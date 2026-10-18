@@ -65,6 +65,14 @@ fn native_file_effects_perform_lillys_shapes() {
         }
     );
     assert_eq!(
+        native(
+            &root,
+            Utility::Chown,
+            &["--no-dereference", &format!("{me}:{me}"), "--", &p("disk")],
+        ),
+        chown,
+    );
+    assert_eq!(
         native(&root, Utility::Sync, &["--", &p("disk"), &text(&root)]),
         Status::Succeeded
     );
@@ -363,6 +371,22 @@ fn zfs_grammar_confines_mutations_to_pool_datasets() {
         "zroot/lilly/vm-a@backup-1"
     ]));
     assert!(ok(&["destroy", "zroot/lilly/vm-a@backup-1"]));
+    assert!(ok(&[
+        "set",
+        "lilly:transfer_nonce=11111111-2222-4333-8444-555555555555",
+        "zroot/lilly/checkpoint-a@lilly-checkpoint"
+    ]));
+    for property in [
+        "readonly=off",
+        "lilly:transfer_nonce=invalid",
+        "lilly:other=abc",
+    ] {
+        assert!(!ok(&[
+            "set",
+            property,
+            "zroot/lilly/checkpoint-a@lilly-checkpoint"
+        ]));
+    }
     assert!(ok(&["destroy", "zroot/lilly/vm-a"]));
     assert!(ok(&[
         "set",

@@ -14,26 +14,27 @@ defmodule Lilly.TerminalTest do
 
   @tag :hegel
   test "hello tags bind placement, epoch and key material" do
-    check all(
-            placement <- member_of(["placement-a", "placement-b"]),
-            epoch <- member_of([1, 2]),
-            test_cases: 20
-          ) do
-      identity = %{@identity | placement_id: placement, execution_epoch: epoch}
-      nonce = :crypto.strong_rand_bytes(16)
-      tag = Vsock.hello_tag(identity, nonce)
-      assert byte_size(tag) == 32
-      assert tag == Vsock.hello_tag(identity, nonce)
-      assert tag != Vsock.hello_tag(%{@identity | execution_epoch: epoch + 1}, nonce)
+    Hegel.check(
+      fn ->
+        placement = draw("placement", member_of(["placement-a", "placement-b"]))
+        epoch = draw("epoch", member_of([1, 2]))
+        identity = %{@identity | placement_id: placement, execution_epoch: epoch}
+        nonce = :crypto.strong_rand_bytes(16)
+        tag = Vsock.hello_tag(identity, nonce)
+        assert byte_size(tag) == 32
+        assert tag == Vsock.hello_tag(identity, nonce)
+        assert tag != Vsock.hello_tag(%{@identity | execution_epoch: epoch + 1}, nonce)
 
-      assert tag ==
-               :crypto.mac(
-                 :hmac,
-                 :sha256,
-                 :crypto.hash(:sha256, [identity.boot_challenge, "overalls-terminald-v1"]),
-                 ["terminald-hello-v1", nonce, placement, Integer.to_string(epoch)]
-               )
-    end
+        assert tag ==
+                 :crypto.mac(
+                   :hmac,
+                   :sha256,
+                   :crypto.hash(:sha256, [identity.boot_challenge, "overalls-terminald-v1"]),
+                   ["terminald-hello-v1", nonce, placement, Integer.to_string(epoch)]
+                 )
+      end,
+      test_cases: 100
+    )
   end
 
   test "stream is ready only after hello_response and reports loss immediately" do

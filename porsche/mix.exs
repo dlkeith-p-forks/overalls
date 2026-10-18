@@ -28,6 +28,8 @@ defmodule Porsche.MixProject do
     [
       {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
       {:logger_json, "~> 7.0"},
+      {:gettext, "~> 1.0"},
+      {:localize, "~> 1.3"},
       {:overalls_protocol, path: "../protocol"},
       {:overalls_diagnostics, path: "../elixir/diagnostics"},
       {:overalls_request_accounting, path: "../elixir/request_accounting"},
@@ -35,7 +37,7 @@ defmodule Porsche.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:hegel_ex,
        git: "https://github.com/ghuntley/hegel-erlang.git",
-       ref: "8fe9786",
+       ref: "b0dec2a",
        subdir: "packages/hegel_ex",
        only: [:dev, :test],
        runtime: false}

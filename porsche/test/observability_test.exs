@@ -19,6 +19,7 @@ defmodule Porsche.ObservabilityTest do
   property "aggregate counts match an independent model and discard arbitrary metadata" do
     events =
       draw(
+        "events",
         list_of(
           tuple(
             {member_of([:http, :ssh]), integer(0..1_000_000), integer(0..1),
@@ -97,7 +98,7 @@ defmodule Porsche.ObservabilityTest do
   end
 
   property "retired metric-shaped reports are redacted like any other report" do
-    secret = draw(binary(max_length: 2048))
+    secret = draw("secret", binary(max_length: 2048))
 
     event = %{
       level: :info,

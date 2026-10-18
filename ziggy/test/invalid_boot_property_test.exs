@@ -3,7 +3,9 @@ defmodule Ziggy.InvalidBootPropertyTest do
   import Hegel
   import Hegel.Gen
 
-  @moduletag timeout: 240_000
+  # A full matrix takes tens of seconds in fresh VMs; preserve all 100 cases.
+  # The aggregate budget includes shared-host headroom; each boot stays bounded.
+  @moduletag timeout: 10_800_000
   @probe Path.expand("../scripts/invalid_boot_probe.exs", __DIR__)
   @id "11111111-1111-4111-8111-111111111111"
   @cases [
@@ -83,45 +85,42 @@ defmodule Ziggy.InvalidBootPropertyTest do
     root = Path.join(System.tmp_dir!(), "k-zb-" <> Base.encode16(:crypto.strong_rand_bytes(8)))
     File.mkdir!(root)
     File.chmod!(root, 0o700)
-    on_exit(fn -> File.rm_rf!(root) end)
+    Hegel.on_cleanup(fn -> File.rm_rf!(root) end)
 
-    check all(
-            order <- shuffle(@cases),
-            token <- string(:alphanumeric, length: 80),
-            suffix <- string(:alphanumeric, length: 35),
-            provider <- member_of(["openai", "anthropic"]),
-            maximum <- member_of([0, 100_001, "10", nil]),
-            max_runs: 3
-          ) do
-      for mutation <- order do
-        directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
-        File.mkdir!(directory)
-        File.chmod!(directory, 0o700)
-        config = configuration(directory, token, suffix)
-        path = Path.join(directory, "config.json")
-        write_config(path, config)
-        assert {:ok, _} = Ziggy.Config.load(path)
-        mutate(mutation, path, config, provider, maximum)
-        secrets = credential_bytes(config)
-        before = snapshot(directory)
-        {output, status} = boot(path, config["socket"], config["spool"])
-        assert status == 0
-        assert projection(output) == expected("rejected", false, true)
+    order = draw("order", shuffle(@cases))
+    token = draw("token", string(:alphanumeric, length: 80))
+    suffix = draw("suffix", string(:alphanumeric, length: 35))
+    provider = draw("provider", member_of(["openai", "anthropic"]))
+    maximum = draw("maximum", member_of([0, 100_001, "10", nil]))
 
-        private? =
-          not Enum.any?(
-            [
-              token,
-              "synthetic-openai-" <> suffix,
-              "synthetic-anthropic-" <> suffix,
-              directory | secrets
-            ],
-            &String.contains?(output, &1)
-          )
+    for mutation <- order do
+      directory = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
+      File.mkdir!(directory)
+      File.chmod!(directory, 0o700)
+      config = configuration(directory, token, suffix)
+      path = Path.join(directory, "config.json")
+      write_config(path, config)
+      assert {:ok, _} = Ziggy.Config.load(path)
+      mutate(mutation, path, config, provider, maximum)
+      secrets = credential_bytes(config)
+      before = snapshot(directory)
+      {output, status} = boot(path, config["socket"], config["spool"])
+      assert status == 0
+      assert projection(output) == expected("rejected", false, true)
 
-        assert private?, "boot diagnostics exposed fixture paths or secrets"
-        assert snapshot(directory) == before
-      end
+      private? =
+        not Enum.any?(
+          [
+            token,
+            "synthetic-openai-" <> suffix,
+            "synthetic-anthropic-" <> suffix,
+            directory | secrets
+          ],
+          &String.contains?(output, &1)
+        )
+
+      assert private?, "boot diagnostics exposed fixture paths or secrets"
+      assert snapshot(directory) == before
     end
   end
 
@@ -142,23 +141,20 @@ defmodule Ziggy.InvalidBootPropertyTest do
     root = Path.join(System.tmp_dir!(), "k-zs-" <> Base.encode16(:crypto.strong_rand_bytes(8)))
     File.mkdir!(root)
     File.chmod!(root, 0o700)
-    on_exit(fn -> File.rm_rf!(root) end)
+    Hegel.on_cleanup(fn -> File.rm_rf!(root) end)
 
-    check all(
-            suffix <- string(:alphanumeric, min_length: 8, max_length: 32),
-            token <- string(:alphanumeric, length: 80),
-            max_runs: 20
-          ) do
-      config = configuration(root, token, suffix)
-      path = Path.join(root, "config.json")
-      write_config(path, config)
-      assert {:ok, _} = Ziggy.Config.load(path)
-      write_config(path, Map.put(config, "spool", "/nix/store/" <> suffix <> "-spool"))
-      before = snapshot(root)
-      rejected? = match?({:error, :invalid_configuration}, Ziggy.Config.load(path))
-      assert rejected?, "immutable spool path was accepted by the loader"
-      assert snapshot(root) == before
-    end
+    suffix = draw("suffix", string(:alphanumeric, min_length: 8, max_length: 32))
+    token = draw("token", string(:alphanumeric, length: 80))
+
+    config = configuration(root, token, suffix)
+    path = Path.join(root, "config.json")
+    write_config(path, config)
+    assert {:ok, _} = Ziggy.Config.load(path)
+    write_config(path, Map.put(config, "spool", "/nix/store/" <> suffix <> "-spool"))
+    before = snapshot(root)
+    rejected? = match?({:error, :invalid_configuration}, Ziggy.Config.load(path))
+    assert rejected?, "immutable spool path was accepted by the loader"
+    assert snapshot(root) == before
   end
 
   @spec expected(String.t(), boolean(), boolean()) :: boot_projection()
@@ -177,9 +173,25 @@ defmodule Ziggy.InvalidBootPropertyTest do
     }
   end
 
+  # @cc [owner:ghuntley,label:verification] fresh-boot-operation-deadline
+  # Each probe MUST run in a fresh VM with the complete startup oracle. A boot
+  # exceeding 30 seconds MUST fail; its process group gets at most five seconds
+  # to terminate before forced cleanup, independently of the aggregate budget.
   @spec boot(Path.t() | nil, Path.t(), Path.t()) :: {String.t(), non_neg_integer()}
   defp boot(path, socket, spool) do
-    System.cmd("mix", ["run", "--no-start", "--no-compile", "--no-deps-check", @probe],
+    System.cmd(
+      "timeout",
+      [
+        "--signal=TERM",
+        "--kill-after=5s",
+        "30s",
+        "mix",
+        "run",
+        "--no-start",
+        "--no-compile",
+        "--no-deps-check",
+        @probe
+      ],
       env: [
         {"MIX_ENV", "test"},
         {"ERL_FLAGS", "+S 2:2 +SDcpu 1 +SDio 1"},

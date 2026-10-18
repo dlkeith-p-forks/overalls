@@ -69,6 +69,38 @@ defmodule Marshall.Operations.AudiTest do
     assert rotated.addresses == [] and rotated.generation == gateway.generation + 1
   end
 
+  test "gateway enrollment explicitly opts into the keyed fleet relay", c do
+    assert {:ok, _} =
+             CLI.run([
+               "audi-gateway-rotate",
+               "relay-gateway",
+               c.host_id,
+               "192.0.2.10",
+               "10.90.0.1",
+               "9445",
+               c.gateway
+             ])
+
+    [service] = Ledger.read!(Service, name: "relay-gateway")
+    assert service.relay_address == "10.90.0.1" and service.relay_port == 9445
+
+    for {address, port} <- [{"127.0.0.1", "9445"}, {"10.90.0.01", "9445"}, {"10.90.0.1", "65536"}] do
+      assert {:error, :invalid_arguments} =
+               CLI.run([
+                 "audi-gateway-rotate",
+                 "bad-relay",
+                 c.host_id,
+                 "192.0.2.10",
+                 address,
+                 port,
+                 c.failed
+               ])
+    end
+
+    refute File.exists?(c.failed)
+    assert Ledger.read!(Service, name: "bad-relay") == []
+  end
+
   test "invalid gateway arguments never create authority or files", c do
     nine = Enum.join(Enum.map(1..9, &"192.0.2.#{100 + &1}"), ",")
 
@@ -135,23 +167,29 @@ defmodule Marshall.Operations.AudiTest do
   end
 
   test "malformed address lists never create authority", c do
-    check all(
-            parts <-
-              list_of(string(:alphanumeric, min_length: 1, max_length: 12),
-                min_length: 1,
-                max_length: 6
-              )
-          ) do
-      assert {:error, _} =
-               CLI.run([
-                 "audi-gateway-rotate",
-                 "property-gateway",
-                 c.host_id,
-                 Enum.join(parts, ","),
-                 c.failed
-               ])
+    Hegel.check(
+      fn ->
+        parts =
+          draw(
+            "parts",
+            list_of(string(:alphanumeric, min_length: 1, max_length: 12),
+              min_length: 1,
+              max_length: 6
+            )
+          )
 
-      assert Ledger.read!(Service, name: "property-gateway") == []
-    end
+        assert {:error, _} =
+                 CLI.run([
+                   "audi-gateway-rotate",
+                   "property-gateway",
+                   c.host_id,
+                   Enum.join(parts, ","),
+                   c.failed
+                 ])
+
+        assert Ledger.read!(Service, name: "property-gateway") == []
+      end,
+      []
+    )
   end
 end

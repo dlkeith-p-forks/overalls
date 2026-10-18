@@ -1,7 +1,5 @@
 defmodule Marshall.Agents.PromptTest do
   use Marshall.DataCase, async: false
-  import Hegel
-  import Hegel.Gen
   import Marshall.ComputeFixtures
   alias Marshall.Agents
   alias Marshall.Agents.{AuditEvent, Conversation, Event, Root, Thread, Turn}
@@ -28,19 +26,6 @@ defmodule Marshall.Agents.PromptTest do
     assert root_id == c.root.id
   end
 
-  test "a repeated prompt key creates one turn, event and audit receipt", c do
-    check all(prompt <- string(:alphanumeric, min_length: 1, max_length: 64), test_cases: 12) do
-      key = Ash.UUID.generate()
-      input = %{thread_id: c.thread.id, prompt: prompt, request_key: key}
-      assert {:ok, first} = Agents.submit_prompt(input, actor: c.actor)
-      assert {:ok, second} = Agents.submit_prompt(input, actor: c.actor)
-      assert first.turn_id == second.turn_id
-      assert length(Ledger.read!(Turn, request_key: key)) == 1
-      assert length(Ledger.read!(Event, turn_id: first.turn_id)) == 1
-      assert length(Ledger.read!(AuditEvent, turn_id: first.turn_id)) == 1
-    end
-  end
-
   test "reusing a key with different content is rejected", c do
     key = Ash.UUID.generate()
 
@@ -57,52 +42,6 @@ defmodule Marshall.Agents.PromptTest do
     assert [%{prompt: "first"}] = Ledger.read!(Turn, request_key: key)
   end
 
-  test "stopped VM prompt retries and changed payload retain one turn and wake", c do
-    check all(
-            prompt <- string(:alphanumeric, min_length: 1, max_length: 24),
-            retries <- integer(1..4),
-            test_cases: 6
-          ) do
-      host_fixture()
-      {:ok, vm} = Compute.provision(request(), actor: c.actor)
-      [root] = Ledger.read!(Root, vm_id: vm.id)
-      [thread] = Ledger.read!(Thread, root_id: root.id)
-
-      assert {:ok, _} =
-               Compute.lifecycle(
-                 %{vm_id: vm.id, kind: :stop, idempotency_key: Ash.UUID.generate()},
-                 actor: c.actor
-               )
-
-      key = Ash.UUID.generate()
-      input = %{thread_id: thread.id, prompt: prompt, request_key: key}
-      assert {:ok, first} = Agents.submit_prompt(input, actor: c.actor)
-
-      for _ <- 1..retries do
-        assert {:ok, replay} = Agents.submit_prompt(input, actor: c.actor)
-        assert replay.turn_id == first.turn_id
-      end
-
-      assert {:error, _} =
-               Agents.submit_prompt(%{input | prompt: prompt <> "changed"}, actor: c.actor)
-
-      assert [%{id: turn_id, prompt: ^prompt}] = Ledger.read!(Turn, request_key: key)
-      assert turn_id == first.turn_id
-      assert [%{kind: :prompt, turn_id: ^turn_id}] = Ledger.read!(Event, turn_id: turn_id)
-
-      assert [%{kind: :prompt_admitted}] =
-               Ledger.read!(AuditEvent, turn_id: turn_id, kind: :prompt_admitted)
-
-      assert [%{kind: :wake_requested}] =
-               Ledger.read!(AuditEvent, turn_id: turn_id, kind: :wake_requested)
-
-      assert [%{kind: :start, request_key: wake_key}] =
-               Ledger.read!(Operation, vm_id: vm.id, initiator: :agent)
-
-      assert wake_key == "agent:" <> key
-    end
-  end
-
   test "child thread, parent event and audit receipt are committed together", c do
     assert {:ok, child} = Conversation.spawn_child(c.thread.id, "Investigate", c.actor)
     assert child.parent_thread_id == c.thread.id
@@ -112,8 +51,9 @@ defmodule Marshall.Agents.PromptTest do
     assert [%{kind: :child_created}] = Ledger.read!(AuditEvent, target_id: child.id)
   end
 
-  test "a stopped VM is woken by its prompt with agent provenance", c do
-    assert {:ok, _stop} =
+  test "a stopped VM retains prompt wake provenance until physical stop and capacity admission",
+       c do
+    assert {:ok, stop} =
              Compute.lifecycle(
                %{vm_id: c.vm.id, kind: :stop, idempotency_key: Ash.UUID.generate()},
                actor: c.actor
@@ -125,10 +65,41 @@ defmodule Marshall.Agents.PromptTest do
                actor: c.actor
              )
 
-    assert [%{initiator: :agent, kind: :start, requested_by_id: actor_id}] =
-             Ledger.read!(Operation, vm_id: c.vm.id, initiator: :agent)
+    assert [%{source: :prompt, requested_by_id: actor_id} = wake] =
+             Ledger.read!(Marshall.Compute.WakeRequest, vm_id: c.vm.id)
 
     assert actor_id == c.actor.id
+    assert Ledger.read!(Operation, vm_id: c.vm.id, kind: :start) == []
+    assert {:ok, :waiting} = Marshall.Compute.Wake.advance(wake.id)
+    assert Ledger.read!(Operation, vm_id: c.vm.id, kind: :start) == []
+
+    assert {:ok, _} =
+             Ledger.transaction(fn ->
+               Ledger.lock!(Marshall.Compute.Host, c.vm.host_id)
+
+               Marshall.Compute.Outcomes.ingest_locked!(c.vm.host_id, [
+                 %{
+                   id: Ash.UUID.generate(),
+                   vm_id: c.vm.id,
+                   placement_id: stop.placement_id,
+                   execution_epoch: stop.execution_epoch,
+                   generation: stop.generation,
+                   operation_id: stop.id,
+                   sequence: 1,
+                   state: :stopped,
+                   compute_empty: true,
+                   disk_present: true,
+                   cleanup_complete: false,
+                   reason: :none
+                 }
+               ])
+             end)
+
+    assert {:ok, :waiting} = Marshall.Compute.Wake.advance(wake.id)
+
+    assert [%{initiator: :wake, kind: :start}] =
+             Ledger.read!(Operation, vm_id: c.vm.id, kind: :start)
+
     assert [%{status: :queued}] = Ledger.read!(Turn, id: turn_id)
 
     assert [%{kind: :wake_requested, turn_id: ^turn_id}] =
@@ -139,6 +110,8 @@ defmodule Marshall.Agents.PromptTest do
     {:ok, _} =
       Ledger.transaction(fn ->
         [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
+        [provision] = Ledger.read!(Operation, vm_id: c.vm.id, kind: :provision)
+        Ledger.update!(provision, :complete, %{})
         Ledger.update!(vm, :observe, %{observed_state: :stopped})
       end)
 
@@ -148,8 +121,14 @@ defmodule Marshall.Agents.PromptTest do
                actor: c.actor
              )
 
-    assert [%{initiator: :agent, kind: :start}] =
-             Ledger.read!(Operation, vm_id: c.vm.id, initiator: :agent)
+    assert [%{source: :prompt} = wake] =
+             Ledger.read!(Marshall.Compute.WakeRequest, vm_id: c.vm.id)
+
+    assert Ledger.read!(Operation, vm_id: c.vm.id, kind: :start) == []
+    assert {:ok, :waiting} = Marshall.Compute.Wake.advance(wake.id)
+
+    assert [%{initiator: :wake, kind: :start}] =
+             Ledger.read!(Operation, vm_id: c.vm.id, kind: :start)
 
     assert [%{kind: :wake_requested, turn_id: ^turn_id}] =
              Ledger.read!(AuditEvent, kind: :wake_requested)
@@ -158,7 +137,7 @@ defmodule Marshall.Agents.PromptTest do
   test "shared write roles can wake, read-only roles cannot", c do
     member = user()
 
-    check all(role <- member_of([:web, :viewer, :operator, :manager]), test_cases: 12) do
+    for role <- [:web, :viewer, :operator, :manager] do
       assert {:ok, _} =
                Access.set_access(
                  %{

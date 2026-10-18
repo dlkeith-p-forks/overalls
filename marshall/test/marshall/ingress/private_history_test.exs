@@ -1,5 +1,5 @@
 defmodule Marshall.Ingress.PrivateHistoryTest do
-  use Marshall.DataCase, async: false
+  use ExUnit.Case, async: false
   import Hegel
   import Hegel.Gen
   alias Marshall.Accounts.User
@@ -8,6 +8,7 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
   alias Marshall.Ingress
   alias Marshall.Ingress.{Endpoint, Token, WebStream}
   @moduletag capture_log: true
+  @moduletag timeout: 180_000
 
   @type role :: :web | :viewer | :operator | :manager | :revoked
   @type operation :: {:direct, role()} | {:team, :member | :admin | :removed}
@@ -59,8 +60,14 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
   # withdrawal MUST recheck authority on exchange. Gateway-style explicit close
   # after refusal MUST permanently fence that ticket even after re-addition.
   # Synthetic execution reports establish control admission, not network closure.
+  # Twelve database-backed histories exercise all fixed sharing transitions;
+  # the CI profile suppresses the wall-clock generation heuristic only. Every
+  # generated case and replay MUST own and roll back an independent SQL sandbox.
   property "private browser admission and renewal follow combined sharing histories",
-    test_cases: 12 do
+    profile: :ci,
+    test_cases: 12,
+    setup: &sandbox/0,
+    teardown: &cleanup/1 do
     check all(
             port <- member_of([0, 3000, 9999]),
             tail <-
@@ -182,7 +189,11 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
   # bindings. Actual endpoint configuration and sign-out exercise public actions;
   # expiry and generation changes below are explicitly synthetic fault injection.
   # A new login may authorize a fresh stream but MUST NOT revive the closed one.
-  property "private streams retain exact policy, execution and login bindings", test_cases: 20 do
+  property "private streams retain exact policy, execution and login bindings",
+    profile: :ci,
+    test_cases: 20,
+    setup: &sandbox/0,
+    teardown: &cleanup/1 do
     check all(
             boundary <- member_of([:policy, :execution, :signout, :close, :expire]),
             port <- member_of([0, 3000, 9999]),
@@ -249,6 +260,17 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
 
       assert {:error, _} = Ingress.renew_web(request, actor: SystemActor.compute())
     end
+  end
+
+  @spec sandbox() :: %{sandbox_owner: pid()}
+  defp sandbox do
+    %{sandbox_owner: Ecto.Adapters.SQL.Sandbox.start_owner!(Marshall.Repo, shared: true)}
+  end
+
+  @spec cleanup(%{sandbox_owner: pid()}) :: :ok
+  defp cleanup(%{sandbox_owner: owner}) do
+    Ecto.Adapters.SQL.Sandbox.stop_owner(owner)
+    :ok
   end
 
   @spec allowed?(model()) :: boolean()

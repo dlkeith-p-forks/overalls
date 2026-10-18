@@ -1,0 +1,203 @@
+msgid ""
+msgstr ""
+"Language: hi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Porsche machine management. Type help."
+msgstr "Porsche मशीन प्रबंधन। help लिखें।"
+
+msgid "Docs:"
+msgstr "दस्तावेज़:"
+
+msgid "Show command help."
+msgstr "कमांड सहायता दिखाएँ।"
+
+msgid "Show the authenticated account."
+msgstr "प्रमाणित खाता दिखाएँ।"
+
+msgid "List available images."
+msgstr "उपलब्ध इमेज की सूची दिखाएँ।"
+
+msgid "List machines you can access."
+msgstr "जिन मशीनों तक आपकी पहुँच है उनकी सूची दिखाएँ।"
+
+msgid "Inspect a machine by name or UUID."
+msgstr "नाम या UUID से मशीन की जाँच करें।"
+
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "मशीन बनाएँ। डिस्क की अधिकतम सीमा: 500 GiB। --source अतिथि में सार्वजनिक GitHub, GitLab, Codeberg या Bitbucket रिपॉज़िटरी की प्रतिलिपि बनाता है।"
+
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "मशीन की पूरी डिस्क की स्वतंत्र प्रतिलिपि कतार में जोड़ें।"
+
+msgid "Move a machine to an automatically selected host."
+msgstr "मशीन को अपने आप चुने गए होस्ट पर ले जाएँ।"
+
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "मशीन का CPU और मेमोरी बदलें; डिस्क केवल बढ़ाई जा सकती है। चलती मशीन बंद होकर दोबारा शुरू होगी।"
+
+msgid "Retry a failed clone or relocation request."
+msgstr "विफल क्लोन या स्थानांतरण अनुरोध फिर आज़माएँ।"
+
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "अप्रकाशित क्लोन या अपुष्ट स्थानांतरण अनुरोध रद्द करें।"
+
+msgid "Start a machine."
+msgstr "मशीन शुरू करें।"
+
+msgid "Stop a machine, retaining its disk."
+msgstr "डिस्क सुरक्षित रखते हुए मशीन बंद करें।"
+
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "मशीन और उसकी डिस्क मिटाएँ। मालिक द्वारा पिन किए होने पर यह अस्वीकार होगा।"
+
+msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
+msgstr "मशीन को अपनी सूचियों में सबसे ऊपर पिन करें। जब तक आप मालिक हैं और यह पिन है, इसे मिटाया नहीं जा सकता।"
+
+msgid "Remove your pin from a machine."
+msgstr "मशीन से अपना पिन हटाएँ।"
+
+msgid "List access grants."
+msgstr "दिए गए पहुँच अधिकारों की सूची दिखाएँ।"
+
+msgid "Grant viewer, operator or manager access."
+msgstr "दर्शक, संचालक या प्रबंधक की पहुँच दें।"
+
+msgid "Revoke an account's shared access."
+msgstr "खाते की साझा पहुँच वापस लें।"
+
+msgid "List your SSH keys."
+msgstr "अपनी SSH कुंजियों की सूची दिखाएँ।"
+
+msgid "Revoke one of your SSH keys."
+msgstr "अपनी एक SSH कुंजी रद्द करें।"
+
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "https://NAME.integration.internal पर नामित एकीकरण बनाएँ या बदलें।"
+
+msgid "Remove a named integration."
+msgstr "नामित एकीकरण हटाएँ।"
+
+msgid "List your integrations."
+msgstr "अपने एकीकरणों की सूची दिखाएँ।"
+
+msgid "Inspect an integration without secrets."
+msgstr "गोपनीय जानकारी के बिना एकीकरण जाँचें।"
+
+msgid "Make an integration available to a machine."
+msgstr "मशीन के लिए एकीकरण उपलब्ध करें।"
+
+msgid "Remove a machine's explicit availability."
+msgstr "मशीन की स्पष्ट रूप से दी गई उपलब्धता हटाएँ।"
+
+msgid "Create a team you own."
+msgstr "अपने स्वामित्व वाली टीम बनाएँ।"
+
+msgid "List your teams and roles."
+msgstr "अपनी टीमों और भूमिकाओं की सूची दिखाएँ।"
+
+msgid "List a team's members."
+msgstr "टीम के सदस्यों की सूची दिखाएँ।"
+
+msgid "Add or change an admin or member."
+msgstr "व्यवस्थापक या सदस्य जोड़ें या बदलें।"
+
+msgid "Remove an account's membership."
+msgstr "खाते की सदस्यता हटाएँ।"
+
+msgid "Offer team ownership to an admin."
+msgstr "व्यवस्थापक को टीम का स्वामित्व देने का प्रस्ताव भेजें।"
+
+msgid "Accept a pending ownership offer."
+msgstr "लंबित स्वामित्व प्रस्ताव स्वीकार करें।"
+
+msgid "Decline a pending ownership offer."
+msgstr "लंबित स्वामित्व प्रस्ताव अस्वीकार करें।"
+
+msgid "Cancel your pending ownership offer."
+msgstr "अपना लंबित स्वामित्व प्रस्ताव रद्द करें।"
+
+msgid "Inspect a previously accepted request."
+msgstr "पहले स्वीकार किए गए अनुरोध की जाँच करें।"
+
+msgid "Close this interactive channel."
+msgstr "यह संवादात्मक चैनल बंद करें।"
+
+msgid "We don't recognize this SSH key:\n  "
+msgstr "हम इस SSH कुंजी को नहीं पहचानते:\n  "
+
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nयह लिंक खोलें, साइन इन करें और मेल खाते फ़िंगरप्रिंट को मंज़ूरी दें:\n  "
+
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
+msgstr "\n\nकुंजी को मंज़ूरी देते समय यह SSH कनेक्शन खुला रखें।\n"
+
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+msgstr "मंज़ूरी के लिंक %{minutes} मिनट बाद या यह कनेक्शन बंद होने पर समाप्त हो जाते हैं।\n"
+
+msgid "After approval, retry your command here.\n"
+msgstr "मंज़ूरी के बाद यहाँ अपना कमांड फिर आज़माएँ।\n"
+
+msgid "\nOpen an interactive Porsche connection without a remote command:"
+msgstr "\nदूरस्थ कमांड दिए बिना संवादात्मक Porsche कनेक्शन खोलें:"
+
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "ब्राउज़र में कुंजी को मंज़ूरी देते समय वह कनेक्शन खुला रखें,\n"
+
+msgid "then retry your original command.\n"
+msgstr "फिर अपना मूल कमांड फिर आज़माएँ।\n"
+
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr "Overalls में आपका स्वागत है।\n\nइस कनेक्शन के लिए Overalls SSH कॉन्फ़िगरेशन आवश्यक है।\n\n"
+
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr "अभी हम यह SSH कुंजी सत्यापित नहीं कर सके। कृपया थोड़ी देर बाद फिर आज़माएँ।\n\n"
+
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr "यह SSH कनेक्शन अधिकृत नहीं हो सका। मशीन की पहुँच जाँचें और फिर आज़माएँ।\n\n"
+
+msgid "Register or check your key by connecting to:\n  ssh "
+msgstr "यहाँ कनेक्ट करके अपनी कुंजी दर्ज करें या जाँचें:\n  ssh "
+
+msgid "\nOr manage your keys at:\n  "
+msgstr "\nया यहाँ अपनी कुंजियाँ प्रबंधित करें:\n  "
+
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+msgstr "Overalls खाता सेटिंग > SSH कुंजियाँ में अपनी कुंजी दर्ज करें या जाँचें।\n\n"
+
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "ब्राउज़र में मंज़ूरी के निर्देशों का पालन करें, फिर सेटअप कमांड चलाएँ\n"
+
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "जो मशीन के पृष्ठ पर है और root@ के बिना दोबारा कनेक्ट करें।\n"
+
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "यह कनेक्शन अधिकृत नहीं है। साइन इन करके फिर आज़माएँ।"
+
+msgid "You do not have permission to perform this action."
+msgstr "आपको यह कार्रवाई करने की अनुमति नहीं है।"
+
+msgid "Invalid command. Type help to see available commands."
+msgstr "अमान्य कमांड। उपलब्ध कमांड देखने के लिए help लिखें।"
+
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr "सेवा कुछ समय के लिए उपलब्ध नहीं है। कृपया थोड़ी देर बाद फिर आज़माएँ।"
+
+msgid "Approve this SSH key in your browser, then retry the command."
+msgstr "ब्राउज़र में इस SSH कुंजी को मंज़ूरी दें, फिर कमांड फिर आज़माएँ।"
+
+msgid "The requested resource could not be found."
+msgstr "अनुरोधित संसाधन नहीं मिला।"
+
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "अनपेक्षित इनपुट। कृपया नया SSH कनेक्शन खोलें।"
+
+msgid "The command could not be completed: %{reason}"
+msgstr "कमांड पूरा नहीं हो सका: %{reason}"
+
+msgid "Request %{id}: submitting"
+msgstr "अनुरोध %{id}: भेजा जा रहा है"
+
+msgid "Request %{id}: waiting for completion"
+msgstr "अनुरोध %{id}: पूरा होने की प्रतीक्षा में"

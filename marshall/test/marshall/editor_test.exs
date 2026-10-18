@@ -72,16 +72,20 @@ defmodule Marshall.EditorTest do
   end
 
   test "current sharing roles independently decide editor write admission", c do
-    check all(role <- member_of([:web, :viewer, :operator, :manager, :revoked]), test_cases: 12) do
-      F.fresh(c)
-      member = Marshall.ComputeFixtures.user()
-      token = Marshall.TerminalFixtures.user_token(member)
-      {:ok, jti, _} = Marshall.Accounts.Login.verify(token, member)
-      actor = Marshall.Accounts.Security.bind(member, jti)
-      assert {:ok, _} = Marshall.TerminalFixtures.grant(c, member, role)
-      result = Marshall.Editor.launch(%{vm_id: c.vm.id}, actor: actor)
-      assert match?({:ok, _}, result) == role in [:operator, :manager]
-    end
+    Hegel.check(
+      fn ->
+        role = draw("role", member_of([:web, :viewer, :operator, :manager, :revoked]))
+        F.fresh(c)
+        member = Marshall.ComputeFixtures.user()
+        token = Marshall.TerminalFixtures.user_token(member)
+        {:ok, jti, _} = Marshall.Accounts.Login.verify(token, member)
+        actor = Marshall.Accounts.Security.bind(member, jti)
+        assert {:ok, _} = Marshall.TerminalFixtures.grant(c, member, role)
+        result = Marshall.Editor.launch(%{vm_id: c.vm.id}, actor: actor)
+        assert match?({:ok, _}, result) == role in [:operator, :manager]
+      end,
+      test_cases: 100
+    )
   end
 
   @tag profile: :customer

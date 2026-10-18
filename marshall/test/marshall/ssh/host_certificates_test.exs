@@ -45,32 +45,37 @@ defmodule Marshall.SSH.HostCertificatesTest do
   end
 
   test "retries converge and replaced keys cannot resurrect an earlier generation", c do
-    check all(count <- integer(2..6), test_cases: 6) do
-      keys =
-        Enum.map(1..count, fn _ ->
-          {key, _} = :crypto.generate_key(:eddsa, :ed25519)
-          "ssh-ed25519 " <> Base.encode64(<<11::32, "ssh-ed25519", 32::32, key::binary>>)
-        end)
+    Hegel.check(
+      fn ->
+        count = draw("count", integer(2..6))
 
-      for key <- keys do
-        request = %{role: :porsche, token: c.token, public_key: key}
-        assert {:ok, response} = SSH.host_certificate(request, actor: c.actor)
-        assert {:ok, ^response} = SSH.host_certificate(request, actor: c.actor)
+        keys =
+          Enum.map(1..count, fn _ ->
+            {key, _} = :crypto.generate_key(:eddsa, :ed25519)
+            "ssh-ed25519 " <> Base.encode64(<<11::32, "ssh-ed25519", 32::32, key::binary>>)
+          end)
 
-        assert {:ok, _} =
-                 Certificate.verify(
-                   response.certificate,
-                   c.ca,
-                   key,
-                   "control.example.test",
-                   System.system_time(:second)
-                 )
+        for key <- keys do
+          request = %{role: :porsche, token: c.token, public_key: key}
+          assert {:ok, response} = SSH.host_certificate(request, actor: c.actor)
+          assert {:ok, ^response} = SSH.host_certificate(request, actor: c.actor)
 
-        current = Ledger.read!(SSH.HostCertificate, status: :issued)
-        assert length(current) == 1
-        assert hd(current).public_key == key
-      end
-    end
+          assert {:ok, _} =
+                   Certificate.verify(
+                     response.certificate,
+                     c.ca,
+                     key,
+                     "control.example.test",
+                     System.system_time(:second)
+                   )
+
+          current = Ledger.read!(SSH.HostCertificate, status: :issued)
+          assert length(current) == 1
+          assert hd(current).public_key == key
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   test "revoked or wrong-role credentials cannot sign", c do

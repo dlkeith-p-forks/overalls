@@ -14,19 +14,17 @@ defmodule Lilly.Host.CountersTest do
   end
 
   property "CPU usage stays in range for increasing counters" do
-    check all(
-            total <- integer(1..1_000_000),
-            idle <- integer(0..total),
-            delta <- integer(1..1_000_000),
-            idle_delta <- integer(0..delta)
-          ) do
-      percent =
-        Counters.cpu_percent(%{total: total, idle: idle}, %{
-          total: total + delta,
-          idle: idle + idle_delta
-        })
+    total = draw("total", integer(1..1_000_000))
+    idle = draw("idle", integer(0..total))
+    delta = draw("delta", integer(1..1_000_000))
+    idle_delta = draw("idle_delta", integer(0..delta))
 
-      assert percent >= 0.0 and percent <= 100.0
-    end
+    percent =
+      Counters.cpu_percent(%{total: total, idle: idle}, %{
+        total: total + delta,
+        idle: idle + idle_delta
+      })
+
+    assert percent >= 0.0 and percent <= 100.0
   end
 end

@@ -59,7 +59,8 @@ defmodule OverallsProtocolTest do
         "images" => [],
         "execution_ready" => false,
         "terminal_protocol" => 0,
-        "inception_image_id" => nil
+        "inception_image_id" => nil,
+        "checkpoint_compatibility" => nil
       },
       pools: [
         %{
@@ -67,6 +68,7 @@ defmodule OverallsProtocolTest do
           total_bytes: total,
           free_bytes: free,
           allocations: %{@id => allocated},
+          checkpoint_allocations: %{},
           storage: %{
             backend: :zfs,
             zpool_guid: "1",
@@ -100,7 +102,8 @@ defmodule OverallsProtocolTest do
         "images" => [],
         "execution_ready" => false,
         "terminal_protocol" => 0,
-        "inception_image_id" => nil
+        "inception_image_id" => nil,
+        "checkpoint_compatibility" => nil
       },
       pools: [pool]
     }
@@ -138,7 +141,8 @@ defmodule OverallsProtocolTest do
         "images" => [],
         "execution_ready" => false,
         "terminal_protocol" => 0,
-        "inception_image_id" => nil
+        "inception_image_id" => nil,
+        "checkpoint_compatibility" => nil
       },
       pools: [pool]
     }
@@ -211,7 +215,8 @@ defmodule OverallsProtocolTest do
         "images" => [],
         "execution_ready" => false,
         "terminal_protocol" => 0,
-        "inception_image_id" => nil
+        "inception_image_id" => nil,
+        "checkpoint_compatibility" => nil
       },
       "pools" => []
     }

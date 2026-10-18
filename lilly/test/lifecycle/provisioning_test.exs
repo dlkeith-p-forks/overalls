@@ -40,55 +40,60 @@ defmodule Lilly.Lifecycle.ProvisioningTest do
   # preserve state and revision. Duplicate writes MUST NOT change either.
   @tag :hegel
   test "generated progress, faults and replays preserve prerequisites and bindings", c do
-    check all(
-            history <-
-              list_of(
-                member_of([
-                  :disk,
-                  :launch,
-                  :trust,
-                  :ssh,
-                  :receipt,
-                  :fail,
-                  :retire,
-                  :replay,
-                  :extend_deadline,
-                  :wrong_boot,
-                  :stale_generation
-                ]),
-                min_length: 1,
-                max_length: 24
-              ),
-            test_cases: 35
-          ) do
-      directory = Path.join(c.tmp_dir, Lilly.UUID.generate())
-      locked(directory, fn -> assert :ok = write(directory, c.payload) end)
+    Hegel.check(
+      fn ->
+        history =
+          draw(
+            "history",
+            list_of(
+              member_of([
+                :disk,
+                :launch,
+                :trust,
+                :ssh,
+                :receipt,
+                :fail,
+                :retire,
+                :replay,
+                :extend_deadline,
+                :wrong_boot,
+                :stale_generation
+              ]),
+              min_length: 1,
+              max_length: 24
+            )
+          )
 
-      initial = %{
-        effects: MapSet.new(),
-        retired: false,
-        failed: false,
-        payload: c.payload,
-        revision: 1
-      }
+        directory = Path.join(c.tmp_dir, Lilly.UUID.generate())
+        locked(directory, fn -> assert :ok = write(directory, c.payload) end)
 
-      Enum.reduce(history, initial, fn command, model ->
-        {allowed, proposal, next} = step(model, command)
-        {:ok, before} = Journal.load(Provisioning, directory, "provisioning.json")
-        result = locked(directory, fn -> write(directory, proposal) end)
-        assert result == :ok == allowed
-        assert {:ok, after_record} = Journal.load(Provisioning, directory, "provisioning.json")
+        initial = %{
+          effects: MapSet.new(),
+          retired: false,
+          failed: false,
+          payload: c.payload,
+          revision: 1
+        }
 
-        if allowed and proposal != model.payload do
-          assert after_record.payload == proposal
-          assert after_record.revision == model.revision + 1
-          %{next | payload: proposal, revision: model.revision + 1}
-        else
-          assert after_record == before
-          model
-        end
-      end)
-    end
+        Enum.reduce(history, initial, fn command, model ->
+          {allowed, proposal, next} = step(model, command)
+          {:ok, before} = Journal.load(Provisioning, directory, "provisioning.json")
+          result = locked(directory, fn -> write(directory, proposal) end)
+          assert result == :ok == allowed
+          assert {:ok, after_record} = Journal.load(Provisioning, directory, "provisioning.json")
+
+          if allowed and proposal != model.payload do
+            assert after_record.payload == proposal
+            assert after_record.revision == model.revision + 1
+            %{next | payload: proposal, revision: model.revision + 1}
+          else
+            assert after_record == before
+            model
+          end
+        end)
+      end,
+      test_cases: 100
+    )
   end
 
   test "ready needs a current boot receipt; newer generations supersede preserving identity",

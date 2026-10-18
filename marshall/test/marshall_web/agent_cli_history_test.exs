@@ -30,107 +30,108 @@ defmodule MarshallWeb.AgentCLIHistoryTest do
   # public direct/team actions. Every step checks both an existing approved secret
   # and a fresh explicit browser approval; refusal MUST preserve complete scoped
   # persisted rows, including prior turns, sessions, audit and wake operations.
-  property "CLI invocations follow direct and team authority histories", test_cases: 8 do
-    check all(
-            tail <-
-              list_of(
-                one_of([
-                  map(member_of([:web, :viewer, :operator, :manager, :revoked]), &{:direct, &1}),
-                  map(member_of([:member, :admin, :removed]), &{:team, &1})
-                ]),
-                max_length: 5
-              ),
-            test_cases: 8
-          ) do
-      c = fixture()
-      model = change(c, %{direct: :revoked, team: false}, {:direct, :operator})
-      existing = credential()
-      approve(c, existing, true)
-      prompt(c, existing, true)
-      [original_turn] = Ledger.read!(Turn, thread_id: c.thread.id)
+  @tag :hegel_case_sandbox
+  property "CLI invocations follow direct and team authority histories", test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    tail =
+      draw(
+        "tail",
+        list_of(
+          one_of([
+            map(member_of([:web, :viewer, :operator, :manager, :revoked]), &{:direct, &1}),
+            map(member_of([:member, :admin, :removed]), &{:team, &1})
+          ]),
+          max_length: 5
+        )
+      )
 
-      operations =
-        [
-          {:direct, :viewer},
-          {:direct, :web},
-          {:team, :member},
-          {:direct, :revoked},
-          {:team, :removed},
-          {:team, :admin},
-          {:team, :removed},
-          {:direct, :manager}
-        ] ++ tail
+    c = fixture()
+    model = change(c, %{direct: :revoked, team: false}, {:direct, :operator})
+    existing = credential()
+    approve(c, existing, true)
+    prompt(c, existing, true)
+    [original_turn] = Ledger.read!(Turn, thread_id: c.thread.id)
 
-      Enum.reduce(operations, model, fn operation, model ->
-        model = change(c, model, operation)
-        permitted = model.team or model.direct in [:operator, :manager]
-        before = inventory(c)
+    operations =
+      [
+        {:direct, :viewer},
+        {:direct, :web},
+        {:team, :member},
+        {:direct, :revoked},
+        {:team, :removed},
+        {:team, :admin},
+        {:team, :removed},
+        {:direct, :manager}
+      ] ++ tail
 
-        for path <- [
-              "/api/agents/v1/session?vm_id=#{c.vm.id}",
-              "/api/agents/v1/threads?vm_id=#{c.vm.id}",
-              "/api/agents/v1/turn/#{original_turn.id}?vm_id=#{c.vm.id}"
-            ] do
-          response = api(c.conn, :get, path, existing.secret)
-          assert response.status == if(permitted, do: 200, else: 403)
-          assert inventory(c) == before
-        end
+    Enum.reduce(operations, model, fn operation, model ->
+      model = change(c, model, operation)
+      permitted = model.team or model.direct in [:operator, :manager]
+      before = inventory(c)
 
-        prompt(c, existing, permitted)
-        fresh = credential()
-        assert fresh.code != existing.code
-        approve(c, fresh, permitted)
-        prompt(c, fresh, permitted)
-        model
-      end)
-    end
+      for path <- [
+            "/api/agents/v1/session?vm_id=#{c.vm.id}",
+            "/api/agents/v1/threads?vm_id=#{c.vm.id}",
+            "/api/agents/v1/turn/#{original_turn.id}?vm_id=#{c.vm.id}"
+          ] do
+        response = api(c.conn, :get, path, existing.secret)
+        assert response.status == if(permitted, do: 200, else: 403)
+        assert inventory(c) == before
+      end
+
+      prompt(c, existing, permitted)
+      fresh = credential()
+      assert fresh.code != existing.code
+      approve(c, fresh, permitted)
+      prompt(c, fresh, permitted)
+      model
+    end)
   end
 
   # @cc [owner:ghuntley,label:verification;security] cli-exact-binding-and-idempotency
   # Digest URLs MUST NOT authenticate API calls. Wrong VM/thread and changed
   # replay payloads MUST preserve prior state; exact request replay MUST retain
   # one turn and its original audit/wake inventory across fresh invocations.
-  property "approved secrets retain exact machine, thread and request bindings", test_cases: 8 do
-    check all(
-            repeats <- integer(2..5),
-            payload <- member_of(["inspect", "read", "check"]),
-            test_cases: 8
-          ) do
-      c = fixture()
-      change(c, %{direct: :revoked, team: false}, {:direct, :operator})
-      token = credential()
-      approve(c, token, true)
-      key = Ash.UUID.generate()
-      body = %{vm_id: c.vm.id, thread_id: c.thread.id, request_key: key, prompt: payload}
-      accepted = api(c.conn, :post, "/api/agents/v1/prompt", token.secret, body)
-      assert accepted.status == 200
-      before = inventory(c)
+  @tag :hegel_case_sandbox
+  property "approved secrets retain exact machine, thread and request bindings",
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    repeats = draw("repeats", integer(2..5))
+    payload = draw("payload", member_of(["inspect", "read", "check"]))
+    c = fixture()
+    change(c, %{direct: :revoked, team: false}, {:direct, :operator})
+    token = credential()
+    approve(c, token, true)
+    key = Ash.UUID.generate()
+    body = %{vm_id: c.vm.id, thread_id: c.thread.id, request_key: key, prompt: payload}
+    accepted = api(c.conn, :post, "/api/agents/v1/prompt", token.secret, body)
+    assert accepted.status == 200
+    before = inventory(c)
 
-      for _ <- 1..repeats do
-        retry = api(c.conn, :post, "/api/agents/v1/prompt", token.secret, body)
-        assert retry.status == 200
-        assert retry.resp_body == accepted.resp_body
-        assert inventory(c) == before
-      end
-
-      for {secret, denied_body} <- [
-            {token.code, body},
-            {credential().secret, body},
-            {token.secret, %{body | vm_id: c.other.id, thread_id: c.other_thread.id}},
-            {token.secret, %{body | thread_id: c.other_thread.id}},
-            {token.secret, %{body | prompt: payload <> " changed"}}
-          ] do
-        assert api(c.conn, :post, "/api/agents/v1/prompt", secret, denied_body).status == 403
-        assert inventory(c) == before
-      end
-
-      fresh = credential()
-      approve(c, fresh, true)
-      after_approval = inventory(c)
-      retry = api(c.conn, :post, "/api/agents/v1/prompt", fresh.secret, body)
-      assert retry.status == 200 and retry.resp_body == accepted.resp_body
-      assert inventory(c) == after_approval
+    for _ <- 1..repeats do
+      retry = api(c.conn, :post, "/api/agents/v1/prompt", token.secret, body)
+      assert retry.status == 200
+      assert retry.resp_body == accepted.resp_body
+      assert inventory(c) == before
     end
+
+    for {secret, denied_body} <- [
+          {token.code, body},
+          {credential().secret, body},
+          {token.secret, %{body | vm_id: c.other.id, thread_id: c.other_thread.id}},
+          {token.secret, %{body | thread_id: c.other_thread.id}},
+          {token.secret, %{body | prompt: payload <> " changed"}}
+        ] do
+      assert api(c.conn, :post, "/api/agents/v1/prompt", secret, denied_body).status == 403
+      assert inventory(c) == before
+    end
+
+    fresh = credential()
+    approve(c, fresh, true)
+    after_approval = inventory(c)
+    retry = api(c.conn, :post, "/api/agents/v1/prompt", fresh.secret, body)
+    assert retry.status == 200 and retry.resp_body == accepted.resp_body
+    assert inventory(c) == after_approval
   end
 
   # @cc [owner:ghuntley,label:verification;security] cli-browser-and-session-lifetimes
@@ -139,14 +140,13 @@ defmodule MarshallWeb.AgentCLIHistoryTest do
   # Synthetic expiry, real retirement and VM deletion MUST all run in every
   # generated order and refuse every subsequent mutation. Generation and
   # shrinking MUST preserve all three boundaries without rejection exhaustion.
-  property "browser sign-out and CLI expiry have separate authority boundaries", test_cases: 4 do
-    check all(
-            boundaries <- shuffle([:expiry, :delete, :retire]),
-            expiry_age <- integer(1..3600),
-            test_cases: 4
-          ) do
-      Enum.each(boundaries, &lifetime_boundary(&1, expiry_age))
-    end
+  @tag :hegel_case_sandbox
+  property "browser sign-out and CLI expiry have separate authority boundaries",
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    boundaries = draw("boundaries", shuffle([:expiry, :delete, :retire]))
+    expiry_age = draw("expiry_age", integer(1..3600))
+    Enum.each(boundaries, &lifetime_boundary(&1, expiry_age))
   end
 
   @spec lifetime_boundary(:expiry | :delete | :retire, pos_integer()) :: :ok

@@ -129,6 +129,14 @@ defmodule Marshall.Agents.Loop do
           calls = Ledger.read!(ModelCall, turn_id: turn.id)
 
           cond do
+            vm != nil and
+                (vm.desired_state == :paused or vm.observed_state == :paused or
+                   Ledger.read!(Marshall.Compute.WakeRequest,
+                     vm_id: vm.id,
+                     finished_at: [is_nil: true]
+                   ) != []) ->
+              :wait
+
             vm == nil or vm.desired_state != :running or vm.observed_state != :running ->
               :machine_unavailable
 

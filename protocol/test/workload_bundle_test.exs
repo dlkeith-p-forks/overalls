@@ -7,6 +7,62 @@ defmodule OverallsProtocol.WorkloadBundleTest do
 
   @image_id "sha256:" <> String.duplicate("a", 64)
 
+  property "Git attribution capability is closed, portable and absent for agentless bundles",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 50,
+    seed: 481_293_109 do
+    kind = draw("kind", member_of([:linux, :windows, :none, :freebsd, :illumos]))
+
+    base =
+      case kind do
+        :linux ->
+          %{
+            "version" => 1,
+            "image_id" => @image_id,
+            "architecture" => "x86_64",
+            "boot_args" => "console=ttyS0",
+            "kernel_bytes" => 1,
+            "initrd_bytes" => 1
+          }
+
+        :windows ->
+          Map.put(firmware_bundle(), "guest_agents", "windows-v1")
+
+        :none ->
+          firmware_bundle()
+
+        :freebsd ->
+          freebsd_firmware_bundle()
+
+        :illumos ->
+          illumos_bundle()
+      end
+
+    assert {:ok, old} = WorkloadBundle.validate(base)
+    assert WorkloadBundle.encode(old) == base
+    capable = Map.put(base, "git_identity_version", 1)
+
+    if kind == :none do
+      assert {:error, :invalid_workload_bundle} = WorkloadBundle.validate(capable)
+    else
+      assert {:ok, bundle} = WorkloadBundle.validate(capable)
+      assert bundle.git_identity_version == 1
+      assert bundle |> WorkloadBundle.encode() |> JSON.encode!() |> JSON.decode!() == capable
+
+      assert {:ok, ^bundle} =
+               capable |> JSON.encode!() |> JSON.decode!() |> WorkloadBundle.validate()
+
+      assert {:error, :invalid_workload_bundle} =
+               WorkloadBundle.validate(Map.put(capable, "extra", true))
+    end
+
+    for value <- [nil, 0, 2, "1", true] do
+      assert {:error, :invalid_workload_bundle} =
+               WorkloadBundle.validate(Map.put(base, "git_identity_version", value))
+    end
+  end
+
   test "validates and encodes closed portable metadata without digests" do
     value = %{
       "version" => 1,

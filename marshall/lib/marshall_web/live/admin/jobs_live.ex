@@ -5,16 +5,19 @@ defmodule MarshallWeb.Admin.JobsLive do
   on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
   on_mount {MarshallWeb.LiveAdminAuth, :required}
 
-  @states [
-    {"Queued", :available},
-    {"Suspended", :suspended},
-    {"Scheduled", :scheduled},
-    {"Running", :executing},
-    {"Retrying", :retryable},
-    {"Succeeded", :completed},
-    {"Failed", :discarded},
-    {"Cancelled", :cancelled}
+  defp states do
+    [
+    {gettext("Queued"), :available},
+    {gettext("Suspended"), :suspended},
+    {gettext("Scheduled"), :scheduled},
+    {gettext("Running"), :executing},
+    {gettext("Retrying"), :retryable},
+    {gettext("Succeeded"), :completed},
+    {gettext("Failed"), :discarded},
+    {gettext("Cancelled"), :cancelled}
   ]
+
+  end
 
   @impl true
   def mount(_, _, socket) do
@@ -33,7 +36,7 @@ defmodule MarshallWeb.Admin.JobsLive do
        events_before: nil,
        job_id: nil,
        refreshed_at: nil,
-       states: @states,
+       states: states(),
        retry_request_id: Ash.UUID.generate()
      )
      |> stream(:jobs, [])
@@ -87,7 +90,7 @@ defmodule MarshallWeb.Admin.JobsLive do
          socket
          |> put_flash(
            :info,
-           "Retry queued. The related operation will recheck its current state."
+           gettext("Retry queued. The related operation will recheck its current state.")
          )
          |> assign(:retry_request_id, Ash.UUID.generate())
          |> refresh()}
@@ -97,13 +100,13 @@ defmodule MarshallWeb.Admin.JobsLive do
          socket
          |> put_flash(
            :error,
-           "This job could not be retried. Its state or your access may have changed."
+           gettext("This job could not be retried. Its state or your access may have changed.")
          )
          |> refresh()}
     end
   end
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, "Invalid request.")}
+  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   defp refresh(%{assigns: %{live_action: :index}} = socket) do
     filters = socket.assigns.filters
@@ -139,7 +142,7 @@ defmodule MarshallWeb.Admin.JobsLive do
         socket
         |> stream(:jobs, [], reset: true)
         |> assign(empty?: true, counts: %{}, next_cursor: nil)
-        |> put_flash(:error, "Jobs are unavailable or the filters are invalid.")
+        |> put_flash(:error, gettext("Jobs are unavailable or the filters are invalid."))
     end
   end
 
@@ -162,7 +165,7 @@ defmodule MarshallWeb.Admin.JobsLive do
         socket
         |> assign(job: nil, subject: nil, next_events_cursor: nil)
         |> stream(:events, [], reset: true)
-        |> put_flash(:error, "This job is unavailable or its history has expired.")
+        |> put_flash(:error, gettext("This job is unavailable or its history has expired."))
     end
   end
 
@@ -170,7 +173,7 @@ defmodule MarshallWeb.Admin.JobsLive do
   defp present(value), do: value
 
   defp label(state),
-    do: Enum.find_value(@states, "Unknown", fn {label, value} -> if value == state, do: label end)
+    do: Enum.find_value(states(), gettext("Unknown"), fn {label, value} -> if value == state, do: label end)
 
   defp duration(nil), do: "—"
   defp duration(milliseconds), do: "#{Float.round(milliseconds / 1000, 2)} s"
@@ -193,13 +196,13 @@ defmodule MarshallWeb.Admin.JobsLive do
     >
       <section id="admin-jobs" class="stack">
         <UI.heading
-          title={if @live_action == :index, do: "Jobs", else: "Job details"}
-          subtitle="Background work run by Oban. A successful job may have dispatched work whose physical outcome is still pending; follow the related operation for completion."
+          title={if @live_action == :index, do: gettext("Jobs"), else: gettext("Job details")}
+          subtitle={gettext("Background work run by Oban. A successful job may have dispatched work whose physical outcome is still pending; follow the related operation for completion.")}
         >
           <:actions>
-            <span class="muted">Updated
+            <span class="muted">{gettext("Updated")}
             <.timestamp at={@refreshed_at} zone={@time_zone} format={:datetime_seconds} />
-            · every 5 seconds</span>
+            {gettext("· every 5 seconds")}</span>
           </:actions>
         </UI.heading>
         <%= if @live_action == :index do %>
@@ -222,51 +225,51 @@ defmodule MarshallWeb.Admin.JobsLive do
             </table>
           </div>
           <p class="muted">
-            Counts cover current and recently retained raw jobs. The list includes redacted history for up to 30 days; older history pruned before deployment is unavailable.
+            {gettext("Counts cover current and recently retained raw jobs. The list includes redacted history for up to 30 days; older history pruned before deployment is unavailable.")}
           </p>
           <.form for={@form} id="job-filters" phx-submit="filter" class="panel stack">
-            <h2>Filter</h2>
+            <h2>{gettext("Filter")}</h2>
             <div class="grid">
               <.input
                 field={@form[:state]}
                 type="select"
-                label="State"
+                label={gettext("State")}
                 options={@states}
-                prompt="All states"
+                prompt={gettext("All states")}
               />
-              <.input field={@form[:queue]} label="Queue" placeholder="Any queue" maxlength="128" />
+              <.input field={@form[:queue]} label={gettext("Queue")} placeholder={gettext("Any queue")} maxlength="128" />
               <.input
                 field={@form[:worker]}
-                label="Worker"
-                placeholder="Exact worker name"
+                label={gettext("Worker")}
+                placeholder={gettext("Exact worker name")}
                 maxlength="256"
               />
               <.input
                 field={@form[:range]}
                 type="select"
-                label="Last updated"
+                label={gettext("Last updated")}
                 options={[
-                  {"All retained", "all"},
-                  {"24 hours", "day"},
-                  {"7 days", "week"},
-                  {"30 days", "month"}
+                  {gettext("All retained"), "all"},
+                  {gettext("24 hours"), "day"},
+                  {gettext("7 days"), "week"},
+                  {gettext("30 days"), "month"}
                 ]}
               />
             </div>
             <div class="row actions">
-              <button type="submit" class="console-button primary">Filter jobs</button>
+              <button type="submit" class="console-button primary">{gettext("Filter jobs")}</button>
             </div>
           </.form>
           <div class="table-flow">
             <table>
               <thead>
                 <tr>
-                  <th class="width-min">Job</th>
-                  <th class="width-min">State</th>
-                  <th class="width-auto">Queue / worker</th>
-                  <th class="width-min num">Attempts</th>
-                  <th class="width-min num">Waiting</th>
-                  <th class="width-min num">Duration</th>
+                  <th class="width-min">{gettext("Job")}</th>
+                  <th class="width-min">{gettext("State")}</th>
+                  <th class="width-auto">{gettext("Queue / worker")}</th>
+                  <th class="width-min num">{gettext("Attempts")}</th>
+                  <th class="width-min num">{gettext("Waiting")}</th>
+                  <th class="width-min num">{gettext("Duration")}</th>
                 </tr>
               </thead>
               <tbody id="job-rows" phx-update="stream">
@@ -274,7 +277,7 @@ defmodule MarshallWeb.Admin.JobsLive do
                   <td><.link navigate={~p"/admin/jobs/#{job.id}"}>#{job.id}</.link></td>
                   <td class="nowrap">
                     <span class="status-label" data-tone={job_tone(job.state)}>{label(job.state)}</span>
-                    <span :if={!job.raw_present} class="muted"> Archived</span>
+                    <span :if={!job.raw_present} class="muted"> {gettext("Archived")}</span>
                   </td>
                   <td class="break">
                     {job.queue}<br /><span class="muted" title={job.worker}>{job.worker}</span>
@@ -287,75 +290,75 @@ defmodule MarshallWeb.Admin.JobsLive do
             </table>
           </div>
           <p :if={@empty?} id="jobs-empty" class="empty-state">
-            No jobs match these filters.
+            {gettext("No jobs match these filters.")}
           </p>
-          <nav aria-label="Job pages" class="row">
-            <.link :if={@filters["before"]} patch={~p"/admin/jobs?#{Map.delete(@filters, "before")}"}>← First page</.link>
+          <nav aria-label={gettext("Job pages")} class="row">
+            <.link :if={@filters["before"]} patch={~p"/admin/jobs?#{Map.delete(@filters, "before")}"}>{gettext("← First page")}</.link>
             <.link
               :if={@next_cursor}
               id="jobs-next"
               patch={~p"/admin/jobs?#{Map.put(@filters, "before", @next_cursor)}"}
-            >Older jobs →</.link>
+            >{gettext("Older jobs →")}</.link>
           </nav>
         <% else %>
-          <p><.link navigate={~p"/admin/jobs"}>← Jobs</.link></p>
+          <p><.link navigate={~p"/admin/jobs"}>{gettext("← Jobs")}</.link></p>
           <div :if={@job} id="job-detail" class="stack">
-            <UI.panel title={"Job ##{@job.id}"}>
+            <UI.panel title={gettext("Job #%{id}", id: @job.id)}>
               <:actions>
                 <span class="status-label" data-tone={job_tone(@job.state)}>{label(@job.state)}</span>
                 <button
                   :if={@admin_authorized and @job.retryable}
                   id="retry-job"
                   phx-click="retry"
-                  data-confirm="Queue another attempt? The operation will recheck its current state."
+                  data-confirm={gettext("Queue another attempt? The operation will recheck its current state.")}
                   class="console-button primary"
-                >Retry job</button>
-                <span :if={!@job.raw_present} class="muted">Archived history · retry unavailable</span>
+                >{gettext("Retry job")}</button>
+                <span :if={!@job.raw_present} class="muted">{gettext("Archived history · retry unavailable")}</span>
               </:actions>
               <.kv>
-                <:item title="Queue">{@job.queue}</:item>
-                <:item title="Worker"><span class="break">{@job.worker}</span></:item>
-                <:item title="Attempts">{@job.attempt} / {@job.max_attempts}</:item>
-                <:item title="Created">
+                <:item title={gettext("Queue")}>{@job.queue}</:item>
+                <:item title={gettext("Worker")}><span class="break">{@job.worker}</span></:item>
+                <:item title={gettext("Attempts")}>{@job.attempt} / {@job.max_attempts}</:item>
+                <:item title={gettext("Created")}>
                   <.timestamp at={@job.inserted_at} zone={@time_zone} format={:datetime_seconds} />
                 </:item>
-                <:item title="Scheduled / next retry">
+                <:item title={gettext("Scheduled / next retry")}>
                   <.timestamp at={@job.scheduled_at} zone={@time_zone} format={:datetime_seconds} />
                 </:item>
-                <:item title="Last attempt started">
+                <:item title={gettext("Last attempt started")}>
                   <.timestamp at={@job.attempted_at} zone={@time_zone} format={:datetime_seconds} />
                 </:item>
-                <:item title="Last execution duration">{duration(@job.duration_ms)}</:item>
-                <:item title="Recorded failures">{@job.error_count}</:item>
+                <:item title={gettext("Last execution duration")}>{duration(@job.duration_ms)}</:item>
+                <:item title={gettext("Recorded failures")}>{@job.error_count}</:item>
               </.kv>
             </UI.panel>
             <p :if={@job.failure} id="job-failure" class="error">
               {@job.failure}
             </p>
-            <UI.panel :if={@subject} id="job-subject" title="Related record">
+            <UI.panel :if={@subject} id="job-subject" title={gettext("Related record")}>
               <.kv>
                 <:item title={String.capitalize(to_string(@subject.kind))}>
                   <code>{@subject.id}</code>
                 </:item>
-                <:item :if={Map.has_key?(@subject, :status)} title="Operation state">
+                <:item :if={Map.has_key?(@subject, :status)} title={gettext("Operation state")}>
                   {@subject.status}
                 </:item>
-                <:item :if={Map.has_key?(@subject, :finished)} title="Relocation complete">
+                <:item :if={Map.has_key?(@subject, :finished)} title={gettext("Relocation complete")}>
                   {to_string(@subject.finished)}
                 </:item>
               </.kv>
               <p :if={@subject[:vm_id]}>
-                <.link navigate={~p"/machines/#{@subject.vm_id}"}>Open machine →</.link>
+                <.link navigate={~p"/machines/#{@subject.vm_id}"}>{gettext("Open machine →")}</.link>
               </p>
             </UI.panel>
-            <UI.panel id="job-history" title="Execution history">
+            <UI.panel id="job-history" title={gettext("Execution history")}>
               <div class="table-flow">
                 <table>
                   <thead>
                     <tr>
-                      <th class="width-min">Captured</th>
-                      <th class="width-min">State</th>
-                      <th class="width-auto">Attempt</th>
+                      <th class="width-min">{gettext("Captured")}</th>
+                      <th class="width-min">{gettext("State")}</th>
+                      <th class="width-auto">{gettext("Attempt")}</th>
                     </tr>
                   </thead>
                   <tbody id="job-events" phx-update="stream">
@@ -372,7 +375,7 @@ defmodule MarshallWeb.Admin.JobsLive do
                           event.state
                         )}</span>
                       </td>
-                      <td>attempt {event.attempt} · {event.error_count} recorded failures</td>
+                      <td>{gettext("attempt %{attempt} · %{count} recorded failures", attempt: event.attempt, count: event.error_count)}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -381,7 +384,7 @@ defmodule MarshallWeb.Admin.JobsLive do
                 <.link
                   id="older-job-events"
                   patch={~p"/admin/jobs/#{@job.id}?#{%{events_before: @next_events_cursor}}"}
-                >Older transitions →</.link>
+                >{gettext("Older transitions →")}</.link>
               </p>
             </UI.panel>
           </div>

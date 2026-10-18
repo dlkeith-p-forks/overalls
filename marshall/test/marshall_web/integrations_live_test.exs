@@ -12,26 +12,30 @@ defmodule MarshallWeb.IntegrationsLiveTest do
     owner = Marshall.ComputeFixtures.user()
     {:ok, view, _} = live(signed_in(conn, owner), ~p"/integrations")
 
-    check all(suffix <- string(:alphanumeric, min_length: 1, max_length: 12), test_cases: 10) do
-      previous_password_ids = password_ids(view)
+    Hegel.check(
+      fn ->
+        suffix = draw("suffix", string(:alphanumeric, min_length: 1, max_length: 12))
+        previous_password_ids = password_ids(view)
 
-      html =
-        view
-        |> form("#integration-form",
-          integration: %{
-            name: "browser-invalid",
-            target: "http://#{suffix}.example.test",
-            bearer: "private-browser-secret"
-          }
-        )
-        |> render_submit()
+        html =
+          view
+          |> form("#integration-form",
+            integration: %{
+              name: "browser-invalid",
+              target: "http://#{suffix}.example.test",
+              bearer: "private-browser-secret"
+            }
+          )
+          |> render_submit()
 
-      assert html =~ "Could not save this integration."
-      refute html =~ "private-browser-secret"
-      assert has_element?(view, "#integration-form input[name='integration[bearer]'][value='']")
-      assert MapSet.disjoint?(MapSet.new(previous_password_ids), MapSet.new(password_ids(view)))
-      assert Ledger.read!(Marshall.Galileo.Integration, name: "browser-invalid") == []
-    end
+        assert html =~ "Could not save this integration."
+        refute html =~ "private-browser-secret"
+        assert has_element?(view, "#integration-form input[name='integration[bearer]'][value='']")
+        assert MapSet.disjoint?(MapSet.new(previous_password_ids), MapSet.new(password_ids(view)))
+        assert Ledger.read!(Marshall.Galileo.Integration, name: "browser-invalid") == []
+      end,
+      test_cases: 100
+    )
   end
 
   test "integration UI configures peer/team fields and manages redacted attachments", %{

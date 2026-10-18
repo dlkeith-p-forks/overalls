@@ -14,7 +14,7 @@ defmodule OverallsProtocol.SSHHostCertificateTest do
   property "issued host identities verify only at the signed principal, key, CA and interval",
     database: :disabled,
     print_blob: false,
-    test_cases: 50,
+    test_cases: 100,
     seed: 1_501_706_194 do
     offset = draw("offset", integer(1..1_000_000))
     serial = draw("serial", integer(0..1_000_000))

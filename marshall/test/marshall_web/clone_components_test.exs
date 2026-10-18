@@ -160,32 +160,30 @@ defmodule MarshallWeb.CloneComponentsTest do
   end
 
   property "publication alone gates opening and restoration never changes the copy stages" do
-    check all(
-            phase <- member_of(@phases),
-            published? <- boolean(),
-            restored? <- boolean(),
-            active? <- boolean(),
-            failure <- member_of([nil, "source_restart_failed", "insufficient_capacity"]),
-            power <- member_of([nil, :running, :stopped])
-          ) do
-      clone =
-        request(%{
-          phase: phase,
-          active: active?,
-          failure: failure,
-          original_power_state: power,
-          published_at: if(published?, do: DateTime.utc_now()),
-          source_restored_at: if(restored?, do: DateTime.utc_now())
-        })
+    phase = draw("phase", member_of(@phases))
+    published? = draw("published?", boolean())
+    restored? = draw("restored?", boolean())
+    active? = draw("active?", boolean())
+    failure = draw("failure", member_of([nil, "source_restart_failed", "insufficient_capacity"]))
+    power = draw("power", member_of([nil, :running, :stopped]))
 
-      progress = CloneComponents.presentation(clone)
-      assert progress.open? == published?
-      assert progress.cancel? == (!published? && phase not in [:complete, :cancelled])
-      assert progress.retry? == (!is_nil(failure) && (active? || !published?))
+    clone =
+      request(%{
+        phase: phase,
+        active: active?,
+        failure: failure,
+        original_power_state: power,
+        published_at: if(published?, do: DateTime.utc_now()),
+        source_restored_at: if(restored?, do: DateTime.utc_now())
+      })
 
-      assert progress.steps ==
-               CloneComponents.presentation(%{clone | source_restored_at: nil}).steps
-    end
+    progress = CloneComponents.presentation(clone)
+    assert progress.open? == published?
+    assert progress.cancel? == (!published? && phase not in [:complete, :cancelled])
+    assert progress.retry? == (!is_nil(failure) && (active? || !published?))
+
+    assert progress.steps ==
+             CloneComponents.presentation(%{clone | source_restored_at: nil}).steps
   end
 
   @spec request(map()) :: CloneComponents.request()

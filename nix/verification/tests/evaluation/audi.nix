@@ -87,12 +87,38 @@ let
       }];
     };
   };
+  relayConfig = extra: evaluate {
+    services.audi = { port = 2200; relay = { enable = true; } // extra; };
+    overalls.fleetNetwork = {
+      enable = true;
+      address = "10.90.0.1";
+      endpointAddress = "192.0.2.1";
+      privateKeyFile = "/run/private/fleet.key";
+      peers.worker = {
+        address = "10.90.0.2";
+        endpointAddress = "192.0.2.2";
+        publicKey = lib.concatStrings (lib.replicate 43 "A") + "=";
+      };
+    };
+  };
+  relay = relayConfig {};
 in
 # @cc [owner:ghuntley,label:verification] audi-administrative-port-precondition
 # Physical-host defaults MUST require administrative OpenSSH on 2222 for port
 # 22 management. Explicit console-only mode MUST instead forbid OpenSSH. All
 # modes MUST reject listener collisions. Port changes alone do not prove that
 # an operator can authenticate; staged deployment acceptance remains separate.
+
+# @cc [owner:ghuntley,label:verification;security] audi-relay-fleet-firewall-scope
+# Relay enablement MUST use the local keyed fleet address and declared peers,
+# expose its port only through fleet rules, and reject arbitrary address/peer overrides.
+assert valid relay;
+assert relay.services.audi.relay.address == "10.90.0.1";
+assert relay.services.audi.relay.peers == [ "10.90.0.2" ];
+assert builtins.elem 9445 relay.overalls.fleetNetwork.tcpPorts;
+assert !(builtins.elem 9445 relay.networking.firewall.allowedTCPPorts);
+assert !valid (relayConfig { address = "192.0.2.1"; });
+assert !valid (relayConfig { peers = [ "10.90.0.3" ]; });
 assert valid ready;
 assert valid separate;
 assert valid separateIptables;

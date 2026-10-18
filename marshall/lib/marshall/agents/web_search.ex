@@ -131,6 +131,7 @@ defmodule Marshall.Agents.WebSearch do
               nil
 
             true ->
+              Marshall.Compute.Idle.touch_locked!(vm)
               query = String.trim(command.arguments["query"])
               key = cache_key(query)
 
@@ -374,6 +375,7 @@ defmodule Marshall.Agents.WebSearch do
   end
 
   defp finish_locked!(command, vm, turn, status, result, credits, cache_hit) do
+    if status != :cancelled, do: Marshall.Compute.Idle.touch_locked!(vm)
     Ledger.update!(command, :transition, %{status: status, result: result})
 
     Ledger.create!(SearchUsage, :record, %{

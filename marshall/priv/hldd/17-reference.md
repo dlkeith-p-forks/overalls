@@ -598,9 +598,23 @@ check. `nixos-machine-tests.yml` runs daily or on dispatch and fans out one job
 per NixOS machine test selected from `meta.ci` (Inception is excluded); its
 discovery evaluates only that metadata, and each matrix job builds its test.
 `nix-upgrades.yml` updates `devenv.lock` weekly and pins the flake's
-`buildNixpkgs` to the same nixpkgs. A run is execution evidence only for the
-commit it ran; a selected matrix entry is not a passing result, and nested-KVM
-availability on the hosted runners is unverified.
+`buildNixpkgs` to the same nixpkgs. Two further weekly jobs apply security
+updates only. `mix-security-upgrades.yml` runs `mix hex.audit` (Hex 2.5.3 or
+newer) in every project with a `mix.lock` and updates packages with a security
+advisory or security retirement; `cargo-security-upgrades.yml` runs
+`cargo audit` against every tracked `Cargo.lock` and updates vulnerable crates
+with `cargo update --package NAME@VERSION`. Both resolve affected builds through
+the flake's `lib.dependencyPins` registry, which lists each entry's lock files,
+the derivation that must build and its fixed-output fetches. Changed entries get
+their `dependency-hashes.json` keys faked, rebuilt and filled from the reported
+mismatch by drvPath, then must build before the commit is pushed to trunk. Mix
+libraries without an entry compile with warnings as errors; a tracked
+`Cargo.lock` without an entry stops the Cargo job. A finding with no allowed
+fixed version fails the run after fixable updates are pushed. Bot-refreshed
+hashes are authenticated by that build, not by human source review, and the
+builds use the build nixpkgs rather than every consumer's package set. A run is
+execution evidence only for the commit it ran; a selected matrix entry is not a
+passing result, and nested-KVM availability on the hosted runners is unverified.
 
 `elixir/request_accounting/` is the shared typed request-accounting library.
 `Overalls.RequestAccounting.Producer` performs private quality-marker and local
@@ -879,8 +893,8 @@ separate obligations. See
 
 ## Elixir property verification
 
-Elixir properties currently use the test-only Hegel frontend ref `8fe9786`
-(`8fe9786cf2e134689c1bd58229e186d97c2f05f8`) under
+Elixir properties currently use the test-only Hegel frontend ref `b0dec2a`
+(`b0dec2abf868c7036950c00256a2ebf5af2929e7`) under
 [ADR-0191](repo:docs/architecture/decisions/0191-elixir-hegel-property-verification.md).
 Protocol properties run once per declared case count with fixed seeds and no
 example database or printed replay blobs. A local draw boundary records literal
@@ -889,6 +903,43 @@ the native replay printer. Bounded generators retain exact string/collection
 constraints, malformed peer shapes and unsigned 64-bit GUIDs through the engine's
 signed integer interface. Transport cases release their own listeners, supervised
 children and fixture messages before another case or replay.
+
+The current exploration repair restores ordinary successful properties to the
+engine's default 100 generated cases and retains existing larger budgets.
+Each property has one runner: labelled draws share its case, and nested
+`check all` execution options are rejected. Unsupported StreamData options
+`max_runs` and `max_shrinking_steps` are rejected rather than silently ignored.
+Finite exhaustive matrices may use ordinary tests when every matrix cell and
+assertion remains; one-case negative and replay controls are separately scoped.
+
+Generated cases own their SQL sandbox, supervised children, sockets and temporary
+files. Cleanup runs before the next case, shrinking attempt or replay. ExUnit
+setup runs once per test and cannot substitute for case isolation. Supervised
+cleanup checks the original PID before stopping a child, so a reused child ID
+does not grant cleanup authority over its replacement. Fresh-VM boot histories
+retain the complete mutation matrix and generated exploration. Measured aggregate
+budgets can reach three hours; each individual boot retains a 30-second deadline
+and a five-second forced-termination allowance.
+
+The frontend preserves original BEAM failures when the native engine reports a
+flaky run. Its native installer stages and atomically renames the shared library:
+compilation must not truncate an inode mapped into another running BEAM. The
+upstream native-backed suite and all eight Nix production release checks passed
+at `b0dec2a`. A separate test-build probe loaded the packaged NIF without an
+override, counted 100 draws and reproduced a deliberate failure. Complete
+application-suite qualification remains pending. Every Hegel revision change
+requires all eleven Mix declarations and locks plus all eight Nix Mix dependency
+hashes. A pin, hash refresh or historical passing suite alone does not qualify
+the installed NIF or the current consumers. The
+[exploration review](repo:docs/architecture/reviews/2026-10-18-hegel-exploration-and-native-custody.md)
+records the repair, exact intermediate results and remaining checks.
+
+### Historical migration evidence
+
+The following records retain their original pins and source scopes. In particular,
+the earlier one- and two-case clamps and ignored compatibility options described
+below are superseded by the current exploration repair; they are not current
+runner guidance. Historical passes do not qualify the current changed tests.
 
 This verifies BEAM codec, refusal and process/socket behavior. It does not
 establish native guest execution, TLS, physical isolation, storage recovery or

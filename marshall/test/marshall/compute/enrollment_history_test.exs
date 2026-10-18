@@ -121,12 +121,16 @@ defmodule Marshall.Compute.EnrollmentHistoryTest do
     File.chmod!(dir, 0o700)
     op_gen = frequency(Enum.map(@weights, fn {op, weight} -> {weight, constant(op)} end))
 
-    check all(generated <- list_of(op_gen, min_length: 6, max_length: 18), test_cases: 12) do
-      {state, fixture} = fixture(dir)
-      history = generated ++ [:rotate_manual, :open_new, :report, :drain, :advance, :retire]
-      state = Enum.reduce(history, state, fn op, current -> step(op, current, fixture) end)
-      terminal_sweep(state, fixture)
-    end
+    Hegel.check(
+      fn ->
+        generated = draw("generated", list_of(op_gen, min_length: 6, max_length: 18))
+        {state, fixture} = fixture(dir)
+        history = generated ++ [:rotate_manual, :open_new, :report, :drain, :advance, :retire]
+        state = Enum.reduce(history, state, fn op, current -> step(op, current, fixture) end)
+        terminal_sweep(state, fixture)
+      end,
+      test_cases: 100
+    )
   end
 
   test "a resumed drain remains in history after a new drain request", %{tmp_dir: dir} do
@@ -172,39 +176,41 @@ defmodule Marshall.Compute.EnrollmentHistoryTest do
       :retire
     ]
 
-    check all(
-            generated <- list_of(member_of(ops), min_length: 5, max_length: 14),
-            test_cases: 12
-          ) do
-      {state, fixture} = fixture(dir)
-      Marshall.ComputeFixtures.image_fixture()
-      state = step(:open_new, state, fixture)
-      state = step(:report, state, fixture)
-      state = step(:enable, state, fixture)
-      assert state.enabled
+    Hegel.check(
+      fn ->
+        generated = draw("generated", list_of(member_of(ops), min_length: 5, max_length: 14))
+        {state, fixture} = fixture(dir)
+        Marshall.ComputeFixtures.image_fixture()
+        state = step(:open_new, state, fixture)
+        state = step(:report, state, fixture)
+        state = step(:enable, state, fixture)
+        assert state.enabled
 
-      assert {:ok, _vm} =
-               Compute.provision(Marshall.ComputeFixtures.request(), actor: fixture.owner)
+        assert {:ok, _vm} =
+                 Compute.provision(Marshall.ComputeFixtures.request(), actor: fixture.owner)
 
-      reservations_before = reservation_rows(fixture)
-      assert reservations_before != []
-      state = %{state | vm: true}
+        reservations_before = reservation_rows(fixture)
+        assert reservations_before != []
+        state = %{state | vm: true}
 
-      state =
-        Enum.reduce(generated ++ [:open_new, :report, :drain, :advance], state, fn op, current ->
-          step(op, current, fixture)
+        state =
+          Enum.reduce(generated ++ [:open_new, :report, :drain, :advance], state, fn op,
+                                                                                     current ->
+            step(op, current, fixture)
+          end)
+
+        # The retained reservation fences retirement even after a confirmed drain.
+        assert state.drain != nil and state.drain.open
+
+        refused(state, fixture, fn ->
+          assert {:error, _} = Drains.retire(state.drain.id)
         end)
 
-      # The retained reservation fences retirement even after a confirmed drain.
-      assert state.drain != nil and state.drain.open
-
-      refused(state, fixture, fn ->
-        assert {:error, _} = Drains.retire(state.drain.id)
-      end)
-
-      assert reservation_rows(fixture) == reservations_before
-      terminal_sweep_active(state, fixture)
-    end
+        assert reservation_rows(fixture) == reservations_before
+        terminal_sweep_active(state, fixture)
+      end,
+      test_cases: 100
+    )
   end
 
   # ---------------------------------------------------------------------------

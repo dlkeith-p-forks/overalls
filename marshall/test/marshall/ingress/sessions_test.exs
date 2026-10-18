@@ -383,32 +383,37 @@ defmodule Marshall.Ingress.SessionsTest do
     {:ok, _} = Marshall.SSH.add_key(%{public_key: public_key}, actor: member)
     member_context = %{c | public_key: public_key}
 
-    check all(
-            roles <-
-              list_of(member_of([:viewer, :operator, :manager, :revoked]),
-                min_length: 1,
-                max_length: 8
-              ),
-            test_cases: 12
-          ) do
-      Enum.each(roles, fn role ->
-        [host] = Ledger.read!(Host, id: c.vm.host_id)
-        Ledger.update!(host, :report, %{reported_at: Ledger.now()})
-        assert {:ok, _} = Marshall.TerminalFixtures.grant(c, member, role)
+    Hegel.check(
+      fn ->
+        roles =
+          draw(
+            "roles",
+            list_of(member_of([:viewer, :operator, :manager, :revoked]),
+              min_length: 1,
+              max_length: 8
+            )
+          )
 
-        case {role, open(member_context)} do
-          {allowed, {:ok, grant}} when allowed in [:operator, :manager] ->
-            assert {:ok, _} = renew(member_context, grant)
-            assert {:ok, _} = Ingress.close_ssh(params(c, grant), actor: SystemActor.compute())
+        Enum.each(roles, fn role ->
+          [host] = Ledger.read!(Host, id: c.vm.host_id)
+          Ledger.update!(host, :report, %{reported_at: Ledger.now()})
+          assert {:ok, _} = Marshall.TerminalFixtures.grant(c, member, role)
 
-          {denied, {:error, _}} when denied in [:viewer, :revoked] ->
-            :ok
+          case {role, open(member_context)} do
+            {allowed, {:ok, grant}} when allowed in [:operator, :manager] ->
+              assert {:ok, _} = renew(member_context, grant)
+              assert {:ok, _} = Ingress.close_ssh(params(c, grant), actor: SystemActor.compute())
 
-          other ->
-            flunk("unexpected authorization result: #{inspect(elem(other, 0))}")
-        end
-      end)
-    end
+            {denied, {:error, _}} when denied in [:viewer, :revoked] ->
+              :ok
+
+            other ->
+              flunk("unexpected authorization result: #{inspect(elem(other, 0))}")
+          end
+        end)
+      end,
+      test_cases: 100
+    )
   end
 
   test "cleanup removes expired rows but retains their audit evidence", c do

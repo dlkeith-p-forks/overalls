@@ -22,20 +22,20 @@ defmodule Marshall.Compute.StateMachineTest do
 
     actions = transitions |> Map.values() |> Enum.flat_map(&Map.keys/1) |> Enum.uniq()
 
-    check all(history <- list_of(member_of(actions), max_length: 50)) do
-      Enum.reduce(history, :queued, fn action, state ->
-        expected = transitions |> Map.fetch!(state) |> Map.get(action)
-        changeset = change(struct(CloneRequest, phase: state), action)
-        assert changeset.valid? == not is_nil(expected)
+    history = draw("history", list_of(member_of(actions), max_length: 50))
 
-        if expected do
-          assert Ash.Changeset.get_attribute(changeset, :phase) == expected
-          expected
-        else
-          state
-        end
-      end)
-    end
+    Enum.reduce(history, :queued, fn action, state ->
+      expected = transitions |> Map.fetch!(state) |> Map.get(action)
+      changeset = change(struct(CloneRequest, phase: state), action)
+      assert changeset.valid? == not is_nil(expected)
+
+      if expected do
+        assert Ash.Changeset.get_attribute(changeset, :phase) == expected
+        expected
+      else
+        state
+      end
+    end)
   end
 
   test "clone cannot skip capture, publish from queue, or mutate phase through progress" do
@@ -60,27 +60,28 @@ defmodule Marshall.Compute.StateMachineTest do
   end
 
   property "operation histories obey terminal completion and allow late cancelled evidence" do
-    check all(actions <- list_of(member_of([:acknowledge, :complete, :cancel]), max_length: 60)) do
-      Enum.reduce(actions, :pending, fn action, state ->
-        expected =
-          case {state, action} do
-            {:pending, :acknowledge} -> :acknowledged
-            {s, :complete} when s in [:pending, :acknowledged, :cancelled] -> :completed
-            {s, :cancel} when s in [:pending, :acknowledged] -> :cancelled
-            _ -> nil
-          end
+    actions =
+      draw("actions", list_of(member_of([:acknowledge, :complete, :cancel]), max_length: 60))
 
-        changeset = change(struct(Operation, status: state), action)
-        assert changeset.valid? == not is_nil(expected)
-
-        if expected do
-          assert Ash.Changeset.get_attribute(changeset, :status) == expected
-          expected
-        else
-          state
+    Enum.reduce(actions, :pending, fn action, state ->
+      expected =
+        case {state, action} do
+          {:pending, :acknowledge} -> :acknowledged
+          {s, :complete} when s in [:pending, :acknowledged, :cancelled] -> :completed
+          {s, :cancel} when s in [:pending, :acknowledged] -> :cancelled
+          _ -> nil
         end
-      end)
-    end
+
+      changeset = change(struct(Operation, status: state), action)
+      assert changeset.valid? == not is_nil(expected)
+
+      if expected do
+        assert Ash.Changeset.get_attribute(changeset, :status) == expected
+        expected
+      else
+        state
+      end
+    end)
   end
 
   @spec change(struct(), atom(), map()) :: Ash.Changeset.t()

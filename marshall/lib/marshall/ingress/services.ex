@@ -34,6 +34,7 @@ defmodule Marshall.Ingress.Services do
     token_hash = digest!(request.token)
     host_id = Map.get(request, :host_id)
     addresses = addresses!(request.role, request.addresses)
+    relay = relay!(request)
 
     unless (request.role == :dns and is_nil(host_id)) or
              (request.role == :gateway and is_binary(host_id) and
@@ -55,7 +56,9 @@ defmodule Marshall.Ingress.Services do
           role: request.role,
           host_id: host_id,
           token_hash: token_hash,
-          addresses: addresses
+          addresses: addresses,
+          relay_address: relay.address,
+          relay_port: relay.port
         })
         |> configured()
 
@@ -66,7 +69,8 @@ defmodule Marshall.Ingress.Services do
           do: Ledger.rollback(:binding_conflict)
 
         unless service.enabled and service.token_hash == token_hash and
-                 service.addresses == addresses,
+                 service.addresses == addresses and service.relay_address == relay.address and
+                 service.relay_port == relay.port,
                do: Ledger.rollback(:unauthorized)
 
         {view(service), nil}
@@ -77,6 +81,7 @@ defmodule Marshall.Ingress.Services do
     token_hash = digest!(request.token)
     host_id = Map.get(request, :host_id)
     addresses = addresses!(request.role, request.addresses)
+    relay = relay!(request)
 
     unless (request.role == :dns and is_nil(host_id)) or
              (request.role == :gateway and is_binary(host_id) and
@@ -98,7 +103,9 @@ defmodule Marshall.Ingress.Services do
           role: request.role,
           host_id: host_id,
           token_hash: token_hash,
-          addresses: addresses
+          addresses: addresses,
+          relay_address: relay.address,
+          relay_port: relay.port
         })
         |> configured()
 
@@ -109,7 +116,8 @@ defmodule Marshall.Ingress.Services do
           do: Ledger.rollback(:binding_conflict)
 
         cond do
-          service.enabled and service.token_hash == token_hash and service.addresses == addresses ->
+          service.enabled and service.token_hash == token_hash and service.addresses == addresses and
+            service.relay_address == relay.address and service.relay_port == relay.port ->
             {view(service), {:service_configured, service.id, service.host_id}}
 
           not service.enabled and service.token_hash == token_hash ->
@@ -122,7 +130,9 @@ defmodule Marshall.Ingress.Services do
               generation: service.generation + 1,
               enabled: true,
               ssh_host_key: nil,
-              addresses: addresses
+              addresses: addresses,
+              relay_address: relay.address,
+              relay_port: relay.port
             })
             |> configured()
         end
@@ -178,6 +188,38 @@ defmodule Marshall.Ingress.Services do
        generation: service.generation,
        public_key: service.ssh_host_key
      }, {:host_key_published, service.id, service.host_id}}
+  end
+
+  # @cc [owner:ghuntley,label:security] ingress-relay-endpoint-enrollment
+  # Relay endpoints MUST come only from operator enrollment. DNS credentials
+  # MUST have none; gateway endpoints MUST use the authenticated fleet network.
+  @spec relay!(map()) :: %{address: String.t() | nil, port: pos_integer()}
+  defp relay!(request) do
+    address = Map.get(request, :relay_address)
+    port = Map.get(request, :relay_port, 9445)
+
+    unless (is_nil(address) or
+              (request.role == :gateway and OverallsProtocol.IngressRelay.fleet_address?(address))) and
+             is_integer(port) and port in 1..65_535,
+           do: Ledger.rollback(:invalid_binding)
+
+    %{address: address, port: port}
+  end
+
+  # @cc [owner:ghuntley,label:concurrency;capacity] ingress-admission-capacity-lock
+  # Admission counts MUST serialize per destination gateway before host/VM locks.
+  # Shared service locks permit reciprocal one-hop admission without lock upgrades.
+  @doc false
+  @spec serialize_open!(String.t()) :: :ok
+  def serialize_open!(id) do
+    Ecto.Adapters.SQL.query!(
+      Marshall.Repo,
+      "SELECT pg_advisory_xact_lock(hashtextextended($1, 0))",
+      ["audi-stream-open:" <> id],
+      log: false
+    )
+
+    :ok
   end
 
   # @cc [owner:ghuntley,label:security;concurrency] ingress-service-current-credential

@@ -38,7 +38,7 @@ defmodule Galileo.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:hegel_ex,
        git: "https://github.com/ghuntley/hegel-erlang.git",
-       ref: "8fe9786",
+       ref: "b0dec2a",
        subdir: "packages/hegel_ex",
        only: [:dev, :test],
        runtime: false}

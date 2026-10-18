@@ -23,23 +23,23 @@
   </head>
   <body>
     <div class="public-page">
-      <a href="#main-content" class="skip-link">Skip to content</a>
+      <a href="#main-content" class="skip-link">{gettext("Skip to content")}</a>
       <div class="docs-shell">
         <aside class="docs-nav">
-          <nav aria-label="Documentation">
+          <nav aria-label={gettext("Documentation")}>
             <ul class="tree">
               <li>
-                <strong><a href={~p"/"}>Overalls</a></strong>
+                <strong><a href={~p"/"}>{gettext("Overalls")}</a></strong>
                 <ul>
-                  <li><a href={~p"/sign-in"}>Sign in</a></li>
+                  <li><a href={~p"/sign-in"}>{gettext("Sign in")}</a></li>
                   <li>
-                    <a href="https://github.com/ghuntley/overalls">Source code
+                    <a href="https://github.com/ghuntley/overalls">{gettext("Source code")}
                     <span aria-hidden="true">↗</span></a>
                   </li>
                 </ul>
               </li>
               <li>
-                <strong>Field notes</strong>
+                <strong>{gettext("Field notes")}</strong>
                 <ul>
                   <li :for={page <- @pages}>
                     <a
@@ -50,21 +50,21 @@
                 </ul>
               </li>
               <li>
-                <strong>Machine readable</strong>
+                <strong>{gettext("Machine readable")}</strong>
                 <ul>
-                  <li><a href={~p"/llms.txt"}>LLM index</a></li>
+                  <li><a href={~p"/llms.txt"}>{gettext("LLM index")}</a></li>
                   <li>
                     <a href={
                       if @page.slug == "index", do: "/docs.md", else: "/docs/#{@page.slug}.md"
                     }>
-                      Markdown for this page
+                      {gettext("Markdown for this page")}
                     </a>
                   </li>
                 </ul>
               </li>
             </ul>
           </nav>
-          <div class="docs-appearance"><span>Appearance</span><Layouts.theme_toggle /></div>
+          <div class="docs-appearance"><span>{gettext("Appearance")}</span><Layouts.theme_toggle /></div>
         </aside>
         <main id="main-content" data-public-documentation class="docs-content prose">
           <article id="public-documentation">{raw(@page.html)}</article>

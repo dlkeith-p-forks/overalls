@@ -96,6 +96,8 @@ fn property(value: &[u8], scope: &Scope) -> bool {
 /// with `setuid`/`devices` only `off` and a `mountpoint` strictly inside a
 /// configured pool directory. reads MUST accept only `zfs list|get` and
 /// `zpool status|get|iostat`, which cannot change state.
+/// A received snapshot MAY receive only the UUID `lilly:transfer_nonce` marker;
+/// this does not grant recursive mutation or arbitrary snapshot properties.
 pub fn mutation(argv: &[&[u8]], scope: &Scope) -> bool {
     let options = |mut rest: &[&[u8]]| -> Option<usize> {
         let mut count = 0;
@@ -120,6 +122,14 @@ pub fn mutation(argv: &[&[u8]], scope: &Scope) -> bool {
             }
         }
         [b"destroy", target] => name(target, scope, true),
+        [b"set", marker, target]
+            if target.contains(&b'@')
+                && marker
+                    .strip_prefix(b"lilly:transfer_nonce=")
+                    .is_some_and(crate::vm_launch::uuid) =>
+        {
+            name(target, scope, true)
+        }
         [b"set", rest @ ..] if rest.len() >= 2 => {
             let (properties, target) = rest.split_at(rest.len() - 1);
             properties.iter().all(|value| property(value, scope)) && name(target[0], scope, false)

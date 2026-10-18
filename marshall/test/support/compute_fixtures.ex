@@ -24,6 +24,7 @@ defmodule Marshall.ComputeFixtures do
     Map.merge(artifacts, %{
       "version" => 4,
       "workspace_source_version" => 2,
+      "git_identity_version" => 1,
       "architecture" => "x86_64",
       "boot_args" => "console=ttyS0",
       "minimum_memory_bytes" => 536_870_912,
@@ -65,6 +66,7 @@ defmodule Marshall.ComputeFixtures do
     windows_image_manifest()
     |> Map.put("guest_agents", "windows-v1")
     |> Map.put("workspace_source_version", 2)
+    |> Map.put("git_identity_version", 1)
   end
 
   def windows_v1_image_fixture do
@@ -246,6 +248,7 @@ defmodule Marshall.ComputeFixtures do
       effective_cores: 5,
       effective_memory_bytes: 4_294_967_296,
       inventory: %{
+        "checkpoint_compatibility" => "sha256:" <> String.duplicate("a", 64),
         "architecture" => "x86_64",
         "images" => [image_id()],
         "execution_ready" => true,
@@ -265,6 +268,7 @@ defmodule Marshall.ComputeFixtures do
           total_bytes: 10_737_418_240,
           free_bytes: 10_737_418_240,
           allocations: %{},
+          checkpoint_allocations: %{},
           storage: storage_observation(pool, 10_737_418_240, 10_737_418_240)
         }
       ]

@@ -19,24 +19,24 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
   # boundaries MUST settle to exactly one terminal turn state with receipts and closed CLI
   # authority. Post-settlement ticks and claim polls MUST NOT change any scoped row digest.
   property "generated revocation orderings settle to one terminal state with receipts",
-    test_cases: 2 do
+    test_cases: 100 do
     pairs =
       for stage <- [:queued, :claimed, :started, :completed],
           boundary <- [:withdraw, :expire, :delete, :retire],
           do: {stage, boundary}
 
-    check all(order <- shuffle(pairs), test_cases: 2) do
-      Enum.each(order, fn {stage, boundary} ->
-        try do
-          history(stage, boundary)
-        rescue
-          error ->
-            reraise RuntimeError,
-                    "#{stage}/#{boundary}: " <> Exception.message(error),
-                    __STACKTRACE__
-        end
-      end)
-    end
+    order = draw("order", shuffle(pairs))
+
+    Enum.each(order, fn {stage, boundary} ->
+      try do
+        history(stage, boundary)
+      rescue
+        error ->
+          reraise RuntimeError,
+                  "#{stage}/#{boundary}: " <> Exception.message(error),
+                  __STACKTRACE__
+      end
+    end)
   end
 
   # @cc [owner:ghuntley,label:verification;security] cli-approval-sequence-single-commit
@@ -46,104 +46,101 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
   # Other approved secrets remain valid while the actor retains current access;
   # sharing withdrawal MUST revoke them independently of this sequence.
   property "generated approval sequences keep one session per digest with classified refusals",
-    test_cases: 8 do
-    check all(
-            actions <-
-              list_of(member_of([:same, :owner, :fresh]), min_length: 1, max_length: 8),
-            withdrawn? <- boolean(),
-            test_cases: 8
-          ) do
-      c = Fixture.setup()
-      if withdrawn?, do: assert({:ok, _} = Fixture.share(c, :revoked))
+    test_cases: 100 do
+    actions =
+      draw("actions", list_of(member_of([:same, :owner, :fresh]), min_length: 1, max_length: 8))
 
-      salt = Ash.UUID.generate()
-      primary_secret = sequence_secret("#{salt}:primary")
+    withdrawn? = draw("withdrawn?", boolean())
+    c = Fixture.setup()
+    if withdrawn?, do: assert({:ok, _} = Fixture.share(c, :revoked))
 
-      state =
-        Enum.reduce(
-          actions,
-          %{approved: %{}, refused: 0, fresh: 0},
-          fn action, model ->
-            {secret, actor} =
-              case action do
-                :same ->
-                  {primary_secret, c.member}
+    salt = Ash.UUID.generate()
+    primary_secret = sequence_secret("#{salt}:primary")
 
-                :owner ->
-                  {primary_secret, c.owner}
+    state =
+      Enum.reduce(
+        actions,
+        %{approved: %{}, refused: 0, fresh: 0},
+        fn action, model ->
+          {secret, actor} =
+            case action do
+              :same ->
+                {primary_secret, c.member}
 
-                :fresh ->
-                  {sequence_secret("#{salt}:fresh_#{model.fresh}"), c.member}
-              end
+              :owner ->
+                {primary_secret, c.owner}
 
-            code = Base.encode16(:crypto.hash(:sha256, secret), case: :lower)
-
-            model =
-              if action == :fresh,
-                do: %{model | fresh: model.fresh + 1},
-                else: model
-
-            permitted =
-              (actor.id == c.owner.id or not withdrawn?) and
-                not Map.has_key?(model.approved, code)
-
-            result = CLIAccess.approve(c.vm.id, code, actor)
-
-            if permitted do
-              assert {:ok, _} = result
-              %{model | approved: Map.put(model.approved, code, {actor.id, secret})}
-            else
-              assert {:error, _} = result
-              %{model | refused: model.refused + 1}
+              :fresh ->
+                {sequence_secret("#{salt}:fresh_#{model.fresh}"), c.member}
             end
+
+          code = Base.encode16(:crypto.hash(:sha256, secret), case: :lower)
+
+          model =
+            if action == :fresh,
+              do: %{model | fresh: model.fresh + 1},
+              else: model
+
+          permitted =
+            (actor.id == c.owner.id or not withdrawn?) and
+              not Map.has_key?(model.approved, code)
+
+          result = CLIAccess.approve(c.vm.id, code, actor)
+
+          if permitted do
+            assert {:ok, _} = result
+            %{model | approved: Map.put(model.approved, code, {actor.id, secret})}
+          else
+            assert {:error, _} = result
+            %{model | refused: model.refused + 1}
           end
-        )
+        end
+      )
 
-      for {code, {actor_id, secret}} <- state.approved do
-        assert [%{actor_id: ^actor_id}] = Ledger.read!(CLISession, code_hash: code)
-        assert {:ok, %{id: ^actor_id}} = CLIAccess.authorize(c.vm.id, secret)
-      end
+    for {code, {actor_id, secret}} <- state.approved do
+      assert [%{actor_id: ^actor_id}] = Ledger.read!(CLISession, code_hash: code)
+      assert {:ok, %{id: ^actor_id}} = CLIAccess.authorize(c.vm.id, secret)
+    end
 
-      member_id = c.member.id
+    member_id = c.member.id
 
-      if withdrawn?,
-        do: assert({:error, :unauthorized} = CLIAccess.authorize(c.vm.id, c.secret)),
-        else: assert({:ok, %{id: ^member_id}} = CLIAccess.authorize(c.vm.id, c.secret))
+    if withdrawn?,
+      do: assert({:error, :unauthorized} = CLIAccess.authorize(c.vm.id, c.secret)),
+      else: assert({:ok, %{id: ^member_id}} = CLIAccess.authorize(c.vm.id, c.secret))
 
-      # Exactly one session row per approved digest, no row for refused digests.
-      approved = Map.keys(state.approved)
+    # Exactly one session row per approved digest, no row for refused digests.
+    approved = Map.keys(state.approved)
 
-      assert %{rows: [[approved_sessions]]} =
+    assert %{rows: [[approved_sessions]]} =
+             Fixture.query(
+               "SELECT count(*) FROM agent_cli_sessions WHERE vm_id=$1",
+               [Ecto.UUID.dump!(c.vm.id)]
+             )
+
+    assert approved_sessions == 1 + length(approved)
+
+    if approved != [] do
+      assert %{rows: [[counted]]} =
                Fixture.query(
-                 "SELECT count(*) FROM agent_cli_sessions WHERE vm_id=$1",
-                 [Ecto.UUID.dump!(c.vm.id)]
+                 "SELECT count(*) FROM agent_cli_sessions WHERE code_hash = ANY($1)",
+                 [approved]
                )
 
-      assert approved_sessions == 1 + length(approved)
-
-      if approved != [] do
-        assert %{rows: [[counted]]} =
-                 Fixture.query(
-                   "SELECT count(*) FROM agent_cli_sessions WHERE code_hash = ANY($1)",
-                   [approved]
-                 )
-
-        assert counted == length(approved)
-      end
-
-      # Aggregate receipt inventory: the fixture's initial approval plus this
-      # sequence's accepted approvals, and one refusal receipt per denial.
-      receipts =
-        Fixture.query(
-          "SELECT kind::text, count(*) FROM agent_audit_events WHERE vm_id=$1 AND kind IN ('cli_approved','cli_refused') GROUP BY kind",
-          [Ecto.UUID.dump!(c.vm.id)]
-        ).rows
-        |> Map.new(fn [kind, counted] -> {kind, counted} end)
-
-      assert Map.get(receipts, "cli_approved", 0) == 1 + length(approved)
-      assert Map.get(receipts, "cli_refused", 0) == state.refused
-      :ok
+      assert counted == length(approved)
     end
+
+    # Aggregate receipt inventory: the fixture's initial approval plus this
+    # sequence's accepted approvals, and one refusal receipt per denial.
+    receipts =
+      Fixture.query(
+        "SELECT kind::text, count(*) FROM agent_audit_events WHERE vm_id=$1 AND kind IN ('cli_approved','cli_refused') GROUP BY kind",
+        [Ecto.UUID.dump!(c.vm.id)]
+      ).rows
+      |> Map.new(fn [kind, counted] -> {kind, counted} end)
+
+    assert Map.get(receipts, "cli_approved", 0) == 1 + length(approved)
+    assert Map.get(receipts, "cli_refused", 0) == state.refused
+    :ok
   end
 
   @spec sequence_secret(String.t()) :: String.t()
@@ -156,79 +153,77 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
   # plus retention hour, leaving every not-yet-reapable row intact, with one
   # cli_expired receipt per destroyed row and idempotent subsequent passes.
   property "the CLI session reaper destroys exactly expired approvals with receipts",
-    test_cases: 8 do
-    check all(
-            # Values near the moving one-hour cutoff race the wall clock
-            # between SQL setup and the reaper's independent cutoff sample.
-            offsets <-
-              list_of(
-                one_of([integer(-7200..-3660), integer(-3540..1800)]),
-                min_length: 2,
-                max_length: 10
-              ),
-            test_cases: 8
-          ) do
-      c = Fixture.setup()
+    test_cases: 100 do
+    offsets =
+      draw(
+        "offsets",
+        list_of(
+          one_of([integer(-7200..-3660), integer(-3540..1800)]),
+          min_length: 2,
+          max_length: 10
+        )
+      )
 
-      generated =
-        for offset <- offsets do
-          secret = "overalls_agent_" <> Base.encode16(:crypto.strong_rand_bytes(32), case: :lower)
-          code = Base.encode16(:crypto.hash(:sha256, secret), case: :lower)
-          assert {:ok, session} = CLIAccess.approve(c.vm.id, code, c.member)
+    c = Fixture.setup()
 
-          Fixture.query(
-            """
-            UPDATE agent_cli_sessions
-            SET inserted_at = now() + (least($2, 0) - 1) * interval '1 second',
-                expires_at = now() + $2 * interval '1 second'
-            WHERE id = $1
-            """,
-            [Ecto.UUID.dump!(session.id), offset]
-          )
+    generated =
+      for offset <- offsets do
+        secret = "overalls_agent_" <> Base.encode16(:crypto.strong_rand_bytes(32), case: :lower)
+        code = Base.encode16(:crypto.hash(:sha256, secret), case: :lower)
+        assert {:ok, session} = CLIAccess.approve(c.vm.id, code, c.member)
 
-          {code, offset}
-        end
+        Fixture.query(
+          """
+          UPDATE agent_cli_sessions
+          SET inserted_at = now() + (least($2, 0) - 1) * interval '1 second',
+              expires_at = now() + $2 * interval '1 second'
+          WHERE id = $1
+          """,
+          [Ecto.UUID.dump!(session.id), offset]
+        )
 
-      expired = for {code, offset} <- generated, offset < -3600, do: code
-      live = for {code, offset} <- generated, offset >= -3600, do: code
+        {code, offset}
+      end
 
-      assert :ok = CLIAccess.reap()
+    expired = for {code, offset} <- generated, offset < -3600, do: code
+    live = for {code, offset} <- generated, offset >= -3600, do: code
 
-      assert %{rows: [[0]]} =
-               Fixture.query(
-                 "SELECT count(*) FROM agent_cli_sessions WHERE code_hash = ANY($1)",
-                 [expired]
-               )
+    assert :ok = CLIAccess.reap()
 
-      expected_live = length(live)
+    assert %{rows: [[0]]} =
+             Fixture.query(
+               "SELECT count(*) FROM agent_cli_sessions WHERE code_hash = ANY($1)",
+               [expired]
+             )
 
-      assert %{rows: [[^expected_live]]} =
-               Fixture.query(
-                 "SELECT count(*) FROM agent_cli_sessions WHERE code_hash = ANY($1)",
-                 [live]
-               )
+    expected_live = length(live)
 
-      # Every expired session must surface exactly one audit receipt; a second
-      # sweep must neither remove a live session nor duplicate a receipt.
-      assert :ok = CLIAccess.reap()
-      expected_expired = length(expired)
+    assert %{rows: [[^expected_live]]} =
+             Fixture.query(
+               "SELECT count(*) FROM agent_cli_sessions WHERE code_hash = ANY($1)",
+               [live]
+             )
 
-      assert %{rows: [[^expected_expired]]} =
-               Fixture.query(
-                 """
-                 SELECT count(*) FROM agent_audit_events
-                 WHERE vm_id = $1 AND kind = 'cli_expired'
-                   AND target_id IS NOT NULL
-                 """,
-                 [Ecto.UUID.dump!(c.vm.id)]
-               )
+    # Every expired session must surface exactly one audit receipt; a second
+    # sweep must neither remove a live session nor duplicate a receipt.
+    assert :ok = CLIAccess.reap()
+    expected_expired = length(expired)
 
-      assert %{rows: [[^expected_live]]} =
-               Fixture.query(
-                 "SELECT count(*) FROM agent_cli_sessions WHERE code_hash = ANY($1)",
-                 [live]
-               )
-    end
+    assert %{rows: [[^expected_expired]]} =
+             Fixture.query(
+               """
+               SELECT count(*) FROM agent_audit_events
+               WHERE vm_id = $1 AND kind = 'cli_expired'
+                 AND target_id IS NOT NULL
+               """,
+               [Ecto.UUID.dump!(c.vm.id)]
+             )
+
+    assert %{rows: [[^expected_live]]} =
+             Fixture.query(
+               "SELECT count(*) FROM agent_cli_sessions WHERE code_hash = ANY($1)",
+               [live]
+             )
   end
 
   @spec history(stage(), boundary()) :: :ok

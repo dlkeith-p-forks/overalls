@@ -31,22 +31,28 @@ defmodule Lilly.Host.SocketsCustodyTest do
   # carry bytes, its peer MUST see end of stream, and the test process's
   # descriptor count MUST return to its baseline.
   test "adopted sockets are released exactly when their port goes down", context do
-    check all(
-            endings <-
-              list_of(member_of([:close, :owner_dies, :transfer_close, :transfer_dies]),
-                max_length: 8
-              )
-          ) do
-      baseline = descriptors()
-      peers = Enum.map(endings, &exercise(context, &1))
+    Hegel.check(
+      fn ->
+        endings =
+          draw(
+            "endings",
+            list_of(member_of([:close, :owner_dies, :transfer_close, :transfer_dies]),
+              max_length: 8
+            )
+          )
 
-      for peer <- peers do
-        assert {:error, :closed} = :gen_tcp.recv(peer, 0, 2000)
-        :gen_tcp.close(peer)
-      end
+        baseline = descriptors()
+        peers = Enum.map(endings, &exercise(context, &1))
 
-      assert settles(baseline)
-    end
+        for peer <- peers do
+          assert {:error, :closed} = :gen_tcp.recv(peer, 0, 2000)
+          :gen_tcp.close(peer)
+        end
+
+        assert settles(baseline)
+      end,
+      []
+    )
   end
 
   test "a refused port closes the owned socket at once", context do

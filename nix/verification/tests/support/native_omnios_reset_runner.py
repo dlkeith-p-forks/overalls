@@ -26,7 +26,8 @@ def verify(
 ) -> Never:
     """@cc [owner:ghuntley,label:verification;security] omnios-reset-event-oracle
     An actual private VMM snapshot event MUST invalidate a peerless live socket
-    and wake already-pending accept/read/write. A new socket MUST revalidate the
+    and wake pending read/write while retaining the original accept listener.
+    A new socket MUST revalidate the
     same compiled identity and current CID. The fixture MUST retain both host
     streams until serial verification and dispose the owned VM afterward; its
     earlier service baseline MUST NOT imply restored service or clean shutdown.
@@ -58,7 +59,9 @@ def verify(
             ),
             reset.api(context.api, "PATCH", "/vm", {"state": "Resumed"}),
         ]
-        verified = reset.wait_event(context.work, context.process, "native-reset-verified")
+        reset.wait_event(context.work, context.process, "native-reset-reconnect-ready")
+        with reset.raw_connection(context.uds, 1101):
+            verified = reset.wait_event(context.work, context.process, "native-reset-verified")
     if (
         verified.get("idle_error") != 131
         or verified.get("fresh_socket") != "current-cid-revalidated"
@@ -66,7 +69,9 @@ def verify(
         raise RuntimeError(
             "OmniOS reset did not invalidate live sockets and revalidate current CID"
         )
-    for field in ("accept_error", "read_error", "write_error"):
+    if verified.get("accept_error") != 0:
+        raise RuntimeError("original native listener did not accept a new stream")
+    for field in ("read_error", "write_error"):
         error = verified.get(field)
         if type(error) is not int or error <= 0:
             raise RuntimeError("a blocked native operation did not wake with an error")
@@ -86,7 +91,7 @@ def verify(
         "api_statuses": statuses,
         "oracle": verified,
         "native_admission": False,
-        "scope": "real transport event after complete-service baseline; idle identity invalidation and pending accept/read/write refusal; no restored service, clean shutdown, recovery or DMA acceptance",
+        "scope": "real transport event after complete-service baseline; idle identity invalidation, pending read/write refusal and original listener reuse; no restored service, clean shutdown, recovery or DMA acceptance",
     }
     (context.work / "reset-receipt.json").write_text(
         json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8"

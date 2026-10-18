@@ -108,7 +108,8 @@ defmodule Lilly.Transfer.Probe do
            command.vm_id == intent.vm_id and command.host_id == intent.source.host_id and
              command.pool_id == intent.source.pool_id and
              command.execution_epoch == intent.source_epoch and
-             command.generation == request.generation and command.kind in [:start, :provision],
+             command.generation == request.generation and
+             command.kind in [:start, :provision, :resume],
          true <- Map.take(command, Map.keys(intent.workload)) == intent.workload,
          do: {:ok, command},
          else: (_ -> {:error, :probe_unconfirmed})

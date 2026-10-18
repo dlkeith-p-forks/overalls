@@ -85,7 +85,7 @@ defmodule OverallsProtocol.TerminalTest do
   property "oversized declared lengths are rejected",
     database: :disabled,
     print_blob: false,
-    test_cases: 20,
+    test_cases: 100,
     seed: 20_261_105 do
     channel = draw("channel", integer(1, 100))
     sequence = draw("sequence", integer(1, 1_000_000))

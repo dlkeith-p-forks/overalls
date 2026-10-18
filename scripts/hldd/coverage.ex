@@ -118,17 +118,32 @@ defmodule Overalls.HLDDCoverage do
   # Hegel evidence MUST recognize the exact hegel::test attribute with either no
   # arguments or balanced parenthesized options, including whitespace and nested
   # calls. Macro-name prefixes and incomplete outer delimiters MUST NOT qualify.
-  # Explicit Elixir Hegel.check/run calls MUST also qualify; other module names,
-  # function-name prefixes and a tag alone MUST NOT establish a runner.
-  # Lexical recognition MUST NOT imply source validity or recorded/native execution.
+  # The explicit Elixir Hegel.check(fn test_case -> ... end) runner MUST also
+  # qualify; similarly named functions MUST NOT. Lexical recognition MUST NOT imply
+  # source validity or recorded/native execution.
   @spec property_source?(String.t()) :: boolean()
   defp property_source?(source) do
-    String.contains?(source, ["property ", "check all", "proptest!", "@given"]) or
-      Regex.match?(~r/(?<![\w.])Hegel\s*\.\s*(?:check|run)\s*\(/, source) or
+    String.contains?(source, ["property ", "property(", "check all", "proptest!", "@given"]) or
+      Regex.match?(~r/\bHegel\.check\s*\(\s*fn\b/, source) or
       Regex.match?(
         ~r/#\s*\[\s*hegel\s*::\s*test\s*(?<args>\((?:[^()]|(?&args))*\))?\s*\]/,
         source
       )
+  end
+
+  @spec unqualified_call?(String.t(), Regex.t()) :: boolean()
+  defp unqualified_call?(source, pattern) do
+    pattern
+    |> Regex.scan(source, return: :index)
+    |> Enum.any?(fn [{offset, _length}] ->
+      prefix =
+        source
+        |> binary_part(0, offset)
+        |> then(&Regex.replace(~r/^\s*#[^\n]*$/m, &1, ""))
+        |> String.trim_trailing()
+
+      not String.ends_with?(prefix, ".")
+    end)
   end
 
   @spec local_file?(String.t(), term()) :: boolean()

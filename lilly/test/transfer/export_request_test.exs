@@ -71,21 +71,21 @@ defmodule Lilly.Transfer.ExportRequestTest do
   end
 
   property "arbitrary bytes can only decode to the exact canonical grammar" do
-    check all(bytes <- binary(max_length: 256)) do
-      case ExportRequest.parse(bytes) do
-        {:ok, request} ->
-          expected =
-            case request do
-              %{resume_token: token} -> "lilly-resume-v4 #{request.relocation_id} #{token}"
-              _ -> "lilly-export-v4 #{request.relocation_id}"
-            end
+    bytes = draw("bytes", binary(max_length: 256))
 
-          assert bytes == expected
-          assert OverallsProtocol.uuid?(request.relocation_id)
+    case ExportRequest.parse(bytes) do
+      {:ok, request} ->
+        expected =
+          case request do
+            %{resume_token: token} -> "lilly-resume-v4 #{request.relocation_id} #{token}"
+            _ -> "lilly-export-v4 #{request.relocation_id}"
+          end
 
-        result ->
-          assert result == {:error, :export_permit_unconfirmed}
-      end
+        assert bytes == expected
+        assert OverallsProtocol.uuid?(request.relocation_id)
+
+      result ->
+        assert result == {:error, :export_permit_unconfirmed}
     end
   end
 end

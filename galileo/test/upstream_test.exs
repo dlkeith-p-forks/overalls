@@ -78,56 +78,56 @@ defmodule Galileo.UpstreamTest do
   # Generated partial response prefixes MUST survive unchanged before refusal,
   # invalid renewal, expiry or consumer halt. No late bytes or replay may be
   # delivered after the single attempt returns cancelled.
-  property "partial responses stop at lease or consumer cancellation", %{origin: origin} do
-    check all(
-            chunks <- integer(1..5),
-            size <- integer(1..256),
-            terminal <- member_of([:refused, :invalid, :expired, :halt]),
-            max_runs: 8
-          ) do
-      owner = self()
-      nonce = make_ref()
-      path = "/history/partial/#{chunks}/#{size}"
+  # Each case retains its lease/quiet windows and retires a 2s origin handler.
+  @tag timeout: 300_000
+  property "partial responses stop at lease or consumer cancellation" do
+    origin = start_origin()
+    chunks = draw("chunks", integer(1..5))
+    size = draw("size", integer(1..256))
+    terminal = draw("terminal", member_of([:refused, :invalid, :expired, :halt]))
 
-      result =
-        Upstream.stream(%{target: origin, headers: [], ttl: 600},
-          method: "GET",
-          path: path,
-          query: "",
-          body_state: :empty,
-          pull: fn state -> {:ok, "", state} end,
-          headers: [],
-          consume: fn
-            {:data, bytes} ->
-              send(owner, {:partial_data, nonce, bytes})
-              if terminal == :halt, do: :halt, else: :ok
+    owner = self()
+    nonce = make_ref()
+    path = "/history/partial/#{chunks}/#{size}"
 
-            _ ->
-              :ok
-          end,
-          renew: fn ->
-            case terminal do
-              :refused -> {:error, :unauthorized}
-              :invalid -> {:ok, %{ttl: 0}}
-              :expired -> Process.sleep(1200)
-              :halt -> {:ok, %{ttl: 600}}
-            end
-          end,
-          transport_opts: [verify: :verify_peer, cacertfile: Path.join(@fixtures, "ca.pem")]
-        )
+    result =
+      Upstream.stream(%{target: origin, headers: [], ttl: 600},
+        method: "GET",
+        path: path,
+        query: "",
+        body_state: :empty,
+        pull: fn state -> {:ok, "", state} end,
+        headers: [],
+        consume: fn
+          {:data, bytes} ->
+            send(owner, {:partial_data, nonce, bytes})
+            if terminal == :halt, do: :halt, else: :ok
 
-      delivered = delivered_partial(nonce, [])
-      expected = String.duplicate("p", size * chunks)
-      assert result.outcome == :cancelled
-      assert result.status == 200
-      assert result.response_bytes == byte_size(delivered)
-      assert byte_size(delivered) > 0
-      assert String.starts_with?(expected, delivered)
-      if terminal != :halt, do: assert(delivered == expected)
-      refute_receive {:partial_data, ^nonce, _}, 100
-      assert_receive {:origin_attempt, ^path}
-      refute_receive {:origin_attempt, ^path}, 100
-    end
+          _ ->
+            :ok
+        end,
+        renew: fn ->
+          case terminal do
+            :refused -> {:error, :unauthorized}
+            :invalid -> {:ok, %{ttl: 0}}
+            :expired -> Process.sleep(1200)
+            :halt -> {:ok, %{ttl: 600}}
+          end
+        end,
+        transport_opts: [verify: :verify_peer, cacertfile: Path.join(@fixtures, "ca.pem")]
+      )
+
+    delivered = delivered_partial(nonce, [])
+    expected = String.duplicate("p", size * chunks)
+    assert result.outcome == :cancelled
+    assert result.status == 200
+    assert result.response_bytes == byte_size(delivered)
+    assert byte_size(delivered) > 0
+    assert String.starts_with?(expected, delivered)
+    if terminal != :halt, do: assert(delivered == expected)
+    refute_receive {:partial_data, ^nonce, _}, 100
+    assert_receive {:origin_attempt, ^path}
+    refute_receive {:origin_attempt, ^path}, 100
   end
 
   @spec delivered_partial(reference(), [binary()]) :: binary()
@@ -139,9 +139,18 @@ defmodule Galileo.UpstreamTest do
     end
   end
 
-  setup do
+  setup context do
+    if Map.get(context, :hegel, false), do: %{}, else: %{origin: start_origin()}
+  end
+
+  # @cc [owner:ghuntley,label:verification] upstream-origin-case-custody
+  # Each generated case MUST own its TLS origin and retire its listener and
+  # stalled request handlers before the next case or replay. Ordinary tests
+  # retain test-scoped origin ownership.
+  @spec start_origin() :: String.t()
+  defp start_origin do
     origin =
-      start_supervised!(
+      Overalls.HegelFixtures.start_fixture!(
         {Bandit,
          plug: {UploadOrigin, self()},
          scheme: :https,
@@ -153,7 +162,7 @@ defmodule Galileo.UpstreamTest do
       )
 
     {:ok, {_, port}} = ThousandIsland.listener_info(origin)
-    %{origin: "https://localhost:#{port}"}
+    "https://localhost:#{port}"
   end
 
   defp authorization(headers, peer \\ nil),
@@ -206,18 +215,19 @@ defmodule Galileo.UpstreamTest do
   end
 
   property "guest headers never override injected names regardless of case" do
-    check all(
-            name <-
-              member_of(["Authorization", "AUTHORIZATION", "authorization", "aUtHoRiZaTiOn"]),
-            value <- string(:alphanumeric, min_length: 1, max_length: 16)
-          ) do
-      authorization = authorization([{"authorization", "Bearer platform"}])
-      headers = Upstream.headers(authorization, [{name, value}])
+    name =
+      draw(
+        "name",
+        member_of(["Authorization", "AUTHORIZATION", "authorization", "aUtHoRiZaTiOn"])
+      )
 
-      assert Enum.count(headers, fn {header_name, _} ->
-               String.downcase(header_name) == "authorization"
-             end) == 1
-    end
+    value = draw("value", string(:alphanumeric, min_length: 1, max_length: 16))
+    authorization = authorization([{"authorization", "Bearer platform"}])
+    headers = Upstream.headers(authorization, [{name, value}])
+
+    assert Enum.count(headers, fn {header_name, _} ->
+             String.downcase(header_name) == "authorization"
+           end) == 1
   end
 
   test "uploads are pulled incrementally on one verified TLS attempt", %{origin: origin} do
@@ -407,68 +417,68 @@ defmodule Galileo.UpstreamTest do
   # @cc [owner:ghuntley,label:verification;security] galileo-generated-single-attempt
   # A source failure before, during or after a partial upload MUST NOT replay
   # the same guest-selected path at the local TLS origin's request handler.
-  property "generated source failures never replay one upstream request", %{origin: origin},
-    profile: :ci do
-    check all(
-            sizes <-
-              list_of(member_of([1, 16_383, 16_384, 16_385, 65_536]),
-                min_length: 2,
-                max_length: 4
-              ),
-            max_runs: 12
-          ) do
-      for mode <- [:before, :middle, :after, :success] do
-        path = "/history/" <> Integer.to_string(System.unique_integer([:positive, :monotonic]))
+  # Four retained 200ms quiet windows require at least 80s over 100 cases.
+  @tag timeout: 180_000
+  property "generated source failures never replay one upstream request", profile: :ci do
+    origin = start_origin()
 
-        fail_at =
-          case mode do
-            :before -> 0
-            :middle -> div(length(sizes), 2)
-            :after -> length(sizes)
-            :success -> nil
-          end
+    sizes =
+      draw(
+        "sizes",
+        list_of(member_of([1, 16383, 16384, 16385, 65536]), min_length: 2, max_length: 4)
+      )
 
-        pull = fn {index, remaining} ->
-          cond do
-            index == fail_at ->
-              {:error, :truncated}
+    for mode <- [:before, :middle, :after, :success] do
+      path = "/history/" <> Integer.to_string(System.unique_integer([:positive, :monotonic]))
 
-            remaining == [] ->
-              {:ok, "", {index, []}}
-
-            true ->
-              [size | rest] = remaining
-              bytes = :binary.copy(<<index + 1>>, size)
-
-              if rest == [] and is_nil(fail_at),
-                do: {:ok, bytes, {index + 1, rest}},
-                else: {:more, bytes, {index + 1, rest}}
-          end
+      fail_at =
+        case mode do
+          :before -> 0
+          :middle -> div(length(sizes), 2)
+          :after -> length(sizes)
+          :success -> nil
         end
 
-        result =
-          Upstream.stream(%{target: origin, headers: [], ttl: 5000},
-            method: "POST",
-            path: path,
-            query: "",
-            body_state: {0, sizes},
-            pull: pull,
-            headers: [],
-            consume: fn _ -> :ok end,
-            renew: fn -> {:ok, %{ttl: 5000}} end,
-            transport_opts: [verify: :verify_peer, cacertfile: Path.join(@fixtures, "ca.pem")]
-          )
+      pull = fn {index, remaining} ->
+        cond do
+          index == fail_at ->
+            {:error, :truncated}
 
-        assert result.outcome == if(is_nil(fail_at), do: :completed, else: :source_error)
-        {pulled_chunks, _remaining} = result.body_state
-        assert pulled_chunks == (fail_at || length(sizes))
+          remaining == [] ->
+            {:ok, "", {index, []}}
 
-        # Upstream.stream/2 is synchronous; count handler dispatches that have
-        # arrived by return plus a bounded quiet window for local dispatch.
-        attempts = attempt_count(path)
-        assert attempts <= 1
-        if is_nil(fail_at), do: assert(attempts == 1)
+          true ->
+            [size | rest] = remaining
+            bytes = :binary.copy(<<index + 1>>, size)
+
+            if rest == [] and is_nil(fail_at),
+              do: {:ok, bytes, {index + 1, rest}},
+              else: {:more, bytes, {index + 1, rest}}
+        end
       end
+
+      result =
+        Upstream.stream(%{target: origin, headers: [], ttl: 5000},
+          method: "POST",
+          path: path,
+          query: "",
+          body_state: {0, sizes},
+          pull: pull,
+          headers: [],
+          consume: fn _ -> :ok end,
+          renew: fn -> {:ok, %{ttl: 5000}} end,
+          transport_opts: [verify: :verify_peer, cacertfile: Path.join(@fixtures, "ca.pem")]
+        )
+
+      assert result.outcome == if(is_nil(fail_at), do: :completed, else: :source_error)
+      {pulled_chunks, _remaining} = result.body_state
+      assert pulled_chunks == (fail_at || length(sizes))
+
+      # Upstream.stream/2 is synchronous; count handler dispatches that have
+      # arrived by return plus a bounded quiet window for local dispatch.
+      attempts = attempt_count(path)
+      assert attempts <= 1
+      if is_nil(fail_at), do: assert(attempts == 1)
     end
   end
 
@@ -609,49 +619,52 @@ defmodule Galileo.UpstreamTest do
   # @cc [owner:ghuntley,label:verification;security] generated-galileo-lease-cutoff
   # After zero or one valid renewals, refusal, an invalid TTL or a renewal
   # blocked beyond expiry MUST cancel the one TLS attempt without response data.
-  property "generated renewal histories close one upstream attempt", %{origin: origin},
-    profile: :ci do
-    check all(ttl <- integer(600..700), valid_prefix <- integer(0..1), max_runs: 4) do
-      for terminal <- [:refused, :invalid, :expired] do
-        owner = self()
-        calls = :atomics.new(1, [])
+  # Three lease histories and quiet windows take up to about 3.1s per case.
+  @tag timeout: 600_000
+  property "generated renewal histories close one upstream attempt", profile: :ci do
+    origin = start_origin()
+    ttl = draw("ttl", integer(600..700))
+    valid_prefix = draw("valid_prefix", integer(0..1))
 
-        result =
-          Upstream.stream(%{target: origin, headers: [], ttl: ttl},
-            method: "GET",
-            path: "/stall",
-            query: "",
-            body_state: :empty,
-            pull: fn state -> {:ok, "", state} end,
-            headers: [],
-            consume: fn event ->
-              send(owner, {:upstream_event, event})
-              :ok
-            end,
-            renew: fn ->
-              call = :atomics.add_get(calls, 1, 1)
+    for terminal <- [:refused, :invalid, :expired] do
+      owner = self()
+      calls = :atomics.new(1, [])
 
-              if call <= valid_prefix do
-                {:ok, %{ttl: ttl}}
-              else
-                case terminal do
-                  :refused -> {:error, :unauthorized}
-                  :invalid -> {:ok, %{ttl: 499}}
-                  :expired -> Process.sleep(ttl * 2)
-                end
+      result =
+        Upstream.stream(%{target: origin, headers: [], ttl: ttl},
+          method: "GET",
+          path: "/stall",
+          query: "",
+          body_state: :empty,
+          pull: fn state -> {:ok, "", state} end,
+          headers: [],
+          consume: fn event ->
+            send(owner, {:upstream_event, event})
+            :ok
+          end,
+          renew: fn ->
+            call = :atomics.add_get(calls, 1, 1)
+
+            if call <= valid_prefix do
+              {:ok, %{ttl: ttl}}
+            else
+              case terminal do
+                :refused -> {:error, :unauthorized}
+                :invalid -> {:ok, %{ttl: 499}}
+                :expired -> Process.sleep(ttl * 2)
               end
-            end,
-            transport_opts: [verify: :verify_peer, cacertfile: Path.join(@fixtures, "ca.pem")]
-          )
+            end
+          end,
+          transport_opts: [verify: :verify_peer, cacertfile: Path.join(@fixtures, "ca.pem")]
+        )
 
-        assert result.outcome == :cancelled
-        assert result.status == nil
-        assert result.response_bytes == 0
-        assert :atomics.get(calls, 1) == valid_prefix + 1
-        assert_receive :origin_attempt, 1000
-        refute_receive {:upstream_event, {:data, _}}
-        refute_receive :origin_attempt, 100
-      end
+      assert result.outcome == :cancelled
+      assert result.status == nil
+      assert result.response_bytes == 0
+      assert :atomics.get(calls, 1) == valid_prefix + 1
+      assert_receive :origin_attempt, 1000
+      refute_receive {:upstream_event, {:data, _}}
+      refute_receive :origin_attempt, 100
     end
   end
 
@@ -659,78 +672,77 @@ defmodule Galileo.UpstreamTest do
   # Generated refused, invalid and expired renewals MUST finish the streaming
   # caller and terminate a blocked source reader without another upstream attempt
   # or body delivery. The reader handshake, not elapsed time, proves it blocked.
-  property "lease cancellation terminates a stalled upload reader", %{origin: origin},
-    profile: :ci do
-    check all(
-            terminal <- member_of([:refused, :invalid, :expired]),
-            owner_bound <- boolean(),
-            max_runs: 12
-          ) do
-      owner = self()
-      nonce = make_ref()
+  # Each case retains a 300–600ms lease and three 100ms quiet windows.
+  @tag timeout: 180_000
+  property "lease cancellation terminates a stalled upload reader", profile: :ci do
+    origin = start_origin()
+    terminal = draw("terminal", member_of([:refused, :invalid, :expired]))
+    owner_bound = draw("owner_bound", boolean())
 
-      {caller, monitor} =
-        spawn_monitor(fn ->
-          stream_owner = self()
+    owner = self()
+    nonce = make_ref()
 
-          result =
-            Upstream.stream(%{target: origin, headers: [], ttl: 600},
-              method: "POST",
-              path: "/upload",
-              query: "",
-              body_state: :blocked,
-              pull_in_owner: owner_bound,
-              cancel_frontend: fn ->
-                send(owner, {:frontend_cancelled, nonce})
-                send(stream_owner, {:release, nonce})
-                :ok
-              end,
-              pull: fn _ ->
-                send(owner, {:reader_blocked, nonce, self()})
+    {caller, monitor} =
+      spawn_monitor(fn ->
+        stream_owner = self()
 
-                receive do
-                  {:release, ^nonce} -> {:ok, "late", :done}
-                end
-              end,
-              headers: [],
-              consume: fn event ->
-                send(owner, {:delivered, nonce, event})
-                :ok
-              end,
-              renew: fn ->
-                case terminal do
-                  :refused ->
-                    {:error, :unauthorized}
+        result =
+          Upstream.stream(%{target: origin, headers: [], ttl: 600},
+            method: "POST",
+            path: "/upload",
+            query: "",
+            body_state: :blocked,
+            pull_in_owner: owner_bound,
+            cancel_frontend: fn ->
+              send(owner, {:frontend_cancelled, nonce})
+              send(stream_owner, {:release, nonce})
+              :ok
+            end,
+            pull: fn _ ->
+              send(owner, {:reader_blocked, nonce, self()})
 
-                  :invalid ->
-                    {:ok, %{ttl: 0}}
+              receive do
+                {:release, ^nonce} -> {:ok, "late", :done}
+              end
+            end,
+            headers: [],
+            consume: fn event ->
+              send(owner, {:delivered, nonce, event})
+              :ok
+            end,
+            renew: fn ->
+              case terminal do
+                :refused ->
+                  {:error, :unauthorized}
 
-                  :expired ->
-                    receive do
-                      :never -> {:ok, %{ttl: 600}}
-                    end
-                end
-              end,
-              transport_opts: [verify: :verify_peer, cacertfile: Path.join(@fixtures, "ca.pem")]
-            )
+                :invalid ->
+                  {:ok, %{ttl: 0}}
 
-          send(owner, {:stream_result, nonce, result})
-        end)
+                :expired ->
+                  receive do
+                    :never -> {:ok, %{ttl: 600}}
+                  end
+              end
+            end,
+            transport_opts: [verify: :verify_peer, cacertfile: Path.join(@fixtures, "ca.pem")]
+          )
 
-      try do
-        assert_receive {:reader_blocked, ^nonce, reader}, 2000
-        reader_monitor = Process.monitor(reader)
-        assert_receive {:stream_result, ^nonce, %{outcome: :cancelled, response_bytes: 0}}, 2000
-        assert_receive {:DOWN, ^monitor, :process, ^caller, :normal}, 1000
-        assert_receive {:DOWN, ^reader_monitor, :process, ^reader, _}, 1000
-        assert_receive {:frontend_cancelled, ^nonce}, 1000
-        refute_receive {:frontend_cancelled, ^nonce}
-        refute_receive {:delivered, ^nonce, _}
-        assert_receive :origin_attempt, 1000
-        refute_receive :origin_attempt, 100
-      after
-        if Process.alive?(caller), do: Process.exit(caller, :kill)
-      end
+        send(owner, {:stream_result, nonce, result})
+      end)
+
+    try do
+      assert_receive {:reader_blocked, ^nonce, reader}, 2000
+      reader_monitor = Process.monitor(reader)
+      assert_receive {:stream_result, ^nonce, %{outcome: :cancelled, response_bytes: 0}}, 2000
+      assert_receive {:DOWN, ^monitor, :process, ^caller, :normal}, 1000
+      assert_receive {:DOWN, ^reader_monitor, :process, ^reader, _}, 1000
+      assert_receive {:frontend_cancelled, ^nonce}, 1000
+      refute_receive {:frontend_cancelled, ^nonce}
+      refute_receive {:delivered, ^nonce, _}
+      assert_receive :origin_attempt, 1000
+      refute_receive :origin_attempt, 100
+    after
+      if Process.alive?(caller), do: Process.exit(caller, :kill)
     end
   end
 end

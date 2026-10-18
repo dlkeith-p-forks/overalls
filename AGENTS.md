@@ -131,3 +131,10 @@ for the component being changed.
 Use the [Covenant skill](.agents/skills/covenant/SKILL.md) when adding or maintaining Covenant contracts in any Elixir application. Keep Covenant development/test-only (`only: [:dev, :test]`, `runtime: false`) and preserve existing test-helper behavior while including `Covenant.Formatter`. Contract obligations belong under each application's `contracts/` tree and tagged executable tests under `test/contract/`, with stable IDs `<mix_app>.<component>.I<n>`. Run static and runtime Covenant checks plus the application's normal precommit gate; protocol changes also require Marshall and Lilly consumer checks.
 
 Covenant evidence is limited to behavior observable in the BEAM test VM. Do not use it to claim native Rust/KVM, physical isolation, multi-host recovery, browser, or production deployment guarantees. Preserve the existing `CONTRACTS`, ADR, HLDD, native, machine, and integration evidence, and update architecture/HLDD records when verification scope changes.
+
+## Localization
+
+- Use the [localization skill](.agents/skills/localization/SKILL.md) for every change involving user-facing strings, locale selection, translation catalogs, formatting, bidirectional presentation, or Elixir Localize integration.
+- Before editing, inventory human-facing text and inspect the pinned Localize/Gettext APIs and existing catalogs. Preserve stable source identifiers and machine-facing contracts; do not invent a parallel translation-key system.
+- Centralize typed locale validation, canonicalization, browser negotiation, fallback, and direction. Validate user overrides and keep them isolated per account/session. Bundle deterministic locale data and test malformed input, fallback, placeholders, plural rules, RTL layout, and catalog completeness.
+- Update architecture and HLDD evidence when localization changes documented behavior, configuration, protocols, operations, or verification scope.

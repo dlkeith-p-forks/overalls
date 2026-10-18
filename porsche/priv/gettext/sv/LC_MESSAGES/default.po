@@ -1,0 +1,203 @@
+msgid ""
+msgstr ""
+"Language: sv\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Porsche machine management. Type help."
+msgstr "Porsche-maskinhantering. Skriv help."
+
+msgid "Docs:"
+msgstr "Dokumentation:"
+
+msgid "Show command help."
+msgstr "Visa kommandohjälp."
+
+msgid "Show the authenticated account."
+msgstr "Visa det autentiserade kontot."
+
+msgid "List available images."
+msgstr "Lista tillgängliga avbildningar."
+
+msgid "List machines you can access."
+msgstr "Lista maskiner som du har åtkomst till."
+
+msgid "Inspect a machine by name or UUID."
+msgstr "Granska en maskin efter namn eller UUID."
+
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "Skapa en maskin. Maximal diskstorlek: 500 GiB. --source klonar ett offentligt GitHub-, GitLab-, Codeberg- eller Bitbucket-arkiv i gästen."
+
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "Köa en fristående kopia av en maskins hela disk."
+
+msgid "Move a machine to an automatically selected host."
+msgstr "Flytta en maskin till en automatiskt vald värd."
+
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "Ändra en maskins processor och minne; disken kan bara utökas. En körande maskin stoppas och startas om."
+
+msgid "Retry a failed clone or relocation request."
+msgstr "Försök igen med en misslyckad klonings- eller flyttbegäran."
+
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "Avbryt en opublicerad kloning eller obekräftad flyttbegäran."
+
+msgid "Start a machine."
+msgstr "Starta en maskin."
+
+msgid "Stop a machine, retaining its disk."
+msgstr "Stoppa en maskin och behåll dess disk."
+
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "Ta bort en maskin och dess disk. Nekas om ägaren har fäst maskinen."
+
+msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
+msgstr "Fäst en maskin överst i dina listor. Den kan inte tas bort så länge du äger den och den är fäst."
+
+msgid "Remove your pin from a machine."
+msgstr "Ta bort din fästning av en maskin."
+
+msgid "List access grants."
+msgstr "Lista beviljade åtkomsträttigheter."
+
+msgid "Grant viewer, operator or manager access."
+msgstr "Bevilja åtkomst som läsare, operatör eller förvaltare."
+
+msgid "Revoke an account's shared access."
+msgstr "Återkalla ett kontos delade åtkomst."
+
+msgid "List your SSH keys."
+msgstr "Lista dina SSH-nycklar."
+
+msgid "Revoke one of your SSH keys."
+msgstr "Återkalla en av dina SSH-nycklar."
+
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "Skapa eller ersätt en namngiven integration på https://NAME.integration.internal."
+
+msgid "Remove a named integration."
+msgstr "Ta bort en namngiven integration."
+
+msgid "List your integrations."
+msgstr "Lista dina integrationer."
+
+msgid "Inspect an integration without secrets."
+msgstr "Granska en integration utan hemligheter."
+
+msgid "Make an integration available to a machine."
+msgstr "Gör en integration tillgänglig för en maskin."
+
+msgid "Remove a machine's explicit availability."
+msgstr "Ta bort en maskins uttryckliga tillgänglighet."
+
+msgid "Create a team you own."
+msgstr "Skapa ett team som du äger."
+
+msgid "List your teams and roles."
+msgstr "Lista dina team och roller."
+
+msgid "List a team's members."
+msgstr "Lista medlemmarna i ett team."
+
+msgid "Add or change an admin or member."
+msgstr "Lägg till eller ändra en administratör eller medlem."
+
+msgid "Remove an account's membership."
+msgstr "Ta bort ett kontos medlemskap."
+
+msgid "Offer team ownership to an admin."
+msgstr "Erbjud en administratör ägarskap av teamet."
+
+msgid "Accept a pending ownership offer."
+msgstr "Acceptera ett väntande ägarskapserbjudande."
+
+msgid "Decline a pending ownership offer."
+msgstr "Avböj ett väntande ägarskapserbjudande."
+
+msgid "Cancel your pending ownership offer."
+msgstr "Avbryt ditt väntande ägarskapserbjudande."
+
+msgid "Inspect a previously accepted request."
+msgstr "Granska en tidigare accepterad begäran."
+
+msgid "Close this interactive channel."
+msgstr "Stäng denna interaktiva kanal."
+
+msgid "We don't recognize this SSH key:\n  "
+msgstr "Vi känner inte igen denna SSH-nyckel:\n  "
+
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nÖppna denna länk, logga in och godkänn det matchande fingeravtrycket:\n  "
+
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
+msgstr "\n\nHåll denna SSH-anslutning öppen medan du godkänner nyckeln.\n"
+
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+msgstr "Godkännandelänkar upphör att gälla efter %{minutes} minuter eller när denna anslutning stängs.\n"
+
+msgid "After approval, retry your command here.\n"
+msgstr "Försök med kommandot här igen efter godkännandet.\n"
+
+msgid "\nOpen an interactive Porsche connection without a remote command:"
+msgstr "\nÖppna en interaktiv Porsche-anslutning utan ett fjärrkommando:"
+
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "Håll anslutningen öppen medan du godkänner nyckeln i webbläsaren,\n"
+
+msgid "then retry your original command.\n"
+msgstr "försök sedan med det ursprungliga kommandot igen.\n"
+
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr "Välkommen till Overalls.\n\nDenna anslutning kräver Overalls SSH-konfiguration.\n\n"
+
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr "Vi kunde inte verifiera denna SSH-nyckel just nu. Försök igen om en stund.\n\n"
+
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr "Denna SSH-anslutning kunde inte auktoriseras. Kontrollera din maskinåtkomst och försök igen.\n\n"
+
+msgid "Register or check your key by connecting to:\n  ssh "
+msgstr "Registrera eller kontrollera din nyckel genom att ansluta till:\n  ssh "
+
+msgid "\nOr manage your keys at:\n  "
+msgstr "\nEller hantera dina nycklar på:\n  "
+
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+msgstr "Registrera eller kontrollera din SSH-nyckel i Overalls kontoinställningar > SSH-nycklar.\n\n"
+
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "Följ godkännandeanvisningarna i webbläsaren och kör sedan installationskommandot\n"
+
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "från maskinens sida och anslut igen utan root@.\n"
+
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "Denna anslutning är inte auktoriserad. Logga in och försök igen."
+
+msgid "You do not have permission to perform this action."
+msgstr "Du har inte behörighet att utföra denna åtgärd."
+
+msgid "Invalid command. Type help to see available commands."
+msgstr "Ogiltigt kommando. Skriv help för att se tillgängliga kommandon."
+
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr "Tjänsten är tillfälligt otillgänglig. Försök igen om en stund."
+
+msgid "Approve this SSH key in your browser, then retry the command."
+msgstr "Godkänn denna SSH-nyckel i webbläsaren och försök sedan med kommandot igen."
+
+msgid "The requested resource could not be found."
+msgstr "Den begärda resursen kunde inte hittas."
+
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "Oväntad inmatning. Öppna en ny SSH-anslutning."
+
+msgid "The command could not be completed: %{reason}"
+msgstr "Kommandot kunde inte slutföras: %{reason}"
+
+msgid "Request %{id}: submitting"
+msgstr "Begäran %{id}: skickas"
+
+msgid "Request %{id}: waiting for completion"
+msgstr "Begäran %{id}: väntar på slutförande"

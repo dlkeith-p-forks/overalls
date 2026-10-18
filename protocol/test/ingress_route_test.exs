@@ -9,7 +9,7 @@ defmodule OverallsProtocol.IngressRouteTest do
   property "readiness preserves execution and digest and rejects caller publication authority",
     database: :disabled,
     print_blob: false,
-    test_cases: 30,
+    test_cases: 100,
     seed: 472_393_697 do
     epoch = draw("epoch", integer(1..9_223_372_036_854_775_807))
     digest = draw("digest", binary(length: 32))

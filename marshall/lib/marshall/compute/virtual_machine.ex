@@ -48,7 +48,7 @@ defmodule Marshall.Compute.VirtualMachine do
   end
 
   # @cc [owner:ghuntley,label:recovery] vm-deletion-terminal-intent
-  # Deleted intent MUST NOT return to running or stopped. Observations remain
+  # Deleted intent MUST NOT return to running, paused or stopped. Observations remain
   # separate authenticated facts; a state transition alone cannot release holds.
   state_machine do
     state_attribute :desired_state
@@ -56,11 +56,12 @@ defmodule Marshall.Compute.VirtualMachine do
     default_initial_state :running
 
     transitions do
-      transition :request_start, from: [:running, :stopped], to: :running
-      transition :request_stop, from: [:running, :stopped], to: :stopped
-      transition :request_delete, from: [:running, :stopped, :deleted], to: :deleted
-      transition :handoff, from: :stopped, to: [:running, :stopped]
-      transition :restore_source, from: [:running, :stopped], to: :stopped
+      transition :request_start, from: [:running, :stopped, :paused], to: :running
+      transition :request_stop, from: [:running, :stopped, :paused], to: :stopped
+      transition :request_delete, from: [:running, :stopped, :paused, :deleted], to: :deleted
+      transition :request_pause, from: [:running, :stopped, :paused], to: :paused
+      transition :handoff, from: [:stopped, :paused], to: [:running, :stopped, :paused]
+      transition :restore_source, from: [:running, :stopped, :paused], to: [:stopped, :paused]
     end
   end
 
@@ -211,9 +212,11 @@ defmodule Marshall.Compute.VirtualMachine do
     end
 
     action :lifecycle, :struct do
-      constraints instance_of: Marshall.Compute.Operation
       argument :vm_id, :uuid, allow_nil?: false
-      argument :kind, :atom, allow_nil?: false, constraints: [one_of: [:start, :stop, :delete]]
+
+      argument :kind, :atom,
+        allow_nil?: false,
+        constraints: [one_of: [:start, :stop, :delete, :pause, :resume]]
 
       argument :idempotency_key, :string,
         allow_nil?: false,
@@ -279,7 +282,8 @@ defmodule Marshall.Compute.VirtualMachine do
         :vcpu,
         :memory_bytes,
         :disk_bytes,
-        :provisioning_sizes
+        :provisioning_sizes,
+        :git_identity
       ]
 
       change fn changeset, _ ->
@@ -294,7 +298,7 @@ defmodule Marshall.Compute.VirtualMachine do
 
     # @cc [owner:ghuntley,label:security;recovery] relocation-only-placement-handoff
     # Only the serialized relocation coordinator may use handoff after verified
-    # stop/import. Placement, successor epoch and reset observation sequence MUST
+    # quiescent-copy/import. Placement, successor epoch and reset observation sequence MUST
     # commit with activation outbox; owner/image/shape/address remain unchanged.
     update :handoff do
       accept [
@@ -309,14 +313,14 @@ defmodule Marshall.Compute.VirtualMachine do
 
       argument :desired_state, :atom,
         allow_nil?: false,
-        constraints: [one_of: [:running, :stopped]]
+        constraints: [one_of: [:running, :stopped, :paused]]
 
       change transition_state(arg(:desired_state))
     end
 
     # @cc [owner:ghuntley,label:security;recovery] cancellation-source-epoch-only
     # Only the cancellation coordinator may advance source epoch here, preserving
-    # placement and identity. The fresh stop and outbox MUST commit atomically
+    # placement and identity. The fresh pause/stop and outbox MUST commit atomically
     # after confirmed export revocation; this action alone grants no restart.
     update :restore_source do
       accept [
@@ -329,7 +333,7 @@ defmodule Marshall.Compute.VirtualMachine do
 
       argument :desired_state, :atom,
         allow_nil?: false,
-        constraints: [one_of: [:running, :stopped]]
+        constraints: [one_of: [:running, :stopped, :paused]]
 
       change transition_state(arg(:desired_state))
     end
@@ -337,6 +341,19 @@ defmodule Marshall.Compute.VirtualMachine do
     update :request_start do
       accept [:generation, :crash_restart_times]
       change transition_state(:running)
+    end
+
+    update :request_pause do
+      accept [:generation, :crash_restart_times]
+      change transition_state(:paused)
+    end
+
+    update :idle_policy do
+      accept [:idle_suspend_enabled, :idle_activity_at, :idle_revision]
+    end
+
+    update :checkpoint do
+      accept [:current_checkpoint]
     end
 
     update :request_stop do
@@ -374,6 +391,7 @@ defmodule Marshall.Compute.VirtualMachine do
           :handoff,
           :restore_source,
           :request_start,
+          :request_pause,
           :request_stop,
           :request_delete,
           :apply_resize
@@ -389,6 +407,7 @@ defmodule Marshall.Compute.VirtualMachine do
                :handoff,
                :restore_source,
                :request_start,
+               :request_pause,
                :request_stop,
                :request_delete,
                :observe,
@@ -404,6 +423,7 @@ defmodule Marshall.Compute.VirtualMachine do
           :handoff,
           :restore_source,
           :request_start,
+          :request_pause,
           :request_stop,
           :request_delete,
           :observe,
@@ -434,12 +454,20 @@ defmodule Marshall.Compute.VirtualMachine do
       allow_nil?: false,
       constraints: [one_of: [:customer, :standard, :oss, :inception]]
 
+    # @cc [owner:ghuntley,label:product] vm-git-identity-immutable
+    # Git identity MUST be captured only at allocation and retained across restarts,
+    # relocation and account preference changes.
+    attribute :git_identity, :map, sensitive?: true
     attribute :provisioning_sizes, :map, allow_nil?: false
     attribute :vcpu, :integer, allow_nil?: false, constraints: [min: 1, max: 32]
     attribute :memory_bytes, :integer, allow_nil?: false, constraints: [min: 536_870_912]
     attribute :disk_bytes, :integer, allow_nil?: false, constraints: [min: 2_147_483_648]
     attribute :generation, :integer, allow_nil?: false, default: 1, constraints: [min: 1]
     attribute :outcome_sequence, :integer, allow_nil?: false, default: 0, constraints: [min: 0]
+    attribute :current_checkpoint, :map
+    attribute :idle_suspend_enabled, :boolean, allow_nil?: false, default: false
+    attribute :idle_activity_at, :utc_datetime_usec
+    attribute :idle_revision, :integer, allow_nil?: false, default: 0, constraints: [min: 0]
     attribute :observed_at, :utc_datetime_usec
 
     attribute :failure_reason, :atom,
@@ -452,12 +480,12 @@ defmodule Marshall.Compute.VirtualMachine do
     attribute :desired_state, :atom,
       allow_nil?: false,
       default: :running,
-      constraints: [one_of: [:running, :stopped, :deleted]]
+      constraints: [one_of: [:running, :stopped, :paused, :deleted]]
 
     attribute :observed_state, :atom,
       allow_nil?: false,
       default: :pending,
-      constraints: [one_of: [:pending, :running, :stopped, :unknown, :failed, :deleted]]
+      constraints: [one_of: [:pending, :running, :stopped, :paused, :unknown, :failed, :deleted]]
 
     create_timestamp :inserted_at
     update_timestamp :updated_at

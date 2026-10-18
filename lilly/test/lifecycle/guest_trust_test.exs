@@ -27,75 +27,80 @@ defmodule Lilly.Lifecycle.GuestTrustTest do
 
   @tag :hegel
   test "a boot must pass pending and delivering before installed", c do
-    check all(attempts <- integer(1..3), test_cases: 12) do
-      directory = Path.join(c.root, Lilly.UUID.generate())
-      {:ok, lock} = Lock.acquire(directory)
+    Hegel.check(
+      fn ->
+        attempts = draw("attempts", integer(1..3))
+        directory = Path.join(c.root, Lilly.UUID.generate())
+        {:ok, lock} = Lock.acquire(directory)
 
-      try do
-        assert :ok = Journal.write(GuestTrust, directory, "guest-trust.json", c.payload)
+        try do
+          assert :ok = Journal.write(GuestTrust, directory, "guest-trust.json", c.payload)
 
-        assert {:error, _} =
-                 Journal.write(GuestTrust, directory, "guest-trust.json", %{
-                   c.payload
-                   | "state" => "installed"
-                 })
+          assert {:error, _} =
+                   Journal.write(GuestTrust, directory, "guest-trust.json", %{
+                     c.payload
+                     | "state" => "installed"
+                   })
 
-        Enum.each(1..attempts, fn attempt ->
+          Enum.each(1..attempts, fn attempt ->
+            assert :ok =
+                     Journal.write(GuestTrust, directory, "guest-trust.json", %{
+                       c.payload
+                       | "state" => "delivering",
+                         "attempts" => attempt
+                     })
+
+            assert :ok =
+                     Journal.write(GuestTrust, directory, "guest-trust.json", %{
+                       c.payload
+                       | "state" => "failed",
+                         "attempts" => attempt
+                     })
+          end)
+
           assert :ok =
                    Journal.write(GuestTrust, directory, "guest-trust.json", %{
                      c.payload
                      | "state" => "delivering",
-                       "attempts" => attempt
+                       "attempts" => attempts + 1
                    })
 
           assert :ok =
                    Journal.write(GuestTrust, directory, "guest-trust.json", %{
                      c.payload
-                     | "state" => "failed",
-                       "attempts" => attempt
+                     | "state" => "installed",
+                       "attempts" => attempts + 1,
+                       "boot_id" => Lilly.UUID.generate(),
+                       "bundle_digest" => String.duplicate("b", 64)
                    })
-        end)
 
-        assert :ok =
-                 Journal.write(GuestTrust, directory, "guest-trust.json", %{
-                   c.payload
-                   | "state" => "delivering",
-                     "attempts" => attempts + 1
-                 })
+          assert {:ok, %{state: :installed, revision: revision}} =
+                   Journal.load(GuestTrust, directory, "guest-trust.json")
 
-        assert :ok =
-                 Journal.write(GuestTrust, directory, "guest-trust.json", %{
-                   c.payload
-                   | "state" => "installed",
-                     "attempts" => attempts + 1,
-                     "boot_id" => Lilly.UUID.generate(),
-                     "bundle_digest" => String.duplicate("b", 64)
-                 })
-
-        assert {:ok, %{state: :installed, revision: revision}} =
-                 Journal.load(GuestTrust, directory, "guest-trust.json")
-
-        assert revision == 2 * attempts + 3
-      after
-        Lock.release(lock)
-      end
-    end
+          assert revision == 2 * attempts + 3
+        after
+          Lock.release(lock)
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   @tag :hegel
   test "digest is invariant under CA ordering and changes when a CA changes" do
-    check all(
-            left <- binary(min_length: 1, max_length: 64),
-            right <- binary(min_length: 1, max_length: 64),
-            test_cases: 30
-          ) do
-      Hegel.assume(left != right)
+    Hegel.check(
+      fn ->
+        left = draw("left", binary(min_length: 1, max_length: 64))
+        right = draw("right", binary(min_length: 1, max_length: 64))
+        Hegel.assume(left != right)
 
-      assert Lilly.VM.GuestTrust.digest([left, right]) ==
-               Lilly.VM.GuestTrust.digest([right, left])
+        assert Lilly.VM.GuestTrust.digest([left, right]) ==
+                 Lilly.VM.GuestTrust.digest([right, left])
 
-      refute Lilly.VM.GuestTrust.digest([left]) == Lilly.VM.GuestTrust.digest([right])
-    end
+        refute Lilly.VM.GuestTrust.digest([left]) == Lilly.VM.GuestTrust.digest([right])
+      end,
+      test_cases: 100
+    )
   end
 
   test "an agentless boot records trust as skipped at once and the skip stays terminal", c do

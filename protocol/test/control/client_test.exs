@@ -344,79 +344,77 @@ defmodule OverallsProtocol.Control.ClientTest do
   # @cc [owner:ghuntley,label:verification;recovery] control-reconnect-cap-after-loss
   # Repeated refused loopback dials MUST retain a backoff ceiling of four seconds;
   # a returning listener MUST receive a fresh hello and restore ready without replay.
-  @tag timeout: 150_000
-  property "a returning server is reached within the cap after repeated failed dials",
-    profile: :ci,
-    database: :disabled,
-    print_blob: false,
-    test_cases: 3,
-    seed: 2_114_116_857 do
-    register_case_cleanup()
-    failures = draw("failures", integer(4..8))
-    {:ok, probe} = :gen_tcp.listen(0, [:binary, :inet, reuseaddr: true, ip: {127, 0, 0, 1}])
-    {:ok, port} = :inet.port(probe)
-    :ok = :gen_tcp.close(probe)
+  for finite_case <- 4..8 do
+    @finite_case finite_case
+    @tag timeout: 90000
+    test "a returning server is reached within the cap after repeated failed dials (" <>
+           to_string(finite_case) <> ")" do
+      failures = @finite_case
+      {:ok, probe} = :gen_tcp.listen(0, [:binary, :inet, reuseaddr: true, ip: {127, 0, 0, 1}])
+      {:ok, port} = :inet.port(probe)
+      :ok = :gen_tcp.close(probe)
 
-    client_id = make_ref()
-    observer = self()
+      client_id = make_ref()
+      observer = self()
 
-    client =
-      start_supervised!(
-        {Client,
-         url: "http://127.0.0.1:#{port}",
-         allow_insecure_loopback: true,
-         service: "galileo",
-         credential: fn ->
-           attempt_ref = make_ref()
-           observer_ref = Process.monitor(observer)
-           send(observer, {:dial_attempt, client_id, self(), attempt_ref})
+      client =
+        start_supervised!(
+          {Client,
+           url: "http://127.0.0.1:#{port}",
+           allow_insecure_loopback: true,
+           service: "galileo",
+           credential: fn ->
+             attempt_ref = make_ref()
+             observer_ref = Process.monitor(observer)
+             send(observer, {:dial_attempt, client_id, self(), attempt_ref})
 
-           receive do
-             {:release_dial, ^attempt_ref} ->
-               Process.demonitor(observer_ref, [:flush])
-               {:ok, "secret-token"}
+             receive do
+               {:release_dial, ^attempt_ref} ->
+                 Process.demonitor(observer_ref, [:flush])
+                 {:ok, "secret-token"}
 
-             {:DOWN, ^observer_ref, :process, ^observer, _} ->
-               {:error, :observer_stopped}
-           after
-             5000 ->
-               Process.demonitor(observer_ref, [:flush])
-               {:error, :gate_timeout}
-           end
-         end,
-         bind: fn -> %{"generation" => 1} end,
-         owner: self()},
-        id: client_id
-      )
+               {:DOWN, ^observer_ref, :process, ^observer, _} ->
+                 {:error, :observer_stopped}
+             after
+               5000 ->
+                 Process.demonitor(observer_ref, [:flush])
+                 {:error, :gate_timeout}
+             end
+           end,
+           bind: fn -> %{"generation" => 1} end,
+           owner: self()},
+          id: client_id
+        )
 
-    for attempt <- 1..failures do
-      assert_receive {:dial_attempt, ^client_id, worker, attempt_ref}, 4500
-      opening_ref = :sys.get_state(client).opening
-      worker_ref = Process.monitor(worker)
-      send(worker, {:release_dial, attempt_ref})
-      assert_receive {:DOWN, ^worker_ref, :process, ^worker, :normal}, 2000
-      state = await_client_state(client, &(&1.opening != opening_ref))
-      assert state.phase in [:disconnected, :connecting]
-      assert state.last_close == :lost
-      assert state.backoff in [2000, 4000]
+      for attempt <- 1..failures do
+        assert_receive {:dial_attempt, ^client_id, worker, attempt_ref}, 4500
+        opening_ref = :sys.get_state(client).opening
+        worker_ref = Process.monitor(worker)
+        send(worker, {:release_dial, attempt_ref})
+        assert_receive {:DOWN, ^worker_ref, :process, ^worker, :normal}, 2000
+        state = await_client_state(client, &(&1.opening != opening_ref))
+        assert state.phase in [:disconnected, :connecting]
+        assert state.last_close == :lost
+        assert state.backoff in [2000, 4000]
 
-      if attempt >= 2 do
-        assert(state.backoff == 4000)
+        if attempt >= 2 do
+          assert(state.backoff == 4000)
+        end
       end
-    end
 
-    {:ok, ^port} = Server.start(self(), :accept, port)
-    restored_at = System.monotonic_time(:millisecond)
-    assert_receive {:dial_attempt, ^client_id, worker, attempt_ref}, 4500
-    send(worker, {:release_dial, attempt_ref})
-    assert_receive {:server, server, _}, 2000
-    assert_receive {:received, {:hello, _}}, 2000
-    welcome(server)
-    assert_receive {:control, ^client, {:connected, _}}, 2000
-    assert System.monotonic_time(:millisecond) - restored_at <= 4500
-    assert Client.ready?(client)
-    refute_receive {:received, {:req, _}}, 50
-    :ok = stop_supervised(client_id)
+      {:ok, ^port} = Server.start(self(), :accept, port)
+      restored_at = System.monotonic_time(:millisecond)
+      assert_receive {:dial_attempt, ^client_id, worker, attempt_ref}, 4500
+      send(worker, {:release_dial, attempt_ref})
+      assert_receive {:server, server, _}, 2000
+      assert_receive {:received, {:hello, _}}, 2000
+      welcome(server)
+      assert_receive {:control, ^client, {:connected, _}}, 2000
+      assert System.monotonic_time(:millisecond) - restored_at <= 4500
+      assert Client.ready?(client)
+      refute_receive {:received, {:req, _}}, 50
+      :ok = stop_supervised(client_id)
+    end
   end
 
   # Observing a peer write or worker exit does not prove that the client has
@@ -462,29 +460,14 @@ defmodule OverallsProtocol.Control.ClientTest do
   # loss MUST resolve every pending caller as unproven without replay; deadlines
   # MUST release capacity and late responses MUST NOT settle successor work. New work
   # on the replacement connection MUST complete independently.
-  @tag timeout: 120_000
-  property "pending batches correlate exactly and retire without replay",
-    profile: :ci,
-    database: :disabled,
-    print_blob: false,
-    test_cases: 2,
-    seed: 460_896_662 do
-    register_case_cleanup()
-    task_supervisor = start_supervised!(Task.Supervisor)
-
-    (
-      count = draw("count", member_of([1, 7, 8]))
-      mode = draw("mode", member_of([:answered, :dropped, :timed_out]))
-
-      fixed =
-        for count <- [1, 7, 8], mode <- [:answered, :dropped, :timed_out] do
-          {count, mode}
-        end
-
-      for {count, mode} <- fixed ++ [{count, mode}] do
-        pending_batch(task_supervisor, count, mode)
-      end
-    )
+  # Exhaust the entire nine-cell domain once; no generated input remains.
+  for count <- [1, 7, 8], mode <- [:answered, :dropped, :timed_out] do
+    @batch_count count
+    @batch_mode mode
+    test "pending batches correlate exactly and retire without replay (#{count}, #{mode})" do
+      task_supervisor = start_supervised!(Task.Supervisor)
+      pending_batch(task_supervisor, @batch_count, @batch_mode)
+    end
   end
 
   @spec pending_batch(pid(), 1 | 7 | 8, :answered | :dropped | :timed_out) :: :ok
@@ -624,225 +607,18 @@ defmodule OverallsProtocol.Control.ClientTest do
   # Unsupported-version close MUST settle all pending callers as unproven and
   # MUST NOT reconnect after the former sixty-second retry interval. Disconnected
   # requests MUST remain refused without wire dispatch or hidden redelivery.
-  @tag timeout: 200_000
-  property "unsupported version retires pending batches without delayed reconnect",
-    profile: :ci,
-    database: :disabled,
-    print_blob: false,
-    test_cases: 2,
-    seed: 970_731_517 do
-    register_case_cleanup()
-    task_supervisor = start_supervised!(Task.Supervisor)
+  # Exhaust every generated count; each independent test retains the real 61-second observation.
+  for finite_case <- [1, 7, 8] do
+    @finite_case finite_case
+    @tag timeout: 120_000
+    test "unsupported version retires pending batches without delayed reconnect (" <>
+           to_string(finite_case) <> ")" do
+      task_supervisor = start_supervised!(Task.Supervisor)
 
-    # Retain the actual former production retry interval. This is a bounded
-    # transport observation; it does not establish arbitrary future absence.
-    (
-      count = draw("count", member_of([1, 7, 8]))
-      {:ok, port} = Server.start(self())
-      child_id = make_ref()
-
-      client =
-        start_supervised!(
-          Supervisor.child_spec(
-            {Client,
-             url: "http://127.0.0.1:#{port}",
-             allow_insecure_loopback: true,
-             service: "galileo",
-             credential: fn -> {:ok, "secret-token"} end,
-             bind: fn -> %{"generation" => 1} end,
-             owner: self()},
-            id: child_id
-          )
-        )
-
-      assert_receive {:server, server, true}, 2000
-      assert_receive {:server_service, "galileo"}, 2000
-      assert_receive {:received, {:hello, _}}, 2000
-      welcome(server)
-      assert_receive {:control, ^client, {:connected, _}}, 2000
-
-      tasks =
-        for ordinal <- 1..count do
-          Task.Supervisor.async_nolink(task_supervisor, fn ->
-            Client.request(client, "galileo.renew", %{"ordinal" => ordinal})
-          end)
-        end
-
-      ordinals =
-        for _ <- 1..count do
-          assert_receive {:received, {:req, %{body: %{"ordinal" => ordinal}}}}, 2000
-          ordinal
-        end
-
-      assert MapSet.new(ordinals) == MapSet.new(1..count)
-      send(server, {:close, Close.code(:unsupported_version)})
-
-      for task <- tasks do
-        assert Task.await(task, 2000) == {:error, :unproven}
-      end
-
-      assert_receive {:control, ^client, {:disconnected, :unsupported_version}}, 2000
-      assert Client.status(client) == {:disconnected, :unsupported_version}
-
-      assert Client.request(client, "galileo.renew", %{"ordinal" => 999}) ==
-               {:error, :disconnected}
-
-      for _ <- 1..count do
-        send(client, :connect)
-        refute_receive {:server, _, _}, 2000
-        assert Client.status(client) == {:disconnected, :unsupported_version}
-      end
-
-      refute_receive {:server, _, _}, 61000
-      assert Client.status(client) == {:disconnected, :unsupported_version}
-      refute_receive {:received, {:req, _}}, 0
-      stop_supervised!(child_id)
-    )
-  end
-
-  # @cc [owner:ghuntley,label:verification;recovery] control-upgrade-version-refusal-is-terminal
-  # HTTP426 at upgrade MUST keep the client disconnected and MUST NOT retry after
-  # sixty seconds or after queued connect messages; no hello or request is sent.
-  @tag timeout: 150_000
-  property "HTTP426 retires upgrade attempts and queued connects",
-    profile: :ci,
-    database: :disabled,
-    print_blob: false,
-    test_cases: 2,
-    seed: 1_635_969_163 do
-    register_case_cleanup()
-    count = draw("count", integer(1..8))
-    {:ok, port} = Server.start(self(), :unsupported_version)
-    child_id = make_ref()
-
-    client =
-      start_supervised!(
-        Supervisor.child_spec(
-          {Client,
-           url: "http://127.0.0.1:#{port}",
-           allow_insecure_loopback: true,
-           service: "galileo",
-           credential: fn -> {:ok, "secret-token"} end,
-           bind: fn -> %{"generation" => 1} end,
-           owner: self()},
-          id: child_id
-        )
-      )
-
-    assert_receive {:upgrade_refused, server}, 2000
-    await_client_state(client, &(&1.phase == :stopped))
-    assert Client.status(client) == {:disconnected, :unsupported_version}
-
-    for _ <- 1..count do
-      send(client, :connect)
-      assert Client.status(client) == {:disconnected, :unsupported_version}
-    end
-
-    assert Client.request(client, "galileo.renew", %{}) == {:error, :disconnected}
-    refute_receive {:upgrade_refused, ^server}, 61000
-    refute_receive {:received, _}, 0
-    assert Client.status(client) == {:disconnected, :unsupported_version}
-    stop_supervised!(child_id)
-  end
-
-  # @cc [owner:ghuntley,label:verification;recovery] control-heartbeat-connection-ownership
-  # A replacement connection MUST NOT receive a heartbeat from a retired
-  # connection's timer. Its own five-second heartbeat MUST still progress.
-  @tag timeout: 90000
-  property "reconnects retire old heartbeat ownership before replacement traffic",
-    profile: :ci,
-    database: :disabled,
-    print_blob: false,
-    test_cases: 2,
-    seed: 1_240_772_644 do
-    register_case_cleanup()
-    drawn = draw("drawn", integer(0..3))
-
-    for reconnects <- [0, 1, 3, drawn] do
-      {:ok, port} = Server.start(self())
-      child_id = make_ref()
-
-      client =
-        start_supervised!(
-          Supervisor.child_spec(
-            {Client,
-             url: "http://127.0.0.1:#{port}",
-             allow_insecure_loopback: true,
-             service: "galileo",
-             credential: fn -> {:ok, "secret-token"} end,
-             bind: fn -> %{"generation" => 1} end,
-             owner: self()},
-            id: child_id
-          )
-        )
-
-      assert_receive {:server, initial, true}, 2000
-      assert_receive {:server_service, "galileo"}, 2000
-      assert_receive {:received, {:hello, _}}, 2000
-      welcome(initial)
-      assert_receive {:control, ^client, {:connected, _}}, 2000
-
-      {server, retired_timers} =
-        Enum.reduce(List.duplicate(:drop, reconnects), {initial, []}, fn :drop,
-                                                                         {server, retired} ->
-          timer = heartbeat_reference(client)
-          send(server, :drop)
-          assert_receive {:control, ^client, {:disconnected, :lost}}, 2000
-          assert_receive {:server, replacement, true}, 3000
-          assert_receive {:server_service, "galileo"}, 2000
-          assert_receive {:received, {:hello, _}}, 2000
-          welcome(replacement)
-          assert_receive {:control, ^client, {:connected, _}}, 2000
-          {replacement, [timer | retired]}
-        end)
-
-      # Re-deliver real retired refs after the replacement is ready. Timer
-      # cancellation cannot remove an already queued message. Also include
-      # the old untagged shape, without exposing the private callback state.
-      for timer <- retired_timers, _ <- 1..2 do
-        send(client, {:timeout, timer, :heartbeat})
-      end
-
-      send(client, :heartbeat)
-
-      # The peer barrier precedes observation. Allow100ms for the welcome
-      # and barrier transit before the connection-owned five-second deadline.
-      peer_barrier(server, 71)
-      refute_receive {:received, {:ping, _}}, 4900
-      assert_receive {:received, {:ping, counter}}, 2000
-      send(server, {:send, {:pong, counter}})
-      peer_barrier(server, 72)
-      assert Client.ready?(client)
-      stop_supervised!(child_id)
-    end
-  end
-
-  # @cc [owner:ghuntley,label:verification;protocol] control-negotiated-capacity-exact-admission
-  # Valid advertised1..256 limits MUST admit exactly that many pending callers;
-  # missing or invalid limits MUST use eight. One additional request MUST be
-  # refused without dispatch, and reconnect MUST apply the replacement limit.
-  @tag timeout: 180_000
-  property "negotiated capacity admits exact peer inventories and resets on reconnect",
-    profile: :ci,
-    database: :disabled,
-    print_blob: false,
-    test_cases: 2,
-    seed: 705_726_619 do
-    register_case_cleanup()
-    task_supervisor = start_supervised!(Task.Supervisor)
-    invalid = [0, -1, 257, 9_007_199_254_740_991, nil, true, false, "1", 2.0, [1], %{}]
-
-    (
-      limit = draw("limit", integer(1..256))
-      invalid_limit = draw("invalid_limit", member_of(invalid))
-
-      fixed =
-        [{%{}, 8}] ++
-          Enum.map([1, 8, 64, 256], &{%{"in_flight" => &1}, &1}) ++
-          Enum.map(invalid, &{%{"in_flight" => &1}, 8})
-
-      for {limits, expected} <-
-            fixed ++ [{%{"in_flight" => limit}, limit}, {%{"in_flight" => invalid_limit}, 8}] do
+      # Retain the actual former production retry interval. This is a bounded
+      # transport observation; it does not establish arbitrary future absence.
+      (
+        count = @finite_case
         {:ok, port} = Server.start(self())
         child_id = make_ref()
 
@@ -863,44 +639,254 @@ defmodule OverallsProtocol.Control.ClientTest do
         assert_receive {:server, server, true}, 2000
         assert_receive {:server_service, "galileo"}, 2000
         assert_receive {:received, {:hello, _}}, 2000
+        welcome(server)
+        assert_receive {:control, ^client, {:connected, _}}, 2000
 
-        send(
-          server,
-          {:send, {:welcome, %{conn: "capacity1", heartbeat_ms: 5000, limits: limits}}}
-        )
-
-        assert_receive {:control, ^client, {:connected, %{conn: "capacity1"}}}, 2000
-        capacity_inventory(task_supervisor, client, server, expected)
-
-        send(server, :drop)
-        assert_receive {:control, ^client, {:disconnected, :lost}}, 2000
-        assert_receive {:server, replacement, true}, 3000
-        assert_receive {:server_service, "galileo"}, 2000
-        assert_receive {:received, {:hello, _}}, 2000
-
-        replacement_limit =
-          if expected == 1 do
-            256
-          else
-            1
+        tasks =
+          for ordinal <- 1..count do
+            Task.Supervisor.async_nolink(task_supervisor, fn ->
+              Client.request(client, "galileo.renew", %{"ordinal" => ordinal})
+            end)
           end
 
-        send(
-          replacement,
-          {:send,
-           {:welcome,
-            %{
-              conn: "capacity2",
-              heartbeat_ms: 5000,
-              limits: %{"in_flight" => replacement_limit}
-            }}}
+        ordinals =
+          for _ <- 1..count do
+            assert_receive {:received, {:req, %{body: %{"ordinal" => ordinal}}}}, 2000
+            ordinal
+          end
+
+        assert MapSet.new(ordinals) == MapSet.new(1..count)
+        send(server, {:close, Close.code(:unsupported_version)})
+
+        for task <- tasks do
+          assert Task.await(task, 2000) == {:error, :unproven}
+        end
+
+        assert_receive {:control, ^client, {:disconnected, :unsupported_version}}, 2000
+        assert Client.status(client) == {:disconnected, :unsupported_version}
+
+        assert Client.request(client, "galileo.renew", %{"ordinal" => 999}) ==
+                 {:error, :disconnected}
+
+        for _ <- 1..count do
+          send(client, :connect)
+          refute_receive {:server, _, _}, 2000
+          assert Client.status(client) == {:disconnected, :unsupported_version}
+        end
+
+        refute_receive {:server, _, _}, 61000
+        assert Client.status(client) == {:disconnected, :unsupported_version}
+        refute_receive {:received, {:req, _}}, 0
+        stop_supervised!(child_id)
+      )
+    end
+  end
+
+  # @cc [owner:ghuntley,label:verification;recovery] control-upgrade-version-refusal-is-terminal
+  # HTTP426 at upgrade MUST keep the client disconnected and MUST NOT retry after
+  # sixty seconds or after queued connect messages; no hello or request is sent.
+  for finite_case <- 1..8 do
+    @finite_case finite_case
+    @tag timeout: 90000
+    test "HTTP426 retires upgrade attempts and queued connects (" <> to_string(finite_case) <> ")" do
+      count = @finite_case
+      {:ok, port} = Server.start(self(), :unsupported_version)
+      child_id = make_ref()
+
+      client =
+        start_supervised!(
+          Supervisor.child_spec(
+            {Client,
+             url: "http://127.0.0.1:#{port}",
+             allow_insecure_loopback: true,
+             service: "galileo",
+             credential: fn -> {:ok, "secret-token"} end,
+             bind: fn -> %{"generation" => 1} end,
+             owner: self()},
+            id: child_id
+          )
         )
 
-        assert_receive {:control, ^client, {:connected, %{conn: "capacity2"}}}, 2000
-        capacity_inventory(task_supervisor, client, replacement, replacement_limit)
+      assert_receive {:upgrade_refused, server}, 2000
+      await_client_state(client, &(&1.phase == :stopped))
+      assert Client.status(client) == {:disconnected, :unsupported_version}
+
+      for _ <- 1..count do
+        send(client, :connect)
+        assert Client.status(client) == {:disconnected, :unsupported_version}
+      end
+
+      assert Client.request(client, "galileo.renew", %{}) == {:error, :disconnected}
+      refute_receive {:upgrade_refused, ^server}, 61000
+      refute_receive {:received, _}, 0
+      assert Client.status(client) == {:disconnected, :unsupported_version}
+      stop_supervised!(child_id)
+    end
+  end
+
+  # @cc [owner:ghuntley,label:verification;recovery] control-heartbeat-connection-ownership
+  # A replacement connection MUST NOT receive a heartbeat from a retired
+  # connection's timer. Its own five-second heartbeat MUST still progress.
+  for finite_case <- 0..3 do
+    @finite_case finite_case
+    @tag timeout: 60000
+    test "reconnects retire old heartbeat ownership before replacement traffic (" <>
+           to_string(finite_case) <> ")" do
+      drawn = @finite_case
+
+      for reconnects <- [drawn] do
+        {:ok, port} = Server.start(self())
+        child_id = make_ref()
+
+        client =
+          start_supervised!(
+            Supervisor.child_spec(
+              {Client,
+               url: "http://127.0.0.1:#{port}",
+               allow_insecure_loopback: true,
+               service: "galileo",
+               credential: fn -> {:ok, "secret-token"} end,
+               bind: fn -> %{"generation" => 1} end,
+               owner: self()},
+              id: child_id
+            )
+          )
+
+        assert_receive {:server, initial, true}, 2000
+        assert_receive {:server_service, "galileo"}, 2000
+        assert_receive {:received, {:hello, _}}, 2000
+        welcome(initial)
+        assert_receive {:control, ^client, {:connected, _}}, 2000
+
+        {server, retired_timers} =
+          Enum.reduce(List.duplicate(:drop, reconnects), {initial, []}, fn :drop,
+                                                                           {server, retired} ->
+            timer = heartbeat_reference(client)
+            send(server, :drop)
+            assert_receive {:control, ^client, {:disconnected, :lost}}, 2000
+            assert_receive {:server, replacement, true}, 3000
+            assert_receive {:server_service, "galileo"}, 2000
+            assert_receive {:received, {:hello, _}}, 2000
+            welcome(replacement)
+            assert_receive {:control, ^client, {:connected, _}}, 2000
+            {replacement, [timer | retired]}
+          end)
+
+        # Re-deliver real retired refs after the replacement is ready. Timer
+        # cancellation cannot remove an already queued message. Also include
+        # the old untagged shape, without exposing the private callback state.
+        for timer <- retired_timers, _ <- 1..2 do
+          send(client, {:timeout, timer, :heartbeat})
+        end
+
+        send(client, :heartbeat)
+
+        # The peer barrier precedes observation. Allow100ms for the welcome
+        # and barrier transit before the connection-owned five-second deadline.
+        peer_barrier(server, 71)
+        refute_receive {:received, {:ping, _}}, 4900
+        assert_receive {:received, {:ping, counter}}, 2000
+        send(server, {:send, {:pong, counter}})
+        peer_barrier(server, 72)
+        assert Client.ready?(client)
         stop_supervised!(child_id)
       end
+    end
+  end
+
+  # @cc [owner:ghuntley,label:verification;protocol] control-negotiated-capacity-exact-admission
+  # Valid advertised1..256 limits MUST admit exactly that many pending callers;
+  # missing or invalid limits MUST use eight. One additional request MUST be
+  # refused without dispatch, and reconnect MUST apply the replacement limit.
+  # Generated limits keep100 cases; the deterministic boundary/refusal matrix
+  # is checked separately so each case spends its budget on new limits.
+  @tag timeout: 600_000
+  property "negotiated capacity admits exact peer inventories and resets on reconnect",
+    profile: :ci,
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100,
+    seed: 705_726_619 do
+    register_case_cleanup()
+    task_supervisor = start_supervised!(Task.Supervisor)
+    limit = draw("limit", integer(1..256))
+    negotiated_capacity(task_supervisor, %{"in_flight" => limit}, limit)
+  end
+
+  @tag timeout: 120_000
+  test "negotiated capacity exhausts boundary, missing and malformed limit cases" do
+    task_supervisor = start_supervised!(Task.Supervisor)
+    invalid = [0, -1, 257, 9_007_199_254_740_991, nil, true, false, "1", 2.0, [1], %{}]
+
+    cases =
+      [{%{}, 8}] ++
+        Enum.map([1, 8, 64, 256], &{%{"in_flight" => &1}, &1}) ++
+        Enum.map(invalid, &{%{"in_flight" => &1}, 8})
+
+    for {limits, expected} <- cases do
+      negotiated_capacity(task_supervisor, limits, expected)
+    end
+  end
+
+  @spec negotiated_capacity(pid(), map(), 1..256) :: :ok
+  defp negotiated_capacity(task_supervisor, limits, expected) do
+    {:ok, port} = Server.start(self())
+    child_id = make_ref()
+
+    client =
+      start_supervised!(
+        Supervisor.child_spec(
+          {Client,
+           url: "http://127.0.0.1:#{port}",
+           allow_insecure_loopback: true,
+           service: "galileo",
+           credential: fn -> {:ok, "secret-token"} end,
+           bind: fn -> %{"generation" => 1} end,
+           owner: self()},
+          id: child_id
+        )
+      )
+
+    assert_receive {:server, server, true}, 2000
+    assert_receive {:server_service, "galileo"}, 2000
+    assert_receive {:received, {:hello, _}}, 2000
+
+    send(
+      server,
+      {:send, {:welcome, %{conn: "capacity1", heartbeat_ms: 5000, limits: limits}}}
     )
+
+    assert_receive {:control, ^client, {:connected, %{conn: "capacity1"}}}, 2000
+    capacity_inventory(task_supervisor, client, server, expected)
+
+    send(server, :drop)
+    assert_receive {:control, ^client, {:disconnected, :lost}}, 2000
+    assert_receive {:server, replacement, true}, 3000
+    assert_receive {:server_service, "galileo"}, 2000
+    assert_receive {:received, {:hello, _}}, 2000
+
+    replacement_limit =
+      if expected == 1 do
+        256
+      else
+        1
+      end
+
+    send(
+      replacement,
+      {:send,
+       {:welcome,
+        %{
+          conn: "capacity2",
+          heartbeat_ms: 5000,
+          limits: %{"in_flight" => replacement_limit}
+        }}}
+    )
+
+    assert_receive {:control, ^client, {:connected, %{conn: "capacity2"}}}, 2000
+    capacity_inventory(task_supervisor, client, replacement, replacement_limit)
+    stop_supervised!(child_id)
+    :ok
   end
 
   @spec capacity_inventory(pid(), pid(), pid(), 1..256) :: :ok

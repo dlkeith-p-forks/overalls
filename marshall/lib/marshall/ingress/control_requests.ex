@@ -22,6 +22,8 @@ defmodule Marshall.Ingress.ControlRequests do
     "editor-renew",
     "editor-close",
     "editor-assets-ready",
+    "relay-consume",
+    "relay-renew",
     "route-ready",
     "nested-open",
     "nested-renew",
@@ -177,21 +179,40 @@ defmodule Marshall.Ingress.ControlRequests do
        when route in ["editor-open", "editor-renew", "editor-close"] do
     with {:ok, action, arguments} <- OverallsProtocol.EditorStream.request(route, value),
          do:
-           invoke_editor(
-             action,
-             Map.put(arguments, :service_token, token),
-             if(route == "editor-close", do: :result, else: :grant)
+           if(route == "editor-open",
+             do: open_connection(:editor, token, arguments),
+             else:
+               invoke_editor(
+                 action,
+                 Map.put(arguments, :service_token, token),
+                 if(route == "editor-close", do: :result, else: :grant)
+               )
            )
   end
 
   defp message(route, token, value) when route in ["web-open", "web-renew", "web-close"] do
     with {:ok, action, arguments} <- OverallsProtocol.WebStream.request(route, value),
          do:
-           invoke(
-             action,
-             Map.put(arguments, :service_token, token),
-             if(route == "web-close", do: :result, else: :grant)
+           if(route == "web-open",
+             do: open_connection(:web, token, arguments),
+             else:
+               invoke(
+                 action,
+                 Map.put(arguments, :service_token, token),
+                 if(route == "web-close", do: :result, else: :grant)
+               )
            )
+  end
+
+  defp message(route, token, value) when route in ["relay-consume", "relay-renew"] do
+    with %{"peer_address" => peer} <- value,
+         {:ok, request} <- OverallsProtocol.IngressRelay.decode(Map.delete(value, "peer_address")),
+         true <- OverallsProtocol.IngressRelay.fleet_address?(peer) do
+      action = if route == "relay-consume", do: :consume_relay, else: :renew_relay
+      invoke(action, Map.merge(request, %{service_token: token, peer_address: peer}), :grant)
+    else
+      _ -> {:error, :invalid_request}
+    end
   end
 
   defp message("dns-snapshot", token, %{"zone" => zone} = value)
@@ -212,7 +233,7 @@ defmodule Marshall.Ingress.ControlRequests do
   defp message("ssh-open", token, %{"public_key" => key, "label" => label} = value)
        when map_size(value) == 3 and is_binary(key) and byte_size(key) <= 4096 and
               is_binary(label) and byte_size(label) <= 63,
-       do: invoke(:open_ssh, %{service_token: token, public_key: key, label: label}, :grant)
+       do: open_connection(:ssh, token, %{public_key: key, label: label})
 
   defp message(route, token, %{"session_token" => session} = value)
        when route in ["ssh-renew", "ssh-close"] and map_size(value) == 2 and
@@ -223,6 +244,15 @@ defmodule Marshall.Ingress.ControlRequests do
   end
 
   defp message(_, _, _), do: {:error, :invalid_request}
+
+  @spec open_connection(:ssh | :web | :editor, String.t(), map()) ::
+          {:ok, map()} | {:error, term()}
+  defp open_connection(purpose, token, arguments) do
+    Marshall.Ingress.open_connection(
+      Map.merge(arguments, %{purpose: purpose, service_token: token}),
+      actor: Marshall.Authorization.SystemActor.compute()
+    )
+  end
 
   defp invoke(action, arguments, envelope) do
     case apply(Marshall.Ingress, action, [

@@ -1,5 +1,9 @@
 # Security boundaries and sensitive operations
 
+## Locale is presentation, not authority
+
+Language headers and session values are untrusted, bounded and validated against the supported locale set. Only the current user may persist their override; reset restores browser negotiation. Neither locale nor text direction changes login, Cedar, execution fences, storage ownership or recovery authority. The Porsche envelope carries a canonical locale for human prose, with English fallback for older peers; machine identifiers and terminal byte streams stay unchanged. Bidi isolation protects interpolated identifiers from misleading direction changes. See [ADR-0197](repo:docs/architecture/decisions/0197-localized-human-surfaces.md); native/browser execution and linguistic review remain gaps until recorded.
+
 ## Agent context and guidance boundaries
 
 [ADR-0178](repo:docs/architecture/decisions/0178-durable-agent-context-and-planning.md)
@@ -1433,3 +1437,7 @@ outcome atoms; objective text, model content,
 terminal bytes, machine payloads and credentials remain in authorized data.
 Archival invalidates a pending planning barrier with the durable `archived`
 reason before lifecycle deletion completes.
+
+## Git identity configuration
+
+Account authorization controls preference updates. Validated identity is inert execution metadata bound to the machine’s admitted snapshot and current boot. Guest services atomically publish protected Git configuration; malformed metadata refuses. Identity values must not enter diagnostics. Guest sudo and Git local configuration retain their existing authority. Native cross-OS and production rollout acceptance remain separate from BEAM property evidence.

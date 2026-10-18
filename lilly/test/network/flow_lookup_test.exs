@@ -5,13 +5,15 @@ defmodule Lilly.Network.FlowLookupTest do
   alias Lilly.Network.FlowLookup
 
   property "kernel endpoints retain every tuple component in fixed argv" do
-    check all(a <- integer(0..255), b <- integer(0..255), port <- integer(1..65_535)) do
-      assert {:ok, ["10.10.#{a}.#{b}", "#{port}", "8.8.8.8", "443"]} ==
-               FlowLookup.arguments(%{
-                 source: {{10, 10, a, b}, port},
-                 destination: {{8, 8, 8, 8}, 443}
-               })
-    end
+    a = draw("a", integer(0..255))
+    b = draw("b", integer(0..255))
+    port = draw("port", integer(1..65535))
+
+    assert {:ok, ["10.10.#{a}.#{b}", "#{port}", "8.8.8.8", "443"]} ==
+             FlowLookup.arguments(%{
+               source: {{10, 10, a, b}, port},
+               destination: {{8, 8, 8, 8}, 443}
+             })
   end
 
   test "missing ports, malformed endpoints and ambiguous helper output are unresolved" do

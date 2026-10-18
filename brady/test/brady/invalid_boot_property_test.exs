@@ -3,7 +3,9 @@ defmodule Brady.InvalidBootPropertyTest do
   import Hegel
   import Hegel.Gen
 
-  @moduletag timeout: 240_000
+  # A full matrix takes tens of seconds in fresh VMs; preserve all 100 cases.
+  # The aggregate budget includes shared-host headroom; each boot stays bounded.
+  @moduletag timeout: 10_800_000
   @probe Path.expand("../../scripts/invalid_boot_probe.exs", __DIR__)
   @fields ~w(version host_id attribution_uid issuer_cert_file issuer_key_file upstream_ca_file protected_cidrs tls_exceptions cache_directory cache_dataset cache_quota_bytes)
   @paths ~w(issuer_cert_file issuer_key_file upstream_ca_file cache_directory)
@@ -86,26 +88,25 @@ defmodule Brady.InvalidBootPropertyTest do
   # named supervisor or reviewed signer/cache/listener/metrics startup calls.
   # Refusal MUST preserve owned fixture custody and exclude fixture material
   # from diagnostics. Unset MUST remain a separate Metrics-only boot.
+  # Every generated case MUST exercise every configuration mutation; randomized
+  # ordering MUST NOT truncate or sample the fixed mutation matrix.
   property "generated invalid Brady configurations refuse fresh OTP startup",
     profile: :ci,
     print_blob: false do
     root = private_directory("k-bc-")
-    on_exit(fn -> File.rm_rf!(root) end)
+    Hegel.on_cleanup(fn -> File.rm_rf!(root) end)
 
-    check all(
-            order <- list_of(member_of(@cases), min_length: 1, max_length: 3),
-            quota <- member_of([1_048_576, 1_048_577, 274_877_906_944]),
-            max_runs: 1
-          ) do
-      for mutation <- order do
-        directory = child_directory(root)
-        config = configuration(directory, quota)
-        path = Path.join(directory, "config.json")
-        write_config(path, config)
-        assert {:ok, _} = Brady.Config.load(path)
-        mutate_config(mutation, path, config)
-        assert_boot(path, config, "configuration_rejected", false, false, true)
-      end
+    order = draw("order", shuffle(@cases))
+    quota = draw("quota", member_of([1_048_576, 1_048_577, 274_877_906_944]))
+
+    for mutation <- order do
+      directory = child_directory(root)
+      config = configuration(directory, quota)
+      path = Path.join(directory, "config.json")
+      write_config(path, config)
+      assert {:ok, _} = Brady.Config.load(path)
+      mutate_config(mutation, path, config)
+      assert_boot(path, config, "configuration_rejected", false, false, true)
     end
   end
 
@@ -117,28 +118,28 @@ defmodule Brady.InvalidBootPropertyTest do
     profile: :ci,
     print_blob: false do
     root = private_directory("k-bs-")
-    on_exit(fn -> File.rm_rf!(root) end)
+    Hegel.on_cleanup(fn -> File.rm_rf!(root) end)
 
-    check all(order <- shuffle(@signing), max_runs: 3) do
-      for mutation <- order do
-        directory = child_directory(root)
-        config = configuration(directory, 1_048_576)
-        path = Path.join(directory, "config.json")
-        write_config(path, config)
-        assert {:ok, _} = Brady.Config.load(path)
+    order = draw("order", shuffle(@signing))
 
-        assert {:ok, signer} =
-                 Brady.TLS.Certificates.start_link(
-                   certfile: config["issuer_cert_file"],
-                   keyfile: config["issuer_key_file"]
-                 )
+    for mutation <- order do
+      directory = child_directory(root)
+      config = configuration(directory, 1_048_576)
+      path = Path.join(directory, "config.json")
+      write_config(path, config)
+      assert {:ok, _} = Brady.Config.load(path)
 
-        GenServer.stop(signer)
-        original = material(config)
-        mutate_signing(mutation, config)
-        assert {:ok, _} = Brady.Config.load(path)
-        assert_boot(path, config, "signing_rejected", true, true, false, original)
-      end
+      assert {:ok, signer} =
+               Brady.TLS.Certificates.start_link(
+                 certfile: config["issuer_cert_file"],
+                 keyfile: config["issuer_key_file"]
+               )
+
+      GenServer.stop(signer)
+      original = material(config)
+      mutate_signing(mutation, config)
+      assert {:ok, _} = Brady.Config.load(path)
+      assert_boot(path, config, "signing_rejected", true, true, false, original)
     end
   end
 
@@ -155,19 +156,19 @@ defmodule Brady.InvalidBootPropertyTest do
   # signer startup or reading material outside the disposable fixture.
   property "generated immutable store issuer key paths are rejected by the loader" do
     root = private_directory("k-bl-")
-    on_exit(fn -> File.rm_rf!(root) end)
+    Hegel.on_cleanup(fn -> File.rm_rf!(root) end)
 
-    check all(suffix <- string(:alphanumeric, min_length: 8, max_length: 32), max_runs: 20) do
-      config = configuration(root, 1_048_576)
-      path = Path.join(root, "config.json")
-      write_config(path, config)
-      assert {:ok, _} = Brady.Config.load(path)
-      write_config(path, Map.put(config, "issuer_key_file", "/nix/store/" <> suffix <> ".key"))
-      before = snapshot(root)
-      rejected? = match?({:error, :invalid_configuration}, Brady.Config.load(path))
-      assert rejected?, "immutable key path was accepted by the loader"
-      assert snapshot(root) == before
-    end
+    suffix = draw("suffix", string(:alphanumeric, min_length: 8, max_length: 32))
+
+    config = configuration(root, 1_048_576)
+    path = Path.join(root, "config.json")
+    write_config(path, config)
+    assert {:ok, _} = Brady.Config.load(path)
+    write_config(path, Map.put(config, "issuer_key_file", "/nix/store/" <> suffix <> ".key"))
+    before = snapshot(root)
+    rejected? = match?({:error, :invalid_configuration}, Brady.Config.load(path))
+    assert rejected?, "immutable key path was accepted by the loader"
+    assert snapshot(root) == before
   end
 
   @spec assert_boot(Path.t(), json_object(), String.t(), boolean(), boolean(), boolean(), [
@@ -205,9 +206,25 @@ defmodule Brady.InvalidBootPropertyTest do
     }
   end
 
+  # @cc [owner:ghuntley,label:verification] fresh-boot-operation-deadline
+  # Each probe MUST run in a fresh VM with the complete startup oracle. A boot
+  # exceeding 30 seconds MUST fail; its process group gets at most five seconds
+  # to terminate before forced cleanup, independently of the aggregate budget.
   @spec boot(Path.t() | nil, Path.t(), Path.t()) :: {String.t(), non_neg_integer()}
   defp boot(path, root, cache) do
-    System.cmd("mix", ["run", "--no-start", "--no-compile", "--no-deps-check", @probe],
+    System.cmd(
+      "timeout",
+      [
+        "--signal=TERM",
+        "--kill-after=5s",
+        "30s",
+        "mix",
+        "run",
+        "--no-start",
+        "--no-compile",
+        "--no-deps-check",
+        @probe
+      ],
       env: [
         {"MIX_ENV", "test"},
         {"ERL_FLAGS", "+S 2:2 +SDcpu 1 +SDio 1"},

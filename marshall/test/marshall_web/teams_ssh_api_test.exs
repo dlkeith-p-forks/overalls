@@ -29,135 +29,147 @@ defmodule MarshallWeb.TeamsSSHAPITest do
   # compare full durable inventories on refusals and pinned replays. A successful
   # historical receipt MUST NOT restore membership or mutate a reused team name.
   test "HTTP histories preserve pinned receipts and permanent team refusals", c do
-    check all(
-            suffix <- string(Enum.to_list(?a..?z), min_length: 1, max_length: 12),
-            steps <-
-              list_of(member_of([:replay, :collision, :missing, :changed]),
-                min_length: 1,
-                max_length: 8
-              ),
-            test_cases: 15
-          ) do
-      owner = account(c)
-      target = account(c)
-      foreign = account(c)
-      name = "ssh-" <> suffix <> "-" <> binary_part(Ash.UUID.generate(), 0, 8)
-      create = "team create #{name} --request-id original --json"
-      original = command(c, owner, create, 200)
-      team_id = original["result"]["id"]
-      assert original["status"] == "succeeded"
+    Hegel.check(
+      fn ->
+        suffix = draw("suffix", string(Enum.to_list(97..122), min_length: 1, max_length: 12))
 
-      assert owner.user.id ==
-               Ledger.read!(TeamMember, team_id: team_id) |> hd() |> Map.fetch!(:user_id)
+        steps =
+          draw(
+            "steps",
+            list_of(member_of([:replay, :collision, :missing, :changed]),
+              min_length: 1,
+              max_length: 8
+            )
+          )
 
-      assert Map.fetch!(snapshot(), "account_admin_events")
-             |> Enum.count(&(&1["target_id"] == team_id)) == 2
+        owner = account(c)
+        target = account(c)
+        foreign = account(c)
+        name = "ssh-" <> suffix <> "-" <> binary_part(Ash.UUID.generate(), 0, 8)
+        create = "team create #{name} --request-id original --json"
+        original = command(c, owner, create, 200)
+        team_id = original["result"]["id"]
+        assert original["status"] == "succeeded"
 
-      before_retry = snapshot()
-      retried = command(c, owner, "team create #{name} --request-id safe-retry", 200)
-      assert retried["result"] == original["result"]
-      assert Map.delete(snapshot(), "ssh_requests") == Map.delete(before_retry, "ssh_requests")
-      assert length(snapshot()["ssh_requests"]) == length(before_retry["ssh_requests"]) + 1
-      unchanged(c, foreign, "team create #{name} --request-id collision", 409, "conflict")
+        assert owner.user.id ==
+                 Ledger.read!(TeamMember, team_id: team_id) |> hd() |> Map.fetch!(:user_id)
 
-      unchanged(
-        c,
-        foreign,
-        "team member add #{name} #{target.user.email} member",
-        403,
-        "forbidden"
-      )
+        assert Map.fetch!(snapshot(), "account_admin_events")
+               |> Enum.count(&(&1["target_id"] == team_id)) == 2
 
-      unchanged(c, owner, "team show absent-#{name}", 404, "not_found")
-      unchanged(c, owner, "team transfer accept #{Ash.UUID.generate()}", 404, "not_found")
+        before_retry = snapshot()
+        retried = command(c, owner, "team create #{name} --request-id safe-retry", 200)
+        assert retried["result"] == original["result"]
+        assert Map.delete(snapshot(), "ssh_requests") == Map.delete(before_retry, "ssh_requests")
+        assert length(snapshot()["ssh_requests"]) == length(before_retry["ssh_requests"]) + 1
+        unchanged(c, foreign, "team create #{name} --request-id collision", 409, "conflict")
 
-      command(
-        c,
-        owner,
-        "team member add #{name} #{target.user.email} member --request-id add",
-        200
-      )
+        unchanged(
+          c,
+          foreign,
+          "team member add #{name} #{target.user.email} member",
+          403,
+          "forbidden"
+        )
 
-      declined =
+        unchanged(c, owner, "team show absent-#{name}", 404, "not_found")
+        unchanged(c, owner, "team transfer accept #{Ash.UUID.generate()}", 404, "not_found")
+
         command(
           c,
           owner,
-          "team transfer offer #{name} #{target.user.email} --request-id decline-offer",
-          200
-        )["result"]["transfer_id"]
-
-      command(c, target, "team transfer decline #{declined} --request-id decline", 200)
-      unchanged(c, target, "team transfer decline #{declined}", 409, "conflict")
-
-      offer =
-        command(
-          c,
-          owner,
-          "team transfer offer #{name} #{target.user.email} --request-id offer",
+          "team member add #{name} #{target.user.email} member --request-id add",
           200
         )
 
-      transfer = offer["result"]["transfer_id"]
-      unchanged(c, owner, "team transfer offer #{name} #{target.user.email}", 409, "conflict")
-      unchanged(c, foreign, "team transfer accept #{transfer}", 403, "forbidden")
-      command(c, target, "team transfer accept #{transfer} --request-id accept", 200)
+        declined =
+          command(
+            c,
+            owner,
+            "team transfer offer #{name} #{target.user.email} --request-id decline-offer",
+            200
+          )["result"]["transfer_id"]
 
-      assert Ledger.read!(TeamMember, team_id: team_id)
-             |> Enum.map(&{&1.user_id, &1.role})
-             |> Enum.sort() == Enum.sort([{owner.user.id, :admin}, {target.user.id, :owner}])
+        command(c, target, "team transfer decline #{declined} --request-id decline", 200)
+        unchanged(c, target, "team transfer decline #{declined}", 409, "conflict")
 
-      command(
-        c,
-        target,
-        "team member remove #{name} #{owner.user.email} --request-id remove",
-        200
-      )
+        offer =
+          command(
+            c,
+            owner,
+            "team transfer offer #{name} #{target.user.email} --request-id offer",
+            200
+          )
 
-      unchanged(c, owner, "team show #{name}", 403, "forbidden")
-      unchanged(c, target, "team create #{name}", 409, "conflict")
-      unchanged(c, owner, "team create #{name}", 409, "conflict")
+        transfer = offer["result"]["transfer_id"]
+        unchanged(c, owner, "team transfer offer #{name} #{target.user.email}", 409, "conflict")
+        unchanged(c, foreign, "team transfer accept #{transfer}", 403, "forbidden")
+        command(c, target, "team transfer accept #{transfer} --request-id accept", 200)
 
-      for step <- [:replay, :changed, :missing, :collision | steps] do
-        case step do
-          :replay ->
-            before = snapshot()
-            assert command(c, owner, create, 200) == original
-            assert command(c, owner, "request show original --json", 200) == original
-            assert snapshot() == before
+        assert Ledger.read!(TeamMember, team_id: team_id)
+               |> Enum.map(&{&1.user_id, &1.role})
+               |> Enum.sort() == Enum.sort([{owner.user.id, :admin}, {target.user.id, :owner}])
 
-          :changed ->
-            unchanged(
-              c,
-              owner,
-              "team create changed-#{name} --request-id original",
-              409,
-              "idempotency_conflict"
-            )
+        command(
+          c,
+          target,
+          "team member remove #{name} #{owner.user.email} --request-id remove",
+          200
+        )
 
-          :missing ->
-            unchanged(c, foreign, "team transfer cancel #{Ash.UUID.generate()}", 404, "not_found")
+        unchanged(c, owner, "team show #{name}", 403, "forbidden")
+        unchanged(c, target, "team create #{name}", 409, "conflict")
+        unchanged(c, owner, "team create #{name}", 409, "conflict")
 
-          :collision ->
-            unchanged(c, foreign, "team create #{name}", 409, "conflict")
+        for step <- [:replay, :changed, :missing, :collision | steps] do
+          case step do
+            :replay ->
+              before = snapshot()
+              assert command(c, owner, create, 200) == original
+              assert command(c, owner, "request show original --json", 200) == original
+              assert snapshot() == before
+
+            :changed ->
+              unchanged(
+                c,
+                owner,
+                "team create changed-#{name} --request-id original",
+                409,
+                "idempotency_conflict"
+              )
+
+            :missing ->
+              unchanged(
+                c,
+                foreign,
+                "team transfer cancel #{Ash.UUID.generate()}",
+                404,
+                "not_found"
+              )
+
+            :collision ->
+              unchanged(c, foreign, "team create #{name}", 409, "conflict")
+          end
         end
-      end
 
-      # Archival has no public command. This trusted fixture transition proves
-      # only that the HTTP receipt keeps its historical identity after reuse.
-      [team] = Ledger.read!(Team, id: team_id)
-      assert {:ok, :ok} = Ledger.transaction(fn -> Ledger.archive!(team, :archive) end)
-      recovered = command(c, foreign, "team create #{name} --request-id reused", 200)
-      refute recovered["result"]["id"] == team_id
-      before = snapshot()
-      assert command(c, owner, create, 200) == original
-      assert snapshot() == before
+        # Archival has no public command. This trusted fixture transition proves
+        # only that the HTTP receipt keeps its historical identity after reuse.
+        [team] = Ledger.read!(Team, id: team_id)
+        assert {:ok, :ok} = Ledger.transaction(fn -> Ledger.archive!(team, :archive) end)
+        recovered = command(c, foreign, "team create #{name} --request-id reused", 200)
+        refute recovered["result"]["id"] == team_id
+        before = snapshot()
+        assert command(c, owner, create, 200) == original
+        assert snapshot() == before
 
-      assert Ledger.read!(TeamMember, team_id: recovered["result"]["id"])
-             |> Enum.map(& &1.user_id) == [foreign.user.id]
+        assert Ledger.read!(TeamMember, team_id: recovered["result"]["id"])
+               |> Enum.map(& &1.user_id) == [foreign.user.id]
 
-      command(c, owner, "team create recovered-#{name} --request-id recovery", 200)
-      assert [%{state: :accepted}] = Ledger.history!(Transfer, id: transfer)
-    end
+        command(c, owner, "team create recovered-#{name} --request-id recovery", 200)
+        assert [%{state: :accepted}] = Ledger.history!(Transfer, id: transfer)
+      end,
+      test_cases: 100
+    )
   end
 
   test "unexpected transfer audit failure remains opaque and rolls back", c do
@@ -199,31 +211,33 @@ defmodule MarshallWeb.TeamsSSHAPITest do
   test "team name grammar and boundary refusals remain permanent", c do
     owner = account(c)
 
-    check all(
-            label <- string(Enum.to_list(?a..?z), min_length: 1, max_length: 20),
-            test_cases: 20
-          ) do
-      for name <- [String.upcase(label), "0" <> label, label <> "-", label <> "_"] do
-        unchanged(c, owner, "team create #{name}", 400, "invalid_request")
-      end
+    Hegel.check(
+      fn ->
+        label = draw("label", string(Enum.to_list(97..122), min_length: 1, max_length: 20))
 
-      for name <- ["", String.duplicate("a", 64)] do
-        before = snapshot()
+        for name <- [String.upcase(label), "0" <> label, label <> "-", label <> "_"] do
+          unchanged(c, owner, "team create #{name}", 400, "invalid_request")
+        end
 
-        body = %{
-          version: 1,
-          session_token: owner.session,
-          command: %{version: 1, command: "team create", arguments: [name], options: %{}}
-        }
+        for name <- ["", String.duplicate("a", 64)] do
+          before = snapshot()
 
-        assert api(c, "commands", body) |> reply(400) == %{"error" => "invalid_command"}
-        assert snapshot() == before
-      end
+          body = %{
+            version: 1,
+            session_token: owner.session,
+            command: %{version: 1, command: "team create", arguments: [name], options: %{}}
+          }
 
-      for name <- [String.first(label), String.pad_trailing(label, 63, "a")] do
-        assert command(c, owner, "team create #{name}", 200)["result"]["name"] == name
-      end
-    end
+          assert api(c, "commands", body) |> reply(400) == %{"error" => "invalid_command"}
+          assert snapshot() == before
+        end
+
+        for name <- [String.first(label), String.pad_trailing(label, 63, "a")] do
+          assert command(c, owner, "team create #{name}", 200)["result"]["name"] == name
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;security] team-resource-public-refusals

@@ -226,6 +226,16 @@ defmodule FleetOperator do
           role: role,
           host_id: request["host_id"],
           addresses: Map.get(request, "addresses", []),
+          relay_address:
+            if(System.get_env("FLEET_SUSPENSION_RELAY") == "1" and role == :gateway,
+              do: if(name == "audi-l1", do: "10.90.0.1", else: "10.90.0.2"),
+              else: nil
+            ),
+          relay_port:
+            if(System.get_env("FLEET_SUSPENSION_RELAY") == "1" and role == :gateway,
+              do: 9445,
+              else: nil
+            ),
           token: token
         },
         actor: SystemActor.compute()
@@ -872,6 +882,85 @@ defmodule FleetOperator do
     %{id: retry.id, stop_operation_id: retry.stop_operation_id}
   end
 
+  # @cc [owner:ghuntley,label:verification;security] fleet-editor-real-private-cookie
+  # Editor credentials MUST use ordinary stored user login and production
+  # launch/begin/authorize/exchange actions. The credential MUST leave only
+  # through an exclusive private fixture file, never operator output.
+  def run(%{
+        "action" => "suspension-editor-cookie",
+        "owner_id" => owner,
+        "vm_id" => vm,
+        "gateway" => gateway,
+        "output" => output
+      })
+      when gateway in ["l1", "l2"] do
+    alias Marshall.Accounts.{Login, Security, User}
+    user = Ash.get!(User, owner, authorize?: false)
+    {:ok, token, _} = AshAuthentication.Jwt.token_for_user(user)
+    {:ok, jti, _} = Login.verify(token, user)
+    actor = Security.bind(user, jti)
+    {:ok, launched} = Marshall.Editor.launch(%{vm_id: vm}, actor: actor)
+    label = launched.hostname |> String.split(".") |> hd()
+    state = Base.url_encode64(:crypto.strong_rand_bytes(32), padding: false)
+    digest = :crypto.hash(:sha256, state) |> Base.encode16(case: :lower)
+    service_token = File.read!("/var/lib/overalls-fleet/audi-#{gateway}.token") |> String.trim()
+
+    {:ok, login} =
+      Marshall.Editor.begin_editor_login(
+        %{service_token: service_token, label: label, state_digest: digest},
+        actor: SystemActor.compute()
+      )
+
+    {:ok, approved} =
+      Marshall.Editor.authorize_editor_login(
+        %{ticket: login.ticket, login_token: token},
+        actor: actor
+      )
+
+    {:ok, cookie} =
+      Marshall.Editor.exchange_editor_login(
+        %{service_token: service_token, ticket: login.ticket, code: approved.code, state: state},
+        actor: SystemActor.compute()
+      )
+
+    true = String.starts_with?(output, "/var/lib/overalls-fleet/")
+    private_write(output, %{hostname: cookie.hostname, cookie: cookie.cookie})
+    %{prepared: true}
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] fleet-idle-clock-only-fixture
+  # This isolated fixture MAY advance only the durable idle-policy clock of the
+  # fixture owner's VM. It MUST NOT fabricate pause completion, capacity,
+  # checkpoints or execution observations; Idle.suspend performs the real checks.
+  def run(%{
+        "action" => "suspension-idle",
+        "owner_id" => owner,
+        "vm_id" => id,
+        "age_seconds" => age
+      })
+      when age in [10800, 14401] do
+    alias Marshall.Compute.{Host, Idle, Ledger, VirtualMachine}
+
+    {:ok, :aged} =
+      Ledger.transaction(fn ->
+        [candidate] = Ledger.read!(VirtualMachine, id: id)
+        true = candidate.owner_id == owner
+        _host = Ledger.lock!(Host, candidate.host_id)
+        vm = Ledger.lock!(VirtualMachine, id)
+
+        Ledger.update!(vm, :idle_policy, %{
+          idle_suspend_enabled: true,
+          idle_activity_at: DateTime.add(Ledger.now(), -age, :second),
+          idle_revision: vm.idle_revision + 1
+        })
+
+        :aged
+      end)
+
+    {:ok, result} = Idle.suspend(id)
+    %{result: Atom.to_string(result)}
+  end
+
   def run(%{
         "action" => "lifecycle",
         "owner_id" => owner,
@@ -880,7 +969,18 @@ defmodule FleetOperator do
         "key" => key
       }) do
     actor = Ash.get!(Marshall.Accounts.User, owner, authorize?: false)
-    kind = Map.fetch!(%{"start" => :start, "stop" => :stop, "delete" => :delete}, kind)
+
+    kind =
+      Map.fetch!(
+        %{
+          "start" => :start,
+          "stop" => :stop,
+          "delete" => :delete,
+          "pause" => :pause,
+          "resume" => :resume
+        },
+        kind
+      )
 
     case Marshall.Compute.lifecycle(%{vm_id: vm, kind: kind, idempotency_key: key}, actor: actor) do
       {:ok, _} ->

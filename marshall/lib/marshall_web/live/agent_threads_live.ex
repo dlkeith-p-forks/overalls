@@ -46,11 +46,11 @@ defmodule MarshallWeb.AgentThreadsLive do
       {:ok, _turn} ->
         {:noreply,
          socket
-         |> assign(prompt_form: prompt_form(), notice: "Prompt queued.")
+         |> assign(prompt_form: prompt_form(), notice: gettext("Prompt queued."))
          |> refresh()}
 
       _ ->
-        {:noreply, assign(socket, notice: "The machine or your access is no longer available.")}
+        {:noreply, assign(socket, notice: gettext("The machine or your access is no longer available."))}
     end
   end
 
@@ -61,7 +61,7 @@ defmodule MarshallWeb.AgentThreadsLive do
          push_navigate(socket, to: ~p"/machines/#{socket.assigns.vm_id}/threads/#{child.id}")}
 
       _ ->
-        {:noreply, assign(socket, notice: "Could not create a child thread.")}
+        {:noreply, assign(socket, notice: gettext("Could not create a child thread."))}
     end
   end
 
@@ -85,7 +85,7 @@ defmodule MarshallWeb.AgentThreadsLive do
     else
       _ ->
         socket
-        |> put_flash(:error, "Machine or agent access is no longer available.")
+        |> put_flash(:error, gettext("Machine or agent access is no longer available."))
         |> push_navigate(to: ~p"/machines")
     end
   end
@@ -104,12 +104,17 @@ defmodule MarshallWeb.AgentThreadsLive do
 
   defp event_text(%{kind: :prompt, body: body}), do: Map.get(body, "prompt", "")
   defp event_text(%{kind: :assistant, body: body}), do: Map.get(body, "text", "")
-  defp event_text(%{kind: :child_spawned}), do: "Child thread created"
+  defp event_text(%{kind: :child_spawned}), do: gettext("Child thread created")
 
   defp event_text(%{kind: :turn_failed, body: %{"reason" => "capability_denied"}}),
-    do: "This tool is not available for the machine profile."
+    do: gettext("This tool is not available for the machine profile.")
 
-  defp event_text(%{kind: kind}), do: kind |> Atom.to_string() |> String.replace("_", " ")
+  defp event_text(%{kind: :turn_started}), do: gettext("Agent started working")
+  defp event_text(%{kind: :turn_finished}), do: gettext("Turn complete")
+  defp event_text(%{kind: :turn_failed}), do: gettext("The agent encountered a problem")
+  defp event_text(%{kind: :tool_queued}), do: gettext("Tools queued")
+  defp event_text(%{kind: :tool_result}), do: gettext("Tool result received")
+  defp event_text(_), do: gettext("Thread updated")
 
   @impl true
   def render(assigns) do
@@ -130,18 +135,18 @@ defmodule MarshallWeb.AgentThreadsLive do
           active="agents"
         />
         <header>
-          <h2>Agents</h2><p class="muted">
-            Prompts wake a stopped machine when you have write access.
+          <h2>{gettext("Agents")}</h2><p class="muted">
+            {gettext("Prompts wake a stopped machine when you have write access.")}
           </p>
         </header>
         <p :if={@notice} role="status" id="agent-notice" class="panel dashed">
           {@notice}
         </p>
         <div class="agent-grid">
-          <nav aria-label="Threads" class="panel thread-list">
+          <nav aria-label={gettext("Threads")} class="panel thread-list">
             <ul class="tree">
               <li>
-                <strong>Threads</strong>
+                <strong>{gettext("Threads")}</strong>
                 <ul>
                   <li :for={thread <- @threads}>
                     <.link
@@ -159,8 +164,8 @@ defmodule MarshallWeb.AgentThreadsLive do
               phx-submit="child"
               class="stack"
             >
-              <.input field={@child_form[:title]} label="Child thread" maxlength="256" required />
-              <button type="submit" class="console-button">Create child</button>
+              <.input field={@child_form[:title]} label={gettext("Child thread")} maxlength="256" required />
+              <button type="submit" class="console-button">{gettext("Create child")}</button>
             </.form>
           </nav>
           <div class="stack">
@@ -180,15 +185,15 @@ defmodule MarshallWeb.AgentThreadsLive do
               <.input
                 field={@prompt_form[:text]}
                 type="textarea"
-                label="Prompt"
+                label={gettext("Prompt")}
                 maxlength="65536"
                 required
               />
               <input type="hidden" name="prompt[key]" value={@prompt_form[:key].value} />
-              <button type="submit" class="console-button primary" phx-disable-with="Sending…">Send prompt</button>
+              <button type="submit" class="console-button primary" phx-disable-with={gettext("Sending…")}>{gettext("Send prompt")}</button>
             </.form>
             <p :if={@vm && !@vm.permissions.write} class="muted">
-              You can read these threads. Ask for operator or manager access to send prompts.
+              {gettext("You can read these threads. Ask for operator or manager access to send prompts.")}
             </p>
           </div>
         </div>

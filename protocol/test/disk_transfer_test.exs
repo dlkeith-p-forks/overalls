@@ -69,7 +69,7 @@ defmodule OverallsProtocol.DiskTransferTest do
   property "every profile's clone workload derives the full drive footprint",
     database: :disabled,
     print_blob: false,
-    test_cases: 40,
+    test_cases: 100,
     seed: 139_663_114 do
     profile = draw("profile", member_of([:customer, :standard, :oss, :inception]))
     disk = draw("disk", member_of([2_147_483_648, 68_719_476_736, 536_870_912_000]))
@@ -88,7 +88,7 @@ defmodule OverallsProtocol.DiskTransferTest do
   property "independent epochs and bounded sizes round trip without losing snapshot lineage",
     database: :disabled,
     print_blob: false,
-    test_cases: 60,
+    test_cases: 100,
     seed: 971_707_743 do
     epoch = draw("epoch", integer(1..10000))
     cpu = draw("cpu", integer(1..32))

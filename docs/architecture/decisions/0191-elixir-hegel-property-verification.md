@@ -59,8 +59,8 @@ storage durability, physical recovery or deployed fleet behavior.
 - [Elixir Hegel testing guide](../../development/testing-with-hegel.md)
 - [Hegel Elixir skill](../../../.agents/skills/hegel-elixir-tests/SKILL.md)
 - [Protocol test-only dependency pin](../../../protocol/mix.exs)
-  currently selects frontend ref `8fe9786`, resolved as
-  `8fe9786cf2e134689c1bd58229e186d97c2f05f8`,
+  currently selects frontend ref `b0dec2a`, resolved as
+  `b0dec2abf868c7036950c00256a2ebf5af2929e7`,
   as do Marshall and Lilly. The historical complete protocol gate at
   `2c9f7a4a9f2cf156de063bbc8058bcf297be5cf0` passed 299 tests and properties;
   the linked review retains that source hash and the earlier `6a62795` result.
@@ -68,9 +68,13 @@ storage durability, physical recovery or deployed fleet behavior.
   The final merged-source protocol gate at `132bc28b5` subsequently passed
   303 tests, Covenant 14/14 and Dialyzer with zero errors or skips; the linked
   matrix review records its exact log, seed and frozen source ledger.
-  The frontend now
-  propagates standalone `check all` options; tuple bindings and filter
-  compatibility still require narrow consumer repairs.
+  The frontend propagates supported standalone `check all` options and rejects
+  unsupported options, nested execution settings and unsupported binding/filter
+  syntax. Current consumer repairs use one runner with labelled draws, preserve
+  default 100-case exploration and larger existing budgets, and isolate mutable
+  fixtures per case. The atomic NIF installer preserves loaded library inodes.
+  The [exploration and native custody review](../reviews/2026-10-18-hegel-exploration-and-native-custody.md)
+  records the current repairs and their still-incomplete application verification.
   These repairs preserve generated assertions and production interfaces.
   The complete final-repair Marshall gate at `02cd8bd` passed 1,694 tests,
   Covenant 24/24 and zero-error forced Dialyzer; the historical `f1ad336`

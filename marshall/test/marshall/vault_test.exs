@@ -42,13 +42,13 @@ defmodule Marshall.VaultTest do
   end
 
   property "arbitrary invalid JSON fails with a fixed, non-sensitive message" do
-    check all(input <- binary(max_length: 128)) do
-      try do
-        Marshall.Vault.keyring!(input)
-      rescue
-        error in ArgumentError ->
-          assert Exception.message(error) == "invalid MARSHALL_CLOAK_KEYS keyring"
-      end
+    input = draw("input", binary(max_length: 128))
+
+    try do
+      Marshall.Vault.keyring!(input)
+    rescue
+      error in ArgumentError ->
+        assert Exception.message(error) == "invalid MARSHALL_CLOAK_KEYS keyring"
     end
   end
 

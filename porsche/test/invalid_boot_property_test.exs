@@ -104,10 +104,12 @@ defmodule Porsche.InvalidBootPropertyTest do
   # supervisor or reviewed listener/status/observability starts. Rejection MUST
   # preserve recursive fixture custody and exclude original/mutated credentials,
   # host-key bytes and fixture paths from diagnostics. Unset is base-only startup.
+  # Three external-fixture cases each exhaust the complete mutation menu in
+  # shuffled order; the count bounds fresh OTP process startup, not refusals.
   property "generated invalid Porsche configurations refuse fresh OTP startup",
     profile: :ci,
     print_blob: false,
-    max_runs: 3 do
+    test_cases: 3 do
     root = private_directory("k-pb-")
     on_exit(fn -> File.rm_rf!(root) end)
     ca = disposable_ca(root)

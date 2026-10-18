@@ -196,27 +196,32 @@ defmodule Marshall.SSH.GuestAccessTest do
 
     username = Marshall.SharingSurfacesFixture.member_name(c.owner)
 
-    check all(delta <- integer(1..1_000), test_cases: 12) do
-      for field <- ~w(host_id vm_id placement_id execution_epoch) do
-        changed =
-          if field == "execution_epoch" do
-            Map.update!(c.binding, field, &(&1 + delta))
-          else
-            Map.put(c.binding, field, Ash.UUID.generate())
-          end
+    Hegel.check(
+      fn ->
+        delta = draw("delta", integer(1..1000))
 
-        boot = Map.merge(changed, Map.take(c.roster_binding, ~w(generation operation_id)))
-        assert {:error, :unauthorized} = GuestAccess.roster(c.ziggy_token, boot)
+        for field <- ~w(host_id vm_id placement_id execution_epoch) do
+          changed =
+            if field == "execution_epoch" do
+              Map.update!(c.binding, field, &(&1 + delta))
+            else
+              Map.put(c.binding, field, Ash.UUID.generate())
+            end
 
-        assert {:error, :unauthorized} =
-                 GuestAccess.authorize(c.ziggy_token, changed, c.key, username)
+          boot = Map.merge(changed, Map.take(c.roster_binding, ~w(generation operation_id)))
+          assert {:error, :unauthorized} = GuestAccess.roster(c.ziggy_token, boot)
 
-        assert {:error, :unauthorized} =
-                 GuestAccess.login(c.ziggy_token, changed, c.key, username)
+          assert {:error, :unauthorized} =
+                   GuestAccess.authorize(c.ziggy_token, changed, c.key, username)
 
-        assert Ledger.read!(Marshall.SSH.GuestLogin) == []
-      end
-    end
+          assert {:error, :unauthorized} =
+                   GuestAccess.login(c.ziggy_token, changed, c.key, username)
+
+          assert Ledger.read!(Marshall.SSH.GuestLogin) == []
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   @tag profile: :standard

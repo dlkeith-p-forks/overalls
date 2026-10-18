@@ -2,8 +2,8 @@
   "apps": {
     "audi": {
       "active": 10,
-      "coverage": 1.0,
-      "covered": 10
+      "coverage": 0.0,
+      "covered": 0
     },
     "system": {
       "active": 0,
@@ -15,127 +15,107 @@
     "audi.dns_authority": {
       "active": 3,
       "app": "audi",
-      "coverage": 1.0,
-      "covered": 3,
+      "coverage": 0.0,
+      "covered": 0,
       "form": "light",
       "obligations": {
         "audi.dns_authority.I1": {
           "failing": 0,
           "kind": "non_functional",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test declared modules compile and remain loadable"
-          ]
+          "tests": []
         },
         "audi.dns_authority.I2": {
           "failing": 0,
           "kind": "security",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test wire decoder rejects responses and clamps EDNS"
-          ]
+          "tests": []
         },
         "audi.dns_authority.I3": {
           "failing": 0,
           "kind": "security",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test oversized UDP replies truncate and keep unsafe flags clear"
-          ]
+          "tests": []
         }
       }
     },
     "audi.http_gateway": {
       "active": 3,
       "app": "audi",
-      "coverage": 1.0,
-      "covered": 3,
+      "coverage": 0.0,
+      "covered": 0,
       "form": "light",
       "obligations": {
         "audi.http_gateway.I1": {
           "failing": 0,
           "kind": "non_functional",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test declared modules compile and remain loadable"
-          ]
+          "tests": []
         },
         "audi.http_gateway.I2": {
           "failing": 0,
           "kind": "security",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test response cookies lose domain and reserved cookies"
-          ]
+          "tests": []
         },
         "audi.http_gateway.I3": {
           "failing": 0,
           "kind": "security",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test websocket frames round trip and reject oversized control payloads"
-          ]
+          "tests": []
         }
       }
     },
     "audi.ssh_tls": {
       "active": 4,
       "app": "audi",
-      "coverage": 1.0,
-      "covered": 4,
+      "coverage": 0.0,
+      "covered": 0,
       "form": "light",
       "obligations": {
         "audi.ssh_tls.I1": {
           "failing": 0,
           "kind": "non_functional",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test declared modules compile and remain loadable"
-          ]
+          "tests": []
         },
         "audi.ssh_tls.I2": {
           "failing": 0,
           "kind": "security",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test SSH request grammar is closed and bounded"
-          ]
+          "tests": []
         },
         "audi.ssh_tls.I3": {
           "failing": 0,
           "kind": "security",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test TLS material validation fails closed for malformed input"
-          ]
+          "tests": []
         },
         "audi.ssh_tls.I4": {
           "failing": 0,
           "kind": "security",
-          "passing": 1,
+          "passing": 0,
           "status": "active",
           "testable": true,
-          "tests": [
-            "test stream guard fences the owner on revocation and rejects stale renewal"
-          ]
+          "tests": []
         }
       }
     },
@@ -151,7 +131,7 @@
   "covenant": "0.2.0",
   "totals": {
     "active": 10,
-    "coverage": 1.0,
-    "covered": 10
+    "coverage": 0.0,
+    "covered": 0
   }
 }

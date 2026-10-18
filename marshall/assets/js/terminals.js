@@ -1,3 +1,4 @@
+import {t} from "./localization.js";
 import {readPalette} from "./palette.js";
 import { Terminal } from "../vendor/xterm/xterm.mjs";
 import { FitAddon } from "../vendor/xterm/addons/addon-fit.mjs";
@@ -124,16 +125,18 @@ export function clipboardConsent(choice) {
 /** @param {number} milliseconds @param {number} now @returns {string} */
 export function relativeActivity(milliseconds, now = Date.now()) {
   const seconds = Math.max(0, Math.floor((now - milliseconds) / 1000));
-  if (seconds < 60) return "just now";
-  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
-  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-  return `${Math.floor(seconds / 86400)}d ago`;
+  const locale = typeof document === "undefined" ? "en" : document.documentElement?.lang || "en";
+  const formatter = new Intl.RelativeTimeFormat(locale, {numeric: "auto"});
+  if (seconds < 60) return formatter.format(0, "second");
+  if (seconds < 3600) return formatter.format(-Math.floor(seconds / 60), "minute");
+  if (seconds < 86400) return formatter.format(-Math.floor(seconds / 3600), "hour");
+  return formatter.format(-Math.floor(seconds / 86400), "day");
 }
 
 function openConfirmedLink(event, uri) {
   event.preventDefault();
   const url = confirmedHttpUrl(uri);
-  if (url && window.confirm(`Open this link?\n\n${url}`)) {
+  if (url && window.confirm(t("Open this link?\n\n%{url}", {url}))) {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 }
@@ -364,7 +367,7 @@ class Pane {
     let consent = this.workspace.clipboard.write;
     if (consent === "ask") {
       const choice = window.prompt(
-        `This machine asks to write ${write.bytes} bytes to your clipboard. Type once, session, or mute.`,
+        t("This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute.", {bytes: write.bytes}),
         "once"
       );
       consent = clipboardConsent(choice);
@@ -722,7 +725,7 @@ export const TerminalWorkspace = {
         if (action === "zoom-out") pane?.zoom(-1);
         if (action === "fullscreen") this.toggleFullscreen();
         if (action === "rename" && pane) {
-          const name = window.prompt("Terminal name (this browser only; empty restores the generated name)", pane.localName || "");
+          const name = window.prompt(t("Terminal name (this browser only; empty restores the generated name)"), pane.localName || "");
           if (name !== null) {
             pane.localName = name.trim().slice(0, 80);
             this.updateTitle(pane.session.id, pane.title || "");
@@ -733,9 +736,9 @@ export const TerminalWorkspace = {
           const dialog = this.el.querySelector("#terminal-share-dialog");
           const email = this.el.querySelector("#terminal-share-email");
           if (!this.liveConnected || !email.reportValidity() || !email.value) return;
-          this.el.querySelector("#terminal-share-result").textContent = "Updating viewing access…";
+          this.el.querySelector("#terminal-share-result").textContent = t("Updating viewing access…");
           this.push("terminal_share", { session_id: dialog.dataset.session, email: email.value, action: action === "share-submit" ? "share" : "revoke" }, (reply) => {
-            this.el.querySelector("#terminal-share-result").textContent = reply.ok ? "Viewing access updated." : "Could not update access. Check the account's machine access.";
+            this.el.querySelector("#terminal-share-result").textContent = reply.ok ? t("Viewing access updated.") : t("Could not update access. Check the account's machine access.");
           });
         }
         return;
@@ -751,7 +754,7 @@ export const TerminalWorkspace = {
       }
       const kill = event.target.closest("[data-terminal-kill]");
       if (kill) {
-        if (window.confirm("Close this terminal session?")) {
+        if (window.confirm(t("Close this terminal session?"))) {
           this.push("terminal_kill", { session_id: kill.dataset.terminalKill });
         }
         return;
@@ -769,7 +772,7 @@ export const TerminalWorkspace = {
           this.pendingName = "";
           this.opening = { request_id: crypto.randomUUID() };
           create.disabled = true;
-          create.textContent = "Opening…";
+          create.textContent = t("Opening…");
           create.setAttribute("aria-busy", "true");
           this.retryOpening();
         }
@@ -815,7 +818,7 @@ export const TerminalWorkspace = {
         event.preventDefault(); event.stopPropagation();
         const pane = this.panes.get(this.activeId);
         if (key === "t") this.el.querySelector("#terminal-create")?.click();
-        if (key === "w" && pane?.session.can_kill && window.confirm("Close this terminal session?")) {
+        if (key === "w" && pane?.session.can_kill && window.confirm(t("Close this terminal session?"))) {
           this.push("terminal_kill", { session_id: pane.session.id });
         }
         if (key === "c") pane?.copySelection();
@@ -915,7 +918,7 @@ export const TerminalWorkspace = {
       const button = this.el.querySelector("#terminal-create");
       if (button) {
         button.disabled = false;
-        button.textContent = "+ New";
+        button.textContent = t("+ New");
         button.setAttribute("aria-busy", "false");
       }
       if (reply.status === "ready" && typeof reply.session_id === "string") {
@@ -966,7 +969,7 @@ export const TerminalWorkspace = {
     const button = this.el.querySelector("#terminal-fullscreen");
     const active = document.fullscreenElement === display;
     if (button) {
-      const label = active ? "Exit full screen" : "Enter full screen";
+      const label = active ? t("Exit full screen") : t("Enter full screen");
       button.setAttribute("aria-label", label);
       button.setAttribute("aria-pressed", String(active));
       button.title = label;
@@ -999,7 +1002,7 @@ export const TerminalWorkspace = {
       const label = item.querySelector(".terminal-label");
       if (label) label.textContent = displayName(session, pane);
       const meta = item.querySelector(".terminal-meta");
-      if (meta) meta.textContent = `${pane?.title || session.guest_user} · ${session.viewers} viewing · ${relativeActivity(session.last_ms)}`;
+      if (meta) meta.textContent = t("%{name} · %{count} viewing · %{activity}", {name: pane?.title || session.guest_user, count: session.viewers, activity: relativeActivity(session.last_ms)});
       item.querySelector(".terminal-unread-dot")?.classList.toggle("unread", !!pane?.unread);
     }
 
@@ -1070,7 +1073,7 @@ export const TerminalWorkspace = {
     if (pane) {
       pane.wanted = true;
       pane.focus();
-      document.title = pane.localName || pane.title ? `${pane.localName || pane.title} · Terminals` : this.originalTitle;
+      document.title = pane.localName || pane.title ? t("%{name} · Terminals", {name: pane.localName || pane.title}) : this.originalTitle;
       this.setStatus(pane.status);
       if (!pane.connected) this.requestTicket(sessionId);
     }
@@ -1161,7 +1164,7 @@ export const TerminalWorkspace = {
     const palette = readPalette();
     const options = { decorations: { matchBackground: palette.backgroundAlt, matchBorder: palette.textAlt, activeMatchBackground: palette.backgroundAlt, activeMatchBorder: palette.text, matchOverviewRuler: palette.textAlt, activeMatchColorOverviewRuler: palette.text } };
     const found = previous ? pane.search.findPrevious(query, options) : pane.search.findNext(query, options);
-    if (result) result.textContent = found ? "Match found" : "No matches";
+    if (result) result.textContent = found ? t("Match found") : t("No matches");
   },
 
   updateTitle(sessionId, title) {
@@ -1172,18 +1175,18 @@ export const TerminalWorkspace = {
     const label = item && item.querySelector(".terminal-label");
     if (label) label.textContent = displayName(pane.session, pane);
     const meta = item && item.querySelector(".terminal-meta");
-    if (meta && pane.title) meta.textContent = `${pane.title} · ${pane.session.viewers} viewing`;
-    if (sessionId === this.activeId) document.title = `${displayName(pane.session, pane)} · Terminals`;
+    if (meta && pane.title) meta.textContent = t("%{name} · %{count} viewing", {name: pane.title, count: pane.session.viewers});
+    if (sessionId === this.activeId) document.title = t("%{name} · Terminals", {name: displayName(pane.session, pane)});
   },
 
   setStatus(status) {
     const element = document.getElementById("terminal-status");
     if (!element) return;
-    const labels = { live: "● live", reconnecting: "⟳ reconnecting…", restoring: "⟳ restoring scrollback…", readonly: "● read-only", "boot-log": "Boot log · read-only", "input-paused": "Input buffer full — that input was not sent" };
+    const labels = { live: t("● live"), reconnecting: t("⟳ reconnecting…"), restoring: t("⟳ restoring scrollback…"), readonly: t("● read-only"), "boot-log": t("Boot log · read-only"), "input-paused": t("Input buffer full — that input was not sent") };
     element.textContent = labels[status] || status;
     element.dataset.status = status;
     const input = document.getElementById("terminal-input-hint");
-    if (input) input.textContent = ["readonly", "boot-log"].includes(status) ? "View only" : "Type to interact";
+    if (input) input.textContent = ["readonly", "boot-log"].includes(status) ? t("View only") : t("Type to interact");
   },
 
   showBootLog() {

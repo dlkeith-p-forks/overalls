@@ -872,6 +872,13 @@ defmodule Lilly.Host.ZFSDataset do
            end),
          {:templates, :ok} <-
            {:templates, Lilly.Host.ImageTemplate.audit(pool, Map.new(templates), owners)},
+         {checkpoint_children, children} =
+           Enum.split_with(children, fn {name, _} ->
+             String.starts_with?(name, pool.storage.dataset <> "/checkpoint-")
+           end),
+         {:workloads, {:ok, _checkpoint_credits}} <-
+           {:workloads,
+            Lilly.VM.CheckpointStorage.audit(pool, Map.new(checkpoint_children), owners, mounts)},
          children = Map.new(children),
          {:workloads, {:ok, credits, recognized}} <-
            {:workloads, audit(pool, entries, children, owners, mounts)},

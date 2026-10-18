@@ -4,6 +4,9 @@ defmodule MarshallWebSurfaceContractTest do
   @tag obligation: "marshall.web_surface.I1"
   test "declared modules compile and remain loadable" do
     modules = [
+      Marshall.Localization,
+      Marshall.LocalizedMarkdown,
+      Marshall.DocumentationMessages,
       MarshallWeb,
       MarshallWeb.AccountLive,
       MarshallWeb.Admin.AccessLive,
@@ -24,6 +27,7 @@ defmodule MarshallWebSurfaceContractTest do
       MarshallWeb.AuthText,
       MarshallWeb.AuthenticationPrivacy,
       MarshallWeb.AutomaticMagicSignInLive,
+      MarshallWeb.BrowserMessages,
       MarshallWeb.BrowserSession,
       MarshallWeb.CloneComponents,
       MarshallWeb.ControlAPI,
@@ -51,6 +55,7 @@ defmodule MarshallWebSurfaceContractTest do
       MarshallWeb.LiveAdminAuth,
       MarshallWeb.LiveSocket,
       MarshallWeb.LiveUserAuth,
+      MarshallWeb.LocalePlug,
       MarshallWeb.MachineDefaults,
       MarshallWeb.MachineWorkspace,
       MarshallWeb.MachinesLive,

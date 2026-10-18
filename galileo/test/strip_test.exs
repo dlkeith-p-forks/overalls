@@ -5,25 +5,24 @@ defmodule Galileo.StripTest do
   alias Galileo.Strip
 
   property "prefix removal is segment-aligned and never rewrites unmatched paths" do
-    check all(
-            segments <-
-              list_of(string(:alphanumeric, min_length: 1, max_length: 8),
-                min_length: 1,
-                max_length: 6
-              ),
-            extra <-
-              list_of(string(:alphanumeric, min_length: 1, max_length: 8),
-                min_length: 0,
-                max_length: 4
-              )
-          ) do
-      prefix = "/" <> Enum.join(segments, "/")
-      path = "/" <> Enum.join(segments ++ extra, "/")
-      expected = if extra == [], do: "/", else: "/" <> Enum.join(extra, "/")
+    segments =
+      draw(
+        "segments",
+        list_of(string(:alphanumeric, min_length: 1, max_length: 8), min_length: 1, max_length: 6)
+      )
 
-      assert Strip.apply(prefix, path) == expected
-      assert Strip.apply(prefix, path <> "/") == expected
-    end
+    extra =
+      draw(
+        "extra",
+        list_of(string(:alphanumeric, min_length: 1, max_length: 8), min_length: 0, max_length: 4)
+      )
+
+    prefix = "/" <> Enum.join(segments, "/")
+    path = "/" <> Enum.join(segments ++ extra, "/")
+    expected = if extra == [], do: "/", else: "/" <> Enum.join(extra, "/")
+
+    assert Strip.apply(prefix, path) == expected
+    assert Strip.apply(prefix, path <> "/") == expected
   end
 
   test "similar prefixes do not match" do

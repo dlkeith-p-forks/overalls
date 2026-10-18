@@ -25,9 +25,10 @@ assert !image.nativeAdmission;
 # @cc [owner:ghuntley,label:verification;security] native-reset-machine-scope
 # A disposable nested-KVM PCI guest MUST hold pending accept/read/write and a
 # peerless live socket before the private fixture API pauses, takes a full
-# snapshot and resumes it. Serial evidence MUST prove the peerless identity
-# option fails and the pending operations wake with errors. FreeBSD MUST refuse
-# new sockets until a replacement VM. The writable disk and saved memory MUST
+# snapshot and restores it into a fresh VMM process. Serial evidence MUST prove
+# the same RAM-only nonce and guest PID survive and the peerless identity
+# option fails and pending read/write operations wake with errors. The original
+# listener MUST accept a new connection and fresh sockets MUST revalidate CID. The writable disk and saved memory MUST
 # remain disposable; this gate MUST NOT claim DMA, physical-host, clean service,
 # crash recovery or native admission acceptance.
 pkgs.testers.runNixOSTest {

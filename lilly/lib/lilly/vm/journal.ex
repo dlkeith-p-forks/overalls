@@ -289,6 +289,8 @@ defmodule Lilly.VM.Journal do
   end
 
   defp attempt_phase(kind) when kind in [:provision, :start], do: "starting"
+  defp attempt_phase(:pause), do: "pausing"
+  defp attempt_phase(:resume), do: "resuming"
   defp attempt_phase(:stop), do: "stopping"
   defp attempt_phase(:delete), do: "deleting"
   defp attempt_phase(:resize), do: "resizing"

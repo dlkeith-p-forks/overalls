@@ -42,14 +42,16 @@ defmodule Marshall.Mailer.ConfigTest do
   end
 
   property "untrusted mailbox suffixes cannot inject SMTP commands or HTML delimiters" do
-    check all(
-            prefix <- string(:alphanumeric, min_length: 1, max_length: 30),
-            suffix <-
-              member_of(["\r\nRCPT TO:<other@example.test>", "\n", "\0", "<", ">", "\"", ","])
-          ) do
-      value = prefix <> suffix <> "@example.test"
-      refute EmailAddress.valid?(value)
-    end
+    prefix = draw("prefix", string(:alphanumeric, min_length: 1, max_length: 30))
+
+    suffix =
+      draw(
+        "suffix",
+        member_of(["\r\nRCPT TO:<other@example.test>", "\n", "\0", "<", ">", "\"", ","])
+      )
+
+    value = prefix <> suffix <> "@example.test"
+    refute EmailAddress.valid?(value)
   end
 
   test "both TLS modes verify certificates and hostnames, with no transport-level retries" do

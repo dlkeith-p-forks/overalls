@@ -8,10 +8,11 @@ defmodule Marshall.Ingress.Catalog do
 
   # @cc [owner:ghuntley,label:security;concurrency] ingress-gateway-catalog
   # Catalogs MUST authenticate a current gateway and return only its host's
-  # active running placements, with immutable VM/placement/execution identity.
+  # current wake-eligible placements and retained enrolled relay origins, with
+  # immutable VM/placement/execution identity.
   # Missing or stale host authority and inventory overflow MUST fail the whole
-  # request. The bounded statement is discovery only; issuance and route reports
-  # MUST independently revalidate current execution under their existing locks.
+  # request. The bounded statement is discovery only; route reports MUST independently revalidate the current wake projection;
+  # stream admission MUST independently prove running execution.
   # Entries MUST NOT carry the retired `certificate_id` key (ADR-0159); retired
   # issuance archives MUST NOT be consulted.
   @impl true
@@ -60,11 +61,20 @@ defmodule Marshall.Ingress.Catalog do
         FROM compute_virtual_machines v
         JOIN compute_workload_placements p ON p.id = v.current_placement_id AND p.vm_id = v.id
         JOIN ingress_endpoints e ON e.vm_id = v.id
-        WHERE p.host_id = $1::text::uuid AND v.archived_at IS NULL
-          AND v.desired_state = 'running' AND v.observed_state = 'running'
+        WHERE v.archived_at IS NULL AND v.desired_state IN ('running', 'paused')
+          AND v.observed_state NOT IN ('deleted', 'failed')
+          AND (p.host_id = $1::text::uuid OR EXISTS (
+            SELECT 1 FROM ingress_routes r
+            JOIN ingress_services origin ON origin.id = r.service_id
+            JOIN ingress_services destination ON destination.host_id = p.host_id
+            WHERE r.vm_id = v.id AND origin.id = $2::text::uuid
+              AND origin.enabled AND origin.role = 'gateway' AND origin.relay_address IS NOT NULL
+              AND destination.enabled AND destination.role = 'gateway'
+              AND destination.relay_address IS NOT NULL
+          ))
         ORDER BY v.id LIMIT 10001
         """,
-        [service.host_id]
+        [service.host_id, service.id]
       )
 
     if length(rows) > 10_000, do: Ledger.rollback(:capacity)

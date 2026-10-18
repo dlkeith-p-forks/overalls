@@ -7,6 +7,38 @@
 # General application configuration
 import Config
 
+config :localize,
+  otp_app: :marshall,
+  default_locale: :en,
+  allow_runtime_locale_download: false,
+  supported_locales: [
+    :en,
+    :zh,
+    :hi,
+    :es,
+    :ar,
+    :fr,
+    :bn,
+    :pt,
+    :"pt-PT",
+    :ru,
+    :ur,
+    :id,
+    :de,
+    :ja,
+    :pcm,
+    :mr,
+    :te,
+    :tr,
+    :ta,
+    :vi,
+    :ko,
+    :fil,
+    :et,
+    :fi,
+    :sv
+  ]
+
 config :overalls_diagnostics, events_catalog: Marshall.Events
 
 # @cc [owner:ghuntley,label:build] offline-time-zone-database
@@ -71,7 +103,10 @@ config :marshall, Oban,
   lifeline: [rescue_after: {2, :hours}],
   pruner: [max_age: {1, :day}],
   repo: Marshall.Repo,
-  plugins: [{Oban.Plugins.Cron, crontab: [{"* * * * *", Marshall.Enrico.Worker}]}]
+  plugins: [
+    {Oban.Plugins.Cron,
+     crontab: [{"* * * * *", Marshall.Enrico.Worker}, {"* * * * *", Marshall.Compute.IdleWorker}]}
+  ]
 
 # These enable behaviors that will become the default in the next major
 # version of Ash. Setting them now opts your application into the new

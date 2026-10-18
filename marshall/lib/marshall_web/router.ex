@@ -5,89 +5,91 @@ defmodule MarshallWeb.Router do
   use AshAuthentication.Phoenix.Router
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, html: {MarshallWeb.Layouts, :root}
-    plug :protect_from_forgery
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, html: {MarshallWeb.Layouts, :root})
+    plug(:protect_from_forgery)
     # @cc [owner:ghuntley,label:security] remembered-login-is-not-email-or-mfa
     # A persistent remember credential MAY establish a new stored browser login,
     # but MUST NOT copy passkey proof or establish fresh email authentication.
     # Required-login hooks and HTTP domain admission still check that new login.
-    plug :sign_in_with_remember_me
-    plug :load_from_session
+    plug(:sign_in_with_remember_me)
+    plug(:load_from_session)
+    plug(MarshallWeb.LocalePlug, session: true)
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
-    plug :load_from_bearer
-    plug :set_actor, :user
+    plug(:accepts, ["json"])
+    plug(:load_from_bearer)
+    plug(:set_actor, :user)
   end
 
   pipeline :agent_cli_api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
   pipeline :ssh_approval_login do
-    plug MarshallWeb.SSHApprovalLogin
+    plug(MarshallWeb.SSHApprovalLogin)
   end
 
   # Public installer, documentation and extension routes: no session, no CSRF
   # token. Security headers come from MarshallWeb.SecurityHeaders at the endpoint.
   pipeline :public_documentation do
+    plug(MarshallWeb.LocalePlug)
   end
 
   scope "/", MarshallWeb do
-    pipe_through :public_documentation
+    pipe_through(:public_documentation)
 
     # @cc [owner:ghuntley,label:architecture;security] public-cli-bin-routes
     # Public CLI delivery MUST use only the /bin shell and PowerShell
     # installers, manifest, five allowlisted platform artifacts, and matching
     # checksum paths.
-    get "/bin/ssh-trust.json", OverallsController, :ssh_trust
-    get "/bin/install.sh", OverallsController, :install
-    get "/bin/install.ps1", OverallsController, :install_powershell
-    get "/bin/manifest.json", OverallsController, :manifest
-    get "/bin/sha256/:target", OverallsController, :checksum
+    get("/bin/ssh-trust.json", OverallsController, :ssh_trust)
+    get("/bin/install.sh", OverallsController, :install)
+    get("/bin/install.ps1", OverallsController, :install_powershell)
+    get("/bin/manifest.json", OverallsController, :manifest)
+    get("/bin/sha256/:target", OverallsController, :checksum)
     # @cc [owner:ghuntley,label:security] public-marvin-bin-routes
     # Extension delivery MUST use exact public archive routes and an independent
     # metadata namespace, without creating a login session or selecting paths.
-    get "/bin/chrome.zip", MarvinDownloadController, :chrome
-    get "/bin/firefox.xpi", MarvinDownloadController, :firefox
-    get "/bin/marvin/manifest.json", MarvinDownloadController, :manifest
-    get "/bin/marvin/sha256/:artifact", MarvinDownloadController, :checksum
-    get "/bin/:target", OverallsController, :artifact
-    get "/docs", DocsController, :index
-    get "/docs.md", DocsController, :markdown
-    get "/docs/:page", DocsController, :show
-    get "/llms.txt", DocsController, :llms
+    get("/bin/chrome.zip", MarvinDownloadController, :chrome)
+    get("/bin/firefox.xpi", MarvinDownloadController, :firefox)
+    get("/bin/marvin/manifest.json", MarvinDownloadController, :manifest)
+    get("/bin/marvin/sha256/:artifact", MarvinDownloadController, :checksum)
+    get("/bin/:target", OverallsController, :artifact)
+    get("/docs", DocsController, :index)
+    get("/docs.md", DocsController, :markdown)
+    get("/docs/:page", DocsController, :show)
+    get("/llms.txt", DocsController, :llms)
   end
 
   scope "/api/agents/v1", MarshallWeb do
-    pipe_through :agent_cli_api
-    get "/session", AgentCLIController, :session
-    get "/threads", AgentCLIController, :threads
-    post "/prompt", AgentCLIController, :prompt
-    get "/turn/:turn_id", AgentCLIController, :turn
+    pipe_through(:agent_cli_api)
+    get("/session", AgentCLIController, :session)
+    get("/threads", AgentCLIController, :threads)
+    post("/prompt", AgentCLIController, :prompt)
+    get("/turn/:turn_id", AgentCLIController, :turn)
   end
 
   scope "/", MarshallWeb do
-    pipe_through [:browser, :ssh_approval_login]
+    pipe_through([:browser, :ssh_approval_login])
 
     ash_authentication_live_session :ssh_approval_routes do
-      live "/ssh/approve/:token", SSHApprovalLive, :show
+      live("/ssh/approve/:token", SSHApprovalLive, :show)
     end
   end
 
   scope "/", MarshallWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    get "/git/github/:owner/:repo/raw", GitRawController, :show
-    get "/audi/authorize/:ticket", AudiLoginController, :authorize
-    get "/editor/authorize/:ticket", EditorController, :authorize
-    get "/machines/:id/code", EditorController, :launch
-    get "/usage/export", InferenceExportController, :show
-    get "/admin/usage/export", InferenceExportController, :show
+    get("/git/github/:owner/:repo/raw", GitRawController, :show)
+    get("/audi/authorize/:ticket", AudiLoginController, :authorize)
+    get("/editor/authorize/:ticket", EditorController, :authorize)
+    get("/machines/:id/code", EditorController, :launch)
+    get("/usage/export", InferenceExportController, :show)
+    get("/admin/usage/export", InferenceExportController, :show)
 
     # @cc [owner:ghuntley,label:security] authenticated-machine-routes
     # Machine and terminal pages MUST remain in the authentication LiveView
@@ -118,7 +120,9 @@ defmodule MarshallWeb.Router do
       live "/admin/usage", InferenceLive, :admin
       live "/admin/audit", Admin.AuditLive, :index
       live "/admin/git", Admin.GitLive, :index
-      live "/settings", AccountLive, :index
+      live "/settings", SettingsLive, :index
+      live "/settings/security", SecurityLive, :index
+      live "/settings/ssh-keys", SSHKeysLive, :index
       live "/machines", MachinesLive, :index
       live "/machines/new", MachinesLive, :new
       live "/machines/:id", TerminalLive, :show
@@ -145,42 +149,48 @@ defmodule MarshallWeb.Router do
   end
 
   scope "/", MarshallWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    get "/", PageController, :home
-    get "/launch/entry", PageController, :entry
-    post "/launch/pending", RepositoryLaunchController, :stage
-    post "/launch/pending/clear", RepositoryLaunchController, :clear
-    auth_routes AuthController, Marshall.Accounts.User, path: "/auth"
+    get("/", PageController, :home)
+    get("/launch/entry", PageController, :entry)
+    post("/launch/pending", RepositoryLaunchController, :stage)
+    post("/launch/pending/clear", RepositoryLaunchController, :clear)
+    auth_routes(AuthController, Marshall.Accounts.User, path: "/auth")
 
-    sign_out_route AuthController, "/sign-out",
+    sign_out_route(AuthController, "/sign-out",
       overrides: [MarshallWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
+    )
 
     # Remove these if you'd like to use your own authentication views
-    sign_in_route register_path: "/register",
-                  gettext_fn: {MarshallWeb.AuthText, :translate},
-                  on_mount_prepend: [MarshallWeb.AuthenticationPrivacy],
-                  reset_path: "/reset",
-                  auth_routes_prefix: "/auth",
-                  on_mount: [{MarshallWeb.LiveUserAuth, :live_no_user}],
-                  overrides: [
-                    MarshallWeb.AuthOverrides,
-                    AshAuthentication.Phoenix.Overrides.Default
-                  ]
+    sign_in_route(
+      register_path: "/register",
+      gettext_fn: {MarshallWeb.AuthText, :translate},
+      on_mount_prepend: [MarshallWeb.AuthenticationPrivacy],
+      reset_path: "/reset",
+      auth_routes_prefix: "/auth",
+      on_mount: [{MarshallWeb.LiveUserAuth, :live_no_user}],
+      overrides: [
+        MarshallWeb.AuthOverrides,
+        AshAuthentication.Phoenix.Overrides.Default
+      ]
+    )
 
     # Remove this if you do not want to use the reset password feature
-    reset_route auth_routes_prefix: "/auth",
-                on_mount_prepend: [MarshallWeb.AuthenticationPrivacy],
-                overrides: [
-                  MarshallWeb.AuthOverrides,
-                  AshAuthentication.Phoenix.Overrides.Default
-                ]
+    reset_route(
+      auth_routes_prefix: "/auth",
+      on_mount_prepend: [MarshallWeb.AuthenticationPrivacy],
+      overrides: [
+        MarshallWeb.AuthOverrides,
+        AshAuthentication.Phoenix.Overrides.Default
+      ]
+    )
 
     # Remove this if you do not use the confirmation strategy
-    confirm_route Marshall.Accounts.User, :confirm_new_user,
+    confirm_route(Marshall.Accounts.User, :confirm_new_user,
       on_mount_prepend: [MarshallWeb.AuthenticationPrivacy],
       auth_routes_prefix: "/auth",
       overrides: [MarshallWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
+    )
 
     # Remove this if you do not use the magic link strategy.
     magic_sign_in_route(Marshall.Accounts.User, :magic_link,
@@ -210,14 +220,14 @@ defmodule MarshallWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      live_dashboard "/dashboard", metrics: MarshallWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+      live_dashboard("/dashboard", metrics: MarshallWeb.Telemetry)
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
     end
 
     scope "/" do
-      pipe_through :browser
+      pipe_through(:browser)
 
       oban_dashboard("/oban")
     end
@@ -227,9 +237,9 @@ defmodule MarshallWeb.Router do
     import AshAdmin.Router
 
     scope "/dev/resources" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      ash_admin "/"
+      ash_admin("/")
     end
   end
 end

@@ -21,28 +21,27 @@ defmodule Marshall.Terminal.ViewerAuthorityTest do
   # refuse exactly at the first conclusive refusal or once an uninterrupted
   # inconclusive episode reaches the backstop, and never otherwise.
   property "only conclusive refusals or an expired inconclusive episode close the viewer" do
-    check all(
-            steps <- list_of(tuple({result(), integer(0..20_000)}), min_length: 1, max_length: 40)
-          ) do
-      Enum.reduce_while(steps, {nil, nil, 0}, fn {result, gap}, {since, episode, now} ->
-        now = now + gap
-        episode = if result == :inconclusive, do: episode || now, else: nil
+    steps =
+      draw("steps", list_of(tuple({result(), integer(0..20000)}), min_length: 1, max_length: 40))
 
-        expected =
-          case result do
-            {:error, reason} -> {:refuse, reason}
-            :ok -> {:ok, nil}
-            :inconclusive when now - episode >= @backstop -> {:refuse, :authority_unconfirmed}
-            :inconclusive -> {:ok, episode}
-          end
+    Enum.reduce_while(steps, {nil, nil, 0}, fn {result, gap}, {since, episode, now} ->
+      now = now + gap
+      episode = if result == :inconclusive, do: episode || now, else: nil
 
-        assert ViewerAuthority.step(since, result, now) == expected
-
-        case expected do
-          {:ok, next} -> {:cont, {next, episode, now}}
-          {:refuse, _} -> {:halt, :closed}
+      expected =
+        case result do
+          {:error, reason} -> {:refuse, reason}
+          :ok -> {:ok, nil}
+          :inconclusive when now - episode >= @backstop -> {:refuse, :authority_unconfirmed}
+          :inconclusive -> {:ok, episode}
         end
-      end)
-    end
+
+      assert ViewerAuthority.step(since, result, now) == expected
+
+      case expected do
+        {:ok, next} -> {:cont, {next, episode, now}}
+        {:refuse, _} -> {:halt, :closed}
+      end
+    end)
   end
 end

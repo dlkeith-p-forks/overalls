@@ -33,9 +33,9 @@ defmodule MarshallWeb.AuthController do
 
         message =
           case activity do
-            {:confirm_new_user, :confirm} -> "Your email address has now been confirmed"
-            {:password, :reset} -> "Your password has successfully been reset"
-            _ -> "You are now signed in"
+            {:confirm_new_user, :confirm} -> gettext("Your email address has now been confirmed")
+            {:password, :reset} -> gettext("Your password has successfully been reset")
+            _ -> gettext("You are now signed in")
           end
 
         Marshall.Events.emit("auth.signed_in", user_id: user.id)
@@ -53,7 +53,10 @@ defmodule MarshallWeb.AuthController do
 
         conn
         |> delete_session(:return_to)
-        |> put_flash(:error, "Your sign-in is no longer valid. Request a new sign-in link.")
+        |> put_flash(
+          :error,
+          gettext("Your sign-in is no longer valid. Request a new sign-in link.")
+        )
         |> redirect(to: ~p"/sign-in")
     end
   end
@@ -74,22 +77,22 @@ defmodule MarshallWeb.AuthController do
              errors: [%AshAuthentication.Errors.CannotConfirmUnconfirmedUser{}]
            }
          }} ->
-          """
+          gettext("""
           You have already signed in another way, but have not confirmed your account.
           You can confirm your account using the link we sent to you, or by resetting your password.
-          """
+          """)
 
         {_,
          %AshAuthentication.Errors.AuthenticationFailed{
            caused_by: %AshAuthentication.Errors.ConfirmationRequired{}
          }} ->
-          """
+          gettext("""
           An account with this email already exists. We've sent a link to that
           address - confirm it to finish linking this provider to your account.
-          """
+          """)
 
         _ ->
-          "Incorrect email or password"
+          gettext("Incorrect email or password")
       end
 
     Marshall.Events.emit("auth.sign_in_failed", reason: sign_in_failure(activity, reason))
@@ -146,7 +149,7 @@ defmodule MarshallWeb.AuthController do
     end
 
     conn
-    |> put_flash(:info, "You are now signed out")
+    |> put_flash(:info, gettext("You are now signed out"))
     |> redirect(to: return_to)
   end
 

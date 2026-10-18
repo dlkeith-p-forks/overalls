@@ -100,81 +100,86 @@ defmodule MarshallWeb.AudiLoginControllerTest do
   @tag :hegel
   test "browser state, controller approval and HTTPS redemption produce a host-only app credential",
        c do
-    check all(app_port <- member_of([0, 3000, 9999]), test_cases: 4) do
-      [host] = Ledger.read!(Marshall.Compute.Host, id: c.vm.host_id)
-      Ledger.update!(host, :report, %{reported_at: Ledger.now()})
-      prefix = if app_port == 0, do: "", else: "p#{app_port}-"
-      hostname = prefix <> c.endpoint.label <> ".apps.example.test"
+    Hegel.check(
+      fn ->
+        app_port = draw("app_port", member_of([0, 3000, 9999]))
+        [host] = Ledger.read!(Marshall.Compute.Host, id: c.vm.host_id)
+        Ledger.update!(host, :report, %{reported_at: Ledger.now()})
+        prefix = if app_port == 0, do: "", else: "p#{app_port}-"
+        hostname = prefix <> c.endpoint.label <> ".apps.example.test"
 
-      start =
-        Browser.start(
-          Plug.Test.conn(:get, "https://#{hostname}:8443/path?view=one"),
-          c.client,
-          "apps.example.test",
-          "https://control.example.test"
-        )
+        start =
+          Browser.start(
+            Plug.Test.conn(:get, "https://#{hostname}:8443/path?view=one"),
+            c.client,
+            "apps.example.test",
+            "https://control.example.test"
+          )
 
-      assert start.status == 303
-      [location] = get_resp_header(start, "location")
-      assert URI.parse(location).host == "control.example.test"
-      approval_path = URI.parse(location).path
-      state = start.resp_cookies["__Host-audi_state"].value
-      return = start.resp_cookies["__Host-audi_return"].value
-      anonymous = get(build_conn(), approval_path)
-      assert redirected_to(anonymous) == "/sign-in"
-      assert get_session(anonymous, :return_to) == approval_path
+        assert start.status == 303
+        [location] = get_resp_header(start, "location")
+        assert URI.parse(location).host == "control.example.test"
+        approval_path = URI.parse(location).path
+        state = start.resp_cookies["__Host-audi_state"].value
+        return = start.resp_cookies["__Host-audi_return"].value
+        anonymous = get(build_conn(), approval_path)
+        assert redirected_to(anonymous) == "/sign-in"
+        assert get_session(anonymous, :return_to) == approval_path
 
-      signed = signed_in(c.owner)
+        signed = signed_in(c.owner)
 
-      approved =
-        signed |> put_req_header("x-forwarded-host", "attacker.example") |> get(approval_path)
+        approved =
+          signed |> put_req_header("x-forwarded-host", "attacker.example") |> get(approval_path)
 
-      assert approved.status == 302
-      [callback] = get_resp_header(approved, "location")
-      uri = URI.parse(callback)
-      assert uri.scheme == "https" and uri.host == hostname and uri.port == 8443
-      assert uri.path == "/_audi/callback"
-      assert get_resp_header(approved, "cache-control") == ["no-store"]
-      assert get_resp_header(approved, "referrer-policy") == ["no-referrer"]
+        assert approved.status == 302
+        [callback] = get_resp_header(approved, "location")
+        uri = URI.parse(callback)
+        assert uri.scheme == "https" and uri.host == hostname and uri.port == 8443
+        assert uri.path == "/_audi/callback"
+        assert get_resp_header(approved, "cache-control") == ["no-store"]
+        assert get_resp_header(approved, "referrer-policy") == ["no-referrer"]
 
-      bad =
-        Plug.Test.conn(:get, callback)
-        |> put_req_header(
-          "cookie",
-          "__Host-audi_state=" <> Base.url_encode64(:crypto.strong_rand_bytes(32), padding: false)
-        )
-        |> Browser.callback(c.client)
+        bad =
+          Plug.Test.conn(:get, callback)
+          |> put_req_header(
+            "cookie",
+            "__Host-audi_state=" <>
+              Base.url_encode64(:crypto.strong_rand_bytes(32), padding: false)
+          )
+          |> Browser.callback(c.client)
 
-      assert bad.status == 403
-      refute Map.has_key?(bad.resp_cookies, "__Host-audi_session")
+        assert bad.status == 403
+        refute Map.has_key?(bad.resp_cookies, "__Host-audi_session")
 
-      callback_conn =
-        Plug.Test.conn(:get, callback)
-        |> put_req_header("cookie", "__Host-audi_state=#{state}; __Host-audi_return=#{return}")
+        callback_conn =
+          Plug.Test.conn(:get, callback)
+          |> put_req_header("cookie", "__Host-audi_state=#{state}; __Host-audi_return=#{return}")
 
-      completed = Browser.callback(callback_conn, c.client)
-      assert completed.status == 303
-      assert get_resp_header(completed, "location") == ["/path?view=one"]
-      cookie = completed.resp_cookies["__Host-audi_session"]
-      assert cookie.secure and cookie.http_only and cookie.path == "/"
-      assert cookie.same_site == "Lax" and Map.get(cookie, :domain) == nil
+        completed = Browser.callback(callback_conn, c.client)
+        assert completed.status == 303
+        assert get_resp_header(completed, "location") == ["/path?view=one"]
+        cookie = completed.resp_cookies["__Host-audi_session"]
+        assert cookie.secure and cookie.http_only and cookie.path == "/"
+        assert cookie.same_site == "Lax" and Map.get(cookie, :domain) == nil
 
-      assert {:ok, stream} =
-               Audi.Control.Client.open_web(c.client, c.endpoint.label, app_port, cookie.value)
+        assert {:ok, stream} =
+                 Audi.Control.Client.open_web(c.client, c.endpoint.label, app_port, cookie.value)
 
-      assert stream.user_id == c.owner.id
-      assert {:ok, _} = Audi.Control.Client.renew_web(c.client, stream.ticket, stream)
-      assert Browser.callback(callback_conn, c.client).status == 403
+        assert stream.user_id == c.owner.id
+        assert {:ok, _} = Audi.Control.Client.renew_web(c.client, stream.ticket, stream)
+        assert Browser.callback(callback_conn, c.client).status == 403
 
-      login_token = get_session(signed, "user_token")
-      :ok = AshAuthentication.TokenResource.Actions.revoke(Marshall.Accounts.Token, login_token)
-      assert {:error, _} = Audi.Control.Client.renew_web(c.client, stream.ticket, stream)
+        login_token = get_session(signed, "user_token")
+        :ok = AshAuthentication.TokenResource.Actions.revoke(Marshall.Accounts.Token, login_token)
+        assert {:error, _} = Audi.Control.Client.renew_web(c.client, stream.ticket, stream)
 
-      assert {:error, :authentication_required} =
-               Audi.Control.Client.open_web(c.client, c.endpoint.label, app_port, cookie.value)
+        assert {:error, :authentication_required} =
+                 Audi.Control.Client.open_web(c.client, c.endpoint.label, app_port, cookie.value)
 
-      assert {:ok, %{closed: true}} = Audi.Control.Client.close_web(c.client, stream.ticket)
-    end
+        assert {:ok, %{closed: true}} = Audi.Control.Client.close_web(c.client, stream.ticket)
+      end,
+      test_cases: 100
+    )
   end
 
   test "malformed tickets cannot establish a return URL", c do

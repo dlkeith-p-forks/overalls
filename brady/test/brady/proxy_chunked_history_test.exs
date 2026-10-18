@@ -24,32 +24,30 @@ defmodule Brady.ProxyChunkedHistoryTest do
   # Empty destination policy MUST remain a loopback fixture override and MUST NOT
   # establish public destination admission, TLS, interception or guest isolation.
   property "chunked proxy histories reuse only complete public parser results" do
-    check all(
-            chunks <-
-              list_of(binary(min_length: 2, max_length: 2048), min_length: 1, max_length: 4),
-            mode <- member_of([:complete, :trailer, :truncated, :malformed, :private, :overflow]),
-            cut <- member_of([1, 2, 7, 31, 65_536]),
-            max_runs: 6
-          ) do
-      {:ok, supervisor} = Task.Supervisor.start_link()
-      Process.unlink(supervisor)
+    chunks =
+      draw(
+        "chunks",
+        list_of(binary(min_length: 2, max_length: 2048), min_length: 1, max_length: 4)
+      )
 
-      Hegel.on_cleanup(fn ->
-        Process.exit(supervisor, :shutdown)
-      end)
+    mode =
+      draw("mode", member_of([:complete, :trailer, :truncated, :malformed, :private, :overflow]))
 
-      for {parts, outcome} <- [
-            {chunks, mode},
-            {[], :complete},
-            {chunks, :complete},
-            {chunks, :trailer},
-            {chunks, :truncated},
-            {chunks, :malformed},
-            {chunks, :private},
-            {chunks, :overflow}
-          ] do
-        history(supervisor, parts, outcome, cut)
-      end
+    cut = draw("cut", member_of([1, 2, 7, 31, 65536]))
+
+    supervisor = Overalls.HegelFixtures.start_supervised!(Task.Supervisor)
+
+    for {parts, outcome} <- [
+          {chunks, mode},
+          {[], :complete},
+          {chunks, :complete},
+          {chunks, :trailer},
+          {chunks, :truncated},
+          {chunks, :malformed},
+          {chunks, :private},
+          {chunks, :overflow}
+        ] do
+      history(supervisor, parts, outcome, cut)
     end
   end
 

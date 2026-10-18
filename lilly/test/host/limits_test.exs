@@ -61,20 +61,26 @@ defmodule Lilly.Host.LimitsTest do
   } do
     leaf = group(root, "guests", "max 100000", "max", "0-7")
 
-    check all(period <- integer(1..1_000_000_000_000_000_000), cores <- integer(1..8)) do
-      quota = cores * period - 1
-      File.write!(Path.join(leaf, "cpu.max"), "#{quota} #{period}")
-      assert {:ok, limits} = Limits.read(root, leaf, inventory)
-      assert limits.effective_cores == cores - 1
-    end
+    Hegel.check(
+      fn ->
+        period = draw("period", integer(1..1_000_000_000_000_000_000))
+        cores = draw("cores", integer(1..8))
+        quota = cores * period - 1
+        File.write!(Path.join(leaf, "cpu.max"), "#{quota} #{period}")
+        assert {:ok, limits} = Limits.read(root, leaf, inventory)
+        assert limits.effective_cores == cores - 1
+      end,
+      []
+    )
   end
 
   property "CPU ranges count distinct processors without expanding large lists" do
-    check all(a <- integer(0..10000), length <- integer(1..10000), gap <- integer(1..100)) do
-      assert {:ok, count} = Limits.cpuset_count("#{a}-#{a + length - 1},#{a + length + gap}")
-      assert count == length + 1
-      assert :error = Limits.cpuset_count("#{a}-#{a + length - 1},#{a}")
-    end
+    a = draw("a", integer(0..10000))
+    length = draw("length", integer(1..10000))
+    gap = draw("gap", integer(1..100))
+    assert {:ok, count} = Limits.cpuset_count("#{a}-#{a + length - 1},#{a + length + gap}")
+    assert count == length + 1
+    assert :error = Limits.cpuset_count("#{a}-#{a + length - 1},#{a}")
   end
 
   defp group(parent, name, cpu, memory, cpuset) do

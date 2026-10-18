@@ -5,19 +5,17 @@ defmodule Brady.Cache.RangeTest do
   alias Brady.Cache.Range
 
   property "selected ranges remain entirely within the complete object" do
-    check all(
-            size <- integer(0..100_000),
-            first <- integer(0..200_000),
-            last <- integer(0..200_000)
-          ) do
-      for range <- ["bytes=#{first}-#{last}", "bytes=#{first}-", "bytes=-#{last}"] do
-        case Range.select([{"range", range}], [], size) do
-          {:partial, offset, length} ->
-            assert offset >= 0 and length > 0 and offset + length <= size
+    size = draw("size", integer(0..100_000))
+    first = draw("first", integer(0..200_000))
+    last = draw("last", integer(0..200_000))
 
-          other ->
-            assert other in [:upstream, :unsatisfiable]
-        end
+    for range <- ["bytes=#{first}-#{last}", "bytes=#{first}-", "bytes=-#{last}"] do
+      case Range.select([{"range", range}], [], size) do
+        {:partial, offset, length} ->
+          assert offset >= 0 and length > 0 and offset + length <= size
+
+        other ->
+          assert other in [:upstream, :unsatisfiable]
       end
     end
   end

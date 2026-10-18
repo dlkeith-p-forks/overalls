@@ -36,11 +36,33 @@ mod daemon {
         loop {
             match mmds::fetch(Duration::from_secs(5)) {
                 Ok(document) => {
+                    lyra::guest::git_identity::install(
+                        std::path::Path::new(r"C:\overalls\git-identity"),
+                        document.git_identity.as_ref(),
+                    )?;
+                    let status = std::process::Command::new(GIT)
+                        .args([
+                            "config",
+                            "--system",
+                            "--fixed-value",
+                            "--replace-all",
+                            "include.path",
+                            "C:/overalls/git-identity/gitconfig",
+                            "C:/overalls/git-identity/gitconfig",
+                        ])
+                        .stdin(std::process::Stdio::null())
+                        .stdout(std::process::Stdio::null())
+                        .stderr(std::process::Stdio::null())
+                        .status()?;
+                    if !status.success() {
+                        return Err(io::Error::other("git identity unavailable"));
+                    }
+
                     return Ok(Binding {
                         placement_id: document.placement,
                         execution_epoch: document.execution_epoch,
                         boot_challenge: document.boot_challenge,
-                    })
+                    });
                 }
                 Err(_) if started.elapsed() < IDENTITY_BUDGET => {
                     thread::sleep(Duration::from_secs(2));

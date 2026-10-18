@@ -20,36 +20,34 @@ defmodule Marshall.Compute.HostLivenessTest do
     capacity = HostLiveness.capacity_ms()
     authority = HostLiveness.authority_ms()
 
-    check all(
-            session <- one_of([constant(nil), constant("session")]),
-            ages <- list_of(integer(-5_000..(authority * 2)), min_length: 1, max_length: 20)
-          ) do
-      for age <- ages do
-        expected =
-          cond do
-            is_nil(session) -> :disconnected
-            age < 0 -> :lost
-            age <= capacity -> :live
-            age <= authority -> :late
-            true -> :lost
-          end
+    session = draw("session", one_of([constant(nil), constant("session")]))
+    ages = draw("ages", list_of(integer(-5000..(authority * 2)), min_length: 1, max_length: 20))
 
-        state = HostLiveness.state(session, at(age), @now)
-        assert state == expected
+    for age <- ages do
+      expected =
+        cond do
+          is_nil(session) -> :disconnected
+          age < 0 -> :lost
+          age <= capacity -> :live
+          age <= authority -> :late
+          true -> :lost
+        end
 
-        if session && HostLiveness.capacity_fresh?(at(age), @now),
-          do: assert(HostLiveness.authority?(session, at(age), @now))
-      end
+      state = HostLiveness.state(session, at(age), @now)
+      assert state == expected
 
-      authorized =
-        ages
-        |> Enum.filter(&(&1 >= 0))
-        |> Enum.sort()
-        |> Enum.map(&HostLiveness.authority?(session, at(&1), @now))
-
-      # Once authority is lost with increasing age it never comes back.
-      assert authorized == Enum.sort(authorized, :desc)
+      if session && HostLiveness.capacity_fresh?(at(age), @now),
+        do: assert(HostLiveness.authority?(session, at(age), @now))
     end
+
+    authorized =
+      ages
+      |> Enum.filter(&(&1 >= 0))
+      |> Enum.sort()
+      |> Enum.map(&HostLiveness.authority?(session, at(&1), @now))
+
+    # Once authority is lost with increasing age it never comes back.
+    assert authorized == Enum.sort(authorized, :desc)
   end
 
   test "a missing report or session never grants anything" do

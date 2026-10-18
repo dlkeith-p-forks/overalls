@@ -1,11 +1,10 @@
 defmodule Marshall.Compute.RelocationRetry do
-  @moduledoc "Retained user request to stop and reactivate only a committed destination."
+  @moduledoc "Retained historical destination retry requests; current admission creates none."
   use Ash.Resource,
     otp_app: :marshall,
     domain: Marshall.Compute,
     data_layer: AshPostgres.DataLayer,
-    authorizers: [Marshall.Authorization.AshAuthorizer],
-    extensions: [AshStateMachine]
+    authorizers: [Marshall.Authorization.AshAuthorizer]
 
   postgres do
     table "compute_relocation_retries"
@@ -34,52 +33,21 @@ defmodule Marshall.Compute.RelocationRetry do
   end
 
   # @cc [owner:ghuntley,label:recovery;concurrency] relocation-retry-retained-identity
-  # Each actor/relocation/key MUST retain one retry and its immutable stop authority.
-  # At most one unfinished retry may exist per relocation. Activation references
-  # MUST name a later generation of that same relocation; supersession grants no
-  # activation. Previous failed readiness results MUST remain immutable history.
-  state_machine do
-    state_attribute :status
-    initial_states [:pending]
-    default_initial_state :pending
-
-    transitions do
-      transition :activate, from: [:pending], to: :activated
-      transition :supersede, from: [:pending], to: :superseded
-    end
-  end
-
+  # Every retained actor/relocation/key MUST identify one immutable retry and its
+  # original stop authority. Historical activation references name a later
+  # generation of that relocation; supersession grants no execution authority.
+  # Current public actions MUST NOT create, activate or alter these records.
   actions do
     defaults [:read]
-
-    create :record do
-      accept [
-        :relocation_id,
-        :vm_id,
-        :requested_by_id,
-        :request_key,
-        :stop_operation_id,
-        :stop_generation
-      ]
-    end
-
-    update :activate do
-      accept [:start_operation_id, :start_generation, :finished_at]
-      change transition_state(:activated)
-    end
-
-    update :supersede do
-      accept [:finished_at]
-      change transition_state(:superseded)
-    end
-  end
-
-  changes do
-    change Marshall.Compute.LifecycleAudit, on: [:create, :update, :destroy]
   end
 
   attributes do
     uuid_primary_key :id
+
+    attribute :status, :atom,
+      allow_nil?: false,
+      default: :pending,
+      constraints: [one_of: [:pending, :activated, :superseded]]
 
     attribute :request_key, :string,
       allow_nil?: false,

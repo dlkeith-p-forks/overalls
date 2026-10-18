@@ -74,6 +74,8 @@ defmodule Marshall.Compute.Outcomes do
   # intent, and future generations MUST be rejected. A matching recorded source
   # cleanup delete may complete its operation without mutating destination state;
   # capacity remains held for the relocation coordinator.
+  # A running resume MUST carry the exact immutable commanded checkpoint;
+  # omitted continuation evidence MUST NOT complete a resume or grant readiness.
   defp record!(host_id, outcome, encoded) do
     vm =
       VirtualMachine
@@ -94,7 +96,23 @@ defmodule Marshall.Compute.Outcomes do
 
           unless compatible?(kind, outcome.state), do: Ledger.rollback(:invalid_outcome)
 
-          if Map.get(outcome, :guest_ready) == true and kind not in [:provision, :start],
+          if kind == :resume do
+            case Map.fetch(outcome, :checkpoint) do
+              {:ok, checkpoint} ->
+                unless OverallsProtocol.Checkpoint.encode(checkpoint) ==
+                         operation.command_snapshot["checkpoint"],
+                       do: Ledger.rollback(:invalid_outcome)
+
+              :error ->
+                if outcome.state == :running, do: Ledger.rollback(:invalid_outcome)
+            end
+          end
+
+          if kind == :pause and Map.has_key?(outcome, :checkpoint) and
+               outcome.checkpoint.memory_bytes != operation.command_snapshot["memory_bytes"],
+             do: Ledger.rollback(:invalid_outcome)
+
+          if Map.get(outcome, :guest_ready) == true and kind not in [:provision, :start, :resume],
             do: Ledger.rollback(:invalid_outcome)
 
           operation
@@ -194,6 +212,12 @@ defmodule Marshall.Compute.Outcomes do
 
     [operation] = Ledger.read!(Operation, id: outcome.operation_id)
 
+    if Map.has_key?(outcome, :checkpoint) do
+      Ledger.update!(vm, :checkpoint, %{
+        current_checkpoint: OverallsProtocol.Checkpoint.encode(outcome.checkpoint)
+      })
+    end
+
     record_activation_phase(operation, outcome)
 
     if operation.clone_request_id do
@@ -209,11 +233,27 @@ defmodule Marshall.Compute.Outcomes do
     relocating = RelocationGuard.lifecycle_busy?(vm, operation.kind)
 
     case {vm.desired_state, operation.kind, outcome.state} do
-      {:running, kind, :running} when kind in [:provision, :start] ->
+      {:running, kind, :running} when kind in [:provision, :start, :resume] ->
+        complete!(operation, outcome)
+        []
+
+      {:paused, :pause, :paused} ->
+        if relocating and reservation.compute_held do
+          Ledger.update!(reservation, :hold_compute, %{memory_bytes: reservation.memory_bytes})
+        else
+          Ledger.update!(reservation, :release_compute, %{})
+        end
+
+        complete!(operation, outcome)
+        []
+
+      {:paused, :pause, :failed} ->
         complete!(operation, outcome)
         []
 
       {:stopped, :stop, :stopped} ->
+        Ledger.update!(vm, :checkpoint, %{current_checkpoint: nil})
+        Ledger.update!(reservation, :release_checkpoint, %{})
         unless relocating, do: Ledger.update!(reservation, :release_compute, %{})
         complete!(operation, outcome)
         []
@@ -233,13 +273,14 @@ defmodule Marshall.Compute.Outcomes do
 
         []
 
-      {:running, kind, :failed} when kind in [:provision, :start] ->
+      {:running, kind, :failed} when kind in [:provision, :start, :resume] ->
         cond do
           relocating ->
             complete!(operation, outcome)
             []
 
-          outcome.reason == :crashed and reservation.compute_held ->
+          operation.kind != :resume and vm.current_checkpoint == nil and
+            outcome.reason == :crashed and reservation.compute_held ->
             recover!(vm, operation, reservation, outcome)
 
           true ->
@@ -368,7 +409,7 @@ defmodule Marshall.Compute.Outcomes do
   defp all_reclaimed?(vm_id) do
     Enum.all?(Ledger.read!(Reservation, vm_id: vm_id), fn reservation ->
       not reservation.compute_held and not reservation.disk_held and
-        reservation.temporary_disk_bytes == 0
+        reservation.temporary_disk_bytes == 0 and reservation.checkpoint_bytes == 0
     end)
   end
 
@@ -421,9 +462,10 @@ defmodule Marshall.Compute.Outcomes do
 
   defp record_activation_phase(_, _), do: :ok
 
-  defp compatible?(kind, state) when kind in [:provision, :start],
+  defp compatible?(kind, state) when kind in [:provision, :start, :resume],
     do: state in [:running, :failed, :unknown]
 
+  defp compatible?(:pause, state), do: state in [:paused, :failed, :unknown]
   defp compatible?(:resize, state), do: state in [:stopped, :unknown]
   defp compatible?(:stop, state), do: state in [:stopped, :unknown]
   defp compatible?(:delete, state), do: state in [:deleted, :unknown]

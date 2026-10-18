@@ -16,7 +16,7 @@ defmodule Marshall.Compute.RelocationImports do
 
   # @cc [owner:ghuntley,label:security;recovery] import-exchange-current-destination
   # Import work MUST authenticate and lock the current destination session before
-  # VM serialization. Only a verified received final disk under unchanged stopped
+  # VM serialization. Only a verified received final disk/checkpoint under unchanged quiescent
   # source authority and retained holds/slots may be offered. Persist request intent
   # before issuing its renewable 180-second control lease. Receipts MUST match that
   # retained request, descriptor and local GUID; conflicting batches roll back.

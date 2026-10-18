@@ -6,25 +6,22 @@ defmodule Lilly.VM.JailTest do
   alias Lilly.VM.Jail
 
   property "accepted pool paths leave room for a full VM socket address, measured in bytes" do
-    check all(
-            name <- string(:alphanumeric, min_length: 1, max_length: 80),
-            unicode <- integer(0..20)
-          ) do
-      path = "/" <> name <> String.duplicate("é", unicode)
-      pool = struct(Pool, path: path)
+    name = draw("name", string(:alphanumeric, min_length: 1, max_length: 80))
+    unicode = draw("unicode", integer(0..20))
+    path = "/" <> name <> String.duplicate("é", unicode)
+    pool = struct(Pool, path: path)
 
-      actual =
-        Path.join([
-          path,
-          ".lilly-jails",
-          "firecracker",
-          Lilly.UUID.generate(),
-          "root",
-          "api.sock"
-        ])
+    actual =
+      Path.join([
+        path,
+        ".lilly-jails",
+        "firecracker",
+        Lilly.UUID.generate(),
+        "root",
+        "api.sock"
+      ])
 
-      assert Jail.supports_pool?(pool) == byte_size(actual) < 108
-    end
+    assert Jail.supports_pool?(pool) == byte_size(actual) < 108
   end
 
   test "the maximum accepted path can bind a real Unix socket" do

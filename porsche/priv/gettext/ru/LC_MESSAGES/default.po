@@ -1,0 +1,203 @@
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+msgid "Porsche machine management. Type help."
+msgstr "Управление машинами Porsche. Введите help."
+
+msgid "Docs:"
+msgstr "Документация:"
+
+msgid "Show command help."
+msgstr "Показать справку по командам."
+
+msgid "Show the authenticated account."
+msgstr "Показать аутентифицированную учётную запись."
+
+msgid "List available images."
+msgstr "Показать доступные образы."
+
+msgid "List machines you can access."
+msgstr "Показать машины, к которым у вас есть доступ."
+
+msgid "Inspect a machine by name or UUID."
+msgstr "Просмотреть машину по имени или UUID."
+
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "Создать машину. Максимальный диск: 500 GiB. --source клонирует публичный репозиторий GitHub, GitLab, Codeberg или Bitbucket в гостевую систему."
+
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "Поставить в очередь независимую полную копию диска машины."
+
+msgid "Move a machine to an automatically selected host."
+msgstr "Переместить машину на автоматически выбранный хост."
+
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "Изменить процессор и память машины; диск можно только увеличить. Работающая машина будет остановлена и перезапущена."
+
+msgid "Retry a failed clone or relocation request."
+msgstr "Повторить неудачный запрос клонирования или перемещения."
+
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "Отменить неопубликованный запрос клонирования или незафиксированный запрос перемещения."
+
+msgid "Start a machine."
+msgstr "Запустить машину."
+
+msgid "Stop a machine, retaining its disk."
+msgstr "Остановить машину, сохранив её диск."
+
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "Удалить машину и её диск. Запрещено, пока владелец закрепил машину."
+
+msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
+msgstr "Закрепить машину в начале ваших списков. Пока она принадлежит вам и закреплена, удалить её невозможно."
+
+msgid "Remove your pin from a machine."
+msgstr "Снять своё закрепление машины."
+
+msgid "List access grants."
+msgstr "Показать разрешения доступа."
+
+msgid "Grant viewer, operator or manager access."
+msgstr "Предоставить доступ viewer, operator или manager."
+
+msgid "Revoke an account's shared access."
+msgstr "Отозвать общий доступ учётной записи."
+
+msgid "List your SSH keys."
+msgstr "Показать ваши SSH-ключи."
+
+msgid "Revoke one of your SSH keys."
+msgstr "Отозвать один из ваших SSH-ключей."
+
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "Создать или заменить именованную интеграцию по адресу https://NAME.integration.internal."
+
+msgid "Remove a named integration."
+msgstr "Удалить именованную интеграцию."
+
+msgid "List your integrations."
+msgstr "Показать ваши интеграции."
+
+msgid "Inspect an integration without secrets."
+msgstr "Просмотреть интеграцию без секретов."
+
+msgid "Make an integration available to a machine."
+msgstr "Сделать интеграцию доступной для машины."
+
+msgid "Remove a machine's explicit availability."
+msgstr "Удалить явно заданную доступность машины."
+
+msgid "Create a team you own."
+msgstr "Создать команду, владельцем которой будете вы."
+
+msgid "List your teams and roles."
+msgstr "Показать ваши команды и роли."
+
+msgid "List a team's members."
+msgstr "Показать участников команды."
+
+msgid "Add or change an admin or member."
+msgstr "Добавить или изменить администратора или участника."
+
+msgid "Remove an account's membership."
+msgstr "Удалить учётную запись из команды."
+
+msgid "Offer team ownership to an admin."
+msgstr "Предложить администратору владение командой."
+
+msgid "Accept a pending ownership offer."
+msgstr "Принять ожидающее предложение о владении."
+
+msgid "Decline a pending ownership offer."
+msgstr "Отклонить ожидающее предложение о владении."
+
+msgid "Cancel your pending ownership offer."
+msgstr "Отменить своё ожидающее предложение о владении."
+
+msgid "Inspect a previously accepted request."
+msgstr "Просмотреть ранее принятый запрос."
+
+msgid "Close this interactive channel."
+msgstr "Закрыть этот интерактивный канал."
+
+msgid "We don't recognize this SSH key:\n  "
+msgstr "Этот SSH-ключ нам неизвестен:\n  "
+
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nОткройте эту ссылку, войдите и подтвердите соответствующий отпечаток:\n  "
+
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
+msgstr "\n\nНе закрывайте это SSH-соединение, пока подтверждаете ключ.\n"
+
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+msgstr "Ссылки подтверждения действуют %{minutes} минут или до закрытия этого соединения.\n"
+
+msgid "After approval, retry your command here.\n"
+msgstr "После подтверждения повторите команду здесь.\n"
+
+msgid "\nOpen an interactive Porsche connection without a remote command:"
+msgstr "\nОткройте интерактивное соединение Porsche без удалённой команды:"
+
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "Не закрывайте это соединение, пока подтверждаете ключ в браузере,\n"
+
+msgid "then retry your original command.\n"
+msgstr "затем повторите исходную команду.\n"
+
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr "Добро пожаловать в Overalls.\n\nДля этого соединения нужна SSH-конфигурация Overalls.\n\n"
+
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr "Сейчас не удалось проверить этот SSH-ключ. Повторите попытку чуть позже.\n\n"
+
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr "Не удалось авторизовать это SSH-соединение. Проверьте свой доступ к машине и повторите попытку.\n\n"
+
+msgid "Register or check your key by connecting to:\n  ssh "
+msgstr "Зарегистрируйте или проверьте свой ключ, подключившись к:\n  ssh "
+
+msgid "\nOr manage your keys at:\n  "
+msgstr "\nИли управляйте ключами по адресу:\n  "
+
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+msgstr "Зарегистрируйте или проверьте свой SSH-ключ в настройках учётной записи Overalls > SSH-ключи.\n\n"
+
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "Следуйте инструкциям подтверждения в браузере, затем выполните команду настройки\n"
+
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "со страницы машины и подключитесь снова без root@.\n"
+
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "Это соединение не авторизовано. Войдите и повторите попытку."
+
+msgid "You do not have permission to perform this action."
+msgstr "У вас нет разрешения на это действие."
+
+msgid "Invalid command. Type help to see available commands."
+msgstr "Недопустимая команда. Введите help для просмотра доступных команд."
+
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr "Сервис временно недоступен. Повторите попытку чуть позже."
+
+msgid "Approve this SSH key in your browser, then retry the command."
+msgstr "Подтвердите этот SSH-ключ в браузере, затем повторите команду."
+
+msgid "The requested resource could not be found."
+msgstr "Запрошенный ресурс не найден."
+
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "Неожиданные входные данные. Откройте новое SSH-соединение."
+
+msgid "The command could not be completed: %{reason}"
+msgstr "Не удалось завершить команду: %{reason}"
+
+msgid "Request %{id}: submitting"
+msgstr "Запрос %{id}: отправка"
+
+msgid "Request %{id}: waiting for completion"
+msgstr "Запрос %{id}: ожидание завершения"

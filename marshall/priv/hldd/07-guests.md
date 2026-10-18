@@ -1780,3 +1780,9 @@ installation can therefore be placed between two known checkpoints and examined
 without rerunning it. The launcher keeps Firecracker's own log and metrics next
 to the disk copy for the same reason. See
 [docs/guests/windows-guests.md](repo:docs/guests/windows-guests.md).
+
+## Git author defaults
+
+New machines capture the creating account’s Git username and email from Settings. The defaults are Overalls and noreply@overalls.dev. Boot-bound metadata supplies a protected system Git include even without a repository checkout. Restart and relocation retain the snapshot; settings changes do not update existing machines. Ordinary Git configuration precedence and guest sudo permissions remain applicable.
+
+New identity-bearing admissions require an image manifest advertising `git_identity_version: 1`. Old firmware agents reject unknown MMDS fields, so artifacts and consumers must be upgraded before enabling these admissions. An older image without this capability refuses new machine creation rather than receiving incompatible boot metadata. Existing machines without an identity snapshot continue to omit the metadata. Native reviewed-image qualification remains a separate requirement.

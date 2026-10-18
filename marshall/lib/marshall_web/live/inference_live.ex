@@ -35,7 +35,7 @@ defmodule MarshallWeb.InferenceLive do
 
       _ ->
         {:noreply,
-         socket |> put_flash(:error, "AI usage is unavailable.") |> redirect(to: ~p"/machines")}
+         socket |> put_flash(:error, gettext("AI usage is unavailable.")) |> redirect(to: ~p"/machines")}
     end
   end
 
@@ -55,7 +55,7 @@ defmodule MarshallWeb.InferenceLive do
   defp number(nil), do: "0"
   defp number(%Decimal{} = number), do: Decimal.to_string(number, :normal)
   defp number(number), do: to_string(number)
-  defp tokens(nil, _), do: "Unknown"
+  defp tokens(nil, _), do: gettext("Unknown")
 
   defp tokens(completion, field) do
     case completion["tokens"][field] do
@@ -78,61 +78,61 @@ defmodule MarshallWeb.InferenceLive do
     >
       <section id="inference-usage" class="stack">
         <UI.heading
-          title={if @live_action == :admin, do: "Fleet AI usage", else: "Your AI usage"}
-          subtitle="AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+          title={if @live_action == :admin, do: gettext("Fleet AI usage"), else: gettext("Your AI usage")}
+          subtitle={gettext("AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown.")}
         >
           <:actions>
             <.link
               id="usage-export"
               href={base(@live_action) <> "/export?" <> URI.encode_query(@filters)}
               class="console-button"
-            >Export AI usage</.link>
+            >{gettext("Export AI usage")}</.link>
           </:actions>
         </UI.heading>
         <.kv id="usage-totals">
-          <:item title="AI requests">{number(@totals[:requests])}</:item>
-          <:item title="Incomplete AI reports">{number(@totals[:unknown_requests])}</:item>
-          <:item title="Reported input tokens">{number(@totals[:input_tokens])}</:item>
-          <:item title="Reported output tokens">{number(@totals[:output_tokens])}</:item>
+          <:item title={gettext("AI requests")}>{number(@totals[:requests])}</:item>
+          <:item title={gettext("Incomplete AI reports")}>{number(@totals[:unknown_requests])}</:item>
+          <:item title={gettext("Reported input tokens")}>{number(@totals[:input_tokens])}</:item>
+          <:item title={gettext("Reported output tokens")}>{number(@totals[:output_tokens])}</:item>
         </.kv>
-        <UI.panel title="AI requests · last 30 days">
+        <UI.panel title={gettext("AI requests · last 30 days")}>
           <figure>
             <pre
               id="usage-chart"
               class="columns"
               role="img"
-              aria-label="Daily AI request counts over the past 30 days"
+              aria-label={gettext("Daily AI request counts over the past 30 days")}
             >{usage_chart(@chart)}</pre>
             <figcaption>
-              One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month.
+              {gettext("One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month.")}
             </figcaption>
           </figure>
         </UI.panel>
         <.form for={@form} id="usage-filter" phx-submit="filter" class="panel stack">
-          <h2>Filter</h2>
+          <h2>{gettext("Filter")}</h2>
           <div class="grid">
             <.input
               field={@form[:provider]}
               type="select"
-              label="Provider"
-              options={[{"All providers", ""}, {"OpenAI", "openai"}, {"Anthropic", "anthropic"}]}
+              label={gettext("Provider")}
+              options={[{gettext("All providers"), ""}, {gettext("OpenAI"), "openai"}, {gettext("Anthropic"), "anthropic"}]}
             />
-            <.input field={@form[:model]} label="Model" placeholder="Exact model ID" maxlength="256" />
+            <.input field={@form[:model]} label={gettext("Model")} placeholder={gettext("Exact model ID")} maxlength="256" />
           </div>
           <div class="row actions">
-            <button class="console-button primary">Apply</button>
+            <button class="console-button primary">{gettext("Apply")}</button>
           </div>
         </.form>
         <div :if={!@empty?} class="table-flow">
           <table>
             <thead>
               <tr>
-                <th class="width-min">Time</th>
-                <th class="width-auto">Model</th>
-                <th class="width-min num">Input tokens</th>
-                <th class="width-min num">Output tokens</th>
-                <th class="width-min">Outcome</th>
-                <th class="width-min">Details</th>
+                <th class="width-min">{gettext("Time")}</th>
+                <th class="width-auto">{gettext("Model")}</th>
+                <th class="width-min num">{gettext("Input tokens")}</th>
+                <th class="width-min num">{gettext("Output tokens")}</th>
+                <th class="width-min">{gettext("Outcome")}</th>
+                <th class="width-min">{gettext("Details")}</th>
               </tr>
             </thead>
             <tbody id="usage-rows" phx-update="stream">
@@ -145,38 +145,38 @@ defmodule MarshallWeb.InferenceLive do
                 </td>
                 <td class="num">{tokens(row.completion, "input_tokens")}</td>
                 <td class="num">{tokens(row.completion, "output_tokens")}</td>
-                <td>{if row.completion, do: row.completion["outcome"], else: "Unreported"}</td>
+                <td>{if row.completion, do: row.completion["outcome"], else: gettext("Unreported")}</td>
                 <td>
                   <details>
-                    <summary>Inspect</summary>
+                    <summary>{gettext("Inspect")}</summary>
                     <dl class="kv stacked">
                       <div>
-                        <dt>Token cost estimate · USD</dt>
+                        <dt>{gettext("Token cost estimate · USD")}</dt>
                         <dd>
-                          {get_in(row.completion || %{}, ["cost_estimate", "usd"]) || "Unknown"}
+                          {get_in(row.completion || %{}, ["cost_estimate", "usd"]) || gettext("Unknown")}
                         </dd>
                       </div>
                       <div>
-                        <dt>Pricing source / version</dt>
+                        <dt>{gettext("Pricing source / version")}</dt>
                         <dd>
-                          {get_in(row.completion || %{}, ["cost_estimate", "source"]) || "Unknown"} / {get_in(
+                          {get_in(row.completion || %{}, ["cost_estimate", "source"]) || gettext("Unknown")} / {get_in(
                             row.completion || %{},
                             ["cost_estimate", "version"]
-                          ) || "Unknown"}
+                          ) || gettext("Unknown")}
                         </dd>
                       </div>
                       <div>
-                        <dt>AI request</dt><dd><code>{row.id}</code></dd>
+                        <dt>{gettext("AI request")}</dt><dd><code>{row.id}</code></dd>
                       </div>
                       <div>
-                        <dt>Machine</dt><dd><code>{row.vm_id}</code></dd>
+                        <dt>{gettext("Machine")}</dt><dd><code>{row.vm_id}</code></dd>
                       </div>
                       <div>
-                        <dt>Placement / epoch</dt>
+                        <dt>{gettext("Placement / epoch")}</dt>
                         <dd><code>{row.placement_id}</code> / {row.execution_epoch}</dd>
                       </div>
                       <div>
-                        <dt>AI usage report</dt>
+                        <dt>{gettext("AI usage report")}</dt>
                         <dd>
                           {if row.completion, do: row.completion["completeness"], else: "unknown"}
                         </dd>
@@ -189,13 +189,13 @@ defmodule MarshallWeb.InferenceLive do
           </table>
         </div>
         <p :if={@empty?} id="usage-empty" class="empty-state">
-          No AI requests match these filters.
+          {gettext("No AI requests match these filters.")}
         </p>
         <p :if={@next}>
           <.link
             id="usage-next"
             patch={base(@live_action) <> "?" <> URI.encode_query(Map.put(@filters, "after", @next))}
-          >Older AI requests →</.link>
+          >{gettext("Older AI requests →")}</.link>
         </p>
       </section>
     </Layouts.app>

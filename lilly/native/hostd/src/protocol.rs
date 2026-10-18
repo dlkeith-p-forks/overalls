@@ -44,7 +44,7 @@ const OP_END_INGRESS_BRIDGE: u8 = 16;
 /// Fixed TransferStream prefix: lease, timeout, rate, producer and consumer kinds.
 const STREAM_FIXED: usize = 8 + 4 + 4 + 1 + 1;
 /// Most NUL-terminated TransferStream fields (an SSH pull into a receive).
-const MAX_STREAM_FIELDS: usize = 13;
+const MAX_STREAM_FIELDS: usize = 14;
 /// Length of a durable job key.
 pub const JOB_KEY: usize = 32;
 
@@ -119,7 +119,7 @@ pub enum Request {
         lease: u64,
         timeout_ms: u32,
         rate: u32,
-        stream: crate::transfer::Stream,
+        stream: Box<crate::transfer::Stream>,
     },
     /// Dial TCP inside a VM network namespace and bridge it to the caller's
     /// own unconnected Unix stream socket, which travels with the request.
@@ -399,7 +399,7 @@ pub fn decode(bytes: &[u8]) -> Option<Envelope> {
             let state_length = usize::from(body[LAUNCH_FIXED - 2]);
             let namespace_length = usize::from(body[LAUNCH_FIXED - 1]);
             let rest = &body[LAUNCH_FIXED..];
-            if flags & !0b11 != 0
+            if flags & !0b111 != 0
                 || state_length == 0
                 || namespace_length == 0
                 || state_length + namespace_length >= rest.len()
@@ -417,6 +417,7 @@ pub fn decode(bytes: &[u8]) -> Option<Envelope> {
                     vcpus: body[72],
                     firmware: flags & 0b01 != 0,
                     logging: flags & 0b10 != 0,
+                    restore: flags & 0b100 != 0,
                     state_dir: rest[..state_length].to_vec(),
                     namespace: rest[state_length..state_length + namespace_length].to_vec(),
                     pool: rest[state_length + namespace_length..].to_vec(),
@@ -445,7 +446,7 @@ pub fn decode(bytes: &[u8]) -> Option<Envelope> {
                 lease: u64_at(body, 0)?,
                 timeout_ms,
                 rate,
-                stream: crate::transfer::Stream::decode(body[16], body[17], fields)?,
+                stream: Box::new(crate::transfer::Stream::decode(body[16], body[17], fields)?),
             }
         }
         OP_CANCEL if body.len() == 8 => Request::Cancel {
@@ -646,7 +647,11 @@ pub fn encode_request(envelope: &Envelope) -> Vec<u8> {
             out.extend(launch.uid.to_be_bytes());
             out.extend(launch.memory_bytes.to_be_bytes());
             out.push(launch.vcpus);
-            out.push(u8::from(launch.firmware) | (u8::from(launch.logging) << 1));
+            out.push(
+                u8::from(launch.firmware)
+                    | (u8::from(launch.logging) << 1)
+                    | (u8::from(launch.restore) << 2),
+            );
             out.push(launch.state_dir.len() as u8);
             out.push(launch.namespace.len() as u8);
             out.extend(&launch.state_dir);

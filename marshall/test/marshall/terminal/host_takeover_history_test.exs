@@ -29,87 +29,114 @@ defmodule Marshall.Terminal.HostTakeoverHistoryTest do
   # channel, observe the old WebSock process exit, reject its delayed hello and
   # retain a usable current successor. Explicit renewal delivery verifies the
   # renewal decision, not the five-second scheduler or per-frame database fencing.
+  @tag :hegel_case_sandbox
+  @tag timeout: 600_000
   property "live host channels cede on renewal and replacement across session takeovers",
-    test_cases: 3 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    Marshall.TerminalFixtures.drain_case_messages()
+    Hegel.on_cleanup(&Marshall.TerminalFixtures.drain_case_messages/0)
     fixture = Marshall.TerminalFixtures.terminal_fixture()
 
     server =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         {Bandit,
          plug: {HostSocket, %{observer: self()}}, ip: {127, 0, 0, 1}, port: 0, startup_log: false}
       )
 
     {:ok, {_, port}} = ThousandIsland.listener_info(server)
 
-    check all(
-            orders <- shuffle([:renew_first, :successor_first]),
-            guest_ids <- list_of(member_of([1, 2, 9_223_372_036_854_775_807]), length: 2),
-            test_cases: 3
-          ) do
-      binding = Marshall.TerminalFixtures.connect(fixture.credential.token, fixture.machine)
-      incumbent = accepted(port, fixture.credential.token, fixture.host.id, binding)
+    orders = draw("orders", shuffle([:renew_first, :successor_first]))
 
-      {incumbent, _binding} =
-        Enum.zip(orders, guest_ids)
-        |> Enum.reduce({incumbent, binding}, fn {order, guest_id}, {old, previous} ->
-          channel = attach(old, fixture.vm, guest_id)
-          output(old, channel, 1, "before-takeover")
-          assert {:ok, old_location} = Directory.lookup(fixture.host.id)
-          delayed = HostSocket.connect(port, fixture.credential.token)
+    guest_ids =
+      draw("guest_ids", list_of(member_of([1, 2, 9_223_372_036_854_775_807]), length: 2))
 
-          current = Marshall.TerminalFixtures.connect(fixture.credential.token, fixture.machine)
-          assert current.epoch > previous.epoch
+    binding = Marshall.TerminalFixtures.connect(fixture.credential.token, fixture.machine)
+    incumbent = accepted(port, fixture.credential.token, fixture.host.id, binding)
 
-          refute Directory.current_execution?(
-                   fixture.host.id,
-                   previous.session_id,
-                   previous.epoch
-                 )
+    {incumbent, _binding} =
+      Enum.zip(orders, guest_ids)
+      |> Enum.reduce({incumbent, binding}, fn {order, guest_id}, {old, previous} ->
+        channel = attach(old, fixture.vm, guest_id)
+        output(old, channel, 1, "before-takeover")
+        assert {:ok, old_location} = Directory.lookup(fixture.host.id)
+        delayed = HostSocket.connect(port, fixture.credential.token)
 
-          assert Directory.current_execution?(fixture.host.id, current.session_id, current.epoch)
+        current = Marshall.TerminalFixtures.connect(fixture.credential.token, fixture.machine)
+        assert current.epoch > previous.epoch
 
-          successor =
-            case order do
-              :renew_first ->
-                send(old.process, :renew_location)
-                Socket.closed(old)
+        refute Directory.current_execution?(
+                 fixture.host.id,
+                 previous.session_id,
+                 previous.epoch
+               )
 
-                assert {:error, :stream_unavailable} =
-                         Relay.local_stream(fixture.host.id, old_location.nonce)
+        assert Directory.current_execution?(fixture.host.id, current.session_id, current.epoch)
 
-                accepted(port, fixture.credential.token, fixture.host.id, current)
+        successor =
+          case order do
+            :renew_first ->
+              send(old.process, :renew_location)
+              Socket.closed(old)
 
-              :successor_first ->
-                successor = accepted(port, fixture.credential.token, fixture.host.id, current)
-                Socket.closed(old)
-                successor
-            end
+              assert_stream_retired(fixture.host.id, old_location.nonce)
 
-          assert {:ok, successor_pid} = Relay.stream_for(fixture.host.id)
-          assert successor_pid == successor.process
-          assert {:ok, new_location} = Directory.lookup(fixture.host.id)
-          refute new_location.nonce == old_location.nonce
-          assert {:error, _} = Directory.renew(fixture.host.id, old_location.nonce)
-          assert {:ok, ^new_location} = Directory.lookup(fixture.host.id)
+              accepted(port, fixture.credential.token, fixture.host.id, current)
 
-          assert {:error, :stream_unavailable} =
-                   Relay.local_stream(fixture.host.id, old_location.nonce)
+            :successor_first ->
+              successor = accepted(port, fixture.credential.token, fixture.host.id, current)
+              Socket.closed(old)
+              successor
+          end
 
-          assert :ok = HostSocket.send_binary(delayed, hello(fixture.host.id, previous))
-          Socket.closed(delayed)
-          assert {:ok, ^successor_pid} = Relay.stream_for(fixture.host.id)
-          assert {:ok, ^new_location} = Directory.lookup(fixture.host.id)
+        assert {:ok, successor_pid} = Relay.stream_for(fixture.host.id)
+        assert successor_pid == successor.process
+        assert {:ok, new_location} = Directory.lookup(fixture.host.id)
+        refute new_location.nonce == old_location.nonce
+        assert {:error, _} = Directory.renew(fixture.host.id, old_location.nonce)
+        assert {:ok, ^new_location} = Directory.lookup(fixture.host.id)
 
-          send(successor.process, :renew_location)
-          Socket.barrier(successor)
-          next_channel = attach(successor, fixture.vm, guest_id)
-          output(successor, next_channel, 1, "successor-output")
-          {successor, current}
-        end)
+        assert {:error, :stream_unavailable} =
+                 Relay.local_stream(fixture.host.id, old_location.nonce)
 
-      Socket.disconnect(incumbent)
-      assert {:ok, location} = Directory.lookup(fixture.host.id)
-      assert {:error, :stream_unavailable} = Relay.local_stream(fixture.host.id, location.nonce)
+        assert :ok = HostSocket.send_binary(delayed, hello(fixture.host.id, previous))
+        Socket.closed(delayed)
+        assert {:ok, ^successor_pid} = Relay.stream_for(fixture.host.id)
+        assert {:ok, ^new_location} = Directory.lookup(fixture.host.id)
+
+        send(successor.process, :renew_location)
+        Socket.barrier(successor)
+        next_channel = attach(successor, fixture.vm, guest_id)
+        output(successor, next_channel, 1, "successor-output")
+        {successor, current}
+      end)
+
+    Socket.disconnect(incumbent)
+    assert {:ok, location} = Directory.lookup(fixture.host.id)
+    assert_stream_retired(fixture.host.id, location.nonce)
+  end
+
+  # The test monitor and Relay receive independent DOWN signals. Observe the
+  # Relay's retirement rather than assuming its mailbox ran before ours.
+  @spec assert_stream_retired(String.t(), String.t()) :: :ok
+  defp assert_stream_retired(host_id, nonce) do
+    await_stream_retired(host_id, nonce, System.monotonic_time(:millisecond) + 1_000)
+  end
+
+  @spec await_stream_retired(String.t(), String.t(), integer()) :: :ok
+  defp await_stream_retired(host_id, nonce, deadline) do
+    case Relay.local_stream(host_id, nonce) do
+      {:error, :stream_unavailable} ->
+        :ok
+
+      {:ok, _pid} ->
+        assert System.monotonic_time(:millisecond) < deadline,
+               "Relay did not retire the dead stream within one second"
+
+        receive do
+        after
+          1 -> await_stream_retired(host_id, nonce, deadline)
+        end
     end
   end
 

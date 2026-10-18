@@ -24,9 +24,13 @@ defmodule MarshallWeb.AuthenticationPrivacy do
     conn
   end
 
-  # The account page at /settings carries passkey ceremonies and pasted SSH
-  # key material in one LiveView, so the whole settings tree is tagged.
-  def call(%{path_info: ["settings" | _]} = conn, _) do
+  def call(%{path_info: ["settings"]} = conn, _) do
+    Logger.metadata(marshall_authentication: true)
+    conn
+  end
+
+  def call(%{path_info: ["settings", page | _]} = conn, _)
+      when page in ["ssh-keys", "security"] do
     Logger.metadata(marshall_authentication: true)
     conn
   end
@@ -60,8 +64,8 @@ defmodule MarshallWeb.AuthenticationPrivacy do
 
   @spec on_mount(:default, map(), map(), Phoenix.LiveView.Socket.t()) ::
           {:cont, Phoenix.LiveView.Socket.t()}
-  def on_mount(:default, _params, _session, socket) do
+  def on_mount(:default, _params, session, socket) do
     Logger.metadata(marshall_authentication: true)
-    {:cont, socket}
+    {:cont, Marshall.Localization.assign_socket(socket, session)}
   end
 end

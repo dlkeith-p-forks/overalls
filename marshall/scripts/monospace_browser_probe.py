@@ -297,18 +297,79 @@ def check_machine_header(page: Page) -> None:
     )
 
 
+def label_style(page: Page, selector: str) -> dict[str, object]:
+    """Computed presentation of the first status label matching `selector`."""
+    value: object = evaluate_on(
+        page,
+        selector,
+        """({
+          text: node.textContent,
+          color: getComputedStyle(node).color,
+          background: getComputedStyle(node).backgroundColor,
+          weight: getComputedStyle(node).fontWeight,
+          style: getComputedStyle(node).fontStyle,
+          height: node.getBoundingClientRect().height,
+          page: getComputedStyle(document.documentElement).color,
+          pageBackground: getComputedStyle(document.documentElement).backgroundColor,
+        })""",
+    )
+    assert isinstance(value, dict), f"No status label matches {selector}"
+    return value
+
+
+def check_status_labels(page: Page) -> None:
+    """@cc [owner:ghuntley,label:product;verification] status-label-severity-presentation
+    Machine status labels MUST name the state in text and carry severity
+    without colour-only meaning: Failed is bold inverse video exactly one grid
+    row tall, Running is bold on the page colours, Stopped is plain weight on
+    the page colours, and the pinned/OS labels keep the secondary colour. The
+    fixture seeds these observations; they are not guest execution evidence.
+    """
+    row = line_height(page)
+    failed = label_style(page, ".status-label[data-state='failed']")
+    running = label_style(page, ".status-label[data-state='running'][data-tone='success']")
+    stopped = label_style(page, ".status-label[data-state='stopped']:not([data-tone])")
+    assert failed["text"] == "Failed" and running["text"] == "Running", "State text differs"
+    assert stopped["text"] == "Stopped", "Stopped label text differs"
+    assert failed["background"] == failed["page"] and failed["color"] == failed["pageBackground"], (
+        "Failed label is not inverse video"
+    )
+    assert failed["weight"] == "800" and failed["style"] == "normal", "Failed label weight differs"
+    height = failed["height"]
+    assert isinstance(height, (int, float)) and abs(float(height) - row) < 0.1, (
+        "Failed label is not one grid row tall"
+    )
+    assert running["background"] == "rgba(0, 0, 0, 0)" and running["weight"] == "800", (
+        "Running label is not bold on the page background"
+    )
+    assert stopped["background"] == "rgba(0, 0, 0, 0)" and stopped["weight"] == "500", (
+        "Stopped label is not plain weight on the page background"
+    )
+    assert stopped["color"] == stopped["page"], "Stopped label is not the page text colour"
+    assert running["color"] == running["page"], "Running label is not the page text colour"
+    assert failed["color"] != stopped["color"], "Failed and Stopped labels share a colour"
+
+
 def check_machine_pins(page: Page) -> None:
     """@cc [owner:ghuntley,label:product;verification] machines-pin-toggle-order
-    Pinning the second row MUST move it to the first row with its Pinned label
-    and pressed toggle, keep every row exactly once, and unpinning MUST restore
-    the id order. The probe waits for the LiveView connection before clicking.
+    Pinning a later row that offers a Pin control MUST move it to the first row
+    with its Pinned label and pressed toggle, keep every row exactly once, and
+    unpinning MUST restore the id order. Failed machines offer no Pin control,
+    so the probe picks the first pinnable row after the first; it waits for the
+    LiveView connection before clicking.
     """
     expect(page.locator("[data-phx-main].phx-connected")).to_have_count(1)
     rows = page.locator("#machines tr.machine-row")
     before = row_ids(page)
     assert len(before) >= 2, "The fixture owner needs at least two listed machines"
-    second = before[1]
-    toggle = rows.nth(1).locator("button.pin-toggle")
+    pinnable = [
+        index
+        for index in range(1, len(before))
+        if rows.nth(index).locator("button.pin-toggle[aria-pressed='false']").count() == 1
+    ]
+    assert pinnable, "No later machine row offers a Pin control"
+    second = before[pinnable[0]]
+    toggle = rows.nth(pinnable[0]).locator("button.pin-toggle")
     expect(toggle).to_have_attribute("aria-pressed", "false")
     expect(toggle).to_have_text("Pin")
     toggle.click()
@@ -943,7 +1004,9 @@ GRID_ROUTES = (
     "create",
     "machine",
     "boot-log",
-    "account",
+    "settings",
+    "security",
+    "ssh",
     "hldd",
 )
 
@@ -981,7 +1044,9 @@ def run(fixture: Context, artifacts: Path) -> None:
             "teams": "/teams",
             "git": "/git",
             "usage": "/usage",
-            "account": "/settings",
+            "settings": "/settings",
+            "security": "/settings/security",
+            "ssh": "/settings/ssh-keys",
             "hldd": "/hldd",
             "hldd-section": "/hldd/system",
         }
@@ -1011,6 +1076,9 @@ def run(fixture: Context, artifacts: Path) -> None:
                     expect(page.locator("#terminal-boot-view")).to_be_visible()
                     expect(page.locator("#terminal-status")).to_have_text("Boot log · read-only")
                     expect(page.locator("#terminal-create")).to_have_count(0)
+                if name in ("overview", "machines"):
+                    # Failed, running and stopped fixture machines in every theme.
+                    check_status_labels(page)
                 if name == "machines" and theme == "light":
                     check_machine_pins(page)
                     screenshot(page, artifacts, "machines-pinned")
@@ -1034,6 +1102,19 @@ def run(fixture: Context, artifacts: Path) -> None:
                         evaluate(page, "navigator.clipboard.readText()")
                         == page.locator("#machine-install-command").text_content()
                     )
+                if name == "settings":
+                    expect(page.locator("#git-settings-form")).to_be_visible()
+                    page.locator("#settings_git_username").fill("Browser Author")
+                    page.locator("#settings_git_email").fill("browser@example.test")
+                    page.locator("#settings_commit_trailers_enabled").uncheck()
+                    page.locator("#save-git-settings").click()
+                    expect(page.locator("#flash-info")).to_contain_text("Git settings saved")
+                    page.reload()
+                    expect(page.locator("#settings_git_username")).to_have_value("Browser Author")
+                    expect(page.locator("#settings_git_email")).to_have_value(
+                        "browser@example.test"
+                    )
+                    expect(page.locator("#settings_commit_trailers_enabled")).not_to_be_checked()
                 if name == "hldd-section":
                     expect(page.locator("pre.hldd-diagram svg").first).to_be_visible()
                 if name == "account":
@@ -1052,10 +1133,14 @@ def run(fixture: Context, artifacts: Path) -> None:
                 "integrations",
                 "teams",
                 "usage",
-                "account",
+                "security",
+                "settings",
             ):
                 visit(page, fixture["origin"], routes[name])
                 check_overflow(page)
+                if name == "settings":
+                    check_grid(page, routes[name])
+                    expect(page.locator("#git-settings-form")).to_be_visible()
                 if name in ("machine", "terminal", "boot-log"):
                     check_machine_tabs(page)
                     check_machine_header(page)

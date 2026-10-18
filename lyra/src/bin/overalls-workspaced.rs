@@ -190,7 +190,14 @@ fn main() {
         std::process::exit(2);
     };
     let result = fs::read_to_string("/proc/cmdline")
-        .and_then(|line| receiver::parse_binding(&line))
+        .and_then(|line| {
+            let identity = lyra::guest::git_identity::from_command_line(&line)?;
+            lyra::guest::git_identity::install(
+                std::path::Path::new("/run/overalls-workspace/git-identity"),
+                identity.as_ref(),
+            )?;
+            receiver::parse_binding(&line)
+        })
         .and_then(|binding| serve(&binding, image));
     if result.is_err() {
         event("unavailable");

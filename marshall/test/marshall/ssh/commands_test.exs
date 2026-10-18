@@ -55,6 +55,96 @@ defmodule Marshall.SSH.CommandsTest do
     })
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] ssh-pause-wake-receipt-continuity
+  # Management retries MUST retain one durable wake receipt, never mark an
+  # acknowledgement ready, and reveal no checkpoint or destination authority.
+  test "pause and unpause retain physical receipts through pending resume", c do
+    assert {:ok, created} = command(c, "new --name sleeping --request-id sleep-create")
+    [provision] = Ledger.read!(Operation, id: created.operation_id)
+    assert {:ok, _} = ingest(c.host.id, outcome(provision, 1, :running))
+    assert {:ok, paused} = command(c, "pause sleeping --request-id sleep-pause")
+    [pause] = Ledger.read!(Operation, id: paused.operation_id)
+    [vm] = Ledger.read!(VirtualMachine, id: pause.vm_id)
+
+    checkpoint = %{
+      id: Ash.UUID.generate(),
+      memory_bytes: vm.memory_bytes,
+      state_bytes: 4096,
+      compatibility: "sha256:" <> String.duplicate("a", 64),
+      memory_sha256: "sha256:" <> String.duplicate("b", 64),
+      state_sha256: "sha256:" <> String.duplicate("c", 64),
+      manifest_sha256: "sha256:" <> String.duplicate("d", 64),
+      dataset_guid: "81",
+      snapshot_guid: "82"
+    }
+
+    event =
+      outcome(pause, 2, :paused) |> Map.merge(%{compute_empty: true, checkpoint: checkpoint})
+
+    assert {:ok, _} = ingest(c.host.id, event)
+    assert {:ok, %{status: "succeeded"}} = command(c, "request show sleep-pause")
+    assert {:ok, wake_receipt} = command(c, "unpause sleeping --request-id sleep-resume")
+    assert wake_receipt.status == "accepted"
+    [wake] = Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id)
+    assert {:ok, replay} = command(c, "unpause sleeping --request-id sleep-resume --json")
+    assert replay.request_id == wake_receipt.request_id
+    assert length(Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id)) == 1
+    assert {:ok, :waiting} = Marshall.Compute.Wake.advance(wake.id)
+    [resume] = Ledger.read!(Operation, vm_id: vm.id, kind: :resume)
+    Ledger.update!(resume, :acknowledge, %{})
+    assert {:ok, %{status: "accepted"}} = command(c, "request show sleep-resume")
+
+    assert {:ok, _} =
+             ingest(c.host.id, Map.put(outcome(resume, 3, :running), :checkpoint, checkpoint))
+
+    assert {:ok, :finished} = Marshall.Compute.Wake.advance(wake.id)
+    assert {:ok, completed} = command(c, "request show sleep-resume")
+    assert completed.status == "succeeded"
+    refute JSON.encode!(completed) =~ checkpoint.memory_sha256
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] ssh-wake-receipt-current-manage
+  # Downgrading an admitted resume's requester to viewer MUST refuse both status
+  # and replay while leaving the already accepted wake durable. A stored receipt
+  # MUST NOT preserve management authority. The paused observation is synthetic;
+  # this test does not advance or establish a physical checkpoint restore.
+  test "wake receipt status and replay require current management authority", c do
+    assert {:ok, created} = command(c, "new --name wake-auth --request-id wake-auth-create")
+    [provision] = Ledger.read!(Operation, id: created.operation_id)
+    assert {:ok, _} = ingest(c.host.id, outcome(provision, 1, :running))
+    member = user()
+    peer = session_for(c, member, :crypto.strong_rand_bytes(32))
+
+    assert {:ok, _} =
+             command(
+               c,
+               "share add wake-auth #{member.email} manager --request-id wake-auth-manager"
+             )
+
+    [vm] = Ledger.read!(VirtualMachine, id: provision.vm_id)
+    Ash.Seed.update!(vm, %{desired_state: :paused, observed_state: :paused})
+
+    assert {:ok, %{status: "accepted"}} =
+             command(peer, "resume wake-auth --request-id wake-auth-resume")
+
+    assert {:ok, _} =
+             command(
+               c,
+               "share add wake-auth #{member.email} viewer --request-id wake-auth-viewer"
+             )
+
+    [vm] = Ledger.read!(VirtualMachine, id: vm.id)
+    assert Marshall.Access.Authorization.allowed?(vm, member, "read")
+    refute Marshall.Access.Authorization.allowed?(vm, member, "manage")
+    assert {:error, _} = command(peer, "request show wake-auth-resume")
+    assert {:error, _} = command(peer, "resume wake-auth --request-id wake-auth-resume")
+
+    assert [%{finished_at: nil, requested_by_id: requester}] =
+             Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id)
+
+    assert requester == member.id
+  end
+
   test "clone commands queue distinct copies and retries retain the original request", c do
     assert {:ok, created} = command(c, "new --name clone-source --request-id source")
     assert created.status == "accepted"
@@ -523,7 +613,9 @@ defmodule Marshall.SSH.CommandsTest do
               ),
             test_cases: 16
           ) do
-      Ledger.update!(c.host, :report, %{reported_at: Ledger.now()})
+      [host] = Ledger.read!(Host, id: c.host.id)
+      report = %{c.report | sequence: host.report_sequence + 1, sampled_at: Ledger.now()}
+      assert {:ok, :ok} = Marshall.Compute.HostReports.ingest(host.id, c.epoch, report)
       key = Ash.UUID.generate()
       profile_option = if selection, do: " --profile #{selection}", else: ""
       original = "new --cpu 1 --request-id #{key}" <> profile_option
@@ -1047,6 +1139,8 @@ defmodule Marshall.SSH.CommandsTest do
     "compute_workload_placements",
     "compute_reservations",
     "compute_operations",
+    "compute_wake_requests",
+    "compute_wake_request_keys",
     "compute_physical_outcomes",
     "compute_network_addresses",
     "ssh_requests",
@@ -1280,6 +1374,8 @@ defmodule Marshall.SSH.CommandsTest do
        ) do
     static = [
       "compute_workload_placements",
+      "compute_wake_requests",
+      "compute_wake_request_keys",
       "compute_network_addresses",
       "compute_physical_outcomes",
       "access_grants",

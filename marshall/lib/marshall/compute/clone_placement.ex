@@ -30,6 +30,8 @@ defmodule Marshall.Compute.ClonePlacement do
         [] -> Ledger.rollback(:vm_deleted)
       end
 
+    Marshall.Compute.GitIdentity.require_image!(source.image_id)
+
     slot = AddressAllocation.next_slot!(source.profile)
 
     hosts =
@@ -134,6 +136,7 @@ defmodule Marshall.Compute.ClonePlacement do
           id: request.destination_vm_id,
           name: request.name,
           owner_id: request.requested_by_id,
+          git_identity: Marshall.Compute.GitIdentity.snapshot!(request.requested_by_id),
           current_placement_id: placement_id,
           idempotency_key: "clone:" <> request.id
         })

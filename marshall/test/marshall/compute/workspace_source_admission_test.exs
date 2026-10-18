@@ -42,49 +42,54 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   # conflict for the same key with any other source (including none), and refuse
   # a source on a profile without egress without creating any allocation.
   test "the workspace source joins idempotent admission identity", c do
-    check all(
-            first <- member_of([nil | @sources]),
-            second <- member_of([nil | @sources]),
-            profile <- member_of([:standard, :oss]),
-            test_cases: 12
-          ) do
-      refresh(Map.put(c, :sequence, System.unique_integer([:positive, :monotonic]) + 1))
-      key = Ash.UUID.generate()
-      first_source = source(first)
-      second_source = source(second)
+    Hegel.check(
+      fn ->
+        first = draw("first", member_of([nil | @sources]))
+        second = draw("second", member_of([nil | @sources]))
+        profile = draw("profile", member_of([:standard, :oss]))
+        refresh(Map.put(c, :sequence, System.unique_integer([:positive, :monotonic]) + 1))
+        key = Ash.UUID.generate()
+        first_source = source(first)
+        second_source = source(second)
 
-      assert {:ok, vm} =
-               Compute.provision(request(key, profile, first_source), actor: c.user)
+        assert {:ok, vm} =
+                 Compute.provision(request(key, profile, first_source), actor: c.user)
 
-      before = counts()
+        before = counts()
 
-      if first_source == second_source do
-        assert {:ok, %{id: id}} =
-                 Compute.provision(request(key, profile, second_source), actor: c.user)
+        if first_source == second_source do
+          assert {:ok, %{id: id}} =
+                   Compute.provision(request(key, profile, second_source), actor: c.user)
 
-        assert id == vm.id
-      else
-        assert {:error, %{errors: [%Compute.Error{reason: :idempotency_conflict}]}} =
-                 Compute.provision(request(key, profile, second_source), actor: c.user)
-      end
+          assert id == vm.id
+        else
+          assert {:error, %{errors: [%Compute.Error{reason: :idempotency_conflict}]}} =
+                   Compute.provision(request(key, profile, second_source), actor: c.user)
+        end
 
-      assert counts() == before
-      stored = Ledger.read!(StoredSource, vm_id: vm.id)
-      assert Enum.map(stored, &StoredSource.protocol/1) == List.wrap(first_source)
-    end
+        assert counts() == before
+        stored = Ledger.read!(StoredSource, vm_id: vm.id)
+        assert Enum.map(stored, &StoredSource.protocol/1) == List.wrap(first_source)
+      end,
+      test_cases: 100
+    )
   end
 
   test "a source on a profile without egress is refused before allocation", c do
-    check all(url <- member_of(@sources), test_cases: 4) do
-      before = counts()
+    Hegel.check(
+      fn ->
+        url = draw("url", member_of(@sources))
+        before = counts()
 
-      assert {:error, %{errors: [%Compute.Error{reason: :workspace_source_not_allowed}]}} =
-               Compute.provision(request(Ash.UUID.generate(), :customer, source(url)),
-                 actor: c.user
-               )
+        assert {:error, %{errors: [%Compute.Error{reason: :workspace_source_not_allowed}]}} =
+                 Compute.provision(request(Ash.UUID.generate(), :customer, source(url)),
+                   actor: c.user
+                 )
 
-      assert counts() == before
-    end
+        assert counts() == before
+      end,
+      test_cases: 100
+    )
   end
 
   test "a malformed source map is refused before allocation", c do
@@ -102,20 +107,24 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   # without changing allocation inventory. A matching explicit v4 capability
   # MUST allow the normal transaction; package/name hints never grant it.
   test "every provider requires an explicit source-capable image before allocation", c do
-    check all(url <- member_of(@sources), test_cases: 7) do
-      manifest = Map.put(image_manifest(), "workspace_source_version", nil)
-      {:ok, image} = Images.register(manifest, "receiver-installed-hint")
-      before = counts()
+    Hegel.check(
+      fn ->
+        url = draw("url", member_of(@sources))
+        manifest = Map.put(image_manifest(), "workspace_source_version", nil)
+        {:ok, image} = Images.register(manifest, "receiver-installed-hint")
+        before = counts()
 
-      params =
-        request(Ash.UUID.generate(), :oss, source(url))
-        |> Map.put(:image_id, image.id)
+        params =
+          request(Ash.UUID.generate(), :oss, source(url))
+          |> Map.put(:image_id, image.id)
 
-      assert {:error, %{errors: [%Compute.Error{reason: :workspace_source_unavailable}]}} =
-               Compute.provision(params, actor: c.user)
+        assert {:error, %{errors: [%Compute.Error{reason: :workspace_source_unavailable}]}} =
+                 Compute.provision(params, actor: c.user)
 
-      assert counts() == before
-    end
+        assert counts() == before
+      end,
+      test_cases: 100
+    )
   end
 
   test "stale, malformed and mismatched persisted manifests refuse before allocation", c do

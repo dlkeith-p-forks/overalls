@@ -35,60 +35,65 @@ defmodule Lilly.VM.ActorFailureEventTest do
   # a durable outcome. A reconcile of a settled failure MUST start no work.
   @tag :hegel
   test "vm.failed follows recorded failed outcomes, not reconcile ticks", context do
-    check all(
-            steps <-
-              list_of(
-                frequency([
-                  {6, tuple({constant(:failed), member_of(@reasons)})},
-                  {1, constant(:observed)},
-                  {1, constant(:actor_restart)},
-                  {1, constant(:newer_command)}
-                ]),
-                min_length: 1,
-                max_length: 12
-              ),
-            test_cases: 15
-          ) do
-      id = Lilly.UUID.generate()
-      directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
-      File.mkdir!(directory)
-      File.chmod!(directory, 0o700)
-      {:ok, store} = Store.open(directory, id, 3)
-      first = command(id)
-      {:ok, :stored} = Store.accept(store, first)
+    Hegel.check(
+      fn ->
+        steps =
+          draw(
+            "steps",
+            list_of(
+              frequency([
+                {6, tuple({constant(:failed), member_of(@reasons)})},
+                {1, constant(:observed)},
+                {1, constant(:actor_restart)},
+                {1, constant(:newer_command)}
+              ]),
+              min_length: 1,
+              max_length: 12
+            )
+          )
 
-      options = [
-        store: store,
-        vm_id: id,
-        placement_id: id,
-        execution_epoch: 1,
-        owner: self(),
-        executor: {ControlledExecutor, self()}
-      ]
+        id = Lilly.UUID.generate()
+        directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
+        File.mkdir!(directory)
+        File.chmod!(directory, 0o700)
+        {:ok, store} = Store.open(directory, id, 3)
+        first = command(id)
+        {:ok, :stored} = Store.accept(store, first)
 
-      log =
-        ExUnit.CaptureLog.capture_log([metadata: @metadata], fn ->
-          actor = start_supervised!({Actor, options}, id: id)
-          assert_receive {:vm_actor_ready, ^id, ^actor, _}, 2000
+        options = [
+          store: store,
+          vm_id: id,
+          placement_id: id,
+          execution_epoch: 1,
+          owner: self(),
+          executor: {ControlledExecutor, self()}
+        ]
 
-          Enum.reduce(steps, {actor, first, false}, fn step, {actor, current, settled} ->
-            apply_step(step, actor, current, settled, store, options)
+        log =
+          ExUnit.CaptureLog.capture_log([metadata: @metadata], fn ->
+            actor = Overalls.HegelFixtures.start_supervised!({Actor, options}, id: id)
+            assert_receive {:vm_actor_ready, ^id, ^actor, _}, 2000
+
+            Enum.reduce(steps, {actor, first, false}, fn step, {actor, current, settled} ->
+              apply_step(step, actor, current, settled, store, options)
+            end)
+
+            stop_supervised!(id)
           end)
 
-          stop_supervised!(id)
-        end)
+        emitted =
+          log
+          |> String.split("\n")
+          |> Enum.filter(&(&1 =~ "vm.failed" and &1 =~ "vm_id=#{id}"))
+          |> Enum.map(fn line ->
+            [_, reason] = Regex.run(~r/reason=([a-z_]+)/, line)
+            String.to_existing_atom(reason)
+          end)
 
-      emitted =
-        log
-        |> String.split("\n")
-        |> Enum.filter(&(&1 =~ "vm.failed" and &1 =~ "vm_id=#{id}"))
-        |> Enum.map(fn line ->
-          [_, reason] = Regex.run(~r/reason=([a-z_]+)/, line)
-          String.to_existing_atom(reason)
-        end)
-
-      assert emitted == expected(steps)
-    end
+        assert emitted == expected(steps)
+      end,
+      test_cases: 100
+    )
   end
 
   @spec apply_step(step(), pid(), map(), boolean(), Store.t(), keyword()) ::

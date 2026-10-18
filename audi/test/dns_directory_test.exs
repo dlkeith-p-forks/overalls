@@ -5,27 +5,26 @@ defmodule Audi.DNS.DirectoryTest do
   alias Audi.DNS.Directory
 
   property "publication order cannot roll back the highest accepted revision" do
-    check all(revisions <- list_of(integer(0..1000), min_length: 1, max_length: 80)) do
-      directory = Audi.Test.DNSDirectory.start!()
-      expires = System.monotonic_time(:millisecond) + 60_000
+    revisions = draw("revisions", list_of(integer(0..1000), min_length: 1, max_length: 80))
+    directory = Audi.Test.DNSDirectory.start!()
+    expires = System.monotonic_time(:millisecond) + 60_000
 
-      Enum.reduce(revisions, -1, fn revision, highest ->
-        entry = %{
-          addresses: [{192, 0, div(revision, 256), rem(revision, 256)}],
-          expires_at: expires
-        }
+    Enum.reduce(revisions, -1, fn revision, highest ->
+      entry = %{
+        addresses: [{192, 0, div(revision, 256), rem(revision, 256)}],
+        expires_at: expires
+      }
 
-        result = Directory.publish(directory, revision, %{"vm.apps.example" => entry}, expires)
-        expected = max(revision, highest)
-        assert result == if(revision >= highest, do: :ok, else: {:error, :stale})
+      result = Directory.publish(directory, revision, %{"vm.apps.example" => entry}, expires)
+      expected = max(revision, highest)
+      assert result == if(revision >= highest, do: :ok, else: {:error, :stale})
 
-        assert {:ok, ^expected, %{addresses: [{192, 0, a, b}]}} =
-                 Directory.lookup(directory, "vm.apps.example")
+      assert {:ok, ^expected, %{addresses: [{192, 0, a, b}]}} =
+               Directory.lookup(directory, "vm.apps.example")
 
-        assert 256 * a + b == expected
-        expected
-      end)
-    end
+      assert 256 * a + b == expected
+      expected
+    end)
   end
 
   test "a snapshot with an entry lacking its own deadline is refused whole" do

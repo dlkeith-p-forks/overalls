@@ -46,6 +46,8 @@ defmodule Marshall.Compute do
     resource Marshall.Compute.CloneRequest
     resource Marshall.Compute.ResizeRequest
     resource Marshall.Compute.Operation
+    resource Marshall.Compute.WakeRequest
+    resource Marshall.Compute.WakeRequestKey
     resource Marshall.Compute.ServiceLevelAttempt
     resource Marshall.Compute.WorkflowServiceLevelAttempt
     resource Marshall.Compute.ServiceLevelTotal

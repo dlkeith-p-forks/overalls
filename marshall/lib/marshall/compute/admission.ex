@@ -183,6 +183,7 @@ defmodule Marshall.Compute.Admission do
     if image == nil or not image.enabled, do: Ledger.rollback(:image_unavailable)
 
     source_image_admissible!(request, image)
+    Marshall.Compute.GitIdentity.require_image!(image.id)
 
     unless image.architecture == request.architecture and
              request.memory_bytes >= image.minimum_memory_bytes and
@@ -236,6 +237,7 @@ defmodule Marshall.Compute.Admission do
               provisioning_sizes: OverallsProtocol.Resize.sizes(request),
               id: vm_id,
               owner_id: actor.id,
+              git_identity: Marshall.Compute.GitIdentity.snapshot!(actor.id),
               current_placement_id: placement_id
             })
           )

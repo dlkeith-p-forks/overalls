@@ -1,4 +1,7 @@
+Code.require_file("../../../scripts/test/hegel_fixtures.exs", __DIR__)
+
 defmodule Audi.Test.DNSControl do
+  @external_resource Path.expand("../../../scripts/test/hegel_fixtures.exs", __DIR__)
   @moduledoc """
   Test-only Marshall control WebSocket for Audi (ADR-0142).
 
@@ -50,7 +53,7 @@ defmodule Audi.Test.DNSControl do
   @spec started(Audi.Control.Client.t()) :: Audi.Control.Client.t()
   def started(client) do
     client = %{client | control: :"audi_control_#{System.unique_integer([:positive])}"}
-    ExUnit.Callbacks.start_supervised!({Audi.Control.Link, client}, id: client.control)
+    Overalls.HegelFixtures.start_fixture!({Audi.Control.Link, client}, id: client.control)
     client
   end
 

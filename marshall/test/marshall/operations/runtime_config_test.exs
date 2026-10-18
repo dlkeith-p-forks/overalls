@@ -45,14 +45,13 @@ defmodule Marshall.Operations.RuntimeConfigTest do
   end
 
   property "default images accept only canonical identities or explicit absence" do
-    check all(value <- one_of([binary(max_length: 128), integer()])) do
-      result = RuntimeConfig.default_image(%{"MARSHALL_DEFAULT_IMAGE_ID" => value})
+    value = draw("value", one_of([binary(max_length: 128), integer()]))
+    result = RuntimeConfig.default_image(%{"MARSHALL_DEFAULT_IMAGE_ID" => value})
 
-      cond do
-        value == "" -> assert result == {:ok, nil}
-        OverallsProtocol.ImageManifest.id?(value) -> assert result == {:ok, value}
-        true -> assert result == {:error, :invalid_default_image}
-      end
+    cond do
+      value == "" -> assert result == {:ok, nil}
+      OverallsProtocol.ImageManifest.id?(value) -> assert result == {:ok, value}
+      true -> assert result == {:error, :invalid_default_image}
     end
 
     assert {:ok, nil} = RuntimeConfig.default_image(%{})
@@ -271,37 +270,41 @@ defmodule Marshall.Operations.RuntimeConfigTest do
   end
 
   property "1–100 replicas fit only when the pool, notifier and operator budget fits" do
-    check all(replicas <- integer(0..150), pool <- integer(1..150), budget <- integer(1..20_000)) do
-      result =
-        RuntimeConfig.from_env(
-          Map.merge(environment(), %{
-            "MARSHALL_REPLICA_COUNT" => to_string(replicas),
-            "POOL_SIZE" => to_string(pool),
-            "MARSHALL_DB_CONNECTION_BUDGET" => to_string(budget)
-          })
-        )
+    replicas = draw("replicas", integer(0..150))
+    pool = draw("pool", integer(1..150))
+    budget = draw("budget", integer(1..20000))
 
-      expected = replicas in 1..100 and pool in 1..100 and replicas * (pool + 1) + 10 <= budget
-      assert match?({:ok, _}, result) == expected
-    end
+    result =
+      RuntimeConfig.from_env(
+        Map.merge(environment(), %{
+          "MARSHALL_REPLICA_COUNT" => to_string(replicas),
+          "POOL_SIZE" => to_string(pool),
+          "MARSHALL_DB_CONNECTION_BUDGET" => to_string(budget)
+        })
+      )
+
+    expected = replicas in 1..100 and pool in 1..100 and replicas * (pool + 1) + 10 <= budget
+    assert match?({:ok, _}, result) == expected
   end
 
   property "malformed operator inputs return a fixed error without reflecting secrets" do
-    check all(
-            key <-
-              member_of([
-                "DATABASE_URL",
-                "MARSHALL_REPLICA_COUNT",
-                "POOL_SIZE",
-                "MARSHALL_DB_CONNECTION_BUDGET",
-                "MARSHALL_INSTANCE_ID",
-                "PHX_SERVER",
-                "MARSHALL_BIND_IP"
-              ]),
-            value <- one_of([integer(), constant(nil), list_of(integer(), max_length: 5)])
-          ) do
-      assert {:error, :invalid_deployment_configuration} =
-               RuntimeConfig.from_env(Map.put(environment(), key, value))
-    end
+    key =
+      draw(
+        "key",
+        member_of([
+          "DATABASE_URL",
+          "MARSHALL_REPLICA_COUNT",
+          "POOL_SIZE",
+          "MARSHALL_DB_CONNECTION_BUDGET",
+          "MARSHALL_INSTANCE_ID",
+          "PHX_SERVER",
+          "MARSHALL_BIND_IP"
+        ])
+      )
+
+    value = draw("value", one_of([integer(), constant(nil), list_of(integer(), max_length: 5)]))
+
+    assert {:error, :invalid_deployment_configuration} =
+             RuntimeConfig.from_env(Map.put(environment(), key, value))
   end
 end

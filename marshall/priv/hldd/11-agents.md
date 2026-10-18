@@ -466,3 +466,7 @@ Incompatible executors return an explicit upgrade-required state. Roll out
 compatible consumers and guest executors before enabling operations; use the
 existing Linux updater and rebuilt Windows images. No additional listener,
 service, private Git credential flow or plugin marketplace is introduced.
+
+## Commit attribution
+
+Marshall supplies a current trusted developer instruction selected by the stable thread configuration owner. Attribution defaults on and requests exactly one Co-authored-by: Overalls <noreply@overalls.dev> trailer while preserving other trailers. Disabling attribution supersedes earlier attribution instructions. Existing commits are not rewritten. This instructional policy does not intercept Git or guarantee model compliance.

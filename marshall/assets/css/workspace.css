@@ -23,11 +23,15 @@
   margin: 0;
   color: var(--text-color-alt);
 }
+/* Labels are one row each and never stretch to the preview's height, so an
+   inverse-video Failed label stays a single-cell-row block. */
 .preview-labels {
   justify-self: end;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
+  align-items: flex-start;
+  align-content: flex-start;
   gap: 0 1ch;
 }
 .preview-links {
@@ -150,7 +154,7 @@ button.machine-editor-link,
   display: grid;
   gap: 0;
   justify-items: end;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 .machine-action-row {
   display: flex;
@@ -161,7 +165,7 @@ button.machine-editor-link,
 .machine-editor-notice {
   margin: 0 0 var(--line-height);
   max-width: 40ch;
-  text-align: right;
+  text-align: end;
 }
 .machine-actions .machine-editor-notice {
   margin: var(--line-height) 0 0;
@@ -262,7 +266,7 @@ button.machine-editor-link,
 }
 .form-chapter span {
   color: var(--text-color-alt);
-  margin-right: 1ch;
+  margin-inline-end: 1ch;
 }
 
 /* Clone workflow */
@@ -298,6 +302,7 @@ button.machine-editor-link,
   font-weight: var(--font-weight-bold);
 }
 .clone-card[data-tone="warning"] .clone-status {
+  padding: 0 1ch;
   background: var(--text-color);
   color: var(--background-color);
   font-weight: var(--font-weight-bold);
@@ -321,7 +326,7 @@ button.machine-editor-link,
   margin: var(--line-height) 0;
 }
 .steps li {
-  padding-left: 4ch;
+  padding-inline-start: 4ch;
   text-indent: -4ch;
 }
 .clone-steps li {
@@ -350,7 +355,7 @@ button.machine-editor-link,
   content: "[▸]";
 }
 .clone-steps .clone-step-marker, .steps .step-marker {
-  margin-right: 1ch;
+  margin-inline-end: 1ch;
 }
 .clone-source {
   color: var(--text-color-alt);
@@ -360,7 +365,7 @@ button.machine-editor-link,
 }
 .clone-source strong {
   color: var(--text-color);
-  margin-right: 1ch;
+  margin-inline-end: 1ch;
 }
 .clone-failure {
   margin: var(--line-height) 0 0;
@@ -424,7 +429,7 @@ button.machine-editor-link,
   flex: 1;
   min-width: 0;
   height: auto;
-  text-align: left;
+  text-align: start;
   text-transform: none;
   font-weight: var(--font-weight-normal);
   border: 0;
@@ -542,7 +547,7 @@ button.machine-editor-link,
 }
 #terminal-search-bar {
   position: absolute;
-  right: 1ch;
+  inset-inline-end: 1ch;
   top: calc(var(--line-height) * 2);
   z-index: 20;
   border: var(--border-thickness) solid var(--text-color);
@@ -625,7 +630,7 @@ button.machine-editor-link,
   color: var(--background-color);
 }
 .agent-message {
-  border-left: var(--border-thickness) solid var(--text-color);
+  border-inline-start: var(--border-thickness) solid var(--text-color);
   padding: 0 0 0 calc(2ch - var(--border-thickness));
   margin: 0 0 var(--line-height);
 }
@@ -733,8 +738,8 @@ button.machine-editor-link,
 }
 .hldd-prose blockquote, .docs-content blockquote {
   margin: 0 0 var(--line-height);
-  padding-left: calc(2ch - var(--border-thickness));
-  border-left: var(--border-thickness) solid var(--text-color);
+  padding-inline-start: calc(2ch - var(--border-thickness));
+  border-inline-start: var(--border-thickness) solid var(--text-color);
 }
 .hldd-diagram {
   background: var(--background-color);
@@ -792,6 +797,15 @@ button.machine-editor-link,
   .docs-shell, .overview-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+  /* A preview stacks on phones: name and facts, then the label row left-aligned,
+     so the labels never squeeze the machine name into a few characters. */
+  .preview-machine {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .preview-labels {
+    justify-self: start;
+    justify-content: flex-start;
+  }
 }
 
 /* Error page */
@@ -803,7 +817,7 @@ button.machine-editor-link,
 .error-page pre {
   margin: 0 auto var(--line-height);
   display: inline-block;
-  text-align: left;
+  text-align: start;
 }
 
 /* Agent thread layout */
@@ -945,8 +959,8 @@ button.machine-editor-link,
 .threads-navigation .thread-navigation-item[aria-current="page"] {
   background: var(--background-color-alt);
   color: var(--text-color);
-  border-left: var(--border-thickness) solid var(--text-color);
-  padding-left: calc(1ch - var(--border-thickness));
+  border-inline-start: var(--border-thickness) solid var(--text-color);
+  padding-inline-start: calc(1ch - var(--border-thickness));
 }
 .thread-navigation-title {
   display: block;
@@ -961,7 +975,7 @@ button.machine-editor-link,
   margin-top: var(--line-height);
 }
 .thread-navigation-meta time {
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 .threads-layout-detail .thread-navigation-mode {
   display: none;
@@ -1091,7 +1105,7 @@ button.machine-editor-link,
   color: var(--text-color-alt);
 }
 .thread-system-event {
-  padding-left: 2ch;
+  padding-inline-start: 2ch;
   color: var(--text-color-alt);
   margin-bottom: var(--line-height);
 }
@@ -1332,7 +1346,7 @@ button.machine-editor-link,
     justify-content: space-between;
   }
   .thread-detail-actions .console-button {
-    padding-left: 0;
+    padding-inline-start: 0;
   }
   .thread-events {
     padding: 0;
@@ -1343,8 +1357,8 @@ button.machine-editor-link,
   .threads-index .thread-navigation-item {
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
-    padding-left: 1ch;
-    padding-right: 1ch;
+    padding-inline-start: 1ch;
+    padding-inline-end: 1ch;
   }
   .threads-index .thread-navigation-meta {
     margin-top: var(--line-height);
@@ -1450,8 +1464,8 @@ button.machine-editor-link,
     grid-template-columns: minmax(0, 1fr);
   }
   .thread-sharing {
-    padding-left: 1ch;
-    padding-right: 1ch;
+    padding-inline-start: 1ch;
+    padding-inline-end: 1ch;
   }
 }
 
@@ -1482,7 +1496,7 @@ button.machine-editor-link,
   height: auto;
   padding: var(--line-height) 2ch;
   border: 0;
-  text-align: left;
+  text-align: start;
   text-transform: none;
   background: var(--background-color);
   color: var(--text-color);
@@ -1576,7 +1590,7 @@ button.machine-editor-link,
   margin-top: calc(2 * var(--line-height));
 }
 .thread-context-sources {
-  padding-left: 2ch;
+  padding-inline-start: 2ch;
 }
 .thread-context-sources li {
   margin-bottom: var(--line-height);

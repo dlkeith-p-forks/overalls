@@ -252,11 +252,18 @@ defmodule Marshall.Compute.HostReports do
   defp within_busy_grace?(_pool, _reported_at), do: false
 
   defp pool_attributes(%{unavailable: true}, _reported_at),
-    do: %{reported_at: nil, observed_at: nil, allocations: %{}, storage_observation: %{}}
+    do: %{
+      reported_at: nil,
+      observed_at: nil,
+      allocations: %{},
+      checkpoint_allocations: %{},
+      storage_observation: %{}
+    }
 
   defp pool_attributes(snapshot, reported_at) do
     snapshot
     |> Map.take([:total_bytes, :free_bytes, :allocations])
+    |> Map.put(:checkpoint_allocations, Map.get(snapshot, :checkpoint_allocations, %{}))
     |> Map.put(:storage_observation, storage_observation(snapshot))
     |> Map.put(:reported_at, reported_at)
     |> Map.put(:observed_at, reported_at)
@@ -282,7 +289,12 @@ defmodule Marshall.Compute.HostReports do
               free <= total and is_map(allocations) do
     Enum.all?(allocations, fn {vm_id, bytes} ->
       is_binary(vm_id) and is_integer(bytes) and bytes >= 0
-    end) and Enum.sum(Map.values(allocations)) <= total - free
+    end) and is_map(Map.get(snapshot, :checkpoint_allocations, %{})) and
+      Enum.all?(Map.get(snapshot, :checkpoint_allocations, %{}), fn {placement, bytes} ->
+        OverallsProtocol.uuid?(placement) and is_integer(bytes) and bytes >= 0
+      end) and
+      Enum.sum(Map.values(allocations)) +
+        Enum.sum(Map.values(Map.get(snapshot, :checkpoint_allocations, %{}))) <= total - free
   end
 
   defp valid_pool?(_), do: false

@@ -5,18 +5,15 @@ defmodule Lilly.Clone.RuntimeCadenceTest do
   alias Lilly.Clone.Runtime
 
   property "only effects first offered in this exchange trigger an immediate follow-up" do
-    check all(
-            previous <- uniq_list_of(string(:alphanumeric, min_length: 1), max_length: 8),
-            fresh <- uniq_list_of(string(:alphanumeric, min_length: 1), max_length: 4),
-            reoffered <- sublist(previous)
-          ) do
-      fresh = Enum.reject(fresh, &(&1 in previous))
-      offered = MapSet.new(previous)
+    previous = draw("previous", uniq_list_of(string(:alphanumeric, min_length: 1), max_length: 8))
+    fresh = draw("fresh", uniq_list_of(string(:alphanumeric, min_length: 1), max_length: 4))
+    reoffered = draw("reoffered", sublist(previous))
+    fresh = Enum.reject(fresh, &(&1 in previous))
+    offered = MapSet.new(previous)
 
-      # Re-executing purposely re-offered effects (capture permit renewal) keeps cadence.
-      refute Runtime.fresh_execution?(offered, reoffered)
-      assert Runtime.fresh_execution?(offered, reoffered ++ fresh) == (fresh != [])
-    end
+    # Re-executing purposely re-offered effects (capture permit renewal) keeps cadence.
+    refute Runtime.fresh_execution?(offered, reoffered)
+    assert Runtime.fresh_execution?(offered, reoffered ++ fresh) == (fresh != [])
   end
 
   defp sublist(list),

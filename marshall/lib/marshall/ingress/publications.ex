@@ -114,9 +114,9 @@ defmodule Marshall.Ingress.Publications do
   # All inventory, execution, service, readiness and lifetime facts MUST come
   # from one bounded PostgreSQL statement snapshot and one database clock,
   # normalized to the UTC timestamp storage type independently of session zone. The
-  # route predicate MUST remain equivalent to current-route execution admission,
-  # including the active wildcard, exact gateway installation receipt, committed
-  # relocation readiness and completed start. Historical
+  # route predicate MUST remain equivalent to the current-route wake projection,
+  # including the active wildcard, exact gateway installation receipt, fresh
+  # source/current hosts and explicitly enrolled relay for a previous gateway. Historical
   # per-VM issuance rows MUST NOT become candidates for proof publication.
   # Nested proofs require exact current host/session/VM/environment bindings but
   # may precede completed startup; nested addresses additionally require it.
@@ -170,31 +170,23 @@ defmodule Marshall.Ingress.Publications do
         AND h.enabled AND h.maintenance_mode <> 'retired' AND h.connection_session_id IS NOT NULL
         AND h.reported_at <= c.now
         AND h.reported_at >= c.now - ($1::bigint * interval '1 millisecond')
-        AND v.host_id = h.id AND b.host_id = h.id
-        AND v.current_placement_id = b.placement_id
-        AND v.execution_epoch = b.execution_epoch AND v.generation = b.generation
-        AND v.desired_state = 'running' AND v.observed_state = 'running'
-        AND (b.kind = 'route' OR b.proof_label = v.label)
+        AND b.host_id = h.id
+        AND v.desired_state IN ('running', 'paused')
+        AND v.observed_state NOT IN ('deleted', 'failed')
         AND b.expires_at > c.now
         AND EXISTS (
-          SELECT 1 FROM compute_operations o
-          WHERE o.vm_id = v.id AND o.placement_id = v.current_placement_id
-            AND o.execution_epoch = v.execution_epoch AND o.generation = v.generation
-            AND o.status = 'completed' AND o.kind IN ('provision', 'start')
+          SELECT 1 FROM compute_hosts current_host
+          WHERE current_host.id = v.host_id AND current_host.enabled
+            AND current_host.maintenance_mode <> 'retired'
+            AND current_host.connection_session_id IS NOT NULL
+            AND current_host.reported_at <= c.now
+            AND current_host.reported_at >= c.now - ($1::bigint * interval '1 millisecond')
         )
-        AND NOT EXISTS (
-          SELECT 1 FROM compute_relocations r
-          WHERE r.vm_id = v.id AND r.finished_at IS NULL AND r.committed_at IS NOT NULL
-            AND NOT COALESCE(
-              v.current_placement_id = r.destination_placement_id
-              AND v.execution_epoch = r.destination_epoch
-              AND v.generation >= r.activation_generation
-              AND EXISTS (
-                SELECT 1 FROM compute_readiness_requests q
-                WHERE q.id = r.activation_operation_id AND q.status = 'ready'
-                  AND q.relocation_id = r.id AND q.generation = r.activation_generation
-              ), false)
-        )
+        AND (v.host_id = h.id OR (s.relay_address IS NOT NULL AND EXISTS (
+          SELECT 1 FROM ingress_services destination
+          WHERE destination.host_id = v.host_id AND destination.enabled
+            AND destination.role = 'gateway' AND destination.relay_address IS NOT NULL
+        )))
     ), asset_gateways AS MATERIALIZED (
       SELECT s.id AS service_id, h.connection_session_id AS session_id, s.addresses,
              LEAST(5000, FLOOR(EXTRACT(EPOCH FROM (LEAST(cert.expires_at, a.expires_at) - c.now)) * 1000)::bigint) AS ttl

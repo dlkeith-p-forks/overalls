@@ -13,25 +13,30 @@ defmodule Marshall.Access.CustomerIsolationTest do
   end
 
   test "customer grants cannot be created or confer authority", c do
-    check all(role <- member_of([:web, :viewer, :operator, :manager]), test_cases: 12) do
-      assert {:error, _} =
-               Access.set_access(
-                 %{
-                   vm_id: c.vm.id,
-                   email: to_string(c.member.email),
-                   role: role,
-                   idempotency_key: Ash.UUID.generate()
-                 },
-                 actor: c.owner
-               )
+    Hegel.check(
+      fn ->
+        role = draw("role", member_of([:web, :viewer, :operator, :manager]))
 
-      assert [] = Ledger.read!(Grant, vm_id: c.vm.id)
+        assert {:error, _} =
+                 Access.set_access(
+                   %{
+                     vm_id: c.vm.id,
+                     email: to_string(c.member.email),
+                     role: role,
+                     idempotency_key: Ash.UUID.generate()
+                   },
+                   actor: c.owner
+                 )
 
-      for action <- ["read", "write", "manage", "web"] do
-        refute Authorization.allowed?(c.vm, c.member, action)
-        assert Authorization.allowed?(c.vm, c.owner, action) == (action != "web")
-      end
-    end
+        assert [] = Ledger.read!(Grant, vm_id: c.vm.id)
+
+        for action <- ["read", "write", "manage", "web"] do
+          refute Authorization.allowed?(c.vm, c.member, action)
+          assert Authorization.allowed?(c.vm, c.owner, action) == (action != "web")
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   test "stale manager grants cannot expose listings, terminal or lifecycle", c do
@@ -122,23 +127,25 @@ defmodule Marshall.Access.CustomerIsolationTest do
   test "even the owner cannot configure customer web exposure", c do
     [before] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
 
-    check all(
-            port <- integer(1..65535),
-            visibility <- member_of([:public, :private]),
-            test_cases: 12
-          ) do
-      assert {:error, _} =
-               Ingress.configure_endpoint(
-                 %{
-                   vm_id: c.vm.id,
-                   expected_revision: before.policy_revision,
-                   primary_port: port,
-                   visibility: visibility
-                 },
-                 actor: c.owner
-               )
+    Hegel.check(
+      fn ->
+        port = draw("port", integer(1..65535))
+        visibility = draw("visibility", member_of([:public, :private]))
 
-      assert [^before] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
-    end
+        assert {:error, _} =
+                 Ingress.configure_endpoint(
+                   %{
+                     vm_id: c.vm.id,
+                     expected_revision: before.policy_revision,
+                     primary_port: port,
+                     visibility: visibility
+                   },
+                   actor: c.owner
+                 )
+
+        assert [^before] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
+      end,
+      test_cases: 100
+    )
   end
 end

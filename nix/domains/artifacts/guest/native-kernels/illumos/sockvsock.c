@@ -328,6 +328,11 @@ refuse:
 	mutex_exit(&vs_lock);
 }
 
+/** @cc [owner:ghuntley,label:recovery;security] illumos-reset-listener-continuation
+ * A reset callback MAY retain live listeners only while the validated transport
+ * remains ready. Connected and unbound sockets MUST be fenced. A failed
+ * transport MUST wake and permanently fence every existing endpoint.
+ */
 static void
 vs_transport_notify(void *reset_arg)
 {
@@ -337,7 +342,9 @@ vs_transport_notify(void *reset_arg)
 	mutex_enter(&vs_lock);
 	for (struct vs_socket *endpoint = vs_sockets; endpoint != NULL;
 	    endpoint = endpoint->next) {
-		if (!reset && endpoint->peer_port == 0)
+		if ((!reset && endpoint->peer_port == 0) ||
+		    (reset && endpoint->listening && endpoint->error == 0 &&
+		    viosock_ready()))
 			continue;
 		if (reset)
 			vs_fail(endpoint, ECONNRESET);

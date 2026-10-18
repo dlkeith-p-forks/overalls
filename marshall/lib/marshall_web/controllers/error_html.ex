@@ -14,14 +14,18 @@ defmodule MarshallWeb.ErrorHTML do
   @spec render(String.t(), map()) :: Phoenix.LiveView.Rendered.t()
   def render(template, _assigns) do
     assigns = %{
-      message: Phoenix.Controller.status_message_from_template(template),
+      message:
+        Gettext.gettext(
+          MarshallWeb.Gettext,
+          Phoenix.Controller.status_message_from_template(template)
+        ),
       retry?: template == "500.html" and not Marshall.Repo.answers?(),
       cat: " /\\_/\\\n( -.- )\n > ^ <"
     }
 
     ~H"""
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang={assigns[:locale] || "en"} dir={assigns[:direction] || :ltr}>
       <head>
         <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta :if={@retry?} http-equiv="refresh" content="3" />
@@ -37,11 +41,15 @@ defmodule MarshallWeb.ErrorHTML do
           <main id="main-content" class="error-page">
             <pre aria-hidden="true">{@cat}</pre>
             <h1>{@message}</h1>
-            <p :if={@retry?}>Overalls is briefly unavailable. This page will retry automatically.</p>
-            <p :if={!@retry?}>
-              We couldn’t open this page. Head back to your workspace, or try again in a moment.
+            <p :if={@retry?}>
+              {gettext("Overalls is briefly unavailable. This page will retry automatically.")}
             </p>
-            <.link href={~p"/"} class="console-button primary">Back to Overalls</.link>
+            <p :if={!@retry?}>
+              {gettext(
+                "We couldn’t open this page. Head back to your workspace, or try again in a moment."
+              )}
+            </p>
+            <.link href={~p"/"} class="console-button primary">{gettext("Back to Overalls")}</.link>
           </main>
         </div>
       </body>

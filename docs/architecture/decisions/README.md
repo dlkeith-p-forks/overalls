@@ -1,31 +1,6 @@
 # Architecture decision records
 
-[ADR-0196](0196-single-account-settings-page.md) merges the Profile, Security
-and SSH keys pages into one `/settings` account page with anchored sections
-behind the security mount, removes `/settings/profile`, `/settings/security`
-and `/settings/ssh-keys` without redirects, and collapses the sidebar to one
-Account entry with AI usage beneath it.
-
-[ADR-0195](0195-user-time-zones.md) adds a per-user display time zone: a
-`/settings/profile` page with a `(GMT+09:30) Adelaide` picker, every browser
-timestamp rendered in the viewer's zone (saved, else browser, else UTC) with the
-UTC instant on hover, and each person's current local time plus the difference
-from the viewer wherever people appear. Storage stays UTC and the zone data is
-compiled in through `tz`; this amends the no-profile position inherited from
-ADR-0158/0159 for display preferences only.
-
-[ADR-0193](0193-per-user-machine-pins.md) adds per-user machine pins: pinned
-machines lead the machines page and overview, an owner's pin refuses every
-delete path (browser, Fleet workloads, SSH/Porsche `rm`, thread teardown) with
-`machine_pinned` except the owner's own account deletion, archival removes all
-pins, and Porsche gains `pin`/`unpin` commands.
-
-[ADR-0194](0194-marshall-http-security-headers.md) sends one strict
-Content-Security-Policy, permissions, opener, resource and framing header set
-from the Marshall endpoint on every response, no-index robots directives, HSTS
-with `includeSubDomains`, and `__Host-` prefixed, encrypted session and
-remember-me cookies; `style-src` alone keeps `'unsafe-inline'` for the xterm.js
-and Mermaid renderers.
+[ADR-0193](0193-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0192](0192-staged-detached-ingress.md) moves the browser editor and
 nested HTTPS onto ADR-0187's detached ingress bridges. The BEAM's only
@@ -114,8 +89,6 @@ registry. Editor and Inception remain false; stock/altered identities and
 unreviewed OmniOS candidates remain refused. Stock source receipts contain no artifact bytes, and
 those constructors refuse before copying a stock disk. Pinned builds link the complete
 FreeBSD kernel, twenty native Lyra executables and both terminal daemons.
-The cross-platform editor review records the current Linux evidence gap and keeps
-Windows, FreeBSD and OmniOS editor capability refused.
 OmniOS native nine-module/full-payload clean-export assembly, QEMU file/runtime
 checks and diagnostic Firecracker executing-token/transport checks passed. Its
 earlier service, mounted-root growth and same-disk process-crash receipts remain
@@ -454,10 +427,9 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0185](0185-underclass-tailnet-exit-egress.md) | accepted | partial | Underclass upstream egress through a tailnet exit node |
 | [ADR-0186](0186-covenant-contract-verification.md) | accepted | partial | Covenant contract verification across Elixir applications |
 | [ADR-0192](0192-staged-detached-ingress.md) | accepted | partial | Editor and nested HTTPS use staged detached ingress bridges |
-| [ADR-0193](0193-per-user-machine-pins.md) | accepted | partial | Per-user machine pins and the owner-pin deletion guard |
+| [ADR-0193](0193-per-user-machine-pins.md) | superseded | partial | Per-user machine pins and the owner-pin deletion guard |
 | [ADR-0194](0194-marshall-http-security-headers.md) | accepted | partial | Marshall HTTP security headers, no-index and session cookie hardening |
 | [ADR-0195](0195-user-time-zones.md) | accepted | partial | User time zone preference and local-time display |
-| [ADR-0196](0196-single-account-settings-page.md) | accepted | partial | One account settings page |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |
 | [ADR-0188](0188-signed-overalls-cachix-substitution.md) | accepted | partial | Use the signed Overalls Cachix cache across Nix machines |
 | [ADR-0187](0187-detached-ingress-bridges.md) | accepted | partial | Detached ingress bridges survive lilly-hostd and Lilly restarts |
@@ -481,7 +453,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0162](0162-clone-cleanup-liveness.md) | accepted | partial | Clone cleanup liveness and transfer slot release at quiescence |
 | [ADR-0161](0161-monospace-web-presentation.md) | accepted | partial | Monospace Web presentation for Marshall |
 | [ADR-0160](0160-privileged-administrator-step-up.md) | accepted | partial | Privileged administrator step-up and pending-action continuation |
-| [ADR-0159](0159-remove-legacy-compatibility.md) | accepted | implemented | Remove legacy compatibility after convergence |
+| [ADR-0159](0159-remove-legacy-compatibility.md) | superseded | implemented | Remove legacy compatibility after convergence |
 | [ADR-0158](0158-durable-guest-identities.md) | superseded | partial | Durable guest identities independent of email |
 | [ADR-0157](0157-multi-provider-authenticated-repository-launch.md) | accepted | implemented | Multi-provider repository launch and authentication resume |
 | [ADR-0156](0156-browser-launcher-distribution.md) | accepted | partial | Browser launcher build, distribution and exact-origin presence detection |
@@ -911,3 +883,5 @@ and physical storage acceptance. See the
 [host-lock review](../reviews/2026-10-05-host-lock-descendant-custody.md) and
 [transfer review](../reviews/2026-10-05-transfer-stream-adopted-children.md);
 ADR-0015/0037 retain their statuses and accepted rationale.
+
+| [ADR-0193](0193-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |

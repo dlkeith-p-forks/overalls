@@ -5,18 +5,17 @@ defmodule Audi.HTTP.BrowserTest do
   alias Audi.HTTP.Browser
 
   property "return destinations remain local paths" do
-    check all(path <- string(:alphanumeric, max_length: 200)) do
-      assert Browser.return_path?("/" <> path <> "?q=value")
+    path = draw("path", string(:alphanumeric, max_length: 200))
+    assert Browser.return_path?("/" <> path <> "?q=value")
 
-      for invalid <- [
-            "//" <> path,
-            "https://" <> path,
-            "/\\" <> path,
-            "/_audi/" <> path,
-            "/" <> path <> "\r\n"
-          ] do
-        refute Browser.return_path?(invalid)
-      end
+    for invalid <- [
+          "//" <> path,
+          "https://" <> path,
+          "/\\" <> path,
+          "/_audi/" <> path,
+          "/" <> path <> "\r\n"
+        ] do
+      refute Browser.return_path?(invalid)
     end
   end
 

@@ -19,42 +19,47 @@ defmodule Lilly.Host.StorageTest do
 
   @tag :hegel
   test "brief native contention permits one protected effect after release", c do
-    check all(delay <- integer(20..80), failure <- boolean(), test_cases: 12) do
-      {:ok, owner} = Lock.acquire(c.lock_dir)
-      parent = self()
-      tag = make_ref()
+    Hegel.check(
+      fn ->
+        delay = draw("delay", integer(20..80))
+        failure = draw("failure", boolean())
+        {:ok, owner} = Lock.acquire(c.lock_dir)
+        parent = self()
+        tag = make_ref()
 
-      worker =
-        Task.async(fn ->
-          send(parent, {tag, :waiting})
+        worker =
+          Task.async(fn ->
+            send(parent, {tag, :waiting})
 
-          Storage.locked(
-            c.pool,
-            fn ->
-              assert is_struct(Lock.current(), Lilly.Host.Lease)
-              assert {:error, :host_already_owned} = Lock.acquire(c.lock_dir)
-              send(parent, {tag, :effect})
-              if failure, do: {:error, :storage_busy}, else: :done
-            end,
-            2000
-          )
-        end)
+            Storage.locked(
+              c.pool,
+              fn ->
+                assert is_struct(Lock.current(), Lilly.Host.Lease)
+                assert {:error, :host_already_owned} = Lock.acquire(c.lock_dir)
+                send(parent, {tag, :effect})
+                if failure, do: {:error, :storage_busy}, else: :done
+              end,
+              2000
+            )
+          end)
 
-      try do
-        assert_receive {^tag, :waiting}
-        refute_receive {^tag, :effect}, delay
-        assert :ok = Lock.release(owner)
-        assert Task.await(worker, 5000) == if(failure, do: {:error, :storage_busy}, else: :done)
-        assert_receive {^tag, :effect}
-        refute_receive {^tag, :effect}, 0
-      after
-        Task.shutdown(worker, :brutal_kill)
-        if Lock.held?(owner), do: Lock.release(owner)
-      end
+        try do
+          assert_receive {^tag, :waiting}
+          refute_receive {^tag, :effect}, delay
+          assert :ok = Lock.release(owner)
+          assert Task.await(worker, 5000) == if(failure, do: {:error, :storage_busy}, else: :done)
+          assert_receive {^tag, :effect}
+          refute_receive {^tag, :effect}, 0
+        after
+          Task.shutdown(worker, :brutal_kill)
+          if Lock.held?(owner), do: Lock.release(owner)
+        end
 
-      {:ok, successor} = Lock.acquire(c.lock_dir)
-      assert :ok = Lock.release(successor)
-    end
+        {:ok, successor} = Lock.acquire(c.lock_dir)
+        assert :ok = Lock.release(successor)
+      end,
+      test_cases: 100
+    )
   end
 
   test "persistent contention is bounded and never invokes the effect", c do
@@ -214,30 +219,34 @@ defmodule Lilly.Host.StorageTest do
   # queued callers MUST be combined into batches of more than one item.
   @tag :hegel
   test "combined callers each get their own result from exclusive batches", c do
-    check all(count <- integer(2..12), test_cases: 8) do
-      parent = self()
+    Hegel.check(
+      fn ->
+        count = draw("count", integer(2..12))
+        parent = self()
 
-      batch = fn items ->
-        assert is_struct(Lock.current(), Lilly.Host.Lease)
-        send(parent, {:batch, self(), length(items)})
-        Process.sleep(40)
-        send(parent, {:batch_done, self()})
-        Enum.map(items, &{:result, &1})
-      end
-
-      results =
-        for index <- 1..count do
-          Task.async(fn -> Storage.combine(c.pool, :prepare, index, batch, 30_000) end)
+        batch = fn items ->
+          assert is_struct(Lock.current(), Lilly.Host.Lease)
+          send(parent, {:batch, self(), length(items)})
+          Process.sleep(40)
+          send(parent, {:batch_done, self()})
+          Enum.map(items, &{:result, &1})
         end
-        |> Task.await_many(30_000)
 
-      assert results == Enum.map(1..count, &{:result, &1})
+        results =
+          for index <- 1..count do
+            Task.async(fn -> Storage.combine(c.pool, :prepare, index, batch, 30_000) end)
+          end
+          |> Task.await_many(30_000)
 
-      sizes = collect_batches([], nil)
-      assert Enum.sum(sizes) == count
-      assert Enum.all?(sizes, &(&1 in 1..16))
-      if count > 2, do: assert(Enum.any?(sizes, &(&1 > 1)))
-    end
+        assert results == Enum.map(1..count, &{:result, &1})
+
+        sizes = collect_batches([], nil)
+        assert Enum.sum(sizes) == count
+        assert Enum.all?(sizes, &(&1 in 1..16))
+        if count > 2, do: assert(Enum.any?(sizes, &(&1 > 1)))
+      end,
+      test_cases: 100
+    )
   end
 
   # Batches never overlap: each start is followed by its own end.

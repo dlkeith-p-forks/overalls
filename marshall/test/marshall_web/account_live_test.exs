@@ -83,6 +83,23 @@ defmodule MarshallWeb.AccountLiveTest do
   end
 
   describe "profile section" do
+    test "language selection persists and resetting restores browser preference", %{conn: conn} do
+      owner = user()
+      {:ok, view, _} = live(signed_in(conn, owner), ~p"/settings")
+      assert has_element?(view, "#language-form")
+      refute has_element?(view, "#clear-language")
+
+      view |> form("#language-form", language: %{locale: "ja"}) |> render_submit()
+      assert_redirect(view, "/settings#profile")
+      assert saved_locale(owner.id) == "ja"
+
+      {:ok, view, _} = live(signed_in(conn, owner), ~p"/settings")
+      assert has_element?(view, "#language-form option[value=ja][selected]")
+      view |> element("#clear-language") |> render_click()
+      assert_redirect(view, "/settings#profile")
+      assert saved_locale(owner.id) == nil
+    end
+
     test "the profile saves, preselects and clears the time zone", %{conn: conn} do
       user = user()
 
@@ -529,6 +546,15 @@ defmodule MarshallWeb.AccountLiveTest do
 
       refute String.contains?(logs, marker)
     end
+  end
+
+  @spec saved_locale(String.t()) :: String.t() | nil
+  defp saved_locale(id) do
+    User
+    |> Ash.Query.for_read(:internal_lookup, %{}, actor: SystemActor.compute())
+    |> Ash.Query.filter(id == ^id)
+    |> Ash.read_one!()
+    |> Map.fetch!(:locale)
   end
 
   @spec saved_zone(String.t()) :: String.t() | nil

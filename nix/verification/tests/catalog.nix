@@ -32,6 +32,7 @@ let
     brady-fleet = featureFleet { brady = true; };
     customer-isolation-fleet = featureFleet { customerIsolation = true; };
     relocation-fleet = featureFleet { relocation = true; };
+    memory-suspension-fleet = featureFleet { relocation = true; suspension = true; audi = true; };
     ubuntu-fleet = featureFleet { ubuntu = true; porsche = true; relocation = true; };
     # Combined sharing surfaces: one member's concurrent Audi SSH, shared
     # terminal viewer and private web under a single direct revocation.
@@ -367,6 +368,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   terminal-ubuntu-fleet = import ./machines/fleet (service // { hostFixture = fixtures.hetzner-uefi; terminal = true; audi = true; ubuntu = true; });
   customer-isolation-fleet = featureFleets.customer-isolation-fleet;
   relocation-fleet = featureFleets.relocation-fleet;
+  memory-suspension-fleet = featureFleets.memory-suspension-fleet;
   secret-custody = import ./machines/secret-custody (service // { inherit hegel; });
   sharing-surfaces = featureFleets.sharing-surfaces;
   credential-rotation = import ./machines/credential-rotation service;

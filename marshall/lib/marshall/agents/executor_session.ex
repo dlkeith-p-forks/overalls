@@ -303,6 +303,8 @@ defmodule Marshall.Agents.ExecutorSession do
           end
         end
 
+        [vm] = Ledger.read!(VirtualMachine, id: executor.vm_id)
+        Marshall.Compute.Idle.touch_locked!(vm)
         command = Ledger.update!(command, :transition, %{status: state, result: result})
 
         if state in [:completed, :failed, :uncertain] do

@@ -1,6 +1,7 @@
 defmodule Porsche.SSH.Channel do
   @moduledoc "Management-only exec and interactive SSH channels."
   @behaviour :ssh_server_channel
+  use Gettext, backend: Porsche.Gettext
   alias Porsche.{Connection, Runner}
   alias Porsche.SSH.{Display, Input, Output}
   alias OverallsProtocol.SSHCommand
@@ -42,6 +43,12 @@ defmodule Porsche.SSH.Channel do
   def handle_msg({reference, result}, %{task: %Task{ref: reference}} = state) do
     Process.demonitor(reference, [:flush])
     state = clear_prompt(%{state | task: nil, job: nil})
+
+    case Connection.snapshot(state.connection) do
+      {:ok, session} -> Porsche.Locale.put_locale(session)
+      _ -> Porsche.Locale.put_locale(nil)
+    end
+
     context = if state.mode == :exec, do: {:exec, state.config.public_origin}, else: :interactive
     if result.response, do: write(state, 0, Output.render(result.response, state.json, context))
 
@@ -93,11 +100,20 @@ defmodule Porsche.SSH.Channel do
     :ssh_connection.reply_request(connection, reply, :success, channel)
     state = %{state | mode: :interactive, connection: connection, channel: channel}
 
+    case Connection.snapshot(connection) do
+      {:ok, session} -> Porsche.Locale.put_locale(session)
+      _ -> Porsche.Locale.put_locale(nil)
+    end
+
     write(
       state,
       0,
       banner() <>
-        "\nPorsche machine management. Type help.\nDocs: " <>
+        "\n" <>
+        gettext("Porsche machine management. Type help.") <>
+        "\n" <>
+        gettext("Docs:") <>
+        " " <>
         state.config.public_origin <> "/docs\n"
     )
 
@@ -280,7 +296,8 @@ defmodule Porsche.SSH.Channel do
       {:ok, %{"status" => "authenticated"}} when text == :welcome ->
         %{exit_status: 0, close: false, response: nil}
 
-      {:ok, %{"session_token" => token}} ->
+      {:ok, %{"session_token" => token} = session} ->
+        Porsche.Locale.put_locale(session)
         run(state, token, text, progress)
 
       {:error, reason} ->

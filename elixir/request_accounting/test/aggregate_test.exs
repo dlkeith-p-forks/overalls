@@ -11,30 +11,30 @@ defmodule Overalls.RequestAccounting.AggregateTest do
   # Every generated terminal history MUST conserve requests as successes plus
   # failures, and every measured duration MUST occupy exactly one fixed slot.
   property "terminal histories conserve outcomes and measured durations" do
-    check all(
-            events <-
-              list_of(
-                tuple(
-                  {member_of([:success, :failure]),
-                   one_of([constant(nil), integer(0..20_000_000)])}
-                ),
-                max_length: 100
-              )
-          ) do
-      aggregate =
-        Enum.reduce(events, Aggregate.new("enrico"), fn {outcome, duration}, state ->
-          Aggregate.record(state, outcome, duration)
-        end)
+    events =
+      draw(
+        "events",
+        list_of(
+          tuple(
+            {member_of([:success, :failure]), one_of([constant(nil), integer(0..20_000_000)])}
+          ),
+          max_length: 100
+        )
+      )
 
-      snapshot = Aggregate.snapshot(aggregate)
-      measured = Enum.count(events, &(elem(&1, 1) != nil))
+    aggregate =
+      Enum.reduce(events, Aggregate.new("enrico"), fn {outcome, duration}, state ->
+        Aggregate.record(state, outcome, duration)
+      end)
 
-      assert snapshot.requests == length(events)
-      assert snapshot.requests == snapshot.successes + snapshot.failures
-      assert snapshot.duration.count == measured
-      assert Enum.sum(snapshot.duration.bucket_counts) == measured
-      assert Aggregate.validate_snapshot(snapshot) == :ok
-    end
+    snapshot = Aggregate.snapshot(aggregate)
+    measured = Enum.count(events, &(elem(&1, 1) != nil))
+
+    assert snapshot.requests == length(events)
+    assert snapshot.requests == snapshot.successes + snapshot.failures
+    assert snapshot.duration.count == measured
+    assert Enum.sum(snapshot.duration.bucket_counts) == measured
+    assert Aggregate.validate_snapshot(snapshot) == :ok
   end
 
   test "boundary values use inclusive explicit bounds and overflow bucket" do

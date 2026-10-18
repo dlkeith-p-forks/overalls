@@ -37,15 +37,14 @@ defmodule Brady.HTTP.HeadTest do
   end
 
   property "every prefix remains incomplete until the header terminator arrives" do
-    check all(target <- string(:alphanumeric, min_length: 1, max_length: 50)) do
-      raw = "GET /#{target} HTTP/1.1\r\nHost: example.com\r\n\r\n"
+    target = draw("target", string(:alphanumeric, min_length: 1, max_length: 50))
+    raw = "GET /#{target} HTTP/1.1\r\nHost: example.com\r\n\r\n"
 
-      for size <- 0..(byte_size(raw) - 1) do
-        assert :more = Head.parse(binary_part(raw, 0, size), :request)
-      end
-
-      assert {:ok, _, ""} = Head.parse(raw, :request)
+    for size <- 0..(byte_size(raw) - 1) do
+      assert :more = Head.parse(binary_part(raw, 0, size), :request)
     end
+
+    assert {:ok, _, ""} = Head.parse(raw, :request)
   end
 
   test "HTTP3 advertisements are stripped on responses" do

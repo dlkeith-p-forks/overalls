@@ -157,24 +157,25 @@ defmodule Marshall.Agents.CompactionTest do
   end
 
   property "completed tool groups are either entirely summarized or entirely retained" do
-    check all(count <- integer(1..40), size <- integer(1..1000)) do
-      groups =
-        Enum.map(1..count, fn index ->
-          id = Integer.to_string(index)
-          [call(id), Map.put(result(id), "output", String.duplicate("x", size))]
-        end)
+    count = draw("count", integer(1..40))
+    size = draw("size", integer(1..1000))
 
-      input = [user("objective")] ++ List.flatten(groups) ++ [user("continue")]
-      assert {:ok, plan} = Compaction.prepare(request(input))
-      compacted = history(plan)
-      assert compacted ++ plan.retained_input == input
+    groups =
+      Enum.map(1..count, fn index ->
+        id = Integer.to_string(index)
+        [call(id), Map.put(result(id), "output", String.duplicate("x", size))]
+      end)
 
-      for group <- groups do
-        assert (Enum.all?(group, &(&1 in compacted)) and
-                  Enum.all?(group, &(&1 not in plan.retained_input))) or
-                 (Enum.all?(group, &(&1 in plan.retained_input)) and
-                    Enum.all?(group, &(&1 not in compacted)))
-      end
+    input = [user("objective")] ++ List.flatten(groups) ++ [user("continue")]
+    assert {:ok, plan} = Compaction.prepare(request(input))
+    compacted = history(plan)
+    assert compacted ++ plan.retained_input == input
+
+    for group <- groups do
+      assert (Enum.all?(group, &(&1 in compacted)) and
+                Enum.all?(group, &(&1 not in plan.retained_input))) or
+               (Enum.all?(group, &(&1 in plan.retained_input)) and
+                  Enum.all?(group, &(&1 not in compacted)))
     end
   end
 

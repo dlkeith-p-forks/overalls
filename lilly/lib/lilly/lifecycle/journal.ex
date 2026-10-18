@@ -146,6 +146,7 @@ defmodule Lilly.Lifecycle.Journal do
   @spec resource_event(module()) :: atom()
   def resource_event(resource) do
     case resource_name(resource) do
+      "Checkpoint" -> :checkpoint
       "BackupSnapshot" -> :backup_snapshot
       "SnapshotPointer" -> :snapshot_pointer
       "Resize" -> :resize

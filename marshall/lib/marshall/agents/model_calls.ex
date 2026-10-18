@@ -165,7 +165,10 @@ defmodule Marshall.Agents.ModelCalls do
       child?: thread.parent_thread_id != nil,
       instructions:
         projection.snapshot.instructions ++
-          ["Current working directory: " <> projection.snapshot.working_directory],
+          [
+            "Current working directory: " <> projection.snapshot.working_directory,
+            Marshall.Accounts.GitSettings.instruction(projection.snapshot.configuration_owner_id)
+          ],
       checkpoint: if(checkpoint, do: checkpoint.state),
       retained_input: if(checkpoint, do: checkpoint.retained_input, else: [])
     ]
@@ -559,6 +562,7 @@ defmodule Marshall.Agents.ModelCalls do
   end
 
   defp queue_tools!(call, turn, thread, vm, calls) do
+    Marshall.Compute.Idle.touch_locked!(vm)
     {questions, calls} = Enum.split_with(calls, &(&1.tool == :request_user_input))
     {command_calls, child_calls} = Enum.split_with(calls, &(&1.tool != :spawn_child_agent))
 

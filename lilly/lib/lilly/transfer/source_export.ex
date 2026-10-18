@@ -87,6 +87,7 @@ defmodule Lilly.Transfer.SourceExport do
       wire = Relocation.encode_descriptor(descriptor)
 
       case request do
+        %{component: :checkpoint} -> Lilly.Transfer.CheckpointTransfer.export(pool, descriptor)
         %{resume_token: token} -> SourceSnapshots.resume_export(pool, wire, token)
         _ -> SourceSnapshots.export(pool, wire)
       end

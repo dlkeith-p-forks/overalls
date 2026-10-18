@@ -52,20 +52,22 @@ defmodule Lilly.Host.EmptyDirectoryTest do
   @tag :hegel
 
   test "unexpected names and bytes survive refused cleanup", %{path: path} do
-    check all(
-            name <- string(:alphanumeric, min_length: 1, max_length: 80),
-            contents <- binary(max_length: 2048)
-          ) do
-      File.mkdir!(path)
-      file = Path.join(path, ".unexpected-" <> name)
-      File.write!(file, contents)
-      assert {:error, reason} = EmptyDirectory.remove(path, stat: &root_stat/1)
-      assert reason in [:enotempty, :eexist]
-      assert File.read!(file) == contents
-      assert File.ls!(path) == [Path.basename(file)]
-      File.rm!(file)
-      File.rmdir!(path)
-    end
+    Hegel.check(
+      fn ->
+        name = draw("name", string(:alphanumeric, min_length: 1, max_length: 80))
+        contents = draw("contents", binary(max_length: 2048))
+        File.mkdir!(path)
+        file = Path.join(path, ".unexpected-" <> name)
+        File.write!(file, contents)
+        assert {:error, reason} = EmptyDirectory.remove(path, stat: &root_stat/1)
+        assert reason in [:enotempty, :eexist]
+        assert File.read!(file) == contents
+        assert File.ls!(path) == [Path.basename(file)]
+        File.rm!(file)
+        File.rmdir!(path)
+      end,
+      []
+    )
   end
 
   test "symlinks, files and nested directories survive", %{parent: parent, path: path} do

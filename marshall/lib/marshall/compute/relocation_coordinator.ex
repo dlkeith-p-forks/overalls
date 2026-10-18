@@ -16,13 +16,13 @@ defmodule Marshall.Compute.RelocationCoordinator do
   require Marshall.Events
 
   # @cc [owner:ghuntley,label:concurrency;capacity;recovery] relocation-stop-atomic-fence
-  # advance/1 MUST lock both endpoint hosts in UUID order before the VM. Stopping
+  # advance/1 MUST lock both endpoint hosts in UUID order before the VM. Pausing
   # a running source requires fresh authenticated destination connectivity proof,
   # fresh ready/image-capable endpoints and all original commitments/slots; that
-  # probe reference, stop generation, console fence, operation/job and relocation
+  # probe reference, pause generation, console fence, operation/job and relocation
   # reference MUST commit together exactly once. No disk is copied before the
-  # recorded physical stop. Accepted cancellation MUST prevent further
-  # stop/handoff transitions. Source compute/disk MUST remain held until the
+  # recorded physical pause. Accepted cancellation MUST prevent further
+  # pause/handoff transitions. Source compute/disk MUST remain held until the
   # handoff for cancellation.
   @spec advance(String.t()) :: {:ok, atom()} | {:error, term()}
   def advance(id) do
@@ -101,19 +101,15 @@ defmodule Marshall.Compute.RelocationCoordinator do
     Marshall.Compute.RelocationRestoration.advance_locked!(relocation, vm)
   end
 
-  defp step(%{committed_at: committed} = relocation, vm, hosts) when not is_nil(committed) do
+  defp step(%{committed_at: committed} = relocation, vm, _) when not is_nil(committed) do
     release_quiescent_streams!(relocation)
-
-    case Marshall.Compute.RelocationRetryState.active(relocation) do
-      nil ->
-        Marshall.Compute.RelocationReadinessState.advance_locked!(relocation, vm)
-        Marshall.Compute.RelocationCleanup.advance_locked!(relocation, vm)
-        :committed
-
-      retry ->
-        Marshall.Compute.RelocationRetryState.advance_locked!(retry, relocation, vm, hosts)
-    end
+    Marshall.Compute.RelocationReadinessState.advance_locked!(relocation, vm)
+    Marshall.Compute.RelocationCleanup.advance_locked!(relocation, vm)
+    :committed
   end
+
+  defp step(relocation, %{desired_state: :paused, observed_state: :paused} = vm, hosts),
+    do: handoff(relocation, vm, hosts)
 
   defp step(relocation, %{desired_state: :stopped} = vm, hosts),
     do: handoff(relocation, vm, hosts)
@@ -143,7 +139,7 @@ defmodule Marshall.Compute.RelocationCoordinator do
       vm =
         Ledger.intent!(vm, %{
           generation: Lifecycle.next_generation!(vm),
-          desired_state: :stopped
+          desired_state: :paused
         })
 
       operation =
@@ -152,7 +148,7 @@ defmodule Marshall.Compute.RelocationCoordinator do
           placement_id: relocation.source_placement_id,
           execution_epoch: relocation.source_epoch,
           generation: vm.generation,
-          kind: :stop,
+          kind: :pause,
           initiator: :relocation,
           relocation_id: relocation.id
         })
@@ -172,12 +168,13 @@ defmodule Marshall.Compute.RelocationCoordinator do
   defp step(_, _, _), do: :waiting
 
   # @cc [owner:ghuntley,label:recovery;capacity;concurrency] relocation-handoff-and-activation-atomic
-  # Handoff MUST require matching final adoption evidence and stopped source
+  # Handoff MUST require matching final adoption evidence and quiescent source
   # authority under both host locks and the VM lock. New placement/epoch, generation,
   # reset observation sequence, commit references and activation outbox commit
   # atomically once. Release only source compute; retain both disks and source
   # snapshots until readiness and cleanup.
-  # Originally stopped workloads receive a stop activation, never a start.
+  # Originally stopped workloads receive stop activation; paused workloads stay
+  # paused. Running memory-bearing moves MUST resume the exact checkpoint.
   defp handoff(relocation, vm, hosts) do
     waiting = if relocation.source_stop_operation_id, do: :stopping, else: :waiting
     destination = Enum.find(hosts, &(&1.id == relocation.destination_host_id))
@@ -214,7 +211,7 @@ defmodule Marshall.Compute.RelocationCoordinator do
           placement_id: relocation.destination_placement_id,
           execution_epoch: relocation.destination_epoch,
           generation: vm.generation,
-          kind: if(relocation.original_state == :running, do: :start, else: :stop),
+          kind: activation_kind(relocation),
           initiator: :relocation,
           relocation_id: relocation.id
         })
@@ -260,7 +257,14 @@ defmodule Marshall.Compute.RelocationCoordinator do
       Marshall.Compute.Evacuations.source_allowed?(host, relocation) and
         host.architecture == vm.architecture and
         host.inventory["execution_ready"] == true and
+        (vm.current_checkpoint == nil or
+           host.inventory["checkpoint_compatibility"] == vm.current_checkpoint["compatibility"]) and
         Marshall.Compute.HostLiveness.capacity_fresh?(host.reported_at, now)
+
+  @spec activation_kind(Relocation.t()) :: :stop | :pause | :resume
+  def activation_kind(%{original_state: :running, preserves_memory: true}), do: :resume
+  def activation_kind(%{original_state: :paused}), do: :pause
+  def activation_kind(%{original_state: :stopped}), do: :stop
 
   defp ready?(nil, _, _), do: false
 
@@ -269,6 +273,8 @@ defmodule Marshall.Compute.RelocationCoordinator do
       host.enabled and host.maintenance_mode == :normal and
         host.architecture == vm.architecture and
         host.inventory["execution_ready"] == true and
+        (vm.current_checkpoint == nil or
+           host.inventory["checkpoint_compatibility"] == vm.current_checkpoint["compatibility"]) and
         Marshall.Compute.HostLiveness.capacity_fresh?(host.reported_at, now)
 
   defp held?(relocation) do
@@ -289,9 +295,9 @@ defmodule Marshall.Compute.RelocationCoordinator do
   end
 
   # @cc [owner:ghuntley,label:recovery;security] final-stream-requires-recorded-physical-stop
-  # stop_confirmed?/2 requires current VM serialization. Neither stop intent,
+  # stop_confirmed?/2 requires current VM serialization. Neither pause intent,
   # acknowledgement nor status alone suffices: the exact relocation operation
-  # must retain a matching immutable stopped outcome with compute empty and disk
+  # must retain a matching immutable paused outcome with compute empty and disk
   # present. Placement/epoch/generation must still identify the same source.
   @spec stop_confirmed?(Relocation.t(), VirtualMachine.t()) :: boolean()
   def stop_confirmed?(relocation, vm) do
@@ -299,11 +305,11 @@ defmodule Marshall.Compute.RelocationCoordinator do
          true <-
            vm.current_placement_id == relocation.source_placement_id and
              vm.execution_epoch == relocation.source_epoch and
-             vm.generation == relocation.source_stop_generation and vm.desired_state == :stopped and
-             vm.observed_state == :stopped,
+             vm.generation == relocation.source_stop_generation and vm.desired_state == :paused and
+             vm.observed_state == :paused,
          [operation] <- Ledger.read!(Operation, id: relocation.source_stop_operation_id),
          true <-
-           operation.status == :completed and operation.kind == :stop and
+           operation.status == :completed and operation.kind == :pause and
              operation.initiator == :relocation and
              operation.relocation_id == relocation.id and
              operation.placement_id == relocation.source_placement_id and
@@ -317,7 +323,7 @@ defmodule Marshall.Compute.RelocationCoordinator do
            observation.operation_id == operation.id and observation.vm_id == vm.id and
              observation.placement_id == operation.placement_id and
              observation.execution_epoch == operation.execution_epoch and
-             observation.generation == operation.generation and observation.state == :stopped and
+             observation.generation == operation.generation and observation.state == :paused and
              observation.compute_empty and observation.disk_present,
          do: true,
          else: (_ -> false)

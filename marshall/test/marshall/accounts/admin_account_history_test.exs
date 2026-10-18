@@ -29,54 +29,56 @@ defmodule Marshall.Accounts.AdminAccountHistoryTest do
   # credentials, outbox/jobs, retirement and audit rows.
   for operation <- [:role, :sessions, :reset, :retire, :invite] do
     @operation operation
-    property "#{@operation} follows current role, login and elevation history", test_cases: 12 do
-      check all(
-              tail <-
-                list_of(member_of([:mutate, :lock, :verify, :signout, :login, :demote, :promote]),
-                  max_length: 14
-                ),
-              test_cases: 12
-            ) do
-        actor = PasskeyFixture.elevate(PasskeyFixture.user(true))
-        operator = PasskeyFixture.elevate(PasskeyFixture.user(true))
-        target = PasskeyFixture.elevate(PasskeyFixture.user())
+    @tag :hegel_case_sandbox
+  property "#{@operation} follows current role, login and elevation history", test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+      tail =
+        draw(
+          "tail",
+          list_of(member_of([:mutate, :lock, :verify, :signout, :login, :demote, :promote]),
+            max_length: 14
+          )
+        )
 
-        model = %{
-          challenges: 2,
-          administrator: true,
-          live: true,
-          elevated: true,
-          target_administrator: false,
-          generation: 0,
-          reset: false,
-          retired: false,
-          keys: 1,
-          mutations: 0,
-          receipts: []
-        }
+      actor = PasskeyFixture.elevate(PasskeyFixture.user(true))
+      operator = PasskeyFixture.elevate(PasskeyFixture.user(true))
+      target = PasskeyFixture.elevate(PasskeyFixture.user())
 
-        history =
-          [
-            :lock,
-            :mutate,
-            :verify,
-            :mutate,
-            :signout,
-            :mutate,
-            :login,
-            :mutate,
-            :verify,
-            :demote,
-            :mutate,
-            :promote
-          ] ++ tail
+      model = %{
+        challenges: 2,
+        administrator: true,
+        live: true,
+        elevated: true,
+        target_administrator: false,
+        generation: 0,
+        reset: false,
+        retired: false,
+        keys: 1,
+        mutations: 0,
+        receipts: []
+      }
 
-        Enum.reduce(history, {actor, model}, fn command, {actor, model} ->
-          {actor, model} = step(command, @operation, actor, operator, target, model)
-          assert_model(actor, target, @operation, model)
-          {actor, model}
-        end)
-      end
+      history =
+        [
+          :lock,
+          :mutate,
+          :verify,
+          :mutate,
+          :signout,
+          :mutate,
+          :login,
+          :mutate,
+          :verify,
+          :demote,
+          :mutate,
+          :promote
+        ] ++ tail
+
+      Enum.reduce(history, {actor, model}, fn command, {actor, model} ->
+        {actor, model} = step(command, @operation, actor, operator, target, model)
+        assert_model(actor, target, @operation, model)
+        {actor, model}
+      end)
     end
   end
 

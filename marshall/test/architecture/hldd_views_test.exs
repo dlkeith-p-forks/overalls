@@ -24,57 +24,60 @@ defmodule Overalls.HLDDViewsTest do
   test "new domains and resource ownership changes invalidate the rendered view", %{
     root: root
   } do
-    check all(
-            suffix <-
-              map(list(integer(?A, ?Z), min: 1, max: 12), &List.to_string/1),
-            change <- member_of([:domain, :resource, :delete])
-          ) do
-      fixture(root)
-      assert HLDDViews.check(root, HLDDGate.files(root)) == []
-      path = Path.join(root, "example/lib/domain.ex")
+    Hegel.check(
+      fn ->
+        suffix = draw("suffix", map(list(integer(65, 90), min: 1, max: 12), &List.to_string/1))
+        change = draw("change", member_of([:domain, :resource, :delete]))
+        fixture(root)
+        assert HLDDViews.check(root, HLDDGate.files(root)) == []
+        path = Path.join(root, "example/lib/domain.ex")
 
-      case change do
-        :domain ->
-          File.write!(
-            path,
-            File.read!(path) <>
-              "\ndefmodule Example.#{suffix} do\nuse Ash.Domain\nresources do\nresource Example.Item\nend\nend\n"
-          )
-
-        :resource ->
-          File.write!(
-            path,
-            String.replace(
-              File.read!(path),
-              "resource Example.Item",
-              "resource Example.#{suffix}Item"
+        case change do
+          :domain ->
+            File.write!(
+              path,
+              File.read!(path) <>
+                "\ndefmodule Example.#{suffix} do\nuse Ash.Domain\nresources do\nresource Example.Item\nend\nend\n"
             )
-          )
 
-        :delete ->
-          File.write!(path, "defmodule Example.NoDomain do\nend\n")
-      end
+          :resource ->
+            File.write!(
+              path,
+              String.replace(
+                File.read!(path),
+                "resource Example.Item",
+                "resource Example.#{suffix}Item"
+              )
+            )
 
-      refute HLDDViews.check(root, HLDDGate.files(root)) == []
-    end
+          :delete ->
+            File.write!(path, "defmodule Example.NoDomain do\nend\n")
+        end
+
+        refute HLDDViews.check(root, HLDDGate.files(root)) == []
+      end,
+      []
+    )
   end
 
   @tag :hegel
   test "evaluated role, peer, port and instance changes cannot reuse a topology snapshot", %{
     root: root
   } do
-    check all(
-            port <- integer(1..65_535),
-            field <- member_of(~w(services fleetPeers adminSshPorts marshallInstances))
-          ) do
-      [host] = JSON.decode!(snapshot())
-      value = if field == "adminSshPorts", do: [port, 2222], else: ["changed#{port}"]
-      changed = JSON.encode!([Map.put(host, field, value)])
+    Hegel.check(
+      fn ->
+        port = draw("port", integer(1..65535))
+        field = draw("field", member_of(~w(services fleetPeers adminSshPorts marshallInstances)))
+        [host] = JSON.decode!(snapshot())
+        value = if field == "adminSshPorts", do: [port, 2222], else: ["changed#{port}"]
+        changed = JSON.encode!([Map.put(host, field, value)])
 
-      assert HLDDViews.check(root, HLDDGate.files(root), changed) == [
-               "evaluated deployment topology is stale"
-             ]
-    end
+        assert HLDDViews.check(root, HLDDGate.files(root), changed) == [
+                 "evaluated deployment topology is stale"
+               ]
+      end,
+      []
+    )
   end
 
   test "domain parsing ignores comments, deduplicates interfaces and retains resource ownership",

@@ -97,11 +97,11 @@ defmodule MarshallWeb.DocsControllerTest do
   end
 
   property "arbitrary page selectors cannot read or render arbitrary content" do
-    check all(selector <- term()) do
-      case Documentation.page(selector) do
-        {:ok, page} -> assert page in Documentation.pages()
-        :error -> refute selector in Enum.map(Documentation.pages(), & &1.slug)
-      end
+    selector = draw("selector", term())
+
+    case Documentation.page(selector) do
+      {:ok, page} -> assert page in Documentation.pages()
+      :error -> refute selector in Enum.map(Documentation.pages(), & &1.slug)
     end
   end
 end

@@ -12,29 +12,28 @@ defmodule Marshall.Operations.OperatorBootPropertyTest do
   # Every valid operator-mode boot MUST initialize a non-serving endpoint and
   # PubSub, disable Oban consumers, and use the exact reduced child set.
   property "operator boots retain serving and queue isolation across valid environments",
-    test_cases: 2 do
-    check all(server <- member_of(["false", ""]), test_cases: 2) do
-      {projection, output} = probe(server)
+    test_cases: 100 do
+    server = draw("server", member_of(["false", ""]))
+    {projection, output} = probe(server)
 
-      assert projection == %{
-               "children" => [
-                 "Elixir.Marshall.Authorization.Cedar",
-                 "Elixir.Marshall.Repo",
-                 "Elixir.Marshall.Vault",
-                 "Elixir.MarshallWeb.Endpoint",
-                 "Elixir.Oban",
-                 "Elixir.Phoenix.PubSub.Supervisor"
-               ],
-               "endpoint_present" => true,
-               "endpoint_server_disabled" => true,
-               "queues_empty" => true,
-               "plugins_empty" => true,
-               "stager_disabled" => true,
-               "isolated_peer" => true
-             }
+    assert projection == %{
+             "children" => [
+               "Elixir.Marshall.Authorization.Cedar",
+               "Elixir.Marshall.Repo",
+               "Elixir.Marshall.Vault",
+               "Elixir.MarshallWeb.Endpoint",
+               "Elixir.Oban",
+               "Elixir.Phoenix.PubSub.Supervisor"
+             ],
+             "endpoint_present" => true,
+             "endpoint_server_disabled" => true,
+             "queues_empty" => true,
+             "plugins_empty" => true,
+             "stager_disabled" => true,
+             "isolated_peer" => true
+           }
 
-      refute String.contains?(output, "SECRET")
-    end
+    refute String.contains?(output, "SECRET")
   end
 
   @spec probe(String.t()) :: {projection(), String.t()}

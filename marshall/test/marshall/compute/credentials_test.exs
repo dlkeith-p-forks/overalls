@@ -123,10 +123,10 @@ defmodule Marshall.Compute.CredentialsTest do
   end
 
   property "untrusted credential strings never authorize or invoke a callback" do
-    check all(token <- binary(max_length: 200)) do
-      assert {:error, :unauthorized} =
-               Credentials.with_host(token, fn _ -> flunk("invalid credential accepted") end)
-    end
+    token = draw("token", binary(max_length: 200))
+
+    assert {:error, :unauthorized} =
+             Credentials.with_host(token, fn _ -> flunk("invalid credential accepted") end)
   end
 
   # Keep key material out of assertion failure diagnostics.

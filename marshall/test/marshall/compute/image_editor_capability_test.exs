@@ -14,28 +14,28 @@ defmodule Marshall.Compute.ImageEditorCapabilityTest do
   # ID and exact configured tuple. Changing commit, package release or manifest
   # content MUST refuse; catalog enabled status MUST NOT change that result.
   property "editor compatibility binds the complete immutable release and image identity" do
-    check all(descriptor <- descriptor_gen(), enabled <- boolean()) do
-      image = editor_image(descriptor) |> Map.put(:enabled, enabled)
+    descriptor = draw("descriptor", descriptor_gen())
+    enabled = draw("enabled", boolean())
+    image = editor_image(descriptor) |> Map.put(:enabled, enabled)
 
-      assert {:ok,
-              %{
-                editor_protocol: 1,
-                editor_commit: commit,
-                editor_release: release
-              }} = Image.editor_capability(image, descriptor)
+    assert {:ok,
+            %{
+              editor_protocol: 1,
+              editor_commit: commit,
+              editor_release: release
+            }} = Image.editor_capability(image, descriptor)
 
-      assert commit == descriptor["commit"] and release == descriptor["release"]
+    assert commit == descriptor["commit"] and release == descriptor["release"]
 
-      for key <- ["commit", "release"] do
-        other = Map.update!(descriptor, key, &different_digest/1)
-        assert {:error, :unsupported_image} = Image.editor_capability(image, other)
-      end
-
-      changed = Map.update!(image.manifest, "boot_args", &(&1 <> " quiet"))
-
-      assert {:error, :unavailable} =
-               Image.editor_capability(%{image | manifest: changed}, descriptor)
+    for key <- ["commit", "release"] do
+      other = Map.update!(descriptor, key, &different_digest/1)
+      assert {:error, :unsupported_image} = Image.editor_capability(image, other)
     end
+
+    changed = Map.update!(image.manifest, "boot_args", &(&1 <> " quiet"))
+
+    assert {:error, :unavailable} =
+             Image.editor_capability(%{image | manifest: changed}, descriptor)
   end
 
   test "a current image without an editor is unsupported, and malformed data fails closed" do

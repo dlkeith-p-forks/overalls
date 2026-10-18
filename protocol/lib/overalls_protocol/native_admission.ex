@@ -32,6 +32,15 @@ defmodule OverallsProtocol.NativeAdmission do
            end)
   @reviewed_identities Map.values(@images) ++ Map.values(@bundles)
 
+  # @cc [owner:ghuntley,label:security;recovery] checkpoint-native-qualification-is-independent
+  # Snapshot continuation MUST require separately recorded exact native image
+  # qualification. Cold-boot admission or a candidate kernel test alone MUST NOT
+  # grant pause/resume to firmware guests. Only the qualified Linux kernel/device
+  # path is enabled until immutable native artifacts receive acceptance evidence.
+  @spec checkpoint_admitted?(term()) :: boolean()
+  def checkpoint_admitted?(%{guest_agents: :linux, boot_kind: :kernel}), do: true
+  def checkpoint_admitted?(_), do: false
+
   @doc "The production manifest whose exact bytes have recorded native acceptance evidence."
   @spec reviewed_manifest() :: map()
   def reviewed_manifest, do: reviewed_manifest(:freebsd)

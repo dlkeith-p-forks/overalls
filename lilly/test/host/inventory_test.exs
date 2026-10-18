@@ -60,31 +60,30 @@ defmodule Lilly.Host.InventoryTest do
   end
 
   property "logical CPUs scale with threading while physical cores stay fixed" do
-    check all(sockets <- integer(1..4), cores <- integer(1..16), threads <- integer(1..4)) do
-      records =
-        for socket <- 0..(sockets - 1), core <- 0..(cores - 1), thread <- 0..(threads - 1) do
-          cpu((socket * cores + core) * threads + thread, socket, core)
-        end
+    sockets = draw("sockets", integer(1..4))
+    cores = draw("cores", integer(1..16))
+    threads = draw("threads", integer(1..4))
 
-      assert {:ok, inventory} = Inventory.parse_cpu(Enum.join(Enum.reverse(records), "\n\n"))
-      assert inventory.logical_cores == sockets * cores * threads
-      assert inventory.physical_cores == sockets * cores
-      assert inventory.sockets == sockets
-    end
+    records =
+      for socket <- 0..(sockets - 1), core <- 0..(cores - 1), thread <- 0..(threads - 1) do
+        cpu((socket * cores + core) * threads + thread, socket, core)
+      end
+
+    assert {:ok, inventory} = Inventory.parse_cpu(Enum.join(Enum.reverse(records), "\n\n"))
+    assert inventory.logical_cores == sockets * cores * threads
+    assert inventory.physical_cores == sockets * cores
+    assert inventory.sockets == sockets
   end
 
   property "valid memory observations conserve capacity and produce bounded percentages" do
-    check all(
-            total <- integer(1..1_000_000),
-            available <- integer(0..total),
-            free <- integer(0..total)
-          ) do
-      assert {:ok, memory} = Inventory.parse_memory(meminfo(total, free, available))
-      assert memory.used_bytes + memory.available_bytes == memory.total_bytes
-      assert memory.free_bytes <= memory.total_bytes
-      assert memory.utilization_percent >= 0.0
-      assert memory.utilization_percent <= 100.0
-    end
+    total = draw("total", integer(1..1_000_000))
+    available = draw("available", integer(0..total))
+    free = draw("free", integer(0..total))
+    assert {:ok, memory} = Inventory.parse_memory(meminfo(total, free, available))
+    assert memory.used_bytes + memory.available_bytes == memory.total_bytes
+    assert memory.free_bytes <= memory.total_bytes
+    assert memory.utilization_percent >= 0.0
+    assert memory.utilization_percent <= 100.0
   end
 
   defp cpu(processor, socket, core) do

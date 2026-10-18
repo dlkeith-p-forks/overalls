@@ -5,20 +5,20 @@ defmodule Audi.SSH.RequestTest do
   alias Audi.SSH.Request
 
   property "every accepted command is a bounded label or fixed nested selector" do
-    check all(bytes <- binary(max_length: 1000)) do
-      case Request.parse(bytes) do
-        {:ok, label} when is_binary(label) ->
-          assert bytes == "connect " <> label
-          assert byte_size(label) <= 63
-          assert OverallsProtocol.IngressName.valid_label?(label)
+    bytes = draw("bytes", binary(max_length: 1000))
 
-        {:ok, {:nested, label, service}} ->
-          assert service in [:porsche_ssh, :audi_ssh]
-          assert {:ok, ^label, ^service} = OverallsProtocol.InceptionName.ssh_selector(bytes)
+    case Request.parse(bytes) do
+      {:ok, label} when is_binary(label) ->
+        assert bytes == "connect " <> label
+        assert byte_size(label) <= 63
+        assert OverallsProtocol.IngressName.valid_label?(label)
 
-        :error ->
-          :ok
-      end
+      {:ok, {:nested, label, service}} ->
+        assert service in [:porsche_ssh, :audi_ssh]
+        assert {:ok, ^label, ^service} = OverallsProtocol.InceptionName.ssh_selector(bytes)
+
+      :error ->
+        :ok
     end
   end
 
@@ -84,5 +84,42 @@ defmodule Audi.SSH.RequestTest do
     refute Request.grant?(grant, {:nested, label, :porsche_ssh}, id)
     refute Request.grant?(grant, selector, "22222222-2222-4222-8222-222222222222")
     refute Request.grant?(grant, label, id)
+  end
+
+  test "a remote grant binds this original host and one exact destination" do
+    source = "11111111-1111-4111-8111-111111111111"
+    destination = "22222222-2222-4222-8222-222222222222"
+    label = "vm-11111111111141118111111111111111"
+
+    relay = %{
+      origin_host_id: source,
+      destination_host_id: destination,
+      address: "10.90.0.2",
+      port: 9445,
+      capability: "audi_relay_" <> Base.url_encode64(<<0::256>>, padding: false)
+    }
+
+    grant = %{
+      ticket: :test,
+      ttl: 5000,
+      relay: relay,
+      binding: %{
+        vm_id: source,
+        placement_id: source,
+        host_id: destination,
+        session_id: source,
+        execution_epoch: 2,
+        generation: 3,
+        service: :ssh,
+        port: 22,
+        label: label
+      }
+    }
+
+    assert Request.grant?(grant, label, source)
+    refute Request.grant?(grant, label, destination)
+    refute Request.grant?(put_in(grant, [:relay, :origin_host_id], destination), label, source)
+    refute Request.grant?(put_in(grant, [:relay, :address], "127.0.0.1"), label, source)
+    refute Request.grant?(put_in(grant, [:binding, :host_id], source), label, source)
   end
 end

@@ -11,8 +11,13 @@ defmodule Audi.DNS.ReplicaTest do
   @token "audi_service_" <> String.duplicate("A", 43)
 
   setup do
+    fixture()
+  end
+
+  @spec fixture() :: %{client: Client.t(), directory: atom(), port: non_neg_integer()}
+  defp fixture do
     server =
-      start_supervised!(
+      Overalls.HegelFixtures.start_fixture!(
         {Bandit,
          plug: {Audi.Test.DNSControl, owner: self()},
          scheme: :https,
@@ -41,7 +46,7 @@ defmodule Audi.DNS.ReplicaTest do
       directory: directory
     }
 
-    dns = start_supervised!({Server, authority: authority})
+    dns = Overalls.HegelFixtures.start_fixture!({Server, authority: authority}, id: make_ref())
     %{client: client, directory: directory, port: Server.port(dns)}
   end
 
@@ -49,53 +54,49 @@ defmodule Audi.DNS.ReplicaTest do
   # Explicit 426 MUST preserve its terminal class before payload-size or JSON
   # classification over real verified HTTPS, including configured-limit families.
   test "verified TLS version refusal precedes malformed and oversized payloads", c do
-    check all(
-            generated <- member_of([0, 4095, 4096, 4097, 8_388_608, 8_388_609]),
-            max_runs: 2,
-          ) do
-      for size <- Enum.uniq([0, 4095, 4096, 4097, 8_388_608, 8_388_609, generated]),
-          operation <- [:dns, :identity] do
-        server_id = make_ref()
+    # Exhaustively visit the finite matrix; a random duplicate adds no coverage.
+    for size <- [0, 4095, 4096, 4097, 8_388_608, 8_388_609],
+        operation <- [:dns, :identity] do
+      server_id = make_ref()
 
-        server =
-          start_supervised!(
-            {Bandit,
-             plug:
-               {Audi.Test.DNSControl, owner: self(), upgrade_refusal: String.duplicate("x", size)},
-             scheme: :https,
-             ip: {127, 0, 0, 1},
-             port: 0,
-             startup_log: false,
-             certfile: Path.join(@fixtures, "localhost.pem"),
-             keyfile: Path.join(@fixtures, "localhost.key")},
-            id: server_id
-          )
+      server =
+        start_supervised!(
+          {Bandit,
+           plug:
+             {Audi.Test.DNSControl, owner: self(), upgrade_refusal: String.duplicate("x", size)},
+           scheme: :https,
+           ip: {127, 0, 0, 1},
+           port: 0,
+           startup_log: false,
+           certfile: Path.join(@fixtures, "localhost.pem"),
+           keyfile: Path.join(@fixtures, "localhost.key")},
+          id: server_id
+        )
 
-        {:ok, {_, port}} = ThousandIsland.listener_info(server)
-        client = Audi.Test.DNSControl.started(%{c.client | origin: "https://127.0.0.1:#{port}"})
+      {:ok, {_, port}} = ThousandIsland.listener_info(server)
+      client = Audi.Test.DNSControl.started(%{c.client | origin: "https://127.0.0.1:#{port}"})
 
-        try do
-          assert_receive {:control_upgrade_refused, ^size}, 1_000
-          assert await_version_stop(client.control, System.monotonic_time(:millisecond) + 5_000)
+      try do
+        assert_receive {:control_upgrade_refused, ^size}, 1_000
+        assert await_version_stop(client.control, System.monotonic_time(:millisecond) + 5_000)
 
-          task =
-            Task.async(fn ->
-              case operation do
-                :dns -> Client.dns_snapshot(client, @zone)
-                :identity -> Client.identity(client)
-              end
-            end)
+        task =
+          Task.async(fn ->
+            case operation do
+              :dns -> Client.dns_snapshot(client, @zone)
+              :identity -> Client.identity(client)
+            end
+          end)
 
-          assert Task.await(task, 10_000) == {:error, :unsupported_version}
+        assert Task.await(task, 10_000) == {:error, :unsupported_version}
 
-          assert OverallsProtocol.Control.Client.status(client.control) ==
-                   {:disconnected, :unsupported_version}
+        assert OverallsProtocol.Control.Client.status(client.control) ==
+                 {:disconnected, :unsupported_version}
 
-          refute_receive {:control_request, _, _, _, _, _}, 0
-        after
-          stop_supervised(client.control)
-          stop_supervised(server_id)
-        end
+        refute_receive {:control_request, _, _, _, _, _}, 0
+      after
+        stop_supervised(client.control)
+        stop_supervised(server_id)
       end
     end
   end
@@ -124,66 +125,67 @@ defmodule Audi.DNS.ReplicaTest do
   # transient, as MUST actual close4008 loss; the oracle MUST observe both
   # peer requests before closing.
   @tag :actual_version_close
-  test "pending reads retain terminal version refusal over the actual TLS socket", c do
-    check all(prefix <- member_of([0, 1, 2]), max_runs: 3, test_cases: 1) do
-      for {close_reason, expected} <- [
-            {:idle, :transport_error},
-            {:unsupported_version, :unsupported_version}
-          ] do
-        client = Audi.Test.DNSControl.connected(c.client)
+  property "pending reads retain terminal version refusal over the actual TLS socket" do
+    c = fixture()
+    prefix = draw("prefix", member_of([0, 1, 2]))
 
-        try do
-          for _ <- List.duplicate(:transient, prefix) do
-            task = Task.async(fn -> Client.identity(client) end)
+    for {close_reason, expected} <- [
+          {:idle, :transport_error},
+          {:unsupported_version, :unsupported_version}
+        ] do
+      client = Audi.Test.DNSControl.connected(c.client)
 
-            assert_receive {:control_request, worker, reference, "/api/audi/v1/identity", _, _},
-                           1000
+      try do
+        for _ <- List.duplicate(:transient, prefix) do
+          task = Task.async(fn -> Client.identity(client) end)
 
-            send(worker, {reference, 503, "{}"})
-            assert Task.await(task, 5000) == {:error, :http_error}
-          end
+          assert_receive {:control_request, worker, reference, "/api/audi/v1/identity", _, _},
+                         1000
 
-          tasks =
-            for operation <- [:dns, :identity] do
-              Task.async(fn ->
-                case operation do
-                  :dns -> Client.dns_snapshot(client, @zone)
-                  :identity -> Client.identity(client)
-                end
-              end)
-            end
-
-          requests =
-            for _ <- 1..2 do
-              assert_receive {:control_request, worker, reference, path, _, _}, 1000
-              {worker, reference, path}
-            end
-
-          assert MapSet.new(Enum.map(requests, &elem(&1, 2))) ==
-                   MapSet.new(["/api/audi/v1/dns-snapshot", "/api/audi/v1/identity"])
-
-          [{worker, reference, _} | _] = requests
-
-          send(
-            worker,
-            {reference, :close, OverallsProtocol.Control.Close.code(close_reason)}
-          )
-
-          for task <- tasks,
-              do: assert(Task.await(task, 5000) == {:error, expected})
-
-          if close_reason == :unsupported_version do
-            assert OverallsProtocol.Control.Client.status(client.control) ==
-                     {:disconnected, :unsupported_version}
-
-            assert Client.identity(client) == {:error, :unsupported_version}
-            assert Client.dns_snapshot(client, @zone) == {:error, :unsupported_version}
-          end
-
-          refute_receive {:control_request, _, _, _, _, _}, 100
-        after
-          stop_supervised(client.control)
+          send(worker, {reference, 503, "{}"})
+          assert Task.await(task, 5000) == {:error, :http_error}
         end
+
+        tasks =
+          for operation <- [:dns, :identity] do
+            Task.async(fn ->
+              case operation do
+                :dns -> Client.dns_snapshot(client, @zone)
+                :identity -> Client.identity(client)
+              end
+            end)
+          end
+
+        requests =
+          for _ <- 1..2 do
+            assert_receive {:control_request, worker, reference, path, _, _}, 1000
+            {worker, reference, path}
+          end
+
+        assert MapSet.new(Enum.map(requests, &elem(&1, 2))) ==
+                 MapSet.new(["/api/audi/v1/dns-snapshot", "/api/audi/v1/identity"])
+
+        [{worker, reference, _} | _] = requests
+
+        send(
+          worker,
+          {reference, :close, OverallsProtocol.Control.Close.code(close_reason)}
+        )
+
+        for task <- tasks,
+            do: assert(Task.await(task, 5000) == {:error, expected})
+
+        if close_reason == :unsupported_version do
+          assert OverallsProtocol.Control.Client.status(client.control) ==
+                   {:disconnected, :unsupported_version}
+
+          assert Client.identity(client) == {:error, :unsupported_version}
+          assert Client.dns_snapshot(client, @zone) == {:error, :unsupported_version}
+        end
+
+        refute_receive {:control_request, _, _, _, _, _}, 100
+      after
+        stop_supervised(client.control)
       end
     end
   end
@@ -195,66 +197,12 @@ defmodule Audi.DNS.ReplicaTest do
   @tag timeout: 120_000
   @tag :actual_version_close
   test "DNS cadence stops on a pending socket version close without renewing authority", c do
-    check all(generated <- member_of([0, 1, 2]), max_runs: 2, test_cases: 1) do
-      for transients <- Enum.uniq([0, 1, 2, generated]) do
-        client = Audi.Test.DNSControl.connected(c.client)
+    # Exhaustively visit the finite matrix; a random duplicate adds no coverage.
+    for transients <- [0, 1, 2] do
+      client = Audi.Test.DNSControl.connected(c.client)
 
-        replica =
-          start_supervised!({Replica, client: client, directory: c.directory, zone: @zone})
-
-        try do
-          revision = System.unique_integer([:positive, :monotonic])
-          reply(200, snapshot(revision))
-          _ = :sys.get_state(replica)
-          published = :sys.get_state(c.directory)
-
-          for _ <- List.duplicate(:transient, transients) do
-            state = :sys.get_state(replica)
-            send(replica, {:refresh, state.timer})
-            reply(503, %{})
-            _ = :sys.get_state(replica)
-            assert Replica.automatic_work_enabled?(replica)
-            assert :sys.get_state(c.directory) == published
-          end
-
-          prior = :sys.get_state(replica)
-          send(replica, {:refresh, prior.timer})
-
-          assert_receive {:control_request, worker, reference, "/api/audi/v1/dns-snapshot", _, _},
-                         1000
-
-          send(
-            worker,
-            {reference, :close, OverallsProtocol.Control.Close.code(:unsupported_version)}
-          )
-
-          refute Replica.automatic_work_enabled?(replica)
-          assert :sys.get_state(c.directory) == published
-
-          for timer <- [prior.timer, make_ref()], do: send(replica, {:refresh, timer})
-          refute Replica.automatic_work_enabled?(replica)
-          refute_receive {:control_request, _, _, _, _, _}, 1100
-          assert answer(c.port, @label <> "." <> @zone, 1, :udp) == {0, 1}
-
-          Process.sleep(max(published.expires_at - System.monotonic_time(:millisecond) + 1, 0))
-          assert answer(c.port, @label <> "." <> @zone, 1, :tcp) == {2, 0}
-          assert :sys.get_state(c.directory) == published
-          refute_receive {:control_request, _, _, _, _, _}, 100
-        after
-          stop_supervised(Replica)
-          stop_supervised(client.control)
-        end
-      end
-    end
-  end
-
-  # @cc [owner:ghuntley,label:verification;recovery] audi-dns-terminal-version-history
-  # Transient failures may retry; an explicit 426 MUST halt automatic and stale
-  # timer refreshes while preserving exact published bytes and original expiry.
-  test "DNS replica halts after version refusal without extending published authority", c do
-    check all(transients <- member_of([0, 1, 2]), max_runs: 3, test_cases: 1) do
       replica =
-        start_supervised!({Replica, client: c.client, directory: c.directory, zone: @zone})
+        start_supervised!({Replica, client: client, directory: c.directory, zone: @zone})
 
       try do
         revision = System.unique_integer([:positive, :monotonic])
@@ -267,32 +215,92 @@ defmodule Audi.DNS.ReplicaTest do
           send(replica, {:refresh, state.timer})
           reply(503, %{})
           _ = :sys.get_state(replica)
+          assert Replica.automatic_work_enabled?(replica)
           assert :sys.get_state(c.directory) == published
         end
 
         prior = :sys.get_state(replica)
         send(replica, {:refresh, prior.timer})
-        reply(426, %{})
-        halted = :sys.get_state(replica)
-        assert :sys.get_state(c.directory) == published
 
-        for timer <- [prior.timer, halted.timer, make_ref()] do
-          send(replica, {:refresh, timer})
-        end
+        assert_receive {:control_request, worker, reference, "/api/audi/v1/dns-snapshot", _, _},
+                       1000
 
-        _ = :sys.get_state(replica)
-        refute_receive {:control_request, _, _, _, _, _}, 1100
-        assert Map.get(:sys.get_state(replica), :halted?) == true
+        send(
+          worker,
+          {reference, :close, OverallsProtocol.Control.Close.code(:unsupported_version)}
+        )
+
         refute Replica.automatic_work_enabled?(replica)
         assert :sys.get_state(c.directory) == published
+
+        for timer <- [prior.timer, make_ref()], do: send(replica, {:refresh, timer})
+        refute Replica.automatic_work_enabled?(replica)
+        refute_receive {:control_request, _, _, _, _, _}, 1100
         assert answer(c.port, @label <> "." <> @zone, 1, :udp) == {0, 1}
+
         Process.sleep(max(published.expires_at - System.monotonic_time(:millisecond) + 1, 0))
         assert answer(c.port, @label <> "." <> @zone, 1, :tcp) == {2, 0}
-        refute_receive {:control_request, _, _, _, _, _}, 100
         assert :sys.get_state(c.directory) == published
+        refute_receive {:control_request, _, _, _, _, _}, 100
       after
         stop_supervised(Replica)
+        stop_supervised(client.control)
       end
+    end
+  end
+
+  # @cc [owner:ghuntley,label:verification;recovery] audi-dns-terminal-version-history
+  # Transient failures may retry; an explicit 426 MUST halt automatic and stale
+  # timer refreshes while preserving exact published bytes and original expiry.
+  # Each case observes the real five-second published-authority expiry.
+  # Six measured cases take 30.6 seconds; preserve 100 cases with an I/O profile.
+  @tag timeout: 900_000
+  property "DNS replica halts after version refusal without extending published authority",
+    profile: :ci do
+    c = fixture()
+    transients = draw("transients", member_of([0, 1, 2]))
+
+    replica =
+      Overalls.HegelFixtures.start_supervised!(
+        {Replica, client: c.client, directory: c.directory, zone: @zone}
+      )
+
+    try do
+      revision = System.unique_integer([:positive, :monotonic])
+      reply(200, snapshot(revision))
+      _ = :sys.get_state(replica)
+      published = :sys.get_state(c.directory)
+
+      for _ <- List.duplicate(:transient, transients) do
+        state = :sys.get_state(replica)
+        send(replica, {:refresh, state.timer})
+        reply(503, %{})
+        _ = :sys.get_state(replica)
+        assert :sys.get_state(c.directory) == published
+      end
+
+      prior = :sys.get_state(replica)
+      send(replica, {:refresh, prior.timer})
+      reply(426, %{})
+      halted = :sys.get_state(replica)
+      assert :sys.get_state(c.directory) == published
+
+      for timer <- [prior.timer, halted.timer, make_ref()] do
+        send(replica, {:refresh, timer})
+      end
+
+      _ = :sys.get_state(replica)
+      refute_receive {:control_request, _, _, _, _, _}, 1100
+      assert Map.get(:sys.get_state(replica), :halted?) == true
+      refute Replica.automatic_work_enabled?(replica)
+      assert :sys.get_state(c.directory) == published
+      assert answer(c.port, @label <> "." <> @zone, 1, :udp) == {0, 1}
+      Process.sleep(max(published.expires_at - System.monotonic_time(:millisecond) + 1, 0))
+      assert answer(c.port, @label <> "." <> @zone, 1, :tcp) == {2, 0}
+      refute_receive {:control_request, _, _, _, _, _}, 100
+      assert :sys.get_state(c.directory) == published
+    after
+      stop_supervised(Replica)
     end
   end
 
@@ -389,125 +397,127 @@ defmodule Audi.DNS.ReplicaTest do
   # @cc [owner:ghuntley,label:verification;security] dns-wire-snapshot-history
   # Generated accepted, stale and invalid publications MUST keep actual UDP and
   # TCP answers aligned with the latest accepted live route and proof inventory.
-  test "UDP and TCP answers follow only the latest accepted snapshot", c do
-    check all(
-            actions <-
-              shuffle([
-                :both,
-                :route,
-                :proof,
-                :empty,
-                :expired_route,
-                :stale,
-                :conflict,
-                :expired_snapshot,
-                :invalid
-              ]),
-            max_runs: 12
-          ) do
-      revision = System.unique_integer([:positive, :monotonic])
-      {:ok, initial} = Snapshot.decode(snapshot(revision), @zone, monotonic_now())
-      assert :ok = Directory.publish(c.directory, revision, initial.entries, initial.expires_at)
-      assert_answers(c.port, :both)
+  property "UDP and TCP answers follow only the latest accepted snapshot" do
+    c = fixture()
 
-      Enum.reduce(actions, {revision, :both}, fn action, {current_revision, current_state} ->
-        case action do
-          :stale ->
-            old = snapshot(current_revision - 1) |> Map.merge(%{"routes" => [], "proofs" => []})
-            {:ok, decoded} = Snapshot.decode(old, @zone, monotonic_now())
+    actions =
+      draw(
+        "actions",
+        shuffle([
+          :both,
+          :route,
+          :proof,
+          :empty,
+          :expired_route,
+          :stale,
+          :conflict,
+          :expired_snapshot,
+          :invalid
+        ])
+      )
 
-            assert {:error, :stale} =
-                     Directory.publish(
-                       c.directory,
-                       decoded.revision,
-                       decoded.entries,
-                       decoded.expires_at
-                     )
+    revision = System.unique_integer([:positive, :monotonic])
+    {:ok, initial} = Snapshot.decode(snapshot(revision), @zone, monotonic_now())
+    assert :ok = Directory.publish(c.directory, revision, initial.entries, initial.expires_at)
+    assert_answers(c.port, :both)
 
-            assert_answers(c.port, current_state)
-            {current_revision, current_state}
+    Enum.reduce(actions, {revision, :both}, fn action, {current_revision, current_state} ->
+      case action do
+        :stale ->
+          old = snapshot(current_revision - 1) |> Map.merge(%{"routes" => [], "proofs" => []})
+          {:ok, decoded} = Snapshot.decode(old, @zone, monotonic_now())
 
-          :invalid ->
-            assert {:error, :invalid_message} =
-                     snapshot(current_revision + 1)
-                     |> Map.put("zone", "wrong.example")
-                     |> Snapshot.decode(@zone, monotonic_now())
+          assert {:error, :stale} =
+                   Directory.publish(
+                     c.directory,
+                     decoded.revision,
+                     decoded.entries,
+                     decoded.expires_at
+                   )
 
-            assert_answers(c.port, current_state)
-            {current_revision, current_state}
+          assert_answers(c.port, current_state)
+          {current_revision, current_state}
 
-          :conflict ->
-            changed =
-              snapshot(current_revision)
-              |> put_in(["routes", Access.at(0), "addresses"], ["192.0.2.2"])
+        :invalid ->
+          assert {:error, :invalid_message} =
+                   snapshot(current_revision + 1)
+                   |> Map.put("zone", "wrong.example")
+                   |> Snapshot.decode(@zone, monotonic_now())
 
-            {:ok, decoded} = Snapshot.decode(changed, @zone, monotonic_now())
+          assert_answers(c.port, current_state)
+          {current_revision, current_state}
 
-            assert {:error, :conflict} =
-                     Directory.publish(
-                       c.directory,
-                       decoded.revision,
-                       decoded.entries,
-                       decoded.expires_at
-                     )
+        :conflict ->
+          changed =
+            snapshot(current_revision)
+            |> put_in(["routes", Access.at(0), "addresses"], ["192.0.2.2"])
 
-            assert_answers(c.port, current_state)
-            {current_revision, current_state}
+          {:ok, decoded} = Snapshot.decode(changed, @zone, monotonic_now())
 
-          :expired_snapshot ->
-            next_revision = System.unique_integer([:positive, :monotonic])
-            {:ok, decoded} = Snapshot.decode(snapshot(next_revision), @zone, monotonic_now())
+          assert {:error, :conflict} =
+                   Directory.publish(
+                     c.directory,
+                     decoded.revision,
+                     decoded.entries,
+                     decoded.expires_at
+                   )
 
-            assert {:error, :stale} =
-                     Directory.publish(
-                       c.directory,
-                       decoded.revision,
-                       decoded.entries,
-                       monotonic_now() - 1
-                     )
+          assert_answers(c.port, current_state)
+          {current_revision, current_state}
 
-            assert_answers(c.port, current_state)
-            {current_revision, current_state}
+        :expired_snapshot ->
+          next_revision = System.unique_integer([:positive, :monotonic])
+          {:ok, decoded} = Snapshot.decode(snapshot(next_revision), @zone, monotonic_now())
 
-          next_state ->
-            next_revision = System.unique_integer([:positive, :monotonic])
+          assert {:error, :stale} =
+                   Directory.publish(
+                     c.directory,
+                     decoded.revision,
+                     decoded.entries,
+                     monotonic_now() - 1
+                   )
 
-            value =
-              case next_state do
-                :both ->
-                  snapshot(next_revision)
+          assert_answers(c.port, current_state)
+          {current_revision, current_state}
 
-                :route ->
-                  Map.put(snapshot(next_revision), "proofs", [])
+        next_state ->
+          next_revision = System.unique_integer([:positive, :monotonic])
 
-                :proof ->
-                  Map.put(snapshot(next_revision), "routes", [])
+          value =
+            case next_state do
+              :both ->
+                snapshot(next_revision)
 
-                :empty ->
-                  Map.merge(snapshot(next_revision), %{"routes" => [], "proofs" => []})
+              :route ->
+                Map.put(snapshot(next_revision), "proofs", [])
 
-                :expired_route ->
-                  put_in(snapshot(next_revision), ["routes", Access.at(0), "ttl"], 1)
-              end
+              :proof ->
+                Map.put(snapshot(next_revision), "routes", [])
 
-            started =
-              if next_state == :expired_route, do: monotonic_now() - 10, else: monotonic_now()
+              :empty ->
+                Map.merge(snapshot(next_revision), %{"routes" => [], "proofs" => []})
 
-            {:ok, decoded} = Snapshot.decode(value, @zone, started)
+              :expired_route ->
+                put_in(snapshot(next_revision), ["routes", Access.at(0), "ttl"], 1)
+            end
 
-            assert :ok =
-                     Directory.publish(
-                       c.directory,
-                       decoded.revision,
-                       decoded.entries,
-                       decoded.expires_at
-                     )
+          started =
+            if next_state == :expired_route, do: monotonic_now() - 10, else: monotonic_now()
 
-            assert_answers(c.port, next_state)
-            {next_revision, next_state}
-        end
-      end)
-    end
+          {:ok, decoded} = Snapshot.decode(value, @zone, started)
+
+          assert :ok =
+                   Directory.publish(
+                     c.directory,
+                     decoded.revision,
+                     decoded.entries,
+                     decoded.expires_at
+                   )
+
+          assert_answers(c.port, next_state)
+          {next_revision, next_state}
+      end
+    end)
   end
 
   @spec assert_answers(:inet.port_number(), :both | :route | :proof | :empty | :expired_route) ::

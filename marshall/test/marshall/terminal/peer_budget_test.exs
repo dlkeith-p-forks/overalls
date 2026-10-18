@@ -46,39 +46,44 @@ defmodule Marshall.Terminal.PeerBudgetTest do
   # @cc [owner:ghuntley,label:verification;capacity;recovery] terminal-peer-budget-death-history
   # A saturated budget MUST refuse extra callers, then reclaim exactly the
   # slots of dead owners and admit that many replacements without a restart.
-  property "generated mass owner death reclaims exactly the available slots", test_cases: 20 do
-    check all(limit <- integer(2..8), deaths <- integer(1..limit), test_cases: 20) do
-      budget = start_supervised!({PeerBudget, name: nil, limit: limit}, id: make_ref())
-      parent = self()
+  property "generated mass owner death reclaims exactly the available slots", test_cases: 100 do
+    limit = draw("limit", integer(2..8))
+    deaths = draw("deaths", integer(1..limit))
 
-      owners = for _ <- 1..limit, do: budget_owner(budget, parent)
-      on_exit(fn -> Enum.each(owners, &Process.exit(&1, :kill)) end)
+    budget =
+      Overalls.HegelFixtures.start_supervised!({PeerBudget, name: nil, limit: limit},
+        id: make_ref()
+      )
 
-      for _ <- owners, do: assert_receive({:budget_owner, {:ok, ^budget}})
-      assert PeerBudget.used(budget) == limit
-      assert {:error, :peer_capacity} = PeerBudget.acquire(budget)
+    parent = self()
 
-      {dead, living} = Enum.split(owners, deaths)
-      monitors = Enum.map(dead, &Process.monitor/1)
-      Enum.each(dead, &Process.exit(&1, :kill))
+    owners = for _ <- 1..limit, do: budget_owner(budget, parent)
+    Hegel.on_cleanup(fn -> Enum.each(owners, &Process.exit(&1, :kill)) end)
 
-      for {owner, monitor} <- Enum.zip(dead, monitors),
-          do: assert_receive({:DOWN, ^monitor, :process, ^owner, :killed})
+    for _ <- owners, do: assert_receive({:budget_owner, {:ok, ^budget}})
+    assert PeerBudget.used(budget) == limit
+    assert {:error, :peer_capacity} = PeerBudget.acquire(budget)
 
-      assert reclaimed_count?(budget, limit - deaths, System.monotonic_time(:millisecond) + 1000)
-      replacements = for _ <- 1..deaths, do: budget_owner(budget, parent)
-      on_exit(fn -> Enum.each(replacements, &Process.exit(&1, :kill)) end)
-      for _ <- replacements, do: assert_receive({:budget_owner, {:ok, ^budget}})
-      assert PeerBudget.used(budget) == limit
-      assert {:error, :peer_capacity} = PeerBudget.acquire(budget)
+    {dead, living} = Enum.split(owners, deaths)
+    monitors = Enum.map(dead, &Process.monitor/1)
+    Enum.each(dead, &Process.exit(&1, :kill))
 
-      Enum.each(living ++ replacements, &Process.exit(&1, :kill))
-      assert reclaimed_count?(budget, 0, System.monotonic_time(:millisecond) + 1000)
-      assert {:ok, ^budget} = PeerBudget.acquire(budget)
-      assert PeerBudget.used(budget) == 1
-      assert :ok = PeerBudget.release(budget)
-      assert reclaimed_count?(budget, 0, System.monotonic_time(:millisecond) + 1000)
-    end
+    for {owner, monitor} <- Enum.zip(dead, monitors),
+        do: assert_receive({:DOWN, ^monitor, :process, ^owner, :killed})
+
+    assert reclaimed_count?(budget, limit - deaths, System.monotonic_time(:millisecond) + 1000)
+    replacements = for _ <- 1..deaths, do: budget_owner(budget, parent)
+    Hegel.on_cleanup(fn -> Enum.each(replacements, &Process.exit(&1, :kill)) end)
+    for _ <- replacements, do: assert_receive({:budget_owner, {:ok, ^budget}})
+    assert PeerBudget.used(budget) == limit
+    assert {:error, :peer_capacity} = PeerBudget.acquire(budget)
+
+    Enum.each(living ++ replacements, &Process.exit(&1, :kill))
+    assert reclaimed_count?(budget, 0, System.monotonic_time(:millisecond) + 1000)
+    assert {:ok, ^budget} = PeerBudget.acquire(budget)
+    assert PeerBudget.used(budget) == 1
+    assert :ok = PeerBudget.release(budget)
+    assert reclaimed_count?(budget, 0, System.monotonic_time(:millisecond) + 1000)
   end
 
   @spec budget_owner(pid(), pid()) :: pid()

@@ -30,6 +30,39 @@ defmodule MarshallWeb.OverviewLiveTest do
     assert has_element?(view, "#overview-capacity-unavailable")
   end
 
+  test "preview status labels name the state and carry its severity tone", %{conn: conn} do
+    host_fixture()
+    host_fixture()
+    owner = user()
+    {:ok, failed} = Compute.provision(request(), actor: owner)
+
+    Ledger.update!(failed, :observe, %{observed_state: :failed, failure_reason: :execution_failed})
+
+    {:ok, running} = Compute.provision(request(), actor: owner)
+    Ledger.update!(running, :observe, %{observed_state: :running})
+
+    {:ok, view, _} = live(signed_in(conn, owner), "/overview")
+    labels = fn vm -> "#overview-machine-#{vm.id} .preview-labels" end
+
+    assert has_element?(
+             view,
+             labels.(failed) <> " .status-label[data-state=failed][data-tone=danger]",
+             "Failed"
+           )
+
+    assert has_element?(
+             view,
+             labels.(running) <> " .status-label[data-state=running][data-tone=success]",
+             "Running"
+           )
+
+    # [OS] leads [State] inside the label row.
+    assert has_element?(
+             view,
+             labels.(failed) <> " #overview-machine-os-#{failed.id} + .status-label"
+           )
+  end
+
   test "preview includes shared machines, excludes unrelated machines, and drops revoked grants",
        %{conn: conn} do
     host_fixture()

@@ -10,7 +10,8 @@ defmodule Lilly.VM.Spec do
     :vcpu,
     :memory_bytes,
     :disk_bytes,
-    workspace_source: nil
+    workspace_source: nil,
+    git_identity: nil
   ]
 
   @type t :: %__MODULE__{
@@ -21,7 +22,8 @@ defmodule Lilly.VM.Spec do
           vcpu: pos_integer(),
           memory_bytes: pos_integer(),
           disk_bytes: pos_integer(),
-          workspace_source: OverallsProtocol.WorkspaceSource.t() | nil
+          workspace_source: OverallsProtocol.WorkspaceSource.t() | nil,
+          git_identity: OverallsProtocol.GitIdentity.t() | nil
         }
 
   # @cc [owner:ghuntley,label:security] local-spec-validates-before-effects
@@ -32,7 +34,20 @@ defmodule Lilly.VM.Spec do
   # An optional workspace_source MUST be a valid closed source-v2 provider reference and MUST NOT
   # enter encode/1: persisted disk, dataset and backup identities stay byte-identical
   # whether or not a command carries a source, so old metadata keeps matching (ADR-0128).
+
+  # @cc [owner:ghuntley,label:security;recovery] spec-git-identity-delivery-only
+  # A supplied Git identity MUST validate before boot and MUST NOT affect persisted
+  # storage identity or adoption comparisons.
   @spec new(map()) :: {:ok, t()} | {:error, :invalid_vm_specification}
+  def new(%{git_identity: identity} = value) when map_size(value) in [9, 10] do
+    with true <- OverallsProtocol.GitIdentity.valid?(identity),
+         {:ok, spec} <- new(Map.delete(value, :git_identity)) do
+      {:ok, %{spec | git_identity: identity}}
+    else
+      _ -> {:error, :invalid_vm_specification}
+    end
+  end
+
   def new(%{workspace_source: source} = value) when map_size(value) == 9 do
     with true <- OverallsProtocol.WorkspaceSource.valid?(source),
          {:ok, spec} <- new(Map.delete(value, :workspace_source)) do
@@ -90,12 +105,12 @@ defmodule Lilly.VM.Spec do
 
   # @cc [owner:ghuntley,label:recovery;security] spec-storage-shape-ignores-delivery
   # storage/1 MUST return the persisted dataset identity of a spec: the exact
-  # shape with its guest-delivery workspace source cleared. Claim, snapshot and
+  # shape with its guest-delivery workspace source and Git attribution cleared. Claim, snapshot and
   # adoption comparisons MUST compare this shape, never the full struct, so a
   # start command that carries a source still matches the claim its stopped
   # or provisioning predecessor journaled (ADR-0128).
   @spec storage(t()) :: t()
-  def storage(spec), do: %{spec | workspace_source: nil}
+  def storage(spec), do: %{spec | workspace_source: nil, git_identity: nil}
 
   @spec encode(t()) :: map()
   def encode(spec),

@@ -241,10 +241,9 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # Real node startup and committed races consume the engine's input timer.
   property "generated multi-node races preserve committed capacity accounting",
     profile: :ci,
-    test_cases: 8 do
-    check all(batches <- schedule_gen(), test_cases: 8) do
-      unboxed(fn -> run_sample(batches) end)
-    end
+    test_cases: 100 do
+    batches = draw("batches", schedule_gen())
+    unboxed(fn -> run_sample(batches) end)
   end
 
   # @cc [owner:ghuntley,label:verification;concurrency] capacity-error-wrapper-regression
@@ -252,44 +251,39 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # step-result validator. Documented atom refusals and ordinary successful
   # clone results MUST remain valid. Error-like data MUST NOT be SQL evidence.
   property "race result validation rejects raw and Ash-wrapped clone SQL failures",
-    test_cases: 8 do
-    check all(
-            depth <- member_of([0, 1, 3, 8]),
-            refusal <- member_of([:insufficient_capacity, :source_unavailable, :vm_busy]),
-            test_cases: 8
-          ) do
-      raw =
-        Postgrex.Error.exception(
-          postgres: %{
-            code: "40P01",
-            severity: "ERROR",
-            message: "synthetic deadlock regression",
-            detail: nil
-          }
-        )
+    test_cases: 100 do
+    depth = draw("depth", member_of([0, 1, 3, 8]))
+    refusal = draw("refusal", member_of([:insufficient_capacity, :source_unavailable, :vm_busy]))
 
-      opaque = Ash.Error.to_ash_error(raw)
+    raw =
+      Postgrex.Error.exception(
+        postgres: %{
+          code: "40P01",
+          severity: "ERROR",
+          message: "synthetic deadlock regression",
+          detail: nil
+        }
+      )
 
-      for error <- [raw, opaque], nested_depth <- [depth, 0, 8] do
-        nested = nest_error(error, nested_depth)
+    opaque = Ash.Error.to_ash_error(raw)
 
-        assert_raise ExUnit.AssertionError, fn ->
-          validate_step_result!({:clone, {:ok, %{}}, {:error, nested}})
-        end
-      end
+    for error <- [raw, opaque], nested_depth <- [depth, 0, 8] do
+      nested = nest_error(error, nested_depth)
 
       assert_raise ExUnit.AssertionError, fn ->
-        validate_step_result!({:outcome, :tag, {:error, nest_error(raw, depth)}, %{}})
+        validate_step_result!({:clone, {:ok, %{}}, {:error, nested}})
       end
-
-      assert :ok = validate_step_result!({:clone, {:ok, %{}}, {:error, refusal}})
-      assert :ok = validate_step_result!({:clone, {:ok, %{}}, {:ok, :queued}})
-
-      assert :ok =
-               validate_step_result!(
-                 {:probe, {:ok, %{label: "40P01", event: :deadlock_detected}}}
-               )
     end
+
+    assert_raise ExUnit.AssertionError, fn ->
+      validate_step_result!({:outcome, :tag, {:error, nest_error(raw, depth)}, %{}})
+    end
+
+    assert :ok = validate_step_result!({:clone, {:ok, %{}}, {:error, refusal}})
+    assert :ok = validate_step_result!({:clone, {:ok, %{}}, {:ok, :queued}})
+
+    assert :ok =
+             validate_step_result!({:probe, {:ok, %{label: "40P01", event: :deadlock_detected}}})
   end
 
   @spec nest_error(term(), non_neg_integer()) :: term()
@@ -2595,11 +2589,12 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # complete allocation inventories and unreleased slot uniqueness MUST be checked.
   property "opposite-source relocations and clone activation reach shared host locks",
     profile: :ci,
-    test_cases: 2 do
-    check all(rotation <- member_of([0, 1, 2]), reverse <- boolean(), test_cases: 2) do
-      for fixed_rotation <- Enum.uniq([rotation, 0, 1, 2]) do
-        unboxed(fn -> lock_schedule_sample(fixed_rotation, reverse) end)
-      end
+    test_cases: 100 do
+    rotation = draw("rotation", member_of([0, 1, 2]))
+    reverse = draw("reverse", boolean())
+
+    for fixed_rotation <- Enum.uniq([rotation, 0, 1, 2]) do
+      unboxed(fn -> lock_schedule_sample(fixed_rotation, reverse) end)
     end
   end
 

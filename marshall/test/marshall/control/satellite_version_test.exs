@@ -13,12 +13,12 @@ defmodule Marshall.Control.SatelliteVersionTest do
   # retain its ordinary invalid_request refusal. Galileo carries no body
   # version: its refusal is the control socket's (426 at upgrade, 4001 after
   # hello), covered by the control API tests.
-  property "explicit wrong Ziggy body versions receive permanent refusals", test_cases: 20 do
-    check all(version <- member_of([0, 1, 99, "2", nil]), test_cases: 20) do
-      for route <- @ziggy_routes do
-        assert Ziggy.handle_request("ziggy." <> route, %{"version" => version}, %{token: "k"}) ==
-                 {:error, "unsupported_version"}
-      end
+  property "explicit wrong Ziggy body versions receive permanent refusals", test_cases: 100 do
+    version = draw("version", member_of([0, 1, 99, "2", nil]))
+
+    for route <- @ziggy_routes do
+      assert Ziggy.handle_request("ziggy." <> route, %{"version" => version}, %{token: "k"}) ==
+               {:error, "unsupported_version"}
     end
   end
 

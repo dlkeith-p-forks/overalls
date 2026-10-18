@@ -95,7 +95,7 @@ defmodule Marshall.MixProject do
       {:lazy_html, ">= 0.1.0", only: :test},
       {:hegel_ex,
        git: "https://github.com/ghuntley/hegel-erlang.git",
-       ref: "8fe9786",
+       ref: "b0dec2a",
        subdir: "packages/hegel_ex",
        only: [:dev, :test],
        runtime: false},
@@ -108,6 +108,10 @@ defmodule Marshall.MixProject do
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 1.0"},
+      # CLDR-backed formatting and Phoenix request helpers. Locale data is
+      # bundled by the packages and is never downloaded at runtime.
+      {:localize, "~> 1.3"},
+      {:localize_web, "~> 1.1"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"}
@@ -149,6 +153,7 @@ defmodule Marshall.MixProject do
       "hldd.check": [&check_hldd/1],
       "workspace.check": [&check_workspace/1],
       "monospace.check": [&check_monospace/1],
+      "localization.data": [fn _ -> Code.eval_file("scripts/check_locale_data.exs", __DIR__) end],
       precommit: [
         "toolchain.check",
         "architecture.check",
@@ -163,6 +168,7 @@ defmodule Marshall.MixProject do
         "terminal.check",
         "workspace.check",
         "monospace.check",
+        "localization.data",
         "dialyzer --force-check"
       ]
     ]
@@ -191,6 +197,7 @@ defmodule Marshall.MixProject do
            [
              "--test",
              "test/browser/repository_launch_test.mjs",
+             "test/browser/localization_test.mjs",
              "test/browser/admin_elevation_test.mjs",
              "test/browser/browser_extension_presence_test.mjs"
            ],

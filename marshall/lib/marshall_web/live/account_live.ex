@@ -31,7 +31,7 @@ defmodule MarshallWeb.AccountLive do
     {:ok,
      socket
      |> assign(
-       page_title: "Account",
+       page_title: gettext("Account"),
        return_to: safe_return(params["return_to"], pending_launch),
        pending_launch: pending_launch,
        security: nil,
@@ -69,7 +69,7 @@ defmodule MarshallWeb.AccountLive do
          put_flash(
            socket,
            :error,
-           "Verification required. Use an existing passkey, or sign out and request a fresh email link before first enrollment."
+           gettext("Verification required. Use an existing passkey, or sign out and request a fresh email link before first enrollment.")
          )}
     end
   end
@@ -89,15 +89,15 @@ defmodule MarshallWeb.AccountLive do
          |> put_flash(
            :info,
            if(kind == "register",
-             do: "Passkey added. Verify it when you need to approve an administrative change.",
-             else: "Passkey verified for 15 minutes."
+             do: gettext("Passkey added. Verify it when you need to approve an administrative change."),
+             else: gettext("Passkey verified for 15 minutes.")
            )
          )
          |> refresh_security()}
 
       _ ->
         {:reply, %{ok: false},
-         put_flash(socket, :error, "Verification could not be completed. Please try again.")}
+         put_flash(socket, :error, gettext("Verification could not be completed. Please try again."))}
     end
   end
 
@@ -117,7 +117,7 @@ defmodule MarshallWeb.AccountLive do
          put_flash(
            socket,
            :error,
-           "Credential change refused. Names must be 1–80 characters, changes need a passkey verified in the last 15 minutes, and administrators must keep at least one passkey."
+           gettext("Credential change refused. Names must be 1–80 characters, changes need a passkey verified in the last 15 minutes, and administrators must keep at least one passkey.")
          )}
     end
   end
@@ -125,7 +125,7 @@ defmodule MarshallWeb.AccountLive do
   def handle_event("cancelled", _, socket),
     do:
       {:noreply,
-       put_flash(socket, :info, "Passkey request cancelled or unavailable. You can try again.")}
+       put_flash(socket, :info, gettext("Passkey request cancelled or unavailable. You can try again."))}
 
   # @cc [owner:ghuntley,label:security] browser-key-account-authority
   # SSH key actions MUST use the freshly authenticated socket user, never an
@@ -139,14 +139,14 @@ defmodule MarshallWeb.AccountLive do
 
     case result do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, "SSH key added.") |> refresh_keys()}
+        {:noreply, socket |> put_flash(:info, gettext("SSH key added.")) |> refresh_keys()}
 
       {:error, _} ->
         {:noreply,
          put_flash(
            socket,
            :error,
-           "Could not add this key. Paste one supported public key; it must not belong to another account."
+           gettext("Could not add this key. Paste one supported public key; it must not belong to another account.")
          )}
     end
   end
@@ -168,10 +168,10 @@ defmodule MarshallWeb.AccountLive do
   def handle_event("remove_ssh_key", %{"id" => id}, socket) do
     case SSH.remove_key(%{id: id}, actor: socket.assigns.current_user) do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, "SSH key removed.") |> refresh_keys()}
+        {:noreply, socket |> put_flash(:info, gettext("SSH key removed.")) |> refresh_keys()}
 
       {:error, _} ->
-        {:noreply, socket |> put_flash(:error, "Could not remove this key.") |> refresh_keys()}
+        {:noreply, socket |> put_flash(:error, gettext("Could not remove this key.")) |> refresh_keys()}
     end
   end
 
@@ -183,22 +183,32 @@ defmodule MarshallWeb.AccountLive do
   def handle_event("save_time_zone", %{"profile" => %{"time_zone" => zone}}, socket)
       when is_binary(zone) do
     case set_time_zone(socket, zone) do
-      {:ok, socket} -> {:noreply, put_flash(socket, :info, "Time zone saved.")}
-      :error -> {:noreply, put_flash(socket, :error, "Choose a time zone from the list.")}
+      {:ok, socket} -> {:noreply, put_flash(socket, :info, gettext("Time zone saved."))}
+      :error -> {:noreply, put_flash(socket, :error, gettext("Choose a time zone from the list."))}
     end
   end
 
   def handle_event("clear_time_zone", _params, socket) do
     case set_time_zone(socket, nil) do
       {:ok, socket} ->
-        {:noreply, put_flash(socket, :info, "Time zone cleared. Your browser's zone is used.")}
+        {:noreply, put_flash(socket, :info, gettext("Time zone cleared. Your browser's zone is used."))}
 
       :error ->
-        {:noreply, put_flash(socket, :error, "Could not clear your time zone.")}
+        {:noreply, put_flash(socket, :error, gettext("Could not clear your time zone."))}
     end
   end
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, "Invalid request.")}
+  # @cc [owner:ghuntley,label:security] profile-language-through-domain-action
+  # Browser input MUST only select a locale, never a target account. Reloading
+  # after a successful update applies language and direction to the whole page.
+  def handle_event("save_locale", %{"language" => %{"locale" => locale}}, socket)
+      when is_binary(locale) do
+    save_locale(socket, locale)
+  end
+
+  def handle_event("clear_locale", _, socket), do: save_locale(socket, nil)
+
+  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   @spec refresh_security(socket()) :: socket()
   defp refresh_security(socket) do
@@ -248,13 +258,26 @@ defmodule MarshallWeb.AccountLive do
         assign(socket, keys: keys)
 
       {:error, _} ->
-        socket |> assign(keys: []) |> put_flash(:error, "SSH keys are temporarily unavailable.")
+        socket |> assign(keys: []) |> put_flash(:error, gettext("SSH keys are temporarily unavailable."))
     end
   end
 
   @spec reset_key_form(socket()) :: socket()
   defp reset_key_form(socket),
     do: assign(socket, key_form: to_form(%{"label" => "", "public_key" => ""}, as: :key))
+
+  @spec save_locale(socket(), String.t() | nil) :: {:noreply, socket()}
+  defp save_locale(socket, locale) do
+    User
+    |> Ash.ActionInput.for_action(:set_locale, %{locale: locale},
+      actor: socket.assigns.current_user
+    )
+    |> Ash.run_action()
+    |> case do
+      {:ok, _} -> {:noreply, redirect(socket, to: ~p"/settings#profile")}
+      _ -> {:noreply, put_flash(socket, :error, gettext("Choose a language from the list."))}
+    end
+  end
 
   @spec set_time_zone(socket(), String.t() | nil) :: {:ok, socket()} | :error
   defp set_time_zone(socket, zone) do
@@ -298,22 +321,25 @@ defmodule MarshallWeb.AccountLive do
     assign(socket,
       saved: user.time_zone,
       options: Enum.map(options, &{&1.label, &1.zone}),
-      zone_form: to_form(%{"time_zone" => zone}, as: :profile)
+      zone_form: to_form(%{"time_zone" => zone}, as: :profile),
+      locale_form:
+        to_form(%{"locale" => user.locale || socket.assigns[:locale] || "en"}, as: :language),
+      locale_options: Marshall.Localization.options()
     )
   end
 
   @spec zone_status(TimeZones.source(), TimeZones.iana()) :: String.t()
   defp zone_status(:saved, zone),
-    do: "Saved: #{zone}. Others who share a team, machine or thread with you see your local time."
+    do: gettext("Saved: %{value1}. Others who share a team, machine or thread with you see your local time.", value1: zone)
 
   defp zone_status(:browser, zone),
-    do: "Detected from your browser: #{zone}. Save it so others can see your local time."
+    do: gettext("Detected from your browser: %{value1}. Save it so others can see your local time.", value1: zone)
 
   defp zone_status(:utc, _zone),
-    do: "No zone saved and none detected; times are shown in UTC until you choose one."
+    do: gettext("No zone saved and none detected; times are shown in UTC until you choose one.")
 
   @spec key_title(String.t() | nil) :: String.t()
-  defp key_title(label) when label in [nil, ""], do: "SSH key"
+  defp key_title(label) when label in [nil, ""], do: gettext("SSH key")
   defp key_title(label), do: label
 
   @impl true
@@ -328,31 +354,58 @@ defmodule MarshallWeb.AccountLive do
     >
       <div id="account-settings" class="stack">
         <UI.heading
-          title="Account"
-          subtitle="Who you are, how you prove it, and the keys that reach your machines."
+          title={gettext("Account")}
+          subtitle={gettext("Who you are, how you prove it, and the keys that reach your machines.")}
         />
-        <nav id="account-index" class="account-index" aria-label="On this page">
+        <nav id="account-index" class="account-index" aria-label={gettext("On this page")}>
           <ol>
             <li>
-              <a href="#profile">Profile</a>
-              <span class="muted">email, time zone and your local clock</span>
+              <a href="#profile">{gettext("Profile")}</a>
+              <span class="muted">{gettext("email, time zone and your local clock")}</span>
             </li>
             <li>
-              <a href="#security">Sign-in and passkeys</a>
-              <span class="muted">verification for administrative changes</span>
+              <a href="#security">{gettext("Sign-in and passkeys")}</a>
+              <span class="muted">{gettext("verification for administrative changes")}</span>
             </li>
             <li>
-              <a href="#ssh-keys">SSH keys</a>
-              <span class="muted">{length(@keys)} registered</span>
+              <a href="#ssh-keys">{gettext("SSH keys")}</a>
+              <span class="muted">{ngettext("%{count} registered key", "%{count} registered keys", length(@keys))}</span>
             </li>
           </ol>
         </nav>
 
         <section id="profile" class="account-section stack" aria-labelledby="profile-title">
-          <h2 id="profile-title">1. Profile</h2>
+          <h2 id="profile-title">{gettext("1. Profile")}</h2>
+          <.form for={@locale_form} id="language-form" phx-submit="save_locale" class="stack">
+            <.input
+              field={@locale_form[:locale]}
+              type="select"
+              label={gettext("Language")}
+              options={@locale_options}
+            />
+            <p id="language-status" class="muted">
+              {if @current_user.locale,
+                do: gettext("Your saved language overrides browser preferences."),
+                else: gettext("Language is detected from your browser.")}
+            </p>
+            <div class="row actions">
+              <button id="save-language" type="submit" class="console-button primary">
+                {gettext("Save language")}
+              </button>
+              <button
+                :if={@current_user.locale}
+                id="clear-language"
+                type="button"
+                phx-click="clear_locale"
+                class="console-button"
+              >
+                {gettext("Use browser language")}
+              </button>
+            </div>
+          </.form>
           <.kv id="profile-account">
-            <:item title="Email">{@current_user.email}</:item>
-            <:item title="Local time">
+            <:item title={gettext("Email")}>{@current_user.email}</:item>
+            <:item title={gettext("Local time")}>
               <span class="profile-clock">
                 <.local_clock
                   id="profile-local-clock"
@@ -367,15 +420,13 @@ defmodule MarshallWeb.AccountLive do
             </:item>
           </.kv>
           <p class="muted">
-            Your email is your sign-in identity and cannot be edited here. Every time on Overalls
-            is shown in your zone; people who share a team, machine or thread with you, and
-            administrators, see your current local time next to your email once a zone is saved.
+            {gettext("Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved.")}
           </p>
           <.form for={@zone_form} id="time-zone-form" phx-submit="save_time_zone" class="stack">
             <.input
               field={@zone_form[:time_zone]}
               type="select"
-              label="Time zone"
+              label={gettext("Time zone")}
               options={@options}
             />
             <p id="time-zone-status" class="muted" data-source={@time_zone_source}>
@@ -383,7 +434,7 @@ defmodule MarshallWeb.AccountLive do
             </p>
             <div class="row actions">
               <button id="save-time-zone" type="submit" class="console-button primary">
-                Save time zone
+                {gettext("Save time zone")}
               </button>
               <button
                 :if={@saved}
@@ -392,7 +443,7 @@ defmodule MarshallWeb.AccountLive do
                 phx-click="clear_time_zone"
                 class="console-button"
               >
-                Clear saved zone
+                {gettext("Clear saved zone")}
               </button>
             </div>
           </.form>
@@ -401,23 +452,22 @@ defmodule MarshallWeb.AccountLive do
         <hr />
 
         <section id="security" class="account-section stack" aria-labelledby="security-title">
-          <h2 id="security-title">2. Sign-in and passkeys</h2>
+          <h2 id="security-title">{gettext("2. Sign-in and passkeys")}</h2>
           <p class="muted">
-            You sign in with an email link. A passkey proves it is you before administrative
-            changes and before passkey changes; everyday use of your workspace never asks for one.
+            {gettext("You sign in with an email link. A passkey proves it is you before administrative changes and before passkey changes; everyday use of your workspace never asks for one.")}
           </p>
           <div :if={@security} class="stack">
             <p id="verification-status" aria-live="polite" data-verified={@remaining > 0}>
               <%= if @remaining > 0 do %>
-                <strong class="inverse">[verified]</strong>
-                Passkey verified · {@remaining} seconds remaining.
+                <strong class="inverse">{gettext("[verified]")}</strong>
+                {ngettext("Passkey verified · %{count} second remaining.", "Passkey verified · %{count} seconds remaining.", @remaining)}
               <% else %>
-                <strong>[not verified]</strong>
-                Verify a passkey before making administrative changes or changing passkeys.
+                <strong>{gettext("[not verified]")}</strong>
+                {gettext("Verify a passkey before making administrative changes or changing passkeys.")}
               <% end %>
             </p>
             <p :if={@security.reset_required} class="error">
-              Your passkeys were reset. Register a replacement before approving administrative changes.
+              {gettext("Your passkeys were reset. Register a replacement before approving administrative changes.")}
             </p>
             <div
               id="passkey-ceremony"
@@ -426,7 +476,7 @@ defmodule MarshallWeb.AccountLive do
               class="row actions"
             >
               <button id="add-passkey" type="button" data-kind="register" class="console-button">
-                Add passkey
+                {gettext("Add passkey")}
               </button>
               <button
                 id="verify-passkey"
@@ -434,7 +484,7 @@ defmodule MarshallWeb.AccountLive do
                 data-kind="verify"
                 class="console-button primary"
               >
-                Verify with passkey
+                {gettext("Verify with passkey")}
               </button>
             </div>
             <p :if={@remaining > 0}>
@@ -443,19 +493,18 @@ defmodule MarshallWeb.AccountLive do
                 phx-click="credential"
                 phx-value-operation="lock"
                 class="console-button compact"
-              >Lock now</button>
-              <span class="muted">End this verification before the fifteen minutes are up.</span>
+              >{gettext("Lock now")}</button>
+              <span class="muted">{gettext("End this verification before the fifteen minutes are up.")}</span>
             </p>
             <p :if={@security.verified or @enrollment_started?}>
               <.link id="security-continue" href={@return_to}>
-                Return to the requested page and retry the action →
+                {gettext("Return to the requested page and retry the action →")}
               </.link>
             </p>
             <p :if={@security.credentials == []} id="passkeys-empty" class="empty-state">
-              No passkeys yet. First enrollment requires a fresh email sign-in completed within
-              the last five minutes. After setup, return to the page you came from and retry the action.
+              {gettext("No passkeys yet. First enrollment requires a fresh email sign-in completed within the last five minutes. After setup, return to the page you came from and retry the action.")}
             </p>
-            <h3 :if={@security.credentials != []}>Your passkeys</h3>
+            <h3 :if={@security.credentials != []}>{gettext("Your passkeys")}</h3>
             <div id="passkey-list" class="stack">
               <div :for={key <- @security.credentials} id={"passkey-#{key.id}"} class="passkey">
                 <.form
@@ -466,25 +515,25 @@ defmodule MarshallWeb.AccountLive do
                 >
                   <input type="hidden" name="credential_id" value={key.id} />
                   <input type="hidden" name="operation" value="rename" />
-                  <.input name="label" value={key.label} label="Passkey name" maxlength="80" />
-                  <button class="console-button">Rename</button>
+                  <.input name="label" value={key.label} label={gettext("Passkey name")} maxlength="80" />
+                  <button class="console-button">{gettext("Rename")}</button>
                   <button
                     id={"remove-#{key.id}"}
                     type="button"
                     phx-click="credential"
                     phx-value-id={key.id}
                     phx-value-operation="remove"
-                    data-confirm="Remove this passkey? Removing your last passkey signs you out everywhere."
+                    data-confirm={gettext("Remove this passkey? Removing your last passkey signs you out everywhere.")}
                     class="console-button danger"
-                  >Remove</button>
+                  >{gettext("Remove")}</button>
                 </.form>
                 <p class="muted">
-                  Added <.timestamp at={key.inserted_at} zone={@time_zone} format={:date} />
+                  {gettext("Added")} <.timestamp at={key.inserted_at} zone={@time_zone} format={:date} />
                 </p>
               </div>
             </div>
             <p class="muted">
-              Keep a backup passkey. If you lose access, another administrator can reset your passkeys.
+              {gettext("Keep a backup passkey. If you lose access, another administrator can reset your passkeys.")}
             </p>
           </div>
         </section>
@@ -492,14 +541,12 @@ defmodule MarshallWeb.AccountLive do
         <hr />
 
         <section id="ssh-keys" class="account-section stack" aria-labelledby="ssh-keys-title">
-          <h2 id="ssh-keys-title">3. SSH keys</h2>
+          <h2 id="ssh-keys-title">{gettext("3. SSH keys")}</h2>
           <p class="muted">
-            Keys registered here open your machines over SSH with the same account and
-            permissions as this site. Remove a key to revoke its access; email sign-in keeps
-            working without any key.
+            {gettext("Keys registered here open your machines over SSH with the same account and permissions as this site. Remove a key to revoke its access; email sign-in keeps working without any key.")}
           </p>
           <p :if={@keys == []} id="ssh-keys-empty" class="empty-state">
-            No SSH keys yet. You can always sign in here using email.
+            {gettext("No SSH keys yet. You can always sign in here using email.")}
           </p>
           <article :for={key <- @keys} id={"ssh-key-#{key.id}"} class="panel">
             <header>
@@ -509,9 +556,9 @@ defmodule MarshallWeb.AccountLive do
                 id={"remove-ssh-key-#{key.id}"}
                 phx-click="remove_ssh_key"
                 phx-value-id={key.id}
-                data-confirm="Remove this key's SSH access? Already accepted machine operations will continue."
+                data-confirm={gettext("Remove this key's SSH access? Already accepted machine operations will continue.")}
               >
-                Remove
+                {gettext("Remove")}
               </Layouts.action>
             </header>
             <.form
@@ -531,38 +578,38 @@ defmodule MarshallWeb.AccountLive do
               <button class="console-button">Rename</button>
             </.form>
             <.kv>
-              <:item title="Fingerprint"><code class="break">{key.fingerprint}</code></:item>
-              <:item title="Type">{key.algorithm}</:item>
-              <:item title="Added">
+              <:item title={gettext("Fingerprint")}><code class="break">{key.fingerprint}</code></:item>
+              <:item title={gettext("Type")}>{key.algorithm}</:item>
+              <:item title={gettext("Added")}>
                 <.timestamp at={key.inserted_at} zone={@time_zone} format={:date} />
               </:item>
             </.kv>
           </article>
           <.form for={@key_form} id="ssh-key-form" phx-submit="add_ssh_key" class="panel dashed">
-            <h3>Add a key</h3>
+            <h3>{gettext("Add a key")}</h3>
             <.input
               field={@key_form[:label]}
-              label="Label (optional)"
+              label={gettext("Label (optional)")}
               maxlength="128"
-              placeholder="My laptop"
+              placeholder={gettext("My laptop")}
             />
             <.input
               field={@key_form[:public_key]}
               type="textarea"
-              label="Public key"
+              label={gettext("Public key")}
               required
               maxlength="4096"
               rows="4"
               placeholder="ssh-ed25519 …"
-              hint="Paste a public key from your .pub file. Never paste a private key."
+              hint={gettext("Paste a public key from your .pub file. Never paste a private key.")}
             />
             <Layouts.action
               tone="primary"
               id="add-ssh-key"
               type="submit"
-              phx-disable-with="Adding…"
+              phx-disable-with={gettext("Adding…")}
             >
-              Add SSH key
+              {gettext("Add SSH key")}
             </Layouts.action>
           </.form>
         </section>

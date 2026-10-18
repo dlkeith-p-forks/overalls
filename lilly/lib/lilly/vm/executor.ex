@@ -8,7 +8,8 @@ defmodule Lilly.VM.Executor do
 
   @type observation :: %{
           optional(:guest_ready) => true,
-          state: :running | :stopped | :deleted | :failed | :unknown,
+          optional(:checkpoint) => OverallsProtocol.Checkpoint.t(),
+          state: :running | :stopped | :paused | :deleted | :failed | :unknown,
           compute_empty: boolean(),
           disk_present: boolean(),
           cleanup_complete: boolean(),
@@ -107,7 +108,7 @@ defmodule Lilly.VM.Executor do
              [:host_id, :vm_id, :placement_id, :execution_epoch, :generation],
              &(Map.fetch!(command, &1) == Map.fetch!(binding, &1))
            ),
-         true <- command.kind in [:provision, :start],
+         true <- command.kind in [:provision, :start, :resume],
          {:ok, guest} <-
            Lilly.Network.Guest.new(command.placement_id, command.profile, command.slot) do
       Lilly.Network.Ingress.connect(config.execution.network, guest, binding)
@@ -137,7 +138,7 @@ defmodule Lilly.VM.Executor do
              [:host_id, :vm_id, :placement_id, :execution_epoch, :generation],
              &(Map.fetch!(command, &1) == Map.fetch!(binding, &1))
            ),
-         true <- command.kind in [:provision, :start],
+         true <- command.kind in [:provision, :start, :resume],
          {:ok, guest} <-
            Lilly.Network.Guest.new(command.placement_id, command.profile, command.slot) do
       Lilly.Network.Ingress.bridge(
@@ -178,6 +179,7 @@ defmodule Lilly.VM.Executor do
          vsock_path: Path.join(Jail.root(pool, spec), "v.sock"),
          boot_log_path: Unit.boot_log(config.execution, spec),
          boot_challenge: boot.boot_challenge,
+         guest_identity: Lilly.VM.Boot.expectation(boot),
          placement_id: boot.placement_id,
          execution_epoch: boot.execution_epoch,
          generation: boot.generation
@@ -223,6 +225,61 @@ defmodule Lilly.VM.Executor do
 
         :start ->
           restart(config, pool, spec, command, history)
+
+        :pause ->
+          case Driver.pause(config.execution, pool, spec,
+                 execution_epoch: command.execution_epoch,
+                 generation: command.generation,
+                 vm_id: command.vm_id
+               ) do
+            {:ok, descriptor} ->
+              {:ok,
+               %{
+                 state: :paused,
+                 compute_empty: true,
+                 disk_present: true,
+                 cleanup_complete: false,
+                 reason: :none,
+                 checkpoint: descriptor
+               }}
+
+            {:error, reason}
+            when reason in [:execution_unavailable, :storage_busy, :network_unavailable] ->
+              {:retry, reason}
+
+            _ ->
+              unknown(:identity_mismatch)
+          end
+
+        :resume ->
+          case Driver.resume(config.execution, pool, spec, command.checkpoint,
+                 execution_epoch: command.execution_epoch,
+                 generation: command.generation,
+                 vm_id: command.vm_id,
+                 commit: Map.get(history, :commit)
+               ) do
+            :ok ->
+              case ready_or_fail(config, pool, spec, command, history) do
+                {:ok, %{state: :running} = observation} ->
+                  {:ok, Map.put(observation, :checkpoint, command.checkpoint)}
+
+                other ->
+                  other
+              end
+
+            {:error, reason}
+            when reason in [
+                   :execution_unavailable,
+                   :storage_busy,
+                   :network_unavailable,
+                   :provisioning_busy,
+                   :preempted
+                 ] ->
+              {:retry, reason}
+
+            _ ->
+              unknown(:identity_mismatch)
+          end
 
         :resize ->
           source_command =
@@ -313,7 +370,8 @@ defmodule Lilly.VM.Executor do
       :vcpu,
       :memory_bytes,
       :disk_bytes,
-      :workspace_source
+      :workspace_source,
+      :git_identity
     ])
     |> Map.put(:id, command.placement_id)
     |> Spec.new()

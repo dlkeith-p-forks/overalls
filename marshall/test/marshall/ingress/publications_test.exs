@@ -97,7 +97,8 @@ defmodule Marshall.Ingress.PublicationsTest do
     assert {:error, _} = Ingress.current_route(%{label: c.route.label}, actor: actor())
   end
 
-  test "host freshness, connection, enabled state and completed start are required", c do
+  test "discovery requires current host authority and remains available during incomplete startup",
+       c do
     [host] = Ledger.read!(Host, id: c.vm.host_id)
 
     for timestamp <- [nil, DateTime.add(Ledger.now(), -60), DateTime.add(Ledger.now(), 60)] do
@@ -120,19 +121,32 @@ defmodule Marshall.Ingress.PublicationsTest do
       [Ecto.UUID.dump!(operation.id)]
     )
 
-    assert {:ok, %{routes: [], proofs: []}} = snapshot(c)
+    assert {:ok, %{routes: [_], proofs: []}} = snapshot(c)
+    [service] = Ledger.read!(Marshall.Ingress.Service, id: c.gateway.id)
+
+    assert {:error, :unauthorized} =
+             Ledger.transaction(fn ->
+               Marshall.Ingress.Execution.current!(service, c.request, :shared)
+             end)
+
     [operation] = Ledger.read!(Operation, id: operation.id)
     Ledger.update!(operation, :complete, %{})
     assert {:ok, %{routes: [_], proofs: []}} = snapshot(c)
   end
 
-  test "stale execution generations never publish retained route rows", c do
+  test "a generation change retains wake discovery while fencing stream execution", c do
     [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
 
     check all(increment <- integer(1..10_000), test_cases: 20) do
       Ledger.intent!(vm, %{generation: vm.generation + increment})
-      assert {:ok, %{routes: [], proofs: []}} = snapshot(c)
-      assert {:error, _} = Ingress.current_route(%{label: c.route.label}, actor: actor())
+      assert {:ok, %{routes: [_], proofs: []}} = snapshot(c)
+      assert {:ok, _} = Ingress.current_route(%{label: c.route.label}, actor: actor())
+      [service] = Ledger.read!(Marshall.Ingress.Service, id: c.gateway.id)
+
+      assert {:error, :unauthorized} =
+               Ledger.transaction(fn ->
+                 Marshall.Ingress.Execution.current!(service, c.request, :shared)
+               end)
     end
   end
 
@@ -296,6 +310,41 @@ defmodule Marshall.Ingress.PublicationsTest do
   @tag timeout: 120_000
   test "measure complete publications for 100 gateways and 10,000 ready routes", c do
     Marshall.IngressCapacityFixtures.populate(c)
+    handler = {__MODULE__, make_ref()}
+    owner = self()
+
+    :ok =
+      :telemetry.attach(
+        handler,
+        [:marshall, :repo, :query],
+        fn _, timings, metadata, _ ->
+          if String.contains?(metadata.query, "WITH clock AS MATERIALIZED") do
+            outcome =
+              case metadata.result do
+                {:ok, _} ->
+                  :ok
+
+                {:error, %Postgrex.Error{postgres: %{code: :query_canceled}}} ->
+                  :query_canceled
+
+                {:error, %Postgrex.Error{postgres: %{code: :lock_not_available}}} ->
+                  :lock_not_available
+
+                _ ->
+                  :database_error
+              end
+
+            send(
+              owner,
+              {:capacity_query,
+               System.convert_time_unit(timings.total_time, :native, :microsecond), outcome}
+            )
+          end
+        end,
+        nil
+      )
+
+    on_exit(fn -> :telemetry.detach(handler) end)
 
     samples =
       for _ <- 1..10 do
@@ -314,6 +363,11 @@ defmodule Marshall.Ingress.PublicationsTest do
         )
 
         {elapsed, result} = :timer.tc(fn -> snapshot(c) end)
+        assert_receive {:capacity_query, query_elapsed, query_outcome}, 1000
+
+        assert match?({:ok, _}, result),
+               "publication query #{query_outcome} in #{query_elapsed} microseconds"
+
         assert {:ok, %{routes: routes, proofs: []}} = result
         assert length(routes) == 10_000
         assert MapSet.size(MapSet.new(routes, & &1.label)) == 10_000
@@ -473,7 +527,7 @@ defmodule Marshall.Ingress.PublicationsTest do
     )
   end
 
-  test "relocation suppresses retained source publications and publishes the completed destination",
+  test "relocation retains wake discovery before handoff and requires enrollment afterward",
        c do
     alias Marshall.Compute.RelocationCapacity
     Marshall.ComputeFixtures.host_fixture()
@@ -489,7 +543,7 @@ defmodule Marshall.Ingress.PublicationsTest do
 
     assert {:ok, %{routes: [_], proofs: []}} = snapshot(c)
 
-    # Synthetic retained coordination evidence exercises discovery rejection;
+    # Synthetic retained coordination evidence exercises discovery retention;
     # this is not a physical transfer or readiness acceptance test.
     import_id = Ash.UUID.generate()
 
@@ -530,8 +584,14 @@ defmodule Marshall.Ingress.PublicationsTest do
       activation_generation: activation.generation
     })
 
-    assert {:ok, %{routes: [], proofs: []}} = snapshot(c)
-    assert {:error, _} = Ingress.current_route(%{label: c.route.label}, actor: actor())
+    assert {:ok, %{routes: [_], proofs: []}} = snapshot(c)
+    assert {:ok, _} = Ingress.current_route(%{label: c.route.label}, actor: actor())
+    [service] = Ledger.read!(Marshall.Ingress.Service, id: c.gateway.id)
+
+    assert {:error, :unauthorized} =
+             Ledger.transaction(fn ->
+               Marshall.Ingress.Execution.current!(service, c.request, :shared)
+             end)
 
     # Model the completed coordinator state inside the rollback-owned sandbox.
     # These rows exercise read/report predicates, not physical import or cleanup.

@@ -5,11 +5,13 @@ defmodule MarshallWeb.AuthOverrides do
   framework class reaches the page (ADR-0161).
   """
   use AshAuthentication.Phoenix.Overrides
+  use Gettext, backend: MarshallWeb.Gettext
 
   @magic_link_request_feedback "Check your email for a sign-in link. Your account will be created automatically when you sign in."
 
   @spec magic_link_request_feedback() :: String.t()
-  def magic_link_request_feedback, do: @magic_link_request_feedback
+  def magic_link_request_feedback,
+    do: gettext("Check your email for a sign-in link. Your account will be created automatically when you sign in.")
 
   alias AshAuthentication.Phoenix.{
     Components,

@@ -64,7 +64,11 @@ defmodule Marshall.Accounts.AuthEmails do
 
       if recent == [] and Ledger.read!(AuthEmail, token_fingerprint: fingerprint) == [] do
         Ledger.create!(AuthEmail, :enqueue, %{
-          payload: %{"email" => email, "token" => token},
+          payload: %{
+            "email" => email,
+            "token" => token,
+            "locale" => Marshall.Localization.normalize(Gettext.get_locale(MarshallWeb.Gettext)) || "en"
+          },
           token_fingerprint: fingerprint,
           recipient_fingerprint: recipient,
           expires_at: expires_at

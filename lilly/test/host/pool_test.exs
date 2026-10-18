@@ -5,22 +5,22 @@ defmodule Lilly.Host.PoolTest do
   alias Lilly.Host.Pool
 
   property "ZFS siblings and backing extent overlaps cannot duplicate capacity" do
-    check all(start <- integer(0..10000), size <- integer(1..10000)) do
-      extent = %{backing_device: "8:0", start_sector: start, sectors: size}
+    start = draw("start", integer(0..10000))
+    size = draw("size", integer(1..10000))
+    extent = %{backing_device: "8:0", start_sector: start, sectors: size}
 
-      zfs = %{
-        filesystem_id: "zfs:1:2",
-        storage: %{backend: :zfs, zpool_guid: "1"},
-        extents: [extent]
-      }
+    zfs = %{
+      filesystem_id: "zfs:1:2",
+      storage: %{backend: :zfs, zpool_guid: "1"},
+      extents: [extent]
+    }
 
-      sibling = %{zfs | filesystem_id: "zfs:1:3", extents: [%{extent | backing_device: "8:16"}]}
-      refute Pool.distinct?([zfs, sibling])
-      other = %{zfs | filesystem_id: "zfs:3:4", storage: %{backend: :zfs, zpool_guid: "3"}}
-      refute Pool.distinct?([zfs, other])
-      assert Pool.distinct?([zfs, %{other | extents: [%{extent | start_sector: start + size}]}])
-      refute Pool.distinct?([zfs, zfs])
-    end
+    sibling = %{zfs | filesystem_id: "zfs:1:3", extents: [%{extent | backing_device: "8:16"}]}
+    refute Pool.distinct?([zfs, sibling])
+    other = %{zfs | filesystem_id: "zfs:3:4", storage: %{backend: :zfs, zpool_guid: "3"}}
+    refute Pool.distinct?([zfs, other])
+    assert Pool.distinct?([zfs, %{other | extents: [%{extent | start_sector: start + size}]}])
+    refute Pool.distinct?([zfs, zfs])
   end
 
   @tag :tmp_dir

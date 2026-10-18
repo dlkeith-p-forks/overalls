@@ -15,24 +15,27 @@ defmodule Marshall.SSH.CredentialRetirementHistoryTest do
   # old registration IDs and sessions MUST NOT return. Refused stale calls and
   # repeated completed cleanup MUST preserve exact durable inventories.
   @tag timeout: 120_000
+  @tag :hegel_case_sandbox
   property "same-email histories release credentials only through old-account cleanup",
-    test_cases: 12 do
-    check all(
-            bytes <- binary(length: 32),
-            generations <-
-              list_of(tuple({member_of([:manual, :approval]), boolean(), integer(1..3)}),
-                min_length: 2,
-                max_length: 3
-              ),
-            test_cases: 12
-          ) do
-      admin = Marshall.PasskeyFixture.elevate(Marshall.PasskeyFixture.user(true))
-      account = Marshall.PasskeyFixture.user()
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
+    bytes = draw("bytes", binary(length: 32))
 
-      Enum.reduce(generations, account, fn generation, current ->
-        advance(generation, current, admin, bytes)
-      end)
-    end
+    generations =
+      draw(
+        "generations",
+        list_of(tuple({member_of([:manual, :approval]), boolean(), integer(1..3)}),
+          min_length: 2,
+          max_length: 3
+        )
+      )
+
+    admin = Marshall.PasskeyFixture.elevate(Marshall.PasskeyFixture.user(true))
+    account = Marshall.PasskeyFixture.user()
+
+    Enum.reduce(generations, account, fn generation, current ->
+      advance(generation, current, admin, bytes)
+    end)
   end
 
   @spec advance(generation(), User.t(), User.t(), binary()) :: User.t()

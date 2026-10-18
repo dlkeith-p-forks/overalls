@@ -1,5 +1,7 @@
 # Architecture
 
+[ADR-0193](decisions/0193-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
+
 [ADR-0188](decisions/0188-signed-overalls-cachix-substitution.md) adds the
 signed Overalls Cachix read cache to all Nix-running hosts, installers and guest
 images. The upstream cache and signature enforcement remain enabled, with local
@@ -1627,3 +1629,5 @@ escape cleanup or physical storage acceptance; those remain open.
 ## Contract verification
 
 ADR-0186 records the Covenant test-only contract layer used by all Elixir applications. Covenant obligations and tests provide deterministic executable evidence while existing ADR, HLDD, native and integration records remain authoritative for deployment and isolation guarantees.
+
+Localization follows [ADR-0197](decisions/0197-localized-human-surfaces.md): validated user/browser locale selection, offline catalogs and direction-aware human surfaces preserve protocol identifiers and execution authority. Implementation remains partial.

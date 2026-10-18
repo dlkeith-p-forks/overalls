@@ -58,6 +58,41 @@ defmodule Lilly.Transfer.PermitJournalTest do
     )
   end
 
+  test "authenticated disk export never grants RAM without its exact descriptor", c do
+    alias Lilly.Transfer.ExportRequest
+    assert :ok = grant(c)
+    disk = "lilly-export-v4 #{c.relocation}"
+    memory = "lilly-checkpoint-v1 #{c.relocation}"
+    assert {:ok, _} = ExportRequest.lookup(c.root, c.host, c.public, disk, 1000)
+    assert {:error, _} = ExportRequest.lookup(c.root, c.host, c.public, memory, 1000)
+
+    checkpoint = %{
+      "id" => uuid(20),
+      "memory_bytes" => 536_870_912,
+      "state_bytes" => 4096,
+      "compatibility" => "sha256:" <> String.duplicate("a", 64),
+      "memory_sha256" => "sha256:" <> String.duplicate("b", 64),
+      "state_sha256" => "sha256:" <> String.duplicate("c", 64),
+      "manifest_sha256" => "sha256:" <> String.duplicate("d", 64),
+      "dataset_guid" => "300",
+      "snapshot_guid" => "400"
+    }
+
+    separate = Path.join(c.root, "memory-permit")
+    File.mkdir!(separate)
+    File.chmod!(separate, 0o700)
+    with_ram = %{c | root: separate, wire: Map.put(c.wire, "checkpoint", checkpoint)}
+    assert :ok = grant(with_ram)
+
+    assert {:ok, %{descriptor: %{checkpoint: %{snapshot_guid: "400"}}}} =
+             ExportRequest.lookup(with_ram.root, c.host, c.public, memory, 1000)
+
+    assert {:error, _} = ExportRequest.lookup(with_ram.root, c.host, key(2), memory, 1000)
+    assert {:error, _} = ExportRequest.lookup(with_ram.root, c.host, c.public, memory, 1200)
+    assert :ok = Journal.fence(with_ram.root, c.host, c.relocation)
+    assert {:error, _} = ExportRequest.lookup(with_ram.root, c.host, c.public, memory, 1000)
+  end
+
   test "restricted endpoint authenticates probes and emits only the current challenge", c do
     alias Lilly.Transfer.{Endpoint, ExportRequest, ProbeRequest}
     assert :ok = probe(c, 1, System.system_time(:second) + 120, System.system_time(:second))
@@ -529,9 +564,13 @@ defmodule Lilly.Transfer.PermitJournalTest do
   end
 
   test "leases reject zero, negative and excessive validity before persistence", c do
-    check all(offset <- one_of([integer(-1000..0), integer(301..10_000)])) do
-      assert {:error, _} = grant(c, 1, 1000 + offset)
-      refute File.exists?(path(c))
-    end
+    Hegel.check(
+      fn ->
+        offset = draw("offset", one_of([integer(-1000..0), integer(301..10000)]))
+        assert {:error, _} = grant(c, 1, 1000 + offset)
+        refute File.exists?(path(c))
+      end,
+      []
+    )
   end
 end

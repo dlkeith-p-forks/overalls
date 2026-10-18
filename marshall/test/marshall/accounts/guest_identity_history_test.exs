@@ -23,38 +23,42 @@ defmodule Marshall.Accounts.GuestIdentityHistoryTest do
   # Database allocation evidence MUST NOT be presented as native home isolation.
   @tag :hegel
   test "same-email generations allocate distinct stable guest identities", %{admin: admin} do
-    check all(generations <- integer(2..4), test_cases: 6) do
-      email = "again-#{binary_part(Ash.UUID.generate(), 0, 16)}@example.test"
-      original = register!(email)
-      assert {:ok, first} = Ledger.transaction(fn -> GuestAccounts.ensure!(original.id) end)
+    Hegel.check(
+      fn ->
+        generations = draw("generations", integer(2..4))
+        email = "again-#{binary_part(Ash.UUID.generate(), 0, 16)}@example.test"
+        original = register!(email)
+        assert {:ok, first} = Ledger.transaction(fn -> GuestAccounts.ensure!(original.id) end)
 
-      Enum.reduce(1..generations, {original, [first]}, fn _, {old_user, prior} ->
-        retire!(old_user, admin)
-        fresh = register!(email)
-        refute fresh.id == old_user.id
-        refute fresh.administrator
-        assert [] == Ledger.read!(Marshall.SSH.Key, user_id: fresh.id)
-        assert [] == Ledger.read!(Marshall.Access.Grant, user_id: fresh.id)
-        assert [] == Ledger.read!(Marshall.Teams.TeamMember, user_id: fresh.id)
+        Enum.reduce(1..generations, {original, [first]}, fn _, {old_user, prior} ->
+          retire!(old_user, admin)
+          fresh = register!(email)
+          refute fresh.id == old_user.id
+          refute fresh.administrator
+          assert [] == Ledger.read!(Marshall.SSH.Key, user_id: fresh.id)
+          assert [] == Ledger.read!(Marshall.Access.Grant, user_id: fresh.id)
+          assert [] == Ledger.read!(Marshall.Teams.TeamMember, user_id: fresh.id)
 
-        assert {:ok, next} = Ledger.transaction(fn -> GuestAccounts.ensure!(fresh.id) end)
-        assert {:ok, same} = Ledger.transaction(fn -> GuestAccounts.ensure!(fresh.id) end)
-        assert next.id == same.id
-        assert next.username == same.username
-        assert next.uid == same.uid
+          assert {:ok, next} = Ledger.transaction(fn -> GuestAccounts.ensure!(fresh.id) end)
+          assert {:ok, same} = Ledger.transaction(fn -> GuestAccounts.ensure!(fresh.id) end)
+          assert next.id == same.id
+          assert next.username == same.username
+          assert next.uid == same.uid
 
-        for old <- prior do
-          refute old.username == next.username
-          refute old.uid == next.uid
-          assert [preserved] = Ledger.read!(GuestAccount, id: old.id)
+          for old <- prior do
+            refute old.username == next.username
+            refute old.uid == next.uid
+            assert [preserved] = Ledger.read!(GuestAccount, id: old.id)
 
-          assert {preserved.user_id, preserved.username, preserved.uid} ==
-                   {old.user_id, old.username, old.uid}
-        end
+            assert {preserved.user_id, preserved.username, preserved.uid} ==
+                     {old.user_id, old.username, old.uid}
+          end
 
-        {fresh, [next | prior]}
-      end)
-    end
+          {fresh, [next | prior]}
+        end)
+      end,
+      test_cases: 100
+    )
   end
 
   test "a fresh explicitly shared writer cannot prevent the surviving owner's roster", %{

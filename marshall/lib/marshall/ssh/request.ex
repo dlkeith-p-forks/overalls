@@ -27,6 +27,7 @@ defmodule Marshall.SSH.Request do
         :relocation_id,
         :relocation_retry_id,
         :resize_request_id,
+        :wake_request_id,
         :status,
         :measurement_started_at,
         :result
@@ -80,6 +81,7 @@ defmodule Marshall.SSH.Request do
     belongs_to :relocation_retry, Marshall.Compute.RelocationRetry
     belongs_to :resize_request, Marshall.Compute.ResizeRequest
     belongs_to :operation, Marshall.Compute.Operation
+    belongs_to :wake_request, Marshall.Compute.WakeRequest
   end
 
   identities do

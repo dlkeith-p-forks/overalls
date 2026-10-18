@@ -327,24 +327,21 @@ defmodule Lilly.Host.ImageTest do
     # A remount's new device number MUST NOT break a seal; any other changed
     # field, or a missing or extra file, MUST.
     property "only the device number may differ across a remount" do
-      check all(
-              names <- uniq_list_of(string(:alphanumeric, min_length: 1), min: 1, max: 16),
-              values <- list_of(non_negative_integer(), length: 11),
-              device <- non_negative_integer(),
-              field <- integer(1..10),
-              bump <- positive_integer()
-            ) do
-        expected = Map.new(names, &{&1, values})
-        remounted = Map.new(names, &{&1, List.replace_at(values, 0, device)})
-        assert Image.same_files?(remounted, expected)
+      names = draw("names", uniq_list_of(string(:alphanumeric, min_length: 1), min: 1, max: 16))
+      values = draw("values", list_of(non_negative_integer(), length: 11))
+      device = draw("device", non_negative_integer())
+      field = draw("field", integer(1..10))
+      bump = draw("bump", positive_integer())
+      expected = Map.new(names, &{&1, values})
+      remounted = Map.new(names, &{&1, List.replace_at(values, 0, device)})
+      assert Image.same_files?(remounted, expected)
 
-        [name | _] = names
-        changed = Map.update!(expected, name, &List.update_at(&1, field, fn v -> v + bump end))
-        refute Image.same_files?(changed, expected)
-        refute Image.same_files?(Map.delete(expected, name), expected)
-        refute Image.same_files?(Map.put(expected, name <> ".extra", values), expected)
-        refute Image.same_files?(Map.put(expected, name, Enum.take(values, 10)), expected)
-      end
+      [name | _] = names
+      changed = Map.update!(expected, name, &List.update_at(&1, field, fn v -> v + bump end))
+      refute Image.same_files?(changed, expected)
+      refute Image.same_files?(Map.delete(expected, name), expected)
+      refute Image.same_files?(Map.put(expected, name <> ".extra", values), expected)
+      refute Image.same_files?(Map.put(expected, name, Enum.take(values, 10)), expected)
     end
   end
 

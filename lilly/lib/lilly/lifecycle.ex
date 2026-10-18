@@ -3,6 +3,7 @@ defmodule Lilly.Lifecycle do
   use Ash.Domain, validate_config_inclusion?: false
 
   resources do
+    resource(Lilly.Lifecycle.Checkpoint)
     resource(Lilly.Lifecycle.BackupSnapshot)
     resource(Lilly.Lifecycle.SnapshotPointer)
     resource(Lilly.Lifecycle.Resize)

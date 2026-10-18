@@ -43,7 +43,7 @@ def unique_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
     return result
 
 
-def api(path: Path, method: str, endpoint: str, body: dict[str, str]) -> int:
+def api(path: Path, method: str, endpoint: str, body: dict[str, object]) -> int:
     connection = http.client.HTTPConnection("localhost", timeout=60)
     stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     stream.connect(str(path))
@@ -122,9 +122,9 @@ def run(image: Path, vmm: Path, probe: Path, work: Path, os_name: Os) -> None:
     The fixture MUST use a fresh private disposable disk and VMM API socket,
     match its pre-event compiled identity to exact image assembly, and hold both
     host connections open through the reset event. Peerless identity refusal
-    MUST be observed over serial before recording success. FreeBSD MUST refuse
-    new sockets until a replacement VM; illumos MUST revalidate the current CID
-    before allowing a fresh socket. Cleanup MUST stop the owned VM; neither
+    MUST be observed over serial before recording success. FreeBSD and illumos
+    MUST revalidate the current CID before allowing a fresh socket, while the
+    original listener survives the validated reset. Cleanup MUST stop the owned VM; neither
     saved memory nor disk may become a production image.
     """
     if os_name not in ("freebsd", "illumos"):
@@ -206,19 +206,60 @@ def run(image: Path, vmm: Path, probe: Path, work: Path, os_name: Os) -> None:
                             "mem_file_path": str(work / "memory.snap"),
                         },
                     ),
-                    api(work / "api.sock", "PATCH", "/vm", {"state": "Resumed"}),
                 ]
-                verified = wait_event(work, process, "native-reset-verified")
-            expected_fresh_socket = (
-                "refused-until-new-vm" if os_name == "freebsd" else "current-cid-revalidated"
-            )
+                process.terminate()
+                process.wait(timeout=10)
+                for stale_socket in work.glob("*.sock*"):
+                    stale_socket.unlink()
+                process = subprocess.Popen(
+                    [
+                        str(vmm),
+                        "--enable-pci",
+                        "--log-path",
+                        str(work / "restore.log"),
+                        "--api-sock",
+                        str(work / "api.sock"),
+                    ],
+                    stdin=subprocess.DEVNULL,
+                    stdout=serial,
+                    stderr=vmm_stderr,
+                )
+                deadline = time.monotonic() + 10
+                while not (work / "api.sock").exists():
+                    if process.poll() is not None or time.monotonic() >= deadline:
+                        raise RuntimeError("fresh restore VMM did not expose its API")
+                    time.sleep(0.05)
+                statuses.append(
+                    api(
+                        work / "api.sock",
+                        "PUT",
+                        "/snapshot/load",
+                        {
+                            "snapshot_path": str(work / "state.snap"),
+                            "mem_backend": {
+                                "backend_type": "File",
+                                "backend_path": str(work / "memory.snap"),
+                            },
+                            "resume_vm": True,
+                        },
+                    )
+                )
+                continued = wait_event(work, process, "native-reset-reconnect-ready")
+                for field in ("memory_nonce", "pid"):
+                    if continued.get(field) != ready.get(field):
+                        raise RuntimeError("fresh VMM did not preserve guest process memory")
+                with raw_connection(work / "v.sock", 1101):
+                    verified = wait_event(work, process, "native-reset-verified")
+            expected_fresh_socket = "current-cid-revalidated"
             expected_idle_error = 54 if os_name == "freebsd" else 131
             if (
                 verified.get("idle_error") != expected_idle_error
                 or verified.get("fresh_socket") != expected_fresh_socket
             ):
                 raise RuntimeError(f"{os_name} reset did not retain its fail-closed socket fence")
-            for field in ("accept_error", "read_error", "write_error"):
+            if verified.get("accept_error") != 0:
+                raise RuntimeError("original native listener did not accept a new stream")
+            for field in ("read_error", "write_error"):
                 error = verified.get(field)
                 if type(error) is not int or error <= 0:
                     raise RuntimeError("a blocked native operation did not wake with an error")
@@ -237,7 +278,8 @@ def run(image: Path, vmm: Path, probe: Path, work: Path, os_name: Os) -> None:
                 "api_statuses": statuses,
                 "oracle": verified,
                 "native_admission": False,
-                "scope": "real transport event fences idle identity and wakes pending accept/read/write; no service or recovery acceptance",
+                "memory_continuation": continued,
+                "scope": "fresh VMM restore preserves RAM nonce/PID; real transport event fences idle identity and connected streams, preserves listener; no service or recovery acceptance",
             }
             (work / "reset-receipt.json").write_text(
                 json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8"

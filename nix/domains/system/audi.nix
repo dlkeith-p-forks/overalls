@@ -20,6 +20,8 @@ let
     host_key_dir = "/var/lib/audi/keys";
     bind = cfg.bindAddress;
     port = cfg.port;
+  } // lib.optionalAttrs cfg.relay.enable {
+    relay = { inherit (cfg.relay) address port peers; };
   } // lib.optionalAttrs (cfg.publicOrigin != null) {
     public_origin = cfg.publicOrigin;
   } // lib.optionalAttrs cfg.tls.enable {
@@ -40,6 +42,15 @@ in {
       type = types.package;
       default = if cfg.crashDumps.enable then packages.encrypted.audi else packages.audi;
       description = "Independent source-built Audi release.";
+    };
+    relay = {
+      enable = mkEnableOption "single-hop authorized ingress over the host fleet WireGuard network";
+      address = mkOption { type = types.nullOr paths.ipv4; default = if config.overalls.fleetNetwork.enable then config.overalls.fleetNetwork.address else null;
+        description = "Exact local fleet /32; never a guest or public listener address."; };
+      port = mkOption { type = types.port; default = 9445; };
+      peers = mkOption { type = types.listOf paths.ipv4;
+        default = map (peer: peer.address) (builtins.attrValues config.overalls.fleetNetwork.peers);
+        description = "Explicit keyed fleet /32 peers allowed to present single-use relay capabilities."; };
     };
     editorPackage = mkOption {
       type = types.nullOr types.package;
@@ -109,6 +120,10 @@ in {
 
   config = mkIf cfg.enable {
     assertions = [
+      { assertion = !cfg.relay.enable || (config.overalls.fleetNetwork.enable &&
+          cfg.relay.address == config.overalls.fleetNetwork.address && cfg.relay.peers != [] &&
+          lib.all (address: builtins.elem address (map (peer: peer.address) (builtins.attrValues config.overalls.fleetNetwork.peers))) cfg.relay.peers);
+        message = "Audi relay requires its exact fleet WireGuard /32 and explicit keyed peers."; }
       # @cc [owner:ghuntley,label:protocol;reliability] audi-module-editor-zone-boundary
       # Configured editor assets MUST use the same canonical multi-label zone
       # as the protocol and broker. Disabled TLS or editor assets retain the
@@ -137,6 +152,10 @@ in {
       { assertion = !cfg.crashDumps.enable || cfg.crashDumps.publicKeyFile != null;
         message = "Audi encrypted dumps require an operator public key file."; }
     ];
+    # @cc [owner:ghuntley,label:security] audi-relay-firewall-peer-only
+    # Relay traffic MUST use the existing source-restricted fleet0 input rules.
+    # Enabling relay MUST NOT expose its port through public service admission.
+    overalls.fleetNetwork.tcpPorts = lib.mkIf cfg.relay.enable (lib.mkAfter [ cfg.relay.port ]);
     users.groups.audi = {};
     users.users.audi = { isSystemUser = true; group = "audi"; };
     users.groups.overalls-otel-audi-ssh-source = lib.mkIf fleetOtelEnabled {};

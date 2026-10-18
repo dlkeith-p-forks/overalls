@@ -10,8 +10,9 @@ defmodule Lilly.Transfer.Source do
   # execute/3 requires the live authenticated runtime and its host-owned store.
   # It MUST match the source command to retained execution identity/shape and
   # driver intent before creating snapshots or granting access. The source MUST
-  # be physically stopped: the one transfer snapshot is always of a stopped disk
-  # (ADR-0155). Roots/pools come only from local configuration. A first grant
+  # have no running VMM: disk relocation requires stopped intent; memory
+  # relocation requires paused intent and its exact ready checkpoint. Roots/pools
+  # come only from local configuration. A first grant
   # MUST hold the stable export lock while creating its snapshot and permit;
   # lease renewal may retain an already active matching stream. Native ownership
   # and lease time MUST be rechecked before publication. Failure MUST NOT release
@@ -33,13 +34,14 @@ defmodule Lilly.Transfer.Source do
         pool,
         spec,
         {request.intent.source_epoch, request.generation},
-        :stopped,
+        if(Map.has_key?(request.intent, :checkpoint), do: :paused, else: :stopped),
         fn ->
           guarded_stream(config.transfer_state_dir, request, fn ->
             Storage.locked(pool, fn ->
               with {:ok, ^command} <- current(store, request),
                    {:ok, claim} <- ZFSDataset.snapshot_source(pool, spec),
                    :ok <- lineage(pool, spec, request),
+                   :ok <- checkpoint_source(pool, spec, request.intent),
                    :ok <- lease(request),
                    {:ok, guid} <-
                      SourceSnapshots.create(
@@ -89,10 +91,16 @@ defmodule Lilly.Transfer.Source do
              command.pool_id == i.source.pool_id and command.execution_epoch == i.source_epoch and
              command.generation == request.generation,
          true <- Map.take(command, Map.keys(i.workload)) == i.workload,
-         true <- command.kind == :stop,
+         true <- command.kind == if(Map.has_key?(i, :checkpoint), do: :pause, else: :stop),
          do: {:ok, command},
          else: (_ -> {:error, :source_authority_unconfirmed})
   end
+
+  defp checkpoint_source(pool, spec, %{checkpoint: descriptor}) do
+    with {:ok, ^descriptor, _} <- Lilly.VM.Checkpoint.ready(pool, spec, descriptor), do: :ok
+  end
+
+  defp checkpoint_source(_, _, _), do: :ok
 
   defp lease(request) do
     remaining = request.expires_at - System.system_time(:second)

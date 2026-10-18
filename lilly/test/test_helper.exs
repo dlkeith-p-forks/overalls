@@ -1,3 +1,5 @@
+Code.require_file("../../scripts/test/hegel_fixtures.exs", __DIR__)
+
 # Unit and harness-adapter tests model a root-run Lilly that connects to local
 # sockets directly. A deployed unprivileged Lilly host (ADR-0182) may export
 # LILLY_SERVICE_UID into every login session; inheriting it would route local

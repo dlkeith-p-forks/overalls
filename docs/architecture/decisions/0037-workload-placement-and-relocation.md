@@ -6,9 +6,15 @@
 - Implementation: partial
 - Components: Marshall Compute, Lilly Control, Lilly VM, shared protocol, NixOS
 - Supersedes: ADR-0005, ADR-0035
-- Superseded by: ADR-0050, ADR-0149, ADR-0155
+- Superseded by: ADR-0050, ADR-0149, ADR-0155, ADR-0197
 
 ## Context
+
+[ADR-0197](0197-memory-suspension-and-demand-wake.md) replaces only the
+memory-migration/stopped-source and cross-host-relay prohibitions where this
+record carries them, and extends owner pins with automatic-suspension prevention
+and wake. Unrelated requirements and historical rationale remain in force.
+
 
 [ADR-0155](0155-stopped-only-relocation.md) removes live pre-copy: every move
 stops the source and sends one full stream; the `lilly-a` baseline, incremental
@@ -1270,9 +1276,10 @@ The recovered plan required a retryable post-handoff failure. Previously failed
 readiness retained the source but excluded every recovery action except Delete.
 [Retry admission](../../../marshall/lib/marshall/compute/relocation_retry_admission.ex),
 its [retained request](../../../marshall/lib/marshall/compute/relocation_retry.ex)
-and [coordinator](../../../marshall/lib/marshall/compute/relocation_retry_state.ex)
-now implement the explicit stop/restart sequence above. The UI offers an
-authorized destination-boot retry. Historical failed receipts remain acknowledgeable
+and the then-current coordinator implemented the explicit stop/restart sequence
+above. The UI then offered an authorized destination-boot retry.
+ADR-0197 removes that cold-retry coordinator for new memory-preserving moves;
+the retained resource and exact historical receipts remain readable. Historical failed receipts remain acknowledgeable
 without satisfying the newer request. The new migration adds only the retry table
 and its operation/relocation bindings, request uniqueness and pending-retry index.
 The 48 focused source/UI cases pass, including idempotency, permission denial,

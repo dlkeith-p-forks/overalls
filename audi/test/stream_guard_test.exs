@@ -92,78 +92,77 @@ defmodule Audi.Authority.StreamGuardTest do
   # Two 300-700 ms expiry waits per history require 60-140 s across the default
   # run, before 700 socket fixtures and the remaining fence assertions.
   @tag timeout: 300_000
-  property "a live TCP stream closes for every grant and guard fence",
-    profile: :ci do
-    check all(
-            actions <-
-              shuffle([
-                :expired_reply,
-                :changed_binding,
-                :revoke,
-                :expiry,
-                :suspended_expiry,
-                :guard_death,
-                :stale_renewal
-              ]),
-            ttl <- member_of([300, 500, 700]),
-            max_runs: 8
-          ) do
-      for action <- actions do
-        {owner, socket} = stream()
-        deadline = if action in [:expiry, :suspended_expiry], do: ttl, else: 5000
+  property "a live TCP stream closes for every grant and guard fence" do
+    actions =
+      draw(
+        "actions",
+        shuffle([
+          :expired_reply,
+          :changed_binding,
+          :revoke,
+          :expiry,
+          :suspended_expiry,
+          :guard_death,
+          :stale_renewal
+        ])
+      )
 
-        guard =
-          if action == :expired_reply do
-            start_supervised!(
-              {StreamGuard,
-               owner: owner, binding: @binding, requested_at: now() - 1000, ttl: 5000},
-              id: make_ref()
-            )
-          else
-            guard(owner, deadline)
-          end
+    ttl = draw("ttl", member_of([300, 500, 700]))
 
-        ref = Process.monitor(owner)
+    for action <- actions do
+      {owner, socket} = stream()
+      deadline = if action in [:expiry, :suspended_expiry], do: ttl, else: 5000
 
-        :ok = :gen_tcp.send(socket, "live")
-        assert {:ok, "live"} = :gen_tcp.recv(socket, 4, 1000)
-
-        case action do
-          :expired_reply ->
-            assert {:error, :invalid_grant} =
-                     StreamGuard.renew(guard, @binding, now() - 500, 1)
-
-          :changed_binding ->
-            assert {:error, :binding_changed} =
-                     StreamGuard.renew(guard, %{@binding | execution_epoch: 2}, now(), 1000)
-
-          :revoke ->
-            assert :ok = StreamGuard.revoke(guard)
-
-          :expiry ->
-            :ok
-
-          :suspended_expiry ->
-            :ok = :sys.suspend(guard)
-
-          :guard_death ->
-            Process.exit(guard, :kill)
-
-          :stale_renewal ->
-            old_deadline = :sys.get_state(guard).lease.expires_at
-            assert {:error, :stale} = StreamGuard.renew(guard, @binding, now() - 10_000, 1000)
-            assert :sys.get_state(guard).lease.expires_at == old_deadline
-            assert Process.alive?(owner)
-            :ok = :gen_tcp.send(socket, "again")
-            assert {:ok, "again"} = :gen_tcp.recv(socket, 5, 1000)
-            assert :ok = StreamGuard.revoke(guard)
+      guard =
+        if action == :expired_reply do
+          Overalls.HegelFixtures.start_supervised!(
+            {StreamGuard, owner: owner, binding: @binding, requested_at: now() - 1000, ttl: 5000},
+            id: make_ref()
+          )
+        else
+          guard(owner, deadline)
         end
 
-        assert_receive {:DOWN, ^ref, :process, ^owner, :killed}, 2000
-        assert {:error, :closed} = :gen_tcp.recv(socket, 0, 1000)
+      ref = Process.monitor(owner)
 
-        if action == :suspended_expiry, do: :ok = :sys.resume(guard)
+      :ok = :gen_tcp.send(socket, "live")
+      assert {:ok, "live"} = :gen_tcp.recv(socket, 4, 1000)
+
+      case action do
+        :expired_reply ->
+          assert {:error, :invalid_grant} =
+                   StreamGuard.renew(guard, @binding, now() - 500, 1)
+
+        :changed_binding ->
+          assert {:error, :binding_changed} =
+                   StreamGuard.renew(guard, %{@binding | execution_epoch: 2}, now(), 1000)
+
+        :revoke ->
+          assert :ok = StreamGuard.revoke(guard)
+
+        :expiry ->
+          :ok
+
+        :suspended_expiry ->
+          :ok = :sys.suspend(guard)
+
+        :guard_death ->
+          Process.exit(guard, :kill)
+
+        :stale_renewal ->
+          old_deadline = :sys.get_state(guard).lease.expires_at
+          assert {:error, :stale} = StreamGuard.renew(guard, @binding, now() - 10_000, 1000)
+          assert :sys.get_state(guard).lease.expires_at == old_deadline
+          assert Process.alive?(owner)
+          :ok = :gen_tcp.send(socket, "again")
+          assert {:ok, "again"} = :gen_tcp.recv(socket, 5, 1000)
+          assert :ok = StreamGuard.revoke(guard)
       end
+
+      assert_receive {:DOWN, ^ref, :process, ^owner, :killed}, 2000
+      assert {:error, :closed} = :gen_tcp.recv(socket, 0, 1000)
+
+      if action == :suspended_expiry, do: :ok = :sys.resume(guard)
     end
   end
 
@@ -171,80 +170,77 @@ defmodule Audi.Authority.StreamGuardTest do
   # Accepted renewal MUST retain the same live owner; stale or obsolete messages
   # MUST NOT change its deadline, and a terminal refusal MUST close its socket.
   property "one TCP owner survives reordered renewals until a terminal fence" do
-    check all(
-            actions <- shuffle([:stale, :obsolete_expire, :renew_again]),
-            max_runs: 8
-          ) do
-      for terminal <- [:revoke, :expired_reply, :changed_binding] do
-        {owner, socket} = stream()
-        initial_started = now()
+    actions = draw("actions", shuffle([:stale, :obsolete_expire, :renew_again]))
 
-        guard =
-          start_supervised!(
-            {StreamGuard,
-             owner: owner, binding: @binding, requested_at: initial_started, ttl: 2000},
-            id: make_ref()
-          )
+    for terminal <- [:revoke, :expired_reply, :changed_binding] do
+      {owner, socket} = stream()
+      initial_started = now()
 
-        ref = Process.monitor(owner)
-        assert_echo(socket, "initial")
-        Process.sleep(2)
-        first_started = now()
-        assert :ok = StreamGuard.renew(guard, @binding, first_started, 2000)
-        original_deadline = initial_started + 2000
-        assert :sys.get_state(guard).lease.expires_at == first_started + 2000
+      guard =
+        Overalls.HegelFixtures.start_supervised!(
+          {StreamGuard,
+           owner: owner, binding: @binding, requested_at: initial_started, ttl: 2000},
+          id: make_ref()
+        )
 
-        latest_started =
-          Enum.reduce(actions, first_started, fn action, latest ->
-            next =
-              case action do
-                :stale ->
-                  deadline = :sys.get_state(guard).lease.expires_at
+      ref = Process.monitor(owner)
+      assert_echo(socket, "initial")
+      Process.sleep(2)
+      first_started = now()
+      assert :ok = StreamGuard.renew(guard, @binding, first_started, 2000)
+      original_deadline = initial_started + 2000
+      assert :sys.get_state(guard).lease.expires_at == first_started + 2000
 
-                  assert {:error, :stale} =
-                           StreamGuard.renew(guard, @binding, initial_started, 2000)
+      latest_started =
+        Enum.reduce(actions, first_started, fn action, latest ->
+          next =
+            case action do
+              :stale ->
+                deadline = :sys.get_state(guard).lease.expires_at
 
-                  assert :sys.get_state(guard).lease.expires_at == deadline
-                  latest
+                assert {:error, :stale} =
+                         StreamGuard.renew(guard, @binding, initial_started, 2000)
 
-                :obsolete_expire ->
-                  deadline = :sys.get_state(guard).lease.expires_at
-                  send(guard, {:expire, original_deadline})
-                  assert :sys.get_state(guard).lease.expires_at == deadline
-                  assert Process.alive?(owner)
-                  latest
+                assert :sys.get_state(guard).lease.expires_at == deadline
+                latest
 
-                :renew_again ->
-                  Process.sleep(2)
-                  requested = now()
-                  assert :ok = StreamGuard.renew(guard, @binding, requested, 2000)
-                  assert :sys.get_state(guard).lease.expires_at == requested + 2000
-                  requested
-              end
+              :obsolete_expire ->
+                deadline = :sys.get_state(guard).lease.expires_at
+                send(guard, {:expire, original_deadline})
+                assert :sys.get_state(guard).lease.expires_at == deadline
+                assert Process.alive?(owner)
+                latest
 
-            assert_echo(socket, "still-live")
-            next
-          end)
+              :renew_again ->
+                Process.sleep(2)
+                requested = now()
+                assert :ok = StreamGuard.renew(guard, @binding, requested, 2000)
+                assert :sys.get_state(guard).lease.expires_at == requested + 2000
+                requested
+            end
 
-        case terminal do
-          :revoke ->
-            assert :ok = StreamGuard.revoke(guard)
+          assert_echo(socket, "still-live")
+          next
+        end)
 
-          :expired_reply ->
-            Process.sleep(2)
-            requested = now()
-            assert requested > latest_started
-            Process.sleep(2)
-            assert {:error, :invalid_grant} = StreamGuard.renew(guard, @binding, requested, 1)
+      case terminal do
+        :revoke ->
+          assert :ok = StreamGuard.revoke(guard)
 
-          :changed_binding ->
-            assert {:error, :binding_changed} =
-                     StreamGuard.renew(guard, %{@binding | execution_epoch: 2}, now(), 2000)
-        end
+        :expired_reply ->
+          Process.sleep(2)
+          requested = now()
+          assert requested > latest_started
+          Process.sleep(2)
+          assert {:error, :invalid_grant} = StreamGuard.renew(guard, @binding, requested, 1)
 
-        assert_receive {:DOWN, ^ref, :process, ^owner, :killed}, 2000
-        assert {:error, :closed} = :gen_tcp.recv(socket, 0, 1000)
+        :changed_binding ->
+          assert {:error, :binding_changed} =
+                   StreamGuard.renew(guard, %{@binding | execution_epoch: 2}, now(), 2000)
       end
+
+      assert_receive {:DOWN, ^ref, :process, ^owner, :killed}, 2000
+      assert {:error, :closed} = :gen_tcp.recv(socket, 0, 1000)
     end
   end
 

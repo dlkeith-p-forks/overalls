@@ -18,56 +18,53 @@ defmodule Overalls.RequestAccounting.UncertainAckHistoryTest do
   # Lost measurement acknowledgments MUST preserve the work's exact return,
   # error, throw or exit and single invocation, while retaining a recording gap.
   property "measurement acknowledgment loss preserves eligible work semantics" do
-    check all(
-            boundary <- member_of(["admit", "finish"]),
-            failure <- member_of([:drop, :malformed, :refused]),
-            mode <- member_of([:return, :error, :throw, :exit]),
-            value <- member_of([0, 1, 4_096, @maximum]),
-            max_runs: 32
-          ) do
-      with_fixture(fn fixture ->
-        fault(fixture.recorder, {boundary, failure})
-        reference = make_ref()
+    boundary = draw("boundary", member_of(["admit", "finish"]))
+    failure = draw("failure", member_of([:drop, :malformed, :refused]))
+    mode = draw("mode", member_of([:return, :error, :throw, :exit]))
+    value = draw("value", member_of([0, 1, 4096, @maximum]))
 
-        work = fn ->
-          send(self(), {reference, value})
+    with_fixture(fn fixture ->
+      fault(fixture.recorder, {boundary, failure})
+      reference = make_ref()
 
-          case mode do
-            :return -> {:owned_result, value}
-            :error -> :erlang.error({:owned_error, value})
-            :throw -> throw({:owned_throw, value})
-            :exit -> exit({:owned_exit, value})
-          end
-        end
-
-        measured = fn -> Producer.measure(@name, work, fn _ -> :success end) end
+      work = fn ->
+        send(self(), {reference, value})
 
         case mode do
-          :return -> assert measured.() == {:owned_result, value}
-          :error -> assert catch_error(measured.()) == {:owned_error, value}
-          :throw -> assert catch_throw(measured.()) == {:owned_throw, value}
-          :exit -> assert catch_exit(measured.()) == {:owned_exit, value}
+          :return -> {:owned_result, value}
+          :error -> :erlang.error({:owned_error, value})
+          :throw -> throw({:owned_throw, value})
+          :exit -> exit({:owned_exit, value})
         end
+      end
 
-        assert_receive {^reference, ^value}
-        refute_receive {^reference, _}, 0
-        assert :sys.get_state(fixture.client).pending == %{}
-        assert :sys.get_state(fixture.client).gap
-        assert QualityMarker.read(fixture.directory) == {:ok, :gap}
+      measured = fn -> Producer.measure(@name, work, fn _ -> :success end) end
 
-        if boundary == "admit" do
-          assert commands(fixture.recorder, "finish") == []
-        else
-          assert [terminal] = commands(fixture.recorder, "finish")
-          assert terminal["id"] == 1
-          assert terminal["outcome"] == if(mode == :return, do: "success", else: "failure")
-          assert is_integer(terminal["duration_us"])
-          assert terminal["duration_us"] >= 0 and terminal["duration_us"] <= @maximum
-        end
+      case mode do
+        :return -> assert measured.() == {:owned_result, value}
+        :error -> assert catch_error(measured.()) == {:owned_error, value}
+        :throw -> assert catch_throw(measured.()) == {:owned_throw, value}
+        :exit -> assert catch_exit(measured.()) == {:owned_exit, value}
+      end
 
-        :ok
-      end)
-    end
+      assert_receive {^reference, ^value}
+      refute_receive {^reference, _}, 0
+      assert :sys.get_state(fixture.client).pending == %{}
+      assert :sys.get_state(fixture.client).gap
+      assert QualityMarker.read(fixture.directory) == {:ok, :gap}
+
+      if boundary == "admit" do
+        assert commands(fixture.recorder, "finish") == []
+      else
+        assert [terminal] = commands(fixture.recorder, "finish")
+        assert terminal["id"] == 1
+        assert terminal["outcome"] == if(mode == :return, do: "success", else: "failure")
+        assert is_integer(terminal["duration_us"])
+        assert terminal["duration_us"] >= 0 and terminal["duration_us"] <= @maximum
+      end
+
+      :ok
+    end)
   end
 
   # @cc [owner:ghuntley,label:verification;reliability] uncertain-ack-gap-before-recovery
@@ -75,86 +72,88 @@ defmodule Overalls.RequestAccounting.UncertainAckHistoryTest do
   # MUST not be replayed by duplicate completion. Both MUST persist a gap until
   # a gap handshake succeeds, refusing new admissions while it cannot succeed.
   property "uncertain admission and completion acknowledgments preserve gaps until verified recovery" do
-    check all(
-            boundary <- member_of([:admit, :finish]),
-            failure <- member_of([:drop, :malformed, :refused]),
-            recovery_failures <-
-              list_of(member_of([:drop, :malformed, :refused]), min_length: 1, max_length: 4),
-            outcome <- member_of([:success, :failure, :exclude]),
-            duration <- member_of([0, 1, 10_000, @maximum]),
-            duplicates <- member_of([1, 2, 4]),
-            max_runs: 32
-          ) do
-      with_fixture(fn fixture ->
-        case boundary do
-          :admit ->
-            fault(fixture.recorder, {"admit", failure})
-            assert :unrecorded = Producer.admit(@name)
-            assert commands(fixture.recorder, "finish") == []
+    boundary = draw("boundary", member_of([:admit, :finish]))
+    failure = draw("failure", member_of([:drop, :malformed, :refused]))
 
-          :finish ->
-            ticket = Producer.admit(@name)
-            assert is_reference(ticket)
-            fault(fixture.recorder, {"finish", failure})
-            assert :ok = Producer.complete(@name, ticket, outcome, duration)
-            original = commands(fixture.recorder, "finish")
+    recovery_failures =
+      draw(
+        "recovery_failures",
+        list_of(member_of([:drop, :malformed, :refused]), min_length: 1, max_length: 4)
+      )
 
-            assert original == [
-                     %{
-                       "op" => "finish",
-                       "id" => 1,
-                       "outcome" => Atom.to_string(outcome),
-                       "duration_us" => duration
-                     }
-                   ]
+    outcome = draw("outcome", member_of([:success, :failure, :exclude]))
+    duration = draw("duration", member_of([0, 1, 10000, @maximum]))
+    duplicates = draw("duplicates", member_of([1, 2, 4]))
 
-            for _ <- 1..duplicates do
-              :ok = Producer.complete(@name, ticket, :failure, 999)
-              assert commands(fixture.recorder, "finish") == original
-            end
-        end
+    with_fixture(fn fixture ->
+      case boundary do
+        :admit ->
+          fault(fixture.recorder, {"admit", failure})
+          assert :unrecorded = Producer.admit(@name)
+          assert commands(fixture.recorder, "finish") == []
 
+        :finish ->
+          ticket = Producer.admit(@name)
+          assert is_reference(ticket)
+          fault(fixture.recorder, {"finish", failure})
+          assert :ok = Producer.complete(@name, ticket, outcome, duration)
+          original = commands(fixture.recorder, "finish")
+
+          assert original == [
+                   %{
+                     "op" => "finish",
+                     "id" => 1,
+                     "outcome" => Atom.to_string(outcome),
+                     "duration_us" => duration
+                   }
+                 ]
+
+          for _ <- 1..duplicates do
+            :ok = Producer.complete(@name, ticket, :failure, 999)
+            assert commands(fixture.recorder, "finish") == original
+          end
+      end
+
+      assert :sys.get_state(fixture.client).pending == %{}
+      assert :sys.get_state(fixture.client).gap
+      assert QualityMarker.read(fixture.directory) == {:ok, :gap}
+      admissions = commands(fixture.recorder, "admit")
+
+      for recovery_failure <- recovery_failures do
+        fault(fixture.recorder, {"gap", recovery_failure})
+        assert :unrecorded = Producer.admit(@name)
+        assert commands(fixture.recorder, "admit") == admissions
         assert :sys.get_state(fixture.client).pending == %{}
         assert :sys.get_state(fixture.client).gap
         assert QualityMarker.read(fixture.directory) == {:ok, :gap}
-        admissions = commands(fixture.recorder, "admit")
+      end
 
-        for recovery_failure <- recovery_failures do
-          fault(fixture.recorder, {"gap", recovery_failure})
-          assert :unrecorded = Producer.admit(@name)
-          assert commands(fixture.recorder, "admit") == admissions
-          assert :sys.get_state(fixture.client).pending == %{}
-          assert :sys.get_state(fixture.client).gap
-          assert QualityMarker.read(fixture.directory) == {:ok, :gap}
-        end
+      before_recovery = Agent.get(fixture.recorder, & &1.commands)
+      fault(fixture.recorder, nil)
+      ticket = Producer.admit(@name)
+      assert is_reference(ticket)
+      assert not :sys.get_state(fixture.client).gap
+      assert QualityMarker.read(fixture.directory) == {:ok, :running}
+      assert map_size(:sys.get_state(fixture.client).pending) == 1
+      after_recovery = Agent.get(fixture.recorder, & &1.commands)
 
-        before_recovery = Agent.get(fixture.recorder, & &1.commands)
-        fault(fixture.recorder, nil)
-        ticket = Producer.admit(@name)
-        assert is_reference(ticket)
-        assert not :sys.get_state(fixture.client).gap
-        assert QualityMarker.read(fixture.directory) == {:ok, :running}
-        assert map_size(:sys.get_state(fixture.client).pending) == 1
-        after_recovery = Agent.get(fixture.recorder, & &1.commands)
+      assert Enum.drop(after_recovery, length(before_recovery)) == [
+               %{"op" => "gap"},
+               %{"op" => "admit"}
+             ]
 
-        assert Enum.drop(after_recovery, length(before_recovery)) == [
-                 %{"op" => "gap"},
-                 %{"op" => "admit"}
-               ]
+      assert :ok = Producer.complete(@name, ticket, :success, 1)
+      assert :sys.get_state(fixture.client).pending == %{}
 
-        assert :ok = Producer.complete(@name, ticket, :success, 1)
-        assert :sys.get_state(fixture.client).pending == %{}
+      assert List.last(commands(fixture.recorder, "finish")) == %{
+               "op" => "finish",
+               "id" => 2,
+               "outcome" => "success",
+               "duration_us" => 1
+             }
 
-        assert List.last(commands(fixture.recorder, "finish")) == %{
-                 "op" => "finish",
-                 "id" => 2,
-                 "outcome" => "success",
-                 "duration_us" => 1
-               }
-
-        :ok
-      end)
-    end
+      :ok
+    end)
   end
 
   @spec fault(pid(), {String.t(), fault()} | nil) :: :ok

@@ -17,40 +17,37 @@ defmodule Marshall.Compute.WorkflowServiceLevelsTest do
 
   @origin ~U[2026-10-02 10:00:00Z]
 
+  @tag :hegel_case_sandbox
   property "temporal histories refuse pre-admission late future and wrong-disposition evidence" do
-    check all(
-            expected <- member_of([:succeeded, :cancelled]),
-            outcome <- member_of([:succeeded, :failed, :cancelled, :superseded]),
-            offset <- integer(-600..1_200),
-            now <- integer(0..1_600)
-          ) do
-      deadline = DateTime.add(@origin, 600)
-      evidence = %{outcome: outcome, at: DateTime.add(@origin, offset)}
+    Marshall.DataCase.isolate_property_case()
+    expected = draw("expected", member_of([:succeeded, :cancelled]))
+    outcome = draw("outcome", member_of([:succeeded, :failed, :cancelled, :superseded]))
+    offset = draw("offset", integer(-600..1200))
+    now = draw("now", integer(0..1600))
+    deadline = DateTime.add(@origin, 600)
+    evidence = %{outcome: outcome, at: DateTime.add(@origin, offset)}
 
-      decision =
-        WorkflowServiceLevels.decide(
-          expected,
-          @origin,
-          deadline,
-          evidence,
-          DateTime.add(@origin, now)
-        )
+    decision =
+      WorkflowServiceLevels.decide(
+        expected,
+        @origin,
+        deadline,
+        evidence,
+        DateTime.add(@origin, now)
+      )
 
-      cond do
-        offset in 0..600 and offset <= now ->
-          if outcome == :superseded or (expected == :succeeded and outcome == :cancelled),
-            do: assert(decision == {:excluded, outcome, evidence.at, offset * 1_000_000}),
-            else:
-              assert(
-                decision == {:finished, outcome == expected, evidence.at, offset * 1_000_000}
-              )
+    cond do
+      offset in 0..600 and offset <= now ->
+        if outcome == :superseded or (expected == :succeeded and outcome == :cancelled),
+          do: assert(decision == {:excluded, outcome, evidence.at, offset * 1_000_000}),
+          else:
+            assert(decision == {:finished, outcome == expected, evidence.at, offset * 1_000_000})
 
-        now >= 600 ->
-          assert decision == {:finished, false, deadline, 600_000_000}
+      now >= 600 ->
+        assert decision == {:finished, false, deadline, 600_000_000}
 
-        true ->
-          assert decision == :pending
-      end
+      true ->
+        assert decision == :pending
     end
   end
 
@@ -58,36 +55,37 @@ defmodule Marshall.Compute.WorkflowServiceLevelsTest do
   # The test MUST retain a failed measurement and its terminal audit evidence
   # when source-restoration retry reuses the clone sequence. A wrong sequence
   # MUST stay pending; only new matching evidence may complete the new receipt.
+  @tag :hegel_case_sandbox
   property "restoration retries retain failed history without accepting another clone sequence",
-    test_cases: 12 do
+    test_cases: 100 do
+    Marshall.DataCase.isolate_property_case()
     {owner, vm, clone} = clone_fixture()
 
-    check all(wrong_delta <- integer(1..100), test_cases: 12) do
-      original = receipt(owner, vm, clone, "clone", Ledger.now())
-      clone = Ledger.update!(clone, :record_progress, %{failure: "source_restart_failed"})
-      assert {:ok, 1} = WorkflowServiceLevels.reconcile()
-      [first] = Ledger.read!(WorkflowServiceLevelAttempt, request_id: original.id)
-      assert first.status == :finished and first.success == false
-      prior = Ledger.read!(LifecycleEvent, resource_id: clone.id, measurement_outcome: :failed)
-      assert Enum.any?(prior, &(&1.sequence == clone.sequence))
+    wrong_delta = draw("wrong_delta", integer(1..100))
+    original = receipt(owner, vm, clone, "clone", Ledger.now())
+    clone = Ledger.update!(clone, :record_progress, %{failure: "source_restart_failed"})
+    assert {:ok, 1} = WorkflowServiceLevels.reconcile()
+    [first] = Ledger.read!(WorkflowServiceLevelAttempt, request_id: original.id)
+    assert first.status == :finished and first.success == false
+    prior = Ledger.read!(LifecycleEvent, resource_id: clone.id, measurement_outcome: :failed)
+    assert Enum.any?(prior, &(&1.sequence == clone.sequence))
 
-      start = Ledger.now()
-      clone = Ledger.update!(clone, :record_progress, %{failure: "retry_source_restart"})
-      retry = receipt(owner, vm, clone, "request retry", start)
-      [pending] = Ledger.read!(WorkflowServiceLevelAttempt, request_id: retry.id)
-      event(clone, clone.sequence + wrong_delta, :succeeded)
-      assert {:ok, 0} = WorkflowServiceLevels.reconcile()
-      [still_pending] = Ledger.read!(WorkflowServiceLevelAttempt, id: pending.id)
-      assert still_pending.status == :pending
+    start = Ledger.now()
+    clone = Ledger.update!(clone, :record_progress, %{failure: "retry_source_restart"})
+    retry = receipt(owner, vm, clone, "request retry", start)
+    [pending] = Ledger.read!(WorkflowServiceLevelAttempt, request_id: retry.id)
+    event(clone, clone.sequence + wrong_delta, :succeeded)
+    assert {:ok, 0} = WorkflowServiceLevels.reconcile()
+    [still_pending] = Ledger.read!(WorkflowServiceLevelAttempt, id: pending.id)
+    assert still_pending.status == :pending
 
-      event(clone, clone.sequence, :succeeded)
-      assert {:ok, 1} = WorkflowServiceLevels.reconcile()
-      [finished] = Ledger.read!(WorkflowServiceLevelAttempt, id: pending.id)
-      assert finished.success and finished.deadline == pending.deadline
-      assert Ledger.read!(WorkflowServiceLevelAttempt, id: first.id) == [first]
-      assert Enum.all?(prior, &(&1 in Ledger.read!(LifecycleEvent, resource_id: clone.id)))
-      assert {:ok, 0} = WorkflowServiceLevels.reconcile()
-    end
+    event(clone, clone.sequence, :succeeded)
+    assert {:ok, 1} = WorkflowServiceLevels.reconcile()
+    [finished] = Ledger.read!(WorkflowServiceLevelAttempt, id: pending.id)
+    assert finished.success and finished.deadline == pending.deadline
+    assert Ledger.read!(WorkflowServiceLevelAttempt, id: first.id) == [first]
+    assert Enum.all?(prior, &(&1 in Ledger.read!(LifecycleEvent, resource_id: clone.id)))
+    assert {:ok, 0} = WorkflowServiceLevels.reconcile()
   end
 
   test "synchronous cancellation is counted once and replay cannot reset its deadline" do

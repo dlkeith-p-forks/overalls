@@ -15,13 +15,13 @@ defmodule Marshall.Accounts.GuestUsernameTest do
   end
 
   property "every allocated UID has one distinct safe home component" do
-    check all(left <- integer(200_000..999_999), right <- integer(200_000..999_999)) do
-      assert {:ok, name} = GuestUsername.from_uid(left)
-      assert name == "u" <> Integer.to_string(left)
-      assert Regex.match?(~r/\Au[2-9][0-9]{5}\z/, name)
-      assert Path.basename("/home/" <> name) == name
-      assert {:ok, other} = GuestUsername.from_uid(right)
-      assert name == other == (left == right)
-    end
+    left = draw("left", integer(200_000..999_999))
+    right = draw("right", integer(200_000..999_999))
+    assert {:ok, name} = GuestUsername.from_uid(left)
+    assert name == "u" <> Integer.to_string(left)
+    assert Regex.match?(~r/\Au[2-9][0-9]{5}\z/, name)
+    assert Path.basename("/home/" <> name) == name
+    assert {:ok, other} = GuestUsername.from_uid(right)
+    assert name == other == (left == right)
   end
 end

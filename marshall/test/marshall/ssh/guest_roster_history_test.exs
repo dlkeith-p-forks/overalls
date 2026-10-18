@@ -28,92 +28,98 @@ defmodule Marshall.SSH.GuestRosterHistoryTest do
   @tag :hegel
   test "generated owner, grant and team histories serve exactly the durable writer identities",
        %{admin: admin} do
-    check all(
-            team? <- boolean(),
-            assignments <-
-              list_of(
-                tuple({
-                  member_of([:unused, :operator, :viewer, :revoked]),
-                  member_of([:none, :member, :admin]),
-                  boolean()
-                }),
-                min_length: 1,
-                max_length: 4
-              ),
-            test_cases: 6
-          ) do
-      {vm, token, binding} = vm_fixture(team?)
-      owner = owner_of(vm)
+    Hegel.check(
+      fn ->
+        team? = draw("team?", boolean())
 
-      pool =
-        for {grant_role, team_role, retiring?} <- assignments do
-          %{
-            user: Marshall.ComputeFixtures.user(),
-            grant: grant_role,
-            team: team_role,
-            retiring?: retiring?
-          }
+        assignments =
+          draw(
+            "assignments",
+            list_of(
+              tuple({
+                member_of([:unused, :operator, :viewer, :revoked]),
+                member_of([:none, :member, :admin]),
+                boolean()
+              }),
+              min_length: 1,
+              max_length: 4
+            )
+          )
+
+        {vm, token, binding} = vm_fixture(team?)
+        owner = owner_of(vm)
+
+        pool =
+          for {grant_role, team_role, retiring?} <- assignments do
+            %{
+              user: Marshall.ComputeFixtures.user(),
+              grant: grant_role,
+              team: team_role,
+              retiring?: retiring?
+            }
+          end
+
+        for %{grant: role} = entry <- pool, role != :unused do
+          granted = if role == :revoked, do: :operator, else: role
+          assert {:ok, _} = grant(vm, owner, entry.user, granted)
         end
 
-      for %{grant: role} = entry <- pool, role != :unused do
-        granted = if role == :revoked, do: :operator, else: role
-        assert {:ok, _} = grant(vm, owner, entry.user, granted)
-      end
-
-      if team? do
-        for %{team: role} = entry <- pool, role != :none do
-          join!(vm.team_id, entry.user, role, owner)
+        if team? do
+          for %{team: role} = entry <- pool, role != :none do
+            join!(vm.team_id, entry.user, role, owner)
+          end
         end
-      end
 
-      expected1 = expected_writer_ids(vm)
-      assert {:ok, %{version: v1, accounts: first}} = GuestAccess.roster(token, binding)
-      assert_roster_exact(first, expected1)
-      first_projection = identity_rows([vm.owner_id | Enum.map(pool, & &1.user.id)])
+        expected1 = expected_writer_ids(vm)
+        assert {:ok, %{version: v1, accounts: first}} = GuestAccess.roster(token, binding)
+        assert_roster_exact(first, expected1)
+        first_projection = identity_rows([vm.owner_id | Enum.map(pool, & &1.user.id)])
 
-      for %{grant: :revoked} = entry <- pool do
-        assert {:ok, _} = grant(vm, owner, entry.user, :revoked)
-      end
+        for %{grant: :revoked} = entry <- pool do
+          assert {:ok, _} = grant(vm, owner, entry.user, :revoked)
+        end
 
-      for %{retiring?: true} = entry <- pool, do: retire!(entry.user, admin)
+        for %{retiring?: true} = entry <- pool, do: retire!(entry.user, admin)
 
-      expected2 = expected_writer_ids(vm)
-      assert {:ok, %{version: v2, accounts: second}} = GuestAccess.roster(token, binding)
-      assert v2 > v1
-      assert_roster_exact(second, expected2)
+        expected2 = expected_writer_ids(vm)
+        assert {:ok, %{version: v2, accounts: second}} = GuestAccess.roster(token, binding)
+        assert v2 > v1
+        assert_roster_exact(second, expected2)
 
-      retired_ids = MapSet.new(for %{user: user, retiring?: true} <- pool, do: user.id)
+        retired_ids = MapSet.new(for %{user: user, retiring?: true} <- pool, do: user.id)
 
-      for {user_id, _id, _name, _uid, retired_at} <-
-            identity_rows([vm.owner_id | Enum.map(pool, & &1.user.id)]) do
-        if MapSet.member?(retired_ids, user_id),
-          do: assert(%DateTime{} = retired_at),
-          else: assert(is_nil(retired_at))
-      end
+        for {user_id, _id, _name, _uid, retired_at} <-
+              identity_rows([vm.owner_id | Enum.map(pool, & &1.user.id)]) do
+          if MapSet.member?(retired_ids, user_id),
+            do: assert(%DateTime{} = retired_at),
+            else: assert(is_nil(retired_at))
+        end
 
-      # Retirement changes the durable marker while preserving each identity.
-      assert Enum.map(
-               identity_rows([vm.owner_id | Enum.map(pool, & &1.user.id)]),
-               &Tuple.delete_at(&1, 4)
-             ) ==
-               Enum.map(first_projection, &Tuple.delete_at(&1, 4))
+        # Retirement changes the durable marker while preserving each identity.
+        assert Enum.map(
+                 identity_rows([vm.owner_id | Enum.map(pool, & &1.user.id)]),
+                 &Tuple.delete_at(&1, 4)
+               ) ==
+                 Enum.map(first_projection, &Tuple.delete_at(&1, 4))
 
-      for %{user: user} <- pool,
-          user.id not in expected1,
-          user.id not in expected2 do
-        assert [] == Ledger.read!(GuestAccount, user_id: user.id)
-      end
+        for %{user: user} <- pool,
+            user.id not in expected1,
+            user.id not in expected2 do
+          assert [] == Ledger.read!(GuestAccount, user_id: user.id)
+        end
 
-      assert {:ok, %{version: v3, accounts: stable}} = GuestAccess.roster(token, binding)
-      assert v3 > v2
-      assert stable == second
+        assert {:ok, %{version: v3, accounts: stable}} = GuestAccess.roster(token, binding)
+        assert v3 > v2
+        assert stable == second
 
-      assert Enum.map(
-               identity_rows([vm.owner_id | Enum.map(pool, & &1.user.id)]),
-               &Tuple.delete_at(&1, 4)
-             ) ==
-               Enum.map(first_projection, &Tuple.delete_at(&1, 4))
-    end
+        assert Enum.map(
+                 identity_rows([vm.owner_id | Enum.map(pool, & &1.user.id)]),
+                 &Tuple.delete_at(&1, 4)
+               ) ==
+                 Enum.map(first_projection, &Tuple.delete_at(&1, 4))
+      end,
+      test_cases: 100
+    )
   end
 
   # @cc [owner:ghuntley,label:verification;security] roster-candidate-bound-atomic

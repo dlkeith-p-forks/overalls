@@ -63,12 +63,12 @@ defmodule Marshall.Compute.RelocationSourcesTest do
 
     {vm, relocation} =
       if tags[:stop_pending] do
-        # A running source may be stopped only with recorded connectivity proof.
+        # A running source may be paused only with recorded connectivity proof.
         probe = Marshall.RelocationProbeFixture.applied!(relocation, vm)
 
         vm =
           Ledger.intent!(vm, %{
-            desired_state: :stopped,
+            desired_state: :paused,
             generation: vm.generation + 1
           })
 
@@ -78,7 +78,7 @@ defmodule Marshall.Compute.RelocationSourcesTest do
             placement_id: vm.current_placement_id,
             execution_epoch: vm.execution_epoch,
             generation: vm.generation,
-            kind: :stop,
+            kind: :pause,
             initiator: :relocation,
             relocation_id: relocation.id
           })
@@ -115,7 +115,8 @@ defmodule Marshall.Compute.RelocationSourcesTest do
     }
   end
 
-  test "full-copy stop requires fresh destination proof and physical stop before snapshots", c do
+  test "full-copy pause requires fresh destination proof and physical checkpoint before snapshots",
+       c do
     alias Marshall.Compute.{ProbeRequest, RelocationProbes}
     alias OverallsProtocol.RelocationProbe, as: ProbeWire
     assert {:ok, :waiting} = Marshall.Compute.RelocationCoordinator.advance(c.relocation.id)
@@ -263,11 +264,11 @@ defmodule Marshall.Compute.RelocationSourcesTest do
     [relocation] = Ledger.read!(Marshall.Compute.Relocation, id: c.relocation.id)
     assert relocation.source_preflight_request_id == probe.id
     [operation] = Ledger.read!(Operation, id: relocation.source_stop_operation_id)
-    assert operation.kind == :stop and operation.generation == c.vm.generation + 1
+    assert operation.kind == :pause and operation.generation == c.vm.generation + 1
     assert {:ok, %{"commands" => []}} = exchange(c)
     restoration_outcome(c, operation, :unknown)
     assert {:ok, %{"commands" => []}} = exchange(c)
-    restoration_outcome(c, operation, :stopped)
+    restoration_outcome(c, operation, :paused)
     assert {:ok, %{"commands" => [full_wire]}} = exchange(c)
     assert {:ok, full} = Wire.command(full_wire)
     assert full.generation == operation.generation
@@ -360,7 +361,7 @@ defmodule Marshall.Compute.RelocationSourcesTest do
           {:ok, command} = Wire.command(wire)
           assert {:ok, _} = exchange(c, [reply(command)])
         else
-          # A running source is never snapshotted before its recorded stop (ADR-0155).
+          # A running source is never copied before its recorded pause (ADR-0197).
           assert {:ok, %{"commands" => []}} = exchange(c)
         end
       end
@@ -383,12 +384,13 @@ defmodule Marshall.Compute.RelocationSourcesTest do
         assert {:ok, :restoring_source} = RelocationCoordinator.advance(c.relocation.id)
 
         if unquote(stage) == :restored do
-          [stop] = Ledger.read!(Operation, relocation_id: c.relocation.id, kind: :stop)
-          restoration_outcome(c, stop, :stopped)
+          quiesce_kind = if c.relocation.preserves_memory, do: :pause, else: :stop
+          [stop] = Ledger.read!(Operation, relocation_id: c.relocation.id, kind: quiesce_kind)
+          restoration_outcome(c, stop, if(stop.kind == :pause, do: :paused, else: :stopped))
 
           if c.relocation.original_state == :running do
             assert {:ok, :restoring_source} = RelocationCoordinator.advance(c.relocation.id)
-            [start] = Ledger.read!(Operation, relocation_id: c.relocation.id, kind: :start)
+            [start] = Ledger.read!(Operation, relocation_id: c.relocation.id, kind: :resume)
             restoration_outcome(c, start, :running)
           end
 
@@ -764,7 +766,9 @@ defmodule Marshall.Compute.RelocationSourcesTest do
       end
 
       assert {:ok, :cancelling} = RelocationCoordinator.advance(c.relocation.id)
-      assert holds == Ledger.read!(Reservation, vm_id: c.vm.id)
+
+      assert Enum.sort_by(holds, & &1.id) ==
+               Enum.sort_by(Ledger.read!(Reservation, vm_id: c.vm.id), & &1.id)
 
       for endpoint <- [:source_relocation_id, :destination_relocation_id] do
         assert [%{released_at: nil}] =
@@ -855,7 +859,10 @@ defmodule Marshall.Compute.RelocationSourcesTest do
       assert {:ok, :restoring_source} = RelocationCoordinator.advance(c.relocation.id)
       assert {:ok, :restoring_source} = RelocationCoordinator.advance(c.relocation.id)
 
-      assert [%{kind: :stop} = stop] =
+      quiesce_kind = if c.relocation.preserves_memory, do: :pause, else: :stop
+      quiesce_state = if c.relocation.preserves_memory, do: :paused, else: :stopped
+
+      assert [%{kind: ^quiesce_kind} = stop] =
                Ledger.read!(Operation, relocation_id: c.relocation.id, status: :pending)
 
       assert stop.placement_id == c.vm.current_placement_id and
@@ -896,17 +903,20 @@ defmodule Marshall.Compute.RelocationSourcesTest do
 
       assert {:ok, :restoring_source} = RelocationCoordinator.advance(c.relocation.id)
 
-      assert [%{kind: :stop}] =
+      assert [%{kind: ^quiesce_kind}] =
                Ledger.read!(Operation, relocation_id: c.relocation.id, status: :pending)
 
       stopped = %{
         uncertain
         | id: Ash.UUID.generate(),
           sequence: c.vm.outcome_sequence + 2,
-          state: :stopped,
+          state: quiesce_state,
           compute_empty: true,
           reason: :none
       }
+
+      stopped =
+        if stop.kind == :pause, do: Map.put(stopped, :checkpoint, checkpoint(c.vm)), else: stopped
 
       assert {:ok, _} =
                ProvisionerControl.exchange_execution(c.token, %{execution | outcomes: [stopped]})
@@ -927,9 +937,13 @@ defmodule Marshall.Compute.RelocationSourcesTest do
                ProvisionerControl.exchange_execution(c.token, %{execution | outcomes: [stopped]})
 
       if c.relocation.original_state == :running do
+        refresh_restoration_capacity!(c)
         assert {:ok, :restoring_source} = RelocationCoordinator.advance(c.relocation.id)
         assert {:ok, :restoring_source} = RelocationCoordinator.advance(c.relocation.id)
-        assert [start] = Ledger.read!(Operation, relocation_id: c.relocation.id, kind: :start)
+        assert [start] = Ledger.read!(Operation, relocation_id: c.relocation.id, kind: :resume)
+
+        assert start.command_snapshot["checkpoint"] ==
+                 OverallsProtocol.Checkpoint.encode(stopped.checkpoint)
 
         assert start.execution_epoch == stop.execution_epoch and
                  start.generation == stop.generation + 1
@@ -950,13 +964,15 @@ defmodule Marshall.Compute.RelocationSourcesTest do
         assert {:ok, _} =
                  ProvisionerControl.exchange_execution(c.token, %{execution | outcomes: [running]})
 
-        unknown_start = %{
+        unknown_start =
           running
-          | id: Ash.UUID.generate(),
+          |> Map.merge(%{
+            id: Ash.UUID.generate(),
             sequence: running.sequence + 1,
             state: :unknown,
             reason: :cleanup_failed
-        }
+          })
+          |> Map.delete(:checkpoint)
 
         assert {:ok, _} =
                  ProvisionerControl.exchange_execution(c.token, %{
@@ -989,6 +1005,18 @@ defmodule Marshall.Compute.RelocationSourcesTest do
       })
 
       cycle_lifecycle(c, c.token, message)
+
+      # Explicit Stop discards only the authoritative source checkpoint. The
+      # destination's retained copy remains charged until its cleanup receipt.
+      expected_holds =
+        Enum.map(holds, fn hold ->
+          if hold.placement_id == restored.source_placement_id,
+            do: %{hold | checkpoint_bytes: 0},
+            else: hold
+        end)
+
+      holds = Ledger.read!(Reservation, vm_id: c.vm.id)
+      assert Enum.sort_by(holds, & &1.id) == Enum.sort_by(expected_holds, & &1.id)
 
       cleanup_result = %{
         id: restored.id,
@@ -1137,9 +1165,19 @@ defmodule Marshall.Compute.RelocationSourcesTest do
           execution_epoch: original.execution_epoch,
           generation: original.generation,
           sequence: 100,
-          state: if(original.kind in [:provision, :start], do: :running, else: :stopped),
-          compute_empty: original.kind == :stop
+          state:
+            case original.kind do
+              kind when kind in [:provision, :start, :resume] -> :running
+              :pause -> :paused
+              :stop -> :stopped
+            end,
+          compute_empty: original.kind in [:stop, :pause]
       }
+
+      old =
+        if original.kind == :pause,
+          do: Map.put(old, :checkpoint, checkpoint(c.vm)),
+          else: Map.delete(old, :checkpoint)
 
       assert {:ok, _} =
                ProvisionerControl.exchange_execution(c.token, %{execution | outcomes: [old]})
@@ -1148,8 +1186,11 @@ defmodule Marshall.Compute.RelocationSourcesTest do
     end
   end
 
-  test "failed cancellation starts retry through bounded fresh stops without releasing holds",
-       c do
+  # @cc [owner:ghuntley,label:verification;recovery] cancellation-failed-resume-is-not-replayed
+  # A consumed cancellation resume MUST NOT create a second resume or cold start
+  # after unknown/failed outcomes, even when an old retry window expires. Both
+  # source and destination storage commitments remain until physical cleanup.
+  test "failed cancellation resume retains memory authority without replay or cold boot", c do
     alias Marshall.Compute.{Relocation, RelocationCoordinator, RelocationRevocations}
 
     {:ok, _} =
@@ -1160,81 +1201,65 @@ defmodule Marshall.Compute.RelocationSourcesTest do
     {:ok, revoke} = OverallsProtocol.RelocationRevocation.command(wire)
 
     {:ok, _} =
-      RelocationRevocations.exchange(c.token, %{
-        message
-        | results: [Map.take(revoke, [:id, :placement_id, :execution_epoch])]
-      })
+      RelocationRevocations.exchange(
+        c.token,
+        %{message | results: [Map.take(revoke, [:id, :placement_id, :execution_epoch])]}
+      )
 
     holds = Enum.sort_by(Ledger.read!(Reservation, vm_id: c.vm.id), & &1.id)
     assert {:ok, :restoring_source} = RelocationCoordinator.advance(c.relocation.id)
+    [relocation] = Ledger.read!(Relocation, id: c.relocation.id)
+    [pause] = Ledger.read!(Operation, id: relocation.cancellation_stop_operation_id)
+    assert pause.kind == :pause
+    restoration_outcome(c, pause, :unknown)
+    assert {:ok, :restoring_source} = RelocationCoordinator.advance(relocation.id)
+    assert [%{cancellation_start_operation_id: nil}] = Ledger.read!(Relocation, id: relocation.id)
+    restoration_outcome(c, pause, :paused)
+    assert {:ok, :restoring_source} = RelocationCoordinator.advance(relocation.id)
+    [relocation] = Ledger.read!(Relocation, id: relocation.id)
+    [resume] = Ledger.read!(Operation, id: relocation.cancellation_start_operation_id)
+    assert resume.kind == :resume and resume.generation == pause.generation + 1
 
-    for attempt <- 0..3 do
-      [relocation] = Ledger.read!(Relocation, id: c.relocation.id)
-      [stop] = Ledger.read!(Operation, id: relocation.cancellation_stop_operation_id)
-      restoration_outcome(c, stop, :unknown)
-      assert {:ok, :restoring_source} = RelocationCoordinator.advance(relocation.id)
+    for state <- [:unknown, :failed] do
+      restoration_outcome(c, resume, state)
 
-      assert [%{cancellation_start_operation_id: nil}] =
-               Ledger.read!(Relocation, id: relocation.id)
+      for _ <- 1..3,
+          do: assert({:ok, :restoring_source} = RelocationCoordinator.advance(relocation.id))
 
-      restoration_outcome(c, stop, :stopped)
-      assert {:ok, :restoring_source} = RelocationCoordinator.advance(relocation.id)
-      [relocation] = Ledger.read!(Relocation, id: relocation.id)
-      [start] = Ledger.read!(Operation, id: relocation.cancellation_start_operation_id)
-      assert start.generation == stop.generation + 1
-      restoration_outcome(c, start, :unknown)
-      assert {:ok, :restoring_source} = RelocationCoordinator.advance(relocation.id)
-      restoration_outcome(c, start, :failed, false)
-      assert {:ok, :restoring_source} = RelocationCoordinator.advance(relocation.id)
-      assert [%{generation: same_generation}] = Ledger.read!(VirtualMachine, id: c.vm.id)
-      assert same_generation == start.generation
-      failure = restoration_outcome(c, start, :failed)
-      expected = if attempt < 3, do: :restoring_source, else: :restoration_retry_exhausted
-      assert {:ok, ^expected} = RelocationCoordinator.advance(relocation.id)
-      [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
-      assert length(vm.crash_restart_times) == min(attempt + 1, 3)
-      assert vm.generation == start.generation + if(attempt < 3, do: 1, else: 0)
-      execution = Map.merge(message, %{report: nil, acknowledgements: [], outcomes: [failure]})
-      assert {:ok, _} = ProvisionerControl.exchange_execution(c.token, execution)
-      assert {:ok, ^expected} = RelocationCoordinator.advance(relocation.id)
-      assert [^vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
-      assert holds == Enum.sort_by(Ledger.read!(Reservation, vm_id: c.vm.id), & &1.id)
-      [retained] = Ledger.read!(Relocation, id: relocation.id)
+      assert [resume.id] ==
+               Enum.map(
+                 Ledger.read!(Operation, relocation_id: relocation.id, kind: :resume),
+                 & &1.id
+               )
 
-      assert retained.source_restored_at == nil and retained.finished_at == nil and
-               retained.committed_at == nil
+      assert Ledger.read!(Operation, relocation_id: relocation.id, kind: :start) == []
     end
 
     [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
-    now = Ledger.now()
 
-    Ledger.intent!(vm, %{
-      crash_restart_times: List.duplicate(DateTime.add(now, 60), 3)
-    })
+    Ledger.intent!(vm, %{crash_restart_times: List.duplicate(DateTime.add(Ledger.now(), -601), 3)})
 
-    assert {:ok, :restoration_retry_exhausted} = RelocationCoordinator.advance(c.relocation.id)
-
-    Ledger.intent!(vm, %{
-      crash_restart_times: List.duplicate(DateTime.add(now, -601), 3)
-    })
-
-    assert {:ok, :restoring_source} = RelocationCoordinator.advance(c.relocation.id)
-    [relocation] = Ledger.read!(Relocation, id: c.relocation.id)
-    [stop] = Ledger.read!(Operation, id: relocation.cancellation_stop_operation_id)
-    restoration_outcome(c, stop, :stopped)
     assert {:ok, :restoring_source} = RelocationCoordinator.advance(relocation.id)
-    [relocation] = Ledger.read!(Relocation, id: relocation.id)
-    [start] = Ledger.read!(Operation, id: relocation.cancellation_start_operation_id)
-    restoration_outcome(c, start, :running)
-    assert {:ok, :source_restored_pending_cleanup} = RelocationCoordinator.advance(relocation.id)
-    [restored] = Ledger.read!(Relocation, id: relocation.id)
-    assert restored.source_restored_at != nil and restored.finished_at == nil
+    [retained] = Ledger.read!(Relocation, id: relocation.id)
+    assert retained.source_restored_at == nil and retained.finished_at == nil
+    assert retained.cancellation_start_operation_id == resume.id
     assert holds == Enum.sort_by(Ledger.read!(Reservation, vm_id: c.vm.id), & &1.id)
   end
 
+  @spec restoration_outcome(
+          map(),
+          Operation.t(),
+          :unknown | :paused | :stopped | :running | :failed
+        ) :: map()
   defp restoration_outcome(c, operation, state),
     do: restoration_outcome(c, operation, state, true)
 
+  @spec restoration_outcome(
+          map(),
+          Operation.t(),
+          :unknown | :paused | :stopped | :running | :failed,
+          boolean()
+        ) :: map()
   defp restoration_outcome(c, operation, state, disk_present) do
     [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
 
@@ -1247,7 +1272,7 @@ defmodule Marshall.Compute.RelocationSourcesTest do
       operation_id: operation.id,
       sequence: vm.outcome_sequence + 1,
       state: state,
-      compute_empty: state in [:stopped, :failed],
+      compute_empty: state in [:stopped, :paused, :failed],
       disk_present: disk_present,
       cleanup_complete: false,
       reason:
@@ -1257,6 +1282,21 @@ defmodule Marshall.Compute.RelocationSourcesTest do
           _ -> :none
         end
     }
+
+    outcome =
+      case {operation.kind, state} do
+        {:pause, :paused} ->
+          Map.put(outcome, :checkpoint, checkpoint(vm))
+
+        {:resume, :running} ->
+          {:ok, descriptor} =
+            OverallsProtocol.Checkpoint.decode(operation.command_snapshot["checkpoint"])
+
+          Map.put(outcome, :checkpoint, descriptor)
+
+        _ ->
+          outcome
+      end
 
     execution = %{
       session_id: c.session["session_id"],
@@ -1271,7 +1311,28 @@ defmodule Marshall.Compute.RelocationSourcesTest do
     assert {:ok, _} =
              ProvisionerControl.exchange_execution(c.token, %{execution | outcomes: [outcome]})
 
+    if state == :paused, do: refresh_restoration_capacity!(c)
     outcome
+  end
+
+  # Positive restore witnesses assume healthy capacity throughout their long
+  # receipt history; refresh only sandbox report times, never physical budgets.
+  @spec refresh_restoration_capacity!(%{vm: VirtualMachine.t()}) :: :ok
+  defp refresh_restoration_capacity!(c) do
+    [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
+
+    {:ok, :ok} =
+      Ledger.transaction(fn ->
+        host = Ledger.lock!(Host, vm.host_id)
+        vm = Ledger.lock!(VirtualMachine, vm.id)
+        [reservation] = Ledger.read!(Reservation, placement_id: vm.current_placement_id)
+        [pool] = Ledger.read!(Marshall.Compute.StoragePool, id: reservation.pool_id)
+        Ledger.update!(host, :report, %{reported_at: Ledger.now()})
+        Ledger.update!(pool, :report, %{reported_at: Ledger.now()})
+        :ok
+      end)
+
+    :ok
   end
 
   test "source revocation receipts require an offered cancelled source identity", c do
@@ -1333,7 +1394,10 @@ defmodule Marshall.Compute.RelocationSourcesTest do
     assert {:ok, _} = RelocationRevocations.exchange(c.token, %{message | results: [result]})
     assert [retried] = Ledger.read!(Relocation, id: result.id)
     assert retried.source_revoked_at == confirmed.source_revoked_at
-    assert holds == Ledger.read!(Reservation, vm_id: c.vm.id)
+
+    assert Enum.sort_by(holds, & &1.id) ==
+             Enum.sort_by(Ledger.read!(Reservation, vm_id: c.vm.id), & &1.id)
+
     assert {:ok, :restoring_source} = Marshall.Compute.RelocationCoordinator.advance(result.id)
   end
 
@@ -1367,7 +1431,7 @@ defmodule Marshall.Compute.RelocationSourcesTest do
 
   test "cancelling a running move before its stop preserves execution and never snapshotted",
        c do
-    # ADR-0155: no source request exists for a running source before its recorded stop.
+    # ADR-0197: no source request exists for a running source before its recorded pause.
     assert {:ok, %{"commands" => []}} = exchange(c)
     assert [] == Ledger.read!(SourcePermitRequest, relocation_id: c.relocation.id)
 
@@ -1475,7 +1539,9 @@ defmodule Marshall.Compute.RelocationSourcesTest do
 
     refute replay_logs =~ "event=relocation.receive_recorded"
 
-    assert holds == Ledger.read!(Reservation, vm_id: c.vm.id)
+    assert Enum.sort_by(holds, & &1.id) ==
+             Enum.sort_by(Ledger.read!(Reservation, vm_id: c.vm.id), & &1.id)
+
     assert [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
     assert vm.desired_state == :stopped and vm.observed_state == :stopped
     assert vm.current_placement_id == c.vm.current_placement_id
@@ -1780,7 +1846,7 @@ defmodule Marshall.Compute.RelocationSourcesTest do
       alias Marshall.Compute.{Relocation, RelocationCoordinator}
       holds = Ledger.read!(Reservation, vm_id: c.vm.id)
       assert {:ok, :waiting} = RelocationCoordinator.advance(c.relocation.id)
-      # Nothing is snapshotted while the source runs (ADR-0155).
+      # Nothing is copied while the source runs (ADR-0197).
       assert {:ok, %{"commands" => []}} = exchange(c)
       assert {:ok, :waiting} = RelocationCoordinator.advance(c.relocation.id)
 
@@ -1824,9 +1890,12 @@ defmodule Marshall.Compute.RelocationSourcesTest do
       assert vm.generation == c.vm.generation + 1
       assert vm.current_placement_id == c.vm.current_placement_id
       assert vm.execution_epoch == c.vm.execution_epoch
-      assert operation.initiator == :relocation and operation.kind == :stop
+      assert operation.initiator == :relocation and operation.kind == :pause
       assert operation.relocation_id == relocation.id
-      assert holds == Ledger.read!(Reservation, vm_id: vm.id)
+
+      assert Enum.sort_by(holds, & &1.id) ==
+               Enum.sort_by(Ledger.read!(Reservation, vm_id: vm.id), & &1.id)
+
       refute RelocationCoordinator.stop_confirmed?(relocation, vm)
 
       assert {:ok, %{relocation: %{downtime: nil}}} =
@@ -1842,7 +1911,8 @@ defmodule Marshall.Compute.RelocationSourcesTest do
         operation_id: operation.id,
         generation: operation.generation,
         sequence: 1,
-        state: :stopped,
+        state: :paused,
+        checkpoint: checkpoint(vm),
         compute_empty: true,
         disk_present: true,
         cleanup_complete: false,
@@ -1873,7 +1943,9 @@ defmodule Marshall.Compute.RelocationSourcesTest do
                vm
              )
 
-      assert holds == Ledger.read!(Reservation, vm_id: vm.id)
+      assert Enum.sort_by(holds, & &1.id) ==
+               Enum.sort_by(Ledger.read!(Reservation, vm_id: vm.id), & &1.id)
+
       assert {:ok, %{"commands" => [delta]}} = exchange(c)
       assert {:ok, %{to_guid: nil} = delta} = Wire.command(delta)
       assert delta.generation == operation.generation
@@ -1885,7 +1957,10 @@ defmodule Marshall.Compute.RelocationSourcesTest do
                receive.([])
 
       assert {:ok, _} = receive.([Map.put(result, :dataset_guid, "300")])
-      assert holds == Ledger.read!(Reservation, vm_id: vm.id)
+
+      assert Enum.sort_by(holds, & &1.id) ==
+               Enum.sort_by(Ledger.read!(Reservation, vm_id: vm.id), & &1.id)
+
       message = %{session_id: session["session_id"], epoch: session["epoch"], results: []}
 
       import = fn results ->
@@ -1912,7 +1987,10 @@ defmodule Marshall.Compute.RelocationSourcesTest do
                Ledger.read!(SourcePermitRequest, id: delta.id)
 
       assert imported != nil
-      assert holds == Ledger.read!(Reservation, vm_id: vm.id)
+
+      assert Enum.sort_by(holds, & &1.id) ==
+               Enum.sort_by(Ledger.read!(Reservation, vm_id: vm.id), & &1.id)
+
       assert [current] = Ledger.read!(VirtualMachine, id: vm.id)
       assert current.current_placement_id == c.vm.current_placement_id
       assert current.execution_epoch == c.vm.execution_epoch
@@ -1926,7 +2004,11 @@ defmodule Marshall.Compute.RelocationSourcesTest do
       assert current.generation == vm.generation + 1
       assert current.outcome_sequence == 0 and current.observed_state == :pending
       assert current.desired_state == :running
-      assert activation.kind == :start and activation.initiator == :relocation
+      assert activation.kind == :resume and activation.initiator == :relocation
+
+      assert activation.command_snapshot["checkpoint"] ==
+               OverallsProtocol.Checkpoint.encode(event.checkpoint)
+
       assert activation.placement_id == current.current_placement_id
       assert activation.execution_epoch == current.execution_epoch
       assert committed.import_request_id == delta.id and committed.committed_at != nil
@@ -2042,7 +2124,7 @@ defmodule Marshall.Compute.RelocationSourcesTest do
         Marshall.Terminal.Authority.open_session(current, c.owner, "root", "xterm-256color")
       end
 
-      assert {:error, :terminal_unavailable} = open_terminal.()
+      assert {:error, :terminal_open_pending} = open_terminal.()
 
       receipt = %{
         id: probe.id,
@@ -2075,7 +2157,7 @@ defmodule Marshall.Compute.RelocationSourcesTest do
                  Marshall.Compute.get_vm(%{vm_id: vm.id}, actor: c.owner)
 
         refute Marshall.Compute.RelocationReadinessState.terminal_allowed?(current)
-        assert {:error, :terminal_unavailable} = open_terminal.()
+        assert {:error, :terminal_open_pending} = open_terminal.()
 
         if c.readiness_mode in [:retry, :retry_delete],
           do: retry_destination(c, credential.token, message, receipt)
@@ -2113,11 +2195,10 @@ defmodule Marshall.Compute.RelocationSourcesTest do
 
       assert retained_source.disk_held and retained_source.temporary_disk_bytes == 0
 
-      if c.readiness_mode in [:ready, :cleanup_delete, :retry] do
+      if c.readiness_mode in [:ready, :cleanup_delete] do
         cleanup_flow(c, credential.token, message)
       else
-        expected = if c.readiness_mode == :retry_delete, do: :retry_stopping, else: :committed
-        assert {:ok, ^expected} = RelocationCoordinator.advance(relocation.id)
+        assert {:ok, :committed} = RelocationCoordinator.advance(relocation.id)
         assert [] == Ledger.read!(Marshall.Compute.CleanupRequest, id: relocation.id)
         delete = request_delete(c)
         deletion_outcome(c, credential.token, message, delete, :deleted)
@@ -2125,225 +2206,51 @@ defmodule Marshall.Compute.RelocationSourcesTest do
         assert_delete_complete(c, delete)
 
         if c.readiness_mode == :retry_delete do
-          assert [%{finished_at: finished, start_operation_id: nil}] =
-                   Ledger.read!(Marshall.Compute.RelocationRetry, relocation_id: relocation.id)
-
-          assert finished != nil
+          assert Ledger.read!(Marshall.Compute.RelocationRetry, relocation_id: relocation.id) ==
+                   []
         end
       end
     end
   end
 
-  defp retry_destination(c, token, session, old_receipt) do
-    alias Marshall.Compute.{ReadinessRequest, Relocation, RelocationCoordinator, RelocationRetry}
-    [failed] = Ledger.read!(ReadinessRequest, id: old_receipt.id)
-    assert failed.status == :failed
-    params = %{relocation_id: c.relocation.id, idempotency_key: Ash.UUID.generate()}
-    measurement_started_at = Ledger.now()
-    assert {:error, _} = Marshall.Compute.retry_relocation(params, actor: user())
+  # A consumed memory checkpoint cannot be retried as a cold destination boot.
+  @spec retry_destination(map(), String.t(), map(), map()) :: :ok
+  defp retry_destination(c, _token, _session, old_receipt) do
+    alias Marshall.Compute.{ReadinessRequest, RelocationRetry}
+    assert [%{status: :failed}] = Ledger.read!(ReadinessRequest, id: old_receipt.id)
 
-    assert {:ok, %{relocation: %{retryable: true}}} =
+    assert {:ok, %{relocation: %{retryable: false}}} =
              Marshall.Compute.get_vm(%{vm_id: c.vm.id}, actor: c.owner)
 
-    {retry, params} =
-      if c.readiness_mode == :retry do
-        {:ok, auth_token, _} = AshAuthentication.Jwt.token_for_user(c.owner)
-        owner = Ash.Resource.put_metadata(c.owner, :token, auth_token)
+    before = Ledger.read!(Operation, vm_id: c.vm.id)
+    holds = Ledger.read!(Reservation, vm_id: c.vm.id)
 
-        conn =
-          Phoenix.ConnTest.build_conn()
-          |> Plug.Test.init_test_session(%{})
-          |> AshAuthentication.Plug.Helpers.store_in_session(owner)
-
-        {:ok, view, _} = live(conn, "/machines/#{c.vm.id}/settings")
-        assert has_element?(view, "#retry-relocation", "Retry destination boot")
-        refute has_element?(view, "#cancel-relocation")
-        view |> element("#retry-relocation") |> render_click()
-        refute has_element?(view, "#retry-relocation")
-
-        assert has_element?(
-                 view,
-                 "#relocation-phase",
-                 "Restarting the destination; source copy retained"
-               )
-
-        [retry] = Ledger.read!(RelocationRetry, relocation_id: c.relocation.id)
-        assert retry.requested_by_id == c.owner.id
-        {retry, %{params | idempotency_key: retry.request_key}}
-      else
-        assert {:ok, retry} = Marshall.Compute.retry_relocation(params, actor: c.owner)
-        {retry, params}
-      end
-
-    assert {:ok, same} = Marshall.Compute.retry_relocation(params, actor: c.owner)
-    assert same.id == retry.id
-
-    measured_receipt =
-      Ledger.create!(Marshall.SSH.Request, :record, %{
-        request_id: Ash.UUID.generate(),
-        user_id: c.owner.id,
-        vm_id: c.vm.id,
-        relocation_id: c.relocation.id,
-        relocation_retry_id: retry.id,
-        status: :accepted,
-        result: %{},
-        command: %{"command" => "request retry"},
-        measurement_started_at: measurement_started_at
-      })
-
-    [measurement] =
-      Ledger.read!(Marshall.Compute.WorkflowServiceLevelAttempt,
-        request_id: measured_receipt.id
-      )
-
-    assert measurement.status == :pending
-
-    assert {:error, _} =
-             Marshall.Compute.retry_relocation(
-               %{params | idempotency_key: Ash.UUID.generate()},
-               actor: c.owner
-             )
-
-    assert {:ok, %{relocation: %{retryable: false, phase: :retrying_destination}}} =
-             Marshall.Compute.get_vm(%{vm_id: c.vm.id}, actor: c.owner)
-
-    assert {:ok, :retry_stopping} = RelocationCoordinator.advance(c.relocation.id)
-    [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
-    assert vm.current_placement_id == c.relocation.destination_placement_id
-    assert vm.execution_epoch == c.relocation.destination_epoch
-    assert vm.desired_state == :stopped
-    [stop] = Ledger.read!(Operation, id: retry.stop_operation_id)
-    assert stop.kind == :stop and stop.generation == vm.generation
-    assert [] == Ledger.read!(Marshall.Compute.CleanupRequest, id: c.relocation.id)
-
-    unless c.readiness_mode == :retry_delete do
-      execution = Map.merge(session, %{report: nil, acknowledgements: [], outcomes: []})
-      assert {:ok, %{"commands" => [_]}} = ProvisionerControl.exchange_execution(token, execution)
-
-      stopped = %{
-        id: Ash.UUID.generate(),
-        operation_id: stop.id,
-        vm_id: vm.id,
-        placement_id: vm.current_placement_id,
-        execution_epoch: vm.execution_epoch,
-        generation: vm.generation,
-        sequence: vm.outcome_sequence + 1,
-        state: :stopped,
-        compute_empty: true,
-        disk_present: true,
-        cleanup_complete: false,
-        reason: :none
-      }
-
-      assert {:ok, _} =
-               ProvisionerControl.exchange_execution(token, %{execution | outcomes: [stopped]})
-
-      [host] = Ledger.read!(Host, id: c.destination.host.id)
-
-      Ledger.update!(host, :report, %{
-        capacity: Map.put(host.capacity, "memory_headroom_bytes", 0)
-      })
-
-      assert {:ok, :retry_stopping} = RelocationCoordinator.advance(c.relocation.id)
-      assert [%{start_operation_id: nil}] = Ledger.read!(RelocationRetry, id: retry.id)
-      Ledger.update!(host, :report, %{capacity: host.capacity, reported_at: Ledger.now()})
-
-      for fixture <- [c.source, c.destination] do
-        [pool] = Ledger.read!(Marshall.Compute.StoragePool, id: fixture.pool.id)
-        Ledger.update!(pool, :report, %{reported_at: Ledger.now()})
-      end
-
-      Application.put_env(:marshall, :relocation_readiness_timeout_ms, 120_000)
-      assert {:ok, :reactivating} = RelocationCoordinator.advance(c.relocation.id)
-      [retry] = Ledger.read!(RelocationRetry, id: retry.id)
-      [r] = Ledger.read!(Relocation, id: c.relocation.id)
-      [start] = Ledger.read!(Operation, id: retry.start_operation_id)
-
-      assert r.activation_operation_id == start.id and
-               r.activation_generation == stop.generation + 1
-
-      assert start.placement_id == vm.current_placement_id and
-               start.execution_epoch == vm.execution_epoch
-
-      assert start.kind == :start and retry.finished_at != nil
-      assert {:ok, _} = Marshall.Compute.WorkflowServiceLevels.reconcile()
-
-      assert [%{status: :pending}] =
-               Ledger.read!(Marshall.Compute.WorkflowServiceLevelAttempt,
-                 id: measurement.id
-               )
-
-      assert {:ok, same} = Marshall.Compute.retry_relocation(params, actor: c.owner)
-      assert same.id == retry.id
-
-      ready_exchange = fn results ->
-        Marshall.Compute.RelocationReadiness.exchange(token, %{session | results: results})
-      end
-
-      assert {:ok, %{"acknowledgements" => [_], "commands" => []}} =
-               ready_exchange.([old_receipt])
-
-      assert [^failed] = Ledger.read!(ReadinessRequest, id: failed.id)
-      assert {:ok, %{"commands" => [_]}} = ProvisionerControl.exchange_execution(token, execution)
-
-      running = %{
-        stopped
-        | id: Ash.UUID.generate(),
-          operation_id: start.id,
-          generation: start.generation,
-          sequence: stopped.sequence + 1,
-          state: :running,
-          compute_empty: false
-      }
-
-      assert {:ok, _} =
-               ProvisionerControl.exchange_execution(token, %{execution | outcomes: [running]})
-
-      assert {:ok, %{"commands" => [wire]}} = ready_exchange.([])
-      {:ok, probe} = OverallsProtocol.RelocationReadiness.command(wire)
-      assert probe.id == start.id and probe.generation == start.generation
-      assert {:ok, %{"acknowledgements" => [_]}} = ready_exchange.([old_receipt])
-      assert [%{status: :pending}] = Ledger.read!(ReadinessRequest, id: probe.id)
-      assert {:ok, _} = Marshall.Compute.WorkflowServiceLevels.reconcile()
-
-      assert [%{status: :pending}] =
-               Ledger.read!(Marshall.Compute.WorkflowServiceLevelAttempt,
-                 id: measurement.id
-               )
-
-      receipt = %{
-        id: probe.id,
-        descriptor: probe.descriptor,
-        generation: probe.generation,
-        boot_id: Ash.UUID.generate()
-      }
-
-      assert {:error, :invalid_outcome} =
-               ready_exchange.([%{receipt | generation: failed.generation}])
-
-      assert {:ok, _} = Marshall.Compute.WorkflowServiceLevels.reconcile()
-
-      assert [%{status: :pending}] =
-               Ledger.read!(Marshall.Compute.WorkflowServiceLevelAttempt,
-                 id: measurement.id
-               )
-
-      assert {:ok, _} = ready_exchange.([receipt])
-      assert [%{status: :ready}] = Ledger.read!(ReadinessRequest, id: probe.id)
-      assert [^failed] = Ledger.read!(ReadinessRequest, id: failed.id)
-      assert {:ok, _} = Marshall.Compute.WorkflowServiceLevels.reconcile()
-
-      assert [%{status: :finished, success: true, deadline: measured_deadline}] =
-               Ledger.read!(Marshall.Compute.WorkflowServiceLevelAttempt, id: measurement.id)
-
-      assert measured_deadline == measurement.deadline
-
+    for actor <- [c.owner, user()], _ <- 1..2 do
       assert {:error, _} =
                Marshall.Compute.retry_relocation(
-                 %{params | idempotency_key: Ash.UUID.generate()},
-                 actor: c.owner
+                 %{relocation_id: c.relocation.id, idempotency_key: Ash.UUID.generate()},
+                 actor: actor
                )
     end
+
+    assert before == Ledger.read!(Operation, vm_id: c.vm.id)
+
+    assert Enum.sort_by(holds, & &1.id) ==
+             Enum.sort_by(Ledger.read!(Reservation, vm_id: c.vm.id), & &1.id)
+
+    assert Ledger.read!(RelocationRetry, relocation_id: c.relocation.id) == []
+    {:ok, auth_token, _} = AshAuthentication.Jwt.token_for_user(c.owner)
+    owner = Ash.Resource.put_metadata(c.owner, :token, auth_token)
+
+    conn =
+      Phoenix.ConnTest.build_conn()
+      |> Plug.Test.init_test_session(%{})
+      |> AshAuthentication.Plug.Helpers.store_in_session(owner)
+
+    {:ok, view, _} = live(conn, "/machines/#{c.vm.id}/settings")
+    refute has_element?(view, "#retry-relocation")
+    refute has_element?(view, "#cancel-relocation")
+    :ok
   end
 
   # @cc [owner:ghuntley,label:verification;capacity] cleanup-cycle-healthy-start-fixture
@@ -2751,6 +2658,21 @@ defmodule Marshall.Compute.RelocationSourcesTest do
       assert [%{disk_held: false, compute_held: false, temporary_disk_bytes: 0}] =
                Ledger.read!(Reservation, placement_id: c.relocation.source_placement_id)
     end
+  end
+
+  @spec checkpoint(VirtualMachine.t()) :: OverallsProtocol.Checkpoint.t()
+  defp checkpoint(vm) do
+    %{
+      id: "11111111-1111-4111-8111-111111111111",
+      memory_bytes: vm.memory_bytes,
+      state_bytes: 4096,
+      compatibility: "sha256:" <> String.duplicate("a", 64),
+      memory_sha256: "sha256:" <> String.duplicate("b", 64),
+      state_sha256: "sha256:" <> String.duplicate("c", 64),
+      manifest_sha256: "sha256:" <> String.duplicate("d", 64),
+      dataset_guid: "81",
+      snapshot_guid: "82"
+    }
   end
 
   defp reply(command),

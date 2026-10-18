@@ -56,6 +56,44 @@ defmodule FleetRelocationGuest do
       :ok = Terminal.ready(socket, 120_000)
 
       case action do
+        "memory-prepare" ->
+          # @cc [owner:ghuntley,label:verification] suspension-ram-process-oracle
+          # The nonce MUST originate only in the live process and the reference
+          # MUST stay on /run tmpfs. Verification MUST compare its PID, kernel
+          # boot UUID and nonce; persisted disk markers cannot satisfy this oracle.
+          source = """
+          import http.server,json,os
+          from pathlib import Path
+          identity=json.dumps({"nonce":os.urandom(32).hex(),"pid":os.getpid(),"boot_uuid":Path('/proc/sys/kernel/random/boot_id').read_text().strip()}).encode()
+          class Handler(http.server.BaseHTTPRequestHandler):
+            def do_GET(self) -> None:
+              self.send_response(200)
+              self.end_headers()
+              self.wfile.write(identity)
+            def log_message(self,*args: object) -> None:
+              pass
+          http.server.HTTPServer(('127.0.0.1',18765),Handler).serve_forever()
+          """
+
+          encoded = Base.encode64(source)
+
+          command(
+            socket,
+            "systemd-run --unit=memory-continuation --property=Restart=no " <>
+              "python3 -c \"import base64;exec(base64.b64decode('#{encoded}'))\""
+          )
+
+          command(
+            socket,
+            "for i in $(seq 1 100); do curl --fail --silent http://127.0.0.1:18765/ > /run/memory-continuation.expected && break; sleep 0.1; done; test -s /run/memory-continuation.expected"
+          )
+
+        "memory-verify" ->
+          command(
+            socket,
+            "test -s /run/memory-continuation.expected && curl --fail --silent http://127.0.0.1:18765/ | cmp - /run/memory-continuation.expected && systemctl is-active memory-continuation.service"
+          )
+
         "readiness-diagnostics" ->
           readiness_diagnostics(socket)
 

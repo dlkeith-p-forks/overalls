@@ -31,34 +31,33 @@ defmodule Lilly.Host.LockOrderTest do
   property "inversions are reported exactly when the reverse order was seen" do
     classes = Map.keys(@directories)
 
-    check all(
-            steps <-
-              list_of({list_of(member_of(classes), max_length: 3), member_of(classes)},
-                max_length: 25
-              )
-          ) do
-      LockOrder.reset()
+    steps =
+      draw(
+        "steps",
+        list_of({list_of(member_of(classes), max_length: 3), member_of(classes)}, max_length: 25)
+      )
 
-      {expected, _seen} =
-        Enum.reduce(steps, {[], MapSet.new()}, fn {held, acquired}, {reports, seen} ->
-          pairs = for h <- Enum.uniq(held), h != acquired, do: {h, acquired}
-          new = Enum.reject(pairs, &MapSet.member?(seen, &1))
-          inverted = for {h, a} <- new, MapSet.member?(seen, {a, h}), do: {h, a}
-          {reports ++ inverted, MapSet.union(seen, MapSet.new(new))}
-        end)
+    LockOrder.reset()
 
-      log =
-        ExUnit.CaptureLog.capture_log([metadata: [:event, :held_class, :acquired_class]], fn ->
-          for {held, acquired} <- steps do
-            LockOrder.acquired(Enum.map(held, &@directories[&1]), @directories[acquired])
-          end
-        end)
+    {expected, _seen} =
+      Enum.reduce(steps, {[], MapSet.new()}, fn {held, acquired}, {reports, seen} ->
+        pairs = for h <- Enum.uniq(held), h != acquired, do: {h, acquired}
+        new = Enum.reject(pairs, &MapSet.member?(seen, &1))
+        inverted = for {h, a} <- new, MapSet.member?(seen, {a, h}), do: {h, a}
+        {reports ++ inverted, MapSet.union(seen, MapSet.new(new))}
+      end)
 
-      reported =
-        for [_, h, a] <- Regex.scan(~r/held_class=(\w+) acquired_class=(\w+)/, log),
-            do: {String.to_existing_atom(h), String.to_existing_atom(a)}
+    log =
+      ExUnit.CaptureLog.capture_log([metadata: [:event, :held_class, :acquired_class]], fn ->
+        for {held, acquired} <- steps do
+          LockOrder.acquired(Enum.map(held, &@directories[&1]), @directories[acquired])
+        end
+      end)
 
-      assert reported == expected
-    end
+    reported =
+      for [_, h, a] <- Regex.scan(~r/held_class=(\w+) acquired_class=(\w+)/, log),
+          do: {String.to_existing_atom(h), String.to_existing_atom(a)}
+
+    assert reported == expected
   end
 end

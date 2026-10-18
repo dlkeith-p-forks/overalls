@@ -5,26 +5,23 @@ defmodule Overalls.RequestAccounting.RecorderRPCTest do
   alias Overalls.RequestAccounting.RecorderRPC
 
   property "admission acknowledgments are positive bounded integers only" do
-    check all(identifier <- integer(-100..9_223_372_036_854_775_807)) do
-      reply = JSON.encode!(%{status: "admitted", id: identifier})
+    identifier = draw("identifier", integer(-100..9_223_372_036_854_775_807))
+    reply = JSON.encode!(%{status: "admitted", id: identifier})
 
-      expected =
-        if identifier in 1..9_223_372_036_854_775_807,
-          do: {:admitted, identifier},
-          else: {:error, :unavailable}
+    expected =
+      if identifier in 1..9_223_372_036_854_775_807,
+        do: {:admitted, identifier},
+        else: {:error, :unavailable}
 
-      assert RecorderRPC.decode(reply) == expected
-    end
+    assert RecorderRPC.decode(reply) == expected
   end
 
   property "extra acknowledgment fields never confer durable authority" do
-    check all(
-            key <- string(:alphanumeric, min_length: 1, max_length: 40),
-            key != "status"
-          ) do
-      assert {:error, :unavailable} =
-               RecorderRPC.decode(JSON.encode!(%{"status" => "ok", key => 1}))
-    end
+    key = draw("key", string(:alphanumeric, min_length: 1, max_length: 40))
+    Hegel.assume(key != "status")
+
+    assert {:error, :unavailable} =
+             RecorderRPC.decode(JSON.encode!(%{"status" => "ok", key => 1}))
   end
 
   test "malformed, oversize and unknown refusal replies remain closed" do

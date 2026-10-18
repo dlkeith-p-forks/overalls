@@ -3,6 +3,127 @@ defmodule Marshall.Terminal.AuthorityTest do
 
   alias Marshall.Terminal.Authority
   alias Marshall.Compute.{HostLiveness, Ledger}
+  import Hegel
+  import Hegel.Gen
+
+  # @cc [owner:ghuntley,label:verification;security] terminal-wake-admission-history
+  # Generated authorized/foreign request histories MUST coalesce only authorized
+  # wake demand without creating sessions or guest tickets while physically paused.
+  # Seeded BEAM observations do not establish snapshot or KVM correctness.
+  property "paused terminal retries coalesce only after current authorization",
+    test_cases: 16,
+    seed: 2_026_101_803 do
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    stranger = Marshall.ComputeFixtures.user()
+    [vm] = Ledger.read!(Marshall.Compute.VirtualMachine, id: fixture.vm.id)
+    Ash.Seed.update!(vm, %{desired_state: :paused, observed_state: :paused})
+
+    history =
+      draw("authorized request history", list_of(boolean(), min_length: 1, max_length: 12))
+
+    for authorized <- history do
+      actor = if authorized, do: fixture.owner, else: stranger
+      expected = if authorized, do: :terminal_open_pending, else: :forbidden
+      assert {:error, ^expected} = Authority.ensure_awake(fixture.vm, actor)
+    end
+
+    wakes = Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id)
+    assert length(wakes) == if(Enum.any?(history), do: 1, else: 0)
+    assert Ledger.read!(Marshall.Terminal.Session, vm_id: vm.id) == []
+  end
+
+  # @cc [owner:ghuntley,label:verification;recovery] terminal-passive-polls-do-not-wake
+  # An attached viewer's periodic authority check MUST refuse a paused guest
+  # without creating wake demand, a new registry row or an attach ticket.
+  test "passive viewer checks do not wake a paused machine" do
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
+    state = attach_viewer(fixture, fixture.owner, fixture.token)
+    [vm] = Ledger.read!(Marshall.Compute.VirtualMachine, id: fixture.vm.id)
+    Ash.Seed.update!(vm, %{desired_state: :paused, observed_state: :paused})
+
+    assert {:error, :terminal_unavailable} =
+             Authority.session_for(state.session.id, fixture.owner)
+
+    assert {:error, :terminal_unavailable} = Authority.host_for(state.session)
+    assert_authority_refusal(state, :authority_host)
+    assert Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id) == []
+    assert [%{id: session_id}] = Ledger.read!(Marshall.Terminal.Session, vm_id: vm.id)
+    assert session_id == state.session.id
+    assert Ledger.read!(Marshall.Terminal.Ticket, session_id: state.session.id) == []
+    Marshall.Terminal.Viewer.terminate(:normal, state)
+  end
+
+  test "an automatic opening cannot wake after a pause wins its listing race" do
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    [vm] = Ledger.read!(Marshall.Compute.VirtualMachine, id: fixture.vm.id)
+    Ash.Seed.update!(vm, %{desired_state: :paused, observed_state: :paused})
+
+    assert {:error, :terminal_unavailable} =
+             Authority.open_personal_session(fixture.vm, fixture.owner, :default, :observe)
+
+    assert Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id) == []
+    assert Ledger.read!(Marshall.Terminal.Session, vm_id: vm.id) == []
+    assert Ledger.read!(Marshall.Terminal.Opening, vm_id: vm.id) == []
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] terminal-viewer-demand-is-authorized
+  # A new shared read-only connection MAY wake a paused guest only after current
+  # machine and session authority. Pending readiness MUST grant no ticket or
+  # guest control, and retries MUST join the same wake request.
+  test "a shared read-only connection joins wake only after current authorization" do
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    stream = Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
+    member = Marshall.ComputeFixtures.user()
+    stranger = Marshall.ComputeFixtures.user()
+    assert {:ok, _grant} = Marshall.TerminalFixtures.grant(fixture, member, :viewer)
+
+    assert {:ok, session} =
+             Authority.open_session(fixture.vm, fixture.owner, "root", "xterm-256color")
+
+    assert :ok =
+             Marshall.Terminal.Sharing.set(
+               session,
+               fixture.owner,
+               to_string(member.email),
+               :shared
+             )
+
+    [vm] = Ledger.read!(Marshall.Compute.VirtualMachine, id: fixture.vm.id)
+    Ash.Seed.update!(vm, %{desired_state: :paused, observed_state: :paused})
+    Process.exit(stream, :shutdown)
+
+    assert {:error, :forbidden} = Authority.ticket(session, stranger)
+    assert {:ok, _grant} = Marshall.TerminalFixtures.grant(fixture, member, :revoked)
+    assert {:error, :forbidden} = Authority.ticket(session, member)
+    assert Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id) == []
+
+    assert {:ok, _grant} = Marshall.TerminalFixtures.grant(fixture, member, :viewer)
+
+    for _ <- 1..3 do
+      assert {:error, :terminal_open_pending} = Authority.ticket(session, member)
+    end
+
+    assert [%{source: :network, requested_by_id: requester}] =
+             Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id)
+
+    assert requester == member.id
+    assert Ledger.read!(Marshall.Terminal.Ticket, session_id: session.id) == []
+    assert [%{id: session_id}] = Ledger.read!(Marshall.Terminal.Session, vm_id: vm.id)
+    assert session_id == session.id
+  end
+
+  test "paused boot-log reads remain diagnostic and create no wake demand" do
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
+    [vm] = Ledger.read!(Marshall.Compute.VirtualMachine, id: fixture.vm.id)
+    Ash.Seed.update!(vm, %{desired_state: :paused, observed_state: :paused})
+
+    assert {:ok, %{next: 0, bytes: ""}} = Authority.boot_log(fixture.vm, fixture.owner, 0)
+    assert Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id) == []
+    assert Ledger.read!(Marshall.Terminal.Session, vm_id: vm.id) == []
+    assert Ledger.read!(Marshall.Terminal.Ticket) == []
+  end
 
   # @cc [owner:ghuntley,label:verification;security] native-diagnostics-retained-placement-fixture
   # The synthetic retained placement MUST exercise the durable native image's
@@ -83,6 +204,30 @@ defmodule Marshall.Terminal.AuthorityTest do
     assert {:ok, []} = Authority.list_sessions(fixture.vm, fixture.owner)
     assert {:ok, []} = Authority.list_sessions(fixture.vm, fixture.owner)
     assert {:ok, []} = Marshall.Terminal.list_for_vm(fixture.vm.id, authorize?: false)
+    events = Ash.read!(Marshall.Terminal.Event, authorize?: false)
+    assert Enum.count(events, &(&1.session_id == session.id and &1.kind == :closed)) == 1
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] restored-guest-does-not-adopt-old-terminal-authority
+  # A guest session number surviving in memory MUST NOT rebind an old registry
+  # session to a newer execution epoch. Authoritative listing MUST retire that
+  # row once, even when the guest reports the same number as live. This seeded
+  # BEAM authority test does not establish physical relocation or PTY continuity.
+  test "a restored guest session number does not adopt an old execution's registry entry" do
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
+
+    assert {:ok, session} =
+             Authority.open_session(fixture.vm, fixture.owner, "root", "xterm-256color")
+
+    [vm] = Ledger.read!(Marshall.Compute.VirtualMachine, id: fixture.vm.id)
+    Ash.Seed.update!(vm, %{execution_epoch: vm.execution_epoch + 1})
+
+    assert {:error, :unknown_session} = Authority.ticket(session, fixture.owner)
+    assert {:ok, []} = Authority.list_sessions(fixture.vm, fixture.owner)
+    assert {:ok, []} = Authority.list_sessions(fixture.vm, fixture.owner)
+    assert {:ok, []} = Marshall.Terminal.list_for_vm(fixture.vm.id, authorize?: false)
+    assert Ledger.read!(Marshall.Compute.WakeRequest, vm_id: vm.id) == []
     events = Ash.read!(Marshall.Terminal.Event, authorize?: false)
     assert Enum.count(events, &(&1.session_id == session.id and &1.kind == :closed)) == 1
   end

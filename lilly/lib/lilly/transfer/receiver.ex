@@ -27,6 +27,21 @@ defmodule Lilly.Transfer.Receiver do
   @spec pull(Path.t(), Pool.t(), map(), map(), pos_integer(), pos_integer(), pid() | nil) ::
           {:ok, String.t()} | {:error, atom()}
   def pull(root, pool, wire, endpoint, timeout, rate \\ 67_108_864, progress \\ nil) do
+    with {:ok, guid} <- pull_disk(root, pool, wire, endpoint, timeout, rate, progress),
+         :ok <-
+           Lilly.Transfer.CheckpointTransfer.pull(
+             root,
+             pool,
+             wire,
+             endpoint,
+             timeout,
+             rate,
+             progress
+           ),
+         do: {:ok, guid}
+  end
+
+  defp pull_disk(root, pool, wire, endpoint, timeout, rate, progress) do
     with true <- is_nil(Lock.current()) and is_integer(timeout) and timeout in 1000..86_400_000,
          true <- is_integer(rate) and rate in 1..1_073_741_824,
          true <- is_nil(progress) or is_pid(progress),

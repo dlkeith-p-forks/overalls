@@ -73,23 +73,24 @@ defmodule MarshallWeb.RepositoryLaunchHistoryTest do
   test "repository launch visits dedupe per visit across generated histories", %{
     conn: conn
   } do
-    check all(
-            commands <- list_of(command(), min_length: 1, max_length: 10),
-            test_cases: 12
-          ) do
-      fixture = roomy_host()
-      owner = user()
-      signed = signed_in(conn, owner)
-      baseline = global_counts()
+    Hegel.check(
+      fn ->
+        commands = draw("commands", list_of(command(), min_length: 1, max_length: 10))
+        fixture = roomy_host()
+        owner = user()
+        signed = signed_in(conn, owner)
+        baseline = global_counts()
 
-      Enum.reduce(commands, {%{vms: %{}, sources: %{}, last: nil}, fixture}, fn command,
-                                                                                {model, fixture} ->
-        fixture = refresh(fixture)
-        model = run(command, model, signed, owner)
-        assert_invariants(model, owner, baseline)
-        {model, fixture}
-      end)
-    end
+        Enum.reduce(commands, {%{vms: %{}, sources: %{}, last: nil}, fixture}, fn command,
+                                                                                  {model, fixture} ->
+          fixture = refresh(fixture)
+          model = run(command, model, signed, owner)
+          assert_invariants(model, owner, baseline)
+          {model, fixture}
+        end)
+      end,
+      test_cases: 100
+    )
   end
 
   test "a launch pins the encoded source on the OSS provision command", %{conn: conn} do

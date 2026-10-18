@@ -2,12 +2,14 @@ defmodule MarshallWeb.TerminalLiveTest do
   use MarshallWeb.ConnCase, async: false
   import Phoenix.LiveViewTest
 
-  test "the Boot log entry reads host diagnostics without automatically opening a guest terminal",
+  test "the paused Boot log entry reads host diagnostics without waking or opening a guest terminal",
        %{
          conn: conn
        } do
     fixture = Marshall.TerminalFixtures.terminal_fixture()
     Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
+    [vm] = Marshall.Compute.Ledger.read!(Marshall.Compute.VirtualMachine, id: fixture.vm.id)
+    Ash.Seed.update!(vm, %{desired_state: :paused, observed_state: :paused})
     actor = Ash.Resource.put_metadata(fixture.owner, :token, fixture.token)
 
     conn =
@@ -24,6 +26,58 @@ defmodule MarshallWeb.TerminalLiveTest do
     send(view.pid, :refresh_terminals)
     assert has_element?(view, "#terminal-client[data-view='boot-log']")
     assert Marshall.Compute.Ledger.read!(Marshall.Terminal.Session, vm_id: fixture.vm.id) == []
+    assert Marshall.Compute.Ledger.read!(Marshall.Compute.WakeRequest, vm_id: fixture.vm.id) == []
+  end
+
+  # @cc [owner:ghuntley,label:verification;recovery] terminal-page-demand-excludes-passive-refresh
+  # Opening a terminal page MUST join suspended demand, while an already open
+  # page's server refresh MUST NOT undo a subsequent pause. Neither path may
+  # create a guest session or attach ticket before resumed readiness.
+  test "an open terminal page does not wake the machine from a server refresh", %{conn: conn} do
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
+    actor = Ash.Resource.put_metadata(fixture.owner, :token, fixture.token)
+
+    conn =
+      conn |> init_test_session(%{}) |> AshAuthentication.Plug.Helpers.store_in_session(actor)
+
+    assert {:ok, view, _} = live(conn, "/machines/#{fixture.vm.id}/terminals")
+    assert_push_event(view, "terminal_sessions", %{sessions: [%{id: _id}]}, 2000)
+    [vm] = Marshall.Compute.Ledger.read!(Marshall.Compute.VirtualMachine, id: fixture.vm.id)
+    Ash.Seed.update!(vm, %{desired_state: :paused, observed_state: :paused})
+
+    for _ <- 1..3 do
+      send(view.pid, :refresh_terminals)
+      assert has_element?(view, "#terminal-notice", "Machine is paused")
+
+      assert Marshall.Compute.Ledger.read!(Marshall.Compute.WakeRequest, vm_id: fixture.vm.id) ==
+               []
+    end
+  end
+
+  test "opening a paused terminal page requests wake without guest effects", %{conn: conn} do
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    [vm] = Marshall.Compute.Ledger.read!(Marshall.Compute.VirtualMachine, id: fixture.vm.id)
+    Ash.Seed.update!(vm, %{desired_state: :paused, observed_state: :paused})
+    actor = Ash.Resource.put_metadata(fixture.owner, :token, fixture.token)
+
+    conn =
+      conn |> init_test_session(%{}) |> AshAuthentication.Plug.Helpers.store_in_session(actor)
+
+    assert {:ok, view, _} = live(conn, "/machines/#{fixture.vm.id}/terminals")
+    assert has_element?(view, "#terminal-notice", "Resuming machine")
+
+    assert [%{source: :network}] =
+             Marshall.Compute.Ledger.read!(Marshall.Compute.WakeRequest, vm_id: fixture.vm.id)
+
+    assert Marshall.Compute.Ledger.read!(Marshall.Terminal.Session, vm_id: fixture.vm.id) == []
+    assert Marshall.Compute.Ledger.read!(Marshall.Terminal.Ticket) == []
+
+    send(view.pid, :refresh_terminals)
+    assert has_element?(view, "#terminal-notice", "Machine is paused")
+
+    assert [_wake] =
+             Marshall.Compute.Ledger.read!(Marshall.Compute.WakeRequest, vm_id: fixture.vm.id)
   end
 
   test "connected workspace initializes and renders a newly created registry session", %{

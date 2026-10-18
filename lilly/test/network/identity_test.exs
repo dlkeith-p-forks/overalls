@@ -7,125 +7,124 @@ defmodule Lilly.Network.IdentityTest do
   @vm "fb8f7045-82cb-4a05-afdf-e10eb405dc6f"
 
   property "nested service targets stay on the same paired Inception slot" do
-    check all(slot <- integer(2..65534)) do
-      {:ok, guest} = Guest.new(@vm, :inception, slot)
+    slot = draw("slot", integer(2..65534))
+    {:ok, guest} = Guest.new(@vm, :inception, slot)
 
-      for {service, octet, port, kind} <- [
-            {:control_https, 40, 443, :web},
-            {:porsche_ssh, 40, 22, :ssh},
-            {:audi_https, 41, 443, :web},
-            {:audi_ssh, 41, 22, :ssh}
-          ] do
-        binding = %{service: service, port: port}
-        assert {:ok, {address, ^port, mark}} = Ingress.target(guest, binding)
-        assert address == "10.#{octet}.#{div(slot, 256)}.#{rem(slot, 256)}"
-        assert mark == Policy.ingress_mark(kind)
-        assert {:error, :ingress_unavailable} = Ingress.target(guest, %{binding | port: port + 1})
+    for {service, octet, port, kind} <- [
+          {:control_https, 40, 443, :web},
+          {:porsche_ssh, 40, 22, :ssh},
+          {:audi_https, 41, 443, :web},
+          {:audi_ssh, 41, 22, :ssh}
+        ] do
+      binding = %{service: service, port: port}
+      assert {:ok, {address, ^port, mark}} = Ingress.target(guest, binding)
+      assert address == "10.#{octet}.#{div(slot, 256)}.#{rem(slot, 256)}"
+      assert mark == Policy.ingress_mark(kind)
+      assert {:error, :ingress_unavailable} = Ingress.target(guest, %{binding | port: port + 1})
 
-        assert {:error, :ingress_unavailable} =
-                 Ingress.target(%{guest | addresses: ["127.0.0.1", "127.0.0.2"]}, binding)
+      assert {:error, :ingress_unavailable} =
+               Ingress.target(%{guest | addresses: ["127.0.0.1", "127.0.0.2"]}, binding)
 
-        for profile <- [:customer, :standard, :oss] do
-          {:ok, ordinary} = Guest.new(@vm, profile, slot)
-          assert {:error, :ingress_unavailable} = Ingress.target(ordinary, binding)
-        end
+      for profile <- [:customer, :standard, :oss] do
+        {:ok, ordinary} = Guest.new(@vm, profile, slot)
+        assert {:error, :ingress_unavailable} = Ingress.target(ordinary, binding)
       end
     end
   end
 
   property "profile identity keeps addresses, MACs and reserved UIDs distinct" do
-    check all(slot <- integer(2..65534)) do
-      guests =
-        for profile <- [:customer, :standard, :oss, :inception] do
-          {:ok, guest} = Guest.new(@vm, profile, slot)
-          assert guest.uid in 1_000_002..1_262_142
-          assert byte_size(guest.tap) <= 15
-          guest
-        end
+    slot = draw("slot", integer(2..65534))
 
-      for key <- [:address, :mac, :uid] do
-        assert guests |> Enum.map(&Map.fetch!(&1, key)) |> Enum.uniq() |> length() == 4
+    guests =
+      for profile <- [:customer, :standard, :oss, :inception] do
+        {:ok, guest} = Guest.new(@vm, profile, slot)
+        assert guest.uid in 1_000_002..1_262_142
+        assert byte_size(guest.tap) <= 15
+        guest
       end
+
+    for key <- [:address, :mac, :uid] do
+      assert guests |> Enum.map(&Map.fetch!(&1, key)) |> Enum.uniq() |> length() == 4
     end
   end
 
   property "guest address, gateway, MAC and reserved UID use the same profile octet" do
-    check all(slot <- integer(2..65534)) do
-      for profile <- [:customer, :standard, :oss, :inception] do
-        {:ok, guest} = Guest.new(@vm, profile, slot)
-        {:ok, canonical_address} = OverallsProtocol.AddressPool.address(profile, slot)
-        ["10", octet_text, third, fourth] = String.split(canonical_address, ".")
-        octet = String.to_integer(octet_text)
+    slot = draw("slot", integer(2..65534))
 
-        assert guest.address == canonical_address
-        assert guest.gateway == "10.#{octet}.0.1"
+    for profile <- [:customer, :standard, :oss, :inception] do
+      {:ok, guest} = Guest.new(@vm, profile, slot)
+      {:ok, canonical_address} = OverallsProtocol.AddressPool.address(profile, slot)
+      ["10", octet_text, third, fourth] = String.split(canonical_address, ".")
+      octet = String.to_integer(octet_text)
 
-        assert guest.mac ==
-                 Enum.map_join(
-                   [2, 252, 10, octet, div(slot, 256), rem(slot, 256)],
-                   ":",
-                   fn byte ->
-                     byte
-                     |> Integer.to_string(16)
-                     |> String.downcase()
-                     |> String.pad_leading(2, "0")
-                   end
-                 )
+      assert guest.address == canonical_address
+      assert guest.gateway == "10.#{octet}.0.1"
 
-        assert guest.uid == 1_000_000 + (div(octet, 10) - 1) * 65_536 + slot
-        assert third == Integer.to_string(div(slot, 256))
-        assert fourth == Integer.to_string(rem(slot, 256))
-        assert Policy.guard(guest) =~ "ether saddr != #{guest.mac} counter drop"
-      end
+      assert guest.mac ==
+               Enum.map_join(
+                 [2, 252, 10, octet, div(slot, 256), rem(slot, 256)],
+                 ":",
+                 fn byte ->
+                   byte
+                   |> Integer.to_string(16)
+                   |> String.downcase()
+                   |> String.pad_leading(2, "0")
+                 end
+               )
+
+      assert guest.uid == 1_000_000 + (div(octet, 10) - 1) * 65_536 + slot
+      assert third == Integer.to_string(div(slot, 256))
+      assert fourth == Integer.to_string(rem(slot, 256))
+      assert Policy.guard(guest) =~ "ether saddr != #{guest.mac} counter drop"
     end
   end
 
   property "editor targets retain profile-derived addresses and one dedicated port" do
-    check all(slot <- integer(2..65534), other_port <- integer(1..65535) |> filter(&(&1 != 4444))) do
-      for profile <- [:customer, :standard, :oss, :inception] do
-        {:ok, guest} = Guest.new(@vm, profile, slot)
+    slot = draw("slot", integer(2..65534))
+    other_port = draw("other_port", integer(1..65535) |> filter(&(&1 != 4444)))
 
-        assert {:ok, {address, 4444, mark}} =
-                 Ingress.target(guest, %{service: :editor, port: 4444})
+    for profile <- [:customer, :standard, :oss, :inception] do
+      {:ok, guest} = Guest.new(@vm, profile, slot)
 
-        assert address == guest.address
-        assert mark == Policy.ingress_mark(:editor)
+      assert {:ok, {address, 4444, mark}} =
+               Ingress.target(guest, %{service: :editor, port: 4444})
 
-        assert {:error, :ingress_unavailable} =
-                 Ingress.target(guest, %{service: :web, port: 4444})
+      assert address == guest.address
+      assert mark == Policy.ingress_mark(:editor)
 
-        assert {:error, :ingress_unavailable} =
-                 Ingress.target(guest, %{service: :editor, port: other_port})
+      assert {:error, :ingress_unavailable} =
+               Ingress.target(guest, %{service: :web, port: 4444})
 
-        assert {:error, :ingress_unavailable} =
-                 Ingress.target(%{guest | address: "127.0.0.1"}, %{service: :editor, port: 4444})
-      end
+      assert {:error, :ingress_unavailable} =
+               Ingress.target(guest, %{service: :editor, port: other_port})
 
-      assert length(Enum.uniq(Enum.map([:ssh, :web, :editor], &Policy.ingress_mark/1))) == 3
+      assert {:error, :ingress_unavailable} =
+               Ingress.target(%{guest | address: "127.0.0.1"}, %{service: :editor, port: 4444})
     end
+
+    assert length(Enum.uniq(Enum.map([:ssh, :web, :editor], &Policy.ingress_mark/1))) == 3
   end
 
   property "customer web sockets fail for every admitted port and slot" do
-    check all(port <- integer(1..65535), slot <- integer(2..65534)) do
-      {:ok, network} = Config.new(@host, "eth0", [], "/var/lib/lilly", true)
-      {:ok, guest} = Guest.new(@vm, :customer, slot)
+    port = draw("port", integer(1..65535))
+    slot = draw("slot", integer(2..65534))
+    {:ok, network} = Config.new(@host, "eth0", [], "/var/lib/lilly", true)
+    {:ok, guest} = Guest.new(@vm, :customer, slot)
 
-      assert {:error, :ingress_unavailable} =
-               Ingress.connect(network, guest, %{service: :web, port: port})
-    end
+    assert {:error, :ingress_unavailable} =
+             Ingress.connect(network, guest, %{service: :web, port: port})
   end
 
   property "Inception guard admits only its paired slot, with the same MAC and gateway" do
-    check all(slot <- integer(2..65534)) do
-      assert {:ok, guest} = Guest.new(@vm, :inception, slot)
-      assert [guest.address, "10.41.#{div(slot, 256)}.#{rem(slot, 256)}"] == guest.addresses
-      policy = Policy.guard(guest)
-      sources = "{ " <> Enum.join(guest.addresses, ", ") <> " }"
-      assert policy =~ "arp saddr ip != #{sources} counter drop"
-      assert policy =~ "ip saddr #{sources} counter accept"
-      assert policy =~ "ether saddr != #{guest.mac} counter drop"
-      assert policy =~ "arp daddr ip != #{guest.gateway} counter drop"
-    end
+    slot = draw("slot", integer(2..65534))
+    assert {:ok, guest} = Guest.new(@vm, :inception, slot)
+    assert [guest.address, "10.41.#{div(slot, 256)}.#{rem(slot, 256)}"] == guest.addresses
+    policy = Policy.guard(guest)
+    sources = "{ " <> Enum.join(guest.addresses, ", ") <> " }"
+    assert policy =~ "arp saddr ip != #{sources} counter drop"
+    assert policy =~ "ip saddr #{sources} counter accept"
+    assert policy =~ "ether saddr != #{guest.mac} counter drop"
+    assert policy =~ "arp daddr ip != #{guest.gateway} counter drop"
   end
 
   test "operator interface/CIDR validation rejects text that can alter nft programs" do

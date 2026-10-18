@@ -17,7 +17,7 @@ defmodule MarshallWeb.OverviewLive do
   @spec mount(map(), map(), socket()) :: {:ok, socket()}
   def mount(_, _, socket) do
     if connected?(socket), do: Process.send_after(self(), :refresh, 60_000)
-    {:ok, socket |> assign(page_title: "Overview", visible: true) |> refresh()}
+    {:ok, socket |> assign(page_title: gettext("Overview"), visible: true) |> refresh()}
   end
 
   @impl true
@@ -115,28 +115,28 @@ defmodule MarshallWeb.OverviewLive do
     >
       <section id="overview" phx-hook="DashboardVisibility">
         <UI.heading
-          title="A good day to make something."
-          subtitle="Your workspace, with a little room to breathe."
+          title={gettext("A good day to make something.")}
+          subtitle={gettext("Your workspace, with a little room to breathe.")}
         >
           <:actions>
             <.link id="overview-create" navigate={~p"/machines/new"} class="console-button primary">
-              + Create machine
+              {gettext("+ Create machine")}
             </.link>
           </:actions>
         </UI.heading>
         <div class="overview-grid">
-          <UI.panel id="overview-machines" title="Your machines">
-            <:actions><.link navigate={~p"/machines"}>View all →</.link></:actions>
+          <UI.panel id="overview-machines" title={gettext("Your machines")}>
+            <:actions><.link navigate={~p"/machines"}>{gettext("View all →")}</.link></:actions>
             <%= case @machines do %>
               <% {:ok, page} -> %>
                 <UI.empty
                   :if={page.items == []}
                   id="overview-machines-empty"
-                  title="Room for your next idea"
+                  title={gettext("Room for your next idea")}
                 >
-                  No machines in this preview yet. Create one or ask an owner to share access.
+                  {gettext("No machines in this preview yet. Create one or ask an owner to share access.")}
                   <:action>
-                    <.link navigate={~p"/machines/new"} class="console-button ghost">Create your first machine</.link>
+                    <.link navigate={~p"/machines/new"} class="console-button ghost">{gettext("Create your first machine")}</.link>
                   </:action>
                 </UI.empty>
                 <div id="overview-machine-preview">
@@ -149,76 +149,79 @@ defmodule MarshallWeb.OverviewLive do
                     <div>
                       <.link navigate={~p"/machines/#{vm.id}"} class="machine-name">{vm.name}</.link><p>
                         {vm.vcpu} vCPU · {gib(vm.memory_bytes)} GiB memory · {gib(vm.disk_bytes)} GiB disk · {if vm.owner,
-                          do: "Personal",
-                          else: "Shared"}
+                          do: gettext("Personal"),
+                          else: gettext("Shared")}
                       </p>
                     </div>
                     <div class="preview-labels">
                       <UI.pinned_label vm={vm} id={"overview-machine-pinned-#{vm.id}"} />
                       <UI.os_label vm={vm} id={"overview-machine-os-#{vm.id}"} />
-                      <span class="status-label" data-state={vm.observed_state}>{UI.machine_state(vm)}</span>
+                      <span
+                        class="status-label"
+                        data-state={vm.observed_state}
+                        data-tone={UI.machine_tone(vm)}
+                      >{UI.machine_state(vm)}</span>
                     </div>
                     <div class="preview-links">
                       <.link
                         :if={vm.desired_state == :running && vm.observed_state == :running}
                         navigate={~p"/machines/#{vm.id}/terminals"}
                         id={"overview-terminal-#{vm.id}"}
-                      >Open terminal ↗</.link>
+                      >{gettext("Open terminal ↗")}</.link>
                       <UI.machine_editor_action vm={vm} id_prefix="overview-machine" variant={:link} />
                       <UI.pin_toggle vm={vm} id={"pin-#{vm.id}"} />
                     </div>
                   </article>
                 </div>
                 <p :if={page.more} class="muted">
-                  A small preview. All your accessible machines are in <.link navigate={~p"/machines"}>Machines</.link>.
+                  {gettext("A small preview. All your accessible machines are in")} <.link navigate={~p"/machines"}>{gettext("Machines")}</.link>.
                 </p>
               <% :unavailable -> %>
                 <p id="overview-machines-unavailable" role="status">
-                  Machines couldn’t be loaded. Refresh to try again.
+                  {gettext("Machines couldn’t be loaded. Refresh to try again.")}
                 </p>
             <% end %>
           </UI.panel>
           <div class="overview-side">
             <UI.panel
               id="overview-marvin-extension"
-              title="Open repositories from your browser"
+              title={gettext("Open repositories from your browser")}
               data-overalls-extension-setup="true"
             >
               <p class="muted">
-                Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls
-                with the Chrome or Firefox extension.
+                {gettext("Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension.")}
               </p>
               <.link
                 id="overview-marvin-extension-link"
                 href={~p"/docs/browser-extension"}
                 class="console-button ghost"
-              >Set up the browser extension ↗</.link>
+              >{gettext("Set up the browser extension ↗")}</.link>
             </UI.panel>
-            <UI.panel id="overview-capacity" title="Room to grow">
-              <p class="muted">Current provisioning headroom</p>
+            <UI.panel id="overview-capacity" title={gettext("Room to grow")}>
+              <p class="muted">{gettext("Current provisioning headroom")}</p>
               <%= case @catalog do %>
                 <% {:ok, %{capacity_known: true} = catalog} -> %>
                   <.kv>
-                    <:item title="CPU">{catalog.available.vcpu} vCPU</:item>
-                    <:item title="Memory">{gib(catalog.available.memory_bytes)} GiB</:item>
-                    <:item title="Disk">{gib(catalog.available.disk_bytes)} GiB</:item>
+                    <:item title={gettext("CPU")}>{gettext("%{value1} vCPU", value1: catalog.available.vcpu)}</:item>
+                    <:item title={gettext("Memory")}>{gettext("%{value1} GiB", value1: gib(catalog.available.memory_bytes))}</:item>
+                    <:item title={gettext("Disk")}>{gettext("%{value1} GiB", value1: gib(catalog.available.disk_bytes))}</:item>
                   </.kv>
-                  <p class="muted">Capacity is checked again when you create a machine.</p>
+                  <p class="muted">{gettext("Capacity is checked again when you create a machine.")}</p>
                 <% _ -> %>
                   <p id="overview-capacity-unavailable" class="muted">
-                    Headroom is temporarily unavailable.
+                    {gettext("Headroom is temporarily unavailable.")}
                   </p>
               <% end %>
             </UI.panel>
-            <UI.panel title="Make yourself at home">
+            <UI.panel title={gettext("Make yourself at home")}>
               <ul class="tree note-list">
                 <li>
-                  <strong>Next steps</strong>
+                  <strong>{gettext("Next steps")}</strong>
                   <ul>
-                    <li><.link navigate={~p"/integrations"}>Connect an integration ↗</.link></li>
-                    <li><.link navigate={~p"/teams"}>Find your people ↗</.link></li>
-                    <li><.link navigate={~p"/usage"}>Explore your usage ↗</.link></li>
-                    <li><.link href={~p"/docs"}>Read the field notes ↗</.link></li>
+                    <li><.link navigate={~p"/integrations"}>{gettext("Connect an integration ↗")}</.link></li>
+                    <li><.link navigate={~p"/teams"}>{gettext("Find your people ↗")}</.link></li>
+                    <li><.link navigate={~p"/usage"}>{gettext("Explore your usage ↗")}</.link></li>
+                    <li><.link href={~p"/docs"}>{gettext("Read the field notes ↗")}</.link></li>
                   </ul>
                 </li>
               </ul>
@@ -226,13 +229,13 @@ defmodule MarshallWeb.OverviewLive do
           </div>
         </div>
         <div class="overview-refresh">
-          <span>Updated <.timestamp at={@updated_at} zone={@time_zone} format={:time} /></span><Layouts.action
+          <span>{gettext("Updated")} <.timestamp at={@updated_at} zone={@time_zone} format={:time} /></span><Layouts.action
             id="overview-refresh"
             tone="ghost"
             phx-click="refresh"
-            phx-disable-with="Refreshing…"
+            phx-disable-with={gettext("Refreshing…")}
           >
-            <.glyph name="refresh" /> Refresh
+            <.glyph name="refresh" /> {gettext("Refresh")}
           </Layouts.action>
         </div>
       </section>

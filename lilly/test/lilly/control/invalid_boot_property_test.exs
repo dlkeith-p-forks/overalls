@@ -6,7 +6,9 @@ defmodule Lilly.Control.InvalidBootPropertyTest do
   alias Lilly.Control.Config
 
   @moduletag :tmp_dir
-  @moduletag timeout: 180_000
+  # A complete 100-boot mutation measured 224 seconds under concurrent fleet suites.
+  # Keep the full exploration budget and a separate 30-second child deadline.
+  @moduletag timeout: 360_000
   @id "11111111-1111-4111-8111-111111111111"
   @probe Path.expand("../../../scripts/invalid_boot_probe.exs", __DIR__)
   @mutations [
@@ -49,17 +51,17 @@ defmodule Lilly.Control.InvalidBootPropertyTest do
   # Every generated invalid private configuration MUST reject actual OTP startup
   # in a fresh BEAM before creating Runtime, supervisor or status sockets. The
   # rejection MUST preserve fixture files and exclude synthetic credentials.
-  @tag :hegel
-  test "generated invalid configurations reject fresh OTP boots before serving", %{
-    tmp_dir: directory
-  } do
-    File.chmod!(directory, 0o700)
-    tools = execution_tools()
+  # Every mutation gets a complete exploration budget in its own fresh-boot test.
+  for mutation <- @mutations do
+    @mutation mutation
+    @tag :hegel
+    test "generated invalid #{@mutation} configuration rejects fresh OTP boot before serving", %{
+      tmp_dir: directory
+    } do
+      File.chmod!(directory, 0o700)
+      tools = execution_tools()
+      mutation = @mutation
 
-    # Each mutation gets the original four generated cases. Keeping the thirteen
-    # fresh-VM mutation probes in separate engine runs avoids counting their
-    # aggregate OTP startup time as slow input generation.
-    for mutation <- @mutations do
       Hegel.check(
         fn test_case ->
           :hegel.note(test_case, "credential suffix = <redacted>")
@@ -73,7 +75,7 @@ defmodule Lilly.Control.InvalidBootPropertyTest do
 
           File.mkdir!(root)
           File.chmod!(root, 0o700)
-          on_exit(fn -> File.rm_rf!(root) end)
+          Hegel.on_cleanup(fn -> File.rm_rf!(root) end)
           token = @id <> ":" <> suffix
           config = configuration(root, token, tools)
           path = Path.join(root, "config.json")
@@ -107,7 +109,7 @@ defmodule Lilly.Control.InvalidBootPropertyTest do
           refute File.exists?(Path.join(root, "vms"))
           refute File.exists?(Path.join(root, "network"))
         end,
-        test_cases: 4
+        test_cases: 100
       )
     end
   end
@@ -127,9 +129,25 @@ defmodule Lilly.Control.InvalidBootPropertyTest do
            }
   end
 
+  # @cc [owner:ghuntley,label:verification] fresh-boot-operation-deadline
+  # Each probe MUST run in a fresh VM with the complete startup oracle. A boot
+  # exceeding 30 seconds MUST fail; its process group gets at most five seconds
+  # to terminate before forced cleanup, independently of the aggregate budget.
   @spec boot(Path.t() | nil, Path.t()) :: {String.t(), non_neg_integer()}
   defp boot(path, root) do
-    System.cmd("mix", ["run", "--no-start", "--no-compile", "--no-deps-check", @probe],
+    System.cmd(
+      "timeout",
+      [
+        "--signal=TERM",
+        "--kill-after=5s",
+        "30s",
+        "mix",
+        "run",
+        "--no-start",
+        "--no-compile",
+        "--no-deps-check",
+        @probe
+      ],
       env: [
         {"MIX_ENV", "test"},
         {"OVERALLS_BOOT_PROBE", "test"},

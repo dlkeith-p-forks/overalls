@@ -56,6 +56,8 @@ defmodule Marshall.Compute.CommandSnapshot do
          true <- Map.take(command, Map.keys(fields)) == fields do
       snapshot =
         command
+        |> Map.delete(:git_identity)
+        |> put_git_identity(vm)
         |> Map.delete(:workspace_source)
         |> put_workspace_source(vm)
         |> OverallsProtocol.Execution.encode_command()
@@ -81,9 +83,28 @@ defmodule Marshall.Compute.CommandSnapshot do
       Map.take(vm, [:architecture, :profile, :vcpu, :memory_bytes, :disk_bytes, :image_id])
     )
     |> Map.put(:slot, address.slot)
+    |> put_git_identity(vm)
     |> put_workspace_source(vm)
     |> OverallsProtocol.Execution.encode_command()
   end
+
+  # @cc [owner:ghuntley,label:security;protocol] command-snapshot-git-identity
+  # Provision and start commands MUST use only the authoritative immutable VM Git
+  # identity and require its content-bound image capability. Caller identity MUST
+  # be removed before rebuilding the command; VMs without a snapshot and other
+  # command kinds MUST omit it. The identity remains inert guest configuration.
+  @spec put_git_identity(map(), VirtualMachine.t()) :: map()
+  defp put_git_identity(%{kind: kind} = fields, %{git_identity: identity} = vm)
+       when kind in [:provision, :start] and not is_nil(identity) do
+    Marshall.Compute.GitIdentity.require_image!(vm.image_id)
+
+    case OverallsProtocol.GitIdentity.decode(identity) do
+      {:ok, validated} -> Map.put(fields, :git_identity, validated)
+      _ -> Ledger.rollback(:invalid_git_identity)
+    end
+  end
+
+  defp put_git_identity(fields, _vm), do: fields
 
   # @cc [owner:ghuntley,label:security] command-snapshot-workspace-source
   # Provision and start commands for a VM with a recorded workspace source MUST

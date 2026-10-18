@@ -15,25 +15,25 @@ defmodule Audi.TLS.FleetCertificateTest do
         constant(:expired)
       ])
 
-    check all(events <- list_of(event, max_length: 50)) do
-      Enum.reduce(events, {FleetCertificate.new(), nil}, fn event, {machine, model} ->
-        assert {:ok, next} = FleetCertificate.step(machine, event)
+    events = draw("events", list_of(event, max_length: 50))
 
-        model =
-          case event do
-            {:installed, generation} -> generation
-            {:failed, _} -> model
-            :expired -> nil
-          end
+    Enum.reduce(events, {FleetCertificate.new(), nil}, fn event, {machine, model} ->
+      assert {:ok, next} = FleetCertificate.step(machine, event)
 
-        assert FleetCertificate.serving(next) == model
-        assert next.state == if(model, do: next.state, else: :unavailable)
+      model =
+        case event do
+          {:installed, generation} -> generation
+          {:failed, _} -> model
+          :expired -> nil
+        end
 
-        if match?({:failed, _}, event) and model,
-          do: assert(next.state == :degraded)
+      assert FleetCertificate.serving(next) == model
+      assert next.state == if(model, do: next.state, else: :unavailable)
 
-        {next, model}
-      end)
-    end
+      if match?({:failed, _}, event) and model,
+        do: assert(next.state == :degraded)
+
+      {next, model}
+    end)
   end
 end

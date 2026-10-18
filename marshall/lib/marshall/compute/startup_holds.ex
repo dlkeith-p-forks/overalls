@@ -39,7 +39,7 @@ defmodule Marshall.Compute.StartupHolds do
             not Marshall.Compute.CloneGuard.lifecycle_busy?(vm.id, :start)
 
         disk =
-          proof["disk"] and observation["state"] in ["running", "stopped"] and
+          proof["disk"] and observation["state"] in ["running", "stopped", "paused"] and
             observation["disk_present"] == true and pool != nil and pool.reported_at != nil and
             Map.has_key?(pool.allocations, reservation.placement_id)
 

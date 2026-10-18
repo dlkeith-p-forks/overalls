@@ -12,47 +12,45 @@ defmodule Lilly.Host.LockTest do
 
   @tag :hegel
   test "bounded acquisition waits for the same native inode and retains exclusive ownership", c do
-    check all(
-            # Release happens within the first third of the retry window, so at
-            # least ~650ms of budget remains for the retry port under host load;
-            # 250/500ms budgets left only ~125-250ms and flaked when loaded.
-            budget <- member_of([1000, 2000]),
-            delay <- integer(div(budget, 4)..div(budget, 3)),
-            test_cases: 12
-          ) do
-      {:ok, owner} = Lock.acquire(c.tmp_dir)
-      inode = File.stat!(Path.join(c.tmp_dir, "owner.lock")).inode
-      parent = self()
-      tag = make_ref()
+    Hegel.check(
+      fn ->
+        budget = draw("budget", member_of([1000, 2000]))
+        delay = draw("delay", integer(div(budget, 4)..div(budget, 3)))
+        {:ok, owner} = Lock.acquire(c.tmp_dir)
+        inode = File.stat!(Path.join(c.tmp_dir, "owner.lock")).inode
+        parent = self()
+        tag = make_ref()
 
-      worker =
-        Task.async(fn ->
-          send(parent, {tag, :waiting})
+        worker =
+          Task.async(fn ->
+            send(parent, {tag, :waiting})
 
-          with {:ok, successor} <- Lock.acquire(c.tmp_dir, budget) do
-            try do
-              assert Lock.current() == successor
-              assert {:error, :host_already_owned} = Lock.acquire(c.tmp_dir, 0)
-              send(parent, {tag, :acquired})
-              :acquired
-            after
-              Lock.release(successor)
+            with {:ok, successor} <- Lock.acquire(c.tmp_dir, budget) do
+              try do
+                assert Lock.current() == successor
+                assert {:error, :host_already_owned} = Lock.acquire(c.tmp_dir, 0)
+                send(parent, {tag, :acquired})
+                :acquired
+              after
+                Lock.release(successor)
+              end
             end
-          end
-        end)
+          end)
 
-      try do
-        assert_receive {^tag, :waiting}
-        refute_receive {^tag, :acquired}, delay
-        assert :ok = Lock.release(owner)
-        assert Task.await(worker, 5000) == :acquired
-        assert_receive {^tag, :acquired}
-        assert File.stat!(Path.join(c.tmp_dir, "owner.lock")).inode == inode
-      after
-        Task.shutdown(worker, :brutal_kill)
-        if Lock.held?(owner), do: Lock.release(owner)
-      end
-    end
+        try do
+          assert_receive {^tag, :waiting}
+          refute_receive {^tag, :acquired}, delay
+          assert :ok = Lock.release(owner)
+          assert Task.await(worker, 5000) == :acquired
+          assert_receive {^tag, :acquired}
+          assert File.stat!(Path.join(c.tmp_dir, "owner.lock")).inode == inode
+        after
+          Task.shutdown(worker, :brutal_kill)
+          if Lock.held?(owner), do: Lock.release(owner)
+        end
+      end,
+      test_cases: 100
+    )
   end
 
   test "persistent contention expires without taking or replacing ownership", c do

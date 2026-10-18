@@ -1,7 +1,7 @@
 defmodule OverallsProtocol.Relocation do
   @moduledoc """
-  Closed v3 disk-transfer descriptors. A descriptor identifies portable disk
-  content and its endpoints; it is neither an SSH permit nor execution authority.
+  Closed v3 relocation descriptors. A descriptor identifies portable disk
+  content, optional immutable RAM and its endpoints; it is neither an SSH permit nor execution authority.
   Dataset paths and host-local ownership records are deliberately absent.
   """
 
@@ -24,6 +24,7 @@ defmodule OverallsProtocol.Relocation do
         }
   @type stream :: %{source_dataset_guid: String.t(), to_guid: String.t()}
   @type descriptor :: %{
+          optional(:checkpoint) => OverallsProtocol.Checkpoint.t(),
           relocation_id: OverallsProtocol.uuid(),
           vm_id: OverallsProtocol.uuid(),
           source: endpoint(),
@@ -35,6 +36,7 @@ defmodule OverallsProtocol.Relocation do
         }
   @type failure :: {:error, :invalid_message | :unsupported_version}
   @type intent :: %{
+          optional(:checkpoint) => OverallsProtocol.Checkpoint.t(),
           relocation_id: OverallsProtocol.uuid(),
           vm_id: OverallsProtocol.uuid(),
           source: endpoint(),
@@ -45,12 +47,22 @@ defmodule OverallsProtocol.Relocation do
         }
 
   # @cc [owner:ghuntley,label:protocol;security] relocation-descriptor-is-not-execution
-  # descriptor/1 MUST accept only the closed v3 disk descriptor, with distinct
+  # descriptor/1 MUST accept only the closed v3 descriptor, with distinct
   # source/destination placement, host and pool IDs and exactly one epoch advance.
   # Paths, execution commands, credentials and extra fields MUST be rejected.
   # Consumers MUST separately authorize transfer and activation; valid syntax
   # does not establish current ownership, permission or snapshot existence.
   @spec descriptor(term()) :: {:ok, descriptor()} | failure()
+  def descriptor(%{"checkpoint" => checkpoint} = value) do
+    with {:ok, checkpoint} <- OverallsProtocol.Checkpoint.decode(checkpoint),
+         {:ok, descriptor} <- descriptor(Map.delete(value, "checkpoint")),
+         true <- checkpoint.memory_bytes == descriptor.workload.memory_bytes do
+      {:ok, Map.put(descriptor, :checkpoint, checkpoint)}
+    else
+      _ -> {:error, :invalid_message}
+    end
+  end
+
   def descriptor(%{"version" => 3, "stream" => stream} = value) when map_size(value) == 9 do
     with {:ok, intent} <- intent(Map.delete(value, "stream")),
          {:ok, stream} <- stream(stream),
@@ -68,6 +80,16 @@ defmodule OverallsProtocol.Relocation do
   # epoch as a descriptor, without accepting a stream or fabricating GUIDs for
   # snapshots not yet observed. Intent alone MUST NOT authorize execution.
   @spec intent(term()) :: {:ok, intent()} | failure()
+  def intent(%{"checkpoint" => checkpoint} = value) do
+    with {:ok, checkpoint} <- OverallsProtocol.Checkpoint.decode(checkpoint),
+         {:ok, intent} <- intent(Map.delete(value, "checkpoint")),
+         true <- checkpoint.memory_bytes == intent.workload.memory_bytes do
+      {:ok, Map.put(intent, :checkpoint, checkpoint)}
+    else
+      _ -> {:error, :invalid_message}
+    end
+  end
+
   def intent(
         %{
           "version" => 3,

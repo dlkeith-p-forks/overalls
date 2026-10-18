@@ -83,39 +83,39 @@ defmodule Audi.SSH.TransportTest do
   # @cc [owner:ghuntley,label:verification;security] ssh-delayed-admission-no-connector
   # A grant delivered after its request-start deadline MUST NOT invoke the
   # connector or forward bytes. Healthy admission MUST still establish a stream.
-  test "expired delayed authorization never reaches the guest connector", context do
-    supervisor = start_supervised!({Task.Supervisor, []}, id: make_ref())
+  property "expired delayed authorization never reaches the guest connector", context do
+    supervisor = Overalls.HegelFixtures.start_supervised!({Task.Supervisor, []}, id: make_ref())
 
-    check all(ttl <- member_of([25, 75, 150]), max_runs: 4) do
-      fence = make_ref()
-      Agent.update(context.agent, &Map.merge(&1, %{ttl: ttl, authorization_gate: fence}))
-      connection = connect(context)
-      {:ok, channel} = :ssh_connection.session_channel(connection, 1000)
+    ttl = draw("ttl", member_of([25, 75, 150]))
 
-      execution =
-        Task.Supervisor.async_nolink(supervisor, fn ->
-          result = :ssh_connection.exec(connection, channel, ~c"connect #{@label}", 2000)
+    fence = make_ref()
+    Agent.update(context.agent, &Map.merge(&1, %{ttl: ttl, authorization_gate: fence}))
+    connection = connect(context)
+    {:ok, channel} = :ssh_connection.session_channel(connection, 1000)
 
-          closed =
-            receive do
-              {:ssh_cm, ^connection, {:closed, ^channel}} -> :closed
-            after
-              2_000 -> :not_closed
-            end
+    execution =
+      Task.Supervisor.async_nolink(supervisor, fn ->
+        result = :ssh_connection.exec(connection, channel, ~c"connect #{@label}", 2000)
 
-          {result, closed}
-        end)
+        closed =
+          receive do
+            {:ssh_cm, ^connection, {:closed, ^channel}} -> :closed
+          after
+            2_000 -> :not_closed
+          end
 
-      assert_receive {:authorization_waiting, ^fence, worker}, 1000
-      observed = System.monotonic_time(:millisecond)
-      Process.sleep(ttl + 10)
-      assert System.monotonic_time(:millisecond) - observed > ttl
-      send(worker, {:release_authorization, fence})
-      assert Task.await(execution, 3000) == {:success, :closed}
-      refute_receive :connector_called, 50
-      refute_receive :guest_connected, 50
-      :ssh.close(connection)
-    end
+        {result, closed}
+      end)
+
+    assert_receive {:authorization_waiting, ^fence, worker}, 1000
+    observed = System.monotonic_time(:millisecond)
+    Process.sleep(ttl + 10)
+    assert System.monotonic_time(:millisecond) - observed > ttl
+    send(worker, {:release_authorization, fence})
+    assert Task.await(execution, 3000) == {:success, :closed}
+    refute_receive :connector_called, 50
+    refute_receive :guest_connected, 50
+    :ssh.close(connection)
 
     Agent.update(context.agent, &(&1 |> Map.delete(:authorization_gate) |> Map.put(:ttl, 2000)))
     connection = connect(context)

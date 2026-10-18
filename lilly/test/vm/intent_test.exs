@@ -14,21 +14,25 @@ defmodule Lilly.VM.IntentTest do
 
   @tag :hegel
   test "arbitrary older generations cannot reverse the launch fence", %{tmp_dir: dir} do
-    check all(generation <- integer(1..9_223_372_036_854_775_800), test_cases: 40) do
-      directory = Path.join(dir, Integer.to_string(System.unique_integer([:positive])))
-      File.mkdir!(directory)
-      File.chmod!(directory, 0o700)
-      assert {:ok, _} = Intent.set(directory, @placement, {1, generation}, :running)
-      assert {"launched", 0} = launch(directory, generation, "printf", ["launched"])
-      assert {:ok, stopped} = Intent.set(directory, @placement, {1, generation + 1}, :stopped)
+    Hegel.check(
+      fn ->
+        generation = draw("generation", integer(1..9_223_372_036_854_775_800))
+        directory = Path.join(dir, Integer.to_string(System.unique_integer([:positive])))
+        File.mkdir!(directory)
+        File.chmod!(directory, 0o700)
+        assert {:ok, _} = Intent.set(directory, @placement, {1, generation}, :running)
+        assert {"launched", 0} = launch(directory, generation, "printf", ["launched"])
+        assert {:ok, stopped} = Intent.set(directory, @placement, {1, generation + 1}, :stopped)
 
-      assert {:error, :stale_generation} =
-               Intent.set(directory, @placement, {1, generation}, :running)
+        assert {:error, :stale_generation} =
+                 Intent.set(directory, @placement, {1, generation}, :running)
 
-      assert {"", 75} = launch(directory, generation, "printf", ["forbidden"])
-      assert {"", 75} = launch(directory, generation + 1, "printf", ["forbidden"])
-      assert {:ok, ^stopped} = Intent.read(directory)
-    end
+        assert {"", 75} = launch(directory, generation, "printf", ["forbidden"])
+        assert {"", 75} = launch(directory, generation + 1, "printf", ["forbidden"])
+        assert {:ok, ^stopped} = Intent.read(directory)
+      end,
+      test_cases: 100
+    )
   end
 
   test "failure is terminal for its generation; deletion is terminal for the VM", %{tmp_dir: dir} do

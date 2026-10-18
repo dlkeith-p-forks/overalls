@@ -1,8 +1,9 @@
 @cc [owner:ghuntley,label:security] terminal-dial-requires-actor-authority
 Guest terminal dials MUST use an identity obtained from the VM actor for the
-current durable running placement/epoch/generation, with the hello proof bound
-to the persisted current boot challenge. The actor authorizes only the
-assigned terminal stream process.
+current durable running placement/epoch/generation. For a restored checkpoint,
+the hello proof MUST use its verified original guest placement, epoch and boot
+challenge; that guest tuple MUST NOT authorize the current host execution.
+The actor authorizes only the assigned terminal stream process.
 
 @cc [owner:ghuntley,label:security] terminal-attach-requires-fresh-hello
 Every guest attachment connection MUST complete its own fresh boot-bound HMAC

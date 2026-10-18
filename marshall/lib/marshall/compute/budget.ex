@@ -40,7 +40,8 @@ defmodule Marshall.Compute.Budget do
 
   # @cc [owner:ghuntley,label:capacity] physical-disk-pending-growth
   # Physical headroom MUST subtract pending disk creation and temporary copy
-  # holds. Only physical bytes of that pending disk may offset its creation hold.
+  # holds and both checkpoint slots. Only audited physical bytes of this exact
+  # placement's matching disk/checkpoint category may offset its own hold.
   # Settled disk size and compression MUST NOT add physical credit or cap logical
   # assignments. Temporary holds on settled disks remain conservatively charged.
   @spec physical_disk_available(map(), map(), [map()]) :: non_neg_integer()
@@ -94,7 +95,14 @@ defmodule Marshall.Compute.Budget do
     values =
       Enum.reduce(
         reservations,
-        %{creation_bytes: 0, materialized_credit_bytes: 0, temporary_bytes: 0, resize_bytes: 0},
+        %{
+          creation_bytes: 0,
+          materialized_credit_bytes: 0,
+          temporary_bytes: 0,
+          resize_bytes: 0,
+          checkpoint_bytes: 0,
+          checkpoint_credit_bytes: 0
+        },
         fn reservation, total ->
           if reservation.host_id == host.id and reservation.pool_id == pool.id do
             startup = reservation.disk_held and Map.get(reservation, :startup_disk_held, true)
@@ -105,10 +113,20 @@ defmodule Marshall.Compute.Budget do
                 do: min(Map.get(pool.allocations, reservation.placement_id, 0), disk),
                 else: 0
 
+            checkpoint = Map.get(reservation, :checkpoint_bytes, 0)
+
+            checkpoint_credit =
+              min(
+                checkpoint,
+                Map.get(Map.get(pool, :checkpoint_allocations, %{}), reservation.placement_id, 0)
+              )
+
             %{
               creation_bytes: total.creation_bytes + disk,
               materialized_credit_bytes: total.materialized_credit_bytes + credit,
               temporary_bytes: total.temporary_bytes + reservation.temporary_disk_bytes,
+              checkpoint_bytes: total.checkpoint_bytes + checkpoint,
+              checkpoint_credit_bytes: total.checkpoint_credit_bytes + checkpoint_credit,
               resize_bytes: total.resize_bytes + Map.get(reservation, :pending_disk_bytes, 0)
             }
           else
@@ -121,7 +139,7 @@ defmodule Marshall.Compute.Budget do
       values,
       :pending_bytes,
       values.creation_bytes - values.materialized_credit_bytes + values.temporary_bytes +
-        values.resize_bytes
+        values.resize_bytes + values.checkpoint_bytes - values.checkpoint_credit_bytes
     )
   end
 

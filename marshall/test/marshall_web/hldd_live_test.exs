@@ -93,35 +93,37 @@ defmodule MarshallWeb.HLDDLiveTest do
        %{conn: conn} do
     ids = Enum.map(Marshall.Handbook.contents(), & &1.id)
 
-    check all(
-            history <- list_of(member_of(ids), min_length: 1, max_length: 5),
-            next_id <- member_of(ids),
-            next_id != List.last(history),
-            test_cases: 20
-          ) do
-      for invalidation <- [:revoke, :expire, :delete] do
-        reader = user()
-        refute reader.administrator
-        signed_conn = signed_in(conn, reader)
-        {:ok, view, _} = live(signed_conn, "/hldd")
+    Hegel.check(
+      fn ->
+        history = draw("history", list_of(member_of(ids), min_length: 1, max_length: 5))
+        next_id = draw("next_id", member_of(ids))
+        Hegel.assume(next_id != List.last(history))
 
-        for id <- history do
-          render_patch(view, "/hldd/#{id}")
-          assert has_element?(view, "[data-hldd-section='#{id}']")
-          refute has_element?(view, "[data-hldd-section]:not([data-hldd-section='#{id}'])")
+        for invalidation <- [:revoke, :expire, :delete] do
+          reader = user()
+          refute reader.administrator
+          signed_conn = signed_in(conn, reader)
+          {:ok, view, _} = live(signed_conn, "/hldd")
+
+          for id <- history do
+            render_patch(view, "/hldd/#{id}")
+            assert has_element?(view, "[data-hldd-section='#{id}']")
+            refute has_element?(view, "[data-hldd-section]:not([data-hldd-section='#{id}'])")
+          end
+
+          {:ok, %{"jti" => jti}} =
+            AshAuthentication.Jwt.peek(get_session(signed_conn, "user_token"))
+
+          invalidate_login(invalidation, jti)
+          render_patch(view, "/hldd/#{next_id}")
+          assert_redirect(view, "/sign-in")
+
+          assert {:error, {:redirect, %{to: "/sign-in"}}} =
+                   live(signed_conn, "/hldd/#{next_id}")
         end
-
-        {:ok, %{"jti" => jti}} =
-          AshAuthentication.Jwt.peek(get_session(signed_conn, "user_token"))
-
-        invalidate_login(invalidation, jti)
-        render_patch(view, "/hldd/#{next_id}")
-        assert_redirect(view, "/sign-in")
-
-        assert {:error, {:redirect, %{to: "/sign-in"}}} =
-                 live(signed_conn, "/hldd/#{next_id}")
-      end
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   @spec invalidate_login(:revoke | :expire | :delete, String.t()) :: :ok

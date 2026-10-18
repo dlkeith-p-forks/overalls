@@ -351,5 +351,5 @@ pkgs.runCommand imageName {
       minimum_memory_bytes: $minimum_memory_bytes,
       minimum_disk_bytes: $minimum_disk_bytes,
       workspace_source_version: $workspace_source_version
-    }' > "$out/manifest.json"
+    } + (if $guest_agents == "windows-v1" then {git_identity_version:1} else {} end)' > "$out/manifest.json"
 ''

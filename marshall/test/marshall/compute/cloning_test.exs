@@ -547,25 +547,29 @@ defmodule Marshall.Compute.CloningTest do
   end
 
   test "arbitrary repeated request histories preserve one destination per distinct key", c do
-    check all(keys <- list_of(integer(1..8), min_length: 1, max_length: 24), test_cases: 20) do
-      prefix = Ash.UUID.generate()
+    Hegel.check(
+      fn ->
+        keys = draw("keys", list_of(integer(1..8), min_length: 1, max_length: 24))
+        prefix = Ash.UUID.generate()
 
-      Enum.reduce(keys, %{}, fn key, model ->
-        assert {:ok, result} =
-                 Compute.clone(%{vm_id: c.vm.id, idempotency_key: "#{prefix}:#{key}"},
-                   actor: c.actor
-                 )
+        Enum.reduce(keys, %{}, fn key, model ->
+          assert {:ok, result} =
+                   Compute.clone(%{vm_id: c.vm.id, idempotency_key: "#{prefix}:#{key}"},
+                     actor: c.actor
+                   )
 
-        case model[key] do
-          nil ->
-            refute result.destination_vm_id in Map.values(model)
-            Map.put(model, key, result.destination_vm_id)
+          case model[key] do
+            nil ->
+              refute result.destination_vm_id in Map.values(model)
+              Map.put(model, key, result.destination_vm_id)
 
-          id ->
-            assert result.destination_vm_id == id
-            model
-        end
-      end)
-    end
+            id ->
+              assert result.destination_vm_id == id
+              model
+          end
+        end)
+      end,
+      test_cases: 100
+    )
   end
 end

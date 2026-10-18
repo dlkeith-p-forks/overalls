@@ -41,8 +41,9 @@ defmodule Audi.Application do
           Overalls.RequestAccounting.Producer.children(Audi.RequestRecorder) ++
             [
               {Registry, keys: :unique, name: Audi.SSH.Proofs},
-              {Registry, keys: :duplicate, name: Audi.Control.Hints} | slo_children()
-            ] ++ listeners
+              {Registry, keys: :duplicate, name: Audi.Control.Hints},
+              {Audi.Wake.Waiters, []}
+            ] ++ slo_children() ++ listeners
 
         harness_started(
           Supervisor.start_link(children, strategy: :rest_for_one, name: Audi.Supervisor)
@@ -139,6 +140,7 @@ defmodule Audi.Application do
 
   defp role_children(options) do
     {tls, options} = Keyword.pop(options, :tls)
+    {relay, options} = Keyword.pop(options, :relay)
 
     {Audi.SSH.ControlBackend, %{client: client, connector: connector}} =
       Keyword.fetch!(options, :backend)
@@ -149,8 +151,18 @@ defmodule Audi.Application do
        {Audi.SSH.Listener, options},
        {Audi.SSH.KeyPublisher,
         client: client, host_key_dir: Keyword.fetch!(options, :host_key_dir)}
-     ] ++ tls_children(tls, client, options[:bind], connector)}
+     ] ++
+       relay_children(relay, client, connector) ++
+       tls_children(tls, client, options[:bind], connector)}
   end
+
+  @spec relay_children(map() | nil, Audi.Control.Client.t(), tuple()) :: [
+          Supervisor.child_spec() | {module(), keyword()}
+        ]
+  defp relay_children(nil, _, _), do: []
+
+  defp relay_children(relay, client, connector),
+    do: [{Audi.Relay.Server, Map.to_list(relay) ++ [client: client, connector: connector]}]
 
   # @cc [owner:ghuntley,label:verification] audi-probe-listener-address
   # Readiness MUST probe the configured listener address. Only a wildcard

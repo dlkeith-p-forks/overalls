@@ -4,23 +4,24 @@ defmodule Audi.HealthTest do
   import Hegel.Gen
 
   property "gateway health needs both listener observations and positive current authority" do
-    check all(before? <- boolean(), after? <- boolean(), authority? <- boolean()) do
-      Process.put(:health_calls, 0)
+    before? = draw("before?", boolean())
+    after? = draw("after?", boolean())
+    authority? = draw("authority?", boolean())
+    Process.put(:health_calls, 0)
 
-      listeners = fn :gateway ->
-        count = Process.get(:health_calls)
-        Process.put(:health_calls, count + 1)
-        if count == 0, do: before?, else: after?
-      end
-
-      control = fn _, :gateway -> if authority?, do: {:ok, %{}}, else: {:error, :unavailable} end
-
-      assert Audi.Health.ready?(%{role: :gateway}, :gateway, [],
-               listeners: listeners,
-               control: control
-             ) ==
-               (before? and after? and authority?)
+    listeners = fn :gateway ->
+      count = Process.get(:health_calls)
+      Process.put(:health_calls, count + 1)
+      if count == 0, do: before?, else: after?
     end
+
+    control = fn _, :gateway -> if authority?, do: {:ok, %{}}, else: {:error, :unavailable} end
+
+    assert Audi.Health.ready?(%{role: :gateway}, :gateway, [],
+             listeners: listeners,
+             control: control
+           ) ==
+             (before? and after? and authority?)
   end
 
   test "DNS needs a fresh replica as well as authenticated control" do

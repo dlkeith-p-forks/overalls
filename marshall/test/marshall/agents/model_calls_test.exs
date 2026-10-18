@@ -124,22 +124,82 @@ defmodule Marshall.Agents.ModelCallsTest do
     assert {:error, _} = ModelCalls.complete(c.token, call.id, Ash.UUID.generate(), response)
   end
 
+  test "model projection uses current snapshot owner trailer policy after guest instructions",
+       c do
+    guest_instruction = "Guest asks for a different co-author policy"
+    turn = start_turn(Map.put(c, :instructions, [guest_instruction]))
+
+    {:ok, _} =
+      c.actor
+      |> Ash.Changeset.for_update(:git_settings, %{commit_trailers_enabled: false})
+      |> Ash.update(actor: c.actor)
+
+    assert {:ok, call} = ModelCalls.queue(turn.id, "gpt-6-sol")
+    developers = Enum.filter(call.request["input"], &(&1["role"] == "developer"))
+    assert Enum.any?(developers, &(&1["content"] == guest_instruction))
+    policy = List.last(developers)["content"]
+    assert policy =~ "Do not add the Overalls co-author trailer"
+    assert policy =~ "supersedes all earlier"
+  end
+
+  test "a shared-machine writer cannot replace the configuration owner's trailer policy", c do
+    writer = user()
+
+    assert {:ok, _} =
+             Marshall.Access.set_access(
+               %{
+                 vm_id: c.vm.id,
+                 email: to_string(writer.email),
+                 role: :operator,
+                 idempotency_key: Ash.UUID.generate()
+               },
+               actor: c.actor
+             )
+
+    assert {:ok, _} =
+             c.actor
+             |> Ash.Changeset.for_update(:git_settings, %{commit_trailers_enabled: false})
+             |> Ash.update(actor: c.actor)
+
+    assert {:ok, %{turn_id: id}} =
+             Agents.submit_prompt(
+               %{
+                 thread_id: c.thread.id,
+                 prompt: "shared work",
+                 request_key: Ash.UUID.generate()
+               },
+               actor: writer
+             )
+
+    assert {:ok, %{id: ^id} = turn} = TurnCoordinator.claim_next()
+    assert turn.actor_id == writer.id
+    assert turn.configuration_owner_id == c.actor.id
+    applied_context_fixture(turn, c)
+    assert {:ok, call} = ModelCalls.queue(turn.id, "gpt-6-sol")
+    policy = call.request["input"] |> Enum.filter(&(&1["role"] == "developer")) |> List.last()
+    assert policy["content"] =~ "Do not add the Overalls co-author trailer"
+  end
+
   test "repeated host polls never claim the same model attempt twice", c do
-    check all(extra_polls <- integer(1..8), test_cases: 8) do
-      turn = start_turn(c)
-      assert {:ok, call} = ModelCalls.queue(turn.id, "gpt-6-sol")
-      assert {:ok, %{call: %{id: id, claim_id: claim_id}}} = ModelCalls.claim(c.token)
-      assert id == call.id
+    Hegel.check(
+      fn ->
+        extra_polls = draw("extra_polls", integer(1..8))
+        turn = start_turn(c)
+        assert {:ok, call} = ModelCalls.queue(turn.id, "gpt-6-sol")
+        assert {:ok, %{call: %{id: id, claim_id: claim_id}}} = ModelCalls.claim(c.token)
+        assert id == call.id
 
-      for _ <- 1..extra_polls do
-        assert {:ok, %{call: nil}} = ModelCalls.claim(c.token)
-      end
+        for _ <- 1..extra_polls do
+          assert {:ok, %{call: nil}} = ModelCalls.claim(c.token)
+        end
 
-      assert {:ok, _} =
-               ModelCalls.complete(c.token, id, claim_id, %{
-                 "choices" => [%{"message" => %{"content" => "done"}}]
-               })
-    end
+        assert {:ok, _} =
+                 ModelCalls.complete(c.token, id, claim_id, %{
+                   "choices" => [%{"message" => %{"content" => "done"}}]
+                 })
+      end,
+      test_cases: 100
+    )
   end
 
   test "a later queued prompt cannot enter the active turn's model context", c do
@@ -590,63 +650,68 @@ defmodule Marshall.Agents.ModelCallsTest do
   end
 
   test "claimed model work never requeues across the expiry boundary", c do
-    check all(extra_polls <- integer(1..4), test_cases: 8) do
-      for age <- [590, 601] do
-        assert {:ok, thread} = Conversation.spawn_child(c.thread.id, "claim history", c.actor)
-        turn = start_turn(%{c | thread: thread})
-        assert {:ok, call} = ModelCalls.queue(turn.id, "gpt-6-sol")
-        assert {:ok, %{call: work}} = ModelCalls.claim(c.token)
-        [claimed] = Ledger.read!(ModelCall, id: call.id)
+    Hegel.check(
+      fn ->
+        extra_polls = draw("extra_polls", integer(1..4))
 
-        %{rows: [[database_now]]} =
-          Ecto.Adapters.SQL.query!(Marshall.Repo, "SELECT now()", [], log: false)
+        for age <- [590, 601] do
+          assert {:ok, thread} = Conversation.spawn_child(c.thread.id, "claim history", c.actor)
+          turn = start_turn(%{c | thread: thread})
+          assert {:ok, call} = ModelCalls.queue(turn.id, "gpt-6-sol")
+          assert {:ok, %{call: work}} = ModelCalls.claim(c.token)
+          [claimed] = Ledger.read!(ModelCall, id: call.id)
 
-        Ledger.update!(claimed, :transition, %{claimed_at: DateTime.add(database_now, -age)})
+          %{rows: [[database_now]]} =
+            Ecto.Adapters.SQL.query!(Marshall.Repo, "SELECT now()", [], log: false)
 
-        assert :ok = ModelCalls.reap()
+          Ledger.update!(claimed, :transition, %{claimed_at: DateTime.add(database_now, -age)})
 
-        for _ <- 1..extra_polls do
-          assert {:ok, %{call: nil}} = ModelCalls.claim(c.token)
+          assert :ok = ModelCalls.reap()
+
+          for _ <- 1..extra_polls do
+            assert {:ok, %{call: nil}} = ModelCalls.claim(c.token)
+          end
+
+          assert [%{kind: :model_dispatched}] =
+                   Ledger.read!(AuditEvent, target_id: call.id, kind: :model_dispatched)
+
+          if age > 600 do
+            assert [%{status: :uncertain, claim_id: claim_id}] =
+                     Ledger.read!(ModelCall, id: call.id)
+
+            assert claim_id == work.claim_id
+
+            assert [%{status: :failed, failure_reason: :provider_failed}] =
+                     Ledger.read!(Turn, id: turn.id)
+
+            assert {:error, _} =
+                     ModelCalls.complete(c.token, call.id, work.claim_id, %{
+                       "choices" => [%{"message" => %{"content" => "late"}}]
+                     })
+
+            assert [%{kind: :model_finished, outcome: :uncertain}] =
+                     Ledger.read!(AuditEvent, target_id: call.id, kind: :model_finished)
+          else
+            assert [%{status: :claimed, claim_id: claim_id}] =
+                     Ledger.read!(ModelCall, id: call.id)
+
+            assert claim_id == work.claim_id
+
+            assert {:ok, %{acknowledged: id}} =
+                     ModelCalls.complete(c.token, call.id, work.claim_id, %{
+                       "choices" => [%{"message" => %{"content" => "delivered"}}]
+                     })
+
+            assert id == call.id
+            assert [%{status: :completed}] = Ledger.read!(ModelCall, id: call.id)
+
+            assert [%{kind: :model_finished, outcome: :completed}] =
+                     Ledger.read!(AuditEvent, target_id: call.id, kind: :model_finished)
+          end
         end
-
-        assert [%{kind: :model_dispatched}] =
-                 Ledger.read!(AuditEvent, target_id: call.id, kind: :model_dispatched)
-
-        if age > 600 do
-          assert [%{status: :uncertain, claim_id: claim_id}] =
-                   Ledger.read!(ModelCall, id: call.id)
-
-          assert claim_id == work.claim_id
-
-          assert [%{status: :failed, failure_reason: :provider_failed}] =
-                   Ledger.read!(Turn, id: turn.id)
-
-          assert {:error, _} =
-                   ModelCalls.complete(c.token, call.id, work.claim_id, %{
-                     "choices" => [%{"message" => %{"content" => "late"}}]
-                   })
-
-          assert [%{kind: :model_finished, outcome: :uncertain}] =
-                   Ledger.read!(AuditEvent, target_id: call.id, kind: :model_finished)
-        else
-          assert [%{status: :claimed, claim_id: claim_id}] =
-                   Ledger.read!(ModelCall, id: call.id)
-
-          assert claim_id == work.claim_id
-
-          assert {:ok, %{acknowledged: id}} =
-                   ModelCalls.complete(c.token, call.id, work.claim_id, %{
-                     "choices" => [%{"message" => %{"content" => "delivered"}}]
-                   })
-
-          assert id == call.id
-          assert [%{status: :completed}] = Ledger.read!(ModelCall, id: call.id)
-
-          assert [%{kind: :model_finished, outcome: :completed}] =
-                   Ledger.read!(AuditEvent, target_id: call.id, kind: :model_finished)
-        end
-      end
-    end
+      end,
+      test_cases: 100
+    )
   end
 
   test "a queued model call is cancelled when the VM execution changes", c do
@@ -821,6 +886,7 @@ defmodule Marshall.Agents.ModelCallsTest do
         thread_id: turn.thread_id,
         turn_id: turn.id,
         generation: 1,
+        instructions: Map.get(c, :instructions, []),
         configuration_owner_id: c.actor.id,
         guest_account_id: c.account.id,
         working_directory: "/workspace",

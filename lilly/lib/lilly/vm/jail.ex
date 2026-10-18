@@ -3,7 +3,7 @@ defmodule Lilly.VM.Jail do
   require Lilly.Events
   alias Lilly.Host.{Command, Pool, PrivateFiles, ZFSDataset}
   alias OverallsProtocol.WorkloadBundle, as: BundleMetadata
-  alias Lilly.VM.{Boot, Disk, Spec, WorkloadBundle}
+  alias Lilly.VM.{Boot, CheckpointStorage, Disk, Spec, WorkloadBundle}
 
   @spec base(Pool.t()) :: Path.t()
   def base(pool), do: Path.join(pool.path, ".lilly-jails")
@@ -39,6 +39,7 @@ defmodule Lilly.VM.Jail do
          {:ok, bundle} <- WorkloadBundle.load(bundle_directory, spec),
          :ok <- mount_boot_artifacts(bundle_directory, pool, spec, bundle),
          :ok <- mount_drives(pool, spec),
+         :ok <- mount_checkpoints(pool, spec),
          :ok <- write_metadata(pool, spec, bundle, boot),
          :ok <-
            PrivateFiles.write(
@@ -89,7 +90,7 @@ defmodule Lilly.VM.Jail do
           " lilly.execution_epoch=" <>
           Integer.to_string(boot.execution_epoch) <>
           " lilly.boot_challenge=" <>
-          boot.boot_challenge
+          boot.boot_challenge <> git_identity_argument(spec)
     }
 
     boot_source =
@@ -165,22 +166,44 @@ defmodule Lilly.VM.Jail do
   # command line (placement, execution epoch, boot challenge, IPv4 address) plus the
   # static network facts a firmware guest cannot derive (prefix length, gateway, MAC)
   # under the single `lilly` key with a version. It MUST NOT include the generation,
-  # which advances without a reboot, nor any credential or host path.
+  # which advances without a reboot, nor any credential or host path. An optional validated public Git identity
+  # MUST use the same versioned document on both boot transports.
   @spec metadata(WorkloadBundle.t(), Spec.t(), Boot.t()) :: map()
   def metadata(%{boot_kind: :firmware}, spec, boot) do
     %{
-      "lilly" => %{
-        "version" => 1,
-        "placement" => boot.placement_id,
-        "execution_epoch" => boot.execution_epoch,
-        "boot_challenge" => boot.boot_challenge,
-        "ipv4" => spec.network.address,
-        "prefix_length" => 32,
-        "gateway" => spec.network.gateway,
-        "mac" => spec.network.mac
-      }
+      "lilly" =>
+        %{
+          "version" => 1,
+          "placement" => boot.placement_id,
+          "execution_epoch" => boot.execution_epoch,
+          "boot_challenge" => boot.boot_challenge,
+          "ipv4" => spec.network.address,
+          "prefix_length" => 32,
+          "gateway" => spec.network.gateway,
+          "mac" => spec.network.mac
+        }
+        |> maybe_git_identity(spec)
     }
   end
+
+  @spec git_identity_argument(Spec.t()) :: String.t()
+  defp git_identity_argument(%{git_identity: nil}), do: ""
+
+  defp git_identity_argument(%{git_identity: identity}) do
+    encoded =
+      identity
+      |> OverallsProtocol.GitIdentity.encode()
+      |> JSON.encode!()
+      |> Base.url_encode64(padding: false)
+
+    " lilly.git_identity=" <> encoded
+  end
+
+  @spec maybe_git_identity(map(), Spec.t()) :: map()
+  defp maybe_git_identity(metadata, %{git_identity: nil}), do: metadata
+
+  defp maybe_git_identity(metadata, %{git_identity: identity}),
+    do: Map.put(metadata, "git_identity", OverallsProtocol.GitIdentity.encode(identity))
 
   @doc "Caller must first confirm the VM cgroup is empty. Unexpected mounts prevent cleanup."
   # @cc [owner:ghuntley,label:assumption;security] jail-cleanup-refuses-unexpected-mounts
@@ -194,7 +217,9 @@ defmodule Lilly.VM.Jail do
 
     allowed =
       Enum.map(
-        WorkloadBundle.boot_artifacts() ++ Enum.map(Spec.drives(spec), & &1.name),
+        WorkloadBundle.boot_artifacts() ++
+          Enum.map(Spec.drives(spec), & &1.name) ++
+          ~w(checkpoint-a checkpoint-b restore.memory restore.state),
         &Path.join(root, &1)
       )
 
@@ -240,6 +265,55 @@ defmodule Lilly.VM.Jail do
              JSON.encode!(metadata(bundle, spec, boot))
            ),
          do: File.chmod(Path.join(root(pool, spec), "metadata.json"), 0o444)
+  end
+
+  @spec prepare_restore(Pool.t(), Spec.t(), Boot.t(), String.t()) ::
+          {:ok, WorkloadBundle.t()} | {:error, atom()}
+  def prepare_restore(pool, spec, boot, slot) when slot in ["a", "b"] do
+    with {:ok, bundle} <- prepare(pool, spec, boot),
+         :ok <-
+           mount_file(
+             Path.join(CheckpointStorage.output(pool, spec.id, slot), "memory"),
+             root(pool, spec),
+             "restore.memory",
+             true
+           ),
+         :ok <-
+           mount_file(
+             Path.join(CheckpointStorage.output(pool, spec.id, slot), "state"),
+             root(pool, spec),
+             "restore.state",
+             true
+           ),
+         do: {:ok, bundle}
+  end
+
+  defp mount_checkpoints(pool, spec) do
+    Enum.reduce_while(["a", "b"], :ok, fn slot, :ok ->
+      target = Path.join(root(pool, spec), "checkpoint-" <> slot)
+      {:ok, record} = Lilly.VM.Checkpoint.read(pool, spec.id)
+      access = if record["slots"][slot]["state"] == "sealed", do: "ro", else: "rw"
+
+      with :ok <- File.mkdir(target),
+           {:ok, _} <-
+             Command.run(:mount, [
+               "--bind",
+               "--",
+               CheckpointStorage.output(pool, spec.id, slot),
+               target
+             ]),
+           {:ok, _} <-
+             Command.run(:mount, [
+               "-o",
+               "remount,bind,nosuid,nodev,noexec," <> access,
+               "--",
+               target
+             ]) do
+        {:cont, :ok}
+      else
+        _ -> {:halt, {:error, :jail_prepare_failed}}
+      end
+    end)
   end
 
   defp mount_drives(pool, spec) do
