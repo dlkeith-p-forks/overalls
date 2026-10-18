@@ -7,6 +7,10 @@ defmodule Audi.ConnectorTest do
     path =
       Path.join(System.tmp_dir!(), "audi-connector-#{System.unique_integer([:positive])}.sock")
 
+    # A killed prior fixture can leave the filesystem socket behind; remove
+    # that stale endpoint before binding the fresh test listener.
+    File.rm(path)
+
     {:ok, listener} =
       :gen_tcp.listen(0, [:binary, ifaddr: {:local, path}, active: false, packet: 4])
 
