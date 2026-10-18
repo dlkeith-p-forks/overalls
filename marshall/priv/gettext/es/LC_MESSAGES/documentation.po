@@ -10461,6 +10461,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "A minimal role fragment uses runtime file paths for private material:"
 msgstr ""
+"Un fragmento de rol mínimo usa rutas de archivos de tiempo de ejecución para material privado:"
 
 #: lib/marshall/documentation_messages.ex:3966
 #, elixir-autogen, elixir-format
@@ -10571,6 +10572,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "ACME account contact email."
 msgstr ""
+"Correo electrónico de contacto de la cuenta ACME."
 
 #: lib/marshall/documentation_messages.ex:4055
 #, elixir-autogen, elixir-format
@@ -10626,6 +10628,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "AWS signing region."
 msgstr ""
+"Región de firma de AWS."
 
 #: lib/marshall/documentation_messages.ex:4097
 #, elixir-autogen, elixir-format
@@ -10666,11 +10669,13 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Actual parent dataset GUID as a decimal string."
 msgstr ""
+"GUID real del conjunto de datos padre como cadena decimal."
 
 #: lib/marshall/documentation_messages.ex:4138
 #, elixir-autogen, elixir-format
 msgid "Actual unsigned 64-bit zpool GUID as a decimal string."
 msgstr ""
+"GUID real de zpool sin signo de 64 bits como cadena decimal."
 
 #: lib/marshall/documentation_messages.ex:4139
 #, elixir-autogen, elixir-format
@@ -10681,16 +10686,19 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Additional arguments passed to each module in addition to ones\nlike `lib`, `config`,\nand `pkgs`, `modulesPath`."
 msgstr ""
+"Argumentos adicionales que se pasan a cada módulo, además de los habituales como `lib`, `config`, `pkgs` y `modulesPath`."
 
 #: lib/marshall/documentation_messages.ex:4148
 #, elixir-autogen, elixir-format
 msgid "Additional canonical IPv4 networks denied to guests, including public management endpoints."
 msgstr ""
+"Redes IPv4 canónicas adicionales denegadas a los invitados, incluidos los endpoints públicos de administración."
 
 #: lib/marshall/documentation_messages.ex:4152
 #, elixir-autogen, elixir-format
 msgid "Administrative access path. Console-only deployments must disable administrative OpenSSH."
 msgstr ""
+"Ruta de acceso administrativo. Las implementaciones solo de consola deben desactivar OpenSSH administrativo."
 
 #: lib/marshall/documentation_messages.ex:4156
 #, elixir-autogen, elixir-format
@@ -10711,6 +10719,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Admit port 80 on the proxy address from any source through the fleet perimeter (ADR-0181), so the public CA can reach HTTP-01 challenges. The listener serves only challenges and HTTPS redirects."
 msgstr ""
+"Admita el puerto 80 en la dirección del proxy desde cualquier origen a través del perímetro de la flota (ADR-0181), para que la CA pública pueda alcanzar los desafíos HTTP-01. El listener solo sirve desafíos y redirecciones HTTPS."
 
 #: lib/marshall/documentation_messages.ex:4172
 #, elixir-autogen, elixir-format
@@ -10746,6 +10755,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "After reviewing public users and host inventory, use a retained recovery identity:"
 msgstr ""
+"Después de revisar los usuarios públicos y el inventario de hosts, use una identidad de recuperación conservada:"
 
 #: lib/marshall/documentation_messages.ex:4200
 #, elixir-autogen, elixir-format
@@ -10761,6 +10771,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Age passed to nix-collect-garbage --delete-older-than. Generations\nyounger than this are preserved."
 msgstr ""
+"Antigüedad que se pasa a nix-collect-garbage --delete-older-than. Se conservan las generaciones más recientes."
 
 #: lib/marshall/documentation_messages.ex:4212
 #, elixir-autogen, elixir-format
@@ -10771,21 +10782,25 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Aggregate CPU quota in logical cores for Marshall instances."
 msgstr ""
+"Cuota agregada de CPU, en núcleos lógicos, para las instancias de Marshall."
 
 #: lib/marshall/documentation_messages.ex:4220
 #, elixir-autogen, elixir-format
 msgid "Aggregate Marshall memory limit in MiB."
 msgstr ""
+"Límite agregado de memoria de Marshall en MiB."
 
 #: lib/marshall/documentation_messages.ex:4221
 #, elixir-autogen, elixir-format
 msgid "Aggregate guest CPU quota in logical cores."
 msgstr ""
+"Cuota agregada de CPU de invitados, en núcleos lógicos."
 
 #: lib/marshall/documentation_messages.ex:4222
 #, elixir-autogen, elixir-format
 msgid "Aggregate guest and VMM memory budget in MiB."
 msgstr ""
+"Presupuesto agregado de memoria de invitados y VMM en MiB."
 
 #: lib/marshall/documentation_messages.ex:4223
 #, elixir-autogen, elixir-format
@@ -10816,6 +10831,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Also bind fleet TLS to loopback for colocated clients when the main fleet bind uses a private interface."
 msgstr ""
+"Vincule también TLS de la flota a loopback para clientes colocados localmente cuando el enlace principal de la flota use una interfaz privada."
 
 #: lib/marshall/documentation_messages.ex:4247
 #, elixir-autogen, elixir-format
@@ -10991,16 +11007,19 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "At least two independent authoritative nameservers."
 msgstr ""
+"Al menos dos servidores de nombres autoritativos independientes."
 
 #: lib/marshall/documentation_messages.ex:4388
 #, elixir-autogen, elixir-format
 msgid "At the Porsche prompt, enter:"
 msgstr ""
+"En el indicador de Porsche, introduzca:"
 
 #: lib/marshall/documentation_messages.ex:4389
 #, elixir-autogen, elixir-format
 msgid "Atomically published PEM key and full certificate chain, readable by the haproxy group."
 msgstr ""
+"Clave PEM y cadena completa de certificados publicadas atómicamente, legibles por el grupo haproxy."
 
 #: lib/marshall/documentation_messages.ex:4393
 #, elixir-autogen, elixir-format
@@ -11051,6 +11070,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Authoritative Audi DNS replicas checked before challenge acknowledgement."
 msgstr ""
+"Réplicas autoritativas de DNS de Audi comprobadas antes de confirmar el desafío."
 
 #: lib/marshall/documentation_messages.ex:4433
 #, elixir-autogen, elixir-format
@@ -11061,16 +11081,19 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Automation"
 msgstr ""
+"Automatización"
 
 #: lib/marshall/documentation_messages.ex:4438
 #, elixir-autogen, elixir-format
 msgid "Backend HTTPS port."
 msgstr ""
+"Puerto HTTPS del backend."
 
 #: lib/marshall/documentation_messages.ex:4439
 #, elixir-autogen, elixir-format
 msgid "Backend IPv4 address or hostname."
 msgstr ""
+"Dirección IPv4 o nombre de host del backend."
 
 #: lib/marshall/documentation_messages.ex:4440
 #, elixir-autogen, elixir-format
@@ -11151,6 +11174,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Bound storage pools; filesystem identity must match the actual mount."
 msgstr ""
+"Pools de almacenamiento vinculados; la identidad del sistema de archivos debe coincidir con el montaje real."
 
 #: lib/marshall/documentation_messages.ex:4508
 #, elixir-autogen, elixir-format
@@ -11221,6 +11245,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Boundary: A transport refusal does not prove a domain effect completed or authorize lifecycle cleanup; Lilly must preserve the permanent class used by Runtime fencing."
 msgstr ""
+"Límite: una negativa de transporte no demuestra que se completara un efecto de dominio ni autoriza la limpieza del ciclo de vida; Lilly debe conservar la clase permanente usada por el cercado de Runtime."
 
 #: lib/marshall/documentation_messages.ex:4568
 #, elixir-autogen, elixir-format
@@ -12036,6 +12061,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Browser extension"
 msgstr ""
+"Extensión del navegador"
 
 #: lib/marshall/documentation_messages.ex:5229
 #, elixir-autogen, elixir-format
@@ -12071,11 +12097,13 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating Marshall backend certificates."
 msgstr ""
+"Paquete de CA que autentica los certificados del backend de Marshall."
 
 #: lib/marshall/documentation_messages.ex:5254
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating the PostgreSQL endpoint."
 msgstr ""
+"Paquete de CA que autentica el endpoint de PostgreSQL."
 
 #: lib/marshall/documentation_messages.ex:5255
 #, elixir-autogen, elixir-format
@@ -12131,6 +12159,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Canonical mounted pool path."
 msgstr ""
+"Ruta canónica del pool montado."
 
 #: lib/marshall/documentation_messages.ex:5292
 #, elixir-autogen, elixir-format
@@ -12216,6 +12245,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Command reference"
 msgstr ""
+"Referencia de comandos"
 
 #: lib/marshall/documentation_messages.ex:5359
 #, elixir-autogen, elixir-format
@@ -20488,6 +20518,7 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Documentation"
 msgstr ""
+"Documentación"
 
 #: lib/marshall/documentation_messages.ex:6323
 #, elixir-autogen, elixir-format
@@ -20563,6 +20594,7 @@ msgstr "Ofrecer la propiedad del equipo a un administrador."
 #, elixir-autogen, elixir-format
 msgid "Options:"
 msgstr ""
+"Opciones:"
 
 #: lib/marshall/documentation_messages.ex:7296
 #, elixir-autogen, elixir-format

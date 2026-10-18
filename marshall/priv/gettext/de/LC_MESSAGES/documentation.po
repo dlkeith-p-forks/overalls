@@ -1107,152 +1107,152 @@ msgstr "## Vertrauensprüfung der nativen Flotte"
 #: lib/marshall/documentation_messages.ex:465
 #, elixir-autogen, elixir-format
 msgid "## Native guest agent boundary"
-msgstr ""
+msgstr "## Grenze des nativen Gastagenten"
 
 #: lib/marshall/documentation_messages.ex:466
 #, elixir-autogen, elixir-format
 msgid "## Native guest protocol reference"
-msgstr ""
+msgstr "## Referenz des nativen Gastprotokolls"
 
 #: lib/marshall/documentation_messages.ex:467
 #, elixir-autogen, elixir-format
 msgid "## Native submission and daemon-loss verification"
-msgstr ""
+msgstr "## Überprüfung der nativen Einreichung und des Daemon-Ausfalls"
 
 #: lib/marshall/documentation_messages.ex:468
 #, elixir-autogen, elixir-format
 msgid "## Native utility descendant custody"
-msgstr ""
+msgstr "## Verwahrung nativer Hilfsprozesse"
 
 #: lib/marshall/documentation_messages.ex:469
 #, elixir-autogen, elixir-format
 msgid "## Neighboring terminal under viewer pressure"
-msgstr ""
+msgstr "## Benachbartes Terminal unter Betrachterlast"
 
 #: lib/marshall/documentation_messages.ex:470
 #, elixir-autogen, elixir-format
 msgid "## Observe a Lilly-bound private service request as a candidate Audi transport indicator"
-msgstr ""
+msgstr "## Eine private Lilly-Dienstanfrage als möglichen Audi-Transportindikator beobachten"
 
 #: lib/marshall/documentation_messages.ex:474
 #, elixir-autogen, elixir-format
 msgid "## Observe a completed Marshall browser HTTP response as a candidate transport indicator"
-msgstr ""
+msgstr "## Eine abgeschlossene Marshall-Browserantwort als möglichen Transportindikator beobachten"
 
 #: lib/marshall/documentation_messages.ex:478
 #, elixir-autogen, elixir-format
 msgid "## Observe a completed public authoritative DNS answer as a candidate availability indicator"
-msgstr ""
+msgstr "## Eine abgeschlossene öffentliche autoritative DNS-Antwort als Verfügbarkeitsindikator beobachten"
 
 #: lib/marshall/documentation_messages.ex:482
 #, elixir-autogen, elixir-format
 msgid "## Observe a durably completed inference request as a candidate service level indicator"
-msgstr ""
+msgstr "## Eine dauerhaft abgeschlossene Inferenzanfrage als Dienstebenenindikator beobachten"
 
 #: lib/marshall/documentation_messages.ex:486
 #, elixir-autogen, elixir-format
 msgid "## Observe a granted guest SSH session establishment as a candidate Audi indicator"
-msgstr ""
+msgstr "## Den Aufbau einer gewährten Gast-SSH-Sitzung als Audi-Indikator beobachten"
 
 #: lib/marshall/documentation_messages.ex:490
 #, elixir-autogen, elixir-format
 msgid "## Observe a registered mirror refresh as a candidate service level indicator"
-msgstr ""
+msgstr "## Eine registrierte Spiegelaktualisierung als Dienstebenenindikator beobachten"
 
 #: lib/marshall/documentation_messages.ex:494
 #, elixir-autogen, elixir-format
 msgid "## Observe admitted request failures and stable source lifetimes after application or recorder restart"
-msgstr ""
+msgstr "## Zugelassene Anfragefehler und stabile Quelllebensdauer nach Neustarts beobachten"
 
 #: lib/marshall/documentation_messages.ex:498
 #, elixir-autogen, elixir-format
 msgid "## Observe an admitted Brady web request as a candidate service level indicator"
-msgstr ""
+msgstr "## Eine zugelassene Brady-Webanfrage als Dienstebenenindikator beobachten"
 
 #: lib/marshall/documentation_messages.ex:502
 #, elixir-autogen, elixir-format
 msgid "## Observe an authorized named integration attempt as a candidate service level indicator"
-msgstr ""
+msgstr "## Einen autorisierten benannten Integrationsversuch als Dienstebenenindikator beobachten"
 
 #: lib/marshall/documentation_messages.ex:506
 #, elixir-autogen, elixir-format
 msgid "## Observe an eligible management SSH command dispatch as a candidate service level indicator"
-msgstr ""
+msgstr "## Die Ausführung eines zulässigen Verwaltungs-SSH-Befehls als Dienstebenenindikator beobachten"
 
 #: lib/marshall/documentation_messages.ex:510
 #, elixir-autogen, elixir-format
 msgid "## Observe authorized Underclass proxy completion and retain interrupted outcomes through restart"
-msgstr ""
+msgstr "## Autorisierte Underclass-Proxy-Abschlüsse beobachten und unterbrochene Ergebnisse über Neustarts behalten"
 
 #: lib/marshall/documentation_messages.ex:514
 #, elixir-autogen, elixir-format
 msgid "## Observe healthy pool capacity beside an exactly owned retained disk with invalid launch metadata"
-msgstr ""
+msgstr "## Gesunde Poolkapazität neben einer exakt zugeordneten Festplatte mit ungültigen Startmetadaten beobachten"
 
 #: lib/marshall/documentation_messages.ex:518
 #, elixir-autogen, elixir-format
 msgid "## Observe producer availability and trace refusals independently of trace intake"
-msgstr ""
+msgstr "## Produzentenverfügbarkeit und Trace-Ablehnungen unabhängig von der Trace-Aufnahme beobachten"
 
 #: lib/marshall/documentation_messages.ex:522
 #, elixir-autogen, elixir-format
 msgid "## Open Marshall in a browser and receive the same strict security headers, no-index directives and host-prefixed cookies on every response"
-msgstr ""
+msgstr "## Marshall im Browser öffnen und bei jeder Antwort dieselben strengen Sicherheitsheader, No-Index-Anweisungen und Host-Cookies erhalten"
 
 #: lib/marshall/documentation_messages.ex:526
 #, elixir-autogen, elixir-format
 msgid "## Open a personal browser editor from a running machine in Marshall"
-msgstr ""
+msgstr "## Einen persönlichen Browsereditor von einer laufenden Maschine in Marshall öffnen"
 
 #: lib/marshall/documentation_messages.ex:530
 #, elixir-autogen, elixir-format
 msgid "## Open a personal terminal and reconnect safely"
-msgstr ""
+msgstr "## Ein persönliches Terminal öffnen und sicher erneut verbinden"
 
 #: lib/marshall/documentation_messages.ex:531
 #, elixir-autogen, elixir-format
 msgid "## Open a public provider link, sign in, or run overalls open to create an OSS machine with a guest-owned checkout"
-msgstr ""
+msgstr "## Einen öffentlichen Anbieterlink öffnen, sich anmelden oder overalls open ausführen, um eine OSS-Maschine mit Gast-Checkout zu erstellen"
 
 #: lib/marshall/documentation_messages.ex:535
 #, elixir-autogen, elixir-format
 msgid "## Open a root or personal shell in a rebuilt guest and receive the stock Starship prompt"
-msgstr ""
+msgstr "## Eine Root- oder persönliche Shell im neu erstellten Gast öffnen und den Standard-Starship-Prompt erhalten"
 
 #: lib/marshall/documentation_messages.ex:539
 #, elixir-autogen, elixir-format
 msgid "## Open a trusted guest project with immutable AI policy and reviewed default extensions"
-msgstr ""
+msgstr "## Ein vertrauenswürdiges Gastprojekt mit unveränderlicher KI-Richtlinie und geprüften Standarderweiterungen öffnen"
 
 #: lib/marshall/documentation_messages.ex:543
 #, elixir-autogen, elixir-format
 msgid "## Open terminal sessions under shared scrollback pressure and reuse only retired capacity"
-msgstr ""
+msgstr "## Terminalsitzungen unter gemeinsamem Scrollback-Druck öffnen und nur freigegebene Kapazität wiederverwenden"
 
 #: lib/marshall/documentation_messages.ex:547
 #, elixir-autogen, elixir-format
 msgid "## Open the personal browser editor on a newly provisioned AlmaLinux or Arch image"
-msgstr ""
+msgstr "## Den persönlichen Browsereditor auf einem neu bereitgestellten AlmaLinux- oder Arch-Abbild öffnen"
 
 #: lib/marshall/documentation_messages.ex:551
 #, elixir-autogen, elixir-format
 msgid "## Open the single account page, move between its profile, sign-in and SSH key sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint"
-msgstr ""
+msgstr "## Die zentrale Kontoseite öffnen, zwischen Profil-, Anmelde- und SSH-Schlüsselbereichen wechseln und sie über Seitenleiste, Step-up-Weiterleitung, SSH-Freigabeseite und CLI-Hinweis erreichen"
 
 #: lib/marshall/documentation_messages.ex:555
 #, elixir-autogen, elixir-format
 msgid "## Operate control and accounting without Marshall diagnostic ingestion"
-msgstr ""
+msgstr "## Steuerung und Abrechnung ohne Marshall-Diagnoseaufnahme betreiben"
 
 #: lib/marshall/documentation_messages.ex:559
 #, elixir-autogen, elixir-format
 msgid "## Operator encrypted-document custody"
-msgstr ""
+msgstr "## Verwahrung verschlüsselter Betreiberdokumente"
 
 #: lib/marshall/documentation_messages.ex:560
 #, elixir-autogen, elixir-format
 msgid "## Personal browser editor"
-msgstr ""
+msgstr "## Persönlicher Browsereditor"
 
 #: lib/marshall/documentation_messages.ex:561
 #, elixir-autogen, elixir-format
