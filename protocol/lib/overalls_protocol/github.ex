@@ -217,9 +217,9 @@ defmodule OverallsProtocol.GitHub do
 
   @spec authorization(term()) :: {:ok, authorization()} | {:error, :invalid_authorization}
   def authorization(%{"lease" => lease} = wire) when map_size(wire) == 5 do
-    with {:ok, base} <- Integration.authorization(Map.delete(wire, "lease")),
-         true <- base.target in Map.values(@origins),
-         true <- base.strip_prefix == nil and base.peer == nil,
+    with {:ok, %{target: target, strip_prefix: nil, peer: nil} = base} <-
+           Integration.authorization(Map.delete(wire, "lease")),
+         true <- target in Map.values(@origins),
          {:ok, lease} <- lease(lease) do
       {:ok, Map.put(base, :lease, lease)}
     else

@@ -12,6 +12,7 @@ import struct
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
+from urllib.parse import urlsplit
 
 HOST = "github.com"
 PREFIX = "/overalls-native-fixture/unpublished-fixture.git"
@@ -112,6 +113,12 @@ class Repository:
         command arguments, environment, repository paths or shell input. The
         generated object graph, request, response and execution time are bounded.
         """
+        # Git may include the default TLS port in Host and preserves the query
+        # on its request target. Normalize only that transport framing before
+        # matching the closed synthetic repository path.
+        host = host.partition(":")[0].lower()
+        parsed = urlsplit(path)
+        path = parsed.path + (("?" + parsed.query) if parsed.query else "")
         if host == "com-github.integration.internal" and path.startswith("/git/"):
             host, path = HOST, path.removeprefix("/git")
         if host != HOST:

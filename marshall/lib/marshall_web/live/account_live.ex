@@ -395,6 +395,18 @@ defmodule MarshallWeb.AccountLive do
   defp key_title(label), do: label
 
   @spec refresh_git_settings(socket()) :: socket()
+  @spec git_form(User.t()) :: Phoenix.HTML.Form.t()
+  defp git_form(user) do
+    to_form(
+      %{
+        "git_username" => user.git_username,
+        "git_email" => to_string(user.git_email),
+        "commit_trailers_enabled" => user.commit_trailers_enabled
+      },
+      as: :settings
+    )
+  end
+
   defp refresh_git_settings(socket) do
     user = Marshall.Accounts.Security.current(socket.assigns.current_user.id)
 
@@ -572,13 +584,32 @@ defmodule MarshallWeb.AccountLive do
         <section id="git-settings" class="account-section stack" aria-labelledby="git-settings-title">
           <h2 id="git-settings-title">{gettext("4. Git commits")}</h2>
           <p class="muted">
-            {gettext("New machines use this Git identity. Agent commits can include the Overalls co-author trailer.")}
+            {gettext(
+              "New machines use this Git identity. Agent commits can include the Overalls co-author trailer."
+            )}
           </p>
           <.form for={@git_form} id="git-settings-form" phx-submit="save_git_settings" class="stack">
-            <.input field={@git_form[:git_username]} label={gettext("Git username")} maxlength="128" required />
-            <.input field={@git_form[:git_email]} type="email" label={gettext("Git email")} maxlength="254" required />
-            <.input field={@git_form[:commit_trailers_enabled]} type="checkbox" label={gettext("Add Overalls commit attribution")} />
-            <button id="save-git-settings" type="submit" class="console-button primary">{gettext("Save Git settings")}</button>
+            <.input
+              field={@git_form[:git_username]}
+              label={gettext("Git username")}
+              maxlength="128"
+              required
+            />
+            <.input
+              field={@git_form[:git_email]}
+              type="email"
+              label={gettext("Git email")}
+              maxlength="254"
+              required
+            />
+            <.input
+              field={@git_form[:commit_trailers_enabled]}
+              type="checkbox"
+              label={gettext("Add Overalls commit attribution")}
+            />
+            <button id="save-git-settings" type="submit" class="console-button primary">{gettext(
+              "Save Git settings"
+            )}</button>
           </.form>
         </section>
 
