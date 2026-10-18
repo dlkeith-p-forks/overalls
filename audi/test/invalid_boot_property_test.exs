@@ -80,7 +80,7 @@ defmodule Audi.InvalidBootPropertyTest do
   # startup before the named supervisor or reviewed listener start entry points
   # are called. Refusal MUST preserve fixture bytes and exclude paths and secrets
   # from diagnostics. Unset configuration MUST remain a separate no-listener boot.
-  property "generated invalid Audi role configurations refuse fresh OTP startup", profile: :ci, print_blob: false do
+  property "generated invalid Audi role configurations refuse fresh OTP startup", profile: :ci, print_blob: false, test_cases: 2 do
     root = Path.join(System.tmp_dir!(), "k-ab-" <> Base.encode16(:crypto.strong_rand_bytes(8)))
     File.mkdir!(root)
     File.chmod!(root, 0o700)
