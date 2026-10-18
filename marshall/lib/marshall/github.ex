@@ -59,45 +59,50 @@ defmodule Marshall.GitHub do
 
   @spec configured?() :: boolean()
   def configured? do
-    Enum.all?([:github_client_id, :github_client_secret_file, :github_redirect_uri], fn key ->
-      value = Application.get_env(:marshall, key)
-      is_binary(value) and byte_size(value) > 0
-    end)
+    Enum.all?(
+      [:github_client_id, :github_client_secret_file, :github_redirect_uri],
+      fn key ->
+        value = Application.get_env(:marshall, key)
+        is_binary(value) and byte_size(value) > 0
+      end, invalid_callback?: true)
   end
 
   @spec begin_authorization(User.t(), binary()) ::
           {:ok, %{url: binary(), attempt_id: binary()}} | {:error, error()}
   def begin_authorization(%User{} = actor, jti) when is_binary(jti) do
-    private(fn ->
-      if configured?() do
-        Ledger.transaction(fn ->
-          current!(actor.id, jti)
-          connection = connection!(actor.id)
+    private(
+      fn ->
+        if configured?() do
+          Ledger.transaction(fn ->
+            current!(actor.id, jti)
+            connection = connection!(actor.id)
 
-          unless connection.phase in [:disconnected, :reconnect_required],
-            do: Ledger.rollback(:reconnect_required)
+            unless connection.phase in [:disconnected, :reconnect_required],
+              do: Ledger.rollback(:reconnect_required)
 
-          cancel_attempt!(connection.authorization_attempt_id)
-          state = random()
-          verifier = random()
+            cancel_attempt!(connection.authorization_attempt_id)
+            state = random()
+            verifier = random()
 
-          attempt =
-            Ledger.create!(AuthorizationAttempt, :record, %{
-              connection_id: connection.id,
-              state_digest: digest(state),
-              login_digest: digest(jti),
-              verifier: verifier,
-              generation: connection.generation,
-              expires_at: DateTime.add(Ledger.now(), 600, :second)
-            })
+            attempt =
+              Ledger.create!(AuthorizationAttempt, :record, %{
+                connection_id: connection.id,
+                state_digest: digest(state),
+                login_digest: digest(jti),
+                verifier: verifier,
+                generation: connection.generation,
+                expires_at: DateTime.add(Ledger.now(), 600, :second)
+              })
 
-          Ledger.update!(connection, :authorize, %{authorization_attempt_id: attempt.id})
-          %{url: Provider.authorization_url(state, digest(verifier)), attempt_id: attempt.id}
-        end)
-      else
-        {:error, :not_configured}
-      end
-    end)
+            Ledger.update!(connection, :authorize, %{authorization_attempt_id: attempt.id})
+            %{url: Provider.authorization_url(state, digest(verifier)), attempt_id: attempt.id}
+          end)
+        else
+          {:error, :not_configured}
+        end
+      end,
+      invalid_callback?: true
+    )
   end
 
   def begin_authorization(_, _), do: {:error, :unauthorized}
@@ -1285,7 +1290,9 @@ defmodule Marshall.GitHub do
   @doc false
   @spec private((-> result)) :: result | {:error, :unavailable | :unauthorized}
         when result: term()
-  def private(fun) do
+  def private(fun), do: private(fun, [])
+
+  defp private(fun, opts) do
     original = Logger.metadata()
     Logger.metadata(marshall_authentication: true)
 
@@ -1297,8 +1304,8 @@ defmodule Marshall.GitHub do
     rescue
       _ -> {:error, :unavailable}
     catch
-      :exit, reason ->
-        if Keyword.get(opts, :invalid) == :invalid_callback,
+      :exit, _reason ->
+        if Keyword.get(opts, :invalid_callback?) == true,
           do: {:error, :invalid_callback},
           else: {:error, :unavailable}
     after
