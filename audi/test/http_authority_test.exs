@@ -4,61 +4,63 @@ defmodule Audi.HTTP.AuthorityTest do
   import Hegel.Gen
   alias Audi.HTTP.Authority
 
-  property "a suspended renewer cannot preserve the owner or its guest socket" do
+  property "a suspended renewer cannot preserve the owner or its guest socket",
+    profile: :ci,
+    test_cases: 1 do
     # Allow a loaded runner to start the guard before the generated lease expires.
-    check all(ttl <- integer(1200..1800), max_runs: 5, test_cases: 1, profile: :ci) do
-      {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
-      {:ok, {_, port}} = :inet.sockname(listener)
-      parent = self()
+    ttl = draw(integer(1200..1800))
 
-      {owner, monitor} =
-        spawn_monitor(fn ->
-          Process.flag(:trap_exit, true)
-          {:ok, socket} = :gen_tcp.connect({127, 0, 0, 1}, port, [:binary, active: false])
-          now = System.monotonic_time(:millisecond)
+    {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
+    {:ok, {_, port}} = :inet.sockname(listener)
+    parent = self()
 
-          grant = %{
-            binding: %{
-              host_id: "22222222-2222-4222-8222-222222222222",
-              vm_id: "33333333-3333-4333-8333-333333333333",
-              placement_id: "33333333-3333-4333-8333-333333333333",
-              session_id: "44444444-4444-4444-8444-444444444444",
-              execution_epoch: 1,
-              generation: 1
+    {owner, monitor} =
+      spawn_monitor(fn ->
+        Process.flag(:trap_exit, true)
+        {:ok, socket} = :gen_tcp.connect({127, 0, 0, 1}, port, [:binary, active: false])
+        now = System.monotonic_time(:millisecond)
+
+        grant = %{
+          binding: %{
+            host_id: "22222222-2222-4222-8222-222222222222",
+            vm_id: "33333333-3333-4333-8333-333333333333",
+            placement_id: "33333333-3333-4333-8333-333333333333",
+            session_id: "44444444-4444-4444-8444-444444444444",
+            execution_epoch: 1,
+            generation: 1
+          },
+          user_id: nil,
+          requested_at: now,
+          expires_at: now + ttl,
+          ticket: "unused"
+        }
+
+        # The worker is suspended before it may use this deliberately unreachable client.
+        {:ok, worker} =
+          Authority.start(
+            %Audi.Control.Client{
+              origin: "https://localhost:1",
+              token: "unused",
+              role: :gateway
             },
-            user_id: nil,
-            requested_at: now,
-            expires_at: now + ttl,
-            ticket: "unused"
-          }
+            grant
+          )
 
-          # The worker is suspended before it may use this deliberately unreachable client.
-          {:ok, worker} =
-            Authority.start(
-              %Audi.Control.Client{
-                origin: "https://localhost:1",
-                token: "unused",
-                role: :gateway
-              },
-              grant
-            )
+        true = :erlang.suspend_process(worker)
+        send(parent, {:guarded, worker, socket})
 
-          true = :erlang.suspend_process(worker)
-          send(parent, {:guarded, worker, socket})
+        receive do
+          :never -> :ok
+        end
+      end)
 
-          receive do
-            :never -> :ok
-          end
-        end)
-
-      {:ok, peer} = :gen_tcp.accept(listener, 1000)
-      assert_receive {:guarded, worker, _}, 1000
-      assert_receive {:DOWN, ^monitor, :process, ^owner, :killed}, 3000
-      assert {:error, :closed} = :gen_tcp.recv(peer, 0, 1000)
-      Process.exit(worker, :kill)
-      :gen_tcp.close(peer)
-      :gen_tcp.close(listener)
-    end
+    {:ok, peer} = :gen_tcp.accept(listener, 1000)
+    assert_receive {:guarded, worker, _}, 1000
+    assert_receive {:DOWN, ^monitor, :process, ^owner, :killed}, 3000
+    assert {:error, :closed} = :gen_tcp.recv(peer, 0, 1000)
+    Process.exit(worker, :kill)
+    :gen_tcp.close(peer)
+    :gen_tcp.close(listener)
   end
 
   # @cc [owner:ghuntley,label:verification;security] audi-renewal-transport-no-revoke

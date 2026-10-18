@@ -670,10 +670,10 @@ defmodule MarshallWeb.MachinesLive do
               >
                 <td>
                   <.link navigate={~p"/machines/#{vm.id}"} class="machine-name">{vm.name}</.link>
-                  <UI.pinned_label vm={vm} id={"machine-pinned-#{vm.id}"} />
                   <UI.os_label vm={vm} id={"machine-os-#{vm.id}"} />
                 </td>
                 <td data-label="Status">
+                  <UI.pinned_label vm={vm} id={"machine-pinned-#{vm.id}"} />
                   <span class="status-label" data-state={vm.observed_state}>{state(vm)}</span>
                 </td>
                 <td class="resource-values" data-label="Resources">

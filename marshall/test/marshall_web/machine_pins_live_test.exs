@@ -37,9 +37,11 @@ defmodule MarshallWeb.MachinePinsLiveTest do
 
     assert has_element?(
              view,
-             "#machines tr[data-pinned=true] #machine-pinned-#{third.id}",
+             "#machines tr[data-pinned=true] td[data-label=Status] #machine-pinned-#{third.id}",
              "Pinned"
            )
+
+    assert has_element?(view, "#machine-pinned-#{third.id} + .status-label[data-state]")
 
     assert has_element?(view, "#pin-#{third.id}[aria-pressed=true]", "Unpin")
     refute has_element?(view, "#machine-pinned-#{first.id}")
@@ -94,6 +96,7 @@ defmodule MarshallWeb.MachinePinsLiveTest do
 
     view |> element("#pin-#{vm.id}") |> render_click()
     assert has_element?(view, "#machine-pinned", "Pinned")
+    assert has_element?(view, "#machine-pinned + #machine-os + #machine-state")
     assert has_element?(view, "#pin-#{vm.id}[aria-pressed=true]", "Unpin")
     assert has_element?(view, "#delete-machine[disabled]")
     assert has_element?(view, "#delete-pinned", "Unpin to delete")
