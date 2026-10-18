@@ -9,8 +9,8 @@ from guest_lifecycle.operation import ComputeLifecycleOperator, OperatorReply
 from guest_lifecycle.scenarios import (
     ObservedMismatch,
     _admit,
-    _reject_mismatch,
     _sample,
+    _submit,
     _usable_catalog,
 )
 from guest_lifecycle.witness import GuestIdentity, GuestSpec, GuestWitnessClient
@@ -122,22 +122,36 @@ class SampleTest(unittest.TestCase):
         for state, generation in (("stopped", 1), ("running", 2)):
             with self.subTest(state=state, generation=generation):
                 operator = FixedOperator(state=state, generation=generation)
-                sample = _sample(
-                    operator,
-                    GuestWitnessClient(operator),
-                    VM,
-                    OPERATION,
-                    "provision",
-                    "running",
-                    1,
-                )
-                self.assertIsInstance(sample, ObservedMismatch)
                 with patch("guest_lifecycle.scenarios.always") as assertion:
-                    _reject_mismatch()
+                    sample = _sample(
+                        operator,
+                        GuestWitnessClient(operator),
+                        VM,
+                        OPERATION,
+                        "provision",
+                        "running",
+                        1,
+                    )
+                self.assertIsInstance(sample, ObservedMismatch)
                 assertion.assert_called_once_with(
                     False,
                     "Completed guest lifecycle outcome matches current VM state and execution identity",
                 )
+
+    def test_consistent_completed_outcome_holds_assertion(self) -> None:
+        operator = FixedOperator(state="running", generation=1)
+        witness = MagicMock(spec=GuestWitnessClient)
+        witness.witness.return_value = Observation.unavailable()
+        with (
+            patch("guest_lifecycle.scenarios.time.monotonic", side_effect=(0.0, 0.5, 2.0)),
+            patch("guest_lifecycle.scenarios.time.sleep"),
+            patch("guest_lifecycle.scenarios.always") as assertion,
+        ):
+            _sample(operator, witness, VM, OPERATION, "provision", "running", 1)
+        assertion.assert_called_once_with(
+            True,
+            "Completed guest lifecycle outcome matches current VM state and execution identity",
+        )
 
     def test_stop_sample_requests_the_retained_boot(self) -> None:
         operator = FixedOperator(state="running", generation=1)
@@ -168,6 +182,25 @@ class SampleTest(unittest.TestCase):
             )
         self.assertIsNone(sample)
         assertion.assert_not_called()
+
+
+class SubmitTest(unittest.TestCase):
+    def test_uncertain_reply_is_resubmitted_with_the_same_key(self) -> None:
+        operator = MagicMock(spec=ComputeLifecycleOperator)
+        reply = OperatorReply(OPERATION, "compute.lifecycle", "ok", {})
+        operator.lifecycle.side_effect = (Observation.unavailable(), Observation.observed(reply))
+        with patch("guest_lifecycle.scenarios.time.sleep"):
+            self.assertEqual(_submit(operator, VM, "stop"), reply)
+        keys = {call.args[2] for call in operator.lifecycle.call_args_list}
+        self.assertEqual(len(keys), 1)
+        self.assertEqual(operator.lifecycle.call_count, 2)
+
+    def test_persistently_uncertain_reply_is_unexercised(self) -> None:
+        operator = MagicMock(spec=ComputeLifecycleOperator)
+        operator.lifecycle.return_value = Observation.unavailable()
+        with patch("guest_lifecycle.scenarios.time.sleep"):
+            self.assertIsNone(_submit(operator, VM, "start"))
+        self.assertEqual(operator.lifecycle.call_count, 3)
 
 
 class AdmissionTest(unittest.TestCase):

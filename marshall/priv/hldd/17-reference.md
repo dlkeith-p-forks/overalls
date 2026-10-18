@@ -414,6 +414,12 @@ placement. Operator `image_unavailable` refusals (a stale host image report
 between catalog and provision) are retried like `insufficient_capacity`, each
 catalog read is bounded to 30 s within a 180 s window, and an expired sample
 logs its last unmet step.
+Run `766b5d3778010731ec34ab191bf48f7c-65-0` reached consistent completed
+provisions, yet reported the outcome/VM consistency property as never hit: the
+driver evaluated it only when a contradiction occurred. It now evaluates that
+assertion for every completed outcome it samples, and resubmits a stop or start
+whose reply was lost with the same deduplicated request key up to three times
+instead of abandoning the cycle after one lost reply.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The
