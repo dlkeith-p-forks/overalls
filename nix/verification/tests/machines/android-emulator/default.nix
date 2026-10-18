@@ -64,8 +64,6 @@ pkgs.testers.runNixOSTest {
   # evidence only; it does not establish Firecracker, guest isolation, native
   # KVM, production Lilly authority, or multi-host recovery.
   testScript = ''
-    import re
-
     android.start()
     android.wait_for_unit("android-test-emulator.service")
     android.wait_until_succeeds("test -r /proc/$(systemctl show android-test-emulator.service -p MainPID --value)/cmdline")
