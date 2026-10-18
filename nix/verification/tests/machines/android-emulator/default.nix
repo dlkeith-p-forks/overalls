@@ -81,6 +81,6 @@ pkgs.testers.runNixOSTest {
     android.succeed("adb -s emulator-5554 shell settings get global animator_duration_scale")
     android.succeed("adb -s emulator-5554 exec-out screencap -p > /tmp/android-screencap.png")
     android.succeed("test $(stat -c %s /tmp/android-screencap.png) -gt 100")
-    android.succeed("head -c 8 /tmp/android-screencap.png | od -An -t x1 | grep -F '89 50 4c 50 4e 47 0d 0a'")
+    android.succeed("head -c 8 /tmp/android-screencap.png | od -An -t x1 | grep -F '89 50 4e 47 0d 0a 1a 0a'")
   '';
 }
