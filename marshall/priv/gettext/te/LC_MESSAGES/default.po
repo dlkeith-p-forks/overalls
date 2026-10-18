@@ -23,21 +23,21 @@ msgstr " ఇంకా పెరుగుతోంది"
 #, elixir-autogen, elixir-format
 msgid "%{count} member"
 msgid_plural "%{count} members"
-msgstr[0] "%{count} సభ్యులు"
+msgstr[0] "%{count} సభ్యుడు"
 msgstr[1] "%{count} సభ్యులు"
 
 #: lib/marshall_web/live/admin/users_live.ex:157
 #, elixir-autogen, elixir-format
 msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
-msgstr[0] "సొంత యంత్రాలు %{count}"
+msgstr[0] "%{count} సొంత యంత్రం"
 msgstr[1] "సొంత యంత్రాలు %{count}"
 
 #: lib/marshall_web/live/account_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "%{count} registered key"
 msgid_plural "%{count} registered keys"
-msgstr[0] "నమోదైన కీలు %{count}"
+msgstr[0] "%{count} నమోదైన కీ"
 msgstr[1] "నమోదైన కీలు %{count}"
 
 #: lib/marshall_web/live/admin/operations_live.ex:218
@@ -3618,7 +3618,7 @@ msgstr "పాస్‌కీ 15 నిమిషాలకు ధృవీకర�
 #, elixir-autogen, elixir-format
 msgid "Passkey verified · %{count} second remaining."
 msgid_plural "Passkey verified · %{count} seconds remaining."
-msgstr[0] "పాస్‌కీ ధృవీకరించబడింది · %{count} సెకన్లు మిగిలాయి."
+msgstr[0] "పాస్‌కీ ధృవీకరించబడింది · %{count} సెకను మిగిలింది."
 msgstr[1] "పాస్‌కీ ధృవీకరించబడింది · %{count} సెకన్లు మిగిలాయి."
 
 #: lib/marshall_web/live/threads_live.ex:1608
@@ -5361,7 +5361,7 @@ msgstr "టెర్మినల్"
 #, elixir-autogen, elixir-format
 msgid "Terminal %{name}, %{count} viewer, created %{created}"
 msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
-msgstr[0] "టెర్మినల్ %{name}, %{count} వీక్షకులు, సృష్టి %{created}"
+msgstr[0] "టెర్మినల్ %{name}, %{count} వీక్షకుడు, సృష్టి %{created}"
 msgstr[1] "టెర్మినల్ %{name}, %{count} వీక్షకులు, సృష్టి %{created}"
 
 #: lib/marshall_web/live/terminal_live.ex:108
@@ -7182,92 +7182,92 @@ msgstr "మీకంటే %{span} వెనుక ఉంది"
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "Add Overalls commit attribution"
+msgstr "కమిట్‌లో Overalls సహకారానికి గుర్తింపు జోడించండి"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "Enter a valid Git name and email address."
+msgstr "చెల్లుబాటు అయ్యే Git పేరు మరియు ఇమెయిల్ చిరునామా నమోదు చేయండి."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Git email"
+msgstr "Git ఇమెయిల్"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Git గుర్తింపులో మార్పులు కొత్త మెషీన్‌లకు వర్తిస్తాయి. కమిట్‌లో సహకార గుర్తింపు మార్పులు భవిష్యత్ ఏజెంట్ అభ్యర్థనలకు వర్తిస్తాయి."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
-msgstr "4. Git identity"
+msgstr "4. Git గుర్తింపు"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git identity"
-msgstr "Git identity"
+msgstr "Git గుర్తింపు"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Git settings saved."
+msgstr "Git సెట్టింగ్‌లు సేవ్ అయ్యాయి."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Git username"
+msgstr "Git వినియోగదారు పేరు"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
-msgstr "Machine is paused. Resume it or reopen this terminal page."
+msgstr "మెషీన్ విరామంలో ఉంది. దానిని తిరిగి ప్రారంభించండి లేదా ఈ టెర్మినల్ పేజీని మళ్లీ తెరవండి."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Pause"
-msgstr "Pause"
+msgstr "విరామం ఇవ్వండి"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "Paused"
+msgstr "విరామంలో ఉంది"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
-msgstr "Resume machine"
+msgstr "మెషీన్‌ను తిరిగి ప్రారంభించండి"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming"
-msgstr "Resuming"
+msgstr "తిరిగి ప్రారంభమవుతోంది"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
-msgstr "Resuming machine; waiting for capacity…"
+msgstr "మెషీన్ తిరిగి ప్రారంభమవుతోంది; సామర్థ్యం కోసం వేచి ఉంది…"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Save Git settings"
+msgstr "Git సెట్టింగ్‌లను సేవ్ చేయండి"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Suspending"
-msgstr "Suspending"
+msgstr "తాత్కాలికంగా నిలిపివేస్తోంది"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "ప్రారంభించినప్పుడు, కొత్త ఏజెంట్ కమిట్‌లలో Co-authored-by: Overalls <noreply@overalls.dev> చేర్చబడుతుంది."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "new machines and commit attribution"
-msgstr "new machines and commit attribution"
+msgstr "కొత్త మెషీన్‌లు మరియు కమిట్‌లో సహకార గుర్తింపు"

@@ -3491,7 +3491,7 @@ msgstr "அணுகல் சாவி 15 நிமிடங்களுக்�
 #, elixir-autogen, elixir-format
 msgid "Passkey verified · %{count} second remaining."
 msgid_plural "Passkey verified · %{count} seconds remaining."
-msgstr[0] "அணுகல் சாவி சரிபார்க்கப்பட்டது · %{count} வினாடிகள் மீதமுள்ளன."
+msgstr[0] "அணுகல் சாவி சரிபார்க்கப்பட்டது · %{count} வினாடி மீதமுள்ளது."
 msgstr[1] "அணுகல் சாவி சரிபார்க்கப்பட்டது · %{count} வினாடிகள் மீதமுள்ளன."
 
 #: lib/marshall_web/live/threads_live.ex:1608
@@ -5175,7 +5175,7 @@ msgstr "முனையம்"
 #, elixir-autogen, elixir-format
 msgid "Terminal %{name}, %{count} viewer, created %{created}"
 msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
-msgstr[0] "முனையம் %{name}, %{count} பார்வையாளர்கள், உருவாக்கப்பட்டது %{created}"
+msgstr[0] "முனையம் %{name}, %{count} பார்வையாளர், உருவாக்கப்பட்டது %{created}"
 msgstr[1] "முனையம் %{name}, %{count} பார்வையாளர்கள், உருவாக்கப்பட்டது %{created}"
 
 #: lib/marshall_web/live/terminal_live.ex:108
@@ -6914,25 +6914,25 @@ msgstr "உங்களை விட %{span} பின்னால்"
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "Add Overalls commit attribution"
+msgstr "கமிட்டில் Overalls பங்களிப்புக்கான அங்கீகாரத்தைச் சேர்க்கவும்"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "Enter a valid Git name and email address."
+msgstr "செல்லுபடியாகும் Git பெயரையும் மின்னஞ்சல் முகவரியையும் உள்ளிடவும்."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Git email"
+msgstr "Git மின்னஞ்சல்"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Git அடையாள மாற்றங்கள் புதிய கணினிகளுக்குப் பொருந்தும். கமிட்டில் பங்களிப்புக்கான அங்கீகார மாற்றங்கள் எதிர்கால முகவர் கோரிக்கைகளுக்குப் பொருந்தும்."
 
 #: lib/marshall_web/live/account_live.ex:538
 #, elixir-autogen, elixir-format
@@ -6943,19 +6943,19 @@ msgstr "Git அமைப்புகள்"
 #: lib/marshall_web/live/account_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Git settings saved."
+msgstr "Git அமைப்புகள் சேமிக்கப்பட்டன."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:542
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Git username"
+msgstr "Git பயனர்பெயர்"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Save Git settings"
+msgstr "Git அமைப்புகளைச் சேமிக்கவும்"
 
 #: lib/marshall_web/live/account_live.ex:559
 #, elixir-autogen, elixir-format
@@ -7103,7 +7103,7 @@ msgstr "செயல்பாடு"
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "Paused"
+msgstr "இடைநிறுத்தப்பட்டது"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:399
 #, elixir-autogen, elixir-format
@@ -7210,54 +7210,54 @@ msgstr "உங்கள் மின்னஞ்சல் இணைப்பு 
 #: lib/marshall_web/live/overview_live.ex:213
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
-msgstr ""
+msgstr "புதிய தகவல்களை அறிந்திருங்கள்"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
-msgstr "4. Git identity"
+msgstr "4. Git அடையாளம்"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git identity"
-msgstr "Git identity"
+msgstr "Git அடையாளம்"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
-msgstr "Machine is paused. Resume it or reopen this terminal page."
+msgstr "கணினி இடைநிறுத்தப்பட்டுள்ளது. அதை மீண்டும் இயக்கவும் அல்லது இந்த முனையப் பக்கத்தை மீண்டும் திறக்கவும்."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Pause"
-msgstr "Pause"
+msgstr "இடைநிறுத்தவும்"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
-msgstr "Resume machine"
+msgstr "கணினியை மீண்டும் இயக்கவும்"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming"
-msgstr "Resuming"
+msgstr "மீண்டும் இயங்குகிறது"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
-msgstr "Resuming machine; waiting for capacity…"
+msgstr "கணினி மீண்டும் இயங்குகிறது; கொள்ளளவுக்காகக் காத்திருக்கிறது…"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Suspending"
-msgstr "Suspending"
+msgstr "தற்காலிகமாக நிறுத்தப்படுகிறது"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "இயக்கப்பட்டால், புதிய முகவர் கமிட்டுகளில் Co-authored-by: Overalls <noreply@overalls.dev> சேர்க்கப்படும்."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "new machines and commit attribution"
-msgstr "new machines and commit attribution"
+msgstr "புதிய கணினிகளும் கமிட்டில் பங்களிப்புக்கான அங்கீகாரமும்"

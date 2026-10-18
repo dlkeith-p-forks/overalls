@@ -41,6 +41,7 @@ in {
     networking.nameservers = [ nodes.m2.networking.primaryIPAddress nodes.m3.networking.primaryIPAddress ];
     security.pki.certificateFiles = [ "${pki}/root.pem" ];
     services.galileo = {
+      enable = true;
       secretsFile = "${root}/galileo.enc.json";
       cpuCores = 1;
       memoryMiB = 512;
