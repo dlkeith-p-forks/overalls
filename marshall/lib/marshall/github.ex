@@ -1302,12 +1302,7 @@ defmodule Marshall.GitHub do
         result -> result
       end
     rescue
-      error in Ash.Error.Invalid ->
-        _ = error
-        {:error, :invalid_callback}
-
-      _ ->
-        {:error, :unavailable}
+      _ -> {:error, :unavailable}
     catch
       :exit, _ -> {:error, :unavailable}
     after
