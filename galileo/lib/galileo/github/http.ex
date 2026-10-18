@@ -312,7 +312,14 @@ defmodule Galileo.GitHub.HTTP do
 
   defp finish(%{mode: :stream, conn: conn}, _, _, _, _, _, _) do
     Process.put(@success_key, conn.status < 500)
-    conn
+
+    # Plug's chunked responses need an explicit terminal empty chunk. Closing
+    # the upstream socket alone leaves clients such as git-lfs with an
+    # incomplete object and an unexpected EOF.
+    case chunk(conn, "") do
+      {:ok, conn} -> conn
+      {:error, _} -> conn
+    end
   end
 
   defp finish(
