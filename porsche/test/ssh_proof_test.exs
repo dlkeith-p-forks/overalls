@@ -30,17 +30,17 @@ defmodule Porsche.SSH.ProofTest do
     File.mkdir_p!(directory)
     on_exit(fn -> File.rm_rf!(directory) end)
 
-    for name <- ["ssh_host_ed25519_key", "user"] do
+    # "device" is the P-256 key type Mila keeps in platform key custody.
+    for {name, type} <- [
+          {"ssh_host_ed25519_key", ["ed25519"]},
+          {"user", ["ed25519"]},
+          {"device", ["ecdsa", "-b", "256"]}
+        ] do
       {_, 0} =
-        System.cmd("ssh-keygen", [
-          "-q",
-          "-t",
-          "ed25519",
-          "-N",
-          "",
-          "-f",
-          Path.join(directory, name)
-        ])
+        System.cmd(
+          "ssh-keygen",
+          ["-q", "-t"] ++ type ++ ["-N", "", "-f", Path.join(directory, name)]
+        )
     end
 
     parent = self()
@@ -121,6 +121,19 @@ defmodule Porsche.SSH.ProofTest do
     monitor = Process.monitor(connection)
     assert_receive {:DOWN, ^monitor, :process, ^connection, _}
     eventually_absent(connection)
+  end
+
+  test "a signed P-256 device key proves possession like any other client key", context do
+    {:ok, device} =
+      context.directory
+      |> Path.join("device.pub")
+      |> File.read!()
+      |> OverallsProtocol.SSHKey.parse()
+
+    assert device.algorithm == "ecdsa-sha2-nistp256"
+    {_output, _status} = ssh(context, Path.join(context.directory, "device"))
+    assert_receive {:proof_event, :candidate, connection, :error}
+    assert_receive {:proof_event, :proved, ^connection, {:ok, ^device}}
   end
 
   test "a callback without a candidate fails closed" do

@@ -6,6 +6,7 @@ defmodule OverallsProtocolCodecsContractTest do
     modules = [
       OverallsProtocol,
       OverallsProtocol.AddressPool,
+      OverallsProtocol.AppRoute,
       OverallsProtocol.Cadence,
       OverallsProtocol.Capacity,
       OverallsProtocol.CloneControl,
@@ -161,5 +162,24 @@ defmodule OverallsProtocolCodecsContractTest do
     assert control == "10.40.0.42"
     assert paired == "10.41.0.42"
     assert {:ok, ["10.10.0.42"]} = OverallsProtocol.AddressPool.addresses(:customer, 42)
+  end
+
+  @tag obligation: "overalls_protocol.codecs.I7"
+  test "application routes refuse secrets, fragments and unknown pages" do
+    id = "123e4567-e89b-42d3-a456-426614174000"
+    link = "overalls://overalls.example/machines/" <> id
+
+    assert {:ok, route} = OverallsProtocol.AppRoute.parse(link)
+    assert OverallsProtocol.AppRoute.format(route) == link
+
+    for refused <- [
+          "overalls://user:secret@overalls.example/machines",
+          link <> "#fragment",
+          link <> "?token=secret",
+          "overalls://overalls.example/ssh/approve/porsche_approval_secret",
+          "overalls://overalls.example/" <> String.duplicate("a", 2048)
+        ] do
+      assert {:error, :invalid_route} = OverallsProtocol.AppRoute.parse(refused)
+    end
   end
 end

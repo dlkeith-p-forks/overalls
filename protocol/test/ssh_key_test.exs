@@ -44,6 +44,25 @@ defmodule OverallsProtocol.SSHKeyTest do
     end
   end
 
+  test "P-256 device keys parse only with their own curve and an uncompressed point" do
+    curve = "nistp256"
+    point = <<4>> <> :binary.copy(<<7>>, 64)
+    blob = <<19::32, "ecdsa-sha2-nistp256", 8::32, curve::binary, 65::32, point::binary>>
+    text = "ecdsa-sha2-nistp256 " <> Base.encode64(blob)
+    assert {:ok, %{algorithm: "ecdsa-sha2-nistp256", public_key: ^text}} = SSHKey.parse(text)
+
+    for invalid <- [
+          <<19::32, "ecdsa-sha2-nistp256", 8::32, "nistp384", 65::32, point::binary>>,
+          <<19::32, "ecdsa-sha2-nistp256", 8::32, curve::binary, 64::32,
+            binary_part(point, 1, 64)::binary>>,
+          <<19::32, "ecdsa-sha2-nistp256", 8::32, curve::binary, 65::32, 2,
+            binary_part(point, 1, 64)::binary>>,
+          blob <> <<0>>
+        ] do
+      assert SSHKey.from_blob(invalid) == {:error, :invalid_public_key}
+    end
+  end
+
   test "options, multiple keys, private keys, inconsistent tags and trailing wire bytes fail" do
     blob = <<11::32, "ssh-ed25519", 32::32, 0::256>>
     key = "ssh-ed25519 " <> Base.encode64(blob)

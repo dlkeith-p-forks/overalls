@@ -1,0 +1,303 @@
+{
+  "@@locale": "en",
+  "appTitle": "Mila",
+  "@appTitle": {
+    "description": "The application name; a proper noun, do not translate."
+  },
+  "deploymentsTitle": "Deployments",
+  "@deploymentsTitle": {
+    "description": "Heading for the list of Overalls deployments the user has added."
+  },
+  "deploymentHostLabel": "Deployment host",
+  "@deploymentHostLabel": {
+    "description": "Label for the host name field when adding a deployment."
+  },
+  "deploymentHostHint": "overalls.example",
+  "@deploymentHostHint": {
+    "description": "Example host name; keep as is."
+  },
+  "addDeployment": "Add deployment",
+  "@addDeployment": {
+    "description": "Button that adds a deployment by host name."
+  },
+  "invalidHost": "Enter a host name such as overalls.example.",
+  "@invalidHost": {
+    "description": "Validation error for the host field."
+  },
+  "signInTitle": "Sign in",
+  "@signInTitle": {
+    "description": "Heading of the sign-in screen."
+  },
+  "signInStart": "Sign in with browser",
+  "@signInStart": {
+    "description": "Button that starts browser-approved sign-in."
+  },
+  "signInConnecting": "Connecting to {host}…",
+  "@signInConnecting": {
+    "description": "Shown while connecting. {host} is a DNS host name.",
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "signInApprove": "Approve this device in your browser, then return here. Keep Mila open until you have approved it.",
+  "@signInApprove": {
+    "description": "Instruction shown with the approval link."
+  },
+  "signInOpenBrowser": "Open approval page",
+  "@signInOpenBrowser": {
+    "description": "Button that opens the approval link in the browser."
+  },
+  "signInFingerprint": "Key fingerprint",
+  "@signInFingerprint": {
+    "description": "Label for the device key fingerprint, compared with the browser page."
+  },
+  "signInExpired": "The approval link is no longer valid. Start again to get a new one.",
+  "@signInExpired": {
+    "description": "Shown when the approval link expired or the connection closed."
+  },
+  "signInFailedHost": "This host did not present a certificate from its published authority, so Mila did not connect.",
+  "@signInFailedHost": {
+    "description": "Host verification failure."
+  },
+  "signInFailedRefused": "The deployment refused this device.",
+  "@signInFailedRefused": {
+    "description": "Authorization failure during sign-in."
+  },
+  "signInFailedProtocol": "The deployment sent a reply Mila does not understand.",
+  "@signInFailedProtocol": {
+    "description": "Protocol failure during sign-in."
+  },
+  "retry": "Try again",
+  "@retry": {
+    "description": "Retry button."
+  },
+  "machinesTitle": "Machines",
+  "@machinesTitle": {
+    "description": "Heading for the machine list."
+  },
+  "machinesSearch": "Search machines",
+  "@machinesSearch": {
+    "description": "Placeholder for the machine search field."
+  },
+  "machinesEmpty": "No machines yet.",
+  "@machinesEmpty": {
+    "description": "Shown when the user has no machines."
+  },
+  "machinesNoMatch": "No machines match.",
+  "@machinesNoMatch": {
+    "description": "Shown when search finds nothing."
+  },
+  "machinesPinned": "pinned",
+  "@machinesPinned": {
+    "description": "Marker shown next to a pinned machine; lowercase in English."
+  },
+  "machinesOffline": "Offline. Showing the last known list.",
+  "@machinesOffline": {
+    "description": "Shown when the list comes from the offline cache."
+  },
+  "stateDeleting": "deleting",
+  "@stateDeleting": {
+    "description": "Machine state label shown in brackets."
+  },
+  "stateStopping": "stopping",
+  "@stateStopping": {
+    "description": "Machine state label shown in brackets."
+  },
+  "stateStarting": "starting",
+  "@stateStarting": {
+    "description": "Machine state label shown in brackets."
+  },
+  "statePending": "pending",
+  "@statePending": {
+    "description": "Machine state label shown in brackets."
+  },
+  "stateRunning": "running",
+  "@stateRunning": {
+    "description": "Machine state label shown in brackets."
+  },
+  "stateStopped": "stopped",
+  "@stateStopped": {
+    "description": "Machine state label shown in brackets."
+  },
+  "stateFailed": "failed",
+  "@stateFailed": {
+    "description": "Machine state label shown in brackets."
+  },
+  "stateDeleted": "deleted",
+  "@stateDeleted": {
+    "description": "Machine state label shown in brackets."
+  },
+  "stateUnknown": "unknown",
+  "@stateUnknown": {
+    "description": "Machine state label shown in brackets."
+  },
+  "stateUnavailable": "unavailable",
+  "@stateUnavailable": {
+    "description": "Machine state label shown in brackets."
+  },
+  "stateSuspending": "suspending",
+  "@stateSuspending": {
+    "description": "Machine state label shown in brackets."
+  },
+  "stateResuming": "resuming",
+  "@stateResuming": {
+    "description": "Machine state label shown in brackets."
+  },
+  "statePaused": "paused",
+  "@statePaused": {
+    "description": "Machine state label shown in brackets."
+  },
+  "actionStart": "Start",
+  "@actionStart": {
+    "description": "Machine lifecycle action."
+  },
+  "actionStop": "Stop",
+  "@actionStop": {
+    "description": "Machine lifecycle action."
+  },
+  "actionPause": "Pause",
+  "@actionPause": {
+    "description": "Machine lifecycle action."
+  },
+  "actionResume": "Resume",
+  "@actionResume": {
+    "description": "Machine lifecycle action."
+  },
+  "actionPin": "Pin",
+  "@actionPin": {
+    "description": "Pin a machine to the top of the list."
+  },
+  "actionUnpin": "Unpin",
+  "@actionUnpin": {
+    "description": "Remove a pin."
+  },
+  "actionDelete": "Delete",
+  "@actionDelete": {
+    "description": "Delete a machine."
+  },
+  "confirmDelete": "Delete {name} and its disk? This cannot be undone.",
+  "@confirmDelete": {
+    "description": "Confirmation for deleting a machine. {name} is the machine name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button."
+  },
+  "requestWaiting": "Waiting for the request to finish…",
+  "@requestWaiting": {
+    "description": "Shown while a lifecycle request runs."
+  },
+  "requestSucceeded": "Done.",
+  "@requestSucceeded": {
+    "description": "Shown when a request succeeds."
+  },
+  "requestFailed": "The request failed.",
+  "@requestFailed": {
+    "description": "Shown when a request fails."
+  },
+  "requestRefused": "The deployment refused the request.",
+  "@requestRefused": {
+    "description": "Shown when a request is refused."
+  },
+  "kvState": "State",
+  "@kvState": {
+    "description": "Key in the machine info panel."
+  },
+  "kvImage": "Image",
+  "@kvImage": {
+    "description": "Key in the machine info panel."
+  },
+  "kvCpu": "CPU",
+  "@kvCpu": {
+    "description": "Key in the machine info panel."
+  },
+  "kvMemory": "Memory",
+  "@kvMemory": {
+    "description": "Key in the machine info panel."
+  },
+  "kvDisk": "Disk",
+  "@kvDisk": {
+    "description": "Key in the machine info panel."
+  },
+  "kvSshHost": "SSH host",
+  "@kvSshHost": {
+    "description": "Key in the machine info panel."
+  },
+  "cpuCount": "{count, plural, =1{1 vCPU} other{{count} vCPUs}}",
+  "@cpuCount": {
+    "description": "Number of virtual CPUs.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "memoryMib": "{mib} MiB",
+  "@memoryMib": {
+    "description": "Memory size in mebibytes.",
+    "placeholders": {
+      "mib": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "diskGib": "{gib} GiB",
+  "@diskGib": {
+    "description": "Disk size in gibibytes.",
+    "placeholders": {
+      "gib": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Heading of the settings screen."
+  },
+  "appearance": "Appearance",
+  "@appearance": {
+    "description": "Label for the light/dark selector."
+  },
+  "appearanceSystem": "System",
+  "@appearanceSystem": {
+    "description": "Follow the system appearance."
+  },
+  "appearanceLight": "Light",
+  "@appearanceLight": {
+    "description": "Light appearance."
+  },
+  "appearanceDark": "Dark",
+  "@appearanceDark": {
+    "description": "Dark appearance."
+  },
+  "linkRefused": "Mila cannot open this link.",
+  "@linkRefused": {
+    "description": "Shown for an overalls:// link outside the supported table."
+  },
+  "linkUnknownDeployment": "Add {host} as a deployment to open this link.",
+  "@linkUnknownDeployment": {
+    "description": "Shown for a link to a deployment the user has not added. {host} is a DNS host name.",
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Navigate back."
+  },
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Reload the current list from the deployment. Same wording as the web console."
+  }
+}

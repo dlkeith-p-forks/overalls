@@ -1024,6 +1024,56 @@ their separate evidence and gaps. Evidence:
 [takeover property](repo:marshall/test/marshall/terminal/host_takeover_history_test.exs)
 and [execution review](repo:docs/architecture/reviews/2026-09-29-antithesis-property-audit.md).
 
+## Mila
+
+Mila is the Overalls client for iOS and Android; its Linux build exists for
+testing. It manages machines through one SSH connection to the deployment's
+Porsche gateway and adds no Marshall API: every command is an ordinary Porsche
+`--json` command, authorized by Marshall's domains like any other SSH caller.
+
+| Concern | Behaviour |
+| --- | --- |
+| Device identity | One P-256 key per deployment: Secure Enclave (iOS), Android Keystore with StrongBox where present, an owner-only `0600` file on Linux. A readable Linux key file is refused. |
+| Host trust | `https://HOST/bin/ssh-trust.json` is fetched over HTTPS without redirects and pinned. A later document with another CA, host or zone is refused; a failed fetch uses only an unretired pin. |
+| Host acceptance | Only `ssh-ed25519-cert-v01@openssh.com`. The certificate must come from the pinned CA, name the management host and be inside its validity window. The check runs in key exchange, before user authentication. |
+| Sign-in | Porsche's browser key approval. Mila opens `approval_url` in the system browser and keeps the connection, re-checking `whoami` every 2 seconds. A link expires after 600 seconds and is never replaced while shown. |
+| Mutations | Submitted once with a client `porsche-<32 hex>` request id and `--no-wait`, then polled with `request show`; never resubmitted. |
+| Links | `overalls://HOST/PATH` only navigates. Unknown deployments land on the deployment list; signed-out deployments reach only their sign-in screen. |
+
+```mermaid
+sequenceDiagram
+    participant M as Mila
+    participant W as Deployment HTTPS
+    participant P as Porsche
+    participant B as Browser
+    M->>W: GET /bin/ssh-trust.json
+    W-->>M: CA, management host, zone
+    M->>P: key exchange, certificate host key only
+    P-->>M: host certificate and exchange signature
+    M->>M: verify CA, principal, validity, signature
+    M->>P: publickey with the device key
+    M->>P: whoami --json
+    P-->>M: approval_required and approval URL
+    M->>B: open approval URL
+    B->>P: user approves the key
+    M->>P: whoami --json on a new channel
+    P-->>M: succeeded
+```
+
+Failure behaviour: an untrusted host ends the connection before any command and
+before the device key signs anything; an unreachable origin with no pin is
+reported as unreachable rather than untrusted. Mila stores no terminal bytes,
+tokens or reply bodies; it logs nothing about keys or commands.
+
+Evidence: [transport](repo:mila/packages/mila_transport/lib/src/ssh_porsche.dart)
+and its [OpenSSH journeys](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart),
+[host certificates](repo:mila/packages/mila_core/lib/src/host_trust.dart),
+[sign-in machine](repo:mila/packages/mila_core/lib/src/sign_in.dart),
+[device keys](repo:mila/packages/mila_transport/lib/src/device_key.dart),
+[dartssh2 patch](repo:nix/platform/patches/dartssh2-host-certificates.patch),
+[real-Porsche machine test](repo:nix/verification/tests/machines/mila-porsche/default.nix)
+(passed against the real Porsche release) and the [M1 review](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+
 ## Explicit terminal kill under withheld credit
 
 Withheld viewer credit pauses ordinary live PTY delivery. An authorized explicit

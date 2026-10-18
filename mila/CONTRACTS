@@ -1,0 +1,29 @@
+@cc [owner:ghuntley,label:architecture] mila-porsche-only-transport
+Mila MUST reach a deployment only through its Porsche SSH gateway running
+`--json` commands, plus the HTTPS trust document fetch. It MUST NOT call
+Marshall HTTP APIs or hold account authority itself (ADR-0220).
+
+@cc [owner:ghuntley,label:security] mila-strict-host-certificates
+Mila MUST accept a host only with a current Ed25519 host certificate from the
+pinned CA naming the deployment's management host, checked during key
+exchange before user authentication. There MUST be no trust-on-first-use, no
+unsigned fallback, and a changed CA, host or zone MUST be refused (ADR-0228).
+
+@cc [owner:ghuntley,label:security] mila-device-key-custody
+Each deployment MUST get its own P-256 device key. Mobile private keys MUST
+stay in the Secure Enclave or Android Keystore and never cross the platform
+channel; the Linux test key MUST be owner-only and a readable key file MUST be
+refused. Keys, signatures and tokens MUST NOT be logged.
+
+@cc [owner:ghuntley,label:architecture] mila-pure-core
+`packages/mila_core` and `packages/mila_transport` MUST NOT import Flutter.
+Protocol decoding, routing and state machines live in `mila_core`.
+
+@cc [owner:ghuntley,label:security] mila-links-navigate-only
+Following an `overalls://` link MUST only navigate. It MUST NOT send a
+command, add a deployment or approve anything, and links to an unknown or
+signed-out deployment MUST NOT open a deployment page (ADR-0221).
+
+@cc [owner:ghuntley,label:protocol] mila-mutation-once
+A mutation MUST be submitted at most once with its client request id; any
+uncertainty MUST be resolved by polling `request show`, never by resubmitting.

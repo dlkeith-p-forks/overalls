@@ -1,5 +1,9 @@
 # Architecture reviews
 
+- [Mila M1: client, transport and host trust (2026-10-18)](2026-10-18-mila-m1.md):
+  ADR-0220–0228; per-deployment P-256 keys, strict host certificates checked in
+  key exchange, the patched dartssh2 overlay and link navigation; native custody
+  and the real-Porsche machine test remain unrun.
 - [Overview newsletter (2026-10-18)](2026-10-18-overview-newsletter.md): ADR-0205's account-wide durable invitation, self-only dismissal and server-side Ghost subscription boundary; test presence is distinguished from external delivery and packaged browser acceptance.
 - [Guest reflection (2026-10-18)](2026-10-18-guest-reflection.md): ADR-0203's secret-free, execution-fenced Peach projection; protocol and credential tests are present while successful HTTP/native guest execution and fleet enablement remain open.
 - [GitHub.com owner integration (2026-10-18)](2026-10-18-github-com-integration.md): ADR-0202's owner-bound OAuth custody and managed guest route; source and focused tests are recorded while live provider and native rollout remain open.

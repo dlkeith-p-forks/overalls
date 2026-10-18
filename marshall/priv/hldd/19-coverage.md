@@ -3895,3 +3895,41 @@ Tested scope: Declared reflection protocol, dedicated Peach control role and pro
 **Gaps:** Fresh/stale execution, credential expiry and generated rotation/revocation histories, host loss and same-host native network isolation need recorded property and machine execution; credential unit tests passed in the focused 40-test Marshall run, and the Peach fixture validates the codec without invoking the HTTP Plug
 
 **Preferred test work:** Add generated current/stale execution and dedicated credential histories, then run a packaged NixOS guest allowed/refused projection journey with Peach enabled and retain exact outcomes
+
+## A user signs Mila in to a deployment by approving its per-deployment device key in the browser
+
+Coverage: **partial**. Layers: identity, authorization, storage.
+
+Boundary: Mila holds one P-256 device key per deployment in platform custody (owner-only file on Linux) and authenticates to Porsche with it; Marshall's existing browser key approval grants the account, and Mila only re-checks whoami.
+
+Required refusal: A Linux key file readable by group or other users, or malformed, is refused rather than used; a stale or expired approval link is never shown; an unapproved key reaches only approval_required.
+
+Tested scope: Dart device-key encoding, signature and file-custody tests, the Hegel stateful sign-in machine, and an Elixir proof that Porsche accepts a signed P-256 client key. Native Secure Enclave and Android Keystore custody are not compiled or run.
+
+- **property, recorded**: [sign-in never shows a stale or expired link](repo:mila/packages/mila_core/test/domain_test.dart) — Hegel stateful sign-in machine over a fake clock and Porsche replies.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **unit, recorded**: [a key file other users can read is refused, not used](repo:mila/packages/mila_transport/test/device_key_test.dart) — Linux file custody: 0600 key, 0700 directory, readable and malformed files refused.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **unit, recorded**: [a signed P-256 device key proves possession like any other client key](repo:porsche/test/ssh_proof_test.exs) — Porsche SSH proof of possession for an ecdsa-sha2-nistp256 client key in the BEAM test VM.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **machine, recorded**: [the pinned CA's certificate and the device key reach Porsche](repo:nix/verification/tests/machines/mila-porsche/default.nix) — Real Porsche release with the device key from mila-probe; Marshall is absent, so commands end in an authority envelope.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+
+**Gaps:** iOS and Android key custody and link delivery have no device build.
+
+**Preferred test work:** Add a mila-desktop GUI machine test of the browser approval journey, and record device builds.
+
+## Mila connects to a deployment only after verifying its Porsche host certificate against the pinned trust document
+
+Coverage: **partial**. Layers: identity, transport, recovery.
+
+Boundary: Mila fetches https://HOST/bin/ssh-trust.json without redirects, pins it, and in key exchange accepts only an Ed25519 host certificate from the pinned CA naming the management host inside its validity window, before user authentication.
+
+Required refusal: Another CA, another principal, an expired certificate or a plain host key ends the connection before the device key signs; a conflicting later trust document is refused and the pin kept; an unreachable origin uses only an unretired pin.
+
+Tested scope: Dart certificate verification against Elixir-issued fixtures, trust resolution, and five journeys against a stock OpenSSH server in the Nix sandbox; mutation-checked by disabling the host check.
+
+- **unit, recorded**: [a certificate from another CA is refused before authentication](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Stock OpenSSH server presenting host certificates in the mila-transport Nix check.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **unit, recorded**: [a different CA is refused and the pin is kept](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Trust document pinning and reconciliation.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **unit, recorded**: [server-issued certificates verify in Mila](repo:mila/packages/mila_core/test/host_trust_test.dart) — Elixir-issued certificate fixtures get the same verdict in Dart.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **machine, recorded**: [a certificate from another CA is refused before authentication](repo:nix/verification/tests/machines/mila-porsche/default.nix) — Real Porsche release refusing a rogue CA without an authentication record; Marshall is absent, so commands end in an authority envelope.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+
+**Gaps:** The real-Porsche fixture has no Marshall, so a full signed-in command journey through Porsche to Marshall is not yet exercised from Mila.
+
+**Preferred test work:** Extend the mila-desktop NixOS machine test to a signed-in journey through Porsche and Marshall.
