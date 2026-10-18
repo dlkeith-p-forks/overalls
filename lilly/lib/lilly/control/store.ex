@@ -197,6 +197,9 @@ defmodule Lilly.Control.Store do
           Map.drop(immutable(existing), [:resize_from, :resize_id]) ==
             Map.delete(immutable(command), :resize_id)
 
+        existing.kind == :pause and command.kind == :resume ->
+          Map.drop(immutable(existing), [:slot]) == Map.drop(immutable(command), [:slot])
+
         true ->
           immutable(existing) == immutable(command)
       end
