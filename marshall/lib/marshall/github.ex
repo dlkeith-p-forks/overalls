@@ -372,7 +372,7 @@ defmodule Marshall.GitHub do
         connection = locked_connection(owner_id)
         lease = Ledger.lock!(RequestLease, lease_id)
 
-        if (connection && lease && lease.connection_id == connection.id) and lease.vm_id == vm_id,
+        if connection && lease && lease.connection_id == connection.id && lease.vm_id == vm_id,
           do: Ledger.archive!(lease, :close)
 
         :ok
@@ -495,7 +495,9 @@ defmodule Marshall.GitHub do
           Ecto.Adapters.SQL.query!(
             Marshall.Repo,
             "SELECT pg_advisory_xact_lock(hashtextextended('github-restore-epoch', 0))",
-            [], log: false)
+            [],
+            log: false
+          )
 
           applied = Ledger.lock!(RestoreEpoch, "github")
 
@@ -761,8 +763,9 @@ defmodule Marshall.GitHub do
         connection.authorization_attempt_id &&
           Ledger.lock!(AuthorizationAttempt, connection.authorization_attempt_id)
 
-      unless (attempt && attempt.phase == :pending) and attempt.state_digest == digest(state) and
-               attempt.login_digest == digest(jti) and attempt.generation == connection.generation and
+      unless (attempt && attempt.phase == :pending && attempt.state_digest == digest(state) &&
+                attempt.login_digest == digest(jti)) and
+               attempt.generation == connection.generation and
                connection.phase in [:disconnected, :reconnect_required] and
                later?(attempt.expires_at, Ledger.now()),
              do: Ledger.rollback(:invalid_callback)
@@ -779,10 +782,10 @@ defmodule Marshall.GitHub do
         connection = locked_connection(actor.id) || Ledger.rollback(:invalid_callback)
         fresh = Ledger.lock!(AuthorizationAttempt, attempt.id)
 
-        unless (fresh && fresh.phase == :exchanging) and
-                 connection.authorization_attempt_id == fresh.id and
-                 connection.generation == fresh.generation and
-                 connection.phase in [:disconnected, :reconnect_required] and
+        unless fresh && fresh.phase == :exchanging &&
+                 connection.authorization_attempt_id == fresh.id &&
+                 connection.generation == fresh.generation &&
+                 connection.phase in [:disconnected, :reconnect_required] &&
                  later?(fresh.expires_at, Ledger.now()),
                do: Ledger.rollback(:invalid_callback)
 
@@ -1095,7 +1098,7 @@ defmodule Marshall.GitHub do
     AccountLifecycle.admit!(user_id)
     user = Security.lock_user!(user_id)
 
-    unless (user && is_nil(user.deleted_at)) and is_binary(jti) and
+    unless user && is_nil(user.deleted_at) && is_binary(jti) &&
              match?({:ok, _}, Login.present(jti, user_id)),
            do: Ledger.rollback(:unauthorized)
 
@@ -1150,7 +1153,7 @@ defmodule Marshall.GitHub do
         Ledger.lock!(AuthorizationAttempt, connection.authorization_attempt_id)
 
     phase =
-      if (attempt && attempt.phase in [:pending, :exchanging]) &&
+      if attempt && attempt.phase in [:pending, :exchanging] &&
            later?(attempt.expires_at, Ledger.now()), do: :authorizing, else: phase
 
     %{
