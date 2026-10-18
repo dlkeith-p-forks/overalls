@@ -196,7 +196,7 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
 
     limits = %{quota: quota, object: object, high: quota, low: quota - 1}
     id = {:boundary_store, make_ref()}
-    store = start_supervised!(Supervisor.child_spec({Store, root: root, limits: limits}, id: id))
+    {:ok, store} = Store.start_link(root: root, limits: limits, name: id)
     parent = self()
     keys = [String.duplicate("a", 64), String.duplicate("b", 64)]
 
