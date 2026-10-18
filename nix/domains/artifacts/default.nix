@@ -32,9 +32,15 @@ let
   codingClis = import ./guest/coding-clis.nix { inherit pkgs; };
   # Google emulator/system-image inputs are accepted explicitly here so the
   # Android guest remains reproducible and does not depend on host SDK state.
-  androidEnvironment = pkgs.callPackage (pkgs.path + "/pkgs/development/mobile/androidenv") {
+  # Android SDK components are unfree in nixpkgs. Re-import the same pinned
+  # input with only the package-level license policy changed; no channel or
+  # host SDK is consulted.
+  androidPkgs = import pkgs.path {
+    system = pkgs.system;
+    config.allowUnfree = true;
+  };
+  androidEnvironment = androidPkgs.callPackage (pkgs.path + "/pkgs/development/mobile/androidenv") {
     licenseAccepted = true;
-    config = { allowUnfree = true; };
   };
   androidSdk = (androidEnvironment.composeAndroidPackages {
     cmdLineToolsVersion = "latest";
