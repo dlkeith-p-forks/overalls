@@ -39,30 +39,52 @@ msgstr ""
 msgid "Show the authenticated account."
 msgstr "显示已认证的账户。"
 
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
 msgid "List available images."
 msgstr "列出可用镜像。"
 
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
 msgid "List machines you can access."
 msgstr "列出您可以访问的机器。"
 
+#: lib/porsche/ssh/command_messages.ex:36
+#, elixir-autogen, elixir-format
 msgid "Inspect a machine by name or UUID."
 msgstr "按名称或 UUID 查看机器。"
 
-msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
-msgstr "创建机器。磁盘最大容量：500 GiB。--source 会在客户机中克隆公共 GitHub、GitLab、Codeberg 或 Bitbucket 仓库。"
+#: lib/porsche/ssh/command_messages.ex:17
+#, elixir-autogen, elixir-format
+msgid ""
+"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
+"GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr ""
+"创建机器。磁盘最大容量：500 GiB。--source 会在客户机中克隆公共 GitHub、GitLab、Codeberg 或 Bitbucket "
+"仓库。"
 
+#: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
 msgid "Queue an independent full-disk copy of a machine."
 msgstr "将机器的独立完整磁盘副本加入队列。"
 
+#: lib/porsche/ssh/command_messages.ex:24
+#, elixir-autogen, elixir-format
 msgid "Move a machine to an automatically selected host."
 msgstr "将机器迁移到自动选择的主机。"
 
-msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+#: lib/porsche/ssh/command_messages.ex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Change a machine's CPU and memory; disk may only grow. A running machine "
+"stops and restarts."
 msgstr "更改机器的 CPU 和内存；磁盘只能扩容。正在运行的机器将停止并重启。"
 
 msgid "Retry a failed clone or relocation request."
 msgstr "重试失败的克隆或迁移请求。"
 
+#: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
 msgid "Cancel an unpublished clone or uncommitted relocation request."
 msgstr "取消尚未发布的克隆或尚未提交的迁移请求。"
 
@@ -73,6 +95,8 @@ msgstr "启动机器。"
 msgid "Stop a machine, retaining its disk and discarding suspended memory."
 msgstr "Stop a machine, retaining its disk and discarding suspended memory."
 
+#: lib/porsche/ssh/command_messages.ex:32
+#, elixir-autogen, elixir-format
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
 msgstr "删除机器及其磁盘。所有者将其置顶时拒绝删除。"
 
@@ -80,57 +104,90 @@ msgstr "删除机器及其磁盘。所有者将其置顶时拒绝删除。"
 msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
 msgid "Remove your pin from a machine."
 msgstr "取消机器的置顶。"
 
+#: lib/porsche/ssh/command_messages.ex:35
+#, elixir-autogen, elixir-format
 msgid "List access grants."
 msgstr "列出访问授权。"
 
+#: lib/porsche/ssh/command_messages.ex:33
+#, elixir-autogen, elixir-format
 msgid "Grant viewer, operator or manager access."
 msgstr "授予查看者、操作者或管理员访问权限。"
 
 msgid "Revoke an account's shared access."
 msgstr "撤销账户的共享访问权限。"
 
+#: lib/porsche/ssh/command_messages.ex:37
+#, elixir-autogen, elixir-format
 msgid "List your SSH keys."
 msgstr "列出您的 SSH 密钥。"
 
 msgid "Revoke one of your SSH keys."
 msgstr "撤销您的一个 SSH 密钥。"
 
-msgid "Create or replace a named integration at https://NAME.integration.internal."
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"Create or replace a named integration at https://NAME.integration.internal."
 msgstr "在 https://NAME.integration.internal 创建或替换指定名称的集成。"
 
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
 msgid "Remove a named integration."
 msgstr "移除指定名称的集成。"
 
+#: lib/porsche/ssh/command_messages.ex:13
+#, elixir-autogen, elixir-format
 msgid "List your integrations."
 msgstr "列出您的集成。"
 
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
 msgid "Inspect an integration without secrets."
 msgstr "查看集成，但不显示机密信息。"
 
+#: lib/porsche/ssh/command_messages.ex:11
+#, elixir-autogen, elixir-format
 msgid "Make an integration available to a machine."
 msgstr "使机器可以使用集成。"
 
+#: lib/porsche/ssh/command_messages.ex:12
+#, elixir-autogen, elixir-format
 msgid "Remove a machine's explicit availability."
 msgstr "移除为机器明确授予的可用权限。"
 
+#: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
 msgid "Create a team you own."
 msgstr "创建您拥有的团队。"
 
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
 msgid "List your teams and roles."
 msgstr "列出您的团队和角色。"
 
+#: lib/porsche/ssh/command_messages.ex:45
+#, elixir-autogen, elixir-format
 msgid "List a team's members."
 msgstr "列出团队成员。"
 
+#: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
 msgid "Add or change an admin or member."
 msgstr "添加或更改管理员或成员。"
 
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
 msgid "Remove an account's membership."
 msgstr "移除账户的团队成员资格。"
 
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
 msgid "Offer team ownership to an admin."
 msgstr "向管理员提议转让团队所有权。"
 
@@ -138,11 +195,6 @@ msgstr "向管理员提议转让团队所有权。"
 #, elixir-autogen, elixir-format
 msgid "Accept a pending ownership offer."
 msgstr "接受待处理的所有权转让提议。"
-
-#: lib/porsche/ssh/command_messages.ex:43
-#, elixir-autogen, elixir-format
-msgid "Add or change an admin or member."
-msgstr "添加或更改管理员或成员。"
 
 #: lib/porsche/ssh/onboarding.ex:64
 #, elixir-autogen, elixir-format
@@ -161,57 +213,20 @@ msgstr "核准链接将在 %{minutes} 分钟后或此连接关闭时失效。\n"
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "在浏览器中核准此 SSH 密钥，然后重试命令。"
 
-#: lib/porsche/ssh/command_messages.ex:25
-#, elixir-autogen, elixir-format
-msgid "Cancel an unpublished clone or uncommitted relocation request."
-msgstr "取消尚未发布的克隆或尚未提交的迁移请求。"
-
 #: lib/porsche/ssh/command_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "Cancel your pending ownership offer."
 msgstr "取消您待处理的所有权转让提议。"
-
-#: lib/porsche/ssh/command_messages.ex:28
-#, elixir-autogen, elixir-format
-msgid ""
-"Change a machine's CPU and memory; disk may only grow. A running machine "
-"stops and restarts."
-msgstr "更改机器的 CPU 和内存；磁盘只能扩容。正在运行的机器将停止并重启。"
 
 #: lib/porsche/ssh/command_messages.ex:7
 #, elixir-autogen, elixir-format
 msgid "Close this interactive channel."
 msgstr "关闭此交互通道。"
 
-#: lib/porsche/ssh/command_messages.ex:17
-#, elixir-autogen, elixir-format
-msgid ""
-"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
-"GitLab, Codeberg or Bitbucket repository in the guest."
-msgstr ""
-"创建机器。磁盘最大容量：500 GiB。--source 会在客户机中克隆公共 GitHub、GitLab、Codeberg 或 Bitbucket "
-"仓库。"
-
-#: lib/porsche/ssh/command_messages.ex:41
-#, elixir-autogen, elixir-format
-msgid "Create a team you own."
-msgstr "创建您拥有的团队。"
-
-#: lib/porsche/ssh/command_messages.ex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"Create or replace a named integration at https://NAME.integration.internal."
-msgstr "在 https://NAME.integration.internal 创建或替换指定名称的集成。"
-
 #: lib/porsche/ssh/command_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "Decline a pending ownership offer."
 msgstr "拒绝待处理的所有权转让提议。"
-
-#: lib/porsche/ssh/command_messages.ex:32
-#, elixir-autogen, elixir-format
-msgid "Delete a machine and its disk. Refused while its owner has it pinned."
-msgstr "删除机器及其磁盘。所有者将其置顶时拒绝删除。"
 
 #: lib/porsche/ssh/channel.ex:115
 #, elixir-autogen, elixir-format
@@ -223,25 +238,10 @@ msgstr "文档："
 msgid "Follow the browser approval instructions, then run the setup command\n"
 msgstr "按照浏览器中的核准说明操作，然后运行设置命令\n"
 
-#: lib/porsche/ssh/command_messages.ex:33
-#, elixir-autogen, elixir-format
-msgid "Grant viewer, operator or manager access."
-msgstr "授予查看者、操作者或管理员访问权限。"
-
-#: lib/porsche/ssh/command_messages.ex:36
-#, elixir-autogen, elixir-format
-msgid "Inspect a machine by name or UUID."
-msgstr "按名称或 UUID 查看机器。"
-
 #: lib/porsche/ssh/command_messages.ex:27
 #, elixir-autogen, elixir-format
 msgid "Inspect a previously accepted request."
 msgstr "查看先前已接受的请求。"
-
-#: lib/porsche/ssh/command_messages.ex:15
-#, elixir-autogen, elixir-format
-msgid "Inspect an integration without secrets."
-msgstr "查看集成，但不显示机密信息。"
 
 #: lib/porsche/ssh/output.ex:58
 #, elixir-autogen, elixir-format
@@ -253,65 +253,10 @@ msgstr "无效命令。输入 help 查看可用命令。"
 msgid "Keep that connection open while approving your key in the browser,\n"
 msgstr "在浏览器中核准密钥时，请保持该连接打开，\n"
 
-#: lib/porsche/ssh/command_messages.ex:45
-#, elixir-autogen, elixir-format
-msgid "List a team's members."
-msgstr "列出团队成员。"
-
-#: lib/porsche/ssh/command_messages.ex:35
-#, elixir-autogen, elixir-format
-msgid "List access grants."
-msgstr "列出访问授权。"
-
-#: lib/porsche/ssh/command_messages.ex:9
-#, elixir-autogen, elixir-format
-msgid "List available images."
-msgstr "列出可用镜像。"
-
-#: lib/porsche/ssh/command_messages.ex:16
-#, elixir-autogen, elixir-format
-msgid "List machines you can access."
-msgstr "列出您可以访问的机器。"
-
-#: lib/porsche/ssh/command_messages.ex:37
-#, elixir-autogen, elixir-format
-msgid "List your SSH keys."
-msgstr "列出您的 SSH 密钥。"
-
-#: lib/porsche/ssh/command_messages.ex:13
-#, elixir-autogen, elixir-format
-msgid "List your integrations."
-msgstr "列出您的集成。"
-
-#: lib/porsche/ssh/command_messages.ex:42
-#, elixir-autogen, elixir-format
-msgid "List your teams and roles."
-msgstr "列出您的团队和角色。"
-
-#: lib/porsche/ssh/command_messages.ex:11
-#, elixir-autogen, elixir-format
-msgid "Make an integration available to a machine."
-msgstr "使机器可以使用集成。"
-
-#: lib/porsche/ssh/command_messages.ex:24
-#, elixir-autogen, elixir-format
-msgid "Move a machine to an automatically selected host."
-msgstr "将机器迁移到自动选择的主机。"
-
-#: lib/porsche/ssh/command_messages.ex:49
-#, elixir-autogen, elixir-format
-msgid "Offer team ownership to an admin."
-msgstr "向管理员提议转让团队所有权。"
-
 #: lib/porsche/ssh/channel.ex:113
 #, elixir-autogen, elixir-format
 msgid "Porsche machine management. Type help."
 msgstr "Porsche 机器管理。输入 help。"
-
-#: lib/porsche/ssh/command_messages.ex:6
-#, elixir-autogen, elixir-format
-msgid "Queue an independent full-disk copy of a machine."
-msgstr "将机器的独立完整磁盘副本加入队列。"
 
 #: lib/porsche/ssh/onboarding.ex:114
 #, elixir-autogen, elixir-format
@@ -330,26 +275,6 @@ msgid ""
 msgstr ""
 "连接到以下地址以注册或检查密钥：\n"
 "  ssh "
-
-#: lib/porsche/ssh/command_messages.ex:12
-#, elixir-autogen, elixir-format
-msgid "Remove a machine's explicit availability."
-msgstr "移除为机器明确授予的可用权限。"
-
-#: lib/porsche/ssh/command_messages.ex:14
-#, elixir-autogen, elixir-format
-msgid "Remove a named integration."
-msgstr "移除指定名称的集成。"
-
-#: lib/porsche/ssh/command_messages.ex:44
-#, elixir-autogen, elixir-format
-msgid "Remove an account's membership."
-msgstr "移除账户的团队成员资格。"
-
-#: lib/porsche/ssh/command_messages.ex:51
-#, elixir-autogen, elixir-format
-msgid "Remove your pin from a machine."
-msgstr "取消机器的置顶。"
 
 #: lib/porsche/ssh/output.ex:104
 #, elixir-autogen, elixir-format

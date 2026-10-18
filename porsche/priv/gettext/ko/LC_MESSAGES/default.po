@@ -39,30 +39,52 @@ msgstr ""
 msgid "Show the authenticated account."
 msgstr "인증된 계정을 표시합니다."
 
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
 msgid "List available images."
 msgstr "사용 가능한 이미지를 나열합니다."
 
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
 msgid "List machines you can access."
 msgstr "접근할 수 있는 머신을 나열합니다."
 
+#: lib/porsche/ssh/command_messages.ex:36
+#, elixir-autogen, elixir-format
 msgid "Inspect a machine by name or UUID."
 msgstr "이름 또는 UUID로 머신을 확인합니다."
 
-msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
-msgstr "머신을 만듭니다. 디스크 최대 크기는 500 GiB입니다. --source는 공개 GitHub, GitLab, Codeberg 또는 Bitbucket 저장소를 게스트에 복제합니다."
+#: lib/porsche/ssh/command_messages.ex:17
+#, elixir-autogen, elixir-format
+msgid ""
+"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
+"GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr ""
+"머신을 만듭니다. 디스크 최대 크기는 500 GiB입니다. --source는 공개 GitHub, GitLab, Codeberg 또는 "
+"Bitbucket 저장소를 게스트에 복제합니다."
 
+#: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
 msgid "Queue an independent full-disk copy of a machine."
 msgstr "머신의 독립적인 전체 디스크 복사본을 대기열에 추가합니다."
 
+#: lib/porsche/ssh/command_messages.ex:24
+#, elixir-autogen, elixir-format
 msgid "Move a machine to an automatically selected host."
 msgstr "자동으로 선택된 호스트로 머신을 이동합니다."
 
-msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+#: lib/porsche/ssh/command_messages.ex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Change a machine's CPU and memory; disk may only grow. A running machine "
+"stops and restarts."
 msgstr "머신의 CPU와 메모리를 변경합니다. 디스크는 확장만 가능합니다. 실행 중인 머신은 중지 후 다시 시작됩니다."
 
 msgid "Retry a failed clone or relocation request."
 msgstr "실패한 복제 또는 이동 요청을 다시 시도합니다."
 
+#: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
 msgid "Cancel an unpublished clone or uncommitted relocation request."
 msgstr "게시되지 않은 복제 또는 확정되지 않은 이동 요청을 취소합니다."
 
@@ -73,6 +95,8 @@ msgstr "머신을 시작합니다."
 msgid "Stop a machine, retaining its disk and discarding suspended memory."
 msgstr "Stop a machine, retaining its disk and discarding suspended memory."
 
+#: lib/porsche/ssh/command_messages.ex:32
+#, elixir-autogen, elixir-format
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
 msgstr "머신과 디스크를 삭제합니다. 소유자가 고정한 동안에는 거부됩니다."
 
@@ -80,57 +104,90 @@ msgstr "머신과 디스크를 삭제합니다. 소유자가 고정한 동안에
 msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
 msgid "Remove your pin from a machine."
 msgstr "머신 고정을 해제합니다."
 
+#: lib/porsche/ssh/command_messages.ex:35
+#, elixir-autogen, elixir-format
 msgid "List access grants."
 msgstr "접근 권한 부여 내역을 나열합니다."
 
+#: lib/porsche/ssh/command_messages.ex:33
+#, elixir-autogen, elixir-format
 msgid "Grant viewer, operator or manager access."
 msgstr "뷰어, 운영자 또는 관리자 접근 권한을 부여합니다."
 
 msgid "Revoke an account's shared access."
 msgstr "계정의 공유 접근 권한을 취소합니다."
 
+#: lib/porsche/ssh/command_messages.ex:37
+#, elixir-autogen, elixir-format
 msgid "List your SSH keys."
 msgstr "SSH 키를 나열합니다."
 
 msgid "Revoke one of your SSH keys."
 msgstr "SSH 키 하나를 취소합니다."
 
-msgid "Create or replace a named integration at https://NAME.integration.internal."
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"Create or replace a named integration at https://NAME.integration.internal."
 msgstr "https://NAME.integration.internal에 이름이 지정된 통합을 만들거나 교체합니다."
 
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
 msgid "Remove a named integration."
 msgstr "이름이 지정된 통합을 제거합니다."
 
+#: lib/porsche/ssh/command_messages.ex:13
+#, elixir-autogen, elixir-format
 msgid "List your integrations."
 msgstr "통합을 나열합니다."
 
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
 msgid "Inspect an integration without secrets."
 msgstr "비밀 정보 없이 통합을 확인합니다."
 
+#: lib/porsche/ssh/command_messages.ex:11
+#, elixir-autogen, elixir-format
 msgid "Make an integration available to a machine."
 msgstr "머신에서 통합을 사용할 수 있게 합니다."
 
+#: lib/porsche/ssh/command_messages.ex:12
+#, elixir-autogen, elixir-format
 msgid "Remove a machine's explicit availability."
 msgstr "머신에 명시적으로 부여한 사용 권한을 제거합니다."
 
+#: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
 msgid "Create a team you own."
 msgstr "소유할 팀을 만듭니다."
 
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
 msgid "List your teams and roles."
 msgstr "팀과 역할을 나열합니다."
 
+#: lib/porsche/ssh/command_messages.ex:45
+#, elixir-autogen, elixir-format
 msgid "List a team's members."
 msgstr "팀 구성원을 나열합니다."
 
+#: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
 msgid "Add or change an admin or member."
 msgstr "관리자 또는 구성원을 추가하거나 변경합니다."
 
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
 msgid "Remove an account's membership."
 msgstr "계정의 구성원 자격을 제거합니다."
 
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
 msgid "Offer team ownership to an admin."
 msgstr "관리자에게 팀 소유권 이전을 제안합니다."
 
@@ -138,11 +195,6 @@ msgstr "관리자에게 팀 소유권 이전을 제안합니다."
 #, elixir-autogen, elixir-format
 msgid "Accept a pending ownership offer."
 msgstr "대기 중인 소유권 이전 제안을 수락합니다."
-
-#: lib/porsche/ssh/command_messages.ex:43
-#, elixir-autogen, elixir-format
-msgid "Add or change an admin or member."
-msgstr "관리자 또는 구성원을 추가하거나 변경합니다."
 
 #: lib/porsche/ssh/onboarding.ex:64
 #, elixir-autogen, elixir-format
@@ -161,57 +213,20 @@ msgstr "승인 링크는 %{minutes}분 후 또는 이 연결을 닫으면 만료
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "브라우저에서 이 SSH 키를 승인한 후 명령을 다시 시도하세요."
 
-#: lib/porsche/ssh/command_messages.ex:25
-#, elixir-autogen, elixir-format
-msgid "Cancel an unpublished clone or uncommitted relocation request."
-msgstr "게시되지 않은 복제 또는 확정되지 않은 이동 요청을 취소합니다."
-
 #: lib/porsche/ssh/command_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "Cancel your pending ownership offer."
 msgstr "대기 중인 소유권 이전 제안을 취소합니다."
-
-#: lib/porsche/ssh/command_messages.ex:28
-#, elixir-autogen, elixir-format
-msgid ""
-"Change a machine's CPU and memory; disk may only grow. A running machine "
-"stops and restarts."
-msgstr "머신의 CPU와 메모리를 변경합니다. 디스크는 확장만 가능합니다. 실행 중인 머신은 중지 후 다시 시작됩니다."
 
 #: lib/porsche/ssh/command_messages.ex:7
 #, elixir-autogen, elixir-format
 msgid "Close this interactive channel."
 msgstr "이 대화형 채널을 닫습니다."
 
-#: lib/porsche/ssh/command_messages.ex:17
-#, elixir-autogen, elixir-format
-msgid ""
-"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
-"GitLab, Codeberg or Bitbucket repository in the guest."
-msgstr ""
-"머신을 만듭니다. 디스크 최대 크기는 500 GiB입니다. --source는 공개 GitHub, GitLab, Codeberg 또는 "
-"Bitbucket 저장소를 게스트에 복제합니다."
-
-#: lib/porsche/ssh/command_messages.ex:41
-#, elixir-autogen, elixir-format
-msgid "Create a team you own."
-msgstr "소유할 팀을 만듭니다."
-
-#: lib/porsche/ssh/command_messages.ex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"Create or replace a named integration at https://NAME.integration.internal."
-msgstr "https://NAME.integration.internal에 이름이 지정된 통합을 만들거나 교체합니다."
-
 #: lib/porsche/ssh/command_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "Decline a pending ownership offer."
 msgstr "대기 중인 소유권 이전 제안을 거절합니다."
-
-#: lib/porsche/ssh/command_messages.ex:32
-#, elixir-autogen, elixir-format
-msgid "Delete a machine and its disk. Refused while its owner has it pinned."
-msgstr "머신과 디스크를 삭제합니다. 소유자가 고정한 동안에는 거부됩니다."
 
 #: lib/porsche/ssh/channel.ex:115
 #, elixir-autogen, elixir-format
@@ -223,25 +238,10 @@ msgstr "문서:"
 msgid "Follow the browser approval instructions, then run the setup command\n"
 msgstr "브라우저의 승인 지침을 따른 다음 설정 명령을 실행하세요.\n"
 
-#: lib/porsche/ssh/command_messages.ex:33
-#, elixir-autogen, elixir-format
-msgid "Grant viewer, operator or manager access."
-msgstr "뷰어, 운영자 또는 관리자 접근 권한을 부여합니다."
-
-#: lib/porsche/ssh/command_messages.ex:36
-#, elixir-autogen, elixir-format
-msgid "Inspect a machine by name or UUID."
-msgstr "이름 또는 UUID로 머신을 확인합니다."
-
 #: lib/porsche/ssh/command_messages.ex:27
 #, elixir-autogen, elixir-format
 msgid "Inspect a previously accepted request."
 msgstr "이전에 수락된 요청을 확인합니다."
-
-#: lib/porsche/ssh/command_messages.ex:15
-#, elixir-autogen, elixir-format
-msgid "Inspect an integration without secrets."
-msgstr "비밀 정보 없이 통합을 확인합니다."
 
 #: lib/porsche/ssh/output.ex:58
 #, elixir-autogen, elixir-format
@@ -253,65 +253,10 @@ msgstr "잘못된 명령입니다. 사용 가능한 명령을 보려면 help를 
 msgid "Keep that connection open while approving your key in the browser,\n"
 msgstr "브라우저에서 키를 승인하는 동안 해당 연결을 열어 두고,\n"
 
-#: lib/porsche/ssh/command_messages.ex:45
-#, elixir-autogen, elixir-format
-msgid "List a team's members."
-msgstr "팀 구성원을 나열합니다."
-
-#: lib/porsche/ssh/command_messages.ex:35
-#, elixir-autogen, elixir-format
-msgid "List access grants."
-msgstr "접근 권한 부여 내역을 나열합니다."
-
-#: lib/porsche/ssh/command_messages.ex:9
-#, elixir-autogen, elixir-format
-msgid "List available images."
-msgstr "사용 가능한 이미지를 나열합니다."
-
-#: lib/porsche/ssh/command_messages.ex:16
-#, elixir-autogen, elixir-format
-msgid "List machines you can access."
-msgstr "접근할 수 있는 머신을 나열합니다."
-
-#: lib/porsche/ssh/command_messages.ex:37
-#, elixir-autogen, elixir-format
-msgid "List your SSH keys."
-msgstr "SSH 키를 나열합니다."
-
-#: lib/porsche/ssh/command_messages.ex:13
-#, elixir-autogen, elixir-format
-msgid "List your integrations."
-msgstr "통합을 나열합니다."
-
-#: lib/porsche/ssh/command_messages.ex:42
-#, elixir-autogen, elixir-format
-msgid "List your teams and roles."
-msgstr "팀과 역할을 나열합니다."
-
-#: lib/porsche/ssh/command_messages.ex:11
-#, elixir-autogen, elixir-format
-msgid "Make an integration available to a machine."
-msgstr "머신에서 통합을 사용할 수 있게 합니다."
-
-#: lib/porsche/ssh/command_messages.ex:24
-#, elixir-autogen, elixir-format
-msgid "Move a machine to an automatically selected host."
-msgstr "자동으로 선택된 호스트로 머신을 이동합니다."
-
-#: lib/porsche/ssh/command_messages.ex:49
-#, elixir-autogen, elixir-format
-msgid "Offer team ownership to an admin."
-msgstr "관리자에게 팀 소유권 이전을 제안합니다."
-
 #: lib/porsche/ssh/channel.ex:113
 #, elixir-autogen, elixir-format
 msgid "Porsche machine management. Type help."
 msgstr "Porsche 머신 관리입니다. help를 입력하세요."
-
-#: lib/porsche/ssh/command_messages.ex:6
-#, elixir-autogen, elixir-format
-msgid "Queue an independent full-disk copy of a machine."
-msgstr "머신의 독립적인 전체 디스크 복사본을 대기열에 추가합니다."
 
 #: lib/porsche/ssh/onboarding.ex:114
 #, elixir-autogen, elixir-format
@@ -330,26 +275,6 @@ msgid ""
 msgstr ""
 "다음으로 연결하여 키를 등록하거나 확인하세요:\n"
 "  ssh "
-
-#: lib/porsche/ssh/command_messages.ex:12
-#, elixir-autogen, elixir-format
-msgid "Remove a machine's explicit availability."
-msgstr "머신에 명시적으로 부여한 사용 권한을 제거합니다."
-
-#: lib/porsche/ssh/command_messages.ex:14
-#, elixir-autogen, elixir-format
-msgid "Remove a named integration."
-msgstr "이름이 지정된 통합을 제거합니다."
-
-#: lib/porsche/ssh/command_messages.ex:44
-#, elixir-autogen, elixir-format
-msgid "Remove an account's membership."
-msgstr "계정의 구성원 자격을 제거합니다."
-
-#: lib/porsche/ssh/command_messages.ex:51
-#, elixir-autogen, elixir-format
-msgid "Remove your pin from a machine."
-msgstr "머신 고정을 해제합니다."
 
 #: lib/porsche/ssh/output.ex:104
 #, elixir-autogen, elixir-format
