@@ -248,3 +248,35 @@ Native governance checks and evaluated Nix HLDD passed before this later merge;
 they are rerun for its final source projection. The full Marshall suite,
 authenticated browser journeys, native Windows candidate execution and
 linguistic acceptance remain separate and are not claimed by this integration.
+
+## Continued translation and authenticated browser evidence
+
+A further catalog batch adds 1,010 documentation translations: Arabic100,
+Bengali300, Japanese400, Finnish10 and Swedish200. Entries retain their existing native
+Gettext identities; raw-entry replacement preserves all unrelated catalog text.
+This preserves ADR-0201 and introduces no architecture, authority or protocol
+change. Documentation coverage and linguistic acceptance remain incomplete.
+
+Authenticated Bombadil run15 completed naturally with exit0 and zero violations:
+25 saved locales, all25 persisted after actual document reload, and all100
+locale/theme/viewport combinations (light/dark,390×844 and1440×1000). It also
+verified repeated English saves from `#profile`, browser-default Japanese reset,
+computed LTR/RTL direction, code direction and bounded layout. The immutable
+runtime ebin SHA256 was
+`42397d898baba1715702def9059361f69b6ee15c58efecba1b8c9747adb891d7`;
+trace SHA256 was
+`d6ef781bd7571959e23a56add4969c2a9df089ae8a1c5aea060cc604614da64a`.
+This is settings-journey browser evidence, not all-route, native Porsche or
+linguistic acceptance. Scratch Chromium CJK font coverage remains a limitation.
+
+The unchanged100-case Enrico history property passes in isolation in53.6seconds
+with a180-second finite execution limit. Its ordinary60-second timeout failed
+under the concurrent full-suite load; the isolated pass does not establish a
+passing full suite. No property cases or assertions were removed.
+
+The deterministic documentation extractor now matches3805 current source units.
+Catalog reconciliation retains two direct messages for3807 identities, adds10
+new identities and retires3. All3797 retained entry blocks per locale preserve
+metadata, fuzzy flags and translations byte-for-byte; one retired nonempty
+translation is privately archived. Native Gettext extraction freshness remains
+a separate pending check. The localization skill passes its structural validator.
