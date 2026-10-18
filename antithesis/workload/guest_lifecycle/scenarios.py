@@ -28,7 +28,6 @@ RELEASE_ATTEMPTS = 5
 # A lost stop/start reply is resubmitted with its original key, which Marshall
 # deduplicates, before the cycle is left unexercised.
 LIFECYCLE_ATTEMPTS = 3
-MISMATCH = "Completed guest lifecycle outcome matches current VM state and execution identity"
 # Marshall withholds capacity whose last accepted Lilly report is older than its
 # 5 s freshness window, which injected faults routinely exceed; the cycle polls
 # for a usable catalog instead of judging one instant.
@@ -133,7 +132,10 @@ def _sample(
             and vm.execution_epoch == operation.execution_epoch
             and vm.generation == operation.generation
         )
-        always(consistent, MISMATCH)
+        always(
+            consistent,
+            "Completed guest lifecycle outcome matches current VM state and execution identity",
+        )
         if not consistent:
             return ObservedMismatch(operation, vm)
         if operation.outcome.state != expected_state:
