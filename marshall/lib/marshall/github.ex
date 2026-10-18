@@ -59,50 +59,45 @@ defmodule Marshall.GitHub do
 
   @spec configured?() :: boolean()
   def configured? do
-    Enum.all?(
-      [:github_client_id, :github_client_secret_file, :github_redirect_uri],
-      fn key ->
-        value = Application.get_env(:marshall, key)
-        is_binary(value) and byte_size(value) > 0
-      end, invalid_callback?: true)
+    Enum.all?([:github_client_id, :github_client_secret_file, :github_redirect_uri], fn key ->
+      value = Application.get_env(:marshall, key)
+      is_binary(value) and byte_size(value) > 0
+    end)
   end
 
   @spec begin_authorization(User.t(), binary()) ::
           {:ok, %{url: binary(), attempt_id: binary()}} | {:error, error()}
   def begin_authorization(%User{} = actor, jti) when is_binary(jti) do
-    private(
-      fn ->
-        if configured?() do
-          Ledger.transaction(fn ->
-            current!(actor.id, jti)
-            connection = connection!(actor.id)
+    private(fn ->
+      if configured?() do
+        Ledger.transaction(fn ->
+          current!(actor.id, jti)
+          connection = connection!(actor.id)
 
-            unless connection.phase in [:disconnected, :reconnect_required],
-              do: Ledger.rollback(:reconnect_required)
+          unless connection.phase in [:disconnected, :reconnect_required],
+            do: Ledger.rollback(:reconnect_required)
 
-            cancel_attempt!(connection.authorization_attempt_id)
-            state = random()
-            verifier = random()
+          cancel_attempt!(connection.authorization_attempt_id)
+          state = random()
+          verifier = random()
 
-            attempt =
-              Ledger.create!(AuthorizationAttempt, :record, %{
-                connection_id: connection.id,
-                state_digest: digest(state),
-                login_digest: digest(jti),
-                verifier: verifier,
-                generation: connection.generation,
-                expires_at: DateTime.add(Ledger.now(), 600, :second)
-              })
+          attempt =
+            Ledger.create!(AuthorizationAttempt, :record, %{
+              connection_id: connection.id,
+              state_digest: digest(state),
+              login_digest: digest(jti),
+              verifier: verifier,
+              generation: connection.generation,
+              expires_at: DateTime.add(Ledger.now(), 600, :second)
+            })
 
-            Ledger.update!(connection, :authorize, %{authorization_attempt_id: attempt.id})
-            %{url: Provider.authorization_url(state, digest(verifier)), attempt_id: attempt.id}
-          end)
-        else
-          {:error, :not_configured}
-        end
-      end,
-      invalid_callback?: true
-    )
+          Ledger.update!(connection, :authorize, %{authorization_attempt_id: attempt.id})
+          %{url: Provider.authorization_url(state, digest(verifier)), attempt_id: attempt.id}
+        end)
+      else
+        {:error, :not_configured}
+      end
+    end)
   end
 
   def begin_authorization(_, _), do: {:error, :unauthorized}
@@ -116,23 +111,26 @@ defmodule Marshall.GitHub do
   def callback(%User{} = actor, jti, state, code)
       when is_binary(jti) and is_binary(state) and byte_size(state) in 32..128 and
              is_binary(code) and byte_size(code) in 1..4096 do
-    private(fn ->
-      with true <- configured?(),
-           {:ok, {attempt, verifier}} <- claim_callback(actor, jti, state) do
-        result = exchange_callback(actor, jti, attempt, code, verifier)
-        if match?({:error, _}, result), do: abandon_attempt(attempt.id)
-        result
-      else
-        false ->
-          {:error, :invalid_callback}
+    private(
+      fn ->
+        with true <- configured?(),
+             {:ok, {attempt, verifier}} <- claim_callback(actor, jti, state) do
+          result = exchange_callback(actor, jti, attempt, code, verifier)
+          if match?({:error, _}, result), do: abandon_attempt(attempt.id)
+          result
+        else
+          false ->
+            {:error, :invalid_callback}
 
-        {:error, reason} when reason in [:unauthorized, :invalid_callback, :identity_in_use] ->
-          {:error, reason}
+          {:error, reason} when reason in [:unauthorized, :invalid_callback, :identity_in_use] ->
+            {:error, reason}
 
-        _ ->
-          {:error, :unavailable}
-      end
-    end)
+          _ ->
+            {:error, :unavailable}
+        end
+      end,
+      invalid: :invalid_callback
+    )
   end
 
   def callback(_, _, _, _), do: {:error, :invalid_callback}
@@ -1305,7 +1303,7 @@ defmodule Marshall.GitHub do
       _ -> {:error, :unavailable}
     catch
       :exit, _reason ->
-        if Keyword.get(opts, :invalid_callback?) == true,
+        if Keyword.get(opts, :invalid) == :invalid_callback,
           do: {:error, :invalid_callback},
           else: {:error, :unavailable}
     after
