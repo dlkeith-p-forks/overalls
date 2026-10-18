@@ -20,11 +20,19 @@ from guest_lifecycle.domain import (
 )
 from guest_lifecycle.operation import ComputeLifecycleOperator, OperationLedger, OperatorReply
 from guest_lifecycle.readiness import observed_gap
-from guest_lifecycle.witness import GuestSpec, GuestWitness, GuestWitnessClient
+from guest_lifecycle.witness import GuestIdentity, GuestSpec, GuestWitness, GuestWitnessClient
 
 LOG = logging.getLogger(__name__)
 # Uncertain final stops are resubmitted with one key before the slot is abandoned.
 RELEASE_ATTEMPTS = 5
+# Marshall withholds capacity whose last accepted Lilly report is older than its
+# 5 s freshness window, which injected faults routinely exceed; the cycle polls
+# for a usable catalog instead of judging one instant.
+CATALOG_WAIT_SECONDS = 90.0
+CATALOG_POLL_SECONDS = 2.0
+# Admission re-checks freshness transactionally, so a stale window between the
+# catalog read and provision is refused once and retried after a fresh wait.
+PROVISION_ATTEMPTS = 2
 
 
 @dataclass(frozen=True)
@@ -69,7 +77,14 @@ def _sample(
     expected_kind: str,
     expected_state: str,
     timeout_seconds: float,
+    boot: tuple[int, int] | None = None,
 ) -> BootObservation | ObservedMismatch | None:
+    """Join a completed operation to the guest witness for its boot.
+
+    A stop retains the boot it ended, whose tuple predates the stop's own
+    generation bump, so the caller names that boot; otherwise the operation's
+    tuple identifies the boot it produced.
+    """
     deadline = time.monotonic() + timeout_seconds
     while time.monotonic() < deadline:
         operation_reply = operator.operation(vm_id, operation_id)
@@ -101,9 +116,8 @@ def _sample(
             return ObservedMismatch(operation, vm)
         if operation.outcome.state != expected_state:
             return None
-        guest_result = witness.witness(
-            GuestSpec(vm.placement_id, operation.execution_epoch, operation.generation)
-        )
+        epoch, generation = boot or (operation.execution_epoch, operation.generation)
+        guest_result = witness.witness(GuestSpec(vm.placement_id, epoch, generation))
         if guest_result.state is State.OBSERVED and guest_result.value is not None:
             return BootObservation(operation, vm, guest_result.value)
         time.sleep(1)
@@ -140,6 +154,54 @@ def _stopped_has_retained_overlay(observation: BootObservation) -> bool:
     )
 
 
+def _usable_catalog(
+    operator: ComputeLifecycleOperator, witness: GuestWitnessClient
+) -> tuple[GuestIdentity, str | None] | str:
+    """Poll until identity and catalog are usable, else return the last gap token."""
+    deadline = time.monotonic() + CATALOG_WAIT_SECONDS
+    while True:
+        identity_result = witness.identity()
+        catalog_result = operator.catalog()
+        gap = observed_gap(identity_result, catalog_result)
+        if gap is None and identity_result.value is not None and catalog_result.value is not None:
+            return identity_result.value, None
+        if time.monotonic() + CATALOG_POLL_SECONDS >= deadline:
+            return gap or "observation_missing"
+        time.sleep(CATALOG_POLL_SECONDS)
+
+
+def _admit(
+    operator: ComputeLifecycleOperator, witness: GuestWitnessClient
+) -> tuple[UUID, UUID] | None:
+    """Provision once capacity is usable; a capacity refusal waits and retries."""
+    for attempt in range(PROVISION_ATTEMPTS):
+        usable = _usable_catalog(operator, witness)
+        if isinstance(usable, str):
+            LOG.info("Guest lifecycle unexercised: %s", usable)
+            return None
+        image = usable[0]
+        disk_bytes = ((image.minimum_disk_bytes + 4095) // 4096) * 4096
+        admission = operator.provision(
+            image.image_id, image.vcpu, image.memory_bytes, disk_bytes, uuid4()
+        )
+        if admission.state is not State.OBSERVED or admission.value is None:
+            LOG.info("Guest lifecycle provision uncertain")
+            return None
+        if admission.value.status != "ok":
+            reason = admission.value.reason or "unrecognized_reason"
+            LOG.info("Guest lifecycle provision refused: %s", reason)
+            if reason == "insufficient_capacity" and attempt + 1 < PROVISION_ATTEMPTS:
+                continue
+            return None
+        try:
+            vm_id = provision_id(admission.value)
+            return vm_id, _operation_id(admission.value, vm_id)
+        except (ValueError, TypeError):
+            LOG.info("Guest lifecycle provision receipt unavailable")
+            return None
+    return None
+
+
 def run_physical_boot_cycle() -> int:
     """@cc [owner:ghuntley,label:verification] guest-cycle-gates-physical-claims
     A completed Compute outcome MUST be joined to a separate guest witness
@@ -156,26 +218,10 @@ def run_physical_boot_cycle() -> int:
     ledger = OperationLedger()
     operator = ComputeLifecycleOperator(Path(request_root), ledger)
     witness = GuestWitnessClient(operator)
-    identity_result = witness.identity()
-    catalog_result = operator.catalog()
-    gap = observed_gap(identity_result, catalog_result)
-    if gap is not None or identity_result.value is None or catalog_result.value is None:
-        LOG.info("Guest lifecycle unexercised: %s", gap or "observation_missing")
+    admitted = _admit(operator, witness)
+    if admitted is None:
         return 0
-    image = identity_result.value
-    disk_bytes = ((image.minimum_disk_bytes + 4095) // 4096) * 4096
-    admission = operator.provision(
-        image.image_id, image.vcpu, image.memory_bytes, disk_bytes, uuid4()
-    )
-    if admission.state is not State.OBSERVED or admission.value is None:
-        LOG.info("Guest lifecycle provision uncertain")
-        return 0
-    try:
-        vm_id = provision_id(admission.value)
-        provision_operation = _operation_id(admission.value, vm_id)
-    except (ValueError, TypeError):
-        LOG.info("Guest lifecycle provision receipt unavailable")
-        return 0
+    vm_id, provision_operation = admitted
     # Every exit after admission submits a final stop, so a failed or
     # unobserved cycle cannot leave the single guest slot held.
     try:
@@ -205,7 +251,16 @@ def run_physical_boot_cycle() -> int:
             stop_id = lifecycle_id(stop_reply.value, vm_id, "stop")
         except (ValueError, TypeError):
             return 0
-        stopped = _sample(operator, witness, vm_id, stop_id, "stop", "stopped", 240)
+        stopped = _sample(
+            operator,
+            witness,
+            vm_id,
+            stop_id,
+            "stop",
+            "stopped",
+            240,
+            (first.operation.execution_epoch, first.operation.generation),
+        )
         if isinstance(stopped, ObservedMismatch):
             _reject_mismatch()
             return 1

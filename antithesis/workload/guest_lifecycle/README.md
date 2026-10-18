@@ -35,6 +35,16 @@ image with known capacity for its shape. Each unmet condition is logged once
 per process with a fixed reason token. The command ends with an unsampled stop
 attempt so a later cycle can find the slot free; that stop proves nothing.
 
+Marshall withholds capacity whose last accepted Lilly report is older than its
+5 s freshness window, and injected faults on the Lilly Control exchange exceed
+that window routinely. The command therefore polls the catalog for up to 90 s
+before provisioning instead of judging one instant, and retries a provision
+refused with `insufficient_capacity` once after a fresh wait, because admission
+re-checks the same window transactionally. Refusals are logged with their
+closed reason token only. A stop retains the boot it ended, so the stopped
+witness is requested with the provision's execution tuple rather than the
+stop operation's newer generation, which the guest server fences exactly.
+
 Which catalog properties the profile can exercise:
 
 | Property | Profile exercise |

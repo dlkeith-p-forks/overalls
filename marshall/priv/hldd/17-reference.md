@@ -388,6 +388,17 @@ connect, handshake and queue budgets, reads and `request_key`-idempotent
 provision and lifecycle evaluations retry a crashed attempt, the final stop is
 resubmitted with one request key, and the driver waits up to 120 s for a reply.
 Production Repo settings and the long-lived Marshall nodes are unchanged.
+Run `a574538c77694308d6133a2f478b71d2-65-0` then completed 54 verified boots
+and about 69 product stops, yet observed no stop: the stopped guest record keeps
+the retained boot's generation while the stop operation carries Marshall's
+bumped generation, and the driver asked the exactly fenced witness for the
+latter. Most other cycles read the catalog once while the last accepted Lilly
+report was older than Marshall's 5 s capacity freshness window under injected
+Control faults (`capacity_unknown`). The driver now requests the stopped witness
+with the provision's tuple, polls the catalog for up to 90 s before
+provisioning, and retries an `insufficient_capacity` refusal once after a fresh
+wait, logging only the closed refusal token. Marshall's freshness decision is
+unchanged.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The

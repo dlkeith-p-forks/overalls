@@ -12,6 +12,8 @@ from uuid import UUID, uuid4
 from core.outcome import Observation, State
 
 IMAGE_ID = re.compile(r"sha256:[0-9a-f]{64}\Z")
+# Refusal reasons are closed atom names; anything else is never kept or logged.
+REASON_TOKEN = re.compile(r"[a-z][a-z0-9_]{0,63}\Z")
 
 
 @dataclass(frozen=True)
@@ -31,6 +33,14 @@ class OperatorReply:
     operation: str
     status: str
     value: object | None
+    reason: str | None = None
+
+
+def reason_token(raw: object) -> str:
+    """Closed refusal token safe to log; unrecognised text collapses to one token."""
+    if isinstance(raw, str) and REASON_TOKEN.match(raw):
+        return raw
+    return "unrecognized_reason"
 
 
 class OperationLedger:
@@ -153,7 +163,11 @@ class ComputeLifecycleOperator:
                     OperatorReply(request_id, operation, status, raw["value"])
                 )
             if status in ("error", "refused") and isinstance(raw.get("reason"), str):
-                return Observation.observed(OperatorReply(request_id, operation, status, None))
+                return Observation.observed(
+                    OperatorReply(
+                        request_id, operation, status, None, reason_token(raw.get("reason"))
+                    )
+                )
             return Observation.unavailable()
         return Observation.unavailable()
 
