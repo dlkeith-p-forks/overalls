@@ -301,7 +301,12 @@ not native ZFS, KVM, Firecracker, isolation or capacity evidence. Its first
 hosted run (`a2edc265384761d6607df51eac50b29d-65-0`) timed out at
 `capacity_unknown` because the host was never enabled; the earlier local pass
 had inherited an enabled host from a retained PostgreSQL volume, so local
-validations now start from empty volumes.
+validations now start from empty volumes. With the host enabled, run
+`91c9dfa850d2435808323d8910182d7a-65-0` still admitted no guest: the stub slot
+reported exactly the 2 GiB guest memory, while admission reserves guest memory
+plus the fixed 64 MiB VMM overhead, so Marshall correctly refused every
+provision for insufficient capacity. The slot now reports guest memory plus
+that overhead, and the workload capacity gate requires the same sum.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The

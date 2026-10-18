@@ -61,7 +61,7 @@ defmodule OverallsAntithesis.Lilly.GuestStubStorageTest do
     report = StubStorageCollector.report([pool], @limits, "x86_64", 3, [], %{}, [])
 
     assert report.capacity["cpu_headroom_millicores"] == 1000
-    assert report.capacity["memory_headroom_bytes"] == 2_147_483_648
+    assert report.capacity["memory_headroom_bytes"] == 2_214_592_512
     assert report.capacity["covered"] == %{}
     assert OverallsProtocol.Capacity.valid?(report.capacity)
     assert report.inventory["execution_ready"] == false
