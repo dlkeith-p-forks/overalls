@@ -225,9 +225,10 @@ secrets into the serial log, keep `assert` messages value-free.
 ## Elixir and BEAM properties
 
 Elixir properties use the same native Hegel engine but run inside the Mix test VM.
-The protocol frontend is pinned to `2c9f7a4`; its merged full gate passed 299
-tests and properties. The review preserves the passing `6a62795` result separately. This
-frontend update changes no native engine sources.
+The current protocol, Marshall and Lilly frontend pin is `9b13af8`. The recorded
+299-test protocol gate used the earlier `2c9f7a4` frontend; the review preserves
+the passing `6a62795` result separately. Those historical results do not verify
+the current pin or changed consumer tests.
 Use them for pure functions, protocol codecs, Ash changesets, lifecycle models,
 authorization decisions, bounded retry/reconciliation models, and BEAM-visible
 process or socket behavior. Keep NixOS, native Rust/KVM, physical isolation,
@@ -235,8 +236,11 @@ filesystem durability, and multi-host recovery claims in their dedicated suites.
 
 The current protocol suite uses one `property` runner with explicit `test_cases`,
 `seed`, `database: :disabled` and `print_blob: false` options. Do not nest the
-frontend's `check all` compatibility runner inside a property: the pinned frontend
-discards its StreamData options and creates another native run. Draw labelled values
+frontend's `check all` compatibility runner inside a property: compatibility
+options and filter clauses are not preserved. Context-pattern `property/3`
+expansion at `9b13af8` can also recurse without bound; affected consumer tests use
+tagged ordinary ExUnit declarations around their existing generated checks.
+Draw labelled values
 once at the property boundary instead. Protocol's
 [`TestProperties.draw/2`](../../protocol/test/support/test_properties.ex) obtains
 the native test case, records only the literal label and a redaction marker, and

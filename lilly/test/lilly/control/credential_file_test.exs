@@ -6,7 +6,9 @@ defmodule Lilly.Control.CredentialFileTest do
   @moduletag :tmp_dir
   @id "11111111-1111-4111-8111-111111111111"
 
-  property "arbitrary file contents fail without disclosing payloads", %{tmp_dir: dir} do
+  @tag :hegel
+
+  test "arbitrary file contents fail without disclosing payloads", %{tmp_dir: dir} do
     File.chmod!(dir, 0o700)
     path = Path.join(dir, "credential.json")
 

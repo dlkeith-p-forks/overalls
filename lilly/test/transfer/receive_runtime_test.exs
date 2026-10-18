@@ -95,10 +95,11 @@ defmodule Lilly.Transfer.ReceiveRuntimeTest do
         [readiness: :execution_unavailable, readiness: :readiness_timeout]
 
     check all(
-            {mode, reason} <- member_of(stages),
+            stage <- member_of(stages),
             bytes <- binary(min_length: 1, max_length: 64),
             wrapped? <- boolean()
           ) do
+      {mode, reason} = stage
       secret = "private-cleanup-" <> Base.encode16(bytes)
       failure = if wrapped?, do: {:error, {reason, secret}}, else: {:error, reason}
       expected = if wrapped?, do: :effect_unconfirmed, else: reason

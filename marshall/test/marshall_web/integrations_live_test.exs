@@ -5,7 +5,8 @@ defmodule MarshallWeb.IntegrationsLiveTest do
   import Phoenix.LiveViewTest
   alias Marshall.Compute.Ledger
 
-  property "invalid submissions preserve the connected view and show redacted refusal", %{
+  @tag :hegel
+  test "invalid submissions preserve the connected view and show redacted refusal", %{
     conn: conn
   } do
     owner = Marshall.ComputeFixtures.user()

@@ -1458,7 +1458,8 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
   # Changed-shape retries MUST refuse while preserving that same row inventory.
   @tag timeout: 300_000
   @tag uncertain_admission: true
-  property "lost post-commit admission replies replay across three nodes", %{peers: peers} do
+  @tag :hegel
+  test "lost post-commit admission replies replay across three nodes", %{peers: peers} do
     check all(
             repeats <- integer(1..3),
             origin <- integer(0..2),

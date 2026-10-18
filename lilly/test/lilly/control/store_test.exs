@@ -113,7 +113,8 @@ defmodule Lilly.Control.StoreTest do
   # later stop/delete commands do not. The reference is operation metadata, so a
   # generated lifecycle MUST never fence the store as an identity conflict, while
   # genuine placement identity changes still conflict.
-  property "workspace source metadata never turns ordinary lifecycle into a conflict", %{
+  @tag :hegel
+  test "workspace source metadata never turns ordinary lifecycle into a conflict", %{
     directory: directory
   } do
     source = %{
@@ -218,9 +219,11 @@ defmodule Lilly.Control.StoreTest do
     assert MapSet.new(copies) == MapSet.new([source, destination])
   end
 
-  property "out-of-order delivery preserves the highest generation", %{store: store} do
+  @tag :hegel
+
+  test "out-of-order delivery preserves the highest generation", %{store: store} do
     check all(
-            generations <- uniq_list_of(integer(1..10000), min_length: 1, max_length: 8),
+            generations <- uniq_list_of(integer(1..10000), min: 1, max: 8),
             max_runs: 20
           ) do
       File.rm(Path.join(store.path, @id <> ".json"))

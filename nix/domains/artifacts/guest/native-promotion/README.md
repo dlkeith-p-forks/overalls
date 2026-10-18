@@ -17,8 +17,12 @@ it does not repeat native assembly or reinterpret a stock image as a candidate.
 Each scenario has `name`, a hash-bound `service` receipt, and `supporting`
 receipts. Growth and crash require one supporting receipt; isolation and daemon
 recovery require two, one per boot. Service receipts must bind the same image,
-kernel, firmware and VMM, retain distinct boot identities and all 22 service
-checks, and record clean exits except the crash scenario's observed SIGKILL.
+kernel, firmware and VMM, retain distinct boot identities and the exact named
+service checks, and record clean exits except the crash scenario's observed
+SIGKILL. The immutable FreeBSD approval retains its 22 reviewed checks. OmniOS
+requires 25, additionally covering workspace Git ownership and unrelated-root
+refusal, executor heartbeat withdrawal and whole-process-group cancellation.
+Missing or substituted oracle names refuse even when the check count matches.
 Supporting receipts must cover those same boots. All original candidate
 receipts retain `native_admission=false`; the approval and runtime capability
 registry are separate authorities.

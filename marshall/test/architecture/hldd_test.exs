@@ -19,7 +19,8 @@ defmodule Overalls.HLDDTest do
     %{root: root}
   end
 
-  property "digests are independent of enumeration order and bind file identities", %{root: root} do
+  @tag :hegel
+  test "digests are independent of enumeration order and bind file identities", %{root: root} do
     check all(bytes <- binary(), name <- string(:alphanumeric, min_length: 1, max_length: 24)) do
       write(root, "a", bytes)
       write(root, "b", name)
@@ -29,7 +30,8 @@ defmodule Overalls.HLDDTest do
     end
   end
 
-  property "edited, added and deleted sources invalidate reviewed receipts", %{root: root} do
+  @tag :hegel
+  test "edited, added and deleted sources invalidate reviewed receipts", %{root: root} do
     check all(change <- member_of([:edit, :add, :delete]), content <- binary(min_length: 1)) do
       fixture(root)
       write(root, "source.ex", "original")
@@ -213,7 +215,8 @@ defmodule Overalls.HLDDTest do
     end
   end
 
-  property "configured Hegel evidence preserves assertion and execution requirements", %{
+  @tag :hegel
+  test "configured Hegel evidence preserves assertion and execution requirements", %{
     root: root
   } do
     data = fixture(root)
@@ -255,6 +258,49 @@ defmodule Overalls.HLDDTest do
 
       write(root, "result.md", "configured runner passed")
       assert HLDDCoverage.validate(root, ledger.(recorded)) == []
+    end
+  end
+
+  test "explicit Elixir Hegel runners qualify without weakening evidence checks", %{root: root} do
+    data = fixture(root)
+    [row] = data["scenarios"]
+
+    evidence = %{
+      "kind" => "property",
+      "execution" => "present",
+      "path" => "test.exs",
+      "assertion" => "generated_refusal",
+      "scope" => "Explicit native Elixir runner recognition only"
+    }
+
+    ledger = %{data | "scenarios" => [%{row | "evidence" => [evidence], "status" => "partial"}]}
+
+    for runner <- ["Hegel.check(", "Hegel.run(", "Hegel . check (", "Hegel.\nrun("] do
+      write(root, "test.exs", runner <> "fn test_case -> generated_refusal(test_case) end)")
+      assert HLDDCoverage.validate(root, ledger) == [], runner
+
+      absent = %{evidence | "assertion" => "absent_assertion"}
+
+      assert HLDDCoverage.validate(root, %{
+               ledger
+               | "scenarios" => [%{row | "evidence" => [absent], "status" => "partial"}]
+             }) == ["missing test assertion: test.exs"]
+    end
+
+    for runner <- [
+          "OtherHegel.check(",
+          "Other.Hegel.check(",
+          "Hegel.check_not_a_runner(",
+          "Hegel.check_run_not_a_runner(",
+          "Hegel.check",
+          "@tag :hegel"
+        ] do
+      write(root, "test.exs", runner <> " generated_refusal")
+
+      assert HLDDCoverage.validate(root, ledger) == [
+               "property evidence has no property test: test.exs"
+             ],
+             runner
     end
   end
 

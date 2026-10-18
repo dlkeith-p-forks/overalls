@@ -262,9 +262,10 @@ defmodule Lilly.VM.WorkspaceSourceTest do
 
     check all(
             key <- member_of(Map.keys(good)),
-            value <- one_of([integer(), constant(nil), string(:alphanumeric, max_length: 70)]),
-            value != good[key]
+            value <- one_of([integer(), constant(nil), string(:alphanumeric, max_length: 70)])
           ) do
+      Hegel.assume(value != good[key])
+
       assert :rejected =
                WorkspaceSource.reply(
                  JSON.encode!(Map.put(good, key, value)) <> "\n",
@@ -284,8 +285,10 @@ defmodule Lilly.VM.WorkspaceSourceTest do
   # Model-based command sequences. The model mirrors Driver.deliver_workspace_source/4:
   # a boot whose journal is settled is never redelivered, each delivery runs in the
   # supervised task via start/2 and the fence compares the model's current boot.
-  property "delivery command sequences keep boot binding, conflict and readiness invariants",
-           %{tmp_dir: root} do
+  @tag :hegel
+  test "delivery command sequences keep boot binding, conflict and readiness invariants", %{
+    tmp_dir: root
+  } do
     commands =
       list_of(
         member_of([
@@ -303,10 +306,10 @@ defmodule Lilly.VM.WorkspaceSourceTest do
     check all(
             source <- source_gen(),
             other <- source_gen(),
-            other != source,
             sequence <- commands,
             max_runs: 20
           ) do
+      Hegel.assume(other != source)
       path = Path.join(root, "#{System.unique_integer([:positive])}.sock")
       first = boot(1, Lilly.UUID.generate())
       {guest, acceptor} = Guest.start(path, first)

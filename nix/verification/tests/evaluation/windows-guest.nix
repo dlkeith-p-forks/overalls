@@ -21,7 +21,38 @@ let
   firmware = packages.windowsFirmware;
   firmwarePatches = map (p: baseNameOf (toString p)) (packages.vmm.passthru.overallsPatches);
   accepts = args: (builtins.tryEval (packages.mkWindowsGuest args).drvPath).success;
+  published = packages.windowsGuestPublished;
+  fleetImages = import ../../../../fleet/guest-images.nix { overallsPackages = packages; };
+  fleetWindows = lib.filter (entry: entry.name == "Windows Server 2025") fleetImages;
 in
+# @cc [owner:ghuntley,label:verification;deployment] windows-fleet-sealed-selection
+# The shared fleet list MUST select the reviewed recursive-hash Windows pin,
+# whose fallback only refuses. The source windows-v1 builder MUST remain an
+# independent development target; declaration checks do not prove guest boot.
+assert published.name == "overalls-windows-server-2025-e9ed22f1";
+assert published.drvAttrs.outputHash == "sha256-wTUJSjElKyGQ6LnYELBh/N8+WAYTlGOcqQwkzMtLoRU=";
+assert published.drvAttrs.outputHashMode == "recursive";
+assert published.drvAttrs.allowedReferences == [ ];
+assert builtins.getContext published.buildCommand == { };
+assert lib.hasInfix "exit 1" published.buildCommand;
+assert lib.hasInfix "signed Overalls cache" published.buildCommand;
+assert published.passthru.manifest.version == 5;
+assert published.passthru.manifest.guest_agents == "windows-v1";
+assert published.passthru.manifest.workspace_source_version == 2;
+assert published.passthru.manifest.boot.kind == "firmware";
+assert published.passthru.manifest.boot.pci;
+assert published.passthru.manifest.boot.firmware == {
+  bytes = 4194304;
+  sha256 = "261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2";
+};
+assert published.passthru.manifest.root == {
+  format = "raw-gpt";
+  bytes = 68719476736;
+  sha256 = "a82162b769d71a5db3d52fdb65b9291f058792d5a9ad1c45ee31e0f3d37226c1";
+};
+assert builtins.length fleetWindows == 1;
+assert (builtins.head fleetWindows).package.drvPath == published.drvPath;
+assert published.drvPath != packages.windowsGuestAgents.drvPath;
 # @cc [owner:ghuntley,label:verification] windows-guest-offline-kvm-assembly
 # The cheap evaluation gate MUST prove the builder keeps the installation in a
 # KVM sandbox with restricted user networking, modern-only virtio-pci devices,
@@ -229,6 +260,7 @@ assert firmwarePatches == [
   "firecracker-pci-decode-enabled.patch"
   "firecracker-cmos-rtc.patch"
   "firecracker-cloudhv-poweroff.patch"
+  "firecracker-omnios-serial-shutdown.patch"
   "firecracker-uart-thre-tests.patch"
   "firecracker-pci-bar-relocation.patch"
   "firecracker-virtio-init-queue.patch"
@@ -238,6 +270,8 @@ assert firmwarePatches == [
   "firecracker-net-reset-reuse.patch"
   "firecracker-virtio-blk-sg.patch"
   "firecracker-vsock-indirect-desc.patch"
+  "firecracker-vsock-reset.patch"
+  "firecracker-rng-reset.patch"
   "firecracker-uart-thre-enable.patch"
 ];
 # Builder argument validation stays in Nix evaluation.

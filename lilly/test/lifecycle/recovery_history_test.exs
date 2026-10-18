@@ -35,7 +35,8 @@ defmodule Lilly.Lifecycle.RecoveryHistoryTest do
   # Restored actors MUST resume current physical reconciliation on authenticated
   # control connection without a diagnostic sender. This actor fixture does not
   # establish native VMM execution, TLS authentication or a full Runtime startup.
-  property "restored actor effects resume without a diagnostic sender", %{tmp_dir: root} do
+  @tag :hegel
+  test "restored actor effects resume without a diagnostic sender", %{tmp_dir: root} do
     check all(
             actor_count <- integer(1..3),
             transitions <- member_of([1, 64, 65, 80]),

@@ -109,15 +109,15 @@ defmodule Lilly.Host.ZFSTest do
     check all(
             base <-
               map(
-                nonempty(list_of(tuple({member_of(@usage), integer(0..1_000_000)}))),
+                list_of(tuple({member_of(@usage), integer(0..1_000_000)}), min_length: 1),
                 &Map.new/1
               ),
             drift <-
               map(
-                nonempty(list_of(tuple({member_of(@usage), integer(0..1_000_000)}))),
+                list_of(tuple({member_of(@usage), integer(0..1_000_000)}), min_length: 1),
                 &Map.new/1
               ),
-            guid <- string(?0..?9, min_length: 1, max_length: 8)
+            guid <- string(Enum.to_list(?0..?9), min_length: 1, max_length: 8)
           ) do
       before = %{@name => Map.merge(base, %{"guid" => guid, "mountpoint" => "/pool/vm"})}
       after_read = %{@name => Map.merge(before[@name], drift)}

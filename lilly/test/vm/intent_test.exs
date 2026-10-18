@@ -12,7 +12,9 @@ defmodule Lilly.VM.IntentTest do
     :ok
   end
 
-  property "arbitrary older generations cannot reverse the launch fence", %{tmp_dir: dir} do
+  @tag :hegel
+
+  test "arbitrary older generations cannot reverse the launch fence", %{tmp_dir: dir} do
     check all(generation <- integer(1..9_223_372_036_854_775_800), max_runs: 40) do
       directory = Path.join(dir, Integer.to_string(System.unique_integer([:positive])))
       File.mkdir!(directory)

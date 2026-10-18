@@ -15,7 +15,8 @@ defmodule Lilly.VM.BootGenerationAdoptionPropertyTest do
   # authority after adoption, including duplicate adoption and durable rereads.
   # These isolated file histories MUST NOT establish confined VMM or guest proof;
   # production callers' physical preconditions require separate native evidence.
-  property "logical adoption preserves the boot but fences every older generation", %{
+  @tag :hegel
+  test "logical adoption preserves the boot but fences every older generation", %{
     tmp_dir: dir
   } do
     check all(
@@ -63,7 +64,8 @@ defmodule Lilly.VM.BootGenerationAdoptionPropertyTest do
   # @cc [owner:ghuntley,label:verification;security] adoption-refuses-foreign-boot
   # Epoch changes and foreign placement, future-generation or corrupt journals
   # MUST remain refused and byte-identical; adoption cannot mint a new boot.
-  property "adoption cannot replace a different or unconfirmed physical boot", %{tmp_dir: dir} do
+  @tag :hegel
+  test "adoption cannot replace a different or unconfirmed physical boot", %{tmp_dir: dir} do
     check all(
             epoch <- integer(1..100),
             generation <- integer(1..100),

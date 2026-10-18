@@ -83,7 +83,8 @@ all twenty native Lyra executables and both terminal daemons cross-link in
 pinned Nix builds. Native OmniOS assembly links all nine modules, installs the
 full payload and exports cleanly; QEMU file/runtime checks and diagnostic
 Firecracker executing-token/transport checks passed. Persistent console
-configuration is installed; final exact-image services remain a separate gate.
+configuration is installed; later source-qualified OmniOS receipts record two
+complete service boots and separate growth and process-crash scenarios.
 The scoped FreeBSD transport gate passed token/CID/refusal/credit-window checks.
 Vendor-base FreeBSD candidates passed complete services and same-boot daemon
 recovery over two clean boots. The later canonical-roots/SSH image passed
@@ -104,11 +105,17 @@ the defect and passed the final scoped crash replay. OmniOS network policy,
 wrong-CID injection, reset/DMA safety, physical recovery and fleet acceptance
 remain open; its scoped process-crash receipt does not establish physical
 recovery or admission.
-The completion-corrected OmniOS image reaches console login in both the paired
-direct-only QEMU diagnostic and retained nested Firecracker serial; growth
-maintenance prevents kernel/service responses. The corrected growth operand
-has a fresh sealed assembly, while local MAC normalization and exact service
-replay remain separate evidence.
+Earlier OmniOS diagnostics reached console login with growth in maintenance and
+withheld kernel/service authority. The later corrected source-qualified growth
+receipt records three clean boots and two expansions. These passing scoped
+receipts preserve the earlier failed histories and leave supervised daemon
+recovery, physical/DMA safety and image qualification open. The later
+handshake-fixed image separately passed manual direct host-KVM transport,
+reset, Lilly-policy, services, growth and process-crash runners. Its supervised
+daemon recovery still fails; formal nested-KVM gates remain separate.
+The
+[OS matrix](../guests/os-matrix.md) distinguishes the seven declared families
+from the six currently admitted catalog rows and their execution evidence.
 The [native review](reviews/2026-10-17-native-kernel-attestation.md) records exact
 source-qualified artifacts and results. The
 [activation review](reviews/2026-10-17-native-image-admission.md) separates the

@@ -136,8 +136,12 @@ defmodule Overalls.NativeImagePromotion do
         else: List.duplicate("clean", count)
 
     require!(receipt["boot_endings"] == endings, :boot_endings)
-    require!(length(receipt["checks"]) == 22, :complete_services)
-    require!("all-boots-complete-service-oracles" in receipt["checks"], :complete_services)
+
+    require!(
+      Enum.sort(receipt["checks"]) ==
+        Enum.sort(service_checks(approval.image.os, scenario.name == "crash-recovery")),
+      :complete_services
+    )
 
     bound_boots =
       Enum.flat_map(scenario.supporting, fn descriptor ->
@@ -163,6 +167,61 @@ defmodule Overalls.NativeImagePromotion do
     end
 
     :ok
+  end
+
+  # @cc [owner:ghuntley,label:security;verification] native-promotion-complete-service-oracles
+  # Every service receipt MUST name the exact reviewed oracle set, including the
+  # scenario's clean or abrupt shutdown checks. The immutable FreeBSD approval
+  # retains its 22 recorded checks; OmniOS MUST additionally verify workspace
+  # ownership and executor heartbeat withdrawal and whole-group cancellation.
+  # Equal-length unknown checks MUST NOT substitute for any required oracle.
+  @spec service_checks(:freebsd | :illumos, boolean()) :: [String.t()]
+  defp service_checks(os, crash?) do
+    common = ~w(
+      mmdsv2-current-boot-kernel
+      assigned-address-reachable
+      readiness-withheld-without-ssh-authority
+      trust-installed-and-stale-refused
+      flush-current-boot-and-refusals
+      workspace-stale-foreign-malformed-refused
+      workspace-native-https-shallow-checkout-and-exact-bytes
+      terminal-hello-ping-and-refusals
+      terminal-managed-pty-input-resize-replay-and-token-refusal
+      kernel-current-boot-rechecked
+      complete-readiness-after-isolated-authority
+      ssh-certified-host-and-foreign-ca-refusal
+      ssh-managed-uid-gid-bash-and-passwordless-sudo
+      ssh-foreign-key-root-foreign-user-and-password-refusals
+      ssh-login-receipt-before-startup-and-client-environment
+      executor-private-https-fixed-command-completed
+      new-mmds-epoch-challenge-and-boot-id
+      previous-boot-protocol-refused
+      all-boots-complete-service-oracles
+    )
+
+    endings =
+      if crash? do
+        ~w(first-boot-sigkill-and-final-clean-shutdown
+          home-bytes-retained-across-abrupt-restart
+          ssh-host-key-rotated-across-abrupt-restart)
+      else
+        ~w(ssh-triggered-clean-guest-shutdown
+          home-bytes-retained-across-clean-reboot
+          ssh-host-key-rotated-across-clean-reboot)
+      end
+
+    additional =
+      case os do
+        :freebsd ->
+          []
+
+        :illumos ->
+          ~w(workspace-exact-git-ownership-and-unrelated-root-refusal
+            executor-current-heartbeat-withdrawal-before-command-deadline
+            executor-whole-group-death-no-result-and-fresh-fence-completion)
+      end
+
+    common ++ endings ++ additional
   end
 
   @spec common_receipt!(map(), approval()) :: :ok

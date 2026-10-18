@@ -48,7 +48,8 @@ defmodule Marshall.Terminal.RemoteTest do
   # Budget death MUST retire every admitted real TLS peer owner before fresh
   # pairs acquire successor slots. The synthetic host stream MUST remain alive;
   # this test MUST NOT claim native guest survival or independent-node recovery.
-  property "budget restart retires live TLS peers and admits exact replacement pairs", %{
+  @tag :hegel
+  test "budget restart retires live TLS peers and admits exact replacement pairs", %{
     fixture: fixture,
     stream: stream,
     remote: initial
@@ -96,7 +97,8 @@ defmodule Marshall.Terminal.RemoteTest do
   # Real peer output between heartbeat ticks MUST renew outgoing silence;
   # subsequent silent transport MUST retire the hop within fifteen seconds
   # plus bounded test scheduler allowance. The host stream remains synthetic.
-  property "shifted TLS activity expires without waiting for another heartbeat", %{
+  @tag :hegel
+  test "shifted TLS activity expires without waiting for another heartbeat", %{
     remote: initial,
     fixture: fixture
   } do
@@ -167,7 +169,8 @@ defmodule Marshall.Terminal.RemoteTest do
   # Incoming peer activity between liveness ticks MUST renew its silence
   # deadline; fifteen subsequent silent seconds MUST terminate its WebSock
   # application and release its slot, independently of server-process lifetime.
-  property "incoming TLS silence retires the application at its renewed deadline", %{
+  @tag :hegel
+  test "incoming TLS silence retires the application at its renewed deadline", %{
     remote: initial,
     fixture: fixture
   } do

@@ -20,7 +20,8 @@ defmodule MarshallWeb.MFALoginHistoryTest do
   # Each login's independent model MUST predict browser/export access from its
   # stored login and administrative access from its own passkey proof. Verifying
   # one login MUST NOT elevate another; revoked logins MUST lose mounted reads.
-  property "subsequent login histories separate ordinary access from passkey elevation", %{
+  @tag :hegel
+  test "subsequent login histories separate ordinary access from passkey elevation", %{
     conn: conn
   } do
     check all(

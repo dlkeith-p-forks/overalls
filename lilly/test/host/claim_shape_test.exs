@@ -94,12 +94,19 @@ defmodule Lilly.Host.ClaimShapeTest do
 
   defp source_gen do
     gen all(
-          namespace <- list_of(string(?a..?z, min_length: 1, max_length: 8), length: 1..2),
-          repository <- string(?a..?z, min_length: 1, max_length: 12),
+          namespace <-
+            list_of(string(Enum.to_list(?a..?z), min_length: 1, max_length: 8),
+              min_length: 1,
+              max_length: 2
+            ),
+          repository <- string(Enum.to_list(?a..?z), min_length: 1, max_length: 12),
           revision <-
             one_of([
               constant(%{kind: :default}),
-              map(string(?a..?z, min_length: 1, max_length: 8), &%{kind: :ref, value: &1})
+              map(
+                string(Enum.to_list(?a..?z), min_length: 1, max_length: 8),
+                &%{kind: :ref, value: &1}
+              )
             ])
         ) do
       %{provider: :github, namespace: namespace, repository: repository, revision: revision}
@@ -111,8 +118,8 @@ defmodule Lilly.Host.ClaimShapeTest do
   # current command carries a workspace source, and MUST refuse any change to
   # the persisted shape, so a running source whose start command carries a
   # source still prunes, captures and adopts.
-  property "a ready claim matches its spec with or without a workspace source",
-           %{tmp_dir: tmp_dir} do
+  @tag :hegel
+  test "a ready claim matches its spec with or without a workspace source", %{tmp_dir: tmp_dir} do
     check all(source <- source_gen(), max_runs: 25) do
       path = Path.join(tmp_dir, Lilly.UUID.generate())
       File.mkdir_p!(path)

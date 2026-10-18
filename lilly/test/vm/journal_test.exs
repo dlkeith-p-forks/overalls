@@ -12,7 +12,9 @@ defmodule Lilly.VM.JournalTest do
     %{journal: journal}
   end
 
-  property "outcomes survive reopening and delayed receipts cannot discard newer state", %{
+  @tag :hegel
+
+  test "outcomes survive reopening and delayed receipts cannot discard newer state", %{
     journal: initial
   } do
     check all(count <- integer(1..8), max_runs: 15) do

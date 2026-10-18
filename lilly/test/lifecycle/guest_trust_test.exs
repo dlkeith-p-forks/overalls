@@ -85,9 +85,10 @@ defmodule Lilly.Lifecycle.GuestTrustTest do
     check all(
             left <- binary(min_length: 1, max_length: 64),
             right <- binary(min_length: 1, max_length: 64),
-            left != right,
             max_runs: 30
           ) do
+      Hegel.assume(left != right)
+
       assert Lilly.VM.GuestTrust.digest([left, right]) ==
                Lilly.VM.GuestTrust.digest([right, left])
 

@@ -29,8 +29,6 @@ defmodule Lilly.Host.PoolSnapshotTest do
                         do: {weight, {kind, id}}
 
   @typep child_identity :: {:template | :vm | :stray, String.t()}
-  @typep child_extra :: :none | :snapshot | :descendant | :unmounted
-  @typep native_child :: {String.t(), {ZFS.dataset(), child_extra()}}
 
   @spec pool() :: Pool.t()
   defp pool do
@@ -46,7 +44,7 @@ defmodule Lilly.Host.PoolSnapshotTest do
 
   # ---- Generators: native trees with templates, VMs and strays ----
 
-  @spec child(child_identity()) :: Hegel.Gen.t(native_child())
+  @spec child(child_identity()) :: Hegel.Gen.t()
   defp child({kind, identity}) do
     # Biased toward rows the observation accepts, so accepted trees routinely
     # hold several artifacts; every refusal shape still occurs.
@@ -100,7 +98,7 @@ defmodule Lilly.Host.PoolSnapshotTest do
   end
 
   @spec children([{pos_integer(), child_identity()}], non_neg_integer()) ::
-          Hegel.Gen.t([native_child()])
+          Hegel.Gen.t()
   defp children(_available, 0), do: constant([])
 
   defp children(available, count) do
@@ -122,10 +120,10 @@ defmodule Lilly.Host.PoolSnapshotTest do
     end
   end
 
-  @spec tree() :: Hegel.Gen.t(ZFS.tree())
+  @spec tree() :: Hegel.Gen.t()
   defp tree do
     gen all(
-          count <- sized(fn size -> integer(0..min(size, 6)) end),
+          count <- integer(0..6),
           children <- children(@child_identities, count)
         ) do
       rows =
@@ -178,53 +176,61 @@ defmodule Lilly.Host.PoolSnapshotTest do
   # Over every generated tree the pool-locked observation accepts, the snapshot
   # artifact check MUST equal the targeted per-command check it replaces, for
   # every name, GUID expectation, seal and artifact kind, including refusals.
-  property "snapshot-derived artifact shape equals the targeted per-command read" do
+  @tag :hegel
+  test "snapshot-derived artifact shape equals the targeted per-command read" do
     identity = Pool.zfs_identity(pool())
     # Outcome tallies prove the generated space is not vacuous.
     tally = :counters.new(3, [])
 
-    check all(
-            tree <- tree(),
-            probes <-
-              list_of(
-                tuple({
-                  member_of(
-                    Map.keys(tree) ++
-                      for(
-                        id <- @ids,
-                        prefix <- ~w(template- standby-),
-                        do: @parent <> "/" <> prefix <> id
-                      )
-                  ),
-                  member_of([nil, "31", "99" | Enum.map(Map.values(tree), & &1["guid"])]),
-                  member_of([:on, :off, :either]),
-                  kind()
-                }),
-                min_length: 1,
-                max_length: 12
-              ),
-            max_runs: 400
-          ) do
-      case ZFS.accounting(tree, identity) do
-        {:ok, observation} ->
-          parents = Map.take(tree, [@parent])
+    Hegel.check(
+      fn test_case ->
+        tree = :hegel.draw(test_case, "native tree", tree())
 
-          for {name, guid, seal, kind} <- probes do
-            targeted =
-              ZFS.artifact_rows(identity, parents, subtree(tree, name), name, guid, seal, kind)
+        probes =
+          :hegel.draw(
+            test_case,
+            "artifact probes",
+            list_of(
+              tuple({
+                member_of(
+                  Map.keys(tree) ++
+                    for(
+                      id <- @ids,
+                      prefix <- ~w(template- standby-),
+                      do: @parent <> "/" <> prefix <> id
+                    )
+                ),
+                member_of([nil, "31", "99" | Enum.map(Map.values(tree), & &1["guid"])]),
+                member_of([:on, :off, :either]),
+                kind()
+              }),
+              min_length: 1,
+              max_length: 12
+            )
+          )
 
-            assert ZFS.observed_artifact(identity, observation.children, name, guid, seal, kind) ==
-                     targeted
+        case ZFS.accounting(tree, identity) do
+          {:ok, observation} ->
+            parents = Map.take(tree, [@parent])
 
-            :counters.add(tally, if(match?({:ok, _}, targeted), do: 1, else: 2), 1)
-          end
+            for {name, guid, seal, kind} <- probes do
+              targeted =
+                ZFS.artifact_rows(identity, parents, subtree(tree, name), name, guid, seal, kind)
 
-        :error ->
-          # An observation the accounting refuses withholds the whole pool, so
-          # no snapshot-derived check can accept anything from it.
-          :counters.add(tally, 3, 1)
-      end
-    end
+              assert ZFS.observed_artifact(identity, observation.children, name, guid, seal, kind) ==
+                       targeted
+
+              :counters.add(tally, if(match?({:ok, _}, targeted), do: 1, else: 2), 1)
+            end
+
+          :error ->
+            # An observation the accounting refuses withholds the whole pool, so
+            # no snapshot-derived check can accept anything from it.
+            :counters.add(tally, 3, 1)
+        end
+      end,
+      test_cases: 400
+    )
 
     assert :counters.get(tally, 1) > 0, "no generated probe was accepted"
     assert :counters.get(tally, 2) > 0, "no generated probe was refused"
@@ -235,23 +241,27 @@ defmodule Lilly.Host.PoolSnapshotTest do
 
   @states ~w(staging verifying sealing ready quarantined retiring deleted)
 
+  @spec template_world() :: Hegel.Gen.t()
   defp template_world do
     gen all(
           entries <-
-            uniq_list_of(
-              tuple({
-                member_of(@ids),
-                member_of(@states),
-                member_of([:bound, :unbound]),
-                member_of([:present, :absent]),
-                member_of([:exact, :wrong_guid]),
-                member_of(["on", "off"]),
-                member_of([:match, :foreign_host, :wrong_nonce, :vm_tag, :missing])
-              }),
-              uniq_fun: &elem(&1, 0),
-              max_tries: 200,
-              max_length: 4
-            ),
+            tuple(
+              Enum.map(@ids, fn id ->
+                one_of([
+                  constant(nil),
+                  tuple({
+                    constant(id),
+                    member_of(@states),
+                    member_of([:bound, :unbound]),
+                    member_of([:present, :absent]),
+                    member_of([:exact, :wrong_guid]),
+                    member_of(["on", "off"]),
+                    member_of([:match, :foreign_host, :wrong_nonce, :vm_tag, :missing])
+                  })
+                ])
+              end)
+            )
+            |> map(fn entries -> entries |> Tuple.to_list() |> Enum.reject(&is_nil/1) end),
           stray <- member_of([nil | @ids])
         ) do
       records =
@@ -371,26 +381,31 @@ defmodule Lilly.Host.PoolSnapshotTest do
   # bound and unbound, replaced GUIDs, foreign or missing owners, unknown and
   # missing children), the snapshot join MUST decide exactly as the
   # per-template native audit did whenever the template's execution seal held.
-  property "template audit from the snapshot equals the per-template native audit" do
+  @tag :hegel
+  test "template audit from the snapshot equals the per-template native audit" do
     pool = pool()
     identity = Pool.zfs_identity(pool)
 
     tally = :counters.new(2, [])
 
-    check all({records, native} <- template_world(), max_runs: 400) do
-      tree = template_tree(native)
-      owners = template_owners(native)
-      {:ok, observation} = ZFS.accounting(tree, identity)
+    Hegel.check(
+      fn test_case ->
+        {records, native} = :hegel.draw(test_case, "template world", template_world())
+        tree = template_tree(native)
+        owners = template_owners(native)
+        {:ok, observation} = ZFS.accounting(tree, identity)
 
-      children =
-        Map.filter(observation.children, fn {name, _} ->
-          String.starts_with?(name, @parent <> "/template-")
-        end)
+        children =
+          Map.filter(observation.children, fn {name, _} ->
+            String.starts_with?(name, @parent <> "/template-")
+          end)
 
-      expected = per_command_audit(pool, records, tree, owners)
-      assert ImageTemplate.audit_records(pool, records, children, owners) == expected
-      :counters.add(tally, if(expected == :ok, do: 1, else: 2), 1)
-    end
+        expected = per_command_audit(pool, records, tree, owners)
+        assert ImageTemplate.audit_records(pool, records, children, owners) == expected
+        :counters.add(tally, if(expected == :ok, do: 1, else: 2), 1)
+      end,
+      test_cases: 400
+    )
 
     assert :counters.get(tally, 1) > 0, "no generated template world was accepted"
     assert :counters.get(tally, 2) > 0, "no generated template world was refused"

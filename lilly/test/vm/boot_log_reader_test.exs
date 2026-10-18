@@ -154,7 +154,9 @@ defmodule Lilly.VM.BootLogReaderTest do
     end
   end
 
-  property "pages preserve arbitrary bytes and clamp cursors after truncation", %{
+  @tag :hegel
+
+  test "pages preserve arbitrary bytes and clamp cursors after truncation", %{
     tmp_dir: directory
   } do
     check all(bytes <- binary(max_length: 40_000), cursor <- integer(0..50_000), max_runs: 30) do

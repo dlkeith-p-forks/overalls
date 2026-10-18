@@ -53,7 +53,9 @@ defmodule Lilly.Host.LimitsTest do
     assert {:error, :invalid_cgroup_limits} = Limits.read(root, root <> "-escape", inventory)
   end
 
-  property "quota capacity uses integer division even beyond floating point precision", %{
+  @tag :hegel
+
+  test "quota capacity uses integer division even beyond floating point precision", %{
     root: root,
     inventory: inventory
   } do

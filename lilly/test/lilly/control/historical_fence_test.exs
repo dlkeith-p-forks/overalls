@@ -221,7 +221,8 @@ defmodule Lilly.Control.HistoricalFenceTest do
   # @cc [owner:ghuntley,label:verification;security] generated-terminal-fence-rosters
   # Every terminal exchange class MUST stop every controlled actor, retain its
   # durable command and leave the runtime unable to restart work on a tick.
-  property "terminal exchange fences stop generated actor rosters without losing intent", %{
+  @tag :hegel
+  test "terminal exchange fences stop generated actor rosters without losing intent", %{
     store: store,
     newer: newer
   } do
@@ -307,7 +308,9 @@ defmodule Lilly.Control.HistoricalFenceTest do
     end
   end
 
-  property "transient exchange failures back off and a delivered report restores readiness", %{
+  @tag :hegel
+
+  test "transient exchange failures back off and a delivered report restores readiness", %{
     store: store,
     newer: newer
   } do
@@ -386,7 +389,8 @@ defmodule Lilly.Control.HistoricalFenceTest do
   # @cc [owner:ghuntley,label:verification;recovery] version-refusal-fences-after-transients
   # A terminal version refusal MUST fence Lilly after any generated transient
   # failure prefix, retain durable intent and never restart exchange on a tick.
-  property "version refusal fences after transient exchange histories", %{
+  @tag :hegel
+  test "version refusal fences after transient exchange histories", %{
     store: store,
     newer: newer
   } do

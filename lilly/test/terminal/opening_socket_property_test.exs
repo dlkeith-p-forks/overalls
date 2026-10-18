@@ -12,8 +12,9 @@ defmodule Lilly.Terminal.OpeningSocketPropertyTest do
   # failed completion. A scripted worker is installed with real stream-owned
   # links/monitors; the registration/retirement callbacks and passive sockets
   # are real. This MUST NOT claim production dial reach, TLS or native guests.
-  property "registered opening sockets retire on worker loss or failed completion" do
-    check all(repetitions <- integer(1..3), max_runs: 2, max_shrinking_steps: 0) do
+  property "registered opening sockets retire on worker loss or failed completion",
+    test_cases: 2 do
+    check all(repetitions <- integer(1..3)) do
       for _ <- 1..repetitions,
           action <- [:kill_before_handoff, :kill_after_handoff, :failed_completion] do
         {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])

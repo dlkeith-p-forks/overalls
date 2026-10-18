@@ -78,8 +78,9 @@ defmodule MarshallWeb.HLDDLiveTest do
   # Generated chapter histories MUST exercise ordinary persisted users. Every
   # history MUST reject revocation, expiry and deletion on mounted navigation and
   # a fresh deep link, without relying on another user's login or cached authority.
-  property "ordinary reader chapter histories lose revoked expired and deleted login authority",
-           %{conn: conn} do
+  @tag :hegel
+  test "ordinary reader chapter histories lose revoked expired and deleted login authority",
+       %{conn: conn} do
     ids = Enum.map(Marshall.Handbook.contents(), & &1.id)
 
     check all(

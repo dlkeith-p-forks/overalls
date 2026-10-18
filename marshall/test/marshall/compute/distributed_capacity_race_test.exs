@@ -172,27 +172,29 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   defp op_gen do
     frequency([
       {4,
-       gen all(key <- member_of([0, 1, 2]), shape <- shape_gen()) do
+       map(tuple([member_of([0, 1, 2]), shape_gen()]), fn {key, shape} ->
          {:provision, key, shape}
-       end},
+       end)},
       {2,
-       gen all(n <- integer(0..9), kind <- member_of([:start, :stop, :delete])) do
+       map(tuple([integer(0..9), member_of([:start, :stop, :delete])]), fn {n, kind} ->
          {:lifecycle, n, kind}
-       end},
+       end)},
       {2, gen_all_conflict()},
       {3,
-       gen all(
-             n <- integer(0..9),
-             {state, reason} <-
-               frequency([
-                 {6, constant({:running, :none})},
-                 {2, constant({:failed, :crashed})},
-                 {2, constant({:failed, :execution_failed})},
-                 {1, constant({:unknown, :unknown})}
-               ])
-           ) do
-         {:outcome, n, state, reason}
-       end},
+       map(
+         tuple([
+           integer(0..9),
+           frequency([
+             {6, constant({:running, :none})},
+             {2, constant({:failed, :crashed})},
+             {2, constant({:failed, :execution_failed})},
+             {1, constant({:unknown, :unknown})}
+           ])
+         ]),
+         fn {n, {state, reason}} ->
+           {:outcome, n, state, reason}
+         end
+       )},
       {1, constant(:image_remove)},
       {1, gen_all_relocate()},
       {1, gen_all_clone()}
@@ -201,28 +203,27 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
 
   @spec gen_all_relocate() :: Hegel.Gen.t(op())
   defp gen_all_relocate do
-    gen(all(n <- integer(0..9), do: {:relocate, n}))
+    map(integer(0..9), &{:relocate, &1})
   end
 
   @spec gen_all_clone() :: Hegel.Gen.t(op())
   defp gen_all_clone do
-    gen(all(n <- integer(0..9), do: {:clone, n}))
+    map(integer(0..9), &{:clone, &1})
   end
 
   @spec gen_all_conflict() :: Hegel.Gen.t(op())
   defp gen_all_conflict do
-    gen(all(n <- integer(0..3), do: {:conflict, n}))
+    map(integer(0..3), &{:conflict, &1})
   end
 
   @spec schedule_gen() :: Hegel.Gen.t([[op()]])
   defp schedule_gen do
-    gen all(sizes <- list_of(integer(2..4), min_length: 4, max_length: 7)) do
-      sizes
-    end
+    list_of(integer(2..4), min_length: 4, max_length: 7)
     |> bind(fn sizes ->
       sizes
       |> Enum.map(fn size -> list_of(op_gen(), length: size) end)
-      |> fixed_list()
+      |> tuple()
+      |> map(&Tuple.to_list/1)
     end)
   end
 

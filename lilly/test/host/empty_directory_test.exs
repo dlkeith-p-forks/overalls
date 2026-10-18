@@ -49,7 +49,9 @@ defmodule Lilly.Host.EmptyDirectoryTest do
     assert :ok = EmptyDirectory.remove(path)
   end
 
-  property "unexpected names and bytes survive refused cleanup", %{path: path} do
+  @tag :hegel
+
+  test "unexpected names and bytes survive refused cleanup", %{path: path} do
     check all(
             name <- string(:alphanumeric, min_length: 1, max_length: 80),
             contents <- binary(max_length: 2048)

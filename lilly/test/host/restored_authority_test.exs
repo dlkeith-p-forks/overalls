@@ -9,8 +9,6 @@ defmodule Lilly.Host.RestoredAuthorityTest do
   refusal semantics both layers then enforce once the identities diverge.
   """
   use ExUnit.Case, async: true
-  import Hegel
-  import Hegel.Gen
   import Bitwise
   alias Lilly.Host.{BackupSnapshot, Lock, Pool, ZFSDataset}
   alias Lilly.Lifecycle.Journal

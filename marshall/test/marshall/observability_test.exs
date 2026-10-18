@@ -1,7 +1,5 @@
 defmodule Marshall.ObservabilityTest do
   use ExUnit.Case, async: false
-  import Hegel
-  import Hegel.Gen
 
   test "aggregation retains only bounded numeric observations" do
     if Process.whereis(Marshall.Observability) == nil,

@@ -69,7 +69,8 @@ defmodule MarshallWeb.RepositoryLaunchHistoryTest do
   # revisits, invalid links, anonymous visits and plain roots MUST leave exactly
   # one OSS machine with a matching stored source and pinned provision command per
   # distinct signed-in (canonical source, visit nonce) pair, and nothing else.
-  property "repository launch visits dedupe per visit across generated histories", %{
+  @tag :hegel
+  test "repository launch visits dedupe per visit across generated histories", %{
     conn: conn
   } do
     check all(

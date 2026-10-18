@@ -21,7 +21,8 @@ defmodule Marshall.Accounts.GuestIdentityHistoryTest do
   # Real retirement and verified same-email registration MUST yield a distinct
   # usable guest account without changing any prior username or UID reservation.
   # Database allocation evidence MUST NOT be presented as native home isolation.
-  property "same-email generations allocate distinct stable guest identities", %{admin: admin} do
+  @tag :hegel
+  test "same-email generations allocate distinct stable guest identities", %{admin: admin} do
     check all(generations <- integer(2..4), max_runs: 6) do
       email = "again-#{binary_part(Ash.UUID.generate(), 0, 16)}@example.test"
       original = register!(email)

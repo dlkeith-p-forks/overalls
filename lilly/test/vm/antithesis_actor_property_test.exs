@@ -17,7 +17,8 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   # Generated replay and advance histories MUST use the real Store, Actor and
   # journal. Across actor lifetimes, each generation may cause at most one
   # durable fake launch, including when a previous result remains unacknowledged.
-  property "replay and generation advance never duplicate a fake launch", %{tmp_dir: root} do
+  @tag :hegel
+  test "replay and generation advance never duplicate a fake launch", %{tmp_dir: root} do
     check all(actions <- list_of(member_of([:replay, :advance]), max_length: 7), max_runs: 20) do
       directory = fresh_directory(root)
       {:ok, store} = Store.open(directory, @host_id, 3)
@@ -51,7 +52,8 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   # @cc [owner:ghuntley,label:verification;recovery] interrupted-launch-fails-closed
   # A durable fake launch marker without a running observation MUST fence a
   # same-generation actor replay; the recovered actor MUST NOT launch it again.
-  property "a marker left before fake launch completion fences actor replay", %{tmp_dir: root} do
+  @tag :hegel
+  test "a marker left before fake launch completion fences actor replay", %{tmp_dir: root} do
     check all(generation <- integer(1..100), max_runs: 20) do
       directory = fresh_directory(root)
       {:ok, store} = Store.open(directory, @host_id, 3)
@@ -83,7 +85,8 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   # Killing a real actor after its executor persists an attempted marker MUST
   # leave an attempt-only journal; a replacement actor MUST fail that generation
   # without increasing the durable fake launch count.
-  property "actor death after a durable launch attempt fences the same generation", %{
+  @tag :hegel
+  test "actor death after a durable launch attempt fences the same generation", %{
     tmp_dir: root
   } do
     check all(generation <- integer(1..100), max_runs: 20) do
@@ -142,7 +145,8 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   # Actor death after executor completion but before recording MUST preserve
   # durable attempt authority. Restart MUST adopt the completed fake unit without
   # another launch and replay the exact recovered outcome identity and sequence.
-  property "completed launch survives actor death before outcome recording", %{tmp_dir: root} do
+  @tag :hegel
+  test "completed launch survives actor death before outcome recording", %{tmp_dir: root} do
     check all(generation <- integer(1..100), max_runs: 20) do
       directory = fresh_directory(root)
       {:ok, store} = Store.open(directory, @host_id, 3)

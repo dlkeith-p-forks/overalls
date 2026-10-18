@@ -74,7 +74,8 @@ defmodule Marshall.Control.ZiggyPorscheServiceTest do
         {"commands", %{"version" => 1, "session_token" => "unknown", "command" => "ls"}}
       ])
 
-    check all({route, body} <- cases, max_runs: 24) do
+    check all(route_body <- cases, max_runs: 24) do
+      {route, body} = route_body
       http = ssh(c.gateway, route, body)
       socket = Porsche.handle_request("porsche." <> route, body, principal)
 

@@ -29,7 +29,8 @@ defmodule Marshall.SSH.GuestRosterMigrationHistoryTest do
   # The roster oracle MUST derive writer candidates from durable PostgreSQL
   # ownership/grants/membership and tombstone state, never from allocator
   # results, and retired users MUST leave the roster before cleanup commits.
-  property "generated grant, team and retirement histories match the PostgreSQL roster oracle", %{
+  @tag :hegel
+  test "generated grant, team and retirement histories match the PostgreSQL roster oracle", %{
     admin: admin
   } do
     check all(

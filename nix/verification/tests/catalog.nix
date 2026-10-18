@@ -373,6 +373,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   private-services-network = import ./machines/private-services storage;
   audi-ingress-network = import ./machines/audi-ingress storage;
   zfs-lifecycle = import ./machines/zfs-lifecycle storage;
+  zfs-retained-bundle = import ./machines/zfs-lifecycle (storage // { retainedBundleOnly = true; });
   ubuntu-guest = import ./machines/zfs-guest (storage // {
     ubuntu = true;
     guest = import ./fixtures/ubuntu { inherit packages; };

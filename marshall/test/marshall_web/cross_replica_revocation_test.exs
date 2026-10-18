@@ -131,7 +131,8 @@ defmodule MarshallWeb.CrossReplicaRevocationTest do
   # and the per-replica check order. Every generated schedule MUST recheck the
   # raw durable oracle and the four protected read decisions on all three
   # replicas.
-  property "generated invalidation schedules refuse on every replica", %{peers: peers} do
+  @tag :hegel
+  test "generated invalidation schedules refuse on every replica", %{peers: peers} do
     check all(
             kind <- member_of([:revoke_sessions, :token_revoke, :expire]),
             revoker <- member_of([0, 1, 2]),

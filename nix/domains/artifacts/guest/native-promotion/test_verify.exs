@@ -111,6 +111,45 @@ defmodule Overalls.NativeImagePromotionTest do
     refused!(fixture, "boot_endings")
   end
 
+  for os <- ~w(freebsd illumos) do
+    test "refuses renamed, missing and extra #{os} service oracles", %{root: root} do
+      fixture = fixture(root, unquote(os))
+
+      for change <- [
+            &Map.update!(&1, "checks", fn [_ | rest] -> ["unchecked-substitute" | rest] end),
+            &Map.update!(&1, "checks", fn [_ | rest] -> rest end),
+            &Map.update!(&1, "checks", fn checks -> ["unchecked-extra" | checks] end),
+            &Map.update!(&1, "checks", fn checks ->
+              Enum.map(checks, fn
+                "ssh-triggered-clean-guest-shutdown" ->
+                  "first-boot-sigkill-and-final-clean-shutdown"
+
+                check ->
+                  check
+              end)
+            end)
+          ] do
+        alter_service(fixture, change)
+        refused!(fixture, "complete_services")
+      end
+    end
+  end
+
+  test "OmniOS refuses FreeBSD's scoped service set", %{root: root} do
+    fixture = fixture(root, "illumos")
+
+    alter_service(fixture, fn receipt ->
+      Map.update!(receipt, "checks", fn checks ->
+        checks --
+          ~w(workspace-exact-git-ownership-and-unrelated-root-refusal
+            executor-current-heartbeat-withdrawal-before-command-deadline
+            executor-whole-group-death-no-result-and-fresh-fence-completion)
+      end)
+    end)
+
+    refused!(fixture, "complete_services")
+  end
+
   test "refuses a supplemental receipt from a different boot", %{root: root} do
     fixture = fixture(root, "freebsd")
     scenarios = fixture.approval["scenarios"]
@@ -247,7 +286,7 @@ defmodule Overalls.NativeImagePromotionTest do
             "kernel_sha256" => image.kernel.sha256,
             "firmware_sha256" => hash(firmware),
             "vmm_sha256" => vmm,
-            "checks" => ["all-boots-complete-service-oracles" | Enum.map(1..21, &"check-#{&1}")]
+            "checks" => service_oracles(os, name == "crash-recovery")
           })
 
         supporting =
@@ -284,6 +323,48 @@ defmodule Overalls.NativeImagePromotionTest do
     approval_path = Path.join(root, "approval.json")
     write_json(approval_path, approval)
     %{root: root, output: output, approval: approval, approval_path: approval_path}
+  end
+
+  @spec service_oracles(String.t(), boolean()) :: [String.t()]
+  defp service_oracles(os, crash?) do
+    checks = ~w(
+      mmdsv2-current-boot-kernel assigned-address-reachable
+      readiness-withheld-without-ssh-authority trust-installed-and-stale-refused
+      flush-current-boot-and-refusals workspace-stale-foreign-malformed-refused
+      workspace-native-https-shallow-checkout-and-exact-bytes
+      terminal-hello-ping-and-refusals
+      terminal-managed-pty-input-resize-replay-and-token-refusal
+      kernel-current-boot-rechecked complete-readiness-after-isolated-authority
+      ssh-certified-host-and-foreign-ca-refusal
+      ssh-managed-uid-gid-bash-and-passwordless-sudo
+      ssh-foreign-key-root-foreign-user-and-password-refusals
+      ssh-login-receipt-before-startup-and-client-environment
+      executor-private-https-fixed-command-completed
+      new-mmds-epoch-challenge-and-boot-id previous-boot-protocol-refused
+      all-boots-complete-service-oracles
+    )
+
+    endings =
+      if crash? do
+        ~w(first-boot-sigkill-and-final-clean-shutdown
+          home-bytes-retained-across-abrupt-restart
+          ssh-host-key-rotated-across-abrupt-restart)
+      else
+        ~w(ssh-triggered-clean-guest-shutdown
+          home-bytes-retained-across-clean-reboot
+          ssh-host-key-rotated-across-clean-reboot)
+      end
+
+    additional =
+      if os == "illumos" do
+        ~w(workspace-exact-git-ownership-and-unrelated-root-refusal
+          executor-current-heartbeat-withdrawal-before-command-deadline
+          executor-whole-group-death-no-result-and-fresh-fence-completion)
+      else
+        []
+      end
+
+    checks ++ endings ++ additional
   end
 
   @spec artifact(binary()) :: %{String.t() => pos_integer() | String.t()}

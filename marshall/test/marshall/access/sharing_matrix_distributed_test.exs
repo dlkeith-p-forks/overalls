@@ -212,13 +212,14 @@ defmodule Marshall.Access.SharingMatrixDistributedTest do
   # Generated schedules MUST place each share mutation and each entry probe on
   # arbitrary distinct peers while the independent matrix oracle decides every
   # expected result from the committed role alone.
-  property "generated peer schedules keep every entry on the committed matrix",
-           %{peers: peers} do
+  @tag :hegel
+  test "generated peer schedules keep every entry on the committed matrix",
+       %{peers: peers} do
     check all(
             tail <-
               list_of(
                 tuple(
-                  {member_of([:manager, :operator, :viewer, :web, :revoked]), member_of(0..2),
+                  {member_of([:manager, :operator, :viewer, :web, :revoked]), integer(0..2),
                    member_of(0..2), member_of([:ssh_open, :web_authorize, :inventory])}
                 ),
                 min_length: 2,

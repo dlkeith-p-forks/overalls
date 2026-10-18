@@ -281,6 +281,15 @@ Verified facts that shape this decision:
 
 ## Implementation evidence
 
+- The [published fleet artifact](../../../nix/domains/artifacts/guest/windows/published.nix)
+  enforces clause 9's built-once identity through a reviewed recursive NAR pin,
+  exactly three regular files and no store references. The
+  [fleet selector](../../../fleet/guest-images.nix) uses it while retaining the
+  separate offline source builder for development. Missing publication refuses
+  rather than constructing another Windows installation. The
+  [matrix review](../reviews/2026-10-18-guest-os-matrix.md) records custody,
+  verification and remaining execution gaps; this does not complete the runtime
+  rollout or change this ADR's status.
 - Protocol: [guest agents](../../../protocol/lib/overalls_protocol/guest_agents.ex),
   [image manifest](../../../protocol/lib/overalls_protocol/image_manifest.ex),
   [workload bundle](../../../protocol/lib/overalls_protocol/workload_bundle.ex).

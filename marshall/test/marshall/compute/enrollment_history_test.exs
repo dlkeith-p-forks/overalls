@@ -116,7 +116,8 @@ defmodule Marshall.Compute.EnrollmentHistoryTest do
   # points under one freshness/readiness oracle, refuse operations without any
   # table change, retain every closed drain row across a later request, and
   # MUST end retired.
-  property "generated histories converge with the oracle and end retired", %{tmp_dir: dir} do
+  @tag :hegel
+  test "generated histories converge with the oracle and end retired", %{tmp_dir: dir} do
     File.chmod!(dir, 0o700)
     op_gen = frequency(Enum.map(@weights, fn {op, weight} -> {weight, constant(op)} end))
 
@@ -147,7 +148,8 @@ defmodule Marshall.Compute.EnrollmentHistoryTest do
   # Credential rotation, revocation, admission toggles and maintenance requests
   # on a host holding a guest reservation MUST leave every reservation row
   # byte-identical; retirement MUST be refused while resources remain.
-  property "credential histories preserve live guest reservations byte for byte", %{
+  @tag :hegel
+  test "credential histories preserve live guest reservations byte for byte", %{
     tmp_dir: dir
   } do
     File.chmod!(dir, 0o700)

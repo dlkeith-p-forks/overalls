@@ -1,4 +1,4 @@
-# Windows guests under Firecracker (spike)
+# Windows guests under Firecracker
 
 This documents the Windows Server 2025 guest recorded in
 [ADR-0169](../architecture/decisions/0169-firmware-booted-windows-guests.md) (the
@@ -9,14 +9,17 @@ Windows Special Administration Console (SAC) on the serial port, and Lilly can
 place it as a guest without agents: running, reachable on its `/32`, never
 `guest_ready`. The `windows-v1` image adds the guest agents of
 [ADR-0171](../architecture/decisions/0171-windows-guest-agents.md) (readiness, trust,
-SSH, terminal, workspace and agent executor over virtio-vsock); the fleet
-catalog entry is still open.
+SSH, terminal, workspace and agent executor over virtio-vsock). The shared fleet
+catalog now selects `windowsGuestPublished`: a sealed 64 GiB Desktop Experience image with
+the pinned tools and a 96 GiB template budget. The agentless spike below retains
+its separate scope. Current admission and execution limits are summarized in
+the [OS matrix](os-matrix.md).
 
 ## What is built
 
 | Output | Flake attribute | Contents |
 |--------|-----------------|----------|
-| Patched VMM | `packages.x86_64-linux.firecracker` | nixpkgs static Firecracker 1.16.1 plus nine reviewed patches (`nix/platform/patches/firecracker-*.patch`: PVH RSDP, ACPI PM timer, Hyper-V CPUID, PCI decode enabled, CMOS RTC, BAR relocation, virtio reset, virtio-blk scatter-gather, vsock indirect descriptors) |
+| Patched VMM | `packages.x86_64-linux.firecracker` | nixpkgs static Firecracker 1.16.1 plus the shared reviewed firmware, PCI, device, transport and reset patches selected in `nix/domains/artifacts/infrastructure/firecracker.nix` |
 | Firmware | `packages.x86_64-linux.windows-firmware` | edk2 CloudHv UEFI as a PVH ELF, PCI aperture ending at Firecracker's MMCONFIG (`$fd/FV/CLOUDHV.fd`) |
 | Image | `packages.x86_64-linux.windows-guest` | `firmware`, sparse `disk.raw` (64 GiB GPT), eight-key `manifest.json` version 5, `evidence/` |
 | Launcher | `packages.x86_64-linux.windows-boot` | `overalls-windows-boot IMAGE_DIR WORK_DIR [MEM_MIB] [VCPUS]` |
@@ -43,6 +46,41 @@ fails if the marker never appears.
 
 Every rebuild produces a different disk image: Windows installation is not
 byte-stable. Hash-pinned inputs keep rebuilds rare.
+
+### Fleet publication
+
+`windowsGuestAgents` remains the offline source builder for development and
+verification. Fleet staging and catalog registration instead use
+[`windowsGuestPublished`](../../nix/domains/artifacts/guest/windows/published.nix),
+which fixes the existing `windows-v1` installation's recursive NAR identity.
+The sealed directory contains exactly three regular files: `disk.raw`,
+`firmware` and `manifest.json`, with no store references. Both hosts consume the
+same bytes through the existing signed Overalls cache. A cache miss prints
+publication guidance and fails; it cannot run another installation or select a
+host-local image.
+
+The reviewed publication is
+`/nix/store/nh6wfp35zm8wpdjgkvms7dlwkr1pwbgr-overalls-windows-server-2025-e9ed22f1`,
+recursive NAR hash `sha256-wTUJSjElKyGQ6LnYELBh/N8+WAYTlGOcqQwkzMtLoRU=`.
+Its 68,719,476,736-byte root SHA-256 is
+`a82162b769d71a5db3d52fdb65b9291f058792d5a9ad1c45ee31e0f3d37226c1`;
+the 4,194,304-byte firmware SHA-256 is
+`261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2`.
+Both hosts hold the same recursive NAR hash and 68,723,672,224-byte NAR with no
+references, imported the public Overalls cache signature and passed
+`nix store verify --no-contents --sigs-needed 1`. The public signed cache entry
+uses a 17,099,050,377-byte compressed NAR.
+This custody record does not establish a new guest execution result.
+
+For an intentional image update, build once with the source builder, retain its
+installation evidence, seal dereferenced disk/firmware and the unchanged
+manifest, then review their sizes, digests, file custody and recursive NAR hash.
+Update the publication name/hash and manifest pins together. Add the sealed
+directory with `nix store add-path --name NAME DIRECTORY` and publish that exact
+path through the existing Overalls Cachix publisher. Verify the fixed-output
+package resolves to those bytes through ordinary signature-checked substitution
+on the other host before activating a changed catalog. An input-addressed source
+derivation path alone cannot establish a shared Windows identity.
 
 ## Installation evidence
 
@@ -155,8 +193,9 @@ A version-5 image is admitted by the shared protocol like any other image:
 `sha256:` over the `lilly-image-v5` array. Operators stage the image directory
 in `services.lilly.images` and register it with
 `Marshall.Compute.Images.register(manifest, name)` (the manifest carries no
-name) after every host runs a release that understands the shape; there is no
-`fleet/guest-images.nix` entry yet.
+name) after every host runs a release that understands the shape. This describes
+the agentless spike. The shared `fleet/guest-images.nix` now stages and registers
+the sealed `windowsGuestPublished` image through the ordinary fleet path.
 
 What Lilly does differently for a firmware image:
 
@@ -318,12 +357,16 @@ executor ships with a rebuilt image. Log: `agentd.log`.
 
 ## Known gaps
 
-- No Windows guest agents: no readiness proof, trust installation, roster
-  identity, terminals or workspace delivery. Marshall shows such a VM as
-  running only and refuses the corresponding features.
-- SAC offers an interactive login on serial with the bootstrap Administrator
-  credential, unlike Linux guests.
-- No fleet catalog entry, standby disks or template budget for the 32 GiB
-  template; staging and registration are operator actions.
+- The agentless `windowsGuest` spike has no readiness proof, trust installation,
+  roster identity, terminals or workspace delivery. The catalog's
+  `windowsGuestAgents` image implements those surfaces; editor and Inception
+  remain disabled.
+- SAC permits bootstrap Administrator login on the agentless spike. The roster
+  agent disables that account after activating a personal account.
+- The current 64 GiB image has named-fleet SSH/tool evidence and a 96 GiB
+  template budget. Its latest nested test passed readiness and reachability,
+  then hung in stop; a complete stop/restart/delete pass for those exact bytes
+  remains open. See [ADR-0173's implementation evidence](../architecture/decisions/0173-windows-images-winget-desktop-experience.md#implementation-evidence).
+- Installed WSL/Podman tools do not establish nested-hypervisor execution.
 - Hyper-V synthetic timers are not advertised; only reference time, TSC page,
   hypercall and APIC MSRs. The CMOS clock is read-only and follows host UTC.

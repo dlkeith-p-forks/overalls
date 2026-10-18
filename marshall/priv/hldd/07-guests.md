@@ -798,6 +798,48 @@ boot after an image change takes the full trust path.
 
 ## Multi-OS image families
 
+The shared fleet declaration names seven families: NixOS, Ubuntu, Arch Linux,
+AlmaLinux, FreeBSD, OmniOS and Windows. Its native admission filter currently
+yields six catalog rows because OmniOS remains excluded. The
+[current OS matrix](repo:docs/guests/os-matrix.md) records package selection,
+boot/agent contracts and evidence limits for each family; a catalog row or an OS
+display label does not prove a successful guest boot or lifecycle.
+
+Windows fleet staging/registration selects `windowsGuestPublished`, a
+recursive-hash fixed-output copy of the reviewed 64 GiB Desktop Experience
+`windows-v1` installation. The separate source builder remains available for
+development. Exactly three regular files (`disk.raw`, `firmware`,
+`manifest.json`) with no references bind both hosts to the same bytes through
+ordinary signed-cache substitution. Missing publication fails with operator
+instructions; it cannot rebuild a different installation or select host-local
+bytes. The [Windows guide](repo:docs/guests/windows-guests.md) records the exact
+NAR/artifact pins and update workflow. Package/file-custody and refusal checks
+and both-host verification of the public cache signature passed. These checks
+do not establish a new Windows lifecycle or capability result.
+
+The opt-in [Porsche matrix runner](repo:scripts/porsche_acceptance.py) collects
+separate live evidence using explicit immutable image IDs and exact expected
+catalog names. Its default selection requires all seven families; missing or
+unadmitted OmniOS fails preflight before any creation. Explicit `--os` subsets
+retain their narrower scope. It binds each fixture to durable create receipts,
+rechecks current UUID/name/image/profile/owner/SSH endpoint before new mutations
+or guest access, and reconciles uncertain lifecycle work with its original
+bounded request ID. Accepted UUIDs persist before create polling, and failed
+terminal receipts remain available for owned cleanup without another creation.
+Guest probes use the installed Overalls CLI, strict pinned
+SSH trust and the authenticated personal account. Exact Linux distribution,
+FreeBSD release, OmniOS release or Windows edition/build output is required;
+raw probe output is not written to evidence. Stop/start/delete receipts and a
+second SSH stage retain separate outcomes. Configuration and resume procedures
+are in the [acceptance guide](repo:docs/acceptance/porsche-acceptance.md).
+Implementation and host-side tests do not establish a live seven-OS pass,
+native attestation, physical isolation, storage growth or multi-host recovery.
+The 2026-10-18 live subset created NixOS, Ubuntu and exact promoted FreeBSD
+fixtures, passed their initial exact OS oracle through CLI SSH and orderly-stopped
+all three at generation 2, then passed restart and repeat exact-OS CLI SSH.
+Final cleanup returned deleted receipts for all three owned fixtures. Earlier quarantined create fixtures were reconciled and cleaned
+with their original bound identities; those failed creates prove no guest boot.
+
 The catalog now includes Arch Linux and AlmaLinux as foreign Linux variants.
 Their builders reuse the version-4 kernel image contract and the reviewed shared
 foreign-Linux root assembly, but add deterministic `arch` and `almalinux` markers so
@@ -810,6 +852,27 @@ Their offline image assembly now carries the pinned Lyra/terminald binaries,
 Python, Git, OpenSSH, CA bundle and generic systemd service units; evaluation
 checks verify those closures and service references, while no native Arch or
 Alma boot result is recorded.
+
+SSH uses a complete owned key-only policy and pinned PAM modules, with a
+requisite private login receipt before a session opens. Locked `sshd` and
+`overalls-ssh` system identities receive collision-checked distinct UID/GIDs;
+account lookup uses local files and reconciliation resolves pinned account tools
+through an explicit PATH. The image contains a regular root-owned setuid sudo
+copy; only current reconciler-managed per-user policies grant access. Vendor
+sshd enablement resolves to the same readiness-gated listener. These assembly
+contracts and account-allocator tests do not establish a working distro-native
+SSH/PAM or sudo session.
+
+Foreign-Linux ext4 construction derives filesystem sizing from regular-file and
+symlink content, fixes source timestamps and the filesystem hash seed, and fixes
+mkfs/resize clocks. This corrects inputs that previously allowed different bytes
+at the same declared Nix paths on two hosts. Historical image builds, evaluation
+and same-builder rootfs `--check` comparisons passed. A subsequent cross-host Arch
+comparison found different hardlink topology from store optimisation; both root
+and closure copying now discard those incidental links. Final fleet-context roots
+then passed actual cross-host `--check` rebuild comparisons after signed cache
+substitution. Distribution-native runtime acceptance remains separate, as recorded in the
+[matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md).
 
 The shared protocol also defines native FreeBSD and OmniOS contracts. Both use
 version-6 firmware/raw-GPT manifests; FreeBSD uses `os = freebsd` and OmniOS is
@@ -827,9 +890,11 @@ capability rows remain all-false. A separate complete-image qualification enable
 only the reviewed FreeBSD image's readiness, trust, terminal, workspace, flush,
 SSH and agent control; editor and Inception stay false. Unapproved native images
 cannot enter new Marshall admission or Lilly launch. FreeBSD and OmniOS
-builder/catalog entries exist; the OmniOS
-catalog row consumes the explicit `illumosGuest` constructor while retaining
-its downstream display name. OmniOS and retained stock FreeBSD identities retain
+builder and conditional catalog declarations exist; only the separately
+promoted FreeBSD package passes the fleet admission filter. The OmniOS
+declaration consumes the explicit `illumosGuest` constructor while retaining
+its downstream display name, but contributes no evaluated catalog row. OmniOS
+and retained stock FreeBSD identities retain
 false capabilities; the host-only transport alone grants no guest operation. The
 rolling FreeBSD 14.3 source endpoint is retired and replaced by a checksum-pinned
 archive capture; Nix evaluates the pinned receipts, but the placeholder kernel
@@ -837,13 +902,36 @@ artifacts make image construction stop before a stock disk is copied. The separa
 the recorded native Lyra package linked eighteen production target executables using the pinned
 FreeBSD libraries and official OmniOS SDK. The illumos sources include a modern
 virtio backport, public socket ABI and bounded transport/socket wrappers.
-Both native terminal daemons now cross-link as separate outputs. These
-experimental outputs do not enter admitted image construction. FreeBSD's separate
-two-boot QEMU candidate assembly and scoped nested-KVM transport gate have passed.
+Both native terminal daemons now cross-link as separate outputs. Experimental
+outputs do not replace the sealed promoted FreeBSD image or grant admission.
+FreeBSD's separate two-boot QEMU candidate assembly and scoped nested-KVM
+transport gate have passed.
 OmniOS full-kit pool import/clone/install/export and diagnostic Firecracker
-file/token/host-CID transport checks have passed; final reproducible-image
-replay, complete service execution, isolation, recovery and fleet
-acceptance remain unrecorded.
+file/token/host-CID transport checks have passed. Later source-qualified OmniOS
+receipts record complete services over two clean boots, three-boot/two-expansion
+growth and separate process-SIGKILL/same-disk recovery. Reproducible full-image
+assembly, policy, supervised daemon recovery, reset/DMA, broader isolation and
+fleet acceptance remain open; admission stays false.
+
+### Current OmniOS accept ordering
+
+The illumos socket downcall waits for connection RESPONSE submission before
+returning an accepted child. An immediate application close cannot overtake the
+pending handshake; reset, listener closure and interruption refuse. The actual
+extracted downcall passed 256 forced host pthread schedules under ASan/UBSan,
+and a forced old-code mutant failed. This establishes bounded host control-flow
+evidence, with no native interrupt/DMA or admission claim.
+
+The exact handshake-fixed test image `aa669e51` passed ordinary transport,
+API pause/full-snapshot/resume reset and two-boot Lilly-policy isolation through
+direct host-KVM maintained runners. Complete 25-service-check receipts remain
+bound to those boots and image. These manual fixtures are separate from formal
+NixOS nested-KVM gates. Supervised daemon recovery still fails after daemon
+replacement. Separate complete services, three-boot/two-expansion growth and
+same-disk process-crash runners passed on these exact bytes, including all 25
+service and eight crash checks. The [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
+records full identities, test scope and remaining native/physical gaps.
+`native_admission=false` remains unchanged.
 
 ### Reviewed FreeBSD admission and publication
 
@@ -862,7 +950,14 @@ and readiness gates still apply after image qualification.
 The [promotion constructor](repo:nix/domains/artifacts/guest/native-promotion/freebsd.nix)
 verifies disk/firmware sizes and hashes plus hash-bound assembly and five native
 scenario evidence sets before publishing exactly `disk.raw`, `firmware` and
-`manifest.json`. Candidate receipts retain false admission flags. The sealed
+`manifest.json`. Each service receipt must name the exact reviewed oracles,
+including the scenario's clean or abrupt shutdown checks. FreeBSD retains its
+22 approved checks; OmniOS requires 25, adding workspace ownership/unrelated-root
+refusal, executor heartbeat withdrawal and whole-process-group cancellation.
+Missing, extra or substituted names refuse even at the expected count. The
+promotion unit gate and current sealed FreeBSD package build passed without
+granting new native execution or OmniOS admission. Candidate receipts retain
+false admission flags. The sealed
 candidate enters Nix with a reviewed recursive NAR hash through ordinary signed
 Overalls Cachix substitution. A cache miss fails with publication instructions;
 there is no temporary-path fallback, signing secret in evaluation or automatic

@@ -1,6 +1,6 @@
 defmodule Lilly.Control.InvalidBootPropertyTest do
   use ExUnit.Case, async: false
-  import Hegel
+  require Hegel
   import Hegel.Gen
 
   alias Lilly.Control.Config
@@ -49,58 +49,66 @@ defmodule Lilly.Control.InvalidBootPropertyTest do
   # Every generated invalid private configuration MUST reject actual OTP startup
   # in a fresh BEAM before creating Runtime, supervisor or status sockets. The
   # rejection MUST preserve fixture files and exclude synthetic credentials.
-  property "generated invalid configurations reject fresh OTP boots before serving", %{
+  @tag :hegel
+  test "generated invalid configurations reject fresh OTP boots before serving", %{
     tmp_dir: directory
   } do
     File.chmod!(directory, 0o700)
     tools = execution_tools()
 
-    check all(
-            order <- shuffle(@mutations),
-            suffix <- string(:alphanumeric, length: 43),
-            invalid_rate <- member_of([0, -1, 1_073_741_825, "1024", nil]),
-            max_runs: 4
-          ) do
-      for mutation <- order do
-        root =
-          Path.join(System.tmp_dir!(), "k-lb-" <> Base.encode16(:crypto.strong_rand_bytes(8)))
+    # Each mutation gets the original four generated cases. Keeping the thirteen
+    # fresh-VM mutation probes in separate engine runs avoids counting their
+    # aggregate OTP startup time as slow input generation.
+    for mutation <- @mutations do
+      Hegel.check(
+        fn test_case ->
+          :hegel.note(test_case, "credential suffix = <redacted>")
+          suffix = :hegel.draw_silent(test_case, string(:alphanumeric, length: 43))
 
-        File.mkdir!(root)
-        File.chmod!(root, 0o700)
-        on_exit(fn -> File.rm_rf!(root) end)
-        token = @id <> ":" <> suffix
-        config = configuration(root, token, tools)
-        path = Path.join(root, "config.json")
-        write_private(path, config)
-        assert {:ok, _} = Config.load(path)
+          invalid_rate =
+            :hegel.draw(test_case, "invalid rate", member_of([0, -1, 1_073_741_825, "1024", nil]))
 
-        mutate(mutation, path, config, invalid_rate)
-        inventory = root |> File.ls!() |> Enum.sort()
-        contents = File.read(path)
+          root =
+            Path.join(System.tmp_dir!(), "k-lb-" <> Base.encode16(:crypto.strong_rand_bytes(8)))
 
-        {output, status} = boot(path, root)
-        assert status == 0
+          File.mkdir!(root)
+          File.chmod!(root, 0o700)
+          on_exit(fn -> File.rm_rf!(root) end)
+          token = @id <> ":" <> suffix
+          config = configuration(root, token, tools)
+          path = Path.join(root, "config.json")
+          write_private(path, config)
+          assert {:ok, _} = Config.load(path)
 
-        assert projection(output) == %{
-                 "outcome" => "rejected",
-                 "child_start_attempted" => false,
-                 "supervisor" => false,
-                 "runtime" => false,
-                 "status_socket" => false,
-                 "terminal_socket" => false
-               }
+          mutate(mutation, path, config, invalid_rate)
+          inventory = root |> File.ls!() |> Enum.sort()
+          contents = File.read(path)
 
-        credential_free? = not String.contains?(output, token)
-        started_marker_absent? = not String.contains?(output, "lilly.started")
-        assert credential_free?, "boot output contained a synthetic credential"
-        assert started_marker_absent?, "rejected boot emitted a started event"
-        assert Enum.sort(File.ls!(root)) == inventory
-        unchanged? = File.read(path) == contents
-        assert unchanged?
-        refute File.exists?(Path.join(root, "state"))
-        refute File.exists?(Path.join(root, "vms"))
-        refute File.exists?(Path.join(root, "network"))
-      end
+          {output, status} = boot(path, root)
+          assert status == 0
+
+          assert projection(output) == %{
+                   "outcome" => "rejected",
+                   "child_start_attempted" => false,
+                   "supervisor" => false,
+                   "runtime" => false,
+                   "status_socket" => false,
+                   "terminal_socket" => false
+                 }
+
+          credential_free? = not String.contains?(output, token)
+          started_marker_absent? = not String.contains?(output, "lilly.started")
+          assert credential_free?, "boot output contained a synthetic credential"
+          assert started_marker_absent?, "rejected boot emitted a started event"
+          assert Enum.sort(File.ls!(root)) == inventory
+          unchanged? = File.read(path) == contents
+          assert unchanged?
+          refute File.exists?(Path.join(root, "state"))
+          refute File.exists?(Path.join(root, "vms"))
+          refute File.exists?(Path.join(root, "network"))
+        end,
+        test_cases: 4
+      )
     end
   end
 

@@ -842,8 +842,9 @@ defmodule Lilly.Host.ZFSDataset do
   # classify_allocations/2 MUST classify only a PoolSnapshot whose lock is still
   # held. Its snapshot expectations are the ones the observation was accounted
   # against under that lock (ADR-0152); owners and mounts come from the same
-  # read. Every ownership, template and workload refusal is retained; a
-  # `standby-*` child left after ADR-0177 is an unrecognized workload.
+  # read. Every ownership, template and disk-metadata refusal is retained; an
+  # owned child with an invalid launch bundle is recognized without credit.
+  # A `standby-*` child left after ADR-0177 is an unrecognized workload.
   # Only an exact snapshot grants credit: an identity snapshot classifies with
   # every refusal but returns no credits.
   @doc false
@@ -1378,20 +1379,65 @@ defmodule Lilly.Host.ZFSDataset do
          mounts_valid?(mounts, pool, spec, :absent, false), do: {:ok, nil}, else: :error
   end
 
+  # @cc [owner:ghuntley,label:capacity;security] retained-storage-does-not-grant-execution
+  # An exactly owned ready child MUST retain claim/spec, GUID, mount, drive and
+  # disk-metadata checks even when its launch bundle is invalid. Privately owned,
+  # bounded boot files with an invalid bundle MUST grant no allocation credit and
+  # MUST NOT withhold the otherwise verified pool. Unsafe boot-file custody MUST
+  # still refuse. Recognition MUST NOT rewrite metadata or authorize readiness.
   defp audit_child(pool, spec, record, child, owner, mounts) do
     with true <- record["state"] != "deleted" and owner?(owner, pool, spec, record),
          true <- owner["guid"] == child.dataset_guid,
          true <- mounts_valid?(mounts, pool, spec, :present, true) do
       if record["state"] == "ready" do
-        if ready_disk?(pool, spec),
-          do: {:ok, min(child.physical_bytes, Spec.storage_bytes(spec))},
-          else: :error
+        if ready_disk_metadata?(pool, spec) do
+          case WorkloadBundle.load(directory(pool, spec), spec) do
+            {:ok, _} -> {:ok, min(child.physical_bytes, Spec.storage_bytes(spec))}
+            {:error, :invalid_workload_bundle} -> retained_boot_storage(pool, spec)
+          end
+        else
+          :error
+        end
       else
         {:ok, nil}
       end
     else
       _ -> :error
     end
+  end
+
+  # This is a storage-custody check, never a decoder for another bundle version.
+  # The caller has already verified the exact drive/boot filename set.
+  @spec retained_boot_storage(Pool.t(), Spec.t()) :: {:ok, nil} | :error
+  defp retained_boot_storage(pool, spec) do
+    root = directory(pool, spec)
+
+    with {:ok, metadata} <- PrivateFiles.read_secret(Path.join(root, "boot-bundle.json")),
+         true <- byte_size(metadata) <= 16_384,
+         {:ok, entries} <- File.ls(root),
+         artifacts = entries -- (Enum.map(Spec.drives(spec), & &1.name) ++ ["boot-bundle.json"]),
+         bytes when is_integer(bytes) <- retained_artifact_bytes(root, artifacts),
+         true <- bytes + byte_size(metadata) <= OverallsProtocol.WorkloadBundle.storage_bytes() do
+      {:ok, nil}
+    else
+      _ -> :error
+    end
+  end
+
+  @spec retained_artifact_bytes(Path.t(), [String.t()]) :: non_neg_integer() | :error
+  defp retained_artifact_bytes(root, artifacts) do
+    Enum.reduce_while(artifacts, 0, fn name, bytes ->
+      case Lilly.Host.Privilege.lstat(Path.join(root, name)) do
+        {:ok, %File.Stat{type: :regular, links: 1, uid: 0, size: size, mode: mode}}
+        when size > 0 ->
+          if :erlang.band(mode, 0o777) == 0o444,
+            do: {:cont, bytes + size},
+            else: {:halt, :error}
+
+        _ ->
+          {:halt, :error}
+      end
+    end)
   end
 
   defp delete_owned(pool, spec, record, location, child, owners) do

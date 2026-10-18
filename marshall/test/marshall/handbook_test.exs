@@ -1,7 +1,6 @@
 defmodule Marshall.HandbookTest do
   use ExUnit.Case, async: true
-  import Hegel
-  import Hegel.Gen
+  require Hegel
   alias Marshall.Handbook
 
   test "contents contains metadata only and every identifier selects one compiled body" do
@@ -15,12 +14,22 @@ defmodule Marshall.HandbookTest do
     end
   end
 
-  property "unknown identifiers cannot select files or unlisted chapters" do
+  @tag :hegel
+  test "unknown identifiers cannot select files or unlisted chapters" do
     ids = MapSet.new(Handbook.contents(), & &1.id)
+    unknown_id = Hegel.Gen.filter(Hegel.Gen.utf8(0, 200), &(not MapSet.member?(ids, &1)))
 
-    check all(id <- string(:utf8, max_length: 200), id not in ids) do
-      assert Handbook.fetch_chapter(id) == :error
-      assert Handbook.fetch_chapter("../" <> id) == :error
-    end
+    Hegel.check(
+      fn test_case ->
+        :hegel.note(test_case, "unknown_id = <redacted>")
+        id = :hegel.draw_silent(test_case, unknown_id)
+        assert Handbook.fetch_chapter(id) == :error
+        assert Handbook.fetch_chapter("../" <> id) == :error
+      end,
+      test_cases: 100,
+      seed: 20_261_018,
+      database: :disabled,
+      print_blob: false
+    )
   end
 end

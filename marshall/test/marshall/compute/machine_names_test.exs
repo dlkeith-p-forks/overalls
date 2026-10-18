@@ -82,7 +82,8 @@ defmodule Marshall.Compute.MachineNamesTest do
     assert [_] = Ledger.read!(VirtualMachine)
   end
 
-  property "retries pin the generated or chosen name and reject changing it", %{owner: owner} do
+  @tag :hegel
+  test "retries pin the generated or chosen name and reject changing it", %{owner: owner} do
     check all(suffix <- integer(1..1_000_000), explicit? <- boolean(), max_runs: 12) do
       params = request(%{name: if(explicit?, do: "chosen-#{suffix}")})
       assert {:ok, vm} = Compute.provision(params, actor: owner)

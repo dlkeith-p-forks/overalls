@@ -815,7 +815,7 @@ separate obligations. See
 
 ## Elixir property verification
 
-Elixir properties use the test-only Hegel frontend pin `2c9f7a4` under
+Elixir properties currently use the test-only Hegel frontend pin `9b13af8` under
 [ADR-0191](repo:docs/architecture/decisions/0191-elixir-hegel-property-verification.md).
 Protocol properties run once per declared case count with fixed seeds and no
 example database or printed replay blobs. A local draw boundary records literal
@@ -829,9 +829,14 @@ This verifies BEAM codec, refusal and process/socket behavior. It does not
 establish native guest execution, TLS, physical isolation, storage recovery or
 fleet acceptance. Protocol's workspace-source and View properties still use
 StreamData, and the wider migration remains partial. The recorded 299-test pass
-used the previous frontend pin `6a62795`; the merged frontend's complete gate
-also passed 299 tests and properties, Covenant 14/14 and Dialyzer with zero
-errors or skips. Native engine sources are unchanged by that frontend update. The
+used the previous frontend pin `6a62795`; the `2c9f7a4` merged frontend's complete
+gate also passed 299 tests and properties, Covenant 14/14 and Dialyzer with zero
+errors or skips. These historical results do not verify the current pin or
+changed consumer tests. At `9b13af8`, context-pattern property expansion can
+recurse without bound and compatibility clauses can discard filters/options.
+Narrow consumer repairs retain generated assertions in tagged ordinary tests;
+the handbook unknown-ID check uses an explicit bounded silent draw and actual
+filter. Current consumer gates retain separate execution records. The
 [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.
@@ -865,7 +870,8 @@ CI-only `.github/` automation and unattended `devenv.lock`/`flake.lock` pin chan
 are excluded from review receipts; source configuration such as `devenv.nix`,
 `devenv.yaml` and `flake.nix` remains covered.
 
-Property evidence recognizes Rust Hegel's bare `#[hegel::test]` and configured
+Property evidence recognizes qualified Elixir `Hegel.check(...)` and
+`Hegel.run(...)` calls, plus Rust Hegel's bare `#[hegel::test]` and configured
 `#[hegel::test(test_cases = 8)]` attributes, including multiline formatting and
 nested settings calls. This is lexical runner recognition: the Rust compiler,
 property assertions and scoped execution record establish separate facts. The

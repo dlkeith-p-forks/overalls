@@ -501,6 +501,12 @@ vs_listen(sock_lower_handle_t lower, int backlog, cred_t *cred)
 	return (0);
 }
 
+/** @cc [owner:ghuntley,label:protocol;recovery] illumos-accept-after-response
+ * Accept MUST wait until the connection RESPONSE has been submitted before
+ * returning the child to user code. An immediate application close MUST NOT
+ * race ahead of that handshake. A reset, closed listener or interrupted wait
+ * MUST refuse instead of publishing an unestablished socket.
+ */
 static int
 vs_accept(sock_lower_handle_t lower, sock_lower_handle_t child,
     sock_upper_handle_t upper, cred_t *cred)
@@ -509,6 +515,13 @@ vs_accept(sock_lower_handle_t lower, sock_lower_handle_t child,
 	struct vs_socket *listener = (struct vs_socket *)lower;
 	(void) cred;
 	mutex_enter(&vs_lock);
+	while (endpoint->handshake && !endpoint->closing && endpoint->error == 0 &&
+	    !listener->closing && listener->error == 0 && listener->listening) {
+		if (cv_wait_sig(&endpoint->cv, &vs_lock) == 0) {
+			mutex_exit(&vs_lock);
+			return (EINTR);
+		}
+	}
 	if (endpoint->closing || endpoint->error != 0 ||
 	    endpoint->connection.phase != OV_VSOCK_ESTABLISHED ||
 	    listener->closing || listener->error != 0 || !listener->listening) {

@@ -12,7 +12,8 @@ defmodule MarshallWeb.DefaultProfileHistoryTest do
   # Omitted profiles MUST start as OSS. Generated explicit choices, refreshes and
   # reloads MUST preserve the last choice and request identity through admission;
   # replaying the same URL MUST create no additional VM, reservation or operation.
-  property "profile drafts survive refresh and reload before duplicate submission", %{conn: conn} do
+  @tag :hegel
+  test "profile drafts survive refresh and reload before duplicate submission", %{conn: conn} do
     check all(
             initial <- member_of([nil, :oss, :customer, :standard]),
             changes <-

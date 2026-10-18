@@ -27,10 +27,13 @@ def declaration(source: str, prefix: str, *, semicolon: bool = False) -> str:
 
 
 def main(arguments: list[str]) -> None:
-    if len(arguments) != 2:
-        raise ValueError("usage: extract_viosock_lifetime.py VIOSOCK_C OUTPUT_DIRECTORY")
+    if len(arguments) != 3:
+        raise ValueError(
+            "usage: extract_viosock_lifetime.py VIOSOCK_C SOCKVSOCK_C OUTPUT_DIRECTORY"
+        )
     source = Path(arguments[0]).read_text()
-    output = Path(arguments[1])
+    socket = Path(arguments[1]).read_text()
+    output = Path(arguments[2])
     output.mkdir(parents=True, exist_ok=True)
     slots = re.findall(r"^#define OV_SLOTS ([1-9][0-9]*U)$", source, re.MULTILINE)
     if len(slots) != 1:
@@ -54,6 +57,12 @@ def main(arguments: list[str]) -> None:
         functions += declaration(source, prefix)
     (output / "viosock_lifetime_types.inc").write_text(types)
     (output / "viosock_lifetime_functions.inc").write_text(functions)
+    (output / "socket_handshake_types.inc").write_text(
+        declaration(socket, "struct vs_socket {", semicolon=True)
+    )
+    (output / "socket_handshake_function.inc").write_text(
+        declaration(socket, "static int\nvs_accept(")
+    )
 
 
 if __name__ == "__main__":

@@ -91,7 +91,15 @@ defmodule Lilly.Clone.RuntimeFailuresTest do
   property "classification is total and every reason is in the closed wire set" do
     reasons = Enum.map(OverallsProtocol.CloneControl.unconfirmed_reasons(), &String.to_atom/1)
 
-    check all(internal <- one_of([atom(:alphanumeric), binary(), integer(), constant(nil)])) do
+    check all(
+            internal <-
+              one_of([
+                member_of([:timeout, :closed, :econnreset, :unexpected_internal]),
+                binary(),
+                integer(),
+                constant(nil)
+              ])
+          ) do
       assert Reason.classify(internal) in reasons
     end
 

@@ -76,7 +76,8 @@ true = byte_size(manifest_bytes) <= 16_384
     memory_bytes: max(512, div(manifest.minimum_memory_bytes + 1_048_575, 1_048_576)) * 1_048_576,
     # Image growth MUST remain a valid native storage fixture, rather than
     # bypassing its intended observation fault through an undersized request.
-    disk_bytes: max(2, div(manifest.minimum_disk_bytes + 1_073_741_823, 1_073_741_824)) * 1_073_741_824
+    disk_bytes:
+      max(2, div(manifest.minimum_disk_bytes + 1_073_741_823, 1_073_741_824)) * 1_073_741_824
   })
 
 relocation = System.get_env("ZFS_RELOCATION", "ffffffff-ffff-4fff-8fff-000000000001")
@@ -164,6 +165,7 @@ case action do
         # The root export worker's argv streams; Lilly hosts name the same
         # lineage to hostd by typed fields only (ADR-0183).
         {:ok, {executable, args}} = result
+
         {:ok, {:local_send, %{placement: _}}} =
           Lilly.Host.Storage.locked(pool, fn -> SourceSnapshots.local_producer(pool, wire) end)
 
@@ -192,6 +194,7 @@ case action do
 
   "prepare" ->
     {:ok, image} = Image.load(image_path)
+
     :ok =
       ZFSLifecycleFixture.prepare(pool, image, spec, System.monotonic_time(:millisecond) + 60_000)
 
@@ -209,6 +212,17 @@ case action do
 
   "reject-delete" ->
     {:error, _} = Disk.delete(pool, spec)
+
+  "reject-ready" ->
+    {:error, _} = Disk.ready(pool, spec)
+
+  action when action in ["credit", "no-credit"] ->
+    {:ok, observation} = Pool.snapshot(pool)
+    credit = Map.get(observation.allocations, spec.id)
+
+    if action == "credit",
+      do: true = is_integer(credit) and credit > 0,
+      else: true = is_nil(credit)
 
   "snapshot" ->
     {:ok, observation} = Pool.snapshot(pool)

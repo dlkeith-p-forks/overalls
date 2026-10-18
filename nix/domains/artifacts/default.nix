@@ -35,6 +35,7 @@ let
   # The windows-v1 image: the same installation with the readiness and trust
   # daemons declared in its manifest (ADR-0171 gate 2).
   windowsGuestAgents = mkWindowsGuest { agents = lyraWindows; terminald = terminaldWindows; guestAgents = "windows-v1"; };
+  windowsGuestPublished = import ./guest/windows/published.nix { inherit pkgs; };
   # Variant that loads the virtio storage driver with drvload instead of the
   # answer file's DriverPaths; kept for diagnosing Setup's WinPE initialization.
   windowsGuestDrvload = mkWindowsGuest { winpeDriverLoad = "drvload"; };
@@ -201,7 +202,7 @@ let
     };
 in
 rec {
-  inherit dependencies cedarCargo hostTools toolchain vmm windowsFirmware windowsFirmwareDebug mkWindowsGuest windowsGuest windowsGuestAgents windowsGuestDrvload windowsBoot;
+  inherit dependencies cedarCargo hostTools toolchain vmm windowsFirmware windowsFirmwareDebug mkWindowsGuest windowsGuest windowsGuestAgents windowsGuestPublished windowsGuestDrvload windowsBoot;
   inherit terminald terminaldChecks terminaldWindows;
   inherit codingClis;
   inherit lyra lyraLinux lyraWindows lyraNative;

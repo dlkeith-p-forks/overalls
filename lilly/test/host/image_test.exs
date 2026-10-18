@@ -328,7 +328,7 @@ defmodule Lilly.Host.ImageTest do
     # field, or a missing or extra file, MUST.
     property "only the device number may differ across a remount" do
       check all(
-              names <- uniq_list_of(string(:alphanumeric, min_length: 1), min_length: 1),
+              names <- uniq_list_of(string(:alphanumeric, min_length: 1), min: 1, max: 16),
               values <- list_of(non_negative_integer(), length: 11),
               device <- non_negative_integer(),
               field <- integer(1..10),

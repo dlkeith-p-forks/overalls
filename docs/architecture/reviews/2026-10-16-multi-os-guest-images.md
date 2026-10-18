@@ -3,8 +3,12 @@
 This historical review records ADR-0180's earlier capability declarations and
 preliminary artifact evidence. [ADR-0190](../decisions/0190-native-kernel-provenance-and-admission.md)
 and the [native kernel review](2026-10-17-native-kernel-attestation.md) supersede
-the native admission conclusions: current capabilities are all false and image
-assembly refuses unavailable kernels.
+the native admission conclusions: unqualified native capabilities remain all
+false and stock image assembly refuses unavailable kernels. A separate
+[exact-image promotion](2026-10-17-native-image-admission.md) admits only the
+reviewed FreeBSD image; OmniOS and changed candidates remain closed. The
+[current OS matrix](../../guests/os-matrix.md) separates later evidence from this
+historical review.
 
 ## Scope
 

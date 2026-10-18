@@ -1,25 +1,150 @@
 #!/usr/bin/env python3
 """Opt-in live Porsche acceptance. Credentials and resumable evidence stay outside Git.
 
-Usage: porsche_acceptance.py PRIVATE_RUN_DIRECTORY {inventory,create,running,stop,start,cleanup}
+Usage: porsche_acceptance.py PRIVATE_RUN_DIRECTORY PHASE [--os OS] [--stage LABEL]
 The directory must contain run.json (run, host, account), primary and known_hosts.
+The opt-in matrix-* phases also require matrix.json with explicit image pins,
+the Overalls executable and its managed SSH configuration and pinned guest trust.
 Sharing commands are deliberately excluded. This runs real billable workloads.
 """
 
 import argparse
+import contextlib
 import datetime
+import hashlib
 import json
 import os
 import re
 import select
 import shlex
+import signal
 import subprocess
 import threading
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import NotRequired, TypedDict
+from typing import Literal, NotRequired, TypedDict
+
+GuestOS = Literal["nixos", "ubuntu", "arch", "almalinux", "freebsd", "omnios", "windows"]
+GUEST_OSES: tuple[GuestOS, ...] = (
+    "nixos",
+    "ubuntu",
+    "arch",
+    "almalinux",
+    "freebsd",
+    "omnios",
+    "windows",
+)
+IMAGE_NAMES: dict[GuestOS, str] = {
+    "nixos": "NixOS",
+    "ubuntu": "Ubuntu 26.04 LTS",
+    "arch": "Arch Linux",
+    "almalinux": "AlmaLinux",
+    "freebsd": "FreeBSD 14.3",
+    "omnios": "OmniOS r151050",
+    "windows": "Windows Server 2025",
+}
+SSH_LOGIN_EVENT = (
+    '{"service":"overalls-ssh-authorize","event":"ssh.login_recorded","severity":"info"}\n'
+)
+
+
+def object_map(value: object) -> dict[str, object]:
+    if not isinstance(value, dict) or not all(isinstance(key, str) for key in value):
+        raise ValueError("Expected a JSON object")
+    return {key: item for key, item in value.items()}
+
+
+def nonempty_text(value: object) -> str:
+    if not isinstance(value, str) or not value or any(ord(char) < 32 for char in value):
+        raise ValueError("Expected nonempty text without control characters")
+    return value
+
+
+def read_object(path: Path) -> dict[str, object]:
+    value: object = json.loads(path.read_text())
+    return object_map(value)
+
+
+def canonical_uuid(value: object) -> str:
+    text = nonempty_text(value)
+    if str(uuid.UUID(text)) != text:
+        raise ValueError("Expected a canonical VM UUID")
+    return text
+
+
+@dataclass(frozen=True)
+class MatrixConfig:
+    cli: Path
+    ssh_config: Path
+    known_hosts: Path
+    images: dict[GuestOS, str | None]
+
+    @classmethod
+    def parse(cls, value: object) -> "MatrixConfig":
+        row = object_map(value)
+        if set(row) != {"cli", "ssh_config", "known_hosts", "images"}:
+            raise ValueError("Unexpected matrix configuration fields")
+        paths: dict[str, Path] = {}
+        for key in ("cli", "ssh_config", "known_hosts"):
+            path = Path(nonempty_text(row[key]))
+            if not path.is_absolute() or not path.is_file() or path.stat().st_mode & 0o022:
+                raise ValueError(
+                    "Matrix paths must be absolute, existing and not publicly writable"
+                )
+            paths[key] = path
+        if not os.access(paths["cli"], os.X_OK):
+            raise ValueError("Matrix CLI must be executable")
+        raw_images = object_map(row["images"])
+        if set(raw_images) != set(GUEST_OSES):
+            raise ValueError("Matrix must explicitly configure all seven operating systems")
+        images: dict[GuestOS, str | None] = {}
+        for kind in GUEST_OSES:
+            image = raw_images[kind]
+            if image is not None and (
+                not isinstance(image, str) or not re.fullmatch(r"sha256:[0-9a-f]{64}", image)
+            ):
+                raise ValueError("Matrix images must be immutable IDs or explicit null")
+            images[kind] = image
+        pinned = [image for image in images.values() if image is not None]
+        if len(pinned) != len(set(pinned)):
+            raise ValueError("Distinct operating systems require distinct image IDs")
+        return cls(paths["cli"], paths["ssh_config"], paths["known_hosts"], images)
+
+
+@dataclass(frozen=True)
+class MatrixFixture:
+    kind: GuestOS
+    id: str
+    name: str
+    image_id: str
+    ssh_host: str
+    request_id: str
+
+    @classmethod
+    def parse(
+        cls, kind: GuestOS, receipt: object, prefix: str, host: str, image_id: str | None
+    ) -> "MatrixFixture":
+        envelope = object_map(receipt)
+        result = object_map(envelope["result"])
+        identifier = canonical_uuid(result["id"])
+        name = prefix + "-" + kind
+        request = name + "-create"
+        label = "v-" + name[:22].rstrip("-") + "-" + identifier.replace("-", "")
+        if (
+            image_id is None
+            or envelope.get("status") not in ("accepted", "succeeded", "failed", "superseded")
+            or envelope.get("request_id") != request
+            or result.get("name") != name
+            or result.get("image_id") != image_id
+            or result.get("profile") != "oss"
+            or (envelope.get("status") == "succeeded" and result.get("outcome") != "running")
+            or result.get("ssh_host") != label + ".apps." + host
+        ):
+            raise ValueError("Matrix receipt does not bind this run's exact fixture")
+        return cls(kind, identifier, name, image_id, label + ".apps." + host, request)
 
 
 class RunConfig(TypedDict):
@@ -45,6 +170,7 @@ class CommandOutcome(TypedDict):
     id: NotRequired[str]
     name: NotRequired[str]
     outcome: NotRequired[str]
+    reason: NotRequired[str]
     owner: NotRequired[bool]
     email: NotRequired[str]
     observed_state: NotRequired[str]
@@ -59,6 +185,9 @@ class CommandOutcome(TypedDict):
     images: NotRequired[list["CommandOutcome"]]
     keys: NotRequired[list["CommandOutcome"]]
     fingerprint: NotRequired[str]
+    image_id: NotRequired[str]
+    ssh_host: NotRequired[str]
+    guest_username: NotRequired[str]
     command: NotRequired[str]
     key: NotRequired[str]
     exit: NotRequired[int | None]
@@ -102,7 +231,14 @@ class Acceptance:
         self.directory: Path = Path(directory).resolve()
         if self.directory.stat().st_mode & 0o077:
             raise ValueError("Run directory must be private (0700)")
-        self.config: RunConfig = json.loads((self.directory / "run.json").read_text())
+        raw_config = read_object(self.directory / "run.json")
+        self.config: RunConfig = {
+            "run": nonempty_text(raw_config["run"]),
+            "host": nonempty_text(raw_config["host"]),
+            "account": nonempty_text(raw_config["account"]),
+        }
+        if not re.fullmatch(r"[a-z0-9][a-z0-9.-]{0,252}", self.config["host"]):
+            raise ValueError("Expected a DNS management host")
         self.prefix: str = self.config["run"]
         if not re.fullmatch(r"porsche-[0-9]{8}-[0-9]{6}", self.prefix):
             raise ValueError("Expected unique porsche-YYYYMMDD-HHMMSS run prefix")
@@ -152,13 +288,19 @@ class Acceptance:
         *,
         expect: int | None = 0,
         key: str = "primary",
-        timeout: int = 160,
+        timeout: int | float = 160,
+        terminal_receipts: bool = False,
     ) -> CommandOutcome:
         """@cc [owner:ghuntley,label:verification] porsche-command-evidence
         Successful JSON commands MUST have exit status zero and valid JSON.
         Expected rejections MUST NOT accept SSH transport failure as proof;
         evidence MUST retain failed and timed-out attempts.
+        Explicit terminal-receipt polling MAY return failed/superseded envelopes
+        with a nonzero command exit for reconciliation, never as success. It
+        MUST still reject transport failure and mismatched exit/status pairs.
         """
+        if terminal_receipts and (expect != 0 or "--json" not in shlex.split(command)):
+            raise ValueError("Terminal receipts require JSON receipt polling")
         if shlex.split(command)[:1] == ["share"]:
             raise ValueError("Sharing is excluded from this acceptance run")
         started = time.monotonic()
@@ -188,7 +330,11 @@ class Acceptance:
             stream.write(json.dumps(record) + "\n")
             stream.flush()
             os.fsync(stream.fileno())
-        if expect is not None:
+        if terminal_receipts and (
+            timed_out or process.returncode is None or not 0 <= process.returncode < 255
+        ):
+            raise RuntimeError("Matrix receipt transport failed; see private commands.jsonl")
+        if expect is not None and not terminal_receipts:
             assert not timed_out, record
             assert (process.returncode == 0) == (expect == 0), record
             assert process.returncode != 255, (
@@ -198,12 +344,26 @@ class Acceptance:
             try:
                 result = json.loads(stdout)
             except json.JSONDecodeError:
+                if terminal_receipts:
+                    raise RuntimeError(
+                        "Malformed matrix receipt; see private commands.jsonl"
+                    ) from None
                 if expect == 1 and process.returncode != 0:
                     return record  # Parser errors occur before output-mode selection.
                 raise
-            if expect == 0:
+            if terminal_receipts:
+                if (
+                    not isinstance(result, dict)
+                    or result.get("status") not in ("accepted", "succeeded", "failed", "superseded")
+                    or (process.returncode == 0)
+                    != (result.get("status") in ("accepted", "succeeded"))
+                ):
+                    raise RuntimeError("Invalid matrix receipt outcome; see private commands.jsonl")
+            elif expect == 0:
                 assert result.get("status") in ("succeeded", "accepted"), result
             return result
+        if terminal_receipts:
+            raise RuntimeError("Missing matrix receipt; see private commands.jsonl")
         return record
 
     def request(self, request_id: str, seconds: int = 600) -> CommandOutcome:
@@ -559,6 +719,334 @@ class Acceptance:
         self.request(original["request_id"])
         self.save("reuse.json", {"archived_requests_pinned_after_name_reuse": "passed"})
 
+    def matrix_config(self) -> MatrixConfig:
+        return MatrixConfig.parse(read_object(self.directory / "matrix.json"))
+
+    def matrix_fixture(self, kind: GuestOS, config: MatrixConfig) -> MatrixFixture:
+        return MatrixFixture.parse(
+            kind,
+            read_object(self.directory / f"matrix-vm-{kind}.json"),
+            self.prefix,
+            self.config["host"],
+            config.images[kind],
+        )
+
+    def matrix_inventory(self, kinds: tuple[GuestOS, ...]) -> None:
+        """@cc [owner:ghuntley,label:verification;security] porsche-matrix-explicit-images
+        Every selected OS MUST have its own pinned catalog ID with the exact
+        expected display name before any matrix creation. Missing/unadmitted
+        images MUST fail preflight, never fall back to another OS or disappear
+        from a seven-OS result. Explicit subsets MUST retain their scope.
+        """
+        config = self.matrix_config()
+        account = object_map(self.command("whoami --json")["result"])
+        if account.get("email") != self.config["account"]:
+            raise ValueError("Matrix account differs from this run")
+        catalog = object_map(self.command("images --json")["result"])
+        raw_images = catalog.get("images")
+        if not isinstance(raw_images, list):
+            raise ValueError("Expected an image catalog")
+        images = [object_map(image) for image in raw_images]
+        rows: list[dict[str, object]] = []
+        for kind in kinds:
+            matches = [image for image in images if image.get("id") == config.images[kind]]
+            available = (
+                config.images[kind] is not None
+                and len(matches) == 1
+                and matches[0].get("name") == IMAGE_NAMES[kind]
+            )
+            rows.append(
+                dict(
+                    os=kind,
+                    image_id=config.images[kind],
+                    name=IMAGE_NAMES[kind],
+                    available=available,
+                )
+            )
+        self.save("matrix-inventory.json", dict(selected=list(kinds), images=rows))
+        if not all(row["available"] for row in rows):
+            raise RuntimeError("Selected OS images unavailable; see private matrix-inventory.json")
+
+    def matrix_poll(self, request_id: str, seconds: int = 900) -> CommandOutcome:
+        """@cc [owner:ghuntley,label:verification;recovery] porsche-matrix-bounded-receipts
+        Matrix polling MUST retain the original request ID, reject a different
+        receipt and cap every SSH call and sleep by one bounded deadline. An
+        unknown result MUST NOT submit a new lifecycle request.
+        Failed/superseded terminal receipts MUST return to the caller so its
+        fixture ledger can retain the original UUID before reporting failure.
+        """
+        if (
+            not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,127}", request_id)
+            or type(seconds) is not int
+            or not 1 <= seconds <= 2400
+        ):
+            raise ValueError("Invalid matrix receipt request or bounded deadline")
+        deadline = time.monotonic() + seconds
+        while (remaining := deadline - time.monotonic()) > 0:
+            result = self.command(
+                f"request show {request_id} --json",
+                timeout=min(160, remaining),
+                terminal_receipts=True,
+            )
+            if result.get("request_id") != request_id:
+                raise ValueError("Matrix polling returned a different request")
+            if time.monotonic() >= deadline:
+                break
+            if result.get("status") in ("succeeded", "failed", "superseded"):
+                return result
+            if result.get("status") != "accepted":
+                raise RuntimeError("Matrix request did not succeed")
+            time.sleep(min(2, max(0, deadline - time.monotonic())))
+        raise TimeoutError(request_id)
+
+    def matrix_create(self, kinds: tuple[GuestOS, ...]) -> None:
+        self.matrix_inventory(kinds)
+        config = self.matrix_config()
+        for kind in kinds:
+            name = self.prefix + "-" + kind
+            request_id = name + "-create"
+            command = (
+                f"new --name {name} --image {config.images[kind]} --profile oss "
+                f"--request-id {request_id} --no-wait --json"
+            )
+            intent = dict(command=command, request_id=request_id)
+            path = self.directory / f"matrix-intent-{kind}.json"
+            if path.exists() and read_object(path) != intent:
+                raise ValueError("Matrix create intent changed; reconcile the original request")
+            self.save(path.name, intent)
+            receipt_path = self.directory / f"matrix-vm-{kind}.json"
+            original = self.matrix_fixture(kind, config) if receipt_path.exists() else None
+            if original is None:
+                admission_path = self.directory / f"matrix-admission-{kind}.json"
+                admission = (
+                    read_object(admission_path) if admission_path.exists() else self.admit(command)
+                )
+                original = MatrixFixture.parse(
+                    kind, admission, self.prefix, self.config["host"], config.images[kind]
+                )
+                self.save(admission_path.name, admission)
+                self.save(receipt_path.name, admission)
+            result = self.matrix_poll(request_id)
+            fixture = MatrixFixture.parse(
+                kind, result, self.prefix, self.config["host"], config.images[kind]
+            )
+            if original is not None and fixture != original:
+                raise ValueError("Replayed matrix create changed fixture identity")
+            self.save(receipt_path.name, result)
+            if result.get("status") != "succeeded":
+                raise RuntimeError(
+                    f"Matrix {kind} create {result.get('status')}; original VM {fixture.id} "
+                    f"and request {request_id} retained for reconciliation/cleanup"
+                )
+            self.matrix_owned(fixture)
+            print(f"matrix created {kind}: {fixture.id}", flush=True)
+
+    def matrix_owned(self, fixture: MatrixFixture) -> dict[str, object]:
+        """@cc [owner:ghuntley,label:security] porsche-matrix-current-ownership
+        Matrix lifecycle and guest probes MUST use a receipt-bound canonical
+        UUID and recheck its current owner, name, image, profile and SSH endpoint.
+        A changed binding MUST refuse before any guest access or mutation.
+        """
+        machine = object_map(self.command(f"show {fixture.id} --json")["result"])
+        if (
+            machine.get("id") != fixture.id
+            or machine.get("owner") is not True
+            or machine.get("name") != fixture.name
+            or machine.get("image_id") != fixture.image_id
+            or machine.get("profile") != "oss"
+            or machine.get("ssh_host") != fixture.ssh_host
+        ):
+            raise ValueError("Current machine no longer matches the owned matrix fixture")
+        return machine
+
+    def matrix_lifecycle(self, kinds: tuple[GuestOS, ...], verb: str, stage: str) -> None:
+        if verb not in ("stop", "start", "rm") or not re.fullmatch(r"[a-z][a-z0-9-]{0,30}", stage):
+            raise ValueError("Invalid matrix lifecycle phase")
+        config = self.matrix_config()
+        fixtures = [self.matrix_fixture(kind, config) for kind in kinds]
+        if len({fixture.id for fixture in fixtures}) != len(fixtures):
+            raise ValueError("Matrix fixtures share a UUID")
+        expected = {"stop": "stopped", "start": "running", "rm": "deleted"}[verb]
+        for fixture in fixtures:
+            request_id = f"{self.prefix}-matrix-{stage}-{fixture.id}"
+            path = self.directory / f"matrix-{stage}-{fixture.kind}.json"
+            command = f"{verb} {fixture.id} --request-id {request_id} --no-wait --json"
+            intent = dict(command=command, request_id=request_id)
+            intent_path = self.directory / f"matrix-{stage}-{fixture.kind}-intent.json"
+            if intent_path.exists() and read_object(intent_path) != intent:
+                raise ValueError("Matrix lifecycle intent changed")
+            resuming = intent_path.exists()
+            if path.exists():
+                if read_object(path).get("request_id") != request_id:
+                    raise ValueError("Saved matrix lifecycle receipt changed request")
+            elif not resuming:
+                self.matrix_owned(fixture)
+                self.save(intent_path.name, intent)
+                self.save(f"matrix-{stage}-{fixture.kind}-admission.json", self.admit(command))
+            result = self.matrix_poll(request_id)
+            self.save(path.name, result)
+            row = object_map(result["result"])
+            if row.get("id") != fixture.id or row.get("name") != fixture.name:
+                raise ValueError("Matrix lifecycle receipt changed identity")
+            if result.get("status") != "succeeded":
+                raise RuntimeError(
+                    f"Matrix {fixture.kind} {stage} {result.get('status')}; original VM "
+                    f"{fixture.id} and request {request_id} retained for reconciliation"
+                )
+            if row.get("outcome") != expected:
+                raise ValueError("Matrix lifecycle receipt changed identity or outcome")
+            print(f"matrix {stage} {fixture.kind}: {expected}", flush=True)
+
+    @staticmethod
+    def matrix_probe(kind: GuestOS) -> str:
+        if kind in ("nixos", "ubuntu", "arch", "almalinux"):
+            return shlex.join(
+                [
+                    "sh",
+                    "-c",
+                    'set -eu; . /etc/os-release; printf "kernel=%s\\ndistribution=%s\\n" "$(uname -s)" "$ID"',
+                ]
+            )
+        if kind == "freebsd":
+            return shlex.join(
+                [
+                    "sh",
+                    "-c",
+                    'set -eu; printf "kernel=%s\\nrelease=%s\\n" "$(uname -s)" "$(uname -r)"',
+                ]
+            )
+        if kind == "omnios":
+            return shlex.join(
+                [
+                    "sh",
+                    "-c",
+                    'set -eu; uname -s; sed -n "s/.*\\(OmniOS r[0-9][0-9]*\\).*/\\1/p" /etc/release',
+                ]
+            )
+        return (
+            'powershell.exe -NoProfile -NonInteractive -Command "'
+            "$ErrorActionPreference = 'Stop'; $os = Get-CimInstance Win32_OperatingSystem; "
+            "[ordered]@{family=[Environment]::OSVersion.Platform.ToString(); "
+            'caption=$os.Caption; build=$os.BuildNumber} | ConvertTo-Json -Compress"'
+        )
+
+    @staticmethod
+    def matrix_verify_os(kind: GuestOS, stdout: str) -> None:
+        """@cc [owner:ghuntley,label:verification] porsche-matrix-guest-os-oracle
+        Zero SSH status or a catalog label alone MUST NOT prove the guest OS.
+        Linux requires its exact distribution ID, FreeBSD its 14.3 release,
+        OmniOS both SunOS and r151050, and Windows the pinned Server 2025 edition
+        and build. Extra or malformed output MUST fail the selected row.
+        """
+        output = stdout.replace("\r\n", "\n")
+        valid = False
+        if kind in ("nixos", "ubuntu", "arch", "almalinux"):
+            valid = output == f"kernel=Linux\ndistribution={kind}\n"
+        elif kind == "freebsd":
+            valid = (
+                re.fullmatch(r"kernel=FreeBSD\nrelease=14\.3-RELEASE(?:-p[0-9]+)?\n", output)
+                is not None
+            )
+        elif kind == "omnios":
+            valid = output == "SunOS\nOmniOS r151050\n"
+        else:
+            value: object = json.loads(output)
+            valid = object_map(value) == {
+                "family": "Win32NT",
+                "caption": "Microsoft Windows Server 2025 Standard Evaluation",
+                "build": "26100",
+            }
+        if not valid:
+            raise ValueError(f"Guest OS differs from the expected {kind} image")
+
+    def matrix_ssh(self, kinds: tuple[GuestOS, ...], stage: str = "initial") -> None:
+        if not re.fullmatch(r"[a-z][a-z0-9-]{0,30}", stage):
+            raise ValueError("Invalid matrix SSH evidence stage")
+        config = self.matrix_config()
+        account = object_map(self.command("whoami --json")["result"])
+        username = nonempty_text(account.get("guest_username"))
+        if (
+            account.get("email") != self.config["account"]
+            or not re.fullmatch(r"[a-z_][a-z0-9_.-]{0,30}", username)
+            or username == "root"
+        ):
+            raise ValueError("Unexpected matrix guest account")
+        fixtures = [self.matrix_fixture(kind, config) for kind in kinds]
+        if len({fixture.id for fixture in fixtures}) != len(fixtures):
+            raise ValueError("Matrix fixtures share a UUID")
+        for fixture in fixtures:
+            machine = self.matrix_owned(fixture)
+            if (
+                machine.get("observed_state") != "running"
+                or machine.get("desired_state") != "running"
+            ):
+                raise ValueError("Matrix SSH requires a currently running fixture")
+            argv = [
+                str(config.cli),
+                "ssh",
+                "-F",
+                str(config.ssh_config),
+                "-T",
+                "-i",
+                str(self.directory / "primary"),
+                "-o",
+                "BatchMode=yes",
+                "-o",
+                "IdentitiesOnly=yes",
+                "-o",
+                "StrictHostKeyChecking=yes",
+                "-o",
+                "GlobalKnownHostsFile=/dev/null",
+                "-o",
+                "UserKnownHostsFile=" + str(config.known_hosts),
+                "-o",
+                "ConnectTimeout=10",
+                "-o",
+                "ServerAliveInterval=5",
+                "-o",
+                "ServerAliveCountMax=3",
+                username + "@" + fixture.ssh_host,
+                self.matrix_probe(fixture.kind),
+            ]
+            process = subprocess.Popen(
+                argv,
+                stdin=subprocess.DEVNULL,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                start_new_session=True,
+            )
+            timed_out = False
+            started = time.monotonic()
+            try:
+                stdout, stderr = process.communicate(timeout=120)
+            except subprocess.TimeoutExpired:
+                with contextlib.suppress(ProcessLookupError):
+                    os.killpg(process.pid, signal.SIGKILL)
+                stdout, stderr = process.communicate()
+                timed_out = True
+            attempt = dict(
+                fixture=asdict(fixture),
+                probe="os-identity",
+                exit=process.returncode,
+                timeout=timed_out,
+                seconds=round(time.monotonic() - started, 3),
+                stdout_bytes=len(stdout.encode()),
+                stderr_bytes=len(stderr.encode()),
+                stdout_sha256=hashlib.sha256(stdout.encode()).hexdigest(),
+                stderr_sha256=hashlib.sha256(stderr.encode()).hexdigest(),
+            )
+            self.save(f"matrix-ssh-{stage}-{fixture.kind}-attempt-{uuid.uuid4()}.json", attempt)
+            self.save(f"matrix-ssh-{stage}-{fixture.kind}.json", dict(**attempt, verified=False))
+            allowed_stderr = (
+                ("", SSH_LOGIN_EVENT) if fixture.kind in ("freebsd", "omnios") else ("",)
+            )
+            if timed_out or process.returncode != 0 or stderr not in allowed_stderr:
+                raise RuntimeError(f"Matrix {fixture.kind} guest SSH failed; see private evidence")
+            self.matrix_verify_os(fixture.kind, stdout)
+            self.save(f"matrix-ssh-{stage}-{fixture.kind}.json", dict(**attempt, verified=True))
+            print(f"matrix SSH {fixture.kind}: verified", flush=True)
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -579,16 +1067,46 @@ def main() -> None:
             "physical-stopped",
             "physical-restarted",
             "physical-deleted",
+            "matrix-inventory",
+            "matrix-create",
+            "matrix-ssh",
+            "matrix-stop",
+            "matrix-start",
+            "matrix-cleanup",
         ],
     )
     parser.add_argument(
         "--stage", help="Unique lifecycle request namespace for an intentional new cycle"
     )
+    parser.add_argument(
+        "--os",
+        action="append",
+        choices=GUEST_OSES,
+        help="Explicit matrix subset (repeatable); default requires all seven OSes",
+    )
     args = parser.parse_args()
     acceptance = Acceptance(args.directory)
     if args.stage and not re.fullmatch(r"[a-z][a-z0-9-]{0,30}", args.stage):
         parser.error("stage must be a short lowercase identifier")
-    if args.phase == "create":
+    if args.phase.startswith("matrix-"):
+        kinds = tuple(kind for kind in GUEST_OSES if args.os is None or kind in args.os)
+        try:
+            if args.phase == "matrix-inventory":
+                acceptance.matrix_inventory(kinds)
+            elif args.phase == "matrix-create":
+                acceptance.matrix_create(kinds)
+            elif args.phase == "matrix-ssh":
+                acceptance.matrix_ssh(kinds, args.stage or "initial")
+            else:
+                phase = args.phase.removeprefix("matrix-")
+                acceptance.matrix_lifecycle(
+                    kinds, "rm" if phase == "cleanup" else phase, args.stage or phase
+                )
+        except (ValueError, RuntimeError, TimeoutError) as error:
+            parser.exit(1, f"{error}\n")
+    elif args.os is not None:
+        parser.error("--os is only valid for matrix phases")
+    elif args.phase == "create":
         with ThreadPoolExecutor(max_workers=5) as pool:
             list(pool.map(acceptance.create, range(1, 51)))
     elif args.phase in ("stop", "start", "cleanup"):

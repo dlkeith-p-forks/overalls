@@ -5,7 +5,8 @@ defmodule Lilly.Host.IdentityTest do
   alias Lilly.Host.{Identity, UIDReservation}
 
   property "host identity is stable with either allowed line termination and hides the raw ID" do
-    check all(raw <- binary(length: 16), raw != <<0::128>>) do
+    check all(raw <- binary(length: 16)) do
+      Hegel.assume(raw != <<0::128>>)
       machine = Base.encode16(raw, case: :lower)
       assert {:ok, id} = Identity.derive(machine)
       assert {:ok, ^id} = Identity.derive(machine <> "\n")

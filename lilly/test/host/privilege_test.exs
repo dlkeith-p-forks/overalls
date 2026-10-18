@@ -24,7 +24,8 @@ defmodule Lilly.Host.PrivilegeTest do
 
   # service-uid-normalised-to-root: only root or the configured service uid
   # reads as 0; any other owner keeps its uid.
-  property "a file reads as root-owned exactly when its owner is the service uid", %{
+  @tag :hegel
+  test "a file reads as root-owned exactly when its owner is the service uid", %{
     path: path,
     owner: owner
   } do

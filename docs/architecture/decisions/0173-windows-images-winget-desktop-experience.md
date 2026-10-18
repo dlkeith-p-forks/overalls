@@ -212,6 +212,12 @@ Observed facts:
 
 ## Implementation evidence
 
+- Fleet selection uses the [published exact artifact](../../../nix/domains/artifacts/guest/windows/published.nix)
+  to enforce ADR-0171's built-once identity. The offline Desktop Experience
+  source builder and pinned installer evidence remain separate. Recursive-hash
+  publication, closed file custody and fail-closed cache behavior do not prove a
+  new Windows lifecycle pass; see the
+  [matrix review](../reviews/2026-10-18-guest-os-matrix.md).
 - Builder: [default.nix](../../../nix/domains/artifacts/guest/windows/default.nix)
   (edition, `wingetPins`, `wingetPayload`, `--serve-command`, marker checks),
   [winget.json](../../../nix/domains/artifacts/guest/windows/winget.json),

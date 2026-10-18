@@ -59,11 +59,13 @@ storage durability, physical recovery or deployed fleet behavior.
 - [Elixir Hegel testing guide](../../development/testing-with-hegel.md)
 - [Hegel Elixir skill](../../../.agents/skills/hegel-elixir-tests/SKILL.md)
 - [Protocol test-only dependency pin](../../../protocol/mix.exs)
-  selects frontend revision `2c9f7a4a9f2cf156de063bbc8058bcf297be5cf0` after
-  the upstream merge. Its changes from the previously executed `6a62795` pin
-  are confined to the Elixir binding; native engine sources are unchanged.
-  The complete protocol gate at the merged frontend pin passed 299 tests and
-  properties; the linked review records its exact source hash and execution scope.
+  currently selects frontend revision `9b13af8a97beab82795d55b518c6f260df522a00`,
+  as do Marshall and Lilly. The historical complete protocol gate at
+  `2c9f7a4a9f2cf156de063bbc8058bcf297be5cf0` passed 299 tests and properties;
+  the linked review retains that source hash and the earlier `6a62795` result.
+  Those results do not establish execution at the current pin. Narrow consumer
+  test repairs avoid its unbounded context-pattern macro expansion without
+  changing the dependency or any production interface.
 - [Protocol terminal properties](../../../protocol/test/hegel_terminal_test.exs)
   define bounded frame round trips and truncation cases with deterministic seeds.
   Their presence does not record execution or completion of the wider migration.

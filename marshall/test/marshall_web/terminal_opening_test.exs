@@ -51,9 +51,11 @@ defmodule MarshallWeb.TerminalOpeningTest do
   property "a stopped or read-only machine never automatically opens" do
     check all(
             phase <- member_of([:waiting, :opening, :ready, :closed, :failed]),
-            {running, writable} <- member_of([{false, false}, {false, true}, {true, false}]),
+            access <- member_of([{false, false}, {false, true}, {true, false}]),
             sessions <- boolean()
           ) do
+      {running, writable} = access
+
       assert {_, :none} =
                Opening.observe(
                  %{execution: "execution-one", phase: phase, rejections: 0},

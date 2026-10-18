@@ -147,8 +147,10 @@ retain verified input artifacts in your Nix cache for long-term rebuilding.
 
 ## Publish and provision
 
-The shared `fleet/guest-images.nix` list declares both NixOS and Ubuntu. Overalls
-and Dungarees stage those same artifacts on Lilly; Overalls registers their
+The shared `fleet/guest-images.nix` list declares NixOS, Ubuntu and the additional
+families described in the [OS matrix](os-matrix.md), with native admission
+filtered by exact reviewed identity. Overalls and Dungarees stage those same
+artifacts on Lilly; Overalls registers their
 manifests through Marshall's existing operator API. NixOS remains the configured
 default. Add custom variants to that list with their own names and derivations.
 

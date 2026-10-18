@@ -18,8 +18,8 @@
   { name = "OmniOS r151050"; package = overallsPackages.illumosGuest; }
 ]
  ++ [
-  # Firmware-booted windows-v1 image (ADR-0171). Its installation is not
-  # byte-stable, so it is built once and copied to both hosts before this entry
-  # lands.
-  { name = "Windows Server 2025"; package = overallsPackages.windowsGuestAgents; }
+  # Windows installation is not byte-stable (ADR-0171). Both staging and
+  # registration consume the same sealed recursive-hash pin through the signed
+  # cache; a cache miss refuses instead of installing a different image.
+  { name = "Windows Server 2025"; package = overallsPackages.windowsGuestPublished; }
 ]

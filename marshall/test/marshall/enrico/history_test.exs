@@ -51,7 +51,8 @@ defmodule Marshall.Enrico.HistoryTest do
   # workers. An independently retained previous head and exact audit/job oracle
   # MUST check failures, ordinary-user refusal, removal and new registration;
   # synthetic HTTPS results MUST NOT be claimed as native Git acceptance.
-  property "refresh failure and removal histories retain only published authority", %{
+  @tag :hegel
+  test "refresh failure and removal histories retain only published authority", %{
     state: state
   } do
     check all(

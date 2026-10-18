@@ -1,7 +1,5 @@
 defmodule Lilly.ObservabilityTest do
   use ExUnit.Case, async: false
-  import Hegel
-  import Hegel.Gen
 
   test "aggregation counts real backoff measurements and ignores metadata" do
     if Process.whereis(Lilly.Observability) == nil, do: start_supervised!(Lilly.Observability)

@@ -25,8 +25,9 @@ defmodule Marshall.SSH.GuestRosterHistoryTest do
   # members, each still active and freshly Cedar write-authorized. Retired or
   # revoked candidates MUST be excluded while their identities stay reserved;
   # versions MUST strictly increase and re-fetch MUST preserve allocations.
-  property "generated owner, grant and team histories serve exactly the durable writer identities",
-           %{admin: admin} do
+  @tag :hegel
+  test "generated owner, grant and team histories serve exactly the durable writer identities",
+       %{admin: admin} do
     check all(
             team? <- boolean(),
             assignments <-

@@ -20,7 +20,8 @@ defmodule Overalls.HLDDViewsTest do
     %{root: root}
   end
 
-  property "new domains and resource ownership changes invalidate the rendered view", %{
+  @tag :hegel
+  test "new domains and resource ownership changes invalidate the rendered view", %{
     root: root
   } do
     check all(
@@ -57,7 +58,8 @@ defmodule Overalls.HLDDViewsTest do
     end
   end
 
-  property "evaluated role, peer, port and instance changes cannot reuse a topology snapshot", %{
+  @tag :hegel
+  test "evaluated role, peer, port and instance changes cannot reuse a topology snapshot", %{
     root: root
   } do
     check all(

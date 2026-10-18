@@ -108,11 +108,12 @@ defmodule Marshall.Control.AudiServiceTest do
       ])
 
     check all(
-            {route, body} <- cases,
+            route_body <- cases,
             credential <- member_of([:gateway, :dns]),
             version <- member_of([1, 1, 1, 2]),
             max_runs: 40
           ) do
+      {route, body} = route_body
       token = Map.fetch!(c, credential)
       document = Map.put(body, "version", version)
       http = api(token, document, route)

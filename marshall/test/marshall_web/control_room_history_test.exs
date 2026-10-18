@@ -19,7 +19,8 @@ defmodule MarshallWeb.ControlRoomHistoryTest do
 
   # Enrollment and initial verification consume two of the ten retained challenge
   # slots; eight transitions keep every generated verify within that separate limit.
-  property "current role and login histories govern Control room reads and audited writes", %{
+  @tag :hegel
+  test "current role and login histories govern Control room reads and audited writes", %{
     conn: conn
   } do
     check all(

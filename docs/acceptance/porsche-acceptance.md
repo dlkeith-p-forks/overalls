@@ -62,6 +62,94 @@ replacement after fleet cleanup, checking that old requests retain their origina
 UUIDs. The explicit automation shape is 1 vCPU, 512 MiB RAM and 2 GiB disk, matching
 the deployed NixOS image's minimums in this acceptance run.
 
+## Operating-system matrix
+
+The separate `matrix-*` phases create one `oss` VM per selected OS using explicit
+immutable catalog image IDs. The default selection requires all seven families:
+`nixos`, `ubuntu`, `arch`, `almalinux`, `freebsd`, `omnios` and `windows`.
+The [current matrix](../guests/os-matrix.md) records the admission and runtime
+limits. OmniOS is currently unadmitted, so a default seven-OS preflight must fail;
+do not substitute another image or silently omit its row.
+
+Add `matrix.json` to the same private run directory:
+
+```json
+{
+  "cli": "/absolute/path/to/overalls",
+  "ssh_config": "/private/porsche-20261018-120000/guest_ssh_config",
+  "known_hosts": "/private/porsche-20261018-120000/guest_known_hosts",
+  "images": {
+    "nixos": null,
+    "ubuntu": null,
+    "arch": null,
+    "almalinux": null,
+    "freebsd": null,
+    "omnios": null,
+    "windows": null
+  }
+}
+```
+
+Replace each available row's `null` with its reviewed `sha256:` catalog ID from
+`images --json`; retain `null` for unavailable images. All seven keys are required
+even for a subset, and non-null IDs must be distinct. Preflight requires the
+exact expected display name for each selected ID and the intended `whoami`
+account. A missing image or name mismatch refuses before creating any matrix VM.
+
+The CLI must be executable. Its path and the two guest SSH files must be absolute,
+existing files without group/other write access. Use the installed Overalls CLI
+and reviewed SSH configuration for the target deployment. The guest known-hosts
+file must trust its verified SSH host CA; it is separate from Porsche's management
+host key. The runner uses the dedicated primary key and the current personal
+`guest_username` returned by `whoami`; it refuses `root`. Guest access uses
+`overalls ssh` with strict host verification, bounded transport timeouts and no
+interactive input. Keep these files and evidence outside Git.
+
+Run these phases in order, passing the private directory first as above:
+
+```text
+matrix-inventory
+matrix-create
+matrix-ssh
+matrix-stop
+matrix-start
+matrix-ssh --stage restarted
+matrix-cleanup
+```
+
+For an explicitly scoped run, repeat the same `--os` selection on every phase:
+
+```sh
+python3 scripts/porsche_acceptance.py /private/porsche-20261018-120000 matrix-inventory --os nixos --os ubuntu
+```
+
+Report such a run as that subset. `matrix-create` repeats inventory preflight,
+creates sequentially and retains exact image IDs, names, profile, canonical
+UUIDs, SSH endpoints and original request IDs in durable intents/receipts.
+The accepted UUID is saved before waiting for creation to finish. Failed or
+superseded terminal receipts remain bound to that same UUID for reconciliation
+and owned cleanup; they are reported as failures. A transport failure cannot
+stand in for such a receipt or justify another create request.
+Before new lifecycle mutations or guest access, it rechecks current ownership
+and each receipt binding. A changed name, owner, image, profile or endpoint
+refuses. Polling is bounded to 900 seconds per request and preserves the original
+request ID. Resume with the same directory and stage; use a new `--stage` only
+for an intentional new lifecycle cycle.
+
+The SSH oracle requires Linux plus the exact distribution ID, FreeBSD 14.3,
+SunOS plus OmniOS r151050, or the pinned Windows Server 2025 Standard Evaluation
+build 26100. A zero SSH exit status or catalog label alone does not pass. Evidence
+retains output byte counts and SHA-256 digests rather than raw guest stdout or
+stderr. Immutable attempt records preserve prior outcomes; the latest stage
+summary records `verified=false` on failure, including a failed rerun after an
+earlier success.
+
+These phases establish only their recorded catalog, request, SSH identity and
+lifecycle outcomes. They do not perform the existing 50-VM physical snapshots or
+prove native kernel attestation, terminal/workspace behavior, isolation, storage
+growth, physical durability or multi-host recovery. No live seven-OS acceptance
+execution is recorded by adding this runner.
+
 ## Resume and evidence
 
 The directory contains append-only command evidence, create intents, receipts,

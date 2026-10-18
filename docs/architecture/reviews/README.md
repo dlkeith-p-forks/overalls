@@ -1,5 +1,13 @@
 # Architecture reviews
 
+- [Retained launch-bundle capacity (2026-10-18)](2026-10-18-retained-bundle-capacity.md):
+  exactly owned storage with an invalid current launch bundle contributes no
+  allocation credit while preserving neighboring pool observations. Current
+  launch/readiness codecs and all native ownership refusals remain strict.
+- [Guest OS matrix evidence (2026-10-18)](2026-10-18-guest-os-matrix.md): seven
+  declared families, six admitted catalog rows, explicit-image live acceptance
+  tooling and corrected current evidence boundaries. OmniOS admission and a
+  complete seven-OS lifecycle pass remain open; accepted contracts are unchanged.
 - [Staged detached ingress (2026-10-17)](2026-10-17-staged-detached-ingress.md): ADR-0192 finds that the editor and nested HTTPS needed the BEAM only for setup (a Lilly-derived preface and the editor's ready frame), not TLS, HTTP inspection, per-request authorization or multiplexing, and moves them onto ADR-0187's detached bridges with a hostd-executed stage. Rust and Elixir tests passed; the editor-fleet restart subtest has not run.
 - [Hegel NixOS property migration (2026-10-17)](2026-10-17-hegel-nixos-migration.md): selected live machine drivers use Hegel for generated histories and stateful schedules; evaluation, guest-side and exact acceptance checks retain their evidence boundaries.
 
@@ -40,8 +48,9 @@
   and paired direct-only QEMU boot pass; the first corrected-image Firecracker
   service run misses its boot deadline. OmniOS supervised daemon recovery, native
   peer-VM isolation, physical recovery and fleet acceptance remain open. Scoped
-  service, growth and process-crash receipts are recorded separately. Capabilities
-  and catalog admission stay disabled.
+  service, growth and process-crash receipts are recorded separately. OmniOS and
+  changed native candidates stay closed; the exact reviewed FreeBSD promotion
+  has its separate admission record.
 
 - [Host boot-log authorization (2026-10-17)](2026-10-17-host-boot-log-authorization.md):
   read-only host diagnostics have independent Cedar, host-stream and current

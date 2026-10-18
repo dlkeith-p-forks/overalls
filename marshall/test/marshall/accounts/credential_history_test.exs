@@ -2,7 +2,6 @@ defmodule Marshall.Accounts.CredentialHistoryTest do
   @moduledoc "Generated passkey lifecycle histories with an independent inventory oracle."
   use Marshall.DataCase, async: false
   import Hegel
-  import Hegel.Gen
   import Marshall.PasskeyFixture
 
   alias Marshall.Accounts.{Login, Passkey, PasskeyChallenge, Security}

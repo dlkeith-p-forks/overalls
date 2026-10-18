@@ -152,12 +152,43 @@ closed. ADR-0159 removed the one-way startup migration after hosts were purged
 of that state.
 Backup consistency and relocation consistency are separate guarantees.
 
+## Retained disks with invalid launch metadata
+
+An exactly owned ready ZFS child can retain storage identity even when its boot
+bundle fails the current launch codec. The allocation audit still requires the
+durable claim/spec, native host/pool/VM nonce and GUID, owned mounts, complete
+closed file set, drive UID/type/length and matching `disk.json` plus
+`disk-ready.json`. Any failure there, or an unknown child, still withholds the
+pool. A retained invalid marker must remain a safely contained private
+single-link file bounded to 16 KiB; boot artifacts must be nonempty root-owned
+single-link regular files with mode 0444, and total marker/artifact sizes must fit
+the protocol's 1 GiB bundle reservation. If only the bundle contents are invalid,
+the child is recognized with no allocation credit while otherwise valid
+neighbors remain measurable. No invalid marker content is decoded.
+
+Measured ZFS free bytes still account for all retained data. With no matching
+allocation credit, that child's outstanding startup disk hold cannot be offset;
+settled virtual promises do not consume the physical admission budget. The
+current launch/readiness decoder still refuses the child. Recognition neither
+rewrites metadata nor grants launch, admission, readiness or deletion authority,
+and adds no legacy decoder or conversion under ADR-0159.
+
+The focused [native ZFS fixture](repo:nix/verification/tests/machines/zfs-lifecycle/retained-bundle.py)
+tests an unsupported bundle version beside a valid owned disk, repeated fresh
+observations, no credit/readiness refusal, unchanged marker bytes and continued
+refusal of corrupt metadata, unsafe kernel permissions, a foreign nonce or
+unexpected files. The focused native test passed in 221.51 seconds, including
+restoration and fixture cleanup; its exact derivation and scope are recorded in the
+[capacity review](repo:docs/architecture/reviews/2026-10-18-retained-bundle-capacity.md).
+It boots no guest and establishes no production rollout, concurrent replacement
+or physical recovery result.
+
 ## Verified image templates
 
 Each pool retains sealed image artifacts under independent
 `template-<incarnation>` children; templates are unconditional (ADR-0159).
 `services.lilly.imageTemplates.budgetBytes` is a positive per-pool budget
-(default 32 GiB; 48 GiB on both fleet hosts since ADR-0171, so the 32 GiB
+(default 32 GiB; 96 GiB on both fleet hosts under ADR-0173, so the current 64 GiB
 Windows template fits beside the Linux templates) that charges artifact lengths
 conservatively; an image larger than the budget uses the fresh verified path,
 and `ImageTemplate.cacheable?/2` answers that question from the staged sizes

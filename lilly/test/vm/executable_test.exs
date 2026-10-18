@@ -36,7 +36,9 @@ defmodule Lilly.VM.ExecutableTest do
     refute Executable.static_x86_64?(path)
   end
 
-  property "an ELF interpreter is always rejected regardless of header order", %{tmp_dir: dir} do
+  @tag :hegel
+
+  test "an ELF interpreter is always rejected regardless of header order", %{tmp_dir: dir} do
     path = Path.join(dir, "vmm")
 
     check all(headers <- list_of(integer(0..16), max_length: 16)) do

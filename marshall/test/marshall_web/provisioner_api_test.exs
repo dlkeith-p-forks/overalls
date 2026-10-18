@@ -159,7 +159,8 @@ defmodule MarshallWeb.ProvisionerAPITest do
     assert [%{reported_at: nil, report_sequence: 0}] = Ledger.read!(Host, id: host.id)
   end
 
-  property "a poisoned command rolls back fresh reports until its operation is removed", %{
+  @tag :hegel
+  test "a poisoned command rolls back fresh reports until its operation is removed", %{
     host: setup_host
   } do
     Ledger.update!(setup_host, :configure, %{enabled: false})
@@ -268,7 +269,8 @@ defmodule MarshallWeb.ProvisionerAPITest do
              send_api(issued.token, "sessions", %{"version" => 99}) |> reply(426)
   end
 
-  property "malformed v4 documents are permanent client errors on every action", %{
+  @tag :hegel
+  test "malformed v4 documents are permanent client errors on every action", %{
     issued: issued,
     host: host
   } do
@@ -314,7 +316,8 @@ defmodule MarshallWeb.ProvisionerAPITest do
     end
   end
 
-  property "version refusals preserve host authority until a valid session opens", %{
+  @tag :hegel
+  test "version refusals preserve host authority until a valid session opens", %{
     issued: issued,
     host: host,
     vm: vm

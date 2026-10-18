@@ -210,6 +210,12 @@ The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.m
 
 ## Implementation evidence
 
+The [2026-10-18 OS matrix review](../reviews/2026-10-18-guest-os-matrix.md)
+reconciles the seven declared families with six currently admitted catalog rows
+and the opt-in explicit-image acceptance workflow. It adds no native admission
+authority or live seven-OS execution result; this decision remains partially
+implemented with the runtime gaps below.
+
 The implementation is partial. Arch and Alma builders are in
 [`nix/domains/artifacts/guest/arch`](../../../nix/domains/artifacts/guest/arch),
 [`nix/domains/artifacts/guest/alma`](../../../nix/domains/artifacts/guest/alma) and the shared

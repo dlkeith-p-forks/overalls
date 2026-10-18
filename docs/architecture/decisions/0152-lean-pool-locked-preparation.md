@@ -105,6 +105,15 @@ removes redundant reads, not verification.
 
 ## Implementation evidence
 
+The [2026-10-18 retained-bundle review](../reviews/2026-10-18-retained-bundle-capacity.md)
+records a capacity-audit correction: a child with exact claim, owner, GUID,
+mount, drive and ready-disk metadata may be recognized without allocation credit
+when only its current launch bundle is invalid and bounded boot-file custody
+remains safe. Those storage refusals remain
+strict, and launch/readiness still refuse the invalid bundle. The correction
+does not decode or rewrite a retired format under ADR-0159; native execution
+evidence and remaining gaps are recorded separately in the review.
+
 The user accepted this decision on 2026-10-10 in the implementing session.
 
 **Code:**

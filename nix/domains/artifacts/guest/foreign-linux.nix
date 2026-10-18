@@ -46,9 +46,10 @@ let
   # reproducible tools for Python, networking, SSH and certificate handling.
   runtimeStorePaths = [
     pkgs.cacert pkgs.coreutils pkgs.e2fsprogs pkgs.git pkgs.iproute2
-    pkgs.openssh pkgs.python3 pkgs.sudo pkgs.systemd terminald lyraLinux
+    pkgs.openssh pkgs.pam pkgs.python3 pkgs.shadow pkgs.glibc.getent
+    pkgs.sudo pkgs.systemd pkgs.util-linux terminald lyraLinux
   ];
-  rootfs = pkgs.callPackage (pkgs.path + "/nixos/lib/make-ext4-fs.nix") {
+  rootfs = (pkgs.callPackage (pkgs.path + "/nixos/lib/make-ext4-fs.nix") {
     storePaths = runtimeStorePaths;
     volumeLabel = "overalls-${distribution}";
     populateImageCommands = ''
@@ -58,7 +59,7 @@ let
       # fakeroot. Copy without ownership/modes and make the staging tree
       # writable for assembly; restore the non-world-writable boundary before
       # mkfs applies root ownership to the image.
-      cp -a --no-preserve=mode,ownership ${baseRoot}/. ./files/
+      cp -a --no-preserve=mode,ownership,links ${baseRoot}/. ./files/
       chmod -R a+rwX ./files
       rm -rf ./files/nix
       mkdir -p ./files/etc ./files/etc/ssh/sshd_config.d ./files/etc/pam.d ./files/etc/sudoers.d ./files/etc/systemd/system \
@@ -90,9 +91,20 @@ let
       ln -sfn ${pkgs.e2fsprogs}/bin/resize2fs ./files/usr/sbin/resize2fs
       ln -sfn ${pkgs.openssh}/bin/sshd ./files/usr/sbin/sshd
       ln -sfn ${pkgs.openssh}/bin/ssh-keygen ./files/usr/bin/ssh-keygen
-      ln -sfn ${pkgs.sudo}/bin/sudo ./files/usr/bin/sudo
+      # @cc [owner:ghuntley,label:security;build] foreign-linux-sudo-setuid-copy
+      # The guest sudo executable MUST be a regular root-owned setuid copy;
+      # Nix store binaries are deliberately non-setuid and MUST NOT be chmodded.
+      rm -f ./files/usr/bin/sudo
+      # Nix forbids real setuid modes. The mkfs fakeroot invocation below sets
+      # the image inode's mode without changing the unprivileged staging inode.
+      install -m 0755 ${pkgs.sudo}/bin/sudo ./files/usr/bin/sudo
       ln -sfn ${pkgs.systemd}/bin/resolvectl ./files/usr/bin/resolvectl
-      for tool in rm touch sync; do
+      ln -sfn ${pkgs.glibc.getent}/bin/getent ./files/usr/bin/getent
+      ln -sfn ${pkgs.util-linux}/bin/nologin ./files/usr/sbin/nologin
+      for tool in groupadd useradd usermod; do
+        ln -sfn ${pkgs.shadow}/bin/$tool ./files/usr/sbin/$tool
+      done
+      for tool in chown rm touch sync; do
         ln -sfn ${pkgs.coreutils}/bin/$tool ./files/usr/bin/$tool
       done
       ln -sfn ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt ./files/etc/ssl/certs/ca-bundle.crt
@@ -112,6 +124,17 @@ let
       # those modes when copying because the distribution-neutral trust and
       # workspace units below replace files in this directory.
       cp -r --no-preserve=mode,ownership ${./ubuntu/units}/. ./files/etc/systemd/system/
+      # @cc [owner:ghuntley,label:security;deployment] foreign-linux-account-command-path
+      # Roster reconciliation and terminal account setup MUST resolve only the
+      # explicit pinned FHS tools, including when invoked by the SSH PAM helper.
+      for unit in overalls-ssh-sync lilly-terminals; do
+        mkdir -p ./files/etc/systemd/system/$unit.service.d
+        cat > ./files/etc/systemd/system/$unit.service.d/path.conf <<'EOF'
+      [Service]
+      Environment=PATH=/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      Environment=OVERALLS_SSH_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+      EOF
+      done
       # Foreign Linux trustd/workspaced use the generic store strategy. The
       # base bundle is immutable; host roots are published atomically at the
       # conventional CA path on every boot.
@@ -157,13 +180,20 @@ let
       # The foreign roots do not share Ubuntu's openssh package policy. Install
       # a distro-neutral, roster-bound sshd service and preserve the same key
       # authorization and no-root-login boundary.
-      cat > ./files/etc/ssh/sshd_config.d/lilly.conf <<'EOF'
+
+      # @cc [owner:ghuntley,label:security] foreign-linux-owned-ssh-policy
+      # SSH MUST use a complete owned policy and pinned absolute PAM modules,
+      # rather than optional distro includes or distro authentication stacks.
+      # A fresh private login receipt MUST be requisite before opening a session.
+      cat > ./files/etc/ssh/sshd_config <<'EOF'
       HostKey /run/overalls-ssh-host/ssh_host_ed25519_key
       HostCertificate /run/overalls-ssh-host/ssh_host_ed25519_key-cert.pub
       HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com
       PermitRootLogin no
       PasswordAuthentication no
+      PermitEmptyPasswords no
       KbdInteractiveAuthentication no
+      UsePAM yes
       AuthenticationMethods publickey
       AllowAgentForwarding no
       AllowTcpForwarding no
@@ -174,7 +204,26 @@ let
       AuthorizedKeysFile none
       AuthorizedKeysCommand /usr/local/bin/overalls-ssh-authorize authorize %u %t %k
       AuthorizedKeysCommandUser overalls-ssh
+      Subsystem sftp internal-sftp
       EOF
+      # pam_unix supplies pam_setcred for key-authenticated sessions; a deny
+      # auth module would also deny credential establishment. sshd disables
+      # both password mechanisms, and managed account passwords stay locked.
+      cat > ./files/etc/pam.d/sshd <<'EOF'
+      auth required ${pkgs.pam}/lib/security/pam_unix.so
+      account required ${pkgs.pam}/lib/security/pam_unix.so
+      password required ${pkgs.pam}/lib/security/pam_deny.so
+      session required ${pkgs.pam}/lib/security/pam_unix.so
+      session requisite ${pkgs.pam}/lib/security/pam_exec.so quiet quiet_log type=open_session /usr/local/bin/overalls-ssh-authorize login
+      EOF
+      for service in sudo sudo-i; do
+        cat > ./files/etc/pam.d/$service <<'EOF'
+      auth required ${pkgs.pam}/lib/security/pam_unix.so
+      account required ${pkgs.pam}/lib/security/pam_unix.so
+      password required ${pkgs.pam}/lib/security/pam_deny.so
+      session required ${pkgs.pam}/lib/security/pam_unix.so
+      EOF
+      done
       cat > ./files/etc/systemd/system/ssh.service <<'EOF'
       [Unit]
       Description=Overalls roster-bound SSH server
@@ -182,25 +231,40 @@ let
       ConditionPathExists=/run/overalls-ssh-ready
       [Service]
       Type=simple
+      Environment=PATH=/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      Environment=OVERALLS_SSH_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
       ExecStart=/usr/sbin/sshd -D -e -f /etc/ssh/sshd_config
       Restart=on-failure
       [Install]
       WantedBy=multi-user.target
       EOF
+      # Any vendor enablement must resolve to the same gated listener.
+      ln -sfn ssh.service ./files/etc/systemd/system/sshd.service
       rm -f ./files/etc/ssh/ssh_host_*
-      if ! grep -q '^overalls-ssh:' ./files/etc/passwd; then
-        printf 'overalls-ssh:x:998:998:Overalls SSH:/var/empty:/usr/sbin/nologin\n' >> ./files/etc/passwd
-        printf 'overalls-ssh:x:998:\n' >> ./files/etc/group
-      fi
+      ${pkgs.python3}/bin/python3 ${./foreign_linux_accounts.py} ./files
       chmod 0755 ./files/var/empty
-      if [ ! -e ./files/etc/sudoers ]; then
-        printf '#includedir /etc/sudoers.d\n' > ./files/etc/sudoers
-      fi
-      printf '%%wheel ALL=(ALL:ALL) NOPASSWD: ALL\n' > ./files/etc/sudoers.d/overalls
-      chmod 0440 ./files/etc/sudoers.d/overalls
-      if [ -f ./files/etc/pam.d/sshd ]; then
-        printf '%s\n' 'session requisite pam_exec.so quiet quiet_log type=open_session /usr/local/bin/overalls-ssh-authorize login' >> ./files/etc/pam.d/sshd
-      fi
+      # Only the shared reconciler's current per-user policies grant sudo.
+      rm -rf ./files/etc/sudoers.d
+      mkdir -m 0755 ./files/etc/sudoers.d
+      install -m 0644 ${pkgs.sudo}/etc/sudo.conf ./files/etc/sudo.conf
+      printf '@includedir /etc/sudoers.d\n' > ./files/etc/sudoers
+      chmod 0440 ./files/etc/sudoers
+      # Alma's authselect-owned NSS path can be an absolute symlink. Replace
+      # it before writing so assembly cannot follow it outside the guest tree.
+      rm -f ./files/etc/nsswitch.conf
+      cat > ./files/etc/nsswitch.conf <<'EOF'
+      passwd: files
+      group: files
+      shadow: files
+      gshadow: files
+      hosts: files dns
+      networks: files
+      services: files
+      protocols: files
+      rpc: files
+      ethers: files
+      netgroup: files
+      EOF
       printf '[safe]\n\tdirectory = /workspace/*\n' > ./files/etc/gitconfig
       ln -sfn /usr/lib/systemd/system/multi-user.target ./files/etc/systemd/system/default.target
       for unit in lilly-network lilly-grow-root lilly-readiness lilly-flush lilly-terminals lilly-console-ready lilly-boot-report; do
@@ -264,7 +328,39 @@ let
       touch ./files/etc/machine-id
       chmod -R go-w ./files
     '';
-  };
+  }).overrideAttrs (previous: {
+    # @cc [owner:ghuntley,label:build;verification] foreign-linux-reproducible-ext4
+    # Identical root trees MUST produce identical ext4 bytes across builders.
+    # Filesystem sizing MUST NOT depend on host directory sizes; source times,
+    # filesystem hash seeds and every filesystem mutation's clock MUST be fixed.
+    # Store optimisation's incidental hardlinks MUST NOT enter the filesystem.
+    buildCommand = let
+      oldSizing = ''
+        numDataBlocks=$(du -s -c -B 4096 --apparent-size ./rootImage | tail -1 | awk '{ print int($1 * 1.20) }')
+      '';
+      oldMkfs = "faketime -f \"1970-01-01 00:00:01\" fakeroot mkfs.ext4";
+      # Fakeroot mode changes and mkfs MUST share one virtual metadata state.
+      # A separate fakeroot chmod process would lose sudo's setuid bit.
+      newMkfs = "faketime -f \"1970-01-01 00:00:01\" fakeroot ${pkgs.runtimeShell} -e -c 'chmod 4755 ./rootImage/usr/bin/sudo; exec mkfs.ext4 \"$@\"' --";
+    in
+    assert lib.hasInfix oldSizing previous.buildCommand;
+    assert lib.hasInfix oldMkfs previous.buildCommand;
+    assert lib.hasInfix "resize2fs -M $img" previous.buildCommand;
+    assert lib.hasInfix "resize2fs $img $new_size" previous.buildCommand;
+    builtins.replaceStrings [ oldSizing oldMkfs "resize2fs -M $img" "resize2fs $img $new_size" "cp -a --reflink=auto" ] [
+      ''
+        # Directory st_size differs between ext4 and ZFS build hosts. Charge
+        # fixed inode headroom and sum only regular file/symlink content sizes.
+        numDataBlocks=$(find ./rootImage \( -type f -o -type l \) -printf '%s\n' | awk '{ bytes += $1 } END { print int(bytes / 4096 * 1.20) + 1 }')
+        find ./rootImage -print0 | xargs -0 touch -h -d @1
+        export E2FSPROGS_FAKE_TIME=1 FAKETIME_DONT_FAKE_STAT=1
+      ''
+      "${newMkfs} -E hash_seed=44444444-4444-4444-8888-888888888888,lazy_itable_init=0,lazy_journal_init=0"
+      "faketime -f \"1970-01-01 00:00:01\" resize2fs -M $img"
+      "faketime -f \"1970-01-01 00:00:01\" resize2fs $img $new_size"
+      "cp -a --no-preserve=links --reflink=auto"
+    ] previous.buildCommand;
+  });
 in
 pkgs.runCommand imageName {
   nativeBuildInputs = [ pkgs.jq ];

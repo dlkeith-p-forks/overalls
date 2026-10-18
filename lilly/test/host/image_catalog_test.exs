@@ -16,7 +16,8 @@ defmodule Lilly.Host.ImageCatalogTest do
   # Model Lilly restarts, same-size artifact corruption and repair. Only images
   # whose bytes were digest-verified by the current catalog and remain unchanged
   # may be advertised; staged images never are, and startup never waits.
-  property "restart sequences advertise exactly the currently verified unchanged images", %{
+  @tag :hegel
+  test "restart sequences advertise exactly the currently verified unchanged images", %{
     tmp_dir: root
   } do
     File.chmod!(root, 0o700)

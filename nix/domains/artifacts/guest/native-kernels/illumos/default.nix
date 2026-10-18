@@ -83,11 +83,15 @@ pkgs.runCommand "overalls-illumos-kernel-candidate-objects-${sourceRevision}" {
     -fno-omit-frame-pointer -I"$TMPDIR/listener-test" \
     ${./block_completion_test.c} -o "$TMPDIR/block-completion-test"
   "$TMPDIR/block-completion-test"
-  python3.13 ${./extract_viosock_lifetime.py} ${./viosock.c} "$TMPDIR/lifetime-test"
+  python3.13 ${./extract_viosock_lifetime.py} ${./viosock.c} ${./sockvsock.c} "$TMPDIR/lifetime-test"
   $CC -std=c11 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined \
     -fno-omit-frame-pointer -I"$TMPDIR/lifetime-test" -I${../common} \
     ${./viosock_lifetime_test.c} -o "$TMPDIR/viosock-lifetime-test"
   "$TMPDIR/viosock-lifetime-test"
+  $CC -std=c11 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined \
+    -fno-omit-frame-pointer -pthread -I"$TMPDIR/lifetime-test" -I${../common} \
+    ${./socket_handshake_test.c} -o "$TMPDIR/socket-handshake-test"
+  "$TMPDIR/socket-handshake-test"
   mkdir -p "$out/objects" "$out/include/sys" "$out/share/overalls/native-kernel" "$out/bin"
   install -m 0555 ${./native_candidate.py} "$out/bin/overalls-illumos-candidate"
   evidence="$out/share/overalls/native-kernel"

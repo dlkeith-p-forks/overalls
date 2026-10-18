@@ -11,8 +11,9 @@ defmodule Lilly.Terminal.OpeningWorkerPropertyTest do
   # Worker death MUST follow a peer-observed real opening request. A fresh
   # request MUST follow death without fabricated completion or readiness.
   # This loopback test MUST NOT claim TLS, guest or native isolation coverage.
-  property "a killed opening worker retires its attempt and permits a fresh dial" do
-    check all(deaths <- integer(1..3), max_runs: 3, max_shrinking_steps: 0) do
+  property "a killed opening worker retires its attempt and permits a fresh dial",
+    test_cases: 3 do
+    check all(deaths <- integer(1..3)) do
       for shutdown <- [:orderly, :killed] do
         {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
         {:ok, port} = :inet.port(listener)

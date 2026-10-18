@@ -42,7 +42,8 @@ defmodule Lilly.Host.MountTableTest do
   property "escaped targets decode to the original path" do
     check all(
             parts <-
-              list_of(string([?a..?z, ?\s, ?\t, ?\\], min_length: 1, max_length: 8),
+              list_of(
+                string(Enum.to_list(?a..?z) ++ [?\s, ?\t, ?\\], min_length: 1, max_length: 8),
                 min_length: 1,
                 max_length: 4
               )

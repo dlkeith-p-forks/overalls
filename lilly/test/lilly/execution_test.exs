@@ -1,6 +1,6 @@
 defmodule Lilly.ExecutionTest do
   use ExUnit.Case, async: true
-  import Hegel
+  import Hegel, except: [run: 2]
   import Hegel.Gen
   alias OverallsProtocol.{Machine, View}
   alias Lilly.Execution

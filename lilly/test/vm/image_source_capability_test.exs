@@ -12,7 +12,8 @@ defmodule Lilly.VM.ImageSourceCapabilityTest do
   # Calling the real driver with an absent, stale, malformed or identity-mismatched
   # source capability MUST return the fixed refusal before accessing native host
   # resources or creating any files; synthetic bytes cannot prove guest execution.
-  property "source images refuse before creating launch state", %{tmp_dir: directory} do
+  @tag :hegel
+  test "source images refuse before creating launch state", %{tmp_dir: directory} do
     check all(capability <- member_of([nil, 1, "2", true]), max_runs: 8) do
       {image, spec} = fixture(directory)
       raw = Map.put(image.manifest.manifest, "workspace_source_version", capability)
