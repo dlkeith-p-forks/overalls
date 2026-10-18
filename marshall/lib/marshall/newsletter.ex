@@ -16,7 +16,7 @@ defmodule Marshall.Newsletter do
     if EmailAddress.valid?(email), do: request(email, requester), else: {:error, :invalid_email}
   end
 
-  def subscribe(_), do: {:error, :invalid_email}
+  def subscribe(_, _requester), do: {:error, :invalid_email}
 
   defp request(email, requester) do
     with {:ok, %{status: 200, body: token}} <-

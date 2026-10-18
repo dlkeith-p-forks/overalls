@@ -19,6 +19,7 @@ defmodule Marshall.NewsletterPropertyTest do
     email = local <> "@example.test"
     token = "token-" <> Integer.to_string(draw("token_id", integer(1..10_000)))
     {:ok, calls} = Agent.start_link(fn -> [] end)
+    Hegel.on_cleanup(fn -> Agent.stop(calls) end)
 
     requester = fn method, url, options ->
       Agent.update(calls, &[{method, url, options} | &1])

@@ -33,7 +33,7 @@ let
     ../../../../antithesis/lilly/lib
   ] ++ lib.optionals (antithesisSdk && application == "marshall") [
     ../../../../antithesis/marshall/lib
-  ] ++ lib.optionals (builtins.elem application [ "marshall" "audi" "porsche" "brady" "galileo" "enrico" "ziggy" ]) [
+  ] ++ lib.optionals (builtins.elem application [ "marshall" "audi" "porsche" "brady" "galileo" "enrico" "ziggy" "peach" ]) [
     ../../../../elixir/request_accounting/mix.exs
     ../../../../elixir/request_accounting/mix.lock
     ../../../../elixir/request_accounting/lib
@@ -52,7 +52,7 @@ let
       ../../../../marshall/priv/static)
   ];
 in
-assert builtins.elem application [ "marshall" "lilly" "audi" "porsche" "ziggy" "brady" "galileo" "enrico" ];
+assert builtins.elem application [ "marshall" "lilly" "audi" "porsche" "ziggy" "brady" "galileo" "enrico" "peach" ];
 lib.fileset.toSource {
   inherit root;
   fileset = lib.fileset.difference selected generated;
