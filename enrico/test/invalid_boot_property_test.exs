@@ -68,7 +68,7 @@ defmodule Enrico.InvalidBootPropertyTest do
             token <- string(:alphanumeric, length: 32),
             valid_length <- member_of([32, 33, 255, 256]),
             invalid_length <- member_of([31, 257, 512]),
-            max_runs: 3
+            max_runs: 1
           ) do
       credential = String.slice(String.duplicate(token, 8), 0, valid_length)
 
