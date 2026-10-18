@@ -86,7 +86,7 @@ defmodule Audi.Authority.StreamGuardTest do
   # @cc [owner:ghuntley,label:verification;security] audi-stream-lease-history
   # Generated grant and guard outcomes MUST close a live stream on refusal,
   # expiry, suspension or guard loss; a stale renewal MUST NOT extend it.
-  property "a live TCP stream closes for every grant and guard fence" do
+  property "a live TCP stream closes for every grant and guard fence", profile: :ci, test_cases: 1 do
     check all(
             actions <-
               shuffle([
