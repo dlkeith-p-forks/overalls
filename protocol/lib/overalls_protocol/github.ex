@@ -271,7 +271,7 @@ defmodule OverallsProtocol.GitHub do
   @spec response_headers([{String.t(), String.t()}]) :: [{String.t(), String.t()}]
   def response_headers(headers) do
     allowed =
-      ~w(content-type content-disposition content-range accept-ranges etag last-modified cache-control expires vary retry-after x-github-request-id x-ratelimit-limit x-ratelimit-remaining x-ratelimit-used x-ratelimit-reset x-ratelimit-resource x-oauth-scopes x-accepted-oauth-scopes deprecation sunset)
+      ~w(content-type content-disposition content-range accept-ranges etag last-modified cache-control expires vary retry-after link x-github-request-id x-ratelimit-limit x-ratelimit-remaining x-ratelimit-used x-ratelimit-reset x-ratelimit-resource x-oauth-scopes x-accepted-oauth-scopes deprecation sunset)
 
     Enum.filter(headers, fn {name, value} -> name in allowed and header_value?(value, 8192) end)
   end
