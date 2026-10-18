@@ -5,7 +5,7 @@ defmodule MarshallWeb.SecurityHeadersTest do
 
   @csp "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; " <>
          "img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; " <>
-         "base-uri 'self'; form-action 'self'; frame-ancestors 'self'; frame-src 'self'; " <>
+         "base-uri 'self'; form-action 'self' https://ghuntley.com; frame-ancestors 'self'; frame-src 'self'; " <>
          "worker-src 'self'; manifest-src 'self'"
 
   @permissions "accelerometer=(), autoplay=(), camera=(), clipboard-read=(self), " <>
@@ -71,7 +71,7 @@ defmodule MarshallWeb.SecurityHeadersTest do
     assert development =~ "img-src 'self' data: http://localhost:*;"
     assert development =~ "default-src 'self'; "
     assert development =~ "object-src 'none'; "
-    assert development =~ "form-action 'self'; frame-ancestors 'self'; "
+    assert development =~ "form-action 'self' https://ghuntley.com; frame-ancestors 'self'; "
     refute development =~ "https:"
   end
 

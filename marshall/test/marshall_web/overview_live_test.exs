@@ -28,6 +28,17 @@ defmodule MarshallWeb.OverviewLiveTest do
     assert has_element?(view, "#overview-marvin-extension-link[href='/docs/browser-extension']")
     assert has_element?(view, "a[href='/admin/nodes']", "Control room")
     assert has_element?(view, "#overview-capacity-unavailable")
+    assert has_element?(view, "#overview-newsletter")
+
+    assert has_element?(
+             view,
+             "#overview-newsletter-form[action='https://ghuntley.com/newsletter/']"
+           )
+
+    assert has_element?(view, "#overview-newsletter-dismiss")
+
+    view |> element("#overview-newsletter-dismiss") |> render_click()
+    refute has_element?(view, "#overview-newsletter")
   end
 
   test "preview status labels name the state and carry its severity tone", %{conn: conn} do
