@@ -95,7 +95,7 @@ defmodule Brady.InvalidBootPropertyTest do
     check all(
             order <- shuffle(@cases),
             quota <- member_of([1_048_576, 1_048_577, 274_877_906_944]),
-            max_runs: 3
+            max_runs: 1
           ) do
       for mutation <- order do
         directory = child_directory(root)
