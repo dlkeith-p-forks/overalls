@@ -8,10 +8,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from uuid import UUID, uuid4
 
-from access.browser import login_fixture, verify_fixture_login
 from access.fixture import read_access_fixture
 from access.mail import MailLinks
 from access.oracle import AccessOracle
+from access.session import login_fixture, verify_fixture_login
 from core.config import Config
 from core.outcome import Observation, State
 from core.sql import SqlOracle

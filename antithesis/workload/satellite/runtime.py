@@ -1,9 +1,11 @@
 """One dedicated real VM and the independent satellite fixture observers."""
 
+import logging
 import os
 import time
 from dataclasses import dataclass
 from pathlib import Path
+from typing import LiteralString
 from uuid import uuid4
 
 from access.fixture import read_access_fixture
@@ -15,6 +17,8 @@ from satellite.authority import IntegrationAuthority
 from satellite.operator import IntegrationOperator
 from satellite.oracle import InferenceOracle
 from satellite.origin import SatelliteOrigin
+
+LOG = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -44,7 +48,7 @@ def prepare_vm() -> Runtime | None:
         or catalog.value is None
         or not catalog.value.capacity_known
     ):
-        return None
+        return _unplaced("catalog unavailable or capacity unknown")
     selected = next(
         (
             image
@@ -56,14 +60,14 @@ def prepare_vm() -> Runtime | None:
         None,
     )
     if selected is None:
-        return None
+        return _unplaced("no offered image fits available capacity")
     key = uuid4()
     created = compute.provision(key, selected, name=f"satellite-{key.hex[:16]}")
     if created.state is not State.OBSERVED or created.value is None:
-        return None
+        return _unplaced("provision reply unavailable")
     vm = provisioned(created.value)
     if vm is None or vm.owner_id != actor.user_id:
-        return None
+        return _unplaced("provision refused or owned by another actor")
     deadline = time.monotonic() + 180
     started = False
     while time.monotonic() < deadline:
@@ -110,10 +114,14 @@ def prepare_vm() -> Runtime | None:
                         or command.value is None
                         or command.value.status != "ok"
                     ):
-                        return None
+                        return _unplaced("start command unavailable")
                     started = True
         time.sleep(1)
-    return None
+    return _unplaced("VM not running by deadline")
+
+
+def _unplaced(reason: LiteralString) -> None:
+    LOG.info("Satellite VM placement unexercised: %s", reason)
 
 
 def delete_vm(runtime: Runtime) -> None:

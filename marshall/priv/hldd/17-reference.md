@@ -397,7 +397,13 @@ material, never a production CA. Ziggy
 completion, Galileo named origin and the editor login-code race need a current
 running VM; the controlled Lilly pool reports unavailable capacity and no Audi
 editor gateway, editor release or wildcard is configured, so their primary and
-`Sometimes` assertions stay unevaluated. Ziggy and Galileo issue and
+`Sometimes` assertions stay unevaluated; the first hosted run
+(`e6bff5d6e4b57e6bb43c7a018384750d-65-0`) confirmed this, and each stop now logs a
+fixed `Satellite VM placement unexercised` reason. That run also listed twelve
+access assertions as never hit because the satellite drivers imported the
+fixture login from the access browser module; the login now lives in the
+assertion-free `access/session.py`, so only selected callsites enter the
+roster. Ziggy and Galileo issue and
 authenticate credentials only for an enabled host, and Marshall's reviewed
 enable action requires a fresh execution-ready report that the controlled
 `lilly-a` never sends, so satellite enrollment applies a labelled harness
