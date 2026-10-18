@@ -1244,3 +1244,7 @@ The Android display hook uses a same-origin WebSocket URL supplied by the page,
 keeps viewer input disabled, and sends controller key/pointer frames only after
 a controller ticket is granted. It does not use a foreign iframe or external
 resource.
+
+The `/android-display` WebSocket upgrade verifies the browser login, signed
+machine ticket, actor binding, mode and generation before creating a relay
+process; failed upgrades return a generic refusal without machine disclosure.
