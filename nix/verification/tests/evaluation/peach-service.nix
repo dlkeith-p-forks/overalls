@@ -5,6 +5,7 @@ let
     inherit pkgs;
     modules = [
       (import ../../../domains/system/peach.nix { inherit packages; })
+      (import ../../../domains/system/lilly.nix { inherit packages; })
       ({ lib, ... }: {
         services.lilly = {
           enable = true;
