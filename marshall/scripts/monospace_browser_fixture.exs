@@ -45,6 +45,10 @@ defmodule Marshall.MonospaceBrowserFixture do
     manager = Ash.Seed.seed!(Marshall.Accounts.User, %{email: "sora@example.test"})
     {:ok, second} = Marshall.Compute.provision(Marshall.ComputeFixtures.request(), actor: owner)
     Ash.Seed.update!(second, %{name: "tiny-moon"})
+    # A second listed machine (tiny-moon is archived below) for the pin-order probe.
+    Marshall.ComputeFixtures.host_fixture()
+    {:ok, third} = Marshall.Compute.provision(Marshall.ComputeFixtures.request(), actor: owner)
+    Ash.Seed.update!(third, %{name: "paper-lantern"})
 
     {:ok, _} =
       Marshall.Teams.create_team(%{name: "little-workshop", idempotency_key: Ash.UUID.generate()},

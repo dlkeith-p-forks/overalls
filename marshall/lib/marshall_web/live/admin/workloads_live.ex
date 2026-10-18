@@ -30,8 +30,11 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
            },
            actor: socket.assigns.current_user
          ) do
-      {:ok, _} -> {:noreply, socket |> put_flash(:info, "Lifecycle request queued.") |> refresh()}
-      {:error, _} -> {:noreply, put_flash(socket, :error, "Lifecycle request was rejected.")}
+      {:ok, _} ->
+        {:noreply, socket |> put_flash(:info, "Lifecycle request queued.") |> refresh()}
+
+      {:error, error} ->
+        {:noreply, put_flash(socket, :error, lifecycle_refusal(error))}
     end
   end
 
@@ -54,6 +57,15 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
   end
 
   def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, "Invalid request.")}
+
+  # The owner's pin fences administrator deletes too (ADR-0193); every other
+  # refusal keeps the generic text so no coordinator detail leaks.
+  @spec lifecycle_refusal(Exception.t()) :: String.t()
+  defp lifecycle_refusal(error) do
+    if Exception.message(error) =~ "machine_pinned",
+      do: "The owner has pinned this machine; it cannot be deleted until they unpin it.",
+      else: "Lifecycle request was rejected."
+  end
 
   defp refresh(socket) do
     case Compute.list_vms_for_admin(%{}, actor: socket.assigns.current_user) do

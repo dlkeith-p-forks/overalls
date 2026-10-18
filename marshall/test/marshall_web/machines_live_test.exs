@@ -593,8 +593,10 @@ defmodule MarshallWeb.MachinesLiveTest do
     assert has_element?(
              view,
              "#machine-#{machine_id}-vscode-reason",
-             "new machine using the current image"
+             "does not support the current browser editor"
            )
+
+    refute has_element?(view, "#machine-#{machine_id}-vscode-reason", "new machine")
   end
 
   test "current headroom distinguishes unknown telemetry from measured zero", %{

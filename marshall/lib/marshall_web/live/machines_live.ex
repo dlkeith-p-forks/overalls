@@ -346,6 +346,14 @@ defmodule MarshallWeb.MachinesLive do
     end
   end
 
+  # The shared MachineWorkspace hook takes this event on detail pages, where the
+  # header shows the toggle; the list page reaches here and re-reads its rows so
+  # the pinned section and the keyset page stay disjoint (ADR-0193).
+  def handle_event("pin", %{"id" => id, "pinned" => pinned}, socket)
+      when is_binary(id) and is_binary(pinned) do
+    {:noreply, socket |> MachineWorkspace.toggle_pin(id, pinned == "true") |> refresh()}
+  end
+
   def handle_event("grants_next", _, socket),
     do: {:noreply, socket |> assign(grant_cursor: socket.assigns.grant_next) |> refresh()}
 
@@ -383,18 +391,31 @@ defmodule MarshallWeb.MachinesLive do
     end
   end
 
+  # @cc [owner:ghuntley,label:product] machines-pinned-first
+  # The list page MUST read the caller's pinned section first and exclude those
+  # ids from every keyset page, so a pinned machine appears once, before the
+  # unpinned rows, and only on the first page. Later pages MUST keep the same
+  # exclusion so paging neither repeats nor skips a machine.
   defp refresh(%{assigns: %{live_action: :index}} = socket) do
-    with {:ok, page} <-
-           Compute.list_vms(%{after: socket.assigns.cursor}, actor: socket.assigns.current_user),
-         {:ok, catalog} <- Compute.catalog(%{}, actor: socket.assigns.current_user) do
+    actor = socket.assigns.current_user
+
+    with {:ok, %{items: pinned}} <- Compute.pinned_vms(%{}, actor: actor),
+         {:ok, page} <-
+           Compute.list_vms(
+             %{after: socket.assigns.cursor, exclude: Enum.map(pinned, & &1.id)},
+             actor: actor
+           ),
+         {:ok, catalog} <- Compute.catalog(%{}, actor: actor) do
+      items = if(socket.assigns.cursor, do: [], else: pinned) ++ page.items
+
       socket
       |> assign(
         catalog: catalog,
         catalog_available: true,
         next_cursor: page.next_cursor,
-        empty: page.items == []
+        empty: items == []
       )
-      |> stream(:machines, page.items, reset: true)
+      |> stream(:machines, items, reset: true)
     else
       _ ->
         socket
@@ -564,6 +585,7 @@ defmodule MarshallWeb.MachinesLive do
       owner_protected: "The owner's access cannot be changed.",
       forbidden: "You no longer have permission for this action.",
       vm_deleted: "This machine is being deleted.",
+      machine_pinned: "Unpin this machine before deleting it.",
       idempotency_conflict: "This request has already been used. Refresh before trying again."
     ]
 
@@ -640,9 +662,15 @@ defmodule MarshallWeb.MachinesLive do
               </tr>
             </thead>
             <tbody id="machines" phx-update="stream">
-              <tr :for={{id, vm} <- @streams.machines} id={id} class="machine-row">
+              <tr
+                :for={{id, vm} <- @streams.machines}
+                id={id}
+                class="machine-row"
+                data-pinned={to_string(UI.pinned?(vm))}
+              >
                 <td>
                   <.link navigate={~p"/machines/#{vm.id}"} class="machine-name">{vm.name}</.link>
+                  <UI.pinned_label vm={vm} id={"machine-pinned-#{vm.id}"} />
                   <UI.os_label vm={vm} id={"machine-os-#{vm.id}"} />
                 </td>
                 <td data-label="Status">
@@ -670,6 +698,7 @@ defmodule MarshallWeb.MachinesLive do
                       class="muted"
                     >Terminal unavailable</span>
                     <UI.machine_editor_action vm={vm} id_prefix="machine" />
+                    <UI.pin_toggle vm={vm} id={"pin-#{vm.id}"} />
                   </div>
                 </td>
               </tr>
@@ -1109,17 +1138,24 @@ defmodule MarshallWeb.MachinesLive do
             title="Delete machine"
           >
             <:actions>
+              <%!-- The owner's pin fences deletion server-side (ADR-0193); the
+                   disabled control only explains that refusal ahead of time. --%>
               <Layouts.action
                 tone="danger"
                 id="delete-machine"
                 phx-click="lifecycle"
                 phx-value-kind="delete"
                 phx-value-key={@lifecycle_key}
+                disabled={@vm.owner && UI.pinned?(@vm)}
+                aria-describedby={@vm.owner && UI.pinned?(@vm) && "delete-pinned"}
                 data-confirm="Delete this machine and its disk? This cannot be undone."
               >
                 Delete
               </Layouts.action>
             </:actions>
+            <p :if={@vm.owner && UI.pinned?(@vm)} id="delete-pinned">
+              Unpin to delete. While you have this machine pinned, nothing can delete it.
+            </p>
             <p class="muted">
               Permanently remove this machine and its disk. This cannot be undone.
             </p>

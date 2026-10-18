@@ -869,9 +869,10 @@ unchanged-image SSH or lifecycle acceptance.
 The repaired exact `8ca0a11f` image subsequently passed actual installation and
 immutable readback of all three repaired executables. Its sealed recursive NAR
 has no references. Signed cache publication and exact NAR-fingerprint Ed25519
-verification passed; independent substitution, selection and a fresh clean
-physical CLI lifecycle remain pending. The old mutated fixture does not verify
-those new bytes.
+verification passed. Independent fresh Dungarees substitution, full NAR contents
+and whole-artifact hashes passed, and source selection pins the reviewed bytes.
+Deployment and a fresh clean physical CLI lifecycle remain pending. The old
+mutated fixture does not verify those new bytes.
 The [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
 records exact run identities and unrun corrected-image/later lifecycle stages.
 The separate exact-promoted OmniOS fixture then completed creation. Its first

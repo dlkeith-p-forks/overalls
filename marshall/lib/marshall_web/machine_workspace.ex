@@ -3,7 +3,7 @@ defmodule MarshallWeb.MachineWorkspace do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [attach_hook: 4, put_flash: 3, push_navigate: 2]
   alias Marshall.Accounts.{Security, User}
-  alias Marshall.Compute
+  alias Marshall.{Access, Compute}
 
   @type socket :: Phoenix.LiveView.Socket.t()
   @type connection ::
@@ -136,7 +136,57 @@ defmodule MarshallWeb.MachineWorkspace do
     "powershell -NoProfile -ExecutionPolicy Bypass -Command \"#{script}\""
   end
 
+  # @cc [owner:ghuntley,label:security;product] machine-pin-current-actor
+  # Pin toggles MUST send the server-selected VM id and the current actor to the
+  # Access domain; the displayed state only chooses pin or unpin, and a stale
+  # choice is absorbed by the coordinator's idempotent result. Refusals MUST
+  # map to the fixed public messages below, never to coordinator detail.
+  @spec toggle_pin(socket(), String.t(), boolean()) :: socket()
+  def toggle_pin(socket, vm_id, pinned?) do
+    actor = socket.assigns.current_user
+
+    result =
+      if pinned?,
+        do: Access.unpin_machine(%{vm_id: vm_id}, actor: actor),
+        else: Access.pin_machine(%{vm_id: vm_id}, actor: actor)
+
+    case result do
+      {:ok, _pin} -> socket
+      {:error, error} -> put_flash(socket, :error, pin_message(error))
+    end
+  end
+
+  @spec pin_message(Exception.t()) :: String.t()
+  defp pin_message(error) do
+    text = Exception.message(error)
+
+    cond do
+      String.contains?(text, "pin_limit") ->
+        "You can pin up to #{Access.Pins.limit()} machines. Unpin one before pinning another."
+
+      String.contains?(text, "vm_deleted") ->
+        "This machine is being deleted and cannot be pinned."
+
+      true ->
+        "The pin could not be changed. Refresh and try again."
+    end
+  end
+
   @spec power_event(String.t(), map(), socket()) :: {:halt | :cont, socket()}
+  defp power_event(
+         "pin",
+         %{"id" => id, "pinned" => pinned},
+         %{assigns: %{vm: %{id: id}}} = socket
+       )
+       when is_binary(id) and is_binary(pinned) do
+    socket = toggle_pin(socket, id, pinned == "true")
+
+    case Compute.get_vm(%{vm_id: id}, actor: socket.assigns.current_user) do
+      {:ok, current} -> {:halt, put_vm(socket, current)}
+      _ -> {:halt, socket}
+    end
+  end
+
   defp power_event(
          "machine-power",
          %{"kind" => kind, "key" => key},

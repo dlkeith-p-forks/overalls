@@ -1236,6 +1236,7 @@ defmodule MarshallWeb.ThreadsLive do
     compaction_no_progress:
       "Compaction could not reduce this context. Reduce required instructions or start a focused thread.",
     nothing_to_compact: "There is no older context to compact yet.",
+    machine_pinned: "Unpin this thread's machine before deleting it.",
     skill_failed:
       "The skill operation failed. The previous installed revision remains available.",
     skill_ambiguous: "More than one skill has this name. Select its exact source from Skills.",

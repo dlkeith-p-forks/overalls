@@ -58,6 +58,7 @@ defmodule Marshall.Compute do
       define :get_vm, action: :get_for_user
       define :resolve_vm, action: :resolve_for_user
       define :list_vms, action: :list_for_user
+      define :pinned_vms, action: :pinned_for_user
       define :list_vms_for_admin, action: :list_for_admin
       define :catalog, action: :catalog
       define :provision, action: :provision

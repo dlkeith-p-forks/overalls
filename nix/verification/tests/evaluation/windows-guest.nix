@@ -29,8 +29,8 @@ in
 # The shared fleet list MUST select the reviewed recursive-hash Windows pin,
 # whose fallback only refuses. The source windows-v1 builder MUST remain an
 # independent development target; declaration checks do not prove guest boot.
-assert published.name == "overalls-windows-server-2025-e9ed22f1";
-assert published.drvAttrs.outputHash == "sha256-wTUJSjElKyGQ6LnYELBh/N8+WAYTlGOcqQwkzMtLoRU=";
+assert published.name == "overalls-windows-server-2025-8ca0a11f";
+assert published.drvAttrs.outputHash == "sha256-MTpVti0Mc+c3FzqjUJLfBAfEIW+plgP+HheZnVdPlUo=";
 assert published.drvAttrs.outputHashMode == "recursive";
 assert published.drvAttrs.allowedReferences == [ ];
 assert builtins.getContext published.buildCommand == { };
@@ -48,7 +48,7 @@ assert published.passthru.manifest.boot.firmware == {
 assert published.passthru.manifest.root == {
   format = "raw-gpt";
   bytes = 68719476736;
-  sha256 = "a82162b769d71a5db3d52fdb65b9291f058792d5a9ad1c45ee31e0f3d37226c1";
+  sha256 = "2eee37f946e7688719b09b9e8b285431ef2332513f768c0b02a9e82c9e90fd05";
 };
 assert builtins.length fleetWindows == 1;
 assert (builtins.head fleetWindows).package.drvPath == published.drvPath;
@@ -157,9 +157,16 @@ assert lib.hasInfix "Add-DnsClientNrptRule -Namespace '.internal' -NameServers '
 # gateway, never on-link (nothing answers ARP for it on the tap).
 assert lib.hasInfix "-DestinationPrefix '169.254.254.1/32' -NextHop $gateway" bootstrap;
 assert !(lib.hasInfix "-DestinationPrefix '169.254.254.1/32' -NextHop 0.0.0.0" bootstrap);
-# The ssh-ready marker is per boot (C:\overalls\run survives reboots and relocation).
-assert lib.hasInfix "boot_id::marker_is_current(Path::new(SSH_READY))" (builtins.readFile ../../../../lyra/src/bin/overalls-readinessd.rs);
-assert lib.hasInfix "boot_id::write_marker(Path::new(SSH_READY))" (builtins.readFile ../../../../lyra/src/bin/overalls-ssh-sync-windows.rs);
+# Bootstrap and verified host-certificate receipts are per boot; readiness also
+# probes the live sshd service (C:\overalls\run survives reboots and relocation).
+assert lib.all (probe: lib.hasInfix probe (builtins.readFile ../../../../lyra/src/bin/overalls-readinessd.rs)) [
+  "if !ssh_bootstrap_ready("
+  "boot_id::marker_is_current(Path::new(ssh_bootstrap::READY))"
+  "boot_id::marker_is_current(Path::new(ssh_bootstrap::CERTIFICATE_READY))"
+  "|| services::running(SSHD)"
+];
+assert lib.hasInfix "boot_id::write_marker(Path::new(ssh_bootstrap::READY))" (builtins.readFile ../../../../lyra/src/bin/overalls-ssh-sync-windows.rs);
+assert lib.hasInfix "boot_id::write_marker(Path::new(ssh_bootstrap::CERTIFICATE_READY))" (builtins.readFile ../../../../lyra/src/bin/overalls-host-certificate-windows.rs);
 # Public names resolve through the Linux guests' resolvers (workspace clones).
 assert lib.hasInfix "-ServerAddresses @('1.1.1.1', '9.9.9.9')" bootstrap;
 # ADR-0173: Desktop Experience, winget and its packages from winget.json only,

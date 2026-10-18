@@ -93,6 +93,8 @@ defmodule Marshall.SSH.ControlRequests do
              :invalid_vm_size,
              :host_unavailable,
              :vm_deleted,
+             :machine_pinned,
+             :pin_limit,
              :workload_not_stable,
              :source_unavailable,
              :transfer_busy,

@@ -230,6 +230,22 @@ defmodule OverallsProtocol.SSHCommandTest do
     end
   end
 
+  test "pin and unpin take one machine and the generic mutation options only" do
+    for name <- ["pin", "unpin"] do
+      assert {:ok, %{command: ^name, arguments: ["vm-one"], options: %{"request-id" => "pin-1"}}} =
+               SSHCommand.parse("#{name} vm-one --request-id pin-1 --json")
+
+      assert SSHCommand.mutation?(name)
+      refute SSHCommand.physical?(name)
+
+      for text <- ["#{name}", "#{name} vm-one vm-two", "#{name} vm-one --timeout 5"] do
+        assert {:error, :invalid_command} = SSHCommand.parse(text)
+      end
+    end
+
+    assert {:error, :invalid_command} = SSHCommand.parse("lock vm-one")
+  end
+
   test "integration stdin credential markers are replaced only through shared validation" do
     assert {:ok, command} =
              SSHCommand.parse("integration add api --target https://api.test --bearer -")

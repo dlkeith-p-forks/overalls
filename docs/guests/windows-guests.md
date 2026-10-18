@@ -60,17 +60,19 @@ publication guidance and fails; it cannot run another installation or select a
 host-local image.
 
 The reviewed publication is
-`/nix/store/nh6wfp35zm8wpdjgkvms7dlwkr1pwbgr-overalls-windows-server-2025-e9ed22f1`,
-recursive NAR hash `sha256-wTUJSjElKyGQ6LnYELBh/N8+WAYTlGOcqQwkzMtLoRU=`.
+`/nix/store/n1jf5kk658v71kixs1j0652mlqvb2in2-overalls-windows-server-2025-8ca0a11f`,
+recursive NAR hash `sha256-MTpVti0Mc+c3FzqjUJLfBAfEIW+plgP+HheZnVdPlUo=`.
 Its 68,719,476,736-byte root SHA-256 is
-`a82162b769d71a5db3d52fdb65b9291f058792d5a9ad1c45ee31e0f3d37226c1`;
+`2eee37f946e7688719b09b9e8b285431ef2332513f768c0b02a9e82c9e90fd05`;
 the 4,194,304-byte firmware SHA-256 is
 `261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2`.
-Both hosts hold the same recursive NAR hash and 68,723,672,224-byte NAR with no
-references, imported the public Overalls cache signature and passed
-`nix store verify --no-contents --sigs-needed 1`. The public signed cache entry
-uses a 17,099,050,377-byte compressed NAR.
-This custody record does not establish a new guest execution result.
+The sealed 68,723,672,224-byte NAR has no references. Its public cache signature
+passed actual Ed25519 verification of the exact NAR fingerprint. Independent
+Dungarees substitution began with the path absent, then passed
+`nix store verify --sigs-needed 1`, including full NAR content verification,
+and independently checked the exact regular file set, manifest/canonical image
+identity and complete disk/firmware hashes. The source selector pins those
+reviewed bytes. Deployment and fresh guest execution remain separate evidence.
 
 For an intentional image update, build once with the source builder, retain its
 installation evidence, seal dereferenced disk/firmware and the unchanged
@@ -300,9 +302,10 @@ The repaired profile/bootstrap image `8ca0a11f` passed actual installation in
 1,834.2 seconds. Its immutable NTFS copies of the three repaired executables
 match the reviewed payloads; the sealed recursive NAR has no references.
 Signed cache publication and Ed25519 verification of the exact NAR fingerprint
-also passed. Independent full-content substitution, selection and a clean
-exact-image create/CLI SSH/stop/restart/repeated SSH/delete lifecycle remain
-separate pending evidence. The old disposable
+also passed, followed by independent full-content Dungarees substitution and
+whole-artifact hashes. Source selection now pins the reviewed image; deployment
+and a clean exact-image create/CLI SSH/stop/restart/repeated SSH/delete lifecycle
+remain separate pending evidence. The old disposable
 fixture's manual profile repair is not an unchanged-image lifecycle pass.
 The [matrix review](../architecture/reviews/2026-10-18-guest-os-matrix.md)
 records exact image, NAR and private receipt identities.

@@ -1,9 +1,9 @@
 { pkgs }:
 let
-  name = "overalls-windows-server-2025-e9ed22f1";
-  narHash = "sha256-wTUJSjElKyGQ6LnYELBh/N8+WAYTlGOcqQwkzMtLoRU=";
-  # Sealed from the existing offline windows-v1 installation at
-  # /nix/store/7pk5s07ak59z5hx66ljhdlyh6kw9pl7a-lilly-windows-server-2025-x86_64.
+  name = "overalls-windows-server-2025-8ca0a11f";
+  narHash = "sha256-MTpVti0Mc+c3FzqjUJLfBAfEIW+plgP+HheZnVdPlUo=";
+  # Sealed from the reviewed frozen windows-v1 source installation at
+  # /nix/store/gpkrcddghwxj3g8wcd9qf69sjya4i1n8-lilly-windows-server-2025-x86_64.
   # Dereferencing its disk/firmware and copying its manifest produces exactly
   # three regular files, no store references and the reviewed recursive hash.
   # These pins describe artifact custody, not guest runtime acceptance.
@@ -21,7 +21,7 @@ let
     root = {
       format = "raw-gpt";
       bytes = 68719476736;
-      sha256 = "a82162b769d71a5db3d52fdb65b9291f058792d5a9ad1c45ee31e0f3d37226c1";
+      sha256 = "2eee37f946e7688719b09b9e8b285431ef2332513f768c0b02a9e82c9e90fd05";
     };
     guest_agents = "windows-v1";
     minimum_memory_bytes = 2147483648;

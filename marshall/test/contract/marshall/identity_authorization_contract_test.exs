@@ -9,6 +9,8 @@ defmodule MarshallIdentityAuthorizationContractTest do
       Marshall.Access.Authorization,
       Marshall.Access.Change,
       Marshall.Access.Grant,
+      Marshall.Access.Pin,
+      Marshall.Access.Pins,
       Marshall.Access.Sharing,
       Marshall.Accounts,
       Marshall.Accounts.AccountLifecycle,
@@ -107,5 +109,37 @@ defmodule MarshallIdentityAuthorizationContractTest do
     assert Marshall.Accounts.Security.email_fresh?(~U[2026-01-01 00:04:00Z], now)
     refute Marshall.Accounts.Security.email_fresh?(~U[2025-12-31 23:00:00Z], now)
     refute Marshall.Accounts.Security.email_fresh?(nil, now)
+  end
+
+  @tag obligation: "marshall.identity_authorization.I5"
+  test "the pin state machine has exactly two transitions from a pinned start" do
+    assert AshStateMachine.Info.state_machine_initial_states!(Marshall.Access.Pin) == [:pinned]
+
+    assert AshStateMachine.Info.state_machine_default_initial_state!(Marshall.Access.Pin) ==
+             :pinned
+
+    assert Enum.sort(AshStateMachine.Info.state_machine_all_states(Marshall.Access.Pin)) == [
+             :pinned,
+             :unpinned
+           ]
+
+    transitions =
+      Marshall.Access.Pin
+      |> AshStateMachine.Info.state_machine_transitions()
+      |> Enum.map(&{&1.action, List.wrap(&1.from), List.wrap(&1.to)})
+      |> Enum.sort()
+
+    assert transitions == [{:repin, [:unpinned], [:pinned]}, {:unpin, [:pinned], [:unpinned]}]
+    assert Marshall.Access.Pins.limit() == 20
+  end
+
+  @tag obligation: "marshall.identity_authorization.I6"
+  test "pin projections are empty for every non-user actor" do
+    vm = %Marshall.Compute.VirtualMachine{id: Ash.UUID.generate(), owner_id: Ash.UUID.generate()}
+
+    for actor <- [Marshall.Authorization.SystemActor.compute(), nil, %{id: Ash.UUID.generate()}] do
+      assert Marshall.Access.Pins.pinned_vm_ids(actor) == []
+      refute Marshall.Access.Pins.pinned?(vm, actor)
+    end
   end
 end

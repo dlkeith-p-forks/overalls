@@ -87,6 +87,11 @@ undersized requests fail.
 Stop retains the disk. `rm MACHINE` deletes the machine and its disk. A name is
 available for reuse only after cleanup is confirmed. Use `exit` to leave the prompt.
 
+`pin MACHINE` keeps a machine at the top of your lists in the browser; `unpin
+MACHINE` removes your pin. Pins are personal, and you may hold up to twenty. While
+the machine's owner has it pinned, nobody can delete it: `rm` answers
+`machine_pinned` until the owner runs `unpin MACHINE` or unpins it in the browser.
+
 `relocate MACHINE` moves the same machine and disk to another eligible physical
 host. Porsche never accepts a destination: Marshall selects one from current
 capacity, image availability and transfer readiness. The machine keeps its name,

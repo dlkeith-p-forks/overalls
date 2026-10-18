@@ -40,7 +40,8 @@
 .preview-links .machine-editor-notice {
   flex-basis: 100%;
 }
-button.machine-editor-link {
+button.machine-editor-link,
+.preview-links .pin-toggle {
   border: 0;
   padding: 0;
   height: var(--line-height);
@@ -49,6 +50,11 @@ button.machine-editor-link {
   font-weight: inherit;
   text-decoration: underline;
   text-decoration-thickness: var(--border-thickness);
+}
+/* Pin controls read as Pin/Unpin text; the pinned label carries the state. */
+.preview-machine[data-pinned="true"] .machine-name,
+.machine-row[data-pinned="true"] .machine-name {
+  font-weight: var(--font-weight-bold);
 }
 .note-list a {
   display: block;

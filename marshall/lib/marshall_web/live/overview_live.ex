@@ -5,9 +5,13 @@ defmodule MarshallWeb.OverviewLive do
   on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
 
   @type socket :: Phoenix.LiveView.Socket.t()
+  @type preview :: %{items: [map()], more: boolean()}
+  @preview 6
   # @cc [owner:ghuntley,label:security;product] overview-bounded-authorized-panels
-  # Overview MUST request a machine page with limit six through the current actor's
-  # domain action. Failed panels MUST remain unavailable, not become zero-valued
+  # Overview MUST request the caller's pinned section and then a machine page
+  # through the current actor's domain actions, show at most six machines with
+  # pinned machines first, and exclude pinned ids from the page so no machine
+  # repeats. Failed panels MUST remain unavailable, not become zero-valued
   # measurements. Refresh replaces all displayed data.
   @impl true
   @spec mount(map(), map(), socket()) :: {:ok, socket()}
@@ -19,6 +23,12 @@ defmodule MarshallWeb.OverviewLive do
   @impl true
   @spec handle_event(String.t(), map(), socket()) :: {:noreply, socket()}
   def handle_event("refresh", _, socket), do: {:noreply, refresh(socket)}
+
+  def handle_event("pin", %{"id" => id, "pinned" => pinned}, socket)
+      when is_binary(id) and is_binary(pinned) do
+    {:noreply,
+     socket |> MarshallWeb.MachineWorkspace.toggle_pin(id, pinned == "true") |> refresh()}
+  end
 
   def handle_event("visibility", %{"visible" => visible}, socket) when is_boolean(visible),
     do: {:noreply, assign(socket, :visible, visible)}
@@ -35,7 +45,7 @@ defmodule MarshallWeb.OverviewLive do
   @spec refresh(socket()) :: socket()
   defp refresh(socket) do
     actor = socket.assigns.current_user
-    machines = read(fn -> Compute.list_vms(%{limit: 6}, actor: actor) end)
+    machines = read(fn -> preview(actor) end)
     catalog = read(fn -> Compute.catalog(%{}, actor: actor) end)
 
     assign(socket,
@@ -43,6 +53,28 @@ defmodule MarshallWeb.OverviewLive do
       catalog: catalog,
       updated_at: Calendar.strftime(DateTime.utc_now(), "%H:%M UTC")
     )
+  end
+
+  # Pinned machines take the first slots; the keyset page fills the rest. When
+  # every slot is pinned, one excluded row only tells whether more exist.
+  @spec preview(Marshall.Accounts.User.t()) :: {:ok, preview()} | {:error, term()}
+  defp preview(actor) do
+    with {:ok, %{items: pinned}} <- Compute.pinned_vms(%{}, actor: actor),
+         shown = Enum.take(pinned, @preview),
+         {:ok, page} <-
+           Compute.list_vms(
+             %{limit: max(@preview - length(shown), 1), exclude: Enum.map(pinned, & &1.id)},
+             actor: actor
+           ) do
+      full? = length(shown) == @preview
+
+      {:ok,
+       %{
+         items: shown ++ if(full?, do: [], else: page.items),
+         more:
+           length(pinned) > @preview or page.next_cursor != nil or (full? and page.items != [])
+       }}
+    end
   end
 
   @spec read((-> {:ok, map()} | {:error, term()})) :: {:ok, map()} | :unavailable
@@ -110,6 +142,7 @@ defmodule MarshallWeb.OverviewLive do
                     :for={vm <- page.items}
                     id={"overview-machine-#{vm.id}"}
                     class="preview-machine"
+                    data-pinned={to_string(UI.pinned?(vm))}
                   >
                     <div>
                       <.link navigate={~p"/machines/#{vm.id}"} class="machine-name">{vm.name}</.link><p>
@@ -119,6 +152,7 @@ defmodule MarshallWeb.OverviewLive do
                       </p>
                     </div>
                     <div class="preview-labels">
+                      <UI.pinned_label vm={vm} id={"overview-machine-pinned-#{vm.id}"} />
                       <UI.os_label vm={vm} id={"overview-machine-os-#{vm.id}"} />
                       <span class="status-label" data-state={vm.observed_state}>{UI.machine_state(vm)}</span>
                     </div>
@@ -129,10 +163,11 @@ defmodule MarshallWeb.OverviewLive do
                         id={"overview-terminal-#{vm.id}"}
                       >Open terminal ↗</.link>
                       <UI.machine_editor_action vm={vm} id_prefix="overview-machine" variant={:link} />
+                      <UI.pin_toggle vm={vm} id={"pin-#{vm.id}"} />
                     </div>
                   </article>
                 </div>
-                <p :if={page.next_cursor} class="muted">
+                <p :if={page.more} class="muted">
                   A small preview. All your accessible machines are in <.link navigate={~p"/machines"}>Machines</.link>.
                 </p>
               <% :unavailable -> %>

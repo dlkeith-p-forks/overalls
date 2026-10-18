@@ -393,6 +393,24 @@ defmodule Marshall.SSH.Commands do
     {%{id: vm.id, name: vm.name}, vm.id, operation.id}
   end
 
+  # @cc [owner:ghuntley,label:product] ssh-pin-commands-idempotent
+  # `pin`/`unpin` MUST resolve the machine like `rm`, call the Access pin
+  # coordinator with the current SSH actor and succeed without a physical
+  # operation. Repeating either MUST succeed with the same `pinned` result; a
+  # refusal MUST keep the coordinator's closed reason (`pin_limit`, `vm_deleted`,
+  # `forbidden`). The reply MUST carry only the machine id/name and pin state.
+  defp perform(%{command: command, arguments: [ref]}, actor, _key)
+       when command in ["pin", "unpin"] do
+    vm = resolve!(ref, actor)
+
+    pin =
+      if command == "pin",
+        do: Access.pin_machine(%{vm_id: vm.id}, actor: actor) |> unwrap!(),
+        else: Access.unpin_machine(%{vm_id: vm.id}, actor: actor) |> unwrap!()
+
+    {%{id: vm.id, name: vm.name, pinned: pin.state == :pinned}, vm.id, nil}
+  end
+
   defp perform(%{command: command, arguments: [ref, email | rest]}, actor, key)
        when command in ["share add", "share remove"] do
     vm = resolve!(ref, actor)
@@ -696,8 +714,12 @@ defmodule Marshall.SSH.Commands do
 
   defp resolve!(ref, actor), do: Compute.resolve_vm(%{reference: ref}, actor: actor) |> unwrap!()
 
+  # Browser-only projections (editor eligibility, guest capability booleans and
+  # the caller's pin) stay out of the SSH/Porsche wire format.
   @spec machine_wire_view(map()) :: map()
-  defp machine_wire_view(vm), do: Map.drop(vm, [:editor_image_status, :guest_capabilities])
+  defp machine_wire_view(vm),
+    do: Map.drop(vm, [:editor_image_status, :guest_capabilities, :pinned])
+
   defp unwrap!({:ok, value}), do: value
   # @cc [owner:ghuntley,label:product;recovery] ssh-coordinator-atom-refusals
   # Trusted coordinators' closed atom refusals MUST retain their typed reason

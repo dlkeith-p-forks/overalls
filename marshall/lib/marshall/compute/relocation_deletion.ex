@@ -113,6 +113,7 @@ defmodule Marshall.Compute.RelocationDeletion do
         for address <- Ledger.read!(NetworkAddress, vm_id: vm.id),
             do: Ledger.archive!(address, :release)
 
+        Marshall.Access.Pins.remove_for_vm!(vm.id)
         Ledger.archive!(vm, :archive)
         :deleted
       else

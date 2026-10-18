@@ -1,5 +1,10 @@
 # Architecture reviews
 
+- [Machine pins (2026-10-18)](2026-10-18-machine-pins.md): ADR-0193's per-user
+  pins, pinned-first lists, the owner-pin deletion guard across every lifecycle
+  delete path with the account-deletion exception, pin removal at archival and
+  Porsche `pin`/`unpin`; BEAM-level property, LiveView and SSH evidence, no
+  native journey.
 - [Retained launch-bundle capacity (2026-10-18)](2026-10-18-retained-bundle-capacity.md):
   exactly owned storage with an invalid current launch bundle contributes no
   allocation credit while preserving neighboring pool observations. Current

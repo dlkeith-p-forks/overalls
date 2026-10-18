@@ -1002,6 +1002,12 @@ Porsche's invalid-boot property now selects one generated CI history while
 still visiting every configured refusal mutation and preserving its startup,
 fixture-custody and diagnostic-secrecy assertions. This reduces randomized
 history exploration; it does not establish a new passing execution record.
+The later machine-pin integration adds the Access resource and deletion fence,
+the protocol `pin`/`unpin` commands and Porsche's closed refusal hints under
+[ADR-0193](repo:docs/architecture/decisions/0193-per-user-machine-pins.md).
+Its scenario evidence remains source-present/partial. Imported execution
+reports and the earlier checkout's frozen current-Hegel run do not establish
+the combined source's consumer gates; final integration execution is separate.
 The [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.

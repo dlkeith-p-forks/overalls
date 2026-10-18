@@ -1245,6 +1245,13 @@ No completed researched property or deployed host placement change follows.
 Persisted sharing, manager lifecycle authorization, bounded VM views and
 signed-in machine pages at `/machines` now exist under
 [ADR-0018](decisions/0018-persisted-sharing-and-user-machine-access.md).
+[ADR-0193](decisions/0193-per-user-machine-pins.md) adds per-user Access pins,
+bounded pinned-first views and an owner-pin deletion fence under the shared
+VM row lock. Pins confer no access; current Cedar checks still control use,
+and account deletion archives the departing owner's pins before deletion.
+The shared SSH catalog and Porsche expose non-physical `pin`/`unpin` mutations.
+Its implementation remains partial, with merged-source gates and native
+browser/Porsche and cross-node race evidence retaining separate scope.
 [ADR-0019](decisions/0019-terminal-session-and-writer-authority.md) adds persisted
 console sessions, fresh account-token checks and pending/active writer claims.
 [ADR-0020](decisions/0020-local-console-fences-and-bounded-streams.md) adds a local

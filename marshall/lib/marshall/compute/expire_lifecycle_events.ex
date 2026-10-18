@@ -30,19 +30,20 @@ defmodule Marshall.Compute.ExpireLifecycleEvents do
     galileo_integrations_versions
     inference_credentials_versions
     inference_requests_versions
-    ingress_endpoints_versions
     ingress_editor_assets_receipts_versions
+    ingress_endpoints_versions
+    ingress_environment_streams_versions
+    ingress_environments_versions
     ingress_fleet_certificate_accounts_versions
     ingress_fleet_certificate_installations_versions
     ingress_fleet_certificates_versions
-    ingress_environment_streams_versions
-    ingress_environments_versions
     ingress_routes_versions
     ingress_services_versions
     ingress_sessions_versions
     ingress_web_credentials_versions
     ingress_web_logins_versions
     ingress_web_streams_versions
+    machine_pins_versions
     ssh_keys_versions
     team_members_versions
     team_transfers_versions

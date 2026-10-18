@@ -72,7 +72,14 @@ defmodule MarshallWeb.EditorWorkspaceTest do
     assert {:ok, view, _} = live(signed_in(c.owner, c.token), "/machines/#{c.vm.id}")
     refute has_element?(view, "#open-vscode")
     assert has_element?(view, "#open-vscode-disabled[disabled]")
-    assert has_element?(view, "#vscode-unavailable", "Create a new machine")
+
+    assert has_element?(
+             view,
+             "#vscode-unavailable",
+             "does not support the current browser editor"
+           )
+
+    refute has_element?(view, "#vscode-unavailable", "Create a new machine")
     assert get(signed_in(c.owner, c.token), "/machines/#{c.vm.id}/code").status == 403
   end
 
@@ -83,7 +90,14 @@ defmodule MarshallWeb.EditorWorkspaceTest do
     Application.put_env(:marshall, :ingress_editor_release, descriptor)
     send(view.pid, :refresh_terminals)
     refute has_element?(view, "#open-vscode")
-    assert has_element?(view, "#vscode-unavailable", "Create a new machine")
+
+    assert has_element?(
+             view,
+             "#vscode-unavailable",
+             "does not support the current browser editor"
+           )
+
+    refute has_element?(view, "#vscode-unavailable", "Create a new machine")
     assert get(signed_in(c.owner, c.token), "/machines/#{c.vm.id}/code").status == 403
   end
 

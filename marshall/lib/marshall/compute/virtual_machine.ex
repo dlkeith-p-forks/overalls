@@ -84,7 +84,19 @@ defmodule Marshall.Compute.VirtualMachine do
     action :list_for_user, :map do
       argument :after, :uuid
       argument :limit, :integer, allow_nil?: false, default: 50, constraints: [min: 1, max: 100]
+
+      # The caller's pinned ids (ADR-0193), so a pinned machine shown in the
+      # pinned section never appears again in the keyset pages.
+      argument :exclude, {:array, :uuid},
+        allow_nil?: false,
+        default: [],
+        constraints: [max_length: 20]
+
       run {Marshall.Compute.Views, operation: :list}
+    end
+
+    action :pinned_for_user, :map do
+      run {Marshall.Compute.Views, operation: :pinned}
     end
 
     action :list_for_admin, :map do

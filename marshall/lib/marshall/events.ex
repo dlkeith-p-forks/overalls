@@ -229,6 +229,22 @@ defmodule Marshall.Events do
     metadata: [vm_id: :uuid, reason: :atom]
   )
 
+  defevent("vm.pinned",
+    message: "VM pinned by a user",
+    metadata: [vm_id: :uuid]
+  )
+
+  defevent("vm.unpinned",
+    message: "VM unpinned by a user",
+    metadata: [vm_id: :uuid]
+  )
+
+  defevent("vm.pin_refused",
+    level: :warning,
+    message: "VM pin request refused",
+    metadata: [vm_id: :uuid, reason: :atom]
+  )
+
   defevent("vm.physical_outcome",
     message: "VM physical outcome recorded",
     metadata: [

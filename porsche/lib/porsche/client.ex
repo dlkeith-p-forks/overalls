@@ -30,7 +30,9 @@ defmodule Porsche.Client do
                        :relocation_finished,
                        :relocation_retry_unavailable,
                        :placement_changed,
-                       :name_unavailable
+                       :name_unavailable,
+                       :machine_pinned,
+                       :pin_limit
                      ],
                      &{Atom.to_string(&1), &1}
                    )
@@ -67,6 +69,8 @@ defmodule Porsche.Client do
           | :relocation_retry_unavailable
           | :placement_changed
           | :name_unavailable
+          | :machine_pinned
+          | :pin_limit
           | :rate_limited
           | :unsupported_version
           | :temporarily_unavailable
@@ -191,10 +195,10 @@ defmodule Porsche.Client do
   end
 
   # @cc [owner:ghuntley,label:security;recovery] porsche-closed-conflict-reasons
-  # Only predefined host/capacity/clone/name-custody reasons may refine a
-  # conflict; other conflict names stay generic and unknown names are an
-  # http_error. Remote values MUST NOT create atoms or trigger automatic
-  # request redelivery.
+  # Only predefined host/capacity/clone/name-custody and machine-pin reasons
+  # (`machine_pinned`, `pin_limit`) may refine a conflict; other conflict names
+  # stay generic and unknown names are an http_error. Remote values MUST NOT
+  # create atoms or trigger automatic request redelivery.
   defp response({:error, name}, _client) when is_binary(name) do
     cond do
       Map.has_key?(@conflict_errors, name) -> {:error, Map.fetch!(@conflict_errors, name)}

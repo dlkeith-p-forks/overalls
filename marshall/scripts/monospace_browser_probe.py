@@ -197,6 +197,7 @@ def check_machine_header(page: Page) -> None:
     assert os_name is not None and os_name.strip() not in ("", "nil"), "Operating system is blank"
     expect(page.locator("#machine-id")).to_be_visible()
     expect(page.locator("[data-copy-command='machine-id']")).to_be_visible()
+    expect(heading.locator("button.pin-toggle")).to_have_attribute("aria-pressed", "false")
     bounds = heading.bounding_box()
     assert bounds is not None, "Machine heading is missing"
     for selector in ("h1", "#machine-state", "#machine-os", "#machine-id", "#lifecycle-actions"):
@@ -217,6 +218,47 @@ def check_machine_header(page: Page) -> None:
     assert abs(title["y"] - state["y"]) < 0.1 or state["y"] > title["y"], (
         "State label sits above the machine name"
     )
+
+
+def check_machine_pins(page: Page) -> None:
+    """@cc [owner:ghuntley,label:product;verification] machines-pin-toggle-order
+    Pinning the second row MUST move it to the first row with its Pinned label
+    and pressed toggle, keep every row exactly once, and unpinning MUST restore
+    the id order. The probe waits for the LiveView connection before clicking.
+    """
+    expect(page.locator("[data-phx-main].phx-connected")).to_have_count(1)
+    rows = page.locator("#machines tr.machine-row")
+    before = row_ids(page)
+    assert len(before) >= 2, "The fixture owner needs at least two listed machines"
+    second = before[1]
+    toggle = rows.nth(1).locator("button.pin-toggle")
+    expect(toggle).to_have_attribute("aria-pressed", "false")
+    expect(toggle).to_have_text("Pin")
+    toggle.click()
+    first = page.locator("#machines tr.machine-row").first
+    expect(first).to_have_id(second)
+    expect(first).to_have_attribute("data-pinned", "true")
+    expect(first.locator(".pinned-label")).to_have_text("Pinned")
+    expect(first.locator("button.pin-toggle")).to_have_attribute("aria-pressed", "true")
+    expect(rows).to_have_count(len(before))
+    assert row_ids(page) == [second, *[row for row in before if row != second]], (
+        "Pinned machine is not first with the rest in their original order"
+    )
+    check_overflow(page)
+    first.locator("button.pin-toggle").click()
+    expect(page.locator("#machines tr.machine-row").first).to_have_id(before[0])
+    expect(page.locator("#machines tr.machine-row[data-pinned='true']")).to_have_count(0)
+    assert row_ids(page) == before, "Unpinning did not restore the id order"
+
+
+def row_ids(page: Page) -> list[str]:
+    ids: list[str] = []
+    for row in page.locator("#machines tr.machine-row").all():
+        row_id = row.get_attribute("id")
+        if not isinstance(row_id, str) or not row_id:
+            raise ValueError("Machine row lacks an id")
+        ids.append(row_id)
+    return ids
 
 
 def check_grid(page: Page, route: str) -> None:
@@ -772,6 +814,9 @@ def run(fixture: Context, artifacts: Path) -> None:
                     expect(page.locator("#terminal-boot-view")).to_be_visible()
                     expect(page.locator("#terminal-status")).to_have_text("Boot log · read-only")
                     expect(page.locator("#terminal-create")).to_have_count(0)
+                if name == "machines" and theme == "light":
+                    check_machine_pins(page)
+                    screenshot(page, artifacts, "machines-pinned")
                 if name == "machine":
                     check_machine_header(page)
                     page.locator("[data-copy-command='machine-id']").click()

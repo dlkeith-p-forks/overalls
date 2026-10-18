@@ -499,9 +499,16 @@ size and empty references. Receipt
 `/tmp/overalls-windows-profile-bootstrap-publication-receipt.json` has SHA-256
 `eed8f20592a39abc7a99c77e8ef3bc70ae3a515fa9f0582aa8c529e2be65f442`.
 The first urllib fetch returned a client-specific 403; bounded TLS curl fetch
-passed with the same signature checks. Independent full-content Dungarees
-substitution, selected-image deployment and clean physical lifecycle acceptance
-remain pending; the old mutated fixture does not verify these new bytes.
+passed with the same signature checks. Independent Dungarees substitution then
+began with the exact sealed path absent, used the reviewed trusted cache key
+and passed full NAR content/signature verification. It independently checked
+the exact three regular files, manifest hash/canonical image identity and
+complete disk/firmware hashes. Receipt
+`/tmp/overalls-windows-profile-bootstrap-dungarees-receipt.json` has SHA-256
+`1b069d4f268781d0c2d0d96223e90d41cff5b86036089650c8075f9eda18f9ad`.
+The source selector now pins that exact reviewed name, NAR hash and manifest.
+Selected-image deployment and clean physical lifecycle acceptance remain
+pending; the old mutated fixture does not verify these new bytes.
 The separate corrected Arch/Alma qualification
 ledger `/tmp/porsche-20261018-085815` later created Arch
 `10ce2f77-7be8-4dea-9f8c-3171dac34b0c` from image `fc437aea` and Alma

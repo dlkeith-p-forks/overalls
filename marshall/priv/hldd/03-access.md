@@ -466,6 +466,45 @@ The
 separates generated identity histories from native cleanup execution and the
 remaining transfer/retirement race and external delivery boundaries.
 
+## Machine pins
+
+A pin is a personal ordering preference recorded by
+[ADR-0193](repo:docs/architecture/decisions/0193-per-user-machine-pins.md) as a
+`Marshall.Access.Pin` row per user and machine. Its state machine has two states,
+`pinned` and `unpinned`; `unpin` and `repin` are the only transitions, and the row
+is archived (not transitioned) when the machine is archived. One live row exists
+per user/machine pair, so repinning reuses it and refreshes `pinned_at`.
+
+```mermaid
+stateDiagram-v2
+  [*] --> pinned: pin
+  pinned --> unpinned: unpin
+  unpinned --> pinned: repin
+  pinned --> [*]: machine archived (row archived)
+  unpinned --> [*]: machine archived (row archived)
+```
+
+Pinning requires current Cedar read access, checked under the machine's row lock
+in the same transaction, and refuses a machine with deleted intent (`vm_deleted`)
+or a 21st pinned machine (`pin_limit`). Unpinning needs only a live row, so a user
+whose access ended can still clear the pin; a never-pinned machine refuses with
+`forbidden`. Repeating either request returns the row unchanged and emits no
+event. A pin grants no authority: it does not appear in the Cedar entity and
+cannot keep a revoked user on the machine.
+
+The machine owner's pin is also a deletion fence, described in
+[machine lifecycle](#lifecycle): every delete path refuses `machine_pinned`
+while the owner holds a live `pinned` row, and the owner's own account deletion
+is the only exception. Account cleanup archives the departing user's pins on
+other people's machines through the resource action, keeping their history.
+Pins hold the Pin domain's `coordinate` authority only through
+`Marshall.Access.Pins`; users reach them through the public `pin_machine` and
+`unpin_machine` actions, the browser toggles and the Porsche `pin`/`unpin`
+commands. Evidence is BEAM-level: the generated
+[pin histories](repo:marshall/test/marshall/access/pins_property_test.exs) and
+[examples](repo:marshall/test/marshall/access/pins_test.exs); see
+[scenario coverage](#coverage).
+
 Evidence: [current read-access decision](repo:docs/architecture/decisions/0119-authenticated-control-room-reads.md),
 [login hooks](repo:marshall/lib/marshall_web/live_user_auth.ex),
 [Cedar policy](repo:marshall/priv/cedar/compute.cedar),

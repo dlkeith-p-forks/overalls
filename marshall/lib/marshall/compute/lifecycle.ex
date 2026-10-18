@@ -163,6 +163,8 @@ defmodule Marshall.Compute.Lifecycle do
     if vm.archived_at != nil or vm.desired_state == :deleted,
       do: Ledger.rollback(:vm_deleted)
 
+    if request.kind == :delete, do: admit_delete_with_pins!(vm, context)
+
     relocation =
       if request.kind == :delete,
         do: RelocationDeletion.active_locked!(vm, Enum.map(hosts, & &1.id))
@@ -196,6 +198,22 @@ defmodule Marshall.Compute.Lifecycle do
       do: RelocationDeletion.request_locked!(relocation, operation, context.actor)
 
     operation
+  end
+
+  # @cc [owner:ghuntley,label:product;security] lifecycle-owner-pin-guard
+  # With the VM locked, a delete request from any initiator (web, admin, SSH,
+  # Porsche, thread teardown) MUST be refused with `machine_pinned` while the
+  # VM owner holds a live pinned row; other users' pins MUST NOT block it. The
+  # only exception is the owner's account deletion, which archives the owner's
+  # own pins on the VM in this transaction before the guard, so the deletion
+  # proceeds and no stale owner pin outlives the retired account.
+  @spec admit_delete_with_pins!(VirtualMachine.t(), map()) :: :ok
+  defp admit_delete_with_pins!(vm, context) do
+    if Map.has_key?(context, :deletion_id),
+      do: Marshall.Access.Pins.remove_for_user_vm!(vm.owner_id, vm.id)
+
+    if Marshall.Access.Pins.owner_pinned?(vm), do: Ledger.rollback(:machine_pinned)
+    :ok
   end
 
   defp vm_id(%{vm_id: id}), do: if(OverallsProtocol.uuid?(id), do: id, else: nil)

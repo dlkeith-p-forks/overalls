@@ -198,4 +198,16 @@ defmodule MarshallComputeContractTest do
              "inception_image_id" => "sha256:" <> String.duplicate("b", 64)
            })
   end
+
+  @tag obligation: "marshall.compute.I4"
+  test "the owner-pin refusal is a closed compute reason across the SSH control API" do
+    error = Marshall.Compute.Error.exception(reason: :machine_pinned)
+    assert Exception.message(error) == "Compute request rejected: machine_pinned"
+
+    assert {:error, 409, "machine_pinned"} =
+             Marshall.SSH.ControlRequests.classify({:error, :machine_pinned})
+
+    assert {:error, 409, "pin_limit"} =
+             Marshall.SSH.ControlRequests.classify({:error, :pin_limit})
+  end
 end
