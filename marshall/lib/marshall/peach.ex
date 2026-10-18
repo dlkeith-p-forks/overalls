@@ -7,5 +7,6 @@ defmodule Marshall.Peach do
 
   resources do
     resource Marshall.Peach.Credential
+    resource Marshall.Peach.Credential.Version
   end
 end

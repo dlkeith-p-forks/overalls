@@ -7015,7 +7015,7 @@ msgstr "Dem don acknowledge am"
 #: lib/marshall_web/live/integrations_live.ex:129
 #, elixir-autogen, elixir-format
 msgid "Awaiting GitHub authorization"
-msgstr ""
+msgstr "Dey wait for GitHub permission"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:576
 #, elixir-autogen, elixir-format
@@ -7045,7 +7045,7 @@ msgstr "Candidate na %{name}"
 #: lib/marshall_web/live/overview_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
-msgstr ""
+msgstr "Check your inbox and click di link to confirm say you wan subscribe."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
 #, elixir-autogen, elixir-format
@@ -7067,7 +7067,7 @@ msgstr "Clone dey go on"
 #: lib/marshall_web/live/machines_live.ex:1117
 #, elixir-autogen, elixir-format
 msgid "Comment"
-msgstr ""
+msgstr "Wetin you wan talk"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
 #, elixir-autogen, elixir-format
@@ -7077,23 +7077,23 @@ msgstr "Host overhead wey dem configure: %{cores} cores · %{memory} memory. Di 
 #: lib/marshall_web/live/integrations_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Connect GitHub"
-msgstr ""
+msgstr "Connect GitHub"
 
 #: lib/marshall_web/live/integrations_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
-msgstr ""
+msgstr "Connect your GitHub account for Git, pull requests, Actions, releases and other development work. Your GitHub login credentials go remain for di edge."
 
 #: lib/marshall_web/live/integrations_live.ex:126
 #: lib/marshall_web/live/integrations_live.ex:127
 #, elixir-autogen, elixir-format
 msgid "Connected"
-msgstr ""
+msgstr "E don connect"
 
 #: lib/marshall_web/live/integrations_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "Connected as %{login}"
-msgstr ""
+msgstr "E connect as %{login}"
 
 #: lib/marshall_web/automatic_magic_sign_in_live.ex:33
 #, elixir-autogen, elixir-format
@@ -7118,27 +7118,27 @@ msgstr "Dem don request destination cleanup"
 #: lib/marshall_web/live/integrations_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub"
-msgstr ""
+msgstr "Disconnect GitHub"
 
 #: lib/marshall_web/live/integrations_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub from your machines?"
-msgstr ""
+msgstr "You wan disconnect GitHub from your machines?"
 
 #: lib/marshall_web/live/integrations_live.ex:128
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
-msgstr ""
+msgstr "E no connect"
 
 #: lib/marshall_web/live/integrations_live.ex:133
 #, elixir-autogen, elixir-format
 msgid "Disconnecting GitHub"
-msgstr ""
+msgstr "Dey disconnect GitHub"
 
 #: lib/marshall_web/live/overview_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
-msgstr ""
+msgstr "Close am"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
 #, elixir-autogen, elixir-format
@@ -7165,7 +7165,7 @@ msgstr "E dey comot di work"
 #: lib/marshall_web/live/overview_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
-msgstr ""
+msgstr "Enter email address wey correct."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
 #, elixir-autogen, elixir-format
@@ -7175,22 +7175,22 @@ msgstr "E dey evacuate"
 #: lib/marshall_web/live/integrations_live.ex:130
 #, elixir-autogen, elixir-format
 msgid "Finishing active GitHub requests"
-msgstr ""
+msgstr "Dey finish GitHub requests wey still dey run"
 
 #: lib/marshall_web/live/overview_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
-msgstr ""
+msgstr "Get tips, better ways to do things and updates about Overalls and AI through email."
 
 #: lib/marshall_web/controllers/git_hub_connection_controller.ex:33
 #, elixir-autogen, elixir-format
 msgid "GitHub connected."
-msgstr ""
+msgstr "GitHub don connect."
 
 #: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
 #, elixir-autogen, elixir-format
 msgid "GitHub could not be connected. Try again from Integrations."
-msgstr ""
+msgstr "GitHub no fit connect. Try again from Integrations."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #, elixir-autogen, elixir-format
@@ -7210,17 +7210,17 @@ msgstr "How di job dey"
 #: lib/marshall_web/live/machines_live.ex:1116
 #, elixir-autogen, elixir-format
 msgid "Labels"
-msgstr ""
+msgstr "Labels"
 
 #: lib/marshall_web/live/machines_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "Machine metadata saved."
-msgstr ""
+msgstr "Machine metadata don save."
 
 #: lib/marshall_web/live/integrations_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Machines excluded from your GitHub identity"
-msgstr ""
+msgstr "Machines wey no go use your GitHub identity"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
 #, elixir-autogen, elixir-format
@@ -7245,17 +7245,17 @@ msgstr "Di operation"
 #: lib/marshall_web/live/integrations_live.ex:132
 #, elixir-autogen, elixir-format
 msgid "Reconnect required"
-msgstr ""
+msgstr "You need connect again"
 
 #: lib/marshall_web/live/machines_live.ex:1115
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
-msgstr ""
+msgstr "Metadata for reflection"
 
 #: lib/marshall_web/live/integrations_live.ex:131
 #, elixir-autogen, elixir-format
 msgid "Refreshing GitHub connection"
-msgstr ""
+msgstr "Dey refresh GitHub connection"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:424
 #, elixir-autogen, elixir-format
@@ -7302,17 +7302,17 @@ msgstr "E dey try destination boot again"
 #: lib/marshall_web/live/machines_live.ex:1118
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
-msgstr ""
+msgstr "Save di metadata"
 
 #: lib/marshall_web/live/machines_live.ex:1117
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
-msgstr ""
+msgstr "Short description for agents"
 
 #: lib/marshall_web/live/integrations_live.ex:401
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
-msgstr ""
+msgstr "Short description for di guest reflection"
 
 #: lib/marshall_web/automatic_magic_sign_in_live.ex:27
 #, elixir-autogen, elixir-format
@@ -7352,12 +7352,12 @@ msgstr "Dey hear the latest gist"
 #: lib/marshall_web/live/overview_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
-msgstr ""
+msgstr "Subscribe"
 
 #: lib/marshall_web/live/integrations_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Temporarily unavailable"
-msgstr ""
+msgstr "E no dey available for now"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
 #, elixir-autogen, elixir-format
@@ -7367,12 +7367,12 @@ msgstr "Di transfer dey busy"
 #: lib/marshall_web/live/overview_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
-msgstr ""
+msgstr "You fit stop di subscription any time."
 
 #: lib/marshall_web/live/overview_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
-msgstr ""
+msgstr "We no fit reach di newsletter service. Try again later."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
 #, elixir-autogen, elixir-format
@@ -7402,12 +7402,12 @@ msgstr "Dem dey verify your email link."
 #: lib/marshall_web/live/integrations_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
-msgstr ""
+msgstr "Your machines go use di GitHub identity wey you connect by demself. People wey dey work together for shared machine fit use di machine owner's GitHub permissions. Machines wey no connect go still fit access public GitHub without login."
 
 #: lib/marshall_web/live/machines_live.ex:1116
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
-msgstr ""
+msgstr "production, project-name"
 
 #: lib/marshall/accounts/time_zones.ex:300
 #, elixir-autogen, elixir-format

@@ -60,6 +60,15 @@
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-18-localization.md",
           "record_assertion": "Latest focused localization regression run: **74 passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/controllers/docs_controller_test.exs",
+          "assertion": "public documentation declares negotiated language and direction",
+          "scope": "Public English/Japanese LTR and Arabic/Urdu RTL HTML attributes, Content-Language and no session cookies; no browser visual-order claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-localization.md",
+          "record_assertion": "The docs controller suite recorded **7 passed**"
         }
       ]
     },
