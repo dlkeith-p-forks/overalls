@@ -277,7 +277,7 @@ defmodule Marshall.Compute.VirtualMachine do
 
       argument(:team_id, :uuid)
 
-      argument(:comment, :string, default_value: "", constraints: [max_length: 2048])
+      argument(:comment, :string, default: "", constraints: [max_length: 2048])
 
       # The validated OverallsProtocol.WorkspaceSource map; admission re-validates it
       # and refuses it for profiles without egress (ADR-0128).
