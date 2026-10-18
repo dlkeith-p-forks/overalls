@@ -76,24 +76,53 @@ defmodule Lilly.Network.Ingress do
   # no generic web/editor binding or host-network fallback may be substituted.
   @spec connect_android_display(Config.t(), Guest.t(), map(), pos_integer()) ::
           {:ok, :gen_tcp.socket()} | {:error, :display_unavailable}
-  def connect_android_display(%Config{ingress: true} = network, %Guest{} = guest, binding, generation)
+  def connect_android_display(
+        %Config{ingress: true} = network,
+        %Guest{} = guest,
+        binding,
+        generation
+      )
       when is_map(binding) and is_integer(generation) and generation > 0 do
-    with {:ok, ^network} <- Config.new(network.host_id, network.egress, network.protected,
-           network.state_dir, true, network.private_services, network.brady),
+    with {:ok, ^network} <-
+           Config.new(
+             network.host_id,
+             network.egress,
+             network.protected,
+             network.state_dir,
+             true,
+             network.private_services,
+             network.brady
+           ),
          {:ok, ^guest} <- Guest.new(guest.vm_id, guest.profile, guest.slot),
          {:ok, target} <- AndroidDisplay.target(guest, binding, generation),
-         {:ok, preface} <- OverallsProtocol.AndroidDisplayRelay.encode(binding[:ticket], generation, binding[:mode]),
+         {:ok, preface} <-
+           OverallsProtocol.AndroidDisplayRelay.encode(
+             binding[:ticket],
+             generation,
+             binding[:mode]
+           ),
          {:ok, address} <- :inet.parse_ipv4strict_address(String.to_charlist(target.address)),
-         {:ok, socket} <- Lilly.Host.Sockets.connect_netns(%{
-           namespace: network.namespace,
-           device: guest.tap,
-           mark: target.mark,
-           destination: address,
-           port: target.port,
-           source: nil,
-           timeout: 750
-         }, [:binary, {:active, false}, {:packet, 0}, {:send_timeout, 1000},
-             {:send_timeout_close, true}, {:buffer, 65_536}], 750),
+         {:ok, socket} <-
+           Lilly.Host.Sockets.connect_netns(
+             %{
+               namespace: network.namespace,
+               device: guest.tap,
+               mark: target.mark,
+               destination: address,
+               port: target.port,
+               source: nil,
+               timeout: 750
+             },
+             [
+               :binary,
+               {:active, false},
+               {:packet, 0},
+               {:send_timeout, 1000},
+               {:send_timeout_close, true},
+               {:buffer, 65_536}
+             ],
+             750
+           ),
          :ok <- :gen_tcp.send(socket, preface) do
       {:ok, socket}
     else
@@ -104,7 +133,6 @@ defmodule Lilly.Network.Ingress do
   end
 
   def connect_android_display(_, _, _, _), do: {:error, :display_unavailable}
-
 
   @doc """
   Services hostd may bridge detached: every service connect/3 serves. SSH

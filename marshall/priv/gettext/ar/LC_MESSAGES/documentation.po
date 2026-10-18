@@ -677,7 +677,7 @@ msgstr "## فقدان المنفذ وإعادة المحاولة الصريحة"
 #: lib/marshall/documentation_messages.ex:275
 #, elixir-autogen, elixir-format
 msgid "## Exercise Control pending-window capacity and retired replies through a real client and loopback peer"
-msgstr ""
+msgstr "## اختبر سعة نافذة الطلبات المعلقة في Control والردود المتقاعدة عبر عميل فعلي ونظير على واجهة الاسترجاع"
 
 #: lib/marshall/documentation_messages.ex:279
 #, elixir-autogen, elixir-format
@@ -697,62 +697,62 @@ msgstr "## منصة اختبار تحكم Antithesis التجريبية"
 #: lib/marshall/documentation_messages.ex:285
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis fixture custody"
-msgstr ""
+msgstr "## الحيازة التجريبية لتجهيزات Antithesis"
 
 #: lib/marshall/documentation_messages.ex:286
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis fixture outside deployed placement"
-msgstr ""
+msgstr "## تجهيز Antithesis تجريبي خارج التموضع المنشور"
 
 #: lib/marshall/documentation_messages.ex:290
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis guest transport boundary"
-msgstr ""
+msgstr "## حدود نقل الضيف التجريبي في Antithesis"
 
 #: lib/marshall/documentation_messages.ex:291
 #, elixir-autogen, elixir-format
 msgid "## Experimental FreeBSD and OmniOS mounted-root growth"
-msgstr ""
+msgstr "## النمو التجريبي للجذر المركّب في FreeBSD وOmniOS"
 
 #: lib/marshall/documentation_messages.ex:292
 #, elixir-autogen, elixir-format
 msgid "## Experimental local guest emulation"
-msgstr ""
+msgstr "## محاكاة ضيف محلية تجريبية"
 
 #: lib/marshall/documentation_messages.ex:293
 #, elixir-autogen, elixir-format
 msgid "## Experimental native daemon recovery"
-msgstr ""
+msgstr "## الاستعادة التجريبية للخدمة الأصلية"
 
 #: lib/marshall/documentation_messages.ex:294
 #, elixir-autogen, elixir-format
 msgid "## Explicit terminal kill under withheld credit"
-msgstr ""
+msgstr "## إنهاء الطرفية صراحة عند حجب رصيد التدفق"
 
 #: lib/marshall/documentation_messages.ex:295
 #, elixir-autogen, elixir-format
 msgid "## Explicitly kill a terminal whose viewer withholds credit without retaining guest session allocations"
-msgstr ""
+msgstr "## أنهِ صراحة طرفية يحجب مشاهدها رصيد التدفق دون الاحتفاظ بتخصيصات جلسة الضيف"
 
 #: lib/marshall/documentation_messages.ex:299
 #, elixir-autogen, elixir-format
 msgid "## Fence native socket identity and wake blocked operations after an actual Firecracker transport event"
-msgstr ""
+msgstr "## قيّد هوية المقبس الأصلي وأيقظ العمليات المحجوبة بعد حدث نقل فعلي في Firecracker"
 
 #: lib/marshall/documentation_messages.ex:303
 #, elixir-autogen, elixir-format
 msgid "## Fetch through filtered web egress without stale attribution"
-msgstr ""
+msgstr "## اجلب عبر خروج ويب مرشّح دون إسناد قديم"
 
 #: lib/marshall/documentation_messages.ex:307
 #, elixir-autogen, elixir-format
 msgid "## Find the browser extension guide, download an unsigned launcher and explicitly configure its server before a provider click"
-msgstr ""
+msgstr "## اعثر على دليل إضافة المتصفح ونزّل مشغّلاً غير موقّع واضبط خادمه صراحة قبل النقر على مزوّد"
 
 #: lib/marshall/documentation_messages.ex:311
 #, elixir-autogen, elixir-format
 msgid "## Firecracker native firmware operations"
-msgstr ""
+msgstr "## عمليات البرنامج الثابت الأصلية في Firecracker"
 
 #: lib/marshall/documentation_messages.ex:312
 #, elixir-autogen, elixir-format
@@ -762,17 +762,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:313
 #, elixir-autogen, elixir-format
 msgid "## Foreign Linux guest PAM runtime"
-msgstr ""
+msgstr "## وقت تشغيل PAM لضيف Linux أجنبي"
 
 #: lib/marshall/documentation_messages.ex:314
 #, elixir-autogen, elixir-format
 msgid "## Foreign and native guest-family boundaries"
-msgstr ""
+msgstr "## حدود عائلات الضيوف الأجنبية والأصلية"
 
 #: lib/marshall/documentation_messages.ex:315
 #, elixir-autogen, elixir-format
 msgid "## Full ring overwrite allocation"
-msgstr ""
+msgstr "## تخصيص الكتابة فوق الحلقة الممتلئة"
 
 #: lib/marshall/documentation_messages.ex:316
 #, elixir-autogen, elixir-format
@@ -782,12 +782,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:320
 #, elixir-autogen, elixir-format
 msgid "## Give Windows guests an agent set with a capability table, reach a guest-side listener over virtio-vsock through the viosock driver, and make the fleet ready to stage the image"
-msgstr ""
+msgstr "## زوّد ضيوف Windows بمجموعة وكلاء ذات جدول قدرات، وصِل إلى مستمع داخل الضيف عبر virtio-vsock باستخدام برنامج تشغيل viosock، وجهّز الأسطول لتهيئة الصورة"
 
 #: lib/marshall/documentation_messages.ex:324
 #, elixir-autogen, elixir-format
 msgid "## Grow active terminal scrollback within the shared memory budget and replace only retired capacity"
-msgstr ""
+msgstr "## وسّع سجل تمرير الطرفية النشطة ضمن ميزانية الذاكرة المشتركة واستبدل السعة المتقاعدة فقط"
 
 #: lib/marshall/documentation_messages.ex:328
 #, elixir-autogen, elixir-format
@@ -802,32 +802,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:330
 #, elixir-autogen, elixir-format
 msgid "## Guest coding CLI configuration"
-msgstr ""
+msgstr "## إعداد CLI البرمجة للضيف"
 
 #: lib/marshall/documentation_messages.ex:331
 #, elixir-autogen, elixir-format
 msgid "## Guest instructions and skills"
-msgstr ""
+msgstr "## تعليمات الضيف ومهاراته"
 
 #: lib/marshall/documentation_messages.ex:332
 #, elixir-autogen, elixir-format
 msgid "## Historical pre-cutover: Deliver physical-host monitoring samples and recover after a conflicting ID"
-msgstr ""
+msgstr "## تاريخي قبل التحويل: سلّم عينات مراقبة المضيف الفعلي وتعافَ بعد معرّف متعارض"
 
 #: lib/marshall/documentation_messages.ex:336
 #, elixir-autogen, elixir-format
 msgid "## Historical pre-cutover: Read fleet diagnostic logs in the Control room with scoped query authority"
-msgstr ""
+msgstr "## تاريخي قبل التحويل: اقرأ سجلات تشخيص الأسطول في غرفة التحكم بصلاحية استعلام محددة النطاق"
 
 #: lib/marshall/documentation_messages.ex:340
 #, elixir-autogen, elixir-format
 msgid "## Historical pre-cutover: Read the fleet telemetry baseline at /admin/slos from the Control room Monitoring menu as a signed-in user"
-msgstr ""
+msgstr "## تاريخي قبل التحويل: اقرأ خط أساس قياس الأسطول على /admin/slos من قائمة المراقبة في غرفة التحكم كمستخدم مسجل دخوله"
 
 #: lib/marshall/documentation_messages.ex:344
 #, elixir-autogen, elixir-format
 msgid "## Hold every Lilly lease and leased utility in lilly-hostd until the holder releases it or dies"
-msgstr ""
+msgstr "## احتفظ بكل إيجار في Lilly وكل أداة مؤجرة داخل lilly-hostd حتى يحرره حامله أو ينتهي"
 
 #: lib/marshall/documentation_messages.ex:348
 #, elixir-autogen, elixir-format
@@ -842,112 +842,112 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:350
 #, elixir-autogen, elixir-format
 msgid "## Host-effects engine boundary"
-msgstr ""
+msgstr "## حدود محرك آثار المضيف"
 
 #: lib/marshall/documentation_messages.ex:351
 #, elixir-autogen, elixir-format
 msgid "## Host-effects engine loss"
-msgstr ""
+msgstr "## فقدان محرك آثار المضيف"
 
 #: lib/marshall/documentation_messages.ex:352
 #, elixir-autogen, elixir-format
 msgid "## Independent diagnostic custody"
-msgstr ""
+msgstr "## حيازة التشخيصات المستقلة"
 
 #: lib/marshall/documentation_messages.ex:353
 #, elixir-autogen, elixir-format
 msgid "## Independent observability recovery"
-msgstr ""
+msgstr "## استعادة الرصد المستقلة"
 
 #: lib/marshall/documentation_messages.ex:354
 #, elixir-autogen, elixir-format
 msgid "## Independent observability roles"
-msgstr ""
+msgstr "## أدوار الرصد المستقلة"
 
 #: lib/marshall/documentation_messages.ex:355
 #, elixir-autogen, elixir-format
 msgid "## Independent service diagnostics"
-msgstr ""
+msgstr "## تشخيصات الخدمة المستقلة"
 
 #: lib/marshall/documentation_messages.ex:356
 #, elixir-autogen, elixir-format
 msgid "## Inline privileged browser actions"
-msgstr ""
+msgstr "## إجراءات المتصفح ذات الامتيازات داخل الصفحة"
 
 #: lib/marshall/documentation_messages.ex:357
 #, elixir-autogen, elixir-format
 msgid "## Inspect bounded Underclass stream outcomes and long-range capacity statistics"
-msgstr ""
+msgstr "## افحص نتائج تدفق Underclass المحدودة وإحصاءات السعة طويلة المدى"
 
 #: lib/marshall/documentation_messages.ex:361
 #, elixir-autogen, elixir-format
 msgid "## Inspect physical and workflow completion independently of receipt polling"
-msgstr ""
+msgstr "## افحص الإكمال الفعلي وإكمال سير العمل باستقلال عن استقصاء الإيصالات"
 
 #: lib/marshall/documentation_messages.ex:365
 #, elixir-autogen, elixir-format
 msgid "## Inspect retained job history and retry a failed background job"
-msgstr ""
+msgstr "## افحص سجل المهام المحتفظ به وأعد محاولة مهمة خلفية فاشلة"
 
 #: lib/marshall/documentation_messages.ex:369
 #, elixir-autogen, elixir-format
 msgid "## Inspect source-owned candidate ratios in the private Grafana dashboard"
-msgstr ""
+msgstr "## افحص نسب المرشحين المملوكة للمصدر في لوحة Grafana الخاصة"
 
 #: lib/marshall/documentation_messages.ex:373
 #, elixir-autogen, elixir-format
 msgid "## Inspect uncertain guest work and explicitly retry with current CLI authority"
-msgstr ""
+msgstr "## افحص عمل الضيف غير المؤكد وأعد المحاولة صراحة بصلاحية CLI الحالية"
 
 #: lib/marshall/documentation_messages.ex:377
 #, elixir-autogen, elixir-format
 msgid "## Install a gallery extension only after verifying the VSIX against packaged trust keys"
-msgstr ""
+msgstr "## ثبّت إضافة من المعرض فقط بعد التحقق من VSIX مقابل مفاتيح الثقة المعبّأة"
 
 #: lib/marshall/documentation_messages.ex:381
 #, elixir-autogen, elixir-format
 msgid "## Install and manage a pinned public skill, then restore it when reopening a thread"
-msgstr ""
+msgstr "## ثبّت مهارة عامة مثبتة الإصدار وأدرها، ثم استعدها عند إعادة فتح سلسلة محادثة"
 
 #: lib/marshall/documentation_messages.ex:385
 #, elixir-autogen, elixir-format
 msgid "## Install one SSH authority and connect to management, Audi and fresh NixOS or Ubuntu guests"
-msgstr ""
+msgstr "## ثبّت جهة صلاحية SSH واحدة واتصل بالإدارة وAudi وضيوف NixOS أو Ubuntu الجدد"
 
 #: lib/marshall/documentation_messages.ex:389
 #, elixir-autogen, elixir-format
 msgid "## Install the Overalls CLI"
-msgstr ""
+msgstr "## ثبّت Overalls CLI"
 
 #: lib/marshall/documentation_messages.ex:390
 #, elixir-autogen, elixir-format
 msgid "## Install the developer archive"
-msgstr ""
+msgstr "## ثبّت أرشيف المطور"
 
 #: lib/marshall/documentation_messages.ex:391
 #, elixir-autogen, elixir-format
 msgid "## Install the overalls CLI on a Windows workstation from the machine page and SSH into Linux and Windows guests through Audi"
-msgstr ""
+msgstr "## ثبّت overalls CLI على محطة عمل Windows من صفحة الجهاز واتصل بضيوف Linux وWindows عبر SSH من خلال Audi"
 
 #: lib/marshall/documentation_messages.ex:395
 #, elixir-autogen, elixir-format
 msgid "## Internal service TLS trust"
-msgstr ""
+msgstr "## الثقة بـTLS للخدمات الداخلية"
 
 #: lib/marshall/documentation_messages.ex:396
 #, elixir-autogen, elixir-format
 msgid "## Interrupted provisioning and templates"
-msgstr ""
+msgstr "## التزويد المنقطع والقوالب"
 
 #: lib/marshall/documentation_messages.ex:397
 #, elixir-autogen, elixir-format
 msgid "## Invalid provisioner startup"
-msgstr ""
+msgstr "## بدء تشغيل مزوّد غير صالح"
 
 #: lib/marshall/documentation_messages.ex:398
 #, elixir-autogen, elixir-format
 msgid "## Invite, retire and register a fresh identity with the same email"
-msgstr ""
+msgstr "## ادعُ هوية وأحِلها إلى التقاعد وسجّل هوية جديدة بالبريد الإلكتروني نفسه"
 
 #: lib/marshall/documentation_messages.ex:402
 #, elixir-autogen, elixir-format
@@ -957,62 +957,62 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:403
 #, elixir-autogen, elixir-format
 msgid "## Job history and operational readers"
-msgstr ""
+msgstr "## سجل المهام والقراء التشغيليون"
 
 #: lib/marshall/documentation_messages.ex:404
 #, elixir-autogen, elixir-format
 msgid "## Keep Customer machines private and isolated"
-msgstr ""
+msgstr "## أبقِ أجهزة Customer خاصة ومعزولة"
 
 #: lib/marshall/documentation_messages.ex:405
 #, elixir-autogen, elixir-format
 msgid "## Keep a full terminal scrollback ring within its reserved backing size while output continues"
-msgstr ""
+msgstr "## أبقِ حلقة سجل تمرير طرفية ممتلئة ضمن حجم تخزينها المحجوز مع استمرار المخرجات"
 
 #: lib/marshall/documentation_messages.ex:409
 #, elixir-autogen, elixir-format
 msgid "## Keep a healthy terminal progressing while stalled viewers, growth and session admission share memory"
-msgstr ""
+msgstr "## حافظ على تقدم طرفية سليمة بينما يتشارك المشاهدون المتوقفون والنمو وقبول الجلسات الذاكرة"
 
 #: lib/marshall/documentation_messages.ex:413
 #, elixir-autogen, elixir-format
 msgid "## Keep a live browser editor WebSocket or nested HTTPS connection through lilly-hostd and Lilly restarts while Lilly still decides its preface, readiness and lifetime"
-msgstr ""
+msgstr "## أبقِ اتصال WebSocket لمحرر المتصفح أو اتصال HTTPS متداخل حياً عبر إعادة تشغيل lilly-hostd وLilly، مع استمرار Lilly في تقرير مقدمته وجاهزيته وعمره"
 
 #: lib/marshall/documentation_messages.ex:417
 #, elixir-autogen, elixir-format
 msgid "## Keep a live guest SSH session through lilly-hostd and Lilly restarts while Lilly can still end it"
-msgstr ""
+msgstr "## أبقِ جلسة SSH حية للضيف عبر إعادة تشغيل lilly-hostd وLilly مع بقاء قدرة Lilly على إنهائها"
 
 #: lib/marshall/documentation_messages.ex:421
 #, elixir-autogen, elixir-format
 msgid "## Keep a neighboring terminal usable while another viewer stops reading and its owner is retired"
-msgstr ""
+msgstr "## أبقِ طرفية مجاورة قابلة للاستخدام عندما يتوقف مشاهد آخر عن القراءة ويُحال مالكها إلى التقاعد"
 
 #: lib/marshall/documentation_messages.ex:425
 #, elixir-autogen, elixir-format
 msgid "## Keep native FreeBSD and illumos admission closed until kernel identity and boot evidence exist"
-msgstr ""
+msgstr "## أبقِ قبول FreeBSD وillumos الأصلي مغلقاً حتى تتوفر هوية النواة وأدلة الإقلاع"
 
 #: lib/marshall/documentation_messages.ex:429
 #, elixir-autogen, elixir-format
 msgid "## Keep native guest public access while refusing private targets and foreign source addresses"
-msgstr ""
+msgstr "## حافظ على وصول الضيف الأصلي العام مع رفض الأهداف الخاصة وعناوين المصدر الأجنبية"
 
 #: lib/marshall/documentation_messages.ex:433
 #, elixir-autogen, elixir-format
 msgid "## Keep one generated guest identity through same-user email changes and reserve it after retirement"
-msgstr ""
+msgstr "## احتفظ بهوية ضيف مولّدة واحدة عبر تغييرات بريد المستخدم نفسه واحجزها بعد التقاعد"
 
 #: lib/marshall/documentation_messages.ex:437
 #, elixir-autogen, elixir-format
 msgid "## Keeping this handbook current"
-msgstr ""
+msgstr "## إبقاء هذا الدليل محدّثاً"
 
 #: lib/marshall/documentation_messages.ex:438
 #, elixir-autogen, elixir-format
 msgid "## Language and text direction"
-msgstr ""
+msgstr "## اللغة واتجاه النص"
 
 #: lib/marshall/documentation_messages.ex:439
 #, elixir-autogen, elixir-format
@@ -1022,12 +1022,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:440
 #, elixir-autogen, elixir-format
 msgid "## Locale is presentation, not authority"
-msgstr ""
+msgstr "## الإعداد المحلي للعرض، لا للتفويض"
 
 #: lib/marshall/documentation_messages.ex:441
 #, elixir-autogen, elixir-format
 msgid "## Logs, queues and independent health"
-msgstr ""
+msgstr "## السجلات والطوابير والصحة المستقلة"
 
 #: lib/marshall/documentation_messages.ex:442
 #, elixir-autogen, elixir-format
@@ -1042,7 +1042,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:444
 #, elixir-autogen, elixir-format
 msgid "## Machine pins and the owner-pin deletion fence"
-msgstr ""
+msgstr "## تثبيت الأجهزة وقيد الحذف الناجم عن تثبيت المالك"
 
 #: lib/marshall/documentation_messages.ex:445
 #, elixir-autogen, elixir-format
@@ -1052,7 +1052,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:446
 #, elixir-autogen, elixir-format
 msgid "## Maintenance control authority"
-msgstr ""
+msgstr "## صلاحية تحكم الصيانة"
 
 #: lib/marshall/documentation_messages.ex:447
 #, elixir-autogen, elixir-format
@@ -1062,222 +1062,222 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:448
 #, elixir-autogen, elixir-format
 msgid "## Measure real NixOS and Ubuntu browser editor journeys without fabricating health during gaps"
-msgstr ""
+msgstr "## قِس رحلات فعلية لمحرر المتصفح على NixOS وUbuntu دون اختلاق حالة سليمة أثناء الفجوات"
 
 #: lib/marshall/documentation_messages.ex:455
 #, elixir-autogen, elixir-format
 msgid "## Mixed growth and admission under viewer pressure"
-msgstr ""
+msgstr "## النمو والقبول المختلطان تحت ضغط المشاهدين"
 
 #: lib/marshall/documentation_messages.ex:456
 #, elixir-autogen, elixir-format
 msgid "## Move a running workload with one stopped full copy and recover interrupted transfer"
-msgstr ""
+msgstr "## انقل حمل عمل جارياً بنسخة كاملة واحدة أثناء التوقف وتعافَ من النقل المنقطع"
 
 #: lib/marshall/documentation_messages.ex:460
 #, elixir-autogen, elixir-format
 msgid "## Multi-OS image families"
-msgstr ""
+msgstr "## عائلات صور متعددة أنظمة التشغيل"
 
 #: lib/marshall/documentation_messages.ex:461
 #, elixir-autogen, elixir-format
 msgid "## Native FreeBSD and illumos guest services"
-msgstr ""
+msgstr "## خدمات الضيف الأصلية في FreeBSD وillumos"
 
 #: lib/marshall/documentation_messages.ex:462
 #, elixir-autogen, elixir-format
 msgid "## Native agent sets and kernel identity"
-msgstr ""
+msgstr "## مجموعات الوكلاء الأصلية وهوية النواة"
 
 #: lib/marshall/documentation_messages.ex:463
 #, elixir-autogen, elixir-format
 msgid "## Native coding CLI defaults"
-msgstr ""
+msgstr "## إعدادات CLI البرمجة الأصلية الافتراضية"
 
 #: lib/marshall/documentation_messages.ex:464
 #, elixir-autogen, elixir-format
 msgid "## Native execution proof and observation"
-msgstr ""
+msgstr "## إثبات التنفيذ الأصلي وملاحظته"
 
 #: lib/marshall/documentation_messages.ex:465
 #, elixir-autogen, elixir-format
 msgid "## Native fleet trust verification"
-msgstr ""
+msgstr "## التحقق الأصلي من ثقة الأسطول"
 
 #: lib/marshall/documentation_messages.ex:466
 #, elixir-autogen, elixir-format
 msgid "## Native guest agent boundary"
-msgstr ""
+msgstr "## حدود وكيل الضيف الأصلي"
 
 #: lib/marshall/documentation_messages.ex:467
 #, elixir-autogen, elixir-format
 msgid "## Native guest protocol reference"
-msgstr ""
+msgstr "## مرجع بروتوكول الضيف الأصلي"
 
 #: lib/marshall/documentation_messages.ex:468
 #, elixir-autogen, elixir-format
 msgid "## Native submission and daemon-loss verification"
-msgstr ""
+msgstr "## التحقق من الإرسال الأصلي وفقدان الخدمة"
 
 #: lib/marshall/documentation_messages.ex:469
 #, elixir-autogen, elixir-format
 msgid "## Native utility descendant custody"
-msgstr ""
+msgstr "## حيازة العمليات المتفرعة للأدوات الأصلية"
 
 #: lib/marshall/documentation_messages.ex:470
 #, elixir-autogen, elixir-format
 msgid "## Neighboring terminal under viewer pressure"
-msgstr ""
+msgstr "## الطرفية المجاورة تحت ضغط المشاهدين"
 
 #: lib/marshall/documentation_messages.ex:471
 #, elixir-autogen, elixir-format
 msgid "## Observe a Lilly-bound private service request as a candidate Audi transport indicator"
-msgstr ""
+msgstr "## راقب طلب خدمة خاصة مرتبطاً بـLilly كمؤشر نقل مرشح لـAudi"
 
 #: lib/marshall/documentation_messages.ex:475
 #, elixir-autogen, elixir-format
 msgid "## Observe a completed Marshall browser HTTP response as a candidate transport indicator"
-msgstr ""
+msgstr "## راقب استجابة HTTP مكتملة من متصفح Marshall كمؤشر نقل مرشح"
 
 #: lib/marshall/documentation_messages.ex:479
 #, elixir-autogen, elixir-format
 msgid "## Observe a completed public authoritative DNS answer as a candidate availability indicator"
-msgstr ""
+msgstr "## راقب إجابة DNS عامة موثوقة مكتملة كمؤشر إتاحة مرشح"
 
 #: lib/marshall/documentation_messages.ex:483
 #, elixir-autogen, elixir-format
 msgid "## Observe a durably completed inference request as a candidate service level indicator"
-msgstr ""
+msgstr "## راقب طلب استدلال مكتمل بصورة دائمة كمؤشر مرشح لمستوى الخدمة"
 
 #: lib/marshall/documentation_messages.ex:487
 #, elixir-autogen, elixir-format
 msgid "## Observe a granted guest SSH session establishment as a candidate Audi indicator"
-msgstr ""
+msgstr "## راقب إنشاء جلسة SSH ممنوحة للضيف كمؤشر مرشح لـAudi"
 
 #: lib/marshall/documentation_messages.ex:491
 #, elixir-autogen, elixir-format
 msgid "## Observe a registered mirror refresh as a candidate service level indicator"
-msgstr ""
+msgstr "## راقب تحديث مرآة مسجلة كمؤشر مرشح لمستوى الخدمة"
 
 #: lib/marshall/documentation_messages.ex:495
 #, elixir-autogen, elixir-format
 msgid "## Observe admitted request failures and stable source lifetimes after application or recorder restart"
-msgstr ""
+msgstr "## راقب إخفاقات الطلبات المقبولة وأعمار المصدر الثابتة بعد إعادة تشغيل التطبيق أو المسجّل"
 
 #: lib/marshall/documentation_messages.ex:499
 #, elixir-autogen, elixir-format
 msgid "## Observe an admitted Brady web request as a candidate service level indicator"
-msgstr ""
+msgstr "## راقب طلب ويب مقبولاً من Brady كمؤشر مرشح لمستوى الخدمة"
 
 #: lib/marshall/documentation_messages.ex:503
 #, elixir-autogen, elixir-format
 msgid "## Observe an authorized named integration attempt as a candidate service level indicator"
-msgstr ""
+msgstr "## راقب محاولة تكامل مسمى مصرحاً بها كمؤشر مرشح لمستوى الخدمة"
 
 #: lib/marshall/documentation_messages.ex:507
 #, elixir-autogen, elixir-format
 msgid "## Observe an eligible management SSH command dispatch as a candidate service level indicator"
-msgstr ""
+msgstr "## راقب إرسال أمر SSH إداري مؤهل كمؤشر مرشح لمستوى الخدمة"
 
 #: lib/marshall/documentation_messages.ex:511
 #, elixir-autogen, elixir-format
 msgid "## Observe authorized Underclass proxy completion and retain interrupted outcomes through restart"
-msgstr ""
+msgstr "## راقب إكمال وكيل Underclass المصرح به واحتفظ بالنتائج المنقطعة عبر إعادة التشغيل"
 
 #: lib/marshall/documentation_messages.ex:515
 #, elixir-autogen, elixir-format
 msgid "## Observe healthy pool capacity beside an exactly owned retained disk with invalid launch metadata"
-msgstr ""
+msgstr "## راقب سعة مجمّع سليمة بجانب قرص محتفظ به ذي ملكية دقيقة وبيانات إطلاق وصفية غير صالحة"
 
 #: lib/marshall/documentation_messages.ex:519
 #, elixir-autogen, elixir-format
 msgid "## Observe producer availability and trace refusals independently of trace intake"
-msgstr ""
+msgstr "## راقب إتاحة المنتج ورفض التتبعات باستقلال عن استقبال التتبعات"
 
 #: lib/marshall/documentation_messages.ex:523
 #, elixir-autogen, elixir-format
 msgid "## Open Marshall in a browser and receive the same strict security headers, no-index directives and host-prefixed cookies on every response"
-msgstr ""
+msgstr "## افتح Marshall في متصفح وتلقَّ ترويسات الأمان الصارمة نفسها وتوجيهات عدم الفهرسة وملفات تعريف الارتباط المسبوقة ببادئة المضيف في كل استجابة"
 
 #: lib/marshall/documentation_messages.ex:527
 #, elixir-autogen, elixir-format
 msgid "## Open a personal browser editor from a running machine in Marshall"
-msgstr ""
+msgstr "## افتح محرر متصفح شخصياً من جهاز عامل في Marshall"
 
 #: lib/marshall/documentation_messages.ex:531
 #, elixir-autogen, elixir-format
 msgid "## Open a personal terminal and reconnect safely"
-msgstr ""
+msgstr "## افتح طرفية شخصية وأعد الاتصال بأمان"
 
 #: lib/marshall/documentation_messages.ex:532
 #, elixir-autogen, elixir-format
 msgid "## Open a public provider link, sign in, or run overalls open to create an OSS machine with a guest-owned checkout"
-msgstr ""
+msgstr "## افتح رابط مزوّد عاماً أو سجّل الدخول أو شغّل overalls open لإنشاء جهاز OSS بنسخة مستودع يملكها الضيف"
 
 #: lib/marshall/documentation_messages.ex:536
 #, elixir-autogen, elixir-format
 msgid "## Open a root or personal shell in a rebuilt guest and receive the stock Starship prompt"
-msgstr ""
+msgstr "## افتح صدفة للجذر أو صدفة شخصية في ضيف أعيد بناؤه واحصل على موجّه Starship القياسي"
 
 #: lib/marshall/documentation_messages.ex:540
 #, elixir-autogen, elixir-format
 msgid "## Open a trusted guest project with immutable AI policy and reviewed default extensions"
-msgstr ""
+msgstr "## افتح مشروع ضيف موثوقاً بسياسة ذكاء اصطناعي ثابتة وإضافات افتراضية مراجعة"
 
 #: lib/marshall/documentation_messages.ex:544
 #, elixir-autogen, elixir-format
 msgid "## Open terminal sessions under shared scrollback pressure and reuse only retired capacity"
-msgstr ""
+msgstr "## افتح جلسات طرفية تحت ضغط سجل التمرير المشترك ولا تُعد استخدام إلا السعة المتقاعدة"
 
 #: lib/marshall/documentation_messages.ex:548
 #, elixir-autogen, elixir-format
 msgid "## Open the personal browser editor on a newly provisioned AlmaLinux or Arch image"
-msgstr ""
+msgstr "## افتح محرر المتصفح الشخصي على صورة AlmaLinux أو Arch مزوّدة حديثاً"
 
 #: lib/marshall/documentation_messages.ex:556
 #, elixir-autogen, elixir-format
 msgid "## Operate control and accounting without Marshall diagnostic ingestion"
-msgstr ""
+msgstr "## شغّل التحكم والمحاسبة دون استيعاب تشخيصات Marshall"
 
 #: lib/marshall/documentation_messages.ex:560
 #, elixir-autogen, elixir-format
 msgid "## Operator encrypted-document custody"
-msgstr ""
+msgstr "## حيازة المشغل للمستندات المشفّرة"
 
 #: lib/marshall/documentation_messages.ex:561
 #, elixir-autogen, elixir-format
 msgid "## Personal browser editor"
-msgstr ""
+msgstr "## محرر المتصفح الشخصي"
 
 #: lib/marshall/documentation_messages.ex:562
 #, elixir-autogen, elixir-format
 msgid "## Personal browser editor layers"
-msgstr ""
+msgstr "## طبقات محرر المتصفح الشخصي"
 
 #: lib/marshall/documentation_messages.ex:563
 #, elixir-autogen, elixir-format
 msgid "## Physical guest readiness receipts"
-msgstr ""
+msgstr "## إيصالات الجاهزية الفعلية للضيف"
 
 #: lib/marshall/documentation_messages.ex:564
 #, elixir-autogen, elixir-format
 msgid "## Pin a machine to the top of the lists and keep it from being deleted until the owner unpins it"
-msgstr ""
+msgstr "## ثبّت جهازاً في أعلى القوائم وامنع حذفه حتى يزيل المالك تثبيته"
 
 #: lib/marshall/documentation_messages.ex:568
 #, elixir-autogen, elixir-format
 msgid "## Pinned machines in the lists"
-msgstr ""
+msgstr "## الأجهزة المثبتة في القوائم"
 
 #: lib/marshall/documentation_messages.ex:569
 #, elixir-autogen, elixir-format
 msgid "## Place the Windows image through Lilly as a guest without agents and reach it on its delivered /32"
-msgstr ""
+msgstr "## ضع صورة Windows عبر Lilly كضيف دون وكلاء وصِل إليها على عنوان /32 المسلّم لها"
 
 #: lib/marshall/documentation_messages.ex:573
 #, elixir-autogen, elixir-format
 msgid "## Plan work, answer durable questions and implement the exact completed proposal"
-msgstr ""
+msgstr "## خطط للعمل وأجب عن الأسئلة الدائمة ونفّذ المقترح المكتمل نفسه"
 
 #: lib/marshall/documentation_messages.ex:577
 #, elixir-autogen, elixir-format
@@ -1292,37 +1292,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:579
 #, elixir-autogen, elixir-format
 msgid "## Preview, request, pause and resume a host evacuation with current administrator authority"
-msgstr ""
+msgstr "## عاين إخلاء مضيف واطلبه وأوقفه مؤقتاً واستأنفه بصلاحية مسؤول حالية"
 
 #: lib/marshall/documentation_messages.ex:583
 #, elixir-autogen, elixir-format
 msgid "## Privacy and availability"
-msgstr ""
+msgstr "## الخصوصية والإتاحة"
 
 #: lib/marshall/documentation_messages.ex:584
 #, elixir-autogen, elixir-format
 msgid "## Privileged administrator continuation layers"
-msgstr ""
+msgstr "## طبقات متابعة المسؤول ذي الامتيازات"
 
 #: lib/marshall/documentation_messages.ex:585
 #, elixir-autogen, elixir-format
 msgid "## Privileged administrator step-up"
-msgstr ""
+msgstr "## التحقق الإضافي للمسؤول ذي الامتيازات"
 
 #: lib/marshall/documentation_messages.ex:586
 #, elixir-autogen, elixir-format
 msgid "## Prompt a shared stopped VM and execute an allowed tool"
-msgstr ""
+msgstr "## أرسل مطالبة إلى آلة افتراضية مشتركة متوقفة ونفّذ أداة مسموحاً بها"
 
 #: lib/marshall/documentation_messages.ex:587
 #, elixir-autogen, elixir-format
 msgid "## Provisioner readiness across incarnation restart"
-msgstr ""
+msgstr "## جاهزية المزوّد عبر إعادة تشغيل تجسيد الخدمة"
 
 #: lib/marshall/documentation_messages.ex:588
 #, elixir-autogen, elixir-format
 msgid "## Provisioning performance acceptance"
-msgstr ""
+msgstr "## قبول أداء التزويد"
 
 #: lib/marshall/documentation_messages.ex:589
 #, elixir-autogen, elixir-format
@@ -1332,167 +1332,167 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:590
 #, elixir-autogen, elixir-format
 msgid "## Public HTTP-01 listener"
-msgstr ""
+msgstr "## مستمع HTTP-01 العام"
 
 #: lib/marshall/documentation_messages.ex:591
 #, elixir-autogen, elixir-format
 msgid "## Publish a guest web service and withdraw access"
-msgstr ""
+msgstr "## انشر خدمة ويب للضيف واسحب الوصول إليها"
 
 #: lib/marshall/documentation_messages.ex:592
 #, elixir-autogen, elixir-format
 msgid "## Purpose-authenticated fleet services submit unsupported or malformed control envelopes during deployment skew"
-msgstr ""
+msgstr "## خدمات أسطول موثّقة بحسب الغرض ترسل مغلفات تحكم غير مدعومة أو مشوهة أثناء تفاوت إصدارات النشر"
 
 #: lib/marshall/documentation_messages.ex:596
 #, elixir-autogen, elixir-format
 msgid "## Qualify exact reviewed FreeBSD and OmniOS images while refusing altered or unapproved native identities"
-msgstr ""
+msgstr "## أهّل صور FreeBSD وOmniOS المراجعة المحددة مع رفض الهويات الأصلية المعدّلة أو غير المعتمدة"
 
 #: lib/marshall/documentation_messages.ex:600
 #, elixir-autogen, elixir-format
 msgid "## Reach Firecracker jail sockets and guest ingress from the unprivileged Lilly BEAM without leaking descriptors"
-msgstr ""
+msgstr "## صِل إلى مقابس سجن Firecracker ومدخل الضيف من BEAM غير المميز في Lilly دون تسريب واصفات"
 
 #: lib/marshall/documentation_messages.ex:604
 #, elixir-autogen, elixir-format
 msgid "## Reach the correct guest Unix account through Audi"
-msgstr ""
+msgstr "## صِل إلى حساب Unix الصحيح للضيف عبر Audi"
 
 #: lib/marshall/documentation_messages.ex:605
 #, elixir-autogen, elixir-format
 msgid "## Reactivate a historical fleet snapshot safely"
-msgstr ""
+msgstr "## أعد تفعيل لقطة تاريخية للأسطول بأمان"
 
 #: lib/marshall/documentation_messages.ex:606
 #, elixir-autogen, elixir-format
 msgid "## Read a guarded candidate for Underclass local monitor availability on both hosts"
-msgstr ""
+msgstr "## اقرأ مرشحاً محروساً لإتاحة مراقب Underclass المحلي على كلا المضيفين"
 
 #: lib/marshall/documentation_messages.ex:610
 #, elixir-autogen, elixir-format
 msgid "## Read fleet dashboards through authenticated public Grafana HTTPS"
-msgstr ""
+msgstr "## اقرأ لوحات الأسطول عبر Grafana عام موثّق باستخدام HTTPS"
 
 #: lib/marshall/documentation_messages.ex:614
 #, elixir-autogen, elixir-format
 msgid "## Read guarded application duration baselines in private Grafana"
-msgstr ""
+msgstr "## اقرأ خطوط أساس مدد التطبيقات المحروسة في Grafana الخاص"
 
 #: lib/marshall/documentation_messages.ex:618
 #, elixir-autogen, elixir-format
 msgid "## Read one handbook section as an ordinary signed-in user"
-msgstr ""
+msgstr "## اقرأ قسماً واحداً من الدليل كمستخدم عادي مسجل دخوله"
 
 #: lib/marshall/documentation_messages.ex:619
 #, elixir-autogen, elixir-format
 msgid "## Read the Control room without administrative mutation authority"
-msgstr ""
+msgstr "## اقرأ غرفة التحكم دون صلاحية تعديل إدارية"
 
 #: lib/marshall/documentation_messages.ex:623
 #, elixir-autogen, elixir-format
 msgid "## Read the current host serial log while guest bootstrap or terminal capability is unavailable"
-msgstr ""
+msgstr "## اقرأ السجل التسلسلي الحالي للمضيف عند عدم توفر التهيئة الأولية للضيف أو قدرة الطرفية"
 
 #: lib/marshall/documentation_messages.ex:627
 #, elixir-autogen, elixir-format
 msgid "## Reattach to retained terminal output after ring resize and consume control frames delivered in arbitrary chunks"
-msgstr ""
+msgstr "## أعد الارتباط بمخرجات الطرفية المحتفظ بها بعد تغيير حجم الحلقة واستهلك إطارات التحكم الواصلة في أجزاء اعتباطية"
 
 #: lib/marshall/documentation_messages.ex:631
 #, elixir-autogen, elixir-format
 msgid "## Receive a delayed SSH authorization response after its grant deadline"
-msgstr ""
+msgstr "## تلقَّ استجابة تفويض SSH متأخرة بعد الموعد النهائي لمنحتها"
 
 #: lib/marshall/documentation_messages.ex:635
 #, elixir-autogen, elixir-format
 msgid "## Receive a served response instead of a stale 429 when a throttled Codex account recovers during the reset check"
-msgstr ""
+msgstr "## تلقَّ استجابة مقدمة بدلاً من 429 قديم عندما يتعافى حساب Codex مقيّد المعدل أثناء فحص إعادة الضبط"
 
 #: lib/marshall/documentation_messages.ex:639
 #, elixir-autogen, elixir-format
 msgid "## Receive provisional seven-day SLO burn and resolved warnings"
-msgstr ""
+msgstr "## تلقَّ تحذيرات استهلاك ميزانية SLO الأولية لسبعة أيام وإشعارات حلها"
 
 #: lib/marshall/documentation_messages.ex:643
 #, elixir-autogen, elixir-format
 msgid "## Recover a VM actor that died after executor completion but before durable outcome recording"
-msgstr ""
+msgstr "## استعد فاعل آلة افتراضية انتهى بعد إكمال المنفذ وقبل تسجيل النتيجة بصورة دائمة"
 
 #: lib/marshall/documentation_messages.ex:647
 #, elixir-autogen, elixir-format
 msgid "## Recover a guest start after provisioner daemon loss at native submission without reusing fenced launch authority"
-msgstr ""
+msgstr "## استعد بدء ضيف بعد فقدان خدمة المزوّد أثناء الإرسال الأصلي دون إعادة استخدام صلاحية إطلاق مقيّدة"
 
 #: lib/marshall/documentation_messages.ex:651
 #, elixir-autogen, elixir-format
 msgid "## Recover from a failed guest CLI candidate and resume authorized tool work"
-msgstr ""
+msgstr "## تعافَ من مرشح CLI ضيف فاشل واستأنف عمل الأدوات المصرح به"
 
 #: lib/marshall/documentation_messages.ex:655
 #, elixir-autogen, elixir-format
 msgid "## Recover mirror command ownership after caller or native helper death without conflicting cleanup or publication"
-msgstr ""
+msgstr "## استعد ملكية أمر المرآة بعد انتهاء المستدعي أو المساعد الأصلي دون تنظيف أو نشر متعارض"
 
 #: lib/marshall/documentation_messages.ex:659
 #, elixir-autogen, elixir-format
 msgid "## Recover service control connections without multiplying heartbeat loops"
-msgstr ""
+msgstr "## استعد اتصالات تحكم الخدمات دون مضاعفة حلقات نبض الحالة"
 
 #: lib/marshall/documentation_messages.ex:663
 #, elixir-autogen, elixir-format
 msgid "## Recover the terminal host stream after an opening worker dies"
-msgstr ""
+msgstr "## استعد تدفق مضيف الطرفية بعد انتهاء عامل الفتح"
 
 #: lib/marshall/documentation_messages.ex:667
 #, elixir-autogen, elixir-format
 msgid "## Recreate operator dashboards and query traces and diagnostic logs from NixOS configuration"
-msgstr ""
+msgstr "## أعد إنشاء لوحات المشغل واستعلم عن التتبعات وسجلات التشخيص من إعدادات NixOS"
 
 #: lib/marshall/documentation_messages.ex:671
 #, elixir-autogen, elixir-format
 msgid "## Recurring authenticated editor journeys"
-msgstr ""
+msgstr "## رحلات محرر موثّقة متكررة"
 
 #: lib/marshall/documentation_messages.ex:672
 #, elixir-autogen, elixir-format
 msgid "## Redeem one banked Codex reset credit for a chosen host-local account"
-msgstr ""
+msgstr "## استخدم رصيد إعادة ضبط Codex واحداً مدخراً لحساب محلي على المضيف تختاره"
 
 #: lib/marshall/documentation_messages.ex:676
 #, elixir-autogen, elixir-format
 msgid "## Refuse a superseded launch while the native guard waits behind an intent coordinator"
-msgstr ""
+msgstr "## ارفض إطلاقاً حلّ محله إطلاق أحدث بينما تنتظر الحراسة الأصلية خلف منسق النوايا"
 
 #: lib/marshall/documentation_messages.ex:680
 #, elixir-autogen, elixir-format
 msgid "## Refuse an unsupported control version while Lilly session and audit exchanges are already pending"
-msgstr ""
+msgstr "## ارفض إصدار تحكم غير مدعوم بينما تبادلات جلسة Lilly والتدقيق معلقة بالفعل"
 
 #: lib/marshall/documentation_messages.ex:684
 #, elixir-autogen, elixir-format
 msgid "## Refuse incompatible control versions without renewing DNS or certificate authority, then recover by operator restart"
-msgstr ""
+msgstr "## ارفض إصدارات التحكم غير المتوافقة دون تجديد صلاحية DNS أو الشهادة، ثم تعافَ بإعادة تشغيل من المشغل"
 
 #: lib/marshall/documentation_messages.ex:688
 #, elixir-autogen, elixir-format
 msgid "## Refuse stale guest attribution while retaining genuine native exit evidence"
-msgstr ""
+msgstr "## ارفض إسناد ضيف قديماً مع الاحتفاظ بأدلة خروج أصلية حقيقية"
 
 #: lib/marshall/documentation_messages.ex:692
 #, elixir-autogen, elixir-format
 msgid "## Register a Git mirror, read published files, refresh through failure and remove it"
-msgstr ""
+msgstr "## سجّل مرآة Git واقرأ الملفات المنشورة وحدّث عبر الفشل وأزلها"
 
 #: lib/marshall/documentation_messages.ex:696
 #, elixir-autogen, elixir-format
 msgid "## Register a valid mailbox on any domain and retain distinct guest identities"
-msgstr ""
+msgstr "## سجّل صندوق بريد صالحاً على أي نطاق واحتفظ بهويات ضيوف متميزة"
 
 #: lib/marshall/documentation_messages.ex:700
 #, elixir-autogen, elixir-format
 msgid "## Register or approve an SSH key while an administrator retires its owner"
-msgstr ""
+msgstr "## سجّل مفتاح SSH أو وافق عليه بينما يحيل مسؤول مالكه إلى التقاعد"
 
 #: lib/marshall/documentation_messages.ex:704
 #, elixir-autogen, elixir-format
@@ -1502,7 +1502,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:705
 #, elixir-autogen, elixir-format
 msgid "## Release a terminal peer attachment when its remote frontend stops responding"
-msgstr ""
+msgstr "## حرر ارتباط نظير طرفية عندما تتوقف واجهته الأمامية البعيدة عن الاستجابة"
 
 #: lib/marshall/documentation_messages.ex:709
 #, elixir-autogen, elixir-format
@@ -1517,7 +1517,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:711
 #, elixir-autogen, elixir-format
 msgid "## Rename and remove own passkeys and manage SSH keys from the account page"
-msgstr ""
+msgstr "## أعد تسمية مفاتيح مرورك وأزلها وأدر مفاتيح SSH من صفحة الحساب"
 
 #: lib/marshall/documentation_messages.ex:715
 #, elixir-autogen, elixir-format
@@ -1532,27 +1532,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:717
 #, elixir-autogen, elixir-format
 msgid "## Replay cached HTTP and HTTPS after a local storage-router reset while retaining ZFS identity and quota"
-msgstr ""
+msgstr "## أعد تشغيل HTTP وHTTPS المخزنين مؤقتاً بعد إعادة ضبط موجّه تخزين محلي مع الاحتفاظ بهوية ZFS وحصته"
 
 #: lib/marshall/documentation_messages.ex:721
 #, elixir-autogen, elixir-format
 msgid "## Repository launch workspaces"
-msgstr ""
+msgstr "## مساحات عمل إطلاق المستودعات"
 
 #: lib/marshall/documentation_messages.ex:722
 #, elixir-autogen, elixir-format
 msgid "## Repository launcher and package placement"
-msgstr ""
+msgstr "## مشغّل المستودعات وتموضع الحزم"
 
 #: lib/marshall/documentation_messages.ex:723
 #, elixir-autogen, elixir-format
 msgid "## Request a magic link and receive a usable sign-in message after an uncertain mail attempt"
-msgstr ""
+msgstr "## اطلب رابط دخول سحرياً وتلقَّ رسالة دخول قابلة للاستخدام بعد محاولة بريد غير مؤكدة"
 
 #: lib/marshall/documentation_messages.ex:727
 #, elixir-autogen, elixir-format
 msgid "## Reset an account and refuse administrative mutations after elevation or role loss"
-msgstr ""
+msgstr "## أعد ضبط حساب وارفض التعديلات الإدارية بعد فقدان الرفع أو الدور"
 
 #: lib/marshall/documentation_messages.ex:731
 #, elixir-autogen, elixir-format
@@ -1567,7 +1567,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:733
 #, elixir-autogen, elixir-format
 msgid "## Resize a running or stopped machine and retry after uncertain progress"
-msgstr ""
+msgstr "## غيّر حجم جهاز عامل أو متوقف وأعد المحاولة بعد تقدم غير مؤكد"
 
 #: lib/marshall/documentation_messages.ex:737
 #, elixir-autogen, elixir-format
@@ -1577,22 +1577,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:738
 #, elixir-autogen, elixir-format
 msgid "## Restart a provisioner during control-plane outage without promoting stale readiness or replacing guests"
-msgstr ""
+msgstr "## أعد تشغيل مزوّد أثناء انقطاع مستوى التحكم دون ترقية جاهزية قديمة أو استبدال الضيوف"
 
 #: lib/marshall/documentation_messages.ex:742
 #, elixir-autogen, elixir-format
 msgid "## Restart the same native disk under fresh authority after an observed abrupt VMM process failure"
-msgstr ""
+msgstr "## أعد تشغيل القرص الأصلي نفسه بصلاحية جديدة بعد رصد فشل مفاجئ لعملية VMM"
 
 #: lib/marshall/documentation_messages.ex:746
 #, elixir-autogen, elixir-format
 msgid "## Restore selected host state and encrypted application data"
-msgstr ""
+msgstr "## استعد حالة مضيف محددة وبيانات تطبيق مشفّرة"
 
 #: lib/marshall/documentation_messages.ex:750
 #, elixir-autogen, elixir-format
 msgid "## Restore service control after a Marshall listener returns"
-msgstr ""
+msgstr "## استعد تحكم الخدمات بعد عودة مستمع Marshall"
 
 #: lib/marshall/documentation_messages.ex:754
 #, elixir-autogen, elixir-format
@@ -1602,37 +1602,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:755
 #, elixir-autogen, elixir-format
 msgid "## Resume a public download after interrupted cache publication or restart"
-msgstr ""
+msgstr "## استأنف تنزيلاً عاماً بعد نشر ذاكرة مؤقتة منقطع أو إعادة تشغيل"
 
 #: lib/marshall/documentation_messages.ex:759
 #, elixir-autogen, elixir-format
 msgid "## Retain accepted diagnostics independently while the Collector or Tempo is unavailable"
-msgstr ""
+msgstr "## احتفظ بالتشخيصات المقبولة بصورة مستقلة أثناء عدم توفر Collector أو Tempo"
 
 #: lib/marshall/documentation_messages.ex:763
 #, elixir-autogen, elixir-format
 msgid "## Retain host mutation or transfer custody until every adopted utility child retires"
-msgstr ""
+msgstr "## احتفظ بحيازة تعديل المضيف أو نقله حتى تتقاعد كل عملية أداة فرعية متبناة"
 
 #: lib/marshall/documentation_messages.ex:767
 #, elixir-autogen, elixir-format
 msgid "## Retain terminal service version refusal for already-pending control requests"
-msgstr ""
+msgstr "## احتفظ برفض إصدار خدمة الطرفية لطلبات التحكم المعلقة بالفعل"
 
 #: lib/marshall/documentation_messages.ex:771
 #, elixir-autogen, elixir-format
 msgid "## Retained disks with invalid launch metadata"
-msgstr ""
+msgstr "## الأقراص المحتفظ بها ذات بيانات الإطلاق الوصفية غير الصالحة"
 
 #: lib/marshall/documentation_messages.ex:772
 #, elixir-autogen, elixir-format
 msgid "## Retained profile migration"
-msgstr ""
+msgstr "## ترحيل الملف التعريفي المحتفظ به"
 
 #: lib/marshall/documentation_messages.ex:773
 #, elixir-autogen, elixir-format
 msgid "## Retained-state profile rewrite authority"
-msgstr ""
+msgstr "## صلاحية إعادة كتابة الملف التعريفي للحالة المحتفظ بها"
 
 #: lib/marshall/documentation_messages.ex:774
 #, elixir-autogen, elixir-format
@@ -1642,27 +1642,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:775
 #, elixir-autogen, elixir-format
 msgid "## Retire incompatible control connections without replaying outstanding service work"
-msgstr ""
+msgstr "## أحِل اتصالات التحكم غير المتوافقة إلى التقاعد دون إعادة تشغيل عمل الخدمة المعلق"
 
 #: lib/marshall/documentation_messages.ex:779
 #, elixir-autogen, elixir-format
 msgid "## Retire old terminal peer owners when their admission budget restarts"
-msgstr ""
+msgstr "## أحِل مالكي أقران الطرفية القدامى إلى التقاعد عند إعادة بدء ميزانية قبولهم"
 
 #: lib/marshall/documentation_messages.ex:783
 #, elixir-autogen, elixir-format
 msgid "## Retired terminal scrollback"
-msgstr ""
+msgstr "## سجل تمرير الطرفية المتقاعد"
 
 #: lib/marshall/documentation_messages.ex:784
 #, elixir-autogen, elixir-format
 msgid "## Retry a mirror refresh after repository removal and attempt reuse while completed receipts reach their retention cap"
-msgstr ""
+msgstr "## أعد محاولة تحديث مرآة بعد إزالة المستودع وحاول إعادة الاستخدام بينما تصل الإيصالات المكتملة إلى حد الاحتفاظ بها"
 
 #: lib/marshall/documentation_messages.ex:788
 #, elixir-autogen, elixir-format
 msgid "## Retry a refused mirror refresh after an active worker completes or dies"
-msgstr ""
+msgstr "## أعد محاولة تحديث مرآة مرفوض بعد اكتمال عامل نشط أو انتهائه"
 
 #: lib/marshall/documentation_messages.ex:792
 #, elixir-autogen, elixir-format
@@ -1672,32 +1672,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:793
 #, elixir-autogen, elixir-format
 msgid "## Rotate a service credential while its control socket remains bound"
-msgstr ""
+msgstr "## دوّر بيانات اعتماد خدمة مع بقاء مقبس تحكمها مرتبطاً"
 
 #: lib/marshall/documentation_messages.ex:797
 #, elixir-autogen, elixir-format
 msgid "## Rotate host-local Codex credentials and recover rejected provider accounts"
-msgstr ""
+msgstr "## دوّر بيانات اعتماد Codex المحلية للمضيف واستعد حسابات المزوّد المرفوضة"
 
 #: lib/marshall/documentation_messages.ex:801
 #, elixir-autogen, elixir-format
 msgid "## Rotate secrets without exposing or losing authority"
-msgstr ""
+msgstr "## دوّر الأسرار دون كشف الصلاحية أو فقدانها"
 
 #: lib/marshall/documentation_messages.ex:802
 #, elixir-autogen, elixir-format
 msgid "## SSH host CA configuration"
-msgstr ""
+msgstr "## إعداد جهة تصديق مضيف SSH"
 
 #: lib/marshall/documentation_messages.ex:803
 #, elixir-autogen, elixir-format
 msgid "## SSH host authority recovery"
-msgstr ""
+msgstr "## استعادة صلاحية مضيف SSH"
 
 #: lib/marshall/documentation_messages.ex:804
 #, elixir-autogen, elixir-format
 msgid "## SSH host certificate authority"
-msgstr ""
+msgstr "## جهة تصديق شهادات مضيف SSH"
 
 #: lib/marshall/documentation_messages.ex:809
 #, elixir-autogen, elixir-format
@@ -1712,117 +1712,117 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:811
 #, elixir-autogen, elixir-format
 msgid "## See where a guest boot spends its time and boot faster without weakening boot-bound trust"
-msgstr ""
+msgstr "## تعرّف على مواضع إنفاق وقت إقلاع الضيف وأسرع الإقلاع دون إضعاف الثقة المرتبطة بالإقلاع"
 
 #: lib/marshall/documentation_messages.ex:815
 #, elixir-autogen, elixir-format
 msgid "## Select a language, reset to the browser default, and use LTR/RTL human surfaces"
-msgstr ""
+msgstr "## اختر لغة وأعد الضبط إلى إعداد المتصفح الافتراضي واستخدم الواجهات البشرية باتجاهَي LTR/RTL"
 
 #: lib/marshall/documentation_messages.ex:819
 #, elixir-autogen, elixir-format
 msgid "## Send Underclass provider traffic, and only that traffic, out through the operator's Australian tailnet exit node"
-msgstr ""
+msgstr "## أرسل حركة مزوّدي Underclass وحدها عبر عقدة خروج tailnet الأسترالية الخاصة بالمشغل"
 
 #: lib/marshall/documentation_messages.ex:823
 #, elixir-autogen, elixir-format
 msgid "## Send native Anthropic Messages or token-counting beta requests through Ziggy"
-msgstr ""
+msgstr "## أرسل طلبات Anthropic Messages الأصلية أو طلبات النسخة التجريبية لعد الرموز عبر Ziggy"
 
 #: lib/marshall/documentation_messages.ex:827
 #, elixir-autogen, elixir-format
 msgid "## Share a VM and revoke a collaborator"
-msgstr ""
+msgstr "## شارك آلة افتراضية وألغِ وصول متعاون"
 
 #: lib/marshall/documentation_messages.ex:828
 #, elixir-autogen, elixir-format
 msgid "## Share a thread and use its current work machine"
-msgstr ""
+msgstr "## شارك سلسلة محادثة واستخدم جهاز عملها الحالي"
 
 #: lib/marshall/documentation_messages.ex:829
 #, elixir-autogen, elixir-format
 msgid "## Shared terminal scrollback admission"
-msgstr ""
+msgstr "## قبول سجل تمرير الطرفية المشترك"
 
 #: lib/marshall/documentation_messages.ex:830
 #, elixir-autogen, elixir-format
 msgid "## Sign in for ordinary access, verify a passkey for privileged actions, and revoke a session"
-msgstr ""
+msgstr "## سجّل الدخول للوصول العادي، وتحقق بمفتاح مرور للإجراءات ذات الامتيازات، وألغِ جلسة"
 
 #: lib/marshall/documentation_messages.ex:843
 #, elixir-autogen, elixir-format
 msgid "## Stage and register the same sealed Windows installation on both hosts"
-msgstr ""
+msgstr "## جهّز تثبيت Windows المختوم نفسه وسجّله على كلا المضيفين"
 
 #: lib/marshall/documentation_messages.ex:847
 #, elixir-autogen, elixir-format
 msgid "## Start an already running copied VM without replacing its physical boot"
-msgstr ""
+msgstr "## ابدأ آلة افتراضية منسوخة تعمل بالفعل دون استبدال إقلاعها الفعلي"
 
 #: lib/marshall/documentation_messages.ex:851
 #, elixir-autogen, elixir-format
 msgid "## Start an isolated control fixture and establish one truthful Antithesis setup signal"
-msgstr ""
+msgstr "## ابدأ تجهيز تحكم معزولاً وأنشئ إشارة إعداد Antithesis صادقة واحدة"
 
 #: lib/marshall/documentation_messages.ex:855
 #, elixir-autogen, elixir-format
 msgid "## Start the installed Codex or Claude Code from a guest terminal or SSH account using private Ziggy inference"
-msgstr ""
+msgstr "## شغّل Codex أو Claude Code المثبت من طرفية الضيف أو حساب SSH باستخدام استدلال Ziggy الخاص"
 
 #: lib/marshall/documentation_messages.ex:859
 #, elixir-autogen, elixir-format
 msgid "## Step up an administrator inline and continue the exact pending action"
-msgstr ""
+msgstr "## نفّذ تحققاً إضافياً للمسؤول داخل الصفحة وتابع الإجراء المعلق نفسه"
 
 #: lib/marshall/documentation_messages.ex:863
 #, elixir-autogen, elixir-format
 msgid "## Stop an executing native guest command when its current executor lease or supervisor authority is withdrawn"
-msgstr ""
+msgstr "## أوقف أمر ضيف أصلياً قيد التنفيذ عند سحب إيجار منفذه الحالي أو صلاحية مشرفه"
 
 #: lib/marshall/documentation_messages.ex:867
 #, elixir-autogen, elixir-format
 msgid "## Streaming cache history verification"
-msgstr ""
+msgstr "## التحقق من سجل ذاكرة البث المؤقتة"
 
 #: lib/marshall/documentation_messages.ex:868
 #, elixir-autogen, elixir-format
 msgid "## Submit bounded OpenTelemetry diagnostics from an eligible guest through Audi"
-msgstr ""
+msgstr "## أرسل تشخيصات OpenTelemetry محدودة من ضيف مؤهل عبر Audi"
 
 #: lib/marshall/documentation_messages.ex:874
 #, elixir-autogen, elixir-format
 msgid "## Telemetry retention and capacity"
-msgstr ""
+msgstr "## الاحتفاظ بالقياسات والسعة"
 
 #: lib/marshall/documentation_messages.ex:875
 #, elixir-autogen, elixir-format
 msgid "## Thread authorization boundary"
-msgstr ""
+msgstr "## حدود تفويض سلسلة المحادثة"
 
 #: lib/marshall/documentation_messages.ex:876
 #, elixir-autogen, elixir-format
 msgid "## Thread commands and planning controls"
-msgstr ""
+msgstr "## أوامر سلسلة المحادثة وأدوات التخطيط"
 
 #: lib/marshall/documentation_messages.ex:878
 #, elixir-autogen, elixir-format
 msgid "## Thread sharing and current machine authority"
-msgstr ""
+msgstr "## مشاركة سلسلة المحادثة وصلاحية الجهاز الحالي"
 
 #: lib/marshall/documentation_messages.ex:879
 #, elixir-autogen, elixir-format
 msgid "## Time zone preference disclosure layers"
-msgstr ""
+msgstr "## طبقات الإفصاح عن تفضيل المنطقة الزمنية"
 
 #: lib/marshall/documentation_messages.ex:880
 #, elixir-autogen, elixir-format
 msgid "## Time zones and local time"
-msgstr ""
+msgstr "## المناطق الزمنية والوقت المحلي"
 
 #: lib/marshall/documentation_messages.ex:881
 #, elixir-autogen, elixir-format
 msgid "## Transfer team ownership without losing its authority invariant"
-msgstr ""
+msgstr "## انقل ملكية الفريق دون فقدان ثابت صلاحياته"
 
 #: lib/marshall/documentation_messages.ex:885
 #, elixir-autogen, elixir-format
@@ -1832,12 +1832,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:886
 #, elixir-autogen, elixir-format
 msgid "## Underclass provider egress layers"
-msgstr ""
+msgstr "## طبقات خروج مزوّدي Underclass"
 
 #: lib/marshall/documentation_messages.ex:887
 #, elixir-autogen, elixir-format
 msgid "## Understand unavailable fleet measurements and retain ninety days of telemetry"
-msgstr ""
+msgstr "## افهم قياسات الأسطول غير المتاحة واحتفظ بتسعين يوماً من القياسات"
 
 #: lib/marshall/documentation_messages.ex:891
 #, elixir-autogen, elixir-format
@@ -1847,27 +1847,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:892
 #, elixir-autogen, elixir-format
 msgid "## Use every workspace, machine, settings, handbook and administration page in light and dark appearance on desktop and phone widths"
-msgstr ""
+msgstr "## استخدم كل صفحات مساحة العمل والأجهزة والإعدادات والدليل والإدارة بالمظهرين الفاتح والداكن على عروض سطح المكتب والهاتف"
 
 #: lib/marshall/documentation_messages.ex:896
 #, elixir-autogen, elixir-format
 msgid "## Use native Code OSS tools under the personal guest UID and recover broker or worker loss"
-msgstr ""
+msgstr "## استخدم أدوات Code OSS الأصلية تحت UID الضيف الشخصي وتعافَ من فقدان الوسيط أو العامل"
 
 #: lib/marshall/documentation_messages.ex:900
 #, elixir-autogen, elixir-format
 msgid "## Use private inference and retain usage receipts through an outage"
-msgstr ""
+msgstr "## استخدم الاستدلال الخاص واحتفظ بإيصالات الاستخدام أثناء الانقطاع"
 
 #: lib/marshall/documentation_messages.ex:904
 #, elixir-autogen, elixir-format
 msgid "## Use private team guest web, remove membership and restore fresh access"
-msgstr ""
+msgstr "## استخدم ويب ضيف الفريق الخاص وأزل العضوية واستعد وصولاً جديداً"
 
 #: lib/marshall/documentation_messages.ex:908
 #, elixir-autogen, elixir-format
 msgid "## User-run guest coding CLI layers"
-msgstr ""
+msgstr "## طبقات CLI برمجة الضيف الذي يشغله المستخدم"
 
 #: lib/marshall/documentation_messages.ex:909
 #, elixir-autogen, elixir-format
@@ -1877,12 +1877,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:910
 #, elixir-autogen, elixir-format
 msgid "## VM actor completion before recording"
-msgstr ""
+msgstr "## إكمال فاعل الآلة الافتراضية قبل التسجيل"
 
 #: lib/marshall/documentation_messages.ex:911
 #, elixir-autogen, elixir-format
 msgid "## Validate native FreeBSD and OmniOS guest metadata before launch"
-msgstr ""
+msgstr "## تحقّق من بيانات ضيف FreeBSD وOmniOS الأصلية الوصفية قبل الإطلاق"
 
 #: lib/marshall/documentation_messages.ex:915
 #, elixir-autogen, elixir-format
@@ -1892,37 +1892,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:916
 #, elixir-autogen, elixir-format
 msgid "## Verification and remaining acceptance"
-msgstr ""
+msgstr "## التحقق والقبول المتبقي"
 
 #: lib/marshall/documentation_messages.ex:917
 #, elixir-autogen, elixir-format
 msgid "## Verified image templates"
-msgstr ""
+msgstr "## قوالب الصور المتحقق منها"
 
 #: lib/marshall/documentation_messages.ex:918
 #, elixir-autogen, elixir-format
 msgid "## Waiting launch authority"
-msgstr ""
+msgstr "## صلاحية الإطلاق المنتظرة"
 
 #: lib/marshall/documentation_messages.ex:919
 #, elixir-autogen, elixir-format
 msgid "## Windows guest boundaries"
-msgstr ""
+msgstr "## حدود ضيوف Windows"
 
 #: lib/marshall/documentation_messages.ex:920
 #, elixir-autogen, elixir-format
 msgid "## Windows guests (experimental)"
-msgstr ""
+msgstr "## ضيوف Windows (تجريبي)"
 
 #: lib/marshall/documentation_messages.ex:921
 #, elixir-autogen, elixir-format
 msgid "## Windows image build inputs"
-msgstr ""
+msgstr "## مدخلات بناء صورة Windows"
 
 #: lib/marshall/documentation_messages.ex:922
 #, elixir-autogen, elixir-format
 msgid "## Withhold native readiness during a real daemon failure and restore the exact supervised process"
-msgstr ""
+msgstr "## احجب الجاهزية الأصلية أثناء فشل فعلي للخدمة واستعد العملية الخاضعة للإشراف نفسها"
 
 #: lib/marshall/documentation_messages.ex:926
 #, elixir-autogen, elixir-format
@@ -4137,67 +4137,67 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1434
 #, elixir-autogen, elixir-format
 msgid "### Agents over virtio-vsock (`windows-v1`, FreeBSD and illumos in progress)"
-msgstr ""
+msgstr "### الوكلاء عبر virtio-vsock (`windows-v1`، والعمل جارٍ على FreeBSD وillumos)"
 
 #: lib/marshall/documentation_messages.ex:1438
 #, elixir-autogen, elixir-format
 msgid "### Antithesis harness retirement"
-msgstr ""
+msgstr "### تقاعد حاضنة Antithesis"
 
 #: lib/marshall/documentation_messages.ex:1439
 #, elixir-autogen, elixir-format
 msgid "### Browser helper type gates"
-msgstr ""
+msgstr "### بوابات أنواع مساعد المتصفح"
 
 #: lib/marshall/documentation_messages.ex:1440
 #, elixir-autogen, elixir-format
 msgid "### Clone observation diagnostic boundary"
-msgstr ""
+msgstr "### حدود تشخيص ملاحظة الاستنساخ"
 
 #: lib/marshall/documentation_messages.ex:1441
 #, elixir-autogen, elixir-format
 msgid "### Clone report rejection diagnostic boundary"
-msgstr ""
+msgstr "### حدود تشخيص رفض تقرير الاستنساخ"
 
 #: lib/marshall/documentation_messages.ex:1442
 #, elixir-autogen, elixir-format
 msgid "### Committed database fixtures"
-msgstr ""
+msgstr "### تجهيزات قاعدة بيانات مثبتة المعاملات"
 
 #: lib/marshall/documentation_messages.ex:1443
 #, elixir-autogen, elixir-format
 msgid "### Current OmniOS accept ordering"
-msgstr ""
+msgstr "### ترتيب القبول الحالي في OmniOS"
 
 #: lib/marshall/documentation_messages.ex:1444
 #, elixir-autogen, elixir-format
 msgid "### Diagnostic custody and restored actors"
-msgstr ""
+msgstr "### حيازة التشخيصات والفاعلون المستعادون"
 
 #: lib/marshall/documentation_messages.ex:1445
 #, elixir-autogen, elixir-format
 msgid "### Experimental Antithesis foundation"
-msgstr ""
+msgstr "### أساس Antithesis التجريبي"
 
 #: lib/marshall/documentation_messages.ex:1447
 #, elixir-autogen, elixir-format
 msgid "### Install and use the browser launcher"
-msgstr ""
+msgstr "### ثبّت مشغّل المتصفح واستخدمه"
 
 #: lib/marshall/documentation_messages.ex:1448
 #, elixir-autogen, elixir-format
 msgid "### Launch through Lilly without guest agents"
-msgstr ""
+msgstr "### أطلِق عبر Lilly دون وكلاء ضيف"
 
 #: lib/marshall/documentation_messages.ex:1449
 #, elixir-autogen, elixir-format
 msgid "### Local host-certificate startup evidence"
-msgstr ""
+msgstr "### أدلة بدء تشغيل شهادة المضيف المحلية"
 
 #: lib/marshall/documentation_messages.ex:1450
 #, elixir-autogen, elixir-format
 msgid "### Local host-session takeover histories"
-msgstr ""
+msgstr "### سجلات الاستحواذ على جلسة المضيف المحلية"
 
 #: lib/marshall/documentation_messages.ex:1451
 #, elixir-autogen, elixir-format
@@ -6877,7 +6877,7 @@ msgstr "يستخدم جزء دور أدنى مسارات ملفات وقت ال�
 #: lib/marshall/documentation_messages.ex:3705
 #, elixir-autogen, elixir-format
 msgid "A mutation validates the actor, locks relevant rows, checks current authority,\nrecords intent and work, and commits. Outcome diagnostics follow commit. Retry\nwith the original idempotency key after an uncertain response. A new key denotes\na new request and may create a second resource."
-msgstr ""
+msgstr "تتحقق عملية التعديل من هوية الفاعل، وتقفل الصفوف المعنية، وتفحص الصلاحية الحالية، وتسجل النية والعمل، ثم تثبت المعاملة. تأتي تشخيصات النتائج بعد التثبيت. أعد المحاولة بمفتاح منع التكرار الأصلي إذا كانت الاستجابة غير مؤكدة. يدل المفتاح الجديد على طلب جديد وقد ينشئ مورداً ثانياً."
 
 #: lib/marshall/documentation_messages.ex:3709
 #, elixir-autogen, elixir-format
@@ -6977,7 +6977,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3789
 #, elixir-autogen, elixir-format
 msgid "ACME account contact email."
-msgstr ""
+msgstr "بريد الاتصال الإلكتروني لحساب ACME."
 
 #: lib/marshall/documentation_messages.ex:3790
 #, elixir-autogen, elixir-format
@@ -7032,7 +7032,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3830
 #, elixir-autogen, elixir-format
 msgid "AWS signing region."
-msgstr ""
+msgstr "منطقة توقيع AWS."
 
 #: lib/marshall/documentation_messages.ex:3831
 #, elixir-autogen, elixir-format
@@ -7072,12 +7072,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3867
 #, elixir-autogen, elixir-format
 msgid "Actual parent dataset GUID as a decimal string."
-msgstr ""
+msgstr "معرّف GUID الفعلي لمجموعة البيانات الأم كسلسلة عشرية."
 
 #: lib/marshall/documentation_messages.ex:3868
 #, elixir-autogen, elixir-format
 msgid "Actual unsigned 64-bit zpool GUID as a decimal string."
-msgstr ""
+msgstr "معرّف GUID الفعلي غير الموقّع ذي 64 بت لـzpool كسلسلة عشرية."
 
 #: lib/marshall/documentation_messages.ex:3869
 #, elixir-autogen, elixir-format
@@ -7172,22 +7172,22 @@ msgstr "العمر الممرر إلى nix-collect-garbage --delete-older-than. 
 #: lib/marshall/documentation_messages.ex:3965
 #, elixir-autogen, elixir-format
 msgid "Aggregate CPU quota in logical cores for Marshall instances."
-msgstr ""
+msgstr "إجمالي حصة CPU بالأنوية المنطقية لنسخ Marshall."
 
 #: lib/marshall/documentation_messages.ex:3969
 #, elixir-autogen, elixir-format
 msgid "Aggregate Marshall memory limit in MiB."
-msgstr ""
+msgstr "إجمالي حد ذاكرة Marshall بوحدة MiB."
 
 #: lib/marshall/documentation_messages.ex:3970
 #, elixir-autogen, elixir-format
 msgid "Aggregate guest CPU quota in logical cores."
-msgstr ""
+msgstr "إجمالي حصة CPU للضيوف بالأنوية المنطقية."
 
 #: lib/marshall/documentation_messages.ex:3971
 #, elixir-autogen, elixir-format
 msgid "Aggregate guest and VMM memory budget in MiB."
-msgstr ""
+msgstr "إجمالي ميزانية ذاكرة الضيوف وVMM بوحدة MiB."
 
 #: lib/marshall/documentation_messages.ex:3972
 #, elixir-autogen, elixir-format
@@ -7292,7 +7292,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4056
 #, elixir-autogen, elixir-format
 msgid "An identical prompt request key retains the original turn. A user who chooses to\nretry must submit a new invocation/request identity with current write access.\nAn old approved CLI session cannot bypass withdrawn sharing. Inspect effects in\nthe guest before choosing to retry an uncertain operation."
-msgstr ""
+msgstr "يحتفظ مفتاح طلب المطالبة المطابق بالدور الأصلي. يجب على المستخدم الذي يختار إعادة المحاولة إرسال هوية استدعاء/طلب جديدة مع صلاحية كتابة حالية. لا تستطيع جلسة CLI قديمة معتمدة تجاوز إلغاء المشاركة. افحص الآثار داخل الضيف قبل اختيار إعادة محاولة عملية غير مؤكدة."
 
 #: lib/marshall/documentation_messages.ex:4060
 #, elixir-autogen, elixir-format
@@ -7337,7 +7337,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4092
 #, elixir-autogen, elixir-format
 msgid "Application release source now includes `protocol/priv` alongside Protocol's\nlibrary and Mix files so its compile-time exact native registry input enters\nthe release closure. A fresh application release build remains pending; source\ninclusion alone grants no native capability or runtime readiness."
-msgstr ""
+msgstr "يتضمن مصدر إصدار التطبيق الآن `protocol/priv` إلى جانب مكتبة Protocol وملفات Mix، كي يدخل مُدخل السجل الأصلي الدقيق وقت الترجمة ضمن مجموعة تبعيات الإصدار. لا يزال بناء إصدار تطبيق جديد معلقاً؛ فإدراج المصدر وحده لا يمنح أي قدرة أصلية أو جاهزية وقت التشغيل."
 
 #: lib/marshall/documentation_messages.ex:4096
 #, elixir-autogen, elixir-format
@@ -7392,12 +7392,12 @@ msgstr "تعني الأسهم موضع الخدمة المهيأ. التكوين
 #: lib/marshall/documentation_messages.ex:4140
 #, elixir-autogen, elixir-format
 msgid "At least two independent authoritative nameservers."
-msgstr ""
+msgstr "خادما أسماء موثوقان مستقلان على الأقل."
 
 #: lib/marshall/documentation_messages.ex:4141
 #, elixir-autogen, elixir-format
 msgid "At the Porsche prompt, enter:"
-msgstr ""
+msgstr "عند موجّه Porsche، أدخل:"
 
 #: lib/marshall/documentation_messages.ex:4142
 #, elixir-autogen, elixir-format
@@ -7467,12 +7467,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4199
 #, elixir-autogen, elixir-format
 msgid "Backend HTTPS port."
-msgstr ""
+msgstr "منفذ HTTPS للواجهة الخلفية."
 
 #: lib/marshall/documentation_messages.ex:4200
 #, elixir-autogen, elixir-format
 msgid "Backend IPv4 address or hostname."
-msgstr ""
+msgstr "عنوان IPv4 أو اسم المضيف للواجهة الخلفية."
 
 #: lib/marshall/documentation_messages.ex:4201
 #, elixir-autogen, elixir-format
@@ -7487,7 +7487,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4209
 #, elixir-autogen, elixir-format
 msgid "Because the console is quiet, routine `Starting`/`Started` lines no longer\nappear in `boot.log`. Unit failures still print, and the boot report timeline\ncovers ordering. Existing writable disks keep their old image layout; the first\nboot after an image change takes the full trust path."
-msgstr ""
+msgstr "لأن وحدة التحكم صامتة، لم تعد أسطر `Starting`/`Started` المعتادة تظهر في `boot.log`. لا تزال إخفاقات الوحدات تُطبع، ويغطي الخط الزمني لتقرير الإقلاع ترتيب الأحداث. تحتفظ الأقراص القابلة للكتابة الموجودة بتخطيط صورتها القديم؛ ويسلك الإقلاع الأول بعد تغيير الصورة مسار الثقة الكامل."
 
 #: lib/marshall/documentation_messages.ex:4213
 #, elixir-autogen, elixir-format
@@ -7577,7 +7577,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4281
 #, elixir-autogen, elixir-format
 msgid "Boundary: A direct local QEMU TCG runner boots a NixOS router with real Linux ZFS, Lilly-generated nftables rules and production Brady. Two complete cached bodies replay with the origin stopped, then an acknowledged QMP reset reimports the same mirror and reapplies Brady's 64 MiB quota/refquota."
-msgstr ""
+msgstr "الحدود: يُقلع مشغل QEMU TCG محلي مباشر موجّه NixOS يستخدم Linux ZFS فعلياً وقواعد nftables مولّدة بواسطة Lilly وBrady الإنتاجي. يُعاد تشغيل جسمَي استجابة كاملين مخزنين مؤقتاً مع توقف المصدر، ثم تعيد إعادة ضبط QMP مؤكدة استيراد المرآة نفسها وتطبيق حصة Brady وحصته المرجعية البالغتين 64 MiB."
 
 #: lib/marshall/documentation_messages.ex:4285
 #, elixir-autogen, elixir-format
@@ -7617,7 +7617,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4313
 #, elixir-autogen, elixir-format
 msgid "Boundary: A selected QEMU TCG NixOS Lilly host prepares a fixed ZFS member and samples pool/dataset GUIDs, capacity, and kernel cgroup CPU/memory. The private 9p witness identifies an image but does not grant Control authority. Enrollment and current authenticated reports must precede admission."
-msgstr ""
+msgstr "الحدود: يُعدّ مضيف Lilly محدد يعمل بنظام NixOS داخل QEMU TCG عضواً ثابتاً في ZFS، ويأخذ عينات من معرّفات GUID للمجمّع ومجموعة البيانات والسعة وموارد CPU/الذاكرة في cgroup للنواة. يحدد شاهد 9p الخاص صورةً، لكنه لا يمنح صلاحية Control. يجب أن يسبق التسجيل والتقارير الموثقة الحالية قبولَ التشغيل."
 
 #: lib/marshall/documentation_messages.ex:4317
 #, elixir-autogen, elixir-format
@@ -7677,7 +7677,7 @@ msgstr "الحد: يجب أن يصبح أصل الترقية الموثق هوي
 #: lib/marshall/documentation_messages.ex:4369
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authored workload commands use OverallsProtocol.Control.Client against a loopback WebSocket peer and inventory exact wire request IDs, caller receipts, busy-without-frame refusal and late retired replies. The peer is a transport fixture outside the Marshall and Lilly service graph."
-msgstr ""
+msgstr "الحدود: تستخدم أوامر حمل العمل المكتوبة OverallsProtocol.Control.Client مع نظير WebSocket على واجهة الاسترجاع، وتحصر معرّفات طلبات البروتوكول الدقيقة وإيصالات المستدعي ورفض الانشغال دون إطار والردود المتأخرة المتقاعدة. النظير تجهيز نقل اختباري خارج مخطط خدمات Marshall وLilly."
 
 #: lib/marshall/documentation_messages.ex:4373
 #, elixir-autogen, elixir-format
@@ -7777,7 +7777,7 @@ msgstr "الحد: دور الفريق الحالي وسير نقل دائم وم
 #: lib/marshall/documentation_messages.ex:4453
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current thread managers configure managed installations; operators invoke enabled versions. Ash resources own immutable request identity and pinned revision metadata, while fenced guest operations fetch and materialize immutable revision directories outside repository discovery roots."
-msgstr ""
+msgstr "الحدود: يضبط مديرو سلسلة المحادثة الحاليون التثبيتات المُدارة؛ ويستدعي المشغلون الإصدارات المفعّلة. تمتلك موارد Ash هوية الطلب غير القابلة للتغيير وبيانات المراجعة المثبتة، بينما تجلب عمليات الضيف المقيّدة أدلة مراجعات ثابتة وتُنشئها خارج جذور اكتشاف المستودعات."
 
 #: lib/marshall/documentation_messages.ex:4457
 #, elixir-autogen, elixir-format
@@ -7842,7 +7842,7 @@ msgstr "الحد: تنقيح Git دقيق وأسرار مرحلية وترحيل
 #: lib/marshall/documentation_messages.ex:4505
 #, elixir-autogen, elixir-format
 msgid "Boundary: Existing boot-bound roster reconciliation owns managed identity, home and executable Bash; global image startup enables interactive Starship with the stock NixOS TERM=dumb skip. Ubuntu initializes interactive Bash even with TERM=dumb. Browser and SSH retain existing admission authority."
-msgstr ""
+msgstr "الحدود: تتولى مطابقة قائمة المستخدمين الحالية المرتبطة بالإقلاع الهوية المُدارة والدليل المنزلي وBash القابل للتنفيذ؛ ويُفعّل بدء تشغيل الصورة العام Starship التفاعلي مع تجاوز NixOS القياسي عند TERM=dumb. يهيئ Ubuntu جلسات Bash التفاعلية حتى مع TERM=dumb. يحتفظ المتصفح وSSH بصلاحية القبول الحالية."
 
 #: lib/marshall/documentation_messages.ex:4509
 #, elixir-autogen, elixir-format
@@ -7892,7 +7892,7 @@ msgstr "الحد: يملك terminald الضيف التمرير الخام وتح
 #: lib/marshall/documentation_messages.ex:4545
 #, elixir-autogen, elixir-format
 msgid "Boundary: Historical boundary at the captured pre-cutover revision; this reader or ingestion path is retired. A dedicated host monitor bearer and HTTPS bind bounded samples to one physical machine; cache acceptance is not a durable acknowledgment, and monitoring cannot authorize compute admission."
-msgstr ""
+msgstr "الحدود: حدود تاريخية عند المراجعة الملتقطة السابقة للتحويل؛ فقد أُحيل هذا القارئ أو مسار الاستيعاب إلى التقاعد. يربط رمز حامل مخصص لمراقبة المضيف وHTTPS عينات محدودة بجهاز فعلي واحد؛ ولا يُعد قبول الذاكرة المؤقتة إقراراً دائماً، ولا تستطيع المراقبة تفويض قبول الحوسبة."
 
 #: lib/marshall/documentation_messages.ex:4549
 #, elixir-autogen, elixir-format
@@ -7982,7 +7982,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4621
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall counts endpoint responses only after the privacy, health and public machine-API prefilters; a mode-0640 cumulative snapshot in a dynamic-user-owned, mode-0750 directory feeds a static Rust exporter using the Marshall-only collector socket with a Nix-configured replica identity."
-msgstr ""
+msgstr "الحدود: يحصي Marshall استجابات نقاط النهاية فقط بعد مرشحات الخصوصية والصحة وواجهة API العامة للأجهزة؛ وتغذي لقطة تراكمية بصلاحيات 0640 داخل دليل بصلاحيات 0750 يملكه مستخدم ديناميكي مُصدّراً ثابتاً بلغة Rust، عبر مقبس تجميع خاص بـMarshall فقط وهوية نسخة متماثلة يضبطها Nix."
 
 #: lib/marshall/documentation_messages.ex:4625
 #, elixir-autogen, elixir-format
@@ -8232,7 +8232,7 @@ msgstr "الحد: تلتقط قناة SSH بدء الطلب قبل تفويض ا
 #: lib/marshall/documentation_messages.ex:4829
 #, elixir-autogen, elixir-format
 msgid "Boundary: The disposable native guest uses actual packaged Lilly router and TAP source-guard rules under validated synthetic identity. Every fixed TCP target is proven reachable before rules. Real guard drop counters distinguish source refusal from an unrelated connection failure."
-msgstr ""
+msgstr "الحدود: يستخدم الضيف الأصلي المؤقت موجّه Lilly المعبّأ الفعلي وقواعد حماية مصدر TAP تحت هوية اصطناعية تم التحقق منها. يُثبت إمكان الوصول إلى كل هدف TCP ثابت قبل تطبيق القواعد. تميّز عدادات الإسقاط الحقيقية للحماية رفض المصدر من فشل اتصال غير ذي صلة."
 
 #: lib/marshall/documentation_messages.ex:4833
 #, elixir-autogen, elixir-format
@@ -8412,7 +8412,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4973
 #, elixir-autogen, elixir-format
 msgid "Brady intercepts permitted guest web TCP before NAT. It verifies the HTTP authority\nor TLS name and connects to the pinned original destination with independent\nupstream TLS verification. Guest identity comes from kernel connection attribution\nand a current execution proof, not guest headers."
-msgstr ""
+msgstr "يعترض Brady اتصالات TCP المسموح بها لتصفح الويب من الضيف قبل NAT. ويتحقق من سلطة HTTP أو اسم TLS، ثم يتصل بالوجهة الأصلية المثبتة مع تحقق مستقل من TLS للجهة العليا. تأتي هوية الضيف من إسناد اتصال النواة وإثبات تنفيذ حالي، لا من ترويسات الضيف."
 
 #: lib/marshall/documentation_messages.ex:4977
 #, elixir-autogen, elixir-format
@@ -8422,7 +8422,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4981
 #, elixir-autogen, elixir-format
 msgid "Browser extension"
-msgstr ""
+msgstr "إضافة المتصفح"
 
 #: lib/marshall/documentation_messages.ex:4982
 #, elixir-autogen, elixir-format
@@ -8437,7 +8437,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4990
 #, elixir-autogen, elixir-format
 msgid "Build hosts need the repository's pinned toolchain and, for native image creation,\nworking KVM. Inspect the resulting `manifest.json`; use its canonical image\nidentity rather than inventing an ID from a filename. Fleet image declarations\nselect installed artifacts and Marshall's default image."
-msgstr ""
+msgstr "تحتاج مضيفات البناء إلى سلسلة الأدوات المثبتة في المستودع، وإلى KVM يعمل لإنشاء الصور الأصلية. افحص `manifest.json` الناتج؛ واستخدم الهوية القياسية للصورة بدلاً من اختراع معرّف من اسم ملف. تحدد تعريفات صور الأسطول العناصر المثبتة وصورة Marshall الافتراضية."
 
 #: lib/marshall/documentation_messages.ex:4994
 #, elixir-autogen, elixir-format
@@ -8457,12 +8457,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5006
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating Marshall backend certificates."
-msgstr ""
+msgstr "حزمة جهات تصديق للتحقق من شهادات واجهة Marshall الخلفية."
 
 #: lib/marshall/documentation_messages.ex:5007
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating the PostgreSQL endpoint."
-msgstr ""
+msgstr "حزمة جهات تصديق للتحقق من نقطة نهاية PostgreSQL."
 
 #: lib/marshall/documentation_messages.ex:5008
 #, elixir-autogen, elixir-format
@@ -8472,17 +8472,17 @@ msgstr "حزمة CA لتوثيق نقطة مستوى التحكم. يقرؤها 
 #: lib/marshall/documentation_messages.ex:5012
 #, elixir-autogen, elixir-format
 msgid "CA certificates authenticating the Marshall HTTPS endpoint."
-msgstr ""
+msgstr "شهادات جهات تصديق للتحقق من نقطة نهاية Marshall عبر HTTPS."
 
 #: lib/marshall/documentation_messages.ex:5013
 #, elixir-autogen, elixir-format
 msgid "CA roots authenticating the ACME directory."
-msgstr ""
+msgstr "جذور جهات تصديق للتحقق من دليل ACME."
 
 #: lib/marshall/documentation_messages.ex:5014
 #, elixir-autogen, elixir-format
 msgid "CA roots validating issued certificate chains."
-msgstr ""
+msgstr "جذور جهات تصديق للتحقق من سلاسل الشهادات الصادرة."
 
 #: lib/marshall/documentation_messages.ex:5015
 #, elixir-autogen, elixir-format
@@ -8512,7 +8512,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5039
 #, elixir-autogen, elixir-format
 msgid "Canonical mounted pool path."
-msgstr ""
+msgstr "المسار القياسي للمجمّع المركّب."
 
 #: lib/marshall/documentation_messages.ex:5040
 #, elixir-autogen, elixir-format
@@ -8537,7 +8537,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5056
 #, elixir-autogen, elixir-format
 msgid "Central metrics/traces/Grafana store or worker collector."
-msgstr ""
+msgstr "مخزن المقاييس/التتبعات/Grafana المركزي أو مجمّع العامل."
 
 #: lib/marshall/documentation_messages.ex:5057
 #, elixir-autogen, elixir-format
@@ -8557,7 +8557,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5069
 #, elixir-autogen, elixir-format
 msgid "Choose a stable, unique request ID for each intended mutation. Reuse it when\nretrying that same mutation after losing a reply. Request IDs contain 1–128 ASCII\nletters, digits, underscores, dots, colons or hyphens, and start with a letter or\ndigit. Do not reuse one ID for different operations."
-msgstr ""
+msgstr "اختر معرّف طلب ثابتاً وفريداً لكل تعديل مقصود. أعد استخدامه عند إعادة محاولة التعديل نفسه بعد فقد الرد. تتكون معرّفات الطلبات من 1–128 حرف ASCII أو رقم أو شرطة سفلية أو نقطة أو نقطتين رأسيتين أو شرطة، وتبدأ بحرف أو رقم. لا تُعد استخدام معرّف واحد لعمليات مختلفة."
 
 #: lib/marshall/documentation_messages.ex:5073
 #, elixir-autogen, elixir-format
@@ -8597,7 +8597,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5105
 #, elixir-autogen, elixir-format
 msgid "Command reference"
-msgstr ""
+msgstr "مرجع الأوامر"
 
 #: lib/marshall/documentation_messages.ex:5106
 #, elixir-autogen, elixir-format
@@ -8972,7 +8972,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5369
 #, elixir-autogen, elixir-format
 msgid "Create a named SSH account on every participating host."
-msgstr ""
+msgstr "أنشئ حساب SSH مسمى على كل مضيف مشارك."
 
 #: lib/marshall/documentation_messages.ex:5370
 #, elixir-autogen, elixir-format
@@ -8992,7 +8992,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5382
 #, elixir-autogen, elixir-format
 msgid "Credential preparation services required before startup."
-msgstr ""
+msgstr "خدمات إعداد بيانات الاعتماد المطلوبة قبل بدء التشغيل."
 
 #: lib/marshall/documentation_messages.ex:5383
 #, elixir-autogen, elixir-format
@@ -9012,7 +9012,7 @@ msgstr "اعتمادات إعداد الجيل الحالي لتوثيق Git."
 #: lib/marshall/documentation_messages.ex:5395
 #, elixir-autogen, elixir-format
 msgid "Daily inference usage retention in days."
-msgstr ""
+msgstr "مدة الاحتفاظ بالاستخدام اليومي للاستدلال بالأيام."
 
 #: lib/marshall/documentation_messages.ex:5396
 #, elixir-autogen, elixir-format
@@ -9022,7 +9022,7 @@ msgstr "التوافر العالي لقاعدة البيانات وأرشفة W
 #: lib/marshall/documentation_messages.ex:5400
 #, elixir-autogen, elixir-format
 msgid "Database pool connections per instance."
-msgstr ""
+msgstr "اتصالات مجمّع قاعدة البيانات لكل نسخة."
 
 #: lib/marshall/documentation_messages.ex:5401
 #, elixir-autogen, elixir-format
@@ -9037,17 +9037,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5409
 #, elixir-autogen, elixir-format
 msgid "Dedicated Galileo control credential runtime file."
-msgstr ""
+msgstr "ملف بيانات اعتماد تحكم Galileo المخصص وقت التشغيل."
 
 #: lib/marshall/documentation_messages.ex:5410
 #, elixir-autogen, elixir-format
 msgid "Dedicated SSH host CA public key."
-msgstr ""
+msgstr "المفتاح العام المخصص لجهة تصديق مضيف SSH."
 
 #: lib/marshall/documentation_messages.ex:5411
 #, elixir-autogen, elixir-format
 msgid "Dedicated Ziggy control credential runtime file."
-msgstr ""
+msgstr "ملف بيانات اعتماد تحكم Ziggy المخصص وقت التشغيل."
 
 #: lib/marshall/documentation_messages.ex:5412
 #, elixir-autogen, elixir-format
@@ -9087,7 +9087,7 @@ msgstr "منطقة DNS التطبيق المفوضة. تتطلب أصول محر
 #: lib/marshall/documentation_messages.ex:5437
 #, elixir-autogen, elixir-format
 msgid "Delegated application zone."
-msgstr ""
+msgstr "منطقة التطبيق المفوّضة."
 
 #: lib/marshall/documentation_messages.ex:5438
 #, elixir-autogen, elixir-format
@@ -9097,7 +9097,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5442
 #, elixir-autogen, elixir-format
 msgid "Deletion retains the VM's identity and idempotency history while physical cleanup\nruns. Busy mounts, foreign GUIDs, or uncertain execution retain holds. The native\ncleanup path handles owned mount copies across Linux namespaces; it does not force\nan unverified dataset into a free state."
-msgstr ""
+msgstr "يحتفظ الحذف بهوية الآلة الافتراضية وسجل منع التكرار أثناء تنفيذ التنظيف الفعلي. تُبقي نقاط التركيب المشغولة أو معرّفات GUID الأجنبية أو التنفيذ غير المؤكد الحجوزات قائمة. يعالج مسار التنظيف الأصلي نسخ نقاط التركيب المملوكة عبر نطاقات أسماء Linux؛ ولا يفرض حالة الإتاحة على مجموعة بيانات لم يُتحقق منها."
 
 #: lib/marshall/documentation_messages.ex:5446
 #, elixir-autogen, elixir-format
@@ -9122,7 +9122,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5466
 #, elixir-autogen, elixir-format
 msgid "Development builds (`config :marshall, MarshallWeb.SecurityHeaders,\ndevelopment_tooling: true`) add inline and `localhost` sources for live reload,\nLiveDashboard, Oban Web, AshAdmin and `live_debugger`; test builds compile the\nproduction policy, so the browser probe measures what production sends."
-msgstr ""
+msgstr "تضيف بنى التطوير (`config :marshall, MarshallWeb.SecurityHeaders,\ndevelopment_tooling: true`) مصادر مضمنة ومصادر `localhost` لإعادة التحميل الحي وLiveDashboard وOban Web وAshAdmin و`live_debugger`؛ أما بنى الاختبار فتترجم سياسة الإنتاج، لذلك يقيس مسبار المتصفح ما يرسله الإنتاج."
 
 #: lib/marshall/documentation_messages.ex:5470
 #, elixir-autogen, elixir-format
@@ -9152,7 +9152,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5490
 #, elixir-autogen, elixir-format
 msgid "Domain validation method; DNS-01 uses Route 53."
-msgstr ""
+msgstr "طريقة التحقق من النطاق؛ تستخدم DNS-01 خدمة Route 53."
 
 #: lib/marshall/documentation_messages.ex:5491
 #, elixir-autogen, elixir-format
@@ -9167,12 +9167,12 @@ msgstr "دليل ممثل VM دائم؛45 بايت كحد أقصى لمقابس 
 #: lib/marshall/documentation_messages.ex:5499
 #, elixir-autogen, elixir-format
 msgid "Durable control receipt and host ownership directory."
-msgstr ""
+msgstr "دليل إيصالات التحكم وملكية المضيف الدائم."
 
 #: lib/marshall/documentation_messages.ex:5500
 #, elixir-autogen, elixir-format
 msgid "Durable host networking ownership directory."
-msgstr ""
+msgstr "دليل ملكية شبكة المضيف الدائم."
 
 #: lib/marshall/documentation_messages.ex:5501
 #, elixir-autogen, elixir-format
@@ -9277,27 +9277,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5589
 #, elixir-autogen, elixir-format
 msgid "Enrolled identity of the local Lilly host."
-msgstr ""
+msgstr "الهوية المسجلة لمضيف Lilly المحلي."
 
 #: lib/marshall/documentation_messages.ex:5590
 #, elixir-autogen, elixir-format
 msgid "Enrolled local Lilly host identity."
-msgstr ""
+msgstr "هوية مضيف Lilly المحلي المسجلة."
 
 #: lib/marshall/documentation_messages.ex:5591
 #, elixir-autogen, elixir-format
 msgid "Enrolled pool UUID."
-msgstr ""
+msgstr "معرّف UUID للمجمّع المسجل."
 
 #: lib/marshall/documentation_messages.ex:5592
 #, elixir-autogen, elixir-format
 msgid "Enrolled, persistent Marshall host resource UUID."
-msgstr ""
+msgstr "معرّف UUID المسجل والدائم لمورد مضيف Marshall."
 
 #: lib/marshall/documentation_messages.ex:5593
 #, elixir-autogen, elixir-format
 msgid "Enter UTF-8 text interactively or on stdin. Open the printed approval URL, verify\nthe machine and request code, and approve. Approval lasts one hour, is scoped to\none machine, and is requested for each invocation. The CLI keeps its secret in\nmemory and transmits it only over HTTPS."
-msgstr ""
+msgstr "أدخل نص UTF-8 تفاعلياً أو عبر stdin. افتح رابط الموافقة المطبوع، وتحقق من الجهاز ورمز الطلب، ثم وافق. تسري الموافقة ساعة واحدة، وتقتصر على جهاز واحد، وتُطلب لكل استدعاء. تحتفظ CLI بسرها في الذاكرة ولا ترسله إلا عبر HTTPS."
 
 #: lib/marshall/documentation_messages.ex:5597
 #, elixir-autogen, elixir-format
@@ -9442,7 +9442,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5713
 #, elixir-autogen, elixir-format
 msgid "Exact cgroup v2 systemd service allowed to admit requests."
-msgstr ""
+msgstr "خدمة systemd الدقيقة في cgroup v2 المسموح لها بقبول الطلبات."
 
 #: lib/marshall/documentation_messages.ex:5718
 #, elixir-autogen, elixir-format
@@ -9462,12 +9462,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5727
 #, elixir-autogen, elixir-format
 msgid "Existing SNS topic ARNs; empty means no notifications."
-msgstr ""
+msgstr "معرّفات ARN لمواضيع SNS الموجودة؛ تعني القيمة الفارغة عدم إرسال إشعارات."
 
 #: lib/marshall/documentation_messages.ex:5728
 #, elixir-autogen, elixir-format
 msgid "Existing administrative directories; never guest disk trees."
-msgstr ""
+msgstr "أدلة إدارية موجودة؛ وليست أشجار أقراص الضيوف أبداً."
 
 #: lib/marshall/documentation_messages.ex:5732
 #, elixir-autogen, elixir-format
@@ -9492,7 +9492,7 @@ msgstr "حساب نظير Unix المتوقع، بما فيه مستخدمو ا�
 #: lib/marshall/documentation_messages.ex:5748
 #, elixir-autogen, elixir-format
 msgid "Expected machine IDs for missing-heartbeat alarms."
-msgstr ""
+msgstr "معرّفات الأجهزة المتوقعة لتنبيهات فقدان نبضات الحالة."
 
 #: lib/marshall/documentation_messages.ex:5749
 #, elixir-autogen, elixir-format
@@ -9517,12 +9517,12 @@ msgstr "عنوان مستمع أسطول IPv4 صريح. يتطلب الوصول 
 #: lib/marshall/documentation_messages.ex:5765
 #, elixir-autogen, elixir-format
 msgid "Explicit consent to register an ACME account."
-msgstr ""
+msgstr "موافقة صريحة على تسجيل حساب ACME."
 
 #: lib/marshall/documentation_messages.ex:5770
 #, elixir-autogen, elixir-format
 msgid "Explicit local IPv4 destination address; never a wildcard."
-msgstr ""
+msgstr "عنوان وجهة IPv4 محلي صريح؛ وليس عنواناً شاملاً أبداً."
 
 #: lib/marshall/documentation_messages.ex:5771
 #, elixir-autogen, elixir-format
@@ -9532,7 +9532,7 @@ msgstr "وحدات خدمة منصة صريحة؛ تُكتشف وحدات VM ب�
 #: lib/marshall/documentation_messages.ex:5775
 #, elixir-autogen, elixir-format
 msgid "Explicit sources; audit is never implicitly selected."
-msgstr ""
+msgstr "مصادر صريحة؛ لا يُختار التدقيق ضمنياً أبداً."
 
 #: lib/marshall/documentation_messages.ex:5776
 #, elixir-autogen, elixir-format
@@ -9562,7 +9562,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5796
 #, elixir-autogen, elixir-format
 msgid "Files in this bundle; all selected secrets are required."
-msgstr ""
+msgstr "الملفات في هذه الحزمة؛ جميع الأسرار المحددة مطلوبة."
 
 #: lib/marshall/documentation_messages.ex:5797
 #, elixir-autogen, elixir-format
@@ -9757,7 +9757,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5949
 #, elixir-autogen, elixir-format
 msgid "Generate a plan for the exact published revision:"
-msgstr ""
+msgstr "ولّد خطة للمراجعة المنشورة المحددة:"
 
 #: lib/marshall/documentation_messages.ex:5950
 #, elixir-autogen, elixir-format
@@ -9867,12 +9867,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6039
 #, elixir-autogen, elixir-format
 msgid "Grant this login user passwordless sudo."
-msgstr ""
+msgstr "امنح مستخدم تسجيل الدخول هذا صلاحية sudo دون كلمة مرور."
 
 #: lib/marshall/documentation_messages.ex:6040
 #, elixir-autogen, elixir-format
 msgid "Group under which Audiobookshelf runs."
-msgstr ""
+msgstr "المجموعة التي يعمل Audiobookshelf تحتها."
 
 #: lib/marshall/documentation_messages.ex:6041
 #, elixir-autogen, elixir-format
@@ -9922,7 +9922,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6077
 #, elixir-autogen, elixir-format
 msgid "Historical backups can resurrect revoked credentials and obsolete commands.\nAutomatic historical fleet reconciliation is not available. This manual therefore\ndoes not prescribe a generic final activation command. Preserve uncertain capacity\nuntil physical obligations are settled."
-msgstr ""
+msgstr "قد تعيد النسخ الاحتياطية التاريخية إحياء بيانات اعتماد ملغاة وأوامر متقادمة. لا تتوفر مطابقة تلقائية للأسطول التاريخي. لذلك لا يوصي هذا الدليل بأمر تفعيل نهائي عام. أبقِ السعة غير المؤكدة محجوزة حتى تسوية الالتزامات الفعلية."
 
 #: lib/marshall/documentation_messages.ex:6081
 #, elixir-autogen, elixir-format
@@ -9932,7 +9932,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6085
 #, elixir-autogen, elixir-format
 msgid "Host attribute under nixosConfigurations."
-msgstr ""
+msgstr "خاصية المضيف ضمن nixosConfigurations."
 
 #: lib/marshall/documentation_messages.ex:6086
 #, elixir-autogen, elixir-format
@@ -9967,7 +9967,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6110
 #, elixir-autogen, elixir-format
 msgid "Host uplink carrying routed guest egress."
-msgstr ""
+msgstr "وصلة المضيف الصاعدة التي تحمل حركة خروج الضيوف الموجّهة."
 
 #: lib/marshall/documentation_messages.ex:6111
 #, elixir-autogen, elixir-format
@@ -9977,12 +9977,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6115
 #, elixir-autogen, elixir-format
 msgid "Host-tool receipt required before polling."
-msgstr ""
+msgstr "إيصال أداة المضيف المطلوب قبل الاستقصاء."
 
 #: lib/marshall/documentation_messages.ex:6116
 #, elixir-autogen, elixir-format
 msgid "Host-wide native log file budget."
-msgstr ""
+msgstr "ميزانية ملفات السجل الأصلية على مستوى المضيف."
 
 #: lib/marshall/documentation_messages.ex:6117
 #, elixir-autogen, elixir-format
@@ -10042,7 +10042,7 @@ msgstr "احتفاظ ثابت لكل دفعة، بما فيه التتبعات �
 #: lib/marshall/documentation_messages.ex:6169
 #, elixir-autogen, elixir-format
 msgid "Immutable platform, disk and persistent identity bindings."
-msgstr ""
+msgstr "روابط المنصة والقرص والهوية الدائمة غير القابلة للتغيير."
 
 #: lib/marshall/documentation_messages.ex:6170
 #, elixir-autogen, elixir-format
@@ -10062,7 +10062,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6182
 #, elixir-autogen, elixir-format
 msgid "Include these keys in every managed encrypted document."
-msgstr ""
+msgstr "أدرج هذه المفاتيح في كل مستند مشفّر مُدار."
 
 #: lib/marshall/documentation_messages.ex:6183
 #, elixir-autogen, elixir-format
@@ -10072,7 +10072,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6191
 #, elixir-autogen, elixir-format
 msgid "Independent bounded native Firecracker diagnostics."
-msgstr ""
+msgstr "تشخيصات Firecracker أصلية مستقلة ومحدودة."
 
 #: lib/marshall/documentation_messages.ex:6192
 #, elixir-autogen, elixir-format
@@ -10082,7 +10082,7 @@ msgstr "مسجلات طلبات دائمة مستقلة؛ يتطلب التمك�
 #: lib/marshall/documentation_messages.ex:6196
 #, elixir-autogen, elixir-format
 msgid "Independent logging health metrics; never carries records."
-msgstr ""
+msgstr "مقاييس مستقلة لصحة التسجيل؛ ولا تحمل سجلات أبداً."
 
 #: lib/marshall/documentation_messages.ex:6197
 #, elixir-autogen, elixir-format
@@ -10092,17 +10092,17 @@ msgstr "حيازة تتبع دائمة مستقلة لكل منتج؛ تترك �
 #: lib/marshall/documentation_messages.ex:6201
 #, elixir-autogen, elixir-format
 msgid "Independent source-built Audi release."
-msgstr ""
+msgstr "إصدار Audi مستقل مبني من المصدر."
 
 #: lib/marshall/documentation_messages.ex:6202
 #, elixir-autogen, elixir-format
 msgid "Independent source-built Porsche release."
-msgstr ""
+msgstr "إصدار Porsche مستقل مبني من المصدر."
 
 #: lib/marshall/documentation_messages.ex:6203
 #, elixir-autogen, elixir-format
 msgid "Inference request metadata retention in days."
-msgstr ""
+msgstr "مدة الاحتفاظ ببيانات طلبات الاستدلال الوصفية بالأيام."
 
 #: lib/marshall/documentation_messages.ex:6204
 #, elixir-autogen, elixir-format
@@ -10312,12 +10312,12 @@ msgstr "يعرض List مرشحي بيان المضيف؛ يتحقق inspect من
 #: lib/marshall/documentation_messages.ex:6380
 #, elixir-autogen, elixir-format
 msgid "Literal IPv4 backend bind address."
-msgstr ""
+msgstr "عنوان ربط IPv4 حرفي للواجهة الخلفية."
 
 #: lib/marshall/documentation_messages.ex:6381
 #, elixir-autogen, elixir-format
 msgid "Literal public listener address."
-msgstr ""
+msgstr "عنوان مستمع عام حرفي."
 
 #: lib/marshall/documentation_messages.ex:6382
 #, elixir-autogen, elixir-format
@@ -10332,7 +10332,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6390
 #, elixir-autogen, elixir-format
 msgid "Local IPv4 address for the dedicated SSH listener."
-msgstr ""
+msgstr "عنوان IPv4 المحلي لمستمع SSH المخصص."
 
 #: lib/marshall/documentation_messages.ex:6391
 #, elixir-autogen, elixir-format
@@ -10342,7 +10342,7 @@ msgstr "عنوان IP المستجيب المحلي Lego؛ استخدم عنوا
 #: lib/marshall/documentation_messages.ex:6395
 #, elixir-autogen, elixir-format
 msgid "Local Marshall instance consuming the certificate queue."
-msgstr ""
+msgstr "نسخة Marshall المحلية التي تستهلك طابور الشهادات."
 
 #: lib/marshall/documentation_messages.ex:6396
 #, elixir-autogen, elixir-format
@@ -10357,7 +10357,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6404
 #, elixir-autogen, elixir-format
 msgid "Local instances keyed by distinct fleet-wide identities."
-msgstr ""
+msgstr "نسخ محلية مفهرسة بهويات متميزة على مستوى الأسطول."
 
 #: lib/marshall/documentation_messages.ex:6405
 #, elixir-autogen, elixir-format
@@ -10387,7 +10387,7 @@ msgstr "عنوان حلقة رجوع أو أسطول موثق لجمع الصح�
 #: lib/marshall/documentation_messages.ex:6425
 #, elixir-autogen, elixir-format
 msgid "Loopback port of the egress node's outbound HTTP proxy."
-msgstr ""
+msgstr "منفذ واجهة الاسترجاع لوكيل HTTP الصادر الخاص بعقدة الخروج."
 
 #: lib/marshall/documentation_messages.ex:6426
 #, elixir-autogen, elixir-format
@@ -10397,7 +10397,7 @@ msgstr "مصدر صحة تطبيق عددي Fluent Bit على حلقة الرج�
 #: lib/marshall/documentation_messages.ex:6430
 #, elixir-autogen, elixir-format
 msgid "Loopback-only VictoriaLogs HTTP port."
-msgstr ""
+msgstr "منفذ VictoriaLogs عبر HTTP على واجهة الاسترجاع فقط."
 
 #: lib/marshall/documentation_messages.ex:6431
 #, elixir-autogen, elixir-format
@@ -10422,7 +10422,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6447
 #, elixir-autogen, elixir-format
 msgid "Magic links use an encrypted outbox and retryable mail jobs. Configure verified\nremote SMTP or explicitly selected loopback relay mode. Check sender identity,\nprovider TLS and delivery; an accepted SMTP transaction is not inbox evidence.\nNever print the token-bearing message to diagnose delivery."
-msgstr ""
+msgstr "تستخدم روابط الدخول السحرية صندوق صادر مشفراً ومهام بريد قابلة لإعادة المحاولة. اضبط SMTP بعيداً موثوقاً أو اختر صراحة وضع المرحّل على واجهة الاسترجاع. تحقق من هوية المرسل وTLS للمزوّد والتسليم؛ فقبول معاملة SMTP لا يثبت وصول الرسالة إلى صندوق الوارد. لا تطبع الرسالة الحاملة للرمز لتشخيص التسليم مطلقاً."
 
 #: lib/marshall/documentation_messages.ex:6451
 #, elixir-autogen, elixir-format
@@ -10462,7 +10462,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6479
 #, elixir-autogen, elixir-format
 msgid "Marshall TLS endpoints, keyed by backend identity."
-msgstr ""
+msgstr "نقاط نهاية TLS لـMarshall، مفهرسة بهوية الواجهة الخلفية."
 
 #: lib/marshall/documentation_messages.ex:6480
 #, elixir-autogen, elixir-format
@@ -10527,7 +10527,7 @@ msgstr "أقصى بايتات تدفق استنساخ على المضيف نفس
 #: lib/marshall/documentation_messages.ex:6540
 #, elixir-autogen, elixir-format
 msgid "Maximum space in GiB a single collection run may delete."
-msgstr ""
+msgstr "أقصى مساحة بوحدة GiB يمكن أن تحذفها دورة جمع واحدة."
 
 #: lib/marshall/documentation_messages.ex:6541
 #, elixir-autogen, elixir-format
@@ -10637,7 +10637,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6633
 #, elixir-autogen, elixir-format
 msgid "Native preset's compiled-in output plugin."
-msgstr ""
+msgstr "إضافة الإخراج المضمنة في ترجمة الإعداد الأصلي المسبق."
 
 #: lib/marshall/documentation_messages.ex:6634
 #, elixir-autogen, elixir-format
@@ -10712,7 +10712,7 @@ msgstr "لا يُضمّن رمز كتابة Cachix. يغطي فحص التقيي
 #: lib/marshall/documentation_messages.ex:6710
 #, elixir-autogen, elixir-format
 msgid "No additional description is declared by the module."
-msgstr ""
+msgstr "لا تعلن الوحدة أي وصف إضافي."
 
 #: lib/marshall/documentation_messages.ex:6711
 #, elixir-autogen, elixir-format
@@ -10737,7 +10737,7 @@ msgstr "مجموعة غير فارغة من المزودين الممكنين ل
 #: lib/marshall/documentation_messages.ex:6727
 #, elixir-autogen, elixir-format
 msgid "OTLP hostname, without scheme, path or credentials."
-msgstr ""
+msgstr "اسم مضيف OTLP، دون مخطط أو مسار أو بيانات اعتماد."
 
 #: lib/marshall/documentation_messages.ex:6728
 #, elixir-autogen, elixir-format
@@ -10852,7 +10852,7 @@ msgstr "افتح مستودع GitHub أو GitLab أو Codeberg أو Bitbucket Cl
 #: lib/marshall/documentation_messages.ex:6820
 #, elixir-autogen, elixir-format
 msgid "Open backend TLS ports; unnecessary for a colocated proxy."
-msgstr ""
+msgstr "افتح منافذ TLS للواجهة الخلفية؛ لا يلزم ذلك لوكيل على المضيف نفسه."
 
 #: lib/marshall/documentation_messages.ex:6821
 #, elixir-autogen, elixir-format
@@ -10862,7 +10862,7 @@ msgstr "افتح منافذ الجدار الناري لواجهة ويب Audiob
 #: lib/marshall/documentation_messages.ex:6825
 #, elixir-autogen, elixir-format
 msgid "Open the public HTTPS port."
-msgstr ""
+msgstr "افتح منفذ HTTPS العام."
 
 #: lib/marshall/documentation_messages.ex:6826
 #, elixir-autogen, elixir-format
@@ -10887,7 +10887,7 @@ msgstr "مفتاح RSA عام للمشغل (3072 بت على الأقل). أبق
 #: lib/marshall/documentation_messages.ex:6842
 #, elixir-autogen, elixir-format
 msgid "Operator selected ACME directory."
-msgstr ""
+msgstr "دليل ACME الذي يختاره المشغل."
 
 #: lib/marshall/documentation_messages.ex:6843
 #, elixir-autogen, elixir-format
@@ -10997,7 +10997,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6927
 #, elixir-autogen, elixir-format
 msgid "Overalls documentation"
-msgstr ""
+msgstr "توثيق Overalls"
 
 #: lib/marshall/documentation_messages.ex:6928
 #, elixir-autogen, elixir-format
@@ -11027,7 +11027,7 @@ msgstr "يمكن للملاك والمديرين تغيير CPU وذاكرة ا�
 #: lib/marshall/documentation_messages.ex:6948
 #, elixir-autogen, elixir-format
 msgid "Owners and managers can queue an independent copy:"
-msgstr ""
+msgstr "يمكن للمالكين والمديرين وضع نسخة مستقلة في الطابور:"
 
 #: lib/marshall/documentation_messages.ex:6949
 #, elixir-autogen, elixir-format
@@ -11047,7 +11047,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6961
 #, elixir-autogen, elixir-format
 msgid "Peer's Lego responder port."
-msgstr ""
+msgstr "منفذ مستجيب Lego للنظير."
 
 #: lib/marshall/documentation_messages.ex:6962
 #, elixir-autogen, elixir-format
@@ -11087,7 +11087,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6990
 #, elixir-autogen, elixir-format
 msgid "Physical IPv4 destination admitted for WireGuard handshakes."
-msgstr ""
+msgstr "وجهة IPv4 الفعلية المقبولة لمصافحات WireGuard."
 
 #: lib/marshall/documentation_messages.ex:6994
 #, elixir-autogen, elixir-format
@@ -11097,17 +11097,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6998
 #, elixir-autogen, elixir-format
 msgid "Pinned Rust request recorder package."
-msgstr ""
+msgstr "حزمة مسجّل طلبات Rust المثبتة."
 
 #: lib/marshall/documentation_messages.ex:6999
 #, elixir-autogen, elixir-format
 msgid "Pinned Underclass package."
-msgstr ""
+msgstr "حزمة Underclass المثبتة."
 
 #: lib/marshall/documentation_messages.ex:7000
 #, elixir-autogen, elixir-format
 msgid "Pinned public Ed25519 keys for SSH and optional recovery."
-msgstr ""
+msgstr "مفاتيح Ed25519 العامة المثبتة لـSSH والاستعادة الاختيارية."
 
 #: lib/marshall/documentation_messages.ex:7001
 #, elixir-autogen, elixir-format
@@ -11127,7 +11127,7 @@ msgstr "أسماء إعدادات الإضافة مربوطة بملفات أس�
 #: lib/marshall/documentation_messages.ex:7013
 #, elixir-autogen, elixir-format
 msgid "Poll Marshall for host-bound agent model calls."
-msgstr ""
+msgstr "استقصِ Marshall بحثاً عن استدعاءات نماذج الوكيل المرتبطة بالمضيف."
 
 #: lib/marshall/documentation_messages.ex:7014
 #, elixir-autogen, elixir-format
@@ -11167,7 +11167,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7042
 #, elixir-autogen, elixir-format
 msgid "Preparation dependency to add to a consumer's secretUnits."
-msgstr ""
+msgstr "تبعية إعداد تُضاف إلى secretUnits الخاصة بالمستهلك."
 
 #: lib/marshall/documentation_messages.ex:7043
 #, elixir-autogen, elixir-format
@@ -11177,7 +11177,7 @@ msgstr "متطلبات مسبقة تنشر ثقة جهة الإصدار أو ا�
 #: lib/marshall/documentation_messages.ex:7047
 #, elixir-autogen, elixir-format
 msgid "Primary Unix group."
-msgstr ""
+msgstr "مجموعة Unix الأساسية."
 
 #: lib/marshall/documentation_messages.ex:7048
 #, elixir-autogen, elixir-format
@@ -11202,12 +11202,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7064
 #, elixir-autogen, elixir-format
 msgid "Private host-bound enrollment credential file."
-msgstr ""
+msgstr "ملف بيانات اعتماد التسجيل الخاص المرتبط بالمضيف."
 
 #: lib/marshall/documentation_messages.ex:7065
 #, elixir-autogen, elixir-format
 msgid "Private runtime Anthropic API key file."
-msgstr ""
+msgstr "ملف مفتاح Anthropic API الخاص وقت التشغيل."
 
 #: lib/marshall/documentation_messages.ex:7066
 #, elixir-autogen, elixir-format
@@ -11222,7 +11222,7 @@ msgstr "تجهيز JSON تشغيلي خاص يحدد ضيف المشغل الح�
 #: lib/marshall/documentation_messages.ex:7074
 #, elixir-autogen, elixir-format
 msgid "Private runtime OpenAI-compatible proxy key file."
-msgstr ""
+msgstr "ملف مفتاح الوكيل المتوافق مع OpenAI الخاص وقت التشغيل."
 
 #: lib/marshall/documentation_messages.ex:7075
 #, elixir-autogen, elixir-format
@@ -11257,7 +11257,7 @@ msgstr "تكوين تصدير v3 خاص يحوي المضيف المحلي وج�
 #: lib/marshall/documentation_messages.ex:7099
 #, elixir-autogen, elixir-format
 msgid "Production database connections apply the fixed\n[lost-client recovery settings](#recovery) at startup. The shorter TCP\nacknowledgement limit affects stalled network connections; it does not cap\nhealthy SQL duration. Existing connections acquire changed settings only after\nreconnection."
-msgstr ""
+msgstr "تطبق اتصالات قاعدة بيانات الإنتاج [إعدادات استعادة العميل المفقود](#recovery) الثابتة عند بدء التشغيل. يؤثر الحد الأقصر لإقرار TCP في اتصالات الشبكة المتوقفة؛ ولا يحد مدة SQL السليمة. لا تكتسب الاتصالات الموجودة الإعدادات المعدّلة إلا بعد إعادة الاتصال."
 
 #: lib/marshall/documentation_messages.ex:7103
 #, elixir-autogen, elixir-format
@@ -11287,7 +11287,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7123
 #, elixir-autogen, elixir-format
 msgid "Provenance of the IOPS limit."
-msgstr ""
+msgstr "مصدر حد IOPS."
 
 #: lib/marshall/documentation_messages.ex:7124
 #, elixir-autogen, elixir-format
@@ -11327,7 +11327,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7152
 #, elixir-autogen, elixir-format
 msgid "Provisioning retries retain the launch-time readiness deadline and exact boot\nbinding. Stop/delete supersede progress only after physical cleanup; a progress\njournal never proves that a process stopped or a disk disappeared. Foreign host\nbindings and stale revisions cannot cancel progress."
-msgstr ""
+msgstr "تحتفظ محاولات التزويد المتكررة بموعد الجاهزية النهائي المحدد عند الإطلاق وبربط الإقلاع الدقيق. لا يحل الإيقاف/الحذف محل التقدم إلا بعد التنظيف الفعلي؛ فسجل التقدم لا يثبت أبداً توقف عملية أو اختفاء قرص. لا تستطيع روابط المضيف الأجنبية والمراجعات القديمة إلغاء التقدم."
 
 #: lib/marshall/documentation_messages.ex:7156
 #, elixir-autogen, elixir-format
@@ -11342,12 +11342,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7164
 #, elixir-autogen, elixir-format
 msgid "Public DNS hostname accepted by the proxy."
-msgstr ""
+msgstr "اسم مضيف DNS العام الذي يقبله الوكيل."
 
 #: lib/marshall/documentation_messages.ex:7165
 #, elixir-autogen, elixir-format
 msgid "Public DNS name used by sign-in links and origin checks."
-msgstr ""
+msgstr "اسم DNS العام المستخدم لروابط تسجيل الدخول وفحوص الأصل."
 
 #: lib/marshall/documentation_messages.ex:7166
 #, elixir-autogen, elixir-format
@@ -11367,7 +11367,7 @@ msgstr "أصل متصفح Marshall HTTPS العام لموافقة الهوية�
 #: lib/marshall/documentation_messages.ex:7178
 #, elixir-autogen, elixir-format
 msgid "Public HTTPS origin for browser key approval."
-msgstr ""
+msgstr "أصل HTTPS العام لاعتماد المفاتيح عبر المتصفح."
 
 #: lib/marshall/documentation_messages.ex:7179
 #, elixir-autogen, elixir-format
@@ -11377,7 +11377,7 @@ msgstr "منفذ HTTPS عام تتشاركه بوابات Audi؛ يستخدم ل
 #: lib/marshall/documentation_messages.ex:7183
 #, elixir-autogen, elixir-format
 msgid "Public HTTPS port."
-msgstr ""
+msgstr "منفذ HTTPS العام."
 
 #: lib/marshall/documentation_messages.ex:7184
 #, elixir-autogen, elixir-format
@@ -11457,7 +11457,7 @@ msgstr "إعادة الاتصال لاحقًا واحدة في كل مكان: `s
 #: lib/marshall/documentation_messages.ex:7244
 #, elixir-autogen, elixir-format
 msgid "Reconstruction admits at most 4,096 eligible events before requiring an existing\ncheckpoint. Exceeding that bound returns `context_history_too_large`; it never\nsilently keeps only the latest events. This is an explicit implementation bound,\nnot a retention limit on the transcript."
-msgstr ""
+msgstr "تقبل إعادة البناء 4,096 حدثاً مؤهلاً على الأكثر قبل اشتراط نقطة تحقق موجودة. يؤدي تجاوز هذا الحد إلى إرجاع `context_history_too_large`؛ ولا يُحتفظ بأحدث الأحداث فقط بصمت مطلقاً. هذا حد صريح للتنفيذ، وليس حد احتفاظ بسجل المحادثة."
 
 #: lib/marshall/documentation_messages.ex:7248
 #, elixir-autogen, elixir-format
@@ -11522,17 +11522,17 @@ msgstr "اسم مضيف شهادة وTLS SNI مطلوبان للمرور وفح�
 #: lib/marshall/documentation_messages.ex:7308
 #, elixir-autogen, elixir-format
 msgid "Required human-readable owner or purpose for this grant."
-msgstr ""
+msgstr "اسم المالك أو الغرض المقروء بشرياً المطلوب لهذه المنحة."
 
 #: lib/marshall/documentation_messages.ex:7309
 #, elixir-autogen, elixir-format
 msgid "Required human-readable owner or purpose for this listener."
-msgstr ""
+msgstr "اسم المالك أو الغرض المقروء بشرياً المطلوب لهذا المستمع."
 
 #: lib/marshall/documentation_messages.ex:7310
 #, elixir-autogen, elixir-format
 msgid "Required native ZFS pool and dataset identity."
-msgstr ""
+msgstr "هوية مجمّع ZFS ومجموعة البيانات الأصلية المطلوبة."
 
 #: lib/marshall/documentation_messages.ex:7311
 #, elixir-autogen, elixir-format
@@ -11657,7 +11657,7 @@ msgstr "الرفض المطلوب: يعيد فشل توليد المرشح أو 
 #: lib/marshall/documentation_messages.ex:7407
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Close a live response after access becomes private; expire authority during a control outage. After gateway credential rotation, refuse the old credential and any conflicting certificate installation while accepting the newer current generation of the same service."
-msgstr ""
+msgstr "الرفض المطلوب: أغلق الاستجابة الحية بعد أن يصبح الوصول خاصاً؛ وأنهِ الصلاحية أثناء انقطاع البوابة. بعد تدوير بيانات اعتماد البوابة، ارفض بيانات الاعتماد القديمة وأي تثبيت شهادة متعارض، مع قبول الجيل الأحدث الحالي للخدمة نفسها."
 
 #: lib/marshall/documentation_messages.ex:7411
 #, elixir-autogen, elixir-format
@@ -11677,7 +11677,7 @@ msgstr "الرفض المطلوب: تفشل حالة رئيسية تالفة أ�
 #: lib/marshall/documentation_messages.ex:7423
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Dangerous client defaults remove prompts and client-level command sandboxing but cannot manufacture identity, revive stale execution, bypass Customer private-inference refusal or enable a disabled provider. Wrong CA trust or hostname must fail rather than disable TLS verification."
-msgstr ""
+msgstr "الرفض المطلوب: تزيل إعدادات العميل الافتراضية الخطرة المطالبات والعزل على مستوى أوامر العميل، لكنها لا تستطيع اختلاق هوية أو إحياء تنفيذ قديم أو تجاوز رفض الاستدلال الخاص بـCustomer أو تمكين مزوّد معطّل. يجب أن تفشل الثقة الخاطئة بجهة التصديق أو اسم المضيف بدلاً من تعطيل التحقق من TLS."
 
 #: lib/marshall/documentation_messages.ex:7427
 #, elixir-autogen, elixir-format
@@ -11757,7 +11757,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7495
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Idle identity must fail ECONNRESET after the event, blocked calls must wake with errors, and FreeBSD must refuse new sockets until VM replacement. Ordinary host peer disconnect alone cannot satisfy the peerless-socket oracle; incomplete histories cannot emit a receipt."
-msgstr ""
+msgstr "الرفض المطلوب: يجب أن تفشل الهوية الخاملة بخطأ ECONNRESET بعد الحدث، وأن تستيقظ الاستدعاءات المحجوبة بأخطاء، وأن يرفض FreeBSD المقابس الجديدة حتى استبدال الآلة الافتراضية. لا يكفي انقطاع نظير المضيف المعتاد وحده لاستيفاء معيار المقبس بلا نظير؛ ولا تستطيع السجلات الناقصة إصدار إيصال."
 
 #: lib/marshall/documentation_messages.ex:7499
 #, elixir-autogen, elixir-format
@@ -11812,7 +11812,7 @@ msgstr "الرفض المطلوب: لا تضيف الحزم المشوهة ور�
 #: lib/marshall/documentation_messages.ex:7543
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Malformed, stale, oversized or failed monitor responses produce an observed zero. A missing host, incomplete scrape window, stale probe, or unavailable collector makes the candidate unknown instead of healthy; other application UIDs cannot write the Underclass collector socket."
-msgstr ""
+msgstr "الرفض المطلوب: تنتج استجابات المراقبة المشوهة أو القديمة أو المتجاوزة للحجم أو الفاشلة صفراً مرصوداً. يجعل غياب مضيف أو عدم اكتمال نافذة الجمع أو تقادم المسبار أو تعذر المجمّع المرشح مجهولاً بدلاً من اعتباره سليماً؛ ولا تستطيع معرّفات مستخدمي التطبيقات الأخرى الكتابة إلى مقبس مجمّع Underclass."
 
 #: lib/marshall/documentation_messages.ex:7547
 #, elixir-autogen, elixir-format
@@ -11857,7 +11857,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7579
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Missing, blank or over-length labels, stale or signed-out sessions, unknown credentials, an administrator's last passkey, limit overflow and consumed challenges refuse; every refusal leaves the complete passkey, verification, token, challenge and audit inventory byte-identical."
-msgstr ""
+msgstr "الرفض المطلوب: تُرفض التسميات المفقودة أو الفارغة أو الطويلة أكثر من الحد، والجلسات القديمة أو المسجل خروجها، وبيانات الاعتماد المجهولة، وآخر مفتاح مرور لمسؤول، وتجاوز الحد، والتحديات المستهلكة؛ ويترك كل رفض جرد مفاتيح المرور والتحقق والرموز والتحديات والتدقيق كاملاً مطابقاً بايتاً ببايت."
 
 #: lib/marshall/documentation_messages.ex:7583
 #, elixir-autogen, elixir-format
@@ -12027,7 +12027,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7715
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Refuse pinning without current read access, on deleted intent (vm_deleted) and past twenty pins (pin_limit); refuse browser, Fleet workloads, SSH/Porsche rm and thread deletes while the owner holds a pin; never let a shared user's pin fence deletion or a pin extend revoked access."
-msgstr ""
+msgstr "الرفض المطلوب: ارفض التثبيت دون صلاحية قراءة حالية، ومع نية محذوفة (vm_deleted)، وبعد عشرين تثبيتاً (pin_limit)؛ وارفض الحذف من المتصفح وأحمال Fleet وSSH/Porsche rm وحذف سلاسل المحادثة ما دام المالك يحتفظ بتثبيت؛ ولا تسمح أبداً لتثبيت مستخدم مشارك بمنع الحذف أو لتثبيت بتمديد وصول ملغى."
 
 #: lib/marshall/documentation_messages.ex:7719
 #, elixir-autogen, elixir-format
@@ -12302,12 +12302,12 @@ msgstr "الرفض المطلوب: لا تدخل طلبات غير معتمدة 
 #: lib/marshall/documentation_messages.ex:7943
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Unavailable physical health, absent private credential, mismatched host/pool identity, disconnected Control or false execution readiness cannot be treated as schedulable capacity. A positive ZFS sample alone cannot prove guest readiness, native KVM isolation or crash recovery."
-msgstr ""
+msgstr "الرفض المطلوب: لا يجوز اعتبار الصحة الفعلية غير المتاحة أو غياب بيانات الاعتماد الخاصة أو عدم تطابق هوية المضيف/المجمّع أو انقطاع Control أو عدم جاهزية التنفيذ سعةً قابلة للجدولة. لا تثبت عينة ZFS إيجابية وحدها جاهزية الضيف أو عزل KVM الأصلي أو التعافي من الانهيار."
 
 #: lib/marshall/documentation_messages.ex:7947
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Under policy refuse sibling, private, protected-uplink, gateway and unregistered fixed-service TCP targets and foreign-source traffic while preserving public access and current private SSH authority. Require assigned-source recovery after the foreign-source test."
-msgstr ""
+msgstr "الرفض المطلوب: بموجب السياسة، ارفض أهداف TCP الشقيقة والخاصة والمحميّة للوصلة الصاعدة والبوابة والخدمات الثابتة غير المسجلة، وحركة المرور ذات المصدر الأجنبي، مع الحفاظ على الوصول العام وصلاحية SSH الخاصة الحالية. اشترط عودة المصدر المخصص بعد اختبار المصدر الأجنبي."
 
 #: lib/marshall/documentation_messages.ex:7951
 #, elixir-autogen, elixir-format
@@ -12332,7 +12332,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7967
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Unproved keys, malformed selectors, denied or malformed grants and diagnostic guidance cannot add outcomes; ordinary Audi UID cannot enter the collector socket; exporter cannot replace the source snapshot, and key, account and VM identity cannot become metric labels."
-msgstr ""
+msgstr "الرفض المطلوب: لا تستطيع المفاتيح غير المثبتة أو المحددات المشوهة أو المنح المرفوضة أو المشوهة أو إرشادات التشخيص إضافة نتائج؛ ولا يستطيع UID العادي لـAudi الدخول إلى مقبس المجمّع؛ ولا يستطيع المُصدّر استبدال لقطة المصدر، ولا يجوز أن تصبح هوية المفتاح أو الحساب أو الآلة الافتراضية تسميات للمقاييس."
 
 #: lib/marshall/documentation_messages.ex:7971
 #, elixir-autogen, elixir-format
@@ -12377,7 +12377,7 @@ msgstr "الرفض المطلوب: احجب اكتمال التنظيف ما د�
 #: lib/marshall/documentation_messages.ex:8007
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Wrong Grafana credentials are refused. Zero current admitted traffic, stale source markers, absent completion ratio, any admitted request without a duration, or duration beyond the last finite bucket removes the p95 candidate instead of showing a reassuring latency value."
-msgstr ""
+msgstr "الرفض المطلوب: تُرفض بيانات اعتماد Grafana الخاطئة. يؤدي انعدام حركة المرور الحالية المقبولة أو تقادم علامات المصدر أو غياب نسبة الإكمال أو وجود أي طلب مقبول بلا مدة أو مدة تتجاوز آخر حاوية محدودة إلى حذف مرشح p95 بدلاً من عرض قيمة زمن استجابة مطمئنة."
 
 #: lib/marshall/documentation_messages.ex:8011
 #, elixir-autogen, elixir-format
@@ -12452,7 +12452,7 @@ msgstr "يترك الاستئناف الضيوف متوقفين ويعيد تم�
 #: lib/marshall/documentation_messages.ex:8067
 #, elixir-autogen, elixir-format
 msgid "Retain verbose build output in the private attempt log."
-msgstr ""
+msgstr "احتفظ بمخرجات البناء التفصيلية في سجل المحاولة الخاص."
 
 #: lib/marshall/documentation_messages.ex:8068
 #, elixir-autogen, elixir-format
@@ -12472,7 +12472,7 @@ msgstr "راجع فرق الموضع المولد ومخطط التفاعل كل
 #: lib/marshall/documentation_messages.ex:8080
 #, elixir-autogen, elixir-format
 msgid "Reviewed IPv4 source address."
-msgstr ""
+msgstr "عنوان مصدر IPv4 المراجع."
 
 #: lib/marshall/documentation_messages.ex:8081
 #, elixir-autogen, elixir-format
@@ -12492,7 +12492,7 @@ msgstr "ضبط CPU/RAM/الحصة الحي المراجع، مرتبط بهوي�
 #: lib/marshall/documentation_messages.ex:8093
 #, elixir-autogen, elixir-format
 msgid "Reviewed typed OTLP custody implementation."
-msgstr ""
+msgstr "تنفيذ حيازة OTLP المراجع والمعرّف الأنواع."
 
 #: lib/marshall/documentation_messages.ex:8094
 #, elixir-autogen, elixir-format
@@ -12562,7 +12562,7 @@ msgstr "شغل بوابات التطبيق المقابلة للمستهلكين
 #: lib/marshall/documentation_messages.ex:8150
 #, elixir-autogen, elixir-format
 msgid "Runtime SSH CA private key delivered only to Marshall."
-msgstr ""
+msgstr "المفتاح الخاص لجهة تصديق SSH وقت التشغيل، ويُسلّم إلى Marshall فقط."
 
 #: lib/marshall/documentation_messages.ex:8151
 #, elixir-autogen, elixir-format
@@ -12587,22 +12587,22 @@ msgstr "ملف بيئة تشغيل يحوي UNDERCLASS_PROXY_KEY وUNDERCLASS_UI
 #: lib/marshall/documentation_messages.ex:8167
 #, elixir-autogen, elixir-format
 msgid "Runtime insert credential; admits only /insert/* paths."
-msgstr ""
+msgstr "بيانات اعتماد إدراج وقت التشغيل؛ لا تسمح إلا بمسارات /insert/*."
 
 #: lib/marshall/documentation_messages.ex:8168
 #, elixir-autogen, elixir-format
 msgid "Runtime leaf certificate for the fleet entry (full chain)."
-msgstr ""
+msgstr "شهادة طرفية وقت التشغيل لمدخل الأسطول (السلسلة الكاملة)."
 
 #: lib/marshall/documentation_messages.ex:8169
 #, elixir-autogen, elixir-format
 msgid "Runtime leaf private key for the fleet entry."
-msgstr ""
+msgstr "المفتاح الخاص الطرفي وقت التشغيل لمدخل الأسطول."
 
 #: lib/marshall/documentation_messages.ex:8170
 #, elixir-autogen, elixir-format
 msgid "Runtime private WireGuard key; never embedded in the store."
-msgstr ""
+msgstr "مفتاح WireGuard الخاص وقت التشغيل؛ لا يُضمّن في المخزن أبداً."
 
 #: lib/marshall/documentation_messages.ex:8171
 #, elixir-autogen, elixir-format
@@ -12622,17 +12622,17 @@ msgstr "شهادة CA توقيع تشغيلية؛ لا يهيئ Brady CA."
 #: lib/marshall/documentation_messages.ex:8183
 #, elixir-autogen, elixir-format
 msgid "Runtime signing CA key."
-msgstr ""
+msgstr "مفتاح جهة تصديق التوقيع وقت التشغيل."
 
 #: lib/marshall/documentation_messages.ex:8184
 #, elixir-autogen, elixir-format
 msgid "S3 HTTPS endpoint without credentials or trailing slash."
-msgstr ""
+msgstr "نقطة نهاية S3 عبر HTTPS دون بيانات اعتماد أو شرطة مائلة ختامية."
 
 #: lib/marshall/documentation_messages.ex:8185
 #, elixir-autogen, elixir-format
 msgid "SOA responsible mailbox in DNS name form."
-msgstr ""
+msgstr "صندوق البريد المسؤول في SOA بصيغة اسم DNS."
 
 #: lib/marshall/documentation_messages.ex:8186
 #, elixir-autogen, elixir-format
@@ -12642,7 +12642,7 @@ msgstr "مستند SOPS يحوي AUDI_PRIVATE_CERTIFICATE_CHAIN وAUDI_PRIVATE_C
 #: lib/marshall/documentation_messages.ex:8190
 #, elixir-autogen, elixir-format
 msgid "SOPS document containing GALILEO_CREDENTIAL."
-msgstr ""
+msgstr "مستند SOPS يحتوي GALILEO_CREDENTIAL."
 
 #: lib/marshall/documentation_messages.ex:8191
 #, elixir-autogen, elixir-format
@@ -12657,7 +12657,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8199
 #, elixir-autogen, elixir-format
 msgid "SSH CA operational retirement in Unix seconds (2046-09-25)."
-msgstr ""
+msgstr "التقاعد التشغيلي لجهة تصديق SSH بالثواني وفق Unix (2046-09-25)."
 
 #: lib/marshall/documentation_messages.ex:8200
 #, elixir-autogen, elixir-format
@@ -12682,7 +12682,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8216
 #, elixir-autogen, elixir-format
 msgid "Secret preparation units required before Underclass starts."
-msgstr ""
+msgstr "وحدات إعداد الأسرار المطلوبة قبل بدء Underclass."
 
 #: lib/marshall/documentation_messages.ex:8217
 #, elixir-autogen, elixir-format
@@ -12697,7 +12697,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8225
 #, elixir-autogen, elixir-format
 msgid "Security is enforced in layers. Passing an outer check never substitutes for the\nnext one. A signed-in user is not automatically a VM owner; an authorized request\nis not automatically current execution; a current placement is not proof that a\nnative disk or process belongs to it."
-msgstr ""
+msgstr "يُفرض الأمن على طبقات. لا يغني اجتياز فحص خارجي أبداً عن الفحص التالي. ليس المستخدم المسجل دخوله مالكاً لآلة افتراضية تلقائياً؛ والطلب المصرح به ليس تنفيذاً حالياً تلقائياً؛ كما أن التموضع الحالي لا يثبت أن قرصاً أو عملية أصلية تابعة له."
 
 #: lib/marshall/documentation_messages.ex:8229
 #, elixir-autogen, elixir-format
@@ -12727,7 +12727,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8249
 #, elixir-autogen, elixir-format
 msgid "Separate machine HTTPS port; never opened by openFirewall."
-msgstr ""
+msgstr "منفذ HTTPS منفصل للجهاز؛ لا يفتحه openFirewall أبداً."
 
 #: lib/marshall/documentation_messages.ex:8250
 #, elixir-autogen, elixir-format
@@ -12792,7 +12792,7 @@ msgstr "ربط مصدر بمجموعة مشترك مع الكتاب؛ مدير �
 #: lib/marshall/documentation_messages.ex:8302
 #, elixir-autogen, elixir-format
 msgid "Source-built Lilly release used by isolated export workers."
-msgstr ""
+msgstr "إصدار Lilly المبني من المصدر المستخدم بواسطة عمال التصدير المعزولين."
 
 #: lib/marshall/documentation_messages.ex:8303
 #, elixir-autogen, elixir-format
@@ -12802,7 +12802,7 @@ msgstr "إصدار Lilly مبني من المصدر ببيانات أداة مض
 #: lib/marshall/documentation_messages.ex:8307
 #, elixir-autogen, elixir-format
 msgid "Source-built Marshall release."
-msgstr ""
+msgstr "إصدار Marshall المبني من المصدر."
 
 #: lib/marshall/documentation_messages.ex:8308
 #, elixir-autogen, elixir-format
@@ -12857,12 +12857,12 @@ msgstr "يرفض المخزن الاستقبال عند هبوط القرص ال
 #: lib/marshall/documentation_messages.ex:8356
 #, elixir-autogen, elixir-format
 msgid "Submit workflows through authorized machine controls or the workflow’s supported\nPorsche command. Resize uses the browser controls. Keep the returned operation identity. Retry an uncertain submission with its original\nidempotency key. Inspect both workflow progress and cleanup obligations."
-msgstr ""
+msgstr "أرسل سير العمل عبر أدوات التحكم المصرح بها للجهاز أو أمر Porsche الذي يدعمه سير العمل. تستخدم إعادة التحجيم أدوات المتصفح. احتفظ بهوية العملية المرتجعة. أعد محاولة إرسال غير مؤكد بمفتاح منع التكرار الأصلي. افحص تقدم سير العمل والتزامات التنظيف معاً."
 
 #: lib/marshall/documentation_messages.ex:8360
 #, elixir-autogen, elixir-format
 msgid "Supplementary Unix groups."
-msgstr ""
+msgstr "مجموعات Unix الإضافية."
 
 #: lib/marshall/documentation_messages.ex:8361
 #, elixir-autogen, elixir-format
@@ -12882,12 +12882,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8385
 #, elixir-autogen, elixir-format
 msgid "TCP ports reachable from any source at this address."
-msgstr ""
+msgstr "منافذ TCP التي يمكن الوصول إليها من أي مصدر على هذا العنوان."
 
 #: lib/marshall/documentation_messages.ex:8386
 #, elixir-autogen, elixir-format
 msgid "Tailnet HTTPS port reserved for Underclass on this host."
-msgstr ""
+msgstr "منفذ Tailnet عبر HTTPS المحجوز لـUnderclass على هذا المضيف."
 
 #: lib/marshall/documentation_messages.ex:8387
 #, elixir-autogen, elixir-format
@@ -12937,7 +12937,7 @@ msgstr "النطاق المختبر:102 رفضًا جديدًا حقيقيًا �
 #: lib/marshall/documentation_messages.ex:8423
 #, elixir-autogen, elixir-format
 msgid "Tested scope: 120 local test-build schema refusals across 40 cases, 51 signer-child refusals across 17 cases in three shuffled histories each, 20 immutable-key loader checks and a Metrics-only unset control. Recursive fixture custody and credential/path-safe output remain unchanged."
-msgstr ""
+msgstr "نطاق الاختبار: 120 حالة رفض محلية للمخطط في بنية اختبار عبر 40 حالة، و51 حالة رفض لعملية الموقّع التابعة عبر 17 حالة بثلاثة سجلات معاد ترتيبها لكل منها، و20 فحصاً لمحمّل المفاتيح الثابتة، واختبار ضبط لإلغاء إعداد Metrics وحده. لم تتغير حيازة التجهيزات المتداخلة والمخرجات الآمنة من كشف بيانات الاعتماد والمسارات."
 
 #: lib/marshall/documentation_messages.ex:8427
 #, elixir-autogen, elixir-format
@@ -13007,7 +13007,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8487
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Actual peer inventories for fixed1/8/64/256, missing and invalid-schema limits, generated valid/invalid histories, reverse settlement and reconnect to1 or256. Integrated property passed27.7seconds,seed0, with compiler/format checks; one property and eight exclusions."
-msgstr ""
+msgstr "نطاق الاختبار: قوائم أقران فعلية للحدود الثابتة 1/8/64/256، وللحدود المفقودة وذات المخطط غير الصحيح، ولسجلات صحيحة/غير صحيحة مولّدة، والتسوية العكسية وإعادة الاتصال إلى 1 أو 256. نجحت الخاصية المتكاملة في 27.7 ثانية، بالبذرة 0، مع فحوص المترجم والتنسيق؛ خاصية واحدة وثمانية استثناءات."
 
 #: lib/marshall/documentation_messages.ex:8491
 #, elixir-autogen, elixir-format
@@ -13087,12 +13087,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8555
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Deployment input validation, generated CA refusal, packaged Linux HTTPS installation with real Porsche account proof, revoked-account-key refusal with re-registration restore, artifact upgrade preservation, served-digest mismatch refusal and shimmed platform/checksum selection probes."
-msgstr ""
+msgstr "نطاق الاختبار: التحقق من مدخلات النشر، ورفض جهة التصديق المولّدة، وتثبيت HTTPS المعبّأ على Linux مع إثبات حساب Porsche فعلي، ورفض مفتاح حساب ملغى مع استعادة إعادة التسجيل، والحفاظ على ترقية العناصر، ورفض عدم تطابق بصمة المحتوى المقدم، ومسابير اختيار المنصة/المجموع الاختباري باستخدام بدائل اختبارية."
 
 #: lib/marshall/documentation_messages.ex:8559
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Deterministic real-port ordering regressions, generated watch-machine terminal transitions and the final typed native Brady VMM-kill/attribution-refusal journey pass. Actual exact-target watcher revocation took 99 milliseconds under the original less-than-1000-millisecond bound."
-msgstr ""
+msgstr "نطاق الاختبار: نجحت اختبارات انحدار حتمية لترتيب المنافذ الفعلية، وانتقالات نهائية مولّدة لمراقبة الجهاز، ورحلة Brady الأصلية النهائية المعرّفة الأنواع لقتل VMM ورفض الإسناد. استغرق الإلغاء الفعلي لمراقب الهدف الدقيق 99 ملي ثانية ضمن الحد الأصلي الأقل من 1000 ملي ثانية."
 
 #: lib/marshall/documentation_messages.ex:8563
 #, elixir-autogen, elixir-format
@@ -13372,7 +13372,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8787
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Historical verified-TLS owner and packaged DNS records retain their pre-migration seam. Current actual upgrade/body-size and pending-close histories passed the nine-check file56.6seconds; refined idle4008/permanent4001 and DNS expiry histories passed two properties33.3seconds."
-msgstr ""
+msgstr "نطاق الاختبار: تحتفظ سجلات المالك التاريخية ذات TLS المتحقق منه وسجلات DNS المعبّأة بنقطة الفصل السابقة للترحيل. نجحت السجلات الحالية الفعلية للترقية/حجم الجسم والإغلاق المعلق في الملف ذي الفحوص التسعة خلال 56.6 ثانية؛ ونجحت السجلات المنقحة للخمول 4008 والديمومة 4001 وانتهاء DNS في خاصيتين خلال 33.3 ثانية."
 
 #: lib/marshall/documentation_messages.ex:8791
 #, elixir-autogen, elixir-format
@@ -13417,7 +13417,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8823
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Native HTTP/WebSocket access and outage expiration scenarios, generated public/fleet listener route refusals, gateway credential-rotation certificate acknowledgement, Audi DNS publication/refusal histories, and Marshall's classified local ACME proof checks over TCP."
-msgstr ""
+msgstr "نطاق الاختبار: سيناريوهات الوصول الأصلي عبر HTTP/WebSocket وانتهاء الصلاحية عند الانقطاع، ورفض مسارات المستمع العام/الأسطول المولّد، وإقرار شهادة تدوير بيانات اعتماد البوابة، وسجلات نشر/رفض Audi DNS، وفحوص Marshall المصنفة لإثبات ACME المحلي عبر TCP."
 
 #: lib/marshall/documentation_messages.ex:8827
 #, elixir-autogen, elixir-format
@@ -13727,7 +13727,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9087
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Three generated Rust properties exercise counter arithmetic, SSE chunk framing and durable restart/replay histories. A native fixture passed real local provider TLS, authorization refusal, terminal stream outcomes, SIGKILL interruption and independent exporter custody."
-msgstr ""
+msgstr "نطاق الاختبار: تختبر ثلاث خصائص مولّدة بلغة Rust حساب العدادات وتأطير أجزاء SSE وسجلات إعادة التشغيل/التشغيل المتينة. نجح تجهيز أصلي في TLS محلي فعلي للمزوّد، ورفض التفويض، والنتائج النهائية للبث، والانقطاع بـSIGKILL، وحيازة المُصدّر المستقلة."
 
 #: lib/marshall/documentation_messages.ex:9091
 #, elixir-autogen, elixir-format
@@ -13737,7 +13737,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9095
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Two authored control workload commands and a typed closed-result parser are present. No hosted image execution or Antithesis assertion ingestion is recorded; any local component gate has separate scope. These source callsites do not prove Marshall domain effects or native execution."
-msgstr ""
+msgstr "نطاق الاختبار: يوجد أمران مكتوبان لحمل عمل التحكم ومحلّل نتائج مغلقة معرّف الأنواع. لا يوجد تسجيل لتنفيذ صورة مستضافة أو استيعاب تأكيدات Antithesis؛ ولكل بوابة مكوّن محلي نطاق منفصل. لا تثبت مواضع الاستدعاء هذه في المصدر آثار مجال Marshall أو التنفيذ الأصلي."
 
 #: lib/marshall/documentation_messages.ex:9099
 #, elixir-autogen, elixir-format
@@ -13832,7 +13832,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9179
 #, elixir-autogen, elixir-format
 msgid "The TCP port Audiobookshelf will listen on."
-msgstr ""
+msgstr "منفذ TCP الذي سيستمع عليه Audiobookshelf."
 
 #: lib/marshall/documentation_messages.ex:9180
 #, elixir-autogen, elixir-format
@@ -14147,7 +14147,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9444
 #, elixir-autogen, elixir-format
 msgid "The audiobookshelf package to use."
-msgstr ""
+msgstr "حزمة audiobookshelf التي ستُستخدم."
 
 #: lib/marshall/documentation_messages.ex:9445
 #, elixir-autogen, elixir-format
@@ -14297,7 +14297,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9581
 #, elixir-autogen, elixir-format
 msgid "The exact admitted GET/HEAD of the packaged extension-worker iframe at the grant's\nsource commit permits same-origin framing for the upstream browser extension host.\nOther editor responses deny framing. Foreign commits, unversioned paths and\nsuffix paths cannot inherit that exception."
-msgstr ""
+msgstr "يسمح طلب GET/HEAD المقبول المطابق لإطار iframe الخاص بعامل الإضافة المعبّأ عند مراجعة مصدر المنحة بالتأطير من الأصل نفسه لمضيف إضافة المتصفح العلوي. ترفض استجابات المحرر الأخرى التأطير. لا تستطيع المراجعات الأجنبية والمسارات غير المصدّرة ومسارات اللواحق وراثة هذا الاستثناء."
 
 #: lib/marshall/documentation_messages.ex:9585
 #, elixir-autogen, elixir-format
@@ -14372,7 +14372,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9641
 #, elixir-autogen, elixir-format
 msgid "The firewall source registry holds only the Overalls and Dungarees addresses;\noperators reach the browser origin, Porsche and administrative SSH through\nTailscale. The disposable Grafana test certificate lasts ten\nyears to keep cached fixtures usable; production certificate policy is unchanged."
-msgstr ""
+msgstr "لا يحتفظ سجل مصادر جدار الحماية إلا بعناوين Overalls وDungarees؛ ويصل المشغلون إلى أصل المتصفح وPorsche وSSH الإداري عبر Tailscale. تستمر شهادة اختبار Grafana المؤقتة عشر سنوات لإبقاء التجهيزات المخزنة مؤقتاً صالحة للاستخدام؛ ولا تتغير سياسة شهادات الإنتاج."
 
 #: lib/marshall/documentation_messages.ex:9645
 #, elixir-autogen, elixir-format
@@ -14472,7 +14472,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9729
 #, elixir-autogen, elixir-format
 msgid "The host Audiobookshelf binds to."
-msgstr ""
+msgstr "المضيف الذي يرتبط به Audiobookshelf."
 
 #: lib/marshall/documentation_messages.ex:9730
 #, elixir-autogen, elixir-format
@@ -14502,7 +14502,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9750
 #, elixir-autogen, elixir-format
 msgid "The installer rechecks identity and storage before formatting. Preserve the phase\njournal and installed receipt. An interrupted install requires inspection and\nexplicit erasure authorization again; it does not silently resume formatting.\nA completed plan cannot be reused to erase the host."
-msgstr ""
+msgstr "يعيد المثبّت فحص الهوية والتخزين قبل التهيئة. احتفظ بسجل المراحل وإيصال التثبيت. يتطلب التثبيت المنقطع فحصاً وتفويضاً صريحاً للمحو مجدداً؛ ولا يستأنف التهيئة بصمت. لا يمكن إعادة استخدام خطة مكتملة لمحو المضيف."
 
 #: lib/marshall/documentation_messages.ex:9754
 #, elixir-autogen, elixir-format
@@ -14602,7 +14602,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9834
 #, elixir-autogen, elixir-format
 msgid "The nesting describes checks along a sensitive path, not a claim that all services\nshare one linear call chain. Recovery must reconstruct every relevant layer.\nAdministrative host root remains a trusted privileged boundary; the guest controls\nneither that authority nor the control-plane database."
-msgstr ""
+msgstr "يصف التداخل الفحوص على طول مسار حساس، ولا يدّعي أن جميع الخدمات تشترك في سلسلة استدعاء خطية واحدة. يجب أن تعيد الاستعادة بناء كل طبقة معنية. يظل جذر المضيف الإداري حداً موثوقاً ذا امتيازات؛ ولا يتحكم الضيف في تلك الصلاحية ولا في قاعدة بيانات مستوى التحكم."
 
 #: lib/marshall/documentation_messages.ex:9838
 #, elixir-autogen, elixir-format
@@ -14617,7 +14617,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9846
 #, elixir-autogen, elixir-format
 msgid "The newer FreeBSD transport replay passed in139seconds against the UART-patched\nproduction VMM, retaining exact image/firmware/VMM hashes and admissionfalse.\nThis establishes token/CID/ABI/refusal/credit-window scope; full services and\nOmniOS transport remain separate acceptance work."
-msgstr ""
+msgstr "نجحت إعادة تشغيل نقل FreeBSD الأحدث خلال 139 ثانية مقابل VMM الإنتاجي المعدّل لـUART، مع الاحتفاظ ببصمات الصورة/البرنامج الثابت/VMM الدقيقة وبقيمة القبول false. يثبت ذلك نطاق الرمز/CID/ABI/الرفض/نافذة الائتمان؛ وتبقى الخدمات الكاملة ونقل OmniOS عمل قبول منفصلاً."
 
 #: lib/marshall/documentation_messages.ex:9850
 #, elixir-autogen, elixir-format
@@ -15077,7 +15077,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10242
 #, elixir-autogen, elixir-format
 msgid "Total planned Marshall instances across the fleet."
-msgstr ""
+msgstr "إجمالي نسخ Marshall المخطط لها عبر الأسطول."
 
 #: lib/marshall/documentation_messages.ex:10243
 #, elixir-autogen, elixir-format
@@ -15737,7 +15737,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10555
 #, elixir-autogen, elixir-format
 msgid "UDP ports reachable from any source at this address."
-msgstr ""
+msgstr "منافذ UDP التي يمكن الوصول إليها من أي مصدر على هذا العنوان."
 
 #: lib/marshall/documentation_messages.ex:10556
 #, elixir-autogen, elixir-format
@@ -15787,7 +15787,7 @@ msgstr "حدث تثبيتات الإضافات الأربعة منفصلة عن 
 #: lib/marshall/documentation_messages.ex:10592
 #, elixir-autogen, elixir-format
 msgid "Upload bandwidth cap in KiB/s; zero means unlimited."
-msgstr ""
+msgstr "حد عرض نطاق الرفع بوحدة KiB/s؛ تعني الصفر عدم وجود حد."
 
 #: lib/marshall/documentation_messages.ex:10593
 #, elixir-autogen, elixir-format
@@ -15827,12 +15827,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10621
 #, elixir-autogen, elixir-format
 msgid "Use reviewed x86-64 hardware with working KVM, supported firmware, stable disk IDs,\nand authenticated administrative SSH. The host tool requires Python, OpenSSH,\nlsblk and iproute2. Pin the rescue host key out of band. Keep operator private keys\nand generated plans outside the checkout."
-msgstr ""
+msgstr "استخدم عتاد x86-64 مراجعاً مع KVM يعمل وبرنامج ثابت مدعوم ومعرّفات أقراص ثابتة وSSH إداري موثّق. تتطلب أداة المضيف Python وOpenSSH وlsblk وiproute2. ثبّت مفتاح مضيف الإنقاذ عبر قناة مستقلة. أبقِ المفاتيح الخاصة للمشغل والخطط المولّدة خارج نسخة المستودع."
 
 #: lib/marshall/documentation_messages.ex:10625
 #, elixir-autogen, elixir-format
 msgid "Use the Porsche hostname supplied by your operator. In a local terminal, run\n`ssh YOUR_PORSCHE_HOST help` for one command, or `ssh YOUR_PORSCHE_HOST` for an\ninteractive prompt. Verify the server host-key fingerprint using your operator's\ntrusted instructions. Management uses port 22."
-msgstr ""
+msgstr "استخدم اسم مضيف Porsche الذي يزودك به المشغل. في طرفية محلية، شغّل `ssh YOUR_PORSCHE_HOST help` لأمر واحد، أو `ssh YOUR_PORSCHE_HOST` لموجّه تفاعلي. تحقق من بصمة مفتاح المضيف للخادم باستخدام تعليمات المشغل الموثوقة. تستخدم الإدارة المنفذ 22."
 
 #: lib/marshall/documentation_messages.ex:10629
 #, elixir-autogen, elixir-format
@@ -15857,7 +15857,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10645
 #, elixir-autogen, elixir-format
 msgid "User account under which Audiobookshelf runs."
-msgstr ""
+msgstr "حساب المستخدم الذي يعمل Audiobookshelf تحته."
 
 #: lib/marshall/documentation_messages.ex:10646
 #, elixir-autogen, elixir-format
@@ -15887,12 +15887,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10666
 #, elixir-autogen, elixir-format
 msgid "Verified HTTPS ACME directory."
-msgstr ""
+msgstr "دليل ACME موثوق عبر HTTPS."
 
 #: lib/marshall/documentation_messages.ex:10667
 #, elixir-autogen, elixir-format
 msgid "Verified HTTPS Marshall origin."
-msgstr ""
+msgstr "أصل Marshall موثوق عبر HTTPS."
 
 #: lib/marshall/documentation_messages.ex:10668
 #, elixir-autogen, elixir-format
@@ -15907,12 +15907,12 @@ msgstr "أصل HTTPS متحقق منه لمستمع أسطول هذا المثي
 #: lib/marshall/documentation_messages.ex:10676
 #, elixir-autogen, elixir-format
 msgid "Verified envelope and message sender address."
-msgstr ""
+msgstr "عنوان مرسل المغلف والرسالة المتحقق منه."
 
 #: lib/marshall/documentation_messages.ex:10677
 #, elixir-autogen, elixir-format
 msgid "Verified filesystem identity."
-msgstr ""
+msgstr "هوية نظام الملفات المتحقق منها."
 
 #: lib/marshall/documentation_messages.ex:10678
 #, elixir-autogen, elixir-format
@@ -15947,17 +15947,17 @@ msgstr "ما إذا كان يمكّن إصدار ACME ونشر شهادة وكي
 #: lib/marshall/documentation_messages.ex:10710
 #, elixir-autogen, elixir-format
 msgid "Whether to enable Audi authoritative DNS."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل DNS الموثوق في Audi."
 
 #: lib/marshall/documentation_messages.ex:10711
 #, elixir-autogen, elixir-format
 msgid "Whether to enable Audi fleet wildcard TLS listener."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل مستمع TLS الشامل للأسطول في Audi."
 
 #: lib/marshall/documentation_messages.ex:10712
 #, elixir-autogen, elixir-format
 msgid "Whether to enable Audi local guest SSH gateway."
-msgstr ""
+msgstr "ما إذا كانت ستُفعّل بوابة SSH المحلية للضيوف في Audi."
 
 #: lib/marshall/documentation_messages.ex:10713
 #, elixir-autogen, elixir-format
@@ -15982,27 +15982,27 @@ msgstr "ما إذا كان يمكّن إنهاء HAProxy HTTPS بخلفيات Ma
 #: lib/marshall/documentation_messages.ex:10729
 #, elixir-autogen, elixir-format
 msgid "Whether to enable IPv4-only host fleet WireGuard transport."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل نقل WireGuard لأسطول المضيف عبر IPv4 فقط."
 
 #: lib/marshall/documentation_messages.ex:10730
 #, elixir-autogen, elixir-format
 msgid "Whether to enable Lilly Firecracker provisioner."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل مزوّد Firecracker في Lilly."
 
 #: lib/marshall/documentation_messages.ex:10731
 #, elixir-autogen, elixir-format
 msgid "Whether to enable Marshall control plane instances."
-msgstr ""
+msgstr "ما إذا كانت ستُفعّل نسخ مستوى التحكم في Marshall."
 
 #: lib/marshall/documentation_messages.ex:10732
 #, elixir-autogen, elixir-format
 msgid "Whether to enable Overalls host BBR and fq profile."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل ملف BBR وfq لمضيف Overalls."
 
 #: lib/marshall/documentation_messages.ex:10733
 #, elixir-autogen, elixir-format
 msgid "Whether to enable Porsche SSH machine management."
-msgstr ""
+msgstr "ما إذا كانت ستُفعّل إدارة الأجهزة عبر SSH في Porsche."
 
 #: lib/marshall/documentation_messages.ex:10734
 #, elixir-autogen, elixir-format
@@ -16027,7 +16027,7 @@ msgstr "ما إذا كان يمكّن Grafana HTTPS عامًا موثقًا عب
 #: lib/marshall/documentation_messages.ex:10750
 #, elixir-autogen, elixir-format
 msgid "Whether to enable authoritative named fleet SSH access."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل وصول SSH المسمى والموثوق للأسطول."
 
 #: lib/marshall/documentation_messages.ex:10751
 #, elixir-autogen, elixir-format
@@ -16037,17 +16037,17 @@ msgstr "ما إذا كان يمكّن جمع قمامة تلقائيًا محد�
 #: lib/marshall/documentation_messages.ex:10755
 #, elixir-autogen, elixir-format
 msgid "Whether to enable bounded encrypted OTP crash dumps."
-msgstr ""
+msgstr "ما إذا كانت ستُفعّل تفريغات انهيار OTP المحدودة والمشفّرة."
 
 #: lib/marshall/documentation_messages.ex:10756
 #, elixir-autogen, elixir-format
 msgid "Whether to enable bounded fleet OpenTelemetry collection."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل جمع OpenTelemetry المحدود للأسطول."
 
 #: lib/marshall/documentation_messages.ex:10757
 #, elixir-autogen, elixir-format
 msgid "Whether to enable bounded guest OTLP intake behind Audi."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل استقبال OTLP المحدود للضيوف خلف Audi."
 
 #: lib/marshall/documentation_messages.ex:10758
 #, elixir-autogen, elixir-format
@@ -16062,7 +16062,7 @@ msgstr "ما إذا كان يمكّن Tailscale على الأسطول ووصول
 #: lib/marshall/documentation_messages.ex:10766
 #, elixir-autogen, elixir-format
 msgid "Whether to enable host recovery backups with Restic."
-msgstr ""
+msgstr "ما إذا كانت ستُفعّل نسخ استعادة المضيف الاحتياطية باستخدام Restic."
 
 #: lib/marshall/documentation_messages.ex:10767
 #, elixir-autogen, elixir-format
@@ -16072,7 +16072,7 @@ msgstr "ما إذا كان يمكّن جمع Fluent Bit محلي المضيف و
 #: lib/marshall/documentation_messages.ex:10771
 #, elixir-autogen, elixir-format
 msgid "Whether to enable host-local synchronous SMTP forwarding."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل تمرير SMTP المتزامن المحلي للمضيف."
 
 #: lib/marshall/documentation_messages.ex:10772
 #, elixir-autogen, elixir-format
@@ -16102,7 +16102,7 @@ msgstr "ما إذا كان يمكّن تسليم Alertmanager خاصًا لتح�
 #: lib/marshall/documentation_messages.ex:10792
 #, elixir-autogen, elixir-format
 msgid "Whether to enable private node-local inference proxy."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل وكيل الاستدلال الخاص المحلي للعقدة."
 
 #: lib/marshall/documentation_messages.ex:10793
 #, elixir-autogen, elixir-format
@@ -16112,7 +16112,7 @@ msgstr "ما إذا كان يمكّن وكيل تكامل مسمى خاصًا م
 #: lib/marshall/documentation_messages.ex:10797
 #, elixir-autogen, elixir-format
 msgid "Whether to enable private public-GitHub mirror service."
-msgstr ""
+msgstr "ما إذا كانت ستُفعّل خدمة مرآة GitHub العامة الخاصة."
 
 #: lib/marshall/documentation_messages.ex:10798
 #, elixir-autogen, elixir-format
@@ -16132,22 +16132,22 @@ msgstr "ما إذا كان يمكّن دليل تدقيق مضيف مقيدًا 
 #: lib/marshall/documentation_messages.ex:10810
 #, elixir-autogen, elixir-format
 msgid "Whether to enable restricted local Audi guest SSH ingress."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل دخول SSH المحلي المقيّد لضيوف Audi."
 
 #: lib/marshall/documentation_messages.ex:10811
 #, elixir-autogen, elixir-format
 msgid "Whether to enable restricted permit-bound Lilly ZFS export."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل تصدير ZFS المقيّد والمرتبط بتصريح في Lilly."
 
 #: lib/marshall/documentation_messages.ex:10816
 #, elixir-autogen, elixir-format
 msgid "Whether to enable this browser editor probe."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل مسبار محرر المتصفح هذا."
 
 #: lib/marshall/documentation_messages.ex:10817
 #, elixir-autogen, elixir-format
 msgid "Whether to enable this source recorder."
-msgstr ""
+msgstr "ما إذا كان سيُفعّل مسجّل المصدر هذا."
 
 #: lib/marshall/documentation_messages.ex:10818
 #, elixir-autogen, elixir-format
@@ -16177,7 +16177,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10842
 #, elixir-autogen, elixir-format
 msgid "Workspace labels `/usage` **AI usage**; its page shows **Your AI usage**.\nControl room labels `/admin/usage` **Fleet AI usage**. These names describe\ninference request and token accounting; they do not change reader authority,\nowner attribution or the treatment of incomplete reports as unknown."
-msgstr ""
+msgstr "تسمي مساحة العمل `/usage` باسم **استخدام الذكاء الاصطناعي**؛ وتعرض صفحتها **استخدامك للذكاء الاصطناعي**. تسمي غرفة التحكم `/admin/usage` باسم **استخدام الأسطول للذكاء الاصطناعي**. تصف هذه الأسماء حساب طلبات الاستدلال والرموز؛ ولا تغيّر صلاحية القارئ أو إسناد المالك أو معاملة التقارير الناقصة بوصفها مجهولة."
 
 #: lib/marshall/documentation_messages.ex:10846
 #, elixir-autogen, elixir-format
@@ -16257,7 +16257,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10910
 #, elixir-autogen, elixir-format
 msgid "[ADR-0179](repo:docs/architecture/decisions/0179-guest-instructions-and-managed-skills.md)\naccepts guest instruction collection and managed skills. Native Linux and\nWindows behavior, provider continuation and restart acceptance remain separate\ndelivery evidence in the context review."
-msgstr ""
+msgstr "يقر [ADR-0179](repo:docs/architecture/decisions/0179-guest-instructions-and-managed-skills.md) جمع تعليمات الضيف والمهارات المُدارة. ويظل سلوك Linux وWindows الأصلي واستمرار المزوّد وقبول إعادة التشغيل أدلة تسليم منفصلة في مراجعة السياق."
 
 #: lib/marshall/documentation_messages.ex:10914
 #, elixir-autogen, elixir-format
@@ -16729,7 +16729,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3913
 #, elixir-autogen, elixir-format
 msgid "After a restart during snapshot load, Lilly may continue the exact claimed live\nVMM. A paused process needs the same launch identity, PID/start time and full\nconfinement proof before a Resume API call; it never reloads the checkpoint.\nMissing or changed authority leaves restoration fenced."
-msgstr ""
+msgstr "بعد إعادة تشغيل أثناء تحميل لقطة، قد يتابع Lilly تشغيل VMM الحي المطالب به نفسه. تحتاج العملية المتوقفة مؤقتاً إلى هوية الإطلاق نفسها وPID/وقت البدء وإثبات الاحتواء الكامل قبل استدعاء Resume API؛ ولا تعيد تحميل نقطة التحقق أبداً. يترك غياب الصلاحية أو تغيرها الاستعادة مقيدة."
 
 #: lib/marshall/documentation_messages.ex:3933
 #, elixir-autogen, elixir-format
@@ -18034,7 +18034,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4189
 #, elixir-autogen, elixir-format
 msgid "Accept a pending ownership offer."
-msgstr ""
+msgstr "اقبل عرض ملكية معلقاً."
 
 #: lib/marshall/documentation_messages.ex:4198
 #, elixir-autogen, elixir-format
@@ -18044,7 +18044,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4236
 #, elixir-autogen, elixir-format
 msgid "Add or change an admin or member."
-msgstr ""
+msgstr "أضف مسؤولاً أو عضواً أو غيّره."
 
 #: lib/marshall/documentation_messages.ex:4325
 #, elixir-autogen, elixir-format
@@ -18059,12 +18059,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4496
 #, elixir-autogen, elixir-format
 msgid "Arrows describe ownership/calls, not deployment units. Seven-family/provider\nexecution, refresh faults and retained updates keep their gaps in\n[coverage](#coverage) and the\n[review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)."
-msgstr ""
+msgstr "تصف الأسهم الملكية/الاستدعاءات، لا وحدات النشر. وتبقى فجوات تنفيذ العائلات السبع/المزوّدين وأعطال التحديث والتحديثات المحتفظ بها موضحة في [التغطية](#coverage) و[المراجعة](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)."
 
 #: lib/marshall/documentation_messages.ex:4512
 #, elixir-autogen, elixir-format
 msgid "Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`. Administrative SSH ports: 2222.\n<!-- hldd:view:end -->"
-msgstr ""
+msgstr "تعني الأسهم تموضع الخدمات المضبوط. الإعداد: `overalls`. نسخ Marshall: `overalls`. عنوان الأسطول: `10.90.0.1`. أقران الأسطول: `dungarees`. منافذ SSH الإدارية: 2222.\n<!-- hldd:view:end -->"
 
 #: lib/marshall/documentation_messages.ex:4522
 #, elixir-autogen, elixir-format
@@ -18084,7 +18084,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4653
 #, elixir-autogen, elixir-format
 msgid "Boundary: A User UUID owns one durable GuestAccount UUID and never-reused UID; exact u<uid> login, /home/u<uid> home and editor origin are independent of email. Current login, Cedar write authority and boot/execution fences still gate every access. Retired identities remain permanent reservations."
-msgstr ""
+msgstr "الحدود: يمتلك UUID المستخدم UUID دائماً واحداً لحساب GuestAccount ومعرّف UID لا يعاد استخدامه؛ ويكون اسم الدخول u<uid> والدليل المنزلي /home/u<uid> وأصل المحرر مستقلين عن البريد الإلكتروني. يظل تسجيل الدخول الحالي وصلاحية كتابة Cedar وقيود الإقلاع/التنفيذ شرطاً لكل وصول. تبقى الهويات المتقاعدة حجوزات دائمة."
 
 #: lib/marshall/documentation_messages.ex:4713
 #, elixir-autogen, elixir-format
@@ -18099,42 +18099,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4757
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi supplies the trusted local execution binding; Peach uses its dedicated host credential; Marshall alone derives current machine and integration authority"
-msgstr ""
+msgstr "الحدود: يوفر Audi ربط التنفيذ المحلي الموثوق؛ ويستخدم Peach بيانات اعتماد المضيف المخصصة له؛ ويستنتج Marshall وحده صلاحية الجهاز والتكامل الحالية"
 
 #: lib/marshall/documentation_messages.ex:4793
 #, elixir-autogen, elixir-format
 msgid "Boundary: Complete case-insensitive email addresses identify distinct accounts independently of Linux naming; generated u<uid> names and permanent GuestAccount UUID/UID reservations prevent accidental cross-account home inheritance."
-msgstr ""
+msgstr "الحدود: تحدد عناوين البريد الإلكتروني الكاملة غير الحساسة لحالة الأحرف حسابات متميزة باستقلال عن تسمية Linux؛ وتمنع أسماء u<uid> المولّدة وحجوزات UUID/UID الدائمة لـGuestAccount توريث الدليل المنزلي عرضياً بين الحسابات."
 
 #: lib/marshall/documentation_messages.ex:5029
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall owns account preference and request validation; Ghost owns subscription state and delivery."
-msgstr ""
+msgstr "الحدود: يمتلك Marshall تفضيل الحساب والتحقق من الطلب؛ ويمتلك Ghost حالة الاشتراك والتسليم."
 
 #: lib/marshall/documentation_messages.ex:5105
 #, elixir-autogen, elixir-format
 msgid "Boundary: Owner-only access, dedicated SSH/bootstrap purposes and a separate editor gateway; no generic private-service, sharing, web exposure or outbound/lateral authority."
-msgstr ""
+msgstr "الحدود: وصول خاص بالمالك فقط، وأغراض مخصصة لـSSH/التهيئة الأولية، وبوابة محرر منفصلة؛ دون صلاحية عامة لخدمات خاصة أو مشاركة أو عرض ويب أو اتصال صادر/جانبي."
 
 #: lib/marshall/documentation_messages.ex:5427
 #, elixir-autogen, elixir-format
 msgid "Cancel an unpublished clone or uncommitted relocation request."
-msgstr ""
+msgstr "ألغِ استنساخاً غير منشور أو طلب نقل لم يُثبّت بعد."
 
 #: lib/marshall/documentation_messages.ex:5431
 #, elixir-autogen, elixir-format
 msgid "Cancel your pending ownership offer."
-msgstr ""
+msgstr "ألغِ عرض الملكية المعلق الخاص بك."
 
 #: lib/marshall/documentation_messages.ex:5474
 #, elixir-autogen, elixir-format
 msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
-msgstr ""
+msgstr "غيّر CPU وذاكرة الجهاز؛ ولا يمكن إلا زيادة القرص. يتوقف الجهاز العامل ثم يُعاد تشغيله."
 
 #: lib/marshall/documentation_messages.ex:5510
 #, elixir-autogen, elixir-format
 msgid "Close this interactive channel."
-msgstr ""
+msgstr "أغلق هذه القناة التفاعلية."
 
 #: lib/marshall/documentation_messages.ex:5532
 #, elixir-autogen, elixir-format
@@ -18159,17 +18159,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5803
 #, elixir-autogen, elixir-format
 msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
-msgstr ""
+msgstr "أنشئ جهازاً. الحد الأقصى للقرص: 500 GiB. يستنسخ --source مستودعاً عاماً من GitHub أو GitLab أو Codeberg أو Bitbucket داخل الضيف."
 
 #: lib/marshall/documentation_messages.ex:5808
 #, elixir-autogen, elixir-format
 msgid "Create a team you own."
-msgstr ""
+msgstr "أنشئ فريقاً تملكه."
 
 #: lib/marshall/documentation_messages.ex:5809
 #, elixir-autogen, elixir-format
 msgid "Create or replace a named integration at https://NAME.integration.internal."
-msgstr ""
+msgstr "أنشئ تكاملاً مسمى أو استبدله على https://NAME.integration.internal."
 
 #: lib/marshall/documentation_messages.ex:5838
 #, elixir-autogen, elixir-format
@@ -18179,12 +18179,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5856
 #, elixir-autogen, elixir-format
 msgid "Decline a pending ownership offer."
-msgstr ""
+msgstr "ارفض عرض ملكية معلقاً."
 
 #: lib/marshall/documentation_messages.ex:5886
 #, elixir-autogen, elixir-format
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
-msgstr ""
+msgstr "احذف جهازاً وقرصه. يُرفض ذلك ما دام مالكه قد ثبّته."
 
 #: lib/marshall/documentation_messages.ex:6001
 #, elixir-autogen, elixir-format
@@ -18199,7 +18199,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6089
 #, elixir-autogen, elixir-format
 msgid "Every guest boot leaves its own timing record in the bounded host boot log\n(`<state_dir>/<placement>/boot.log`, ADR-0154). Operators read it to see where a\ncreate spends its boot and trust time; it is observation only and never gates\nreadiness."
-msgstr ""
+msgstr "يترك كل إقلاع للضيف سجل توقيت خاصاً به في سجل إقلاع المضيف المحدود (`<state_dir>/<placement>/boot.log`، ADR-0154). يقرأه المشغلون لمعرفة أين تقضي عملية الإنشاء وقت الإقلاع والثقة؛ وهو للملاحظة فقط ولا يحدد الجاهزية أبداً."
 
 #: lib/marshall/documentation_messages.ex:6105
 #, elixir-autogen, elixir-format
@@ -18209,7 +18209,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6109
 #, elixir-autogen, elixir-format
 msgid "Every running guest can query `https://reflection.internal` for a bounded,\nsecret-free description of itself and the private services currently available\nto its execution."
-msgstr ""
+msgstr "يمكن لكل ضيف عامل الاستعلام عن `https://reflection.internal` للحصول على وصف محدود وخالٍ من الأسرار لنفسه وللخدمات الخاصة المتاحة حالياً لتنفيذه."
 
 #: lib/marshall/documentation_messages.ex:6225
 #, elixir-autogen, elixir-format
@@ -18234,12 +18234,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6528
 #, elixir-autogen, elixir-format
 msgid "Grant viewer, operator or manager access."
-msgstr ""
+msgstr "امنح صلاحية مشاهد أو مشغل أو مدير."
 
 #: lib/marshall/documentation_messages.ex:6542
 #, elixir-autogen, elixir-format
 msgid "Guest metadata includes the machine name and ID, profile, architecture,\noperating-system family, vCPU, memory and disk sizes, image identity,\ngeneration, owner email, team name, current Lilly node, labels, and comment.\nOperating-system values come from the validated image manifest."
-msgstr ""
+msgstr "تتضمن بيانات الضيف الوصفية اسم الجهاز ومعرّفه وملفه التعريفي ومعماريته وعائلة نظام التشغيل وعدد vCPU وأحجام الذاكرة والقرص وهوية الصورة والجيل وبريد المالك الإلكتروني واسم الفريق وعقدة Lilly الحالية والتسميات والتعليق. تأتي قيم نظام التشغيل من بيان الصورة المتحقق منه."
 
 #: lib/marshall/documentation_messages.ex:6550
 #, elixir-autogen, elixir-format
@@ -18249,37 +18249,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6642
 #, elixir-autogen, elixir-format
 msgid "Immutable executor artifacts for fenced retained-machine GitHub tools bootstrap."
-msgstr ""
+msgstr "عناصر منفذ ثابتة للتهيئة الأولية المقيّدة لأدوات GitHub على الأجهزة المحتفظ بها."
 
 #: lib/marshall/documentation_messages.ex:6658
 #, elixir-autogen, elixir-format
 msgid "Immutable managed GitHub CLI and LFS release for fenced guest maintenance."
-msgstr ""
+msgstr "إصدار ثابت مُدار من GitHub CLI وLFS لصيانة الضيف المقيّدة."
 
 #: lib/marshall/documentation_messages.ex:6662
 #, elixir-autogen, elixir-format
 msgid "Immutable manifest for the managed guest GitHub tools release."
-msgstr ""
+msgstr "بيان ثابت لإصدار أدوات GitHub المُدارة للضيوف."
 
 #: lib/marshall/documentation_messages.ex:6679
 #, elixir-autogen, elixir-format
 msgid "Immutable source-built executor inventory for retained-machine tool maintenance."
-msgstr ""
+msgstr "جرد منفذ ثابت مبني من المصدر لصيانة أدوات الأجهزة المحتفظ بها."
 
 #: lib/marshall/documentation_messages.ex:6737
 #, elixir-autogen, elixir-format
 msgid "Inspect a machine by name or UUID."
-msgstr ""
+msgstr "افحص جهازاً بالاسم أو UUID."
 
 #: lib/marshall/documentation_messages.ex:6738
 #, elixir-autogen, elixir-format
 msgid "Inspect a previously accepted request."
-msgstr ""
+msgstr "افحص طلباً سبق قبوله."
 
 #: lib/marshall/documentation_messages.ex:6739
 #, elixir-autogen, elixir-format
 msgid "Inspect an integration without secrets."
-msgstr ""
+msgstr "افحص تكاملاً دون أسرار."
 
 #: lib/marshall/documentation_messages.ex:6740
 #, elixir-autogen, elixir-format
@@ -18304,47 +18304,47 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6904
 #, elixir-autogen, elixir-format
 msgid "List a team's members."
-msgstr ""
+msgstr "اعرض أعضاء فريق."
 
 #: lib/marshall/documentation_messages.ex:6905
 #, elixir-autogen, elixir-format
 msgid "List access grants."
-msgstr ""
+msgstr "اعرض منح الوصول."
 
 #: lib/marshall/documentation_messages.ex:6906
 #, elixir-autogen, elixir-format
 msgid "List available images."
-msgstr ""
+msgstr "اعرض الصور المتاحة."
 
 #: lib/marshall/documentation_messages.ex:6907
 #, elixir-autogen, elixir-format
 msgid "List machines you can access."
-msgstr ""
+msgstr "اعرض الأجهزة التي تستطيع الوصول إليها."
 
 #: lib/marshall/documentation_messages.ex:6912
 #, elixir-autogen, elixir-format
 msgid "List your SSH keys."
-msgstr ""
+msgstr "اعرض مفاتيح SSH الخاصة بك."
 
 #: lib/marshall/documentation_messages.ex:6913
 #, elixir-autogen, elixir-format
 msgid "List your integrations."
-msgstr ""
+msgstr "اعرض تكاملاتك."
 
 #: lib/marshall/documentation_messages.ex:6914
 #, elixir-autogen, elixir-format
 msgid "List your teams and roles."
-msgstr ""
+msgstr "اعرض فرقك وأدوارك."
 
 #: lib/marshall/documentation_messages.ex:6970
 #, elixir-autogen, elixir-format
 msgid "Machine managers can edit labels and the machine comment from machine settings.\nLabels are limited to 32 entries and comments to 2 KiB. Integration managers\ncan edit an integration comment from the integrations page. Changes are\naudited without recording comment text or secret values."
-msgstr ""
+msgstr "يمكن لمديري الأجهزة تعديل التسميات وتعليق الجهاز من إعداداته. تقتصر التسميات على 32 إدخالاً والتعليقات على 2 KiB. ويمكن لمديري التكاملات تعديل تعليق التكامل من صفحة التكاملات. تُدقق التغييرات دون تسجيل نص التعليق أو القيم السرية."
 
 #: lib/marshall/documentation_messages.ex:6998
 #, elixir-autogen, elixir-format
 msgid "Make an integration available to a machine."
-msgstr ""
+msgstr "أتِح تكاملاً لجهاز."
 
 #: lib/marshall/documentation_messages.ex:7003
 #, elixir-autogen, elixir-format
@@ -18379,7 +18379,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7141
 #, elixir-autogen, elixir-format
 msgid "Move a machine to an automatically selected host."
-msgstr ""
+msgstr "انقل جهازاً إلى مضيف يُختار تلقائياً."
 
 #: lib/marshall/documentation_messages.ex:7150
 #, elixir-autogen, elixir-format
@@ -18399,7 +18399,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7313
 #, elixir-autogen, elixir-format
 msgid "Offer team ownership to an admin."
-msgstr ""
+msgstr "اعرض ملكية الفريق على مسؤول."
 
 #: lib/marshall/documentation_messages.ex:7334
 #, elixir-autogen, elixir-format
@@ -18424,12 +18424,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7544
 #, elixir-autogen, elixir-format
 msgid "Peach serves the bounded, secret-free `reflection.internal` projection for a\ncurrently running guest. Marshall remains the authorization authority and\nreturns only integrations eligible for the fenced execution."
-msgstr ""
+msgstr "يقدم Peach إسقاط `reflection.internal` المحدود والخالي من الأسرار لضيف يعمل حالياً. ويظل Marshall جهة التفويض، ولا يعيد إلا التكاملات المؤهلة للتنفيذ المقيّد."
 
 #: lib/marshall/documentation_messages.ex:7585
 #, elixir-autogen, elixir-format
 msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
-msgstr ""
+msgstr "ثبّت جهازاً في أعلى قوائمك. يوقظ تثبيتك بصفتك المالك الجهاز، ويمنع التعليق التلقائي والحذف."
 
 #: lib/marshall/documentation_messages.ex:7596
 #, elixir-autogen, elixir-format
@@ -18444,7 +18444,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7669
 #, elixir-autogen, elixir-format
 msgid "Private runtime GitHub OAuth client secret, delivered through systemd credentials."
-msgstr ""
+msgstr "سر عميل GitHub OAuth الخاص وقت التشغيل، ويُسلّم عبر بيانات اعتماد systemd."
 
 #: lib/marshall/documentation_messages.ex:7731
 #, elixir-autogen, elixir-format
@@ -18454,7 +18454,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7777
 #, elixir-autogen, elixir-format
 msgid "Public GitHub OAuth application client identity. Configure together with clientSecretFile and redirectUri."
-msgstr ""
+msgstr "هوية عميل تطبيق GitHub OAuth العامة. اضبطها مع clientSecretFile وredirectUri."
 
 #: lib/marshall/documentation_messages.ex:7803
 #, elixir-autogen, elixir-format
@@ -18464,17 +18464,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7827
 #, elixir-autogen, elixir-format
 msgid "Queue an independent full-disk copy of a machine."
-msgstr ""
+msgstr "ضع نسخة مستقلة لكامل قرص جهاز في الطابور."
 
 #: lib/marshall/documentation_messages.ex:7881
 #, elixir-autogen, elixir-format
 msgid "Reflection is available only through the private network. Requests are bound to\nthe current VM, host, placement, and execution epoch; stopped, relocated,\nretired, stale, or unauthorized guests receive an unavailable response.\n"
-msgstr ""
+msgstr "لا تتوفر خدمة Reflection إلا عبر الشبكة الخاصة. ترتبط الطلبات بالآلة الافتراضية والمضيف والتموضع وحقبة التنفيذ الحالية؛ وتتلقى الضيوف المتوقفة أو المنقولة أو المتقاعدة أو القديمة أو غير المصرح بها استجابة عدم الإتاحة.\n"
 
 #: lib/marshall/documentation_messages.ex:7885
 #, elixir-autogen, elixir-format
 msgid "Reflection reveals bounded machine metadata and eligible integration descriptors,\nnever credential values. [ADR-0203](repo:docs/architecture/decisions/0203-guest-reflection.md)\nkeeps projection and credential authority in Marshall. Peach does not own a\ndatabase or retained snapshot authority."
-msgstr ""
+msgstr "تكشف Reflection بيانات وصفية محدودة للجهاز وأوصاف التكاملات المؤهلة، ولا تكشف قيم بيانات الاعتماد أبداً. يُبقي [ADR-0203](repo:docs/architecture/decisions/0203-guest-reflection.md) صلاحية الإسقاط وبيانات الاعتماد في Marshall. لا يمتلك Peach قاعدة بيانات أو صلاحية لقطة محتفظ بها."
 
 #: lib/marshall/documentation_messages.ex:7889
 #, elixir-autogen, elixir-format
@@ -18484,7 +18484,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7893
 #, elixir-autogen, elixir-format
 msgid "Registered HTTPS GitHub OAuth callback URL."
-msgstr ""
+msgstr "رابط رد النداء المسجل لـGitHub OAuth عبر HTTPS."
 
 #: lib/marshall/documentation_messages.ex:7894
 #, elixir-autogen, elixir-format
@@ -18494,27 +18494,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7914
 #, elixir-autogen, elixir-format
 msgid "Remove a machine's explicit availability."
-msgstr ""
+msgstr "أزل الإتاحة الصريحة لجهاز."
 
 #: lib/marshall/documentation_messages.ex:7915
 #, elixir-autogen, elixir-format
 msgid "Remove a named integration."
-msgstr ""
+msgstr "أزل تكاملاً مسمى."
 
 #: lib/marshall/documentation_messages.ex:7916
 #, elixir-autogen, elixir-format
 msgid "Remove an account's membership."
-msgstr ""
+msgstr "أزل عضوية حساب."
 
 #: lib/marshall/documentation_messages.ex:7917
 #, elixir-autogen, elixir-format
 msgid "Remove your pin from a machine."
-msgstr ""
+msgstr "أزل تثبيتك لجهاز."
 
 #: lib/marshall/documentation_messages.ex:8105
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Foreign actors cannot dismiss another account; malformed mailboxes and all upstream failures are refused safely without secret diagnostics."
-msgstr ""
+msgstr "الرفض المطلوب: لا يستطيع فاعلون أجانب استبعاد حساب آخر؛ وتُرفض صناديق البريد المشوهة وجميع إخفاقات الجهة العليا بأمان دون تشخيصات تكشف أسراراً."
 
 #: lib/marshall/documentation_messages.ex:8145
 #, elixir-autogen, elixir-format
@@ -18524,12 +18524,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8181
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Malformed or foreign host bindings, stale execution, stopped or retired machines, expired or revoked Peach credentials and disallowed profiles must refuse without returning a retained projection or secret header values"
-msgstr ""
+msgstr "الرفض المطلوب: يجب رفض روابط المضيف المشوهة أو الأجنبية والتنفيذ القديم والأجهزة المتوقفة أو المتقاعدة وبيانات اعتماد Peach المنتهية أو الملغاة والملفات التعريفية غير المسموح بها، دون إرجاع إسقاط محتفظ به أو قيم ترويسات سرية"
 
 #: lib/marshall/documentation_messages.ex:8417
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject administrator ownership bypass, stale manager grants, forged guest marks and Customer inference/reflection/integration/telemetry before a private execution binding."
-msgstr ""
+msgstr "الرفض المطلوب: ارفض تجاوز ملكية المسؤول ومنح المدير القديمة وعلامات الضيف المزورة واستدلال/انعكاس/تكامل/قياس Customer قبل وجود ربط تنفيذ خاص."
 
 #: lib/marshall/documentation_messages.ex:8669
 #, elixir-autogen, elixir-format
@@ -18539,17 +18539,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8713
 #, elixir-autogen, elixir-format
 msgid "Resume a suspended machine's preserved memory."
-msgstr ""
+msgstr "استأنف الذاكرة المحفوظة لجهاز معلّق."
 
 #: lib/marshall/documentation_messages.ex:8718
 #, elixir-autogen, elixir-format
 msgid "Resume preserved memory, waiting for capacity or relocation."
-msgstr ""
+msgstr "استأنف الذاكرة المحفوظة مع انتظار السعة أو النقل."
 
 #: lib/marshall/documentation_messages.ex:8731
 #, elixir-autogen, elixir-format
 msgid "Retry a failed clone or relocation request."
-msgstr ""
+msgstr "أعد محاولة طلب استنساخ أو نقل فاشل."
 
 #: lib/marshall/documentation_messages.ex:8737
 #, elixir-autogen, elixir-format
@@ -18559,17 +18559,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8758
 #, elixir-autogen, elixir-format
 msgid "Revoke an account's shared access."
-msgstr ""
+msgstr "ألغِ الوصول المشترك لحساب."
 
 #: lib/marshall/documentation_messages.ex:8759
 #, elixir-autogen, elixir-format
 msgid "Revoke one of your SSH keys."
-msgstr ""
+msgstr "ألغِ أحد مفاتيح SSH الخاصة بك."
 
 #: lib/marshall/documentation_messages.ex:8776
 #, elixir-autogen, elixir-format
 msgid "Root-controlled public UUID restored-authority fence, shared identically across all replicas before recovery startup. The marker persists after invalidation."
-msgstr ""
+msgstr "قيد استعادة الصلاحية بمعرّف UUID عام يتحكم فيه الجذر، مشترك بصورة متطابقة بين كل النسخ المتماثلة قبل بدء الاستعادة. تبقى العلامة بعد الإبطال."
 
 #: lib/marshall/documentation_messages.ex:8878
 #, elixir-autogen, elixir-format
@@ -18599,12 +18599,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8972
 #, elixir-autogen, elixir-format
 msgid "Show command help."
-msgstr ""
+msgstr "اعرض مساعدة الأوامر."
 
 #: lib/marshall/documentation_messages.ex:8973
 #, elixir-autogen, elixir-format
 msgid "Show the authenticated account."
-msgstr ""
+msgstr "اعرض الحساب الموثّق."
 
 #: lib/marshall/documentation_messages.ex:9020
 #, elixir-autogen, elixir-format
@@ -18614,32 +18614,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9028
 #, elixir-autogen, elixir-format
 msgid "Start a machine."
-msgstr ""
+msgstr "ابدأ تشغيل جهاز."
 
 #: lib/marshall/documentation_messages.ex:9029
 #, elixir-autogen, elixir-format
 msgid "Stop a machine, retaining its disk and discarding suspended memory."
-msgstr ""
+msgstr "أوقف جهازاً مع الاحتفاظ بقرصه والتخلص من ذاكرة التعليق."
 
 #: lib/marshall/documentation_messages.ex:9062
 #, elixir-autogen, elixir-format
 msgid "Suspend a machine, preserving its memory and disk."
-msgstr ""
+msgstr "علّق جهازاً مع حفظ ذاكرته وقرصه."
 
 #: lib/marshall/documentation_messages.ex:9145
 #, elixir-autogen, elixir-format
 msgid "Tested scope: ADR-0201 presentation boundaries with recorded bounded BEAM/LiveView execution; full browser, native Porsche and linguistic acceptance remain partial."
-msgstr ""
+msgstr "نطاق الاختبار: حدود العرض في ADR-0201 مع تنفيذ BEAM/LiveView محدود مسجل؛ ولا يزال قبول المتصفح الكامل وPorsche الأصلي والقبول اللغوي جزئياً."
 
 #: lib/marshall/documentation_messages.ex:9221
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Authenticated Overview account preference and server-side Ghost request boundary; local BEAM evidence does not establish external delivery."
-msgstr ""
+msgstr "نطاق الاختبار: تفضيل الحساب الموثّق في Overview وحد طلب Ghost من جهة الخادم؛ ولا تثبت أدلة BEAM المحلية التسليم الخارجي."
 
 #: lib/marshall/documentation_messages.ex:9249
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Declared reflection protocol, dedicated Peach control role and projection fixture; source and test presence do not establish fleet enablement or successful native guest reflection"
-msgstr ""
+msgstr "نطاق الاختبار: بروتوكول الانعكاس المعلن ودور تحكم Peach المخصص وتجهيز الإسقاط؛ ولا يثبت وجود المصدر والاختبارات تفعيل الأسطول أو نجاح انعكاس الضيف الأصلي"
 
 #: lib/marshall/documentation_messages.ex:9765
 #, elixir-autogen, elixir-format
@@ -18689,7 +18689,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10512
 #, elixir-autogen, elixir-format
 msgid "The machine workspace exposes Android display controls only when the image's\n`android_display` capability is present. Viewer and controller ticket requests\nremain authenticated LiveView events; the browser relay must still enforce\ncurrent generation and controller lease before opening RFB.\n"
-msgstr ""
+msgstr "تعرض مساحة عمل الجهاز أدوات التحكم بشاشة Android فقط عند وجود قدرة `android_display` في الصورة. تبقى طلبات تذاكر المشاهد والمتحكم أحداث LiveView موثّقة؛ ولا يزال على مرحّل المتصفح فرض الجيل الحالي وإيجار المتحكم قبل فتح RFB.\n"
 
 #: lib/marshall/documentation_messages.ex:10628
 #, elixir-autogen, elixir-format
@@ -18714,12 +18714,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10900
 #, elixir-autogen, elixir-format
 msgid "These are legal connection phases, not proof of successful provider effects.\nAuthorization and refresh attempts retain their own one-use/submission phases;\nqueued delivery, request expiry and provider response are not connection state."
-msgstr ""
+msgstr "هذه مراحل اتصال مسموحة، وليست دليلاً على نجاح آثار المزوّد. تحتفظ محاولات التفويض والتحديث بمراحل الاستخدام الواحد/الإرسال الخاصة بها؛ ولا يُعد التسليم في الطابور أو انتهاء الطلب أو استجابة المزوّد حالة اتصال."
 
 #: lib/marshall/documentation_messages.ex:10936
 #, elixir-autogen, elixir-format
 msgid "This graph describes the intended local request boundary; it is not evidence of\nactivated fleet placement or a native guest journey."
-msgstr ""
+msgstr "يصف هذا الرسم حد الطلب المحلي المقصود؛ ولا يُعد دليلاً على تموضع أسطول مفعّل أو رحلة ضيف أصلية."
 
 #: lib/marshall/documentation_messages.ex:10988
 #, elixir-autogen, elixir-format
@@ -18759,7 +18759,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:11548
 #, elixir-autogen, elixir-format
 msgid "Whether to enable guest reflection service."
-msgstr ""
+msgstr "ما إذا كانت ستُفعّل خدمة انعكاس الضيف."
 
 #: lib/marshall/documentation_messages.ex:11605
 #, elixir-autogen, elixir-format
@@ -18799,7 +18799,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:11801
 #, elixir-autogen, elixir-format
 msgid "`GET /` returns a versioned object containing `guest`, `integrations`, and the\navailable paths. `GET /guest` returns only guest metadata. `GET /integrations`\nreturns the integrations array directly, which makes it convenient for shell\nscripts and agents."
-msgstr ""
+msgstr "يعيد `GET /` كائناً ذا إصدار يتضمن `guest` و`integrations` والمسارات المتاحة. يعيد `GET /guest` بيانات الضيف الوصفية فقط. ويعيد `GET /integrations` مصفوفة التكاملات مباشرة، مما يجعله مناسباً لنصوص الصدفة والوكلاء."
 
 #: lib/marshall/documentation_messages.ex:11829
 #, elixir-autogen, elixir-format

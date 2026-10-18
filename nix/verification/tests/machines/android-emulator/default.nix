@@ -9,9 +9,10 @@ let
     export ANDROID_USER_HOME=/var/lib/android-test
     export ANDROID_AVD_HOME=/var/lib/android-test/avd
     export DISPLAY=:0
+    mkdir -p "$HOME/.android"
     mkdir -p "$ANDROID_AVD_HOME"
     if [ ! -f "$ANDROID_AVD_HOME/overalls-test.avd/config.ini" ]; then
-      yes "" | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
+      printf 'no\n' | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
         --force --name overalls-test \
         --package 'system-images;android-36;google_apis;x86_64' \
         --path "$ANDROID_AVD_HOME/overalls-test.avd"
@@ -28,7 +29,8 @@ pkgs.testers.runNixOSTest {
     system.stateVersion = "26.05";
     virtualisation.memorySize = 6144;
     virtualisation.cores = 4;
-    environment.systemPackages = [ pkgs.android-tools pkgs.xorg.xorgserver pkgs.jdk sdk ];
+    virtualisation.diskSize = 32768;
+    environment.systemPackages = [ pkgs.android-tools pkgs.gawk pkgs.xorg.xorgserver pkgs.jdk sdk ];
     users.users.android-test = {
       isSystemUser = true;
       group = "android-test";
@@ -47,7 +49,11 @@ pkgs.testers.runNixOSTest {
       wantedBy = [ "multi-user.target" ];
       requires = [ "android-test-display.service" ];
       after = [ "android-test-display.service" ];
-      environment = { JAVA_HOME = "${pkgs.jdk}"; };
+      path = [ pkgs.coreutils pkgs.gawk ];
+      environment = {
+        HOME = "/var/lib/android-test";
+        JAVA_HOME = "${pkgs.jdk}";
+      };
       serviceConfig = {
         Type = "simple";
         User = "android-test";
@@ -67,14 +73,14 @@ pkgs.testers.runNixOSTest {
   testScript = ''
     android.start()
     android.wait_for_unit("android-test-emulator.service")
-    android.wait_until_succeeds("pgrep -a -f '/emulator/emulator'", timeout=30)
-    cmdline = android.succeed("pgrep -a -f '/emulator/emulator' | head -n 1")
+    android.wait_until_succeeds("pid=$(systemctl show -p MainPID --value android-test-emulator.service); test \"$pid\" -gt 0; tr '\\0' ' ' < /proc/$pid/cmdline | grep -F '/emulator'", timeout=120)
+    cmdline = android.succeed("pid=$(systemctl show -p MainPID --value android-test-emulator.service); tr '\\0' ' ' < /proc/$pid/cmdline")
     assert "-no-accel" in cmdline, cmdline
     assert "-gpu swiftshader_indirect" in cmdline, cmdline
     android.wait_for_open_port(5555)
     android.succeed("adb start-server")
-    android.wait_until_succeeds("adb -s emulator-5554 wait-for-device", timeout=180)
-    android.wait_until_succeeds("test \"$(adb -s emulator-5554 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=300)
+    android.wait_until_succeeds("timeout 15 adb -s emulator-5554 wait-for-device", timeout=600)
+    android.wait_until_succeeds("test \"$(timeout 15 adb -s emulator-5554 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=600)
     android.succeed("adb -s emulator-5554 shell getprop ro.kernel.qemu | grep -Fx 1")
     android.succeed("adb -s emulator-5554 shell settings get global animator_duration_scale")
     android.succeed("adb -s emulator-5554 exec-out screencap -p > /tmp/android-screencap.png")

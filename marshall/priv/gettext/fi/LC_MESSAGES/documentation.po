@@ -16477,12 +16477,12 @@ msgstr "## Commitin tekijätiedot"
 #: lib/marshall/documentation_messages.ex:213
 #, elixir-autogen, elixir-format
 msgid "## Connecting to a suspended machine"
-msgstr ""
+msgstr "## Yhteyden muodostaminen keskeytettyyn koneeseen"
 
 #: lib/marshall/documentation_messages.ex:244
 #, elixir-autogen, elixir-format
 msgid "## Demand wake and relocation relay"
-msgstr ""
+msgstr "## Tarvepohjainen herätys ja siirron välitys"
 
 #: lib/marshall/documentation_messages.ex:317
 #, elixir-autogen, elixir-format
@@ -16502,17 +16502,17 @@ msgstr "## Git-asetukset"
 #: lib/marshall/documentation_messages.ex:452
 #, elixir-autogen, elixir-format
 msgid "## Memory suspension and ingress handoff rollout"
-msgstr ""
+msgstr "## Muistin säilyttävän keskeytyksen ja saapuvien yhteyksien siirron käyttöönotto"
 
 #: lib/marshall/documentation_messages.ex:453
 #, elixir-autogen, elixir-format
 msgid "## Memory suspension and wake authority"
-msgstr ""
+msgstr "## Muistin säilyttävä keskeytys ja herätysoikeus"
 
 #: lib/marshall/documentation_messages.ex:454
 #, elixir-autogen, elixir-format
 msgid "## Memory-preserving suspension"
-msgstr ""
+msgstr "## Muistin säilyttävä keskeytys"
 
 #: lib/marshall/documentation_messages.ex:552
 #, elixir-autogen, elixir-format
@@ -16527,28 +16527,28 @@ msgstr "## Tilin Git-oletusten tallennus, koneen luominen ja valinnaisen agentti
 #: lib/marshall/documentation_messages.ex:834
 #, elixir-autogen, elixir-format
 msgid "## Snapshot continuation"
-msgstr ""
+msgstr "## Jatkaminen tilannekuvasta"
 
 #: lib/marshall/documentation_messages.ex:835
 #: lib/marshall/documentation_messages.ex:839
 #, elixir-autogen, elixir-format
 msgid "## Stage a personal Windows browser editor candidate while keeping unqualified Windows images editor-ineligible"
-msgstr ""
+msgstr "## Valmistele henkilökohtainen Windows-selaineditoriehdokas sallimatta editoria kelpuuttamattomille Windows-levykuville"
 
 #: lib/marshall/documentation_messages.ex:872
 #, elixir-autogen, elixir-format
 msgid "## Suspended workloads and gateway relay"
-msgstr ""
+msgstr "## Keskeytetyt työkuormat ja yhdyskäytävän välitys"
 
 #: lib/marshall/documentation_messages.ex:873
 #, elixir-autogen, elixir-format
 msgid "## Suspension checkpoint custody"
-msgstr ""
+msgstr "## Keskeytyksen tarkistuspisteen hallinta"
 
 #: lib/marshall/documentation_messages.ex:877
 #, elixir-autogen, elixir-format
 msgid "## Thread machine suspension"
-msgstr ""
+msgstr "## Keskusteluketjun koneen keskeytys"
 
 #: lib/marshall/documentation_messages.ex:963
 #, elixir-autogen, elixir-format
@@ -16578,7 +16578,7 @@ msgstr "### Historiallinen siirtonäyttö"
 #: lib/marshall/documentation_messages.ex:1458
 #, elixir-autogen, elixir-format
 msgid "### Windows editor payload staging (not admitted)"
-msgstr ""
+msgstr "### Windows-editorin sisällön valmistelu (ei hyväksytty käyttöön)"
 
 #: lib/marshall/documentation_messages.ex:1641
 #, elixir-autogen, elixir-format
@@ -17164,27 +17164,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "# Reflection integration"
-msgstr ""
+msgstr "# Reflektiointegraatio"
 
 #: lib/marshall/documentation_messages.ex:136
 #, elixir-autogen, elixir-format
 msgid "## Android display authority"
-msgstr ""
+msgstr "## Android-näytön käyttöoikeudet"
 
 #: lib/marshall/documentation_messages.ex:137
 #, elixir-autogen, elixir-format
 msgid "## Android software guest"
-msgstr ""
+msgstr "## Ohjelmistopohjainen Android-vieras"
 
 #: lib/marshall/documentation_messages.ex:254
 #, elixir-autogen, elixir-format
 msgid "## Customer private-service boundaries"
-msgstr ""
+msgstr "## Asiakkaan yksityisten palvelujen rajat"
 
 #: lib/marshall/documentation_messages.ex:267
 #, elixir-autogen, elixir-format
 msgid "## Discover the current guest and eligible private integrations without credential disclosure"
-msgstr ""
+msgstr "## Selvitä nykyinen vieras ja soveltuvat yksityiset integraatiot paljastamatta tunnistetietoja"
 
 #: lib/marshall/documentation_messages.ex:282
 #, elixir-autogen, elixir-format
@@ -17194,42 +17194,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:337
 #, elixir-autogen, elixir-format
 msgid "## GitHub OAuth deployment inputs"
-msgstr ""
+msgstr "## GitHub OAuthin käyttöönoton lähtötiedot"
 
 #: lib/marshall/documentation_messages.ex:338
 #, elixir-autogen, elixir-format
 msgid "## GitHub connection and token rotation"
-msgstr ""
+msgstr "## GitHub-yhteys ja tunnisteiden kierto"
 
 #: lib/marshall/documentation_messages.ex:339
 #, elixir-autogen, elixir-format
 msgid "## GitHub rotating credential recovery"
-msgstr ""
+msgstr "## GitHubin kiertävien tunnistetietojen palautus"
 
 #: lib/marshall/documentation_messages.ex:340
 #, elixir-autogen, elixir-format
 msgid "## GitHub.com connection authority"
-msgstr ""
+msgstr "## GitHub.com-yhteyden käyttöoikeudet"
 
 #: lib/marshall/documentation_messages.ex:353
 #, elixir-autogen, elixir-format
 msgid "## Guest reflection and dedicated Peach credentials"
-msgstr ""
+msgstr "## Vieraan reflektio ja erilliset Peach-tunnistetiedot"
 
 #: lib/marshall/documentation_messages.ex:477
 #, elixir-autogen, elixir-format
 msgid "## Metadata controls"
-msgstr ""
+msgstr "## Metatietojen hallinta"
 
 #: lib/marshall/documentation_messages.ex:584
 #, elixir-autogen, elixir-format
 msgid "## Peach private reflection placement"
-msgstr ""
+msgstr "## Peachin yksityisen reflektion sijoittelu"
 
 #: lib/marshall/documentation_messages.ex:892
 #, elixir-autogen, elixir-format
 msgid "## Subscribe to the newsletter or permanently dismiss the Overview invitation"
-msgstr ""
+msgstr "## Tilaa uutiskirje tai hylkää yleiskatsauksen kutsu pysyvästi"
 
 #: lib/marshall/documentation_messages.ex:952
 #, elixir-autogen, elixir-format
@@ -17904,22 +17904,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1745
 #, elixir-autogen, elixir-format
 msgid "### Built-in GitHub.com provider"
-msgstr ""
+msgstr "### Sisäänrakennettu GitHub.com-palveluntarjoaja"
 
 #: lib/marshall/documentation_messages.ex:1752
 #, elixir-autogen, elixir-format
 msgid "### GitHub connection ownership"
-msgstr ""
+msgstr "### GitHub-yhteyden omistus"
 
 #: lib/marshall/documentation_messages.ex:1763
 #, elixir-autogen, elixir-format
 msgid "### Peach reflection authority"
-msgstr ""
+msgstr "### Peach-reflektion käyttöoikeudet"
 
 #: lib/marshall/documentation_messages.ex:1901
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Documentation translations and native linguistic review remain incomplete. Packaged NixOS LTR/RTL browser journeys, real browser layout/bidi behavior and native Porsche protocol journeys are not established by the focused BEAM run."
-msgstr ""
+msgstr "**Puutteet:** Dokumentaation käännökset ja äidinkielinen kielentarkistus ovat yhä kesken. Rajattu BEAM-ajo ei osoita paketoituja NixOS-selainkäyttöpolkuja vasemmalta oikealle tai oikealta vasemmalle, todellisen selaimen asettelua tai kaksisuuntaista tekstiä eikä varsinaisia Porsche-protokollan käyttöpolkuja."
 
 #: lib/marshall/documentation_messages.ex:1957
 #, elixir-autogen, elixir-format
@@ -17929,22 +17929,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1989
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Ghost availability, external receipt, and native browser journey remain unverified."
-msgstr ""
+msgstr "**Puutteet:** Ghostin saatavuutta, ulkoista vastaanottoa ja varsinaista selainkäyttöpolkua ei ole vielä varmennettu."
 
 #: lib/marshall/documentation_messages.ex:2569
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add generated current/stale execution and dedicated credential histories, then run a packaged NixOS guest allowed/refused projection journey with Peach enabled and retain exact outcomes\n"
-msgstr ""
+msgstr "**Suositeltu testaustyö:** Lisää generoituja nykyisen ja vanhentuneen suorituksen sekä erillisten tunnistetietojen tapahtumahistorioita. Aja sitten paketoidun NixOS-vieraan sallitun ja hylätyn projektion käyttöpolku Peach käytössä ja tallenna tarkat tulokset\n"
 
 #: lib/marshall/documentation_messages.ex:3109
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the authenticated browser journey against a controlled Ghost-compatible endpoint and record receipt without exposing mailbox or token data."
-msgstr ""
+msgstr "**Suositeltu testaustyö:** Aja todennettu selainkäyttöpolku hallittua Ghost-yhteensopivaa päätepistettä vasten ja kirjaa vastaanotto paljastamatta postilaatikko- tai tunnistetietoja."
 
 #: lib/marshall/documentation_messages.ex:3133
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the memory-suspension-fleet NixOS check and record exact-source RAM/cgroup/connection evidence; separately qualify each native image before enabling its checkpoint operations."
-msgstr ""
+msgstr "**Suositeltu testaustyö:** Aja memory-suspension-fleet-NixOS-tarkistus ja tallenna täsmälliseen lähdekoodiversioon sidottu RAM-, cgroup- ja yhteysnäyttö. Kelpuuta kukin varsinainen levykuva erikseen ennen sen tarkistuspistetoimintojen käyttöönottoa."
 
 #: lib/marshall/documentation_messages.ex:3217
 #, elixir-autogen, elixir-format
@@ -18014,7 +18014,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3977
 #, elixir-autogen, elixir-format
 msgid "<!-- hldd:view:start -->\n## Declared ownership"
-msgstr ""
+msgstr "<!-- hldd:view:start -->\n## Määritetty omistajuus"
 
 #: lib/marshall/documentation_messages.ex:3978
 #, elixir-autogen, elixir-format
@@ -18034,7 +18034,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4189
 #, elixir-autogen, elixir-format
 msgid "Accept a pending ownership offer."
-msgstr ""
+msgstr "Hyväksy odottava omistajuustarjous."
 
 #: lib/marshall/documentation_messages.ex:4198
 #, elixir-autogen, elixir-format
@@ -18044,7 +18044,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4236
 #, elixir-autogen, elixir-format
 msgid "Add or change an admin or member."
-msgstr ""
+msgstr "Lisää tai muuta ylläpitäjä tai jäsen."
 
 #: lib/marshall/documentation_messages.ex:4325
 #, elixir-autogen, elixir-format
@@ -18099,42 +18099,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4757
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi supplies the trusted local execution binding; Peach uses its dedicated host credential; Marshall alone derives current machine and integration authority"
-msgstr ""
+msgstr "Raja: Audi toimittaa luotetun paikallisen suoritussidoksen; Peach käyttää omaa erillistä isäntätunnistettaan; vain Marshall johtaa nykyiset koneen ja integraation käyttöoikeudet"
 
 #: lib/marshall/documentation_messages.ex:4793
 #, elixir-autogen, elixir-format
 msgid "Boundary: Complete case-insensitive email addresses identify distinct accounts independently of Linux naming; generated u<uid> names and permanent GuestAccount UUID/UID reservations prevent accidental cross-account home inheritance."
-msgstr ""
+msgstr "Raja: Kokonaiset sähköpostiosoitteet yksilöivät tilit kirjainkoosta ja Linux-nimistä riippumatta; generoidut u<uid>-nimet ja pysyvät GuestAccount-UUID/UID-varaukset estävät kotihakemiston tahattoman periytymisen tililtä toiselle."
 
 #: lib/marshall/documentation_messages.ex:5029
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall owns account preference and request validation; Ghost owns subscription state and delivery."
-msgstr ""
+msgstr "Raja: Marshall vastaa tilin asetuksesta ja pyynnön tarkistuksesta; Ghost vastaa tilauksen tilasta ja toimituksesta."
 
 #: lib/marshall/documentation_messages.ex:5105
 #, elixir-autogen, elixir-format
 msgid "Boundary: Owner-only access, dedicated SSH/bootstrap purposes and a separate editor gateway; no generic private-service, sharing, web exposure or outbound/lateral authority."
-msgstr ""
+msgstr "Raja: Vain omistajan käyttöoikeus, erilliset SSH- ja alustuskäyttötarkoitukset sekä erillinen editoriyhdyskäytävä; ei yleisiä yksityisten palvelujen, jakamisen, verkkojulkaisun eikä lähtevien tai sivuttaisten yhteyksien oikeuksia."
 
 #: lib/marshall/documentation_messages.ex:5427
 #, elixir-autogen, elixir-format
 msgid "Cancel an unpublished clone or uncommitted relocation request."
-msgstr ""
+msgstr "Peruuta julkaisematon kloonaus tai siirtopyyntö, jonka luovutusta ei ole vahvistettu."
 
 #: lib/marshall/documentation_messages.ex:5431
 #, elixir-autogen, elixir-format
 msgid "Cancel your pending ownership offer."
-msgstr ""
+msgstr "Peruuta odottava omistajuustarjouksesi."
 
 #: lib/marshall/documentation_messages.ex:5474
 #, elixir-autogen, elixir-format
 msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
-msgstr ""
+msgstr "Muuta koneen suoritinta ja muistia; levyä voi vain suurentaa. Käynnissä oleva kone pysähtyy ja käynnistyy uudelleen."
 
 #: lib/marshall/documentation_messages.ex:5510
 #, elixir-autogen, elixir-format
 msgid "Close this interactive channel."
-msgstr ""
+msgstr "Sulje tämä vuorovaikutteinen kanava."
 
 #: lib/marshall/documentation_messages.ex:5532
 #, elixir-autogen, elixir-format
@@ -18149,27 +18149,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5612
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution, isolation."
-msgstr ""
+msgstr "Kattavuus: **osittainen**. Kerrokset: valtuutus, tiedonsiirto, suoritus, eristys."
 
 #: lib/marshall/documentation_messages.ex:5678
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, storage, recovery."
-msgstr ""
+msgstr "Kattavuus: **osittainen**. Kerrokset: henkilöllisyys, valtuutus, tallennus, palautuminen."
 
 #: lib/marshall/documentation_messages.ex:5803
 #, elixir-autogen, elixir-format
 msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
-msgstr ""
+msgstr "Luo kone. Levyn enimmäiskoko: 500 GiB. --source kloonaa julkisen GitHub-, GitLab-, Codeberg- tai Bitbucket-tietovaraston vieraaseen."
 
 #: lib/marshall/documentation_messages.ex:5808
 #, elixir-autogen, elixir-format
 msgid "Create a team you own."
-msgstr ""
+msgstr "Luo omistamasi tiimi."
 
 #: lib/marshall/documentation_messages.ex:5809
 #, elixir-autogen, elixir-format
 msgid "Create or replace a named integration at https://NAME.integration.internal."
-msgstr ""
+msgstr "Luo tai korvaa nimetty integraatio osoitteessa https://NAME.integration.internal."
 
 #: lib/marshall/documentation_messages.ex:5838
 #, elixir-autogen, elixir-format
@@ -18179,12 +18179,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5856
 #, elixir-autogen, elixir-format
 msgid "Decline a pending ownership offer."
-msgstr ""
+msgstr "Hylkää odottava omistajuustarjous."
 
 #: lib/marshall/documentation_messages.ex:5886
 #, elixir-autogen, elixir-format
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
-msgstr ""
+msgstr "Poista kone ja sen levy. Pyyntö hylätään, jos omistaja on kiinnittänyt koneen."
 
 #: lib/marshall/documentation_messages.ex:6001
 #, elixir-autogen, elixir-format
@@ -18234,7 +18234,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6528
 #, elixir-autogen, elixir-format
 msgid "Grant viewer, operator or manager access."
-msgstr ""
+msgstr "Myönnä katselijan, operaattorin tai hallinnoijan käyttöoikeus."
 
 #: lib/marshall/documentation_messages.ex:6542
 #, elixir-autogen, elixir-format
@@ -18249,37 +18249,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6642
 #, elixir-autogen, elixir-format
 msgid "Immutable executor artifacts for fenced retained-machine GitHub tools bootstrap."
-msgstr ""
+msgstr "Muuttumattomat suoritusartefaktit säilytetyn koneen GitHub-työkalujen aidattuun alustukseen."
 
 #: lib/marshall/documentation_messages.ex:6658
 #, elixir-autogen, elixir-format
 msgid "Immutable managed GitHub CLI and LFS release for fenced guest maintenance."
-msgstr ""
+msgstr "Muuttumaton hallittu GitHub CLI- ja LFS-julkaisu vieraan aidattua ylläpitoa varten."
 
 #: lib/marshall/documentation_messages.ex:6662
 #, elixir-autogen, elixir-format
 msgid "Immutable manifest for the managed guest GitHub tools release."
-msgstr ""
+msgstr "Muuttumaton manifesti vieraan hallitulle GitHub-työkalujulkaisulle."
 
 #: lib/marshall/documentation_messages.ex:6679
 #, elixir-autogen, elixir-format
 msgid "Immutable source-built executor inventory for retained-machine tool maintenance."
-msgstr ""
+msgstr "Muuttumaton lähdekoodista rakennettujen suoritusohjelmien luettelo säilytetyn koneen työkalujen ylläpitoon."
 
 #: lib/marshall/documentation_messages.ex:6737
 #, elixir-autogen, elixir-format
 msgid "Inspect a machine by name or UUID."
-msgstr ""
+msgstr "Tarkastele konetta nimen tai UUID-tunnisteen perusteella."
 
 #: lib/marshall/documentation_messages.ex:6738
 #, elixir-autogen, elixir-format
 msgid "Inspect a previously accepted request."
-msgstr ""
+msgstr "Tarkastele aiemmin hyväksyttyä pyyntöä."
 
 #: lib/marshall/documentation_messages.ex:6739
 #, elixir-autogen, elixir-format
 msgid "Inspect an integration without secrets."
-msgstr ""
+msgstr "Tarkastele integraatiota ilman salaisuuksia."
 
 #: lib/marshall/documentation_messages.ex:6740
 #, elixir-autogen, elixir-format
@@ -18304,37 +18304,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6904
 #, elixir-autogen, elixir-format
 msgid "List a team's members."
-msgstr ""
+msgstr "Luettele tiimin jäsenet."
 
 #: lib/marshall/documentation_messages.ex:6905
 #, elixir-autogen, elixir-format
 msgid "List access grants."
-msgstr ""
+msgstr "Luettele myönnetyt käyttöoikeudet."
 
 #: lib/marshall/documentation_messages.ex:6906
 #, elixir-autogen, elixir-format
 msgid "List available images."
-msgstr ""
+msgstr "Luettele käytettävissä olevat levykuvat."
 
 #: lib/marshall/documentation_messages.ex:6907
 #, elixir-autogen, elixir-format
 msgid "List machines you can access."
-msgstr ""
+msgstr "Luettele koneet, joihin sinulla on käyttöoikeus."
 
 #: lib/marshall/documentation_messages.ex:6912
 #, elixir-autogen, elixir-format
 msgid "List your SSH keys."
-msgstr ""
+msgstr "Luettele SSH-avaimesi."
 
 #: lib/marshall/documentation_messages.ex:6913
 #, elixir-autogen, elixir-format
 msgid "List your integrations."
-msgstr ""
+msgstr "Luettele integraatiosi."
 
 #: lib/marshall/documentation_messages.ex:6914
 #, elixir-autogen, elixir-format
 msgid "List your teams and roles."
-msgstr ""
+msgstr "Luettele tiimisi ja roolisi."
 
 #: lib/marshall/documentation_messages.ex:6970
 #, elixir-autogen, elixir-format
@@ -18344,7 +18344,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6998
 #, elixir-autogen, elixir-format
 msgid "Make an integration available to a machine."
-msgstr ""
+msgstr "Aseta integraatio koneen käytettäväksi."
 
 #: lib/marshall/documentation_messages.ex:7003
 #, elixir-autogen, elixir-format
@@ -18379,7 +18379,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7141
 #, elixir-autogen, elixir-format
 msgid "Move a machine to an automatically selected host."
-msgstr ""
+msgstr "Siirrä kone automaattisesti valittuun isäntään."
 
 #: lib/marshall/documentation_messages.ex:7150
 #, elixir-autogen, elixir-format
@@ -18399,7 +18399,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7313
 #, elixir-autogen, elixir-format
 msgid "Offer team ownership to an admin."
-msgstr ""
+msgstr "Tarjoa tiimin omistajuutta ylläpitäjälle."
 
 #: lib/marshall/documentation_messages.ex:7334
 #, elixir-autogen, elixir-format
@@ -18414,7 +18414,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7477
 #, elixir-autogen, elixir-format
 msgid "Options:"
-msgstr ""
+msgstr "Valinnat:"
 
 #: lib/marshall/documentation_messages.ex:7540
 #, elixir-autogen, elixir-format
@@ -18429,7 +18429,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7585
 #, elixir-autogen, elixir-format
 msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
-msgstr ""
+msgstr "Kiinnitä kone luetteloidesi alkuun. Omistajan kiinnitys herättää koneen sekä estää automaattisen keskeytyksen ja poistamisen."
 
 #: lib/marshall/documentation_messages.ex:7596
 #, elixir-autogen, elixir-format
@@ -18444,7 +18444,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7669
 #, elixir-autogen, elixir-format
 msgid "Private runtime GitHub OAuth client secret, delivered through systemd credentials."
-msgstr ""
+msgstr "Yksityinen ajonaikainen GitHub OAuth -asiakassalaisuus, joka toimitetaan systemd-tunnistetietojen kautta."
 
 #: lib/marshall/documentation_messages.ex:7731
 #, elixir-autogen, elixir-format
@@ -18454,7 +18454,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7777
 #, elixir-autogen, elixir-format
 msgid "Public GitHub OAuth application client identity. Configure together with clientSecretFile and redirectUri."
-msgstr ""
+msgstr "Julkinen GitHub OAuth -sovelluksen asiakastunnus. Määritä yhdessä clientSecretFile- ja redirectUri-asetusten kanssa."
 
 #: lib/marshall/documentation_messages.ex:7803
 #, elixir-autogen, elixir-format
@@ -18464,12 +18464,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7827
 #, elixir-autogen, elixir-format
 msgid "Queue an independent full-disk copy of a machine."
-msgstr ""
+msgstr "Lisää koneen itsenäinen koko levyn kopio jonoon."
 
 #: lib/marshall/documentation_messages.ex:7881
 #, elixir-autogen, elixir-format
 msgid "Reflection is available only through the private network. Requests are bound to\nthe current VM, host, placement, and execution epoch; stopped, relocated,\nretired, stale, or unauthorized guests receive an unavailable response.\n"
-msgstr ""
+msgstr "Reflektio on käytettävissä vain yksityisen verkon kautta. Pyynnöt sidotaan\nnykyiseen virtuaalikoneeseen, isäntään, sijoitteluun ja suoritusepookkiin; pysäytetyt, siirretyt,\npoistetut, vanhentuneet tai luvattomat vieraat saavat vastauksen, jonka mukaan palvelu ei ole käytettävissä.\n"
 
 #: lib/marshall/documentation_messages.ex:7885
 #, elixir-autogen, elixir-format
@@ -18484,7 +18484,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7893
 #, elixir-autogen, elixir-format
 msgid "Registered HTTPS GitHub OAuth callback URL."
-msgstr ""
+msgstr "Rekisteröity GitHub OAuthin HTTPS-paluukutsuosoite."
 
 #: lib/marshall/documentation_messages.ex:7894
 #, elixir-autogen, elixir-format
@@ -18494,27 +18494,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7914
 #, elixir-autogen, elixir-format
 msgid "Remove a machine's explicit availability."
-msgstr ""
+msgstr "Poista koneen erikseen määritetty saatavuus."
 
 #: lib/marshall/documentation_messages.ex:7915
 #, elixir-autogen, elixir-format
 msgid "Remove a named integration."
-msgstr ""
+msgstr "Poista nimetty integraatio."
 
 #: lib/marshall/documentation_messages.ex:7916
 #, elixir-autogen, elixir-format
 msgid "Remove an account's membership."
-msgstr ""
+msgstr "Poista tilin jäsenyys."
 
 #: lib/marshall/documentation_messages.ex:7917
 #, elixir-autogen, elixir-format
 msgid "Remove your pin from a machine."
-msgstr ""
+msgstr "Poista oma kiinnityksesi koneesta."
 
 #: lib/marshall/documentation_messages.ex:8105
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Foreign actors cannot dismiss another account; malformed mailboxes and all upstream failures are refused safely without secret diagnostics."
-msgstr ""
+msgstr "Vaadittu hylkäys: Vieraat toimijat eivät voi hylätä kutsua toisen tilin puolesta; virheelliset postilaatikot ja kaikki taustapalvelun virheet hylätään turvallisesti ilman salaisia tietoja sisältävää diagnostiikkaa."
 
 #: lib/marshall/documentation_messages.ex:8145
 #, elixir-autogen, elixir-format
@@ -18524,12 +18524,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8181
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Malformed or foreign host bindings, stale execution, stopped or retired machines, expired or revoked Peach credentials and disallowed profiles must refuse without returning a retained projection or secret header values"
-msgstr ""
+msgstr "Vaadittu hylkäys: Virheelliset tai vieraat isäntäsidokset, vanhentunut suoritus, pysäytetyt tai poistetut koneet, vanhentuneet tai perutut Peach-tunnistetiedot ja kielletyt profiilit on hylättävä palauttamatta säilytettyä projektiota tai salaisia otsakearvoja"
 
 #: lib/marshall/documentation_messages.ex:8417
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject administrator ownership bypass, stale manager grants, forged guest marks and Customer inference/reflection/integration/telemetry before a private execution binding."
-msgstr ""
+msgstr "Vaadittu hylkäys: Hylkää ylläpitäjän omistajuuden ohitus, vanhentuneet hallinnoijan valtuutukset, väärennetyt vierasmerkinnät ja Customerin päättely-, reflektio-, integraatio- ja telemetriatoiminnot ennen yksityisen suoritussidoksen muodostamista."
 
 #: lib/marshall/documentation_messages.ex:8669
 #, elixir-autogen, elixir-format
@@ -18539,17 +18539,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8713
 #, elixir-autogen, elixir-format
 msgid "Resume a suspended machine's preserved memory."
-msgstr ""
+msgstr "Jatka keskeytetyn koneen toimintaa säilytetystä muistista."
 
 #: lib/marshall/documentation_messages.ex:8718
 #, elixir-autogen, elixir-format
 msgid "Resume preserved memory, waiting for capacity or relocation."
-msgstr ""
+msgstr "Jatka säilytetystä muistista odottaen kapasiteettia tai siirtoa."
 
 #: lib/marshall/documentation_messages.ex:8731
 #, elixir-autogen, elixir-format
 msgid "Retry a failed clone or relocation request."
-msgstr ""
+msgstr "Yritä epäonnistunutta kloonaus- tai siirtopyyntöä uudelleen."
 
 #: lib/marshall/documentation_messages.ex:8737
 #, elixir-autogen, elixir-format
@@ -18559,17 +18559,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8758
 #, elixir-autogen, elixir-format
 msgid "Revoke an account's shared access."
-msgstr ""
+msgstr "Peruuta tilille jaettu käyttöoikeus."
 
 #: lib/marshall/documentation_messages.ex:8759
 #, elixir-autogen, elixir-format
 msgid "Revoke one of your SSH keys."
-msgstr ""
+msgstr "Peruuta yksi SSH-avaimistasi."
 
 #: lib/marshall/documentation_messages.ex:8776
 #, elixir-autogen, elixir-format
 msgid "Root-controlled public UUID restored-authority fence, shared identically across all replicas before recovery startup. The marker persists after invalidation."
-msgstr ""
+msgstr "Pääkäyttäjän hallitsema julkinen UUID-raja palautetulle valtuutukselle, joka jaetaan samanlaisena kaikille replikoille ennen palautuksen käynnistystä. Merkintä säilyy mitätöinnin jälkeen."
 
 #: lib/marshall/documentation_messages.ex:8878
 #, elixir-autogen, elixir-format
@@ -18599,12 +18599,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8972
 #, elixir-autogen, elixir-format
 msgid "Show command help."
-msgstr ""
+msgstr "Näytä komentojen ohje."
 
 #: lib/marshall/documentation_messages.ex:8973
 #, elixir-autogen, elixir-format
 msgid "Show the authenticated account."
-msgstr ""
+msgstr "Näytä todennettu tili."
 
 #: lib/marshall/documentation_messages.ex:9020
 #, elixir-autogen, elixir-format
@@ -18614,32 +18614,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9028
 #, elixir-autogen, elixir-format
 msgid "Start a machine."
-msgstr ""
+msgstr "Käynnistä kone."
 
 #: lib/marshall/documentation_messages.ex:9029
 #, elixir-autogen, elixir-format
 msgid "Stop a machine, retaining its disk and discarding suspended memory."
-msgstr ""
+msgstr "Pysäytä kone säilyttäen sen levy ja hyläten keskeytyksessä säilytetty muisti."
 
 #: lib/marshall/documentation_messages.ex:9062
 #, elixir-autogen, elixir-format
 msgid "Suspend a machine, preserving its memory and disk."
-msgstr ""
+msgstr "Keskeytä kone säilyttäen sen muisti ja levy."
 
 #: lib/marshall/documentation_messages.ex:9145
 #, elixir-autogen, elixir-format
 msgid "Tested scope: ADR-0201 presentation boundaries with recorded bounded BEAM/LiveView execution; full browser, native Porsche and linguistic acceptance remain partial."
-msgstr ""
+msgstr "Testattu laajuus: ADR-0201:n esitysrajat tallennetulla rajatulla BEAM/LiveView-suorituksella; täysi selaimen, varsinaisen Porschen ja kielen hyväksyntä on yhä osittainen."
 
 #: lib/marshall/documentation_messages.ex:9221
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Authenticated Overview account preference and server-side Ghost request boundary; local BEAM evidence does not establish external delivery."
-msgstr ""
+msgstr "Testattu laajuus: Todennetun yleiskatsauksen tiliasetus ja palvelinpuolen Ghost-pyynnön raja; paikallinen BEAM-näyttö ei osoita ulkoista toimitusta."
 
 #: lib/marshall/documentation_messages.ex:9249
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Declared reflection protocol, dedicated Peach control role and projection fixture; source and test presence do not establish fleet enablement or successful native guest reflection"
-msgstr ""
+msgstr "Testattu laajuus: Määritetty reflektioprotokolla, erillinen Peach-hallintarooli ja projektion testiaineisto; lähdekoodin ja testien olemassaolo ei osoita käyttöönottoa laivastossa eikä onnistunutta varsinaisen vieraan reflektiota"
 
 #: lib/marshall/documentation_messages.ex:9765
 #, elixir-autogen, elixir-format
@@ -18714,12 +18714,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10900
 #, elixir-autogen, elixir-format
 msgid "These are legal connection phases, not proof of successful provider effects.\nAuthorization and refresh attempts retain their own one-use/submission phases;\nqueued delivery, request expiry and provider response are not connection state."
-msgstr ""
+msgstr "Nämä ovat sallittuja yhteyden vaiheita, eivät todiste palveluntarjoajan toimintojen onnistumisesta.\nValtuutus- ja päivitysyrityksillä on omat kertakäyttö- ja lähetysvaiheensa;\njonossa oleva toimitus, pyynnön vanheneminen ja palveluntarjoajan vastaus eivät ole yhteyden tiloja."
 
 #: lib/marshall/documentation_messages.ex:10936
 #, elixir-autogen, elixir-format
 msgid "This graph describes the intended local request boundary; it is not evidence of\nactivated fleet placement or a native guest journey."
-msgstr ""
+msgstr "Tämä kaavio kuvaa suunniteltua paikallisen pyynnön rajaa; se ei todista\nkäyttöönotettua laivastosijoittelua eikä varsinaista vieraan käyttöpolkua."
 
 #: lib/marshall/documentation_messages.ex:10988
 #, elixir-autogen, elixir-format
@@ -18759,7 +18759,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:11548
 #, elixir-autogen, elixir-format
 msgid "Whether to enable guest reflection service."
-msgstr ""
+msgstr "Otetaanko vieraan reflektiopalvelu käyttöön."
 
 #: lib/marshall/documentation_messages.ex:11605
 #, elixir-autogen, elixir-format

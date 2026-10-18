@@ -5,6 +5,7 @@ defmodule Marshall.Access.PinsPropertyTest do
   import Marshall.ComputeFixtures
   @moduletag capture_log: true
   @moduletag timeout: 300_000
+  @moduletag hegel_case_sandbox: true
 
   alias Marshall.{Access, Compute, SSH}
   alias Marshall.Access.{Pin, Pins}
@@ -21,8 +22,13 @@ defmodule Marshall.Access.PinsPropertyTest do
   @type pin_command :: {:pin | :unpin, :alice | :bob, non_neg_integer()}
   @type pin_model :: %{alice: [String.t()], bob: [String.t()]}
 
-  setup do
-    fixture = host_fixture()
+  # @cc [owner:ghuntley,label:verification] pin-generated-fixture-isolation
+  # Every generated case and replay MUST start its own SQL sandbox before creating
+  # hosts, users or gateway authority and release that owner before the next case.
+  @spec property_fixture() :: String.t()
+  defp property_fixture do
+    isolate_property_case()
+    host_fixture()
     {gateway_token, _} = Token.issue(:gateway)
 
     {:ok, _} =
@@ -30,7 +36,7 @@ defmodule Marshall.Access.PinsPropertyTest do
         actor: SystemActor.compute()
       )
 
-    %{fixture: fixture, gateway_token: gateway_token}
+    gateway_token
   end
 
   @spec guard_commands() :: Hegel.Gen.t(guard_command())
@@ -50,9 +56,10 @@ defmodule Marshall.Access.PinsPropertyTest do
   # absent, whatever the member holds. A refusal MUST leave intent unchanged and
   # enqueue nothing; an admission MUST then archive every live pin on the VM once
   # the deleted outcome arrives.
-  test "deletion is admitted exactly when the owner's pin is absent", c do
+  test "deletion is admitted exactly when the owner's pin is absent" do
     Hegel.check(
       fn ->
+        gateway_token = property_fixture()
         commands = draw("commands", list_of(guard_commands(), min_length: 4, max_length: 16))
         host_fixture()
         owner = user()
@@ -61,8 +68,8 @@ defmodule Marshall.Access.PinsPropertyTest do
         share!(vm, owner, member, :manager)
 
         sessions = %{
-          owner: session(owner, c.gateway_token),
-          member: session(member, c.gateway_token)
+          owner: session(owner, gateway_token),
+          member: session(member, gateway_token)
         }
 
         model = %{owner: false, member: false, deleted: false}
@@ -186,7 +193,12 @@ defmodule Marshall.Access.PinsPropertyTest do
   # list unless already pinned, an unpin removes it, repeats change nothing,
   # each user/VM pair keeps at most one live row, and `pinned_vm_ids/1` and the
   # pinned view return exactly the model order and never another user's pins.
+
+  # The full 100-case isolated run measured 276 seconds; retain finite aggregate
+  # headroom while every case keeps its own SQL ownership deadline.
+  @tag timeout: 600_000
   property "pin histories match the per-user ordered-set model", test_cases: 100 do
+    property_fixture()
     commands = draw("commands", list_of(pin_commands(), min_length: 3, max_length: 20))
     # Each synthetic host admits two of these machines.
     for _ <- 1..2, do: host_fixture()
@@ -259,6 +271,7 @@ defmodule Marshall.Access.PinsPropertyTest do
   # authorized machine exactly once, pinned machines first in pin order and the
   # rest in id order, independent of the page size.
   property "pinned section plus excluded pages covers each machine once", test_cases: 100 do
+    property_fixture()
     pin_order = draw("pin_order", list_of(integer(0..5), min_length: 0, max_length: 8))
     page_size = draw("page_size", integer(1..4))
     for _ <- 1..3, do: host_fixture()
