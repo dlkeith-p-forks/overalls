@@ -7,6 +7,11 @@ let
   almaCommand = plain alma.buildCommand;
   archRootCommand = plain arch.passthru.rootfs.buildCommand;
   almaRootCommand = plain alma.passthru.rootfs.buildCommand;
+  almaPrivate = packages.mkAlmaLinuxGuest {
+    imageName = "alma-private-evaluation";
+    privateServiceRoots = [ ../../../../secrets/private-services-root.pem ];
+  };
+  almaPrivateRootCommand = plain almaPrivate.passthru.rootfs.buildCommand;
   archSourceName = builtins.baseNameOf (toString arch.passthru.source);
   almaSourceName = builtins.baseNameOf (toString alma.passthru.source);
   # @cc [owner:ghuntley,label:verification] foreign-linux-builder-evaluation
@@ -73,6 +78,18 @@ assert accountRuntime archRootCommand;
 assert accountRuntime almaRootCommand;
 assert pkgs.lib.hasInfix "z / 0755 root root -" archRootCommand;
 assert !(pkgs.lib.hasInfix "z / 0755 root root -" almaRootCommand);
+# @cc [owner:ghuntley,label:verification;build;security] almalinux-resolver-assembly-scope
+# Only private Alma roots MUST install the pinned resolver bundle and scoped
+# identity bootstrap. Plain Alma and Arch assembly MUST retain their own paths.
+assert pkgs.lib.hasInfix "example/systemd/system/$unit" almaPrivateRootCommand;
+assert pkgs.lib.hasInfix "systemd-resolved-monitor.socket" almaPrivateRootCommand;
+assert pkgs.lib.hasInfix "example/sysusers.d/systemd-resolve.conf" almaPrivateRootCommand;
+assert pkgs.lib.hasInfix "share/dbus-1/system.d/org.freedesktop.resolve1.conf" almaPrivateRootCommand;
+assert pkgs.lib.hasInfix "share/dbus-1/system-services/org.freedesktop.resolve1.service" almaPrivateRootCommand;
+assert pkgs.lib.hasInfix (plain "ExecStart=${pkgs.systemd}/bin/systemd-sysusers /usr/lib/sysusers.d/systemd-resolve.conf") almaPrivateRootCommand;
+assert pkgs.lib.hasInfix "Requires=overalls-resolved-identity.service" almaPrivateRootCommand;
+assert !(pkgs.lib.hasInfix "overalls-resolved-identity.service" almaRootCommand);
+assert !(pkgs.lib.hasInfix "overalls-resolved-identity.service" archRootCommand);
 assert arch.name == "arch-evaluation";
 assert alma.name == "alma-evaluation";
 # The source format remains part of the evaluated catalog contract, so a

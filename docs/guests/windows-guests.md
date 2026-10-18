@@ -299,8 +299,10 @@ agent logs.
 The repaired profile/bootstrap image `8ca0a11f` passed actual installation in
 1,834.2 seconds. Its immutable NTFS copies of the three repaired executables
 match the reviewed payloads; the sealed recursive NAR has no references.
-Signed publication and a clean exact-image create/CLI SSH/stop/restart/repeated
-SSH/delete lifecycle remain separate pending evidence. The old disposable
+Signed cache publication and Ed25519 verification of the exact NAR fingerprint
+also passed. Independent full-content substitution, selection and a clean
+exact-image create/CLI SSH/stop/restart/repeated SSH/delete lifecycle remain
+separate pending evidence. The old disposable
 fixture's manual profile repair is not an unchanged-image lifecycle pass.
 The [matrix review](../architecture/reviews/2026-10-18-guest-os-matrix.md)
 records exact image, NAR and private receipt identities.

@@ -243,6 +243,12 @@ higher-priority root policy preserves root 0755 without changing capabilities
 or recursively changing ownership. Actual artifact checks and a pinned
 tmpfiles/capability-free scratch execution pass; a fresh repaired-image
 production lifecycle remains separate.
+The private Alma image additionally carries the existing pinned resolver's
+service, two sockets, D-Bus policy/activation and a scoped identity bootstrap.
+That bootstrap runs only the exact resolver sysusers configuration before
+sysinit/D-Bus/resolver startup, preserving vendor conditions and unrelated
+accounts. Actual artifact, isolated sysusers and native unit-parser checks
+pass; these do not establish a fresh guest boot or resolver/SSH readiness.
 
 Native builders and catalog entries are in
 [`native.nix`](../../../nix/domains/artifacts/guest/native.nix),

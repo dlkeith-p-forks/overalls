@@ -370,8 +370,10 @@ records.
 The repaired exact image `8ca0a11f` then passed its actual 1,834.2-second
 installation and immutable NTFS readback of all three repaired executables.
 The sealed no-reference recursive NAR has a separate custody receipt. Signed
-publication and a fresh exact-image physical CLI lifecycle remain pending;
-installation does not close the runtime gates or change this record's status.
+cache publication and exact NAR-fingerprint Ed25519 verification then passed.
+Independent substitution, selection and a fresh exact-image physical CLI
+lifecycle remain pending; custody does not close the runtime gates or change
+this record's status.
 
 ## Open questions
 

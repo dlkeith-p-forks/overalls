@@ -492,9 +492,16 @@ with recursive NAR hash
 `sha256-MTpVti0Mc+c3FzqjUJLfBAfEIW+plgP+HheZnVdPlUo=`,
 68,723,672,224 bytes and no references. Private installer, installed-custody,
 manifest and seal receipts are under
-`/tmp/overalls-windows-profile-bootstrap-*`. Signed publication and clean
-physical lifecycle acceptance remain pending; the old mutated fixture does
-not verify these new bytes.
+`/tmp/overalls-windows-profile-bootstrap-*`. Scoped signed publication then
+passed in 418.446 seconds, followed by public narinfo retrieval and actual
+Ed25519 verification of the exact NAR fingerprint, including store path, hash,
+size and empty references. Receipt
+`/tmp/overalls-windows-profile-bootstrap-publication-receipt.json` has SHA-256
+`eed8f20592a39abc7a99c77e8ef3bc70ae3a515fa9f0582aa8c529e2be65f442`.
+The first urllib fetch returned a client-specific 403; bounded TLS curl fetch
+passed with the same signature checks. Independent full-content Dungarees
+substitution, selected-image deployment and clean physical lifecycle acceptance
+remain pending; the old mutated fixture does not verify these new bytes.
 The separate corrected Arch/Alma qualification
 ledger `/tmp/porsche-20261018-085815` later created Arch
 `10ce2f77-7be8-4dea-9f8c-3171dac34b0c` from image `fc437aea` and Alma
@@ -586,6 +593,47 @@ network and growth predicates, but `systemd-resolved.service` was absent.
 Dependent private DNS/readiness/SSH units therefore remained inactive. The
 closed `alma-final-{readiness,units}-diagnostic.json` receipts preserve that
 cause without changing its original failed create or proving guest SSH.
+
+The private Alma-only repair now installs the existing pinned resolver service,
+both sockets, D-Bus policy/activation and exact sysusers configuration. A
+dedicated `overalls-resolved-identity.service` invokes only that configuration
+after remount/vendor sysusers and before sysinit, D-Bus and resolver startup;
+the resolver requires and follows this bootstrap. Vendor sysusers conditions
+and unrelated account configurations remain intact. Eight regular files and
+five activation links are checked byte-for-byte with root ownership and modes
+in the actual immutable ext4; the old image is rejected specifically for its
+missing resolver runtime. Final private filesystem/evaluation gates passed in
+44 seconds. The Arch derivation is unchanged, and there is no new host service,
+domain/resource, wire contract, capability or authority grant.
+
+The repaired Alma candidate is
+`sha256:bed87c331fae5fbd3669646765f21af7c9631498e3c8cef5d19952f55714dc33`.
+Its actual-artifact audit checks the manifest, copied native executables and
+exact pinned resolver/sysusers/nologin ELF bytes, including root-owned 0555
+executables inside the copied Nix store. Private receipt
+`alma-resolver-artifact-audit.json` in the combined Linux ledger has SHA-256
+`e22bab6bda53887a9650c4e9f4e67f40b0227f2a68f3c130c749589bc175f98e`.
+Independent Dungarees forced root and wrapper rebuilds with empty builders and
+substituters passed, and remote root/manifest hashes match local immutable
+outputs. The combined source selects those exact Alma outputs and preserves
+the Arch derivation. Receipt `alma-resolver-cross-host-receipt.json` has SHA-256
+`48495dc6264e4d05f6ec0e95b9990fe6b8b898e26751b94c4222cb53cfcee488`.
+Isolated pinned sysusers execution using copied Alma account databases creates
+only a locked nonroot resolver UID/GID 992, preserves every unrelated account
+row and reruns byte-idempotently. Receipt `alma-resolver-sysusers-proof.json`
+has SHA-256
+`16086d0b7f231a2b17c0b41ed4a9ab316ec32cdfd80bbe77aaeca414c6f4afe2`.
+
+The native Alma systemd 257 parser also accepts the exact pinned systemd 261
+resolver service/two sockets and the actual built identity unit/drop-in with
+zero unknown/invalid settings, ordering cycles or shared-library failures.
+The isolated extracted scratch still reports eight missing executables; this
+is parser compatibility evidence without daemon execution. The v2 receipt
+`/tmp/alma-systemd-parser-20261018-1053/native-parser-receipt-v2.json` has
+SHA-256 `9bd222f8a940488a1a8121013716cf5d8ca4ef3fc38d94d0e7fa0f1aea276973`,
+and retains the original narrower v1 receipt identity. Artifact/build, sysusers
+policy execution and parser results do not establish a fresh production guest
+boot, resolver/D-Bus activation, strict CLI SSH or the repaired-image lifecycle.
 
 The same ledger's later strict idle-namespace recovery preserved the original
 cleanup intents. Both the user Podman service and exact pause scope received

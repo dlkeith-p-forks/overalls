@@ -321,7 +321,43 @@ let
         ln -sfn /dev/null ./files/etc/systemd/system/systemd-resolved.service
         printf 'nameserver 1.1.1.1\nnameserver 9.9.9.9\n' > ./files/etc/resolv.conf
       ''}
-      ${lib.optionalString (privateServiceRoots != [ ]) ''
+      ${lib.optionalString (privateServiceRoots != [ ] && distribution == "almalinux") ''
+          # @cc [owner:ghuntley,label:build;security] almalinux-private-resolver-runtime
+          # Private Alma images MUST carry the pinned nonroot resolver service,
+          # both sockets, D-Bus activation/policy and its sysusers configuration.
+          # A dedicated bootstrap MUST create only that configured identity
+          # before resolver/DBus startup, even when vendor sysusers is skipped.
+          for unit in systemd-resolved.service systemd-resolved-varlink.socket systemd-resolved-monitor.socket; do
+            install -D -m 0644 ${pkgs.systemd}/example/systemd/system/$unit ./files/usr/lib/systemd/system/$unit
+          done
+          install -D -m 0644 ${pkgs.systemd}/example/sysusers.d/systemd-resolve.conf ./files/usr/lib/sysusers.d/systemd-resolve.conf
+          install -D -m 0644 ${pkgs.systemd}/share/dbus-1/system.d/org.freedesktop.resolve1.conf ./files/usr/share/dbus-1/system.d/org.freedesktop.resolve1.conf
+          install -D -m 0644 ${pkgs.systemd}/share/dbus-1/system-services/org.freedesktop.resolve1.service ./files/usr/share/dbus-1/system-services/org.freedesktop.resolve1.service
+          cat > ./files/etc/systemd/system/overalls-resolved-identity.service <<'EOF'
+        [Unit]
+        Description=Create the private DNS resolver service identity
+        DefaultDependencies=no
+        After=systemd-remount-fs.service systemd-sysusers.service
+        Before=sysinit.target systemd-resolved.service dbus.socket dbus.service dbus-broker.service
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=${pkgs.systemd}/bin/systemd-sysusers /usr/lib/sysusers.d/systemd-resolve.conf
+        [Install]
+        WantedBy=sysinit.target
+        EOF
+          mkdir -p ./files/etc/systemd/system/systemd-resolved.service.d ./files/etc/systemd/system/sysinit.target.wants
+          cat > ./files/etc/systemd/system/systemd-resolved.service.d/identity.conf <<'EOF'
+        [Unit]
+        Requires=overalls-resolved-identity.service
+        After=overalls-resolved-identity.service
+        EOF
+          ln -sfn ../overalls-resolved-identity.service ./files/etc/systemd/system/sysinit.target.wants/overalls-resolved-identity.service
+          ln -sfn /usr/lib/systemd/system/systemd-resolved.service ./files/etc/systemd/system/dbus-org.freedesktop.resolve1.service
+          for unit in systemd-resolved-varlink.socket systemd-resolved-monitor.socket; do
+            ln -sfn /usr/lib/systemd/system/$unit ./files/etc/systemd/system/sockets.target.wants/$unit
+          done
+      ''}${lib.optionalString (privateServiceRoots != [ ]) ''
         ln -sfn /usr/lib/systemd/system/systemd-resolved.service ./files/etc/systemd/system/multi-user.target.wants/systemd-resolved.service
         mkdir -p ./files/etc/systemd/resolved.conf.d
         cat > ./files/etc/systemd/resolved.conf.d/lilly.conf <<'EOF'

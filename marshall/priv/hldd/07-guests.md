@@ -868,8 +868,10 @@ sshd. The diagnostic mutated the disposable fixture and does not establish
 unchanged-image SSH or lifecycle acceptance.
 The repaired exact `8ca0a11f` image subsequently passed actual installation and
 immutable readback of all three repaired executables. Its sealed recursive NAR
-has no references. Signed publication and a fresh clean physical CLI lifecycle
-remain pending; the old mutated fixture does not verify those new bytes.
+has no references. Signed cache publication and exact NAR-fingerprint Ed25519
+verification passed; independent substitution, selection and a fresh clean
+physical CLI lifecycle remain pending. The old mutated fixture does not verify
+those new bytes.
 The [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
 records exact run identities and unrun corrected-image/later lifecycle stages.
 The separate exact-promoted OmniOS fixture then completed creation. Its first
@@ -890,8 +892,11 @@ Arch-only higher-priority root policy now retains 0755; actual artifact gates,
 the old-image negative and pinned tmpfiles scratch execution passed. A fresh
 repaired-image production lifecycle remains pending. Alma's exact fixture has
 no `systemd-resolved.service`, leaving dependent DNS/readiness/SSH inactive;
-its original create failure remains unchanged while the resolver repair is
-prepared.
+its original create failure remains unchanged. The private Alma repair installs
+the pinned resolver service, two sockets, D-Bus activation/policy and a scoped
+identity bootstrap before sysinit/D-Bus/resolver startup. Actual artifact,
+exact-config sysusers and native unit-parser checks pass; a fresh repaired-image
+boot and full CLI lifecycle remain pending.
 The final historical cleanup census records all 15 known fixtures deleted
 after strict idle rootless-namespace retirement. Both service and pause scope
 received guarded normal SIGTERM with no force, migration, unmount, storage
@@ -909,8 +914,8 @@ network, isolation or recovery behavior. Both entries use the normal Linux
 guest agent row and are catalogued without standby metadata in [`fleet/guest-images.nix`](repo:fleet/guest-images.nix).
 Their offline image assembly now carries the pinned Lyra/terminald binaries,
 Python, Git, OpenSSH, CA bundle and generic systemd service units; evaluation
-checks verify those closures and service references, while no native Arch or
-Alma boot result is recorded.
+checks verify those closures and service references. Successful repaired-image
+native Arch and Alma boot results remain separate gaps.
 
 SSH uses a complete owned key-only policy and pinned PAM modules, with a
 requisite private login receipt before a session opens. Locked `sshd` and

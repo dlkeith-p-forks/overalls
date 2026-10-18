@@ -1109,6 +1109,15 @@ isolated pinned-tmpfiles execution reproduce that refusal and show successful
 write/flush/fsync/unlink under the override with the same empty capability
 sets. No capabilities or recursive ownership are added. Fresh repaired-image
 runtime and foreign SSH/PAM/sudo acceptance remain separate gaps.
+Private Alma images install the exact pinned nonroot resolver service and its
+two sockets, D-Bus policy/activation and sysusers configuration. A root oneshot
+invokes only that configuration before sysinit/D-Bus/resolver startup; the
+resolver requires its successful completion. Existing vendor sysusers
+conditions and unrelated account configurations are preserved. Isolated exact
+configuration execution creates a locked nonroot identity, preserves unrelated
+account rows and is byte-idempotent. Artifact custody and native unit parsing
+pass, but new-image resolver/D-Bus behavior, readiness and CLI acceptance still
+need a fresh guest journey. This adds no host, transport or protocol authority.
 
 ## Windows guest boundaries
 

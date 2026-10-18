@@ -979,6 +979,17 @@ in 357 seconds and converged healthy on both hosts at 10:10 UTC. Independent
 forced Dungarees rebuilds of the actual Arch/Alma ext4s and wrappers passed
 with remote hashes matching local outputs. Later Arch root-policy artifact and
 pinned-tmpfiles scratch checks passed; neither is a fresh guest lifecycle.
+The subsequent private Alma resolver bundle passed actual filesystem/unit gates
+in 44 seconds, and the old exact image was rejected for missing resolver files.
+Pinned exact-config sysusers execution created a locked nonroot resolver
+identity, preserved every unrelated account row and was byte-idempotent on
+repeat. The actual immutable image contains the expected resolver, sysusers and
+nologin ELF bytes. Alma's native systemd 257 parser accepted the exact pinned
+261 service, two sockets and actual identity unit/drop-in without unknown or
+invalid settings or cycles. The extracted scratch retained eight missing
+executable diagnostics; parsing does not establish daemon execution or boot.
+The matrix review records exact receipts. Fresh repaired-image lifecycle and
+production deployment retain separate scopes.
 The later incoming Ziggy reporter history explicitly selects one generated
 case, and two Galileo boot-refusal histories select two each with the CI
 profile. Their remaining inner compatibility `max_runs` options are ignored;
