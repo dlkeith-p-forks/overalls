@@ -202,6 +202,57 @@ class GuestControlTest(unittest.TestCase):
             ],
         )
 
+    def test_stopped_inventory_keeps_last_boot_tuple(self) -> None:
+        with (
+            tempfile.TemporaryDirectory() as directory,
+            tempfile.TemporaryDirectory() as image_directory,
+        ):
+            root = Path(directory)
+            image = Path(image_directory)
+            artifact = {"bytes": 1024, "sha256": "a" * 64}
+            (image / "manifest.json").write_text(
+                json.dumps(
+                    {
+                        "version": 4,
+                        "workspace_source_version": None,
+                        "architecture": "x86_64",
+                        "boot_args": "console=ttyS0",
+                        "minimum_memory_bytes": 536870912,
+                        "minimum_disk_bytes": 2147483648,
+                        "kernel": artifact,
+                        "initrd": artifact,
+                        "rootfs": artifact,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            tools = ToolConfig(
+                image_dir=image,
+                qemu=Path("/nix/store/qemu"),
+                qemu_img=Path("/nix/store/qemu-img"),
+                backend=Path("/nix/store/backend"),
+                ip=Path("/nix/store/ip"),
+            )
+            good = root / "11111111-1111-4111-8111-111111111111"
+            good.mkdir()
+            (good / "stopped.json").write_text(
+                json.dumps({"placement_id": good.name, "execution_epoch": 3, "generation": 2}),
+                encoding="utf-8",
+            )
+            stale = root / "22222222-2222-4222-8222-222222222222"
+            stale.mkdir()
+            (stale / "stopped.json").write_text(
+                json.dumps({"placement_id": good.name, "execution_epoch": 3, "generation": 2}),
+                encoding="utf-8",
+            )
+            placements = inventory(root, tools)["placements"]
+        self.assertIsInstance(placements, list)
+        assert isinstance(placements, list)
+        self.assertEqual(
+            [(p["state"], p["execution_epoch"], p["generation"]) for p in placements],
+            [("stopped", 3, 2), ("uncertain", None, None)],
+        )
+
     def test_stale_stop_does_not_terminate_newer_launch(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             state = Path(directory)

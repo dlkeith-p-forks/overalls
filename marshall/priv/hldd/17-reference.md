@@ -326,7 +326,14 @@ validations now start from empty volumes. With the host enabled, run
 reported exactly the 2 GiB guest memory, while admission reserves guest memory
 plus the fixed 64 MiB VMM overhead, so Marshall correctly refused every
 provision for insufficient capacity. The slot now reports guest memory plus
-that overhead, and the workload capacity gate requires the same sum.
+that overhead, and the workload capacity gate requires the same sum. Run
+`655477db4745f0857c2c0ffcd8571d7a-65-0` then booted real QEMU guests to port 1024
+readiness, but no stop ever completed: the guest VMM inventory dropped the
+execution epoch and generation once a placement stopped, while the fixture
+executor binds a stop to that exact boot, so every stop was deferred until the
+driver gave up and later cycles found the slot held. The inventory now reports
+the stopped boot tuple from its stop record, and the driver submits a final
+stop on every exit after admission.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The
