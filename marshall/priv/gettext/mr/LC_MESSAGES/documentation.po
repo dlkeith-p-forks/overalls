@@ -57,142 +57,142 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "# Accounts and access control"
-msgstr ""
+msgstr "# खाती आणि प्रवेश नियंत्रण"
 
 #: lib/marshall/documentation_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "# Agent threads and tools"
-msgstr ""
+msgstr "# एजंट थ्रेड आणि साधने"
 
 #: lib/marshall/documentation_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "# Ash business domains"
-msgstr ""
+msgstr "# Ash व्यवसाय डोमेन"
 
 #: lib/marshall/documentation_messages.ex:49
 #, elixir-autogen, elixir-format
 msgid "# Automation"
-msgstr ""
+msgstr "# स्वयंचलन"
 
 #: lib/marshall/documentation_messages.ex:50
 #, elixir-autogen, elixir-format
 msgid "# Backup and recovery"
-msgstr ""
+msgstr "# बॅकअप आणि पुनर्प्राप्ती"
 
 #: lib/marshall/documentation_messages.ex:51
 #, elixir-autogen, elixir-format
 msgid "# Browser editors, terminals, SSH, and management"
-msgstr ""
+msgstr "# ब्राउझर संपादक, टर्मिनल, SSH आणि व्यवस्थापन"
 
 #: lib/marshall/documentation_messages.ex:52
 #, elixir-autogen, elixir-format
 msgid "# Browser extension"
-msgstr ""
+msgstr "# ब्राउझर विस्तार"
 
 #: lib/marshall/documentation_messages.ex:53
 #, elixir-autogen, elixir-format
 msgid "# Command reference"
-msgstr ""
+msgstr "# आदेश संदर्भ"
 
 #: lib/marshall/documentation_messages.ex:54
 #, elixir-autogen, elixir-format
 msgid "# Control plane and durable authority"
-msgstr ""
+msgstr "# नियंत्रण स्तर आणि कायम प्राधिकरण"
 
 #: lib/marshall/documentation_messages.ex:55
 #, elixir-autogen, elixir-format
 msgid "# Deployment topology"
-msgstr ""
+msgstr "# तैनाती टोपोलॉजी"
 
 #: lib/marshall/documentation_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "# Getting started"
-msgstr ""
+msgstr "# सुरुवात करा"
 
 #: lib/marshall/documentation_messages.ex:57
 #, elixir-autogen, elixir-format
 msgid "# Guest systems and images"
-msgstr ""
+msgstr "# अतिथी प्रणाली आणि प्रतिमा"
 
 #: lib/marshall/documentation_messages.ex:58
 #, elixir-autogen, elixir-format
 msgid "# Installation and deployment"
-msgstr ""
+msgstr "# प्रतिष्ठापन आणि तैनाती"
 
 #: lib/marshall/documentation_messages.ex:59
 #, elixir-autogen, elixir-format
 msgid "# Machine lifecycle"
-msgstr ""
+msgstr "# यंत्राचे जीवनचक्र"
 
 #: lib/marshall/documentation_messages.ex:60
 #, elixir-autogen, elixir-format
 msgid "# Monitoring and troubleshooting"
-msgstr ""
+msgstr "# देखरेख आणि समस्यानिवारण"
 
 #: lib/marshall/documentation_messages.ex:61
 #, elixir-autogen, elixir-format
 msgid "# Networking, ingress, and certificates"
-msgstr ""
+msgstr "# नेटवर्किंग, इनग्रेस आणि प्रमाणपत्रे"
 
 #: lib/marshall/documentation_messages.ex:62
 #, elixir-autogen, elixir-format
 msgid "# Nix cache trust and fallback"
-msgstr ""
+msgstr "# Nix कॅशे विश्वास आणि पर्याय"
 
 #: lib/marshall/documentation_messages.ex:63
 #, elixir-autogen, elixir-format
 msgid "# NixOS machine configuration"
-msgstr ""
+msgstr "# NixOS यंत्र संरचना"
 
 #: lib/marshall/documentation_messages.ex:64
 #, elixir-autogen, elixir-format
 msgid "# NixOS option reference"
-msgstr ""
+msgstr "# NixOS पर्याय संदर्भ"
 
 #: lib/marshall/documentation_messages.ex:65
 #, elixir-autogen, elixir-format
 msgid "# Overalls documentation"
-msgstr ""
+msgstr "# Overalls दस्तऐवजीकरण"
 
 #: lib/marshall/documentation_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "# Resize, clone, and relocation"
-msgstr ""
+msgstr "# आकार बदला, क्लोन करा आणि स्थलांतरित करा"
 
 #: lib/marshall/documentation_messages.ex:67
 #, elixir-autogen, elixir-format
 msgid "# Routine operations"
-msgstr ""
+msgstr "# नियमित कार्ये"
 
 #: lib/marshall/documentation_messages.ex:68
 #, elixir-autogen, elixir-format
 msgid "# Security boundaries and sensitive operations"
-msgstr ""
+msgstr "# सुरक्षा सीमा आणि संवेदनशील कार्ये"
 
 #: lib/marshall/documentation_messages.ex:69
 #, elixir-autogen, elixir-format
 msgid "# Storage and capacity"
-msgstr ""
+msgstr "# संचयन आणि क्षमता"
 
 #: lib/marshall/documentation_messages.ex:70
 #, elixir-autogen, elixir-format
 msgid "# Supporting services"
-msgstr ""
+msgstr "# सहाय्यक सेवा"
 
 #: lib/marshall/documentation_messages.ex:71
 #, elixir-autogen, elixir-format
 msgid "# System overview"
-msgstr ""
+msgstr "# प्रणाली आढावा"
 
 #: lib/marshall/documentation_messages.ex:72
 #, elixir-autogen, elixir-format
 msgid "# User scenarios and test gaps"
-msgstr ""
+msgstr "# वापरकर्ता परिस्थिती आणि चाचणी उणीवा"
 
 #: lib/marshall/documentation_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "# Verification and reference"
-msgstr ""
+msgstr "# पडताळणी आणि संदर्भ"
 
 #: lib/marshall/documentation_messages.ex:74
 #, elixir-autogen, elixir-format

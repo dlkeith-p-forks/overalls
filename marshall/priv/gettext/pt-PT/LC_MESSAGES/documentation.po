@@ -107,32 +107,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "# Getting started"
-msgstr ""
+msgstr "# Primeiros passos"
 
 #: lib/marshall/documentation_messages.ex:57
 #, elixir-autogen, elixir-format
 msgid "# Guest systems and images"
-msgstr ""
+msgstr "# Sistemas convidados e imagens"
 
 #: lib/marshall/documentation_messages.ex:58
 #, elixir-autogen, elixir-format
 msgid "# Installation and deployment"
-msgstr ""
+msgstr "# Instalação e implementação"
 
 #: lib/marshall/documentation_messages.ex:59
 #, elixir-autogen, elixir-format
 msgid "# Machine lifecycle"
-msgstr ""
+msgstr "# Ciclo de vida das máquinas"
 
 #: lib/marshall/documentation_messages.ex:60
 #, elixir-autogen, elixir-format
 msgid "# Monitoring and troubleshooting"
-msgstr ""
+msgstr "# Monitorização e resolução de problemas"
 
 #: lib/marshall/documentation_messages.ex:61
 #, elixir-autogen, elixir-format
 msgid "# Networking, ingress, and certificates"
-msgstr ""
+msgstr "# Rede, entrada e certificados"
 
 #: lib/marshall/documentation_messages.ex:62
 #, elixir-autogen, elixir-format
@@ -162,27 +162,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:67
 #, elixir-autogen, elixir-format
 msgid "# Routine operations"
-msgstr ""
+msgstr "# Operações de rotina"
 
 #: lib/marshall/documentation_messages.ex:68
 #, elixir-autogen, elixir-format
 msgid "# Security boundaries and sensitive operations"
-msgstr ""
+msgstr "# Limites de segurança e operações sensíveis"
 
 #: lib/marshall/documentation_messages.ex:69
 #, elixir-autogen, elixir-format
 msgid "# Storage and capacity"
-msgstr ""
+msgstr "# Armazenamento e capacidade"
 
 #: lib/marshall/documentation_messages.ex:70
 #, elixir-autogen, elixir-format
 msgid "# Supporting services"
-msgstr ""
+msgstr "# Serviços de suporte"
 
 #: lib/marshall/documentation_messages.ex:71
 #, elixir-autogen, elixir-format
 msgid "# System overview"
-msgstr ""
+msgstr "# Visão geral do sistema"
 
 #: lib/marshall/documentation_messages.ex:72
 #, elixir-autogen, elixir-format
@@ -192,7 +192,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "# Verification and reference"
-msgstr ""
+msgstr "# Verificação e referência"
 
 #: lib/marshall/documentation_messages.ex:74
 #, elixir-autogen, elixir-format

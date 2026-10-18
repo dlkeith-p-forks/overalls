@@ -57,142 +57,142 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "# Accounts and access control"
-msgstr ""
+msgstr "# Mga account at kontrol sa pag-access"
 
 #: lib/marshall/documentation_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "# Agent threads and tools"
-msgstr ""
+msgstr "# Mga thread at tool ng ahente"
 
 #: lib/marshall/documentation_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "# Ash business domains"
-msgstr ""
+msgstr "# Mga domain ng negosyo ng Ash"
 
 #: lib/marshall/documentation_messages.ex:49
 #, elixir-autogen, elixir-format
 msgid "# Automation"
-msgstr ""
+msgstr "# Awtomasyon"
 
 #: lib/marshall/documentation_messages.ex:50
 #, elixir-autogen, elixir-format
 msgid "# Backup and recovery"
-msgstr ""
+msgstr "# Backup at pagbawi"
 
 #: lib/marshall/documentation_messages.ex:51
 #, elixir-autogen, elixir-format
 msgid "# Browser editors, terminals, SSH, and management"
-msgstr ""
+msgstr "# Mga editor ng browser, terminal, SSH, at pamamahala"
 
 #: lib/marshall/documentation_messages.ex:52
 #, elixir-autogen, elixir-format
 msgid "# Browser extension"
-msgstr ""
+msgstr "# Extension ng browser"
 
 #: lib/marshall/documentation_messages.ex:53
 #, elixir-autogen, elixir-format
 msgid "# Command reference"
-msgstr ""
+msgstr "# Sanggunian ng command"
 
 #: lib/marshall/documentation_messages.ex:54
 #, elixir-autogen, elixir-format
 msgid "# Control plane and durable authority"
-msgstr ""
+msgstr "# Control plane at matatag na awtoridad"
 
 #: lib/marshall/documentation_messages.ex:55
 #, elixir-autogen, elixir-format
 msgid "# Deployment topology"
-msgstr ""
+msgstr "# Topolohiya ng deployment"
 
 #: lib/marshall/documentation_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "# Getting started"
-msgstr ""
+msgstr "# Pagsisimula"
 
 #: lib/marshall/documentation_messages.ex:57
 #, elixir-autogen, elixir-format
 msgid "# Guest systems and images"
-msgstr ""
+msgstr "# Mga guest system at image"
 
 #: lib/marshall/documentation_messages.ex:58
 #, elixir-autogen, elixir-format
 msgid "# Installation and deployment"
-msgstr ""
+msgstr "# Pag-install at deployment"
 
 #: lib/marshall/documentation_messages.ex:59
 #, elixir-autogen, elixir-format
 msgid "# Machine lifecycle"
-msgstr ""
+msgstr "# Siklo ng buhay ng makina"
 
 #: lib/marshall/documentation_messages.ex:60
 #, elixir-autogen, elixir-format
 msgid "# Monitoring and troubleshooting"
-msgstr ""
+msgstr "# Pagsubaybay at pag-troubleshoot"
 
 #: lib/marshall/documentation_messages.ex:61
 #, elixir-autogen, elixir-format
 msgid "# Networking, ingress, and certificates"
-msgstr ""
+msgstr "# Networking, ingress, at certificate"
 
 #: lib/marshall/documentation_messages.ex:62
 #, elixir-autogen, elixir-format
 msgid "# Nix cache trust and fallback"
-msgstr ""
+msgstr "# Tiwala at fallback ng Nix cache"
 
 #: lib/marshall/documentation_messages.ex:63
 #, elixir-autogen, elixir-format
 msgid "# NixOS machine configuration"
-msgstr ""
+msgstr "# Konpigurasyon ng NixOS machine"
 
 #: lib/marshall/documentation_messages.ex:64
 #, elixir-autogen, elixir-format
 msgid "# NixOS option reference"
-msgstr ""
+msgstr "# Sanggunian ng opsyon ng NixOS"
 
 #: lib/marshall/documentation_messages.ex:65
 #, elixir-autogen, elixir-format
 msgid "# Overalls documentation"
-msgstr ""
+msgstr "# Dokumentasyon ng Overalls"
 
 #: lib/marshall/documentation_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "# Resize, clone, and relocation"
-msgstr ""
+msgstr "# Baguhin ang laki, i-clone, at ilipat"
 
 #: lib/marshall/documentation_messages.ex:67
 #, elixir-autogen, elixir-format
 msgid "# Routine operations"
-msgstr ""
+msgstr "# Karaniwang operasyon"
 
 #: lib/marshall/documentation_messages.ex:68
 #, elixir-autogen, elixir-format
 msgid "# Security boundaries and sensitive operations"
-msgstr ""
+msgstr "# Mga hangganan ng seguridad at sensitibong operasyon"
 
 #: lib/marshall/documentation_messages.ex:69
 #, elixir-autogen, elixir-format
 msgid "# Storage and capacity"
-msgstr ""
+msgstr "# Storage at kapasidad"
 
 #: lib/marshall/documentation_messages.ex:70
 #, elixir-autogen, elixir-format
 msgid "# Supporting services"
-msgstr ""
+msgstr "# Mga serbisyong sumusuporta"
 
 #: lib/marshall/documentation_messages.ex:71
 #, elixir-autogen, elixir-format
 msgid "# System overview"
-msgstr ""
+msgstr "# Pangkalahatang-ideya ng system"
 
 #: lib/marshall/documentation_messages.ex:72
 #, elixir-autogen, elixir-format
 msgid "# User scenarios and test gaps"
-msgstr ""
+msgstr "# Mga senaryo ng user at puwang sa pagsubok"
 
 #: lib/marshall/documentation_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "# Verification and reference"
-msgstr ""
+msgstr "# Pagpapatunay at sanggunian"
 
 #: lib/marshall/documentation_messages.ex:74
 #, elixir-autogen, elixir-format

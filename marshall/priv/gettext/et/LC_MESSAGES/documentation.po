@@ -57,142 +57,142 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "# Accounts and access control"
-msgstr ""
+msgstr "# Kontod ja juurdepääsu kontroll"
 
 #: lib/marshall/documentation_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "# Agent threads and tools"
-msgstr ""
+msgstr "# Agendi lõimed ja tööriistad"
 
 #: lib/marshall/documentation_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "# Ash business domains"
-msgstr ""
+msgstr "# Ashi äridomeenid"
 
 #: lib/marshall/documentation_messages.ex:49
 #, elixir-autogen, elixir-format
 msgid "# Automation"
-msgstr ""
+msgstr "# Automatiseerimine"
 
 #: lib/marshall/documentation_messages.ex:50
 #, elixir-autogen, elixir-format
 msgid "# Backup and recovery"
-msgstr ""
+msgstr "# Varundamine ja taastamine"
 
 #: lib/marshall/documentation_messages.ex:51
 #, elixir-autogen, elixir-format
 msgid "# Browser editors, terminals, SSH, and management"
-msgstr ""
+msgstr "# Brauseriredaktorid, terminalid, SSH ja haldus"
 
 #: lib/marshall/documentation_messages.ex:52
 #, elixir-autogen, elixir-format
 msgid "# Browser extension"
-msgstr ""
+msgstr "# Brauserilaiendus"
 
 #: lib/marshall/documentation_messages.ex:53
 #, elixir-autogen, elixir-format
 msgid "# Command reference"
-msgstr ""
+msgstr "# Käsuviite"
 
 #: lib/marshall/documentation_messages.ex:54
 #, elixir-autogen, elixir-format
 msgid "# Control plane and durable authority"
-msgstr ""
+msgstr "# Juhtimistasand ja püsiv autoriteet"
 
 #: lib/marshall/documentation_messages.ex:55
 #, elixir-autogen, elixir-format
 msgid "# Deployment topology"
-msgstr ""
+msgstr "# Juurutamise topoloogia"
 
 #: lib/marshall/documentation_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "# Getting started"
-msgstr ""
+msgstr "# Alustamine"
 
 #: lib/marshall/documentation_messages.ex:57
 #, elixir-autogen, elixir-format
 msgid "# Guest systems and images"
-msgstr ""
+msgstr "# Külalissüsteemid ja tõmmised"
 
 #: lib/marshall/documentation_messages.ex:58
 #, elixir-autogen, elixir-format
 msgid "# Installation and deployment"
-msgstr ""
+msgstr "# Paigaldus ja juurutamine"
 
 #: lib/marshall/documentation_messages.ex:59
 #, elixir-autogen, elixir-format
 msgid "# Machine lifecycle"
-msgstr ""
+msgstr "# Masina elutsükkel"
 
 #: lib/marshall/documentation_messages.ex:60
 #, elixir-autogen, elixir-format
 msgid "# Monitoring and troubleshooting"
-msgstr ""
+msgstr "# Jälgimine ja tõrkeotsing"
 
 #: lib/marshall/documentation_messages.ex:61
 #, elixir-autogen, elixir-format
 msgid "# Networking, ingress, and certificates"
-msgstr ""
+msgstr "# Võrgundus, sisend ja sertifikaadid"
 
 #: lib/marshall/documentation_messages.ex:62
 #, elixir-autogen, elixir-format
 msgid "# Nix cache trust and fallback"
-msgstr ""
+msgstr "# Nixi vahemälu usaldus ja tagavara"
 
 #: lib/marshall/documentation_messages.ex:63
 #, elixir-autogen, elixir-format
 msgid "# NixOS machine configuration"
-msgstr ""
+msgstr "# NixOS-i masina konfiguratsioon"
 
 #: lib/marshall/documentation_messages.ex:64
 #, elixir-autogen, elixir-format
 msgid "# NixOS option reference"
-msgstr ""
+msgstr "# NixOS-i suvandite viide"
 
 #: lib/marshall/documentation_messages.ex:65
 #, elixir-autogen, elixir-format
 msgid "# Overalls documentation"
-msgstr ""
+msgstr "# Overallsi dokumentatsioon"
 
 #: lib/marshall/documentation_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "# Resize, clone, and relocation"
-msgstr ""
+msgstr "# Suuruse muutmine, kloonimine ja teisaldamine"
 
 #: lib/marshall/documentation_messages.ex:67
 #, elixir-autogen, elixir-format
 msgid "# Routine operations"
-msgstr ""
+msgstr "# Igapäevased toimingud"
 
 #: lib/marshall/documentation_messages.ex:68
 #, elixir-autogen, elixir-format
 msgid "# Security boundaries and sensitive operations"
-msgstr ""
+msgstr "# Turvapiirid ja tundlikud toimingud"
 
 #: lib/marshall/documentation_messages.ex:69
 #, elixir-autogen, elixir-format
 msgid "# Storage and capacity"
-msgstr ""
+msgstr "# Salvestus ja maht"
 
 #: lib/marshall/documentation_messages.ex:70
 #, elixir-autogen, elixir-format
 msgid "# Supporting services"
-msgstr ""
+msgstr "# Tugiteenused"
 
 #: lib/marshall/documentation_messages.ex:71
 #, elixir-autogen, elixir-format
 msgid "# System overview"
-msgstr ""
+msgstr "# Süsteemi ülevaade"
 
 #: lib/marshall/documentation_messages.ex:72
 #, elixir-autogen, elixir-format
 msgid "# User scenarios and test gaps"
-msgstr ""
+msgstr "# Kasutajastsenaariumid ja testilüngad"
 
 #: lib/marshall/documentation_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "# Verification and reference"
-msgstr ""
+msgstr "# Kontrollimine ja viide"
 
 #: lib/marshall/documentation_messages.ex:74
 #, elixir-autogen, elixir-format

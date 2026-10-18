@@ -107,17 +107,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "# Getting started"
-msgstr ""
+msgstr "# தொடங்குதல்"
 
 #: lib/marshall/documentation_messages.ex:57
 #, elixir-autogen, elixir-format
 msgid "# Guest systems and images"
-msgstr ""
+msgstr "# விருந்தினர் அமைப்புகள் மற்றும் படங்கள்"
 
 #: lib/marshall/documentation_messages.ex:58
 #, elixir-autogen, elixir-format
 msgid "# Installation and deployment"
-msgstr ""
+msgstr "# நிறுவல் மற்றும் வெளியீடு"
 
 #: lib/marshall/documentation_messages.ex:59
 #, elixir-autogen, elixir-format
