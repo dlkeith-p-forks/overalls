@@ -7413,3 +7413,38 @@ msgstr "produksiyon, pangalan-ng-proyekto"
 #, elixir-autogen, elixir-format
 msgid "same time as you"
 msgstr "kapareho ng oras mo"
+
+#: lib/marshall_web/live/account_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "Paglalarawan"
+
+#: lib/marshall_web/live/account_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "Napalitan ang pangalan ng SSH key."
+
+#: lib/marshall_web/live/account_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "Hindi mapalitan ang pangalan ng key na ito. Gumamit ng hanggang 128 character."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "Nangangailangan ng administrator ang mga administratibong pagbabago."
+
+#: lib/marshall_web/live_admin_auth.ex:139
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "Hindi awtorisado ang mga administratibong pagbabago."
+
+#: lib/marshall_web/live_admin_auth.ex:186
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "Tapusin o kanselahin muna ang kasalukuyang pagpapatunay."
+
+#: lib/marshall_web/live_admin_auth.ex:199
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "Hindi wastong administratibong request."

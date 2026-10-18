@@ -16,6 +16,8 @@ retirement or generation replacement withdraws authority without replaying an
 upstream mutation. Anonymous public forwarding receives no credential. See
 [services](#services), [security](#security) and
 [ADR-0202](repo:docs/architecture/decisions/0202-github-com-owner-integration.md).
+Safe GitHub pagination `Link` headers are rewritten to the private endpoint so
+managed clients can continue pagination without receiving an upstream hostname.
 Suspended-machine discovery retains publication and identity lookup without
 pretending the guest is reachable. Audi admits wake only after current SSH key,
 web publication/login or editor authority. A waiting connection joins one durable

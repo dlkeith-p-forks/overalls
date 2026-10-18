@@ -7087,12 +7087,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3867
 #, elixir-autogen, elixir-format
 msgid "Actual parent dataset GUID as a decimal string."
-msgstr ""
+msgstr "Tegeliku ülemandmestiku GUID kümnendstringina."
 
 #: lib/marshall/documentation_messages.ex:3868
 #, elixir-autogen, elixir-format
 msgid "Actual unsigned 64-bit zpool GUID as a decimal string."
-msgstr ""
+msgstr "Tegelik märgita 64-bitine zpooli GUID kümnendstringina."
 
 #: lib/marshall/documentation_messages.ex:3869
 #, elixir-autogen, elixir-format
@@ -7412,7 +7412,7 @@ msgstr "Nooled tähistavad seadistatud teenusepaigutust. Konfiguratsioon: `dunga
 #: lib/marshall/documentation_messages.ex:4140
 #, elixir-autogen, elixir-format
 msgid "At least two independent authoritative nameservers."
-msgstr ""
+msgstr "Vähemalt kaks sõltumatut autoriteetset nimeserverit."
 
 #: lib/marshall/documentation_messages.ex:4141
 #, elixir-autogen, elixir-format
@@ -8222,7 +8222,7 @@ msgstr "Piir: sisselogitud piiratud ja puhastatud projektsioonid; kehtiv kõrgen
 #: lib/marshall/documentation_messages.ex:4801
 #, elixir-autogen, elixir-format
 msgid "Boundary: Signed-in read access is separate from administrator membership plus fresh elevation."
-msgstr ""
+msgstr "Piir: sisselogitud lugemisõigus on eraldi administraatori liikmesusest koos värske õiguste tõstmisega."
 
 #: lib/marshall/documentation_messages.ex:4805
 #, elixir-autogen, elixir-format
@@ -8232,7 +8232,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4809
 #, elixir-autogen, elixir-format
 msgid "Boundary: Stored browser login, current direct/team Cedar rights, exact app cookie and execution/policy-bound five-second request-start lease."
-msgstr ""
+msgstr "Piir: salvestatud brauseri sisselogimine, kehtivad otsesed/meeskonna Cedari õigused, täpne rakenduseküpsis ning täitmise/poliitikaga seotud viiesekundiline päringu alustamise rendiõigus."
 
 #: lib/marshall/documentation_messages.ex:4813
 #, elixir-autogen, elixir-format
@@ -8242,7 +8242,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4817
 #, elixir-autogen, elixir-format
 msgid "Boundary: Strict operator schema, control origin, private credential and local socket are validated before Galileo creates serving authority."
-msgstr ""
+msgstr "Piir: range operaatoriskeem, juhtimise päritolu, privaatne mandaat ja kohalik sokkel valideeritakse enne, kui Galileo loob teenindusõiguse."
 
 #: lib/marshall/documentation_messages.ex:4821
 #, elixir-autogen, elixir-format
@@ -8342,7 +8342,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4897
 #, elixir-autogen, elixir-format
 msgid "Boundary: The shared client owns volatile reconnect scheduling; durable host freshness and domain authority remain independent."
-msgstr ""
+msgstr "Piir: jagatud klient omab lenduvat taasühendumise ajastust; püsiv hosti värskus ja domeeni otsustusõigus jäävad sõltumatuks."
 
 #: lib/marshall/documentation_messages.ex:4901
 #, elixir-autogen, elixir-format
@@ -8362,17 +8362,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4913
 #, elixir-autogen, elixir-format
 msgid "Boundary: Trusted absolute utility argv, private export lock and all-adopted-child kernel custody; source permit and SSH authority remain separate."
-msgstr ""
+msgstr "Piir: usaldatud absoluutne utiliidi argv, privaatne ekspordilukk ja kõigi üle võetud alamprotsesside tuumavaldus; lähteluba ja SSH-õigus jäävad eraldi."
 
 #: lib/marshall/documentation_messages.ex:4917
 #, elixir-autogen, elixir-format
 msgid "Boundary: Unsupported-version close is a terminal transport refusal, and disconnect cannot prove domain completion."
-msgstr ""
+msgstr "Piir: toetamata versiooni sulgemine on lõplik transpordikeeldumine ning ühenduse katkemine ei saa tõendada domeeni lõpetamist."
 
 #: lib/marshall/documentation_messages.ex:4921
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified HTTPS policy and one dedicated host CA; issuance requires locked service or physical boot authority."
-msgstr ""
+msgstr "Piir: kontrollitud HTTPS-poliitika ja üks spetsiaalne hosti CA; väljastamine nõuab lukustatud teenuse või füüsilise käivituse õigust."
 
 #: lib/marshall/documentation_messages.ex:4925
 #, elixir-autogen, elixir-format
@@ -8382,7 +8382,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4929
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified email identity, current elevated administrator, immediate account revocation and old-UUID cleanup through physical lifecycle fences."
-msgstr ""
+msgstr "Piir: kontrollitud e-posti identiteet, kehtiv kõrgendatud õigustega administraator, kohene konto tühistamine ning vana UUID koristus füüsiliste elutsüklipiirangute kaudu."
 
 #: lib/marshall/documentation_messages.ex:4933
 #, elixir-autogen, elixir-format
@@ -8397,7 +8397,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4941
 #, elixir-autogen, elixir-format
 msgid "Boundary: Versioned authenticated control transport, durable generation, owned physical process and GUID-bound drives."
-msgstr ""
+msgstr "Piir: versioonitud autenditud juhttransport, püsiv põlvkond, omatud füüsiline protsess ja GUID-ga seotud kettad."
 
 #: lib/marshall/documentation_messages.ex:4945
 #, elixir-autogen, elixir-format
@@ -8407,7 +8407,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4949
 #, elixir-autogen, elixir-format
 msgid "Boundary: Write permission, profile tool allowlist, model claim and boot-bound executor fence."
-msgstr ""
+msgstr "Piir: kirjutusõigus, profiili tööriistade lubamisloend, mudelinõue ja käivitusega seotud täituripiirang."
 
 #: lib/marshall/documentation_messages.ex:4953
 #, elixir-autogen, elixir-format
@@ -8482,22 +8482,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5006
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating Marshall backend certificates."
-msgstr ""
+msgstr "CA kogum Marshalli tagaserverite sertifikaatide autentimiseks."
 
 #: lib/marshall/documentation_messages.ex:5007
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating the PostgreSQL endpoint."
-msgstr ""
+msgstr "CA kogum PostgreSQL-i otspunkti autentimiseks."
 
 #: lib/marshall/documentation_messages.ex:5008
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating the control-plane endpoint. Lilly reads it through systemd LoadCredential, so the file may be readable by root only."
-msgstr ""
+msgstr "CA kogum juhttasandi otspunkti autentimiseks. Lilly loeb seda systemd LoadCredential kaudu, seega võib fail olla loetav ainult root-kasutajale."
 
 #: lib/marshall/documentation_messages.ex:5012
 #, elixir-autogen, elixir-format
 msgid "CA certificates authenticating the Marshall HTTPS endpoint."
-msgstr ""
+msgstr "CA sertifikaadid Marshalli HTTPS-otspunkti autentimiseks."
 
 #: lib/marshall/documentation_messages.ex:5013
 #, elixir-autogen, elixir-format
@@ -8507,7 +8507,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5014
 #, elixir-autogen, elixir-format
 msgid "CA roots validating issued certificate chains."
-msgstr ""
+msgstr "CA juured väljastatud sertifikaadiahelate valideerimiseks."
 
 #: lib/marshall/documentation_messages.ex:5015
 #, elixir-autogen, elixir-format
@@ -8542,7 +8542,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5040
 #, elixir-autogen, elixir-format
 msgid "Canonical runtime directory containing the complete published bundle."
-msgstr ""
+msgstr "Kanooniline käitusajakataloog, mis sisaldab täielikku avaldatud paketti."
 
 #: lib/marshall/documentation_messages.ex:5044
 #, elixir-autogen, elixir-format
@@ -8562,7 +8562,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5056
 #, elixir-autogen, elixir-format
 msgid "Central metrics/traces/Grafana store or worker collector."
-msgstr ""
+msgstr "Keskne mõõdikute/jälgede/Grafana hoidla või töötajakoguja."
 
 #: lib/marshall/documentation_messages.ex:5057
 #, elixir-autogen, elixir-format
@@ -8607,12 +8607,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5089
 #, elixir-autogen, elixir-format
 msgid "Cloning is currently unavailable for the Inception multi-disk profile."
-msgstr ""
+msgstr "Kloonimine pole praegu Inceptioni mitme ketta profiili jaoks saadaval."
 
 #: lib/marshall/documentation_messages.ex:5093
 #, elixir-autogen, elixir-format
 msgid "Closed trusted request-source name; physical measurements stay in PostgreSQL."
-msgstr ""
+msgstr "Suletud usaldatud päringuallika nimi; füüsilised mõõtmised jäävad PostgreSQL-i."
 
 #: lib/marshall/documentation_messages.ex:5101
 #, elixir-autogen, elixir-format
@@ -8652,7 +8652,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5126
 #, elixir-autogen, elixir-format
 msgid "Conservative per-pool artifact budget for sealed image templates (ADR-0130); images larger than the budget use fresh verification for every provision."
-msgstr ""
+msgstr "Konservatiivne puulipõhine artefaktieelarve suletud tõmmisemallidele (ADR-0130); eelarvest suuremad tõmmised kasutavad igal ettevalmistusel värsket kontrolli."
 
 #: lib/marshall/documentation_messages.ex:5130
 #, elixir-autogen, elixir-format
@@ -8672,332 +8672,332 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5142
 #, elixir-autogen, elixir-format
 msgid "Coverage: **covered**. Layers: identity, authorization, transport, recovery."
-msgstr ""
+msgstr "Katvus: **kaetud**. Kihid: identiteet, volitamine, transport, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5146
 #, elixir-autogen, elixir-format
 msgid "Coverage: **covered**. Layers: identity, transport, execution, recovery."
-msgstr ""
+msgstr "Katvus: **kaetud**. Kihid: identiteet, transport, täitmine, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5150
 #, elixir-autogen, elixir-format
 msgid "Coverage: **covered**. Layers: identity, transport."
-msgstr ""
+msgstr "Katvus: **kaetud**. Kihid: identiteet, transport."
 
 #: lib/marshall/documentation_messages.ex:5151
 #, elixir-autogen, elixir-format
 msgid "Coverage: **gap**. Layers: authorization, recovery."
-msgstr ""
+msgstr "Katvus: **lünk**. Kihid: volitamine, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5152
 #, elixir-autogen, elixir-format
 msgid "Coverage: **gap**. Layers: authorization, storage, recovery."
-msgstr ""
+msgstr "Katvus: **lünk**. Kihid: volitamine, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5156
 #, elixir-autogen, elixir-format
 msgid "Coverage: **gap**. Layers: authorization, transport, storage, recovery."
-msgstr ""
+msgstr "Katvus: **lünk**. Kihid: volitamine, transport, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5160
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, isolation, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, täitmine, isolatsioon, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5164
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, isolation."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, täitmine, isolatsioon."
 
 #: lib/marshall/documentation_messages.ex:5168
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, täitmine, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5172
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, täitmine, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5176
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, transport."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, täitmine, transport."
 
 #: lib/marshall/documentation_messages.ex:5180
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, täitmine."
 
 #: lib/marshall/documentation_messages.ex:5181
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, isolation."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, isolatsioon."
 
 #: lib/marshall/documentation_messages.ex:5182
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution, isolation, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, transport, täitmine, isolatsioon, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5186
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, transport, täitmine, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5190
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, transport, täitmine, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5194
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, transport, täitmine."
 
 #: lib/marshall/documentation_messages.ex:5198
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, isolation, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, transport, isolatsioon, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5202
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, isolation, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, transport, isolatsioon, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5206
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: volitamine, transport, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5210
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, isolation, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: täitmine, isolatsioon, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5214
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, isolation, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: täitmine, isolatsioon, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5218
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: täitmine, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5219
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, storage, recovery, transport."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: täitmine, salvestus, taastamine, transport."
 
 #: lib/marshall/documentation_messages.ex:5223
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: täitmine, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5227
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, storage."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: täitmine, salvestus."
 
 #: lib/marshall/documentation_messages.ex:5228
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, execution, isolation, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, täitmine, isolatsioon, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5232
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, execution, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, täitmine, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5236
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, execution."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, täitmine."
 
 #: lib/marshall/documentation_messages.ex:5240
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, isolation, storage."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, isolatsioon, salvestus."
 
 #: lib/marshall/documentation_messages.ex:5244
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5248
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, storage."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, salvestus."
 
 #: lib/marshall/documentation_messages.ex:5252
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport, täitmine, isolatsioon, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5256
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport, täitmine, isolatsioon, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5260
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport, täitmine, isolatsioon."
 
 #: lib/marshall/documentation_messages.ex:5264
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport, täitmine, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5268
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport, täitmine, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5272
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport, täitmine."
 
 #: lib/marshall/documentation_messages.ex:5276
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, isolation, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport, isolatsioon, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5280
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, isolation, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport, isolatsioon, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5284
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5288
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5292
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, storage."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport, salvestus."
 
 #: lib/marshall/documentation_messages.ex:5296
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine, transport."
 
 #: lib/marshall/documentation_messages.ex:5300
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, volitamine."
 
 #: lib/marshall/documentation_messages.ex:5301
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, execution, isolation, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, täitmine, isolatsioon, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5305
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, execution, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, täitmine, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5309
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, execution."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, täitmine."
 
 #: lib/marshall/documentation_messages.ex:5310
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution, isolation, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, transport, täitmine, isolatsioon, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5314
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, transport, täitmine, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5318
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution, storage."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, transport, täitmine, salvestus."
 
 #: lib/marshall/documentation_messages.ex:5322
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, transport, täitmine."
 
 #: lib/marshall/documentation_messages.ex:5326
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, isolation, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, transport, isolatsioon, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5330
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, transport, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5334
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, transport, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5338
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: identiteet, transport."
 
 #: lib/marshall/documentation_messages.ex:5339
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: isolation, transport, execution."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: isolatsioon, transport, täitmine."
 
 #: lib/marshall/documentation_messages.ex:5343
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5344
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, isolation, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: transport, täitmine, isolatsioon, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5348
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, isolation, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: transport, täitmine, isolatsioon, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5352
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: transport, täitmine, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5356
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, storage."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: transport, täitmine, salvestus."
 
 #: lib/marshall/documentation_messages.ex:5360
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: transport, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5361
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, storage, execution."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: transport, salvestus, täitmine."
 
 #: lib/marshall/documentation_messages.ex:5365
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, storage, recovery."
-msgstr ""
+msgstr "Katvus: **osaline**. Kihid: transport, salvestus, taastamine."
 
 #: lib/marshall/documentation_messages.ex:5369
 #, elixir-autogen, elixir-format
 msgid "Create a named SSH account on every participating host."
-msgstr ""
+msgstr "Looge igas osalevas hostis nimega SSH-konto."
 
 #: lib/marshall/documentation_messages.ex:5370
 #, elixir-autogen, elixir-format
@@ -9017,7 +9017,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5382
 #, elixir-autogen, elixir-format
 msgid "Credential preparation services required before startup."
-msgstr ""
+msgstr "Enne käivitust nõutavad mandaatide ettevalmistusteenused."
 
 #: lib/marshall/documentation_messages.ex:5383
 #, elixir-autogen, elixir-format
@@ -9032,7 +9032,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5391
 #, elixir-autogen, elixir-format
 msgid "Current-generation preparation dependencies for Git authentication."
-msgstr ""
+msgstr "Kehtiva põlvkonna ettevalmistussõltuvused Giti autentimiseks."
 
 #: lib/marshall/documentation_messages.ex:5395
 #, elixir-autogen, elixir-format
@@ -9062,7 +9062,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5409
 #, elixir-autogen, elixir-format
 msgid "Dedicated Galileo control credential runtime file."
-msgstr ""
+msgstr "Spetsiaalne Galileo juhtmandaadi käitusajafail."
 
 #: lib/marshall/documentation_messages.ex:5410
 #, elixir-autogen, elixir-format
@@ -9072,12 +9072,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5411
 #, elixir-autogen, elixir-format
 msgid "Dedicated Ziggy control credential runtime file."
-msgstr ""
+msgstr "Spetsiaalne Ziggy juhtmandaadi käitusajafail."
 
 #: lib/marshall/documentation_messages.ex:5412
 #, elixir-autogen, elixir-format
 msgid "Default immutable image for new SSH machines and initial browser drafts; admission still requires image availability."
-msgstr ""
+msgstr "Vaikimisi muutumatu tõmmis uutele SSH-masinatele ja algsetele brauserimustanditele; vastuvõtt nõuab endiselt tõmmise kättesaadavust."
 
 #: lib/marshall/documentation_messages.ex:5416
 #, elixir-autogen, elixir-format
@@ -9087,27 +9087,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5417
 #, elixir-autogen, elixir-format
 msgid "Default: Required when its service or enclosing record is selected."
-msgstr ""
+msgstr "Vaikimisi: nõutav, kui selle teenus või ümbritsev kirje on valitud."
 
 #: lib/marshall/documentation_messages.ex:5421
 #, elixir-autogen, elixir-format
 msgid "Default: Required when its service or enclosing record is selected.\n"
-msgstr ""
+msgstr "Vaikimisi: nõutav, kui selle teenus või ümbritsev kirje on valitud.\n"
 
 #: lib/marshall/documentation_messages.ex:5425
 #, elixir-autogen, elixir-format
 msgid "Delay between garbage collection checks. The first check runs one\ninterval after boot; missed checks are caught up after downtime."
-msgstr ""
+msgstr "Viivitus prügikoristuskontrollide vahel. Esimene kontroll toimub ühe\nintervalli järel pärast käivitust; vahele jäänud kontrollid tehakse pärast seisakut järele."
 
 #: lib/marshall/documentation_messages.ex:5429
 #, elixir-autogen, elixir-format
 msgid "Delegated Audi application zone, shared by all gateways and DNS replicas. Editor authority requires at least two canonical lowercase DNS labels."
-msgstr ""
+msgstr "Delegeeritud Audi rakendustsoon, mida jagavad kõik lüüsid ja DNS-i koopiad. Redaktori otsustusõigus nõuab vähemalt kaht kanoonilist väiketähtedega DNS-silti."
 
 #: lib/marshall/documentation_messages.ex:5433
 #, elixir-autogen, elixir-format
 msgid "Delegated application DNS zone. Browser editor assets require at least two canonical lowercase DNS labels."
-msgstr ""
+msgstr "Delegeeritud rakenduse DNS-tsoon. Brauseriredaktori varad nõuavad vähemalt kaht kanoonilist väiketähtedega DNS-silti."
 
 #: lib/marshall/documentation_messages.ex:5437
 #, elixir-autogen, elixir-format
@@ -9177,7 +9177,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5490
 #, elixir-autogen, elixir-format
 msgid "Domain validation method; DNS-01 uses Route 53."
-msgstr ""
+msgstr "Domeeni valideerimismeetod; DNS-01 kasutab Route 53."
 
 #: lib/marshall/documentation_messages.ex:5491
 #, elixir-autogen, elixir-format
@@ -9187,12 +9187,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5495
 #, elixir-autogen, elixir-format
 msgid "Durable VM actor directory; maximum 45 bytes for UNIX sockets."
-msgstr ""
+msgstr "Püsiv VM-aktori kataloog; UNIX-soklite jaoks kuni 45 baiti."
 
 #: lib/marshall/documentation_messages.ex:5499
 #, elixir-autogen, elixir-format
 msgid "Durable control receipt and host ownership directory."
-msgstr ""
+msgstr "Püsiva juhtkviitungi ja hostiomandi kataloog."
 
 #: lib/marshall/documentation_messages.ex:5500
 #, elixir-autogen, elixir-format
@@ -9202,7 +9202,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5501
 #, elixir-autogen, elixir-format
 msgid "Durable transfer journal root used by Lilly's generated export configuration."
-msgstr ""
+msgstr "Lilly genereeritud ekspordikonfiguratsioonis kasutatav püsiva ülekandepäeviku juur."
 
 #: lib/marshall/documentation_messages.ex:5505
 #, elixir-autogen, elixir-format
@@ -9282,7 +9282,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5573
 #, elixir-autogen, elixir-format
 msgid "Encrypt private input from a mode-0600 file outside the checkout:"
-msgstr ""
+msgstr "Krüptige privaatne sisend väljaspool töökoopiat asuvast režiimi-0600 failist:"
 
 #: lib/marshall/documentation_messages.ex:5577
 #, elixir-autogen, elixir-format
@@ -9317,7 +9317,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5592
 #, elixir-autogen, elixir-format
 msgid "Enrolled, persistent Marshall host resource UUID."
-msgstr ""
+msgstr "Registreeritud püsiva Marshalli hostiressursi UUID."
 
 #: lib/marshall/documentation_messages.ex:5593
 #, elixir-autogen, elixir-format
@@ -9332,7 +9332,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5601
 #, elixir-autogen, elixir-format
 msgid "Evaluated producer identity inventory for topology and independent health."
-msgstr ""
+msgstr "Hinnatud tootjaidentiteetide loend topoloogia ja sõltumatu tervise jaoks."
 
 #: lib/marshall/documentation_messages.ex:5605
 #, elixir-autogen, elixir-format
@@ -9467,12 +9467,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5713
 #, elixir-autogen, elixir-format
 msgid "Exact cgroup v2 systemd service allowed to admit requests."
-msgstr ""
+msgstr "Täpne cgroup v2 systemd teenus, millel on lubatud päringuid vastu võtta."
 
 #: lib/marshall/documentation_messages.ex:5718
 #, elixir-autogen, elixir-format
 msgid "Exact locally installed Inception image allowed to receive the shared SMTP bundle."
-msgstr ""
+msgstr "Täpselt kohapeal paigaldatud Inceptioni tõmmis, millel on lubatud saada jagatud SMTP-pakett."
 
 #: lib/marshall/documentation_messages.ex:5722
 #, elixir-autogen, elixir-format
@@ -9487,37 +9487,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5727
 #, elixir-autogen, elixir-format
 msgid "Existing SNS topic ARNs; empty means no notifications."
-msgstr ""
+msgstr "Olemasolevad SNS-teemade ARN-id; tühi tähendab teavituste puudumist."
 
 #: lib/marshall/documentation_messages.ex:5728
 #, elixir-autogen, elixir-format
 msgid "Existing administrative directories; never guest disk trees."
-msgstr ""
+msgstr "Olemasolevad halduskataloogid; mitte kunagi külalisketaste puud."
 
 #: lib/marshall/documentation_messages.ex:5732
 #, elixir-autogen, elixir-format
 msgid "Existing enrolled source host identity. This service never generates or replaces it."
-msgstr ""
+msgstr "Olemasolev registreeritud lähtehosti identiteet. See teenus ei genereeri ega asenda seda kunagi."
 
 #: lib/marshall/documentation_messages.ex:5736
 #, elixir-autogen, elixir-format
 msgid "Existing mounted parent dataset, with LZ4 and no reservations."
-msgstr ""
+msgstr "Olemasolev ühendatud ülemandmestik LZ4-ga ja reservatsioonideta."
 
 #: lib/marshall/documentation_messages.ex:5740
 #, elixir-autogen, elixir-format
 msgid "Expected Linux peer UID of the Lilly connector: the Lilly service user where Lilly runs."
-msgstr ""
+msgstr "Lilly ühendaja eeldatav Linuxi partner-UID: Lilly teenusekasutaja seal, kus Lilly töötab."
 
 #: lib/marshall/documentation_messages.ex:5744
 #, elixir-autogen, elixir-format
 msgid "Expected Unix peer account, including dynamically allocated application users."
-msgstr ""
+msgstr "Eeldatav Unixi partnerkonto, sealhulgas dünaamiliselt eraldatud rakendusekasutajad."
 
 #: lib/marshall/documentation_messages.ex:5748
 #, elixir-autogen, elixir-format
 msgid "Expected machine IDs for missing-heartbeat alarms."
-msgstr ""
+msgstr "Eeldatavad masina-ID-d puuduva südamelöögi häiretele."
 
 #: lib/marshall/documentation_messages.ex:5749
 #, elixir-autogen, elixir-format
@@ -9537,7 +9537,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5761
 #, elixir-autogen, elixir-format
 msgid "Explicit IPv4 fleet listener address. Remote access requires separate interface-scoped firewall policy."
-msgstr ""
+msgstr "Selgesõnaline IPv4 pargikuulaja aadress. Kaugligipääs nõuab eraldi liidesepõhist tulemüüripoliitikat."
 
 #: lib/marshall/documentation_messages.ex:5765
 #, elixir-autogen, elixir-format
@@ -9547,22 +9547,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5770
 #, elixir-autogen, elixir-format
 msgid "Explicit local IPv4 destination address; never a wildcard."
-msgstr ""
+msgstr "Selgesõnaline kohalik IPv4-sihtaadress; mitte kunagi metamärk."
 
 #: lib/marshall/documentation_messages.ex:5771
 #, elixir-autogen, elixir-format
 msgid "Explicit platform service units; VM units are discovered by bounded systemd metadata."
-msgstr ""
+msgstr "Selgesõnalised platvormi teenuseüksused; VM-üksused avastatakse piiratud systemd metaandmete abil."
 
 #: lib/marshall/documentation_messages.ex:5775
 #, elixir-autogen, elixir-format
 msgid "Explicit sources; audit is never implicitly selected."
-msgstr ""
+msgstr "Selgesõnalised allikad; auditit ei valita kunagi kaudselt."
 
 #: lib/marshall/documentation_messages.ex:5776
 #, elixir-autogen, elixir-format
 msgid "Externally provided module arguments that can't be modified from\nwithin a configuration, but can be used in module imports."
-msgstr ""
+msgstr "Väliselt antud mooduliargumendid, mida ei saa konfiguratsiooni\nseest muuta, kuid mida saab kasutada mooduli importides."
 
 #: lib/marshall/documentation_messages.ex:5780
 #, elixir-autogen, elixir-format
@@ -9587,7 +9587,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5796
 #, elixir-autogen, elixir-format
 msgid "Files in this bundle; all selected secrets are required."
-msgstr ""
+msgstr "Selle paketi failid; kõik valitud saladused on nõutavad."
 
 #: lib/marshall/documentation_messages.ex:5797
 #, elixir-autogen, elixir-format
@@ -9597,17 +9597,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5801
 #, elixir-autogen, elixir-format
 msgid "Five-minute real authenticated editor journeys; fixtures and operator sessions are private runtime credentials."
-msgstr ""
+msgstr "Viieminutilised tegelikud autenditud redaktoriteekonnad; fikstuurid ja operaatoriseansid on privaatsed käitusajamandaadid."
 
 #: lib/marshall/documentation_messages.ex:5805
 #, elixir-autogen, elixir-format
 msgid "Fixed OpenAI-compatible origin; enrolled hosts use host-local Underclass."
-msgstr ""
+msgstr "Fikseeritud OpenAI-ga ühilduv päritolu; registreeritud hostid kasutavad hostikohalikku Underclassi."
 
 #: lib/marshall/documentation_messages.ex:5809
 #, elixir-autogen, elixir-format
 msgid "Fixed Serper origin; loopback is reserved for the machine-test fixture."
-msgstr ""
+msgstr "Fikseeritud Serperi päritolu; tagasisilmus on reserveeritud masinatesti fikstuurile."
 
 #: lib/marshall/documentation_messages.ex:5813
 #, elixir-autogen, elixir-format
@@ -9617,7 +9617,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5817
 #, elixir-autogen, elixir-format
 msgid "Fleet database allocation, including one notifier per instance and ten operator connections."
-msgstr ""
+msgstr "Pargi andmebaasieraldis, sealhulgas üks teavitaja instantsi kohta ja kümme operaatoriühendust."
 
 #: lib/marshall/documentation_messages.ex:5821
 #, elixir-autogen, elixir-format
@@ -9632,12 +9632,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5829
 #, elixir-autogen, elixir-format
 msgid "Fleet wildcard leaf and intermediate PEM chain from the bundle."
-msgstr ""
+msgstr "Pargi metamärgi lõppsertifikaat ja vahepealne PEM-ahel paketist."
 
 #: lib/marshall/documentation_messages.ex:5833
 #, elixir-autogen, elixir-format
 msgid "Fleet wildcard leaf key from the bundle; rotation is operator custody."
-msgstr ""
+msgstr "Pargi metamärgi lõppsertifikaadi võti paketist; vahetamine on operaatori valduses."
 
 #: lib/marshall/documentation_messages.ex:5837
 #, elixir-autogen, elixir-format
@@ -9697,7 +9697,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5881
 #, elixir-autogen, elixir-format
 msgid "For one-shot exec commands, register the key on Marshall's SSH keys page first,\nor complete approval in an interactive connection before retrying the command."
-msgstr ""
+msgstr "Ühekordsete exec-käskude jaoks registreerige esmalt võti Marshalli SSH-võtmete lehel\nvõi lõpetage kinnitamine interaktiivses ühenduses enne käsu kordamist."
 
 #: lib/marshall/documentation_messages.ex:5885
 #, elixir-autogen, elixir-format
@@ -9782,7 +9782,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5949
 #, elixir-autogen, elixir-format
 msgid "Generate a plan for the exact published revision:"
-msgstr ""
+msgstr "Genereerige täpse avaldatud revisjoni plaan:"
 
 #: lib/marshall/documentation_messages.ex:5950
 #, elixir-autogen, elixir-format
@@ -9982,7 +9982,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6102
 #, elixir-autogen, elixir-format
 msgid "Host queue budget; selected per-source output limits must fit. Size from measured rate for 24 hours plus 50% headroom."
-msgstr ""
+msgstr "Hosti järjekorraeelarve; valitud allikapõhised väljundipiirid peavad sellesse mahtuma. Määrake suurus mõõdetud 24 tunni määra ja 50% varu järgi."
 
 #: lib/marshall/documentation_messages.ex:6106
 #, elixir-autogen, elixir-format
@@ -10032,7 +10032,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6133
 #, elixir-autogen, elixir-format
 msgid "If this is `null`, definitions without an option\nwill throw an error unless {option}`_module.check` is\nturned off."
-msgstr ""
+msgstr "Kui see on `null`, põhjustavad suvandita määratlused\nvea, välja arvatud juhul, kui {option}`_module.check` on\nvälja lülitatud."
 
 #: lib/marshall/documentation_messages.ex:6137
 #, elixir-autogen, elixir-format
@@ -10042,42 +10042,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6145
 #, elixir-autogen, elixir-format
 msgid "Immutable image bound exclusively to the Inception development profile; native host eligibility is also required."
-msgstr ""
+msgstr "Muutumatu tõmmis, mis on seotud ainult Inceptioni arendusprofiiliga; nõutav on ka omatäitmise hosti sobivus."
 
 #: lib/marshall/documentation_messages.ex:6149
 #, elixir-autogen, elixir-format
 msgid "Immutable local image directory (manifest.json and artifacts) verified by Lilly before advertising."
-msgstr ""
+msgstr "Muutumatu kohalik tõmmisekataloog (manifest.json ja artefaktid), mida Lilly kontrollib enne väljakuulutamist."
 
 #: lib/marshall/documentation_messages.ex:6153
 #, elixir-autogen, elixir-format
 msgid "Immutable local images verified by Lilly before advertising, in operator order."
-msgstr ""
+msgstr "Muutumatud kohalikud tõmmised, mida Lilly kontrollib enne väljakuulutamist operaatori järjekorras."
 
 #: lib/marshall/documentation_messages.ex:6157
 #, elixir-autogen, elixir-format
 msgid "Immutable measurement deadline reconciled with this source's request budget."
-msgstr ""
+msgstr "Muutumatu mõõtmistähtaeg, mis on kooskõlastatud selle allika päringueelarvega."
 
 #: lib/marshall/documentation_messages.ex:6165
 #, elixir-autogen, elixir-format
 msgid "Immutable per-batch retention, including traces already acknowledged upstream."
-msgstr ""
+msgstr "Muutumatu partiipõhine säilitusaeg, sealhulgas ülesvoolus juba kinnitatud jäljed."
 
 #: lib/marshall/documentation_messages.ex:6169
 #, elixir-autogen, elixir-format
 msgid "Immutable platform, disk and persistent identity bindings."
-msgstr ""
+msgstr "Muutumatud platvormi, ketta ja püsiva identiteedi seosed."
 
 #: lib/marshall/documentation_messages.ex:6170
 #, elixir-autogen, elixir-format
 msgid "Immutable unsigned Chrome and Firefox browser extension package served at the public /bin routes. Null disables browser extension downloads."
-msgstr ""
+msgstr "Muutumatu allkirjastamata Chrome'i ja Firefoxi brauserilaiendi pakett, mida serveeritakse avalikel /bin marsruutidel. Null keelab brauserilaiendi allalaadimised."
 
 #: lib/marshall/documentation_messages.ex:6174
 #, elixir-autogen, elixir-format
 msgid "Inception parent gateway allowed to supply IPv4 PROXY metadata; null for public listeners."
-msgstr ""
+msgstr "Inceptioni ülemine lüüs, millel on lubatud anda IPv4 PROXY metaandmeid; avalike kuulajate korral null."
 
 #: lib/marshall/documentation_messages.ex:6178
 #, elixir-autogen, elixir-format
@@ -10087,7 +10087,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6182
 #, elixir-autogen, elixir-format
 msgid "Include these keys in every managed encrypted document."
-msgstr ""
+msgstr "Lisage need võtmed igasse hallatud krüptitud dokumenti."
 
 #: lib/marshall/documentation_messages.ex:6183
 #, elixir-autogen, elixir-format
@@ -10097,22 +10097,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6191
 #, elixir-autogen, elixir-format
 msgid "Independent bounded native Firecracker diagnostics."
-msgstr ""
+msgstr "Sõltumatu piiratud omatäitmise Firecrackeri diagnostika."
 
 #: lib/marshall/documentation_messages.ex:6192
 #, elixir-autogen, elixir-format
 msgid "Independent durable request recorders; enabling requires reviewed producer hooks and source-specific deadlines."
-msgstr ""
+msgstr "Sõltumatud püsivad päringusalvestajad; lubamine nõuab ülevaadatud tootjahaake ja allikapõhiseid tähtaegu."
 
 #: lib/marshall/documentation_messages.ex:6196
 #, elixir-autogen, elixir-format
 msgid "Independent logging health metrics; never carries records."
-msgstr ""
+msgstr "Sõltumatud logimise tervisemõõdikud; ei kanna kunagi kirjeid."
 
 #: lib/marshall/documentation_messages.ex:6197
 #, elixir-autogen, elixir-format
 msgid "Independent per-producer durable trace custody; failures leave producers running."
-msgstr ""
+msgstr "Sõltumatu tootjapõhine püsiv jäljevaldus; rikked jätavad tootjad tööle."
 
 #: lib/marshall/documentation_messages.ex:6201
 #, elixir-autogen, elixir-format
@@ -10142,7 +10142,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6212
 #, elixir-autogen, elixir-format
 msgid "Initialize only when Restic positively reports that the repository does not exist."
-msgstr ""
+msgstr "Algväärtustage ainult siis, kui Restic kinnitab üheselt, et hoidlat pole olemas."
 
 #: lib/marshall/documentation_messages.ex:6216
 #, elixir-autogen, elixir-format
@@ -10157,7 +10157,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6224
 #, elixir-autogen, elixir-format
 msgid "Inspect failure and cancellation status before resubmitting with a new identity.\nAn already published destination must not be mistaken for a failed submission."
-msgstr ""
+msgstr "Vaadake enne uue identiteediga uuesti esitamist üle rikke ja tühistamise olek.\nJuba avaldatud sihtkohta ei tohi pidada nurjunud esituseks."
 
 #: lib/marshall/documentation_messages.ex:6228
 #, elixir-autogen, elixir-format
@@ -10182,7 +10182,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6248
 #, elixir-autogen, elixir-format
 msgid "Interfaces counted as external network traffic; excludes bridges and taps unless explicitly selected."
-msgstr ""
+msgstr "Välise võrguliiklusena arvestatavad liidesed; sillad ja tap-liidesed on välja jäetud, kui neid pole selgesõnaliselt valitud."
 
 #: lib/marshall/documentation_messages.ex:6256
 #, elixir-autogen, elixir-format
@@ -10317,7 +10317,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6364
 #, elixir-autogen, elixir-format
 msgid "Lilly's leases live in `lilly-hostd`\n([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md)\ndecision 4):"
-msgstr ""
+msgstr "Lilly rendiõigused asuvad `lilly-hostd`-s\n([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md)\notsus 4):"
 
 #: lib/marshall/documentation_messages.ex:6368
 #, elixir-autogen, elixir-format
@@ -10357,22 +10357,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6390
 #, elixir-autogen, elixir-format
 msgid "Local IPv4 address for the dedicated SSH listener."
-msgstr ""
+msgstr "Kohalik IPv4-aadress spetsiaalse SSH-kuulaja jaoks."
 
 #: lib/marshall/documentation_messages.ex:6391
 #, elixir-autogen, elixir-format
 msgid "Local Lego responder IP; use a stable private address when configuring peers."
-msgstr ""
+msgstr "Kohaliku Lego vastaja IP; kasutage partnerite seadistamisel stabiilset privaatset aadressi."
 
 #: lib/marshall/documentation_messages.ex:6395
 #, elixir-autogen, elixir-format
 msgid "Local Marshall instance consuming the certificate queue."
-msgstr ""
+msgstr "Kohalik Marshalli instants, mis tarbib sertifikaadijärjekorda."
 
 #: lib/marshall/documentation_messages.ex:6396
 #, elixir-autogen, elixir-format
 msgid "Local fleet services admitted only from configured tunnel peers."
-msgstr ""
+msgstr "Kohalikud pargiteenused, kuhu pääsevad ainult seadistatud tunnelipartnerid."
 
 #: lib/marshall/documentation_messages.ex:6400
 #, elixir-autogen, elixir-format
@@ -10382,7 +10382,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6404
 #, elixir-autogen, elixir-format
 msgid "Local instances keyed by distinct fleet-wide identities."
-msgstr ""
+msgstr "Kohalikud instantsid, mille võtmed on eristuvad pargiülesed identiteedid."
 
 #: lib/marshall/documentation_messages.ex:6405
 #, elixir-autogen, elixir-format
@@ -10392,32 +10392,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6409
 #, elixir-autogen, elixir-format
 msgid "Logical archive/SQLite budget per producer, distinct from Tempo quota. New data refuses when full."
-msgstr ""
+msgstr "Loogiline arhiivi/SQLite'i eelarve tootja kohta, eraldi Tempo kvoodist. Täitumisel keeldutakse uutest andmetest."
 
 #: lib/marshall/documentation_messages.ex:6413
 #, elixir-autogen, elixir-format
 msgid "Loopback HTTP port. Underclass is never bound directly to a fleet interface."
-msgstr ""
+msgstr "Tagasisilmuse HTTP-port. Underclassi ei seota kunagi otse pargiliidesega."
 
 #: lib/marshall/documentation_messages.ex:6417
 #, elixir-autogen, elixir-format
 msgid "Loopback Prometheus resource exporter; no application credentials or ingestion."
-msgstr ""
+msgstr "Tagasisilmuse Prometheuse ressursieksportija; rakendusemandaadid ja andmesisestus puuduvad."
 
 #: lib/marshall/documentation_messages.ex:6421
 #, elixir-autogen, elixir-format
 msgid "Loopback or authenticated fleet address for independent health scraping."
-msgstr ""
+msgstr "Tagasisilmuse või autenditud pargiaadress sõltumatuks tervisekogumiseks."
 
 #: lib/marshall/documentation_messages.ex:6425
 #, elixir-autogen, elixir-format
 msgid "Loopback port of the egress node's outbound HTTP proxy."
-msgstr ""
+msgstr "Väljuva liikluse sõlme HTTP-väljundpuhverserveri tagasisilmuse port."
 
 #: lib/marshall/documentation_messages.ex:6426
 #, elixir-autogen, elixir-format
 msgid "Loopback-only Fluent Bit numeric application health exporter when fleet telemetry and logging are enabled."
-msgstr ""
+msgstr "Ainult tagasisilmuse Fluent Biti numbriline rakenduse tervise eksportija, kui pargi telemeetria ja logimine on lubatud."
 
 #: lib/marshall/documentation_messages.ex:6430
 #, elixir-autogen, elixir-format
@@ -10477,7 +10477,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6471
 #, elixir-autogen, elixir-format
 msgid "Management-only AWS credentials. Null uses explicit EC2 role mode."
-msgstr ""
+msgstr "Ainult halduse AWS-mandaadid. Null kasutab selgesõnalist EC2 rollirežiimi."
 
 #: lib/marshall/documentation_messages.ex:6475
 #, elixir-autogen, elixir-format
@@ -10487,7 +10487,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6479
 #, elixir-autogen, elixir-format
 msgid "Marshall TLS endpoints, keyed by backend identity."
-msgstr ""
+msgstr "Marshalli TLS-otspunktid tagaserveri identiteedi järgi."
 
 #: lib/marshall/documentation_messages.ex:6480
 #, elixir-autogen, elixir-format
@@ -10542,17 +10542,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6532
 #, elixir-autogen, elixir-format
 msgid "Maximum receive stream bytes per second, with a 64 KiB burst allowance."
-msgstr ""
+msgstr "Maksimaalsed vastuvõtuvoo baidid sekundis koos 64 KiB purskevaruga."
 
 #: lib/marshall/documentation_messages.ex:6536
 #, elixir-autogen, elixir-format
 msgid "Maximum same-host clone stream bytes per second; these never cross the network."
-msgstr ""
+msgstr "Maksimaalsed sama hosti kloonivoo baidid sekundis; need ei liigu kunagi üle võrgu."
 
 #: lib/marshall/documentation_messages.ex:6540
 #, elixir-autogen, elixir-format
 msgid "Maximum space in GiB a single collection run may delete."
-msgstr ""
+msgstr "Maksimaalne ruum GiB-des, mille üks koristuskäik võib kustutada."
 
 #: lib/marshall/documentation_messages.ex:6541
 #, elixir-autogen, elixir-format
@@ -10567,7 +10567,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6549
 #, elixir-autogen, elixir-format
 msgid "Measured or configured IOPS limit; null means unknown. ZFS uses logical whole-pool operations. This is monitoring metadata, not admission capacity."
-msgstr ""
+msgstr "Mõõdetud või seadistatud IOPS-piir; null tähendab tundmatut. ZFS kasutab loogilisi kogu puuli toiminguid. See on seiremetaandmestik, mitte vastuvõtumaht."
 
 #: lib/marshall/documentation_messages.ex:6553
 #, elixir-autogen, elixir-format
@@ -10577,22 +10577,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6561
 #, elixir-autogen, elixir-format
 msgid "Merging Lilly's pending and delivering trust journal writes (about 6 ms each)\nwas not worth the change."
-msgstr ""
+msgstr "Lilly ootel ja edastatavate usalduspäeviku kirjutuste ühendamine (umbes 6 ms kummagi kohta)\nei väärinud muudatust."
 
 #: lib/marshall/documentation_messages.ex:6565
 #, elixir-autogen, elixir-format
 msgid "Minimum free Lilly pool space before capture and during upload."
-msgstr ""
+msgstr "Minimaalne vaba Lilly puuliruum enne hõivet ja üleslaadimise ajal."
 
 #: lib/marshall/documentation_messages.ex:6569
 #, elixir-autogen, elixir-format
 msgid "Minimum free space in GiB on the filesystem holding /nix. Falling\nbelow it triggers a collection run."
-msgstr ""
+msgstr "Minimaalne vaba ruum GiB-des /nix-i sisaldavas failisüsteemis. Sellest\nallapoole langemine käivitab koristuse."
 
 #: lib/marshall/documentation_messages.ex:6573
 #, elixir-autogen, elixir-format
 msgid "Minimum remaining lifetime before a certificate can be published."
-msgstr ""
+msgstr "Minimaalne järelejäänud eluiga enne sertifikaadi avaldamist."
 
 #: lib/marshall/documentation_messages.ex:6577
 #, elixir-autogen, elixir-format
@@ -10602,12 +10602,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6585
 #, elixir-autogen, elixir-format
 msgid "Named IPv4 sources allowed to reach every fleet host over TCP and UDP."
-msgstr ""
+msgstr "Nimega IPv4-allikad, millel on TCP ja UDP kaudu ligipääs igale pargihostile."
 
 #: lib/marshall/documentation_messages.ex:6589
 #, elixir-autogen, elixir-format
 msgid "Named destination-scoped listeners admitted from any IPv4 source; each needs an explicit local address, at least one TCP or UDP port, and a reviewed comment."
-msgstr ""
+msgstr "Nimega sihtkohapõhised kuulajad, kuhu pääseb igast IPv4-allikast; igaüks vajab selgesõnalist kohalikku aadressi, vähemalt üht TCP- või UDP-porti ja ülevaadatud kommentaari."
 
 #: lib/marshall/documentation_messages.ex:6593
 #, elixir-autogen, elixir-format
@@ -10737,7 +10737,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6710
 #, elixir-autogen, elixir-format
 msgid "No additional description is declared by the module."
-msgstr ""
+msgstr "Moodul ei deklareeri täiendavat kirjeldust."
 
 #: lib/marshall/documentation_messages.ex:6711
 #, elixir-autogen, elixir-format
@@ -10752,22 +10752,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6719
 #, elixir-autogen, elixir-format
 msgid "Non-secret native output settings; routing and queue keys are reserved."
-msgstr ""
+msgstr "Mittesalajased omatäitmise väljundisätted; marsruutimise ja järjekorra võtmed on reserveeritud."
 
 #: lib/marshall/documentation_messages.ex:6723
 #, elixir-autogen, elixir-format
 msgid "Nonempty set of providers enabled for discovery and inference; readiness requires all selected catalogs."
-msgstr ""
+msgstr "Mittetühi pakkujate hulk, mis on lubatud avastamiseks ja inferentsiks; valmisolek nõuab kõiki valitud katalooge."
 
 #: lib/marshall/documentation_messages.ex:6727
 #, elixir-autogen, elixir-format
 msgid "OTLP hostname, without scheme, path or credentials."
-msgstr ""
+msgstr "OTLP hostinimi ilma skeemi, tee või mandaatideta."
 
 #: lib/marshall/documentation_messages.ex:6728
 #, elixir-autogen, elixir-format
 msgid "OTP supervisor progress reports, two per TLS connection, are dropped at the\nsource. Crash and supervisor-failure reports remain."
-msgstr ""
+msgstr "OTP juhendaja edenemisaruanded, kaks TLS-ühenduse kohta, jäetakse\nallikas kõrvale. Krahhi- ja juhendajarikete aruanded jäävad alles."
 
 #: lib/marshall/documentation_messages.ex:6732
 #, elixir-autogen, elixir-format
@@ -10782,7 +10782,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6740
 #, elixir-autogen, elixir-format
 msgid "Official parent/trace-ID ratio for routine spans; committed lifecycle diagnostics always sample and SLO accounting is independent."
-msgstr ""
+msgstr "Ametlik vanema/jälje-ID suhtarv tavapäraste lõikude jaoks; kinnitatud elutsüklidiagnostikat valimitakse alati ja SLO-arvestus on sõltumatu."
 
 #: lib/marshall/documentation_messages.ex:6744
 #, elixir-autogen, elixir-format
@@ -10832,7 +10832,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6780
 #, elixir-autogen, elixir-format
 msgid "One Marshall instance authorized to issue the public Audi wildcard."
-msgstr ""
+msgstr "Üks Marshalli instants, millel on õigus väljastada avalik Audi metamärgisertifikaat."
 
 #: lib/marshall/documentation_messages.ex:6784
 #, elixir-autogen, elixir-format
@@ -10882,12 +10882,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6820
 #, elixir-autogen, elixir-format
 msgid "Open backend TLS ports; unnecessary for a colocated proxy."
-msgstr ""
+msgstr "Avage tagaserveri TLS-pordid; samas kohas asuva puhverserveri korral ebavajalik."
 
 #: lib/marshall/documentation_messages.ex:6821
 #, elixir-autogen, elixir-format
 msgid "Open ports in the firewall for the Audiobookshelf web interface."
-msgstr ""
+msgstr "Avage tulemüüris pordid Audiobookshelfi veebiliidese jaoks."
 
 #: lib/marshall/documentation_messages.ex:6825
 #, elixir-autogen, elixir-format
@@ -10912,7 +10912,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6838
 #, elixir-autogen, elixir-format
 msgid "Operator RSA public key (at least 3072 bits). Keep its private key off-host."
-msgstr ""
+msgstr "Operaatori RSA avalik võti (vähemalt 3072 bitti). Hoidke selle privaatvõtit hostist väljas."
 
 #: lib/marshall/documentation_messages.ex:6842
 #, elixir-autogen, elixir-format
@@ -10932,12 +10932,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6851
 #, elixir-autogen, elixir-format
 msgid "Optional IPv4 recursive DNS resolver or hostname including its port."
-msgstr ""
+msgstr "Valikuline IPv4 rekursiivne DNS-lahendaja või hostinimi koos pordiga."
 
 #: lib/marshall/documentation_messages.ex:6855
 #, elixir-autogen, elixir-format
 msgid "Optional ZFS dataset mounted at /var/lib/tempo with a hard refquota."
-msgstr ""
+msgstr "Valikuline ZFS-andmestik, mis on ühendatud /var/lib/tempo alla range refquota-ga."
 
 #: lib/marshall/documentation_messages.ex:6859
 #, elixir-autogen, elixir-format
@@ -10967,7 +10967,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6879
 #, elixir-autogen, elixir-format
 msgid "Optional operator-owned runtime public hostname, delivered through systemd credentials. Overrides publicHost; invalid or missing input prevents startup."
-msgstr ""
+msgstr "Valikuline operaatori omatud käitusaja avalik hostinimi, mis edastatakse systemd mandaatidega. Kirjutab publicHost-i üle; vigane või puuduv sisend takistab käivitust."
 
 #: lib/marshall/documentation_messages.ex:6883
 #, elixir-autogen, elixir-format
@@ -10977,17 +10977,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6887
 #, elixir-autogen, elixir-format
 msgid "Optional private CA bundle for terminal peer TLS; system roots otherwise."
-msgstr ""
+msgstr "Valikuline privaatne CA kogum terminalipartneri TLS-i jaoks; muidu süsteemijuured."
 
 #: lib/marshall/documentation_messages.ex:6891
 #, elixir-autogen, elixir-format
 msgid "Optional private runtime bearer credential for the approved webhook."
-msgstr ""
+msgstr "Valikuline privaatne käitusaja bearer-mandaat kinnitatud veebikonksu jaoks."
 
 #: lib/marshall/documentation_messages.ex:6895
 #, elixir-autogen, elixir-format
 msgid "Optional verified HTTPS Route 53 endpoint for isolated fixtures or compatible services."
-msgstr ""
+msgstr "Valikuline kontrollitud HTTPS Route 53 otspunkt isoleeritud fikstuuridele või ühilduvatele teenustele."
 
 #: lib/marshall/documentation_messages.ex:6899
 #, elixir-autogen, elixir-format
@@ -11002,7 +11002,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6907
 #, elixir-autogen, elixir-format
 msgid "Other HTTP-01 issuers for the same hostname on a trusted private network. Configure every frontend with every other issuer."
-msgstr ""
+msgstr "Muud HTTP-01 väljastajad sama hostinime jaoks usaldatud privaatvõrgus. Seadistage igas eesserveris kõik teised väljastajad."
 
 #: lib/marshall/documentation_messages.ex:6911
 #, elixir-autogen, elixir-format
@@ -11052,12 +11052,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6944
 #, elixir-autogen, elixir-format
 msgid "Owners and managers can change a machine's CPU and memory; disk may only grow,\nup to 500 GiB:"
-msgstr ""
+msgstr "Omanikud ja haldurid saavad muuta masina CPU-d ja mälu; ketas võib ainult kasvada,\nkuni 500 GiB-ni:"
 
 #: lib/marshall/documentation_messages.ex:6948
 #, elixir-autogen, elixir-format
 msgid "Owners and managers can queue an independent copy:"
-msgstr ""
+msgstr "Omanikud ja haldurid saavad sõltumatu koopia järjekorda panna:"
 
 #: lib/marshall/documentation_messages.ex:6949
 #, elixir-autogen, elixir-format
@@ -11067,7 +11067,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6953
 #, elixir-autogen, elixir-format
 msgid "Path to Audiobookshelf config and metadata inside of /var/lib."
-msgstr ""
+msgstr "Tee Audiobookshelfi konfiguratsiooni ja metaandmeteni /var/lib sees."
 
 #: lib/marshall/documentation_messages.ex:6957
 #, elixir-autogen, elixir-format
@@ -11082,17 +11082,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6962
 #, elixir-autogen, elixir-format
 msgid "Pending export admission budget per producer, within retained archive budget."
-msgstr ""
+msgstr "Ootel ekspordi vastuvõtueelarve tootja kohta säilitatud arhiivieelarve piires."
 
 #: lib/marshall/documentation_messages.ex:6966
 #, elixir-autogen, elixir-format
 msgid "Per-host queue alarm threshold; align with each writer budget."
-msgstr ""
+msgstr "Hostipõhine järjekorra häirelävi; joondage iga kirjutaja eelarvega."
 
 #: lib/marshall/documentation_messages.ex:6970
 #, elixir-autogen, elixir-format
 msgid "Per-instance TLS health overrides; default uses publicHost and the configured certificate as trust anchor."
-msgstr ""
+msgstr "Instantsipõhised TLS-tervise ülekirjutused; vaikimisi kasutatakse publicHost-i ja seadistatud sertifikaati usaldusankruna."
 
 #: lib/marshall/documentation_messages.ex:6974
 #, elixir-autogen, elixir-format
@@ -11117,7 +11117,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6990
 #, elixir-autogen, elixir-format
 msgid "Physical IPv4 destination admitted for WireGuard handshakes."
-msgstr ""
+msgstr "Füüsiline IPv4-sihtkoht, kuhu WireGuardi käepigistused on lubatud."
 
 #: lib/marshall/documentation_messages.ex:6994
 #, elixir-autogen, elixir-format
@@ -11137,7 +11137,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7000
 #, elixir-autogen, elixir-format
 msgid "Pinned public Ed25519 keys for SSH and optional recovery."
-msgstr ""
+msgstr "Kinnitatud avalikud Ed25519 võtmed SSH ja valikulise taaste jaoks."
 
 #: lib/marshall/documentation_messages.ex:7001
 #, elixir-autogen, elixir-format
@@ -11152,12 +11152,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7009
 #, elixir-autogen, elixir-format
 msgid "Plugin setting names mapped to root-only runtime secret files."
-msgstr ""
+msgstr "Plugina sätete nimed seostatuna ainult root-kasutaja käitusaja saladusfailidega."
 
 #: lib/marshall/documentation_messages.ex:7013
 #, elixir-autogen, elixir-format
 msgid "Poll Marshall for host-bound agent model calls."
-msgstr ""
+msgstr "Küsitlege Marshalli hostiga seotud agendi mudelikutsete saamiseks."
 
 #: lib/marshall/documentation_messages.ex:7014
 #, elixir-autogen, elixir-format
@@ -11197,12 +11197,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7042
 #, elixir-autogen, elixir-format
 msgid "Preparation dependency to add to a consumer's secretUnits."
-msgstr ""
+msgstr "Ettevalmistussõltuvus tarbija secretUnits-i lisamiseks."
 
 #: lib/marshall/documentation_messages.ex:7043
 #, elixir-autogen, elixir-format
 msgid "Prerequisites publishing issuer trust or selected DNS credentials before issuance."
-msgstr ""
+msgstr "Eeltingimused, mis avaldavad väljastaja usalduse või valitud DNS-mandaadid enne väljastamist."
 
 #: lib/marshall/documentation_messages.ex:7047
 #, elixir-autogen, elixir-format
@@ -11212,17 +11212,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7048
 #, elixir-autogen, elixir-format
 msgid "Private AWS shared credentials INI with only the default profile; required for DNS-01."
-msgstr ""
+msgstr "Privaatne AWS-i jagatud mandaatide INI ainult vaikeprofiiliga; nõutav DNS-01 jaoks."
 
 #: lib/marshall/documentation_messages.ex:7052
 #, elixir-autogen, elixir-format
 msgid "Private Lego responder port, never the public validation port."
-msgstr ""
+msgstr "Privaatne Lego vastaja port, mitte kunagi avalik valideerimisport."
 
 #: lib/marshall/documentation_messages.ex:7056
 #, elixir-autogen, elixir-format
 msgid "Private Playwright storage state obtained from a real Marshall operator browser sign-in; no authentication bypass."
-msgstr ""
+msgstr "Privaatne Playwrighti salvestusolek, mis on saadud Marshalli operaatori tegelikust brauserisisselogimisest; autentimisest möödumine puudub."
 
 #: lib/marshall/documentation_messages.ex:7060
 #, elixir-autogen, elixir-format
@@ -11232,7 +11232,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7064
 #, elixir-autogen, elixir-format
 msgid "Private host-bound enrollment credential file."
-msgstr ""
+msgstr "Privaatne hostiga seotud registreerimismandaadi fail."
 
 #: lib/marshall/documentation_messages.ex:7065
 #, elixir-autogen, elixir-format
@@ -11242,47 +11242,47 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7066
 #, elixir-autogen, elixir-format
 msgid "Private runtime JSON containing only shared Inception SMTP configuration; null disables Inception bootstrap."
-msgstr ""
+msgstr "Privaatne käitusaja JSON, mis sisaldab ainult jagatud Inceptioni SMTP-konfiguratsiooni; null keelab Inceptioni algseadistuse."
 
 #: lib/marshall/documentation_messages.ex:7070
 #, elixir-autogen, elixir-format
 msgid "Private runtime JSON fixture identifying the real operator's guest, origin, UID and existing Markdown probe file."
-msgstr ""
+msgstr "Privaatne käitusaja JSON-fikstuur, mis määrab tegeliku operaatori külalise, päritolu, UID ja olemasoleva Markdowni proovifaili."
 
 #: lib/marshall/documentation_messages.ex:7074
 #, elixir-autogen, elixir-format
 msgid "Private runtime OpenAI-compatible proxy key file."
-msgstr ""
+msgstr "Privaatne käitusaja OpenAI-ga ühilduva puhverserveri võtmefail."
 
 #: lib/marshall/documentation_messages.ex:7075
 #, elixir-autogen, elixir-format
 msgid "Private runtime Serper API key, delivered to each Marshall instance through systemd credentials."
-msgstr ""
+msgstr "Privaatne käitusaja Serperi API-võti, mis edastatakse igale Marshalli instantsile systemd mandaatide kaudu."
 
 #: lib/marshall/documentation_messages.ex:7079
 #, elixir-autogen, elixir-format
 msgid "Private runtime file containing a separately enrolled DNS service token."
-msgstr ""
+msgstr "Privaatne käitusajafail, mis sisaldab eraldi registreeritud DNS-teenuse tõendit."
 
 #: lib/marshall/documentation_messages.ex:7083
 #, elixir-autogen, elixir-format
 msgid "Private runtime file containing a separately provisioned Marshall gateway token."
-msgstr ""
+msgstr "Privaatne käitusajafail, mis sisaldab eraldi ettevalmistatud Marshalli lüüsitõendit."
 
 #: lib/marshall/documentation_messages.ex:7087
 #, elixir-autogen, elixir-format
 msgid "Private runtime file containing the approved HTTPS webhook URL; no plaintext URL enters Nix configuration."
-msgstr ""
+msgstr "Privaatne käitusajafail, mis sisaldab kinnitatud HTTPS-veebikonksu URL-i; lihttekstiline URL ei sisene Nixi konfiguratsiooni."
 
 #: lib/marshall/documentation_messages.ex:7091
 #, elixir-autogen, elixir-format
 msgid "Private systemd environment file containing database, signing, Cloak and SMTP configuration."
-msgstr ""
+msgstr "Privaatne systemd keskkonnafail, mis sisaldab andmebaasi, allkirjastamise, Cloaki ja SMTP konfiguratsiooni."
 
 #: lib/marshall/documentation_messages.ex:7095
 #, elixir-autogen, elixir-format
 msgid "Private v3 export configuration containing local host, journal root and bound pools; no control-plane credentials."
-msgstr ""
+msgstr "Privaatne v3 ekspordikonfiguratsioon kohaliku hosti, päevikujuure ja seotud puulidega; juhttasandi mandaadid puuduvad."
 
 #: lib/marshall/documentation_messages.ex:7099
 #, elixir-autogen, elixir-format
@@ -11307,7 +11307,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7115
 #, elixir-autogen, elixir-format
 msgid "Prometheus time retention in days; distinct from the seven-day SLO window."
-msgstr ""
+msgstr "Prometheuse ajaline säilitusaeg päevades; eraldi seitsmepäevasest SLO-aknast."
 
 #: lib/marshall/documentation_messages.ex:7119
 #, elixir-autogen, elixir-format
@@ -11377,12 +11377,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7165
 #, elixir-autogen, elixir-format
 msgid "Public DNS name used by sign-in links and origin checks."
-msgstr ""
+msgstr "Avalik DNS-nimi, mida kasutatakse sisselogimislinkide ja päritolukontrollide jaoks."
 
 #: lib/marshall/documentation_messages.ex:7166
 #, elixir-autogen, elixir-format
 msgid "Public Grafana HTTPS port on the Marshall proxy's explicit IPv4 address and hostname."
-msgstr ""
+msgstr "Avalik Grafana HTTPS-port Marshalli puhverserveri selgesõnalisel IPv4-aadressil ja hostinimel."
 
 #: lib/marshall/documentation_messages.ex:7170
 #, elixir-autogen, elixir-format
@@ -11392,7 +11392,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7174
 #, elixir-autogen, elixir-format
 msgid "Public HTTPS Marshall browser origin for identity approval; separate from the private control API."
-msgstr ""
+msgstr "Marshalli avalik HTTPS-brauseripäritolu identiteedi kinnitamiseks; eraldi privaatsest juht-API-st."
 
 #: lib/marshall/documentation_messages.ex:7178
 #, elixir-autogen, elixir-format
@@ -11402,7 +11402,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7179
 #, elixir-autogen, elixir-format
 msgid "Public HTTPS port shared by Audi gateways; used for browser callbacks."
-msgstr ""
+msgstr "Avalik HTTPS-port, mida Audi lüüsid jagavad; kasutatakse brauseri tagasikutseteks."
 
 #: lib/marshall/documentation_messages.ex:7183
 #, elixir-autogen, elixir-format
@@ -11412,27 +11412,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7184
 #, elixir-autogen, elixir-format
 msgid "Public Marshall HTTPS origin for SSH setup guidance; never the private control endpoint."
-msgstr ""
+msgstr "Marshalli avalik HTTPS-päritolu SSH seadistusjuhiste jaoks; mitte kunagi privaatne juhtotspunkt."
 
 #: lib/marshall/documentation_messages.ex:7188
 #, elixir-autogen, elixir-format
 msgid "Public platform CA certificates delivered to each guest on boot."
-msgstr ""
+msgstr "Avalikud platvormi CA sertifikaadid, mis edastatakse igale külalisele käivitamisel."
 
 #: lib/marshall/documentation_messages.ex:7192
 #, elixir-autogen, elixir-format
 msgid "Public preparation descriptors shared with candidate deployment staging."
-msgstr ""
+msgstr "Avalikud ettevalmistuskirjeldused, mida jagatakse kandidaadi juurutuse ettevalmistusega."
 
 #: lib/marshall/documentation_messages.ex:7196
 #, elixir-autogen, elixir-format
 msgid "Public private-service CA trust bundle, also supplied to guest images."
-msgstr ""
+msgstr "Avalik privaatteenuse CA usalduskogum, mis antakse ka külalistõmmistele."
 
 #: lib/marshall/documentation_messages.ex:7200
 #, elixir-autogen, elixir-format
 msgid "Publish the loopback service through tailnet-only Tailscale Serve HTTPS."
-msgstr ""
+msgstr "Avaldage tagasisilmuse teenus ainult tailneti Tailscale Serve HTTPS-i kaudu."
 
 #: lib/marshall/documentation_messages.ex:7204
 #, elixir-autogen, elixir-format
@@ -11442,7 +11442,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7208
 #, elixir-autogen, elixir-format
 msgid "Queue limit per effective output group. Native/OTLP platform sources share a group; CloudWatch sources have separate groups."
-msgstr ""
+msgstr "Järjekorrapiir tegeliku väljundrühma kohta. Omatäitmise/OTLP platvormiallikad jagavad rühma; CloudWatchi allikatel on eraldi rühmad."
 
 #: lib/marshall/documentation_messages.ex:7212
 #, elixir-autogen, elixir-format
@@ -11452,7 +11452,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7216
 #, elixir-autogen, elixir-format
 msgid "Raw single secret, or a systemd EnvironmentFile of selected values."
-msgstr ""
+msgstr "Üks toores saladus või valitud väärtuste systemd EnvironmentFile."
 
 #: lib/marshall/documentation_messages.ex:7220
 #, elixir-autogen, elixir-format
@@ -11462,7 +11462,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7224
 #, elixir-autogen, elixir-format
 msgid "Read-only recipient group; root uses 0700/0600, other groups 0750/0640."
-msgstr ""
+msgstr "Ainult lugemise saajarühm; root kasutab 0700/0600, teised rühmad 0750/0640."
 
 #: lib/marshall/documentation_messages.ex:7228
 #, elixir-autogen, elixir-format
@@ -11482,7 +11482,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7240
 #, elixir-autogen, elixir-format
 msgid "Reconnecting later is the same everywhere: `ssh HOST`. (On Windows, if you\ndeclined the administrator prompt, use `overalls ssh HOST` instead.)"
-msgstr ""
+msgstr "Hiljem taasühendumine on kõikjal sama: `ssh HOST`. (Windowsis, kui\nkeeldusite administraatoriviibast, kasutage selle asemel `overalls ssh HOST`.)"
 
 #: lib/marshall/documentation_messages.ex:7244
 #, elixir-autogen, elixir-format
@@ -11517,7 +11517,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7268
 #, elixir-autogen, elixir-format
 msgid "Release-independent runtime configuration; null uses the deployed configuration."
-msgstr ""
+msgstr "Väljalaskest sõltumatu käitusaja konfiguratsioon; null kasutab juurutatud konfiguratsiooni."
 
 #: lib/marshall/documentation_messages.ex:7280
 #, elixir-autogen, elixir-format
@@ -11552,22 +11552,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7304
 #, elixir-autogen, elixir-format
 msgid "Required certificate hostname and TLS SNI for traffic and health checks."
-msgstr ""
+msgstr "Nõutav sertifikaadi hostinimi ja TLS SNI liikluse ning tervisekontrollide jaoks."
 
 #: lib/marshall/documentation_messages.ex:7308
 #, elixir-autogen, elixir-format
 msgid "Required human-readable owner or purpose for this grant."
-msgstr ""
+msgstr "Selle loa nõutav inimloetav omanik või eesmärk."
 
 #: lib/marshall/documentation_messages.ex:7309
 #, elixir-autogen, elixir-format
 msgid "Required human-readable owner or purpose for this listener."
-msgstr ""
+msgstr "Selle kuulaja nõutav inimloetav omanik või eesmärk."
 
 #: lib/marshall/documentation_messages.ex:7310
 #, elixir-autogen, elixir-format
 msgid "Required native ZFS pool and dataset identity."
-msgstr ""
+msgstr "Nõutav omatäitmise ZFS-puuli ja andmestiku identiteet."
 
 #: lib/marshall/documentation_messages.ex:7311
 #, elixir-autogen, elixir-format
@@ -11577,12 +11577,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7315
 #, elixir-autogen, elixir-format
 msgid "Required preparation services that publish runtime credentials."
-msgstr ""
+msgstr "Nõutavad ettevalmistusteenused, mis avaldavad käitusajamandaate."
 
 #: lib/marshall/documentation_messages.ex:7319
 #, elixir-autogen, elixir-format
 msgid "Required preparation services that publish runtime secrets before startup."
-msgstr ""
+msgstr "Nõutavad ettevalmistusteenused, mis avaldavad käitusajasaladused enne käivitust."
 
 #: lib/marshall/documentation_messages.ex:7323
 #, elixir-autogen, elixir-format
@@ -11602,7 +11602,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7335
 #, elixir-autogen, elixir-format
 msgid "Required refusal: A full64MiB ring reservation budget refuses new sessions without replacing live PTYs; retirement permits only exact replacement capacity."
-msgstr ""
+msgstr "Nõutav keeldumine: täis 64MiB ringireservatsiooni eelarve keeldub uutest seanssidest aktiivseid PTY-sid asendamata; kõrvaldamine lubab ainult täpset asendusmahtu."
 
 #: lib/marshall/documentation_messages.ex:7339
 #, elixir-autogen, elixir-format
@@ -11622,17 +11622,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7351
 #, elixir-autogen, elixir-format
 msgid "Required refusal: A retired session cannot retain its backing scrollback after returning quota; natural EOF preserves every independently queued output byte."
-msgstr ""
+msgstr "Nõutav keeldumine: kõrvaldatud seanss ei saa pärast kvoodi tagastamist säilitada oma kerimisajalugu; loomulik EOF säilitab iga sõltumatult järjekorda pandud väljundbaidi."
 
 #: lib/marshall/documentation_messages.ex:7355
 #, elixir-autogen, elixir-format
 msgid "Required refusal: A silent outgoing hop must retire and notify its viewer; the incoming application must release its budget slot after resumption."
-msgstr ""
+msgstr "Nõutav keeldumine: vaikiv väljuv hüpe peab taanduma ja oma vaatajat teavitama; sisenev rakendus peab pärast jätkamist oma eelarvekoha vabastama."
 
 #: lib/marshall/documentation_messages.ex:7359
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Actor restart must not launch the completed generation again or replace its recovered outcome identity."
-msgstr ""
+msgstr "Nõutav keeldumine: aktori taaskäivitus ei tohi lõpetatud põlvkonda uuesti käivitada ega selle taastatud tulemuse identiteeti asendada."
 
 #: lib/marshall/documentation_messages.ex:7363
 #, elixir-autogen, elixir-format
@@ -11652,7 +11652,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7375
 #, elixir-autogen, elixir-format
 msgid "Required refusal: An expired delayed grant must close the SSH channel without connector calls or guest admission."
-msgstr ""
+msgstr "Nõutav keeldumine: aegunud viivitusega luba peab SSH-kanali sulgema ilma ühendajakutsete või külalise vastuvõtuta."
 
 #: lib/marshall/documentation_messages.ex:7379
 #, elixir-autogen, elixir-format
@@ -11697,7 +11697,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7411
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Close4001 must refuse every pending caller as unsupported_version, while draining4008 must remain a transient loss without request replay."
-msgstr ""
+msgstr "Nõutav keeldumine: sulgemine 4001 peab keelduma igast ootel kutsujast kui unsupported_version, samas kui tühjendamine 4008 peab jääma ajutiseks kaoks ilma päringu taasesituseta."
 
 #: lib/marshall/documentation_messages.ex:7415
 #, elixir-autogen, elixir-format
@@ -11707,7 +11707,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7419
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Corrupt or non-v2 primary state fails closed without rewriting, and diagnostic I/O cannot occur under the native writer lock."
-msgstr ""
+msgstr "Nõutav keeldumine: rikutud või mitte-v2 esmane olek sulgub turvaliselt ümberkirjutamata ning diagnostika I/O ei saa toimuda omatäitmise kirjutajaluku all."
 
 #: lib/marshall/documentation_messages.ex:7423
 #, elixir-autogen, elixir-format
@@ -11727,12 +11727,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7435
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Do not attribute an old flow to a new owner after address reuse."
-msgstr ""
+msgstr "Nõutav keeldumine: ärge omistage vana voogu pärast aadressi taaskasutust uuele omanikule."
 
 #: lib/marshall/documentation_messages.ex:7439
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Do not reply success/failure, admit successor mutation or release custody while independently observed adopted children remain live."
-msgstr ""
+msgstr "Nõutav keeldumine: ärge vastake edu/rikkega, võtke vastu järglasmuudatust ega vabastage valdust, kuni sõltumatult vaadeldud üle võetud alamprotsessid on aktiivsed."
 
 #: lib/marshall/documentation_messages.ex:7443
 #, elixir-autogen, elixir-format
@@ -11757,7 +11757,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7459
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Every non-hello first envelope closes with4005 while identity stays nil and no tasks are dispatched."
-msgstr ""
+msgstr "Nõutav keeldumine: iga muu esimene ümbrik peale hello sulgub koodiga 4005, identiteet jääb nil-iks ja ühtegi ülesannet ei saadeta välja."
 
 #: lib/marshall/documentation_messages.ex:7467
 #, elixir-autogen, elixir-format
@@ -11822,7 +11822,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7519
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Invalid keys, unsupported versions and unknown session credentials preserve exact closed refusal names."
-msgstr ""
+msgstr "Nõutav keeldumine: vigased võtmed, toetamata versioonid ja tundmatud seansimandaadid säilitavad täpsed suletud keeldumisnimed."
 
 #: lib/marshall/documentation_messages.ex:7523
 #, elixir-autogen, elixir-format
@@ -11917,7 +11917,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7595
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Never treat a readable restored database as current production authority."
-msgstr ""
+msgstr "Nõutav keeldumine: ärge käsitlege loetavat taastatud andmebaasi kunagi kehtiva tootmise otsustusõigusena."
 
 #: lib/marshall/documentation_messages.ex:7599
 #, elixir-autogen, elixir-format
@@ -11942,7 +11942,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7615
 #, elixir-autogen, elixir-format
 msgid "Required refusal: One request beyond the advertised integer1..256 limit is refused as busy without wire dispatch; missing or invalid limits use eight."
-msgstr ""
+msgstr "Nõutav keeldumine: ühest päringust üle väljakuulutatud täisarvulise 1..256 piiri keeldutakse kui busy ilma juhtmeedastuseta; puuduvad või vigased piirid kasutavad kaheksat."
 
 #: lib/marshall/documentation_messages.ex:7619
 #, elixir-autogen, elixir-format
@@ -11957,7 +11957,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7627
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Overwriting a fresh fixed positive-capacity ring cannot retain expanded backing; newest raw-byte suffix and absolute cursors remain exact."
-msgstr ""
+msgstr "Nõutav keeldumine: värske fikseeritud positiivse mahuga ringi ülekirjutamine ei saa säilitada laiendatud taustmälu; uusim toorbaitide lõpp ja absoluutsed kursorid jäävad täpseks."
 
 #: lib/marshall/documentation_messages.ex:7631
 #, elixir-autogen, elixir-format
@@ -11982,7 +11982,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7647
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Recoverable loss must not grow the retry ceiling beyond four seconds. Unsupported-version terminal refusals must remain stopped."
-msgstr ""
+msgstr "Nõutav keeldumine: taastatav kadu ei tohi tõsta korduskatse ülempiiri üle nelja sekundi. Toetamata versiooni lõplikud keeldumised peavad jääma peatunuks."
 
 #: lib/marshall/documentation_messages.ex:7651
 #, elixir-autogen, elixir-format
@@ -12052,7 +12052,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7703
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Refuse ordinary, locked, demoted or revoked actors and archived/non-retryable jobs; changed request meaning cannot retry another job."
-msgstr ""
+msgstr "Nõutav keeldumine: keelduge tavalistest, lukustatud, alandatud või tühistatud aktoritest ja arhiveeritud/mittekorratavatest töödest; muutunud päringutähendus ei saa teist tööd korrata."
 
 #: lib/marshall/documentation_messages.ex:7707
 #, elixir-autogen, elixir-format

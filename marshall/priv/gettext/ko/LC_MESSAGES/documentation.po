@@ -32,7 +32,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "  For this reason, callers of the module system can provide `specialArgs`\n  which are available during import resolution."
-msgstr ""
+msgstr "  이러한 이유로 모듈 시스템 호출자는 import 해석 중 사용할 수 있는\n  `specialArgs`를 제공할 수 있습니다."
 
 #: lib/marshall/documentation_messages.ex:22
 #, elixir-autogen, elixir-format
@@ -47,7 +47,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:30
 #, elixir-autogen, elixir-format
 msgid "  Whereas option values can generally depend on other option values\n  thanks to laziness, this does not apply to `imports`, which\n  must be computed statically before anything else."
-msgstr ""
+msgstr "  지연 평가 덕분에 옵션 값은 일반적으로 다른 옵션 값에 의존할 수 있지만,\n  다른 모든 것보다 먼저 정적으로 계산해야 하는 `imports`에는\n  적용되지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:34
 #, elixir-autogen, elixir-format
@@ -6887,7 +6887,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3701
 #, elixir-autogen, elixir-format
 msgid "A minimal role fragment uses runtime file paths for private material:"
-msgstr ""
+msgstr "최소 역할 구성 조각은 비공개 자료에 런타임 파일 경로를 사용합니다:"
 
 #: lib/marshall/documentation_messages.ex:3705
 #, elixir-autogen, elixir-format
@@ -6937,7 +6937,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3745
 #, elixir-autogen, elixir-format
 msgid "A running VM in steady state is not reconciled every second (ADR-0176). An actor\ncounts as steady when all of the following hold:"
-msgstr ""
+msgstr "안정 상태로 실행 중인 VM은 매초 조정하지 않습니다(ADR-0176). 다음 조건을\n모두 만족하면 액터가 안정 상태인 것으로 간주합니다:"
 
 #: lib/marshall/documentation_messages.ex:3749
 #, elixir-autogen, elixir-format
@@ -7007,7 +7007,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3798
 #, elixir-autogen, elixir-format
 msgid "ADR-0154 keeps only changes whose effect was measured with the boot profile\n(1-vCPU fixture; seconds since guest kernel start):"
-msgstr ""
+msgstr "ADR-0154는 부팅 프로필로 효과를 측정한 변경만 유지합니다\n(1-vCPU 픽스처, 게스트 커널 시작 이후의 초):"
 
 #: lib/marshall/documentation_messages.ex:3802
 #, elixir-autogen, elixir-format
@@ -7102,17 +7102,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3873
 #, elixir-autogen, elixir-format
 msgid "Additional arguments passed to each module in addition to ones\nlike `lib`, `config`,\nand `pkgs`, `modulesPath`."
-msgstr ""
+msgstr "`lib`, `config`,\n`pkgs`, `modulesPath` 등의 인수 외에\n각 모듈에 전달하는 추가 인수입니다."
 
 #: lib/marshall/documentation_messages.ex:3877
 #, elixir-autogen, elixir-format
 msgid "Additional canonical IPv4 networks denied to guests, including public management endpoints."
-msgstr ""
+msgstr "공개 관리 엔드포인트를 포함하여 게스트 접근을 차단할 추가 정규 IPv4 네트워크입니다."
 
 #: lib/marshall/documentation_messages.ex:3881
 #, elixir-autogen, elixir-format
 msgid "Administrative access path. Console-only deployments must disable administrative OpenSSH."
-msgstr ""
+msgstr "관리 접근 경로입니다. 콘솔 전용 배포는 관리용 OpenSSH를 비활성화해야 합니다."
 
 #: lib/marshall/documentation_messages.ex:3885
 #, elixir-autogen, elixir-format
@@ -7132,7 +7132,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3901
 #, elixir-autogen, elixir-format
 msgid "Admit port 80 on the proxy address from any source through the fleet perimeter (ADR-0181), so the public CA can reach HTTP-01 challenges. The listener serves only challenges and HTTPS redirects."
-msgstr ""
+msgstr "공개 CA가 HTTP-01 챌린지에 접근할 수 있도록 플릿 경계를 통해 모든 출처에서 프록시 주소의 80번 포트를 허용합니다(ADR-0181). 리스너는 챌린지와 HTTPS 리디렉션만 제공합니다."
 
 #: lib/marshall/documentation_messages.ex:3905
 #, elixir-autogen, elixir-format
@@ -7167,7 +7167,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3941
 #, elixir-autogen, elixir-format
 msgid "After reviewing public users and host inventory, use a retained recovery identity:"
-msgstr ""
+msgstr "공개 사용자와 호스트 인벤토리를 검토한 후 보존된 복구 ID를 사용하세요:"
 
 #: lib/marshall/documentation_messages.ex:3949
 #, elixir-autogen, elixir-format
@@ -7182,7 +7182,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3957
 #, elixir-autogen, elixir-format
 msgid "Age passed to nix-collect-garbage --delete-older-than. Generations\nyounger than this are preserved."
-msgstr ""
+msgstr "nix-collect-garbage --delete-older-than에 전달하는 보존 기간입니다.\n이보다 오래되지 않은 세대는 보존합니다."
 
 #: lib/marshall/documentation_messages.ex:3961
 #, elixir-autogen, elixir-format
@@ -7192,7 +7192,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3965
 #, elixir-autogen, elixir-format
 msgid "Aggregate CPU quota in logical cores for Marshall instances."
-msgstr ""
+msgstr "Marshall 인스턴스에 대한 논리 코어 단위의 총 CPU 할당량입니다."
 
 #: lib/marshall/documentation_messages.ex:3969
 #, elixir-autogen, elixir-format
@@ -7237,7 +7237,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3992
 #, elixir-autogen, elixir-format
 msgid "Also bind fleet TLS to loopback for colocated clients when the main fleet bind uses a private interface."
-msgstr ""
+msgstr "기본 플릿 바인딩이 비공개 인터페이스를 사용할 때 함께 배치된 클라이언트를 위해 플릿 TLS를 루프백에도 바인딩합니다."
 
 #: lib/marshall/documentation_messages.ex:3996
 #, elixir-autogen, elixir-format
@@ -7402,12 +7402,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4132
 #, elixir-autogen, elixir-format
 msgid "Arrows mean application ownership, not calls or deployment units. Resources below are literal declarations, deduplicated; extension-generated versions are excluded."
-msgstr ""
+msgstr "화살표는 호출이나 배포 단위가 아닌 애플리케이션 소유권을 나타냅니다. 아래 리소스는 중복을 제거한 실제 선언이며, 확장이 생성한 버전은 제외합니다."
 
 #: lib/marshall/documentation_messages.ex:4136
 #, elixir-autogen, elixir-format
 msgid "Arrows mean configured service placement. Configuration: `dungarees`. Marshall instances: none. Fleet address: `10.90.0.2`. Fleet peers: `overalls`. Administrative SSH ports: 2222."
-msgstr ""
+msgstr "화살표는 구성된 서비스 배치를 나타냅니다. 구성: `dungarees`. Marshall 인스턴스: 없음. 플릿 주소: `10.90.0.2`. 플릿 피어: `overalls`. 관리 SSH 포트: 2222."
 
 #: lib/marshall/documentation_messages.ex:4140
 #, elixir-autogen, elixir-format
@@ -7422,7 +7422,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4142
 #, elixir-autogen, elixir-format
 msgid "Atomically published PEM key and full certificate chain, readable by the haproxy group."
-msgstr ""
+msgstr "원자적으로 게시되는 PEM 키와 전체 인증서 체인으로, haproxy 그룹이 읽을 수 있습니다."
 
 #: lib/marshall/documentation_messages.ex:4146
 #, elixir-autogen, elixir-format
@@ -7457,7 +7457,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4174
 #, elixir-autogen, elixir-format
 msgid "Authenticate the installed public host key from the receipt. Publish it in the\nhost inventory. Prepare encrypted Git custody, publish the enrolled configuration,\nthen activate the exact commit:"
-msgstr ""
+msgstr "영수증을 통해 설치된 공개 호스트 키를 인증하세요. 이를 호스트 인벤토리에\n게시하세요. 암호화된 Git 보관을 준비하고 등록된 구성을 게시한 다음\n정확한 커밋을 활성화하세요:"
 
 #: lib/marshall/documentation_messages.ex:4178
 #, elixir-autogen, elixir-format
@@ -7472,7 +7472,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4186
 #, elixir-autogen, elixir-format
 msgid "Authoritative Audi DNS replicas checked before challenge acknowledgement."
-msgstr ""
+msgstr "챌린지 확인 전에 검사할 권한 있는 Audi DNS 복제본입니다."
 
 #: lib/marshall/documentation_messages.ex:4190
 #, elixir-autogen, elixir-format
@@ -7572,7 +7572,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4261
 #, elixir-autogen, elixir-format
 msgid "Bound storage pools; filesystem identity must match the actual mount."
-msgstr ""
+msgstr "바인딩된 스토리지 풀입니다. 파일시스템 ID가 실제 마운트와 일치해야 합니다."
 
 #: lib/marshall/documentation_messages.ex:4265
 #, elixir-autogen, elixir-format
@@ -7642,7 +7642,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4317
 #, elixir-autogen, elixir-format
 msgid "Boundary: A transport refusal does not prove a domain effect completed or authorize lifecycle cleanup; Lilly must preserve the permanent class used by Runtime fencing."
-msgstr ""
+msgstr "경계: 전송 거부는 도메인 효과의 완료를 입증하거나 수명 주기 정리를 승인하지 않습니다. Lilly는 Runtime 펜싱에 사용하는 영구 분류를 유지해야 합니다."
 
 #: lib/marshall/documentation_messages.ex:4321
 #, elixir-autogen, elixir-format
@@ -7667,7 +7667,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4345
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi DNS counts ordinary in-zone questions after an authoritative UDP or TCP reply and socket send; a mode-0600 numeric snapshot feeds a Rust exporter through an Audi-DNS-only collector intake."
-msgstr ""
+msgstr "경계: Audi DNS는 권한 있는 UDP 또는 TCP 응답과 소켓 전송 후 일반적인 영역 내 질의를 집계합니다. 모드 0600의 숫자 스냅샷이 Audi-DNS 전용 수집기 입력을 통해 Rust 내보내기에 전달됩니다."
 
 #: lib/marshall/documentation_messages.ex:4349
 #, elixir-autogen, elixir-format
@@ -7677,22 +7677,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4353
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi gets a current Lilly placement binding and forwards an exact private OTLP route to the Rust receiver; only host-bound sanitized guest metrics reach the local collector."
-msgstr ""
+msgstr "경계: Audi는 현재 Lilly 배치 바인딩을 가져와 정확한 비공개 OTLP 경로를 Rust 수신기에 전달합니다. 호스트에 바인딩되고 정제된 게스트 지표만 로컬 수집기에 도달합니다."
 
 #: lib/marshall/documentation_messages.ex:4357
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi private counts completed non-OTLP requests only after current Lilly binding and TLS checks; a private fixed numeric snapshot feeds a Rust exporter through an Audi-private-only collector intake."
-msgstr ""
+msgstr "경계: Audi 비공개 서비스는 현재 Lilly 바인딩과 TLS 검사 후에만 완료된 비 OTLP 요청을 집계합니다. 비공개 고정 숫자 스냅샷이 Audi-private 전용 수집기 입력을 통해 Rust 내보내기에 전달됩니다."
 
 #: lib/marshall/documentation_messages.ex:4361
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authenticated current-incarnation report delivery and reconciled durable authority through the private Unix readiness socket."
-msgstr ""
+msgstr "경계: 비공개 Unix 준비 상태 소켓을 통한 인증된 현재 인카네이션 보고서 전달과 조정된 영속 권한입니다."
 
 #: lib/marshall/documentation_messages.ex:4365
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authenticated upgrade principal must become a bound identity through the first hello; a valid envelope alone is not binding."
-msgstr ""
+msgstr "경계: 인증된 업그레이드 주체는 첫 hello를 통해 바인딩된 ID가 되어야 합니다. 유효한 봉투만으로는 바인딩되지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:4369
 #, elixir-autogen, elixir-format
@@ -7707,27 +7707,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4377
 #, elixir-autogen, elixir-format
 msgid "Boundary: Both adapters delegate to the same durable gateway/session authority; separate session creations issue separate identities."
-msgstr ""
+msgstr "경계: 두 어댑터는 동일한 영속 게이트웨이/세션 권한에 위임합니다. 별도의 세션 생성은 별도의 ID를 발급합니다."
 
 #: lib/marshall/documentation_messages.ex:4381
 #, elixir-autogen, elixir-format
 msgid "Boundary: Both creation entries select OSS by default; an explicit Customer choice remains restricted by the persisted profile policy."
-msgstr ""
+msgstr "경계: 두 생성 진입점 모두 기본적으로 OSS를 선택합니다. 명시적인 Customer 선택에도 저장된 프로필 정책의 제한이 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4385
 #, elixir-autogen, elixir-format
 msgid "Boundary: Central Prometheus and private loopback Alertmanager route only the reviewed provisional burn roster to a runtime HTTPS destination."
-msgstr ""
+msgstr "경계: 중앙 Prometheus와 비공개 루프백 Alertmanager는 검토된 임시 소진 명단만 런타임 HTTPS 대상으로 라우팅합니다."
 
 #: lib/marshall/documentation_messages.ex:4389
 #, elixir-autogen, elixir-format
 msgid "Boundary: Common runtime configuration is evaluated before Marshall application callbacks, Repo and listeners."
-msgstr ""
+msgstr "경계: 공통 런타임 구성은 Marshall 애플리케이션 콜백, Repo 및 리스너보다 먼저 평가합니다."
 
 #: lib/marshall/documentation_messages.ex:4393
 #, elixir-autogen, elixir-format
 msgid "Boundary: Complete manifest, matching keyring, native ownership and isolated restoration."
-msgstr ""
+msgstr "경계: 완전한 매니페스트, 일치하는 키링, 네이티브 소유권 및 격리된 복원입니다."
 
 #: lib/marshall/documentation_messages.ex:4397
 #, elixir-autogen, elixir-format
@@ -7737,32 +7737,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4401
 #, elixir-autogen, elixir-format
 msgid "Boundary: Control documents and immutable business/security receipts retain authority; diagnostics cannot authorize work, release capacity or rewrite accounting."
-msgstr ""
+msgstr "경계: Control 문서와 변경 불가능한 업무/보안 영수증이 권한을 유지합니다. 진단은 작업을 승인하거나 용량을 해제하거나 회계를 다시 쓸 수 없습니다."
 
 #: lib/marshall/documentation_messages.ex:4409
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current administrator and passkey elevation share the audited catalog transaction; stored browser login/current registration gate reads; locked current attempt gates publication."
-msgstr ""
+msgstr "경계: 현재 관리자와 패스키 권한 상승은 감사되는 카탈로그 트랜잭션을 공유합니다. 저장된 브라우저 로그인/현재 등록이 읽기를 통제하고, 잠긴 현재 시도가 게시를 통제합니다."
 
 #: lib/marshall/documentation_messages.ex:4413
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current administrator role, stored browser login and recent passkey elevation govern user controls through commit. Accepted fixed-cohort work has separate durable campaign authority."
-msgstr ""
+msgstr "경계: 현재 관리자 역할, 저장된 브라우저 로그인 및 최근 패스키 권한 상승이 커밋까지 사용자 제어를 통제합니다. 승인된 고정 집단 작업에는 별도의 영속 캠페인 권한이 있습니다."
 
 #: lib/marshall/documentation_messages.ex:4417
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current browser/CLI authority, durable command start, VM placement and executor fence; exact disposable guest process interruption."
-msgstr ""
+msgstr "경계: 현재 브라우저/CLI 권한, 영속 명령 시작, VM 배치 및 실행기 펜스와 정확한 일회용 게스트 프로세스 중단입니다."
 
 #: lib/marshall/documentation_messages.ex:4421
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current completed login; no administrator requirement and no public documentation fallback."
-msgstr ""
+msgstr "경계: 현재 완료된 로그인이 필요합니다. 관리자 요건이나 공개 문서 대체 경로는 없습니다."
 
 #: lib/marshall/documentation_messages.ex:4425
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current creator ownership, unique active team name and transactional owner membership."
-msgstr ""
+msgstr "경계: 현재 생성자 소유권, 고유한 활성 팀 이름 및 트랜잭션 방식의 소유자 멤버십입니다."
 
 #: lib/marshall/documentation_messages.ex:4429
 #, elixir-autogen, elixir-format
@@ -7772,27 +7772,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4433
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current locally confined Firecracker boot, host-only vsock delivery, installed public trust and readiness ordering."
-msgstr ""
+msgstr "경계: 현재 로컬로 제한된 Firecracker 부팅, 호스트 전용 vsock 전달, 설치된 공개 신뢰 및 준비 상태 순서입니다."
 
 #: lib/marshall/documentation_messages.ex:4437
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current management authority, retained draft/request identity, host/VM serialization, immutable physical command and exact target evidence."
-msgstr ""
+msgstr "경계: 현재 관리 권한, 보존된 초안/요청 ID, 호스트/VM 직렬화, 변경 불가능한 물리 명령 및 정확한 대상 증거입니다."
 
 #: lib/marshall/documentation_messages.ex:4441
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current publication, TLS identity, renewable request lease and current execution. Gateway catalog decoder refuses TTL above five seconds; ordinary web/SSH grants have their separate thirty-second limit."
-msgstr ""
+msgstr "경계: 현재 게시, TLS ID, 갱신 가능한 요청 임대 및 현재 실행입니다. 게이트웨이 카탈로그 디코더는 5초를 넘는 TTL을 거부하며, 일반 웹/SSH 허가는 별도의 30초 제한을 가집니다."
 
 #: lib/marshall/documentation_messages.ex:4445
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current stored browser login, administrator role and fixed passkey elevation retained through account mutation and audit commit; retirement keeps its exclusive admission fence before sorted participants."
-msgstr ""
+msgstr "경계: 현재 저장된 브라우저 로그인, 관리자 역할 및 고정 패스키 권한 상승은 계정 변경과 감사 커밋까지 유지됩니다. 해제는 정렬된 참여자보다 먼저 독점 수용 펜스를 유지합니다."
 
 #: lib/marshall/documentation_messages.ex:4449
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current team role, durable transfer workflow and exactly one active owner."
-msgstr ""
+msgstr "경계: 현재 팀 역할, 영속 전송 워크플로 및 정확히 한 명의 활성 소유자입니다."
 
 #: lib/marshall/documentation_messages.ex:4453
 #, elixir-autogen, elixir-format
@@ -7807,12 +7807,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4461
 #, elixir-autogen, elixir-format
 msgid "Boundary: Deployment enrollment binds each host to its real machine identity, name and ZFS GUIDs. Retirement is the only way to release host authority permanently; the retired row is never recycled or renamed."
-msgstr ""
+msgstr "경계: 배포 등록은 각 호스트를 실제 머신 ID, 이름 및 ZFS GUID에 바인딩합니다. 호스트 권한을 영구적으로 해제하는 유일한 방법은 해제 처리이며, 해제된 행은 재사용하거나 이름을 바꾸지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:4465
 #, elixir-autogen, elixir-format
 msgid "Boundary: Deployment-bound public CA policy from verified HTTPS and strict account-proof SSH."
-msgstr ""
+msgstr "경계: 검증된 HTTPS와 엄격한 계정 증명 SSH에서 얻는 배포에 바인딩된 공개 CA 정책입니다."
 
 #: lib/marshall/documentation_messages.ex:4469
 #, elixir-autogen, elixir-format
@@ -7822,32 +7822,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4473
 #, elixir-autogen, elixir-format
 msgid "Boundary: Distinct local guest-terminal PTY/socket pumps and shared drain coordination; authenticated guest authority remains separate."
-msgstr ""
+msgstr "경계: 별개의 로컬 guest-terminal PTY/소켓 펌프와 공유 드레인 조정입니다. 인증된 게스트 권한은 별도로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4477
 #, elixir-autogen, elixir-format
 msgid "Boundary: Durable Store/Journal attempt authority survives the actor; recorded controlled-executor and native Executor/Firecracker histories retain distinct evidence."
-msgstr ""
+msgstr "경계: 영속 Store/Journal 시도 권한은 액터 종료 후에도 유지됩니다. 기록된 제어 실행기 이력과 네이티브 Executor/Firecracker 이력은 별개의 증거로 유지합니다."
 
 #: lib/marshall/documentation_messages.ex:4481
 #, elixir-autogen, elixir-format
 msgid "Boundary: Each host owns its independent account database and refresh tokens; account controls require its admin bearer token."
-msgstr ""
+msgstr "경계: 각 호스트가 독립 계정 데이터베이스와 갱신 토큰을 소유합니다. 계정 제어에는 해당 호스트의 관리자 베어러 토큰이 필요합니다."
 
 #: lib/marshall/documentation_messages.ex:4485
 #, elixir-autogen, elixir-format
 msgid "Boundary: Each private fleet API owns bounded decoding and its service credential; monitoring cache/history remains observational and cannot alter Compute authority."
-msgstr ""
+msgstr "경계: 각 비공개 플릿 API가 제한된 디코딩과 서비스 자격 증명을 소유합니다. 모니터링 캐시/이력은 관찰 전용이며 Compute 권한을 변경할 수 없습니다."
 
 #: lib/marshall/documentation_messages.ex:4489
 #, elixir-autogen, elixir-format
 msgid "Boundary: Enrico Manager serializes eight active repository owners; token-authenticated API dispatch cannot bypass admission. Marshall retains durable intent."
-msgstr ""
+msgstr "경계: Enrico Manager는 8개의 활성 저장소 소유자를 직렬화합니다. 토큰 인증 API 디스패치는 수용 절차를 우회할 수 없습니다. Marshall은 영속 의도를 유지합니다."
 
 #: lib/marshall/documentation_messages.ex:4493
 #, elixir-autogen, elixir-format
 msgid "Boundary: Enrico owns local worker generations and capped receipts; Marshall owns durable intent and account authority."
-msgstr ""
+msgstr "경계: Enrico는 로컬 작업자 세대와 개수가 제한된 영수증을 소유합니다. Marshall은 영속 의도와 계정 권한을 소유합니다."
 
 #: lib/marshall/documentation_messages.ex:4497
 #, elixir-autogen, elixir-format
@@ -7857,7 +7857,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4501
 #, elixir-autogen, elixir-format
 msgid "Boundary: Exact Git revision, staged secrets, serialized migration, compatible storage identity and readiness."
-msgstr ""
+msgstr "경계: 정확한 Git 리비전, 준비된 비밀, 직렬화된 마이그레이션, 호환되는 스토리지 ID 및 준비 상태입니다."
 
 #: lib/marshall/documentation_messages.ex:4505
 #, elixir-autogen, elixir-format
@@ -7867,7 +7867,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4509
 #, elixir-autogen, elixir-format
 msgid "Boundary: Explicit Overalls IPv4 HTTPS frontend with existing certificate custody; Grafana login authorizes data, and backend/query stores remain private."
-msgstr ""
+msgstr "경계: 기존 인증서 보관을 사용하는 명시적 Overalls IPv4 HTTPS 프런트엔드입니다. Grafana 로그인이 데이터 접근을 승인하며 백엔드/쿼리 저장소는 비공개로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4513
 #, elixir-autogen, elixir-format
@@ -7877,12 +7877,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4517
 #, elixir-autogen, elixir-format
 msgid "Boundary: Explicit personal source attachments (including owner machines), automatic live-team membership, injected secret custody, current peer token and renewal."
-msgstr ""
+msgstr "경계: 명시적 개인 소스 연결(소유자 머신 포함), 자동 활성 팀 멤버십, 주입된 비밀 보관, 현재 피어 토큰 및 갱신입니다."
 
 #: lib/marshall/documentation_messages.ex:4521
 #, elixir-autogen, elixir-format
 msgid "Boundary: Fresh measured capacity, atomic reservations and owned physical allocation."
-msgstr ""
+msgstr "경계: 새로 측정된 용량, 원자적 예약 및 소유한 물리 할당입니다."
 
 #: lib/marshall/documentation_messages.ex:4525
 #, elixir-autogen, elixir-format
@@ -7892,22 +7892,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4529
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald current session lifetime and registered PTY/socket ownership after authorized kill; upstream browser/vsock authority is a separate boundary."
-msgstr ""
+msgstr "경계: 승인된 종료 후 게스트 terminald의 현재 세션 수명과 등록된 PTY/소켓 소유권입니다. 상위 브라우저/vsock 권한은 별도의 경계입니다."
 
 #: lib/marshall/documentation_messages.ex:4533
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald local Linux PTY, viewer queues and shared reservation/backing accounting; authenticated upstream authority remains separate."
-msgstr ""
+msgstr "경계: 게스트 terminald의 로컬 Linux PTY, 뷰어 큐 및 공유 예약/백킹 회계입니다. 인증된 상위 권한은 별도로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4537
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald local session and atomic ring reservations; authenticated upstream authority remains separate."
-msgstr ""
+msgstr "경계: 게스트 terminald의 로컬 세션과 원자적 링 예약입니다. 인증된 상위 권한은 별도로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4541
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald owns raw scrollback and frame prefix parsing; boot authentication and shared session admission remain independent."
-msgstr ""
+msgstr "경계: 게스트 terminald는 원시 스크롤백과 프레임 접두부 파싱을 소유합니다. 부팅 인증과 공유 세션 수용은 독립적으로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4545
 #, elixir-autogen, elixir-format
@@ -7927,12 +7927,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4557
 #, elixir-autogen, elixir-format
 msgid "Boundary: Immutable seed, verified candidate digest, saved executable identity and real current VM executor fence."
-msgstr ""
+msgstr "경계: 변경 불가능한 시드, 검증된 후보 다이제스트, 저장된 실행 파일 ID 및 실제 현재 VM 실행기 펜스입니다."
 
 #: lib/marshall/documentation_messages.ex:4561
 #, elixir-autogen, elixir-format
 msgid "Boundary: Incoming/outgoing peers share a process-owned budget and must retire when that accounting incarnation dies; a successor cannot retain live unaccounted peers."
-msgstr ""
+msgstr "경계: 수신/송신 피어는 프로세스 소유 예산을 공유하며 해당 회계 인카네이션이 종료되면 해제되어야 합니다. 후속 프로세스는 회계에 포함되지 않은 활성 피어를 유지할 수 없습니다."
 
 #: lib/marshall/documentation_messages.ex:4565
 #, elixir-autogen, elixir-format
@@ -7942,42 +7942,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4573
 #, elixir-autogen, elixir-format
 msgid "Boundary: Initial TLS upgrade and hello bind volatile socket identity; each request retains current database-backed credential and session-generation authority."
-msgstr ""
+msgstr "경계: 초기 TLS 업그레이드와 hello가 휘발성 소켓 ID를 바인딩합니다. 각 요청은 현재 데이터베이스 기반 자격 증명과 세션 세대 권한을 유지합니다."
 
 #: lib/marshall/documentation_messages.ex:4577
 #, elixir-autogen, elixir-format
 msgid "Boundary: Kernel flow label, current execution proof, verified origin and fail-closed proxy path."
-msgstr ""
+msgstr "경계: 커널 흐름 레이블, 현재 실행 증명, 검증된 원본 및 실패 시 차단되는 프록시 경로입니다."
 
 #: lib/marshall/documentation_messages.ex:4581
 #, elixir-autogen, elixir-format
 msgid "Boundary: Lilly owns each linked/monitored opening worker; worker death cannot occupy an attempt forever or confer stream readiness, and abrupt stream-owner death retires its worker."
-msgstr ""
+msgstr "경계: Lilly는 연결되거나 감시되는 각 열기 작업자를 소유합니다. 작업자 종료는 시도를 영구 점유하거나 스트림 준비 상태를 부여할 수 없으며, 스트림 소유자의 갑작스러운 종료는 작업자를 해제합니다."
 
 #: lib/marshall/documentation_messages.ex:4585
 #, elixir-autogen, elixir-format
 msgid "Boundary: Lilly-resolved attribution and a terminal Brady outcome enter fixed cumulative counters; a private file is checked by a Rust host exporter before separate local OTLP collection."
-msgstr ""
+msgstr "경계: Lilly가 확인한 귀속과 Brady의 최종 결과가 고정 누적 카운터에 들어갑니다. 별도의 로컬 OTLP 수집 전에 Rust 호스트 내보내기가 비공개 파일을 검사합니다."
 
 #: lib/marshall/documentation_messages.ex:4589
 #, elixir-autogen, elixir-format
 msgid "Boundary: Live stored login and five-minute passkey elevation gate rename/remove through the locked account row; labels are bounded to 80 characters; accounts hold at most ten passkeys and one hundred SSH keys."
-msgstr ""
+msgstr "경계: 유효한 저장된 로그인과 5분 패스키 권한 상승이 잠긴 계정 행을 통해 이름 변경/삭제를 통제합니다. 레이블은 80자로 제한하며 계정은 최대 10개의 패스키와 100개의 SSH 키를 가집니다."
 
 #: lib/marshall/documentation_messages.ex:4593
 #, elixir-autogen, elixir-format
 msgid "Boundary: Local guest terminald PTY growth, actual deque backing and reservations; authenticated guest authority remains separate."
-msgstr ""
+msgstr "경계: 로컬 게스트 terminald PTY 증가, 실제 deque 백킹 및 예약입니다. 인증된 게스트 권한은 별도로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4597
 #, elixir-autogen, elixir-format
 msgid "Boundary: Local terminald PTY EOF, atomic ring reservation and retained viewer threads; authenticated guest authority remains separate."
-msgstr ""
+msgstr "경계: 로컬 terminald PTY EOF, 원자적 링 예약 및 유지된 뷰어 스레드입니다. 인증된 게스트 권한은 별도로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4601
 #, elixir-autogen, elixir-format
 msgid "Boundary: Loopback Grafana authenticates the operator and reads only the nine Nix-provisioned candidate duration recordings; source-owned histograms enter the collector under assigned application provenance."
-msgstr ""
+msgstr "경계: 루프백 Grafana는 운영자를 인증하고 Nix가 프로비저닝한 9개의 후보 기간 기록만 읽습니다. 소스 소유 히스토그램은 지정된 애플리케이션 출처로 수집기에 들어갑니다."
 
 #: lib/marshall/documentation_messages.ex:4605
 #, elixir-autogen, elixir-format
@@ -7987,12 +7987,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4609
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall authorizes Start and advances logical generation; Lilly owns the placement and proves native confinement before same-epoch boot journal adoption."
-msgstr ""
+msgstr "경계: Marshall은 Start를 승인하고 논리 세대를 증가시킵니다. Lilly는 배치를 소유하며 동일 에포크 부팅 저널을 채택하기 전에 네이티브 격리를 입증합니다."
 
 #: lib/marshall/documentation_messages.ex:4613
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall authorizes current guest inference; Ziggy durably reserves bounded usage metadata before provider effects and removes completed receipts only after acknowledgement."
-msgstr ""
+msgstr "경계: Marshall은 현재 게스트 추론을 승인합니다. Ziggy는 제공자 효과 전에 제한된 사용량 메타데이터를 영속적으로 예약하며 확인을 받은 뒤에만 완료된 영수증을 제거합니다."
 
 #: lib/marshall/documentation_messages.ex:4617
 #, elixir-autogen, elixir-format
@@ -8027,12 +8027,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4641
 #, elixir-autogen, elixir-format
 msgid "Boundary: Native helpers retain completion custody (the source-export lock; the transfer-stream hostd lease) across descendant process groups/sessions; direct leader exit does not prove cleanup."
-msgstr ""
+msgstr "경계: 네이티브 도우미는 하위 프로세스 그룹/세션 전체에 걸쳐 완료 보관권(source-export 잠금, transfer-stream hostd 임대)을 유지합니다. 리더의 직접 종료는 정리를 입증하지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:4645
 #, elixir-autogen, elixir-format
 msgid "Boundary: Native state journals, ownership fences and physical readiness receipts remain authoritative; observer ACKs cannot gate v2 actor progress."
-msgstr ""
+msgstr "경계: 네이티브 상태 저널, 소유권 펜스 및 물리 준비 상태 영수증이 권한을 유지합니다. 관찰자 ACK는 v2 액터의 진행을 통제할 수 없습니다."
 
 #: lib/marshall/documentation_messages.ex:4649
 #, elixir-autogen, elixir-format
@@ -8052,37 +8052,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4661
 #, elixir-autogen, elixir-format
 msgid "Boundary: Nix provisions stable dashboards and datasources; Grafana authenticates the operator while its server-side datasource holds only reader-scoped log-store authority."
-msgstr ""
+msgstr "경계: Nix는 안정적인 대시보드와 데이터 소스를 프로비저닝합니다. Grafana는 운영자를 인증하며 서버 측 데이터 소스는 읽기 범위의 로그 저장소 권한만 가집니다."
 
 #: lib/marshall/documentation_messages.ex:4665
 #, elixir-autogen, elixir-format
 msgid "Boundary: Nix-owned measurement rosters and numeric diagnostic states; operator Grafana and signed-in Marshall reads; independent read-only loopback storage probe and one 15-bound Underclass duration histogram."
-msgstr ""
+msgstr "경계: Nix 소유 측정 명단과 숫자 진단 상태, 운영자 Grafana 및 로그인한 Marshall 읽기, 독립적인 읽기 전용 루프백 스토리지 프로브와 15개 경계를 가진 Underclass 기간 히스토그램 하나입니다."
 
 #: lib/marshall/documentation_messages.ex:4669
 #, elixir-autogen, elixir-format
 msgid "Boundary: Official-source Nix package and broker bind exact boot address/gateway, execution/release/account preface and reconciled UID. Systemd worker/socket ownership is independent of the root broker."
-msgstr ""
+msgstr "경계: 공식 소스 Nix 패키지와 브로커가 정확한 부팅 주소/게이트웨이, 실행/릴리스/계정 프리페이스 및 조정된 UID를 바인딩합니다. Systemd 작업자/소켓 소유권은 루트 브로커와 독립적입니다."
 
 #: lib/marshall/documentation_messages.ex:4673
 #, elixir-autogen, elixir-format
 msgid "Boundary: Official-source patch routes Open VSX gallery, dependencies and WEB-targeted installs through the native signature verifier before extraction; package identity includes the reviewed key ring."
-msgstr ""
+msgstr "경계: 공식 소스 패치는 추출 전에 Open VSX 갤러리, 종속성 및 WEB 대상 설치를 네이티브 서명 검증기로 라우팅합니다. 패키지 ID에는 검토된 키링이 포함됩니다."
 
 #: lib/marshall/documentation_messages.ex:4681
 #, elixir-autogen, elixir-format
 msgid "Boundary: Only the current connection owns a heartbeat schedule; retired timer messages cannot service its replacement."
-msgstr ""
+msgstr "경계: 현재 연결만 하트비트 일정을 소유합니다. 해제된 타이머 메시지는 대체 연결을 처리할 수 없습니다."
 
 #: lib/marshall/documentation_messages.ex:4685
 #, elixir-autogen, elixir-format
 msgid "Boundary: Operator-owned private configuration is validated before Lilly creates runtime authority or status listeners."
-msgstr ""
+msgstr "경계: Lilly가 런타임 권한이나 상태 리스너를 생성하기 전에 운영자 소유 비공개 구성을 검증합니다."
 
 #: lib/marshall/documentation_messages.ex:4689
 #, elixir-autogen, elixir-format
 msgid "Boundary: Overalls supervisors use private real operator session/guest fixtures and own browser deadlines; distinct durable recorders, numeric readers/exporters and collector sockets preserve outcome authority."
-msgstr ""
+msgstr "경계: Overalls 감독자는 비공개 실제 운영자 세션/게스트 픽스처를 사용하고 브라우저 기한을 소유합니다. 별개의 영속 기록기, 숫자 리더/내보내기 및 수집기 소켓이 결과 권한을 보존합니다."
 
 #: lib/marshall/documentation_messages.ex:4693
 #, elixir-autogen, elixir-format
@@ -8092,22 +8092,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4697
 #, elixir-autogen, elixir-format
 msgid "Boundary: Owner-only access, no sharing or web exposure, and denied outbound/lateral traffic."
-msgstr ""
+msgstr "경계: 소유자 전용 접근이며 공유나 웹 노출이 없고 외부 송신/측면 트래픽을 차단합니다."
 
 #: lib/marshall/documentation_messages.ex:4701
 #, elixir-autogen, elixir-format
 msgid "Boundary: Peer activity renews a fifteen-second silence budget; outgoing ping cadence must not postpone retirement beyond that budget."
-msgstr ""
+msgstr "경계: 피어 활동은 15초 침묵 예산을 갱신합니다. 송신 ping 주기는 해당 예산을 넘어 해제를 지연해서는 안 됩니다."
 
 #: lib/marshall/documentation_messages.ex:4705
 #, elixir-autogen, elixir-format
 msgid "Boundary: Per-producer Unix UID/cgroup identity and private SQLite FULL-WAL archive determine diagnostic custody; the observer holds no application or guest authority."
-msgstr ""
+msgstr "경계: 생산자별 Unix UID/cgroup ID와 비공개 SQLite FULL-WAL 아카이브가 진단 보관권을 결정합니다. 관찰자는 애플리케이션이나 게스트 권한을 갖지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:4709
 #, elixir-autogen, elixir-format
 msgid "Boundary: Persisted Cedar role governs each action and live capability renewal."
-msgstr ""
+msgstr "경계: 저장된 Cedar 역할이 각 동작과 활성 기능 갱신을 통제합니다."
 
 #: lib/marshall/documentation_messages.ex:4713
 #, elixir-autogen, elixir-format
@@ -8117,12 +8117,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4717
 #, elixir-autogen, elixir-format
 msgid "Boundary: Personal account allocation, boot-bound opening receipt, current creator/read-only attachment authority and PTY ownership."
-msgstr ""
+msgstr "경계: 개인 계정 할당, 부팅에 바인딩된 열기 영수증, 현재 생성자/읽기 전용 연결 권한 및 PTY 소유권입니다."
 
 #: lib/marshall/documentation_messages.ex:4721
 #, elixir-autogen, elixir-format
 msgid "Boundary: Pinned transfer, probe-gated source stop and quiescence, one full stream of the stopped disk, atomic placement handoff and destination readiness before source cleanup (ADR-0155)."
-msgstr ""
+msgstr "경계: 고정된 전송, 프로브가 통제하는 소스 중지와 정지 상태, 중지된 디스크의 전체 스트림 한 번, 원자적 배치 인계 및 소스 정리 전 대상 준비 상태입니다(ADR-0155)."
 
 #: lib/marshall/documentation_messages.ex:4725
 #, elixir-autogen, elixir-format
@@ -8132,27 +8132,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4729
 #, elixir-autogen, elixir-format
 msgid "Boundary: Post-backup revocations, epochs, generations and physical survivors must be reconciled."
-msgstr ""
+msgstr "경계: 백업 후의 권한 취소, 에포크, 세대 및 물리적으로 남은 대상을 조정해야 합니다."
 
 #: lib/marshall/documentation_messages.ex:4733
 #, elixir-autogen, elixir-format
 msgid "Boundary: Presentation changes never alter authorization, terminal transport, element identifiers or hook names; every stylesheet, script and font is served from the application origin."
-msgstr ""
+msgstr "경계: 표시 변경은 권한 부여, 터미널 전송, 요소 식별자 또는 훅 이름을 변경하지 않습니다. 모든 스타일시트, 스크립트 및 글꼴은 애플리케이션 원본에서 제공합니다."
 
 #: lib/marshall/documentation_messages.ex:4737
 #, elixir-autogen, elixir-format
 msgid "Boundary: Private file ownership, global recovery membership, selected host recipients, retained rekey identity, per-document publication, staged compatibility and old-key retention."
-msgstr ""
+msgstr "경계: 비공개 파일 소유권, 전역 복구 멤버십, 선택한 호스트 수신자, 보존된 키 교체 ID, 문서별 게시, 단계적 호환성 및 이전 키 보존입니다."
 
 #: lib/marshall/documentation_messages.ex:4741
 #, elixir-autogen, elixir-format
 msgid "Boundary: Private stable intent lock, exact current-generation payload and trusted absolute exec target; shared custody must precede intent validation."
-msgstr ""
+msgstr "경계: 비공개 안정 의도 잠금, 정확한 현재 세대 페이로드 및 신뢰할 수 있는 절대 실행 대상입니다. 공유 보관권을 확보한 뒤 의도를 검증해야 합니다."
 
 #: lib/marshall/documentation_messages.ex:4745
 #, elixir-autogen, elixir-format
 msgid "Boundary: Production Lilly Driver and independent systemd VM tree, durable launch authority and authenticated Marshall physical outcome settlement in a disposable fleet."
-msgstr ""
+msgstr "경계: 프로덕션 Lilly Driver와 독립 systemd VM 트리, 영속 실행 권한 및 일회용 플릿에서 인증된 Marshall 물리 결과 정산입니다."
 
 #: lib/marshall/documentation_messages.ex:4749
 #, elixir-autogen, elixir-format
@@ -8167,82 +8167,82 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4757
 #, elixir-autogen, elixir-format
 msgid "Boundary: Pure guest-terminal Ring retention allocation; actual PTY growth, viewer queues and authenticated upstream authority remain separate."
-msgstr ""
+msgstr "경계: 순수 guest-terminal Ring 보존 할당입니다. 실제 PTY 증가, 뷰어 큐 및 인증된 상위 권한은 별도로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4761
 #, elixir-autogen, elixir-format
 msgid "Boundary: Registered SSH key, current Cedar decision, CA-authenticated gateway and guest, boot-bound roster, permanently reserved username/UID and durable account discovery."
-msgstr ""
+msgstr "경계: 등록된 SSH 키, 현재 Cedar 결정, CA 인증 게이트웨이와 게스트, 부팅에 바인딩된 명단, 영구 예약된 사용자 이름/UID 및 영속 계정 검색입니다."
 
 #: lib/marshall/documentation_messages.ex:4765
 #, elixir-autogen, elixir-format
 msgid "Boundary: Required operator fields, IPv4 bind, port, absolute paths, token limits and regular certificate/key references are validated before worker or listener authority starts."
-msgstr ""
+msgstr "경계: 작업자 또는 리스너 권한을 시작하기 전에 필수 운영자 필드, IPv4 바인딩, 포트, 절대 경로, 토큰 제한 및 일반 인증서/키 참조를 검증합니다."
 
 #: lib/marshall/documentation_messages.ex:4769
 #, elixir-autogen, elixir-format
 msgid "Boundary: Reviewed finite producer-health events use trusted journal service/unit, module host identity and the native journal clock; the loopback numeric bridge retains independent application log routing."
-msgstr ""
+msgstr "경계: 검토된 유한 생산자 상태 이벤트는 신뢰할 수 있는 저널 서비스/유닛, 모듈 호스트 ID 및 네이티브 저널 시계를 사용합니다. 루프백 숫자 브리지는 독립적인 애플리케이션 로그 라우팅을 유지합니다."
 
 #: lib/marshall/documentation_messages.ex:4773
 #, elixir-autogen, elixir-format
 msgid "Boundary: Role-specific operator configuration and private credentials/keys are validated before Audi creates listener authority."
-msgstr ""
+msgstr "경계: Audi가 리스너 권한을 생성하기 전에 역할별 운영자 구성과 비공개 자격 증명/키를 검증합니다."
 
 #: lib/marshall/documentation_messages.ex:4777
 #, elixir-autogen, elixir-format
 msgid "Boundary: Runtime schema and file custody are validated before named supervision and SSH or status listeners."
-msgstr ""
+msgstr "경계: 이름이 지정된 감독과 SSH 또는 상태 리스너 전에 런타임 스키마와 파일 보관권을 검증합니다."
 
 #: lib/marshall/documentation_messages.ex:4781
 #, elixir-autogen, elixir-format
 msgid "Boundary: Saved self-only locale override takes precedence over validated session/browser negotiation and English fallback. Arabic and Urdu use RTL; locale does not grant authority or change machine output."
-msgstr ""
+msgstr "경계: 저장된 본인 전용 로캘 재정의가 검증된 세션/브라우저 협상 및 영어 대체값보다 우선합니다. 아랍어와 우르두어는 RTL을 사용합니다. 로캘은 권한을 부여하거나 머신 출력을 변경하지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:4785
 #, elixir-autogen, elixir-format
 msgid "Boundary: Schema is validated before named supervision; private matching CA signer material is validated by the first supervised child before cache and transparent listeners."
-msgstr ""
+msgstr "경계: 이름이 지정된 감독 전에 스키마를 검증합니다. 캐시와 투명 리스너 전에 첫 감독 대상 자식이 일치하는 비공개 CA 서명 자료를 검증합니다."
 
 #: lib/marshall/documentation_messages.ex:4789
 #, elixir-autogen, elixir-format
 msgid "Boundary: Shared account admission through the outer manual/approval transaction, exclusive retirement and completed old-UUID credential cleanup."
-msgstr ""
+msgstr "경계: 외부 수동/승인 트랜잭션을 통한 공유 계정 수용, 독점 해제 및 완료된 이전 UUID 자격 증명 정리입니다."
 
 #: lib/marshall/documentation_messages.ex:4793
 #, elixir-autogen, elixir-format
 msgid "Boundary: Shared client owns volatile request correlation and at most eight pending callers; disconnect is unproven domain completion and cannot authorize replay."
-msgstr ""
+msgstr "경계: 공유 클라이언트는 휘발성 요청 상관관계와 최대 8개의 대기 호출자를 소유합니다. 연결 해제는 도메인 완료를 입증하지 않으며 재실행을 승인할 수 없습니다."
 
 #: lib/marshall/documentation_messages.ex:4797
 #, elixir-autogen, elixir-format
 msgid "Boundary: Signed-in bounded redacted projections; current elevated administrator, installation/account/raw-job locks and actor/request-bound retry receipt."
-msgstr ""
+msgstr "경계: 로그인한 사용자의 제한된 마스킹 투영, 현재 권한 상승 관리자, 설치/계정/원시 작업 잠금 및 액터/요청에 바인딩된 재시도 영수증입니다."
 
 #: lib/marshall/documentation_messages.ex:4801
 #, elixir-autogen, elixir-format
 msgid "Boundary: Signed-in read access is separate from administrator membership plus fresh elevation."
-msgstr ""
+msgstr "경계: 로그인한 읽기 접근은 관리자 멤버십과 새 권한 상승을 함께 요구하는 접근과 별개입니다."
 
 #: lib/marshall/documentation_messages.ex:4805
 #, elixir-autogen, elixir-format
 msgid "Boundary: Snapshot ownership, audit and current requester authority, serialized publication/cancellation, immutable snapshot, source restoration and independently proven cleanup."
-msgstr ""
+msgstr "경계: 스냅샷 소유권, 감사와 현재 요청자 권한, 직렬화된 게시/취소, 변경 불가능한 스냅샷, 소스 복원 및 독립적으로 입증된 정리입니다."
 
 #: lib/marshall/documentation_messages.ex:4809
 #, elixir-autogen, elixir-format
 msgid "Boundary: Stored browser login, current direct/team Cedar rights, exact app cookie and execution/policy-bound five-second request-start lease."
-msgstr ""
+msgstr "경계: 저장된 브라우저 로그인, 현재 직접/팀 Cedar 권리, 정확한 앱 쿠키 및 실행/정책에 바인딩된 5초 요청 시작 임대입니다."
 
 #: lib/marshall/documentation_messages.ex:4813
 #, elixir-autogen, elixir-format
 msgid "Boundary: Strict operator configuration, private service/provider credentials, fixed upstream origins and runtime paths are validated before serving or provider worker authority starts."
-msgstr ""
+msgstr "경계: 서비스 제공 또는 제공자 작업자 권한을 시작하기 전에 엄격한 운영자 구성, 비공개 서비스/제공자 자격 증명, 고정 상위 원본 및 런타임 경로를 검증합니다."
 
 #: lib/marshall/documentation_messages.ex:4817
 #, elixir-autogen, elixir-format
 msgid "Boundary: Strict operator schema, control origin, private credential and local socket are validated before Galileo creates serving authority."
-msgstr ""
+msgstr "경계: Galileo가 서비스 권한을 생성하기 전에 엄격한 운영자 스키마, 제어 원본, 비공개 자격 증명 및 로컬 소켓을 검증합니다."
 
 #: lib/marshall/documentation_messages.ex:4821
 #, elixir-autogen, elixir-format
@@ -8252,7 +8252,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4825
 #, elixir-autogen, elixir-format
 msgid "Boundary: The SSH channel captures request start before backend authorization; StreamGuard must refuse expired admission before invoking the locally configured guest connector."
-msgstr ""
+msgstr "경계: SSH 채널은 백엔드 권한 승인 전에 요청 시작을 기록합니다. StreamGuard는 로컬로 구성된 게스트 커넥터를 호출하기 전에 만료된 수용을 거부해야 합니다."
 
 #: lib/marshall/documentation_messages.ex:4829
 #, elixir-autogen, elixir-format
@@ -8262,7 +8262,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4833
 #, elixir-autogen, elixir-format
 msgid "Boundary: The encrypted outbox row controls whether a mail attempt may start; each retry carries one stable Message-ID and token payload, while token consumption remains single-use."
-msgstr ""
+msgstr "경계: 암호화된 발신함 행이 메일 시도 시작 가능 여부를 제어합니다. 각 재시도는 하나의 안정된 Message-ID와 토큰 페이로드를 가지며 토큰 사용은 일회성으로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4837
 #, elixir-autogen, elixir-format
@@ -8272,7 +8272,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4841
 #, elixir-autogen, elixir-format
 msgid "Boundary: The first supervised listener validates certificate signature leaf binding current time and a single principal before the SSH daemon or later serving children."
-msgstr ""
+msgstr "경계: 첫 감독 대상 리스너는 SSH 데몬 또는 이후 서비스 자식보다 먼저 인증서 서명, 리프 바인딩, 현재 시각 및 단일 주체를 검증합니다."
 
 #: lib/marshall/documentation_messages.ex:4845
 #, elixir-autogen, elixir-format
@@ -8297,7 +8297,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4861
 #, elixir-autogen, elixir-format
 msgid "Boundary: The native helper owns stable command slots and repository writer locks; inherited descriptors retain uncertain descendant authority. Marshall retains durable intent."
-msgstr ""
+msgstr "경계: 네이티브 도우미는 안정적인 명령 슬롯과 저장소 작성자 잠금을 소유합니다. 상속된 디스크립터는 불확실한 하위 프로세스 권한을 유지합니다. Marshall은 영속 의도를 유지합니다."
 
 #: lib/marshall/documentation_messages.ex:4865
 #, elixir-autogen, elixir-format
@@ -8317,7 +8317,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4877
 #, elixir-autogen, elixir-format
 msgid "Boundary: The pinned Underclass proxy stores sanitized stream outcomes and aggregate statistics in its host-local database; the stats API, event import route and CLI require the host administrator bearer token."
-msgstr ""
+msgstr "경계: 고정된 Underclass 프록시는 정제된 스트림 결과와 집계 통계를 호스트 로컬 데이터베이스에 저장합니다. 통계 API, 이벤트 가져오기 경로 및 CLI에는 호스트 관리자 베어러 토큰이 필요합니다."
 
 #: lib/marshall/documentation_messages.ex:4881
 #, elixir-autogen, elixir-format
@@ -8327,22 +8327,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4885
 #, elixir-autogen, elixir-format
 msgid "Boundary: The reset route, page button and underclass reset command require the host's admin bearer token; a remote --url call must carry UNDERCLASS_UI_TOKEN and never sends a database token."
-msgstr ""
+msgstr "경계: 재설정 경로, 페이지 버튼 및 underclass reset 명령에는 호스트의 관리자 베어러 토큰이 필요합니다. 원격 --url 호출은 UNDERCLASS_UI_TOKEN을 포함해야 하며 데이터베이스 토큰은 보내지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:4889
 #, elixir-autogen, elixir-format
 msgid "Boundary: The shared client owns socket retirement; public satellite adapters must preserve its stopped unsupported-version reason when pending calls resolve as unproven."
-msgstr ""
+msgstr "경계: 공유 클라이언트는 소켓 해제를 소유합니다. 공개 위성 어댑터는 대기 호출이 unproven으로 해결될 때 중지된 unsupported-version 사유를 보존해야 합니다."
 
 #: lib/marshall/documentation_messages.ex:4893
 #, elixir-autogen, elixir-format
 msgid "Boundary: The shared client owns volatile pending requests under the current welcome's validated capacity; service admission and domain authority remain separate."
-msgstr ""
+msgstr "경계: 공유 클라이언트는 현재 welcome의 검증된 용량 아래에서 휘발성 대기 요청을 소유합니다. 서비스 수용과 도메인 권한은 별도로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4897
 #, elixir-autogen, elixir-format
 msgid "Boundary: The shared client owns volatile reconnect scheduling; durable host freshness and domain authority remain independent."
-msgstr ""
+msgstr "경계: 공유 클라이언트는 휘발성 재연결 일정을 소유합니다. 영속 호스트 최신성과 도메인 권한은 독립적으로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4901
 #, elixir-autogen, elixir-format
@@ -8362,27 +8362,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4913
 #, elixir-autogen, elixir-format
 msgid "Boundary: Trusted absolute utility argv, private export lock and all-adopted-child kernel custody; source permit and SSH authority remain separate."
-msgstr ""
+msgstr "경계: 신뢰할 수 있는 절대 유틸리티 argv, 비공개 내보내기 잠금 및 채택된 모든 자식의 커널 보관권입니다. 소스 허가와 SSH 권한은 별도로 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:4917
 #, elixir-autogen, elixir-format
 msgid "Boundary: Unsupported-version close is a terminal transport refusal, and disconnect cannot prove domain completion."
-msgstr ""
+msgstr "경계: 지원하지 않는 버전으로 인한 종료는 최종 전송 거부이며, 연결 해제는 도메인 완료를 입증할 수 없습니다."
 
 #: lib/marshall/documentation_messages.ex:4921
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified HTTPS policy and one dedicated host CA; issuance requires locked service or physical boot authority."
-msgstr ""
+msgstr "경계: 검증된 HTTPS 정책과 전용 호스트 CA 하나입니다. 발급에는 잠긴 서비스 권한 또는 물리 부팅 권한이 필요합니다."
 
 #: lib/marshall/documentation_messages.ex:4925
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified TLS control upgrade, correlated error and pending-close classes plus local DNS, SSH publisher, Fleet and readiness ownership; Marshall remains publication authority."
-msgstr ""
+msgstr "경계: 검증된 TLS 제어 업그레이드, 상관된 오류와 종료 대기 분류 및 로컬 DNS, SSH 게시자, Fleet과 준비 상태 소유권입니다. Marshall은 게시 권한을 유지합니다."
 
 #: lib/marshall/documentation_messages.ex:4929
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified email identity, current elevated administrator, immediate account revocation and old-UUID cleanup through physical lifecycle fences."
-msgstr ""
+msgstr "경계: 검증된 이메일 ID, 현재 권한 상승 관리자, 즉각적인 계정 권한 취소 및 물리 수명 주기 펜스를 통한 이전 UUID 정리입니다."
 
 #: lib/marshall/documentation_messages.ex:4933
 #, elixir-autogen, elixir-format
@@ -8397,22 +8397,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4941
 #, elixir-autogen, elixir-format
 msgid "Boundary: Versioned authenticated control transport, durable generation, owned physical process and GUID-bound drives."
-msgstr ""
+msgstr "경계: 버전이 지정된 인증 제어 전송, 영속 세대, 소유한 물리 프로세스 및 GUID에 바인딩된 드라이브입니다."
 
 #: lib/marshall/documentation_messages.ex:4945
 #, elixir-autogen, elixir-format
 msgid "Boundary: Volatile proof binds the exact currently verified VMM; one native observer may outlive proof withdrawal to report its actual terminal outcome, without granting authority."
-msgstr ""
+msgstr "경계: 휘발성 증명은 현재 검증된 정확한 VMM에 바인딩됩니다. 네이티브 관찰자 하나는 권한을 부여하지 않고 실제 최종 결과를 보고하기 위해 증명 철회 후에도 남을 수 있습니다."
 
 #: lib/marshall/documentation_messages.ex:4949
 #, elixir-autogen, elixir-format
 msgid "Boundary: Write permission, profile tool allowlist, model claim and boot-bound executor fence."
-msgstr ""
+msgstr "경계: 쓰기 권한, 프로필 도구 허용 목록, 모델 클레임 및 부팅에 바인딩된 실행기 펜스입니다."
 
 #: lib/marshall/documentation_messages.ex:4953
 #, elixir-autogen, elixir-format
 msgid "Boundary: Ziggy counts a newly durable terminal spool completion, excludes caller cancellation and exports only fixed cumulative numbers through a private file, Rust exporter and Ziggy-only collector intake."
-msgstr ""
+msgstr "경계: Ziggy는 새로 영속화된 최종 스풀 완료를 집계하고 호출자 취소를 제외하며, 비공개 파일, Rust 내보내기 및 Ziggy 전용 수집기 입력을 통해 고정 누적 숫자만 내보냅니다."
 
 #: lib/marshall/documentation_messages.ex:4957
 #, elixir-autogen, elixir-format
@@ -8492,12 +8492,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5008
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating the control-plane endpoint. Lilly reads it through systemd LoadCredential, so the file may be readable by root only."
-msgstr ""
+msgstr "제어 평면 엔드포인트를 인증하는 CA 번들입니다. Lilly는 systemd LoadCredential을 통해 읽으므로 파일을 루트만 읽을 수 있게 해도 됩니다."
 
 #: lib/marshall/documentation_messages.ex:5012
 #, elixir-autogen, elixir-format
 msgid "CA certificates authenticating the Marshall HTTPS endpoint."
-msgstr ""
+msgstr "Marshall HTTPS 엔드포인트를 인증하는 CA 인증서입니다."
 
 #: lib/marshall/documentation_messages.ex:5013
 #, elixir-autogen, elixir-format
@@ -8542,7 +8542,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5040
 #, elixir-autogen, elixir-format
 msgid "Canonical runtime directory containing the complete published bundle."
-msgstr ""
+msgstr "게시된 전체 번들을 포함하는 정규 런타임 디렉터리입니다."
 
 #: lib/marshall/documentation_messages.ex:5044
 #, elixir-autogen, elixir-format
@@ -8562,7 +8562,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5056
 #, elixir-autogen, elixir-format
 msgid "Central metrics/traces/Grafana store or worker collector."
-msgstr ""
+msgstr "중앙 지표/추적/Grafana 저장소 또는 작업자 수집기입니다."
 
 #: lib/marshall/documentation_messages.ex:5057
 #, elixir-autogen, elixir-format
@@ -8607,12 +8607,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5089
 #, elixir-autogen, elixir-format
 msgid "Cloning is currently unavailable for the Inception multi-disk profile."
-msgstr ""
+msgstr "현재 Inception 다중 디스크 프로필에서는 복제를 사용할 수 없습니다."
 
 #: lib/marshall/documentation_messages.ex:5093
 #, elixir-autogen, elixir-format
 msgid "Closed trusted request-source name; physical measurements stay in PostgreSQL."
-msgstr ""
+msgstr "닫힌 집합의 신뢰할 수 있는 요청 소스 이름입니다. 물리 측정값은 PostgreSQL에 유지됩니다."
 
 #: lib/marshall/documentation_messages.ex:5101
 #, elixir-autogen, elixir-format
@@ -8652,7 +8652,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5126
 #, elixir-autogen, elixir-format
 msgid "Conservative per-pool artifact budget for sealed image templates (ADR-0130); images larger than the budget use fresh verification for every provision."
-msgstr ""
+msgstr "봉인된 이미지 템플릿에 대한 보수적인 풀별 아티팩트 예산입니다(ADR-0130). 예산보다 큰 이미지는 프로비저닝할 때마다 새로 검증합니다."
 
 #: lib/marshall/documentation_messages.ex:5130
 #, elixir-autogen, elixir-format
@@ -8672,12 +8672,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5142
 #, elixir-autogen, elixir-format
 msgid "Coverage: **covered**. Layers: identity, authorization, transport, recovery."
-msgstr ""
+msgstr "검증 범위: **검증됨**. 계층: 신원, 권한 부여, 전송, 복구."
 
 #: lib/marshall/documentation_messages.ex:5146
 #, elixir-autogen, elixir-format
 msgid "Coverage: **covered**. Layers: identity, transport, execution, recovery."
-msgstr ""
+msgstr "검증 범위: **검증됨**. 계층: 신원, 전송, 실행, 복구."
 
 #: lib/marshall/documentation_messages.ex:5150
 #, elixir-autogen, elixir-format
@@ -8692,92 +8692,92 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5152
 #, elixir-autogen, elixir-format
 msgid "Coverage: **gap**. Layers: authorization, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **미검증**. 계층: 권한 부여, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5156
 #, elixir-autogen, elixir-format
 msgid "Coverage: **gap**. Layers: authorization, transport, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **미검증**. 계층: 권한 부여, 전송, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5160
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, isolation, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 실행, 격리, 복구."
 
 #: lib/marshall/documentation_messages.ex:5164
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, isolation."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 실행, 격리."
 
 #: lib/marshall/documentation_messages.ex:5168
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 실행, 복구."
 
 #: lib/marshall/documentation_messages.ex:5172
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 실행, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5176
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, transport."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 실행, 전송."
 
 #: lib/marshall/documentation_messages.ex:5180
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 실행."
 
 #: lib/marshall/documentation_messages.ex:5181
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, isolation."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 격리."
 
 #: lib/marshall/documentation_messages.ex:5182
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution, isolation, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 전송, 실행, 격리, 복구."
 
 #: lib/marshall/documentation_messages.ex:5186
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 전송, 실행, 복구."
 
 #: lib/marshall/documentation_messages.ex:5190
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 전송, 실행, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5194
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 전송, 실행."
 
 #: lib/marshall/documentation_messages.ex:5198
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, isolation, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 전송, 격리, 복구."
 
 #: lib/marshall/documentation_messages.ex:5202
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, isolation, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 전송, 격리, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5206
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 권한 부여, 전송, 복구."
 
 #: lib/marshall/documentation_messages.ex:5210
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, isolation, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 실행, 격리, 복구."
 
 #: lib/marshall/documentation_messages.ex:5214
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, isolation, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 실행, 격리, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5218
 #, elixir-autogen, elixir-format
@@ -8787,12 +8787,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5219
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, storage, recovery, transport."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 실행, 스토리지, 복구, 전송."
 
 #: lib/marshall/documentation_messages.ex:5223
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 실행, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5227
 #, elixir-autogen, elixir-format
@@ -8802,92 +8802,92 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5228
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, execution, isolation, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 실행, 격리, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5232
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, execution, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 실행, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5236
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, execution."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 실행."
 
 #: lib/marshall/documentation_messages.ex:5240
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, isolation, storage."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 격리, 스토리지."
 
 #: lib/marshall/documentation_messages.ex:5244
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 복구."
 
 #: lib/marshall/documentation_messages.ex:5248
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, storage."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 스토리지."
 
 #: lib/marshall/documentation_messages.ex:5252
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송, 실행, 격리, 복구."
 
 #: lib/marshall/documentation_messages.ex:5256
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송, 실행, 격리, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5260
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송, 실행, 격리."
 
 #: lib/marshall/documentation_messages.ex:5264
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송, 실행, 복구."
 
 #: lib/marshall/documentation_messages.ex:5268
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송, 실행, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5272
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송, 실행."
 
 #: lib/marshall/documentation_messages.ex:5276
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, isolation, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송, 격리, 복구."
 
 #: lib/marshall/documentation_messages.ex:5280
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, isolation, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송, 격리, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5284
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송, 복구."
 
 #: lib/marshall/documentation_messages.ex:5288
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5292
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, storage."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송, 스토리지."
 
 #: lib/marshall/documentation_messages.ex:5296
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 권한 부여, 전송."
 
 #: lib/marshall/documentation_messages.ex:5300
 #, elixir-autogen, elixir-format
@@ -8897,12 +8897,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5301
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, execution, isolation, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 실행, 격리, 복구."
 
 #: lib/marshall/documentation_messages.ex:5305
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, execution, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 실행, 복구."
 
 #: lib/marshall/documentation_messages.ex:5309
 #, elixir-autogen, elixir-format
@@ -8912,37 +8912,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5310
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution, isolation, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 전송, 실행, 격리, 복구."
 
 #: lib/marshall/documentation_messages.ex:5314
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 전송, 실행, 복구."
 
 #: lib/marshall/documentation_messages.ex:5318
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution, storage."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 전송, 실행, 스토리지."
 
 #: lib/marshall/documentation_messages.ex:5322
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 전송, 실행."
 
 #: lib/marshall/documentation_messages.ex:5326
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, isolation, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 전송, 격리, 복구."
 
 #: lib/marshall/documentation_messages.ex:5330
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 전송, 복구."
 
 #: lib/marshall/documentation_messages.ex:5334
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 신원, 전송, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5338
 #, elixir-autogen, elixir-format
@@ -8952,7 +8952,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5339
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: isolation, transport, execution."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 격리, 전송, 실행."
 
 #: lib/marshall/documentation_messages.ex:5343
 #, elixir-autogen, elixir-format
@@ -8962,22 +8962,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5344
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, isolation, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 전송, 실행, 격리, 복구."
 
 #: lib/marshall/documentation_messages.ex:5348
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, isolation, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 전송, 실행, 격리, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5352
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 전송, 실행, 복구."
 
 #: lib/marshall/documentation_messages.ex:5356
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, storage."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 전송, 실행, 스토리지."
 
 #: lib/marshall/documentation_messages.ex:5360
 #, elixir-autogen, elixir-format
@@ -8987,12 +8987,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5361
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, storage, execution."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 전송, 스토리지, 실행."
 
 #: lib/marshall/documentation_messages.ex:5365
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, storage, recovery."
-msgstr ""
+msgstr "검증 범위: **부분적**. 계층: 전송, 스토리지, 복구."
 
 #: lib/marshall/documentation_messages.ex:5369
 #, elixir-autogen, elixir-format
@@ -9017,7 +9017,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5382
 #, elixir-autogen, elixir-format
 msgid "Credential preparation services required before startup."
-msgstr ""
+msgstr "시작 전에 필요한 자격 증명 준비 서비스입니다."
 
 #: lib/marshall/documentation_messages.ex:5383
 #, elixir-autogen, elixir-format
@@ -9032,7 +9032,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5391
 #, elixir-autogen, elixir-format
 msgid "Current-generation preparation dependencies for Git authentication."
-msgstr ""
+msgstr "Git 인증을 위한 현재 세대 준비 종속성입니다."
 
 #: lib/marshall/documentation_messages.ex:5395
 #, elixir-autogen, elixir-format
@@ -9052,7 +9052,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5401
 #, elixir-autogen, elixir-format
 msgid "Deadline for one root-disk image copy or flush per pool (ADR-0173); expiry fails the placement closed. Raise it only where image I/O is known to be slow, such as nested test hosts reading a non-sparse store."
-msgstr ""
+msgstr "풀별 루트 디스크 이미지 복사 또는 플러시 한 번의 기한입니다(ADR-0173). 만료 시 배치를 차단합니다. 비희소 저장소를 읽는 중첩 테스트 호스트처럼 이미지 I/O가 느리다고 확인된 경우에만 늘리세요."
 
 #: lib/marshall/documentation_messages.ex:5405
 #, elixir-autogen, elixir-format
@@ -9077,7 +9077,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5412
 #, elixir-autogen, elixir-format
 msgid "Default immutable image for new SSH machines and initial browser drafts; admission still requires image availability."
-msgstr ""
+msgstr "새 SSH 머신과 초기 브라우저 초안의 기본 불변 이미지입니다. 수용하려면 여전히 이미지를 사용할 수 있어야 합니다."
 
 #: lib/marshall/documentation_messages.ex:5416
 #, elixir-autogen, elixir-format
@@ -9087,27 +9087,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5417
 #, elixir-autogen, elixir-format
 msgid "Default: Required when its service or enclosing record is selected."
-msgstr ""
+msgstr "기본값: 해당 서비스 또는 이를 포함하는 레코드를 선택하면 필수입니다."
 
 #: lib/marshall/documentation_messages.ex:5421
 #, elixir-autogen, elixir-format
 msgid "Default: Required when its service or enclosing record is selected.\n"
-msgstr ""
+msgstr "기본값: 해당 서비스 또는 이를 포함하는 레코드를 선택하면 필수입니다.\n"
 
 #: lib/marshall/documentation_messages.ex:5425
 #, elixir-autogen, elixir-format
 msgid "Delay between garbage collection checks. The first check runs one\ninterval after boot; missed checks are caught up after downtime."
-msgstr ""
+msgstr "가비지 수집 검사 간격입니다. 첫 검사는 부팅 후 한 간격이 지나면\n실행하며, 중단 중 놓친 검사는 이후에 보충합니다."
 
 #: lib/marshall/documentation_messages.ex:5429
 #, elixir-autogen, elixir-format
 msgid "Delegated Audi application zone, shared by all gateways and DNS replicas. Editor authority requires at least two canonical lowercase DNS labels."
-msgstr ""
+msgstr "모든 게이트웨이와 DNS 복제본이 공유하는 위임된 Audi 애플리케이션 영역입니다. 편집기 권한에는 정규 소문자 DNS 레이블이 최소 두 개 필요합니다."
 
 #: lib/marshall/documentation_messages.ex:5433
 #, elixir-autogen, elixir-format
 msgid "Delegated application DNS zone. Browser editor assets require at least two canonical lowercase DNS labels."
-msgstr ""
+msgstr "위임된 애플리케이션 DNS 영역입니다. 브라우저 편집기 자산에는 정규 소문자 DNS 레이블이 최소 두 개 필요합니다."
 
 #: lib/marshall/documentation_messages.ex:5437
 #, elixir-autogen, elixir-format
@@ -9187,7 +9187,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5495
 #, elixir-autogen, elixir-format
 msgid "Durable VM actor directory; maximum 45 bytes for UNIX sockets."
-msgstr ""
+msgstr "영속 VM 액터 디렉터리입니다. UNIX 소켓을 위해 최대 45바이트로 제한합니다."
 
 #: lib/marshall/documentation_messages.ex:5499
 #, elixir-autogen, elixir-format
@@ -9202,7 +9202,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5501
 #, elixir-autogen, elixir-format
 msgid "Durable transfer journal root used by Lilly's generated export configuration."
-msgstr ""
+msgstr "Lilly가 생성한 내보내기 구성이 사용하는 영속 전송 저널 루트입니다."
 
 #: lib/marshall/documentation_messages.ex:5505
 #, elixir-autogen, elixir-format
@@ -9282,7 +9282,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5573
 #, elixir-autogen, elixir-format
 msgid "Encrypt private input from a mode-0600 file outside the checkout:"
-msgstr ""
+msgstr "체크아웃 외부의 모드 0600 파일에서 비공개 입력을 암호화하세요:"
 
 #: lib/marshall/documentation_messages.ex:5577
 #, elixir-autogen, elixir-format
@@ -9332,7 +9332,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5601
 #, elixir-autogen, elixir-format
 msgid "Evaluated producer identity inventory for topology and independent health."
-msgstr ""
+msgstr "토폴로지와 독립 상태를 위한 평가된 생산자 ID 인벤토리입니다."
 
 #: lib/marshall/documentation_messages.ex:5605
 #, elixir-autogen, elixir-format
@@ -9392,7 +9392,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5653
 #, elixir-autogen, elixir-format
 msgid "Evidence: [backup procedures](repo:docs/operations/backups.md),\n[database recovery limits](repo:docs/operations/database-recovery.md),\n[backup module](repo:nix/domains/system/backups/default.nix)."
-msgstr ""
+msgstr "증거: [백업 절차](repo:docs/operations/backups.md),\n[데이터베이스 복구 한계](repo:docs/operations/database-recovery.md),\n[백업 모듈](repo:nix/domains/system/backups/default.nix)."
 
 #: lib/marshall/documentation_messages.ex:5657
 #, elixir-autogen, elixir-format
@@ -9467,12 +9467,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5713
 #, elixir-autogen, elixir-format
 msgid "Exact cgroup v2 systemd service allowed to admit requests."
-msgstr ""
+msgstr "요청 수용이 허용된 정확한 cgroup v2 systemd 서비스입니다."
 
 #: lib/marshall/documentation_messages.ex:5718
 #, elixir-autogen, elixir-format
 msgid "Exact locally installed Inception image allowed to receive the shared SMTP bundle."
-msgstr ""
+msgstr "공유 SMTP 번들을 받을 수 있는 로컬에 설치된 정확한 Inception 이미지입니다."
 
 #: lib/marshall/documentation_messages.ex:5722
 #, elixir-autogen, elixir-format
@@ -9492,27 +9492,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5728
 #, elixir-autogen, elixir-format
 msgid "Existing administrative directories; never guest disk trees."
-msgstr ""
+msgstr "기존 관리 디렉터리입니다. 게스트 디스크 트리는 사용하지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:5732
 #, elixir-autogen, elixir-format
 msgid "Existing enrolled source host identity. This service never generates or replaces it."
-msgstr ""
+msgstr "등록된 기존 소스 호스트 ID입니다. 이 서비스는 이를 생성하거나 교체하지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:5736
 #, elixir-autogen, elixir-format
 msgid "Existing mounted parent dataset, with LZ4 and no reservations."
-msgstr ""
+msgstr "LZ4를 사용하고 예약이 없는 기존 마운트된 상위 데이터셋입니다."
 
 #: lib/marshall/documentation_messages.ex:5740
 #, elixir-autogen, elixir-format
 msgid "Expected Linux peer UID of the Lilly connector: the Lilly service user where Lilly runs."
-msgstr ""
+msgstr "Lilly 커넥터의 예상 Linux 피어 UID입니다. Lilly가 실행되는 곳의 Lilly 서비스 사용자입니다."
 
 #: lib/marshall/documentation_messages.ex:5744
 #, elixir-autogen, elixir-format
 msgid "Expected Unix peer account, including dynamically allocated application users."
-msgstr ""
+msgstr "동적으로 할당된 애플리케이션 사용자를 포함한 예상 Unix 피어 계정입니다."
 
 #: lib/marshall/documentation_messages.ex:5748
 #, elixir-autogen, elixir-format
@@ -9537,7 +9537,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5761
 #, elixir-autogen, elixir-format
 msgid "Explicit IPv4 fleet listener address. Remote access requires separate interface-scoped firewall policy."
-msgstr ""
+msgstr "명시적 IPv4 플릿 리스너 주소입니다. 원격 접근에는 별도의 인터페이스 범위 방화벽 정책이 필요합니다."
 
 #: lib/marshall/documentation_messages.ex:5765
 #, elixir-autogen, elixir-format
@@ -9547,12 +9547,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5770
 #, elixir-autogen, elixir-format
 msgid "Explicit local IPv4 destination address; never a wildcard."
-msgstr ""
+msgstr "명시적 로컬 IPv4 대상 주소입니다. 와일드카드를 사용하지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:5771
 #, elixir-autogen, elixir-format
 msgid "Explicit platform service units; VM units are discovered by bounded systemd metadata."
-msgstr ""
+msgstr "명시적 플랫폼 서비스 유닛입니다. VM 유닛은 제한된 systemd 메타데이터로 검색합니다."
 
 #: lib/marshall/documentation_messages.ex:5775
 #, elixir-autogen, elixir-format
@@ -9562,7 +9562,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5776
 #, elixir-autogen, elixir-format
 msgid "Externally provided module arguments that can't be modified from\nwithin a configuration, but can be used in module imports."
-msgstr ""
+msgstr "구성 내부에서 변경할 수 없지만 모듈 import에서\n사용할 수 있는 외부 제공 모듈 인수입니다."
 
 #: lib/marshall/documentation_messages.ex:5780
 #, elixir-autogen, elixir-format
@@ -9587,7 +9587,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5796
 #, elixir-autogen, elixir-format
 msgid "Files in this bundle; all selected secrets are required."
-msgstr ""
+msgstr "이 번들에 포함된 파일입니다. 선택한 모든 비밀이 필요합니다."
 
 #: lib/marshall/documentation_messages.ex:5797
 #, elixir-autogen, elixir-format
@@ -9597,17 +9597,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5801
 #, elixir-autogen, elixir-format
 msgid "Five-minute real authenticated editor journeys; fixtures and operator sessions are private runtime credentials."
-msgstr ""
+msgstr "5분간의 실제 인증된 편집기 여정입니다. 픽스처와 운영자 세션은 비공개 런타임 자격 증명입니다."
 
 #: lib/marshall/documentation_messages.ex:5805
 #, elixir-autogen, elixir-format
 msgid "Fixed OpenAI-compatible origin; enrolled hosts use host-local Underclass."
-msgstr ""
+msgstr "고정된 OpenAI 호환 원본입니다. 등록된 호스트는 호스트 로컬 Underclass를 사용합니다."
 
 #: lib/marshall/documentation_messages.ex:5809
 #, elixir-autogen, elixir-format
 msgid "Fixed Serper origin; loopback is reserved for the machine-test fixture."
-msgstr ""
+msgstr "고정된 Serper 원본입니다. 루프백은 머신 테스트 픽스처용으로 예약되어 있습니다."
 
 #: lib/marshall/documentation_messages.ex:5813
 #, elixir-autogen, elixir-format
@@ -9617,7 +9617,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5817
 #, elixir-autogen, elixir-format
 msgid "Fleet database allocation, including one notifier per instance and ten operator connections."
-msgstr ""
+msgstr "인스턴스별 알림기 하나와 운영자 연결 10개를 포함한 플릿 데이터베이스 할당입니다."
 
 #: lib/marshall/documentation_messages.ex:5821
 #, elixir-autogen, elixir-format
@@ -9632,12 +9632,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5829
 #, elixir-autogen, elixir-format
 msgid "Fleet wildcard leaf and intermediate PEM chain from the bundle."
-msgstr ""
+msgstr "번들의 플릿 와일드카드 리프 및 중간 PEM 체인입니다."
 
 #: lib/marshall/documentation_messages.ex:5833
 #, elixir-autogen, elixir-format
 msgid "Fleet wildcard leaf key from the bundle; rotation is operator custody."
-msgstr ""
+msgstr "번들의 플릿 와일드카드 리프 키입니다. 키 교체는 운영자가 관리합니다."
 
 #: lib/marshall/documentation_messages.ex:5837
 #, elixir-autogen, elixir-format
@@ -9657,7 +9657,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5849
 #, elixir-autogen, elixir-format
 msgid "For NixOS, the default value for this option includes at least this argument:\n- {var}`pkgs`: The nixpkgs package set according to\n  the {option}`nixpkgs.pkgs` option."
-msgstr ""
+msgstr "NixOS에서 이 옵션의 기본값에는 최소한 다음 인수가 포함됩니다:\n- {var}`pkgs`: {option}`nixpkgs.pkgs` 옵션에 따른\n  nixpkgs 패키지 집합입니다."
 
 #: lib/marshall/documentation_messages.ex:5853
 #, elixir-autogen, elixir-format
@@ -9697,7 +9697,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5881
 #, elixir-autogen, elixir-format
 msgid "For one-shot exec commands, register the key on Marshall's SSH keys page first,\nor complete approval in an interactive connection before retrying the command."
-msgstr ""
+msgstr "일회성 exec 명령의 경우 먼저 Marshall의 SSH 키 페이지에서 키를 등록하거나\n대화형 연결에서 승인을 완료한 후 명령을 다시 시도하세요."
 
 #: lib/marshall/documentation_messages.ex:5885
 #, elixir-autogen, elixir-format
@@ -9982,7 +9982,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6102
 #, elixir-autogen, elixir-format
 msgid "Host queue budget; selected per-source output limits must fit. Size from measured rate for 24 hours plus 50% headroom."
-msgstr ""
+msgstr "호스트 큐 예산입니다. 선택한 소스별 출력 제한이 이 안에 들어야 합니다. 측정된 24시간 비율에 여유 50%를 더해 크기를 정하세요."
 
 #: lib/marshall/documentation_messages.ex:6106
 #, elixir-autogen, elixir-format
@@ -10027,12 +10027,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6129
 #, elixir-autogen, elixir-format
 msgid "If set, merge all definitions that don't have an associated option\ntogether using this type. The result then gets combined with the\nvalues of all declared options to produce the final `\nconfig` value."
-msgstr ""
+msgstr "설정하면 관련 옵션이 없는 모든 정의를 이 유형을 사용하여\n병합합니다. 그런 다음 결과를 선언된 모든 옵션의\n값과 결합하여 최종 `\nconfig` 값을 만듭니다."
 
 #: lib/marshall/documentation_messages.ex:6133
 #, elixir-autogen, elixir-format
 msgid "If this is `null`, definitions without an option\nwill throw an error unless {option}`_module.check` is\nturned off."
-msgstr ""
+msgstr "이 값이 `null`이면 옵션이 없는 정의는\n{option}`_module.check`를 끄지 않는 한\n오류를 발생시킵니다."
 
 #: lib/marshall/documentation_messages.ex:6137
 #, elixir-autogen, elixir-format
@@ -10042,42 +10042,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6145
 #, elixir-autogen, elixir-format
 msgid "Immutable image bound exclusively to the Inception development profile; native host eligibility is also required."
-msgstr ""
+msgstr "Inception 개발 프로필에만 바인딩된 불변 이미지입니다. 네이티브 호스트 자격도 필요합니다."
 
 #: lib/marshall/documentation_messages.ex:6149
 #, elixir-autogen, elixir-format
 msgid "Immutable local image directory (manifest.json and artifacts) verified by Lilly before advertising."
-msgstr ""
+msgstr "광고 전에 Lilly가 검증하는 불변 로컬 이미지 디렉터리(manifest.json 및 아티팩트)입니다."
 
 #: lib/marshall/documentation_messages.ex:6153
 #, elixir-autogen, elixir-format
 msgid "Immutable local images verified by Lilly before advertising, in operator order."
-msgstr ""
+msgstr "광고 전에 Lilly가 검증하는 불변 로컬 이미지이며 운영자가 정한 순서를 따릅니다."
 
 #: lib/marshall/documentation_messages.ex:6157
 #, elixir-autogen, elixir-format
 msgid "Immutable measurement deadline reconciled with this source's request budget."
-msgstr ""
+msgstr "이 소스의 요청 예산과 조정된 불변 측정 기한입니다."
 
 #: lib/marshall/documentation_messages.ex:6165
 #, elixir-autogen, elixir-format
 msgid "Immutable per-batch retention, including traces already acknowledged upstream."
-msgstr ""
+msgstr "상위에서 이미 확인한 추적을 포함한 불변 배치별 보존입니다."
 
 #: lib/marshall/documentation_messages.ex:6169
 #, elixir-autogen, elixir-format
 msgid "Immutable platform, disk and persistent identity bindings."
-msgstr ""
+msgstr "변경 불가능한 플랫폼, 디스크 및 영속 ID 바인딩입니다."
 
 #: lib/marshall/documentation_messages.ex:6170
 #, elixir-autogen, elixir-format
 msgid "Immutable unsigned Chrome and Firefox browser extension package served at the public /bin routes. Null disables browser extension downloads."
-msgstr ""
+msgstr "공개 /bin 경로에서 제공하는 불변의 서명되지 않은 Chrome 및 Firefox 브라우저 확장 패키지입니다. Null이면 브라우저 확장 다운로드를 비활성화합니다."
 
 #: lib/marshall/documentation_messages.ex:6174
 #, elixir-autogen, elixir-format
 msgid "Inception parent gateway allowed to supply IPv4 PROXY metadata; null for public listeners."
-msgstr ""
+msgstr "IPv4 PROXY 메타데이터를 제공할 수 있는 Inception 상위 게이트웨이입니다. 공개 리스너에는 null을 사용합니다."
 
 #: lib/marshall/documentation_messages.ex:6178
 #, elixir-autogen, elixir-format
@@ -10102,17 +10102,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6192
 #, elixir-autogen, elixir-format
 msgid "Independent durable request recorders; enabling requires reviewed producer hooks and source-specific deadlines."
-msgstr ""
+msgstr "독립 영속 요청 기록기입니다. 활성화하려면 검토된 생산자 훅과 소스별 기한이 필요합니다."
 
 #: lib/marshall/documentation_messages.ex:6196
 #, elixir-autogen, elixir-format
 msgid "Independent logging health metrics; never carries records."
-msgstr ""
+msgstr "독립적인 로깅 상태 지표입니다. 레코드는 전달하지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:6197
 #, elixir-autogen, elixir-format
 msgid "Independent per-producer durable trace custody; failures leave producers running."
-msgstr ""
+msgstr "생산자별 독립 영속 추적 보관입니다. 실패해도 생산자는 계속 실행됩니다."
 
 #: lib/marshall/documentation_messages.ex:6201
 #, elixir-autogen, elixir-format
@@ -10142,7 +10142,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6212
 #, elixir-autogen, elixir-format
 msgid "Initialize only when Restic positively reports that the repository does not exist."
-msgstr ""
+msgstr "Restic이 저장소가 존재하지 않는다고 명확히 보고할 때만 초기화하세요."
 
 #: lib/marshall/documentation_messages.ex:6216
 #, elixir-autogen, elixir-format
@@ -10157,7 +10157,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6224
 #, elixir-autogen, elixir-format
 msgid "Inspect failure and cancellation status before resubmitting with a new identity.\nAn already published destination must not be mistaken for a failed submission."
-msgstr ""
+msgstr "새 ID로 다시 제출하기 전에 실패 및 취소 상태를 확인하세요.\n이미 게시된 대상을 실패한 제출로 오인해서는 안 됩니다."
 
 #: lib/marshall/documentation_messages.ex:6228
 #, elixir-autogen, elixir-format
@@ -10182,7 +10182,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6248
 #, elixir-autogen, elixir-format
 msgid "Interfaces counted as external network traffic; excludes bridges and taps unless explicitly selected."
-msgstr ""
+msgstr "외부 네트워크 트래픽으로 집계할 인터페이스입니다. 명시적으로 선택하지 않으면 브리지와 탭은 제외합니다."
 
 #: lib/marshall/documentation_messages.ex:6256
 #, elixir-autogen, elixir-format
@@ -10202,7 +10202,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6268
 #, elixir-autogen, elixir-format
 msgid "Keep four facts separate: desired VM state, observed physical state, workflow\nphase, and cleanup receipts. A successful state transition records intent; it\ncannot prove that a process stopped or a disk disappeared."
-msgstr ""
+msgstr "원하는 VM 상태, 관찰된 물리 상태, 워크플로 단계 및 정리 영수증이라는 네 가지\n사실을 구분하세요. 성공한 상태 전환은 의도를 기록할 뿐,\n프로세스가 중지되었거나 디스크가 사라졌음을 입증하지 못합니다."
 
 #: lib/marshall/documentation_messages.ex:6272
 #, elixir-autogen, elixir-format
@@ -10317,7 +10317,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6364
 #, elixir-autogen, elixir-format
 msgid "Lilly's leases live in `lilly-hostd`\n([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md)\ndecision 4):"
-msgstr ""
+msgstr "Lilly의 임대는 `lilly-hostd`에 있습니다\n([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md)\n결정 4):"
 
 #: lib/marshall/documentation_messages.ex:6368
 #, elixir-autogen, elixir-format
@@ -10332,7 +10332,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6376
 #, elixir-autogen, elixir-format
 msgid "List reports host-manifest candidates; inspect validates the selected manifest\nstructure. Neither command proves that every referenced component is available;\nrestoration verifies each component as it is read."
-msgstr ""
+msgstr "list는 호스트 매니페스트 후보를 보고하고 inspect는 선택한 매니페스트\n구조를 검증합니다. 어느 명령도 참조된 모든 구성 요소를 사용할 수 있음을 입증하지는 않습니다.\n복원은 각 구성 요소를 읽을 때 검증합니다."
 
 #: lib/marshall/documentation_messages.ex:6380
 #, elixir-autogen, elixir-format
@@ -10362,17 +10362,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6391
 #, elixir-autogen, elixir-format
 msgid "Local Lego responder IP; use a stable private address when configuring peers."
-msgstr ""
+msgstr "로컬 Lego 응답자 IP입니다. 피어를 구성할 때 안정적인 비공개 주소를 사용하세요."
 
 #: lib/marshall/documentation_messages.ex:6395
 #, elixir-autogen, elixir-format
 msgid "Local Marshall instance consuming the certificate queue."
-msgstr ""
+msgstr "인증서 큐를 소비하는 로컬 Marshall 인스턴스입니다."
 
 #: lib/marshall/documentation_messages.ex:6396
 #, elixir-autogen, elixir-format
 msgid "Local fleet services admitted only from configured tunnel peers."
-msgstr ""
+msgstr "구성된 터널 피어에서만 접근을 허용하는 로컬 플릿 서비스입니다."
 
 #: lib/marshall/documentation_messages.ex:6400
 #, elixir-autogen, elixir-format
@@ -10382,7 +10382,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6404
 #, elixir-autogen, elixir-format
 msgid "Local instances keyed by distinct fleet-wide identities."
-msgstr ""
+msgstr "서로 다른 플릿 전체 ID를 키로 사용하는 로컬 인스턴스입니다."
 
 #: lib/marshall/documentation_messages.ex:6405
 #, elixir-autogen, elixir-format
@@ -10392,22 +10392,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6409
 #, elixir-autogen, elixir-format
 msgid "Logical archive/SQLite budget per producer, distinct from Tempo quota. New data refuses when full."
-msgstr ""
+msgstr "Tempo 할당량과 별개인 생산자별 논리 아카이브/SQLite 예산입니다. 가득 차면 새 데이터를 거부합니다."
 
 #: lib/marshall/documentation_messages.ex:6413
 #, elixir-autogen, elixir-format
 msgid "Loopback HTTP port. Underclass is never bound directly to a fleet interface."
-msgstr ""
+msgstr "루프백 HTTP 포트입니다. Underclass를 플릿 인터페이스에 직접 바인딩하지 않습니다."
 
 #: lib/marshall/documentation_messages.ex:6417
 #, elixir-autogen, elixir-format
 msgid "Loopback Prometheus resource exporter; no application credentials or ingestion."
-msgstr ""
+msgstr "루프백 Prometheus 리소스 내보내기입니다. 애플리케이션 자격 증명이나 수집은 없습니다."
 
 #: lib/marshall/documentation_messages.ex:6421
 #, elixir-autogen, elixir-format
 msgid "Loopback or authenticated fleet address for independent health scraping."
-msgstr ""
+msgstr "독립 상태 스크래핑을 위한 루프백 또는 인증된 플릿 주소입니다."
 
 #: lib/marshall/documentation_messages.ex:6425
 #, elixir-autogen, elixir-format
@@ -10417,7 +10417,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6426
 #, elixir-autogen, elixir-format
 msgid "Loopback-only Fluent Bit numeric application health exporter when fleet telemetry and logging are enabled."
-msgstr ""
+msgstr "플릿 원격 측정과 로깅이 활성화된 경우의 루프백 전용 Fluent Bit 숫자 애플리케이션 상태 내보내기입니다."
 
 #: lib/marshall/documentation_messages.ex:6430
 #, elixir-autogen, elixir-format
@@ -10477,7 +10477,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6471
 #, elixir-autogen, elixir-format
 msgid "Management-only AWS credentials. Null uses explicit EC2 role mode."
-msgstr ""
+msgstr "관리 전용 AWS 자격 증명입니다. Null이면 명시적인 EC2 역할 모드를 사용합니다."
 
 #: lib/marshall/documentation_messages.ex:6475
 #, elixir-autogen, elixir-format

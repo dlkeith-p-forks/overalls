@@ -71,6 +71,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
   hooks: {
     ...colocatedHooks,
     TerminalWorkspace,
+    AndroidDisplay,
     PasskeyCeremony,
     AdminElevation,
     WorkspaceNavigation,

@@ -4247,7 +4247,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1461
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** A killed shell supervisor with surviving children is unverified. Storage power-loss durability, relocation, physical host failure and fleet availability remain separate from individual daemon replacement."
-msgstr ""
+msgstr "**الثغرات:** لم يُتحقق من قتل مشرف الصدفة مع بقاء العمليات الأبناء. متانة التخزين عند انقطاع الطاقة والنقل وفشل المضيف المادي وتوافر الأسطول أمور منفصلة عن استبدال عفريت منفرد."
 
 #: lib/marshall/documentation_messages.ex:1465
 #, elixir-autogen, elixir-format
@@ -4257,12 +4257,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1469
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** A separate full native run failed in Lilly crash recovery after passing the guest SSH collector assertion. Source-process crash accounting, production nonzero collection and measured targets remain open."
-msgstr ""
+msgstr "**الثغرات:** فشل تشغيل أصلي كامل منفصل في تعافي Lilly من الانهيار بعد نجاح تأكيد جامع SSH للضيف. ما زالت محاسبة انهيار عملية المصدر والجمع الإنتاجي غير الصفري والأهداف المقاسة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:1473
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Actual multi-gateway package mismatch/receipt expiry, native public DNS and TLS through Audi, publisher restart/version refusal and signing-key rollout have no recorded editor acceptance here."
-msgstr ""
+msgstr "**الثغرات:** لا يوجد هنا قبول مسجل للمحرر بشأن عدم تطابق حزم البوابات المتعددة أو انتهاء الإيصالات، أو DNS العام وTLS الأصليين عبر Audi، أو إعادة تشغيل الناشر ورفض الإصدار، أو طرح مفتاح التوقيع."
 
 #: lib/marshall/documentation_messages.ex:1477
 #, elixir-autogen, elixir-format
@@ -4282,7 +4282,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1489
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Archive/live revocation, complete provider/tool continuation and browser keyboard/mobile question/proposal flows remain unverified. The instructional mode does not enforce operating-system read-only execution."
-msgstr ""
+msgstr "**الثغرات:** لم يُتحقق من الإلغاء للأرشيف/الجلسات الحية، والاستمرار الكامل للمزود/الأداة، وتدفقات الأسئلة/المقترحات بلوحة المفاتيح والهاتف في المتصفح. لا يفرض الوضع الإرشادي تنفيذًا للقراءة فقط على مستوى نظام التشغيل."
 
 #: lib/marshall/documentation_messages.ex:1493
 #, elixir-autogen, elixir-format
@@ -4292,32 +4292,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1497
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Arguments remain caller-supplied until typed native effects replace the utility table. The peer cgroup check reads /proc after connect rather than through a pidfd. Lilly and hostd both run as root until the privilege drop."
-msgstr ""
+msgstr "**الثغرات:** تظل الوسائط مقدمة من المستدعي حتى تحل التأثيرات الأصلية ذات الأنواع محل جدول الأدوات. يقرأ فحص cgroup للنظير /proc بعد الاتصال بدلًا من استخدام pidfd. يعمل Lilly وhostd كلاهما بصلاحية root حتى خفض الامتيازات."
 
 #: lib/marshall/documentation_messages.ex:1501
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated redemption, the 409 refusals and force override, idempotency across restart and live upstream credit consumption have not been verified for this revision."
-msgstr ""
+msgstr "**الثغرات:** لم يُتحقق لهذا التنقيح من الاسترداد الموثق ورفض 409 والتجاوز القسري، أو تكرار العملية دون أثر إضافي عبر إعادة التشغيل، أو استهلاك الرصيد الفعلي لدى المنبع."
 
 #: lib/marshall/documentation_messages.ex:1505
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated statistics queries, event import deduplication, retention pruning, rollup recovery and live provider capacity classification have not been verified for this revision."
-msgstr ""
+msgstr "**الثغرات:** لم يُتحقق لهذا التنقيح من استعلامات الإحصاءات الموثقة وإزالة تكرار استيراد الأحداث وتقليم الاحتفاظ وتعافي التجميعات وتصنيف سعة المزود الفعلية."
 
 #: lib/marshall/documentation_messages.ex:1509
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authenticated vsock/Firecracker/browser composition, aggregate64MiB admission, escaped descendant death and hosted fault reach remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زالت تركيبة vsock/Firecracker/المتصفح الموثقة، وقبول إجمالي64MiB، وموت العمليات المتفرعة الهاربة، ومدى الوصول إلى الأعطال المستضافة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:1513
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Authorized command-to-collector attribution, asynchronous physical completion, process-crash accounting and a measured target remain open. The production sample proves dispatch source collection only."
-msgstr ""
+msgstr "**الثغرات:** ما زالت نسبة الأمر المصرح به إلى الجامع والإكمال المادي غير المتزامن ومحاسبة انهيار العملية والهدف المقاس مفتوحة. تثبت العينة الإنتاجية جمع مصدر الإرسال فقط."
 
 #: lib/marshall/documentation_messages.ex:1517
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Binding changes during upload, customer-profile refusal, guest trace delivery to central Tempo over authenticated WireGuard, physical-host outage duration, long-duration queue capacity and production guest volume remain unverified."
-msgstr ""
+msgstr "**الثغرات:** لم يُتحقق من تغيرات الربط أثناء الرفع ورفض ملف العميل وإيصال تتبع الضيف إلى Tempo المركزي عبر WireGuard موثق، ومدة انقطاع المضيف المادي وسعة الطابور الطويلة وحجم الضيوف الإنتاجي."
 
 #: lib/marshall/documentation_messages.ex:1521
 #, elixir-autogen, elixir-format
@@ -4347,7 +4347,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1541
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Capture overhead, database throughput, independent physical hosts, hardware authenticators, SMTP inbox delivery and production rollout remain outside finite functional evidence. Historical passes retain their captured revisions."
-msgstr ""
+msgstr "**الثغرات:** تقع كلفة الالتقاط ومعدل نقل قاعدة البيانات والمضيفون الماديون المستقلون وأجهزة المصادقة وتسليم SMTP إلى صندوق الوارد والطرح الإنتاجي خارج الأدلة الوظيفية المحدودة. تحتفظ النجاحات التاريخية بتنقيحاتها الملتقطة."
 
 #: lib/marshall/documentation_messages.ex:1549
 #, elixir-autogen, elixir-format
@@ -4362,7 +4362,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1557
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Concurrent native browser/SSH registration-versus-retirement delivery and independent physical control-plane hosts remain unverified. Existing native journeys retain their separate nonconcurrent scope."
-msgstr ""
+msgstr "**الثغرات:** لم يُتحقق من تسليم التسجيل مقابل الإحالة إلى التقاعد بشكل متزامن عبر المتصفح/SSH الأصليين، أو مضيفي مستوى التحكم الماديين المستقلين. تحتفظ الرحلات الأصلية القائمة بنطاقها المنفصل غير المتزامن."
 
 #: lib/marshall/documentation_messages.ex:1561
 #, elixir-autogen, elixir-format
@@ -4372,17 +4372,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1565
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Continuous pressure between observations, aggregate admission, complete byte fidelity, throughput, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زال الضغط المستمر بين الملاحظات والقبول الإجمالي ودقة البايتات الكاملة ومعدل النقل وتركيبة vsock/VM/المتصفح الموثقة والأعطال المستضافة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:1569
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Continuous pressure instrumentation, authenticated vsock/Firecracker/browser composition, RSS, sustained many-viewer throughput, host recovery and hosted faults remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زالت أدوات قياس الضغط المستمر وتركيبة vsock/Firecracker/المتصفح الموثقة وRSS ومعدل النقل المستدام لكثير من المشاهدين وتعافي المضيف والأعطال المستضافة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:1573
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Coordinated v4 Lilly/v2 Ziggy publication is required; production version skew and retained production database migration acceptance remain separate."
-msgstr ""
+msgstr "**الثغرات:** يلزم نشر منسق لـ v4 Lilly/v2 Ziggy؛ يظل تفاوت الإصدارات الإنتاجية وقبول ترحيل قاعدة البيانات الإنتاجية المحتفظ بها منفصلين."
 
 #: lib/marshall/documentation_messages.ex:1577
 #, elixir-autogen, elixir-format
@@ -4392,7 +4392,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1581
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Cross-host Marshall scheduling, manager-crash accounting, production collection and a measured final target baseline remain open; the provisional seven-day rule consumes only the named candidate series."
-msgstr ""
+msgstr "**الثغرات:** ما زالت جدولة Marshall عبر المضيفين ومحاسبة انهيار المدير والجمع الإنتاجي وخط الأساس النهائي المقاس للهدف مفتوحة؛ لا تستخدم قاعدة الأيام السبعة المؤقتة سوى سلسلة المرشح المسماة."
 
 #: lib/marshall/documentation_messages.ex:1585
 #, elixir-autogen, elixir-format
@@ -4402,7 +4402,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1589
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** DNS TTL alone is not authority; cross-host refresh and production DNS delegation, CA behavior and sustained load require separate acceptance. Gateway credential rotation and live route restoration have local database evidence but no native journey."
-msgstr ""
+msgstr "**الثغرات:** ليست DNS TTL وحدها سلطة؛ يتطلب التحديث عبر المضيفين وتفويض DNS الإنتاجي وسلوك CA والحمل المستدام قبولًا منفصلًا. لتدوير بيانات اعتماد البوابة واستعادة المسار الحي أدلة محلية بقاعدة البيانات، دون رحلة أصلية."
 
 #: lib/marshall/documentation_messages.ex:1593
 #, elixir-autogen, elixir-format
@@ -4412,12 +4412,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1597
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Dynamic growth, interleaved create/retirement, child-exit/idle release, mixed stalled/healthy viewers, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زال النمو الديناميكي وتداخل الإنشاء/التقاعد والتحرير عند خروج الابن/الخمول ومزيج المشاهدين المتعطلين/الأصحاء وتركيبة vsock/VM/المتصفح الموثقة والأعطال المستضافة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:1601
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Dynamic growth, mixed-pressure aggregate admission, RSS/allocator peak, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زال النمو الديناميكي والقبول الإجمالي بضغط مختلط وذروة RSS/المخصص وتركيبة vsock/VM/المتصفح الموثقة والأعطال المستضافة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:1605
 #, elixir-autogen, elixir-format
@@ -4447,7 +4447,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1625
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Existing guest disks are intentionally excluded. Native macOS and a complete nested Inception deployment remain unverified. Production rollout is tracked separately in the execution review."
-msgstr ""
+msgstr "**الثغرات:** تُستبعد أقراص الضيوف الحالية عمدًا. لم يُتحقق من macOS الأصلي أو نشر Inception متداخل كامل. يُتتبع الطرح الإنتاجي منفصلًا في مراجعة التنفيذ."
 
 #: lib/marshall/documentation_messages.ex:1629
 #, elixir-autogen, elixir-format
@@ -4472,7 +4472,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1649
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Full Lilly application death at this boundary, start/restart completion, attempt-marker-before-submission, physical power loss and hosted faults remain open. Executor retry is witnessed; actor-deferred result consumption is not independently asserted."
-msgstr ""
+msgstr "**الثغرات:** ما زالت وفاة تطبيق Lilly بالكامل عند هذه الحدود وإكمال البدء/إعادة التشغيل وعلامة المحاولة قبل الإرسال وانقطاع الطاقة المادي والأعطال المستضافة مفتوحة. شوهدت إعادة محاولة المنفذ؛ لم يُؤكد مستقلًا استهلاك الممثل للنتيجة المؤجلة."
 
 #: lib/marshall/documentation_messages.ex:1657
 #, elixir-autogen, elixir-format
@@ -4482,7 +4482,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1661
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated cross-target observation/arming histories remain absent. Native acceptance uses the captured guest runtime before incoming Starship defaults; physical host failure remains separate."
-msgstr ""
+msgstr "**الثغرات:** لا تزال سجلات الملاحظة/التسليح المولدة عبر الأهداف غائبة. يستخدم القبول الأصلي بيئة تشغيل الضيف الملتقطة قبل افتراضيات Starship الواردة؛ يظل فشل المضيف المادي منفصلًا."
 
 #: lib/marshall/documentation_messages.ex:1665
 #, elixir-autogen, elixir-format
@@ -4512,7 +4512,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1685
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, independent physical hosts, SMTP delivery and production rollout remain separate; full/native captures and previous Control room/retirement claims retain their exact revisions."
-msgstr ""
+msgstr "**الثغرات:** تظل أجهزة المصادقة والمضيفون الماديون المستقلون وتسليم SMTP والطرح الإنتاجي منفصلة؛ تحتفظ اللقطات الكاملة/الأصلية وادعاءات Control room/التقاعد السابقة بتنقيحاتها الدقيقة."
 
 #: lib/marshall/documentation_messages.ex:1689
 #, elixir-autogen, elixir-format
@@ -4522,7 +4522,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1693
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, physically independent serving replicas and production rollout remain external acceptance. The native journey uses virtual authenticators inside one VM."
-msgstr ""
+msgstr "**الثغرات:** تظل أجهزة المصادقة والنسخ الخادمة المستقلة ماديًا والطرح الإنتاجي ضمن القبول الخارجي. تستخدم الرحلة الأصلية أجهزة مصادقة افتراضية داخل VM واحدة."
 
 #: lib/marshall/documentation_messages.ex:1697
 #, elixir-autogen, elixir-format
@@ -4542,7 +4542,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1709
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Independent physical hosts, production DNS/CA/load and native direct-grant withdrawal remain separate. Synthetic reports and expiry injection establish application decisions only."
-msgstr ""
+msgstr "**الثغرات:** تظل المضيفات المادية المستقلة وDNS/CA/الحمل الإنتاجي وسحب المنح المباشرة الأصلي منفصلة. لا تثبت التقارير الاصطناعية وحقن انتهاء الصلاحية سوى قرارات التطبيق."
 
 #: lib/marshall/documentation_messages.ex:1713
 #, elixir-autogen, elixir-format
@@ -4562,22 +4562,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1725
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Initial provisioning, host power loss, arbitrary generation boundaries, guest data usability and hosted faults remain separate. Mutation sensitivity and final publication gates remain pending."
-msgstr ""
+msgstr "**الثغرات:** تظل التهيئة الأولية وانقطاع طاقة المضيف وحدود الأجيال الاعتباطية وقابلية استخدام بيانات الضيف والأعطال المستضافة منفصلة. حساسية الطفرات وبوابات النشر النهائية معلقة."
 
 #: lib/marshall/documentation_messages.ex:1729
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Interrupted expansion and physical recovery acceptance remain open. The recorded source-qualified OmniOS no-op/expansion replay does not qualify interrupted recovery or native admission."
-msgstr ""
+msgstr "**الثغرات:** ما زال قبول التوسعة المتقطعة والتعافي المادي مفتوحًا. لا يؤهل تكرار OmniOS المسجل والمقيد بالمصدر، دون تغيير/بالتوسعة، التعافي المتقطع أو القبول الأصلي."
 
 #: lib/marshall/documentation_messages.ex:1733
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Interrupted writes, interrupted expansion, physical stable-media/host power loss, direct isolation, relocation and fleet recovery remain unproven; both native crash receipts retain admission false, while exact sealed FreeBSD activation is recorded separately."
-msgstr ""
+msgstr "**الثغرات:** لم تثبت الكتابات والتوسعة المتقطعة أو انقطاع طاقة الوسائط الثابتة/المضيف المادي أو العزل المباشر أو النقل أو تعافي الأسطول؛ يحتفظ إيصالا الانهيار الأصليان بالقبول false، ويُسجل تنشيط FreeBSD المختوم الدقيق منفصلًا."
 
 #: lib/marshall/documentation_messages.ex:1737
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Live revocation failure classification, production collection and a measured baseline remain open; no compliance rule consumes this candidate series."
-msgstr ""
+msgstr "**الثغرات:** ما زال تصنيف فشل الإلغاء الحي والجمع الإنتاجي وخط الأساس المقاس مفتوحًا؛ لا تستخدم أي قاعدة امتثال سلسلة المرشح هذه."
 
 #: lib/marshall/documentation_messages.ex:1741
 #, elixir-autogen, elixir-format
@@ -4587,17 +4587,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1745
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Local monitor readiness is not authorized proxy completion, tailnet availability or a live-provider result. A provisional monitor target exists, but full seven-day production coverage remains unverified."
-msgstr ""
+msgstr "**الثغرات:** جاهزية المراقب المحلي ليست إكمالًا مصرحًا للوكيل أو توافر tailnet أو نتيجة مزود حي. يوجد هدف مراقبة مؤقت، لكن التغطية الإنتاجية الكاملة لسبعة أيام غير متحقق منها."
 
 #: lib/marshall/documentation_messages.ex:1749
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Manager/role histories, URL/path attacks, interrupted guest installation reconciliation, local-edit preservation, immutable revision retention and pinned physical reopen restoration remain unverified on Linux and Windows."
-msgstr ""
+msgstr "**الثغرات:** لم يُتحقق على Linux وWindows من سجلات المدير/الأدوار وهجمات URL/المسار وتسوية تثبيت الضيف المتقطع وحفظ التعديلات المحلية والاحتفاظ بالتنقيح الثابت واستعادة إعادة الفتح المادية المثبتة."
 
 #: lib/marshall/documentation_messages.ex:1753
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Marshall account authorization/browser approval, HTTPS management, production release/systemd startup, native isolation, production CA rotation, concurrent replacement and hosted faults remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زال تفويض حساب Marshall/موافقة المتصفح وإدارة HTTPS وبدء الإصدار الإنتاجي/systemd والعزل الأصلي وتدوير CA الإنتاجي والاستبدال المتزامن والأعطال المستضافة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:1757
 #, elixir-autogen, elixir-format
@@ -4637,22 +4637,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1789
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native finite scenarios do not prove all packet encodings, kernel versions or physical network configurations."
-msgstr ""
+msgstr "**الثغرات:** لا تثبت السيناريوهات الأصلية المحدودة جميع ترميزات الحزم أو إصدارات النواة أو تكوينات الشبكة المادية."
 
 #: lib/marshall/documentation_messages.ex:1793
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native foreign/corrupt ownership refusal remains open; metadata properties do not establish all physical isolation boundaries."
-msgstr ""
+msgstr "**الثغرات:** ما زال رفض الملكية الأجنبية/التالفة الأصلي مفتوحًا؛ لا تثبت خصائص البيانات الوصفية جميع حدود العزل المادي."
 
 #: lib/marshall/documentation_messages.ex:1797
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native legacy-database migration, scheduled rotation, issuer failure, authenticated recovery and live provider behavior have not been verified for this revision."
-msgstr ""
+msgstr "**الثغرات:** لم يُتحقق لهذا التنقيح من ترحيل قاعدة البيانات القديمة الأصلي والتدوير المجدول وفشل الجهة المصدرة والتعافي الموثق وسلوك المزود الحي."
 
 #: lib/marshall/documentation_messages.ex:1801
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native macOS installation/runtime and arbitrary pre-existing SSH configurations remain outside this tested Linux scope; guest connections are recorded under ssh-host-ca and the fleet user journey revocation cycle."
-msgstr ""
+msgstr "**الثغرات:** يظل تثبيت/تشغيل macOS الأصلي وتكوينات SSH الاعتباطية الموجودة مسبقًا خارج نطاق Linux المختبر هذا؛ تُسجل اتصالات الضيوف ضمن ssh-host-ca ودورة الإلغاء في رحلة مستخدم الأسطول."
 
 #: lib/marshall/documentation_messages.ex:1805
 #, elixir-autogen, elixir-format
@@ -4667,12 +4667,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1813
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native reboot, quota refusal, canonical identity, ACK preservation and corrupt-store refusal pass in disposable machines. Test VM fsync does not establish physical host power-loss or production ninety-day retention."
-msgstr ""
+msgstr "**الثغرات:** تنجح إعادة التشغيل الأصلية ورفض الحصة والهوية القياسية وحفظ ACK ورفض المخزن التالف في آلات مؤقتة. لا يثبت fsync في VM الاختبار تحمل انقطاع طاقة المضيف المادي أو الاحتفاظ الإنتاجي لتسعين يومًا."
 
 #: lib/marshall/documentation_messages.ex:1817
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native running-workload downtime consent (every running move now needs it per ADR-0155), cancellation/replan and interruption permutations, physically independent hosts, hardware passkeys, Ubuntu evacuation and production rollout remain unverified."
-msgstr ""
+msgstr "**الثغرات:** لم يُتحقق من موافقة توقف حمل العمل الجاري الأصلية (تتطلبها الآن كل عملية نقل جارية حسب ADR-0155)، أو تبديلات الإلغاء/إعادة التخطيط والانقطاع، أو المضيفين المستقلين ماديًا ومفاتيح المرور المادية وإخلاء Ubuntu والطرح الإنتاجي."
 
 #: lib/marshall/documentation_messages.ex:1821
 #, elixir-autogen, elixir-format
@@ -4697,17 +4697,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1837
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No NixOS machine test drives a pin over a live Porsche SSH session or in the packaged browser; cross-node pin/delete races are argued from the shared VM row lock, not observed; team-admin pinning is undecided."
-msgstr ""
+msgstr "**الثغرات:** لا ينفذ اختبار آلة NixOS التثبيت عبر جلسة Porsche SSH حية أو في المتصفح المحزم؛ يُستدل على سباقات التثبيت/الحذف عبر العقد من قفل صف VM المشترك دون مشاهدتها؛ لم يُحسم تثبيت مسؤول الفريق."
 
 #: lib/marshall/documentation_messages.ex:1841
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No NixOS machine test drives the profile page or the browser connect param in the packaged browser; local-time lines inside LiveView streams refresh on re-read, not on the minute tick; the browser probe inherits pre-existing off-grid and thread appearance failures."
-msgstr ""
+msgstr "**الثغرات:** لا يقود اختبار آلة NixOS صفحة الملف أو معلمة اتصال المتصفح في المتصفح المحزم؛ تتحدث أسطر التوقيت المحلي داخل تدفقات LiveView عند إعادة القراءة لا عند نبضة الدقيقة؛ يرث مسبار المتصفح إخفاقات الشبكة ومظهر الخيوط السابقة."
 
 #: lib/marshall/documentation_messages.ex:1845
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No complete NixOS/browser journey through a pending/failed guest is recorded for this correction yet. Reading sparse serial output does not identify the failed guest stage, install guest agents or prove native readiness, isolation or recovery."
-msgstr ""
+msgstr "**الثغرات:** لم تُسجل بعد رحلة NixOS/متصفح كاملة عبر ضيف معلق/فاشل لهذا التصحيح. لا تحدد قراءة المخرجات التسلسلية المتناثرة مرحلة فشل الضيف ولا تثبت عوامل الضيف أو الجاهزية الأصلية أو العزل أو التعافي."
 
 #: lib/marshall/documentation_messages.ex:1849
 #, elixir-autogen, elixir-format
@@ -4732,7 +4732,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1865
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No generic automated reconciliation makes a historical database authoritative for surviving guests; physical replacement GUID adoption needs operator reconciliation."
-msgstr ""
+msgstr "**الثغرات:** لا تجعل تسوية آلية عامة قاعدة بيانات تاريخية مرجعًا موثوقًا للضيوف الباقين؛ يتطلب تبني GUID البديل المادي تسوية من المشغل."
 
 #: lib/marshall/documentation_messages.ex:1869
 #, elixir-autogen, elixir-format
@@ -4747,12 +4747,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1877
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No native guest detachment, independent-node partitions, production scheduler bound or hosted Antithesis acceptance. Both original TLS deadline defects reproduced and restored fork properties passed; complete integrated/full Marshall gates and typing remain pending."
-msgstr ""
+msgstr "**الثغرات:** لا يوجد فصل أصلي للضيف أو تقسيم عقد مستقلة أو حد للمجدول الإنتاجي أو قبول Antithesis مستضاف. أُعيد إنتاج عيبي مهلة TLS الأصليين ونجحت خصائص التفرع المستعادة؛ بوابات Marshall المتكاملة/الكاملة وفحص الأنواع معلقة."
 
 #: lib/marshall/documentation_messages.ex:1881
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No native guest survival, physical channel custody, independent-node partition or hosted acceptance. Wrong-budget-PID mutant was caught at old owner retirement and restored four-check execution passed; full Marshall gate/typing remain pending."
-msgstr ""
+msgstr "**الثغرات:** لا يوجد بقاء أصلي للضيف أو حيازة مادية للقناة أو تقسيم عقد مستقلة أو قبول مستضاف. كُشف متحول PID الميزانية الخاطئ عند تقاعد المالك القديم ونجح تنفيذ الفحوص الأربعة المستعاد؛ بوابة Marshall الكاملة/فحص الأنواع معلقان."
 
 #: lib/marshall/documentation_messages.ex:1885
 #, elixir-autogen, elixir-format
@@ -4762,52 +4762,52 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1889
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No packaged invalid systemd startup, configured TLS serving, native isolation, concurrent file replacement, hosted configuration faults or remaining component boot validators."
-msgstr ""
+msgstr "**الثغرات:** لا يوجد بدء systemd غير صالح محزم أو تقديم TLS مهيأ أو عزل أصلي أو استبدال ملفات متزامن أو أعطال تكوين مستضافة أو مدققات إقلاع المكونات المتبقية."
 
 #: lib/marshall/documentation_messages.ex:1893
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No packaged invalid systemd startup, configured transparent serving, native interception, guest trust, ZFS/isolation, concurrent file replacement, hosted config faults or Porsche/Marshall boot validators."
-msgstr ""
+msgstr "**الثغرات:** لا يوجد بدء systemd غير صالح محزم أو تقديم شفاف مهيأ أو اعتراض أصلي أو ثقة ضيف أو ZFS/عزل أو استبدال ملفات متزامن أو أعطال تكوين مستضافة أو مدققات إقلاع Porsche/Marshall."
 
 #: lib/marshall/documentation_messages.ex:1897
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No packaged systemd or successful configured startup, concurrent file replacement, native host/isolation effects, other application boot validators or hosted configuration faults."
-msgstr ""
+msgstr "**الثغرات:** لا يوجد systemd محزم أو بدء مهيأ ناجح أو استبدال ملفات متزامن أو آثار مضيف/عزل أصلية أو مدققات إقلاع تطبيقات أخرى أو أعطال تكوين مستضافة."
 
 #: lib/marshall/documentation_messages.ex:1901
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No packaged systemd startup, successful configured serving, native guest isolation, concurrent file replacement, hosted configuration faults or remaining component boot validators."
-msgstr ""
+msgstr "**الثغرات:** لا يوجد بدء systemd محزم أو تقديم مهيأ ناجح أو عزل ضيف أصلي أو استبدال ملفات متزامن أو أعطال تكوين مستضافة أو مدققات إقلاع المكونات المتبقية."
 
 #: lib/marshall/documentation_messages.ex:1905
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No packaged systemd startup, successful configured serving, native network/isolation, concurrent file replacement, hosted configuration faults or other components boot validators."
-msgstr ""
+msgstr "**الثغرات:** لا يوجد بدء systemd محزم أو تقديم مهيأ ناجح أو شبكة/عزل أصليان أو استبدال ملفات متزامن أو أعطال تكوين مستضافة أو مدققات إقلاع المكونات الأخرى."
 
 #: lib/marshall/documentation_messages.ex:1909
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No physical power-loss durability, KVM/Firecracker behavior, production reverse-path validation, real guest attribution, composed container startup or hosted Antithesis baseline. Preferred native machine/property coverage remains separate."
-msgstr ""
+msgstr "**الثغرات:** لا توجد متانة عند انقطاع الطاقة المادي أو سلوك KVM/Firecracker أو تحقق إنتاجي للمسار العكسي أو نسبة حقيقية للضيف أو بدء حاويات مركب أو خط أساس Antithesis مستضاف. تبقى تغطية الآلات/الخصائص الأصلية المفضلة منفصلة."
 
 #: lib/marshall/documentation_messages.ex:1913
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No recorded hosted peer execution, independent Marshall/Lilly integration, fault campaign or native guest proof. Preferred property and machine tests for the real service graph remain separate."
-msgstr ""
+msgstr "**الثغرات:** لا يوجد تنفيذ نظير مستضاف مسجل أو تكامل Marshall/Lilly مستقل أو حملة أعطال أو إثبات ضيف أصلي. تظل اختبارات الخصائص والآلات المفضلة لرسم الخدمات الحقيقي منفصلة."
 
 #: lib/marshall/documentation_messages.ex:1917
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No recorded native signed/tampered dependency or WEB-gallery install through the complete workbench here. Production Open VSX key rotation, outage and coordinated image/gateway rollout remain separate."
-msgstr ""
+msgstr "**الثغرات:** لا يوجد تثبيت أصلي مسجل لاعتماد موقع/متلاعب به أو WEB-gallery عبر workbench الكامل هنا. يظل تدوير مفاتيح Open VSX الإنتاجي والانقطاع والطرح المنسق للصورة/البوابة منفصلًا."
 
 #: lib/marshall/documentation_messages.ex:1921
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No recorded physical host/guest run demonstrates a Cachix hit or outage fallback. Cache freshness, availability and deployment convergence remain unverified."
-msgstr ""
+msgstr "**الثغرات:** لا يبرهن تشغيل مادي مسجل للمضيف/الضيف على إصابة Cachix أو الرجوع عند الانقطاع. لم يُتحقق من حداثة الذاكرة المخبأة وتوافرها وتقارب النشر."
 
 #: lib/marshall/documentation_messages.ex:1925
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** No repeated/racing reset stress, malformed DMA, DMA reclamation or physical/multi-host safety. The single OmniOS event establishes socket fencing, separately from service restoration and exact-image promotion."
-msgstr ""
+msgstr "**الثغرات:** لا يوجد إجهاد إعادة ضبط متكررة/متسابقة أو DMA مشوه أو استرداد DMA أو أمان مادي/متعدد المضيفين. يثبت حدث OmniOS الواحد تسييج المقبس، منفصلًا عن استعادة الخدمة وترقية الصورة الدقيقة."
 
 #: lib/marshall/documentation_messages.ex:1929
 #, elixir-autogen, elixir-format
@@ -4827,17 +4827,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1941
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Packaged TLS, native Git resource consumption, physical cache quota and durable Marshall overload-retry composition remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زالت TLS المحزمة واستهلاك موارد Git الأصلي وحصة الذاكرة المخبأة المادية وتركيبة إعادة محاولة الحمل الزائد الدائمة في Marshall مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:1945
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Packaged invalid startup, configured SSH and host-certificate serving, native isolation, concurrent file replacement, hosted faults and Marshall fresh boots remain untested."
-msgstr ""
+msgstr "**الثغرات:** لم يُختبر البدء غير الصالح المحزم وتقديم SSH وشهادات المضيف المهيأ والعزل الأصلي واستبدال الملفات المتزامن والأعطال المستضافة وإقلاع Marshall الجديد."
 
 #: lib/marshall/documentation_messages.ex:1949
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Packaged service-cgroup restart and escaped-session cleanup, authenticated remote Git pressure, physical cache quota and durable Marshall retry composition remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زالت إعادة تشغيل cgroup الخدمة المحزمة وتنظيف الجلسات الهاربة وضغط Git البعيد الموثق وحصة الذاكرة المخبأة المادية وتركيبة إعادة المحاولة الدائمة في Marshall مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:1953
 #, elixir-autogen, elixir-format
@@ -4852,12 +4852,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1961
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Power-loss recovery, native Firecracker provider-to-collector delivery, production collection and measured targets remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زال التعافي من انقطاع الطاقة والتسليم الأصلي من مزود Firecracker إلى الجامع والجمع الإنتاجي والأهداف المقاسة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:1965
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Process-crash counter recovery, binding changes during streaming and measured targets remain open. The production sample does not establish an authorized end-to-end user outcome."
-msgstr ""
+msgstr "**الثغرات:** ما زال تعافي عداد انهيار العملية وتغير الربط أثناء التدفق والأهداف المقاسة مفتوحًا. لا تثبت العينة الإنتاجية نتيجة مستخدم مصرحًا بها من البداية إلى النهاية."
 
 #: lib/marshall/documentation_messages.ex:1969
 #, elixir-autogen, elixir-format
@@ -4867,17 +4867,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1973
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Production destination, external receipt and independent central-host failure monitoring remain unverified."
-msgstr ""
+msgstr "**الثغرات:** لم يُتحقق من الوجهة الإنتاجية والاستلام الخارجي والمراقبة المستقلة لفشل المضيف المركزي."
 
 #: lib/marshall/documentation_messages.ex:1977
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Production operator browser rendering, complete production seven-day observation, other sources' durable crash accounting and final target selection remain open. Authenticated loopback API provisioning is verified. Provisional burn warnings have no notification route."
-msgstr ""
+msgstr "**الثغرات:** ما زال عرض متصفح المشغل الإنتاجي والملاحظة الإنتاجية الكاملة لسبعة أيام ومحاسبة الانهيارات الدائمة للمصادر الأخرى واختيار الهدف النهائي مفتوحة. جرى التحقق من التهيئة عبر API حلقة رجوع موثقة. لا مسار إخطار لتحذيرات الاحتراق المؤقتة."
 
 #: lib/marshall/documentation_messages.ex:1981
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Production operator rendering and 28-day baseline remain open; candidate source durations have different workflow boundaries and may omit failures with unknown duration."
-msgstr ""
+msgstr "**الثغرات:** ما زال عرض المشغل الإنتاجي وخط الأساس لـ28 يومًا مفتوحين؛ تختلف حدود سير العمل لمدد المصادر المرشحة وقد تُحذف إخفاقات مجهولة المدة."
 
 #: lib/marshall/documentation_messages.ex:1985
 #, elixir-autogen, elixir-format
@@ -4887,7 +4887,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1993
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Production-built release startup, required production secret/TLS/mail/budget faults, other optional integrations, packaged and configured serving, concurrent file replacement and hosted faults remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زال بدء الإصدار المبني للإنتاج وأعطال الأسرار/TLS/البريد/الميزانية الإنتاجية المطلوبة والتكاملات الاختيارية الأخرى والتقديم المحزم والمهيأ واستبدال الملفات المتزامن والأعطال المستضافة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:1997
 #, elixir-autogen, elixir-format
@@ -4897,7 +4897,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2001
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Public production activation remains pending; no Marshall single sign-on or external notification delivery. Generated Nix cases are not a randomized application property framework."
-msgstr ""
+msgstr "**الثغرات:** يظل التنشيط الإنتاجي العام معلقًا؛ لا تسجيل دخول موحد في Marshall أو تسليم إخطار خارجي. حالات Nix المولدة ليست إطار خصائص تطبيق عشوائيًا."
 
 #: lib/marshall/documentation_messages.ex:2005
 #, elixir-autogen, elixir-format
@@ -4907,22 +4907,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2009
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Pure byte checks do not prove authenticated vsock, PTY backpressure, shared session budgets or browser delivery."
-msgstr ""
+msgstr "**الثغرات:** لا تثبت فحوص البايتات البحتة vsock الموثق أو الضغط العكسي لـPTY أو ميزانيات الجلسات المشتركة أو التسليم إلى المتصفح."
 
 #: lib/marshall/documentation_messages.ex:2013
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Real external operator login, certificate rotation, production activation and effective retention require deployment acceptance. No notification delivery is implied."
-msgstr ""
+msgstr "**الثغرات:** يتطلب تسجيل المشغل الخارجي الحقيقي وتدوير الشهادات والتنشيط الإنتاجي والاحتفاظ الفعلي قبول النشر. لا يُفهم منه تسليم الإخطارات."
 
 #: lib/marshall/documentation_messages.ex:2017
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Real remote TLS, packaged recovery, physical cache quota, aggregate active admission and hosted faults remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زال TLS البعيد الحقيقي والتعافي المحزم وحصة الذاكرة المخبأة المادية والقبول النشط الإجمالي والأعطال المستضافة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:2021
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Resize/growth, actual PTY aggregate mixed-pressure admission, viewer-stream byte ordering, RSS and authenticated guest/hosted composition remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زال تغيير الحجم/النمو والقبول الفعلي الإجمالي لـPTY بضغط مختلط وترتيب بايتات تدفق المشاهد وRSS وتركيبة الضيف/الاستضافة الموثقة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:2025
 #, elixir-autogen, elixir-format
@@ -4942,7 +4942,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2037
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Simultaneous mixed stalled/healthy growth and admission, RSS, authenticated vsock/VM/browser composition and hosted faults remain open."
-msgstr ""
+msgstr "**الثغرات:** ما زال النمو والقبول المتزامنان بمزيج متعطل/سليم وRSS وتركيبة vsock/VM/المتصفح الموثقة والأعطال المستضافة مفتوحة."
 
 #: lib/marshall/documentation_messages.ex:2041
 #, elixir-autogen, elixir-format
@@ -4952,12 +4952,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2045
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** The NixOS browser tests, the passkey probe and the Antithesis access workload were rewritten to /settings by inspection and have not been executed against the merged page; no property test fits a page composition."
-msgstr ""
+msgstr "**الثغرات:** أُعيدت كتابة اختبارات متصفح NixOS ومسبار مفتاح المرور وحمل الوصول Antithesis إلى /settings بالفحص ولم تُنفذ على الصفحة المدمجة؛ لا يلائم اختبار خصائص تركيب صفحة."
 
 #: lib/marshall/documentation_messages.ex:2049
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** The bounded 100-millisecond polling watch does not establish continuous-time absence of every transient ready reply or the exact fifteen-second boundary. Physical hosts, updater generation promotion, individual gate faults and hosted Antithesis remain unverified."
-msgstr ""
+msgstr "**الثغرات:** لا تثبت مراقبة الاقتراع المحدودة إلى100 ملي ثانية الغياب المستمر لكل رد ready عابر أو الحد الدقيق لخمس عشرة ثانية. لم يُتحقق من المضيفين الماديين وترقية جيل المحدث وأعطال البوابات الفردية وAntithesis المستضاف."
 
 #: lib/marshall/documentation_messages.ex:2053
 #, elixir-autogen, elixir-format
@@ -5007,12 +5007,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2089
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** The full native Brady fleet gate still fails in restart recovery; native malformed-request refusal through the collector and an independent production baseline remain absent. No compliance rule consumes this candidate series."
-msgstr ""
+msgstr "**الثغرات:** لا تزال بوابة أسطول Brady الأصلية الكاملة تفشل في تعافي إعادة التشغيل؛ يغيب الرفض الأصلي للطلبات المشوهة عبر الجامع وخط أساس إنتاجي مستقل. لا تستخدم أي قاعدة امتثال سلسلة المرشح هذه."
 
 #: lib/marshall/documentation_messages.ex:2093
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** The lock-wait race has no regression test because the reset check interval is not injectable; no NixOS test drives saturation and no live provider throttling observation covers this revision."
-msgstr ""
+msgstr "**الثغرات:** لا اختبار انحدار لسباق انتظار القفل لأن فترة فحص إعادة الضبط غير قابلة للحقن؛ لا يدفع اختبار NixOS التشبع ولا تغطي هذا التنقيح ملاحظة خنق مزود حي."
 
 #: lib/marshall/documentation_messages.ex:2097
 #, elixir-autogen, elixir-format
@@ -5027,12 +5027,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2109
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** The packaged authenticated two-host collector/spool outage and fresh transition-delivery journey passes in disposable machines. Physical host power loss, measured production archive sizing and coordinated deployment acceptance remain open."
-msgstr ""
+msgstr "**الثغرات:** تنجح رحلة انقطاع الجامع/التخزين المؤقت الموثقة المحزمة بين مضيفين وتسليم الانتقال الجديد في آلات مؤقتة. ما زال انقطاع الطاقة المادي للمضيف وحجم الأرشيف الإنتاجي المقاس وقبول النشر المنسق مفتوحًا."
 
 #: lib/marshall/documentation_messages.ex:2113
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** The process fixture does not run every real SDK producer in systemd or establish retained health through host restart. Generated producer/normalizer shape histories and a complete eight-service NixOS health journey remain absent."
-msgstr ""
+msgstr "**الثغرات:** لا يشغل تجهيز العملية كل منتج SDK حقيقي في systemd ولا يثبت استمرار الصحة عبر إعادة تشغيل المضيف. تغيب سجلات أشكال المنتج/المطبع المولدة ورحلة صحة NixOS كاملة للخدمات الثماني."
 
 #: lib/marshall/documentation_messages.ex:2117
 #, elixir-autogen, elixir-format
@@ -5072,7 +5072,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2145
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Two properties passed2.3seconds,seed0. Oracle mutation, complete consumer gates, independent committed-replica ordering, native gateway rollout and hosted exploration remain unverified."
-msgstr ""
+msgstr "**الثغرات:** نجحت خاصيتان خلال2.3ثانية،seed0. لم يُتحقق من طفرة المرجع وبوابات المستهلك الكاملة وترتيب النسخ المستقلة المثبتة وطرح البوابة الأصلي والاستكشاف المستضاف."
 
 #: lib/marshall/documentation_messages.ex:2149
 #, elixir-autogen, elixir-format
@@ -5082,7 +5082,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2157
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Unexported crash accounting, client-side resolution, complete gateway outcomes and measured targets remain open. The production sample proves only observed authoritative source collection."
-msgstr ""
+msgstr "**الثغرات:** ما زالت محاسبة الانهيار غير المصدرة والحل من جانب العميل ونتائج البوابة الكاملة والأهداف المقاسة مفتوحة. لا تثبت العينة الإنتاجية سوى جمع المصدر الموثوق الملحوظ."
 
 #: lib/marshall/documentation_messages.ex:2161
 #, elixir-autogen, elixir-format
@@ -5112,12 +5112,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2181
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** A dedicated host-effects-custody machine test for wrong-peer refusal, BEAM SIGKILL mid-command and escaped descendants under cgroup custody."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** اختبار آلة مخصص لـ host-effects-custody لرفض النظير الخاطئ وBEAM SIGKILL أثناء الأمر والذرية الهاربة تحت حيازة cgroup."
 
 #: lib/marshall/documentation_messages.ex:2185
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Activate the coordinated fleet packages and verify an external authenticated operator's dashboards, freshness and source-to-trace/log correlation."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** فعّل حزم الأسطول المنسقة وتحقق من لوحات مشغل خارجي موثق وحداثتها وربط المصدر بالتتبع/السجل."
 
 #: lib/marshall/documentation_messages.ex:2189
 #, elixir-autogen, elixir-format
@@ -5132,17 +5132,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2197
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add a direct second native VM/TAP, jail and physical-host boundaries without transferring the Linux-sink policy result to those scopes."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف حدود VM/TAP أصلية ثانية مباشرة والسجن والمضيف المادي دون نقل نتيجة سياسة مصرف Linux إلى تلك النطاقات."
 
 #: lib/marshall/documentation_messages.ex:2201
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add a native Porsche journey that pins, is refused rm, unpins and deletes, and a packaged-browser toggle check; keep the generated BEAM histories as the model oracle."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف رحلة Porsche أصلية تثبت وتُرفض فيها rm ثم تلغي التثبيت وتحذف، وفحص تبديل بالمتصفح المحزم؛ أبق سجلات BEAM المولدة مرجع النموذج."
 
 #: lib/marshall/documentation_messages.ex:2205
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add a packaged-browser machine check that saves a zone, reloads and reads a converted timestamp, and a cross-session check that a collaborator sees the saved local time."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف فحص آلة بالمتصفح المحزم يحفظ منطقة زمنية ويعيد التحميل ويقرأ طابعًا زمنيًا محولًا، وفحصًا عبر الجلسات يثبت رؤية المتعاون للوقت المحلي المحفوظ."
 
 #: lib/marshall/documentation_messages.ex:2209
 #, elixir-autogen, elixir-format
@@ -5152,7 +5152,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2213
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add actual production-build bootstrap and packaged machine refusal before claiming the production guard boundary; local common runtime checks do not establish serving or native recovery."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف إقلاع بناء إنتاجي فعلي ورفض آلة محزمة قبل ادعاء حدود الحارس الإنتاجي؛ لا تثبت فحوص وقت التشغيل المحلية المشتركة التقديم أو التعافي الأصلي."
 
 #: lib/marshall/documentation_messages.ex:2217
 #, elixir-autogen, elixir-format
@@ -5162,42 +5162,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2221
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add an integrated faulted Marshall acknowledgement and reporter recovery property, then exercise native provider-independent spool restart and retained usage accounting."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف خاصية متكاملة لإقرار Marshall المعطل وتعافي المبلغ، ثم اختبر إعادة تشغيل التخزين المؤقت الأصلية المستقلة عن المزود ومحاسبة الاستخدام المحتفظ به."
 
 #: lib/marshall/documentation_messages.ex:2225
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add and execute generated source/operation histories plus native Linux/Windows install/update/remove/reopen journeys using public-repository fixtures, exact digest assertions, mid-operation guest loss and current-authority withdrawal."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف ونفذ سجلات المصدر/العمليات المولدة ورحلات تثبيت/تحديث/إزالة/إعادة فتح Linux/Windows الأصلية بتجهيزات مستودعات عامة وتأكيدات تجزئة دقيقة وفقد الضيف أثناء العملية وسحب السلطة الحالية."
 
 #: lib/marshall/documentation_messages.ex:2229
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add authenticated NixOS guest mixed-viewer pressure and independent reservation/backing refusal through the real terminal authority path."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف ضغط المشاهدين المختلط على ضيف NixOS موثق ورفض حجز/تخزين داعم مستقلًا عبر مسار سلطة الطرفية الحقيقي."
 
 #: lib/marshall/documentation_messages.ex:2233
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add authenticated socket credential-rotation histories and native gateway evidence; finish full integrated gates."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف سجلات تدوير اعتماد المقبس الموثقة وأدلة البوابة الأصلية؛ أكمل البوابات المتكاملة الكاملة."
 
 #: lib/marshall/documentation_messages.ex:2237
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add boot-authenticated guest admission with mixed ring growth and slow viewers; measure aggregate retired allocations independently of reservation counters."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف قبول ضيف موثق بالإقلاع بنمو حلقة مختلط ومشاهدين بطيئين؛ قس إجمالي التخصيصات المتقاعدة مستقلًا عن عدادات الحجز."
 
 #: lib/marshall/documentation_messages.ex:2241
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add bounded overload/refusal/retry and packaged authenticated Git/cache-pressure histories."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف سجلات محدودة للحمل الزائد/الرفض/إعادة المحاولة وضغط Git/الذاكرة المخبأة الموثق المحزم."
 
 #: lib/marshall/documentation_messages.ex:2245
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add concurrent growth/admission under mixed native viewer pressure, then authenticated NixOS guest accounting and refusal."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف نموًا/قبولًا متزامنًا تحت ضغط مشاهدين أصلي مختلط، ثم محاسبة ورفض ضيف NixOS موثق."
 
 #: lib/marshall/documentation_messages.ex:2249
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add generated closed-shape histories and a NixOS journey using all actual SDK producers with trace intake unavailable, exact trusted identities and recovery; retain malformed and foreign-message refusals."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف سجلات أشكال مغلقة مولدة ورحلة NixOS بكل منتجي SDK الفعليين مع تعطل استقبال التتبع والهويات الموثوقة الدقيقة والتعافي؛ أبق رفض الرسائل المشوهة والغريبة."
 
 #: lib/marshall/documentation_messages.ex:2253
 #, elixir-autogen, elixir-format
@@ -5207,92 +5207,92 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2257
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add generated negotiation and isolation properties, complete catalog checks, LTR/RTL browser journeys and a packaged NixOS account-language/Porsche journey; record exact outcomes."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف خصائص تفاوض وعزل مولدة وفحوص فهارس كاملة ورحلات متصفح LTR/RTL ورحلة لغة حساب/Porsche في NixOS محزم؛ سجل النتائج الدقيقة."
 
 #: lib/marshall/documentation_messages.ex:2261
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add hardware-authenticator and independent-host credential acceptance in their required environments."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف قبول بيانات اعتماد أجهزة المصادقة والمضيفين المستقلين في بيئاتهم المطلوبة."
 
 #: lib/marshall/documentation_messages.ex:2265
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add native authenticated viewer pressure and shared-budget histories across guest lifetime boundaries."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف ضغط مشاهدين أصليًا موثقًا وسجلات ميزانية مشتركة عبر حدود عمر الضيف."
 
 #: lib/marshall/documentation_messages.ex:2269
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add native foreign/corrupt ownership refusal against the confined running-boot adoption boundary."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف رفض الملكية الأجنبية/التالفة الأصلي عند حدود تبني الإقلاع الجاري المحصور."
 
 #: lib/marshall/documentation_messages.ex:2273
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add native gateway readiness/expiry histories and execute actual public DNS/TLS discovery in both editor fleet checks; the corrected merged NixOS physical-ready journey does not establish multi-gateway publication fault histories."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف سجلات جاهزية/انتهاء البوابة الأصلية ونفذ اكتشاف DNS/TLS العام الفعلي في فحصي أسطول المحرر؛ لا تثبت رحلة جاهزية NixOS المادية المدمجة المصححة سجلات أعطال نشر متعدد البوابات."
 
 #: lib/marshall/documentation_messages.ex:2277
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add native growth/timekeeping and independent-host recovery evidence, then run the Marshall-driven multi-OS fleet journey."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف أدلة النمو/ضبط الوقت الأصلي وتعافي المضيف المستقل، ثم شغل رحلة الأسطول متعددة الأنظمة التي يقودها Marshall."
 
 #: lib/marshall/documentation_messages.ex:2281
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add native unauthorized creation and owner guest-SSH cases; retain separate packet/tool and complete legacy feature-matrix acceptance after campaign 011's shared trust fixture repair."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف حالات إنشاء غير مصرح أصلي وSSH ضيف المالك؛ أبق قبول الحزم/الأدوات ومصفوفة الميزات القديمة الكاملة منفصلًا بعد إصلاح تجهيز الثقة المشترك في الحملة 011."
 
 #: lib/marshall/documentation_messages.ex:2285
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add nested-KVM Arch/Alma and generated authority/refusal histories covering current roster revocation, guest capabilities, network guard, storage growth and recovery; preserve the recorded live SSH/lifecycle scope separately."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف Arch/Alma بـKVM متداخل وسجلات سلطة/رفض مولدة تغطي إلغاء القائمة الحالية وقدرات الضيف وحارس الشبكة ونمو التخزين والتعافي؛ احفظ نطاق SSH/دورة الحياة الحي المسجل منفصلًا."
 
 #: lib/marshall/documentation_messages.ex:2289
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged authenticated overload and real Marshall retry histories with native resource and quota witnesses."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف سجلات حمل زائد موثق محزم وإعادة محاولة Marshall حقيقية مع شواهد موارد وحصص أصلية."
 
 #: lib/marshall/documentation_messages.ex:2293
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged gateway refusal while a real readiness job is active and verify health remains refused until operator restart."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف رفض بوابة محزمة أثناء نشاط مهمة جاهزية حقيقية وتحقق من استمرار رفض الصحة حتى إعادة تشغيل المشغل."
 
 #: lib/marshall/documentation_messages.ex:2297
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged machine startup and real certificate/Marshall account approval and authorized HTTPS management journeys; local scripted pending authority does not establish domain authorization."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف بدء آلة محزمة ورحلات شهادة حقيقية/موافقة حساب Marshall وإدارة HTTPS مصرح بها؛ لا تثبت السلطة المعلقة المحلية المكتوبة نصيًا تفويض النطاق."
 
 #: lib/marshall/documentation_messages.ex:2301
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native invalid schema/signer refusal and remaining component boot properties; local startup refusal does not establish guest traffic interception or native storage custody."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف رفض مخطط/موقع غير صالح أصلي محزم وخصائص إقلاع المكونات المتبقية؛ لا يثبت رفض البدء المحلي اعتراض مرور الضيف أو حيازة التخزين الأصلية."
 
 #: lib/marshall/documentation_messages.ex:2305
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native invalid-startup refusal and remaining component boot properties; regular synthetic certificate/key baseline files do not establish successful TLS serving."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف رفض بدء غير صالح أصلي محزم وخصائص إقلاع المكونات المتبقية؛ لا تثبت ملفات أساس شهادة/مفتاح اصطناعية عادية تقديم TLS ناجحًا."
 
 #: lib/marshall/documentation_messages.ex:2309
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native refusal and real disposable host-certificate startup properties; local loader custody does not establish configured serving."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف رفضًا أصليًا محزمًا وخصائص بدء شهادة مضيف مؤقت حقيقية؛ لا تثبت حيازة المحمل المحلية التقديم المهيأ."
 
 #: lib/marshall/documentation_messages.ex:2313
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native startup/refusal and equivalent generated fresh-boot properties for remaining applications; local process checks do not establish native execution."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف بدءًا/رفضًا أصليًا محزمًا وخصائص إقلاع جديد مولدة مكافئة للتطبيقات المتبقية؛ لا تثبت فحوص العملية المحلية التنفيذ الأصلي."
 
 #: lib/marshall/documentation_messages.ex:2317
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native startup/refusal and remaining application boot properties; fresh test-build process rejection does not establish native serving or guest isolation."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف بدءًا/رفضًا أصليًا محزمًا وخصائص إقلاع التطبيقات المتبقية؛ لا يثبت رفض عملية بناء اختباري جديد التقديم الأصلي أو عزل الضيف."
 
 #: lib/marshall/documentation_messages.ex:2321
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native startup/refusal and remaining component boot properties; local refusal does not establish native integration transport or guest isolation."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف بدءًا/رفضًا أصليًا محزمًا وخصائص إقلاع المكونات المتبقية؛ لا يثبت الرفض المحلي نقل التكامل الأصلي أو عزل الضيف."
 
 #: lib/marshall/documentation_messages.ex:2325
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add packaged native startup/refusal and remaining component fresh-boot properties. Test-build refusal does not establish native provider transport or guest isolation."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف بدءًا/رفضًا أصليًا محزمًا وخصائص إقلاع جديد للمكونات المتبقية. لا يثبت رفض البناء الاختباري نقل المزود الأصلي أو عزل الضيف."
 
 #: lib/marshall/documentation_messages.ex:2329
 #, elixir-autogen, elixir-format
@@ -5307,7 +5307,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2337
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add real guest PTY growth and concurrent admission with independent aggregate backing measurements and mixed stalled/healthy viewers."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف نمو PTY ضيف حقيقي وقبولًا متزامنًا بقياسات مستقلة لإجمالي التخزين الداعم ومزيج مشاهدين متعطلين/أصحاء."
 
 #: lib/marshall/documentation_messages.ex:2341
 #, elixir-autogen, elixir-format
@@ -5317,22 +5317,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2345
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add relocation destination retry/cancellation measurement acceptance and verify fresh production creation without resetting retained failures."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف قبول قياس إعادة محاولة/إلغاء وجهة النقل وتحقق من إنشاء إنتاجي جديد دون تصفير الإخفاقات المحتفظ بها."
 
 #: lib/marshall/documentation_messages.ex:2349
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add repeated/racing events and independently bounded DMA/lifetime fault scenarios; retain separate service-restoration and physical-safety evidence."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف أحداثًا متكررة/متسابقة وسيناريوهات أعطال DMA/عمر محدودة مستقلًا؛ أبق أدلة استعادة الخدمة والسلامة المادية منفصلة."
 
 #: lib/marshall/documentation_messages.ex:2353
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Add the Marshall-driven multi-OS fleet journey and record WSL 2, timekeeping and SAC security evidence; retain the operator-only boundary for this scenario."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أضف رحلة أسطول متعددة الأنظمة يقودها Marshall وسجل أدلة WSL 2 وضبط الوقت وأمن SAC؛ أبق حدود المشغل فقط لهذا السيناريو."
 
 #: lib/marshall/documentation_messages.ex:2357
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Assert exact signed-in browser response export through the collector, then measure the live baseline before selecting a target; retain the passing native recorder/application-loss conservation oracles."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أكد تصدير استجابة المتصفح المسجل دخوله الدقيقة عبر الجامع، ثم قس خط الأساس الحي قبل اختيار هدف؛ أبق مراجع الحفظ الناجحة لفقد المسجل/التطبيق الأصليين."
 
 #: lib/marshall/documentation_messages.ex:2361
 #, elixir-autogen, elixir-format
@@ -5347,12 +5347,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2369
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Both preferred forms have recorded execution for this functional scope. Add bounded capture-cost/load measurements before claiming throughput; physical-host and rollout acceptance remain separate."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** للصيغتين المفضلتين تنفيذ مسجل لهذا النطاق الوظيفي. أضف قياسات محدودة لكلفة الالتقاط/الحمل قبل ادعاء معدل النقل؛ يظل قبول المضيف المادي والطرح منفصلًا."
 
 #: lib/marshall/documentation_messages.ex:2373
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Build a NixOS multi-host restore scenario and a property model of post-backup revocations before enabling automated reactivation."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** ابن سيناريو استعادة NixOS متعدد المضيفين ونموذج خصائص للإلغاءات اللاحقة للنسخ الاحتياطي قبل تمكين إعادة التنشيط الآلية."
 
 #: lib/marshall/documentation_messages.ex:2377
 #, elixir-autogen, elixir-format
@@ -5372,152 +5372,152 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2389
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Drive authorized native vsock kill with real guest PTY saturation and independently verify current execution fencing and memory accounting."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** نفذ قتل vsock أصليًا مصرحًا مع تشبع PTY ضيف حقيقي وتحقق مستقلًا من تسييج التنفيذ الحالي ومحاسبة الذاكرة."
 
 #: lib/marshall/documentation_messages.ex:2393
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Enforce the accepted completion-wait bound with a scoped timeout regression, record boot reports from fleet NixOS and Ubuntu creates after deployment, and add an issued-leaf TLS check to the rotation journey."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** افرض حد انتظار الإكمال المقبول باختبار انحدار مهلة محدد النطاق، وسجل تقارير إقلاع إنشاءات NixOS وUbuntu بالأسطول بعد النشر، وأضف فحص TLS للورقة المصدرة إلى رحلة التدوير."
 
 #: lib/marshall/documentation_messages.ex:2397
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Execute a NixOS and Ubuntu browser/guest journey with valid plus and numeric-leading mailboxes, equal local parts on different domains and retired reservations; retain generated UID-name and email-history properties."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** نفذ رحلة متصفح/ضيف NixOS وUbuntu بصناديق بريد صالحة بعلامة زائد وبادئة رقمية وأجزاء محلية متساوية بنطاقات مختلفة وحجوزات متقاعدة؛ أبق خصائص اسم UID وسجل البريد المولدة."
 
 #: lib/marshall/documentation_messages.ex:2401
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Execute generated SQL checkpoint/replay histories and a NixOS Marshall-to-Ziggy-to-provider-fixture-to-guest continuation including claim loss, stale completion and repeated compaction; verify live native compaction separately before enabling it."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** نفذ سجلات SQL checkpoint/replay مولدة واستمرار NixOS Marshall-to-Ziggy-to-provider-fixture-to-guest بفقد المطالبة وإكمال قديم وضغط متكرر؛ تحقق من الضغط الأصلي الحي منفصلًا قبل تمكينه."
 
 #: lib/marshall/documentation_messages.ex:2405
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Execute generated file/chunk/parser histories and Linux/Windows native guest discovery through the full fenced control path, including changed content, oversized skills, duplicate identities and current-authority loss."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** نفذ سجلات ملف/قطعة/محلل مولدة واكتشاف ضيوف Linux/Windows الأصلي عبر مسار التحكم المسيج الكامل، بمحتوى متغير ومهارات ضخمة وهويات مكررة وفقد السلطة الحالية."
 
 #: lib/marshall/documentation_messages.ex:2409
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Execute the actual-TLS property, repair any reproduced classification mismatch and run full consumer gates before native Runtime/transfer acceptance."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** نفذ خاصية actual-TLS وأصلح أي عدم تطابق تصنيف معاد إنتاجه وشغل بوابات المستهلك كاملة قبل قبول Runtime/النقل الأصلي."
 
 #: lib/marshall/documentation_messages.ex:2413
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Execute the replacement independent-observability native and property scenarios; historical test receipts cannot establish the cutover. Current journeys are recorded in the independent-observability scenarios."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** نفذ سيناريوهات الخصائص والأصلية البديلة للرصد المستقل؛ لا تثبت إيصالات الاختبار التاريخية الانتقال. تُسجل الرحلات الحالية في سيناريوهات الرصد المستقل."
 
 #: lib/marshall/documentation_messages.ex:2417
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Execute the selected integrated guest adapter with measured ownership and capacity, add a NixOS machine journey and generated recovery properties, then record a separate hosted execution identity."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** نفذ محول الضيف المتكامل المحدد بملكية وسعة مقاستين وأضف رحلة آلة NixOS وخصائص تعاف مولدة، ثم سجل هوية تنفيذ مستضاف منفصلة."
 
 #: lib/marshall/documentation_messages.ex:2421
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Exercise Marshall-to-Enrico scheduling and manager restart under native NixOS, then verify live collection and measure the production baseline."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** اختبر جدولة Marshall-to-Enrico وإعادة تشغيل المدير في NixOS أصلي، ثم تحقق من الجمع الحي وقس خط الأساس الإنتاجي."
 
 #: lib/marshall/documentation_messages.ex:2425
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Exercise all eight application hooks under producer/recorder faults through actual source and collector paths; verify production lifetime continuity and seven-day eligibility."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** اختبر خطافات التطبيقات الثمانية تحت أعطال المنتج/المسجل عبر مسارات المصدر والجامع الفعلية؛ تحقق من استمرارية العمر الإنتاجي وأهلية سبعة أيام."
 
 #: lib/marshall/documentation_messages.ex:2429
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Exercise packaged reconnect histories against authenticated fleet sockets after incoming-main integration."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** اختبر سجلات إعادة الاتصال المحزمة على مقابس الأسطول الموثقة بعد دمج main الوارد."
 
 #: lib/marshall/documentation_messages.ex:2433
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Exercise shell-supervisor death with surviving children, then physical host failure and fleet recovery separately."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** اختبر موت مشرف الصدفة مع بقاء الأبناء، ثم فشل المضيف المادي وتعافي الأسطول منفصلين."
 
 #: lib/marshall/documentation_messages.ex:2437
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Exercise the full guest-to-Ziggy provider result and spool recovery with collector export under Firecracker, then measure the live baseline."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** اختبر نتيجة المزود الكاملة من الضيف إلى Ziggy وتعافي التخزين المؤقت مع تصدير الجامع تحت Firecracker، ثم قس خط الأساس الحي."
 
 #: lib/marshall/documentation_messages.ex:2441
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend live delivered-report boundary and independently faulted readiness gates, preserving separate updater, physical and hosted acceptance."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع حدود التقرير الحي المسلم وبوابات الجاهزية المعطلة مستقلًا، مع حفظ قبول المحدث والمادي والمستضاف منفصلًا."
 
 #: lib/marshall/documentation_messages.ex:2445
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend native recovery to Ubuntu failures and real guest-command drain; retain the recorded NixOS failure and historical two-distribution private successful-update scopes."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع التعافي الأصلي إلى إخفاقات Ubuntu وتصريف أوامر ضيف حقيقي؛ أبق فشل NixOS المسجل ونطاقي التحديث الخاص الناجح التاريخيين للتوزيعتين."
 
 #: lib/marshall/documentation_messages.ex:2449
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend property state models and native interruption cases together when lifecycle transitions change. Execute the replacement independent-observability native and property scenarios; historical test receipts cannot establish the cutover."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع نماذج حالة الخصائص وحالات الانقطاع الأصلية معًا عند تغير انتقالات دورة الحياة. نفذ سيناريوهات الخصائص والأصلية البديلة للرصد المستقل؛ لا تثبت إيصالات الاختبارات التاريخية الانتقال."
 
 #: lib/marshall/documentation_messages.ex:2453
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend recorded native completion recovery to full daemon/start interruption and marker-before-systemd-submission histories."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع تعافي الإكمال الأصلي المسجل إلى سجلات انقطاع العفريت/البدء الكامل والعلامة قبل الإرسال إلى systemd."
 
 #: lib/marshall/documentation_messages.ex:2457
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the Underclass NixOS service test with a controlled credit issuer; drive the reset route and CLI, check refusals, force and restart idempotency; run upstream reset fixtures."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع اختبار خدمة Underclass NixOS بجهة إصدار رصيد محكومة؛ نفذ مسار إعادة الضبط وCLI وافحص الرفض والتجاوز والتكرار الآمن بعد إعادة التشغيل؛ شغل تجهيزات إعادة الضبط المنبع."
 
 #: lib/marshall/documentation_messages.ex:2461
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the Underclass NixOS service test with a legacy database and controlled issuer; run upstream generated rotation-interval properties and recovery fixtures. Tests were skipped at the user's request."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع اختبار خدمة Underclass NixOS بقاعدة قديمة وجهة إصدار محكومة؛ شغل خصائص فترة التدوير المولدة وتجهيزات التعافي في المنبع. جرى تخطي الاختبارات بطلب المستخدم."
 
 #: lib/marshall/documentation_messages.ex:2465
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the Underclass NixOS service test with controlled streams and an event importer; verify authorization, sanitized persistence, retention, rollups, bounded windows and restart recovery."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع اختبار خدمة Underclass NixOS بتدفقات محكومة ومستورد أحداث؛ تحقق من التفويض والحفظ المنقى والاحتفاظ والتجميعات والنوافذ المحدودة وتعافي إعادة التشغيل."
 
 #: lib/marshall/documentation_messages.ex:2469
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the native Porsche fleet journey to assert an authorized command result through the exporter and collector, then measure the 28-day live baseline."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع رحلة أسطول Porsche الأصلية لتأكيد نتيجة أمر مصرح عبر المصدر والجامع، ثم قس خط الأساس الحي لـ28 يومًا."
 
 #: lib/marshall/documentation_messages.ex:2473
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the native browser fixture with signed and tampered gallery/dependency/WEB installs and execute both guest distributions; the corrected merged NixOS ordinary journey does not close gallery-installation gaps."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع تجهيز المتصفح الأصلي بتثبيتات gallery/dependency/WEB موقعة ومتلاعب بها ونفذ توزيعتي الضيف؛ لا تسد رحلة NixOS العادية المدمجة المصححة ثغرات تثبيت gallery."
 
 #: lib/marshall/documentation_messages.ex:2477
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the real guest journey to test rebinding and customer-profile refusal, then deliver that guest trace over authenticated WireGuard to central Tempo."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع رحلة الضيف الحقيقية لاختبار إعادة الربط ورفض ملف العميل، ثم أوصل تتبع ذلك الضيف عبر WireGuard موثق إلى Tempo المركزي."
 
 #: lib/marshall/documentation_messages.ex:2481
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the recorded bounded native campaign to running-workload downtime consent and cancellation/replan histories and Ubuntu; retain earlier relocation failure evidence with its original scope."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع الحملة الأصلية المحدودة المسجلة إلى موافقة توقف حمل العمل الجاري وسجلات الإلغاء/إعادة التخطيط وUbuntu؛ أبق دليل فشل النقل السابق بنطاقه الأصلي."
 
 #: lib/marshall/documentation_messages.ex:2485
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Extend the recorded focused native fixture with generated ownership and malformed-bundle histories across fresh audit processes. Preserve strict launch/readiness and independent storage refusals; a host unit test cannot establish native ZFS behavior."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** وسع التجهيز الأصلي المركز المسجل بسجلات ملكية وحزم مشوهة مولدة عبر عمليات تدقيق جديدة. احفظ رفض البدء/الجاهزية الصارم والتخزين المستقل؛ لا يثبت اختبار وحدة المضيف سلوك ZFS الأصلي."
 
 #: lib/marshall/documentation_messages.ex:2489
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Falsify current-revocation and gateway-generation oracles, then verify native authenticated gateway rotation and independent-replica ordering."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** حاول إبطال مرجعي الإلغاء الحالي وجيل البوابة، ثم تحقق من تدوير بوابة أصلي موثق وترتيب النسخ المستقلة."
 
 #: lib/marshall/documentation_messages.ex:2493
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Falsify the request-start deadline oracle and compose delayed actual TLS ControlBackend with native guest connector evidence."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** حاول إبطال مرجع مهلة بدء الطلب وركب TLS ControlBackend فعليًا مؤخرًا مع دليل موصل الضيف الأصلي."
 
 #: lib/marshall/documentation_messages.ex:2497
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Finish combined integrated/full gates, then compose with native guest attachments and independent frontend loss."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أكمل البوابات المتكاملة/الكاملة المجمعة، ثم ركبها مع اتصالات ضيف أصلية وفقد واجهة أمامية مستقل."
 
 #: lib/marshall/documentation_messages.ex:2501
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Finish restored/full component verification, then repeat budget-incarnation loss with native guest attachments and independent nodes."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أكمل تحقق المكون المستعاد/الكامل، ثم كرر فقد تجسد الميزانية مع اتصالات ضيف أصلية وعقد مستقلة."
 
 #: lib/marshall/documentation_messages.ex:2505
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Follow-up 030 adds composed dispatch histories and a native started-effect fixture. Establish native pre-start observation before claiming that case; preserve the earlier unexplained interruption."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** تضيف المتابعة 030 سجلات إرسال مركبة وتجهيز أثر بدأ أصليًا. أثبت الملاحظة الأصلية قبل البدء قبل ادعاء تلك الحالة؛ احفظ الانقطاع السابق غير المفسر."
 
 #: lib/marshall/documentation_messages.ex:2509
 #, elixir-autogen, elixir-format
@@ -5527,12 +5527,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2513
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Generate cross-target event histories with journal contention and delayed native callbacks; deterministic ordering is used to reproduce the specific race reliably. Validate physical host loss separately."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** ولد سجلات أحداث عبر الأهداف بتزاحم اليومية واستدعاءات أصلية مؤخرة؛ يُستخدم ترتيب حتمي لإعادة إنتاج السباق المحدد بموثوقية. تحقق من فقد المضيف المادي منفصلًا."
 
 #: lib/marshall/documentation_messages.ex:2517
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Generate escaped failure paths and successor lock admission, then run real authenticated storage composition with independent stream cessation witnesses."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** ولد مسارات فشل هاربة وقبول قفل الخلف، ثم نفذ تركيبة تخزين حقيقية موثقة بشواهد مستقلة لتوقف التدفق."
 
 #: lib/marshall/documentation_messages.ex:2521
 #, elixir-autogen, elixir-format
@@ -5542,7 +5542,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2525
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Instrument admitted proxy completion at the pinned Underclass source and test the tailnet plus provider path with native evidence before promoting a final objective."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** جهز قياس إكمال الوكيل المقبول في مصدر Underclass المثبت واختبر مسار tailnet والمزود بدليل أصلي قبل ترقية هدف نهائي."
 
 #: lib/marshall/documentation_messages.ex:2529
 #, elixir-autogen, elixir-format
@@ -5552,27 +5552,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2533
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Keep property capability matrices and extend the native CLI approval and denial journeys."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق مصفوفات قدرات الخصائص ووسع رحلات موافقة ورفض CLI الأصلية."
 
 #: lib/marshall/documentation_messages.ex:2537
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Keep the native outage/refusal cases; add native gateway credential rotation with route restoration, then expand generated publication/lease event ordering."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق حالات الانقطاع/الرفض الأصلية؛ أضف تدوير اعتماد البوابة الأصلي باستعادة المسار، ثم وسع ترتيب أحداث النشر/الإيجار المولدة."
 
 #: lib/marshall/documentation_messages.ex:2541
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Make the reset check interval injectable and add an end-to-end test where a cooldown expires while a request waits on the reset lock; extend the Underclass NixOS service test with a throttling upstream fixture."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** اجعل فترة فحص إعادة الضبط قابلة للحقن وأضف اختبارًا شاملًا تنتهي فيه التهدئة أثناء انتظار الطلب لقفل إعادة الضبط؛ وسع اختبار خدمة Underclass NixOS بتجهيز منبع يخنق الطلبات."
 
 #: lib/marshall/documentation_messages.ex:2545
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Measure duration coverage and volume over the baseline, then define per-journey latency targets with native user-path evidence."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** قس تغطية المدة والحجم خلال خط الأساس، ثم حدد أهداف تأخر لكل رحلة بدليل مسار مستخدم أصلي."
 
 #: lib/marshall/documentation_messages.ex:2549
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Measure the adoption grace on a loaded production host."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** قس مهلة التبني على مضيف إنتاجي محمل."
 
 #: lib/marshall/documentation_messages.ex:2553
 #, elixir-autogen, elixir-format
@@ -5582,7 +5582,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2557
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Native NixOS/Ubuntu journeys and generated cryptographic refusals are recorded; retain those gates and add native macOS and complete nested Inception acceptance."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** سُجلت رحلات NixOS/Ubuntu الأصلية والرفض التشفيري المولد؛ أبق تلك البوابات وأضف قبول macOS أصلي وInception متداخل كامل."
 
 #: lib/marshall/documentation_messages.ex:2561
 #, elixir-autogen, elixir-format
@@ -5592,37 +5592,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2565
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** NixOS guest scenario should drive boot-authenticated vsock admission and independent memory accounting under native viewer pressure."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** ينبغي لسيناريو ضيف NixOS تنفيذ قبول vsock موثق بالإقلاع ومحاسبة ذاكرة مستقلة تحت ضغط مشاهدين أصلي."
 
 #: lib/marshall/documentation_messages.ex:2569
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** NixOS guest scenario should drive independent boot-authenticated viewers and verify neighboring output and accounting under persistent native pressure."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** ينبغي لسيناريو ضيف NixOS تشغيل مشاهدين مستقلين موثقين بالإقلاع والتحقق من المخرجات المجاورة والمحاسبة تحت ضغط أصلي مستمر."
 
 #: lib/marshall/documentation_messages.ex:2573
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** No property test: the behaviour is a fixed configuration and network boundary rather than a generated input space. After stage 2, record one live proxied request per host showing the Mac Mini's address, and consider a periodic preference check."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** لا اختبار خصائص: السلوك تكوين ثابت وحد شبكة لا فضاء مدخلات مولد. بعد المرحلة 2 سجل طلبًا حيًا عبر الوكيل لكل مضيف يبين عنوان Mac Mini، وفكر في فحص دوري للتفضيل."
 
 #: lib/marshall/documentation_messages.ex:2577
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Pair NixOS packet-path tests with property tests for cache eligibility and parser bounds."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** قرن اختبارات مسار الحزم في NixOS باختبارات خصائص أهلية الذاكرة المخبأة وحدود المحلل."
 
 #: lib/marshall/documentation_messages.ex:2581
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Populate native drill-down pages and remaining administrative mutation families; retain cross-replica browser session revocation and current-role properties."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** املأ صفحات التفصيل الأصلية وعائلات التغيير الإداري المتبقية؛ أبق إلغاء جلسات المتصفح عبر النسخ وخصائص الدور الحالي."
 
 #: lib/marshall/documentation_messages.ex:2585
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Preferred native and generated refusal coverage is recorded; add native macOS execution and generated pre-existing SSH configuration combinations."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** سُجلت تغطية الرفض الأصلية والمولدة المفضلة؛ أضف تنفيذ macOS أصليًا وتركيبات تكوين SSH الموجودة مسبقًا المولدة."
 
 #: lib/marshall/documentation_messages.ex:2589
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Preferred property and native evidence is recorded for the stated scope. Physical authenticator/host and SMTP/provider acceptance requires separately provisioned infrastructure."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** سُجل دليل الخصائص والدليل الأصلي المفضلان للنطاق المذكور. يتطلب قبول المصادق/المضيف المادي وSMTP/المزود بنية تحتية مهيأة منفصلًا."
 
 #: lib/marshall/documentation_messages.ex:2593
 #, elixir-autogen, elixir-format
@@ -5632,27 +5632,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2597
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Provision an approved runtime destination and verify actual receipt; separately test independent failure monitoring. Native transport and generated routing evidence do not establish seven-day production compliance."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** هيئ وجهة تشغيل معتمدة وتحقق من الاستلام الفعلي؛ اختبر رصد الفشل المستقل منفصلًا. لا تثبت أدلة النقل الأصلي والتوجيه المولد امتثال الإنتاج لسبعة أيام."
 
 #: lib/marshall/documentation_messages.ex:2601
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Record a passing user-ssh-journey-fleet run on the detached bridge path."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** سجل تشغيل user-ssh-journey-fleet ناجحًا على مسار الجسر المنفصل."
 
 #: lib/marshall/documentation_messages.ex:2605
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Record a passing vscode-web-nixos-fleet run of the editor restart subtest; nested HTTPS waits on a working Inception fleet."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** سجل تشغيل vscode-web-nixos-fleet ناجحًا لاختبار إعادة تشغيل المحرر الفرعي؛ ينتظر HTTPS المتداخل أسطول Inception عاملًا."
 
 #: lib/marshall/documentation_messages.ex:2609
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Record native TLS/firewall results and external production certificate/login verification. Generated Nix port cases cover configuration invariants; no new business logic requires a separate application property test."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** سجل نتائج TLS/الجدار الناري الأصلية والتحقق الخارجي من شهادة/دخول الإنتاج. تغطي حالات منافذ Nix المولدة ثوابت التكوين؛ لا منطق أعمال جديد يتطلب اختبار خصائص تطبيق منفصلًا."
 
 #: lib/marshall/documentation_messages.ex:2613
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Record the browser-approved proofs (SSH through Audi, a roster-user terminal, an agent turn) and add a Marshall-driven Windows fleet test so the fleet proofs become machine tests."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** سجل البراهين المعتمدة من المتصفح (SSH عبر Audi وطرفية مستخدم قائمة ودور وكيل) وأضف اختبار أسطول Windows يقوده Marshall لتصبح براهين الأسطول اختبارات آلات."
 
 #: lib/marshall/documentation_messages.ex:2617
 #, elixir-autogen, elixir-format
@@ -5667,32 +5667,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2625
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Rerun the NixOS handbook and control-room browser machine tests on the merged presentation and record them here; a property over the token file and glyph table would add little beyond the structural gate."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أعد تشغيل اختبارات آلة متصفح دليل NixOS وcontrol-room على العرض المدمج وسجلها هنا؛ تضيف خاصية على ملف الرموز وجدول المحارف القليل فوق البوابة البنيوية."
 
 #: lib/marshall/documentation_messages.ex:2629
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Rerun the credential-self-service, mfa-login, admin-account, account-lifecycle, control-room and fleet Porsche browser machine tests on the merged page and record them; rerun the Antithesis access workload."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أعد تشغيل اختبارات آلات متصفح credential-self-service وmfa-login وadmin-account وaccount-lifecycle وcontrol-room وأسطول Porsche على الصفحة المدمجة وسجلها؛ أعد تشغيل حمل الوصول Antithesis."
 
 #: lib/marshall/documentation_messages.ex:2633
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Rerun the seven legacy feature matrices on current source, verify sender-side terminal trust-retry exhaustion (053) and extend to independent physical hosts."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أعد تشغيل مصفوفات الميزات القديمة السبع على المصدر الحالي وتحقق من نفاد إعادة محاولة ثقة الطرفية لدى المرسل (053) ووسع إلى مضيفين ماديين مستقلين."
 
 #: lib/marshall/documentation_messages.ex:2637
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Resolve the full native Lilly crash-recovery failure, verify source restart accounting and measure live baseline targets."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** حل فشل تعافي انهيار Lilly الأصلي الكامل، وتحقق من محاسبة إعادة تشغيل المصدر وقس أهداف خط الأساس الحي."
 
 #: lib/marshall/documentation_messages.ex:2641
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Resolve the later restart recovery timeout, verify a native refusal leaves the collector series unchanged, then measure a target baseline."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** حل مهلة تعافي إعادة التشغيل اللاحقة، وتحقق من بقاء سلسلة الجامع دون تغيير عند رفض أصلي، ثم قس خط أساس للهدف."
 
 #: lib/marshall/documentation_messages.ex:2645
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain NixOS and Ubuntu native journeys. Native retained-image roster migration behavior is tracked as pending campaign improvement 048."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق رحلات NixOS وUbuntu الأصلية. يُتتبع سلوك ترحيل قائمة الصور الأصلية المحتفظ بها كتحسين حملة معلق 048."
 
 #: lib/marshall/documentation_messages.ex:2649
 #, elixir-autogen, elixir-format
@@ -5707,7 +5707,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2657
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain generated action histories and recorded browser/service scopes; exercise physical tunnel and cache pressure in dedicated acceptance environments."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق سجلات الإجراءات المولدة ونطاقات المتصفح/الخدمة المسجلة؛ اختبر ضغط النفق المادي والذاكرة المخبأة في بيئات قبول مخصصة."
 
 #: lib/marshall/documentation_messages.ex:2661
 #, elixir-autogen, elixir-format
@@ -5717,7 +5717,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2665
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain generated refusal histories and the native owner CLI lifecycle journey; extend native guest SSH and packet matrices separately."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق سجلات الرفض المولدة ورحلة دورة حياة CLI للمالك الأصلية؛ وسع مصفوفات SSH الضيف والحزم الأصلية منفصلًا."
 
 #: lib/marshall/documentation_messages.ex:2669
 #, elixir-autogen, elixir-format
@@ -5727,7 +5727,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2673
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain native candidate/failure and credential-rotation scopes; extend native live-environment replacement and concurrent delivery evidence separately from the recorded compatibility and custody histories."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق نطاقات المرشح/الفشل وتدوير الاعتماد الأصلية؛ وسع دليل استبدال بيئة التشغيل الحية والتسليم المتزامن الأصلي منفصلًا عن سجلات التوافق والحيازة المسجلة."
 
 #: lib/marshall/documentation_messages.ex:2677
 #, elixir-autogen, elixir-format
@@ -5737,12 +5737,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2681
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain native pre-start interruption as follow-up until its observation seam is established; rerun the strict driver after agent executor, fence or helper contract changes."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق الانقطاع الأصلي قبل البدء متابعة حتى تأسيس نقطة ملاحظته؛ أعد تشغيل السائق الصارم بعد تغير عقود منفذ الوكيل أو السياج أو المساعد."
 
 #: lib/marshall/documentation_messages.ex:2685
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain native revocation journeys and extend the generated matrix when actions or roles change; add a native composed withdrawal journey for physical acceptance."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق رحلات الإلغاء الأصلية ووسع المصفوفة المولدة عند تغير الإجراءات أو الأدوار؛ أضف رحلة سحب مركبة أصلية للقبول المادي."
 
 #: lib/marshall/documentation_messages.ex:2689
 #, elixir-autogen, elixir-format
@@ -5752,17 +5752,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2693
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain recorded generated consent/resource histories, committed public-retirement races and native shared SSH/integration transitions; extend preferred evidence to team terminal and agent journeys."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق سجلات الموافقة/الموارد المولدة المسجلة وسباقات التقاعد العام المثبتة وانتقالات SSH/التكامل المشتركة الأصلية؛ وسع الدليل المفضل إلى رحلات طرفية الفريق والوكيل."
 
 #: lib/marshall/documentation_messages.ex:2697
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain recorded native network/ZFS acceptance and generated Cache/Store histories. Extend native fault boundaries only when an uncovered production change requires them; preserve historical revision scope."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق قبول الشبكة/ZFS الأصلي المسجل وسجلات Cache/Store المولدة. وسع حدود الأعطال الأصلية فقط عند حاجة تغيير إنتاجي غير مغطى؛ احفظ نطاق التنقيح التاريخي."
 
 #: lib/marshall/documentation_messages.ex:2701
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain recorded native team original-transport closure and generated real-action histories; extend physical failure and native direct sharing withdrawal independently."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق إغلاق النقل الأصلي للفريق المسجل وسجلات الإجراءات الحقيقية المولدة؛ وسع الفشل المادي وسحب المشاركة المباشرة الأصلية مستقلًا."
 
 #: lib/marshall/documentation_messages.ex:2705
 #, elixir-autogen, elixir-format
@@ -5782,17 +5782,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2717
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain the exact VMM, receipt and fresh native-transition oracle while extending acceptance to physical storage loss and measured deployed archive budgets."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق VMM والإيصال ومرجع الانتقال الأصلي الجديد بدقتها أثناء توسيع القبول إلى فقد التخزين المادي وميزانيات الأرشيف المنشور المقاسة."
 
 #: lib/marshall/documentation_messages.ex:2721
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain the native two-Lilly replacement journey with fresh physical GUIDs and stale-credential refusal. Rebinding a surviving fleet onto a replaced control-plane database belongs to the historical-authority improvement."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق رحلة استبدال Lilly المزدوجة الأصلية بمعرفات GUID مادية جديدة ورفض اعتماد قديم. تنتمي إعادة ربط أسطول باق بقاعدة مستوى تحكم مستبدلة إلى تحسين السلطة التاريخية."
 
 #: lib/marshall/documentation_messages.ex:2725
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Retain the recorded browser and generated history gates; extend native distribution/profile interruption matrices when their behavior changes."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** أبق بوابات المتصفح والسجلات المولدة المسجلة؛ وسع مصفوفات انقطاع التوزيع/الملف الأصلية عند تغير سلوكها."
 
 #: lib/marshall/documentation_messages.ex:2729
 #, elixir-autogen, elixir-format
@@ -5802,7 +5802,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2737
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run a NixOS machine journey that forces a known signed closure through Cachix, then blocks the endpoint and records successful upstream or local fallback while preserving signature refusal."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل رحلة آلة NixOS تفرض مرور إغلاق موقع معروف عبر Cachix ثم تحجب نقطة النهاية وتسجل رجوعًا ناجحًا للمنبع أو محليًا مع حفظ رفض التوقيع."
 
 #: lib/marshall/documentation_messages.ex:2741
 #, elixir-autogen, elixir-format
@@ -5817,17 +5817,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2749
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run a NixOS machine/browser journey that follows Boot log while guest terminal capability is false, reads a known host marker and rejects revoked, superseded and restarted execution authority."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل رحلة آلة/متصفح NixOS تتابع Boot log حين تكون قدرة طرفية الضيف false، وتقرأ علامة مضيف معروفة وترفض سلطة التنفيذ الملغاة والمستبدلة والمعاد تشغيلها."
 
 #: lib/marshall/documentation_messages.ex:2753
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run a native or hosted fault workload with a controlled SMTP relay and independent Marshall workers; retain the local generated retry property as bounded state-machine evidence."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل حمل أعطال أصليًا أو مستضافًا بمرحل SMTP محكوم وعمال Marshall مستقلين؛ أبق خاصية إعادة المحاولة المحلية المولدة دليل آلة حالات محدودًا."
 
 #: lib/marshall/documentation_messages.ex:2757
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run full Lilly using the exact verified helper binaries and then native storage/host lifecycle composition."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل Lilly كاملًا بثنائيات المساعد المتحقق منها الدقيقة، ثم تركيبة دورة حياة التخزين/المضيف الأصلية."
 
 #: lib/marshall/documentation_messages.ex:2761
 #, elixir-autogen, elixir-format
@@ -5837,72 +5837,72 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2765
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run integrated Protocol and consumers, then native authenticated service restart/report-freshness histories."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل Protocol والمستهلكين المتكاملين، ثم سجلات إعادة تشغيل خدمة موثقة أصلية/حداثة التقرير."
 
 #: lib/marshall/documentation_messages.ex:2769
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run interrupted-growth histories for both OS families, then add physical recovery evidence before any admission change."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل سجلات النمو المتقطع لعائلتي نظام التشغيل، ثم أضف دليل التعافي المادي قبل أي تغيير قبول."
 
 #: lib/marshall/documentation_messages.ex:2773
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run native NixOS ZFS/router machine and generated recovery properties at the selected source, then validate the container entrypoint and hosted graph independently."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل آلة NixOS ZFS/راوتر الأصلية وخصائص التعافي المولدة عند المصدر المختار، ثم تحقق من مدخل الحاوية والرسم المستضاف مستقلًا."
 
 #: lib/marshall/documentation_messages.ex:2777
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run packaged service recovery with independent descendant and mirror-byte witnesses, then real durable retry composition."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل تعافي الخدمة المحزمة بشواهد مستقلة للذرية وبايتات المرآة، ثم تركيبة إعادة المحاولة الدائمة الحقيقية."
 
 #: lib/marshall/documentation_messages.ex:2785
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the SQL persistence suite and generated question/revocation histories, then a NixOS browser and guest journey that restarts Marshall while awaiting input, races answers and implements only the accepted exact proposal."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل مجموعة حفظ SQL وسجلات السؤال/الإلغاء المولدة، ثم رحلة متصفح وضيف NixOS تعيد تشغيل Marshall أثناء انتظار المدخلات وتسابق الإجابات ولا تنفذ إلا المقترح الدقيق المقبول."
 
 #: lib/marshall/documentation_messages.ex:2789
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the exact OmniOS policy, supervised daemon-recovery and wrong-CID/reset variants under Firecracker, bind each result to the current image/kernel/VMM provenance, then add direct peer isolation and fleet admission only after those receipts pass."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل سياسة OmniOS الدقيقة وتعافي العفريت المشرف ومتغيرات wrong-CID/reset تحت Firecracker، واربط كل نتيجة بمصدر الصورة/النواة/VMM الحالي، ثم أضف عزل النظير المباشر وقبول الأسطول بعد نجاح تلك الإيصالات فقط."
 
 #: lib/marshall/documentation_messages.ex:2793
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the exact selected peer command in a hosted image and retain its assertion receipt; test live Control effect and recovery separately with NixOS machine and generated property evidence."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل أمر النظير المختار الدقيق في صورة مستضافة واحتفظ بإيصال تأكيده؛ اختبر أثر Control الحي والتعافي منفصلًا بأدلة آلة NixOS وخصائص مولدة."
 
 #: lib/marshall/documentation_messages.ex:2797
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the generated client history, add timer retirement histories and verify packaged control sockets through fleet faults."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل سجل العميل المولد وأضف سجلات تقاعد المؤقت وتحقق من مقابس التحكم المحزمة خلال أعطال الأسطول."
 
 #: lib/marshall/documentation_messages.ex:2805
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the kernel property and ordering mutant, then compose the wait/revocation boundary with production journal and packaged launch behavior."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل خاصية النواة ومتحول الترتيب، ثم ركب حد الانتظار/الإلغاء مع يومية الإنتاج وسلوك الإطلاق المحزم."
 
 #: lib/marshall/documentation_messages.ex:2813
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the packaged authenticated fleet against an upgraded retained database, with old documents permanently refused and current control outcomes conserved."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل الأسطول الموثق المحزم على قاعدة محتفظ بها مرقاة، مع رفض المستندات القديمة دائمًا وحفظ نتائج التحكم الحالية."
 
 #: lib/marshall/documentation_messages.ex:2817
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the page's PowerShell command on a Windows Server 2025 fleet VM, connect to a Linux and a Windows guest, and observe an update activation; record it in the review."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل أمر PowerShell في الصفحة على VM أسطول Windows Server 2025، واتصل بضيف Linux وآخر Windows وشاهد تنشيط تحديث؛ سجله في المراجعة."
 
 #: lib/marshall/documentation_messages.ex:2821
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the selected private Docker topology at the built image identity, then record reviewed enrollment, current authenticated Control/report, a real nested guest and crash recovery; retain separate native NixOS machine and generated property evidence."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل طوبولوجيا Docker الخاصة المختارة بهوية الصورة المبنية، ثم سجل التسجيل المراجع وControl/التقرير الحالي الموثق وضيفًا متداخلًا حقيقيًا وتعافي الانهيار؛ أبق أدلة آلة NixOS الأصلية والخصائص المولدة منفصلة."
 
 #: lib/marshall/documentation_messages.ex:2825
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the source-built fleet scenario and validate deliberate same-generation launch or VMM replacement mutants; add initial provision and guest data continuity through the same authenticated path."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** شغل سيناريو الأسطول المبني من المصدر وتحقق من متحولات الإطلاق في الجيل نفسه أو استبدال VMM المتعمدة؛ أضف التهيئة الأولية واستمرار بيانات الضيف عبر المسار الموثق نفسه."
 
 #: lib/marshall/documentation_messages.ex:2829
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Size archive budgets from measured production traffic and independently test physical storage loss."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** حدد ميزانيات الأرشيف من مرور الإنتاج المقاس واختبر فقد التخزين المادي مستقلًا."
 
 #: lib/marshall/documentation_messages.ex:2833
 #, elixir-autogen, elixir-format
@@ -5912,17 +5912,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2837
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Test Audi restart and binding change during streaming, then measure a 28-day live baseline."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** اختبر إعادة تشغيل Audi وتغير الربط أثناء التدفق، ثم قس خط أساس حيًا لـ28 يومًا."
 
 #: lib/marshall/documentation_messages.ex:2841
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Test DNS restart accounting and client-side resolution, then establish a target from the 28-day baseline."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** اختبر محاسبة إعادة تشغيل DNS والحل من جانب العميل، ثم حدد هدفًا من خط أساس28 يومًا."
 
 #: lib/marshall/documentation_messages.ex:2845
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Test interrupted writes and expansion, physical stable-media and host recovery, direct isolation and fleet recovery separately against exact image/kernel/VMM provenance."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** اختبر الكتابات والتوسعة المتقطعة والوسائط المادية الثابتة وتعافي المضيف والعزل المباشر وتعافي الأسطول منفصلة مقابل مصدر صورة/نواة/VMM دقيق."
 
 #: lib/marshall/documentation_messages.ex:2849
 #, elixir-autogen, elixir-format
@@ -5932,42 +5932,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:2853
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Verify authenticated native version skew at service boundaries and provider effect fencing."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** تحقق من تفاوت الإصدارات الأصلي الموثق عند حدود الخدمات وتسييج آثار المزود."
 
 #: lib/marshall/documentation_messages.ex:2857
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Verify missing collection is unknown, classify failure after live revocation, and measure a production baseline before defining a target."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** تحقق من أن غياب الجمع مجهول، وصنف الفشل بعد إلغاء حي، وقس خط أساس إنتاجيًا قبل تعريف هدف."
 
 #: lib/marshall/documentation_messages.ex:2861
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Verify the complete component gate and authenticated native reconnect/worker-loss behavior with production backoff."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** تحقق من بوابة المكون الكاملة وسلوك إعادة الاتصال/فقد العامل الأصلي الموثق بتراجع الإنتاج."
 
 #: lib/marshall/documentation_messages.ex:2865
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Verify the complete migrated consumer tree and packaged service64 task admission over authenticated fleet sockets."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** تحقق من شجرة المستهلك المرحل كاملة وقبول مهام الخدمة المحزمة64 عبر مقابس أسطول موثقة."
 
 #: lib/marshall/documentation_messages.ex:2869
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Verify the expanded 36-panel dashboard after rollout and its source reset guard, then measure full production coverage and review final targets."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** تحقق من لوحة36 لوحة الموسعة بعد الطرح وحارس إعادة ضبط المصدر فيها، ثم قس تغطية الإنتاج الكاملة وراجع الأهداف النهائية."
 
 #: lib/marshall/documentation_messages.ex:2873
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Verify the repaired first-envelope fencing through packaged native control sockets; callback baseline and targeted mutation are recorded."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** تحقق من تسييج المغلف الأول المصلح عبر مقابس تحكم أصلية محزمة؛ سُجل خط أساس الاستدعاء والطفرة المستهدفة."
 
 #: lib/marshall/documentation_messages.ex:2877
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Verify the repaired real-time property and packaged native version skew, retaining pending outcome and no-replay observations."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** تحقق من خاصية الوقت الحقيقي المصلحة وتفاوت الإصدارات الأصلي المحزم، مع الاحتفاظ بملاحظات النتيجة المعلقة وعدم الإعادة."
 
 #: lib/marshall/documentation_messages.ex:2881
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** When a public archival journey exists, extend native browser coverage through name reuse; retain separate multi-node transfer/retirement testing."
-msgstr ""
+msgstr "**عمل الاختبار المفضل:** عند وجود رحلة أرشفة عامة، وسع تغطية المتصفح الأصلي عبر إعادة استخدام الاسم؛ أبق اختبار النقل/التقاعد متعدد العقد منفصلًا."
 
 #: lib/marshall/documentation_messages.ex:2885
 #, elixir-autogen, elixir-format
@@ -6652,7 +6652,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3477
 #, elixir-autogen, elixir-format
 msgid "- **unit, present**: [configured](repo:nix/verification/tests/evaluation/nix-cache.nix) — The flake evaluation check passed for host, guest and all declared fleet fixtures; it also rejects a forced require-sigs=false configuration.."
-msgstr ""
+msgstr "- **unit, present**: [مهيأ](repo:nix/verification/tests/evaluation/nix-cache.nix) — نجح فحص تقييم flake للمضيف والضيف وكل تجهيزات الأسطول المعلنة؛ ويرفض أيضًا تكوين require-sigs=false مفروضًا.."
 
 #: lib/marshall/documentation_messages.ex:3481
 #, elixir-autogen, elixir-format
@@ -6772,12 +6772,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3605
 #, elixir-autogen, elixir-format
 msgid "- a changed command;\n- a deferral;\n- any other outcome;\n- any watcher report other than armed."
-msgstr ""
+msgstr "- أمر متغير؛\n- تأجيل؛\n- أي نتيجة أخرى؛\n- أي تقرير مراقب بخلاف armed."
 
 #: lib/marshall/documentation_messages.ex:3609
 #, elixir-autogen, elixir-format
 msgid "- its last three reconciles of the unchanged command each recorded the same\n  running outcome;\n- an armed watcher holds the exact VMM behind the current proof."
-msgstr ""
+msgstr "- سجلت آخر ثلاث تسويات للأمر غير المتغير نتيجة\n  running نفسها في كل مرة؛\n- يحتفظ مراقب armed بـVMM الدقيق وراء الإثبات الحالي."
 
 #: lib/marshall/documentation_messages.ex:3613
 #, elixir-autogen, elixir-format
@@ -6792,7 +6792,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3621
 #, elixir-autogen, elixir-format
 msgid "1. capacity snapshots;\n2. creation, deletion, transfer and other mutations;\n3. upkeep."
-msgstr ""
+msgstr "1. لقطات السعة؛\n2. الإنشاء والحذف والنقل والتغييرات الأخرى؛\n3. الصيانة."
 
 #: lib/marshall/documentation_messages.ex:3625
 #, elixir-autogen, elixir-format
@@ -6827,7 +6827,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3649
 #, elixir-autogen, elixir-format
 msgid "A failed SSH signing attempt retains its public generation. Matching retries\ntransition it back to pending, so an unavailable private signer does not append\na history row on every guest synchronization attempt. Changed keys and renewal\nwindows still allocate a new generation.\n"
-msgstr ""
+msgstr "تحتفظ محاولة توقيع SSH الفاشلة بجيلها العام. تعيد المحاولات المطابقة\nنقلها إلى pending، فلا يضيف موقع خاص غير متاح\nصف سجل في كل محاولة مزامنة ضيف. تظل المفاتيح المتغيرة ونوافذ\nالتجديد تخصص جيلًا جديدًا.\n"
 
 #: lib/marshall/documentation_messages.ex:3653
 #, elixir-autogen, elixir-format
@@ -6887,7 +6887,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3701
 #, elixir-autogen, elixir-format
 msgid "A minimal role fragment uses runtime file paths for private material:"
-msgstr ""
+msgstr "يستخدم جزء دور أدنى مسارات ملفات وقت التشغيل للمواد الخاصة:"
 
 #: lib/marshall/documentation_messages.ex:3705
 #, elixir-autogen, elixir-format
@@ -6937,7 +6937,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3745
 #, elixir-autogen, elixir-format
 msgid "A running VM in steady state is not reconciled every second (ADR-0176). An actor\ncounts as steady when all of the following hold:"
-msgstr ""
+msgstr "لا تُسوّى VM جارية في حالة مستقرة كل ثانية (ADR-0176). يُعد الممثل\nمستقرًا حين تتحقق كل الشروط التالية:"
 
 #: lib/marshall/documentation_messages.ex:3749
 #, elixir-autogen, elixir-format
@@ -6947,7 +6947,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3753
 #, elixir-autogen, elixir-format
 msgid "A running guest receives a bounded boot-specific sync request. No freeze occurs;\nan unconfirmed flush is recorded and capture can continue. Guest snapshots are\ncrash-consistent, not a transaction across applications and hosts. Stopped guests\nare not started for backup."
-msgstr ""
+msgstr "يتلقى الضيف الجاري طلب مزامنة محدودًا خاصًا بالإقلاع. لا يحدث تجميد؛\nيسجل تفريغ غير مؤكد ويمكن أن يستمر الالتقاط. لقطات الضيوف\nمتسقة مع الانهيار، وليست معاملة عبر التطبيقات والمضيفين. لا تُشغل الضيوف\nالمتوقفة للنسخ الاحتياطي."
 
 #: lib/marshall/documentation_messages.ex:3757
 #, elixir-autogen, elixir-format
@@ -6977,7 +6977,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3777
 #, elixir-autogen, elixir-format
 msgid "A steady actor skips per-second ticks and reconciles on a 10-second backstop,\nwell inside the 30-second watched deadline. Before this, each running VM took\nthe placement, intent and network locks and ran `systemctl show` once a second.\nAny of these ends steadiness at once:"
-msgstr ""
+msgstr "يتخطى الممثل المستقر نبضات كل ثانية ويسوي على حاجز احتياطي10 ثوان،\nداخل مهلة المراقبة30 ثانية بكثير. سابقًا كانت كل VM جارية تأخذ\nأقفال الموضع والنية والشبكة وتشغل `systemctl show` كل ثانية.\nينهي أي مما يلي الاستقرار فورًا:"
 
 #: lib/marshall/documentation_messages.ex:3781
 #, elixir-autogen, elixir-format
@@ -7007,7 +7007,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3798
 #, elixir-autogen, elixir-format
 msgid "ADR-0154 keeps only changes whose effect was measured with the boot profile\n(1-vCPU fixture; seconds since guest kernel start):"
-msgstr ""
+msgstr "يحتفظ ADR-0154 فقط بالتغييرات التي قيس أثرها بملف الإقلاع\n(تجهيز1-vCPU؛ ثوان منذ بدء نواة الضيف):"
 
 #: lib/marshall/documentation_messages.ex:3802
 #, elixir-autogen, elixir-format
@@ -7052,7 +7052,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3831
 #, elixir-autogen, elixir-format
 msgid "Acceptance requires the deployed revision, healthy required services, current host\nreports, an authorized guest lifecycle, terminal/SSH access, and working configured\nmail/provider paths. A build or push alone proves none of these runtime outcomes."
-msgstr ""
+msgstr "يتطلب القبول التنقيح المنشور وخدمات مطلوبة سليمة وتقارير مضيف حالية\nودورة حياة ضيف مصرحًا بها ووصول طرفية/SSH ومسارات بريد/مزود مهيأة\nعاملة. لا يثبت البناء أو الدفع وحده أيًا من هذه النتائج التشغيلية."
 
 #: lib/marshall/documentation_messages.ex:3839
 #, elixir-autogen, elixir-format
@@ -7102,17 +7102,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3873
 #, elixir-autogen, elixir-format
 msgid "Additional arguments passed to each module in addition to ones\nlike `lib`, `config`,\nand `pkgs`, `modulesPath`."
-msgstr ""
+msgstr "وسائط إضافية تمرر لكل وحدة إلى جانب أمثال\n`lib` و`config`\nو`pkgs` و`modulesPath`."
 
 #: lib/marshall/documentation_messages.ex:3877
 #, elixir-autogen, elixir-format
 msgid "Additional canonical IPv4 networks denied to guests, including public management endpoints."
-msgstr ""
+msgstr "شبكات IPv4 قياسية إضافية محظورة على الضيوف، بما فيها نقاط إدارة عامة."
 
 #: lib/marshall/documentation_messages.ex:3881
 #, elixir-autogen, elixir-format
 msgid "Administrative access path. Console-only deployments must disable administrative OpenSSH."
-msgstr ""
+msgstr "مسار الوصول الإداري. يجب على النشر المعتمد على وحدة التحكم فقط تعطيل OpenSSH الإداري."
 
 #: lib/marshall/documentation_messages.ex:3885
 #, elixir-autogen, elixir-format
@@ -7132,7 +7132,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3901
 #, elixir-autogen, elixir-format
 msgid "Admit port 80 on the proxy address from any source through the fleet perimeter (ADR-0181), so the public CA can reach HTTP-01 challenges. The listener serves only challenges and HTTPS redirects."
-msgstr ""
+msgstr "اسمح بالمنفذ80 على عنوان الوكيل من أي مصدر عبر محيط الأسطول (ADR-0181)، ليصل CA العام إلى تحديات HTTP-01. لا يقدم المستمع سوى التحديات وإعادة توجيه HTTPS."
 
 #: lib/marshall/documentation_messages.ex:3905
 #, elixir-autogen, elixir-format
@@ -7167,7 +7167,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3941
 #, elixir-autogen, elixir-format
 msgid "After reviewing public users and host inventory, use a retained recovery identity:"
-msgstr ""
+msgstr "بعد مراجعة المستخدمين العامين وجرد المضيفين، استخدم هوية تعاف محتفظًا بها:"
 
 #: lib/marshall/documentation_messages.ex:3949
 #, elixir-autogen, elixir-format
@@ -7182,7 +7182,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3957
 #, elixir-autogen, elixir-format
 msgid "Age passed to nix-collect-garbage --delete-older-than. Generations\nyounger than this are preserved."
-msgstr ""
+msgstr "العمر الممرر إلى nix-collect-garbage --delete-older-than. تُحفظ الأجيال\nالأحدث من هذا العمر."
 
 #: lib/marshall/documentation_messages.ex:3961
 #, elixir-autogen, elixir-format
@@ -7237,12 +7237,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3992
 #, elixir-autogen, elixir-format
 msgid "Also bind fleet TLS to loopback for colocated clients when the main fleet bind uses a private interface."
-msgstr ""
+msgstr "اربط TLS الأسطول أيضًا بحلقة الرجوع للعملاء المتجاورين حين يستخدم ربط الأسطول الرئيسي واجهة خاصة."
 
 #: lib/marshall/documentation_messages.ex:3996
 #, elixir-autogen, elixir-format
 msgid "An Ash domain groups resource actions and their code interfaces. It is a business\nboundary inside an application. It does not create a service, database or process.\nThe diagrams and resource inventory below are extracted from literal declarations."
-msgstr ""
+msgstr "يجمع نطاق Ash إجراءات الموارد وواجهاتها البرمجية. إنه حد أعمال\nداخل تطبيق. لا ينشئ خدمة أو قاعدة بيانات أو عملية.\nتُستخرج المخططات وجرد الموارد أدناه من تصريحات حرفية."
 
 #: lib/marshall/documentation_messages.ex:4000
 #, elixir-autogen, elixir-format
@@ -7292,7 +7292,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4040
 #, elixir-autogen, elixir-format
 msgid "An elevated administrator can send an invitation from **Users**. The\nrecipient becomes an ordinary account only after explicitly consuming a valid\nemail link. Delivery uses an encrypted outbox; requesting an invitation does not\nprove that a mailbox received it."
-msgstr ""
+msgstr "يمكن لمسؤول مرتفع الامتياز إرسال دعوة من **Users**. لا يصبح\nالمتلقي حسابًا عاديًا إلا بعد استهلاك رابط بريد صالح صراحة.\nيستخدم التسليم صندوق صادر مشفرًا؛ لا يثبت طلب الدعوة\nأن صندوق بريد تلقاها."
 
 #: lib/marshall/documentation_messages.ex:4044
 #, elixir-autogen, elixir-format
@@ -7402,12 +7402,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4132
 #, elixir-autogen, elixir-format
 msgid "Arrows mean application ownership, not calls or deployment units. Resources below are literal declarations, deduplicated; extension-generated versions are excluded."
-msgstr ""
+msgstr "تعني الأسهم ملكية التطبيق لا الاستدعاءات أو وحدات النشر. الموارد أدناه تصريحات حرفية أزيل تكرارها؛ تستبعد النسخ المولدة بالإضافات."
 
 #: lib/marshall/documentation_messages.ex:4136
 #, elixir-autogen, elixir-format
 msgid "Arrows mean configured service placement. Configuration: `dungarees`. Marshall instances: none. Fleet address: `10.90.0.2`. Fleet peers: `overalls`. Administrative SSH ports: 2222."
-msgstr ""
+msgstr "تعني الأسهم موضع الخدمة المهيأ. التكوين: `dungarees`. مثيلات Marshall: لا شيء. عنوان الأسطول: `10.90.0.2`. نظراء الأسطول: `overalls`. منافذ SSH الإدارية:2222."
 
 #: lib/marshall/documentation_messages.ex:4140
 #, elixir-autogen, elixir-format
@@ -7422,7 +7422,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4142
 #, elixir-autogen, elixir-format
 msgid "Atomically published PEM key and full certificate chain, readable by the haproxy group."
-msgstr ""
+msgstr "مفتاح PEM وسلسلة شهادات كاملة منشوران ذريًا، قابلان للقراءة من مجموعة haproxy."
 
 #: lib/marshall/documentation_messages.ex:4146
 #, elixir-autogen, elixir-format
@@ -7457,7 +7457,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4174
 #, elixir-autogen, elixir-format
 msgid "Authenticate the installed public host key from the receipt. Publish it in the\nhost inventory. Prepare encrypted Git custody, publish the enrolled configuration,\nthen activate the exact commit:"
-msgstr ""
+msgstr "وثق مفتاح المضيف العام المثبت من الإيصال. انشره في\nجرد المضيف. حضر حيازة Git مشفرة وانشر التكوين المسجل،\nثم نشط الالتزام الدقيق:"
 
 #: lib/marshall/documentation_messages.ex:4178
 #, elixir-autogen, elixir-format
@@ -7472,7 +7472,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4186
 #, elixir-autogen, elixir-format
 msgid "Authoritative Audi DNS replicas checked before challenge acknowledgement."
-msgstr ""
+msgstr "نسخ Audi DNS الموثوقة المفحوصة قبل إقرار التحدي."
 
 #: lib/marshall/documentation_messages.ex:4190
 #, elixir-autogen, elixir-format
@@ -7512,7 +7512,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4213
 #, elixir-autogen, elixir-format
 msgid "Before a schema or protocol rollout, verify compatibility with every serving\nreplica and retained host journal. Never downgrade by deleting journals or undoing\na migration whose rows establish ownership. See [deployment](#deployment) and\n[recovery](#recovery)."
-msgstr ""
+msgstr "قبل طرح مخطط أو بروتوكول، تحقق من توافقه مع كل نسخة خادمة\nويومية مضيف محتفظ بها. لا ترجع إصدارًا بحذف اليوميات أو التراجع عن\nترحيل تثبت صفوفه الملكية. انظر [النشر](#deployment) و\n[التعافي](#recovery)."
 
 #: lib/marshall/documentation_messages.ex:4217
 #, elixir-autogen, elixir-format
@@ -7572,7 +7572,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4261
 #, elixir-autogen, elixir-format
 msgid "Bound storage pools; filesystem identity must match the actual mount."
-msgstr ""
+msgstr "مسابح التخزين المرتبطة؛ يجب أن تطابق هوية نظام الملفات التركيب الفعلي."
 
 #: lib/marshall/documentation_messages.ex:4265
 #, elixir-autogen, elixir-format
@@ -7587,7 +7587,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4273
 #, elixir-autogen, elixir-format
 msgid "Boundary: A current stored login permits ordinary access independently of a passkey. Single-use WebAuthn challenges establish session-specific privileged elevation. Browser magic-link GET leaves the single-use token intact; connected LiveView posts it with remember enabled."
-msgstr ""
+msgstr "الحد: يتيح تسجيل دخول مخزن حالي وصولًا عاديًا مستقلًا عن مفتاح مرور. تثبت تحديات WebAuthn أحادية الاستخدام ارتفاع امتياز خاصًا بالجلسة. يترك GET لرابط المتصفح السحري الرمز الأحادي سليمًا؛ تنشره LiveView المتصلة مع تمكين remember."
 
 #: lib/marshall/documentation_messages.ex:4277
 #, elixir-autogen, elixir-format
@@ -7607,7 +7607,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4289
 #, elixir-autogen, elixir-format
 msgid "Boundary: A host-owned Rust probe calls only the pinned Underclass tokenless local Unix monitor; a separate collector intake assigns fixed Underclass-monitor and host provenance before Prometheus and private Grafana read it."
-msgstr ""
+msgstr "الحد: يستدعي مسبار Rust المملوك للمضيف مراقب Unix المحلي المثبت لـUnderclass بلا رمز فقط؛ يعيّن مدخل جامع منفصل مصدر Underclass-monitor والمضيف الثابتين قبل قراءة Prometheus وGrafana الخاص له."
 
 #: lib/marshall/documentation_messages.ex:4293
 #, elixir-autogen, elixir-format
@@ -7642,7 +7642,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4317
 #, elixir-autogen, elixir-format
 msgid "Boundary: A transport refusal does not prove a domain effect completed or authorize lifecycle cleanup; Lilly must preserve the permanent class used by Runtime fencing."
-msgstr ""
+msgstr "الحد: لا يثبت رفض النقل اكتمال أثر نطاق ولا يصرح بتنظيف دورة الحياة؛ يجب أن يحفظ Lilly الفئة الدائمة التي يستخدمها تسييج Runtime."
 
 #: lib/marshall/documentation_messages.ex:4321
 #, elixir-autogen, elixir-format
@@ -7667,32 +7667,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4345
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi DNS counts ordinary in-zone questions after an authoritative UDP or TCP reply and socket send; a mode-0600 numeric snapshot feeds a Rust exporter through an Audi-DNS-only collector intake."
-msgstr ""
+msgstr "الحد: يحصي Audi DNS الأسئلة العادية داخل المنطقة بعد رد UDP أو TCP موثوق وإرسال المقبس؛ تغذي لقطة عددية mode-0600 مصدر Rust عبر مدخل جامع Audi-DNS-only."
 
 #: lib/marshall/documentation_messages.ex:4349
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi counts only a validated Marshall grant followed by local Lilly connector and SSH exec acknowledgment; a source-group-readable numeric snapshot feeds a separate Rust exporter through an Audi-SSH-only collector intake."
-msgstr ""
+msgstr "الحد: لا يحصي Audi إلا منحة Marshall متحققًا منها يتبعها موصل Lilly محلي وإقرار SSH exec؛ تغذي لقطة عددية تقرؤها مجموعة المصدر مصدر Rust منفصلًا عبر مدخل جامع Audi-SSH-only."
 
 #: lib/marshall/documentation_messages.ex:4353
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi gets a current Lilly placement binding and forwards an exact private OTLP route to the Rust receiver; only host-bound sanitized guest metrics reach the local collector."
-msgstr ""
+msgstr "الحد: يحصل Audi على ربط موضع Lilly حالي ويمرر مسار OTLP خاصًا دقيقًا إلى مستقبل Rust؛ لا تصل إلى الجامع المحلي إلا مقاييس ضيف منقاة مرتبطة بالمضيف."
 
 #: lib/marshall/documentation_messages.ex:4357
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi private counts completed non-OTLP requests only after current Lilly binding and TLS checks; a private fixed numeric snapshot feeds a Rust exporter through an Audi-private-only collector intake."
-msgstr ""
+msgstr "الحد: لا يحصي Audi private طلبات غير OTLP المكتملة إلا بعد فحوص ربط Lilly الحالي وTLS؛ تغذي لقطة عددية خاصة ثابتة مصدر Rust عبر مدخل جامع Audi-private-only."
 
 #: lib/marshall/documentation_messages.ex:4361
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authenticated current-incarnation report delivery and reconciled durable authority through the private Unix readiness socket."
-msgstr ""
+msgstr "الحد: تسليم تقرير التجسد الحالي الموثق وسلطة دائمة مسواة عبر مقبس جاهزية Unix الخاص."
 
 #: lib/marshall/documentation_messages.ex:4365
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authenticated upgrade principal must become a bound identity through the first hello; a valid envelope alone is not binding."
-msgstr ""
+msgstr "الحد: يجب أن يصبح أصل الترقية الموثق هوية مرتبطة عبر hello الأولى؛ المغلف الصالح وحده ليس ربطًا."
 
 #: lib/marshall/documentation_messages.ex:4369
 #, elixir-autogen, elixir-format
@@ -7707,7 +7707,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4377
 #, elixir-autogen, elixir-format
 msgid "Boundary: Both adapters delegate to the same durable gateway/session authority; separate session creations issue separate identities."
-msgstr ""
+msgstr "الحد: يفوض المحولان إلى سلطة البوابة/الجلسة الدائمة نفسها؛ تصدر عمليات إنشاء الجلسات المنفصلة هويات منفصلة."
 
 #: lib/marshall/documentation_messages.ex:4381
 #, elixir-autogen, elixir-format
