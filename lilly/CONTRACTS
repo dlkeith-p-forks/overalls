@@ -29,3 +29,9 @@ confined VMM alone (ADR-0170).
 Lilly MUST only hand a validated workspace source reference to the current boot over
 its jail vsock socket; the guest runs git. Lilly MUST NOT fetch repositories, write
 guest disks, log the reference, or let delivery delay, fail or fence running (ADR-0128).
+
+@cc [owner:ghuntley,label:security;isolation] lilly-android-display-target
+Android display connections MUST derive the guest address, fixed RFB port and
+network mark from a revalidated Guest identity, require the current emulator
+generation and an Android display capability, and refuse stale or ordinary inputs
+before opening a host socket.
