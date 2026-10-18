@@ -3,13 +3,20 @@ defmodule Audi.ConnectorTest do
   alias OverallsProtocol.IngressConnect, as: Wire
   @id "11111111-1111-4111-8111-111111111111"
 
+  # @cc [owner:ghuntley,label:verification] connector-fixture-process-custody
+  # Socket names MUST include the OS process ID and a VM-local unique suffix
+  # so concurrent BEAM test runs cannot unlink each other's listener. Stale
+  # endpoint removal MUST succeed or report absence before binding.
   defp fixture(context, response) do
     path =
-      Path.join(System.tmp_dir!(), "audi-connector-#{System.unique_integer([:positive])}.sock")
+      Path.join(
+        System.tmp_dir!(),
+        "audi-connector-#{System.pid()}-#{System.unique_integer([:positive])}.sock"
+      )
 
     # A killed prior fixture can leave the filesystem socket behind; remove
     # that stale endpoint before binding the fresh test listener.
-    File.rm(path)
+    assert File.rm(path) in [:ok, {:error, :enoent}]
 
     {:ok, listener} =
       :gen_tcp.listen(0, [:binary, ifaddr: {:local, path}, active: false, packet: 4])
