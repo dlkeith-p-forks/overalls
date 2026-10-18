@@ -1,8 +1,8 @@
 defmodule MarshallWeb.MachinesLive do
   use MarshallWeb, :live_view
   alias Marshall.{Access, Compute, Teams}
-  on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
-  on_mount MarshallWeb.MachineWorkspace
+  on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
+  on_mount(MarshallWeb.MachineWorkspace)
   alias MarshallWeb.{MachineDefaults, MachineWorkspace}
   alias MarshallWeb.CloneComponents
 
@@ -36,6 +36,7 @@ defmodule MarshallWeb.MachinesLive do
        relocation_retry_key: Ash.UUID.generate(),
        lifecycle_key: Ash.UUID.generate()
      )
+     |> assign(metadata_form: to_form(%{"labels" => "", "comment" => ""}, as: :metadata))
      |> new_form()
      |> share_form()
      |> stream(:machines, [])
@@ -200,6 +201,22 @@ defmodule MarshallWeb.MachinesLive do
          |> assign(lifecycle_key: Ash.UUID.generate())
          |> put_flash(:info, gettext("Machine update requested."))
          |> refresh()}
+
+      {:error, error} ->
+        {:noreply, put_flash(socket, :error, error_message(error))}
+    end
+  end
+
+  def handle_event("save-reflection-metadata", %{"metadata" => params}, socket) do
+    labels =
+      params["labels"] |> to_string() |> String.split(",", trim: true) |> Enum.map(&String.trim/1)
+
+    case Compute.update_reflection_metadata(
+           %{id: socket.assigns.vm_id, labels: labels, comment: params["comment"] || ""},
+           actor: socket.assigns.current_user
+         ) do
+      {:ok, _} ->
+        {:noreply, socket |> put_flash(:info, gettext("Machine metadata saved.")) |> refresh()}
 
       {:error, error} ->
         {:noreply, put_flash(socket, :error, error_message(error))}
@@ -1094,6 +1111,12 @@ defmodule MarshallWeb.MachinesLive do
           id="machine-advanced"
           class="stack"
         >
+          <.form for={@metadata_form} id="reflection-metadata" phx-submit="save-reflection-metadata" class="panel stack">
+            <h2>{gettext("Reflection metadata")}</h2>
+            <.input field={@metadata_form[:labels]} label={gettext("Labels")} value={Enum.join(@vm.labels || [], ", ")} placeholder={gettext("production, project-name")} />
+            <.input field={@metadata_form[:comment]} label={gettext("Comment")} value={@vm.comment || ""} type="textarea" placeholder={gettext("Short description for agents")} />
+            <Layouts.action tone="primary" id="reflection-metadata-submit">{gettext("Save metadata")}</Layouts.action>
+          </.form>
           <UI.panel id="relocation-controls" title={gettext("Relocate machine")}>
             <:actions>
               <Layouts.action

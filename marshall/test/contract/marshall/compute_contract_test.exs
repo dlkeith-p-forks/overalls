@@ -129,6 +129,7 @@ defmodule MarshallComputeContractTest do
       Marshall.Control.Services.Galileo,
       Marshall.Control.Services.Lilly,
       Marshall.Control.Services.Porsche,
+      Marshall.Control.Services.Peach,
       Marshall.Control.Services.Ziggy,
       Marshall.Control.Socket
     ]

@@ -392,6 +392,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   native-backup-cleanup = import ./machines/backup-cleanup storage;
   packaged-backup-cleanup = import ./machines/backup-cleanup/packaged.nix service;
   private-services-network = import ./machines/private-services storage;
+  peach-service = import ./evaluation/peach-service.nix { pkgs = testPkgs; packages = packages; };
   audi-ingress-network = import ./machines/audi-ingress storage;
   zfs-lifecycle = import ./machines/zfs-lifecycle storage;
   zfs-retained-bundle = import ./machines/zfs-lifecycle (storage // { retainedBundleOnly = true; });

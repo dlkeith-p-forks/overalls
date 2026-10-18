@@ -29,7 +29,7 @@ let
     execution_epoch = 1;
   });
   clientNode = { nodes, ... }: {
-    networking.extraHosts = "169.254.254.1 ${if github then "com-github" else "exedev"}.integration.internal";
+    networking.extraHosts = "169.254.254.1 ${if github then "com-github" else "esample"}.integration.internal";
     environment.systemPackages = [ pkgs.curl pkgs.dig pkgs.python3 pkgs.git ] ++ githubClients;
     environment.etc."galileo-client.py".source = ./client.py;
     environment.etc."galileo-ca.pem".source = "${tls}/ca.pem";
