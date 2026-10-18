@@ -73,6 +73,15 @@ NixOS or Ubuntu sign-in, edit/save/readback and recovery receipt is recorded in
 this status review, and the captured Alma/Arch receipts retain their earlier
 image and source scope.
 
+Windows has only a staged editor runtime/source and broker boundary. The
+runtime and source recipes keep `editor_capability = false`; the portable model
+and Win32 launcher bind workers to MMDS boot identity, descriptor, placement,
+epoch, GuestAccount/UID, local SAM SID and origin, with SYSTEM-only jobs,
+profile-backed paths, exact process and named-pipe custody, and refusal of
+foreign or incomplete recovery. The listener and roster authorizer code has no
+image admission or recorded native Windows execution. A browser origin, native
+bundle, sign-in, edit/save/readback and restart recovery remain open.
+
 Every machine page (Terminal, Access, Settings, Agents, Resize and the Boot log view)
 shares one header. A bordered heading box carries the machine name, then an
 operating-system label that is the registered display name of the machine's

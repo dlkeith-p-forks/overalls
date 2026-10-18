@@ -383,6 +383,44 @@ This closes that exact-image CLI lifecycle gap. It does not establish terminal,
 executor, workspace, growth, isolation or crash-supervision acceptance, and this
 record remains proposed/partial.
 
+The editor target-boundary evaluation
+([`editor-target-boundaries.nix`](../../../nix/verification/tests/evaluation/editor-target-boundaries.nix))
+asserts that the reviewed editor and broker metadata target only
+`x86_64-linux`, and that the Windows v5 package has neither an editor field nor
+an editor capability. This is static artifact evidence; it does not implement a
+Windows editor, broker, browser origin or browser acceptance. The explicit
+`editor: false` row therefore remains the accepted Windows boundary.
+
+The Windows editor bring-up is staged, fail-closed material rather than a
+capability promotion. [`windows-runtime.nix`](../../../nix/domains/artifacts/vscode-web/windows-runtime.nix)
+builds pinned Windows Node and ripgrep payloads with `editorCapability = false`
+and no store references. [`windows-source.nix`](../../../nix/domains/artifacts/vscode-web/windows-source.nix)
+assembles pinned Code OSS source inputs, Windows headers and language adapters
+for a later native build; its release identity includes those inputs, patches
+and build scripts, while its payload remains editor-disabled. The runtime and
+static boundary evaluations passed, but no completed native Windows bundle or
+browser run is recorded here.
+
+The portable broker model in
+[`windows_model.rs`](../../../nix/domains/artifacts/vscode-web-broker/src/windows_model.rs)
+binds a worker to the validated boot, descriptor, placement, epoch, roster UID,
+GuestAccount UUID, local SAM SID and origin. It derives names from that identity,
+rejects foreign or incomplete process/pipe custody, refuses ambiguous Windows
+paths, and preserves owned workers across broker restart. The Win32 launcher in
+[`windows.rs`](../../../nix/domains/artifacts/vscode-web-broker/src/windows.rs)
+uses S4U account tokens, profile-backed paths, SYSTEM-owned jobs and exact
+process/PID-time/SID/executable/pipe checks; `windows_main.rs` obtains MMDS
+identity, runs the reviewed authorizer, serializes one account startup and
+adopts only a matching receipt. These are source and portable-model boundaries:
+the broker has no admitted image, native Windows listener execution or browser
+acceptance. The broker library's 22 Linux tests and clippy check passed; the
+final Windows-target link, VM journey and browser proof remain open.
+
+The Windows roster authorizer now shares `C:\overalls\ssh\accounts.lock`
+with the roster daemon and verifies the exact username/UID pair before account
+mutation. This closes a concurrent-authorizer race in the Windows source path;
+it does not widen the guest capability table or establish a native editor run.
+
 ## Open questions
 
 - Whether an S4U network logon of a roster account (a member of
@@ -394,6 +432,12 @@ record remains proposed/partial.
   with an error status, or whether an SCM service host is needed (decision 8).
 - Allocated-bytes template accounting and hole-aware hashing for sparse
   images, which would let the Windows template become standby-eligible.
+- A Windows browser editor remains outside this decision. Any proposal must add
+  a reviewed Windows image/editor package, agent and protocol contract, broker
+  admission and native browser sign-in/edit/readback/recovery evidence before
+  changing the capability table. [ADR-0200](0200-windows-browser-editor-candidate.md)
+  accepts that candidate in the separate `windows-editor-v1` namespace without
+  activating supersession or changing the existing false editor capability.
 
 ## Related decisions
 

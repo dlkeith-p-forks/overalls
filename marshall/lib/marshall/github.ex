@@ -1150,7 +1150,7 @@ defmodule Marshall.GitHub do
         Ledger.lock!(AuthorizationAttempt, connection.authorization_attempt_id)
 
     phase =
-      if (attempt && attempt.phase in [:pending, :exchanging]) and
+      if (attempt && attempt.phase in [:pending, :exchanging]) &&
            later?(attempt.expires_at, Ledger.now()), do: :authorizing, else: phase
 
     %{
@@ -1292,9 +1292,7 @@ defmodule Marshall.GitHub do
         result -> result
       end
     rescue
-      error ->
-        IO.inspect({error, __STACKTRACE__}, label: "GITHUB_DEBUG")
-        {:error, :unavailable}
+      _ -> {:error, :unavailable}
     catch
       :exit, _ -> {:error, :unavailable}
     after

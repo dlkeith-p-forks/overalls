@@ -737,3 +737,9 @@ request identity stay in its private local completion. A replayed completion
 succeeds only when it exactly equals the stored one; PostgreSQL refuses a stored
 completion outside that closed key set, and the legacy-shaped rows were purged
 after export (ADR-0159). The final SSH authorization recheck and its security audit remain.
+## Guest reflection
+
+Peach serves the bounded, secret-free `reflection.internal` projection for a
+currently running guest. Marshall remains the authorization authority and
+returns only integrations eligible for the fenced execution.
+

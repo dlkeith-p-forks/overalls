@@ -4,7 +4,8 @@ defmodule OverallsProtocol.WorkloadBundle do
 
   Version 1 describes a Linux kernel bundle and version 2 a firmware bundle.
   Version 3 carries a native FreeBSD firmware bundle or an illumos firmware
-  bundle with an explicit guest-agent set. Existing versions
+  bundle with an explicit guest-agent set. Version 4 carries the separate
+  Windows editor firmware bundle with its required EditorRelease. Existing versions
   remain byte-compatible.
   """
 
@@ -62,11 +63,24 @@ defmodule OverallsProtocol.WorkloadBundle do
           firmware_bytes: pos_integer()
         }
 
+  @type windows_editor_bundle :: %{
+          optional(:git_identity_version) => 1,
+          image_id: String.t(),
+          architecture: :x86_64,
+          boot_kind: :firmware,
+          os: :windows,
+          guest_agents: :windows_editor_v1,
+          pci: true,
+          firmware_bytes: pos_integer(),
+          editor: OverallsProtocol.EditorRelease.t()
+        }
+
   @type t ::
           kernel_bundle()
           | native_firmware_bundle()
           | native_freebsd_firmware_bundle()
           | firmware_bundle()
+          | windows_editor_bundle()
 
   @spec storage_bytes() :: pos_integer()
   def storage_bytes, do: @storage_bytes
@@ -76,7 +90,8 @@ defmodule OverallsProtocol.WorkloadBundle do
   # version 1, boot arguments with bounded kernel/initrd byte lengths; for version 2,
   # the firmware boot kind with PCI transport, a declared guest agent set (`none` or
   # `windows-v1`) and a bounded firmware byte length; or for version 3, the closed
-  # native firmware identity with matching OS, agent set and kernel provenance.
+  # native firmware identity with matching OS, agent set and kernel provenance;
+  # version 4 requires Windows firmware, windows-editor-v1 and EditorRelease.
   # Portable metadata MUST NOT contain artifact paths, credentials or host-local authority.
   @spec validate(term()) :: {:ok, t()} | {:error, :invalid_workload_bundle}
   # @cc [owner:ghuntley,label:security;protocol] workload-bundle-git-identity-capability
@@ -157,6 +172,43 @@ defmodule OverallsProtocol.WorkloadBundle do
   end
 
   def validate(%{"version" => 3} = value), do: validate_native(value)
+
+  # @cc [owner:ghuntley,label:security;protocol] windows-editor-bundle-closed
+  # Version 4 MUST bind only Windows x86_64 firmware with PCI, the separate
+  # windows-editor-v1 row, a bounded firmware length and closed EditorRelease.
+  # A version-2 Windows bundle MUST NOT gain editor support by adding a field.
+  def validate(
+        %{
+          "version" => 4,
+          "image_id" => image_id,
+          "architecture" => "x86_64",
+          "os" => "windows",
+          "boot" => "firmware",
+          "pci" => true,
+          "guest_agents" => "windows-editor-v1",
+          "firmware_bytes" => firmware_bytes,
+          "editor" => editor
+        } = value
+      )
+      when map_size(value) == 9 do
+    with true <- OverallsProtocol.ImageManifest.id?(image_id),
+         true <- is_integer(firmware_bytes) and firmware_bytes in 1..@firmware_maximum_bytes,
+         {:ok, editor} <- OverallsProtocol.EditorRelease.decode(editor) do
+      {:ok,
+       %{
+         image_id: image_id,
+         architecture: :x86_64,
+         os: :windows,
+         boot_kind: :firmware,
+         guest_agents: :windows_editor_v1,
+         pci: true,
+         firmware_bytes: firmware_bytes,
+         editor: editor
+       }}
+    else
+      _ -> {:error, :invalid_workload_bundle}
+    end
+  end
 
   def validate(_), do: {:error, :invalid_workload_bundle}
 
@@ -261,7 +313,7 @@ defmodule OverallsProtocol.WorkloadBundle do
   # @cc [owner:ghuntley,label:protocol] workload-bundle-encode-by-kind
   # encode/1 MUST emit exactly the six version-1 keys for a Linux kernel bundle,
   # the seven version-2 keys for a Windows firmware bundle, or the closed version-3
-  # native shape, plus its validated optional Git identity capability, so an
+  # native shape, or nine version-4 Windows editor keys, plus its validated optional Git identity capability, so an
   # on-disk marker compares equal to its validated bundle.
   @spec encode(t()) :: map()
   def encode(%{git_identity_version: 1} = bundle) do
@@ -293,6 +345,24 @@ defmodule OverallsProtocol.WorkloadBundle do
       "guest_agents" => OverallsProtocol.GuestAgents.wire(bundle.guest_agents),
       "firmware_bytes" => bundle.firmware_bytes,
       "kernel" => encode_kernel(bundle.kernel)
+    }
+  end
+
+  def encode(%{boot_kind: :firmware, os: :windows, guest_agents: :windows_editor_v1} = bundle) do
+    %{
+      "version" => 4,
+      "image_id" => bundle.image_id,
+      "architecture" => "x86_64",
+      "os" => "windows",
+      "boot" => "firmware",
+      "pci" => true,
+      "guest_agents" => "windows-editor-v1",
+      "firmware_bytes" => bundle.firmware_bytes,
+      "editor" => %{
+        "protocol" => bundle.editor.protocol,
+        "commit" => bundle.editor.commit,
+        "release" => bundle.editor.release
+      }
     }
   end
 

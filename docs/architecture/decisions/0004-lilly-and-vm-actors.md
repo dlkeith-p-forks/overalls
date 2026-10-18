@@ -38,7 +38,7 @@ dedicated-host model.
 
 Actors must recover durable process/disk identity and reconcile reality rather
 than assume a fresh host. Host supervision and console buffering need explicit
-limits. The local exe.dev VM exposes KVM to root: API version 12 and creation of an
+limits. The local sample-host VM exposes KVM to root: API version 12 and creation of an
 empty KVM VM were verified on 2026-09-15. This permits local execution tests;
 a second independent host is still needed for the required cross-host tests.
 

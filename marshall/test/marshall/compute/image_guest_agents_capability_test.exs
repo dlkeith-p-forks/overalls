@@ -114,6 +114,29 @@ defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
     assert same.id == windows.id and same.name == "Windows Server 2025"
   end
 
+  test "the separate Windows editor contract retains Windows platform and exact row authority" do
+    manifest =
+      windows_image_manifest()
+      |> Map.merge(%{
+        "version" => 7,
+        "os" => "windows",
+        "guest_agents" => "windows-editor-v1",
+        "editor" => Marshall.EditorFixture.descriptor()
+      })
+
+    assert {:ok, image} = Images.register(manifest, "synthetic Windows editor candidate")
+    assert {:ok, :windows_editor_v1} = Image.guest_agents_capability(image)
+    assert Images.guest_platform(image.id) == :windows
+    assert Images.readiness_budget_ms(image.id, :customer) == 600_000
+    assert Images.guest_capabilities(image.id).editor
+    refute Images.guest_capabilities(image.id).inception
+    assert Image.guest_capabilities(%{image | id: image_id()}) == @none
+
+    old = windows_v1_image_fixture()
+    assert Images.guest_platform(old.id) == :windows
+    refute Images.guest_capabilities(old.id).editor
+  end
+
   # @cc [owner:ghuntley,label:verification;security] native-image-capabilities-fail-closed
   # Unapproved native image identities MUST remain available as catalog records
   # while every guest service capability is false, including when their valid

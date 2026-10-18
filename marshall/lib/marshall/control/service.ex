@@ -47,7 +47,8 @@ defmodule Marshall.Control.Service do
     "galileo" => Marshall.Control.Services.Galileo,
     "lilly" => Marshall.Control.Services.Lilly,
     "porsche" => Marshall.Control.Services.Porsche,
-    "ziggy" => Marshall.Control.Services.Ziggy
+    "ziggy" => Marshall.Control.Services.Ziggy,
+    "peach" => Marshall.Control.Services.Peach
   }
 
   @doc "The limits of a service module over the defaults."

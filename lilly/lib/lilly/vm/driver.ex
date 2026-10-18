@@ -522,7 +522,7 @@ defmodule Lilly.VM.Driver do
   end
 
   defp finish_pause(config, pool, spec, authority, options) do
-    with :ok <- Unit.stop(spec, Keyword.get(options, :vm_id)),
+    with :ok <- Unit.kill_paused(spec),
          {:ok, :stopped} <- Unit.status(spec),
          :ok <- Jail.cleanup(pool, spec),
          :ok <- Lilly.Network.detach(config.network, spec.network),

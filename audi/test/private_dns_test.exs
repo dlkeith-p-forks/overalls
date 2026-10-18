@@ -56,7 +56,7 @@ defmodule Audi.PrivateDNSTest do
 
   test "the integration zone answers single labels and nothing deeper" do
     for {labels, code, answers} <- [
-          {["exedev", "integration", "internal"], 0, 1},
+          {["esample", "integration", "internal"], 0, 1},
           {["a", "integration", "internal"], 0, 1},
           {["mirror-1", "integration", "internal"], 0, 1},
           {["a", "b", "integration", "internal"], 3, 0},

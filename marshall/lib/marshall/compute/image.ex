@@ -103,7 +103,8 @@ defmodule Marshall.Compute.Image do
   # Guest agent capability MUST come only from a validated manifest matching the
   # stored image ID: version-4 images carry the Linux agent set, version-5
   # firmware images declare `none` or `windows-v1`, and version-6 native images
-  # carry their matching native agent set. A missing, corrupt or
+  # carry their matching native agent set. Version-7 Windows editor images carry
+  # only the separate windows-editor-v1 set. A missing, corrupt or
   # mismatched manifest MUST return unavailable, never a default agent set. This
   # pure helper grants no authority.
   @spec guest_agents_capability(term()) ::

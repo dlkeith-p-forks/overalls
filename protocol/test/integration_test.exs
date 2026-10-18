@@ -34,18 +34,18 @@ defmodule OverallsProtocol.IntegrationTest do
     seed: 921_798_668 do
     prefix = draw("prefix", member_of([".", "A.", "a.b.", "-.", "a-."]))
     suffix = draw("suffix", member_of(["", ".attacker.com", ".integration.internal.evil.com"]))
-    value = prefix <> "exedev.integration.internal" <> suffix
+    value = prefix <> "esample.integration.internal" <> suffix
     assert {:error, :invalid_hostname} = Integration.label(value)
   end
 
   test "valid labels round-trip through hostname composition" do
-    assert {:ok, "exedev"} = Integration.label("exedev.integration.internal")
+    assert {:ok, "esample"} = Integration.label("esample.integration.internal")
     assert {:ok, "a"} = Integration.label("a.integration.internal")
     assert {:ok, "mirror-1"} = Integration.label("mirror-1.integration.internal")
     assert {:error, :invalid_hostname} = Integration.label("llm.internal")
     assert {:error, :invalid_hostname} = Integration.label("integration.internal")
-    assert {:error, :invalid_hostname} = Integration.label("exedev.integration.internal.")
-    assert {:error, :invalid_name} = Integration.hostname("Exedev")
+    assert {:error, :invalid_hostname} = Integration.label("esample.integration.internal.")
+    assert {:error, :invalid_name} = Integration.hostname("Esample")
     assert {:error, :invalid_name} = Integration.hostname("ssh")
     assert {:error, :invalid_hostname} = Integration.label("ssh.integration.internal")
   end
@@ -226,7 +226,7 @@ defmodule OverallsProtocol.IntegrationTest do
   test "valid peer attestation" do
     id = "01234567-89ab-4def-8123-456789abcdef"
 
-    assert {:ok, %{source_vm_id: ^id, name: "exedev", expires_at: 4}} =
+    assert {:ok, %{source_vm_id: ^id, name: "esample", expires_at: 4}} =
              Integration.peer_attestation(attestation(4))
 
     extra = Map.put(attestation(4), "target", "https://evil.test")
@@ -255,7 +255,7 @@ defmodule OverallsProtocol.IntegrationTest do
       "grant" => peer_grant(label)
     }
 
-    assert {:ok, %{attestation: %{name: "exedev"}, grant: %{binding: %{label: ^label}}}} =
+    assert {:ok, %{attestation: %{name: "esample"}, grant: %{binding: %{label: ^label}}}} =
              Integration.peer_open_response(
                response,
                "11234567-89ab-4def-8123-456789abcdef",
@@ -294,7 +294,7 @@ defmodule OverallsProtocol.IntegrationTest do
     %{
       "purpose" => "galileo-peer",
       "source_vm_id" => "01234567-89ab-4def-8123-456789abcdef",
-      "name" => "exedev",
+      "name" => "esample",
       "expires_at" => expires
     }
   end

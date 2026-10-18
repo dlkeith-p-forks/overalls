@@ -6,8 +6,9 @@ defmodule OverallsProtocol.ImageManifest do
   boot arguments) with explicit workspace-source and editor capabilities.
   Version 5 describes firmware-booted images (a PVH firmware and a raw GPT
   root disk) that declare no guest agents or the Windows v1 agent set.
-  Version 6 adds native FreeBSD and
-  illumos firmware disk images. Both derive the same content-addressed
+  Version 6 adds native FreeBSD and illumos firmware disk images. Version 7
+  binds the separate Windows editor agent set to a required EditorRelease.
+  Every version derives a content-addressed
   `sha256:` identity from an ordered identity array.
   """
   @type workspace_source_version :: 2 | nil
@@ -72,7 +73,23 @@ defmodule OverallsProtocol.ImageManifest do
           manifest: map()
         }
 
-  @type t :: kernel_image() | firmware_image() | native_image()
+  @type windows_editor_image :: %{
+          optional(:git_identity_version) => git_identity_version(),
+          id: String.t(),
+          architecture: :x86_64,
+          os: :windows,
+          boot_kind: :firmware,
+          pci: true,
+          root_format: :raw_gpt,
+          guest_agents: :windows_editor_v1,
+          minimum_memory_bytes: pos_integer(),
+          minimum_disk_bytes: pos_integer(),
+          workspace_source_version: workspace_source_version(),
+          editor: OverallsProtocol.EditorRelease.t(),
+          manifest: map()
+        }
+
+  @type t :: kernel_image() | firmware_image() | native_image() | windows_editor_image()
 
   @boot_artifact_maximum_bytes 8_589_934_592
   @firmware_maximum_bytes 67_108_864
@@ -83,7 +100,7 @@ defmodule OverallsProtocol.ImageManifest do
   # (kind, PCI transport and boot arguments where present), minimum resource sizes, declared
   # capabilities and every artifact size/digest using the ordered identity encoding. Reordering
   # JSON fields must not change the ID; changing a boot requirement or artifact descriptor must
-  # change it. Version-4, version-5 and version-6 manifests never share an ID.
+  # change it. Version-4 through version-7 manifests never share an ID.
 
   # @cc [owner:ghuntley,label:protocol] image-rootfs-admission-bound
   # validate/1 MUST accept root artifacts (ext4 or raw GPT) through 128 GiB
@@ -231,6 +248,68 @@ defmodule OverallsProtocol.ImageManifest do
 
   def validate(%{"version" => 6} = manifest), do: validate_native(manifest)
 
+  # @cc [owner:ghuntley,label:security;protocol] windows-editor-manifest-closed
+  # Version 7 MUST contain exactly the ten Windows x86_64 firmware/raw-GPT
+  # fields with windows-editor-v1 and a required closed EditorRelease. The
+  # optional Git wrapper is independent. Every descriptor and requirement MUST
+  # enter its new identity namespace; version 5 and windows-v1 remain unchanged.
+  def validate(
+        %{
+          "version" => 7,
+          "os" => "windows",
+          "architecture" => "x86_64",
+          "boot" => %{"kind" => "firmware", "pci" => true, "firmware" => firmware} = boot,
+          "root" => %{"format" => "raw-gpt"} = root,
+          "guest_agents" => "windows-editor-v1",
+          "minimum_memory_bytes" => memory,
+          "minimum_disk_bytes" => disk,
+          "workspace_source_version" => workspace_source_version,
+          "editor" => editor
+        } = manifest
+      )
+      when map_size(manifest) == 10 and map_size(boot) == 3 and map_size(root) == 3 do
+    with true <- workspace_source_version in [nil, 2],
+         {:ok, editor} <- OverallsProtocol.EditorRelease.decode(editor),
+         true <- minima?(memory, disk),
+         true <- artifact?(firmware, @firmware_maximum_bytes),
+         true <- artifact?(Map.delete(root, "format"), @root_maximum_bytes),
+         true <- disk >= root["bytes"] do
+      identity = [
+        "lilly-image-v7",
+        "windows",
+        "x86_64",
+        "firmware",
+        true,
+        "raw-gpt",
+        "windows-editor-v1",
+        memory,
+        disk,
+        workspace_source_version,
+        [editor.protocol, editor.commit, editor.release],
+        [firmware["bytes"], firmware["sha256"]],
+        [root["bytes"], root["sha256"]]
+      ]
+
+      {:ok,
+       %{
+         id: identity_id(identity),
+         architecture: :x86_64,
+         os: :windows,
+         boot_kind: :firmware,
+         pci: true,
+         root_format: :raw_gpt,
+         guest_agents: :windows_editor_v1,
+         minimum_memory_bytes: memory,
+         minimum_disk_bytes: disk,
+         workspace_source_version: workspace_source_version,
+         editor: editor,
+         manifest: manifest
+       }}
+    else
+      _ -> {:error, :invalid_image_manifest}
+    end
+  end
+
   def validate(_), do: {:error, :invalid_image_manifest}
 
   # @cc [owner:ghuntley,label:protocol;security] image-native-manifest-closed
@@ -315,17 +394,17 @@ defmodule OverallsProtocol.ImageManifest do
   # @cc [owner:ghuntley,label:security;protocol] image-guest-agents-no-inference
   # Guest agent capability MUST come only from a validated manifest: version 4 images
   # carry Linux, version 5 declares `none`/`windows-v1`, and version 6 declares
-  # the matching native OS agent set.
+  # the matching native OS agent set. Version 7 alone carries windows-editor-v1.
   # Installed guest software, package presence or caller hints MUST NOT grant or
   # remove agent capability; what a set can do is OverallsProtocol.GuestAgents'
   # table, qualified by exact reviewed native image identity for capabilities/2.
   @spec guest_agents(t()) :: guest_agents()
   def guest_agents(%{guest_agents: agents})
-      when agents in [:linux, :none, :windows_v1, :freebsd_v1, :illumos_v1],
+      when agents in [:linux, :none, :windows_v1, :windows_editor_v1, :freebsd_v1, :illumos_v1],
       do: agents
 
   # @cc [owner:ghuntley,label:security;protocol] image-editor-capability-no-inference
-  # Editor capability MUST come only from a validated v4 content-bound descriptor.
+  # Editor capability MUST come only from a validated v4 or v7 content-bound descriptor.
   # A non-editor image, package presence or caller hint MUST NOT grant capability.
   @spec editor(term()) ::
           {:ok, OverallsProtocol.EditorRelease.t()} | {:error, :editor_unavailable}

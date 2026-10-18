@@ -4487,7 +4487,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/accounts/time_zones_property_test.exs",
           "assertion": "every label carries the zone's offset in force at that instant",
-          "scope": "Every curated zone over random instants 2000–2040 plus fixed DST edges; half-hour and 45-minute zones pinned",
+          "scope": "Every curated zone over random instants 2000\u20132040 plus fixed DST edges; half-hour and 45-minute zones pinned",
           "execution": "present"
         },
         {
@@ -6354,9 +6354,9 @@
           "record_assertion": "7 passed (1 property, 6 tests)"
         },
         {
-          "kind": "property",
+          "kind": "unit",
           "path": "ziggy/test/control_response_test.exs",
-          "assertion": "only an exact completion conflict is classified as a durable conflict",
+          "assertion": "documents are bounded and only maps become acknowledgements",
           "scope": "Generated route, HTTP status and reply-error combinations preserve the distinct 409 completion_conflict class; local response mapping only, without live Marshall or reporter timing.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-09-29-antithesis-property-audit.md",
@@ -11372,6 +11372,66 @@
       ]
     },
     {
+      "id": "windows-browser-editor-candidate",
+      "journey": "Stage a personal Windows browser editor candidate while keeping unqualified Windows images editor-ineligible",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "storage",
+        "recovery"
+      ],
+      "boundary": "ADR-0200 accepts a source-built native Code OSS candidate and SYSTEM broker on dedicated gateway-only TCP 4444. The separate windows-editor-v1 row requires manifest v7 with a closed immutable editor descriptor; portable bundle v4 retains that tuple. Existing windows-v1/v5 remains editor false and no production catalog selects the candidate. The candidate binds current MMDS execution, the closed preface, locked roster reconciliation, canonical local SAM SID and S4U token, personal profile, exact Job Object/process/pipe custody and a private recovery receipt.",
+      "denial": "The accepted windows-v1 editor capability remains false. Missing or mismatched image descriptors, foreign gateway or execution, stale roster account, ambiguous package/PATH custody, wrong SID/process/job/pipe and exhausted pending-I/O capacity must refuse. A foreign process cannot be terminated or adopted without exact custody; a portable test or cross-link cannot qualify native Windows browser admission.",
+      "scope": "The Windows runtime/source recipes, broker model/native source, bundle importer, fixed-task installer and native acceptance harness are present. Focused protocol and Lilly tests cover immutable v7/v4 identity, release preservation and old-row refusal. Portable tests cover finite identity, path and capacity decisions. Thirty native Windows library tests pass, including actual named-pipe timeout/cancellation and Windows ACL descriptor/refusal checks. No completed native Code OSS bundle, admitted Windows image, Win32 listener/account/worker/task lifecycle or authenticated Windows browser journey is recorded.",
+      "status": "partial",
+      "gaps": "Native Windows SAM/S4U/profile and executable/PATH lifecycle custody, sustained/interrupted overlapped cancellation, task crash/reboot supervision, exact bundle/image qualification, two-account browser separation, edit/readback, revocation, broker adoption and worker-loss recovery remain unrecorded. Guest administrator authority and physical isolation are separate boundaries.",
+      "preferred_gap": "Run the isolated native Windows machine/browser harness against the exact reviewed bundle and candidate image, complete protocol and both consumer gates, then review exact production image selection.",
+      "evidence": [
+        {
+          "kind": "unit",
+          "path": "nix/domains/artifacts/vscode-web-broker/src/windows_model.rs",
+          "assertion": "same_account_pipe_requires_job_and_executable_custody",
+          "scope": "Portable modeled custody rejects a same-account pipe without exact retained job and executable identity; no native SAM, Job Object or pipe API runs.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/domains/artifacts/vscode-web-broker/src/windows_model.rs",
+          "assertion": "pipe_slots_remain_reserved_until_retained_operation_is_released",
+          "scope": "Portable slot reservations remain bounded until retained state drops; no native overlapped cancellation or completion is exercised.",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "protocol/test/windows_editor_image_test.exs",
+          "assertion": "Windows editor identity binds its release and survives portable storage",
+          "scope": "Pure generated v7 identity and v4 bundle round trips, field mutations and closed refusal. Existing Windows v1 remains false; no native image runs.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md",
+          "record_assertion": "the focused protocol run passed 33 tests"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/domains/artifacts/vscode-web-broker/src/windows_pipe.rs",
+          "assertion": "native_pipe_copies_completed_bytes_and_retires_timeout_without_caller_storage",
+          "scope": "Executed real Windows named-pipe completion and timeout with copied operation storage; not the full worker or browser lifecycle.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md",
+          "record_assertion": "30 library tests and 0 binary tests"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/windows-editor/browser.py",
+          "assertion": "windows-editor-native-browser-journey",
+          "scope": "Source-present actual relay/workbench, native save/PTY and broker/worker recovery harness. Static compilation and boundary checks do not execute Windows or authenticate a browser journey.",
+          "execution": "present"
+        }
+      ]
+    },
+    {
       "id": "windows-guest-agents-transport",
       "journey": "Give Windows guests an agent set with a capability table, reach a guest-side listener over virtio-vsock through the viosock driver, and make the fleet ready to stage the image",
       "layers": [
@@ -11385,9 +11445,9 @@
       ],
       "boundary": "OverallsProtocol.GuestAgents names the closed agent set (linux, none, windows-v1) and a pure capability table; Lilly's jail, driver and executor and Marshall's per-capability image facts branch on the table, never on the set's name, so the agentless none row reproduces ADR-0170 exactly. The firmware jail gets the jail-local vsock endpoint only for an agent set that speaks the Lilly protocols. The readiness budget is the agent set's (600 s for windows-v1) and is recorded once per boot. The image ships the virtio-win viosock driver and, until the real agents exist, a SYSTEM probe that discovers the provider's address family at runtime, listens on vsock port 1099 and answers the host's CONNECT with one JSON line, publishing only its own log on the EFI system partition. Windows binaries are cross-built from the shared Lyra crate with the pinned zig toolchain; the Lyra gate type-checks the library and the Windows bins for x86_64-pc-windows-gnu. Images are configured as { path } objects; a size check decides template cacheability and every root disk is copied on demand (ADR-0177); both hosts' template budget is 96 GiB.",
       "denial": "An unknown agent set string, a workspace source version 2 on an agentless manifest or a ninth manifest key is refused by the protocol; an older Lilly refuses a windows-v1 bundle, so the converged push precedes any placement. A missing, corrupt or mismatched manifest yields every capability false in Marshall. A bare image path or any image key beyond path, including the retired standby key, refuses Lilly's configuration. The probe carries no identity or credential material. The editor and the Inception profile stay refused for windows-v1.",
-      "scope": "Protocol tests pin the capability table and the windows-v1 manifest and bundle vectors; Lilly tests pin the agentless jail configuration, the vsock addition for windows-v1, the recorded readiness budget, the image configuration shape and template cacheability; Marshall tests bind the capabilities to the exact image ID for every agent set and exercise the per-capability surfaces; the windows-guest-unit evaluation checks the viosock driver, the agents directory, the probe task, the manifest arguments and the launcher's vsock device; the lyra check builds and type-checks the Windows target. Recorded on 2026-10-14: lyraWindows built overalls-winprobe.exe (PE32+, 320 000 bytes) through zig. The windows-guest machine test dials the probe through the launcher's vsock socket after the SAC prompt and reads its published log. The agents composition now also inspects the live Windows EFI log for the closed agentd startup line; this is present evidence only until the composed check runs. The prior selected sealed e9ed22f1 image in live run 075200 reported ready while sshd was stopped and CLI SSH failed; that current failure is distinct from earlier dated fleet proofs.",
+      "scope": "Protocol tests pin the capability table and the windows-v1 manifest and bundle vectors; Lilly tests pin the agentless jail configuration, the vsock addition for windows-v1, the recorded readiness budget, the image configuration shape and template cacheability; Marshall tests bind the capabilities to the exact image ID for every agent set and exercise the per-capability surfaces; the windows-guest-unit evaluation checks the viosock driver, the agents directory, the probe task, the manifest arguments and the launcher's vsock device; the lyra check builds and type-checks the Windows target. Recorded on 2026-10-14: lyraWindows built overalls-winprobe.exe (PE32+, 320 000 bytes) through zig. The windows-guest machine test dials the probe through the launcher's vsock socket after the SAC prompt and reads its published log. The agents composition now also inspects the live Windows EFI log for the closed agentd startup line; this is present evidence only until the composed check runs. The staged Windows editor runtime and source recipes retain editor_capability=false; the editor-target-boundaries and windows-editor-runtime evaluations pass. The broker has 26 passing portable library and 7 Linux binary tests, Linux/Windows clippy and production Windows cross-link evidence. Thirty actual Windows library tests cover named-pipe timeout/cancellation and ACL descriptor/refusal checks; personal worker, task and browser lifecycle remain unrecorded. The separate editor candidate uses manifest v7/windows-editor-v1 and bundle v4 while this existing windows-v1 row remains editor false. The prior selected sealed e9ed22f1 image in live run 075200 reported ready while sshd was stopped and CLI SSH failed; that current failure is distinct from earlier dated fleet proofs.",
       "status": "partial",
-      "gaps": "Fleet proofs on 2026-10-15 cover creation to ready in seconds, trust, roster accounts and sshd, the host certificate, executor registration, a public workspace clone and a relocation between hosts (review). Still unproven: an SSH login through Audi, a roster-user ConPTY terminal under an S4U logon and an agent turn (they need a browser-approved key), crash restart of the scheduled-task agents, the pool-level refill with an uncacheable image configured, and no Marshall-driven Windows fleet test makes any of the fleet proofs repeatable; ConPTY re-renders terminal output.",
+      "gaps": "Fleet proofs on 2026-10-15 cover creation to ready in seconds, trust, roster accounts and sshd, the host certificate, executor registration, a public workspace clone and a relocation between hosts (review). Still unproven: an SSH login through Audi, a roster-user ConPTY terminal under an S4U logon and an agent turn (they need a browser-approved key), crash restart of the scheduled-task agents, the pool-level refill with an uncacheable image configured, and no Marshall-driven Windows fleet test makes any of the fleet proofs repeatable; ConPTY re-renders terminal output. The staged editor runtime/source and portable broker custody model have no native Windows link, listener VM run, image admission, browser origin or editor sign-in/edit/readback/recovery evidence.",
       "preferred_gap": "Record the browser-approved proofs (SSH through Audi, a roster-user terminal, an agent turn) and add a Marshall-driven Windows fleet test so the fleet proofs become machine tests.",
       "evidence": [
         {
@@ -11423,6 +11483,34 @@
           "path": "nix/verification/tests/evaluation/windows-guest.nix",
           "assertion": "viosock",
           "scope": "Builder rules: viosock in the driver tree, the agents directory and probe task only when agents are supplied, manifest agent set and workspace source version from the builder arguments, the launcher's vsock device. No installation or boot.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/verification/tests/evaluation/editor-target-boundaries.nix",
+          "assertion": "windows-v5-editor=false",
+          "scope": "Static package metadata asserts the editor and broker target x86_64-linux and the Windows v5 package has no editor field or capability. This preserves the windows-v1 editor refusal; no Windows broker, browser origin or browser journey is exercised.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/verification/tests/evaluation/windows-editor-runtime.nix",
+          "assertion": "editor_capability == false",
+          "scope": "Pinned Windows Node and ripgrep runtime metadata evaluates with editor_capability=false and no references; this stages executables only and does not build or run a Code OSS bundle.",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "nix/domains/artifacts/vscode-web-broker/src/windows_model.rs",
+          "assertion": "proptest!",
+          "scope": "Portable Rust properties and fixed tests bind names and peer custody to the boot/descriptor/account/SID identity, refuse foreign or incomplete recovery without cleanup, reject truncated SIDs and ambiguous local paths, and quote Windows command lines. No Win32 API, listener, VM or browser runs.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "lyra/src/bin/overalls-ssh-sync-windows.rs",
+          "assertion": "ensure_account",
+          "scope": "The Windows authorizer serializes account ensure with the shared roster lock and requires the exact canonical username/UID roster pair before mutation; no Windows account or SSH daemon is exercised.",
           "execution": "present"
         },
         {
@@ -11566,7 +11654,7 @@
           "assertion": "foreign-linux-pam-nosuid-account",
           "scope": "Isolated VM/chroot using the exact pinned installer and PAM: missing-helper9, valid0, expired13, password-change12, unknown10 on nosuid runtime storage; root-owned04755 copy, unchanged0555 source, idempotence and twelve unsafe/argument/nonroot refusals. vmTools source ownership is replaced by a byte-identical root-owned overlay only inside the disposable chroot. No foreign guest SSH/sudo or nonroot elevation acceptance.",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
-          "record_assertion": "The maintained VM gate records missing-helper9 → repaired0"
+          "record_assertion": "The maintained VM gate records missing-helper9 \u2192 repaired0"
         },
         {
           "kind": "manual",
@@ -13211,9 +13299,9 @@
         },
         {
           "kind": "unit",
-          "path": "marshall/test/marshall_web/settings_live_test.exs",
-          "assertion": "a revoked login cannot change settings on an existing page",
-          "scope": "LiveView revoked-session refusal in the BEAM VM.",
+          "path": "marshall/test/marshall_web/account_live_test.exs",
+          "assertion": "the Git settings form persists identity and trailer preference",
+          "scope": "AccountLive settings form saves Git username, email and trailer preference for the authenticated account.",
           "execution": "present"
         }
       ],

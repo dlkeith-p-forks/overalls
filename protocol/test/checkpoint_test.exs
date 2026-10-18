@@ -137,6 +137,7 @@ defmodule OverallsProtocol.CheckpointTest do
     }
 
     wire = Execution.encode_command(command)
+    assert wire["checkpoint"] == Checkpoint.encode(command.checkpoint)
     assert {:ok, ^command} = Execution.command(wire)
     assert {:error, :invalid_message} = Execution.command(Map.delete(wire, "checkpoint"))
 

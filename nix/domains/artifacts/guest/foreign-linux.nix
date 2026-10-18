@@ -606,6 +606,7 @@ pkgs.runCommand imageName {
     --argjson kernel_bytes "$kernel_bytes" --arg kernel_sha256 "$(sha256sum "$out/kernel" | cut -d' ' -f1)" \
     --argjson initrd_bytes "$initrd_bytes" --arg initrd_sha256 "$(sha256sum "$out/initrd" | cut -d' ' -f1)" \
     --argjson rootfs_bytes "$rootfs_bytes" --arg rootfs_sha256 "$(sha256sum "$out/rootfs.ext4" | cut -d' ' -f1)" \
-    '{version:4,architecture:"x86_64",boot_args:("console=ttyS0 root=/dev/vda rw overalls.distribution=" + $distro),minimum_disk_bytes:$disk,minimum_memory_bytes:$memory,workspace_source_version:${if privateServiceRoots == [] then "null" else "2"},kernel:{bytes:$kernel_bytes,sha256:$kernel_sha256},initrd:{bytes:$initrd_bytes,sha256:$initrd_sha256},rootfs:{bytes:$rootfs_bytes,sha256:$rootfs_sha256}} + ${if privateServiceRoots == [] then "{}" else "{git_identity_version:1}"}' \
+    --argjson editor '${builtins.toJSON editorDescriptor}' \
+    '{version:4,architecture:"x86_64",boot_args:("console=ttyS0 root=/dev/vda rw lsm=landlock,yama,bpf overalls.distribution=" + $distro),minimum_disk_bytes:$disk,minimum_memory_bytes:$memory,workspace_source_version:${if privateServiceRoots == [] then "null" else "2"},kernel:{bytes:$kernel_bytes,sha256:$kernel_sha256},initrd:{bytes:$initrd_bytes,sha256:$initrd_sha256},rootfs:{bytes:$rootfs_bytes,sha256:$rootfs_sha256}} + ${if privateServiceRoots == [] then "{}" else "{git_identity_version:1}"} + (if $editor == null then {} else {editor:$editor} end)' \
     > "$out/manifest.json"
 ''

@@ -196,7 +196,7 @@ defmodule Marshall.Galileo.Authorizations do
     now = Ledger.now()
 
     unless match?(%Marshall.Accounts.User{deleted_at: nil}, Security.current(vm.owner_id)) and
-             OverallsProtocol.ProfilePolicy.allows?(vm.profile, :egress) and
+             OverallsProtocol.ProfilePolicy.allows?(vm.profile, :private_services) and
              host.enabled and host.maintenance_mode != :retired and
              is_binary(host.connection_session_id) and
              Marshall.Compute.HostLiveness.authority?(

@@ -6,6 +6,13 @@ use std::io::{self, Read, Write};
 use std::net::Ipv4Addr;
 use url::Url;
 
+pub mod mmds;
+#[cfg(windows)]
+pub mod windows;
+pub mod windows_model;
+#[cfg(windows)]
+pub mod windows_pipe;
+
 pub const MAX_PREFACE: usize = 2048;
 pub const PORT: u16 = 4444;
 
@@ -17,14 +24,14 @@ pub struct Descriptor {
     pub release: String,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub struct Preface {
     pub version: u8,
     pub binding: Binding,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub struct Binding {
     pub vm_id: String,

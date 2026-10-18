@@ -52,6 +52,8 @@
       lib.mkArchLinuxGuest = built.mkArchLinuxGuest;
       lib.mkAlmaLinuxGuest = built.mkAlmaLinuxGuest;
       lib.mkAlmaGuest = built.mkAlmaGuest;
+      lib.mkWindowsGuest = built.mkWindowsGuest;
+      lib.mkWindowsEditorBundle = built.mkWindowsEditorBundle;
       lib.nativeKernels = built.nativeKernels;
       lib.mkFreeBSDGuest = built.mkFreeBSDGuest;
       lib.mkFreeBSDImageCandidate = built.mkFreeBSDImageCandidate;
@@ -108,6 +110,7 @@
         tool-browser = built.browser;
         tool-vscode-web = built.vscodeWeb;
         tool-vscode-web-broker = built.vscodeWebBroker;
+        tool-vscode-web-broker-windows = built.windowsEditorBroker;
         tool-update-vscode-extensions = built.updateVscodeExtensions;
         tool-underclass = built.underclass;
         tool-smtprelay = built.smtprelay;

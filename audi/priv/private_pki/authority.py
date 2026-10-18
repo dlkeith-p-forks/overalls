@@ -16,7 +16,7 @@ ROOT_YEARS = 20
 INTERMEDIATE_YEARS = 10
 SERVER_YEARS = 10
 HOSTNAME = "llm.internal"
-NAMES = ["llm.internal", "*.integration.internal"]
+NAMES = ["llm.internal", "reflection.internal", "*.integration.internal"]
 MAX_PEM = 65536
 # KeyUsage annotates encipher_only/decipher_only as bool, but None is the
 # documented omitted value at runtime and encodes identically without key

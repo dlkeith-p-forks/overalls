@@ -130,6 +130,7 @@ defmodule Audi.Private.Front do
   end
 
   defp service("llm.internal", _opts), do: {:ok, :ziggy}
+  defp service("reflection.internal", _opts), do: {:ok, :peach}
   defp service("ssh.integration.internal", _opts), do: {:ok, :ssh}
 
   defp service("com-github.integration.internal", opts) do
@@ -150,7 +151,6 @@ defmodule Audi.Private.Front do
 
   # 10.10/16 is the customer profile. It has no inference or integration access.
   defp service_allowed?(:ssh, _peer), do: true
-  defp service_allowed?(_, {10, 10, _, _}), do: false
   defp service_allowed?(_, _), do: true
 
   # @cc [owner:ghuntley,label:security] guest-otel-exact-surface
@@ -191,6 +191,7 @@ defmodule Audi.Private.Front do
       case service do
         {:galileo, _label} -> {opts[:galileo_socket], ~w(content-type accept)}
         :ziggy -> {opts[:ziggy_socket], ~w(content-type accept anthropic-version anthropic-beta)}
+        :peach -> {opts[:peach_socket], ~w(content-type accept)}
         :ssh -> {opts[:ziggy_socket], ~w(content-type accept)}
         :otel -> {opts[:otel_socket], ~w(content-type)}
       end

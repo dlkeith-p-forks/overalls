@@ -25,7 +25,7 @@ mod sync {
     use lyra::platform::windows::{boot_id, services};
     use serde::Deserialize;
     use std::collections::HashMap;
-    use std::fs::{self, File};
+    use std::fs::{self, File, OpenOptions};
     use std::io::{self, Read, Seek, SeekFrom, Write};
     use std::path::{Path, PathBuf};
     use std::process::{Command, Stdio};
@@ -35,6 +35,7 @@ mod sync {
     const SSH_DIR: &str = "C:\\overalls\\ssh";
     const KEYS_DIR: &str = "C:\\overalls\\ssh\\authorized_keys";
     const STATE: &str = "C:\\overalls\\ssh\\accounts.json";
+    const LOCK: &str = "C:\\overalls\\ssh\\accounts.lock";
     const RUN_DIR: &str = "C:\\overalls\\run";
     const ADMINISTRATOR_RETIRED: &str = "C:\\overalls\\run\\administrator-retired";
     const INTERVAL: Duration = Duration::from_secs(2);
@@ -92,6 +93,30 @@ mod sync {
     }
 
     struct FileStore(PathBuf);
+
+    /// @cc [owner:ghuntley,label:security;concurrency] windows-roster-single-writer
+    /// The daemon and on-demand reconciler MUST hold the same no-follow file
+    /// lock through fetching, checking and committing the roster. Lock failure
+    /// or a five-second contention deadline MUST refuse without account changes.
+    fn roster_lock() -> io::Result<File> {
+        let file = lyra::platform::open_private(
+            Path::new(LOCK),
+            OpenOptions::new().read(true).write(true).create(true).truncate(false),
+        )?;
+        let deadline = Instant::now() + Duration::from_secs(5);
+        loop {
+            match fs2::FileExt::try_lock_exclusive(&file) {
+                Ok(()) => return Ok(file),
+                Err(error)
+                    if error.raw_os_error() == fs2::lock_contended_error().raw_os_error()
+                        && Instant::now() < deadline =>
+                {
+                    std::thread::sleep(Duration::from_millis(10));
+                }
+                Err(_) => return Err(io::Error::other("account reconciliation unavailable")),
+            }
+        }
+    }
 
     impl StateStore for FileStore {
         fn load(&self) -> io::Result<Option<State>> {
@@ -292,10 +317,33 @@ mod sync {
         store: &mut FileStore,
         accounts: &mut NetAccounts,
     ) -> io::Result<State> {
+        let _lock = roster_lock()?;
         let roster: Roster =
             serde_json::from_slice(&fetch(client, Route::Roster, ssh_roster::MAX_ROSTER)?)
                 .map_err(|_| io::Error::other("invalid roster"))?;
         ssh_roster::reconcile(roster, store, accounts)
+    }
+
+    /// @cc [owner:ghuntley,label:security] windows-editor-account-current-authority
+    /// An editor account MUST be fetched over fresh verified private TLS and
+    /// match both requested name and UID before the shared reconciler runs.
+    /// Missing trust, stale roster or reconciliation failure MUST return failure
+    /// with no credentials, identity, response body or arguments in diagnostics.
+    pub fn ensure_account(username: &str, uid: u32) -> io::Result<()> {
+        if !ssh_roster::valid_name(username) || !ssh_roster::UID_RANGE.contains(&uid) {
+            return Err(io::Error::other("invalid account"));
+        }
+        let _lock = roster_lock()?;
+        let bundle = bundle_path().ok_or_else(|| io::Error::other("trust unavailable"))?;
+        std::env::set_var("OVERALLS_SSH_CA_BUNDLE", bundle);
+        let client = lyra::private_http::client()?;
+        let roster: Roster =
+            serde_json::from_slice(&fetch(&client, Route::Roster, ssh_roster::MAX_ROSTER)?)
+                .map_err(|_| io::Error::other("invalid roster"))?;
+        ssh_roster::require_identity(&roster, username, uid)?;
+        let mut store = FileStore(PathBuf::from(STATE));
+        ssh_roster::reconcile(roster, &mut store, &mut NetAccounts)?;
+        Ok(())
     }
 
     fn keys_pass(client: &reqwest::blocking::Client, state: &State) -> io::Result<KeyIndex> {
@@ -482,7 +530,20 @@ mod sync {
 
 #[cfg(windows)]
 fn main() {
-    std::process::exit(sync::run());
+    let arguments: Vec<String> = std::env::args().skip(1).take(4).collect();
+    let status = match arguments.as_slice() {
+        [] => sync::run(),
+        [operation, username, uid] if operation == "--ensure-account" => {
+            match uid.parse::<u32>() {
+                Ok(parsed) if parsed.to_string() == *uid => {
+                    if sync::ensure_account(username, parsed).is_ok() { 0 } else { 1 }
+                }
+                _ => 64,
+            }
+        }
+        _ => 64,
+    };
+    std::process::exit(status);
 }
 
 #[cfg(not(windows))]

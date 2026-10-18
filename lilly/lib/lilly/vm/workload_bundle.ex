@@ -83,7 +83,7 @@ defmodule Lilly.VM.WorkloadBundle do
   # load/2 MUST accept only closed metadata matching the workload image and
   # architecture plus exact, root-owned, single-link, read-only artifact files
   # of the bundle's own kind: kernel and initrd for a version-1 bundle, the
-  # firmware alone for a version-2 bundle, or the version-3 native set. It intentionally verifies no image
+  # firmware alone for version-2, version-3 native or version-4 Windows editor bundles. It intentionally verifies no image
   # digest: placement-local ownership and ZFS transfer lineage are the integrity
   # authority after creation.
   @spec load(Path.t(), Spec.t()) :: {:ok, t()} | {:error, :invalid_workload_bundle}
@@ -155,6 +155,28 @@ defmodule Lilly.VM.WorkloadBundle do
       pci: true,
       firmware_bytes: firmware.size,
       kernel: manifest.kernel
+    })
+  end
+
+  # @cc [owner:ghuntley,label:security;recovery] bundle-retains-windows-editor-release
+  # A verified Windows editor image MUST materialize the version-4 portable
+  # bundle with its exact editor tuple and agent set; the generic firmware path
+  # MUST NOT discard this release when a placement later starts from storage.
+  defp metadata_base(
+         %Image{manifest: %{boot_kind: :firmware, guest_agents: :windows_editor_v1} = manifest} =
+           image
+       ) do
+    {_, firmware} = image.files["firmware"]
+
+    BundleMetadata.encode(%{
+      image_id: image.id,
+      architecture: manifest.architecture,
+      boot_kind: :firmware,
+      guest_agents: :windows_editor_v1,
+      os: :windows,
+      pci: true,
+      firmware_bytes: firmware.size,
+      editor: manifest.editor
     })
   end
 

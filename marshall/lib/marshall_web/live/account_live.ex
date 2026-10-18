@@ -37,7 +37,8 @@ defmodule MarshallWeb.AccountLive do
        security: nil,
        remaining: 0,
        enrollment_started?: false,
-       keys: []
+       keys: [],
+       git_form: git_form(socket.assigns.current_user)
      )
      |> assign_picker()
      |> reset_key_form()
@@ -444,6 +445,10 @@ defmodule MarshallWeb.AccountLive do
                 length(@keys)
               )}</span>
             </li>
+            <li>
+              <a href="#git-settings">{gettext("Git commits")}</a>
+              <span class="muted">{gettext("identity and commit attribution")}</span>
+            </li>
           </ol>
         </nav>
 
@@ -559,6 +564,21 @@ defmodule MarshallWeb.AccountLive do
             <button id="save-git-settings" type="submit" class="console-button primary">{gettext(
               "Save Git settings"
             )}</button>
+          </.form>
+        </section>
+
+        <hr />
+
+        <section id="git-settings" class="account-section stack" aria-labelledby="git-settings-title">
+          <h2 id="git-settings-title">{gettext("4. Git commits")}</h2>
+          <p class="muted">
+            {gettext("New machines use this Git identity. Agent commits can include the Overalls co-author trailer.")}
+          </p>
+          <.form for={@git_form} id="git-settings-form" phx-submit="save_git_settings" class="stack">
+            <.input field={@git_form[:git_username]} label={gettext("Git username")} maxlength="128" required />
+            <.input field={@git_form[:git_email]} type="email" label={gettext("Git email")} maxlength="254" required />
+            <.input field={@git_form[:commit_trailers_enabled]} type="checkbox" label={gettext("Add Overalls commit attribution")} />
+            <button id="save-git-settings" type="submit" class="console-button primary">{gettext("Save Git settings")}</button>
           </.form>
         </section>
 

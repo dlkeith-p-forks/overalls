@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:build] windows-project-language-adapters
+Windows Elixir language adapters MUST be command scripts that resolve only
+project PATH executables, preserve all caller arguments, and return fixed
+stderr plus exit code 127 when an executable is absent. They MUST NOT install,
+bootstrap, or bundle a language toolchain.

@@ -1674,6 +1674,50 @@ no self-update on Windows: a new executor ships with a rebuilt image. The
 private HTTPS client uses native TLS (schannel) on Windows, as Linux guests
 use OpenSSL, because rustls rejects the deployed private leaf.
 
+### Windows editor payload staging (not admitted)
+
+[ADR-0200](repo:docs/architecture/decisions/0200-windows-browser-editor-candidate.md)
+accepts the account-bound native Windows candidate: a source-built Code OSS
+bundle, SYSTEM gateway broker, verified local SAM/S4U workers, exact job/pipe
+recovery and a supervised fixed task. Implementation remains partial. The
+existing `windows-v1` false editor row is unchanged. Only the separate
+`windows-editor-v1` candidate uses manifest v7 with a required content-bound
+editor tuple and portable bundle v4 preserving that tuple. The candidate is
+not selected in the production catalog; exact native/browser qualification
+remains unrecorded.
+
+The Windows editor work is staged separately from the `windows-v1` capability
+row. [`windows-runtime.nix`](repo:nix/domains/artifacts/vscode-web/windows-runtime.nix)
+provides pinned Windows Node and ripgrep executables and writes a digest
+manifest; its metadata is runtime-only, has no store references and keeps
+`editor_capability = false`. [`windows-source.nix`](repo:nix/domains/artifacts/vscode-web/windows-source.nix)
+stages the pinned Code OSS source, Windows headers/import libraries, embedded
+Python, extension adapters and offline build scripts. A source payload or a
+successful compile alone does not alter the selected image manifest, add an
+editor descriptor or publish a browser origin. The native bundle, image admission and a Windows
+browser sign-in/edit/readback/recovery run remain unrecorded.
+
+The staged broker is a SYSTEM-owned boundary around that future payload. Its
+portable model binds boot, descriptor, placement, epoch, GuestAccount UUID,
+roster UID, canonical account name, local SAM SID and editor origin; identity
+derived pipe/job names and process creation time prevent foreign reuse. The
+Win32 launcher resolves the current local account, obtains an explicit S4U
+token, uses the SID-backed profile, starts a direct Node process suspended in a
+SYSTEM-only job, and verifies PID/time/SID/executable/job and named-pipe peer
+custody before forwarding. `windows_main.rs` fetches MMDS identity, runs the
+closed SSH authorizer and serializes one account startup; durable receipts
+permit only exact adoption after broker restart. Ambiguous paths, incomplete
+custody, stale roster pairs and foreign processes refuse without cleanup. The
+broker's 26 portable library and 7 Linux binary tests passed, with one deliberate
+subprocess fixture ignored; both Linux and Windows clippy checks passed. A
+production Windows cross-link and 30 actual native Windows library tests passed,
+including named-pipe timeout/cancellation and Windows ACL descriptor/refusal
+checks. These do not establish a listener/personal-worker lifecycle, candidate
+image or browser acceptance. The
+[native harness](repo:nix/verification/tests/machines/windows-editor/README.md)
+has six passing portable boundary/relay tests and static/type checks; its real
+Windows/browser assertions have not run.
+
 Tools in Windows images ([ADR-0173](repo:docs/architecture/decisions/0173-windows-images-winget-desktop-experience.md)):
 Windows images install Windows Server 2025 **Desktop Experience**, because
 winget and AppX provisioning exist only there (Server Core has no DISM AppX

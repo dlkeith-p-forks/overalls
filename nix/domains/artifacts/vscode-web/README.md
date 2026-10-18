@@ -1,5 +1,15 @@
 # Overalls browser editor
 
+The source-built workbench remains a Linux release. `windows-runtime.nix`
+stages hash-pinned native Windows Node 24 and ripgrep executables for guest
+bring-up, with a digest inventory that explicitly declares
+`editor_capability: false`. `windowsGuestRuntime` can carry those inert inputs
+beside the Windows v1 agents; it registers no editor task or network listener
+and retains the version-5 manifest. This is an executable runtime staging step,
+not Windows VS Code Web acceptance. A native Code OSS bundle, Windows PTY and
+watcher dependencies, an account-bound broker, service supervision and a real
+browser journey remain required.
+
 This package builds Microsoft's MIT-licensed Code OSS source at the exact commit
 in `inputs.nix`. It runs the native remote extension host, file service, watcher
 and terminal service in the signed guest, with the browser workbench from that
