@@ -768,6 +768,7 @@ let
     services.audi.editorPackages = lib.optionalAttrs (editor || suspension) {
       linux-x64 = packages.vscodeWeb;
     };
+    services.audiPrivate.enable = lib.mkIf suspension (lib.mkForce false);
     services.audi.relay = lib.mkIf suspension {
       enable = true;
       address = if name == "l1" then "10.90.0.1" else "10.90.0.2";
@@ -1147,8 +1148,6 @@ let
         storage = identity;
       }];
     };
-    services.ziggy.enable = true;
-    services.galileo.enable = true;
     environment.systemPackages = lib.optionals runtimeReadiness [
       (pkgs.writeShellScriptBin "fleet-readiness" ''
         exec ${pkgs.python313}/bin/python3 ${./readiness-probe.py} /run/lilly-release/status.sock "$@"
