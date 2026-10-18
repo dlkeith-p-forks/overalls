@@ -67,7 +67,9 @@ missing shows no operating-system label rather than a placeholder. Beneath them
 sit the resource facts (vCPU, memory, disk, profile) and the machine ID with a
 one-line **Copy** control; the authorized power actions and **Open VS Code**
 stay on the right and wrap under the summary on phone widths. The "Connect from
-your computer" box follows with one explanation and two steps, "Install and
+your computer" box follows, collapsed to its heading while it holds commands
+(an unavailable explanation starts open, and the viewer's open or closed
+choice survives live updates). Expanded, it shows one explanation and two steps, "Install and
 connect" lists the Linux / macOS and Windows installer commands side by side,
 each with a platform label and **Copy** button, and "Already installed" shows a
 single `ssh HOST` command for every platform, replacing the former Linux/macOS

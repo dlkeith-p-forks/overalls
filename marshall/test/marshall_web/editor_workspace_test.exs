@@ -206,6 +206,9 @@ defmodule MarshallWeb.EditorWorkspaceTest do
              )
            ) == 1
 
+    # Without commands the box starts open so the explanation stays visible.
+    assert Enum.count(LazyHTML.query(windows, "details#machine-connect-details[open]")) == 1
+
     notice = LazyHTML.query(windows, "#machine-connect-unavailable")
     assert Enum.count(notice) == 1
     assert LazyHTML.text(notice) =~ "no guest agents"

@@ -780,6 +780,12 @@ def run(fixture: Context, artifacts: Path) -> None:
                         page.evaluate("navigator.clipboard.readText()")
                         == page.locator("#machine-id").text_content()
                     )
+                    # The connect box starts collapsed; open it, then keep it open
+                    # across a LiveView update before copying an install command.
+                    expect(page.locator("#machine-install-command")).to_be_hidden()
+                    expect(page.locator("[data-phx-main].phx-connected")).to_have_count(1)
+                    page.locator("#machine-connect-details > summary").click()
+                    expect(page.locator("#machine-install-command")).to_be_visible()
                     page.locator("[data-copy-command='machine-install-command']").click()
                     expect(page.locator("#machine-copy-status")).to_have_text("Command copied.")
                     assert (

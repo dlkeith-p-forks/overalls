@@ -1,6 +1,7 @@
 defmodule MarshallWeb.WorkspaceComponents do
   @moduledoc "Shared Overalls panels, headings and machine workspace navigation."
   use MarshallWeb, :html
+  alias Phoenix.LiveView.JS
 
   # @cc [owner:ghuntley,label:product] workspace-controls-preserve-authority
   # Presentation components MUST preserve caller-provided action attributes and
@@ -238,68 +239,80 @@ defmodule MarshallWeb.WorkspaceComponents do
         class="machine-connect"
         aria-labelledby="machine-connect-title"
       >
-        <h2 id="machine-connect-title">Connect from your computer</h2>
-        <%= if @connection && capability?(@vm, :ssh) do %>
-          <p class="muted">
-            Installs Overalls, configures SSH, and connects to this machine. On Windows
-            the installer also installs OpenSSH 9.6 or newer and, with administrator
-            approval, makes it the default ssh.
-          </p>
-          <h3 class="connection-step">Install and connect</h3>
-          <div class="connection-grid">
-            <span class="connection-platform muted">Linux / macOS</span>
-            <div id="ssh-connection-commands" class="connection-command">
-              <pre><code id="machine-install-command">{@connection.install}</code></pre>
+        <%!-- Collapsed while it holds commands, to keep the header short; an
+             unavailable explanation (which may carry the only Boot log link)
+             starts open. LiveView keeps the viewer's open/closed choice. --%>
+        <details
+          id="machine-connect-details"
+          class="machine-connect-details"
+          open={!(@connection && capability?(@vm, :ssh))}
+          phx-mounted={JS.ignore_attributes(["open"])}
+        >
+          <summary>
+            <h2 id="machine-connect-title">Connect from your computer</h2>
+          </summary>
+          <%= if @connection && capability?(@vm, :ssh) do %>
+            <p class="muted">
+              Installs Overalls, configures SSH, and connects to this machine. On Windows
+              the installer also installs OpenSSH 9.6 or newer and, with administrator
+              approval, makes it the default ssh.
+            </p>
+            <h3 class="connection-step">Install and connect</h3>
+            <div class="connection-grid">
+              <span class="connection-platform muted">Linux / macOS</span>
+              <div id="ssh-connection-commands" class="connection-command">
+                <pre><code id="machine-install-command">{@connection.install}</code></pre>
+                <button
+                  type="button"
+                  class="console-button compact copy-button"
+                  data-copy-command="machine-install-command"
+                  aria-label="Copy Linux and macOS install command"
+                >Copy</button>
+              </div>
+              <span class="connection-platform muted">Windows</span>
+              <div id="machine-connect-windows" class="connection-command">
+                <pre><code id="machine-install-command-windows">{@connection.install_windows}</code></pre>
+                <button
+                  type="button"
+                  class="console-button compact copy-button"
+                  data-copy-command="machine-install-command-windows"
+                  aria-label="Copy Windows PowerShell install command"
+                >Copy</button>
+              </div>
+            </div>
+            <h3 class="connection-step">Already installed</h3>
+            <div class="connection-command">
+              <pre><code id="machine-ssh-command">{@connection.ssh}</code></pre>
               <button
                 type="button"
                 class="console-button compact copy-button"
-                data-copy-command="machine-install-command"
-                aria-label="Copy Linux and macOS install command"
+                data-copy-command="machine-ssh-command"
+                aria-label="Copy SSH command"
               >Copy</button>
             </div>
-            <span class="connection-platform muted">Windows</span>
-            <div id="machine-connect-windows" class="connection-command">
-              <pre><code id="machine-install-command-windows">{@connection.install_windows}</code></pre>
-              <button
-                type="button"
-                class="console-button compact copy-button"
-                data-copy-command="machine-install-command-windows"
-                aria-label="Copy Windows PowerShell install command"
-              >Copy</button>
-            </div>
-          </div>
-          <h3 class="connection-step">Already installed</h3>
-          <div class="connection-command">
-            <pre><code id="machine-ssh-command">{@connection.ssh}</code></pre>
-            <button
-              type="button"
-              class="console-button compact copy-button"
-              data-copy-command="machine-ssh-command"
-              aria-label="Copy SSH command"
-            >Copy</button>
-          </div>
-        <% else %>
-          <p id="machine-connect-unavailable" class="muted">
-            <%= cond do %>
-              <% capability?(@vm, :available) && !capability?(@vm, :ssh) -> %>
-                This machine's image has no guest agents yet: SSH, the browser terminal
-                and agents are unavailable. Use
-                <.link
-                  :if={@vm.permissions.read}
-                  id="machine-boot-log"
-                  navigate={~p"/machines/#{@vm.id}/terminals?view=boot-log"}
-                  aria-current={@active == "boot-log" && "page"}
-                >Boot log</.link>
-                to view the read-only host console.
-              <% !@vm.permissions.write -> %>
-                SSH connection requires write access to this machine.
-              <% @vm.profile == :inception -> %>
-                Use the browser terminal for this Inception environment.
-              <% true -> %>
-                SSH connection details are temporarily unavailable.
-            <% end %>
-          </p>
-        <% end %>
+          <% else %>
+            <p id="machine-connect-unavailable" class="muted">
+              <%= cond do %>
+                <% capability?(@vm, :available) && !capability?(@vm, :ssh) -> %>
+                  This machine's image has no guest agents yet: SSH, the browser terminal
+                  and agents are unavailable. Use
+                  <.link
+                    :if={@vm.permissions.read}
+                    id="machine-boot-log"
+                    navigate={~p"/machines/#{@vm.id}/terminals?view=boot-log"}
+                    aria-current={@active == "boot-log" && "page"}
+                  >Boot log</.link>
+                  to view the read-only host console.
+                <% !@vm.permissions.write -> %>
+                  SSH connection requires write access to this machine.
+                <% @vm.profile == :inception -> %>
+                  Use the browser terminal for this Inception environment.
+                <% true -> %>
+                  SSH connection details are temporarily unavailable.
+              <% end %>
+            </p>
+          <% end %>
+        </details>
         <span id="machine-copy-status" role="status" aria-live="polite" phx-update="ignore"></span>
       </section>
       <.machine_nav vm={@vm} active={@active} />

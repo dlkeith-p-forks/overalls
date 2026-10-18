@@ -168,10 +168,22 @@ button.machine-editor-link {
   padding: calc(var(--line-height) - var(--border-thickness)) calc(2ch - var(--border-thickness));
   margin-bottom: var(--line-height);
 }
+/* The connect box is the border; its disclosure adds none of its own. */
+.machine-connect-details {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.machine-connect-details > summary h2 {
+  display: inline;
+}
+.machine-connect-details[open] > summary {
+  margin-bottom: 0;
+}
 .machine-connect h2 {
   margin: 0;
 }
-.machine-connect > p {
+.machine-connect-details > p {
   margin: 0;
 }
 .connection-step {

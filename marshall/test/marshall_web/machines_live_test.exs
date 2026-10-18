@@ -23,7 +23,12 @@ defmodule MarshallWeb.MachinesLiveTest do
     assert has_element?(view, "#machine-ssh-command", "ssh ")
     refute has_element?(view, "#machine-ssh-command", "overalls ssh")
     assert has_element?(view, "#machine-connect-windows #machine-install-command-windows")
-    refute has_element?(view, "#machine-connect details")
+    # One disclosure for the whole box (collapsed while it holds commands);
+    # nothing inside it is collapsible.
+    assert has_element?(view, "#machine-connect > details#machine-connect-details:not([open])")
+    assert has_element?(view, "#machine-connect-details > summary #machine-connect-title")
+    refute has_element?(view, "#machine-connect-details details")
+    assert has_element?(view, "#machine-connect > #machine-copy-status")
     assert has_element?(view, "#machine-install-command-windows", "/bin/install.ps1")
     assert has_element?(view, "#machine-install-command-windows", "-ExecutionPolicy Bypass")
     refute has_element?(view, "#machine-ssh-command-windows")
