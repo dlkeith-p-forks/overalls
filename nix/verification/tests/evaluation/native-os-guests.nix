@@ -121,11 +121,13 @@ assert lib.hasInfix "stale_markers=" packages.nativeGuestAgents.freebsdSuperviso
 assert lib.hasInfix "ssh-ready" packages.nativeGuestAgents.freebsdSupervisor.text;
 assert lib.hasInfix "sshd-native" packages.nativeGuestAgents.freebsdSupervisor.text;
 assert lib.hasInfix "stale_temporary_markers=" packages.nativeGuestAgents.freebsdSupervisor.text;
+assert lib.hasInfix "sshd.pid.tmp.*" packages.nativeGuestAgents.freebsdSupervisor.text;
 assert lib.hasInfix "overalls-native-ssh-refresh.pid.tmp.*" packages.nativeGuestAgents.freebsdSupervisor.text;
 assert lib.hasInfix "mv -f \"$marker_tmp\" \"$marker\"" packages.nativeGuestAgents.freebsdSupervisor.text;
 assert lib.hasInfix "stale_markers=" packages.nativeGuestAgents.illumosSupervisor.text;
 assert lib.hasInfix "sshd-native" packages.nativeGuestAgents.illumosSupervisor.text;
 assert lib.hasInfix "stale_temporary_markers=" packages.nativeGuestAgents.illumosSupervisor.text;
+assert lib.hasInfix "sshd.pid.tmp.*" packages.nativeGuestAgents.illumosSupervisor.text;
 assert lib.hasInfix "overalls-native-ssh-refresh.pid.tmp.*" packages.nativeGuestAgents.illumosSupervisor.text;
 assert lib.hasInfix "mv -f \"$marker_tmp\" \"$marker\"" packages.nativeGuestAgents.illumosSupervisor.text;
 assert lib.hasInfix "/usr/local/libexec/overalls-native-kernel-probed" packages.nativeGuestAgents.freebsdSupervisor.text;
