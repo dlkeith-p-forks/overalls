@@ -987,6 +987,10 @@ claim for the Marshall and protocol repairs above.
 The later Ziggy context/refusal and Galileo pending/upstream histories also
 select bounded one- or two-case CI runs. Their reduced exploration retains
 separate execution and does not inherit preserved-count claims.
+Porsche's invalid-boot property now selects one generated CI history while
+still visiting every configured refusal mutation and preserving its startup,
+fixture-custody and diagnostic-secrecy assertions. This reduces randomized
+history exploration; it does not establish a new passing execution record.
 The [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.

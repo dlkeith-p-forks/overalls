@@ -810,6 +810,16 @@ Both hosts subsequently converged healthy to exact `cdbc76086` at 10:43 UTC,
 with zero failures. Complete current-pin consumer gates and the later Arch
 repair's host builds retain separate records. No prior-pin pass is transferred.
 
+The subsequent incoming `f7f3c8c7e` bounds Porsche's invalid-boot property to
+one generated CI history. Each history still visits every configured refusal
+mutation and retains startup, fixture-custody and diagnostic-secrecy assertions;
+randomized history exploration is reduced, and no new execution is inferred.
+Its unrelated temporary fake Porsche dependency hash is replaced with the
+previously proven `sha256-Hp2h0NYvDKZDiVJEztDpL8/YVGF1r9vD/lNC51MlI30=`.
+Source locks and dependency contents are unchanged, so the existing independent
+fixed-output and byte-equal lock custody proof still applies. This merge
+changes no production authority, domain, protocol or deployment placement.
+
 The scenario validator additionally recognizes exact qualified Elixir
 `Hegel.check(...)`/`Hegel.run(...)` calls, alongside existing property markers.
 Negative-prefix and tag-only fixtures retain refusal; path containment, inspected
