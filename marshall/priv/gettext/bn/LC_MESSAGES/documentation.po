@@ -517,127 +517,127 @@ msgstr "## প্রসঙ্গ, সংমিশ্রণ এবং সহয�
 #: lib/marshall/documentation_messages.ex:218
 #, elixir-autogen, elixir-format
 msgid "## Continue a long thread through automatic or requested context compaction"
-msgstr ""
+msgstr "## স্বয়ংক্রিয় বা অনুরোধিত প্রসঙ্গ সংকোচনের মাধ্যমে দীর্ঘ থ্রেড চালিয়ে যান"
 
 #: lib/marshall/documentation_messages.ex:222
 #, elixir-autogen, elixir-format
 msgid "## Continue native state publication and recover actors while diagnostics are unavailable"
-msgstr ""
+msgstr "## ডায়াগনস্টিক অনুপলব্ধ থাকলে নেটিভ অবস্থা প্রকাশ চালিয়ে যান এবং অ্যাক্টর পুনরুদ্ধার করুন"
 
 #: lib/marshall/documentation_messages.ex:226
 #, elixir-autogen, elixir-format
 msgid "## Continuing physical boot adoption"
-msgstr ""
+msgstr "## শারীরিক বুট গ্রহণ চালিয়ে যাওয়া"
 
 #: lib/marshall/documentation_messages.ex:227
 #, elixir-autogen, elixir-format
 msgid "## Control WebSocket"
-msgstr ""
+msgstr "## কন্ট্রোল WebSocket"
 
 #: lib/marshall/documentation_messages.ex:228
 #, elixir-autogen, elixir-format
 msgid "## Create a machine and wait for its exact boot to become usable over SSH"
-msgstr ""
+msgstr "## একটি মেশিন তৈরি করুন এবং SSH ব্যবহারের উপযোগী নির্দিষ্ট বুটের জন্য অপেক্ষা করুন"
 
 #: lib/marshall/documentation_messages.ex:232
 #, elixir-autogen, elixir-format
 msgid "## Create a machine in the browser or Porsche SSH without choosing a profile"
-msgstr ""
+msgstr "## প্রোফাইল নির্বাচন না করে ব্রাউজার বা Porsche SSH-তে একটি মেশিন তৈরি করুন"
 
 #: lib/marshall/documentation_messages.ex:236
 #, elixir-autogen, elixir-format
 msgid "## Create a team without claiming another account's active name"
-msgstr ""
+msgstr "## অন্য অ্যাকাউন্টের সক্রিয় নাম দখল না করে একটি দল তৈরি করুন"
 
 #: lib/marshall/documentation_messages.ex:240
 #, elixir-autogen, elixir-format
 msgid "## Create and recover a user thread with its dedicated machine"
-msgstr ""
+msgstr "## নিবেদিত মেশিনসহ ব্যবহারকারীর থ্রেড তৈরি ও পুনরুদ্ধার করুন"
 
 #: lib/marshall/documentation_messages.ex:244
 #, elixir-autogen, elixir-format
 msgid "## Create, stop, restart and delete a machine"
-msgstr ""
+msgstr "## মেশিন তৈরি, থামানো, পুনরায় চালু ও মুছে ফেলুন"
 
 #: lib/marshall/documentation_messages.ex:245
 #, elixir-autogen, elixir-format
 msgid "## Credential and key rotation"
-msgstr ""
+msgstr "## শংসাপত্র ও কী ঘুরিয়ে নেওয়া"
 
 #: lib/marshall/documentation_messages.ex:246
 #, elixir-autogen, elixir-format
 msgid "## Dedicated editor path"
-msgstr ""
+msgstr "## নিবেদিত এডিটর পথ"
 
 #: lib/marshall/documentation_messages.ex:247
 #, elixir-autogen, elixir-format
 msgid "## Deploy a candidate while preserving guests and authority"
-msgstr ""
+msgstr "## অতিথি ও কর্তৃত্ব অক্ষুণ্ণ রেখে প্রার্থী স্থাপন করুন"
 
 #: lib/marshall/documentation_messages.ex:248
 #, elixir-autogen, elixir-format
 msgid "## Developer SSH"
-msgstr ""
+msgstr "## ডেভেলপার SSH"
 
 #: lib/marshall/documentation_messages.ex:249
 #, elixir-autogen, elixir-format
 msgid "## Developer verification"
-msgstr ""
+msgstr "## ডেভেলপার যাচাই"
 
 #: lib/marshall/documentation_messages.ex:250
 #, elixir-autogen, elixir-format
 msgid "## Diagnostic outages and queue recovery"
-msgstr ""
+msgstr "## ডায়াগনস্টিক বিভ্রাট ও সারি পুনরুদ্ধার"
 
 #: lib/marshall/documentation_messages.ex:251
 #, elixir-autogen, elixir-format
 msgid "## Diagnostic paths and custody"
-msgstr ""
+msgstr "## ডায়াগনস্টিক পথ ও হেফাজত"
 
 #: lib/marshall/documentation_messages.ex:252
 #, elixir-autogen, elixir-format
 msgid "## Disable, drain, resume, retire"
-msgstr ""
+msgstr "## নিষ্ক্রিয়, নিষ্কাশন, পুনরায় চালু ও অবসর"
 
 #: lib/marshall/documentation_messages.ex:253
 #, elixir-autogen, elixir-format
 msgid "## Discover editor and neutral webview origins only through gateways with matching immutable assets"
-msgstr ""
+msgstr "## মিলে যাওয়া অপরিবর্তনীয় সম্পদসহ গেটওয়ের মাধ্যমে শুধু এডিটর ও নিরপেক্ষ webview উৎস খুঁজুন"
 
 #: lib/marshall/documentation_messages.ex:257
 #, elixir-autogen, elixir-format
 msgid "## Drain a naturally exited terminal without retaining unreserved scrollback"
-msgstr ""
+msgstr "## সংরক্ষণ না করা স্ক্রলব্যাক না রেখে স্বাভাবিকভাবে বন্ধ হওয়া টার্মিনাল নিষ্কাশন করুন"
 
 #: lib/marshall/documentation_messages.ex:261
 #, elixir-autogen, elixir-format
 msgid "## Durable guest accounts"
-msgstr ""
+msgstr "## টেকসই অতিথি অ্যাকাউন্ট"
 
 #: lib/marshall/documentation_messages.ex:262
 #, elixir-autogen, elixir-format
 msgid "## Durable guest identity reservations"
-msgstr ""
+msgstr "## টেকসই অতিথি পরিচয় সংরক্ষণ"
 
 #: lib/marshall/documentation_messages.ex:263
 #, elixir-autogen, elixir-format
 msgid "## Durable objectives and measurement authority"
-msgstr ""
+msgstr "## টেকসই উদ্দেশ্য ও পরিমাপের কর্তৃত্ব"
 
 #: lib/marshall/documentation_messages.ex:264
 #, elixir-autogen, elixir-format
 msgid "## Durable request sources"
-msgstr ""
+msgstr "## টেকসই অনুরোধের উৎস"
 
 #: lib/marshall/documentation_messages.ex:265
 #, elixir-autogen, elixir-format
 msgid "## Editor transition evidence"
-msgstr ""
+msgstr "## এডিটর পরিবর্তনের প্রমাণ"
 
 #: lib/marshall/documentation_messages.ex:266
 #, elixir-autogen, elixir-format
 msgid "## Elixir contract verification"
-msgstr ""
+msgstr "## Elixir চুক্তি যাচাই"
 
 #: lib/marshall/documentation_messages.ex:267
 #, elixir-autogen, elixir-format

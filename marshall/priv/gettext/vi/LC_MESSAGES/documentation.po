@@ -18067,32 +18067,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:833
 #, elixir-autogen, elixir-format
 msgid "## Stage a personal Windows browser editor candidate while keeping unqualified Windows images editor-ineligible"
-msgstr ""
+msgstr "## Chuẩn bị ứng viên trình chỉnh sửa trình duyệt Windows cá nhân, đồng thời giữ các ảnh Windows chưa đủ điều kiện ở trạng thái không được cấp quyền"
 
 #: lib/marshall/documentation_messages.ex:1037
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.address`"
-msgstr ""
+msgstr "## `services.audi.relay.address`"
 
 #: lib/marshall/documentation_messages.ex:1038
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.enable`"
-msgstr ""
+msgstr "## `services.audi.relay.enable`"
 
 #: lib/marshall/documentation_messages.ex:1039
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.peers`"
-msgstr ""
+msgstr "## `services.audi.relay.peers`"
 
 #: lib/marshall/documentation_messages.ex:1040
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.port`"
-msgstr ""
+msgstr "## `services.audi.relay.port`"
 
 #: lib/marshall/documentation_messages.ex:1713
 #, elixir-autogen, elixir-format
 msgid "### Windows editor payload staging (not admitted)"
-msgstr ""
+msgstr "### Chuẩn bị tải trọng trình chỉnh sửa Windows (chưa được cấp quyền)"
 
 #: lib/marshall/documentation_messages.ex:1848
 #, elixir-autogen, elixir-format
@@ -18147,12 +18147,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5985
 #, elixir-autogen, elixir-format
 msgid "Exact local fleet /32; never a guest or public listener address."
-msgstr ""
+msgstr "Địa chỉ /32 chính xác của đội máy cục bộ; không bao giờ là địa chỉ của máy khách hoặc trình lắng nghe công khai."
 
 #: lib/marshall/documentation_messages.ex:6041
 #, elixir-autogen, elixir-format
 msgid "Explicit keyed fleet /32 peers allowed to present single-use relay capabilities."
-msgstr ""
+msgstr "Các nút ngang hàng /32 của đội máy có khóa rõ ràng được phép cung cấp khả năng chuyển tiếp dùng một lần."
 
 #: lib/marshall/documentation_messages.ex:6563
 #, elixir-autogen, elixir-format
@@ -18167,7 +18167,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8766
 #, elixir-autogen, elixir-format
 msgid "Tested scope: ADR-0201 presentation boundaries with recorded bounded BEAM/LiveView execution; full browser, native Porsche and linguistic acceptance remain partial."
-msgstr ""
+msgstr "Phạm vi đã kiểm thử: các ranh giới trình bày của ADR-0201 với lần thực thi BEAM/LiveView có giới hạn đã được ghi nhận; việc chấp nhận đầy đủ trên trình duyệt, Porsche gốc và ngôn ngữ vẫn chưa hoàn tất."
 
 #: lib/marshall/documentation_messages.ex:9206
 #, elixir-autogen, elixir-format
@@ -18197,7 +18197,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:11134
 #, elixir-autogen, elixir-format
 msgid "Whether to enable single-hop authorized ingress over the host fleet WireGuard network."
-msgstr ""
+msgstr "Có bật truy cập vào được ủy quyền một chặng qua mạng WireGuard của đội máy chủ hay không."
 
 #: lib/marshall/documentation_messages.ex:11144
 #, elixir-autogen, elixir-format
