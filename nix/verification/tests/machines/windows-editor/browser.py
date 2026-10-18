@@ -209,7 +209,9 @@ def browser_stage(page: Page, origin: str, run_id: str) -> None:
     native contributed command, observe its exact success notification and see
     its real terminal marker in xterm. HTML or process presence alone MUST fail.
     """
-    folder = rf"C:\workspace\overalls-editor-acceptance-{run_id}"
+    # Code OSS treats a leading slash as a path under its configured remote
+    # authority; a Windows filesystem path would instead parse as URI scheme C.
+    folder = f"/C:/workspace/overalls-editor-acceptance-{run_id}"
     page.goto(origin + "/?" + urlencode({"folder": folder}), wait_until="domcontentloaded")
     expect(page.locator(".monaco-workbench")).to_be_visible(timeout=120000)
     expect(

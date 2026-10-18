@@ -1299,3 +1299,84 @@ ADR, handbook, generated-reference, coverage and topology gates check
 documentation consistency only. Remaining gate results are recorded at
 completion; the open runtime requirements above remain open regardless of
 those results.
+
+## Forward callback and generated-fixture repairs
+
+The `7c323f197` checkpoint was pushed with the startup-mail and Customer
+private-service repairs. A read-only production observation at **22:32:58 UTC
+on 2026-10-18** subsequently found Overalls healthy at `98bd5da6` and Dungarees
+healthy at `ccad2528`, with no updater failure on either host. Both reports were
+about one second old and carried all six inventory keys, at sequences 92 and
+416 respectively. Unexpired route counts were zero on Overalls and six on
+Dungarees. Marshall had started at 22:31:27 UTC. Separate local and remote
+checks at 22:32:05 and 22:32:29 UTC found Lilly and Audi DNS/gateway readiness
+true. These public-field observations are retained in the tool transcript;
+no manual restart or production mutation was used.
+The ordinary Windows CLI then passed through the normal Overalls proxy in
+**0.636 seconds**, exit zero, checking the fixed marker with strict certificate
+trust. This establishes that observed activation, inventory convergence and
+ordinary Windows routing path; it does not qualify browser/editor access,
+native isolation, recovery or the complete guest OS matrix.
+
+The later Marshall Covenant run passed **35 of 36 tests**, seed **336541**, in
+**3.9 seconds** (`/tmp/osmatrix-marshall-forward-contracts-types.log`). Its
+callback replay failure exposed a deterministic nullable-attempt guard: a
+successful connection clears its active attempt ID, then strict `and` received
+`nil` and the exception became `unavailable`. The forward guard explicitly
+requires a non-nil attempt before the unchanged state, login, generation, phase
+and expiry checks. Existing Covenant, fixed callback and generated replay
+assertions retain `invalid_callback` and passed in the focused timing run
+below. This restores ADR-0202 and ADR-0186 without changing authority or protocol.
+
+The earlier Pins property failure followed a SQL sandbox owner exceeding its
+120-second ownership limit; Teams' HTTP history exceeded the default aggregate
+60-second ExUnit timeout. The fixture repair creates a sandbox for each
+generated case and replay before its gateway, host and account rows, then
+releases that owner before the next case.
+All three Pins runners and both generated Teams runners retain their full
+100-case budgets and existing state/refusal oracles. Fixed Teams tests retain
+their ordinary sandbox setup. The focused timing-only run passed **23 tests**,
+seed **52647**, in **419.4 seconds**, including the callback Covenant and
+history regressions, all three Pins properties, both Teams generated tests and
+sandbox regressions (`/tmp/osmatrix-forward-followup-regressions.log`). It
+measured Teams' full HTTP history at **30.5206 seconds** and Pins' full
+ordered-set history at **276.0067 seconds**. The pinned Mix
+runner implicitly enables `--trace` for `--slowest 8`
+(`/tmp/osmatrix-test-help.log`), so this execution does not qualify finite
+ExUnit deadlines. Only the Pins ordered-set history now has a finite
+**600,000-millisecond** aggregate timeout, approximately twice its measured
+duration; the other Pins tests retain the 300,000-millisecond module timeout,
+each generated case retains its 120,000-millisecond SQL ownership deadline,
+and Teams retains the 60,000-millisecond default. These are test-isolation and
+bounded test-budget repairs under ADR-0191. The required complete Marshall
+`mix precommit` gate, without `--trace` or `--slowest`, remains pending and
+will verify these tests with their finite deadlines. No production failure or
+native guarantee follows from the test-fixture repairs.
+
+The Windows browser probe reached HTTP 200, the workbench and its native
+command, then failed its existing workspace-equality assertion: the `folder`
+query held a Windows filesystem path that Code OSS parsed as URI scheme `c`.
+The probe now sends `/C:/workspace/overalls-editor-acceptance-<run-id>`, a path
+under the configured remote authority. The exact workspace and native command
+assertions remain unchanged. This corrects probe input syntax; it changes no
+production authorization surface or editor admission contract. The rebuilt
+harness is
+`/nix/store/nm4yzal1g32fp4msplfha6xi42l148jr-overalls-windows-editor-acceptance-harness-0.1.0`
+(`/tmp/windows-editor-harness-uri-build.log`). Whole-repository Python Ruff
+formatting, Ruff and ty gates passed in the pinned environment
+(`/tmp/windows-editor-python-gates.log`). The native retry ended at an SSH EOF
+before readiness (`/tmp/windows-editor-native-browser-uri.log`); it is not a
+browser pass. The stock-fixture probe also remains separate from qualification
+of the exact immutable candidate image.
+
+The stable forced Marshall Dialyzer run remains pending after an earlier
+attempt lost a compiled `Collectable` input during overlapping compilation.
+No current typing pass or complete Marshall gate is recorded for this diff.
+
+The merged Marshall catalog checker exited zero with **invalid=0** in every
+reported catalog (`/tmp/osmatrix-incoming-marshall-catalogs.log`); empty and
+source-equal documentation entries remain explicitly incomplete. Porsche's
+catalog regression passed **3 tests**, seed **691955**, in **0.05 seconds**
+(`/tmp/osmatrix-porsche-catalogs-retry.log`). These results establish bounded
+catalog/template checks, not linguistic review, packaged browser or native
+Porsche acceptance.
