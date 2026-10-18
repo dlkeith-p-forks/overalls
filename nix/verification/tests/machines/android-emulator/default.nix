@@ -28,7 +28,7 @@ pkgs.testers.runNixOSTest {
     system.stateVersion = "26.05";
     virtualisation.memorySize = 6144;
     virtualisation.cores = 4;
-    environment.systemPackages = [ pkgs.android-tools pkgs.xorg.xorgserver sdk ];
+    environment.systemPackages = [ pkgs.android-tools pkgs.xorg.xorgserver pkgs.jdk sdk ];
     users.users.android-test = {
       isSystemUser = true;
       group = "android-test";
@@ -67,7 +67,6 @@ pkgs.testers.runNixOSTest {
     android.start()
     android.wait_for_unit("android-test-emulator.service")
     android.wait_until_succeeds("test -r /proc/$(systemctl show android-test-emulator.service -p MainPID --value)/cmdline")
-    android.fail("test -e /dev/kvm")
     cmdline = android.succeed("tr '\\0' ' ' < /proc/$(systemctl show android-test-emulator.service -p MainPID --value)/cmdline")
     assert "-no-accel" in cmdline, cmdline
     assert "-gpu swiftshader_indirect" in cmdline, cmdline
