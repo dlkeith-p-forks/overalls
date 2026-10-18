@@ -1,4 +1,4 @@
-{ pkgs, module, packages, hostFixture, codingClis ? false, editor ? false, editorFamily ? null, hostReplacement ? false, runtimeReadiness ? false, observabilityRecovery ? false, porsche ? false, porscheLifecycleOnly ? false, relocation ? false, suspension ? false, audi ? false, sshBootstrap ? false, userSshJourney ? false, cloning ? false, ubuntu ? false, customerIsolation ? false, brady ? false, galileo ? false, terminal ? false, agent ? false, agentCli ? false, guestCliRecovery ? false, executorLoss ? false, defaultOss ? false, resize ? false, accountLifecycle ? false, guestTrust ? false, teamResources ? false, integrationRenewals ? false, privateWeb ? false, maintenanceEvacuation ? false, cloneCancellation ? false, repositoryLaunch ? false, githubIntegration ? false, githubFamily ? null, sharingSurfaces ? false, cloneDestinationLoss ? false, cloneMarshallRestart ? false, sshRosterMatrix ? false, otelGuest ? false, otelGalileo ? false, otelAudiSsh ? false, otelPorsche ? false, hegel ? null }:
+{ pkgs, module, packages, hostFixture, codingClis ? false, editor ? false, editorFamily ? null, suspension ? false, hostReplacement ? false, runtimeReadiness ? false, observabilityRecovery ? false, porsche ? false, porscheLifecycleOnly ? false, relocation ? false, audi ? false, sshBootstrap ? false, userSshJourney ? false, cloning ? false, ubuntu ? false, customerIsolation ? false, brady ? false, galileo ? false, terminal ? false, agent ? false, agentCli ? false, guestCliRecovery ? false, executorLoss ? false, defaultOss ? false, resize ? false, accountLifecycle ? false, guestTrust ? false, teamResources ? false, integrationRenewals ? false, privateWeb ? false, maintenanceEvacuation ? false, cloneCancellation ? false, repositoryLaunch ? false, githubIntegration ? false, githubFamily ? null, sharingSurfaces ? false, cloneDestinationLoss ? false, cloneMarshallRestart ? false, sshRosterMatrix ? false, otelGuest ? false, otelGalileo ? false, otelAudiSsh ? false, otelPorsche ? false, hegel ? null }:
 let
   inherit (pkgs) lib;
   # @cc [owner:ghuntley,label:verification] editor-native-family-selection
@@ -1933,29 +1933,7 @@ assert editorFamily == null || (editor && !ubuntu
             client.execute("systemctl reset-failed audi-slo-held.service")
         assert process_snapshot(vm) == audi_slo_guest_before
       ''
-      else if suspension then ''
-    storage_budget = ${toString storageBudget}
-    storage_images = "${storage}"
-    qemu_img = "${pkgs.qemu_kvm}/bin/qemu-img"
-    host_bindings = ${builtins.toJSON hosts}
-    fixture_guest_memory_bytes = ${toString (fixtureGuestMemoryMiB * 1024 * 1024)}
-    ubuntu_enabled = False
-    porsche_enabled = False
-    cloning_enabled = False
-    relocation_enabled = True
-    audi_enabled = True
-    galileo_enabled = False
-    ssh_private_enabled = False
-    agent_enabled = False
-  '' + lib.concatMapStringsSep "\n" builtins.readFile [
-    ./driver.py
-    ../../support/transfer.py
-    ../../support/guest-diagnostics.py
-    ./helpers.py
-    ./scenarios/bootstrap.py
-    ./scenarios/enrollment.py
-    ./scenarios/boot-trust-services.py
-  ] + builtins.readFile ./scenarios/suspension.py
+      else if suspension then builtins.readFile ./scenarios/suspension.py
       else if ubuntu && audi then builtins.readFile ./scenarios/audi.py
         + lib.optionalString relocation (builtins.readFile ./scenarios/audi-relocation.py)
       else if ubuntu then builtins.readFile ./scenarios/relocation.py
