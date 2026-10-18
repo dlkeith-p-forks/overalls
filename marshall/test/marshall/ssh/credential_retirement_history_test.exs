@@ -15,7 +15,8 @@ defmodule Marshall.SSH.CredentialRetirementHistoryTest do
   # old registration IDs and sessions MUST NOT return. Refused stale calls and
   # repeated completed cleanup MUST preserve exact durable inventories.
   @tag timeout: 120_000
-  property "same-email histories release credentials only through old-account cleanup" do
+  property "same-email histories release credentials only through old-account cleanup",
+    test_cases: 12 do
     check all(
             bytes <- binary(length: 32),
             generations <-
@@ -23,7 +24,7 @@ defmodule Marshall.SSH.CredentialRetirementHistoryTest do
                 min_length: 2,
                 max_length: 3
               ),
-            max_runs: 12
+            test_cases: 12
           ) do
       admin = Marshall.PasskeyFixture.elevate(Marshall.PasskeyFixture.user(true))
       account = Marshall.PasskeyFixture.user()

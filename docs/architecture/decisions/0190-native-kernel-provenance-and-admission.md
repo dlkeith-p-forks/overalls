@@ -524,6 +524,21 @@ the executor lease/stop correction and both SSH fixes. Runtime, complete
 services, growth, recovery and admission remain false or pending for these
 exact bytes; the admission review records their separate replay requirements.
 
+Follow-up [matrix review](../reviews/2026-10-18-guest-os-matrix.md) evidence
+separates source corrections from fresh-image qualification. OmniOS root
+growth discovers read-only device labels with the persisted userland pool cache
+disabled, retaining the assembly GUID, single canonical whole-disk vdev and
+GPT/capacity gates; a disposable same-boot missing-cache fault case passed.
+Native agent SMF keeps contract duration and ignores only signal failures so
+the existing child supervisor can replace one killed daemon; exact-policy host
+refusals passed. Listener close also wakes pending accept children under the
+socket lock; host sanitizers and a missing-wake mutant check passed. Fresh native
+assembly passed for the combined sealed `45983bb7` disk, while current-image
+runtime scenarios remain pending. Core,
+hardware and empty-contract failures retain outer restart authority. A killed
+shell supervisor with surviving children remains an explicit recovery gap.
+These corrections change neither this decision, capabilities nor admission status.
+
 ## Open questions
 
 - Which further signed FreeBSD and OmniOS/illumos inputs should be accepted. OmniOS is

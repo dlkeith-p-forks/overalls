@@ -9691,10 +9691,10 @@
           "kind": "property",
           "path": "marshall/test/marshall/terminal/remote_test.exs",
           "assertion": "budget restart retires live TLS peers and admits exact replacement pairs",
-          "scope": "Matching isolated fork with real verified TLS and production peer-proof API, synthetic host stream and attachments; shrinking is disabled for destructive restart histories.",
+          "scope": "Current merged frontend: three generated real verified-TLS budget restart histories through the production peer-proof API, with synthetic host stream and attachments. Part of the passing 17-test focused rerun; no disabled-shrinking or native claim.",
           "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-06-terminal-peer-budget-incarnation.md",
-          "record_assertion": "Matching no-shrink fork baseline passed four checks (one property, three tests), seed 0, 2.1 seconds, exit 0."
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "The three-file focused rerun passed all 17 tests"
         }
       ]
     },
@@ -9716,19 +9716,19 @@
           "kind": "property",
           "path": "marshall/test/marshall/terminal/remote_test.exs",
           "assertion": "shifted TLS activity expires without waiting for another heartbeat",
-          "scope": "Restored local fork, generated three verified-TLS histories, production peer-proof API and last-seen timestamp; synthetic host stream and attachment replies.",
+          "scope": "Current merged frontend: three separate generated verified-TLS histories preserve actual fifteen-second deadlines, production peer-proof API and last-seen timestamp; synthetic host stream and attachment replies. Passing 17-test focused rerun, separate from full Marshall verification.",
           "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-06-terminal-peer-silence.md",
-          "record_assertion": "Confirmation passed three checks"
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "The three-file focused rerun passed all 17 tests"
         },
         {
           "kind": "property",
           "path": "marshall/test/marshall/terminal/remote_test.exs",
           "assertion": "incoming TLS silence retires the application at its renewed deadline",
-          "scope": "Restored local fork, three generated real verified-TLS incoming histories, actual budget-release send timestamps and slot removal, then outgoing viewer closure; synthetic host stream and attachment replies.",
+          "scope": "Current merged frontend: three separate generated real verified-TLS incoming histories, actual fifteen-second deadlines, budget-release send timestamps and slot removal, then outgoing viewer closure; synthetic host stream and attachment replies. Passing 17-test focused rerun, separate from full Marshall verification.",
           "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-06-terminal-peer-silence.md",
-          "record_assertion": "confirmation passed the three generated histories"
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "The three-file focused rerun passed all 17 tests"
         }
       ]
     },
@@ -11965,6 +11965,15 @@
           "scope": "The final reviewed FreeBSD image 5022d714 passed three distinct clean boots with complete service oracles, two 2-GiB expansions, retained home data, exact GPT/nonroot identities, bounded root-only EFI NvVars change, foreign-disk preservation and caller/nonroot refusals. The source-qualified OmniOS growth replay at `/tmp/overalls-omnios-native-probe/exact-services-growth-rerun2` separately passed three complete service boots and two root expansions with preserved pool/vdev identities, foreign-disk bytes and `native_admission=false`; it does not establish interrupted expansion.",
           "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
           "record_assertion": "The final reviewed FreeBSD image subsequently passed all five native machine"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "lyra/src/native_growth.rs",
+          "assertion": "OmniOS pool discovery MUST NOT depend on a persisted zpool cache",
+          "scope": "One same-boot controlled missing-cache fault on a disposable native clone: the old read-only discovery refused before mutation; the revised helper retained assembly GUID, exact canonical whole-vdev and raw-device/capacity/GPT gates and passed expansion, post-GPT preservation and its volatile receipt. Not fresh-image multi-boot growth, interrupted expansion, physical recovery or admission.",
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "missing-cache diagnostic on a disposable clone"
         }
       ]
     },
@@ -11982,7 +11991,7 @@
       "denial": "Under policy refuse sibling, private, protected-uplink, gateway and unregistered fixed-service TCP targets and foreign-source traffic while preserving public access and current private SSH authority. Require assigned-source recovery after the foreign-source test.",
       "scope": "The earlier canonical-roots/SSH FreeBSD policy run passed in 280 seconds. The final reviewed image 5022d714 also passed two clean boots with complete service oracles and independent policy receipts. Real fixed sinks were reachable before policy; afterward public traffic and current SSH worked, forbidden targets refused, actual TAP guard drop counters proved foreign-source refusal and assigned-source traffic recovered. Packaged policy was unchanged; host rule/parser checks remain separately scoped.",
       "status": "partial",
-      "gaps": "No recorded OmniOS native policy run. The sibling target is a Linux TCP sink behind the test peer uplink, not another native VM/TAP. Direct native-VM peer, jail, physical-host and multi-host isolation or recovery remain unproven; the original candidate receipt retains admission false, while exact sealed FreeBSD activation is recorded separately.",
+      "gaps": "The exact aa669e51 OmniOS image has a passing manual direct host-KVM two-boot Lilly-policy run recorded in the matrix review, separate from a formal nested NixOS gate and later changed payloads. The sibling target is a Linux TCP sink behind the test peer uplink, not another native VM/TAP. Direct native-VM peer, jail, physical-host and multi-host isolation or recovery remain unproven; OmniOS admission stays false, while exact sealed FreeBSD activation is recorded separately.",
       "preferred_gap": "Run the same two-boot fixture against the corrected exact OmniOS input, retain positive-control sink counts, actual foreign-source guard drops and assigned-source recovery, then add a direct second native VM/TAP and host/jail boundaries.",
       "evidence": [
         {

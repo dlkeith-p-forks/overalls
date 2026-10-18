@@ -89,7 +89,7 @@ defmodule Lilly.Lifecycle.ImageTemplateTest do
                 min_length: 1,
                 max_length: 25
               ),
-            max_runs: 35
+            test_cases: 35
           ) do
       directory = Path.join(c.tmp_dir, Lilly.UUID.generate())
       payload = payload()

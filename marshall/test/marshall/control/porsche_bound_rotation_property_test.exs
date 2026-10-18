@@ -17,13 +17,14 @@ defmodule Marshall.Control.PorscheBoundRotationPropertyTest do
   # @cc [owner:ghuntley,label:verification;security] porsche-bound-gateway-rotation
   # Bound old credentials MUST refuse after explicit gateway rotation. A fresh
   # credential MUST serve new sessions without adopting old-generation sessions.
-  property "bound Porsche sockets preserve credential and session generation fences" do
+  property "bound Porsche sockets preserve credential and session generation fences",
+    test_cases: 4 do
     account = user()
     public_key = "ssh-ed25519 " <> Base.encode64(<<11::32, "ssh-ed25519", 32::32, 12::256>>)
     {:ok, _} = SSH.add_key(%{public_key: public_key}, actor: account)
     base = listener()
 
-    check all(prefix <- integer(0..3), max_runs: 4) do
+    check all(prefix <- integer(0..3), test_cases: 4) do
       name = "rotation-" <> Ash.UUID.generate()
       {token, _} = SSH.Token.issue(:gateway)
 

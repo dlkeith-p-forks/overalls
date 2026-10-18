@@ -122,7 +122,7 @@ defmodule Marshall.Control.LillyServiceTest do
   # Opens and exchanges over the control socket MUST follow the session
   # ratchet the retired HTTPS routes did: the newest session exchanges, and
   # every superseded session is stale_connection.
-  property "socket opens and exchanges follow the session ratchet" do
+  property "socket opens and exchanges follow the session ratchet", test_cases: 10 do
     check all(
             steps <-
               list_of(
@@ -130,7 +130,7 @@ defmodule Marshall.Control.LillyServiceTest do
                 min_length: 2,
                 max_length: 7
               ),
-            max_runs: 10
+            test_cases: 10
           ) do
       fixture = host_fixture()
       {:ok, issued} = Credentials.rotate(fixture.host.id, 3600)

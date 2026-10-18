@@ -173,10 +173,11 @@ defmodule Lilly.Lifecycle.BackupHistoryTest do
     end)
   end
 
+  @tag :hegel
   test "native backup histories cannot skip cleanup or resurrect a cleaned producer", c do
     check all(
             targets <- list_of(member_of(~w(creating ready cleaning cleaned)), max_length: 15),
-            max_runs: 20
+            test_cases: 20
           ) do
       directory = Path.join(c.directory, Lilly.UUID.generate())
 

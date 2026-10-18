@@ -32,7 +32,7 @@ defmodule Marshall.Ingress.HistoryTest do
                 min_length: 6,
                 max_length: 16
               ),
-            max_runs: 10
+            test_cases: 10
           ) do
       c = Fx.new(c.certificate)
 

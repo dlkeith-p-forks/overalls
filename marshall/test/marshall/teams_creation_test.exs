@@ -22,14 +22,15 @@ defmodule Marshall.TeamsCreationTest do
   # Generated creation histories MUST check every reply against the actor/name
   # model and compare persisted memberships, audit receipts and versions after
   # retries and refusals. Archived names MUST acquire a fresh identity and owner.
-  property "creation histories isolate actors, names, retries and archived generations" do
+  property "creation histories isolate actors, names, retries and archived generations",
+    test_cases: 25 do
     check all(
             operations <-
               list_of(tuple({integer(0..2), integer(0..1), integer(0..2)}),
                 min_length: 1,
                 max_length: 15
               ),
-            max_runs: 25
+            test_cases: 25
           ) do
       actors = for _ <- 0..2, do: Marshall.ComputeFixtures.user()
       prefix = "create-" <> binary_part(Ash.UUID.generate(), 0, 8)
@@ -56,12 +57,13 @@ defmodule Marshall.TeamsCreationTest do
     end
   end
 
-  property "transferred names cannot create false success for either owner identity" do
+  property "transferred names cannot create false success for either owner identity",
+    test_cases: 15 do
     check all(
             role <- member_of([:admin, :member]),
             remove_creator? <- boolean(),
             key <- string(:alphanumeric, min_length: 1, max_length: 16),
-            max_runs: 15
+            test_cases: 15
           ) do
       creator = Marshall.ComputeFixtures.user()
       target = Marshall.ComputeFixtures.user()

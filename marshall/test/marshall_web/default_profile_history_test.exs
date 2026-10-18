@@ -18,7 +18,7 @@ defmodule MarshallWeb.DefaultProfileHistoryTest do
             initial <- member_of([nil, :oss, :customer, :standard]),
             changes <-
               list_of(member_of([:refresh, :reload, :oss, :customer, :standard]), max_length: 8),
-            max_runs: 16
+            test_cases: 16
           ) do
       fixture = host_fixture()
       owner = user()

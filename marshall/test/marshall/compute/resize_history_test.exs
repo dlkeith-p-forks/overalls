@@ -27,7 +27,8 @@ defmodule Marshall.Compute.ResizeHistoryTest do
   # Refusals and exact replays MUST preserve complete durable rows; unknown effects
   # MUST retain holds. Shape expectations MUST include the fixed extra Inception
   # drive and bundle/VMM costs independently of the production accounting helpers.
-  property "resize histories preserve identity, evidence boundaries and held resources" do
+  property "resize histories preserve identity, evidence boundaries and held resources",
+    test_cases: 16 do
     previous = Application.get_env(:marshall, :inception_image_id)
     on_exit(fn -> restore_inception(previous) end)
 
@@ -40,7 +41,7 @@ defmodule Marshall.Compute.ResizeHistoryTest do
             unknowns <- list_of(integer(0..2), length: 2),
             pressure <- boolean(),
             restart_failure <- boolean(),
-            max_runs: 16
+            test_cases: 16
           ) do
       minimum =
         if profile == :inception,
@@ -71,10 +72,11 @@ defmodule Marshall.Compute.ResizeHistoryTest do
   # An original request receipt MUST NOT grant authority after management is
   # downgraded or revoked. Retry authorization follows the current persisted grant;
   # automatic phases retain the retrying actor without changing original ownership.
-  property "management transitions fence original request replays and phase retries" do
+  property "management transitions fence original request replays and phase retries",
+    test_cases: 10 do
     check all(
             roles <- list_of(member_of([:manager, :viewer, :revoked]), max_length: 6),
-            max_runs: 10
+            test_cases: 10
           ) do
       fixture = host_fixture()
       owner = user()

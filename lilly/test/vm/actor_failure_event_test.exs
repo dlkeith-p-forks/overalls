@@ -33,6 +33,7 @@ defmodule Lilly.VM.ActorFailureEventTest do
   # failed outcome: once per generation/reason until a recovery or a newer
   # command, never once per reconcile, and a repeated failure MUST NOT append
   # a durable outcome. A reconcile of a settled failure MUST start no work.
+  @tag :hegel
   test "vm.failed follows recorded failed outcomes, not reconcile ticks", context do
     check all(
             steps <-
@@ -46,7 +47,7 @@ defmodule Lilly.VM.ActorFailureEventTest do
                 min_length: 1,
                 max_length: 12
               ),
-            max_runs: 15
+            test_cases: 15
           ) do
       id = Lilly.UUID.generate()
       directory = Path.join(context.tmp_dir, Lilly.UUID.generate())

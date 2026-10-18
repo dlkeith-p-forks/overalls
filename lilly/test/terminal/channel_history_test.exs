@@ -31,12 +31,13 @@ defmodule Lilly.Terminal.ChannelHistoryTest do
   # Histories MUST observe real local channel socket effects and decoded stream
   # frames. Synthetic bytes MUST NOT appear in failure diagnostics. These tests
   # MUST NOT claim guest PTY, TLS, native isolation or reconnect acceptance.
-  property "replay credit histories preserve exact output and drain only after consumption" do
+  @tag :hegel
+  test "replay credit histories preserve exact output and drain only after consumption" do
     check all(
             size <- member_of([1, 32_767, 32_768, 32_769, 262_143, 262_144, 262_145, 524_289]),
             stride <- member_of([1, 2, 7, 8, 9, 16]),
             channel_id <- member_of([1, 4_294_967_295]),
-            max_runs: 24
+            test_cases: 24
           ) do
       # Every generated history contains a byte-exhaustion witness as well as
       # the drawn replay/receipt schedule.
@@ -113,11 +114,12 @@ defmodule Lilly.Terminal.ChannelHistoryTest do
     end
   end
 
-  property "transport loss stops old channels before a successor accepts queued output" do
+  @tag :hegel
+  test "transport loss stops old channels before a successor accepts queued output" do
     check all(
             size <- member_of([1, 32_768, 32_769, 262_145]),
             channel_id <- member_of([1, 4_294_967_295]),
-            max_runs: 16
+            test_cases: 16
           ) do
       with_channel(channel_id, fn old, producer, state, receiver ->
         guests = %{{"synthetic-vm", "synthetic-placement", 1} => %{pid: self()}}
@@ -154,13 +156,14 @@ defmodule Lilly.Terminal.ChannelHistoryTest do
     end
   end
 
-  property "input duplicates have no socket effect and a gap fences only its channel" do
+  @tag :hegel
+  test "input duplicates have no socket effect and a gap fences only its channel" do
     check all(
             lengths <-
               list_of(member_of([1, 2, 125, 126, 32_768, 65_535]), min_length: 1, max_length: 6),
             gap <- member_of([2, 3, 65_535]),
             channel_id <- member_of([1, 4_294_967_295]),
-            max_runs: 24
+            test_cases: 24
           ) do
       with_channel(channel_id, fn channel, producer, state, receiver ->
         sibling_id = if channel_id == 1, do: 2, else: 1
@@ -250,12 +253,13 @@ defmodule Lilly.Terminal.ChannelHistoryTest do
     end
   end
 
-  property "live frames stop at frame credit and malformed consumption fences the channel" do
+  @tag :hegel
+  test "live frames stop at frame credit and malformed consumption fences the channel" do
     check all(
             length <- member_of([1, 125, 126, 127]),
             prefix <- member_of([1, 8, 15, 16]),
             invalid <- member_of([:future, :inconsistent]),
-            max_runs: 16
+            test_cases: 16
           ) do
       with_channel(1, fn channel, producer, state, receiver ->
         payload = :binary.copy(<<1>>, length)
@@ -316,8 +320,9 @@ defmodule Lilly.Terminal.ChannelHistoryTest do
     end
   end
 
-  property "unacknowledged input credit fences before an excess guest effect" do
-    check all(order <- member_of([[:frames, :bytes], [:bytes, :frames]]), max_runs: 8) do
+  @tag :hegel
+  test "unacknowledged input credit fences before an excess guest effect" do
+    check all(order <- member_of([[:frames, :bytes], [:bytes, :frames]]), test_cases: 8) do
       for family <- order do
         {length, accepted} = if family == :frames, do: {1, 16}, else: {65_535, 4}
 

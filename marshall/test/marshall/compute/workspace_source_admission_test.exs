@@ -46,7 +46,7 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
             first <- member_of([nil | @sources]),
             second <- member_of([nil | @sources]),
             profile <- member_of([:standard, :oss]),
-            max_runs: 12
+            test_cases: 12
           ) do
       refresh(Map.put(c, :sequence, System.unique_integer([:positive, :monotonic]) + 1))
       key = Ash.UUID.generate()
@@ -75,7 +75,7 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   end
 
   test "a source on a profile without egress is refused before allocation", c do
-    check all(url <- member_of(@sources), max_runs: 4) do
+    check all(url <- member_of(@sources), test_cases: 4) do
       before = counts()
 
       assert {:error, %{errors: [%Compute.Error{reason: :workspace_source_not_allowed}]}} =
@@ -102,7 +102,7 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   # without changing allocation inventory. A matching explicit v4 capability
   # MUST allow the normal transaction; package/name hints never grant it.
   test "every provider requires an explicit source-capable image before allocation", c do
-    check all(url <- member_of(@sources), max_runs: 7) do
+    check all(url <- member_of(@sources), test_cases: 7) do
       manifest = Map.put(image_manifest(), "workspace_source_version", nil)
       {:ok, image} = Images.register(manifest, "receiver-installed-hint")
       before = counts()

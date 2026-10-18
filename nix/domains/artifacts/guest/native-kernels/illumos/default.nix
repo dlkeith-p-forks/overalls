@@ -90,7 +90,7 @@ pkgs.runCommand "overalls-illumos-kernel-candidate-objects-${sourceRevision}" {
   "$TMPDIR/viosock-lifetime-test"
   $CC -std=c11 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined \
     -fno-omit-frame-pointer -pthread -I"$TMPDIR/lifetime-test" -I${../common} \
-    ${./socket_handshake_test.c} -o "$TMPDIR/socket-handshake-test"
+    ${./socket_handshake_test.c} ${../common/ov_vsock.c} -o "$TMPDIR/socket-handshake-test"
   "$TMPDIR/socket-handshake-test"
   mkdir -p "$out/objects" "$out/include/sys" "$out/share/overalls/native-kernel" "$out/bin"
   install -m 0555 ${./native_candidate.py} "$out/bin/overalls-illumos-candidate"

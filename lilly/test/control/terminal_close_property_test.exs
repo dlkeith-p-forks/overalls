@@ -13,8 +13,9 @@ defmodule Lilly.Control.TerminalClosePropertyTest do
   # Actual close4001 after every pending request is observed MUST preserve the
   # terminal version class; close4008 and prior transient replies MUST remain
   # transient. Later version-refused calls MUST NOT dispatch or replay work.
-  property "pending Lilly exchanges retain terminal version refusal over actual TLS" do
-    check all(prefix <- integer(0..2), max_runs: 3) do
+  @tag :hegel
+  test "pending Lilly exchanges retain terminal version refusal over actual TLS" do
+    check all(prefix <- integer(0..2), test_cases: 3) do
       for {reason, expected} <- [
             {:idle, :transport_error},
             {:unsupported_version, :unsupported_version}

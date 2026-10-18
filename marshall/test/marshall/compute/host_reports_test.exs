@@ -13,14 +13,15 @@ defmodule Marshall.Compute.HostReportsTest do
   # A rejected stale, wrong-epoch or partial report MUST leave host and pool
   # capacity state unchanged. A reconnect may reset sequence only while its
   # epoch advances and host freshness is revoked.
-  property "generated report histories preserve epoch order and atomic rejection" do
+  property "generated report histories preserve epoch order and atomic rejection",
+    test_cases: 12 do
     check all(
             actions <-
               list_of(member_of([:advance, :duplicate, :older, :old_epoch, :partial, :reconnect]),
                 min_length: 1,
                 max_length: 8
               ),
-            max_runs: 12
+            test_cases: 12
           ) do
       fixture = host_fixture()
       host_id = fixture.host.id

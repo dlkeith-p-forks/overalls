@@ -25,7 +25,8 @@ defmodule Overalls.HLDDViewsTest do
     root: root
   } do
     check all(
-            suffix <- string(?A..?Z, min_length: 1, max_length: 12),
+            suffix <-
+              map(list(integer(?A, ?Z), min: 1, max: 12), &List.to_string/1),
             change <- member_of([:domain, :resource, :delete])
           ) do
       fixture(root)

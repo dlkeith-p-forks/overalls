@@ -29,8 +29,9 @@ defmodule Marshall.TeamsHistoryTest do
   # owner constraints MUST be checked between operations without preventing the
   # temporary ownerless state inside an atomic transfer. SQL sandbox execution
   # does not establish independent-node races or actual outer transaction commits.
-  property "generated membership and consent histories preserve current authority" do
-    check all(commands <- list_of(command(), min_length: 15, max_length: 35), max_runs: 40) do
+  property "generated membership and consent histories preserve current authority",
+    test_cases: 40 do
+    check all(commands <- list_of(command(), min_length: 15, max_length: 35), test_cases: 40) do
       fixture = fixture()
       initial = %{roles: %{0 => :owner, 1 => :admin, 2 => :member}, transfers: []}
 

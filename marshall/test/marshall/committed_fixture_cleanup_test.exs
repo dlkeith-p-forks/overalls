@@ -16,7 +16,8 @@ defmodule Marshall.CommittedFixtureCleanupTest do
   # table's complete row digest inventory, including unrelated retained history.
   # Setup MUST use real public provisioning actions. Synthetic host receipts do
   # not establish native guest or isolation behavior.
-  property "committed fixture success and failure restore the prior complete inventory" do
+  property "committed fixture success and failure restore the prior complete inventory",
+    test_cases: 8 do
     check all(
             history <-
               shuffle(
@@ -24,7 +25,7 @@ defmodule Marshall.CommittedFixtureCleanupTest do
                     fail? <- [false, true],
                     do: {kind, fail?}
               ),
-            max_runs: 8
+            test_cases: 8
           ) do
       for control_kind <- [:unused_image, :vm], do: verify_history!(history, control_kind)
     end

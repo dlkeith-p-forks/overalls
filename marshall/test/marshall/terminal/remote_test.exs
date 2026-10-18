@@ -54,8 +54,8 @@ defmodule Marshall.Terminal.RemoteTest do
     stream: stream,
     remote: initial
   } do
-    # Shrinking cannot reuse a partially executed global budget restart.
-    check all(count <- integer(1..3), max_runs: 3, max_shrinking_steps: 0) do
+    # The native runner uses test_cases to bound these real-socket histories.
+    check all(count <- integer(1..3), test_cases: 3) do
       {:ok, location} = Directory.lookup(fixture.host.id)
       remotes = for _ <- 1..count, do: start_peer(location)
       remotes = if Process.alive?(initial), do: [initial | remotes], else: remotes
@@ -109,42 +109,46 @@ defmodule Marshall.Terminal.RemoteTest do
     for {owner, monitor} <- Enum.zip(owners, monitors),
         do: assert_receive({:DOWN, ^monitor, :process, ^owner, _}, 2_000)
 
-    check all(offset <- integer(500..1_500), max_runs: 3, max_shrinking_steps: 0) do
-      {:ok, previous_location} = Directory.lookup(fixture.host.id)
-      assert :ok = Directory.renew(fixture.host.id, previous_location.nonce)
-      {:ok, location} = Directory.lookup(fixture.host.id)
-      remote = start_peer(location)
-      healthy_peer(remote, fixture.vm)
-      [peer] = Map.keys(:sys.get_state(PeerBudget).owners) -- [remote]
-      marker = make_ref()
-      Process.send_after(self(), {:shifted_activity, marker}, offset)
-      assert_receive {:shifted_activity, ^marker}, 2_000
-      send(peer, {:terminal_output, <<42>>})
-      assert_receive {:terminal_output, <<42>>}, 1_000
-      last_seen = :sys.get_state(remote).last_seen
-      :ok = :sys.suspend(peer)
+    # Each real silence deadline exceeds fifteen seconds. Keep the original
+    # three generated cases in separate runs below the native slow-input limit.
+    for _ <- 1..3 do
+      check all(offset <- integer(500..1_500), test_cases: 1) do
+        {:ok, previous_location} = Directory.lookup(fixture.host.id)
+        assert :ok = Directory.renew(fixture.host.id, previous_location.nonce)
+        {:ok, location} = Directory.lookup(fixture.host.id)
+        remote = start_peer(location)
+        healthy_peer(remote, fixture.vm)
+        [peer] = Map.keys(:sys.get_state(PeerBudget).owners) -- [remote]
+        marker = make_ref()
+        Process.send_after(self(), {:shifted_activity, marker}, offset)
+        assert_receive {:shifted_activity, ^marker}, 2_000
+        send(peer, {:terminal_output, <<42>>})
+        assert_receive {:terminal_output, <<42>>}, 1_000
+        last_seen = :sys.get_state(remote).last_seen
+        :ok = :sys.suspend(peer)
 
-      on_exit(fn ->
-        try do
-          :sys.resume(peer)
-        catch
-          :exit, _ -> :ok
-        end
-      end)
+        on_exit(fn ->
+          try do
+            :sys.resume(peer)
+          catch
+            :exit, _ -> :ok
+          end
+        end)
 
-      monitor = Process.monitor(remote)
-      Process.send_after(self(), {:renew_location, marker}, 10_000)
-      assert_receive {:renew_location, ^marker}, 11_000
-      assert :ok = Directory.renew(fixture.host.id, location.nonce)
-      remaining = max(0, last_seen + 15_000 - System.monotonic_time(:millisecond))
-      assert_receive {:DOWN, ^monitor, :process, ^remote, :normal}, remaining + 250
-      elapsed = System.monotonic_time(:millisecond) - last_seen
-      assert elapsed >= 15_000
-      assert elapsed <= 15_250
-      assert_receive {:terminal_closed, %{reason: :stream_unavailable}}, 1_000
-      :ok = :sys.resume(peer)
-      assert await_peer_release(peer, System.monotonic_time(:millisecond) + 2_000)
-      assert PeerBudget.used() == 0
+        monitor = Process.monitor(remote)
+        Process.send_after(self(), {:renew_location, marker}, 10_000)
+        assert_receive {:renew_location, ^marker}, 11_000
+        assert :ok = Directory.renew(fixture.host.id, location.nonce)
+        remaining = max(0, last_seen + 15_000 - System.monotonic_time(:millisecond))
+        assert_receive {:DOWN, ^monitor, :process, ^remote, :normal}, remaining + 250
+        elapsed = System.monotonic_time(:millisecond) - last_seen
+        assert elapsed >= 15_000
+        assert elapsed <= 15_250
+        assert_receive {:terminal_closed, %{reason: :stream_unavailable}}, 1_000
+        :ok = :sys.resume(peer)
+        assert await_peer_release(peer, System.monotonic_time(:millisecond) + 2_000)
+        assert PeerBudget.used() == 0
+      end
     end
   end
 
@@ -181,64 +185,68 @@ defmodule Marshall.Terminal.RemoteTest do
     for {owner, monitor} <- Enum.zip(owners, monitors),
         do: assert_receive({:DOWN, ^monitor, :process, ^owner, _}, 2_000)
 
-    check all(offset <- integer(500..1_500), max_runs: 3, max_shrinking_steps: 0) do
-      {:ok, location} = Directory.lookup(fixture.host.id)
-      assert :ok = Directory.renew(fixture.host.id, location.nonce)
-      remote = start_peer(location)
-      healthy_peer(remote, fixture.vm)
-      [peer] = Map.keys(:sys.get_state(PeerBudget).owners) -- [remote]
-      previous = peer_last_seen(peer)
-      marker = make_ref()
-      Process.send_after(self(), {:incoming_activity, marker}, offset)
-      assert_receive {:incoming_activity, ^marker}, 2_000
-      channel = :sys.get_state(remote).channel
-      send(remote, {:viewer_output_ack, channel, 0, 0})
-      _ = :sys.get_state(remote)
+    # Preserve three generated real-deadline histories without accumulating
+    # their expected runtime into one native slow-input health check.
+    for _ <- 1..3 do
+      check all(offset <- integer(500..1_500), test_cases: 1) do
+        {:ok, location} = Directory.lookup(fixture.host.id)
+        assert :ok = Directory.renew(fixture.host.id, location.nonce)
+        remote = start_peer(location)
+        healthy_peer(remote, fixture.vm)
+        [peer] = Map.keys(:sys.get_state(PeerBudget).owners) -- [remote]
+        previous = peer_last_seen(peer)
+        marker = make_ref()
+        Process.send_after(self(), {:incoming_activity, marker}, offset)
+        assert_receive {:incoming_activity, ^marker}, 2_000
+        channel = :sys.get_state(remote).channel
+        send(remote, {:viewer_output_ack, channel, 0, 0})
+        _ = :sys.get_state(remote)
 
-      last_seen =
-        await_peer_activity(peer, previous, System.monotonic_time(:millisecond) + 1_000)
+        last_seen =
+          await_peer_activity(peer, previous, System.monotonic_time(:millisecond) + 1_000)
 
-      assert is_integer(last_seen)
-      :erlang.trace(peer, true, [:send, :monotonic_timestamp])
-      :ok = :sys.suspend(remote)
+        assert is_integer(last_seen)
+        :erlang.trace(peer, true, [:send, :monotonic_timestamp])
+        :ok = :sys.suspend(remote)
 
-      on_exit(fn ->
-        try do
-          :sys.resume(remote)
-        catch
-          :exit, _ -> :ok
-        end
-      end)
+        on_exit(fn ->
+          try do
+            :sys.resume(remote)
+          catch
+            :exit, _ -> :ok
+          end
+        end)
 
-      Process.send_after(self(), {:renew_incoming_location, marker}, 10_000)
-      assert_receive {:renew_incoming_location, ^marker}, 11_000
-      assert :ok = Directory.renew(fixture.host.id, location.nonce)
-      remaining = max(0, last_seen + 15_000 - System.monotonic_time(:millisecond))
+        Process.send_after(self(), {:renew_incoming_location, marker}, 10_000)
+        assert_receive {:renew_incoming_location, ^marker}, 11_000
+        assert :ok = Directory.renew(fixture.host.id, location.nonce)
+        remaining = max(0, last_seen + 15_000 - System.monotonic_time(:millisecond))
 
-      timestamp =
-        receive do
-          {:trace_ts, ^peer, :send, {:"$gen_cast", {:release, ^peer}}, _budget, timestamp} ->
-            timestamp
-        after
-          remaining + 250 ->
-            {_socket, %{connection: connection}} = :sys.get_state(peer)
-            renewed_by = connection.websock_state.last_seen - last_seen
-            occupied = Map.has_key?(:sys.get_state(PeerBudget).owners, peer)
+        timestamp =
+          receive do
+            {:trace_ts, ^peer, :send, {:"$gen_cast", {:release, ^peer}}, _budget, timestamp} ->
+              timestamp
+          after
+            remaining + 250 ->
+              {_socket, %{connection: connection}} = :sys.get_state(peer)
+              renewed_by = connection.websock_state.last_seen - last_seen
+              occupied = Map.has_key?(:sys.get_state(PeerBudget).owners, peer)
 
-            flunk(
-              "termination unobserved: state=#{connection.state}, renewed_by_ms=#{renewed_by}, occupied=#{occupied}"
-            )
-        end
+              flunk(
+                "termination unobserved: state=#{connection.state}, renewed_by_ms=#{renewed_by}, occupied=#{occupied}"
+              )
+          end
 
-      elapsed = System.convert_time_unit(timestamp, :native, :millisecond) - last_seen
-      assert elapsed >= 15_000
-      assert elapsed <= 15_250
-      assert await_peer_release(peer, System.monotonic_time(:millisecond) + 2_000)
-      monitor = Process.monitor(remote)
-      :ok = :sys.resume(remote)
-      assert_receive {:DOWN, ^monitor, :process, ^remote, :normal}, 2_000
-      assert_receive {:terminal_closed, %{reason: :stream_unavailable}}, 1_000
-      assert PeerBudget.used() == 0
+        elapsed = System.convert_time_unit(timestamp, :native, :millisecond) - last_seen
+        assert elapsed >= 15_000
+        assert elapsed <= 15_250
+        assert await_peer_release(peer, System.monotonic_time(:millisecond) + 2_000)
+        monitor = Process.monitor(remote)
+        :ok = :sys.resume(remote)
+        assert_receive {:DOWN, ^monitor, :process, ^remote, :normal}, 2_000
+        assert_receive {:terminal_closed, %{reason: :stream_unavailable}}, 1_000
+        assert PeerBudget.used() == 0
+      end
     end
   end
 

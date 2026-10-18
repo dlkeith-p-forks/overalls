@@ -45,8 +45,8 @@ defmodule MarshallWeb.ProvisionerAPITest do
   # Every fresh session MUST advance the durable epoch exactly once. Retrying a
   # current nonce MUST be idempotent, while every superseded nonce MUST remain
   # unable to open or exchange after any later takeover.
-  property "generated takeovers never readmit consumed session nonces" do
-    check all(takeovers <- integer(2..5), newest_first? <- boolean(), max_runs: 8) do
+  property "generated takeovers never readmit consumed session nonces", test_cases: 8 do
+    check all(takeovers <- integer(2..5), newest_first? <- boolean(), test_cases: 8) do
       fixture = host_fixture()
       {:ok, issued} = Credentials.rotate(fixture.host.id, 3600)
       [initial] = Ledger.read!(Host, id: fixture.host.id)
@@ -168,7 +168,7 @@ defmodule MarshallWeb.ProvisionerAPITest do
     check all(
             retries <- integer(1..4),
             acknowledge? <- boolean(),
-            max_runs: 8
+            test_cases: 8
           ) do
       fixture = host_fixture()
       owner = user()
@@ -302,7 +302,7 @@ defmodule MarshallWeb.ProvisionerAPITest do
                 %{"version" => 4, "session_id" => "not-a-uuid"},
                 %{"version" => 4, "session_id" => 1, "epoch" => []}
               ]),
-            max_runs: 12
+            test_cases: 12
           ) do
       [before_host] = Ledger.read!(Host, id: host.id)
 
@@ -324,7 +324,7 @@ defmodule MarshallWeb.ProvisionerAPITest do
   } do
     check all(
             body_version <- member_of([0, 1, 2, 3, "4", nil]),
-            max_runs: 20
+            test_cases: 20
           ) do
       [before_host] = Ledger.read!(Host, id: host.id)
       before_operations = Ledger.read!(Operation, vm_id: vm.id)

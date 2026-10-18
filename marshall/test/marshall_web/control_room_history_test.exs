@@ -40,7 +40,7 @@ defmodule MarshallWeb.ControlRoomHistoryTest do
                 min_length: 1,
                 max_length: 8
               ),
-            max_runs: 25
+            test_cases: 25
           ) do
       assert_history(conn, administrator, forged_role, events)
     end

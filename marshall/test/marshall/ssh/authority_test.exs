@@ -44,7 +44,7 @@ defmodule Marshall.SSH.AuthorityTest do
   end
 
   test "removal and re-addition never restore a previous connection", c do
-    check all(bytes <- binary(length: 32), max_runs: 20) do
+    check all(bytes <- binary(length: 32), test_cases: 20) do
       text = public_key(bytes)
       assert {:ok, key} = SSH.add_key(%{public_key: text}, actor: c.user)
       assert {:ok, first} = open(c, text)

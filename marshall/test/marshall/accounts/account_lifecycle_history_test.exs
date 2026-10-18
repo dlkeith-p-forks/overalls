@@ -26,7 +26,8 @@ defmodule Marshall.Accounts.AccountLifecycleHistoryTest do
   # sets after every refused/retried action. A replacement MUST appear while old
   # cleanup still holds disk, inherit no authority, and survive old-UUID cleanup.
   # Synthetic outcomes prove coordinator fencing only, never native reclamation.
-  property "same-email generations cannot inherit retired authority or redirect cleanup" do
+  property "same-email generations cannot inherit retired authority or redirect cleanup",
+    test_cases: 12 do
     check all(
             generations <-
               list_of(
@@ -41,7 +42,7 @@ defmodule Marshall.Accounts.AccountLifecycleHistoryTest do
                 min_length: 2,
                 max_length: 3
               ),
-            max_runs: 12
+            test_cases: 12
           ) do
       fixture = fixture()
 

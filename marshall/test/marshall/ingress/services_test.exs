@@ -257,7 +257,7 @@ defmodule Marshall.Ingress.ServicesTest do
     assert [] = Ledger.read!(Service)
   end
 
-  property "arbitrary public-key input cannot replace a registered identity" do
+  property "arbitrary public-key input cannot replace a registered identity", test_cases: 30 do
     %{host: host} = Marshall.ComputeFixtures.host_fixture()
     {token, _} = Token.issue()
 
@@ -274,7 +274,7 @@ defmodule Marshall.Ingress.ServicesTest do
 
     check all(
             candidate <- one_of([binary(max_length: 200), constant(key), constant(host_key())]),
-            max_runs: 30
+            test_cases: 30
           ) do
       result =
         Ingress.publish_host_key(%{token: token, public_key: candidate},
@@ -289,7 +289,8 @@ defmodule Marshall.Ingress.ServicesTest do
     end
   end
 
-  property "address histories advance identity exactly when the address set changes" do
+  property "address histories advance identity exactly when the address set changes",
+    test_cases: 20 do
     %{host: host} = Marshall.ComputeFixtures.host_fixture()
 
     check all(
@@ -298,7 +299,7 @@ defmodule Marshall.Ingress.ServicesTest do
                 min_length: 1,
                 max_length: 10
               ),
-            max_runs: 20
+            test_cases: 20
           ) do
       {token, _} = Token.issue()
       params = %{name: Ash.UUID.generate(), role: :gateway, host_id: host.id, token: token}
@@ -321,11 +322,11 @@ defmodule Marshall.Ingress.ServicesTest do
     end
   end
 
-  property "rotation and revocation histories reject every replaced credential" do
+  property "rotation and revocation histories reject every replaced credential", test_cases: 20 do
     check all(
             actions <-
               list_of(member_of([:rotate, :disable, :repeat]), min_length: 1, max_length: 12),
-            max_runs: 20
+            test_cases: 20
           ) do
       {token, _} = Token.issue()
       name = "dns-" <> Ash.UUID.generate()

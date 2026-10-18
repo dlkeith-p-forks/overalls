@@ -307,7 +307,7 @@ defmodule Marshall.Compute.DrainsTest do
                 min_length: 1,
                 max_length: 12
               ),
-            max_runs: 15
+            test_cases: 15
           ) do
       {:error, :example_complete} =
         Ledger.transaction(fn ->

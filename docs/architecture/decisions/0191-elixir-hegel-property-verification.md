@@ -59,7 +59,8 @@ storage durability, physical recovery or deployed fleet behavior.
 - [Elixir Hegel testing guide](../../development/testing-with-hegel.md)
 - [Hegel Elixir skill](../../../.agents/skills/hegel-elixir-tests/SKILL.md)
 - [Protocol test-only dependency pin](../../../protocol/mix.exs)
-  currently selects frontend ref `02cd8bd`,
+  currently selects frontend ref `02cd8bd`, resolved as
+  `02cd8bd5bf07a7ca1bfaf7d599456fff5badbfa2`,
   as do Marshall and Lilly. The historical complete protocol gate at
   `2c9f7a4a9f2cf156de063bbc8058bcf297be5cf0` passed 299 tests and properties;
   the linked review retains that source hash and the earlier `6a62795` result.

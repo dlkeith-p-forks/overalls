@@ -23,7 +23,7 @@ defmodule Lilly.VM.BootGenerationAdoptionPropertyTest do
             epoch <- integer(1..100),
             initial <- integer(1..100),
             advances <- list_of(integer(1..8), min_length: 1, max_length: 6),
-            max_runs: 30
+            test_cases: 30
           ) do
       path = sample_directory(dir)
 
@@ -70,7 +70,7 @@ defmodule Lilly.VM.BootGenerationAdoptionPropertyTest do
             epoch <- integer(1..100),
             generation <- integer(1..100),
             fault <- member_of([:epoch, :placement, :future_generation, :corrupt, :missing]),
-            max_runs: 35
+            test_cases: 35
           ) do
       path = sample_directory(dir)
 

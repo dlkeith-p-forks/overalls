@@ -21,8 +21,9 @@ defmodule Marshall.CommittedCredentialInventoryTest do
   # MUST invoke the real ceremony/key actions and assert session revocation
   # effects against raw committed state before exact teardown.
   @tag timeout: 120_000
-  property "committed credential lifecycles preserve unrelated fixture history and restore inventory" do
-    check all(bytes <- binary(length: 32), max_runs: 8) do
+  property "committed credential lifecycles preserve unrelated fixture history and restore inventory",
+    test_cases: 8 do
+    check all(bytes <- binary(length: 32), test_cases: 8) do
       unboxed(fn -> verify_lifecycle!(bytes) end)
     end
   end

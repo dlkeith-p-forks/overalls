@@ -301,10 +301,11 @@ defmodule Marshall.Terminal.HostStreamTest do
     refute_receive {:terminal_output, "duplicate"}
   end
 
-  property "a future output sequence closes its channel while a replay is ignored" do
+  property "a future output sequence closes its channel while a replay is ignored",
+    test_cases: 12 do
     state = accepted_state()
 
-    check all(gap <- integer(3..64), max_runs: 12) do
+    check all(gap <- integer(3..64), test_cases: 12) do
       {channel, state} = attach(state, self(), 11)
 
       first = Codec.encode_data_frame(channel, 1, "one")
@@ -362,8 +363,8 @@ defmodule Marshall.Terminal.HostStreamTest do
   # @cc [owner:ghuntley,label:verification;reliability] generated-viewer-mailbox-isolation
   # A slow viewer at the 64-message bound MUST be shed once, without forwarding
   # beyond the bound or preventing any other active channel from advancing.
-  property "generated mailbox pressure sheds only the stalled viewer" do
-    check all(prefill <- integer(60..64), fast_count <- integer(1..3), max_runs: 8) do
+  property "generated mailbox pressure sheds only the stalled viewer", test_cases: 8 do
+    check all(prefill <- integer(60..64), fast_count <- integer(1..3), test_cases: 8) do
       state = accepted_state()
       owner = self()
 

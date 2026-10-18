@@ -36,7 +36,7 @@ defmodule MarshallWeb.TeamsSSHAPITest do
                 min_length: 1,
                 max_length: 8
               ),
-            max_runs: 15
+            test_cases: 15
           ) do
       owner = account(c)
       target = account(c)
@@ -199,7 +199,7 @@ defmodule MarshallWeb.TeamsSSHAPITest do
   test "team name grammar and boundary refusals remain permanent", c do
     owner = account(c)
 
-    check all(label <- string(?a..?z, min_length: 1, max_length: 20), max_runs: 20) do
+    check all(label <- string(?a..?z, min_length: 1, max_length: 20), test_cases: 20) do
       for name <- [String.upcase(label), "0" <> label, label <> "-", label <> "_"] do
         unchanged(c, owner, "team create #{name}", 400, "invalid_request")
       end

@@ -882,19 +882,34 @@ vs_ioctl(sock_lower_handle_t lower, int command, intptr_t argument, int mode,
 	return (ddi_copyout(&bytes, (void *)argument, sizeof (bytes), mode) != 0 ? EFAULT : 0);
 }
 
+/** @cc [owner:ghuntley,label:recovery;protocol] illumos-listener-close-wakes-accept
+ * Closing a listener MUST publish its closed state and wake pending-handshake
+ * children on its port under vs_lock. A child waiting in sd_accept MUST refuse
+ * without depending on the connection callback completing or another interrupt.
+ */
 static int
 vs_close(sock_lower_handle_t lower, int flags, cred_t *cred)
 {
 	struct vs_socket *endpoint = (struct vs_socket *)lower;
 	boolean_t asynchronous;
+	boolean_t listener;
 	(void) flags;
 	(void) cred;
 	mutex_enter(&vs_lock);
+	listener = endpoint->listening;
 	vs_remove(endpoint);
 	if (endpoint->connection.phase == OV_VSOCK_ESTABLISHED)
 		(void) vs_control(endpoint, OV_VSOCK_RST, 0);
 	vs_fail(endpoint, ECONNRESET);
 	endpoint->closing = B_TRUE;
+	/* sd_accept waits on the child CV while also observing listener state. */
+	if (listener) {
+		for (struct vs_socket *child = vs_sockets; child != NULL;
+		    child = child->next) {
+			if (child->local_port == endpoint->local_port && child->handshake)
+				cv_broadcast(&child->cv);
+		}
+	}
 	asynchronous = endpoint->refs > 1;
 	endpoint->async_close = asynchronous;
 	mutex_exit(&vs_lock);

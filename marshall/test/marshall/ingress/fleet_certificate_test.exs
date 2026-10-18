@@ -22,7 +22,8 @@ defmodule Marshall.Ingress.FleetCertificateTest do
   # Delayed issued generations MUST fail activation after any newer generation
   # exists. Refusal MUST preserve the active certificate and audit rows; only
   # the latest issued generation may retire its predecessor and become active.
-  property "generated delayed certificate jobs never activate an older generation" do
+  property "generated delayed certificate jobs never activate an older generation",
+    test_cases: 12 do
     previous_acme = Application.get_env(:marshall, :fleet_acme)
     on_exit(fn -> restore_env(:fleet_acme, previous_acme) end)
 
@@ -31,7 +32,7 @@ defmodule Marshall.Ingress.FleetCertificateTest do
             order <- shuffle(Enum.to_list(1..count)),
             newer_status <- member_of([:pending, :failed, :issued]),
             retries <- integer(1..3),
-            max_runs: 12
+            test_cases: 12
           ) do
       zone = "#{Ash.UUID.generate()}.example.test"
       base = System.unique_integer([:positive, :monotonic]) * 10

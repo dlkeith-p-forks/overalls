@@ -225,7 +225,7 @@ defmodule Marshall.Access.SharingMatrixDistributedTest do
                 min_length: 2,
                 max_length: 4
               ),
-            max_runs: 3
+            test_cases: 3
           ) do
       schedule =
         [

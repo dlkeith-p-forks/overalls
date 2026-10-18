@@ -30,7 +30,7 @@ defmodule MarshallWeb.AgentCLIHistoryTest do
   # public direct/team actions. Every step checks both an existing approved secret
   # and a fresh explicit browser approval; refusal MUST preserve complete scoped
   # persisted rows, including prior turns, sessions, audit and wake operations.
-  property "CLI invocations follow direct and team authority histories" do
+  property "CLI invocations follow direct and team authority histories", test_cases: 8 do
     check all(
             tail <-
               list_of(
@@ -40,7 +40,7 @@ defmodule MarshallWeb.AgentCLIHistoryTest do
                 ]),
                 max_length: 5
               ),
-            max_runs: 8
+            test_cases: 8
           ) do
       c = fixture()
       model = change(c, %{direct: :revoked, team: false}, {:direct, :operator})
@@ -90,11 +90,11 @@ defmodule MarshallWeb.AgentCLIHistoryTest do
   # Digest URLs MUST NOT authenticate API calls. Wrong VM/thread and changed
   # replay payloads MUST preserve prior state; exact request replay MUST retain
   # one turn and its original audit/wake inventory across fresh invocations.
-  property "approved secrets retain exact machine, thread and request bindings" do
+  property "approved secrets retain exact machine, thread and request bindings", test_cases: 8 do
     check all(
             repeats <- integer(2..5),
             payload <- member_of(["inspect", "read", "check"]),
-            max_runs: 8
+            test_cases: 8
           ) do
       c = fixture()
       change(c, %{direct: :revoked, team: false}, {:direct, :operator})
@@ -139,11 +139,11 @@ defmodule MarshallWeb.AgentCLIHistoryTest do
   # Synthetic expiry, real retirement and VM deletion MUST all run in every
   # generated order and refuse every subsequent mutation. Generation and
   # shrinking MUST preserve all three boundaries without rejection exhaustion.
-  property "browser sign-out and CLI expiry have separate authority boundaries" do
+  property "browser sign-out and CLI expiry have separate authority boundaries", test_cases: 4 do
     check all(
             boundaries <- shuffle([:expiry, :delete, :retire]),
             expiry_age <- integer(1..3600),
-            max_runs: 4
+            test_cases: 4
           ) do
       Enum.each(boundaries, &lifetime_boundary(&1, expiry_age))
     end

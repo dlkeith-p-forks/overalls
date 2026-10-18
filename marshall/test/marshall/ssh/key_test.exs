@@ -5,14 +5,15 @@ defmodule Marshall.SSH.KeyTest do
   import Marshall.ComputeFixtures, only: [user: 0]
   alias Marshall.SSH
 
-  property "canonical key ownership survives duplicate registration and changes only after revocation" do
+  property "canonical key ownership survives duplicate registration and changes only after revocation",
+    test_cases: 30 do
     owner = user()
     other = user()
 
     check all(
             bytes <- binary(length: 32),
             label <- string(:alphanumeric, max_length: 32),
-            max_runs: 30
+            test_cases: 30
           ) do
       public_key = encode(bytes)
       assert {:ok, key} = SSH.add_key(%{public_key: public_key, label: label}, actor: owner)

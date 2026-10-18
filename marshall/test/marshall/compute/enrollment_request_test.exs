@@ -52,11 +52,14 @@ defmodule Marshall.Compute.EnrollmentRequestTest do
 
   property "ZFS enrollment binds unsigned GUIDs and refuses a retired budget or unknown pool key" do
     check all(
-            guid <- integer(1..18_446_744_073_709_551_615),
+            guid <- positive_uint64(),
             overhead <- integer(0..9_223_372_036_854_775_806),
             budget <- one_of([integer(), constant(nil), binary()]),
-            key <- string(:alphanumeric, min_length: 1, max_length: 32),
-            key not in ~w(name storage overhead_bytes)
+            key <-
+              filter(
+                string(:alphanumeric, min_length: 1, max_length: 32),
+                &(&1 not in ~w(name storage overhead_bytes))
+              )
           ) do
       storage = %{
         "backend" => "zfs",
@@ -115,5 +118,15 @@ defmodule Marshall.Compute.EnrollmentRequestTest do
     check all(value <- one_of([binary(), integer(), list_of(integer())])) do
       assert {:error, :invalid_enrollment_request} = EnrollmentRequest.parse(value)
     end
+  end
+
+  # @cc [owner:ghuntley,label:verification] enrollment-generated-unsigned-width
+  # Enrollment GUID generation MUST retain every nonzero unsigned 64-bit value,
+  # including the upper half beyond the native engine's signed integer bound.
+  @spec positive_uint64() :: :hegel_gen.t(pos_integer())
+  defp positive_uint64 do
+    tuple([integer(0, 0xFFFFFFFF), integer(0, 0xFFFFFFFF)])
+    |> map(fn {high, low} -> high * 0x100000000 + low end)
+    |> filter(&(&1 > 0))
   end
 end

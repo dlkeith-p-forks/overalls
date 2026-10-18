@@ -208,8 +208,9 @@ defmodule Lilly.Transfer.SnapshotJournalTest do
     end)
   end
 
+  @tag :hegel
   test "arbitrary journal bytes never crash or rebind identity", c do
-    check all(bytes <- binary(max_length: 1024), max_runs: 30) do
+    check all(bytes <- binary(max_length: 1024), test_cases: 30) do
       :ok = PrivateFiles.write(c.directory, "snapshots.json", bytes)
 
       case Journal.read(c.directory, c.binding) do

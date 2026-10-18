@@ -84,7 +84,7 @@ defmodule Marshall.Compute.MachineNamesTest do
 
   @tag :hegel
   test "retries pin the generated or chosen name and reject changing it", %{owner: owner} do
-    check all(suffix <- integer(1..1_000_000), explicit? <- boolean(), max_runs: 12) do
+    check all(suffix <- integer(1..1_000_000), explicit? <- boolean(), test_cases: 12) do
       params = request(%{name: if(explicit?, do: "chosen-#{suffix}")})
       assert {:ok, vm} = Compute.provision(params, actor: owner)
       assert OverallsProtocol.MachineName.valid?(vm.name)

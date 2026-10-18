@@ -13,7 +13,7 @@ defmodule Lilly.Host.ImageCopyTest do
             suffix <- binary(min_length: 1, max_length: 1024),
             hole <- integer(0..2_097_152),
             method <- member_of(["copy", "auto"]),
-            max_runs: 16
+            test_cases: 16
           ) do
       directory = Path.join(c.tmp_dir, Lilly.UUID.generate())
       {:ok, lock} = Lock.acquire(directory)

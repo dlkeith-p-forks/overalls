@@ -192,6 +192,40 @@ class NativeImageTest(unittest.TestCase):
             ):
                 image.check_disabled_service_properties(output)
 
+    def test_agent_service_contract_keeps_child_signals_local(self) -> None:
+        duration = '<propval name="duration" type="astring" value="contract"/>'
+        signal = '<propval name="ignore_error" type="astring" value="signal"/>'
+        manifest = (
+            '<service_bundle type="manifest" name="overalls-native-agents">'
+            '<service name="site/overalls-native-agents" type="service" version="1">'
+            '<property_group name="startd" type="framework">'
+            + duration
+            + signal
+            + "</property_group></service></service_bundle>"
+        )
+        image.check_agent_service_contract(manifest.encode())
+        for changed in (
+            manifest.replace(signal, ""),
+            manifest.replace('value="signal"', 'value="core"'),
+            manifest.replace('value="signal"', 'value="core,signal"'),
+            manifest.replace('value="contract"', 'value="transient"'),
+            manifest.replace(signal, signal + signal),
+            manifest.replace('name="startd"', 'name="other"'),
+            manifest.replace('type="framework"', 'type="application"'),
+            manifest.replace("site/overalls-native-agents", "site/foreign"),
+            manifest.replace(
+                "</service>",
+                '<instance name="default" enabled="true">'
+                '<property_group name="startd" type="framework">'
+                '<propval name="duration" type="astring" value="transient"/>'
+                '<propval name="ignore_error" type="astring" value="core"/>'
+                "</property_group></instance></service>",
+            ),
+            "<service_bundle>",
+        ):
+            with self.subTest(manifest=changed), self.assertRaisesRegex(ValueError, "SMF signal"):
+                image.check_agent_service_contract(changed.encode())
+
     def test_console_configuration_preserves_stock_and_binds_both_files(self) -> None:
         with (
             tempfile.TemporaryDirectory() as temporary,

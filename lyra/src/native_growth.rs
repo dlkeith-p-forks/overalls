@@ -446,6 +446,7 @@ fn disk(path: &str) -> io::Result<File> {
 /// precede native mutation. FreeBSD MUST preserve the root UUID/start and every
 /// nonroot entry; OmniOS MUST additionally match the assembly pool GUID and a
 /// single whole-disk ZFS vdev, preserving loader and reserved-tail identity.
+/// OmniOS pool discovery MUST NOT depend on a persisted zpool cache.
 /// Failure MUST withhold a success receipt and MUST NOT emit native output.
 pub fn run(os: Os) -> io::Result<()> {
     // SAFETY: geteuid reads the process credential without modifying state.
@@ -493,8 +494,15 @@ pub fn run(os: Os) -> io::Result<()> {
                 )?,
                 &actual,
             )?;
+            // Early boot may not have a persisted pool cache. zdb has its own
+            // read-only userland namespace: exclude cached pools before label
+            // discovery so an existing cached entry cannot collide with -e.
             let target = illumos_vdev(
-                &command("/usr/sbin/zdb", &["-C", POOL], true)?,
+                &command(
+                    "/usr/sbin/zdb",
+                    &["-C", "-e", "-U", "/dev/null", "-p", "/dev/dsk", POOL],
+                    true,
+                )?,
                 pool_guid(actual.trim())?,
             )?;
             let disk = illumos_device(&target)?;
@@ -633,6 +641,11 @@ mod tests {
             ("'disk'", "'mirror'"),
             ("children[0]", "children[1]"),
             ("c2t0d0s1", "c2t0d0s0"),
+            (
+                "/dev/dsk/c2t0d0s1",
+                "/mnt/overalls-native-assembly/devices/scratch",
+            ),
+            ("/dev/dsk/c2t0d0s1", "/dev/dsk/../c2t0d0s1"),
             ("vdev_children: 1", "vdev_children: 2"),
             ("is_log: 0", "is_log: 1"),
         ] {

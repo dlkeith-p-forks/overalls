@@ -22,7 +22,7 @@ defmodule Marshall.Access.SharingTest do
                 min_length: 1,
                 max_length: 8
               ),
-            max_runs: 12
+            test_cases: 12
           ) do
       for role <- roles do
         assert {:ok, _} = share(context, role)

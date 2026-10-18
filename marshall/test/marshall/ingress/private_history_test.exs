@@ -59,7 +59,8 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
   # withdrawal MUST recheck authority on exchange. Gateway-style explicit close
   # after refusal MUST permanently fence that ticket even after re-addition.
   # Synthetic execution reports establish control admission, not network closure.
-  property "private browser admission and renewal follow combined sharing histories" do
+  property "private browser admission and renewal follow combined sharing histories",
+    test_cases: 12 do
     check all(
             port <- member_of([0, 3000, 9999]),
             tail <-
@@ -70,7 +71,7 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
                 ]),
                 max_length: 8
               ),
-            max_runs: 12
+            test_cases: 12
           ) do
       c = fixture()
 
@@ -181,11 +182,11 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
   # bindings. Actual endpoint configuration and sign-out exercise public actions;
   # expiry and generation changes below are explicitly synthetic fault injection.
   # A new login may authorize a fresh stream but MUST NOT revive the closed one.
-  property "private streams retain exact policy, execution and login bindings" do
+  property "private streams retain exact policy, execution and login bindings", test_cases: 20 do
     check all(
             boundary <- member_of([:policy, :execution, :signout, :close, :expire]),
             port <- member_of([0, 3000, 9999]),
-            max_runs: 20
+            test_cases: 20
           ) do
       c = fixture()
 

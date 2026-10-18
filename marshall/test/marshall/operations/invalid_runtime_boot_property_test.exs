@@ -51,8 +51,9 @@ defmodule Marshall.Operations.InvalidRuntimeBootPropertyTest do
   # controls MUST use app.config only and MUST NOT establish configured serving
   # or production-release acceptance. Child diagnostics MUST omit fixture data.
   @tag timeout: 300_000
-  property "invalid common Marshall runtime settings refuse before application startup" do
-    check all(order <- shuffle(Enum.to_list(0..(length(@cases) - 1))), max_runs: 3) do
+  property "invalid common Marshall runtime settings refuse before application startup",
+    test_cases: 3 do
+    check all(order <- shuffle(Enum.to_list(0..(length(@cases) - 1))), test_cases: 3) do
       for index <- order do
         {name, value} = Enum.at(@cases, index)
 

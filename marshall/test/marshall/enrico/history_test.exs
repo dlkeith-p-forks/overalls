@@ -61,7 +61,7 @@ defmodule Marshall.Enrico.HistoryTest do
                 min_length: 1,
                 max_length: 3
               ),
-            max_runs: 18
+            test_cases: 18
           ) do
       admin = Marshall.PasskeyFixture.elevate(Marshall.PasskeyFixture.user(true))
       reader = Marshall.ComputeFixtures.user()

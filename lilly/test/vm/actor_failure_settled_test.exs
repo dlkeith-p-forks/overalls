@@ -29,6 +29,7 @@ defmodule Lilly.VM.ActorFailureSettledTest do
   # replacement actor re-observes it once without appending a durable outcome,
   # and a newer command or a delete still drives at once. A recorded failure
   # MUST remain the pending outcome Marshall receives.
+  @tag :hegel
   test "a recorded failure is driven once per actor process and command", context do
     check all(
             events <-
@@ -42,7 +43,7 @@ defmodule Lilly.VM.ActorFailureSettledTest do
                 max_length: 14
               ),
             reason <- member_of([:execution_failed, :crashed]),
-            max_runs: 20
+            test_cases: 20
           ) do
       run = boot(context.tmp_dir)
       before = drive_failure(run, reason)

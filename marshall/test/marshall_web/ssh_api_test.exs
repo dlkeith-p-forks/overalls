@@ -77,7 +77,7 @@ defmodule MarshallWeb.SSHAPITest do
       {:ok, api(c, route, payload) |> reply(200)}
     end
 
-    check all(count <- integer(0..4), max_runs: 10) do
+    check all(count <- integer(0..4), test_cases: 10) do
       integrations =
         for _ <- List.duplicate(:integration, count) do
           {:ok, integration} =

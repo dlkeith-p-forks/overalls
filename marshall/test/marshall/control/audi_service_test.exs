@@ -111,7 +111,7 @@ defmodule Marshall.Control.AudiServiceTest do
             route_body <- cases,
             credential <- member_of([:gateway, :dns]),
             version <- member_of([1, 1, 1, 2]),
-            max_runs: 40
+            test_cases: 40
           ) do
       {route, body} = route_body
       token = Map.fetch!(c, credential)

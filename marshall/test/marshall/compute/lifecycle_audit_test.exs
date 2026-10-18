@@ -141,7 +141,7 @@ defmodule Marshall.Compute.LifecycleAuditTest do
   # every full batch MUST enqueue one maintenance continuation, including an
   # exact multiple of 1000, while a partial or empty batch MUST enqueue none.
   test "generated expired backlogs drain with one continuation per full batch", c do
-    check all(offset <- integer(1..200), max_runs: 4) do
+    check all(offset <- integer(1..200), test_cases: 4) do
       for backlog <- [0, offset, 1000, 1000 + offset, 2000] do
         assert_retention_backlog(backlog, c.vm.id)
       end

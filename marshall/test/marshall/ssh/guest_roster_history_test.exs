@@ -40,7 +40,7 @@ defmodule Marshall.SSH.GuestRosterHistoryTest do
                 min_length: 1,
                 max_length: 4
               ),
-            max_runs: 6
+            test_cases: 6
           ) do
       {vm, token, binding} = vm_fixture(team?)
       owner = owner_of(vm)

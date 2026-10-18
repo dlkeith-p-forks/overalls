@@ -12,11 +12,12 @@ defmodule Lilly.TerminalTest do
     boot_challenge: "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
   }
 
-  property "hello tags bind placement, epoch and key material" do
+  @tag :hegel
+  test "hello tags bind placement, epoch and key material" do
     check all(
             placement <- member_of(["placement-a", "placement-b"]),
             epoch <- member_of([1, 2]),
-            max_runs: 20
+            test_cases: 20
           ) do
       identity = %{@identity | placement_id: placement, execution_epoch: epoch}
       nonce = :crypto.strong_rand_bytes(16)

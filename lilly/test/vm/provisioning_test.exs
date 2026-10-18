@@ -123,8 +123,9 @@ defmodule Lilly.VM.ProvisioningTest do
     end
   end
 
+  @tag :hegel
   test "foreign journals and stale cancellation cannot alter durable progress", c do
-    check all(epoch <- integer(1..100), generation <- integer(2..100), max_runs: 20) do
+    check all(epoch <- integer(1..100), generation <- integer(2..100), test_cases: 20) do
       spec = %{c.spec | id: Lilly.UUID.generate()}
       directory = Path.join(c.config.state_dir, spec.id)
       {:ok, lock} = Lock.acquire(directory)

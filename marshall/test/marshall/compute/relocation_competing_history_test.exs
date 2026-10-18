@@ -33,7 +33,8 @@ defmodule Marshall.Compute.RelocationCompetingHistoryTest do
   # Duplicate receipts and advances MUST preserve first release timestamps and
   # the competitor's complete allocation records. This is database authority
   # with synthetic outcomes, not evidence that native streams have ceased.
-  property "competing relocation admission follows both endpoint stream receipts" do
+  property "competing relocation admission follows both endpoint stream receipts",
+    test_cases: 12 do
     check all(
             source_first? <- boolean(),
             wrong_epoch? <- boolean(),
@@ -43,7 +44,7 @@ defmodule Marshall.Compute.RelocationCompetingHistoryTest do
                 min_length: 4,
                 max_length: 12
               ),
-            max_runs: 12
+            test_cases: 12
           ) do
       :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
 

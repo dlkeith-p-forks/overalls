@@ -26,7 +26,8 @@ defmodule Marshall.Administration.JobsTest do
   # Every ordinary-reader job projection MUST use only the approved fields,
   # regardless of raw arguments, errors, state order or revoked login. A
   # revoked reader MUST receive no list or detail projection.
-  property "generated mixed job histories expose only redacted fields to current readers" do
+  property "generated mixed job histories expose only redacted fields to current readers",
+    test_cases: 8 do
     check all(
             states <-
               list_of(member_of(~w(available executing retryable completed discarded cancelled)),
@@ -35,7 +36,7 @@ defmodule Marshall.Administration.JobsTest do
               ),
             suffix <- string(:alphanumeric, min_length: 1, max_length: 32),
             shape <- member_of([:flat, :nested, :array]),
-            max_runs: 8
+            test_cases: 8
           ) do
       reader = Marshall.PasskeyFixture.user() |> Marshall.PasskeyFixture.verified_session()
       queue = "redaction_#{Ash.UUID.generate()}"

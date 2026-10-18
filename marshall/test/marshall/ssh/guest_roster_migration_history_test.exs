@@ -44,7 +44,7 @@ defmodule Marshall.SSH.GuestRosterMigrationHistoryTest do
                 min_length: 3,
                 max_length: 10
               ),
-            max_runs: 6
+            test_cases: 6
           ) do
       fixture = Marshall.TerminalFixtures.terminal_fixture(%{profile: :oss})
 

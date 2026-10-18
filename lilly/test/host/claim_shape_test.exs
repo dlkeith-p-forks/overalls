@@ -120,7 +120,7 @@ defmodule Lilly.Host.ClaimShapeTest do
   # source still prunes, captures and adopts.
   @tag :hegel
   test "a ready claim matches its spec with or without a workspace source", %{tmp_dir: tmp_dir} do
-    check all(source <- source_gen(), max_runs: 25) do
+    check all(source <- source_gen(), test_cases: 25) do
       path = Path.join(tmp_dir, Lilly.UUID.generate())
       File.mkdir_p!(path)
       pool = pool(path)

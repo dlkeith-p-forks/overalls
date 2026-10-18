@@ -57,7 +57,8 @@ defmodule MarshallWeb.FleetEndpointTest do
     end
   end
 
-  property "listener routing ignores method, host header and supplied machine credential" do
+  property "listener routing ignores method, host header and supplied machine credential",
+    test_cases: 60 do
     check all(
             service <-
               one_of([
@@ -68,7 +69,7 @@ defmodule MarshallWeb.FleetEndpointTest do
             method <- member_of([:get, :post, :put, :delete]),
             host <- member_of(["example.test", "fleet.example.test", "localhost"]),
             slug <- string(:alphanumeric, min_length: 1, max_length: 24),
-            max_runs: 60
+            test_cases: 60
           ) do
       machine_path = "/api/#{service}/#{suffix}"
 

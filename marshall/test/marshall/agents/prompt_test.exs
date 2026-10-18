@@ -29,7 +29,7 @@ defmodule Marshall.Agents.PromptTest do
   end
 
   test "a repeated prompt key creates one turn, event and audit receipt", c do
-    check all(prompt <- string(:alphanumeric, min_length: 1, max_length: 64), max_runs: 12) do
+    check all(prompt <- string(:alphanumeric, min_length: 1, max_length: 64), test_cases: 12) do
       key = Ash.UUID.generate()
       input = %{thread_id: c.thread.id, prompt: prompt, request_key: key}
       assert {:ok, first} = Agents.submit_prompt(input, actor: c.actor)
@@ -61,7 +61,7 @@ defmodule Marshall.Agents.PromptTest do
     check all(
             prompt <- string(:alphanumeric, min_length: 1, max_length: 24),
             retries <- integer(1..4),
-            max_runs: 6
+            test_cases: 6
           ) do
       host_fixture()
       {:ok, vm} = Compute.provision(request(), actor: c.actor)
@@ -158,7 +158,7 @@ defmodule Marshall.Agents.PromptTest do
   test "shared write roles can wake, read-only roles cannot", c do
     member = user()
 
-    check all(role <- member_of([:web, :viewer, :operator, :manager]), max_runs: 12) do
+    check all(role <- member_of([:web, :viewer, :operator, :manager]), test_cases: 12) do
       assert {:ok, _} =
                Access.set_access(
                  %{

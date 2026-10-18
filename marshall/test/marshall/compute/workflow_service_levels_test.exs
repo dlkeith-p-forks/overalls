@@ -58,10 +58,11 @@ defmodule Marshall.Compute.WorkflowServiceLevelsTest do
   # The test MUST retain a failed measurement and its terminal audit evidence
   # when source-restoration retry reuses the clone sequence. A wrong sequence
   # MUST stay pending; only new matching evidence may complete the new receipt.
-  property "restoration retries retain failed history without accepting another clone sequence" do
+  property "restoration retries retain failed history without accepting another clone sequence",
+    test_cases: 12 do
     {owner, vm, clone} = clone_fixture()
 
-    check all(wrong_delta <- integer(1..100), max_runs: 12) do
+    check all(wrong_delta <- integer(1..100), test_cases: 12) do
       original = receipt(owner, vm, clone, "clone", Ledger.now())
       clone = Ledger.update!(clone, :record_progress, %{failure: "source_restart_failed"})
       assert {:ok, 1} = WorkflowServiceLevels.reconcile()

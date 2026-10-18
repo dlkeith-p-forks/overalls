@@ -121,7 +121,7 @@ defmodule Marshall.Compute.EnrollmentHistoryTest do
     File.chmod!(dir, 0o700)
     op_gen = frequency(Enum.map(@weights, fn {op, weight} -> {weight, constant(op)} end))
 
-    check all(generated <- list_of(op_gen, min_length: 6, max_length: 18), max_runs: 12) do
+    check all(generated <- list_of(op_gen, min_length: 6, max_length: 18), test_cases: 12) do
       {state, fixture} = fixture(dir)
       history = generated ++ [:rotate_manual, :open_new, :report, :drain, :advance, :retire]
       state = Enum.reduce(history, state, fn op, current -> step(op, current, fixture) end)
@@ -174,7 +174,7 @@ defmodule Marshall.Compute.EnrollmentHistoryTest do
 
     check all(
             generated <- list_of(member_of(ops), min_length: 5, max_length: 14),
-            max_runs: 12
+            test_cases: 12
           ) do
       {state, fixture} = fixture(dir)
       Marshall.ComputeFixtures.image_fixture()

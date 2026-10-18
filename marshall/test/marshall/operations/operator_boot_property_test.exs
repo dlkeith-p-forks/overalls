@@ -11,8 +11,9 @@ defmodule Marshall.Operations.OperatorBootPropertyTest do
   # @cc [owner:ghuntley,label:verification;security] operator-boot-isolation-property
   # Every valid operator-mode boot MUST initialize a non-serving endpoint and
   # PubSub, disable Oban consumers, and use the exact reduced child set.
-  property "operator boots retain serving and queue isolation across valid environments" do
-    check all(server <- member_of(["false", ""]), max_runs: 2) do
+  property "operator boots retain serving and queue isolation across valid environments",
+    test_cases: 2 do
+    check all(server <- member_of(["false", ""]), test_cases: 2) do
       {projection, output} = probe(server)
 
       assert projection == %{

@@ -204,7 +204,7 @@ defmodule Marshall.Ingress.RoutesTest do
             field <-
               member_of([:placement_id, :execution_epoch, :generation, :service_generation]),
             increment <- integer(1..1000),
-            max_runs: 25
+            test_cases: 25
           ) do
       value =
         if field == :placement_id,
@@ -221,7 +221,7 @@ defmodule Marshall.Ingress.RoutesTest do
   test "refreshes preserve one route and reject unacknowledged certificate substitutions", c do
     check all(
             fingerprints <- list_of(member_of(["a", "b", "c"]), min_length: 1, max_length: 12),
-            max_runs: 15
+            test_cases: 15
           ) do
       [host] = Ledger.read!(Host, id: c.vm.host_id)
       Ledger.update!(host, :report, %{reported_at: Ledger.now()})
@@ -264,7 +264,7 @@ defmodule Marshall.Ingress.RoutesTest do
                 min_length: 1,
                 max_length: 12
               ),
-            max_runs: 15
+            test_cases: 15
           ) do
       [host] = Ledger.read!(Host, id: c.vm.host_id)
       Ledger.update!(host, :report, %{reported_at: Ledger.now()})

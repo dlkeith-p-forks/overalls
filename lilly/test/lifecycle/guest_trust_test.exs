@@ -25,8 +25,9 @@ defmodule Lilly.Lifecycle.GuestTrustTest do
     }
   end
 
+  @tag :hegel
   test "a boot must pass pending and delivering before installed", c do
-    check all(attempts <- integer(1..3), max_runs: 12) do
+    check all(attempts <- integer(1..3), test_cases: 12) do
       directory = Path.join(c.root, Lilly.UUID.generate())
       {:ok, lock} = Lock.acquire(directory)
 
@@ -81,11 +82,12 @@ defmodule Lilly.Lifecycle.GuestTrustTest do
     end
   end
 
-  property "digest is invariant under CA ordering and changes when a CA changes" do
+  @tag :hegel
+  test "digest is invariant under CA ordering and changes when a CA changes" do
     check all(
             left <- binary(min_length: 1, max_length: 64),
             right <- binary(min_length: 1, max_length: 64),
-            max_runs: 30
+            test_cases: 30
           ) do
       Hegel.assume(left != right)
 

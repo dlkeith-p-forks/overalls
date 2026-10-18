@@ -18,7 +18,7 @@ defmodule Lilly.Host.LockTest do
             # 250/500ms budgets left only ~125-250ms and flaked when loaded.
             budget <- member_of([1000, 2000]),
             delay <- integer(div(budget, 4)..div(budget, 3)),
-            max_runs: 12
+            test_cases: 12
           ) do
       {:ok, owner} = Lock.acquire(c.tmp_dir)
       inode = File.stat!(Path.join(c.tmp_dir, "owner.lock")).inode

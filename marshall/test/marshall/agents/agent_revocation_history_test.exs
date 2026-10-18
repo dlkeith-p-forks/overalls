@@ -18,13 +18,14 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
   # Generated queue/claim/start/complete stages crossed with withdraw/expire/delete/retire
   # boundaries MUST settle to exactly one terminal turn state with receipts and closed CLI
   # authority. Post-settlement ticks and claim polls MUST NOT change any scoped row digest.
-  property "generated revocation orderings settle to one terminal state with receipts" do
+  property "generated revocation orderings settle to one terminal state with receipts",
+    test_cases: 2 do
     pairs =
       for stage <- [:queued, :claimed, :started, :completed],
           boundary <- [:withdraw, :expire, :delete, :retire],
           do: {stage, boundary}
 
-    check all(order <- shuffle(pairs), max_runs: 2) do
+    check all(order <- shuffle(pairs), test_cases: 2) do
       Enum.each(order, fn {stage, boundary} ->
         try do
           history(stage, boundary)
@@ -44,12 +45,13 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
   # cli_refused receipt and authorized winners exactly one cli_approved receipt.
   # Other approved secrets remain valid while the actor retains current access;
   # sharing withdrawal MUST revoke them independently of this sequence.
-  property "generated approval sequences keep one session per digest with classified refusals" do
+  property "generated approval sequences keep one session per digest with classified refusals",
+    test_cases: 8 do
     check all(
             actions <-
               list_of(member_of([:same, :owner, :fresh]), min_length: 1, max_length: 8),
             withdrawn? <- boolean(),
-            max_runs: 8
+            test_cases: 8
           ) do
       c = Fixture.setup()
       if withdrawn?, do: assert({:ok, _} = Fixture.share(c, :revoked))
@@ -153,7 +155,8 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
   # Generated expiry offsets MUST destroy exactly the sessions past their expiry
   # plus retention hour, leaving every not-yet-reapable row intact, with one
   # cli_expired receipt per destroyed row and idempotent subsequent passes.
-  property "the CLI session reaper destroys exactly expired approvals with receipts" do
+  property "the CLI session reaper destroys exactly expired approvals with receipts",
+    test_cases: 8 do
     check all(
             # Values near the moving one-hour cutoff race the wall clock
             # between SQL setup and the reaper's independent cutoff sample.
@@ -163,7 +166,7 @@ defmodule Marshall.Agents.AgentRevocationHistoryTest do
                 min_length: 2,
                 max_length: 10
               ),
-            max_runs: 8
+            test_cases: 8
           ) do
       c = Fixture.setup()
 

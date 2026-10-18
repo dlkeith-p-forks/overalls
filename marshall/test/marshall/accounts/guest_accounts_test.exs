@@ -22,8 +22,8 @@ defmodule Marshall.Accounts.GuestAccountsTest do
   # @cc [owner:ghuntley,label:verification;security] durable-email-history-oracle
   # Generated email changes MUST preserve the User and GuestAccount UUIDs,
   # numeric UID and Linux login without creating historical guest incarnations.
-  property "email changes and changes back preserve one lifetime identity" do
-    check all(changes <- integer(1..8), max_runs: 12) do
+  property "email changes and changes back preserve one lifetime identity", test_cases: 12 do
+    check all(changes <- integer(1..8), test_cases: 12) do
       prefix = binary_part(Ash.UUID.generate(), 0, 16)
       email = "original-#{prefix}@example.test"
       user = account(email)

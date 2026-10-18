@@ -1,22 +1,43 @@
 defmodule OverallsProtocol.ViewTest do
   use ExUnit.Case, async: false
-  import Hegel
+  import Hegel, except: [run: 2]
   import Hegel.Gen
   alias OverallsProtocol.View
 
   @keys [:k1, :k2, :k3]
   @terms [:t1, :t2]
 
-  setup do
-    name = :"view_test_#{System.unique_integer([:positive])}"
-    start_supervised!({View, name: name})
-    %{view: name}
-  end
-
   # Writers are real processes that execute commands on request, so ownership is
   # enforced exactly as in production.
+  @spec writer() :: pid()
   defp writer do
-    spawn(fn -> loop() end)
+    pid = spawn(fn -> loop() end)
+    cleanup = fn -> stop_writer(pid) end
+
+    if Hegel.in_property_case?(),
+      do: Hegel.on_cleanup(cleanup),
+      else: on_exit(cleanup)
+
+    pid
+  end
+
+  @spec stop_writer(pid()) :: :ok
+  defp stop_writer(pid) do
+    reference = Process.monitor(pid)
+    Process.exit(pid, :kill)
+    assert_receive {:DOWN, ^reference, :process, ^pid, _}, 1_000
+    :ok
+  end
+
+  # @cc [owner:ghuntley,label:verification] view-generated-case-ownership
+  # Every generated case and replay MUST own a fresh View and retire all of its
+  # writers before the next case; test setup MUST NOT supply shared mutable state.
+  @spec generated_view() :: View.view()
+  defp generated_view do
+    name = :protocol_generated_view
+    {:ok, pid} = View.start_link(name: name)
+    Hegel.on_cleanup(fn -> :ok = GenServer.stop(pid) end)
+    name
   end
 
   defp loop do
@@ -37,7 +58,8 @@ defmodule OverallsProtocol.ViewTest do
     end
   end
 
-  property "rows, ownership, versions and lookups match a reference model", %{view: view} do
+  @tag :hegel
+  test "rows, ownership, versions and lookups match a reference model" do
     check all(
             commands <-
               list_of(
@@ -53,8 +75,9 @@ defmodule OverallsProtocol.ViewTest do
                 ]),
                 max_length: 60
               ),
-            max_runs: 60
+            test_cases: 60
           ) do
+      view = generated_view()
       writers = Enum.map(0..2, fn _ -> writer() end)
 
       model =
@@ -76,7 +99,8 @@ defmodule OverallsProtocol.ViewTest do
     end
   end
 
-  property "subscribers are notified of every change to a subscribed key", %{view: view} do
+  @tag :hegel
+  test "subscribers are notified of every change to a subscribed key" do
     check all(
             ops <-
               list_of(
@@ -88,8 +112,9 @@ defmodule OverallsProtocol.ViewTest do
                 ]),
                 max_length: 30
               ),
-            max_runs: 40
+            test_cases: 40
           ) do
+      view = generated_view()
       :ok = View.subscribe(view, [:k1, :k2])
       w = writer()
       Enum.each(@keys, fn key -> :ok = run(w, fn -> View.claim(view, key) end) end)
@@ -137,7 +162,9 @@ defmodule OverallsProtocol.ViewTest do
 
   defp expect(view, key), do: refute_receive({:view_changed, ^view, ^key}, 20)
 
-  test "a restarted view starts empty", %{view: view} do
+  test "a restarted view starts empty" do
+    view = :protocol_restarted_view
+    start_supervised!({View, name: view})
     w = writer()
     :ok = run(w, fn -> View.claim(view, :k1) end)
     {:ok, _} = run(w, fn -> View.put(view, :k1, :v, [:t1]) end)

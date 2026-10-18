@@ -99,7 +99,7 @@ defmodule Marshall.Ingress.EndpointsTest do
                 min_length: 1,
                 max_length: 20
               ),
-            max_runs: 20
+            test_cases: 20
           ) do
       {:ok, initial} = Ingress.get_endpoint(%{vm_id: ctx.vm.id}, actor: ctx.owner)
 

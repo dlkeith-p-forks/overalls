@@ -129,7 +129,7 @@ defmodule Marshall.Ingress.PublicationsTest do
   test "stale execution generations never publish retained route rows", c do
     [vm] = Ledger.read!(VirtualMachine, id: c.vm.id)
 
-    check all(increment <- integer(1..10_000), max_runs: 20) do
+    check all(increment <- integer(1..10_000), test_cases: 20) do
       Ledger.intent!(vm, %{generation: vm.generation + increment})
       assert {:ok, %{routes: [], proofs: []}} = snapshot(c)
       assert {:error, _} = Ingress.current_route(%{label: c.route.label}, actor: actor())

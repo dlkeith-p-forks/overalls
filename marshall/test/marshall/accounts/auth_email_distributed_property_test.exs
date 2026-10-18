@@ -42,14 +42,14 @@ defmodule Marshall.Accounts.AuthEmailDistributedPropertyTest do
       @tag :post_ack
     end
 
-    property name do
+    property name, test_cases: 3 do
       crash? = unquote(crash?)
       phase = unquote(phase)
 
       check all(
               replays <- integer(1..3),
               ordering <- member_of([[0, 1, 2], [1, 2, 0], [2, 0, 1]]),
-              max_runs: 3
+              test_cases: 3
             ) do
         unboxed(fn -> history(crash?, replays, ordering, phase) end)
       end
@@ -61,12 +61,13 @@ defmodule Marshall.Accounts.AuthEmailDistributedPropertyTest do
   # the delivery's Message-ID even when the successor's sender domain changes.
   # The separate committed observer MUST still see pending ciphertext before retry.
   @tag :sender_rotation
-  property "generated pending mail retries retain Message-ID across sender-domain rotation" do
+  property "generated pending mail retries retain Message-ID across sender-domain rotation",
+    test_cases: 3 do
     check all(
             replays <- integer(1..3),
             ordering <- member_of([[0, 1, 2], [1, 2, 0], [2, 0, 1]]),
             sender_domain <- member_of(["retry.example.test", "alternate.example.test"]),
-            max_runs: 3
+            test_cases: 3
           ) do
       unboxed(fn -> history(true, replays, ordering, :post_ack, sender_domain) end)
     end

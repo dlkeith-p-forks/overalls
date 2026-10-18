@@ -29,7 +29,8 @@ defmodule Marshall.Terminal.HostTakeoverHistoryTest do
   # channel, observe the old WebSock process exit, reject its delayed hello and
   # retain a usable current successor. Explicit renewal delivery verifies the
   # renewal decision, not the five-second scheduler or per-frame database fencing.
-  property "live host channels cede on renewal and replacement across session takeovers" do
+  property "live host channels cede on renewal and replacement across session takeovers",
+    test_cases: 3 do
     fixture = Marshall.TerminalFixtures.terminal_fixture()
 
     server =
@@ -43,7 +44,7 @@ defmodule Marshall.Terminal.HostTakeoverHistoryTest do
     check all(
             orders <- shuffle([:renew_first, :successor_first]),
             guest_ids <- list_of(member_of([1, 2, 9_223_372_036_854_775_807]), length: 2),
-            max_runs: 3
+            test_cases: 3
           ) do
       binding = Marshall.TerminalFixtures.connect(fixture.credential.token, fixture.machine)
       incumbent = accepted(port, fixture.credential.token, fixture.host.id, binding)

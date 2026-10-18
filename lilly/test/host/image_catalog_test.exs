@@ -25,7 +25,7 @@ defmodule Lilly.Host.ImageCatalogTest do
     check all(
             count <- integer(1..3),
             commands <- list_of(command(count), max_length: 8),
-            max_runs: 15
+            test_cases: 15
           ) do
       base = Path.join(root, Integer.to_string(System.unique_integer([:positive])))
       File.mkdir_p!(base)

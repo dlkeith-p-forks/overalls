@@ -46,8 +46,8 @@ defmodule Marshall.Terminal.PeerBudgetTest do
   # @cc [owner:ghuntley,label:verification;capacity;recovery] terminal-peer-budget-death-history
   # A saturated budget MUST refuse extra callers, then reclaim exactly the
   # slots of dead owners and admit that many replacements without a restart.
-  property "generated mass owner death reclaims exactly the available slots" do
-    check all(limit <- integer(2..8), deaths <- integer(1..limit), max_runs: 20) do
+  property "generated mass owner death reclaims exactly the available slots", test_cases: 20 do
+    check all(limit <- integer(2..8), deaths <- integer(1..limit), test_cases: 20) do
       budget = start_supervised!({PeerBudget, name: nil, limit: limit}, id: make_ref())
       parent = self()
 

@@ -36,8 +36,9 @@ defmodule OverallsProtocol.WorkspaceSourceTest do
     end
   end
 
-  property "accepted sources never yield an option-shaped or traversing git argument" do
-    check all(url <- url_like(), max_runs: 500) do
+  @tag :hegel
+  test "accepted sources never yield an option-shaped or traversing git argument" do
+    check all(url <- url_like(), test_cases: 500) do
       case WorkspaceSource.parse_url(url) do
         {:ok, source} ->
           for value <- source.namespace ++ [source.repository, source.revision[:value]],

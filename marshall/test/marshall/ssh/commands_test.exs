@@ -308,7 +308,7 @@ defmodule Marshall.SSH.CommandsTest do
                 min_length: 6,
                 max_length: 12
               ),
-            max_runs: 8
+            test_cases: 8
           ) do
       actors = history_actors(c)
       refresh_reports(c)
@@ -446,7 +446,7 @@ defmodule Marshall.SSH.CommandsTest do
                 min_length: 1,
                 max_length: 8
               ),
-            max_runs: 16
+            test_cases: 16
           ) do
       Ledger.update!(c.host, :report, %{reported_at: Ledger.now()})
       key = Ash.UUID.generate()
@@ -728,7 +728,7 @@ defmodule Marshall.SSH.CommandsTest do
   end
 
   test "retries, acknowledgement and reordered evidence preserve one physical result", c do
-    check all(succeeded? <- boolean(), retries <- integer(1..4), max_runs: 8) do
+    check all(succeeded? <- boolean(), retries <- integer(1..4), test_cases: 8) do
       id = Ash.UUID.generate()
       {:ok, receipt} = command(c, "new --request-id #{id}")
 

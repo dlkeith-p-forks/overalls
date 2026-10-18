@@ -23,7 +23,7 @@ defmodule Marshall.Accounts.GuestIdentityHistoryTest do
   # Database allocation evidence MUST NOT be presented as native home isolation.
   @tag :hegel
   test "same-email generations allocate distinct stable guest identities", %{admin: admin} do
-    check all(generations <- integer(2..4), max_runs: 6) do
+    check all(generations <- integer(2..4), test_cases: 6) do
       email = "again-#{binary_part(Ash.UUID.generate(), 0, 16)}@example.test"
       original = register!(email)
       assert {:ok, first} = Ledger.transaction(fn -> GuestAccounts.ensure!(original.id) end)

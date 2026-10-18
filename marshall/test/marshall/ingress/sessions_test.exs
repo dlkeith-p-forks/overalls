@@ -389,7 +389,7 @@ defmodule Marshall.Ingress.SessionsTest do
                 min_length: 1,
                 max_length: 8
               ),
-            max_runs: 12
+            test_cases: 12
           ) do
       Enum.each(roles, fn role ->
         [host] = Ledger.read!(Host, id: c.vm.host_id)

@@ -30,14 +30,15 @@ defmodule Marshall.Access.SharingSurfacesTest do
   # renewals MUST extend the same live lease; denied renewals MUST be closed
   # explicitly by the fixture and MUST never revive; fresh admission after
   # re-sharing MUST yield a new lease identity, never a recycled one.
-  property "one generated role history drives terminal, SSH and web entry and renewals" do
+  property "one generated role history drives terminal, SSH and web entry and renewals",
+    test_cases: 6 do
     check all(
             tail <-
               list_of(member_of([:web, :viewer, :operator, :manager, :revoked]),
                 min_length: 2,
                 max_length: 6
               ),
-            max_runs: 6
+            test_cases: 6
           ) do
       c = Fixture.fixture()
 

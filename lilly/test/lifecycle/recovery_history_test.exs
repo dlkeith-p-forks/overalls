@@ -40,7 +40,7 @@ defmodule Lilly.Lifecycle.RecoveryHistoryTest do
     check all(
             actor_count <- integer(1..3),
             transitions <- member_of([1, 64, 65, 80]),
-            max_runs: 4
+            test_cases: 4
           ) do
       directory = Path.join(root, Lilly.UUID.generate())
       :ok = PrivateFiles.directory(directory)

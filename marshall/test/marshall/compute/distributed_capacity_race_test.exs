@@ -238,8 +238,8 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # re-spendable exactly once;
   # non-confirmed-delete terminal paths retain disk and clear temporary bytes;
   # addresses stay unique per profile without pre-archival reuse.
-  property "generated multi-node races preserve committed capacity accounting" do
-    check all(batches <- schedule_gen(), max_runs: 8) do
+  property "generated multi-node races preserve committed capacity accounting", test_cases: 8 do
+    check all(batches <- schedule_gen(), test_cases: 8) do
       unboxed(fn -> run_sample(batches) end)
     end
   end
@@ -248,11 +248,12 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # Known SQL deadlock and opaque Ash-wrapped clone errors MUST fail the actual
   # step-result validator. Documented atom refusals and ordinary successful
   # clone results MUST remain valid. Error-like data MUST NOT be SQL evidence.
-  property "race result validation rejects raw and Ash-wrapped clone SQL failures" do
+  property "race result validation rejects raw and Ash-wrapped clone SQL failures",
+    test_cases: 8 do
     check all(
             depth <- member_of([0, 1, 3, 8]),
             refusal <- member_of([:insufficient_capacity, :source_unavailable, :vm_busy]),
-            max_runs: 8
+            test_cases: 8
           ) do
       raw =
         Postgrex.Error.exception(
@@ -2589,8 +2590,9 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # count as clone activation; at least one real transfer allocation MUST commit.
   # Returned SQL errors MUST fail, and committed opposite relocation endpoints,
   # complete allocation inventories and unreleased slot uniqueness MUST be checked.
-  property "opposite-source relocations and clone activation reach shared host locks" do
-    check all(rotation <- member_of([0, 1, 2]), reverse <- boolean(), max_runs: 2) do
+  property "opposite-source relocations and clone activation reach shared host locks",
+    test_cases: 2 do
+    check all(rotation <- member_of([0, 1, 2]), reverse <- boolean(), test_cases: 2) do
       for fixed_rotation <- Enum.uniq([rotation, 0, 1, 2]) do
         unboxed(fn -> lock_schedule_sample(fixed_rotation, reverse) end)
       end

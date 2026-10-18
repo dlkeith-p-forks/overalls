@@ -24,8 +24,9 @@ defmodule Lilly.Host.TemplateStewardTest do
   # build and all receive its result; different images build independently; a
   # caller whose wait expires gets storage_busy without stopping the build; a
   # crashed build answers template_unconfirmed.
-  property "concurrent callers for one pool and image share one build" do
-    check all(callers <- integer(1..12), images <- integer(1..3), max_runs: 15) do
+  @tag :hegel
+  test "concurrent callers for one pool and image share one build" do
+    check all(callers <- integer(1..12), images <- integer(1..3), test_cases: 15) do
       pool = pool()
       parent = self()
 

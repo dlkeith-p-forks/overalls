@@ -50,7 +50,7 @@ without admitting an OmniOS image or executing a new native scenario.
 Current source-qualified OmniOS receipts cover complete services over two clean
 boots, three boots with two root expansions and separate process-SIGKILL
 same-disk recovery. Those receipts retain `native_admission=false`. No claim of
-supervised daemon recovery, policy, current wrong-CID/reset/DMA safety, direct
+supervised daemon recovery, formal policy gates, current wrong-CID/reset/DMA safety, direct
 native peer-VM or physical-host isolation, interrupted growth, physical
 durability, relocation or live fleet acceptance follows. Historical failed
 assemblies and service attempts remain in the
@@ -90,6 +90,45 @@ recovery checks with endings `sigkill,clean` across boots
 `68f89a41-217e-4c25-aa97-dc0e7bb4b771`. Earlier image results are not
 transferred to these bytes. Admission remains false. No peer-native,
 jail/physical-host, multi-host or power-loss guarantee is established.
+
+The follow-up source correction keeps the native agent SMF service's contract
+duration and sets `ignore_error` to `signal` only. This lets the shell supervisor
+replace an individually killed child without SMF killing the other listeners;
+core dumps, hardware errors and an empty contract still use the outer restart
+boundary. Assembly and boot verification reject missing, duplicate, broader or
+instance-overriding policies. The 25-test native-image suite passed, including
+ten refusal mutations for the new semantic gate; Ruff formatting/lint, ty and
+contract checks passed. Listener close additionally publishes its closed state
+and wakes same-port pending-handshake children under the socket lock, so accept
+can refuse without another interrupt or completed connection callback. The
+extracted production close/accept regression passed ASan/UBSan and caught a
+missing-wake mutant. A killed shell supervisor with surviving children remains
+an explicit unverified recovery case.
+
+The combined kit subsequently passed fresh native assembly, including nine
+modules, 764 payload records, native SMF validation, clean export, read-only
+receipt extraction and administration shutdown. Its 8,589,934,592-byte disk
+SHA-256 is `45983bb74f9064f7aeea7d4f934094bd8c4c0efb4e8a2ad7f4bf0a8ee6390554`;
+the 158,362-byte assembly receipt SHA-256 is
+`aaf9aeeee25b73c6454a395b69b78eb4a207b59dcbcd363b088e8839592edb04`.
+Its test-only manifest SHA-256 is
+`aac2c4d67684f9e77d1fc7b6b2207b6ae4fc4a3800cfd32170608c9d607d6be8`.
+Current-image recovery, growth and isolation executions remain pending; no older
+runtime receipt transfers to these bytes and admission stays false.
+
+The follow-up mounted-root helper also removes dependence on an early-boot
+persisted ZFS userland cache. Read-only label discovery uses
+`zdb -C -e -U /dev/null -p /dev/dsk` for the fixed root pool. Assembly pool GUID,
+the exact single whole-disk vdev, canonical device path, raw-device custody,
+capacity and both GPT copies remain prerequisites before mutation. Three natural
+failures stopped at the old `zdb` child exit before mutation. A controlled
+missing-cache diagnostic on a disposable clone removed only its root-owned
+regular cache: the old query failed with the missing-file class and no pool
+configuration; the revised helper passed preflight, native expansion, post-GPT
+preservation and the volatile success receipt. This is one same-boot diagnostic
+fault case, separate from fresh-image three-boot growth, interrupted expansion,
+physical recovery and admission. The full Lyra Nix gate also passed in 224
+seconds; its host tests, lint and target checks do not establish native growth.
 
 Arch/Alma evaluation checks establish their separate pinned root sources,
 version-4 identity and installed offline agent/service closure. They do not
@@ -201,14 +240,22 @@ claim follows from these subset results.
 
 ## Consumer verification prerequisites
 
-Current consumers pin Hegel frontend `9b13af8`; the historical protocol pass at
-`2c9f7a4` does not verify this pin. The first Marshall full test attempt (seed
+Initial consumer repairs used Hegel frontend `9b13af8`; the merged consumers now
+select ref `02cd8bd`, resolved as `02cd8bd5bf07a7ca1bfaf7d599456fff5badbfa2`.
+The source locks were normalized to that full resolved commit while retaining
+the requested ref. Source/fixed-output lock snapshot comparison and hash refresh
+retain separate verification records. All eight actual Mix dependency outputs
+now match their current source lock snapshots and configured recursive NAR
+hashes. Six rebuilt outputs passed; Brady and Galileo retained their matching
+outputs, and the Cargo hash is unchanged. This corrects source/artifact custody
+without selecting new dependency bytes. The
+historical protocol pass at `2c9f7a4` verifies neither pin. The first Marshall full test attempt (seed
 836760) was killed with exit 137 during compilation. The pinned context-pattern
 `property/3` macro recursively rewrites identifiers without reaching a fixed
 point. Twenty-nine affected declarations across twenty Marshall test files now
 use ordinary ExUnit declarations tagged `:hegel`, retaining their one existing
-generated check, all generators, fixtures and oracles. No dependency, production
-behavior, transport or authorization interface changes.
+generated check, all generators, fixtures and oracles. These consumer repairs
+change no production behavior, transport or authorization interface.
 
 The handbook unknown-ID property separately corrects a discarded compatibility
 filter: a bounded UTF-8 generator actually excludes listed chapter IDs, draws
@@ -221,6 +268,38 @@ generator; explicit tuple/map/bind composition preserves its operation variants,
 weights, key ranges and four-to-seven batches of two-to-four operations. Full
 current consumer outcomes remain separate records. These are BEAM verification
 repairs and establish no native guest or deployment guarantee.
+
+After merging frontend `02cd8bd`, the view-inventory suffix generator was made
+explicitly uppercase, and enrollment GUIDs compose two 32-bit halves to retain
+all nonzero unsigned 64-bit values. Unknown enrollment keys use a real filter.
+The three-case TLS histories use the native `test_cases` option; each actual
+fifteen-second silence history runs separately so expected runtime does not trip
+the cumulative slow-input health check. No deadline or assertion was relaxed.
+The three-file focused rerun passed all 17 tests in 97.7 seconds, ExUnit seed
+43955, with warnings as errors on the full resolved frontend commit above.
+This covers the maintained view inventory, enrollment parser and real loopback
+TLS peer fixtures; it does not establish a full consumer gate or native guest.
+
+The subsequent count audit replaced 158 ignored `max_runs` option names in 107
+Marshall test files with native `test_cases`, retaining each literal value.
+Ninety-seven plain outer properties also receive the identical count so their
+existing per-case fixture and replay boundaries remain intact. Normalized AST
+comparison preserved every other body, generator, assertion and option value.
+Compiler, contract and logging checks passed; a temporary native counter probe
+observed exactly three executions from an outer `test_cases: 3` property.
+Full current-source execution remains separate. One pre-existing distributed
+admission `max_shrinking_steps: 0` option remains unsupported by this engine;
+the repair does not claim that shrinking is disabled there.
+
+Lilly's analogous audit restores 55 intended counts in 37 files and moves 14
+plain outer wrappers to tagged ordinary tests so their native checks own those
+counts. Protocol restores three counts in two files; its two View histories
+create a fresh View and retire real writer processes for every case and replay.
+The focused protocol run passed eight tests in 3.6 seconds, seed 427219.
+Lilly's full canonical-pin precommit previously passed 610 tests in 150.4
+seconds, seed 947632, Covenant 15/15 and forced Dialyzer with zero errors.
+That pass preceded these intended-count repairs; the final repaired-source
+protocol, Lilly and Marshall full gates remain separate pending records.
 
 The scenario validator additionally recognizes exact qualified Elixir
 `Hegel.check(...)`/`Hegel.run(...)` calls, alongside existing property markers.

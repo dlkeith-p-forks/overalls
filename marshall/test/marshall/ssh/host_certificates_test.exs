@@ -45,7 +45,7 @@ defmodule Marshall.SSH.HostCertificatesTest do
   end
 
   test "retries converge and replaced keys cannot resurrect an earlier generation", c do
-    check all(count <- integer(2..6), max_runs: 6) do
+    check all(count <- integer(2..6), test_cases: 6) do
       keys =
         Enum.map(1..count, fn _ ->
           {key, _} = :crypto.generate_key(:eddsa, :ed25519)

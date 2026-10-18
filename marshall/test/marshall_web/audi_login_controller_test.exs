@@ -100,7 +100,7 @@ defmodule MarshallWeb.AudiLoginControllerTest do
   @tag :hegel
   test "browser state, controller approval and HTTPS redemption produce a host-only app credential",
        c do
-    check all(app_port <- member_of([0, 3000, 9999]), max_runs: 4) do
+    check all(app_port <- member_of([0, 3000, 9999]), test_cases: 4) do
       [host] = Ledger.read!(Marshall.Compute.Host, id: c.vm.host_id)
       Ledger.update!(host, :report, %{reported_at: Ledger.now()})
       prefix = if app_port == 0, do: "", else: "p#{app_port}-"

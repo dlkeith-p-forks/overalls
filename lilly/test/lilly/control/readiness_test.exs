@@ -8,7 +8,8 @@ defmodule Lilly.Control.ReadinessTest do
   # A delivered report is fresh through exactly fifteen seconds. Readiness MUST
   # require every durable placement's current actor authority, and a missing,
   # stale or foreign actor MUST refuse even when the report is fresh.
-  property "generated report ages and actor rosters require every current authority" do
+  @tag :hegel
+  test "generated report ages and actor rosters require every current authority" do
     check all(
             age_ms <- member_of([-1, 0, 1, 14_999, 15_000, 15_001, 30_000]),
             actor_cases <-
@@ -17,7 +18,7 @@ defmodule Lilly.Control.ReadinessTest do
                 min_length: 1,
                 max_length: 4
               ),
-            max_runs: 60
+            test_cases: 60
           ) do
       now = DateTime.utc_now()
 

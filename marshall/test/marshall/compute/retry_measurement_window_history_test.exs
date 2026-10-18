@@ -43,14 +43,15 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
   # row and exact totals while preserving complete execution/receipt inventories.
   # Proofs use authenticated real actions; timestamp edits are sandbox-only
   # consumer controls, not elapsed clock, native boot or transport evidence.
-  property "retry measurements retain both received proof windows through repeated scans" do
+  property "retry measurements retain both received proof windows through repeated scans",
+    test_cases: 4 do
     check all(
             physical <- member_of([-1, 0, 599, 600, 601]),
             ready <- member_of([-1, 0, 599, 600, 601]),
             phase <- member_of([:before, :after]),
             proofs <- member_of([:none, :physical, :both]),
             repeats <- member_of([1, 2, 4]),
-            max_runs: 4
+            test_cases: 4
           ) do
       for {p, r, when_, presence} <- [
             {physical, ready, phase, proofs},
@@ -86,7 +87,8 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
   # inventories. Matching proof after every refusal MUST still finish the exact
   # retry measurement once. Historical failed readiness MUST remain acknowledged
   # without satisfying the newer retry measurement.
-  property "retry proof binding refusals conserve authority before matching success" do
+  property "retry proof binding refusals conserve authority before matching success",
+    test_cases: 2 do
     check all(
             binding <-
               member_of([
@@ -103,7 +105,7 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
                 :ready_historical
               ]),
             repeats <- member_of([1, 2, 4]),
-            max_runs: 2
+            test_cases: 2
           ) do
       for witness <- [
             binding,
@@ -350,11 +352,12 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
   # Authenticated delayed physical receipts for exact older operations MUST be
   # retained without changing current intent or satisfying the newer retry.
   # Matching current proof MUST finish once; replay MUST conserve full totals.
-  property "retained older physical proof cannot satisfy a newer retry measurement" do
+  property "retained older physical proof cannot satisfy a newer retry measurement",
+    test_cases: 2 do
     check all(
             side <- member_of([:source, :destination]),
             repeats <- member_of([1, 2, 4]),
-            max_runs: 2
+            test_cases: 2
           ) do
       for endpoint <- [side, :source, :destination] do
         :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
@@ -502,11 +505,12 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
   # count one failure after the database clock crosses that same deadline.
   # Setup-only sandbox clock controls MUST NOT change admission/window between
   # scans. Timeout MUST preserve authority, proof and unrelated accounting rows.
-  property "pending retry measurements fail once across their unchanged deadline" do
+  property "pending retry measurements fail once across their unchanged deadline",
+    test_cases: 2 do
     check all(
             presence <- member_of([:none, :physical]),
             repeats <- member_of([1, 2, 4]),
-            max_runs: 2
+            test_cases: 2
           ) do
       for proofs <- [presence, :none, :physical] do
         :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)

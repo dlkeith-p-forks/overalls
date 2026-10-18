@@ -13,6 +13,7 @@ import shutil
 import socket
 import stat
 import sys
+import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -532,6 +533,42 @@ def check_stock_network_absent(root: Path) -> None:
             raise ValueError("stock network configuration must remain absent")
 
 
+def check_agent_service_contract(data: bytes) -> None:
+    """@cc [owner:ghuntley,label:recovery;build] native-agent-smf-signal-policy
+    The native agents manifest MUST select the contract service model and ignore
+    only external signal failures, so SMF does not replace the live listeners
+    when the shell supervisor reaps an individually killed daemon. Missing,
+    duplicate or broader error policies MUST refuse; core, hardware and empty
+    contract failures MUST retain their outer restart boundary.
+    """
+    try:
+        document = ET.fromstring(data)
+    except ET.ParseError:
+        raise ValueError("native agents require the exact SMF signal policy") from None
+    services = document.findall("./service")
+    if len(services) != 1 or services[0].get("name") != "site/overalls-native-agents":
+        raise ValueError("native agents require the exact SMF signal policy")
+    groups = services[0].findall("./property_group[@name='startd']")
+    if (
+        len(groups) != 1
+        or groups[0].get("type") != "framework"
+        or document.findall(".//property_group[@name='startd']") != groups
+    ):
+        raise ValueError("native agents require the exact SMF signal policy")
+    properties = list(groups[0])
+    expected = {
+        ("duration", "astring", "contract"),
+        ("ignore_error", "astring", "signal"),
+    }
+    if (
+        len(properties) != len(expected)
+        or any(item.tag != "propval" for item in properties)
+        or {(item.get("name"), item.get("type"), item.get("value")) for item in properties}
+        != expected
+    ):
+        raise ValueError("native agents require the exact SMF signal policy")
+
+
 def validate_native_services(root: Path) -> None:
     """@cc [owner:ghuntley,label:build;verification] native-service-manifest-schema
     Assembly and booted verification MUST validate all three exact installed
@@ -541,7 +578,9 @@ def validate_native_services(root: Path) -> None:
     """
     paths = [kernel.destination(root, relative) for relative in NATIVE_SERVICE_MANIFESTS]
     for path in paths:
-        kernel.read_file(path, 65536)
+        data = kernel.read_file(path, 65536)
+        if path.name == "overalls-native-agents.xml":
+            check_agent_service_contract(data)
     for path in paths:
         kernel.command(["/usr/sbin/svccfg", "validate", str(path)])
 

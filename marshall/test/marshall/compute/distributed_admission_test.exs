@@ -1469,7 +1469,7 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
                 %{memory_bytes: 1_073_741_824},
                 %{disk_bytes: 4_294_967_296}
               ]),
-            max_runs: 2,
+            test_cases: 2,
             max_shrinking_steps: 0
           ) do
       for loss <- [:worker, :node], archived <- [false, true] do
@@ -1609,7 +1609,7 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
   # inventory; a later success MUST create one linked admission set, and replay
   # or conflict MUST NOT add another row to that set.
   @tag timeout: 300_000
-  property "injected insert failures preserve the admission commit set" do
+  property "injected insert failures preserve the admission commit set", test_cases: 2 do
     check all(
             tables <-
               shuffle([
@@ -1626,7 +1626,7 @@ defmodule Marshall.Compute.DistributedAdmissionTest do
                 "compute_operations",
                 "oban_jobs"
               ]),
-            max_runs: 2
+            test_cases: 2
           ) do
       for vcpu <- [1, 2], table <- tables do
         unboxed(fn ->

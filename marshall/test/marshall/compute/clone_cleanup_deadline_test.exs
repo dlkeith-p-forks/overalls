@@ -16,8 +16,9 @@ defmodule Marshall.Compute.CloneCleanupDeadlineTest do
   # offered; another machine's clone on the host MUST activate meanwhile, a
   # same-source request MUST wait as source_cleanup_pending, and the prune
   # receipt MUST settle the hold and wake the waiting request.
-  property "cleanup deadline completes the copy but keeps the source hold until prune confirms" do
-    check all(attempts <- integer(1..3), same_source_first? <- boolean(), max_runs: 6) do
+  property "cleanup deadline completes the copy but keeps the source hold until prune confirms",
+    test_cases: 6 do
+    check all(attempts <- integer(1..3), same_source_first? <- boolean(), test_cases: 6) do
       :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
       previous = Application.get_env(:marshall, :clone_cleanup_deadline_ms)
       Application.put_env(:marshall, :clone_cleanup_deadline_ms, 1)

@@ -62,12 +62,13 @@ defmodule Marshall.Accounts.CredentialManagementHistoryTest do
   # last-passkey removal MUST disable MFA and revoke every stored session,
   # including its own.
   @tag timeout: 120_000
-  property "generated passkey and SSH key histories match the raw inventory oracle" do
+  property "generated passkey and SSH key histories match the raw inventory oracle",
+    test_cases: 25 do
     check all(
             admin <- boolean(),
             seed <- binary(length: 16),
             operations <- operations(),
-            max_runs: 25
+            test_cases: 25
           ) do
       run_history(admin, seed, operations)
     end

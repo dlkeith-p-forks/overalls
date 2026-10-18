@@ -118,6 +118,11 @@ let
     # The rc.d supervisor is enabled only after the image's network bootstrap.
     overalls_native_agents_enable="YES"
   '';
+  # @cc [owner:ghuntley,label:recovery] illumos-native-service-signal-boundary
+  # SMF MUST retain its contract service model while allowing the shell
+  # supervisor to restart an individually signalled daemon. Only signal errors
+  # may be ignored; core dumps, hardware errors and an empty service contract
+  # MUST retain the outer service restart boundary.
   illumosManifest = pkgs.writeText "overalls-native-agents-illumos.xml" ''
     <?xml version="1.0"?>
     <!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
@@ -136,6 +141,10 @@ let
         </dependency>
         <exec_method type="method" name="start" exec="/opt/overalls/libexec/native-agents-start" timeout_seconds="30"/>
         <exec_method type="method" name="stop" exec=":kill" timeout_seconds="30"/>
+        <property_group name="startd" type="framework">
+          <propval name="duration" type="astring" value="contract"/>
+          <propval name="ignore_error" type="astring" value="signal"/>
+        </property_group>
         <stability value="Unstable"/>
         <template>
           <common_name><loctext xml:lang="C">Overalls native guest agents</loctext></common_name>

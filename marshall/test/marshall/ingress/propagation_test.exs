@@ -11,11 +11,11 @@ defmodule Marshall.Ingress.PropagationTest do
   # Generated live TCP replies MUST distinguish authoritative proof readiness,
   # absent proof, malformed DNS, expired TTL, value mismatch and transport loss.
   # Only exact, live proof bytes from the configured peer may acknowledge readiness.
-  property "DNS proof checks retain the negative cause class" do
+  property "DNS proof checks retain the negative cause class", test_cases: 42 do
     check all(
             proof_bytes <- binary(length: 32),
             mode <- member_of([:valid, :absent, :malformed, :expired, :mismatch, :transport]),
-            max_runs: 42
+            test_cases: 42
           ) do
       proof = Base.url_encode64(proof_bytes, padding: false)
       {listener, port, server} = start_server(mode, proof)
@@ -42,12 +42,12 @@ defmodule Marshall.Ingress.PropagationTest do
     end
   end
 
-  property "each configured DNS replica must return the exact live proof" do
+  property "each configured DNS replica must return the exact live proof", test_cases: 24 do
     check all(
             proof_bytes <- binary(length: 32),
             mode <- member_of([:valid, :absent, :malformed, :expired, :mismatch, :transport]),
             failed_first? <- boolean(),
-            max_runs: 24
+            test_cases: 24
           ) do
       proof = Base.url_encode64(proof_bytes, padding: false)
       first = start_server(:valid, proof)

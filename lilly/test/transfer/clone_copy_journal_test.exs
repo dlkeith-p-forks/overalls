@@ -117,13 +117,14 @@ defmodule Lilly.Transfer.CloneCopyJournalTest do
     end)
   end
 
+  @tag :hegel
   test "bindings, file records and completion refuse every conflicting history", c do
     check all(
             other_nonce <- member_of([String.duplicate("b", 32), "short", @nonce]),
             other_guid <- member_of(["300", "301"]),
             other_size <- member_of([4096, 4097]),
             missing <- member_of(@files),
-            max_runs: 30
+            test_cases: 30
           ) do
       directory = Path.join(c.directory, Integer.to_string(System.unique_integer([:positive])))
       c = %{c | directory: directory}

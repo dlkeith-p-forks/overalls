@@ -33,12 +33,13 @@ defmodule Marshall.Compute.ServiceLevelBacklogHistoryTest do
   # Operation and workflow families MUST each exercise the shared publication
   # guard; finished rows, SSH receipts and execution allocations MUST remain
   # immutable while the other pending rows drain.
-  property "mixed deadline backlogs preserve totals and refuse premature freshness" do
+  property "mixed deadline backlogs preserve totals and refuse premature freshness",
+    test_cases: 4 do
     check all(
             overdue <- member_of([0, 1, 99, 100, 101, 102]),
             future_first <- boolean(),
             family <- member_of([:operation, :workflow]),
-            max_runs: 4
+            test_cases: 4
           ) do
       for {kind, expired, first} <- [
             {family, overdue, future_first},

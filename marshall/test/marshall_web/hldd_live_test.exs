@@ -87,7 +87,7 @@ defmodule MarshallWeb.HLDDLiveTest do
             history <- list_of(member_of(ids), min_length: 1, max_length: 5),
             next_id <- member_of(ids),
             next_id != List.last(history),
-            max_runs: 20
+            test_cases: 20
           ) do
       for invalidation <- [:revoke, :expire, :delete] do
         reader = user()

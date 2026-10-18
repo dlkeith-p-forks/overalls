@@ -151,7 +151,8 @@ defmodule Marshall.Compute.LifecycleHistoryTest do
   # before each command executes. Crash-recovery assertions MUST establish only
   # safe restart bounds; the dead-restart limit (three per ten minutes) is
   # crossed deterministically in the fixed arc before the generated middle.
-  property "generated lifecycle histories preserve the durable transition model" do
+  property "generated lifecycle histories preserve the durable transition model",
+    test_cases: 24 do
     check all(
             middle <- list_of(commands(), min_length: 6, max_length: 24),
             late <-
@@ -159,7 +160,7 @@ defmodule Marshall.Compute.LifecycleHistoryTest do
                 min_length: 1,
                 max_length: 4
               ),
-            max_runs: 24
+            test_cases: 24
           ) do
       unboxed(fn ->
         fixture = host_fixture()

@@ -19,7 +19,7 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   # durable fake launch, including when a previous result remains unacknowledged.
   @tag :hegel
   test "replay and generation advance never duplicate a fake launch", %{tmp_dir: root} do
-    check all(actions <- list_of(member_of([:replay, :advance]), max_length: 7), max_runs: 20) do
+    check all(actions <- list_of(member_of([:replay, :advance]), max_length: 7), test_cases: 20) do
       directory = fresh_directory(root)
       {:ok, store} = Store.open(directory, @host_id, 3)
       first = command(1)
@@ -54,7 +54,7 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   # same-generation actor replay; the recovered actor MUST NOT launch it again.
   @tag :hegel
   test "a marker left before fake launch completion fences actor replay", %{tmp_dir: root} do
-    check all(generation <- integer(1..100), max_runs: 20) do
+    check all(generation <- integer(1..100), test_cases: 20) do
       directory = fresh_directory(root)
       {:ok, store} = Store.open(directory, @host_id, 3)
       intent = command(generation)
@@ -89,7 +89,7 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   test "actor death after a durable launch attempt fences the same generation", %{
     tmp_dir: root
   } do
-    check all(generation <- integer(1..100), max_runs: 20) do
+    check all(generation <- integer(1..100), test_cases: 20) do
       directory = fresh_directory(root)
       {:ok, store} = Store.open(directory, @host_id, 3)
       intent = command(generation)
@@ -147,7 +147,7 @@ defmodule Lilly.VM.AntithesisActorPropertyTest do
   # another launch and replay the exact recovered outcome identity and sequence.
   @tag :hegel
   test "completed launch survives actor death before outcome recording", %{tmp_dir: root} do
-    check all(generation <- integer(1..100), max_runs: 20) do
+    check all(generation <- integer(1..100), test_cases: 20) do
       directory = fresh_directory(root)
       {:ok, store} = Store.open(directory, @host_id, 3)
       intent = command(generation)

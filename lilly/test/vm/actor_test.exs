@@ -537,12 +537,13 @@ defmodule Lilly.VM.ActorTest do
   # @cc [owner:ghuntley,label:verification;recovery] generated-superseded-results-stay-old
   # A completed executor task for an older revision MUST NOT publish after
   # durable intent advances, even when the replacement changes epoch or kind.
+  @tag :hegel
   test "generated supersession histories publish only the current revision", context do
     check all(
             newer_epoch? <- boolean(),
             next_generation <- integer(2..30),
             kind <- member_of([:start, :stop]),
-            max_runs: 25
+            test_cases: 25
           ) do
       directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
       File.mkdir!(directory)
@@ -590,12 +591,13 @@ defmodule Lilly.VM.ActorTest do
   # @cc [owner:ghuntley,label:verification;recovery] generated-journal-before-effect
   # For every generated execution revision, the journal MUST contain its
   # attempted epoch and generation before the executor can return any effect.
+  @tag :hegel
   test "generated revisions are durably attempted before executor work", context do
     check all(
             epoch <- integer(1..8),
             generation <- integer(1..100),
             kind <- member_of([:provision, :start]),
-            max_runs: 25
+            test_cases: 25
           ) do
       directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
       File.mkdir!(directory)
@@ -666,7 +668,7 @@ defmodule Lilly.VM.ActorTest do
     check all(
             restarts <- list_of(boolean(), min_length: 1, max_length: 8),
             terminal? <- boolean(),
-            max_runs: 20
+            test_cases: 20
           ) do
       directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
       File.mkdir!(directory)
@@ -826,7 +828,7 @@ defmodule Lilly.VM.ActorTest do
   # generation MUST be attempted immediately despite the old retry deadline.
   @tag :hegel
   test "generated cleanup failures plateau without retiring or delaying new intent", context do
-    check all(failures <- integer(6..8), max_runs: 6) do
+    check all(failures <- integer(6..8), test_cases: 6) do
       directory = Path.join(context.tmp_dir, Lilly.UUID.generate())
       File.mkdir!(directory)
       File.chmod!(directory, 0o700)

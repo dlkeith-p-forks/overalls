@@ -44,10 +44,11 @@ defmodule Lilly.Host.PoolQueueTest do
   # Generated arrival sequences MUST be granted one at a time, in priority
   # order and FIFO within a priority, matching an independent sort of the
   # arrivals; the queue is never asked to order against itself.
-  property "turns are exclusive, priority-ordered and FIFO within a priority" do
+  @tag :hegel
+  test "turns are exclusive, priority-ordered and FIFO within a priority" do
     check all(
             priorities <- list_of(member_of([:observe, :mutate, :upkeep]), max_length: 12),
-            max_runs: 25
+            test_cases: 25
           ) do
       directory = directory()
       parent = self()

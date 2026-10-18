@@ -53,7 +53,8 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
   # state with independent approval/revision/pause expectations. Denied or stale
   # requests and advisory previews MUST preserve complete operation, allocation,
   # audit and job rows. Synthetic reports MUST NOT establish native movement.
-  property "campaign histories preserve fixed authority and per-revision downtime consent" do
+  property "campaign histories preserve fixed authority and per-revision downtime consent",
+    test_cases: 12 do
     check all(
             commands <-
               list_of(
@@ -70,7 +71,7 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
                 min_length: 5,
                 max_length: 14
               ),
-            max_runs: 12
+            test_cases: 12
           ) do
       {fixture, initial} = fixture()
 
@@ -150,7 +151,7 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
   # Readiness and resume MUST be independently tested against host freshness,
   # pool freshness and physical allocations, including evidence lost after ready.
   # Advancing the workflow or aging a timestamp MUST NOT substitute for evidence.
-  property "ready and resume require all current physical emptiness evidence" do
+  property "ready and resume require all current physical emptiness evidence", test_cases: 8 do
     check all(
             obstructions <-
               list_of(member_of([:host_stale, :pool_stale, :allocation]),
@@ -158,7 +159,7 @@ defmodule Marshall.Compute.EvacuationHistoryTest do
                 max_length: 7
               ),
             close <- member_of([:resume, :retire]),
-            max_runs: 8
+            test_cases: 8
           ) do
       source = host_fixture()
       admin = Marshall.PasskeyFixture.elevate(Marshall.PasskeyFixture.user(true))

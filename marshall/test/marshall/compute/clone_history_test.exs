@@ -39,7 +39,8 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # model MUST retain every accepted identity across failed retries, cancellation,
   # name release and authorization changes, and compare durable side effects.
   # Operation inventories MUST compare complete rows without relying on query order.
-  property "queue histories retain identities while authority and retry eligibility change" do
+  property "queue histories retain identities while authority and retry eligibility change",
+    test_cases: 16 do
     fixture = host_fixture()
     owner = user()
     manager = user()
@@ -53,7 +54,7 @@ defmodule Marshall.Compute.CloneHistoryTest do
         tuple({member_of([:submit, :cancel, :retry, :advance, :conflict]), integer(1..4)})
       ])
 
-    check all(history <- list_of(commands, min_length: 8, max_length: 28), max_runs: 16) do
+    check all(history <- list_of(commands, min_length: 8, max_length: 28), test_cases: 16) do
       prefix = Ash.UUID.generate()
       context = %{owner: owner, actor: manager, vm: vm, prefix: prefix}
       grant(context, :manager)
@@ -272,8 +273,9 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # publishing or fabricating a snapshot. Only an intent-bound successful receipt
   # may clear the diagnostic and allow the coordinator to record that snapshot.
   # Operation inventories MUST compare complete rows without relying on query order.
-  property "unconfirmed capture retries the same effect until a bound receipt clears progress" do
-    check all(attempts <- integer(1..4), max_runs: 8) do
+  property "unconfirmed capture retries the same effect until a bound receipt clears progress",
+    test_cases: 8 do
+    check all(attempts <- integer(1..4), test_cases: 8) do
       fixture = host_fixture()
       owner = user()
       {:ok, vm} = Compute.provision(request(), actor: owner)
@@ -374,7 +376,8 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # receipts. Matching success MUST clear its label; duplicate success and late
   # uncertainty MUST NOT erase completion or recreate progress failure.
   # Operation inventories MUST compare complete rows without relying on query order.
-  property "forward and cleanup uncertainty await the same bound effect without releasing holds" do
+  property "forward and cleanup uncertainty await the same bound effect without releasing holds",
+    test_cases: 4 do
     cases = [
       {:prepare, :destination},
       {:probe, :source},
@@ -387,7 +390,7 @@ defmodule Marshall.Compute.CloneHistoryTest do
       {:prune, :source}
     ]
 
-    check all(attempts <- integer(1..3), max_runs: 4) do
+    check all(attempts <- integer(1..3), test_cases: 4) do
       for {kind, endpoint} <- cases do
         fixture = host_fixture()
         owner = user()
@@ -550,7 +553,8 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # Cancellation histories MUST retain source/destination holds until both native
   # endpoints, destination discard, snapshot prune and source restoration have
   # supplied evidence. Revoked user actions MUST fail while admitted recovery runs.
-  property "cancellation retains obligations through reordered evidence and revoked requester" do
+  property "cancellation retains obligations through reordered evidence and revoked requester",
+    test_cases: 16 do
     check all(
             boundary <- member_of([:preparing, :stopping, :capturing, :copying, :publishing]),
             revoke? <- boolean(),
@@ -568,7 +572,7 @@ defmodule Marshall.Compute.CloneHistoryTest do
                 min_length: 5,
                 max_length: 20
               ),
-            max_runs: 16
+            test_cases: 16
           ) do
       host = host_fixture()
       owner = user()
@@ -763,7 +767,8 @@ defmodule Marshall.Compute.CloneHistoryTest do
   # destination row and offered workload descriptor against the source row
   # captured at activation. Catalog disable or rotation MUST refuse fresh
   # admission while leaving queued identity, replay and completion untouched.
-  property "generated profile and shape histories retain the captured source row through churn" do
+  property "generated profile and shape histories retain the captured source row through churn",
+    test_cases: 8 do
     check all(
             profile <- member_of([:customer, :standard, :oss]),
             vcpu <- member_of([1, 2]),
@@ -771,7 +776,7 @@ defmodule Marshall.Compute.CloneHistoryTest do
             disk_gib <- member_of([2, 3]),
             churn <- member_of([:none, :disabled, :rotated]),
             power <- member_of([:running, :stopped]),
-            max_runs: 8
+            test_cases: 8
           ) do
       budget = 34_359_738_368
       fixture = host_fixture()

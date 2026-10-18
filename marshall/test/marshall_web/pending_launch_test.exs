@@ -20,8 +20,8 @@ defmodule MarshallWeb.PendingLaunchTest do
     assert is_nil(PendingLaunch.validate(%{pending | source: @url <> ".git"}, 100))
   end
 
-  property "arbitrary staged values never bypass the exact validated shape" do
-    check all(value <- term(), max_runs: 50) do
+  property "arbitrary staged values never bypass the exact validated shape", test_cases: 50 do
+    check all(value <- term(), test_cases: 50) do
       assert is_nil(PendingLaunch.validate(value, 100))
     end
   end

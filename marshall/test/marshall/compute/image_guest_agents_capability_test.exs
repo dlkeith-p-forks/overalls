@@ -23,12 +23,13 @@ defmodule Marshall.Compute.ImageGuestAgentsCapabilityTest do
   # their own content-bound ID; kernel manifests MUST report the Linux agent set;
   # any mismatched ID or malformed manifest MUST fail closed as unavailable, with
   # every capability false.
-  property "guest agent capability is bound to the validated manifest and its exact image ID" do
+  property "guest agent capability is bound to the validated manifest and its exact image ID",
+    test_cases: 25 do
     check all(
             root_bytes <- integer(1..137_438_953_472),
             firmware_bytes <- integer(1..67_108_864),
             agents <- member_of(["none", "windows-v1"]),
-            max_runs: 25
+            test_cases: 25
           ) do
       manifest =
         windows_image_manifest()

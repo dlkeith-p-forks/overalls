@@ -83,12 +83,12 @@ defmodule Marshall.Compute.RelocationOwnershipTest do
   # A clone and a relocation MUST NOT occupy one host simultaneously. A failed
   # paired relocation MUST leave neither new endpoint claimed; released rows
   # MUST stay historical while the previously blocked claimant can proceed.
-  property "generated clone and relocation claims retain exclusive host slots" do
+  property "generated clone and relocation claims retain exclusive host slots", test_cases: 8 do
     check all(
             incumbent <- member_of([:clone, :relocation]),
             contested_endpoint <- member_of([:source, :destination]),
             retries <- integer(1..3),
-            max_runs: 8
+            test_cases: 8
           ) do
       context = relocation_fixture()
 

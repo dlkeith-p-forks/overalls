@@ -196,7 +196,7 @@ defmodule Marshall.SSH.GuestAccessTest do
 
     username = Marshall.SharingSurfacesFixture.member_name(c.owner)
 
-    check all(delta <- integer(1..1_000), max_runs: 12) do
+    check all(delta <- integer(1..1_000), test_cases: 12) do
       for field <- ~w(host_id vm_id placement_id execution_epoch) do
         changed =
           if field == "execution_epoch" do

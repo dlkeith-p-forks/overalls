@@ -227,8 +227,9 @@ defmodule Lilly.VM.WorkspaceSourceTest do
              })
   end
 
-  property "generated sources always encode within the request bound" do
-    check all(source <- source_gen(), max_runs: 200) do
+  @tag :hegel
+  test "generated sources always encode within the request bound" do
+    check all(source <- source_gen(), test_cases: 200) do
       assert {:ok, line} =
                WorkspaceSource.request(expectation(boot(1)), String.duplicate("a", 64), source)
 
@@ -307,7 +308,7 @@ defmodule Lilly.VM.WorkspaceSourceTest do
             source <- source_gen(),
             other <- source_gen(),
             sequence <- commands,
-            max_runs: 20
+            test_cases: 20
           ) do
       Hegel.assume(other != source)
       path = Path.join(root, "#{System.unique_integer([:positive])}.sock")

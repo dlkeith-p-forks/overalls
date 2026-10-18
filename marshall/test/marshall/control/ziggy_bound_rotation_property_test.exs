@@ -15,11 +15,11 @@ defmodule Marshall.Control.ZiggyBoundRotationPropertyTest do
   # A bound socket MUST refuse fresh identity requests after its credential
   # rotates. A fresh credential MUST bind and serve the same host; the old
   # connection's prior welcome MUST NOT substitute for current authority.
-  property "bound Ziggy sockets recheck rotated credentials on every request" do
+  property "bound Ziggy sockets recheck rotated credentials on every request", test_cases: 4 do
     fixture = host_fixture()
     base = listener()
 
-    check all(prefix <- integer(0..3), max_runs: 4) do
+    check all(prefix <- integer(0..3), test_cases: 4) do
       {:ok, first} = Credentials.rotate(fixture.host.id, 3600)
       {old, old_id} = connected(base, first.id <> "." <> first.secret, fixture.host.id)
       body = %{"version" => 2}

@@ -10,8 +10,9 @@ defmodule Marshall.Accounts.AuthEmailsTest do
   # An accepted attempt with an unobserved result MUST leave the row pending;
   # retries MUST retain the delivery's Message-ID and body, and a committed
   # delivered row MUST cause no further mail attempt.
-  property "generated uncertain mail results retain identity and stop after commit" do
-    check all(uncertain_attempts <- integer(1..3), max_runs: 5) do
+  property "generated uncertain mail results retain identity and stop after commit",
+    test_cases: 5 do
+    check all(uncertain_attempts <- integer(1..3), test_cases: 5) do
       original_config = Application.fetch_env!(:marshall, Marshall.Mailer)
       counter = start_supervised!({Agent, fn -> 0 end}, id: Ash.UUID.generate())
 

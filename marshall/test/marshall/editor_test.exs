@@ -72,7 +72,7 @@ defmodule Marshall.EditorTest do
   end
 
   test "current sharing roles independently decide editor write admission", c do
-    check all(role <- member_of([:web, :viewer, :operator, :manager, :revoked]), max_runs: 12) do
+    check all(role <- member_of([:web, :viewer, :operator, :manager, :revoked]), test_cases: 12) do
       F.fresh(c)
       member = Marshall.ComputeFixtures.user()
       token = Marshall.TerminalFixtures.user_token(member)

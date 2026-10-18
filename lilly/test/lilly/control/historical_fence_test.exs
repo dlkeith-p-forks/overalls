@@ -226,7 +226,7 @@ defmodule Lilly.Control.HistoricalFenceTest do
     store: store,
     newer: newer
   } do
-    check all(actor_count <- integer(1..4), max_runs: 4) do
+    check all(actor_count <- integer(1..4), test_cases: 4) do
       for reason <- [
             :stale_connection,
             :unauthorized,
@@ -309,7 +309,6 @@ defmodule Lilly.Control.HistoricalFenceTest do
   end
 
   @tag :hegel
-
   test "transient exchange failures back off and a delivered report restores readiness", %{
     store: store,
     newer: newer
@@ -327,7 +326,7 @@ defmodule Lilly.Control.HistoricalFenceTest do
                 min_length: 1,
                 max_length: 6
               ),
-            max_runs: 15
+            test_cases: 15
           ) do
       authority = {newer.placement_id, newer.execution_epoch, newer.generation}
 
@@ -399,7 +398,7 @@ defmodule Lilly.Control.HistoricalFenceTest do
               list_of(member_of([:transport_error, :temporarily_unavailable, :http_error]),
                 max_length: 5
               ),
-            max_runs: 12
+            test_cases: 12
           ) do
       state = connected_state(store, %{@placement => newer})
 

@@ -13,11 +13,10 @@ defmodule Lilly.VM.JournalTest do
   end
 
   @tag :hegel
-
   test "outcomes survive reopening and delayed receipts cannot discard newer state", %{
     journal: initial
   } do
-    check all(count <- integer(1..8), max_runs: 15) do
+    check all(count <- integer(1..8), test_cases: 15) do
       dir = Path.join(initial.directory, Lilly.UUID.generate())
       {:ok, journal} = Journal.open(dir, @id, @id, @id)
 

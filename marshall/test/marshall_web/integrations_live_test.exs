@@ -12,7 +12,7 @@ defmodule MarshallWeb.IntegrationsLiveTest do
     owner = Marshall.ComputeFixtures.user()
     {:ok, view, _} = live(signed_in(conn, owner), ~p"/integrations")
 
-    check all(suffix <- string(:alphanumeric, min_length: 1, max_length: 12), max_runs: 10) do
+    check all(suffix <- string(:alphanumeric, min_length: 1, max_length: 12), test_cases: 10) do
       previous_password_ids = password_ids(view)
 
       html =

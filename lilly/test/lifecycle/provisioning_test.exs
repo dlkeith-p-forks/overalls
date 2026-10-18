@@ -38,6 +38,7 @@ defmodule Lilly.Lifecycle.ProvisioningTest do
   # The oracle MUST track completed prerequisites and terminal facts independently
   # of Ash's transition table. Reopen after every command; invalid requests MUST
   # preserve state and revision. Duplicate writes MUST NOT change either.
+  @tag :hegel
   test "generated progress, faults and replays preserve prerequisites and bindings", c do
     check all(
             history <-
@@ -58,7 +59,7 @@ defmodule Lilly.Lifecycle.ProvisioningTest do
                 min_length: 1,
                 max_length: 24
               ),
-            max_runs: 35
+            test_cases: 35
           ) do
       directory = Path.join(c.tmp_dir, Lilly.UUID.generate())
       locked(directory, fn -> assert :ok = write(directory, c.payload) end)

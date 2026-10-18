@@ -127,7 +127,7 @@ defmodule Lilly.Control.StoreTest do
     check all(
             kinds <- list_of(member_of([:stop, :start, :delete]), min_length: 1, max_length: 8),
             carries <- list_of(boolean(), length: length(kinds)),
-            max_runs: 25
+            test_cases: 25
           ) do
       root = Path.join(directory, Integer.to_string(System.unique_integer([:positive])))
       File.mkdir_p!(root)
@@ -220,11 +220,10 @@ defmodule Lilly.Control.StoreTest do
   end
 
   @tag :hegel
-
   test "out-of-order delivery preserves the highest generation", %{store: store} do
     check all(
             generations <- uniq_list_of(integer(1..10000), min: 1, max: 8),
-            max_runs: 20
+            test_cases: 20
           ) do
       File.rm(Path.join(store.path, @id <> ".json"))
 

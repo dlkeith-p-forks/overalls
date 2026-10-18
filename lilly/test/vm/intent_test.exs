@@ -13,9 +13,8 @@ defmodule Lilly.VM.IntentTest do
   end
 
   @tag :hegel
-
   test "arbitrary older generations cannot reverse the launch fence", %{tmp_dir: dir} do
-    check all(generation <- integer(1..9_223_372_036_854_775_800), max_runs: 40) do
+    check all(generation <- integer(1..9_223_372_036_854_775_800), test_cases: 40) do
       directory = Path.join(dir, Integer.to_string(System.unique_integer([:positive])))
       File.mkdir!(directory)
       File.chmod!(directory, 0o700)

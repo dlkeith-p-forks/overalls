@@ -44,14 +44,15 @@ defmodule Marshall.Access.SharingMatrixHistoryTest do
   @spec grants?(role(), capability()) :: boolean()
   defp grants?(role, capability), do: capability in Map.fetch!(@matrix, role)
 
-  property "every shared role composes terminal, SSH and web entries in one generated history" do
+  property "every shared role composes terminal, SSH and web entries in one generated history",
+    test_cases: 6 do
     check all(
             tail <-
               list_of(member_of([:manager, :operator, :viewer, :web, :revoked]),
                 min_length: 2,
                 max_length: 6
               ),
-            max_runs: 6
+            test_cases: 6
           ) do
       fixture = Fixture.create()
       Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
@@ -154,7 +155,8 @@ defmodule Marshall.Access.SharingMatrixHistoryTest do
     assert {:ok, %{closed: true}} = close_ssh(fixture, fresh_ssh.ticket)
   end
 
-  property "grant churn across two machines keeps each machine on its own matrix cell" do
+  property "grant churn across two machines keeps each machine on its own matrix cell",
+    test_cases: 5 do
     check all(
             tail <-
               list_of(
@@ -165,7 +167,7 @@ defmodule Marshall.Access.SharingMatrixHistoryTest do
                 min_length: 2,
                 max_length: 4
               ),
-            max_runs: 5
+            test_cases: 5
           ) do
       fixture = Fixture.create()
       Marshall.TerminalFixtures.stream_fixture(fixture.host.id)

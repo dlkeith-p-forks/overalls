@@ -7,7 +7,8 @@ defmodule Marshall.SSH.AuthorityModelTest do
   alias Marshall.SSH
   alias Marshall.SSH.{Session, Token}
 
-  property "generated approval, expiry, rotation and key histories never resurrect authority" do
+  property "generated approval, expiry, rotation and key histories never resurrect authority",
+    test_cases: 25 do
     owner = Marshall.ComputeFixtures.user()
 
     check all(
@@ -16,7 +17,7 @@ defmodule Marshall.SSH.AuthorityModelTest do
                 min_length: 1,
                 max_length: 16
               ),
-            max_runs: 25
+            test_cases: 25
           ) do
       {gateway_token, _} = Token.issue(:gateway)
 

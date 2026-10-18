@@ -7,7 +7,8 @@ defmodule Marshall.Terminal.PersonalSessionTest do
   alias Marshall.Terminal.Authority
   import Marshall.TerminalFixtures
 
-  property "automatic retries share the SSH identity and never replace an exited shell" do
+  property "automatic retries share the SSH identity and never replace an exited shell",
+    test_cases: 8 do
     fixture = terminal_fixture()
     stream = stream_fixture(fixture.host.id)
 
@@ -16,7 +17,7 @@ defmodule Marshall.Terminal.PersonalSessionTest do
 
     assert {:ok, session} = Authority.open_personal_session(fixture.vm, fixture.owner)
 
-    check all(retries <- integer(1..8), max_runs: 8) do
+    check all(retries <- integer(1..8), test_cases: 8) do
       for _ <- 1..retries do
         assert {:ok, repeated} = Authority.open_personal_session(fixture.vm, fixture.owner)
         assert repeated.id == session.id

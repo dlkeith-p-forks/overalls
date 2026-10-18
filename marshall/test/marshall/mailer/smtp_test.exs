@@ -22,14 +22,14 @@ defmodule Marshall.Mailer.SMTPTest do
     # Actual accepted-but-unacknowledged DATA MUST time out and close its client
     # connection, preserving pending ciphertext. All retries MUST retain decoded
     # payload and Message-ID, and terminal replay MUST open no SMTP connection.
-    property name do
+    property name, test_cases: 3 do
       mode = unquote(mode)
 
       check all(
               uncertain_attempts <- integer(1..2),
               rejection? <- boolean(),
               terminal_replays <- integer(1..3),
-              max_runs: 3
+              test_cases: 3
             ) do
         {record, expected_token} = enqueue()
         ciphertext = record.encrypted_payload

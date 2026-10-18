@@ -8,7 +8,8 @@ defmodule Lilly.VM.FakeExecutorPropertyTest do
   # @cc [owner:ghuntley,label:verification;recovery] fake-observation-command-causality
   # Generated fake observations MUST refer to an accepted command incarnation;
   # unseen stop/delete revisions MUST preserve the persisted unit and attempts.
-  property "fake physical evidence follows accepted command incarnations" do
+  @tag :hegel
+  test "fake physical evidence follows accepted command incarnations" do
     check all(
             actions <-
               list_of(
@@ -16,7 +17,7 @@ defmodule Lilly.VM.FakeExecutorPropertyTest do
                 min_length: 1,
                 max_length: 12
               ),
-            max_runs: 20
+            test_cases: 20
           ) do
       directory =
         Path.join(System.tmp_dir!(), "overalls-fake-#{System.unique_integer([:positive])}")

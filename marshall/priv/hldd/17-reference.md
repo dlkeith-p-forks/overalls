@@ -836,8 +836,8 @@ children and fixture messages before another case or replay.
 
 This verifies BEAM codec, refusal and process/socket behavior. It does not
 establish native guest execution, TLS, physical isolation, storage recovery or
-fleet acceptance. Protocol's workspace-source and View properties still use
-StreamData, and the wider migration remains partial. The recorded 299-test pass
+fleet acceptance. Protocol's workspace-source and View histories use Hegel;
+the wider migration remains partial. The recorded 299-test pass
 used the previous frontend pin `6a62795`; the `2c9f7a4` merged frontend's complete
 gate also passed 299 tests and properties, Covenant 14/14 and Dialyzer with zero
 errors or skips. These historical results do not verify the current pin or
@@ -847,8 +847,27 @@ expansion can still recurse without bound and compatibility clauses can discard
 tuple bindings, filters or nested options.
 Narrow consumer repairs retain generated assertions in tagged ordinary tests;
 the handbook unknown-ID check uses an explicit bounded silent draw and actual
-filter. Current consumer gates retain separate execution records. The
-[testing guide](repo:docs/development/testing-with-hegel.md) and
+filter. Current consumer gates retain separate execution records.
+Marshall view inventory property constructs actual uppercase module names, and
+enrollment GUID generation composes two 32-bit halves to retain the full nonzero
+unsigned 64-bit domain. Real TLS silence histories retain three generated cases
+and their actual fifteen-second deadlines; separate one-case runs avoid the
+native cumulative slow-input health check without claiming a disabled timer or
+shrinking setting. Marshall's remaining intended counts use native `test_cases`;
+an outer property owns that option when it wraps compatibility `check all`, so
+its existing per-case setup/replay boundary remains intact. A native counter
+probe confirmed the outer count. The pre-existing distributed-admission
+`max_shrinking_steps: 0` knob remains unsupported; no disabled-shrinking claim is
+made for it. Full current-source gate results remain separate.
+Lilly restores 55 intended counts across 37 files, with 14 tagged ordinary
+wrappers letting native checks own their counts. Protocol restores three counts
+across two files; each View case and replay creates fresh state and cleans up
+its real writer processes. Eight focused protocol tests passed at seed 427219.
+Lilly's canonical-pin full precommit passed 610 tests, Covenant 15/15 and forced
+Dialyzer with zero errors before these count repairs. Final repaired-source
+consumer gates remain pending. The full Lyra Nix gate passed in 224 seconds;
+that host/target verification is separate from native guest growth execution.
+The [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.
 

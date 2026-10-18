@@ -61,7 +61,15 @@ def main(arguments: list[str]) -> None:
         declaration(socket, "struct vs_socket {", semicolon=True)
     )
     (output / "socket_handshake_function.inc").write_text(
-        declaration(socket, "static int\nvs_accept(")
+        "".join(
+            declaration(socket, prefix)
+            for prefix in (
+                "static void\nvs_remove(",
+                "static void\nvs_fail(",
+                "static int\nvs_accept(",
+                "static int\nvs_close(",
+            )
+        )
     )
 
 

@@ -37,7 +37,7 @@ defmodule Marshall.ThreadsSharingTest do
                 min_length: 1,
                 max_length: 6
               ),
-            max_runs: 8
+            test_cases: 8
           ) do
       for role <- roles do
         assert {:ok, %AccessChange{}} = share(context, role)

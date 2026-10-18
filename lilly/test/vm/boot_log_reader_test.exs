@@ -155,11 +155,10 @@ defmodule Lilly.VM.BootLogReaderTest do
   end
 
   @tag :hegel
-
   test "pages preserve arbitrary bytes and clamp cursors after truncation", %{
     tmp_dir: directory
   } do
-    check all(bytes <- binary(max_length: 40_000), cursor <- integer(0..50_000), max_runs: 30) do
+    check all(bytes <- binary(max_length: 40_000), cursor <- integer(0..50_000), test_cases: 30) do
       fixture(directory, :running, 2, 2, bytes)
       start = min(cursor, byte_size(bytes))
       length = min(16_384, byte_size(bytes) - start)

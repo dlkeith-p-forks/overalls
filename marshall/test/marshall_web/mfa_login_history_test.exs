@@ -33,7 +33,7 @@ defmodule MarshallWeb.MFALoginHistoryTest do
                 ),
                 max_length: 5
               ),
-            max_runs: 20
+            test_cases: 20
           ) do
       # Registration plus four fixed ceremonies plus five generated ceremonies
       # fit the independent ten-retained-challenge limit without pruning fixtures.

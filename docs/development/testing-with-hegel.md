@@ -242,6 +242,11 @@ options inside a property and filter clauses are not preserved. Standalone
 `max_runs`. Context-pattern `property/3` expansion can still recurse without
 bound; affected consumer tests use
 tagged ordinary ExUnit declarations around their existing generated checks.
+For retained plain outer properties, put `test_cases` on that outer runner as
+well: the inner compatibility count cannot control an already active run.
+Preserve fixture setup and cleanup at their existing per-case boundary when
+repairing counts. The native ABI does not implement `max_shrinking_steps`; its
+presence alone cannot establish disabled shrinking.
 Draw labelled values
 once at the property boundary instead. Protocol's
 [`TestProperties.draw/2`](../../protocol/test/support/test_properties.ex) obtains

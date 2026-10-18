@@ -75,7 +75,7 @@ defmodule MarshallWeb.RepositoryLaunchHistoryTest do
   } do
     check all(
             commands <- list_of(command(), min_length: 1, max_length: 10),
-            max_runs: 12
+            test_cases: 12
           ) do
       fixture = roomy_host()
       owner = user()

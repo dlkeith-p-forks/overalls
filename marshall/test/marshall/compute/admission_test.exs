@@ -205,7 +205,7 @@ defmodule Marshall.Compute.AdmissionTest do
   # Every same-key replay after VM archival MUST return the original ID without
   # creating another allocation record or dispatch job; changed shape MUST
   # refuse with the same complete inventory.
-  property "archived admission replays retain the complete allocation inventory" do
+  property "archived admission replays retain the complete allocation inventory", test_cases: 8 do
     check all(
             repeats <- integer(1..4),
             changed <-
@@ -214,7 +214,7 @@ defmodule Marshall.Compute.AdmissionTest do
                 %{memory_bytes: 1_073_741_824},
                 %{disk_bytes: 4_294_967_296}
               ]),
-            max_runs: 8
+            test_cases: 8
           ) do
       _fixture = host_fixture()
       actor = user()

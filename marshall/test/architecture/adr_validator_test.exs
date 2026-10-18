@@ -192,7 +192,7 @@ defmodule Overalls.ADRValidatorTest do
   test "acyclic histories with branches remain valid regardless of decision order", %{
     root: root
   } do
-    check all(choices <- list_of(integer(0..100), min_length: 2, max_length: 20), max_runs: 40) do
+    check all(choices <- list_of(integer(0..100), min_length: 2, max_length: 20), test_cases: 40) do
       records =
         choices
         |> Enum.with_index(1)
@@ -210,7 +210,7 @@ defmodule Overalls.ADRValidatorTest do
 
   @tag :hegel
   test "closing a valid replacement chain always produces a detected cycle", %{root: root} do
-    check all(size <- integer(2..30), max_runs: 30) do
+    check all(size <- integer(2..30), test_cases: 30) do
       chain = Enum.map(1..size, &decision(&1, supersedes: if(&1 == 1, do: [], else: [&1 - 1])))
       fixture(root, connect_successors(chain))
       assert {:ok, ^size} = ADRValidator.check(root)

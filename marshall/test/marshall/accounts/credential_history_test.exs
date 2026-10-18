@@ -29,7 +29,8 @@ defmodule Marshall.Accounts.CredentialHistoryTest do
   # real security action against a model of login liveness, elevation, credential
   # labels, MFA generation and token presence. Every refused step MUST leave the
   # passkey, verification, token, challenge and audit rows byte-identical.
-  property "current login, elevation and inventory govern credential self-service" do
+  property "current login, elevation and inventory govern credential self-service",
+    test_cases: 25 do
     check all(
             admin <- Gen.boolean(),
             initial <- Gen.integer(1..3),
@@ -47,7 +48,7 @@ defmodule Marshall.Accounts.CredentialHistoryTest do
                 min_length: 1,
                 max_length: 8
               ),
-            max_runs: 25
+            test_cases: 25
           ) do
       history(admin, initial, events)
     end

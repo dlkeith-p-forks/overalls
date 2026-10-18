@@ -34,13 +34,13 @@ defmodule Marshall.Accounts.AuthEmailWaitingAuthorityPropertyTest do
     # outbox lock. If stored token authority changes before the first attempt
     # fails, the waiter MUST expire and erase the still-time-valid outbox without
     # another SMTP connection. Independent peers MUST observe terminal refusal.
-    property name do
+    property name, test_cases: 3 do
       kind = unquote(kind)
 
       check all(
               replays <- integer(1..3),
               ordering <- member_of([[0, 1, 2], [1, 2, 0], [2, 0, 1]]),
-              max_runs: 3
+              test_cases: 3
             ) do
         unboxed(fn -> history(kind, replays, ordering) end)
       end

@@ -118,7 +118,7 @@ defmodule MarshallWeb.ControlAPITest do
   # unbound upgraded socket with protocol_violation without identity or tasks.
   # The same heartbeat counters MUST work after a valid identity-binding hello.
   test "every non-hello first envelope is refused before identity binding", context do
-    check all(drawn <- integer(0..9_007_199_254_740_991), max_runs: 10) do
+    check all(drawn <- integer(0..9_007_199_254_740_991), test_cases: 10) do
       for counter <- [0, 1, 9_007_199_254_740_991, drawn] do
         messages = [
           {:ping, counter},

@@ -27,14 +27,15 @@ defmodule Marshall.Accounts.SecurityTest do
     end
   end
 
-  property "revocation and generation changes fence arbitrary verification sequences" do
+  property "revocation and generation changes fence arbitrary verification sequences",
+    test_cases: 15 do
     check all(
             events <-
               list_of(member_of([:verify, :lock, :expire, :generation, :revoke]),
                 min_length: 1,
                 max_length: 12
               ),
-            max_runs: 15
+            test_cases: 15
           ) do
       {actor, token} = login(user())
       key = register(actor)

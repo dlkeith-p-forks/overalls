@@ -21,11 +21,11 @@ defmodule Marshall.Terminal.PeerDeadlinePropertyTest do
   # An attached peer's next liveness wake MUST NOT exceed its remaining
   # fifteen-second silence budget. This observes the actual timer BIF from
   # a callback worker; constructed timestamps do not prove native/TLS timing.
-  property "the next peer-silence wake remains inside the unexpired deadline" do
+  property "the next peer-silence wake remains inside the unexpired deadline", test_cases: 20 do
     :erlang.trace_pattern({:erlang, :send_after, 4}, true, [])
 
     try do
-      check all(remaining <- integer(500..4_500), max_runs: 20) do
+      check all(remaining <- integer(500..4_500), test_cases: 20) do
         for {module, message, expected} <- [
               {PeerSocket, :liveness, :ok},
               {Remote, :silence_deadline, :noreply}

@@ -56,11 +56,11 @@ defmodule Marshall.Compute.LifecycleLogTest do
     end
   end
 
-  property "unseen persisted labels cannot crash committed audit notifications" do
+  property "unseen persisted labels cannot crash committed audit notifications", test_cases: 30 do
     check all(
             action <- string(:alphanumeric, min_length: 1, max_length: 32),
             state <- string(:alphanumeric, min_length: 1, max_length: 32),
-            max_runs: 30
+            test_cases: 30
           ) do
       assert :ok = LifecycleLog.notify(notification(action, "running", state))
     end

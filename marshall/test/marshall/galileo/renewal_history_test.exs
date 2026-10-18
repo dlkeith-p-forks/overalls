@@ -26,12 +26,13 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   # Personal-owner histories MUST exercise public attachment changes and derive
   # admission from a separate attachment model. Refusals and every renewal MUST
   # preserve durable credentials, provenance, attachments and mutation audits.
-  property "personal owners require explicit attachments for admission and renewal" do
+  property "personal owners require explicit attachments for admission and renewal",
+    test_cases: 15 do
     check all(
             peer <- boolean(),
             tail <- list_of(boolean(), max_length: 12),
             stale_delta <- integer(1..10),
-            max_runs: 15
+            test_cases: 15
           ) do
       fixture = fresh_fixture()
       outsider = Marshall.ComputeFixtures.user()
@@ -103,12 +104,13 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   # Supported account retirement and integration removal MUST refuse subsequent
   # admission and renewal despite prior successful attachment. Refused reads
   # MUST preserve the post-mutation durable snapshot and mutation audit rows.
-  property "supported retirement and removal revoke previously attached personal integrations" do
+  property "supported retirement and removal revoke previously attached personal integrations",
+    test_cases: 4 do
     [bootstrap] = Ledger.read!(Marshall.Accounts.AdminBootstrap)
     Ledger.update!(bootstrap, :complete, %{})
     admin = Marshall.PasskeyFixture.elevate(Marshall.PasskeyFixture.user(true))
 
-    check all(peer <- boolean(), attempts <- integer(1..3), max_runs: 4) do
+    check all(peer <- boolean(), attempts <- integer(1..3), test_cases: 4) do
       for terminal <- [:remove, :retire] do
         fixture = fresh_fixture()
         name = "retire-" <> binary_part(Ash.UUID.generate(), 0, 12)
@@ -149,8 +151,9 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
     end
   end
 
-  property "archived teams refuse integration admission, renewal, reads and peer tokens" do
-    check all(attached <- boolean(), peer <- boolean(), attempts <- integer(1..3), max_runs: 8) do
+  property "archived teams refuse integration admission, renewal, reads and peer tokens",
+    test_cases: 8 do
+    check all(attached <- boolean(), peer <- boolean(), attempts <- integer(1..3), test_cases: 8) do
       fixture = fresh_fixture()
       manager = Marshall.ComputeFixtures.user()
 
@@ -228,13 +231,14 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   # test's operation model, not the implementation's authority predicates. Each
   # renewal MUST leave credentials, token rows and configuration receipts intact.
   # Synthetic execution reports establish application admission only.
-  property "renewal tracks combined membership, attachment and ownership histories" do
+  property "renewal tracks combined membership, attachment and ownership histories",
+    test_cases: 20 do
     check all(
             tail <-
               list_of(member_of([:join, :leave, :attach, :detach, :team, :personal]),
                 max_length: 15
               ),
-            max_runs: 20
+            test_cases: 20
           ) do
       fixture = fresh_fixture()
       manager = Marshall.ComputeFixtures.user()
@@ -282,8 +286,9 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   # after direct/peer reconfiguration MUST return exactly TTL/version without
   # minting, consuming, replacing or refreshing that token. Removal MUST refuse
   # renewal and token consumption. This does not assert network cancellation.
-  property "renewals never reissue peer provenance or credentials after configuration changes" do
-    check all(modes <- list_of(boolean(), min_length: 3, max_length: 10), max_runs: 15) do
+  property "renewals never reissue peer provenance or credentials after configuration changes",
+    test_cases: 15 do
+    check all(modes <- list_of(boolean(), min_length: 3, max_length: 10), test_cases: 15) do
       fixture = fresh_fixture()
       name = "peer-" <> binary_part(Ash.UUID.generate(), 0, 12)
       {:ok, integration} = configure_peer(name, fixture, true, 0)

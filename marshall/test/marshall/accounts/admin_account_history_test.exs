@@ -29,13 +29,13 @@ defmodule Marshall.Accounts.AdminAccountHistoryTest do
   # credentials, outbox/jobs, retirement and audit rows.
   for operation <- [:role, :sessions, :reset, :retire, :invite] do
     @operation operation
-    property "#{@operation} follows current role, login and elevation history" do
+    property "#{@operation} follows current role, login and elevation history", test_cases: 12 do
       check all(
               tail <-
                 list_of(member_of([:mutate, :lock, :verify, :signout, :login, :demote, :promote]),
                   max_length: 14
                 ),
-              max_runs: 12
+              test_cases: 12
             ) do
         actor = PasskeyFixture.elevate(PasskeyFixture.user(true))
         operator = PasskeyFixture.elevate(PasskeyFixture.user(true))

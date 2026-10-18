@@ -25,7 +25,8 @@ defmodule Marshall.Terminal.AttachmentHistoryTest do
   # Expected attachment authority MUST come from generated user commands and
   # the creator/shared permission table, never from the SUT's authorization
   # answer. Tickets remain bounded by their issued mode and are consumed once.
-  property "issued tickets compose current roles, explicit sharing and one-use socket lifetimes" do
+  property "issued tickets compose current roles, explicit sharing and one-use socket lifetimes",
+    test_cases: 6 do
     fixture = fixture()
 
     check all(
@@ -39,7 +40,7 @@ defmodule Marshall.Terminal.AttachmentHistoryTest do
                 min_length: 5,
                 max_length: 8
               ),
-            max_runs: 6
+            test_cases: 6
           ) do
       fresh(fixture)
       role(fixture, :operator)
@@ -165,13 +166,14 @@ defmodule Marshall.Terminal.AttachmentHistoryTest do
     end
   end
 
-  property "expired and foreign-actor tickets refuse a real attachment without relay dispatch" do
+  property "expired and foreign-actor tickets refuse a real attachment without relay dispatch",
+    test_cases: 4 do
     fixture = fixture()
     own = session(fixture, fixture.member)
     foreign = session(fixture, fixture.owner)
     token = Marshall.TerminalFixtures.user_token(fixture.member)
 
-    check all(cursor <- integer(0..1_000_000), expired_first? <- boolean(), max_runs: 4) do
+    check all(cursor <- integer(0..1_000_000), expired_first? <- boolean(), test_cases: 4) do
       fresh(fixture)
       cases = if expired_first?, do: [:expired, :foreign], else: [:foreign, :expired]
 
@@ -206,13 +208,14 @@ defmodule Marshall.Terminal.AttachmentHistoryTest do
 
   for trigger <- [:input, :resize, :idle] do
     @trigger trigger
-    property "live #{@trigger} attachment closes across every authority boundary and needs a fresh socket" do
+    property "live #{@trigger} attachment closes across every authority boundary and needs a fresh socket",
+      test_cases: 3 do
       fixture = fixture()
 
       check all(
               order <- list_of(integer(0..100), length: 6),
               cursor <- integer(0..1_000_000),
-              max_runs: 3
+              test_cases: 3
             ) do
         boundaries =
           Enum.zip(order, [:grant, :login, :capability, :freshness, :execution, :kill])

@@ -145,7 +145,7 @@ defmodule Marshall.Ingress.AccessTest do
 
   @tag :hegel
   test "public primary streams cannot survive policy changes or authorize alternate ports", c do
-    check all(port <- filter(integer(3000..9999), &(&1 != 4444)), max_runs: 8) do
+    check all(port <- filter(integer(3000..9999), &(&1 != 4444)), test_cases: 8) do
       [endpoint] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
 
       assert {:ok, public} =
@@ -201,7 +201,7 @@ defmodule Marshall.Ingress.AccessTest do
                actor: c.owner
              )
 
-    check all(mode <- member_of([:close, :expire]), age <- integer(1..1000), max_runs: 10) do
+    check all(mode <- member_of([:close, :expire]), age <- integer(1..1000), test_cases: 10) do
       assert {:ok, opened} =
                Ingress.open_web(
                  %{service_token: c.request.service_token, label: endpoint.label, app_port: 0},
@@ -288,7 +288,7 @@ defmodule Marshall.Ingress.AccessTest do
 
     [endpoint] = Ledger.read!(Marshall.Ingress.Endpoint, vm_id: c.vm.id)
 
-    check all(bytes <- binary(length: 32), port <- member_of([0, 3000, 9999]), max_runs: 5) do
+    check all(bytes <- binary(length: 32), port <- member_of([0, 3000, 9999]), test_cases: 5) do
       state = Base.url_encode64(bytes, padding: false)
       digest = Base.encode16(:crypto.hash(:sha256, state), case: :lower)
 

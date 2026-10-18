@@ -44,7 +44,7 @@ defmodule Lilly.VM.ActorDeferralTest do
                 min_length: 1,
                 max_length: 12
               ),
-            max_runs: 15
+            test_cases: 15
           ) do
       id = Lilly.UUID.generate()
       directory = Path.join(context.tmp_dir, Lilly.UUID.generate())

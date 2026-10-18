@@ -137,7 +137,7 @@ defmodule MarshallWeb.CrossReplicaRevocationTest do
             kind <- member_of([:revoke_sessions, :token_revoke, :expire]),
             revoker <- member_of([0, 1, 2]),
             order <- shuffle([0, 1, 2]),
-            max_runs: 6
+            test_cases: 6
           ) do
       assert_schedule(Enum.map(order, &Enum.at(peers, &1)), kind, revoker)
     end

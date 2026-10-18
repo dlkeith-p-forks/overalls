@@ -547,7 +547,7 @@ defmodule Marshall.Compute.CloningTest do
   end
 
   test "arbitrary repeated request histories preserve one destination per distinct key", c do
-    check all(keys <- list_of(integer(1..8), min_length: 1, max_length: 24), max_runs: 20) do
+    check all(keys <- list_of(integer(1..8), min_length: 1, max_length: 24), test_cases: 20) do
       prefix = Ash.UUID.generate()
 
       Enum.reduce(keys, %{}, fn key, model ->

@@ -13,7 +13,7 @@ defmodule Marshall.Access.CustomerIsolationTest do
   end
 
   test "customer grants cannot be created or confer authority", c do
-    check all(role <- member_of([:web, :viewer, :operator, :manager]), max_runs: 12) do
+    check all(role <- member_of([:web, :viewer, :operator, :manager]), test_cases: 12) do
       assert {:error, _} =
                Access.set_access(
                  %{
@@ -125,7 +125,7 @@ defmodule Marshall.Access.CustomerIsolationTest do
     check all(
             port <- integer(1..65535),
             visibility <- member_of([:public, :private]),
-            max_runs: 12
+            test_cases: 12
           ) do
       assert {:error, _} =
                Ingress.configure_endpoint(

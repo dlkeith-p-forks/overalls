@@ -910,7 +910,7 @@ OmniOS full-kit pool import/clone/install/export and diagnostic Firecracker
 file/token/host-CID transport checks have passed. Later source-qualified OmniOS
 receipts record complete services over two clean boots, three-boot/two-expansion
 growth and separate process-SIGKILL/same-disk recovery. Reproducible full-image
-assembly, policy, supervised daemon recovery, reset/DMA, broader isolation and
+assembly, formal policy gates, supervised daemon recovery, reset/DMA, broader isolation and
 fleet acceptance remain open; admission stays false.
 
 ### Current OmniOS accept ordering
@@ -932,6 +932,21 @@ same-disk process-crash runners passed on these exact bytes, including all 25
 service and eight crash checks. The [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
 records full identities, test scope and remaining native/physical gaps.
 `native_admission=false` remains unchanged.
+
+The follow-up OmniOS agent manifest keeps SMF's contract service model and
+ignores only signal failures so the shell supervisor can replace an individually
+killed daemon without SMF replacing all listeners. Core dumps, hardware errors
+and an empty contract retain the outer service restart boundary. Assembly and
+boot verification require this exact policy and refuse duplicate, broader or
+instance-overriding settings. Listener close also wakes pending-handshake
+children on its port under the socket lock, letting accept refuse without a
+completed callback or another interrupt. The host sanitizer regression caught
+a missing-wake mutant. The combined payload passed fresh native assembly,
+including native SMF validation, nine modules, 764 payload records and clean
+export; the matrix review binds its sealed `45983bb7` disk and receipt.
+Current-image runtime scenarios remain pending. A killed shell supervisor while children survive
+can leave a nonempty contract without a supervisor; recovery of that case is
+unverified and no daemon-recovery pass follows from this source correction.
 
 ### Reviewed FreeBSD admission and publication
 
@@ -1072,7 +1087,13 @@ control or ordinary guest TCP surface.
 Native boot now includes a root-only mounted-root growth helper before MMDS
 identity and network. It verifies both GPT copies/CRCs, exact disk/partition
 identities and actual capacity before native resize commands, then requires a
-fresh volatile success receipt. Twelve pure checks and three native FreeBSD
+fresh volatile success receipt. OmniOS read-only pool discovery searches fixed
+device labels with its userland cache disabled; no persisted early-boot cache is
+required. Assembly pool GUID, one canonical whole-disk vdev and raw-device
+custody remain mandatory. A disposable missing-cache diagnostic passed the
+revised helper's preflight, expansion, post-GPT preservation and success receipt
+where the old query refused. This same-boot fault case is separate from new-image
+growth/recovery qualification. Twelve pure checks and three native FreeBSD
 QEMU boots passed one unchanged root and two expansions, retaining home bytes,
 nonroot GPT entries and a foreign disk. The later exact canonical-roots/SSH
 FreeBSD image passed 334-second Firecracker composition through three clean

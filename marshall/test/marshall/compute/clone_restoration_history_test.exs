@@ -18,14 +18,15 @@ defmodule Marshall.Compute.CloneRestorationHistoryTest do
   # enqueue while slots are held and is deferred, not failed, allocating
   # nothing until verified release; activation after release MUST NOT change
   # the original first-release timestamps.
-  property "published clones retain cleanup authority through failed restoration and replay" do
+  property "published clones retain cleanup authority through failed restoration and replay",
+    test_cases: 16 do
     check all(
             repeats <- integer(1..4),
             duplicates <- integer(1..4),
             newer? <- boolean(),
             destination_first? <- boolean(),
             competing_attempts <- member_of([1, 2, 4]),
-            max_runs: 16
+            test_cases: 16
           ) do
       :ok = Ecto.Adapters.SQL.Sandbox.checkout(Marshall.Repo)
 

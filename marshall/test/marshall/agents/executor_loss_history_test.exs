@@ -28,14 +28,15 @@ defmodule Marshall.Agents.ExecutorLossHistoryTest do
   # MUST follow the generated start boundary, independently of SUT predicates.
   # SQL sandbox observations and synthetic expiry establish durable dispatch
   # policy only; they MUST NOT be described as real guest side effects or TLS.
-  property "executor loss preserves one dispatch and requires authorized explicit retry" do
+  property "executor loss preserves one dispatch and requires authorized explicit retry",
+    test_cases: 3 do
     scenarios =
       for state <- [:claimed, :started],
           loss <- [:replace, :expire],
           access <- [:allowed, :revoked],
           do: {state, loss, access}
 
-    check all(order <- shuffle(scenarios), repeats <- integer(1..3), max_runs: 3) do
+    check all(order <- shuffle(scenarios), repeats <- integer(1..3), test_cases: 3) do
       Enum.each(order, &history(&1, repeats))
     end
   end

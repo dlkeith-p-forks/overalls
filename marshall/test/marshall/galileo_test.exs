@@ -8,8 +8,9 @@ defmodule Marshall.GalileoTest do
   alias Marshall.Galileo
   alias Marshall.Galileo.{Attachment, Credentials, Integration, IntegrationHeader, PeerTokens}
 
-  property "exclusive integration cursors enumerate every visible row exactly once" do
-    check all(count <- integer(1..6), limit <- integer(1..3), max_runs: 15) do
+  property "exclusive integration cursors enumerate every visible row exactly once",
+    test_cases: 15 do
+    check all(count <- integer(1..6), limit <- integer(1..3), test_cases: 15) do
       actor = Marshall.ComputeFixtures.user()
 
       integrations =
@@ -255,13 +256,14 @@ defmodule Marshall.GalileoTest do
     end
   end
 
-  property "malformed routing and static headers refuse without exceptions or persistence" do
+  property "malformed routing and static headers refuse without exceptions or persistence",
+    test_cases: 15 do
     actor = Marshall.ComputeFixtures.user()
 
     check all(
             kind <- member_of([:target, :prefix, :header]),
             suffix <- string(:alphanumeric, min_length: 1, max_length: 12),
-            max_runs: 15
+            test_cases: 15
           ) do
       {overrides, reason} =
         case kind do

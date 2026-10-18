@@ -39,7 +39,8 @@ defmodule Marshall.Administration.JobHistoryTest do
   # Generated raw transitions MUST be compared with an independent event model
   # through ordinary-user projections. Pruning MUST preserve the exact history
   # without preserving retry authority; raw fixture transitions prove no worker execution.
-  property "generated transitions retain exact redacted history through pruning and expiry" do
+  property "generated transitions retain exact redacted history through pruning and expiry",
+    test_cases: 25 do
     check all(
             transitions <-
               list_of(
@@ -58,7 +59,7 @@ defmodule Marshall.Administration.JobHistoryTest do
                 min_length: 1,
                 max_length: 12
               ),
-            max_runs: 25
+            test_cases: 25
           ) do
       reader = Passkeys.user()
       job = Fixture.insert("history_#{System.unique_integer([:positive])}")
@@ -109,7 +110,8 @@ defmodule Marshall.Administration.JobHistoryTest do
   # The model MUST derive retry acceptance from its own role, elevation, login,
   # raw-state and receipt history. Refused and replayed requests MUST preserve
   # every job/history/audit row; changed request meaning MUST never mutate another job.
-  property "retry histories bind receipts while role elevation and login authority change" do
+  property "retry histories bind receipts while role elevation and login authority change",
+    test_cases: 25 do
     check all(
             actions <-
               list_of(
@@ -120,7 +122,7 @@ defmodule Marshall.Administration.JobHistoryTest do
                 ]),
                 max_length: 5
               ),
-            max_runs: 25
+            test_cases: 25
           ) do
       admin = Passkeys.elevate(Passkeys.user(true))
       operator = Passkeys.elevate(Passkeys.user(true))

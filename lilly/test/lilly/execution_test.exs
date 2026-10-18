@@ -222,7 +222,8 @@ defmodule Lilly.ExecutionTest do
     end
   end
 
-  property "reads equal the join of runtime, intent and live rows for any write history" do
+  @tag :hegel
+  test "reads equal the join of runtime, intent and live rows for any write history" do
     placements = [@a, @b]
 
     check all(
@@ -241,7 +242,7 @@ defmodule Lilly.ExecutionTest do
                 ]),
                 max_length: 40
               ),
-            max_runs: 50
+            test_cases: 50
           ) do
       # A fresh view per run: earlier writers' claims never leak into this one.
       view = :"execution_property_#{System.unique_integer([:positive])}"

@@ -125,7 +125,7 @@ defmodule Marshall.Agents.ModelCallsTest do
   end
 
   test "repeated host polls never claim the same model attempt twice", c do
-    check all(extra_polls <- integer(1..8), max_runs: 8) do
+    check all(extra_polls <- integer(1..8), test_cases: 8) do
       turn = start_turn(c)
       assert {:ok, call} = ModelCalls.queue(turn.id, "gpt-6-sol")
       assert {:ok, %{call: %{id: id, claim_id: claim_id}}} = ModelCalls.claim(c.token)
@@ -590,7 +590,7 @@ defmodule Marshall.Agents.ModelCallsTest do
   end
 
   test "claimed model work never requeues across the expiry boundary", c do
-    check all(extra_polls <- integer(1..4), max_runs: 8) do
+    check all(extra_polls <- integer(1..4), test_cases: 8) do
       for age <- [590, 601] do
         assert {:ok, thread} = Conversation.spawn_child(c.thread.id, "claim history", c.actor)
         turn = start_turn(%{c | thread: thread})

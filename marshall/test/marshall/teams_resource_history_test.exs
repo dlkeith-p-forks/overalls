@@ -15,12 +15,13 @@ defmodule Marshall.TeamsResourceHistoryTest do
   # independently expect member VM use, admin management, removed/foreign refusal
   # and Customer owner-only access. Synthetic host outcomes establish control
   # admission only; native guest SSH remains a separate acceptance boundary.
-  property "current team membership admits guest use without granting member management" do
+  property "current team membership admits guest use without granting member management",
+    test_cases: 20 do
     check all(
             profile <- member_of([:oss, :customer]),
             roles <-
               list_of(member_of([:admin, :member, :removed]), min_length: 3, max_length: 10),
-            max_runs: 20
+            test_cases: 20
           ) do
       fixture = fresh_fixture(:standard)
       member = Marshall.ComputeFixtures.user()
@@ -159,12 +160,13 @@ defmodule Marshall.TeamsResourceHistoryTest do
   # including removal and re-addition, without explicit attachments. Customer
   # access always refuses. Configuration rights remain with team owner/admin;
   # member and removed actor attempts MUST leave integration and audit state intact.
-  property "team integration access follows membership histories without attachments" do
+  property "team integration access follows membership histories without attachments",
+    test_cases: 20 do
     check all(
             profile <- member_of([:oss, :customer]),
             roles <-
               list_of(member_of([:admin, :member, :removed]), min_length: 3, max_length: 10),
-            max_runs: 20
+            test_cases: 20
           ) do
       fixture = fresh_fixture(profile)
       founder = Marshall.ComputeFixtures.user()

@@ -107,7 +107,7 @@ defmodule Marshall.Inference.RequestsTest do
   test "completion replay and conflict histories count each request once", c do
     check all(
             attempts <- list_of(member_of([:replay, :conflict]), min_length: 1, max_length: 12),
-            max_runs: 12
+            test_cases: 12
           ) do
       id = Ash.UUID.generate()
       input = Map.put(c.input, "request_id", id)
