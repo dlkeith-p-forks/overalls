@@ -257,8 +257,13 @@ crashed on every trace request; back-to-back recovery restarts also tripped
 systemd's default start limit, and the pressure loop outran the command window.
 The fixture paths now carry store context, the producer refuses a failed
 request instead of exiting, the two restarted units have no start limit in this
-fixture only, and the pressure loop has a 20 s budget. Its evidence is
-emulated, not native.
+fixture only, and the pressure loop has a 20 s budget. The next run
+(`acfe129cf2288d30a7972edcbf9b92cf-65-0`) reached spool custody, recovery and
+real ENOSPC on the dedicated archive, but the one write attempted under ENOSPC
+committed into already allocated SQLite pages, so no refusal followed; the
+command now keeps writing, up to 32 batches, until the exhausted backing
+refuses. Archive quota refusal stays out of reach inside the 20 s loop. Its
+evidence is emulated, not native.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub

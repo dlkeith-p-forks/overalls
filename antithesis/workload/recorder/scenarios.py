@@ -25,6 +25,7 @@ from recorder.oracle import (
 
 LOG = logging.getLogger(__name__)
 PRESSURE_BUDGET_SECONDS = 20.0
+ENOSPC_WRITE_ATTEMPTS = 32
 MAX_PENDING = 4096
 
 
@@ -323,6 +324,19 @@ def _physical_pressure(
     spool_before = read_spool_identity(config)
     try:
         result = client.call({"op": "trace", "sequence": sequence, "size": "large"})
+        writes = 0
+        while result is not None and result.status == "200" and writes < ENOSPC_WRITE_ATTEMPTS:
+            # Existing allocated SQLite pages may commit without new blocks; keep
+            # writing until the exhausted backing must refuse.
+            reachable("Trace spool reused allocated archive pages during backing pressure")
+            writes += 1
+            result = client.call(
+                {
+                    "op": "trace",
+                    "sequence": ((sequence + 10 + writes) % 999_999) + 1,
+                    "size": "large",
+                }
+            )
         if result is not None and result.status == "503":
             reachable("Trace spool refused an archive write during real ENOSPC")
             again = client.call({"op": "trace", "sequence": sequence + 1, "size": "small"})
@@ -339,9 +353,6 @@ def _physical_pressure(
                     again.status != "200",
                     "Trace spool poisoned storage refuses fresh ACKs until reopen",
                 )
-        elif result is not None and result.status == "200":
-            # Existing allocated SQLite pages may commit without new blocks.
-            reachable("Trace spool reused allocated archive pages during backing pressure")
     finally:
         cleared = client.control({"op": "pressure_clear"})
         if cleared is None or cleared.status != "ok":
