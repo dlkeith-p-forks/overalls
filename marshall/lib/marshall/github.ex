@@ -111,23 +111,26 @@ defmodule Marshall.GitHub do
   def callback(%User{} = actor, jti, state, code)
       when is_binary(jti) and is_binary(state) and byte_size(state) in 32..128 and
              is_binary(code) and byte_size(code) in 1..4096 do
-    private(fn ->
-      with true <- configured?(),
-           {:ok, {attempt, verifier}} <- claim_callback(actor, jti, state) do
-        result = exchange_callback(actor, jti, attempt, code, verifier)
-        if match?({:error, _}, result), do: abandon_attempt(attempt.id)
-        result
-      else
-        false ->
-          {:error, :invalid_callback}
+    private(
+      fn ->
+        with true <- configured?(),
+             {:ok, {attempt, verifier}} <- claim_callback(actor, jti, state) do
+          result = exchange_callback(actor, jti, attempt, code, verifier)
+          if match?({:error, _}, result), do: abandon_attempt(attempt.id)
+          result
+        else
+          false ->
+            {:error, :invalid_callback}
 
-        {:error, reason} when reason in [:unauthorized, :invalid_callback, :identity_in_use] ->
-          {:error, reason}
+          {:error, reason} when reason in [:unauthorized, :invalid_callback, :identity_in_use] ->
+            {:error, reason}
 
-        _ ->
-          {:error, :unavailable}
-      end
-    end)
+          _ ->
+            {:error, :unavailable}
+        end
+      end,
+      invalid: :invalid_callback
+    )
   end
 
   def callback(_, _, _, _), do: {:error, :invalid_callback}
@@ -1285,7 +1288,9 @@ defmodule Marshall.GitHub do
   @doc false
   @spec private((-> result)) :: result | {:error, :unavailable | :unauthorized}
         when result: term()
-  def private(fun) do
+  def private(fun), do: private(fun, [])
+
+  defp private(fun, opts) do
     original = Logger.metadata()
     Logger.metadata(marshall_authentication: true)
 
@@ -1297,7 +1302,7 @@ defmodule Marshall.GitHub do
     rescue
       _ -> {:error, :unavailable}
     catch
-      :exit, reason ->
+      :exit, _reason ->
         if Keyword.get(opts, :invalid) == :invalid_callback,
           do: {:error, :invalid_callback},
           else: {:error, :unavailable}
