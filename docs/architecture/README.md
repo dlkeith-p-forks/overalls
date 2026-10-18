@@ -79,6 +79,9 @@ workspace, flush, SSH and agent controls; editor and Inception remain false.
 Retained stock images, altered identities and unreviewed OmniOS candidates
 refuse new admission. The selected OmniOS fleet aliases now point to the exact
 immutable promotion; candidate constructors retain their false admission flags.
+A separate [cross-platform editor review](reviews/2026-10-18-cross-platform-editor-status.md)
+keeps the editor capability Linux-only and records the missing current-revision
+browser evidence; terminal, SSH and native service receipts do not widen it.
 Stock-input kernel receipts contain no artifact bytes, so those constructors
 refuse before copying a stock disk. The FreeBSD kernel candidate,
 all twenty native Lyra executables and both terminal daemons cross-link in

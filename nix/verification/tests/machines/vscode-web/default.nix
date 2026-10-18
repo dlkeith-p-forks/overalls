@@ -344,6 +344,11 @@ in
         formatted_value: object = json.loads(formatted)
         assert formatted_value == {"answer": 42, "nested": {"value": True}}
         assert len(formatted.splitlines()) >= 3
+        # Chromium closes its context before the remote auto-shutdown grace
+        # period expires. Stop this fixture-owned unit before the policy
+        # journeys so leaked extension-host children cannot accumulate in the
+        # 2 GiB guest while each journey starts from the same saved profile.
+        guest.succeed("systemctl stop overalls-vscode-u200001.service")
     # @cc [owner:ghuntley,label:verification] editor-native-personal-policy-acceptance
     # HOME and outside-HOME workspaces MUST report workspace.isTrusted through
     # the native API under conflicting personal settings. Both accounts MUST
@@ -353,6 +358,8 @@ in
     # from an offline project fixture, never a fake LSP or global compiler.
     def editor_policy(origin: str, folder: str, mode: str) -> None:
         gateway.succeed("${python}/bin/python ${helpers}/policy.py " + origin + " " + folder + " " + mode, timeout=180)
+        uid = "200001" if origin == "${origin}" else "200002"
+        guest.succeed("systemctl stop overalls-vscode-u" + uid + ".service")
 
     with subtest("all folders are trusted and both personal accounts receive immutable defaults"):
         editor_policy("${origin}", "/opt/overalls-editor-alice", "defaults")

@@ -562,14 +562,6 @@ defmodule MarshallWeb.MachinesLive do
   defp label(:inception), do: "Inception"
   defp label(:standard), do: "Standard"
   defp label(:oss), do: "OSS"
-  defp state(%{desired_state: :deleted}), do: "Deleting"
-  defp state(%{desired_state: :stopped, observed_state: :running}), do: "Stopping"
-
-  defp state(%{desired_state: :running, observed_state: state})
-       when state in [:pending, :stopped], do: "Starting"
-
-  defp state(%{observed_state: state}), do: state |> Atom.to_string() |> String.capitalize()
-
   # @cc [owner:ghuntley,label:security] fixed-machine-error-messages
   # error_message/1 MUST return only predefined public messages; raw exceptions,
   # SQL details, credential data and arbitrary error payloads MUST NOT be shown.
@@ -680,7 +672,11 @@ defmodule MarshallWeb.MachinesLive do
                 </td>
                 <td data-label="Status">
                   <UI.pinned_label vm={vm} id={"machine-pinned-#{vm.id}"} />
-                  <span class="status-label" data-state={vm.observed_state}>{state(vm)}</span>
+                  <span
+                    class="status-label"
+                    data-state={vm.observed_state}
+                    data-tone={UI.machine_tone(vm)}
+                  >{UI.machine_state(vm)}</span>
                 </td>
                 <td class="resource-values" data-label="Resources">
                   {vm.vcpu} vCPU · {gib(vm.memory_bytes)} GiB RAM · {gib(vm.disk_bytes)} GiB disk

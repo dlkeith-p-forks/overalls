@@ -54,6 +54,14 @@ defmodule MarshallWeb.WorkspaceComponents do
     """
   end
 
+  # @cc [owner:ghuntley,label:product] machine-state-label-text-and-tone
+  # Every machine status label MUST name the state in text from machine_state/1
+  # (Deleting, Stopping, Starting, or the capitalised observed state) and carry
+  # the observed state in `data-state` plus the severity in `data-tone`, decided
+  # in the same clause order as the text: pending for every transition
+  # (Deleting, Stopping, Starting, Pending, Unknown), danger for a failed
+  # machine, success for a settled running machine and no tone for the neutral
+  # settled states (Stopped, Deleted). Colour never carries meaning.
   @spec machine_state(map()) :: String.t()
   def machine_state(%{desired_state: :deleted}), do: "Deleting"
   def machine_state(%{desired_state: :stopped, observed_state: :running}), do: "Stopping"
@@ -62,6 +70,19 @@ defmodule MarshallWeb.WorkspaceComponents do
       when state in [:pending, :stopped], do: "Starting"
 
   def machine_state(%{observed_state: state}), do: String.capitalize(to_string(state))
+
+  @doc "The status-label severity tone matching machine_state/1, or nil for neutral states."
+  @spec machine_tone(map()) :: String.t() | nil
+  def machine_tone(%{desired_state: :deleted}), do: "pending"
+  def machine_tone(%{desired_state: :stopped, observed_state: :running}), do: "pending"
+
+  def machine_tone(%{desired_state: :running, observed_state: state})
+      when state in [:pending, :stopped], do: "pending"
+
+  def machine_tone(%{observed_state: :failed}), do: "danger"
+  def machine_tone(%{observed_state: :running}), do: "success"
+  def machine_tone(%{observed_state: state}) when state in [:pending, :unknown], do: "pending"
+  def machine_tone(_vm), do: nil
 
   attr :vm, :map, required: true
   attr :active, :string, default: "terminal"
@@ -194,9 +215,12 @@ defmodule MarshallWeb.WorkspaceComponents do
             <h1>{@vm.name}</h1>
             <.pinned_label vm={@vm} id="machine-pinned" />
             <.os_label vm={@vm} id="machine-os" />
-            <span id="machine-state" class="status-label" data-state={@vm.observed_state}>{machine_state(
-              @vm
-            )}</span>
+            <span
+              id="machine-state"
+              class="status-label"
+              data-state={@vm.observed_state}
+              data-tone={machine_tone(@vm)}
+            >{machine_state(@vm)}</span>
           </div>
           <p class="machine-facts muted">
             {@vm.vcpu} vCPU · {workspace_gib(@vm.memory_bytes)} GiB memory · {workspace_gib(

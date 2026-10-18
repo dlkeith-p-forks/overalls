@@ -1098,6 +1098,14 @@ payloads do not inherit admission from that image. Missing, foreign, replayed or
 incomplete promotion evidence refuses; evidence and debugging hooks stay outside
 the published image. The candidate's original false admission flags are retained.
 
+These native-family boundaries are also editor boundaries. FreeBSD and OmniOS
+have no admitted editor package, broker, descriptor or browser acceptance, and
+their explicit false capability rows remain false even where a sealed image has
+readiness, terminal, workspace, SSH or agent evidence. Those receipts cannot be
+used as a browser-editor result. A future native editor would require a new
+reviewed image and kernel/agent contract, protocol capability, broker admission
+and browser sign-in/edit/readback/recovery receipt.
+
 All seven selected image identities now bind separately recorded strict
 personal-account SSH and current-owner create/readiness, stop, independent
 stopped checkpoint, same-VM restart, repeated SSH and completed deletion. The
@@ -1388,6 +1396,13 @@ leave a bootable guest. The host policy drops unmarked
 traffic between the host and a Customer guest by design, so the machine test's
 reachability probe is a test-only allowance for one address, never a product
 path or a Marshall observation.
+
+The Windows `windows-v1` contract deliberately excludes the browser editor.
+Readiness, roster SSH, ConPTY, workspace and agent evidence therefore remains
+scoped to those capabilities; it supplies no editor package, broker, descriptor,
+browser authority or browser journey. Enabling an editor on Windows is a new
+architecture decision and requires reviewed image, agent/protocol, broker and
+browser evidence rather than an inference from existing guest readiness.
 
 ## Thread authorization boundary
 

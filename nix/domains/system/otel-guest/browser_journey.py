@@ -419,15 +419,31 @@ def submit_command(page: Page, entry: ElementHandle) -> None:
     """
     try:
         # Keep Enter attached to the palette input, so late iframe focus cannot
-        # send it to the preview or to an existing terminal instead.
-        entry.wait_for_element_state("visible", timeout=8000)
-        entry.focus()
-        focused: object = entry.evaluate(
-            "element => element.isConnected && element.ownerDocument.activeElement === element"
-        )
-        if focused is not True:
+        # send it to the preview or to an existing terminal instead. The
+        # workbench can briefly reclaim focus while a webview settles; retry
+        # acquiring custody only before dispatching the single Enter.
+        deadline = time.monotonic() + 8
+        focused = False
+        while time.monotonic() < deadline:
+            timeout = max(1, min(1000, int((deadline - time.monotonic()) * 1000)))
+            try:
+                entry.wait_for_element_state("visible", timeout=timeout)
+                entry.focus()
+                custody: object = entry.evaluate(
+                    "element => element.isConnected && element.ownerDocument.activeElement === element"
+                )
+                if custody is True:
+                    focused = True
+                    break
+            except (PlaywrightError, PlaywrightTimeoutError):
+                pass
+            page.wait_for_timeout(min(50, timeout))
+        if not focused:
             raise RuntimeError("command input focus custody unavailable")
-        entry.press("Enter", timeout=8000)
+        # Dispatch exactly once after custody is established. This call is
+        # deliberately outside the retry loop: a timeout may follow a
+        # delivered key and must never replay a possibly executed command.
+        entry.press("Enter", timeout=max(1, min(1000, int((deadline - time.monotonic()) * 1000))))
     finally:
         entry.dispose()
     expect(page.locator(".quick-input-widget")).not_to_be_visible()

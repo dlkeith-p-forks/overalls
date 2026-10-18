@@ -59,12 +59,33 @@ Retirement and current login/write/execution refusals remain authoritative.
 Pre-cutover leases closed during the breaking database migration; this continuity
 rule applies to subsequent generated-identity admissions.
 
+The editor-bearing capability is currently limited to the reviewed version-4
+Linux image contract. Windows `windows-v1` and native FreeBSD/OmniOS
+(`freebsd-v1` and `illumos-v1`) rows are refused before this flow because their
+protocol capabilities set `editor: false`; their terminal, SSH, readiness or
+agent receipts do not widen that boundary. The Linux package and authority
+checks also do not constitute a current-revision browser journey: no current
+NixOS or Ubuntu sign-in, edit/save/readback and recovery receipt is recorded in
+this status review, and the captured Alma/Arch receipts retain their earlier
+image and source scope.
+
 Every machine page (Terminal, Access, Settings, Agents, Resize and the Boot log view)
 shares one header. A bordered heading box carries the machine name, then an
 operating-system label that is the registered display name of the machine's
 immutable image (`[NixOS]`, `[Ubuntu 26.04 LTS]`, `[Windows Server 2025]`), then
 its state label (`[Running]`, `[Stopping]`, …); a machine whose image row is
-missing shows no operating-system label rather than a placeholder. Beneath them
+missing shows no operating-system label rather than a placeholder. Every status
+label is one bracketed word on the character grid whose text names the state;
+severity is weight, style or inverse video, never colour: `[Pinned]` and the
+operating system are secondary-colour metadata, `[Stopped]` is plain text,
+`[Running]` is bold, transitions (`[Starting]`, `[Stopping]`, `[Deleting]`,
+`[Pending]`, `[Unknown]`) are italic, and `[Failed]` is a bold inverse-video
+block one row tall with a one-cell margin inside the block. The label carries
+the observed state in `data-state` and the severity in `data-tone` (`danger`,
+`success`, `pending`, `muted`, or none for neutral states) on the Overview,
+the Machines list and the machine header alike; the tone is decided in the
+same order as the text, so a failed machine with delete intent reads
+`[Deleting]` as a transition rather than `[Failed]`. Beneath them
 sit the resource facts (vCPU, memory, disk, profile) and the machine ID with a
 one-line **Copy** control; the authorized power actions and **Open VS Code**
 stay on the right and wrap under the summary on phone widths. The "Connect from
@@ -179,6 +200,11 @@ The exact admitted GET/HEAD of the packaged extension-worker iframe at the grant
 source commit permits same-origin framing for the upstream browser extension host.
 Other editor responses deny framing. Foreign commits, unversioned paths and
 suffix paths cannot inherit that exception.
+
+The browser-fleet fixture retries focus custody before submitting a palette
+command and stops its fixture-owned personal worker after the policy probe. Those
+actions prevent stale Chromium focus and worker processes from contaminating a
+later fixture, but they add no product authority, transport or editor evidence.
 
 An expired/revoked personal cookie or its stored login requires authentication
 again and redirects a safe browser visit into the fixed approval/sign-in flow.
@@ -628,7 +654,9 @@ and security views. Optional and public views retain their existing behavior.
 
 The signed-in sidebar groups Overview through Teams under "Your workspace";
 Account, AI usage and Browser extension under "Your account"; and Field notes,
-HLDD and Source code under a separate "Reference" section. Each SSH key on the
+HLDD and Source code under a separate "Reference" section. In the Control room
+the sidebar shows only the administration tree; neither "Your account" nor
+"Reference" is rendered there. Each SSH key on the
 account page carries an inline Description field with Rename.
 
 The profile section of the account page (`/settings#profile`, reached from the
