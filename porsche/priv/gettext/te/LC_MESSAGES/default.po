@@ -306,3 +306,101 @@ msgstr "Resume preserved memory, waiting for capacity or relocation."
 # Reviewed English fallback pending translation of suspension behavior.
 msgid "Resume a suspended machine's preserved memory."
 msgstr "Resume a suspended machine's preserved memory."
+
+#: lib/porsche/ssh/onboarding.ex:112
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"Or manage your keys at:\n"
+"  "
+msgstr ""
+"\n"
+"లేదా మీ కీలను ఇక్కడ నిర్వహించండి:\n"
+"  "
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "Show command help."
+msgstr "కమాండ్ సహాయాన్ని చూపించు."
+
+#: lib/porsche/ssh/output.ex:73
+#, elixir-autogen, elixir-format
+msgid "The command could not be completed: %{reason}"
+msgstr "కమాండ్‌ను పూర్తి చేయలేకపోయాము: %{reason}"
+
+#: lib/porsche/ssh/output.ex:67
+#, elixir-autogen, elixir-format
+msgid "The requested resource could not be found."
+msgstr "అభ్యర్థించిన వనరు కనుగొనబడలేదు."
+
+#: lib/porsche/ssh/output.ex:61
+#, elixir-autogen, elixir-format
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr ""
+"సేవ తాత్కాలికంగా అందుబాటులో లేదు. దయచేసి కొద్దిసేపటి తర్వాత మళ్లీ "
+"ప్రయత్నించండి."
+
+#: lib/porsche/ssh/onboarding.ex:100
+#, elixir-autogen, elixir-format
+msgid ""
+"This SSH connection could not be authorized. Check your machine access and try again.\n"
+"\n"
+msgstr ""
+"ఈ SSH కనెక్షన్‌కు అధికారం ఇవ్వలేకపోయాము. మీ మెషీన్ యాక్సెస్‌ను తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.\n"
+"\n"
+
+#: lib/porsche/ssh/output.ex:52
+#, elixir-autogen, elixir-format
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "ఈ కనెక్షన్‌కు అధికారం లేదు. దయచేసి సైన్ ఇన్ చేసి మళ్లీ ప్రయత్నించండి."
+
+#: lib/porsche/ssh/output.ex:70
+#, elixir-autogen, elixir-format
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "ఊహించని ఇన్‌పుట్. దయచేసి కొత్త SSH కనెక్షన్‌ను తెరవండి."
+
+#: lib/porsche/ssh/onboarding.ex:97
+#, elixir-autogen, elixir-format
+msgid ""
+"We couldn't verify this SSH key right now. Please try again shortly.\n"
+"\n"
+msgstr ""
+"ప్రస్తుతం ఈ SSH కీని ధృవీకరించలేకపోయాము. దయచేసి కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:53
+#, elixir-autogen, elixir-format
+msgid ""
+"We don't recognize this SSH key:\n"
+"  "
+msgstr ""
+"ఈ SSH కీ మాకు తెలియదు:\n"
+"  "
+
+#: lib/porsche/ssh/onboarding.ex:86
+#, elixir-autogen, elixir-format
+msgid ""
+"Welcome to Overalls.\n"
+"\n"
+"This connection needs the Overalls SSH configuration.\n"
+"\n"
+msgstr ""
+"Overallsకు స్వాగతం.\n"
+"\n"
+"ఈ కనెక్షన్‌కు Overalls SSH కాన్ఫిగరేషన్ అవసరం.\n"
+"\n"
+
+#: lib/porsche/ssh/output.ex:55
+#, elixir-autogen, elixir-format
+msgid "You do not have permission to perform this action."
+msgstr "ఈ చర్యను చేయడానికి మీకు అనుమతి లేదు."
+
+#: lib/porsche/ssh/onboarding.ex:121
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "మీ మెషీన్ పేజీ నుండి మరియు root@ లేకుండా మళ్లీ కనెక్ట్ అవ్వండి.\n"
+
+#: lib/porsche/ssh/onboarding.ex:78
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "ఆపై మీ అసలు కమాండ్‌ను మళ్లీ ప్రయత్నించండి.\n"

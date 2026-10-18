@@ -304,3 +304,99 @@ msgstr "Resume preserved memory, waiting for capacity or relocation."
 # Reviewed English fallback pending translation of suspension behavior.
 msgid "Resume a suspended machine's preserved memory."
 msgstr "Resume a suspended machine's preserved memory."
+
+#: lib/porsche/ssh/onboarding.ex:112
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"Or manage your keys at:\n"
+"  "
+msgstr ""
+"\n"
+"किंवा आपल्या कळा येथे व्यवस्थापित करा:\n"
+"  "
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "Show command help."
+msgstr "कमांडची मदत दाखवा."
+
+#: lib/porsche/ssh/output.ex:73
+#, elixir-autogen, elixir-format
+msgid "The command could not be completed: %{reason}"
+msgstr "कमांड पूर्ण करता आली नाही: %{reason}"
+
+#: lib/porsche/ssh/output.ex:67
+#, elixir-autogen, elixir-format
+msgid "The requested resource could not be found."
+msgstr "विनंती केलेले संसाधन सापडले नाही."
+
+#: lib/porsche/ssh/output.ex:61
+#, elixir-autogen, elixir-format
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr "सेवा तात्पुरती अनुपलब्ध आहे. कृपया थोड्या वेळाने पुन्हा प्रयत्न करा."
+
+#: lib/porsche/ssh/onboarding.ex:100
+#, elixir-autogen, elixir-format
+msgid ""
+"This SSH connection could not be authorized. Check your machine access and try again.\n"
+"\n"
+msgstr ""
+"हे SSH कनेक्शन अधिकृत करता आले नाही. आपल्या मशीनचा प्रवेश तपासा आणि पुन्हा प्रयत्न करा.\n"
+"\n"
+
+#: lib/porsche/ssh/output.ex:52
+#, elixir-autogen, elixir-format
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "हे कनेक्शन अधिकृत नाही. कृपया साइन इन करून पुन्हा प्रयत्न करा."
+
+#: lib/porsche/ssh/output.ex:70
+#, elixir-autogen, elixir-format
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "अनपेक्षित इनपुट. कृपया नवीन SSH कनेक्शन उघडा."
+
+#: lib/porsche/ssh/onboarding.ex:97
+#, elixir-autogen, elixir-format
+msgid ""
+"We couldn't verify this SSH key right now. Please try again shortly.\n"
+"\n"
+msgstr ""
+"आम्हाला सध्या ही SSH कळ पडताळता आली नाही. कृपया थोड्या वेळाने पुन्हा प्रयत्न करा.\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:53
+#, elixir-autogen, elixir-format
+msgid ""
+"We don't recognize this SSH key:\n"
+"  "
+msgstr ""
+"आम्ही ही SSH कळ ओळखत नाही:\n"
+"  "
+
+#: lib/porsche/ssh/onboarding.ex:86
+#, elixir-autogen, elixir-format
+msgid ""
+"Welcome to Overalls.\n"
+"\n"
+"This connection needs the Overalls SSH configuration.\n"
+"\n"
+msgstr ""
+"Overalls मध्ये आपले स्वागत आहे.\n"
+"\n"
+"या कनेक्शनसाठी Overalls SSH कॉन्फिगरेशन आवश्यक आहे.\n"
+"\n"
+
+#: lib/porsche/ssh/output.ex:55
+#, elixir-autogen, elixir-format
+msgid "You do not have permission to perform this action."
+msgstr "आपल्याला ही कृती करण्याची परवानगी नाही."
+
+#: lib/porsche/ssh/onboarding.ex:121
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "आपल्या मशीनच्या पृष्ठावरून आणि root@ शिवाय पुन्हा कनेक्ट करा.\n"
+
+#: lib/porsche/ssh/onboarding.ex:78
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "नंतर आपली मूळ कमांड पुन्हा वापरून पहा.\n"
