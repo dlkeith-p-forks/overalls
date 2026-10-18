@@ -41,6 +41,7 @@ in
       ANDROID_USER_HOME = "/var/lib/overalls-android";
       ANDROID_AVD_HOME = avdRoot;
       DISPLAY = ":0";
+      HOME = "/var/lib/overalls-android";
       JAVA_HOME = "${pkgs.jdk}";
     };
     serviceConfig = {
@@ -60,9 +61,10 @@ in
       ReadWritePaths = [ "/var/lib/overalls-android" "/run/overalls-android" ];
       ExecStart = "${pkgs.writeShellScript "overalls-android-emulator" ''
         set -eu
+        mkdir -p "$HOME/.android"
         mkdir -p "$ANDROID_AVD_HOME"
         if [ ! -f "$ANDROID_AVD_HOME/${avdName}.avd/config.ini" ]; then
-          yes "" | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
+          printf 'no\n' | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
             --force --name ${avdName} \
             --package "system-images;android-36;google_apis;x86_64" \
             --path "$ANDROID_AVD_HOME/${avdName}.avd"

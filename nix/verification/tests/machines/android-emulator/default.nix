@@ -9,9 +9,10 @@ let
     export ANDROID_USER_HOME=/var/lib/android-test
     export ANDROID_AVD_HOME=/var/lib/android-test/avd
     export DISPLAY=:0
+    mkdir -p "$HOME/.android"
     mkdir -p "$ANDROID_AVD_HOME"
     if [ ! -f "$ANDROID_AVD_HOME/overalls-test.avd/config.ini" ]; then
-      yes "" | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
+      printf 'no\n' | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
         --force --name overalls-test \
         --package 'system-images;android-36;google_apis;x86_64' \
         --path "$ANDROID_AVD_HOME/overalls-test.avd"
@@ -49,7 +50,10 @@ pkgs.testers.runNixOSTest {
       requires = [ "android-test-display.service" ];
       after = [ "android-test-display.service" ];
       path = [ pkgs.coreutils pkgs.gawk ];
-      environment = { JAVA_HOME = "${pkgs.jdk}"; };
+      environment = {
+        HOME = "/var/lib/android-test";
+        JAVA_HOME = "${pkgs.jdk}";
+      };
       serviceConfig = {
         Type = "simple";
         User = "android-test";
@@ -69,8 +73,8 @@ pkgs.testers.runNixOSTest {
   testScript = ''
     android.start()
     android.wait_for_unit("android-test-emulator.service")
-    android.wait_until_succeeds("pgrep -a -f '[e]mulator/emulator'", timeout=60)
-    cmdline = android.succeed("pgrep -a -f '[e]mulator/emulator' | head -n 1")
+    android.wait_until_succeeds("pid=$(systemctl show -p MainPID --value android-test-emulator.service); test \"$pid\" -gt 0; tr '\\0' ' ' < /proc/$pid/cmdline | grep -F '/emulator'", timeout=120)
+    cmdline = android.succeed("pid=$(systemctl show -p MainPID --value android-test-emulator.service); tr '\\0' ' ' < /proc/$pid/cmdline")
     assert "-no-accel" in cmdline, cmdline
     assert "-gpu swiftshader_indirect" in cmdline, cmdline
     android.wait_for_open_port(5555)
