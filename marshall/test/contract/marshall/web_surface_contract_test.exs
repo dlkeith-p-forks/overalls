@@ -53,6 +53,7 @@ defmodule MarshallWebSurfaceContractTest do
       MarshallWeb.MachineWorkspace,
       MarshallWeb.MachinesLive,
       MarshallWeb.MarvinDownloadController,
+      MarshallWeb.NoIndex,
       MarshallWeb.ObservedRouter,
       MarshallWeb.OverallsController,
       MarshallWeb.OverallsInstaller,

@@ -19,6 +19,7 @@ defmodule MarshallWeb.Endpoint do
   # AuthenticationPrivacy MUST run before request loggers, telemetry and body
   # parsers so token-bearing request paths are tagged before diagnostics occur.
   plug MarshallWeb.AuthenticationPrivacy
+  plug MarshallWeb.NoIndex
   plug MarshallWeb.Health
 
   # Serve at "/" the static files from "priv/static" directory.

@@ -16,4 +16,20 @@ defmodule MarshallWeb.PublicEndpointTest do
       assert get_resp_header(response, "set-cookie") == []
     end
   end
+
+  test "every browser endpoint response asks search engines not to index" do
+    directive = "noindex, nofollow, noarchive, nosnippet, noimageindex"
+
+    for path <- ["/", "/sign-in", "/robots.txt", "/health/live", "/api/fleet/v1/identity"] do
+      response = get(build_conn(), "https://localhost" <> path)
+      assert get_resp_header(response, "x-robots-tag") == [directive]
+    end
+
+    # The signed-out root redirects to the launch entry; the sign-in page renders
+    # the root layout, which repeats the directive as a robots meta tag.
+    assert redirected_to(get(build_conn(), "https://localhost/")) == "/launch/entry"
+
+    assert html_response(get(build_conn(), "https://localhost/sign-in"), 200) =~
+             ~s(<meta name="robots" content="#{directive}">)
+  end
 end

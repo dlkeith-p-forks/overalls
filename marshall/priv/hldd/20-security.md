@@ -823,6 +823,34 @@ the tailnet or the fleet tunnel. Expected refusal: a request for any other
 live issuance and HAProxy start were observed on 2026-10-16. No machine test
 exercises public port 80 yet.
 
+## Search engine exposure
+
+Marshall is a private control plane at the apex `https://ghuntley.dev`; nothing it
+serves is meant to appear in a search index. Two independent mechanisms say so:
+
+| Mechanism | Where | Effect |
+| --- | --- | --- |
+| `robots.txt` (`User-agent: *` / `Disallow: /`) | `marshall/priv/static/robots.txt`, served by `Plug.Static` | Compliant crawlers fetch nothing but the file itself. |
+| `X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex` | `MarshallWeb.NoIndex`, plugged in the endpoint before health, static files and the early `/api` refusals | Every response from the browser endpoint, including redirects, static assets, health probes, installer downloads and error pages, tells a crawler that does fetch it not to index, follow, cache or snippet it. |
+| `<meta name="robots">` with the same directive | Root layout | Repeats the header for crawlers that only read markup. |
+
+The two mechanisms cover different crawlers. A crawler that honours `robots.txt`
+never requests a page, so it never sees the `noindex` directive; a URL it already
+knows can stay listed from external links. Removal of already-indexed URLs is a
+separate action in each search engine's webmaster removal tool. The header and
+meta tag cover crawlers that fetch pages regardless of `robots.txt`. Neither
+mechanism is an access control: authentication, Cedar authorization and the
+public-route allowlist decide what a request may read, and public installer and
+documentation routes stay reachable to anyone who knows their URL.
+
+Expected refusals: none, because the directives are advisory to crawlers. The
+unit test `marshall/test/marshall_web/public_endpoint_test.exs` ("every browser
+endpoint response asks search engines not to index") asserts the header on the
+signed-out root redirect, the sign-in page, `robots.txt`, `/health/live` and a
+refused `/api` path, and the meta tag on the rendered sign-in page. Crawler
+behaviour and search-result removal are not tested; the fleet endpoint on the
+provisioner transport serves no browser pages and sends no robots directive.
+
 ## Sealed image authority
 
 Template-backed image verification relies on trusted host ownership, a local
