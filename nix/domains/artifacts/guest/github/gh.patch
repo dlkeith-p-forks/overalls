@@ -1,0 +1,211 @@
+--- a/api/http_client.go
++++ b/api/http_client.go
+@@ -1,6 +1,7 @@
+ package api
+ 
+ import (
++	"github.com/cli/cli/v2/internal/overalls"
+ 	"fmt"
+ 	"io"
+ 	"net/http"
+@@ -36,6 +37,7 @@
+ 	// Provide invalid host, and token values so gh.HTTPClient will not automatically resolve them.
+ 	// The real host and token are inserted at request time.
+ 	clientOpts := ghAPI.ClientOptions{
++		Transport:          overalls.Wrap(overalls.Direct()),
+ 		Host:               "none",
+ 		AuthToken:          "none",
+ 		LogIgnoreEnv:       true,
+@@ -85,6 +87,7 @@
+ 		}
+ 	}
+ 
++	client.Transport = overalls.Wrap(client.Transport)
+ 	return client, nil
+ }
+ 
+@@ -105,7 +108,7 @@
+ 		AuthToken:          "none",
+ 		LogIgnoreEnv:       true,
+ 		SkipDefaultHeaders: true,
+-		Transport:          opts.Transport,
++		Transport:          overalls.Wrap(overalls.Direct()),
+ 	}
+ 
+ 	debugEnabled, debugValue := utils.IsDebugEnabled()
+@@ -129,6 +132,7 @@
+ 		return nil, err
+ 	}
+ 
++	client.Transport = overalls.Wrap(client.Transport)
+ 	return client, nil
+ }
+ 
+--- a/internal/config/config.go
++++ b/internal/config/config.go
+@@ -1,6 +1,7 @@
+ package config
+ 
+ import (
++	"github.com/cli/cli/v2/internal/overalls"
+ 	"errors"
+ 	"fmt"
+ 	"os"
+@@ -179,6 +180,7 @@
+ }
+ 
+ func (c *cfg) Telemetry() gh.ConfigEntry {
++	if overalls.Managed { return gh.ConfigEntry{Value: "disabled", Source: gh.ConfigDefaultProvided} }
+ 	// Intentionally panic if there is no user provided value or default value (which would be a programmer error)
+ 	return c.GetOrDefault("", telemetryKey).Unwrap()
+ }
+@@ -242,6 +244,7 @@
+ // ActiveTokenType reports what kind of credential the active token is, so a
+ // caller that only needs to know that can avoid handling the token.
+ func (c *AuthConfig) ActiveTokenType(hostname string) gh.TokenType {
++	if overalls.Managed && hostname == "github.com" { return gh.TokenTypeOAuth }
+ 	token, _ := c.ActiveToken(hostname)
+ 	for _, tokenType := range gh.TokenTypes {
+ 		if strings.HasPrefix(token, string(tokenType)) {
+@@ -255,6 +258,10 @@
+ // searching environment variables, plain text config, and
+ // lastly encrypted storage.
+ func (c *AuthConfig) ActiveToken(hostname string) (string, string) {
++	if overalls.Managed {
++		if hostname == "github.com" { return overalls.Marker, overalls.Source }
++		return "", overalls.Source
++	}
+ 	if c.tokenOverride != nil {
+ 		return c.tokenOverride(hostname)
+ 	}
+@@ -341,6 +348,7 @@
+ }
+ 
+ func (c *AuthConfig) Hosts() []string {
++	if overalls.Managed { return []string{"github.com"} }
+ 	if c.hostsOverride != nil {
+ 		return c.hostsOverride()
+ 	}
+@@ -399,6 +407,7 @@
+ }
+ 
+ func (c *AuthConfig) DefaultHost() (string, string) {
++	if overalls.Managed { return "github.com", overalls.Source }
+ 	if c.defaultHostOverride != nil {
+ 		return c.defaultHostOverride()
+ 	}
+@@ -554,6 +563,7 @@
+ }
+ 
+ func (c *AuthConfig) UsersForHost(hostname string) []string {
++	if overalls.Managed { return nil }
+ 	users, err := c.cfg.Keys([]string{hostsKey, hostname, usersKey})
+ 	if err != nil {
+ 		return nil
+--- a/pkg/cmd/auth/auth.go
++++ b/pkg/cmd/auth/auth.go
+@@ -1,6 +1,7 @@
+ package auth
+ 
+ import (
++	"github.com/cli/cli/v2/internal/overalls"
+ 	gitCredentialCmd "github.com/cli/cli/v2/pkg/cmd/auth/gitcredential"
+ 	authLoginCmd "github.com/cli/cli/v2/pkg/cmd/auth/login"
+ 	authLogoutCmd "github.com/cli/cli/v2/pkg/cmd/auth/logout"
+@@ -31,6 +32,21 @@
+ 	cmd.AddCommand(authTokenCmd.NewCmdToken(f, nil))
+ 	cmd.AddCommand(authSwitchCmd.NewCmdSwitch(f, nil))
+ 
++	// Reject before subcommand validation can read token stdin or prompt.
++	for _, child := range cmd.Commands() {
++		if child.Name() == "status" {
++			original := child.PreRunE
++			child.PreRunE = func(cmd *cobra.Command, args []string) error {
++				show, _ := cmd.Flags().GetBool("show-token")
++				if show { return overalls.ErrManaged }
++				if original != nil { return original(cmd, args) }
++				return nil
++			}
++		} else {
++			child.PreRunE = func(*cobra.Command, []string) error { return overalls.ErrManaged }
++			child.Args = func(*cobra.Command, []string) error { return overalls.ErrManaged }
++		}
++	}
+ 	cmdutil.DisableTelemetryForSubcommands(cmd)
+ 
+ 	return cmd
+--- a/pkg/cmd/auth/status/status.go
++++ b/pkg/cmd/auth/status/status.go
+@@ -1,6 +1,7 @@
+ package status
+ 
+ import (
++	"github.com/cli/cli/v2/internal/overalls"
+ 	"errors"
+ 	"fmt"
+ 	"net"
+@@ -424,5 +425,5 @@
+ }
+ 
+ func authTokenWriteable(src string) bool {
+-	return !strings.HasSuffix(src, "_TOKEN")
+-}
++	return src != overalls.Source && !strings.HasSuffix(src, "_TOKEN")
++}
+--- a/pkg/cmd/send-telemetry/send_telemetry.go
++++ b/pkg/cmd/send-telemetry/send_telemetry.go
+@@ -1,6 +1,7 @@
+ package sendtelemetry
+ 
+ import (
++	"github.com/cli/cli/v2/internal/overalls"
+ 	"cmp"
+ 	"context"
+ 	"encoding/json"
+@@ -37,6 +38,7 @@
+ 		Hidden: true,
+ 		Args:   cobra.NoArgs,
+ 		RunE: func(cmd *cobra.Command, args []string) error {
++			if overalls.Managed { return nil }
+ 			cfg, err := f.Config()
+ 			if err != nil {
+ 				return err
+--- a/pkg/cmd/release/shared/upload.go
++++ b/pkg/cmd/release/shared/upload.go
+@@ -1,6 +1,7 @@
+ package shared
+ 
+ import (
++	"github.com/cli/cli/v2/internal/overalls"
+ 	"context"
+ 	"encoding/json"
+ 	"errors"
+@@ -144,6 +145,10 @@
+ 			return err
+ 		}
+ 	}
++	if overalls.Managed {
++		_, err := uploadAsset(ctx, httpClient, uploadURL, a)
++		return err
++	}
+ 	bo := backoff.NewConstantBackOff(retryInterval)
+ 	return backoff.Retry(func() error {
+ 		_, err := uploadAsset(ctx, httpClient, uploadURL, a)
+--- a/pkg/cmd/pr/create/create.go
++++ b/pkg/cmd/pr/create/create.go
+@@ -1,6 +1,7 @@
+ package create
+ 
+ import (
++	"github.com/cli/cli/v2/internal/overalls"
+ 	"context"
+ 	"errors"
+ 	"fmt"
+@@ -1341,6 +1342,7 @@
+ 		w := NewRegexpWriter(opts.IO.ErrOut, gitPushRegexp, "")
+ 		defer w.Flush()
+ 		ref := fmt.Sprintf("HEAD:refs/heads/%s", ctx.PRRefs.UnqualifiedHeadRef())
++		if overalls.Managed { return ctx.GitClient.Push(context.Background(), headRemote.Name, ref, git.WithStderr(w)) }
+ 		bo := backoff.NewConstantBackOff(2 * time.Second)
+ 		root := context.Background()
+ 		return backoff.Retry(func() error {

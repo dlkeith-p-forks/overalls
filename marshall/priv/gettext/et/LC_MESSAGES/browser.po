@@ -11,10 +11,6 @@
 msgid ""
 msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: et\n"
 
-
-
-
-
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"

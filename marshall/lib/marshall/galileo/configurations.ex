@@ -326,6 +326,9 @@ defmodule Marshall.Galileo.Configurations do
   # protocol's closed refusal reason and roll back before persistence. Invalid
   # user input MUST NOT escape as an exception or crash its calling LiveView.
   defp validated!(arguments) do
+    unless OverallsProtocol.Integration.name?(arguments.name),
+      do: Ledger.rollback(:invalid_name)
+
     if arguments.peer do
       unless OverallsProtocol.uuid?(arguments[:peer_vm_id] || ""),
         do: Ledger.rollback(:peer_target_required)

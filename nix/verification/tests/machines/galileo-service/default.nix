@@ -1,5 +1,9 @@
-{ pkgs, module, packages }:
+{ pkgs, module, packages, github ? false }:
 let
+  githubHosts = [ "github.com" "api.github.com" "uploads.github.com" "gist.github.com"
+    "raw.githubusercontent.com" "gist.githubusercontent.com" "release-assets.githubusercontent.com"
+    "github-cloud.githubusercontent.com" "github-cloud.s3.amazonaws.com" ];
+  githubClients = if github then packages.githubTools.packages "linux-amd64" else [];
   tls = pkgs.runCommand "galileo-isolated-control-tls" { nativeBuildInputs = [ pkgs.openssl ]; } ''
     mkdir -p $out
     openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes -days 3650 \
@@ -9,7 +13,7 @@ let
       -keyout ca.key -out $out/ca.pem 2>/dev/null
     openssl req -new -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes \
       -subj /CN=control.test -keyout $out/server.key -out server.csr 2>/dev/null
-    printf 'subjectAltName=DNS:control.test,DNS:origin.test\nextendedKeyUsage=serverAuth\n' > extensions
+    printf 'subjectAltName=DNS:control.test,DNS:origin.test${pkgs.lib.optionalString github ("," + pkgs.lib.concatMapStringsSep "," (host: "DNS:" + host) githubHosts)}\nextendedKeyUsage=serverAuth\n' > extensions
     openssl x509 -req -in server.csr -CA $out/ca.pem -CAkey ca.key -CAcreateserial \
       -days 3650 -extfile extensions -out $out/server.pem 2>/dev/null
     openssl req -new -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes \
@@ -24,9 +28,22 @@ let
     placement_id = "33333333-3333-4333-8333-333333333333";
     execution_epoch = 1;
   });
+  clientNode = { nodes, ... }: {
+    networking.extraHosts = "169.254.254.1 ${if github then "com-github" else "exedev"}.integration.internal";
+    environment.systemPackages = [ pkgs.curl pkgs.dig pkgs.python3 pkgs.git ] ++ githubClients;
+    environment.etc."galileo-client.py".source = ./client.py;
+    environment.etc."galileo-ca.pem".source = "${tls}/ca.pem";
+    environment.etc."galileo-proxy-address".text = nodes.proxy.networking.primaryIPAddress;
+    security.pki.certificateFiles = [ "${tls}/ca.pem" ];
+    programs.git = pkgs.lib.mkIf github {
+      enable = true;
+      config.include.path = "${packages.githubTools.configuration}";
+    };
+  };
 in pkgs.testers.runNixOSTest {
-  name = "overalls-galileo-service";
-  nodes.proxy = { lib, ... }: {
+  name = if github then "overalls-github-integration" else "overalls-galileo-service";
+  nodes = {
+  proxy = { lib, ... }: {
     imports = [ module (import ../../support/request-source.nix {
       inherit pkgs; name = "galileo"; source = "galileo";
       producerUser = "galileo"; producerUnit = "galileo.service";
@@ -85,15 +102,16 @@ in pkgs.testers.runNixOSTest {
       RuntimeDirectoryMode = "0750";
       UMask = "0007";
     };
-    networking.extraHosts = "127.0.0.1 control.test origin.test";
+    networking.extraHosts = "127.0.0.1 control.test origin.test ${pkgs.lib.optionalString github (pkgs.lib.concatStringsSep " " githubHosts)}";
     networking.firewall.allowedTCPPorts = [ 443 ];
     networking.firewall.allowedUDPPorts = [ 53 ];
     security.pki.certificateFiles = [ "${tls}/ca.pem" ];
-    environment.systemPackages = [ pkgs.curl pkgs.jq pkgs.python3 pkgs.openssh packages.secretTools.sops packages.secretTools.ssh-to-age ];
+    environment.systemPackages = [ pkgs.curl pkgs.jq pkgs.python3 pkgs.openssh pkgs.git packages.secretTools.sops packages.secretTools.ssh-to-age ];
     environment.etc."galileo-seal.py".source = ./seal.py;
     environment.etc."galileo-binding.json".source = binding;
     systemd.services.galileo-fixture = {
       wantedBy = [ "multi-user.target" ];
+      path = lib.optionals github [ pkgs.git ];
       preStart = ''
         install -o audi -g audi -m 0400 ${tls}/audi.key /run/galileo-fixture/audi.key
         install -o audi -g audi -m 0400 ${tls}/audi.pem /run/galileo-fixture/audi.pem
@@ -116,7 +134,7 @@ in pkgs.testers.runNixOSTest {
         chown audi:audi /run/galileo-fixture/audi.json
         chmod 0400 /run/galileo-fixture/audi.json
       '';
-      serviceConfig = { ExecStart = "${pkgs.python3}/bin/python3 ${./fixture.py} ${tls}/server.pem ${tls}/server.key";
+      serviceConfig = { ExecStart = "${pkgs.python3}/bin/python3 ${if github then ../github-integration/fixture.py else ./fixture.py} ${tls}/server.pem ${tls}/server.key";
         RuntimeDirectory = "galileo-fixture"; RuntimeDirectoryMode = "0755"; };
     };
     systemd.services.audi-private-fixture = {
@@ -141,18 +159,13 @@ in pkgs.testers.runNixOSTest {
       };
     };
   };
-  nodes.client = { nodes, ... }: {
-    networking.extraHosts = "169.254.254.1 exedev.integration.internal";
-    environment.systemPackages = [ pkgs.curl pkgs.dig pkgs.python3 ];
-    environment.etc."galileo-client.py".source = ./client.py;
-    environment.etc."galileo-ca.pem".source = "${tls}/ca.pem";
-    environment.etc."galileo-proxy-address".text = nodes.proxy.networking.primaryIPAddress;
-  };
+  client = clientNode;
+  } // pkgs.lib.optionalAttrs github { client2 = clientNode; };
   # @cc [owner:ghuntley,label:verification] galileo-service-fixture-scope
   # Use packaged Audi and Galileo releases across two NixOS machines with real TLS,
   # Unix forwarding, SecretSpec/SOPS credentials, durable recorder Rust OTLP export
   # and bounded streaming failures.
   # The synthetic binding/control fixtures MUST NOT be represented as real Lilly,
   # Marshall, relocation, attachment, independent-host or Firecracker acceptance.
-  testScript = builtins.readFile ./driver.py;
+  testScript = builtins.readFile (if github then ../github-integration/driver.py else ./driver.py);
 }

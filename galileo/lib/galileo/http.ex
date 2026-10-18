@@ -68,14 +68,16 @@ defmodule Galileo.HTTP do
     zone = "." <> OverallsProtocol.PrivateServices.integration_zone()
 
     with [host] <- get_req_header(conn, "host"),
-         {:ok, name} <- Integration.label(host),
+         {:ok, name} <- integration_label(host),
          true <- host == name <> zone,
          [encoded] when byte_size(encoded) <= 2048 <- get_req_header(conn, "x-overalls-binding"),
          {:ok, json} <- Base.url_decode64(encoded, padding: false),
          {:ok, wire} <- Jason.decode(json),
          {:ok, %{host_id: host_id}} <- OverallsProtocol.PrivateServices.binding(wire),
          true <- host_id == config.host_id do
-      proxy(conn, config, wire, name)
+      if name == OverallsProtocol.GitHub.name(),
+        do: Galileo.GitHub.HTTP.call(conn, config, wire),
+        else: proxy(conn, config, wire, name)
     else
       _ ->
         Galileo.Events.emit("galileo.request_denied",
@@ -90,6 +92,10 @@ defmodule Galileo.HTTP do
       Galileo.Events.emit("galileo.request_denied", host_id: config.host_id, reason: :unavailable)
       error(conn, 503, "unavailable")
   end
+
+  @spec integration_label(String.t()) :: {:ok, String.t()} | {:error, :invalid_hostname}
+  defp integration_label("com-github.integration.internal"), do: {:ok, "com-github"}
+  defp integration_label(host), do: Integration.label(host)
 
   # @cc [owner:ghuntley,label:reliability;security] galileo-request-cleanup
   # After incrementing the active-request counter, this request MUST decrement
@@ -210,17 +216,17 @@ defmodule Galileo.HTTP do
   # cancellation MUST close that socket through the transport API, without
   # modifying adapter ownership or killing the owner before cleanup executes.
   @spec frontend_cancel(Plug.Conn.t()) :: (-> :ok)
-  defp frontend_cancel(%Plug.Conn{
-         adapter:
-           {Bandit.Adapter, %Bandit.Adapter{transport: %Bandit.HTTP1.Socket{socket: socket}}}
-       }) do
+  def frontend_cancel(%Plug.Conn{
+        adapter:
+          {Bandit.Adapter, %Bandit.Adapter{transport: %Bandit.HTTP1.Socket{socket: socket}}}
+      }) do
     fn ->
       _ = ThousandIsland.Socket.close(socket)
       :ok
     end
   end
 
-  defp frontend_cancel(%Plug.Conn{adapter: {Plug.Adapters.Test.Conn, _}}), do: fn -> :ok end
+  def frontend_cancel(%Plug.Conn{adapter: {Plug.Adapters.Test.Conn, _}}), do: fn -> :ok end
 
   defp authorize(config, wire, name) do
     case Galileo.Control.request(config.control, "authorize", %{"binding" => wire, "name" => name}) do

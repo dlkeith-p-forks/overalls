@@ -1,6 +1,14 @@
 # Architecture
 
-[ADR-0193](decisions/0193-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
+[ADR-0198](decisions/0198-github-com-owner-integration.md) accepts `github-com`
+at `com-github.integration.internal`: per-user OAuth custody, VM-owner identity,
+automatic eligible owner machines with persistent detach, and fenced scheduled
+refresh. Shared writers use the owner's authority. The existing wildcard,
+generic attachments and single-attempt leases remain. Seven-family client and
+retained-machine support, rotating-token recovery and provider acceptance retain
+the implementation boundaries in the [review](reviews/2026-10-18-github-com-integration.md).
+
+[ADR-0199](decisions/0199-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0188](decisions/0188-signed-overalls-cachix-substitution.md) adds the
 signed Overalls Cachix read cache to all Nix-running hosts, installers and guest
@@ -1628,4 +1636,4 @@ escape cleanup or physical storage acceptance; those remain open.
 
 ADR-0186 records the Covenant test-only contract layer used by all Elixir applications. Covenant obligations and tests provide deterministic executable evidence while existing ADR, HLDD, native and integration records remain authoritative for deployment and isolation guarantees.
 
-Localization follows [ADR-0197](decisions/0197-localized-human-surfaces.md): validated user/browser locale selection, offline catalogs and direction-aware human surfaces preserve protocol identifiers and execution authority. Implementation remains partial.
+Localization follows [ADR-0200](decisions/0200-localized-human-surfaces.md): validated user/browser locale selection, offline catalogs and direction-aware human surfaces preserve protocol identifiers and execution authority. Implementation remains partial.

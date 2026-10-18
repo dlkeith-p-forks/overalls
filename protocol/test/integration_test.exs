@@ -23,7 +23,7 @@ defmodule OverallsProtocol.IntegrationTest do
         assert {:ok, ^composed} = Integration.hostname(name)
 
       false ->
-        assert not letter_start or not lowercase or name == "ssh"
+        assert not letter_start or not lowercase or name in ["ssh", "com-github"]
     end
   end
 

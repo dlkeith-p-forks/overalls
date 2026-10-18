@@ -1,9 +1,9 @@
 { pkgs, packages, image ? packages.freebsdImageCandidate, osName ? "freebsd"
 , isolation ? false, growth ? false, recovery ? false, crash ? false
 , transport ? false, transportReset ? false, transportProbe ? null
-, transportBuildId ? "" }:
+, transportBuildId ? "", github ? false }:
 let
-  scenario = if transportReset then "transport-reset" else if transport then "ordinary-transport" else if isolation then "isolation" else if growth then "growth" else if recovery then "recovery" else if crash then "crash-recovery" else "services";
+  scenario = if github then "github-retained" else if transportReset then "transport-reset" else if transport then "ordinary-transport" else if isolation then "isolation" else if growth then "growth" else if recovery then "recovery" else if crash then "crash-recovery" else "services";
   tools = pkgs.runCommand "overalls-native-service-tools" {
     nativeBuildInputs = [ pkgs.python3 pkgs.ruff pkgs.ty ];
   } ''
@@ -12,6 +12,7 @@ let
     cp ${../../support/native_services.py} "$out/native_services.py"
     cp ${../../support/native_control.py} "$out/native_control.py"
     cp ${../../support/native_git_fixture.py} "$out/native_git_fixture.py"
+    cp ${../../support/native_github_fixture.py} "$out/native_github_fixture.py"
     cp ${../../support/native_growth_oracle.py} "$out/native_growth_oracle.py"
     cp ${../../support/native_fat_oracle.py} "$out/native_fat_oracle.py"
     cp ${../../support/native_omnios_growth_oracle.py} "$out/native_omnios_growth_oracle.py"
@@ -49,7 +50,7 @@ let
       -keyout "$out/ca.key" -out "$out/ca.pem" 2>/dev/null
     openssl req -new -newkey rsa:2048 -nodes -sha256 \
       -subj '/CN=ssh.integration.internal' \
-      -addext 'subjectAltName=DNS:ssh.integration.internal,DNS:llm.internal,DNS:github.com' \
+      -addext 'subjectAltName=DNS:ssh.integration.internal,DNS:llm.internal,DNS:github.com,DNS:com-github.integration.internal' \
       -addext 'basicConstraints=critical,CA:FALSE' \
       -addext 'keyUsage=critical,digitalSignature,keyEncipherment' \
       -addext 'extendedKeyUsage=serverAuth' \
@@ -62,10 +63,10 @@ let
     done
   '';
 in
-assert !image.nativeAdmission;
+assert github || !image.nativeAdmission;
 assert builtins.elem osName [ "freebsd" "illumos" ];
 assert (!transport && !transportReset) || (osName == "illumos" && transportProbe != null && builtins.match "[0-9a-f]{64}" transportBuildId != null);
-assert pkgs.lib.count (enabled: enabled) [ isolation growth recovery crash transport transportReset ] <= 1;
+assert pkgs.lib.count (enabled: enabled) [ isolation growth recovery crash transport transportReset github ] <= 1;
 # @cc [owner:ghuntley,label:verification;security] native-service-machine-boundary
 # The actual native image MUST bootstrap against isolated MMDS in nested KVM
 # and answer the host-only daemon protocols. Missing SSH authority MUST withhold
@@ -91,6 +92,10 @@ assert pkgs.lib.count (enabled: enabled) [ isolation growth recovery crash trans
 # Reset transport MUST observe an actual private VMM event after that baseline
 # and dispose its VM after independent serial verification; it MUST NOT create
 # an ordinary service receipt or claim restored service or clean shutdown.
+# The GitHub variant MUST use only a disposable copy of the retained image,
+# bootstrap public verified tools through its existing executor and exercise
+# actual personal-UID gh, Git and LFS before and after clean reboot. Its separate
+# receipt MUST NOT change native admission or claim SQL broker authorization.
 pkgs.testers.runNixOSTest {
   name = "overalls-${osName}-native-${scenario}";
   requiredFeatures.nested-kvm = true;
@@ -117,6 +122,12 @@ pkgs.testers.runNixOSTest {
     environment.etc."overalls-native-service-image".source = image;
     environment.etc."native-service-tools".source = tools;
     environment.etc."native-service-fixture".source = fixture;
+    environment.etc."native-github-tools" = lib.mkIf github {
+      source = packages.githubTools.release;
+    };
+    environment.etc."native-github-executors" = lib.mkIf github {
+      source = packages.githubBootstrapRelease;
+    };
     environment.etc."native-transport-probe" = lib.mkIf (transport || transportReset) {
       source = transportProbe;
     };
@@ -130,6 +141,7 @@ pkgs.testers.runNixOSTest {
     growth = ${if growth then "True" else "False"}
     recovery = ${if recovery then "True" else "False"}
     crash = ${if crash then "True" else "False"}
+    github = ${if github then "True" else "False"}
     service_runner = "${if recovery then "native_recovery.py" else if crash then "native_crash_recovery.py" else "native_service_runner.py"}"
   '' + builtins.readFile (
     if transportReset then ./omnios-reset-driver.py

@@ -89,6 +89,31 @@ defmodule Ziggy.ProviderSelectionTest do
     end
   end
 
+  test "executor bootstrap is optional and cannot use mutable deployment paths", %{
+    dir: dir,
+    config: config
+  } do
+    assert {:ok, %{bootstrap_release: nil}} = load(dir, config)
+
+    for root <- ["/tmp/release", "/nix/store/../release", "relative", 1, %{}] do
+      assert {:error, :invalid_configuration} =
+               load(dir, Map.put(config, "executor_bootstrap_release", root))
+    end
+  end
+
+  test "GitHub tools are optional and deployment paths stay immutable", %{
+    dir: dir,
+    config: config
+  } do
+    assert {:ok, %{github_tools: nil}} = load(dir, config)
+    assert {:ok, %{github_tools: nil}} = load(dir, Map.put(config, "github_tools_release", nil))
+
+    for root <- ["/tmp/release", "/nix/store/../release", "relative", 1, %{}] do
+      assert {:error, :invalid_configuration} =
+               load(dir, Map.put(config, "github_tools_release", root))
+    end
+  end
+
   test "guest update source is a fixed Nix release path", %{dir: dir, config: config} do
     assert {:ok, %{lyra_release: nil}} = load(dir, config)
 

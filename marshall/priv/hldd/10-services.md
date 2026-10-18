@@ -364,6 +364,82 @@ See [Underclass operations](repo:docs/services/underclass.md).
 
 ## Galileo
 
+### Built-in GitHub.com provider
+
+[ADR-0198](repo:docs/architecture/decisions/0198-github-com-owner-integration.md)
+accepts `github-com` at `https://com-github.integration.internal`. It resolves
+the VM owner's personal connection rather than a globally registered integration
+name. Eligible non-Customer owner machines are implicit sources; persistent
+detach overrides that default until reattachment. Generic personal integrations
+retain their explicit attachment policy below.
+
+Marshall holds sensitive Cloak-encrypted access/refresh credentials and stable
+numeric external identity. Active numeric identity is unique across Marshall
+accounts. Shared writers use the owner's authority without receiving the token.
+An absent, detached, disconnected or reconnect-required connection permits fresh
+anonymous public forwarding without a token. Active drain/refresh refuses fresh
+admissions. Existing authenticated leases cannot change identity or become
+anonymous. GitHub remains responsible for repository, organization,
+SAML SSO and consent policy.
+
+Connection progress is an explicit state machine: `disconnected`, `connected`,
+`draining`, `refreshing`, `reconnect_required` and `revoking`. OAuth attempts,
+refresh attempts and generation-bound request leases remain separate resources.
+The `github` queue has concurrency two; AshOban scheduling and ID-only jobs
+rediscover due work. Delivery does not replace current durable authority.
+
+```mermaid
+stateDiagram-v2
+  [*] --> disconnected
+  disconnected --> connected: validated consent
+  connected --> draining: refresh due
+  draining --> refreshing: drained or bounded deadline
+  refreshing --> connected: validated atomic pair
+  connected --> reconnect_required: invalid authority
+  draining --> reconnect_required: invalid authority
+  refreshing --> reconnect_required: uncertain exchange
+  reconnect_required --> connected: validated consent
+  connected --> revoking: disconnect or retirement
+  draining --> revoking: disconnect or retirement
+  refreshing --> revoking: disconnect or retirement
+  reconnect_required --> revoking: disconnect or retirement
+  disconnected --> revoking: withdrawal fence
+  revoking --> disconnected: cleanup acknowledged
+```
+
+These are legal connection phases, not proof of successful provider effects.
+Authorization and refresh attempts retain their own one-use/submission phases;
+queued delivery, request expiry and provider response are not connection state.
+
+Refresh starts ten minutes before access expiry. Stop new old-generation
+admissions, drain existing requests for at most five minutes, then withdraw
+remaining leases before exchange. Current-attempt settlement atomically publishes
+the replacement pair. Provider waits stay outside database transactions. An
+uncertain rotating exchange requires reconnect; duplicate workers, old replies
+and revoked callbacks cannot restore a generation.
+
+Provider request-start time anchors expiry. Known late or rejected pairs remain
+encrypted in failed attempts until ID-only access-token cleanup clears them;
+minute reconciliation rediscovers cleanup. Missing provider replies still require
+reconnect. Removing optional OAuth settings withdraws private admission and old
+authenticated renewals immediately, leaving new forwarding anonymous and stored
+encrypted grants pending operator reconfiguration or revocation. Configuration
+removal is not remote grant revocation.
+
+Mutations have no automatic retry or redirect following. GET/HEAD redirects are
+limited to three reviewed hops under the same lease; signed storage receives no
+OAuth bearer. LFS action headers/URLs stay in short-lived Galileo memory behind
+opaque method/execution/generation-bound selectors. Their lifetime is at most
+sixty seconds and no later than provider expiry; mutation selectors have one
+winner. JSON rewriting stops at eight MiB/thirty-two levels; binary bodies stream.
+
+Managed `gh`, Git HTTPS and LFS, all seven families and retained updates are the
+accepted client scope. Exact native image qualification and per-family runtime
+evidence remain separate. The [guide](repo:docs/services/github-com.md) describes
+operator inputs; the
+[review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)
+records source/tests and remaining provider/native gaps.
+
 Named integrations forward to reviewed HTTP targets or peer VMs. Marshall owns
 attachments, team access, encrypted injected credentials, and renewable admission.
 Galileo strips/injects configured headers and cancels forwarding when renewal fails.

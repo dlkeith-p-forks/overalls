@@ -34,6 +34,7 @@ assert builtins.elem guestAgents [ "none" "windows-v1" ];
 assert guestAgents == "none" || (agents != null && terminald != null);
 assert terminald == null || agents != null;
 let
+  githubTools = import ../github { inherit pkgs; };
   inherit (pkgs) lib;
   # viosock is the virtio-vsock driver and Winsock provider the guest agents
   # use to reach Lilly (ADR-0171); it binds PCI\VEN_1AF4&DEV_1053 at first boot.
@@ -187,6 +188,11 @@ let
     cp ${./specialize.cmd} tree/overalls/setup/specialize.cmd
     cp ${./overalls-winget.ps1} tree/overalls/setup/overalls-winget.ps1
     cp ${./FirstLogon.cmd} tree/overalls/setup/FirstLogon.cmd
+    cp ${./overalls-github-tools.ps1} tree/overalls/setup/overalls-github-tools.ps1
+    mkdir -p tree/overalls/github-tools
+    cp ${githubTools.gh.windows-amd64}/bin/gh.exe tree/overalls/github-tools/gh.exe
+    cp ${githubTools.lfs.windows-amd64}/bin/git-lfs.exe tree/overalls/github-tools/git-lfs.exe
+    cp ${githubTools.configuration} tree/overalls/github-tools/github.gitconfig
     mkdir -p tree/overalls/winget
     cp -r ${wingetPayload}/media/. tree/overalls/winget/
     cp ${./overalls-bootstrap.ps1} tree/overalls/bootstrap/overalls-bootstrap.ps1

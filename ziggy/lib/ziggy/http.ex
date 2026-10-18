@@ -184,6 +184,63 @@ defmodule Ziggy.HTTP do
   defp ssh_result(conn, {:error, :unauthorized}), do: error(conn, 403, "unauthorized")
   defp ssh_result(conn, _), do: error(conn, 503, "unavailable")
 
+  # @cc [owner:ghuntley,label:security] ziggy-bootstrap-current-attempt
+  # Executor bootstrap bytes MUST require the exact current VM executor, fence,
+  # bootstrap attempt and startup-verified digest/size. Query parameters MUST
+  # carry only these three nonsecret selectors; no caller-selected file path.
+  defp dispatch(
+         %{method: "GET", request_path: "/agent/v1/bootstrap/artifacts/" <> digest} = conn,
+         config,
+         wire
+       ) do
+    with true <- OverallsProtocol.GitHubTools.digest?(digest),
+         {:ok, input} <- attempt_query(conn.query_string, "bootstrap_id"),
+         %{artifacts: artifacts} <- Map.get(config, :bootstrap_release),
+         %{path: path, digest: ^digest, size: size} <- Map.get(artifacts, digest),
+         {:ok, %{"sha256" => ^digest, "bytes" => ^size}} <-
+           Ziggy.Control.request(
+             config.control,
+             "agent_bootstrap_artifact",
+             input |> Map.put("digest", digest) |> Map.put("binding", wire)
+           ) do
+      conn
+      |> put_resp_header("cache-control", "no-store")
+      |> put_resp_content_type("application/octet-stream")
+      |> send_file(200, path)
+    else
+      _ -> error(conn, 503, "unavailable")
+    end
+  end
+
+  # @cc [owner:ghuntley,label:security] ziggy-maintenance-artifact-bound-attempt
+  # A digest selector MUST be authorized against this VM's current executor,
+  # fence and maintenance attempt. Marshall's digest, size and generation MUST
+  # match the startup-verified local release before any bytes are sent. Query
+  # parameters MUST be exactly the nonsecret three-field attempt binding.
+  defp dispatch(
+         %{method: "GET", request_path: "/agent/v1/maintenance/artifacts/" <> digest} = conn,
+         config,
+         wire
+       ) do
+    with true <- OverallsProtocol.GitHubTools.digest?(digest),
+         {:ok, input} <- attempt_query(conn.query_string, "maintenance_id"),
+         %{generation: generation, artifacts: artifacts} <- Map.get(config, :github_tools),
+         %{path: path, digest: ^digest, size: size} <- Map.get(artifacts, digest),
+         {:ok, %{"sha256" => ^digest, "bytes" => ^size, "generation" => ^generation}} <-
+           Ziggy.Control.request(
+             config.control,
+             "agent_maintenance_artifact",
+             input |> Map.put("digest", digest) |> Map.put("binding", wire)
+           ) do
+      conn
+      |> put_resp_header("cache-control", "no-store")
+      |> put_resp_content_type("application/octet-stream")
+      |> send_file(200, path)
+    else
+      _ -> error(conn, 503, "unavailable")
+    end
+  end
+
   defp dispatch(%{method: "GET", request_path: path, query_string: ""} = conn, config, wire)
        when path in ["/agent/v1/update/manifest.json", "/agent/v1/update/bin/linux-amd64"] do
     case update_artifact(config, wire) do
@@ -253,7 +310,7 @@ defmodule Ziggy.HTTP do
          config,
          wire
        )
-       when route in ~w(register heartbeat claim transition) do
+       when route in ~w(register heartbeat claim transition maintenance/claim maintenance/transition) do
     with [content_type] <- get_req_header(conn, "content-type"),
          {:ok, "application", "json", _} <- Plug.Conn.Utils.content_type(content_type),
          {:ok, body, conn} <- read_body(conn, length: 12_288, read_length: 12_288),
@@ -263,7 +320,7 @@ defmodule Ziggy.HTTP do
          {:ok, result} <-
            Ziggy.Control.request(
              config.control,
-             "agent_" <> route,
+             "agent_" <> String.replace(route, "/", "_"),
              Map.put(input, "binding", wire)
            ) do
       conn
@@ -295,6 +352,30 @@ defmodule Ziggy.HTTP do
       _ -> error(conn, 400, "invalid_request")
     end
   end
+
+  @spec attempt_query(String.t(), String.t()) :: {:ok, map()} | {:error, :invalid_request}
+  defp attempt_query(query, attempt_key) when byte_size(query) in 1..2048 do
+    pairs = Enum.to_list(URI.query_decoder(query))
+    input = Map.new(pairs)
+
+    with true <- length(pairs) == 3 and map_size(input) == 3,
+         true <-
+           Enum.sort(Map.keys(input)) == Enum.sort(["executor_id", "fence_epoch", attempt_key]),
+         true <-
+           OverallsProtocol.uuid?(input["executor_id"]) and
+             OverallsProtocol.uuid?(input[attempt_key]),
+         {fence, ""} when fence in 1..9_223_372_036_854_775_807 <-
+           Integer.parse(input["fence_epoch"]),
+         true <- Integer.to_string(fence) == input["fence_epoch"] do
+      {:ok, Map.put(input, "fence_epoch", fence)}
+    else
+      _ -> {:error, :invalid_request}
+    end
+  rescue
+    _ -> {:error, :invalid_request}
+  end
+
+  defp attempt_query(_, _), do: {:error, :invalid_request}
 
   # @cc [owner:ghuntley,label:security] ziggy-update-artifact-binding
   # Private artifact delivery MUST require current Marshall VM authority and

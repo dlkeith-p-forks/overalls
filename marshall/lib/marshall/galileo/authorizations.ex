@@ -160,12 +160,22 @@ defmodule Marshall.Galileo.Authorizations do
   end
 
   defp admit!(token, binding, name) do
-    authority = Credentials.authenticate_locked!(token)
-    if authority.host_id != binding.host_id, do: deny!()
-    vm = current_vm!(authority.host, binding)
+    vm = admit_execution!(token, binding)
     integration = active_integration!(name)
     vm_authorized!(integration, vm)
     {vm, integration}
+  end
+
+  # @cc [owner:ghuntley,label:security] galileo-builtin-current-execution
+  # Built-in provider admission MUST use the same dedicated host credential,
+  # source binding, profile, owner liveness and execution fences as generic
+  # integrations. Callers MUST retain the surrounding database transaction.
+  @doc false
+  @spec admit_execution!(String.t(), OverallsProtocol.PrivateServices.binding()) :: VirtualMachine.t()
+  def admit_execution!(token, binding) do
+    authority = Credentials.authenticate_locked!(token)
+    if authority.host_id != binding.host_id, do: deny!()
+    current_vm!(authority.host, binding)
   end
 
   defp injected(%IntegrationHeader{kind: :static, name: name, value: value}), do: {name, value}

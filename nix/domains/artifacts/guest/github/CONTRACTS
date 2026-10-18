@@ -1,0 +1,13 @@
+@cc [owner:ghuntley,label:security] managed-github-credential-custody
+Managed GitHub clients MUST address only the reviewed broker routes, strip guest
+credentials before dispatch and keep github.com as their logical repository host.
+The managed-auth marker MUST be public configuration, never a bearer credential.
+
+@cc [owner:ghuntley,label:recovery] managed-github-single-attempt
+Managed mutating HTTP requests MUST NOT be retried or followed across redirects.
+An ambiguous upstream result MUST remain ambiguous and MUST NOT trigger replay.
+
+@cc [owner:ghuntley,label:build] managed-github-pinned-sources
+Managed client packages MUST build from hash-pinned upstream sources with the
+supplied Nixpkgs Go toolchain. Cross-compilation alone MUST NOT establish guest
+runtime qualification or alter an admitted immutable native image identity.

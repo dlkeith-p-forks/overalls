@@ -21,7 +21,15 @@ defmodule Galileo.Control do
   # Pending unproven calls retired by close4001 MUST preserve the stopped
   # client's unsupported_version reason; other losses remain authority outages.
   @spec request(t(), binary(), map()) :: result()
-  def request(%{client: client}, route, body) when route in ["authorize", "identity", "renew"] do
+  def request(%{client: client}, route, body)
+      when route in [
+             "authorize",
+             "identity",
+             "renew",
+             "github.authorize",
+             "github.renew",
+             "github.close"
+           ] do
     response =
       case Client.request(client, "galileo." <> route, body, 5_000) do
         {:ok, object} -> {:ok, object}
@@ -51,6 +59,9 @@ defmodule Galileo.Control do
   defp route_reason("authorize"), do: :authorize
   defp route_reason("identity"), do: :identity
   defp route_reason("renew"), do: :renew
+  defp route_reason("github.authorize"), do: :authorize
+  defp route_reason("github.renew"), do: :renew
+  defp route_reason("github.close"), do: :renew
 
   defmodule Link do
     @moduledoc "Owns the control client and absorbs its connection events."

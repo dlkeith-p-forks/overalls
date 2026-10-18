@@ -118,7 +118,7 @@ pub fn writable_root() -> io::Result<()> {
 pub fn flush_root() -> io::Result<()> {
     #[cfg(target_os = "freebsd")]
     {
-        use std::mem::{MaybeUninit, size_of};
+        use std::mem::{size_of, MaybeUninit};
         use std::os::fd::AsRawFd;
         use std::os::unix::fs::{FileTypeExt, OpenOptionsExt};
 
@@ -265,7 +265,7 @@ pub fn install_trust(
     request: &trust::Request,
     boot: &Boot,
 ) -> io::Result<()> {
-    use std::os::unix::fs::{OpenOptionsExt, symlink};
+    use std::os::unix::fs::{symlink, OpenOptionsExt};
 
     trust::validate(request, boot)?;
     if base == destination || !fs::symlink_metadata(base)?.file_type().is_file() {

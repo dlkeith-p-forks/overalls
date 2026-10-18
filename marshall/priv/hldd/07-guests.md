@@ -1,5 +1,33 @@
 # Guest systems and images
 
+## Managed GitHub development tools
+
+The accepted `github-com` client path uses managed `gh`, Git HTTPS and Git LFS
+through `https://com-github.integration.internal`, with no real GitHub credential
+in guest configuration, environment or command arguments. Permitted processes,
+including shared writers, exercise the VM owner's connected identity. Guest
+identity strings cannot choose another connection. Anonymous public requests
+remain possible without eligible credentials.
+The managed clients' fixed integration errors retain reviewed English fallback;
+native CLI translation is not established by Marshall's localization catalogs.
+
+Support is intended for NixOS, Ubuntu, Arch, AlmaLinux, Windows, FreeBSD and
+OmniOS, including retained-machine delivery through a fenced update operation.
+`Marshall.Agents.ToolMaintenance` records desired generation and
+`queued/claimed/started/completed/failed/uncertain` progress independently of a
+conversation. Current VM placement, execution epoch and executor lease fence
+artifact reads and receipts. A validated content-addressed manifest supplies
+public tool bytes; it does not authorize activation by itself.
+Retained executors without the tool capability use a separate ToolBootstrap
+state/receipt for a fixed server-authored platform/digest program. It requires
+the current VM/executor fence and the matching completed tool-installation
+receipt. No model output or conversation turn selects or records this bootstrap.
+Image construction, release inventory, update completion and actual per-family
+CLI/provider execution are distinct evidence. Native admission still requires
+the exact immutable promoted image; changed recipes cannot silently qualify a
+rebuilt candidate. Seven-family and retained-machine execution gaps remain in
+the [review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
+
 ## Agent project context
 
 The accepted guest-context operations read the creator's permanent guest account

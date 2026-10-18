@@ -388,6 +388,16 @@ defmodule OverallsProtocol.Execution do
     |> Map.put("workspace_source", WorkspaceSource.encode(source))
   end
 
+  # @cc [owner:ghuntley,label:protocol;recovery] command-checkpoint-wire-encoding
+  # Checkpoint-bearing commands MUST encode the nested descriptor through its
+  # closed wire codec, preserving the validated resume command round trip.
+  def encode_command(%{checkpoint: checkpoint} = command) do
+    command
+    |> Map.delete(:checkpoint)
+    |> encode_command()
+    |> Map.put("checkpoint", OverallsProtocol.Checkpoint.encode(checkpoint))
+  end
+
   def encode_command(command) do
     Map.new(command, fn {key, value} ->
       {Atom.to_string(key), if(is_atom(value), do: Atom.to_string(value), else: value)}

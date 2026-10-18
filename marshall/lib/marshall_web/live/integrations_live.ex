@@ -5,6 +5,7 @@ defmodule MarshallWeb.IntegrationsLive do
   on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
 
   @impl true
+  @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_, _, socket) do
     {:ok, socket |> assign(integrations: []) |> reset_form() |> refresh()}
   end
@@ -16,6 +17,8 @@ defmodule MarshallWeb.IntegrationsLive do
   # MUST replace password inputs so browser-local values cannot survive a patch
   # whose server-side form values were already empty.
   @impl true
+  @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
+          {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_event("add", %{"integration" => params}, socket) when is_map(params) do
     user = socket.assigns.current_user
 
@@ -39,14 +42,18 @@ defmodule MarshallWeb.IntegrationsLive do
     case result do
       {:ok, integration} ->
         {:noreply,
-         socket |> put_flash(:info, gettext("Integration %{value1} saved.", value1: integration.name)) |> refresh()}
+         socket
+         |> put_flash(:info, gettext("Integration %{value1} saved.", value1: integration.name))
+         |> refresh()}
 
       {:error, _} ->
         {:noreply,
          put_flash(
            socket,
            :error,
-           gettext("Could not save this integration. Check the name, HTTPS target and header values.")
+           gettext(
+             "Could not save this integration. Check the name, HTTPS target and header values."
+           )
          )}
     end
   end
@@ -57,7 +64,8 @@ defmodule MarshallWeb.IntegrationsLive do
         {:noreply, socket |> put_flash(:info, gettext("Integration removed.")) |> refresh()}
 
       {:error, _} ->
-        {:noreply, socket |> put_flash(:error, gettext("Could not remove this integration.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:error, gettext("Could not remove this integration.")) |> refresh()}
     end
   end
 
@@ -69,7 +77,8 @@ defmodule MarshallWeb.IntegrationsLive do
         {:noreply, socket |> put_flash(:info, gettext("Machine attached.")) |> refresh()}
 
       {:error, _} ->
-        {:noreply, socket |> put_flash(:error, gettext("Could not attach that machine.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:error, gettext("Could not attach that machine.")) |> refresh()}
     end
   end
 
@@ -81,13 +90,49 @@ defmodule MarshallWeb.IntegrationsLive do
         {:noreply, socket |> put_flash(:info, gettext("Machine detached.")) |> refresh()}
 
       {:error, _} ->
-        {:noreply, socket |> put_flash(:error, gettext("Could not detach that machine.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:error, gettext("Could not detach that machine.")) |> refresh()}
     end
   end
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+  def handle_event("github-disconnect", _, socket) do
+    github_result(socket, Marshall.GitHub.disconnect(socket.assigns.current_user))
+  end
+
+  def handle_event("github-detach", %{"github_machine" => %{"vm_id" => vm_id}}, socket) do
+    github_result(socket, Marshall.GitHub.set_excluded(socket.assigns.current_user, vm_id, true))
+  end
+
+  def handle_event("github-attach", %{"vm-id" => vm_id}, socket) do
+    github_result(socket, Marshall.GitHub.set_excluded(socket.assigns.current_user, vm_id, false))
+  end
+
+  def handle_event(_, _, socket),
+    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+
+  @spec github_result(Phoenix.LiveView.Socket.t(), {:ok, map()} | {:error, term()}) ::
+          {:noreply, Phoenix.LiveView.Socket.t()}
+  defp github_result(socket, {:ok, _}), do: {:noreply, refresh(socket)}
+
+  defp github_result(socket, {:error, _}) do
+    {:noreply,
+     socket
+     |> put_flash(:error, gettext("Could not update the GitHub connection."))
+     |> refresh()}
+  end
 
   defp refresh(socket) do
+    github =
+      case Marshall.GitHub.status(socket.assigns.current_user) do
+        {:ok, status} ->
+          status
+
+        {:error, _} ->
+          %{phase: :unavailable, github_login: nil, exclusions: [], configured: false}
+      end
+
+    socket = assign(socket, github: github)
+
     case Galileo.list_integrations(%{}, actor: socket.assigns.current_user) do
       {:ok, integrations} ->
         assign(socket, integrations: integrations)
@@ -98,6 +143,17 @@ defmodule MarshallWeb.IntegrationsLive do
         |> put_flash(:error, gettext("Integrations are temporarily unavailable."))
     end
   end
+
+  @spec github_state(atom()) :: String.t()
+  defp github_state(:connected), do: gettext("Connected")
+  defp github_state(:ready), do: gettext("Connected")
+  defp github_state(:disconnected), do: gettext("Disconnected")
+  defp github_state(:authorizing), do: gettext("Awaiting GitHub authorization")
+  defp github_state(:draining), do: gettext("Finishing active GitHub requests")
+  defp github_state(:refreshing), do: gettext("Refreshing GitHub connection")
+  defp github_state(:reconnect_required), do: gettext("Reconnect required")
+  defp github_state(:revoking), do: gettext("Disconnecting GitHub")
+  defp github_state(_), do: gettext("Temporarily unavailable")
 
   defp reset_form(socket) do
     assign(
@@ -150,6 +206,7 @@ defmodule MarshallWeb.IntegrationsLive do
   defp blank_to_nil(value), do: value
 
   @impl true
+  @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
     <Layouts.app
@@ -163,10 +220,81 @@ defmodule MarshallWeb.IntegrationsLive do
       <section id="integrations-page" class="stack">
         <UI.heading
           title={gettext("Integrations")}
-          subtitle={gettext("Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine.")}
+          subtitle={
+            gettext(
+              "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
+            )
+          }
         />
+        <article id="github-com-integration" class="panel stack">
+          <header>
+            <h2>github-com</h2>
+            <span id="github-com-state" class="status-label">{github_state(@github.phase)}</span>
+          </header>
+          <p><code>https://com-github.integration.internal</code></p>
+          <p>
+            {gettext(
+              "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
+            )}
+          </p>
+          <p>
+            {gettext(
+              "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
+            )}
+          </p>
+          <p :if={@github.github_login} id="github-com-identity">
+            {gettext("Connected as %{login}", login: @github.github_login)}
+          </p>
+          <div class="row">
+            <.form for={%{}} id="github-com-connect" action="/auth/github-com/start" method="post">
+              <button class="console-button primary" type="submit" disabled={!@github.configured}>
+                {gettext("Connect GitHub")}
+              </button>
+            </.form>
+            <button
+              :if={@github.phase not in [:disconnected, :unavailable]}
+              id="github-com-disconnect"
+              phx-click="github-disconnect"
+              data-confirm={gettext("Disconnect GitHub from your machines?")}
+              class="console-button danger"
+            >
+              {gettext("Disconnect GitHub")}
+            </button>
+          </div>
+          <details id="github-com-machines">
+            <summary>{gettext("Machines excluded from your GitHub identity")}</summary>
+            <div class="stack">
+              <.form
+                for={to_form(%{"vm_id" => ""}, as: :github_machine)}
+                id="github-com-detach"
+                phx-submit="github-detach"
+                class="field-row"
+              >
+                <.input
+                  name="github_machine[vm_id]"
+                  value=""
+                  label={gettext("Machine UUID")}
+                  required
+                />
+                <button class="console-button" type="submit">{gettext("Detach")}</button>
+              </.form>
+              <div :for={vm_id <- @github.exclusions} id={"github-com-excluded-#{vm_id}"} class="row">
+                <code class="break">{vm_id}</code>
+                <button
+                  phx-click="github-attach"
+                  phx-value-vm-id={vm_id}
+                  class="console-button compact"
+                >
+                  {gettext("Attach")}
+                </button>
+              </div>
+            </div>
+          </details>
+        </article>
         <p :if={@integrations == []} class="empty-state">
-          {gettext("No integrations yet. Add one below to give your machines a named connection to an API or to another machine.")}
+          {gettext(
+            "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
+          )}
         </p>
         <div id="integrations" class="stack">
           <article
@@ -219,8 +347,10 @@ defmodule MarshallWeb.IntegrationsLive do
               <div id={"integration-attachments-#{integration.id}"}>
                 <p :if={integration.attachments == []} class="muted">
                   {if integration.team_id,
-                    do: gettext("No explicit attachments. Current team members' machines have access."),
-                    else: gettext("No machines have access. Attach a machine to use this integration.")}
+                    do:
+                      gettext("No explicit attachments. Current team members' machines have access."),
+                    else:
+                      gettext("No machines have access. Attach a machine to use this integration.")}
                 </p>
                 <div :if={integration.attachments != []} class="table-flow">
                   <table>
@@ -273,11 +403,21 @@ defmodule MarshallWeb.IntegrationsLive do
         <.form for={@form} id="integration-form" phx-submit="add" class="panel stack">
           <h2>{gettext("Add an integration")}</h2>
           <p class="muted">
-            {gettext("Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again.")}
+            {gettext(
+              "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
+            )}
           </p>
           <div class="grid">
-            <.input field={@form[:name]} label={gettext("Name")} placeholder={gettext("example-integration")} />
-            <.input field={@form[:target]} label={gettext("HTTPS target")} placeholder="https://api.example.com" />
+            <.input
+              field={@form[:name]}
+              label={gettext("Name")}
+              placeholder={gettext("example-integration")}
+            />
+            <.input
+              field={@form[:target]}
+              label={gettext("HTTPS target")}
+              placeholder="https://api.example.com"
+            />
           </div>
           <h3>{gettext("Credentials")}</h3>
           <div class="grid">

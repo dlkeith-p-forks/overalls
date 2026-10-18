@@ -104,6 +104,7 @@
         tool-nix-compact = nix-compact.lib.mkPackage { inherit pkgs; };
         tool-nix-compact-host = nix-compact.lib.mkPackage { pkgs = nixpkgs.legacyPackages.${system}; };
         tool-lyra = built.lyra;
+        tool-github-managed = built.githubTools.release;
         tool-browser = built.browser;
         tool-vscode-web = built.vscodeWeb;
         tool-vscode-web-broker = built.vscodeWebBroker;

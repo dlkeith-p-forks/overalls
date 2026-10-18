@@ -62,6 +62,12 @@ config :marshall, :thread_modes, %{
 config :phoenix, :filter_parameters, [
   "password",
   "token",
+  "code",
+  "state",
+  "code_verifier",
+  "client_secret",
+  "access_token",
+  "refresh_token",
   "bytes",
   "input",
   "payload",
@@ -98,6 +104,7 @@ config :marshall, Oban,
     provisioning: 10,
     mail: 2,
     maintenance: 2,
+    github: 2,
     certificates: [limit: 1, paused: true]
   ],
   lifeline: [rescue_after: {2, :hours}],
@@ -105,7 +112,11 @@ config :marshall, Oban,
   repo: Marshall.Repo,
   plugins: [
     {Oban.Plugins.Cron,
-     crontab: [{"* * * * *", Marshall.Enrico.Worker}, {"* * * * *", Marshall.Compute.IdleWorker}]}
+     crontab: [
+       {"* * * * *", Marshall.Enrico.Worker},
+       {"* * * * *", Marshall.Compute.IdleWorker},
+       {"* * * * *", Marshall.GitHub.Worker, args: %{"op" => "reconcile"}}
+     ]}
   ]
 
 # These enable behaviors that will become the default in the next major
@@ -172,6 +183,7 @@ config :marshall,
     Marshall.Editor,
     Marshall.Inference,
     Marshall.Galileo,
+    Marshall.GitHub,
     Marshall.Enrico,
     Marshall.Teams,
     Marshall.Terminal,

@@ -845,6 +845,37 @@ defmodule Marshall.Events do
   )
 
   # Galileo
+  defevent("github.connected",
+    message: "GitHub identity connected",
+    metadata: [connection_id: :uuid, user_id: :uuid]
+  )
+
+  defevent("github.disconnected",
+    message: "GitHub identity disconnected",
+    metadata: [connection_id: :uuid, user_id: :uuid]
+  )
+
+  defevent("github.refresh_finished",
+    message: "GitHub credential refresh settled",
+    metadata: [connection_id: :uuid, outcome: :atom]
+  )
+
+  defevent("github.authorization_failed",
+    level: :warning,
+    message: "GitHub authorization refused",
+    metadata: [user_id: :uuid, reason: :atom]
+  )
+
+  defevent("github.machine_access_changed",
+    message: "GitHub machine access changed",
+    metadata: [user_id: :uuid, vm_id: :uuid]
+  )
+
+  defevent("github.token_revoked",
+    message: "GitHub token revocation settled",
+    metadata: [kind: :atom, outcome: :atom]
+  )
+
   defevent("galileo.authorization_denied",
     level: :warning,
     message: "Galileo integration authorization denied",

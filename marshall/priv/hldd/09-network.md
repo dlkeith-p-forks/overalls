@@ -1,5 +1,23 @@
 # Networking, ingress, and certificates
 
+## GitHub.com private route
+
+`com-github.integration.internal` is a built-in Galileo route under the existing
+`integration.internal` zone. Audi supplies the binding from Lilly's pre-NAT
+current execution proof and removes guest identity headers. The hostname matches
+the reviewed `*.integration.internal` SAN; no new wildcard, issuer, root or public
+listener is introduced.
+
+Reviewed REST, GraphQL, Git smart-HTTP and LFS requests use fixed GitHub origins
+and validated rewrites. Guest input cannot choose arbitrary credential
+recipients. Injected Authorization replaces guest copies; unsafe redirects and
+response links cannot forward the token to an unreviewed host. Connected requests
+pin the owner's credential generation and renewable lease. Detach, disconnect,
+retirement or generation replacement withdraws authority without replaying an
+upstream mutation. Anonymous public forwarding receives no credential. See
+[services](#services), [security](#security) and
+[ADR-0198](repo:docs/architecture/decisions/0198-github-com-owner-integration.md).
+
 ## Experimental Antithesis guest transport boundary
 
 The optional TCG guest TAP runs directly in its inner Lilly host's network

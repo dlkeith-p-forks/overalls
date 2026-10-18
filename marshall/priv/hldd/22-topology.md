@@ -1,5 +1,32 @@
 # Deployment topology
 
+## GitHub.com uses existing service placement
+
+The accepted provider adds resources and scheduled work inside Marshall, not a
+fleet application or listener. Both existing Galileo instances carry
+`com-github.integration.internal` behind local Audi/Lilly execution binding.
+Existing PostgreSQL holds encrypted connections, operation progress, exclusions
+and leases. The existing wildcard already covers the hostname.
+
+```mermaid
+flowchart LR
+  Browser[Browser OAuth] --> Marshall[Existing Marshall]
+  Marshall --> DB[(Existing PostgreSQL and Cloak custody)]
+  Marshall -->|verified OAuth exchange| GitHub[GitHub.com]
+  Guest[Managed gh Git and LFS] --> Private[Local Audi and Lilly proof]
+  Private --> Galileo[Local Galileo]
+  Galileo -->|owner and lease authority| Marshall
+  Galileo -->|one reviewed verified request| GitHub
+```
+
+Marshall/database loss prevents fresh credential-bearing admission and expires
+renewal at bounded lease deadlines; proxy health cannot substitute. Anonymous
+public traffic remains separate. Guests hold no token; Galileo persists none.
+New image payloads and retained delivery need separate per-family evidence.
+Unchanged declared placement does not establish deployment or live GitHub
+acceptance. See [services](#services), [security](#security) and the
+[review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
+
 ## Foreign Linux guest PAM runtime
 
 Arch/Alma's `overalls-pam-helpers.service` is a root oneshot inside each guest,

@@ -22,7 +22,11 @@ defmodule Galileo.Upstream do
           | {:cancel_frontend, (-> :ok)}
           | {:headers, [{binary(), binary()}]}
           | {:consume, (tuple() -> :ok | :halt)}
-          | {:renew, (-> {:ok, %{ttl: pos_integer()}} | {:error, term()})}
+          | {:response_headers, ([{binary(), binary()}] -> [{binary(), binary()}])}
+          | {:renew,
+             (-> {:ok, %{required(:ttl) => pos_integer(), optional(:expires_at) => integer()}}
+                 | {:error, term()})}
+          | {:lease_expires_at, integer()}
           | {:transport_opts, keyword()}
   @type lease :: {pid(), reference()}
 
@@ -61,7 +65,14 @@ defmodule Galileo.Upstream do
 
     body_updated = Keyword.get(options, :body_updated, fn _state -> :ok end)
     guest = Keyword.fetch!(options, :headers)
-    consume = Keyword.fetch!(options, :consume)
+    consumer = Keyword.fetch!(options, :consume)
+    project = Keyword.get(options, :response_headers, &default_response_headers/1)
+
+    consume = fn
+      {:headers, headers} -> consumer.({:headers, project.(headers)})
+      event -> consumer.(event)
+    end
+
     renew = Keyword.fetch!(options, :renew)
     transport_opts = Keyword.get(options, :transport_opts, [])
     uri = authorization |> origin() |> URI.parse()
@@ -80,7 +91,15 @@ defmodule Galileo.Upstream do
                match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
              ]
            ),
-         lease = start_lease(authorization.ttl, renew, cancel_frontend) do
+         expires_at =
+           Keyword.get(
+             options,
+             :lease_expires_at,
+             System.monotonic_time(:millisecond) + authorization.ttl
+           ),
+         true <- is_integer(expires_at) and System.monotonic_time(:millisecond) < expires_at,
+         expires_at = min(expires_at, System.monotonic_time(:millisecond) + authorization.ttl),
+         lease = start_lease(authorization.ttl, expires_at, renew, cancel_frontend) do
       try do
         case connect_upstream(host, port, transport_opts, lease) do
           {:ok, upstream} ->
@@ -408,13 +427,17 @@ defmodule Galileo.Upstream do
     if lease_open?(lease), do: state, else: %{state | outcome: :cancelled}
   end
 
-  defp start_lease(ttl, renew, cancel_frontend) do
+  # @cc [owner:ghuntley,label:security] galileo-authority-delay-consumes-lifetime
+  # Supplied absolute admission deadlines and renewal-call start times MUST
+  # bound the lease even if responses or process messages arrive late. Status
+  # polling MUST NOT keep an expired lease open by delaying its timeout.
+  defp start_lease(ttl, expires_at, renew, cancel_frontend) do
     owner = self()
     token = make_ref()
 
     pid =
       spawn(fn ->
-        lease_loop(owner, Process.monitor(owner), token, renew, deadline(ttl), %{
+        lease_loop(owner, Process.monitor(owner), token, renew, deadline(ttl, expires_at), %{
           connection: nil,
           cancel_frontend: cancel_frontend
         })
@@ -423,10 +446,8 @@ defmodule Galileo.Upstream do
     {pid, token}
   end
 
-  defp deadline(ttl) do
-    now = System.monotonic_time(:millisecond)
-    %{renew_at: now + div(ttl, 2), expires_at: now + ttl}
-  end
+  defp deadline(ttl, expires_at),
+    do: %{renew_at: expires_at - div(ttl, 2), expires_at: expires_at}
 
   defp lease_loop(owner, owner_monitor, token, renew, deadline, upstream) do
     timeout = max(deadline.renew_at - System.monotonic_time(:millisecond), 0)
@@ -436,8 +457,12 @@ defmodule Galileo.Upstream do
         lease_loop(owner, owner_monitor, token, renew, deadline, %{upstream | connection: value})
 
       {:status, ^token, caller, query} ->
-        send(caller, {:lease_status, query, true})
-        lease_loop(owner, owner_monitor, token, renew, deadline, upstream)
+        open? = System.monotonic_time(:millisecond) < deadline.expires_at
+        send(caller, {:lease_status, query, open?})
+
+        if open?,
+          do: lease_loop(owner, owner_monitor, token, renew, deadline, upstream),
+          else: close_lease(owner, owner_monitor, token, upstream)
 
       {:stop, ^token} ->
         :ok
@@ -454,6 +479,8 @@ defmodule Galileo.Upstream do
 
     {worker, worker_monitor} =
       spawn_monitor(fn ->
+        started = System.monotonic_time(:millisecond)
+
         result =
           try do
             renew.()
@@ -463,7 +490,7 @@ defmodule Galileo.Upstream do
             _, _ -> {:error, :authority_unavailable}
           end
 
-        send(parent, {:renewed, token, self(), result})
+        send(parent, {:renewed, token, self(), result, started})
       end)
 
     await_renewal(
@@ -504,27 +531,42 @@ defmodule Galileo.Upstream do
         )
 
       {:status, ^token, caller, query} ->
-        send(caller, {:lease_status, query, true})
+        open? = System.monotonic_time(:millisecond) < deadline.expires_at
+        send(caller, {:lease_status, query, open?})
 
-        await_renewal(
-          owner,
-          owner_monitor,
-          token,
-          renew,
-          deadline,
-          upstream,
-          worker,
-          worker_monitor
-        )
+        if open? do
+          await_renewal(
+            owner,
+            owner_monitor,
+            token,
+            renew,
+            deadline,
+            upstream,
+            worker,
+            worker_monitor
+          )
+        else
+          Process.exit(worker, :kill)
+          close_lease(owner, owner_monitor, token, upstream)
+        end
 
-      {:renewed, ^token, ^worker, {:ok, %{ttl: ttl}}} ->
+      {:renewed, ^token, ^worker, {:ok, %{ttl: ttl} = renewal}, started} ->
         Process.demonitor(worker_monitor, [:flush])
 
-        if valid_ttl?(ttl) and System.monotonic_time(:millisecond) < deadline.expires_at,
-          do: lease_loop(owner, owner_monitor, token, renew, deadline(ttl), upstream),
-          else: close_lease(owner, owner_monitor, token, upstream)
+        expires_at =
+          if valid_ttl?(ttl), do: Map.get(renewal, :expires_at, started + ttl), else: nil
 
-      {:renewed, ^token, ^worker, _result} ->
+        expires_at = if is_integer(expires_at), do: min(expires_at, started + ttl), else: nil
+
+        now = System.monotonic_time(:millisecond)
+
+        if valid_ttl?(ttl) and is_integer(expires_at) and now < deadline.expires_at and
+             now < expires_at,
+           do:
+             lease_loop(owner, owner_monitor, token, renew, deadline(ttl, expires_at), upstream),
+           else: close_lease(owner, owner_monitor, token, upstream)
+
+      {:renewed, ^token, ^worker, _result, _started} ->
         Process.demonitor(worker_monitor, [:flush])
         close_lease(owner, owner_monitor, token, upstream)
 
@@ -611,8 +653,7 @@ defmodule Galileo.Upstream do
        do: events(rest, state, ref, consume, lease)
 
   defp handle_events([{:headers, ref, headers} | rest], state, ref, consume, lease) do
-    safe = Enum.filter(headers, fn {name, _} -> name in ~w(content-type retry-after) end)
-    deliver(rest, {:headers, safe}, state, ref, consume, lease)
+    deliver(rest, {:headers, headers}, state, ref, consume, lease)
   end
 
   defp handle_events([{:data, ref, bytes} | rest], state, ref, consume, lease) do
@@ -631,6 +672,10 @@ defmodule Galileo.Upstream do
 
   defp handle_events([_event | rest], state, ref, consume, lease),
     do: events(rest, state, ref, consume, lease)
+
+  @spec default_response_headers([{binary(), binary()}]) :: [{binary(), binary()}]
+  defp default_response_headers(headers),
+    do: Enum.filter(headers, fn {name, _} -> name in ~w(content-type retry-after) end)
 
   defp deliver(rest, event, state, ref, consume, lease) do
     case consume.(event) do

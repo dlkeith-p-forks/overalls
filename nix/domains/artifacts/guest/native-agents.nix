@@ -2,6 +2,7 @@
 let
   bootstrap = import ./native-bootstrap.nix { inherit pkgs lyra; };
   nativeGit = import ./native-git.nix { inherit pkgs; };
+  githubTools = import ./github { inherit pkgs; };
   # @cc [owner:ghuntley,label:security] native-agent-set-complete
   # Every binary listed here MUST be cross-built for the selected native OS;
   # the image builder MUST never copy the Linux Lyra closure into a native
@@ -338,6 +339,7 @@ let
     [include]
       path = /run/overalls-workspace/gitconfig
       path = /run/overalls-workspace/git-identity/gitconfig
+      path = /etc/overalls/github.gitconfig
   '';
   freebsdService = pkgs.writeTextFile {
     name = "overalls-native-agents-freebsd";
@@ -382,6 +384,9 @@ let
     install -m 0644 ${sshdConfiguration "freebsd"} "$out/etc/overalls/sshd_config"
     install -m 0644 ${nativeGit.freebsd}/etc/ssl/cert.pem "$out/etc/overalls/system-ca.pem"
     install -m 0644 ${gitConfiguration} "$out/usr/local/etc/gitconfig"
+    install -D -m 0755 ${githubTools.gh.freebsd-amd64}/bin/gh "$out/usr/local/bin/gh"
+    install -D -m 0755 ${githubTools.lfs.freebsd-amd64}/bin/git-lfs "$out/usr/local/bin/git-lfs"
+    install -m 0644 ${githubTools.configuration} "$out/etc/overalls/github.gitconfig"
     install -m 0755 ${sshRefresh "freebsd"} "$out/usr/local/libexec/native-ssh-refresh"
     install -D -m 0440 ${sudoConfiguration "freebsd"} "$out/usr/local/etc/sudoers"
     mkdir -p "$out/usr/local/etc/sudoers.d"
@@ -402,6 +407,9 @@ let
     install -m 0644 ${sshdConfiguration "illumos"} "$out/etc/overalls/sshd_config"
     install -m 0644 ${nativeGit.illumos}/etc/ssl/cacert.pem "$out/etc/overalls/system-ca.pem"
     install -m 0644 ${gitConfiguration} "$out/etc/gitconfig"
+    install -D -m 0755 ${githubTools.gh.illumos-amd64}/bin/gh "$out/usr/local/bin/gh"
+    install -D -m 0755 ${githubTools.lfs.illumos-amd64}/bin/git-lfs "$out/usr/local/bin/git-lfs"
+    install -m 0644 ${githubTools.configuration} "$out/etc/overalls/github.gitconfig"
     install -m 0755 ${sshRefresh "illumos"} "$out/opt/overalls/libexec/native-ssh-refresh"
     install -m 0440 ${sudoConfiguration "illumos"} "$out/etc/sudoers"
     mkdir -p "$out/etc/sudoers.d"

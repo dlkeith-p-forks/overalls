@@ -84,6 +84,12 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   ziggy-underclass = import ./machines/ziggy-underclass service;
   fleet-network = import ./machines/fleet-network { pkgs = testPkgs; };
   galileo-service = import ./machines/galileo-service service;
+  github-integration = import ./machines/github-integration service;
+  github-integration-fleet = featureFleet { githubIntegration = true; audi = true; galileo = true; };
+  github-integration-ubuntu-fleet = featureFleet { githubIntegration = true; githubFamily = "ubuntu"; audi = true; galileo = true; };
+  github-integration-arch-fleet = featureFleet { githubIntegration = true; githubFamily = "arch"; audi = true; galileo = true; };
+  github-integration-almalinux-fleet = featureFleet { githubIntegration = true; githubFamily = "almalinux"; audi = true; galileo = true; };
+  github-integration-windows-fleet = featureFleet { githubIntegration = true; githubFamily = "windows"; audi = true; galileo = true; };
   enrico-service = import ./machines/enrico-service { pkgs = testPkgs; module = modules.services.enrico; inherit packages; };
   git-mirrors-browser = import ./machines/git-mirrors service;
   underclass-package = packages.underclass;
@@ -172,6 +178,12 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   native-freebsd-reset = import ./machines/native-reset { pkgs = testPkgs; inherit packages; };
   native-freebsd-transport = import ./machines/native-transport { pkgs = testPkgs; inherit packages; };
   native-freebsd-services = import ./machines/native-services { pkgs = testPkgs; inherit packages; };
+  github-tools-freebsd-retained = import ./machines/native-services {
+    pkgs = testPkgs; inherit packages; image = packages.freebsdGuest; github = true;
+  };
+  github-tools-illumos-retained = import ./machines/native-services {
+    pkgs = testPkgs; inherit packages; image = packages.omniosGuest; osName = "illumos"; github = true;
+  };
   native-freebsd-isolation = import ./machines/native-services { pkgs = testPkgs; inherit packages; isolation = true; };
   native-freebsd-growth = import ./machines/native-services { pkgs = testPkgs; inherit packages; growth = true; };
   native-freebsd-recovery = import ./machines/native-services { pkgs = testPkgs; inherit packages; recovery = true; };

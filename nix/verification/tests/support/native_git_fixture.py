@@ -35,6 +35,7 @@ class Repository:
     git: Path
     commit: str
     manifest: dict[str, str]
+    allow_writes: bool = False
 
     def command(self, arguments: list[str], body: bytes = b"") -> bytes:
         """Run fixed Git operations against only the generated synthetic root."""
@@ -70,7 +71,7 @@ class Repository:
         return result.stdout
 
     @classmethod
-    def create(cls, root: Path, git: Path) -> Repository:
+    def create(cls, root: Path, git: Path, *, allow_writes: bool = False) -> Repository:
         if not root.is_absolute() or root != root.resolve() or not git.is_absolute():
             raise ValueError("canonical isolated Git fixture paths required")
         root.mkdir(mode=0o700)
@@ -92,6 +93,7 @@ class Repository:
             git,
             commit,
             {name: hashlib.sha256(content).hexdigest() for name, content in FILES.items()},
+            allow_writes,
         )
 
     def source(self) -> dict[str, object]:
@@ -110,6 +112,8 @@ class Repository:
         command arguments, environment, repository paths or shell input. The
         generated object graph, request, response and execution time are bounded.
         """
+        if host == "com-github.integration.internal" and path.startswith("/git/"):
+            host, path = HOST, path.removeprefix("/git")
         if host != HOST:
             return None
         if len(body) > MAX_REQUEST:
@@ -125,6 +129,22 @@ class Repository:
             return Response(
                 b"application/x-git-upload-pack-result",
                 self.command(["upload-pack", "--stateless-rpc", bare], body),
+            )
+        if (
+            self.allow_writes
+            and method == "GET"
+            and path == PREFIX + "/info/refs?service=git-receive-pack"
+            and not body
+        ):
+            return Response(
+                b"application/x-git-receive-pack-advertisement",
+                b"001f# service=git-receive-pack\n0000"
+                + self.command(["receive-pack", "--stateless-rpc", "--advertise-refs", bare]),
+            )
+        if self.allow_writes and method == "POST" and path == PREFIX + "/git-receive-pack" and body:
+            return Response(
+                b"application/x-git-receive-pack-result",
+                self.command(["receive-pack", "--stateless-rpc", bare], body),
             )
         raise ValueError("unknown isolated Git fixture route")
 
@@ -174,7 +194,7 @@ def dns_response(packet: bytes, address: str) -> bytes | None:
             return None
     elif tail:
         return None
-    known = ".".join(labels) == HOST
+    known = ".".join(labels) in {HOST, "com-github.integration.internal"}
     answer = (
         b"\xc0\x0c" + struct.pack("!HHIH", 1, 1, 30, 4) + ipaddress.IPv4Address(address).packed
         if known and kind == 1

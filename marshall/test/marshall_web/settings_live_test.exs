@@ -19,7 +19,7 @@ defmodule MarshallWeb.SettingsLiveTest do
     other = user()
     conn = signed_in(conn, owner)
     {:ok, view, _} = live(conn, ~p"/settings")
-    assert has_element?(view, "#nav-settings[aria-current=page]")
+    assert has_element?(view, "#nav-account[aria-current=page]")
     assert has_element?(view, "#settings_git_username[value='Overalls']")
 
     view

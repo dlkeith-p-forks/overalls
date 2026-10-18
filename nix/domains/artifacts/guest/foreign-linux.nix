@@ -8,6 +8,7 @@
 }:
 let
   inherit (pkgs) lib;
+  githubTools = import ./github { inherit pkgs; };
   # @cc [owner:ghuntley,label:build;security] foreign-linux-fixture-files
   # Custom files MUST use canonical absolute /opt destinations and ordinary
   # read-only or owner-writable file modes. Assembly MUST refuse existing
@@ -157,7 +158,8 @@ let
     pkgs.cacert pkgs.coreutils pkgs.e2fsprogs pkgs.git pkgs.iproute2
     pkgs.openssh pkgs.pam pkgs.python3 pkgs.shadow pkgs.glibc.getent
     pkgs.sudo pkgs.systemd pkgs.util-linux terminald lyraLinux pamHelperInstaller
-  ] ++ lib.optionals editorEnabled [ vscodeWeb vscodeWebBroker editorConfiguration editorUnit pkgs.direnv ];
+  ] ++ githubTools.packages "linux-amd64"
+    ++ lib.optionals editorEnabled [ vscodeWeb vscodeWebBroker editorConfiguration editorUnit pkgs.direnv ];
   rootfs = (pkgs.callPackage (pkgs.path + "/nixos/lib/make-ext4-fs.nix") {
     storePaths = runtimeStorePaths;
     volumeLabel = "overalls-${distribution}";
@@ -237,6 +239,9 @@ let
       install -D -m 0755 ${lyraLinux}/bin/overalls-host-certificate ./files/usr/local/bin/overalls-host-certificate
       install -D -m 0755 ${lyraLinux}/bin/overalls-trustd ./files/usr/local/bin/overalls-trustd
       install -D -m 0755 ${lyraLinux}/bin/overalls-workspaced ./files/usr/local/bin/overalls-workspaced
+      ln -s ${githubTools.gh.linux-amd64}/bin/gh ./files/usr/local/bin/gh
+      ln -s ${githubTools.lfs.linux-amd64}/bin/git-lfs ./files/usr/local/bin/git-lfs
+      install -D -m 0644 ${githubTools.configuration} ./files/etc/overalls/github.gitconfig
       install -D -m 0755 ${terminald}/bin/lilly-terminald ./files/usr/local/lib/lilly/lilly-terminald
       install -D -m 0755 ${pamHelperInstaller} ./files/usr/local/lib/lilly/install-pam-helper
       install -D -m 0755 ${./network.py} ./files/usr/local/lib/lilly-network.py
@@ -400,7 +405,7 @@ let
       if [ -f ./files/etc/pam.d/sshd ]; then
         printf '%s\n' 'session requisite pam_exec.so quiet quiet_log type=open_session /usr/local/bin/overalls-ssh-authorize login' >> ./files/etc/pam.d/sshd
       fi
-      printf '[safe]\n\tdirectory = /workspace/*\n[include]\n\tpath = /run/overalls-workspace/git-identity/gitconfig\n' > ./files/etc/gitconfig
+      printf '[safe]\n\tdirectory = /workspace/*\n[include]\n\tpath = /run/overalls-workspace/git-identity/gitconfig\n\tpath = /etc/overalls/github.gitconfig\n' > ./files/etc/gitconfig
       ln -sfn /usr/lib/systemd/system/multi-user.target ./files/etc/systemd/system/default.target
       for unit in lilly-network lilly-grow-root lilly-readiness lilly-flush lilly-terminals lilly-console-ready lilly-boot-report; do
         ln -sfn ../$unit.service ./files/etc/systemd/system/multi-user.target.wants/$unit.service

@@ -1291,6 +1291,64 @@ null
 ```
 
 
+## `services.audi.relay.address`
+
+Exact local fleet /32; never a guest or public listener address.
+
+Type: `null or string`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.audi.relay.enable`
+
+Whether to enable single-hop authorized ingress over the host fleet WireGuard network.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+false
+```
+
+Example:
+
+```nix
+true
+```
+
+
+## `services.audi.relay.peers`
+
+Explicit keyed fleet /32 peers allowed to present single-use relay capabilities.
+
+Type: `list of string`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
+## `services.audi.relay.port`
+
+No additional description is declared by the module.
+
+Type: `16 bit unsigned integer; between 0 and 65535 (both inclusive)`.
+
+Default:
+
+```nix
+9445
+```
+
+
 ## `services.audi.secretUnits`
 
 Credential preparation services required before startup.
@@ -3439,6 +3497,58 @@ Default:
 
 ```nix
 "/run/overalls-secrets/marshall.env"
+```
+
+
+## `services.marshall.github.clientId`
+
+Public GitHub OAuth application client identity. Configure together with clientSecretFile and redirectUri.
+
+Type: `null or string matching the pattern [A-Za-z0-9_.-]{1,200}`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshall.github.clientSecretFile`
+
+Private runtime GitHub OAuth client secret, delivered through systemd credentials.
+
+Type: `null or string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshall.github.redirectUri`
+
+Registered HTTPS GitHub OAuth callback URL.
+
+Type: `null or string matching the pattern https://[A-Za-z0-9.-]+(:[0-9]+)?/auth/github-com/callback`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshall.githubToolsRelease`
+
+Immutable manifest for the managed guest GitHub tools release.
+
+Type: `null or package`.
+
+Default:
+
+```nix
+<derivation overalls-github-tools-release-v1>
 ```
 
 
@@ -8161,6 +8271,19 @@ Default:
   "openai"
   "anthropic"
 ]
+```
+
+
+## `services.ziggy.githubToolsRelease`
+
+Immutable managed GitHub CLI and LFS release for fenced guest maintenance.
+
+Type: `null or package`.
+
+Default:
+
+```nix
+<derivation overalls-github-tools-release-v1>
 ```
 
 

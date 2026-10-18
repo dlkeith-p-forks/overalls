@@ -1,5 +1,33 @@
 # Accounts and access control
 
+## GitHub.com connection authority
+
+[ADR-0198](repo:docs/architecture/decisions/0198-github-com-owner-integration.md)
+accepts a personal `github-com` connection managed from Integrations. Start uses
+the current completed stored login and CSRF-protected
+`POST /auth/github-com/start`; the fixed callback
+`GET /auth/github-com/callback` consumes one expiring attempt bound to that same
+account and login. Replayed state, changed/revoked login, retired accounts and a
+numeric external identity already owned by another active connection refuse.
+OAuth consent is separate from Marshall sign-in.
+
+Eligible non-Customer machines use their owner's connection automatically;
+explicit detach persists across reconnect, restart and relocation. Shared writers
+and background processes use the VM owner's identity. The trusted binding cannot
+distinguish the human initiating a guest request; usernames/headers cannot select
+another account. Authorized writers retain existing sudo authority. Without an
+eligible connection the route can make anonymous public requests without an
+injected token; GitHub decides which operations require authentication.
+Disconnect and retirement withdraw credential-bearing authority. Ordinary
+Marshall browser sign-out preserves the independent GitHub connection.
+
+Selected daily repository/workflow/project/package scopes include `read:org`,
+without organization administration or repository deletion. Provider consent,
+repository grants, organization approval and SAML SSO remain independent
+refusals. Actual source/results and remaining gaps are recorded in the
+[review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)
+and [scenario coverage](#coverage).
+
 ## Privileged administrator step-up
 
 [ADR-0160](repo:docs/architecture/decisions/0160-privileged-administrator-step-up.md)
@@ -100,11 +128,11 @@ are eligible. Malformed domains and header injection refuse; there is no
 organization allowlist. Complete case-insensitive email addresses identify
 distinct Users, each with a separate reserved guest UUID/UID. All email edits of
 the same User preserve its guest identity. No profile username, public email-edit
-action or onboarding step is added; the only profile preference is the display
-time zone of [ADR-0195](repo:docs/architecture/decisions/0195-user-time-zones.md),
-set in the profile section of `/settings` through the self-only `set_time_zone`
-action, which
-changes no identity, guest account or authority (see
+action or onboarding step is added. The profile section of `/settings` contains
+the display time zone of [ADR-0195](repo:docs/architecture/decisions/0195-user-time-zones.md),
+the language preference, and the Git author/trailer defaults of
+[ADR-0199](repo:docs/architecture/decisions/0199-git-attribution-and-guest-identity.md).
+The self-only `set_time_zone` action changes no identity, guest account or authority (see
 [time zones and local time](#interactive)). Native plus-alias/numeric-leading mailbox
 sign-in and SMTP inbox delivery remain separate gaps in [scenario coverage](#coverage).
 

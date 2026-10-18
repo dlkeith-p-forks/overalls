@@ -5,7 +5,9 @@ source-built CloudHv firmware, inside a KVM-enabled Nix sandbox whose guest
 network is restricted. Guest agents come only from the source-built
 `lyraWindows` and `terminaldWindows` derivations, and winget and every
 winget package (Git among them) only from winget.json, fetched by Nix against
-the recorded SHA-256 digests. No build step may fetch anything at build time;
+the recorded SHA-256 digests. The managed GitHub CLI and LFS replacements MUST
+be source-built from the separate hash-pinned `guest/github` derivations and
+staged offline before setup. No build step may fetch anything at build time;
 the installation guest's only reachable endpoint is the guestfwd file server
 serving exactly the staged installers, and the installation MUST bind
 modern-only virtio-pci devices (ADR-0169, ADR-0171, ADR-0173).

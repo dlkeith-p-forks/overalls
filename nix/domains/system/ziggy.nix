@@ -19,6 +19,8 @@ let
     openai_origin = cfg.openaiOrigin;
     agent_enabled = cfg.agentEnable;
     lyra_release = toString cfg.lyraRelease;
+    executor_bootstrap_release = if cfg.githubBootstrapRelease == null then null else toString cfg.githubBootstrapRelease;
+    github_tools_release = if cfg.githubToolsRelease == null then null else toString cfg.githubToolsRelease;
     anthropic_key_file = "/run/ziggy/credentials/anthropic.key";
     socket = "/run/ziggy/proxy.sock";
     spool = "/var/lib/ziggy/spool";
@@ -55,6 +57,16 @@ in {
       type = types.package;
       default = packages.lyra;
       description = "Trusted local Overalls CLI artifacts for private guest updates.";
+    };
+    githubBootstrapRelease = mkOption {
+      type = types.nullOr types.package;
+      default = packages.githubBootstrapRelease or null;
+      description = "Immutable executor artifacts for fenced retained-machine GitHub tools bootstrap.";
+    };
+    githubToolsRelease = mkOption {
+      type = types.nullOr types.package;
+      default = if packages ? githubTools then packages.githubTools.release else null;
+      description = "Immutable managed GitHub CLI and LFS release for fenced guest maintenance.";
     };
     anthropicKeyFile = mkOption { type = paths.privatePath; default = "/run/overalls-secrets/ziggy/anthropic.key"; readOnly = true; description = "Private runtime Anthropic API key file."; };
     secretUnits = mkOption { type = types.listOf (types.strMatching "[a-zA-Z0-9_.@-]+\\.service"); default = []; };
