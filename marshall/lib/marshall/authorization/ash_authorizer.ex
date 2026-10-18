@@ -98,6 +98,8 @@ defmodule Marshall.Authorization.AshAuthorizer do
     Marshall.Compute.LifecycleEvent => [:read, :record, :expire],
     Marshall.Galileo.Credential => [:read, :issue, :revoke],
     Marshall.Galileo.Credential.Version => [:read, :create],
+    Marshall.Peach.Credential => [:read, :issue, :revoke],
+    Marshall.Peach.Credential.Version => [:read, :create],
     Marshall.Galileo.Integration => [:read, :register, :edit, :archive, :history],
     Marshall.Galileo.Integration.Version => [:read, :create],
     Marshall.Galileo.IntegrationHeader => [:read, :record, :remove],

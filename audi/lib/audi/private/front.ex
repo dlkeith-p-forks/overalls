@@ -130,7 +130,14 @@ defmodule Audi.Private.Front do
   end
 
   defp service("llm.internal", _opts), do: {:ok, :ziggy}
-  defp service("reflection.internal", _opts), do: {:ok, :peach}
+
+  # @cc [owner:ghuntley,label:security] private-reflection-configured-backend
+  # Reflection MUST refuse before requesting guest execution authority when the
+  # operator has not configured Peach. Other private services remain independent.
+  defp service("reflection.internal", opts) do
+    if is_binary(opts[:peach_socket]), do: {:ok, :peach}, else: {:error, :unavailable}
+  end
+
   defp service("ssh.integration.internal", _opts), do: {:ok, :ssh}
 
   defp service("com-github.integration.internal", opts) do

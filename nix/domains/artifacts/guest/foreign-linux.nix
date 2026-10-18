@@ -398,7 +398,7 @@ let
       ${pkgs.python3}/bin/python3 ${./foreign_linux_accounts.py} ./files
       chmod 0755 ./files/var/empty
       if [ ! -e ./files/etc/sudoers ]; then
-        printf '#includedir /etc/sudoers.d\n' > ./files/etc/sudoers
+        printf '@includedir /etc/sudoers.d\n' > ./files/etc/sudoers
       fi
       printf '%%wheel ALL=(ALL:ALL) NOPASSWD: ALL\n' > ./files/etc/sudoers.d/overalls
       chmod 0440 ./files/etc/sudoers.d/overalls

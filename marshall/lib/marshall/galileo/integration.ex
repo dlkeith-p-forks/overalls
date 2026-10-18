@@ -64,6 +64,7 @@ defmodule Marshall.Galileo.Integration do
         :strip_prefix,
         :peer,
         :peer_vm_id,
+        :comment,
         :owner_id,
         :team_id,
         :idempotency_key
@@ -95,7 +96,11 @@ defmodule Marshall.Galileo.Integration do
       argument :peer, :boolean, allow_nil?: false, default: false
       argument :peer_vm_id, :uuid
       argument :team_id, :uuid
-      argument :comment, :string, allow_nil?: false, default: "", constraints: [max_length: 2048]
+
+      argument :comment, :string,
+        allow_nil?: false,
+        default: "",
+        constraints: [max_length: 2048, allow_empty?: true]
 
       argument :idempotency_key, :string,
         allow_nil?: false,
@@ -152,7 +157,14 @@ defmodule Marshall.Galileo.Integration do
 
     attribute :target, :string, constraints: [min_length: 8, max_length: 2048]
     attribute :strip_prefix, :string, constraints: [min_length: 2, max_length: 256]
-    attribute :comment, :string, allow_nil?: false, default: "", constraints: [max_length: 2048]
+    # @cc [owner:ghuntley,label:product] integration-empty-reflection-comment
+    # An integration without an operator comment MUST retain the empty-string
+    # default so ordinary registration remains valid.
+    attribute :comment, :string,
+      allow_nil?: false,
+      default: "",
+      constraints: [max_length: 2048, allow_empty?: true]
+
     attribute :peer, :boolean, allow_nil?: false, default: false
 
     attribute :idempotency_key, :string,

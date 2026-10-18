@@ -145,7 +145,6 @@ defmodule Marshall.Galileo.Configurations do
             strip_prefix: validated.strip_prefix,
             peer: arguments.peer,
             peer_vm_id: arguments[:peer_vm_id],
-          comment: arguments.comment,
             comment: arguments.comment,
             owner_id: if(arguments[:team_id], do: nil, else: actor.id),
             team_id: arguments[:team_id],

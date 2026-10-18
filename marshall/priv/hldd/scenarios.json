@@ -4328,7 +4328,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/accounts/time_zones_property_test.exs",
           "assertion": "every label carries the zone's offset in force at that instant",
-          "scope": "Every curated zone over random instants 2000\u20132040 plus fixed DST edges; half-hour and 45-minute zones pinned",
+          "scope": "Every curated zone over random instants 2000–2040 plus fixed DST edges; half-hour and 45-minute zones pinned",
           "execution": "present"
         },
         {
@@ -11518,7 +11518,7 @@
           "assertion": "foreign-linux-pam-nosuid-account",
           "scope": "Isolated VM/chroot using the exact pinned installer and PAM: missing-helper9, valid0, expired13, password-change12, unknown10 on nosuid runtime storage; root-owned04755 copy, unchanged0555 source, idempotence and twelve unsafe/argument/nonroot refusals. vmTools source ownership is replaced by a byte-identical root-owned overlay only inside the disposable chroot. No foreign guest SSH/sudo or nonroot elevation acceptance.",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
-          "record_assertion": "The maintained VM gate records missing-helper9 \u2192 repaired0"
+          "record_assertion": "The maintained VM gate records missing-helper9 → repaired0"
         },
         {
           "kind": "manual",
@@ -13218,10 +13218,12 @@
         },
         {
           "assertion": "checkpoint_stream_custody",
-          "execution": "present",
+          "execution": "recorded",
           "kind": "property",
           "path": "lilly/native/hostd/src/transfer_tests.rs",
-          "scope": "Native typed stream path, ownership policy, non-resumable receive and malformed/foreign slot refusal; no ZFS or VM execution."
+          "scope": "Integrated 3e25e8218 cargo suite passed 61 local native-process tests including typed checkpoint stream custody and malformed/foreign slot refusal; no ZFS or KVM execution",
+          "record": "docs/architecture/reviews/2026-10-18-memory-suspension.md",
+          "record_assertion": "local hostd cargo suite passed **61 tests**"
         },
         {
           "assertion": "interrupted output sealing verifies both files before skipping repair",
@@ -13264,6 +13266,202 @@
       "preferred_gap": "Run the memory-suspension-fleet NixOS check and record exact-source RAM/cgroup/connection evidence; separately qualify each native image before enabling its checkpoint operations.",
       "scope": "Ash state machines and Hegel histories exercise BEAM admission, timer boundaries, coalescing and execution fences. Native hostd tests cover API-only restore launch and fixed checkpoint stream derivation. The real fleet test definition asserts repeated capture, RAM-only nonce/PID/boot continuity, cgroup absence, running/paused moves and original authorized connections through measured source memory exhaustion; successful changed-source execution is not yet recorded here.",
       "status": "partial"
+    },
+    {
+      "id": "overview-newsletter-signup",
+      "journey": "Subscribe to the newsletter or permanently dismiss the Overview invitation",
+      "layers": [
+        "identity",
+        "authorization",
+        "storage",
+        "recovery"
+      ],
+      "scope": "Authenticated Overview account preference and server-side Ghost request boundary; local BEAM evidence does not establish external delivery.",
+      "status": "partial",
+      "gaps": "Ghost availability, external receipt, and native browser journey remain unverified.",
+      "preferred_gap": "Run the authenticated browser journey against a controlled Ghost-compatible endpoint and record receipt without exposing mailbox or token data.",
+      "evidence": [
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/newsletter_property_test.exs",
+          "assertion": "only bounded valid mailboxes can reach the subscription boundary",
+          "scope": "Bounded Hegel invalid-input property rejects malformed mailboxes before the request boundary; no external delivery",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-overview-newsletter.md",
+          "record_assertion": "focused Marshall run passed **40 tests**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/overview_live_test.exs",
+          "assertion": "refute has_element?(view, \"#overview-newsletter\")",
+          "scope": "The authenticated empty Overview renders the fixed no-JavaScript form and a dismissal event removes the invitation; packaged browser remount persistence remains a separate gap",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-overview-newsletter.md",
+          "record_assertion": "focused Marshall run passed **40 tests**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/accounts/newsletter_dismissal_test.exs",
+          "assertion": "self dismissal persists and remains dismissed when repeated from a stale account",
+          "scope": "Database-backed own-account persistence, unrelated-account isolation and repeated stale snapshot dismissal; no browser remount",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-overview-newsletter.md",
+          "record_assertion": "focused Marshall run passed **40 tests**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/accounts/newsletter_dismissal_test.exs",
+          "assertion": "foreign, anonymous and non-user actors cannot dismiss an account invitation",
+          "scope": "Refused writes preserve both account preferences; separate tests reject false reset and retired-account stale actors",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-overview-newsletter.md",
+          "record_assertion": "focused Marshall run passed **40 tests**"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/newsletter_property_test.exs",
+          "assertion": "successful Ghost responses produce a success without exposing request data",
+          "scope": "Injected requester property checks safe success and the fixed subscription payload; no external Ghost request",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-overview-newsletter.md",
+          "record_assertion": "focused Marshall run passed **40 tests**"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/newsletter_property_test.exs",
+          "assertion": "Ghost and transport failures collapse to the safe unavailable result",
+          "scope": "Injected requester properties cover token HTTP, signup HTTP and transport failures; no provider acceptance",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-overview-newsletter.md",
+          "record_assertion": "focused Marshall run passed **40 tests**"
+        }
+      ],
+      "denial": "Foreign actors cannot dismiss another account; malformed mailboxes and all upstream failures are refused safely without secret diagnostics.",
+      "boundary": "Marshall owns account preference and request validation; Ghost owns subscription state and delivery."
+    },
+    {
+      "id": "guest-reflection-current-execution",
+      "journey": "Discover the current guest and eligible private integrations without credential disclosure",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "recovery"
+      ],
+      "scope": "Declared reflection protocol, dedicated Peach control role and projection fixture; source and test presence do not establish fleet enablement or successful native guest reflection",
+      "status": "partial",
+      "gaps": "Fresh/stale execution, credential expiry and generated rotation/revocation histories, host loss and same-host native network isolation need recorded property and machine execution; credential unit tests passed in the focused 40-test Marshall run, and the Peach fixture validates the codec without invoking the HTTP Plug",
+      "preferred_gap": "Add generated current/stale execution and dedicated credential histories, then run a packaged NixOS guest allowed/refused projection journey with Peach enabled and retain exact outcomes",
+      "evidence": [
+        {
+          "kind": "property",
+          "path": "protocol/test/reflection_test.exs",
+          "assertion": "comments are bounded and never accept NUL bytes",
+          "scope": "100 generated comment cases passed with explicit 2048/2049-byte, NUL and invalid-UTF-8 boundaries; no guest or HTTP execution",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-guest-reflection.md",
+          "record_assertion": "reflection protocol focused run passed **2 tests**"
+        },
+        {
+          "kind": "unit",
+          "path": "protocol/test/reflection_test.exs",
+          "assertion": "rejects snapshots with secret-shaped header values",
+          "scope": "A malformed snapshot containing a header value refuses; this fixture alone does not isolate every valid-shape secret boundary",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-guest-reflection.md",
+          "record_assertion": "reflection protocol focused run passed **2 tests**"
+        },
+        {
+          "kind": "unit",
+          "path": "protocol/test/private_services_test.exs",
+          "assertion": "canonical endpoint, zone and approved lifetime policy",
+          "scope": "Fixed certificate-name expectation includes reflection in the four-test private-services suite; the function has no runtime consumer and this does not inspect or validate a deployed leaf",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-guest-reflection.md",
+          "record_assertion": "private-services suite passed **4 tests**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/control/peach_service_test.exs",
+          "assertion": "uses a dedicated credential shape and refuses malformed requests",
+          "scope": "Malformed credential shape and malformed snapshot request refuse; database-backed expiry/revocation is separate",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-guest-reflection.md",
+          "record_assertion": "focused Marshall run passed **40 tests**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/peach/credentials_test.exs",
+          "assertion": "rotation authenticates the new secret, revokes the old one and retains secret-free audit",
+          "scope": "Database-backed credential rotation/revoke and audit redaction; no HTTP or native guest request",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-guest-reflection.md",
+          "record_assertion": "focused Marshall run passed **40 tests**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/peach/credentials_test.exs",
+          "assertion": "users cannot read or mutate internal credentials or their audit history",
+          "scope": "Foreign user read/mutation refusal for credentials and generated versions; no deployed credential custody claim",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-guest-reflection.md",
+          "record_assertion": "focused Marshall run passed **40 tests**"
+        },
+        {
+          "kind": "unit",
+          "path": "peach/test/http_test.exs",
+          "assertion": "assert checked.version == 1",
+          "scope": "Validates a versioned projection fixture through the protocol codec; it does not invoke the HTTP Plug",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/private-services/driver.py",
+          "assertion": "https://reflection.internal/ | grep -Fx 403",
+          "scope": "Declared native fixture checks the fixed private DNS/TLS endpoint refuses without a current binding; no recorded execution or successful projection",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "audi/test/config_test.exs",
+          "assertion": "private reflection backend is optional and accepts only bounded canonical socket paths",
+          "scope": "Runtime decoder permits omitted/null Peach backend and validates configured canonical bounded Unix paths; native enabled Peach socket and guest projection remain separate",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-guest-reflection.md",
+          "record_assertion": "run passed **15 tests**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/peach/credentials_test.exs",
+          "assertion": "Peach control accepts its current credential and refuses a Galileo credential",
+          "scope": "Dedicated host credential admits only Peach control; same-host Galileo and revoked Peach credentials refuse in the recorded database-backed fixture",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-guest-reflection.md",
+          "record_assertion": "focused Marshall run passed **40 tests**"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/verification/tests/evaluation/ziggy.nix",
+          "assertion": "assert !ready.services.peach.enable;",
+          "scope": "Nix private-service fixture evaluation passed with Peach disabled in 11 seconds; no runtime activation or reflection request",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-guest-reflection.md",
+          "record_assertion": "passed in **11 seconds**"
+        },
+        {
+          "kind": "unit",
+          "path": "audi/test/config_test.exs",
+          "assertion": "disabled reflection refuses before requesting connector authority",
+          "scope": "Exact HTTPS Host/SNI request refuses before invalid connector options can obtain authority; BEAM Plug fixture only",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-guest-reflection.md",
+          "record_assertion": "run passed **15 tests**"
+        }
+      ],
+      "denial": "Malformed or foreign host bindings, stale execution, stopped or retired machines, expired or revoked Peach credentials and disallowed profiles must refuse without returning a retained projection or secret header values",
+      "boundary": "Audi supplies the trusted local execution binding; Peach uses its dedicated host credential; Marshall alone derives current machine and integration authority"
     }
   ]
 }

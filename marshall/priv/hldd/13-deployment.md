@@ -427,7 +427,18 @@ the [agents review](repo:docs/architecture/reviews/2026-10-14-windows-guest-agen
 and the [multi-OS review](repo:docs/architecture/reviews/2026-10-16-multi-os-guest-images.md).
 ## Reflection deployment
 
-The private frontend routes `reflection.internal` to Peach. Peach is host-bound
-and depends on the Marshall control service; packaged NixOS wiring and guest
-journey evidence remain pending.
+The private frontend routes `reflection.internal` to Peach's Unix socket.
+The declared module runs as the unprivileged `peach` user with a private runtime
+directory, dedicated host-bound Marshall credential and CA delivered as systemd
+credentials. It depends on Lilly for the local host identity. Peach is optional
+beside `audiPrivate`: disabled Peach produces a null backend socket, and
+`reflection.internal` refuses before guest authority is requested. Enabling it
+requires a bounded canonical Unix-socket path. Mandatory Lilly, Ziggy and Galileo
+dependencies remain. Fleet enablement, socket access and credential lifetime,
+and complete native guest journeys remain separate acceptance work.
 
+Before enabling reflection, reissue the private leaf through the existing offline
+issuer custody with the fixed `reflection.internal` SAN. Read-only inspection
+found only `llm.internal` and `*.integration.internal` on deployed leaves. Current
+private health checks validate `llm.internal`; their success does not establish
+reflection hostname verification. Disabled Peach requires no certificate change.

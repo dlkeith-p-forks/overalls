@@ -7828,6 +7828,125 @@ Default:
 ```
 
 
+## `services.peach.caFile`
+
+No additional description is declared by the module.
+
+Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+"<store>/nss-cacert-3.126/etc/ssl/certs/ca-bundle.crt"
+```
+
+
+## `services.peach.controlPlane`
+
+No additional description is declared by the module.
+
+Type: `string`.
+
+Default:
+
+```nix
+<derived from required configuration>
+```
+
+
+## `services.peach.credentialFile`
+
+No additional description is declared by the module.
+
+Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+"/run/overalls-secrets/peach/control.token"
+```
+
+
+## `services.peach.enable`
+
+Whether to enable guest reflection service.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+false
+```
+
+Example:
+
+```nix
+true
+```
+
+
+## `services.peach.hostId`
+
+No additional description is declared by the module.
+
+Type: `string matching the pattern [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}`.
+
+Default:
+
+```nix
+<derived from required configuration>
+```
+
+
+## `services.peach.package`
+
+No additional description is declared by the module.
+
+Type: `package`.
+
+Default:
+
+```nix
+<derivation overalls-peach-0.1.0>
+```
+
+
+## `services.peach.secretUnits`
+
+No additional description is declared by the module.
+
+Type: `list of string`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
+## `services.peach.secretsFile`
+
+No additional description is declared by the module.
+
+Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `services.peach.socket`
+
+No additional description is declared by the module.
+
+Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+"/run/peach/reflection.sock"
+```
+
+
 ## `services.porsche.administrativeAccess`
 
 Administrative access path. Console-only deployments must disable administrative OpenSSH.
@@ -8122,7 +8241,7 @@ Type: `package`.
 Default:
 
 ```nix
-<derivation underclass-0.1.0-469aff4>
+<derivation underclass-0.1.0-7169223>
 ```
 
 

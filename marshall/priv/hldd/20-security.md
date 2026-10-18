@@ -24,7 +24,32 @@ recorded machine evidence in the
 
 ## Locale is presentation, not authority
 
-Language headers and session values are untrusted, bounded and validated against the supported locale set. Only the current user may persist their override; reset restores browser negotiation. Neither locale nor text direction changes login, Cedar, execution fences, storage ownership or recovery authority. The Porsche envelope carries a canonical locale for human prose, with English fallback for older peers; machine identifiers and terminal byte streams stay unchanged. Bidi isolation protects interpolated identifiers from misleading direction changes. See [ADR-0197](repo:docs/architecture/decisions/0196-single-account-settings-page.md); native/browser execution and linguistic review remain gaps until recorded.
+Language headers and session values are untrusted, bounded and validated against the supported locale set. Only the current user may persist their override; reset restores browser negotiation. Neither locale nor text direction changes login, Cedar, execution fences, storage ownership or recovery authority. The Porsche envelope carries a canonical locale for human prose, with English fallback for older peers; machine identifiers and terminal byte streams stay unchanged. Bidi isolation protects interpolated identifiers from misleading direction changes. See [ADR-0201](repo:docs/architecture/decisions/0201-localized-human-surfaces.md); native/browser execution and linguistic review remain gaps until recorded.
+
+## Guest reflection and dedicated Peach credentials
+
+Reflection reveals bounded machine metadata and eligible integration descriptors,
+never credential values. [ADR-0203](repo:docs/architecture/decisions/0203-guest-reflection.md)
+keeps projection and credential authority in Marshall. Peach does not own a
+database or retained snapshot authority.
+
+| Layer | Authority and expected refusal |
+| --- | --- |
+| Identity | Audi supplies the trusted private-service binding; guest-supplied host or VM fields cannot establish identity. Peach requires its configured host. |
+| Authorization | Dedicated Peach credentials admit only the Peach control service. Compute/Audi credentials and ordinary user access to credential rows or versions refuse. |
+| Transport | Private TLS routing and the local Peach socket preserve the binding; the packaged service loads its control credential and CA through systemd credentials. Tokens remain outside the Nix store and diagnostics. Enabled reflection requires offline leaf reissue with `reflection.internal`; current deployed leaf SANs and `llm.internal` health do not establish reflection TLS. |
+| Execution | Marshall checks the current host, placement, epoch and completed start operation. Stale, stopped, relocated or retired executions receive unavailable rather than a retained projection. |
+| Isolation | Responses contain header names and kinds, without values or secrets. Same-host native network isolation still requires executed machine evidence. |
+| Storage | Marshall stores only the random secret digest; rotation serializes on the host, revokes the previous credential and retains secret-free PaperTrail versions. Peach cannot read PostgreSQL directly. |
+| Recovery | Current revocation, database-clock expiry and enabled-host checks gate every request. Lost control admission cannot fall back to a cached snapshot; host loss and cross-host recovery remain unverified. |
+
+The focused 40-test Marshall run records credential rotation/revocation and
+foreign-user refusal in local database fixtures; the native refusal fixture
+remains unexecuted. The recorded focused protocol run covers 100 bounded comment
+cases; Audi's 15-test decoder/refusal run and disabled-Peach Nix evaluation cover
+optional rollout only. The current Peach HTTP-named test exercises only the projection
+codec. Successful Peach HTTP/guest projection and generated stale/expired histories
+remain gaps, and the declared fleet does not yet enable Peach.
 
 ## Agent context and guidance boundaries
 

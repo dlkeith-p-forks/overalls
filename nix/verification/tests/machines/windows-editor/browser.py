@@ -111,7 +111,9 @@ class Controller:
         """@cc [owner:ghuntley,label:verification;security] windows-editor-closed-fixture-staging
         Staging MUST require a fresh fixed run directory with administrator and
         SYSTEM-only writes. Only local packaged fixture files and the validated
-        binding may enter it; the controller MUST NOT replace account authority.
+        binding may enter it. Transferred files MUST receive that exact ACL
+        before the controller reads or executes them; the controller MUST NOT
+        replace account authority.
         """
         root = rf"C:\overalls\editor-acceptance\{self.run_id}"
         script = (
@@ -150,6 +152,21 @@ class Controller:
             staged = subprocess.run(command, check=False, capture_output=True, timeout=180)
             if staged.returncode != 0:
                 raise RuntimeError("fixture file staging failed")
+        # Win32 OpenSSH's SFTP mode conversion can leave uploaded files with an
+        # empty protected DACL. The owning administrator can restore this fixed
+        # fixture policy before attempting to execute the transferred script.
+        script = (
+            "$ErrorActionPreference='Stop'; "
+            f"[string]$Root='{root}'; "
+            "foreach ($Name in @('control.ps1','extension.js','package.json','binding.json')) { "
+            "[string]$Path=$Root+'\\'+$Name; "
+            "[System.Security.AccessControl.FileSecurity]$Acl=Get-Acl -LiteralPath $Path; "
+            "$Acl.SetSecurityDescriptorSddlForm('D:P(A;;FA;;;SY)(A;;FA;;;BA)'); "
+            "Set-Acl -LiteralPath $Path -AclObject $Acl }; "
+            "Write-Output 'FIXTURE-ACL-READY'"
+        )
+        if self.powershell(script).strip() != b"FIXTURE-ACL-READY":
+            raise RuntimeError("fixture transferred ACL failed")
 
     def operation(self, operation: str) -> dict[str, object]:
         if operation not in {"setup", "snapshot", "kill-broker", "kill-worker"}:

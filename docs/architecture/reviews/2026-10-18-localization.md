@@ -1,6 +1,6 @@
 # Localized human surfaces (2026-10-18)
 
-Scope: [ADR-0200](../decisions/0200-localized-human-surfaces.md). Reviewed
+Scope: [ADR-0201](../decisions/0201-localized-human-surfaces.md). Reviewed
 against the requested Marshall web, Porsche interactive output, Localize
 integration, locale preference and RTL behavior.
 
@@ -37,11 +37,15 @@ integration, locale preference and RTL behavior.
 
 ## HLDD source-group review
 
+The following source-group findings describe the recorded focused snapshot
+above. Later integration adds the source changes and evidence gaps described
+by the suspension, reflection and fleet reviews; their gates remain separate.
+
 Marshall's reviewed changes keep locale as presentation: saved overrides are
 self-only, retired users and foreign targets refuse, browser negotiation is
 bounded, and Arabic/Urdu values receive Localize isolation. Git preferences live
-inside the existing Profile section; authentication and the three account anchors
-remain unchanged. Chapter 08 describes CLDR formatting, protected documentation
+inside the combined Account page; the current integration places them in a fourth
+anchored section under the same fresh-login gate. Chapter 08 describes CLDR formatting, protected documentation
 tokens, catalog validation and the settings location. Chapter 20 retains explicit
 authority and native/browser evidence limits. The localization scenario records
 the executed bounded tests below without closing its broader gaps.
@@ -61,7 +65,7 @@ this adds reference text without changing fleet configuration.
 Porsche's changes configure the same bidi-safe interpolation contract and update
 human command summaries/catalogs. Command names, usage, option tokens and JSON
 contracts stay literal. The focused Marshall run does not execute Porsche's own
-suite. Governance changes renumber the localization/Git ADRs to 0198/0199, tighten
+suite. Canonical governance assignments retain localization/Git as ADR-0201/0198, tighten
 the localization skill/catalog checker and restore recognition of actual Hegel
 property declarations in coverage discovery; historical revised test fixtures
 remain `present` unless their exact execution is recorded. No historical native

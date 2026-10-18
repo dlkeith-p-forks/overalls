@@ -18,6 +18,32 @@ transport and destination capacity remain separate failure boundaries. Declared
 placement does not prove multi-host availability; the suspension fleet test is
 the corresponding native acceptance boundary.
 
+## Peach private reflection placement
+
+Peach is a separately packaged local service behind Audi's private Unix-socket
+frontend, using its own unprivileged user and host-bound control credential.
+Marshall's Peach domain retains only credential digests; it builds each bounded
+projection from current Compute and integration authority. Peach/database loss
+withholds reflection rather than serving a retained snapshot. The source module
+and evaluation test exist, but the host inventory does not yet declare Peach
+enabled. Audi's mandatory Lilly, Ziggy and Galileo dependencies remain; disabled
+Peach emits a null optional socket and reflection refuses before execution
+admission. A configured backend requires a bounded canonical Unix-socket path.
+The public placement projection includes the Peach role without serializing its
+credential or runtime configuration. Enabled socket access and credential
+lifetime still need review and native execution.
+
+```mermaid
+flowchart LR
+  Guest[Guest private request] --> Front[Local Audi private frontend]
+  Front -->|Unix socket| Peach[Local Peach service]
+  Peach -->|authenticated control request| Marshall[Marshall current projection]
+  Marshall --> DB[(Existing PostgreSQL)]
+```
+
+This graph describes the intended local request boundary; it is not evidence of
+activated fleet placement or a native guest journey.
+
 ## Foreign Linux guest PAM runtime
 
 Arch/Alma's `overalls-pam-helpers.service` is a root oneshot inside each guest,

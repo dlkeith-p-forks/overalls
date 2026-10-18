@@ -1,6 +1,6 @@
-# ADR-0200: Localized human-facing surfaces
+# ADR-0201: Localized human-facing surfaces
 
-- ID: ADR-0200
+- ID: ADR-0201
 - Date: 2026-10-18
 - Status: accepted
 - Implementation: partial

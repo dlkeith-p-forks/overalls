@@ -93,6 +93,7 @@ assert builtins.elem "ziggy" ready.services.overallsFleetExporter.roles;
 assert builtins.elem "ziggy.service" ready.services.overallsFleetExporter.units;
 assert builtins.elem "ziggy-proxy" ready.systemd.services.overalls-fleet-exporter.serviceConfig.SupplementaryGroups;
 assert ready.services.lilly.privateServices.enable;
+assert !ready.services.peach.enable;
 assert lillyDependents ready ? audi-private;
 assert followsLilly ready;
 assert !ready.services.lilly.ingress.enable;

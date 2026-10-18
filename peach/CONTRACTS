@@ -1,0 +1,21 @@
+@cc [owner:ghuntley,label:architecture;security] peach-projection-authority
+Peach MUST obtain each reflection projection through Marshall's dedicated Peach
+control service. Peach MUST NOT read Marshall PostgreSQL directly, derive VM or
+integration authority from guest-supplied identity fields, or serve a retained
+snapshot after control admission fails.
+
+@cc [owner:ghuntley,label:security;protocol] peach-local-binding-and-secret-boundary
+An HTTP reflection response MUST require a validated private-service binding for
+Peach's configured host and a protocol-valid Marshall snapshot. Responses MUST
+omit credentials, integration header values and control tokens. Unknown paths,
+malformed bindings and failed control requests MUST NOT return a projection.
+
+@cc [owner:ghuntley,label:security;deployment] peach-dedicated-control-custody
+Peach MUST use its dedicated host-bound control credential and configured CA.
+Compute or Audi credentials MUST NOT authenticate Peach requests. Credentials and
+reflection request payloads MUST NOT enter diagnostic output or the Nix store.
+
+@cc [owner:ghuntley,label:verification] peach-evidence-boundary
+Projection codec fixtures MUST NOT be represented as HTTP, native guest, network
+isolation, credential lifecycle or production deployment acceptance. Such claims
+MUST identify the exact executed test and supporting result.
