@@ -1,5 +1,3 @@
-import Hegel
-import Hegel.Gen
 defmodule OverallsAntithesis.SDKTest do
   use ExUnit.Case, async: false
 
