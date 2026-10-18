@@ -60,6 +60,14 @@ defmodule Marshall.Accounts.User do
       require_atomic? false
     end
 
+    # @cc [owner:ghuntley,label:security] account-git-preferences-self-only
+    # Git preferences MUST be writable only on the authenticated actor's live
+    # account, with bounded validated identity fields and no owner reassignment.
+    update :git_settings do
+      accept [:git_username, :git_email, :commit_trailers_enabled]
+      require_atomic? false
+    end
+
     update :security_state do
       accept([
         :mfa_enabled,
@@ -269,6 +277,10 @@ defmodule Marshall.Accounts.User do
       authorize_if expr(id == ^actor(:id) and is_nil(deleted_at))
     end
 
+    policy action(:git_settings) do
+      authorize_if expr(id == ^actor(:id) and is_nil(deleted_at))
+    end
+
     policy action(:security) do
       authorize_if actor_present()
     end
@@ -292,6 +304,14 @@ defmodule Marshall.Accounts.User do
 
   attributes do
     uuid_primary_key(:id)
+
+    attribute :git_username, Marshall.Accounts.GitUsername, allow_nil?: false, default: "Overalls"
+
+    attribute :git_email, Marshall.Accounts.EmailAddress,
+      allow_nil?: false,
+      default: "noreply@overalls.dev"
+
+    attribute :commit_trailers_enabled, :boolean, allow_nil?: false, default: true
 
     attribute :git_username, Marshall.Accounts.GitUsername, allow_nil?: false, default: "Overalls"
 
