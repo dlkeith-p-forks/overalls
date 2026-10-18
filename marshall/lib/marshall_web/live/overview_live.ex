@@ -156,7 +156,11 @@ defmodule MarshallWeb.OverviewLive do
                     <div class="preview-labels">
                       <UI.pinned_label vm={vm} id={"overview-machine-pinned-#{vm.id}"} />
                       <UI.os_label vm={vm} id={"overview-machine-os-#{vm.id}"} />
-                      <span class="status-label" data-state={vm.observed_state}>{UI.machine_state(vm)}</span>
+                      <span
+                        class="status-label"
+                        data-state={vm.observed_state}
+                        data-tone={UI.machine_tone(vm)}
+                      >{UI.machine_state(vm)}</span>
                     </div>
                     <div class="preview-links">
                       <.link

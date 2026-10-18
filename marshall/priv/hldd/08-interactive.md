@@ -74,7 +74,18 @@ shares one header. A bordered heading box carries the machine name, then an
 operating-system label that is the registered display name of the machine's
 immutable image (`[NixOS]`, `[Ubuntu 26.04 LTS]`, `[Windows Server 2025]`), then
 its state label (`[Running]`, `[Stopping]`, …); a machine whose image row is
-missing shows no operating-system label rather than a placeholder. Beneath them
+missing shows no operating-system label rather than a placeholder. Every status
+label is one bracketed word on the character grid whose text names the state;
+severity is weight, style or inverse video, never colour: `[Pinned]` and the
+operating system are secondary-colour metadata, `[Stopped]` is plain text,
+`[Running]` is bold, transitions (`[Starting]`, `[Stopping]`, `[Deleting]`,
+`[Pending]`, `[Unknown]`) are italic, and `[Failed]` is a bold inverse-video
+block one row tall with a one-cell margin inside the block. The label carries
+the observed state in `data-state` and the severity in `data-tone` (`danger`,
+`success`, `pending`, `muted`, or none for neutral states) on the Overview,
+the Machines list and the machine header alike; the tone is decided in the
+same order as the text, so a failed machine with delete intent reads
+`[Deleting]` as a transition rather than `[Failed]`. Beneath them
 sit the resource facts (vCPU, memory, disk, profile) and the machine ID with a
 one-line **Copy** control; the authorized power actions and **Open VS Code**
 stay on the right and wrap under the summary on phone widths. The "Connect from

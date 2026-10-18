@@ -440,7 +440,12 @@ defmodule MarshallWeb.Layouts do
 
   attr(:id, :string, default: nil)
   attr(:state, :string, default: nil)
-  attr(:tone, :string, default: nil, values: [nil, "success", "warning", "danger", "muted"])
+
+  attr(:tone, :string,
+    default: nil,
+    values: [nil, "success", "warning", "danger", "pending", "muted"]
+  )
+
   slot(:inner_block, required: true)
 
   def status(assigns) do

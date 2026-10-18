@@ -10726,7 +10726,7 @@
       ],
       "boundary": "Presentation changes never alter authorization, terminal transport, element identifiers or hook names; every stylesheet, script and font is served from the application origin.",
       "denial": "Reject utility-framework classes, colour literals outside the token file, external resource references, cross-origin requests, horizontal overflow, off-grid layout on workspace routes and utility classes on the public sign-in page.",
-      "scope": "Structural gate over templates, stylesheets and presentation JavaScript; Playwright probe against the disposable fixture covering both themes, 390-pixel layouts, token contrast, JetBrains Mono availability, grid alignment on workspace routes, drawer focus containment and Escape, creation draft identity across reload, reduced-motion compliance, administration navigation, empty overview, session-free public documentation and the absence of any request to another origin. The machine header check asserts the bordered heading box holds the name, state label, operating-system label (image display name), machine ID and power actions on desktop and phone widths, and that the machine-ID and installer Copy controls write only the displayed text.",
+      "scope": "Structural gate over templates, stylesheets and presentation JavaScript; Playwright probe against the disposable fixture covering both themes, 390-pixel layouts, token contrast, JetBrains Mono availability, grid alignment on workspace routes, drawer focus containment and Escape, creation draft identity across reload, reduced-motion compliance, administration navigation, empty overview, session-free public documentation and the absence of any request to another origin. The machine header check asserts the bordered heading box holds the name, state label, operating-system label (image display name), machine ID and power actions on desktop and phone widths, and that the machine-ID and installer Copy controls write only the displayed text. The status-label check asserts the one-row inverse-video Failed, bold Running and plain Stopped presentation on the Overview and Machines pages in both themes and at phone width.",
       "status": "partial",
       "gaps": "The fixture holds synthetic accounts and machines, so the probe proves rendering and interaction rather than guest execution. Contrast sampling and the grid check are not an assistive-technology audit. Native NixOS browser tests exercise the packaged release only where recorded by their own scenarios.",
       "preferred_gap": "Rerun the NixOS handbook and control-room browser machine tests on the merged presentation and record them here; a property over the token file and glyph table would add little beyond the structural gate.",
@@ -10770,6 +10770,20 @@
           "path": "marshall/scripts/monospace_browser_probe.py",
           "assertion": "check_machine_header",
           "scope": "Heading-box containment of name, state, operating system, machine ID and power actions in both themes and at 390px; machine-ID copy reports \"Machine ID copied.\" and the clipboard holds only the displayed ID before the installer copy check. Synthetic fixture machines only.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/machines_live_test.exs",
+          "assertion": "status labels name the state in text and carry its severity tone",
+          "scope": "Machines list and machine header labels render Failed/danger, Running/success, Starting and Stopping/pending and Stopped without a tone, with the observed data-state and the [OS] [State] order; the Overview test covers the same Failed and Running labels in the preview label row. Seeded observations, not provisioner outcomes.",
+          "execution": "present"
+        },
+        {
+          "kind": "manual",
+          "path": "marshall/scripts/monospace_browser_probe.py",
+          "assertion": "check_status_labels",
+          "scope": "Overview and Machines in both themes at desktop and 390px: the seeded Failed label is bold inverse video exactly one grid row tall, Running is bold and Stopped plain on the page colours, and the Failed and Stopped labels never share a colour. Synthetic fixture machines; no guest execution.",
           "execution": "present"
         }
       ]
