@@ -210,7 +210,9 @@ class Runner:
                     hostname=self.config["hostname"],
                     run_id=identity,
                     started_at=started,
-                    completed_at=int(time.time()),
+                    # A backward wall-clock step mid-capture must not publish a
+                    # point that its own retention validator then refuses.
+                    completed_at=max(started, int(time.time())),
                     revision=self.config["revision"],
                     complete=True,
                     components=journal.value["components"],

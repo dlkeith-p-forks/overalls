@@ -55,7 +55,7 @@ if [[ "$storage_stub" == 1 ]]; then
   chmod 0600 "$secrets/.lilly-a-stub-image.json.new"
   mv -f "$secrets/.lilly-a-stub-image.json.new" "$secrets/lilly-a-stub-image.json"
   jq -n --arg image "$stub_image" \
-    '{version:1,scope:"antithesis-harness-stub-not-zfs",zpool_guid:"10001",dataset_guid:"10002",dataset:"overalls/antithesis",total_bytes:68719476736,free_bytes:51539607552,image_path:$image}' \
+    '{version:1,scope:"antithesis-harness-stub-not-zfs",zpool_guid:"10001",dataset_guid:"10002",dataset:"overalls/antithesis",total_bytes:68719476736,free_bytes:51539607552,stub_cpu_millicores:1000,image_path:$image}' \
     > "$runtime/.storage-stub.json.new"
   chmod 0600 "$runtime/.storage-stub.json.new"
   mv -f "$runtime/.storage-stub.json.new" "$runtime/storage-stub.json"

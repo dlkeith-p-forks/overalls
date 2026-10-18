@@ -6,8 +6,9 @@ defmodule OverallsAntithesis.Lilly.StubStorage do
   The Lilly entrypoint writes one fixed substrate file when Compose selects the
   stub; this module turns it into a pool report with configured (not measured)
   totals so Marshall's real admission code has storage headroom to decide on.
-  Host CPU and memory headroom stay measured from the container's cgroups, and
-  the advertised image is a tiny non-bootable artifact set that Lilly still
+  Memory headroom stays measured from the container's cgroups; CPU headroom is
+  the file's labelled STUB budget capped by the measured effective cores,
+  because the hosted single-CPU VM never measures a whole idle core. The advertised image is a tiny non-bootable artifact set that Lilly still
   digest-verifies with `Lilly.Host.Image.load/1`. The module exists only in
   `ANTITHESIS_HARNESS=1` builds.
   """
@@ -16,12 +17,13 @@ defmodule OverallsAntithesis.Lilly.StubStorage do
   @env "OVERALLS_ANTITHESIS_STORAGE_STUB_FILE"
   @scope "antithesis-harness-stub-not-zfs"
   @max_bytes 9_223_372_036_854_775_807
-  @keys ~w(version scope zpool_guid dataset_guid dataset total_bytes free_bytes image_path)
+  @keys ~w(version scope zpool_guid dataset_guid dataset total_bytes free_bytes stub_cpu_millicores image_path)
 
   @type t :: %{
           identity: OverallsProtocol.Storage.identity(),
           total_bytes: pos_integer(),
           free_bytes: non_neg_integer(),
+          stub_cpu_millicores: pos_integer(),
           image_path: Path.t()
         }
 
@@ -60,6 +62,7 @@ defmodule OverallsAntithesis.Lilly.StubStorage do
            "dataset" => dataset,
            "total_bytes" => total,
            "free_bytes" => free,
+           "stub_cpu_millicores" => cpu,
            "image_path" => image_path
          } = value
        ) do
@@ -69,9 +72,17 @@ defmodule OverallsAntithesis.Lilly.StubStorage do
          OverallsProtocol.Storage.valid_identity?(identity) and
          is_integer(total) and total in 1..@max_bytes and
          is_integer(free) and free in 0..total and
+         is_integer(cpu) and cpu in 1..65_536_000 and
          is_binary(image_path) and Path.type(image_path) == :absolute and
          Path.expand(image_path) == image_path do
-      {:ok, %{identity: identity, total_bytes: total, free_bytes: free, image_path: image_path}}
+      {:ok,
+       %{
+         identity: identity,
+         total_bytes: total,
+         free_bytes: free,
+         stub_cpu_millicores: cpu,
+         image_path: image_path
+       }}
     else
       :error
     end
@@ -112,7 +123,7 @@ defmodule OverallsAntithesis.Lilly.StubStorage do
   @doc "Whether a stub-backed report may advertise placement readiness."
   # @cc [owner:ghuntley,label:capacity;verification] stub-readiness-requires-measured-report
   # Stub readiness MUST require the stub to be selected and valid, measured
-  # host CPU/memory headroom, every pool observed against the stub identity,
+  # memory headroom, the capped stub CPU budget, every pool observed against the stub identity,
   # and at least one digest-verified stub image. It grants Marshall placement
   # eligibility only; the controlled executor still claims no execution.
   @spec ready?(OverallsProtocol.report()) :: boolean()

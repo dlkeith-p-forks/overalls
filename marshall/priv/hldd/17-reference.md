@@ -285,8 +285,8 @@ checks held throughout. Its evidence is emulated, not native.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
-pool totals for its enrolled pool identity, measured cgroup CPU and memory
-headroom, and a tiny non-bootable image it digest-verifies before advertising;
+pool totals for its enrolled pool identity, measured cgroup memory headroom, a
+labelled STUB CPU budget of one core capped by the measured cgroup cores, and a tiny non-bootable image it digest-verifies before advertising;
 the enrollment operator registers that image through Marshall's catalog action
 and then enables lilly-a through the reviewed CLI `enable` action, which
 refuses until Lilly's stub report is fresh and execution-ready. A fully stub-backed report advertises placement readiness, so Marshall's real
@@ -420,11 +420,13 @@ small SDK-chosen fraction of cases: the workload preloads the image's pinned
 libfaketime into that one coordinator process, and a fixed Restic wrapper steps
 its wall clock back 120 seconds when the host-state upload begins, after the
 journal recorded `started_at`. Restic, raw oracle reads and the production
-modules are unchanged, and every existing `always` check still applies. A local
-run of the real coordinator under the stub recorded `completed_at` before
-`started_at`, published a tag-visible manifest and then failed its own
-retention validator, so the publication-validator property is expected to fail
-in stepped cases until the coordinator changes. The stub is not evidence of
+modules are unchanged, and every existing `always` check still applies. Hosted
+run `6993853fa020fd46ed8e13c6c123ac86-65-0` confirmed the defect the stub
+targets: the coordinator recorded `completed_at` before `started_at`, published
+a tag-visible manifest and then failed its own retention validator. The
+coordinator now publishes `completed_at` no earlier than `started_at`, and the
+`backup-operators` evaluation check reproduces the step with a shim-triggered
+clock offset and requires a retention-valid, inspectable point. The stub is not evidence of
 real kernel or host clock steps, NTP behaviour or production hosts. The `satellite-standin` **guest stand-in** is a labelled harness process
 from the workload image that shares only `lilly-a`'s network namespace and
 speaks the guest-side TLS protocol to `169.254.254.1`. It is not a guest: it has

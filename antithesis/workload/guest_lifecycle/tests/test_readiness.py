@@ -40,10 +40,10 @@ class ReadinessTests(unittest.TestCase):
             (catalog(status="refused"), "catalog_not_ok"),
             (catalog(known=False), "capacity_unknown"),
             (catalog(image="sha256:" + "b" * 64), "image_not_offered"),
-            (catalog(vcpu=0), "capacity_insufficient"),
-            (catalog(memory=1), "capacity_insufficient"),
-            (catalog(memory=2_147_483_648), "capacity_insufficient"),
-            (catalog(disk=4096), "capacity_insufficient"),
+            (catalog(vcpu=0), "capacity_insufficient_vcpu"),
+            (catalog(memory=1), "capacity_insufficient_memory"),
+            (catalog(memory=2_147_483_648), "capacity_insufficient_memory"),
+            (catalog(disk=4096), "capacity_insufficient_disk"),
         )
         for reply, reason in cases:
             with self.subTest(reason=reason):

@@ -68,9 +68,11 @@ defmodule OverallsAntithesis.Lilly.Collector do
 
   # @cc [owner:ghuntley,label:capacity;verification] stub-capacity-measured-compute
   # Only a selected, valid stub substrate MAY replace unavailable pool entries,
-  # and only with its configured stub totals. Host CPU and memory headroom MUST
-  # still come from Lilly's real usage sampler over this process's measured
-  # cgroup subtree; an unknown interval MUST stay nil. Without the stub, or with
+  # and only with its configured stub totals. Memory headroom, the interval and
+  # coverage MUST still come from Lilly's real usage sampler over this process's
+  # measured cgroup subtree; an unknown interval MUST stay nil. CPU headroom is
+  # the substrate's labelled STUB budget capped by the measured effective cores,
+  # because the hosted single-CPU VM never measures a whole idle core. Without the stub, or with
   # an invalid one, every pool MUST stay unavailable and no image is added.
   @spec stub_sample(
           {:ok, StubStorage.t()} | :disabled | {:error, :stub_storage_invalid},
@@ -85,10 +87,19 @@ defmodule OverallsAntithesis.Lilly.Collector do
   def stub_sample({:ok, stub}, pools, root, path, inventory, limits, previous, coverage) do
     prior = if is_map(previous), do: Map.get(previous, :usage)
     {capacity, usage} = Usage.sample(root, path, inventory, limits, prior, coverage)
+    capacity = stub_compute(capacity, stub, limits)
 
     {capacity, usage, Enum.map(pools, &StubStorage.pool_report(&1, stub)),
      StubStorage.image_ids(stub)}
   end
+
+  @spec stub_compute(map() | nil, StubStorage.t(), Limits.t()) :: map() | nil
+  defp stub_compute(capacity, stub, limits) when is_map(capacity) do
+    budget = min(stub.stub_cpu_millicores, limits.effective_cores * 1000)
+    Map.put(capacity, "cpu_headroom_millicores", budget)
+  end
+
+  defp stub_compute(capacity, _stub, _limits), do: capacity
 
   def stub_sample(_substrate, pools, _root, _path, _inventory, _limits, _previous, _coverage),
     do: {nil, nil, Enum.map(pools, &%{id: &1.id, unavailable: true, storage: &1.storage}), []}

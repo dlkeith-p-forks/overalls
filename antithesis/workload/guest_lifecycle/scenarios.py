@@ -19,7 +19,7 @@ from guest_lifecycle.domain import (
     vm_view,
 )
 from guest_lifecycle.operation import ComputeLifecycleOperator, OperationLedger, OperatorReply
-from guest_lifecycle.readiness import capacity_ready
+from guest_lifecycle.readiness import observed_gap
 from guest_lifecycle.witness import GuestSpec, GuestWitness, GuestWitnessClient
 
 LOG = logging.getLogger(__name__)
@@ -156,14 +156,9 @@ def run_physical_boot_cycle() -> int:
     witness = GuestWitnessClient(operator)
     identity_result = witness.identity()
     catalog_result = operator.catalog()
-    if (
-        identity_result.state is not State.OBSERVED
-        or identity_result.value is None
-        or catalog_result.state is not State.OBSERVED
-        or catalog_result.value is None
-        or not capacity_ready(catalog_result.value, identity_result.value)
-    ):
-        LOG.info("Guest lifecycle unexercised: image or measured capacity unavailable")
+    gap = observed_gap(identity_result, catalog_result)
+    if gap is not None or identity_result.value is None or catalog_result.value is None:
+        LOG.info("Guest lifecycle unexercised: %s", gap or "observation_missing")
         return 0
     image = identity_result.value
     disk_bytes = ((image.minimum_disk_bytes + 4095) // 4096) * 4096

@@ -6169,6 +6169,13 @@
           "record_assertion": "check passed in 1418 seconds, exit 0;"
         },
         {
+          "kind": "unit",
+          "path": "nix/verification/tests/evaluation/backup-operators.py",
+          "assertion": "test_backward_clock_step_publishes_a_retention_valid_point",
+          "scope": "Real coordinator and local encrypted Restic with the wall clock stepped back 120 seconds after the host-state upload; the published manifest keeps completed_at no earlier than started_at, inspects and survives its own retention. Regression for hosted Antithesis run 6993853fa020fd46ed8e13c6c123ac86-65-0. Not evidence of kernel, NTP or production clock steps.",
+          "execution": "present"
+        },
+        {
           "kind": "property",
           "path": "nix/verification/tests/evaluation/backup-workflow.py",
           "assertion": "test_exited_leader_reader_group_is_retired",

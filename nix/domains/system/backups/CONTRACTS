@@ -9,6 +9,8 @@ A complete host recovery point MUST reference successful captures of every
 required component. Flush failure or a stopped guest MUST NOT exclude its disks.
 Every owned snapshot MUST have durable cleanup intent before creation; uncertain
 cleanup remains visible and retryable. Foreign snapshots MUST never be destroyed.
+A published complete manifest MUST pass its own retention validator, including
+when the wall clock steps backward between started_at and publication.
 
 @cc [owner:ghuntley,label:recovery] backup-retention-reachability
 Retention MUST preserve all component snapshots referenced by retained completed

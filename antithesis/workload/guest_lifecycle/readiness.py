@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from core.outcome import State
+from core.outcome import Observation, State
 from guest_lifecycle.operation import ComputeLifecycleOperator, OperationLedger, OperatorReply
 from guest_lifecycle.witness import GuestIdentity, GuestWitnessClient
 
@@ -37,20 +37,28 @@ def capacity_gap(reply: OperatorReply, identity: GuestIdentity) -> str | None:
     vcpu = available.get("vcpu")
     memory = available.get("memory_bytes")
     disk = available.get("disk_bytes")
-    if not (
-        type(vcpu) is int
-        and vcpu >= identity.vcpu
-        and type(memory) is int
-        and memory >= identity.memory_bytes + VMM_OVERHEAD_BYTES
-        and type(disk) is int
-        and disk >= identity.minimum_disk_bytes
-    ):
-        return "capacity_insufficient"
+    if not (type(vcpu) is int and vcpu >= identity.vcpu):
+        return "capacity_insufficient_vcpu"
+    if not (type(memory) is int and memory >= identity.memory_bytes + VMM_OVERHEAD_BYTES):
+        return "capacity_insufficient_memory"
+    if not (type(disk) is int and disk >= identity.minimum_disk_bytes):
+        return "capacity_insufficient_disk"
     return None
 
 
 def capacity_ready(reply: OperatorReply, identity: GuestIdentity) -> bool:
     return capacity_gap(reply, identity) is None
+
+
+def observed_gap(
+    identity: Observation[GuestIdentity], catalog: Observation[OperatorReply]
+) -> str | None:
+    """Fixed reason token for an unusable identity or catalog observation."""
+    if identity.state is not State.OBSERVED or identity.value is None:
+        return f"guest_identity_{identity.state.value}"
+    if catalog.state is not State.OBSERVED or catalog.value is None:
+        return f"compute_catalog_{catalog.state.value}"
+    return capacity_gap(catalog.value, identity.value)
 
 
 def substrate_gap(request_root: Path) -> str | None:
@@ -64,7 +72,4 @@ def substrate_gap(request_root: Path) -> str | None:
     identity = GuestWitnessClient(operator).identity()
     if identity.state is not State.OBSERVED or identity.value is None:
         return f"guest_identity_{identity.state.value}"
-    catalog = operator.catalog()
-    if catalog.state is not State.OBSERVED or catalog.value is None:
-        return f"compute_catalog_{catalog.state.value}"
-    return capacity_gap(catalog.value, identity.value)
+    return observed_gap(identity, operator.catalog())
