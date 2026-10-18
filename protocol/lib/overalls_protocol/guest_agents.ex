@@ -4,7 +4,14 @@ defmodule OverallsProtocol.GuestAgents do
   can do. Lilly and Marshall branch on these capabilities, never on the set name.
   """
 
-  @type t :: :linux | :none | :windows_v1 | :windows_editor_v1 | :freebsd_v1 | :illumos_v1
+  @type t ::
+          :linux
+          | :linux_android_v1
+          | :none
+          | :windows_v1
+          | :windows_editor_v1
+          | :freebsd_v1
+          | :illumos_v1
 
   @type capabilities :: %{
           readiness: boolean(),
@@ -15,7 +22,11 @@ defmodule OverallsProtocol.GuestAgents do
           flush: boolean(),
           ssh: boolean(),
           agents: boolean(),
-          editor: boolean()
+          editor: boolean(),
+          android_sdk: boolean(),
+          adb: boolean(),
+          android_emulator: boolean(),
+          android_display: boolean()
         }
 
   @all %{
@@ -27,10 +38,22 @@ defmodule OverallsProtocol.GuestAgents do
     flush: true,
     ssh: true,
     agents: true,
-    editor: true
+    editor: true,
+    android_sdk: false,
+    adb: false,
+    android_emulator: false,
+    android_display: false
   }
 
   @none Map.new(@all, fn {key, _} -> {key, false} end)
+
+  @android_all %{
+    @all
+    | android_sdk: true,
+      adb: true,
+      android_emulator: true,
+      android_display: true
+  }
 
   # @cc [owner:ghuntley,label:protocol;security] guest-agents-capability-table-closed
   # capabilities/1 and capabilities/2 are the only authority for what a guest agent set can do. A
@@ -43,6 +66,7 @@ defmodule OverallsProtocol.GuestAgents do
   # without widening any retained stock-image identity or changing wire names.
   @spec capabilities(t()) :: capabilities()
   def capabilities(:linux), do: @all
+  def capabilities(:linux_android_v1), do: @android_all
   def capabilities(:none), do: @none
   def capabilities(:windows_v1), do: %{@all | inception: false, editor: false}
   def capabilities(:windows_editor_v1), do: %{@all | inception: false}
@@ -91,6 +115,7 @@ defmodule OverallsProtocol.GuestAgents do
 
   @spec wire(t()) :: String.t()
   def wire(:linux), do: "linux"
+  def wire(:linux_android_v1), do: "linux-android-v1"
   def wire(:none), do: "none"
   def wire(:windows_v1), do: "windows-v1"
   def wire(:windows_editor_v1), do: "windows-editor-v1"
@@ -99,6 +124,7 @@ defmodule OverallsProtocol.GuestAgents do
 
   @spec parse(term()) :: {:ok, t()} | :error
   def parse("linux"), do: {:ok, :linux}
+  def parse("linux-android-v1"), do: {:ok, :linux_android_v1}
   def parse("none"), do: {:ok, :none}
   def parse("windows-v1"), do: {:ok, :windows_v1}
   def parse("windows-editor-v1"), do: {:ok, :windows_editor_v1}
@@ -121,13 +147,14 @@ defmodule OverallsProtocol.GuestAgents do
 
   # @cc [owner:ghuntley,label:recovery] readiness-budget-by-agent-set
   # readiness_budget_ms/2 MUST give every agent set a fixed readiness deadline:
-  # Linux guests 120 s (Inception 2400 s for its instance-specific rebuild) and
-  # firmware guests with guest agents 600 s, matching Marshall's provision
-  # service level. A set without readiness has no budget to spend and MUST NOT
-  # be waited for.
+  # Linux guests 120 s (Inception 2400 s for its instance-specific rebuild), the
+  # Android SDK/emulator row 600 s for software-emulator startup, and firmware
+  # guests with guest agents 600 s, matching Marshall's provision service level.
+  # A set without readiness has no budget to spend and MUST NOT be waited for.
   @spec readiness_budget_ms(t(), atom()) :: pos_integer()
   def readiness_budget_ms(:linux, :inception), do: 2_400_000
   def readiness_budget_ms(:linux, _profile), do: 120_000
+  def readiness_budget_ms(:linux_android_v1, _profile), do: 600_000
   def readiness_budget_ms(:windows_v1, _profile), do: 600_000
   def readiness_budget_ms(:windows_editor_v1, _profile), do: 600_000
   def readiness_budget_ms(:freebsd_v1, _profile), do: 600_000
