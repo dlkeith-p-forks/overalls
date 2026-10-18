@@ -360,13 +360,15 @@ nestedKvm }`. A check is a machine test when it has a test driver, requires
 in `ci.nix` (currently the Inception checks). GitHub Actions derives its
 matrices by evaluation: `publish-cache.yml` builds every enabled non-machine
 check and publishes it to Cachix, and `nixos-machine-tests.yml` fans out one
-job per enabled machine test. `.github/scripts/select-checks.sh build`
-evaluates each check in isolation with `nix-eval-jobs`, so a check that fails
-to evaluate is reported (and fails the run) without hiding the others.
-`select-checks.sh machine` evaluates only `meta.ci`, never the derivations:
-machine tests build guest images at evaluation time, which belongs to each
-matrix job rather than to choosing the matrix. A machine test whose derivation
-does not evaluate fails its own matrix job.
+job per enabled machine test. Both selections in
+`.github/scripts/select-checks.sh` start from `meta.ci` alone, never the
+machine-test derivations: machine tests build guest images at evaluation time,
+which belongs to each matrix job rather than to choosing the matrix, and
+evaluating every fleet test together exhausts the runner's memory.
+`select-checks.sh build` then evaluates every check not known to be a machine
+test in isolation with `nix-eval-jobs`, so a check that fails to evaluate is
+reported (and fails the run) without hiding the others. A machine test whose
+derivation does not evaluate fails its own matrix job.
 
 A scheduled or dispatched run is execution evidence only for the commit it
 ran; a selected matrix entry is not a passing result.
