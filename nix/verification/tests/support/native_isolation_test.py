@@ -10,6 +10,7 @@ from pathlib import Path
 import native_isolation as isolation
 import native_services as services
 import native_tcp_probe as tcp
+from native_service_runner import Platform
 
 
 class BoundaryTest(unittest.TestCase):
@@ -59,6 +60,14 @@ class BoundaryTest(unittest.TestCase):
                 self.assertRaises(ValueError),
             ):
                 tcp.connected(destination, source)
+
+    def test_illumos_source_probe_uses_vioif_and_reversible_address_operation(self) -> None:
+        add, remove = isolation.foreign_source_commands(Platform("illumos"))
+        self.assertEqual(add, "/sbin/ifconfig vioif0 addif 10.20.0.205/32 up")
+        self.assertEqual(remove, "/sbin/ifconfig vioif0 removeif 10.20.0.205")
+        command = isolation.tcp_command(Platform("illumos"), isolation.PUBLIC)
+        self.assertIn("/usr/bin/python3.12", command)
+        self.assertIn("8.8.8.8", command)
 
 
 if __name__ == "__main__":

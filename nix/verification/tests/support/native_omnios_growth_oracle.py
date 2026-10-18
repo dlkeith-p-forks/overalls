@@ -521,23 +521,58 @@ class Oracle:
         self.observations: list[Evidence] = []
         self.pending: Evidence | None = None
         self.active = False
+        # A host-side expansion can be visible before the guest has published
+        # its volatile receipt.  Keep that retry state explicit so a
+        # test-only interruption can exercise recovery without silently
+        # truncating the disk back to its previous capacity.
+        self.retry_generation: int | None = None
 
     def before_boot(self, generation: int) -> None:
+        if type(generation) is not int:
+            raise RuntimeError("native OmniOS growth boot sequence differs")
+        retry = self.retry_generation == generation
+        expected_bytes = (
+            INITIAL_BYTES + generation * EXPANSION
+            if retry
+            else INITIAL_BYTES + max(0, generation - 1) * EXPANSION
+        )
         if (
-            type(generation) is not int
-            or generation != len(self.observations)
+            generation != len(self.observations)
             or generation not in (0, 1, 2)
             or self.active
             or self.pending is not None
-            or self.disk.stat().st_size != INITIAL_BYTES + max(0, generation - 1) * EXPANSION
+            or self.disk.stat().st_size != expected_bytes
+            or (self.retry_generation is not None and not retry)
         ):
             raise RuntimeError("native OmniOS growth boot sequence differs")
-        if generation:
+        if generation and not retry:
             with self.disk.open("r+b") as target:
                 target.truncate(INITIAL_BYTES + generation * EXPANSION)
                 target.flush()
                 os.fsync(target.fileno())
+        if retry:
+            self.retry_generation = None
         self.active = True
+
+    def interrupt_before_guest(self) -> None:
+        """@cc [owner:ghuntley,label:verification;recovery] native-omnios-growth-retry
+        A test-only interrupted expansion MUST retain the host-expanded disk,
+        clear the active boot without publishing guest evidence, and allow one
+        retry of the same generation. A retry MUST reuse the retained capacity
+        and MUST still pass the ordinary guest and clean-shutdown checks before
+        the closed growth receipt can be written.
+        """
+        generation = len(self.observations)
+        if (
+            not self.active
+            or self.pending is not None
+            or generation not in (1, 2)
+            or self.retry_generation is not None
+            or self.disk.stat().st_size != INITIAL_BYTES + generation * EXPANSION
+        ):
+            raise RuntimeError("native OmniOS growth interruption is not retryable")
+        self.active = False
+        self.retry_generation = generation
 
     def guest(self, probe: shared.Probe, sudo: str) -> shared.Guest:
         if not self.active or self.pending is not None or sudo != "/usr/bin/sudo":
@@ -643,6 +678,7 @@ class Oracle:
             )
             or self.active
             or self.pending is not None
+            or self.retry_generation is not None
         ):
             raise RuntimeError("native OmniOS growth lacks three clean boot observations")
         receipt = {
