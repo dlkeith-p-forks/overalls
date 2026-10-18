@@ -224,8 +224,6 @@ fn systemctl(argv: &[&[u8]]) -> bool {
             .and_then(|rest| rest.strip_suffix(b".service"))
             .is_some_and(crate::vm_launch::uuid)
     };
-    let query_unit =
-        |name: &[u8]| name == b"lilly.slice" || name == b"lilly-vm-*.service" || vm_unit(name);
     match argv {
         [b"stop", name] => vm_unit(name),
         [b"kill", b"--kill-who=all", b"--signal=KILL", name] => vm_unit(name),
@@ -233,9 +231,7 @@ fn systemctl(argv: &[&[u8]]) -> bool {
             let (options, units): (Vec<&[u8]>, Vec<&[u8]>) =
                 rest.iter().partition(|word| word.starts_with(b"--"));
             !units.is_empty()
-                && units.iter().all(|name| {
-                    *name == b"lilly.slice" || *name == b"lilly-vm-*.service" || vm_unit(name)
-                })
+                && units.iter().all(|name| query_unit(name))
                 && options.iter().all(|option| {
                     matches!(
                         *option,

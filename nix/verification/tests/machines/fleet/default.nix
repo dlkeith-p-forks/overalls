@@ -645,8 +645,11 @@ let
     networking.extraHosts = lib.mkIf githubIntegration
       "${nodes.egress.networking.primaryIPAddress} ${lib.concatStringsSep " " githubProviderHosts}";
     security.pki.certificateFiles = lib.optionals githubIntegration [ "${githubFixture}/root.pem" ];
-    systemd.services."marshall-${name}".environment.ERL_AFLAGS = lib.mkIf githubIntegration
-      "-eval 'public_key:cacerts_load(\"/etc/ssl/certs/ca-bundle.crt\").'";
+    systemd.services."marshall-${name}".environment = {
+      ERL_AFLAGS = lib.mkIf githubIntegration
+        "-eval 'public_key:cacerts_load(\"/etc/ssl/certs/ca-bundle.crt\").'";
+      MARSHALL_CONTROL_FAULT_GATE_FILE = lib.mkIf relocation "/run/marshall-fault-gate/ops";
+    };
     systemd.services.fleet-credentials.preStart = ''
       ${lib.optionalString githubIntegration ''
         umask 077
@@ -719,8 +722,6 @@ let
     # @cc [owner:ghuntley,label:verification;security] fleet-control-fault-gate
     # Relocation fault scenarios refuse listed control ops through Marshall's
     # test-only gate file (ADR-0142); only this fixture configures it.
-    systemd.services."marshall-${name}".environment.MARSHALL_CONTROL_FAULT_GATE_FILE =
-      lib.mkIf relocation "/run/marshall-fault-gate/ops";
     systemd.tmpfiles.rules = lib.mkIf relocation [
       "d /run/marshall-fault-gate 0755 root root -"
       "f /run/marshall-fault-gate/ops 0644 root root -"
@@ -762,10 +763,12 @@ let
     let host = hosts.${name}; in {
     imports = [ ziggyFixture.lilly ]
       ++ [ (import ./audi.nix { inherit pkgs ubuntu; role = "gateway"; hostId = host.host; }) ]
-      ++ [ galileoFixture.lilly ]
+      ++ lib.optional (!suspension) galileoFixture.lilly
       ++ lib.optional (otelAudiSsh || observabilityRecovery || suspension) (otelAudiSshHost name);
     security.pki.certificateFiles = lib.optionals githubIntegration [ "${githubFixture}/root.pem" ];
-    services.audi.editorPackage = if editor || suspension then packages.vscodeWeb else null;
+    services.audi.editorPackages = lib.optionalAttrs (editor || suspension) {
+      linux-x64 = packages.vscodeWeb;
+    };
     services.audi.relay = lib.mkIf suspension {
       enable = true;
       address = if name == "l1" then "10.90.0.1" else "10.90.0.2";
