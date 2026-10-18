@@ -645,8 +645,11 @@ let
     networking.extraHosts = lib.mkIf githubIntegration
       "${nodes.egress.networking.primaryIPAddress} ${lib.concatStringsSep " " githubProviderHosts}";
     security.pki.certificateFiles = lib.optionals githubIntegration [ "${githubFixture}/root.pem" ];
-    systemd.services."marshall-${name}".environment.ERL_AFLAGS = lib.mkIf githubIntegration
-      "-eval 'public_key:cacerts_load(\"/etc/ssl/certs/ca-bundle.crt\").'";
+    systemd.services."marshall-${name}".environment = {
+      ERL_AFLAGS = lib.mkIf githubIntegration
+        "-eval 'public_key:cacerts_load(\"/etc/ssl/certs/ca-bundle.crt\").'";
+      MARSHALL_CONTROL_FAULT_GATE_FILE = lib.mkIf relocation "/run/marshall-fault-gate/ops";
+    };
     systemd.services.fleet-credentials.preStart = ''
       ${lib.optionalString githubIntegration ''
         umask 077
@@ -719,8 +722,6 @@ let
     # @cc [owner:ghuntley,label:verification;security] fleet-control-fault-gate
     # Relocation fault scenarios refuse listed control ops through Marshall's
     # test-only gate file (ADR-0142); only this fixture configures it.
-    systemd.services."marshall-${name}".environment.MARSHALL_CONTROL_FAULT_GATE_FILE =
-      lib.mkIf relocation "/run/marshall-fault-gate/ops";
     systemd.tmpfiles.rules = lib.mkIf relocation [
       "d /run/marshall-fault-gate 0755 root root -"
       "f /run/marshall-fault-gate/ops 0644 root root -"
