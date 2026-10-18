@@ -109,9 +109,8 @@ defmodule Brady.Cache.ChunkedBoundaryHistoryTest do
           kill(writer)
       end
 
-      recovered =
-        {:ok, recovered} = Store.start_link(root: root, limits: limits)
-        Process.unlink(recovered)
+      {:ok, recovered} = Store.start_link(root: root, limits: limits)
+      Process.unlink(recovered)
 
       assert %{writers: 0, readers: 0, pending: 0, writable: false} = Store.stats(recovered)
       assert File.ls!(Path.join(root, "tmp")) == []
