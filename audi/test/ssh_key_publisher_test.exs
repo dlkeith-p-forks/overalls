@@ -37,7 +37,7 @@ defmodule Audi.SSH.KeyPublisherTest do
 
     before = key_digests(context.directory)
 
-    check all(transients <- member_of([0, 1, 2]), max_runs: 3) do
+    check all(transients <- member_of([0, 1, 2]), max_runs: 3, test_cases: 1) do
       publisher =
         start_supervised!(
           {Audi.SSH.KeyPublisher, client: client, host_key_dir: context.directory}

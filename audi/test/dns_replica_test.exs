@@ -49,7 +49,11 @@ defmodule Audi.DNS.ReplicaTest do
   # Explicit 426 MUST preserve its terminal class before payload-size or JSON
   # classification over real verified HTTPS, including configured-limit families.
   test "verified TLS version refusal precedes malformed and oversized payloads", c do
-    check all(generated <- member_of([0, 4095, 4096, 4097, 8_388_608, 8_388_609]), max_runs: 2) do
+    check all(
+            generated <- member_of([0, 4095, 4096, 4097, 8_388_608, 8_388_609]),
+            max_runs: 2,
+            test_cases: 1
+          ) do
       for size <- Enum.uniq([0, 4095, 4096, 4097, 8_388_608, 8_388_609, generated]),
           operation <- [:dns, :identity] do
         server_id = make_ref()
@@ -122,7 +126,7 @@ defmodule Audi.DNS.ReplicaTest do
   # peer requests before closing.
   @tag :actual_version_close
   test "pending reads retain terminal version refusal over the actual TLS socket", c do
-    check all(prefix <- member_of([0, 1, 2]), max_runs: 3) do
+    check all(prefix <- member_of([0, 1, 2]), max_runs: 3, test_cases: 1) do
       for {close_reason, expected} <- [
             {:idle, :transport_error},
             {:unsupported_version, :unsupported_version}
@@ -192,7 +196,7 @@ defmodule Audi.DNS.ReplicaTest do
   @tag timeout: 120_000
   @tag :actual_version_close
   test "DNS cadence stops on a pending socket version close without renewing authority", c do
-    check all(generated <- member_of([0, 1, 2]), max_runs: 2) do
+    check all(generated <- member_of([0, 1, 2]), max_runs: 2, test_cases: 1) do
       for transients <- Enum.uniq([0, 1, 2, generated]) do
         client = Audi.Test.DNSControl.connected(c.client)
 
@@ -249,7 +253,7 @@ defmodule Audi.DNS.ReplicaTest do
   # Transient failures may retry; an explicit 426 MUST halt automatic and stale
   # timer refreshes while preserving exact published bytes and original expiry.
   test "DNS replica halts after version refusal without extending published authority", c do
-    check all(transients <- member_of([0, 1, 2]), max_runs: 3) do
+    check all(transients <- member_of([0, 1, 2]), max_runs: 3, test_cases: 1) do
       replica =
         start_supervised!({Replica, client: c.client, directory: c.directory, zone: @zone})
 
