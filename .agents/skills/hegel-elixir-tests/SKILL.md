@@ -52,6 +52,14 @@ ExUnit tests where those provide the required evidence.
 - Preserve refusal, malformed-input, stale-generation, duplicate, restart, and
   redaction assertions from the migrated property. A Hegel property may strengthen
   coverage but must not weaken an existing contract.
+- Treat `test_cases` as a verification-strength setting, not a generic timeout
+  workaround. Never clamp an ordinary property to one generated case merely to
+  make a suite finish. Keep default exploration for normal properties; use a
+  named CI profile only when sockets, host processes, native work, or other
+  external fixtures impose a demonstrated budget, and record the exact reduced
+  count and reason. Options on `check all` are not reliable in this Hegel
+  implementation: put execution options on `property` and use `draw/2` or
+  `draw/3` for generated values.
 - Keep diagnostics redacted by default. Include labels, locations, seeds, and bounded
   structural metadata; opt into values or replay blobs only when the test explicitly
   proves they are safe. Failure rendering must preserve the original exception.
