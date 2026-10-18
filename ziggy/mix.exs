@@ -37,7 +37,12 @@ defmodule Ziggy.MixProject do
       {:overalls_request_accounting, path: "../elixir/request_accounting"},
       {:telemetry, "~> 1.4"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "9b13af8", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
+      {:hegel_ex,
+       git: "https://github.com/ghuntley/hegel-erlang.git",
+       ref: "9b13af8",
+       subdir: "packages/hegel_ex",
+       only: [:dev, :test],
+       runtime: false}
     ] ++ antithesis_deps()
   end
 
