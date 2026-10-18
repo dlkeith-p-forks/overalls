@@ -28,7 +28,8 @@ pkgs.testers.runNixOSTest {
     system.stateVersion = "26.05";
     virtualisation.memorySize = 6144;
     virtualisation.cores = 4;
-    environment.systemPackages = [ pkgs.android-tools pkgs.xorg.xorgserver pkgs.jdk sdk ];
+    virtualisation.diskSize = 32768;
+    environment.systemPackages = [ pkgs.android-tools pkgs.gawk pkgs.xorg.xorgserver pkgs.jdk sdk ];
     users.users.android-test = {
       isSystemUser = true;
       group = "android-test";
@@ -47,6 +48,7 @@ pkgs.testers.runNixOSTest {
       wantedBy = [ "multi-user.target" ];
       requires = [ "android-test-display.service" ];
       after = [ "android-test-display.service" ];
+      path = [ pkgs.coreutils pkgs.gawk ];
       environment = { JAVA_HOME = "${pkgs.jdk}"; };
       serviceConfig = {
         Type = "simple";
@@ -67,14 +69,14 @@ pkgs.testers.runNixOSTest {
   testScript = ''
     android.start()
     android.wait_for_unit("android-test-emulator.service")
-    android.wait_until_succeeds("pgrep -a -f '/emulator/emulator'", timeout=30)
-    cmdline = android.succeed("pgrep -a -f '/emulator/emulator' | head -n 1")
+    android.wait_until_succeeds("pgrep -a -f '[e]mulator/emulator'", timeout=60)
+    cmdline = android.succeed("pgrep -a -f '[e]mulator/emulator' | head -n 1")
     assert "-no-accel" in cmdline, cmdline
     assert "-gpu swiftshader_indirect" in cmdline, cmdline
     android.wait_for_open_port(5555)
     android.succeed("adb start-server")
     android.wait_until_succeeds("adb -s emulator-5554 wait-for-device", timeout=180)
-    android.wait_until_succeeds("test \"$(adb -s emulator-5554 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=300)
+    android.wait_until_succeeds("test \"$(timeout 15 adb -s emulator-5554 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=600)
     android.succeed("adb -s emulator-5554 shell getprop ro.kernel.qemu | grep -Fx 1")
     android.succeed("adb -s emulator-5554 shell settings get global animator_duration_scale")
     android.succeed("adb -s emulator-5554 exec-out screencap -p > /tmp/android-screencap.png")
