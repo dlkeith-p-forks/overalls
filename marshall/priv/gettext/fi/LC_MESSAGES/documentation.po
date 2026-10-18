@@ -15317,7 +15317,7 @@ msgstr "Tyyppi: `list of (one of \"marshall\", \"lilly\", \"audi\", \"porsche\",
 #: lib/marshall/documentation_messages.ex:10336
 #, elixir-autogen, elixir-format
 msgid "Type: `list of (one of \"marshall\", \"lilly\", \"porsche\", \"audi\", \"ziggy\", \"enrico\", \"brady\", \"galileo\", \"underclass\", \"haproxy\", \"audit\", \"firecracker\", \"auth\", \"kernel\", \"storage\", \"mail\", \"operations\", \"system\", \"metrics\")`."
-msgstr ""
+msgstr "Tyyppi: `list of (one of \"marshall\", \"lilly\", \"porsche\", \"audi\", \"ziggy\", \"enrico\", \"brady\", \"galileo\", \"underclass\", \"haproxy\", \"audit\", \"firecracker\", \"auth\", \"kernel\", \"storage\", \"mail\", \"operations\", \"system\", \"metrics\")`."
 
 #: lib/marshall/documentation_messages.ex:10340
 #, elixir-autogen, elixir-format
@@ -16638,12 +16638,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1653
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Full changed-source fleet execution and native image qualification are in progress. Existing socket migration, physical isolation, host power-loss and production deployment are not established by local application properties."
-msgstr ""
+msgstr "**Puutteet:** Muutetun lähdekoodin koko parven suoritus ja natiivien levykuvien kelpuutus ovat käynnissä. Nykyistä sokettisiirtoa, fyysistä eristystä, isännän sähkökatkoksen sietoa ja tuotantoon vientiä eivät paikalliset sovellusominaisuudet osoita."
 
 #: lib/marshall/documentation_messages.ex:1765
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Native Windows SAM/S4U/profile and executable/PATH lifecycle custody, sustained/interrupted overlapped cancellation, task crash/reboot supervision, exact bundle/image qualification, two-account browser separation, edit/readback, revocation, broker adoption and worker-loss recovery remain unrecorded. Guest administrator authority and physical isolation are separate boundaries."
-msgstr ""
+msgstr "**Puutteet:** Natiivi Windowsin SAM-/S4U-/profiili- ja suoritettavan tiedoston/PATH:n elinkaarivalvonta, jatkuva/keskeytynyt päällekkäinen peruutus, tehtävän kaatumisen/uudelleenkäynnistyksen valvonta, täsmällinen paketti-/levykuvakelpuutus, kahden tilin selainero, muokkaus/takaisinluku, peruutus, välittäjän omaksuminen ja työntekijämenetyksen palautus ovat kirjaamatta. Vieraan ylläpitäjävaltuus ja fyysinen eristys ovat erillisiä rajoja."
 
 #: lib/marshall/documentation_messages.ex:1989
 #, elixir-autogen, elixir-format
@@ -16668,17 +16668,17 @@ msgstr "**Ensisijainen testityö:** Aja NixOS-konehistoria jokaisella nykyisell�
 #: lib/marshall/documentation_messages.ex:2781
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run real guest commits under managed login accounts after setting custom identity and after reboot; retain native and property scopes separately."
-msgstr ""
+msgstr "**Suositeltu testityö:** Tee oikeita vieraan committeja hallituilla kirjautumistileillä mukautetun identiteetin asettamisen jälkeen ja uudelleenkäynnistyksen jälkeen; pidä natiivien testien ja ominaisuustestien laajuudet erillään."
 
 #: lib/marshall/documentation_messages.ex:2801
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the isolated native Windows machine/browser harness against the exact reviewed bundle and candidate image, complete protocol and both consumer gates, then review exact production image selection."
-msgstr ""
+msgstr "**Suositeltu testityö:** Suorita eristetty natiivi Windows-kone-/selainkehikko täsmälleen tarkastettua pakettia ja ehdokaslevykuvaa vasten, suorita protokollan ja molempien käyttäjien tarkistukset ja tarkasta sitten täsmällinen tuotantolevykuvan valinta."
 
 #: lib/marshall/documentation_messages.ex:2809
 #, elixir-autogen, elixir-format
 msgid "**Preferred test work:** Run the memory-suspension-fleet NixOS check and record exact-source RAM/cgroup/connection evidence; separately qualify each native image before enabling its checkpoint operations.\n"
-msgstr ""
+msgstr "**Suositeltu testityö:** Suorita memory-suspension-fleet-NixOS-tarkistus ja kirjaa täsmällisen lähdekoodin RAM-/cgroup-/yhteystodisteet; kelpuuta erikseen jokainen natiivi levykuva ennen sen tarkistuspistetoimintojen käyttöönottoa.\n"
 
 #: lib/marshall/documentation_messages.ex:2913
 #, elixir-autogen, elixir-format
@@ -16794,7 +16794,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3913
 #, elixir-autogen, elixir-format
 msgid "After a restart during snapshot load, Lilly may continue the exact claimed live\nVMM. A paused process needs the same launch identity, PID/start time and full\nconfinement proof before a Resume API call; it never reloads the checkpoint.\nMissing or changed authority leaves restoration fenced."
-msgstr ""
+msgstr "Jos uudelleenkäynnistys tapahtuu tilannekuvan latauksen aikana, Lilly voi jatkaa täsmälleen varattua käynnissä olevaa\nVMM:ää. Keskeytetty prosessi tarvitsee saman käynnistysidentiteetin, PID:n/aloitusajan ja täyden\neristystodisteen ennen Resume-API-kutsua; se ei koskaan lataa tarkistuspistettä uudelleen.\nPuuttuva tai muuttunut valtuus pitää palautuksen estettynä."
 
 #: lib/marshall/documentation_messages.ex:3933
 #, elixir-autogen, elixir-format
@@ -16809,12 +16809,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3945
 #, elixir-autogen, elixir-format
 msgid "After the acknowledged snapshot response, Lilly records `copied` under the\ncurrent placement/capture authority without reacquiring the pool lock. This\nprivate journal update changes neither dataset ownership nor allocation credit.\nSealing and ready publication still serialize through the pool. A merely\n`capturing` journal never infers success from files or repeats the snapshot."
-msgstr ""
+msgstr "Vahvistetun tilannekuvavastauksen jälkeen Lilly kirjaa tilan `copied`\nnykyisellä sijoitus-/taltiointivaltuudella ottamatta poolilukkoa uudelleen. Tämä\nyksityinen päiväkirjapäivitys ei muuta tietojoukon omistusta eikä varauskrediittiä.\nSinetöinti ja valmisjulkaisu järjestetään edelleen poolin kautta. Pelkkä\n`capturing`-päiväkirja ei koskaan päättele onnistumista tiedostoista eikä toista tilannekuvaa."
 
 #: lib/marshall/documentation_messages.ex:4020
 #, elixir-autogen, elixir-format
 msgid "An ambiguous or failed memory restore retains its execution fence and storage\nholds. It cannot replay the consumed checkpoint or use the former cold destination\nboot retry. Historical retry receipts remain readable; new retry admission refuses.\nExplicit Stop retires memory before an intentional later cold Start."
-msgstr ""
+msgstr "Epäselvä tai epäonnistunut muistin palautus säilyttää suoritusestonsa ja tallennus-\nvarauksensa. Se ei voi toistaa kulutettua tarkistuspistettä eikä käyttää aiempaa kylmän kohde-\nkäynnistyksen uusintaa. Historialliset uusintakuitit pysyvät luettavina; uusi uusintahyväksyntä kieltäytyy.\nNimenomainen Stop poistaa muistin ennen tarkoituksellista myöhempää kylmää Start-toimintoa."
 
 #: lib/marshall/documentation_messages.ex:4166
 #, elixir-autogen, elixir-format
@@ -16824,7 +16824,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4195
 #, elixir-autogen, elixir-format
 msgid "BEAM properties establish admission, coalescing and refusals. Native RAM\ncontinuity, filesystem coherence and multi-node availability need separately\nrecorded machine evidence in the\n[suspension review](repo:docs/architecture/reviews/2026-10-18-memory-suspension.md)."
-msgstr ""
+msgstr "BEAM-ominaisuudet osoittavat hyväksynnän, yhdistämisen ja kieltäytymiset. Natiivin RAM-muistin\njatkuvuus, tiedostojärjestelmän yhtenäisyys ja usean solmun saatavuus tarvitsevat erikseen\nkirjattua konenäyttöä\n[keskeytyskatselmuksessa](repo:docs/architecture/reviews/2026-10-18-memory-suspension.md)."
 
 #: lib/marshall/documentation_messages.ex:4325
 #, elixir-autogen, elixir-format
@@ -16839,7 +16839,7 @@ msgstr "Raja: tilin omistamista asetuksista tulee muuttumaton VM-määritys; nyk
 #: lib/marshall/documentation_messages.ex:4405
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current Cedar/key/publication/editor authority admits coalesced durable wake only; compute and private checkpoint capacity, sealed same-boot continuation, single-use restore and destination relay consumption independently fence execution."
-msgstr ""
+msgstr "Raja: Nykyinen Cedar-/avain-/julkaisu-/muokkainvaltuus hyväksyy vain yhdistetyn pysyvän herätyksen; laskenta ja yksityinen tarkistuspistekapasiteetti, sinetöity saman käynnistyksen jatkaminen, kertapalautus ja kohteen välityksen kulutus rajaavat suoritusta itsenäisesti."
 
 #: lib/marshall/documentation_messages.ex:4677
 #, elixir-autogen, elixir-format
@@ -16849,7 +16849,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5027
 #, elixir-autogen, elixir-format
 msgid "Cancellation is accepted only before the handoff commit, from any phase up to\n`handoff`, and restores the original running, paused or stopped source under fresh\nauthority. Deletion supersedes any unfinished phase through `deleting_copies`."
-msgstr ""
+msgstr "Peruutus hyväksytään vain ennen luovutuksen vahvistusta mistä tahansa vaiheesta vaiheeseen\n`handoff` asti, ja se palauttaa alkuperäisen käynnissä olevan, keskeytetyn tai pysäytetyn lähteen tuoreella\nvaltuudella. Poistaminen syrjäyttää kaikki keskeneräiset vaiheet vaiheen `deleting_copies` kautta."
 
 #: lib/marshall/documentation_messages.ex:5097
 #, elixir-autogen, elixir-format
@@ -16869,7 +16869,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5569
 #, elixir-autogen, elixir-format
 msgid "Enablement also requires explicit Marshall gateway enrollment. On the trusted\nMarshall operator entry point, use new private output paths and each host's\ncurrent enrolled Lilly UUID:"
-msgstr ""
+msgstr "Käyttöönotto edellyttää myös nimenomaista Marshall-yhdyskäytävän rekisteröintiä. Käytä luotetussa\nMarshallin operaattorin sisääntulopisteessä uusia yksityisiä tulostepolkuja ja kunkin isännän\nnykyistä rekisteröityä Lilly-UUID:tä:"
 
 #: lib/marshall/documentation_messages.ex:5629
 #, elixir-autogen, elixir-format
@@ -16879,12 +16879,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5714
 #, elixir-autogen, elixir-format
 msgid "Exact local fleet /32; never a guest or public listener address."
-msgstr ""
+msgstr "Täsmällinen paikallinen parven /32; ei koskaan vieraan tai julkisen kuuntelijan osoite."
 
 #: lib/marshall/documentation_messages.ex:5766
 #, elixir-autogen, elixir-format
 msgid "Explicit keyed fleet /32 peers allowed to present single-use relay capabilities."
-msgstr ""
+msgstr "Erikseen määritetyt avaimelliset parven /32-vertaiset, joilla on lupa esittää kertakäyttöisiä välityskyvykkyyksiä."
 
 #: lib/marshall/documentation_messages.ex:5974
 #, elixir-autogen, elixir-format
@@ -16909,7 +16909,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6252
 #, elixir-autogen, elixir-format
 msgid "Interrupted sealing skips repair only when both memory and device-state files\nare regular, singly linked, root/service-owned and mode `0444`. Incomplete files\ncan be repaired only after independently confirming a writable owned dataset;\nan incomplete read-only checkpoint refuses. Each ownership request names one\nfixed output file through hostd's existing native file grammar."
-msgstr ""
+msgstr "Keskeytynyt sinetöinti ohittaa korjauksen vain, kun sekä muisti- että laitetilanne-\ntiedostot ovat tavallisia, yksilinkkisiä, root-/palveluomisteisia ja tilassa `0444`. Keskeneräiset tiedostot\nvoidaan korjata vasta, kun kirjoitettava omistettu tietojoukko on itsenäisesti vahvistettu;\nkeskeneräinen vain luku -tarkistuspiste torjutaan. Jokainen omistuspyyntö nimeää yhden\nkiinteän tulostetiedoston hostd:n olemassa olevan natiivin tiedostokieliopin kautta."
 
 #: lib/marshall/documentation_messages.ex:6516
 #, elixir-autogen, elixir-format
@@ -16954,7 +16954,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7272
 #, elixir-autogen, elixir-format
 msgid "Relocation retires old-placement terminal authority. Reconnection is required;\nPTY reattachment across a move is not promised. Authorized SSH, published web\napplications and editor requests can wait through resume and automatic relocation\nwhile renewing their authentication and publication/account authority. Snapshot\ntransport reset does not preserve established sockets."
-msgstr ""
+msgstr "Siirto poistaa vanhan sijoituksen päätevaltuuden. Uudelleenyhdistäminen vaaditaan;\nPTY:n uudelleenliittämistä siirron yli ei luvata. Valtuutettu SSH, julkaistut verkkosovellukset\nja muokkainpyynnöt voivat odottaa jatkamisen ja automaattisen siirron ajan\nuusien samalla todennuksensa ja julkaisu-/tilivaltuutensa. Tilannekuvan\nsiirtoyhteyden nollaus ei säilytä muodostettuja soketteja."
 
 #: lib/marshall/documentation_messages.ex:7276
 #, elixir-autogen, elixir-format
@@ -16969,12 +16969,12 @@ msgstr "Vaadittu torjunta: vieraan tilin päivitykset ja virheelliset Git-identi
 #: lib/marshall/documentation_messages.ex:7471
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Foreign or revoked authority, missing/corrupt/incompatible checkpoints, replayed restore and arbitrary relay targets refuse. Network activity cannot override explicit stop intent; a user prompt or explicit start may start a stopped VM. Full compatible-fleet capacity leaves wake pending; it never cold boots to replace memory."
-msgstr ""
+msgstr "Vaadittu kieltäytyminen: Vieras tai peruttu valtuus, puuttuvat/vioittuneet/epäyhteensopivat tarkistuspisteet, toistetut palautukset ja mielivaltaiset välityskohteet torjutaan. Verkkotoiminta ei voi ohittaa nimenomaista pysäytysaikomusta; käyttäjän kehote tai nimenomainen käynnistys voi käynnistää pysäytetyn VM:n. Täysi yhteensopivan parven kapasiteetti jättää herätyksen odottamaan; se ei koskaan korvaa muistia kylmäkäynnistyksellä."
 
 #: lib/marshall/documentation_messages.ex:7927
 #, elixir-autogen, elixir-format
 msgid "Required refusal: The accepted windows-v1 editor capability remains false. Missing or mismatched image descriptors, foreign gateway or execution, stale roster account, ambiguous package/PATH custody, wrong SID/process/job/pipe and exhausted pending-I/O capacity must refuse. A foreign process cannot be terminated or adopted without exact custody; a portable test or cross-link cannot qualify native Windows browser admission."
-msgstr ""
+msgstr "Vaadittu kieltäytyminen: Hyväksytty windows-v1-muokkainkyvykkyys pysyy epätotena. Puuttuvat tai ristiriitaiset levykuvakuvaukset, vieras yhdyskäytävä tai suoritus, vanhentunut tililuettelotili, epäselvä paketti-/PATH-valvonta, väärä SID/prosessi/työ/putki ja loppunut odottavan I/O:n kapasiteetti on torjuttava. Vierasta prosessia ei voi lopettaa tai ottaa haltuun ilman täsmällistä valvontaa; siirrettävä testi tai ristiinlinkitys ei voi kelpuuttaa natiivia Windows-selainhyväksyntää."
 
 #: lib/marshall/documentation_messages.ex:8122
 #, elixir-autogen, elixir-format
@@ -17004,7 +17004,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8369
 #, elixir-autogen, elixir-format
 msgid "Suspension adds no new deployed service. Marshall's existing PostgreSQL stores\nwake demand, idle clocks and current execution authority. Lilly retains sealed RAM\nand device state in private sibling ZFS datasets beside each owned VM disk, with\nhost-local single-use journals outside transferred storage. A suspended VM has no\nVMM/cgroup compute but still consumes disk/checkpoint capacity."
-msgstr ""
+msgstr "Keskeytys ei lisää uutta käyttöön otettua palvelua. Marshallin nykyinen PostgreSQL tallentaa\nherätyskysynnän, joutokäyntikellot ja nykyisen suoritusvaltuuden. Lilly säilyttää sinetöidyn RAM-\nja laitetilan yksityisissä rinnakkaisissa ZFS-tietojoukoissa kunkin omistetun VM-levyn vieressä sekä\nisäntäkohtaiset kertakäyttöpäiväkirjat siirrettävän tallennuksen ulkopuolella. Keskeytetyllä VM:llä ei ole\nVMM-/cgroup-laskentaa, mutta se kuluttaa silti levy-/tarkistuspistekapasiteettia."
 
 #: lib/marshall/documentation_messages.ex:8373
 #, elixir-autogen, elixir-format
@@ -17054,7 +17054,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9188
 #, elixir-autogen, elixir-format
 msgid "The VM profile/address slot is reserved globally across Lilly hosts and remains\nunchanged across relocation. A restored guest retains its IP/MAC; a destination\nplacement does not allocate a new address. Checkpoint admission independently\ncompares the retained guest workload shape and slot with current authority."
-msgstr ""
+msgstr "VM:n profiili-/osoitepaikka varataan globaalisti Lilly-isäntien välillä ja pysyy\nmuuttumattomana siirrossa. Palautettu vieras säilyttää IP-/MAC-osoitteensa; kohde-\nsijoitus ei varaa uutta osoitetta. Tarkistuspisteen hyväksyntä vertaa itsenäisesti\nsäilytetyn vieraskuorman rakennetta ja paikkaa nykyiseen valtuuteen."
 
 #: lib/marshall/documentation_messages.ex:9192
 #, elixir-autogen, elixir-format
@@ -17069,7 +17069,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9449
 #, elixir-autogen, elixir-format
 msgid "The authenticated `/settings#git-settings` section edits Git username, Git email\nand optional agent commit trailers for the current account. It is the fourth\nsection of the single Account page, behind the same fresh-login gate as profile,\npasskey and SSH key controls. The old settings URLs remain removed. Git email is\nseparate from sign-in email. Invalid or foreign-account changes refuse. Identity\nchanges apply to newly created machines.\n"
-msgstr ""
+msgstr "Todennetun `/settings#git-settings`-osion kautta muokataan nykyisen tilin Git-käyttäjänimeä, Git-sähköpostia\nja valinnaisia agentin commit-loppumerkintöjä. Se on yhden Account-sivun neljäs\nosio saman tuoreen kirjautumisen tarkistuksen takana kuin profiilin,\npääsyavainten ja SSH-avainten hallinta. Vanhat asetusosoitteet pysyvät poistettuina. Git-sähköposti on\nerillinen kirjautumissähköpostista. Virheelliset tai vieraan tilin muutokset torjutaan. Identiteetti-\nmuutokset koskevat uusia luotavia koneita.\n"
 
 #: lib/marshall/documentation_messages.ex:9485
 #, elixir-autogen, elixir-format
@@ -17124,7 +17124,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10150
 #, elixir-autogen, elixir-format
 msgid "These are **desired states**. The VM resource permits idempotent start/stop\nrequests. Deletion is terminal intent. Relocation has additional quiesced-source\nhandoff and restoration transitions guarded by its coordinator."
-msgstr ""
+msgstr "Nämä ovat **tavoitetiloja**. VM-resurssi sallii idempotentit käynnistys-/pysäytys-\npyynnöt. Poistaminen on lopullinen aikomus. Siirrossa on lisäksi pysäytetyn lähteen\nluovutus- ja palautussiirtymiä, joita sen koordinaattori suojaa."
 
 #: lib/marshall/documentation_messages.ex:10162
 #, elixir-autogen, elixir-format
@@ -17154,7 +17154,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10812
 #, elixir-autogen, elixir-format
 msgid "Whether to enable single-hop authorized ingress over the host fleet WireGuard network."
-msgstr ""
+msgstr "Otetaanko käyttöön yhden hypyn valtuutettu sisääntulo isäntäparven WireGuard-verkon kautta."
 
 #: lib/marshall/documentation_messages.ex:10822
 #, elixir-autogen, elixir-format
@@ -17189,7 +17189,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1545
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Catalog completeness, placeholder parity, browser layout/bidi behavior, locale isolation and protocol compatibility need executed evidence. Native linguistic review and packaged NixOS browser journeys are not established."
-msgstr ""
+msgstr "**Puutteet:** Luetteloiden täydellisyys, paikkamerkkien vastaavuus, selaimen asettelu/kaksisuuntainen teksti, kieliasetusten eristys ja protokollayhteensopivuus tarvitsevat suoritettua näyttöä. Äidinkielistä tarkastusta ja paketoituja NixOS-selainpolkuja ei ole osoitettu."
 
 #: lib/marshall/documentation_messages.ex:3097
 #, elixir-autogen, elixir-format
@@ -17209,7 +17209,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4569
 #, elixir-autogen, elixir-format
 msgid "Boundary: Ingress EditorAssetsReceipt binds each approved target's full release tuple independently to current host session/service generation. Every advertised editor/webview gateway must hold the complete configured set because neutral DNS cannot route by release; discovery remains separate from personal Editor admission."
-msgstr ""
+msgstr "Raja: Sisääntulon EditorAssetsReceipt sitoo jokaisen hyväksytyn kohteen koko julkaisutuplen erikseen nykyiseen isäntäistuntoon/palvelusukupolveen. Jokaisen mainostetun muokkain-/webview-yhdyskäytävän on pidettävä koko määritetty joukko, koska neutraali DNS ei voi reitittää julkaisun mukaan; löytyminen pysyy erillään henkilökohtaisesta Editor-hyväksynnästä."
 
 #: lib/marshall/documentation.ex:74
 #, elixir-autogen, elixir-format
@@ -17219,12 +17219,12 @@ msgstr "Ohjeet"
 #: lib/marshall/documentation_messages.ex:6141
 #, elixir-autogen, elixir-format
 msgid "Immutable browser editor packages by linux-x64 or win32-x64 target, serving exact release webview assets; empty disables assets. Every published gateway must serve all Marshall-approved releases."
-msgstr ""
+msgstr "Muuttumattomat selainmuokkainpaketit kohteille linux-x64 tai win32-x64 tarjoavat julkaisun täsmälliset webview-resurssit; tyhjä arvo poistaa resurssit käytöstä. Jokaisen julkaistun yhdyskäytävän on tarjottava kaikki Marshallin hyväksymät julkaisut."
 
 #: lib/marshall/documentation_messages.ex:6161
 #, elixir-autogen, elixir-format
 msgid "Immutable official-source browser editor packages by linux-x64 or win32-x64 target; their exact descriptors govern image and gateway admission. Empty disables editor authority."
-msgstr ""
+msgstr "Muuttumattomat virallisista lähteistä rakennetut selainmuokkainpaketit kohteille linux-x64 tai win32-x64; niiden täsmälliset kuvaukset määräävät levykuvan ja yhdyskäytävän hyväksynnän. Tyhjä arvo poistaa muokkaimen valtuuden käytöstä."
 
 #: lib/marshall/documentation_messages.ex:6276
 #, elixir-autogen, elixir-format
@@ -17249,12 +17249,12 @@ msgstr "Julkiset ohjeet Overallsin selainlaajennuksille ja SSH-konehallinnalle (
 #: lib/marshall/documentation_messages.ex:8003
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Withhold editor/webview records when any configured target lacks a live five-second matching receipt or the current route is unhealthy. A tuple approved only for the other image target grants no capability. Refuse malformed/foreign/duplicate registry entries, wrong release, service role, stale credentials, unknown paths, symlinks and unsafe asset methods."
-msgstr ""
+msgstr "Vaadittu kieltäytyminen: Älä julkaise muokkain-/webview-tietueita, jos joltakin määritetyltä kohteelta puuttuu elävä viiden sekunnin vastaava kuitti tai nykyinen reitti on epäterve. Vain toiselle levykuvakohteelle hyväksytty tuple ei anna kyvykkyyttä. Torju virheelliset/vieraat/päällekkäiset rekisterimerkinnät, väärä julkaisu, palvelurooli, vanhentuneet tunnisteet, tuntemattomat polut, symboliset linkit ja turvattomat resurssimenetelmät."
 
 #: lib/marshall/documentation_messages.ex:8451
 #, elixir-autogen, elixir-format
 msgid "Tested scope: Accepted design in ADR-0197; no implementation execution is claimed by this scenario."
-msgstr ""
+msgstr "Testattu laajuus: ADR-0197:n hyväksytty suunnitelma; tässä skenaariossa ei väitetä toteutusta suoritetuksi."
 
 #: lib/marshall/documentation_messages.ex:9163
 #, elixir-autogen, elixir-format
@@ -17279,4 +17279,4 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:11062
 #, elixir-autogen, elixir-format
 msgid "`services.marshall.editorPackages` and `services.audi.editorPackages` map the\nfinite targets `linux-x64` and `win32-x64` to approved source-built packages.\nBoth default to `{ linux-x64 = packages.vscodeWeb; }`; an empty attribute set\ndisables that role's editor capability. Windows requires an explicitly selected,\nreviewed native bundle and does not enter the default catalog."
-msgstr ""
+msgstr "`services.marshall.editorPackages` ja `services.audi.editorPackages` yhdistävät\nrajatut kohteet `linux-x64` ja `win32-x64` hyväksyttyihin lähteestä rakennettuihin paketteihin.\nMolempien oletus on `{ linux-x64 = packages.vscodeWeb; }`; tyhjä attribuuttijoukko\npoistaa kyseisen roolin muokkainkyvykkyyden. Windows vaatii erikseen valitun,\ntarkastetun natiivipaketin eikä kuulu oletusluetteloon."
