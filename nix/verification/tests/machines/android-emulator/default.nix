@@ -1,0 +1,86 @@
+{ pkgs, packages }:
+let
+  sdk = packages.androidSdk;
+  sdkRoot = "${sdk}/libexec/android-sdk";
+  emulatorScript = pkgs.writeShellScript "android-emulator-software" ''
+    set -euo pipefail
+    export ANDROID_HOME=${sdkRoot}
+    export ANDROID_SDK_ROOT=${sdkRoot}
+    export ANDROID_USER_HOME=/var/lib/android-test
+    export ANDROID_AVD_HOME=/var/lib/android-test/avd
+    export DISPLAY=:0
+    mkdir -p "$ANDROID_AVD_HOME"
+    if [ ! -f "$ANDROID_AVD_HOME/overalls-test.avd/config.ini" ]; then
+      yes "" | ${sdkRoot}/cmdline-tools/latest/bin/avdmanager create avd \
+        --force --name overalls-test \
+        --package 'system-images;android-36;google_apis;x86_64' \
+        --path "$ANDROID_AVD_HOME/overalls-test.avd"
+    fi
+    exec ${sdkRoot}/emulator/emulator -avd overalls-test \
+      -no-accel -gpu swiftshader_indirect -no-boot-anim -no-snapshot \
+      -ports 5554,5555
+  '';
+in
+pkgs.testers.runNixOSTest {
+  name = "overalls-android-emulator-software";
+  globalTimeout = 900;
+  nodes.android = { ... }: {
+    system.stateVersion = "26.05";
+    virtualisation.memorySize = 6144;
+    virtualisation.cores = 4;
+    environment.systemPackages = [ pkgs.android-tools pkgs.xorg.xorgserver sdk ];
+    users.users.android-test = {
+      isSystemUser = true;
+      group = "android-test";
+    };
+    users.groups.android-test = { };
+    systemd.services.android-test-display = {
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "simple";
+        User = "android-test";
+        Group = "android-test";
+        ExecStart = "${pkgs.xorg.xorgserver}/bin/Xvfb :0 -screen 0 1080x1920x24 -nolisten tcp -ac -noreset";
+      };
+    };
+    systemd.services.android-test-emulator = {
+      wantedBy = [ "multi-user.target" ];
+      requires = [ "android-test-display.service" ];
+      after = [ "android-test-display.service" ];
+      serviceConfig = {
+        Type = "simple";
+        User = "android-test";
+        Group = "android-test";
+        StateDirectory = "android-test";
+        ExecStart = emulatorScript;
+        Restart = "on-failure";
+      };
+    };
+  };
+  # @cc [owner:ghuntley,label:verification;isolation] android-emulator-software-machine
+  # The machine check MUST observe an actual Android emulator process using
+  # software rendering, with no /dev/kvm, and obtain a boot-complete property
+  # and PNG screencap through the real adb client. This is software-emulator
+  # evidence only; it does not establish Firecracker, guest isolation, native
+  # KVM, production Lilly authority, or multi-host recovery.
+  testScript = ''
+    import re
+
+    android.start()
+    android.wait_for_unit("android-test-emulator.service")
+    android.wait_until_succeeds("test -r /proc/$(systemctl show android-test-emulator.service -p MainPID --value)/cmdline")
+    android.fail("test -e /dev/kvm")
+    cmdline = android.succeed("tr '\\0' ' ' < /proc/$(systemctl show android-test-emulator.service -p MainPID --value)/cmdline")
+    assert "-no-accel" in cmdline, cmdline
+    assert "-gpu swiftshader_indirect" in cmdline, cmdline
+    android.wait_for_open_port(5555)
+    android.succeed("adb start-server")
+    android.wait_until_succeeds("adb -s emulator-5554 wait-for-device", timeout=180)
+    android.wait_until_succeeds("test \"$(adb -s emulator-5554 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=300)
+    android.succeed("adb -s emulator-5554 shell getprop ro.kernel.qemu | grep -Fx 1")
+    android.succeed("adb -s emulator-5554 shell settings get global animator_duration_scale")
+    android.succeed("adb -s emulator-5554 exec-out screencap -p > /tmp/android-screencap.png")
+    android.succeed("test $(stat -c %s /tmp/android-screencap.png) -gt 100")
+    android.succeed("head -c 8 /tmp/android-screencap.png | od -An -t x1 | grep -F '89 50 4e 47 0d 0a 1a 0a'")
+  '';
+}

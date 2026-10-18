@@ -1817,3 +1817,13 @@ to the disk copy for the same reason. See
 New machines capture the creating account’s Git username and email from Settings. The defaults are Overalls and noreply@overalls.dev. Boot-bound metadata supplies a protected system Git include even without a repository checkout. Restart and relocation retain the snapshot; settings changes do not update existing machines. Ordinary Git configuration precedence and guest sudo permissions remain applicable.
 
 New identity-bearing admissions require an image manifest advertising `git_identity_version: 1`. Old firmware agents reject unknown MMDS fields, so artifacts and consumers must be upgraded before enabling these admissions. An older image without this capability refuses new machine creation rather than receiving incompatible boot metadata. Existing machines without an identity snapshot continue to omit the metadata. Native reviewed-image qualification remains a separate requirement.
+
+## Android software guest
+
+`linux-android-v1` is an additive NixOS Firecracker guest profile. Its emulator
+uses TCG software rendering and persistent AVD state; readiness is bounded at
+600 seconds. ADB and display authority are withheld until emulator readiness.
+The image's current RFB bridge is loopback-bound for diagnostics only; it is not
+an authenticated display authority. An authenticated vsock relay with one input
+controller and read-only viewers remains pending, as does native Firecracker
+acceptance.
