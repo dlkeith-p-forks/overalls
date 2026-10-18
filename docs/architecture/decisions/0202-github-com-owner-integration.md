@@ -1,6 +1,6 @@
-# ADR-0198: Owner-bound GitHub.com integration
+# ADR-0202: Owner-bound GitHub.com integration
 
-- ID: ADR-0198
+- ID: ADR-0202
 - Date: 2026-10-18
 - Status: accepted
 - Implementation: partial

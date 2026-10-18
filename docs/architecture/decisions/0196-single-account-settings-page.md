@@ -156,7 +156,7 @@ management; their authority rules are untouched.
   declarations. The repair restores the single `#nav-account` entry and strict
   `AccountLive` mount, and moves the existing Git-preferences form into its
   profile section with its stable field IDs. This preserves the subsequent
-  [ADR-0199](0199-git-attribution-and-guest-identity.md) feature within this page;
+  [ADR-0198](0198-git-attribution-and-guest-identity.md) feature within this page;
   it introduces no weaker settings route. Current validation is recorded in the
   [integration review](../reviews/2026-10-18-github-com-integration.md).
 - Page: [`account_live.ex`](../../../marshall/lib/marshall_web/live/account_live.ex);

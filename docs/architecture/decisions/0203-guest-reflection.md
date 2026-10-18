@@ -1,6 +1,6 @@
-# ADR-0199: Guest reflection service
+# ADR-0203: Guest reflection service
 
-- ID: ADR-0199
+- ID: ADR-0203
 - Date: 2026-10-18
 - Status: accepted
 - Implementation: partial
@@ -26,8 +26,9 @@ unauthorized executions receive an unavailable response.
 ## Verification
 
 Protocol property tests cover bounded metadata and rejection of secret-shaped
-headers. Packaged NixOS machine coverage remains required before marking this
-decision implemented.
+headers. Dedicated credential tests cover rotation, revocation, internal-only
+reads and secret-free audit. These tests are present; recorded native HTTP and
+guest execution remain required before marking this decision implemented.
 
 ## Alternatives
 
@@ -42,19 +43,28 @@ private service and must be deployed with the private frontend.
 ## Invariants and verification
 
 Snapshots contain no secret values, are bounded, and are fenced to the current
-execution. Protocol property tests and a packaged NixOS guest journey verify
-these invariants.
+execution. Protocol properties exercise bounded metadata. The Peach projection
+fixture does not invoke its HTTP Plug; successful native guest projection and
+current/stale execution histories remain acceptance gaps.
 
 ## Implementation evidence
 
 See [reflection protocol](../../../protocol/lib/overalls_protocol/reflection.ex),
 [Marshall projection](../../../marshall/lib/marshall/reflection/snapshots.ex),
-and [Peach HTTP service](../../../peach/lib/peach/http.ex). Packaged deployment
-and NixOS execution remain open.
+[Peach credential domain](../../../marshall/lib/marshall/peach.ex),
+[credential lifecycle](../../../marshall/lib/marshall/peach/credentials.ex),
+[secret-free audit migration](../../../marshall/priv/repo/migrations/20261018211500_add_peach_credential_versions.exs),
+[credential tests](../../../marshall/test/marshall/peach/credentials_test.exs),
+[Peach HTTP service](../../../peach/lib/peach/http.ex) and
+[packaged NixOS module](../../../nix/domains/system/peach.nix).
+The package/module and test presence do not establish deployed fleet enablement
+or a successful native HTTP projection.
 
 ## Open questions
 
-Dedicated Peach host credential persistence and packaged service wiring remain.
+Recorded property histories for current/stale execution and credential expiry,
+successful packaged guest projection, host loss, and native same-host network
+isolation remain. The declared fleet currently does not enable Peach.
 
 ## Related decisions
 

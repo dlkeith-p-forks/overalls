@@ -16,7 +16,7 @@ pin the owner's credential generation and renewable lease. Detach, disconnect,
 retirement or generation replacement withdraws authority without replaying an
 upstream mutation. Anonymous public forwarding receives no credential. See
 [services](#services), [security](#security) and
-[ADR-0198](repo:docs/architecture/decisions/0198-github-com-owner-integration.md).
+[ADR-0202](repo:docs/architecture/decisions/0202-github-com-owner-integration.md).
 
 ## Experimental Antithesis guest transport boundary
 

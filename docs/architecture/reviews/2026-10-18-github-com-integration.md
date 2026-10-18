@@ -1,6 +1,6 @@
 # GitHub.com owner integration architecture review
 
-Date: 2026-10-18. Decision: [ADR-0198](../decisions/0198-github-com-owner-integration.md),
+Date: 2026-10-18. Decision: [ADR-0202](../decisions/0202-github-com-owner-integration.md),
 accepted with implementation and verification in progress.
 
 ## Scope and authority
@@ -14,7 +14,7 @@ exists. One numeric GitHub account has one active Marshall owner.
 Impact includes Ash ownership, encrypted persistence, credential lifecycle,
 authorization, edge routing and managed guest configuration. ADR-0080's
 single-attempt forwarding/leases and ADR-0134's generic attachment rule remain.
-ADR-0198 records the built-in eligibility exception. ADR-0111's exact wildcard
+ADR-0202 records the built-in eligibility exception. ADR-0111's exact wildcard
 already covers the hostname: no new SAN, issuer, service or public listener.
 ADR-0158's shared sudo boundary remains explicit.
 
@@ -107,12 +107,12 @@ Structural ADR/HLDD gates do not establish runtime or production acceptance.
 ## Prerequisite governance repairs
 
 The required gates exposed existing duplicate IDs from independently added
-records. Machine pins keep ADR-0193 and memory suspension keeps ADR-0197,
-including their accepted supersession chains. Git attribution becomes
-[ADR-0199](../decisions/0199-git-attribution-and-guest-identity.md) and localization
-becomes [ADR-0200](../decisions/0200-localized-human-surfaces.md); only identifiers,
-paths and references change, preserving their rationale/status. The index now
-includes the previously missing ADR-0196/0197 rows.
+records. Machine pins keep ADR-0193 and memory suspension keeps ADR-0199,
+including their accepted supersession chains. Git attribution remains the
+canonical ADR-0198 and localization is ADR-0201; the incoming GitHub, guest
+reflection and newsletter records use ADR-0202 through ADR-0205. Only identifiers,
+paths and references changed during reconciliation, preserving each rationale
+and implementation status.
 
 The coverage recognizer now accepts exact parenthesized/multiline Elixir
 `property`, `Hegel.check` and `Hegel.run` forms, using the existing regression
@@ -128,7 +128,7 @@ actions in `User`, plus router references to removed `SecurityLive` and
 uses the existing `AccountLive` under accepted ADR-0196. Its single
 `#nav-account` entry is restored. The existing Git-preferences form/action moves
 into the profile section with stable field IDs and the whole-page strict mount;
-the duplicate `SettingsLive` is removed. ADR-0199's creation-time Git defaults
+the duplicate `SettingsLive` is removed. ADR-0198's creation-time Git defaults
 remain available through the accepted account page. These repairs grant no new
 GitHub authority. Current compiler and account-page checks must be recorded separately.
 

@@ -366,7 +366,7 @@ See [Underclass operations](repo:docs/services/underclass.md).
 
 ### Built-in GitHub.com provider
 
-[ADR-0198](repo:docs/architecture/decisions/0198-github-com-owner-integration.md)
+[ADR-0202](repo:docs/architecture/decisions/0202-github-com-owner-integration.md)
 accepts `github-com` at `https://com-github.integration.internal`. It resolves
 the VM owner's personal connection rather than a globally registered integration
 name. Eligible non-Customer owner machines are implicit sources; persistent

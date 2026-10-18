@@ -1,5 +1,8 @@
 # Architecture reviews
 
+- [Overview newsletter (2026-10-18)](2026-10-18-overview-newsletter.md): ADR-0205's account-wide durable invitation, self-only dismissal and server-side Ghost subscription boundary; focused validation is recorded while external delivery remains outside local acceptance.
+- [Guest reflection (2026-10-18)](2026-10-18-guest-reflection.md): ADR-0203's secret-free, execution-fenced Peach projection; protocol and service tests are recorded while packaged guest deployment remains open.
+- [GitHub.com owner integration (2026-10-18)](2026-10-18-github-com-integration.md): ADR-0202's owner-bound OAuth custody and managed guest route; source and focused tests are recorded while live provider and native rollout remain open.
 - [Fleet dependency convergence (2026-10-18)](2026-10-18-fleet-dependency-convergence.md):
   diagnoses mixed inventory versions and stale Marshall/Porsche dependency
   snapshots; repairs current release inputs without weakening the lock guard,

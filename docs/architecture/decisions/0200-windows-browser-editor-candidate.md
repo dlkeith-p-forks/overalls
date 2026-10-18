@@ -204,9 +204,11 @@ and [startup wrapper](../../../nix/domains/artifacts/guest/windows/start-editor.
 describe candidate task, trust, package and firewall installation. The linked
 review records 30 actual native Windows library tests, including pipe timeout,
 idle cancellation and ACL refusals; this is narrower than account or worker
-lifecycle acceptance. The native bundle is completed and imported; no admitted
-Windows image, listener/worker journey, scheduler crash/reboot run or
-authenticated Windows browser acceptance is recorded here.
+lifecycle acceptance. The native bundle is completed and imported. The later candidate installer
+completed, and a separate 2-vCPU/4096-MiB Firecracker boot reached Windows Server
+build 26100 SAC; exact evidence is recorded in the cross-platform review. No
+production image admission, listener/worker journey, scheduler crash/reboot run
+or authenticated Windows browser acceptance is recorded here.
 The [native acceptance harness](../../../nix/verification/tests/machines/windows-editor/README.md)
 defines actual gateway-relay, personal account, browser edit/trust/PTY and
 broker/worker recovery assertions. Static harness compilation or boundary tests

@@ -37,7 +37,16 @@ activation, fresh host reports and an ordinary CLI request need separate results
 ## Verification and limits
 
 The eight-way snapshot inspection and deployed service/version observations are
-recorded above. Clean release builds and live convergence remain pending in this
-checkpoint. No destructive guest operation, hostd restart or production database
-mutation was used for diagnosis. This repair does not qualify the separate
-Windows browser editor candidate or establish guest isolation or recovery.
+recorded above. The refreshed Porsche source-built release and
+`checks.x86_64-linux.porsche-release` both passed, producing
+`/nix/store/4jf06n1iawjk1fi2a93crrr7n8n5hjzy-overalls-porsche-0.1.0`;
+local logs are `/tmp/porsche-final.log` and `/tmp/porsche-release-check.log`.
+The current Lilly source-built release also exited 0, recorded in
+`/tmp/osmatrix-lilly-current-release.log`. These results describe the pre-merge
+worktree source snapshot, not deployed convergence. Marshall compilation,
+post-integration gates, fresh reports from both hosts and an ordinary CLI
+request remain pending in this checkpoint.
+
+No destructive guest operation, hostd restart or production database mutation
+was used for diagnosis. This repair does not qualify the separate Windows
+browser editor candidate or establish guest isolation or recovery.

@@ -3816,3 +3816,46 @@ Tested scope: Account preference, codec and immutable snapshot property coverage
 **Gaps:** Production rollout and complete cross-OS native Git commit acceptance remain unrecorded.
 
 **Preferred test work:** Run real guest commits under managed login accounts after setting custom identity and after reboot; retain native and property scopes separately.
+
+## Subscribe to the newsletter or permanently dismiss the Overview invitation
+
+Coverage: **partial**. Layers: identity, authorization, storage, recovery.
+
+Boundary: Marshall owns account preference and request validation; Ghost owns subscription state and delivery.
+
+Required refusal: Foreign actors cannot dismiss another account; malformed mailboxes and all upstream failures are refused safely without secret diagnostics.
+
+Tested scope: Authenticated Overview account preference and server-side Ghost request boundary; local BEAM evidence does not establish external delivery.
+
+- **property, present**: [only bounded valid mailboxes can reach the subscription boundary](repo:marshall/test/marshall/newsletter_property_test.exs) — Bounded Hegel invalid-input property rejects malformed mailboxes before the request boundary; no external delivery.
+- **property, present**: [successful Ghost responses produce a success without exposing request data](repo:marshall/test/marshall/newsletter_property_test.exs) — Injected requester property checks safe success and the fixed subscription payload; no external Ghost request.
+- **property, present**: [Ghost and transport failures collapse to the safe unavailable result](repo:marshall/test/marshall/newsletter_property_test.exs) — Injected requester properties cover token HTTP, signup HTTP and transport failures; no provider acceptance.
+- **unit, present**: [refute has_element?(view, "#overview-newsletter")](repo:marshall/test/marshall_web/overview_live_test.exs) — The authenticated empty Overview renders the fixed no-JavaScript form and a dismissal event removes the invitation; packaged browser remount persistence remains a separate gap.
+- **unit, present**: [self dismissal persists and remains dismissed when repeated from a stale account](repo:marshall/test/marshall/accounts/newsletter_dismissal_test.exs) — Database-backed own-account persistence, unrelated-account isolation and repeated stale snapshot dismissal; no browser remount.
+- **unit, present**: [foreign, anonymous and non-user actors cannot dismiss an account invitation](repo:marshall/test/marshall/accounts/newsletter_dismissal_test.exs) — Refused writes preserve both account preferences; separate tests reject false reset and retired-account stale actors.
+
+**Gaps:** Ghost availability, external receipt, and native browser journey remain unverified.
+
+**Preferred test work:** Run the authenticated browser journey against a controlled Ghost-compatible endpoint and record receipt without exposing mailbox or token data.
+
+## Discover the current guest and eligible private integrations without credential disclosure
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, recovery.
+
+Boundary: Audi supplies the trusted local execution binding; Peach uses its dedicated host credential; Marshall alone derives current machine and integration authority
+
+Required refusal: Malformed or foreign host bindings, stale execution, stopped or retired machines, expired or revoked Peach credentials and disallowed profiles must refuse without returning a retained projection or secret header values
+
+Tested scope: Declared reflection protocol, dedicated Peach control role and projection fixture; source and test presence do not establish fleet enablement or successful native guest reflection
+
+- **property, present**: [comments are bounded and never accept NUL bytes](repo:protocol/test/reflection_test.exs) — Generated comment-boundary validation only.
+- **unit, present**: [rejects snapshots with secret-shaped header values](repo:protocol/test/reflection_test.exs) — A malformed snapshot containing a header value refuses; this fixture alone does not isolate every valid-shape secret boundary.
+- **unit, present**: [uses a dedicated credential shape and refuses malformed requests](repo:marshall/test/marshall/control/peach_service_test.exs) — Malformed credential shape and malformed snapshot request refuse; database-backed expiry/revocation is separate.
+- **unit, present**: [rotation authenticates the new secret, revokes the old one and retains secret-free audit](repo:marshall/test/marshall/peach/credentials_test.exs) — Database-backed credential rotation/revoke and audit redaction; no HTTP or native guest request.
+- **unit, present**: [users cannot read or mutate internal credentials or their audit history](repo:marshall/test/marshall/peach/credentials_test.exs) — Foreign user read/mutation refusal for credentials and generated versions; no deployed credential custody claim.
+- **unit, present**: [assert checked.version == 1](repo:peach/test/http_test.exs) — Validates a versioned projection fixture through the protocol codec; it does not invoke the HTTP Plug.
+- **machine, present**: [https://reflection.internal/ | grep -Fx 403](repo:nix/verification/tests/machines/private-services/driver.py) — Declared native fixture checks the fixed private DNS/TLS endpoint refuses without a current binding; no recorded execution or successful projection.
+
+**Gaps:** Fresh/stale execution, credential expiry and generated rotation/revocation histories, host loss and same-host native network isolation need recorded property and machine execution; credential unit tests are present, and the Peach fixture validates the codec without invoking the HTTP Plug
+
+**Preferred test work:** Add generated current/stale execution and dedicated credential histories, then run a packaged NixOS guest allowed/refused projection journey with Peach enabled and retain exact outcomes

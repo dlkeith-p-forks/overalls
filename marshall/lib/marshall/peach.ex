@@ -1,5 +1,9 @@
 defmodule Marshall.Peach do
-  use Ash.Domain, otp_app: :marshall
+  use Ash.Domain, otp_app: :marshall, extensions: [AshPaperTrail.Domain]
+
+  paper_trail do
+    include_versions? true
+  end
 
   resources do
     resource Marshall.Peach.Credential

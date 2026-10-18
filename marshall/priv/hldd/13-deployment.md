@@ -427,6 +427,9 @@ the [agents review](repo:docs/architecture/reviews/2026-10-14-windows-guest-agen
 and the [multi-OS review](repo:docs/architecture/reviews/2026-10-16-multi-os-guest-images.md).
 ## Reflection deployment
 
-The private frontend routes `reflection.internal` to Peach. Peach is host-bound
-and depends on the Marshall control service; packaged NixOS wiring and guest
-journey evidence remain pending.
+The private frontend routes `reflection.internal` to Peach's Unix socket.
+The declared module runs as the unprivileged `peach` user with a private runtime
+directory, dedicated host-bound Marshall credential and CA delivered as systemd
+credentials. It depends on Lilly for the local host identity. `audiPrivate`
+requires Peach to be enabled; fleet placement and complete guest journeys remain
+separate from the package/module and evaluation-test declarations.

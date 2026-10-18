@@ -1194,7 +1194,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/vscode-web/default.nix",
           "assertion": "worker loss starts a fresh personal process without deleting data",
-          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334\u20133357, legitimate origin replacement L3358\u20133389 and worker loss with saved data L3390\u20133407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
+          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334–3357, legitimate origin replacement L3358–3389 and worker loss with saved data L3390–3407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-10-browser-editor.md",
           "record_assertion": "The corrected final-package standalone native check passed, exit 0, in 342 seconds"
@@ -4328,7 +4328,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/accounts/time_zones_property_test.exs",
           "assertion": "every label carries the zone's offset in force at that instant",
-          "scope": "Every curated zone over random instants 2000\u20132040 plus fixed DST edges; half-hour and 45-minute zones pinned",
+          "scope": "Every curated zone over random instants 2000–2040 plus fixed DST edges; half-hour and 45-minute zones pinned",
           "execution": "present"
         },
         {
@@ -5511,7 +5511,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/database-recovery/driver.py",
           "assertion": "expected_holder_state",
-          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432\u201327.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
+          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432–27.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-02-database-loss-histories.md",
           "record_assertion": "All six cases preserved the twenty-second holder and thirty-five-second\nall-connection assertions and reacquired the row after reclamation."
@@ -6680,7 +6680,7 @@
       ],
       "boundary": "Complete manifest, matching keyring, native ownership and isolated restoration.",
       "denial": "Reject unrelated decryption keys, malformed manifests, unavailable retained references, busy operator locks and unsafe or nonempty restore targets; keep historical authority isolated.",
-      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore\u2192decrypt\u2192repository-access composition with the historical-generation refusal in synthetic fixtures.",
+      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore→decrypt→repository-access composition with the historical-generation refusal in synthetic fixtures.",
       "status": "partial",
       "gaps": "No generic automated reconciliation makes a historical database authoritative for surviving guests; physical replacement GUID adoption needs operator reconciliation.",
       "preferred_gap": "Native TLS/ZFS/database/keyring and packaged-command acceptance retains its original scope. Local generated command histories cannot establish physical replacement GUID adoption or historical-authority reconciliation; those require explicit operator and native disaster-recovery drills.",
@@ -11511,7 +11511,7 @@
           "assertion": "foreign-linux-pam-nosuid-account",
           "scope": "Isolated VM/chroot using the exact pinned installer and PAM: missing-helper9, valid0, expired13, password-change12, unknown10 on nosuid runtime storage; root-owned04755 copy, unchanged0555 source, idempotence and twelve unsafe/argument/nonroot refusals. vmTools source ownership is replaced by a byte-identical root-owned overlay only inside the disposable chroot. No foreign guest SSH/sudo or nonroot elevation acceptance.",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
-          "record_assertion": "The maintained VM gate records missing-helper9 \u2192 repaired0"
+          "record_assertion": "The maintained VM gate records missing-helper9 → repaired0"
         },
         {
           "kind": "manual",
@@ -13180,27 +13180,117 @@
         {
           "kind": "property",
           "path": "marshall/test/marshall/newsletter_property_test.exs",
-          "assertion": "invalid mailboxes, successful responses and Ghost/transport failures preserve safe outcomes",
-          "scope": "Bounded Hegel requester properties; no external delivery.",
+          "assertion": "only bounded valid mailboxes can reach the subscription boundary",
+          "scope": "Bounded Hegel invalid-input property rejects malformed mailboxes before the request boundary; no external delivery",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/newsletter_property_test.exs",
+          "assertion": "successful Ghost responses produce a success without exposing request data",
+          "scope": "Injected requester property checks safe success and the fixed subscription payload; no external Ghost request",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/newsletter_property_test.exs",
+          "assertion": "Ghost and transport failures collapse to the safe unavailable result",
+          "scope": "Injected requester properties cover token HTTP, signup HTTP and transport failures; no provider acceptance",
           "execution": "present"
         },
         {
           "kind": "unit",
           "path": "marshall/test/marshall_web/overview_live_test.exs",
-          "assertion": "Overview renders and dismisses the newsletter panel",
-          "scope": "LiveView presentation and event behavior.",
+          "assertion": "refute has_element?(view, \"#overview-newsletter\")",
+          "scope": "The authenticated empty Overview renders the fixed no-JavaScript form and a dismissal event removes the invitation; packaged browser remount persistence remains a separate gap",
           "execution": "present"
         },
         {
           "kind": "unit",
-          "path": "marshall/lib/marshall/newsletter.ex",
-          "assertion": "fixed server-side Ghost request sequence",
-          "scope": "Req client boundary; no provider acceptance.",
+          "path": "marshall/test/marshall/accounts/newsletter_dismissal_test.exs",
+          "assertion": "self dismissal persists and remains dismissed when repeated from a stale account",
+          "scope": "Database-backed own-account persistence, unrelated-account isolation and repeated stale snapshot dismissal; no browser remount",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/accounts/newsletter_dismissal_test.exs",
+          "assertion": "foreign, anonymous and non-user actors cannot dismiss an account invitation",
+          "scope": "Refused writes preserve both account preferences; separate tests reject false reset and retired-account stale actors",
           "execution": "present"
         }
       ],
       "denial": "Foreign actors cannot dismiss another account; malformed mailboxes and all upstream failures are refused safely without secret diagnostics.",
       "boundary": "Marshall owns account preference and request validation; Ghost owns subscription state and delivery."
+    },
+    {
+      "id": "guest-reflection-current-execution",
+      "journey": "Discover the current guest and eligible private integrations without credential disclosure",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "recovery"
+      ],
+      "scope": "Declared reflection protocol, dedicated Peach control role and projection fixture; source and test presence do not establish fleet enablement or successful native guest reflection",
+      "status": "partial",
+      "gaps": "Fresh/stale execution, credential expiry and generated rotation/revocation histories, host loss and same-host native network isolation need recorded property and machine execution; credential unit tests are present, and the Peach fixture validates the codec without invoking the HTTP Plug",
+      "preferred_gap": "Add generated current/stale execution and dedicated credential histories, then run a packaged NixOS guest allowed/refused projection journey with Peach enabled and retain exact outcomes",
+      "evidence": [
+        {
+          "kind": "property",
+          "path": "protocol/test/reflection_test.exs",
+          "assertion": "comments are bounded and never accept NUL bytes",
+          "scope": "Generated comment-boundary validation only",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "protocol/test/reflection_test.exs",
+          "assertion": "rejects snapshots with secret-shaped header values",
+          "scope": "A malformed snapshot containing a header value refuses; this fixture alone does not isolate every valid-shape secret boundary",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/control/peach_service_test.exs",
+          "assertion": "uses a dedicated credential shape and refuses malformed requests",
+          "scope": "Malformed credential shape and malformed snapshot request refuse; database-backed expiry/revocation is separate",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/peach/credentials_test.exs",
+          "assertion": "rotation authenticates the new secret, revokes the old one and retains secret-free audit",
+          "scope": "Database-backed credential rotation/revoke and audit redaction; no HTTP or native guest request",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/peach/credentials_test.exs",
+          "assertion": "users cannot read or mutate internal credentials or their audit history",
+          "scope": "Foreign user read/mutation refusal for credentials and generated versions; no deployed credential custody claim",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "peach/test/http_test.exs",
+          "assertion": "assert checked.version == 1",
+          "scope": "Validates a versioned projection fixture through the protocol codec; it does not invoke the HTTP Plug",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/private-services/driver.py",
+          "assertion": "https://reflection.internal/ | grep -Fx 403",
+          "scope": "Declared native fixture checks the fixed private DNS/TLS endpoint refuses without a current binding; no recorded execution or successful projection",
+          "execution": "present"
+        }
+      ],
+      "denial": "Malformed or foreign host bindings, stale execution, stopped or retired machines, expired or revoked Peach credentials and disallowed profiles must refuse without returning a retained projection or secret header values",
+      "boundary": "Audi supplies the trusted local execution binding; Peach uses its dedicated host credential; Marshall alone derives current machine and integration authority"
     }
   ]
 }

@@ -27,6 +27,29 @@ Unchanged declared placement does not establish deployment or live GitHub
 acceptance. See [services](#services), [security](#security) and the
 [review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
 
+## Peach private reflection placement
+
+Peach is a separately packaged local service behind Audi's private Unix-socket
+frontend, using its own unprivileged user and host-bound control credential.
+Marshall's Peach domain retains only credential digests; it builds each bounded
+projection from current Compute and integration authority. Peach/database loss
+withholds reflection rather than serving a retained snapshot. The source module
+and evaluation test exist, but the host inventory does not yet declare Peach
+enabled. The `audiPrivate` dependency assertion requires compatible fleet
+enablement before deployment. The public placement projection now includes the
+Peach role without serializing its credential or runtime configuration.
+
+```mermaid
+flowchart LR
+  Guest[Guest private request] --> Front[Local Audi private frontend]
+  Front -->|Unix socket| Peach[Local Peach service]
+  Peach -->|authenticated control request| Marshall[Marshall current projection]
+  Marshall --> DB[(Existing PostgreSQL)]
+```
+
+This graph describes the intended local request boundary; it is not evidence of
+activated fleet placement or a native guest journey.
+
 ## Foreign Linux guest PAM runtime
 
 Arch/Alma's `overalls-pam-helpers.service` is a root oneshot inside each guest,
