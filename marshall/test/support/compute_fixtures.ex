@@ -152,6 +152,7 @@ defmodule Marshall.ComputeFixtures do
         architecture: :x86_64,
         image_id: image_id(),
         profile: :standard,
+        comment: "test fixture",
         vcpu: 2,
         memory_bytes: 536_870_912,
         disk_bytes: 2_147_483_648
