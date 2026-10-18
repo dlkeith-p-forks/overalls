@@ -931,6 +931,9 @@ The merged first batch `c420650b2` then passed both actual-host toplevel builds
 in 233 seconds and both consumers converged healthy to that exact release.
 Its selected catalog still had six entries; the subsequent exact OmniOS alias
 activation is a separate source, build, deployment and live-evidence scope.
+Both actual-host toplevel builds for the seven-entry catalog at `008a02331`
+passed in 291 seconds. That build predates the later caption and crawler-policy
+merge; deployment convergence and live OmniOS acceptance remain separate.
 The ten-file focused Marshall rerun passed 59/60 tests in 407.4 seconds, seed
 393478, clearing all twelve original failures. A sibling four-case retry-window
 history hit the same TooSlow heuristic; its scoped profile retains every case

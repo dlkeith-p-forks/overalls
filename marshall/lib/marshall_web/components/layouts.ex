@@ -236,7 +236,7 @@ defmodule MarshallWeb.Layouts do
             aria-label="Close navigation"
           >×</button>
         </div>
-        <p class="brand-caption">A cozy corner of the cloud</p>
+        <p class="brand-caption">Made to get dirty</p>
         <nav class="workspace-switch" aria-label="Workspace mode">
           <.link navigate={~p"/overview"} aria-current={@active != "admin" && "true"}>Workspace</.link>
           <.link navigate={~p"/admin/nodes"} aria-current={@active == "admin" && "true"}>Control room</.link>
