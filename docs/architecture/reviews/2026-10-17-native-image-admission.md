@@ -278,11 +278,21 @@ executor heartbeat withdrawal and process-group fencing, fresh-fence recovery,
 host-key rotation and retained home data across clean reboot. The test-only
 manifest and receipt retain `native_admission=false`.
 
-This receipt is service and clean-reboot evidence only. It does not establish
-mounted-root growth, network policy isolation, daemon or abrupt-crash recovery,
-reset/DMA safety, direct peer-VM/jail/physical isolation, stable-media durability
-or Marshall fleet admission. The earlier sealed `wz4r` disk remains historical
-and stale; this replay uses the current source-qualified image and VMM hashes.
+This receipt is service and clean-reboot evidence only. A separate growth
+replay at
+`/tmp/overalls-omnios-native-probe/exact-services-growth-rerun2/growth-receipt.json`
+used the same image and patched VMM, retained one root through three clean boots,
+and performed two verified expansions. Physical bytes grew
+`8589934592 -> 10737418240 -> 12884901888`; pool bytes grew
+`8053063680 -> 10200547328 -> 12348030976`; root bytes grew
+`6882697216 -> 8963035136 -> 11043348480`. The receipt binds pool GUID
+`6088636317398311714`, vdev GUID `7318836247622920379`, assembly SHA-256
+`f1f0833204ba6b56cefcecc1cb59a18743b5f490a25cf1e62a48243145678adc`, and
+`native_admission=false`. This does not establish network policy isolation,
+daemon or abrupt-crash recovery, reset/DMA safety, direct peer-VM/jail/physical
+isolation, stable-media durability or Marshall fleet admission. The earlier
+sealed `wz4r` disk remains historical and stale; these replays use the current
+source-qualified image and VMM hashes.
 
 ## Validation and remaining gaps
 

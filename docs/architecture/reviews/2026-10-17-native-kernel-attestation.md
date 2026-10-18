@@ -1386,10 +1386,19 @@ rotation and retained home data. The receipt and test-only manifest retain
 `native_admission=false`; no capability row or fleet authority was changed.
 
 This closes the prior exact-image service-replay gap for the current source
-payload. Mounted-root growth, network-policy isolation, supervised daemon
-recovery, abrupt VMM crash recovery, reset/DMA stress, physical or peer-VM
-isolation, stable-media durability and Marshall fleet admission remain open and
-require separate receipts.
+payload. A fresh growth replay then ran from
+`/tmp/overalls-omnios-native-probe/exact-services-growth-rerun2` with the same
+image and patched VMM. Its receipt records three clean boots and two root
+expansions: physical bytes `8589934592 -> 10737418240 -> 12884901888`, pool
+bytes `8053063680 -> 10200547328 -> 12348030976`, and root bytes
+`6882697216 -> 8963035136 -> 11043348480`; pool GUID
+`6088636317398311714`, vdev GUID `7318836247622920379`, assembly SHA-256
+`f1f0833204ba6b56cefcecc1cb59a18743b5f490a25cf1e62a48243145678adc`, and
+`native_admission=false` remain bound in
+`growth-receipt.json`. This is scoped mounted-root growth evidence; network
+policy isolation, supervised daemon recovery, abrupt VMM crash recovery,
+reset/DMA stress, physical or peer-VM isolation, stable-media durability and
+Marshall fleet admission remain open and require separate receipts.
 
 ## Verification boundary and follow-up
 
