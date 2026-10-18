@@ -1479,8 +1479,8 @@ The next forward patch addresses the recorded typing and relay findings while
 preserving accepted decisions. Prompt audit selection now matches the returned
 `WakeRequest` shape, and GitHub admission removes a redundant nullable-user
 check after `Security.lock_user!/1`; deleted-user and current-login refusals
-remain. The explicit positive step in the Android socket's bounded integer
-guard preserves the same accepted interval. These restore existing typed
+remain. Explicit `>=` and `<=` comparisons in the Android socket's bounded
+integer guard preserve the same accepted interval. These restore existing typed
 contracts rather than changing authority under ADR-0002, ADR-0199 or ADR-0202.
 
 `MarshallWeb.GettextPlural` uses the official Gettext plural callbacks. Generated
@@ -1567,3 +1567,39 @@ hypothesis pending native execution. The exact immutable candidate currently
 under Lilly qualification still contains the old launcher; stock-fixture
 browser results and this source change do not qualify that image or establish
 browser recovery, worker-loss recovery or production promotion.
+
+## Additional trunk integration through `351b160de`
+
+The reviewed incoming range is `589530ab..351b160de`. The resolved merge keeps
+the forward callback, property-fixture, browser-path, typed plural adapter and
+verification repairs recorded above. It takes the incoming explicit `>=` and
+`<=` comparisons for the Android socket integer bounds and the shared terminal
+string byte-length bounds. Both preserve their existing inclusive intervals
+and malformed-input refusals; no wire schema, capability or authorization
+contract changes. ADR-0002, ADR-0012 and partial ADR-0206 remain unchanged.
+
+The Android software-emulator machine fixture explicitly supplies the pinned
+JDK through `JAVA_HOME` and checks the actual emulator command line through
+`pgrep`, retaining its no-acceleration and software-rendering assertions. The
+suspension composition now takes only Audi enrollment/bootstrap before the
+first guest HTTP scenario, then runs its own VM and route journey. This removes
+the unrelated Audi guest/SSH journey from that fixture. Its native continuation,
+paused-cgroup absence and interrupted-capture cleanup assertions remain present;
+this merge does not record a passing Android or suspension machine execution.
+
+At forward checkpoint `6b6f04c8`, the focused Marshall run passed **28 tests**
+with normal finite deadlines, seed **327352**, in **12.9 seconds**
+(`/tmp/osmatrix-type-repair-focused.log`). It covers Gettext plural and
+interpolation semantics, Prompt and wake-property behavior, GitHub authorization
+and Android relay state. Formatting also passed
+(`/tmp/osmatrix-type-repair-format.log`). These are checkpoint-scoped results;
+they do not establish merged-source full-suite, forced typing, native Android,
+browser recovery or exact Windows candidate acceptance. The corrected protocol
+assertion has received formatting only; its final-source gate and both consumer
+gates remain pending.
+
+No domain ownership, deployment placement or accepted architectural decision
+changes. The frozen handbook already describes the relevant partial Android,
+native editor, controller-custody and recovery boundaries; the checkpoint result
+does not close those gaps. No handbook chapter or scenario-status change is
+needed for these contract-preserving repairs and bounded evidence updates.

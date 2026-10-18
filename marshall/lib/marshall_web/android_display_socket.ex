@@ -46,7 +46,7 @@ defmodule MarshallWeb.AndroidDisplaySocket do
   defp bounded_integer(value, minimum, maximum)
        when is_binary(value) and byte_size(value) <= 20 do
     case Integer.parse(value) do
-      {number, ""} when number in minimum..maximum//1 -> {:ok, number}
+      {number, ""} when number >= minimum and number <= maximum -> {:ok, number}
       _ -> :error
     end
   end

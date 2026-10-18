@@ -47,6 +47,7 @@ pkgs.testers.runNixOSTest {
       wantedBy = [ "multi-user.target" ];
       requires = [ "android-test-display.service" ];
       after = [ "android-test-display.service" ];
+      environment = { JAVA_HOME = "${pkgs.jdk}"; };
       serviceConfig = {
         Type = "simple";
         User = "android-test";
@@ -66,8 +67,8 @@ pkgs.testers.runNixOSTest {
   testScript = ''
     android.start()
     android.wait_for_unit("android-test-emulator.service")
-    android.wait_until_succeeds("test -r /proc/$(systemctl show android-test-emulator.service -p MainPID --value)/cmdline")
-    cmdline = android.succeed("tr '\\0' ' ' < /proc/$(systemctl show android-test-emulator.service -p MainPID --value)/cmdline")
+    android.wait_until_succeeds("pgrep -a -f '/emulator/emulator'", timeout=30)
+    cmdline = android.succeed("pgrep -a -f '/emulator/emulator' | head -n 1")
     assert "-no-accel" in cmdline, cmdline
     assert "-gpu swiftshader_indirect" in cmdline, cmdline
     android.wait_for_open_port(5555)

@@ -57,6 +57,7 @@ defmodule OverallsProtocol.NativeAdmissionTest do
                android_emulator: false,
                android_display: false
              }
+
       refute Enum.any?(Map.values(GuestAgents.capabilities(@agents)))
       refute Enum.any?(Map.values(GuestAgents.capabilities(@other_agents, image)))
 
