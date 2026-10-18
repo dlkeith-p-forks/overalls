@@ -2594,6 +2594,7 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # Returned SQL errors MUST fail, and committed opposite relocation endpoints,
   # complete allocation inventories and unreleased slot uniqueness MUST be checked.
   property "opposite-source relocations and clone activation reach shared host locks",
+    profile: :ci,
     test_cases: 2 do
     check all(rotation <- member_of([0, 1, 2]), reverse <- boolean(), test_cases: 2) do
       for fixed_rotation <- Enum.uniq([rotation, 0, 1, 2]) do

@@ -78,6 +78,17 @@ let
       mkdir -p ./files/etc/ssl/certs
       touch ./files/etc/passwd ./files/etc/group
       printf '%s\n' 'overalls image: ${distribution}' > ./files/etc/overalls-distribution
+      # @cc [owner:ghuntley,label:security;build] arch-root-runtime-permissions
+      # Arch MUST override its vendor root tmpfiles policy with root-owned mode
+      # 0755 so capability-free readiness can create and fsync its root probe.
+      # The vendor policy MUST remain intact and nonroot users MUST NOT gain
+      # root-directory write access.
+      ${lib.optionalString (distribution == "arch") ''
+        mkdir -p ./files/etc/tmpfiles.d
+        rm -f ./files/etc/tmpfiles.d/root.conf
+        printf 'z / 0755 root root -\n' > ./files/etc/tmpfiles.d/root.conf
+        chmod 0644 ./files/etc/tmpfiles.d/root.conf
+      ''}
       # Arch's bootstrap archive intentionally omits the traditional init
       # symlink. Point it at systemd so the shared Linux initrd reaches the
       # distribution's real init instead of an interactive shell.

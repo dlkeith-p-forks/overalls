@@ -853,8 +853,8 @@ separate obligations. See
 
 ## Elixir property verification
 
-Elixir properties currently use the test-only Hegel frontend ref `f1ad336`
-(`f1ad336e4be1f0b3e18e429f8bc826d538b40601`) under
+Elixir properties currently use the test-only Hegel frontend ref `08cd428`
+(`08cd4289b8b268ae14176e3391c791647e8affae`) under
 [ADR-0191](repo:docs/architecture/decisions/0191-elixir-hegel-property-verification.md).
 Protocol properties run once per declared case count with fixed seeds and no
 example database or printed replay blobs. A local draw boundary records literal
@@ -872,11 +872,11 @@ used the previous frontend pin `6a62795`; the `2c9f7a4` merged frontend's comple
 gate also passed 299 tests and properties, Covenant 14/14 and Dialyzer with zero
 errors or skips. These historical results do not verify the current pin or
 changed consumer tests. Standalone `check all` options now propagate, but the
-engine uses `test_cases` rather than `max_runs`. The current map-context/options
-expansion still failed a memory/time-bounded compilation probe while a plain
-property control passed; context-pattern expansion can recurse without bound
-and compatibility clauses can discard
-tuple bindings, filters or nested options.
+engine uses `test_cases` rather than `max_runs`. The earlier `f1ad336`
+map-context/options expansion failed a bounded compilation probe while a plain
+control passed. Current `08cd428` context forms passed isolated compilation and
+runtime checks; tuple bindings, filters and nested compatibility options retain
+their narrower consumer repairs.
 Narrow consumer repairs retain generated assertions in tagged ordinary tests;
 the handbook unknown-ID check uses an explicit bounded silent draw and actual
 filter. Current consumer gates retain separate execution records.
@@ -957,11 +957,36 @@ exited zero. It started from `21831915e` with the repairs later committed as
 `b84ac6277`, on frontend `02cd8bd`; the later literal caption and handbook
 merge does not change that test-source scope. These remain separate focused
 and complete records and do not verify the later `f1ad336` frontend pin.
+The complete `f1ad336` Marshall scan then failed only the native TooSlow
+heuristic in the opposite-source host-lock property: 1,693/1,694 passed, four
+excluded, 1,526.1 seconds, seed 770435. Covenant 24/24, both JavaScript suites,
+Monospace and forced Dialyzer with zero errors/skips passed. The current scoped
+CI-profile repair preserves both cases, every rotation, three real peers,
+clocks and SQL/allocation oracles; its selected actual `08cd428` run passed in
+26.9 seconds at the same seed. A separate 512 MiB/10-second context probe
+passed three forms at seed 454122. Full current-pin gates remain separate.
+Actual Mix resolution normalizes all eleven Hegel locks to the full current
+commit. All eight incoming dependency snapshots were stale, so their hashes
+were refreshed from actual fetches. Every new stored lock snapshot equals its
+source and every independently computed recursive NAR hash equals its configured
+value. This repairs dependency custody without transferring any prior-pin test
+or release result. Upstream `cdbc76086` merged byte-identical resolved locks and
+hashes, confirmed against the independent proof; both hosts then converged
+healthy to that exact revision with zero failures at 10:43 UTC. The exact
+custody and convergence scope is in the matrix review.
+The combined `870eecef5` checkpoint also passed both actual-host toplevel builds
+in 357 seconds and converged healthy on both hosts at 10:10 UTC. Independent
+forced Dungarees rebuilds of the actual Arch/Alma ext4s and wrappers passed
+with remote hashes matching local outputs. Later Arch root-policy artifact and
+pinned-tmpfiles scratch checks passed; neither is a fresh guest lifecycle.
 The later incoming Ziggy reporter history explicitly selects one generated
 case, and two Galileo boot-refusal histories select two each with the CI
 profile. Their remaining inner compatibility `max_runs` options are ignored;
 these bounded counts reduce exploration and do not inherit the preserved-count
 claim for the Marshall and protocol repairs above.
+The later Ziggy context/refusal and Galileo pending/upstream histories also
+select bounded one- or two-case CI runs. Their reduced exploration retains
+separate execution and does not inherit preserved-count claims.
 The [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.

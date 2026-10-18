@@ -59,19 +59,24 @@ storage durability, physical recovery or deployed fleet behavior.
 - [Elixir Hegel testing guide](../../development/testing-with-hegel.md)
 - [Hegel Elixir skill](../../../.agents/skills/hegel-elixir-tests/SKILL.md)
 - [Protocol test-only dependency pin](../../../protocol/mix.exs)
-  currently selects frontend ref `f1ad336`, resolved as
-  `f1ad336e4be1f0b3e18e429f8bc826d538b40601`,
+  currently selects frontend ref `08cd428`, resolved as
+  `08cd4289b8b268ae14176e3391c791647e8affae`,
   as do Marshall and Lilly. The historical complete protocol gate at
   `2c9f7a4a9f2cf156de063bbc8058bcf297be5cf0` passed 299 tests and properties;
   the linked review retains that source hash and the earlier `6a62795` result.
   Those results do not establish execution at the current pin. The frontend now
-  propagates standalone `check all` options; context-pattern expansion, tuple
-  bindings and filter compatibility still require narrow consumer repairs.
+  propagates standalone `check all` options; tuple bindings and filter
+  compatibility still require narrow consumer repairs.
   These repairs preserve generated assertions and production interfaces.
   The complete final-repair Marshall gate at `02cd8bd` passed 1,694 tests,
-  Covenant 24/24 and zero-error forced Dialyzer; the current pin retains a
-  failing bounded context/options compilation probe and separate focused
-  consumer passes. Historical execution does not verify the new pin.
+  Covenant 24/24 and zero-error forced Dialyzer; the historical `f1ad336`
+  checkpoint retained a failing bounded context/options
+  compilation probe. The current pin passed an isolated three-form context
+  compilation/runtime probe and the preserved two-case distributed lock
+  property; complete current-pin consumer gates remain separate. All eight
+  refreshed fixed-output dependency snapshots equal the normalized source locks
+  and their actual recursive NAR hashes equal the configured values.
+  Historical execution does not verify the new pin.
 - [Protocol terminal properties](../../../protocol/test/hegel_terminal_test.exs)
   define bounded frame round trips and truncation cases with deterministic seeds.
   Their presence does not record execution or completion of the wider migration.

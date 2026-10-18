@@ -367,6 +367,12 @@ neither unchanged-image lifecycle acceptance nor the new sealed image's
 runtime behavior. No decision or implementation status is promoted by these
 records.
 
+The repaired exact image `8ca0a11f` then passed its actual 1,834.2-second
+installation and immutable NTFS readback of all three repaired executables.
+The sealed no-reference recursive NAR has a separate custody receipt. Signed
+publication and a fresh exact-image physical CLI lifecycle remain pending;
+installation does not close the runtime gates or change this record's status.
+
 ## Open questions
 
 - Whether an S4U network logon of a roster account (a member of

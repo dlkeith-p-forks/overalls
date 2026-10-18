@@ -866,14 +866,38 @@ buffer failed with Win32 1783; a 260-unit call registered the SID-bound profile,
 after which the old agent enabled the account, installed a key and started
 sshd. The diagnostic mutated the disposable fixture and does not establish
 unchanged-image SSH or lifecycle acceptance.
+The repaired exact `8ca0a11f` image subsequently passed actual installation and
+immutable readback of all three repaired executables. Its sealed recursive NAR
+has no references. Signed publication and a fresh clean physical CLI lifecycle
+remain pending; the old mutated fixture does not verify those new bytes.
 The [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
 records exact run identities and unrun corrected-image/later lifecycle stages.
 The separate exact-promoted OmniOS fixture then completed creation. Its first
 CLI transport succeeded but the OS probe omitted the real `v11` release label
 and failed the oracle. After narrowly normalizing that label while retaining
-the exact revision, the same VM passed initial CLI identity and orderly stop.
-Restart remains accepted/polling; repeat SSH and cleanup are unrun at this
-checkpoint. The original failed oracle receipt is retained.
+the exact revision, the same 16 GiB VM passed initial CLI identity, orderly stop,
+restart, repeated strict CLI identity and terminal deleted cleanup. Stop has a
+terminal stopped receipt; no separate pre-restart show-state or physical
+checkpoint was recorded. The original failed oracle receipt is retained.
+The final `101111` custody proof retains Ubuntu's unchanged exact image and
+earlier full lifecycle. The changed NixOS image passed its complete fresh CLI
+lifecycle, including a separate stopped-state checkpoint and deleted cleanup.
+Final Arch/Alma creates still failed. Their actual-image and independent
+rebuild results establish artifact custody separately from runtime acceptance.
+Arch's exact same-boot diagnosis found vendor tmpfiles changed root from
+immutable 0755 to live 0555, refusing capability-free readiness writes. The
+Arch-only higher-priority root policy now retains 0755; actual artifact gates,
+the old-image negative and pinned tmpfiles scratch execution passed. A fresh
+repaired-image production lifecycle remains pending. Alma's exact fixture has
+no `systemd-resolved.service`, leaving dependent DNS/readiness/SSH inactive;
+its original create failure remains unchanged while the resolver repair is
+prepared.
+The final historical cleanup census records all 15 known fixtures deleted
+after strict idle rootless-namespace retirement. Both service and pause scope
+received guarded normal SIGTERM with no force, migration, unmount, storage
+removal or database writes. Current foreign diagnostic fixtures are separate.
+This manual operational recovery does not establish arbitrary automatic or
+independent physical cleanup.
 
 The catalog now includes Arch Linux and AlmaLinux as foreign Linux variants.
 Their builders reuse the version-4 kernel image contract and the reviewed shared

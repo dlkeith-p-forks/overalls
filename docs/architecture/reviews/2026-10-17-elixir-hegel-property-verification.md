@@ -129,3 +129,16 @@ passed. Existing ordinary ExUnit workarounds remain required. Focused new-pin
 protocol and Marshall checks passed; complete new-pin gates retain separate
 records and cannot inherit the prior pin's results. The matrix review records
 the exact probe and execution scope. ADR-0191 remains partial.
+
+The complete `f1ad336` Marshall run subsequently failed only the shared-lock
+property's native TooSlow heuristic: 1,693/1,694 passed, four excluded,
+1,526.1 seconds, seed 770435. Covenant 24/24, both JavaScript suites, Monospace
+and forced zero-error Dialyzer passed. The next frontend `08cd428`, resolved
+as `08cd4289b8b268ae14176e3391c791647e8affae`, preserves the native engine and
+corrects context macro traversal/metadata. Its bounded three-form context
+compilation/runtime probe passed; the scoped CI-profile lock property passed
+without reducing its two cases or three rotations. Actual resolution normalized
+all eleven source locks, and all eight refreshed fixed-output snapshots and
+independently computed recursive NAR hashes now match. These focused and
+dependency-custody results do not replace complete consumer execution. The
+matrix review records exact failed and focused scopes and receipt identities.

@@ -10,6 +10,10 @@ evaluation's shared VMM patch inventory.
 The next checkpoint repairs Windows profile/bootstrap ordering, foreign-root
 LSM and temporary-directory construction, and the exact OmniOS release probe;
 it preserves diagnostic failures and separate source/build/native/live scopes.
+The following checkpoint restores Arch's boot-time root policy, normalizes
+actual Hegel lock identities and refreshes all eight dependency snapshots. It
+records completed OmniOS and fresh NixOS lifecycles without upgrading failed
+foreign-Linux or unrun repaired-Windows acceptance.
 
 There is no new Ash domain/resource, deployment host/service, persistence shape,
 authorization grant, wire protocol or guest capability kind. Exact-image
@@ -471,7 +475,7 @@ The portable cases cover actual readiness answers, pre-completed-start key
 refusal followed by successful retrieval, stale-key cleanup refusals and
 same-boot preservation. They do not execute Windows SCM/profile APIs or a
 fresh sealed image. The new Windows installation and its full live lifecycle
-remain separate pending evidence.
+retain separate evidence.
 A separate 64-second sandbox mutation gate caught both retaining prior keys
 and allowing a readiness answer without the current marker, log
 `/tmp/overalls-windows-bootstrap-negative-check.log`. The mutation build did
@@ -480,6 +484,17 @@ The combined final source's multi-target production Lyra release also built
 successfully in 318 seconds, log
 `/tmp/overalls-osmatrix-final-lyra-release-build.log`. A linked release does
 not establish execution of the new Windows installation.
+The subsequent actual installation passed in 1,834.2 seconds with QEMU/result
+zero and all required markers. Readback of the three repaired executables from
+immutable NTFS matched the reviewed payloads. The sealed exact image is
+`sha256:8ca0a11fd0063dc3f3bb7e4eb928dcb7083da08be4e72ba8ef9e56de911c5d5c`,
+with recursive NAR hash
+`sha256-MTpVti0Mc+c3FzqjUJLfBAfEIW+plgP+HheZnVdPlUo=`,
+68,723,672,224 bytes and no references. Private installer, installed-custody,
+manifest and seal receipts are under
+`/tmp/overalls-windows-profile-bootstrap-*`. Signed publication and clean
+physical lifecycle acceptance remain pending; the old mutated fixture does
+not verify these new bytes.
 The separate corrected Arch/Alma qualification
 ledger `/tmp/porsche-20261018-085815` later created Arch
 `10ce2f77-7be8-4dea-9f8c-3171dac34b0c` from image `fc437aea` and Alma
@@ -507,13 +522,85 @@ private ledger.
 The same VM's explicit `initial-v11` stage then passed the exact OS oracle
 through actual CLI SSH, exit zero, 21 output bytes and SHA-256
 `2c45e839af8de414f3acdb6b514c9902ec09ef927545bd82f6146a6dd5a1fece`.
-Its orderly stop succeeded; the original restart is accepted/polling, with
-repeat SSH and cleanup still unrun at this checkpoint. No complete OmniOS
-lifecycle follows yet.
+Its orderly stop, original restart, repeated strict CLI OS identity and owned
+cleanup then all succeeded, ending with a terminal deleted receipt. Stop is
+proved by its terminal stopped receipt; no separate pre-restart show-state or
+physical checkpoint was recorded. The immutable private summary is
+`qualification-summary-100056.json`, SHA-256
+`4bd27971eee5547ccedff2ba77d50aa2972f00d000e7cb05bdc0cddaaecd3132`.
+This establishes one ordinary 16 GiB exact-image live lifecycle at `b17d6beec`,
+separately from the native growth/policy/recovery scenarios and physical
+isolation or reset stress.
 Its promoted-artifact proof passed the shared schema/admission validator and
 fresh full 8 GiB disk/4 MiB firmware hashes against the reviewed manifest.
 Artifact custody, creation/readiness, exact CLI identity and later lifecycle
 stages retain separate evidence scopes.
+
+Both actual-host toplevel builds for the combined repair checkpoint
+`870eecef53c5627b517974e5367069a068cd4b8a` passed in 357 seconds, log
+`/tmp/overalls-osmatrix-870-hosts-build.log`; both auto-updaters confirmed
+healthy exact-release convergence with zero failures at 10:10 UTC.
+The combined Arch/Alma actual ext4s and image wrappers also passed forced
+independent Dungarees `--check` rebuilds with builders and substituters disabled.
+Remote rootfs and manifest hashes matched local outputs; manifest-file hashes
+are distinct from canonical protocol image IDs. The receipt is
+`/tmp/overalls-combined-linux-images-20261018/cross-host-reproducibility-receipt.json`,
+SHA-256 `1c0ee9ab412c06c33555e18a9ebf445f1cbf80a2efb4db0f1e7e55c2b10989f2`.
+These build/custody results did not establish guest readiness.
+
+The final `/tmp/porsche-20261018-101111` custody audit independently validated
+the actual selected artifacts and canonical identities. Ubuntu retained its
+previous exact `8d468c67` image despite a wrapper-path change, so its recorded
+`075200` full lifecycle is retained with fresh custody evidence. The changed
+NixOS `92114604` image's VM `40e03d8b-b369-43e7-9f1e-faf72dfabfc2` passed
+create, strict initial CLI identity, terminal stopped plus a separate current
+owner stopped-state checkpoint, restart, repeated strict CLI identity and
+terminal deleted cleanup. Final Arch `e2f67fe5` VM
+`05406661-2b26-4d91-97fc-29d1cf87cd48` and Alma `43b08259` VM
+`abe3258e-86a0-4956-adeb-2629720d5c37` both returned terminal `execution_failed` creates; no foreign SSH or
+privilege smoke passed. The private `qualification-snapshot-102335.json`
+retains the actual receipts, unchanged-Ubuntu proof and failed creates.
+
+The exact Arch same-boot diagnostic found root mode 0555 and a capability-free
+root process receiving `mkstemp` EACCES, despite immutable root mode 0755.
+The preserved vendor `/usr/lib/tmpfiles.d/root.conf` contains `z / 555 - - -`.
+An Arch-only higher-priority `/etc/tmpfiles.d/root.conf` now applies
+`z / 0755 root root -`; it leaves the vendor file, capabilities, recursive
+ownership, readiness checks and host authority unchanged. Actual private
+artifact/evaluation gates passed in 63 seconds; the original exact image fails
+the new gate for its missing override. A guarded scratch execution using the
+pinned systemd-tmpfiles and exact extracted policies reproduces old root 0555
+with capability-free `mkstemp` errno 13, then proves root 0755 and successful
+write/flush/fsync/unlink with the override. Receipt
+`arch-root-policy-runtime.json` in the combined Linux ledger has SHA-256
+`64bfc6cd57b03b6a968664c90fab89d54a80f4f72524ad94336e866197c733f8`.
+The final exact-artifact audit confirms the combined evaluation selects
+`sha256:8ab89c2d0e0f679ef2f43fdd849b1d750d1ca24948ca5413c05913e17493801c`;
+it checks the actual filesystem, manifest hashes and copied native executable
+custody. Receipt `arch-root-policy-artifact-audit.json` has SHA-256
+`8a4ace58fc62d81cbbb5231015eb40696c96dc2c5c21aab9b43c1f5652cef5a7`.
+This is actual artifact and isolated policy execution evidence; a fresh
+repaired-image production boot and lifecycle remain pending.
+The exact Alma fixture separately passed capability-free root write/fsync,
+network and growth predicates, but `systemd-resolved.service` was absent.
+Dependent private DNS/readiness/SSH units therefore remained inactive. The
+closed `alma-final-{readiness,units}-diagnostic.json` receipts preserve that
+cause without changing its original failed create or proving guest SSH.
+
+The same ledger's later strict idle-namespace recovery preserved the original
+cleanup intents. Both the user Podman service and exact pause scope received
+normal SIGTERM under temporary `SendSIGKILL=no` guards only after fresh zero
+ordinary containers, runtimes, API clients and storage users/errors. Namespace holders
+then reached zero without forced signals, unmounts, migration, storage removal
+or database writes; the external storage record remained intact. All 15 known
+historical fixtures subsequently reached terminal deleted receipts with no
+visible historical fixtures or missing cleanup. The durable manual audit is
+`/tmp/overalls-osmatrix-idle-namespace-cleanup-recovery-audit.json`, SHA-256
+`df26f04459beaecbbe2c9fab54606b8ba695f97b483d0b4aabb4d7ff7cfe995c`.
+The two current failed foreign fixtures remain separately authorized for
+causal diagnosis. Original failed creates, SSH attempts and transport failures
+remain failures; this manual recovery is not an automatic or independent
+physical cleanup guarantee.
 
 ## Consumer verification prerequisites
 
@@ -671,8 +758,57 @@ and logs are `/tmp/overalls-hegel-f1ad-{context,plain}-probe.{exs,log}`.
 Existing tagged ordinary ExUnit workarounds remain in place. Focused new-pin
 execution passed two protocol capability tests (seed 21863), six native
 admission tests (seed 395668), and fourteen Marshall handbook/observability
-tests in 4.7 seconds (seed 365394). Complete new-pin gates remain pending;
-the passing prior-pin records are not transferred.
+tests in 4.7 seconds (seed 365394). The complete `f1ad336` Marshall run then
+exited 2: 1,693 of 1,694 tests passed, four were excluded, in 1,526.1 seconds,
+seed 770435. Its only failure was the opposite-source relocation/clone
+host-lock property's native TooSlow heuristic after two valid inputs in
+34.511763231 seconds. Covenant passed 24/24, terminal JavaScript 36/36,
+presentation JavaScript 9/9, Monospace and forced Dialyzer with zero errors,
+skips or unnecessary skips in 54.36 seconds. Log
+`/tmp/overalls-os-matrix-marshall-f1ad-full.log` has SHA-256
+`191055fe6498cadf7e922480a1b99518fa18eafc2893bafb54108b61a0334e09`.
+It ran `0ed3c8151` plus the frozen sources committed as `870eecef5`.
+This remains a failed full gate, separate from the passing prior-pin record.
+
+Incoming `fb956a2c4` selects frontend `08cd428`, actually resolved as
+`08cd4289b8b268ae14176e3391c791647e8affae`. Its delta from `f1ad336` touches
+only the Elixir macro and regression tests: postwalk replaces recursive
+prewalk, inserted variable metadata is corrected and context/options expansion
+uses the ExUnit context pattern directly. Native engine/settings source is
+unchanged. An isolated 512 MiB/10-second actual compilation/runtime probe passed
+three forms: map context with options, named ExUnit context with options and
+map context without options, seed 454122. Its log is
+`/tmp/overalls-hegel-08cd-context-confirmation.log`; the initial diagnostic's
+overly strict equality against a named full ExUnit context was corrected to a
+submap pattern, preserving the original diagnostic log. This does not establish
+the upstream suite or every compatibility form.
+
+The scoped host-lock property repair adds only its outer `profile: :ci`,
+retaining two generated cases and all three rotations per case, the real
+three-peer startup, lock barriers, clocks, allocation/SQL assertions and cleanup.
+Its selected actual `08cd428` run passed one test with two exclusions in 26.9
+seconds at seed 770435, log
+`/tmp/overalls-os-matrix-marshall-08cd-lock-focused.log`.
+
+The incoming release failed the existing source-lock snapshot comparison.
+Actual Mix resolution normalizes all eleven locks to the full upstream commit;
+ten source locks required correction because Ziggy was already normalized.
+All eight configured dependency outputs retained stale snapshots: seven used
+the short ref and Ziggy used a different full revision. The private audit
+`/tmp/overalls-os-matrix-08cd-stale-dependency-snapshots.json` preserves those
+identities. All eight hashes were then discovered from actual normalized-source
+fetches and refreshed; normal fixed-output builds passed. Independently computed
+recursive NAR hashes equal the configured values, and every actual
+`.overalls-mix.lock` is byte-equal to its source lock. Receipt
+`/tmp/overalls-os-matrix-08cd-dependency-custody.json` has SHA-256
+`574fe280ab34fd1d3d01996402cf8d120edf92d61484df606a1b393f0f729136`.
+The Cedar Cargo hash is unchanged. Upstream `cdbc76086` then supplied
+byte-identical resolved locks and hashes. The post-fast-forward source
+comparison is `/tmp/overalls-os-matrix-08cd-cdbc-custody-confirmation.json`;
+it independently confirms the same eight proven identities at that revision.
+Both hosts subsequently converged healthy to exact `cdbc76086` at 10:43 UTC,
+with zero failures. Complete current-pin consumer gates and the later Arch
+repair's host builds retain separate records. No prior-pin pass is transferred.
 
 The scenario validator additionally recognizes exact qualified Elixir
 `Hegel.check(...)`/`Hegel.run(...)` calls, alongside existing property markers.

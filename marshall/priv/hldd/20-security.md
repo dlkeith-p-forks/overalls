@@ -1102,6 +1102,13 @@ Root-owned real `/tmp` and `/var/tmp` directories retain mode 01777 after
 normalization. Offline actual-image checks cover the arguments and directory
 custody; runtime activation and successful repaired-image boot remain separate.
 This changes no jailer, per-TAP guard, host storage or protocol authority.
+Arch additionally overrides its preserved vendor root tmpfiles policy with
+`z / 0755 root root -`. The exact vendor rule changed live root to 0555 and
+blocked a capability-free root readiness write. Actual artifact checks and
+isolated pinned-tmpfiles execution reproduce that refusal and show successful
+write/flush/fsync/unlink under the override with the same empty capability
+sets. No capabilities or recursive ownership are added. Fresh repaired-image
+runtime and foreign SSH/PAM/sudo acceptance remain separate gaps.
 
 ## Windows guest boundaries
 

@@ -237,6 +237,12 @@ carry distro SELinux labels. Actual private-image offline checks and old-input
 negative controls pass. Current corrected-image create failures and pending
 repaired-image runtime checks remain distinct in the matrix review; host
 isolation, wire contracts and capability authority are unchanged.
+The exact Arch diagnosis additionally found vendor tmpfiles changed the mutable
+root to 0555 at boot, refusing capability-free readiness writes. An Arch-only
+higher-priority root policy preserves root 0755 without changing capabilities
+or recursively changing ownership. Actual artifact checks and a pinned
+tmpfiles/capability-free scratch execution pass; a fresh repaired-image
+production lifecycle remains separate.
 
 Native builders and catalog entries are in
 [`native.nix`](../../../nix/domains/artifacts/guest/native.nix),
@@ -563,6 +569,12 @@ hardware and empty-contract failures retain outer restart authority. A killed
 shell supervisor with surviving children remains an explicit recovery gap.
 The source corrections preserve this decision's existing boundaries; the later
 per-image qualification enables only its previously authorized native subset.
+The selected exact OmniOS `98b23b79` image subsequently passed an ordinary
+Marshall-driven 16 GiB create, strict CLI SSH identity, terminal stop, restart,
+repeat strict CLI identity and terminal deleted cleanup at healthy `b17d6beec`.
+The original failed release-label oracle is retained. Stop has a terminal
+receipt rather than a separate physical checkpoint. The matrix review records
+the immutable lifecycle summary separately from native scenarios.
 
 ## Open questions
 
@@ -570,10 +582,9 @@ per-image qualification enables only its previously authorized native subset.
   the installable downstream image and `illumos` is the stable protocol label.
   A direct illumos.org image source is unavailable: the upstream project
   identifies OmniOS, OpenIndiana and Tribblix as downstream distributions.
-- The exact OmniOS five-scenario matrix and individual daemon replacement have
-  passed. Its live 16 GiB fleet launch, complete ordinary lifecycle, readiness
-  behavior under fleet load and shell-supervisor death with surviving children
-  still need independent records.
+- The exact OmniOS five-scenario matrix, individual daemon replacement and one
+  ordinary 16 GiB fleet lifecycle have passed. Readiness under fleet load and
+  shell-supervisor death with surviving children still need independent records.
 - Reproducible native full-disk assembly remains unrecorded. The exact FreeBSD
   and OmniOS artifacts are promoted by reviewed immutable bytes and hash-bound native
   evidence; candidate manifests alone remain insufficient.

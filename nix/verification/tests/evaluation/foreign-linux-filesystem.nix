@@ -17,16 +17,20 @@ let
   # @cc [owner:ghuntley,label:verification;build;security] foreign-linux-final-filesystem-modes
   # The actual fleet Arch and Alma ext4 images MUST retain executable upstream
   # init/shell/loader files, non-executable release data and root ownership. The owned
-  # sudo copy MUST be setuid while account secrets remain private, and both
-  # temporary directories MUST be real root-owned directories with mode 01777. This offline
+  # sudo copy MUST be setuid while account secrets remain private. The root MUST
+  # be a root-owned mode-0755 directory, and both temporary directories MUST be
+  # real root-owned directories with mode 01777. This offline
   # check MUST NOT be reported as guest boot, SSH or elevation execution.
   checkImage = distribution: image:
   let
     loader = if distribution == "arch" then "/usr/lib/ld-linux-x86-64.so.2" else "/usr/lib64/ld-linux-x86-64.so.2";
     modes = expectedModes // { ${loader} = "0755"; };
     entries = lib.mapAttrs (_: mode: { inherit mode; kind = "regular"; }) modes // {
+      "/" = { mode = "0755"; kind = "directory"; };
       "/tmp" = { mode = "01777"; kind = "directory"; };
       "/var/tmp" = { mode = "01777"; kind = "directory"; };
+    } // lib.optionalAttrs (distribution == "arch") {
+      "/etc/tmpfiles.d/root.conf" = { mode = "0644"; kind = "regular"; };
     };
   in ''
     # @cc [owner:ghuntley,label:verification;security] foreign-linux-final-kernel-lsm
@@ -39,6 +43,17 @@ let
       ($arguments | index("overalls.distribution=" + $distribution) != null)
     ' ${image}/manifest.json >/dev/null; then
       echo ${lib.escapeShellArg "${distribution}: invalid LSM selection or distribution in final manifest"} >&2
+      exit 1
+    fi
+  '' + lib.optionalString (distribution == "arch") ''
+    # @cc [owner:ghuntley,label:verification;security] arch-final-root-tmpfiles-policy
+    # The actual private Arch image MUST carry the exact higher-priority 0755
+    # root policy. An initial writable inode alone MUST NOT pass when boot-time
+    # tmpfiles would remove the owner's write bit.
+    printf 'z / 0755 root root -\n' > expected-root.conf
+    debugfs -R 'cat /etc/tmpfiles.d/root.conf' ${image}/rootfs.ext4 2>/dev/null > actual-root.conf
+    if ! cmp -s expected-root.conf actual-root.conf; then
+      echo 'arch: missing or invalid boot-time root tmpfiles override' >&2
       exit 1
     fi
   '' + lib.concatStringsSep "\n" (lib.mapAttrsToList (path: expected: ''

@@ -126,8 +126,10 @@ source-qualified artifacts and results. The
 [activation review](reviews/2026-10-17-native-image-admission.md) separates the
 reviewed FreeBSD promotion from broader physical and fleet acceptance. The
 [matrix review](reviews/2026-10-18-guest-os-matrix.md) records the exact OmniOS
-promotion and selected catalog aliases, separately from the pending selected
-release deployment and live OmniOS lifecycle acceptance.
+promotion and selected catalog aliases, healthy selected-release deployment and
+one exact-image ordinary OmniOS CLI lifecycle, including terminal deleted
+cleanup. The retained failed release-label probe and broader native/physical
+acceptance gaps keep their separate scope.
 
 [ADR-0149](decisions/0149-independent-observability.md) separates control and
 observability: Lilly v4 carries capacity and physical readiness receipts, Ziggy v2

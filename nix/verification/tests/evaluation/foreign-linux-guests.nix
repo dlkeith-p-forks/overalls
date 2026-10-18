@@ -71,6 +71,8 @@ assert reproducible archRootCommand;
 assert reproducible almaRootCommand;
 assert accountRuntime archRootCommand;
 assert accountRuntime almaRootCommand;
+assert pkgs.lib.hasInfix "z / 0755 root root -" archRootCommand;
+assert !(pkgs.lib.hasInfix "z / 0755 root root -" almaRootCommand);
 assert arch.name == "arch-evaluation";
 assert alma.name == "alma-evaluation";
 # The source format remains part of the evaluated catalog contract, so a

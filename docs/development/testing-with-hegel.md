@@ -225,8 +225,8 @@ secrets into the serial log, keep `assert` messages value-free.
 ## Elixir and BEAM properties
 
 Elixir properties use the same native Hegel engine but run inside the Mix test VM.
-The current protocol, Marshall and Lilly frontend ref is `f1ad336`, resolved as
-`f1ad336e4be1f0b3e18e429f8bc826d538b40601`. The recorded
+The current protocol, Marshall and Lilly frontend ref is `08cd428`, resolved as
+`08cd4289b8b268ae14176e3391c791647e8affae`. The recorded
 299-test protocol gate used the earlier `2c9f7a4` frontend; the review preserves
 the passing `6a62795` result separately. Those historical results do not verify
 the current pin or changed consumer tests.
@@ -240,10 +240,14 @@ The current protocol suite uses one `property` runner with explicit `test_cases`
 frontend's `check all` compatibility runner inside a property: compatibility
 options inside a property and filter clauses are not preserved. Standalone
 `check all` now propagates options, but the engine uses `test_cases`, not
-`max_runs`. Context-pattern `property/3` expansion can still recurse without
-bound. The current map-context/options branch failed a 512 MiB/10-second
-isolated compilation probe while a plain-property control passed; affected consumer tests use
-tagged ordinary ExUnit declarations around their existing generated checks.
+`max_runs`. The earlier `f1ad336` map-context/options branch recursively
+expanded and failed a 512 MiB/10-second compilation probe while a plain-property
+control passed. The current `08cd428` source passed an equally bounded
+compilation/runtime probe for map context with options, named ExUnit context
+with options and map context without options. A named context receives the
+complete ExUnit context, including metadata; use a submap pattern for setup
+values. Retained tagged ordinary declarations keep their existing generated
+checks and fixture boundaries; this scoped probe is not a complete consumer gate.
 For retained plain outer properties, put `test_cases` on that outer runner as
 well: the inner compatibility count cannot control an already active run.
 Preserve fixture setup and cleanup at their existing per-case boundary when
@@ -258,6 +262,11 @@ Review effective settings from the linked NIF: for the current Elixir frontend,
 its explicit setters restore randomness and database defaults, leaving only
 TooSlow suppression changed. The profile name alone does not prove the same
 behavior for another frontend or future pin.
+At the current pin, the shared-lock distributed property retains two generated
+cases and all three rotations per case under its scoped CI profile. Its selected
+run passed in 26.9 seconds at ExUnit seed 770435. The prior full `f1ad336` scan
+failed only its TooSlow heuristic after two valid inputs in 34.511763231 seconds;
+the profile repair changes no clocks, peer count, lock barrier or oracle.
 Draw labelled values
 once at the property boundary instead. Protocol's
 [`TestProperties.draw/2`](../../protocol/test/support/test_properties.ex) obtains

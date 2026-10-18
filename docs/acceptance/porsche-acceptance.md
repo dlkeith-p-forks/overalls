@@ -68,8 +68,10 @@ The separate `matrix-*` phases create one `oss` VM per selected OS using explici
 immutable catalog image IDs. The default selection requires all seven families:
 `nixos`, `ubuntu`, `arch`, `almalinux`, `freebsd`, `omnios` and `windows`.
 The [current matrix](../guests/os-matrix.md) records the admission and runtime
-limits. OmniOS is currently unadmitted, so a default seven-OS preflight must fail;
-do not substitute another image or silently omit its row.
+limits. The exact reviewed OmniOS promotion is selected and admitted. Default
+preflight still requires all seven explicit images and refuses missing or
+unqualified entries; do not substitute another image or silently omit its row.
+Admission and a passing preflight do not establish a complete live matrix.
 
 Add `matrix.json` to the same private run directory:
 
