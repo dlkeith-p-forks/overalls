@@ -19,7 +19,7 @@ in
   # The guest display bridge MUST bind RFB to loopback. This module does not
   # claim authenticated host display access; no new guest ingress port is opened
   # and an authenticated display relay remains a separate integration.
-  environment.systemPackages = [ androidSdk pkgs.xorg.xorgserver pkgs.x11vnc ];
+  environment.systemPackages = [ androidSdk pkgs.xorg.xorgserver pkgs.x11vnc pkgs.socat ];
 
   users.users.overalls-android = {
     isSystemUser = true;
@@ -93,7 +93,36 @@ CONFIG
       RestartSec = 2;
       NoNewPrivileges = true;
       PrivateTmp = true;
-      ExecStart = "${pkgs.x11vnc}/bin/x11vnc -display :0 -rfbport 5900 -localhost -forever -shared -nopw -quiet";
+      ExecStart = "${pkgs.writeShellScript "overalls-android-display" ''
+        set -eu
+        password_file=/run/overalls-android/rfb.pass
+        if [ ! -s "$password_file" ]; then
+          umask 077
+          password=$(head -c 18 /dev/urandom | base64 -w0 | cut -c1-8)
+          ${pkgs.x11vnc}/bin/x11vnc -storepasswd "$password" "$password_file" >/dev/null
+        fi
+        exec ${pkgs.x11vnc}/bin/x11vnc -display :0 -rfbport 5900 -localhost -forever -shared -rfbauth "$password_file" -quiet
+      ''}";
+    };
+  };
+
+  # The only guest-side display transport is a vsock relay to the loopback RFB
+  # server. Lilly must still authenticate and authorize the host-side connection;
+  # this service does not make RFB public or mint browser authority.
+  systemd.services.overalls-android-display-vsock = {
+    description = "Android display vsock relay";
+    wantedBy = [ "multi-user.target" ];
+    requires = [ "overalls-android-display.service" ];
+    after = [ "overalls-android-display.service" ];
+    serviceConfig = {
+      Type = "simple";
+      User = "overalls-android";
+      Group = "overalls-android";
+      Restart = "always";
+      RestartSec = 2;
+      NoNewPrivileges = true;
+      PrivateTmp = true;
+      ExecStart = "${pkgs.socat}/bin/socat VSOCK-LISTEN:5900,reuseaddr,fork TCP:127.0.0.1:5900";
     };
   };
 
