@@ -209,10 +209,12 @@ The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.m
   validation, `Lilly.VM.JailTest` and `Lilly.Host.ImageTest` checks are
   structural evidence. Separate recorded FreeBSD execution covers the scoped
   transport, complete service, mounted-root growth, IPv4/router/TAP policy and
-  same-boot daemon recovery boundaries described below. OmniOS has diagnostic
-  file/token/transport execution and native image assembly. These results do not
-  establish acceptance for both families, physical stable-media/power-loss durability,
-  reset/DMA safety, physical isolation or fleet availability.
+  same-boot daemon recovery boundaries described below. Exact OmniOS disk
+  `45983bb7` separately binds all five service/growth/policy/daemon-recovery/
+  process-crash scenario receipts and its own transport/reset evidence. These
+  results do not establish broader capability acceptance, physical stable-media/
+  power-loss durability, repeated reset/DMA safety, physical isolation or fleet
+  availability.
 
 ## Implementation evidence
 
@@ -220,9 +222,13 @@ The [2026-10-18 OS matrix review](../reviews/2026-10-18-guest-os-matrix.md)
 reconciles the seven declared families with seven source-selected catalog rows
 and the opt-in explicit-image acceptance workflow. It records the exact OmniOS
 immutable promotion, registry qualification and selected package aliases.
-Deployment and live acceptance remain separate. It adds no live seven-OS
-execution result; this decision remains partially
-implemented with the runtime gaps below.
+It now records all seven exact selected families' separately executed
+create/readiness, strict CLI SSH, independent stopped checkpoints, same-VM
+restart, repeated strict SSH and completed deletion. Its typed aggregate binds
+49 stage receipts and four Arch/Alma read-only smoke receipts at their distinct
+execution revisions; no simultaneous same-revision run is claimed. This closes
+the scoped SSH/lifecycle milestone while this decision remains partially
+implemented for the broader native/recovery/capability requirements below.
 
 The implementation is partial. Arch and Alma builders are in
 [`nix/domains/artifacts/guest/arch`](../../../nix/domains/artifacts/guest/arch),
@@ -234,8 +240,8 @@ The shared builder now preserves executable source modes, restores real
 root-owned sticky temporary directories and selects the reviewed
 `landlock,yama,bpf` guest LSM stack explicitly; these assembled roots do not
 carry distro SELinux labels. Actual private-image offline checks and old-input
-negative controls pass. Current corrected-image create failures and pending
-repaired-image runtime checks remain distinct in the matrix review; host
+negative controls pass. Historical corrected-image create failures and later
+helper-fixed runtime results remain distinct in the matrix review; host
 isolation, wire contracts and capability authority are unchanged.
 The exact Arch diagnosis additionally found vendor tmpfiles changed the mutable
 root to 0555 at boot, refusing capability-free readiness writes. An Arch-only
@@ -262,8 +268,13 @@ with status 0 on nosuid runtime storage, and preserves expired/password-change/
 unknown-account refusals. Pinned PAM's root account caller sets real UID 0
 before helper execution; no mount flags or unprivileged elevation are added.
 Actual image and independent rebuild checks pass for Arch `99fa9876` and Alma
-`473f9589`; fresh guest SSH/sudo and lifecycle remain separate. The matrix review
-binds exact artifacts, the VM fixture's source-ownership overlay and receipts.
+`473f9589`. Both exact images subsequently passed fresh strict personal-account
+CLI SSH, read-only sudo/helper checks, independent stopped checkpoints, restart,
+repeated strict SSH/checks and completed deletion in run `114223`. Runtime mounts
+remained nosuid; these observations do not establish direct helper setuid
+elevation, terminal/executor/workspace, revocation, isolation or physical recovery.
+The matrix review binds exact artifacts, the VM fixture's source-ownership
+overlay and independent lifecycle receipts.
 This repairs the accepted owned PAM runtime without changing host isolation,
 protocol identity, account policy or capability authority; implementation remains
 partial.
@@ -599,6 +610,12 @@ repeat strict CLI identity and terminal deleted cleanup at healthy `b17d6beec`.
 The original failed release-label oracle is retained. Stop has a terminal
 receipt rather than a separate physical checkpoint. The matrix review records
 the immutable lifecycle summary separately from native scenarios.
+Fresh exact-image run `122228` then separately passed the same full lifecycle
+with an independent current-owner stopped-state checkpoint and completed
+deletion. Its immutable checkpoint/deletion receipts close that owner-observation
+gap without adding a physical absence, capability or recovery guarantee to
+either journey. The original `091638` result and failed release-label oracle
+retain their own scope.
 
 ## Open questions
 
@@ -606,8 +623,9 @@ the immutable lifecycle summary separately from native scenarios.
   the installable downstream image and `illumos` is the stable protocol label.
   A direct illumos.org image source is unavailable: the upstream project
   identifies OmniOS, OpenIndiana and Tribblix as downstream distributions.
-- The exact OmniOS five-scenario matrix, individual daemon replacement and one
-  ordinary 16 GiB fleet lifecycle have passed. Readiness under fleet load and
+- The exact OmniOS five-scenario matrix, individual daemon replacement and two
+  separately recorded ordinary 16 GiB fleet lifecycles have passed. The later
+  journey includes an independent stopped-owner checkpoint. Readiness under fleet load and
   shell-supervisor death with surviving children still need independent records.
 - Reproducible native full-disk assembly remains unrecorded. The exact FreeBSD
   and OmniOS artifacts are promoted by reviewed immutable bytes and hash-bound native

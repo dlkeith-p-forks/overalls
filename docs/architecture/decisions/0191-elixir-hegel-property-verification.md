@@ -114,8 +114,10 @@ implicit result of adding the dependency.
 Remaining application migrations need an inventory, executed property and replay
 results, and verified fixture cleanup before their existing engines are removed.
 Native Hegel smoke and full consumer gates retain their own execution records.
-Protocol still retains StreamData for its workspace-source and View properties;
-the pinned frontend does not provide every accepted stateful/concurrent API.
+Protocol's workspace-source and View histories now use Hegel and ran in the
+recorded final 303-test gate. The wider migration and supported
+stateful/concurrent interfaces still require their own inventory and evidence;
+the dependency pin alone establishes neither.
 
 ## Related decisions
 

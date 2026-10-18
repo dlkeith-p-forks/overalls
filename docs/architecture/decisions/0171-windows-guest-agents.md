@@ -373,8 +373,15 @@ The sealed no-reference recursive NAR has a separate custody receipt. Signed
 cache publication and exact NAR-fingerprint Ed25519 verification then passed.
 Independent fresh Dungarees substitution, full NAR contents and whole-artifact
 hashes then passed; source selection pins those exact reviewed bytes. Deployment
-and a fresh exact-image physical CLI lifecycle remain pending. Custody does not
-close the runtime gates or change this record's status.
+was subsequently observed healthy at `132bc28b5`. Fresh run `103842` then
+completed create/readiness, strict personal-account CLI SSH with exact
+Win32NT/Server 2025 build 26100, stop with an independent stopped checkpoint,
+restart, repeated strict SSH and completed deletion. The matrix review
+binds its immutable receipts and preserves the original warning-only refusal;
+only the exact stock Windows OpenSSH warning is classified as expected.
+This closes that exact-image CLI lifecycle gap. It does not establish terminal,
+executor, workspace, growth, isolation or crash-supervision acceptance, and this
+record remains proposed/partial.
 
 ## Open questions
 

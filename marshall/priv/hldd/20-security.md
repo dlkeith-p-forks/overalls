@@ -951,10 +951,10 @@ retired and replaced by a checksum-pinned archive capture; Nix evaluates the
 receipt inputs, but placeholder kernels stop image construction before any
 stock disk can be admitted. Complete image qualification separately enables
 readiness, trust, terminal, workspace, flush, SSH and agents only for the reviewed
-sealed FreeBSD manifest or its exact portable descriptor. Editor and Inception
-remain false. A matching kernel, agent name or retained row cannot qualify an
-image; altered/missing identity and every OmniOS image refuse new admission.
-Lilly selects transport from validated
+sealed FreeBSD and OmniOS manifests or their exact portable descriptors. Editor
+and Inception remain false. A matching kernel, agent name or retained row cannot
+qualify an image; altered, missing, foreign or unapproved native identities
+refuse new admission. Lilly selects transport from validated
 metadata, rejects cross-OS agent sets and preserves the jailer, seccomp,
 per-tap guard and ZFS boundaries. OmniOS remains the installable downstream
 image while `illumos` is the protocol family.
@@ -967,13 +967,21 @@ image while `illumos` is the protocol family.
 | Execution | Lilly repeats image admission before fresh launch, then requires current placement, epoch, boot challenge, kernel attestation and readiness. |
 | Isolation | Jailer, per-TAP/router policy and ZFS boundaries remain. The native policy evidence uses a Linux sibling sink and does not prove direct native-peer or physical isolation. |
 | Storage | Promotion hashes actual disk/firmware and five scenario evidence sets before writing the manifest. Cache input is bound by recursive NAR hash; missing publication fails closed. |
-| Recovery | Exact FreeBSD same-disk SIGKILL evidence retains its scope; native physical power loss, relocation and fleet recovery remain separate. Retained stock records remain readable with false capabilities. |
+| Recovery | Exact FreeBSD and OmniOS same-disk SIGKILL evidence retains its scope; native physical power loss, relocation and fleet recovery remain separate. Retained stock records remain readable with false capabilities. |
 
 The [activation review](repo:docs/architecture/reviews/2026-10-17-native-image-admission.md)
 records the sealed artifact and publication boundary. Current rebuilt native
 payloads do not inherit admission from that image. Missing, foreign, replayed or
 incomplete promotion evidence refuses; evidence and debugging hooks stay outside
 the published image. The candidate's original false admission flags are retained.
+
+All seven selected image identities now bind separately recorded strict
+personal-account SSH and current-owner create/readiness, stop, independent
+stopped checkpoint, same-VM restart, repeated SSH and completed deletion. The
+fresh OmniOS checkpoint is an owner-authorized control-plane observation,
+separate from independent physical absence. Those 49 stage receipts establish
+the scoped lifecycle journeys at their recorded revisions; they do not establish
+every enabled guest capability, revocation, physical isolation or recovery.
 
 Native manifests and workload bundles bind kernel bytes, digest, source
 revision, patch/configuration hashes and compiler. Lilly's jail-local probe
@@ -1055,8 +1063,11 @@ old-authority refusal; its seven host checks pass. Actual crash execution expose
 scheduled-only UFS sync. The corrected native suspension/resume flush passed the
 final FreeBSD observed-SIGKILL/same-disk restart boundary with exact retained bytes,
 native UFS snapshot fsck and complete service oracles before/after the crash.
-The separate OmniOS process-crash receipt covers SIGKILL and same-disk recovery; supervised daemon recovery remains unexecuted. Neither fixture establishes physical
-stable-media/host power-loss durability or fleet recovery.
+The final exact OmniOS image separately passed supervised daemon kill/reap,
+three withheld-readiness probes and same-boot restoration, as well as SIGKILL
+and same-disk recovery. Those receipts remain distinct from the earlier failed
+candidate. Neither fixture establishes physical stable-media/host power-loss
+durability or fleet recovery.
 
 A separate test-only FreeBSD probe passed one actual Firecracker pause,
 full-snapshot and resume transport event. An idle socket with no peer lost its
@@ -1064,7 +1075,11 @@ identity authority with `ECONNRESET`; pending accept/read/write operations woke
 with errors and fresh sockets refused until a new VM. The native review binds
 its distinct test image and transport token. This establishes that one live
 socket-fencing history, without granting reset-race/DMA/physical safety,
-OmniOS, production-service or fleet acceptance.
+production-service or fleet acceptance. The separate exact OmniOS `45983bb7`
+direct host-KVM reset receipt records its own pause/full-snapshot/resume event,
+three API responses 204, current-CID revalidation and idle/read/accept errors
+131 plus write error 32. It does not inherit the FreeBSD test image's identity
+or establish repeated/racing reset or DMA safety.
 The persisted `native-freebsd-reset` nested-KVM gate subsequently passed in
 232 seconds with exact test image/kernel/probe/firmware/VMM receipts and the
 same observed socket outcomes. The API remains a private fixture Unix socket;
@@ -1154,8 +1169,14 @@ immutable source0555 and refusing unsafe parents/destinations. Existing nosuid
 mount flags remain unchanged. Root PAM account checks succeed because the
 pinned caller sets real UID0 before helper execution; the runtime inode mode
 does not establish unprivileged elevation. Isolated VM checks preserve expired,
-password-change and unknown-account refusals. Actual guest SSH/sudo, roster
-revocation and complete lifecycle require fresh exact-image acceptance.
+password-change and unknown-account refusals. Fresh exact Arch `99fa9876` and
+Alma `473f9589` journeys then passed strict personal-account SSH and read-only
+sudo/helper checks before and after restart, with independent stopped
+checkpoints and completed deletion. Both observed numeric sudo UID 0, approved
+policy custody, active helper service, exact root-owned bytes/modes and nosuid
+runtime mounts. These are recorded root PAM/sudo paths, not direct helper
+setuid elevation. Roster revocation, terminal/executor/workspace, native
+isolation and physical recovery remain separate acceptance gaps.
 
 ## Windows guest boundaries
 

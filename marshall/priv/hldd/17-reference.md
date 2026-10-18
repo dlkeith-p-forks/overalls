@@ -1045,9 +1045,9 @@ repeat SSH and terminal deleted cleanup at healthy `132bc28b5`. Its original
 warning-only failure remains intact; only the exact stock Windows OpenSSH
 three-line post-quantum warning is classified as expected, with no trust or
 algorithm change. The matrix review binds all receipts and the 27-test/pinned
-Python classifier verification. Five families now have separately scoped
-lifecycle evidence; Arch and AlmaLinux remain open, and no all-capability or
-native isolation claim follows.
+Python classifier verification. At that checkpoint five families had separately
+scoped lifecycle evidence; the later Arch/Alma outcomes are recorded below.
+No all-capability or native isolation claim follows.
 The final protocol precommit passed 303 tests in 420.6 seconds, seed 476754,
 Covenant 14/14, shared contract tests 19/19 and Dialyzer with zero errors,
 skips or unnecessary skips in 2.77 seconds. Its frozen runtime source ledger
@@ -1062,9 +1062,39 @@ after four narrow CSS, fixture machine-key and palette accessibility repairs,
 including153 screenshots and thread/collaborator revocation checks. These
 synthetic browser results are separate from guest/package acceptance.
 The reviewed PAM helper repair also passes actual image, independent rebuild,
-unit parser and isolated root-account nosuid checks for Arch99fa9876/Alma473f9589;
-fresh exact-image guest SSH/sudo and lifecycle remain pending. The matrix review
-binds all receipts and explains the isolated VM's source-ownership overlay.
+unit parser and isolated root-account nosuid checks for Arch `99fa9876`/Alma
+`473f9589`. Both exact images subsequently passed fresh readiness, strict
+personal-account SSH, read-only sudo/helper checks, separate current-owner
+stopped checkpoints, restart with repeated SSH/checks and completed deletion
+in run `114223`. Both retained nosuid runtime mounts and exact pinned helper
+custody. The matrix review binds all receipts and explains the isolated VM's
+source-ownership overlay. These scoped observations do not establish direct
+helper setuid elevation or broader guest capability/isolation acceptance.
+Fresh exact-image OmniOS run `122228` then passed create/readiness, strict
+initial personal-account SSH, stop with an independent current-owner stopped
+checkpoint, same-VM restart, repeated strict SSH and completed deletion. Its
+source-health holds retained the same UUID and are separate from OS failures.
+The post-deletion 12:43:41 UTC observation records both hosts healthy at exact
+`d0eaddbc9`, zero updater failures, passing live checks and the exact selected
+seven-image catalog. The matrix review binds all hashes, including the typed
+aggregate's 49 stage receipts, four Arch/Alma smoke receipts and 17 separate
+historical failures/holds. All seven selected families now satisfy that scoped
+SSH/lifecycle milestone at distinct execution revisions. Preparation timestamps
+and historical revision context are not exact execution times or observed
+activated-host revisions. The result does not establish a simultaneous run or
+broader native capability, revocation, isolation, physical recovery, relocation
+or reproducible full-image/kernel assembly. ADR-0190 and ADR-0191 remain
+accepted/partial; ADR-0171 remains proposed/partial.
+The two earlier `101111` diagnostic cleanup requests remain separate from this
+aggregate. Guarded manual retirement confirmed the original idle API process,
+namespace and open-file holders gone using normal SIGTERM after two fresh
+complete idle proofs, with no force, unmount, storage removal or database
+writes. Alma's original request then reached deleted. New external rootless
+Podman activity created a different namespace before Arch's retry completed;
+Arch's original request remains accepted at that checkpoint. No active workload
+was stopped and no replacement intent was submitted. The matrix review binds
+the retirement journal. These observations do not establish arbitrary automatic
+cleanup or completion of the separate old Arch request.
 The [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.
@@ -1076,6 +1106,22 @@ values do not preserve prior random counts. This reduced exploration has no
 new passing Enrico execution record and lies outside the unchanged four-consumer
 runtime ledger. Production behavior, service placement and authority are
 unchanged; ADR-0191 remains partial.
+
+The subsequent `e5234f67f` import changes only Brady process cleanup,
+Porsche/Ziggy Hegel fixture bindings and receipt metadata. Its changed Porsche
+strict host-certificate property passed a separate one-property execution with
+all four trust cases; the matrix review records its exact log digest. The
+prior frozen 100-test Porsche gate does not verify this new test source, and
+no new Brady or Ziggy passing execution is claimed. Production/image behavior,
+protocol contracts and deployment placement are unchanged.
+
+The later `d0eaddbc9` import broadens only Lilly's refused-SSH unit-test
+observation to include the already typed closed consumer-failure atom. Its
+zero-progress and transfer-lock reacquisition checks remain. The separate
+pinned transfer-file run passed five tests in 1.1 seconds; the matrix review
+binds its log digest. The earlier frozen 610-test gate does not verify this
+changed test source. No production runtime, native transfer or recovery
+behavior changes.
 
 ## Keeping this handbook current
 

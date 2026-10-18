@@ -1424,23 +1424,23 @@ above covers process SIGKILL and same-disk recovery only.
 ## Verification boundary and follow-up
 
 Protocol, Lilly and Rust unit tests plus Nix evaluation provide typed, bounded
-source evidence. The exact FreeBSD candidates have separately recorded native
-service, growth, policy, daemon-recovery, process-crash, ordinary-transport and
-transport-event results above. Their receipts retain distinct image identities
-and establish only those nested-KVM histories. OmniOS has target-native
-assembly, scoped diagnostic transport and paired direct-only QEMU boot evidence;
-the preceding corrected-block Firecracker service attempt reaches login but
-times out before service oracles with growth in maintenance. Corrected growth
-payloads retain their own assembly evidence. The current source-qualified OmniOS
-service, growth and crash receipts are recorded above; supervised daemon recovery,
-interrupted growth and final `wz4r` runtime replay remain open.
+source evidence. The exact promoted FreeBSD and OmniOS images now each have
+separate recorded service, mounted-root growth, policy, same-boot daemon-recovery
+and process-SIGKILL recovery receipts under ADR-0190. The
+[matrix review](2026-10-18-guest-os-matrix.md) binds the current OmniOS promotion
+and its five passing scenarios. Earlier failed boots and superseded candidate
+assemblies retain their exact identities and results above; they do not inherit
+the promoted image's passes. Ordinary transport and transport-event images also
+retain separate identities and scoped evidence. Interrupted growth remains open.
 Neither family's record establishes wrong-CID injection, DMA/race stress,
 direct native peer-VM isolation, physical power-loss durability, relocation or
 fleet availability.
 
 The separate [exact-image approval](2026-10-17-native-image-admission.md)
-qualifies only the reviewed sealed FreeBSD image after its five native scenario
-sets. Unqualified capability rows, changed candidates and OmniOS remain closed.
+qualifies the reviewed sealed FreeBSD image after its five native scenario
+sets; the later OmniOS approval and catalog activation are recorded in the
+matrix review. Both require the complete immutable identity. Unqualified
+capability rows and changed candidates remain closed.
 Historical candidate receipts retain false admission flags. Reproducible native
 assembly and Marshall-driven capability/recovery journeys remain separate
 requirements; exact immutable artifact promotion does not claim either.

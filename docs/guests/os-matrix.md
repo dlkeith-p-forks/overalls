@@ -6,14 +6,20 @@ entries: `omniosGuest` and `illumosGuest` select the exact reviewed immutable
 OmniOS promotion. Catalog declaration, deployment, staged artifacts, native machine
 execution and live fleet acceptance are separate evidence scopes.
 
+All seven selected immutable images now have separately recorded successful
+create/readiness, strict personal-account CLI SSH, stop with an independent
+current-owner stopped checkpoint, same-VM restart, repeated strict SSH and
+completed deletion. The [matrix review](../architecture/reviews/2026-10-18-guest-os-matrix.md)
+binds the 49 stage receipts at their distinct times and execution revisions.
+
 | Family | Selected package | Boot and agent contract | Current evidence and limit |
 |--------|------------------|-------------------------|----------------------------|
 | NixOS | `guest` | Linux kernel, version 4, `linux` | Exact selected `92114604` passed fresh `101111` strict personal-account CLI SSH, stop with separate stopped checkpoint, restart, repeat SSH and deleted cleanup. Existing native scopes remain separate; see [ADR-0011](../architecture/decisions/0011-nixos-guest-and-console.md). |
 | Ubuntu 26.04 LTS | `ubuntuGuest` | Linux kernel, version 4, `linux` | Unchanged selected `8d468c67` retains the `075200` complete strict CLI lifecycle/deleted-cleanup evidence and final immutable artifact custody; see the [Ubuntu guide](ubuntu-guests.md). |
-| Arch Linux | `archGuest` | Linux kernel, version 4, `linux` | Earlier mode/LSM repairs and the root-policy override passed offline checks. Fresh `105935` image `8ab89c2d` reached readiness but strict personal SSH closed during authentication. Boot-bound diagnostics found successful NSS lookup and PAM startup, account refusal and the missing pinned PAM helper. Its owned fixture was deleted; rebuilt helper image `99fa9876` passes offline and isolated checks, with fresh lifecycle pending. |
-| AlmaLinux | `almaLinuxGuest` | Linux kernel, version 4, `linux` | The resolver/identity bundle passes actual artifact, sysusers and native parser checks. Fresh `112332` image `bed87c33` reached readiness but strict personal SSH closed during authentication. Shared immutable assembly lacks the same helper diagnosed in Arch; no independent Alma PAM root probe is recorded. Its owned fixture was deleted; rebuilt helper image `473f9589` passes offline and isolated checks, with fresh lifecycle pending. |
+| Arch Linux | `archGuest` | Linux kernel, version 4, `linux` | Fresh helper-fixed `99fa9876` in run `114223` passed create/readiness, strict personal SSH and read-only sudo/helper checks, stop with an independent current-owner stopped checkpoint, restart with repeated strict SSH/checks and completed deletion. Earlier `8ab89c2d` reached readiness but failed SSH at PAM account management; that failed fixture and its cleanup retain separate receipts. |
+| AlmaLinux | `almaLinuxGuest` | Linux kernel, version 4, `linux` | Fresh helper-fixed `473f9589` in run `114223` passed create/readiness, strict personal SSH and read-only sudo/helper checks, stop with an independent current-owner stopped checkpoint, restart with repeated strict SSH/checks and completed deletion. Earlier `bed87c33` reached readiness but failed SSH during authentication; it shares Arch's immutable helper omission, with no separate Alma PAM root probe recorded. Historical failure and cleanup receipts remain separate. |
 | FreeBSD 14.3 | `freebsdGuest` | CloudHv firmware, raw GPT/UFS, version 6, `freebsd-v1` | Exact promoted image; five native scenarios passed. Runs `072900` and `075200` passed CLI lifecycle and terminal deleted cleanup. The later cleanup required scoped idle rootless-namespace recovery; that manual recovery does not establish general automatic cleanup. |
-| OmniOS r151050 | `illumosGuest` | CloudHv firmware, raw GPT/ZFS, version 6, `illumos-v1` | Exact promoted image is selected and admitted. Disk `45983bb7` passed all five direct host-KVM scenarios, ordinary transport and reset. Separate run `091638` passed the 16 GiB ordinary CLI lifecycle and terminal deleted cleanup after the strict release-label oracle correction. |
+| OmniOS r151050 | `illumosGuest` | CloudHv firmware, raw GPT/ZFS, version 6, `illumos-v1` | Exact promoted image is selected and admitted. Disk `45983bb7` passed all five direct host-KVM scenarios, ordinary transport and reset. Fresh `122228` passed the full 16 GiB strict CLI lifecycle, separate current-owner stopped checkpoint and completed deletion. Earlier `091638` retains its own lifecycle and original release-label oracle failure; it lacked that separate checkpoint. |
 | Windows Server 2025 | `windowsGuestPublished` | CloudHv firmware, raw GPT, version 5, `windows-v1` | Repaired `8ca0a11f` passed installation, sealing, executable readback, signed publication and independent full-content substitution. Fresh `103842` passed create/readiness, exact strict CLI SSH, stop with separate stopped checkpoint, restart, repeat SSH and deleted cleanup. Its original warning-only failure is preserved; the runner admits only the exact stock Windows warning without changing trust/algorithms. Terminal, executor, workspace, growth and isolation remain separate. See the [Windows guide](windows-guests.md). |
 
 The helper repair following the Arch/Alma rows' failed SSH attempts is now implemented in exact
@@ -21,8 +27,11 @@ rebuilt Arch `99fa9876` and Alma `473f9589` images. The root-only guest oneshot
 recreates only pinned PAM's compiled `unix_chkpwd` helper before SSH, preserving
 owned key-only policy and existing nosuid mounts. Actual-image custody,
 independent rootfs/package rebuilds and the isolated VM root-account
-success/expiry/unsafe-path checks passed. These are separate from fresh guest
-SSH/sudo and lifecycle acceptance, which remain pending.
+success/expiry/unsafe-path checks passed. The exact rebuilt images subsequently
+passed fresh guest SSH/sudo and lifecycle acceptance in `114223`, including
+the same reviewed read-only checks after restart. Runtime helper storage remained
+nosuid; the result establishes the observed root PAM/sudo paths, not direct
+unprivileged helper setuid elevation.
 
 The [foreign Linux evaluation](../../nix/verification/tests/evaluation/foreign-linux-guests.nix)
 checks the Arch/Alma inputs, manifests and offline closure. It does not execute
@@ -47,10 +56,13 @@ govern per-image native promotion. The [OS matrix review](../architecture/review
 records the exact OmniOS promotion, publication and current source gates. The [native kernel review](../architecture/reviews/2026-10-17-native-kernel-attestation.md)
 records full artifact identities and the scoped OmniOS receipts. None of those
 records establishes direct native peer-VM or physical-host isolation,
-interrupted growth, physical durability, relocation or seven-OS fleet acceptance.
+interrupted growth, physical durability, relocation or acceptance of every
+enabled capability. The scoped SSH/lifecycle milestone does not complete every
+requirement of the custom native-kernel plan; ADR-0190 remains accepted/partial.
 
 The opt-in [Porsche acceptance runner](../acceptance/porsche-acceptance.md)
 provides a separate path to collect live catalog, creation, SSH OS-identity and
-lifecycle evidence using explicit image IDs. A complete seven-OS run requires
-all seven images to be admitted and available first; this guide does not relax
-the selected-package admission gate to make that run possible.
+lifecycle evidence using explicit image IDs. The seven families were executed
+as separate identity-bound journeys; no simultaneous same-revision seven-OS
+run is claimed. New runs still require every selected image to pass the
+selected-package admission and live availability gates.

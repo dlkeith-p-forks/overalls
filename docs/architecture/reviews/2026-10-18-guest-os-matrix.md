@@ -14,8 +14,12 @@ The following checkpoint restores Arch's boot-time root policy, normalizes
 actual Hegel lock identities and refreshes all eight dependency snapshots. It
 records completed OmniOS and fresh NixOS lifecycles while preserving failed
 foreign-Linux and then-pending repaired-Windows acceptance. The later checkpoint
-records the exact repaired Windows full CLI lifecycle and keeps current foreign
-Linux PAM refusals separate from pending immutable helper repairs.
+records the exact repaired Windows full CLI lifecycle and preserves the foreign
+Linux PAM refusals. The helper-fixed checkpoint subsequently records fresh
+Arch and AlmaLinux lifecycle passes with read-only sudo/helper checks before
+and after restart. The final OmniOS checkpoint journey completes the scoped
+seven-family SSH/lifecycle milestone. Earlier failed image attempts retain
+their failed scope; the broader custom-kernel plan remains partial.
 
 The matrix-specific repairs add no Ash domain/resource, deployment host/service, persistence shape,
 authorization grant, wire protocol or guest capability kind. Exact-image
@@ -367,9 +371,10 @@ Windows runtime guarantee.
 The [Porsche acceptance guide](../../acceptance/porsche-acceptance.md) describes
 the explicit-image matrix workflow. The runner retains private resumable
 evidence and exact fixture ownership. Its implementation and host-side tests
-cannot substitute for a live guest execution record. No live seven-OS pass is
-recorded, and the runner must not bypass unavailable OmniOS admission to obtain
-one. Inception is known broken and outside this work.
+cannot substitute for a live guest execution record. At this initial checkpoint
+no live seven-OS pass was recorded, and the runner could not bypass unavailable
+OmniOS admission to obtain one. Later exact-image lifecycle evidence is recorded
+below. Inception is known broken and outside this work.
 
 The first NixOS, Ubuntu and FreeBSD matrix creates in the private
 `/tmp/porsche-20261018-071500` run failed with `template_quarantined` before guest
@@ -969,9 +974,9 @@ all manifest validations completed with exit zero. Receipts and SHA-256:
 The four historical completed lifecycle records remain image-applicable for
 their exact selected NixOS, Ubuntu, FreeBSD and OmniOS artifacts at their
 recorded revisions. This identity proof does not establish the final control
-plane's runtime acceptance. The repaired Arch and AlmaLinux complete lifecycles
-remain separate obligations. The later current-image Windows lifecycle is
-recorded below.
+plane's runtime acceptance. The later current-image Windows, Arch and AlmaLinux
+lifecycles are recorded below; their results remain bound to their own execution
+revisions.
 
 ### Strict SSH warning classification
 
@@ -1057,7 +1062,139 @@ image parser with no diagnostics or service starts for both images; receipt
 `/tmp/overalls-pam-helper-unit-parser-proof.json` has SHA-256
 `d10f9bc90d0a084f44e849c8158a7e805582c80c883f0e7a448b47139dd26301`.
 
-### Completed browser layout verification
+### Fresh helper-fixed Arch lifecycle
+
+Run `/tmp/porsche-20261018-114223` completed the exact Arch
+`sha256:99fa9876f927fe02dbc2151e01f35b73d6f381b646fe8b924ade5d467667fefb`
+lifecycle on the original fresh VM `bd53747c-ca57-423b-b4e5-d91a1e619d8c`:
+create/readiness, strict personal-account CLI SSH, reviewed read-only sudo/helper
+checks, stop, an independent current-owner stopped-state checkpoint, restart,
+repeated strict SSH/checks and completed deletion. Host health required the
+merged `e8f3e5457` source or its reviewed `8428a676` descendant with unchanged
+catalog selection. The stopped checkpoint has SHA-256
+`79e8416d09a6a4ee2dcb67184ed4e9371080653ee323d8e153b3c93d4b134009`;
+`matrix-helper-fixed-cleanup-arch.json` has SHA-256
+`48430f158097689a8a75b8d21716617352725017103fd8f1a9f3c90a942907e7`.
+The initial and restarted read-only smoke checks observed the same managed
+nonroot UID/GID, `sudo -n id -u` equal to 0, exact private sudo-policy custody,
+active helper service, root-owned 0755 parents, a regular root-owned 04755 runtime
+helper and byte identity with its immutable root-owned 0555 PAM 1.7.2 source.
+The runtime mount was nosuid; no effective helper setuid elevation is claimed.
+Initial/restarted smoke receipt hashes are
+`0cef4f01160a06e918221e28acb1c7c1603d204642b51d1c199a9aa04c638ea2`
+and `854c7c08a74147c5228ad018686e95ea99623acbd1019cebf048c54a61d4b09b`.
+Two retained pre-stop holds did not create another VM or replace failed OS
+evidence. This is the sixth separately completed family lifecycle. It does not
+establish revocation, terminal/executor/workspace, growth, isolation or physical
+recovery. The later Alma result follows; the fresh OmniOS checkpoint journey
+remains separate at this checkpoint.
+
+### Fresh helper-fixed AlmaLinux lifecycle
+
+The same `114223` ledger completed the exact AlmaLinux
+`sha256:473f958974b821d2b8e13b11c6fb28206aa64eddbe743325359433215578e559`
+lifecycle on VM `ed47f904-9ba6-442e-a733-106317060ce7`: create/readiness,
+initial strict personal-account CLI SSH and reviewed read-only sudo/helper
+checks, stop with a separate current-owner stopped-state checkpoint, same-VM
+restart, repeated strict SSH/checks and completed deletion. Healthy deployments
+and the exact seven-image catalog were checked around the journey.
+The stopped checkpoint has SHA-256
+`2342ff60b13dd50fbddcf00e16d7bd72bfdf84a0b0710b60ef27c8ef3e4508a4`;
+`matrix-helper-fixed-cleanup-almalinux.json` has SHA-256
+`0a8a04170eafb7cd09d40564380ad266d80e3ff15d27bdf832c786655ff4012e`.
+The initial/restarted smoke hashes are
+`6fc6ace4c02fd126122973349c9f3675d3504eacbef66198bc9179a54b608919`
+and `c2bc4799c08a72ed1d265372aa22c07d2e025cf1b2a1bf2ffa05b69857231fbe`.
+They establish the same bounded observations as Arch: managed nonroot identity,
+numeric sudo UID 0, reviewed policy custody, active helper service and exact
+root-owned helper/source bytes and modes. Runtime mounts remained nosuid.
+This is the seventh separately completed family lifecycle. The fresh OmniOS
+journey below subsequently adds the independent stopped checkpoint missing
+from its earlier lifecycle evidence. No terminal, executor, workspace, revocation,
+growth, isolation or physical recovery result follows from these SSH/smoke
+checks, and no independent historical Alma PAM root probe is inferred.
+
+### Fresh OmniOS independent stopped checkpoint
+
+Run `/tmp/porsche-20261018-122228` passed a fresh exact promoted OmniOS
+`sha256:98b23b7931bc52d55b3c5b38cc20c97c1c967be96cf301940f88b01c715530d8`
+16 GiB lifecycle on VM `26c53b61-f59a-4e2e-acad-5cfabb291126`:
+create/readiness, strict initial personal-account CLI SSH, stop, an independent
+current-owner stopped-state checkpoint, same-VM restart, repeated strict SSH
+and completed deletion. Checkpoint
+`matrix-checkpoint-omnios-checkpoint-stopped-omnios.json` has SHA-256
+`9b7562fd05f0e970460a2fe361c3eadd2c78e2081c0c3b387ea5635457d4ef55`;
+`matrix-omnios-checkpoint-cleanup-omnios.json` has SHA-256
+`7e8f678db35206256d8e68b046986fa3fcfe353927d43f81bd5175329654d7ab`.
+The source-health holds after creation retained the same VM and attempted no
+SSH/stop before the accepted deployment gate recovered. They are separate
+from OS failures; no cause is inferred for the earlier updater verify timeout.
+Accepted host observations span reviewed `8428a676`, `e5234f67f` and
+`d0eaddbc9` descendants of required `e8f3e5457`, with unchanged exact image
+selection. At 12:43:41 UTC the post-deletion observation records both hosts
+healthy at `d0eaddbc9f99416e785b82eb277cae55d2dfba9f`, zero updater failures,
+passing live checks and the exact seven-image catalog. Its receipt
+`deployment-omnios-after-delete-124341.json` has SHA-256
+`b8350da70e228cb0866270afa093e9e12698ace8d5cadc5bb864ea033188b87d`.
+This closes the independent owner-checkpoint gap through a new journey;
+the historical `091638` record is unchanged and gains no missing observation.
+
+### Seven-family lifecycle milestone
+
+The typed closed aggregate
+`/tmp/porsche-20261018-114223/seven-family-lifecycle-evidence.json` has SHA-256
+`c77e33863fba694ea1bd6b5122f5d83d71194e377b838c9da112031c0199f6cf`.
+It validates 49 identity-bound stage receipts across the seven selected families:
+create/readiness, strict initial SSH, stop, independent stopped-owner checkpoint,
+same-VM restart, strict repeated SSH and owned completed deletion for each.
+It separately binds four read-only helper/sudo smoke receipts for Arch/Alma,
+the exact final catalog and 17 historical failures/health holds. Each receipt
+retains its path and hash; old failures and the original two historical cleanup
+requests remain separate scopes.
+
+This completes the scoped seven-family SSH/lifecycle milestone at distinct times
+and recorded revision contexts. Ledger preparation times do not establish exact
+execution timestamps, and historical revision context is distinct from activated
+host revisions actually observed during newer journeys. Current exact catalog
+equality binds those historical results only to unchanged immutable image IDs;
+it does not rehash disks or replace independent artifact custody. No simultaneous
+same-revision seven-OS run is claimed.
+
+The broader custom-kernel plan remains partial: reproducible native full-image/
+kernel assembly, including OmniOS native linker/ZFS assembly; wrong-CID injection;
+reset/DMA stress; direct native peer/host isolation; interrupted growth;
+physical power-loss/recovery; relocation; and broader fleet/capability/revocation
+acceptance remain open. The immutable promotions and separately recorded native
+scenarios retain their existing scope. ADR-0190 stays accepted/partial,
+ADR-0191 stays accepted/partial, and ADR-0171 stays proposed/partial. Inception
+is known broken and excluded.
+
+### Separate historical cleanup recovery
+
+The two earlier `101111` diagnostic fixtures retain their original cleanup
+requests, separate from the seven successful lifecycle records: Arch
+`05406661-2b26-4d91-97fc-29d1cf87cd48` and AlmaLinux
+`abe3258e-86a0-4956-adeb-2629720d5c37`. Guarded manual retirement of their
+original idle rootless namespace holders passed two fresh complete idle proofs
+and used normal SIGTERM on the exact original Podman API service. The original
+PIDs, namespaces and open-file holders were confirmed gone. No force, SIGKILL,
+lazy unmount, Podman CLI, storage removal or database writes were used.
+The journal `/tmp/overalls-retirement-86636242fb1140b88683283e56999906.jsonl`
+has SHA-256 `4bbd78bce4c2e2dff9f9d50296c530b0a1136264e84659ec6bc3cc80183053b9`.
+Guard/custody removal followed confirmed inactive/dead/success state, and the
+original configuration was restored.
+
+Alma's original cleanup request subsequently reached deleted. Before Arch's
+retry completed, new external rootless Podman activity created a different
+namespace that retained its dataset; these are new identities rather than
+surviving retired PIDs. Arch's original request remains accepted at this
+checkpoint, with no replacement intent. No active workload was stopped, and
+the operator did not restart the API service to produce that activity. This
+manual recovery does not establish automatic cleanup for arbitrary holders;
+the current seven-family milestone does not imply these separate old requests
+are complete.
+
+### Final browser layout evidence
 
 The first final-source browser attempt failed the existing grid assertion on
 the machines list. Its log `/tmp/overalls-os-matrix-132-browser/probe.log` has
@@ -1127,6 +1264,27 @@ The four-consumer runtime ledger still verifies unchanged and excludes Enrico.
 The import preserves production behavior, deployment placement and accepted
 architecture; ADR-0191 remains partial. Reviewed merged-source governance
 receipts replace the conflicting historical receipt metadata.
+
+The later upstream `e5234f67f` import changes only Brady cleanup and
+Porsche/Ziggy Hegel test bindings plus receipt metadata. It changes no
+production runtime, image, protocol or placement. The changed Porsche
+`host_certificate_negotiation_property_test.exs` passed its separate pinned
+one-property execution, retaining trusted, foreign-CA, foreign-name and absent
+trust cases. Log `/tmp/overalls-os-matrix-e523-porsche-property.log` has SHA-256
+`3b5955f13a539c6d49ca2ff5e2a85adae057201f7570e3b836b00fa1d2a41e4a`.
+The frozen prior 100-test Porsche result does not verify this changed test
+source; no new Brady or Ziggy execution is claimed.
+
+The subsequent `d0eaddbc9` import changes only Lilly's transfer test and review
+metadata. The test also admits the existing closed `stream_consumer_failed`
+observation when refused SSH closes the pipeline, retaining zero initial
+progress and actual transfer-lock reacquisition assertions. The runtime's
+typed failure domain, helper-exit mapping and lease-release path are unchanged.
+Its separate pinned transfer-file execution passed five tests in 1.1 seconds;
+log `/tmp/overalls-os-matrix-d0-lilly-transfer.log` has SHA-256
+`c36a07fe6684ef076b949449972a238fb136d5ddf56e5b61bee3b37b8e2cb363`.
+This verifies the changed test file, separately from the earlier frozen
+610-test Lilly gate. No native transfer, storage or recovery result follows.
 
 The native and Windows evaluation assertions inspect generated artifact/service
 configuration; they do not start a guest. The pinned Python 3.13 runner suite

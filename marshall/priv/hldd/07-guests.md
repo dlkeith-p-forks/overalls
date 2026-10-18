@@ -805,6 +805,16 @@ yields seven source-selected catalog rows, including the exact OmniOS promotion.
 boot/agent contracts and evidence limits for each family; a catalog row or an OS
 display label does not prove a successful guest boot or lifecycle.
 
+All seven selected exact immutable images now have separate recorded successful
+create/readiness, strict personal-account CLI SSH, stop with an independent
+current-owner stopped checkpoint, same-VM restart, repeated strict SSH and
+completed deletion. The matrix review's typed aggregate binds all 49 stage
+receipts and four additional Arch/Alma read-only sudo/helper checks at distinct
+times and recorded revision contexts. Fresh OmniOS `122228` supplies the owner
+checkpoint missing from its earlier `091638` journey. This scoped milestone
+does not establish a simultaneous same-revision run, broader enabled-capability
+acceptance, revocation, native isolation, interrupted growth or physical recovery.
+
 Windows fleet staging/registration selects `windowsGuestPublished`, a
 recursive-hash fixed-output copy of the reviewed 64 GiB Desktop Experience
 `windows-v1` installation. The separate source builder remains available for
@@ -877,17 +887,22 @@ immutable readback of all three repaired executables. Its sealed recursive NAR
 has no references. Signed cache publication and exact NAR-fingerprint Ed25519
 verification passed. Independent fresh Dungarees substitution, full NAR contents
 and whole-artifact hashes passed, and source selection pins the reviewed bytes.
-Deployment and a fresh clean physical CLI lifecycle remain pending. The old
-mutated fixture does not verify those new bytes.
+These publication records alone do not verify a clean CLI lifecycle. The later
+fresh `103842` fixture passed the exact repaired image's strict personal-account
+SSH, stop with an independent current-owner checkpoint, restart, repeated SSH
+and completed deletion. The old mutated fixture does not verify those new bytes.
 The [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
-records exact run identities and unrun corrected-image/later lifecycle stages.
+records exact run identities, historical failures and later lifecycle stages.
 The separate exact-promoted OmniOS fixture then completed creation. Its first
 CLI transport succeeded but the OS probe omitted the real `v11` release label
 and failed the oracle. After narrowly normalizing that label while retaining
 the exact revision, the same 16 GiB VM passed initial CLI identity, orderly stop,
 restart, repeated strict CLI identity and terminal deleted cleanup. Stop has a
 terminal stopped receipt; no separate pre-restart show-state or physical
-checkpoint was recorded. The original failed oracle receipt is retained.
+checkpoint was recorded in that original `091638` journey. Fresh `122228`
+separately adds an independent current-owner stopped-state checkpoint before
+restart and completes deletion, without establishing physical absence. The
+original failed oracle receipt is retained.
 The final `101111` custody proof retains Ubuntu's unchanged exact image and
 earlier full lifecycle. The changed NixOS image passed its complete fresh CLI
 lifecycle, including a separate stopped-state checkpoint and deleted cleanup.
@@ -896,14 +911,15 @@ rebuild results establish artifact custody separately from runtime acceptance.
 Arch's exact same-boot diagnosis found vendor tmpfiles changed root from
 immutable 0755 to live 0555, refusing capability-free readiness writes. The
 Arch-only higher-priority root policy now retains 0755; actual artifact gates,
-the old-image negative and pinned tmpfiles scratch execution passed. A fresh
-repaired-image production lifecycle remains pending. Alma's exact fixture has
-no `systemd-resolved.service`, leaving dependent DNS/readiness/SSH inactive;
+the old-image negative and pinned tmpfiles scratch execution passed. These
+checks preceded the later helper-fixed lifecycle recorded below. Alma's exact
+failed fixture had no `systemd-resolved.service`, leaving dependent
+DNS/readiness/SSH inactive;
 its original create failure remains unchanged. The private Alma repair installs
 the pinned resolver service, two sockets, D-Bus activation/policy and a scoped
 identity bootstrap before sysinit/D-Bus/resolver startup. Actual artifact,
-exact-config sysusers and native unit-parser checks pass; a fresh repaired-image
-boot and full CLI lifecycle remain pending.
+exact-config sysusers and native unit-parser checks pass; the later helper-fixed
+runtime journey supplies separate boot/CLI evidence below.
 The final historical cleanup census records all 15 known fixtures deleted
 after strict idle rootless-namespace retirement. Both service and pause scope
 received guarded normal SIGTERM with no force, migration, unmount, storage
@@ -921,8 +937,8 @@ network, isolation or recovery behavior. Both entries use the normal Linux
 guest agent row and are catalogued without standby metadata in [`fleet/guest-images.nix`](repo:fleet/guest-images.nix).
 Their offline image assembly now carries the pinned Lyra/terminald binaries,
 Python, Git, OpenSSH, CA bundle and generic systemd service units; evaluation
-checks verify those closures and service references. Successful repaired-image
-native Arch and Alma boot results remain separate gaps.
+checks verify those closures and service references. The later helper-fixed
+Arch/Alma runtime results below are separate from evaluation evidence.
 
 SSH uses a complete owned key-only policy and pinned PAM modules, with a
 requisite private login receipt before a session opens. Locked `sshd` and
@@ -931,8 +947,9 @@ account lookup uses local files and reconciliation resolves pinned account tools
 through an explicit PATH. The image contains a regular root-owned setuid sudo
 copy; only current reconciler-managed per-user policies grant access. Vendor
 sshd enablement resolves to the same readiness-gated listener. These assembly
-contracts and account-allocator tests do not establish a working distro-native
-SSH/PAM or sudo session.
+contracts and account-allocator tests alone do not establish a working
+distro-native SSH/PAM or sudo session; the later exact-image results below
+record that scope.
 
 The shared foreign root now recreates pinned PAM's compiled account helper at
 `/run/wrappers/bin/unix_chkpwd` on every boot. The root oneshot
@@ -948,8 +965,14 @@ root-owned source overlay inside its disposable chroot because vmTools projects
 store ownership to nobody; actual images separately verify root-owned 0555
 source custody. This does not establish unprivileged setuid elevation or a
 foreign guest SSH/sudo session. Exact rebuilt Arch `99fa9876` and Alma
-`473f9589` artifacts passed offline and independent rebuild checks; their fresh
-guest lifecycle remains separate in the matrix review.
+`473f9589` artifacts passed offline and independent rebuild checks. Their fresh
+`114223` journeys then separately passed readiness, strict personal-account SSH,
+read-only sudo/helper checks, stop with independent current-owner stopped
+checkpoints, restart with repeated SSH/checks and completed deletion. Both
+observed exact helper/source custody and nosuid runtime mounts. These checks
+establish the recorded root PAM/sudo paths; they do not prove helper setuid
+elevation, terminal/executor/workspace, revocation, isolation or physical
+recovery. The matrix review preserves the historical failed images and receipts.
 
 Foreign-Linux ext4 construction derives filesystem sizing from regular-file and
 symlink content, fixes source timestamps and the filesystem hash seed, and fixes
@@ -1099,9 +1122,9 @@ which remains unadmitted; it does not replace the sealed closure. The
 [activation review](repo:docs/architecture/reviews/2026-10-17-native-image-admission.md)
 separates artifact verification, cache publication, SQL/host refusal tests and
 native scenario evidence. Reproducible native assembly, direct native peer-VM
-isolation, physical recovery, relocation and Marshall-driven fleet acceptance
-remain gaps. The current source-qualified OmniOS service, growth and crash
-receipts are recorded separately. The final OmniOS disk `45983bb7` now has all
+isolation, physical recovery, relocation and broader Marshall-driven capability
+acceptance remain gaps. The current source-qualified OmniOS service, growth and
+crash receipts are recorded separately. The final OmniOS disk `45983bb7` now has all
 five exact-image scenario receipts, a verified
 [promotion constructor](repo:nix/domains/artifacts/guest/native-promotion/omnios.nix)
 and compiled registry identity
@@ -1113,15 +1136,16 @@ passed exact local comparison, signed-cache verification and independent
 Dungarees substitution; the promoted closed three-file package passed its
 artifact/evidence verifier. `omniosGuest` and `illumosGuest` now select that
 exact immutable promotion, producing seven source-selected catalog rows while
-the candidate kits retain false admission flags. Selected-release deployment
-and live OmniOS CLI acceptance remain separate.
+the candidate kits retain false admission flags. The separately recorded
+selected-release deployment and exact-image live CLI journeys do not transfer
+to unrelated candidate builds.
 Catalog evaluation, the promotion gate and the actual promoted package build
 passed after alias selection; exact `98b23b79` identity/flags and alias equality
 are checked while candidate-kit admission/runtime flags stay false.
 The [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
 records exact disk/manifest/NAR/receipt pins. Declared minimums are 2 GiB memory
-and 16 GiB disk; the scoped growth history is 8-to-10-to-12 GiB, with no live
-16 GiB OmniOS fleet launch yet.
+and 16 GiB disk; the scoped growth history is 8-to-10-to-12 GiB, while the
+separate ordinary OmniOS fleet lifecycle uses the selected 16 GiB minimum.
 
 Native bootstrap canonicalizes only local `ifconfig` MAC output: exactly six
 one- or two-digit ASCII hexadecimal octets become lowercase two-digit octets
@@ -1319,9 +1343,9 @@ arguments; second-boot verification rejects any remaining single-user token.
 This fixes loader selection only. The current source-qualified OmniOS image
 later passed two complete native service boots; the runner required status zero
 and the bounded `syncing file systems... done` serial marker before recording
-clean shutdown. Policy, supervised daemon recovery and physical isolation remain
-pending. The separate OmniOS abrupt-crash receipt covers
-process SIGKILL and same-disk recovery; physical stable-media and host recovery
+clean shutdown. The later exact disk `45983bb7` separately passed policy and
+supervised daemon recovery; physical isolation remains open. The separate OmniOS
+abrupt-crash receipt covers process SIGKILL and same-disk recovery; physical stable-media and host recovery
 remain unverified.
 
 ## Windows guests (experimental)
