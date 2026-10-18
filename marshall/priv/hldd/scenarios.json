@@ -4172,7 +4172,7 @@
         "recovery"
       ],
       "boundary": "The zone is a nullable display preference on the user's own row, written only through the self-only set_time_zone action and validated against the compiled tz database; storage, ledger time, CSV export and SSH wire views stay UTC. The viewer zone resolves saved, then validated browser connect param, then UTC; other people's local time renders only from a saved zone.",
-      "denial": "Refuse unknown or malformed zones with invalid_time_zone, non-user actors with Forbidden and retired accounts with unauthorized; required/security minute ticks first refuse revoked or expired persisted logins. Never persist the browser zone, log the zone text, show a person's local time without a saved zone, or add owner fields to the SSH ls/show contract.",
+      "denial": "Refuse unknown or malformed zones with invalid_time_zone, non-user actors with Forbidden and retired accounts with unauthorized; required/security minute ticks first refuse revoked or expired persisted logins. Never persist the browser zone, log the zone text, show a person's local time without a saved zone, or add browser-only fields to SSH ls/show, share show or team show.",
       "scope": "Hegel properties over every curated zone and random instants including DST edges for label offsets, ordering, uniqueness, antisymmetric differences and validation; database round trips of the action; LiveView tests of the profile page, resolution order, dead render, UTC-provenance timestamps and people on team, machine, thread and Control room pages; Covenant obligations; synthetic browser probe of the profile page and an Adelaide timestamp. During integration through 9e7f6bd3, 49 focused tests passed, including actual persisted-token revocation refused on the next clock tick after correcting hook order. No native journey.",
       "status": "partial",
       "gaps": "No NixOS machine test drives the profile page or the browser connect param in the packaged browser; local-time lines inside LiveView streams refresh on re-read, not on the minute tick; the browser probe inherits pre-existing off-grid and thread appearance failures.",
@@ -4248,6 +4248,13 @@
           "path": "marshall/test/marshall/ssh/commands_test.exs",
           "assertion": "refute Map.has_key?(hd(listed.result[\"items\"]), \"owner_time_zone\")",
           "scope": "SSH ls/show wire views gain no owner keys",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/ssh/commands_test.exs",
+          "assertion": "sharing and team reads keep their wire fields when users save time zones",
+          "scope": "Database projections demonstrably contain saved zones, while actual sharing/team commands retain exact prior owner/grant/member keys, values, member count and envelope. No native SSH or packaged CLI journey.",
           "execution": "present"
         },
         {

@@ -87,7 +87,8 @@ shown in the web UI.
    has saved a zone, `3:42 PM ACDT local time · 2h 30m ahead of you` relative
    to the viewer. Projections carry `time_zone` beside `email`; the machine
    view carries `owner_email`/`owner_time_zone` only for non-owners, and the
-   SSH `ls`/`show` wire view drops both. Terminal viewers show Linux guest
+   SSH `ls`/`show` wire view drops both; `share show` and `team show` omit
+   `time_zone` from owner, grant and member projections. Terminal viewers show Linux guest
    names, not accounts, and stay unchanged.
 8. **Disclosure boundary.** A saved zone is disclosed to users who share a
    team, machine or thread with its owner and to Control room readers, in the
@@ -161,7 +162,9 @@ public email edit or onboarding step, and guest identity is untouched.
 - Converted timestamps keep UTC provenance (`timestamp-utc-provenance`,
   Covenant `marshall.web_surface.I9`); a person's local time renders only from
   a saved zone (`person-local-time-saved-only`).
-- SSH `ls`/`show` gain no keys (`commands_test.exs`).
+- SSH `ls`/`show`, `share show` and `team show` gain no keys
+  (`commands_test.exs`); sharing and team exact-map assertions retain identity,
+  email and role while excluding the browser-only preference.
 - The browser probe opens the profile page, saves Adelaide and checks a
   timestamp on the overview ends in ACST/ACDT in both themes.
 

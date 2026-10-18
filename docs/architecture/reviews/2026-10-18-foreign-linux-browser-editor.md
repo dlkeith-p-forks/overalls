@@ -26,6 +26,13 @@ Merged-source execution is recorded separately from the earlier `cdd323d51`
 gates and immutable native fixtures. ADR-0191 and the handbook distinguish the
 new pin from historical NIF and dependency-snapshot acceptance.
 
+The final review also restores ADR-0195's browser-only disclosure boundary for
+sharing/team SSH responses and completes UTC provenance for thread activity and
+operational expirations. The time-zone review records those integration findings.
+The combined generated trace schema now includes the reviewed Audi proxy event,
+finite phases and response-state/count fields; its prior mismatch was not a
+passing schema result. No raw request/header/error value or payload is added.
+
 ## Implementation and refusal boundaries
 
 The [shared builder](../../../nix/domains/artifacts/guest/foreign-linux.nix)
@@ -146,7 +153,8 @@ Broker and worker health probes remained positive; the account-level Node probe
 failed but selects a different Node store path from the actual editor runtime,
 so it does not establish a worker runtime failure. The exact cause remains under investigation, and later recovery,
 same-disk restart and refusal stages were not reached. The failed build and
-immutable driver are retained; no full Arch browser pass is claimed. No CSP
+immutable driver are retained; this original run supplies no full Arch browser
+pass. No CSP
 relaxation or forged browser session is used. Functional editor instrumentation
 runs on the separately served editor origin.
 
@@ -218,7 +226,7 @@ the exact empty chunk before replying, preserving the existing payload, header,
 stream, generator and timeout assertions. The original failing case now passes
 with seed `497400`: **1 passed, 8 excluded**. The exact original Mint error was
 not retained, so the fixture error does not establish its precise reset cause.
-The production proxy remains unchanged. The original full-gate log
+That fixture-framing correction changes no production proxy code. The original full-gate log
 `/tmp/oa-rHmf85al/precommit.log` has SHA-256
 `cdc3f3db1796b0a3efb20587c70875ceb7cbcd1c799e2554ef9b74484c9291c2`.
 The corrected isolated log has SHA-256
@@ -246,7 +254,52 @@ comment is corrected. A clean forced source build loaded the new pin's actual
 NIF with SHA-256
 `4b82b70e1562e02ad0751d5b31df1ef9cb5b024d6a26c2726c9d94d43a09b90d`,
 without an override; this differs from the older pin's library. Full merged
-consumer gates and configured fixed-output dependency builds remain separate.
+consumer gates remain separate. All eight current ordinary-production
+fixed-output dependencies were subsequently realized from existing caches.
+Every embedded lock equals the immutable evaluated source and current checkout;
+every independently computed recursive NAR hash equals configuration. Qualified
+receipt `/tmp/overalls-8fe-fod-custody.6EMduL/receipt-qualified.json` has SHA-256
+`9ab22b9dd67c43eb37c66d38c79defb5093495500718b83baaeab688c6bdc09b`.
+Its completed merge base is `0de23e24d`; it explicitly corrects earlier
+in-progress-merge wording without altering the original capture. It establishes
+cached ordinary-production dependency custody, not fresh fetch/reproducibility,
+releases, native NIF execution, harness variants or Cargo.
+
+The merged protocol and Lilly precommit gates passed **303** and **610** tests,
+respectively, including Covenant **14/14** and **15/15** and forced Dialyzer
+with zero errors or skips. Their logs
+`/tmp/overalls-editor-merged-protocol-precommit.log` and
+`/tmp/overalls-editor-merged-lilly-precommit.log` have SHA-256
+`a4a6c02376b2130dacb2d2c51f13dc5e67ecf2e56bcaa6d21f465fdf00189902`
+and `43ca4dac374198c01e0507c903d38769d987b483e8af5d376dbc18dffcceec39`.
+These are BEAM consumer gates at the imported dependency pin; neither reruns
+the captured native browser tests or production sign-in.
+
+The current-pin Porsche precommit exited 2: **99/100 passed**, seed `966054`,
+four test cases in parallel and 287.3 seconds of tests. Its fresh-process
+invalid-boot property exhausted the unchanged 240-second aggregate budget;
+no assertion failure establishes an invalid-configuration product defect.
+Covenant **4/4** and forced Dialyzer with zero errors/skips passed. Two
+formatting-only failures were corrected first: the new failed-pin hint's
+line wrapping and the Hegel certificate property's indentation. The complete
+post-format gate log `/tmp/overalls-editor-merged-porsche-precommit-v2.log`
+has SHA-256
+`ba20a03bf29887ca0fdc69eb3bc73524df29691c45070215cf368c54ac91b1be`.
+
+The current-pin Audi precommit also exited 2: **212/214 passed**, seed `835548`,
+eight test cases in parallel and 741.8 seconds of tests. StreamGuard passed
+with all default histories and per-action deadlines intact. The remaining
+failures were the known Inception 60-second timeout and the unchanged
+fresh-process invalid-boot 600-second budget. Covenant **10/10** and forced
+Dialyzer reported zero errors/skips. Receipt
+`/tmp/oa-rHmf85al/audi-merged-8fe-precommit/receipt.json` has SHA-256
+`9c8543d85ff19b6fb9919bb83cdd53587ccb3c0bfbc7baddf216b203f96c3aad`;
+its full log has SHA-256
+`a9b66b132be44a89cda5d8cdb3dd1f5ed277ed021feb96a804b116654fce1fd4`.
+All Audi sources, locks and actual native engine remained frozen. Root-owned
+review documents and the generated diagnostic schema changed during the run;
+the final schema's focused execution is separate from this full-suite result.
+No complete passing Audi or Porsche gate is claimed.
 
 An initial Marshall full gate was interrupted after concurrent test fixtures
 exhausted its isolated PostgreSQL connection budget. The bounded replacement

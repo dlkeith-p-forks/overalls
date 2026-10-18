@@ -1661,6 +1661,7 @@ defmodule MarshallWeb.ThreadsLive do
                   >
                     <time
                       datetime={DateTime.to_iso8601(thread.updated_at)}
+                      title={TimeZones.utc_text(thread.updated_at)}
                       class="thread-activity-time"
                     >
                       <span>{TimeZones.format(thread.updated_at, @time_zone, :day_month)}</span>

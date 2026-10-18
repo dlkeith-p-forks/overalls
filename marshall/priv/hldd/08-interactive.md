@@ -169,8 +169,9 @@ which ends the bridge. Its first machine run failed: the bridges survived, but
 Marshall refused the next renewal because the lease was pinned to Lilly's
 replaced control session, so Audi revoked the stream. Renewal no longer pins
 that session. The later Alma and Arch suites both passed this exact restart
-survival stage; Alma completed all twelve stages, while Arch later failed folder
-navigation after broker restart. See the separate
+survival stage. Alma completed all twelve stages. Arch's first capture later
+failed folder navigation after broker restart; its same-image diagnostic replay
+passed all twelve stages, without establishing the original 502's cause. See the separate
 [family execution review](repo:docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md).
 
 The exact admitted GET/HEAD of the packaged extension-worker iframe at the grant's
@@ -615,8 +616,9 @@ guest execution and packaged-browser coverage remain separate.
 
 [ADR-0195](repo:docs/architecture/decisions/0195-user-time-zones.md) gives each
 account a display time zone. Storage, ledger comparisons, the usage CSV export
-and the SSH `ls`/`show` JSON stay UTC; conversion happens only when a page
-renders. The viewer's zone resolves as the saved zone, else a valid browser zone
+and SSH JSON stay unchanged; `ls`/`show` omit the additional machine-owner
+fields, and `share show`/`team show` omit saved zones from owner, grant and
+member records. Conversion happens only when a page renders. The viewer's zone resolves as the saved zone, else a valid browser zone
 sent in the LiveView connect params (`timezone`, from the Intl API), else UTC.
 The dead render trusts only the saved zone. `MarshallWeb.LiveUserAuth` assigns
 `time_zone`, `time_zone_source` (`saved`, `browser`, `utc`) and `now`, and a
@@ -632,10 +634,11 @@ the picker so it can be saved. The account menu in the sidebar shows the same
 clock under the email. Saving an unknown identifier is refused with a fixed
 message and the saved zone is unchanged.
 
-Every timestamp on the overview, machines, threads, git, usage, SSH-key and
-Control room pages renders through `<.timestamp>`: the text is the viewer's local
+Timestamps on the overview, machines, threads, git, usage, SSH-key and
+Control room pages render through `<.timestamp>` or equivalent semantic markup: the text is the viewer's local
 time with its zone abbreviation (`2026-10-18 19:42 ACDT`) and the element keeps
-the UTC instant in `datetime` and in the hover title. The thread activity
+the UTC instant in `datetime` and in the hover title. This includes the two-line
+thread activity time and ingress route/certificate expirations. The thread activity
 filters (today, week, month) compare calendar days in the viewer's zone. The JS
 relative-activity labels stay relative.
 

@@ -68,6 +68,13 @@ nineteen contract regression tests also passed. These are scoped integration
 checks. Browser native captures below retain their immutable feature-source scope;
 merged-main native and full component acceptance are separate.
 
+The later guest-editor integration through `9e7f6bd3` regenerates the combined
+trace vocabulary with `audi.http_proxy_failed`, closed proxy phases,
+`response_state` and bounded `response_events`. The generated additions name
+catalogued fields and finite atoms only; no URL, header value, raw error,
+credential or terminal payload is admitted. This repairs generated-schema drift
+without changing proxy transport or authority.
+
 The earlier corrected Ubuntu native capture passed cross-tab sign-in/required MFA,
 four exact initial GitHub checkouts and retained stop/start without re-clone.
 Ten additional GitHub/GitLab/Codeberg revision cases passed before Codeberg change
@@ -999,8 +1006,15 @@ hashes, confirmed against the independent proof; both hosts then converged
 healthy to that exact revision with zero failures at 10:43 UTC. The exact
 custody and convergence scope is in the matrix review.
 The later `8fe9786` import again changes eleven pins and eight configured
-dependency hashes. The earlier custody and release results do not qualify this
-new NIF or its snapshots. New consumer checks retain their exact source scope.
+dependency hashes. At completed merge `0de23e24d`, all eight ordinary-production
+outputs were realized from existing caches. Their lock snapshots equal the
+immutable evaluated source and checkout locks, and independently computed
+recursive NAR hashes equal all eight configured values. Qualified receipt
+`/tmp/overalls-8fe-fod-custody.6EMduL/receipt-qualified.json` has SHA-256
+`9ab22b9dd67c43eb37c66d38c79defb5093495500718b83baaeab688c6bdc09b`.
+This is cached dependency custody, not fresh refetch/reproducibility, release,
+native NIF, harness-variant or Cargo acceptance. New consumer checks retain their
+exact source scope; older custody and releases do not qualify the new NIF.
 At the older pin, the default outer count was 100 even for CI properties;
 Audi's stream-guard menu therefore required at least 60–140 seconds of expiry
 waits, and its complete 42-mutation role menu scheduled 4,200 fresh OTP starts.

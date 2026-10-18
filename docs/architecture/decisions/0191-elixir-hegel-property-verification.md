@@ -92,8 +92,16 @@ storage durability, physical recovery or deployed fleet behavior.
   equalled the normalized source locks and their actual recursive NAR hashes
   equalled the configured values. The imported `8fe9786` update changes all
   eleven application pins and eight configured dependency hashes; those
-  historical builds do not qualify its snapshots or native NIF. New source-bound
-  smoke/replay and consumer evidence remain separate from the earlier results.
+  historical builds do not qualify its snapshots or native NIF. At completed
+  merge `0de23e24d`, all eight ordinary-production dependency outputs were
+  realized from existing caches: each lock snapshot equals its immutable
+  evaluated source and checkout lock, and its independently computed recursive
+  NAR hash equals configuration. The qualified receipt
+  `/tmp/overalls-8fe-fod-custody.6EMduL/receipt-qualified.json` has SHA-256
+  `9ab22b9dd67c43eb37c66d38c79defb5093495500718b83baaeab688c6bdc09b`.
+  This establishes cached snapshot custody, not fresh-fetch reproducibility,
+  release builds, native NIF execution, harness variants or Cargo custody.
+  New source-bound smoke/replay and consumer evidence remain separate.
 - [Protocol terminal properties](../../../protocol/test/hegel_terminal_test.exs)
   define bounded frame round trips and truncation cases with deterministic seeds.
   Their presence does not record execution or completion of the wider migration.

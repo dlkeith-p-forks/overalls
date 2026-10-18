@@ -165,9 +165,16 @@ defmodule Marshall.SSH.Commands do
   defp read(%{command: "show", arguments: [ref]}, actor),
     do: resolve!(ref, actor) |> machine_wire_view()
 
+  # @cc [owner:ghuntley,label:protocol;security] ssh-share-display-time-zone-private
+  # share show MUST preserve its owner, grant and cursor fields without the
+  # browser-only saved time_zone added by the sharing projection (ADR-0195).
   defp read(%{command: "share show", arguments: [ref], options: opts}, actor) do
     vm = resolve!(ref, actor)
-    Access.list_grants(%{vm_id: vm.id, after: opts["after"]}, actor: actor) |> unwrap!()
+
+    Access.list_grants(%{vm_id: vm.id, after: opts["after"]}, actor: actor)
+    |> unwrap!()
+    |> Map.update!(:owner, &Map.delete(&1, :time_zone))
+    |> Map.update!(:items, &Enum.map(&1, fn grant -> Map.delete(grant, :time_zone) end))
   end
 
   defp read(%{command: "ssh-key list"}, actor),
@@ -194,6 +201,9 @@ defmodule Marshall.SSH.Commands do
     |> listing()
   end
 
+  # @cc [owner:ghuntley,label:protocol;security] ssh-team-display-time-zone-private
+  # team show MUST retain its members envelope and each member's identity,
+  # email and role without the browser-only saved time_zone (ADR-0195).
   defp read(%{command: "team show", arguments: [team]}, actor),
     do:
       Marshall.Teams.list_team_members(
@@ -201,6 +211,7 @@ defmodule Marshall.SSH.Commands do
         actor: actor
       )
       |> unwrap!()
+      |> Enum.map(&Map.delete(&1, :time_zone))
       |> then(&%{members: &1})
 
   defp read(%{command: "exit"}, _), do: %{closed: true}

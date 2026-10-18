@@ -155,6 +155,74 @@ defmodule Marshall.SSH.CommandsTest do
     end
   end
 
+  test "sharing and team reads keep their wire fields when users save time zones", c do
+    owner = Ash.Seed.update!(c.actor, %{time_zone: "Australia/Adelaide"})
+    member = Ash.Seed.update!(user(), %{time_zone: "Europe/London"})
+
+    assert {:ok, created} =
+             command(c, "new --profile standard --name zone-wire --request-id zone-wire-create")
+
+    assert {:ok, _} =
+             command(c, "share add zone-wire #{member.email} manager --request-id zone-wire-grant")
+
+    assert {:ok, %{owner: owner_view, items: [grant]}} =
+             Marshall.Access.list_grants(%{vm_id: created.result["id"]}, actor: owner)
+
+    assert owner_view.time_zone == "Australia/Adelaide"
+    assert grant.time_zone == "Europe/London"
+    assert {:ok, shown} = command(c, "share show zone-wire")
+
+    assert shown.result == %{
+             "owner" => %{
+               "user_id" => owner.id,
+               "email" => to_string(owner.email),
+               "role" => "owner"
+             },
+             "items" => [
+               %{
+                 "id" => grant.id,
+                 "user_id" => member.id,
+                 "email" => to_string(member.email),
+                 "role" => "manager"
+               }
+             ],
+             "next_cursor" => nil
+           }
+
+    assert {:ok, team} = command(c, "team create zone-team --request-id zone-team-create")
+
+    assert {:ok, _} =
+             command(
+               c,
+               "team member add zone-team #{member.email} member --request-id zone-team-add"
+             )
+
+    assert {:ok, members} =
+             Marshall.Teams.list_team_members(%{team_id: team.result["id"]}, actor: owner)
+
+    assert Map.new(members, &{&1.user_id, &1.time_zone}) == %{
+             owner.id => "Australia/Adelaide",
+             member.id => "Europe/London"
+           }
+
+    assert {:ok, shown} = command(c, "team show zone-team")
+    assert Map.keys(shown.result) == ["members"]
+    assert length(shown.result["members"]) == 2
+
+    assert Map.new(shown.result["members"], &{&1["user_id"], &1}) == %{
+             owner.id => %{
+               "user_id" => owner.id,
+               "email" => to_string(owner.email),
+               "role" => "owner"
+             },
+             member.id => %{
+               "user_id" => member.id,
+               "email" => to_string(member.email),
+               "role" => "member"
+             }
+           }
+  end
+
   test "new defaults to OSS and preserves an explicit Customer profile", c do
     assert {:ok, default} = command(c, "new --name oss-default --request-id oss-default")
     assert default.result["profile"] == "oss"

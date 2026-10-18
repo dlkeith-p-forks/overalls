@@ -43,8 +43,9 @@ inherited from ADR-0158 through ADR-0159 for display preferences only.
   through `:internal_lookup` under the compute actor after their existing
   Cedar decision. `Views.view/2` adds `owner_email`/`owner_time_zone` only
   when the caller is not the owner and already holds read access; the SSH
-  `ls`/`show` wire view drops both, so the Porsche JSON field set is unchanged
-  (asserted in `commands_test.exs`). `<.person>` renders the local-time line
+  `ls`/`show` wire view drops both. Sharing owner/grants and team members omit
+  `time_zone` at their SSH projection boundaries, preserving their prior JSON
+  envelopes and fields (exact-map assertions in `commands_test.exs`). `<.person>` renders the local-time line
   only from a saved zone passed by the caller.
 - **Presentation.** `TimeComponents` emit semantic `<time>` and `<span>`
   elements styled in grid units (`.person`, `.local-time`, `.local-clock`,
@@ -100,6 +101,18 @@ new pin LiveView/backend tests passed (seed 10891, 10.5 seconds) with four
 schedulers and default Hegel exploration. This entry records those focused
 checks, separately from the
 historical branch results above and the required complete merged gate.
+
+Final integration review found two additional violations of the accepted display
+contract. The imported sharing/team SSH paths returned browser projection maps
+directly, adding `time_zone` to their JSON. They now delete only that field from
+share owner/grants and team members. The regression first verifies that actual
+database projections contain saved zones, then checks the complete prior wire
+maps, membership count and unchanged team envelope. The two-line thread activity
+timestamp now retains its UTC hover title; operational route/certificate
+expirations render through the shared zone-aware timestamp component. These
+restore ADR-0195's existing boundaries without changing authorization or time
+authority. The running full suite compiled before these final corrections;
+their focused compilation/tests and typing retain separate execution scope.
 
 Evidence is BEAM-level: Hegel properties drive `TimeZones` over every curated
 zone and random instants including DST edges; the action property and tests

@@ -139,6 +139,7 @@ defmodule MarshallWeb.Admin.OperationsLive do
         <UI.panel id="ingress-routes" title="Ingress routes">
           <.status_list
             rows={@snapshot.routes}
+            zone={@time_zone}
             empty="No ingress routes are published."
             fields={[
               {:vm_id, "Machine"},
@@ -151,6 +152,7 @@ defmodule MarshallWeb.Admin.OperationsLive do
         <UI.panel id="dns-publications" title="DNS publications">
           <.status_list
             rows={@snapshot.publications}
+            zone={@time_zone}
             empty="No DNS publications are recorded."
             fields={[{:zone, "Zone"}, {:revision, "Revision"}]}
           />
@@ -163,7 +165,12 @@ defmodule MarshallWeb.Admin.OperationsLive do
   attr :rows, :list, required: true
   attr :fields, :list, required: true
   attr :empty, :string, required: true
+  attr :zone, :string, required: true
 
+  # @cc [owner:ghuntley,label:product] status-timestamp-provenance
+  # Operational DateTime values MUST use the viewer's zone through the shared
+  # timestamp component, retaining their stored UTC instant and hover title.
+  @spec status_list(map()) :: Phoenix.LiveView.Rendered.t()
   defp status_list(assigns) do
     ~H"""
     <p :if={@rows == []} class="muted">{@empty}</p>
@@ -177,7 +184,14 @@ defmodule MarshallWeb.Admin.OperationsLive do
         <tbody>
           <tr :for={row <- @rows}>
             <td :for={{field, _title} <- @fields} class="break">
-              <code>{format(Map.get(row, field))}</code>
+              <code>
+                <%= case Map.get(row, field) do %>
+                  <% %DateTime{} = instant -> %>
+                    <.timestamp at={instant} zone={@zone} />
+                  <% value -> %>
+                    {format(value)}
+                <% end %>
+              </code>
             </td>
           </tr>
         </tbody>
@@ -206,7 +220,8 @@ defmodule MarshallWeb.Admin.OperationsLive do
 
   defp bytes(nil), do: "unknown"
   defp bytes(value), do: "#{Float.round(value / 1_073_741_824, 1)} GiB"
+
+  @spec format(String.t() | integer() | nil) :: String.t()
   defp format(nil), do: "unknown"
-  defp format(%DateTime{} = value), do: DateTime.to_iso8601(value)
   defp format(value), do: to_string(value)
 end
