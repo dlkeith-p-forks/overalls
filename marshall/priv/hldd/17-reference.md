@@ -927,6 +927,10 @@ seed 991989, Covenant 15/15 and forced Dialyzer with zero errors/skips in 12.46
 seconds. Both actual-host toplevel builds on frozen registry/foreign-mode source
 and merged `21831915e` passed in 247 seconds. This records corrected count and
 build closure evidence, separately from native guest or later deployment claims.
+The merged first batch `c420650b2` then passed both actual-host toplevel builds
+in 233 seconds and both consumers converged healthy to that exact release.
+Its selected catalog still had six entries; the subsequent exact OmniOS alias
+activation is a separate source, build, deployment and live-evidence scope.
 The ten-file focused Marshall rerun passed 59/60 tests in 407.4 seconds, seed
 393478, clearing all twelve original failures. A sibling four-case retry-window
 history hit the same TooSlow heuristic; its scoped profile retains every case

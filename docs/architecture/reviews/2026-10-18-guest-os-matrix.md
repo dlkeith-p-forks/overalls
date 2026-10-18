@@ -9,7 +9,8 @@ the native SSH supervisor's temporary PID cleanup and reconciles the Windows
 evaluation's shared VMM patch inventory.
 
 There is no new Ash domain/resource, deployment host/service, persistence shape,
-authorization grant, wire protocol or guest capability. The work preserves
+authorization grant, wire protocol or guest capability kind. Exact-image
+qualification enables only the previously reviewed native subset. The work preserves
 [ADR-0190](../decisions/0190-native-kernel-provenance-and-admission.md),
 [ADR-0171](../decisions/0171-windows-guest-agents.md) and
 [ADR-0173](../decisions/0173-windows-images-winget-desktop-experience.md).
@@ -23,11 +24,11 @@ host-only transport while making successful accept wait for RESPONSE publication
 
 The [shared image list](../../../fleet/guest-images.nix) declares NixOS, Ubuntu,
 Arch Linux, AlmaLinux, FreeBSD, OmniOS and Windows. Native entries are filtered
-by the selected package's `nativeAdmission` flag. Only the selected promoted
-FreeBSD package passes that filter; the unchanged OmniOS candidate alias still
-contributes no evaluated catalog row. The separately reviewed exact OmniOS
-registry entry and immutable promotion below do not change that package alias.
-The [current matrix](../../guests/os-matrix.md) separates these six entries
+by the selected package's `nativeAdmission` flag. Both exact promoted FreeBSD
+and OmniOS packages now pass that filter. `omniosGuest` and `illumosGuest`
+select the same reviewed OmniOS promotion; stock constructors and candidate
+kits retain false admission/runtime flags. The
+[current matrix](../../guests/os-matrix.md) separates these seven source-selected entries
 from recorded native machine and live fleet execution.
 
 FreeBSD admission remains bound to image
@@ -158,7 +159,14 @@ containing only `disk.raw`, `firmware` and `manifest.json`. The compiled registr
 now qualifies that complete immutable identity and its normalized descriptor;
 changed identities, cross-family descriptors and stock agent names still refuse.
 The unqualified native capability rows, editor and Inception remain false.
-The source fleet alias remains a candidate until a separate catalog activation.
+The later source activation points both fleet aliases at that exact promotion;
+it does not admit unrelated candidates or establish a deployed live guest.
+The catalog evaluation, 15-check promotion gate and actual exact promoted
+package build passed for that source activation. Evaluation binds image
+`98b23b79` and true promotion flags, identical OmniOS/illumos aliases and false
+candidate-kit flags. The existing promoted output is unchanged. The record is
+`/tmp/overalls-osmatrix-omnios-catalog-gates.log`; selected-release host builds,
+deployment and live CLI acceptance retain independent records.
 These records satisfy the existing per-image promotion requirements without
 claiming reproducible native assembly, formal nested-NixOS execution, a direct
 native peer VM, jail/physical isolation, interrupted growth, shell-supervisor
@@ -351,6 +359,46 @@ An unrelated existing VM received a read-only SSH probe only. No complete
 seven-OS lifecycle, all-capability, revocation or independent physical cleanup
 claim follows from these subset results.
 
+The later `/tmp/porsche-20261018-075200` six-image run used deployed revision
+`f5ce1e6c67593040d0523ecc81b8b84c8977cdcb`; its 09:11:49 UTC structured
+snapshot is `acceptance-ledger-snapshot-091149.json` in that private directory.
+NixOS `226555b3-1fb5-47cf-b9d2-cd238135a36d` and Ubuntu
+`45f93d2c-b354-4696-8b84-0a795761974e` passed create, initial exact-OS CLI
+SSH, orderly stop with stopped-state checkpoint, restart, repeated exact-OS SSH
+and terminal deleted cleanup receipts. The NixOS restart reconciled the original
+request after a transport failure. Original Arch
+`cfb76a7d-e67b-4a0f-aa4e-2b2f700d4c72` and Alma
+`f1196e0a-c3c6-4531-a5f2-5f72a338dc4a` failed before init on the mode-stripped
+images; their later stages were not run, and their original identities and
+failed receipts are retained.
+
+That run's FreeBSD `cbf81155-470c-407e-a0f0-5132f2a03daa` passed through
+restart and repeated exact-OS CLI SSH. Its original cleanup request remains
+unsettled: desired state is deleted, observed state unknown and the current
+failure is `cleanup_failed` while the maintained ZFS destroy namespace sweep
+cannot confirm absence. The reconciliation poll ended with a management
+`transport_error`, rather than a successful deleted receipt or deadline
+exhaustion. This is a current cleanup gap, separate from the successful
+`072900` cleanup above; no forced cleanup, database repair or replacement intent
+is acceptance evidence.
+
+Windows `c8149dc5-eff4-4bed-8ab0-2f6965edb025`, image
+`sha256:e9ed22f19485315066bc5527ebd207fce8cd7d7fa4c0854a963c58ffa5361d73`,
+created and reported running with `guest_ready=true`, but its initial CLI SSH
+attempt exited 255 before a remote banner. Read-only diagnosis found sshd
+stopped with no TCP/22 listener and SSH-sync reporting `pass_failed`, despite
+an existing roster account and enabled inbound TCP/22 rule. The owned fixture
+is retained for diagnosis; later lifecycle stages are unrun. That ready flag
+does not establish SSH access. The separate corrected Arch/Alma qualification
+ledger `/tmp/porsche-20261018-085815` has no created fixtures in this snapshot;
+its completed artifact, policy and cross-host checks do not establish those
+planned live stages. OmniOS is outside the six-image ledger. No complete six-
+or seven-OS pass follows.
+The separate `/tmp/porsche-20261018-091638` OmniOS ledger has no creates. Its
+promoted-artifact proof passed the shared schema/admission validator and fresh
+full 8 GiB disk/4 MiB firmware hashes against the reviewed manifest; that is
+artifact custody, without a live CLI or 16 GiB launch result.
+
 ## Consumer verification prerequisites
 
 Initial consumer repairs used Hegel frontend `9b13af8`; the merged consumers now
@@ -382,6 +430,13 @@ actual-host toplevel builds in 247 seconds, recorded in
 `/tmp/overalls-osmatrix-registry-hosts-build.log`. The merged presentation checks
 also passed, including nine JavaScript tests. Later handbook compilation and
 deployment retain separate records.
+The merged first batch `c420650b2` subsequently passed both actual-host
+toplevel builds in 233 seconds, log
+`/tmp/overalls-osmatrix-merged-registry-hosts.log`, and both consumers converged
+healthy to that exact release before catalog activation. That release still
+selected six entries. The later OmniOS alias activation is a distinct source
+change requiring its own build, deployment and live records; no guest outcome
+is inferred from the consumer convergence.
 
 The handbook unknown-ID property separately corrects a discarded compatibility
 filter: a bounded UTF-8 generator actually excludes listed chapter IDs, draws

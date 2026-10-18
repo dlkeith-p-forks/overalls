@@ -41,8 +41,8 @@ candidate builds and exploratory boots grant no admission. The current OmniOS
 candidate has now satisfied the five exact-image service, growth, policy,
 daemon-recovery and process-crash requirements. Its runtime receipts retain
 `native_admission=false`; a separate immutable promotion and compiled registry
-entry qualify that reviewed identity. The fleet alias still selects its
-unadmitted candidate. These records establish neither physical recovery,
+entry qualify that reviewed identity. The fleet aliases now select its exact
+immutable promotion; unrelated candidates remain unadmitted. These records establish neither physical recovery,
 broader isolation, reset stress nor fleet acceptance.
 
 The existing NixOS, Ubuntu and Windows contracts must remain intact. OS names,
@@ -217,10 +217,11 @@ The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.m
 ## Implementation evidence
 
 The [2026-10-18 OS matrix review](../reviews/2026-10-18-guest-os-matrix.md)
-reconciles the seven declared families with six currently admitted catalog rows
+reconciles the seven declared families with seven source-selected catalog rows
 and the opt-in explicit-image acceptance workflow. It records the exact OmniOS
-immutable promotion and registry qualification while the selected fleet alias
-still yields six catalog rows. It adds no live seven-OS execution result; this decision remains partially
+immutable promotion, registry qualification and selected package aliases.
+Deployment and live acceptance remain separate. It adds no live seven-OS
+execution result; this decision remains partially
 implemented with the runtime gaps below.
 
 The implementation is partial. Arch and Alma builders are in

@@ -1,10 +1,9 @@
 # Guest operating-system matrix
 
 The shared [fleet image list](../../fleet/guest-images.nix) declares seven OS
-families. Its selected-package admission filter currently yields six catalog
-entries: the OmniOS alias still selects its candidate. Exact OmniOS registry
-qualification and immutable promotion are recorded below; catalog activation
-remains separate. Catalog declaration, staged artifacts, native machine
+families. Its selected-package admission filter now yields seven catalog
+entries: `omniosGuest` and `illumosGuest` select the exact reviewed immutable
+OmniOS promotion. Catalog declaration, deployment, staged artifacts, native machine
 execution and live fleet acceptance are separate evidence scopes.
 
 | Family | Selected package | Boot and agent contract | Current evidence and limit |
@@ -13,9 +12,9 @@ execution and live fleet acceptance are separate evidence scopes.
 | Ubuntu 26.04 LTS | `ubuntuGuest` | Linux kernel, version 4, `linux` | Existing native and fleet journeys retain their recorded scopes; see the [Ubuntu guide](ubuntu-guests.md). |
 | Arch Linux | `archGuest` | Linux kernel, version 4, `linux` | Original live creation exposed lost executable source modes before init. Corrected actual inode/policy audits and independent cross-host rebuilds pass; the corrected live lifecycle remains separate. |
 | AlmaLinux | `almaLinuxGuest` | Linux kernel, version 4, `linux` | Original live creation exposed the same lost executable source modes before init. Corrected actual inode/policy audits and independent cross-host rebuilds pass; the corrected live lifecycle remains separate. |
-| FreeBSD 14.3 | `freebsdGuest` | CloudHv firmware, raw GPT/UFS, version 6, `freebsd-v1` | Only the exact reviewed promoted image is admitted. Five native scenarios passed. The current live subset passed create, exact OS identity over CLI SSH, orderly stop, restart, repeat SSH and cleanup receipts. |
-| OmniOS r151050 | `illumosGuest` | CloudHv firmware, raw GPT/ZFS, version 6, `illumos-v1` | Candidate alias excluded from catalog. Exact reviewed disk `45983bb7` passed all five required direct host-KVM service/growth/policy/daemon-recovery/process-crash scenarios, plus ordinary transport and reset. Its exact registry identity and signed immutable promotion passed; live fleet activation and acceptance remain separate. |
-| Windows Server 2025 | `windowsGuestPublished` | CloudHv firmware, raw GPT, version 5, `windows-v1` | The current catalog selects a sealed recursive-hash 64 GiB Desktop Experience image with agents and a 96 GiB template budget. Publication custody is separate from native and named-fleet evidence; the complete current-image stop/restart/delete journey remains unrecorded. See the [Windows guide](windows-guests.md). |
+| FreeBSD 14.3 | `freebsdGuest` | CloudHv firmware, raw GPT/UFS, version 6, `freebsd-v1` | Exact promoted image; five native scenarios passed. Run `072900` passed CLI lifecycle/cleanup. Later `075200` passed through repeated SSH after restart, but cleanup remains failed/unconfirmed. |
+| OmniOS r151050 | `illumosGuest` | CloudHv firmware, raw GPT/ZFS, version 6, `illumos-v1` | Exact promoted image is selected in source. Disk `45983bb7` passed all five required direct host-KVM service/growth/policy/daemon-recovery/process-crash scenarios, ordinary transport and reset. Registry/publication passed; selected-release deployment and live CLI acceptance remain separate. |
+| Windows Server 2025 | `windowsGuestPublished` | CloudHv firmware, raw GPT, version 5, `windows-v1` | Sealed recursive-hash 64 GiB Desktop Experience image; 96 GiB template budget. Run `075200` created and reported ready, but CLI SSH failed with stopped sshd; later lifecycle is unrun. See the [Windows guide](windows-guests.md). |
 
 The [foreign Linux evaluation](../../nix/verification/tests/evaluation/foreign-linux-guests.nix)
 checks the Arch/Alma inputs, manifests and offline closure. It does not execute

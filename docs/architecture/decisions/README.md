@@ -106,7 +106,8 @@ recorded separately. Final sealed disk `45983bb7` subsequently passed all five
 direct host-KVM scenarios, ordinary transport and one reset event. Its exact
 immutable promotion and registry qualification are recorded in the
 [matrix review](../reviews/2026-10-18-guest-os-matrix.md); the selected OmniOS
-fleet alias remains the unadmitted candidate.
+fleet aliases now select that exact immutable promotion. Candidate constructors
+remain unadmitted; deployment and live acceptance retain separate records.
 The [review](../reviews/2026-10-17-native-kernel-attestation.md) records exact
 artifacts and limits; the [activation review](../reviews/2026-10-17-native-image-admission.md)
 records the separate exact FreeBSD promotion. Candidate evidence alone grants

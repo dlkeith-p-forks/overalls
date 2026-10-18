@@ -26,12 +26,19 @@ assert illumos.passthru.distribution == "OmniOS";
 assert illumos.passthru.release == "r151050";
 assert toString illumos.passthru.firmware == toString packages.windowsFirmware.fd;
 assert illumos.passthru.upstreamUrl == "https://illumos.org/";
-# The reviewed FreeBSD artifact is promoted separately from the stock/staging
-# constructor. OmniOS remains excluded until its exact runtime evidence passes.
+# Both reviewed artifacts are promoted separately from stock/staging
+# constructors. Fleet admission binds each complete immutable identity.
 assert freebsdFleetImage != null;
 assert freebsdFleetImage.package.nativeAdmission;
 assert freebsdFleetImage.package.imageId == "sha256:d141e4266c29da00a1378157b1d39369b1d48e577bca4ce7375e8ff6d399557b";
-assert illumosFleetImage == null;
+assert illumosFleetImage != null;
+assert illumosFleetImage.package.nativeAdmission;
+assert illumosFleetImage.package.runtimeValidated;
+assert illumosFleetImage.package.imageAssemblyReady;
+assert illumosFleetImage.package.imageId == "sha256:98b23b7931bc52d55b3c5b38cc20c97c1c967be96cf301940f88b01c715530d8";
+assert toString packages.omniosGuest == toString packages.illumosGuest;
+assert !packages.omniosImageCandidateKit.nativeAdmission;
+assert !packages.omniosImageCandidateKit.runtimeValidated;
 assert !freebsd.passthru.kernelReady;
 assert !omnios.passthru.kernelReady;
 assert !freebsd.passthru.imageAssemblyReady;

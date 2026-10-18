@@ -800,7 +800,7 @@ boot after an image change takes the full trust path.
 
 The shared fleet declaration names seven families: NixOS, Ubuntu, Arch Linux,
 AlmaLinux, FreeBSD, OmniOS and Windows. Its native admission filter currently
-yields six catalog rows because OmniOS remains excluded. The
+yields seven source-selected catalog rows, including the exact OmniOS promotion. The
 [current OS matrix](repo:docs/guests/os-matrix.md) records package selection,
 boot/agent contracts and evidence limits for each family; a catalog row or an OS
 display label does not prove a successful guest boot or lifecycle.
@@ -839,6 +839,20 @@ fixtures, passed their initial exact OS oracle through CLI SSH and orderly-stopp
 all three at generation 2, then passed restart and repeat exact-OS CLI SSH.
 Final cleanup returned deleted receipts for all three owned fixtures. Earlier quarantined create fixtures were reconciled and cleaned
 with their original bound identities; those failed creates prove no guest boot.
+
+The later `075200` six-image run independently passed the complete CLI lifecycle
+and terminal deleted cleanup receipts for NixOS and Ubuntu. FreeBSD passed
+through restart and repeated exact-OS SSH, but its original delete remains
+`cleanup_failed` with desired deleted/observed unknown and unconfirmed ZFS
+namespace absence; reconciliation ended on a management transport error.
+That gap does not invalidate or inherit the earlier `072900` cleanup result.
+Original Arch/Alma creates failed before init on stripped executable modes;
+their corrected artifacts have separate passing offline/cross-host evidence.
+Windows created and reported ready, but actual CLI SSH failed before a banner;
+read-only inspection found stopped sshd, no TCP/22 listener and SSH-sync
+`pass_failed`. The retained fixture's ready flag is no SSH success evidence.
+The [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
+records exact run identities and unrun corrected-image/later lifecycle stages.
 
 The catalog now includes Arch Linux and AlmaLinux as foreign Linux variants.
 Their builders reuse the version-4 kernel image contract and the reviewed shared
@@ -1023,8 +1037,13 @@ subset; unqualified rows, editor and Inception remain false. Candidate runtime
 receipts remain false and do not transfer to other images. The candidate NAR
 passed exact local comparison, signed-cache verification and independent
 Dungarees substitution; the promoted closed three-file package passed its
-artifact/evidence verifier. The fleet alias still selects the unadmitted
-candidate, so these source changes alone leave six evaluated catalog rows.
+artifact/evidence verifier. `omniosGuest` and `illumosGuest` now select that
+exact immutable promotion, producing seven source-selected catalog rows while
+the candidate kits retain false admission flags. Selected-release deployment
+and live OmniOS CLI acceptance remain separate.
+Catalog evaluation, the promotion gate and the actual promoted package build
+passed after alias selection; exact `98b23b79` identity/flags and alias equality
+are checked while candidate-kit admission/runtime flags stay false.
 The [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
 records exact disk/manifest/NAR/receipt pins. Declared minimums are 2 GiB memory
 and 16 GiB disk; the scoped growth history is 8-to-10-to-12 GiB, with no live
@@ -1354,7 +1373,7 @@ names the closed set (`linux`, `none`, `windows-v1`, `freebsd-v1` and
 `illumos-v1`) and a pure capability table. Linux has everything, `none` has
 nothing, Windows has its reviewed firmware subset, and unqualified FreeBSD and
 illumos rows remain all-false transport declarations. Qualified `capabilities/2`
-requires the exact approved image identity for FreeBSD's reviewed subset;
+requires an exact approved FreeBSD or OmniOS identity for the reviewed native subset;
 editor and Inception stay false. Lilly's driver, executor and
 jail and Marshall's surfaces branch on these capabilities, never on the set's
 name. Version-5 Windows and version-6 native manifests may declare

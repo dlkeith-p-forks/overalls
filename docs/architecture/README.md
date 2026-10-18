@@ -74,9 +74,11 @@ inference and stock-kernel substitution. Lilly preserves the jailer, per-tap
 guard, ZFS ownership and recovery boundaries, and requires a boot-bound native
 kernel response before credentials or readiness. Unqualified native capability
 rows remain all false. A separate exact-image registry and immutable promotion
-path activate only the reviewed FreeBSD image's readiness, trust, terminal,
+paths activate only the reviewed FreeBSD and exact OmniOS images' readiness, trust, terminal,
 workspace, flush, SSH and agent controls; editor and Inception remain false.
-Retained stock images, altered identities and OmniOS refuse new admission.
+Retained stock images, altered identities and unreviewed OmniOS candidates
+refuse new admission. The selected OmniOS fleet aliases now point to the exact
+immutable promotion; candidate constructors retain their false admission flags.
 Stock-input kernel receipts contain no artifact bytes, so those constructors
 refuse before copying a stock disk. The FreeBSD kernel candidate,
 all twenty native Lyra executables and both terminal daemons cross-link in
@@ -101,15 +103,15 @@ except bounded root firmware `NvVars`. OmniOS assembly disables vendor cloud-ini
 and SSH in the clone's offline SMF repository, and native trust keeps an immutable
 vendor CA separate from the effective managed bundle. Actual FreeBSD crash
 execution exposed scheduled-only UFS sync; native UFS suspension/resume corrected
-the defect and passed the final scoped crash replay. OmniOS network policy,
-wrong-CID injection, reset/DMA safety, physical recovery and fleet acceptance
-remain open; its scoped process-crash receipt does not establish physical
-recovery or admission.
+the defect and passed the final scoped crash replay. Earlier OmniOS
+process-crash receipts established neither policy nor qualification by
+themselves. Wrong-CID injection, repeated/racing reset and DMA safety, physical
+recovery and fleet acceptance remain separate gaps.
 Earlier OmniOS diagnostics reached console login with growth in maintenance and
 withheld kernel/service authority. The later corrected source-qualified growth
 receipt records three clean boots and two expansions. These passing scoped
-receipts preserve the earlier failed histories and leave supervised daemon
-recovery, physical/DMA safety and image qualification open. The later
+receipts preserved the earlier failed histories while supervised daemon
+recovery and image qualification were still open at that point. The later
 handshake-fixed image separately passed manual direct host-KVM transport,
 reset, Lilly-policy, services, growth and process-crash runners, while its
 daemon-recovery attempt failed. The final SMF/listener-corrected `45983bb7`
@@ -118,13 +120,14 @@ and one reset event. Its exact immutable promotion and dual-family registry
 qualification passed; formal nested-NixOS gates remain separate.
 The
 [OS matrix](../guests/os-matrix.md) distinguishes the seven declared families
-from the six currently admitted catalog rows and their execution evidence.
+from the seven source-selected catalog rows and their execution evidence.
 The [native review](reviews/2026-10-17-native-kernel-attestation.md) records exact
 source-qualified artifacts and results. The
 [activation review](reviews/2026-10-17-native-image-admission.md) separates the
 reviewed FreeBSD promotion from broader physical and fleet acceptance. The
 [matrix review](reviews/2026-10-18-guest-os-matrix.md) records the exact OmniOS
-promotion while its fleet alias still selects the unadmitted candidate.
+promotion and selected catalog aliases, separately from the pending selected
+release deployment and live OmniOS lifecycle acceptance.
 
 [ADR-0149](decisions/0149-independent-observability.md) separates control and
 observability: Lilly v4 carries capacity and physical readiness receipts, Ziggy v2
