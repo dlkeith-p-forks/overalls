@@ -328,6 +328,10 @@ defmodule MarshallWeb.AgentCLIHistoryTest do
       assert inventory(c) == before
     end
 
+    # A denied browser request remains mounted after the hook returns. Stop
+    # this exact view before the next generated role transition; the Hegel
+    # cleanup above remains as the failure/timeout fallback.
+    stop_approval_view(view.pid)
     :ok
   end
 
