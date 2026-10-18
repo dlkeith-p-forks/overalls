@@ -216,7 +216,7 @@ fn nft(argv: &[&[u8]], roots: &[PathBuf]) -> bool {
 
 /// @cc [owner:ghuntley,label:security] systemctl-lilly-units-only
 /// systemctl MUST accept only `show` and `list-units` queries of `lilly.slice`
-/// and `lilly-vm-*` units, and `stop lilly-vm-<uuid>.service`.
+/// and `lilly-vm-*` units, and lifecycle stop/kill for one UUID unit.
 fn systemctl(argv: &[&[u8]]) -> bool {
     let unit = |name: &[u8]| {
         name == b"lilly.slice"
@@ -228,6 +228,8 @@ fn systemctl(argv: &[&[u8]]) -> bool {
     };
     match argv {
         [b"stop", name] => name != b"lilly-vm-*.service" && unit(name),
+        [b"kill", b"--kill-who=all", b"--signal=KILL", name] =>
+            name != b"lilly-vm-*.service" && unit(name),
         [b"show" | b"list-units", rest @ ..] => {
             let (options, units): (Vec<&[u8]>, Vec<&[u8]>) =
                 rest.iter().partition(|word| word.starts_with(b"--"));
