@@ -273,17 +273,25 @@ procedure are described in [docs/operations/nixos.md](../operations/nixos.md).
 
 SSH (gate 3): Win32-OpenSSH has no `AuthorizedKeysCommand`, so
 `overalls-ssh-sync-windows.exe` (task `Overalls\SshSync`) pulls the roster and
-`GET /ssh/v1/authorized-keys` from Audi's private route every two seconds,
 creates the `u<uid>` accounts (Administrators, random unrecorded password),
-writes `C:\overalls\ssh\authorized_keys\<user>` and starts `sshd` with the
+requiring each SID-bound registered profile before activation. A new boot
+stops `sshd`, clears prior managed authorized-key files and waits for the
+verified current-boot host certificate before starting a keyless listener.
+It publishes `ssh-ready` before ordinary key retrieval so readiness can
+complete provision/start without weakening key authority. Every readiness
+poll requires the current bootstrap and certificate receipts plus live sshd.
+The agent then pulls `GET /ssh/v1/authorized-keys` every two seconds under
+the existing running-execution/completed-start binding and writes
+`C:\overalls\ssh\authorized_keys\<user>`. Same-boot retries preserve
+current keys. It uses the
 shipped `sshd_config` (`AuthorizedKeysFile C:/overalls/ssh/authorized_keys/%u`,
 public-key only, no `administrators_authorized_keys`).
 `overalls-host-certificate-windows.exe` (task `Overalls\HostCertificate`)
 generates a fresh host key at every boot and installs the certificate Audi
 issues into `%ProgramData%\ssh`. The roster agent also tails
 `%ProgramData%\ssh\logs\sshd.log` (sshd logs to file, `SyslogFacility LOCAL0`)
-and reports each accepted public-key login to Audi's `/ssh/v1/login`, and once a
-roster account is active it retires the bootstrap `Administrator` (random
+and reports each accepted public-key login to Audi's `/ssh/v1/login`; after
+successful key delivery to a nonempty roster it retires the bootstrap `Administrator` (random
 unrecorded password, disabled), so the SAC prompt no longer offers a login on
 such guests. Logs: `ssh-sync.log` and `host-certificate.log` beside the other
 agent logs.

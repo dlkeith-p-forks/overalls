@@ -853,7 +853,8 @@ separate obligations. See
 
 ## Elixir property verification
 
-Elixir properties currently use the test-only Hegel frontend ref `02cd8bd` under
+Elixir properties currently use the test-only Hegel frontend ref `f1ad336`
+(`f1ad336e4be1f0b3e18e429f8bc826d538b40601`) under
 [ADR-0191](repo:docs/architecture/decisions/0191-elixir-hegel-property-verification.md).
 Protocol properties run once per declared case count with fixed seeds and no
 example database or printed replay blobs. A local draw boundary records literal
@@ -871,8 +872,10 @@ used the previous frontend pin `6a62795`; the `2c9f7a4` merged frontend's comple
 gate also passed 299 tests and properties, Covenant 14/14 and Dialyzer with zero
 errors or skips. These historical results do not verify the current pin or
 changed consumer tests. Standalone `check all` options now propagate, but the
-engine uses `test_cases` rather than `max_runs`. Context-pattern property
-expansion can still recurse without bound and compatibility clauses can discard
+engine uses `test_cases` rather than `max_runs`. The current map-context/options
+expansion still failed a memory/time-bounded compilation probe while a plain
+property control passed; context-pattern expansion can recurse without bound
+and compatibility clauses can discard
 tuple bindings, filters or nested options.
 Narrow consumer repairs retain generated assertions in tagged ordinary tests;
 the handbook unknown-ID check uses an explicit bounded silent draw and actual
@@ -934,12 +937,26 @@ activation is a separate source, build, deployment and live-evidence scope.
 Both actual-host toplevel builds for the seven-entry catalog at `008a02331`
 passed in 291 seconds. That build predates the later caption and crawler-policy
 merge; deployment convergence and live OmniOS acceptance remain separate.
+Both actual-host builds after the caption/crawler merge at `b17d6beec` then
+passed in 263 seconds, and both consumers converged healthy to that exact
+release. That deployment record does not establish a live OmniOS journey.
+The combined frozen Windows/Linux/oracle source subsequently passed the
+multi-target Lyra release build in 318 seconds and actual private Linux
+filesystem/manifest plus evaluation gates in 167 seconds. These are build and
+offline artifact records; repaired-image runtime and later deployment remain
+separate.
 The ten-file focused Marshall rerun passed 59/60 tests in 407.4 seconds, seed
 393478, clearing all twelve original failures. A sibling four-case retry-window
 history hit the same TooSlow heuristic; its scoped profile retains every case
 and oracle. That selected test then passed in 46.4 seconds, seed 525114, with
-three unrelated tests excluded. Final complete Marshall precommit remains
-pending; these are separate focused execution records.
+three unrelated tests excluded. The complete final-repair Marshall gate then
+passed 1,694 tests with four excluded in 1,540.6 seconds, seed 156566, Covenant
+24/24, terminal JavaScript 36/36, presentation JavaScript 9/9 and Monospace.
+Forced Dialyzer passed with zero errors/skips in 59.03 seconds; the command
+exited zero. It started from `21831915e` with the repairs later committed as
+`b84ac6277`, on frontend `02cd8bd`; the later literal caption and handbook
+merge does not change that test-source scope. These remain separate focused
+and complete records and do not verify the later `f1ad336` frontend pin.
 The later incoming Ziggy reporter history explicitly selects one generated
 case, and two Galileo boot-refusal histories select two each with the CI
 profile. Their remaining inner compatibility `max_runs` options are ignored;

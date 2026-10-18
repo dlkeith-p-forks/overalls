@@ -4,15 +4,19 @@
 //! this boot's identity from MMDS and the volatile boot UUID, listens on vsock
 //! port 1024 and answers Lilly's poll with the closed six-key `ready` line only
 //! when the live probes pass: the delivered `/32` and routes are configured,
-//! every required service is RUNNING, `sshd` is RUNNING once the SSH agent has
-//! published its `ssh-ready` marker, and `C:` accepts a durable write. It has
+//! every required service is RUNNING, the SSH agent has published this boot's
+//! `ssh-ready` marker, `sshd` is RUNNING, and `C:` accepts a durable write. It has
 //! no execution, transfer or cleanup authority and ingests nothing from the
 //! peer. Runs as a SYSTEM task; exits 64 on other operating systems.
 
+#[cfg(any(windows, test))]
+use lyra::guest::ssh_bootstrap::ready as ssh_bootstrap_ready;
+
 #[cfg(windows)]
 mod daemon {
-    use lyra::guest::mmds;
+    use super::ssh_bootstrap_ready;
     use lyra::guest::readiness::{self, Boot, Probe};
+    use lyra::guest::{mmds, ssh_bootstrap};
     use lyra::platform::windows::log::Logger;
     use lyra::platform::windows::vsock::{self, Listener, HOST_CID};
     use lyra::platform::windows::{boot_id, net, services};
@@ -24,7 +28,6 @@ mod daemon {
 
     const IDENTITY_BUDGET: Duration = Duration::from_secs(600);
     const RUN_DIR: &str = "C:\\overalls\\run";
-    const SSH_READY: &str = "C:\\overalls\\run\\ssh-ready";
     const SSHD: &str = "sshd";
     /// Services that must be RUNNING before the guest is ready, besides sshd:
     /// the network store and the TCP/IP stack. The DHCP client is not required
@@ -40,8 +43,8 @@ mod daemon {
     impl Live {
         /// @cc [owner:ghuntley,label:recovery] windows-readiness-live-probes
         /// Every answer MUST re-check the delivered /32 and routes, every required
-        /// service, sshd once the ssh-ready marker exists, and a synced write on
-        /// C:; a failed or erroring probe withholds the answer.
+        /// service, a current-boot SSH bootstrap marker, a running sshd service,
+        /// and a synced write on C:; a failed or erroring probe withholds the answer.
         fn probe(&mut self) -> io::Result<bool> {
             if !net::configured(self.address, self.gateway)? {
                 self.logger.log("probe_network_pending");
@@ -53,7 +56,11 @@ mod daemon {
                     return Ok(false);
                 }
             }
-            if boot_id::marker_is_current(Path::new(SSH_READY)) && !services::running(SSHD)? {
+            if !ssh_bootstrap_ready(
+                boot_id::marker_is_current(Path::new(ssh_bootstrap::READY)),
+                boot_id::marker_is_current(Path::new(ssh_bootstrap::CERTIFICATE_READY)),
+                || services::running(SSHD),
+            )? {
                 self.logger.log("probe_sshd_pending");
                 return Ok(false);
             }
@@ -194,4 +201,134 @@ fn main() {
 fn main() {
     eprintln!("overalls-readinessd runs inside Windows guests only");
     std::process::exit(64);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::ssh_bootstrap_ready;
+    use lyra::guest::readiness::{self, Boot, Probe};
+    use std::io;
+
+    struct SshEvidence {
+        current_receipt: bool,
+        current_certificate: bool,
+        service: Result<bool, io::ErrorKind>,
+        service_queries: usize,
+    }
+
+    impl Probe for SshEvidence {
+        fn ready(&mut self) -> io::Result<bool> {
+            ssh_bootstrap_ready(self.current_receipt, self.current_certificate, || {
+                self.service_queries += 1;
+                self.service.map_err(io::Error::from)
+            })
+        }
+    }
+
+    fn boot() -> Boot {
+        Boot::new(
+            "dddddddd-dddd-4ddd-8ddd-000000000201".into(),
+            7,
+            "b".repeat(64),
+            "0f0e0d0c-0b0a-4908-8706-050403020100".into(),
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn absent_or_stale_ssh_receipts_withhold_ready_even_when_sshd_runs() {
+        // marker_is_current maps absent, prior-boot and unreadable files to
+        // false. None may authorize a host response through this live gate.
+        let mut probe = SshEvidence {
+            current_receipt: false,
+            current_certificate: true,
+            service: Ok(true),
+            service_queries: 0,
+        };
+        assert!(readiness::answer(2, 2, &boot(), &mut probe)
+            .unwrap()
+            .is_none());
+        assert_eq!(probe.service_queries, 0);
+
+        probe.service = Err(io::ErrorKind::PermissionDenied);
+        assert!(readiness::answer(2, 2, &boot(), &mut probe)
+            .unwrap()
+            .is_none());
+        assert_eq!(probe.service_queries, 0);
+    }
+
+    #[test]
+    fn each_host_poll_requires_current_receipt_and_live_sshd() {
+        let mut probe = SshEvidence {
+            current_receipt: true,
+            current_certificate: true,
+            service: Ok(false),
+            service_queries: 0,
+        };
+        let boot = boot();
+        assert!(readiness::answer(2, 2, &boot, &mut probe)
+            .unwrap()
+            .is_none());
+
+        probe.service = Ok(true);
+        assert_eq!(
+            readiness::answer(2, 2, &boot, &mut probe).unwrap(),
+            Some(boot.response().unwrap())
+        );
+
+        probe.service = Ok(false);
+        assert!(readiness::answer(2, 2, &boot, &mut probe)
+            .unwrap()
+            .is_none());
+        assert_eq!(probe.service_queries, 3);
+
+        probe.service = Ok(true);
+        probe.current_receipt = false;
+        assert!(readiness::answer(2, 2, &boot, &mut probe)
+            .unwrap()
+            .is_none());
+        assert_eq!(probe.service_queries, 3);
+    }
+
+    #[test]
+    fn service_errors_and_foreign_peers_cannot_receive_ready() {
+        let mut probe = SshEvidence {
+            current_receipt: true,
+            current_certificate: true,
+            service: Err(io::ErrorKind::PermissionDenied),
+            service_queries: 0,
+        };
+        assert_eq!(
+            readiness::answer(2, 2, &boot(), &mut probe)
+                .unwrap_err()
+                .kind(),
+            io::ErrorKind::PermissionDenied
+        );
+        assert_eq!(probe.service_queries, 1);
+
+        probe.service = Ok(true);
+        assert!(readiness::answer(3, 2, &boot(), &mut probe)
+            .unwrap()
+            .is_none());
+        assert_eq!(probe.service_queries, 1);
+    }
+
+    #[test]
+    fn host_certificate_replacement_withholds_ready_until_verified_install() {
+        let mut probe = SshEvidence {
+            current_receipt: true,
+            current_certificate: false,
+            service: Ok(true),
+            service_queries: 0,
+        };
+        assert!(readiness::answer(2, 2, &boot(), &mut probe)
+            .unwrap()
+            .is_none());
+        assert_eq!(probe.service_queries, 0);
+        probe.current_certificate = true;
+        assert!(readiness::answer(2, 2, &boot(), &mut probe)
+            .unwrap()
+            .is_some());
+        assert_eq!(probe.service_queries, 1);
+    }
 }

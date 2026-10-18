@@ -329,6 +329,15 @@ let
       rm -f ./files/etc/machine-id ./files/var/lib/dbus/machine-id ./files/var/lib/systemd/random-seed
       touch ./files/etc/machine-id
       chmod -R go-w ./files
+      # @cc [owner:ghuntley,label:security;build] foreign-linux-sticky-temporary-directories
+      # The final root MUST provide real root-owned /tmp and /var/tmp directories
+      # with mode 01777 after general mode normalization. Guest accounts MUST be
+      # able to create temporary files without deleting another account's files.
+      for directory in ./files/tmp ./files/var/tmp; do
+        test ! -L "$directory"
+        mkdir -p "$directory"
+        chmod 1777 "$directory"
+      done
     '';
   }).overrideAttrs (previous: {
     # @cc [owner:ghuntley,label:build;verification] foreign-linux-reproducible-ext4
@@ -364,6 +373,11 @@ let
     ] previous.buildCommand;
   });
 in
+# @cc [owner:ghuntley,label:security;build] foreign-linux-explicit-kernel-lsm
+# Foreign Linux manifests MUST select the reviewed NixOS guest LSM stack
+# explicitly. A distribution's default SELinux policy MUST NOT activate against
+# the assembled root, which does not carry that distribution's SELinux labels.
+# The arguments select Landlock, Yama and BPF; host VM/network authority is unchanged.
 pkgs.runCommand imageName {
   nativeBuildInputs = [ pkgs.jq ];
   preferLocalBuild = true;
@@ -387,6 +401,6 @@ pkgs.runCommand imageName {
     --argjson kernel_bytes "$kernel_bytes" --arg kernel_sha256 "$(sha256sum "$out/kernel" | cut -d' ' -f1)" \
     --argjson initrd_bytes "$initrd_bytes" --arg initrd_sha256 "$(sha256sum "$out/initrd" | cut -d' ' -f1)" \
     --argjson rootfs_bytes "$rootfs_bytes" --arg rootfs_sha256 "$(sha256sum "$out/rootfs.ext4" | cut -d' ' -f1)" \
-    '{version:4,architecture:"x86_64",boot_args:("console=ttyS0 root=/dev/vda rw overalls.distribution=" + $distro),minimum_disk_bytes:$disk,minimum_memory_bytes:$memory,workspace_source_version:${if privateServiceRoots == [] then "null" else "2"},kernel:{bytes:$kernel_bytes,sha256:$kernel_sha256},initrd:{bytes:$initrd_bytes,sha256:$initrd_sha256},rootfs:{bytes:$rootfs_bytes,sha256:$rootfs_sha256}}' \
+    '{version:4,architecture:"x86_64",boot_args:("console=ttyS0 root=/dev/vda rw lsm=landlock,yama,bpf overalls.distribution=" + $distro),minimum_disk_bytes:$disk,minimum_memory_bytes:$memory,workspace_source_version:${if privateServiceRoots == [] then "null" else "2"},kernel:{bytes:$kernel_bytes,sha256:$kernel_sha256},initrd:{bytes:$initrd_bytes,sha256:$initrd_sha256},rootfs:{bytes:$rootfs_bytes,sha256:$rootfs_sha256}}' \
     > "$out/manifest.json"
 ''

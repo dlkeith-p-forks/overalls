@@ -7,33 +7,35 @@
 //! through the Net API (create, enable, disable; never delete), writes one
 //! `AuthorizedKeysFile` per account under `C:\overalls\ssh\authorized_keys`
 //! (SYSTEM-owned, readable by that account only) and, after the first applied
-//! roster, publishes the `ssh-ready` marker the readiness daemon waits for,
-//! starts `sshd` and retires the image's bootstrap Administrator. It also tails
+//! roster and a current host certificate, starts `sshd` with prior-boot keys
+//! removed and publishes the `ssh-ready` marker. Ordinary key retrieval follows
+//! readiness under its existing completed-start authority. It retires the
+//! image's bootstrap Administrator after applying the keys. It also tails
 //! sshd's file log and reports each accepted public-key login to the authority,
 //! as the Linux PAM hook does. Logs are closed event names; no key, name or
 //! token is written. Runs as a SYSTEM task; exits 64 on other operating systems.
 
 #[cfg(windows)]
 mod sync {
+    use lyra::guest::ssh_bootstrap;
     use lyra::guest::ssh_login;
     use lyra::guest::ssh_roster::{self, Account, Roster, Route, State, StateStore, ORIGIN};
     use lyra::platform::windows::accounts::{self, NetAccounts};
-    use lyra::platform::windows::boot_id;
     use lyra::platform::windows::log::Logger;
+    use lyra::platform::windows::{boot_id, services};
     use serde::Deserialize;
     use std::collections::HashMap;
     use std::fs::{self, File};
     use std::io::{self, Read, Seek, SeekFrom, Write};
     use std::path::{Path, PathBuf};
     use std::process::{Command, Stdio};
-    use std::time::Duration;
+    use std::time::{Duration, Instant};
 
     const TRUST_DIR: &str = "C:\\overalls\\trust";
     const SSH_DIR: &str = "C:\\overalls\\ssh";
     const KEYS_DIR: &str = "C:\\overalls\\ssh\\authorized_keys";
     const STATE: &str = "C:\\overalls\\ssh\\accounts.json";
     const RUN_DIR: &str = "C:\\overalls\\run";
-    const SSH_READY: &str = "C:\\overalls\\run\\ssh-ready";
     const ADMINISTRATOR_RETIRED: &str = "C:\\overalls\\run\\administrator-retired";
     const INTERVAL: Duration = Duration::from_secs(2);
     const MAX_KEYS_BODY: usize = 1024 * 1024;
@@ -228,33 +230,120 @@ mod sync {
     }
 
     fn start_sshd() -> io::Result<()> {
-        if lyra::platform::windows::services::running("sshd")? {
+        if services::running("sshd")? {
             return Ok(());
         }
-        if tool("sc.exe", &["start", "sshd"])? {
-            Ok(())
-        } else {
-            Err(io::Error::other("sshd start failed"))
+        let _ = tool("sc.exe", &["start", "sshd"])?;
+        let started = Instant::now();
+        while started.elapsed() < Duration::from_secs(10) {
+            if services::running("sshd")? {
+                return Ok(());
+            }
+            std::thread::sleep(Duration::from_millis(100));
+        }
+        Err(io::Error::other("sshd start failed"))
+    }
+
+    fn stop_sshd() -> io::Result<()> {
+        if services::stopped("sshd")? {
+            return Ok(());
+        }
+        let _ = tool("sc.exe", &["stop", "sshd"])?;
+        let started = Instant::now();
+        while started.elapsed() < Duration::from_secs(10) {
+            if services::stopped("sshd")? {
+                return Ok(());
+            }
+            std::thread::sleep(Duration::from_millis(100));
+        }
+        Err(io::Error::other("sshd stop failed"))
+    }
+
+    struct Bootstrap;
+
+    impl ssh_bootstrap::Host for Bootstrap {
+        fn bootstrap_current(&self) -> bool {
+            boot_id::marker_is_current(Path::new(ssh_bootstrap::READY))
+        }
+
+        fn certificate_current(&self) -> bool {
+            boot_id::marker_is_current(Path::new(ssh_bootstrap::CERTIFICATE_READY))
+        }
+
+        fn stop_listener(&mut self) -> io::Result<()> {
+            stop_sshd()
+        }
+
+        fn clear_keys(&mut self) -> io::Result<()> {
+            ssh_bootstrap::clear_keys(Path::new(KEYS_DIR))
+        }
+
+        fn start_listener(&mut self) -> io::Result<()> {
+            start_sshd()
+        }
+
+        fn publish_ready(&mut self) -> io::Result<()> {
+            boot_id::write_marker(Path::new(ssh_bootstrap::READY))
         }
     }
 
-    fn pass(
+    fn roster_pass(
         client: &reqwest::blocking::Client,
         store: &mut FileStore,
         accounts: &mut NetAccounts,
-    ) -> io::Result<(State, KeyIndex)> {
+    ) -> io::Result<State> {
         let roster: Roster =
             serde_json::from_slice(&fetch(client, Route::Roster, ssh_roster::MAX_ROSTER)?)
                 .map_err(|_| io::Error::other("invalid roster"))?;
-        let state = ssh_roster::reconcile(roster, store, accounts)?;
+        ssh_roster::reconcile(roster, store, accounts)
+    }
+
+    fn keys_pass(client: &reqwest::blocking::Client, state: &State) -> io::Result<KeyIndex> {
         let listing: AuthorizedKeys =
             serde_json::from_slice(&fetch(client, Route::AuthorizedKeys, MAX_KEYS_BODY)?)
                 .map_err(|_| io::Error::other("invalid authorized keys"))?;
         if listing.version == 0 {
             return Err(io::Error::other("invalid authorized keys"));
         }
-        let index = apply_keys(&state, listing)?;
-        Ok((state, index))
+        apply_keys(state, listing)
+    }
+
+    /// @cc [owner:ghuntley,label:security;recovery] windows-key-fetch-after-bootstrap
+    /// Ordinary authorized-key retrieval MUST occur only after current-boot
+    /// roster reconciliation and keyless listener bootstrap. A denied fetch
+    /// MUST retain the last current-boot key index for login receipts and MUST
+    /// NOT prevent the already-published bootstrap from completing readiness.
+    fn advance_ssh(
+        client: &reqwest::blocking::Client,
+        state: &State,
+        index: &mut KeyIndex,
+        logger: &Logger,
+    ) -> io::Result<()> {
+        let was_current = boot_id::marker_is_current(Path::new(ssh_bootstrap::READY));
+        if !ssh_bootstrap::ensure(&mut Bootstrap)? {
+            logger.log("host_certificate_pending");
+            return Ok(());
+        }
+        if !was_current {
+            logger.log("sshd_started");
+            logger.publish();
+        }
+        *index = keys_pass(client, state)?;
+        if !state.accounts.is_empty() && !Path::new(ADMINISTRATOR_RETIRED).exists() {
+            match accounts::retire_bootstrap_administrator()
+                .and_then(|()| fs::write(ADMINISTRATOR_RETIRED, b"retired\n"))
+            {
+                Ok(()) => {
+                    logger.log("administrator_retired");
+                    logger.publish();
+                }
+                Err(error) => logger.log(&format!(
+                    "administrator_retire_failed kind={:?}",
+                    error.kind()
+                )),
+            }
+        }
+        Ok(())
     }
 
     /// Tail sshd's file log from the last offset; return the new complete lines.
@@ -368,9 +457,8 @@ mod sync {
                 }
             }
             if let Some(ready) = client.as_ref() {
-                match pass(ready, &mut store, &mut accounts) {
-                    Ok((state, applied)) => {
-                        index = applied;
+                match roster_pass(ready, &mut store, &mut accounts) {
+                    Ok(state) => {
                         if state.version != last_version {
                             last_version = state.version;
                             logger.log(&format!(
@@ -379,32 +467,8 @@ mod sync {
                                 state.accounts.len()
                             ));
                         }
-                        if !boot_id::marker_is_current(Path::new(SSH_READY)) {
-                            match start_sshd()
-                                .and_then(|()| boot_id::write_marker(Path::new(SSH_READY)))
-                            {
-                                Ok(()) => {
-                                    logger.log("sshd_started");
-                                    logger.publish();
-                                }
-                                Err(error) => logger
-                                    .log(&format!("sshd_start_failed kind={:?}", error.kind())),
-                            }
-                        }
-                        if !state.accounts.is_empty() && !Path::new(ADMINISTRATOR_RETIRED).exists()
-                        {
-                            match accounts::retire_bootstrap_administrator()
-                                .and_then(|()| fs::write(ADMINISTRATOR_RETIRED, b"retired\n"))
-                            {
-                                Ok(()) => {
-                                    logger.log("administrator_retired");
-                                    logger.publish();
-                                }
-                                Err(error) => logger.log(&format!(
-                                    "administrator_retire_failed kind={:?}",
-                                    error.kind()
-                                )),
-                            }
+                        if let Err(error) = advance_ssh(ready, &state, &mut index, &logger) {
+                            logger.log(&format!("pass_failed kind={:?}", error.kind()));
                         }
                     }
                     Err(error) => logger.log(&format!("pass_failed kind={:?}", error.kind())),

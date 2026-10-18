@@ -354,6 +354,19 @@ agent turn is a fleet proof. Push 3b is not done; this ADR stays `partial`
 until the review records the machine-test executions and the production
 acceptance.
 
+The 2026-10-18 [matrix review](../reviews/2026-10-18-guest-os-matrix.md)
+records a source repair to gates 2 and 3. A `MAX_PATH`-bounded native profile
+call is followed by SID-bound registration verification. New-boot SSH
+bootstrap clears prior keys, waits for a verified host certificate, starts a
+keyless listener and publishes its receipt before ordinary key delivery.
+Readiness requires both current-boot receipts and live sshd; key delivery
+retains the existing completed-start authority. The frozen Lyra gate passed
+223 portable tests plus cross-target checks. A disposable native API diagnosis
+reproduced the prior buffer failure but mutated its fixture; it establishes
+neither unchanged-image lifecycle acceptance nor the new sealed image's
+runtime behavior. No decision or implementation status is promoted by these
+records.
+
 ## Open questions
 
 - Whether an S4U network logon of a roster account (a member of

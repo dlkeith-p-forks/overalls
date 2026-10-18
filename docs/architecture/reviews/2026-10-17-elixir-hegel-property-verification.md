@@ -107,3 +107,25 @@ pinned binding does not implement every accepted stateful/concurrent API.
 Consumer gates and native-engine smoke/replay obligations keep their separate
 scope and records; this checkpoint does not claim migration completion or any
 new guest, TLS, isolation, storage-recovery or fleet acceptance.
+
+## 2026-10-18 consumer checkpoint
+
+The [current matrix review](2026-10-18-guest-os-matrix.md) retains later count,
+fixture, generator and health-check repairs and their failed/focused runs.
+On frontend `02cd8bd5bf07a7ca1bfaf7d599456fff5badbfa2`, the complete protocol
+gate passed 302 tests with Covenant 14/14 and zero-error forced Dialyzer;
+Lilly passed 610 tests with Covenant 15/15 and zero-error forced Dialyzer.
+The final repaired Marshall gate passed 1,694 tests with four exclusions in
+1,540.6 seconds, seed 156566, Covenant 24/24 and forced Dialyzer with zero
+errors/skips in 59.03 seconds. Its log is
+`/tmp/overalls-os-matrix-marshall-confirmation2.log`; the final repair sources
+were committed as `b84ac6277`.
+
+Upstream `0ed3c8151` then advanced every frontend to
+`f1ad336e4be1f0b3e18e429f8bc826d538b40601` and refreshed Mix dependency
+hashes. Its native engine is unchanged, but its context/options macro still
+failed a bounded actual-compilation probe while a plain-property control
+passed. Existing ordinary ExUnit workarounds remain required. Focused new-pin
+protocol and Marshall checks passed; complete new-pin gates retain separate
+records and cannot inherit the prior pin's results. The matrix review records
+the exact probe and execution scope. ADR-0191 remains partial.

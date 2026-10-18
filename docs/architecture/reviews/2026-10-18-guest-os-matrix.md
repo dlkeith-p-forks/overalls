@@ -7,6 +7,9 @@ fleet catalog, current image evidence and opt-in Porsche acceptance tooling.
 It also corrects foreign-Linux ext4 construction, adds evaluation assertions for
 the native SSH supervisor's temporary PID cleanup and reconciles the Windows
 evaluation's shared VMM patch inventory.
+The next checkpoint repairs Windows profile/bootstrap ordering, foreign-root
+LSM and temporary-directory construction, and the exact OmniOS release probe;
+it preserves diagnostic failures and separate source/build/native/live scopes.
 
 There is no new Ash domain/resource, deployment host/service, persistence shape,
 authorization grant, wire protocol or guest capability kind. Exact-image
@@ -14,6 +17,9 @@ qualification enables only the previously reviewed native subset. The work prese
 [ADR-0190](../decisions/0190-native-kernel-provenance-and-admission.md),
 [ADR-0171](../decisions/0171-windows-guest-agents.md) and
 [ADR-0173](../decisions/0173-windows-images-winget-desktop-experience.md).
+The new Hegel frontend checkpoint preserves
+[ADR-0191](../decisions/0191-elixir-hegel-property-verification.md), including
+its incomplete compatibility and separate execution evidence.
 Their recorded decision and implementation statuses remain unchanged.
 The existing domain and deployment views require no inventory change.
 Windows publication enforces ADR-0171's existing built-once distribution through
@@ -302,7 +308,29 @@ results do not transfer to these corrected roots. The corrected images then
 passed fresh actual file SHA-256/length and complete offline policy audits,
 plus forced Dungarees `--check` rebuilds with independently matching remote
 hashes. Records are under `/tmp/overalls-corrected-fleet-images-20261018/`.
-Their live creates remain held for deployment and retain separate runtime scope.
+Their later failed live creates are recorded below and do not inherit offline
+success. The next source repair explicitly selects `lsm=landlock,yama,bpf`,
+matching the evaluated NixOS manifest (the Ubuntu manifest does not currently
+declare an LSM parameter). The assembled foreign roots lack the distribution's
+SELinux labels, so the distro policy must not activate against that root.
+This selects the guest stack without changing host jailer, network, protocol
+or capacity authority. After general write-mode normalization, the builder
+also restores real root-owned `/tmp` and `/var/tmp` directories to 01777;
+accounts can create temporary files while the sticky bit protects other
+accounts' entries.
+The actual private Arch/Alma artifact gate passed in 57 seconds, inspecting
+the final manifest and ext4 directory/file modes and ownership. A manifest
+without the selection failed the LSM check; substituting the previous Arch
+ext4 while preserving a valid new manifest failed the `/tmp` directory-mode
+check. The evaluation and contract/format checks passed; logs are
+`/tmp/overalls-foreign-linux-boot-{check,contracts,old-alma-negative,old-arch-tmp-negative}.log`.
+These are offline artifact checks, without a repaired-image boot or readiness
+claim. The exact Arch readiness sandbox diagnosis remains in progress.
+The combined final source, including the Windows repair and current Hegel
+pin, then passed both actual private Linux filesystem/manifest and evaluation
+gates in 167 seconds; log
+`/tmp/overalls-osmatrix-final-foreign-linux-artifact-checks.log`. That combined
+artifact result remains separate from repaired-image runtime acceptance.
 
 Windows
 has a current 64 GiB Desktop Experience catalog image and 96 GiB template
@@ -373,14 +401,37 @@ images; their later stages were not run, and their original identities and
 failed receipts are retained.
 
 That run's FreeBSD `cbf81155-470c-407e-a0f0-5132f2a03daa` passed through
-restart and repeated exact-OS CLI SSH. Its original cleanup request remains
-unsettled: desired state is deleted, observed state unknown and the current
-failure is `cleanup_failed` while the maintained ZFS destroy namespace sweep
-cannot confirm absence. The reconciliation poll ended with a management
+restart and repeated exact-OS CLI SSH. Its original cleanup request first
+remained unsettled: desired state was deleted, observed state unknown and the
+failure was `cleanup_failed` while the maintained ZFS destroy namespace sweep
+could not confirm absence. The reconciliation poll ended with a management
 `transport_error`, rather than a successful deleted receipt or deadline
-exhaustion. This is a current cleanup gap, separate from the successful
-`072900` cleanup above; no forced cleanup, database repair or replacement intent
-is acceptance evidence.
+exhaustion. Investigation found the exact dataset retained in a rootless
+Podman mount namespace. Retirement was initially refused while unrelated
+containers were active. After fresh proof of zero active work, normal idle
+context retirement released the namespace; `SendSIGKILL=no` prevented forced
+termination and the pause process exited naturally. The external storage
+container remained intact. The unchanged cleanup helper then reconciled the
+original request to `succeeded`/`deleted`; the VM was archived at 09:38:41 UTC
+with no failure reason. The private `matrix-final-six-cleanup-freebsd.json`
+receipt records that terminal outcome. No forced unmount, migration, database
+repair or replacement intent was used. This closes the recorded fixture's
+lifecycle after operational recovery, without establishing independent
+physical cleanup or automatic recovery for other namespace holders.
+The inspected transient context started at 08:55:11 UTC; it explains the
+later observed blocker, not necessarily the earliest 07:52 cleanup failures.
+Its private manual operational audit is
+`/tmp/overalls-osmatrix-freebsd-cleanup-recovery-audit.json`, SHA-256
+`fbec957e7ca328cd39423e48d30d935ecc98d281b7f294fda7a2db07b8841084`.
+The audit records zero active runtime processes/API clients, nine mounted
+storage paths with zero process users/errors, preserved storage records,
+normal service retirement and an exact post-retirement namespace inventory
+with zero matches/errors and confirmed dataset absence. It is not a native
+machine-test receipt. Existing recursive-private propagation does not remove
+already copied mounts; preventive pool-free rootless namespace creation
+remains unimplemented.
+The terminal receipt SHA-256 is
+`1996c8eaca49b2053f625cf722c94f365cd58065d0c35a84547d7f23815506ba`.
 
 Windows `c8149dc5-eff4-4bed-8ab0-2f6965edb025`, image
 `sha256:e9ed22f19485315066bc5527ebd207fce8cd7d7fa4c0854a963c58ffa5361d73`,
@@ -388,21 +439,87 @@ created and reported running with `guest_ready=true`, but its initial CLI SSH
 attempt exited 255 before a remote banner. Read-only diagnosis found sshd
 stopped with no TCP/22 listener and SSH-sync reporting `pass_failed`, despite
 an existing roster account and enabled inbound TCP/22 rule. The owned fixture
-is retained for diagnosis; later lifecycle stages are unrun. That ready flag
-does not establish SSH access. The separate corrected Arch/Alma qualification
-ledger `/tmp/porsche-20261018-085815` has no created fixtures in this snapshot;
-its completed artifact, policy and cross-host checks do not establish those
-planned live stages. OmniOS is outside the six-image ledger. No complete six-
-or seven-OS pass follows.
-The separate `/tmp/porsche-20261018-091638` OmniOS ledger has no creates. Its
-promoted-artifact proof passed the shared schema/admission validator and fresh
-full 8 GiB disk/4 MiB firmware hashes against the reviewed manifest; that is
-artifact custody, without a live CLI or 16 GiB launch result.
+was retained for diagnosis; later lifecycle stages were unrun. That ready flag
+does not establish SSH access. A later owned-fixture native diagnostic isolated
+`CreateProfile`: the original 4,096-unit output buffer returned HRESULT
+`0x800706f7` (Win32 1783) without registering a profile; the `MAX_PATH`-sized
+260-unit call returned `S_OK` and created the SID-bound profile. The existing
+agent then enabled the account, installed one key file, started sshd and
+retired the bootstrap Administrator. The private
+`windows-profile-diagnostic-receipt.json` marks `fixture_mutated=true` and
+`unchanged_image_lifecycle_acceptance=false`. This is a manual API diagnosis,
+not an unchanged-image SSH or lifecycle pass; a rebuilt, sealed image still
+requires its own acceptance.
+The diagnostic receipt SHA-256 is
+`e0a1225693a09e5a1a9d4eca1e52bf5b89f07205f480dd3d25cb98c821ab3239`.
+The integrated Windows repair uses the bounded profile call and verifies the
+SID-bound registered directory before activation. Its shared
+[`ssh_bootstrap`](../../../lyra/src/guest/ssh_bootstrap.rs) coordinator clears
+prior keys before first listener startup, requires a verified current-boot
+host-certificate receipt and publishes bootstrap readiness before ordinary key
+delivery. Every readiness response also requires the two current receipts and
+live sshd. Same-boot retries preserve current keys. The four-field running-VM
+and completed provision/start key-delivery authority is unchanged; neither
+the roster nor host-certificate bootstrap route acquires key authority.
+This implements ADR-0171's existing boundaries without a replacement decision.
+The frozen source patch SHA-256 is
+`8946bd954ca2b3a716cb46dfe1d13707a5cd3a7b04ef41c7591e9d74d0661455`.
+Its sandboxed Lyra gate passed in 197 seconds with 223 portable tests,
+Linux Clippy, Windows all-binary type checks and FreeBSD/illumos checks and
+Clippy; log `/tmp/overalls-windows-profile-bootstrap-frozen-lyra-check.log`.
+The portable cases cover actual readiness answers, pre-completed-start key
+refusal followed by successful retrieval, stale-key cleanup refusals and
+same-boot preservation. They do not execute Windows SCM/profile APIs or a
+fresh sealed image. The new Windows installation and its full live lifecycle
+remain separate pending evidence.
+A separate 64-second sandbox mutation gate caught both retaining prior keys
+and allowing a readiness answer without the current marker, log
+`/tmp/overalls-windows-bootstrap-negative-check.log`. The mutation build did
+not change frozen production or image inputs.
+The combined final source's multi-target production Lyra release also built
+successfully in 318 seconds, log
+`/tmp/overalls-osmatrix-final-lyra-release-build.log`. A linked release does
+not establish execution of the new Windows installation.
+The separate corrected Arch/Alma qualification
+ledger `/tmp/porsche-20261018-085815` later created Arch
+`10ce2f77-7be8-4dea-9f8c-3171dac34b0c` from image `fc437aea` and Alma
+`746ad956-f800-4e32-80bc-cf98af6c57c4` from image `f91eaf37`. Both original
+create requests ended `failed`/`execution_failed`. Arch reached running units
+and an SSH listener, then failed the readiness budget; Alma encountered
+SELinux policy and `/run` mount-context denials. Their corrected mode and
+artifact-custody checks do not establish readiness or any later lifecycle
+stage. Further source/image repairs require separate runtime results.
+OmniOS is outside the six-image ledger. No complete six- or seven-OS pass
+follows.
+The separate `/tmp/porsche-20261018-091638` OmniOS ledger completed its original
+create request for `b04f2400-fc7a-4fe5-8a92-dd7c441e98f2` after both consumers
+converged healthy to `b17d6beec`, using exact promoted image `98b23b79`.
+The original `matrix-ssh-omnios-promoted-initial-omnios.json` recorded actual
+CLI transport exit zero but failed the OS oracle: the probe omitted the real
+`OmniOS v11 r151050` label and produced only `SunOS`. That failed attempt is
+retained. A narrow probe correction normalizes the pinned `v11` label to the
+existing canonical `OmniOS r151050`, preserving exact revision refusal.
+Its executable shell regression refuses the wrong revision, version and
+vendor. The updated suite passed 24 checks; narrowed Ruff/ty/contracts and
+all-files pinned Ruff, Ruff format and ty passed. Logs are
+`omnios-oracle-source-checks.log` and `python-all-files-static.log` in that
+private ledger.
+The same VM's explicit `initial-v11` stage then passed the exact OS oracle
+through actual CLI SSH, exit zero, 21 output bytes and SHA-256
+`2c45e839af8de414f3acdb6b514c9902ec09ef927545bd82f6146a6dd5a1fece`.
+Its orderly stop succeeded; the original restart is accepted/polling, with
+repeat SSH and cleanup still unrun at this checkpoint. No complete OmniOS
+lifecycle follows yet.
+Its promoted-artifact proof passed the shared schema/admission validator and
+fresh full 8 GiB disk/4 MiB firmware hashes against the reviewed manifest.
+Artifact custody, creation/readiness, exact CLI identity and later lifecycle
+stages retain separate evidence scopes.
 
 ## Consumer verification prerequisites
 
-Initial consumer repairs used Hegel frontend `9b13af8`; the merged consumers now
-select ref `02cd8bd`, resolved as `02cd8bd5bf07a7ca1bfaf7d599456fff5badbfa2`.
+Initial consumer repairs used Hegel frontend `9b13af8`; the repaired consumer
+checkpoint selected ref `02cd8bd`, resolved as
+`02cd8bd5bf07a7ca1bfaf7d599456fff5badbfa2`.
 The source locks were normalized to that full resolved commit while retaining
 the requested ref. Source/fixed-output lock snapshot comparison and hash refresh
 retain separate verification records. All eight actual Mix dependency outputs
@@ -437,6 +554,12 @@ healthy to that exact release before catalog activation. That release still
 selected six entries. The later OmniOS alias activation is a distinct source
 change requiring its own build, deployment and live records; no guest outcome
 is inferred from the consumer convergence.
+Both actual-host builds for the selected seven-entry catalog at `008a02331`
+then passed in 291 seconds. After merging the caption and crawler policy,
+both actual-host builds at `b17d6beec` passed in 263 seconds, recorded in
+`/tmp/overalls-osmatrix-omnios-merged-hosts.log`; both consumers converged
+healthy to that exact release. This establishes the selected-release build
+and deployment scope, separately from live OmniOS or other guest acceptance.
 
 The handbook unknown-ID property separately corrects a discarded compatibility
 filter: a bounded UTF-8 generator actually excludes listed chapter IDs, draws
@@ -520,12 +643,36 @@ history then hit the same TooSlow heuristic after three valid cases in 34.55
 seconds; it receives the same scoped profile while retaining all four cases,
 proof mixtures and assertions. Its fresh focused run then passed in 46.4
 seconds, seed 525114 (one selected test, three excluded). Complete final
-Marshall precommit remains pending; the two focused records are separate runs.
+Marshall precommit then passed completely: 1,694 tests, four excluded,
+1,540.6 seconds, seed 156566, Covenant 24/24, terminal JavaScript 36/36,
+presentation JavaScript 9/9, Monospace and forced Dialyzer with zero errors,
+skips or unnecessary skips in 59.03 seconds after its PLT refresh. The process
+exited zero; log `/tmp/overalls-os-matrix-marshall-confirmation2.log`.
+It began at 09:11:27 UTC from `21831915e` plus final repairs committed as
+`b84ac6277` at 09:13:28. Later caption/handbook merges add no test fixture
+change. This is the `02cd8bd` checkpoint, separate from the focused records
+and the later frontend update.
 
 The frozen dual-family registry's full protocol precommit then passed 302 tests
 in 413.6 seconds, Covenant 14/14, compiler/format/contracts/ADR checks and
 Dialyzer with zero errors or skips in 3.38 seconds. That exact-source protocol
 gate does not establish the pending consumer or native fleet execution.
+
+Upstream `0ed3c8151` subsequently selected frontend ref `f1ad336`, resolved as
+`f1ad336e4be1f0b3e18e429f8bc826d538b40601`, and refreshed all eight Mix
+dependency hashes. Its upstream delta changes only map-context/keyword-options
+macro handling and a regression test; the native engine/settings sources are
+unchanged. Both freshly resolved Marshall and protocol NIFs hash to
+`6ed2a45ede213661e8231523bcdc8315e96bcd81b4e1b29085686a436665d38a`.
+The new context/options branch still recursively wraps its inserted variable:
+an actual macro-compilation probe in an isolated 512 MiB/10-second scope
+exited 137, while the plain-property/options control exited zero. Probe files
+and logs are `/tmp/overalls-hegel-f1ad-{context,plain}-probe.{exs,log}`.
+Existing tagged ordinary ExUnit workarounds remain in place. Focused new-pin
+execution passed two protocol capability tests (seed 21863), six native
+admission tests (seed 395668), and fourteen Marshall handbook/observability
+tests in 4.7 seconds (seed 365394). Complete new-pin gates remain pending;
+the passing prior-pin records are not transferred.
 
 The scenario validator additionally recognizes exact qualified Elixir
 `Hegel.check(...)`/`Hegel.run(...)` calls, alongside existing property markers.
@@ -538,7 +685,7 @@ lexical recognition alone remains no proof of execution or native behavior.
 
 The native and Windows evaluation assertions inspect generated artifact/service
 configuration; they do not start a guest. The pinned Python 3.13 runner suite
-passed all 23 tests with
+passed all 24 tests with
 `python3 -m unittest discover -s scripts/test -p test_porsche_acceptance.py` in
 `devenv shell`. These tests exercise runner refusal, receipt recovery, timeout
 cleanup, strict SSH configuration, output privacy and OS-oracle behavior with

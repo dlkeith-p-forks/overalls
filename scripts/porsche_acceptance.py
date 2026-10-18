@@ -899,6 +899,10 @@ class Acceptance:
 
     @staticmethod
     def matrix_probe(kind: GuestOS) -> str:
+        """@cc [owner:ghuntley,label:verification] porsche-matrix-release-probe
+        The OmniOS probe MUST normalize the pinned v11 release label while
+        retaining its numeric r revision for the independent exact OS oracle.
+        """
         if kind in ("nixos", "ubuntu", "arch", "almalinux"):
             return shlex.join(
                 [
@@ -920,7 +924,7 @@ class Acceptance:
                 [
                     "sh",
                     "-c",
-                    'set -eu; uname -s; sed -n "s/.*\\(OmniOS r[0-9][0-9]*\\).*/\\1/p" /etc/release',
+                    'set -eu; uname -s; sed -n "s/.*OmniOS v11 \\(r[0-9][0-9]*\\).*/OmniOS \\1/p" /etc/release',
                 ]
             )
         return (

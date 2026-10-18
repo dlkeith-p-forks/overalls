@@ -230,6 +230,13 @@ The implementation is partial. Arch and Alma builders are in
 [`foreign-linux.nix`](../../../nix/domains/artifacts/guest/foreign-linux.nix), with the
 [`foreign-linux-guests`](../../../nix/verification/tests/evaluation/foreign-linux-guests.nix)
 evaluation and catalog entries in [`fleet/guest-images.nix`](../../../fleet/guest-images.nix).
+The shared builder now preserves executable source modes, restores real
+root-owned sticky temporary directories and selects the reviewed
+`landlock,yama,bpf` guest LSM stack explicitly; these assembled roots do not
+carry distro SELinux labels. Actual private-image offline checks and old-input
+negative controls pass. Current corrected-image create failures and pending
+repaired-image runtime checks remain distinct in the matrix review; host
+isolation, wire contracts and capability authority are unchanged.
 
 Native builders and catalog entries are in
 [`native.nix`](../../../nix/domains/artifacts/guest/native.nix),

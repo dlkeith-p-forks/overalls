@@ -19,6 +19,7 @@ let
     assert pkgs.lib.hasInfix "kernel:{bytes:" command;
     assert pkgs.lib.hasInfix "rootfs:{bytes:" command;
     assert pkgs.lib.hasInfix "overalls.distribution=" command;
+    assert pkgs.lib.hasInfix "lsm=landlock,yama,bpf" command;
     assert builtins.elem image.passthru.sourceFormat [ "arch-bootstrap" "qcow2-ext4" ];
     true;
   # @cc [owner:ghuntley,label:verification] foreign-linux-determinism-inputs
@@ -60,6 +61,8 @@ let
     assert pkgs.lib.hasInfix "ln -sfn ssh.service ./files/etc/systemd/system/sshd.service" command;
     assert pkgs.lib.hasInfix "@includedir /etc/sudoers.d" command;
     assert pkgs.lib.hasInfix "foreign_linux_accounts.py" command;
+    assert pkgs.lib.hasInfix ''for directory in ./files/tmp ./files/var/tmp'' command;
+    assert pkgs.lib.hasInfix ''chmod 1777 "$directory"'' command;
     true;
 in
 assert check arch archCommand "arch";

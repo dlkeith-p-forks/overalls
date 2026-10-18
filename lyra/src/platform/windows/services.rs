@@ -6,7 +6,7 @@ use std::mem::zeroed;
 use std::ptr::null;
 use windows_sys::Win32::System::Services::{
     CloseServiceHandle, OpenSCManagerW, OpenServiceW, QueryServiceStatus, SC_HANDLE,
-    SC_MANAGER_CONNECT, SERVICE_QUERY_STATUS, SERVICE_RUNNING, SERVICE_STATUS,
+    SC_MANAGER_CONNECT, SERVICE_QUERY_STATUS, SERVICE_RUNNING, SERVICE_STATUS, SERVICE_STOPPED,
 };
 
 struct Handle(SC_HANDLE);
@@ -23,6 +23,15 @@ impl Drop for Handle {
 /// Whether the named Windows service is currently RUNNING. An unknown service
 /// is an error, not `false`, so misspelt requirements are visible.
 pub fn running(name: &str) -> io::Result<bool> {
+    Ok(status(name)? == SERVICE_RUNNING)
+}
+
+/// Whether the service has fully stopped, including its listener process.
+pub fn stopped(name: &str) -> io::Result<bool> {
+    Ok(status(name)? == SERVICE_STOPPED)
+}
+
+fn status(name: &str) -> io::Result<u32> {
     // SAFETY: null machine and database select the local active database.
     let manager = unsafe { OpenSCManagerW(null(), null(), SC_MANAGER_CONNECT) };
     if manager.is_null() {
@@ -42,5 +51,5 @@ pub fn running(name: &str) -> io::Result<bool> {
     if unsafe { QueryServiceStatus(service.0, &mut status) } == 0 {
         return Err(last_error());
     }
-    Ok(status.dwCurrentState == SERVICE_RUNNING)
+    Ok(status.dwCurrentState)
 }

@@ -1095,6 +1095,14 @@ does not activate package privilege. Periodic roster/certificate refresh removes
 readiness on failure. Actual authorized SSH, expiry, retained-home and current
 session refusal still require target-native journeys.
 
+Foreign Arch/Alma roots explicitly select the same `landlock,yama,bpf` boot
+arguments as the evaluated NixOS image. Their assembled roots lack distro
+SELinux labels, so no distro SELinux policy is part of this guest boundary.
+Root-owned real `/tmp` and `/var/tmp` directories retain mode 01777 after
+normalization. Offline actual-image checks cover the arguments and directory
+custody; runtime activation and successful repaired-image boot remain separate.
+This changes no jailer, per-TAP guard, host storage or protocol authority.
+
 ## Windows guest boundaries
 
 The firmware-booted Windows image ([ADR-0169](repo:docs/architecture/decisions/0169-firmware-booted-windows-guests.md),
@@ -1135,14 +1143,21 @@ on a Windows guest (gate 3) is public-key only: the roster agent pulls the
 writers' registered keys from Marshall through the private route and writes one
 SYSTEM-owned key file per account that only that account can read, so a user's
 key opens only that user's account; passwords are random and never recorded;
-`sshd` starts only after the first applied roster and serves a per-boot host
-certificate. Unlike Linux, acceptance is not bound to the live Audi session
+on a new boot the agent first stops `sshd` and clears prior authorized keys.
+It starts a keyless listener only after roster reconciliation and a verified
+per-boot host certificate. Readiness requires both current-boot receipts and
+a live service on every host poll. Ordinary key delivery still requires the
+running execution's completed provision/start operation; bootstrap does not
+grant key authority. Same-boot retries preserve current keys. Account
+activation requires the SID-bound registered profile after a bounded native
+`CreateProfile` call. Unlike Linux, acceptance is not bound to the live Audi session
 (Win32-OpenSSH cannot ask per connection); Audi's ingress remains the only path
 to port 22 and still authenticates the outer session. Login receipts come
 from sshd's file log, matched by fingerprint to the pulled keys and reported to
 the same Marshall authority as Linux logins; the bootstrap Administrator is
-retired (random unrecorded password, disabled) once a roster account exists, so
-the SAC serial login of ADR-0169 stops working on guests with agents. The
+retired (random unrecorded password, disabled) after successful key delivery to
+a nonempty roster, so the SAC serial login of ADR-0169 stops working on guests
+with agents. The
 terminal daemon (gate 4) keeps the Linux terminald boundaries: host CID only,
 a HELLO bound to this boot's challenge, placement and epoch (read from MMDS),
 128-bit attach tokens and no terminal bytes in logs. Its `root` session is

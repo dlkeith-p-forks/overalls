@@ -12,7 +12,7 @@ use crate::guest::ssh_roster::{Account, Accounts};
 use std::io;
 use std::path::PathBuf;
 use std::ptr::{null, null_mut};
-use windows_sys::Win32::Foundation::{LocalFree, ERROR_MEMBER_IN_ALIAS};
+use windows_sys::Win32::Foundation::{LocalFree, ERROR_MEMBER_IN_ALIAS, MAX_PATH};
 use windows_sys::Win32::NetworkManagement::NetManagement::{
     NERR_Success, NERR_UserExists, NERR_UserNotFound, NetApiBufferFree, NetLocalGroupAddMembers,
     NetUserAdd, NetUserGetInfo, NetUserSetInfo, LOCALGROUP_MEMBERS_INFO_3, UF_ACCOUNTDISABLE,
@@ -110,6 +110,11 @@ pub fn profile_home(name: &str) -> io::Result<PathBuf> {
     profile_for_sid(&account_sid(name)?)
 }
 
+/// @cc [owner:ghuntley,label:security;recovery] windows-profile-native-api-bound
+/// Profile creation MUST use CreateProfile's MAX_PATH-sized output buffer,
+/// then verify the SID-bound registered directory before account activation
+/// succeeds. An RPC/API failure MUST leave activation failed and the account
+/// disabled; a guessed user-directory path MUST NOT replace registration.
 fn ensure_profile(name: &str) -> io::Result<()> {
     let sid = account_sid(name)?;
     match profile_for_sid(&sid) {
@@ -117,15 +122,17 @@ fn ensure_profile(name: &str) -> io::Result<()> {
         Err(error) if error.kind() == io::ErrorKind::NotFound => {}
         Err(error) => return Err(error),
     }
-    let sid = wide(&sid);
-    let name = wide(name);
-    let mut profile = vec![0u16; 4096];
+    let wide_sid = wide(&sid);
+    let wide_name = wide(name);
+    // CreateProfile's RPC buffer is bounded by MAX_PATH. Passing 4096 units
+    // returns RPC_X_BAD_STUB_DATA before creating the SID-bound profile.
+    let mut profile = [0u16; MAX_PATH as usize];
     // SAFETY: SID and username are terminated; profile supplies the declared
     // writable buffer. Windows creates the actual profile and registry binding.
     let status = unsafe {
         CreateProfile(
-            sid.as_ptr(),
-            name.as_ptr(),
+            wide_sid.as_ptr(),
+            wide_name.as_ptr(),
             profile.as_mut_ptr(),
             profile.len() as u32,
         )
@@ -133,6 +140,7 @@ fn ensure_profile(name: &str) -> io::Result<()> {
     if status < 0 {
         return Err(io::Error::other("account profile creation failed"));
     }
+    profile_for_sid(&sid)?;
     Ok(())
 }
 

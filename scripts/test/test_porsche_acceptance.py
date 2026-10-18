@@ -1,6 +1,7 @@
 """Live acceptance must not mutate unrelated resources or count transport errors as passes."""
 
 import json
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -433,6 +434,31 @@ class MatrixSafetyTest(unittest.TestCase):
                 if other != kind:
                     with self.assertRaises((ValueError, json.JSONDecodeError)):
                         self.runner.matrix_verify_os(kind, substituted)
+
+    def test_omnios_probe_normalizes_real_v11_release_and_refuses_other_revisions(self) -> None:
+        release = self.path / "release"
+        for label, accepted in (
+            ("OmniOS v11 r151050 (stable)", True),
+            ("OmniOS v11 r151048 (stable)", False),
+            ("OmniOS v12 r151050", False),
+            ("OpenIndiana v11 r151050", False),
+            ("unidentified release", False),
+        ):
+            with self.subTest(label=label):
+                release.write_text(label + "\n")
+                command = shlex.split(self.runner.matrix_probe("omnios"))
+                command[2] = (
+                    command[2]
+                    .replace("uname -s", "printf '%s\\n' SunOS")
+                    .replace("/etc/release", shlex.quote(str(release)))
+                )
+                process = subprocess.run(command, check=True, capture_output=True, text=True)
+                self.assertEqual(process.stderr, "")
+                if accepted:
+                    self.runner.matrix_verify_os("omnios", process.stdout)
+                else:
+                    with self.assertRaises(ValueError):
+                        self.runner.matrix_verify_os("omnios", process.stdout)
 
     def test_guest_probe_uses_overalls_cli_strict_trust_and_digest_only_evidence(self) -> None:
         receipt = self.receipt()

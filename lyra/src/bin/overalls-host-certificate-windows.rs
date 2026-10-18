@@ -11,6 +11,8 @@
 
 #[cfg(windows)]
 mod agent {
+    use lyra::guest::ssh_bootstrap;
+    use lyra::platform::windows::boot_id;
     use lyra::platform::windows::log::Logger;
     use lyra::platform::windows::services;
     use lyra::private_http;
@@ -20,7 +22,7 @@ mod agent {
     use std::io;
     use std::path::{Path, PathBuf};
     use std::process::{Command, Stdio};
-    use std::time::{Duration, SystemTime, UNIX_EPOCH};
+    use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
     const TRUST_DIR: &str = "C:\\overalls\\trust";
     const ROUTE: &str = "https://ssh.integration.internal/ssh/v1/host-certificate";
@@ -157,7 +159,8 @@ mod agent {
             &directory.join("certificate.json"),
             &serde_json::to_vec(&issued)?,
         )?;
-        restart_sshd_if_running()
+        restart_sshd_if_running()?;
+        boot_id::write_marker(Path::new(ssh_bootstrap::CERTIFICATE_READY))
     }
 
     fn restart_sshd_if_running() -> io::Result<()> {
@@ -173,7 +176,21 @@ mod agent {
                 .stdout(Stdio::null())
                 .stderr(Stdio::null())
                 .status()?;
-            std::thread::sleep(Duration::from_secs(1));
+            let started = Instant::now();
+            loop {
+                let settled = if action == "stop" {
+                    services::stopped("sshd")?
+                } else {
+                    services::running("sshd")?
+                };
+                if settled {
+                    break;
+                }
+                if started.elapsed() >= Duration::from_secs(10) {
+                    return Err(io::Error::other("sshd transition failed"));
+                }
+                std::thread::sleep(Duration::from_millis(100));
+            }
         }
         Ok(())
     }
@@ -185,6 +202,20 @@ mod agent {
         if let Err(error) = fs::create_dir_all(&directory) {
             logger.log(&format!("key_dir_unavailable kind={:?}", error.kind()));
             return 1;
+        }
+        // A same-boot task restart also replaces the host key. Its previous
+        // installation receipt must not authorize the replacement prematurely.
+        match fs::remove_file(ssh_bootstrap::CERTIFICATE_READY) {
+            Ok(()) => {}
+            Err(error) if error.kind() == io::ErrorKind::NotFound => {}
+            Err(_) => {
+                logger.log("certificate_receipt_unavailable");
+                return 2;
+            }
+        }
+        if fs::create_dir_all("C:\\overalls\\run").is_err() {
+            logger.log("certificate_receipt_unavailable");
+            return 2;
         }
         let key = match fresh_key(&directory) {
             Ok(key) => key,
@@ -206,6 +237,16 @@ mod agent {
             }
             let time = now().unwrap_or(0);
             if current(&directory, &key, time) {
+                if !boot_id::marker_is_current(Path::new(ssh_bootstrap::CERTIFICATE_READY)) {
+                    let receipt = restart_sshd_if_running().and_then(|()| {
+                        boot_id::write_marker(Path::new(ssh_bootstrap::CERTIFICATE_READY))
+                    });
+                    if receipt.is_err() {
+                        logger.log("certificate_receipt_unavailable");
+                        std::thread::sleep(Duration::from_secs(10));
+                        continue;
+                    }
+                }
                 std::thread::sleep(Duration::from_secs(3600));
                 continue;
             }

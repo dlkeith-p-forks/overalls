@@ -225,7 +225,8 @@ secrets into the serial log, keep `assert` messages value-free.
 ## Elixir and BEAM properties
 
 Elixir properties use the same native Hegel engine but run inside the Mix test VM.
-The current protocol, Marshall and Lilly frontend ref is `02cd8bd`. The recorded
+The current protocol, Marshall and Lilly frontend ref is `f1ad336`, resolved as
+`f1ad336e4be1f0b3e18e429f8bc826d538b40601`. The recorded
 299-test protocol gate used the earlier `2c9f7a4` frontend; the review preserves
 the passing `6a62795` result separately. Those historical results do not verify
 the current pin or changed consumer tests.
@@ -240,7 +241,8 @@ frontend's `check all` compatibility runner inside a property: compatibility
 options inside a property and filter clauses are not preserved. Standalone
 `check all` now propagates options, but the engine uses `test_cases`, not
 `max_runs`. Context-pattern `property/3` expansion can still recurse without
-bound; affected consumer tests use
+bound. The current map-context/options branch failed a 512 MiB/10-second
+isolated compilation probe while a plain-property control passed; affected consumer tests use
 tagged ordinary ExUnit declarations around their existing generated checks.
 For retained plain outer properties, put `test_cases` on that outer runner as
 well: the inner compatibility count cannot control an already active run.

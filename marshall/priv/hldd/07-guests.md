@@ -842,17 +842,38 @@ with their original bound identities; those failed creates prove no guest boot.
 
 The later `075200` six-image run independently passed the complete CLI lifecycle
 and terminal deleted cleanup receipts for NixOS and Ubuntu. FreeBSD passed
-through restart and repeated exact-OS SSH, but its original delete remains
-`cleanup_failed` with desired deleted/observed unknown and unconfirmed ZFS
-namespace absence; reconciliation ended on a management transport error.
-That gap does not invalidate or inherit the earlier `072900` cleanup result.
+through restart and repeated exact-OS SSH; its original delete first remained
+`cleanup_failed` with unconfirmed ZFS namespace absence and a management
+transport error. After fresh proof of no active unrelated containers, normal
+idle rootless Podman context retirement released the retained namespace.
+The unchanged helper then completed the original request with a terminal
+deleted receipt. No force, migration, database repair or replacement intent
+was used. This fixture recovery is separate from independent physical cleanup
+and from the earlier `072900` cleanup result.
 Original Arch/Alma creates failed before init on stripped executable modes;
 their corrected artifacts have separate passing offline/cross-host evidence.
+The later source repair restores root-owned `/tmp` and `/var/tmp` as real
+01777 directories and explicitly selects `lsm=landlock,yama,bpf` rather than
+activating distro SELinux policy on a root assembled without its labels.
+Actual final-image manifest/mode checks and old-input negative controls pass;
+these offline checks do not establish repaired-image readiness or a live
+lifecycle. Host isolation and current execution authority remain unchanged.
 Windows created and reported ready, but actual CLI SSH failed before a banner;
 read-only inspection found stopped sshd, no TCP/22 listener and SSH-sync
 `pass_failed`. The retained fixture's ready flag is no SSH success evidence.
+A later manual `CreateProfile` diagnostic found the original 4,096-unit
+buffer failed with Win32 1783; a 260-unit call registered the SID-bound profile,
+after which the old agent enabled the account, installed a key and started
+sshd. The diagnostic mutated the disposable fixture and does not establish
+unchanged-image SSH or lifecycle acceptance.
 The [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
 records exact run identities and unrun corrected-image/later lifecycle stages.
+The separate exact-promoted OmniOS fixture then completed creation. Its first
+CLI transport succeeded but the OS probe omitted the real `v11` release label
+and failed the oracle. After narrowly normalizing that label while retaining
+the exact revision, the same VM passed initial CLI identity and orderly stop.
+Restart remains accepted/polling; repeat SSH and cleanup are unrun at this
+checkpoint. The original failed oracle receipt is retained.
 
 The catalog now includes Arch Linux and AlmaLinux as foreign Linux variants.
 Their builders reuse the version-4 kernel image contract and the reviewed shared
@@ -1406,7 +1427,8 @@ named mutex ([`boot_id`](repo:lyra/src/platform/windows/boot_id.rs)), listens on
 port 1024 and answers Lilly's poll with the closed six-key line only to host
 CID 2 and only after the live probes pass (the delivered `/32` preferred with
 the on-link gateway and default routes from the IP Helper tables, the required
-services RUNNING, `sshd` once the SSH agent's marker exists, a synced write on
+services RUNNING, current-boot SSH bootstrap and verified host-certificate
+receipts, live `sshd`, and a synced write on
 `C:`); [`overalls-trustd-windows`](repo:lyra/src/bin/overalls-trustd-windows.rs)
 accepts one host request on port 1030, validates it against the exact boot with
 the shared [`guest/trust`](repo:lyra/src/guest/trust.rs) rules (version, nonce,
@@ -1426,8 +1448,13 @@ private request unanswered). The `windows-v1` image
 
 Gate 3 brings roster SSH. Win32-OpenSSH has no `AuthorizedKeysCommand`, so the
 Windows roster agent ([`overalls-ssh-sync-windows`](repo:lyra/src/bin/overalls-ssh-sync-windows.rs))
-pulls instead of being asked: every two seconds it fetches the roster and the
-new private route `GET /ssh/v1/authorized-keys` (Marshall's
+pulls instead of being asked. It first reconciles the current bootstrap-bound
+roster. On a new boot it stops sshd and clears prior authorized-key files from
+the managed directory; a reparse point, unexpected directory or cleanup error
+withholds bootstrap. After the verified current-boot host certificate is
+installed, it starts a keyless listener and publishes `ssh-ready`. Readiness
+then permits the provision/start operation to complete, after which the agent
+can fetch the ordinary private route `GET /ssh/v1/authorized-keys` (Marshall's
 [`GuestAccess.authorized_keys/2`](repo:marshall/lib/marshall/ssh/guest_access.ex)
 through Ziggy and Audi: the roster's current writers with their unarchived
 registered keys, under the ordinary four-field binding of a running
@@ -1437,7 +1464,11 @@ execution), reconciles local accounts with the shared
 Administrators with a never-recorded random password, disabled rather than
 deleted when they leave), writes one `AuthorizedKeysFile` per account under
 `C:\overalls\ssh\authorized_keys` (SYSTEM-owned, readable only by that account)
-and, after the first applied roster, publishes `ssh-ready` and starts `sshd`.
+and retries every two seconds. Key delivery retains the existing running-VM
+and completed provision/start authority. A denied key fetch does not retract
+the completed keyless bootstrap; same-boot retries preserve current keys.
+Account activation uses a `MAX_PATH`-bounded `CreateProfile` output buffer and
+requires the SID-bound registered profile before enabling the account.
 The shipped [`sshd_config`](repo:nix/domains/artifacts/guest/windows/sshd_config) is
 public-key only, has no `administrators_authorized_keys` and serves the per-boot
 host certificate that
@@ -1451,8 +1482,8 @@ that writer's own account rather than only the live Audi session's key; port
 hook with sshd's own file log: the roster agent tails
 `%ProgramData%\ssh\logs\sshd.log` and reports each `Accepted publickey` line
 whose fingerprint matches a pulled key for that account
-([`guest/ssh_login`](repo:lyra/src/guest/ssh_login.rs)); once a roster account
-is active it gives the image's bootstrap Administrator a random unrecorded
+([`guest/ssh_login`](repo:lyra/src/guest/ssh_login.rs)); after key delivery to a
+nonempty roster it gives the image's bootstrap Administrator a random unrecorded
 password and disables it, closing the ADR-0169 serial-login gap for guests with
 agents.
 
