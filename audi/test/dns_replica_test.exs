@@ -52,7 +52,6 @@ defmodule Audi.DNS.ReplicaTest do
     check all(
             generated <- member_of([0, 4095, 4096, 4097, 8_388_608, 8_388_609]),
             max_runs: 2,
-            test_cases: 1
           ) do
       for size <- Enum.uniq([0, 4095, 4096, 4097, 8_388_608, 8_388_609, generated]),
           operation <- [:dns, :identity] do

@@ -28,7 +28,6 @@ defmodule Ziggy.ControlResponseTest do
     "only an exact completion conflict is classified as a durable conflict",
     %{control: control},
     profile: :ci,
-    test_cases: 2
   ) do
     check all(
             route <- member_of(["complete", "admit", "renew", "agent_result"]),
