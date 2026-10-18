@@ -15,8 +15,7 @@ defmodule Ziggy.PendingVersionRefusalPropertyTest do
   # A prior successful call and peer-observed pending inventory MUST establish
   # reach. Connection loss MUST NOT replay any request.
   property "pending calls retain a version refusal after the peer closes",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     supervisor = start_supervised!(Task.Supervisor)
 
     check all(count <- integer(1..3), max_runs: 3, max_shrinking_steps: 0) do

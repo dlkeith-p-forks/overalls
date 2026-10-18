@@ -79,8 +79,7 @@ defmodule Ziggy.InvalidBootPropertyTest do
   # Refusal MUST preserve fixture bytes and exclude secrets and fixture paths
   # from diagnostics. Unset configuration MUST remain a separate empty boot.
   property "generated invalid Ziggy configurations refuse fresh OTP startup",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     root = Path.join(System.tmp_dir!(), "k-zb-" <> Base.encode16(:crypto.strong_rand_bytes(8)))
     File.mkdir!(root)
     File.chmod!(root, 0o700)

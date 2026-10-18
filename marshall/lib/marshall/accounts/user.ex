@@ -34,7 +34,12 @@ defmodule Marshall.Accounts.User do
         sender Marshall.Accounts.User.Senders.SendMagicLinkEmail
       end
 
-      remember_me :remember_me
+      # The __Host- prefix requires Secure, Path=/ and no Domain, which the
+      # strategy's cookie helper already emits; sibling *.apps.ghuntley.dev
+      # origins therefore cannot plant a remembered credential on the apex.
+      remember_me :remember_me do
+        cookie_name :"__Host-remember_me"
+      end
     end
   end
 

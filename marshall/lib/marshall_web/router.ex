@@ -10,7 +10,6 @@ defmodule MarshallWeb.Router do
     plug :fetch_live_flash
     plug :put_root_layout, html: {MarshallWeb.Layouts, :root}
     plug :protect_from_forgery
-    plug :put_secure_browser_headers
     # @cc [owner:ghuntley,label:security] remembered-login-is-not-email-or-mfa
     # A persistent remember credential MAY establish a new stored browser login,
     # but MUST NOT copy passkey proof or establish fresh email authentication.
@@ -33,8 +32,9 @@ defmodule MarshallWeb.Router do
     plug MarshallWeb.SSHApprovalLogin
   end
 
+  # Public installer, documentation and extension routes: no session, no CSRF
+  # token. Security headers come from MarshallWeb.SecurityHeaders at the endpoint.
   pipeline :public_documentation do
-    plug :put_secure_browser_headers
   end
 
   scope "/", MarshallWeb do

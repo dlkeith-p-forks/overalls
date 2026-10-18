@@ -1,9 +1,9 @@
 {
   "apps": {
     "marshall": {
-      "active": 27,
+      "active": 29,
       "coverage": 1.0,
-      "covered": 27
+      "covered": 29
     },
     "system": {
       "active": 0,
@@ -268,10 +268,10 @@
       }
     },
     "marshall.web_surface": {
-      "active": 6,
+      "active": 8,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 6,
+      "covered": 8,
       "form": "light",
       "obligations": {
         "marshall.web_surface.I1": {
@@ -333,6 +333,26 @@
           "tests": [
             "test terminal names are deterministic and vocabulary bounded"
           ]
+        },
+        "marshall.web_surface.I7": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test security headers are fixed, single and strict for script"
+          ]
+        },
+        "marshall.web_surface.I8": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test secure session options are host-prefixed, secure and encrypted"
+          ]
         }
       }
     },
@@ -347,8 +367,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 27,
+    "active": 29,
     "coverage": 1.0,
-    "covered": 27
+    "covered": 29
   }
 }

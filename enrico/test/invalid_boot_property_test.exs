@@ -62,7 +62,7 @@ defmodule Enrico.InvalidBootPropertyTest do
   property "generated invalid Enrico configurations refuse fresh OTP startup",
     profile: :ci,
     print_blob: false,
-    test_cases: 1 do
+  do
     root = private_directory("k-eb-")
     on_exit(fn -> File.rm_rf!(root) end)
 
@@ -111,8 +111,7 @@ defmodule Enrico.InvalidBootPropertyTest do
   # Generated non-string JSON bind values MUST return fixed loader refusal
   # without an exception or creation of the configured state directory.
   property "generated non-string bind values refuse without loader side effects",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     root = private_directory("k-el-")
     on_exit(fn -> File.rm_rf!(root) end)
 

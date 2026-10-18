@@ -106,7 +106,6 @@ defmodule Porsche.InvalidBootPropertyTest do
   # host-key bytes and fixture paths from diagnostics. Unset is base-only startup.
   property "generated invalid Porsche configurations refuse fresh OTP startup",
     profile: :ci,
-    test_cases: 1,
     print_blob: false,
     max_runs: 3 do
     root = private_directory("k-pb-")

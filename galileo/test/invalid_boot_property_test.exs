@@ -74,8 +74,7 @@ defmodule Galileo.InvalidBootPropertyTest do
   # Refusal MUST preserve fixture bytes and exclude credentials and fixture paths
   # from diagnostics. Unset configuration MUST remain a separate empty boot.
   property "generated invalid Galileo configurations refuse fresh OTP startup",
-    profile: :ci,
-    test_cases: 2 do
+    profile: :ci do
     root = private_directory("k-gb-")
     on_exit(fn -> File.rm_rf!(root) end)
 
@@ -121,8 +120,7 @@ defmodule Galileo.InvalidBootPropertyTest do
   # Immutable-store socket rejection MUST be checked through the read-only
   # loader, without booting a listener outside the disposable fixture.
   property "generated immutable store socket paths are rejected without boot effects",
-    profile: :ci,
-    test_cases: 2 do
+    profile: :ci do
     root = private_directory("k-gs-")
     on_exit(fn -> File.rm_rf!(root) end)
 

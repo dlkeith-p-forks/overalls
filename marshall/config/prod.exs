@@ -16,7 +16,22 @@ config :marshall, MarshallWeb.Endpoint, cache_static_manifest: "priv/static/cach
 # @cc [owner:ghuntley,label:security] token-safe-https-redirect
 # Production force_ssl MUST apply to every path and keep redirect logging off:
 # redirects precede authentication privacy tagging and URLs may contain tokens.
-config :marshall, MarshallWeb.Endpoint, force_ssl: [hsts: true, exclude: [], log: false]
+# HSTS MUST cover subdomains for at least one year without the preload token;
+# preload-list submission is a separate decision (ADR-0194).
+config :marshall, MarshallWeb.Endpoint,
+  force_ssl: [
+    hsts: true,
+    expires: 63_072_000,
+    subdomains: true,
+    preload: false,
+    exclude: [],
+    log: false
+  ]
+
+# The production browser session cookie is __Host- prefixed, Secure and
+# encrypted (MarshallWeb.BrowserSession). Compile-time: Plug.Session and the
+# LiveView socket options are compiled into the endpoint.
+config :marshall, browser_session: :secure
 
 # Configure Swoosh API Client
 config :swoosh, api_client: Swoosh.ApiClient.Req

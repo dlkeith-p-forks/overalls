@@ -21,8 +21,7 @@ defmodule Ziggy.ReporterHistoryTest do
   # A single conflicted receipt MUST NOT prevent healthy neighbors from draining.
   # Reporting and spool recovery MUST preserve lifetime totals.
   property "mixed reporter histories retain exact receipts and drain healthy neighbors",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     check all(
             repeats <- member_of([1, 2, 4]),
             order <-

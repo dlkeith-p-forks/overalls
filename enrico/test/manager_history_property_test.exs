@@ -12,8 +12,7 @@ defmodule Enrico.ManagerHistoryPropertyTest do
   @head String.duplicate("a", 40)
 
   property "occupied native writer refuses clone cleanup and administrative removal before effects",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     check all(suffix <- member_of(["a", "b", "c"]), max_runs: 3) do
       with_state(fn initial ->
         root = Path.join(initial.config.state_dir, "owned-#{suffix}.git")
@@ -61,8 +60,7 @@ defmodule Enrico.ManagerHistoryPropertyTest do
   end
 
   property "manager replacement retires saturated workers before new admission",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     for culprit <- [:manager, :tasks], count <- [1, 7, 8], do: restart_history(culprit, count)
 
     check all(
@@ -146,8 +144,7 @@ defmodule Enrico.ManagerHistoryPropertyTest do
   end
 
   property "real saturated workers release one slot for the refused attempt",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     for terminal <- [:success, :failure, :death], do: saturation_history(terminal, 1, 2)
 
     check all(
@@ -281,8 +278,7 @@ defmodule Enrico.ManagerHistoryPropertyTest do
   end
 
   property "saturated refresh admission preserves replay and refuses without effects",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     check all(extra <- integer(0..3), max_runs: 8) do
       with_state(fn initial ->
         state =
@@ -316,8 +312,7 @@ defmodule Enrico.ManagerHistoryPropertyTest do
   end
 
   property "unknown or missing completion generations cannot manufacture an outcome",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     check all(
             generation <- member_of([nil, false, 0, "", make_ref()]),
             attempt <- member_of([nil, @attempt]),
@@ -337,8 +332,7 @@ defmodule Enrico.ManagerHistoryPropertyTest do
   end
 
   property "real refresh workers preserve reuse against retired generation messages",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     for terminal <- [:success, :death], neighbors <- [1_023, 1_024, 1_025] do
       real_refresh_history(terminal, neighbors)
     end
@@ -459,8 +453,7 @@ defmodule Enrico.ManagerHistoryPropertyTest do
   end
 
   property "removed receipts cannot evict a reused running attempt at the retention boundary",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     check all(neighbors <- member_of([1_023, 1_024, 1_025]), max_runs: 6) do
       with_state(fn state ->
         {state, generation} = admit(state, @id, @attempt)
@@ -533,8 +526,7 @@ defmodule Enrico.ManagerHistoryPropertyTest do
   end
 
   property "old-generation results and death cannot settle a reused attempt",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     check all(
             result <- member_of([{:ok, @head}, {:error, :git_failed}]),
             order <- member_of([:result_first, :death_first]),

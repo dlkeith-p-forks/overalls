@@ -55,6 +55,10 @@ config :marshall, MarshallWeb.Endpoint,
 # Enable dev routes for dashboard and mailbox
 config :marshall, dev_routes: true, token_signing_secret: "6OaRVeZX4ylNPXFBysnXu+ZYaWiiKiE4"
 
+# Live reload, LiveDashboard and live_debugger need inline and localhost
+# sources; production and test keep the strict policy.
+config :marshall, MarshallWeb.SecurityHeaders, development_tooling: true
+
 # Do not include metadata nor timestamps in development logs
 config :logger, :default_formatter, format: "[$level] $message\n"
 

@@ -1441,7 +1441,7 @@ random base64 prefixes from becoming Erlang options.
 
 | Boundary | Responsibility | Decisions |
 | --- | --- | --- |
-| Accounts and access | Identity, ownership, sharing, Cedar authorization | [ADR-0008](decisions/0008-identity-sharing-and-terminal.md) |
+| Accounts and access | Identity, ownership, sharing, Cedar authorization, browser security headers and host-prefixed session cookies | [ADR-0008](decisions/0008-identity-sharing-and-terminal.md), [ADR-0194](decisions/0194-marshall-http-security-headers.md) |
 | Compute lifecycle | VM intent, placements, durable operations and bounded recovery | [ADR-0004](decisions/0004-lilly-and-vm-actors.md), [ADR-0037](decisions/0037-workload-placement-and-relocation.md) |
 | Hosts and scheduling | Architecture, inventory, freshness, atomic reservations | [ADR-0006](decisions/0006-capacity-accounting.md) |
 | Independent observability | Typed service diagnostics, durable private custody, infrastructure export and Grafana/Tempo views | [ADR-0149](decisions/0149-independent-observability.md) |

@@ -15,8 +15,7 @@ defmodule Galileo.PendingVersionRefusalPropertyTest do
   # A prior successful call and peer-observed pending inventory MUST establish
   # reach. Connection loss MUST NOT replay any request.
   property "pending calls retain a version refusal after the peer closes",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     supervisor = start_supervised!(Task.Supervisor)
 
     check all(

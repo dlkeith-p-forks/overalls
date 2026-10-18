@@ -823,6 +823,93 @@ the tailnet or the fleet tunnel. Expected refusal: a request for any other
 live issuance and HAProxy start were observed on 2026-10-16. No machine test
 exercises public port 80 yet.
 
+## Search engine exposure
+
+Marshall is a private control plane at the apex `https://ghuntley.dev`; nothing it
+serves is meant to appear in a search index. Two independent mechanisms say so:
+
+| Mechanism | Where | Effect |
+| --- | --- | --- |
+| `robots.txt` (`User-agent: *` / `Disallow: /`) | `marshall/priv/static/robots.txt`, served by `Plug.Static` | Compliant crawlers fetch nothing but the file itself. |
+| `X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex` | `MarshallWeb.NoIndex`, plugged in the endpoint before health, static files and the early `/api` refusals | Every response from the browser endpoint, including redirects, static assets, health probes, installer downloads and error pages, tells a crawler that does fetch it not to index, follow, cache or snippet it. |
+| `<meta name="robots">` with the same directive | Root layout | Repeats the header for crawlers that only read markup. |
+
+The two mechanisms cover different crawlers. A crawler that honours `robots.txt`
+never requests a page, so it never sees the `noindex` directive; a URL it already
+knows can stay listed from external links. Removal of already-indexed URLs is a
+separate action in each search engine's webmaster removal tool. The header and
+meta tag cover crawlers that fetch pages regardless of `robots.txt`. Neither
+mechanism is an access control: authentication, Cedar authorization and the
+public-route allowlist decide what a request may read, and public installer and
+documentation routes stay reachable to anyone who knows their URL.
+
+Expected refusals: none, because the directives are advisory to crawlers. The
+unit test `marshall/test/marshall_web/public_endpoint_test.exs` ("every browser
+endpoint response asks search engines not to index") asserts the header on the
+signed-out root redirect, the sign-in page, `robots.txt`, `/health/live` and a
+refused `/api` path, and the meta tag on the rendered sign-in page. Crawler
+behaviour and search-result removal are not tested; the fleet endpoint on the
+provisioner transport serves no browser pages and sends no robots directive.
+
+## Browser response headers, transport and session cookies
+
+Every response of Marshall's browser endpoint, including redirects, static
+files, health probes, the early `/api` refusals, the JSON agent API and error
+pages, passes `MarshallWeb.SecurityHeaders` before any route runs
+([ADR-0194](repo:docs/architecture/decisions/0194-marshall-http-security-headers.md)).
+The pipelines no longer set their own headers, so no response carries two
+policies.
+
+| Header | Value and purpose |
+| --- | --- |
+| `content-security-policy` | `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; frame-src 'self'; worker-src 'self'; manifest-src 'self'`. Scripts, fonts, WebSockets, frames and form targets are same-origin only. `'unsafe-inline'` applies to styles alone because the vendored xterm.js and Mermaid renderers create `<style>` elements and set `style` attributes, which a nonce cannot authorise; Marshall's own templates contain no inline script, style or `style=` attribute. |
+| `permissions-policy` | Sensors, camera, microphone, geolocation, payment, USB, serial, HID, MIDI, autoplay, display capture, idle detection, local fonts, picture-in-picture, wake lock and XR are denied. `clipboard-read` and `clipboard-write` stay allowed for this origin because the terminal pastes from and the copy buttons write to the clipboard. Passkeys and the terminal fullscreen control keep the browser defaults. |
+| `cross-origin-opener-policy: same-origin` | A foreign page that opens Marshall keeps no window reference. |
+| `cross-origin-resource-policy: same-origin` | Browsers refuse to embed Marshall responses as cross-origin subresources. `curl` and PowerShell installer downloads and extension archive navigations are unaffected. |
+| `referrer-policy: strict-origin-when-cross-origin` | Secret-bearing routes tighten this to `no-referrer`. |
+| `x-content-type-options: nosniff`, `x-frame-options: SAMEORIGIN`, `x-permitted-cross-domain-policies: none` | Legacy equivalents of the policy above. |
+| `strict-transport-security: max-age=63072000; includeSubDomains` | Production only, sent by `force_ssl`; two years, no `preload`. |
+| `x-robots-tag` | See the Search engine exposure section of this chapter. |
+
+Development builds (`config :marshall, MarshallWeb.SecurityHeaders,
+development_tooling: true`) add inline and `localhost` sources for live reload,
+LiveDashboard, Oban Web, AshAdmin and `live_debugger`; test builds compile the
+production policy, so the browser probe measures what production sends.
+
+HSTS `includeSubDomains` commits every `ghuntley.dev` name to HTTPS in browsers
+that have visited the apex. The names this repository serves: the apex (proxy
+TLS, HTTP-01 challenge and permanent redirect on port 80), `*.apps.ghuntley.dev`
+(Audi wildcard certificate; HTTP answers `308` to HTTPS for recognised hosts and
+`421` otherwise) and `ns1`/`ns2.ghuntley.dev` (DNS only at Audi's address; TLS
+fails closed and HTTP answers `421`, so no browser service exists). Ports 4443
+and 5443 on the apex serve service-CA TLS to non-browser clients. The apex DNS
+zone lives outside the repository; an HTTP-only name created there would stop
+working in browsers that visited the apex.
+
+| Layer | Authority and refusal |
+| --- | --- |
+| Identity | The production session cookie is `__Host-marshall`: Secure, HttpOnly, `Path=/`, no Domain, `SameSite=Lax`, signed and encrypted. The remembered credential is `__Host-remember_me` with the same attributes. Browsers refuse a `__Host-` cookie set by any other host, so a user application on `*.apps.ghuntley.dev` can neither plant nor shadow either cookie. A request that still carries the legacy `_marshall_key` or `remember_me` name receives an expiring `Set-Cookie` for it. |
+| Authorization | Headers and cookies grant nothing: stored-login checks and Cedar decide every read and mutation. User applications are same-site with Marshall, so `SameSite` offers no CSRF protection against them; CSRF tokens on every form and the LiveView socket remain the control. |
+| Transport | HTTPS is forced with HSTS for the apex and its subdomains; the LiveView and terminal WebSockets are same-origin under `connect-src 'self'`. |
+| Execution | `script-src 'self'` and `object-src 'none'` refuse injected, inline or foreign scripts and plugins; `form-action 'self'` refuses foreign form targets. |
+| Isolation | `frame-ancestors 'self'` and `frame-src 'self'` allow only Marshall to frame Marshall (the thread page embeds its own terminal route); the opener and resource policies isolate Marshall from foreign pages. |
+| Storage | Session contents are encrypted in the cookie; no secret is stored in browser storage, only the appearance preference. |
+| Recovery | Changing the cookie names or encryption signs every browser out once; a remembered browser signs in again with one fresh magic link. Legacy cookies expire on the next response. |
+
+Expected refusals: a page with a foreign or inline script reports a
+`securitypolicyviolation` and the browser does not run it; a `__Host-` cookie
+without `Secure` or with a `Domain` attribute is dropped by the browser; a
+cross-site frame of Marshall renders nothing. Evidence:
+`marshall/test/marshall_web/security_headers_test.exs` asserts the exact header
+set on a page, a redirect, a static file, health, a refused `/api` path and a
+JSON API reply; `marshall/test/marshall_web/browser_session_test.exs` and
+`remember_me_login_test.exs` assert the cookie attributes and encryption;
+`marshall/scripts/monospace_browser_probe.py` fails on any Content-Security-Policy
+violation across every route it renders in Chromium. No NixOS machine test yet
+asserts these headers over the production TLS path, and the production
+deployment has not been observed sending them; see
+[scenario coverage](#coverage).
+
 ## Sealed image authority
 
 Template-backed image verification relies on trusted host ownership, a local

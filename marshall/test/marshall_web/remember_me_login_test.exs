@@ -144,6 +144,29 @@ defmodule MarshallWeb.RememberMeLoginTest do
     remember = AshAuthentication.Info.strategy!(User, :remember_me)
     name = to_string(remember.cookie_name)
     assert %{value: cookie, secure: true, http_only: true} = response.resp_cookies[name]
+    assert_host_prefixed_remember_cookie(response, name)
     {name, cookie}
+  end
+
+  # @cc [owner:ghuntley,label:security;verification] remember-cookie-host-prefix
+  # The remembered credential MUST be issued as __Host-remember_me with Path=/,
+  # Secure, HttpOnly and SameSite=Lax and without a Domain attribute, so a
+  # sibling *.apps.ghuntley.dev origin cannot plant or shadow it.
+  @spec assert_host_prefixed_remember_cookie(Plug.Conn.t(), String.t()) :: true
+  defp assert_host_prefixed_remember_cookie(response, name) do
+    assert name == "__Host-remember_me"
+
+    header =
+      response
+      |> get_resp_header("set-cookie")
+      |> Enum.find(&String.starts_with?(&1, "__Host-remember_me="))
+
+    assert is_binary(header)
+    assert header =~ "; path=/"
+    assert header =~ "; secure"
+    assert header =~ "; HttpOnly"
+    assert header =~ "; SameSite=Lax"
+    assert header =~ "; max-age="
+    refute header =~ ~r/domain=/i
   end
 end

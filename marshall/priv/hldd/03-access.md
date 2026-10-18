@@ -82,7 +82,7 @@ The extension removes source queries/fragments before opening capture. Direct
 capture removes them before browser storage or the CSRF POST and refuses URL user
 information; raw authority/path still undergoes strict backend validation.
 `POST /launch/pending` requires CSRF and stores canonical source, 128-bit visit and
-server expiry for thirty minutes in the existing signed session cookie. A valid
+server expiry for thirty minutes in the existing signed, encrypted session cookie. A valid
 pending launch returns through ordinary sign-in to fixed `/launch`, including
 a magic link opened in another tab of the same browser. Expired or malformed input
 creates nothing. Connected admission uses the current completed stored login and

@@ -9,8 +9,7 @@ defmodule Enrico.SLOTest do
   # Generated terminal histories MUST preserve closed cumulative arithmetic,
   # one duration bucket per attempt and fixed snapshot keys without identity.
   property "generated terminal refreshes have closed cumulative outcomes",
-    profile: :ci,
-    test_cases: 1 do
+    profile: :ci do
     check all(
             outcomes <-
               list_of({boolean(), integer(0..11_000_000)}, min_length: 1, max_length: 80)

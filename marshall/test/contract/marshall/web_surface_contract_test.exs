@@ -23,6 +23,7 @@ defmodule MarshallWebSurfaceContractTest do
       MarshallWeb.AuthText,
       MarshallWeb.AuthenticationPrivacy,
       MarshallWeb.AutomaticMagicSignInLive,
+      MarshallWeb.BrowserSession,
       MarshallWeb.CloneComponents,
       MarshallWeb.ControlAPI,
       MarshallWeb.CoreComponents,
@@ -53,6 +54,7 @@ defmodule MarshallWebSurfaceContractTest do
       MarshallWeb.MachineWorkspace,
       MarshallWeb.MachinesLive,
       MarshallWeb.MarvinDownloadController,
+      MarshallWeb.NoIndex,
       MarshallWeb.ObservedRouter,
       MarshallWeb.OverallsController,
       MarshallWeb.OverallsInstaller,
@@ -69,6 +71,7 @@ defmodule MarshallWebSurfaceContractTest do
       MarshallWeb.SSHApprovalLive,
       MarshallWeb.SSHApprovalLogin,
       MarshallWeb.SSHKeysLive,
+      MarshallWeb.SecurityHeaders,
       MarshallWeb.SecurityLive,
       MarshallWeb.TeamsLive,
       MarshallWeb.Telemetry,
@@ -128,5 +131,48 @@ defmodule MarshallWebSurfaceContractTest do
     head = Plug.Test.conn(:head, "/health/live") |> MarshallWeb.Health.call([])
     assert head.status == 200
     assert head.resp_body == ""
+  end
+
+  @tag obligation: "marshall.web_surface.I7"
+  test "security headers are fixed, single and strict for script" do
+    conn = Plug.Test.conn(:get, "/health/live") |> MarshallWeb.SecurityHeaders.call([])
+    headers = MarshallWeb.SecurityHeaders.headers()
+
+    for {name, value} <- headers do
+      assert Plug.Conn.get_resp_header(conn, name) == [value]
+    end
+
+    [policy] = Plug.Conn.get_resp_header(conn, "content-security-policy")
+    assert "script-src 'self'" in String.split(policy, "; ")
+    refute MarshallWeb.SecurityHeaders.development_tooling?()
+    assert policy == MarshallWeb.SecurityHeaders.policy(false)
+
+    assert Enum.map(headers, &elem(&1, 0)) == [
+             "content-security-policy",
+             "permissions-policy",
+             "cross-origin-opener-policy",
+             "cross-origin-resource-policy",
+             "referrer-policy",
+             "x-content-type-options",
+             "x-frame-options",
+             "x-permitted-cross-domain-policies"
+           ]
+  end
+
+  @tag obligation: "marshall.web_surface.I8"
+  test "secure session options are host-prefixed, secure and encrypted" do
+    secure = MarshallWeb.BrowserSession.options(:secure)
+    assert secure[:key] == "__Host-marshall"
+    assert secure[:secure] == true
+    assert secure[:http_only] == true
+    assert secure[:path] == "/"
+    assert secure[:same_site] == "Lax"
+    assert is_binary(secure[:encryption_salt]) and byte_size(secure[:encryption_salt]) >= 16
+    refute Keyword.has_key?(secure, :domain)
+
+    plain = MarshallWeb.BrowserSession.options(:plain)
+    assert plain[:key] == "_marshall_key"
+    refute Keyword.has_key?(plain, :secure)
+    assert plain[:encryption_salt] == secure[:encryption_salt]
   end
 end
