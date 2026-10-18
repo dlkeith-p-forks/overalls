@@ -24,6 +24,27 @@ let
   published = packages.windowsGuestPublished;
   fleetImages = import ../../../../fleet/guest-images.nix { overallsPackages = packages; };
   fleetWindows = lib.filter (entry: entry.name == "Windows Server 2025") fleetImages;
+  # Local declaration fixtures exercise constructor refusal without compiling
+  # or qualifying a Windows build. The native acceptance gate is separate.
+  editorFixture = pkgs.runCommand "windows-editor-constructor-fixture" {
+    passthru = {
+      targetPlatform = "win32-x64";
+      nativeBundle = true;
+      editorCapability = false;
+      editorProtocol = 1;
+      sourceCommit = lib.concatStrings (lib.replicate 40 "a");
+      releaseId = lib.concatStrings (lib.replicate 64 "b");
+    };
+  } "touch $out";
+  editorArgs = {
+    agents = packages.lyraWindows;
+    terminald = packages.terminaldWindows;
+    editorBundle = editorFixture;
+    editorBroker = packages.windowsEditorBroker;
+  };
+  editorCandidate = packages.mkWindowsGuest editorArgs;
+  candidateMedia = plain editorCandidate.passthru.configMedia.buildCommand;
+  candidateManifest = plain editorCandidate.buildCommand;
 in
 # @cc [owner:ghuntley,label:verification;deployment] windows-fleet-sealed-selection
 # The shared fleet list MUST select the reviewed recursive-hash Windows pin,
@@ -141,6 +162,39 @@ assert !accepts { agents = packages.lyraWindows; terminald = packages.terminaldW
 assert lib.hasInfix "tree/overalls/editor-runtime/node.exe" (plain (packages.windowsGuestRuntime.passthru.configMedia.buildCommand));
 assert lib.hasInfix "tree/overalls/editor-runtime/runtime.json" (plain (packages.windowsGuestRuntime.passthru.configMedia.buildCommand));
 assert packages.windowsGuestRuntime.passthru.editorRuntime == packages.windowsEditorRuntime;
+# @cc [owner:ghuntley,label:verification;security] windows-editor-candidate-closed-constructor
+# The candidate constructor MUST require the paired unqualified Windows bundle
+# and broker, select windows-editor-v1 with its exact v7 descriptor, and refuse
+# incomplete, runtime-only or explicitly windows-v1 combinations. These are
+# declaration checks only, not native bundle, image or browser acceptance.
+assert accepts editorArgs;
+assert editorCandidate.passthru.guestAgents == "windows-editor-v1";
+assert !editorCandidate.passthru.editorCapability;
+assert editorCandidate.passthru.editorDescriptor == { protocol = 1; commit = editorFixture.sourceCommit; release = editorFixture.releaseId; };
+assert lib.hasInfix "--argjson minimum_memory_bytes 4294967296" candidateManifest;
+assert lib.hasInfix "OVERALLS-EDITOR-CANDIDATE-INSTALLED" candidateManifest;
+assert lib.hasInfix ''{version:7,os:"windows",editor:$editor_descriptor}'' candidateManifest;
+assert lib.hasInfix "tree/overalls/editor-broker/start.ps1" candidateMedia;
+assert lib.hasInfix "tree/overalls/editor/" candidateMedia;
+assert lib.hasInfix "'Bootstrap', 'EditorBroker'" setupComplete;
+assert !(lib.hasInfix "tree/overalls/editor-broker/" mediaScript);
+assert !(lib.hasInfix "tree/overalls/editor-broker/" (plain packages.windowsGuestRuntime.passthru.configMedia.buildCommand));
+assert !accepts (editorArgs // { editorBroker = null; });
+assert !accepts (editorArgs // { editorBundle = null; });
+assert !accepts (editorArgs // { agents = null; });
+assert !accepts (editorArgs // { terminald = null; });
+assert !accepts (editorArgs // { guestAgents = "windows-v1"; });
+assert !accepts (editorArgs // { guestAgents = "none"; });
+assert !accepts (editorArgs // { editorRuntime = packages.windowsEditorRuntime; });
+assert !accepts { agents = packages.lyraWindows; terminald = packages.terminaldWindows; guestAgents = "windows-editor-v1"; };
+assert !accepts (editorArgs // { editorBundle = editorFixture // { targetPlatform = "linux-x64"; }; });
+assert !accepts (editorArgs // { editorBundle = editorFixture // { nativeBundle = false; }; });
+assert !accepts (editorArgs // { editorBundle = editorFixture // { editorCapability = true; }; });
+assert !accepts (editorArgs // { editorBundle = editorFixture // { editorProtocol = 2; }; });
+assert !accepts (editorArgs // { editorBundle = editorFixture // { sourceCommit = "invalid"; }; });
+assert !accepts (editorArgs // { editorBundle = editorFixture // { releaseId = "invalid"; }; });
+assert !accepts (editorArgs // { editorBroker = packages.windowsEditorBroker // { targetPlatform = "linux-x64"; }; });
+assert !accepts (editorArgs // { editorBroker = packages.windowsEditorBroker // { editorCapability = true; }; });
 assert lib.hasInfix "overalls-terminald.exe tree/overalls/agents/"
   (plain packages.windowsGuestAgents.passthru.configMedia.buildCommand);
 assert !(lib.hasInfix "overalls-terminald.exe" mediaScript);
@@ -266,6 +320,7 @@ assert !(lib.hasInfix "boot_args" bootScript) && !(lib.hasInfix "initrd_path" bo
 assert firmware.pname == "cloudhv-firecracker-firmware";
 assert packages.vmm.version == "1.16.1";
 assert firmwarePatches == [
+  "firecracker-snapshot-block-barrier.patch"
   "firecracker-pvh-rsdp-paddr.patch"
   "firecracker-acpi-pm-timer.patch"
   "firecracker-hyperv-cpuid.patch"

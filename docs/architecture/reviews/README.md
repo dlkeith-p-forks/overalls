@@ -17,7 +17,10 @@
   explicit FreeBSD, OmniOS/illumos and Windows editor refusals and their remaining
   implementation and native-browser gaps. Windows runtime/source staging,
   portable broker custody tests and the roster authorizer lock are recorded as
-  partial evidence; no native Windows listener or browser journey is claimed.
+  partial evidence; ADR-0200 accepts a separate manifest-v7/bundle-v4 Windows
+  editor candidate without changing selected Windows images. Native pipe/ACL
+  library checks are recorded; personal account/task execution and the complete
+  Windows browser journey remain unrecorded.
 - [User time zones (2026-10-18)](2026-10-18-user-time-zones.md): ADR-0195's
   per-user display zone, self-only validated writes, saved → browser → UTC
   viewer resolution, UTC-provenance timestamps, people's local time in team,

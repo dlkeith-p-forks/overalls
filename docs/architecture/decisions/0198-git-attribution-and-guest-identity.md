@@ -1,6 +1,6 @@
-# ADR-0193: Git attribution and guest identity
+# ADR-0198: Git attribution and guest identity
 
-- ID: ADR-0193
+- ID: ADR-0198
 - Date: 2026-10-18
 - Status: accepted
 - Implementation: partial

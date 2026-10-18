@@ -6,6 +6,7 @@
 
 use crate::{Boot, Refusal, hex, parse_boot};
 use serde::Deserialize;
+use sha2::{Digest, Sha256};
 use std::collections::BTreeSet;
 use std::io::{Read, Write};
 use std::net::{Ipv4Addr, SocketAddrV4, TcpStream};
@@ -28,13 +29,29 @@ struct Document {
     mac: String,
 }
 
+/// Validated network identity and an opaque namespace for this physical boot.
+/// The challenge is never retained or exposed to callers.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Identity {
+    pub boot: Boot,
+    state_key: String,
+}
+
+impl Identity {
+    pub fn state_key(&self) -> &str {
+        &self.state_key
+    }
+}
+
 /// @cc [owner:ghuntley,label:security] editor-mmds-physical-network-identity
 /// A document MUST have exactly Lilly's version-1 fields, a valid boot
 /// challenge, and the placement/epoch/profile address accepted by parse_boot.
 /// Its prefix MUST be 32 and its gateway and MAC MUST match the address's
 /// deterministic Lilly network identity. Invalid, duplicate or unknown fields
 /// MUST refuse; neither the challenge nor metadata text may be returned.
-pub fn parse_document(body: &[u8]) -> Result<Boot, Refusal> {
+/// The opaque state namespace MUST change when the physical boot challenge,
+/// placement or execution epoch changes, including reboot at the same epoch.
+pub fn parse_document(body: &[u8]) -> Result<Identity, Refusal> {
     if body.is_empty() || body.len() > MAX_RESPONSE {
         return Err(Refusal::Boot);
     }
@@ -57,7 +74,17 @@ pub fn parse_document(body: &[u8]) -> Result<Boot, Refusal> {
     {
         return Err(Refusal::Boot);
     }
-    Ok(boot)
+    let mut hash = Sha256::new();
+    hash.update(b"overalls-windows-editor-physical-boot-v1\0");
+    hash.update(boot.placement_id.as_bytes());
+    hash.update(boot.execution_epoch.to_be_bytes());
+    hash.update(document.boot_challenge.as_bytes());
+    let state_key = hash
+        .finalize()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect();
+    Ok(Identity { boot, state_key })
 }
 
 struct ResponseHead {
@@ -206,7 +233,7 @@ fn exchange(
     }
 }
 
-fn fetch_at(address: SocketAddrV4, timeout: Duration) -> Result<Boot, Refusal> {
+fn fetch_at(address: SocketAddrV4, timeout: Duration) -> Result<Identity, Refusal> {
     let deadline = Instant::now().checked_add(timeout).ok_or(Refusal::Boot)?;
     remaining(deadline)?;
     let request = format!(
@@ -243,7 +270,7 @@ fn fetch_at(address: SocketAddrV4, timeout: Duration) -> Result<Boot, Refusal> {
 /// No proxy, redirect, retry or durable token state is allowed. Token and body
 /// bytes MUST NOT enter diagnostics or returned error values. The supplied
 /// timeout MUST bound both requests together.
-pub fn fetch(timeout: Duration) -> Result<Boot, Refusal> {
+pub fn fetch(timeout: Duration) -> Result<Identity, Refusal> {
     fetch_at(SocketAddrV4::new(ADDRESS, 80), timeout)
 }
 
@@ -295,11 +322,22 @@ mod tests {
             let document = DOCUMENT
                 .replace("10.10.", &format!("10.{profile}."))
                 .replace("02:fc:0a:0a:", &format!("02:fc:0a:{profile:02x}:"));
-            let boot = parse_document(document.as_bytes()).unwrap();
+            let boot = parse_document(document.as_bytes()).unwrap().boot;
             assert_eq!(boot.address, Ipv4Addr::new(10, profile, 0, 203));
             assert_eq!(boot.gateway, Ipv4Addr::new(10, profile, 0, 1));
             assert_eq!(boot.execution_epoch, 7);
         }
+    }
+
+    #[test]
+    fn physical_boot_namespace_rotates_at_the_same_placement_and_epoch() {
+        let first = parse_document(DOCUMENT.as_bytes()).unwrap();
+        let second = parse_document(DOCUMENT.replace("bbbbbbbb", "cccccccc").as_bytes()).unwrap();
+        assert_eq!(first.boot, second.boot);
+        assert_ne!(first.state_key(), second.state_key());
+        assert_eq!(first.state_key().len(), 64);
+        assert_ne!(first.state_key(), "b".repeat(64));
+        assert_eq!(first, parse_document(DOCUMENT.as_bytes()).unwrap());
     }
 
     #[test]
@@ -376,7 +414,7 @@ mod tests {
             second.write_all(&response(DOCUMENT)).unwrap();
             hold.recv_timeout(Duration::from_secs(2)).unwrap();
         });
-        let boot = fetch_at(endpoint, Duration::from_secs(1)).unwrap();
+        let boot = fetch_at(endpoint, Duration::from_secs(1)).unwrap().boot;
         assert_eq!(boot.execution_epoch, 7);
         release.send(()).unwrap();
         server.join().unwrap();

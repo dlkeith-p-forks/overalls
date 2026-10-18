@@ -3,6 +3,53 @@
 use crate::{Binding, Boot, Descriptor, Preface, Refusal, validate};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
+use std::sync::atomic::{AtomicUsize, Ordering};
+
+pub const PIPE_LIMIT: usize = 128;
+
+/// Broker-wide custody budget shared by live pipes and cancelled operations.
+pub struct PipeSlots {
+    used: AtomicUsize,
+}
+
+impl Default for PipeSlots {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl PipeSlots {
+    pub const fn new() -> Self {
+        Self {
+            used: AtomicUsize::new(0),
+        }
+    }
+
+    /// @cc [owner:ghuntley,label:security;capacity] windows-editor-pipe-slots
+    /// Live pipes and undrained cancelled operations MUST share at most 128
+    /// reservations. A reservation MUST remain owned until its operation's
+    /// buffer, completion storage and handles may safely be released. Exhaustion
+    /// MUST refuse new pipes without evicting an outstanding operation.
+    pub fn reserve(&self) -> Option<PipeSlot<'_>> {
+        self.used
+            .fetch_update(Ordering::AcqRel, Ordering::Acquire, |used| {
+                (used < PIPE_LIMIT).then_some(used + 1)
+            })
+            .ok()
+            .map(|_| PipeSlot { slots: self })
+    }
+}
+
+/// Moving a reservation transfers its capacity; only releasing it returns a slot.
+pub struct PipeSlot<'a> {
+    slots: &'a PipeSlots,
+}
+
+impl Drop for PipeSlot<'_> {
+    fn drop(&mut self) {
+        self.slots.used.fetch_sub(1, Ordering::AcqRel);
+    }
+}
 
 /// Complete S-1-5-21 account SID syntax; native SAM lookup establishes locality.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -106,6 +153,29 @@ impl WorkerIdentity {
     }
     pub fn webview_template(&self) -> &str {
         &self.webview_template
+    }
+
+    /// @cc [owner:ghuntley,label:security;recovery] windows-editor-stable-receipt
+    /// A receipt in the current physical-boot namespace MAY survive session
+    /// and generation rotation only when its validated stable worker identity
+    /// equals the current account, SID, placement/epoch, package and origins.
+    /// This comparison MUST NOT authorize receipts from another boot namespace.
+    pub fn matches_retained_binding(
+        &self,
+        binding: &Binding,
+        boot: &Boot,
+        descriptor: &Descriptor,
+    ) -> bool {
+        Self::admitted(
+            &Preface {
+                version: 1,
+                binding: binding.clone(),
+            },
+            boot,
+            descriptor,
+            self.sid.clone(),
+        )
+        .is_ok_and(|retained| retained == *self)
     }
 
     pub fn key(&self) -> String {
@@ -246,6 +316,57 @@ fn dos_device(component: &str) -> bool {
         })
 }
 
+/// A closed deployment PATH; every entry still requires native directory custody.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct WorkerPath {
+    value: String,
+    directories: Vec<LocalPath>,
+}
+
+impl WorkerPath {
+    /// @cc [owner:ghuntley,label:security] windows-editor-worker-path-closed-list
+    /// Worker PATH MUST contain at most 32 explicit ASCII absolute local
+    /// directories within 4096 bytes. Empty, relative, case-insensitive duplicate,
+    /// environment-expanded, device and ambiguous entries MUST refuse;
+    /// configuration authority alone MUST NOT bypass the native directory
+    /// ownership and write-ACL checks.
+    pub fn parse(value: &str) -> Result<Self, Refusal> {
+        if value.is_empty() || value.len() > 4096 || !value.is_ascii() {
+            return Err(Refusal::Package);
+        }
+        let mut directories: Vec<LocalPath> = Vec::new();
+        for entry in value.split(';') {
+            if directories.len() >= 32
+                || entry
+                    .chars()
+                    .any(|character| character.is_control() || "<>|?*%".contains(character))
+            {
+                return Err(Refusal::Package);
+            }
+            let path = LocalPath::parse(entry)?;
+            if directories
+                .iter()
+                .any(|previous| previous.as_str().eq_ignore_ascii_case(path.as_str()))
+            {
+                return Err(Refusal::Package);
+            }
+            directories.push(path);
+        }
+        Ok(Self {
+            value: value.to_owned(),
+            directories,
+        })
+    }
+
+    pub fn as_str(&self) -> &str {
+        &self.value
+    }
+
+    pub fn directories(&self) -> &[LocalPath] {
+        &self.directories
+    }
+}
+
 /// Windows C-runtime quoting; the process is created directly, without a shell.
 pub fn command_line(arguments: &[String]) -> Result<Vec<u16>, Refusal> {
     let mut command = String::new();
@@ -295,22 +416,49 @@ mod tests {
         AccountSid::parse(&bytes).unwrap()
     }
 
-    fn identity() -> WorkerIdentity {
-        WorkerIdentity {
-            uid: 200001,
-            username: "u200001".to_owned(),
-            guest_account_id: "11111111-1111-4111-8111-111111111111".to_owned(),
+    fn admission_fixture() -> (Preface, Boot, Descriptor, AccountSid) {
+        let id = "11111111-1111-4111-8111-111111111111".to_owned();
+        let descriptor = Descriptor {
+            protocol: 1,
+            commit: "a".repeat(40),
+            release: "b".repeat(64),
+        };
+        let boot = Boot {
             placement_id: "22222222-2222-4222-8222-222222222222".to_owned(),
             execution_epoch: 1,
-            sid: sid(1001),
-            descriptor: Descriptor {
-                protocol: 1,
-                commit: "a".repeat(40),
-                release: "b".repeat(64),
+            address: "10.10.0.2".parse().unwrap(),
+            gateway: "10.10.0.1".parse().unwrap(),
+        };
+        let preface = Preface {
+            version: 1,
+            binding: Binding {
+                vm_id: id.clone(),
+                host_id: id.clone(),
+                placement_id: boot.placement_id.clone(),
+                session_id: id.clone(),
+                execution_epoch: boot.execution_epoch,
+                generation: 1,
+                label: "e-ceirceircfardairceirceirce-ceirceircfardairceirceirce".to_owned(),
+                service: "editor".to_owned(),
+                port: crate::PORT,
+                user_id: id.clone(),
+                guest_account_id: id,
+                uid: 200001,
+                username: "u200001".to_owned(),
+                editor_protocol: descriptor.protocol,
+                editor_commit: descriptor.commit.clone(),
+                editor_release: descriptor.release.clone(),
+                editor_origin:
+                    "https://e-ceirceircfardairceirceirce-ceirceircfardairceirceirce.apps.test"
+                        .to_owned(),
             },
-            origin: "https://editor.apps.test".to_owned(),
-            webview_template: "https://{{uuid}}.apps.test/code-assets/test/".to_owned(),
-        }
+        };
+        (preface, boot, descriptor, sid(1001))
+    }
+
+    fn identity() -> WorkerIdentity {
+        let (preface, boot, descriptor, sid) = admission_fixture();
+        WorkerIdentity::admitted(&preface, &boot, &descriptor, sid).unwrap()
     }
 
     proptest! {
@@ -345,6 +493,27 @@ mod tests {
         #[test]
         fn every_truncated_local_sid_refuses(length in 0_usize..28) {
             prop_assert_eq!(AccountSid::parse(&sid(1001).as_bytes()[..length]), Err(Refusal::Account));
+        }
+
+        #[test]
+        fn renewed_sessions_and_generations_retain_only_exact_stable_identity(generation in 1_u64..i64::MAX as u64) {
+            let (preface, boot, descriptor, sid) = admission_fixture();
+            let identity = WorkerIdentity::admitted(&preface, &boot, &descriptor, sid.clone()).unwrap();
+            let mut renewed = preface.clone();
+            renewed.binding.generation = generation;
+            renewed.binding.session_id = "33333333-3333-4333-8333-333333333333".to_owned();
+            let current = WorkerIdentity::admitted(&renewed, &boot, &descriptor, sid).unwrap();
+            prop_assert_eq!(&current, &identity);
+            prop_assert!(current.matches_retained_binding(&preface.binding, &boot, &descriptor));
+            let mut foreign = preface.binding.clone();
+            foreign.execution_epoch += 1;
+            prop_assert!(!current.matches_retained_binding(&foreign, &boot, &descriptor));
+            foreign = preface.binding.clone();
+            foreign.guest_account_id = renewed.binding.session_id;
+            prop_assert!(!current.matches_retained_binding(&foreign, &boot, &descriptor));
+            foreign = preface.binding;
+            foreign.editor_origin = foreign.editor_origin.replace("apps.test", "other.test");
+            prop_assert!(!current.matches_retained_binding(&foreign, &boot, &descriptor));
         }
     }
 
@@ -435,5 +604,58 @@ mod tests {
             "\"C:\\Program Files\\node.exe\" \"a\\\"b\" \"x\\\\\" \"\""
         );
         assert_eq!(command_line(&["x\0y".to_owned()]), Err(Refusal::Package));
+    }
+
+    #[test]
+    fn worker_path_requires_explicit_distinct_local_directories() {
+        let value = r"C:\overalls\editor;C:\Windows\System32;C:\Program Files\Git\cmd";
+        let path = WorkerPath::parse(value).unwrap();
+        assert_eq!(path.as_str(), value);
+        assert_eq!(path.directories().len(), 3);
+        for value in [
+            "",
+            r"C:\Windows\System32;",
+            r";C:\Windows\System32",
+            r"C:\Windows\System32;;C:\overalls",
+            r"C:\Windows\System32;c:\windows\system32",
+            r"C:\overalls;.",
+            r"C:\overalls;relative",
+            r"C:\overalls;%SystemRoot%\System32",
+            r"C:\overalls;\\server\share",
+            r"C:\overalls;C:\Windows\*",
+            r"C:\overalls;C:\Windows\?",
+            r"C:\overalls;C:\Överalls",
+            "C:\\overalls;C:\\a\tb",
+        ] {
+            assert_eq!(WorkerPath::parse(value), Err(Refusal::Package));
+        }
+        let too_many = (0..33)
+            .map(|index| format!(r"C:\path{index}"))
+            .collect::<Vec<_>>()
+            .join(";");
+        assert_eq!(WorkerPath::parse(&too_many), Err(Refusal::Package));
+        assert_eq!(
+            WorkerPath::parse(&format!(r"C:\{}", "x".repeat(4094))),
+            Err(Refusal::Package)
+        );
+    }
+
+    #[test]
+    fn pipe_slots_remain_reserved_until_retained_operation_is_released() {
+        let slots = PipeSlots::new();
+        let mut live = (0..PIPE_LIMIT)
+            .map(|_| slots.reserve().unwrap())
+            .collect::<Vec<_>>();
+        assert!(slots.reserve().is_none());
+        let retained = live.pop().unwrap();
+        assert!(slots.reserve().is_none());
+        drop(retained);
+        let replacement = slots.reserve().unwrap();
+        assert!(slots.reserve().is_none());
+        drop(replacement);
+        drop(live);
+        for _ in 0..PIPE_LIMIT * 2 {
+            assert!(slots.reserve().is_some());
+        }
     }
 }

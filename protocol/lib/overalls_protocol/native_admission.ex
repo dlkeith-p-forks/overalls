@@ -60,6 +60,9 @@ defmodule OverallsProtocol.NativeAdmission do
   def admitted?(%{guest_agents: agents} = identity) when agents in [:freebsd_v1, :illumos_v1],
     do: identity in @reviewed_identities
 
-  def admitted?(%{guest_agents: agents}) when agents in [:linux, :none, :windows_v1], do: true
+  def admitted?(%{guest_agents: agents})
+      when agents in [:linux, :none, :windows_v1, :windows_editor_v1],
+      do: true
+
   def admitted?(_), do: false
 end

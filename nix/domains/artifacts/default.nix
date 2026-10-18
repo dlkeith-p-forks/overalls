@@ -27,6 +27,8 @@ let
   # windows-v1 editor capability (ADR-0171).
   windowsEditorRuntime = import ./vscode-web/windows-runtime.nix { inherit pkgs; };
   windowsEditorSource = import ./vscode-web/windows-source.nix { inherit pkgs; };
+  mkWindowsEditorBundle = import ./vscode-web/windows-bundle.nix { inherit pkgs; source = windowsEditorSource; };
+  windowsEditorBroker = import ./vscode-web-broker/windows.nix { inherit pkgs; inherit (lyra) toolchain; };
   codingClis = import ./guest/coding-clis.nix { inherit pkgs; };
   # Patched static Firecracker/jailer pair (ADR-0169); the only VMM Lilly runs.
   inherit (import ./infrastructure/firecracker.nix { inherit pkgs; }) vmm;
@@ -271,7 +273,7 @@ let
     };
 in
 rec {
-  inherit dependencies cedarCargo hostTools toolchain vmm windowsFirmware windowsFirmwareDebug mkWindowsGuest windowsGuest windowsGuestAgents windowsGuestRuntime windowsGuestPublished windowsGuestDrvload windowsBoot windowsEditorRuntime windowsEditorSource;
+  inherit dependencies cedarCargo hostTools toolchain vmm windowsFirmware windowsFirmwareDebug mkWindowsGuest windowsGuest windowsGuestAgents windowsGuestRuntime windowsGuestPublished windowsGuestDrvload windowsBoot windowsEditorRuntime windowsEditorSource windowsEditorBroker mkWindowsEditorBundle;
   inherit terminald terminaldChecks terminaldWindows;
   inherit codingClis;
   inherit lyra lyraLinux lyraWindows lyraNative;

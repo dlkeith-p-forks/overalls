@@ -3,7 +3,7 @@
 ## Scope and architecture assessment
 
 The approved task changes execution, persistence, capacity, recovery and ingress
-contracts. [ADR-0197](../decisions/0197-memory-suspension-and-demand-wake.md)
+contracts. [ADR-0199](../decisions/0199-memory-suspension-and-demand-wake.md)
 partially supersedes the inherited memory-migration, stopped-only relocation and
 cross-host relay prohibitions and extends owner pins. Historical rationale and
 unrelated boundaries remain in force. The final diff and execution evidence must

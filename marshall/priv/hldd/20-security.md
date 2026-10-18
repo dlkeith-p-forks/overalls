@@ -1417,6 +1417,17 @@ editor on Windows is a new architecture decision and requires reviewed image,
 agent/protocol, broker and browser evidence rather than an inference from
 existing guest readiness.
 
+[ADR-0200](repo:docs/architecture/decisions/0200-windows-browser-editor-candidate.md)
+records the accepted Windows candidate design, including bounded cancelled-pipe custody,
+package/PATH ACL checks and the fixed SYSTEM task. Its separate
+`windows-editor-v1` manifest v7 requires an immutable editor descriptor; bundle v4
+retains it across placement-local starts. Existing `windows-v1` stays false and
+the candidate remains outside the selected production catalog. Native account,
+task restart, sustained cancellation under worker lifecycle and authenticated
+browser execution remain unrecorded. Thirty actual Windows library tests cover
+named-pipe timeout/cancellation and ACL descriptor/refusal checks only; source
+or harness presence cannot grant deployed image acceptance.
+
 ## Thread authorization boundary
 
 Thread reads require current creator, team or canonical thread-grant authority. Creation checks

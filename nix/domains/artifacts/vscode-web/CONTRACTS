@@ -75,3 +75,13 @@ digests. It MUST declare `editor_capability: false` until a Windows Code OSS
 bundle, account-bound broker, service task and native browser acceptance are
 all reviewed. Runtime presence MUST NOT alter any image manifest or guest-agent
 capability row.
+
+@cc [owner:ghuntley,label:build;security] windows-editor-native-bundle-custody
+Imported native Windows bundles MUST match an exact reviewed recursive NAR pin
+and the maintained source payload's release descriptor, product identity and
+four-extension lock. Their closed, bounded provenance record MUST match the
+pinned source, Node and source date and record compiler/toolset versions and
+compiler/MSBuild executable SHA-256 digests; recorded builder custody MUST NOT
+be presented as reproducible compilation. The import MUST refuse links and non-regular entries and
+MUST retain no Nix store references. Import is candidate packaging only and
+MUST NOT assert browser acceptance or promote an image capability.

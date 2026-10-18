@@ -1,0 +1,13 @@
+@cc [owner:ghuntley,label:verification;security] windows-editor-native-fixture-boundary
+The harness MUST require an explicitly isolated Windows VM, the source-built
+candidate and a real current Lyra-authorized canonical SAM account. Its fixed
+account relay MUST bind only loopback and reject browser requests to other
+origins. It MUST NOT create or weaken production admission, substitute an
+authorizer, or count administrative SSH as ordinary CLI acceptance.
+
+@cc [owner:ghuntley,label:verification;recovery] windows-editor-native-recovery-evidence
+Acceptance MUST observe native workbench/extension/terminal behavior and exact
+SAM SID, executable, PID and creation-time custody. Broker loss MUST retain the
+worker and saved file; worker loss MUST produce a distinct process with the
+same account and saved file. Static checks or harness packaging MUST NOT count
+as native execution, fleet authorization or capability promotion.

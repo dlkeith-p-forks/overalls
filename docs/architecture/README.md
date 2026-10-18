@@ -1,6 +1,13 @@
 # Architecture
 
-[ADR-0193](decisions/0193-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
+[ADR-0200](decisions/0200-windows-browser-editor-candidate.md) accepts a native
+Windows browser editor with a SYSTEM gateway broker and personal SAM/S4U workers.
+Its separate `windows-editor-v1` manifest-v7 and bundle-v4 candidate contract
+requires the immutable editor tuple. The candidate remains outside the selected
+production catalog; `windows-v1` keeps editor false and exact native/browser
+acceptance remains unrecorded.
+
+[ADR-0198](decisions/0198-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0188](decisions/0188-signed-overalls-cachix-substitution.md) adds the
 signed Overalls Cachix read cache to all Nix-running hosts, installers and guest

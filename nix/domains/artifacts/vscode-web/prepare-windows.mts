@@ -61,7 +61,7 @@ async function prepare(source: string, payload: string): Promise<void> {
     // from source with the installed compiler.
     const recursiveEntries = await readdir(remoteModules, { recursive: true });
     for (const relative of recursiveEntries) {
-        if (relative !== 'binding.gyp' && !relative.endsWith('\\binding.gyp')) { continue; }
+        if (!relative.endsWith('.gyp') && !relative.endsWith('.gypi')) { continue; }
         const bindingPath = join(remoteModules, relative);
         const binding = await readFile(bindingPath, 'utf8');
         // Keep the binding's project settings intact while disabling the

@@ -11,7 +11,7 @@ use overalls_vscode_web_broker::windows::{
     Package, Worker, package_file, private_directory, read_private_optional, require_system,
     resolve_account, write_private,
 };
-use overalls_vscode_web_broker::windows_model::{ProcessIdentity, WorkerIdentity};
+use overalls_vscode_web_broker::windows_model::{ProcessIdentity, WorkerIdentity, WorkerPath};
 use overalls_vscode_web_broker::windows_pipe::Pipe;
 use overalls_vscode_web_broker::{
     Binding, Boot, Descriptor, PORT, Preface, Refusal, mmds, ready, validate,
@@ -19,10 +19,11 @@ use overalls_vscode_web_broker::{
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::fs;
+use std::io::Write;
 use std::net::{Shutdown, TcpListener, TcpStream};
 use std::path::Path;
 use std::process::{Command, Stdio};
-use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::{Duration, Instant};
@@ -102,6 +103,7 @@ fn read_configuration(path: &Path) -> Result<Configuration, Refusal> {
         local(value)?;
     }
     package_file(&local(&configuration.account_authorizer)?)?;
+    WorkerPath::parse(&configuration.worker_path)?;
     Ok(configuration)
 }
 
@@ -181,11 +183,34 @@ fn worker_identity(runtime: &Runtime, preface: &Preface) -> Result<WorkerIdentit
     WorkerIdentity::admitted(preface, &runtime.boot, &runtime.descriptor, sid)
 }
 
-fn receipt_matches(receipt: &Receipt, binding: &Binding, descriptor: &Descriptor) -> bool {
-    receipt.binding == *binding
-        && receipt.binding.editor_protocol == descriptor.protocol
-        && receipt.binding.editor_commit == descriptor.commit
-        && receipt.binding.editor_release == descriptor.release
+fn receipt_matches(receipt: &Receipt, identity: &WorkerIdentity, runtime: &Runtime) -> bool {
+    identity.matches_retained_binding(&receipt.binding, &runtime.boot, &runtime.descriptor)
+}
+
+/// @cc [owner:ghuntley,label:security;recovery] windows-editor-record-launch-or-stop
+/// A new worker MUST obtain its complete SYSTEM-only receipt or be terminated
+/// before startup returns. Serialization and publication failure MUST share the
+/// same cleanup, and a termination failure MUST be surfaced rather than hidden.
+fn launch_and_record(
+    runtime: &Runtime,
+    identity: WorkerIdentity,
+    binding: &Binding,
+    path: &overalls_vscode_web_broker::windows_model::LocalPath,
+) -> Result<Worker, Refusal> {
+    let worker = Worker::launch(identity, &runtime.package)?;
+    let recorded = (|| {
+        let receipt = Receipt {
+            binding: binding.clone(),
+            process: worker.process_identity(),
+        };
+        let encoded = serde_json::to_vec(&receipt).map_err(|_| Refusal::Custody)?;
+        write_private(path, &encoded)
+    })();
+    if let Err(error) = recorded {
+        worker.terminate()?;
+        return Err(error);
+    }
+    Ok(worker)
 }
 
 fn probe(worker: &Worker, binding: &Binding, deadline: Instant) -> Result<(), Refusal> {
@@ -263,70 +288,26 @@ fn ensure_worker(
     private_directory(&account_dir)?;
     if let Some(bytes) = read_private_optional(&receipt_path, RECEIPT_MAXIMUM)? {
         let receipt: Receipt = serde_json::from_slice(&bytes).map_err(|_| Refusal::Custody)?;
-        if !receipt_matches(&receipt, binding, &runtime.descriptor) {
+        if !receipt_matches(&receipt, &identity, runtime) {
             return Err(Refusal::Custody);
         }
-        let worker = match Worker::recover(
+        if let Some(worker) = Worker::recover(
             identity.clone(),
             receipt.process,
             local(&runtime.configuration.node)?,
         )? {
-            Some(worker) => worker,
-            None => {
-                fs::remove_file(receipt_path.as_str()).map_err(|_| Refusal::Custody)?;
-                let worker = Worker::launch(identity.clone(), &runtime.package)?;
-                let receipt = Receipt {
-                    binding: binding.clone(),
-                    process: worker.process_identity(),
-                };
-                let encoded = serde_json::to_vec(&receipt).map_err(|_| Refusal::Custody)?;
-                if let Err(error) = write_private(&receipt_path, &encoded) {
-                    let _ = worker.terminate();
-                    return Err(error);
-                }
-                worker
-            }
-        };
-        if probe(&worker, binding, deadline).is_ok() {
-            return Ok(worker);
-        }
-        if !worker.is_running()? {
-            fs::remove_file(receipt_path.as_str()).map_err(|_| Refusal::Custody)?;
-        } else {
-            worker.terminate()?;
-            fs::remove_file(receipt_path.as_str()).map_err(|_| Refusal::Custody)?;
-        }
-        let worker = Worker::launch(identity.clone(), &runtime.package)?;
-        let receipt = Receipt {
-            binding: binding.clone(),
-            process: worker.process_identity(),
-        };
-        write_private(
-            &receipt_path,
-            &serde_json::to_vec(&receipt).map_err(|_| Refusal::Custody)?,
-        )?;
-        let mut ready = false;
-        while Instant::now() < deadline {
             if probe(&worker, binding, deadline).is_ok() {
-                ready = true;
-                break;
+                return Ok(worker);
             }
-            thread::sleep(Duration::from_millis(50));
+            worker.terminate()?;
+            drop(worker);
         }
-        if ready {
-            return Ok(worker);
-        }
-        worker.terminate()?;
         fs::remove_file(receipt_path.as_str()).map_err(|_| Refusal::Custody)?;
+    }
+    if Instant::now() >= deadline {
         return Err(Refusal::Readiness);
     }
-    let worker = Worker::launch(identity, &runtime.package)?;
-    let receipt = Receipt {
-        binding: binding.clone(),
-        process: worker.process_identity(),
-    };
-    let encoded = serde_json::to_vec(&receipt).map_err(|_| Refusal::Custody)?;
-    write_private(&receipt_path, &encoded)?;
+    let worker = launch_and_record(runtime, identity, binding, &receipt_path)?;
     let mut ready = false;
     while Instant::now() < deadline {
         if probe(&worker, binding, deadline).is_ok() {
@@ -347,12 +328,23 @@ fn ensure_worker(
 fn relay(mut client: TcpStream, mut worker: Pipe) -> Result<(), Refusal> {
     let mut client_writer = client.try_clone().map_err(|_| Refusal::Transport)?;
     let mut worker_reader = worker.try_clone().map_err(|_| Refusal::Transport)?;
+    client_writer
+        .set_write_timeout(Some(Duration::from_secs(30)))
+        .map_err(|_| Refusal::Transport)?;
+    let cancelled = AtomicBool::new(false);
     thread::scope(|scope| {
         scope.spawn(|| {
-            let _ = std::io::copy(&mut worker_reader, &mut client_writer);
+            let mut buffer = [0_u8; 64 * 1024];
+            while let Ok(length) = worker_reader.read_until_cancelled(&mut buffer, &cancelled) {
+                if length == 0 || client_writer.write_all(&buffer[..length]).is_err() {
+                    break;
+                }
+            }
+            cancelled.store(true, Ordering::Release);
             let _ = client_writer.shutdown(Shutdown::Both);
         });
         let _ = std::io::copy(&mut client, &mut worker);
+        cancelled.store(true, Ordering::Release);
         let _ = client.shutdown(Shutdown::Both);
     });
     Ok(())
@@ -384,7 +376,7 @@ fn connection(mut client: TcpStream, runtime: Arc<Runtime>) -> Result<(), Refusa
 
 fn serve(configuration: Configuration) -> Result<(), Refusal> {
     require_system()?;
-    let boot = mmds::fetch(STARTUP)?;
+    let physical = mmds::fetch(STARTUP)?;
     let node = local(&configuration.node)?;
     let server = local(&configuration.server)?;
     let system_root = local(&configuration.system_root)?;
@@ -393,8 +385,14 @@ fn serve(configuration: Configuration) -> Result<(), Refusal> {
     package_file(&server)?;
     package_file(&ca_bundle)?;
     private_directory(&local(&configuration.state_directory)?)?;
-    let state = local(&configuration.state_directory)?;
-    let worker_path = configuration.worker_path.clone();
+    let state = local(&format!(
+        r"{}\b{}",
+        configuration.state_directory,
+        physical.state_key()
+    ))?;
+    private_directory(&state)?;
+    let boot = physical.boot;
+    let worker_path = WorkerPath::parse(&configuration.worker_path)?;
     let listener = TcpListener::bind((boot.address, PORT)).map_err(|_| Refusal::Transport)?;
     listener
         .set_nonblocking(false)

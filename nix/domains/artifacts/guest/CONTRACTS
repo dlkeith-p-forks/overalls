@@ -10,7 +10,8 @@ record exact artifact sizes and digests plus the positive kernel byte count,
 SHA-256, full source revision, patch/configuration hashes and compiler identity.
 A source/build receipt with unavailable kernel bytes MUST NOT produce an image
 or enter the fleet catalog. Firmware-booted Windows images use
-version 5 under the separate `windows/CONTRACTS` identity contract (ADR-0170).
+version 5, or version 7 only for the separate Windows editor candidate, under
+the `windows/CONTRACTS` identity contract (ADR-0170).
 Editor-capable images MUST additionally record the immutable protocol/source/patch
 release descriptor and at least 2 GiB writable disk headroom. The immutable rootfs
 is a template for a separate writable VM disk. See ADR-0011 and ADR-0016.

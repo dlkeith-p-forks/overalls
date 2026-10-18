@@ -9,6 +9,14 @@ param(
 Set-StrictMode -Version 2
 $ErrorActionPreference = 'Stop'
 
+# MSBuild tasks still use legacy MAX_PATH normalization even when Windows
+# long paths are enabled. Keep the offline kit near the volume root so nested
+# node-addon-api intermediates fit without changing compiler behavior.
+$PayloadRoot = [System.IO.Path]::GetFullPath($PayloadRoot)
+if ($PayloadRoot -notmatch '^[A-Za-z]:\\[A-Za-z0-9_-]+$' -or $PayloadRoot.Length -gt 32) {
+    throw 'native_editor_payload_requires_short_root'
+}
+
 # @cc [owner:ghuntley,label:build;security] windows-editor-native-build-offline
 # The build MUST use only the staged source, patch stack, npm caches, native
 # Node/Python inputs and installed C++ toolchain. Every native command MUST
@@ -62,6 +70,7 @@ $env:PATH = $NodeDirectory + ';' + (Join-Path $PayloadRoot 'python') + ';C:\Prog
 $env:NODE_ENV = 'development'
 $env:NODE_OPTIONS = '--max-old-space-size=16384'
 $env:BUILD_SOURCEVERSION = (Get-Content -LiteralPath (Join-Path $PayloadRoot 'source-commit') -Raw).Trim()
+$env:SOURCE_DATE_EPOCH = '1791274552'
 $env:PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = '1'
 $env:ELECTRON_SKIP_BINARY_DOWNLOAD = '1'
 $env:npm_config_offline = 'true'
@@ -101,16 +110,28 @@ try {
     Invoke-Native $Node @($Npm, '--prefix', 'remote', 'prune', '--ignore-scripts', '--no-audit', '--no-fund', '--offline')
     Write-Checkpoint 'OVERALLS-EDITOR-NATIVE-START'
     Invoke-Native $Node @($Npm, '--prefix', 'remote', 'rebuild', '--build-from-source', '--no-audit', '--no-fund', '--offline')
+    # Rebuild/prune may reintroduce optional platform packages. Only native
+    # compiler outputs may remain when the server bundle is assembled.
+    foreach ($Optional in @(Get-ChildItem -Path (Join-Path $Source 'remote\node_modules\@parcel\watcher-*') -Directory -ErrorAction SilentlyContinue)) {
+        Remove-Item -LiteralPath $Optional.FullName -Recurse -Force
+    }
+    [string]$PtyPrebuilds = Join-Path $Source 'remote\node_modules\node-pty\prebuilds'
+    if (Test-Path -LiteralPath $PtyPrebuilds) { Remove-Item -LiteralPath $PtyPrebuilds -Recurse -Force }
     Write-Checkpoint 'OVERALLS-EDITOR-COMPILE-START'
-    Invoke-Native $Node @($Npm, 'run', 'typecheck-client')
+    Copy-Item -LiteralPath (Join-Path $PayloadRoot 'maintenance-entry.ts') -Destination (Join-Path $Source 'overalls-maintenance-entry.ts')
+    [pscustomobject]$TypeCheck = Get-Content -LiteralPath (Join-Path $Source 'src\tsconfig.json') -Raw | ConvertFrom-Json
+    $TypeCheck.include += '../overalls-maintenance-entry.ts'
+    $TypeCheck.compilerOptions | Add-Member -NotePropertyName rootDir -NotePropertyValue '..' -Force
+    $TypeCheck | ConvertTo-Json -Depth 32 | Set-Content -LiteralPath (Join-Path $Source 'src\tsconfig.overalls-maintenance.json') -Encoding UTF8
+    Invoke-Native $Node @($Npm, 'run', 'typecheck-client', '--', '--project', './src/tsconfig.overalls-maintenance.json')
     $TypeScript = Join-Path $Source 'node_modules\typescript\bin\tsc6'
     if (-not (Test-Path -LiteralPath $TypeScript)) { throw 'native_editor_typescript_missing' }
-    Invoke-Native $Node @($TypeScript, '--noEmit', '--strict', '--skipLibCheck', '--target', 'es2022', '--module', 'nodenext', '--types', 'node', '--typeRoots', (Join-Path $Source 'node_modules\@types'), (Join-Path $Source 'prepare-windows.mts'))
+    Invoke-Native $Node @($TypeScript, '--noEmit', '--strict', '--skipLibCheck', '--target', 'es2022', '--module', 'nodenext', '--types', 'node', '--typeRoots', (Join-Path $Source 'node_modules\@types'), (Join-Path $PayloadRoot 'prepare-windows.mts'))
     $Esbuild = Join-Path $Source 'build\node_modules\esbuild\bin\esbuild'
     if (-not (Test-Path -LiteralPath $Esbuild)) { throw 'native_editor_esbuild_missing' }
     $MaintenanceRoot = Join-Path $OutputDirectory 'lib\overalls-maintenance'
     $MaintenanceStage = Join-Path $env:TEMP 'overalls-maintenance.bundle.mjs'
-    Invoke-Native $Node @($Esbuild, (Join-Path $Source 'maintenance-entry.ts'), '--bundle', '--platform=node', '--format=esm', '--packages=external', ('--outfile=' + $MaintenanceStage))
+    Invoke-Native $Node @($Esbuild, (Join-Path $Source 'overalls-maintenance-entry.ts'), '--bundle', '--platform=node', '--format=esm', '--packages=external', ('--outfile=' + $MaintenanceStage))
     Invoke-Native $Node @($Npm, 'run', 'gulp', '--', 'vscode-reh-web-win32-x64-min')
     $Bundle = Join-Path (Split-Path $Source -Parent) 'vscode-reh-web-win32-x64'
     foreach ($Required in @('node.exe', 'out\server-main.js', 'product.json', 'bin\overalls-code.cmd')) {
@@ -118,7 +139,23 @@ try {
     }
     if (Test-Path -LiteralPath $OutputDirectory) { throw 'native_editor_output_exists' }
     Copy-Item -LiteralPath $Bundle -Destination $OutputDirectory -Recurse
+    Copy-Item -LiteralPath (Join-Path $Source 'ThirdPartyNotices.txt') -Destination $OutputDirectory
     Copy-Item -LiteralPath (Join-Path $PayloadRoot 'overalls-editor-release.json') -Destination $OutputDirectory
+    [string]$Compiler = Join-Path $env:VCToolsInstallDir 'bin\Hostx64\x64\cl.exe'
+    [string]$BuildEngine = Join-Path ([string]$Toolchain).Trim() 'MSBuild\Current\Bin\MSBuild.exe'
+    [pscustomobject]@{
+        version = 1
+        source_commit = $env:BUILD_SOURCEVERSION
+        source_date_epoch = $env:SOURCE_DATE_EPOCH
+        node = (& $Node '--version')
+        visual_studio = $env:VisualStudioVersion
+        toolset = $env:VCToolsVersion
+        compiler = (Get-Item -LiteralPath $Compiler).VersionInfo.FileVersion
+        compiler_sha256 = (Get-FileHash -LiteralPath $Compiler -Algorithm SHA256).Hash.ToLowerInvariant()
+        msbuild = (Get-Item -LiteralPath $BuildEngine).VersionInfo.FileVersion
+        msbuild_sha256 = (Get-FileHash -LiteralPath $BuildEngine -Algorithm SHA256).Hash.ToLowerInvariant()
+    } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $OutputDirectory 'native-build-provenance.json') -Encoding UTF8
+    if ($LASTEXITCODE -ne 0) { throw 'native_editor_provenance_failed' }
     New-Item -ItemType Directory -Path $MaintenanceRoot -Force | Out-Null
     Copy-Item -LiteralPath $MaintenanceStage -Destination (Join-Path $MaintenanceRoot 'maintenance.bundle.mjs')
     Copy-Item -LiteralPath (Join-Path $PayloadRoot 'check-extension.mts') -Destination $MaintenanceRoot
@@ -135,7 +172,7 @@ try {
             '--node', $Node, '--validator', (Join-Path $MaintenanceRoot 'check-extension.mts'),
             '--key', $SigningKey, '--editor-version', '1.141.0', '--output', $ExtensionOutput
         )
-        Invoke-Native $Python @ExtensionArgs
+        Invoke-Native $Python $ExtensionArgs
     }
     # Successful source compilation is explicitly separate from native browser
     # acceptance and leaves the retained windows-v1 manifest unchanged.

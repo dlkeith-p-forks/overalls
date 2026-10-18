@@ -388,6 +388,17 @@ defmodule OverallsProtocol.Execution do
     |> Map.put("workspace_source", WorkspaceSource.encode(source))
   end
 
+  # @cc [owner:ghuntley,label:protocol;recovery] resume-checkpoint-encoded-through-codec
+  # An executable resume command MUST encode its inert checkpoint through the
+  # closed Checkpoint codec, so nested keys use the wire schema and the exact
+  # validated command survives an encode/decode round trip.
+  def encode_command(%{checkpoint: checkpoint} = command) do
+    command
+    |> Map.delete(:checkpoint)
+    |> encode_command()
+    |> Map.put("checkpoint", OverallsProtocol.Checkpoint.encode(checkpoint))
+  end
+
   def encode_command(command) do
     Map.new(command, fn {key, value} ->
       {Atom.to_string(key), if(is_atom(value), do: Atom.to_string(value), else: value)}

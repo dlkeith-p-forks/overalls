@@ -39,8 +39,34 @@ job ownership/membership and pipe server PID. Unknown or foreign custody MUST
 refuse without terminating processes or deleting personal files. Library
 presence MUST NOT enable an image capability or a network listener.
 
+@cc [owner:ghuntley,label:security;recovery] windows-editor-boot-receipt-lifetime
+Receipts MUST live in a SYSTEM-only namespace derived from the validated MMDS
+physical boot challenge, placement and epoch. A renewed session/generation MAY
+reuse only the exact validated stable worker identity in that same namespace.
+Prior boot receipts MUST NOT authorize current workers. Every new launch MUST
+publish a complete private receipt or stop its entire owned job; failed cleanup
+MUST surface. Recovery of a conclusively absent retained root process MUST stop
+any remaining proven SYSTEM-owned exact-job descendants before replacement;
+PID reuse and incomplete or foreign custody MUST refuse cleanup.
+
+@cc [owner:ghuntley,label:security] windows-editor-platform-path-authority
+Worker PATH MUST be a bounded explicit list of distinct ASCII absolute local
+directories with native owner, write-ACL and reparse custody. SYSTEM and
+Administrators MAY control package leaves. The exact Windows TrustedInstaller
+service SID MAY additionally control PATH directories and directory ancestors,
+because platform servicing already controls the OS executable environment;
+foreign owners and foreign replacement/delete/ACL authority MUST refuse.
+TrustedInstaller MUST NOT authorize package leaves or SYSTEM-only state.
+
 @cc [owner:ghuntley,label:security;recovery] windows-editor-overlapped-pipe
 The Windows named pipe MUST be opened with overlapped I/O and each read or
-write MUST have a bounded wait. A timed-out operation MUST be cancelled and
-drained before its OVERLAPPED storage or caller buffer is released. A broker
+write MUST have bounded kernel waits. A healthy idle relay MUST wait for bytes
+or explicit shutdown without an idle read deadline, polling cancellation at
+most every 100ms; blocked writes MUST retain their bounded deadline. A timed-out
+or cancelled operation MUST be cancelled and
+retain owned OVERLAPPED storage, copied buffer and handles until a nonblocking
+drain observes completion. Kernel I/O MUST NOT reference caller storage after
+return. Live and pending cancelled operations MUST share at most 128 pipe
+reservations, acquired before open/duplication; exhaustion MUST refuse new
+pipes. At most one process-wide completion reaper may run. A broker request
 thread MUST NOT remain blocked on a worker pipe after worker loss.

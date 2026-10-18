@@ -54,6 +54,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   hegel-framework-packages = hegel-framework-packages;
   team-ssh = import ./machines/team-ssh service;
   vscode-web-package = import ./machines/vscode-web { pkgs = testPkgs; inherit packages; };
+  windows-editor-acceptance-harness = import ./machines/windows-editor { pkgs = testPkgs; inherit packages; };
   vscode-web-broker = packages.vscodeWebBroker;
   vscode-web-extensions = import ../../domains/artifacts/vscode-web/check-extensions.nix {
     pkgs = buildPkgs;

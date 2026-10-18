@@ -16,7 +16,8 @@ defmodule Marshall.Compute.ImageEditorCapabilityTest do
   property "editor compatibility binds the complete immutable release and image identity" do
     descriptor = draw("descriptor", descriptor_gen())
     enabled = draw("enabled", boolean())
-    image = editor_image(descriptor) |> Map.put(:enabled, enabled)
+    platform = draw("platform", member_of([:linux, :windows]))
+    image = editor_image(descriptor, platform) |> Map.put(:enabled, enabled)
 
     assert {:ok,
             %{
@@ -32,7 +33,11 @@ defmodule Marshall.Compute.ImageEditorCapabilityTest do
       assert {:error, :unsupported_image} = Image.editor_capability(image, other)
     end
 
-    changed = Map.update!(image.manifest, "boot_args", &(&1 <> " quiet"))
+    changed =
+      case platform do
+        :linux -> Map.update!(image.manifest, "boot_args", &(&1 <> " quiet"))
+        :windows -> put_in(image.manifest, ["root", "sha256"], String.duplicate("d", 64))
+      end
 
     assert {:error, :unavailable} =
              Image.editor_capability(%{image | manifest: changed}, descriptor)
@@ -66,11 +71,23 @@ defmodule Marshall.Compute.ImageEditorCapabilityTest do
     end
   end
 
-  @spec editor_image(descriptor()) :: image_input()
-  defp editor_image(descriptor) do
+  @spec editor_image(descriptor(), :linux | :windows) :: image_input()
+  defp editor_image(descriptor, platform \\ :linux) do
     manifest =
-      Marshall.ComputeFixtures.image_manifest()
-      |> Map.put("editor", descriptor)
+      case platform do
+        :linux ->
+          Marshall.ComputeFixtures.image_manifest()
+          |> Map.put("editor", descriptor)
+
+        :windows ->
+          Marshall.ComputeFixtures.windows_image_manifest()
+          |> Map.merge(%{
+            "version" => 7,
+            "os" => "windows",
+            "guest_agents" => "windows-editor-v1",
+            "editor" => descriptor
+          })
+      end
 
     {:ok, validated} = OverallsProtocol.ImageManifest.validate(manifest)
     %{id: validated.id, manifest: manifest}

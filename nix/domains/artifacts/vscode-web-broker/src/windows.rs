@@ -7,7 +7,8 @@
 
 use crate::Refusal;
 use crate::windows_model::{
-    AccountSid, LocalPath, PipePeer, ProcessIdentity, WorkerIdentity, command_line, verify_peer,
+    AccountSid, LocalPath, PipePeer, ProcessIdentity, WorkerIdentity, WorkerPath, command_line,
+    verify_peer,
 };
 use crate::windows_pipe::Pipe;
 use std::fs::{File, OpenOptions};
@@ -17,6 +18,8 @@ use std::os::windows::fs::OpenOptionsExt;
 use std::os::windows::io::{AsRawHandle, FromRawHandle, OwnedHandle};
 use std::ptr::{null, null_mut};
 use std::sync::atomic::{AtomicU64, Ordering};
+use std::thread;
+use std::time::{Duration, Instant};
 use windows_sys::Win32::Foundation::{
     CloseHandle, ERROR_ALREADY_EXISTS, ERROR_FILE_NOT_FOUND, ERROR_INVALID_PARAMETER,
     ERROR_NOT_ALL_ASSIGNED, FILETIME, GetLastError, HANDLE, LUID, LocalFree, SetLastError,
@@ -36,11 +39,12 @@ use windows_sys::Win32::Security::Authorization::{
 use windows_sys::Win32::Security::{
     ACCESS_ALLOWED_ACE, AdjustTokenPrivileges, AllocateLocallyUniqueId, DACL_SECURITY_INFORMATION,
     DuplicateTokenEx, EqualSid, GetAce, GetLengthSid, GetSecurityDescriptorControl,
-    GetTokenInformation, IsValidSid, LUID_AND_ATTRIBUTES, LookupPrivilegeValueW,
-    OWNER_SECURITY_INFORMATION, QUOTA_LIMITS, SE_ASSIGNPRIMARYTOKEN_NAME, SE_DACL_PROTECTED,
-    SE_INCREASE_QUOTA_NAME, SE_PRIVILEGE_ENABLED, SE_TCB_NAME, SECURITY_ATTRIBUTES,
-    SecurityImpersonation, TOKEN_ADJUST_PRIVILEGES, TOKEN_ALL_ACCESS, TOKEN_PRIVILEGES,
-    TOKEN_QUERY, TOKEN_SOURCE, TOKEN_USER, TokenPrimary, TokenUser,
+    GetSecurityDescriptorDacl, GetSecurityDescriptorOwner, GetTokenInformation,
+    IsValidSecurityDescriptor, IsValidSid, LUID_AND_ATTRIBUTES, LookupPrivilegeValueW,
+    OWNER_SECURITY_INFORMATION, PSECURITY_DESCRIPTOR, QUOTA_LIMITS, SE_ASSIGNPRIMARYTOKEN_NAME,
+    SE_DACL_PROTECTED, SE_INCREASE_QUOTA_NAME, SE_PRIVILEGE_ENABLED, SE_TCB_NAME,
+    SECURITY_ATTRIBUTES, SecurityImpersonation, TOKEN_ADJUST_PRIVILEGES, TOKEN_ALL_ACCESS,
+    TOKEN_PRIVILEGES, TOKEN_QUERY, TOKEN_SOURCE, TOKEN_USER, TokenPrimary, TokenUser,
 };
 use windows_sys::Win32::Storage::FileSystem::{
     BY_HANDLE_FILE_INFORMATION, CreateDirectoryW, FILE_ATTRIBUTE_DIRECTORY,
@@ -52,14 +56,15 @@ use windows_sys::Win32::Storage::FileSystem::{
 };
 use windows_sys::Win32::System::JobObjects::{
     AssignProcessToJobObject, CreateJobObjectW, IsProcessInJob, JOB_OBJECT_LIMIT_ACTIVE_PROCESS,
-    JOBOBJECT_EXTENDED_LIMIT_INFORMATION, JobObjectExtendedLimitInformation, OpenJobObjectW,
-    SetInformationJobObject, TerminateJobObject,
+    JOBOBJECT_BASIC_ACCOUNTING_INFORMATION, JOBOBJECT_EXTENDED_LIMIT_INFORMATION,
+    JobObjectBasicAccountingInformation, JobObjectExtendedLimitInformation, OpenJobObjectW,
+    QueryInformationJobObject, SetInformationJobObject, TerminateJobObject,
 };
 use windows_sys::Win32::System::Pipes::{GetNamedPipeServerProcessId, WaitNamedPipeW};
 use windows_sys::Win32::System::Threading::{
-    CREATE_NO_WINDOW, CREATE_SUSPENDED, CREATE_UNICODE_ENVIRONMENT, CreateProcessAsUserW,
-    GetCurrentProcess, GetProcessId, GetProcessTimes, OpenProcess, OpenProcessToken,
-    PROCESS_INFORMATION, PROCESS_QUERY_LIMITED_INFORMATION, PROCESS_SYNCHRONIZE,
+    CREATE_BREAKAWAY_FROM_JOB, CREATE_NO_WINDOW, CREATE_SUSPENDED, CREATE_UNICODE_ENVIRONMENT,
+    CreateProcessAsUserW, GetCurrentProcess, GetProcessId, GetProcessTimes, OpenProcess,
+    OpenProcessToken, PROCESS_INFORMATION, PROCESS_QUERY_LIMITED_INFORMATION, PROCESS_SYNCHRONIZE,
     QueryFullProcessImageNameW, ResumeThread, STARTUPINFOW, TerminateProcess, WaitForSingleObject,
 };
 use windows_sys::Win32::UI::Shell::GetUserProfileDirectoryW;
@@ -73,6 +78,32 @@ fn system_sid() -> [u32; 3] {
 }
 fn administrators_sid() -> [u32; 4] {
     [0x00000201, 0x05000000, 32, 544]
+}
+
+fn trusted_installer_sid() -> [u32; 8] {
+    [
+        0x00000601, 0x05000000, 80, 956008885, 3418522649, 1831038044, 1853292631, 2271478464,
+    ]
+}
+
+/// @cc [owner:ghuntley,label:security] windows-editor-platform-authority-scope
+/// Only directory ancestry and explicit worker search directories MAY accept
+/// the exact TrustedInstaller service SID as platform servicing authority.
+/// Package leaves MUST remain SYSTEM/Administrators-only; private state MUST
+/// remain SYSTEM-only. A trusted directory owner MUST NOT authorize foreign
+/// write, deletion, reparse traversal or ACL replacement.
+#[derive(Clone, Copy)]
+enum FileAuthority {
+    SystemOnly,
+    Package,
+    Ancestor,
+    WorkerDirectory,
+}
+
+impl FileAuthority {
+    fn platform_servicing(self) -> bool {
+        matches!(self, Self::Ancestor | Self::WorkerDirectory)
+    }
 }
 
 /// Refuse execution unless this broker is running as LocalSystem.
@@ -125,18 +156,16 @@ fn attributes(file: &File) -> Result<u32, Refusal> {
     Ok(information.dwFileAttributes)
 }
 
-fn file_acl(file: &File, system_only: bool, ancestor: bool) -> Result<(), Refusal> {
-    let mut owner = null_mut();
-    let mut dacl = null_mut();
+fn file_acl(file: &File, authority: FileAuthority) -> Result<(), Refusal> {
     let mut descriptor = null_mut();
     if unsafe {
         GetSecurityInfo(
             file.as_raw_handle(),
             windows_sys::Win32::Security::Authorization::SE_FILE_OBJECT,
             OWNER_SECURITY_INFORMATION | DACL_SECURITY_INFORMATION,
-            &mut owner,
             null_mut(),
-            &mut dacl,
+            null_mut(),
+            null_mut(),
             null_mut(),
             &mut descriptor,
         )
@@ -144,63 +173,99 @@ fn file_acl(file: &File, system_only: bool, ancestor: bool) -> Result<(), Refusa
     {
         return Err(Refusal::Custody);
     }
-    let result = (|| {
-        let system = system_sid();
-        let administrators = administrators_sid();
-        let is_system = |sid| unsafe { EqualSid(sid, system.as_ptr().cast_mut().cast()) } != 0;
-        let is_admin =
-            |sid| unsafe { EqualSid(sid, administrators.as_ptr().cast_mut().cast()) } != 0;
-        if owner.is_null()
-            || dacl.is_null()
-            || (system_only && !is_system(owner))
-            || (!system_only && !ancestor && !is_system(owner) && !is_admin(owner))
-        {
-            return Err(Refusal::Custody);
-        }
-        let count = unsafe { (*dacl).AceCount };
-        if count == 0 || count > 128 {
-            return Err(Refusal::Custody);
-        }
-        for index in 0..u32::from(count) {
-            let mut ace = null_mut();
-            if unsafe { GetAce(dacl, index, &mut ace) } == 0 || ace.is_null() {
-                return Err(Refusal::Custody);
-            }
-            let allowed = unsafe { &*ace.cast::<ACCESS_ALLOWED_ACE>() };
-            if allowed.Header.AceType == 1 {
-                continue;
-            } // Denials cannot grant write authority.
-            if allowed.Header.AceType != 0
-                || (allowed.Header.AceSize as usize) < size_of::<ACCESS_ALLOWED_ACE>()
-            {
-                return Err(Refusal::Custody);
-            }
-            if allowed.Header.AceFlags & 8 != 0 {
-                continue;
-            } // INHERIT_ONLY does not apply here.
-            let sid = (&raw const allowed.SidStart).cast_mut().cast();
-            if is_system(sid) {
-                continue;
-            }
-            if system_only {
-                return Err(Refusal::Custody);
-            }
-            if is_admin(sid) {
-                continue;
-            }
-            // A parent may allow creation of unrelated children. It MUST NOT
-            // allow replacing/deleting this already-owned child or its ACL.
-            let write_mask = 0x500d0040 | if ancestor { 0 } else { 0x00000116 };
-            if allowed.Mask & write_mask != 0 {
-                return Err(Refusal::Custody);
-            }
-        }
-        Ok(())
-    })();
+    // SAFETY: GetSecurityInfo returned the owned security descriptor; its
+    // owner and DACL remain valid until LocalFree after validation.
+    let result = unsafe { descriptor_acl(descriptor, authority) };
     unsafe {
         LocalFree(descriptor);
     }
     result
+}
+
+/// Validate only a Windows-owned, live security descriptor. The caller MUST
+/// retain its allocation through this call; arbitrary pointers are forbidden.
+unsafe fn descriptor_acl(
+    descriptor: PSECURITY_DESCRIPTOR,
+    authority: FileAuthority,
+) -> Result<(), Refusal> {
+    if descriptor.is_null() || unsafe { IsValidSecurityDescriptor(descriptor) } == 0 {
+        return Err(Refusal::Custody);
+    }
+    let mut owner = null_mut();
+    let mut dacl = null_mut();
+    let mut owner_defaulted = 0;
+    let mut dacl_present = 0;
+    let mut dacl_defaulted = 0;
+    if unsafe { GetSecurityDescriptorOwner(descriptor, &mut owner, &mut owner_defaulted) } == 0
+        || unsafe {
+            GetSecurityDescriptorDacl(
+                descriptor,
+                &mut dacl_present,
+                &mut dacl,
+                &mut dacl_defaulted,
+            )
+        } == 0
+        || dacl_present == 0
+    {
+        return Err(Refusal::Custody);
+    }
+    let system = system_sid();
+    let administrators = administrators_sid();
+    let trusted_installer = trusted_installer_sid();
+    let system_only = matches!(authority, FileAuthority::SystemOnly);
+    let ancestor = matches!(authority, FileAuthority::Ancestor);
+    let is_system = |sid| unsafe { EqualSid(sid, system.as_ptr().cast_mut().cast()) } != 0;
+    let is_admin = |sid| unsafe { EqualSid(sid, administrators.as_ptr().cast_mut().cast()) } != 0;
+    let is_platform = |sid| {
+        authority.platform_servicing()
+            && unsafe { EqualSid(sid, trusted_installer.as_ptr().cast_mut().cast()) } != 0
+    };
+    if owner.is_null()
+        || dacl.is_null()
+        || (system_only && !is_system(owner))
+        || (!system_only && !is_system(owner) && !is_admin(owner) && !is_platform(owner))
+    {
+        return Err(Refusal::Custody);
+    }
+    let count = unsafe { (*dacl).AceCount };
+    if count == 0 || count > 128 {
+        return Err(Refusal::Custody);
+    }
+    for index in 0..u32::from(count) {
+        let mut ace = null_mut();
+        if unsafe { GetAce(dacl, index, &mut ace) } == 0 || ace.is_null() {
+            return Err(Refusal::Custody);
+        }
+        let allowed = unsafe { &*ace.cast::<ACCESS_ALLOWED_ACE>() };
+        if allowed.Header.AceType == 1 {
+            continue;
+        } // Denials cannot grant write authority.
+        if allowed.Header.AceType != 0
+            || (allowed.Header.AceSize as usize) < size_of::<ACCESS_ALLOWED_ACE>()
+        {
+            return Err(Refusal::Custody);
+        }
+        if allowed.Header.AceFlags & 8 != 0 {
+            continue;
+        } // INHERIT_ONLY does not apply here.
+        let sid = (&raw const allowed.SidStart).cast_mut().cast();
+        if is_system(sid) {
+            continue;
+        }
+        if system_only {
+            return Err(Refusal::Custody);
+        }
+        if is_admin(sid) || is_platform(sid) {
+            continue;
+        }
+        // A parent may allow creation of unrelated children. It MUST NOT
+        // allow replacing/deleting this already-owned child or its ACL.
+        let write_mask = 0x500d0040 | if ancestor { 0 } else { 0x00000116 };
+        if allowed.Mask & write_mask != 0 {
+            return Err(Refusal::Custody);
+        }
+    }
+    Ok(())
 }
 
 fn ancestors(path: &LocalPath) -> Result<(), Refusal> {
@@ -211,7 +276,7 @@ fn ancestors(path: &LocalPath) -> Result<(), Refusal> {
         if attributes(&handle)? & FILE_ATTRIBUTE_DIRECTORY == 0 {
             return Err(Refusal::Custody);
         }
-        file_acl(&handle, false, true)?;
+        file_acl(&handle, FileAuthority::Ancestor)?;
         parent = directory.parent();
     }
     Ok(())
@@ -222,14 +287,30 @@ fn ancestors(path: &LocalPath) -> Result<(), Refusal> {
 /// files with SYSTEM or Administrators ownership and write authority only for
 /// those principals. Every ancestor MUST refuse reparse traversal and foreign
 /// replacement/delete/ACL authority. A caller path or existence alone MUST NOT
-/// establish immutable package custody.
+/// establish immutable package custody. Retained-worker adoption and recovery
+/// MUST recheck executable custody before trusting the retained process.
 pub fn package_file(path: &LocalPath) -> Result<(), Refusal> {
     ancestors(path)?;
     let file = path_handle(path.as_str())?;
     if attributes(&file)? & FILE_ATTRIBUTE_DIRECTORY != 0 {
         return Err(Refusal::Custody);
     }
-    file_acl(&file, false, false)
+    file_acl(&file, FileAuthority::Package)
+}
+
+/// @cc [owner:ghuntley,label:security] windows-editor-path-directory-custody
+/// Every initial worker PATH entry MUST be an existing real directory owned by
+/// SYSTEM, Administrators or the exact Windows TrustedInstaller service SID.
+/// Those principals alone may write it or control ancestor replacement/ACLs;
+/// every component MUST refuse reparse traversal. TrustedInstaller already
+/// controls platform servicing; it MUST NOT gain package-file or receipt trust.
+fn package_directory(path: &LocalPath) -> Result<(), Refusal> {
+    ancestors(path)?;
+    let directory = path_handle(path.as_str())?;
+    if attributes(&directory)? & FILE_ATTRIBUTE_DIRECTORY == 0 {
+        return Err(Refusal::Custody);
+    }
+    file_acl(&directory, FileAuthority::WorkerDirectory)
 }
 
 fn checked_private_directory(path: &LocalPath) -> Result<(), Refusal> {
@@ -238,7 +319,7 @@ fn checked_private_directory(path: &LocalPath) -> Result<(), Refusal> {
     if attributes(&directory)? & FILE_ATTRIBUTE_DIRECTORY == 0 {
         return Err(Refusal::Custody);
     }
-    file_acl(&directory, true, false)
+    file_acl(&directory, FileAuthority::SystemOnly)
 }
 
 /// Create only the final directory under trusted ancestors, with SYSTEM-only ACL.
@@ -303,7 +384,7 @@ pub fn read_private(path: &LocalPath, maximum: usize) -> Result<Vec<u8>, Refusal
     if attributes(&file)? & FILE_ATTRIBUTE_DIRECTORY != 0 {
         return Err(Refusal::Custody);
     }
-    file_acl(&file, true, false)?;
+    file_acl(&file, FileAuthority::SystemOnly)?;
     let mut bytes = Vec::new();
     file.take(maximum as u64 + 1)
         .read_to_end(&mut bytes)
@@ -336,7 +417,7 @@ pub fn read_private_optional(path: &LocalPath, maximum: usize) -> Result<Option<
     if attributes(&file)? & FILE_ATTRIBUTE_DIRECTORY != 0 {
         return Err(Refusal::Custody);
     }
-    file_acl(&file, true, false)?;
+    file_acl(&file, FileAuthority::SystemOnly)?;
     let mut bytes = Vec::new();
     file.take(maximum as u64 + 1)
         .read_to_end(&mut bytes)
@@ -370,7 +451,7 @@ pub fn write_private(path: &LocalPath, bytes: &[u8]) -> Result<(), Refusal> {
             .open(&temporary)
             .map_err(|_| Refusal::Custody)?;
         attributes(&file)?;
-        file_acl(&file, true, false)?;
+        file_acl(&file, FileAuthority::SystemOnly)?;
         file.write_all(bytes)
             .and_then(|()| file.sync_all())
             .map_err(|_| Refusal::Custody)?;
@@ -773,6 +854,44 @@ fn system_job(job: &OwnedHandle) -> Result<(), Refusal> {
     result
 }
 
+/// @cc [owner:ghuntley,label:security;recovery] windows-editor-complete-owned-job-stop
+/// Stopping a proven SYSTEM-owned worker job MUST wait at most five seconds
+/// for all of its descendants to exit. A missing retained root process MUST
+/// NOT leave owned descendants behind, and failed termination/accounting MUST
+/// refuse replacement. Foreign or incompletely identified jobs MUST NOT reach
+/// this operation.
+fn stop_owned_job(job: &OwnedHandle) -> Result<(), Refusal> {
+    system_job(job)?;
+    if unsafe { TerminateJobObject(raw(job), 1) } == 0 {
+        return Err(Refusal::Startup);
+    }
+    let deadline = Instant::now() + Duration::from_secs(5);
+    loop {
+        let mut accounting: JOBOBJECT_BASIC_ACCOUNTING_INFORMATION = unsafe { zeroed() };
+        let mut returned = 0;
+        if unsafe {
+            QueryInformationJobObject(
+                raw(job),
+                JobObjectBasicAccountingInformation,
+                (&raw mut accounting).cast(),
+                size_of_val(&accounting) as u32,
+                &mut returned,
+            )
+        } == 0
+            || returned as usize != size_of_val(&accounting)
+        {
+            return Err(Refusal::Startup);
+        }
+        if accounting.ActiveProcesses == 0 {
+            return Ok(());
+        }
+        if Instant::now() >= deadline {
+            return Err(Refusal::Startup);
+        }
+        thread::sleep(Duration::from_millis(10));
+    }
+}
+
 fn process_identity(process: &OwnedHandle) -> Result<ProcessIdentity, Refusal> {
     let mut created: FILETIME = unsafe { zeroed() };
     let mut exit: FILETIME = unsafe { zeroed() };
@@ -831,7 +950,7 @@ pub struct Package {
     pub node: LocalPath,
     pub server: LocalPath,
     pub system_root: LocalPath,
-    pub worker_path: String,
+    pub worker_path: WorkerPath,
     pub extra_ca_certs: LocalPath,
 }
 
@@ -849,16 +968,15 @@ impl Worker {
     /// Launch MUST verify the current local and S4U token SID, create the exact
     /// configured executable directly with no inherited handles, and assign its
     /// suspended process to a new SYSTEM-only job before resume. Failure MUST
-    /// terminate the child. Broker handle closure MUST NOT end a resumed worker.
+    /// terminate the child. Launch MUST request breakaway from the broker's
+    /// service job and refuse if that job prevents independence. Broker handle
+    /// closure or termination MUST NOT end a resumed worker.
     pub fn launch(identity: WorkerIdentity, package: &Package) -> Result<Self, Refusal> {
         package_file(&package.node)?;
         package_file(&package.server)?;
         package_file(&package.extra_ca_certs)?;
-        if package.worker_path.is_empty()
-            || package.worker_path.len() > 4096
-            || package.worker_path.contains(['\0', '\r', '\n'])
-        {
-            return Err(Refusal::Package);
+        for directory in package.worker_path.directories() {
+            package_directory(directory)?;
         }
         privilege(SE_ASSIGNPRIMARYTOKEN_NAME)?;
         privilege(SE_INCREASE_QUOTA_NAME)?;
@@ -887,7 +1005,7 @@ impl Worker {
             ("USERNAME", identity.username().to_owned()),
             ("SystemRoot", package.system_root.as_str().to_owned()),
             ("WINDIR", package.system_root.as_str().to_owned()),
-            ("PATH", package.worker_path.clone()),
+            ("PATH", package.worker_path.as_str().to_owned()),
             ("APPDATA", format!(r"{}\AppData\Roaming", home.as_str())),
             ("LOCALAPPDATA", format!(r"{}\AppData\Local", home.as_str())),
             (
@@ -929,7 +1047,10 @@ impl Worker {
                 null(),
                 null(),
                 0,
-                CREATE_SUSPENDED | CREATE_UNICODE_ENVIRONMENT | CREATE_NO_WINDOW,
+                CREATE_SUSPENDED
+                    | CREATE_UNICODE_ENVIRONMENT
+                    | CREATE_NO_WINDOW
+                    | CREATE_BREAKAWAY_FROM_JOB,
                 environment.as_ptr().cast(),
                 directory.as_ptr(),
                 &startup,
@@ -981,6 +1102,10 @@ impl Worker {
         expected: ProcessIdentity,
         executable: LocalPath,
     ) -> Result<Self, Refusal> {
+        if expected.pid == 0 || expected.created == 0 {
+            return Err(Refusal::Custody);
+        }
+        package_file(&executable)?;
         if resolve_account(identity_uid(&identity)?, identity.username())? != *identity.sid() {
             return Err(Refusal::Account);
         }
@@ -1015,12 +1140,17 @@ impl Worker {
     }
 
     /// Reopen a retained worker, distinguishing a conclusively absent process
-    /// from a PID-reused or foreign process. Only the former returns `None`.
+    /// from a PID-reused or foreign process. Only the former returns `None`,
+    /// after any proven SYSTEM-owned job descendants have been stopped.
     pub fn recover(
         identity: WorkerIdentity,
         expected: ProcessIdentity,
         executable: LocalPath,
     ) -> Result<Option<Self>, Refusal> {
+        if expected.pid == 0 || expected.created == 0 {
+            return Err(Refusal::Custody);
+        }
+        package_file(&executable)?;
         if resolve_account(identity_uid(&identity)?, identity.username())? != *identity.sid() {
             return Err(Refusal::Account);
         }
@@ -1060,13 +1190,24 @@ impl Worker {
         };
         if process.is_null() {
             return match unsafe { GetLastError() } {
-                ERROR_INVALID_PARAMETER => Ok(None),
+                ERROR_INVALID_PARAMETER => {
+                    stop_owned_job(&job)?;
+                    Ok(None)
+                }
                 _ => Err(Refusal::Custody),
             };
         }
         let process = owned(process, Refusal::Custody)?;
         if process_identity(&process)? != expected {
             return Err(Refusal::Custody);
+        }
+        match unsafe { WaitForSingleObject(raw(&process), 0) } {
+            WAIT_OBJECT_0 => {
+                stop_owned_job(&job)?;
+                return Ok(None);
+            }
+            windows_sys::Win32::Foundation::WAIT_TIMEOUT => {}
+            _ => return Err(Refusal::Custody),
         }
         verify_peer(&identity, expected, &peer(&process, &job, &executable)?)?;
         Ok(Some(Self {
@@ -1082,13 +1223,13 @@ impl Worker {
     /// exact and the process is still in the verified named job.
     pub fn is_running(&self) -> Result<bool, Refusal> {
         let observed = process_identity(&self.process)?;
-        if observed != self.process_identity
-            || unsafe {
-                WaitForSingleObject(raw(&self.process), 0)
-                    != windows_sys::Win32::Foundation::WAIT_TIMEOUT
-            }
-        {
-            return Ok(false);
+        if observed != self.process_identity {
+            return Err(Refusal::Custody);
+        }
+        match unsafe { WaitForSingleObject(raw(&self.process), 0) } {
+            WAIT_OBJECT_0 => return Ok(false),
+            windows_sys::Win32::Foundation::WAIT_TIMEOUT => {}
+            _ => return Err(Refusal::Custody),
         }
         verify_peer(
             &self.identity,
@@ -1105,6 +1246,7 @@ impl Worker {
     /// server cannot impersonate the LocalSystem broker. Failure closes the
     /// connection without killing or deleting the possible server.
     pub fn connect(&self) -> Result<Pipe, Refusal> {
+        let reservation = Pipe::reserve().map_err(|_| Refusal::Capacity)?;
         let pipe_name = wide(&self.identity.pipe_name());
         if unsafe { WaitNamedPipeW(pipe_name.as_ptr(), 2_000) } == 0 {
             return Err(Refusal::Readiness);
@@ -1126,22 +1268,124 @@ impl Worker {
             self.process_identity,
             &peer(&self.process, &self.job, &self.executable)?,
         )?;
-        Pipe::from_file(pipe).map_err(|_| Refusal::Readiness)
+        Pipe::from_file(pipe, reservation).map_err(|_| Refusal::Readiness)
     }
 
     /// End only the verified job; personal profile/workspace files are untouched.
     pub fn terminate(&self) -> Result<(), Refusal> {
         system_job(&self.job)?;
-        verify_peer(
-            &self.identity,
-            self.process_identity,
-            &peer(&self.process, &self.job, &self.executable)?,
-        )?;
-        if unsafe { TerminateJobObject(raw(&self.job), 1) } == 0
-            || unsafe { WaitForSingleObject(raw(&self.process), 5000) } != WAIT_OBJECT_0
-        {
-            return Err(Refusal::Startup);
+        if process_identity(&self.process)? != self.process_identity {
+            return Err(Refusal::Custody);
         }
-        Ok(())
+        match unsafe { WaitForSingleObject(raw(&self.process), 0) } {
+            windows_sys::Win32::Foundation::WAIT_TIMEOUT => {
+                verify_peer(
+                    &self.identity,
+                    self.process_identity,
+                    &peer(&self.process, &self.job, &self.executable)?,
+                )?;
+            }
+            // Both retained handles were verified when this Worker was built;
+            // a dead root cannot erase custody of its remaining descendants.
+            WAIT_OBJECT_0 => {}
+            _ => return Err(Refusal::Custody),
+        }
+        stop_owned_job(&self.job)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const TRUSTED_INSTALLER: &str =
+        "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464";
+
+    fn check_descriptor(sddl: &str, authority: FileAuthority) -> Result<(), Refusal> {
+        let mut descriptor = null_mut();
+        assert_ne!(
+            unsafe {
+                ConvertStringSecurityDescriptorToSecurityDescriptorW(
+                    wide(sddl).as_ptr(),
+                    1,
+                    &mut descriptor,
+                    null_mut(),
+                )
+            },
+            0
+        );
+        // SAFETY: this descriptor is owned by this fixture and retained until
+        // the same production validator has finished reading its owner/DACL.
+        let result = unsafe { descriptor_acl(descriptor, authority) };
+        unsafe {
+            LocalFree(descriptor);
+        }
+        result
+    }
+
+    #[test]
+    fn native_platform_authority_is_scoped_to_directories_and_ancestors() {
+        let platform = format!(
+            "O:{TRUSTED_INSTALLER}G:SYD:P(A;;FA;;;SY)(A;;FA;;;{TRUSTED_INSTALLER})(A;;GR;;;BU)"
+        );
+        for authority in [FileAuthority::Ancestor, FileAuthority::WorkerDirectory] {
+            assert_eq!(check_descriptor(&platform, authority), Ok(()));
+        }
+        for authority in [FileAuthority::Package, FileAuthority::SystemOnly] {
+            assert_eq!(
+                check_descriptor(&platform, authority),
+                Err(Refusal::Custody)
+            );
+        }
+        let inherited_platform =
+            format!("O:BAG:SYD:P(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;{TRUSTED_INSTALLER})(A;;GR;;;BU)");
+        assert_eq!(
+            check_descriptor(&inherited_platform, FileAuthority::WorkerDirectory),
+            Ok(())
+        );
+        assert_eq!(
+            check_descriptor(&inherited_platform, FileAuthority::Package),
+            Err(Refusal::Custody)
+        );
+        let foreign_service = platform.replace("-2271478464", "-2271478465");
+        for authority in [FileAuthority::Ancestor, FileAuthority::WorkerDirectory] {
+            assert_eq!(
+                check_descriptor(&foreign_service, authority),
+                Err(Refusal::Custody)
+            );
+        }
+    }
+
+    #[test]
+    fn native_directory_custody_refuses_foreign_owners_and_write_authority() {
+        for authority in [FileAuthority::Ancestor, FileAuthority::WorkerDirectory] {
+            for descriptor in [
+                "O:LSG:SYD:P(A;;FA;;;SY)",
+                "O:SYG:SYD:P(A;;FA;;;SY)(A;;GW;;;BU)",
+                "O:SYG:SYD:P(A;;FA;;;SY)(A;;WD;;;BU)",
+                "O:SYG:SYD:P(A;;FA;;;SY)(A;;0x00000040;;;BU)",
+                "O:SYG:SY",
+                "O:SYG:SYD:P",
+            ] {
+                assert_eq!(
+                    check_descriptor(descriptor, authority),
+                    Err(Refusal::Custody),
+                    "{descriptor}"
+                );
+            }
+        }
+        let unrelated_children = "O:SYG:SYD:P(A;;FA;;;SY)(A;;0x00000006;;;BU)";
+        assert_eq!(
+            check_descriptor(unrelated_children, FileAuthority::Ancestor),
+            Ok(())
+        );
+        assert_eq!(
+            check_descriptor(unrelated_children, FileAuthority::WorkerDirectory),
+            Err(Refusal::Custody)
+        );
+        assert_eq!(
+            check_descriptor("O:SYG:SYD:P(A;;FA;;;SY)", FileAuthority::SystemOnly),
+            Ok(())
+        );
     }
 }

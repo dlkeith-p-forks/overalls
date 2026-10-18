@@ -435,7 +435,9 @@ it does not widen the guest capability table or establish a native editor run.
 - A Windows browser editor remains outside this decision. Any proposal must add
   a reviewed Windows image/editor package, agent and protocol contract, broker
   admission and native browser sign-in/edit/readback/recovery evidence before
-  changing the capability table.
+  changing the capability table. [ADR-0200](0200-windows-browser-editor-candidate.md)
+  accepts that candidate in the separate `windows-editor-v1` namespace without
+  activating supersession or changing the existing false editor capability.
 
 ## Related decisions
 

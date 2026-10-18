@@ -38,6 +38,7 @@ let
     recipe = builtins.hashFile "sha256" ./windows-source.nix;
     build = builtins.hashFile "sha256" ./windows-build.ps1;
     preparation = builtins.hashFile "sha256" ./prepare-windows.mts;
+    npmDirectories = builtins.hashFile "sha256" ./npm-directories.json;
     runtime = toString runtime;
     nodeHeaders = toString nodeHeaders;
     nodeLibrary = toString nodeLibrary;
@@ -79,7 +80,7 @@ let
       policy = { builtInAI = "disabled"; workspaceTrust = "disabled"; };
       configurationDefaults = {
         "rust-analyzer.server.path" = "rust-analyzer";
-        "elixirLS.languageServerOverridePath" = "C:/overalls/editor-built/project-language-adapters";
+        "elixirLS.languageServerOverridePath" = "C:/overalls/editor/project-language-adapters";
         "workbench.startupEditor" = "none";
         "workbench.welcomePage.walkthroughs.openOnInstall" = false;
       };
@@ -116,7 +117,7 @@ pkgs.stdenvNoCC.mkDerivation {
     cp ${electronTypes} .build/typings/electron.d.ts
   '';
   installPhase = ''
-    mkdir -p "$out/source" "$out/node" "$out/python" "$out/headers/x64" "$out/ripgrep"
+    mkdir -p "$out/source" "$out/node" "$out/python" "$out/headers/x64" "$out/headers/Release" "$out/ripgrep"
     cp -R . "$out/source/"
     cp -R ${npmCache} "$out/npm-cache"
     unzip -q ${nodeArchive} -d "$TMPDIR/node"
@@ -129,6 +130,7 @@ import site
 EOF_PYTHON
     tar -xf ${nodeHeaders} --strip-components=1 -C "$out/headers"
     cp ${nodeLibrary} "$out/headers/x64/node.lib"
+    cp ${nodeLibrary} "$out/headers/Release/node.lib"
     cp ${runtime}/bin/rg.exe "$out/ripgrep/rg.exe"
     cp ${./windows-build.ps1} "$out/windows-build.ps1"
     cp ${./prepare-windows.mts} "$out/prepare-windows.mts"
