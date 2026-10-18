@@ -358,7 +358,17 @@ execution epoch and generation once a placement stopped, while the fixture
 executor binds a stop to that exact boot, so every stop was deferred until the
 driver gave up and later cycles found the slot held. The inventory now reports
 the stopped boot tuple from its stop record, and the driver submits a final
-stop on every exit after admission.
+stop on every exit after admission. Run `23988c965cff394cc43e5a8553dc12b0-65-0`
+logged per-dimension gap reasons: most cycles stopped at
+`compute_catalog_unavailable` because each operator request boots a fresh
+Marshall BEAM whose cold TLS pool missed the production 3 s handshake under
+injected latency, so the evaluation crashed before reaching Compute; a lost
+final stop then left the single slot occupied (`capacity_insufficient_vcpu`).
+Operator request evaluations now use a harness-only small pool with longer
+connect, handshake and queue budgets, reads and `request_key`-idempotent
+provision and lifecycle evaluations retry a crashed attempt, the final stop is
+resubmitted with one request key, and the driver waits up to 120 s for a reply.
+Production Repo settings and the long-lived Marshall nodes are unchanged.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The
@@ -867,6 +877,9 @@ Lilly's canonical-pin full precommit passed 610 tests, Covenant 15/15 and forced
 Dialyzer with zero errors before these count repairs. Final repaired-source
 consumer gates remain pending. The full Lyra Nix gate passed in 224 seconds;
 that host/target verification is separate from native guest growth execution.
+Both actual-host NixOS toplevel source builds passed in 691 seconds with the
+canonical locks and native-growth correction. Their release/build closure is
+separate from later handbook-only rebuilds, deployment and live guest readiness.
 The [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.

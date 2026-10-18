@@ -23,11 +23,16 @@ if [[ ! -e "$control/lilly-a-credential.json" ]]; then
   mv "$control/.lilly-a-credential.json.new" "$control/lilly-a-credential.json"
 fi
 fixture="$control/fixture.json"
-fixture_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/overalls/operator/fixture.ex"); OverallsAntithesis.Fixture.main(System.argv())'
-compute_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/compute.ex"); OverallsAntithesis.Compute.main(System.argv())'
-terminal_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/terminal.ex"); OverallsAntithesis.Terminal.main(System.argv())'
-integration_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/integrations.ex"); OverallsAntithesis.Integrations.main(System.argv())'
-guest_witness_eval='Application.put_env(:marshall, :operator_mode, true); {:ok, _} = Application.ensure_all_started(:marshall); Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/guest_witness.ex"); OverallsAntithesis.GuestWitness.main(System.argv())'
+# Each request boots a fresh Marshall BEAM whose TLS pool must connect under
+# injected network latency. Harness-only: request evaluations get a small pool
+# with longer connect/handshake/queue budgets; production Repo config and the
+# long-lived Marshall nodes are unchanged.
+operator_boot='Application.put_env(:marshall, :operator_mode, true); Application.put_env(:marshall, Marshall.Repo, Keyword.merge(Application.get_env(:marshall, Marshall.Repo) || [], pool_size: 2, connect_timeout: 15_000, handshake_timeout: 15_000, queue_target: 2_000, queue_interval: 10_000)); {:ok, _} = Application.ensure_all_started(:marshall);'
+fixture_eval="$operator_boot"' Code.require_file("/opt/overalls/operator/fixture.ex"); OverallsAntithesis.Fixture.main(System.argv())'
+compute_eval="$operator_boot"' Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/compute.ex"); OverallsAntithesis.Compute.main(System.argv())'
+terminal_eval="$operator_boot"' Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/terminal.ex"); OverallsAntithesis.Terminal.main(System.argv())'
+integration_eval="$operator_boot"' Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/integrations.ex"); OverallsAntithesis.Integrations.main(System.argv())'
+guest_witness_eval="$operator_boot"' Code.require_file("/opt/overalls/operator/fixture.ex"); Code.require_file("/opt/overalls/operator/guest_witness.ex"); OverallsAntithesis.GuestWitness.main(System.argv())'
 bootstrap_marker="$control/fixture-bootstrap.started"
 if [[ ! -e "$fixture" ]]; then
   [[ ! -e "$bootstrap_marker" ]] || {
@@ -471,7 +476,21 @@ process_domain_action() {
   }
   sync -f "$marker" "$channel/state"
   temporary=$(mktemp "$channel/results/.$request_id.XXXXXXXX")
-  if ! "$release" eval "$evaluation" "$operation" "$fixture" "$request" "$temporary" >/dev/null 2>&1 ||
+  # Reads and request_key-idempotent Compute mutations may retry an evaluation
+  # that crashed (typically a cold pool that never connected); every other
+  # action, including one-shot faults, runs once.
+  local attempts=1 attempt evaluated=0
+  case "$operation" in
+    compute.catalog|compute.get|compute.operation|compute.list|compute.list_access|compute.provision|compute.lifecycle) attempts=3 ;;
+  esac
+  for ((attempt = 1; attempt <= attempts; attempt++)); do
+    if "$release" eval "$evaluation" "$operation" "$fixture" "$request" "$temporary" >/dev/null 2>&1; then
+      evaluated=1
+      break
+    fi
+    ((attempt == attempts)) || sleep 2
+  done
+  if [[ "$evaluated" != 1 ]] ||
       ! jq -e --arg id "$request_id" --arg op "$operation" \
         'type == "object" and .version == 1 and .request_id == $id and .operation == $op and ((.status == "ok" and (keys == ["operation","request_id","status","value","version"])) or ((.status == "error" or .status == "unavailable") and (keys == ["operation","reason","request_id","status","version"]) and (.reason | type == "string" and length >= 1 and length <= 100)))' \
         "$temporary" >/dev/null 2>&1; then

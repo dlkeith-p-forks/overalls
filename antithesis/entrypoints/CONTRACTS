@@ -25,8 +25,12 @@ named fixture actions. Host rotation MUST use Marshall's reviewed rotate and
 verify CLI and publish an issued result only after verifying the private output
 and reading committed host generation. Fixture actions MUST use their reviewed
 Ash coordinators with a fresh stored synthetic login and real passkey assertion.
-A failed or ambiguous operation MUST NOT be retried automatically or reported
-as applied. Fixture bootstrap MUST mark its start durably before the first
+A failed or ambiguous mutation MUST NOT be retried automatically or reported
+as applied, except that a crashed evaluation MAY retry an exact read request or
+the same request-key-idempotent compute.provision/compute.lifecycle request,
+with at most three total evaluation attempts. One-shot faults and all other
+mutations MUST run once; an unconfirmed retry MUST remain uncertain. Fixture
+bootstrap MUST mark its start durably before the first
 account mutation; if it fails before manifest publication, restart MUST refuse
 the partial fixture rather than silently create more credentials.
 

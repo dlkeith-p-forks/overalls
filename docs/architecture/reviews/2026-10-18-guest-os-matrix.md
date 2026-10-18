@@ -257,6 +257,11 @@ use ordinary ExUnit declarations tagged `:hegel`, retaining their one existing
 generated check, all generators, fixtures and oracles. These consumer repairs
 change no production behavior, transport or authorization interface.
 
+Both actual-host NixOS toplevel source builds subsequently passed in 691
+seconds with the canonical dependency locks and native-growth correction. This
+establishes release/build closure for those source inputs, separate from later
+handbook-only rebuilds, deployment, live readiness and guest runtime acceptance.
+
 The handbook unknown-ID property separately corrects a discarded compatibility
 filter: a bounded UTF-8 generator actually excludes listed chapter IDs, draws
 silently through the native test-case boundary and checks direct/traversal
