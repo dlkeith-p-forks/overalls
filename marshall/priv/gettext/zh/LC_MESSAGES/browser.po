@@ -14,204 +14,204 @@ msgstr "\nPlural-Forms: nplurals=1; plural=0;\nLanguage: zh\n"
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
 msgid "%{count}d ago"
-msgstr ""
+msgstr "%{count}天前"
 
 #: lib/marshall_web/browser_messages.ex:12
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
-msgstr ""
+msgstr "%{count}小时前"
 
 #: lib/marshall_web/browser_messages.ex:13
 #, elixir-autogen, elixir-format
 msgid "%{count}m ago"
-msgstr ""
+msgstr "%{count}分钟前"
 
 #: lib/marshall_web/browser_messages.ex:14
 #, elixir-autogen, elixir-format
 msgid "%{label} copied."
-msgstr ""
+msgstr "已复制%{label}。"
 
 #: lib/marshall_web/browser_messages.ex:9
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing"
-msgstr ""
+msgstr "%{name} · %{count}人查看"
 
 #: lib/marshall_web/browser_messages.ex:10
 #, elixir-autogen, elixir-format
 msgid "%{name} · %{count} viewing · %{activity}"
-msgstr ""
+msgstr "%{name} · %{count}人查看 · %{activity}"
 
 #: lib/marshall_web/browser_messages.ex:8
 #, elixir-autogen, elixir-format
 msgid "%{name} · Terminals"
-msgstr ""
+msgstr "%{name} · 终端"
 
 #: lib/marshall_web/browser_messages.ex:15
 #, elixir-autogen, elixir-format
 msgid "+ New"
-msgstr ""
+msgstr "+ 新建"
 
 #: lib/marshall_web/browser_messages.ex:16
 #, elixir-autogen, elixir-format
 msgid "Applying administrative change…"
-msgstr ""
+msgstr "正在应用管理更改…"
 
 #: lib/marshall_web/browser_messages.ex:17
 #, elixir-autogen, elixir-format
 msgid "Boot log · read-only"
-msgstr ""
+msgstr "启动日志 · 只读"
 
 #: lib/marshall_web/browser_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "Close this terminal session?"
-msgstr ""
+msgstr "关闭此终端会话？"
 
 #: lib/marshall_web/browser_messages.ex:19
 #, elixir-autogen, elixir-format
 msgid "Command"
-msgstr ""
+msgstr "命令"
 
 #: lib/marshall_web/browser_messages.ex:20
 #, elixir-autogen, elixir-format
 msgid "Could not copy. Select the text and copy it manually."
-msgstr ""
+msgstr "无法复制。请选择文本并手动复制。"
 
 #: lib/marshall_web/browser_messages.ex:21
 #, elixir-autogen, elixir-format
 msgid "Could not update access. Check the account's machine access."
-msgstr ""
+msgstr "无法更新访问权限。请检查帐户的机器访问权限。"
 
 #: lib/marshall_web/browser_messages.ex:22
 #, elixir-autogen, elixir-format
 msgid "Design diagram; explanation follows in the handbook"
-msgstr ""
+msgstr "设计图；说明见手册"
 
 #: lib/marshall_web/browser_messages.ex:23
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
-msgstr ""
+msgstr "进入全屏"
 
 #: lib/marshall_web/browser_messages.ex:24
 #, elixir-autogen, elixir-format
 msgid "Exit full screen"
-msgstr ""
+msgstr "退出全屏"
 
 #: lib/marshall_web/browser_messages.ex:25
 #, elixir-autogen, elixir-format
 msgid "Input buffer full — that input was not sent"
-msgstr ""
+msgstr "输入缓冲区已满——该输入未发送"
 
 #: lib/marshall_web/browser_messages.ex:26
 #, elixir-autogen, elixir-format
 msgid "Match found"
-msgstr ""
+msgstr "找到匹配项"
 
 #: lib/marshall_web/browser_messages.ex:27
 #, elixir-autogen, elixir-format
 msgid "No matches"
-msgstr ""
+msgstr "无匹配项"
 
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr ""
+msgstr "打开此链接？\n\n%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
 msgid "Opening…"
-msgstr ""
+msgstr "正在打开…"
 
 #: lib/marshall_web/browser_messages.ex:30
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled. You can try again."
-msgstr ""
+msgstr "通行密钥请求已取消。您可以重试。"
 
 #: lib/marshall_web/browser_messages.ex:31
 #, elixir-autogen, elixir-format
 msgid "Passkey verification failed or unavailable. Try again."
-msgstr ""
+msgstr "通行密钥验证失败或不可用。请重试。"
 
 #: lib/marshall_web/browser_messages.ex:32
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
-msgstr ""
+msgstr "终端名称（仅此浏览器；留空可恢复生成的名称）"
 
 #: lib/marshall_web/browser_messages.ex:33
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
-msgstr ""
+msgstr "无法确认结果。请重新加载页面并在重试前检查结果。"
 
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr ""
+msgstr "此机器请求将 %{bytes} 字节写入剪贴板。请输入一次、会话或静音。"
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
 msgid "This repository link could not be launched. Open the link again."
-msgstr ""
+msgstr "无法打开此仓库链接。请再次打开链接。"
 
 #: lib/marshall_web/browser_messages.ex:36
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
-msgstr ""
+msgstr "输入以交互"
 
 #: lib/marshall_web/browser_messages.ex:37
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
-msgstr ""
+msgstr "正在更新查看权限…"
 
 #: lib/marshall_web/browser_messages.ex:38
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
-msgstr ""
+msgstr "验证未完成。请重试。"
 
 #: lib/marshall_web/browser_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
-msgstr ""
+msgstr "使用通行密钥验证以%{action}。验证后仅运行一次。"
 
 #: lib/marshall_web/browser_messages.ex:40
 #, elixir-autogen, elixir-format
 msgid "View only"
-msgstr ""
+msgstr "仅查看"
 
 #: lib/marshall_web/browser_messages.ex:41
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
-msgstr ""
+msgstr "查看权限已更新。"
 
 #: lib/marshall_web/browser_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
-msgstr ""
+msgstr "正在等待您的通行密钥…"
 
 #: lib/marshall_web/browser_messages.ex:43
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
-msgstr ""
+msgstr "完成此管理更改"
 
 #: lib/marshall_web/browser_messages.ex:44
 #, elixir-autogen, elixir-format
 msgid "just now"
-msgstr ""
+msgstr "刚刚"
 
 #: lib/marshall_web/browser_messages.ex:45
 #, elixir-autogen, elixir-format
 msgid "● live"
-msgstr ""
+msgstr "● 实时"
 
 #: lib/marshall_web/browser_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "● read-only"
-msgstr ""
+msgstr "● 只读"
 
 #: lib/marshall_web/browser_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
-msgstr ""
+msgstr "⟳ 正在重新连接…"
 
 #: lib/marshall_web/browser_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
-msgstr ""
+msgstr "⟳ 正在恢复滚动内容…"

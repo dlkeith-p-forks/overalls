@@ -117,6 +117,15 @@ defmodule Lilly.VM.Unit do
     end
   end
 
+  @doc "Force-terminate a paused service after its checkpoint is durably sealed."
+  @spec kill_paused(Spec.t()) :: :ok | {:error, atom()}
+  def kill_paused(spec) do
+    case Command.run(:systemctl, ["kill", "--kill-who=all", "--signal=KILL", name(spec)], 5000) do
+      {:ok, _} -> await_stopped(spec, System.monotonic_time(:millisecond) + 5000)
+      error -> error
+    end
+  end
+
   defp stop_result(spec) do
     case status(spec) do
       {:ok, :stopped} ->

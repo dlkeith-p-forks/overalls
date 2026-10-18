@@ -54,962 +54,962 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:38
 #, elixir-autogen, elixir-format
 msgid "# Accounts and access control"
-msgstr ""
+msgstr "# アカウントとアクセス制御"
 
 #: lib/marshall/documentation_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "# Agent threads and tools"
-msgstr ""
+msgstr "# エージェントのスレッドとツール"
 
 #: lib/marshall/documentation_messages.ex:40
 #, elixir-autogen, elixir-format
 msgid "# Ash business domains"
-msgstr ""
+msgstr "# アッシュの事業ドメイン"
 
 #: lib/marshall/documentation_messages.ex:41
 #, elixir-autogen, elixir-format
 msgid "# Automation"
-msgstr ""
+msgstr "# オートメーション"
 
 #: lib/marshall/documentation_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "# Backup and recovery"
-msgstr ""
+msgstr "# バックアップとリカバリ"
 
 #: lib/marshall/documentation_messages.ex:43
 #, elixir-autogen, elixir-format
 msgid "# Browser editors, terminals, SSH, and management"
-msgstr ""
+msgstr "# ブラウザエディタ、ターミナル、SSH、および管理"
 
 #: lib/marshall/documentation_messages.ex:44
 #, elixir-autogen, elixir-format
 msgid "# Browser extension"
-msgstr ""
+msgstr "# ブラウザ拡張機能"
 
 #: lib/marshall/documentation_messages.ex:45
 #, elixir-autogen, elixir-format
 msgid "# Command reference"
-msgstr ""
+msgstr "# コマンドリファレンス"
 
 #: lib/marshall/documentation_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "# Control plane and durable authority"
-msgstr ""
+msgstr "# コントロールプレーンと永続的な権限"
 
 #: lib/marshall/documentation_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "# Deployment topology"
-msgstr ""
+msgstr "# 展開トポロジ"
 
 #: lib/marshall/documentation_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "# Getting started"
-msgstr ""
+msgstr "# はじめる"
 
 #: lib/marshall/documentation_messages.ex:49
 #, elixir-autogen, elixir-format
 msgid "# Guest systems and images"
-msgstr ""
+msgstr "# ゲスト システムとイメージ"
 
 #: lib/marshall/documentation_messages.ex:50
 #, elixir-autogen, elixir-format
 msgid "# Installation and deployment"
-msgstr ""
+msgstr "# インストールと展開"
 
 #: lib/marshall/documentation_messages.ex:51
 #, elixir-autogen, elixir-format
 msgid "# Machine lifecycle"
-msgstr ""
+msgstr "# マシンのライフサイクル"
 
 #: lib/marshall/documentation_messages.ex:52
 #, elixir-autogen, elixir-format
 msgid "# Monitoring and troubleshooting"
-msgstr ""
+msgstr "# 監視とトラブルシューティング"
 
 #: lib/marshall/documentation_messages.ex:53
 #, elixir-autogen, elixir-format
 msgid "# Networking, ingress, and certificates"
-msgstr ""
+msgstr "# ネットワーキング、イングレス、および証明書"
 
 #: lib/marshall/documentation_messages.ex:54
 #, elixir-autogen, elixir-format
 msgid "# Nix cache trust and fallback"
-msgstr ""
+msgstr "# Nix キャッシュの信頼とフォールバック"
 
 #: lib/marshall/documentation_messages.ex:55
 #, elixir-autogen, elixir-format
 msgid "# NixOS machine configuration"
-msgstr ""
+msgstr "# NixOS マシン構成"
 
 #: lib/marshall/documentation_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "# NixOS option reference"
-msgstr ""
+msgstr "# NixOS オプションのリファレンス"
 
 #: lib/marshall/documentation_messages.ex:57
 #, elixir-autogen, elixir-format
 msgid "# Overalls documentation"
-msgstr ""
+msgstr "# オーバーオールのドキュメント"
 
 #: lib/marshall/documentation_messages.ex:58
 #, elixir-autogen, elixir-format
 msgid "# Resize, clone, and relocation"
-msgstr ""
+msgstr "# サイズ変更、複製、再配置"
 
 #: lib/marshall/documentation_messages.ex:59
 #, elixir-autogen, elixir-format
 msgid "# Routine operations"
-msgstr ""
+msgstr "# 日常業務"
 
 #: lib/marshall/documentation_messages.ex:60
 #, elixir-autogen, elixir-format
 msgid "# Security boundaries and sensitive operations"
-msgstr ""
+msgstr "# セキュリティ境界と機密性の高い操作"
 
 #: lib/marshall/documentation_messages.ex:61
 #, elixir-autogen, elixir-format
 msgid "# Storage and capacity"
-msgstr ""
+msgstr "# ストレージと容量"
 
 #: lib/marshall/documentation_messages.ex:62
 #, elixir-autogen, elixir-format
 msgid "# Supporting services"
-msgstr ""
+msgstr "# サポートサービス"
 
 #: lib/marshall/documentation_messages.ex:63
 #, elixir-autogen, elixir-format
 msgid "# System overview"
-msgstr ""
+msgstr "# システム概要"
 
 #: lib/marshall/documentation_messages.ex:64
 #, elixir-autogen, elixir-format
 msgid "# User scenarios and test gaps"
-msgstr ""
+msgstr "# ユーザーシナリオとテストギャップ"
 
 #: lib/marshall/documentation_messages.ex:65
 #, elixir-autogen, elixir-format
 msgid "# Verification and reference"
-msgstr ""
+msgstr "# 検証と参照"
 
 #: lib/marshall/documentation_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "## A gateway creates and reads an authenticated SSH session through either control adapter"
-msgstr ""
+msgstr "## ゲートウェイは、いずれかの制御アダプタを介して認証された SSH セッションを作成および読み取ります。"
 
 #: lib/marshall/documentation_messages.ex:70
 #, elixir-autogen, elixir-format
 msgid "## A service binds its authenticated control socket before exchanging work or heartbeats"
-msgstr ""
+msgstr "## サービスは、作業またはハートビートを交換する前に、認証された制御ソケットをバインドします。"
 
 #: lib/marshall/documentation_messages.ex:74
 #, elixir-autogen, elixir-format
 msgid "## A service settles its pending control requests and recovers capacity after connection loss"
-msgstr ""
+msgstr "## サービスは保留中の制御リクエストを解決し、接続が失われた後に容量を回復します"
 
 #: lib/marshall/documentation_messages.ex:78
 #, elixir-autogen, elixir-format
 msgid "## Actual scrollback growth"
-msgstr ""
+msgstr "## 実際のスクロールバックの増加"
 
 #: lib/marshall/documentation_messages.ex:79
 #, elixir-autogen, elixir-format
 msgid "## Administrator action continuation"
-msgstr ""
+msgstr "## 管理者のアクションの継続"
 
 #: lib/marshall/documentation_messages.ex:80
 #, elixir-autogen, elixir-format
 msgid "## Admission observations and independent diagnostics"
-msgstr ""
+msgstr "## 入院時の観察と独立した診断"
 
 #: lib/marshall/documentation_messages.ex:81
 #, elixir-autogen, elixir-format
 msgid "## Admit work without double-spending capacity"
-msgstr ""
+msgstr "## 二重支出能力のない仕事を認める"
 
 #: lib/marshall/documentation_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "## Agent context and guidance boundaries"
-msgstr ""
+msgstr "## エージェントのコンテキストとガイダンスの境界"
 
 #: lib/marshall/documentation_messages.ex:83
 #, elixir-autogen, elixir-format
 msgid "## Agent context remains within existing services"
-msgstr ""
+msgstr "## エージェントコンテキストは既存のサービス内に残ります"
 
 #: lib/marshall/documentation_messages.ex:84
 #, elixir-autogen, elixir-format
 msgid "## Agent loss and retry authority"
-msgstr ""
+msgstr "## エージェントの喪失と再試行権限"
 
 #: lib/marshall/documentation_messages.ex:85
 #, elixir-autogen, elixir-format
 msgid "## Agent project context"
-msgstr ""
+msgstr "## エージェントプロジェクトのコンテキスト"
 
 #: lib/marshall/documentation_messages.ex:86
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Brady with closed egress policy, private runtime signer and disposable cache settings"
-msgstr ""
+msgstr "## オペレーターは、クローズドエグレスポリシー、プライベートランタイム署名者、および使い捨てキャッシュ設定を使用して Brady を開始します。"
 
 #: lib/marshall/documentation_messages.ex:90
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Enrico with service-token, TLS file references, mirror state and readiness socket settings"
-msgstr ""
+msgstr "## オペレーターは、サービストークン、TLS ファイル参照、ミラー状態、レディネスソケット設定を使用して Enrico を開始します。"
 
 #: lib/marshall/documentation_messages.ex:94
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Galileo with a private control credential and local integration socket"
-msgstr ""
+msgstr "## オペレーターは、プライベート コントロール資格情報とローカル統合ソケットを使用して Galileo を起動します。"
 
 #: lib/marshall/documentation_messages.ex:98
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Lilly with a private runtime configuration"
-msgstr ""
+msgstr "## オペレーターがプライベート ランタイム構成で Lilly を起動します。"
 
 #: lib/marshall/documentation_messages.ex:102
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Marshall with common runtime guard settings"
-msgstr ""
+msgstr "## オペレーターは共通のランタイム ガード設定で Marshall を起動します。"
 
 #: lib/marshall/documentation_messages.ex:106
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Porsche with private gateway credentials and host keys"
-msgstr ""
+msgstr "## オペレーターはプライベート ゲートウェイ認証情報とホスト キーを使用してポルシェを起動します。"
 
 #: lib/marshall/documentation_messages.ex:110
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Porsche with real private host keys and a host certificate"
-msgstr ""
+msgstr "## オペレーターは実際のプライベートホストキーとホスト証明書を使用してポルシェを起動します"
 
 #: lib/marshall/documentation_messages.ex:114
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Ziggy with private provider credentials and a local serving socket"
-msgstr ""
+msgstr "## オペレーターは、プライベートプロバイダーの資格情報とローカルのサービングソケットを使用して Ziggy を開始します。"
 
 #: lib/marshall/documentation_messages.ex:118
 #, elixir-autogen, elixir-format
 msgid "## An operator starts an Audi gateway, authoritative DNS replica or private-service frontend"
-msgstr ""
+msgstr "## オペレーターが Audi ゲートウェイ、権威 DNS レプリカ、またはプライベート サービス フロントエンドを開始します"
 
 #: lib/marshall/documentation_messages.ex:122
 #, elixir-autogen, elixir-format
 msgid "## Apply negotiated control request capacity and recover it after reconnect"
-msgstr ""
+msgstr "## ネゴシエートされた制御リクエスト容量を適用し、再接続後に回復します"
 
 #: lib/marshall/documentation_messages.ex:126
 #, elixir-autogen, elixir-format
 msgid "## Apply the thread creator's guest and project guidance with explicitly selected skills"
-msgstr ""
+msgstr "## 明示的に選択されたスキルを使用して、スレッド作成者のゲストとプロジェクトのガイダンスを適用します"
 
 #: lib/marshall/documentation_messages.ex:130
 #, elixir-autogen, elixir-format
 msgid "## Approve a packaged agent CLI invocation in an ordinary browser and receive real guest work"
-msgstr ""
+msgstr "## 通常のブラウザでパッケージ化されたエージェントの CLI 呼び出しを承認し、実際のゲストの作業を受け取ります"
 
 #: lib/marshall/documentation_messages.ex:134
 #, elixir-autogen, elixir-format
 msgid "## Attach and withdraw integrations, renew open requests and authenticate peer VM traffic"
-msgstr ""
+msgstr "## 統合のアタッチと取り消し、オープンリクエストの更新、ピア VM トラフィックの認証"
 
 #: lib/marshall/documentation_messages.ex:138
 #, elixir-autogen, elixir-format
 msgid "## Audi browser editor and guest workers"
-msgstr ""
+msgstr "## Audi ブラウザエディターとゲストワーカー"
 
 #: lib/marshall/documentation_messages.ex:139
 #, elixir-autogen, elixir-format
 msgid "## Audi private request monitoring"
-msgstr ""
+msgstr "## アウディのプライベートリクエストモニタリング"
 
 #: lib/marshall/documentation_messages.ex:140
 #, elixir-autogen, elixir-format
 msgid "## Audi public authoritative DNS monitoring"
-msgstr ""
+msgstr "## Audi パブリック権威 DNS モニタリング"
 
 #: lib/marshall/documentation_messages.ex:141
 #, elixir-autogen, elixir-format
 msgid "## Audi terminal control-version refusal"
-msgstr ""
+msgstr "## アウディターミナルコントロールバージョンの拒否"
 
 #: lib/marshall/documentation_messages.ex:142
 #, elixir-autogen, elixir-format
 msgid "## Authenticate CLI installation before adding SSH trust"
-msgstr ""
+msgstr "## SSH 信頼を追加する前に CLI インストールを認証する"
 
 #: lib/marshall/documentation_messages.ex:143
 #, elixir-autogen, elixir-format
 msgid "## Authority and interactions"
-msgstr ""
+msgstr "## 権限と相互作用"
 
 #: lib/marshall/documentation_messages.ex:144
 #, elixir-autogen, elixir-format
 msgid "## Backup custody"
-msgstr ""
+msgstr "## バックアップ保管"
 
 #: lib/marshall/documentation_messages.ex:145
 #, elixir-autogen, elixir-format
 msgid "## Boot a disposable NixOS guest in the local Antithesis emulator and retain its disk identity across restart"
-msgstr ""
+msgstr "## ローカルの Antithesis エミュレータで使い捨て NixOS ゲストを起動し、再起動後もそのディスク ID を保持します。"
 
 #: lib/marshall/documentation_messages.ex:149
 #, elixir-autogen, elixir-format
 msgid "## Boot and restart a guest with the current host trust roots"
-msgstr ""
+msgstr "## 現在のホスト信頼ルートを使用してゲストを起動し、再起動します。"
 
 #: lib/marshall/documentation_messages.ex:153
 #, elixir-autogen, elixir-format
 msgid "## Boot the optional inner Lilly host and observe real ZFS and cgroup capacity before enrollment"
-msgstr ""
+msgstr "## オプションの内部 Lilly ホストを起動し、登録前に実際の ZFS と cgroup の容量を観察します。"
 
 #: lib/marshall/documentation_messages.ex:157
 #, elixir-autogen, elixir-format
 msgid "## Brady"
-msgstr ""
+msgstr "## ブレイディ"
 
 #: lib/marshall/documentation_messages.ex:158
 #, elixir-autogen, elixir-format
 msgid "## Browser editor authority and worker recovery"
-msgstr ""
+msgstr "## ブラウザの編集権限とワーカーの回復"
 
 #: lib/marshall/documentation_messages.ex:159
 #, elixir-autogen, elixir-format
 msgid "## Browser editor capability"
-msgstr ""
+msgstr "## ブラウザエディタ機能"
 
 #: lib/marshall/documentation_messages.ex:160
 #, elixir-autogen, elixir-format
 msgid "## Browser editor package and image updates"
-msgstr ""
+msgstr "## ブラウザエディタパッケージとイメージの更新"
 
 #: lib/marshall/documentation_messages.ex:161
 #, elixir-autogen, elixir-format
 msgid "## Browser editor placement and failure boundary"
-msgstr ""
+msgstr "## ブラウザエディタの配置と障害境界"
 
 #: lib/marshall/documentation_messages.ex:162
 #, elixir-autogen, elixir-format
 msgid "## Browser editor release configuration"
-msgstr ""
+msgstr "## ブラウザエディタのリリース構成"
 
 #: lib/marshall/documentation_messages.ex:163
 #, elixir-autogen, elixir-format
 msgid "## Browser extension package"
-msgstr ""
+msgstr "## ブラウザ拡張パッケージ"
 
 #: lib/marshall/documentation_messages.ex:164
 #, elixir-autogen, elixir-format
 msgid "## Browser extension presence layers"
-msgstr ""
+msgstr "## ブラウザ拡張プレゼンス レイヤー"
 
 #: lib/marshall/documentation_messages.ex:165
 #, elixir-autogen, elixir-format
 msgid "## Browser presentation"
-msgstr ""
+msgstr "## ブラウザプレゼンテーション"
 
 #: lib/marshall/documentation_messages.ex:166
 #, elixir-autogen, elixir-format
 msgid "## Browser response headers, transport and session cookies"
-msgstr ""
+msgstr "## ブラウザ応答ヘッダー、トランスポートおよびセッション Cookie"
 
 #: lib/marshall/documentation_messages.ex:167
 #, elixir-autogen, elixir-format
 msgid "## Build Arch Linux and AlmaLinux images through the existing Linux guest contract"
-msgstr ""
+msgstr "## 既存の Linux ゲスト契約を通じて Arch Linux および AlmaLinux イメージを構築する"
 
 #: lib/marshall/documentation_messages.ex:171
 #, elixir-autogen, elixir-format
 msgid "## Build a host or guest closure with the signed Overalls Nix cache"
-msgstr ""
+msgstr "## 署名された Overalls Nix キャッシュを使用してホストまたはゲスト クロージャを構築する"
 
 #: lib/marshall/documentation_messages.ex:175
 #, elixir-autogen, elixir-format
 msgid "## Build and activate a release"
-msgstr ""
+msgstr "## リリースをビルドしてアクティブ化する"
 
 #: lib/marshall/documentation_messages.ex:176
 #, elixir-autogen, elixir-format
 msgid "## Build the Windows Server 2025 evaluation image offline and boot it under the patched Firecracker to the serial Special Administration Console"
-msgstr ""
+msgstr "## Windows Server 2025 評価イメージをオフラインでビルドし、パッチを適用した Firecracker でシリアル特別管理コンソールを起動します。"
 
 #: lib/marshall/documentation_messages.ex:180
 #, elixir-autogen, elixir-format
 msgid "## Burn delivery operations"
-msgstr ""
+msgstr "## バーンデリバリーオペレーション"
 
 #: lib/marshall/documentation_messages.ex:181
 #, elixir-autogen, elixir-format
 msgid "## Burn notification credentials and refusal"
-msgstr ""
+msgstr "## 通知資格情報の書き込みと拒否"
 
 #: lib/marshall/documentation_messages.ex:182
 #, elixir-autogen, elixir-format
 msgid "## Certified SSH boot identity"
-msgstr ""
+msgstr "## 認定された SSH ブート ID"
 
 #: lib/marshall/documentation_messages.ex:183
 #, elixir-autogen, elixir-format
 msgid "## Choose a display time zone in the profile section of the account page, read every timestamp in that zone and see collaborators' local time"
-msgstr ""
+msgstr "## アカウントページのプロフィールセクションで表示タイムゾーンを選択し、そのゾーン内のすべてのタイムスタンプを読み取り、コラボレーターの現地時間を確認します。"
 
 #: lib/marshall/documentation_messages.ex:187
 #, elixir-autogen, elixir-format
 msgid "## Clone"
-msgstr ""
+msgstr "## クローン"
 
 #: lib/marshall/documentation_messages.ex:188
 #, elixir-autogen, elixir-format
 msgid "## Clone a machine"
-msgstr ""
+msgstr "## マシンのクローンを作成する"
 
 #: lib/marshall/documentation_messages.ex:189
 #, elixir-autogen, elixir-format
 msgid "## Clone a machine without sharing its mutable disk"
-msgstr ""
+msgstr "## 可変ディスクを共有せずにマシンのクローンを作成する"
 
 #: lib/marshall/documentation_messages.ex:190
 #, elixir-autogen, elixir-format
 msgid "## Collect explicit-image guest OS and lifecycle evidence through Porsche and personal-account SSH"
-msgstr ""
+msgstr "## ポルシェと個人アカウント SSH を通じて明示的なイメージのゲスト OS とライフサイクルの証拠を収集する"
 
 #: lib/marshall/documentation_messages.ex:194
 #, elixir-autogen, elixir-format
 msgid "## Command reference"
-msgstr ""
+msgstr "## コマンドリファレンス"
 
 #: lib/marshall/documentation_messages.ex:195
 #, elixir-autogen, elixir-format
 msgid "## Common runtime startup refusal evidence"
-msgstr ""
+msgstr "## 一般的なランタイム起動拒否の証拠"
 
 #: lib/marshall/documentation_messages.ex:196
 #, elixir-autogen, elixir-format
 msgid "## Complete Windows SSH bootstrap before ordinary key delivery and withhold readiness when bootstrap evidence is missing"
-msgstr ""
+msgstr "## 通常のキー配信前に Windows SSH ブートストラップを完了し、ブートストラップの証拠が欠落している場合は準備を保留します。"
 
 #: lib/marshall/documentation_messages.ex:200
 #, elixir-autogen, elixir-format
 msgid "## Complete a source export only after native sender descendants have been reaped"
-msgstr ""
+msgstr "## ネイティブ送信者の子孫が取得された後でのみ、ソース エクスポートを完了します。"
 
 #: lib/marshall/documentation_messages.ex:204
 #, elixir-autogen, elixir-format
 msgid "## Configuration and change procedure"
-msgstr ""
+msgstr "## 設定・変更手順"
 
 #: lib/marshall/documentation_messages.ex:205
 #, elixir-autogen, elixir-format
 msgid "## Configure and open a repository"
-msgstr ""
+msgstr "## リポジトリを設定して開く"
 
 #: lib/marshall/documentation_messages.ex:206
 #, elixir-autogen, elixir-format
 msgid "## Connect"
-msgstr ""
+msgstr "## 接続する"
 
 #: lib/marshall/documentation_messages.ex:207
 #, elixir-autogen, elixir-format
 msgid "## Context, compaction and collaboration"
-msgstr ""
+msgstr "## コンテキスト、圧縮、コラボレーション"
 
 #: lib/marshall/documentation_messages.ex:208
 #, elixir-autogen, elixir-format
 msgid "## Continue a long thread through automatic or requested context compaction"
-msgstr ""
+msgstr "## 自動または要求されたコンテキスト圧縮を通じて長いスレッドを継続します。"
 
 #: lib/marshall/documentation_messages.ex:212
 #, elixir-autogen, elixir-format
 msgid "## Continue native state publication and recover actors while diagnostics are unavailable"
-msgstr ""
+msgstr "## 診断が利用できない間にネイティブ状態の公開を続行し、アクターを回復します"
 
 #: lib/marshall/documentation_messages.ex:216
 #, elixir-autogen, elixir-format
 msgid "## Continuing physical boot adoption"
-msgstr ""
+msgstr "## 物理ブートの継続採用"
 
 #: lib/marshall/documentation_messages.ex:217
 #, elixir-autogen, elixir-format
 msgid "## Control WebSocket"
-msgstr ""
+msgstr "## WebSocketの制御"
 
 #: lib/marshall/documentation_messages.ex:218
 #, elixir-autogen, elixir-format
 msgid "## Create a machine and wait for its exact boot to become usable over SSH"
-msgstr ""
+msgstr "## マシンを作成し、その正確なブートが SSH 経由で使用可能になるまで待ちます"
 
 #: lib/marshall/documentation_messages.ex:222
 #, elixir-autogen, elixir-format
 msgid "## Create a machine in the browser or Porsche SSH without choosing a profile"
-msgstr ""
+msgstr "## プロファイルを選択せず​​にブラウザまたは Porsche SSH でマシンを作成します"
 
 #: lib/marshall/documentation_messages.ex:226
 #, elixir-autogen, elixir-format
 msgid "## Create a team without claiming another account's active name"
-msgstr ""
+msgstr "## 別のアカウントのアクティブな名前を主張せずにチームを作成する"
 
 #: lib/marshall/documentation_messages.ex:230
 #, elixir-autogen, elixir-format
 msgid "## Create and recover a user thread with its dedicated machine"
-msgstr ""
+msgstr "## 専用マシンを使用してユーザー スレッドを作成および回復する"
 
 #: lib/marshall/documentation_messages.ex:234
 #, elixir-autogen, elixir-format
 msgid "## Create, stop, restart and delete a machine"
-msgstr ""
+msgstr "## マシンの作成、停止、再起動、削除"
 
 #: lib/marshall/documentation_messages.ex:235
 #, elixir-autogen, elixir-format
 msgid "## Credential and key rotation"
-msgstr ""
+msgstr "## 資格情報とキーのローテーション"
 
 #: lib/marshall/documentation_messages.ex:236
 #, elixir-autogen, elixir-format
 msgid "## Dedicated editor path"
-msgstr ""
+msgstr "## 専用エディターのパス"
 
 #: lib/marshall/documentation_messages.ex:237
 #, elixir-autogen, elixir-format
 msgid "## Deploy a candidate while preserving guests and authority"
-msgstr ""
+msgstr "## ゲストと権限を維持しながら候補者を配置する"
 
 #: lib/marshall/documentation_messages.ex:238
 #, elixir-autogen, elixir-format
 msgid "## Developer SSH"
-msgstr ""
+msgstr "## 開発者SSH"
 
 #: lib/marshall/documentation_messages.ex:239
 #, elixir-autogen, elixir-format
 msgid "## Developer verification"
-msgstr ""
+msgstr "## 開発者の検証"
 
 #: lib/marshall/documentation_messages.ex:240
 #, elixir-autogen, elixir-format
 msgid "## Diagnostic outages and queue recovery"
-msgstr ""
+msgstr "## 診断停止とキューの回復"
 
 #: lib/marshall/documentation_messages.ex:241
 #, elixir-autogen, elixir-format
 msgid "## Diagnostic paths and custody"
-msgstr ""
+msgstr "## 診断経路と保護"
 
 #: lib/marshall/documentation_messages.ex:242
 #, elixir-autogen, elixir-format
 msgid "## Disable, drain, resume, retire"
-msgstr ""
+msgstr "## 無効化、ドレイン、再開、リタイア"
 
 #: lib/marshall/documentation_messages.ex:243
 #, elixir-autogen, elixir-format
 msgid "## Discover editor and neutral webview origins only through gateways with matching immutable assets"
-msgstr ""
+msgstr "## 一致する不変アセットを持つゲートウェイを介してのみ、エディターと中立的な Web ビューのオリジンを検出します"
 
 #: lib/marshall/documentation_messages.ex:247
 #, elixir-autogen, elixir-format
 msgid "## Drain a naturally exited terminal without retaining unreserved scrollback"
-msgstr ""
+msgstr "## 予約されていないスクロールバックを保持せずに、自然に終了したターミナルを排出します"
 
 #: lib/marshall/documentation_messages.ex:251
 #, elixir-autogen, elixir-format
 msgid "## Durable guest accounts"
-msgstr ""
+msgstr "## 永続的なゲストアカウント"
 
 #: lib/marshall/documentation_messages.ex:252
 #, elixir-autogen, elixir-format
 msgid "## Durable guest identity reservations"
-msgstr ""
+msgstr "## 永続的なゲスト ID 予約"
 
 #: lib/marshall/documentation_messages.ex:253
 #, elixir-autogen, elixir-format
 msgid "## Durable objectives and measurement authority"
-msgstr ""
+msgstr "## 耐久性のある対物レンズと測定権限"
 
 #: lib/marshall/documentation_messages.ex:254
 #, elixir-autogen, elixir-format
 msgid "## Durable request sources"
-msgstr ""
+msgstr "## 永続的なリクエストソース"
 
 #: lib/marshall/documentation_messages.ex:255
 #, elixir-autogen, elixir-format
 msgid "## Editor transition evidence"
-msgstr ""
+msgstr "## 編集者の移行の証拠"
 
 #: lib/marshall/documentation_messages.ex:256
 #, elixir-autogen, elixir-format
 msgid "## Elixir contract verification"
-msgstr ""
+msgstr "## Elixir契約の検証"
 
 #: lib/marshall/documentation_messages.ex:257
 #, elixir-autogen, elixir-format
 msgid "## Elixir property verification"
-msgstr ""
+msgstr "## Elixirのプロパティ検証"
 
 #: lib/marshall/documentation_messages.ex:258
 #, elixir-autogen, elixir-format
 msgid "## Enrico"
-msgstr ""
+msgstr "## エンリコ"
 
 #: lib/marshall/documentation_messages.ex:259
 #, elixir-autogen, elixir-format
 msgid "## Enroll"
-msgstr ""
+msgstr "## 登録する"
 
 #: lib/marshall/documentation_messages.ex:260
 #, elixir-autogen, elixir-format
 msgid "## Enroll a replacement host with fresh physical identity after retiring the old one"
-msgstr ""
+msgstr "## 古いホストを廃止した後、新しい物理 ID を使用して代替ホストを登録します。"
 
 #: lib/marshall/documentation_messages.ex:264
 #, elixir-autogen, elixir-format
 msgid "## Evaluated placement"
-msgstr ""
+msgstr "## 評価された配置"
 
 #: lib/marshall/documentation_messages.ex:265
 #, elixir-autogen, elixir-format
 msgid "## Evidence levels"
-msgstr ""
+msgstr "## 証拠レベル"
 
 #: lib/marshall/documentation_messages.ex:266
 #, elixir-autogen, elixir-format
 msgid "## Executor loss and explicit retry"
-msgstr ""
+msgstr "## エグゼキュータの喪失と明示的な再試行"
 
 #: lib/marshall/documentation_messages.ex:267
 #, elixir-autogen, elixir-format
 msgid "## Exercise Control pending-window capacity and retired replies through a real client and loopback peer"
-msgstr ""
+msgstr "## 実際のクライアントとループバック ピアを介して保留ウィンドウの容量とリタイアされた応答を制御する"
 
 #: lib/marshall/documentation_messages.ex:271
 #, elixir-autogen, elixir-format
 msgid "## Expand a retained native root without changing foreign disks or nonroot partitions"
-msgstr ""
+msgstr "## 外部ディスクや非ルート パーティションを変更せずに、保持されているネイティブ ルートを拡張します"
 
 #: lib/marshall/documentation_messages.ex:275
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis build selection"
-msgstr ""
+msgstr "## 実験的アンチテーゼのビルド選択"
 
 #: lib/marshall/documentation_messages.ex:276
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis control fixture"
-msgstr ""
+msgstr "## 実験用アンチテーゼ制御治具"
 
 #: lib/marshall/documentation_messages.ex:277
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis fixture custody"
-msgstr ""
+msgstr "## 実験的アンチテーゼの備品保管"
 
 #: lib/marshall/documentation_messages.ex:278
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis fixture outside deployed placement"
-msgstr ""
+msgstr "## 展開された配置の外側に実験用アンチテーゼ フィクスチャ"
 
 #: lib/marshall/documentation_messages.ex:282
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis guest transport boundary"
-msgstr ""
+msgstr "## 実験的アンチテーゼのゲストトランスポート境界"
 
 #: lib/marshall/documentation_messages.ex:283
 #, elixir-autogen, elixir-format
 msgid "## Experimental FreeBSD and OmniOS mounted-root growth"
-msgstr ""
+msgstr "## 実験的な FreeBSD および OmniOS のマウントされたルートの成長"
 
 #: lib/marshall/documentation_messages.ex:284
 #, elixir-autogen, elixir-format
 msgid "## Experimental local guest emulation"
-msgstr ""
+msgstr "## 実験的なローカルゲストエミュレーション"
 
 #: lib/marshall/documentation_messages.ex:285
 #, elixir-autogen, elixir-format
 msgid "## Experimental native daemon recovery"
-msgstr ""
+msgstr "## 実験的なネイティブ デーモンの回復"
 
 #: lib/marshall/documentation_messages.ex:286
 #, elixir-autogen, elixir-format
 msgid "## Explicit terminal kill under withheld credit"
-msgstr ""
+msgstr "## クレジットが保留されている場合の明示的なターミナルキル"
 
 #: lib/marshall/documentation_messages.ex:287
 #, elixir-autogen, elixir-format
 msgid "## Explicitly kill a terminal whose viewer withholds credit without retaining guest session allocations"
-msgstr ""
+msgstr "## ゲストセッションの割り当てを保持せずに、視聴者がクレジットを保留している端末を明示的に強制終了します。"
 
 #: lib/marshall/documentation_messages.ex:291
 #, elixir-autogen, elixir-format
 msgid "## Fence native socket identity and wake blocked operations after an actual Firecracker transport event"
-msgstr ""
+msgstr "## 実際の Firecracker トランスポート イベント後にネイティブ ソケット ID をフェンスし、ブロックされた操作をウェイクします。"
 
 #: lib/marshall/documentation_messages.ex:295
 #, elixir-autogen, elixir-format
 msgid "## Fetch through filtered web egress without stale attribution"
-msgstr ""
+msgstr "## 古い属性を付けずに、フィルタリングされた Web 出口経由で取得します"
 
 #: lib/marshall/documentation_messages.ex:299
 #, elixir-autogen, elixir-format
 msgid "## Find the browser extension guide, download an unsigned launcher and explicitly configure its server before a provider click"
-msgstr ""
+msgstr "## プロバイダーがクリックする前に、ブラウザー拡張機能ガイドを見つけて、未署名のランチャーをダウンロードし、そのサーバーを明示的に構成します。"
 
 #: lib/marshall/documentation_messages.ex:303
 #, elixir-autogen, elixir-format
 msgid "## Firecracker native firmware operations"
-msgstr ""
+msgstr "## Firecracker のネイティブ ファームウェアの操作"
 
 #: lib/marshall/documentation_messages.ex:304
 #, elixir-autogen, elixir-format
 msgid "## First commands"
-msgstr ""
+msgstr "## 最初のコマンド"
 
 #: lib/marshall/documentation_messages.ex:305
 #, elixir-autogen, elixir-format
 msgid "## Foreign Linux guest PAM runtime"
-msgstr ""
+msgstr "## 外部 Linux ゲスト PAM ランタイム"
 
 #: lib/marshall/documentation_messages.ex:306
 #, elixir-autogen, elixir-format
 msgid "## Foreign and native guest-family boundaries"
-msgstr ""
+msgstr "## 外国人ゲストファミリーとネイティブゲストファミリーの境界線"
 
 #: lib/marshall/documentation_messages.ex:307
 #, elixir-autogen, elixir-format
 msgid "## Full ring overwrite allocation"
-msgstr ""
+msgstr "## フルリング上書き割り当て"
 
 #: lib/marshall/documentation_messages.ex:308
 #, elixir-autogen, elixir-format
 msgid "## Galileo"
-msgstr ""
+msgstr "## ガリレオ"
 
 #: lib/marshall/documentation_messages.ex:309
 #, elixir-autogen, elixir-format
 msgid "## Give Windows guests an agent set with a capability table, reach a guest-side listener over virtio-vsock through the viosock driver, and make the fleet ready to stage the image"
-msgstr ""
+msgstr "## Windows ゲストに機能テーブルを備えたエージェント セットを提供し、viosock ドライバーを介して virtio-vsock 経由でゲスト側のリスナーに到達し、フリートがイメージをステージングできるように準備します。"
 
 #: lib/marshall/documentation_messages.ex:313
 #, elixir-autogen, elixir-format
 msgid "## Grow active terminal scrollback within the shared memory budget and replace only retired capacity"
-msgstr ""
+msgstr "## 共有メモリの予算内でアクティブな端末のスクロールバックを拡張し、廃止された容量のみを置き換えます"
 
 #: lib/marshall/documentation_messages.ex:317
 #, elixir-autogen, elixir-format
 msgid "## Guest CLI replacement"
-msgstr ""
+msgstr "## ゲスト CLI の置き換え"
 
 #: lib/marshall/documentation_messages.ex:318
 #, elixir-autogen, elixir-format
 msgid "## Guest boot profile"
-msgstr ""
+msgstr "## ゲストブートプロファイル"
 
 #: lib/marshall/documentation_messages.ex:319
 #, elixir-autogen, elixir-format
 msgid "## Guest coding CLI configuration"
-msgstr ""
+msgstr "## ゲストコーディング CLI 設定"
 
 #: lib/marshall/documentation_messages.ex:320
 #, elixir-autogen, elixir-format
 msgid "## Guest instructions and skills"
-msgstr ""
+msgstr "## ゲストの指示とスキル"
 
 #: lib/marshall/documentation_messages.ex:321
 #, elixir-autogen, elixir-format
 msgid "## Historical pre-cutover: Deliver physical-host monitoring samples and recover after a conflicting ID"
-msgstr ""
+msgstr "## 履歴的なカットオーバー前: 物理ホスト監視サンプルを配信し、ID の競合後に回復します"
 
 #: lib/marshall/documentation_messages.ex:325
 #, elixir-autogen, elixir-format
 msgid "## Historical pre-cutover: Read fleet diagnostic logs in the Control room with scoped query authority"
-msgstr ""
+msgstr "## カットオーバー前の履歴: 範囲指定されたクエリ権限を使用してコントロール ルームでフリート診断ログを読み取る"
 
 #: lib/marshall/documentation_messages.ex:329
 #, elixir-autogen, elixir-format
 msgid "## Historical pre-cutover: Read the fleet telemetry baseline at /admin/slos from the Control room Monitoring menu as a signed-in user"
-msgstr ""
+msgstr "## カットオーバー前の履歴: サインインしたユーザーとして、コントロール ルームの [監視] メニューから /admin/slos にあるフリート テレメトリ ベースラインを読み取ります。"
 
 #: lib/marshall/documentation_messages.ex:333
 #, elixir-autogen, elixir-format
 msgid "## Hold every Lilly lease and leased utility in lilly-hostd until the holder releases it or dies"
-msgstr ""
+msgstr "## 所有者が解放するか死亡するまで、すべての Lilly リースおよびリースされたユーティリティを lilly-hostd に保持します"
 
 #: lib/marshall/documentation_messages.ex:337
 #, elixir-autogen, elixir-format
 msgid "## Host evacuation"
-msgstr ""
+msgstr "## ホストの退避"
 
 #: lib/marshall/documentation_messages.ex:338
 #, elixir-autogen, elixir-format
 msgid "## Host responsibilities"
-msgstr ""
+msgstr "## 主催者の責任"
 
 #: lib/marshall/documentation_messages.ex:339
 #, elixir-autogen, elixir-format
 msgid "## Host-effects engine boundary"
-msgstr ""
+msgstr "## ホストエフェクトエンジンの境界"
 
 #: lib/marshall/documentation_messages.ex:340
 #, elixir-autogen, elixir-format
 msgid "## Host-effects engine loss"
-msgstr ""
+msgstr "## ホストエフェクトエンジン損失"
 
 #: lib/marshall/documentation_messages.ex:341
 #, elixir-autogen, elixir-format
 msgid "## Independent diagnostic custody"
-msgstr ""
+msgstr "## 独立した診断保管"
 
 #: lib/marshall/documentation_messages.ex:342
 #, elixir-autogen, elixir-format
 msgid "## Independent observability recovery"
-msgstr ""
+msgstr "## 独立した可観測性の回復"
 
 #: lib/marshall/documentation_messages.ex:343
 #, elixir-autogen, elixir-format
 msgid "## Independent observability roles"
-msgstr ""
+msgstr "## 独立した可観測性の役割"
 
 #: lib/marshall/documentation_messages.ex:344
 #, elixir-autogen, elixir-format
 msgid "## Independent service diagnostics"
-msgstr ""
+msgstr "## 独立したサービス診断"
 
 #: lib/marshall/documentation_messages.ex:345
 #, elixir-autogen, elixir-format
 msgid "## Inline privileged browser actions"
-msgstr ""
+msgstr "## インライン特権ブラウザアクション"
 
 #: lib/marshall/documentation_messages.ex:346
 #, elixir-autogen, elixir-format
 msgid "## Inspect bounded Underclass stream outcomes and long-range capacity statistics"
-msgstr ""
+msgstr "## 制限されたアンダークラス ストリームの結果と長距離キャパシティ統計を検査する"
 
 #: lib/marshall/documentation_messages.ex:350
 #, elixir-autogen, elixir-format
 msgid "## Inspect physical and workflow completion independently of receipt polling"
-msgstr ""
+msgstr "## 受信ポーリングとは別に物理的な完了とワークフローの完了を検査します"
 
 #: lib/marshall/documentation_messages.ex:354
 #, elixir-autogen, elixir-format
 msgid "## Inspect retained job history and retry a failed background job"
-msgstr ""
+msgstr "## 保持されているジョブ履歴を検査し、失敗したバックグラウンド ジョブを再試行します"
 
 #: lib/marshall/documentation_messages.ex:358
 #, elixir-autogen, elixir-format
 msgid "## Inspect source-owned candidate ratios in the private Grafana dashboard"
-msgstr ""
+msgstr "## プライベート Grafana ダッシュボードでソース所有の候補者の割合を検査する"
 
 #: lib/marshall/documentation_messages.ex:362
 #, elixir-autogen, elixir-format
 msgid "## Inspect uncertain guest work and explicitly retry with current CLI authority"
-msgstr ""
+msgstr "## 不確実なゲスト作業を検査し、現在の CLI 権限で明示的に再試行します"
 
 #: lib/marshall/documentation_messages.ex:366
 #, elixir-autogen, elixir-format
 msgid "## Install a gallery extension only after verifying the VSIX against packaged trust keys"
-msgstr ""
+msgstr "## パッケージ化された信頼キーに対して VSIX を検証した後にのみ、ギャラリー拡張機能をインストールします。"
 
 #: lib/marshall/documentation_messages.ex:370
 #, elixir-autogen, elixir-format
 msgid "## Install and manage a pinned public skill, then restore it when reopening a thread"
-msgstr ""
+msgstr "## 固定された公開スキルをインストールして管理し、スレッドを再度開くときに復元します"
 
 #: lib/marshall/documentation_messages.ex:374
 #, elixir-autogen, elixir-format
 msgid "## Install one SSH authority and connect to management, Audi and fresh NixOS or Ubuntu guests"
-msgstr ""
+msgstr "## 1 つの SSH 機関をインストールし、管理、Audi、および新しい NixOS または Ubuntu ゲストに接続します"
 
 #: lib/marshall/documentation_messages.ex:378
 #, elixir-autogen, elixir-format
 msgid "## Install the Overalls CLI"
-msgstr ""
+msgstr "## オーバーオール CLI をインストールする"
 
 #: lib/marshall/documentation_messages.ex:379
 #, elixir-autogen, elixir-format
 msgid "## Install the developer archive"
-msgstr ""
+msgstr "## 開発者アーカイブをインストールする"
 
 #: lib/marshall/documentation_messages.ex:380
 #, elixir-autogen, elixir-format
 msgid "## Install the overalls CLI on a Windows workstation from the machine page and SSH into Linux and Windows guests through Audi"
-msgstr ""
+msgstr "## マシン ページから Windows ワークステーションにオーバーオール CLI をインストールし、Audi を介して Linux および Windows ゲストに SSH で接続します。"
 
 #: lib/marshall/documentation_messages.ex:384
 #, elixir-autogen, elixir-format
 msgid "## Internal service TLS trust"
-msgstr ""
+msgstr "## 内部サービスの TLS トラスト"
 
 #: lib/marshall/documentation_messages.ex:385
 #, elixir-autogen, elixir-format
 msgid "## Interrupted provisioning and templates"
-msgstr ""
+msgstr "## 中断されたプロビジョニングとテンプレート"
 
 #: lib/marshall/documentation_messages.ex:386
 #, elixir-autogen, elixir-format
 msgid "## Invalid provisioner startup"
-msgstr ""
+msgstr "## 無効なプロビジョナーの起動"
 
 #: lib/marshall/documentation_messages.ex:387
 #, elixir-autogen, elixir-format
 msgid "## Invite, retire and register a fresh identity with the same email"
-msgstr ""
+msgstr "## 同じメールアドレスで新しい ID を招待、削除、登録できます"
 
 #: lib/marshall/documentation_messages.ex:391
 #, elixir-autogen, elixir-format
 msgid "## Isolated restoration"
-msgstr ""
+msgstr "## 単独修復"
 
 #: lib/marshall/documentation_messages.ex:392
 #, elixir-autogen, elixir-format
 msgid "## Job history and operational readers"
-msgstr ""
+msgstr "## 職歴と運用リーダー"
 
 #: lib/marshall/documentation_messages.ex:393
 #, elixir-autogen, elixir-format
 msgid "## Keep Customer machines private and isolated"
-msgstr ""
+msgstr "## 顧客のマシンをプライベートかつ隔離した状態に保つ"
 
 #: lib/marshall/documentation_messages.ex:394
 #, elixir-autogen, elixir-format
 msgid "## Keep a full terminal scrollback ring within its reserved backing size while output continues"
-msgstr ""
+msgstr "## 出力が続行されている間、ターミナル全体のスクロールバック リングを予約されたバッキング サイズ内に維持します。"
 
 #: lib/marshall/documentation_messages.ex:398
 #, elixir-autogen, elixir-format
 msgid "## Keep a healthy terminal progressing while stalled viewers, growth and session admission share memory"
-msgstr ""
+msgstr "## 停止したビューア、成長、セッション アドミッションがメモリを共有しながら、正常な端末の進行を維持します"
 
 #: lib/marshall/documentation_messages.ex:402
 #, elixir-autogen, elixir-format
 msgid "## Keep a live browser editor WebSocket or nested HTTPS connection through lilly-hostd and Lilly restarts while Lilly still decides its preface, readiness and lifetime"
-msgstr ""
+msgstr "## lilly-hostd を介してライブブラウザエディターの WebSocket またはネストされた HTTPS 接続を維持し、Lilly がその序文、準備状況、有効期間を決定している間に Lilly が再起動します。"
 
 #: lib/marshall/documentation_messages.ex:406
 #, elixir-autogen, elixir-format
 msgid "## Keep a live guest SSH session through lilly-hostd and Lilly restarts while Lilly can still end it"
-msgstr ""
+msgstr "## lilly-hostd を介してライブ ゲスト SSH セッションを維持すると、Lilly が終了できる間、Lilly が再起動します。"
 
 #: lib/marshall/documentation_messages.ex:410
 #, elixir-autogen, elixir-format
 msgid "## Keep a neighboring terminal usable while another viewer stops reading and its owner is retired"
-msgstr ""
+msgstr "## 別の閲覧者が閲覧を停止し、その所有者が引退している間、隣接する端末を使用可能な状態に保つ"
 
 #: lib/marshall/documentation_messages.ex:414
 #, elixir-autogen, elixir-format
 msgid "## Keep native FreeBSD and illumos admission closed until kernel identity and boot evidence exist"
-msgstr ""
+msgstr "## カーネルの ID とブートの証拠が存在するまで、ネイティブの FreeBSD と Illumos の受付を閉じたままにします"
 
 #: lib/marshall/documentation_messages.ex:418
 #, elixir-autogen, elixir-format
 msgid "## Keep native guest public access while refusing private targets and foreign source addresses"
-msgstr ""
+msgstr "## プライベート ターゲットと外部ソース アドレスを拒否しながら、ネイティブ ゲストのパブリック アクセスを維持します"
 
 #: lib/marshall/documentation_messages.ex:422
 #, elixir-autogen, elixir-format
 msgid "## Keep one generated guest identity through same-user email changes and reserve it after retirement"
-msgstr ""
+msgstr "## 同じユーザーの電子メール変更を通じて 1 つの生成されたゲスト ID を保持し、退職後にそれを予約します"
 
 #: lib/marshall/documentation_messages.ex:426
 #, elixir-autogen, elixir-format
 msgid "## Keeping this handbook current"
-msgstr ""
+msgstr "## このハンドブックを最新の状態に保つ"
 
 #: lib/marshall/documentation_messages.ex:427
 #, elixir-autogen, elixir-format
 msgid "## Language and text direction"
-msgstr ""
+msgstr "## 言語とテキストの方向性"
 
 #: lib/marshall/documentation_messages.ex:428
 #, elixir-autogen, elixir-format

@@ -54,962 +54,962 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:38
 #, elixir-autogen, elixir-format
 msgid "# Accounts and access control"
-msgstr ""
+msgstr "# 帐户和访问控制"
 
 #: lib/marshall/documentation_messages.ex:39
 #, elixir-autogen, elixir-format
 msgid "# Agent threads and tools"
-msgstr ""
+msgstr "# 代理线程和工具"
 
 #: lib/marshall/documentation_messages.ex:40
 #, elixir-autogen, elixir-format
 msgid "# Ash business domains"
-msgstr ""
+msgstr "# 灰业务领域"
 
 #: lib/marshall/documentation_messages.ex:41
 #, elixir-autogen, elixir-format
 msgid "# Automation"
-msgstr ""
+msgstr "# 自动化"
 
 #: lib/marshall/documentation_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "# Backup and recovery"
-msgstr ""
+msgstr "# 备份与恢复"
 
 #: lib/marshall/documentation_messages.ex:43
 #, elixir-autogen, elixir-format
 msgid "# Browser editors, terminals, SSH, and management"
-msgstr ""
+msgstr "# 浏览器编辑器、终端、SSH 和管理"
 
 #: lib/marshall/documentation_messages.ex:44
 #, elixir-autogen, elixir-format
 msgid "# Browser extension"
-msgstr ""
+msgstr "# 浏览器扩展"
 
 #: lib/marshall/documentation_messages.ex:45
 #, elixir-autogen, elixir-format
 msgid "# Command reference"
-msgstr ""
+msgstr "# 命令参考"
 
 #: lib/marshall/documentation_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "# Control plane and durable authority"
-msgstr ""
+msgstr "# 控制平面和持久权威"
 
 #: lib/marshall/documentation_messages.ex:47
 #, elixir-autogen, elixir-format
 msgid "# Deployment topology"
-msgstr ""
+msgstr "# 部署拓扑"
 
 #: lib/marshall/documentation_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "# Getting started"
-msgstr ""
+msgstr "# 入门"
 
 #: lib/marshall/documentation_messages.ex:49
 #, elixir-autogen, elixir-format
 msgid "# Guest systems and images"
-msgstr ""
+msgstr "# 访客系统和图像"
 
 #: lib/marshall/documentation_messages.ex:50
 #, elixir-autogen, elixir-format
 msgid "# Installation and deployment"
-msgstr ""
+msgstr "# 安装部署"
 
 #: lib/marshall/documentation_messages.ex:51
 #, elixir-autogen, elixir-format
 msgid "# Machine lifecycle"
-msgstr ""
+msgstr "# 机器生命周期"
 
 #: lib/marshall/documentation_messages.ex:52
 #, elixir-autogen, elixir-format
 msgid "# Monitoring and troubleshooting"
-msgstr ""
+msgstr "# 监控和故障排除"
 
 #: lib/marshall/documentation_messages.ex:53
 #, elixir-autogen, elixir-format
 msgid "# Networking, ingress, and certificates"
-msgstr ""
+msgstr "# 网络、入口和证书"
 
 #: lib/marshall/documentation_messages.ex:54
 #, elixir-autogen, elixir-format
 msgid "# Nix cache trust and fallback"
-msgstr ""
+msgstr "# Nix 缓存信任和回退"
 
 #: lib/marshall/documentation_messages.ex:55
 #, elixir-autogen, elixir-format
 msgid "# NixOS machine configuration"
-msgstr ""
+msgstr "# NixOS机器配置"
 
 #: lib/marshall/documentation_messages.ex:56
 #, elixir-autogen, elixir-format
 msgid "# NixOS option reference"
-msgstr ""
+msgstr "# NixOS 选项参考"
 
 #: lib/marshall/documentation_messages.ex:57
 #, elixir-autogen, elixir-format
 msgid "# Overalls documentation"
-msgstr ""
+msgstr "# 工作服文档"
 
 #: lib/marshall/documentation_messages.ex:58
 #, elixir-autogen, elixir-format
 msgid "# Resize, clone, and relocation"
-msgstr ""
+msgstr "# 调整大小、克隆和重新定位"
 
 #: lib/marshall/documentation_messages.ex:59
 #, elixir-autogen, elixir-format
 msgid "# Routine operations"
-msgstr ""
+msgstr "# 日常操作"
 
 #: lib/marshall/documentation_messages.ex:60
 #, elixir-autogen, elixir-format
 msgid "# Security boundaries and sensitive operations"
-msgstr ""
+msgstr "# 安全边界和敏感操作"
 
 #: lib/marshall/documentation_messages.ex:61
 #, elixir-autogen, elixir-format
 msgid "# Storage and capacity"
-msgstr ""
+msgstr "# 存储和容量"
 
 #: lib/marshall/documentation_messages.ex:62
 #, elixir-autogen, elixir-format
 msgid "# Supporting services"
-msgstr ""
+msgstr "# 配套服务"
 
 #: lib/marshall/documentation_messages.ex:63
 #, elixir-autogen, elixir-format
 msgid "# System overview"
-msgstr ""
+msgstr "# 系统概述"
 
 #: lib/marshall/documentation_messages.ex:64
 #, elixir-autogen, elixir-format
 msgid "# User scenarios and test gaps"
-msgstr ""
+msgstr "# 用户场景和测试差距"
 
 #: lib/marshall/documentation_messages.ex:65
 #, elixir-autogen, elixir-format
 msgid "# Verification and reference"
-msgstr ""
+msgstr "# 验证与参考"
 
 #: lib/marshall/documentation_messages.ex:66
 #, elixir-autogen, elixir-format
 msgid "## A gateway creates and reads an authenticated SSH session through either control adapter"
-msgstr ""
+msgstr "## 网关通过任一控制适配器创建并读取经过身份验证的 SSH 会话"
 
 #: lib/marshall/documentation_messages.ex:70
 #, elixir-autogen, elixir-format
 msgid "## A service binds its authenticated control socket before exchanging work or heartbeats"
-msgstr ""
+msgstr "## 服务在交换工作或心跳之前绑定其经过身份验证的控制套接字"
 
 #: lib/marshall/documentation_messages.ex:74
 #, elixir-autogen, elixir-format
 msgid "## A service settles its pending control requests and recovers capacity after connection loss"
-msgstr ""
+msgstr "## 服务解决其挂起的控制请求并在连接丢失后恢复容量"
 
 #: lib/marshall/documentation_messages.ex:78
 #, elixir-autogen, elixir-format
 msgid "## Actual scrollback growth"
-msgstr ""
+msgstr "## 实际回滚增长"
 
 #: lib/marshall/documentation_messages.ex:79
 #, elixir-autogen, elixir-format
 msgid "## Administrator action continuation"
-msgstr ""
+msgstr "## 管理员操作继续"
 
 #: lib/marshall/documentation_messages.ex:80
 #, elixir-autogen, elixir-format
 msgid "## Admission observations and independent diagnostics"
-msgstr ""
+msgstr "## 入院观察和独立诊断"
 
 #: lib/marshall/documentation_messages.ex:81
 #, elixir-autogen, elixir-format
 msgid "## Admit work without double-spending capacity"
-msgstr ""
+msgstr "## 承认没有双花能力的工作"
 
 #: lib/marshall/documentation_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "## Agent context and guidance boundaries"
-msgstr ""
+msgstr "## 代理上下文和指导边界"
 
 #: lib/marshall/documentation_messages.ex:83
 #, elixir-autogen, elixir-format
 msgid "## Agent context remains within existing services"
-msgstr ""
+msgstr "## 代理上下文保留在现有服务中"
 
 #: lib/marshall/documentation_messages.ex:84
 #, elixir-autogen, elixir-format
 msgid "## Agent loss and retry authority"
-msgstr ""
+msgstr "## 代理丢失和重试权限"
 
 #: lib/marshall/documentation_messages.ex:85
 #, elixir-autogen, elixir-format
 msgid "## Agent project context"
-msgstr ""
+msgstr "## 代理项目背景"
 
 #: lib/marshall/documentation_messages.ex:86
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Brady with closed egress policy, private runtime signer and disposable cache settings"
-msgstr ""
+msgstr "## 操作员以封闭的出口策略、私有运行时签名者和一次性缓存设置启动 Brady"
 
 #: lib/marshall/documentation_messages.ex:90
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Enrico with service-token, TLS file references, mirror state and readiness socket settings"
-msgstr ""
+msgstr "## 操作员使用服务令牌、TLS 文件引用、镜像状态和就绪套接字设置启动 Enrico"
 
 #: lib/marshall/documentation_messages.ex:94
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Galileo with a private control credential and local integration socket"
-msgstr ""
+msgstr "## 操作员使用私有控制凭证和本地集成套接字启动 Galileo"
 
 #: lib/marshall/documentation_messages.ex:98
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Lilly with a private runtime configuration"
-msgstr ""
+msgstr "## 操作员使用私有运行时配置启动 Lilly"
 
 #: lib/marshall/documentation_messages.ex:102
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Marshall with common runtime guard settings"
-msgstr ""
+msgstr "## 操作员使用常见的运行时防护设置启动 Marshall"
 
 #: lib/marshall/documentation_messages.ex:106
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Porsche with private gateway credentials and host keys"
-msgstr ""
+msgstr "## 操作员使用私有网关凭据和主机密钥启动 Porsche"
 
 #: lib/marshall/documentation_messages.ex:110
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Porsche with real private host keys and a host certificate"
-msgstr ""
+msgstr "## 操作员使用真实的私有主机密钥和主机证书启动保时捷"
 
 #: lib/marshall/documentation_messages.ex:114
 #, elixir-autogen, elixir-format
 msgid "## An operator starts Ziggy with private provider credentials and a local serving socket"
-msgstr ""
+msgstr "## 操作员使用私人提供商凭证和本地服务套接字启动 Ziggy"
 
 #: lib/marshall/documentation_messages.ex:118
 #, elixir-autogen, elixir-format
 msgid "## An operator starts an Audi gateway, authoritative DNS replica or private-service frontend"
-msgstr ""
+msgstr "## 运营商启动 Audi 网关、权威 DNS 副本或私有服务前端"
 
 #: lib/marshall/documentation_messages.ex:122
 #, elixir-autogen, elixir-format
 msgid "## Apply negotiated control request capacity and recover it after reconnect"
-msgstr ""
+msgstr "## 应用协商的控制请求容量并在重新连接后恢复它"
 
 #: lib/marshall/documentation_messages.ex:126
 #, elixir-autogen, elixir-format
 msgid "## Apply the thread creator's guest and project guidance with explicitly selected skills"
-msgstr ""
+msgstr "## 通过明确选择的技能应用线程创建者的来宾和项目指导"
 
 #: lib/marshall/documentation_messages.ex:130
 #, elixir-autogen, elixir-format
 msgid "## Approve a packaged agent CLI invocation in an ordinary browser and receive real guest work"
-msgstr ""
+msgstr "## 在普通浏览器中批准打包的代理 CLI 调用并接收真实的来宾工作"
 
 #: lib/marshall/documentation_messages.ex:134
 #, elixir-autogen, elixir-format
 msgid "## Attach and withdraw integrations, renew open requests and authenticate peer VM traffic"
-msgstr ""
+msgstr "## 附加和撤销集成、更新开放请求并验证对等虚拟机流量"
 
 #: lib/marshall/documentation_messages.ex:138
 #, elixir-autogen, elixir-format
 msgid "## Audi browser editor and guest workers"
-msgstr ""
+msgstr "## 奥迪浏览器编辑器和客座工作人员"
 
 #: lib/marshall/documentation_messages.ex:139
 #, elixir-autogen, elixir-format
 msgid "## Audi private request monitoring"
-msgstr ""
+msgstr "## 奥迪私人请求监控"
 
 #: lib/marshall/documentation_messages.ex:140
 #, elixir-autogen, elixir-format
 msgid "## Audi public authoritative DNS monitoring"
-msgstr ""
+msgstr "## 奥迪公共权威DNS监控"
 
 #: lib/marshall/documentation_messages.ex:141
 #, elixir-autogen, elixir-format
 msgid "## Audi terminal control-version refusal"
-msgstr ""
+msgstr "## 奥迪终端控制-版本拒绝"
 
 #: lib/marshall/documentation_messages.ex:142
 #, elixir-autogen, elixir-format
 msgid "## Authenticate CLI installation before adding SSH trust"
-msgstr ""
+msgstr "## 添加 SSH 信任之前验证 CLI 安装"
 
 #: lib/marshall/documentation_messages.ex:143
 #, elixir-autogen, elixir-format
 msgid "## Authority and interactions"
-msgstr ""
+msgstr "## 权威与互动"
 
 #: lib/marshall/documentation_messages.ex:144
 #, elixir-autogen, elixir-format
 msgid "## Backup custody"
-msgstr ""
+msgstr "## 备份保管"
 
 #: lib/marshall/documentation_messages.ex:145
 #, elixir-autogen, elixir-format
 msgid "## Boot a disposable NixOS guest in the local Antithesis emulator and retain its disk identity across restart"
-msgstr ""
+msgstr "## 在本地 Antithesis 模拟器中启动一次性 NixOS 来宾并在重新启动时保留其磁盘标识"
 
 #: lib/marshall/documentation_messages.ex:149
 #, elixir-autogen, elixir-format
 msgid "## Boot and restart a guest with the current host trust roots"
-msgstr ""
+msgstr "## 使用当前主机信任根引导并重新启动来宾"
 
 #: lib/marshall/documentation_messages.ex:153
 #, elixir-autogen, elixir-format
 msgid "## Boot the optional inner Lilly host and observe real ZFS and cgroup capacity before enrollment"
-msgstr ""
+msgstr "## 启动可选的内部 Lilly 主机并在注册前观察真实的 ZFS 和 cgroup 容量"
 
 #: lib/marshall/documentation_messages.ex:157
 #, elixir-autogen, elixir-format
 msgid "## Brady"
-msgstr ""
+msgstr "## 布雷迪"
 
 #: lib/marshall/documentation_messages.ex:158
 #, elixir-autogen, elixir-format
 msgid "## Browser editor authority and worker recovery"
-msgstr ""
+msgstr "## 浏览器编辑权限和worker恢复"
 
 #: lib/marshall/documentation_messages.ex:159
 #, elixir-autogen, elixir-format
 msgid "## Browser editor capability"
-msgstr ""
+msgstr "## 浏览器编辑器功能"
 
 #: lib/marshall/documentation_messages.ex:160
 #, elixir-autogen, elixir-format
 msgid "## Browser editor package and image updates"
-msgstr ""
+msgstr "## 浏览器编辑器包和图像更新"
 
 #: lib/marshall/documentation_messages.ex:161
 #, elixir-autogen, elixir-format
 msgid "## Browser editor placement and failure boundary"
-msgstr ""
+msgstr "## 浏览器编辑器放置和故障边界"
 
 #: lib/marshall/documentation_messages.ex:162
 #, elixir-autogen, elixir-format
 msgid "## Browser editor release configuration"
-msgstr ""
+msgstr "## 浏览器编辑器发布配置"
 
 #: lib/marshall/documentation_messages.ex:163
 #, elixir-autogen, elixir-format
 msgid "## Browser extension package"
-msgstr ""
+msgstr "## 浏览器扩展包"
 
 #: lib/marshall/documentation_messages.ex:164
 #, elixir-autogen, elixir-format
 msgid "## Browser extension presence layers"
-msgstr ""
+msgstr "## 浏览器扩展存在层"
 
 #: lib/marshall/documentation_messages.ex:165
 #, elixir-autogen, elixir-format
 msgid "## Browser presentation"
-msgstr ""
+msgstr "## 浏览器演示"
 
 #: lib/marshall/documentation_messages.ex:166
 #, elixir-autogen, elixir-format
 msgid "## Browser response headers, transport and session cookies"
-msgstr ""
+msgstr "## 浏览器响应标头、传输和会话 cookie"
 
 #: lib/marshall/documentation_messages.ex:167
 #, elixir-autogen, elixir-format
 msgid "## Build Arch Linux and AlmaLinux images through the existing Linux guest contract"
-msgstr ""
+msgstr "## 通过现有的 Linux 来宾合约构建 Arch Linux 和 AlmaLinux 镜像"
 
 #: lib/marshall/documentation_messages.ex:171
 #, elixir-autogen, elixir-format
 msgid "## Build a host or guest closure with the signed Overalls Nix cache"
-msgstr ""
+msgstr "## 使用已签名的 Overalls Nix 缓存构建主机或来宾关闭"
 
 #: lib/marshall/documentation_messages.ex:175
 #, elixir-autogen, elixir-format
 msgid "## Build and activate a release"
-msgstr ""
+msgstr "## 构建并激活版本"
 
 #: lib/marshall/documentation_messages.ex:176
 #, elixir-autogen, elixir-format
 msgid "## Build the Windows Server 2025 evaluation image offline and boot it under the patched Firecracker to the serial Special Administration Console"
-msgstr ""
+msgstr "## 离线构建 Windows Server 2025 评估映像并在已修补的 Firecracker 下启动至串行特殊管理控制台"
 
 #: lib/marshall/documentation_messages.ex:180
 #, elixir-autogen, elixir-format
 msgid "## Burn delivery operations"
-msgstr ""
+msgstr "## 烧伤运送作业"
 
 #: lib/marshall/documentation_messages.ex:181
 #, elixir-autogen, elixir-format
 msgid "## Burn notification credentials and refusal"
-msgstr ""
+msgstr "## 销毁通知凭据和拒绝"
 
 #: lib/marshall/documentation_messages.ex:182
 #, elixir-autogen, elixir-format
 msgid "## Certified SSH boot identity"
-msgstr ""
+msgstr "## 经过认证的 SSH 启动身份"
 
 #: lib/marshall/documentation_messages.ex:183
 #, elixir-autogen, elixir-format
 msgid "## Choose a display time zone in the profile section of the account page, read every timestamp in that zone and see collaborators' local time"
-msgstr ""
+msgstr "## 在帐户页面的个人资料部分选择显示时区，读取该区域中的每个时间戳并查看协作者的当地时间"
 
 #: lib/marshall/documentation_messages.ex:187
 #, elixir-autogen, elixir-format
 msgid "## Clone"
-msgstr ""
+msgstr "## 克隆"
 
 #: lib/marshall/documentation_messages.ex:188
 #, elixir-autogen, elixir-format
 msgid "## Clone a machine"
-msgstr ""
+msgstr "## 克隆机器"
 
 #: lib/marshall/documentation_messages.ex:189
 #, elixir-autogen, elixir-format
 msgid "## Clone a machine without sharing its mutable disk"
-msgstr ""
+msgstr "## 克隆机器而不共享其可变磁盘"
 
 #: lib/marshall/documentation_messages.ex:190
 #, elixir-autogen, elixir-format
 msgid "## Collect explicit-image guest OS and lifecycle evidence through Porsche and personal-account SSH"
-msgstr ""
+msgstr "## 通过保时捷和个人帐户 SSH 收集显式映像访客操作系统和生命周期证据"
 
 #: lib/marshall/documentation_messages.ex:194
 #, elixir-autogen, elixir-format
 msgid "## Command reference"
-msgstr ""
+msgstr "## 命令参考"
 
 #: lib/marshall/documentation_messages.ex:195
 #, elixir-autogen, elixir-format
 msgid "## Common runtime startup refusal evidence"
-msgstr ""
+msgstr "## 常见的运行时启动拒绝证据"
 
 #: lib/marshall/documentation_messages.ex:196
 #, elixir-autogen, elixir-format
 msgid "## Complete Windows SSH bootstrap before ordinary key delivery and withhold readiness when bootstrap evidence is missing"
-msgstr ""
+msgstr "## 在普通密钥传递之前完成 Windows SSH 引导程序，并在引导程序证据丢失时保留准备状态"
 
 #: lib/marshall/documentation_messages.ex:200
 #, elixir-autogen, elixir-format
 msgid "## Complete a source export only after native sender descendants have been reaped"
-msgstr ""
+msgstr "## 仅在收获本机发送者后代后才完成源导出"
 
 #: lib/marshall/documentation_messages.ex:204
 #, elixir-autogen, elixir-format
 msgid "## Configuration and change procedure"
-msgstr ""
+msgstr "## 配置和变更流程"
 
 #: lib/marshall/documentation_messages.ex:205
 #, elixir-autogen, elixir-format
 msgid "## Configure and open a repository"
-msgstr ""
+msgstr "## 配置并打开存储库"
 
 #: lib/marshall/documentation_messages.ex:206
 #, elixir-autogen, elixir-format
 msgid "## Connect"
-msgstr ""
+msgstr "## 连接"
 
 #: lib/marshall/documentation_messages.ex:207
 #, elixir-autogen, elixir-format
 msgid "## Context, compaction and collaboration"
-msgstr ""
+msgstr "## 上下文、压缩和协作"
 
 #: lib/marshall/documentation_messages.ex:208
 #, elixir-autogen, elixir-format
 msgid "## Continue a long thread through automatic or requested context compaction"
-msgstr ""
+msgstr "## 通过自动或请求的上下文压缩继续长线程"
 
 #: lib/marshall/documentation_messages.ex:212
 #, elixir-autogen, elixir-format
 msgid "## Continue native state publication and recover actors while diagnostics are unavailable"
-msgstr ""
+msgstr "## 在诊断不可用时继续本机状态发布并恢复参与者"
 
 #: lib/marshall/documentation_messages.ex:216
 #, elixir-autogen, elixir-format
 msgid "## Continuing physical boot adoption"
-msgstr ""
+msgstr "## 继续采用物理引导"
 
 #: lib/marshall/documentation_messages.ex:217
 #, elixir-autogen, elixir-format
 msgid "## Control WebSocket"
-msgstr ""
+msgstr "## 控制WebSocket"
 
 #: lib/marshall/documentation_messages.ex:218
 #, elixir-autogen, elixir-format
 msgid "## Create a machine and wait for its exact boot to become usable over SSH"
-msgstr ""
+msgstr "## 创建一台机器并等待其准确启动以通过 SSH 可用"
 
 #: lib/marshall/documentation_messages.ex:222
 #, elixir-autogen, elixir-format
 msgid "## Create a machine in the browser or Porsche SSH without choosing a profile"
-msgstr ""
+msgstr "## 在浏览器或 Porsche SSH 中创建机器，无需选择配置文件"
 
 #: lib/marshall/documentation_messages.ex:226
 #, elixir-autogen, elixir-format
 msgid "## Create a team without claiming another account's active name"
-msgstr ""
+msgstr "## 创建团队而无需声明其他帐户的有效名称"
 
 #: lib/marshall/documentation_messages.ex:230
 #, elixir-autogen, elixir-format
 msgid "## Create and recover a user thread with its dedicated machine"
-msgstr ""
+msgstr "## 使用其专用机器创建和恢复用户线程"
 
 #: lib/marshall/documentation_messages.ex:234
 #, elixir-autogen, elixir-format
 msgid "## Create, stop, restart and delete a machine"
-msgstr ""
+msgstr "## 创建、停止、重启和删除机器"
 
 #: lib/marshall/documentation_messages.ex:235
 #, elixir-autogen, elixir-format
 msgid "## Credential and key rotation"
-msgstr ""
+msgstr "## 凭证和密钥轮换"
 
 #: lib/marshall/documentation_messages.ex:236
 #, elixir-autogen, elixir-format
 msgid "## Dedicated editor path"
-msgstr ""
+msgstr "## 专用编辑器路径"
 
 #: lib/marshall/documentation_messages.ex:237
 #, elixir-autogen, elixir-format
 msgid "## Deploy a candidate while preserving guests and authority"
-msgstr ""
+msgstr "## 在保留客人和权威的同时部署候选人"
 
 #: lib/marshall/documentation_messages.ex:238
 #, elixir-autogen, elixir-format
 msgid "## Developer SSH"
-msgstr ""
+msgstr "## 开发者SSH"
 
 #: lib/marshall/documentation_messages.ex:239
 #, elixir-autogen, elixir-format
 msgid "## Developer verification"
-msgstr ""
+msgstr "## 开发者验证"
 
 #: lib/marshall/documentation_messages.ex:240
 #, elixir-autogen, elixir-format
 msgid "## Diagnostic outages and queue recovery"
-msgstr ""
+msgstr "## 诊断中断和队列恢复"
 
 #: lib/marshall/documentation_messages.ex:241
 #, elixir-autogen, elixir-format
 msgid "## Diagnostic paths and custody"
-msgstr ""
+msgstr "## 诊断路径和监护"
 
 #: lib/marshall/documentation_messages.ex:242
 #, elixir-autogen, elixir-format
 msgid "## Disable, drain, resume, retire"
-msgstr ""
+msgstr "## 禁用、耗尽、恢复、退休"
 
 #: lib/marshall/documentation_messages.ex:243
 #, elixir-autogen, elixir-format
 msgid "## Discover editor and neutral webview origins only through gateways with matching immutable assets"
-msgstr ""
+msgstr "## 仅通过具有匹配的不可变资产的网关发现编辑器和中性 Web 视图来源"
 
 #: lib/marshall/documentation_messages.ex:247
 #, elixir-autogen, elixir-format
 msgid "## Drain a naturally exited terminal without retaining unreserved scrollback"
-msgstr ""
+msgstr "## 清空自然退出的终端，不保留未保留的回滚"
 
 #: lib/marshall/documentation_messages.ex:251
 #, elixir-autogen, elixir-format
 msgid "## Durable guest accounts"
-msgstr ""
+msgstr "## 持久的访客帐户"
 
 #: lib/marshall/documentation_messages.ex:252
 #, elixir-autogen, elixir-format
 msgid "## Durable guest identity reservations"
-msgstr ""
+msgstr "## 持久的客人身份预订"
 
 #: lib/marshall/documentation_messages.ex:253
 #, elixir-autogen, elixir-format
 msgid "## Durable objectives and measurement authority"
-msgstr ""
+msgstr "## 持久的目标和衡量权威"
 
 #: lib/marshall/documentation_messages.ex:254
 #, elixir-autogen, elixir-format
 msgid "## Durable request sources"
-msgstr ""
+msgstr "## 持久的请求源"
 
 #: lib/marshall/documentation_messages.ex:255
 #, elixir-autogen, elixir-format
 msgid "## Editor transition evidence"
-msgstr ""
+msgstr "## 编辑过渡证据"
 
 #: lib/marshall/documentation_messages.ex:256
 #, elixir-autogen, elixir-format
 msgid "## Elixir contract verification"
-msgstr ""
+msgstr "## Elixir 合约验证"
 
 #: lib/marshall/documentation_messages.ex:257
 #, elixir-autogen, elixir-format
 msgid "## Elixir property verification"
-msgstr ""
+msgstr "## Elixir属性验证"
 
 #: lib/marshall/documentation_messages.ex:258
 #, elixir-autogen, elixir-format
 msgid "## Enrico"
-msgstr ""
+msgstr "## 恩里科"
 
 #: lib/marshall/documentation_messages.ex:259
 #, elixir-autogen, elixir-format
 msgid "## Enroll"
-msgstr ""
+msgstr "## 注册"
 
 #: lib/marshall/documentation_messages.ex:260
 #, elixir-autogen, elixir-format
 msgid "## Enroll a replacement host with fresh physical identity after retiring the old one"
-msgstr ""
+msgstr "## 在旧主机退役后，注册具有新物理身份的替代主机"
 
 #: lib/marshall/documentation_messages.ex:264
 #, elixir-autogen, elixir-format
 msgid "## Evaluated placement"
-msgstr ""
+msgstr "## 评估安置"
 
 #: lib/marshall/documentation_messages.ex:265
 #, elixir-autogen, elixir-format
 msgid "## Evidence levels"
-msgstr ""
+msgstr "## 证据水平"
 
 #: lib/marshall/documentation_messages.ex:266
 #, elixir-autogen, elixir-format
 msgid "## Executor loss and explicit retry"
-msgstr ""
+msgstr "## 执行器丢失和显式重试"
 
 #: lib/marshall/documentation_messages.ex:267
 #, elixir-autogen, elixir-format
 msgid "## Exercise Control pending-window capacity and retired replies through a real client and loopback peer"
-msgstr ""
+msgstr "## 练习 通过真实客户端和环回对等点控制挂起窗口容量和退休回复"
 
 #: lib/marshall/documentation_messages.ex:271
 #, elixir-autogen, elixir-format
 msgid "## Expand a retained native root without changing foreign disks or nonroot partitions"
-msgstr ""
+msgstr "## 扩展保留的本机根而不更改外部磁盘或非根分区"
 
 #: lib/marshall/documentation_messages.ex:275
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis build selection"
-msgstr ""
+msgstr "## 实验对立构建选择"
 
 #: lib/marshall/documentation_messages.ex:276
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis control fixture"
-msgstr ""
+msgstr "## 实验对偶控制夹具"
 
 #: lib/marshall/documentation_messages.ex:277
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis fixture custody"
-msgstr ""
+msgstr "## 实验对偶夹具保管"
 
 #: lib/marshall/documentation_messages.ex:278
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis fixture outside deployed placement"
-msgstr ""
+msgstr "## 部署位置之外的实验对偶夹具"
 
 #: lib/marshall/documentation_messages.ex:282
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis guest transport boundary"
-msgstr ""
+msgstr "## 实验对立客体传输边界"
 
 #: lib/marshall/documentation_messages.ex:283
 #, elixir-autogen, elixir-format
 msgid "## Experimental FreeBSD and OmniOS mounted-root growth"
-msgstr ""
+msgstr "## 实验性 FreeBSD 和 OmniOS 安装根增长"
 
 #: lib/marshall/documentation_messages.ex:284
 #, elixir-autogen, elixir-format
 msgid "## Experimental local guest emulation"
-msgstr ""
+msgstr "## 实验性本地访客模拟"
 
 #: lib/marshall/documentation_messages.ex:285
 #, elixir-autogen, elixir-format
 msgid "## Experimental native daemon recovery"
-msgstr ""
+msgstr "## 实验性本机守护进程恢复"
 
 #: lib/marshall/documentation_messages.ex:286
 #, elixir-autogen, elixir-format
 msgid "## Explicit terminal kill under withheld credit"
-msgstr ""
+msgstr "## 扣留信用下的显式终端终止"
 
 #: lib/marshall/documentation_messages.ex:287
 #, elixir-autogen, elixir-format
 msgid "## Explicitly kill a terminal whose viewer withholds credit without retaining guest session allocations"
-msgstr ""
+msgstr "## 明确终止其查看者扣留信用的终端，而不保留访客会话分配"
 
 #: lib/marshall/documentation_messages.ex:291
 #, elixir-autogen, elixir-format
 msgid "## Fence native socket identity and wake blocked operations after an actual Firecracker transport event"
-msgstr ""
+msgstr "## 在实际的 Firecracker 传输事件之后，隔离本机套接字身份并唤醒阻塞的操作"
 
 #: lib/marshall/documentation_messages.ex:295
 #, elixir-autogen, elixir-format
 msgid "## Fetch through filtered web egress without stale attribution"
-msgstr ""
+msgstr "## 通过过滤后的网络出口获取数据，而无需过时的归因"
 
 #: lib/marshall/documentation_messages.ex:299
 #, elixir-autogen, elixir-format
 msgid "## Find the browser extension guide, download an unsigned launcher and explicitly configure its server before a provider click"
-msgstr ""
+msgstr "## 查找浏览器扩展指南，下载未签名的启动器并在提供商单击之前显式配置其服务器"
 
 #: lib/marshall/documentation_messages.ex:303
 #, elixir-autogen, elixir-format
 msgid "## Firecracker native firmware operations"
-msgstr ""
+msgstr "## Firecracker 本机固件操作"
 
 #: lib/marshall/documentation_messages.ex:304
 #, elixir-autogen, elixir-format
 msgid "## First commands"
-msgstr ""
+msgstr "## 第一个命令"
 
 #: lib/marshall/documentation_messages.ex:305
 #, elixir-autogen, elixir-format
 msgid "## Foreign Linux guest PAM runtime"
-msgstr ""
+msgstr "## 国外 Linux 来宾 PAM 运行时"
 
 #: lib/marshall/documentation_messages.ex:306
 #, elixir-autogen, elixir-format
 msgid "## Foreign and native guest-family boundaries"
-msgstr ""
+msgstr "## 外国和本地宾客家庭界限"
 
 #: lib/marshall/documentation_messages.ex:307
 #, elixir-autogen, elixir-format
 msgid "## Full ring overwrite allocation"
-msgstr ""
+msgstr "## 全环覆盖分配"
 
 #: lib/marshall/documentation_messages.ex:308
 #, elixir-autogen, elixir-format
 msgid "## Galileo"
-msgstr ""
+msgstr "## 伽利略"
 
 #: lib/marshall/documentation_messages.ex:309
 #, elixir-autogen, elixir-format
 msgid "## Give Windows guests an agent set with a capability table, reach a guest-side listener over virtio-vsock through the viosock driver, and make the fleet ready to stage the image"
-msgstr ""
+msgstr "## 为 Windows 客户机提供一个带有功能表的代理集，通过 viosock 驱动程序通过 virtio-vsock 到达客户机端侦听器，并使队列准备好暂存映像"
 
 #: lib/marshall/documentation_messages.ex:313
 #, elixir-autogen, elixir-format
 msgid "## Grow active terminal scrollback within the shared memory budget and replace only retired capacity"
-msgstr ""
+msgstr "## 在共享内存预算内增加活动终端回滚并仅替换已停用的容量"
 
 #: lib/marshall/documentation_messages.ex:317
 #, elixir-autogen, elixir-format
 msgid "## Guest CLI replacement"
-msgstr ""
+msgstr "## 来宾 CLI 替换"
 
 #: lib/marshall/documentation_messages.ex:318
 #, elixir-autogen, elixir-format
 msgid "## Guest boot profile"
-msgstr ""
+msgstr "## 来宾启动配置文件"
 
 #: lib/marshall/documentation_messages.ex:319
 #, elixir-autogen, elixir-format
 msgid "## Guest coding CLI configuration"
-msgstr ""
+msgstr "## 访客编码 CLI 配置"
 
 #: lib/marshall/documentation_messages.ex:320
 #, elixir-autogen, elixir-format
 msgid "## Guest instructions and skills"
-msgstr ""
+msgstr "## 宾客须知和技巧"
 
 #: lib/marshall/documentation_messages.ex:321
 #, elixir-autogen, elixir-format
 msgid "## Historical pre-cutover: Deliver physical-host monitoring samples and recover after a conflicting ID"
-msgstr ""
+msgstr "## 历史预割接：交付物理主机监控样本并在ID冲突后恢复"
 
 #: lib/marshall/documentation_messages.ex:325
 #, elixir-autogen, elixir-format
 msgid "## Historical pre-cutover: Read fleet diagnostic logs in the Control room with scoped query authority"
-msgstr ""
+msgstr "## 历史预切换：使用范围查询权限读取控制室中的车队诊断日志"
 
 #: lib/marshall/documentation_messages.ex:329
 #, elixir-autogen, elixir-format
 msgid "## Historical pre-cutover: Read the fleet telemetry baseline at /admin/slos from the Control room Monitoring menu as a signed-in user"
-msgstr ""
+msgstr "## 历史预切换：以登录用户身份从控制室监控菜单中读取位于 /admin/slos 的车队遥测基线"
 
 #: lib/marshall/documentation_messages.ex:333
 #, elixir-autogen, elixir-format
 msgid "## Hold every Lilly lease and leased utility in lilly-hostd until the holder releases it or dies"
-msgstr ""
+msgstr "## 持有 lilly-hostd 中的每个 Lilly 租约和租赁实用程序，直到持有者释放它或死亡"
 
 #: lib/marshall/documentation_messages.ex:337
 #, elixir-autogen, elixir-format
 msgid "## Host evacuation"
-msgstr ""
+msgstr "## 主机疏散"
 
 #: lib/marshall/documentation_messages.ex:338
 #, elixir-autogen, elixir-format
 msgid "## Host responsibilities"
-msgstr ""
+msgstr "## 主持人职责"
 
 #: lib/marshall/documentation_messages.ex:339
 #, elixir-autogen, elixir-format
 msgid "## Host-effects engine boundary"
-msgstr ""
+msgstr "## 宿主效应引擎边界"
 
 #: lib/marshall/documentation_messages.ex:340
 #, elixir-autogen, elixir-format
 msgid "## Host-effects engine loss"
-msgstr ""
+msgstr "## 宿主效应发动机损失"
 
 #: lib/marshall/documentation_messages.ex:341
 #, elixir-autogen, elixir-format
 msgid "## Independent diagnostic custody"
-msgstr ""
+msgstr "## 独立诊断监护"
 
 #: lib/marshall/documentation_messages.ex:342
 #, elixir-autogen, elixir-format
 msgid "## Independent observability recovery"
-msgstr ""
+msgstr "## 独立可观测性恢复"
 
 #: lib/marshall/documentation_messages.ex:343
 #, elixir-autogen, elixir-format
 msgid "## Independent observability roles"
-msgstr ""
+msgstr "## 独立的可观察性角色"
 
 #: lib/marshall/documentation_messages.ex:344
 #, elixir-autogen, elixir-format
 msgid "## Independent service diagnostics"
-msgstr ""
+msgstr "## 独立服务诊断"
 
 #: lib/marshall/documentation_messages.ex:345
 #, elixir-autogen, elixir-format
 msgid "## Inline privileged browser actions"
-msgstr ""
+msgstr "## 内联特权浏览器操作"
 
 #: lib/marshall/documentation_messages.ex:346
 #, elixir-autogen, elixir-format
 msgid "## Inspect bounded Underclass stream outcomes and long-range capacity statistics"
-msgstr ""
+msgstr "## 检查有界底层流结果和远程容量统计"
 
 #: lib/marshall/documentation_messages.ex:350
 #, elixir-autogen, elixir-format
 msgid "## Inspect physical and workflow completion independently of receipt polling"
-msgstr ""
+msgstr "## 独立于收据轮询检查物理和工作流程完成情况"
 
 #: lib/marshall/documentation_messages.ex:354
 #, elixir-autogen, elixir-format
 msgid "## Inspect retained job history and retry a failed background job"
-msgstr ""
+msgstr "## 检查保留的作业历史记录并重试失败的后台作业"
 
 #: lib/marshall/documentation_messages.ex:358
 #, elixir-autogen, elixir-format
 msgid "## Inspect source-owned candidate ratios in the private Grafana dashboard"
-msgstr ""
+msgstr "## 在私有 Grafana 仪表板中检查源拥有的候选者比例"
 
 #: lib/marshall/documentation_messages.ex:362
 #, elixir-autogen, elixir-format
 msgid "## Inspect uncertain guest work and explicitly retry with current CLI authority"
-msgstr ""
+msgstr "## 检查不确定的来宾工作并使用当前 CLI 权限显式重试"
 
 #: lib/marshall/documentation_messages.ex:366
 #, elixir-autogen, elixir-format
 msgid "## Install a gallery extension only after verifying the VSIX against packaged trust keys"
-msgstr ""
+msgstr "## 仅在根据打包的信任密钥验证 VSIX 后安装库扩展"
 
 #: lib/marshall/documentation_messages.ex:370
 #, elixir-autogen, elixir-format
 msgid "## Install and manage a pinned public skill, then restore it when reopening a thread"
-msgstr ""
+msgstr "## 安装和管理固定的公共技能，然后在重新打开线程时恢复它"
 
 #: lib/marshall/documentation_messages.ex:374
 #, elixir-autogen, elixir-format
 msgid "## Install one SSH authority and connect to management, Audi and fresh NixOS or Ubuntu guests"
-msgstr ""
+msgstr "## 安装一个 SSH 权限并连接到管理、Audi 和新的 NixOS 或 Ubuntu 来宾"
 
 #: lib/marshall/documentation_messages.ex:378
 #, elixir-autogen, elixir-format
 msgid "## Install the Overalls CLI"
-msgstr ""
+msgstr "## 安装工作服 CLI"
 
 #: lib/marshall/documentation_messages.ex:379
 #, elixir-autogen, elixir-format
 msgid "## Install the developer archive"
-msgstr ""
+msgstr "## 安装开发者存档"
 
 #: lib/marshall/documentation_messages.ex:380
 #, elixir-autogen, elixir-format
 msgid "## Install the overalls CLI on a Windows workstation from the machine page and SSH into Linux and Windows guests through Audi"
-msgstr ""
+msgstr "## 从计算机页面在 Windows 工作站上安装工作服 CLI，并通过 Audi SSH 到 Linux 和 Windows 来宾"
 
 #: lib/marshall/documentation_messages.ex:384
 #, elixir-autogen, elixir-format
 msgid "## Internal service TLS trust"
-msgstr ""
+msgstr "## 内部服务 TLS 信任"
 
 #: lib/marshall/documentation_messages.ex:385
 #, elixir-autogen, elixir-format
 msgid "## Interrupted provisioning and templates"
-msgstr ""
+msgstr "## 中断的配置和模板"
 
 #: lib/marshall/documentation_messages.ex:386
 #, elixir-autogen, elixir-format
 msgid "## Invalid provisioner startup"
-msgstr ""
+msgstr "## 无效的配置程序启动"
 
 #: lib/marshall/documentation_messages.ex:387
 #, elixir-autogen, elixir-format
 msgid "## Invite, retire and register a fresh identity with the same email"
-msgstr ""
+msgstr "## 使用同一电子邮件邀请、退出和注册新身份"
 
 #: lib/marshall/documentation_messages.ex:391
 #, elixir-autogen, elixir-format
 msgid "## Isolated restoration"
-msgstr ""
+msgstr "## 孤立恢复"
 
 #: lib/marshall/documentation_messages.ex:392
 #, elixir-autogen, elixir-format
 msgid "## Job history and operational readers"
-msgstr ""
+msgstr "## 工作经历和操作读者"
 
 #: lib/marshall/documentation_messages.ex:393
 #, elixir-autogen, elixir-format
 msgid "## Keep Customer machines private and isolated"
-msgstr ""
+msgstr "## 保持客户机器的私密性和隔离性"
 
 #: lib/marshall/documentation_messages.ex:394
 #, elixir-autogen, elixir-format
 msgid "## Keep a full terminal scrollback ring within its reserved backing size while output continues"
-msgstr ""
+msgstr "## 在输出继续的同时，将完整的终端回滚环保持在其保留的支持大小内"
 
 #: lib/marshall/documentation_messages.ex:398
 #, elixir-autogen, elixir-format
 msgid "## Keep a healthy terminal progressing while stalled viewers, growth and session admission share memory"
-msgstr ""
+msgstr "## 在观众停滞、增长和会话入场共享内存的同时保持终端健康发展"
 
 #: lib/marshall/documentation_messages.ex:402
 #, elixir-autogen, elixir-format
 msgid "## Keep a live browser editor WebSocket or nested HTTPS connection through lilly-hostd and Lilly restarts while Lilly still decides its preface, readiness and lifetime"
-msgstr ""
+msgstr "## 通过 lilly-hostd 保持实时浏览器编辑器 WebSocket 或嵌套 HTTPS 连接，Lilly 会重新启动，而 Lilly 仍会决定其序言、准备情况和生命周期"
 
 #: lib/marshall/documentation_messages.ex:406
 #, elixir-autogen, elixir-format
 msgid "## Keep a live guest SSH session through lilly-hostd and Lilly restarts while Lilly can still end it"
-msgstr ""
+msgstr "## 通过 lilly-hostd 保持实时访客 SSH 会话，Lilly 会重新启动，而 Lilly 仍然可以结束它"
 
 #: lib/marshall/documentation_messages.ex:410
 #, elixir-autogen, elixir-format
 msgid "## Keep a neighboring terminal usable while another viewer stops reading and its owner is retired"
-msgstr ""
+msgstr "## 当另一个观看者停止阅读并且其所有者退休时，保持相邻终端可用"
 
 #: lib/marshall/documentation_messages.ex:414
 #, elixir-autogen, elixir-format
 msgid "## Keep native FreeBSD and illumos admission closed until kernel identity and boot evidence exist"
-msgstr ""
+msgstr "## 保持本机 FreeBSD 和 illumos 准入关闭，直到存在内核身份和启动证据"
 
 #: lib/marshall/documentation_messages.ex:418
 #, elixir-autogen, elixir-format
 msgid "## Keep native guest public access while refusing private targets and foreign source addresses"
-msgstr ""
+msgstr "## 保持本地来宾公共访问，同时拒绝私有目标和外部源地址"
 
 #: lib/marshall/documentation_messages.ex:422
 #, elixir-autogen, elixir-format
 msgid "## Keep one generated guest identity through same-user email changes and reserve it after retirement"
-msgstr ""
+msgstr "## 通过同一用户电子邮件更改保留一个生成的访客身份，并在退休后保留它"
 
 #: lib/marshall/documentation_messages.ex:426
 #, elixir-autogen, elixir-format
 msgid "## Keeping this handbook current"
-msgstr ""
+msgstr "## 保持本手册最新"
 
 #: lib/marshall/documentation_messages.ex:427
 #, elixir-autogen, elixir-format
 msgid "## Language and text direction"
-msgstr ""
+msgstr "## 语言和文本方向"
 
 #: lib/marshall/documentation_messages.ex:428
 #, elixir-autogen, elixir-format

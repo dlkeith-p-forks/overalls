@@ -14,66 +14,66 @@ msgstr "\nPlural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%1
 #: lib/marshall_web/live/machines_live.ex:1064
 #, elixir-autogen, elixir-format
 msgid " and counting"
-msgstr ""
+msgstr "والعد"
 
 #: lib/marshall_web/live/teams_live.ex:193
 #, elixir-autogen, elixir-format
 msgid "%{count} member"
 msgid_plural "%{count} members"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%{count} عضو"
+msgstr[1] "%{count} أعضاء"
+msgstr[2] "%{count} أعضاء"
+msgstr[3] "%{count} أعضاء"
+msgstr[4] "%{count} أعضاء"
+msgstr[5] "%{count} أعضاء"
 
 #: lib/marshall_web/live/admin/users_live.ex:157
 #, elixir-autogen, elixir-format
 msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%{count} جهاز مملوك"
+msgstr[1] "%{count} أجهزة مملوكة"
+msgstr[2] "%{count} أجهزة مملوكة"
+msgstr[3] "%{count} أجهزة مملوكة"
+msgstr[4] "%{count} أجهزة مملوكة"
+msgstr[5] "%{count} أجهزة مملوكة"
 
 #: lib/marshall_web/live/account_live.ex:358
 #, elixir-autogen, elixir-format
 msgid "%{count} registered key"
 msgid_plural "%{count} registered keys"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%{count} مفتاح مسجل"
+msgstr[1] "%{count} مفاتيح مسجلة"
+msgstr[2] "%{count} مفاتيح مسجلة"
+msgstr[3] "%{count} مفاتيح مسجلة"
+msgstr[4] "%{count} مفاتيح مسجلة"
+msgstr[5] "%{count} مفاتيح مسجلة"
 
 #: lib/marshall_web/live/admin/operations_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "%{count} · %{enabled} enabled"
-msgstr ""
+msgstr "%{count} · %{enabled} مفعّل"
 
 #: lib/marshall_web/live/machines_live.ex:1063
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
-msgstr ""
+msgstr "%{seconds} ثانية%{suffix}"
 
 #: lib/marshall_web/live/terminal_live.ex:495
 #, elixir-autogen, elixir-format
 msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%{user} · يشاهده %{count}"
+msgstr[1] "%{user} · يشاهده %{count}"
+msgstr[2] "%{user} · يشاهده %{count}"
+msgstr[3] "%{user} · يشاهده %{count}"
+msgstr[4] "%{user} · يشاهده %{count}"
+msgstr[5] "%{user} · يشاهده %{count}"
 
 #: lib/marshall_web/live/resize_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "%{value1} CPU"
-msgstr ""
+msgstr "%{value1} CPU"
 
 #: lib/marshall_web/live/machines_live.ex:893
 #: lib/marshall_web/live/machines_live.ex:894
@@ -82,12 +82,12 @@ msgstr ""
 #: lib/marshall_web/live/resize_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
-msgstr ""
+msgstr "%{value1} GiB"
 
 #: lib/marshall_web/live/resize_live.ex:285
 #, elixir-autogen, elixir-format
 msgid "%{value1} MiB"
-msgstr ""
+msgstr "%{value1} MiB"
 
 #: lib/marshall_web/live/threads_live.ex:1426
 #, elixir-autogen, elixir-format

@@ -14,50 +14,50 @@ msgstr "\nPlural-Forms: nplurals=2; plural=(n != 1);\nLanguage: bn\n"
 #: lib/marshall_web/live/machines_live.ex:1064
 #, elixir-autogen, elixir-format
 msgid " and counting"
-msgstr ""
+msgstr "এবং গণনা"
 
 #: lib/marshall_web/live/teams_live.ex:193
 #, elixir-autogen, elixir-format
 msgid "%{count} member"
 msgid_plural "%{count} members"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} জন সদস্য"
+msgstr[1] "%{count} জন সদস্য"
 
 #: lib/marshall_web/live/admin/users_live.ex:157
 #, elixir-autogen, elixir-format
 msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} মালিকানাধীন মেশিন"
+msgstr[1] "%{count} মালিকানাধীন মেশিন"
 
 #: lib/marshall_web/live/account_live.ex:358
 #, elixir-autogen, elixir-format
 msgid "%{count} registered key"
 msgid_plural "%{count} registered keys"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} নিবন্ধিত কী"
+msgstr[1] "%{count} নিবন্ধিত কী"
 
 #: lib/marshall_web/live/admin/operations_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "%{count} · %{enabled} enabled"
-msgstr ""
+msgstr "%{count} · %{enabled} সক্রিয়"
 
 #: lib/marshall_web/live/machines_live.ex:1063
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
-msgstr ""
+msgstr "%{seconds} সেকেন্ড%{suffix}"
 
 #: lib/marshall_web/live/terminal_live.ex:495
 #, elixir-autogen, elixir-format
 msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{user} · %{count} জন দেখছেন"
+msgstr[1] "%{user} · %{count} জন দেখছেন"
 
 #: lib/marshall_web/live/resize_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "%{value1} CPU"
-msgstr ""
+msgstr "%{value1} CPU"
 
 #: lib/marshall_web/live/machines_live.ex:893
 #: lib/marshall_web/live/machines_live.ex:894
@@ -66,12 +66,12 @@ msgstr ""
 #: lib/marshall_web/live/resize_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
-msgstr ""
+msgstr "%{value1} GiB"
 
 #: lib/marshall_web/live/resize_live.ex:285
 #, elixir-autogen, elixir-format
 msgid "%{value1} MiB"
-msgstr ""
+msgstr "%{value1} MiB"
 
 #: lib/marshall_web/live/threads_live.ex:1426
 #, elixir-autogen, elixir-format
