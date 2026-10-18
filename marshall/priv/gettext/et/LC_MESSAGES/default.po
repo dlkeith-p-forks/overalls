@@ -7413,3 +7413,38 @@ msgstr "tootmine, projekti-nimi"
 #, elixir-autogen, elixir-format
 msgid "same time as you"
 msgstr "sama aeg mis sinul"
+
+#: lib/marshall_web/live/account_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "Kirjeldus"
+
+#: lib/marshall_web/live/account_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH-võti on ümber nimetatud."
+
+#: lib/marshall_web/live/account_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "Seda võtit ei saanud ümber nimetada. Kasuta kuni 128 märki."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "Haldusmuudatused nõuavad administraatorit."
+
+#: lib/marshall_web/live_admin_auth.ex:139
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "Haldusmuudatused pole autoriseeritud."
+
+#: lib/marshall_web/live_admin_auth.ex:186
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "Lõpeta või tühista esmalt praegune kinnitamine."
+
+#: lib/marshall_web/live_admin_auth.ex:199
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "Vigane halduspäring."

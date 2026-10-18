@@ -6887,7 +6887,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3701
 #, elixir-autogen, elixir-format
 msgid "A minimal role fragment uses runtime file paths for private material:"
-msgstr ""
+msgstr "Gumagamit ang payak na role fragment ng runtime file path para sa pribadong materyal:"
 
 #: lib/marshall/documentation_messages.ex:3705
 #, elixir-autogen, elixir-format
@@ -7192,7 +7192,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3965
 #, elixir-autogen, elixir-format
 msgid "Aggregate CPU quota in logical cores for Marshall instances."
-msgstr ""
+msgstr "Pinagsama-samang CPU quota sa logical core para sa mga Marshall instance."
 
 #: lib/marshall/documentation_messages.ex:3969
 #, elixir-autogen, elixir-format
@@ -7472,7 +7472,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4186
 #, elixir-autogen, elixir-format
 msgid "Authoritative Audi DNS replicas checked before challenge acknowledgement."
-msgstr ""
+msgstr "Mga authoritative Audi DNS replica na sinusuri bago ang challenge acknowledgement."
 
 #: lib/marshall/documentation_messages.ex:4190
 #, elixir-autogen, elixir-format
@@ -7572,7 +7572,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4261
 #, elixir-autogen, elixir-format
 msgid "Bound storage pools; filesystem identity must match the actual mount."
-msgstr ""
+msgstr "Mga nakataling storage pool; kailangang tumugma ang filesystem identity sa aktuwal na mount."
 
 #: lib/marshall/documentation_messages.ex:4265
 #, elixir-autogen, elixir-format
@@ -8107,7 +8107,7 @@ msgstr "Hangganan: Tinutukoy ng per-producer Unix UID/cgroup identity at pribado
 #: lib/marshall/documentation_messages.ex:4709
 #, elixir-autogen, elixir-format
 msgid "Boundary: Persisted Cedar role governs each action and live capability renewal."
-msgstr ""
+msgstr "Hangganan: Pinamamahalaan ng nakaimbak na Cedar role ang bawat aksiyon at aktuwal na pag-renew ng capability."
 
 #: lib/marshall/documentation_messages.ex:4713
 #, elixir-autogen, elixir-format
@@ -8497,7 +8497,7 @@ msgstr "CA bundle na nagpapatunay sa control-plane endpoint. Binabasa ito ng Lil
 #: lib/marshall/documentation_messages.ex:5012
 #, elixir-autogen, elixir-format
 msgid "CA certificates authenticating the Marshall HTTPS endpoint."
-msgstr ""
+msgstr "Mga CA certificate na nagpapatunay sa Marshall HTTPS endpoint."
 
 #: lib/marshall/documentation_messages.ex:5013
 #, elixir-autogen, elixir-format
@@ -8542,7 +8542,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5040
 #, elixir-autogen, elixir-format
 msgid "Canonical runtime directory containing the complete published bundle."
-msgstr ""
+msgstr "Canonical runtime directory na naglalaman ng buong inilathalang bundle."
 
 #: lib/marshall/documentation_messages.ex:5044
 #, elixir-autogen, elixir-format
@@ -8562,7 +8562,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5056
 #, elixir-autogen, elixir-format
 msgid "Central metrics/traces/Grafana store or worker collector."
-msgstr ""
+msgstr "Sentral na metrics/traces/Grafana store o worker collector."
 
 #: lib/marshall/documentation_messages.ex:5057
 #, elixir-autogen, elixir-format
@@ -8607,12 +8607,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5089
 #, elixir-autogen, elixir-format
 msgid "Cloning is currently unavailable for the Inception multi-disk profile."
-msgstr ""
+msgstr "Kasalukuyang hindi magagamit ang cloning para sa Inception multi-disk profile."
 
 #: lib/marshall/documentation_messages.ex:5093
 #, elixir-autogen, elixir-format
 msgid "Closed trusted request-source name; physical measurements stay in PostgreSQL."
-msgstr ""
+msgstr "Saradong pinagkakatiwalaang request-source name; nananatili sa PostgreSQL ang mga pisikal na sukat."
 
 #: lib/marshall/documentation_messages.ex:5101
 #, elixir-autogen, elixir-format
@@ -8672,12 +8672,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5142
 #, elixir-autogen, elixir-format
 msgid "Coverage: **covered**. Layers: identity, authorization, transport, recovery."
-msgstr ""
+msgstr "Saklaw: **saklaw**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5146
 #, elixir-autogen, elixir-format
 msgid "Coverage: **covered**. Layers: identity, transport, execution, recovery."
-msgstr ""
+msgstr "Saklaw: **saklaw**. Mga layer: pagkakakilanlan, transportasyon, pagpapatakbo, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5150
 #, elixir-autogen, elixir-format
@@ -8692,47 +8692,47 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5152
 #, elixir-autogen, elixir-format
 msgid "Coverage: **gap**. Layers: authorization, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **kakulangan**. Mga layer: awtorisasyon, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5156
 #, elixir-autogen, elixir-format
 msgid "Coverage: **gap**. Layers: authorization, transport, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **kakulangan**. Mga layer: awtorisasyon, transportasyon, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5160
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, isolation, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, pagpapatakbo, paghihiwalay, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5164
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, isolation."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, pagpapatakbo, paghihiwalay."
 
 #: lib/marshall/documentation_messages.ex:5168
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, pagpapatakbo, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5172
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, pagpapatakbo, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5176
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution, transport."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, pagpapatakbo, transportasyon."
 
 #: lib/marshall/documentation_messages.ex:5180
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, execution."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, pagpapatakbo."
 
 #: lib/marshall/documentation_messages.ex:5181
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, isolation."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, paghihiwalay."
 
 #: lib/marshall/documentation_messages.ex:5182
 #, elixir-autogen, elixir-format
@@ -8742,7 +8742,7 @@ msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, transportasyon, pagpapatak
 #: lib/marshall/documentation_messages.ex:5186
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, transportasyon, pagpapatakbo, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5190
 #, elixir-autogen, elixir-format
@@ -8752,12 +8752,12 @@ msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, transportasyon, pagpapatak
 #: lib/marshall/documentation_messages.ex:5194
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, execution."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, transportasyon, pagpapatakbo."
 
 #: lib/marshall/documentation_messages.ex:5198
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, isolation, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, transportasyon, paghihiwalay, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5202
 #, elixir-autogen, elixir-format
@@ -8767,17 +8767,17 @@ msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, transportasyon, paghihiwal
 #: lib/marshall/documentation_messages.ex:5206
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: authorization, transport, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: awtorisasyon, transportasyon, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5210
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, isolation, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagpapatakbo, paghihiwalay, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5214
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, isolation, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagpapatakbo, paghihiwalay, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5218
 #, elixir-autogen, elixir-format
@@ -8787,12 +8787,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5219
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, storage, recovery, transport."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagpapatakbo, imbakan, pagbawi, transportasyon."
 
 #: lib/marshall/documentation_messages.ex:5223
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: execution, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagpapatakbo, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5227
 #, elixir-autogen, elixir-format
@@ -8812,22 +8812,22 @@ msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, pagpapata
 #: lib/marshall/documentation_messages.ex:5236
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, execution."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, pagpapatakbo."
 
 #: lib/marshall/documentation_messages.ex:5240
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, isolation, storage."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, paghihiwalay, imbakan."
 
 #: lib/marshall/documentation_messages.ex:5244
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5248
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, storage."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, imbakan."
 
 #: lib/marshall/documentation_messages.ex:5252
 #, elixir-autogen, elixir-format
@@ -8857,7 +8857,7 @@ msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transport
 #: lib/marshall/documentation_messages.ex:5272
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, execution."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, pagpapatakbo."
 
 #: lib/marshall/documentation_messages.ex:5276
 #, elixir-autogen, elixir-format
@@ -8872,7 +8872,7 @@ msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transport
 #: lib/marshall/documentation_messages.ex:5284
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5288
 #, elixir-autogen, elixir-format
@@ -8882,12 +8882,12 @@ msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transport
 #: lib/marshall/documentation_messages.ex:5292
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport, storage."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon, imbakan."
 
 #: lib/marshall/documentation_messages.ex:5296
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, authorization, transport."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, awtorisasyon, transportasyon."
 
 #: lib/marshall/documentation_messages.ex:5300
 #, elixir-autogen, elixir-format
@@ -8897,12 +8897,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5301
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, execution, isolation, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, pagpapatakbo, paghihiwalay, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5305
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, execution, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, pagpapatakbo, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5309
 #, elixir-autogen, elixir-format
@@ -8917,32 +8917,32 @@ msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, transportasyon, pagpapa
 #: lib/marshall/documentation_messages.ex:5314
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, transportasyon, pagpapatakbo, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5318
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution, storage."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, transportasyon, pagpapatakbo, imbakan."
 
 #: lib/marshall/documentation_messages.ex:5322
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, execution."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, transportasyon, pagpapatakbo."
 
 #: lib/marshall/documentation_messages.ex:5326
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, isolation, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, transportasyon, paghihiwalay, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5330
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, transportasyon, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5334
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: identity, transport, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: pagkakakilanlan, transportasyon, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5338
 #, elixir-autogen, elixir-format
@@ -8952,7 +8952,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5339
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: isolation, transport, execution."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: paghihiwalay, transportasyon, pagpapatakbo."
 
 #: lib/marshall/documentation_messages.ex:5343
 #, elixir-autogen, elixir-format
@@ -8962,7 +8962,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5344
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, isolation, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: transportasyon, pagpapatakbo, paghihiwalay, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5348
 #, elixir-autogen, elixir-format
@@ -8972,12 +8972,12 @@ msgstr "Saklaw: **bahagya**. Mga layer: transportasyon, pagpapatakbo, paghihiwal
 #: lib/marshall/documentation_messages.ex:5352
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: transportasyon, pagpapatakbo, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5356
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, execution, storage."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: transportasyon, pagpapatakbo, imbakan."
 
 #: lib/marshall/documentation_messages.ex:5360
 #, elixir-autogen, elixir-format
@@ -8987,12 +8987,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5361
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, storage, execution."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: transportasyon, imbakan, pagpapatakbo."
 
 #: lib/marshall/documentation_messages.ex:5365
 #, elixir-autogen, elixir-format
 msgid "Coverage: **partial**. Layers: transport, storage, recovery."
-msgstr ""
+msgstr "Saklaw: **bahagya**. Mga layer: transportasyon, imbakan, pagbawi."
 
 #: lib/marshall/documentation_messages.ex:5369
 #, elixir-autogen, elixir-format
@@ -9017,7 +9017,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5382
 #, elixir-autogen, elixir-format
 msgid "Credential preparation services required before startup."
-msgstr ""
+msgstr "Mga serbisyong naghahanda ng credential na kailangan bago magsimula."
 
 #: lib/marshall/documentation_messages.ex:5383
 #, elixir-autogen, elixir-format
@@ -9032,7 +9032,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5391
 #, elixir-autogen, elixir-format
 msgid "Current-generation preparation dependencies for Git authentication."
-msgstr ""
+msgstr "Mga current-generation preparation dependency para sa Git authentication."
 
 #: lib/marshall/documentation_messages.ex:5395
 #, elixir-autogen, elixir-format
@@ -9087,12 +9087,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5417
 #, elixir-autogen, elixir-format
 msgid "Default: Required when its service or enclosing record is selected."
-msgstr ""
+msgstr "Default: Kailangan kapag pinili ang serbisyo nito o ang nakapaloob na record."
 
 #: lib/marshall/documentation_messages.ex:5421
 #, elixir-autogen, elixir-format
 msgid "Default: Required when its service or enclosing record is selected.\n"
-msgstr ""
+msgstr "Default: Kailangan kapag pinili ang serbisyo nito o ang nakapaloob na record.\n"
 
 #: lib/marshall/documentation_messages.ex:5425
 #, elixir-autogen, elixir-format
@@ -9187,7 +9187,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5495
 #, elixir-autogen, elixir-format
 msgid "Durable VM actor directory; maximum 45 bytes for UNIX sockets."
-msgstr ""
+msgstr "Matibay na direktoryo ng VM actor; hanggang 45 byte para sa UNIX socket."
 
 #: lib/marshall/documentation_messages.ex:5499
 #, elixir-autogen, elixir-format
@@ -9202,7 +9202,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5501
 #, elixir-autogen, elixir-format
 msgid "Durable transfer journal root used by Lilly's generated export configuration."
-msgstr ""
+msgstr "Matibay na transfer journal root na ginagamit ng nabuong export configuration ng Lilly."
 
 #: lib/marshall/documentation_messages.ex:5505
 #, elixir-autogen, elixir-format
@@ -9282,7 +9282,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5573
 #, elixir-autogen, elixir-format
 msgid "Encrypt private input from a mode-0600 file outside the checkout:"
-msgstr ""
+msgstr "I-encrypt ang pribadong input mula sa mode-0600 file sa labas ng checkout:"
 
 #: lib/marshall/documentation_messages.ex:5577
 #, elixir-autogen, elixir-format
@@ -9332,7 +9332,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5601
 #, elixir-autogen, elixir-format
 msgid "Evaluated producer identity inventory for topology and independent health."
-msgstr ""
+msgstr "Nasuring producer identity inventory para sa topology at hiwalay na health."
 
 #: lib/marshall/documentation_messages.ex:5605
 #, elixir-autogen, elixir-format
@@ -9467,7 +9467,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5713
 #, elixir-autogen, elixir-format
 msgid "Exact cgroup v2 systemd service allowed to admit requests."
-msgstr ""
+msgstr "Eksaktong cgroup v2 systemd service na pinapayagang tumanggap ng request."
 
 #: lib/marshall/documentation_messages.ex:5718
 #, elixir-autogen, elixir-format
@@ -9492,7 +9492,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5728
 #, elixir-autogen, elixir-format
 msgid "Existing administrative directories; never guest disk trees."
-msgstr ""
+msgstr "Mga umiiral na administratibong direktoryo; hindi kailanman guest disk tree."
 
 #: lib/marshall/documentation_messages.ex:5732
 #, elixir-autogen, elixir-format
@@ -9502,7 +9502,7 @@ msgstr "Umiiral na identity ng naka-enroll na source host. Hindi ito kailanman b
 #: lib/marshall/documentation_messages.ex:5736
 #, elixir-autogen, elixir-format
 msgid "Existing mounted parent dataset, with LZ4 and no reservations."
-msgstr ""
+msgstr "Umiiral na naka-mount na parent dataset, na may LZ4 at walang reservation."
 
 #: lib/marshall/documentation_messages.ex:5740
 #, elixir-autogen, elixir-format
@@ -9512,7 +9512,7 @@ msgstr "Inaasahang Linux peer UID ng Lilly connector: ang Lilly service user kun
 #: lib/marshall/documentation_messages.ex:5744
 #, elixir-autogen, elixir-format
 msgid "Expected Unix peer account, including dynamically allocated application users."
-msgstr ""
+msgstr "Inaasahang Unix peer account, kabilang ang dinamikong inilaan na application user."
 
 #: lib/marshall/documentation_messages.ex:5748
 #, elixir-autogen, elixir-format
@@ -9547,7 +9547,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5770
 #, elixir-autogen, elixir-format
 msgid "Explicit local IPv4 destination address; never a wildcard."
-msgstr ""
+msgstr "Tahasang lokal na IPv4 destination address; hindi kailanman wildcard."
 
 #: lib/marshall/documentation_messages.ex:5771
 #, elixir-autogen, elixir-format
@@ -9562,7 +9562,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5776
 #, elixir-autogen, elixir-format
 msgid "Externally provided module arguments that can't be modified from\nwithin a configuration, but can be used in module imports."
-msgstr ""
+msgstr "Mga module argument na ibinibigay mula sa labas na hindi mababago mula\nsa loob ng configuration, ngunit magagamit sa module import."
 
 #: lib/marshall/documentation_messages.ex:5780
 #, elixir-autogen, elixir-format
@@ -9587,27 +9587,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5796
 #, elixir-autogen, elixir-format
 msgid "Files in this bundle; all selected secrets are required."
-msgstr ""
+msgstr "Mga file sa bundle na ito; kailangan ang lahat ng napiling secret."
 
 #: lib/marshall/documentation_messages.ex:5797
 #, elixir-autogen, elixir-format
 msgid "Firefox temporary add-ons are removed when Firefox closes. Permanent Firefox\ninstallation requires Mozilla signing or an explicitly managed browser policy.\nOveralls does not currently publish either archive to a browser store."
-msgstr ""
+msgstr "Inaalis ang mga pansamantalang add-on ng Firefox kapag nagsara ang Firefox. Kailangan ng permanenteng\npag-install sa Firefox ang Mozilla signing o tahasang pinamamahalaang browser policy.\nKasalukuyang hindi inilalathala ng Overalls ang alinman sa dalawang archive sa browser store."
 
 #: lib/marshall/documentation_messages.ex:5801
 #, elixir-autogen, elixir-format
 msgid "Five-minute real authenticated editor journeys; fixtures and operator sessions are private runtime credentials."
-msgstr ""
+msgstr "Limang-minutong tunay na authenticated editor journey; pribadong runtime credential ang fixture at operator session."
 
 #: lib/marshall/documentation_messages.ex:5805
 #, elixir-autogen, elixir-format
 msgid "Fixed OpenAI-compatible origin; enrolled hosts use host-local Underclass."
-msgstr ""
+msgstr "Nakapirming OpenAI-compatible origin; gumagamit ang naka-enroll na host ng host-local Underclass."
 
 #: lib/marshall/documentation_messages.ex:5809
 #, elixir-autogen, elixir-format
 msgid "Fixed Serper origin; loopback is reserved for the machine-test fixture."
-msgstr ""
+msgstr "Nakapirming Serper origin; nakalaan ang loopback para sa machine-test fixture."
 
 #: lib/marshall/documentation_messages.ex:5813
 #, elixir-autogen, elixir-format
@@ -9617,7 +9617,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5817
 #, elixir-autogen, elixir-format
 msgid "Fleet database allocation, including one notifier per instance and ten operator connections."
-msgstr ""
+msgstr "Fleet database allocation, kabilang ang isang notifier bawat instance at sampung operator connection."
 
 #: lib/marshall/documentation_messages.ex:5821
 #, elixir-autogen, elixir-format
@@ -9632,12 +9632,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5829
 #, elixir-autogen, elixir-format
 msgid "Fleet wildcard leaf and intermediate PEM chain from the bundle."
-msgstr ""
+msgstr "Fleet wildcard leaf at intermediate PEM chain mula sa bundle."
 
 #: lib/marshall/documentation_messages.ex:5833
 #, elixir-autogen, elixir-format
 msgid "Fleet wildcard leaf key from the bundle; rotation is operator custody."
-msgstr ""
+msgstr "Fleet wildcard leaf key mula sa bundle; nasa kustodiya ng operator ang rotation."
 
 #: lib/marshall/documentation_messages.ex:5837
 #, elixir-autogen, elixir-format
@@ -9657,7 +9657,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5849
 #, elixir-autogen, elixir-format
 msgid "For NixOS, the default value for this option includes at least this argument:\n- {var}`pkgs`: The nixpkgs package set according to\n  the {option}`nixpkgs.pkgs` option."
-msgstr ""
+msgstr "Para sa NixOS, kasama sa default na halaga ng opsyong ito ang hindi bababa sa argumentong ito:\n- {var}`pkgs`: Ang nixpkgs package set ayon sa\n  opsyong {option}`nixpkgs.pkgs`."
 
 #: lib/marshall/documentation_messages.ex:5853
 #, elixir-autogen, elixir-format
@@ -9692,12 +9692,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5877
 #, elixir-autogen, elixir-format
 msgid "For nonstandard administrative ports, pass matching `--ssh-port` throughout.\nInstallation also binds `--installer-ssh-port`. Management SSH cannot run host\noperations. Use the declared named administrator and pinned keys."
-msgstr ""
+msgstr "Para sa hindi karaniwang administratibong port, ipasa ang katugmang `--ssh-port` sa lahat ng hakbang.\nItinatali rin ng installation ang `--installer-ssh-port`. Hindi maaaring magpatakbo ng host\noperation ang management SSH. Gamitin ang idineklarang pinangalanang administrator at pinned key."
 
 #: lib/marshall/documentation_messages.ex:5881
 #, elixir-autogen, elixir-format
 msgid "For one-shot exec commands, register the key on Marshall's SSH keys page first,\nor complete approval in an interactive connection before retrying the command."
-msgstr ""
+msgstr "Para sa one-shot exec command, irehistro muna ang key sa pahina ng SSH key ng Marshall,\no kumpletuhin ang pag-apruba sa interactive connection bago ulitin ang utos."
 
 #: lib/marshall/documentation_messages.ex:5885
 #, elixir-autogen, elixir-format
@@ -9982,7 +9982,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6102
 #, elixir-autogen, elixir-format
 msgid "Host queue budget; selected per-source output limits must fit. Size from measured rate for 24 hours plus 50% headroom."
-msgstr ""
+msgstr "Host queue budget; kailangang magkasya ang napiling per-source output limit. Ibatay ang laki sa nasukat na rate para sa 24 oras at dagdag na 50% na puwang."
 
 #: lib/marshall/documentation_messages.ex:6106
 #, elixir-autogen, elixir-format
@@ -10027,12 +10027,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6129
 #, elixir-autogen, elixir-format
 msgid "If set, merge all definitions that don't have an associated option\ntogether using this type. The result then gets combined with the\nvalues of all declared options to produce the final `\nconfig` value."
-msgstr ""
+msgstr "Kung nakatakda, pagsamahin gamit ang type na ito ang lahat ng definition na walang kaugnay na\nopsyon. Isinasama pagkatapos ang resulta sa\nmga halaga ng lahat ng idineklarang opsyon upang mabuo ang panghuling halaga ng `\nconfig`."
 
 #: lib/marshall/documentation_messages.ex:6133
 #, elixir-autogen, elixir-format
 msgid "If this is `null`, definitions without an option\nwill throw an error unless {option}`_module.check` is\nturned off."
-msgstr ""
+msgstr "Kung ito ay `null`, maglalabas ng error ang mga definition na walang opsyon\nmaliban kung naka-off ang {option}`_module.check`."
 
 #: lib/marshall/documentation_messages.ex:6137
 #, elixir-autogen, elixir-format
@@ -10042,42 +10042,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6145
 #, elixir-autogen, elixir-format
 msgid "Immutable image bound exclusively to the Inception development profile; native host eligibility is also required."
-msgstr ""
+msgstr "Immutable image na eksklusibong nakatali sa Inception development profile; kailangan din ang native host eligibility."
 
 #: lib/marshall/documentation_messages.ex:6149
 #, elixir-autogen, elixir-format
 msgid "Immutable local image directory (manifest.json and artifacts) verified by Lilly before advertising."
-msgstr ""
+msgstr "Immutable local image directory (manifest.json at artifact) na pinatutunayan ng Lilly bago i-advertise."
 
 #: lib/marshall/documentation_messages.ex:6153
 #, elixir-autogen, elixir-format
 msgid "Immutable local images verified by Lilly before advertising, in operator order."
-msgstr ""
+msgstr "Mga immutable local image na pinatutunayan ng Lilly bago i-advertise, sa pagkakasunod na itinakda ng operator."
 
 #: lib/marshall/documentation_messages.ex:6157
 #, elixir-autogen, elixir-format
 msgid "Immutable measurement deadline reconciled with this source's request budget."
-msgstr ""
+msgstr "Immutable measurement deadline na na-reconcile sa request budget ng source na ito."
 
 #: lib/marshall/documentation_messages.ex:6165
 #, elixir-autogen, elixir-format
 msgid "Immutable per-batch retention, including traces already acknowledged upstream."
-msgstr ""
+msgstr "Immutable per-batch retention, kabilang ang mga trace na na-acknowledge na upstream."
 
 #: lib/marshall/documentation_messages.ex:6169
 #, elixir-autogen, elixir-format
 msgid "Immutable platform, disk and persistent identity bindings."
-msgstr ""
+msgstr "Immutable na pagkakatali ng platform, disk at persistent identity."
 
 #: lib/marshall/documentation_messages.ex:6170
 #, elixir-autogen, elixir-format
 msgid "Immutable unsigned Chrome and Firefox browser extension package served at the public /bin routes. Null disables browser extension downloads."
-msgstr ""
+msgstr "Immutable unsigned Chrome at Firefox browser extension package na inihahatid sa pampublikong /bin route. Hindi pinapagana ng null ang pag-download ng browser extension."
 
 #: lib/marshall/documentation_messages.ex:6174
 #, elixir-autogen, elixir-format
 msgid "Inception parent gateway allowed to supply IPv4 PROXY metadata; null for public listeners."
-msgstr ""
+msgstr "Inception parent gateway na pinapayagang magbigay ng IPv4 PROXY metadata; null para sa pampublikong listener."
 
 #: lib/marshall/documentation_messages.ex:6178
 #, elixir-autogen, elixir-format
@@ -10102,17 +10102,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6192
 #, elixir-autogen, elixir-format
 msgid "Independent durable request recorders; enabling requires reviewed producer hooks and source-specific deadlines."
-msgstr ""
+msgstr "Mga hiwalay na matibay na request recorder; kailangan ng pagpapagana ang sinuring producer hook at source-specific deadline."
 
 #: lib/marshall/documentation_messages.ex:6196
 #, elixir-autogen, elixir-format
 msgid "Independent logging health metrics; never carries records."
-msgstr ""
+msgstr "Mga hiwalay na logging health metric; hindi kailanman nagdadala ng record."
 
 #: lib/marshall/documentation_messages.ex:6197
 #, elixir-autogen, elixir-format
 msgid "Independent per-producer durable trace custody; failures leave producers running."
-msgstr ""
+msgstr "Hiwalay na matibay na trace custody bawat producer; iniiwang tumatakbo ng pagkabigo ang mga producer."
 
 #: lib/marshall/documentation_messages.ex:6201
 #, elixir-autogen, elixir-format
@@ -10142,7 +10142,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6212
 #, elixir-autogen, elixir-format
 msgid "Initialize only when Restic positively reports that the repository does not exist."
-msgstr ""
+msgstr "Mag-initialize lamang kapag positibong iniulat ng Restic na hindi umiiral ang repositoryo."
 
 #: lib/marshall/documentation_messages.ex:6216
 #, elixir-autogen, elixir-format
@@ -10157,7 +10157,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6224
 #, elixir-autogen, elixir-format
 msgid "Inspect failure and cancellation status before resubmitting with a new identity.\nAn already published destination must not be mistaken for a failed submission."
-msgstr ""
+msgstr "Suriin ang failure at cancellation status bago muling magsumite gamit ang bagong identity.\nHindi dapat mapagkamalang nabigong submission ang destinasyong nailathala na."
 
 #: lib/marshall/documentation_messages.ex:6228
 #, elixir-autogen, elixir-format
@@ -10182,7 +10182,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6248
 #, elixir-autogen, elixir-format
 msgid "Interfaces counted as external network traffic; excludes bridges and taps unless explicitly selected."
-msgstr ""
+msgstr "Mga interface na binibilang bilang external network traffic; hindi kasama ang bridge at tap maliban kung tahasang pinili."
 
 #: lib/marshall/documentation_messages.ex:6256
 #, elixir-autogen, elixir-format
@@ -10202,7 +10202,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6268
 #, elixir-autogen, elixir-format
 msgid "Keep four facts separate: desired VM state, observed physical state, workflow\nphase, and cleanup receipts. A successful state transition records intent; it\ncannot prove that a process stopped or a disk disappeared."
-msgstr ""
+msgstr "Panatilihing magkahiwalay ang apat na katotohanan: nais na VM state, naobserbahang physical state, workflow\nphase at cleanup receipt. Itinatala ng matagumpay na state transition ang intent; hindi nito\nmapatutunayang huminto ang process o nawala ang disk."
 
 #: lib/marshall/documentation_messages.ex:6272
 #, elixir-autogen, elixir-format
@@ -10317,7 +10317,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6364
 #, elixir-autogen, elixir-format
 msgid "Lilly's leases live in `lilly-hostd`\n([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md)\ndecision 4):"
-msgstr ""
+msgstr "Nasa `lilly-hostd` ang mga lease ng Lilly\n([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md)\ndesisyon 4):"
 
 #: lib/marshall/documentation_messages.ex:6368
 #, elixir-autogen, elixir-format
@@ -10332,7 +10332,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6376
 #, elixir-autogen, elixir-format
 msgid "List reports host-manifest candidates; inspect validates the selected manifest\nstructure. Neither command proves that every referenced component is available;\nrestoration verifies each component as it is read."
-msgstr ""
+msgstr "Iniuulat ng list ang mga host-manifest candidate; pinatutunayan ng inspect ang istruktura\nng napiling manifest. Hindi pinatutunayan ng alinmang utos na magagamit ang bawat tinutukoy na component;\npinatutunayan ng restoration ang bawat component habang binabasa ito."
 
 #: lib/marshall/documentation_messages.ex:6380
 #, elixir-autogen, elixir-format
@@ -10362,17 +10362,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6391
 #, elixir-autogen, elixir-format
 msgid "Local Lego responder IP; use a stable private address when configuring peers."
-msgstr ""
+msgstr "Lokal na Lego responder IP; gumamit ng matatag na pribadong address kapag nagko-configure ng peer."
 
 #: lib/marshall/documentation_messages.ex:6395
 #, elixir-autogen, elixir-format
 msgid "Local Marshall instance consuming the certificate queue."
-msgstr ""
+msgstr "Lokal na Marshall instance na kumokonsumo ng certificate queue."
 
 #: lib/marshall/documentation_messages.ex:6396
 #, elixir-autogen, elixir-format
 msgid "Local fleet services admitted only from configured tunnel peers."
-msgstr ""
+msgstr "Mga lokal na fleet service na tinatanggap lamang mula sa naka-configure na tunnel peer."
 
 #: lib/marshall/documentation_messages.ex:6400
 #, elixir-autogen, elixir-format
@@ -10382,7 +10382,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6404
 #, elixir-autogen, elixir-format
 msgid "Local instances keyed by distinct fleet-wide identities."
-msgstr ""
+msgstr "Mga lokal na instance na naka-key ayon sa magkakaibang fleet-wide identity."
 
 #: lib/marshall/documentation_messages.ex:6405
 #, elixir-autogen, elixir-format
@@ -10392,22 +10392,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6409
 #, elixir-autogen, elixir-format
 msgid "Logical archive/SQLite budget per producer, distinct from Tempo quota. New data refuses when full."
-msgstr ""
+msgstr "Lohikal na archive/SQLite budget bawat producer, na hiwalay sa Tempo quota. Tinatanggihan ang bagong data kapag puno na."
 
 #: lib/marshall/documentation_messages.ex:6413
 #, elixir-autogen, elixir-format
 msgid "Loopback HTTP port. Underclass is never bound directly to a fleet interface."
-msgstr ""
+msgstr "Loopback HTTP port. Hindi kailanman direktang ibinabind ang Underclass sa fleet interface."
 
 #: lib/marshall/documentation_messages.ex:6417
 #, elixir-autogen, elixir-format
 msgid "Loopback Prometheus resource exporter; no application credentials or ingestion."
-msgstr ""
+msgstr "Loopback Prometheus resource exporter; walang application credential o ingestion."
 
 #: lib/marshall/documentation_messages.ex:6421
 #, elixir-autogen, elixir-format
 msgid "Loopback or authenticated fleet address for independent health scraping."
-msgstr ""
+msgstr "Loopback o authenticated fleet address para sa hiwalay na health scraping."
 
 #: lib/marshall/documentation_messages.ex:6425
 #, elixir-autogen, elixir-format
@@ -10417,7 +10417,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6426
 #, elixir-autogen, elixir-format
 msgid "Loopback-only Fluent Bit numeric application health exporter when fleet telemetry and logging are enabled."
-msgstr ""
+msgstr "Loopback-only Fluent Bit numeric application health exporter kapag pinagana ang fleet telemetry at logging."
 
 #: lib/marshall/documentation_messages.ex:6430
 #, elixir-autogen, elixir-format
@@ -10477,7 +10477,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6471
 #, elixir-autogen, elixir-format
 msgid "Management-only AWS credentials. Null uses explicit EC2 role mode."
-msgstr ""
+msgstr "Mga AWS credential para lamang sa pamamahala. Gumagamit ang null ng tahasang EC2 role mode."
 
 #: lib/marshall/documentation_messages.ex:6475
 #, elixir-autogen, elixir-format
@@ -10497,12 +10497,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6484
 #, elixir-autogen, elixir-format
 msgid "Marshall instances share PostgreSQL. Local processes and PubSub improve delivery;\nthey do not replace durable authority. Ash resources define domain actions and\npolicy boundaries. Oban performs retryable background work."
-msgstr ""
+msgstr "Magkasama ang mga Marshall instance sa PostgreSQL. Pinabubuti ng mga lokal na process at PubSub ang paghahatid;\nhindi nila pinapalitan ang matibay na awtoridad. Tinutukoy ng Ash resource ang mga domain action at\npolicy boundary. Gumagawa ang Oban ng background work na maaaring ulitin."
 
 #: lib/marshall/documentation_messages.ex:6488
 #, elixir-autogen, elixir-format
 msgid "Marshall is a private control plane at the apex `https://ghuntley.dev`; nothing it\nserves is meant to appear in a search index. Two independent mechanisms say so:"
-msgstr ""
+msgstr "Pribadong control plane ang Marshall sa apex na `https://ghuntley.dev`; walang inihahatid nito\nang nilalayong lumitaw sa search index. Sinasabi ito ng dalawang hiwalay na mekanismo:"
 
 #: lib/marshall/documentation_messages.ex:6492
 #, elixir-autogen, elixir-format
@@ -10542,17 +10542,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6532
 #, elixir-autogen, elixir-format
 msgid "Maximum receive stream bytes per second, with a 64 KiB burst allowance."
-msgstr ""
+msgstr "Pinakamataas na receive stream byte bawat segundo, na may 64 KiB burst allowance."
 
 #: lib/marshall/documentation_messages.ex:6536
 #, elixir-autogen, elixir-format
 msgid "Maximum same-host clone stream bytes per second; these never cross the network."
-msgstr ""
+msgstr "Pinakamataas na same-host clone stream byte bawat segundo; hindi kailanman tumatawid sa network ang mga ito."
 
 #: lib/marshall/documentation_messages.ex:6540
 #, elixir-autogen, elixir-format
 msgid "Maximum space in GiB a single collection run may delete."
-msgstr ""
+msgstr "Pinakamalaking puwang sa GiB na maaaring burahin ng iisang collection run."
 
 #: lib/marshall/documentation_messages.ex:6541
 #, elixir-autogen, elixir-format
@@ -10562,12 +10562,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6545
 #, elixir-autogen, elixir-format
 msgid "Measured and reverted, with no gain on a 1-vCPU guest:\n- starting the trust receiver before `basic.target`;\n- replacing udev-settle with an `eth0` device dependency;\n- skipping root fsck."
-msgstr ""
+msgstr "Sinukat at ibinalik, na walang pakinabang sa 1-vCPU guest:\n- pagsisimula ng trust receiver bago ang `basic.target`;\n- pagpapalit ng udev-settle ng `eth0` device dependency;\n- paglaktaw sa root fsck."
 
 #: lib/marshall/documentation_messages.ex:6549
 #, elixir-autogen, elixir-format
 msgid "Measured or configured IOPS limit; null means unknown. ZFS uses logical whole-pool operations. This is monitoring metadata, not admission capacity."
-msgstr ""
+msgstr "Nasukat o naka-configure na IOPS limit; nangangahulugang hindi alam ang null. Gumagamit ang ZFS ng lohikal na whole-pool operation. Monitoring metadata ito, hindi admission capacity."
 
 #: lib/marshall/documentation_messages.ex:6553
 #, elixir-autogen, elixir-format
@@ -10577,22 +10577,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6561
 #, elixir-autogen, elixir-format
 msgid "Merging Lilly's pending and delivering trust journal writes (about 6 ms each)\nwas not worth the change."
-msgstr ""
+msgstr "Hindi sulit baguhin ang pagsasama ng pending at delivering trust journal write ng Lilly\n(halos 6 ms bawat isa)."
 
 #: lib/marshall/documentation_messages.ex:6565
 #, elixir-autogen, elixir-format
 msgid "Minimum free Lilly pool space before capture and during upload."
-msgstr ""
+msgstr "Pinakamababang libreng Lilly pool space bago ang capture at habang nag-a-upload."
 
 #: lib/marshall/documentation_messages.ex:6569
 #, elixir-autogen, elixir-format
 msgid "Minimum free space in GiB on the filesystem holding /nix. Falling\nbelow it triggers a collection run."
-msgstr ""
+msgstr "Pinakamababang libreng puwang sa GiB sa filesystem na naglalaman ng /nix. Nagti-trigger\nng collection run ang pagbaba rito."
 
 #: lib/marshall/documentation_messages.ex:6573
 #, elixir-autogen, elixir-format
 msgid "Minimum remaining lifetime before a certificate can be published."
-msgstr ""
+msgstr "Pinakamababang natitirang haba ng buhay bago maaaring ilathala ang certificate."
 
 #: lib/marshall/documentation_messages.ex:6577
 #, elixir-autogen, elixir-format
@@ -10602,12 +10602,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6585
 #, elixir-autogen, elixir-format
 msgid "Named IPv4 sources allowed to reach every fleet host over TCP and UDP."
-msgstr ""
+msgstr "Mga pinangalanang IPv4 source na pinapayagang umabot sa bawat fleet host sa TCP at UDP."
 
 #: lib/marshall/documentation_messages.ex:6589
 #, elixir-autogen, elixir-format
 msgid "Named destination-scoped listeners admitted from any IPv4 source; each needs an explicit local address, at least one TCP or UDP port, and a reviewed comment."
-msgstr ""
+msgstr "Mga pinangalanang destination-scoped listener na tinatanggap mula sa anumang IPv4 source; kailangan ng bawat isa ang tahasang lokal na address, kahit isang TCP o UDP port at sinuring komento."
 
 #: lib/marshall/documentation_messages.ex:6593
 #, elixir-autogen, elixir-format
@@ -10732,7 +10732,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6706
 #, elixir-autogen, elixir-format
 msgid "No Cachix write token is embedded. The evaluation check\n`nix-cache-configuration` covers host, guest and fleet fixture declarations; it\ndoes not establish live reachability, cache hit rate or physical rollout."
-msgstr ""
+msgstr "Walang naka-embed na Cachix write token. Saklaw ng evaluation check\nna `nix-cache-configuration` ang mga deklarasyon ng host, guest at fleet fixture; hindi nito\npinatutunayan ang aktuwal na reachability, cache hit rate o pisikal na rollout."
 
 #: lib/marshall/documentation_messages.ex:6710
 #, elixir-autogen, elixir-format
@@ -10752,12 +10752,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6719
 #, elixir-autogen, elixir-format
 msgid "Non-secret native output settings; routing and queue keys are reserved."
-msgstr ""
+msgstr "Mga hindi lihim na native output setting; nakalaan ang routing at queue key."
 
 #: lib/marshall/documentation_messages.ex:6723
 #, elixir-autogen, elixir-format
 msgid "Nonempty set of providers enabled for discovery and inference; readiness requires all selected catalogs."
-msgstr ""
+msgstr "Hindi bakanteng hanay ng provider na pinagana para sa discovery at inference; kailangan ng readiness ang lahat ng napiling catalog."
 
 #: lib/marshall/documentation_messages.ex:6727
 #, elixir-autogen, elixir-format
@@ -10767,7 +10767,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6728
 #, elixir-autogen, elixir-format
 msgid "OTP supervisor progress reports, two per TLS connection, are dropped at the\nsource. Crash and supervisor-failure reports remain."
-msgstr ""
+msgstr "Inaalis sa source ang OTP supervisor progress report, na dalawa bawat TLS connection.\nNananatili ang crash at supervisor-failure report."
 
 #: lib/marshall/documentation_messages.ex:6732
 #, elixir-autogen, elixir-format
@@ -10782,7 +10782,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6740
 #, elixir-autogen, elixir-format
 msgid "Official parent/trace-ID ratio for routine spans; committed lifecycle diagnostics always sample and SLO accounting is independent."
-msgstr ""
+msgstr "Opisyal na parent/trace-ID ratio para sa karaniwang span; palaging sini-sample ang committed lifecycle diagnostic at hiwalay ang SLO accounting."
 
 #: lib/marshall/documentation_messages.ex:6744
 #, elixir-autogen, elixir-format
@@ -10832,7 +10832,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6780
 #, elixir-autogen, elixir-format
 msgid "One Marshall instance authorized to issue the public Audi wildcard."
-msgstr ""
+msgstr "Isang Marshall instance na awtorisadong maglabas ng pampublikong Audi wildcard."
 
 #: lib/marshall/documentation_messages.ex:6784
 #, elixir-autogen, elixir-format
@@ -10882,12 +10882,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6820
 #, elixir-autogen, elixir-format
 msgid "Open backend TLS ports; unnecessary for a colocated proxy."
-msgstr ""
+msgstr "Buksan ang mga backend TLS port; hindi kailangan para sa magkakalokasyong proxy."
 
 #: lib/marshall/documentation_messages.ex:6821
 #, elixir-autogen, elixir-format
 msgid "Open ports in the firewall for the Audiobookshelf web interface."
-msgstr ""
+msgstr "Buksan ang mga port sa firewall para sa Audiobookshelf web interface."
 
 #: lib/marshall/documentation_messages.ex:6825
 #, elixir-autogen, elixir-format
@@ -10912,7 +10912,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6838
 #, elixir-autogen, elixir-format
 msgid "Operator RSA public key (at least 3072 bits). Keep its private key off-host."
-msgstr ""
+msgstr "Pampublikong RSA key ng operator (hindi bababa sa 3072 bit). Panatilihin sa labas ng host ang pribadong key nito."
 
 #: lib/marshall/documentation_messages.ex:6842
 #, elixir-autogen, elixir-format
@@ -10922,7 +10922,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6843
 #, elixir-autogen, elixir-format
 msgid "Operator-owned JSON public Inception issuer, consent, DNS and trust settings, delivered through systemd credentials. Contains no parent credentials. Null leaves public bootstrap disabled."
-msgstr ""
+msgstr "JSON na pag-aari ng operator para sa pampublikong Inception issuer, consent, DNS at trust setting, na inihahatid sa systemd credential. Walang parent credential. Iniiwang naka-disable ng null ang public bootstrap."
 
 #: lib/marshall/documentation_messages.ex:6847
 #, elixir-autogen, elixir-format
@@ -10932,17 +10932,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6851
 #, elixir-autogen, elixir-format
 msgid "Optional IPv4 recursive DNS resolver or hostname including its port."
-msgstr ""
+msgstr "Opsyonal na IPv4 recursive DNS resolver o hostname kasama ang port nito."
 
 #: lib/marshall/documentation_messages.ex:6855
 #, elixir-autogen, elixir-format
 msgid "Optional ZFS dataset mounted at /var/lib/tempo with a hard refquota."
-msgstr ""
+msgstr "Opsyonal na ZFS dataset na naka-mount sa /var/lib/tempo na may mahigpit na refquota."
 
 #: lib/marshall/documentation_messages.ex:6859
 #, elixir-autogen, elixir-format
 msgid "Optional ZFS dataset mounted at the store state directory with a hard refquota. Uses a static service user (DynamicUser bind-mounts conflict with pre-mounted datasets)."
-msgstr ""
+msgstr "Opsyonal na ZFS dataset na naka-mount sa store state directory na may mahigpit na refquota. Gumagamit ng static service user (sumasalungat ang DynamicUser bind-mount sa pre-mounted dataset)."
 
 #: lib/marshall/documentation_messages.ex:6863
 #, elixir-autogen, elixir-format
@@ -10962,12 +10962,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6875
 #, elixir-autogen, elixir-format
 msgid "Optional operator-owned runtime default image identity, delivered through systemd credentials. Overrides defaultImageId; empty input disables the default and invalid input prevents startup."
-msgstr ""
+msgstr "Opsyonal na runtime default image identity na pag-aari ng operator, na inihahatid sa systemd credential. Ino-override ang defaultImageId; hindi pinapagana ng bakanteng input ang default at hinahadlangan ng invalid input ang startup."
 
 #: lib/marshall/documentation_messages.ex:6879
 #, elixir-autogen, elixir-format
 msgid "Optional operator-owned runtime public hostname, delivered through systemd credentials. Overrides publicHost; invalid or missing input prevents startup."
-msgstr ""
+msgstr "Opsyonal na runtime public hostname na pag-aari ng operator, na inihahatid sa systemd credential. Ino-override ang publicHost; hinahadlangan ng invalid o nawawalang input ang startup."
 
 #: lib/marshall/documentation_messages.ex:6883
 #, elixir-autogen, elixir-format
@@ -10977,17 +10977,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6887
 #, elixir-autogen, elixir-format
 msgid "Optional private CA bundle for terminal peer TLS; system roots otherwise."
-msgstr ""
+msgstr "Opsyonal na pribadong CA bundle para sa terminal peer TLS; system root kung wala ito."
 
 #: lib/marshall/documentation_messages.ex:6891
 #, elixir-autogen, elixir-format
 msgid "Optional private runtime bearer credential for the approved webhook."
-msgstr ""
+msgstr "Opsyonal na pribadong runtime bearer credential para sa aprubadong webhook."
 
 #: lib/marshall/documentation_messages.ex:6895
 #, elixir-autogen, elixir-format
 msgid "Optional verified HTTPS Route 53 endpoint for isolated fixtures or compatible services."
-msgstr ""
+msgstr "Opsyonal na verified HTTPS Route 53 endpoint para sa hiwalay na fixture o katugmang serbisyo."
 
 #: lib/marshall/documentation_messages.ex:6899
 #, elixir-autogen, elixir-format
@@ -11002,7 +11002,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6907
 #, elixir-autogen, elixir-format
 msgid "Other HTTP-01 issuers for the same hostname on a trusted private network. Configure every frontend with every other issuer."
-msgstr ""
+msgstr "Ibang HTTP-01 issuer para sa parehong hostname sa pinagkakatiwalaang pribadong network. I-configure ang bawat frontend kasama ang lahat ng ibang issuer."
 
 #: lib/marshall/documentation_messages.ex:6911
 #, elixir-autogen, elixir-format
@@ -11052,7 +11052,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6944
 #, elixir-autogen, elixir-format
 msgid "Owners and managers can change a machine's CPU and memory; disk may only grow,\nup to 500 GiB:"
-msgstr ""
+msgstr "Maaaring baguhin ng may-ari at manager ang CPU at memory ng machine; maaari lamang palakihin ang disk,\nhanggang 500 GiB:"
 
 #: lib/marshall/documentation_messages.ex:6948
 #, elixir-autogen, elixir-format
@@ -11062,12 +11062,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6949
 #, elixir-autogen, elixir-format
 msgid "Owners, managers and team admins can move a machine to another eligible physical\nhost. The destination and transfer strategy are always selected by Marshall and\ncannot be supplied through Porsche:"
-msgstr ""
+msgstr "Maaaring ilipat ng may-ari, manager at team admin ang machine sa ibang kwalipikadong pisikal\nna host. Palaging Marshall ang pumipili ng destinasyon at transfer strategy at\nhindi ito maibibigay sa pamamagitan ng Porsche:"
 
 #: lib/marshall/documentation_messages.ex:6953
 #, elixir-autogen, elixir-format
 msgid "Path to Audiobookshelf config and metadata inside of /var/lib."
-msgstr ""
+msgstr "Path ng Audiobookshelf config at metadata sa loob ng /var/lib."
 
 #: lib/marshall/documentation_messages.ex:6957
 #, elixir-autogen, elixir-format
@@ -11082,17 +11082,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6962
 #, elixir-autogen, elixir-format
 msgid "Pending export admission budget per producer, within retained archive budget."
-msgstr ""
+msgstr "Pending export admission budget bawat producer, sa loob ng retained archive budget."
 
 #: lib/marshall/documentation_messages.ex:6966
 #, elixir-autogen, elixir-format
 msgid "Per-host queue alarm threshold; align with each writer budget."
-msgstr ""
+msgstr "Per-host queue alarm threshold; iayon sa budget ng bawat writer."
 
 #: lib/marshall/documentation_messages.ex:6970
 #, elixir-autogen, elixir-format
 msgid "Per-instance TLS health overrides; default uses publicHost and the configured certificate as trust anchor."
-msgstr ""
+msgstr "Per-instance TLS health override; gumagamit ang default ng publicHost at naka-configure na certificate bilang trust anchor."
 
 #: lib/marshall/documentation_messages.ex:6974
 #, elixir-autogen, elixir-format
@@ -11117,7 +11117,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6990
 #, elixir-autogen, elixir-format
 msgid "Physical IPv4 destination admitted for WireGuard handshakes."
-msgstr ""
+msgstr "Pisikal na IPv4 destination na tinatanggap para sa WireGuard handshake."
 
 #: lib/marshall/documentation_messages.ex:6994
 #, elixir-autogen, elixir-format
@@ -11137,7 +11137,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7000
 #, elixir-autogen, elixir-format
 msgid "Pinned public Ed25519 keys for SSH and optional recovery."
-msgstr ""
+msgstr "Mga pinned na pampublikong Ed25519 key para sa SSH at opsyonal na recovery."
 
 #: lib/marshall/documentation_messages.ex:7001
 #, elixir-autogen, elixir-format
@@ -11152,7 +11152,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7009
 #, elixir-autogen, elixir-format
 msgid "Plugin setting names mapped to root-only runtime secret files."
-msgstr ""
+msgstr "Mga pangalan ng plugin setting na naka-map sa root-only runtime secret file."
 
 #: lib/marshall/documentation_messages.ex:7013
 #, elixir-autogen, elixir-format
@@ -11197,12 +11197,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7042
 #, elixir-autogen, elixir-format
 msgid "Preparation dependency to add to a consumer's secretUnits."
-msgstr ""
+msgstr "Preparation dependency na idaragdag sa secretUnits ng consumer."
 
 #: lib/marshall/documentation_messages.ex:7043
 #, elixir-autogen, elixir-format
 msgid "Prerequisites publishing issuer trust or selected DNS credentials before issuance."
-msgstr ""
+msgstr "Mga prerequisite na naglalathala ng issuer trust o napiling DNS credential bago ang issuance."
 
 #: lib/marshall/documentation_messages.ex:7047
 #, elixir-autogen, elixir-format
@@ -11212,17 +11212,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7048
 #, elixir-autogen, elixir-format
 msgid "Private AWS shared credentials INI with only the default profile; required for DNS-01."
-msgstr ""
+msgstr "Pribadong AWS shared credentials INI na may default profile lamang; kailangan para sa DNS-01."
 
 #: lib/marshall/documentation_messages.ex:7052
 #, elixir-autogen, elixir-format
 msgid "Private Lego responder port, never the public validation port."
-msgstr ""
+msgstr "Pribadong Lego responder port, hindi kailanman pampublikong validation port."
 
 #: lib/marshall/documentation_messages.ex:7056
 #, elixir-autogen, elixir-format
 msgid "Private Playwright storage state obtained from a real Marshall operator browser sign-in; no authentication bypass."
-msgstr ""
+msgstr "Pribadong Playwright storage state na nakuha mula sa tunay na pag-sign in ng Marshall operator sa browser; walang pag-bypass ng authentication."
 
 #: lib/marshall/documentation_messages.ex:7060
 #, elixir-autogen, elixir-format
@@ -11242,12 +11242,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7066
 #, elixir-autogen, elixir-format
 msgid "Private runtime JSON containing only shared Inception SMTP configuration; null disables Inception bootstrap."
-msgstr ""
+msgstr "Pribadong runtime JSON na naglalaman lamang ng shared Inception SMTP configuration; hindi pinapagana ng null ang Inception bootstrap."
 
 #: lib/marshall/documentation_messages.ex:7070
 #, elixir-autogen, elixir-format
 msgid "Private runtime JSON fixture identifying the real operator's guest, origin, UID and existing Markdown probe file."
-msgstr ""
+msgstr "Pribadong runtime JSON fixture na tumutukoy sa guest, origin, UID at umiiral na Markdown probe file ng tunay na operator."
 
 #: lib/marshall/documentation_messages.ex:7074
 #, elixir-autogen, elixir-format
@@ -11257,32 +11257,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7075
 #, elixir-autogen, elixir-format
 msgid "Private runtime Serper API key, delivered to each Marshall instance through systemd credentials."
-msgstr ""
+msgstr "Pribadong runtime Serper API key, na inihahatid sa bawat Marshall instance sa pamamagitan ng systemd credential."
 
 #: lib/marshall/documentation_messages.ex:7079
 #, elixir-autogen, elixir-format
 msgid "Private runtime file containing a separately enrolled DNS service token."
-msgstr ""
+msgstr "Pribadong runtime file na naglalaman ng hiwalay na naka-enroll na DNS service token."
 
 #: lib/marshall/documentation_messages.ex:7083
 #, elixir-autogen, elixir-format
 msgid "Private runtime file containing a separately provisioned Marshall gateway token."
-msgstr ""
+msgstr "Pribadong runtime file na naglalaman ng hiwalay na na-provision na Marshall gateway token."
 
 #: lib/marshall/documentation_messages.ex:7087
 #, elixir-autogen, elixir-format
 msgid "Private runtime file containing the approved HTTPS webhook URL; no plaintext URL enters Nix configuration."
-msgstr ""
+msgstr "Pribadong runtime file na naglalaman ng aprubadong HTTPS webhook URL; walang plaintext URL na pumapasok sa Nix configuration."
 
 #: lib/marshall/documentation_messages.ex:7091
 #, elixir-autogen, elixir-format
 msgid "Private systemd environment file containing database, signing, Cloak and SMTP configuration."
-msgstr ""
+msgstr "Pribadong systemd environment file na naglalaman ng database, signing, Cloak at SMTP configuration."
 
 #: lib/marshall/documentation_messages.ex:7095
 #, elixir-autogen, elixir-format
 msgid "Private v3 export configuration containing local host, journal root and bound pools; no control-plane credentials."
-msgstr ""
+msgstr "Pribadong v3 export configuration na naglalaman ng lokal na host, journal root at bound pool; walang control-plane credential."
 
 #: lib/marshall/documentation_messages.ex:7099
 #, elixir-autogen, elixir-format
@@ -11307,7 +11307,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7115
 #, elixir-autogen, elixir-format
 msgid "Prometheus time retention in days; distinct from the seven-day SLO window."
-msgstr ""
+msgstr "Prometheus time retention sa araw; hiwalay sa pitong-araw na SLO window."
 
 #: lib/marshall/documentation_messages.ex:7119
 #, elixir-autogen, elixir-format
@@ -11377,12 +11377,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7165
 #, elixir-autogen, elixir-format
 msgid "Public DNS name used by sign-in links and origin checks."
-msgstr ""
+msgstr "Pampublikong DNS name na ginagamit ng sign-in link at origin check."
 
 #: lib/marshall/documentation_messages.ex:7166
 #, elixir-autogen, elixir-format
 msgid "Public Grafana HTTPS port on the Marshall proxy's explicit IPv4 address and hostname."
-msgstr ""
+msgstr "Pampublikong Grafana HTTPS port sa tahasang IPv4 address at hostname ng Marshall proxy."
 
 #: lib/marshall/documentation_messages.ex:7170
 #, elixir-autogen, elixir-format
@@ -11392,7 +11392,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7174
 #, elixir-autogen, elixir-format
 msgid "Public HTTPS Marshall browser origin for identity approval; separate from the private control API."
-msgstr ""
+msgstr "Pampublikong HTTPS Marshall browser origin para sa identity approval; hiwalay sa pribadong control API."
 
 #: lib/marshall/documentation_messages.ex:7178
 #, elixir-autogen, elixir-format
@@ -11402,7 +11402,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7179
 #, elixir-autogen, elixir-format
 msgid "Public HTTPS port shared by Audi gateways; used for browser callbacks."
-msgstr ""
+msgstr "Pampublikong HTTPS port na pinagsasaluhan ng mga Audi gateway; ginagamit para sa browser callback."
 
 #: lib/marshall/documentation_messages.ex:7183
 #, elixir-autogen, elixir-format
@@ -11412,27 +11412,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7184
 #, elixir-autogen, elixir-format
 msgid "Public Marshall HTTPS origin for SSH setup guidance; never the private control endpoint."
-msgstr ""
+msgstr "Pampublikong Marshall HTTPS origin para sa gabay ng SSH setup; hindi kailanman pribadong control endpoint."
 
 #: lib/marshall/documentation_messages.ex:7188
 #, elixir-autogen, elixir-format
 msgid "Public platform CA certificates delivered to each guest on boot."
-msgstr ""
+msgstr "Mga pampublikong platform CA certificate na inihahatid sa bawat guest sa boot."
 
 #: lib/marshall/documentation_messages.ex:7192
 #, elixir-autogen, elixir-format
 msgid "Public preparation descriptors shared with candidate deployment staging."
-msgstr ""
+msgstr "Mga pampublikong preparation descriptor na ibinabahagi sa candidate deployment staging."
 
 #: lib/marshall/documentation_messages.ex:7196
 #, elixir-autogen, elixir-format
 msgid "Public private-service CA trust bundle, also supplied to guest images."
-msgstr ""
+msgstr "Pampublikong private-service CA trust bundle, na ibinibigay din sa guest image."
 
 #: lib/marshall/documentation_messages.ex:7200
 #, elixir-autogen, elixir-format
 msgid "Publish the loopback service through tailnet-only Tailscale Serve HTTPS."
-msgstr ""
+msgstr "Ilathala ang loopback service sa pamamagitan ng tailnet-only Tailscale Serve HTTPS."
 
 #: lib/marshall/documentation_messages.ex:7204
 #, elixir-autogen, elixir-format
@@ -11442,7 +11442,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7208
 #, elixir-autogen, elixir-format
 msgid "Queue limit per effective output group. Native/OTLP platform sources share a group; CloudWatch sources have separate groups."
-msgstr ""
+msgstr "Queue limit bawat effective output group. Magkasama sa isang grupo ang native/OTLP platform source; may magkakahiwalay na grupo ang CloudWatch source."
 
 #: lib/marshall/documentation_messages.ex:7212
 #, elixir-autogen, elixir-format
@@ -11452,7 +11452,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7216
 #, elixir-autogen, elixir-format
 msgid "Raw single secret, or a systemd EnvironmentFile of selected values."
-msgstr ""
+msgstr "Raw na iisang secret, o systemd EnvironmentFile ng napiling halaga."
 
 #: lib/marshall/documentation_messages.ex:7220
 #, elixir-autogen, elixir-format
@@ -11462,7 +11462,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7224
 #, elixir-autogen, elixir-format
 msgid "Read-only recipient group; root uses 0700/0600, other groups 0750/0640."
-msgstr ""
+msgstr "Read-only recipient group; gumagamit ang root ng 0700/0600, ibang grupo ng 0750/0640."
 
 #: lib/marshall/documentation_messages.ex:7228
 #, elixir-autogen, elixir-format
@@ -11482,7 +11482,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7240
 #, elixir-autogen, elixir-format
 msgid "Reconnecting later is the same everywhere: `ssh HOST`. (On Windows, if you\ndeclined the administrator prompt, use `overalls ssh HOST` instead.)"
-msgstr ""
+msgstr "Pareho saanman ang muling pagkonekta sa ibang pagkakataon: `ssh HOST`. (Sa Windows, kung\ntinanggihan mo ang administrator prompt, gamitin sa halip ang `overalls ssh HOST`.)"
 
 #: lib/marshall/documentation_messages.ex:7244
 #, elixir-autogen, elixir-format
@@ -11517,7 +11517,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7268
 #, elixir-autogen, elixir-format
 msgid "Release-independent runtime configuration; null uses the deployed configuration."
-msgstr ""
+msgstr "Runtime configuration na hiwalay sa release; ginagamit ng null ang naka-deploy na configuration."
 
 #: lib/marshall/documentation_messages.ex:7280
 #, elixir-autogen, elixir-format
@@ -11552,17 +11552,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7304
 #, elixir-autogen, elixir-format
 msgid "Required certificate hostname and TLS SNI for traffic and health checks."
-msgstr ""
+msgstr "Kinakailangang certificate hostname at TLS SNI para sa traffic at health check."
 
 #: lib/marshall/documentation_messages.ex:7308
 #, elixir-autogen, elixir-format
 msgid "Required human-readable owner or purpose for this grant."
-msgstr ""
+msgstr "Kinakailangang may-ari o layunin na nababasa ng tao para sa grant na ito."
 
 #: lib/marshall/documentation_messages.ex:7309
 #, elixir-autogen, elixir-format
 msgid "Required human-readable owner or purpose for this listener."
-msgstr ""
+msgstr "Kinakailangang may-ari o layunin na nababasa ng tao para sa listener na ito."
 
 #: lib/marshall/documentation_messages.ex:7310
 #, elixir-autogen, elixir-format
@@ -11577,12 +11577,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7315
 #, elixir-autogen, elixir-format
 msgid "Required preparation services that publish runtime credentials."
-msgstr ""
+msgstr "Mga kinakailangang preparation service na naglalathala ng runtime credential."
 
 #: lib/marshall/documentation_messages.ex:7319
 #, elixir-autogen, elixir-format
 msgid "Required preparation services that publish runtime secrets before startup."
-msgstr ""
+msgstr "Mga kinakailangang preparation service na naglalathala ng runtime secret bago magsimula."
 
 #: lib/marshall/documentation_messages.ex:7323
 #, elixir-autogen, elixir-format
@@ -11592,7 +11592,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7327
 #, elixir-autogen, elixir-format
 msgid "Required refusal: A foreign Unix peer, malformed binding, unbounded or forged outer metric, wrong route, and customer-profile private connection must be refused."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Kailangang tanggihan ang banyagang Unix peer, malformed binding, walang-hangganan o huwad na outer metric, maling ruta at customer-profile private connection."
 
 #: lib/marshall/documentation_messages.ex:7331
 #, elixir-autogen, elixir-format
@@ -11602,7 +11602,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7335
 #, elixir-autogen, elixir-format
 msgid "Required refusal: A full64MiB ring reservation budget refuses new sessions without replacing live PTYs; retirement permits only exact replacement capacity."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tinatanggihan ng punong 64MiB ring reservation budget ang bagong session nang hindi pinapalitan ang aktibong PTY; eksaktong replacement capacity lamang ang pinapayagan ng retirement."
 
 #: lib/marshall/documentation_messages.ex:7339
 #, elixir-autogen, elixir-format
@@ -11612,7 +11612,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7343
 #, elixir-autogen, elixir-format
 msgid "Required refusal: A pending handshake remains unready; only a hello response enables readiness. Stream shutdown closes the opening socket without guest effects."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Nananatiling hindi handa ang pending handshake; hello response lamang ang nagpapagana ng readiness. Isinasara ng stream shutdown ang opening socket nang walang guest effect."
 
 #: lib/marshall/documentation_messages.ex:7347
 #, elixir-autogen, elixir-format
@@ -11622,37 +11622,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7351
 #, elixir-autogen, elixir-format
 msgid "Required refusal: A retired session cannot retain its backing scrollback after returning quota; natural EOF preserves every independently queued output byte."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring panatilihin ng retired session ang backing scrollback nito matapos ibalik ang quota; pinananatili ng natural EOF ang bawat byte ng output na hiwalay na nakapila."
 
 #: lib/marshall/documentation_messages.ex:7355
 #, elixir-autogen, elixir-format
 msgid "Required refusal: A silent outgoing hop must retire and notify its viewer; the incoming application must release its budget slot after resumption."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Kailangang magretiro ang tahimik na outgoing hop at abisuhan ang viewer nito; kailangang palayain ng incoming application ang budget slot nito pagkatapos magpatuloy."
 
 #: lib/marshall/documentation_messages.ex:7359
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Actor restart must not launch the completed generation again or replace its recovered outcome identity."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi dapat muling ilunsad ng actor restart ang nakumpletong generation o palitan ang nabawi nitong outcome identity."
 
 #: lib/marshall/documentation_messages.ex:7363
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Actual HTTP426 upgrade, close4001 or an unsupported-version request error halts automatic work; recovered control, stale ticks and queued publication cannot reopen the worker or extend existing authority."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Pinahihinto ng aktuwal na HTTP426 upgrade, close4001 o unsupported-version request error ang awtomatikong gawain; hindi maaaring muling buksan ng nabawing control, stale tick at nakapilang publication ang worker o pahabain ang umiiral na awtoridad."
 
 #: lib/marshall/documentation_messages.ex:7367
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Actual close4001 must retire both pending operations as unsupported_version and prevent later dispatch; close4008 and prior service unavailability stay transient."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Kailangang iretiro ng aktuwal na close4001 ang parehong pending operation bilang unsupported_version at pigilan ang susunod na dispatch; nananatiling pansamantala ang close4008 at naunang service unavailability."
 
 #: lib/marshall/documentation_messages.ex:7371
 #, elixir-autogen, elixir-format
 msgid "Required refusal: All pending callers settle as unproven, further requests remain disconnected, and no replacement upgrade occurs after the former sixty-second retry interval."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Nalulutas bilang unproven ang lahat ng pending caller, nananatiling disconnected ang susunod na request, at walang replacement upgrade matapos ang dating animnapung-segundong retry interval."
 
 #: lib/marshall/documentation_messages.ex:7375
 #, elixir-autogen, elixir-format
 msgid "Required refusal: An expired delayed grant must close the SSH channel without connector calls or guest admission."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Kailangang isara ng expired delayed grant ang SSH channel nang walang connector call o guest admission."
 
 #: lib/marshall/documentation_messages.ex:7379
 #, elixir-autogen, elixir-format
@@ -11662,7 +11662,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7383
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Anonymous Grafana queries, reader credentials on insert paths and unprivileged credential reads refuse. Marshall has no diagnostic reader credential or query path."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tinatanggihan ang anonymous Grafana query, reader credential sa insert path at unprivileged credential read. Walang diagnostic reader credential o query path ang Marshall."
 
 #: lib/marshall/documentation_messages.ex:7387
 #, elixir-autogen, elixir-format
@@ -11682,12 +11682,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7399
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Before-submission loss must fail that generation without launch; after-submission loss must preserve the exact native VMM. Reopens cannot replace original outcome identity or unrelated guests."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Kailangang ibagsak ng before-submission loss ang generation na iyon nang walang launch; kailangang panatilihin ng after-submission loss ang eksaktong native VMM. Hindi maaaring palitan ng reopen ang orihinal na outcome identity o guest na walang kaugnayan."
 
 #: lib/marshall/documentation_messages.ex:7403
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Candidate spawn failure or unsuccessful registration restores the predecessor; a stale executor cannot retain authority. No semantic rollback is provided after registration."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Ibinabalik ng pagkabigo ng candidate spawn o hindi matagumpay na registration ang nauna rito; hindi maaaring magpanatili ng awtoridad ang stale executor. Walang semantic rollback pagkatapos ng registration."
 
 #: lib/marshall/documentation_messages.ex:7407
 #, elixir-autogen, elixir-format
@@ -11697,17 +11697,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7411
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Close4001 must refuse every pending caller as unsupported_version, while draining4008 must remain a transient loss without request replay."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Kailangang tanggihan ng Close4001 ang bawat pending caller bilang unsupported_version, habang kailangang manatiling pansamantalang pagkawala ang draining4008 nang walang request replay."
 
 #: lib/marshall/documentation_messages.ex:7415
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Competing growth and creates cannot exceed the shared budget or replace survivors; retirement permits only exact growth and replacement capacity."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring lumampas sa shared budget o palitan ang nanatili ang nag-uunahang paglaki at paglikha; eksaktong growth at replacement capacity lamang ang pinapayagan ng retirement."
 
 #: lib/marshall/documentation_messages.ex:7419
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Corrupt or non-v2 primary state fails closed without rewriting, and diagnostic I/O cannot occur under the native writer lock."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Fail-closed nang walang rewriting ang corrupt o non-v2 primary state, at hindi maaaring mangyari ang diagnostic I/O sa ilalim ng native writer lock."
 
 #: lib/marshall/documentation_messages.ex:7423
 #, elixir-autogen, elixir-format
@@ -11722,47 +11722,47 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7431
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Discarded scrollback cannot reappear after growth; incomplete headers cannot become frames and complete bad-magic or oversized headers refuse before payload arrival."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring muling lumitaw ang itinapong scrollback pagkatapos ng growth; hindi maaaring maging frame ang kulang na header at tinatanggihan ang kumpletong bad-magic o oversized header bago dumating ang payload."
 
 #: lib/marshall/documentation_messages.ex:7435
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Do not attribute an old flow to a new owner after address reuse."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Huwag iugnay ang lumang flow sa bagong may-ari matapos muling gamitin ang address."
 
 #: lib/marshall/documentation_messages.ex:7439
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Do not reply success/failure, admit successor mutation or release custody while independently observed adopted children remain live."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Huwag tumugon ng success/failure, tumanggap ng successor mutation o magpalaya ng custody habang aktibo pa ang hiwalay na naobserbahang adopted child."
 
 #: lib/marshall/documentation_messages.ex:7443
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Do not run both copies or release storage on failed destination cleanup. Reject a clone or relocation claim while the host transfer slot is occupied."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Huwag patakbuhin ang parehong kopya o magpalaya ng storage kapag nabigo ang destination cleanup. Tanggihan ang clone o relocation claim habang okupado ang host transfer slot."
 
 #: lib/marshall/documentation_messages.ex:7447
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Each invalid retention, ingress-port, readiness-timeout or image identity mutation returns its specific fixed-error family before reviewed startup calls."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Ibinabalik ng bawat invalid na retention, ingress-port, readiness-timeout o image identity mutation ang tiyak nitong fixed-error family bago ang sinuring startup call."
 
 #: lib/marshall/documentation_messages.ex:7451
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Each restarted daemon must return a complete negative readiness reply while PostgreSQL is unavailable, and remain negative throughout the bounded watch."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Kailangang magbalik ang bawat na-restart na daemon ng kumpletong negatibong readiness reply habang hindi magagamit ang PostgreSQL, at manatiling negatibo sa buong may-hangganang watch."
 
 #: lib/marshall/documentation_messages.ex:7455
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Eight occupied command slots refuse reads and writes; occupied writers refuse clone cleanup, publication and removal; surviving descendants retain writer refusal after helper SIGKILL."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tinatanggihan ng walong okupadong command slot ang read at write; tinatanggihan ng okupadong writer ang clone cleanup, publication at removal; pinananatili ng buhay na descendant ang writer refusal pagkatapos ng helper SIGKILL."
 
 #: lib/marshall/documentation_messages.ex:7459
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Every non-hello first envelope closes with4005 while identity stays nil and no tasks are dispatched."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Nagsasara sa 4005 ang bawat non-hello first envelope habang nananatiling nil ang identity at walang ipinapadalang gawain."
 
 #: lib/marshall/documentation_messages.ex:7467
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Foreign or duplicate diagnostic rows, stale or missing sources, unauthorized dashboard reads and incomplete duration history cannot imply healthy compliance."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring magpahiwatig ng malusog na compliance ang banyaga o dobleng diagnostic row, stale o nawawalang source, unauthorized dashboard read at kulang na duration history."
 
 #: lib/marshall/documentation_messages.ex:7475
 #, elixir-autogen, elixir-format
@@ -11772,12 +11772,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7479
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Foreign, late and duplicate completions cannot settle admissions. Corrupt/missing initialized state, symlinks, concurrent writers and failed durability cannot reset history or publish fresh healthy evidence."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring mag-settle ng admission ang banyaga, huli at dobleng completion. Hindi maaaring mag-reset ng history o maglathala ng bagong malusog na katibayan ang corrupt/nawawalang initialized state, symlink, sabayang writer at nabigong durability."
 
 #: lib/marshall/documentation_messages.ex:7483
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Full ring budget refuses new sessions without changing survivor identities or retaining unreserved backing; retirement releases backing before replacement growth."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tinatanggihan ng punong ring budget ang bagong session nang hindi binabago ang survivor identity o pinananatili ang unreserved backing; pinapalaya ng retirement ang backing bago ang replacement growth."
 
 #: lib/marshall/documentation_messages.ex:7487
 #, elixir-autogen, elixir-format
@@ -11807,12 +11807,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7507
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Invalid and forbidden command outcomes stay outside the denominator; ordinary Porsche UID cannot connect to the collector socket; command text, sessions and receipts never become labels."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Nananatiling wala sa denominator ang invalid at forbidden command outcome; hindi makakonekta ang karaniwang Porsche UID sa collector socket; hindi kailanman nagiging label ang command text, session at receipt."
 
 #: lib/marshall/documentation_messages.ex:7511
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Invalid certificate/key material fails the listener child with exact invalid_configuration; expected supervisor/listener attempts never reach daemon/status/observability and leave no serving state."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Ibinabagsak ng invalid certificate/key material ang listener child gamit ang eksaktong invalid_configuration; hindi kailanman umaabot sa daemon/status/observability ang inaasahang supervisor/listener attempt at walang naiiwang serving state."
 
 #: lib/marshall/documentation_messages.ex:7515
 #, elixir-autogen, elixir-format
@@ -11822,17 +11822,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7519
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Invalid keys, unsupported versions and unknown session credentials preserve exact closed refusal names."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Pinananatili ng invalid key, unsupported version at hindi kilalang session credential ang eksaktong saradong pangalan ng pagtanggi."
 
 #: lib/marshall/documentation_messages.ex:7523
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Invalid or rejected admission cannot add a successful outcome; duplicate completion cannot count again; ordinary Ziggy UID cannot connect to the collector; guest identity and prompt content never become labels."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring magdagdag ng matagumpay na outcome ang invalid o rejected admission; hindi maaaring mabilang muli ang dobleng completion; hindi makakonekta ang karaniwang Ziggy UID sa collector; hindi kailanman nagiging label ang guest identity at prompt content."
 
 #: lib/marshall/documentation_messages.ex:7527
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Invalid runtime configuration returns exact invalid_runtime_configuration before reviewed startup calls and preserves owned fixtures without material or path diagnostics."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Ibinabalik ng invalid runtime configuration ang eksaktong invalid_runtime_configuration bago ang sinuring startup call at pinananatili ang pag-aaring fixture nang walang material o path diagnostic."
 
 #: lib/marshall/documentation_messages.ex:7531
 #, elixir-autogen, elixir-format
@@ -11842,12 +11842,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7535
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Invalid, busy and duplicate attempts do not add outcomes; unauthenticated reads cannot access the mirror; ordinary Enrico UID cannot connect to the collector socket; repository labels never enter SLO metrics."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi nagdaragdag ng outcome ang invalid, busy at dobleng attempt; hindi makakapasok sa mirror ang unauthenticated read; hindi makakonekta ang karaniwang Enrico UID sa collector socket; hindi kailanman pumapasok sa SLO metric ang repository label."
 
 #: lib/marshall/documentation_messages.ex:7539
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Malformed packets, out-of-zone refusals, unsupported transfers and truncated UDP responses cannot add successes; ordinary Audi DNS UID cannot enter the collector socket; queried names cannot become labels."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring magdagdag ng success ang malformed packet, out-of-zone refusal, unsupported transfer at truncated UDP response; hindi makakapasok sa collector socket ang karaniwang Audi DNS UID; hindi maaaring maging label ang queried name."
 
 #: lib/marshall/documentation_messages.ex:7543
 #, elixir-autogen, elixir-format
@@ -11872,7 +11872,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7559
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Missing or malformed generations cannot manufacture outcomes; retired task results and death notifications cannot settle a reused attempt; active removal refuses and old queue keys cannot erase current work."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi makagagawa ng outcome ang nawawala o malformed generation; hindi makakapag-settle ng muling ginamit na attempt ang retired task result at death notification; tinatanggihan ang active removal at hindi mabubura ng lumang queue key ang kasalukuyang gawain."
 
 #: lib/marshall/documentation_messages.ex:7563
 #, elixir-autogen, elixir-format
@@ -11887,7 +11887,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7571
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Missing peer output, malformed typed fields, process failure or an incomplete frame inventory remain unavailable; they cannot be counted as a busy refusal or a successful retired-response oracle."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Nananatiling unavailable ang nawawalang peer output, malformed typed field, process failure o kulang na frame inventory; hindi sila maaaring ibilang bilang busy refusal o matagumpay na retired-response oracle."
 
 #: lib/marshall/documentation_messages.ex:7575
 #, elixir-autogen, elixir-format
@@ -11902,7 +11902,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7583
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Missing, corrupt, foreign placement/epoch, regressing and stale intent evidence cannot establish a current boot; previous generations remain refused."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi makapagpapatunay ng kasalukuyang boot ang nawawala, corrupt, foreign placement/epoch, pabalik at stale intent evidence; nananatiling tinatanggihan ang mga naunang generation."
 
 #: lib/marshall/documentation_messages.ex:7587
 #, elixir-autogen, elixir-format
@@ -11912,67 +11912,67 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7591
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Negative evidence immediately withdraws proof; unavailable or unarmed targets retain the short backstop, stale ports cannot renew it, and a different boot target cannot inherit live authority."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Agad na binabawi ng negatibong katibayan ang proof; pinananatili ng unavailable o unarmed target ang maikling backstop, hindi ito mare-renew ng stale port, at hindi mamanahin ng ibang boot target ang aktibong awtoridad."
 
 #: lib/marshall/documentation_messages.ex:7595
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Never treat a readable restored database as current production authority."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Huwag kailanman ituring na kasalukuyang awtoridad ng produksiyon ang nababasang restored database."
 
 #: lib/marshall/documentation_messages.ex:7599
 #, elixir-autogen, elixir-format
 msgid "Required refusal: New attempts at saturation receive unavailable without task, receipt or measurement admission; same-attempt replay remains available and different work for an active repository remains busy."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tumatanggap ng unavailable ang bagong attempt kapag saturated nang walang task, receipt o measurement admission; nananatiling magagamit ang same-attempt replay at busy ang ibang gawain para sa aktibong repositoryo."
 
 #: lib/marshall/documentation_messages.ex:7603
 #, elixir-autogen, elixir-format
 msgid "Required refusal: No successor lease while a utility of the previous holder may run; no mutating utility without a lease; no second command on a busy lease; no session for a wrong uid, cgroup or protocol version."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Walang successor lease habang maaaring tumakbo ang utility ng dating holder; walang mutating utility nang walang lease; walang ikalawang command sa busy lease; walang session para sa maling uid, cgroup o protocol version."
 
 #: lib/marshall/documentation_messages.ex:7607
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Old host/gateway credentials must refuse fresh requests after rotation; new gateway credentials must not adopt old-generation sessions or allow a denied old-socket creation."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Kailangang tanggihan ng lumang host/gateway credential ang bagong request pagkatapos ng rotation; hindi dapat ampunin ng bagong gateway credential ang old-generation session o payagan ang ipinagbabawal na old-socket creation."
 
 #: lib/marshall/documentation_messages.ex:7611
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Old peer owners must terminate after budget death. The replacement starts empty and admits exactly the requested replacement pairs while the synthetic host stream remains alive."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Kailangang magtapos ang lumang peer owner pagkatapos mamatay ang budget. Nagsisimulang walang laman ang kapalit at tumatanggap ng eksaktong hiniling na replacement pair habang nananatiling aktibo ang synthetic host stream."
 
 #: lib/marshall/documentation_messages.ex:7615
 #, elixir-autogen, elixir-format
 msgid "Required refusal: One request beyond the advertised integer1..256 limit is refused as busy without wire dispatch; missing or invalid limits use eight."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tinatanggihan bilang busy nang walang wire dispatch ang isang request lampas sa in-advertise na integer1..256 limit; walo ang ginagamit para sa nawawala o invalid na limit."
 
 #: lib/marshall/documentation_messages.ex:7619
 #, elixir-autogen, elixir-format
 msgid "Required refusal: One stalled viewer cannot prevent successive neighboring output or retain its own allocations after explicit kill; neighboring identity and permits remain intact."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring hadlangan ng isang stalled viewer ang sunod-sunod na kalapit na output o panatilihin ang sariling allocation nito pagkatapos ng explicit kill; nananatiling buo ang kalapit na identity at permit."
 
 #: lib/marshall/documentation_messages.ex:7623
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Ordinary users cannot mutate, demoted actors cannot admit late writes, removed/stale repository handles cannot read, and superseded or duplicate attempts cannot publish outcomes."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring mag-mutate ang ordinaryong user, tumanggap ng huling write ang demoted actor, magbasa ang removed/stale repository handle, at maglathala ng outcome ang superseded o dobleng attempt."
 
 #: lib/marshall/documentation_messages.ex:7627
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Overwriting a fresh fixed positive-capacity ring cannot retain expanded backing; newest raw-byte suffix and absolute cursors remain exact."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring magpanatili ng expanded backing ang pag-overwrite sa bagong fixed positive-capacity ring; nananatiling eksakto ang pinakabagong raw-byte suffix at absolute cursor."
 
 #: lib/marshall/documentation_messages.ex:7631
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Pre-binding refusals and guest OTLP uploads cannot add successes; an ordinary Audi UID cannot connect to the isolated collector socket; VM and request data cannot become labels."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring magdagdag ng success ang pre-binding refusal at guest OTLP upload; hindi makakonekta ang karaniwang Audi UID sa hiwalay na collector socket; hindi maaaring maging label ang VM at request data."
 
 #: lib/marshall/documentation_messages.ex:7635
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Proxy-only and unauthenticated callers cannot administer accounts; Enable must preserve quota cooldowns, and scheduled refresh failure must preserve account health."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring mangasiwa ng account ang proxy-only at unauthenticated caller; kailangang panatilihin ng Enable ang quota cooldown, at kailangang panatilihin ng scheduled refresh failure ang account health."
 
 #: lib/marshall/documentation_messages.ex:7639
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Proxy-only, monitor-socket and unauthenticated callers cannot read or import statistics; prompt bodies, cache keys, credentials and unsanitized upstream error text never enter the statistics store."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi maaaring magbasa o mag-import ng statistic ang proxy-only, monitor-socket at unauthenticated caller; hindi kailanman pumapasok sa statistics store ang prompt body, cache key, credential at unsanitized upstream error text."
 
 #: lib/marshall/documentation_messages.ex:7643
 #, elixir-autogen, elixir-format
@@ -11982,12 +11982,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7647
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Recoverable loss must not grow the retry ceiling beyond four seconds. Unsupported-version terminal refusals must remain stopped."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Hindi dapat palakihin ng recoverable loss ang retry ceiling lampas sa apat na segundo. Kailangang manatiling nakahinto ang unsupported-version terminal refusal."
 
 #: lib/marshall/documentation_messages.ex:7651
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Refuse a new SMTP attempt after the delivery commits delivered or expired; an uncertain earlier provider acceptance may be duplicated with the same identity."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang bagong SMTP attempt matapos mag-commit ang delivery bilang delivered o expired; maaaring maulit ang hindi tiyak na naunang provider acceptance gamit ang parehong identity."
 
 #: lib/marshall/documentation_messages.ex:7655
 #, elixir-autogen, elixir-format
@@ -12012,7 +12012,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7671
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Refuse expired/replaced executor results and revoked CLI use; never redispatch an uncertain command or turn an identical request replay into new work."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang expired/replaced executor result at binawing CLI use; huwag kailanman muling ipadala ang hindi tiyak na command o gawing bagong gawain ang identical request replay."
 
 #: lib/marshall/documentation_messages.ex:7675
 #, elixir-autogen, elixir-format
@@ -12052,7 +12052,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7703
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Refuse ordinary, locked, demoted or revoked actors and archived/non-retryable jobs; changed request meaning cannot retry another job."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang ordinaryo, locked, demoted o revoked actor at archived/non-retryable job; hindi maaaring mag-retry ng ibang job ang binagong kahulugan ng request."
 
 #: lib/marshall/documentation_messages.ex:7707
 #, elixir-autogen, elixir-format
@@ -12072,7 +12072,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7719
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Refuse private or conditional requests even when a public range is cached; never publish short, overflowing, aborted or owner-interrupted writes."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang pribado o conditional request kahit naka-cache ang public range; huwag kailanman ilathala ang maikli, umaapaw, aborted o owner-interrupted write."
 
 #: lib/marshall/documentation_messages.ex:7723
 #, elixir-autogen, elixir-format
@@ -12082,7 +12082,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7727
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Refuse stale elevation/login, ordinary users, stale workload revisions and readiness without fresh physical emptiness; pause admits no new move."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang stale elevation/login, ordinaryong user, stale workload revision at readiness na walang bagong pisikal na kawalan ng laman; walang bagong move na tinatanggap ang pause."
 
 #: lib/marshall/documentation_messages.ex:7731
 #, elixir-autogen, elixir-format
@@ -12097,7 +12097,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7739
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Refuse unretained rekey identities, nonrecipient decryption, unsafe custody and incompatible cutovers; preparation failure preserves all originals and partial publication is reported for explicit retry."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang unretained rekey identity, nonrecipient decryption, unsafe custody at incompatible cutover; pinananatili ng preparation failure ang lahat ng orihinal at iniuulat ang partial publication para sa tahasang retry."
 
 #: lib/marshall/documentation_messages.ex:7743
 #, elixir-autogen, elixir-format
@@ -12117,7 +12117,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7755
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject a digest-diverging sample ID without acknowledging the valid neighbors in its batch; only a committed history receipt may acknowledge an ID."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang sample ID na naiiba ang digest nang hindi ina-acknowledge ang valid na katabi nito sa batch; tanging committed history receipt ang maaaring mag-acknowledge ng ID."
 
 #: lib/marshall/documentation_messages.ex:7759
 #, elixir-autogen, elixir-format
@@ -12127,17 +12127,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7763
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject a wrong-boot trust exchange without changing installed trust, service availability or durable receipt."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang wrong-boot trust exchange nang hindi binabago ang naka-install na trust, service availability o matibay na receipt."
 
 #: lib/marshall/documentation_messages.ex:7767
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject absent, conflicting or revoked CA trust, mismatched deployment inputs, revoked account keys and mismatched artifact digests."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang wala, magkasalungat o binawing CA trust, hindi tugmang deployment input, binawing account key at hindi tugmang artifact digest."
 
 #: lib/marshall/documentation_messages.ex:7771
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject administrator ownership bypass, stale manager grants and forged guest marks."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang administrator ownership bypass, stale manager grant at huwad na guest mark."
 
 #: lib/marshall/documentation_messages.ex:7775
 #, elixir-autogen, elixir-format
@@ -12152,12 +12152,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7783
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject expired/replayed challenges and revoke authority held by stale actors. Invalid or replayed magic links establish neither login nor remembered authority."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang expired/replayed challenge at bawiin ang awtoridad na hawak ng stale actor. Hindi nagtatatag ng login o remembered authority ang invalid o replayed magic link."
 
 #: lib/marshall/documentation_messages.ex:7787
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject foreign and transferred-name creation without false success, membership or audit writes."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang foreign at transferred-name creation nang walang huwad na success, membership o audit write."
 
 #: lib/marshall/documentation_messages.ex:7791
 #, elixir-autogen, elixir-format
@@ -12172,7 +12172,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7799
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject foreign principals, CA revocation, malformed or expired certificates and stale/cross-VM boot bindings."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang foreign principal, CA revocation, malformed o expired certificate at stale/cross-VM boot binding."
 
 #: lib/marshall/documentation_messages.ex:7803
 #, elixir-autogen, elixir-format
@@ -12182,7 +12182,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7807
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject forged mutation events and forged administrator flags from ordinary users."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang huwad na mutation event at huwad na administrator flag mula sa ordinaryong user."
 
 #: lib/marshall/documentation_messages.ex:7811
 #, elixir-autogen, elixir-format
@@ -12192,27 +12192,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7815
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject incompatible candidates, retain explicit failed-phase evidence, and recover an operator-switched active candidate by health re-verification only."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang incompatible candidate, panatilihin ang tahasang failed-phase evidence, at bawiin ang active candidate na inilipat ng operator sa pamamagitan lamang ng health re-verification."
 
 #: lib/marshall/documentation_messages.ex:7819
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject invalid files, missing or wrong fields, unsafe socket paths and credential defects with exact invalid_configuration and a catalogued event before reviewed startup entry points."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang invalid file, nawawala o maling field, unsafe socket path at credential defect gamit ang eksaktong invalid_configuration at catalogued event bago ang sinuring startup entry point."
 
 #: lib/marshall/documentation_messages.ex:7823
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject invalid files, schemas, control origins, local paths, provider selections and credential custody with exact invalid_configuration and a catalogued rejection before reviewed startup entry points."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang invalid file, schema, control origin, local path, provider selection at credential custody gamit ang eksaktong invalid_configuration at catalogued rejection bago ang sinuring startup entry point."
 
 #: lib/marshall/documentation_messages.ex:7827
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject malformed mailboxes, header injection and replayed tokens before account or guest authority; valid plus aliases, numeric-leading local parts and root mailboxes remain eligible."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang malformed mailbox, header injection at replayed token bago ang account o guest authority; nananatiling kwalipikado ang valid plus alias, numeric-leading local part at root mailbox."
 
 #: lib/marshall/documentation_messages.ex:7831
 #, elixir-autogen, elixir-format
 msgid "Required refusal: Reject malformed, unsafe, incompatible and internally inconsistent required configuration with the fixed credential-free startup error."
-msgstr ""
+msgstr "Kinakailangang pagtanggi: Tanggihan ang malformed, unsafe, incompatible at internally inconsistent na kinakailangang configuration gamit ang nakapirming credential-free startup error."
 
 #: lib/marshall/documentation_messages.ex:7835
 #, elixir-autogen, elixir-format

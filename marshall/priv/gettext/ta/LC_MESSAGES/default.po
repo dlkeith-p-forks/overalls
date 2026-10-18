@@ -7413,3 +7413,40 @@ msgstr "உற்பத்தி, திட்டத்தின்-பெயர
 #, elixir-autogen, elixir-format
 msgid "same time as you"
 msgstr "உங்களுடைய அதே நேரம்"
+
+#: lib/marshall_web/live/account_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "விளக்கம்"
+
+#: lib/marshall_web/live/account_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH விசையின் பெயர் மாற்றப்பட்டது."
+
+#: lib/marshall_web/live/account_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr ""
+"இந்த விசையின் பெயரை மாற்ற முடியவில்லை. அதிகபட்சம் 128 எழுத்துகளைப் "
+"பயன்படுத்தவும்."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "நிர்வாக மாற்றங்களைச் செய்ய நிர்வாகியாக இருக்க வேண்டும்."
+
+#: lib/marshall_web/live_admin_auth.ex:139
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "நிர்வாக மாற்றங்கள் அங்கீகரிக்கப்படவில்லை."
+
+#: lib/marshall_web/live_admin_auth.ex:186
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "முதலில் தற்போதைய சரிபார்ப்பை முடிக்கவும் அல்லது ரத்துசெய்யவும்."
+
+#: lib/marshall_web/live_admin_auth.ex:199
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "செல்லாத நிர்வாகக் கோரிக்கை."

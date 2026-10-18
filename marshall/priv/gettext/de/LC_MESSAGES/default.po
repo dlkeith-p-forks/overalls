@@ -7859,3 +7859,38 @@ msgstr "produktion, projektname"
 #, elixir-autogen, elixir-format
 msgid "same time as you"
 msgstr "gleiche Uhrzeit wie bei Ihnen"
+
+#: lib/marshall_web/live/account_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "Beschreibung"
+
+#: lib/marshall_web/live/account_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH-Schlüssel umbenannt."
+
+#: lib/marshall_web/live/account_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "Dieser Schlüssel konnte nicht umbenannt werden. Verwende höchstens 128 Zeichen."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "Administrative Änderungen erfordern einen Administrator."
+
+#: lib/marshall_web/live_admin_auth.ex:139
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "Administrative Änderungen sind nicht autorisiert."
+
+#: lib/marshall_web/live_admin_auth.ex:186
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "Schließe zuerst die aktuelle Überprüfung ab oder brich sie ab."
+
+#: lib/marshall_web/live_admin_auth.ex:199
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "Ungültige administrative Anfrage."

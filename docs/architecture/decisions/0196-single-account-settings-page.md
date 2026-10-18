@@ -50,8 +50,7 @@ old-link requirement ("breaking changes acceptable for links").
 
 1. **One page with anchored sections.** `MarshallWeb.AccountLive` serves
    `/settings` with, in this order, `#profile` (email, local clock, time zone
-   picker and [ADR-0198](0198-git-attribution-and-guest-identity.md) Git
-   identity/commit attribution preferences), `#security` (verification status,
+   picker), `#security` (verification status,
    ceremony buttons, the
    elevation return link, the passkey list with rename and remove) and
    `#ssh-keys` (registered keys, then the add form). A numbered index at the
@@ -159,7 +158,7 @@ management; their authority rules are untouched.
 - The 2026-10-18 integration review found conflicting later route/navigation
   declarations. The repair restores the single `#nav-account` entry and strict
   `AccountLive` mount, and moves the existing Git-preferences form into its
-  profile section with its stable field IDs. This preserves the subsequent
+  fourth `#git-settings` section with its stable field IDs. This preserves the subsequent
   [ADR-0198](0198-git-attribution-and-guest-identity.md) feature within this page;
   it introduces no weaker settings route. Current validation is recorded in the
   [integration review](../reviews/2026-10-18-github-com-integration.md).

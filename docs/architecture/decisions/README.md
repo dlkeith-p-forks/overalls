@@ -8,7 +8,7 @@
 
 [ADR-0202](0202-github-com-owner-integration.md) accepts owner-bound GitHub OAuth custody and managed guest forwarding; implementation remains partial.
 
-[ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, browser language negotiation and validated account overrides with LTR/RTL presentation; implementation remains partial.
+[ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, the central 25-locale policy, browser language negotiation and validated account overrides with LTR/RTL presentation; implementation remains partial.
 
 [ADR-0200](0200-windows-browser-editor-candidate.md) accepts a source-built,
 account-bound Windows editor candidate with a separate `windows-editor-v1`

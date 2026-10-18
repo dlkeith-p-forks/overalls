@@ -6772,12 +6772,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3605
 #, elixir-autogen, elixir-format
 msgid "- a changed command;\n- a deferral;\n- any other outcome;\n- any watcher report other than armed."
-msgstr ""
+msgstr "- um comando alterado;\n- um adiamento;\n- qualquer outro resultado;\n- qualquer relatório do observador diferente de armado."
 
 #: lib/marshall/documentation_messages.ex:3609
 #, elixir-autogen, elixir-format
 msgid "- its last three reconciles of the unchanged command each recorded the same\n  running outcome;\n- an armed watcher holds the exact VMM behind the current proof."
-msgstr ""
+msgstr "- as suas últimas três reconciliações do comando inalterado registaram todas o mesmo\n  resultado de execução ativa;\n- um observador armado mantém o VMM exato subjacente à prova atual."
 
 #: lib/marshall/documentation_messages.ex:3613
 #, elixir-autogen, elixir-format
@@ -6792,7 +6792,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3621
 #, elixir-autogen, elixir-format
 msgid "1. capacity snapshots;\n2. creation, deletion, transfer and other mutations;\n3. upkeep."
-msgstr ""
+msgstr "1. instantâneos de capacidade;\n2. criação, eliminação, transferência e outras alterações;\n3. manutenção."
 
 #: lib/marshall/documentation_messages.ex:3625
 #, elixir-autogen, elixir-format
@@ -6937,7 +6937,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3745
 #, elixir-autogen, elixir-format
 msgid "A running VM in steady state is not reconciled every second (ADR-0176). An actor\ncounts as steady when all of the following hold:"
-msgstr ""
+msgstr "Uma VM em execução num estado estável não é reconciliada a cada segundo (ADR-0176). Um ator\nconta como estável quando todas as condições seguintes se verificam:"
 
 #: lib/marshall/documentation_messages.ex:3749
 #, elixir-autogen, elixir-format
@@ -7007,7 +7007,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3798
 #, elixir-autogen, elixir-format
 msgid "ADR-0154 keeps only changes whose effect was measured with the boot profile\n(1-vCPU fixture; seconds since guest kernel start):"
-msgstr ""
+msgstr "A ADR-0154 mantém apenas alterações cujo efeito foi medido com o perfil de arranque\n(ambiente de teste com 1 vCPU; segundos desde o arranque do kernel do convidado):"
 
 #: lib/marshall/documentation_messages.ex:3802
 #, elixir-autogen, elixir-format
@@ -7102,17 +7102,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3873
 #, elixir-autogen, elixir-format
 msgid "Additional arguments passed to each module in addition to ones\nlike `lib`, `config`,\nand `pkgs`, `modulesPath`."
-msgstr ""
+msgstr "Argumentos adicionais passados a cada módulo, além de argumentos\ncomo `lib`, `config`,\ne `pkgs`, `modulesPath`."
 
 #: lib/marshall/documentation_messages.ex:3877
 #, elixir-autogen, elixir-format
 msgid "Additional canonical IPv4 networks denied to guests, including public management endpoints."
-msgstr ""
+msgstr "Redes IPv4 canónicas adicionais cujo acesso é negado aos convidados, incluindo pontos de acesso públicos de gestão."
 
 #: lib/marshall/documentation_messages.ex:3881
 #, elixir-autogen, elixir-format
 msgid "Administrative access path. Console-only deployments must disable administrative OpenSSH."
-msgstr ""
+msgstr "Percurso de acesso administrativo. As implementações apenas com consola têm de desativar o OpenSSH administrativo."
 
 #: lib/marshall/documentation_messages.ex:3885
 #, elixir-autogen, elixir-format
@@ -7132,7 +7132,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3901
 #, elixir-autogen, elixir-format
 msgid "Admit port 80 on the proxy address from any source through the fleet perimeter (ADR-0181), so the public CA can reach HTTP-01 challenges. The listener serves only challenges and HTTPS redirects."
-msgstr ""
+msgstr "Permitir a porta 80 no endereço do proxy a partir de qualquer origem através do perímetro da frota (ADR-0181), para que a CA pública possa aceder aos desafios HTTP-01. O serviço de escuta serve apenas desafios e redirecionamentos para HTTPS."
 
 #: lib/marshall/documentation_messages.ex:3905
 #, elixir-autogen, elixir-format
@@ -7167,7 +7167,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3941
 #, elixir-autogen, elixir-format
 msgid "After reviewing public users and host inventory, use a retained recovery identity:"
-msgstr ""
+msgstr "Após rever os utilizadores públicos e o inventário de anfitriões, utilize uma identidade de recuperação preservada:"
 
 #: lib/marshall/documentation_messages.ex:3949
 #, elixir-autogen, elixir-format
@@ -7182,7 +7182,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3957
 #, elixir-autogen, elixir-format
 msgid "Age passed to nix-collect-garbage --delete-older-than. Generations\nyounger than this are preserved."
-msgstr ""
+msgstr "Idade passada a nix-collect-garbage --delete-older-than. As gerações\nmais recentes do que este limite são preservadas."
 
 #: lib/marshall/documentation_messages.ex:3961
 #, elixir-autogen, elixir-format
@@ -7237,7 +7237,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3992
 #, elixir-autogen, elixir-format
 msgid "Also bind fleet TLS to loopback for colocated clients when the main fleet bind uses a private interface."
-msgstr ""
+msgstr "Associar também o TLS da frota à interface de loopback para clientes no mesmo anfitrião quando a associação principal da frota utiliza uma interface privada."
 
 #: lib/marshall/documentation_messages.ex:3996
 #, elixir-autogen, elixir-format
@@ -7402,12 +7402,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4132
 #, elixir-autogen, elixir-format
 msgid "Arrows mean application ownership, not calls or deployment units. Resources below are literal declarations, deduplicated; extension-generated versions are excluded."
-msgstr ""
+msgstr "As setas indicam propriedade da aplicação, não chamadas nem unidades de implementação. Os recursos abaixo são declarações literais, sem duplicados; as versões geradas por extensões são excluídas."
 
 #: lib/marshall/documentation_messages.ex:4136
 #, elixir-autogen, elixir-format
 msgid "Arrows mean configured service placement. Configuration: `dungarees`. Marshall instances: none. Fleet address: `10.90.0.2`. Fleet peers: `overalls`. Administrative SSH ports: 2222."
-msgstr ""
+msgstr "As setas indicam a localização configurada dos serviços. Configuração: `dungarees`. Instâncias do Marshall: nenhuma. Endereço da frota: `10.90.0.2`. Pares da frota: `overalls`. Portas SSH administrativas: 2222."
 
 #: lib/marshall/documentation_messages.ex:4140
 #, elixir-autogen, elixir-format
@@ -7422,7 +7422,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4142
 #, elixir-autogen, elixir-format
 msgid "Atomically published PEM key and full certificate chain, readable by the haproxy group."
-msgstr ""
+msgstr "Chave PEM e cadeia completa de certificados publicadas atomicamente, legíveis pelo grupo haproxy."
 
 #: lib/marshall/documentation_messages.ex:4146
 #, elixir-autogen, elixir-format
@@ -7457,7 +7457,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4174
 #, elixir-autogen, elixir-format
 msgid "Authenticate the installed public host key from the receipt. Publish it in the\nhost inventory. Prepare encrypted Git custody, publish the enrolled configuration,\nthen activate the exact commit:"
-msgstr ""
+msgstr "Autentique a chave pública de anfitrião instalada a partir do recibo. Publique-a no\ninventário de anfitriões. Prepare a custódia Git encriptada, publique a configuração de inscrição\ne depois ative o commit exato:"
 
 #: lib/marshall/documentation_messages.ex:4178
 #, elixir-autogen, elixir-format
@@ -7642,7 +7642,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4317
 #, elixir-autogen, elixir-format
 msgid "Boundary: A transport refusal does not prove a domain effect completed or authorize lifecycle cleanup; Lilly must preserve the permanent class used by Runtime fencing."
-msgstr ""
+msgstr "Limite: Uma recusa do transporte não comprova que um efeito do domínio tenha sido concluído nem autoriza a limpeza do ciclo de vida; o Lilly tem de preservar a classe permanente utilizada pelas barreiras do Runtime."
 
 #: lib/marshall/documentation_messages.ex:4321
 #, elixir-autogen, elixir-format
@@ -7667,7 +7667,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4345
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi DNS counts ordinary in-zone questions after an authoritative UDP or TCP reply and socket send; a mode-0600 numeric snapshot feeds a Rust exporter through an Audi-DNS-only collector intake."
-msgstr ""
+msgstr "Limite: O Audi DNS contabiliza perguntas normais dentro da zona após uma resposta autoritativa UDP ou TCP e o envio pelo socket; um instantâneo numérico com modo 0600 alimenta um exportador Rust através de uma entrada do coletor exclusiva do Audi DNS."
 
 #: lib/marshall/documentation_messages.ex:4349
 #, elixir-autogen, elixir-format
@@ -7677,22 +7677,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4353
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi gets a current Lilly placement binding and forwards an exact private OTLP route to the Rust receiver; only host-bound sanitized guest metrics reach the local collector."
-msgstr ""
+msgstr "Limite: O Audi obtém uma associação atual de localização do Lilly e encaminha uma rota OTLP privada exata para o recetor Rust; só as métricas de convidados saneadas e vinculadas ao anfitrião chegam ao coletor local."
 
 #: lib/marshall/documentation_messages.ex:4357
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi private counts completed non-OTLP requests only after current Lilly binding and TLS checks; a private fixed numeric snapshot feeds a Rust exporter through an Audi-private-only collector intake."
-msgstr ""
+msgstr "Limite: O Audi privado só contabiliza pedidos concluídos que não sejam OTLP após verificar a associação atual do Lilly e o TLS; um instantâneo numérico privado fixo alimenta um exportador Rust através de uma entrada do coletor exclusiva do Audi privado."
 
 #: lib/marshall/documentation_messages.ex:4361
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authenticated current-incarnation report delivery and reconciled durable authority through the private Unix readiness socket."
-msgstr ""
+msgstr "Limite: Entrega autenticada de relatórios da encarnação atual e autoridade durável reconciliada através do socket Unix privado de prontidão."
 
 #: lib/marshall/documentation_messages.ex:4365
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authenticated upgrade principal must become a bound identity through the first hello; a valid envelope alone is not binding."
-msgstr ""
+msgstr "Limite: A identidade autenticada da atualização tem de se tornar uma identidade vinculada através da primeira mensagem hello; um envelope válido, por si só, não estabelece o vínculo."
 
 #: lib/marshall/documentation_messages.ex:4369
 #, elixir-autogen, elixir-format
@@ -7707,27 +7707,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4377
 #, elixir-autogen, elixir-format
 msgid "Boundary: Both adapters delegate to the same durable gateway/session authority; separate session creations issue separate identities."
-msgstr ""
+msgstr "Limite: Ambos os adaptadores delegam na mesma autoridade durável de gateway e sessão; criações separadas de sessões emitem identidades separadas."
 
 #: lib/marshall/documentation_messages.ex:4381
 #, elixir-autogen, elixir-format
 msgid "Boundary: Both creation entries select OSS by default; an explicit Customer choice remains restricted by the persisted profile policy."
-msgstr ""
+msgstr "Limite: Ambos os pontos de entrada de criação selecionam OSS por predefinição; uma escolha explícita de Customer continua restringida pela política de perfis persistida."
 
 #: lib/marshall/documentation_messages.ex:4385
 #, elixir-autogen, elixir-format
 msgid "Boundary: Central Prometheus and private loopback Alertmanager route only the reviewed provisional burn roster to a runtime HTTPS destination."
-msgstr ""
+msgstr "Limite: O Prometheus central e o Alertmanager privado em loopback encaminham apenas a lista provisória revista de consumo do orçamento para um destino HTTPS em tempo de execução."
 
 #: lib/marshall/documentation_messages.ex:4389
 #, elixir-autogen, elixir-format
 msgid "Boundary: Common runtime configuration is evaluated before Marshall application callbacks, Repo and listeners."
-msgstr ""
+msgstr "Limite: A configuração comum de execução é avaliada antes dos callbacks da aplicação Marshall, do Repo e dos serviços de escuta."
 
 #: lib/marshall/documentation_messages.ex:4393
 #, elixir-autogen, elixir-format
 msgid "Boundary: Complete manifest, matching keyring, native ownership and isolated restoration."
-msgstr ""
+msgstr "Limite: Manifesto completo, conjunto de chaves correspondente, propriedade nativa e restauro isolado."
 
 #: lib/marshall/documentation_messages.ex:4397
 #, elixir-autogen, elixir-format
@@ -7737,17 +7737,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4401
 #, elixir-autogen, elixir-format
 msgid "Boundary: Control documents and immutable business/security receipts retain authority; diagnostics cannot authorize work, release capacity or rewrite accounting."
-msgstr ""
+msgstr "Limite: Os documentos de controlo e os recibos imutáveis de negócio e segurança mantêm a autoridade; os diagnósticos não podem autorizar trabalho, libertar capacidade nem reescrever a contabilização."
 
 #: lib/marshall/documentation_messages.ex:4409
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current administrator and passkey elevation share the audited catalog transaction; stored browser login/current registration gate reads; locked current attempt gates publication."
-msgstr ""
+msgstr "Limite: O administrador atual e a elevação por chave de acesso partilham a transação auditada do catálogo; o início de sessão guardado no navegador e o registo atual condicionam as leituras; a tentativa atual bloqueada condiciona a publicação."
 
 #: lib/marshall/documentation_messages.ex:4413
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current administrator role, stored browser login and recent passkey elevation govern user controls through commit. Accepted fixed-cohort work has separate durable campaign authority."
-msgstr ""
+msgstr "Limite: O papel atual de administrador, o início de sessão guardado no navegador e a elevação recente por chave de acesso regem os controlos de utilizadores até à confirmação da transação. O trabalho aceite para um grupo fixo tem autoridade durável de campanha separada."
 
 #: lib/marshall/documentation_messages.ex:4417
 #, elixir-autogen, elixir-format

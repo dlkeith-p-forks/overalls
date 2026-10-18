@@ -7413,3 +7413,38 @@ msgstr "üretim, proje-adı"
 #, elixir-autogen, elixir-format
 msgid "same time as you"
 msgstr "sizinle aynı saatte"
+
+#: lib/marshall_web/live/account_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "Açıklama"
+
+#: lib/marshall_web/live/account_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH anahtarı yeniden adlandırıldı."
+
+#: lib/marshall_web/live/account_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "Bu anahtar yeniden adlandırılamadı. En fazla 128 karakter kullanın."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "Yönetim değişiklikleri için yönetici gerekir."
+
+#: lib/marshall_web/live_admin_auth.ex:139
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "Yönetim değişikliklerine izin verilmiyor."
+
+#: lib/marshall_web/live_admin_auth.ex:186
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "Önce mevcut doğrulamayı tamamlayın veya iptal edin."
+
+#: lib/marshall_web/live_admin_auth.ex:199
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "Geçersiz yönetim isteği."

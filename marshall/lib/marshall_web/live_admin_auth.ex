@@ -3,6 +3,7 @@ defmodule MarshallWeb.LiveAdminAuth do
   alias Marshall.Accounts.{Security, User}
   alias Marshall.Authorization.Cedar
   alias MarshallWeb.AdminElevation
+  use Gettext, backend: MarshallWeb.Gettext
   import Phoenix.Component
   use MarshallWeb, :verified_routes
 
@@ -120,7 +121,7 @@ defmodule MarshallWeb.LiveAdminAuth do
          Phoenix.LiveView.put_flash(
            socket,
            :error,
-           "Administrative changes require an administrator."
+           gettext("Administrative changes require an administrator.")
          )}
 
       not Security.recent?(socket.assigns.current_user) ->
@@ -135,7 +136,11 @@ defmodule MarshallWeb.LiveAdminAuth do
 
       true ->
         {:halt,
-         Phoenix.LiveView.put_flash(socket, :error, "Administrative changes are not authorized.")}
+         Phoenix.LiveView.put_flash(
+           socket,
+           :error,
+           gettext("Administrative changes are not authorized.")
+         )}
     end
   end
 
@@ -182,7 +187,7 @@ defmodule MarshallWeb.LiveAdminAuth do
            Phoenix.LiveView.put_flash(
              socket,
              :error,
-             "Finish or cancel the current verification first."
+             gettext("Finish or cancel the current verification first.")
            )}
         else
           socket = Phoenix.LiveView.put_private(socket, :admin_intent, intent)
@@ -195,7 +200,9 @@ defmodule MarshallWeb.LiveAdminAuth do
         end
       end
     else
-      _ -> {:halt, Phoenix.LiveView.put_flash(socket, :error, "Invalid administrative request.")}
+      _ ->
+        {:halt,
+         Phoenix.LiveView.put_flash(socket, :error, gettext("Invalid administrative request."))}
     end
   end
 

@@ -20,6 +20,8 @@ transport reset does not preserve established sockets.
 
 [ADR-0201](repo:docs/architecture/decisions/0201-localized-human-surfaces.md) accepts a saved account language override with session/browser negotiation and English fallback. The supported catalog list includes Japanese, Hindi, Filipino, Estonian, Finnish, Swedish and Brazilian/European Portuguese. Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Implementation and recorded browser/native evidence remain partial.
 
+SSH key rename descriptions, confirmation and refusal flashes, and administrative verification/refusal messages use the active locale catalog. Translation does not change ownership checks, recent-passkey requirements or accepted mutation outcomes. English date-only month/day output follows bundled CLDR ordering (`Oct 18`); the UTC provenance remains unchanged.
+
 ## Inline privileged browser actions
 
 The accepted ADR-0160 flow keeps a requested administrator mutation on its current
