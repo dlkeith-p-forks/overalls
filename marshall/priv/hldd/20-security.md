@@ -943,7 +943,7 @@ policies.
 
 | Header | Value and purpose |
 | --- | --- |
-| `content-security-policy` | `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; frame-src 'self'; worker-src 'self'; manifest-src 'self'`. Scripts, fonts, WebSockets, frames and form targets are same-origin only. `'unsafe-inline'` applies to styles alone because the vendored xterm.js and Mermaid renderers create `<style>` elements and set `style` attributes, which a nonce cannot authorise; Marshall's own templates contain no inline script, style or `style=` attribute. |
+| `content-security-policy` | `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://ghuntley.com; frame-ancestors 'self'; frame-src 'self'; worker-src 'self'; manifest-src 'self'`. Scripts, fonts, WebSockets and frames are same-origin only. Forms additionally permit the fixed newsletter fallback origin under ADR-0205; unrestricted `https:` is refused. `'unsafe-inline'` applies to styles alone because the vendored xterm.js and Mermaid renderers create `<style>` elements and set `style` attributes, which a nonce cannot authorise; Marshall's own templates contain no inline script, style or `style=` attribute. |
 | `permissions-policy` | Sensors, camera, microphone, geolocation, payment, USB, serial, HID, MIDI, autoplay, display capture, idle detection, local fonts, picture-in-picture, wake lock and XR are denied. `clipboard-read` and `clipboard-write` stay allowed for this origin because the terminal pastes from and the copy buttons write to the clipboard. Passkeys and the terminal fullscreen control keep the browser defaults. |
 | `cross-origin-opener-policy: same-origin` | A foreign page that opens Marshall keeps no window reference. |
 | `cross-origin-resource-policy: same-origin` | Browsers refuse to embed Marshall responses as cross-origin subresources. `curl` and PowerShell installer downloads and extension archive navigations are unaffected. |
@@ -972,7 +972,7 @@ working in browsers that visited the apex.
 | Identity | The production session cookie is `__Host-marshall`: Secure, HttpOnly, `Path=/`, no Domain, `SameSite=Lax`, signed and encrypted. The remembered credential is `__Host-remember_me` with the same attributes. Browsers refuse a `__Host-` cookie set by any other host, so a user application on `*.apps.ghuntley.dev` can neither plant nor shadow either cookie. A request that still carries the legacy `_marshall_key` or `remember_me` name receives an expiring `Set-Cookie` for it. |
 | Authorization | Headers and cookies grant nothing: stored-login checks and Cedar decide every read and mutation. User applications are same-site with Marshall, so `SameSite` offers no CSRF protection against them; CSRF tokens on every form and the LiveView socket remain the control. |
 | Transport | HTTPS is forced with HSTS for the apex and its subdomains; the LiveView and terminal WebSockets are same-origin under `connect-src 'self'`. |
-| Execution | `script-src 'self'` and `object-src 'none'` refuse injected, inline or foreign scripts and plugins; `form-action 'self'` refuses foreign form targets. |
+| Execution | `script-src 'self'` and `object-src 'none'` refuse injected, inline or foreign scripts and plugins; `form-action` permits only `'self'` and the fixed `https://ghuntley.com` newsletter fallback origin, refusing other form targets. |
 | Isolation | `frame-ancestors 'self'` and `frame-src 'self'` allow only Marshall to frame Marshall (the thread page embeds its own terminal route); the opener and resource policies isolate Marshall from foreign pages. |
 | Storage | Session contents are encrypted in the cookie; no secret is stored in browser storage, only the appearance preference. |
 | Recovery | Changing the cookie names or encryption signs every browser out once; a remembered browser signs in again with one fresh magic link. Legacy cookies expire on the next response. |
@@ -1360,6 +1360,23 @@ policy custody, active helper service, exact root-owned bytes/modes and nosuid
 runtime mounts. These are recorded root PAM/sudo paths, not direct helper
 setuid elevation. Roster revocation, terminal/executor/workspace, native
 isolation and physical recovery remain separate acceptance gaps.
+
+## Customer private-service boundaries
+
+Customer capabilities are a closed set: SSH, terminal and editor. Generic
+private-service admission is refused. Owner authorization and the separate
+editor gateway remain mandatory; a shared private execution binding is not a
+grant to inference, reflection, integrations or telemetry. Audi refuses these
+non-SSH services from `10.10/16` before asking Lilly for a binding. The reserved
+SSH service retains exact account-pull, boot-roster and host-certificate
+purposes; Lilly still requires current local execution authority.
+
+The [fleet follow-up review](repo:docs/architecture/reviews/2026-10-18-fleet-dependency-convergence.md)
+records four Protocol policy tests including generated closed-capability
+checks, 21 Audi Plug/configuration tests and 18 Lilly execution/bootstrap tests.
+These results restore the ADR-0064/0158/0203 boundary in the BEAM. They do not
+establish native packet isolation, real guest TLS, Windows editor admission or
+production activation. The [Customer scenario](#coverage) retains those gaps.
 
 ## Windows guest boundaries
 

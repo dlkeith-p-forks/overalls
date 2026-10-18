@@ -31,7 +31,9 @@ defmodule Marshall.GitHubDistributedFixture do
   def due!(id) do
     Marshall.Repo.query!(
       "UPDATE github_connections SET refresh_due_at=clock_timestamp()-interval '1 second' WHERE id=$1",
-      [Ecto.UUID.dump!(id)], log: false)
+      [Ecto.UUID.dump!(id)],
+      log: false
+    )
 
     :ok
   end
@@ -52,19 +54,25 @@ defmodule Marshall.GitHubDistributedFixture do
     %{rows: connections} =
       Marshall.Repo.query!(
         "SELECT id FROM github_connections WHERE user_id=$1",
-        [Ecto.UUID.dump!(user.id)], log: false)
+        [Ecto.UUID.dump!(user.id)],
+        log: false
+      )
 
     connection_ids = Enum.map(connections, fn [id] -> id end)
 
     %{rows: attempts} =
       Marshall.Repo.query!(
         "SELECT id FROM github_authorization_attempts WHERE connection_id=ANY($1::uuid[])",
-        [connection_ids], log: false)
+        [connection_ids],
+        log: false
+      )
 
     %{rows: refresh_attempts} =
       Marshall.Repo.query!(
         "SELECT id FROM github_refresh_attempts WHERE connection_id=ANY($1::uuid[])",
-        [connection_ids], log: false)
+        [connection_ids],
+        log: false
+      )
 
     job_ids =
       Enum.map(
@@ -77,7 +85,9 @@ defmodule Marshall.GitHubDistributedFixture do
     for table <- ["github_audit_events", "github_exclusions"] do
       Marshall.Repo.query!(
         "DELETE FROM " <> table <> " WHERE user_id=$1",
-        [Ecto.UUID.dump!(user.id)], log: false)
+        [Ecto.UUID.dump!(user.id)],
+        log: false
+      )
     end
 
     for table <- [
@@ -87,12 +97,16 @@ defmodule Marshall.GitHubDistributedFixture do
         ] do
       Marshall.Repo.query!(
         "DELETE FROM " <> table <> " WHERE connection_id=ANY($1::uuid[])",
-        [connection_ids], log: false)
+        [connection_ids],
+        log: false
+      )
     end
 
     Marshall.Repo.query!(
       "DELETE FROM github_connections WHERE user_id=$1",
-      [Ecto.UUID.dump!(user.id)], log: false)
+      [Ecto.UUID.dump!(user.id)],
+      log: false
+    )
 
     Marshall.PasskeyFixture.cleanup(user)
     Marshall.Repo.query!("DELETE FROM users WHERE id=$1", [Ecto.UUID.dump!(user.id)], log: false)

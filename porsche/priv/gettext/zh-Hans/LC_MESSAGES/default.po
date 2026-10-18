@@ -297,3 +297,73 @@ msgstr "Resume preserved memory, waiting for capacity or relocation."
 # Reviewed English fallback pending translation of suspension behavior.
 msgid "Resume a suspended machine's preserved memory."
 msgstr "Resume a suspended machine's preserved memory."
+
+#: lib/porsche/ssh/onboarding.ex:112
+#, elixir-autogen, elixir-format
+msgid "\nOr manage your keys at:\n  "
+msgstr "\n或在此处管理密钥：\n  "
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "Show command help."
+msgstr "显示命令帮助。"
+
+#: lib/porsche/ssh/output.ex:73
+#, elixir-autogen, elixir-format
+msgid "The command could not be completed: %{reason}"
+msgstr "无法完成命令：%{reason}"
+
+#: lib/porsche/ssh/output.ex:67
+#, elixir-autogen, elixir-format
+msgid "The requested resource could not be found."
+msgstr "找不到请求的资源。"
+
+#: lib/porsche/ssh/output.ex:61
+#, elixir-autogen, elixir-format
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr "服务暂时不可用。请稍后重试。"
+
+#: lib/porsche/ssh/onboarding.ex:100
+#, elixir-autogen, elixir-format
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr "无法授权此 SSH 连接。请检查您的机器访问权限后重试。\n\n"
+
+#: lib/porsche/ssh/output.ex:52
+#, elixir-autogen, elixir-format
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "此连接未经授权。请登录后重试。"
+
+#: lib/porsche/ssh/output.ex:70
+#, elixir-autogen, elixir-format
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "输入异常。请打开新的 SSH 连接。"
+
+#: lib/porsche/ssh/onboarding.ex:97
+#, elixir-autogen, elixir-format
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr "目前无法验证此 SSH 密钥。请稍后重试。\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:53
+#, elixir-autogen, elixir-format
+msgid "We don't recognize this SSH key:\n  "
+msgstr "我们无法识别此 SSH 密钥：\n  "
+
+#: lib/porsche/ssh/onboarding.ex:86
+#, elixir-autogen, elixir-format
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr "欢迎使用 Overalls。\n\n此连接需要 Overalls SSH 配置。\n\n"
+
+#: lib/porsche/ssh/output.ex:55
+#, elixir-autogen, elixir-format
+msgid "You do not have permission to perform this action."
+msgstr "您无权执行此操作。"
+
+#: lib/porsche/ssh/onboarding.ex:121
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "从您的机器页面获取，然后在不使用 root@ 的情况下重新连接。\n"
+
+#: lib/porsche/ssh/onboarding.ex:78
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "然后重试原来的命令。\n"

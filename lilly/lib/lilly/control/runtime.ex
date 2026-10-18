@@ -152,7 +152,7 @@ defmodule Lilly.Control.Runtime do
   def private_binding(view, address) do
     with {:ok, _version, %{command: command}} <- Lilly.Execution.by_address(view, address),
          true <- command.kind in [:provision, :start, :resume],
-         true <- OverallsProtocol.ProfilePolicy.allows?(command.profile, :private_services) do
+         true <- OverallsProtocol.ProfilePolicy.allows?(command.profile, :ssh) do
       {:ok, Map.take(command, [:host_id, :vm_id, :placement_id, :execution_epoch])}
     else
       _ -> {:error, :private_service_unavailable}

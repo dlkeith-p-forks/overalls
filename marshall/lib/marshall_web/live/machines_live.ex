@@ -1111,11 +1111,29 @@ defmodule MarshallWeb.MachinesLive do
           id="machine-advanced"
           class="stack"
         >
-          <.form for={@metadata_form} id="reflection-metadata" phx-submit="save-reflection-metadata" class="panel stack">
+          <.form
+            for={@metadata_form}
+            id="reflection-metadata"
+            phx-submit="save-reflection-metadata"
+            class="panel stack"
+          >
             <h2>{gettext("Reflection metadata")}</h2>
-            <.input field={@metadata_form[:labels]} label={gettext("Labels")} value={Enum.join(@vm.labels || [], ", ")} placeholder={gettext("production, project-name")} />
-            <.input field={@metadata_form[:comment]} label={gettext("Comment")} value={@vm.comment || ""} type="textarea" placeholder={gettext("Short description for agents")} />
-            <Layouts.action tone="primary" id="reflection-metadata-submit">{gettext("Save metadata")}</Layouts.action>
+            <.input
+              field={@metadata_form[:labels]}
+              label={gettext("Labels")}
+              value={Enum.join(@vm.labels || [], ", ")}
+              placeholder={gettext("production, project-name")}
+            />
+            <.input
+              field={@metadata_form[:comment]}
+              label={gettext("Comment")}
+              value={@vm.comment || ""}
+              type="textarea"
+              placeholder={gettext("Short description for agents")}
+            />
+            <Layouts.action tone="primary" id="reflection-metadata-submit">
+              {gettext("Save metadata")}
+            </Layouts.action>
           </.form>
           <UI.panel id="relocation-controls" title={gettext("Relocate machine")}>
             <:actions>

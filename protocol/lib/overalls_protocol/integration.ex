@@ -78,7 +78,7 @@ defmodule OverallsProtocol.Integration do
   # Strip prefixes MUST be absolute paths over the URL-safe segment charset,
   # without empty segments, regex or control characters. Removal is applied
   # segment-aligned in the request direction only.
-  @spec strip_prefix(term()) :: {:ok, binary()} | {:error, :invalid_strip_prefix}
+  @spec strip_prefix(term()) :: {:ok, binary() | nil} | {:error, :invalid_strip_prefix}
   def strip_prefix(value) when is_binary(value) and byte_size(value) in 2..256 do
     if Regex.match?(@strip_regex, value) and not String.contains?(value, "//"),
       do: {:ok, value},

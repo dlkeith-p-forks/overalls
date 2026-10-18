@@ -413,7 +413,7 @@ defmodule Marshall.Agents.ExecutorSession do
 
     unless match?(%Marshall.Accounts.User{deleted_at: nil}, owner) and
              Marshall.Access.Authorization.allowed?(vm, owner, "write"),
-      do: Ledger.rollback(:access_revoked)
+           do: Ledger.rollback(:access_revoked)
 
     {executor, vm}
   end

@@ -317,3 +317,73 @@ msgstr "Resume preserved memory, waiting for capacity or relocation."
 # Reviewed English fallback pending translation of suspension behavior.
 msgid "Resume a suspended machine's preserved memory."
 msgstr "Resume a suspended machine's preserved memory."
+
+#: lib/porsche/ssh/onboarding.ex:112
+#, elixir-autogen, elixir-format
+msgid "\nOr manage your keys at:\n  "
+msgstr "\nOder verwalte deine Schlüssel unter:\n  "
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "Show command help."
+msgstr "Befehlshilfe anzeigen."
+
+#: lib/porsche/ssh/output.ex:73
+#, elixir-autogen, elixir-format
+msgid "The command could not be completed: %{reason}"
+msgstr "Der Befehl konnte nicht abgeschlossen werden: %{reason}"
+
+#: lib/porsche/ssh/output.ex:67
+#, elixir-autogen, elixir-format
+msgid "The requested resource could not be found."
+msgstr "Die angeforderte Ressource wurde nicht gefunden."
+
+#: lib/porsche/ssh/output.ex:61
+#, elixir-autogen, elixir-format
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr "Der Dienst ist vorübergehend nicht verfügbar. Bitte versuche es in Kürze erneut."
+
+#: lib/porsche/ssh/onboarding.ex:100
+#, elixir-autogen, elixir-format
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr "Diese SSH-Verbindung konnte nicht autorisiert werden. Prüfe deinen Maschinenzugriff und versuche es erneut.\n\n"
+
+#: lib/porsche/ssh/output.ex:52
+#, elixir-autogen, elixir-format
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "Diese Verbindung ist nicht autorisiert. Bitte melde dich an und versuche es erneut."
+
+#: lib/porsche/ssh/output.ex:70
+#, elixir-autogen, elixir-format
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "Unerwartete Eingabe. Bitte öffne eine neue SSH-Verbindung."
+
+#: lib/porsche/ssh/onboarding.ex:97
+#, elixir-autogen, elixir-format
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr "Wir konnten diesen SSH-Schlüssel gerade nicht überprüfen. Bitte versuche es in Kürze erneut.\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:53
+#, elixir-autogen, elixir-format
+msgid "We don't recognize this SSH key:\n  "
+msgstr "Wir erkennen diesen SSH-Schlüssel nicht:\n  "
+
+#: lib/porsche/ssh/onboarding.ex:86
+#, elixir-autogen, elixir-format
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr "Willkommen bei Overalls.\n\nDiese Verbindung benötigt die SSH-Konfiguration von Overalls.\n\n"
+
+#: lib/porsche/ssh/output.ex:55
+#, elixir-autogen, elixir-format
+msgid "You do not have permission to perform this action."
+msgstr "Du hast keine Berechtigung, diese Aktion auszuführen."
+
+#: lib/porsche/ssh/onboarding.ex:121
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "auf der Seite deiner Maschine aus und verbinde dich ohne root@ erneut.\n"
+
+#: lib/porsche/ssh/onboarding.ex:78
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "versuche dann deinen ursprünglichen Befehl erneut.\n"

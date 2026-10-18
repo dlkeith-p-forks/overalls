@@ -344,16 +344,28 @@ let
       && tunedRoles.systemd.services.marshall-one.serviceConfig.LimitNOFILE == 65536;
     smtpDisabled = !(onlyMarshall.systemd.services ? overalls-smtprelay);
     smtpPresets = lib.all (provider:
-      let cfg = evaluate { imports = [ marshall ]; services.marshall.smtpRelay = {
+      let cfg = evaluate { imports = [ marshall ];
+        services.marshall.githubBootstrapRelease = pkgs.hello;
+        services.marshall.smtpRelay = {
         enable = true; from = "noreply@example.test";
         upstream = { inherit provider; region = "us-east-1";
           usernameFile = "/run/smtp/username"; passwordFile = "/run/smtp/password";
         } // lib.optionalAttrs (provider == "generic") { host = "smtp.example.test"; };
-      }; }; relay = cfg.services.marshall.smtpRelay; in
+      }; }; relay = cfg.services.marshall.smtpRelay;
+        launch = cfg.systemd.services.marshall-one.script; in
       valid cfg && cfg.systemd.services.overalls-smtprelay.serviceConfig.DynamicUser
       && relay.upstream.port == (if provider == "resend" then 465 else 587)
       && !(builtins.elem 2525 cfg.networking.firewall.allowedTCPPorts)
-      && lib.hasInfix "MARSHALL_MAIL_TRANSPORT=local_relay" cfg.systemd.services.marshall-one.script
+      && lib.hasInfix "MARSHALL_MAIL_TRANSPORT=local_relay" launch
+      && lib.hasInfix "MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE=" launch
+      && lib.hasInfix "-u MARSHALL_SMTP_CA_CERTFILE"
+        (builtins.head (lib.splitString "MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE=" launch))
+      && lib.all (name:
+        let preStart = cfg.systemd.services."marshall-${name}".preStart; in
+        lib.hasInfix "MARSHALL_MAIL_TRANSPORT=local_relay" preStart
+        && lib.hasInfix "MARSHALL_SMTP_HOST=127.0.0.1" preStart
+        && lib.hasInfix "-u MARSHALL_SMTP_USERNAME -u MARSHALL_SMTP_PASSWORD" preStart
+      ) [ "one" "two" "three" ]
     ) [ "generic" "ses" "resend" ];
     smtpMissing = !(valid (evaluate { imports = [ marshall ]; services.marshall.smtpRelay.enable = true; }));
     smtpCollision = !(valid (evaluate { imports = [ marshall ]; services.marshall.smtpRelay = {

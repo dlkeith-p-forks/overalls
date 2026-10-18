@@ -459,6 +459,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0200](0200-windows-browser-editor-candidate.md) | accepted | partial | Account-bound Windows browser editor candidate |
 | [ADR-0202](0202-github-com-owner-integration.md) | accepted | partial | Owner-bound GitHub.com integration |
 | [ADR-0203](0203-guest-reflection.md) | accepted | partial | Guest reflection service |
+| [ADR-0206](0206-android-firecracker-guest.md) | accepted | partial | Software-rendered Android in the Firecracker guest |
 | [ADR-0204](0204-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |
 | [ADR-0205](0205-overview-newsletter.md) | accepted | partial | Overview newsletter signup |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |

@@ -156,8 +156,12 @@ defmodule Audi.Private.Front do
          do: {:ok, {:galileo, label}}
   end
 
-  # 10.10/16 is the customer profile. It has no inference or integration access.
+  # @cc [owner:ghuntley,label:security] private-customer-ssh-only
+  # Customer sources in 10.10/16 MUST access only the reserved SSH service;
+  # inference, reflection, integrations and telemetry MUST refuse before
+  # requesting a Lilly execution binding.
   defp service_allowed?(:ssh, _peer), do: true
+  defp service_allowed?(_, {10, 10, _, _}), do: false
   defp service_allowed?(_, _), do: true
 
   # @cc [owner:ghuntley,label:security] guest-otel-exact-surface

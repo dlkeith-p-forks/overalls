@@ -1218,3 +1218,5 @@ separate from sign-in email. Invalid or foreign-account changes refuse. Identity
 changes apply to newly created machines.
 
 Public documentation applies validated browser language negotiation without a login or session cookie. Its standalone HTML declares the negotiated `lang` and explicit `dir`, including RTL for Arabic and Urdu. Controller regression coverage checks English, Arabic, Urdu and Japanese; this does not establish visual bidi correctness or translation completeness.
+
+Porsche catalog verification compares all 25 terminal catalogs with the extracted message inventory and checks placeholders. The recorded full Porsche gate at `1f79f63e6` passed 108 tests and Dialyzer with zero errors. This establishes bounded BEAM/catalog behavior; native SSH onboarding, visual bidi behavior and native-language quality still require separate acceptance.

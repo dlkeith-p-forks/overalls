@@ -62,6 +62,12 @@ Observed before this decision:
    | `x-frame-options` | `SAMEORIGIN` (legacy browsers; `frame-ancestors` is authoritative) |
    | `x-permitted-cross-domain-policies` | `none` |
 
+   [ADR-0205](0205-overview-newsletter.md) amends only the original
+   `form-action 'self'` clause above: the current policy additionally permits
+   the fixed `https://ghuntley.com` origin for the native newsletter fallback
+   form. It permits no unrestricted `https:` source; scripts, connections and
+   the other directives retain their original restrictions.
+
    `put_secure_browser_headers` is removed from both pipelines. The only
    relaxation is `'unsafe-inline'` in `style-src`, required by xterm.js and
    Mermaid's `setAttribute("style")` calls, which a nonce cannot cover.
@@ -236,4 +242,5 @@ applications remain same-site with the control plane.
 [ADR-0065](0065-passkey-administration.md),
 [ADR-0161](0161-monospace-web-presentation.md),
 [ADR-0181](0181-public-proxy-http01-ingress.md);
+[ADR-0205](0205-overview-newsletter.md) amends the form-action clause only;
 [review 2026-10-18](../reviews/2026-10-18-marshall-security-headers.md).

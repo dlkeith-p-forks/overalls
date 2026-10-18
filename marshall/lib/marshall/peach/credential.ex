@@ -8,47 +8,47 @@ defmodule Marshall.Peach.Credential do
     extensions: [AshPaperTrail.Resource]
 
   postgres do
-    table("peach_credentials")
-    repo(Marshall.Repo)
-    identity_wheres_to_sql(one_active_per_host: "revoked_at IS NULL")
+    table "peach_credentials"
+    repo Marshall.Repo
+    identity_wheres_to_sql one_active_per_host: "revoked_at IS NULL"
   end
 
   paper_trail do
-    metadata(:actor_kind, :atom, allow_nil?: true)
-    metadata(:actor_id, :uuid, allow_nil?: true)
-    change_tracking_mode(:changes_only)
-    store_action_name?(true)
-    ignore_attributes([:secret_hash, :inserted_at, :updated_at])
-    sensitive_attributes(:ignore)
-    version_extensions(authorizers: [Marshall.Authorization.AshAuthorizer])
+    metadata :actor_kind, :atom, allow_nil?: true
+    metadata :actor_id, :uuid, allow_nil?: true
+    change_tracking_mode :changes_only
+    store_action_name? true
+    ignore_attributes [:secret_hash, :inserted_at, :updated_at]
+    sensitive_attributes :ignore
+    version_extensions authorizers: [Marshall.Authorization.AshAuthorizer]
   end
 
   actions do
-    defaults([:read])
+    defaults [:read]
 
     create :issue do
-      accept([:host_id, :secret_hash, :expires_at])
+      accept [:host_id, :secret_hash, :expires_at]
     end
 
     update :revoke do
-      accept([:revoked_at])
+      accept [:revoked_at]
     end
   end
 
   attributes do
-    uuid_primary_key(:id)
-    attribute(:secret_hash, :binary, sensitive?: true, allow_nil?: false)
-    attribute(:expires_at, :utc_datetime_usec, allow_nil?: false)
-    attribute(:revoked_at, :utc_datetime_usec)
-    create_timestamp(:inserted_at)
-    update_timestamp(:updated_at)
+    uuid_primary_key :id
+    attribute :secret_hash, :binary, sensitive?: true, allow_nil?: false
+    attribute :expires_at, :utc_datetime_usec, allow_nil?: false
+    attribute :revoked_at, :utc_datetime_usec
+    create_timestamp :inserted_at
+    update_timestamp :updated_at
   end
 
   relationships do
-    belongs_to(:host, Marshall.Compute.Host, allow_nil?: false)
+    belongs_to :host, Marshall.Compute.Host, allow_nil?: false
   end
 
   identities do
-    identity(:one_active_per_host, [:host_id], where: expr(is_nil(revoked_at)))
+    identity :one_active_per_host, [:host_id], where: expr(is_nil(revoked_at))
   end
 end

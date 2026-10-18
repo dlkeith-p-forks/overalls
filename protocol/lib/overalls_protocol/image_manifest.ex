@@ -400,7 +400,15 @@ defmodule OverallsProtocol.ImageManifest do
   # table, qualified by exact reviewed native image identity for capabilities/2.
   @spec guest_agents(t()) :: guest_agents()
   def guest_agents(%{guest_agents: agents})
-      when agents in [:linux, :none, :windows_v1, :windows_editor_v1, :freebsd_v1, :illumos_v1],
+      when agents in [
+             :linux,
+             :linux_android_v1,
+             :none,
+             :windows_v1,
+             :windows_editor_v1,
+             :freebsd_v1,
+             :illumos_v1
+           ],
       do: agents
 
   # @cc [owner:ghuntley,label:security;protocol] image-editor-capability-no-inference

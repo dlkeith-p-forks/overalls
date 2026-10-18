@@ -168,9 +168,13 @@ defmodule MarshallWeb.OverviewLive do
                   id="overview-machines-empty"
                   title={gettext("Room for your next idea")}
                 >
-                  {gettext("No machines in this preview yet. Create one or ask an owner to share access.")}
+                  {gettext(
+                    "No machines in this preview yet. Create one or ask an owner to share access."
+                  )}
                   <:action>
-                    <.link navigate={~p"/machines/new"} class="console-button ghost">{gettext("Create your first machine")}</.link>
+                    <.link navigate={~p"/machines/new"} class="console-button ghost">{gettext(
+                      "Create your first machine"
+                    )}</.link>
                   </:action>
                 </UI.empty>
                 <div id="overview-machine-preview">
@@ -208,7 +212,9 @@ defmodule MarshallWeb.OverviewLive do
                   </article>
                 </div>
                 <p :if={page.more} class="muted">
-                  {gettext("A small preview. All your accessible machines are in")} <.link navigate={~p"/machines"}>{gettext("Machines")}</.link>.
+                  {gettext("A small preview. All your accessible machines are in")} <.link navigate={
+                    ~p"/machines"
+                  }>{gettext("Machines")}</.link>.
                 </p>
               <% :unavailable -> %>
                 <p id="overview-machines-unavailable" role="status">
@@ -217,21 +223,51 @@ defmodule MarshallWeb.OverviewLive do
             <% end %>
           </UI.panel>
           <div class="overview-side">
-            <UI.panel :if={!@newsletter_dismissed} id="overview-newsletter" title={gettext("Stay in the loop")}>
+            <UI.panel
+              :if={!@newsletter_dismissed}
+              id="overview-newsletter"
+              title={gettext("Stay in the loop")}
+            >
               <:actions>
-                <button id="overview-newsletter-dismiss" type="button" class="console-button ghost" phx-click="dismiss_newsletter">{gettext("Dismiss")}</button>
+                <button
+                  id="overview-newsletter-dismiss"
+                  type="button"
+                  class="console-button ghost"
+                  phx-click="dismiss_newsletter"
+                >{gettext("Dismiss")}</button>
               </:actions>
-              <p class="muted">{gettext("Get tips, tricks and updates about Overalls and AI by email.")}</p>
-              <.form for={@newsletter_form} id="overview-newsletter-form" phx-submit="subscribe_newsletter" action="https://ghuntley.com/newsletter/" method="get">
-                <.input field={@newsletter_form[:email]} type="email" autocomplete="email" placeholder="you@example.com" required label={gettext("Email address")} />
-                <button id="overview-newsletter-submit" type="submit" class="console-button primary">{gettext("Subscribe")}</button>
+              <p class="muted">
+                {gettext("Get tips, tricks and updates about Overalls and AI by email.")}
+              </p>
+              <.form
+                for={@newsletter_form}
+                id="overview-newsletter-form"
+                phx-submit="subscribe_newsletter"
+                action="https://ghuntley.com/newsletter/"
+                method="get"
+              >
+                <.input
+                  field={@newsletter_form[:email]}
+                  type="email"
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                  required
+                  label={gettext("Email address")}
+                />
+                <button id="overview-newsletter-submit" type="submit" class="console-button primary">{gettext(
+                  "Subscribe"
+                )}</button>
               </.form>
               <p id="overview-newsletter-status" class="muted" role="status" aria-live="polite">
                 <%= case @newsletter_status do %>
-                  <% :ok -> %>{gettext("Check your inbox and click the link to confirm your subscription.")}
-                  <% {:error, :invalid_email} -> %>{gettext("Enter a valid email address.")}
-                  <% {:error, :unavailable} -> %>{gettext("We could not reach the newsletter service. Try again later.")}
-                  <% _ -> %>{gettext("Unsubscribe any time.")}
+                  <% :ok -> %>
+                    {gettext("Check your inbox and click the link to confirm your subscription.")}
+                  <% {:error, :invalid_email} -> %>
+                    {gettext("Enter a valid email address.")}
+                  <% {:error, :unavailable} -> %>
+                    {gettext("We could not reach the newsletter service. Try again later.")}
+                  <% _ -> %>
+                    {gettext("Unsubscribe any time.")}
                 <% end %>
               </p>
             </UI.panel>
@@ -241,7 +277,9 @@ defmodule MarshallWeb.OverviewLive do
               data-overalls-extension-setup="true"
             >
               <p class="muted">
-                {gettext("Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension.")}
+                {gettext(
+                  "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
+                )}
               </p>
               <.link
                 id="overview-marvin-extension-link"
@@ -254,11 +292,19 @@ defmodule MarshallWeb.OverviewLive do
               <%= case @catalog do %>
                 <% {:ok, %{capacity_known: true} = catalog} -> %>
                   <.kv>
-                    <:item title={gettext("CPU")}>{gettext("%{value1} vCPU", value1: catalog.available.vcpu)}</:item>
-                    <:item title={gettext("Memory")}>{gettext("%{value1} GiB", value1: gib(catalog.available.memory_bytes))}</:item>
-                    <:item title={gettext("Disk")}>{gettext("%{value1} GiB", value1: gib(catalog.available.disk_bytes))}</:item>
+                    <:item title={gettext("CPU")}>
+                      {gettext("%{value1} vCPU", value1: catalog.available.vcpu)}
+                    </:item>
+                    <:item title={gettext("Memory")}>
+                      {gettext("%{value1} GiB", value1: gib(catalog.available.memory_bytes))}
+                    </:item>
+                    <:item title={gettext("Disk")}>
+                      {gettext("%{value1} GiB", value1: gib(catalog.available.disk_bytes))}
+                    </:item>
                   </.kv>
-                  <p class="muted">{gettext("Capacity is checked again when you create a machine.")}</p>
+                  <p class="muted">
+                    {gettext("Capacity is checked again when you create a machine.")}
+                  </p>
                 <% _ -> %>
                   <p id="overview-capacity-unavailable" class="muted">
                     {gettext("Headroom is temporarily unavailable.")}
@@ -270,7 +316,9 @@ defmodule MarshallWeb.OverviewLive do
                 <li>
                   <strong>{gettext("Next steps")}</strong>
                   <ul>
-                    <li><.link navigate={~p"/integrations"}>{gettext("Connect an integration ↗")}</.link></li>
+                    <li>
+                      <.link navigate={~p"/integrations"}>{gettext("Connect an integration ↗")}</.link>
+                    </li>
                     <li><.link navigate={~p"/teams"}>{gettext("Find your people ↗")}</.link></li>
                     <li><.link navigate={~p"/usage"}>{gettext("Explore your usage ↗")}</.link></li>
                     <li><.link href={~p"/docs"}>{gettext("Read the field notes ↗")}</.link></li>

@@ -60,7 +60,8 @@ defmodule Marshall.LocaleCatalogCheck do
           "#{locale}/#{domain}: total=#{counts.total} empty=#{counts.empty} source_equal=#{counts.source_equal} fuzzy=#{counts.fuzzy} invalid=#{counts.invalid}"
         )
 
-        {if(locale == "en", do: 0, else: counts.empty + counts.source_equal + counts.fuzzy), counts.invalid}
+        {if(locale == "en", do: 0, else: counts.empty + counts.source_equal + counts.fuzzy),
+         counts.invalid}
       end
 
     if Enum.any?(gaps, fn {_missing, invalid} -> invalid > 0 end),

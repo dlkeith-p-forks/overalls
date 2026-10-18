@@ -272,3 +272,76 @@ msgstr "Resume preserved memory, waiting for capacity or relocation."
 # Reviewed English fallback pending translation of suspension behavior.
 msgid "Resume a suspended machine's preserved memory."
 msgstr "Resume a suspended machine's preserved memory."
+
+#: lib/porsche/ssh/output.ex:73
+#, elixir-autogen, elixir-format
+msgid "The command could not be completed: %{reason}"
+msgstr "கட்டளையை நிறைவு செய்ய முடியவில்லை: %{reason}"
+
+#: lib/porsche/ssh/output.ex:67
+#, elixir-autogen, elixir-format
+msgid "The requested resource could not be found."
+msgstr "கோரப்பட்ட வளத்தைக் கண்டுபிடிக்க முடியவில்லை."
+
+#: lib/porsche/ssh/output.ex:61
+#, elixir-autogen, elixir-format
+msgid "The service is temporarily unavailable. Please try again shortly."
+msgstr ""
+"சேவை தற்காலிகமாகக் கிடைக்கவில்லை. சிறிது நேரம் கழித்து மீண்டும் முயலவும்."
+
+#: lib/porsche/ssh/onboarding.ex:100
+#, elixir-autogen, elixir-format
+msgid ""
+"This SSH connection could not be authorized. Check your machine access and try again.\n"
+"\n"
+msgstr ""
+"இந்த SSH இணைப்பை அங்கீகரிக்க முடியவில்லை. உங்கள் இயந்திர அணுகலைச் சரிபார்த்து மீண்டும் முயலவும்.\n"
+"\n"
+
+#: lib/porsche/ssh/output.ex:52
+#, elixir-autogen, elixir-format
+msgid "This connection is not authorized. Please sign in and try again."
+msgstr "இந்த இணைப்பு அங்கீகரிக்கப்படவில்லை. உள்நுழைந்து மீண்டும் முயலவும்."
+
+#: lib/porsche/ssh/output.ex:70
+#, elixir-autogen, elixir-format
+msgid "Unexpected input. Please open a new SSH connection."
+msgstr "எதிர்பாராத உள்ளீடு. புதிய SSH இணைப்பைத் திறக்கவும்."
+
+#: lib/porsche/ssh/onboarding.ex:97
+#, elixir-autogen, elixir-format
+msgid ""
+"We couldn't verify this SSH key right now. Please try again shortly.\n"
+"\n"
+msgstr ""
+"இப்போது இந்த SSH விசையைச் சரிபார்க்க முடியவில்லை. சிறிது நேரம் கழித்து மீண்டும் முயலவும்.\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:86
+#, elixir-autogen, elixir-format
+msgid ""
+"Welcome to Overalls.\n"
+"\n"
+"This connection needs the Overalls SSH configuration.\n"
+"\n"
+msgstr ""
+"Overallsக்கு வரவேற்கிறோம்.\n"
+"\n"
+"இந்த இணைப்புக்கு Overalls SSH உள்ளமைவு தேவை.\n"
+"\n"
+
+#: lib/porsche/ssh/output.ex:55
+#, elixir-autogen, elixir-format
+msgid "You do not have permission to perform this action."
+msgstr "இந்தச் செயலைச் செய்ய உங்களுக்கு அனுமதி இல்லை."
+
+#: lib/porsche/ssh/onboarding.ex:121
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr ""
+"உங்கள் இயந்திரத்தின் பக்கத்திலிருந்து, root@ இல்லாமல் மீண்டும் இணைக்கவும்.\n"
+
+#: lib/porsche/ssh/onboarding.ex:78
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "பிறகு உங்கள் அசல் கட்டளையை மீண்டும் முயலவும்.\n"

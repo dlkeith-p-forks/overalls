@@ -1,0 +1,2 @@
+@cc [owner:ghuntley,label:verification;isolation] android-emulator-scope
+This machine fixture MUST exercise a real Android emulator and adb client with software rendering and no /dev/kvm. Its assertions establish only software-emulated Android boot and screencap; they MUST NOT be reported as Firecracker, KVM, native isolation, production authority or multi-host recovery evidence.

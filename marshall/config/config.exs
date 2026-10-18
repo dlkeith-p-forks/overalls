@@ -190,8 +190,7 @@ config :marshall,
     Marshall.Terminal,
     Marshall.Agents,
     Marshall.Threads,
-    Marshall.Administration,
-    Marshall.Peach
+    Marshall.Administration
   ],
   capacity_freshness_ms: 5_000,
   pool_busy_grace_ms: 15_000,
