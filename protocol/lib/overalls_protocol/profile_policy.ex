@@ -7,7 +7,7 @@ defmodule OverallsProtocol.ProfilePolicy do
   # capabilities MUST fail closed. A capability never substitutes for owner authorization.
   @spec allows?(term(), term()) :: boolean()
   def allows?(:customer, capability),
-    do: capability in [:private_services, :ssh, :terminal, :editor]
+    do: capability in [:ssh, :terminal, :editor]
 
   def allows?(profile, capability) when profile in [:standard, :oss, :inception],
     do: capability in [:egress, :private_services, :sharing, :web, :ssh, :terminal, :editor]

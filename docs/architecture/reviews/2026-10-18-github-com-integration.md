@@ -149,6 +149,24 @@ establish the complete protocol gate.
 
 ## Remaining acceptance
 
+The later full Protocol gate recorded **371 of 372 tests passing** in
+**910.0 seconds**, seed **700067**. Its sole test failure was the stale private
+certificate-name expectation, subsequently corrected with **4 focused tests
+passing**. Covenant recorded **14 of 14 obligations**. That run then exposed an
+incorrect `Integration.strip_prefix/1` typespec: its existing `nil` clause and
+authorization result already permit an absent prefix, while the function's
+success type omitted `nil`. The correction changes only that success type to
+`binary() | nil`; validation, wire values and refusals are unchanged, preserving
+ADR-0080 and ADR-0202. Existing nil, malformed-prefix and closed GitHub
+authorization tests passed in the **22-test** focused Integration/GitHub run,
+seed **979616**, in **0.1 seconds**. Forced Protocol Dialyzer then passed with
+**0 errors and 0 skips** in **3.67 seconds**. Logs:
+`/tmp/osmatrix-protocol-postfix-precommit.log`,
+`/tmp/osmatrix-protocol-private-focused.log`,
+`/tmp/osmatrix-protocol-null-prefix-focused.log` and
+`/tmp/osmatrix-protocol-null-prefix-dialyzer.log`. The complete Protocol suite
+was not repeated after these focused corrections.
+
 - Inspect final callback/scope checks, lifecycle transitions, encryption,
   generation-bound requests, drain/refresh workers and retirement wiring.
 - Exercise replay/expiry/login changes, numeric ownership, detach persistence,

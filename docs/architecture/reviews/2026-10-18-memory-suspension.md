@@ -179,6 +179,17 @@ recovery, and do not replace the current Lilly consumer gate.
 The same integrated local source passed `cargo clippy --all-targets -- -D warnings`;
 log: `/tmp/osmatrix-hostd-integrated-clippy.log`. This is native static evidence.
 
+## Post-pull Lilly BEAM and type checks
+
+The post-pull Lilly full gate later exited **0**: **649 tests passed** in
+**883.0 seconds**, seed **749313**, Covenant covered **15 of 15 obligations**,
+and forced Dialyzer passed with **0 errors and 0 skips**. Log:
+`/tmp/osmatrix-lilly-postpull-precommit.log`. After the shared optional-prefix
+typespec correction, Lilly's forced Dialyzer passed again with **0 errors and
+0 skips**, in **12.88 seconds**; log:
+`/tmp/osmatrix-lilly-null-prefix-dialyzer.log`. These are local BEAM/type results,
+not execution of the memory-suspension-fleet NixOS test or native continuation.
+
 ## Historical recorded validation
 
 These runs preceded the merged-tree repairs described below. Their exact scope

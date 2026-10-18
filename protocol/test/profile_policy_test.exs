@@ -14,7 +14,7 @@ defmodule OverallsProtocol.ProfilePolicyTest do
       draw(
         "capability",
         one_of([
-          member_of([:ssh, :terminal, :editor, :web, :sharing, :egress]),
+          member_of([:ssh, :terminal, :editor, :web, :sharing, :egress, :private_services]),
           OverallsProtocol.TestGenerators.peer_term()
         ])
       )
@@ -32,15 +32,22 @@ defmodule OverallsProtocol.ProfilePolicyTest do
     Hegel.assume(profile not in [:customer, :standard, :oss, :inception])
 
     capability =
-      draw("capability", member_of([:ssh, :terminal, :editor, :web, :sharing, :egress]))
+      draw(
+        "capability",
+        member_of([:ssh, :terminal, :editor, :web, :sharing, :egress, :private_services])
+      )
 
     refute ProfilePolicy.allows?(profile, capability)
   end
 
   test "other declared profiles retain their capabilities" do
     for profile <- [:standard, :oss, :inception],
-        capability <- [:ssh, :terminal, :editor, :web, :sharing, :egress] do
+        capability <- [:ssh, :terminal, :editor, :web, :sharing, :egress, :private_services] do
       assert ProfilePolicy.allows?(profile, capability)
     end
+  end
+
+  test "customer private-service admission remains unavailable" do
+    refute ProfilePolicy.allows?(:customer, :private_services)
   end
 end

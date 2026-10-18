@@ -23,6 +23,10 @@ Ghost's fixed members endpoints; browsers do not make cross-origin API calls.
 Email validation is bounded and failures expose fixed safe messages without
 logging addresses, tokens, or upstream bodies. The native Ghost newsletter URL
 remains the no-JavaScript fallback.
+This amends [ADR-0194](0194-marshall-http-security-headers.md)'s form-action
+clause only: the fixed `https://ghuntley.com` origin joins `'self'` for that
+native form. Unrestricted `https:` and cross-origin script or connection
+sources remain refused.
 
 ## Consequences
 

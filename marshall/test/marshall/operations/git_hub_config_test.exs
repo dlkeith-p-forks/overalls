@@ -42,12 +42,25 @@ defmodule Marshall.Operations.GitHubConfigTest do
 
   test "plaintext development exception is loopback only and explicitly enabled" do
     for host <- ["localhost", "127.0.0.1", "[::1]"] do
-      env = Map.put(settings(), "MARSHALL_GITHUB_REDIRECT_URI", "http://#{host}:4123/auth/github-com/callback")
+      env =
+        Map.put(
+          settings(),
+          "MARSHALL_GITHUB_REDIRECT_URI",
+          "http://#{host}:4123/auth/github-com/callback"
+        )
+
       assert {:ok, _} = GitHubConfig.from_env(env, allow_loopback: true)
       assert {:error, :invalid_github_configuration} = GitHubConfig.from_env(env)
     end
 
-    env = Map.put(settings(), "MARSHALL_GITHUB_REDIRECT_URI", "http://other.test/auth/github-com/callback")
-    assert {:error, :invalid_github_configuration} = GitHubConfig.from_env(env, allow_loopback: true)
+    env =
+      Map.put(
+        settings(),
+        "MARSHALL_GITHUB_REDIRECT_URI",
+        "http://other.test/auth/github-com/callback"
+      )
+
+    assert {:error, :invalid_github_configuration} =
+             GitHubConfig.from_env(env, allow_loopback: true)
   end
 end

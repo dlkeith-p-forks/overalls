@@ -171,7 +171,8 @@ defmodule Marshall.Galileo.Authorizations do
   # source binding, profile, owner liveness and execution fences as generic
   # integrations. Callers MUST retain the surrounding database transaction.
   @doc false
-  @spec admit_execution!(String.t(), OverallsProtocol.PrivateServices.binding()) :: VirtualMachine.t()
+  @spec admit_execution!(String.t(), OverallsProtocol.PrivateServices.binding()) ::
+          VirtualMachine.t()
   def admit_execution!(token, binding) do
     authority = Credentials.authenticate_locked!(token)
     if authority.host_id != binding.host_id, do: deny!()

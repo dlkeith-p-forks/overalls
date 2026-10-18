@@ -323,12 +323,16 @@ defmodule Marshall.GalileoTest do
     attach_logs =
       capture_log([metadata: [:event, :operation_status, :vm_id]], fn ->
         assert {:ok, %{attached: "esample", integration_id: integration_id}} =
-                 Galileo.attach_integration(%{name: "esample", vm_id: fixture.vm.id}, actor: actor)
+                 Galileo.attach_integration(%{name: "esample", vm_id: fixture.vm.id},
+                   actor: actor
+                 )
 
         assert integration_id == integration.id
 
         assert {:ok, %{attached: "esample"}} =
-                 Galileo.attach_integration(%{name: "esample", vm_id: fixture.vm.id}, actor: actor)
+                 Galileo.attach_integration(%{name: "esample", vm_id: fixture.vm.id},
+                   actor: actor
+                 )
       end)
 
     assert attach_logs =~ "event=galileo.integration_configured"
@@ -347,7 +351,9 @@ defmodule Marshall.GalileoTest do
     detach_logs =
       ExUnit.CaptureLog.capture_log([metadata: [:event, :operation_status]], fn ->
         assert {:ok, %{detached: "esample"}} =
-                 Galileo.detach_integration(%{name: "esample", vm_id: fixture.vm.id}, actor: actor)
+                 Galileo.detach_integration(%{name: "esample", vm_id: fixture.vm.id},
+                   actor: actor
+                 )
       end)
 
     assert detach_logs =~ "event=galileo.integration_configured"

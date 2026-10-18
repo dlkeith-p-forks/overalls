@@ -5,6 +5,10 @@ defmodule MarshallWeb.TimeComponentsTest do
 
   @instant ~U[2026-10-18 09:12:07.000000Z]
 
+  setup do
+    Marshall.Localization.put_locale("en")
+  end
+
   defp fragment(html), do: LazyHTML.from_fragment(html)
 
   defp text(doc, selector),
