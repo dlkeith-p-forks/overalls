@@ -397,7 +397,18 @@ the default control graph's hosted baseline.
 The `backup-restic` repository uses Restic's local file backend because the
 production operator reports one failure status for an unavailable repository
 and for a validator refusal; a network backend would let a fault read as a
-refusal. The `satellite-standin` **guest stand-in** is a labelled harness process
+refusal. Antithesis does not step the wall clock backward in these runs, so
+coordinator publication compatibility uses a labelled **STUB (harness)** for a
+small SDK-chosen fraction of cases: the workload preloads the image's pinned
+libfaketime into that one coordinator process, and a fixed Restic wrapper steps
+its wall clock back 120 seconds when the host-state upload begins, after the
+journal recorded `started_at`. Restic, raw oracle reads and the production
+modules are unchanged, and every existing `always` check still applies. A local
+run of the real coordinator under the stub recorded `completed_at` before
+`started_at`, published a tag-visible manifest and then failed its own
+retention validator, so the publication-validator property is expected to fail
+in stepped cases until the coordinator changes. The stub is not evidence of
+real kernel or host clock steps, NTP behaviour or production hosts. The `satellite-standin` **guest stand-in** is a labelled harness process
 from the workload image that shares only `lilly-a`'s network namespace and
 speaks the guest-side TLS protocol to `169.254.254.1`. It is not a guest: it has
 no VM, boot, tap, placement or execution authority and mounts no secret. Its

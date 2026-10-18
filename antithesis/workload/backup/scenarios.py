@@ -219,7 +219,16 @@ def run_published_compatibility() -> int:
         sentinel.write_bytes(b"coordinator-host-sentinel")
         case.config["materialize"] = [str(sentinel)]
         before = {str(row["id"]) for row in case.manifests()}
-        result = case.operator("backup", timeout=180)
+        # STUB (harness): Antithesis does not step the wall clock backward in
+        # these runs, so a small SDK-chosen fraction preloads libfaketime into
+        # the coordinator alone and steps it back mid-capture. Every Always
+        # check below still applies to the stepped case unchanged.
+        if choice((False, False, False, True)):
+            LOG.info("STUB (harness): backup coordinator wall clock steps backward mid-capture")
+            with case.backward_clock_step():
+                result = case.operator("backup", timeout=180)
+        else:
+            result = case.operator("backup", timeout=180)
         after = [row for row in case.manifests() if str(row["id"]) not in before]
         if result.code == 0:
             always(
