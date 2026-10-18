@@ -408,7 +408,8 @@ defmodule Galileo.UpstreamTest do
   # A source failure before, during or after a partial upload MUST NOT replay
   # the same guest-selected path at the local TLS origin's request handler.
   property "generated source failures never replay one upstream request", %{origin: origin},
-    profile: :ci, test_cases: 1 do
+    profile: :ci,
+    test_cases: 1 do
     check all(
             sizes <-
               list_of(member_of([1, 16_383, 16_384, 16_385, 65_536]),
@@ -610,7 +611,8 @@ defmodule Galileo.UpstreamTest do
   # After zero or one valid renewals, refusal, an invalid TTL or a renewal
   # blocked beyond expiry MUST cancel the one TLS attempt without response data.
   property "generated renewal histories close one upstream attempt", %{origin: origin},
-    profile: :ci, test_cases: 1 do
+    profile: :ci,
+    test_cases: 1 do
     check all(ttl <- integer(600..700), valid_prefix <- integer(0..1), max_runs: 4) do
       for terminal <- [:refused, :invalid, :expired] do
         owner = self()
@@ -660,7 +662,8 @@ defmodule Galileo.UpstreamTest do
   # caller and terminate a blocked source reader without another upstream attempt
   # or body delivery. The reader handshake, not elapsed time, proves it blocked.
   property "lease cancellation terminates a stalled upload reader", %{origin: origin},
-    profile: :ci, test_cases: 1 do
+    profile: :ci,
+    test_cases: 1 do
     check all(
             terminal <- member_of([:refused, :invalid, :expired]),
             owner_bound <- boolean(),

@@ -71,7 +71,8 @@ defmodule Audi.HTTP.ProxyTest do
     refute hd(get_resp_header(response, "location")) =~ c.client.origin
   end
 
-  test "HTTPS-authorized HTTP streams bytes and removes platform authority from guest headers", c do
+  test "HTTPS-authorized HTTP streams bytes and removes platform authority from guest headers",
+       c do
     check all(payload <- binary(min_length: 1, max_length: 80_000), max_runs: 5) do
       {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
       {:ok, {_, port}} = :inet.sockname(listener)

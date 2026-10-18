@@ -49,6 +49,7 @@ defmodule ZiggyAccountingContractTest do
 
     assert {:ok, ^valid} = Ziggy.Completion.validate(valid)
     assert {:error, :invalid_request} = Ziggy.Completion.validate(Map.put(valid, "secret", "x"))
+
     assert {:error, :invalid_request} =
              Ziggy.Completion.validate(%{valid | "duration_ms" => -1})
   end
