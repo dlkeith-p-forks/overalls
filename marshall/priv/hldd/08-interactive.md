@@ -1230,3 +1230,17 @@ claim through Marshall. The guest relay remains responsible for current emulator
 generation and controller-lease checks; a viewer claim cannot send input. Claims
 are refused for images without the `android_display` capability and do not expose
 ADB or RFB through a public browser route.
+
+The machine workspace exposes Android display controls only when the image's
+`android_display` capability is present. Viewer and controller ticket requests
+remain authenticated LiveView events; the browser relay must still enforce
+current generation and controller lease before opening RFB.
+
+The Android relay state machine permits read-only viewers and one controller,
+advances frame sequence numbers monotonically, and revokes controller authority
+when its process exits or the emulator generation changes.
+
+The Android display hook uses a same-origin WebSocket URL supplied by the page,
+keeps viewer input disabled, and sends controller key/pointer frames only after
+a controller ticket is granted. It does not use a foreign iframe or external
+resource.
