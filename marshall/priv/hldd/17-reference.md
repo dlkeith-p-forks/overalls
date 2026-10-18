@@ -309,8 +309,15 @@ the enrollment operator registers that image through Marshall's catalog action
 and then enables lilly-a through the reviewed CLI `enable` action, which
 refuses until Lilly's stub report is fresh and execution-ready. A fully stub-backed report advertises placement readiness, so Marshall's real
 admission transaction commits VM, placement, reservation and dispatch rows,
-but the controlled executor never launches a guest and a delete never
-completes. Setup requires the enabled normal-mode host and those committed report, pool
+but the controlled executor never launches a guest. A delete settles only
+through a labelled **STUB** enabled by this profile's explicit opt-in: the
+controlled executor reports the deleted facts for a placement only after
+observing a controlled pool, a journal that never recorded it running, only
+publication records for it and no native execution state, and writes an
+absence attestation; Marshall's real outcome, release and archive path then
+runs. Run `a8c0a8e424bc48eb017aa2322795fc68-65-0` left archived-key replay
+unreached and later admissions short of vCPU because no delete settled. This
+is never cleanup or physical-absence evidence for anything that existed. Setup requires the enabled normal-mode host and those committed report, pool
 and image rows in SQL; hosted runs before this check never enabled the host,
 so every admission probe stopped at unknown capacity
 (`dd4f5f9cd52da22427ae2e5b79c095bf-65-0`). With the host enabled, the next run

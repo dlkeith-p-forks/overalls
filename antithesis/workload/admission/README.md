@@ -57,9 +57,11 @@ and the old catalog fit check withheld submission.
 Admission decisions, idempotency history, rows and dispatch jobs are all real
 Marshall effects; only the storage substrate (and the image artifacts) are
 stubbed. Results from this profile are admission-logic evidence. They are not
-ZFS, physical-capacity, KVM, Firecracker or isolation evidence. Because the
-controlled executor never completes a delete, the archived-replay branch of the
-key command stays unexercised under the stub.
+ZFS, physical-capacity, KVM, Firecracker or isolation evidence. A delete
+settles only through the profile's labelled STUB: the controlled executor
+attests the deleted facts for a placement it observably never created anything
+for, so Marshall's real release and archive path can open the archived-replay
+branch of the key command. It is not cleanup evidence.
 
 ## Measured physical capacity
 
