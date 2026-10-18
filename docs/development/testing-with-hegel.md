@@ -247,6 +247,15 @@ well: the inner compatibility count cannot control an already active run.
 Preserve fixture setup and cleanup at their existing per-case boundary when
 repairing counts. The native ABI does not implement `max_shrinking_steps`; its
 presence alone cannot establish disabled shrinking.
+The pinned `string` kind accepts an explicit character list; pass
+`Enum.to_list(?a..?z)` for lowercase ASCII. A Range is not that alphabet and
+falls back to printable ASCII. `member_of` also requires a list; use
+`integer(0..2)` for that integer domain. Slow real-I/O histories may select the
+CI profile at their actual runner boundary without reducing cases or deadlines.
+Review effective settings from the linked NIF: for the current Elixir frontend,
+its explicit setters restore randomness and database defaults, leaving only
+TooSlow suppression changed. The profile name alone does not prove the same
+behavior for another frontend or future pin.
 Draw labelled values
 once at the property boundary instead. Protocol's
 [`TestProperties.draw/2`](../../protocol/test/support/test_properties.ex) obtains

@@ -61,21 +61,34 @@ def api(path: Path, method: str, endpoint: str, body: dict[str, str]) -> int:
         connection.close()
 
 
+def serial_event(data: bytes, name: str) -> dict[str, object] | None:
+    """@cc [owner:ghuntley,label:verification] native-reset-complete-serial-event
+    Only newline-terminated guest reset records MAY establish an event. A final
+    fragment MUST remain pending, even if it is already valid JSON; malformed
+    or duplicate fields in a complete matching record MUST still refuse.
+    """
+    for line in data.split(b"\n")[:-1]:
+        offset = line.find(b'{"event":"native-reset-')
+        if offset < 0:
+            continue
+        event = document(line[offset:])
+        if event.get("event") == "native-reset-failed":
+            raise RuntimeError(f"native reset probe failed: {event.get('boundary')}")
+        if event.get("event") == name:
+            return event
+    return None
+
+
 def wait_event(work: Path, process: subprocess.Popen[bytes], name: str) -> dict[str, object]:
     deadline = time.monotonic() + 180
     while True:
         serial = work / "serial.log"
-        if serial.stat().st_size > 8 * 1024 * 1024:
+        data = serial.read_bytes()
+        if len(data) > 8 * 1024 * 1024:
             raise RuntimeError("native reset serial evidence exceeded its bound")
-        for line in serial.read_bytes().splitlines():
-            offset = line.find(b'{"event":"native-reset-')
-            if offset < 0:
-                continue
-            event = document(line[offset:])
-            if event.get("event") == "native-reset-failed":
-                raise RuntimeError(f"native reset probe failed: {event.get('boundary')}")
-            if event.get("event") == name:
-                return event
+        event = serial_event(data, name)
+        if event is not None:
+            return event
         if process.poll() is not None:
             raise RuntimeError("native reset guest exited before its required serial evidence")
         if time.monotonic() >= deadline:
@@ -151,11 +164,16 @@ def run(image: Path, vmm: Path, probe: Path, work: Path, os_name: Os) -> None:
         "vsock": {"guest_cid": 3, "uds_path": str(work / "v.sock")},
     }
     (work / "config.json").write_text(json.dumps(config), encoding="utf-8")
-    with (work / "serial.log").open("wb") as serial:
+    with (
+        (work / "serial.log").open("wb") as serial,
+        (work / "vmm-stderr.log").open("wb") as vmm_stderr,
+    ):
         process = subprocess.Popen(
             [
                 str(vmm),
                 "--enable-pci",
+                "--log-path",
+                str(work / "vmm.log"),
                 "--api-sock",
                 str(work / "api.sock"),
                 "--config-file",
@@ -163,7 +181,7 @@ def run(image: Path, vmm: Path, probe: Path, work: Path, os_name: Os) -> None:
             ],
             stdin=subprocess.DEVNULL,
             stdout=serial,
-            stderr=subprocess.STDOUT,
+            stderr=vmm_stderr,
         )
         try:
             ready = wait_event(work, process, "native-reset-listeners-ready")

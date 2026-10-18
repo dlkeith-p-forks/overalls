@@ -238,7 +238,10 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # re-spendable exactly once;
   # non-confirmed-delete terminal paths retain disk and clear temporary bytes;
   # addresses stay unique per profile without pre-archival reuse.
-  property "generated multi-node races preserve committed capacity accounting", test_cases: 8 do
+  # Real node startup and committed races consume the engine's input timer.
+  property "generated multi-node races preserve committed capacity accounting",
+    profile: :ci,
+    test_cases: 8 do
     check all(batches <- schedule_gen(), test_cases: 8) do
       unboxed(fn -> run_sample(batches) end)
     end

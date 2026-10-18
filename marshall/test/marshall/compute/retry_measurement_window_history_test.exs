@@ -44,6 +44,7 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
   # Proofs use authenticated real actions; timestamp edits are sandbox-only
   # consumer controls, not elapsed clock, native boot or transport evidence.
   property "retry measurements retain both received proof windows through repeated scans",
+    profile: :ci,
     test_cases: 4 do
     check all(
             physical <- member_of([-1, 0, 599, 600, 601]),
@@ -506,6 +507,7 @@ defmodule Marshall.Compute.RetryMeasurementWindowHistoryTest do
   # Setup-only sandbox clock controls MUST NOT change admission/window between
   # scans. Timeout MUST preserve authority, proof and unrelated accounting rows.
   property "pending retry measurements fail once across their unchanged deadline",
+    profile: :ci,
     test_cases: 2 do
     check all(
             presence <- member_of([:none, :physical]),

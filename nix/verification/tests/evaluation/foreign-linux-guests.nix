@@ -31,7 +31,10 @@ let
     assert pkgs.lib.hasInfix "touch -h -d @1" command;
     assert !(pkgs.lib.hasInfix "cp -a --reflink=auto" command);
     assert pkgs.lib.hasInfix "cp -a --no-preserve=links --reflink=auto" command;
-    assert pkgs.lib.hasInfix "--no-preserve=mode,ownership,links" command;
+    assert pkgs.lib.hasInfix "cp -a --no-preserve=ownership,links" command;
+    assert !(pkgs.lib.hasInfix "cp -a --no-preserve=mode,ownership,links" command);
+    assert pkgs.lib.hasInfix "chmod -R u+rwX ./files" command;
+    assert !(pkgs.lib.hasInfix "chmod -R a+rwX ./files" command);
     assert pkgs.lib.hasInfix "E2FSPROGS_FAKE_TIME=1 FAKETIME_DONT_FAKE_STAT=1" command;
     assert pkgs.lib.hasInfix "hash_seed=44444444-4444-4444-8888-888888888888,lazy_itable_init=0,lazy_journal_init=0" command;
     assert pkgs.lib.hasInfix ''faketime -f "1970-01-01 00:00:01" resize2fs -M $img'' command;

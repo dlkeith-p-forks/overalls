@@ -45,9 +45,9 @@
       ],
       "boundary": "The opt-in private runner requires explicit distinct catalog IDs for all seven OS keys, with null marking unavailable images. Selected IDs must match exact catalog names and the intended account. New lifecycle mutations and guest probes bind durable create receipts to canonical UUID, current owner, name, image, profile and SSH endpoint. Personal-account probes use the installed Overalls CLI with strict guest trust; this client-side ledger does not replace Marshall authorization, current-boot attestation, Lilly fencing, guest/host isolation or native storage ownership.",
       "denial": "Missing or unadmitted selected images refuse preflight before creation; an explicit subset retains its scope. Changed fixture bindings refuse before new mutations or guest access. Transport failure, timeout, a generic Linux response, a wrong distribution/native release or a catalog label alone cannot pass the OS oracle. Unknown lifecycle outcomes retain the original request ID rather than creating fresh work; cleanup only uses the run's receipt-bound UUIDs.",
-      "scope": "The matrix runner implements inventory, sequential explicit-image creation, exact SSH OS probes, stop, start and cleanup with bounded polling and durable private intents/receipts. Accepted UUIDs persist before create polling; failed or superseded terminal receipts remain bound to the original fixture for owned reconciliation/cleanup. Host unit fixtures inspect all-seven configuration, missing-OmniOS preflight, ownership refusal, accepted-UUID retention, receipt recovery, strict SSH configuration and digest-only guest-output evidence. These tests use controlled responses and do not execute a guest or live management service. The first live NixOS, Ubuntu and FreeBSD creates failed template_quarantined and were cleaned through their original owned receipts. A separate live subset created all three, passed initial exact OS identity through the actual CLI and orderly-stopped each at durable generation 2. All three then passed restart and repeat exact-OS CLI SSH; final cleanup returned deleted receipts for all three owned fixtures. Private run IDs and UUIDs are in the matrix review.",
+      "scope": "The matrix runner implements inventory, sequential explicit-image creation, exact SSH OS probes, stop, start and cleanup with bounded polling and durable private intents/receipts. Accepted UUIDs persist before create polling; failed or superseded terminal receipts remain bound to the original fixture for owned reconciliation/cleanup. Host unit fixtures inspect all-seven configuration, missing-OmniOS preflight, ownership refusal, accepted-UUID retention, receipt recovery, strict SSH configuration and digest-only guest-output evidence. These tests use controlled responses and do not execute a guest or live management service. The first live NixOS, Ubuntu and FreeBSD creates failed template_quarantined and were cleaned through their original owned receipts. A separate live subset created all three, passed initial exact OS identity through the actual CLI and orderly-stopped each at durable generation 2. All three then passed restart and repeat exact-OS CLI SSH; final cleanup returned deleted receipts for all three owned fixtures. Private run IDs and UUIDs are in the matrix review. Both original Arch and Alma final-image creates reached init Permission denied; owned failed identities and diagnostic receipts are retained. The upstream staging mode fix and final ext4 inode checks passed offline, with independent original-image negative checks; exact corrected images need separate runtime evidence.",
       "status": "partial",
-      "gaps": "No live seven-OS matrix execution is recorded. OmniOS remains excluded from admission, so default full-matrix preflight must fail. Arch/Alma native boot and the current Windows complete stop/restart/delete journey remain open. This runner does not prove native kernel attestation, terminal/workspace behavior, network or physical isolation, storage growth, native durability, relocation, multi-host recovery or physical deletion/reservation release.",
+      "gaps": "No live seven-OS matrix pass is recorded. The OmniOS candidate alias still excludes its catalog row despite exact registry qualification and immutable promotion. Original Arch/Alma creates exposed lost executable source modes before init; corrected exact-filesystem checks pass but corrected runtime acceptance remains separate. Current Windows full SSH/stop/restart/delete remains open. No terminal/workspace, native isolation, durability, relocation or independent physical cleanup claim follows.",
       "preferred_gap": "After each image has independently satisfied admission, run and retain the exact live matrix outcomes. Prefer NixOS machine and generated property histories for ownership, receipt recovery and per-OS lifecycle boundaries; host unit fixtures are limited to client refusal logic and cannot establish native execution.",
       "evidence": [
         {
@@ -100,6 +100,15 @@
           "scope": "Actual private NixOS, Ubuntu and exact promoted FreeBSD subset: create, strict personal-account CLI SSH with exact OS oracle, orderly stop at generation 2, restart, repeat SSH and final deleted cleanup receipts. No full seven-OS pass or independent physical cleanup result.",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
           "record_assertion": "matrix-stop --stage orderly-stop"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "assertion": "private-fleet filesystem gate passed in 58 seconds",
+          "scope": "Both original foreign roots failed before userspace; corrected init/bash/loaders, sudo and private account-file modes/ownership pass all fourteen actual ext4 assertions. Original Arch and Alma independently fail the new gate at bash mode 0644. Offline evidence, no successful guest boot.",
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "private-fleet filesystem gate passed in 58 seconds"
         }
       ]
     },
@@ -11879,10 +11888,10 @@
       ],
       "boundary": "A disposable test-only guest retains one peerless identity socket and pending accept/read/write operations before a real pause/full-snapshot/resume sequence. Only the fixture owns the private Unix API socket and disposable snapshot/memory files; production native controls and ordinary TCP exposure are unchanged.",
       "denial": "Idle identity must fail ECONNRESET after the event, blocked calls must wake with errors, and FreeBSD must refuse new sockets until VM replacement. Ordinary host peer disconnect alone cannot satisfy the peerless-socket oracle; incomplete histories cannot emit a receipt.",
-      "scope": "Actual preliminary and formal FreeBSD nested-KVM execution passed all three API responses 204, idle/accept/read ECONNRESET 54, write EPIPE 32 after send accepted 327680 bytes, and fresh-socket ENXIO until a new VM. The persisted gate passed in 232 seconds and records exact test image 69144fa6, kernel 5d6ea5f9, probe a67b8973, transport token 5e1fd7cf and firmware/VMM hashes. This test image is distinct from final service image 5022d714; both-OS isolated probe cross-compilation passed.",
+      "scope": "Actual preliminary and formal FreeBSD nested-KVM execution passed all three API responses 204, idle/accept/read ECONNRESET 54, write EPIPE 32 after send accepted 327680 bytes, and fresh-socket ENXIO until a new VM. The persisted gate passed in 232 seconds and records exact test image 69144fa6, kernel 5d6ea5f9, probe a67b8973, transport token 5e1fd7cf and firmware/VMM hashes. This test image is distinct from final service image 5022d714; both-OS isolated probe cross-compilation passed. Exact OmniOS disk 45983bb7 separately passed the maintained direct host-KVM pause/full-snapshot/resume oracle: three API responses 204, idle/read/accept errors 131, write error 32 after 262,144 bytes and current-CID revalidation, with a newline-complete guest JSON receipt and isolated VMM logs.",
       "status": "partial",
-      "gaps": "No recorded corrected OmniOS event oracle, repeated/racing reset stress, malformed DMA, DMA reclamation or physical/multi-host safety. This one transport event does not establish service recovery or production admission; native_admission remains false.",
-      "preferred_gap": "Run the corrected OmniOS probe, then add repeated/racing events and independently bounded DMA/lifetime fault scenarios without widening admission from isolated socket-fencing histories.",
+      "gaps": "No repeated/racing reset stress, malformed DMA, DMA reclamation or physical/multi-host safety. The single OmniOS event establishes socket fencing, separately from service restoration and exact-image promotion.",
+      "preferred_gap": "Add repeated/racing events and independently bounded DMA/lifetime fault scenarios; retain separate service-restoration and physical-safety evidence.",
       "evidence": [
         {
           "kind": "manual",
@@ -11901,6 +11910,15 @@
           "scope": "The repeatable nested-KVM gate passed in 232 seconds on exact test image 69144fa6 with kernel/probe/firmware/VMM receipts. It proved idle identity fencing, blocked-call errors and fresh-socket refusal after one private fixture API pause/full-snapshot/resume. No DMA, physical, service/recovery or admission claim.",
           "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
           "record_assertion": "The persisted `native-freebsd-reset` nested-KVM gate subsequently passed in"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "assertion": "The final reset receipt SHA-256 is",
+          "scope": "Exact unchanged OmniOS disk 45983bb7 direct host-KVM reset receipt binds three API responses 204 and socket errors/current-CID revalidation; no service-restoration or DMA claim.",
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "The final reset receipt SHA-256 is"
         }
       ]
     },
@@ -11916,7 +11934,7 @@
       ],
       "boundary": "A no-argument root helper derives the actual mounted pinned root and checks both GPT copies/CRCs, physical capacity, disk/partition GUIDs and starts before mutation. OmniOS additionally binds the assembly dataset/pool GUID and exactly one whole-disk vdev. Bootstrap requires a current volatile success receipt before network or identity.",
       "denial": "Refuse nonroot execution, caller-selected disks, foreign or shrinking layouts, invalid CRCs, extra partitions, substituted pool identity and failed native commands. Failure must withhold the root-growth receipt and bootstrap authority.",
-      "scope": "Twelve pure authority/GPT/receipt checks passed, with cross-target Clippy and twenty-binary linkage. Earlier offline QEMU and canonical-roots/SSH FreeBSD Firecracker growth passed. The final reviewed image 5022d714, including blocking UFS flush, also passed three distinct clean boots with complete service oracles, two 2-GiB expansions, root bytes 5183107072 to 7268753408 to 9354403840, retained home data, exact GPT/nonroot identities, strict EFI inventories except bounded root NvVars, foreign-disk preservation and caller/nonroot refusals. OmniOS typed raw/whole-disk operand regression and corrected-kit native assembly passed. A host-direct diagnostic reproduced sliced refusal and unsliced success. The source-qualified OmniOS growth replay separately passed three complete service boots and two root expansions; interrupted expansion remains pending.",
+      "scope": "Twelve pure authority/GPT/receipt checks passed, with cross-target Clippy and twenty-binary linkage. Earlier offline QEMU and canonical-roots/SSH FreeBSD Firecracker growth passed. The final reviewed image 5022d714, including blocking UFS flush, also passed three distinct clean boots with complete service oracles, two 2-GiB expansions, root bytes 5183107072 to 7268753408 to 9354403840, retained home data, exact GPT/nonroot identities, strict EFI inventories except bounded root NvVars, foreign-disk preservation and caller/nonroot refusals. OmniOS typed raw/whole-disk operand regression and corrected-kit native assembly passed. A host-direct diagnostic reproduced sliced refusal and unsliced success. The source-qualified OmniOS growth replay separately passed three complete service boots and two root expansions; interrupted expansion remains pending. Final OmniOS disk 45983bb7 passed three clean service boots with two expansions from 8 to 10 to 12 GiB, exact pinned pool/vdev and foreign-disk preservation. The promoted manifest minimum 16 GiB fleet launch remains separate.",
       "status": "partial",
       "gaps": "Interrupted expansion and physical recovery acceptance remain open. The recorded source-qualified OmniOS no-op/expansion replay does not qualify interrupted recovery or native admission.",
       "preferred_gap": "Run interrupted-growth histories for both OS families, then add physical recovery evidence before any admission change.",
@@ -11974,6 +11992,15 @@
           "scope": "One same-boot controlled missing-cache fault on a disposable native clone: the old read-only discovery refused before mutation; the revised helper retained assembly GUID, exact canonical whole-vdev and raw-device/capacity/GPT gates and passed expansion, post-GPT preservation and its volatile receipt. Not fresh-image multi-boot growth, interrupted expansion, physical recovery or admission.",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
           "record_assertion": "missing-cache diagnostic on a disposable clone"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "assertion": "three-boot/two-expansion growth",
+          "scope": "Final exact OmniOS 45983 disk passed three clean service boots and two deterministic expansions with pool/vdev and foreign-disk identities preserved; interrupted growth and live 16 GiB launch remain open.",
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "three-boot/two-expansion growth"
         }
       ]
     },
@@ -11989,10 +12016,10 @@
       ],
       "boundary": "The disposable native guest uses actual packaged Lilly router and TAP source-guard rules under validated synthetic identity. Every fixed TCP target is proven reachable before rules. Real guard drop counters distinguish source refusal from an unrelated connection failure.",
       "denial": "Under policy refuse sibling, private, protected-uplink, gateway and unregistered fixed-service TCP targets and foreign-source traffic while preserving public access and current private SSH authority. Require assigned-source recovery after the foreign-source test.",
-      "scope": "The earlier canonical-roots/SSH FreeBSD policy run passed in 280 seconds. The final reviewed image 5022d714 also passed two clean boots with complete service oracles and independent policy receipts. Real fixed sinks were reachable before policy; afterward public traffic and current SSH worked, forbidden targets refused, actual TAP guard drop counters proved foreign-source refusal and assigned-source traffic recovered. Packaged policy was unchanged; host rule/parser checks remain separately scoped.",
+      "scope": "The earlier canonical-roots/SSH FreeBSD policy run passed in 280 seconds. The final reviewed image 5022d714 also passed two clean boots with complete service oracles and independent policy receipts. Real fixed sinks were reachable before policy; afterward public traffic and current SSH worked, forbidden targets refused, actual TAP guard drop counters proved foreign-source refusal and assigned-source traffic recovered. Packaged policy was unchanged; host rule/parser checks remain separately scoped. Final OmniOS 45983 disk separately passed two clean boots of the maintained direct host-KVM actual Lilly router/TAP policy runner with all 25 service checks.",
       "status": "partial",
-      "gaps": "The exact aa669e51 OmniOS image has a passing manual direct host-KVM two-boot Lilly-policy run recorded in the matrix review, separate from a formal nested NixOS gate and later changed payloads. The sibling target is a Linux TCP sink behind the test peer uplink, not another native VM/TAP. Direct native-VM peer, jail, physical-host and multi-host isolation or recovery remain unproven; OmniOS admission stays false, while exact sealed FreeBSD activation is recorded separately.",
-      "preferred_gap": "Run the same two-boot fixture against the corrected exact OmniOS input, retain positive-control sink counts, actual foreign-source guard drops and assigned-source recovery, then add a direct second native VM/TAP and host/jail boundaries.",
+      "gaps": "The sibling is a Linux TCP sink behind the test peer uplink. Direct native VM/TAP peer, jail, physical-host and multi-host isolation/recovery remain unproven. Exact OmniOS direct host-KVM policy receipts are separate from formal nested-NixOS gates and immutable qualification.",
+      "preferred_gap": "Add a direct second native VM/TAP, jail and physical-host boundaries without transferring the Linux-sink policy result to those scopes.",
       "evidence": [
         {
           "kind": "machine",
@@ -12011,6 +12038,15 @@
           "scope": "Linux namespace smoke installed actual packaged Lilly rules and exercised the exact five-drop inventory/counter parser. No native guest was booted.",
           "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
           "record_assertion": "five-drop guard inventory/counter parser passed."
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "assertion": "two-boot Lilly router/TAP policy",
+          "scope": "Final unchanged OmniOS 45983 disk passed two clean boots with actual Lilly router/TAP policy, positive-control targets, foreign-source refusal and restored assigned-source traffic; no direct native peer/jail/physical isolation.",
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "two-boot Lilly router/TAP policy"
         }
       ]
     },
@@ -12026,10 +12062,10 @@
       ],
       "boundary": "Actual managed SSH observes the root-owned flush marker, executable mode/hash and live PID. Within one boot the oracle kills/reaps that process while executable permission prevents restart, then restores exact mode and requires a different supervised PID with the same bytes and boot identity.",
       "denial": "Require three refusals over the still-live readiness channel while the flush daemon cannot restart. Refuse malformed snapshot/mode/PID/hash framing and incomplete restoration; only the full sequence may publish a receipt.",
-      "scope": "Four host snapshot-parser and failure-cleanup tests passed with Ruff/ty. The vendor-base and final reviewed FreeBSD image 5022d714 both passed two clean boots with actual flush-daemon kill/reap, three live-channel readiness refusals, exact mode/bytes restoration, a new supervised PID and same-boot flush/refusals restored. Final per-boot recovery and service receipts bind exact image/kernel/firmware/VMM inputs.",
+      "scope": "Four host snapshot-parser and failure-cleanup tests passed with Ruff/ty. The vendor-base and final reviewed FreeBSD image 5022d714 both passed two clean boots with actual flush-daemon kill/reap, three live-channel readiness refusals, exact mode/bytes restoration, a new supervised PID and same-boot flush/refusals restored. Final per-boot recovery and service receipts bind exact image/kernel/firmware/VMM inputs. Final OmniOS 45983 disk passed the same direct host-KVM daemon-death oracle: actual kill/reap, three readiness refusals, exact replacement PID/mode/bytes, unchanged boot identity and restored flush.",
       "status": "partial",
-      "gaps": "No complete OmniOS same-boot daemon recovery receipt. Storage power-loss durability, relocation, host failure and fleet availability remain separate; native admission is false.",
-      "preferred_gap": "Run the fixture on the exact corrected OmniOS image, observe real daemon death, readiness refusal, exact supervised replacement and restored current-boot flush, then test physical host failure and fleet recovery separately.",
+      "gaps": "A killed shell supervisor with surviving children is unverified. Storage power-loss durability, relocation, physical host failure and fleet availability remain separate from individual daemon replacement.",
+      "preferred_gap": "Exercise shell-supervisor death with surviving children, then physical host failure and fleet recovery separately.",
       "evidence": [
         {
           "kind": "machine",
@@ -12048,6 +12084,15 @@
           "scope": "Four host checks exercise canonical snapshot parsing, malformed input refusals and finally restoration without receipt on failure. They do not kill a native daemon.",
           "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
           "record_assertion": "Four host parser/failure-cleanup tests passed with Ruff/ty."
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "assertion": "Recovery observed real daemon death",
+          "scope": "Exact OmniOS 45983 direct host-KVM individual-daemon kill/reap history passed with three withheld-readiness probes and current-boot restoration. No shell-supervisor/physical-host guarantee.",
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "Recovery observed real daemon death"
         }
       ]
     },
@@ -12064,7 +12109,7 @@
       ],
       "boundary": "The fixture flushes and reads back exact home bytes, requires actual Firecracker SIGKILL, then boots the same disk with fresh MMDS authority. Native filesystem verification and retained bytes are required after recovery; final shutdown must be observed cleanly.",
       "denial": "Refuse old flush, workspace and terminal authority after restart. Refuse incomplete filesystem checks, corrupt or missing retained bytes, an unobserved SIGKILL, reused boot identity or unclean final exit; incomplete histories cannot publish a receipt.",
-      "scope": "Seven host boundary checks and the composed NixOS driver passed. An initial FreeBSD crash run exposed scheduled-only libc sync and lost acknowledged home/marker bytes. The corrected native UFS suspension/resume flush passed the final reviewed image 5022d714 crash variant in 224 seconds: observed SIGKILL, same-disk/new-MMDS/new-boot restart, exact retained bytes, stale-authority refusal, native UFS snapshot background fsck, all eight crash checks, both complete service oracles and final clean exit. The source-qualified OmniOS image then passed the crash variant with image SHA-256 d47a84fd726276865bea26812c2a3624b88144eda87926e2dd6dbd5dccb98bc8, kernel c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21, firmware 261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2 and VMM ba91e85a7af3f96d02f845df543daec07353ed6bff4aaee0abf524c751476b68. Its immutable crash receipt records SIGKILL, fresh MMDS/boot identity, stale-authority refusal, exact retained bytes, completed zero-error ZFS scrub and clean shutdown; both image families retain native_admission=false.",
+      "scope": "Seven host boundary checks and the composed NixOS driver passed. An initial FreeBSD crash run exposed scheduled-only libc sync and lost acknowledged home/marker bytes. The corrected native UFS suspension/resume flush passed the final reviewed image 5022d714 crash variant in 224 seconds: observed SIGKILL, same-disk/new-MMDS/new-boot restart, exact retained bytes, stale-authority refusal, native UFS snapshot background fsck, all eight crash checks, both complete service oracles and final clean exit. The source-qualified OmniOS image then passed the crash variant with image SHA-256 d47a84fd726276865bea26812c2a3624b88144eda87926e2dd6dbd5dccb98bc8, kernel c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21, firmware 261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2 and VMM ba91e85a7af3f96d02f845df543daec07353ed6bff4aaee0abf524c751476b68. Its immutable crash receipt records SIGKILL, fresh MMDS/boot identity, stale-authority refusal, exact retained bytes, completed zero-error ZFS scrub and clean shutdown; both image families retain native_admission=false. Final unchanged OmniOS 45983 disk separately passed the same-disk process-SIGKILL runner with endings sigkill,clean, fresh authority/boot identity, exact retained bytes and native ZFS integrity checks.",
       "status": "partial",
       "gaps": "Interrupted writes, interrupted expansion, physical stable-media/host power loss, direct isolation, relocation and fleet recovery remain unproven; both native crash receipts retain admission false, while exact sealed FreeBSD activation is recorded separately.",
       "preferred_gap": "Test interrupted writes and expansion, physical stable-media and host recovery, direct isolation and fleet recovery separately against exact image/kernel/VMM provenance.",
@@ -12086,6 +12131,15 @@
           "scope": "Seven host checks validate retained data, filesystem-result and source/mode boundaries without crashing or recovering a native guest.",
           "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
           "record_assertion": "Seven host boundary checks passed."
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "assertion": "The crash receipt records",
+          "scope": "Final exact OmniOS 45983 disk passed process-SIGKILL/same-disk restart, stale-authority refusal, retained bytes and native ZFS integrity; no physical power-loss or relocation guarantee.",
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "The crash receipt records"
         }
       ]
     },
@@ -12116,7 +12170,7 @@
     },
     {
       "id": "native-image-qualified-admission",
-      "journey": "Create a FreeBSD machine from the exact reviewed immutable image and refuse altered or unapproved native identities",
+      "journey": "Qualify exact reviewed FreeBSD and OmniOS images while refusing altered or unapproved native identities",
       "layers": [
         "identity",
         "authorization",
@@ -12126,26 +12180,30 @@
         "storage",
         "recovery"
       ],
-      "boundary": "A compiled pure protocol registry qualifies only the complete reviewed FreeBSD manifest or portable descriptor. Marshall binds that identity to its durable image row before allocation; Lilly repeats admission before launch. Promotion independently hashes actual artifacts and assembly plus all five native scenario evidence sets. Signed recursive-NAR substitution is publication custody, not runtime readiness.",
-      "denial": "Refuse missing, altered, foreign, stock or unapproved native identity before new allocation or launch effects, including source-bearing requests. An agent-set name, matching kernel or image ID alone cannot qualify an image. OmniOS, editor, Inception and the latest rebuilt FreeBSD candidate remain disabled. Missing or replayed promotion evidence and unavailable publication refuse.",
-      "scope": "The sealed FreeBSD disk5022d714/image d141e426 retains its five recorded native service/growth/policy/daemon-recovery/SIGKILL-recovery results. Exact identity, artifact publication and consumer refusal have separate bounded tests; adding the new registry does not reclassify older candidate receipts or establish a Marshall-driven native guest journey. Complete Marshall and Lilly gates passed on clean589ff7fe5 with 1690 and 610 checks respectively, both with zero-error forced Dialyzer. Public trusted-NAR verification and fresh-store substitution passed separately. These records predate later source/test changes. The current promotion gate requires exact named service oracles: the immutable FreeBSD 22 and OmniOS 25 including workspace ownership and executor withdrawal/cancellation. Current verifier units and the sealed FreeBSD package build passed. A separate live promoted-FreeBSD subset passed ordinary create, exact-OS personal-account CLI SSH and orderly stop; restart and repeat exact-OS CLI SSH also passed; final cleanup returned deleted receipts for the owned subset.",
+      "boundary": "A compiled pure protocol registry qualifies only complete reviewed FreeBSD and OmniOS manifests or portable descriptors. Marshall binds identity to its durable image row before allocation; Lilly repeats admission before launch. Promotion independently hashes actual artifacts and assembly plus all five native scenario evidence sets. Signed recursive-NAR substitution establishes publication custody separately from runtime readiness.",
+      "denial": "Refuse missing, altered, foreign, stock or unapproved native identity before allocation or launch, including source-bearing requests. Names, kernel digest and image ID alone cannot qualify an image. Only exact reviewed FreeBSD d141e426 and OmniOS 98b23b identities qualify; unqualified capability rows, editor, Inception and unrelated rebuilt candidates remain disabled. Missing or replayed evidence/publication refuses.",
+      "scope": "The sealed FreeBSD disk5022d714/image d141e426 retains its five recorded native service/growth/policy/daemon-recovery/SIGKILL-recovery results. Exact identity, artifact publication and consumer refusal have separate bounded tests; adding the new registry does not reclassify older candidate receipts or establish a Marshall-driven native guest journey. Complete Marshall and Lilly gates passed on clean589ff7fe5 with 1690 and 610 checks respectively, both with zero-error forced Dialyzer. Public trusted-NAR verification and fresh-store substitution passed separately. These records predate later source/test changes. The current promotion gate requires exact named service oracles: the immutable FreeBSD 22 and OmniOS 25 including workspace ownership and executor withdrawal/cancellation. Current verifier units and the sealed FreeBSD package build passed. A separate live promoted-FreeBSD subset passed ordinary create, exact-OS personal-account CLI SSH and orderly stop; restart and repeat exact-OS CLI SSH also passed; final cleanup returned deleted receipts for the owned subset. Exact OmniOS disk 45983bb7/image 98b23b now binds all five direct host-KVM scenario sets to a signed immutable no-reference candidate NAR. Independent Dungarees substitution/content/signature verification, exact promotion build and six dual-family focused checks including 64 generated substitutions passed. Full exact-source protocol precommit passed 302 tests, Covenant 14/14 and Dialyzer with zero errors/skips. The fleet alias remains candidate, retaining six evaluated catalog rows.",
       "status": "partial",
-      "gaps": "The composed promoted-FreeBSD create/SSH/stop/restart/repeat-SSH subset passed; final deleted cleanup receipts also passed; revocation, all-enabled-capability and independent physical absence coverage remain separate. Protocol property execution and changed-source consumer gates need current records. OmniOS supervised daemon recovery, direct native peer-VM isolation, reset/DMA stress, physical power loss, relocation and full fleet acceptance remain gaps.",
+      "gaps": "The final corrected-count Lilly precommit passed 610 tests, Covenant 15/15 and forced Dialyzer with zero errors/skips against the frozen dual-family registry; final Marshall verification remains pending. Full OmniOS fleet lifecycle, all-enabled-capability/revocation, independent physical absence, shell-supervisor death, direct native-peer/jail isolation, reset/DMA stress, physical power loss and relocation remain gaps. The unchanged OmniOS fleet alias still selects the candidate.",
       "preferred_gap": "Run a NixOS machine journey through ordinary Marshall admission and Lilly launch using the exact promoted artifact, exercise its seven enabled capabilities and false editor/Inception surfaces, and reject changed manifests, stale portable identity and revoked execution. Preserve the existing native and generated refusal scopes separately.",
       "evidence": [
         {
           "kind": "property",
-          "execution": "present",
+          "execution": "recorded",
           "path": "protocol/test/native_admission_test.exs",
-          "assertion": "a codec-valid root substitution cannot inherit reviewed capabilities",
-          "scope": "Sixty-four deterministic Hegel root-digest substitutions remain codec-valid while exact admission and every native capability refuse; pure policy evidence, not guest execution."
+          "assertion": "codec-valid root and firmware substitutions cannot inherit reviewed capabilities",
+          "scope": "Sixty-four deterministic Hegel root/firmware substitutions cover both reviewed native families; changed codec-valid identities and every native capability refuse. Full protocol precommit passed; pure policy evidence without guest execution.",
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "full protocol precommit then passed 302 tests"
         },
         {
           "kind": "unit",
-          "execution": "present",
+          "execution": "recorded",
           "path": "protocol/test/native_admission_test.exs",
-          "assertion": "portable context binds the reviewed ID and all retained boot descriptors",
-          "scope": "Exact normalized manifest/bundle qualification and changed ID, firmware, kernel and compiler refusal; native unqualified rows, foreign family, editor and Inception remain false."
+          "assertion": "context binds the reviewed ID and all retained boot descriptors",
+          "scope": "Both native families retain exact normalized manifest/bundle qualification and changed ID, firmware, kernel/compiler and cross-family refusal; unqualified rows, editor and Inception remain false. Full protocol precommit passed.",
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "full protocol precommit then passed 302 tests"
         },
         {
           "kind": "unit",
@@ -12200,6 +12258,15 @@
           "scope": "Exact named 22/25-oracle host verification refuses missing, extra, substituted and wrong-ending checks, including equal counts; the sealed FreeBSD artifact build passed independently. No new native scenario or OmniOS admission.",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
           "record_assertion": "actual sealed FreeBSD package build passed"
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "assertion": "The compiled registry",
+          "scope": "Exact OmniOS 98b23b qualification binds raw45983 to five direct host-KVM scenario receipts and immutable signed NAR; constructor emits only disk.raw, firmware and manifest.json. The catalog alias remains candidate. No reproducible assembly or live fleet guarantee.",
+          "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
+          "record_assertion": "The compiled registry"
         }
       ]
     },

@@ -108,11 +108,17 @@ class BootContext:
 
 
 def firecracker_arguments(vmm: Path, metadata: Path, config: Path, api: Path | None) -> list[str]:
-    """Select only the default no-API mode or a fixed local test socket."""
+    """@cc [owner:ghuntley,label:verification] native-vmm-log-destination
+    VMM diagnostics MUST use the owned work directory's explicit log path,
+    because Firecracker's default logger shares stdout with guest serial bytes.
+    The API MUST remain disabled unless a private Unix test socket is supplied.
+    """
     control = ["--no-api"] if api is None else ["--api-sock", str(api)]
     return [
         str(vmm),
         "--enable-pci",
+        "--log-path",
+        str(config.parent / "vmm.log"),
         *control,
         "--metadata",
         str(metadata),
@@ -809,12 +815,15 @@ def run(
             for path in work.glob("v.sock*"):
                 path.unlink()
             prepare_api_socket(api, process)
-            with (work / "serial.log").open("ab") as serial:
+            with (
+                (work / "serial.log").open("ab") as serial,
+                (work / "vmm-stderr.log").open("ab") as vmm_stderr,
+            ):
                 process = subprocess.Popen(
                     firecracker_arguments(vmm, metadata_path, config_path, api),
                     stdin=subprocess.DEVNULL,
                     stdout=serial,
-                    stderr=subprocess.STDOUT,
+                    stderr=vmm_stderr,
                 )
                 try:
                     stage = "boot"

@@ -136,7 +136,7 @@ defmodule Marshall.SSH.CommandsTest do
     refute Map.has_key?(shown.result, "editor_image_status")
 
     fields =
-      ~w(architecture desired_state disk_bytes execution_ref failure_reason generation host id image_id inserted_at memory_bytes name observed_state owner permissions profile relocation resize ssh_host vcpu)
+      ~w(architecture desired_state disk_bytes execution_ref failure_reason generation host id image_id image_name inserted_at memory_bytes name observed_state owner permissions profile relocation resize ssh_host vcpu)
 
     assert Map.keys(shown.result) |> Enum.sort() == fields
     assert Map.keys(hd(listed.result["items"])) |> Enum.sort() == fields

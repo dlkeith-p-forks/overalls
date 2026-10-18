@@ -111,15 +111,20 @@ receipt records three clean boots and two expansions. These passing scoped
 receipts preserve the earlier failed histories and leave supervised daemon
 recovery, physical/DMA safety and image qualification open. The later
 handshake-fixed image separately passed manual direct host-KVM transport,
-reset, Lilly-policy, services, growth and process-crash runners. Its supervised
-daemon recovery still fails; formal nested-KVM gates remain separate.
+reset, Lilly-policy, services, growth and process-crash runners, while its
+daemon-recovery attempt failed. The final SMF/listener-corrected `45983bb7`
+image passed all five required direct host-KVM scenarios, ordinary transport
+and one reset event. Its exact immutable promotion and dual-family registry
+qualification passed; formal nested-NixOS gates remain separate.
 The
 [OS matrix](../guests/os-matrix.md) distinguishes the seven declared families
 from the six currently admitted catalog rows and their execution evidence.
 The [native review](reviews/2026-10-17-native-kernel-attestation.md) records exact
 source-qualified artifacts and results. The
 [activation review](reviews/2026-10-17-native-image-admission.md) separates the
-reviewed FreeBSD promotion from pending OmniOS, physical and fleet acceptance.
+reviewed FreeBSD promotion from broader physical and fleet acceptance. The
+[matrix review](reviews/2026-10-18-guest-os-matrix.md) records the exact OmniOS
+promotion while its fleet alias still selects the unadmitted candidate.
 
 [ADR-0149](decisions/0149-independent-observability.md) separates control and
 observability: Lilly v4 carries capacity and physical readiness receipts, Ziggy v2

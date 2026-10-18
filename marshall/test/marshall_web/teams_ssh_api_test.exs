@@ -30,7 +30,7 @@ defmodule MarshallWeb.TeamsSSHAPITest do
   # historical receipt MUST NOT restore membership or mutate a reused team name.
   test "HTTP histories preserve pinned receipts and permanent team refusals", c do
     check all(
-            suffix <- string(?a..?z, min_length: 1, max_length: 12),
+            suffix <- string(Enum.to_list(?a..?z), min_length: 1, max_length: 12),
             steps <-
               list_of(member_of([:replay, :collision, :missing, :changed]),
                 min_length: 1,
@@ -199,7 +199,10 @@ defmodule MarshallWeb.TeamsSSHAPITest do
   test "team name grammar and boundary refusals remain permanent", c do
     owner = account(c)
 
-    check all(label <- string(?a..?z, min_length: 1, max_length: 20), test_cases: 20) do
+    check all(
+            label <- string(Enum.to_list(?a..?z), min_length: 1, max_length: 20),
+            test_cases: 20
+          ) do
       for name <- [String.upcase(label), "0" <> label, label <> "-", label <> "_"] do
         unchanged(c, owner, "team create #{name}", 400, "invalid_request")
       end

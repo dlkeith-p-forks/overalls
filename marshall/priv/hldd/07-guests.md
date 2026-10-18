@@ -874,6 +874,21 @@ then passed actual cross-host `--check` rebuild comparisons after signed cache
 substitution. Distribution-native runtime acceptance remains separate, as recorded in the
 [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md).
 
+Later live Arch and Alma creates both reached `/sbin/init: Permission denied`:
+the upstream-root staging copy had discarded executable modes, including init,
+its ELF loader and bash. The corrected copy preserves those modes and adds
+write permission only for the staging owner. The new
+[`foreign-linux-guest-filesystem` gate](repo:nix/verification/tests/evaluation/foreign-linux-filesystem.nix)
+inspects actual private-fleet ext4 images: both init/bash/loaders are 0755,
+release data is 0644, sudo is 04755, shadow/gshadow are 0600 and ownership is
+root. Both corrected images passed, while each original image independently
+failed at bash mode 0644. Exact corrected identities and root hashes are in the
+matrix review. This offline regression establishes inode modes separately from
+a successful boot, PAM/sudo session or live lifecycle. Corrected images then
+passed complete offline policy/file audits and independent forced Dungarees
+`--check` rebuilds with actual remote hashes matching local outputs. Those
+corrected-byte results do not upgrade the retained original failed boots.
+
 The shared protocol also defines native FreeBSD and OmniOS contracts. Both use
 version-6 firmware/raw-GPT manifests; FreeBSD uses `os = freebsd` and OmniOS is
 represented as `os = illumos`. The FreeBSD disk retains its complete GPT layout
@@ -907,7 +922,7 @@ outputs do not replace the sealed promoted FreeBSD image or grant admission.
 FreeBSD's separate two-boot QEMU candidate assembly and scoped nested-KVM
 transport gate have passed.
 OmniOS full-kit pool import/clone/install/export and diagnostic Firecracker
-file/token/host-CID transport checks have passed. Later source-qualified OmniOS
+file/token/host-CID transport checks have passed. Earlier source-qualified OmniOS
 receipts record complete services over two clean boots, three-boot/two-expansion
 growth and separate process-SIGKILL/same-disk recovery. Reproducible full-image
 assembly, formal policy gates, supervised daemon recovery, reset/DMA, broader isolation and
@@ -944,11 +959,22 @@ completed callback or another interrupt. The host sanitizer regression caught
 a missing-wake mutant. The combined payload passed fresh native assembly,
 including native SMF validation, nine modules, 764 payload records and clean
 export; the matrix review binds its sealed `45983bb7` disk and receipt.
-Current-image runtime scenarios remain pending. A killed shell supervisor while children survive
+That exact disk subsequently passed all five maintained direct host-KVM service,
+growth, Lilly-policy, same-boot daemon-replacement and process-SIGKILL scenarios,
+plus ordinary transport and one API pause/full-snapshot/resume reset event.
+The reset receipt establishes pending-socket refusal and current-CID
+revalidation, without service-restoration or DMA-safety claims. Final services
+and reset replays use explicit owned VMM log files, separate startup stderr and
+serial stdout, newline-complete JSON events and independent authenticated
+terminal-control deadlines. The fixture regression suite passed 87 checks;
+additional controlled-clock and old-helper/parser mutants retain refusal.
+These fixture corrections change no guest bytes or classify the retained
+earlier PTY incident. A killed shell supervisor while children survive
 can leave a nonempty contract without a supervisor; recovery of that case is
-unverified and no daemon-recovery pass follows from this source correction.
+unverified; the later passing daemon-replacement history covers the individual
+child-death boundary only.
 
-### Reviewed FreeBSD admission and publication
+### Reviewed native admission and publication
 
 The approved FreeBSD image ID is
 `sha256:d141e4266c29da00a1378157b1d39369b1d48e577bca4ce7375e8ff6d399557b`,
@@ -987,7 +1013,22 @@ separates artifact verification, cache publication, SQL/host refusal tests and
 native scenario evidence. Reproducible native assembly, direct native peer-VM
 isolation, physical recovery, relocation and Marshall-driven fleet acceptance
 remain gaps. The current source-qualified OmniOS service, growth and crash
-receipts are recorded separately; OmniOS admission remains closed.
+receipts are recorded separately. The final OmniOS disk `45983bb7` now has all
+five exact-image scenario receipts, a verified
+[promotion constructor](repo:nix/domains/artifacts/guest/native-promotion/omnios.nix)
+and compiled registry identity
+`sha256:98b23b7931bc52d55b3c5b38cc20c97c1c967be96cf301940f88b01c715530d8`.
+Its complete immutable manifest/descriptor enables the same reviewed native
+subset; unqualified rows, editor and Inception remain false. Candidate runtime
+receipts remain false and do not transfer to other images. The candidate NAR
+passed exact local comparison, signed-cache verification and independent
+Dungarees substitution; the promoted closed three-file package passed its
+artifact/evidence verifier. The fleet alias still selects the unadmitted
+candidate, so these source changes alone leave six evaluated catalog rows.
+The [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
+records exact disk/manifest/NAR/receipt pins. Declared minimums are 2 GiB memory
+and 16 GiB disk; the scoped growth history is 8-to-10-to-12 GiB, with no live
+16 GiB OmniOS fleet launch yet.
 
 Native bootstrap canonicalizes only local `ifconfig` MAC output: exactly six
 one- or two-digit ASCII hexadecimal octets become lowercase two-digit octets

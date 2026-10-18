@@ -260,10 +260,11 @@ defmodule Marshall.Ingress.ServicesTest do
   property "arbitrary public-key input cannot replace a registered identity", test_cases: 30 do
     %{host: host} = Marshall.ComputeFixtures.host_fixture()
     {token, _} = Token.issue()
+    name = "immutable-property-" <> Ash.UUID.generate()
 
     {:ok, service} =
       Ingress.configure_service(
-        %{name: "immutable-property", role: :gateway, host_id: host.id, token: token},
+        %{name: name, role: :gateway, host_id: host.id, token: token},
         actor: SystemActor.compute()
       )
 

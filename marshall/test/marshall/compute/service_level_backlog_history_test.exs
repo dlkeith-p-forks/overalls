@@ -33,7 +33,10 @@ defmodule Marshall.Compute.ServiceLevelBacklogHistoryTest do
   # Operation and workflow families MUST each exercise the shared publication
   # guard; finished rows, SSH receipts and execution allocations MUST remain
   # immutable while the other pending rows drain.
+  # The native input timer includes each real database history; the scoped CI
+  # profile permits those histories without reducing their generated cases.
   property "mixed deadline backlogs preserve totals and refuse premature freshness",
+    profile: :ci,
     test_cases: 4 do
     check all(
             overdue <- member_of([0, 1, 99, 100, 101, 102]),

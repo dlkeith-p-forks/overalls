@@ -896,7 +896,36 @@ The subsequent protocol merge serializes its control-client fixture and applies
 the CI profile directly to the standalone workspace-source check, retaining all
 500 intended native cases. The earlier repaired-count full gate passed 299
 tests, Covenant 14/14 and Dialyzer with zero errors or skips; the merged profile
-and serialization require a separate focused result.
+and serialization retain separate results. The merged workspace-source check
+passed five tests in 0.1 seconds, seed 926594. The frozen dual-family native
+registry passed six focused checks including its 64-case identity-substitution
+property; its full protocol precommit then passed 302 checks in 413.6 seconds,
+Covenant 14/14 and Dialyzer with zero errors/skips in 3.38 seconds.
+
+The complete repaired-count Marshall scan at seed 634032 passed 1,682 of 1,694
+tests, failed 12 and excluded four in 1,342.4 seconds. Covenant passed 24/24,
+presentation JavaScript 9/9, Monospace passed and forced Dialyzer passed with
+zero errors/skips. Six failures were the native TooSlow heuristic counting real
+database/distributed/passkey/SMTP runtime. The scoped CI-profile repairs retain
+case counts, clocks and assertions; actual linked-NIF setting getters prove
+only the TooSlow suppression bit differs, preserving randomness, seed,
+database, phases and backend. Other repairs retain unique per-case ingress/key
+ownership, the requested lowercase alphabet, peer range and existing
+`image_name` output field. Fresh focused and complete execution remain required;
+the failed scan is not a passing consumer gate. The later pair of actual-host
+builds at `d388cf91a` passed in 264 seconds; no later deployment or native runtime
+result follows from that build record.
+Lilly's final repaired-count precommit then passed 610 tests in 66.8 seconds,
+seed 991989, Covenant 15/15 and forced Dialyzer with zero errors/skips in 12.46
+seconds. Both actual-host toplevel builds on frozen registry/foreign-mode source
+and merged `21831915e` passed in 247 seconds. This records corrected count and
+build closure evidence, separately from native guest or later deployment claims.
+The ten-file focused Marshall rerun passed 59/60 tests in 407.4 seconds, seed
+393478, clearing all twelve original failures. A sibling four-case retry-window
+history hit the same TooSlow heuristic; its scoped profile retains every case
+and oracle. That selected test then passed in 46.4 seconds, seed 525114, with
+three unrelated tests excluded. Final complete Marshall precommit remains
+pending; these are separate focused execution records.
 The [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.

@@ -82,14 +82,14 @@ boundaries while selecting the validated boot path. Native manifests bind
 kernel provenance, and Lilly requires a boot-bound kernel response before
 credentials or readiness. The implementation remains partial: unqualified native
 rows are false, while complete image-qualified identity activates only the
-reviewed FreeBSD subset through a separate immutable promotion and runtime
+reviewed FreeBSD and exact OmniOS subsets through separate immutable promotions and a runtime
 registry. Editor and Inception remain false; stock/altered identities and
-OmniOS remain refused. Stock source receipts contain no artifact bytes, and
+unreviewed OmniOS candidates remain refused. Stock source receipts contain no artifact bytes, and
 those constructors refuse before copying a stock disk. Pinned builds link the complete
 FreeBSD kernel, twenty native Lyra executables and both terminal daemons.
 OmniOS native nine-module/full-payload clean-export assembly, QEMU file/runtime
 checks and diagnostic Firecracker executing-token/transport checks passed. Its
-current service, mounted-root growth and same-disk process-crash receipts remain
+earlier service, mounted-root growth and same-disk process-crash receipts remain
 scoped evidence with `native_admission=false`; physical recovery, isolation,
 reset/DMA safety and fleet acceptance remain open.
 FreeBSD has source-qualified transport, complete-service, same-boot daemon
@@ -102,7 +102,11 @@ stable-media/power-loss durability, reset/DMA and fleet acceptance remain open.
 The completion-corrected OmniOS image reaches console login in the paired
 direct-only QEMU diagnostic and retained nested Firecracker serial, with growth
 maintenance before bootstrap authority. Exact corrected service replay is now
-recorded separately and does not change admission.
+recorded separately. Final sealed disk `45983bb7` subsequently passed all five
+direct host-KVM scenarios, ordinary transport and one reset event. Its exact
+immutable promotion and registry qualification are recorded in the
+[matrix review](../reviews/2026-10-18-guest-os-matrix.md); the selected OmniOS
+fleet alias remains the unadmitted candidate.
 The [review](../reviews/2026-10-17-native-kernel-attestation.md) records exact
 artifacts and limits; the [activation review](../reviews/2026-10-17-native-image-admission.md)
 records the separate exact FreeBSD promotion. Candidate evidence alone grants

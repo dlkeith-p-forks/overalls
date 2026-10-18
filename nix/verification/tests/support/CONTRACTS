@@ -7,3 +7,10 @@ guest execution optional or silently broaden trusted networks.
 Python driver fragments MUST be composed in an explicit order during Nix
 evaluation. The complete driver MUST pass the NixOS framework's lint and type
 checks; runtime exec or disabling checks MUST NOT hide fragments from validation.
+
+@cc [owner:ghuntley,label:verification] native-serial-evidence-channel
+Native Firecracker fixtures reading structured guest serial events MUST select
+an explicit owned VMM log path and capture startup stderr separately from serial
+stdout. The default VMM logger shares stdout with the guest. A host diagnostic
+interleaved with a guest record MUST NOT become guest evidence or be silently
+repaired into one.

@@ -220,7 +220,7 @@ defmodule Marshall.Access.SharingMatrixDistributedTest do
               list_of(
                 tuple(
                   {member_of([:manager, :operator, :viewer, :web, :revoked]), integer(0..2),
-                   member_of(0..2), member_of([:ssh_open, :web_authorize, :inventory])}
+                   integer(0..2), member_of([:ssh_open, :web_authorize, :inventory])}
                 ),
                 min_length: 2,
                 max_length: 4

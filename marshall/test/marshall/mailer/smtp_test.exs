@@ -22,7 +22,8 @@ defmodule Marshall.Mailer.SMTPTest do
     # Actual accepted-but-unacknowledged DATA MUST time out and close its client
     # connection, preserving pending ciphertext. All retries MUST retain decoded
     # payload and Message-ID, and terminal replay MUST open no SMTP connection.
-    property name, test_cases: 3 do
+    # Each case retains its actual ten-second post-DATA timeout attempts.
+    property name, profile: :ci, test_cases: 3 do
       mode = unquote(mode)
 
       check all(

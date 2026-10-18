@@ -227,6 +227,8 @@ class NativeServiceApiTest(unittest.TestCase):
             [
                 "vmm",
                 "--enable-pci",
+                "--log-path",
+                "vmm.log",
                 "--no-api",
                 "--metadata",
                 "metadata",
@@ -239,6 +241,8 @@ class NativeServiceApiTest(unittest.TestCase):
             [
                 "vmm",
                 "--enable-pci",
+                "--log-path",
+                "vmm.log",
                 "--api-sock",
                 "work/api.sock",
                 "--metadata",

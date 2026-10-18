@@ -487,6 +487,16 @@ def terminal_until(channel: Connection, expected: bytes, initial: bytes = b"") -
     return bytes(output)
 
 
+def terminal_control_request(uds: Path, binding: Binding, operation: int, payload: bytes) -> bytes:
+    """@cc [owner:ghuntley,label:verification;security] native-terminal-phase-deadline
+    Each standalone control operation MUST authenticate a fresh connection and
+    retain its absolute deadline; unrelated PTY work MUST NOT consume that budget.
+    """
+    with connect(uds, 1075) as channel:
+        terminal_authenticate(channel, binding)
+        return terminal_request(channel, operation, payload)
+
+
 def terminal_session(uds: Path, binding: Binding, os_name: Os) -> None:
     """@cc [owner:ghuntley,label:verification;security] native-terminal-real-pty
     PTY evidence MUST create a real managed-account session, authenticate every
@@ -495,21 +505,26 @@ def terminal_session(uds: Path, binding: Binding, os_name: Os) -> None:
     diagnostic or receipt fields, and the session MUST be explicitly retired.
     Resize proof MUST query the selected native stty dialect; the command input
     MUST NOT contain the expected geometry output.
+    Retirement failure MUST fail successful probes and preserve an earlier probe
+    error with a secondary note containing no response or exception payload.
     """
     if os_name not in ("freebsd", "illumos"):
         raise ValueError("invalid native terminal platform")
     user, term = b"u200000", b"xterm-256color"
     request_id = secrets.token_bytes(16)
     create = bytes([len(user)]) + user + bytes([len(term)]) + term + struct.pack(">HH", 80, 24)
-    with connect(uds, 1075) as control:
-        terminal_authenticate(control, binding)
-        created = terminal_request(control, 12, request_id + create)
-        if len(created) != 24:
-            raise ProtocolError("invalid native terminal creation receipt")
-        session_id, token = struct.unpack(">Q16s", created)
-        if not 0 < session_id < 1 << 63:
-            raise ProtocolError("invalid native terminal session identity")
-        try:
+    session_id: int | None = None
+    failure: BaseException | None = None
+    try:
+        with connect(uds, 1075) as control:
+            terminal_authenticate(control, binding)
+            created = terminal_request(control, 12, request_id + create)
+            if len(created) != 24:
+                raise ProtocolError("invalid native terminal creation receipt")
+            candidate_id, token = struct.unpack(">Q16s", created)
+            if not 0 < candidate_id < 1 << 63:
+                raise ProtocolError("invalid native terminal session identity")
+            session_id = candidate_id
             if terminal_request(control, 12, request_id + create) != created:
                 raise ProtocolError("native terminal duplicate creation changed identity")
             if terminal_request(control, 13, request_id) != struct.pack(">QB", session_id, 1):
@@ -517,46 +532,55 @@ def terminal_session(uds: Path, binding: Binding, os_name: Os) -> None:
             recovered = terminal_request(control, 11, struct.pack(">Q", session_id))
             if not hmac.compare_digest(recovered, token):
                 raise ProtocolError("native terminal recovery changed session authority")
-            wrong = bytes([token[0] ^ 1]) + token[1:]
-            with connect(uds, 1075) as rejected:
-                terminal_authenticate(rejected, binding)
-                terminal_send(
-                    rejected, 10, struct.pack(">Q16sBQHH", session_id, wrong, 1, 0, 80, 24)
+        wrong = bytes([token[0] ^ 1]) + token[1:]
+        with connect(uds, 1075) as rejected:
+            terminal_authenticate(rejected, binding)
+            terminal_send(rejected, 10, struct.pack(">Q16sBQHH", session_id, wrong, 1, 0, 80, 24))
+            if rejected.terminal_frame() != (0x81, b"\x03") or rejected.receive(1):
+                raise ProtocolError("native terminal accepted incorrect session authority")
+        with connect(uds, 1075) as data:
+            terminal_authenticate(data, binding)
+            cursor, replay = terminal_replay(
+                data, struct.pack(">Q16sBQHH", session_id, token, 1, 0, 80, 24)
+            )
+            if cursor != 0:
+                raise ProtocolError("native terminal unexpectedly truncated fresh replay")
+            data.send(b"stty -echo; printf '%s%s\\n' native- pty-ready\r")
+            terminal_until(data, b"native-pty-ready\n", replay)
+            identity = b"native-pty-identity:200000:200000\n"
+            data.send(b'printf \'%s%s:%s:%s\\n\' native- pty-identity "$(id -u)" "$(id -g)"\r')
+            terminal_until(data, identity)
+            if terminal_control_request(uds, binding, 5, struct.pack(">QHH", session_id, 101, 41)):
+                raise ProtocolError("invalid native terminal resize receipt")
+            if os_name == "illumos":
+                data.send(b"LC_ALL=C /usr/bin/stty -a\r")
+                terminal_until(data, b"rows = 41; columns = 101;")
+            else:
+                data.send(b"printf '%s%s:' native- pty-size; stty size\r")
+                terminal_until(data, b"native-pty-size:41 101\n")
+            data.send(b"printf '%s%s\\n' native- pty-retained\r")
+            retained = terminal_until(data, b"native-pty-retained\n")
+        with connect(uds, 1075) as replayed:
+            terminal_authenticate(replayed, binding)
+            cursor, replay = terminal_replay(
+                replayed, struct.pack(">Q16sBQHH", session_id, token, 0, 0, 0, 0)
+            )
+            if cursor != 0 or retained not in replay:
+                raise ProtocolError("native terminal did not retain its acknowledged output")
+    except BaseException as error:
+        failure = error
+        raise
+    finally:
+        if session_id is not None:
+            try:
+                if terminal_control_request(uds, binding, 4, struct.pack(">Q", session_id)):
+                    raise ProtocolError("invalid native terminal retirement receipt")
+            except Exception as cleanup_error:
+                if failure is None:
+                    raise
+                failure.add_note(
+                    "native terminal retirement also failed (" + type(cleanup_error).__name__ + ")"
                 )
-                if rejected.terminal_frame() != (0x81, b"\x03") or rejected.receive(1):
-                    raise ProtocolError("native terminal accepted incorrect session authority")
-            with connect(uds, 1075) as data:
-                terminal_authenticate(data, binding)
-                cursor, replay = terminal_replay(
-                    data, struct.pack(">Q16sBQHH", session_id, token, 1, 0, 80, 24)
-                )
-                if cursor != 0:
-                    raise ProtocolError("native terminal unexpectedly truncated fresh replay")
-                data.send(b"stty -echo; printf '%s%s\\n' native- pty-ready\r")
-                terminal_until(data, b"native-pty-ready\n", replay)
-                identity = b"native-pty-identity:200000:200000\n"
-                data.send(b'printf \'%s%s:%s:%s\\n\' native- pty-identity "$(id -u)" "$(id -g)"\r')
-                terminal_until(data, identity)
-                if terminal_request(control, 5, struct.pack(">QHH", session_id, 101, 41)):
-                    raise ProtocolError("invalid native terminal resize receipt")
-                if os_name == "illumos":
-                    data.send(b"LC_ALL=C /usr/bin/stty -a\r")
-                    terminal_until(data, b"rows = 41; columns = 101;")
-                else:
-                    data.send(b"printf '%s%s:' native- pty-size; stty size\r")
-                    terminal_until(data, b"native-pty-size:41 101\n")
-                data.send(b"printf '%s%s\\n' native- pty-retained\r")
-                retained = terminal_until(data, b"native-pty-retained\n")
-            with connect(uds, 1075) as replayed:
-                terminal_authenticate(replayed, binding)
-                cursor, replay = terminal_replay(
-                    replayed, struct.pack(">Q16sBQHH", session_id, token, 0, 0, 0, 0)
-                )
-                if cursor != 0 or retained not in replay:
-                    raise ProtocolError("native terminal did not retain its acknowledged output")
-        finally:
-            if terminal_request(control, 4, struct.pack(">Q", session_id)):
-                raise ProtocolError("invalid native terminal retirement receipt")
 
 
 def fixture_binding(path: Path) -> Binding:

@@ -23,8 +23,10 @@ host-only transport while making successful accept wait for RESPONSE publication
 
 The [shared image list](../../../fleet/guest-images.nix) declares NixOS, Ubuntu,
 Arch Linux, AlmaLinux, FreeBSD, OmniOS and Windows. Native entries are filtered
-by the selected package's `nativeAdmission` flag. Only the exact promoted
-FreeBSD image passes that filter; OmniOS contributes no evaluated catalog row.
+by the selected package's `nativeAdmission` flag. Only the selected promoted
+FreeBSD package passes that filter; the unchanged OmniOS candidate alias still
+contributes no evaluated catalog row. The separately reviewed exact OmniOS
+registry entry and immutable promotion below do not change that package alias.
 The [current matrix](../../guests/os-matrix.md) separates these six entries
 from recorded native machine and live fleet execution.
 
@@ -45,9 +47,9 @@ cancellation with fresh-fence completion. Missing, extra, renamed or incorrect
 clean/crash-ending checks refuse, including equal-length substitutions and an
 OmniOS receipt using FreeBSD's narrower set. The current promotion unit gate and
 actual sealed FreeBSD package build passed; this strengthens evidence validation
-without admitting an OmniOS image or executing a new native scenario.
+without itself admitting an OmniOS image or executing a new native scenario.
 
-Current source-qualified OmniOS receipts cover complete services over two clean
+Earlier source-qualified OmniOS receipts cover complete services over two clean
 boots, three boots with two root expansions and separate process-SIGKILL
 same-disk recovery. Those receipts retain `native_admission=false`. No claim of
 supervised daemon recovery, formal policy gates, current wrong-CID/reset/DMA safety, direct
@@ -113,8 +115,84 @@ the 158,362-byte assembly receipt SHA-256 is
 `aaf9aeeee25b73c6454a395b69b78eb4a207b59dcbcd363b088e8839592edb04`.
 Its test-only manifest SHA-256 is
 `aac2c4d67684f9e77d1fc7b6b2207b6ae4fc4a3800cfd32170608c9d607d6be8`.
-Current-image recovery, growth and isolation executions remain pending; no older
-runtime receipt transfers to these bytes and admission stays false.
+Those assembly records alone granted no admission; the exact-image runtime and
+immutable promotion records below were collected separately.
+
+The unchanged `45983bb7` disk subsequently passed all five maintained direct
+host-KVM scenario runners: complete services, three-boot/two-expansion growth,
+two-boot Lilly router/TAP policy, same-boot supervised daemon replacement and
+same-disk process-SIGKILL recovery. Ordinary transport and the API
+pause/full-snapshot/resume reset fixture also passed independently. Every
+service-bearing receipt records the exact 25-check OmniOS oracle. The final
+services receipt SHA-256 is
+`b8fc867e0d1e5484c05da231bb5012ae00411937320ae91e0764be296efb30de`,
+with clean boots `eba79645-1cd5-479d-a035-9b2aa24bcd4f` and
+`8620cb2b-a7ac-4aed-9f9a-547458f740f4`. Recovery observed real daemon death,
+three withheld-readiness probes, an exact supervised replacement and restored
+current-boot flush without changing the guest boot identity. Growth preserved
+the pinned pool/vdev and foreign-disk identities. The crash receipt records
+`sigkill,clean`, fresh authority/boot identity, exact retained bytes and native
+ZFS integrity checks. All candidate execution receipts retain
+`native_admission=false`; qualification is the separate immutable review step.
+
+The final reset receipt SHA-256 is
+`02f0ed8e2c0a7146d16a93a5e0f5f7fe9887174c784df1b603d0d4a62a64fb1d`,
+boot `c3e2cf85-4e50-4e2e-ac48-5037628e052f`. All three API operations returned
+204; pending read, accept and idle operations refused with 131 and the blocked
+write with 32 after 262,144 bytes. The current CID was revalidated. This is one
+transport-reset event, without service-restoration or DMA-safety evidence.
+
+The reviewed version-6 manifest is
+[`protocol/priv/native/omnios-r151050.json`](../../../protocol/priv/native/omnios-r151050.json),
+image ID
+`sha256:98b23b7931bc52d55b3c5b38cc20c97c1c967be96cf301940f88b01c715530d8`.
+The manually assembled input is sealed at
+`/nix/store/9r92hvbj5zch8r0xdv4wsw7rhhwg6as7-overalls-native-omnios-r151050-45983bb7`,
+recursive NAR hash `sha256-JrTq1siY+meAVhpqYBdddLVgs+eagD79taqn+wZivsU=`,
+with no references. Local exact-NAR comparison, public signed-cache import and
+independent Dungarees substitution/content/signature verification passed. The
+[OmniOS promotion constructor](../../../nix/domains/artifacts/guest/native-promotion/omnios.nix)
+passed its exact artifact/evidence verifier and produced
+`/nix/store/8lckqimfchbk5p21n3qb3s09byx4dr1q-lilly-omnios-r151050-x86_64-promoted`,
+containing only `disk.raw`, `firmware` and `manifest.json`. The compiled registry
+now qualifies that complete immutable identity and its normalized descriptor;
+changed identities, cross-family descriptors and stock agent names still refuse.
+The unqualified native capability rows, editor and Inception remain false.
+The source fleet alias remains a candidate until a separate catalog activation.
+These records satisfy the existing per-image promotion requirements without
+claiming reproducible native assembly, formal nested-NixOS execution, a direct
+native peer VM, jail/physical isolation, interrupted growth, shell-supervisor
+death with surviving children, physical power loss, relocation or live OmniOS
+fleet acceptance.
+The promoted output has recursive NAR hash
+`sha256-qKv00aAEuM+ObUg2GpzEvepykgDpn3EE9aoG3EKWAhs=` and no references.
+The published candidate contains no test probes, synthetic keys, logs or runtime
+clones; probes were installed only in owned disposable clones. Its declared
+minimum is 2 GiB memory and 16 GiB disk. Recorded growth is the deterministic
+8-to-10-to-12 GiB expansion history, separate from a live 16 GiB launch. The
+kernel digest identifies the kernel executable; the assembled disk digest binds
+the nine installed modules.
+
+The final runner uses an explicit owned Firecracker `--log-path`: the default
+logger writes stdout even when stderr is redirected, so splitting only stderr
+could mix VMM text into the guest JSON stream. Startup stderr and serial stdout
+now have separate files. The reset parser waits for a newline before accepting
+even a valid final JSON fragment; malformed or duplicate complete events still
+refuse. Four focused reset regressions and an old-parser mutant established the
+boundary. Native terminal verification now closes the completed initial control
+before PTY work and gives resize/retire fresh authenticated 15-second controls;
+the data channel keeps its own 15-second limit. A controlled-clock healthy
+18-second history passed, a 16-second data timeout still refused and the actual
+old-helper mutant failed. Retirement failures fail otherwise successful probes;
+secondary cleanup failures preserve the original failure without payloads.
+These fixture fixes change no guest bytes and do not classify the preserved
+earlier PTY failure. The final native-fixture gate passed 87 checks, 31 additional
+focused checks passed, promotion tests passed 15 checks, and pinned Ruff
+format/lint plus ty passed on all Python files. Six focused protocol checks,
+including the 64-case identity-substitution property, passed; full exact-source
+protocol and consumer gates retain separate records.
+The exact-source protocol full precommit is recorded below; the five-scenario
+native execution scope remains separate from that BEAM validation.
 
 The follow-up mounted-root helper also removes dependence on an early-boot
 persisted ZFS userland cache. Read-only label discovery uses
@@ -163,7 +241,7 @@ Arch measures 2,325,372,928 bytes, SHA-256
 `750e1bcbb607e0d96aeb270c27172713d44ec29b53d2ce01a8d72c9c06aa6662`;
 AlmaLinux measures 2,684,354,560 bytes, SHA-256
 `21e62216428509310cefd13f2d992a5fba926c83e9eed8c88c380f5eb5b77682`.
-This comparison covers the final fleet-context construction inputs, including
+This historical comparison covers those fleet-context construction inputs, including
 the copy and SSH-policy corrections below. Native guest execution remains a
 separate requirement.
 
@@ -182,6 +260,41 @@ service identities, pinned executable tools, SSH/PAM policy, private login
 receipt requirement and unit PATH; its digest/outcome record is
 `/tmp/foreign-linux-final-filesystem-audit-20261018.json`. These checks do not
 establish a successful Arch/Alma boot, PAM session or sudo invocation.
+
+A subsequent six-image artifact audit checked every manifest, native admission
+result and actual file length/SHA-256, including the 64 GiB Windows disk. The
+then-current Arch and Alma roots also passed independent Dungarees rebuilds with
+Nix 2.34.8, empty builders/substituters and `nix-store --realise --check`:
+
+| Family | Compared rootfs output | Bytes | SHA-256 |
+|--------|------------------------|-------|---------|
+| Arch | `/nix/store/g8ll63iw4fqhvwbiak0z0pp92wv19xfp-ext4-fs.img` | 2,325,372,928 | `424736943bee56855eddc242b24ccdb56b35bd3ec548b6f0dda678bdcfc50539` |
+| AlmaLinux | `/nix/store/03l6nbi3ni4dqbfc7q615slj3nc09ifb-ext4-fs.img` | 2,684,354,560 | `46c98944ee61cd042e02f61ca1eff46c13b3c9f97da1629822f6513bdb89e1ce` |
+
+The receipt is
+`/tmp/overalls-final-fleet-images-20261018/cross-host-reproducibility-receipt.json`.
+These exact-byte comparisons did not establish a bootable distribution root:
+live creation of both images subsequently reached `/sbin/init: Permission denied`.
+The shared upstream-root copy discarded source modes, leaving systemd, its ELF
+loader and bash at 0644. The original failed VM identities and diagnostic
+receipts remain retained. A narrow correction preserves upstream executable
+modes and grants staging write access only to the build owner. The actual
+private-fleet filesystem gate passed in 58 seconds, inspecting both
+init/bash/loaders at 0755, release data at 0644, sudo at 04755, shadow/gshadow
+at 0600 and root ownership. Both original images separately failed this gate at
+bash mode 0644. The corrected Arch image ID is
+`sha256:fc437aea09e700c617afa6d45a7c76c94fbf071b60c5a7d9d44477847ed68778`,
+root SHA-256 `4a12184a5c207ea8d1fa003f7b8e39e7bb236de50ddb0e3e16837a19831a000a`,
+2,325,372,928 bytes. Alma's image ID is
+`sha256:f91eaf37e427c28e3529ef9f26ec0e3bb4b4134d1bd2268add1f31fb4d6cac7b`,
+root SHA-256 `8cc93fb7ace0889cfeb6518590aa2248e80494941a61fc8368b35ff6709b7b05`,
+2,684,354,560 bytes. Evaluation and contract checks passed. Corrected-image
+cross-host rebuild and runtime acceptance remain separate; prior rebuild
+results do not transfer to these corrected roots. The corrected images then
+passed fresh actual file SHA-256/length and complete offline policy audits,
+plus forced Dungarees `--check` rebuilds with independently matching remote
+hashes. Records are under `/tmp/overalls-corrected-fleet-images-20261018/`.
+Their live creates remain held for deployment and retain separate runtime scope.
 
 Windows
 has a current 64 GiB Desktop Experience catalog image and 96 GiB template
@@ -261,6 +374,14 @@ Both actual-host NixOS toplevel source builds subsequently passed in 691
 seconds with the canonical dependency locks and native-growth correction. This
 establishes release/build closure for those source inputs, separate from later
 handbook-only rebuilds, deployment, live readiness and guest runtime acceptance.
+A later pair of actual-host source builds at `d388cf91a` passed in 264 seconds.
+That result likewise establishes build closure, separately from later merged
+source, deployment and guest acceptance.
+The frozen registry/foreign-mode source on merged `21831915e` then passed both
+actual-host toplevel builds in 247 seconds, recorded in
+`/tmp/overalls-osmatrix-registry-hosts-build.log`. The merged presentation checks
+also passed, including nine JavaScript tests. Later handbook compilation and
+deployment retain separate records.
 
 The handbook unknown-ID property separately corrects a discarded compatibility
 filter: a bounded UTF-8 generator actually excludes listed chapter IDs, draws
@@ -305,14 +426,51 @@ Lilly's full canonical-pin precommit previously passed 610 tests in 150.4
 seconds, seed 947632, Covenant 15/15 and forced Dialyzer with zero errors.
 That pass preceded these intended-count repairs; the final repaired-source
 protocol, Lilly and Marshall full gates remain separate pending records.
+Lilly's final repaired-count full precommit subsequently passed all 610 tests
+in 66.8 seconds, seed 991989, Covenant 15/15, contract regression/format checks
+and forced Dialyzer with zero errors or skips in 12.46 seconds. It exercises the
+55 corrected counts on the frozen dual-family registry source, separately from
+the earlier canonical-pin baseline or native host behavior.
 
 The later protocol merge serializes the control-client fixture and selects the
 CI profile directly on the standalone workspace-source native check. The
 reviewed count stays 500: the incoming two-case outer wrapper and ignored inner
 `max_runs: 50` would reduce exploration from the already passing native count.
-The merged profile/serialization source requires its own focused verification;
+The merged workspace-source profile passed all five focused tests in 0.1
+seconds, seed 926594. Control-client serialization retains its separate focused
+and full verification record;
 the prior 299-test full repaired-count gate passed in 417.3 seconds, seed
 953483, Covenant 14/14 and Dialyzer with zero errors or skips.
+
+The first complete repaired-count Marshall scan ran 1,694 tests with seed
+634032: 1,682 passed, 12 failed and four were excluded, in 1,342.4 seconds.
+Covenant passed 24/24, presentation JavaScript passed 9/9 and the Monospace
+check passed; forced Dialyzer passed with zero errors/skips in 61.36 seconds
+after a 4-minute-50.9-second PLT refresh. Six failures were the
+native TooSlow input-health heuristic including real database, distributed,
+passkey and ten-second SMTP histories. Scoped `profile: :ci` selections retain
+all intended case counts and the actual clocks/assertions. A strict typed C
+diagnostic against the actual linked NIF and its exact setter sequence compared
+the effective settings: only the TooSlow suppression bit differs; seed,
+randomness, database, phases, backend and counts are equal. The remaining
+repairs give each ingress/key history unique fixture ownership, use the intended
+lowercase list alphabet instead of a Range that the generator treated as
+printable ASCII, use `integer(0..2)` for peer selection and retain the existing
+`image_name` projection in SSH's exact field list. These repairs change no
+production behavior and require fresh focused and complete execution; the
+failed full scan is preserved as a failure record.
+The fresh ten-file focused scan passed 59/60 tests in 407.4 seconds, seed
+393478, clearing all twelve original failures. A sibling four-case retry-window
+history then hit the same TooSlow heuristic after three valid cases in 34.55
+seconds; it receives the same scoped profile while retaining all four cases,
+proof mixtures and assertions. Its fresh focused run then passed in 46.4
+seconds, seed 525114 (one selected test, three excluded). Complete final
+Marshall precommit remains pending; the two focused records are separate runs.
+
+The frozen dual-family registry's full protocol precommit then passed 302 tests
+in 413.6 seconds, Covenant 14/14, compiler/format/contracts/ADR checks and
+Dialyzer with zero errors or skips in 3.38 seconds. That exact-source protocol
+gate does not establish the pending consumer or native fleet execution.
 
 The scenario validator additionally recognizes exact qualified Elixir
 `Hegel.check(...)`/`Hegel.run(...)` calls, alongside existing property markers.

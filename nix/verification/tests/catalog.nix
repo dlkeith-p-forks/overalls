@@ -154,6 +154,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   ubuntu-build-boundaries = import ./evaluation/ubuntu-build-boundaries.nix { pkgs = buildPkgs; inherit packages; };
   ubuntu-guest-unit = import ./evaluation/ubuntu-guest.nix { pkgs = buildPkgs; inherit packages; };
   foreign-linux-guest-unit = import ./evaluation/foreign-linux-guests.nix { pkgs = buildPkgs; inherit packages; };
+  foreign-linux-guest-filesystem = import ./evaluation/foreign-linux-filesystem.nix { pkgs = buildPkgs; inherit packages; };
   native-os-guest-unit = import ./evaluation/native-os-guests.nix { pkgs = buildPkgs; inherit packages; };
   native-image-promotion = packages.nativeImagePromotionChecks;
   # Windows guest spike (ADR-0169): VMM identity, firmware provenance and the

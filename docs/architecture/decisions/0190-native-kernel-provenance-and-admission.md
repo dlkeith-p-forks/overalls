@@ -38,9 +38,12 @@ Stock-image constructors still consume unavailable receipts and refuse before
 copying a stock disk. The reviewed FreeBSD candidate now has exact
 five-scenario native evidence and a separate immutable promotion path; unrelated
 candidate builds and exploratory boots grant no admission. The current OmniOS
-candidate has scoped native service, mounted-root growth and same-disk
-process-crash receipts, but those receipts retain `native_admission=false` and
-do not establish physical recovery, isolation, reset stress or fleet acceptance.
+candidate has now satisfied the five exact-image service, growth, policy,
+daemon-recovery and process-crash requirements. Its runtime receipts retain
+`native_admission=false`; a separate immutable promotion and compiled registry
+entry qualify that reviewed identity. The fleet alias still selects its
+unadmitted candidate. These records establish neither physical recovery,
+broader isolation, reset stress nor fleet acceptance.
 
 The existing NixOS, Ubuntu and Windows contracts must remain intact. OS names,
 root formats, boot artifacts and agent capabilities must come from validated
@@ -73,13 +76,13 @@ image contains a tool.
    functions are the sole source for Lilly and Marshall. `freebsd-v1` and
    `illumos-v1` retain their OS-specific wire identities and host-only vsock
    transport shape. Their unqualified `capabilities/1` rows remain all false.
-   `capabilities/2` may grant the reviewed FreeBSD subset only when its agent
+   `capabilities/2` may grant the reviewed native subset only when its agent
    set, image ID and complete normalized manifest or portable boot descriptor
    match the immutable native admission registry. Readiness, trust, terminal,
    workspace, flush, SSH and agent control are enabled for that exact image;
    editor and Inception remain false. The registry requires a cross-built
    kernel, complete agent closure and recorded native machine evidence.
-   OmniOS, retained stock images, changed descriptors and an image ID alone
+   Unreviewed OmniOS candidates, retained stock images, changed descriptors and an image ID alone
    remain refused. `workspace_source_version = 2` alone grants no delivery.
    Reading the host's bounded serial boot log is a separately authorized
    diagnostic under [ADR-0083](0083-terminal-host-stream-and-registry.md), not
@@ -136,14 +139,17 @@ image contains a tool.
     instructions. Candidate constructors retain false admission flags. The
     published image contains only its declared artifacts and manifest, while
     the protocol registry independently controls runtime admission. This
-    authorizes the reviewed FreeBSD image without claiming reproducible native
-    assembly, physical recovery or fleet rollout; OmniOS remains closed until
-    its remaining evidence and promotion requirements are satisfied.
+    authorizes each reviewed immutable image without claiming reproducible
+    native assembly, physical recovery or fleet rollout. The OmniOS identity
+    recorded below now satisfies those existing promotion requirements;
+    unrelated candidates remain closed.
 
 Authorization: the multi-OS guest-image implementation plan of 2026-10-16 and
 the custom native-kernel plan of 2026-10-17, followed by the explicit instruction
-to enable admission. Activation is per reviewed immutable image; OmniOS remains
-closed while its exact service matrix is incomplete.
+to enable admission, continued by the autonomous implementation instruction of
+2026-10-18. Activation is per reviewed immutable image; completing OmniOS's
+existing exact service matrix authorizes its separate immutable promotion and
+registry entry, without changing the admission rationale or capability subset.
 The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.md),
 [ADR-0170](0170-lilly-firmware-guest-launch.md),
 [ADR-0171](0171-windows-guest-agents.md) and
@@ -212,8 +218,9 @@ The Windows decisions remain in [ADR-0169](0169-firmware-booted-windows-guests.m
 
 The [2026-10-18 OS matrix review](../reviews/2026-10-18-guest-os-matrix.md)
 reconciles the seven declared families with six currently admitted catalog rows
-and the opt-in explicit-image acceptance workflow. It adds no native admission
-authority or live seven-OS execution result; this decision remains partially
+and the opt-in explicit-image acceptance workflow. It records the exact OmniOS
+immutable promotion and registry qualification while the selected fleet alias
+still yields six catalog rows. It adds no live seven-OS execution result; this decision remains partially
 implemented with the runtime gaps below.
 
 The implementation is partial. Arch and Alma builders are in
@@ -277,7 +284,14 @@ reviewed FreeBSD image has a separate
 [reviewed manifest](../../../protocol/priv/native/freebsd-14.3.json) and
 [runtime registry](../../../protocol/lib/overalls_protocol/native_admission.ex).
 The [activation review](../reviews/2026-10-17-native-image-admission.md) records
-its exact publication and validation scope. Physical power-loss acceptance and
+its exact publication and validation scope. The matrix review separately binds
+OmniOS disk `45983bb7` to image
+`sha256:98b23b7931bc52d55b3c5b38cc20c97c1c967be96cf301940f88b01c715530d8`,
+all five direct host-KVM scenario receipts, the signed immutable NAR and the
+[OmniOS constructor](../../../nix/domains/artifacts/guest/native-promotion/omnios.nix).
+Its exact artifact/evidence build and dual-family registry refusal property
+passed. Historical narrower or failed candidate records remain distinct.
+Physical power-loss acceptance and
 Marshall-driven fleet execution remain unrecorded.
 
 The [FreeBSD candidate](../../../nix/domains/artifacts/guest/native-kernels/freebsd/default.nix)
@@ -454,7 +468,7 @@ later native FreeBSD policy variant passed 280 seconds over two clean boots:
 all sinks reachable before policy, public traffic and private SSH retained,
 forbidden targets refused, foreign-source guard drops observed and assigned
 source recovered. Its sibling is a Linux sink behind the peer uplink; direct
-native peer-VM/TAP, OmniOS, jail, physical-host and multi-host isolation remain
+native peer-VM/TAP, jail, physical-host and multi-host isolation remain
 gaps. The final blocking-flush image also passed that same two-boot policy
 boundary. The original candidate receipts retain admission false; the later
 exact-image approval is recorded separately from those execution results.
@@ -518,11 +532,11 @@ native service or admission. The sealed `wz4r` disk was later found to contain
 a stale cached kit with the former wildcard config and pre-fencing receiver, so
 it does not evidence this current source behavior. The source-derived kit
 `/nix/store/w5mg2jw3c2sispdkfg1r9ys5vxm41a97-overalls-omnios-native-image-candidate-kit`
-requires fresh target-native assembly and replay.
-The final kit includes
+then required fresh target-native assembly and replay.
+That earlier kit includes
 the executor lease/stop correction and both SSH fixes. Runtime, complete
-services, growth, recovery and admission remain false or pending for these
-exact bytes; the admission review records their separate replay requirements.
+services, growth, recovery and admission were false or pending at that point;
+the matrix review preserves that history separately from final qualification.
 
 Follow-up [matrix review](../reviews/2026-10-18-guest-os-matrix.md) evidence
 separates source corrections from fresh-image qualification. OmniOS root
@@ -533,11 +547,14 @@ Native agent SMF keeps contract duration and ignores only signal failures so
 the existing child supervisor can replace one killed daemon; exact-policy host
 refusals passed. Listener close also wakes pending accept children under the
 socket lock; host sanitizers and a missing-wake mutant check passed. Fresh native
-assembly passed for the combined sealed `45983bb7` disk, while current-image
-runtime scenarios remain pending. Core,
+assembly passed for the combined sealed `45983bb7` disk. That exact disk then
+passed all five direct host-KVM service/growth/policy/daemon-recovery/SIGKILL
+scenarios, ordinary transport and one reset event. Its immutable promotion,
+signed-cache custody and exact registry qualification passed separately. Core,
 hardware and empty-contract failures retain outer restart authority. A killed
 shell supervisor with surviving children remains an explicit recovery gap.
-These corrections change neither this decision, capabilities nor admission status.
+The source corrections preserve this decision's existing boundaries; the later
+per-image qualification enables only its previously authorized native subset.
 
 ## Open questions
 
@@ -545,15 +562,17 @@ These corrections change neither this decision, capabilities nor admission statu
   the installable downstream image and `illumos` is the stable protocol label.
   A direct illumos.org image source is unavailable: the upstream project
   identifies OmniOS, OpenIndiana and Tribblix as downstream distributions.
-- Whether the corrected exact OmniOS payload passes the remaining current
-  boot/service/restart matrix, including supervised daemon recovery and the
-  600-second readiness budget. Its process-crash/same-disk receipt is recorded.
+- The exact OmniOS five-scenario matrix and individual daemon replacement have
+  passed. Its live 16 GiB fleet launch, complete ordinary lifecycle, readiness
+  behavior under fleet load and shell-supervisor death with surviving children
+  still need independent records.
 - Reproducible native full-disk assembly remains unrecorded. The exact FreeBSD
-  artifact is promoted by reviewed immutable bytes and hash-bound native
+  and OmniOS artifacts are promoted by reviewed immutable bytes and hash-bound native
   evidence; candidate manifests alone remain insufficient.
-- OmniOS wrong-CID injection, reset/DMA, physical recovery and broader isolation
-  scenarios retain their separate gaps. Enabling the reviewed FreeBSD image
-  does not close them or activate the OmniOS family.
+- OmniOS wrong-CID injection, repeated/racing reset and DMA safety, physical
+  recovery and broader isolation retain separate gaps. The one reset receipt
+  and exact image promotion do not establish those broader guarantees or admit
+  unrelated members of either native family.
 
 ## Related decisions
 

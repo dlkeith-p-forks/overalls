@@ -3,27 +3,42 @@ defmodule OverallsProtocol.NativeAdmission do
 
   alias OverallsProtocol.ImageManifest
 
-  @manifest_file Path.expand("../../priv/native/freebsd-14.3.json", __DIR__)
-  @external_resource @manifest_file
-  @manifest @manifest_file |> File.read!() |> JSON.decode!()
-  @image (case ImageManifest.validate(@manifest) do
-            {:ok, image} -> image
-            {:error, reason} -> raise "invalid reviewed native manifest: #{reason}"
-          end)
-  @bundle %{
-    image_id: @image.id,
-    architecture: :x86_64,
-    boot_kind: :firmware,
-    os: :freebsd,
-    guest_agents: :freebsd_v1,
-    pci: true,
-    firmware_bytes: @manifest["boot"]["firmware"]["bytes"],
-    kernel: @image.kernel
+  @freebsd_manifest_file Path.expand("../../priv/native/freebsd-14.3.json", __DIR__)
+  @illumos_manifest_file Path.expand("../../priv/native/omnios-r151050.json", __DIR__)
+  @external_resource @freebsd_manifest_file
+  @external_resource @illumos_manifest_file
+  @manifests %{
+    freebsd: @freebsd_manifest_file |> File.read!() |> JSON.decode!(),
+    illumos: @illumos_manifest_file |> File.read!() |> JSON.decode!()
   }
+  @images Map.new(@manifests, fn {os, manifest} ->
+            case ImageManifest.validate(manifest) do
+              {:ok, %{os: ^os} = image} -> {os, image}
+              _ -> raise "invalid reviewed native manifest for #{os}"
+            end
+          end)
+  @bundles Map.new(@images, fn {os, image} ->
+             {os,
+              %{
+                image_id: image.id,
+                architecture: image.architecture,
+                boot_kind: image.boot_kind,
+                os: image.os,
+                guest_agents: image.guest_agents,
+                pci: image.pci,
+                firmware_bytes: image.manifest["boot"]["firmware"]["bytes"],
+                kernel: image.kernel
+              }}
+           end)
+  @reviewed_identities Map.values(@images) ++ Map.values(@bundles)
 
   @doc "The production manifest whose exact bytes have recorded native acceptance evidence."
   @spec reviewed_manifest() :: map()
-  def reviewed_manifest, do: @manifest
+  def reviewed_manifest, do: reviewed_manifest(:freebsd)
+
+  @doc "The exact reviewed production manifest for the selected native OS family."
+  @spec reviewed_manifest(:freebsd | :illumos) :: map()
+  def reviewed_manifest(os) when os in [:freebsd, :illumos], do: Map.fetch!(@manifests, os)
 
   # @cc [owner:ghuntley,label:security;protocol] native-admission-exact-reviewed-identity
   # A normalized native image or portable boot bundle MUST match the complete
@@ -34,7 +49,7 @@ defmodule OverallsProtocol.NativeAdmission do
   # nonnative validated identities retain their existing admission semantics.
   @spec admitted?(term()) :: boolean()
   def admitted?(%{guest_agents: agents} = identity) when agents in [:freebsd_v1, :illumos_v1],
-    do: identity == @image or identity == @bundle
+    do: identity in @reviewed_identities
 
   def admitted?(%{guest_agents: agents}) when agents in [:linux, :none, :windows_v1], do: true
   def admitted?(_), do: false

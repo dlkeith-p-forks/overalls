@@ -55,7 +55,7 @@ defmodule OverallsProtocol.GuestAgents do
   # @cc [owner:ghuntley,label:security;protocol] guest-agents-native-context-required
   # Native capabilities MUST require a validated exact reviewed image or bundle
   # with the matching agent set; missing or mismatched context MUST return the
-  # all-false row. FreeBSD admission MUST NOT grant editor or Inception support.
+  # all-false row. Native admission MUST NOT grant editor or Inception support.
   @spec capabilities(t(), term()) :: capabilities()
   def capabilities(agents, %{guest_agents: agents} = identity)
       when agents in [:freebsd_v1, :illumos_v1] do

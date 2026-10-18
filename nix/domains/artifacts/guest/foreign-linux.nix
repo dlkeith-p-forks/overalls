@@ -54,13 +54,15 @@ let
     volumeLabel = "overalls-${distribution}";
     populateImageCommands = ''
       mkdir -p ./files
-      # The source extraction preserves root ownership and restrictive modes,
-      # but this builder writes deterministic service files unprivileged under
-      # fakeroot. Copy without ownership/modes and make the staging tree
-      # writable for assembly; restore the non-world-writable boundary before
-      # mkfs applies root ownership to the image.
-      cp -a --no-preserve=mode,ownership,links ${baseRoot}/. ./files/
-      chmod -R a+rwX ./files
+      # @cc [owner:ghuntley,label:build;security] foreign-linux-upstream-executable-modes
+      # Assembly MUST preserve upstream executable bits, including init, its
+      # dynamic loader and the login shell. Only the build owner gains staging
+      # write access; image assembly MUST NOT grant group/other write access.
+      # Store normalization removes write access but preserves executable bits.
+      # Dropping modes here also removes x, which chmod's conditional X cannot
+      # recover and makes switch_root fail before any guest service can start.
+      cp -a --no-preserve=ownership,links ${baseRoot}/. ./files/
+      chmod -R u+rwX ./files
       rm -rf ./files/nix
       mkdir -p ./files/etc ./files/etc/ssh/sshd_config.d ./files/etc/pam.d ./files/etc/sudoers.d ./files/etc/systemd/system \
         ./files/etc/systemd/system/multi-user.target.wants \

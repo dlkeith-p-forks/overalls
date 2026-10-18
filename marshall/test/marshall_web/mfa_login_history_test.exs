@@ -33,6 +33,9 @@ defmodule MarshallWeb.MFALoginHistoryTest do
                 ),
                 max_length: 5
               ),
+            # Real LiveView/passkey work consumes the engine's input timer.
+            # Keep every history and use CI's scoped slow-input allowance.
+            profile: :ci,
             test_cases: 20
           ) do
       # Registration plus four fixed ceremonies plus five generated ceremonies
