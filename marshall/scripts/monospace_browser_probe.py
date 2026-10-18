@@ -768,9 +768,7 @@ def run(fixture: Context, artifacts: Path) -> None:
                     expect(page.locator("#machine-connect")).to_be_visible()
                 if name == "boot-log":
                     check_machine_tabs(page)
-                    expect(page.locator("#machine-boot-log")).to_have_attribute(
-                        "aria-current", "page"
-                    )
+                    expect(page.locator(".machine-tabs #machine-boot-log")).to_have_count(0)
                     expect(page.locator("#terminal-boot-view")).to_be_visible()
                     expect(page.locator("#terminal-status")).to_have_text("Boot log · read-only")
                     expect(page.locator("#terminal-create")).to_have_count(0)

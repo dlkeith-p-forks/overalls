@@ -12032,7 +12032,7 @@
           "execution": "recorded",
           "path": "marshall/test/marshall_web/terminal_live_test.exs",
           "assertion": "the Boot log entry reads host diagnostics without automatically opening a guest terminal",
-          "scope": "LiveView and synthetic host-stream fixtures deliver bounded diagnostic bytes with zero automatically opened registry rows across refresh. Navigation component fixtures expose Boot log while image terminal capability is false. No actual browser, Lilly host or native guest.",
+          "scope": "LiveView and synthetic host-stream fixtures deliver bounded diagnostic bytes with zero automatically opened registry rows across refresh. Header component fixtures link Boot log from the connection explanation while image terminal capability is false and render no Boot log tab. No actual browser, Lilly host or native guest.",
           "record": "docs/architecture/reviews/2026-10-17-host-boot-log-authorization.md",
           "record_assertion": "LiveView and navigation suite passed 27 tests"
         },

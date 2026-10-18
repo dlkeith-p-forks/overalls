@@ -71,9 +71,11 @@ defmodule MarshallWeb.WorkspaceComponents do
   # Hiding is presentation only; server-side authorities refuse independently.
 
   # @cc [owner:ghuntley,label:product;security] workspace-host-boot-log-entry
-  # Machine readers MUST have a distinct Boot log entry regardless of guest
-  # terminal capability. This entry MUST select read-only host diagnostics;
-  # navigation MUST NOT grant terminal or host-file authority.
+  # Machine navigation MUST NOT carry a Boot log tab. Readers of a machine whose
+  # image lacks guest SSH MUST get a Boot log link in the connection explanation,
+  # since host diagnostics are their only console. The link MUST select
+  # read-only host diagnostics; navigation MUST NOT grant terminal or host-file
+  # authority.
 
   # @cc [owner:ghuntley,label:product] workspace-global-thread-entry
   # Machine workspace navigation MUST omit the machine-scoped Agents entry;
@@ -87,12 +89,6 @@ defmodule MarshallWeb.WorkspaceComponents do
         navigate={~p"/machines/#{@vm.id}"}
         aria-current={@active == "terminal" && "page"}
       >Terminal</.link>
-      <.link
-        :if={@vm.permissions.read}
-        id="machine-boot-log"
-        navigate={~p"/machines/#{@vm.id}/terminals?view=boot-log"}
-        aria-current={@active == "boot-log" && "page"}
-      >Boot log</.link>
       <.link
         :if={@vm.permissions.manage && OverallsProtocol.ProfilePolicy.allows?(@vm.profile, :sharing)}
         navigate={~p"/machines/#{@vm.id}/access"}
@@ -244,44 +240,49 @@ defmodule MarshallWeb.WorkspaceComponents do
       >
         <h2 id="machine-connect-title">Connect from your computer</h2>
         <%= if @connection && capability?(@vm, :ssh) do %>
-          <h3 class="connection-platform">
-            Linux / macOS
-            <span class="muted">— installs Overalls, configures SSH, and connects to this machine.</span>
-          </h3>
-          <div id="ssh-connection-commands" class="connection-command">
-            <pre><code id="machine-install-command">{@connection.install}</code></pre>
-            <button
-              type="button"
-              class="console-button primary"
-              data-copy-command="machine-install-command"
-            >Copy</button>
-          </div>
-          <div class="connection-secondary">
-            <span class="muted">Already installed?</span><code id="machine-ssh-command">{@connection.ssh}</code>
-            <button
-              type="button"
-              class="console-button compact"
-              data-copy-command="machine-ssh-command"
-              aria-label="Copy SSH command"
-            >Copy</button>
-          </div>
-          <details id="machine-connect-windows">
-            <summary>Windows (PowerShell)</summary>
-            <p class="muted">
-              Installs Overalls for Windows, offers OpenSSH 9.6 or newer through winget
-              when the built-in client is older, configures SSH, and connects.
-            </p>
-            <div class="connection-command">
+          <p class="muted">
+            Installs Overalls, configures SSH, and connects to this machine. On Windows
+            the installer also offers OpenSSH 9.6 or newer through winget when the
+            built-in client is older.
+          </p>
+          <h3 class="connection-step">Install and connect</h3>
+          <div class="connection-grid">
+            <span class="connection-platform muted">Linux / macOS</span>
+            <div id="ssh-connection-commands" class="connection-command">
+              <pre><code id="machine-install-command">{@connection.install}</code></pre>
+              <button
+                type="button"
+                class="console-button primary"
+                data-copy-command="machine-install-command"
+                aria-label="Copy Linux and macOS install command"
+              >Copy</button>
+            </div>
+            <span class="connection-platform muted">Windows</span>
+            <div id="machine-connect-windows" class="connection-command">
               <pre><code id="machine-install-command-windows">{@connection.install_windows}</code></pre>
               <button
                 type="button"
                 class="console-button primary"
                 data-copy-command="machine-install-command-windows"
-                aria-label="Copy Windows install command"
+                aria-label="Copy Windows PowerShell install command"
               >Copy</button>
             </div>
-            <div class="connection-secondary">
-              <span class="muted">Already installed?</span><code id="machine-ssh-command-windows">{@connection.ssh_windows}</code>
+          </div>
+          <h3 class="connection-step">Already installed</h3>
+          <div class="connection-grid">
+            <span class="connection-platform muted">Linux / macOS</span>
+            <div class="connection-command">
+              <pre><code id="machine-ssh-command">{@connection.ssh}</code></pre>
+              <button
+                type="button"
+                class="console-button compact"
+                data-copy-command="machine-ssh-command"
+                aria-label="Copy SSH command"
+              >Copy</button>
+            </div>
+            <span class="connection-platform muted">Windows</span>
+            <div class="connection-command">
+              <pre><code id="machine-ssh-command-windows">{@connection.ssh_windows}</code></pre>
               <button
                 type="button"
                 class="console-button compact"
@@ -289,13 +290,20 @@ defmodule MarshallWeb.WorkspaceComponents do
                 aria-label="Copy Windows SSH command"
               >Copy</button>
             </div>
-          </details>
+          </div>
         <% else %>
           <p id="machine-connect-unavailable" class="muted">
             <%= cond do %>
               <% capability?(@vm, :available) && !capability?(@vm, :ssh) -> %>
                 This machine's image has no guest agents yet: SSH, the browser terminal
-                and agents are unavailable. Use Boot log to view the read-only host console.
+                and agents are unavailable. Use
+                <.link
+                  :if={@vm.permissions.read}
+                  id="machine-boot-log"
+                  navigate={~p"/machines/#{@vm.id}/terminals?view=boot-log"}
+                  aria-current={@active == "boot-log" && "page"}
+                >Boot log</.link>
+                to view the read-only host console.
               <% !@vm.permissions.write -> %>
                 SSH connection requires write access to this machine.
               <% @vm.profile == :inception -> %>

@@ -48,8 +48,8 @@ computer" section with a one-line installer that sets up SSH and connects to
 that machine:
 
 - Linux and macOS: the `curl … /bin/install.sh | bash` command.
-- Windows: open "Windows (PowerShell)" and run its `powershell …` command in
-  PowerShell. Windows needs OpenSSH 9.6 or newer; the installer offers to
+- Windows: run the Windows `powershell …` command under "Install and connect"
+  in PowerShell. Windows needs OpenSSH 9.6 or newer; the installer offers to
   install it with winget when the built-in client is older. Afterwards connect
   with `overalls ssh HOST`.
 

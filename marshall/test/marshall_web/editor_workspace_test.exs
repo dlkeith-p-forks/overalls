@@ -177,12 +177,7 @@ defmodule MarshallWeb.EditorWorkspaceTest do
     assert Enum.count(LazyHTML.query(linux, "a[href='/machines/#{c.vm.id}']")) == 1
     assert Enum.count(LazyHTML.query(linux, "#open-vscode")) == 1
 
-    assert Enum.count(
-             LazyHTML.query(
-               linux,
-               "#machine-boot-log[href='/machines/#{c.vm.id}/terminals?view=boot-log']"
-             )
-           ) == 1
+    assert Enum.empty?(LazyHTML.query(linux, "#machine-boot-log"))
 
     windows =
       render.(
@@ -203,10 +198,12 @@ defmodule MarshallWeb.EditorWorkspaceTest do
     assert Enum.empty?(LazyHTML.query(windows, "#open-vscode"))
     assert Enum.empty?(LazyHTML.query(windows, "#open-vscode-disabled"))
 
+    assert Enum.empty?(LazyHTML.query(windows, ".machine-tabs #machine-boot-log"))
+
     assert Enum.count(
              LazyHTML.query(
                windows,
-               "#machine-boot-log[href='/machines/#{c.vm.id}/terminals?view=boot-log']"
+               "#machine-connect-unavailable #machine-boot-log[href='/machines/#{c.vm.id}/terminals?view=boot-log']"
              )
            ) == 1
 

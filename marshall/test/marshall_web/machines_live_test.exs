@@ -21,7 +21,8 @@ defmodule MarshallWeb.MachinesLiveTest do
 
     assert has_element?(view, "#machine-install-command", "/bin/install.sh")
     assert has_element?(view, "#machine-ssh-command", "ssh ")
-    assert has_element?(view, "#machine-connect-windows summary", "Windows (PowerShell)")
+    assert has_element?(view, "#machine-connect-windows #machine-install-command-windows")
+    refute has_element?(view, "#machine-connect details")
     assert has_element?(view, "#machine-install-command-windows", "/bin/install.ps1")
     assert has_element?(view, "#machine-install-command-windows", "-ExecutionPolicy Bypass")
     assert has_element?(view, "#machine-ssh-command-windows", "overalls ssh ")
@@ -41,7 +42,10 @@ defmodule MarshallWeb.MachinesLiveTest do
            )
 
     refute has_element?(view, "#machine-workspace-header summary", "Machine ID")
-    assert has_element?(view, "#machine-connect h3", "Linux / macOS")
+    assert has_element?(view, "#machine-connect h3", "Install and connect")
+    assert has_element?(view, "#machine-connect h3", "Already installed")
+    assert has_element?(view, "#machine-connect .connection-platform", "Windows")
+    refute has_element?(view, "#machine-connect h3", "Already installed?")
   end
 
   test "Customer hides sharing but retains owner lifecycle controls", %{conn: conn, owner: owner} do

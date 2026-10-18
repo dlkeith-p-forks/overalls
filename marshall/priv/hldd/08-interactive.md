@@ -58,7 +58,7 @@ Retirement and current login/write/execution refusals remain authoritative.
 Pre-cutover leases closed during the breaking database migration; this continuity
 rule applies to subsequent generated-identity admissions.
 
-Every machine page (Terminal, Boot log, Access, Settings, Agents and Resize)
+Every machine page (Terminal, Access, Settings, Agents, Resize and the Boot log view)
 shares one header. A bordered heading box carries the machine name, its state
 label (`[Running]`, `[Stopping]`, …) and an operating-system label that is the
 registered display name of the machine's immutable image (`[NixOS]`,
@@ -67,9 +67,11 @@ missing shows no operating-system label rather than a placeholder. Beneath them
 sit the resource facts (vCPU, memory, disk, profile) and the machine ID with a
 one-line **Copy** control; the authorized power actions and **Open VS Code**
 stay on the right and wrap under the summary on phone widths. The "Connect from
-your computer" box follows with the Linux/macOS sub-heading and explanation on
-one line, the installer command and its **Copy** button, the "Already
-installed?" SSH command, and the Windows (PowerShell) disclosure. Copying any
+your computer" box follows with one explanation and two steps, "Install and
+connect" and "Already installed"; each step lists Linux / macOS and Windows
+side by side as a platform label beside its command and **Copy** button, so
+every platform's commands are visible without a disclosure and the "already
+installed" wording appears once. Copying any
 command or the machine ID writes only the displayed text to the user's own
 clipboard and reports "Machine ID copied." or "Command copied." in the status
 line; a refused clipboard write tells the user to select the text manually. The
@@ -504,8 +506,11 @@ disabled. Each response holds at most 16 KiB plus a cursor; it returns no guest
 socket path or boot challenge and never dials the guest. A newer command or
 changed boot/log incarnation refuses the read. Sparse serial output remains
 observation, not proof of the failed guest stage.
-The machine navigation's `Boot log` link opens
-`/machines/:id/terminals?view=boot-log` directly. This diagnostic view selects
+The machine navigation has no Boot log tab. A machine whose image has no
+guest agents, whose only console is host diagnostics, links `Boot log` from
+its connection explanation; the link opens
+`/machines/:id/terminals?view=boot-log` directly, and that URL stays
+available for every machine reader. This diagnostic view selects
 the read-only serial pane and skips guest-session listing and automatic shell
 creation, so pending and failed boots do not depend on a guest terminal.
 A local browser fixture passed desktop/mobile and both themes, grid, contrast,
@@ -628,7 +633,7 @@ after old-account cleanup; old sessions retain their original registration ID.
 ### Windows workstations
 
 A Windows 10, 11 or Server user installs the CLI from the machine page's
-"Windows (PowerShell)" section
+Windows row under "Install and connect"
 ([ADR-0172](repo:docs/architecture/decisions/0172-windows-workstation-client.md)).
 The command runs [`/bin/install.ps1`](repo:marshall/priv/overalls-install.ps1),
 templated with the same deployment trust as `install.sh` and refused (503)

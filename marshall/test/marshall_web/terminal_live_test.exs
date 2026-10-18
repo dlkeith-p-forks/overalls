@@ -14,7 +14,7 @@ defmodule MarshallWeb.TerminalLiveTest do
       conn |> init_test_session(%{}) |> AshAuthentication.Plug.Helpers.store_in_session(actor)
 
     assert {:ok, view, _} = live(conn, "/machines/#{fixture.vm.id}/terminals?view=boot-log")
-    assert has_element?(view, "#machine-boot-log[aria-current='page']")
+    refute has_element?(view, ".machine-tabs #machine-boot-log")
     assert has_element?(view, "#terminal-client[data-view='boot-log']")
     refute has_element?(view, "#terminal-create")
     assert Marshall.Compute.Ledger.read!(Marshall.Terminal.Session, vm_id: fixture.vm.id) == []
@@ -22,7 +22,7 @@ defmodule MarshallWeb.TerminalLiveTest do
     render_hook(view, "terminal_boot_log", %{"cursor" => "0"})
     assert_reply(view, %{ok: true, next: 0, text: ""})
     send(view.pid, :refresh_terminals)
-    assert has_element?(view, "#machine-boot-log[aria-current='page']")
+    assert has_element?(view, "#terminal-client[data-view='boot-log']")
     assert Marshall.Compute.Ledger.read!(Marshall.Terminal.Session, vm_id: fixture.vm.id) == []
   end
 

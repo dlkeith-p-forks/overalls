@@ -70,8 +70,9 @@ update by renaming over the running binary, which Windows forbids.
    `config-ssh --staged-installer` with the downloaded binary before installing
    it, adds the binary directory to the user PATH and connects with
    `overalls ssh <host>`. The machine page keeps its Linux/macOS commands and adds
-   a "Windows (PowerShell)" section with the equivalent install and SSH
-   commands.
+   the equivalent Windows PowerShell install and SSH commands beside them (a
+   Windows row under each of the "Install and connect" and "Already installed"
+   steps; originally a collapsible section).
 
 ## Alternatives
 
