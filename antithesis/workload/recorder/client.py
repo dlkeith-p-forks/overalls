@@ -303,6 +303,12 @@ class Client:
                 or operation["action"] not in ("start", "stop", "restart", "kill")
             ):
                 raise ValueError("unreviewed service operation")
+        elif op == "spool_quota":
+            if set(operation) != {"op", "profile"} or operation["profile"] not in (
+                "default",
+                "pressure",
+            ):
+                raise ValueError("unreviewed spool quota operation")
         elif (
             op not in ("pressure_fill", "pressure_clear", "replay", "status") or len(operation) != 1
         ):

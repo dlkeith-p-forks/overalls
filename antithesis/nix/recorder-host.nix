@@ -22,7 +22,7 @@ let
         traceAccount = "ktr-${builtins.substring 0 16 (builtins.hashString "sha256" "recorder-peer")}";
         traceGroup = "ktp-${builtins.substring 0 16 (builtins.hashString "sha256" "recorder-peer")}";
         requestIdentities = import ../../nix/domains/system/otel-fleet/request-identities.nix;
-        traceRuntime = pkgs.writeText "overalls-recorder-peer-trace.json" (builtins.toJSON {
+        traceSettings = {
           service = "galileo";
           host = "recorder-host";
           producer_user = "recorder-peer";
@@ -36,7 +36,13 @@ let
           quota_bytes = 62914560;
           pending_quota_bytes = 33554432;
           retention_seconds = 7776000;
-        });
+        };
+        traceRuntime = pkgs.writeText "overalls-recorder-peer-trace.json" (builtins.toJSON traceSettings);
+        # Pending-quota window: the same spool configuration with the minimum
+        # pending quota (one body limit), selected only for a bounded window at
+        # the end of a traces command so the real 429 path is reachable.
+        tracePressureRuntime = pkgs.writeText "overalls-recorder-peer-trace-pressure.json"
+          (builtins.toJSON (traceSettings // { pending_quota_bytes = 262144; }));
       in {
         imports = [ ../../nix/domains/system/otel-fleet/request-recorder.nix ];
         system.stateVersion = "26.05";
@@ -67,6 +73,7 @@ let
         };
         environment.systemPackages = [ pkgs.python313 pkgs.coreutils pkgs.util-linux pkgs.sqlite spool ];
         environment.etc."overalls-recorder-trace-config".source = traceRuntime;
+        environment.etc."overalls-recorder-trace-config-pressure".source = tracePressureRuntime;
         users.groups.recorder-peer = {};
         users.users.recorder-peer = {
           isSystemUser = true; group = "recorder-peer";
@@ -94,6 +101,9 @@ let
           "d /archive 0755 root root -"
           "d /archive/state 0700 ${traceAccount} ${traceAccount} -"
           "d /archive/pressure 0700 root root -"
+          # Root-owned selector the bridge retargets; it boots on the default.
+          "d /run/overalls-trace-recorder-profile 0755 root root -"
+          "L+ /run/overalls-trace-recorder-profile/config.json - - - - /etc/overalls-recorder-trace-config"
         ];
         # @cc [owner:ghuntley,label:verification;recovery] recorder-peer-independent-effects
         # The BEAM producer MUST own the attempted-effect ledger and survive
@@ -137,7 +147,7 @@ let
           requires = [ "archive.mount" ];
           serviceConfig = {
             Type = "exec";
-            ExecStart = "${spool}/bin/overalls-trace-spool ${traceRuntime}";
+            ExecStart = "${spool}/bin/overalls-trace-spool /run/overalls-trace-recorder-profile/config.json";
             User = traceAccount; Group = traceAccount;
             SupplementaryGroups = [ traceGroup ];
             ReadWritePaths = [ "/archive" "/run/overalls-trace-recorder" "/run/overalls-trace-recorder-source" ];

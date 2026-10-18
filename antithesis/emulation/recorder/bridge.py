@@ -32,6 +32,11 @@ UNITS = {
     "spool": "overalls-trace-recorder.service",
 }
 ACTIONS = {"start", "stop", "restart", "kill"}
+SPOOL_PROFILE = Path("/run/overalls-trace-recorder-profile/config.json")
+SPOOL_CONFIGS = {
+    "default": Path("/etc/overalls-recorder-trace-config"),
+    "pressure": Path("/etc/overalls-recorder-trace-config-pressure"),
+}
 
 
 def atomic_bytes(path: Path, body: bytes) -> None:
@@ -164,6 +169,17 @@ def pressure(fill: bool) -> dict[str, object]:
     return {"status": "ok" if exhausted else "unavailable", "enospc": exhausted}
 
 
+def spool_quota(profile: object) -> dict[str, object]:
+    """Select a fixed spool configuration, then restart the spool onto it."""
+    if not isinstance(profile, str) or profile not in SPOOL_CONFIGS:
+        return {"status": "invalid"}
+    staged = SPOOL_PROFILE.with_name(".config.json.new")
+    staged.unlink(missing_ok=True)
+    staged.symlink_to(SPOOL_CONFIGS[profile])
+    staged.replace(SPOOL_PROFILE)
+    return service("restart", "spool")
+
+
 def replay() -> dict[str, object]:
     if active(UNITS["spool"]):
         return {"status": "unavailable"}
@@ -201,6 +217,8 @@ def dispatch(raw: object) -> dict[str, object]:
         return pressure(True)
     if op == "pressure_clear" and set(raw) == {"op"}:
         return pressure(False)
+    if op == "spool_quota" and set(raw) == {"op", "profile"}:
+        return spool_quota(raw["profile"])
     if op == "replay" and set(raw) == {"op"}:
         return replay()
     if op == "status" and set(raw) == {"op"}:

@@ -27,6 +27,8 @@ LOG = logging.getLogger(__name__)
 PRESSURE_BUDGET_SECONDS = 20.0
 ENOSPC_WRITE_ATTEMPTS = 32
 REOPEN_ANSWER_ATTEMPTS = 60
+# Large batches tried while the minimum pending quota is selected.
+QUOTA_WINDOW_ATTEMPTS = 40
 MAX_PENDING = 4096
 
 
@@ -563,7 +565,52 @@ def run_traces() -> int:
         prior = current
         synchronized = True
     _physical_pressure(client, config, prior, ((attempts + 258) % 999_999) + 1)
+    _pending_quota_window(client, config, ((attempts + 300) % 999_999) + 1)
     return 0
+
+
+def _pending_quota_window(client: Client, config: Config, sequence: int) -> None:
+    """Select the minimum pending quota briefly so the real spool can refuse with 429.
+
+    The 60 MiB archive quota exceeds the 57 MB device and pending custody never
+    drains in this fixture, so neither quota is reachable organically. The spool
+    restarts on a fixed configuration whose only change is the minimum pending
+    quota; the default is restored before the command ends.
+    """
+    selected = client.control({"op": "spool_quota", "profile": "pressure"})
+    try:
+        if selected is None or selected.status != "ok":
+            LOG.info("Trace spool pending quota window unexercised: selection unavailable")
+            return
+        prior = _archive(config)
+        if prior is None:
+            LOG.info("Trace spool pending quota window unexercised: archive unavailable")
+            return
+        for index in range(QUOTA_WINDOW_ATTEMPTS):
+            reply = client.call(
+                {"op": "trace", "sequence": ((sequence + index) % 999_999) + 1, "size": "large"}
+            )
+            current = _archive(config)
+            if reply is None or current is None or reply.status not in ("200", "429", "503"):
+                # The restarted spool may not have bound ingest yet.
+                time.sleep(0.25)
+                continue
+            if reply.status == "429":
+                always(
+                    _retained(prior, current, time.time_ns()) and set(current) == set(prior),
+                    "trace spool saturation preserves accepted archive bytes and refuses on exhausted backing",
+                )
+                reachable("Trace spool reached real archive or pending quota refusal")
+                return
+            if reply.status == "503":
+                LOG.info("Trace spool pending quota window unexercised: storage unavailable")
+                return
+            prior = current
+        LOG.info("Trace spool pending quota window unexercised: no refusal observed")
+    finally:
+        restored = client.control({"op": "spool_quota", "profile": "default"})
+        if restored is None or restored.status != "ok":
+            LOG.error("trace spool default quota restoration unavailable")
 
 
 def main(mode: str) -> int:

@@ -286,8 +286,20 @@ real ENOSPC 25 times and its refusal 18 times without a counterexample, but the
 20 s organic loop never filled the 57 MB archive, so its exhausted-backing,
 storage-refusal and saturation checks were never evaluated. The ENOSPC path now
 evaluates those same checks against its confirmed zero-free backing and
-refused write; archive quota (`429`) refusal remains unexercised. Its evidence
-is emulated, not native.
+refused write. Run `eb926cce7fee3dfcad1d6d8172b28d29-65-0` then passed 65 of
+67 properties; only quota refusal and the hint-loss anchor stayed unreached.
+The 60 MiB archive quota exceeds the 57 MB archive device, so ENOSPC always
+comes first, and pending custody never drains in this fixture, so the 32 MiB
+pending quota needs far more intake than a timeline sends. Each traces command
+now ends with a bounded window in which the bridge restarts the real spool on a
+fixed configuration whose only change is the minimum pending quota (one body
+limit), sends large batches until the production admission check refuses with
+`429`, checks that the refusal kept accepted bytes, and restores the default
+quota before returning. It proves the pending-quota refusal path, not the
+production quota values or the archive-quota branch. The hint-loss anchor
+cannot fire under hosted faults: Oban reports `:isolated` only after 120 s with
+no notifier ping, beyond any recorded timeline. Its evidence is emulated, not
+native.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub

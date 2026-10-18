@@ -98,7 +98,11 @@ anchor, `Marshall notifier recovered after losing a host command hint`, when
 its hint relay observes the Oban notifier leave `:isolated`. That anchor marks
 the window in which hints may have been dropped; it does not observe a lost
 hint, a committed command, a reader re-read or Lilly progress, and it does not
-satisfy either hint-loss catalog primary.
+satisfy either hint-loss catalog primary. It cannot fire under hosted faults:
+Oban's Sonar reports `:isolated` only after 120 s with no notifier ping at all
+(a fixed dependency default, not configuration), while hosted timelines end
+after roughly three minutes; run `eb926cce7fee3dfcad1d6d8172b28d29-65-0`
+recorded no isolation in any timeline.
 The default graph has no targeted notifier isolation or reviewed action that
 commits a uniquely identified host command while PostgreSQL and Lilly's reader
 remain healthy. A session receipt and a generic socket disconnect do not
