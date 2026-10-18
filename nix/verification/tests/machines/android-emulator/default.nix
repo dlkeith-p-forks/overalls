@@ -36,6 +36,7 @@ pkgs.testers.runNixOSTest {
     users.groups.android-test = { };
     systemd.services.android-test-display = {
       wantedBy = [ "multi-user.target" ];
+      environment = { JAVA_HOME = "${pkgs.jdk}"; };
       serviceConfig = {
         Type = "simple";
         User = "android-test";
