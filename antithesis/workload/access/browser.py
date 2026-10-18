@@ -8,6 +8,7 @@ import logging
 import os
 import stat
 import time
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
@@ -57,12 +58,13 @@ def _jwt_jti(token: str) -> str | None:
     return None
 
 
-def _token_path(link: str, expected_origin: str) -> tuple[str, str] | None:
+def _token_path(link: str, marshall_origins: Sequence[str]) -> tuple[str, str] | None:
+    """The delivering Oban node may be either replica, so the link's host may be
+    any configured Marshall origin; the token path is replayed on the requester."""
     parsed = urlparse(link)
-    expected = urlparse(expected_origin)
     if (
         parsed.scheme != "https"
-        or parsed.netloc != expected.netloc
+        or parsed.netloc not in {urlparse(origin).netloc for origin in marshall_origins}
         or not parsed.path.startswith("/magic_link/")
     ):
         return None
@@ -110,7 +112,7 @@ def _request_and_page(
     link = _value(links.wait_link(email, cursor, 30))
     if link is None:
         return None
-    parsed = _token_path(link, origin)
+    parsed = _token_path(link, config.marshall_urls)
     if parsed is None:
         return None
     path, token = parsed
@@ -147,30 +149,40 @@ def verify_fixture_login(config: Config, login: Login, actor: Actor, webauthn_or
     if login.origin != webauthn_origin:
         # A virtual authenticator must obey the same origin restriction as a
         # browser. A signed assertion for another URL would be false evidence.
+        LOG.info("WebAuthn verification unexercised: login origin is not the RP origin")
         return False
     response = _value(login.browser.request("GET", f"{login.origin}/settings/security"))
     if response is None or response.status != 200:
+        LOG.info("WebAuthn verification unexercised: security page unavailable")
         return False
     page = parse_live_page(response.body)
     if page is None:
+        LOG.info("WebAuthn verification unexercised: security page is not a LiveView")
         return False
     mounted = _value(
         LiveView.mount(login.browser, login.origin, "/settings/security", page, config.ca_file)
     )
     if mounted is None:
+        LOG.info("WebAuthn verification unexercised: security LiveView mount failed")
         return False
     try:
         begun = _value(mounted.event("begin", {"kind": "verify"}))
         if begun is None or begun.get("ok") is not True:
+            LOG.info("WebAuthn verification unexercised: begin reply missing ok challenge")
             return False
         signed = assertion(begun.get("challenge"), actor.authenticator, webauthn_origin)
         if signed is None:
+            LOG.info("WebAuthn verification unexercised: challenge did not name the passkey")
             return False
         finished = mounted.event("finish", {"kind": "verify", "payload": signed})
         if finished.state is not State.OBSERVED:
+            LOG.info("WebAuthn verification unexercised: finish reply unavailable")
             return False
         completed = _value(AccessOracle(SqlOracle(config)).completed_verifications(actor.user_id))
-        return completed is not None and login.user_jti in completed
+        if completed is None or login.user_jti not in completed:
+            LOG.info("WebAuthn verification unexercised: no verification row for the login")
+            return False
+        return True
     finally:
         mounted.close()
 
@@ -416,18 +428,23 @@ def run_remembered_revocation(config: Config, links: LinkSource) -> int:
     after_replay = _value(oracle.tokens(account.user_id))
     if replay is None or after_replay is None:
         return 0
-    blocked = (
+    unchanged = after_replay.user == fenced.user and after_replay.remember == fenced.remember
+    redirected = (
         replay.status in (302, 303)
         and replay.location is not None
         and replay.location.startswith("/sign-in")
-        and after_replay.user == fenced.user
-        and after_replay.remember == fenced.remember
     )
+    # A 5xx (B cannot reach PostgreSQL under a partition) is Marshall's
+    # inconclusive refusal (live_user_auth.ex revoked-login-halts-operation
+    # raises on mount when the Repo does not answer): it must commit nothing,
+    # but it cannot redirect.
+    refused = (redirected or replay.status >= 500) and unchanged
     always(
-        blocked,
+        refused,
         "Revoked remembered cookie cannot mint or use browser authority across Marshall replicas",
-        {"fence": "ordinary_sign_out", "replica": "b"},
+        {"fence": "ordinary_sign_out", "replica": "b", "status_class": replay.status // 100},
     )
+    blocked = redirected and unchanged
     if blocked:
         reachable("Copied remembered cookie was refused on second Marshall after sign-out")
     return 0
@@ -571,6 +588,7 @@ def run_stale_admin(
 def main_magic() -> int:
     from access.mail import MailLinks
 
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     try:
         config = Config.from_environment()
         fixture = read_access_fixture(Path("/run/overalls-control-secrets/fixture.json"))
@@ -583,6 +601,7 @@ def main_magic() -> int:
 def main_remember() -> int:
     from access.mail import MailLinks
 
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     try:
         config = Config.from_environment()
         return run_remembered_revocation(config, MailLinks.from_environment(config.ca_file))
@@ -594,6 +613,7 @@ def main_remember() -> int:
 def main_admin() -> int:
     from access.mail import MailLinks
 
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     try:
         config = Config.from_environment()
         fixture = read_access_fixture(Path("/run/overalls-control-secrets/fixture.json"))

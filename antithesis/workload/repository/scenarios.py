@@ -70,6 +70,7 @@ def _published_head_effect(runtime: Runtime, published: Published, source: Origi
     repository_id = published.repository_id
     head = published.head
     if head is None:
+        LOG.info("Enrico published-head case unexercised: no published head")
         return 0
     generation = source.generation
     if source.head != head:
@@ -91,11 +92,14 @@ def _published_head_effect(runtime: Runtime, published: Published, source: Origi
     next_generation = 3 if generation != 3 else 1
     moved = runtime.origin.set_generation(next_generation)
     if moved.state is not State.OBSERVED or moved.value == head:
+        LOG.info("Enrico published-head case unexercised: origin force push unobserved")
         return 0
     if not runtime.origin.set_fault("error"):
+        LOG.info("Enrico published-head case unexercised: origin Git fault unavailable")
         return 0
     try:
         if not runtime.operator.refresh(uuid4(), repository_id):
+            LOG.info("Enrico published-head case unexercised: refresh action unapplied")
             return 0
         deadline = time.monotonic() + 40
         failed_attempt: UUID | None = None
@@ -115,6 +119,7 @@ def _published_head_effect(runtime: Runtime, published: Published, source: Origi
                     break
             time.sleep(0.2)
         if failed_attempt is None:
+            LOG.info("Enrico published-head case unexercised: no audited failed attempt")
             return 0
         current = runtime.oracle.published(repository_id)
         if (
@@ -149,6 +154,8 @@ def _published_head_effect(runtime: Runtime, published: Published, source: Origi
                 )
             if native.state is State.OBSERVED and native.value == expected:
                 reachable("Enrico retained prior published head across force push")
+        else:
+            LOG.info("Enrico published-head case unexercised: published row changed")
         audit = runtime.oracle.failure_audit(repository_id, failed_attempt)
         if audit.state is State.OBSERVED and audit.value is True:
             reachable("Marshall settled failed Enrico refresh without replacing head")
@@ -185,6 +192,7 @@ def run_replay() -> int:
         settled = _settled(runtime, repository_id, attempt_id, 35)
         if settled is None:
             return 0
+        quiet = runtime.oracle.marshall_refresh_marker()
         baseline = runtime.origin.state()
         if baseline.state is not State.OBSERVED or baseline.value is None:
             return 0
@@ -198,6 +206,16 @@ def run_replay() -> int:
                 replay_observed = True
                 replay_consistent = replay_consistent and duplicate.value == settled
         after = runtime.origin.receipts(baseline.value.sequence)
+        still_quiet = runtime.oracle.marshall_refresh_marker()
+        if (
+            quiet.state is not State.OBSERVED
+            or quiet.value is None
+            or quiet.value[0] != 0
+            or still_quiet.state is not State.OBSERVED
+            or still_quiet.value != quiet.value
+        ):
+            LOG.info("Enrico replay case unexercised: Marshall refresh in replay window")
+            return 0
         final_generation = service_generation(runtime.mirror_root)
         if (
             final_generation.state is not State.OBSERVED

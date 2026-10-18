@@ -269,6 +269,7 @@ let
         "opt/overalls/control-peer-tools" = toString controlPeerTools;
         "opt/overalls/control-peer" = toString controlPeerProtocol;
         "opt/overalls/restic" = toString pkgs.restic;
+        "opt/overalls/git" = toString pkgs.git;
         "opt/overalls/backup-modules" = toString backupModules;
         "opt/overalls/trace-spool" = toString traceSpool;
         "opt/antithesis/catalog" = "/opt/overalls-antithesis/catalog/workload";
@@ -306,10 +307,14 @@ let
       extraRoots = [ traceSpool ];
       extraLinks."opt/overalls/trace-spool" = toString traceSpool;
     };
+    # OpenSSH generates the synthetic Marshall SSH host CA with the other secrets.
     pg = closure.mkContext {
       name = "pg";
-      extraRoots = [ pkgs.postgresql_18 ];
-      extraLinks."opt/overalls/postgresql" = toString pkgs.postgresql_18;
+      extraRoots = [ pkgs.postgresql_18 pkgs.openssh ];
+      extraLinks = {
+        "opt/overalls/postgresql" = toString pkgs.postgresql_18;
+        "opt/overalls/openssh" = toString pkgs.openssh;
+      };
     };
     guest-vmm = closure.mkContext {
       name = "guest-vmm";

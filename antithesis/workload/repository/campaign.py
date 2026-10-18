@@ -15,6 +15,7 @@ def run_exclusive(action: Callable[[], int]) -> int:
     changes the fixture's Git ref or fault mode. Contention MUST leave the
     command unexercised without changing shared fixture state.
     """
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     root = Path(os.getenv("ANTITHESIS_REPOSITORY_CAMPAIGN_DIR", "/tmp"))
     descriptor = os.open(root / "repository-campaign.lock", os.O_RDWR | os.O_CREAT, 0o600)
     try:

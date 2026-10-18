@@ -1,12 +1,14 @@
 """Single-owner QEMU TCG supervisor for the retained Linux/ZFS router guest."""
 
 import argparse
+import errno
 import fcntl
 import hashlib
 import json
 import os
 import socket
 import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TypedDict
@@ -175,6 +177,28 @@ def live(config: Config) -> Process | None:
     return None
 
 
+def drive_cache(paths: tuple[Path, ...]) -> str:
+    """@cc [owner:ghuntley,label:verification;recovery] vmm-drive-cache-mode
+    Disks MUST use QEMU cache=none when every image file, including the qcow2
+    backing image, accepts O_DIRECT. A filesystem that refuses O_DIRECT (the
+    Antithesis container filesystem) MUST fall back to cache=writeback, which
+    still turns each guest flush into a host fsync; never cache=unsafe. The
+    effective mode is printed so a run records which durability backend it had.
+    """
+    mode = "none"
+    for path in paths:
+        try:
+            descriptor = os.open(path, os.O_RDONLY | os.O_DIRECT)
+        except OSError as error:
+            if error.errno != errno.EINVAL:
+                raise
+            mode = "writeback"
+            break
+        os.close(descriptor)
+    print(f"overalls vmm drive cache={mode}", file=sys.stderr, flush=True)
+    return mode
+
+
 def start(config: Config) -> Process:
     identity = image(config)
     ensure_disks(config, identity)
@@ -189,6 +213,14 @@ def start(config: Config) -> Process:
     qmp = config.runtime_dir / "qmp.sock"
     control = config.runtime_dir / "control.sock"
     state = config.state_dir
+    cache = drive_cache(
+        (
+            state / "root.qcow2",
+            state / "mirror-a.raw",
+            state / "mirror-b.raw",
+            (config.image_dir / "root.qcow2").resolve(strict=True),
+        )
+    )
     argv = [
         str(config.qemu),
         "-machine",
@@ -215,15 +247,15 @@ def start(config: Config) -> Process:
         "-append",
         "init=" + identity["toplevel"] + "/init root=LABEL=nixos rw console=ttyS0 panic=1",
         "-drive",
-        f"if=none,id=root,file={state / 'root.qcow2'},format=qcow2,cache=none",
+        f"if=none,id=root,file={state / 'root.qcow2'},format=qcow2,cache={cache}",
         "-device",
         "virtio-blk-pci,drive=root,serial=KTROUTER-ROOT",
         "-drive",
-        f"if=none,id=mirror-a,file={state / 'mirror-a.raw'},format=raw,cache=none",
+        f"if=none,id=mirror-a,file={state / 'mirror-a.raw'},format=raw,cache={cache}",
         "-device",
         "virtio-blk-pci,drive=mirror-a,serial=KTROUTER-MIRROR-A",
         "-drive",
-        f"if=none,id=mirror-b,file={state / 'mirror-b.raw'},format=raw,cache=none",
+        f"if=none,id=mirror-b,file={state / 'mirror-b.raw'},format=raw,cache={cache}",
         "-device",
         "virtio-blk-pci,drive=mirror-b,serial=KTROUTER-MIRROR-B",
         "-qmp",

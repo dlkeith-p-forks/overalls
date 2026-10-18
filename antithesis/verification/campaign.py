@@ -256,7 +256,7 @@ def reserve(
 ) -> dict[str, Json]:
     """@cc [owner:ghuntley,label:verification] remote-attempt-admission
     Every remote attempt MUST consume one durable slot before submission,
-    including bootstrap/retries. At most five may remain active, mutant
+    including bootstrap/retries. At most MAX_ACTIVE_ATTEMPTS (32) may remain active, mutant
     selection MUST serialize, and a mutant requires a matching green baseline.
     At most one baseline for a Compose config may be reserved or submitted;
     refusing another baseline MUST preserve the current baseline lineage.

@@ -222,6 +222,12 @@ manifest and served path never matched the committed row, and Marshall's own
 refresh failed against the origin, so setup stayed incomplete. The probe now
 reports each distinct unmet prerequisite once per process by condition token,
 observation state, HTTP status or phase, never by credential or payload.
+The failed-refresh published-head case was never exercised in hosted runs:
+the workload image linked Git into its closure but not onto a fixed path, so
+the native blob oracle could not run Git and every attempt stopped before the
+force push (run `30a420d501d5d6d22527e679a7f00005-65-0`). The image now links
+`/opt/overalls/git`, the oracle calls it explicitly, and each early stop logs a
+fixed `Enrico published-head case unexercised` reason.
 The optional `recorder-host` profile selects the TCG NixOS recorder VM and the
 three recorder commands. The workload waits for the VM health check, then its
 own read-only probe requires a fresh all-active unit sample, producer and spool
@@ -233,19 +239,40 @@ stopped in initrd emergency mode: the runner's `root=` argument duplicated the
 image's own root fstab entry and, without `rw`, left the real root read-only,
 so the `/run` bind into it failed. The runner now relies on the image fstab
 alone; a direct local QEMU TCG boot of the rebuilt context, outside any
-container, reached the runner's health check in 66–96 s. The profile is
-selectable, but no hosted validation or run is recorded; its evidence is
+container, reached the runner's health check in 66–96 s. Its first hosted run
+(`bbb308949ab76c0f1ce04fd209f1f091-65-0`) failed container setup because the
+Antithesis container filesystem refuses O_DIRECT, which QEMU `cache=none`
+needs to open the qcow2 backing image. The recorder, host and storage VMM
+runners now probe O_DIRECT on every disk and its backing image and fall back to
+flush-respecting `cache=writeback` (never `cache=unsafe`), printing the
+effective mode. Hosted run `109aecb1aca881ff09e15403e72802cb-65-0` completed
+setup but reached no trace spool custody: the guest fixture paths were
+context-free strings, so the trace fixtures were absent and the BEAM producer
+crashed on every trace request; back-to-back recovery restarts also tripped
+systemd's default start limit, and the pressure loop outran the command window.
+The fixture paths now carry store context, the producer refuses a failed
+request instead of exiting, the two restarted units have no start limit in this
+fixture only, and the pressure loop has a 20 s budget. Its evidence is
 emulated, not native.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
 pool totals for its enrolled pool identity, measured cgroup CPU and memory
 headroom, and a tiny non-bootable image it digest-verifies before advertising;
-the enrollment operator registers that image through Marshall's catalog action.
-A fully stub-backed report advertises placement readiness, so Marshall's real
+the enrollment operator registers that image through Marshall's catalog action
+and then enables lilly-a through the reviewed CLI `enable` action, which
+refuses until Lilly's stub report is fresh and execution-ready. A fully stub-backed report advertises placement readiness, so Marshall's real
 admission transaction commits VM, placement, reservation and dispatch rows,
 but the controlled executor never launches a guest and a delete never
-completes. Setup requires those committed report, pool and image rows in SQL.
+completes. Setup requires the enabled normal-mode host and those committed report, pool
+and image rows in SQL; hosted runs before this check never enabled the host,
+so every admission probe stopped at unknown capacity
+(`dd4f5f9cd52da22427ae2e5b79c095bf-65-0`). With the host enabled, the next run
+still submitted nothing: the pre-submission SQL witness read host and pool from
+the VM row, which the placement migration had moved to
+`compute_workload_placements`, so every query failed and was reported as
+unavailable (`379970e17a2d5312bff3e5c5e2c17369-65-0`). The witness now joins the
+current placement, and oracle queries log each failing SQLSTATE class once.
 Catalog headroom below the request shape no longer withholds a request: a
 definite `insufficient_capacity` refusal is Marshall's real decision, checked
 for absent rows and a bounded one-VM replay. Every stop before a settled
@@ -259,12 +286,17 @@ the guest VMM overlay. Its container Lilly is a separate STUB-storage release:
 it reports a fixed synthetic pool with no ZFS and compute headroom for one free
 guest-vmm slot, capped by measured cgroup limits, and sets execution readiness
 only after a guest-vmm health check and a verified advertised image. The
-enrollment operator registers that image manifest through the catalog action.
-Bootstrap adds a third gate: the guest-vmm image identity, read through the
+enrollment operator registers that image manifest through the catalog action
+and enables lilly-a through the reviewed CLI `enable` action once its report is
+fresh and execution-ready; Marshall's catalog counts no capacity from a disabled
+host. Bootstrap adds a third gate: the guest-vmm image identity, read through the
 read-only witness bridge, and a Marshall catalog offering that image with known
 capacity for its shape. The stub admits one emulated QEMU TCG guest only; it is
-not native ZFS, KVM, Firecracker, isolation or capacity evidence, and no local
-or hosted run of this profile is recorded.
+not native ZFS, KVM, Firecracker, isolation or capacity evidence. Its first
+hosted run (`a2edc265384761d6607df51eac50b29d-65-0`) timed out at
+`capacity_unknown` because the host was never enabled; the earlier local pass
+had inherited an enabled host from a retained PostgreSQL volume, so local
+validations now start from empty volumes.
 In every other profile the host report has unavailable pool capacity and false
 execution readiness, so a successful Control connection cannot authorize a
 guest placement. The
@@ -342,7 +374,16 @@ no VM, boot, tap, placement or execution authority and mounts no secret. Its
 assertions test only private Audi's transport-only attribution with the origin
 fixture as effect witness; they say nothing about guest routing or isolation.
 The overlay also corrects the private Audi start script, which omitted the
-required `connector_uid` and so could not load its configuration. Ziggy
+required `connector_uid` and so could not load its configuration, and waited
+on the disabled ordinary `audi.sock` instead of Lilly's private-services
+`private.sock`. Porsche refuses to listen without a Marshall-signed host
+certificate, which Lyra fetches in production; the stand-in start script makes
+the same reviewed `/api/ssh/v1/host-certificate` request with the gateway token
+held in a private header file. The harness Marshall had no SSH host CA, so that
+request returned the opaque unavailable reply; the synthetic secret volume now
+carries a generated ed25519 SSH host CA, and both replicas receive
+`MARSHALL_SSH_HOST_TRUST` shaped like the NixOS module's. It is test-only key
+material, never a production CA. Ziggy
 completion, Galileo named origin and the editor login-code race need a current
 running VM; the controlled Lilly pool reports unavailable capacity and no Audi
 editor gateway, editor release or wildcard is configured, so their primary and

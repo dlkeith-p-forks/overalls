@@ -29,11 +29,15 @@ pool totals for the enrolled pool identity, with no allocation credit. Host CPU
 and memory headroom remain measured by Lilly's real usage sampler over the
 container's cgroup subtree. Lilly digest-verifies a tiny non-bootable stub
 image (`Lilly.Host.Image.load/1`), and the enrollment operator registers its
-manifest through Marshall's reviewed `Images.register` action. A fully
+manifest through Marshall's reviewed `Images.register` action, then enables
+lilly-a through the reviewed CLI `enable` action once Lilly's stub report is
+fresh and execution-ready (Marshall excludes a disabled host from catalog
+capacity). A fully
 stub-backed report advertises placement readiness so Marshall's real
 admission transaction can choose the host; the controlled executor still only
 publishes requested work and never launches a guest. The bootstrap probe
-requires the committed execution-ready report, measured compute headroom, a
+requires the enabled normal-mode host, the committed execution-ready report,
+measured compute headroom, a
 fresh stub pool row and an enabled advertised image in SQL before setup.
 
 Each command logs a fixed `Compute admission unexercised: <reason>` INFO line,
