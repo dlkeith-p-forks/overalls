@@ -1933,7 +1933,8 @@ assert editorFamily == null || (editor && !ubuntu
             client.execute("systemctl reset-failed audi-slo-held.service")
         assert process_snapshot(vm) == audi_slo_guest_before
       ''
-      else if suspension then builtins.head otelAudiSshScenarioParts + "\n" + builtins.readFile ./scenarios/suspension.py
+      else if suspension then builtins.head (lib.splitString "\nwith subtest(\"real guest HTTP reaches" audiScenario)
+        + "\n" + builtins.readFile ./scenarios/suspension.py
       else if ubuntu && audi then builtins.readFile ./scenarios/audi.py
         + lib.optionalString relocation (builtins.readFile ./scenarios/audi-relocation.py)
       else if ubuntu then builtins.readFile ./scenarios/relocation.py
