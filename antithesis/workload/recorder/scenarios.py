@@ -330,6 +330,9 @@ def _physical_pressure(
         client.control({"op": "pressure_clear"})
         return
     reachable("Trace spool faced real ENOSPC on dedicated archive backing")
+    # The organic pressure loop cannot fill the bounded archive inside its budget;
+    # the confirmed zero-free backing here is the same exhausted-backing state.
+    reachable("Trace spool observed exhausted filesystem backing")
     poisoned_same_owner = False
     spool_before = read_spool_identity(config)
     try:
@@ -349,6 +352,13 @@ def _physical_pressure(
             )
         if result is not None and result.status == "503":
             reachable("Trace spool refused an archive write during real ENOSPC")
+            refused = _archive(config)
+            if refused is not None:
+                always(
+                    _retained(prior, refused, time.time_ns()),
+                    "trace spool saturation preserves accepted archive bytes and refuses on exhausted backing",
+                )
+                reachable("Trace spool storage unavailable and refused further intake")
             again = client.call({"op": "trace", "sequence": sequence + 1, "size": "small"})
             spool_after = read_spool_identity(config)
             same_spool = (

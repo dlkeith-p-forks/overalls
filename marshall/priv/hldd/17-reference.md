@@ -281,7 +281,13 @@ recovered its fsynced `v1:gap` marker to `v1:running` when the saturation
 check read it. The reopen check now retries a transport-unavailable reply,
 and the saturation check accepts `v1:running` only with the checkpoint's
 advanced coverage start as the durable gap. Both acknowledged-custody
-checks held throughout. Its evidence is emulated, not native.
+checks held throughout. Run `d03118781050d16ad698713ce9fb4d61-65-0` reached
+real ENOSPC 25 times and its refusal 18 times without a counterexample, but the
+20 s organic loop never filled the 57 MB archive, so its exhausted-backing,
+storage-refusal and saturation checks were never evaluated. The ENOSPC path now
+evaluates those same checks against its confirmed zero-free backing and
+refused write; archive quota (`429`) refusal remains unexercised. Its evidence
+is emulated, not native.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
