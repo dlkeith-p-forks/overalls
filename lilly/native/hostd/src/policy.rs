@@ -224,9 +224,8 @@ fn systemctl(argv: &[&[u8]]) -> bool {
             .and_then(|rest| rest.strip_suffix(b".service"))
             .is_some_and(crate::vm_launch::uuid)
     };
-    let query_unit = |name: &[u8]| {
-        name == b"lilly.slice" || name == b"lilly-vm-*.service" || vm_unit(name)
-    };
+    let query_unit =
+        |name: &[u8]| name == b"lilly.slice" || name == b"lilly-vm-*.service" || vm_unit(name);
     match argv {
         [b"stop", name] => vm_unit(name),
         [b"kill", b"--kill-who=all", b"--signal=KILL", name] => vm_unit(name),
