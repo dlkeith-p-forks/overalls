@@ -37,6 +37,9 @@ for transport in ["", "+tcp"]:
     router.wait_until_succeeds(
         f"ip netns exec guest dig @169.254.254.1 esample.integration.internal A +short +time=1 +tries=1 {transport} | grep -Fx 169.254.254.1"
     )
+    router.wait_until_succeeds(
+        f"ip netns exec guest dig @169.254.254.1 reflection.internal A +short +time=1 +tries=1 {transport} | grep -Fx 169.254.254.1"
+    )
     assert "NXDOMAIN" in router.succeed(
         f"ip netns exec guest dig @169.254.254.1 unknown.internal A +time=1 +tries=1 {transport}"
     )
@@ -47,6 +50,7 @@ for transport in ["", "+tcp"]:
         f"ip netns exec guest dig @169.254.254.1 example.com A +time=1 +tries=1 {transport}"
     )
 curl = "ip netns exec guest curl --noproxy '*' --silent --show-error --max-time 3 --resolve llm.internal:443:169.254.254.1"
+reflection_curl = "ip netns exec guest curl --noproxy '*' --silent --show-error --max-time 3 --resolve reflection.internal:443:169.254.254.1"
 integration_curl = "ip netns exec guest curl --noproxy '*' --silent --show-error --max-time 3 --resolve esample.integration.internal:443:169.254.254.1"
 router.wait_until_succeeds(
     curl
