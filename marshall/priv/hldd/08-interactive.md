@@ -1235,3 +1235,7 @@ The machine workspace exposes Android display controls only when the image's
 `android_display` capability is present. Viewer and controller ticket requests
 remain authenticated LiveView events; the browser relay must still enforce
 current generation and controller lease before opening RFB.
+
+The Android relay state machine permits read-only viewers and one controller,
+advances frame sequence numbers monotonically, and revokes controller authority
+when its process exits or the emulator generation changes.
