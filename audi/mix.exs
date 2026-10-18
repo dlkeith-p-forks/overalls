@@ -41,7 +41,7 @@ defmodule Audi.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:hegel_ex,
        git: "https://github.com/ghuntley/hegel-erlang.git",
-       ref: "02cd8bd",
+       ref: "f1ad336",
        subdir: "packages/hegel_ex",
        only: [:dev, :test],
        runtime: false}
