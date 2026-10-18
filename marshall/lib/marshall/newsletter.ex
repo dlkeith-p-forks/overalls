@@ -11,12 +11,15 @@ defmodule Marshall.Newsletter do
   # the fixed Ghost endpoints, and collapse all upstream failures to :unavailable.
   @type requester :: (atom(), String.t(), keyword() -> {:ok, map()} | {:error, term()})
 
+  @spec subscribe(term()) :: result()
+  def subscribe(email), do: subscribe(email, &request/3)
+
   @spec subscribe(term(), requester()) :: result()
-  def subscribe(email, requester \\ &request/3) when is_binary(email) do
+  def subscribe(email, requester) when is_binary(email) do
     if EmailAddress.valid?(email), do: request(email, requester), else: {:error, :invalid_email}
   end
 
-  def subscribe(_), do: {:error, :invalid_email}
+  def subscribe(_, _), do: {:error, :invalid_email}
 
   defp request(email, requester) do
     with {:ok, %{status: 200, body: token}} <-

@@ -81,7 +81,7 @@ defmodule MarshallWeb.OverviewLive do
   defp newsletter_dismissed(%Marshall.Accounts.User{id: id} = actor) do
     case Marshall.Accounts.Security.current(id) do
       %Marshall.Accounts.User{newsletter_dismissed: dismissed} -> dismissed
-      _ -> actor.newsletter_dismissed
+      _ -> Map.get(actor, :newsletter_dismissed, false)
     end
   end
 
