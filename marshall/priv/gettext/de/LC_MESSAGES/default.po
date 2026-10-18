@@ -7344,94 +7344,94 @@ msgstr "← Einstellungen"
 #: lib/marshall_web/live/threads_live.ex:2196
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
-msgstr "↑ ↓ choose · Enter run · Escape close"
+msgstr "↑ ↓ auswählen · Eingabe ausführen · Escape schließen"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
-msgstr "4. Git identity"
+msgstr "4. Git-Identität"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "Add Overalls commit attribution"
+msgstr "Overalls als Mitautor von Commits nennen"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "Enter a valid Git name and email address."
+msgstr "Geben Sie einen gültigen Git-Namen und eine gültige E-Mail-Adresse ein."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Git email"
+msgstr "Git-E-Mail-Adresse"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git identity"
-msgstr "Git identity"
+msgstr "Git-Identität"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Änderungen der Git-Identität gelten für neue Maschinen. Änderungen der Mitautorenangabe gelten für zukünftige Anfragen an den Agenten."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Git settings saved."
+msgstr "Git-Einstellungen gespeichert."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Git username"
+msgstr "Git-Benutzername"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
-msgstr "Machine is paused. Resume it or reopen this terminal page."
+msgstr "Die Maschine ist pausiert. Setzen Sie sie fort oder öffnen Sie diese Terminalseite erneut."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Pause"
-msgstr "Pause"
+msgstr "Pausieren"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "Paused"
+msgstr "Pausiert"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
-msgstr "Resume machine"
+msgstr "Maschine fortsetzen"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming"
-msgstr "Resuming"
+msgstr "Wird fortgesetzt"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
-msgstr "Resuming machine; waiting for capacity…"
+msgstr "Maschine wird fortgesetzt; Kapazität wird abgewartet…"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Save Git settings"
+msgstr "Git-Einstellungen speichern"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Suspending"
-msgstr "Suspending"
+msgstr "Wird angehalten"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "Wenn diese Option aktiviert ist, enthalten neue Agenten-Commits Co-authored-by: Overalls <noreply@overalls.dev>."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "new machines and commit attribution"
-msgstr "new machines and commit attribution"
+msgstr "neue Maschinen und Mitautorenangabe für Commits"

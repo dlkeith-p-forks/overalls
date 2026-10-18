@@ -651,3 +651,4 @@ needs replacement. Keep checks that were run separate from future test plans.
 - [2026 10 16 Nix Domain Layout](2026-10-16-nix-domain-layout.md)
 
 - [Git attribution and guest identity (2026-10-18)](2026-10-18-git-attribution.md): ADR-0198 settings, immutable snapshots and guest configuration verification.
+- [Underclass package pin (2026-10-18)](2026-10-18-underclass-pin.md): advances the immutable package to upstream `7169223`; the source hash changed, Cargo.lock and architecture boundaries remain unchanged. Tests and builds were not run.

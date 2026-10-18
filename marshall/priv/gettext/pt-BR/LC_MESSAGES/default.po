@@ -485,7 +485,7 @@ msgstr "Seções adjacentes"
 #: lib/marshall_web/live/teams_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Admin"
-msgstr "Admin"
+msgstr "Administração"
 
 #: lib/marshall_web/components/layouts.ex:283
 #: lib/marshall_web/components/layouts.ex:380
@@ -4136,7 +4136,7 @@ msgstr ""
 #: lib/marshall_web/live/git_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Ref"
-msgstr "Ref"
+msgstr "Referência"
 
 #: lib/marshall_web/components/layouts.ex:340
 #, elixir-autogen, elixir-format
@@ -7598,43 +7598,43 @@ msgstr "Carga de trabalho resolvida"
 #, elixir-autogen, elixir-format
 msgid "Your email link is being verified."
 msgstr "Seu link de e-mail está sendo verificado."
+
 #: lib/marshall_web/live/overview_live.ex:213
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
-msgstr ""
+msgstr "Fique por dentro"
 
 #: lib/marshall_web/live/overview_live.ex:216
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
-msgstr ""
+msgstr "Dispensar"
 
 #: lib/marshall_web/live/overview_live.ex:218
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
-msgstr ""
+msgstr "Receba dicas, truques e novidades sobre Overalls e IA por e-mail."
 
 #: lib/marshall_web/live/overview_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
-msgstr ""
+msgstr "Inscrever-se"
 
 #: lib/marshall_web/live/overview_live.ex:225
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
-msgstr ""
+msgstr "Verifique a sua caixa de entrada e clique no link para confirmar a sua inscrição."
 
 #: lib/marshall_web/live/overview_live.ex:226
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
-msgstr ""
+msgstr "Insira um endereço de e-mail válido."
 
 #: lib/marshall_web/live/overview_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
-msgstr ""
+msgstr "Não foi possível acessar o serviço de newsletter. Tente novamente mais tarde."
 
 #: lib/marshall_web/live/overview_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
-msgstr ""
-
+msgstr "Cancele a inscrição a qualquer momento."

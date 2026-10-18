@@ -152,7 +152,7 @@ msgstr "# مرجع خيار NixOS"
 #: lib/marshall/documentation_messages.ex:65
 #, elixir-autogen, elixir-format
 msgid "# Overalls documentation"
-msgstr "#وثائق وزرة"
+msgstr "# وثائق Overalls"
 
 #: lib/marshall/documentation_messages.ex:66
 #, elixir-autogen, elixir-format
@@ -177,7 +177,7 @@ msgstr "# التخزين والسعة"
 #: lib/marshall/documentation_messages.ex:70
 #, elixir-autogen, elixir-format
 msgid "# Supporting services"
-msgstr "#الخدمات المساندة"
+msgstr "# الخدمات المساندة"
 
 #: lib/marshall/documentation_messages.ex:71
 #, elixir-autogen, elixir-format
@@ -437,7 +437,7 @@ msgstr "## أنشئ صورة تقييم Windows Server 2025 في وضع عدم �
 #: lib/marshall/documentation_messages.ex:189
 #, elixir-autogen, elixir-format
 msgid "## Burn delivery operations"
-msgstr "##حرق عمليات التسليم"
+msgstr "## عمليات تسليم تنبيهات استهلاك ميزانية الأخطاء"
 
 #: lib/marshall/documentation_messages.ex:190
 #, elixir-autogen, elixir-format

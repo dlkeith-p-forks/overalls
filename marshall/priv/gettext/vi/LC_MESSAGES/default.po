@@ -6930,25 +6930,25 @@ msgstr "chậm hơn bạn %{span}"
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "Add Overalls commit attribution"
+msgstr "Thêm ghi nhận đóng góp của Overalls vào commit"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "Enter a valid Git name and email address."
+msgstr "Nhập tên và địa chỉ email Git hợp lệ."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Git email"
+msgstr "Email Git"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Thay đổi danh tính Git áp dụng cho máy mới. Thay đổi ghi nhận đóng góp trong commit áp dụng cho các yêu cầu tác nhân trong tương lai."
 
 #: lib/marshall_web/live/account_live.ex:538
 #, elixir-autogen, elixir-format
@@ -6959,19 +6959,19 @@ msgstr "Cài đặt Git"
 #: lib/marshall_web/live/account_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Git settings saved."
+msgstr "Đã lưu cài đặt Git."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:542
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Git username"
+msgstr "Tên người dùng Git"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Save Git settings"
+msgstr "Lưu cài đặt Git"
 
 #: lib/marshall_web/live/account_live.ex:559
 #, elixir-autogen, elixir-format
@@ -7119,7 +7119,7 @@ msgstr "Thao tác"
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "Paused"
+msgstr "Đã tạm dừng"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:399
 #, elixir-autogen, elixir-format
@@ -7226,54 +7226,54 @@ msgstr "Đang xác minh liên kết email của bạn."
 #: lib/marshall_web/live/overview_live.ex:213
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
-msgstr ""
+msgstr "Theo dõi tin tức mới nhất"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
-msgstr "4. Git identity"
+msgstr "4. Danh tính Git"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git identity"
-msgstr "Git identity"
+msgstr "Danh tính Git"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
-msgstr "Machine is paused. Resume it or reopen this terminal page."
+msgstr "Máy đã tạm dừng. Tiếp tục máy hoặc mở lại trang terminal này."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Pause"
-msgstr "Pause"
+msgstr "Tạm dừng"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
-msgstr "Resume machine"
+msgstr "Tiếp tục máy"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming"
-msgstr "Resuming"
+msgstr "Đang tiếp tục"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
-msgstr "Resuming machine; waiting for capacity…"
+msgstr "Đang tiếp tục máy; chờ tài nguyên khả dụng…"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Suspending"
-msgstr "Suspending"
+msgstr "Đang tạm ngưng"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "Khi được bật, các commit mới của tác nhân sẽ bao gồm Co-authored-by: Overalls <noreply@overalls.dev>."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "new machines and commit attribution"
-msgstr "new machines and commit attribution"
+msgstr "máy mới và ghi nhận đóng góp trong commit"
