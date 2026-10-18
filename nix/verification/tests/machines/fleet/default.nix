@@ -1673,7 +1673,7 @@ assert editorFamily == null || (editor && !ubuntu
     relocation_enabled = False
     audi_enabled = True
     galileo_enabled = False
-    ssh_private_enabled = True
+    ssh_private_enabled = ${if suspension then "False" else "True"}
     agent_enabled = False
     coding_cli_guest_image = "${guest}"
     coding_cli_provider_ca = "${ziggyFixture.tls}/ca.pem"
@@ -1725,7 +1725,7 @@ assert editorFamily == null || (editor && !ubuntu
     relocation_enabled = False
     audi_enabled = True
     galileo_enabled = False
-    ssh_private_enabled = True
+    ssh_private_enabled = ${if suspension then "False" else "True"}
     agent_enabled = False
   '' + lib.concatMapStringsSep "\n" builtins.readFile [
     ./driver.py
@@ -1832,7 +1832,7 @@ assert editorFamily == null || (editor && !ubuntu
     relocation_enabled = ${if relocation then "True" else "False"}
     audi_enabled = True
     galileo_enabled = ${if galileo then "True" else "False"}
-    ssh_private_enabled = True
+    ssh_private_enabled = ${if suspension then "False" else "True"}
     agent_enabled = ${if agent then "True" else "False"}
     otel_guest_enabled = ${if otelGuest then "True" else "False"}
     otel_galileo_enabled = ${if otelGalileo then "True" else "False"}
