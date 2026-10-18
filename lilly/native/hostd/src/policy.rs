@@ -233,9 +233,7 @@ fn systemctl(argv: &[&[u8]]) -> bool {
             let (options, units): (Vec<&[u8]>, Vec<&[u8]>) =
                 rest.iter().partition(|word| word.starts_with(b"--"));
             !units.is_empty()
-                && units.iter().all(|name| {
-                    *name == b"lilly.slice" || *name == b"lilly-vm-*.service" || vm_unit(name)
-                })
+                && units.iter().all(|name| query_unit(name))
                 && options.iter().all(|option| {
                     matches!(
                         *option,
