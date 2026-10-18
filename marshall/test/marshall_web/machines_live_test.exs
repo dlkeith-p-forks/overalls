@@ -43,6 +43,8 @@ defmodule MarshallWeb.MachinesLiveTest do
     assert has_element?(view, "#machine-workspace-header h1", vm.name)
     assert has_element?(view, "#machine-state[data-state]")
     assert has_element?(view, "#machine-os.status-label", "synthetic-test-image")
+    # Operating system comes first, then status.
+    assert has_element?(view, ".machine-title h1 + #machine-os + #machine-state")
     assert has_element?(view, "#machine-id", vm.id)
 
     assert has_element?(

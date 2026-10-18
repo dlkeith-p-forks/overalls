@@ -59,10 +59,10 @@ Pre-cutover leases closed during the breaking database migration; this continuit
 rule applies to subsequent generated-identity admissions.
 
 Every machine page (Terminal, Access, Settings, Agents, Resize and the Boot log view)
-shares one header. A bordered heading box carries the machine name, its state
-label (`[Running]`, `[Stopping]`, …) and an operating-system label that is the
-registered display name of the machine's immutable image (`[NixOS]`,
-`[Ubuntu 26.04 LTS]`, `[Windows Server 2025]`); a machine whose image row is
+shares one header. A bordered heading box carries the machine name, then an
+operating-system label that is the registered display name of the machine's
+immutable image (`[NixOS]`, `[Ubuntu 26.04 LTS]`, `[Windows Server 2025]`), then
+its state label (`[Running]`, `[Stopping]`, …); a machine whose image row is
 missing shows no operating-system label rather than a placeholder. Beneath them
 sit the resource facts (vCPU, memory, disk, profile) and the machine ID with a
 one-line **Copy** control; the authorized power actions and **Open VS Code**
@@ -78,7 +78,7 @@ clipboard and reports "Machine ID copied." or "Command copied." in the status
 line; a refused clipboard write tells the user to select the text manually. The
 same image name appears as an **Operating system** row in Settings → Resources,
 beneath the machine name in the Machines list (the table gains no column, so it
-still fits the main column) and beside the state label in the Overview preview. The view projection exposes only the image's display name:
+still fits the main column) and before the state label in the Overview preview. The view projection exposes only the image's display name:
 manifests, placements and reservations stay private, and the label is shown
 only to principals who can already read the machine.
 

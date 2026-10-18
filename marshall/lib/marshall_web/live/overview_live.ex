@@ -119,8 +119,8 @@ defmodule MarshallWeb.OverviewLive do
                       </p>
                     </div>
                     <div class="preview-labels">
-                      <span class="status-label" data-state={vm.observed_state}>{UI.machine_state(vm)}</span>
                       <UI.os_label vm={vm} id={"overview-machine-os-#{vm.id}"} />
+                      <span class="status-label" data-state={vm.observed_state}>{UI.machine_state(vm)}</span>
                     </div>
                     <div class="preview-links">
                       <.link

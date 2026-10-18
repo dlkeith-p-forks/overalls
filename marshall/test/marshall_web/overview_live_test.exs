@@ -43,6 +43,8 @@ defmodule MarshallWeb.OverviewLiveTest do
     {:ok, view, _} = live(signed_in(conn, member), "/overview")
     assert has_element?(view, "#overview-machine-#{shared.id}")
     assert has_element?(view, "#overview-machine-os-#{shared.id}", "synthetic-test-image")
+    # Operating system comes first, then status.
+    assert has_element?(view, "#overview-machine-os-#{shared.id} + .status-label")
     refute has_element?(view, "#overview-machine-#{private.id}")
 
     {:ok, _} =

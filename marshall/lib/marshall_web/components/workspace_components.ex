@@ -146,10 +146,10 @@ defmodule MarshallWeb.WorkspaceComponents do
         <div class="machine-summary">
           <div class="machine-title">
             <h1>{@vm.name}</h1>
+            <.os_label vm={@vm} id="machine-os" />
             <span id="machine-state" class="status-label" data-state={@vm.observed_state}>{machine_state(
               @vm
             )}</span>
-            <.os_label vm={@vm} id="machine-os" />
           </div>
           <p class="machine-facts muted">
             {@vm.vcpu} vCPU · {workspace_gib(@vm.memory_bytes)} GiB memory · {workspace_gib(
