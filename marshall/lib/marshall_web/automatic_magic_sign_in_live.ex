@@ -24,13 +24,13 @@ defmodule MarshallWeb.AutomaticMagicSignInLive do
     ~H"""
     <main class="auth-shell">
       <section class="auth-panel" aria-live="polite">
-        <h1 class="ident">Signing you in</h1>
-        <p>Your email link is being verified.</p>
+        <h1 class="ident">{gettext("Signing you in")}</h1>
+        <p>{gettext("Your email link is being verified.")}</p>
         <form action={~p"/auth/user/magic_link"} method="post" phx-trigger-action={true}>
           <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
           <input type="hidden" name="user[token]" value={@token} />
           <input type="hidden" name="user[remember_me]" value="true" />
-          <button type="submit" class="console-button primary">Continue to Overalls</button>
+          <button type="submit" class="console-button primary">{gettext("Continue to Overalls")}</button>
         </form>
       </section>
     </main>

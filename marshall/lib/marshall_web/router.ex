@@ -121,8 +121,6 @@ defmodule MarshallWeb.Router do
       live "/admin/audit", Admin.AuditLive, :index
       live "/admin/git", Admin.GitLive, :index
       live "/settings", AccountLive, :index
-      live "/settings/security", SecurityLive, :index
-      live "/settings/ssh-keys", SSHKeysLive, :index
       live "/machines", MachinesLive, :index
       live "/machines/new", MachinesLive, :new
       live "/machines/:id", TerminalLive, :show

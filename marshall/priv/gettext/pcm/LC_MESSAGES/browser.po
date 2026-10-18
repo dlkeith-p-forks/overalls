@@ -1,0 +1,230 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: pcm\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/browser_messages.ex:11
+#, elixir-autogen, elixir-format
+msgid "%{count}d ago"
+msgstr "%{count} days ago"
+
+#: lib/marshall_web/browser_messages.ex:12
+#, elixir-autogen, elixir-format
+msgid "%{count}h ago"
+msgstr "%{count} hours ago"
+
+#: lib/marshall_web/browser_messages.ex:13
+#, elixir-autogen, elixir-format
+msgid "%{count}m ago"
+msgstr "%{count} minutes ago"
+
+#: lib/marshall_web/browser_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "%{label} copied."
+msgstr "Dem don copy %{label}."
+
+#: lib/marshall_web/browser_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "%{name} · %{count} viewing"
+msgstr "%{name} · %{count} dey watch"
+
+#: lib/marshall_web/browser_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid "%{name} · %{count} viewing · %{activity}"
+msgstr "%{name} · %{count} dey watch · %{activity}"
+
+#: lib/marshall_web/browser_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "%{name} · Terminals"
+msgstr "%{name} · Terminals"
+
+#: lib/marshall_web/browser_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "+ New"
+msgstr "+ New one"
+
+#: lib/marshall_web/browser_messages.ex:16
+#, elixir-autogen, elixir-format
+msgid "Applying administrative change…"
+msgstr "Dey apply admin change…"
+
+#: lib/marshall_web/browser_messages.ex:17
+#, elixir-autogen, elixir-format
+msgid "Boot log · read-only"
+msgstr "Boot log · na read only"
+
+#: lib/marshall_web/browser_messages.ex:18
+#, elixir-autogen, elixir-format
+msgid "Close this terminal session?"
+msgstr "Make we close dis terminal session?"
+
+#: lib/marshall_web/browser_messages.ex:19
+#, elixir-autogen, elixir-format
+msgid "Command"
+msgstr "Command"
+
+#: lib/marshall_web/browser_messages.ex:20
+#, elixir-autogen, elixir-format
+msgid "Could not copy. Select the text and copy it manually."
+msgstr "We no fit copy am. Select di text and copy am by yourself."
+
+#: lib/marshall_web/browser_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "Could not update access. Check the account's machine access."
+msgstr "We no fit update access. Check di account access to di machine."
+
+#: lib/marshall_web/browser_messages.ex:22
+#, elixir-autogen, elixir-format
+msgid "Design diagram; explanation follows in the handbook"
+msgstr "Design diagram; explanation dey for handbook"
+
+#: lib/marshall_web/browser_messages.ex:23
+#, elixir-autogen, elixir-format
+msgid "Enter full screen"
+msgstr "Enter full screen"
+
+#: lib/marshall_web/browser_messages.ex:24
+#, elixir-autogen, elixir-format
+msgid "Exit full screen"
+msgstr "Comot full screen"
+
+#: lib/marshall_web/browser_messages.ex:25
+#, elixir-autogen, elixir-format
+msgid "Input buffer full — that input was not sent"
+msgstr "Input buffer don full — we no send dat input"
+
+#: lib/marshall_web/browser_messages.ex:26
+#, elixir-autogen, elixir-format
+msgid "Match found"
+msgstr "We don find match"
+
+#: lib/marshall_web/browser_messages.ex:27
+#, elixir-autogen, elixir-format
+msgid "No matches"
+msgstr "No match dey"
+
+#: lib/marshall_web/browser_messages.ex:28
+#, elixir-autogen, elixir-format
+msgid "Open this link?\n\n%{url}"
+msgstr ""
+"Make we open dis link?\n"
+"\n"
+"%{url}"
+
+#: lib/marshall_web/browser_messages.ex:29
+#, elixir-autogen, elixir-format
+msgid "Opening…"
+msgstr "Dey open…"
+
+#: lib/marshall_web/browser_messages.ex:30
+#, elixir-autogen, elixir-format
+msgid "Passkey request cancelled. You can try again."
+msgstr "Passkey request don cancel. You fit try again."
+
+#: lib/marshall_web/browser_messages.ex:31
+#, elixir-autogen, elixir-format
+msgid "Passkey verification failed or unavailable. Try again."
+msgstr "Passkey verification fail or e no dey available. Try again."
+
+#: lib/marshall_web/browser_messages.ex:32
+#, elixir-autogen, elixir-format
+msgid "Terminal name (this browser only; empty restores the generated name)"
+msgstr ""
+"Terminal name (na only dis browser; leave am empty to bring back di "
+"generated name)"
+
+#: lib/marshall_web/browser_messages.ex:33
+#, elixir-autogen, elixir-format
+msgid "The result could not be confirmed. Reload the page and check the result before retrying."
+msgstr ""
+"We no fit confirm di result. Reload di page and check di result before you "
+"try again."
+
+#: lib/marshall_web/browser_messages.ex:34
+#, elixir-autogen, elixir-format
+msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
+msgstr ""
+"Dis machine wan write %{bytes} bytes to your clipboard. Type once, session, "
+"or mute."
+
+#: lib/marshall_web/browser_messages.ex:35
+#, elixir-autogen, elixir-format
+msgid "This repository link could not be launched. Open the link again."
+msgstr "We no fit launch dis repository link. Open di link again."
+
+#: lib/marshall_web/browser_messages.ex:36
+#, elixir-autogen, elixir-format
+msgid "Type to interact"
+msgstr "Type make you interact"
+
+#: lib/marshall_web/browser_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "Updating viewing access…"
+msgstr "Dey update viewing access…"
+
+#: lib/marshall_web/browser_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Verification could not be completed. Try again."
+msgstr "We no fit finish verification. Try again."
+
+#: lib/marshall_web/browser_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "Verify with your passkey to %{action}. This runs once after verification."
+msgstr ""
+"Use your passkey verify to %{action}. Dis go run once after verification."
+
+#: lib/marshall_web/browser_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "View only"
+msgstr "Na view only"
+
+#: lib/marshall_web/browser_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Viewing access updated."
+msgstr "Viewing access don update."
+
+#: lib/marshall_web/browser_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "Waiting for your passkey…"
+msgstr "Dey wait for your passkey…"
+
+#: lib/marshall_web/browser_messages.ex:43
+#, elixir-autogen, elixir-format
+msgid "complete this administrative change"
+msgstr "finish dis admin change"
+
+#: lib/marshall_web/browser_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid "just now"
+msgstr "just now now"
+
+#: lib/marshall_web/browser_messages.ex:45
+#, elixir-autogen, elixir-format
+msgid "● live"
+msgstr "● e dey live"
+
+#: lib/marshall_web/browser_messages.ex:46
+#, elixir-autogen, elixir-format
+msgid "● read-only"
+msgstr "● na read only"
+
+#: lib/marshall_web/browser_messages.ex:47
+#, elixir-autogen, elixir-format
+msgid "⟳ reconnecting…"
+msgstr "⟳ dey connect again…"
+
+#: lib/marshall_web/browser_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "⟳ restoring scrollback…"
+msgstr "⟳ dey bring back scrollback…"

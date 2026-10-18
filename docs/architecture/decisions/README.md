@@ -1,5 +1,7 @@
 # Architecture decision records
 
+[ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, browser language negotiation and validated account overrides with LTR/RTL presentation; implementation remains partial.
+
 [ADR-0200](0200-windows-browser-editor-candidate.md) accepts a source-built,
 account-bound Windows editor candidate with a separate `windows-editor-v1`
 manifest-v7/bundle-v4 contract. Native package, image and browser qualification
@@ -436,7 +438,6 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0194](0194-marshall-http-security-headers.md) | accepted | partial | Marshall HTTP security headers, no-index and session cookie hardening |
 | [ADR-0195](0195-user-time-zones.md) | accepted | partial | User time zone preference and local-time display |
 | [ADR-0196](0196-single-account-settings-page.md) | accepted | partial | One account settings page |
-| [ADR-0197](0197-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |
 | [ADR-0198](0198-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |
 | [ADR-0199](0199-memory-suspension-and-demand-wake.md) | accepted | partial | Memory-preserving suspension, relocation and demand wake |
 | [ADR-0200](0200-windows-browser-editor-candidate.md) | accepted | partial | Account-bound Windows browser editor candidate |
@@ -893,3 +894,5 @@ and physical storage acceptance. See the
 [host-lock review](../reviews/2026-10-05-host-lock-descendant-custody.md) and
 [transfer review](../reviews/2026-10-05-transfer-stream-adopted-children.md);
 ADR-0015/0037 retain their statuses and accepted rationale.
+
+| [ADR-0201](0201-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |

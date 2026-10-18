@@ -17,8 +17,10 @@ messages =
     "Browser extension",
     "Getting started",
     "Command reference",
-    "Automation"
+    "Automation",
+    "Options:"
   ])
+  |> Kernel.++(Enum.map(OverallsProtocol.SSHCommand.catalog(), & &1.summary))
   |> Enum.uniq()
   |> Enum.sort()
 

@@ -11,11 +11,57 @@
       ],
       "boundary": "Saved self-only locale override takes precedence over validated session/browser negotiation and English fallback. Arabic and Urdu use RTL; locale does not grant authority or change machine output.",
       "denial": "Unsupported or malformed locale input cannot persist; a foreign user cannot change the preference; old Porsche protocol peers fall back to English; JSON fields, protocol identifiers and terminal bytes remain language-neutral.",
-      "scope": "Accepted design in ADR-0197; no implementation execution is claimed by this scenario.",
+      "scope": "ADR-0201 presentation boundaries with recorded bounded BEAM/LiveView execution; full browser, native Porsche and linguistic acceptance remain partial.",
       "status": "partial",
-      "gaps": "Catalog completeness, placeholder parity, browser layout/bidi behavior, locale isolation and protocol compatibility need executed evidence. Native linguistic review and packaged NixOS browser journeys are not established.",
+      "gaps": "Documentation translations and native linguistic review remain incomplete. Packaged NixOS LTR/RTL browser journeys, real browser layout/bidi behavior and native Porsche protocol journeys are not established by the focused BEAM run.",
       "preferred_gap": "Add generated negotiation and isolation properties, complete catalog checks, LTR/RTL browser journeys and a packaged NixOS account-language/Porsche journey; record exact outcomes.",
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/accounts/locale_test.exs",
+          "assertion": "a user cannot change another account or persist unsupported input",
+          "scope": "Persisted override self-only/unsupported-input refusal within the BEAM fixture; no native transport claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-localization.md",
+          "record_assertion": "Latest focused localization regression run: **74 passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/locale_test.exs",
+          "assertion": "request processes have independent translation locale state",
+          "scope": "Negotiation and isolated request-process locale state; no browser rendering claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-localization.md",
+          "record_assertion": "Latest focused localization regression run: **74 passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/gettext_interpolation_test.exs",
+          "assertion": "RTL interpolation isolates a mixed-script value through the configured backend",
+          "scope": "Configured Arabic Gettext interpolation wraps a mixed-script value through Localize; no browser visual-order claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-localization.md",
+          "record_assertion": "Latest focused localization regression run: **74 passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/accounts/localized_time_zones_test.exs",
+          "assertion": "every supported locale formats shifted instants without changing UTC provenance",
+          "scope": "All 25 locales and six formats plus CLDR relative units preserve the UTC instant/provenance in the BEAM.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-localization.md",
+          "record_assertion": "Latest focused localization regression run: **74 passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/localized_markdown_test.exs",
+          "assertion": "translated prose cannot change commands, links or heading structure",
+          "scope": "Bounded Markdown token guard and extracted prose; no claim of translated catalog completeness.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-localization.md",
+          "record_assertion": "Latest focused localization regression run: **74 passed**"
+        }
+      ]
     },
     {
       "id": "account-settings-page",
@@ -1127,7 +1173,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/vscode-web/default.nix",
           "assertion": "worker loss starts a fresh personal process without deleting data",
-          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334\u20133357, legitimate origin replacement L3358\u20133389 and worker loss with saved data L3390\u20133407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
+          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334–3357, legitimate origin replacement L3358–3389 and worker loss with saved data L3390–3407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-10-browser-editor.md",
           "record_assertion": "The corrected final-package standalone native check passed, exit 0, in 342 seconds"
@@ -2864,10 +2910,8 @@
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
           "assertion": "older archived activation proof cannot replace the retry proof",
-          "scope": "Reviewed combined four-property run passed seed158289 in91.9seconds: exact ingress refusal inventories, historical failed-readiness ACKs, actual valid delayed source/destination physical receipts before and after current readiness/terminalization, independent current-proof times and complete firstscan/unrelated accounting conservation. Unchanged600-second window crosses actualDBclock after setup backdating with aboutfive seconds remaining. Full Marshall precommit passed 1,422 checks (221 properties, 1,201 tests), two exclusions, seed930025,1133.1seconds; forced Dialyzer42.96seconds with zero errors, skips or unnecessary skips; terminal exit0. No native ten-minute, committed publisher/restart or hosted timing claim.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-02-retry-proof-binding-histories.md",
-          "record_assertion": "The reviewed combined run passed four properties, seed `158289`, in 91.9 seconds,"
+          "scope": "Current property imports typed archived retry operations and proves older activation receipts cannot replace retry receipts; repeated scans retain pending measurements until the exact retry proof arrives and preserve inventories. No current retry admission, guest execution or native timing. Historical predecessor execution remains recorded separately in docs/architecture/reviews/2026-10-02-retry-proof-binding-histories.md and does not establish execution of this revised fixture.",
+          "execution": "present"
         },
         {
           "kind": "machine",
@@ -2990,10 +3034,8 @@
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
           "assertion": "historical retry measurements retain both proof windows through repeated scans",
-          "scope": "Recorded actual authenticated retry followed by synthetic received-time controls for inclusive admission/deadline, missing/future proof and repeated scan witnesses. Exact bucket vectors, terminal rows/totals and complete execution/readiness/SSH/proof inventories. One focused property passed seed405587 in38.6seconds; Full Marshall precommit passed 1,419 checks (218 properties, 1,201 tests), two exclusions, seed404257,1135.7seconds; forced Dialyzer42.61seconds with zero errors, skips or unnecessary skips; terminal exit0. No native timing, independent committed publisher, process recovery or hosted claim. Reviewed late-proof extension passed seed768114 in44.3seconds: actual ready-state and success audit after terminal deadline failure cannot rewrite complete measurement/totals or post-receipt execution/proof inventories.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-02-retry-measurement-window-histories.md",
-          "record_assertion": "extension passed one property, seed `768114`, in 44.3 seconds,"
+          "scope": "Current property imports archived retry history and models received timestamps at inclusive admission/deadline boundaries, missing/early/late/future proofs and repeated scans; asserts exact totals, bucket vectors and retained execution/proof inventories. No current cold retry admission, independent publisher, native timing or production claim. Historical predecessor execution remains recorded separately in docs/architecture/reviews/2026-10-02-retry-measurement-window-histories.md and does not establish execution of this revised fixture.",
+          "execution": "present"
         }
       ]
     },
@@ -5448,7 +5490,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/database-recovery/driver.py",
           "assertion": "expected_holder_state",
-          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432\u201327.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
+          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432–27.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-02-database-loss-histories.md",
           "record_assertion": "All six cases preserved the twenty-second holder and thirty-five-second\nall-connection assertions and reacquired the row after reclamation."
@@ -6058,10 +6100,10 @@
           "execution": "present"
         },
         {
-          "kind": "unit",
-          "path": "marshall/test/marshall/agents/prompt_test.exs",
-          "assertion": "a stopped VM retains prompt wake provenance until physical stop and capacity admission",
-          "scope": "Generated stopped-VM prompt text, repeated keys and changed payload against local Ash/PostgreSQL state; one turn, event, admission and wake receipts, and agent start operation. Synthetic capacity and no native guest wake.",
+          "kind": "property",
+          "path": "marshall/test/marshall/agents/prompt_wake_property_test.exs",
+          "assertion": "prompt retries join one wake without duplicating turns or starting a guest",
+          "scope": "Generated prompt text, repeated keys and changed payload across synthetic pending/stopped/paused/running observations against local Ash/PostgreSQL state; one turn/event/admission and sleeping-state wake receipts, with unchanged operation inventory. No native guest wake or checkpoint acceptance.",
           "execution": "present"
         },
         {
@@ -6617,7 +6659,7 @@
       ],
       "boundary": "Complete manifest, matching keyring, native ownership and isolated restoration.",
       "denial": "Reject unrelated decryption keys, malformed manifests, unavailable retained references, busy operator locks and unsafe or nonempty restore targets; keep historical authority isolated.",
-      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore\u2192decrypt\u2192repository-access composition with the historical-generation refusal in synthetic fixtures.",
+      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore→decrypt→repository-access composition with the historical-generation refusal in synthetic fixtures.",
       "status": "partial",
       "gaps": "No generic automated reconciliation makes a historical database authoritative for surviving guests; physical replacement GUID adoption needs operator reconciliation.",
       "preferred_gap": "Native TLS/ZFS/database/keyring and packaged-command acceptance retains its original scope. Local generated command histories cannot establish physical replacement GUID adoption or historical-authority reconciliation; those require explicit operator and native disaster-recovery drills.",
@@ -12924,12 +12966,10 @@
         },
         {
           "kind": "unit",
-          "execution": "recorded",
+          "execution": "present",
           "path": "marshall/test/marshall_web/terminal_live_test.exs",
           "assertion": "the paused Boot log entry reads host diagnostics without waking or opening a guest terminal",
-          "scope": "LiveView and synthetic host-stream fixtures deliver bounded diagnostic bytes with zero automatically opened registry rows across refresh. Header component fixtures link Boot log from the connection explanation while image terminal capability is false and render no Boot log tab. No actual browser, Lilly host or native guest.",
-          "record": "docs/architecture/reviews/2026-10-17-host-boot-log-authorization.md",
-          "record_assertion": "LiveView and navigation suite passed 27 tests"
+          "scope": "Current LiveView fixture checks bounded synthetic host diagnostic delivery while the VM is paused, with no guest terminal registry rows or wake requests. No actual browser, Lilly host or native guest. Historical predecessor execution remains in docs/architecture/reviews/2026-10-17-host-boot-log-authorization.md; the revised paused-state fixture has no recorded execution here."
         },
         {
           "kind": "unit",

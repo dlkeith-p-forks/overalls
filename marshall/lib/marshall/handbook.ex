@@ -18,16 +18,13 @@ defmodule Marshall.Handbook do
                   @external_resource path
                   [_, id] = Regex.run(~r/^[0-9]+-(.+)\.md$/, Path.basename(path))
 
-                  reference =
-                    Enum.map_join(OverallsProtocol.SSHCommand.catalog(), "\n\n", fn command ->
-                      "### `#{command.name}`\n\n`#{command.usage}`\n\n#{command.summary}\n\nOptions: " <>
-                        Enum.map_join(command.options, ", ", &"`--#{&1}`") <> "."
-                    end)
-
                   markdown =
                     File.read!(path)
                     |> Marshall.LocalizedMarkdown.translate(locale)
-                    |> String.replace("{{COMMAND_REFERENCE}}", reference)
+                    |> String.replace(
+                      "{{COMMAND_REFERENCE}}",
+                      Marshall.LocalizedMarkdown.command_reference(locale, 3)
+                    )
 
                   [_, title] = Regex.run(~r/^# (.+)$/m, markdown)
 

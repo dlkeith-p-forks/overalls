@@ -1,5 +1,7 @@
 # Architecture
 
+[ADR-0201](decisions/0201-localized-human-surfaces.md) accepts Localize-backed human surfaces with validated language preferences and LTR/RTL presentation; translation and native browser acceptance remain partial.
+
 [ADR-0200](decisions/0200-windows-browser-editor-candidate.md) accepts a native
 Windows browser editor with a SYSTEM gateway broker and personal SAM/S4U workers.
 Its separate `windows-editor-v1` manifest-v7 and bundle-v4 candidate contract
@@ -1637,4 +1639,4 @@ escape cleanup or physical storage acceptance; those remain open.
 
 ADR-0186 records the Covenant test-only contract layer used by all Elixir applications. Covenant obligations and tests provide deterministic executable evidence while existing ADR, HLDD, native and integration records remain authoritative for deployment and isolation guarantees.
 
-Localization follows [ADR-0197](decisions/0197-localized-human-surfaces.md): validated user/browser locale selection, offline catalogs and direction-aware human surfaces preserve protocol identifiers and execution authority. Implementation remains partial.
+Localization follows [ADR-0201](decisions/0201-localized-human-surfaces.md): validated user/browser locale selection, offline catalogs and direction-aware human surfaces preserve protocol identifiers and execution authority. Implementation remains partial.

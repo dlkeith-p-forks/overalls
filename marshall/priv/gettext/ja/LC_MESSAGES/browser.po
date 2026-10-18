@@ -1,16 +1,18 @@
-## This file is a PO Template file.
-##
-## "msgid"s here are often extracted from source code.
-## Add new messages manually only if they're dynamic
-## messages that can't be statically extracted.
-##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here has no
-## effect: edit them in PO (.po) files instead.
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
 #
 msgid ""
-msgstr "\nPlural-Forms: nplurals=1; plural=0;\nLanguage: ja\n"
-
+msgstr ""
+"Language: ja\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: lib/marshall_web/browser_messages.ex:11
 #, elixir-autogen, elixir-format
@@ -115,7 +117,10 @@ msgstr "一致しません"
 #: lib/marshall_web/browser_messages.ex:28
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
-msgstr "このリンクを開いてください?\n\n%{url}"
+msgstr ""
+"このリンクを開いてください?\n"
+"\n"
+"%{url}"
 
 #: lib/marshall_web/browser_messages.ex:29
 #, elixir-autogen, elixir-format
@@ -145,7 +150,8 @@ msgstr "結果は確認できませんでした。再試行する前に、ペー
 #: lib/marshall_web/browser_messages.ex:34
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
-msgstr "このマシンは、クリップボードに %{bytes} バイトを書き込むように要求します。 1 回入力、セッション、またはミュートします。"
+msgstr ""
+"このマシンはクリップボードに %{bytes} バイトの書き込みを要求しています。once、session、mute のいずれかを入力してください。"
 
 #: lib/marshall_web/browser_messages.ex:35
 #, elixir-autogen, elixir-format
