@@ -1,6 +1,6 @@
-# ADR-0198: Git attribution and guest identity
+# ADR-0199: Git attribution and guest identity
 
-- ID: ADR-0198
+- ID: ADR-0199
 - Date: 2026-10-18
 - Status: accepted
 - Implementation: partial
@@ -59,6 +59,14 @@ Rust properties and guest checks cover boot parsing and Git configuration.
 BEAM properties do not establish actual guest execution or production rollout.
 
 ## Implementation evidence
+
+The existing `#git-settings-form` and self-only preference action now live in
+[`AccountLive`](../../../marshall/lib/marshall_web/live/account_live.ex)'s profile
+section of `/settings`, under the complete strict settings gate specified by
+[ADR-0196](0196-single-account-settings-page.md). Stable Git field IDs remain;
+the duplicate later `SettingsLive` route/module has been removed. This is a
+reconciliation with the accepted single-page decision, not a change to Git
+snapshot scope or authorization.
 
 The [command snapshot](../../../marshall/lib/marshall/compute/command_snapshot.ex)
 and [allocation snapshot](../../../marshall/lib/marshall/compute/git_identity.ex)

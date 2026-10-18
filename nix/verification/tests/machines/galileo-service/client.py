@@ -11,7 +11,7 @@ import sys
 import time
 from pathlib import Path
 
-HOST = "exedev.integration.internal"
+HOST = "esample.integration.internal"
 
 
 def fault_events() -> list[tuple[str, float]]:

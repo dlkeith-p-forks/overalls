@@ -1635,6 +1635,20 @@ button.machine-editor-link,
   gap: 0 2ch;
 }
 
+#overview-newsletter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: var(--line-height) 1ch;
+}
+#overview-newsletter-form .field {
+  margin: 0;
+}
+@media (max-width: 480px) {
+  #overview-newsletter-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 /* Account page: a numbered index of the three anchored sections, double-rule
    separators between them and one-line passkey rows (rename form + remove). */
 .account-index ol {

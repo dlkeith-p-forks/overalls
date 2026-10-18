@@ -24,6 +24,7 @@ from pathlib import Path
 
 import native_control as control
 import native_git_fixture as git_fixture
+import native_github_fixture as github_fixture
 import native_growth_oracle as growth_oracle
 import native_omnios_growth_oracle as omnios_growth_oracle
 import native_services as services
@@ -695,6 +696,70 @@ def metadata(path: Path, binding: services.Binding, network: Network) -> None:
     path.chmod(0o600)
 
 
+def github_tools(context: BootContext, generation: int) -> dict[str, object]:
+    """Run shipped retained bootstrap, managed gh, Git and LFS as the personal UID."""
+    authority = context.authority
+    plugin = authority.github
+    if plugin is None:
+        raise ValueError("missing native GitHub fixture")
+    prepare = (
+        "set -eu; test $(id -u) = 200000; "
+        + (
+            'test "$(cat "$HOME/github-preserved")" = github-preserved; '
+            f'test "$({context.platform.git} config --global fixture.preserved)" = retained; '
+            if generation
+            else 'printf github-preserved > "$HOME/github-preserved"; '
+            f"{context.platform.git} config --global fixture.preserved retained; "
+        )
+        + "printf github-prepared"
+    )
+    success(
+        ssh(context.fixture, context.work / "known_hosts", prepare, network=context.network),
+        b"github-prepared",
+    )
+    with authority._lock:
+        plugin.arm()
+    deadline = time.monotonic() + 180
+    while True:
+        alive(context.process)
+        with authority._lock:
+            complete = plugin.completed and plugin.bootstrap_completed
+        if complete:
+            break
+        if time.monotonic() >= deadline:
+            raise RuntimeError("native retained GitHub bootstrap did not complete")
+        time.sleep(0.1)
+    branch = f"native-github-{generation}"
+    command = (
+        "set -eu; test $(id -u) = 200000; "
+        'test "$(cat "$HOME/github-preserved")" = github-preserved; '
+        f'test "$({context.platform.git} config --global fixture.preserved)" = retained; '
+        "gh --version | head -1 | grep -q 'gh version 2.102.0'; "
+        'test "$(gh api user --jq .login)" = native-fixture; '
+        "if gh auth token >/dev/null 2>&1; then exit 1; fi; "
+        'test ! -e "$HOME/.config/gh/hosts.yml"; test ! -e "$HOME/.git-credentials"; '
+        f'work="$HOME/github-{generation}"; mkdir "$work"; cd "$work"; '
+        f"{context.platform.git} clone -q https://github.com{git_fixture.PREFIX} original; "
+        f"cd original; {context.platform.git} checkout -q -b {branch}; "
+        f"{context.platform.git} lfs install --local >/dev/null; "
+        f"{context.platform.git} lfs track '*.dat' >/dev/null; "
+        "printf 'native-github-lfs-proof\\n' > proof.dat; "
+        f"{context.platform.git} add .gitattributes proof.dat; "
+        f"{context.platform.git} -c user.name=Native -c user.email=native@fixture.test commit -q -m proof; "
+        f"{context.platform.git} push -q origin {branch}; cd ..; "
+        f"{context.platform.git} clone -q --branch {branch} https://github.com{git_fixture.PREFIX} verified; "
+        'test "$(cat verified/proof.dat)" = native-github-lfs-proof; '
+        'test ! -e "$HOME/.config/gh/hosts.yml"; test ! -e "$HOME/.git-credentials"; '
+        "printf native-github-tools-verified"
+    )
+    success(
+        ssh(context.fixture, context.work / "known_hosts", command, network=context.network),
+        b"native-github-tools-verified",
+    )
+    with authority._lock:
+        return {"generation": plugin.generation, "outcome": plugin.outcome}
+
+
 def run(
     image: Path,
     vmm: Path,
@@ -708,6 +773,8 @@ def run(
     growth: bool = False,
     crash_first_boot: bool = False,
     enable_api: bool = False,
+    github_tools_release: Path | None = None,
+    github_executor_release: Path | None = None,
 ) -> None:
     """@cc [owner:ghuntley,label:verification;security] native-service-machine-scope
     Checks MUST exercise source-built daemons after MMDS/static-network setup
@@ -721,6 +788,8 @@ def run(
     production control endpoint may be introduced.
     """
     platform = Platform(os_name)
+    if (github_tools_release is None) != (github_executor_release is None):
+        raise ValueError("both native GitHub releases are required")
     if growth and crash_first_boot:
         raise ValueError("native growth cannot share the crash-recovery scenario")
     work.mkdir(mode=0o700, parents=True, exist_ok=False)
@@ -746,7 +815,10 @@ def run(
     git = shutil.which("git")
     if git is None:
         raise RuntimeError("pinned native Git fixture tool is unavailable")
-    repository = git_fixture.Repository.create(work / "git", Path(git).resolve())
+    repository = git_fixture.Repository.create(
+        work / "git", Path(git).resolve(), allow_writes=github_tools_release is not None
+    )
+    github_observations: list[dict[str, object]] = []
     manifest = services.decode_object((image / "manifest.json").read_bytes())
     kernel = services.decode_object(json.dumps(manifest.get("kernel")).encode("utf-8"))
     expected = kernel.get("sha256")
@@ -855,6 +927,10 @@ def run(
                             receipt=work / f"control-{generation}.json",
                         )
                     )
+                    if github_tools_release is not None and github_executor_release is not None:
+                        authority.github = github_fixture.GitHub(
+                            github_tools_release, github_executor_release, os_name + "-amd64"
+                        )
                     with (
                         control.Server(
                             ("169.254.254.1", 443), context, authority, repository=repository
@@ -930,6 +1006,10 @@ def run(
                             stage = "executor"
                             executor_withdrawal(boot_context)
                             print("native service fenced execution verified", flush=True)
+                            if authority.github is not None:
+                                stage = "retained-github-tools"
+                                github_observations.append(github_tools(boot_context, generation))
+                                print("native retained GitHub tools verified", flush=True)
                             stage = "retained-home"
                             retained_command = (
                                 'test "$(cat "$HOME/native-retained")" = native-home-retained'
@@ -1059,6 +1139,32 @@ def run(
         (work / "service-receipt.json").write_text(
             json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8"
         )
+        if github_observations:
+            (work / "github-tools-receipt.json").write_text(
+                json.dumps(
+                    {
+                        "version": 1,
+                        "platform": os_name + "-amd64",
+                        "native_admission": False,
+                        "boots": github_observations,
+                        "checks": [
+                            "retained-executor-fixed-bootstrap-and-fenced-artifact",
+                            "verified-atomic-managed-generation",
+                            "personal-uid-managed-gh-version-and-broker-api",
+                            "personal-uid-git-clone-branch-commit-push",
+                            "personal-uid-lfs-upload-and-download-exact-bytes",
+                            "token-command-refused-and-no-cli-credential-store",
+                            "home-and-existing-git-config-retained",
+                            "clean-reboot-already-current-generation",
+                        ],
+                        "scope": "actual retained native guest programs with isolated synthetic authority; Marshall SQL authorization and production native admission require separate evidence",
+                    },
+                    sort_keys=True,
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
     except (OSError, RuntimeError, ValueError, subprocess.SubprocessError):
         print(f"native service verification failed at stage {stage}", flush=True)
         raise RuntimeError("native service verification failed") from None
@@ -1079,6 +1185,8 @@ class Options(argparse.Namespace):
     mac: str
     os_name: services.Os
     growth: bool
+    github_tools_release: Path | None
+    github_executor_release: Path | None
 
 
 def main() -> None:
@@ -1093,6 +1201,8 @@ def main() -> None:
     parser.add_argument("--mac", default=DEFAULT_NETWORK.mac)
     parser.add_argument("--os-name", choices=("freebsd", "illumos"), default="freebsd")
     parser.add_argument("--growth", action="store_true")
+    parser.add_argument("--github-tools-release", type=Path)
+    parser.add_argument("--github-executor-release", type=Path)
     arguments = parser.parse_args(namespace=Options())
     run(
         arguments.image,
@@ -1103,6 +1213,8 @@ def main() -> None:
         network=Network(arguments.address, arguments.gateway, arguments.mac),
         os_name=arguments.os_name,
         growth=arguments.growth,
+        github_tools_release=arguments.github_tools_release,
+        github_executor_release=arguments.github_executor_release,
     )
 
 

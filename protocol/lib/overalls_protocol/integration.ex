@@ -9,12 +9,14 @@ defmodule OverallsProtocol.Integration do
 
   # @cc [owner:ghuntley,label:security] integration-name-closed-charset
   # Integration names MUST be lowercase DNS labels (1..40) from a closed
-  # charset, excluding the reserved SSH authority label. Peer-supplied names
+  # charset, excluding the reserved SSH and built-in GitHub authority labels. Peer-supplied names
   # MUST never select origins or hosts directly; they only address a persisted
   # integration configuration.
   @spec name?(term()) :: boolean()
   def name?(value) when is_binary(value),
-    do: value != "ssh" and byte_size(value) in 1..40 and Regex.match?(@name_regex, value)
+    do:
+      value not in ["ssh", "com-github"] and byte_size(value) in 1..40 and
+        Regex.match?(@name_regex, value)
 
   def name?(_), do: false
 

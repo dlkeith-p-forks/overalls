@@ -1,4 +1,5 @@
 Code.require_file("/etc/fleet-account-lifecycle.exs")
+Code.require_file("/etc/fleet-github-historical.exs")
 
 # Trusted fixture entry point; all actions are fenced by the disposable DB sentinel.
 defmodule FleetOperator do
@@ -19,6 +20,9 @@ defmodule FleetOperator do
   end
 
   @spec run(map()) :: map()
+  def run(%{"action" => "github-historical-windows"} = request),
+    do: GitHubHistoricalFleet.run(request)
+
   def run(%{"action" => "account-lifecycle", "request" => request}) do
     FleetAccountLifecycle.run(request)
   end

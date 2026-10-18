@@ -1,6 +1,7 @@
 { config, lib, pkgs, modulesPath, ... }@arguments:
 let
   codingClis = arguments.codingClis or (import ./coding-clis.nix { inherit pkgs; });
+  githubTools = import ./github { inherit pkgs; };
 in
 {
   imports = [
@@ -148,7 +149,6 @@ in
     ripgrep
     mercurial
     git
-    gh
     atop
     btop
     iotop
@@ -157,10 +157,12 @@ in
     podman-compose
     direnv
     devenv
-  ]) ++ codingClis.packages;
+  ]) ++ codingClis.packages ++ githubTools.packages "linux-amd64";
+  environment.etc."overalls/github.gitconfig".source = githubTools.configuration;
   environment.etc."codex/config.toml".source = codingClis.codexConfiguration;
   environment.etc."claude-code/managed-settings.json".source = codingClis.claudeConfiguration;
   environment.sessionVariables = codingClis.environmentVariables;
+  environment.localBinInPath = true;
 
   # @cc [owner:ghuntley,label:isolation] guest-toolset-container-boundary
   # Podman MUST stay rootful-only inside the guest and MUST NOT open a network

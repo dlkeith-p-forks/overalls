@@ -1,0 +1,14 @@
+@cc [owner:ghuntley,label:verification] github-machine-packaged-client-boundary
+The test MUST execute packaged Audi/Galileo and the actual managed GitHub CLI,
+Git and Git LFS clients. The independent synthetic admission and binding
+authorities MUST NOT be reported as Marshall/Lilly or physical VM acceptance.
+
+@cc [owner:ghuntley,label:security] github-machine-synthetic-secret-custody
+The controlled provider MUST use only synthetic credentials. Its observation
+records and service diagnostics MUST contain structural outcomes only, without
+authorization values, token-bearing URL queries or request payloads.
+
+@cc [owner:ghuntley,label:verification] github-machine-observable-effects
+Mutation and transfer checks MUST inspect the controlled provider's resulting
+repository, object or dispatch records. CLI success alone MUST NOT establish
+private push, exact-once dispatch or LFS object integrity.

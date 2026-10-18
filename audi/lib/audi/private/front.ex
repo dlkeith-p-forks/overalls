@@ -130,7 +130,14 @@ defmodule Audi.Private.Front do
   end
 
   defp service("llm.internal", _opts), do: {:ok, :ziggy}
+  defp service("reflection.internal", _opts), do: {:ok, :peach}
   defp service("ssh.integration.internal", _opts), do: {:ok, :ssh}
+
+  defp service("com-github.integration.internal", opts) do
+    if is_binary(opts[:galileo_socket]),
+      do: {:ok, {:galileo, "com-github"}},
+      else: {:error, :unavailable}
+  end
 
   defp service("otel.integration.internal", opts) do
     if is_binary(opts[:otel_socket]), do: {:ok, :otel}, else: {:error, :unavailable}
@@ -144,7 +151,6 @@ defmodule Audi.Private.Front do
 
   # 10.10/16 is the customer profile. It has no inference or integration access.
   defp service_allowed?(:ssh, _peer), do: true
-  defp service_allowed?(_, {10, 10, _, _}), do: false
   defp service_allowed?(_, _), do: true
 
   # @cc [owner:ghuntley,label:security] guest-otel-exact-surface
@@ -185,11 +191,16 @@ defmodule Audi.Private.Front do
       case service do
         {:galileo, _label} -> {opts[:galileo_socket], ~w(content-type accept)}
         :ziggy -> {opts[:ziggy_socket], ~w(content-type accept anthropic-version anthropic-beta)}
+        :peach -> {opts[:peach_socket], ~w(content-type accept)}
         :ssh -> {opts[:ziggy_socket], ~w(content-type accept)}
         :otel -> {opts[:otel_socket], ~w(content-type)}
       end
 
-    headers = Enum.filter(conn.req_headers, fn {name, _} -> name in allowed end)
+    headers =
+      if canonical == OverallsProtocol.GitHub.hostname(),
+        do: OverallsProtocol.GitHub.request_headers(conn.req_headers),
+        else: Enum.filter(conn.req_headers, fn {name, _} -> name in allowed end)
+
     encoded = binding |> JSON.encode!() |> Base.url_encode64(padding: false)
 
     # @cc [owner:ghuntley,label:security] private-upstream-canonical-host
@@ -297,9 +308,17 @@ defmodule Audi.Private.Front do
   defp events([{:headers, ref, headers} | rest], conn, ref, status, false)
        when status in 200..599 do
     safe =
-      Enum.filter(headers, fn {name, _} ->
-        name in ~w(content-type request-id x-request-id x-ziggy-request-id retry-after)
-      end)
+      if conn.host == OverallsProtocol.GitHub.hostname() do
+        OverallsProtocol.GitHub.response_headers(headers) ++
+          Enum.filter(headers, fn {name, value} ->
+            name in ["location", "link"] and byte_size(value) <= 16_384 and
+              not String.contains?(value, ["\r", "\n", "\0"])
+          end)
+      else
+        Enum.filter(headers, fn {name, _} ->
+          name in ~w(content-type request-id x-request-id x-ziggy-request-id retry-after)
+        end)
+      end
 
     conn = Enum.reduce(safe, conn, fn {name, value}, acc -> put_resp_header(acc, name, value) end)
     events(rest, send_chunked(conn, status), ref, status, true)

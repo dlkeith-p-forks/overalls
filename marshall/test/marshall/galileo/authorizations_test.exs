@@ -35,7 +35,7 @@ defmodule Marshall.Galileo.AuthorizationsTest do
     {:ok, _} =
       Galileo.configure_integration(
         %{
-          name: "exedev",
+          name: "esample",
           target: "https://api.example.test",
           strip_prefix: "/api/v3",
           headers: [
@@ -48,12 +48,12 @@ defmodule Marshall.Galileo.AuthorizationsTest do
         actor: c.owner
       )
 
-    assert {:error, :unauthorized} = authorize(c, "exedev")
+    assert {:error, :unauthorized} = authorize(c, "esample")
 
     assert {:ok, _} =
-             Galileo.attach_integration(%{name: "exedev", vm_id: c.vm.id}, actor: c.owner)
+             Galileo.attach_integration(%{name: "esample", vm_id: c.vm.id}, actor: c.owner)
 
-    assert {:ok, authorization} = authorize(c, "exedev")
+    assert {:ok, authorization} = authorize(c, "esample")
     assert authorization["target"] == "https://api.example.test"
     assert authorization["strip_prefix"] == "/api/v3"
     assert authorization["ttl"] == 2000
@@ -268,7 +268,7 @@ defmodule Marshall.Galileo.AuthorizationsTest do
     assert {:error, :invalid_request} =
              Marshall.Galileo.Authorizations.authorize(c.galileo_token, %{
                "binding" => %{"host_id" => "nope"},
-               "name" => "exedev"
+               "name" => "esample"
              })
 
     other = Marshall.ComputeFixtures.host_fixture()
@@ -277,7 +277,7 @@ defmodule Marshall.Galileo.AuthorizationsTest do
     assert {:error, :unauthorized} =
              Marshall.Galileo.Authorizations.authorize(foreign.id <> "." <> foreign.secret, %{
                "binding" => c.binding,
-               "name" => "exedev"
+               "name" => "esample"
              })
   end
 
@@ -290,7 +290,7 @@ defmodule Marshall.Galileo.AuthorizationsTest do
       capture_log([metadata: [:event, :reason]], fn ->
         assert {:error, :invalid_request} =
                  Marshall.Galileo.Authorizations.authorize(c.galileo_token, %{
-                   "name" => "exedev"
+                   "name" => "esample"
                  })
       end)
 
@@ -299,7 +299,7 @@ defmodule Marshall.Galileo.AuthorizationsTest do
 
     denial_logs =
       capture_log([metadata: [:event, :reason]], fn ->
-        assert {:error, :unauthorized} = authorize(c, "exedev")
+        assert {:error, :unauthorized} = authorize(c, "esample")
       end)
 
     assert denial_logs =~ "event=galileo.authorization_denied"

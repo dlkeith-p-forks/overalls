@@ -33,6 +33,9 @@ defmodule Audi.Private.DNS do
   defp resolve(%{labels: ["llm", "internal"], type: 1}),
     do: {0, [{["llm", "internal"], 1, 20, <<169, 254, 254, 1>>}], [], true}
 
+  defp resolve(%{labels: ["reflection", "internal"], type: 1}),
+    do: {0, [{["reflection", "internal"], 1, 20, <<169, 254, 254, 1>>}], [], true}
+
   defp resolve(%{labels: [label | zone], type: 1})
        when zone == @integration_zone and label != "integration",
        do: integration_address(label)
@@ -42,7 +45,12 @@ defmodule Audi.Private.DNS do
   defp resolve(%{labels: ["internal"], type: 6}), do: {0, [soa()], [], true}
 
   defp resolve(%{labels: labels})
-       when labels in [["llm", "internal"], ["internal"], @integration_zone],
+       when labels in [
+              ["llm", "internal"],
+              ["reflection", "internal"],
+              ["internal"],
+              @integration_zone
+            ],
        do: {0, [], [soa()], true}
 
   defp resolve(%{labels: labels}) do

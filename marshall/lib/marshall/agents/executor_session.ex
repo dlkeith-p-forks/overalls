@@ -6,7 +6,7 @@ defmodule Marshall.Agents.ExecutorSession do
   require Marshall.Events
 
   @lease_seconds 30
-  @capabilities ["context-v1", "skills-v1"]
+  @capabilities ["context-v1", "skills-v1", "github-tools-v1"]
   @internal_tools [:context_inventory, :context_read, :skill_install, :skill_status]
 
   @type capability :: String.t()
@@ -397,6 +397,25 @@ defmodule Marshall.Agents.ExecutorSession do
     end)
 
     :ok
+  end
+
+  # @cc [owner:ghuntley,label:security] maintenance-lease-lock-lifetime
+  # This trusted entry MUST be called inside the host-authenticated transaction;
+  # it MUST lock and revalidate the physical VM/executor binding and live root
+  # owner's write authority. It grants no conversation or model tool authority.
+  @spec maintenance_lease!(OverallsProtocol.PrivateServices.binding(), String.t(), pos_integer()) ::
+          {Executor.t(), VirtualMachine.t()}
+  def maintenance_lease!(parsed, id, fence) do
+    executor = valid_lease!(parsed, id, fence)
+    [vm] = Ledger.read!(VirtualMachine, id: executor.vm_id)
+    [root] = Ledger.read!(Root, id: executor.root_id)
+    owner = Marshall.Accounts.Security.current(root.owner_id)
+
+    unless match?(%Marshall.Accounts.User{deleted_at: nil}, owner) and
+             Marshall.Access.Authorization.allowed?(vm, owner, "write"),
+      do: Ledger.rollback(:access_revoked)
+
+    {executor, vm}
   end
 
   defp valid_lease!(parsed, id, fence) do

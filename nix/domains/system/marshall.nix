@@ -15,6 +15,21 @@ in
 {
   imports = [ ./marshall-operator.nix ./crash-dumps/retention.nix (import ./smtp-relay { inherit packages; }) ];
   options.services.marshall = {
+    githubRestoreEpochFile = mkOption {
+      type = localTypes.absolutePath;
+      default = "/var/lib/overalls-marshall-recovery/github-restore-epoch";
+      description = "Root-controlled public UUID restored-authority fence, shared identically across all replicas before recovery startup. The marker persists after invalidation.";
+    };
+    githubBootstrapRelease = mkOption {
+      type = types.nullOr types.package;
+      default = packages.githubBootstrapRelease or null;
+      description = "Immutable source-built executor inventory for retained-machine tool maintenance.";
+    };
+    githubToolsRelease = mkOption {
+      type = types.nullOr types.package;
+      default = if packages ? githubTools then packages.githubTools.release else null;
+      description = "Immutable manifest for the managed guest GitHub tools release.";
+    };
     enable = mkEnableOption "Marshall control plane instances";
     crashDumps = dumps.options;
     package = mkOption {
@@ -46,6 +61,23 @@ in
       type = types.enum [ "https://google.serper.dev" "http://127.0.0.1:18080" ];
       default = "https://google.serper.dev";
       description = "Fixed Serper origin; loopback is reserved for the machine-test fixture.";
+    };
+    github = {
+      clientId = mkOption {
+        type = types.nullOr (types.strMatching "[A-Za-z0-9_.-]{1,200}");
+        default = null;
+        description = "Public GitHub OAuth application client identity. Configure together with clientSecretFile and redirectUri.";
+      };
+      clientSecretFile = mkOption {
+        type = types.nullOr localTypes.privatePath;
+        default = null;
+        description = "Private runtime GitHub OAuth client secret, delivered through systemd credentials.";
+      };
+      redirectUri = mkOption {
+        type = types.nullOr (types.strMatching "https://[A-Za-z0-9.-]+(:[0-9]+)?/auth/github-com/callback");
+        default = null;
+        description = "Registered HTTPS GitHub OAuth callback URL.";
+      };
     };
     secretUnits = mkOption {
       type = types.listOf (types.strMatching "[a-zA-Z0-9_.@-]+\\.service");
@@ -204,6 +236,9 @@ in
     services.overallsCrashDumpRetention.directories = lib.mkIf cfg.crashDumps.enable (map (name: "/var/lib/marshall-${name}-crash-dumps") (builtins.attrNames cfg.instances));
     systemd.coredump.settings.Coredump = lib.mkIf cfg.crashDumps.enable { Storage = "none"; ProcessSizeMax = 0; };
     assertions = [
+      { assertion = (cfg.github.clientId == null) == (cfg.github.clientSecretFile == null) &&
+          (cfg.github.clientId == null) == (cfg.github.redirectUri == null);
+        message = "Marshall GitHub OAuth clientId, clientSecretFile and redirectUri must be configured together."; }
       # @cc [owner:ghuntley,label:protocol;reliability] editor-module-zone-boundary
       # A configured editor zone MUST satisfy the canonical multi-label protocol
       # boundary before service rendering. Null leaves discovery unconfigured.
@@ -267,6 +302,8 @@ in
         MARSHALL_SERPER_KEY_FILE = "/run/credentials/marshall-${name}.service/serper.key";
       } // lib.optionalAttrs (packages ? lyra) {
         OVERALLS_LYRA_RELEASE = toString packages.lyra;
+      } // lib.optionalAttrs (cfg.githubToolsRelease != null) {
+        MARSHALL_GITHUB_TOOLS_MANIFEST_FILE = "${cfg.githubToolsRelease}/manifest.json";
       } // lib.optionalAttrs (cfg.ingress.zone != null) {
         MARSHALL_INGRESS_ZONE = cfg.ingress.zone;
       } // lib.optionalAttrs (cfg.editorPackage != null) {
@@ -301,6 +338,25 @@ in
       # @cc [owner:ghuntley,label:security] marshall-cookie-argument-alphabet
       # The generated cookie MUST contain only hexadecimal digits so erlexec cannot
       # interpret a leading base64 '+' as a VM flag or echo it in usage diagnostics.
+
+      # @cc [owner:ghuntley,label:security] github-module-runtime-authority
+      # The final wrapper MUST remove inherited OAuth configuration and select
+      # only module settings. Disabled OAuth MUST remain disabled; secret bytes
+      # MUST stay in systemd credentials and never enter Nix or command arguments.
+      preStart = ''
+          export RELEASE_COOKIE
+          RELEASE_COOKIE="$(${pkgs.coreutils}/bin/head -c 32 /dev/urandom | ${pkgs.coreutils}/bin/basenc --base16 -w0)"
+          ${pkgs.coreutils}/bin/env -u PORT -u MARSHALL_FLEET_TLS_PORT -u MARSHALL_FLEET_BIND_IP \
+            -u MARSHALL_GITHUB_CLIENT_ID -u MARSHALL_GITHUB_CLIENT_SECRET_FILE -u MARSHALL_GITHUB_REDIRECT_URI \
+            -u MARSHALL_GITHUB_TOOLS_MANIFEST_FILE -u MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE \
+            PHX_SERVER=false RELEASE_DISTRIBUTION=none ERL_CRASH_DUMP=/dev/null RELEASE_TMP=/run/marshall-${name} \
+            PHX_HOST=${lib.escapeShellArg cfg.publicHost} MARSHALL_INSTANCE_ID=${lib.escapeShellArg name} \
+            MARSHALL_GITHUB_RESTORE_EPOCH_FILE=${lib.escapeShellArg cfg.githubRestoreEpochFile} \
+            MARSHALL_DB_TLS=verify MARSHALL_DB_CA_CERTFILE="$CREDENTIALS_DIRECTORY/database-ca.crt" \
+            MARSHALL_REPLICA_COUNT=${toString cfg.replicaCount} POOL_SIZE=${toString cfg.poolSize} \
+            MARSHALL_DB_CONNECTION_BUDGET=${toString cfg.databaseConnectionBudget} \
+            ${cfg.package}/bin/marshall eval 'Marshall.GitHub.invalidate_restored_credentials_before_serving!()'
+      '';
       script = ''
         ${lib.optionalString fleetOtelEnabled "${pkgs.coreutils}/bin/chmod 0700 /run/marshall-${name}"}
         export RELEASE_COOKIE
@@ -312,7 +368,13 @@ in
           default_image="$(${pkgs.python3}/bin/python3 ${./marshall-default-image.py} "$CREDENTIALS_DIRECTORY/default-image-id")" || exit 1
         ''}
         exec ${pkgs.coreutils}/bin/env -u PORT -u MARSHALL_SLO_SNAPSHOT -u MARSHALL_SERVICE_LEVEL_DIRECTORY -u MARSHALL_INGRESS_EDITOR_RELEASE -u OVERALLS_MARVIN_RELEASE \
+          -u MARSHALL_GITHUB_CLIENT_ID -u MARSHALL_GITHUB_CLIENT_SECRET_FILE -u MARSHALL_GITHUB_REDIRECT_URI -u MARSHALL_GITHUB_TOOLS_MANIFEST_FILE -u MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE \
+          ${lib.optionalString (cfg.githubBootstrapRelease != null) ("MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE=" + lib.escapeShellArg "${cfg.githubBootstrapRelease}/manifest.json")} \
           ${mailEnvironment}          PHX_SERVER=true RELEASE_DISTRIBUTION=none \
+          ${lib.optionalString (cfg.github.clientId != null) ("MARSHALL_GITHUB_CLIENT_ID=" + lib.escapeShellArg cfg.github.clientId)} \
+          ${lib.optionalString (cfg.github.clientSecretFile != null) ''MARSHALL_GITHUB_CLIENT_SECRET_FILE="$CREDENTIALS_DIRECTORY/github-oauth-secret"''} \
+          ${lib.optionalString (cfg.github.redirectUri != null) ("MARSHALL_GITHUB_REDIRECT_URI=" + lib.escapeShellArg cfg.github.redirectUri)} \
+          ${lib.optionalString (cfg.githubToolsRelease != null) ("MARSHALL_GITHUB_TOOLS_MANIFEST_FILE=" + lib.escapeShellArg "${cfg.githubToolsRelease}/manifest.json")} \
           ${lib.optionalString fleetOtelEnabled "MARSHALL_SLO_SNAPSHOT=/run/marshall-slo-${name}/slo.json"} \
           ${lib.optionalString fleetOtelEnabled "MARSHALL_SLO_CATALOG=${sloCatalog}"} \
           ${lib.optionalString (cfg.editorPackage != null) ("MARSHALL_INGRESS_EDITOR_RELEASE=" + lib.escapeShellArg (builtins.toJSON { protocol = cfg.editorPackage.editorProtocol; commit = cfg.editorPackage.sourceCommit; release = cfg.editorPackage.releaseId; }))} \
@@ -359,6 +421,7 @@ in
           "database-ca.crt:${cfg.databaseCAFile}"
         ] ++ lib.optional (cfg.sshHostCa.keyFile != null) "ssh-host-ca:${cfg.sshHostCa.keyFile}"
           ++ lib.optional (cfg.serperKeyFile != null) "serper.key:${cfg.serperKeyFile}"
+          ++ lib.optional (cfg.github.clientSecretFile != null) "github-oauth-secret:${cfg.github.clientSecretFile}"
           ++ lib.optional (cfg.publicHostFile != null) "public-host:${cfg.publicHostFile}"
           ++ lib.optional (instance.terminalPeerCAFile != null) "terminal-peer-ca.crt:${instance.terminalPeerCAFile}"
           ++ lib.optional (cfg.defaultImageIdFile != null) "default-image-id:${cfg.defaultImageIdFile}"

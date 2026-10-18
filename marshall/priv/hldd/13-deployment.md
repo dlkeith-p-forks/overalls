@@ -425,3 +425,9 @@ instead of each building a different one with a different identity. The
 procedure is in [docs/operations/nixos.md](repo:docs/operations/nixos.md); acceptance is recorded in
 the [agents review](repo:docs/architecture/reviews/2026-10-14-windows-guest-agents.md)
 and the [multi-OS review](repo:docs/architecture/reviews/2026-10-16-multi-os-guest-images.md).
+## Reflection deployment
+
+The private frontend routes `reflection.internal` to Peach. Peach is host-bound
+and depends on the Marshall control service; packaged NixOS wiring and guest
+journey evidence remain pending.
+

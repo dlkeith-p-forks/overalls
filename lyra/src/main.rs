@@ -96,6 +96,12 @@ enum LogsCommand {
 }
 
 fn run() -> Result<i32, &'static str> {
+    if let Some(code) = lyra::agent::maintenance::run_tool() {
+        return Ok(code);
+    }
+    if let Some(code) = lyra::agent::maintenance::bootstrap_invocation() {
+        return Ok(code);
+    }
     if std::env::args_os()
         .nth(1)
         .is_some_and(|arg| arg == "__update-worker")

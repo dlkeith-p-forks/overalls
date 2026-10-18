@@ -2,7 +2,7 @@ defmodule MarshallWeb.OverviewLive do
   @moduledoc "A bounded, actor-authorized starting point for the Overalls workspace."
   use MarshallWeb, :live_view
   alias Marshall.Compute
-  on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
+  on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
 
   @type socket :: Phoenix.LiveView.Socket.t()
   @type preview :: %{items: [map()], more: boolean()}
@@ -17,12 +17,33 @@ defmodule MarshallWeb.OverviewLive do
   @spec mount(map(), map(), socket()) :: {:ok, socket()}
   def mount(_, _, socket) do
     if connected?(socket), do: Process.send_after(self(), :refresh, 60_000)
-    {:ok, socket |> assign(page_title: gettext("Overview"), visible: true) |> refresh()}
+
+    {:ok,
+     socket
+     |> assign(page_title: gettext("Overview"), visible: true, newsletter_status: nil)
+     |> assign(newsletter_form: to_form(%{"email" => ""}, as: :newsletter))
+     |> refresh()}
   end
 
   @impl true
   @spec handle_event(String.t(), map(), socket()) :: {:noreply, socket()}
   def handle_event("refresh", _, socket), do: {:noreply, refresh(socket)}
+
+  def handle_event("dismiss_newsletter", _, socket) do
+    case Ash.update(socket.assigns.current_user, %{},
+           action: :dismiss_newsletter,
+           actor: socket.assigns.current_user
+         ) do
+      {:ok, _user} -> {:noreply, assign(socket, :newsletter_dismissed, true)}
+      {:error, _} -> {:noreply, socket}
+    end
+  end
+
+  def handle_event("subscribe_newsletter", %{"newsletter" => %{"email" => email}}, socket)
+      when is_binary(email) do
+    result = Marshall.Newsletter.subscribe(email)
+    {:noreply, assign(socket, :newsletter_status, result)}
+  end
 
   def handle_event("pin", %{"id" => id, "pinned" => pinned}, socket)
       when is_binary(id) and is_binary(pinned) do
@@ -51,8 +72,17 @@ defmodule MarshallWeb.OverviewLive do
     assign(socket,
       machines: machines,
       catalog: catalog,
+      newsletter_dismissed: newsletter_dismissed(actor),
       updated_at: DateTime.utc_now()
     )
+  end
+
+  @spec newsletter_dismissed(Marshall.Accounts.User.t()) :: boolean()
+  defp newsletter_dismissed(%Marshall.Accounts.User{id: id} = actor) do
+    case Marshall.Accounts.Security.current(id) do
+      %Marshall.Accounts.User{newsletter_dismissed: dismissed} -> dismissed
+      _ -> actor.newsletter_dismissed
+    end
   end
 
   # Pinned machines take the first slots; the keyset page fills the rest. When
@@ -104,6 +134,12 @@ defmodule MarshallWeb.OverviewLive do
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
+    assigns =
+      assigns
+      |> Map.put_new(:newsletter_dismissed, false)
+      |> Map.put_new(:newsletter_status, nil)
+      |> Map.put_new(:newsletter_form, to_form(%{"email" => ""}, as: :newsletter))
+
     ~H"""
     <Layouts.app
       flash={@flash}
@@ -183,6 +219,24 @@ defmodule MarshallWeb.OverviewLive do
             <% end %>
           </UI.panel>
           <div class="overview-side">
+            <UI.panel :if={!@newsletter_dismissed} id="overview-newsletter" title={gettext("Stay in the loop")}>
+              <:actions>
+                <button id="overview-newsletter-dismiss" type="button" class="console-button ghost" phx-click="dismiss_newsletter">{gettext("Dismiss")}</button>
+              </:actions>
+              <p class="muted">{gettext("Get tips, tricks and updates about Overalls by email.")}</p>
+              <.form for={@newsletter_form} id="overview-newsletter-form" phx-submit="subscribe_newsletter" action="https://ghuntley.com/newsletter/" method="get">
+                <.input field={@newsletter_form[:email]} type="email" autocomplete="email" placeholder="you@example.com" required label={gettext("Email address")} />
+                <button id="overview-newsletter-submit" type="submit" class="console-button primary">{gettext("Subscribe")}</button>
+              </.form>
+              <p id="overview-newsletter-status" class="muted" role="status" aria-live="polite">
+                <%= case @newsletter_status do %>
+                  <% :ok -> %>{gettext("Check your inbox and click the link to confirm your subscription.")}
+                  <% {:error, :invalid_email} -> %>{gettext("Enter a valid email address.")}
+                  <% {:error, :unavailable} -> %>{gettext("We could not reach the newsletter service. Try again later.")}
+                  <% _ -> %>{gettext("Unsubscribe any time.")}
+                <% end %>
+              </p>
+            </UI.panel>
             <UI.panel
               id="overview-marvin-extension"
               title={gettext("Open repositories from your browser")}

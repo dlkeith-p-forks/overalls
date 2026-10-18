@@ -44,7 +44,7 @@ complete telemetry collector. Privileged VM effects are not present yet.
 - Nix built the pinned runtimes successfully. The version checker accepts
   Elixir 1.20.4/OTP 29.0.6 and rejects the original 1.18.4/28.5.0.5 shell.
 - Lilly's seven unit tests and two properties pass on the pinned runtime. A live
-  read of this exe.dev VM reports x86-64, 32 logical/physical cores and memory
+  read of this sample-host VM reports x86-64, 32 logical/physical cores and memory
   byte counters. This confirms procfs collection, not KVM or admission behavior.
 - The new compiler found two redundant truthiness conditions in generated
   table content (`marshall/lib/marshall_web/components/table_content.ex`, removed with the Mishka set by ADR-0161)

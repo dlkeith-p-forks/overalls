@@ -10,6 +10,7 @@
 }:
 let
   inherit (pkgs) lib;
+  githubTools = import ../github { inherit pkgs; };
   nixCache = import ../../../../platform/nix-cache.nix;
   nixConfig = pkgs.writeText "overalls-ubuntu-nix.conf" ''
     substituters = https://cache.nixos.org/ ${nixCache.substituter}
@@ -59,7 +60,7 @@ let
   }) debs);
   ubuntuDevelopmentTools = pkgs.buildEnv {
     name = "ubuntu-guest-development-tools";
-    paths = [ pkgs.devenv ] ++ codingClis.packages;
+    paths = [ pkgs.devenv ] ++ codingClis.packages ++ githubTools.packages "linux-amd64";
     pathsToLink = [ "/bin" ];
   };
   editorConfiguration = pkgs.writeText "ubuntu-overalls-vscode-web-broker.json" (builtins.toJSON {
@@ -250,9 +251,10 @@ let
     python3 ${./normalize_nix_db.py} "$root/nix/var/nix/db/db.sqlite"
     mkdir -p "$root/nix/var/nix/gcroots" "$root/usr/local/bin"
     ln -s ${ubuntuDevelopmentTools} "$root/nix/var/nix/gcroots/ubuntu-guest-development-tools"
-    for command in devenv codex claude; do
+    for command in devenv codex claude gh git-lfs; do
       ln -s ${ubuntuDevelopmentTools}/bin/$command "$root/usr/local/bin/$command"
     done
+    install -D -m 0644 ${githubTools.configuration} "$root/etc/overalls/github.gitconfig"
     # @cc [owner:ghuntley,label:security] ubuntu-coding-cli-native-settings
     # Native system configuration MUST keep Ziggy and verified guest CA trust
     # available to login, interactive Bash and PAM sessions, without rewriting
@@ -308,7 +310,7 @@ let
       # root-owned and shared by every sudo-capable login account.
       ln -sf ../overalls-workspace.service "$root/etc/systemd/system/multi-user.target.wants/overalls-workspace.service"
       install -d -m 0755 "$root/workspace"
-      printf '[safe]\n\tdirectory = /workspace/*\n[include]\n\tpath = /run/overalls-workspace/git-identity/gitconfig\n' > "$root/etc/gitconfig"
+      printf '[safe]\n\tdirectory = /workspace/*\n[include]\n\tpath = /run/overalls-workspace/git-identity/gitconfig\n\tpath = /etc/overalls/github.gitconfig\n' > "$root/etc/gitconfig"
       mkdir -p "$root/etc/systemd/system/lilly-network.service.d"
       cat > "$root/etc/systemd/system/lilly-network.service.d/trust.conf" <<'EOF'
     [Unit]

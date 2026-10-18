@@ -39,6 +39,10 @@ defmodule Ziggy.Control do
              "agent_heartbeat",
              "agent_claim",
              "agent_transition",
+             "agent_maintenance_claim",
+             "agent_maintenance_transition",
+             "agent_maintenance_artifact",
+             "agent_bootstrap_artifact",
              "agent_next",
              "agent_result",
              "ssh_roster",
@@ -117,6 +121,10 @@ defmodule Ziggy.Control do
   defp route_reason("agent_heartbeat"), do: :agent_heartbeat
   defp route_reason("agent_claim"), do: :agent_claim
   defp route_reason("agent_transition"), do: :agent_transition
+  defp route_reason("agent_maintenance_claim"), do: :agent_maintenance_claim
+  defp route_reason("agent_maintenance_transition"), do: :agent_maintenance_transition
+  defp route_reason("agent_bootstrap_artifact"), do: :agent_bootstrap_artifact
+  defp route_reason("agent_maintenance_artifact"), do: :agent_maintenance_artifact
   defp route_reason("agent_next"), do: :agent_next
   defp route_reason("agent_result"), do: :agent_result
   defp route_reason("ssh_host_certificate"), do: :ssh_host_certificate

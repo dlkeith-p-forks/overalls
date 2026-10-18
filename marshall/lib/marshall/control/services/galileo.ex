@@ -37,12 +37,22 @@ defmodule Marshall.Control.Services.Galileo do
   def handle_request("galileo.renew", body, %{token: token}),
     do: result(Authorizations.renew(token, body), & &1)
 
+  def handle_request("galileo.github.authorize", body, %{token: token}),
+    do: result(Marshall.Galileo.GitHub.authorize(token, body), & &1)
+
+  def handle_request("galileo.github.renew", body, %{token: token}),
+    do: result(Marshall.Galileo.GitHub.renew(token, body), & &1)
+
+  def handle_request("galileo.github.close", body, %{token: token}),
+    do: result(Marshall.Galileo.GitHub.close(token, body), & &1)
+
   def handle_request(_op, _body, _identity), do: {:error, "invalid_request"}
 
   @spec result({:ok, map()} | {:error, term()}, (map() -> map())) ::
           {:ok, map()} | {:error, String.t()}
   defp result({:ok, value}, shape), do: {:ok, stringify(shape.(value))}
   defp result({:error, :unauthorized}, _shape), do: {:error, "unauthorized"}
+  defp result({:error, :unavailable}, _shape), do: {:error, "unavailable"}
   defp result({:error, _reason}, _shape), do: {:error, "invalid_request"}
 
   @spec stringify(map()) :: map()

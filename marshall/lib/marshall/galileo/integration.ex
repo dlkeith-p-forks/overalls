@@ -53,6 +53,7 @@ defmodule Marshall.Galileo.Integration do
         :owner_id,
         :team_id,
         :peer_vm_id,
+        :comment,
         :idempotency_key
       ]
     end
@@ -94,6 +95,7 @@ defmodule Marshall.Galileo.Integration do
       argument :peer, :boolean, allow_nil?: false, default: false
       argument :peer_vm_id, :uuid
       argument :team_id, :uuid
+      argument :comment, :string, allow_nil?: false, default: "", constraints: [max_length: 2048]
 
       argument :idempotency_key, :string,
         allow_nil?: false,
@@ -150,6 +152,7 @@ defmodule Marshall.Galileo.Integration do
 
     attribute :target, :string, constraints: [min_length: 8, max_length: 2048]
     attribute :strip_prefix, :string, constraints: [min_length: 2, max_length: 256]
+    attribute :comment, :string, allow_nil?: false, default: "", constraints: [max_length: 2048]
     attribute :peer, :boolean, allow_nil?: false, default: false
 
     attribute :idempotency_key, :string,

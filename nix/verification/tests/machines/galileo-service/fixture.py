@@ -360,7 +360,7 @@ def control_result(op: str, decoded: object) -> tuple[int, object]:
     if op == "galileo.authorize":
         if (
             mode("control-mode") != "active"
-            or decoded.get("name") != "exedev"
+            or decoded.get("name") != "esample"
             or decoded.get("binding") != BINDING
         ):
             return 403, {}
@@ -373,7 +373,7 @@ def control_result(op: str, decoded: object) -> tuple[int, object]:
     if op == "galileo.renew":
         if (
             set(decoded) != {"name", "binding"}
-            or decoded.get("name") != "exedev"
+            or decoded.get("name") != "esample"
             or decoded.get("binding") != BINDING
             or mode("control-mode") != "active"
             or mode("connector-mode") != "active"

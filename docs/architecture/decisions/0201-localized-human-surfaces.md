@@ -1,6 +1,12 @@
+<<<<<<<< HEAD:docs/architecture/decisions/0201-localized-human-surfaces.md
 # ADR-0201: Localized human-facing surfaces
 
 - ID: ADR-0201
+========
+# ADR-0200: Localized human-facing surfaces
+
+- ID: ADR-0200
+>>>>>>>> origin/trunk:docs/architecture/decisions/0200-localized-human-surfaces.md
 - Date: 2026-10-18
 - Status: accepted
 - Implementation: partial
