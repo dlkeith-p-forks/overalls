@@ -1454,3 +1454,10 @@ this range. Earlier checkpoint test/type evidence retains its original scope;
 merged consumer gates and the normal finite-deadline Marshall gate remain
 pending. No deployment or native capability qualification is inferred from the
 pull.
+
+After merge `2ce5d0c4`, the application imports `AndroidDisplay` from its
+existing module before referencing it in the hook registry. This closes the
+missing-import source finding without changing authorization, display
+contracts or accepted architecture; ADR-0161 and partial ADR-0206 remain
+unchanged. Startup smoke and the broader feature qualification retain separate
+evidence scopes.
