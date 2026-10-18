@@ -12,6 +12,10 @@
   diagnostic replay passed all twelve stages after an unexplained broker-recovery
   502; all remain separate from
   the frozen seven-family CLI milestone.
+- [Cross-platform browser editor status (2026-10-18)](2026-10-18-cross-platform-editor-status.md):
+  reconciles current Linux editor evidence with ADR-0153/0158 and records the
+  explicit FreeBSD, OmniOS/illumos and Windows editor refusals and their remaining
+  implementation and native-browser gaps.
 - [User time zones (2026-10-18)](2026-10-18-user-time-zones.md): ADR-0195's
   per-user display zone, self-only validated writes, saved → browser → UTC
   viewer resolution, UTC-provenance timestamps, people's local time in team,

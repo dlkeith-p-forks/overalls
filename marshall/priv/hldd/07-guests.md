@@ -137,6 +137,24 @@ session or physical isolation.
 Existing writable disks retain their original manifest and require a new machine
 from an editor-bearing image. See the
 [foreign Linux editor review](repo:docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md).
+
+This capability remains an explicitly Linux-only v4 contract. At the current
+revision there is no recorded native browser sign-in, edit/save/readback or
+recovery receipt against the current NixOS or Ubuntu image; the historical and
+captured Alma/Arch results retain their source, image and fixture scope. Package
+closure, descriptor, broker, CLI, terminal or SSH evidence cannot be promoted
+to current browser acceptance. Windows `windows-v1`, FreeBSD `freebsd-v1` and
+OmniOS/illumos `illumos-v1` rows keep `editor: false`; their readiness, agent,
+terminal or SSH evidence does not create an editor capability. A future
+non-Linux editor requires a separately reviewed image, agent/protocol contract,
+broker and browser journey.
+
+The evaluated `editor-target-boundaries` check independently asserts that the
+editor and broker package metadata target `x86_64-linux`, while the reviewed
+Windows v5 and native v6 package metadata has no editor field or capability.
+This is an artifact-boundary check only; it does not establish a booted guest or
+browser journey.
+
 The same closure carries four reviewed Open VSX builtin extensions, immutable AI
 policy and project language adapters. No global language toolchain or server is
 added by the editor. Extension pins, verified extraction recipe, adapters and

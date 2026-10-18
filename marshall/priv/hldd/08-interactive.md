@@ -59,6 +59,16 @@ Retirement and current login/write/execution refusals remain authoritative.
 Pre-cutover leases closed during the breaking database migration; this continuity
 rule applies to subsequent generated-identity admissions.
 
+The editor-bearing capability is currently limited to the reviewed version-4
+Linux image contract. Windows `windows-v1` and native FreeBSD/OmniOS
+(`freebsd-v1` and `illumos-v1`) rows are refused before this flow because their
+protocol capabilities set `editor: false`; their terminal, SSH, readiness or
+agent receipts do not widen that boundary. The Linux package and authority
+checks also do not constitute a current-revision browser journey: no current
+NixOS or Ubuntu sign-in, edit/save/readback and recovery receipt is recorded in
+this status review, and the captured Alma/Arch receipts retain their earlier
+image and source scope.
+
 Every machine page (Terminal, Access, Settings, Agents, Resize and the Boot log view)
 shares one header. A bordered heading box carries the machine name, then an
 operating-system label that is the registered display name of the machine's
@@ -179,6 +189,11 @@ The exact admitted GET/HEAD of the packaged extension-worker iframe at the grant
 source commit permits same-origin framing for the upstream browser extension host.
 Other editor responses deny framing. Foreign commits, unversioned paths and
 suffix paths cannot inherit that exception.
+
+The browser-fleet fixture retries focus custody before submitting a palette
+command and stops its fixture-owned personal worker after the policy probe. Those
+actions prevent stale Chromium focus and worker processes from contaminating a
+later fixture, but they add no product authority, transport or editor evidence.
 
 An expired/revoked personal cookie or its stored login requires authentication
 again and redirects a safe browser visit into the fixed approval/sign-in flow.

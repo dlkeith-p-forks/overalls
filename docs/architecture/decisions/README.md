@@ -114,6 +114,8 @@ registry. Editor and Inception remain false; stock/altered identities and
 unreviewed OmniOS candidates remain refused. Stock source receipts contain no artifact bytes, and
 those constructors refuse before copying a stock disk. Pinned builds link the complete
 FreeBSD kernel, twenty native Lyra executables and both terminal daemons.
+The cross-platform editor review records the current Linux evidence gap and keeps
+Windows, FreeBSD and OmniOS editor capability refused.
 OmniOS native nine-module/full-payload clean-export assembly, QEMU file/runtime
 checks and diagnostic Firecracker executing-token/transport checks passed. Its
 earlier service, mounted-root growth and same-disk process-crash receipts remain

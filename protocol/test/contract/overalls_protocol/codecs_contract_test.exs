@@ -18,6 +18,7 @@ defmodule OverallsProtocolCodecsContractTest do
       OverallsProtocol.EditorConnect,
       OverallsProtocol.EditorLogin,
       OverallsProtocol.EditorName,
+      OverallsProtocol.EditorPlatform,
       OverallsProtocol.EditorRelease,
       OverallsProtocol.EditorStream,
       OverallsProtocol.EgressAttribution,
