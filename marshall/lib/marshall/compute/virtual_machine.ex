@@ -374,10 +374,6 @@ defmodule Marshall.Compute.VirtualMachine do
     end
 
     update :reflection_metadata do
-      accept([:labels, :comment])
-    end
-
-    update :reflection_metadata do
       accept [:labels, :comment]
     end
 
