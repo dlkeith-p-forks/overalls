@@ -1185,16 +1185,18 @@ Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
 Default: Required when its service or enclosing record is selected.
 
 
-## `services.audi.editorPackage`
+## `services.audi.editorPackages`
 
-Immutable browser editor release serving self-hosted webview bootstrap assets; must match the guest image and Marshall release admission.
+Immutable browser editor packages by linux-x64 or win32-x64 target, serving exact release webview assets; empty disables assets. Every published gateway must serve all Marshall-approved releases.
 
-Type: `null or package`.
+Type: `attribute set of package`.
 
 Default:
 
 ```nix
-<derivation overalls-vscode-web-1.141.0>
+{
+  linux-x64 = <derivation overalls-vscode-web-1.141.0>;
+}
 ```
 
 
@@ -3455,16 +3457,18 @@ null
 ```
 
 
-## `services.marshall.editorPackage`
+## `services.marshall.editorPackages`
 
-Immutable official-source browser editor package whose protocol, commit and release digest govern image and gateway admission. Null disables editor authority.
+Immutable official-source browser editor packages by linux-x64 or win32-x64 target; their exact descriptors govern image and gateway admission. Empty disables editor authority.
 
-Type: `null or package`.
+Type: `attribute set of package`.
 
 Default:
 
 ```nix
-<derivation overalls-vscode-web-1.141.0>
+{
+  linux-x64 = <derivation overalls-vscode-web-1.141.0>;
+}
 ```
 
 

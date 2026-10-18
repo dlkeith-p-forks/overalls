@@ -397,6 +397,8 @@ defmodule Audi.HTTP.FrontTest do
       release: String.duplicate("b", 64)
     }
 
+    windows_descriptor = %{descriptor | release: String.duplicate("d", 64)}
+
     {:ok, reservation} = :gen_tcp.listen(0, [:inet, ip: {127, 0, 0, 1}])
     {:ok, {_, port}} = :inet.sockname(reservation)
     :ok = :gen_tcp.close(reservation)
@@ -410,11 +412,15 @@ defmodule Audi.HTTP.FrontTest do
          ip: {127, 0, 0, 1},
          port: port,
          https_port: port,
-         editor_assets: %{root: c.tmp_dir, descriptor: descriptor}}
+         editor_assets: %{
+           "linux-x64" => %{root: c.tmp_dir, descriptor: descriptor},
+           "win32-x64" => %{root: c.tmp_dir, descriptor: windows_descriptor}
+         }}
       )
 
     peer = {{127, 0, 0, 1}, port}
     assert :ok = Audi.HTTP.EditorAssetsProbe.check(peer, @zone, c.roots, descriptor)
+    assert :ok = Audi.HTTP.EditorAssetsProbe.check(peer, @zone, c.roots, windows_descriptor)
 
     wrong_release = %{descriptor | release: String.duplicate("c", 64)}
 
@@ -429,6 +435,9 @@ defmodule Audi.HTTP.FrontTest do
 
     assert {:error, :editor_assets_not_ready} =
              Audi.HTTP.EditorAssetsProbe.check(peer, @zone, c.roots, descriptor)
+
+    assert {:error, :editor_assets_not_ready} =
+             Audi.HTTP.EditorAssetsProbe.check(peer, @zone, c.roots, windows_descriptor)
 
     assert Process.alive?(listener)
     assert File.regular?(Path.join([c.tmp_dir, relative, "index.html"]))

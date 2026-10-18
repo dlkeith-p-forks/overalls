@@ -68,6 +68,8 @@ pkgs.runCommand "overalls-vscode-web-windows-native-bundle" {
   test -s "$out/out/server-main.js"
   test -s "$out/bin/overalls-code.cmd"
   test -s "$out/product.json"
+  cmp ${source}/source/LICENSE.txt "$out/LICENSE"
+  cmp ${source}/source/ThirdPartyNotices.txt "$out/ThirdPartyNotices.txt"
   cmp ${./extensions.lock.json} "$out/overalls-editor-extensions.json"
   while IFS=$'\t' read -r identity version; do
     jq -e --arg id "$identity" --arg version "$version" \

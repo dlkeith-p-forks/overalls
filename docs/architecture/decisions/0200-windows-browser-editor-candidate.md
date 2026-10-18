@@ -19,8 +19,9 @@ installing Windows runtime bytes or porting the Linux executable.
 The user authorized continuing the guest OS matrix plan in this repository and
 implementing the Windows editor candidate. A Windows implementation needs native
 account and kernel-object custody rather than Linux UID/systemd assumptions.
-Source staging, portable tests and bounded native pipe/ACL library tests exist; a complete native Windows
-bundle, candidate image and authenticated browser acceptance remain unrecorded.
+Source staging, portable tests, bounded native pipe/ACL library tests and a
+completed reviewed native Windows bundle import exist. Candidate image and
+authenticated browser acceptance remain unrecorded.
 This decision records the candidate boundary without changing ADR-0171's
 accepted capability exclusion.
 
@@ -85,8 +86,19 @@ accepted capability exclusion.
    agent row and editor tuple; the optional version-1 Git identity capability
    remains independently explicit. Closed v5/v2 codecs continue to reject
    editor fields and the new row. Marshall binds capability to the exact
-   immutable row ID and configured release; Lilly preserves the tuple on
-   placement-local starts. This candidate protocol is implementation support,
+   immutable row ID and the release configured for its validated target;
+   Lilly preserves the tuple on placement-local starts. Marshall and Audi use
+   a closed version-1 target registry containing only `linux-x64` and
+   `win32-x64`, with exact descriptors and distinct release digests. Unknown or
+   malformed entries refuse; an empty registry disables the editor. No legacy
+   singleton reader remains. Each gateway reports a separate five-second
+   receipt per full release tuple under its current service/session identity.
+   Every advertised editor or neutral webview gateway needs the complete
+   configured set because shared webview DNS cannot route by release. Apply
+   the receipt-index migration first, then atomically rebuild each host's
+   application and configuration; an old Linux-only gateway under a two-target
+   registry remains absent from discovery until both receipts are current.
+   This candidate protocol is implementation support,
    not evidence that a particular native image passed acceptance.
 8. **Keep promotion as a separate image-bound acceptance step.** Candidate
    runtime, broker, source/bundle imports and installation continue to declare
@@ -158,12 +170,23 @@ implement the separate v7/v4 candidate contract. The
 cover declared identity and release behavior; their execution and native limits
 are recorded separately in the cross-platform review.
 
+The [target registry](../../../marshall/lib/marshall/editor/releases.ex),
+[per-release receipt](../../../marshall/lib/marshall/ingress/editor_assets_receipt.ex),
+[publication query](../../../marshall/lib/marshall/ingress/publications.ex) and
+[receipt-index migration](../../../marshall/priv/repo/migrations/20261018192955_editor_asset_releases.exs)
+implement concurrent target admission and complete asset-set discovery. The
+[registry properties](../../../marshall/test/marshall/editor/releases_test.exs)
+and [publication tests](../../../marshall/test/marshall/editor_publication_test.exs)
+inspect finite targets, exact tuple selection, independent receipts and expiry;
+they do not establish native multi-gateway DNS or TLS behavior.
+
 The [runtime recipe](../../../nix/domains/artifacts/vscode-web/windows-runtime.nix)
 and [source kit](../../../nix/domains/artifacts/vscode-web/windows-source.nix)
 stage pinned native inputs with false capability metadata. The
 [bundle importer](../../../nix/domains/artifacts/vscode-web/windows-bundle.nix)
-describes the hash and descriptor checks for a later completed native build.
-These are package/source boundaries, not native browser execution.
+enforces the hash, descriptor, product-policy and native provenance checks.
+The cross-platform review records the completed native build and exact imported
+bundle identity. These are package/source boundaries, not browser execution.
 
 The [portable worker model](../../../nix/domains/artifacts/vscode-web-broker/src/windows_model.rs),
 [Win32 launcher](../../../nix/domains/artifacts/vscode-web-broker/src/windows.rs),
@@ -181,8 +204,9 @@ and [startup wrapper](../../../nix/domains/artifacts/guest/windows/start-editor.
 describe candidate task, trust, package and firewall installation. The linked
 review records 30 actual native Windows library tests, including pipe timeout,
 idle cancellation and ACL refusals; this is narrower than account or worker
-lifecycle acceptance. No completed native bundle, admitted Windows image, listener/worker journey, scheduler
-crash/reboot run or authenticated Windows browser acceptance is recorded here.
+lifecycle acceptance. The native bundle is completed and imported; no admitted
+Windows image, listener/worker journey, scheduler crash/reboot run or
+authenticated Windows browser acceptance is recorded here.
 The [native acceptance harness](../../../nix/verification/tests/machines/windows-editor/README.md)
 defines actual gateway-relay, personal account, browser edit/trust/PTY and
 broker/worker recovery assertions. Static harness compilation or boundary tests
@@ -190,8 +214,8 @@ do not execute those native assertions. Implementation remains partial.
 
 ## Open questions
 
-Complete the native Windows build and review its immutable bundle hash. Run
-native account/pipe/task acceptance and the complete image-bound browser journey.
+Run native account/pipe/task acceptance for the reviewed imported bundle and
+the complete image-bound browser journey.
 Then review the exact candidate image and bundle needed for production
 selection, including retained-image refusal and rollout ordering. Task Scheduler
 restart semantics and interrupted native cancellation require executed evidence.

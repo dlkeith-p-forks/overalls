@@ -586,8 +586,9 @@ decision 4). Its boundary:
   and every other utility must match the argument shapes Lilly uses (ZFS
   names beneath the pool datasets, `ip`/`sysctl` only on Lilly's devices
   and namespaces, `netns exec` only for `ip`, `nft`, `sysctl` and the flow
-  labeller with hostd's own executable, `systemctl` only on `lilly-vm-*`
-  units; host-namespace `nft` rule files may only define Lilly's own
+  labeller with hostd's own executable, mutating `systemctl` operations only on
+  one exact `lilly-vm-UUID.service` unit; slice and wildcard queries remain
+  read-only. Host-namespace `nft` rule files may only define Lilly's own
   `lilly_<hex>_filter`/`_nat` tables and are loaded from hostd's checked
   copy). **Residual risks:** Lilly's own tables can still drop or redirect
   host traffic (it is the network policy author); namespace-local rule
@@ -1424,9 +1425,21 @@ package/PATH ACL checks and the fixed SYSTEM task. Its separate
 retains it across placement-local starts. Existing `windows-v1` stays false and
 the candidate remains outside the selected production catalog. Native account,
 task restart, sustained cancellation under worker lifecycle and authenticated
-browser execution remain unrecorded. Thirty actual Windows library tests cover
-named-pipe timeout/cancellation and ACL descriptor/refusal checks only; source
-or harness presence cannot grant deployed image acceptance.
+browser execution remain unrecorded. The native Code OSS bundle passed reviewed
+import; its immutable product policy, signed extensions, licenses and provenance
+were checked. Thirty actual Windows library tests cover named-pipe
+timeout/cancellation and ACL descriptor/refusal checks, and thirteen native
+SYSTEM fixture cases cover installer/task custody. These bounded results and
+harness presence cannot grant deployed image acceptance.
+
+The approved editor registry is finite and target-specific. A valid Linux tuple
+cannot authorize a Windows image or vice versa. Each immutable asset receipt is
+bound to its full protocol/commit/release tuple as well as current service
+generation and host session. Concurrent reports preserve independent expiries.
+Publication requires every approved release on an advertised gateway; a missing,
+stale or foreign report cannot leave a neutral webview address that serves only
+part of the configured set. SQL-backed tests establish these database rules;
+native multi-gateway DNS, TLS and publisher-fault histories remain separate.
 
 ## Thread authorization boundary
 

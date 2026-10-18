@@ -61,10 +61,23 @@ let
     };
   };
   tls = tlsConfig {};
+  windowsEditor = pkgs.runCommand "windows-editor-configuration-fixture" {
+    passthru = { editorProtocol = 1; sourceCommit = lib.concatStrings (lib.replicate 40 "a"); releaseId = lib.concatStrings (lib.replicate 64 "d"); };
+  } ''touch "$out"'';
+  dualEditors = evaluate {
+    services.audi = {
+      port = 2200;
+      editorPackages = {
+        linux-x64 = tls.services.audi.editorPackages.linux-x64;
+        win32-x64 = windowsEditor;
+      };
+      tls = { enable = true; zone = "apps.example"; browserOrigin = "https://control.example.test"; };
+    };
+  };
   nonEditorSingleLabel = evaluate {
     services.audi = {
       port = 2200;
-      editorPackage = null;
+      editorPackages = {};
       tls = { enable = true; zone = "apps"; browserOrigin = "https://control.example.test"; };
     };
   };
@@ -137,6 +150,11 @@ assert !valid consoleWithSSH;
 assert !valid overlapping;
 assert valid custom;
 assert valid tls;
+assert valid dualEditors;
+assert builtins.attrNames dualEditors.services.audi.editorPackages == [ "linux-x64" "win32-x64" ];
+assert !(builtins.tryEval (builtins.deepSeq (evaluate {
+  services.audi = { port = 2200; editorPackages.windows-x64 = windowsEditor; };
+}).services.audi.editorPackages true)).success;
 assert !valid (tlsConfig { zone = "apps"; });
 assert valid nonEditorSingleLabel;
 assert !valid (tlsConfig { browserOrigin = "https://control.example.test:5443"; });

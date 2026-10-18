@@ -1017,17 +1017,17 @@ msgstr "## Sens de la langue et du texte"
 #: lib/marshall/documentation_messages.ex:441
 #, elixir-autogen, elixir-format
 msgid "## Lilly role"
-msgstr ""
+msgstr "## Rôle de Lilly"
 
 #: lib/marshall/documentation_messages.ex:442
 #, elixir-autogen, elixir-format
 msgid "## Locale is presentation, not authority"
-msgstr ""
+msgstr "## La langue concerne la présentation, pas l’autorité"
 
 #: lib/marshall/documentation_messages.ex:443
 #, elixir-autogen, elixir-format
 msgid "## Logs, queues and independent health"
-msgstr ""
+msgstr "## Journaux, files et état de santé indépendant"
 
 #: lib/marshall/documentation_messages.ex:444
 #, elixir-autogen, elixir-format
@@ -1072,37 +1072,37 @@ msgstr "## Croissance mixte et admission sous la pression des visionneuses"
 #: lib/marshall/documentation_messages.ex:455
 #, elixir-autogen, elixir-format
 msgid "## Move a running workload with one stopped full copy and recover interrupted transfer"
-msgstr ""
+msgstr "## Déplacer une charge en cours avec une copie complète arrêtée et reprendre un transfert interrompu"
 
 #: lib/marshall/documentation_messages.ex:459
 #, elixir-autogen, elixir-format
 msgid "## Multi-OS image families"
-msgstr ""
+msgstr "## Familles d’images multi-systèmes"
 
 #: lib/marshall/documentation_messages.ex:460
 #, elixir-autogen, elixir-format
 msgid "## Native FreeBSD and illumos guest services"
-msgstr ""
+msgstr "## Services invités natifs FreeBSD et illumos"
 
 #: lib/marshall/documentation_messages.ex:461
 #, elixir-autogen, elixir-format
 msgid "## Native agent sets and kernel identity"
-msgstr ""
+msgstr "## Ensembles d’agents natifs et identité du noyau"
 
 #: lib/marshall/documentation_messages.ex:462
 #, elixir-autogen, elixir-format
 msgid "## Native coding CLI defaults"
-msgstr ""
+msgstr "## Valeurs par défaut du CLI de codage natif"
 
 #: lib/marshall/documentation_messages.ex:463
 #, elixir-autogen, elixir-format
 msgid "## Native execution proof and observation"
-msgstr ""
+msgstr "## Preuve et observation de l’exécution native"
 
 #: lib/marshall/documentation_messages.ex:464
 #, elixir-autogen, elixir-format
 msgid "## Native fleet trust verification"
-msgstr ""
+msgstr "## Vérification de confiance de la flotte native"
 
 #: lib/marshall/documentation_messages.ex:465
 #, elixir-autogen, elixir-format

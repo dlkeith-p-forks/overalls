@@ -41,7 +41,12 @@ apps = %{
     # outcome. SSH.Commands emits admission outcomes after outer commit;
     # ServiceLevelPublisher emits catalogued publication failures. Emitting in
     # this nested accounting transaction would report rolled-back admissions.
-    exempt_from_mutation_rule: ["lib/marshall/compute/workflow_service_levels.ex"]
+    exempt_from_mutation_rule: [
+      "lib/marshall/compute/workflow_service_levels.ex",
+      # Editor.Releases.approved?/2 is a pure registry membership predicate;
+      # it has no security-significant side effect to announce.
+      "lib/marshall/editor/releases.ex"
+    ]
   },
   "lilly" => %{
     catalog: Lilly.Events,

@@ -350,7 +350,7 @@ defmodule Marshall.Editor.Authority do
   defp capability!(vm) do
     image = List.first(Ledger.read!(Image, id: vm.image_id)) || deny!()
 
-    case Image.editor_capability(image, Application.get_env(:marshall, :ingress_editor_release)) do
+    case Image.editor_capability(image, Application.get_env(:marshall, :ingress_editor_releases)) do
       {:ok, capability} -> capability
       {:error, _} -> Ledger.rollback(:image_unavailable)
     end

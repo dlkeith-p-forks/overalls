@@ -1005,8 +1005,6 @@ GRID_ROUTES = (
     "machine",
     "boot-log",
     "settings",
-    "security",
-    "ssh",
     "hldd",
 )
 
@@ -1045,8 +1043,6 @@ def run(fixture: Context, artifacts: Path) -> None:
             "git": "/git",
             "usage": "/usage",
             "settings": "/settings",
-            "security": "/settings/security",
-            "ssh": "/settings/ssh-keys",
             "hldd": "/hldd",
             "hldd-section": "/hldd/system",
         }
@@ -1133,7 +1129,6 @@ def run(fixture: Context, artifacts: Path) -> None:
                 "integrations",
                 "teams",
                 "usage",
-                "security",
                 "settings",
             ):
                 visit(page, fixture["origin"], routes[name])

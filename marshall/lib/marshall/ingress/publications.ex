@@ -50,10 +50,10 @@ defmodule Marshall.Ingress.Publications do
     # DNS keeps a host's records while it holds authority (live or late), so a
     # few seconds of report delay no longer removes them (ADR-0140).
     freshness = Marshall.Compute.HostLiveness.authority_ms()
-    {editor_commit, editor_release, editor_protocol} = approved_editor()
+    releases = Marshall.Editor.Releases.configured() |> Marshall.Editor.Releases.sql_rows()
 
     %{rows: rows} =
-      sql!(statement(), [freshness, zone, editor_commit, editor_release, editor_protocol])
+      sql!(statement(), [freshness, zone, releases])
 
     if length(rows) > 20_000 or MapSet.size(MapSet.new(rows, &hd/1)) > 10_000,
       do: Ledger.rollback(:capacity)
@@ -126,11 +126,16 @@ defmodule Marshall.Ingress.Publications do
   # The eligibility result MUST be evaluated once per statement, rather than
   # rescanning the full inventory for each endpoint under stale small-table estimates.
   # Editor owners MUST require a content-bound image matching the approved release
-  # and live asset receipt under the same snapshot. The neutral webview owner MUST
-  # publish only healthy, asset-equipped gateways; neither record grants access.
+  # for its validated target and live asset receipt under the same snapshot.
+  # Every published editor and neutral webview gateway MUST have current receipts
+  # for the complete configured release set, since webview DNS cannot select a
+  # release-specific destination. Neither record grants access.
   defp statement do
     """
-    WITH clock AS MATERIALIZED (SELECT clock_timestamp() AT TIME ZONE 'UTC' AS now),
+    WITH approved_editor AS MATERIALIZED (
+      SELECT target, protocol, commit, release FROM jsonb_to_recordset($3::jsonb)
+        AS approved(target text, protocol integer, commit text, release text)
+    ), clock AS MATERIALIZED (SELECT clock_timestamp() AT TIME ZONE 'UTC' AS now),
     inventory AS MATERIALIZED (
       SELECT v.id, placement.host_id, v.current_placement_id, v.execution_epoch,
              v.generation, v.desired_state, v.observed_state, v.profile, v.image_id, e.label
@@ -189,6 +194,7 @@ defmodule Marshall.Ingress.Publications do
         )))
     ), asset_gateways AS MATERIALIZED (
       SELECT s.id AS service_id, h.connection_session_id AS session_id, s.addresses,
+             approved.target, approved.protocol, approved.commit, approved.release,
              LEAST(5000, FLOOR(EXTRACT(EPOCH FROM (LEAST(cert.expires_at, a.expires_at) - c.now)) * 1000)::bigint) AS ttl
       FROM ingress_services s
       JOIN compute_hosts h ON h.id = s.host_id
@@ -196,8 +202,9 @@ defmodule Marshall.Ingress.Publications do
       JOIN ingress_editor_assets_receipts a ON a.service_id = s.id
         AND a.service_generation = s.generation AND a.host_id = h.id
         AND a.session_id = h.connection_session_id
-        AND a.editor_commit = $3 AND a.editor_release = $4 AND a.editor_protocol = $5
         AND a.expires_at > c.now
+      JOIN approved_editor approved ON a.editor_commit = approved.commit
+        AND a.editor_release = approved.release AND a.editor_protocol = approved.protocol
       JOIN ingress_fleet_certificates cert ON cert.zone = $2 AND cert.status = 'active'
         AND cert.expires_at > c.now
       JOIN ingress_fleet_certificate_installations i ON i.host_id = h.id
@@ -207,17 +214,29 @@ defmodule Marshall.Ingress.Publications do
         AND s.ssh_host_key IS NOT NULL AND h.enabled AND h.maintenance_mode <> 'retired'
         AND h.connection_session_id IS NOT NULL AND h.reported_at <= c.now
         AND h.reported_at >= c.now - ($1::bigint * interval '1 millisecond')
+    ), complete_asset_gateways AS MATERIALIZED (
+      SELECT service_id, session_id, addresses, MIN(ttl) AS ttl
+      FROM asset_gateways
+      GROUP BY service_id, session_id, addresses
+      HAVING COUNT(*) = (SELECT COUNT(*) FROM approved_editor)
+        AND COUNT(*) > 0
     ), editor_publications AS (
-      SELECT 'editor-' || replace(v.id::text, '-', '') AS label, p.addresses, LEAST(p.ttl, a.ttl) AS ttl
+      SELECT 'editor-' || replace(v.id::text, '-', '') AS label, p.addresses, LEAST(p.ttl, a.ttl, complete.ttl) AS ttl
       FROM inventory v
       JOIN current_publications p ON p.vm_id = v.id AND p.kind = 'route'
       JOIN asset_gateways a ON a.service_id = p.service_id AND a.session_id = p.session_id
+      JOIN complete_asset_gateways complete ON complete.service_id = a.service_id
+        AND complete.session_id = a.session_id
       JOIN compute_images image ON image.id = v.image_id
       WHERE v.profile IN ('customer', 'standard', 'oss')
-        AND image.manifest->>'version' = '4'
-        AND image.manifest->'editor'->>'commit' = $3
-        AND image.manifest->'editor'->>'release' = $4
-        AND image.manifest->'editor'->>'protocol' = $5::text
+        AND image.manifest->>'architecture' = 'x86_64'
+        AND ((a.target = 'linux-x64' AND image.manifest->>'version' = '4')
+          OR (a.target = 'win32-x64' AND image.manifest->>'version' = '7'
+            AND image.manifest->>'os' = 'windows'
+            AND image.manifest->>'guest_agents' = 'windows-editor-v1'))
+        AND image.manifest->'editor'->>'commit' = a.commit
+        AND image.manifest->'editor'->>'release' = a.release
+        AND image.manifest->'editor'->>'protocol' = a.protocol::text
     ), nested AS (
       SELECT CASE WHEN record->>'label' = 'control'
                   THEN 'control.' || e.label || '.inception'
@@ -276,22 +295,12 @@ defmodule Marshall.Ingress.Publications do
       SELECT label, 'route'::text, addresses, NULL::text[], ttl FROM editor_publications
       UNION ALL
       SELECT 'webview'::text, 'route'::text, ARRAY(SELECT DISTINCT address
-        FROM asset_gateways a, LATERAL unnest(a.addresses) address ORDER BY address LIMIT 8),
-        NULL::text[], MIN(ttl) FROM asset_gateways HAVING COUNT(*) > 0
+        FROM complete_asset_gateways a, LATERAL unnest(a.addresses) address ORDER BY address LIMIT 8),
+        NULL::text[], MIN(ttl) FROM complete_asset_gateways HAVING COUNT(*) > 0
     )
     SELECT label, kind, addresses, proofs, ttl FROM all_publications
     ORDER BY label, kind LIMIT 20001
     """
-  end
-
-  @spec approved_editor() :: {String.t() | nil, String.t() | nil, pos_integer() | nil}
-  defp approved_editor do
-    case OverallsProtocol.EditorRelease.decode(
-           Application.get_env(:marshall, :ingress_editor_release)
-         ) do
-      {:ok, descriptor} -> {descriptor.commit, descriptor.release, descriptor.protocol}
-      _ -> {nil, nil, nil}
-    end
   end
 
   defp configured_zone?(zone) do

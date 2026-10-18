@@ -9,6 +9,7 @@ let
   mediaScript = plain image.passthru.configMedia.buildCommand;
   manifestScript = plain image.buildCommand;
   installDriver = builtins.readFile ../../../domains/artifacts/guest/windows/install.py;
+  installEditor = builtins.readFile ../../../domains/artifacts/guest/windows/install-editor.ps1;
   setupComplete = builtins.readFile ../../../domains/artifacts/guest/windows/SetupComplete.cmd;
   specialize = builtins.readFile ../../../domains/artifacts/guest/windows/specialize.cmd;
   firstLogon = builtins.readFile ../../../domains/artifacts/guest/windows/FirstLogon.cmd;
@@ -175,7 +176,14 @@ assert lib.hasInfix "--argjson minimum_memory_bytes 4294967296" candidateManifes
 assert lib.hasInfix "OVERALLS-EDITOR-CANDIDATE-INSTALLED" candidateManifest;
 assert lib.hasInfix ''{version:7,os:"windows",editor:$editor_descriptor}'' candidateManifest;
 assert lib.hasInfix "tree/overalls/editor-broker/start.ps1" candidateMedia;
-assert lib.hasInfix "tree/overalls/editor/" candidateMedia;
+assert lib.hasInfix "stage-editor.py" candidateMedia;
+assert lib.hasInfix "Install-EditorArchive" installEditor;
+assert lib.hasInfix "editor.inventory.json" installEditor;
+assert lib.hasInfix "editor.archive.json" installEditor;
+assert lib.hasInfix "Get-FileHash -LiteralPath $Archive" installEditor;
+assert lib.hasInfix "tar.exe" installEditor;
+assert lib.hasInfix "editor_archive_nonregular" installEditor;
+assert lib.hasInfix "editor_archive_file_mismatch" installEditor;
 assert lib.hasInfix "'Bootstrap', 'EditorBroker'" setupComplete;
 assert !(lib.hasInfix "tree/overalls/editor-broker/" mediaScript);
 assert !(lib.hasInfix "tree/overalls/editor-broker/" (plain packages.windowsGuestRuntime.passthru.configMedia.buildCommand));

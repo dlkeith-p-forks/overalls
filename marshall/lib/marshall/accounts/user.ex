@@ -46,6 +46,7 @@ defmodule Marshall.Accounts.User do
   postgres do
     table "users"
     repo Marshall.Repo
+    migration_defaults git_email: "\"noreply@overalls.dev\""
   end
 
   actions do
@@ -93,12 +94,13 @@ defmodule Marshall.Accounts.User do
       validate Marshall.Accounts.ValidLocale
     end
 
+    # @cc [owner:ghuntley,label:security;protocol] locale-explicit-clear
+    # Only an explicit nil MAY clear the saved locale. Empty or unsupported
+    # strings MUST reach validation unchanged and refuse without a write.
     action :set_locale, :map do
-      # Preserve empty input for the coordinator to reject; only explicit nil
-      # clears an override. Ash must not coerce an empty string into nil.
       argument :locale, :string,
         allow_nil?: true,
-        constraints: [max_length: 35, allow_empty?: true]
+        constraints: [max_length: 35, trim?: false, allow_empty?: true]
 
       run Marshall.Accounts.ProfileLocale
     end
@@ -266,15 +268,7 @@ defmodule Marshall.Accounts.User do
       authorize_if expr(id == ^actor(:id) and is_nil(deleted_at))
     end
 
-    # @cc [owner:ghuntley,label:security] self-profile-action-admission
-    # Profile action admission MUST require an actor. The implementations MUST
-    # lock and validate that actor's live User row; no input may select a target
-    # account, and internal store actions retain their separate system gate.
-    policy action([:set_time_zone, :set_locale]) do
-      authorize_if actor_present()
-    end
-
-    policy action(:security) do
+    policy action([:security, :set_time_zone, :set_locale]) do
       authorize_if actor_present()
     end
 

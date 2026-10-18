@@ -71,17 +71,18 @@ defmodule Marshall.Compute.Image do
 
   # @cc [owner:ghuntley,label:security;protocol] image-editor-exact-release
   # Editor capability MUST require a validated manifest matching the stored image
-  # ID and the exact configured protocol/commit/release. Valid legacy or different
+  # ID and the exact protocol/commit/release configured for its validated target.
+  # A tuple approved only for another target MUST NOT authorize it. Valid legacy or different
   # releases MUST return unsupported_image; missing/corrupt image or configuration
   # MUST return unavailable. Catalog enabled status MUST NOT revoke an existing
   # image's editor capability. This pure helper MUST NOT grant user authority.
   @spec editor_capability(term(), term()) ::
           {:ok, editor_capability()} | {:error, :unsupported_image | :unavailable}
   def editor_capability(%{id: id, manifest: manifest}, configured) do
-    with {:ok, approved} <- OverallsProtocol.EditorRelease.decode(configured),
+    with {:ok, releases} <- Marshall.Editor.Releases.decode(configured),
          {:ok, %{id: ^id} = validated} <- OverallsProtocol.ImageManifest.validate(manifest) do
-      case Map.get(validated, :editor) do
-        ^approved ->
+      case {Marshall.Editor.Releases.for_image(validated, releases), Map.get(validated, :editor)} do
+        {{:ok, approved}, actual} when approved == actual ->
           {:ok,
            %{
              editor_protocol: approved.protocol,

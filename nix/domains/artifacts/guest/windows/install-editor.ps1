@@ -51,13 +51,95 @@ function Set-EditorTreeAcl {
     }
 }
 
+function Install-EditorArchive {
+    [OutputType([void])]
+    param()
+    # @cc [owner:ghuntley,label:security;recovery] windows-editor-archive-extraction
+    # SYSTEM MUST verify the closed archive metadata, inventory, regular-file
+    # tar listing and every extracted byte before moving the payload into its
+    # fixed editor path. Traversal, links, duplicate case-insensitive names,
+    # stale destinations and extraction failures MUST refuse installation.
+    [string]$Broker = 'C:\overalls\editor-broker'
+    [string]$Archive = Join-Path $Broker 'editor.tar'
+    [string]$InventoryPath = Join-Path $Broker 'editor.inventory.json'
+    [string]$MetadataPath = Join-Path $Broker 'editor.archive.json'
+    [string]$Stage = 'C:\overalls\editor-staging'
+    [string]$Destination = 'C:\overalls\editor'
+    [string]$Tar = 'C:\Windows\System32\tar.exe'
+    foreach ($Path in @($Archive, $InventoryPath, $MetadataPath, $Tar)) {
+        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { throw 'editor_archive_input_missing' }
+    }
+    [pscustomobject]$Metadata = Get-Content -LiteralPath $MetadataPath -Raw | ConvertFrom-Json
+    [pscustomobject]$Inventory = Get-Content -LiteralPath $InventoryPath -Raw | ConvertFrom-Json
+    if ($Metadata.format -ne 1 -or $Inventory.format -ne 1 -or
+        ((@($Metadata.PSObject.Properties.Name | Sort-Object) -join ',') -cne 'archive_sha256,archive_size,file_count,format,inventory_sha256') -or
+        ((@($Inventory.PSObject.Properties.Name | Sort-Object) -join ',') -cne 'files,format')) { throw 'editor_archive_format' }
+    [System.IO.FileInfo]$ArchiveInfo = Get-Item -LiteralPath $Archive -Force
+    if ([int64]$Metadata.archive_size -ne $ArchiveInfo.Length -or
+        $Metadata.archive_sha256 -cne (Get-FileHash -LiteralPath $Archive -Algorithm SHA256).Hash.ToLowerInvariant() -or
+        $Metadata.inventory_sha256 -cne (Get-FileHash -LiteralPath $InventoryPath -Algorithm SHA256).Hash.ToLowerInvariant()) {
+        throw 'editor_archive_digest_mismatch'
+    }
+    [object[]]$Entries = @($Inventory.files)
+    if ($Entries.Count -eq 0 -or [int64]$Metadata.file_count -ne $Entries.Count) { throw 'editor_archive_inventory_count' }
+    [System.Collections.Generic.HashSet[string]]$Seen = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+    [System.Collections.Generic.Dictionary[string, object]]$Expected = [System.Collections.Generic.Dictionary[string, object]]::new([System.StringComparer]::OrdinalIgnoreCase)
+    foreach ($Entry in $Entries) {
+        if ((@($Entry.PSObject.Properties.Name | Sort-Object) -join ',') -cne 'mode,path,sha256,size') { throw 'editor_archive_inventory_fields' }
+        [string]$Name = $Entry.path
+        if ([string]::IsNullOrEmpty($Name) -or $Name -cnotmatch '^[^<>:"/\\|?*\x00-\x1f]+(?:/[^<>:"/\\|?*\x00-\x1f]+)*$' -or
+            $Name.Length -gt 32767 -or -not $Seen.Add($Name) -or
+            $Entry.sha256 -cnotmatch '^[0-9a-f]{64}$' -or [int64]$Entry.size -lt 0 -or
+            [int64]$Entry.mode -lt 0 -or [int64]$Entry.mode -gt 511) { throw 'editor_archive_inventory_path' }
+        foreach ($Part in $Name.Split('/')) {
+            if ($Part -in @('.', '..') -or $Part.EndsWith('.') -or $Part.EndsWith(' ') -or
+                $Part -cmatch '^(?i:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\..*)?$') { throw 'editor_archive_inventory_path' }
+        }
+        $Expected.Add($Name, $Entry)
+    }
+    [object[]]$Listed = @(& $Tar -tf $Archive)
+    if ($LASTEXITCODE -ne 0 -or $Listed.Count -ne $Entries.Count) { throw 'editor_archive_listing' }
+    [object[]]$VerboseListing = @(& $Tar -tvf $Archive)
+    if ($LASTEXITCODE -ne 0 -or $VerboseListing.Count -ne $Entries.Count -or
+        @($VerboseListing | Where-Object { $_.Length -eq 0 -or $_.Substring(0, 1) -ne '-' }).Count -ne 0) {
+        throw 'editor_archive_nonregular'
+    }
+    for ($Index = 0; $Index -lt $Entries.Count; $Index++) {
+        if ([string]$Listed[$Index] -cne [string]$Entries[$Index].path) { throw 'editor_archive_listing' }
+    }
+    if (Test-Path -LiteralPath $Destination) { throw 'editor_archive_destination_exists' }
+    if (Test-Path -LiteralPath $Stage) { throw 'editor_archive_staging_exists' }
+    [void](New-Item -ItemType Directory -Path $Stage -Force)
+    try {
+        & $Tar -xf $Archive -C $Stage
+        if ($LASTEXITCODE -ne 0) { throw 'editor_archive_extract' }
+        [object[]]$All = @(Get-ChildItem -LiteralPath $Stage -Recurse -Force)
+        if (@($All | Where-Object { ($_.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0 }).Count -ne 0) { throw 'editor_archive_reparse' }
+        [object[]]$Actual = @($All | Where-Object { $_ -is [System.IO.FileInfo] })
+        if ($Actual.Count -ne $Entries.Count) { throw 'editor_archive_file_count' }
+        foreach ($File in $Actual) {
+            [string]$Name = $File.FullName.Substring($Stage.Length + 1).Replace('\', '/')
+            if (-not $Expected.ContainsKey($Name)) { throw 'editor_archive_extra_file' }
+            [pscustomobject]$Entry = $Expected[$Name]
+            if ([int64]$Entry.size -ne $File.Length -or
+                $Entry.sha256 -cne (Get-FileHash -LiteralPath $File.FullName -Algorithm SHA256).Hash.ToLowerInvariant()) { throw 'editor_archive_file_mismatch' }
+        }
+        [void](Move-Item -LiteralPath $Stage -Destination $Destination)
+    } catch {
+        if (Test-Path -LiteralPath $Stage) { Remove-Item -LiteralPath $Stage -Recurse -Force }
+        throw
+    }
+}
+
 # @cc [owner:ghuntley,label:security] windows-editor-task-installation
 # Candidate installation MUST restrict package/configuration/authorizer writes
 # to SYSTEM and Administrators and receipts to SYSTEM, register only the fixed
 # SYSTEM boot task, and verify its action, principal, unlimited lifetime and
 # private scheduler DACL. Any failed prerequisite MUST prevent completion.
 Set-EditorAcl -Item (Get-Item -LiteralPath 'C:\overalls' -Force)
-foreach ($Tree in @('C:\overalls\editor', 'C:\overalls\editor-broker', 'C:\overalls\agents', 'C:\overalls\trust')) {
+Set-EditorTreeAcl -Path 'C:\overalls\editor-broker'
+Install-EditorArchive
+foreach ($Tree in @('C:\overalls\editor', 'C:\overalls\agents', 'C:\overalls\trust')) {
     Set-EditorTreeAcl -Path $Tree
 }
 [void](New-Item -ItemType Directory -Path 'C:\overalls\editor-state' -Force)

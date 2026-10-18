@@ -742,4 +742,3 @@ after export (ADR-0159). The final SSH authorization recheck and its security au
 Peach serves the bounded, secret-free `reflection.internal` projection for a
 currently running guest. Marshall remains the authorization authority and
 returns only integrations eligible for the fenced execution.
-

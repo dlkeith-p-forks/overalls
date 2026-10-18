@@ -107,6 +107,9 @@ pkgs.stdenvNoCC.mkDerivation {
   nativeBuildInputs = [ pkgs.jq pkgs.unzip ];
   dontConfigure = true;
   dontBuild = true;
+  # These upstream shell assets also ship in the Windows server for Git Bash.
+  # Host Nix shebang rewriting would make them unusable and leak store paths.
+  dontPatchShebangs = true;
   postPatch = ''
     jq --slurp '(.[0] | del(.trustedExtensionAuthAccess)) * .[1] | del(.defaultChatAgent, .voiceWsUrl, .webviewContentExternalBaseUrlTemplate, .agentsTelemetryAppName)' \
       product.json ${productOverlay} > product.overalls.json
