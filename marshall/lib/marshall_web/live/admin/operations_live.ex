@@ -41,6 +41,8 @@ defmodule MarshallWeb.Admin.OperationsLive do
     <Layouts.app
       flash={@flash}
       current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
       compute={true}
       active="admin"
       admin_active="operations"
@@ -51,7 +53,9 @@ defmodule MarshallWeb.Admin.OperationsLive do
           subtitle="Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
         >
           <:actions>
-            <span class="muted">Updated {stamp(@refreshed_at)} · every 30 seconds</span>
+            <span class="muted">Updated
+            <.timestamp at={@refreshed_at} zone={@time_zone} format={:datetime_seconds} />
+            · every 30 seconds</span>
           </:actions>
         </UI.heading>
         <.kv id="platform-summary">
@@ -199,10 +203,6 @@ defmodule MarshallWeb.Admin.OperationsLive do
     enabled = Enum.count(rows, & &1.enabled)
     "#{length(rows)} · #{enabled} enabled"
   end
-
-  @spec stamp(DateTime.t() | nil) :: String.t()
-  defp stamp(nil), do: "—"
-  defp stamp(value), do: Calendar.strftime(value, "%Y-%m-%d %H:%M:%S UTC")
 
   defp bytes(nil), do: "unknown"
   defp bytes(value), do: "#{Float.round(value / 1_073_741_824, 1)} GiB"

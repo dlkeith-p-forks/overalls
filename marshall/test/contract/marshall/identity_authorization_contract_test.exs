@@ -36,14 +36,17 @@ defmodule MarshallIdentityAuthorizationContractTest do
       Marshall.Accounts.MagicLinkSignIn,
       Marshall.Accounts.Passkey,
       Marshall.Accounts.PasskeyChallenge,
+      Marshall.Accounts.Profile,
       Marshall.Accounts.PruneSecurity,
       Marshall.Accounts.RegistrationFence,
       Marshall.Accounts.RememberedLogin,
       Marshall.Accounts.Security,
+      Marshall.Accounts.TimeZones,
       Marshall.Accounts.Token,
       Marshall.Accounts.User,
       Marshall.Accounts.User.Senders.SendMagicLinkEmail,
       Marshall.Accounts.UserDeletion,
+      Marshall.Accounts.ValidTimeZone,
       Marshall.Accounts.Verification,
       Marshall.Administration,
       Marshall.Administration.AuditEvent,
@@ -140,6 +143,63 @@ defmodule MarshallIdentityAuthorizationContractTest do
     for actor <- [Marshall.Authorization.SystemActor.compute(), nil, %{id: Ash.UUID.generate()}] do
       assert Marshall.Access.Pins.pinned_vm_ids(actor) == []
       refute Marshall.Access.Pins.pinned?(vm, actor)
+    end
+  end
+
+  @tag obligation: "marshall.identity_authorization.I7"
+  test "time zone validation accepts only resolvable identifiers and never raises" do
+    alias Marshall.Accounts.TimeZones
+    instant = ~U[2026-10-18 09:12:07Z]
+
+    for zone <- ["Australia/Adelaide", "Etc/UTC", "America/Argentina/Ushuaia"] do
+      assert TimeZones.valid?(zone)
+      assert TimeZones.shift(instant, zone).time_zone == zone
+    end
+
+    for bad <- [
+          nil,
+          "",
+          :"Etc/UTC",
+          42,
+          "australia/adelaide",
+          "Mars/Olympus",
+          "Etc/UTC\n",
+          String.duplicate("a", 65)
+        ] do
+      refute TimeZones.valid?(bad)
+    end
+
+    assert TimeZones.shift(instant, "Mars/Olympus").time_zone == "Etc/UTC"
+    assert TimeZones.shift(instant, nil).time_zone == "Etc/UTC"
+
+    changeset =
+      Ash.Changeset.for_update(
+        struct(Marshall.Accounts.User, %{id: Ash.UUID.generate()}),
+        :store_time_zone,
+        %{time_zone: "Mars/Olympus"},
+        actor: Marshall.Authorization.SystemActor.compute()
+      )
+
+    refute changeset.valid?
+  end
+
+  @tag obligation: "marshall.identity_authorization.I8"
+  test "picker labels carry the current offset and differences are antisymmetric" do
+    alias Marshall.Accounts.TimeZones
+    summer = ~U[2026-12-01 00:00:00Z]
+    options = TimeZones.options(summer)
+
+    assert options == Enum.sort_by(options, &{&1.offset, &1.city})
+    assert Enum.map(options, & &1.zone) |> Enum.uniq() |> length() == length(options)
+    assert Enum.find(options, &(&1.zone == "Australia/Adelaide")).label == "(GMT+10:30) Adelaide"
+    assert Enum.find(options, &(&1.zone == "Asia/Kathmandu")).label == "(GMT+05:45) Kathmandu"
+
+    for {a, b} <- [{"Europe/London", "Australia/Adelaide"}, {"Asia/Tokyo", "America/New_York"}] do
+      ab = TimeZones.difference(a, b, summer)
+      ba = TimeZones.difference(b, a, summer)
+      assert ab.minutes == -ba.minutes
+      assert (ab.minutes > 0 and ab.text =~ "ahead of you") or ab.text =~ "behind you"
+      assert TimeZones.difference(a, a, summer) == %{minutes: 0, text: "same time as you"}
     end
   end
 end

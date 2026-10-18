@@ -47,7 +47,13 @@ defmodule MarshallWeb.HLDDLive do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={%{user: @current_user}} active="hldd">
+    <Layouts.app
+      flash={@flash}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+      active="hldd"
+    >
       <div id="hldd" class="hldd">
         <header class="hldd-heading">
           <p class="muted">HLDD · Design and operations</p>

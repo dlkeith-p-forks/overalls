@@ -185,7 +185,9 @@ defmodule MarshallWeb.OverviewLiveTest do
         current_user: user(),
         machines: :unavailable,
         catalog: :unavailable,
-        updated_at: "12:00 UTC"
+        updated_at: ~U[2026-10-18 12:00:00Z],
+        time_zone: "Etc/UTC",
+        now: ~U[2026-10-18 12:00:00Z]
       )
 
     document = LazyHTML.from_fragment(html)

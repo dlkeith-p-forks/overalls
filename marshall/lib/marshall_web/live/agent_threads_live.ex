@@ -114,7 +114,13 @@ defmodule MarshallWeb.AgentThreadsLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} compute={true} current_scope={%{user: @current_user}}>
+    <Layouts.app
+      flash={@flash}
+      compute={true}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+    >
       <section id="agent-threads" class="stack">
         <UI.machine_header
           :if={@vm}

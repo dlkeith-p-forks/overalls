@@ -416,7 +416,13 @@ defmodule MarshallWeb.TerminalLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={%{user: @current_user}} compute={true}>
+    <Layouts.app
+      flash={@flash}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+      compute={true}
+    >
       <section :if={@vm} id="terminal-workspace" class="stack">
         <UI.machine_header
           vm={@vm}

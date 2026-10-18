@@ -10,6 +10,12 @@ defmodule MarshallWeb.PageController do
     redirect(conn, to: ~p"/launch/entry")
   end
 
+  # /settings has no index page; the profile page is its canonical entry.
+  @spec settings(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def settings(conn, _params) do
+    redirect(conn, to: ~p"/settings/profile")
+  end
+
   @spec entry(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def entry(conn, _params) do
     idle_to =

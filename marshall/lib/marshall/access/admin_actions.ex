@@ -63,6 +63,7 @@ defmodule Marshall.Access.AdminActions do
         vm_name: vms[grant.vm_id].name,
         user_id: grant.user_id,
         email: users[grant.user_id].email,
+        time_zone: users[grant.user_id].time_zone,
         role: grant.role,
         inserted_at: grant.inserted_at
       }

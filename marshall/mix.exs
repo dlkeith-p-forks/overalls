@@ -54,6 +54,8 @@ defmodule Marshall.MixProject do
     [
       {:covenant, "~> 0.2.0", only: [:dev, :test], runtime: false},
       {:ex_cedar, "~> 0.1.2"},
+      # IANA zone data compiled in at build time; nothing is fetched at runtime.
+      {:tz, "~> 0.28.4"},
       {:yaml_elixir, "~> 2.12"},
       {:overalls_protocol, path: "../protocol"},
       {:overalls_diagnostics, path: "../elixir/diagnostics"},

@@ -1256,6 +1256,12 @@ and account deletion archives the departing owner's pins before deletion.
 The shared SSH catalog and Porsche expose non-physical `pin`/`unpin` mutations.
 Its implementation remains partial, with merged-source gates and native
 browser/Porsche and cross-node race evidence retaining separate scope.
+[ADR-0195](decisions/0195-user-time-zones.md) adds a nullable display time zone
+on `User`, a self-only `set_time_zone` action, the `/settings/profile` page and
+viewer-zone rendering of every browser timestamp with people's local time and
+difference beside their email; storage stays UTC, the `tz` data is compiled into
+the offline release and SSH wire views are unchanged. Implementation is partial:
+BEAM property/LiveView evidence only, no packaged-browser journey.
 [ADR-0019](decisions/0019-terminal-session-and-writer-authority.md) adds persisted
 console sessions, fresh account-token checks and pending/active writer claims.
 [ADR-0020](decisions/0020-local-console-fences-and-bounded-streams.md) adds a local

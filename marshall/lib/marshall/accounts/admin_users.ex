@@ -9,7 +9,7 @@ defmodule Marshall.Accounts.AdminUsers do
 
   # @cc [owner:ghuntley,label:security;capacity] admin-user-page-projection
   # Every account page MUST recheck current Cedar Control room read permission,
-  # bound its query to limit plus one, and expose only identity, role, MFA configuration, owned count and deletion progress.
+  # bound its query to limit plus one, and expose only identity, role, MFA configuration, owned count, deletion progress and the saved display time zone.
   # Tokens, authentication metadata and unbounded account reads MUST NOT escape.
   @impl true
   def run(input, _, %{actor: actor}) do
@@ -52,7 +52,7 @@ defmodule Marshall.Accounts.AdminUsers do
     deletion = List.first(Ledger.read!(Marshall.Accounts.UserDeletion, user_id: user.id))
 
     user
-    |> Map.take([:id, :email, :administrator, :mfa_enabled, :deleted_at])
+    |> Map.take([:id, :email, :administrator, :mfa_enabled, :deleted_at, :time_zone])
     |> Map.put(:owned_count, Marshall.Accounts.AccountLifecycle.owned_count(user.id))
     |> Map.put(:email, if(deletion, do: deletion.email, else: user.email))
     |> Map.put(

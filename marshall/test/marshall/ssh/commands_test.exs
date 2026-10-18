@@ -127,6 +127,8 @@ defmodule Marshall.SSH.CommandsTest do
     refute Map.has_key?(hd(listed.result["items"]), "current_placement_id")
     refute Map.has_key?(hd(listed.result["items"]), "editor_image_status")
     refute Map.has_key?(hd(listed.result["items"]), "pinned")
+    refute Map.has_key?(hd(listed.result["items"]), "owner_email")
+    refute Map.has_key?(hd(listed.result["items"]), "owner_time_zone")
 
     assert {:ok, shown} = command(c, "show placed-machine")
     assert shown.result["host"] == c.host.name
@@ -135,6 +137,7 @@ defmodule Marshall.SSH.CommandsTest do
     refute Map.has_key?(shown.result, "current_placement_id")
     refute Map.has_key?(shown.result, "execution_epoch")
     refute Map.has_key?(shown.result, "editor_image_status")
+    refute Map.has_key?(shown.result, "owner_time_zone")
 
     fields =
       ~w(architecture desired_state disk_bytes execution_ref failure_reason generation host id image_id image_name inserted_at memory_bytes name observed_state owner permissions profile relocation resize ssh_host vcpu)

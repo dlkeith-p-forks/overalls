@@ -62,7 +62,14 @@ defmodule MarshallWeb.SSHKeysLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={%{user: @current_user}} compute={true} active="ssh">
+    <Layouts.app
+      flash={@flash}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+      compute={true}
+      active="ssh"
+    >
       <section class="stack">
         <UI.heading title="SSH keys" subtitle="Manage the keys you use to connect to your machines." />
         <.form for={@form} id="ssh-key-form" phx-submit="add" class="panel">
@@ -112,7 +119,8 @@ defmodule MarshallWeb.SSHKeysLive do
             </header>
             <p class="break"><code>{key.fingerprint}</code></p>
             <p class="muted">
-              {key.algorithm} · Added {Calendar.strftime(key.inserted_at, "%Y-%m-%d")}
+              {key.algorithm} · Added
+              <.timestamp at={key.inserted_at} zone={@time_zone} format={:date} />
             </p>
           </article>
         </div>

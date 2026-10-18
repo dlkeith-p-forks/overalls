@@ -328,6 +328,56 @@ def check_machine_pins(page: Page) -> None:
     assert row_ids(page) == before, "Unpinning did not restore the id order"
 
 
+def check_profile(page: Page, origin: str, theme: str) -> None:
+    """@cc [owner:ghuntley,label:product;verification] profile-time-zone-presentation
+    The profile page MUST preselect the browser's zone until one is saved, save
+    the chosen zone through the picker, show the viewer's local clock in that
+    zone, and every converted timestamp on the overview MUST end in the saved
+    zone's abbreviation while keeping the UTC instant in its title. The probe
+    checks this in both themes and restores the detected zone afterwards.
+    """
+    visit(page, origin, "/settings/profile")
+    expect(page.locator("#nav-profile")).to_have_attribute("aria-current", "page")
+    expect(page.locator("[data-phx-main].phx-connected")).to_have_count(1)
+    detected: object = evaluate(page, "Intl.DateTimeFormat().resolvedOptions().timeZone")
+    assert isinstance(detected, str) and detected, "Browser must report an Intl zone"
+    status = page.locator("#time-zone-status")
+    expect(status).to_have_attribute("data-source", "browser")
+    expect(page.locator("#profile_time_zone")).to_have_value(detected)
+    expect(page.locator("#profile-local-clock")).to_have_attribute("data-zone", detected)
+    expect(page.locator("#clear-time-zone")).to_have_count(0)
+    option_label: object = page.locator("#profile_time_zone option:checked").text_content()
+    assert isinstance(option_label, str) and re.match(r"^\(GMT[+-]\d{2}:\d{2}\) ", option_label), (
+        "Picker labels must lead with the current GMT offset"
+    )
+    page.locator("#profile_time_zone").select_option("Australia/Adelaide")
+    page.locator("#save-time-zone").click()
+    expect(status).to_have_attribute("data-source", "saved")
+    expect(status).to_contain_text("Australia/Adelaide")
+    expect(page.locator("#profile-local-clock")).to_have_attribute(
+        "data-zone", "Australia/Adelaide"
+    )
+    expect(page.locator("#profile-local-clock")).to_have_text(re.compile(r"AC[DS]T$"))
+    expect(page.locator("#account-local-clock")).to_have_attribute(
+        "data-zone", "Australia/Adelaide"
+    )
+    expect(page.locator("#clear-time-zone")).to_be_visible()
+    check_grid(page, "/settings/profile")
+    visit(page, origin, "/overview")
+    stamp = page.locator(".overview-refresh time.timestamp")
+    expect(stamp).to_have_attribute("data-zone", "Australia/Adelaide")
+    expect(stamp).to_have_text(re.compile(r"\d{2}:\d{2} AC[DS]T$"))
+    title: object = stamp.get_attribute("title")
+    assert isinstance(title, str) and title.endswith(" UTC"), "Hover title must keep UTC"
+    visit(page, origin, "/settings/profile")
+    page.locator("#clear-time-zone").click()
+    expect(status).to_have_attribute("data-source", "browser")
+    expect(page.locator("#profile_time_zone")).to_have_value(detected)
+    expect(page.locator("#clear-time-zone")).to_have_count(0)
+    if theme == "dark":
+        expect(page.locator("html")).to_have_attribute("data-theme", "dark")
+
+
 def row_ids(page: Page) -> list[str]:
     ids: list[str] = []
     for row in page.locator("#machines tr.machine-row").all():
@@ -832,7 +882,17 @@ def check_contrast(page: Page) -> None:
         assert ratio >= minimum, f"Insufficient contrast for {foreground} on {background}"
 
 
-GRID_ROUTES = ("overview", "machines", "create", "machine", "boot-log", "security", "ssh", "hldd")
+GRID_ROUTES = (
+    "overview",
+    "machines",
+    "create",
+    "machine",
+    "boot-log",
+    "profile",
+    "security",
+    "ssh",
+    "hldd",
+)
 
 
 def run(fixture: Context, artifacts: Path) -> None:
@@ -868,6 +928,7 @@ def run(fixture: Context, artifacts: Path) -> None:
             "teams": "/teams",
             "git": "/git",
             "usage": "/usage",
+            "profile": "/settings/profile",
             "security": "/settings/security",
             "ssh": "/settings/ssh-keys",
             "hldd": "/hldd",
@@ -924,6 +985,9 @@ def run(fixture: Context, artifacts: Path) -> None:
                     )
                 if name == "hldd-section":
                     expect(page.locator("pre.hldd-diagram svg").first).to_be_visible()
+                if name == "profile":
+                    check_profile(page, fixture["origin"], theme)
+                    visit(page, fixture["origin"], route)
                 screenshot(page, artifacts, f"{name}-{theme}")
             page.set_viewport_size({"width": 390, "height": 844})
             for name in (
@@ -937,6 +1001,7 @@ def run(fixture: Context, artifacts: Path) -> None:
                 "integrations",
                 "teams",
                 "usage",
+                "profile",
                 "security",
             ):
                 visit(page, fixture["origin"], routes[name])

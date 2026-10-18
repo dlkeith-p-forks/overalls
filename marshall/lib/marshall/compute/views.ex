@@ -180,6 +180,32 @@ defmodule Marshall.Compute.Views do
           &{&1, Authorization.allowed?(vm, actor, Atom.to_string(&1))}
         )
     })
+    |> Map.merge(owner_view(vm, actor))
+  end
+
+  # @cc [owner:ghuntley,label:security;product] views-shared-owner-identity
+  # A view MUST name the owner (email and saved display zone, ADR-0195) only
+  # when the caller is not the owner and already holds read access to the
+  # machine; the owner's own view carries nil for both so no page shows a
+  # person their own local time as another user. SSH wire views drop both.
+  @spec owner_view(VirtualMachine.t(), map()) :: %{
+          owner_email: String.t() | nil,
+          owner_time_zone: String.t() | nil
+        }
+  defp owner_view(%VirtualMachine{owner_id: owner_id}, %{id: owner_id}),
+    do: %{owner_email: nil, owner_time_zone: nil}
+
+  defp owner_view(vm, _actor) do
+    owner =
+      Marshall.Accounts.User
+      |> Ash.Query.for_read(:internal_lookup, %{}, actor: SystemActor.compute())
+      |> Ash.Query.filter(id == ^vm.owner_id)
+      |> Ash.read_one!()
+
+    %{
+      owner_email: owner && to_string(owner.email),
+      owner_time_zone: owner && owner.time_zone
+    }
   end
 
   # @cc [owner:ghuntley,label:product;security] views-image-display-name

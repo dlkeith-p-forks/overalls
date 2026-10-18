@@ -718,7 +718,14 @@ defmodule Marshall.SSH.Commands do
   # the caller's pin) stay out of the SSH/Porsche wire format.
   @spec machine_wire_view(map()) :: map()
   defp machine_wire_view(vm),
-    do: Map.drop(vm, [:editor_image_status, :guest_capabilities, :pinned])
+    do:
+      Map.drop(vm, [
+        :editor_image_status,
+        :guest_capabilities,
+        :pinned,
+        :owner_email,
+        :owner_time_zone
+      ])
 
   defp unwrap!({:ok, value}), do: value
   # @cc [owner:ghuntley,label:product;recovery] ssh-coordinator-atom-refusals

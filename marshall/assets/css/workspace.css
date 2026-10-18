@@ -1600,3 +1600,23 @@ button.machine-editor-link,
   flex: 1 1 24ch;
   margin: 0;
 }
+
+/* People and time (ADR-0195): a person's email with their local time on the
+   next line, and the viewer's clock. Both stay on the line grid. */
+.person {
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 100%;
+}
+.person-local,
+.local-time {
+  white-space: nowrap;
+}
+.local-clock {
+  font-weight: var(--font-weight-bold);
+}
+.profile-clock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2ch;
+}

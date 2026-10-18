@@ -1270,6 +1270,31 @@ Tested scope: Generated owner/member pin and delete histories through the real d
 
 **Preferred test work:** Add a native Porsche journey that pins, is refused rm, unpins and deletes, and a packaged-browser toggle check; keep the generated BEAM histories as the model oracle.
 
+## Choose a display time zone on the profile page, read every timestamp in that zone and see collaborators' local time
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, storage, recovery.
+
+Boundary: The zone is a nullable display preference on the user's own row, written only through the self-only set_time_zone action and validated against the compiled tz database; storage, ledger time, CSV export and SSH wire views stay UTC. The viewer zone resolves saved, then validated browser connect param, then UTC; other people's local time renders only from a saved zone.
+
+Required refusal: Refuse unknown or malformed zones with invalid_time_zone, non-user actors with Forbidden and retired accounts with unauthorized; never persist the browser zone, never log the zone text, never show a person's local time without a saved zone, and never add owner fields to the SSH ls/show contract.
+
+Tested scope: Hegel properties over every curated zone and random instants including DST edges for label offsets, ordering, uniqueness, antisymmetric differences and validation; database round trips of the action; LiveView tests of the profile page, resolution order, dead render, UTC-provenance timestamps and people on team, machine, thread and Control room pages; Covenant obligations; synthetic browser probe of the profile page and an Adelaide timestamp. No native journey.
+
+- **property, present**: [every label carries the zone's offset in force at that instant](repo:marshall/test/marshall/accounts/time_zones_property_test.exs) — Every curated zone over random instants 2000–2040 plus fixed DST edges; half-hour and 45-minute zones pinned.
+- **property, present**: [difference is antisymmetric, zero on itself and its text follows the sign](repo:marshall/test/marshall/accounts/time_zones_property_test.exs) — Random zone pairs and instants; text direction and hour/minute spans.
+- **property, present**: [arbitrary text is refused unless the database resolves it](repo:marshall/test/marshall/accounts/time_zones_property_test.exs) — Random printable and binary input against valid?/1 and the UTC fallback of shift/2.
+- **property, present**: [set_time_zone round-trips valid zones and refuses everything else](repo:marshall/test/marshall/accounts/time_zone_test.exs) — Curated, non-curated resolvable, upper-cased and random zones through the real action against local PostgreSQL; refusals leave the row unchanged.
+- **unit, present**: [a user changes only their own zone; nil clears it](repo:marshall/test/marshall/accounts/time_zone_test.exs) — Self-only write, forged target argument rejected, nil clears, non-user and retired actors refused, event without zone text.
+- **unit, present**: [the viewer zone resolves saved, then browser, then UTC](repo:marshall/test/marshall_web/profile_live_test.exs) — Connected mount with connect params, invalid browser zone, dead render ignoring the browser.
+- **unit, present**: [team members show their local time and the difference from the viewer](repo:marshall/test/marshall_web/profile_live_test.exs) — Team, machine access and list, thread sharing and Control room pages with saved and unsaved people.
+- **unit, present**: [timestamp renders in the zone with the UTC instant as provenance](repo:marshall/test/marshall_web/time_components_test.exs) — Component rendering of formats, UTC fallback, saved-only person lines and the local clock.
+- **unit, present**: [refute Map.has_key?(hd(listed.result["items"]), "owner_time_zone")](repo:marshall/test/marshall/ssh/commands_test.exs) — SSH ls/show wire views gain no owner keys.
+- **manual, present**: [check_profile](repo:marshall/scripts/monospace_browser_probe.py) — Synthetic fixture: profile page saves Adelaide, overview timestamp ends in ACST/ACDT, both themes and mobile.
+
+**Gaps:** No NixOS machine test drives the profile page or the browser connect param in the packaged browser; local-time lines inside LiveView streams refresh on re-read, not on the minute tick; the browser probe inherits pre-existing off-grid and thread appearance failures.
+
+**Preferred test work:** Add a packaged-browser machine check that saves a zone, reloads and reads a converted timestamp, and a cross-session check that a collaborator sees the saved local time.
+
 ## Keep Customer machines private and isolated
 
 Coverage: **partial**. Layers: authorization, isolation.

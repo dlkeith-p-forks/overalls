@@ -9,6 +9,11 @@ import Config
 
 config :overalls_diagnostics, events_catalog: Marshall.Events
 
+# @cc [owner:ghuntley,label:build] offline-time-zone-database
+# DateTime zone conversion MUST use the Tz database compiled from the pinned
+# hex package; the release MUST NOT fetch IANA data at runtime (ADR-0195).
+config :elixir, :time_zone_database, Tz.TimeZoneDatabase
+
 config :marshall, agent_model: "gpt-6-sol"
 
 config :marshall, :thread_modes, %{

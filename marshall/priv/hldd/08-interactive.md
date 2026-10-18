@@ -600,6 +600,50 @@ probe passed both themes/mobile,32 thread and36 collaborator combinations,
 sharing/revocation/refusals and153 screenshots after these corrections; actual
 guest execution and packaged-browser coverage remain separate.
 
+## Time zones and local time
+
+[ADR-0195](repo:docs/architecture/decisions/0195-user-time-zones.md) gives each
+account a display time zone. Storage, ledger comparisons, the usage CSV export
+and the SSH `ls`/`show` JSON stay UTC; conversion happens only when a page
+renders. The viewer's zone resolves as the saved zone, else a valid browser zone
+sent in the LiveView connect params (`timezone`, from the Intl API), else UTC.
+The dead render trusts only the saved zone. `MarshallWeb.LiveUserAuth` assigns
+`time_zone`, `time_zone_source` (`saved`, `browser`, `utc`) and `now`, and a
+one-minute tick refreshes `now` without a login check.
+
+`/settings/profile` (reached from Profile at the top of "Your account" and from
+`/settings`) shows the email read-only, a `<select>` of about 160 curated zones
+labelled `(GMT+09:30) Adelaide` from the offset in force now (so daylight saving
+is reflected), Save and Clear, a status line naming the source, and the viewer's
+live local clock. A detected browser zone outside the curated list is added to
+the picker so it can be saved. The account menu in the sidebar shows the same
+clock under the email. Saving an unknown identifier is refused with a fixed
+message and the saved zone is unchanged.
+
+Every timestamp on the overview, machines, threads, git, usage, SSH-key and
+Control room pages renders through `<.timestamp>`: the text is the viewer's local
+time with its zone abbreviation (`2026-10-18 19:42 ACDT`) and the element keeps
+the UTC instant in `datetime` and in the hover title. The thread activity
+filters (today, week, month) compare calendar days in the viewer's zone. The JS
+relative-activity labels stay relative.
+
+Wherever a person appears, `<.person>` renders the email and, only when that
+person has saved a zone, `3:42 PM ACDT local time · 2h 30m ahead of you`
+relative to the viewer: team members and pending transfers, the machine Access
+tab owner and grants, the owner of a shared machine in the machines list, thread
+owner and grants in the sharing panel, and the Control room users (local time
+only), access and workloads pages. A person without a saved zone shows the
+email alone; the browser zone is never shown to others. Lines inside LiveView
+streams (machine and thread grants) refresh when the list is re-read, not on the
+minute tick. Terminal viewers show Linux guest names, not accounts, and are
+unchanged. Evidence is in
+[profile_live_test.exs](repo:marshall/test/marshall_web/profile_live_test.exs),
+[time_components_test.exs](repo:marshall/test/marshall_web/time_components_test.exs)
+and the Hegel properties in
+[time_zones_property_test.exs](repo:marshall/test/marshall/accounts/time_zones_property_test.exs);
+the browser probe saves Adelaide on the profile page and checks an overview
+timestamp ends in ACST/ACDT in both themes. No packaged-browser journey exists.
+
 ## Developer SSH
 
 Use the machine's installation instructions to install the `overalls` CLI and

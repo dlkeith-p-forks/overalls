@@ -52,6 +52,7 @@ defmodule Marshall.Compute.AdminViews do
         Map.take(vm, @fields)
         |> Map.put(:owner_id, vm.owner_id)
         |> Map.put(:owner_email, owners[vm.owner_id].email)
+        |> Map.put(:owner_time_zone, owners[vm.owner_id].time_zone)
         |> Map.put(:host_id, vm.host_id)
       end)
 

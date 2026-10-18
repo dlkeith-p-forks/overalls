@@ -62,6 +62,7 @@ defmodule MarshallWebSurfaceContractTest do
       MarshallWeb.PageController,
       MarshallWeb.PageHTML,
       MarshallWeb.PendingLaunch,
+      MarshallWeb.ProfileLive,
       MarshallWeb.ProvisionerAPI,
       MarshallWeb.PublicIngress,
       MarshallWeb.RepositoryLaunchController,
@@ -83,6 +84,7 @@ defmodule MarshallWebSurfaceContractTest do
       MarshallWeb.TerminalSocket,
       MarshallWeb.ThreadCommands,
       MarshallWeb.ThreadsLive,
+      MarshallWeb.TimeComponents,
       MarshallWeb.WorkspaceComponents
     ]
 

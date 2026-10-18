@@ -58,6 +58,8 @@ defmodule MarshallWeb.Admin.GitLive do
     <Layouts.app
       flash={@flash}
       current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
       compute={true}
       active="admin"
       admin_active="git"
@@ -138,7 +140,9 @@ defmodule MarshallWeb.Admin.GitLive do
               </thead>
               <tbody>
                 <tr :for={event <- @events}>
-                  <td class="nowrap">{Calendar.strftime(event.inserted_at, "%Y-%m-%d %H:%M UTC")}</td>
+                  <td class="nowrap">
+                    <.timestamp at={event.inserted_at} zone={@time_zone} format={:datetime} />
+                  </td>
                   <td>{event.kind}</td>
                   <td class="break">{event.failure_reason || "—"}</td>
                   <td class="break muted">

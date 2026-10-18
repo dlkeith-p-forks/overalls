@@ -54,7 +54,14 @@ defmodule MarshallWeb.SSHApprovalLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={%{user: @current_user}} compute={true} active="ssh">
+    <Layouts.app
+      flash={@flash}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+      compute={true}
+      active="ssh"
+    >
       <section class="stack">
         <h1>Approve SSH key</h1>
         <.form :if={@approval} for={@form} id="ssh-approval-form" phx-submit="approve" class="panel">

@@ -1,9 +1,9 @@
 {
   "apps": {
     "marshall": {
-      "active": 26,
+      "active": 32,
       "coverage": 1.0,
-      "covered": 26
+      "covered": 32
     },
     "system": {
       "active": 0,
@@ -13,10 +13,10 @@
   },
   "components": {
     "marshall.compute": {
-      "active": 3,
+      "active": 4,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 3,
+      "covered": 4,
       "form": "light",
       "obligations": {
         "marshall.compute.I1": {
@@ -48,14 +48,24 @@
           "tests": [
             "test inception default shape preserves minimum resources"
           ]
+        },
+        "marshall.compute.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the owner-pin refusal is a closed compute reason across the SSH control API"
+          ]
         }
       }
     },
     "marshall.identity_authorization": {
-      "active": 4,
+      "active": 8,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 4,
+      "covered": 8,
       "form": "light",
       "obligations": {
         "marshall.identity_authorization.I1": {
@@ -96,6 +106,46 @@
           "testable": true,
           "tests": [
             "test security proof freshness is bounded in both directions"
+          ]
+        },
+        "marshall.identity_authorization.I5": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the pin state machine has exactly two transitions from a pinned start"
+          ]
+        },
+        "marshall.identity_authorization.I6": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test pin projections are empty for every non-user actor"
+          ]
+        },
+        "marshall.identity_authorization.I7": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test time zone validation accepts only resolvable identifiers and never raises"
+          ]
+        },
+        "marshall.identity_authorization.I8": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test picker labels carry the current offset and differences are antisymmetric"
           ]
         }
       }
@@ -238,10 +288,10 @@
       }
     },
     "marshall.web_surface": {
-      "active": 8,
+      "active": 9,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 8,
+      "covered": 9,
       "form": "light",
       "obligations": {
         "marshall.web_surface.I1": {
@@ -323,6 +373,16 @@
           "tests": [
             "test secure session options are host-prefixed, secure and encrypted"
           ]
+        },
+        "marshall.web_surface.I9": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test converted timestamps keep the UTC instant and people show saved zones only"
+          ]
         }
       }
     },
@@ -338,8 +398,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 26,
+    "active": 32,
     "coverage": 1.0,
-    "covered": 26
+    "covered": 32
   }
 }

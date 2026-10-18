@@ -16,9 +16,9 @@ defmodule MarshallWeb.LiveUserAuth do
 
   def on_mount(:live_user_optional, _params, _session, socket) do
     if socket.assigns[:current_user] do
-      fresh_login(socket, :mount)
+      socket |> assign_time_zone() |> fresh_login(:mount)
     else
-      {:cont, assign(socket, :current_user, nil)}
+      {:cont, socket |> assign(:current_user, nil) |> assign_time_zone()}
     end
   end
 
@@ -36,6 +36,7 @@ defmodule MarshallWeb.LiveUserAuth do
         socket
         |> assign(:current_user, Marshall.Accounts.Security.bind(user, jti))
         |> Phoenix.LiveView.put_private(:login_jti, jti)
+        |> assign_time_zone()
         |> Phoenix.LiveView.attach_hook(:fresh_login, :handle_event, fn _, _, socket ->
           fresh_login(socket, :drop)
         end)
@@ -57,6 +58,90 @@ defmodule MarshallWeb.LiveUserAuth do
       {:halt, Phoenix.LiveView.redirect(socket, to: ~p"/")}
     else
       {:cont, assign(socket, :current_user, nil)}
+    end
+  end
+
+  @tick {__MODULE__, :clock_tick}
+  @tick_ms 60_000
+
+  # @cc [owner:ghuntley,label:product] viewer-time-zone-resolution
+  # The viewer zone MUST resolve as the saved user zone, then a valid browser
+  # zone from the connect params, then UTC, with :time_zone_source naming
+  # which applied. The dead render MUST use only the saved zone or UTC. A
+  # browser zone MUST be validated before use and MUST never be persisted here.
+  @doc """
+  Assigns `:time_zone`, `:time_zone_source` and `:now` for the viewer and, on
+  a connected socket, refreshes `:now` every minute so local clocks and
+  differences stay current.
+  """
+  @spec assign_time_zone(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  def assign_time_zone(socket) do
+    socket = remember_browser_zone(socket)
+    {zone, source} = resolve_zone(socket)
+
+    socket
+    |> assign(:time_zone, zone)
+    |> assign(:time_zone_source, source)
+    |> assign(:now, DateTime.utc_now())
+    |> schedule_tick()
+  end
+
+  @spec resolve_zone(Phoenix.LiveView.Socket.t()) ::
+          {Marshall.Accounts.TimeZones.iana(), Marshall.Accounts.TimeZones.source()}
+  defp resolve_zone(socket) do
+    saved =
+      case socket.assigns[:current_user] do
+        %Marshall.Accounts.User{time_zone: zone} when is_binary(zone) -> zone
+        _ -> nil
+      end
+
+    browser = socket.private[:browser_time_zone]
+
+    cond do
+      Marshall.Accounts.TimeZones.valid?(saved) -> {saved, :saved}
+      Marshall.Accounts.TimeZones.valid?(browser) -> {browser, :browser}
+      true -> {Marshall.Accounts.TimeZones.utc(), :utc}
+    end
+  end
+
+  # Connect params exist only during mount, so the browser zone is read once
+  # on a connected mount and kept in the socket's private state for later
+  # re-resolution (for example after the profile page saves or clears a zone).
+  @spec remember_browser_zone(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  defp remember_browser_zone(socket) do
+    cond do
+      Map.has_key?(socket.private, :browser_time_zone) ->
+        socket
+
+      Phoenix.LiveView.connected?(socket) ->
+        zone = (Phoenix.LiveView.get_connect_params(socket) || %{})["timezone"]
+        Phoenix.LiveView.put_private(socket, :browser_time_zone, zone)
+
+      true ->
+        socket
+    end
+  end
+
+  # The tick hook is attached before fresh_login so a clock tick never costs a
+  # login check; events and other messages still verify the login.
+  @spec schedule_tick(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  defp schedule_tick(socket) do
+    if Phoenix.LiveView.connected?(socket) and
+         not Map.has_key?(socket.private, :time_zone_tick) do
+      Process.send_after(self(), @tick, @tick_ms)
+
+      socket
+      |> Phoenix.LiveView.put_private(:time_zone_tick, true)
+      |> Phoenix.LiveView.attach_hook(:time_zone_tick, :handle_info, fn
+        @tick, socket ->
+          Process.send_after(self(), @tick, @tick_ms)
+          {:halt, assign(socket, :now, DateTime.utc_now())}
+
+        _message, socket ->
+          {:cont, socket}
+      end)
+    else
+      socket
     end
   end
 

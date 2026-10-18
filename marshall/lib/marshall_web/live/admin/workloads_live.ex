@@ -83,6 +83,8 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
     <Layouts.app
       flash={@flash}
       current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
       compute={true}
       active="admin"
       admin_active="workloads"
@@ -93,7 +95,9 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
           subtitle="Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included."
         >
           <:actions>
-            <span class="muted">Updated {stamp(@refreshed_at)} · every 15 seconds</span>
+            <span class="muted">Updated
+            <.timestamp at={@refreshed_at} zone={@time_zone} format={:datetime_seconds} />
+            · every 15 seconds</span>
           </:actions>
         </UI.heading>
         <p :if={@workloads == []} class="empty-state">No active workloads.</p>
@@ -112,7 +116,14 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
               <tr :for={vm <- @workloads} id={"admin-workload-#{vm.id}"}>
                 <td class="break">
                   <strong>{vm.name}</strong><br />
-                  <span class="muted">{vm.owner_email}</span><br />
+                  <.person
+                    id={"admin-workload-#{vm.id}-owner"}
+                    email={vm.owner_email}
+                    time_zone={vm.owner_time_zone}
+                    viewer_zone={@time_zone}
+                    now={@now}
+                    class="muted"
+                  /><br />
                   <code class="muted">{vm.id}</code>
                 </td>
                 <td><code title={vm.host_id}>{short(vm.host_id)}</code></td>
@@ -197,8 +208,4 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
   @spec short(String.t() | nil) :: String.t()
   defp short(nil), do: "unplaced"
   defp short(id), do: String.slice(to_string(id), 0, 8)
-
-  @spec stamp(DateTime.t() | nil) :: String.t()
-  defp stamp(nil), do: "—"
-  defp stamp(value), do: Calendar.strftime(value, "%Y-%m-%d %H:%M:%S UTC")
 end

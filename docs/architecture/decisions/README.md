@@ -1,5 +1,13 @@
 # Architecture decision records
 
+[ADR-0195](0195-user-time-zones.md) adds a per-user display time zone: a
+`/settings/profile` page with a `(GMT+09:30) Adelaide` picker, every browser
+timestamp rendered in the viewer's zone (saved, else browser, else UTC) with the
+UTC instant on hover, and each person's current local time plus the difference
+from the viewer wherever people appear. Storage stays UTC and the zone data is
+compiled in through `tz`; this amends the no-profile position inherited from
+ADR-0158/0159 for display preferences only.
+
 [ADR-0193](0193-per-user-machine-pins.md) adds per-user machine pins: pinned
 machines lead the machines page and overview, an owner's pin refuses every
 delete path (browser, Fleet workloads, SSH/Porsche `rm`, thread teardown) with
@@ -440,6 +448,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0192](0192-staged-detached-ingress.md) | accepted | partial | Editor and nested HTTPS use staged detached ingress bridges |
 | [ADR-0193](0193-per-user-machine-pins.md) | accepted | partial | Per-user machine pins and the owner-pin deletion guard |
 | [ADR-0194](0194-marshall-http-security-headers.md) | accepted | partial | Marshall HTTP security headers, no-index and session cookie hardening |
+| [ADR-0195](0195-user-time-zones.md) | accepted | partial | User time zone preference and local-time display |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |
 | [ADR-0188](0188-signed-overalls-cachix-substitution.md) | accepted | partial | Use the signed Overalls Cachix cache across Nix machines |
 | [ADR-0187](0187-detached-ingress-bridges.md) | accepted | partial | Detached ingress bridges survive lilly-hostd and Lilly restarts |

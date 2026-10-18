@@ -36,4 +36,41 @@ defmodule MarshallWebSurfaceBehaviorContractTest do
     assert Regex.match?(~r/\A[a-z]+-[a-z]+\z/, first)
     refute first =~ " "
   end
+
+  @tag obligation: "marshall.web_surface.I9"
+  test "converted timestamps keep the UTC instant and people show saved zones only" do
+    import Phoenix.LiveViewTest
+    instant = ~U[2026-10-18 09:12:07Z]
+
+    html =
+      render_component(&MarshallWeb.TimeComponents.timestamp/1,
+        at: instant,
+        zone: "Australia/Adelaide"
+      )
+
+    assert html =~ ~s(datetime="2026-10-18T09:12:07Z")
+    assert html =~ ~s(title="2026-10-18 09:12:07 UTC")
+    assert html =~ "2026-10-18 19:42 ACDT"
+
+    saved =
+      render_component(&MarshallWeb.TimeComponents.person/1,
+        email: "hana@example.test",
+        time_zone: "Australia/Adelaide",
+        viewer_zone: "Europe/London",
+        now: instant
+      )
+
+    assert saved =~ "7:42 PM ACDT local time · 9h 30m ahead of you"
+
+    unsaved =
+      render_component(&MarshallWeb.TimeComponents.person/1,
+        email: "momo@example.test",
+        time_zone: nil,
+        viewer_zone: "Europe/London",
+        now: instant
+      )
+
+    refute unsaved =~ "local time"
+    assert unsaved =~ "momo@example.test"
+  end
 end

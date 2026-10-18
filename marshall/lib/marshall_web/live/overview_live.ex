@@ -51,7 +51,7 @@ defmodule MarshallWeb.OverviewLive do
     assign(socket,
       machines: machines,
       catalog: catalog,
-      updated_at: Calendar.strftime(DateTime.utc_now(), "%H:%M UTC")
+      updated_at: DateTime.utc_now()
     )
   end
 
@@ -108,6 +108,8 @@ defmodule MarshallWeb.OverviewLive do
     <Layouts.app
       flash={@flash}
       current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
       compute={true}
       active="overview"
     >
@@ -224,7 +226,7 @@ defmodule MarshallWeb.OverviewLive do
           </div>
         </div>
         <div class="overview-refresh">
-          <span>Updated {@updated_at}</span><Layouts.action
+          <span>Updated <.timestamp at={@updated_at} zone={@time_zone} format={:time} /></span><Layouts.action
             id="overview-refresh"
             tone="ghost"
             phx-click="refresh"

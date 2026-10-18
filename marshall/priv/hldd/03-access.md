@@ -98,7 +98,11 @@ are eligible. Malformed domains and header injection refuse; there is no
 organization allowlist. Complete case-insensitive email addresses identify
 distinct Users, each with a separate reserved guest UUID/UID. All email edits of
 the same User preserve its guest identity. No profile username, public email-edit
-action or onboarding step is added. Native plus-alias/numeric-leading mailbox
+action or onboarding step is added; the only profile preference is the display
+time zone of [ADR-0195](repo:docs/architecture/decisions/0195-user-time-zones.md),
+set on `/settings/profile` through the self-only `set_time_zone` action, which
+changes no identity, guest account or authority (see
+[time zones and local time](#interactive)). Native plus-alias/numeric-leading mailbox
 sign-in and SMTP inbox delivery remain separate gaps in [scenario coverage](#coverage).
 
 Opening a magic link in a JavaScript-enabled browser submits the token through

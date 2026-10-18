@@ -139,7 +139,14 @@ defmodule MarshallWeb.GitLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} current_scope={%{user: @current_user}} compute={true} active="git">
+    <Layouts.app
+      flash={@flash}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+      compute={true}
+      active="git"
+    >
       <section class="stack">
         <UI.heading
           title="Git repositories"
@@ -151,7 +158,8 @@ defmodule MarshallWeb.GitLive do
             / github / {@repo.owner} / {@repo.name}</code>
           </nav>
           <p :if={@repo.last_success_at} class="muted">
-            Last updated {Calendar.strftime(@repo.last_success_at, "%Y-%m-%d %H:%M UTC")}
+            Last updated
+            <.timestamp at={@repo.last_success_at} zone={@time_zone} format={:datetime} />
           </p>
           <nav class="machine-tabs" aria-label="Repository views">
             <.link

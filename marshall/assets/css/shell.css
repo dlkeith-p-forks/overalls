@@ -144,6 +144,14 @@
   overflow-wrap: anywhere;
   color: var(--text-color-alt);
 }
+.account-menu .account-clock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1ch;
+}
+.account-menu .account-clock .local-clock {
+  color: var(--text-color);
+}
 
 .workspace-body {
   min-width: 0;

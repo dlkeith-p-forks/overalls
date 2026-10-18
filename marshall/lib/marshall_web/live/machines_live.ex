@@ -628,7 +628,13 @@ defmodule MarshallWeb.MachinesLive do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} compute={true} current_scope={%{user: @current_user}}>
+    <Layouts.app
+      flash={@flash}
+      compute={true}
+      current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
+    >
       <section :if={@live_action == :index} class="stack">
         <UI.heading title="Machines" subtitle="Your development environments, personal and shared.">
           <:actions>
@@ -683,7 +689,20 @@ defmodule MarshallWeb.MachinesLive do
                 <td id={"machine-host-#{vm.id}"} class="nowrap" data-label="Host">
                   <code>{vm.host || "Unavailable"}</code>
                 </td>
-                <td class="muted" data-label="Access">{if vm.owner, do: "Owner", else: "Shared"}</td>
+                <td class="muted" data-label="Access">
+                  <%= if vm.owner do %>
+                    Owner
+                  <% else %>
+                    Shared by
+                    <.person
+                      id={"machine-owner-#{vm.id}"}
+                      email={vm.owner_email}
+                      time_zone={vm.owner_time_zone}
+                      viewer_zone={@time_zone}
+                      now={@now}
+                    />
+                  <% end %>
+                </td>
                 <td data-label="Connect">
                   <div class="machine-open-actions">
                     <.link
@@ -914,7 +933,15 @@ defmodule MarshallWeb.MachinesLive do
                 </thead>
                 <tbody>
                   <tr :if={@grant_owner} id="machine-owner">
-                    <td class="break" data-label="Account">{@grant_owner.email}</td>
+                    <td class="break" data-label="Account">
+                      <.person
+                        id="machine-owner-person"
+                        email={@grant_owner.email}
+                        time_zone={@grant_owner.time_zone}
+                        viewer_zone={@time_zone}
+                        now={@now}
+                      />
+                    </td>
                     <td data-label="Role"><span class="status-label">Owner</span></td>
                     <td data-label="Allows" class="muted">
                       Everything; cannot be changed here.
@@ -923,7 +950,15 @@ defmodule MarshallWeb.MachinesLive do
                 </tbody>
                 <tbody id="grants" phx-update="stream">
                   <tr :for={{id, grant} <- @streams.grants} id={id}>
-                    <td class="break" data-label="Account">{grant.email}</td>
+                    <td class="break" data-label="Account">
+                      <.person
+                        id={"#{id}-person"}
+                        email={grant.email}
+                        time_zone={grant.time_zone}
+                        viewer_zone={@time_zone}
+                        now={@now}
+                      />
+                    </td>
                     <td data-label="Role">
                       <span class="status-label">{role_label(grant.role)}</span>
                     </td>

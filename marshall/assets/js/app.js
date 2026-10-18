@@ -40,6 +40,19 @@ const csrfToken = document
 captureRepositoryLaunch(document, window);
 initBrowserExtensionPresence(document);
 /**
+ * @cc [owner:ghuntley,label:product] browser-time-zone-connect-param
+ * The connect params MUST carry the browser's IANA zone from the Intl API as
+ * `timezone` (or null when unavailable) so a user without a saved zone sees
+ * times in their browser's zone. The server validates it; it is never stored.
+ */
+function browserTimeZone() {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || null;
+  } catch (_error) {
+    return null;
+  }
+}
+/**
  * @cc [owner:ghuntley,label:integration] liveview-hook-and-csrf-registration
  * liveSocket MUST send the page CSRF token and register TerminalWorkspace along
  * with the component/colocated hooks. Asset refactors MUST preserve the hook
@@ -53,6 +66,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
   timeout: 60000,
   params: {
     _csrf_token: csrfToken,
+    timezone: browserTimeZone(),
   },
   hooks: {
     ...colocatedHooks,

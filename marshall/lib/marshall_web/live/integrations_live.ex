@@ -155,6 +155,8 @@ defmodule MarshallWeb.IntegrationsLive do
     <Layouts.app
       flash={@flash}
       current_scope={%{user: @current_user}}
+      time_zone={@time_zone}
+      now={@now}
       compute={true}
       active="integrations"
     >
