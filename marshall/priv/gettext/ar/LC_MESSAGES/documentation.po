@@ -152,7 +152,7 @@ msgstr "# مرجع خيار NixOS"
 #: lib/marshall/documentation_messages.ex:65
 #, elixir-autogen, elixir-format
 msgid "# Overalls documentation"
-msgstr "#وثائق وزرة"
+msgstr "# وثائق Overalls"
 
 #: lib/marshall/documentation_messages.ex:66
 #, elixir-autogen, elixir-format
@@ -177,7 +177,7 @@ msgstr "# التخزين والسعة"
 #: lib/marshall/documentation_messages.ex:70
 #, elixir-autogen, elixir-format
 msgid "# Supporting services"
-msgstr "#الخدمات المساندة"
+msgstr "# الخدمات المساندة"
 
 #: lib/marshall/documentation_messages.ex:71
 #, elixir-autogen, elixir-format
@@ -437,7 +437,7 @@ msgstr "## أنشئ صورة تقييم Windows Server 2025 في وضع عدم �
 #: lib/marshall/documentation_messages.ex:189
 #, elixir-autogen, elixir-format
 msgid "## Burn delivery operations"
-msgstr "##حرق عمليات التسليم"
+msgstr "## عمليات تسليم تنبيهات استهلاك ميزانية الأخطاء"
 
 #: lib/marshall/documentation_messages.ex:190
 #, elixir-autogen, elixir-format
@@ -567,112 +567,112 @@ msgstr "## دوران بيانات الاعتماد والمفتاح"
 #: lib/marshall/documentation_messages.ex:246
 #, elixir-autogen, elixir-format
 msgid "## Dedicated editor path"
-msgstr ""
+msgstr "## مسار المحرر المخصص"
 
 #: lib/marshall/documentation_messages.ex:247
 #, elixir-autogen, elixir-format
 msgid "## Deploy a candidate while preserving guests and authority"
-msgstr ""
+msgstr "## نشر نسخة مرشحة مع الحفاظ على الضيوف والصلاحيات"
 
 #: lib/marshall/documentation_messages.ex:248
 #, elixir-autogen, elixir-format
 msgid "## Developer SSH"
-msgstr ""
+msgstr "## SSH للمطورين"
 
 #: lib/marshall/documentation_messages.ex:249
 #, elixir-autogen, elixir-format
 msgid "## Developer verification"
-msgstr ""
+msgstr "## تحقق المطورين"
 
 #: lib/marshall/documentation_messages.ex:250
 #, elixir-autogen, elixir-format
 msgid "## Diagnostic outages and queue recovery"
-msgstr ""
+msgstr "## انقطاعات التشخيص واستعادة قائمة الانتظار"
 
 #: lib/marshall/documentation_messages.ex:251
 #, elixir-autogen, elixir-format
 msgid "## Diagnostic paths and custody"
-msgstr ""
+msgstr "## مسارات التشخيص وحيازة الأدلة"
 
 #: lib/marshall/documentation_messages.ex:252
 #, elixir-autogen, elixir-format
 msgid "## Disable, drain, resume, retire"
-msgstr ""
+msgstr "## التعطيل والاستنزاف والاستئناف والإيقاف"
 
 #: lib/marshall/documentation_messages.ex:253
 #, elixir-autogen, elixir-format
 msgid "## Discover editor and neutral webview origins only through gateways with matching immutable assets"
-msgstr ""
+msgstr "## اكتشاف مصادر المحرر وواجهة الويب المحايدة عبر بوابات ذات أصول ثابتة متطابقة فقط"
 
 #: lib/marshall/documentation_messages.ex:257
 #, elixir-autogen, elixir-format
 msgid "## Drain a naturally exited terminal without retaining unreserved scrollback"
-msgstr ""
+msgstr "## استنزاف طرفية انتهت طبيعيًا دون الاحتفاظ بسجل تمرير غير محجوز"
 
 #: lib/marshall/documentation_messages.ex:261
 #, elixir-autogen, elixir-format
 msgid "## Durable guest accounts"
-msgstr ""
+msgstr "## حسابات الضيوف الدائمة"
 
 #: lib/marshall/documentation_messages.ex:262
 #, elixir-autogen, elixir-format
 msgid "## Durable guest identity reservations"
-msgstr ""
+msgstr "## حجوزات هويات الضيوف الدائمة"
 
 #: lib/marshall/documentation_messages.ex:263
 #, elixir-autogen, elixir-format
 msgid "## Durable objectives and measurement authority"
-msgstr ""
+msgstr "## الأهداف الدائمة وسلطة القياس"
 
 #: lib/marshall/documentation_messages.ex:264
 #, elixir-autogen, elixir-format
 msgid "## Durable request sources"
-msgstr ""
+msgstr "## مصادر الطلبات الدائمة"
 
 #: lib/marshall/documentation_messages.ex:265
 #, elixir-autogen, elixir-format
 msgid "## Editor transition evidence"
-msgstr ""
+msgstr "## أدلة انتقال المحرر"
 
 #: lib/marshall/documentation_messages.ex:266
 #, elixir-autogen, elixir-format
 msgid "## Elixir contract verification"
-msgstr ""
+msgstr "## التحقق من عقود Elixir"
 
 #: lib/marshall/documentation_messages.ex:267
 #, elixir-autogen, elixir-format
 msgid "## Elixir property verification"
-msgstr ""
+msgstr "## التحقق من خصائص Elixir"
 
 #: lib/marshall/documentation_messages.ex:268
 #, elixir-autogen, elixir-format
 msgid "## Enrico"
-msgstr ""
+msgstr "## إنريكو"
 
 #: lib/marshall/documentation_messages.ex:269
 #, elixir-autogen, elixir-format
 msgid "## Enroll"
-msgstr ""
+msgstr "## التسجيل"
 
 #: lib/marshall/documentation_messages.ex:270
 #, elixir-autogen, elixir-format
 msgid "## Enroll a replacement host with fresh physical identity after retiring the old one"
-msgstr ""
+msgstr "## تسجيل مضيف بديل بهوية مادية جديدة بعد تقاعد المضيف القديم"
 
 #: lib/marshall/documentation_messages.ex:274
 #, elixir-autogen, elixir-format
 msgid "## Evaluated placement"
-msgstr ""
+msgstr "## الموضع المُقيَّم"
 
 #: lib/marshall/documentation_messages.ex:275
 #, elixir-autogen, elixir-format
 msgid "## Evidence levels"
-msgstr ""
+msgstr "## مستويات الأدلة"
 
 #: lib/marshall/documentation_messages.ex:276
 #, elixir-autogen, elixir-format
 msgid "## Executor loss and explicit retry"
-msgstr ""
+msgstr "## فقدان المنفذ وإعادة المحاولة الصريحة"
 
 #: lib/marshall/documentation_messages.ex:277
 #, elixir-autogen, elixir-format
@@ -682,17 +682,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:281
 #, elixir-autogen, elixir-format
 msgid "## Expand a retained native root without changing foreign disks or nonroot partitions"
-msgstr ""
+msgstr "## توسيع الجذر الأصلي المحتفظ به دون تغيير الأقراص الأجنبية أو الأقسام غير الجذرية"
 
 #: lib/marshall/documentation_messages.ex:285
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis build selection"
-msgstr ""
+msgstr "## اختيار بناء Antithesis التجريبي"
 
 #: lib/marshall/documentation_messages.ex:286
 #, elixir-autogen, elixir-format
 msgid "## Experimental Antithesis control fixture"
-msgstr ""
+msgstr "## منصة اختبار تحكم Antithesis التجريبية"
 
 #: lib/marshall/documentation_messages.ex:287
 #, elixir-autogen, elixir-format

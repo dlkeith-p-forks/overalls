@@ -6024,7 +6024,7 @@ msgstr "VM"
 #: lib/marshall_web/live/admin/audit_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "VM ID"
-msgstr "VM ID"
+msgstr "VM 식별자"
 
 #: lib/marshall_web/live/admin/access_live.ex:39
 #, elixir-autogen, elixir-format
@@ -6955,89 +6955,89 @@ msgstr "↑ ↓ 선택 · 실행 입력 · 탈출 닫기"
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
-msgstr "4. Git identity"
+msgstr "4. Git 작성자 정보"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
-msgstr "Add Overalls commit attribution"
+msgstr "커밋에 Overalls 기여 정보 추가"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
-msgstr "Enter a valid Git name and email address."
+msgstr "유효한 Git 이름과 이메일 주소를 입력하세요."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git email"
-msgstr "Git email"
+msgstr "Git 이메일"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git identity"
-msgstr "Git identity"
+msgstr "Git 작성자 정보"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Git 작성자 정보 변경 사항은 새 머신에 적용됩니다. 커밋 기여 정보 변경 사항은 이후 에이전트 요청에 적용됩니다."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Git settings saved."
+msgstr "Git 설정이 저장되었습니다."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Git username"
+msgstr "Git 사용자 이름"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
-msgstr "Machine is paused. Resume it or reopen this terminal page."
+msgstr "머신이 일시 중지되었습니다. 머신을 다시 시작하거나 이 터미널 페이지를 다시 여세요."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Pause"
-msgstr "Pause"
+msgstr "일시 중지"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "Paused"
+msgstr "일시 중지됨"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
-msgstr "Resume machine"
+msgstr "머신 다시 시작"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming"
-msgstr "Resuming"
+msgstr "다시 시작 중"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
-msgstr "Resuming machine; waiting for capacity…"
+msgstr "머신을 다시 시작하는 중입니다. 사용 가능한 용량을 기다리는 중…"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Save Git settings"
+msgstr "Git 설정 저장"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Suspending"
-msgstr "Suspending"
+msgstr "일시 중단 중"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "활성화하면 새 에이전트 커밋에 Co-authored-by: Overalls <noreply@overalls.dev>가 포함됩니다."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "new machines and commit attribution"
-msgstr "new machines and commit attribution"
+msgstr "새 머신 및 커밋 기여 정보"

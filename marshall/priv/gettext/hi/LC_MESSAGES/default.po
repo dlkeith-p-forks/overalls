@@ -883,7 +883,7 @@ msgstr ""
 #: lib/marshall_web/live/integrations_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Basic user:pass"
-msgstr "Basic user:pass"
+msgstr "बेसिक user:pass"
 
 #: lib/marshall_web/live/integrations_live.ex:287
 #, elixir-autogen, elixir-format
@@ -6221,7 +6221,7 @@ msgstr "VM"
 #: lib/marshall_web/live/admin/audit_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "VM ID"
-msgstr "VM ID"
+msgstr "VM आईडी"
 
 #: lib/marshall_web/live/admin/access_live.ex:39
 #, elixir-autogen, elixir-format
@@ -7197,112 +7197,96 @@ msgstr "आपसे %{span} आगे"
 msgid "%{span} behind you"
 msgstr "आपसे %{span} पीछे"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
 msgstr "कमिट में Overalls का श्रेय जोड़ें"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
 msgstr "मान्य Git नाम और ईमेल पता दर्ज करें।"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
 msgstr "Git ईमेल"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr ""
+msgstr "Git पहचान में बदलाव नई मशीनों पर लागू होते हैं। कमिट के श्रेय में बदलाव एजेंट को किए जाने वाले आगामी अनुरोधों पर लागू होते हैं।"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
-msgstr "4. Git identity"
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "Add Overalls commit attribution"
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Enter a valid Git name and email address."
-msgstr "Enter a valid Git name and email address."
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Git email"
-msgstr "Git email"
+msgstr "4. Git पहचान"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git identity"
-msgstr "Git identity"
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Git पहचान"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Git settings saved."
+msgstr "Git सेटिंग सहेज ली गईं।"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Git username"
+msgstr "Git उपयोगकर्ता नाम"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
-msgstr "Machine is paused. Resume it or reopen this terminal page."
+msgstr "मशीन रुकी हुई है। उसे फिर से चालू करें या इस टर्मिनल पृष्ठ को दोबारा खोलें।"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Pause"
-msgstr "Pause"
+msgstr "रोकें"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "Paused"
+msgstr "रुकी हुई"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
-msgstr "Resume machine"
+msgstr "मशीन फिर से चालू करें"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming"
-msgstr "Resuming"
+msgstr "फिर से चालू हो रही है"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
-msgstr "Resuming machine; waiting for capacity…"
+msgstr "मशीन फिर से चालू हो रही है; क्षमता उपलब्ध होने की प्रतीक्षा है…"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Save Git settings"
+msgstr "Git सेटिंग सहेजें"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Suspending"
-msgstr "Suspending"
+msgstr "निलंबित हो रही है"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "सक्षम होने पर, एजेंट के नए कमिट में Co-authored-by: Overalls <noreply@overalls.dev> शामिल होता है।"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "new machines and commit attribution"
-msgstr "new machines and commit attribution"
+msgstr "नई मशीनें और कमिट का श्रेय"

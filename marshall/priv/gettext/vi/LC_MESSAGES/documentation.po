@@ -4487,7 +4487,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1904
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Full Lilly application death at this boundary, start/restart completion, attempt-marker-before-submission, physical power loss and hosted faults remain open. Executor retry is witnessed; actor-deferred result consumption is not independently asserted."
-msgstr ""
+msgstr "**Khoảng trống:** Việc toàn bộ ứng dụng Lilly dừng tại ranh giới này, hoàn tất khởi động/khởi động lại, ghi dấu lần thử trước khi gửi, mất điện vật lý và lỗi trong môi trường lưu trữ vẫn còn bỏ ngỏ. Đã quan sát thấy bộ thực thi thử lại; việc tiêu thụ kết quả bị trì hoãn theo tác nhân chưa được khẳng định độc lập."
 
 #: lib/marshall/documentation_messages.ex:1908
 #, elixir-autogen, elixir-format
@@ -4502,7 +4502,7 @@ msgstr "**Khoảng trống:** Lịch sử quan sát/kích hoạt chéo đích đ
 #: lib/marshall/documentation_messages.ex:1916
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Generated local histories do not execute native systemd units, real database migrations, guest-impact activation or live environment replacement on machines; independent physical rollout scheduling remains outside host-local updates and automatic database rollback is forbidden."
-msgstr ""
+msgstr "**Khoảng trống:** Các lịch sử cục bộ được sinh không thực thi các đơn vị systemd gốc, di chuyển cơ sở dữ liệu thực, kích hoạt có ảnh hưởng đến máy khách hoặc thay thế môi trường đang chạy trên máy; việc lập lịch triển khai trên các máy vật lý độc lập nằm ngoài cập nhật cục bộ của máy chủ và việc tự động hoàn tác cơ sở dữ liệu bị cấm."
 
 #: lib/marshall/documentation_messages.ex:1920
 #, elixir-autogen, elixir-format
@@ -4517,22 +4517,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:1928
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Guard-removal mutant killed at counter0 ping in0.9seconds; Marshall1466-check and zero-error forced Dialyzer gate passed. Incoming-main integration and publication remain pending; callback coverage does not prove native fleet or rollout behavior. Existing TLS smoke retains its separate scope."
-msgstr ""
+msgstr "**Khoảng trống:** Biến thể đột biến loại bỏ điều kiện bảo vệ đã bị phát hiện tại lần ping counter0 trong 0.9 giây; bộ kiểm tra Marshall1466 và cổng Dialyzer bắt buộc với không lỗi đã vượt qua. Việc tích hợp nhánh chính mới đến và công bố vẫn đang chờ; phạm vi kiểm tra hàm gọi lại không chứng minh hành vi của cụm máy gốc hoặc triển khai. Kiểm tra khói TLS hiện có giữ phạm vi riêng."
 
 #: lib/marshall/documentation_messages.ex:1932
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, every administrative mutation family, populated drill-down projections and independent physical hosts remain unverified. Cross-replica revocation has recorded generated three-BEAM schedule evidence for mounted reads; the cross-replica native browser scenario is the login journey's three colocated services."
-msgstr ""
+msgstr "**Khoảng trống:** Bộ xác thực phần cứng, mọi nhóm thao tác quản trị, các phép chiếu chi tiết có dữ liệu và các máy chủ vật lý độc lập vẫn chưa được xác minh. Việc thu hồi giữa các bản sao đã có bằng chứng lịch thực thi được sinh với ba BEAM cho các lượt đọc đã gắn; kịch bản trình duyệt gốc giữa các bản sao là ba dịch vụ cùng đặt trong hành trình đăng nhập."
 
 #: lib/marshall/documentation_messages.ex:1936
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, independent physical hosts, SMTP delivery and production rollout remain separate; full/native captures and previous Control room/retirement claims retain their exact revisions."
-msgstr ""
+msgstr "**Khoảng trống:** Bộ xác thực phần cứng, các máy chủ vật lý độc lập, chuyển phát SMTP và triển khai sản xuất vẫn thuộc các phạm vi riêng; các bản ghi đầy đủ/gốc và những tuyên bố trước đây về Control room/ngừng sử dụng giữ nguyên các phiên bản chính xác của chúng."
 
 #: lib/marshall/documentation_messages.ex:1940
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Hardware authenticators, independent physical hosts, actual inbox delivery and production rollout remain unverified. Native replicas share one NixOS VM and PostgreSQL. JavaScript-capable mail scanners may consume links; the native automatic-submit run uses three colocated replicas in one VM."
-msgstr ""
+msgstr "**Khoảng trống:** Bộ xác thực phần cứng, các máy chủ vật lý độc lập, việc thư thực sự đến hộp thư và triển khai sản xuất vẫn chưa được xác minh. Các bản sao gốc dùng chung một máy ảo NixOS và PostgreSQL. Trình quét thư có khả năng chạy JavaScript có thể sử dụng các liên kết; lần chạy tự động gửi gốc sử dụng ba bản sao cùng đặt trong một máy ảo."
 
 #: lib/marshall/documentation_messages.ex:1944
 #, elixir-autogen, elixir-format
@@ -4562,7 +4562,7 @@ msgstr "**Khoảng trống:** Máy chủ vật lý độc lập, DNS/CA/tải s�
 #: lib/marshall/documentation_messages.ex:1964
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Independent physical hosts, team terminal/agent journeys, existing SSH session termination, positive public CLI integration configuration and production rollout remain separate. Recorded native accounts remain ordinary; integration setup invokes the real Ash action through the private fixture."
-msgstr ""
+msgstr "**Khoảng trống:** Các máy chủ vật lý độc lập, hành trình thiết bị đầu cuối/tác nhân của nhóm, việc chấm dứt phiên SSH hiện có, cấu hình tích hợp CLI công khai thành công và triển khai sản xuất vẫn thuộc các phạm vi riêng. Các tài khoản gốc được ghi nhận vẫn là tài khoản thông thường; thiết lập tích hợp gọi thao tác Ash thực thông qua bộ dữ liệu kiểm thử riêng."
 
 #: lib/marshall/documentation_messages.ex:1968
 #, elixir-autogen, elixir-format
@@ -4587,7 +4587,7 @@ msgstr "**Khoảng trống:** Nghiệm thu mở rộng bị gián đoạn và kh
 #: lib/marshall/documentation_messages.ex:1984
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Interrupted writes, interrupted expansion, physical stable-media/host power loss, direct isolation, relocation and fleet recovery remain unproven; both native crash receipts retain admission false, while exact sealed FreeBSD activation is recorded separately."
-msgstr ""
+msgstr "**Khoảng trống:** Ghi bị gián đoạn, mở rộng bị gián đoạn, mất điện máy chủ/phương tiện lưu trữ bền vững vật lý, cách ly trực tiếp, di chuyển và khôi phục cụm máy vẫn chưa được chứng minh; cả hai biên nhận sự cố gốc giữ admission false, trong khi việc kích hoạt FreeBSD đã niêm phong chính xác được ghi nhận riêng."
 
 #: lib/marshall/documentation_messages.ex:1988
 #, elixir-autogen, elixir-format
@@ -18067,32 +18067,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:833
 #, elixir-autogen, elixir-format
 msgid "## Stage a personal Windows browser editor candidate while keeping unqualified Windows images editor-ineligible"
-msgstr ""
+msgstr "## Chuẩn bị ứng viên trình chỉnh sửa trình duyệt Windows cá nhân, đồng thời giữ các ảnh Windows chưa đủ điều kiện ở trạng thái không được cấp quyền"
 
 #: lib/marshall/documentation_messages.ex:1037
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.address`"
-msgstr ""
+msgstr "## `services.audi.relay.address`"
 
 #: lib/marshall/documentation_messages.ex:1038
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.enable`"
-msgstr ""
+msgstr "## `services.audi.relay.enable`"
 
 #: lib/marshall/documentation_messages.ex:1039
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.peers`"
-msgstr ""
+msgstr "## `services.audi.relay.peers`"
 
 #: lib/marshall/documentation_messages.ex:1040
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.port`"
-msgstr ""
+msgstr "## `services.audi.relay.port`"
 
 #: lib/marshall/documentation_messages.ex:1713
 #, elixir-autogen, elixir-format
 msgid "### Windows editor payload staging (not admitted)"
-msgstr ""
+msgstr "### Chuẩn bị tải trọng trình chỉnh sửa Windows (chưa được cấp quyền)"
 
 #: lib/marshall/documentation_messages.ex:1848
 #, elixir-autogen, elixir-format
@@ -18147,12 +18147,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5985
 #, elixir-autogen, elixir-format
 msgid "Exact local fleet /32; never a guest or public listener address."
-msgstr ""
+msgstr "Địa chỉ /32 chính xác của đội máy cục bộ; không bao giờ là địa chỉ của máy khách hoặc trình lắng nghe công khai."
 
 #: lib/marshall/documentation_messages.ex:6041
 #, elixir-autogen, elixir-format
 msgid "Explicit keyed fleet /32 peers allowed to present single-use relay capabilities."
-msgstr ""
+msgstr "Các nút ngang hàng /32 của đội máy có khóa rõ ràng được phép cung cấp khả năng chuyển tiếp dùng một lần."
 
 #: lib/marshall/documentation_messages.ex:6563
 #, elixir-autogen, elixir-format
@@ -18167,7 +18167,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8766
 #, elixir-autogen, elixir-format
 msgid "Tested scope: ADR-0201 presentation boundaries with recorded bounded BEAM/LiveView execution; full browser, native Porsche and linguistic acceptance remain partial."
-msgstr ""
+msgstr "Phạm vi đã kiểm thử: các ranh giới trình bày của ADR-0201 với lần thực thi BEAM/LiveView có giới hạn đã được ghi nhận; việc chấp nhận đầy đủ trên trình duyệt, Porsche gốc và ngôn ngữ vẫn chưa hoàn tất."
 
 #: lib/marshall/documentation_messages.ex:9206
 #, elixir-autogen, elixir-format
@@ -18197,7 +18197,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:11134
 #, elixir-autogen, elixir-format
 msgid "Whether to enable single-hop authorized ingress over the host fleet WireGuard network."
-msgstr ""
+msgstr "Có bật truy cập vào được ủy quyền một chặng qua mạng WireGuard của đội máy chủ hay không."
 
 #: lib/marshall/documentation_messages.ex:11144
 #, elixir-autogen, elixir-format

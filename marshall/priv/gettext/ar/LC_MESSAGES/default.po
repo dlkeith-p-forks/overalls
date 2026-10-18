@@ -7091,112 +7091,96 @@ msgstr "متقدم عن توقيتك بمقدار %{span}"
 msgid "%{span} behind you"
 msgstr "متأخر عن توقيتك بمقدار %{span}"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "Add Overalls commit attribution"
 msgstr "إضافة إسناد Overalls إلى عمليات الإيداع"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
 msgstr "أدخل اسم Git وعنوان بريد إلكتروني صالحين."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:549
 #, elixir-autogen, elixir-format
 msgid "Git email"
 msgstr "البريد الإلكتروني لـ Git"
 
+# Reviewed English fallback pending translation of suspension and account behavior.
 #: lib/marshall_web/live/account_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr ""
+msgstr "تُطبَّق تغييرات هوية Git على الأجهزة الجديدة. وتُطبَّق تغييرات إسناد الإيداعات على طلبات الوكيل المستقبلية."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
-msgstr "4. Git identity"
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "Add Overalls commit attribution"
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Enter a valid Git name and email address."
-msgstr "Enter a valid Git name and email address."
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Git email"
-msgstr "Git email"
+msgstr "4. هوية Git"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git identity"
-msgstr "Git identity"
-
-# Reviewed English fallback pending translation of suspension and account behavior.
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "هوية Git"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
-msgstr "Git settings saved."
+msgstr "تم حفظ إعدادات Git."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Git username"
-msgstr "Git username"
+msgstr "اسم مستخدم Git"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
-msgstr "Machine is paused. Resume it or reopen this terminal page."
+msgstr "الجهاز متوقف مؤقتًا. استأنفه أو أعد فتح صفحة الطرفية هذه."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Pause"
-msgstr "Pause"
+msgstr "إيقاف مؤقت"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "Paused"
+msgstr "متوقف مؤقتًا"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
-msgstr "Resume machine"
+msgstr "استئناف الجهاز"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming"
-msgstr "Resuming"
+msgstr "جارٍ الاستئناف"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
-msgstr "Resuming machine; waiting for capacity…"
+msgstr "جارٍ استئناف الجهاز؛ في انتظار السعة المتاحة…"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
-msgstr "Save Git settings"
+msgstr "حفظ إعدادات Git"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "Suspending"
-msgstr "Suspending"
+msgstr "جارٍ التعليق"
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "عند التمكين، تتضمن إيداعات الوكيل الجديدة Co-authored-by: Overalls <noreply@overalls.dev>."
 
 # Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
 msgid "new machines and commit attribution"
-msgstr "new machines and commit attribution"
+msgstr "الأجهزة الجديدة وإسناد الإيداعات"
