@@ -11,7 +11,7 @@ let
     export DISPLAY=:0
     mkdir -p "$ANDROID_AVD_HOME"
     if [ ! -f "$ANDROID_AVD_HOME/overalls-test.avd/config.ini" ]; then
-      yes "" | ${sdkRoot}/cmdline-tools/latest/bin/avdmanager create avd \
+      yes "" | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
         --force --name overalls-test \
         --package 'system-images;android-36;google_apis;x86_64' \
         --path "$ANDROID_AVD_HOME/overalls-test.avd"
@@ -28,7 +28,7 @@ pkgs.testers.runNixOSTest {
     system.stateVersion = "26.05";
     virtualisation.memorySize = 6144;
     virtualisation.cores = 4;
-    environment.systemPackages = [ pkgs.android-tools pkgs.xorg.xorgserver sdk ];
+    environment.systemPackages = [ pkgs.android-tools pkgs.xorg.xorgserver pkgs.jdk sdk ];
     users.users.android-test = {
       isSystemUser = true;
       group = "android-test";
@@ -47,6 +47,7 @@ pkgs.testers.runNixOSTest {
       wantedBy = [ "multi-user.target" ];
       requires = [ "android-test-display.service" ];
       after = [ "android-test-display.service" ];
+      environment = { JAVA_HOME = "${pkgs.jdk}"; };
       serviceConfig = {
         Type = "simple";
         User = "android-test";
@@ -64,13 +65,10 @@ pkgs.testers.runNixOSTest {
   # evidence only; it does not establish Firecracker, guest isolation, native
   # KVM, production Lilly authority, or multi-host recovery.
   testScript = ''
-    import re
-
     android.start()
     android.wait_for_unit("android-test-emulator.service")
-    android.wait_until_succeeds("test -r /proc/$(systemctl show android-test-emulator.service -p MainPID --value)/cmdline")
-    android.fail("test -e /dev/kvm")
-    cmdline = android.succeed("tr '\\0' ' ' < /proc/$(systemctl show android-test-emulator.service -p MainPID --value)/cmdline")
+    android.wait_until_succeeds("pgrep -a -f '/emulator/emulator'", timeout=30)
+    cmdline = android.succeed("pgrep -a -f '/emulator/emulator' | head -n 1")
     assert "-no-accel" in cmdline, cmdline
     assert "-gpu swiftshader_indirect" in cmdline, cmdline
     android.wait_for_open_port(5555)

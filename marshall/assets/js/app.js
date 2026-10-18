@@ -1,3 +1,4 @@
+import {AndroidDisplay} from "./android_display.js";
 import {ThreadComposer} from "./thread_composer.js";
 import {Handbook} from "./handbook.js";
 import {WorkspaceNavigation, MachineConnection} from "./workspace.js";
@@ -73,6 +74,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
   hooks: {
     ...colocatedHooks,
     TerminalWorkspace,
+    AndroidDisplay,
     PasskeyCeremony,
     AdminElevation,
     WorkspaceNavigation,

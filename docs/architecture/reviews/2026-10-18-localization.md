@@ -168,3 +168,27 @@ before restarting acceptance. They are not recorded as application layout or
 authentication failures, and their successful process exits do not establish
 locale coverage. Scratch Chromium's missing CJK fallback glyphs are a separate
 font-environment limitation, not verified native typography.
+
+## Commit and trunk integration scope
+
+Commit `1e36beb3` passed all configured commit hooks. Native extraction produced
+3,800 documentation identities; all 25 catalogs were reconciled exactly, retaining
+13,132 existing nonempty translations and adding 25 Reflection title translations.
+Retired translations were archived in scratch storage. Catalog validation passed;
+remaining empty entries are explicit gaps. Five Porsche wording corrections
+followed the recorded full precommit and have catalog/source review only.
+
+Integration of `c91ac4435` preserves upstream Android display and GitHub framing
+work. The registered Android display hook lacked an import; integration adds it.
+The resulting browser bundle builds and localization JavaScript tests pass 3/3.
+The HLDD Nix check passed before this merge; the final Marshall full gate and
+post-fix authenticated Bombadil acceptance remain pending. AccountLive assertions
+passed in the 59/60 focused run; its sole failure used stale compiled docs404
+translations. A forced catalog compilation and fresh focused rerun were still in
+progress at commit preparation. No passing full Marshall result is claimed.
+
+A read-only upstream review found a separate GitHub response-header discrepancy:
+the newly allowlisted original Link may survive alongside the rewritten Link.
+This integration preserves upstream behavior and records the gap rather than
+claiming the handbook's no-upstream-hostname assertion is established. ADR0201
+remains partial; no localization authority or persistence decision changes.

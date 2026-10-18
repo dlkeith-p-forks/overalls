@@ -18,8 +18,6 @@ def assert_suspended(copy: PlacementRef) -> None:
     machine.succeed("python3 -c " + shlex.quote(program))
 
 
-# The suspension journey owns its VM and public route so it can start after the
-# shared enrollment/bootstrap phase without running unrelated Audi assertions.
 vm = provision_when_available(m1, "standard")
 await_running(vm["vm_id"])
 route = operator(

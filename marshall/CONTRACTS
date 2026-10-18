@@ -20,3 +20,13 @@ Android display tickets MUST be signed by Marshall, expire within the relay wind
 carry one machine and actor identity, and be issued only for images advertising
 android_display. Guest generation and the single controller lease remain required
 before a relay accepts a ticket.
+
+@cc [owner:ghuntley,label:security;recovery] android-display-relay-state
+The Android display relay MUST permit multiple viewers but at most one controller,
+reject stale generations, preserve monotonic frame sequences, and revoke controller
+authority when its process exits.
+
+@cc [owner:ghuntley,label:recovery;security] android-display-host-bridge
+The Android host bridge MUST forward only current-generation bounded frames into
+the display relay, drop stale frames, and route controller input back to the
+host stream without granting viewer input authority.
