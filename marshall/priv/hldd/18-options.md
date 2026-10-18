@@ -3539,6 +3539,32 @@ null
 ```
 
 
+## `services.marshall.githubBootstrapRelease`
+
+Immutable source-built executor inventory for retained-machine tool maintenance.
+
+Type: `null or package`.
+
+Default:
+
+```nix
+<derivation overalls-executor-bootstrap-v1>
+```
+
+
+## `services.marshall.githubRestoreEpochFile`
+
+Root-controlled public UUID restored-authority fence, shared identically across all replicas before recovery startup. The marker persists after invalidation.
+
+Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+"/var/lib/overalls-marshall-recovery/github-restore-epoch"
+```
+
+
 ## `services.marshall.githubToolsRelease`
 
 Immutable manifest for the managed guest GitHub tools release.
@@ -8271,6 +8297,19 @@ Default:
   "openai"
   "anthropic"
 ]
+```
+
+
+## `services.ziggy.githubBootstrapRelease`
+
+Immutable executor artifacts for fenced retained-machine GitHub tools bootstrap.
+
+Type: `null or package`.
+
+Default:
+
+```nix
+<derivation overalls-executor-bootstrap-v1>
 ```
 
 
