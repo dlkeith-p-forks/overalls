@@ -762,13 +762,12 @@ let
     let host = hosts.${name}; in {
     imports = [ ziggyFixture.lilly ]
       ++ [ (import ./audi.nix { inherit pkgs ubuntu; role = "gateway"; hostId = host.host; }) ]
-      ++ [ galileoFixture.lilly ]
+      ++ lib.optional (!suspension) galileoFixture.lilly
       ++ lib.optional (otelAudiSsh || observabilityRecovery || suspension) (otelAudiSshHost name);
     security.pki.certificateFiles = lib.optionals githubIntegration [ "${githubFixture}/root.pem" ];
     services.audi.editorPackages = lib.optionalAttrs (editor || suspension) {
       linux-x64 = packages.vscodeWeb;
     };
-    services.audiPrivate.enable = lib.mkIf suspension (lib.mkForce false);
     services.audi.relay = lib.mkIf suspension {
       enable = true;
       address = if name == "l1" then "10.90.0.1" else "10.90.0.2";
