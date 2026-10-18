@@ -2,8 +2,10 @@
 
 - [Foreign Linux browser editor (2026-10-18)](2026-10-18-foreign-linux-browser-editor.md):
   repairs the missing Alma/Arch editor package, account broker and immutable
-  descriptor while preserving exact-release authority; fresh image and native
-  browser acceptance are tracked separately from the seven-family CLI milestone.
+  descriptor while preserving exact-release authority; twelve Alma native browser
+  subtests and both new production CLI lifecycles passed, while Arch browser
+  passed eight stages before a broker-recovery 502; all remain separate from
+  the frozen seven-family CLI milestone.
 - [Machine pins (2026-10-18)](2026-10-18-machine-pins.md): ADR-0193's per-user
   pins, pinned-first lists, the owner-pin deletion guard across every lifecycle
   delete path with the account-deletion exception, pin removal at archival and

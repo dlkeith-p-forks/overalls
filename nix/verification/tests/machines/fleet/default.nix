@@ -7,6 +7,10 @@ let
   # NOT redirect another fleet scenario or substitute a NixOS guest for it.
   selectedEditorFamily = if editorFamily == null then (if ubuntu then "ubuntu" else "nixos") else editorFamily;
   foreignEditor = editor && builtins.elem selectedEditorFamily [ "arch" "almalinux" ];
+  # @cc [owner:ghuntley,label:verification] editor-native-packaged-runtime-probe
+  # Native Node diagnostics MUST execute the selected editor package's own
+  # runtime, never the separate NixOS fixture package set's Node installation.
+  editorRuntimeNode = "${packages.vscodeWeb}/node";
   otelExporter = pkgs.callPackage ../../../../domains/system/otel-guest/receiver.nix {};
   requestIdentities = import ../../../../domains/system/otel-fleet/request-identities.nix;
   # @cc [owner:ghuntley,label:verification;security] fixture-request-export-custody
@@ -1173,7 +1177,7 @@ let
       (pkgs.writeShellScriptBin "fleet-editor-guest" ''
         export PATH="${config.boot.zfs.package}/bin:/run/current-system/sw/bin:${packages.lilly}/host-tools/bin"
         ${lib.optionalString editor ''
-          export FLEET_EDITOR_NODE="${pkgs.nodejs_24}/bin/node" FLEET_EDITOR_COMMIT="${packages.vscodeWeb.sourceCommit}"
+          export FLEET_EDITOR_NODE="${editorRuntimeNode}" FLEET_EDITOR_COMMIT="${packages.vscodeWeb.sourceCommit}"
         ''}
         export ERL_FLAGS="+S 2:2" RELEASE_DISTRIBUTION=none RELEASE_COOKIE=isolated-editor-guest
         export LILLY_SERVICE_UID=${toString config.users.users.lilly.uid}

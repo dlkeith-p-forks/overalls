@@ -150,6 +150,13 @@ or 60 s without a browser frame; the gateway listener's 5 s HTTP read timeout do
 not apply to it, so a client with a 5 s keepalive is not cut off
 ([regression test](repo:audi/test/http_proxy_test.exs)).
 
+HTTP forwarding failures emit `audi.http_proxy_failed` with a fixed forwarding
+phase, timeout/closed/protocol/other category, response state and bounded event
+count. Errors, URLs, headers and request or response bytes never enter that
+event. Failure before response headers returns 502; an interrupted response
+still terminates the stream without a successful final chunk. These categories
+locate a failed hop; they do not prove the guest's cause or retry a request.
+
 Lilly's leg runs in a detached ingress bridge
 ([ADR-0192](repo:docs/architecture/decisions/0192-staged-detached-ingress.md)).
 Lilly derives the typed account preface and the exact ready frame it requires
@@ -161,7 +168,10 @@ loses authority, and Audi's sign-out revocation still closes the WebSocket,
 which ends the bridge. Its first machine run failed: the bridges survived, but
 Marshall refused the next renewal because the lease was pinned to Lilly's
 replaced control session, so Audi revoked the stream. Renewal no longer pins
-that session; the corrected subtest has not run yet.
+that session. The later Alma and Arch suites both passed this exact restart
+survival stage; Alma completed all twelve stages, while Arch later failed folder
+navigation after broker restart. See the separate
+[family execution review](repo:docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md).
 
 The exact admitted GET/HEAD of the packaged extension-worker iframe at the grant's
 source commit permits same-origin framing for the upstream browser extension host.

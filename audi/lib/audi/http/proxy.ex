@@ -5,6 +5,22 @@ defmodule Audi.HTTP.Proxy do
   alias Audi.Control.Client
   require Audi.Events
 
+  @typep failure_phase ::
+           :request_headers
+           | :request_method
+           | :connector
+           | :initiate
+           | :socket_options
+           | :request
+           | :upload_body
+           | :upload_eof
+           | :read_body
+           | :recv
+           | :response_headers
+           | :downstream_body
+           | :response_events
+  @typep failure_reason :: :timeout | :closed | :protocol | :other
+
   # @cc [owner:ghuntley,label:security] audi-web-admission-before-bytes
   # Host selection MUST use the validated TLS origin. Fresh web authority and an
   # independent guard MUST precede guest connection. Browser sign-in is only for
@@ -87,16 +103,17 @@ defmodule Audi.HTTP.Proxy do
   @doc false
   @spec forward(Plug.Conn.t(), tuple(), map(), binary() | nil) :: Plug.Conn.t()
   def forward(conn, {module, config}, grant, source_vm_id) do
-    with {:ok, headers} <-
-           Headers.request(conn.req_headers, %{
-             host: conn.host,
-             port: conn.port,
-             remote_ip: conn.remote_ip,
-             user_id: grant.user_id,
-             source_vm_id: source_vm_id
-           }),
-         true <- conn.method not in ["CONNECT", "TRACE"],
-         {:ok, socket} <- module.open(config, grant.binding) do
+    with {:request_headers, {:ok, headers}} <-
+           {:request_headers,
+            Headers.request(conn.req_headers, %{
+              host: conn.host,
+              port: conn.port,
+              remote_ip: conn.remote_ip,
+              user_id: grant.user_id,
+              source_vm_id: source_vm_id
+            })},
+         {:request_method, true} <- {:request_method, conn.method not in ["CONNECT", "TRACE"]},
+         {:connector, {:ok, socket}} <- {:connector, module.open(config, grant.binding)} do
       try do
         :ok =
           :inet.setopts(socket,
@@ -107,40 +124,46 @@ defmodule Audi.HTTP.Proxy do
             send_timeout_close: true
           )
 
-        with {:ok, upstream} <-
-               Mint.HTTP1.initiate(:http, socket, conn.host, grant.binding.port,
-                 mode: :passive,
-                 max_header_list_size: 65_536,
-                 log: false
-               ),
-             :ok <- :inet.setopts(socket, buffer: 65_536),
+        with {:initiate, {:ok, upstream}} <-
+               {:initiate,
+                Mint.HTTP1.initiate(:http, socket, conn.host, grant.binding.port,
+                  mode: :passive,
+                  max_header_list_size: 65_536,
+                  log: false
+                )},
+             {:socket_options, :ok} <- {:socket_options, :inet.setopts(socket, buffer: 65_536)},
              path =
                conn.request_path <>
                  if(conn.query_string == "", do: "", else: "?" <> conn.query_string),
-             {:ok, upstream, ref} <-
-               Mint.HTTP1.request(
-                 upstream,
-                 conn.method,
-                 path,
-                 headers ++ [{"connection", "close"}],
-                 :stream
-               ) do
+             {:request, {:ok, upstream, ref}} <-
+               {:request,
+                Mint.HTTP1.request(
+                  upstream,
+                  conn.method,
+                  path,
+                  headers ++ [{"connection", "close"}],
+                  :stream
+                )} do
           case upload(conn, upstream, ref) do
             {:ok, conn, upstream} -> download(conn, upstream, ref, nil, false)
-            _ -> fail(conn)
+            {:error, phase, reason} -> fail(conn, phase, reason)
           end
         else
-          _ -> fail(conn)
+          {:initiate, {:error, error}} -> fail(conn, :initiate, failure_reason(error))
+          {:socket_options, _} -> fail(conn, :socket_options, :other)
+          {:request, {:error, _, error}} -> fail(conn, :request, failure_reason(error))
         end
       after
         :gen_tcp.close(socket)
       end
     else
-      _ -> fail(conn)
+      {:request_headers, _} -> fail(conn, :request_headers, :protocol)
+      {:request_method, _} -> fail(conn, :request_method, :other)
+      {:connector, _} -> fail(conn, :connector, :other)
     end
   end
 
-  def forward(conn, _, _, _), do: fail(conn)
+  def forward(conn, _, _, _), do: fail(conn, :connector, :other)
 
   defp peer_token(conn, label, app_port) do
     case get_req_header(conn, "authorization") do
@@ -179,19 +202,29 @@ defmodule Audi.HTTP.Proxy do
     end
   end
 
+  @spec upload(Plug.Conn.t(), Mint.HTTP1.t(), reference()) ::
+          {:ok, Plug.Conn.t(), Mint.HTTP1.t()} | {:error, failure_phase(), failure_reason()}
   defp upload(conn, upstream, ref) do
     case read_body(conn, length: 65_536, read_length: 65_536, read_timeout: 5000) do
       {:more, bytes, conn} ->
-        with {:ok, upstream} <- Mint.HTTP1.stream_request_body(upstream, ref, bytes),
-             do: upload(conn, upstream, ref)
+        case Mint.HTTP1.stream_request_body(upstream, ref, bytes) do
+          {:ok, upstream} -> upload(conn, upstream, ref)
+          {:error, _, error} -> {:error, :upload_body, failure_reason(error)}
+        end
 
       {:ok, bytes, conn} ->
-        with {:ok, upstream} <- Mint.HTTP1.stream_request_body(upstream, ref, bytes),
-             {:ok, upstream} <- Mint.HTTP1.stream_request_body(upstream, ref, :eof),
-             do: {:ok, conn, upstream}
+        with {:upload_body, {:ok, upstream}} <-
+               {:upload_body, Mint.HTTP1.stream_request_body(upstream, ref, bytes)},
+             {:upload_eof, {:ok, upstream}} <-
+               {:upload_eof, Mint.HTTP1.stream_request_body(upstream, ref, :eof)} do
+          {:ok, conn, upstream}
+        else
+          {:upload_body, {:error, _, error}} -> {:error, :upload_body, failure_reason(error)}
+          {:upload_eof, {:error, _, error}} -> {:error, :upload_eof, failure_reason(error)}
+        end
 
       _ ->
-        {:error, :invalid_body}
+        {:error, :read_body, :other}
     end
   end
 
@@ -201,11 +234,11 @@ defmodule Audi.HTTP.Proxy do
         case events(events, conn, ref, status, sent) do
           {:more, conn, status, sent} -> download(conn, upstream, ref, status, sent)
           {:done, conn} -> conn
-          {:error, conn} -> fail(conn)
+          {:error, conn, phase, reason} -> fail(conn, phase, reason, length(events))
         end
 
-      _ ->
-        fail(conn)
+      {:error, _, error, events} ->
+        fail(conn, :recv, failure_reason(error), length(events))
     end
   end
 
@@ -225,7 +258,7 @@ defmodule Audi.HTTP.Proxy do
       conn = send_chunked(conn, status)
       events(rest, conn, ref, status, true)
     else
-      _ -> {:error, conn}
+      _ -> {:error, conn, :response_headers, :protocol}
     end
   end
 
@@ -235,12 +268,41 @@ defmodule Audi.HTTP.Proxy do
   defp events([{:data, ref, data} | rest], conn, ref, status, true) do
     case chunk(conn, data) do
       {:ok, conn} -> events(rest, conn, ref, status, true)
-      _ -> {:error, conn}
+      _ -> {:error, conn, :downstream_body, :other}
     end
   end
 
   defp events([{:done, ref}], conn, ref, _, true), do: {:done, conn}
-  defp events(_, conn, _, _, _), do: {:error, conn}
+  defp events(_, conn, _, _, _), do: {:error, conn, :response_events, :protocol}
+
+  # @cc [owner:ghuntley,label:security;observability] audi-http-failure-closed-diagnostics
+  # Proxy failures MUST emit only the catalogued literal phase, finite error
+  # category, response state and bounded event count. Raw Mint errors, HTTP
+  # events, request data and payloads MUST NOT reach diagnostics. Classification
+  # MUST preserve the existing 502 or interrupted-response shutdown behavior.
+  @spec fail(Plug.Conn.t(), failure_phase(), failure_reason(), non_neg_integer()) :: Plug.Conn.t()
+  defp fail(conn, phase, reason, response_events \\ 0) do
+    Audi.Events.emit("audi.http_proxy_failed",
+      phase: phase,
+      reason: reason,
+      response_state:
+        if(conn.state in [:sent, :chunked, :upgraded], do: :after_headers, else: :before_headers),
+      response_events: min(response_events, 2_147_483_647)
+    )
+
+    fail(conn)
+  end
+
+  @spec failure_reason(Mint.Types.error()) :: failure_reason()
+  defp failure_reason(%Mint.TransportError{reason: :timeout}), do: :timeout
+
+  defp failure_reason(%Mint.TransportError{reason: reason})
+       when reason in [:closed, :econnreset, :enotconn, :epipe],
+       do: :closed
+
+  defp failure_reason(%Mint.HTTPError{reason: :closed}), do: :closed
+  defp failure_reason(%Mint.HTTPError{}), do: :protocol
+  defp failure_reason(_), do: :other
 
   defp fail(%{state: state}) when state in [:sent, :chunked, :upgraded] do
     # Never turn an interrupted body into a successful terminating chunk.

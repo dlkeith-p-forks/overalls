@@ -82,8 +82,7 @@ defmodule Audi.InvalidBootPropertyTest do
   # from diagnostics. Unset configuration MUST remain a separate no-listener boot.
   property "generated invalid Audi role configurations refuse fresh OTP startup",
     profile: :ci,
-    print_blob: false,
-  do
+    print_blob: false do
     root = Path.join(System.tmp_dir!(), "k-ab-" <> Base.encode16(:crypto.strong_rand_bytes(8)))
     File.mkdir!(root)
     File.chmod!(root, 0o700)

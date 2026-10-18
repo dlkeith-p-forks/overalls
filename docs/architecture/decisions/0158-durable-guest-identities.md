@@ -4,7 +4,7 @@
 - Date: 2026-10-10
 - Status: superseded
 - Implementation: partial
-- Components: Marshall Accounts, SSH, terminal, Editor, Lyra, NixOS and Ubuntu guests
+- Components: Marshall Accounts, SSH, terminal, Editor, Lyra, NixOS, Ubuntu, Arch and Alma guests
 - Supersedes: ADR-0125, ADR-0148, ADR-0153
 - Superseded by: ADR-0159
 
@@ -181,7 +181,10 @@ The [foreign Linux editor review](../reviews/2026-10-18-foreign-linux-browser-ed
 applies the existing personal editor identity and immutable release boundaries
 to Arch and AlmaLinux. Their earlier CLI lifecycle passes do not establish
 editor support. New image packaging and native browser acceptance are recorded
-separately; retained guest disks receive no manifest or identity conversion.
+separately: Alma passed all twelve isolated native browser subtests, both new
+production images passed complete CLI lifecycles, and Arch passed eight browser
+stages before broker-restart recovery returned 502. Retained guest
+disks receive no manifest or identity conversion; implementation stays partial.
 
 ## Open questions
 

@@ -101,12 +101,142 @@ These results establish neither kernel isolation nor browser runtime acceptance.
 
 The exact Alma full-chain derivation
 `/nix/store/5xwyaq2cy9ypfwawfgq1ssppkxy7lp1f-vm-test-run-overalls-vscode-web-almalinux-fleet.drv`
-was captured and launched with local builders only. Its evaluated driver is not
-a passing execution record. Alma and Arch browser execution and new-image live
-CLI acceptance are pending at publication. The existing seven-family
-SSH/lifecycle evidence remains tied to its original immutable images and
-execution revisions. Production recurring probe names and credentials are not
-expanded by the fixture.
+passed all **12 native subtests**: 693.21 seconds of machine execution and
+1071 seconds including local-only prerequisite builds. Its immutable output is
+`/nix/store/03w3c7zhhqbn7fv2lpbhqslr3n72p1i7-vm-test-run-overalls-vscode-web-almalinux-fleet`.
+The ordinary browser provisions the actual Alma image with the default shape,
+opens its personal editor/terminal and isolated webview, and checks immutable
+policy, extensions, EditorConfig and explicit direnv approval. Live bridges
+survive Lilly/hostd restarts; broker restart retains the worker and workspace;
+worker loss requires a fresh authorized open. Same-disk stop/start retains
+saved files and admits only the new execution. Foreign Origins refuse and
+sign-out closes current editor authority.
+
+The receipt `/tmp/overalls-editor-almalinux-fleet-evidence.json` has SHA-256
+`60b683862593b7f78c28d52ab5382db9b9977b10ee899d2d7d53460558e511ae`;
+its complete driver log has SHA-256
+`de289af3737144c14f29d815879b90346cde13bde095d13870c0ab62c927cbdb`.
+The isolated Alma fixture is image `90eca504`, with private fixture roots and
+immutable `/opt` policy files, not production image `65e7700b`. Its
+3,246,698,496-byte rootfs has SHA-256
+`2414e19461ef1ae87da129ad2c6449fffbc3aa6ab209f36d5b6fc671efc1f5c6`.
+All five recorded builder/driver/helper source hashes and all 110 historical
+receipt hashes remain unchanged. This captured derivation predates the later
+Marshall HTTP security changes and does not qualify those changes.
+
+The Arch suite is separately captured from merged revision
+`cdd323d51c6dd88934ef333eb2dd2cf6a34bee8f`, including ADR-0194's endpoint
+headers and actual secure-cookie login. Its exact derivation is
+`/nix/store/ci3x702i4dniylyccj91j5zxad5h7wcj-vm-test-run-overalls-vscode-web-arch-fleet.drv`;
+the first **8 of 12 subtests passed**, including ordinary provisioning, the
+personal editor/terminal/webview, policy and live bridge survival across both
+Lilly and hostd restarts. The next broker-restart recovery subtest failed:
+initial fresh handoff succeeded, but later folder navigation returned HTTP 502.
+Broker and worker health probes remained positive; the account-level Node probe
+failed but selects a different Node store path from the actual editor runtime,
+so it does not establish a worker runtime failure. The exact cause remains under investigation, and later recovery,
+same-disk restart and refusal stages were not reached. The failed build and
+immutable driver are retained; no full Arch browser pass is claimed. No CSP
+relaxation or forged browser session is used. Functional editor instrumentation
+runs on the separately served editor origin.
+
+The failure exposes a diagnostic gap: the HTTP proxy collapses connector,
+request/upload and pre-header receive errors into the same 502 response. The
+diagnostic correction adds catalogued finite phase/error categories, the actual
+editor Node path and bounded guest resource-pressure booleans. A replay must retain
+the original 2 GiB default, all stage assertions and deadlines, and the original
+failure. These diagnostics change no access, framing or recovery contract under
+ADR-0042/0158; they are not evidence that recovery has been repaired.
+The original failed-run receipt
+`/tmp/overalls-editor-arch-fleet-failed-evidence.json` has SHA-256
+`d258a6d99e89f1d4276b75bd1f6867ce5a42e685372b017de85545efe89825ed`.
+It binds all ten original source hashes, the exact driver and fixture bytes,
+eight completed stages and the failed assertion/502, with exit 1 after
+588 seconds. It also rechecks Alma and the frozen seven-family evidence.
+The real-handler proxy/privacy checks passed **21/21** with seed `497400`,
+including unchanged 502 responses for closed/malformed upstreams and canary
+redaction from payloads and inherited metadata. Log
+`/tmp/oa-rHmf85al/proxy-diagnostic-focused-v3.log` has SHA-256
+`1dbaf8401fff3943c0d14c4b176a6d4b110358af76ed616c4bacec6f7839e25a`.
+This proves finite diagnostic behavior, not the cause of the native 502.
+The same-image diagnostic replay is captured as
+`/nix/store/sgnphysw0d315c9dg4r922fgdcxirzfz-vm-test-run-overalls-vscode-web-arch-fleet.drv`.
+Its frozen source ledger has SHA-256
+`2855ba04a63ea24bee7e0abe855c8f449dfba31ee38b9127c0bb092328e72607`.
+The recursive closure retains the original `b1c8ff76` fixture image and
+`2a6f7729…` rootfs, 2 GiB RAM and 8 GiB disk minima. Its execution is pending;
+diagnostic-only source changes do not repair or erase the original failure.
+
+Both **production** replacement images passed fresh CLI lifecycles in
+`/tmp/porsche-20261018-132308`: create/readiness, strict personal-account
+`overalls ssh`, stop, independent current-owner stopped checkpoint, restart
+the same VM, repeat strict SSH and original owned deletion. The four unchanged
+read-only managed-identity/PAM-helper/sudo smokes also passed. Alma fixture
+`3d60db8a-944b-40b9-a785-93d76f5f57b3` and Arch fixture
+`0cc83b9d-df45-4093-8b84-bc4155721158` are both terminally deleted; no retries or
+replacement fixtures were used. The hash-linked summary
+`fresh-linux-image-cli-acceptance.json` has SHA-256
+`e9e4b1cd10289af94112edd870a5f496682f07dde9bd8bf9215017b5e2176671`.
+Sixteen per-stage deployment observations bind exact catalog IDs, the unchanged
+other five images and stable, healthy activated/lastHealthy revisions containing
+the pushed editor fix `a6ca2782`. The helper mount remains nosuid; these checks
+claim the observed root PAM/sudo path, not effective unprivileged helper setuid.
+This is no production browser journey. The earlier seven-family aggregate
+remains frozen at `c77e3386` with its original image IDs and execution revisions.
+
+The packaging commit `f7a4ef07c` and normal upstream merge `a6ca2782e` were
+pushed only to trunk. A subsequent reviewed merge `cdd323d51` preserves the
+new HTTP security headers and Hegel exploration changes. It also carries a
+test-only connector socket fix: PID-qualified names and explicit unlink errors
+prevent concurrent BEAM fixtures from removing one another's listener.
+Focused Audi connector/authority tests passed **8/8**, Covenant **10/10** and
+forced Dialyzer reported **0 errors**. Full Audi precommit failed **2/213**:
+HTTP proxy shutdown reproduced in isolation, and the known Inception timeout.
+The original fixture replied and closed before consuming Mint's streamed empty
+GET terminator. A narrow test-only correction now consumes bounded headers and
+the exact empty chunk before replying, preserving the existing payload, header,
+stream, generator and timeout assertions. The original failing case now passes
+with seed `497400`: **1 passed, 8 excluded**. The exact original Mint error was
+not retained, so the fixture error does not establish its precise reset cause.
+The production proxy remains unchanged. The original full-gate log
+`/tmp/oa-rHmf85al/precommit.log` has SHA-256
+`cdc3f3db1796b0a3efb20587c70875ceb7cbcd1c799e2554ef9b74484c9291c2`.
+The corrected isolated log has SHA-256
+`88b9b732e7e26c3606deae2d7f6042557d1fa8dc9c8fa81e9b558d7919f8910b`.
+A later full Audi gate stopped at an imported property-test syntax error before
+executing tests. The narrow correction removes a dangling comma while retaining
+the existing CI profile, exploration and assertions. The final Audi gate exited
+2: **211 of 214 passed**, seed `342853`, with four test cases in parallel and
+717.6 seconds total. The known Inception case and generated live-stream guard
+history each hit 60 seconds; the restored-default fresh-role-boot property hit
+its 600-second aggregate budget while starting a child VM. No assertion failure
+establishes a guard or invalid-boot product defect. Exploration and deadlines
+remain unchanged while their fixture cost is reviewed. Covenant **10/10** and
+forced Dialyzer with **zero errors/skips** passed. The full log has SHA-256
+`20915dc43f402f43483cddc083f2557c831763012818bdb85bd90ff3ba1d965c`.
+No full Audi gate pass is claimed.
+
+An initial Marshall full gate was interrupted after concurrent test fixtures
+exhausted its isolated PostgreSQL connection budget. The bounded replacement
+passed: **1,725 tests passed, 4 excluded**, Covenant **29/29**, terminal **36/36**,
+workspace/privacy **9/9**, Monospace checks and forced Dialyzer with **zero errors**.
+Log `/tmp/overalls-editor-merge-ui-precommit-bounded.log` has SHA-256
+`bd184f4d97f25b460bbb3ef3e0de32cc84ae3295bd2ef3609ed359c6dd6fbe59`.
+Receipt `/tmp/overalls-editor-merge-ui-precommit-bounded.json` has SHA-256
+`10188398eee878e361146463409202d9ed8e6c398baeb61c39a67b02b5591efb`.
+Its unchanged Marshall production/test logic is based on `cdd323d51`; dirty
+handbook content and later Audi edits are distinguished from that source scope.
+
+The scoped current strict-CSP Monospace probe also passed **61 screenshots**:
+the original machine/workspace route loops in both themes and viewports,
+drawer/pin/control assertions and final external-request, CSP-violation and
+browser-error checks. Its actual dirty Audi/HLDD/asset inputs stayed stable.
+Receipt `/tmp/overalls-editor-merge-ui-csp.zo2h1xkr/result.json` has SHA-256
+`3be28039a714e8a45d8a5bc1abb34808b6908baa1c5bab9ac654832e9a7ef1f4`.
+The broader thread/admin/public/draft/reduced-motion tail was outside this
+probe; its earlier full-probe failure remains separate. The owned fixture,
+listener, private browser context and database connections were cleaned up.
+Production recurring probe names and credentials are unchanged.
 
 ## Remaining gaps
 

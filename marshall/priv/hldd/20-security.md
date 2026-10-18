@@ -273,7 +273,12 @@ editor-free manifests remain refused, even though CLI SSH succeeds. Final-image
 closure checks and a newly displayed editor control cannot substitute for a
 recorded personal browser journey. The
 [foreign Linux review](repo:docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md)
-separates packaging, native fixtures and production acceptance.
+records all twelve passing Alma native browser subtests and both new production
+CLI lifecycles separately. The native fixture checks recovery, current-boot
+restart, foreign-Origin refusal and sign-out; its private roots and policy files
+give it a different immutable image ID. Arch passed eight native stages before
+broker-restart folder navigation returned 502. Remaining Arch recovery, production
+browser sign-in and physical isolation remain separate evidence boundaries.
 
 | Layer | Authority and refusal |
 | --- | --- |

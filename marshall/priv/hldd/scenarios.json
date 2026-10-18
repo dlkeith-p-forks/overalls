@@ -7,10 +7,10 @@
       "layers": ["identity", "authorization", "transport", "execution", "isolation", "storage", "recovery"],
       "boundary": "The immutable image binds the pinned editor/broker closure and exact descriptor; Marshall retains current write/profile/Customer-owner authority, Audi retains the account origin, Lilly fences TCP 4444 to the current boot, and the guest broker reconciles the current personal UID before launching a systemd worker.",
       "denial": "Retained editor-free images, a changed release or image identity, missing package partner, insufficient headroom, unsafe customization paths, foreign gateway/boot/account and revoked browser authority must refuse. A Linux family capability or successful SSH does not grant editor authority.",
-      "scope": "The shared Alma/Arch builder now packages the pinned editor/broker/direnv, exact descriptor, registered offline closure and GC roots. Final evaluation and actual-filesystem custody gates passed, as did the unchanged two-check exact-release/image property and absent-descriptor refusal suite. Both pinned distro unit parsers accepted the exact service with dependency stubs. New image IDs are Arch0b3da3e8 and Alma65e7700b. The real Alma full-chain derivation is running; no passing Alma/Arch browser or production journey is claimed yet.",
+      "scope": "The shared Alma/Arch builder packages the pinned editor/broker/direnv, exact descriptor, registered offline closure and GC roots. Final evaluation and actual-filesystem custody gates passed, along with two exact-release/image property and absent-descriptor checks. Alma's isolated nine-node nested-KVM suite passed all twelve actual provisioning, editor/terminal/webview, policy, recovery, same-disk restart and current-authority subtests. Its fixture image90eca504 differs from production65e7700b by private roots and immutable policy files. Both production Arch0b3da3e8 and Alma65e7700b passed fresh strict personal CLI SSH, stop/checkpoint/restart, repeated SSH and original owned deletion, plus four read-only PAM/sudo smokes. Arch passed eight native browser stages against merged HTTP security source, including live bridges across hostd/Lilly restarts, before folder navigation returned 502 after broker restart.",
       "status": "partial",
-      "gaps": "Full-chain browser and replacement-image CLI journeys remain in progress. Existing seven-family CLI lifecycle receipts apply to the earlier immutable images. Retained disks are not upgraded. Production sign-in/recurring fixtures and physical isolation remain separate; Windows and native BSD/illumos editor support stay disabled.",
-      "preferred_gap": "Run the Alma and Arch Marshall/Audi/Lilly/Firecracker editor fixtures with the exact rebuilt images, including save/readback, personal UID, broker/worker recovery and same-disk restart. Preserve failed attempts and then observe the separately deployed production catalog.",
+      "gaps": "Arch broker-restart recovery failed and its later worker recovery, same-disk restart and refusal stages were not reached. The cause remains under investigation. The production CLI journeys do not establish production browser sign-in or recurring history. Existing seven-family receipts retain earlier image IDs. Retained disks are not upgraded; physical isolation remains separate and Windows/native BSD/illumos editor support stays disabled.",
+      "preferred_gap": "Diagnose and repair Arch's broker-restart folder-navigation 502, then pass the complete Marshall/Audi/Lilly/Firecracker browser suite with unchanged default capacity and recovery/refusal assertions. Add separately owned production browser fixtures without fabricating operator session authority.",
       "evidence": [
         {
           "kind": "property",
@@ -34,8 +34,10 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/vscode-web/fleet.py",
           "assertion": "native editor opens from Marshall with personal terminal and isolated webview",
-          "scope": "Explicit Alma/Arch fixture selection uses the real application chain and exact guest image. Presence is not a passing execution record.",
-          "execution": "present"
+          "scope": "Alma's complete twelve-subtest isolated nine-node real application/Chromium/Firecracker fixture passed in693.21 machine seconds, including immutable policy, live bridges, broker/worker recovery, same-disk current-boot restart, foreign-Origin refusal and sign-out. Fixture90eca504 is distinct from production65e7700b. Arch passed eight stages before broker-restart folder navigation returned502; no full Arch, production browser or physical-isolation claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md",
+          "record_assertion": "passed all **12 native subtests**: 693.21 seconds of machine execution"
         }
       ]
     },

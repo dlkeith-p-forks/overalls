@@ -193,6 +193,33 @@ defmodule Audi.Events do
     metadata: [reason: :atom]
   )
 
+  defevent("audi.http_proxy_failed",
+    level: :warning,
+    message: "HTTP upstream forwarding failed",
+    metadata: [
+      phase:
+        {:enum,
+         [
+           :request_headers,
+           :request_method,
+           :connector,
+           :initiate,
+           :socket_options,
+           :request,
+           :upload_body,
+           :upload_eof,
+           :read_body,
+           :recv,
+           :response_headers,
+           :downstream_body,
+           :response_events
+         ]},
+      reason: {:enum, [:timeout, :closed, :protocol, :other]},
+      response_state: {:enum, [:before_headers, :after_headers]},
+      response_events: :int
+    ]
+  )
+
   defevent("audi.ssh_denied",
     level: :warning,
     message: "SSH request denied",

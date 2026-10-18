@@ -145,9 +145,11 @@ origins and immutable webview assets; Lilly opens the dedicated fenced port to a
 guest broker, which starts each editor under its reconciled GuestAccount UID.
 NixOS and Ubuntu declare the exact editor closure and manifest capability.
 The [foreign Linux repair](reviews/2026-10-18-foreign-linux-browser-editor.md)
-adds the missing package pair, broker service and descriptor to Arch/Alma;
-fresh image and browser execution evidence remains separate from their earlier
-CLI lifecycle passes. Retained disks keep their original capability.
+adds the missing package pair, broker service and descriptor to Arch/Alma.
+Alma passed all twelve isolated native browser subtests, and both rebuilt
+production images passed fresh strict CLI lifecycles. Arch passed eight browser
+stages on the merged HTTP security source before a broker-recovery 502. Their earlier
+seven-family milestone and retained disks keep their original image identities.
 The guest package disables built-in AI/Chat and workspace trust, includes four
 verified immutable Open VSX defaults, and delegates language tools to project
 environments. Policy, extension lock and adapters bind the release identity;

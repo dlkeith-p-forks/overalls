@@ -124,8 +124,15 @@ offline registered closure, GC roots, account broker and exact descriptor. Their
 earlier selected images omitted that payload and correctly display an unsupported
 editor explanation. Final evaluation and actual-filesystem closure/configuration/
 service checks pass for editor-bearing Arch `0b3da3e8` and Alma `65e7700b`.
-Native browser and replacement-image CLI execution remain separate pending
-evidence; the seven-family CLI milestone applies to their earlier image IDs.
+The actual Alma nine-node browser suite passed all twelve provisioning, editor,
+policy, recovery, restart and current-authority subtests. Arch's equivalent
+native suite passed eight stages, including hostd/Lilly restart survival, before
+folder navigation returned 502 after broker restart. Its recovery remains open.
+Both production replacement images passed fresh strict personal CLI SSH,
+stop/checkpoint/restart, repeat SSH, PAM/sudo checks and completed deletion.
+The seven-family CLI milestone retains its earlier exact image IDs; neither
+the isolated native browser fixture nor CLI access claims a production browser
+session or physical isolation.
 Existing writable disks retain their original manifest and require a new machine
 from an editor-bearing image. See the
 [foreign Linux editor review](repo:docs/architecture/reviews/2026-10-18-foreign-linux-browser-editor.md).

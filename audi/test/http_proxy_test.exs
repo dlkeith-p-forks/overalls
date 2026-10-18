@@ -81,7 +81,7 @@ defmodule Audi.HTTP.ProxyTest do
       guest =
         Task.async(fn ->
           {:ok, socket} = :gen_tcp.accept(listener, 3000)
-          request = request(socket, "")
+          request = empty_chunked_get(socket)
           send(owner, {:guest_headers, request})
 
           :ok =
@@ -135,6 +135,69 @@ defmodule Audi.HTTP.ProxyTest do
       Task.await(guest, 1000)
       assert_receive {:control_request, close, close_ref, "/api/audi/v1/web-close", _, _}, 2000
       send(close, {close_ref, 200, JSON.encode!(%{version: 1, result: %{closed: true}})})
+      :gen_tcp.close(listener)
+    end
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] audi-http-failure-diagnostics-private
+  # An upstream close or malformed status MUST retain the pre-header 502 and
+  # emit the distinct finite receive category through the real log handler.
+  # Neither malformed upstream data nor inherited private metadata may appear.
+  test "upstream failures retain finite receive diagnostics without private data" do
+    canary = "private-proxy-canary"
+
+    for {bytes, reason} <- [{"", :closed}, {"HTTP/1.1 #{canary}\r\n\r\n", :protocol}] do
+      {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
+      {:ok, {_, port}} = :inet.sockname(listener)
+
+      guest =
+        Task.async(fn ->
+          {:ok, socket} = :gen_tcp.accept(listener, 3000)
+          _ = empty_chunked_get(socket)
+          :ok = :gen_tcp.send(socket, bytes)
+          :gen_tcp.close(socket)
+        end)
+
+      metadata =
+        case :logger.get_process_metadata() do
+          values when is_map(values) -> values
+          :undefined -> %{}
+        end
+
+      output =
+        ExUnit.CaptureLog.capture_log(
+          [
+            format: "$metadata$message\n",
+            metadata: [:event, :phase, :reason, :response_state, :response_events, :private_proxy]
+          ],
+          fn ->
+            :logger.update_process_metadata(%{private_proxy: canary})
+
+            try do
+              response =
+                Plug.Test.conn(:get, "https://#{@label}.apps.example/path")
+                |> put_req_header("cookie", "app=#{canary}")
+                |> Audi.HTTP.Proxy.forward(
+                  {Audi.Test.WebConnector, %{port: port, owner: self()}},
+                  grant().grant,
+                  nil
+                )
+
+              assert response.status == 502
+              assert response.resp_body == "Upstream unavailable\n"
+            after
+              :logger.set_process_metadata(metadata)
+            end
+          end
+        )
+
+      assert output =~ "event=audi.http_proxy_failed"
+      assert output =~ "phase=recv"
+      assert output =~ "reason=#{reason}"
+      assert output =~ "response_state=before_headers"
+      assert output =~ "response_events=0"
+      refute output =~ canary
+      Task.await(guest, 1000)
       :gen_tcp.close(listener)
     end
   end
@@ -580,6 +643,49 @@ defmodule Audi.HTTP.ProxyTest do
         }
       }
     }
+  end
+
+  # @cc [owner:ghuntley,label:verification] audi-http-fixture-complete-empty-request
+  # The successful stream fixture MUST consume the complete known-empty GET
+  # before sending its response. Headers MUST fit 64 KiB and declare exactly
+  # one chunked transfer encoding, no Content-Length, and the exact empty
+  # chunk terminator. Other framing MUST fail without rendering request bytes.
+  @spec empty_chunked_get(:gen_tcp.socket()) :: binary()
+  defp empty_chunked_get(socket) do
+    headers = empty_get_headers(socket, "")
+    unless String.valid?(headers), do: flunk("invalid fixture request header encoding")
+    [request_line | lines] = String.split(headers, "\r\n", trim: true)
+    unless request_line == "GET /path HTTP/1.1", do: flunk("unexpected fixture request line")
+
+    fields =
+      Enum.map(lines, fn line ->
+        case String.split(line, ":", parts: 2) do
+          [name, value] -> {String.downcase(name), String.trim(value)}
+          _ -> flunk("invalid fixture request header")
+        end
+      end)
+
+    encodings = for {"transfer-encoding", value} <- fields, do: value
+
+    unless encodings == ["chunked"] and
+             not Enum.any?(fields, fn {name, _value} -> name == "content-length" end),
+           do: flunk("unexpected fixture request framing")
+
+    case :gen_tcp.recv(socket, 5, 2000) do
+      {:ok, "0\r\n\r\n"} -> headers
+      _ -> flunk("fixture request body is not an empty chunked body")
+    end
+  end
+
+  @spec empty_get_headers(:gen_tcp.socket(), binary()) :: binary()
+  defp empty_get_headers(socket, acc) do
+    if String.ends_with?(acc, "\r\n\r\n") do
+      acc
+    else
+      assert byte_size(acc) < 65_536, "fixture request headers exceed 64 KiB"
+      {:ok, byte} = :gen_tcp.recv(socket, 1, 2000)
+      empty_get_headers(socket, acc <> byte)
+    end
   end
 
   defp request(socket, acc) do

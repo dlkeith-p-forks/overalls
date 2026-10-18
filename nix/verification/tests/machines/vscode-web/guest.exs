@@ -70,6 +70,17 @@ defmodule EditorGuestFixture do
     :worker_version,
     :personal_launcher,
     :node_as_account,
+    :guest_memory_observed,
+    :guest_memory_low,
+    :guest_oom_observed,
+    :guest_oom,
+    :broker_pids_observed,
+    :broker_pids_limited,
+    :worker_memory_observed,
+    :worker_oom,
+    :worker_oom_kill,
+    :worker_pids_observed,
+    :worker_pids_limited,
     :refusal_package,
     :refusal_account,
     :refusal_custody,
@@ -93,6 +104,17 @@ defmodule EditorGuestFixture do
           | :worker_version
           | :personal_launcher
           | :node_as_account
+          | :guest_memory_observed
+          | :guest_memory_low
+          | :guest_oom_observed
+          | :guest_oom
+          | :broker_pids_observed
+          | :broker_pids_limited
+          | :worker_memory_observed
+          | :worker_oom
+          | :worker_oom_kill
+          | :worker_pids_observed
+          | :worker_pids_limited
           | :refusal_package
           | :refusal_account
           | :refusal_custody
@@ -213,9 +235,14 @@ defmodule EditorGuestFixture do
   # Failure diagnosis MUST first prove the current physical boot and an executed
   # root console assertion. Its subsequent read-only checks MUST emit only the
   # fixed boolean keys below, never unit metadata, journal bodies, terminal
-  # bytes or worker arguments. Node may execute only --version as the reconciled
-  # personal user; diagnosis MUST NOT launch an editor or replace failed browser
-  # acceptance. Console checks MUST share one 30-second deadline.
+  # bytes or worker arguments. Node may execute only the editor package's own
+  # runtime with --version as the reconciled personal user. Resource sources
+  # MUST be captured once and their numeric fields validated before separate
+  # observability and pressure flags consume that same snapshot. Unreadable
+  # counters MUST NOT establish absence of OOM or PID exhaustion. Low memory
+  # means MemAvailable below 256 MiB. Diagnosis MUST NOT launch an editor or
+  # replace failed browser acceptance. Console checks MUST share one 30-second
+  # deadline.
   @spec diagnose(String.t(), String.t(), integer()) :: :ok
   defp diagnose(placement, username, uid) do
     _snapshot = snapshot_boot(placement)
@@ -223,10 +250,15 @@ defmodule EditorGuestFixture do
     :ok = mark(:diagnostics)
     node = System.fetch_env!("FLEET_EDITOR_NODE")
     commit = System.fetch_env!("FLEET_EDITOR_COMMIT")
-    true = Regex.match?(~r|\A/nix/store/[a-z0-9]{32}-nodejs[-a-zA-Z0-9_.]+/bin/node\z|, node)
+
+    true =
+      Regex.match?(~r|\A/nix/store/[a-z0-9]{32}-overalls-vscode-web-[-a-zA-Z0-9_.]+/node\z|, node)
+
     true = Regex.match?(~r/\A[0-9a-f]{40}\z/, commit)
     unit = "overalls-vscode-u#{uid}.service"
     socket = "/run/overalls-vscode/u#{uid}/editor.sock"
+    worker_cgroup = "/sys/fs/cgroup/system.slice/#{unit}"
+    broker_cgroup = "/sys/fs/cgroup/system.slice/overalls-vscode-web.service"
 
     probes = [
       {:broker_active, "systemctl is-active --quiet overalls-vscode-web.service"},
@@ -246,7 +278,29 @@ defmodule EditorGuestFixture do
       {:worker_version,
        "test \"$(curl --silent --fail --max-time 2 --max-filesize 64 --unix-socket #{socket} http://localhost/version 2>/dev/null)\" = #{commit}"},
       {:personal_launcher, "command -v runuser >/dev/null"},
-      {:node_as_account, "runuser -u #{username} -- #{node} --version >/dev/null 2>&1"}
+      {:node_as_account, "runuser -u #{username} -- #{node} --version >/dev/null 2>&1"},
+      {:guest_memory_observed,
+       "overalls_editor_memory_snapshot=$(cat /proc/meminfo 2>/dev/null) && command -v awk >/dev/null && printf '%s\\n' \"$overalls_editor_memory_snapshot\" | grep -Eq '^MemAvailable:[[:space:]]+[0-9]+ kB$'"},
+      {:guest_memory_low,
+       "printf '%s\\n' \"$overalls_editor_memory_snapshot\" | awk '$1 == \"MemAvailable:\" && $2 < 262144 {low=1} END {exit !low}'"},
+      {:guest_oom_observed,
+       "overalls_editor_vmstat_snapshot=$(cat /proc/vmstat 2>/dev/null) && command -v awk >/dev/null && printf '%s\\n' \"$overalls_editor_vmstat_snapshot\" | grep -Eq '^oom_kill [0-9]+$'"},
+      {:guest_oom,
+       "printf '%s\\n' \"$overalls_editor_vmstat_snapshot\" | awk '$1 == \"oom_kill\" && $2 > 0 {found=1} END {exit !found}'"},
+      {:broker_pids_observed,
+       "overalls_editor_broker_pids_snapshot=$(cat #{broker_cgroup}/pids.events 2>/dev/null) && command -v awk >/dev/null && printf '%s\\n' \"$overalls_editor_broker_pids_snapshot\" | grep -Eq '^max [0-9]+$'"},
+      {:broker_pids_limited,
+       "printf '%s\\n' \"$overalls_editor_broker_pids_snapshot\" | awk '$1 == \"max\" && $2 > 0 {found=1} END {exit !found}'"},
+      {:worker_memory_observed,
+       "overalls_editor_worker_memory_snapshot=$(cat #{worker_cgroup}/memory.events 2>/dev/null) && command -v awk >/dev/null && printf '%s\\n' \"$overalls_editor_worker_memory_snapshot\" | grep -Eq '^oom [0-9]+$' && printf '%s\\n' \"$overalls_editor_worker_memory_snapshot\" | grep -Eq '^oom_kill [0-9]+$'"},
+      {:worker_oom,
+       "printf '%s\\n' \"$overalls_editor_worker_memory_snapshot\" | awk '$1 == \"oom\" && $2 > 0 {found=1} END {exit !found}'"},
+      {:worker_oom_kill,
+       "printf '%s\\n' \"$overalls_editor_worker_memory_snapshot\" | awk '$1 == \"oom_kill\" && $2 > 0 {found=1} END {exit !found}'"},
+      {:worker_pids_observed,
+       "overalls_editor_worker_pids_snapshot=$(cat #{worker_cgroup}/pids.events 2>/dev/null) && command -v awk >/dev/null && printf '%s\\n' \"$overalls_editor_worker_pids_snapshot\" | grep -Eq '^max [0-9]+$'"},
+      {:worker_pids_limited,
+       "printf '%s\\n' \"$overalls_editor_worker_pids_snapshot\" | awk '$1 == \"max\" && $2 > 0 {found=1} END {exit !found}'"}
     ]
 
     refusals = [
