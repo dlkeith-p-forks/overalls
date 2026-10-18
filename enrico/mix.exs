@@ -35,7 +35,7 @@ defmodule Enrico.MixProject do
       {:overalls_request_accounting, path: "../elixir/request_accounting"},
       {:telemetry, "~> 1.4"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "989def5", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
+      {:hegel_ex, git: "https://github.com/ghuntley/hegel-erlang.git", ref: "ed508b5", subdir: "packages/hegel_ex", only: [:dev, :test], runtime: false}
     ] ++ antithesis_deps()
   end
 
