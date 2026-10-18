@@ -124,6 +124,10 @@ defmodule Marshall.GitHub do
         {:error, reason} when reason in [:unauthorized, :invalid_callback, :identity_in_use] ->
           {:error, reason}
 
+        {:error, %Marshall.Compute.Error{reason: reason}}
+        when reason in [:unauthorized, :invalid_callback, :identity_in_use] ->
+          {:error, reason}
+
         _ ->
           {:error, :unavailable}
       end
