@@ -1955,7 +1955,7 @@ assert editorFamily == null || (editor && !ubuntu
     ./scenarios/bootstrap.py
     ./scenarios/enrollment.py
     ./scenarios/boot-trust-services.py
-  ] + builtins.head (lib.splitString "with subtest(\"real guest HTTP" audiScenario)
+  ] + builtins.head (lib.splitString "real guest HTTP reaches" audiScenario)
     + builtins.readFile ./scenarios/suspension.py
       else if ubuntu && audi then builtins.readFile ./scenarios/audi.py
         + lib.optionalString relocation (builtins.readFile ./scenarios/audi-relocation.py)
