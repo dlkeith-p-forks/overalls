@@ -338,7 +338,7 @@ defmodule MarshallWeb.AccountLive do
     )
     |> Ash.run_action()
     |> case do
-      {:ok, _} -> {:noreply, redirect(socket, to: ~p"/settings#profile")}
+      {:ok, _} -> {:noreply, push_event(socket, "locale-updated", %{})}
       _ -> {:noreply, put_flash(socket, :error, gettext("Choose a language from the list."))}
     end
   end

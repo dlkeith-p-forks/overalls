@@ -69,6 +69,27 @@
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-18-localization.md",
           "record_assertion": "The docs controller suite recorded **7 passed**"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/controllers/overalls_controller_test.exs",
+          "assertion": "Arabic and Japanese refusals retain transport and privacy contracts",
+          "scope": "Localized public download, missing documentation, export/raw access and editor refusal bodies retain status, newline, Content-Language, cache and cookie boundaries in the BEAM fixture; no browser bidi claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/controllers/overalls_controller_test.exs",
+          "assertion": "negotiation leaves executable installers and JSON trust policy byte identical",
+          "scope": "Successful shell/PowerShell installer and trust JSON bodies are byte-identical across English, Arabic and Japanese in the controller fixture; does not execute installed clients or establish native trust acceptance.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/controllers/overalls_controller_test.exs",
+          "assertion": "repository launch guidance is localized without storing invalid input",
+          "scope": "Invalid repository launch input returns Arabic/Japanese guidance with no staged launch value and unchanged no-store/no-referrer response policy.",
+          "execution": "present"
         }
       ]
     },

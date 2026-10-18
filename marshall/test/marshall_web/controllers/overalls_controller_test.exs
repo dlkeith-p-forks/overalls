@@ -77,4 +77,95 @@ defmodule MarshallWeb.OverallsControllerTest do
       assert build_conn() |> get(path) |> response(404) == "Unavailable\n"
     end
   end
+
+  # @cc [owner:ghuntley,label:verification] localized-http-refusal-machine-bytes
+  # Negotiated human refusals MUST retain status, newline and privacy boundaries;
+  # successful installer and trust-policy bytes MUST remain locale independent.
+  test "Arabic and Japanese refusals retain transport and privacy contracts" do
+    for {locale, unavailable} <- [{"ar", "غير متاح"}, {"ja", "利用不可"}] do
+      for path <- ["/bin/Cargo.toml", "/bin/sha256/Cargo.toml", "/bin/marvin/sha256/invalid"] do
+        conn = build_conn() |> put_req_header("accept-language", locale) |> get(path)
+        assert response(conn, 404) == unavailable <> "\n"
+        assert get_resp_header(conn, "content-language") == [locale]
+        assert get_resp_header(conn, "set-cookie") == []
+      end
+
+      missing_docs = if locale == "ar", do: "لم يتم العثور على الوثائق", else: "ドキュメントが見つかりません"
+
+      docs =
+        build_conn() |> put_req_header("accept-language", locale) |> get("/docs/missing-page")
+
+      assert response(docs, 404) == missing_docs <> "\n"
+      assert get_resp_header(docs, "content-language") == [locale]
+      assert get_resp_header(docs, "set-cookie") == []
+
+      for path <- ["/usage/export", "/git/github/missing/missing/raw?path=x"] do
+        conn = build_conn() |> put_req_header("accept-language", locale) |> get(path)
+        assert response(conn, 404) == unavailable
+        assert get_resp_header(conn, "content-language") == [locale]
+        assert get_resp_header(conn, "cache-control") in [["no-store"], ["private, no-store"]]
+      end
+
+      conn =
+        build_conn()
+        |> put_req_header("accept-language", locale)
+        |> get("/editor/authorize/invalid")
+
+      assert response(conn, 404) == unavailable <> "\n"
+      assert get_resp_header(conn, "referrer-policy") == ["no-referrer"]
+      refute get_session(conn, :return_to)
+    end
+  end
+
+  test "negotiation leaves executable installers and JSON trust policy byte identical" do
+    for path <- ["/bin/install.sh", "/bin/install.ps1", "/bin/ssh-trust.json"] do
+      english = build_conn() |> put_req_header("accept-language", "en") |> get(path)
+      expected = response(english, 200)
+
+      for locale <- ["ar", "ja"] do
+        conn = build_conn() |> put_req_header("accept-language", locale) |> get(path)
+        assert response(conn, 200) == expected
+        assert get_resp_header(conn, "content-language") == [locale]
+        assert get_resp_header(conn, "set-cookie") == []
+        assert get_resp_header(conn, "cache-control") == ["no-store"]
+      end
+    end
+  end
+
+  test "repository launch guidance is localized without storing invalid input" do
+    for {locale, message} <- [
+          {"ar", "تعذّر التشغيل من رابط المستودع هذا. افتح الرابط مرة أخرى."},
+          {"ja", "このリポジトリリンクから起動できませんでした。リンクをもう一度開いてください。"}
+        ] do
+      conn = build_conn() |> put_req_header("accept-language", locale)
+      conn = post(conn, "/launch/pending", %{"source" => "invalid", "visit" => "invalid"})
+      assert response(conn, 422) == message <> "\n"
+      assert get_resp_header(conn, "cache-control") == ["no-store"]
+      assert get_resp_header(conn, "referrer-policy") == ["no-referrer"]
+      refute get_session(conn, MarshallWeb.PendingLaunch.key())
+    end
+  end
+
+  test "localized trust failures preserve service status and never return installer bytes" do
+    Application.delete_env(:marshall, :ssh_host_trust)
+
+    for {locale, installer, ssh} <- [
+          {"ar", "التحقق من موثوقية برنامج التثبيت غير متاح", "التحقق من موثوقية SSH غير متاح"},
+          {"ja", "インストーラーの信頼性を確認できません", "SSHの信頼性を確認できません"}
+        ] do
+      for path <- ["/bin/install.sh", "/bin/install.ps1"] do
+        conn = build_conn() |> put_req_header("accept-language", locale) |> get(path)
+        assert response(conn, 503) == installer <> "\n"
+        assert get_resp_header(conn, "cache-control") == ["no-store"]
+        assert get_resp_header(conn, "set-cookie") == []
+      end
+
+      conn =
+        build_conn() |> put_req_header("accept-language", locale) |> get("/bin/ssh-trust.json")
+
+      assert response(conn, 503) == ssh <> "\n"
+      assert get_resp_header(conn, "cache-control") == ["no-store"]
+      assert get_resp_header(conn, "set-cookie") == []
+    end
+  end
 end

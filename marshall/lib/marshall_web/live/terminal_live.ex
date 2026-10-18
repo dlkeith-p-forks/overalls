@@ -36,6 +36,7 @@ defmodule MarshallWeb.TerminalLive do
     case Compute.get_vm(%{vm_id: id}, actor: socket.assigns.current_user) do
       {:ok, vm} ->
         if connected?(socket), do: Process.send_after(self(), :refresh_terminals, 2000)
+
         {:ok,
          socket
          |> MachineWorkspace.put_vm(vm)
@@ -80,12 +81,15 @@ defmodule MarshallWeb.TerminalLive do
          |> push_event("android_display_ticket", %{ticket: ticket, mode: mode})}
 
       {:error, :forbidden} ->
-        {:noreply, assign(socket, android_display_notice: gettext("Android display is unavailable."))}
+        {:noreply,
+         assign(socket, android_display_notice: gettext("Android display is unavailable."))}
     end
   end
 
   def handle_event("android_display_ticket", _params, socket),
-    do: {:noreply, assign(socket, android_display_notice: gettext("Android display is unavailable."))}
+    do:
+      {:noreply,
+       assign(socket, android_display_notice: gettext("Android display is unavailable."))}
 
   def handle_event("terminal_new", %{"request_id" => request_id}, socket)
       when is_binary(request_id) do
@@ -614,7 +618,14 @@ defmodule MarshallWeb.TerminalLive do
             </div>
           </aside>
 
-          <section :if={@android_display?} id="android-display" class="stack" aria-labelledby="android-display-heading" phx-hook="AndroidDisplay" data-display-websocket-url="/android-display">
+          <section
+            :if={@android_display?}
+            id="android-display"
+            class="stack"
+            aria-labelledby="android-display-heading"
+            phx-hook="AndroidDisplay"
+            data-display-websocket-url="/android-display"
+          >
             <h2 id="android-display-heading">{gettext("Android display")}</h2>
             <p>{gettext("The software-rendered Android display uses the machine relay.")}</p>
             <div class="row">
@@ -625,7 +636,9 @@ defmodule MarshallWeb.TerminalLive do
                 {gettext("Request control")}
               </button>
             </div>
-            <p data-display-status data-status="idle" role="status">{@android_display_notice || gettext("Waiting for display relay.")}</p>
+            <p data-display-status data-status="idle" role="status">
+              {@android_display_notice || gettext("Waiting for display relay.")}
+            </p>
             <canvas width="1080" height="1920" aria-label={gettext("Android display canvas")}></canvas>
           </section>
 

@@ -7448,3 +7448,65 @@ msgstr "Finish or cancel di verification wey dey go on first."
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "Dis administrative request no valid."
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:34
+#: lib/marshall_web/controllers/editor_controller.ex:52
+#, elixir-autogen, elixir-format
+msgid "Sign-in unavailable"
+msgstr "Sign-in no dey available"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:76
+#, elixir-autogen, elixir-format
+msgid "Installer trust unavailable"
+msgstr "Installer trust no dey available"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:89
+#, elixir-autogen, elixir-format
+msgid "SSH trust unavailable"
+msgstr "SSH trust no dey available"
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#, elixir-autogen, elixir-format
+msgid "This repository link could not be launched. Open the link again."
+msgstr "We no fit launch dis repository link. Open di link again."
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:51
+#, elixir-autogen, elixir-format
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "We no fit finish dis launch. Sign in and open di link again."
+
+#: lib/marshall_web/live/terminal_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "Display relay ticket don issue."
+
+#: lib/marshall_web/live/terminal_live.ex:83
+#: lib/marshall_web/live/terminal_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Android display no dey available."
+
+#: lib/marshall_web/live/terminal_live.ex:618
+#, elixir-autogen, elixir-format
+msgid "Android display"
+msgstr "Android screen"
+
+#: lib/marshall_web/live/terminal_live.ex:619
+#, elixir-autogen, elixir-format
+msgid "The software-rendered Android display uses the machine relay."
+msgstr "Di Android display wey software dey render dey use di machine relay."
+
+#: lib/marshall_web/live/terminal_live.ex:622
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "Open di display"
+
+#: lib/marshall_web/live/terminal_live.ex:625
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "Ask for control"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "We no find di documentation"

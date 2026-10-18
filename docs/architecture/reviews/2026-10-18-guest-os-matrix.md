@@ -1603,3 +1603,64 @@ changes. The frozen handbook already describes the relevant partial Android,
 native editor, controller-custody and recovery boundaries; the checkpoint result
 does not close those gaps. No handbook chapter or scenario-status change is
 needed for these contract-preserving repairs and bounded evidence updates.
+
+## Localization integration through `ee597fc1e`
+
+The merge adds the `1e36beb3e` localization patch while retaining this branch's
+typed plural adapter, callback and generated-fixture repairs, Windows fixtures
+and handbook reference history. Human HTTP refusals now use the existing
+Gettext integration; their status, newline, generic redaction and privacy
+branches remain. Successful scripts, downloads, manifests, checksums, trust
+JSON, CSV and raw Git bytes keep their machine format. Porsche translates
+reviewed outer labels, statuses and refusal guidance while its JSON branch,
+identifiers, unknown keys and nested values retain their existing representation
+and escaping. The pin guidance retains literal `unpin MACHINE` in all catalogs.
+No authority, protocol schema, domain ownership or placement decision changes;
+ADR-0201 and ADR-0161 remain partial.
+
+Successful account-language persistence now pushes `locale-updated`, and the
+typed application listener reloads the document. The new JavaScript regression
+uses a simulated event target; it does not establish real browser root language,
+direction or repeated-save acceptance. The incoming
+[localization review](2026-10-18-localization.md) explicitly retains the earlier
+all-English browser trace as no language-transition evidence. Its Porsche
+110-test/zero-Dialyzer result predates five wording corrections; those have
+source/catalog review only. The new controller evidence remains `present` in
+the scenario ledger. No linguistic, packaged-browser or native SSH acceptance
+is inferred from these source changes or historical results.
+
+The incoming 3,800-identity documentation extraction excludes this branch's
+retained newer handbook reference text. Reconciliation of generated messages,
+POT and all locale catalogs against the final handbook remains pending;
+untranslated prose retains English fallback. It is deferred while the existing
+Marshall gate runs its compiled `572a0ebc6` checkpoint. That gate cannot establish
+acceptance of these newly merged source/catalog changes. The known duplicate
+original and rewritten GitHub `Link` projection remains a separately recorded
+source discrepancy, not a passing hostname-redaction claim.
+
+Galileo's pending-version refusal property receives a finite 300,000-ms aggregate
+timeout after the old full gate exceeded 60 seconds. Its CI profile still runs
+100 cases, each covering six verified TLS combinations and a 50-ms no-replay
+window, for 600 connections and 30 seconds of quiet windows. Version refusal,
+transient draining classification, peer-observed pending requests and no-replay
+assertions are unchanged. The rerun is pending; no fresh full-gate pass is
+recorded. The three Android/terminal source edits accompanying this merge are
+formatting only and preserve their template identifiers and authority checks.
+
+The stock Windows fixture remains blocked after launcher exit normalization:
+new browser connections were refused before navigation with broker reason
+`custody`. A SYSTEM read-only discriminator could not open the exact named job
+(`job_open=false`, error 2), while the previously inspected receipt root remained
+live (`/tmp/windows-editor-job-custody-result.json`). This is a custody observation,
+not proof of why the job disappeared or of a recovery repair. The earlier first
+browser/PTY/save stage retains its scope; automatic restart, worker-loss recovery
+and immutable-candidate promotion remain unaccepted. Handbook 17 stays unchanged;
+its explicit native/editor/recovery gaps remain accurate.
+
+The Windows Lilly fixture raises only observation, stop and delete command
+budgets to a finite 1,800 seconds, matching its existing refusal probe. Every
+invocation still verifies the full 64-GiB image; no digest check is skipped.
+The exact candidate's first image/manifest/refusal phase took 1,071.11 seconds,
+which motivates this verification budget without establishing lifecycle success.
+The already-running immutable derivation retains its older driver and remains
+in placement/start qualification; exact native lifecycle acceptance is pending.

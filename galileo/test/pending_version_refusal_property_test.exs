@@ -9,11 +9,15 @@ defmodule Galileo.PendingVersionRefusalPropertyTest do
 
   @fixtures Path.expand("../../marshall/test/fixtures/tls", __DIR__)
 
+  # The full 100-case matrix opens 600 verified TLS fixtures and retains 30s of
+  # quiet windows. Its 60s aggregate expired; allow finite shared-host headroom.
+
   # @cc [owner:ghuntley,label:verification;recovery] galileo-pending-version-refusal
   # Pending public calls retired by actual TLS close4001 MUST retain
   # unsupported_version; close4008 MUST remain a transient transport class.
   # A prior successful call and peer-observed pending inventory MUST establish
   # reach. Connection loss MUST NOT replay any request.
+  @tag timeout: 300_000
   property "pending calls retain a version refusal after the peer closes",
     profile: :ci do
     supervisor = Overalls.HegelFixtures.start_supervised!(Task.Supervisor)

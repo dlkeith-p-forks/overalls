@@ -1,3 +1,4 @@
+import {AndroidDisplay} from "./android_display.js";
 import {ThreadComposer} from "./thread_composer.js";
 import {AndroidDisplay} from "./android_display.js";
 import {Handbook} from "./handbook.js";
@@ -7,6 +8,7 @@ import {adjustMediaPadding, offGridElements, setGridDebug} from "./grid.js";
 import {PasskeyCeremony} from "./passkey";
 import {AdminElevation} from "./admin_elevation";
 import "./appearance.js";
+import {installLocaleReload} from "./localization.js";
 import {captureRepositoryLaunch, RepositoryLaunchComplete} from "./repository_launch.js";
 import {initBrowserExtensionPresence} from "./browser_extension_presence.js";
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
@@ -40,6 +42,7 @@ const csrfToken = document
   ?.getAttribute("content");
 captureRepositoryLaunch(document, window);
 initBrowserExtensionPresence(document);
+installLocaleReload(window);
 /**
  * @cc [owner:ghuntley,label:product] browser-time-zone-connect-param
  * The connect params MUST carry the browser's IANA zone from the Intl API as

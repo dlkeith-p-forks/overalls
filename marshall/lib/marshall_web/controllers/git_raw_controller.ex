@@ -4,6 +4,7 @@ defmodule MarshallWeb.GitRawController do
 
   # @cc [owner:ghuntley,label:security] enrico-raw-authentication
   # Raw bytes MUST require a live persisted browser login and registered mirror.
+  @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def show(conn, %{"owner" => owner, "repo" => name} = params) do
     conn = put_resp_header(conn, "cache-control", "private, no-store")
 
@@ -20,7 +21,7 @@ defmodule MarshallWeb.GitRawController do
       |> put_resp_header("content-disposition", "attachment; filename=\"#{filename}\"")
       |> send_resp(200, bytes)
     else
-      _ -> send_resp(conn, 404, "Unavailable")
+      _ -> send_resp(conn, 404, gettext("Unavailable"))
     end
   end
 end

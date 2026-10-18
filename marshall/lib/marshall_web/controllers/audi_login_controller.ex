@@ -7,6 +7,7 @@ defmodule MarshallWeb.AudiLoginController do
   # Callback hosts MUST come from the domain's configured zone, never request
   # headers or a supplied return URL. Secret-bearing redirects MUST forbid cache
   # storage and referrers; gateway credentials cannot approve browser identity.
+  @spec authorize(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def authorize(conn, %{"ticket" => ticket}) do
     conn =
       conn
@@ -31,7 +32,7 @@ defmodule MarshallWeb.AudiLoginController do
               )
 
             _ ->
-              send_resp(conn, 403, "Sign-in unavailable\n")
+              send_resp(conn, 403, gettext("Sign-in unavailable") <> "\n")
           end
 
         _ ->
@@ -40,7 +41,7 @@ defmodule MarshallWeb.AudiLoginController do
           |> redirect(to: "/sign-in")
       end
     else
-      send_resp(conn, 404, "Unavailable\n")
+      send_resp(conn, 404, gettext("Unavailable") <> "\n")
     end
   end
 end

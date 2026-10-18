@@ -145,10 +145,13 @@ with subtest(
     # rule for its assigned address counted packets.
     accepted = re.search(r"ip saddr [^\n]*counter packets (\d+) [^\n]*accept", counters)
     assert accepted is not None and int(accepted.group(1)) > 0, counters
-    storage.succeed("windows-lilly observe 1")
+    # Every probe invocation digest-verifies the full 64 GiB shared-store
+    # image before its lifecycle action; retain the refusal probe's finite
+    # image-verification budget for observation and cleanup as well.
+    storage.succeed("windows-lilly observe 1", timeout=1800)
 
 with subtest("stop, restart from the portable bundle without the image, and delete"):
-    storage.succeed("windows-lilly stop 2", timeout=600)
+    storage.succeed("windows-lilly stop 2", timeout=1800)
     restarted = json.loads(
         storage.succeed("windows-lilly restart 3", timeout=3600).splitlines()[-1]
     )
@@ -162,6 +165,6 @@ with subtest("stop, restart from the portable bundle without the image, and dele
     allow_probe(namespace, address)
     storage.wait_until_succeeds(f"ip netns exec {namespace} ping -c 1 -W 2 {address}", timeout=2400)
     storage.copy_from_vm(facts["boot_log"], "second-boot")
-    storage.succeed("windows-lilly stop 4", timeout=600)
-    storage.succeed("windows-lilly delete 5", timeout=600)
+    storage.succeed("windows-lilly stop 4", timeout=1800)
+    storage.succeed("windows-lilly delete 5", timeout=1800)
     storage.fail(f"zfs list {child}")

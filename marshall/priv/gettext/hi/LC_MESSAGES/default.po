@@ -7735,3 +7735,66 @@ msgstr "पहले वर्तमान सत्यापन पूरा �
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "अमान्य प्रशासनिक अनुरोध।"
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:34
+#: lib/marshall_web/controllers/editor_controller.ex:52
+#, elixir-autogen, elixir-format
+msgid "Sign-in unavailable"
+msgstr "साइन इन उपलब्ध नहीं है"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:76
+#, elixir-autogen, elixir-format
+msgid "Installer trust unavailable"
+msgstr "इंस्टॉलर की विश्वसनीयता जाँच उपलब्ध नहीं है"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:89
+#, elixir-autogen, elixir-format
+msgid "SSH trust unavailable"
+msgstr "SSH की विश्वसनीयता जाँच उपलब्ध नहीं है"
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#, elixir-autogen, elixir-format
+msgid "This repository link could not be launched. Open the link again."
+msgstr "इस रिपॉज़िटरी लिंक से लॉन्च नहीं किया जा सका। लिंक फिर से खोलें।"
+
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:51
+#, elixir-autogen, elixir-format
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "यह लॉन्च पूरा नहीं किया जा सका। साइन इन करें और लिंक फिर से खोलें।"
+
+#: lib/marshall_web/live/terminal_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "डिस्प्ले रिले टिकट जारी किया गया।"
+
+#: lib/marshall_web/live/terminal_live.ex:83
+#: lib/marshall_web/live/terminal_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Android डिस्प्ले उपलब्ध नहीं है।"
+
+#: lib/marshall_web/live/terminal_live.ex:618
+#, elixir-autogen, elixir-format
+msgid "Android display"
+msgstr "Android डिस्प्ले"
+
+#: lib/marshall_web/live/terminal_live.ex:619
+#, elixir-autogen, elixir-format
+msgid "The software-rendered Android display uses the machine relay."
+msgstr "सॉफ़्टवेयर से रेंडर किया गया Android डिस्प्ले मशीन के रिले का उपयोग करता है।"
+
+#: lib/marshall_web/live/terminal_live.ex:622
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "डिस्प्ले खोलें"
+
+#: lib/marshall_web/live/terminal_live.ex:625
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "नियंत्रण का अनुरोध करें"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "दस्तावेज़ नहीं मिले"
