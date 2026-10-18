@@ -104,7 +104,7 @@ let
   # Fixed-output Mix dependency fetches and release compilation MUST use the
   # same explicit harness/guest/integrated-host selectors and production Mix
   # environment.
-  dependencies = lib.genAttrs [ "marshall" "lilly" "audi" "porsche" "ziggy" "brady" "galileo" "enrico" ] (application:
+  dependencies = lib.genAttrs [ "marshall" "lilly" "audi" "porsche" "ziggy" "brady" "galileo" "enrico" "peach" ] (application:
     beam.fetchMixDeps {
       pname = "overalls-${application}-deps";
       inherit version;
@@ -289,7 +289,7 @@ rec {
   userRecipients = secretPackages.recipients;
   secrets = secretPackages.command;
   inherit mixReleases dependencyPins;
-  inherit (mixReleases) marshall lilly audi brady porsche ziggy galileo enrico;
+  inherit (mixReleases) marshall lilly audi brady porsche ziggy galileo enrico peach;
   guest = import ./guest {
     inherit pkgs privateServiceRoots terminald lyraLinux vscodeWeb vscodeWebBroker codingClis;
     minimumMemoryBytes = 2147483648;

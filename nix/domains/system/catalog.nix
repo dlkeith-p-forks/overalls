@@ -27,6 +27,7 @@
     (import ./audi-private.nix { inherit packages; })
     (import ./ziggy.nix { inherit packages; })
     (import ./galileo.nix { inherit packages; })
+    (import ./peach.nix { inherit packages; })
     (import ./enrico.nix { inherit packages; })
     (import ./audi.nix { inherit packages; })
     ./proxy.nix
