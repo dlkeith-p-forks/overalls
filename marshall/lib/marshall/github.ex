@@ -22,13 +22,13 @@ defmodule Marshall.GitHub do
   require Marshall.Events
 
   resources do
-    resource Marshall.GitHub.Connection
-    resource Marshall.GitHub.AuthorizationAttempt
-    resource Marshall.GitHub.RefreshAttempt
-    resource Marshall.GitHub.Exclusion
-    resource Marshall.GitHub.RequestLease
-    resource Marshall.GitHub.AuditEvent
-    resource Marshall.GitHub.RestoreEpoch
+    resource(Marshall.GitHub.Connection)
+    resource(Marshall.GitHub.AuthorizationAttempt)
+    resource(Marshall.GitHub.RefreshAttempt)
+    resource(Marshall.GitHub.Exclusion)
+    resource(Marshall.GitHub.RequestLease)
+    resource(Marshall.GitHub.AuditEvent)
+    resource(Marshall.GitHub.RestoreEpoch)
   end
 
   @lease_ms 2000
@@ -1302,8 +1302,12 @@ defmodule Marshall.GitHub do
         result -> result
       end
     rescue
-      %Ash.Error.Invalid{} -> {:error, :invalid_callback}
-      _ -> {:error, :unavailable}
+      error in Ash.Error.Invalid ->
+        _ = error
+        {:error, :invalid_callback}
+
+      _ ->
+        {:error, :unavailable}
     catch
       :exit, _ -> {:error, :unavailable}
     after
