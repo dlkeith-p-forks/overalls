@@ -137,6 +137,7 @@ defmodule OverallsProtocol.CheckpointTest do
     }
 
     wire = Execution.encode_command(command)
+    assert wire["checkpoint"] == Checkpoint.encode(command.checkpoint)
     assert {:ok, ^command} = Execution.command(wire)
     assert {:error, :invalid_message} = Execution.command(Map.delete(wire, "checkpoint"))
 
@@ -144,6 +145,19 @@ defmodule OverallsProtocol.CheckpointTest do
              Execution.command(Map.put(wire, "memory_bytes", 1_073_741_824))
 
     assert {:error, :invalid_message} = Execution.command(Map.put(wire, "kind", "start"))
+
+    assert {:error, :invalid_message} =
+             Execution.command(Map.put(wire, "checkpoint", command.checkpoint))
+
+    # Both codecs must compose without allowing attribution to authorize a new
+    # identity on memory continuation: identity belongs to provision/start only.
+    {:ok, identity} =
+      OverallsProtocol.GitIdentity.validate(%{name: "Author", email: "author@example.test"})
+
+    combined = Execution.encode_command(Map.put(command, :git_identity, identity))
+    assert combined["checkpoint"] == Checkpoint.encode(command.checkpoint)
+    assert combined["git_identity"] == OverallsProtocol.GitIdentity.encode(identity)
+    assert {:error, :invalid_message} = Execution.command(combined)
   end
 
   test "RAM relocation remains an inert component and clones reject it" do

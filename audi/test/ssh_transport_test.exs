@@ -5,7 +5,7 @@ defmodule Audi.SSH.TransportTest do
   @host "11111111-1111-4111-8111-111111111111"
   @label "vm-11111111111141118111111111111111"
 
-  setup do
+  setup context do
     directory = Path.join(System.tmp_dir!(), "audi-ssh-#{System.unique_integer([:positive])}")
     File.mkdir_p!(directory)
     on_exit(fn -> File.rm_rf!(directory) end)
@@ -23,9 +23,28 @@ defmodule Audi.SSH.TransportTest do
         ])
     end
 
+    if context[:isolated_transport],
+      do: %{directory: directory},
+      else: transport_fixture(directory, false)
+  end
+
+  @type transport_context :: %{
+          directory: String.t(),
+          port: :inet.port_number(),
+          upstream: :inet.port_number(),
+          agent: pid(),
+          listener: pid()
+        }
+
+  # @cc [owner:ghuntley,label:verification;recovery] ssh-case-socket-custody
+  # Every generated delayed-authorization case MUST own a fresh upstream socket,
+  # agent and SSH listener. Replay MUST NOT reuse an exhausted single-accept
+  # listener or authorization state from an earlier case.
+  @spec transport_fixture(String.t(), boolean()) :: transport_context()
+  defp transport_fixture(directory, per_case?) do
     parent = self()
 
-    start_supervised!(
+    supervise_fixture(
       {Task,
        fn ->
          {:ok, listener} = :gen_tcp.listen(0, [:binary, active: false, ip: {127, 0, 0, 1}])
@@ -35,16 +54,20 @@ defmodule Audi.SSH.TransportTest do
          :gen_tcp.close(listener)
          send(parent, :guest_connected)
          echo(socket, parent)
-       end}
+       end},
+      per_case?
     )
 
     assert_receive {:upstream, upstream}
 
     agent =
-      start_supervised!({Agent, fn -> %{allow: true, renew: :allow, host: @host, ttl: 1000} end})
+      supervise_fixture(
+        {Agent, fn -> %{allow: true, renew: :allow, host: @host, ttl: 1000} end},
+        per_case?
+      )
 
     listener =
-      start_supervised!(
+      supervise_fixture(
         {Audi.SSH.Listener,
          [
            port: 0,
@@ -54,7 +77,8 @@ defmodule Audi.SSH.TransportTest do
            host_id: @host,
            public_origin: "https://control.example.test",
            backend: {Audi.SSHBackendFixture, %{owner: self(), agent: agent, port: upstream}}
-         ]}
+         ]},
+        per_case?
       )
 
     port = Audi.SSH.Listener.port(listener)
@@ -83,7 +107,9 @@ defmodule Audi.SSH.TransportTest do
   # @cc [owner:ghuntley,label:verification;security] ssh-delayed-admission-no-connector
   # A grant delivered after its request-start deadline MUST NOT invoke the
   # connector or forward bytes. Healthy admission MUST still establish a stream.
+  @tag isolated_transport: true
   property "expired delayed authorization never reaches the guest connector", context do
+    context = transport_fixture(context.directory, true)
     supervisor = Overalls.HegelFixtures.start_supervised!({Task.Supervisor, []}, id: make_ref())
 
     ttl = draw("ttl", member_of([25, 75, 150]))
@@ -609,6 +635,12 @@ defmodule Audi.SSH.TransportTest do
       refute_receive :guest_connected
     end
   end
+
+  @spec supervise_fixture(Supervisor.child_spec() | {module(), term()}, boolean()) :: pid()
+  defp supervise_fixture(child, true),
+    do: Overalls.HegelFixtures.start_supervised!(child, id: make_ref())
+
+  defp supervise_fixture(child, false), do: start_supervised!(child)
 
   defp connect(context) do
     {:ok, connection} =

@@ -39,14 +39,18 @@ defmodule MarshallWeb.IntegrationsLive do
     case result do
       {:ok, integration} ->
         {:noreply,
-         socket |> put_flash(:info, gettext("Integration %{value1} saved.", value1: integration.name)) |> refresh()}
+         socket
+         |> put_flash(:info, gettext("Integration %{value1} saved.", value1: integration.name))
+         |> refresh()}
 
       {:error, _} ->
         {:noreply,
          put_flash(
            socket,
            :error,
-           gettext("Could not save this integration. Check the name, HTTPS target and header values.")
+           gettext(
+             "Could not save this integration. Check the name, HTTPS target and header values."
+           )
          )}
     end
   end
@@ -57,7 +61,8 @@ defmodule MarshallWeb.IntegrationsLive do
         {:noreply, socket |> put_flash(:info, gettext("Integration removed.")) |> refresh()}
 
       {:error, _} ->
-        {:noreply, socket |> put_flash(:error, gettext("Could not remove this integration.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:error, gettext("Could not remove this integration.")) |> refresh()}
     end
   end
 
@@ -69,7 +74,8 @@ defmodule MarshallWeb.IntegrationsLive do
         {:noreply, socket |> put_flash(:info, gettext("Machine attached.")) |> refresh()}
 
       {:error, _} ->
-        {:noreply, socket |> put_flash(:error, gettext("Could not attach that machine.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:error, gettext("Could not attach that machine.")) |> refresh()}
     end
   end
 
@@ -81,11 +87,13 @@ defmodule MarshallWeb.IntegrationsLive do
         {:noreply, socket |> put_flash(:info, gettext("Machine detached.")) |> refresh()}
 
       {:error, _} ->
-        {:noreply, socket |> put_flash(:error, gettext("Could not detach that machine.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:error, gettext("Could not detach that machine.")) |> refresh()}
     end
   end
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+  def handle_event(_, _, socket),
+    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   defp refresh(socket) do
     case Galileo.list_integrations(%{}, actor: socket.assigns.current_user) do
@@ -163,10 +171,16 @@ defmodule MarshallWeb.IntegrationsLive do
       <section id="integrations-page" class="stack">
         <UI.heading
           title={gettext("Integrations")}
-          subtitle={gettext("Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine.")}
+          subtitle={
+            gettext(
+              "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
+            )
+          }
         />
         <p :if={@integrations == []} class="empty-state">
-          {gettext("No integrations yet. Add one below to give your machines a named connection to an API or to another machine.")}
+          {gettext(
+            "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
+          )}
         </p>
         <div id="integrations" class="stack">
           <article
@@ -219,8 +233,10 @@ defmodule MarshallWeb.IntegrationsLive do
               <div id={"integration-attachments-#{integration.id}"}>
                 <p :if={integration.attachments == []} class="muted">
                   {if integration.team_id,
-                    do: gettext("No explicit attachments. Current team members' machines have access."),
-                    else: gettext("No machines have access. Attach a machine to use this integration.")}
+                    do:
+                      gettext("No explicit attachments. Current team members' machines have access."),
+                    else:
+                      gettext("No machines have access. Attach a machine to use this integration.")}
                 </p>
                 <div :if={integration.attachments != []} class="table-flow">
                   <table>
@@ -273,11 +289,21 @@ defmodule MarshallWeb.IntegrationsLive do
         <.form for={@form} id="integration-form" phx-submit="add" class="panel stack">
           <h2>{gettext("Add an integration")}</h2>
           <p class="muted">
-            {gettext("Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again.")}
+            {gettext(
+              "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
+            )}
           </p>
           <div class="grid">
-            <.input field={@form[:name]} label={gettext("Name")} placeholder={gettext("example-integration")} />
-            <.input field={@form[:target]} label={gettext("HTTPS target")} placeholder="https://api.example.com" />
+            <.input
+              field={@form[:name]}
+              label={gettext("Name")}
+              placeholder={gettext("example-integration")}
+            />
+            <.input
+              field={@form[:target]}
+              label={gettext("HTTPS target")}
+              placeholder="https://api.example.com"
+            />
           </div>
           <h3>{gettext("Credentials")}</h3>
           <div class="grid">

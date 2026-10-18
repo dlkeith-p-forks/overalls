@@ -18,7 +18,7 @@ defmodule Lilly.VM.ImageGitIdentityCapabilityTest do
     Hegel.check(
       fn test_case ->
         capability =
-          Hegel.draw(
+          :hegel.draw(
             test_case,
             "unsupported capability",
             member_of([:absent, nil, 0, 2, "1", true])
@@ -48,7 +48,7 @@ defmodule Lilly.VM.ImageGitIdentityCapabilityTest do
       end,
       database: :disabled,
       print_blob: false,
-      test_cases: 20,
+      test_cases: 100,
       seed: 814_029_313
     )
   end

@@ -19,13 +19,13 @@
     },
     {
       "id": "account-settings-page",
-      "journey": "Open the single account page, move between its profile, sign-in and SSH key sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint",
+      "journey": "Open the single account page, move between its profile, sign-in, SSH key and Git sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint",
       "layers": [
         "identity",
         "authorization",
         "transport"
       ],
-      "boundary": "One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey and SSH key sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH and User.set_time_zone; fragments (#profile, #security, #ssh-keys) carry no authority and return_to keeps its allowlist.",
+      "boundary": "One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey, SSH key and Git sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH, User.set_time_zone and User.git_settings; fragments (#profile, #security, #ssh-keys, #git-settings) carry no authority and return_to keeps its allowlist.",
       "denial": "Refuse anonymous visitors with a sign-in redirect; answer 404 on /settings/profile, /settings/security and /settings/ssh-keys; refuse unknown events with a fixed flash and no change; a revoked login halts the next SSH key event or clock tick with a sign-in redirect; a weaker mount (optional, current_user or none) fails the pin test.",
       "scope": "LiveView tests of the merged page (sections, single navigation entry, the step-up redirect and Users link to /settings?return_to=%2Fadmin%2Fusers#security, the SSH approval navigation to /settings#ssh-keys, every former Security, SSH key and profile assertion) and a structural pin of the lifecycle ids and route; the synthetic browser probe checks the single sidebar entry, section order, anchors landing at the top, the zone round trip and grid alignment in both themes and at 390 px.",
       "status": "partial",
@@ -43,7 +43,7 @@
           "kind": "unit",
           "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "the page renders every section behind one Account navigation entry",
-          "scope": "Section ids, index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile",
+          "scope": "All four section ids and index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile",
           "execution": "present"
         },
         {
@@ -71,7 +71,7 @@
           "kind": "manual",
           "path": "marshall/scripts/monospace_browser_probe.py",
           "assertion": "check_account",
-          "scope": "Synthetic fixture: single navigation entry, section order, #profile and #ssh-keys anchors, zone round trip, grid alignment, screenshots in light, dark and at 390 px",
+          "scope": "Current synthetic browser fixture targets the Account route and all four sections, retains Git preference and zone round trips, anchor positioning, grid alignment and light/dark/mobile screenshots. Source and static checks do not record browser execution of this repaired probe.",
           "execution": "present"
         }
       ]
@@ -1127,7 +1127,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/vscode-web/default.nix",
           "assertion": "worker loss starts a fresh personal process without deleting data",
-          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334\u20133357, legitimate origin replacement L3358\u20133389 and worker loss with saved data L3390\u20133407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
+          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334–3357, legitimate origin replacement L3358–3389 and worker loss with saved data L3390–3407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-10-browser-editor.md",
           "record_assertion": "The corrected final-package standalone native check passed, exit 0, in 342 seconds"
@@ -2863,11 +2863,9 @@
         {
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
-          "assertion": "retained older physical proof cannot satisfy a newer retry measurement",
-          "scope": "Reviewed combined four-property run passed seed158289 in91.9seconds: exact ingress refusal inventories, historical failed-readiness ACKs, actual valid delayed source/destination physical receipts before and after current readiness/terminalization, independent current-proof times and complete firstscan/unrelated accounting conservation. Unchanged600-second window crosses actualDBclock after setup backdating with aboutfive seconds remaining. Full Marshall precommit passed 1,422 checks (221 properties, 1,201 tests), two exclusions, seed930025,1133.1seconds; forced Dialyzer42.96seconds with zero errors, skips or unnecessary skips; terminal exit0. No native ten-minute, committed publisher/restart or hosted timing claim.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-02-retry-proof-binding-histories.md",
-          "record_assertion": "The reviewed combined run passed four properties, seed `158289`, in 91.9 seconds,"
+          "assertion": "older archived activation proof cannot replace the retry proof",
+          "scope": "Directly seeded pre-upgrade retry rows exercise the historical WorkflowServiceLevels database reader: exact proof windows, mismatched bindings, older-proof refusal and immutable totals/deadlines. No current retry admission, protocol, guest or native execution is claimed.",
+          "execution": "present"
         },
         {
           "kind": "machine",
@@ -2989,11 +2987,9 @@
         {
           "kind": "property",
           "path": "marshall/test/marshall/compute/retry_measurement_window_history_test.exs",
-          "assertion": "retry measurements retain both received proof windows through repeated scans",
-          "scope": "Recorded actual authenticated retry followed by synthetic received-time controls for inclusive admission/deadline, missing/future proof and repeated scan witnesses. Exact bucket vectors, terminal rows/totals and complete execution/readiness/SSH/proof inventories. One focused property passed seed405587 in38.6seconds; Full Marshall precommit passed 1,419 checks (218 properties, 1,201 tests), two exclusions, seed404257,1135.7seconds; forced Dialyzer42.61seconds with zero errors, skips or unnecessary skips; terminal exit0. No native timing, independent committed publisher, process recovery or hosted claim. Reviewed late-proof extension passed seed768114 in44.3seconds: actual ready-state and success audit after terminal deadline failure cannot rewrite complete measurement/totals or post-receipt execution/proof inventories.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-10-02-retry-measurement-window-histories.md",
-          "record_assertion": "extension passed one property, seed `768114`, in 44.3 seconds,"
+          "assertion": "historical retry measurements retain both proof windows through repeated scans",
+          "scope": "Directly seeded pre-upgrade retry rows exercise the historical WorkflowServiceLevels database reader: exact proof windows, mismatched bindings, older-proof refusal and immutable totals/deadlines. No current retry admission, protocol, guest or native execution is claimed.",
+          "execution": "present"
         }
       ]
     },
@@ -5448,7 +5444,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/database-recovery/driver.py",
           "assertion": "expected_holder_state",
-          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432\u201327.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
+          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432–27.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-02-database-loss-histories.md",
           "record_assertion": "All six cases preserved the twenty-second holder and thirty-five-second\nall-connection assertions and reacquired the row after reclamation."
@@ -6059,9 +6055,9 @@
         },
         {
           "kind": "property",
-          "path": "marshall/test/marshall/agents/prompt_test.exs",
-          "assertion": "stopped VM prompt retries and changed payload retain one turn and wake",
-          "scope": "Generated stopped-VM prompt text, repeated keys and changed payload against local Ash/PostgreSQL state; one turn, event, admission and wake receipts, and agent start operation. Synthetic capacity and no native guest wake.",
+          "path": "marshall/test/marshall/agents/prompt_wake_property_test.exs",
+          "assertion": "prompt retries join one wake without duplicating turns or starting a guest",
+          "scope": "Generated running, pending, stopped and paused prompt histories use a fresh SQL sandbox per case; one turn, event and durable wake identity, with no premature execution. Synthetic capacity and no native guest wake.",
           "execution": "present"
         },
         {
@@ -6236,11 +6232,9 @@
         {
           "kind": "property",
           "path": "marshall/test/marshall/agents/executor_loss_history_test.exs",
-          "assertion": "executor loss preserves one dispatch and requires authorized explicit retry",
-          "scope": "Every order covers claimed/started loss, replacement/synthetic expiry, repeated polling, stale transitions, request identity and sharing withdrawal/regrant; complete public-table refusal inventories. Synthetic SQL control evidence only.",
-          "execution": "recorded",
-          "record": "docs/architecture/reviews/2026-09-26-executor-loss-histories.md",
-          "record_assertion": "Full Marshall gate 1,171 checks (133 properties, 1,038 tests), seed 536772; final focused suite 26 checks (2 properties, 24 tests), seed 799844"
+          "assertion": "preserves one dispatch and explicit retry",
+          "scope": "Eight separate 100-case property runners cover claimed/started loss, replacement/synthetic expiry and allowed/revoked access, with repeated polling, stale transitions, request identity, sharing withdrawal/regrant and an unrelated workload inventory in each case. The former shuffled combined runner's execution record remains historical. Current runner execution is present only; synthetic SQL control evidence cannot establish native effects.",
+          "execution": "present"
         },
         {
           "kind": "machine",
@@ -6617,7 +6611,7 @@
       ],
       "boundary": "Complete manifest, matching keyring, native ownership and isolated restoration.",
       "denial": "Reject unrelated decryption keys, malformed manifests, unavailable retained references, busy operator locks and unsafe or nonempty restore targets; keep historical authority isolated.",
-      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore\u2192decrypt\u2192repository-access composition with the historical-generation refusal in synthetic fixtures.",
+      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore→decrypt→repository-access composition with the historical-generation refusal in synthetic fixtures.",
       "status": "partial",
       "gaps": "No generic automated reconciliation makes a historical database authoritative for surviving guests; physical replacement GUID adoption needs operator reconciliation.",
       "preferred_gap": "Native TLS/ZFS/database/keyring and packaged-command acceptance retains its original scope. Local generated command histories cannot establish physical replacement GUID adoption or historical-authority reconciliation; those require explicit operator and native disaster-recovery drills.",
@@ -12836,12 +12830,10 @@
         },
         {
           "kind": "unit",
-          "execution": "recorded",
+          "execution": "present",
           "path": "marshall/test/marshall_web/terminal_live_test.exs",
-          "assertion": "the Boot log entry reads host diagnostics without automatically opening a guest terminal",
-          "scope": "LiveView and synthetic host-stream fixtures deliver bounded diagnostic bytes with zero automatically opened registry rows across refresh. Header component fixtures link Boot log from the connection explanation while image terminal capability is false and render no Boot log tab. No actual browser, Lilly host or native guest.",
-          "record": "docs/architecture/reviews/2026-10-17-host-boot-log-authorization.md",
-          "record_assertion": "LiveView and navigation suite passed 27 tests"
+          "assertion": "the paused Boot log entry reads host diagnostics without waking or opening a guest terminal",
+          "scope": "Current LiveView synthetic host-stream fixture checks a paused machine's bounded boot-log reads across refresh with no guest session, ticket or wake demand. This changed test is present; the older 27-test record remains historical and does not record execution of this assertion."
         },
         {
           "kind": "unit",
@@ -12997,6 +12989,90 @@
       ],
       "denial": "Foreign account updates and malformed Git identities refuse; settings changes cannot replace an existing machine snapshot. Images without version-1 Git identity support refuse new admissions.",
       "boundary": "Account-owned preferences become immutable VM configuration; existing execution and guest custody boundaries remain."
+    },
+    {
+      "boundary": "Current Cedar/key/publication/editor authority admits coalesced durable wake only; compute and private checkpoint capacity, sealed same-boot continuation, single-use restore and destination relay consumption independently fence execution.",
+      "denial": "Foreign or revoked authority, missing/corrupt/incompatible checkpoints, replayed restore and arbitrary relay targets refuse. Network activity cannot override explicit stop intent; a user prompt or explicit start may start a stopped VM. Full compatible-fleet capacity leaves wake pending; it never cold boots to replace memory.",
+      "evidence": [
+        {
+          "assertion": "pause releases execution and resume preserves RAM, PID and boot UUID",
+          "execution": "present",
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/fleet/scenarios/suspension.py",
+          "scope": "The NixOS test definition asserts real Firecracker lifecycle and repeated same-memory continuation, running and paused relocation, and original waiting SSH/HTTPS/editor connections. Presence does not record a successful run."
+        },
+        {
+          "assertion": "idle deadline is exactly four hours and opt-out never expires",
+          "execution": "present",
+          "kind": "property",
+          "path": "marshall/test/marshall/compute/suspension_test.exs",
+          "scope": "Application policy, serialized durable idle timing and synthetic outcome accounting; no physical RAM continuity."
+        },
+        {
+          "assertion": "paused terminal retries coalesce only after current authorization",
+          "execution": "present",
+          "kind": "property",
+          "path": "marshall/test/marshall/terminal/authority_test.exs",
+          "scope": "Generated allowed/foreign histories prove no premature terminal session creation while waiting for wake."
+        },
+        {
+          "assertion": "a failure cannot finish demand without its exact relocation association",
+          "execution": "present",
+          "kind": "unit",
+          "path": "marshall/test/marshall/compute/wake_relocation_failure_test.exs",
+          "scope": "Ash/PostgreSQL fixtures distinguish an exact committed relocation failure from uncommitted or unrelated failure, retain checkpoint and reservation custody, and refuse premature wake success. No physical restore or transfer."
+        },
+        {
+          "assertion": "origin loses wake and relay authority",
+          "execution": "present",
+          "kind": "unit",
+          "path": "marshall/test/marshall/ingress_wake_test.exs",
+          "scope": "Local current-origin authority fixtures refuse new wake, relay consumption and renewal after disablement, drain, retirement, disconnect or expiry, while permitting an enabled evacuating origin. No WireGuard or gateway socket execution."
+        },
+        {
+          "assertion": "terminal cleanup cannot promote an interrupted capture into usable RAM",
+          "execution": "present",
+          "kind": "property",
+          "path": "lilly/test/vm/checkpoint_test.exs",
+          "scope": "Durably reopened checkpoint and intent fixtures permit only current local terminal cleanup, refuse old/foreign/nonterminal authority, and retain the capturing phase. This BEAM model does not establish native kill completion or KVM continuation."
+        },
+        {
+          "assertion": "checkpoint_stream_custody",
+          "execution": "present",
+          "kind": "property",
+          "path": "lilly/native/hostd/src/transfer_tests.rs",
+          "scope": "Native typed stream path, ownership policy, non-resumable receive and malformed/foreign slot refusal; no ZFS or VM execution."
+        },
+        {
+          "assertion": "interrupted output sealing verifies both files before skipping repair",
+          "execution": "present",
+          "kind": "property",
+          "path": "lilly/test/vm/checkpoint_sealing_test.exs",
+          "scope": "Local real-file histories cover interrupted mode changes and missing, hardlinked, symlinked or writable output refusal. This BEAM metadata test does not establish native ZFS readonly, privileged ownership changes or KVM continuation."
+        },
+        {
+          "assertion": "restore changes host authority without changing guest hello identity",
+          "execution": "present",
+          "kind": "property",
+          "path": "lilly/test/terminal/vsock_test.exs",
+          "scope": "Guest HMAC continuation inside separate current outer placement authority; no guest process or multi-host execution."
+        }
+      ],
+      "gaps": "Full changed-source fleet execution and native image qualification are in progress. Existing socket migration, physical isolation, host power-loss and production deployment are not established by local application properties.",
+      "id": "memory-suspension-demand-wake",
+      "journey": "A thread machine suspends after four tool-idle hours and resumes its memory on a prompt or authorized SSH, web or editor connection, relocating automatically when its host is full",
+      "layers": [
+        "identity",
+        "authorization",
+        "transport",
+        "execution",
+        "isolation",
+        "storage",
+        "recovery"
+      ],
+      "preferred_gap": "Run the memory-suspension-fleet NixOS check and record exact-source RAM/cgroup/connection evidence; separately qualify each native image before enabling its checkpoint operations.",
+      "scope": "Ash state machines and Hegel histories exercise BEAM admission, timer boundaries, coalescing and execution fences. Native hostd tests cover API-only restore launch and fixed checkpoint stream derivation. The real fleet test definition asserts repeated capture, RAM-only nonce/PID/boot continuity, cgroup absence, running/paused moves and original authorized connections through measured source memory exhaustion; successful changed-source execution is not yet recorded here.",
+      "status": "partial"
     }
   ]
 }

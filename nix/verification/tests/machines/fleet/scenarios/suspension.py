@@ -380,3 +380,86 @@ with subtest("missing and corrupt checkpoints refuse execution without a cold bo
         )
         lifecycle(damaged_vm, "delete")
         eventually(lambda damaged_vm=damaged_vm: vm_state(damaged_vm) == "deleted", timeout=600)
+
+
+with subtest("newer stop and delete discard only the interrupted confined paused VMM"):
+    # @cc [owner:ghuntley,label:verification;recovery] interrupted-capture-terminal-cleanup
+    # Real capturing journal plus a native Paused VMM MUST NOT imply a copied
+    # checkpoint. Explicit newer stop/delete MUST empty its exact cgroup without
+    # starting a replacement VMM or publishing a continuation.
+    for terminal_kind in ("stop", "delete"):
+        interrupted = provision_when_available(m1, "customer")
+        interrupted_vm = str(interrupted["vm_id"])
+        await_running(interrupted_vm)
+        interrupted_copy = current_copy(interrupted_vm)
+        interrupted_host = host_for(interrupted_copy)
+        guest_assertion(interrupted_copy, "memory-prepare")
+        native_before_capture = process_snapshot(interrupted_copy)
+        interrupted_host.succeed("systemctl stop lilly.service")
+        try:
+            lifecycle(interrupted_vm, "pause")
+            capture_generation = int(
+                sql(
+                    "SELECT generation FROM compute_virtual_machines WHERE id='"
+                    + interrupted_vm
+                    + "'"
+                )
+            )
+            capture_revision = str(interrupted_copy["epoch"]) + ":" + str(capture_generation)
+            interrupted_host.succeed(
+                "fleet-relocation-guest interrupted-capture "
+                + shlex.quote(interrupted_copy["placement_id"])
+                + " "
+                + shlex.quote(capture_revision),
+                timeout=300,
+            )
+            assert process_snapshot(interrupted_copy) == native_before_capture
+            lifecycle(interrupted_vm, terminal_kind)
+            terminal_generation = int(
+                sql(
+                    "SELECT generation FROM compute_virtual_machines WHERE id='"
+                    + interrupted_vm
+                    + "'"
+                )
+            )
+            assert terminal_generation > capture_generation
+        finally:
+            interrupted_host.succeed("systemctl start lilly.service")
+        terminal_state = "stopped" if terminal_kind == "stop" else "deleted"
+        eventually(
+            lambda interrupted_vm=interrupted_vm, terminal_state=terminal_state: (
+                vm_state(interrupted_vm) == terminal_state
+            ),
+            timeout=600,
+        )
+        assert_suspended(interrupted_copy)
+        absent_checkpoints = (
+            "from pathlib import Path; root=Path("
+            + repr("/var/lib/lilly/pool/.lilly-checkpoints/" + interrupted_copy["placement_id"])
+            + "); assert not any(p.name in ('memory','state') for p in root.rglob('*'))"
+        )
+        interrupted_host.succeed("python3 -c " + shlex.quote(absent_checkpoints))
+        assert (
+            sql(
+                "SELECT count(*) FROM compute_operations WHERE vm_id='"
+                + interrupted_vm
+                + "' AND kind IN ('start','resume')"
+            )
+            == "0"
+        )
+        assert (
+            sql(
+                "SELECT count(*) FROM compute_operations o JOIN compute_physical_outcomes p "
+                "ON p.id=o.completion_outcome_id WHERE o.vm_id='"
+                + interrupted_vm
+                + "' AND p.observation->'checkpoint' IS NOT NULL "
+                "AND p.observation->'checkpoint' <> 'null'::jsonb"
+            )
+            == "0"
+        )
+        if terminal_kind == "stop":
+            lifecycle(interrupted_vm, "delete")
+            eventually(
+                lambda interrupted_vm=interrupted_vm: vm_state(interrupted_vm) == "deleted",
+                timeout=600,
+            )

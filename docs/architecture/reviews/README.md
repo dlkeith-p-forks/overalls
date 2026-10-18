@@ -1,7 +1,7 @@
 # Architecture reviews
 
 - [Memory-preserving suspension and demand wake (2026-10-18)](2026-10-18-memory-suspension.md):
-  ADR-0197, durable lifecycle/wake/checkpoint state machines and authenticated
+  ADR-0198, durable lifecycle/wake/checkpoint state machines and authenticated
   waiting connections; implementation and native acceptance in progress.
 
 - [Foreign Linux browser editor (2026-10-18)](2026-10-18-foreign-linux-browser-editor.md):
@@ -629,4 +629,4 @@ needs replacement. Keep checks that were run separate from future test plans.
 - [Antithesis guest-lifecycle profile (2026-10-17)](2026-10-17-antithesis-guest-lifecycle-profile.md): launchable QEMU TCG guest-lifecycle selection with a labelled stub-storage container Lilly; harness-only, no ADR change and no recorded run.
 - [2026 10 16 Nix Domain Layout](2026-10-16-nix-domain-layout.md)
 
-- [Git attribution and guest identity (2026-10-18)](2026-10-18-git-attribution.md): ADR-0193 settings, immutable snapshots and guest configuration verification.
+- [Git attribution and guest identity (2026-10-18)](2026-10-18-git-attribution.md): ADR-0199 settings, immutable snapshots and guest configuration verification.

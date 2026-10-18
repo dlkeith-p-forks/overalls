@@ -7,16 +7,15 @@ defmodule MarshallWeb.Admin.JobsLive do
 
   defp states do
     [
-    {gettext("Queued"), :available},
-    {gettext("Suspended"), :suspended},
-    {gettext("Scheduled"), :scheduled},
-    {gettext("Running"), :executing},
-    {gettext("Retrying"), :retryable},
-    {gettext("Succeeded"), :completed},
-    {gettext("Failed"), :discarded},
-    {gettext("Cancelled"), :cancelled}
-  ]
-
+      {gettext("Queued"), :available},
+      {gettext("Suspended"), :suspended},
+      {gettext("Scheduled"), :scheduled},
+      {gettext("Running"), :executing},
+      {gettext("Retrying"), :retryable},
+      {gettext("Succeeded"), :completed},
+      {gettext("Failed"), :discarded},
+      {gettext("Cancelled"), :cancelled}
+    ]
   end
 
   @impl true
@@ -106,7 +105,8 @@ defmodule MarshallWeb.Admin.JobsLive do
     end
   end
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+  def handle_event(_, _, socket),
+    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   defp refresh(%{assigns: %{live_action: :index}} = socket) do
     filters = socket.assigns.filters
@@ -173,7 +173,10 @@ defmodule MarshallWeb.Admin.JobsLive do
   defp present(value), do: value
 
   defp label(state),
-    do: Enum.find_value(states(), gettext("Unknown"), fn {label, value} -> if value == state, do: label end)
+    do:
+      Enum.find_value(states(), gettext("Unknown"), fn {label, value} ->
+        if value == state, do: label
+      end)
 
   defp duration(nil), do: "—"
   defp duration(milliseconds), do: "#{Float.round(milliseconds / 1000, 2)} s"
@@ -197,7 +200,11 @@ defmodule MarshallWeb.Admin.JobsLive do
       <section id="admin-jobs" class="stack">
         <UI.heading
           title={if @live_action == :index, do: gettext("Jobs"), else: gettext("Job details")}
-          subtitle={gettext("Background work run by Oban. A successful job may have dispatched work whose physical outcome is still pending; follow the related operation for completion.")}
+          subtitle={
+            gettext(
+              "Background work run by Oban. A successful job may have dispatched work whose physical outcome is still pending; follow the related operation for completion."
+            )
+          }
         >
           <:actions>
             <span class="muted">{gettext("Updated")}
@@ -225,7 +232,9 @@ defmodule MarshallWeb.Admin.JobsLive do
             </table>
           </div>
           <p class="muted">
-            {gettext("Counts cover current and recently retained raw jobs. The list includes redacted history for up to 30 days; older history pruned before deployment is unavailable.")}
+            {gettext(
+              "Counts cover current and recently retained raw jobs. The list includes redacted history for up to 30 days; older history pruned before deployment is unavailable."
+            )}
           </p>
           <.form for={@form} id="job-filters" phx-submit="filter" class="panel stack">
             <h2>{gettext("Filter")}</h2>
@@ -237,7 +246,12 @@ defmodule MarshallWeb.Admin.JobsLive do
                 options={@states}
                 prompt={gettext("All states")}
               />
-              <.input field={@form[:queue]} label={gettext("Queue")} placeholder={gettext("Any queue")} maxlength="128" />
+              <.input
+                field={@form[:queue]}
+                label={gettext("Queue")}
+                placeholder={gettext("Any queue")}
+                maxlength="128"
+              />
               <.input
                 field={@form[:worker]}
                 label={gettext("Worker")}
@@ -277,7 +291,7 @@ defmodule MarshallWeb.Admin.JobsLive do
                   <td><.link navigate={~p"/admin/jobs/#{job.id}"}>#{job.id}</.link></td>
                   <td class="nowrap">
                     <span class="status-label" data-tone={job_tone(job.state)}>{label(job.state)}</span>
-                    <span :if={!job.raw_present} class="muted"> {gettext("Archived")}</span>
+                    <span :if={!job.raw_present} class="muted">{gettext("Archived")}</span>
                   </td>
                   <td class="break">
                     {job.queue}<br /><span class="muted" title={job.worker}>{job.worker}</span>
@@ -293,7 +307,9 @@ defmodule MarshallWeb.Admin.JobsLive do
             {gettext("No jobs match these filters.")}
           </p>
           <nav aria-label={gettext("Job pages")} class="row">
-            <.link :if={@filters["before"]} patch={~p"/admin/jobs?#{Map.delete(@filters, "before")}"}>{gettext("← First page")}</.link>
+            <.link :if={@filters["before"]} patch={~p"/admin/jobs?#{Map.delete(@filters, "before")}"}>{gettext(
+              "← First page"
+            )}</.link>
             <.link
               :if={@next_cursor}
               id="jobs-next"
@@ -310,10 +326,14 @@ defmodule MarshallWeb.Admin.JobsLive do
                   :if={@admin_authorized and @job.retryable}
                   id="retry-job"
                   phx-click="retry"
-                  data-confirm={gettext("Queue another attempt? The operation will recheck its current state.")}
+                  data-confirm={
+                    gettext("Queue another attempt? The operation will recheck its current state.")
+                  }
                   class="console-button primary"
                 >{gettext("Retry job")}</button>
-                <span :if={!@job.raw_present} class="muted">{gettext("Archived history · retry unavailable")}</span>
+                <span :if={!@job.raw_present} class="muted">{gettext(
+                  "Archived history · retry unavailable"
+                )}</span>
               </:actions>
               <.kv>
                 <:item title={gettext("Queue")}>{@job.queue}</:item>
@@ -375,7 +395,12 @@ defmodule MarshallWeb.Admin.JobsLive do
                           event.state
                         )}</span>
                       </td>
-                      <td>{gettext("attempt %{attempt} · %{count} recorded failures", attempt: event.attempt, count: event.error_count)}</td>
+                      <td>
+                        {gettext("attempt %{attempt} · %{count} recorded failures",
+                          attempt: event.attempt,
+                          count: event.error_count
+                        )}
+                      </td>
                     </tr>
                   </tbody>
                 </table>

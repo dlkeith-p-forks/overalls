@@ -46,14 +46,16 @@ msgstr "வெளியிடப்படாத நகலை அல்லது 
 msgid "Start a machine."
 msgstr "இயந்திரத்தைத் தொடங்கு."
 
-msgid "Stop a machine, retaining its disk."
-msgstr "வட்டைத் தக்கவைத்து இயந்திரத்தை நிறுத்து."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
 
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
 msgstr "இயந்திரத்தையும் அதன் வட்டையும் நீக்கு. உரிமையாளர் பொருத்தி வைத்திருந்தால் மறுக்கப்படும்."
 
-msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
-msgstr "இயந்திரத்தை உங்கள் பட்டியல்களின் மேலே பொருத்து. நீங்கள் உரிமையாளராக இருந்து அது பொருத்தப்பட்டிருக்கும் வரை எதுவும் அதை நீக்க முடியாது."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 
 msgid "Remove your pin from a machine."
 msgstr "இயந்திரத்தில் உங்கள் பொருத்தலை நீக்கு."
@@ -201,3 +203,15 @@ msgstr "கோரிக்கை %{id}: சமர்ப்பிக்கப்�
 
 msgid "Request %{id}: waiting for completion"
 msgstr "கோரிக்கை %{id}: நிறைவடையக் காத்திருக்கிறது"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

@@ -46,14 +46,16 @@ msgstr "Yayımlanmamış klonu veya kesinleştirilmemiş taşıma isteğini ipta
 msgid "Start a machine."
 msgstr "Makineyi başlat."
 
-msgid "Stop a machine, retaining its disk."
-msgstr "Diskini koruyarak makineyi durdur."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
 
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
 msgstr "Makineyi ve diskini sil. Sahibi sabitlemişse reddedilir."
 
-msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
-msgstr "Makineyi listelerinizin başına sabitleyin. Sahibi olduğunuz ve sabitlenmiş olduğu sürece hiçbir işlem onu silemez."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 
 msgid "Remove your pin from a machine."
 msgstr "Makinedeki sabitlemenizi kaldır."
@@ -201,3 +203,15 @@ msgstr "İstek %{id}: gönderiliyor"
 
 msgid "Request %{id}: waiting for completion"
 msgstr "İstek %{id}: tamamlanması bekleniyor"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

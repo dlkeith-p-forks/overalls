@@ -46,14 +46,16 @@ msgstr "Cancel clone wey dem never publish or move request wey dem never commit.
 msgid "Start a machine."
 msgstr "Start machine."
 
-msgid "Stop a machine, retaining its disk."
-msgstr "Stop machine, but keep im disk."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
 
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
 msgstr "Delete machine and im disk. E no go work if di owner pin am."
 
-msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
-msgstr "Pin machine for top of your list dem. As long as you own am and e dey pinned, nothing fit delete am."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 
 msgid "Remove your pin from a machine."
 msgstr "Remove your pin from machine."
@@ -201,3 +203,15 @@ msgstr "Request %{id}: e dey submit"
 
 msgid "Request %{id}: waiting for completion"
 msgstr "Request %{id}: e dey wait to finish"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

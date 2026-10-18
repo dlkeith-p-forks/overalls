@@ -2,7 +2,7 @@ defmodule Lilly.VM.Checkpoint do
   @moduledoc "Durable single-use continuation journal and immutable checkpoint content verification."
   alias Lilly.Host.{Lock, Pool, PrivateFiles, Storage}
   alias Lilly.Lifecycle.Journal
-  alias Lilly.VM.{Boot, CheckpointStorage, Spec}
+  alias Lilly.VM.{Boot, CheckpointStorage, Intent, Spec}
   alias OverallsProtocol.Checkpoint, as: Descriptor
   @type slot :: :a | :b
   @type journal_record :: %{String.t() => term()}
@@ -64,6 +64,30 @@ defmodule Lilly.VM.Checkpoint do
       "restore_authority" => nil,
       "relocation" => nil
     }
+
+  # @cc [owner:ghuntley,label:security;recovery] interrupted-pause-discard-needs-terminal-authority
+  # A paused VMM may be discarded without publishing RAM only under stopped,
+  # deleted or failed intent for this exact local binding, at least as new as
+  # its capture/restore authority. Missing, corrupt, foreign, ready or retired
+  # journals MUST NOT authorize forced paused cleanup. This predicate grants no
+  # execution authority and MUST NOT advance the checkpoint phase.
+  @spec discardable_pause?(term(), Pool.t(), Spec.t(), Intent.t()) :: boolean()
+  def discardable_pause?(record, pool, spec, intent) do
+    with true <- valid_record?(record),
+         true <- record["binding"] == binding(pool, spec),
+         true <- intent.placement_id == spec.id and intent.state in [:stopped, :deleted, :failed],
+         %{"placement_id" => placement, "execution_epoch" => epoch, "generation" => generation} <-
+           (case record["phase"] do
+              phase when phase in ["capturing", "copied"] -> record["capture_authority"]
+              phase when phase in ["restoring", "consumed"] -> record["restore_authority"]
+              _ -> nil
+            end) do
+      placement == spec.id and
+        {intent.execution_epoch, intent.generation} >= {epoch, generation}
+    else
+      _ -> false
+    end
+  end
 
   # @cc [owner:ghuntley,label:recovery;security] capture-journal-before-freeze
   # begin_capture/4 requires current running authority and the placement lock.

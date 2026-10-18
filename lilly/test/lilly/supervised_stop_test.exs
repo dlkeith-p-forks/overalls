@@ -25,6 +25,6 @@ defmodule Lilly.SupervisedStopTest do
     assert SupervisedStop.category({:shutdown, secret}) == :shutdown
 
     assert SupervisedStop.location({:badarg, [{Lilly.VM.Actor, :schedule, [secret], []}]}) ==
-             {Lilly.VM.Actor, :schedule, 1}
+             {:unknown, :unknown, 0}
   end
 end

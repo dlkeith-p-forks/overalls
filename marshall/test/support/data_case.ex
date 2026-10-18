@@ -76,10 +76,23 @@ defmodule Marshall.DataCase do
   # case and stop it before replay or the next case. Register this before process
   # fixtures so their cleanup runs first. Committed/distributed tests retain
   # their explicit owned-row cleanup instead; they MUST NOT use this helper.
+  # The current exact owner MUST also have an ExUnit exit fallback so a forced
+  # test timeout cannot leave shared ownership for subsequent tests.
   @spec isolate_property_case() :: :ok
   def isolate_property_case do
     owner = Ecto.Adapters.SQL.Sandbox.start_owner!(Marshall.Repo, shared: true)
-    Hegel.on_cleanup(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(owner) end)
+    on_exit(:hegel_sql_sandbox_owner, fn -> stop_property_owner(owner) end)
+    Hegel.on_cleanup(fn -> stop_property_owner(owner) end)
+  end
+
+  # @cc [owner:ghuntley,label:verification] generated-sandbox-exact-owner-cleanup
+  # Per-case and ExUnit cleanup MUST target only the registered owner PID. An
+  # already stopped owner MAY be ignored; every other cleanup failure MUST fail.
+  @spec stop_property_owner(pid()) :: :ok
+  defp stop_property_owner(owner) do
+    Ecto.Adapters.SQL.Sandbox.stop_owner(owner)
+  catch
+    :exit, {:noproc, _} -> :ok
   end
 
   @doc """

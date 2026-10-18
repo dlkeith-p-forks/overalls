@@ -11,7 +11,10 @@ defmodule MarshallWeb.AuthOverrides do
 
   @spec magic_link_request_feedback() :: String.t()
   def magic_link_request_feedback,
-    do: gettext("Check your email for a sign-in link. Your account will be created automatically when you sign in.")
+    do:
+      gettext(
+        "Check your email for a sign-in link. Your account will be created automatically when you sign in."
+      )
 
   alias AshAuthentication.Phoenix.{
     Components,

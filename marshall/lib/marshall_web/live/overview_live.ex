@@ -134,9 +134,13 @@ defmodule MarshallWeb.OverviewLive do
                   id="overview-machines-empty"
                   title={gettext("Room for your next idea")}
                 >
-                  {gettext("No machines in this preview yet. Create one or ask an owner to share access.")}
+                  {gettext(
+                    "No machines in this preview yet. Create one or ask an owner to share access."
+                  )}
                   <:action>
-                    <.link navigate={~p"/machines/new"} class="console-button ghost">{gettext("Create your first machine")}</.link>
+                    <.link navigate={~p"/machines/new"} class="console-button ghost">{gettext(
+                      "Create your first machine"
+                    )}</.link>
                   </:action>
                 </UI.empty>
                 <div id="overview-machine-preview">
@@ -174,7 +178,9 @@ defmodule MarshallWeb.OverviewLive do
                   </article>
                 </div>
                 <p :if={page.more} class="muted">
-                  {gettext("A small preview. All your accessible machines are in")} <.link navigate={~p"/machines"}>{gettext("Machines")}</.link>.
+                  {gettext("A small preview. All your accessible machines are in")} <.link navigate={
+                    ~p"/machines"
+                  }>{gettext("Machines")}</.link>.
                 </p>
               <% :unavailable -> %>
                 <p id="overview-machines-unavailable" role="status">
@@ -189,7 +195,9 @@ defmodule MarshallWeb.OverviewLive do
               data-overalls-extension-setup="true"
             >
               <p class="muted">
-                {gettext("Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension.")}
+                {gettext(
+                  "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
+                )}
               </p>
               <.link
                 id="overview-marvin-extension-link"
@@ -202,11 +210,19 @@ defmodule MarshallWeb.OverviewLive do
               <%= case @catalog do %>
                 <% {:ok, %{capacity_known: true} = catalog} -> %>
                   <.kv>
-                    <:item title={gettext("CPU")}>{gettext("%{value1} vCPU", value1: catalog.available.vcpu)}</:item>
-                    <:item title={gettext("Memory")}>{gettext("%{value1} GiB", value1: gib(catalog.available.memory_bytes))}</:item>
-                    <:item title={gettext("Disk")}>{gettext("%{value1} GiB", value1: gib(catalog.available.disk_bytes))}</:item>
+                    <:item title={gettext("CPU")}>
+                      {gettext("%{value1} vCPU", value1: catalog.available.vcpu)}
+                    </:item>
+                    <:item title={gettext("Memory")}>
+                      {gettext("%{value1} GiB", value1: gib(catalog.available.memory_bytes))}
+                    </:item>
+                    <:item title={gettext("Disk")}>
+                      {gettext("%{value1} GiB", value1: gib(catalog.available.disk_bytes))}
+                    </:item>
                   </.kv>
-                  <p class="muted">{gettext("Capacity is checked again when you create a machine.")}</p>
+                  <p class="muted">
+                    {gettext("Capacity is checked again when you create a machine.")}
+                  </p>
                 <% _ -> %>
                   <p id="overview-capacity-unavailable" class="muted">
                     {gettext("Headroom is temporarily unavailable.")}
@@ -218,7 +234,9 @@ defmodule MarshallWeb.OverviewLive do
                 <li>
                   <strong>{gettext("Next steps")}</strong>
                   <ul>
-                    <li><.link navigate={~p"/integrations"}>{gettext("Connect an integration ↗")}</.link></li>
+                    <li>
+                      <.link navigate={~p"/integrations"}>{gettext("Connect an integration ↗")}</.link>
+                    </li>
                     <li><.link navigate={~p"/teams"}>{gettext("Find your people ↗")}</.link></li>
                     <li><.link navigate={~p"/usage"}>{gettext("Explore your usage ↗")}</.link></li>
                     <li><.link href={~p"/docs"}>{gettext("Read the field notes ↗")}</.link></li>

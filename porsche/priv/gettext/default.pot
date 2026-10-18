@@ -191,11 +191,6 @@ msgstr ""
 msgid "Offer team ownership to an admin."
 msgstr ""
 
-#: lib/porsche/ssh/command_messages.ex:25
-#, elixir-autogen, elixir-format
-msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
-msgstr ""
-
 #: lib/porsche/ssh/channel.ex:113
 #, elixir-autogen, elixir-format
 msgid "Porsche machine management. Type help."
@@ -276,11 +271,6 @@ msgstr ""
 msgid "Start a machine."
 msgstr ""
 
-#: lib/porsche/ssh/command_messages.ex:21
-#, elixir-autogen, elixir-format
-msgid "Stop a machine, retaining its disk."
-msgstr ""
-
 #: lib/porsche/ssh/output.ex:73
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
@@ -339,4 +329,29 @@ msgstr ""
 #: lib/porsche/ssh/onboarding.ex:78
 #, elixir-autogen, elixir-format
 msgid "then retry your original command.\n"
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:55
+#, elixir-autogen, elixir-format
+msgid "Resume a suspended machine's preserved memory."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:53
+#, elixir-autogen, elixir-format
+msgid "Suspend a machine, preserving its memory and disk."
 msgstr ""

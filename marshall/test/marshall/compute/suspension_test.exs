@@ -73,6 +73,51 @@ defmodule Marshall.Compute.SuspensionTest do
     assert hold(c.vm).checkpoint_bytes > 0
   end
 
+  # @cc [owner:ghuntley,label:verification;security] resume-snapshot-ignores-caller-checkpoint
+  # Both built and supplied resume snapshots MUST retain the VM's exact durable
+  # continuation. A caller's otherwise valid replacement ID or hash MUST NOT
+  # change the checkpoint that Operation.enqueue will dispatch.
+  test "supplied resume snapshots cannot replace authoritative checkpoint identity", c do
+    pause!(c)
+    vm = current(c.vm)
+
+    fields = %{
+      id: Ash.UUID.generate(),
+      vm_id: vm.id,
+      host_id: vm.host_id,
+      pool_id: vm.pool_id,
+      owner_id: vm.owner_id,
+      placement_id: vm.current_placement_id,
+      execution_epoch: vm.execution_epoch,
+      generation: vm.generation + 1,
+      kind: :resume
+    }
+
+    snapshot = Marshall.Compute.CommandSnapshot.build(fields)
+    assert snapshot["checkpoint"] == vm.current_checkpoint
+    operation_fields = Map.drop(fields, [:host_id, :pool_id, :owner_id])
+
+    for {key, replacement} <- [
+          {"id", Ash.UUID.generate()},
+          {"memory_sha256", "sha256:" <> String.duplicate("e", 64)}
+        ] do
+      supplied = put_in(snapshot, ["checkpoint", key], replacement)
+
+      changeset =
+        Ash.Changeset.for_create(
+          Operation,
+          :enqueue,
+          Map.put(operation_fields, :command_snapshot, supplied),
+          actor: Marshall.Authorization.SystemActor.compute()
+        )
+
+      assert changeset.valid?
+
+      assert Ash.Changeset.get_attribute(changeset, :command_snapshot)["checkpoint"] ==
+               vm.current_checkpoint
+    end
+  end
+
   # @cc [owner:ghuntley,label:verification;security] restored-private-services-current-receipt
   # Pending resume may fetch its bootstrap roster, but inference and pulled SSH
   # keys MUST wait for exact physical completion. An older generation MUST fail.

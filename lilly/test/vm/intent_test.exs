@@ -48,6 +48,36 @@ defmodule Lilly.VM.IntentTest do
     assert {"", 75} = launch(dir, 2, "true", [])
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] interrupted-capture-failure-fences-native-launch
+  # Same-generation capture failure MUST persist a terminal fence, survive
+  # reopening and refuse the real native launch guard. Neither the paused
+  # command nor its failure retry may authorize a cold execution.
+  property "an interrupted pause can fail once without reopening native execution", %{
+    tmp_dir: dir
+  } do
+    generation = draw("capture generation", integer(1..9_223_372_036_854_775_800))
+    directory = Path.join(dir, Lilly.UUID.generate())
+    File.mkdir!(directory)
+    File.chmod!(directory, 0o700)
+
+    try do
+      assert {:ok, _} = Intent.set(directory, @placement, {1, generation}, :paused)
+      assert {"", 75} = launch(directory, generation, "true", [])
+      assert {:ok, failed} = Intent.set(directory, @placement, {1, generation}, :failed)
+      assert {:ok, ^failed} = Intent.read(directory)
+      assert {:ok, ^failed} = Intent.set(directory, @placement, {1, generation}, :failed)
+
+      for rejected <- [:running, :paused] do
+        assert {:error, :generation_conflict} =
+                 Intent.set(directory, @placement, {1, generation}, rejected)
+      end
+
+      assert {"", 75} = launch(directory, generation, "true", [])
+    after
+      File.rm_rf!(directory)
+    end
+  end
+
   test "a queued launcher reads the newer intent only after the exclusive writer releases", %{
     tmp_dir: dir
   } do

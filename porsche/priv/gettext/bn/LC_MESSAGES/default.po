@@ -46,14 +46,16 @@ msgstr "অপ্রকাশিত ক্লোন বা চূড়ান্
 msgid "Start a machine."
 msgstr "মেশিন চালু করুন।"
 
-msgid "Stop a machine, retaining its disk."
-msgstr "ডিস্ক রেখে মেশিন বন্ধ করুন।"
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
 
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
 msgstr "মেশিন ও তার ডিস্ক মুছুন। মালিক পিন করে রাখলে মুছতে দেওয়া হবে না।"
 
-msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
-msgstr "মেশিনকে আপনার তালিকার শীর্ষে পিন করুন। আপনি মালিক থাকা অবস্থায় এটি পিন করা থাকলে কোনো কিছুই এটি মুছতে পারবে না।"
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 
 msgid "Remove your pin from a machine."
 msgstr "মেশিন থেকে আপনার পিন সরান।"
@@ -201,3 +203,15 @@ msgstr "অনুরোধ %{id}: জমা দেওয়া হচ্ছে"
 
 msgid "Request %{id}: waiting for completion"
 msgstr "অনুরোধ %{id}: সম্পূর্ণ হওয়ার অপেক্ষায়"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

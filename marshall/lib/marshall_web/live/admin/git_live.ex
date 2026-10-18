@@ -67,7 +67,11 @@ defmodule MarshallWeb.Admin.GitLive do
       <section id="admin-git" class="stack">
         <UI.heading
           title={gettext("Git mirrors")}
-          subtitle={gettext("Public GitHub repositories mirrored for machines. Mirrors refresh hourly; changes require recent passkey verification.")}
+          subtitle={
+            gettext(
+              "Public GitHub repositories mirrored for machines. Mirrors refresh hourly; changes require recent passkey verification."
+            )
+          }
         />
         <.form :if={@admin_authorized} for={@form} phx-submit="register" class="panel stack">
           <h2>{gettext("Add a mirror")}</h2>
@@ -146,7 +150,8 @@ defmodule MarshallWeb.Admin.GitLive do
                   <td>{event.kind}</td>
                   <td class="break">{event.failure_reason || "—"}</td>
                   <td class="break muted">
-                    {gettext("actor")} <code>{event.actor_id || "system"}</code><br /> {gettext("repository")}
+                    {gettext("actor")}
+                    <code>{event.actor_id || "system"}</code><br /> {gettext("repository")}
                     <code>{event.repository_id}</code><br /> {gettext("attempt")}
                     <code>{event.attempt_id || "—"}</code>
                   </td>

@@ -6,11 +6,11 @@
 - Implementation: partial
 - Components: Marshall Compute, Lilly Control, Lilly VM, shared protocol, NixOS
 - Supersedes: ADR-0005, ADR-0035
-- Superseded by: ADR-0050, ADR-0149, ADR-0155, ADR-0197
+- Superseded by: ADR-0050, ADR-0149, ADR-0155, ADR-0198
 
 ## Context
 
-[ADR-0197](0197-memory-suspension-and-demand-wake.md) replaces only the
+[ADR-0198](0198-memory-suspension-and-demand-wake.md) replaces only the
 memory-migration/stopped-source and cross-host-relay prohibitions where this
 record carries them, and extends owner pins with automatic-suspension prevention
 and wake. Unrelated requirements and historical rationale remain in force.
@@ -1278,7 +1278,7 @@ readiness retained the source but excluded every recovery action except Delete.
 its [retained request](../../../marshall/lib/marshall/compute/relocation_retry.ex)
 and the then-current coordinator implemented the explicit stop/restart sequence
 above. The UI then offered an authorized destination-boot retry.
-ADR-0197 removes that cold-retry coordinator for new memory-preserving moves;
+ADR-0198 removes that cold-retry coordinator for new memory-preserving moves;
 the retained resource and exact historical receipts remain readable. Historical failed receipts remain acknowledgeable
 without satisfying the newer request. The new migration adds only the retry table
 and its operation/relocation bindings, request uniqueness and pending-retry index.

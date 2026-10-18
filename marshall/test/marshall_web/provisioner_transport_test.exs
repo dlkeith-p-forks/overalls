@@ -597,8 +597,8 @@ defmodule MarshallWeb.ProvisionerTransportTest do
     {:ok, foreign} = client(context, base, cacertfile: @ca)
     {:ok, foreign_session} = Client.open(foreign, Ash.UUID.generate())
 
-    # ADR-0155: a running source is never snapshotted. Fresh connectivity proof
-    # gates the physical stop; only then is the single full stream requested.
+    # ADR-0198: fresh connectivity proof gates memory-preserving suspension;
+    # only its exact checkpoint permits the coherent disk/RAM stream.
     assert {:ok, %{commands: []}} =
              Client.exchange_relocation_source(foreign, foreign_session, [])
 
@@ -615,6 +615,20 @@ defmodule MarshallWeb.ProvisionerTransportTest do
     assert {:ok, %{commands: [stop]}} =
              Client.exchange_execution(foreign, foreign_session, nil, [], [])
 
+    assert stop.kind == :pause
+
+    checkpoint = %{
+      id: Ash.UUID.generate(),
+      memory_bytes: context.vm.memory_bytes,
+      state_bytes: 4096,
+      compatibility: "sha256:" <> String.duplicate("a", 64),
+      memory_sha256: "sha256:" <> String.duplicate("b", 64),
+      state_sha256: "sha256:" <> String.duplicate("c", 64),
+      manifest_sha256: "sha256:" <> String.duplicate("d", 64),
+      dataset_guid: "81",
+      snapshot_guid: "82"
+    }
+
     event = %{
       id: Ash.UUID.generate(),
       vm_id: stop.vm_id,
@@ -623,7 +637,8 @@ defmodule MarshallWeb.ProvisionerTransportTest do
       generation: stop.generation,
       operation_id: stop.id,
       sequence: 1,
-      state: :stopped,
+      state: :paused,
+      checkpoint: checkpoint,
       compute_empty: true,
       disk_present: true,
       cleanup_complete: false,
@@ -745,6 +760,9 @@ defmodule MarshallWeb.ProvisionerTransportTest do
     assert {:ok, %{commands: [activation]}} =
              Client.exchange_execution(client, session, nil, [], [])
 
+    assert activation.kind == :resume
+    assert activation.checkpoint == checkpoint
+
     activated = %{
       event
       | id: Ash.UUID.generate(),
@@ -843,17 +861,21 @@ defmodule MarshallWeb.ProvisionerTransportTest do
     assert source_delete.kind == :delete and
              source_delete.placement_id == relocation.source_placement_id
 
-    removed = %{
-      event
-      | id: Ash.UUID.generate(),
-        operation_id: source_delete.id,
-        generation: source_delete.generation,
-        sequence: 3,
-        state: :deleted,
-        compute_empty: true,
-        disk_present: false,
-        cleanup_complete: true
-    }
+    removed =
+      Map.delete(
+        %{
+          event
+          | id: Ash.UUID.generate(),
+            operation_id: source_delete.id,
+            generation: source_delete.generation,
+            sequence: 3,
+            state: :deleted,
+            compute_empty: true,
+            disk_present: false,
+            cleanup_complete: true
+        },
+        :checkpoint
+      )
 
     assert {:ok, %{outcome_acknowledgements: [_]}} =
              Client.exchange_execution(foreign, foreign_session, nil, [], [removed])

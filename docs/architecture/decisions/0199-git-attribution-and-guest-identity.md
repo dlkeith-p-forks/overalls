@@ -1,6 +1,6 @@
-# ADR-0193: Git attribution and guest identity
+# ADR-0199: Git attribution and guest identity
 
-- ID: ADR-0193
+- ID: ADR-0199
 - Date: 2026-10-18
 - Status: accepted
 - Implementation: partial
@@ -21,6 +21,11 @@ Account settings default to Git username `Overalls`, Git email
 may update its preferences. Machine admission captures an immutable Git identity;
 clones capture their new owner's current preference. Restart and relocation retain
 that snapshot, while existing machines without a snapshot remain unchanged.
+
+Preferences occupy the fourth `#git-settings` section of ADR-0196's single
+`MarshallWeb.AccountLive` page at `/settings`. Profile, passkeys, SSH keys and Git
+preferences share its strict fresh-login mount and single Account navigation entry.
+The removed settings URLs remain 404; Git settings introduce no parallel page.
 
 Provision/start commands carry the validated identity as inert guest configuration.
 Kernel guests receive encoded boot metadata; firmware guests receive MMDS metadata.
@@ -60,6 +65,9 @@ BEAM properties do not establish actual guest execution or production rollout.
 
 ## Implementation evidence
 
+The [account page](../../../marshall/lib/marshall_web/live/account_live.ex) and
+[Git settings tests](../../../marshall/test/marshall_web/settings_live_test.exs)
+retain account-owned updates and revoked-login refusal within the combined page.
 The [command snapshot](../../../marshall/lib/marshall/compute/command_snapshot.ex)
 and [allocation snapshot](../../../marshall/lib/marshall/compute/git_identity.ex)
 retain VM-owned identity. Execution and guest evidence are recorded in the
@@ -75,3 +83,4 @@ Production rollout and complete cross-OS machine acceptance remain unrecorded.
 - [ADR-0178](0178-durable-agent-context-and-planning.md)
 - [ADR-0179](0179-guest-instructions-and-managed-skills.md)
 - [ADR-0191](0191-elixir-hegel-property-verification.md)
+- [ADR-0196](0196-single-account-settings-page.md)

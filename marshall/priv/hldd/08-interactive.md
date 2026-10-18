@@ -1,5 +1,21 @@
 # Browser editors, terminals, SSH, and management
 
+## Connecting to a suspended machine
+
+The machine controls expose Pause and Resume. Resume retains guest memory and
+may wait for compatible capacity. A stopped machine still needs Start. Opening
+a browser terminal rechecks current Cedar access and the image's terminal
+capability before joining wake demand. Pending wake grants neither guest
+controls nor terminal tickets. Boot-log viewing, passive viewer checks and
+server refresh timers do not wake a machine. A fresh authorized connection or
+explicit terminal open may admit demand.
+
+Relocation retires old-placement terminal authority. Reconnection is required;
+PTY reattachment across a move is not promised. Authorized SSH, published web
+applications and editor requests can wait through resume and automatic relocation
+while renewing their authentication and publication/account authority. Snapshot
+transport reset does not preserve established sockets.
+
 ## Language and text direction
 
 [ADR-0197](repo:docs/architecture/decisions/0197-localized-human-surfaces.md) accepts a saved account language override with session/browser negotiation and English fallback. The supported catalog list includes Japanese, Hindi, Filipino, Estonian, Finnish, Swedish and Brazilian/European Portuguese. Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Implementation and recorded browser/native evidence remain partial.
@@ -1176,4 +1192,9 @@ newest-first transcript throughout these interactions.
 
 ## Git settings
 
-The authenticated /settings page edits Git username, Git email and optional agent commit trailers for the current account. Git email is separate from sign-in email. Invalid or foreign-account changes refuse. Identity changes apply to newly created machines.
+The authenticated `/settings#git-settings` section edits Git username, Git email
+and optional agent commit trailers for the current account. It is the fourth
+section of the single Account page, behind the same fresh-login gate as profile,
+passkey and SSH key controls. The old settings URLs remain removed. Git email is
+separate from sign-in email. Invalid or foreign-account changes refuse. Identity
+changes apply to newly created machines.

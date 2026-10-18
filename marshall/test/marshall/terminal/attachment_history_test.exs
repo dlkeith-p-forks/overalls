@@ -213,9 +213,9 @@ defmodule Marshall.Terminal.AttachmentHistoryTest do
   for trigger <- [:input, :resize, :idle] do
     @trigger trigger
     @tag :hegel_case_sandbox
-  property "live #{@trigger} attachment closes across every authority boundary and needs a fresh socket",
+    property "live #{@trigger} attachment closes across every authority boundary and needs a fresh socket",
       test_cases: 100 do
-    Marshall.DataCase.isolate_property_case()
+      Marshall.DataCase.isolate_property_case()
       fixture = fixture()
 
       order = draw("order", list_of(integer(0..100), length: 6))

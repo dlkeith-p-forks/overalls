@@ -379,12 +379,22 @@ defmodule Overalls.HLDDTest do
           {"OtherHegel.check(fn test_case -> generated_refusal end)", false}
         ] do
       write(root, "test.exs", runner)
+
       evidence = %{
-        "kind" => "property", "execution" => "present", "path" => "test.exs",
-        "assertion" => "generated_refusal", "scope" => "Explicit callback runner recognition"
+        "kind" => "property",
+        "execution" => "present",
+        "path" => "test.exs",
+        "assertion" => "generated_refusal",
+        "scope" => "Explicit callback runner recognition"
       }
-      errors = HLDDCoverage.validate(root, %{data | "scenarios" => [%{row | "evidence" => [evidence], "status" => "partial"}]})
-      assert (errors == []) == valid?
+
+      errors =
+        HLDDCoverage.validate(root, %{
+          data
+          | "scenarios" => [%{row | "evidence" => [evidence], "status" => "partial"}]
+        })
+
+      assert errors == [] == valid?
     end
   end
 

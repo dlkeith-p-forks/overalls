@@ -1,6 +1,13 @@
 # Architecture decision records
 
-[ADR-0193](0193-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
+[ADR-0198](0198-memory-suspension-and-demand-wake.md) accepts full-memory
+suspension, paused relocation, durable demand wake and the four-hour tool-idle
+policy. It carries forward fencing, capacity and cleanup requirements while
+replacing stopped-source reboot and the cross-host relay prohibition. The
+[suspension review](../reviews/2026-10-18-memory-suspension.md) retains the
+distinction between source implementation and recorded native acceptance.
+
+[ADR-0199](0199-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0192](0192-staged-detached-ingress.md) moves the browser editor and
 nested HTTPS onto ADR-0187's detached ingress bridges. The BEAM's only
@@ -296,10 +303,11 @@ and both eight-subtest lifecycle journeys (NixOS 438.33 seconds, Ubuntu
 the native ZFS inventory helper are separate scopes. The helper passed inside a
 complete native-zfs run that failed unrelated resource-tuning receipt validation.
 
-Accepted [ADR-0155](0155-stopped-only-relocation.md) makes relocation one
-stopped full copy: live pre-copy, baseline/incremental streams, temporary
-headroom and the strategy column are removed. It supersedes the pre-copy parts
-of ADR-0037, ADR-0061 and ADR-0072 and carries their other requirements forward.
+Superseded [ADR-0155](0155-stopped-only-relocation.md) removed live pre-copy,
+baseline/incremental streams and the strategy column. ADR-0198 retains one full
+quiescent copy and replaces a running source's stop/reboot with pause/resume,
+adding separately reserved checkpoint custody. Historical results keep their
+original scope; inherited fencing and cleanup requirements remain in force.
 
 [ADR-0157](0157-multi-provider-authenticated-repository-launch.md) supersedes
 ADR-0128's GitHub-only/no-resume choices with source2, bounded signed-cookie
@@ -430,6 +438,10 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0193](0193-per-user-machine-pins.md) | superseded | partial | Per-user machine pins and the owner-pin deletion guard |
 | [ADR-0194](0194-marshall-http-security-headers.md) | accepted | partial | Marshall HTTP security headers, no-index and session cookie hardening |
 | [ADR-0195](0195-user-time-zones.md) | accepted | partial | User time zone preference and local-time display |
+| [ADR-0196](0196-single-account-settings-page.md) | accepted | partial | One account settings page |
+| [ADR-0197](0197-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |
+| [ADR-0198](0198-memory-suspension-and-demand-wake.md) | accepted | partial | Memory-preserving suspension, relocation and demand wake |
+| [ADR-0199](0199-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |
 | [ADR-0188](0188-signed-overalls-cachix-substitution.md) | accepted | partial | Use the signed Overalls Cachix cache across Nix machines |
 | [ADR-0187](0187-detached-ingress-bridges.md) | accepted | partial | Detached ingress bridges survive lilly-hostd and Lilly restarts |
@@ -883,5 +895,3 @@ and physical storage acceptance. See the
 [host-lock review](../reviews/2026-10-05-host-lock-descendant-custody.md) and
 [transfer review](../reviews/2026-10-05-transfer-stream-adopted-children.md);
 ADR-0015/0037 retain their statuses and accepted rationale.
-
-| [ADR-0193](0193-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |

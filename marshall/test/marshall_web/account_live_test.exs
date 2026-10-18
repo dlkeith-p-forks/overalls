@@ -36,7 +36,7 @@ defmodule MarshallWeb.AccountLiveTest do
       refute has_element?(view, "#workspace-sidebar a[href='/settings/profile']")
       assert has_element?(view, "#account-local-clock + a.nav-hint[href='/settings#profile']")
 
-      for anchor <- ["profile", "security", "ssh-keys"] do
+      for anchor <- ["profile", "security", "ssh-keys", "git-settings"] do
         assert has_element?(view, "#account-index a[href='##{anchor}']")
 
         assert has_element?(
@@ -45,6 +45,7 @@ defmodule MarshallWeb.AccountLiveTest do
                )
       end
 
+      assert has_element?(view, "#git-settings #git-settings-form #save-git-settings")
       assert has_element?(view, "#profile #profile-account")
       assert has_element?(view, "#profile #time-zone-form")
       assert has_element?(view, "#security #verification-status")

@@ -89,7 +89,8 @@ defmodule MarshallWeb.MachinesLive do
         |> Map.merge(creation_params(params["machine"]))
         |> MachineDefaults.creation_defaults(socket.assigns.catalog.images)
 
-      socket = assign(socket, form: to_form(values, as: :machine), page_title: gettext("Create machine"))
+      socket =
+        assign(socket, form: to_form(values, as: :machine), page_title: gettext("Create machine"))
 
       if connected?(socket) and
            creation_params(params["machine"])["request_key"] != values["request_key"] do
@@ -266,7 +267,10 @@ defmodule MarshallWeb.MachinesLive do
         {:noreply,
          socket
          |> assign(relocation_key: Ash.UUID.generate())
-         |> put_flash(:info, gettext("Relocation requested. A destination is selected automatically."))
+         |> put_flash(
+           :info,
+           gettext("Relocation requested. A destination is selected automatically.")
+         )
          |> refresh()}
 
       {:error, error} ->
@@ -284,7 +288,10 @@ defmodule MarshallWeb.MachinesLive do
         {:ok, _} ->
           {:noreply,
            socket
-           |> put_flash(:info, gettext("Cancellation requested. Cleanup may continue after recovery."))
+           |> put_flash(
+             :info,
+             gettext("Cancellation requested. Cleanup may continue after recovery.")
+           )
            |> refresh()}
 
         {:error, error} ->
@@ -312,7 +319,9 @@ defmodule MarshallWeb.MachinesLive do
            |> assign(relocation_retry_key: Ash.UUID.generate())
            |> put_flash(
              :info,
-             gettext("Destination restart requested. The source copy remains retained until readiness succeeds.")
+             gettext(
+               "Destination restart requested. The source copy remains retained until readiness succeeds."
+             )
            )
            |> refresh()}
 
@@ -339,7 +348,8 @@ defmodule MarshallWeb.MachinesLive do
            actor: socket.assigns.current_user
          ) do
       {:ok, _} ->
-        {:noreply, socket |> share_form() |> put_flash(:info, gettext("Access updated.")) |> refresh()}
+        {:noreply,
+         socket |> share_form() |> put_flash(:info, gettext("Access updated.")) |> refresh()}
 
       {:error, error} ->
         {:noreply, put_flash(socket, :error, error_message(error))}
@@ -360,7 +370,8 @@ defmodule MarshallWeb.MachinesLive do
   def handle_event("grants_first", _, socket),
     do: {:noreply, socket |> assign(grant_cursor: nil) |> refresh()}
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+  def handle_event(_, _, socket),
+    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   defp integer(value) when is_binary(value) and byte_size(value) <= 12, do: Integer.parse(value)
   defp integer(_), do: :error
@@ -502,7 +513,11 @@ defmodule MarshallWeb.MachinesLive do
   defp blank_to_nil(value), do: value
 
   defp profile_options(images) do
-    ordinary = [{gettext("Customer"), "customer"}, {gettext("Standard"), "standard"}, {"OSS", "oss"}]
+    ordinary = [
+      {gettext("Customer"), "customer"},
+      {gettext("Standard"), "standard"},
+      {"OSS", "oss"}
+    ]
 
     if Enum.any?(images, &(&1.id == Marshall.Compute.Profiles.inception_image_id())),
       do: ordinary ++ [{gettext("Inception"), "inception"}],
@@ -512,19 +527,27 @@ defmodule MarshallWeb.MachinesLive do
   @spec profile_description(String.t()) :: String.t()
   defp profile_description("customer"),
     do:
-      gettext("Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent.")
+      gettext(
+        "Private and owner-only. SSH and terminal access; no outbound connections, sharing, web apps, or AI agent."
+      )
 
   defp profile_description("standard"),
     do:
-      gettext("Outbound connections, sharing, web apps, SSH, terminal, and AI agent tools. The agent cannot start child agents.")
+      gettext(
+        "Outbound connections, sharing, web apps, SSH, terminal, and AI agent tools. The agent cannot start child agents."
+      )
 
   defp profile_description("oss"),
     do:
-      gettext("The same network and access options as Standard, with AI agents that can start child agents.")
+      gettext(
+        "The same network and access options as Standard, with AI agents that can start child agents."
+      )
 
   defp profile_description("inception"),
     do:
-      gettext("A Overalls development environment for nested machines. It uses a dedicated image, an extra 256 GiB data disk, and higher resource minimums. Its AI agent can start child agents.")
+      gettext(
+        "A Overalls development environment for nested machines. It uses a dedicated image, an extra 256 GiB data disk, and higher resource minimums. Its AI agent can start child agents."
+      )
 
   defp share_form(socket),
     do:
@@ -582,7 +605,8 @@ defmodule MarshallWeb.MachinesLive do
 
     messages = [
       insufficient_capacity: gettext("There is not enough available capacity for this machine."),
-      image_unavailable: gettext("This image is no longer available. Refresh and choose another image."),
+      image_unavailable:
+        gettext("This image is no longer available. Refresh and choose another image."),
       image_requirements_not_met: gettext("The selected image needs more memory or disk space."),
       host_unavailable: gettext("This machine's host is currently unavailable."),
       recipient_not_registered: gettext("No registered account matches that email address."),
@@ -590,7 +614,8 @@ defmodule MarshallWeb.MachinesLive do
       forbidden: gettext("You no longer have permission for this action."),
       vm_deleted: gettext("This machine is being deleted."),
       machine_pinned: gettext("Unpin this machine before deleting it."),
-      idempotency_conflict: gettext("This request has already been used. Refresh before trying again.")
+      idempotency_conflict:
+        gettext("This request has already been used. Refresh before trying again.")
     ]
 
     Enum.find_value(
@@ -613,7 +638,6 @@ defmodule MarshallWeb.MachinesLive do
       checking_destination: gettext("Checking destination readiness"),
       activation_failed: gettext("Destination boot failed; source copy retained"),
       readiness_failed: gettext("Destination readiness failed; source copy retained"),
-      retrying_destination: gettext("Restarting the destination; source copy retained"),
       source_cleanup: gettext("Destination ready; cleaning up the source"),
       restoring_source: gettext("Cancelling and restoring the source"),
       cancelled_cleanup: gettext("Source restored; destination cleanup pending"),
@@ -640,7 +664,10 @@ defmodule MarshallWeb.MachinesLive do
       now={@now}
     >
       <section :if={@live_action == :index} class="stack">
-        <UI.heading title={gettext("Machines")} subtitle={gettext("Your development environments, personal and shared.")}>
+        <UI.heading
+          title={gettext("Machines")}
+          subtitle={gettext("Your development environments, personal and shared.")}
+        >
           <:actions>
             <.link id="create-machine" navigate={~p"/machines/new"} class="console-button primary">
               {gettext("+ Create machine")}
@@ -649,11 +676,15 @@ defmodule MarshallWeb.MachinesLive do
         </UI.heading>
         <p id="available-capacity" class="capacity-summary muted">
           <span :if={@catalog_available && @catalog.capacity_known}>
-            {gettext("Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk", value1: @catalog.available.vcpu, value2: gib(@catalog.available.memory_bytes), value3: gib(
-              @catalog.available.disk_bytes
-            ))}
+            {gettext("Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk",
+              value1: @catalog.available.vcpu,
+              value2: gib(@catalog.available.memory_bytes),
+              value3: gib(@catalog.available.disk_bytes)
+            )}
           </span>
-          <span :if={!@catalog_available || !@catalog.capacity_known}>{gettext("Current headroom is temporarily unavailable.")}</span>
+          <span :if={!@catalog_available || !@catalog.capacity_known}>{gettext(
+            "Current headroom is temporarily unavailable."
+          )}</span>
         </p>
         <p :if={@empty} id="machines-empty" class="empty-state">
           {gettext("No machines on this page. Create a machine or ask an owner to share access.")}
@@ -684,10 +715,18 @@ defmodule MarshallWeb.MachinesLive do
                 </td>
                 <td data-label={gettext("Status")}>
                   <UI.pinned_label vm={vm} id={"machine-pinned-#{vm.id}"} />
-                  <span class="status-label" data-state={vm.observed_state}>{state(vm)}</span>
+                  <span
+                    class="status-label"
+                    data-state={vm.observed_state}
+                    data-tone={UI.machine_tone(vm)}
+                  >{state(vm)}</span>
                 </td>
                 <td class="resource-values" data-label={gettext("Resources")}>
-                  {gettext("%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk", value1: vm.vcpu, value2: gib(vm.memory_bytes), value3: gib(vm.disk_bytes))}
+                  {gettext("%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk",
+                    value1: vm.vcpu,
+                    value2: gib(vm.memory_bytes),
+                    value3: gib(vm.disk_bytes)
+                  )}
                 </td>
                 <td data-label={gettext("Profile")}>{label(vm.profile)}</td>
                 <td id={"machine-host-#{vm.id}"} class="nowrap" data-label={gettext("Host")}>
@@ -710,14 +749,20 @@ defmodule MarshallWeb.MachinesLive do
                 <td data-label={gettext("Connect")}>
                   <div class="machine-open-actions">
                     <.link
-                      :if={vm.desired_state == :running && vm.observed_state == :running}
+                      :if={
+                        vm.desired_state in [:running, :paused] &&
+                          vm.observed_state in [:running, :paused]
+                      }
                       navigate={~p"/machines/#{vm.id}/terminals"}
                       id={"machine-terminal-#{vm.id}"}
                       class="console-button"
                       aria-label={gettext("Open terminal for %{value1}", value1: vm.name)}
                     >{gettext("Open terminal")}</.link>
                     <span
-                      :if={vm.desired_state != :running || vm.observed_state != :running}
+                      :if={
+                        vm.desired_state not in [:running, :paused] ||
+                          vm.observed_state not in [:running, :paused]
+                      }
                       class="muted"
                     >{gettext("Terminal unavailable")}</span>
                     <UI.machine_editor_action vm={vm} id_prefix="machine" />
@@ -730,7 +775,9 @@ defmodule MarshallWeb.MachinesLive do
         </div>
         <nav class="row" aria-label={gettext("Machine pages")}>
           <.link :if={@cursor} patch={~p"/machines"} id="machines-first">{gettext("← First page")}</.link>
-          <.link :if={@next_cursor} patch={~p"/machines?#{%{after: @next_cursor}}"} id="machines-next">{gettext("Next page →")}</.link>
+          <.link :if={@next_cursor} patch={~p"/machines?#{%{after: @next_cursor}}"} id="machines-next">{gettext(
+            "Next page →"
+          )}</.link>
         </nav>
       </section>
       <section :if={@live_action == :new} class="creation-page stack">
@@ -752,9 +799,11 @@ defmodule MarshallWeb.MachinesLive do
             {gettext("No images are available on ready hosts right now.")}
           </p>
           <p :if={@catalog_available && @catalog.capacity_known} class="capacity-summary muted">
-            {gettext("Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk", value1: @catalog.available.vcpu, value2: gib(@catalog.available.memory_bytes), value3: gib(
-              @catalog.available.disk_bytes
-            ))}
+            {gettext("Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk",
+              value1: @catalog.available.vcpu,
+              value2: gib(@catalog.available.memory_bytes),
+              value3: gib(@catalog.available.disk_bytes)
+            )}
           </p>
           <.form
             for={@form}
@@ -791,7 +840,9 @@ defmodule MarshallWeb.MachinesLive do
             />
             <div id="profile-guide" class="profile-guide">
               <p class="muted">
-                {gettext("Profiles choose access and agent features. Machines remain isolated from one another.")}
+                {gettext(
+                  "Profiles choose access and agent features. Machines remain isolated from one another."
+                )}
               </p>
               <dl class="kv">
                 <div
@@ -838,7 +889,9 @@ defmodule MarshallWeb.MachinesLive do
                 field={@form[:disk_gib]}
                 type="number"
                 label={
-                  if @form[:profile].value == "inception", do: gettext("Root disk (GiB)"), else: gettext("Disk (GiB)")
+                  if @form[:profile].value == "inception",
+                    do: gettext("Root disk (GiB)"),
+                    else: gettext("Disk (GiB)")
                 }
                 min={if @form[:profile].value == "inception", do: 64, else: 2}
                 max={OverallsProtocol.VMShape.maximum_disk_gib()}
@@ -849,7 +902,11 @@ defmodule MarshallWeb.MachinesLive do
             <div id="creation-summary" class="creation-summary panel dashed">
               <h3>{gettext("Ready when you are")}</h3>
               <p>
-                {gettext("%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk", value1: @form[:vcpu].value, value2: @form[:memory_mib].value, value3: @form[:disk_gib].value)}
+                {gettext("%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk",
+                  value1: @form[:vcpu].value,
+                  value2: @form[:memory_mib].value,
+                  value3: @form[:disk_gib].value
+                )}
               </p>
               <p class="muted">{gettext("Your disk stays with you when the machine is stopped.")}</p>
             </div>
@@ -890,8 +947,12 @@ defmodule MarshallWeb.MachinesLive do
               <span id="machine-operating-system">{UI.operating_system(@vm) || gettext("Unavailable")}</span>
             </:item>
             <:item title={gettext("CPU")}>{gettext("%{value1} vCPU", value1: @vm.vcpu)}</:item>
-            <:item title={gettext("Memory")}>{gettext("%{value1} GiB", value1: gib(@vm.memory_bytes))}</:item>
-            <:item title={gettext("Disk")}>{gettext("%{value1} GiB", value1: gib(@vm.disk_bytes))}</:item>
+            <:item title={gettext("Memory")}>
+              {gettext("%{value1} GiB", value1: gib(@vm.memory_bytes))}
+            </:item>
+            <:item title={gettext("Disk")}>
+              {gettext("%{value1} GiB", value1: gib(@vm.disk_bytes))}
+            </:item>
             <:item title={gettext("Host")}>
               <code id="machine-host">{@vm.host || gettext("Unavailable")}</code>
             </:item>
@@ -907,7 +968,9 @@ defmodule MarshallWeb.MachinesLive do
           {gettext("Management access is required to change the remaining settings.")}
         </p>
         <p :if={@vm.profile == :customer} id="customer-isolation" class="muted">
-          {gettext("Customer machines allow only owner SSH and terminal access. Outbound networking, workspace sharing, and web service exposure are disabled.")}
+          {gettext(
+            "Customer machines allow only owner SSH and terminal access. Outbound networking, workspace sharing, and web service exposure are disabled."
+          )}
         </p>
         <section
           :if={
@@ -945,7 +1008,9 @@ defmodule MarshallWeb.MachinesLive do
                         now={@now}
                       />
                     </td>
-                    <td data-label={gettext("Role")}><span class="status-label">{gettext("Owner")}</span></td>
+                    <td data-label={gettext("Role")}>
+                      <span class="status-label">{gettext("Owner")}</span>
+                    </td>
                     <td data-label={gettext("Allows")} class="muted">
                       {gettext("Everything; cannot be changed here.")}
                     </td>
@@ -985,7 +1050,9 @@ defmodule MarshallWeb.MachinesLive do
           <.form for={@access_form} id="sharing-form" phx-submit="share" class="panel stack">
             <h2>{gettext("Grant, change or remove access")}</h2>
             <p class="muted">
-              {gettext("The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant.")}
+              {gettext(
+                "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
+              )}
             </p>
             <.input field={@access_form[:request_key]} type="hidden" />
             <div class="grid">
@@ -1037,13 +1104,19 @@ defmodule MarshallWeb.MachinesLive do
                 id="relocate-machine"
                 phx-click="relocate"
                 phx-disable-with={gettext("Requesting…")}
-                data-confirm={gettext("Move this machine to an automatically selected host? The machine may be briefly unavailable.")}
+                data-confirm={
+                  gettext(
+                    "Move this machine to an automatically selected host? The machine may be briefly unavailable."
+                  )
+                }
               >
                 {gettext("Move to another host")}
               </Layouts.action>
             </:actions>
             <p id="relocation-network-note" class="muted">
-              {gettext("The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production.")}
+              {gettext(
+                "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
+              )}
             </p>
             <div :if={@vm.relocation} id="relocation-status" class="stack" aria-live="polite">
               <.kv>
@@ -1058,10 +1131,17 @@ defmodule MarshallWeb.MachinesLive do
                 <:item :if={@vm.relocation.downtime} title={gettext("Observed downtime")}>
                   <span
                     id="relocation-downtime"
-                    title={gettext("Measured between control-plane stop and readiness observations; guest availability may differ.")}
+                    title={
+                      gettext(
+                        "Measured between control-plane stop and readiness observations; guest availability may differ."
+                      )
+                    }
                   >
-                    {gettext("%{seconds} seconds%{suffix}", seconds: @vm.relocation.downtime.seconds,
-                      suffix: if(@vm.relocation.downtime.ongoing, do: gettext(" and counting"), else: ""))}
+                    {gettext("%{seconds} seconds%{suffix}",
+                      seconds: @vm.relocation.downtime.seconds,
+                      suffix:
+                        if(@vm.relocation.downtime.ongoing, do: gettext(" and counting"), else: "")
+                    )}
                   </span>
                 </:item>
               </.kv>
@@ -1097,7 +1177,9 @@ defmodule MarshallWeb.MachinesLive do
             </header>
             <div class="panel-body">
               <p>
-                {gettext("Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins.")}
+                {gettext(
+                  "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
+                )}
               </p>
               <.form
                 for={@clone_form}

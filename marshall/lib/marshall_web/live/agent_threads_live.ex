@@ -50,7 +50,8 @@ defmodule MarshallWeb.AgentThreadsLive do
          |> refresh()}
 
       _ ->
-        {:noreply, assign(socket, notice: gettext("The machine or your access is no longer available."))}
+        {:noreply,
+         assign(socket, notice: gettext("The machine or your access is no longer available."))}
     end
   end
 
@@ -164,7 +165,12 @@ defmodule MarshallWeb.AgentThreadsLive do
               phx-submit="child"
               class="stack"
             >
-              <.input field={@child_form[:title]} label={gettext("Child thread")} maxlength="256" required />
+              <.input
+                field={@child_form[:title]}
+                label={gettext("Child thread")}
+                maxlength="256"
+                required
+              />
               <button type="submit" class="console-button">{gettext("Create child")}</button>
             </.form>
           </nav>
@@ -190,10 +196,16 @@ defmodule MarshallWeb.AgentThreadsLive do
                 required
               />
               <input type="hidden" name="prompt[key]" value={@prompt_form[:key].value} />
-              <button type="submit" class="console-button primary" phx-disable-with={gettext("Sending…")}>{gettext("Send prompt")}</button>
+              <button
+                type="submit"
+                class="console-button primary"
+                phx-disable-with={gettext("Sending…")}
+              >{gettext("Send prompt")}</button>
             </.form>
             <p :if={@vm && !@vm.permissions.write} class="muted">
-              {gettext("You can read these threads. Ask for operator or manager access to send prompts.")}
+              {gettext(
+                "You can read these threads. Ask for operator or manager access to send prompts."
+              )}
             </p>
           </div>
         </div>

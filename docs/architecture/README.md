@@ -1,6 +1,15 @@
 # Architecture
 
-[ADR-0193](decisions/0193-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
+[ADR-0198](decisions/0198-memory-suspension-and-demand-wake.md) accepts
+memory-preserving suspension, paused relocation and demand wake with automatic
+capacity relocation. New thread/Orb machines use a four-hour tool-idle policy;
+owner pins wake and prevent automatic suspension. Checkpoints retain immutable
+RAM backing independently of disk clones/backups, and authorized connections
+wait through fenced restore or one fleet-gateway relay hop. Implementation and
+native acceptance remain partial in the
+[suspension review](reviews/2026-10-18-memory-suspension.md).
+
+[ADR-0199](decisions/0199-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0188](decisions/0188-signed-overalls-cachix-substitution.md) adds the
 signed Overalls Cachix read cache to all Nix-running hosts, installers and guest
@@ -1029,11 +1038,12 @@ and local lookup checks, three-frontend HTTP issuance/renewal, Route 53 and
 service-role regressions pass; acceptance scope is tracked in the
 [HTTP-01 review](reviews/2026-09-17-http01-validation.md).
 
-Accepted [ADR-0155](decisions/0155-stopped-only-relocation.md) now makes every
-relocation one stopped full copy: probe-gated stop of a running source, one
-`lilly-b` full stream, adoption, fenced handoff, readiness, then source cleanup.
-Pre-copy, baseline/incremental streams and temporary relocation headroom are
-removed; the pre-copy history below is retained as historical evidence only.
+[ADR-0198](decisions/0198-memory-suspension-and-demand-wake.md) replaces
+ADR-0155's stopped-source reboot with pause, coherent full disk/checkpoint
+transfer and same-memory resume. Already paused machines remain paused after
+an explicit move; stopped machines remain disk-only moves. There is no live
+pre-copy. Historical stopped-copy and pre-copy implementation evidence below
+retains its original revision and does not qualify memory continuation.
 
 Superseded [ADR-0037](decisions/0037-workload-placement-and-relocation.md) accepted explicit
 placement-based relocation through Oban, ZFS pre-copy, restricted per-relocation

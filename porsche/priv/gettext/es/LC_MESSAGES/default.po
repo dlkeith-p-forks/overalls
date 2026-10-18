@@ -46,14 +46,16 @@ msgstr "Cancelar una solicitud de clonación no publicada o de reubicación no c
 msgid "Start a machine."
 msgstr "Iniciar una máquina."
 
-msgid "Stop a machine, retaining its disk."
-msgstr "Detener una máquina y conservar su disco."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
 
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
 msgstr "Eliminar una máquina y su disco. Se rechaza mientras su propietario la tenga fijada."
 
-msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
-msgstr "Fijar una máquina al principio de sus listas. Mientras sea su propietario y esté fijada, nada podrá eliminarla."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 
 msgid "Remove your pin from a machine."
 msgstr "Quitar su fijación de una máquina."
@@ -201,3 +203,15 @@ msgstr "Solicitud %{id}: enviando"
 
 msgid "Request %{id}: waiting for completion"
 msgstr "Solicitud %{id}: esperando a que finalice"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

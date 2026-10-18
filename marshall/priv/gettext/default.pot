@@ -4294,11 +4294,6 @@ msgstr ""
 msgid "Restarting"
 msgstr ""
 
-#: lib/marshall_web/live/machines_live.ex:616
-#, elixir-autogen, elixir-format
-msgid "Restarting the destination; source copy retained"
-msgstr ""
-
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:427
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
@@ -6868,4 +6863,95 @@ msgstr ""
 #: lib/marshall_web/live/threads_live.ex:2196
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
+msgstr ""
+
+#: lib/marshall_web/live/account_live.ex:732
+#, elixir-autogen, elixir-format
+msgid "4. Git identity"
+msgstr ""
+
+#: lib/marshall_web/live/account_live.ex:750
+#, elixir-autogen, elixir-format
+msgid "Add Overalls commit attribution"
+msgstr ""
+
+#: lib/marshall_web/live/account_live.ex:250
+#, elixir-autogen, elixir-format
+msgid "Enter a valid Git name and email address."
+msgstr ""
+
+#: lib/marshall_web/live/account_live.ex:743
+#, elixir-autogen, elixir-format
+msgid "Git email"
+msgstr ""
+
+#: lib/marshall_web/live/account_live.ex:449
+#, elixir-autogen, elixir-format
+msgid "Git identity"
+msgstr ""
+
+#: lib/marshall_web/live/account_live.ex:758
+#, elixir-autogen, elixir-format
+msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr ""
+
+#: lib/marshall_web/live/account_live.ex:246
+#, elixir-autogen, elixir-format
+msgid "Git settings saved."
+msgstr ""
+
+#: lib/marshall_web/live/account_live.ex:736
+#, elixir-autogen, elixir-format
+msgid "Git username"
+msgstr ""
+
+#: lib/marshall_web/live/terminal_live.ex:308
+#, elixir-autogen, elixir-format
+msgid "Machine is paused. Resume it or reopen this terminal page."
+msgstr ""
+
+#: lib/marshall_web/components/workspace_components.ex:328
+#, elixir-autogen, elixir-format
+msgid "Pause"
+msgstr ""
+
+#: lib/marshall_web/components/workspace_components.ex:82
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr ""
+
+#: lib/marshall_web/components/workspace_components.ex:319
+#, elixir-autogen, elixir-format
+msgid "Resume machine"
+msgstr ""
+
+#: lib/marshall_web/components/workspace_components.ex:72
+#, elixir-autogen, elixir-format
+msgid "Resuming"
+msgstr ""
+
+#: lib/marshall_web/live/terminal_live.ex:110
+#: lib/marshall_web/live/terminal_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Resuming machine; waiting for capacity…"
+msgstr ""
+
+#: lib/marshall_web/live/account_live.ex:763
+#, elixir-autogen, elixir-format
+msgid "Save Git settings"
+msgstr ""
+
+#: lib/marshall_web/components/workspace_components.ex:70
+#, elixir-autogen, elixir-format
+msgid "Suspending"
+msgstr ""
+
+#: lib/marshall_web/live/account_live.ex:753
+#, elixir-autogen, elixir-format
+msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr ""
+
+#: lib/marshall_web/live/account_live.ex:450
+#, elixir-autogen, elixir-format
+msgid "new machines and commit attribution"
 msgstr ""

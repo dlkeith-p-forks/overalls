@@ -43,6 +43,68 @@ defmodule FleetRelocationGuest do
     :ok
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] interrupted-capture-native-boundary
+  # This privileged fixture MUST use real local records and the caller's queued
+  # Marshall pause revision. It MUST journal capturing then pause the confined
+  # VMM, without creating or publishing snapshot bytes. Only a later explicit
+  # terminal lifecycle command may discard this interrupted continuation.
+  def run("interrupted-capture", placement, revision) when is_binary(revision) do
+    alias Lilly.VM.{API, Boot, Checkpoint, Intent, Jail, Observation, Spec}
+    true = OverallsProtocol.uuid?(placement)
+    [epoch, generation] = revision |> String.split(":") |> Enum.map(&String.to_integer/1)
+    true = epoch > 0 and generation > 0
+    {:ok, config} = Lilly.Control.Config.load("/run/lilly-release/config.json")
+    directory = Path.join(config.execution.state_dir, placement)
+    {:ok, lock} = Lilly.Host.Lock.acquire(Path.join(directory, "lock"), 2_000)
+
+    try do
+      {:ok, bytes} = Lilly.Host.PrivateFiles.read_secret(Path.join(directory, "vm.json"))
+      %{"pool_path" => pool_path, "spec" => wire} = JSON.decode!(bytes)
+      pool = Enum.find(config.pools, &(&1.path == pool_path))
+      true = not is_nil(pool)
+
+      profile =
+        Enum.find(
+          [:customer, :standard, :oss, :inception],
+          &(Atom.to_string(&1) == wire["profile"])
+        )
+
+      true = not is_nil(profile)
+      fields = [:id, :image_id, :pool_id, :slot, :vcpu, :memory_bytes, :disk_bytes]
+      shape = Map.new(fields, &{&1, Map.fetch!(wire, Atom.to_string(&1))})
+      {:ok, spec} = Spec.new(Map.put(shape, :profile, profile))
+      true = spec.id == placement and spec.pool_id == pool.id
+      {:ok, _} = Observation.check_state(config.execution, pool, spec, [:running])
+      {:ok, boot} = Boot.read(directory)
+      {:ok, intent} = Intent.set(directory, placement, {epoch, generation}, :paused)
+
+      authority =
+        intent
+        |> Map.take([:placement_id, :execution_epoch, :generation])
+        |> Map.new(fn {key, value} -> {Atom.to_string(key), value} end)
+
+      {:ok, compatibility} = Checkpoint.compatibility(config.execution.firecracker)
+      {:ok, _} = Checkpoint.begin_capture(pool, spec, boot, authority, compatibility)
+      :ok = API.pause(Path.join(Jail.root(pool, spec), "api.sock"))
+      {:ok, _} = Observation.check_state(config.execution, pool, spec, [:paused])
+
+      {:ok, %{"phase" => "capturing", "descriptor" => nil, "capture_authority" => ^authority}} =
+        Checkpoint.read(pool, placement)
+
+      true =
+        Enum.all?(["a", "b"], fn slot ->
+          root = Path.join([pool.path, ".lilly-checkpoints", placement, slot, "output"])
+
+          not File.exists?(Path.join(root, "memory")) and
+            not File.exists?(Path.join(root, "state"))
+        end)
+
+      :ok
+    after
+      Lilly.Host.Lock.release(lock)
+    end
+  end
+
   def run(action, placement, peer) do
     Process.put(:fixture_stage, :connect)
     true = OverallsProtocol.uuid?(placement)

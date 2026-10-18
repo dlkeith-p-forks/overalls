@@ -46,14 +46,16 @@ msgstr "ప్రచురించని క్లోన్ లేదా ఖర
 msgid "Start a machine."
 msgstr "యంత్రాన్ని ప్రారంభించండి."
 
-msgid "Stop a machine, retaining its disk."
-msgstr "డిస్క్‌ను ఉంచి యంత్రాన్ని ఆపండి."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
 
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
 msgstr "యంత్రాన్ని, దాని డిస్క్‌ను తొలగించండి. యజమాని పిన్ చేసి ఉంచితే నిరాకరించబడుతుంది."
 
-msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
-msgstr "యంత్రాన్ని మీ జాబితాల పైభాగంలో పిన్ చేయండి. మీరు యజమానిగా ఉండి అది పిన్ చేసి ఉన్నంతవరకు దానిని ఏదీ తొలగించలేదు."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 
 msgid "Remove your pin from a machine."
 msgstr "యంత్రంపై మీ పిన్‌ను తీసివేయండి."
@@ -201,3 +203,15 @@ msgstr "అభ్యర్థన %{id}: సమర్పిస్తోంది"
 
 msgid "Request %{id}: waiting for completion"
 msgstr "అభ్యర్థన %{id}: పూర్తయ్యే వరకు వేచి ఉంది"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

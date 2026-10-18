@@ -1,5 +1,27 @@
 # Security boundaries and sensitive operations
 
+## Memory suspension and wake authority
+
+Suspension adds sensitive RAM storage and continuation authority. Checkpoint
+memory, manifests and hashes never enter ordinary diagnostics, backup/clone
+streams or public capabilities. Exact image/VMM/device and CPU/KVM compatibility
+must be proven before loading; guest continuation uses the captured boot tuple
+inside a separately fenced current placement/epoch. A durable consumed marker
+precedes possible execution, and ambiguous execution forbids replay.
+
+Wake admission follows identity and fresh authorization, then durable demand,
+capacity admission and physical readiness, and a fresh connection grant. A pin
+never grants access. Waiters renew authority; revoked keys, sessions or
+publications must stop waiting. Relay capabilities are single-use and bound to
+both current gateways and the exact admitted stream over fleet transport.
+Disabled, retired or stale origins cannot admit demand or consume/renew relay
+authority. Caller input cannot choose arbitrary upstream hosts or ports.
+
+BEAM properties establish admission, coalescing and refusals. Native RAM
+continuity, filesystem coherence and multi-node availability need separately
+recorded machine evidence in the
+[suspension review](repo:docs/architecture/reviews/2026-10-18-memory-suspension.md).
+
 ## Locale is presentation, not authority
 
 Language headers and session values are untrusted, bounded and validated against the supported locale set. Only the current user may persist their override; reset restores browser negotiation. Neither locale nor text direction changes login, Cedar, execution fences, storage ownership or recovery authority. The Porsche envelope carries a canonical locale for human prose, with English fallback for older peers; machine identifiers and terminal byte streams stay unchanged. Bidi isolation protects interpolated identifiers from misleading direction changes. See [ADR-0197](repo:docs/architecture/decisions/0197-localized-human-surfaces.md); native/browser execution and linguistic review remain gaps until recorded.

@@ -62,7 +62,8 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
         {:noreply, assign(socket, :capacity, capacity)}
 
       _ ->
-        {:noreply, put_flash(socket, :error, gettext("Capacity information is temporarily unavailable."))}
+        {:noreply,
+         put_flash(socket, :error, gettext("Capacity information is temporarily unavailable."))}
     end
   end
 
@@ -80,11 +81,16 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
              },
              actor: socket.assigns.current_user
            ) do
-      {:noreply, put_flash(socket, :info, gettext("Admission settings updated.")) |> refresh(false)}
+      {:noreply,
+       put_flash(socket, :info, gettext("Admission settings updated.")) |> refresh(false)}
     else
       _ ->
         {:noreply,
-         put_flash(socket, :error, gettext("Admission settings were invalid or the node is not ready."))}
+         put_flash(
+           socket,
+           :error,
+           gettext("Admission settings were invalid or the node is not ready.")
+         )}
     end
   end
 
@@ -135,7 +141,8 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
     end
   end
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+  def handle_event(_, _, socket),
+    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   defp respond(socket, {:ok, _}) do
     {:noreply,
@@ -149,7 +156,10 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
     do:
       {:noreply,
        socket
-       |> put_flash(:error, gettext("Could not accept this change. Refresh and check the workload state."))
+       |> put_flash(
+         :error,
+         gettext("Could not accept this change. Refresh and check the workload state.")
+       )
        |> refresh(false)}
 
   # @cc [owner:ghuntley,label:capacity;product] maintenance-view-read-cadence
@@ -222,9 +232,15 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
         <UI.heading
           :if={is_nil(@host_id)}
           title={gettext("Node maintenance")}
-          subtitle={gettext("Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service.")}
+          subtitle={
+            gettext(
+              "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
+            )
+          }
         />
-        <p :if={@unavailable?} role="alert" class="error">{gettext("Node information is unavailable.")}</p>
+        <p :if={@unavailable?} role="alert" class="error">
+          {gettext("Node information is unavailable.")}
+        </p>
         <div :if={is_nil(@host_id)} class="table-flow">
           <table>
             <thead>
@@ -256,7 +272,9 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
           <header class="page-heading ident">
             <div>
               <h1>{@node.name}</h1>
-              <p>{gettext("Lilly node · %{mode} maintenance", mode: label(@node.maintenance_mode))}</p>
+              <p>
+                {gettext("Lilly node · %{mode} maintenance", mode: label(@node.maintenance_mode))}
+              </p>
             </div>
           </header>
           <UI.panel id="node-summary" title={gettext("Node")}>
@@ -264,16 +282,24 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
               <:item title={gettext("Maintenance")}>
                 <span class="status-label">{label(@node.maintenance_mode)}</span>
               </:item>
-              <:item title={gettext("Admission")}>{if @node.enabled, do: gettext("Enabled"), else: gettext("Excluded")}</:item>
+              <:item title={gettext("Admission")}>
+                {if @node.enabled, do: gettext("Enabled"), else: gettext("Excluded")}
+              </:item>
               <:item title={gettext("Report")}>
                 {if @node.fresh, do: gettext("Fresh report"), else: gettext("Stale or unknown report")}
               </:item>
             </.kv>
             <p id="terminal-stream-health" class="muted">
-              {gettext("Terminal protocol: %{protocol} · Local stream: %{state}", protocol: Map.get(@node, :terminal_protocol, gettext("Unknown")), state: if(@node.terminal_stream_ready, do: gettext("ready"), else: gettext("unavailable")))}
+              {gettext("Terminal protocol: %{protocol} · Local stream: %{state}",
+                protocol: Map.get(@node, :terminal_protocol, gettext("Unknown")),
+                state:
+                  if(@node.terminal_stream_ready, do: gettext("ready"), else: gettext("unavailable"))
+              )}
             </p>
             <p class="muted">
-              {gettext("Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload.")}
+              {gettext(
+                "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
+              )}
             </p>
             <div class="row actions">
               <button id="preview-evacuation" phx-click="preview" class="console-button">
@@ -289,14 +315,24 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 }
                 id="start-evacuation"
                 phx-click="evacuate"
-                data-confirm={gettext("Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval.")}
+                data-confirm={
+                  gettext(
+                    "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
+                  )
+                }
                 class="console-button primary"
               >{gettext("Start evacuation")}</button>
             </div>
           </UI.panel>
-          <UI.panel :if={@capacity} id="capacity-details-panel" title={gettext("Capacity explanation")}>
+          <UI.panel
+            :if={@capacity}
+            id="capacity-details-panel"
+            title={gettext("Capacity explanation")}
+          >
             <p class="muted">
-              {gettext("Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission.")}
+              {gettext(
+                "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
+              )}
             </p>
             <.kv>
               <:item title={gettext("Admission")}>
@@ -323,7 +359,9 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                     <span class="field-label">{gettext("Admission")}</span>
                     <span class="select">
                       <select name="enabled">
-                        <option value="true" selected={@capacity.admission_enabled}>{gettext("enabled")}</option>
+                        <option value="true" selected={@capacity.admission_enabled}>
+                          {gettext("enabled")}
+                        </option>
                         <option value="false" selected={not @capacity.admission_enabled}>
                           {gettext("excluded")}
                         </option>
@@ -355,7 +393,9 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 </div>
               </div>
               <div class="row actions">
-                <button class="console-button primary" type="submit">{gettext("Apply admission settings")}</button>
+                <button class="console-button primary" type="submit">{gettext(
+                  "Apply admission settings"
+                )}</button>
               </div>
             </form>
             <div class="table-flow">
@@ -376,7 +416,9 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 <tbody>
                   <tr :for={pool <- @capacity.pools}>
                     <td><code>{pool.name}</code></td>
-                    <td class="muted">{if pool.fresh, do: gettext("Fresh"), else: gettext("Stale or unknown")}</td>
+                    <td class="muted">
+                      {if pool.fresh, do: gettext("Fresh"), else: gettext("Stale or unknown")}
+                    </td>
                     <td class="num">
                       {quantity(pool.budget.measured_cpu_headroom_millicores, "mCPU")}
                     </td>
@@ -401,7 +443,9 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
             </:actions>
             <p class="break muted">{gettext("Campaign")} <code>{@campaign.id}</code></p>
             <p class="muted">
-              {gettext("Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient.")}
+              {gettext(
+                "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
+              )}
             </p>
             <div class="row actions">
               <button
@@ -430,14 +474,22 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 id="retire-node"
                 phx-click="control"
                 phx-value-command="retire"
-                data-confirm={gettext("Permanently retire this empty node and revoke its credentials?")}
+                data-confirm={
+                  gettext("Permanently retire this empty node and revoke its credentials?")
+                }
                 class="console-button danger"
               >{gettext("Retire node")}</button>
             </div>
           </UI.panel>
-          <UI.panel :if={@timeline != []} id="evacuation-timeline" title={gettext("Evacuation timeline")}>
+          <UI.panel
+            :if={@timeline != []}
+            id="evacuation-timeline"
+            title={gettext("Evacuation timeline")}
+          >
             <p class="muted">
-              {gettext("Campaign, workload and relocation milestones from durable control-plane records.")}
+              {gettext(
+                "Campaign, workload and relocation milestones from durable control-plane records."
+              )}
             </p>
             <div class="table-flow">
               <table>
@@ -454,10 +506,13 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                     <td>{label(event.kind)}</td>
                     <td class="muted break">
                       <span :if={event.vm_id}>{gettext("VM")} <code>{event.vm_id}</code></span>
-                      <span :if={event.relocation_id}>{gettext("move")} <code>{event.relocation_id}</code></span>
-                      <span :if={event[:campaign_id]}>{gettext("campaign")} <code>{event[:campaign_id]}</code></span>
+                      <span :if={event.relocation_id}>{gettext("move")}
+                      <code>{event.relocation_id}</code></span>
+                      <span :if={event[:campaign_id]}>{gettext("campaign")}
+                      <code>{event[:campaign_id]}</code></span>
                       <span :if={event.kind == :job_state}>
-                        {gettext("job")} <code>{event.job_id}</code> · {event.state} · {gettext("attempt %{attempt}", attempt: event.attempt)}
+                        {gettext("job")} <code>{event.job_id}</code>
+                        · {event.state} · {gettext("attempt %{attempt}", attempt: event.attempt)}
                       </span>
                     </td>
                   </tr>
@@ -504,7 +559,9 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
             </div>
           </UI.panel>
           <p :if={@preview?} id="evacuation-preview-note" class="panel dashed">
-            {gettext("Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins.")}
+            {gettext(
+              "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
+            )}
           </p>
           <div id="evacuation-workloads" phx-update="stream" class="stack">
             <article :for={{dom_id, row} <- @streams.workloads} id={dom_id} class="panel">
@@ -532,11 +589,13 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 </p>
               </div>
               <div :if={row.preview}>
-                <p :if={row.preview[:blocker]}>{gettext("Preview: %{blocker}", blocker: label(row.preview.blocker))}</p>
+                <p :if={row.preview[:blocker]}>
+                  {gettext("Preview: %{blocker}", blocker: label(row.preview.blocker))}
+                </p>
                 <p :if={row.preview[:destination_name]}>
                   Candidate: {row.preview.destination_name}<span :if={
                     row.preview.downtime_approval_required
-                  }> {gettext("· Downtime approval required")}</span>
+                  }>{gettext("· Downtime approval required")}</span>
                 </p>
               </div>
               <div :if={row.item && is_nil(row.item.resolved_at)} class="row actions">
@@ -550,17 +609,27 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                   phx-click="approve"
                   phx-value-id={row.item.id}
                   phx-value-key={row.item.request_key}
-                  data-confirm={gettext("Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime.")}
+                  data-confirm={
+                    gettext(
+                      "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
+                    )
+                  }
                   class="console-button"
                 >{gettext("Approve move downtime")}</button>
-                <span :if={row.item.approved_at} class="muted">{gettext("Downtime approved for this workload revision")}</span>
+                <span :if={row.item.approved_at} class="muted">{gettext(
+                  "Downtime approved for this workload revision"
+                )}</span>
                 <button
                   :if={@admin_authorized and (is_nil(row.progress) or not row.progress.active)}
                   id={"replan-#{row.item.id}"}
                   phx-click="replan"
                   phx-value-id={row.item.id}
                   phx-value-key={row.item.request_key}
-                  data-confirm={gettext("Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared.")}
+                  data-confirm={
+                    gettext(
+                      "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
+                    )
+                  }
                   class="console-button"
                 >{gettext("Re-plan workload")}</button>
               </div>

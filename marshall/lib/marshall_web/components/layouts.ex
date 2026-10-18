@@ -177,8 +177,8 @@ defmodule MarshallWeb.Layouts do
 
   # @cc [owner:ghuntley,label:product] signed-in-account-navigation
   # The "Your account" tree MUST open with one Account entry (#nav-account,
-  # /settings) that covers profile, sign-in passkeys and SSH keys, followed by
-  # AI usage (#nav-usage, /usage); the account menu MUST show the viewer's local
+  # /settings) that covers profile, sign-in passkeys, SSH keys and Git preferences,
+  # followed by AI usage (#nav-usage, /usage); the account menu MUST show the viewer's local
   # clock under the email, linking to /settings#profile, whenever a zone and
   # instant are given. There MUST be no separate Profile, Security or SSH keys
   # navigation entries.
@@ -186,6 +186,12 @@ defmodule MarshallWeb.Layouts do
   # @cc [owner:ghuntley,label:product] signed-in-control-room-navigation
   # Every signed-in account MUST see the Control room mode switch regardless of
   # administrator membership. Public navigation MUST still require sign-in.
+
+  # @cc [owner:ghuntley,label:product] signed-in-reference-navigation
+  # Field notes, HLDD and Source code MUST form their own "Reference" tree
+  # (#nav-reference) after "Your account", in that order, not inside it.
+  # In the Control room only the administration tree is shown: neither the
+  # "Your account" nor the "Reference" tree renders there.
 
   # @cc [owner:ghuntley,label:product] signed-in-hldd-reference-navigation
   # The shared signed-in menu MUST place HLDD immediately below Field notes,
@@ -301,25 +307,17 @@ defmodule MarshallWeb.Layouts do
               </li>
             </ul>
           </section>
-          <section>
+          <section :if={@active != "admin"} id="nav-account-section">
             <ul class="tree">
               <li>
                 <h2>{gettext("Your account")}</h2>
                 <ul>
                   <li>
                     <.link
-                      id="nav-settings"
+                      id="nav-account"
                       navigate={~p"/settings"}
-                      aria-current={@active == "settings" && "page"}
-                    >Settings</.link>
-                  </li>
-                  <li>
-                    <.link
-                      navigate={~p"/settings/security"}
-                      aria-current={@active == "security" && "page"}
-                    >
-                      {gettext("Account")}
-                    </.link>
+                      aria-current={@active == "account" && "page"}
+                    >{gettext("Account")}</.link>
                   </li>
                   <li>
                     <.link
@@ -335,6 +333,15 @@ defmodule MarshallWeb.Layouts do
                       {gettext("Browser extension")}
                     </.link>
                   </li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+          <section :if={@active != "admin"} id="nav-reference">
+            <ul class="tree">
+              <li>
+                <h2>{gettext("Reference")}</h2>
+                <ul>
                   <li>
                     <.link href={~p"/docs"}>{gettext("Field notes")}
                     <span class="nav-hint">{gettext("Docs ↗")}</span></.link>
@@ -346,7 +353,10 @@ defmodule MarshallWeb.Layouts do
                       aria-current={@active == "hldd" && "page"}
                     >
                       {gettext("HLDD")} <span class="nav-hint">{gettext("Reference")}</span>
-                    </.link><.link id="nav-source-code" href="https://github.com/ghuntley/overalls">
+                    </.link>
+                  </li>
+                  <li>
+                    <.link id="nav-source-code" href="https://github.com/ghuntley/overalls">
                       {gettext("Source code")} <span class="nav-hint">{gettext("GitHub ↗")}</span>
                     </.link>
                   </li>

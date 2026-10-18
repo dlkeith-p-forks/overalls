@@ -6,13 +6,13 @@
 - Implementation: partial
 - Components: Marshall Compute, Lilly Transfer, Lilly VM, Lilly Lifecycle, shared protocol, Nix tests
 - Supersedes: ADR-0037, ADR-0061, ADR-0072
-- Superseded by: ADR-0159, ADR-0197
+- Superseded by: ADR-0159, ADR-0198
 
 > Superseded by [ADR-0159](0159-remove-legacy-compatibility.md) only for the transfer-journal migration and legacy lifecycle rebase. ADR-0159 carries every other requirement of this record forward unchanged.
 
 ## Context
 
-[ADR-0197](0197-memory-suspension-and-demand-wake.md) replaces only the
+[ADR-0198](0198-memory-suspension-and-demand-wake.md) replaces only the
 memory-migration/stopped-source and cross-host-relay prohibitions where this
 record carries them, and extends owner pins with automatic-suspension prevention
 and wake. Unrelated requirements and historical rationale remain in force.

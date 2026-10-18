@@ -103,7 +103,7 @@ defmodule Porsche.SSH.ChannelTest do
     refute stderr =~ "owner@example.test"
     {stdout, _, status} = openssh(context, ["uname -a"])
     assert status == 2
-    assert stdout =~ "invalid_command"
+    assert stdout == "Invalid command. Type help to see available commands.\n"
   end
 
   test "exec reads integration secrets from stdin without placing them in command arguments",

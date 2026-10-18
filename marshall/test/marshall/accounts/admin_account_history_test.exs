@@ -30,8 +30,9 @@ defmodule Marshall.Accounts.AdminAccountHistoryTest do
   for operation <- [:role, :sessions, :reset, :retire, :invite] do
     @operation operation
     @tag :hegel_case_sandbox
-  property "#{@operation} follows current role, login and elevation history", test_cases: 100 do
-    Marshall.DataCase.isolate_property_case()
+    property "#{@operation} follows current role, login and elevation history", test_cases: 100 do
+      Marshall.DataCase.isolate_property_case()
+
       tail =
         draw(
           "tail",

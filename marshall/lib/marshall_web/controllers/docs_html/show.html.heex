@@ -64,7 +64,9 @@
               </li>
             </ul>
           </nav>
-          <div class="docs-appearance"><span>{gettext("Appearance")}</span><Layouts.theme_toggle /></div>
+          <div class="docs-appearance">
+            <span>{gettext("Appearance")}</span><Layouts.theme_toggle />
+          </div>
         </aside>
         <main id="main-content" data-public-documentation class="docs-content prose">
           <article id="public-documentation">{raw(@page.html)}</article>

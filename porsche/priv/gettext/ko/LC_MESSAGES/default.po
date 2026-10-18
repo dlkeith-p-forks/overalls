@@ -46,14 +46,16 @@ msgstr "게시되지 않은 복제 또는 확정되지 않은 이동 요청을 �
 msgid "Start a machine."
 msgstr "머신을 시작합니다."
 
-msgid "Stop a machine, retaining its disk."
-msgstr "디스크를 유지하고 머신을 중지합니다."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
 
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
 msgstr "머신과 디스크를 삭제합니다. 소유자가 고정한 동안에는 거부됩니다."
 
-msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
-msgstr "머신을 목록 맨 위에 고정합니다. 소유 중이고 고정되어 있으면 삭제할 수 없습니다."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 
 msgid "Remove your pin from a machine."
 msgstr "머신 고정을 해제합니다."
@@ -201,3 +203,15 @@ msgstr "요청 %{id}: 제출 중"
 
 msgid "Request %{id}: waiting for completion"
 msgstr "요청 %{id}: 완료 대기 중"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

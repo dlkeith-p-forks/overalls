@@ -1291,6 +1291,64 @@ null
 ```
 
 
+## `services.audi.relay.address`
+
+Exact local fleet /32; never a guest or public listener address.
+
+Type: `null or string`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.audi.relay.enable`
+
+Whether to enable single-hop authorized ingress over the host fleet WireGuard network.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+false
+```
+
+Example:
+
+```nix
+true
+```
+
+
+## `services.audi.relay.peers`
+
+Explicit keyed fleet /32 peers allowed to present single-use relay capabilities.
+
+Type: `list of string`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
+## `services.audi.relay.port`
+
+No additional description is declared by the module.
+
+Type: `16 bit unsigned integer; between 0 and 65535 (both inclusive)`.
+
+Default:
+
+```nix
+9445
+```
+
+
 ## `services.audi.secretUnits`
 
 Credential preparation services required before startup.

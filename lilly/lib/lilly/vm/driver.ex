@@ -496,7 +496,7 @@ defmodule Lilly.VM.Driver do
                  do: {:ok, descriptor}
 
           {:ok, %{"phase" => "copied", "capture_authority" => ^authority}} ->
-            finish_pause(config, pool, spec, authority, options)
+            finish_pause(config, pool, spec, authority)
 
           {:ok, %{"phase" => phase}} when phase in ["empty", "consumed"] ->
             with {:ok, _} <- Observation.check_state(config, pool, spec, [:running]),
@@ -512,7 +512,7 @@ defmodule Lilly.VM.Driver do
                      if(record["slot"] == "a", do: :a, else: :b)
                    ),
                  :ok <- Checkpoint.copied(pool, spec, authority),
-                 do: finish_pause(config, pool, spec, authority, options)
+                 do: finish_pause(config, pool, spec, authority)
 
           _ ->
             {:error, :checkpoint_unconfirmed}
@@ -521,14 +521,28 @@ defmodule Lilly.VM.Driver do
     end)
   end
 
-  defp finish_pause(config, pool, spec, authority, options) do
-    with :ok <- Unit.kill_paused(spec),
+  defp finish_pause(config, pool, spec, authority) do
+    with :ok <- paused_cleanup_available(config, pool, spec),
+         :ok <- Unit.kill_paused(spec),
          {:ok, :stopped} <- Unit.status(spec),
          :ok <- Jail.cleanup(pool, spec),
          :ok <- Lilly.Network.detach(config.network, spec.network),
          {:ok, descriptor} <- Checkpoint.complete(pool, spec, authority),
          :ok <- CheckpointStorage.recycle_other(pool, spec),
          do: {:ok, descriptor}
+  end
+
+  defp paused_cleanup_available(config, pool, spec) do
+    case Unit.status(spec) do
+      {:ok, :stopped} ->
+        :ok
+
+      {:ok, :running} ->
+        with {:ok, _} <- Observation.check_state(config, pool, spec, [:paused]), do: :ok
+
+      error ->
+        error
+    end
   end
 
   # @cc [owner:ghuntley,label:recovery;security] resume-single-use-without-cold-fallback
@@ -1835,7 +1849,7 @@ defmodule Lilly.VM.Driver do
                revision(options),
                :stopped
              ),
-           :ok <- shutdown(pool, spec, vm_id),
+           :ok <- shutdown(config, pool, spec, intent, vm_id),
            :ok <- Jail.cleanup(pool, spec, vm_id),
            :ok <- Lilly.Network.detach(config.network, spec.network, vm_id),
            :ok <- CheckpointStorage.retire(pool, spec),
@@ -1967,7 +1981,7 @@ defmodule Lilly.VM.Driver do
 
     locked(config, spec, fn ->
       with :ok <- claim(config, pool, spec),
-           {:ok, _} <-
+           {:ok, intent} <-
              Intent.set(
                directory(config, spec),
                spec.id,
@@ -1980,7 +1994,7 @@ defmodule Lilly.VM.Driver do
                "deleted.json",
                JSON.encode!(identity(config, pool, spec))
              ),
-           :ok <- shutdown(pool, spec, vm_id),
+           :ok <- shutdown(config, pool, spec, intent, vm_id),
            :ok <- Jail.cleanup(pool, spec, vm_id),
            :ok <- Lilly.Network.detach(config.network, spec.network, vm_id),
            :ok <- remove_log(Unit.boot_log(config, spec)),
@@ -2023,14 +2037,20 @@ defmodule Lilly.VM.Driver do
 
     locked(config, spec, fn ->
       with :ok <- cleanup_step(fn -> claim(config, pool, spec) end, vm_id, spec.id, :claim),
-           {:ok, _} <-
+           {:ok, intent} <-
              Intent.set(
                directory(config, spec),
                spec.id,
                revision(options),
                :failed
              ),
-           :ok <- cleanup_step(fn -> Unit.stop(spec, vm_id) end, vm_id, spec.id, :unit),
+           :ok <-
+             cleanup_step(
+               fn -> shutdown(config, pool, spec, intent, vm_id, :force) end,
+               vm_id,
+               spec.id,
+               :unit
+             ),
            :ok <- cleanup_step(fn -> Jail.cleanup(pool, spec, vm_id) end, vm_id, spec.id, :jail),
            :ok <-
              cleanup_step(
@@ -2066,15 +2086,31 @@ defmodule Lilly.VM.Driver do
     end
   end
 
-  defp shutdown(pool, spec, vm_id) do
+  # @cc [owner:ghuntley,label:security;recovery] paused-terminal-cleanup-never-promotes-capture
+  # Terminal cleanup MUST re-read its exact durable intent and verify the local
+  # checkpoint journal and fully confined Paused process before forced termination.
+  # Capturing never becomes copied/ready through cleanup. Only proven absence
+  # permits the caller to detach networking or retire checkpoint storage.
+  @spec discard_paused(Config.t(), Pool.t(), Spec.t(), Intent.t()) :: result()
+  defp discard_paused(config, pool, spec, intent) do
+    with %Lilly.Host.Lease{} <- Lock.current(),
+         {:ok, ^intent} <- Intent.read(directory(config, spec)),
+         {:ok, record} <- Checkpoint.read(pool, spec.id),
+         true <- Checkpoint.discardable_pause?(record, pool, spec, intent),
+         {:ok, _} <- Observation.check_state(config, pool, spec, [:paused]),
+         do: Unit.kill_paused(spec),
+         else: (_ -> {:error, :checkpoint_unconfirmed})
+  end
+
+  defp shutdown(config, pool, spec, intent, vm_id, mode \\ :graceful) do
     case Unit.status(spec) do
       {:ok, :stopped} ->
         :ok
 
       {:ok, :running} ->
-        case API.shutdown(Path.join(Jail.root(pool, spec), "api.sock")) do
-          :ok -> await_shutdown(spec, System.monotonic_time(:millisecond) + 30_000)
-          _ -> Unit.stop(spec)
+        case API.state(api_path(pool, spec), spec.id) do
+          {:ok, :paused} -> discard_paused(config, pool, spec, intent)
+          _ -> shutdown_running(pool, spec, vm_id, mode)
         end
 
       _ ->
@@ -2085,6 +2121,15 @@ defmodule Lilly.VM.Driver do
         )
 
         {:error, :stop_unconfirmed}
+    end
+  end
+
+  defp shutdown_running(_pool, spec, vm_id, :force), do: Unit.stop(spec, vm_id)
+
+  defp shutdown_running(pool, spec, _vm_id, :graceful) do
+    case API.shutdown(api_path(pool, spec)) do
+      :ok -> await_shutdown(spec, System.monotonic_time(:millisecond) + 30_000)
+      _ -> Unit.stop(spec)
     end
   end
 

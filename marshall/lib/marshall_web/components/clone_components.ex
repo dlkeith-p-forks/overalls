@@ -60,7 +60,9 @@ defmodule MarshallWeb.CloneComponents do
         </div>
         <span class="clone-status" id={@id <> "-status"}>{@progress.label}</span>
       </div>
-      <p :if={@clone.queue_position} class="clone-queue">{gettext("Queue position %{value1}", value1: @clone.queue_position)}</p>
+      <p :if={@clone.queue_position} class="clone-queue">
+        {gettext("Queue position %{value1}", value1: @clone.queue_position)}
+      </p>
       <p class="clone-detail">{@progress.detail}</p>
       <ol :if={@progress.steps != []} class="clone-steps" aria-label={gettext("Clone stages")}>
         <li
@@ -156,7 +158,9 @@ defmodule MarshallWeb.CloneComponents do
 
   defp detail_override(%{phase: :complete, cleanup_completed_at: nil}),
     do:
-      gettext("Your private copy has been created. The source snapshot is still being released; the source stays protected until then.")
+      gettext(
+        "Your private copy has been created. The source snapshot is still being released; the source stays protected until then."
+      )
 
   defp detail_override(_), do: nil
 
@@ -164,13 +168,14 @@ defmodule MarshallWeb.CloneComponents do
   @typep presentation_tone :: :neutral | :working | :success | :warning
   defp phase(:queued),
     do:
-      {gettext("Queued"), gettext("Waiting for its turn. Each copy takes a fresh snapshot when processing begins."),
+      {gettext("Queued"),
+       gettext("Waiting for its turn. Each copy takes a fresh snapshot when processing begins."),
        :neutral}
 
   defp phase(:preparing),
     do:
-      {gettext("Preparing clone"), gettext("Preparing space and checking the source before taking a snapshot."),
-       :working}
+      {gettext("Preparing clone"),
+       gettext("Preparing space and checking the source before taking a snapshot."), :working}
 
   defp phase(:stopping),
     do:
@@ -180,45 +185,53 @@ defmodule MarshallWeb.CloneComponents do
   defp phase(:capturing),
     do:
       {gettext("Taking snapshot"),
-       gettext("Capturing the source disk. Copying begins after the snapshot is ready."), :working}
+       gettext("Capturing the source disk. Copying begins after the snapshot is ready."),
+       :working}
 
   defp phase(:copying),
     do:
       {gettext("Copying files"),
-       gettext("Creating an independent disk from the snapshot. Source recovery proceeds separately."),
-       :working}
+       gettext(
+         "Creating an independent disk from the snapshot. Source recovery proceeds separately."
+       ), :working}
 
   defp phase(:publishing),
     do:
-      {gettext("Creating cloned machine"), gettext("Registering the copied disk as your private machine."),
-       :working}
+      {gettext("Creating cloned machine"),
+       gettext("Registering the copied disk as your private machine."), :working}
 
   defp phase(:cleaning),
     do:
       {gettext("Finishing up"),
-       gettext("The clone can be opened. Finalizing its power state and cleaning up temporary resources."),
-       :working}
+       gettext(
+         "The clone can be opened. Finalizing its power state and cleaning up temporary resources."
+       ), :working}
 
   defp phase(:complete),
     do:
       {gettext("Clone complete"),
-       gettext("Your private copy has been created and temporary resources have been cleaned up."),
-       :success}
+       gettext(
+         "Your private copy has been created and temporary resources have been cleaned up."
+       ), :success}
 
   defp phase(:cancelling),
     do:
       {gettext("Cancelling clone"),
-       gettext("Stopping the copy and removing temporary resources. Source recovery is tracked separately."),
-       :neutral}
+       gettext(
+         "Stopping the copy and removing temporary resources. Source recovery is tracked separately."
+       ), :neutral}
 
   defp phase(:cancelled),
-    do: {gettext("Clone cancelled"), gettext("This request has ended without publishing a clone."), :neutral}
+    do:
+      {gettext("Clone cancelled"), gettext("This request has ended without publishing a clone."),
+       :neutral}
 
   defp phase(:failed),
     do:
       {gettext("Clone needs attention"),
-       gettext("This request could not finish. Review the issue below and the available actions."),
-       :warning}
+       gettext(
+         "This request could not finish. Review the issue below and the available actions."
+       ), :warning}
 
   @spec steps(phase()) :: [step()]
   defp steps(phase) when phase in [:cancelling, :cancelled, :failed], do: []
@@ -234,7 +247,13 @@ defmodule MarshallWeb.CloneComponents do
         :complete -> 5
       end
 
-    [gettext("Queued"), gettext("Preparing"), gettext("Snapshot"), gettext("Copying"), gettext("Finishing")]
+    [
+      gettext("Queued"),
+      gettext("Preparing"),
+      gettext("Snapshot"),
+      gettext("Copying"),
+      gettext("Finishing")
+    ]
     |> Enum.with_index()
     |> Enum.map(fn {label, index} ->
       state =
@@ -255,13 +274,16 @@ defmodule MarshallWeb.CloneComponents do
   defp source(%{source_restored_at: at}) when not is_nil(at),
     do: gettext("Source returned to its original power state.")
 
-  defp source(%{failure: "source_restart_failed"}), do: gettext("Source recovery needs attention.")
+  defp source(%{failure: "source_restart_failed"}),
+    do: gettext("Source recovery needs attention.")
+
   defp source(%{failure: "retry_source_restart"}), do: gettext("Source recovery retry requested.")
 
   defp source(%{phase: phase}) when phase in [:queued, :preparing],
     do: gettext("Snapshot has not started.")
 
-  defp source(%{phase: :failed, original_power_state: nil}), do: gettext("Snapshot did not start.")
+  defp source(%{phase: :failed, original_power_state: nil}),
+    do: gettext("Snapshot did not start.")
 
   defp source(%{phase: :cancelled, original_power_state: nil}),
     do: gettext("Cancelled before the snapshot started.")
@@ -295,10 +317,12 @@ defmodule MarshallWeb.CloneComponents do
     do: gettext("The source host is unavailable. Retry once it is available.")
 
   defp failure_message("transfer_busy"),
-    do: gettext("Another copy or move is using this host's transfer slot. Retry when it finishes.")
+    do:
+      gettext("Another copy or move is using this host's transfer slot. Retry when it finishes.")
 
   defp failure_message("source_cleanup_pending"),
-    do: gettext("The previous copy of this machine is still releasing its snapshot. Retry shortly.")
+    do:
+      gettext("The previous copy of this machine is still releasing its snapshot. Retry shortly.")
 
   defp failure_message("forbidden"),
     do: gettext("Permission to clone this machine is no longer available.")
@@ -309,10 +333,15 @@ defmodule MarshallWeb.CloneComponents do
   defp failure_message(reason) do
     case Marshall.Compute.CloneFailure.parse(reason) do
       {:ok, kind, host_reason} ->
-        gettext("Step %{value1} is waiting on the host: %{value2}", value1: kind, value2: host_reason_message(host_reason))
+        gettext("Step %{value1} is waiting on the host: %{value2}",
+          value1: kind,
+          value2: host_reason_message(host_reason)
+        )
 
       :error ->
-        gettext("The request encountered a problem. Use the available actions to recover or cancel it.")
+        gettext(
+          "The request encountered a problem. Use the available actions to recover or cancel it."
+        )
     end
   end
 

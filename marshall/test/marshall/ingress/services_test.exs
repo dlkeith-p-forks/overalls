@@ -329,6 +329,7 @@ defmodule Marshall.Ingress.ServicesTest do
   property "rotation and revocation histories reject every replaced credential",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
+
     actions =
       draw(
         "actions",

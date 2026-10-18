@@ -44,7 +44,10 @@ defmodule MarshallWeb.AgentCLIApprovalLive do
   defp unavailable(socket) do
     socket
     |> assign(vm_id: nil, code: nil, vm: nil)
-    |> put_flash(:error, gettext("This agent CLI approval is unavailable. Start again in your terminal."))
+    |> put_flash(
+      :error,
+      gettext("This agent CLI approval is unavailable. Start again in your terminal.")
+    )
   end
 
   @impl true
@@ -65,7 +68,11 @@ defmodule MarshallWeb.AgentCLIApprovalLive do
           <strong class="font-mono">{String.slice(@code, 0, 12)}</strong>
         </p>
         <.form :if={@code && @vm} for={to_form(%{})} id="agent-cli-approval" phx-submit="approve">
-          <button type="submit" class="console-button primary" phx-disable-with={gettext("Approving…")}>
+          <button
+            type="submit"
+            class="console-button primary"
+            phx-disable-with={gettext("Approving…")}
+          >
             {gettext("Approve CLI access")}
           </button>
         </.form>

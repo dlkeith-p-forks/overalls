@@ -217,6 +217,12 @@ fn lillys_shapes_are_accepted() {
             "lilly-vm-11111111-2222-4333-8444-555555555555.service",
         ],
         vec![
+            "kill",
+            "--kill-who=all",
+            "--signal=KILL",
+            "lilly-vm-11111111-2222-4333-8444-555555555555.service",
+        ],
+        vec![
             "show",
             "lilly-vm-11111111-2222-4333-8444-555555555555.service",
             "--property=ActiveState",
@@ -297,6 +303,38 @@ fn lillys_shapes_are_accepted() {
         &["zroot/lilly/vm-a", "/var/lib/lilly/pool/vms/a"]
     ));
     assert!(ok(&f, Utility::KvmProbe, &[]));
+}
+
+/// Lifecycle operations MUST target one exact VM unit, never a slice, wildcard,
+/// another service or a broader signal/target grammar.
+#[test]
+fn systemctl_lifecycle_cannot_expand_past_one_vm() {
+    let f = fixture();
+    let vm = "lilly-vm-11111111-2222-4333-8444-555555555555.service";
+    for target in [
+        "lilly.slice",
+        "lilly-vm-*.service",
+        "sshd.service",
+        "lilly-vm-other.service",
+        "lilly-vm-11111111-2222-4333-8444-555555555555.scope",
+    ] {
+        assert!(!ok(&f, Utility::Systemctl, &["stop", target]));
+        assert!(!ok(
+            &f,
+            Utility::Systemctl,
+            &["kill", "--kill-who=all", "--signal=KILL", target]
+        ));
+    }
+    for argv in [
+        vec!["stop", vm, vm],
+        vec!["kill", "--kill-who=all", "--signal=KILL", vm, vm],
+        vec!["kill", "--kill-who=main", "--signal=KILL", vm],
+        vec!["kill", "--kill-who=all", "--signal=TERM", vm],
+        vec!["kill", vm],
+        vec!["restart", vm],
+    ] {
+        assert!(!ok(&f, Utility::Systemctl, &argv));
+    }
 }
 
 #[test]

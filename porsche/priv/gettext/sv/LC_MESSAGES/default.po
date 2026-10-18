@@ -46,14 +46,16 @@ msgstr "Avbryt en opublicerad kloning eller obekräftad flyttbegäran."
 msgid "Start a machine."
 msgstr "Starta en maskin."
 
-msgid "Stop a machine, retaining its disk."
-msgstr "Stoppa en maskin och behåll dess disk."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
 
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
 msgstr "Ta bort en maskin och dess disk. Nekas om ägaren har fäst maskinen."
 
-msgid "Pin a machine to the top of your lists. While you own it and it is pinned, nothing can delete it."
-msgstr "Fäst en maskin överst i dina listor. Den kan inte tas bort så länge du äger den och den är fäst."
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 
 msgid "Remove your pin from a machine."
 msgstr "Ta bort din fästning av en maskin."
@@ -201,3 +203,15 @@ msgstr "Begäran %{id}: skickas"
 
 msgid "Request %{id}: waiting for completion"
 msgstr "Begäran %{id}: väntar på slutförande"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

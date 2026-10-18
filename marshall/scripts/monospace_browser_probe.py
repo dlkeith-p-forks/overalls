@@ -392,8 +392,8 @@ def check_machine_pins(page: Page) -> None:
 def check_account(page: Page, origin: str, theme: str) -> None:
     """@cc [owner:ghuntley,label:product;verification] account-page-presentation
     The account page at /settings MUST be the only "Your account" settings
-    entry (#nav-account current) and MUST render the profile, sign-in and SSH
-    key sections in that order with an index whose anchors land each section
+    entry (#nav-account current) and MUST render the profile, sign-in, SSH
+    key and Git identity sections in that order with an index whose anchors land each section
     at the top of the viewport. The profile section MUST preselect the
     browser's zone until one is saved, save the chosen zone through the picker
     and show the viewer's local clock in that zone; every converted timestamp
@@ -406,7 +406,7 @@ def check_account(page: Page, origin: str, theme: str) -> None:
     expect(page.locator("#nav-usage")).to_have_attribute("href", "/usage")
     expect(page.locator("#workspace-sidebar a[href^='/settings/']")).to_have_count(0)
     expect(page.locator("[data-phx-main].phx-connected")).to_have_count(1)
-    sections = ("profile", "security", "ssh-keys")
+    sections = ("profile", "security", "ssh-keys", "git-settings")
     for anchor in sections:
         expect(page.locator(f"#account-index a[href='#{anchor}']")).to_be_visible()
         expect(page.locator(f"section#{anchor}.account-section")).to_be_visible()
@@ -1004,9 +1004,7 @@ GRID_ROUTES = (
     "create",
     "machine",
     "boot-log",
-    "settings",
-    "security",
-    "ssh",
+    "account",
     "hldd",
 )
 
@@ -1044,9 +1042,7 @@ def run(fixture: Context, artifacts: Path) -> None:
             "teams": "/teams",
             "git": "/git",
             "usage": "/usage",
-            "settings": "/settings",
-            "security": "/settings/security",
-            "ssh": "/settings/ssh-keys",
+            "account": "/settings",
             "hldd": "/hldd",
             "hldd-section": "/hldd/system",
         }
@@ -1102,7 +1098,7 @@ def run(fixture: Context, artifacts: Path) -> None:
                         evaluate(page, "navigator.clipboard.readText()")
                         == page.locator("#machine-install-command").text_content()
                     )
-                if name == "settings":
+                if name == "account":
                     expect(page.locator("#git-settings-form")).to_be_visible()
                     page.locator("#settings_git_username").fill("Browser Author")
                     page.locator("#settings_git_email").fill("browser@example.test")
@@ -1133,12 +1129,11 @@ def run(fixture: Context, artifacts: Path) -> None:
                 "integrations",
                 "teams",
                 "usage",
-                "security",
-                "settings",
+                "account",
             ):
                 visit(page, fixture["origin"], routes[name])
                 check_overflow(page)
-                if name == "settings":
+                if name == "account":
                     check_grid(page, routes[name])
                     expect(page.locator("#git-settings-form")).to_be_visible()
                 if name in ("machine", "terminal", "boot-log"):
