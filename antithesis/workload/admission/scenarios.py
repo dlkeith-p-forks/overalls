@@ -50,6 +50,7 @@ OPERATOR_TIMEOUT_SECONDS = 90.0
 # Marshall.Compute.Error reasons are lowercase atom names.
 _REASON = re.compile(r"[a-z_]{1,64}")
 _REFUSALS: set[str] = set()
+_SHORT: set[str] = set()
 
 
 def unexercised(reason: Unexercised) -> None:
@@ -126,10 +127,26 @@ def select_image(catalog: Observation[Catalog]) -> CatalogImage | None:
     if not selected.images:
         unexercised("no enabled catalog image advertised")
         return None
-    return next(
+    fitting = next(
         (candidate for candidate in selected.images if _catalog_fits(selected, candidate)),
-        selected.images[0],
+        None,
     )
+    if fitting is None:
+        _short(selected, selected.images[0])
+    return fitting or selected.images[0]
+
+
+def _short(catalog: Catalog, image: CatalogImage) -> None:
+    """Name each catalog dimension below the reservation once per process (no values)."""
+    vcpu, memory, disk = image.request_shape()
+    for dimension, short in (
+        ("vcpu", catalog.available_vcpu < vcpu),
+        ("memory", catalog.available_memory_bytes < memory + 67_108_864),
+        ("disk", catalog.available_disk_bytes < disk + 1_073_741_824),
+    ):
+        if short and dimension not in _SHORT:
+            _SHORT.add(dimension)
+            LOG.info("Compute catalog headroom below reservation: %s", dimension)
 
 
 def _catalog_fits(catalog: Catalog, image: CatalogImage) -> bool:
