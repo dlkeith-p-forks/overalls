@@ -44,6 +44,10 @@ re-checks the same window transactionally. Refusals are logged with their
 closed reason token only. A stop retains the boot it ended, so the stopped
 witness is requested with the provision's execution tuple rather than the
 stop operation's newer generation, which the guest server fences exactly.
+The outcome/VM consistency assertion is evaluated for every completed outcome
+sampled, so a healthy run records it as held. A stop or start whose reply is
+lost is resubmitted with its original request key, which Marshall
+deduplicates, up to three times before the cycle is left unexercised.
 
 Which catalog properties the profile can exercise:
 
