@@ -56,7 +56,8 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
     {:noreply, push_navigate(socket, to: "/machines/" <> id <> suffix)}
   end
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+  def handle_event(_, _, socket),
+    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   # The owner's pin fences administrator deletes too (ADR-0193); every other
   # refusal keeps the generic text so no coordinator detail leaks.
@@ -92,7 +93,11 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
       <section id="admin-workloads" class="stack">
         <UI.heading
           title={gettext("Fleet workloads")}
-          subtitle={gettext("Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included.")}
+          subtitle={
+            gettext(
+              "Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included."
+            )
+          }
         >
           <:actions>
             <span class="muted">{gettext("Updated")}

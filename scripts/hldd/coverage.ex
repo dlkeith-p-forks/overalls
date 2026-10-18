@@ -118,10 +118,9 @@ defmodule Overalls.HLDDCoverage do
   # Hegel evidence MUST recognize the exact hegel::test attribute with either no
   # arguments or balanced parenthesized options, including whitespace and nested
   # calls. Macro-name prefixes and incomplete outer delimiters MUST NOT qualify.
-  # Explicit Elixir Hegel.check/run callbacks and unqualified property macros,
-  # including parenthesized calls, MUST qualify; qualified lookalikes and name
-  # prefixes MUST NOT. Lexical recognition MUST NOT imply
-  # source validity or recorded/native execution.
+  # Explicit Elixir Hegel.check/run callbacks and parenthesized property macros
+  # MUST also qualify; qualified or similarly named macros MUST NOT. Lexical
+  # recognition MUST NOT imply source validity or recorded/native execution.
   @spec property_source?(String.t()) :: boolean()
   defp property_source?(source) do
     String.contains?(source, ["check all", "proptest!", "@given"]) or

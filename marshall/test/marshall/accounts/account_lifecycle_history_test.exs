@@ -30,6 +30,7 @@ defmodule Marshall.Accounts.AccountLifecycleHistoryTest do
   property "same-email generations cannot inherit retired authority or redirect cleanup",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
+
     generations =
       draw(
         "generations",

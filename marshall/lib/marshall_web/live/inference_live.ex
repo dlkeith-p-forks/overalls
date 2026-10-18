@@ -35,7 +35,9 @@ defmodule MarshallWeb.InferenceLive do
 
       _ ->
         {:noreply,
-         socket |> put_flash(:error, gettext("AI usage is unavailable.")) |> redirect(to: ~p"/machines")}
+         socket
+         |> put_flash(:error, gettext("AI usage is unavailable."))
+         |> redirect(to: ~p"/machines")}
     end
   end
 
@@ -78,8 +80,14 @@ defmodule MarshallWeb.InferenceLive do
     >
       <section id="inference-usage" class="stack">
         <UI.heading
-          title={if @live_action == :admin, do: gettext("Fleet AI usage"), else: gettext("Your AI usage")}
-          subtitle={gettext("AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown.")}
+          title={
+            if @live_action == :admin, do: gettext("Fleet AI usage"), else: gettext("Your AI usage")
+          }
+          subtitle={
+            gettext(
+              "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+            )
+          }
         >
           <:actions>
             <.link
@@ -104,7 +112,9 @@ defmodule MarshallWeb.InferenceLive do
               aria-label={gettext("Daily AI request counts over the past 30 days")}
             >{usage_chart(@chart)}</pre>
             <figcaption>
-              {gettext("One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month.")}
+              {gettext(
+                "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
+              )}
             </figcaption>
           </figure>
         </UI.panel>
@@ -115,9 +125,18 @@ defmodule MarshallWeb.InferenceLive do
               field={@form[:provider]}
               type="select"
               label={gettext("Provider")}
-              options={[{gettext("All providers"), ""}, {gettext("OpenAI"), "openai"}, {gettext("Anthropic"), "anthropic"}]}
+              options={[
+                {gettext("All providers"), ""},
+                {gettext("OpenAI"), "openai"},
+                {gettext("Anthropic"), "anthropic"}
+              ]}
             />
-            <.input field={@form[:model]} label={gettext("Model")} placeholder={gettext("Exact model ID")} maxlength="256" />
+            <.input
+              field={@form[:model]}
+              label={gettext("Model")}
+              placeholder={gettext("Exact model ID")}
+              maxlength="256"
+            />
           </div>
           <div class="row actions">
             <button class="console-button primary">{gettext("Apply")}</button>
@@ -145,7 +164,9 @@ defmodule MarshallWeb.InferenceLive do
                 </td>
                 <td class="num">{tokens(row.completion, "input_tokens")}</td>
                 <td class="num">{tokens(row.completion, "output_tokens")}</td>
-                <td>{if row.completion, do: row.completion["outcome"], else: gettext("Unreported")}</td>
+                <td>
+                  {if row.completion, do: row.completion["outcome"], else: gettext("Unreported")}
+                </td>
                 <td>
                   <details>
                     <summary>{gettext("Inspect")}</summary>
@@ -153,13 +174,15 @@ defmodule MarshallWeb.InferenceLive do
                       <div>
                         <dt>{gettext("Token cost estimate · USD")}</dt>
                         <dd>
-                          {get_in(row.completion || %{}, ["cost_estimate", "usd"]) || gettext("Unknown")}
+                          {get_in(row.completion || %{}, ["cost_estimate", "usd"]) ||
+                            gettext("Unknown")}
                         </dd>
                       </div>
                       <div>
                         <dt>{gettext("Pricing source / version")}</dt>
                         <dd>
-                          {get_in(row.completion || %{}, ["cost_estimate", "source"]) || gettext("Unknown")} / {get_in(
+                          {get_in(row.completion || %{}, ["cost_estimate", "source"]) ||
+                            gettext("Unknown")} / {get_in(
                             row.completion || %{},
                             ["cost_estimate", "version"]
                           ) || gettext("Unknown")}

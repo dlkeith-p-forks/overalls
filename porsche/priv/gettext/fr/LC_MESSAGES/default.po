@@ -36,16 +36,103 @@ msgstr ""
 "Ouvrez ce lien, connectez-vous et approuvez l’empreinte correspondante :\n"
 "  "
 
-#: lib/porsche/ssh/onboarding.ex:112
-#, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Or manage your keys at:\n"
-"  "
-msgstr ""
-"\n"
-"Ou gérez vos clés à l’adresse :\n"
-"  "
+msgid "Show the authenticated account."
+msgstr "Afficher le compte authentifié."
+
+msgid "List available images."
+msgstr "Lister les images disponibles."
+
+msgid "List machines you can access."
+msgstr "Lister les machines auxquelles vous avez accès."
+
+msgid "Inspect a machine by name or UUID."
+msgstr "Inspecter une machine par nom ou UUID."
+
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "Créer une machine. Disque maximal : 500 GiB. --source clone un dépôt public GitHub, GitLab, Codeberg ou Bitbucket dans l’invité."
+
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "Mettre en file une copie indépendante du disque complet d’une machine."
+
+msgid "Move a machine to an automatically selected host."
+msgstr "Déplacer une machine vers un hôte sélectionné automatiquement."
+
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "Modifier le processeur et la mémoire d’une machine ; le disque peut seulement être agrandi. Une machine en cours d’exécution s’arrête puis redémarre."
+
+msgid "Retry a failed clone or relocation request."
+msgstr "Réessayer une demande de clonage ou de déplacement échouée."
+
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "Annuler une demande de clonage non publiée ou de déplacement non validée."
+
+msgid "Start a machine."
+msgstr "Démarrer une machine."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
+
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "Supprimer une machine et son disque. Refusé tant que son propriétaire l’a épinglée."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+
+msgid "Remove your pin from a machine."
+msgstr "Retirer votre épingle d’une machine."
+
+msgid "List access grants."
+msgstr "Lister les autorisations d’accès."
+
+msgid "Grant viewer, operator or manager access."
+msgstr "Accorder un accès viewer, operator ou manager."
+
+msgid "Revoke an account's shared access."
+msgstr "Révoquer l’accès partagé d’un compte."
+
+msgid "List your SSH keys."
+msgstr "Lister vos clés SSH."
+
+msgid "Revoke one of your SSH keys."
+msgstr "Révoquer l’une de vos clés SSH."
+
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "Créer ou remplacer une intégration nommée à l’adresse https://NAME.integration.internal."
+
+msgid "Remove a named integration."
+msgstr "Supprimer une intégration nommée."
+
+msgid "List your integrations."
+msgstr "Lister vos intégrations."
+
+msgid "Inspect an integration without secrets."
+msgstr "Inspecter une intégration sans secrets."
+
+msgid "Make an integration available to a machine."
+msgstr "Rendre une intégration disponible pour une machine."
+
+msgid "Remove a machine's explicit availability."
+msgstr "Retirer la disponibilité explicite d’une machine."
+
+msgid "Create a team you own."
+msgstr "Créer une équipe dont vous êtes propriétaire."
+
+msgid "List your teams and roles."
+msgstr "Lister vos équipes et vos rôles."
+
+msgid "List a team's members."
+msgstr "Lister les membres d’une équipe."
+
+msgid "Add or change an admin or member."
+msgstr "Ajouter ou modifier un administrateur ou un membre."
+
+msgid "Remove an account's membership."
+msgstr "Retirer l’adhésion d’un compte."
+
+msgid "Offer team ownership to an admin."
+msgstr "Proposer la propriété de l’équipe à un administrateur."
 
 #: lib/porsche/ssh/command_messages.ex:46
 #, elixir-autogen, elixir-format
@@ -290,149 +377,14 @@ msgstr "Demande %{id} : envoi en cours"
 msgid "Request %{id}: waiting for completion"
 msgstr "Demande %{id} : en attente de la fin"
 
-#: lib/porsche/ssh/command_messages.ex:26
-#, elixir-autogen, elixir-format
-msgid "Retry a failed clone or relocation request."
-msgstr "Réessayer une demande de clonage ou de déplacement échouée."
-
-#: lib/porsche/ssh/command_messages.ex:34
-#, elixir-autogen, elixir-format
-msgid "Revoke an account's shared access."
-msgstr "Révoquer l’accès partagé d’un compte."
-
-#: lib/porsche/ssh/command_messages.ex:38
-#, elixir-autogen, elixir-format
-msgid "Revoke one of your SSH keys."
-msgstr "Révoquer l’une de vos clés SSH."
-
-#: lib/porsche/ssh/command_messages.ex:8
-#, elixir-autogen, elixir-format
-msgid "Show command help."
-msgstr "Afficher l’aide des commandes."
-
-#: lib/porsche/ssh/command_messages.ex:52
-#, elixir-autogen, elixir-format
-msgid "Show the authenticated account."
-msgstr "Afficher le compte authentifié."
-
-#: lib/porsche/ssh/command_messages.ex:39
-#, elixir-autogen, elixir-format
-msgid "Start a machine."
-msgstr "Démarrer une machine."
-
-#: lib/porsche/ssh/output.ex:73
-#, elixir-autogen, elixir-format
-msgid "The command could not be completed: %{reason}"
-msgstr "La commande n’a pas pu être exécutée : %{reason}"
-
-#: lib/porsche/ssh/output.ex:67
-#, elixir-autogen, elixir-format
-msgid "The requested resource could not be found."
-msgstr "La ressource demandée est introuvable."
-
-#: lib/porsche/ssh/output.ex:61
-#, elixir-autogen, elixir-format
-msgid "The service is temporarily unavailable. Please try again shortly."
-msgstr ""
-"Le service est temporairement indisponible. Veuillez réessayer dans un "
-"instant."
-
-#: lib/porsche/ssh/onboarding.ex:100
-#, elixir-autogen, elixir-format
-msgid ""
-"This SSH connection could not be authorized. Check your machine access and try again.\n"
-"\n"
-msgstr ""
-"Cette connexion SSH n’a pas pu être autorisée. Vérifiez votre accès à la machine et réessayez.\n"
-"\n"
-
-#: lib/porsche/ssh/output.ex:52
-#, elixir-autogen, elixir-format
-msgid "This connection is not authorized. Please sign in and try again."
-msgstr ""
-"Cette connexion n’est pas autorisée. Veuillez vous connecter et réessayer."
-
-#: lib/porsche/ssh/output.ex:70
-#, elixir-autogen, elixir-format
-msgid "Unexpected input. Please open a new SSH connection."
-msgstr "Entrée inattendue. Veuillez ouvrir une nouvelle connexion SSH."
-
-#: lib/porsche/ssh/onboarding.ex:97
-#, elixir-autogen, elixir-format
-msgid ""
-"We couldn't verify this SSH key right now. Please try again shortly.\n"
-"\n"
-msgstr ""
-"Nous n’avons pas pu vérifier cette clé SSH pour le moment. Veuillez réessayer dans un instant.\n"
-"\n"
-
-#: lib/porsche/ssh/onboarding.ex:53
-#, elixir-autogen, elixir-format
-msgid ""
-"We don't recognize this SSH key:\n"
-"  "
-msgstr ""
-"Nous ne reconnaissons pas cette clé SSH :\n"
-"  "
-
-#: lib/porsche/ssh/onboarding.ex:86
-#, elixir-autogen, elixir-format
-msgid ""
-"Welcome to Overalls.\n"
-"\n"
-"This connection needs the Overalls SSH configuration.\n"
-"\n"
-msgstr ""
-"Bienvenue dans Overalls.\n"
-"\n"
-"Cette connexion nécessite la configuration SSH d’Overalls.\n"
-"\n"
-
-#: lib/porsche/ssh/output.ex:55
-#, elixir-autogen, elixir-format
-msgid "You do not have permission to perform this action."
-msgstr "Vous n’avez pas l’autorisation d’effectuer cette action."
-
-#: lib/porsche/ssh/onboarding.ex:121
-#, elixir-autogen, elixir-format
-msgid "from your machine's page and reconnect without root@.\n"
-msgstr "depuis la page de votre machine et reconnectez-vous sans root@.\n"
-
-#: lib/porsche/ssh/onboarding.ex:78
-#, elixir-autogen, elixir-format
-msgid "then retry your original command.\n"
-msgstr "puis réessayez votre commande initiale.\n"
-
-#: lib/porsche/ssh/command_messages.ex:21
-#, elixir-autogen, elixir-format
-msgid ""
-"Pin a machine to the top of your lists. Your owner pin wakes it, prevents "
-"automatic suspension, and prevents deletion."
-msgstr ""
-"Épingler une machine en haut de vos listes. Votre épinglage en tant que "
-"propriétaire la réveille, empêche la suspension automatique et empêche sa "
-"suppression."
-
-#: lib/porsche/ssh/command_messages.ex:50
-#, elixir-autogen, elixir-format
-msgid "Resume a suspended machine's preserved memory."
-msgstr "Restaurer la mémoire conservée d’une machine suspendue."
-
-#: lib/porsche/ssh/command_messages.ex:31
-#, elixir-autogen, elixir-format
-msgid "Resume preserved memory, waiting for capacity or relocation."
-msgstr ""
-"Restaurer la mémoire conservée, en attendant de la capacité ou une "
-"relocalisation."
-
-#: lib/porsche/ssh/command_messages.ex:40
-#, elixir-autogen, elixir-format
-msgid "Stop a machine, retaining its disk and discarding suspended memory."
-msgstr ""
-"Arrêter une machine en conservant son disque et en abandonnant la mémoire "
-"suspendue."
-
-#: lib/porsche/ssh/command_messages.ex:20
-#, elixir-autogen, elixir-format
+# Reviewed English fallback pending translation of suspension behavior.
 msgid "Suspend a machine, preserving its memory and disk."
-msgstr "Suspendre une machine en conservant sa mémoire et son disque."
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

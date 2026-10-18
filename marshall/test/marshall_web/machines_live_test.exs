@@ -12,6 +12,35 @@ defmodule MarshallWeb.MachinesLiveTest do
     %{owner: owner, fixture: fixture}
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] suspended-machine-controls
+  # Paused machines MUST expose Resume and terminal connection, never Start;
+  # transitional labels MUST retain their text and pending severity.
+  test "paused machines retain resume controls and terminal connection", %{
+    conn: conn,
+    owner: owner
+  } do
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    Ash.Seed.update!(vm, %{desired_state: :paused, observed_state: :paused})
+    {:ok, detail, _} = live(signed_in(conn, owner), ~p"/machines/#{vm.id}")
+    assert has_element?(detail, "#resume-machine[phx-value-kind=resume]", "Resume machine")
+    assert has_element?(detail, "#stop-machine")
+    refute has_element?(detail, "#start-machine")
+    refute has_element?(detail, "#pause-machine")
+    assert has_element?(detail, "#machine-state[data-state=paused]", "Paused")
+
+    {:ok, listing, _} = live(signed_in(conn, owner), ~p"/machines")
+    assert has_element?(listing, "#machine-terminal-#{vm.id}")
+
+    for {desired, observed, label} <- [
+          {:paused, :running, "Suspending"},
+          {:running, :paused, "Resuming"}
+        ] do
+      state = %{desired_state: desired, observed_state: observed}
+      assert MarshallWeb.WorkspaceComponents.machine_state(state) == label
+      assert MarshallWeb.WorkspaceComponents.machine_tone(state) == "pending"
+    end
+  end
+
   test "machine connection keeps installer and SSH commands without a profile download", %{
     conn: conn,
     owner: owner

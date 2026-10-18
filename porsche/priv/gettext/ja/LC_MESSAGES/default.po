@@ -36,16 +36,103 @@ msgstr ""
 "このリンクを開き、サインインして、一致するフィンガープリントを承認してください:\n"
 "  "
 
-#: lib/porsche/ssh/onboarding.ex:112
-#, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Or manage your keys at:\n"
-"  "
-msgstr ""
-"\n"
-"または、次の場所で鍵を管理してください:\n"
-"  "
+msgid "Show the authenticated account."
+msgstr "認証済みアカウントを表示します。"
+
+msgid "List available images."
+msgstr "利用可能なイメージを一覧表示します。"
+
+msgid "List machines you can access."
+msgstr "アクセスできるマシンを一覧表示します。"
+
+msgid "Inspect a machine by name or UUID."
+msgstr "名前または UUID でマシンを調べます。"
+
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "マシンを作成します。ディスクの上限は 500 GiB です。--source は公開 GitHub、GitLab、Codeberg、Bitbucket リポジトリをゲスト内に複製します。"
+
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "マシンの独立したディスク全体のコピーをキューに追加します。"
+
+msgid "Move a machine to an automatically selected host."
+msgstr "自動選択されたホストにマシンを移動します。"
+
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "マシンの CPU とメモリを変更します。ディスクは拡張のみ可能です。稼働中のマシンは停止して再起動します。"
+
+msgid "Retry a failed clone or relocation request."
+msgstr "失敗した複製または移動リクエストを再試行します。"
+
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "未公開の複製または未確定の移動リクエストを取り消します。"
+
+msgid "Start a machine."
+msgstr "マシンを起動します。"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
+
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "マシンとディスクを削除します。所有者が固定している間は拒否されます。"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+
+msgid "Remove your pin from a machine."
+msgstr "マシンの固定を解除します。"
+
+msgid "List access grants."
+msgstr "アクセス権の一覧を表示します。"
+
+msgid "Grant viewer, operator or manager access."
+msgstr "閲覧者、操作担当者、管理者のアクセス権を付与します。"
+
+msgid "Revoke an account's shared access."
+msgstr "アカウントの共有アクセス権を取り消します。"
+
+msgid "List your SSH keys."
+msgstr "SSH 鍵を一覧表示します。"
+
+msgid "Revoke one of your SSH keys."
+msgstr "SSH 鍵を一つ取り消します。"
+
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "https://NAME.integration.internal に名前付き連携を作成または置換します。"
+
+msgid "Remove a named integration."
+msgstr "名前付き連携を削除します。"
+
+msgid "List your integrations."
+msgstr "連携を一覧表示します。"
+
+msgid "Inspect an integration without secrets."
+msgstr "秘密情報を含めずに連携を調べます。"
+
+msgid "Make an integration available to a machine."
+msgstr "マシンで連携を利用可能にします。"
+
+msgid "Remove a machine's explicit availability."
+msgstr "マシンへの明示的な利用許可を削除します。"
+
+msgid "Create a team you own."
+msgstr "自分が所有するチームを作成します。"
+
+msgid "List your teams and roles."
+msgstr "チームと役割を一覧表示します。"
+
+msgid "List a team's members."
+msgstr "チームのメンバーを一覧表示します。"
+
+msgid "Add or change an admin or member."
+msgstr "管理者またはメンバーを追加または変更します。"
+
+msgid "Remove an account's membership."
+msgstr "アカウントのメンバー資格を削除します。"
+
+msgid "Offer team ownership to an admin."
+msgstr "管理者にチームの所有権を譲渡する提案を送ります。"
 
 #: lib/porsche/ssh/command_messages.ex:46
 #, elixir-autogen, elixir-format
@@ -274,139 +361,14 @@ msgstr "リクエスト %{id}: 送信中"
 msgid "Request %{id}: waiting for completion"
 msgstr "リクエスト %{id}: 完了待ち"
 
-#: lib/porsche/ssh/command_messages.ex:26
-#, elixir-autogen, elixir-format
-msgid "Retry a failed clone or relocation request."
-msgstr "失敗した複製または移動リクエストを再試行します。"
-
-#: lib/porsche/ssh/command_messages.ex:34
-#, elixir-autogen, elixir-format
-msgid "Revoke an account's shared access."
-msgstr "アカウントの共有アクセス権を取り消します。"
-
-#: lib/porsche/ssh/command_messages.ex:38
-#, elixir-autogen, elixir-format
-msgid "Revoke one of your SSH keys."
-msgstr "SSH 鍵を一つ取り消します。"
-
-#: lib/porsche/ssh/command_messages.ex:8
-#, elixir-autogen, elixir-format
-msgid "Show command help."
-msgstr "コマンドのヘルプを表示します。"
-
-#: lib/porsche/ssh/command_messages.ex:52
-#, elixir-autogen, elixir-format
-msgid "Show the authenticated account."
-msgstr "認証済みアカウントを表示します。"
-
-#: lib/porsche/ssh/command_messages.ex:39
-#, elixir-autogen, elixir-format
-msgid "Start a machine."
-msgstr "マシンを起動します。"
-
-#: lib/porsche/ssh/output.ex:73
-#, elixir-autogen, elixir-format
-msgid "The command could not be completed: %{reason}"
-msgstr "コマンドを完了できませんでした: %{reason}"
-
-#: lib/porsche/ssh/output.ex:67
-#, elixir-autogen, elixir-format
-msgid "The requested resource could not be found."
-msgstr "要求されたリソースが見つかりませんでした。"
-
-#: lib/porsche/ssh/output.ex:61
-#, elixir-autogen, elixir-format
-msgid "The service is temporarily unavailable. Please try again shortly."
-msgstr "サービスは一時的に利用できません。しばらくしてから再試行してください。"
-
-#: lib/porsche/ssh/onboarding.ex:100
-#, elixir-autogen, elixir-format
-msgid ""
-"This SSH connection could not be authorized. Check your machine access and try again.\n"
-"\n"
-msgstr ""
-"この SSH 接続を認可できませんでした。マシンへのアクセス権を確認して再試行してください。\n"
-"\n"
-
-#: lib/porsche/ssh/output.ex:52
-#, elixir-autogen, elixir-format
-msgid "This connection is not authorized. Please sign in and try again."
-msgstr "この接続は認可されていません。サインインして再試行してください。"
-
-#: lib/porsche/ssh/output.ex:70
-#, elixir-autogen, elixir-format
-msgid "Unexpected input. Please open a new SSH connection."
-msgstr "予期しない入力です。新しい SSH 接続を開いてください。"
-
-#: lib/porsche/ssh/onboarding.ex:97
-#, elixir-autogen, elixir-format
-msgid ""
-"We couldn't verify this SSH key right now. Please try again shortly.\n"
-"\n"
-msgstr ""
-"現在、この SSH 鍵を検証できません。しばらくしてから再試行してください。\n"
-"\n"
-
-#: lib/porsche/ssh/onboarding.ex:53
-#, elixir-autogen, elixir-format
-msgid ""
-"We don't recognize this SSH key:\n"
-"  "
-msgstr ""
-"この SSH 鍵は登録されていません:\n"
-"  "
-
-#: lib/porsche/ssh/onboarding.ex:86
-#, elixir-autogen, elixir-format
-msgid ""
-"Welcome to Overalls.\n"
-"\n"
-"This connection needs the Overalls SSH configuration.\n"
-"\n"
-msgstr ""
-"Overalls へようこそ。\n"
-"\n"
-"この接続には Overalls の SSH 設定が必要です。\n"
-"\n"
-
-#: lib/porsche/ssh/output.ex:55
-#, elixir-autogen, elixir-format
-msgid "You do not have permission to perform this action."
-msgstr "この操作を実行する権限がありません。"
-
-#: lib/porsche/ssh/onboarding.ex:121
-#, elixir-autogen, elixir-format
-msgid "from your machine's page and reconnect without root@.\n"
-msgstr "マシンのページから実行し、root@ を付けずに再接続してください。\n"
-
-#: lib/porsche/ssh/onboarding.ex:78
-#, elixir-autogen, elixir-format
-msgid "then retry your original command.\n"
-msgstr "元のコマンドを再試行してください。\n"
-
-#: lib/porsche/ssh/command_messages.ex:21
-#, elixir-autogen, elixir-format
-msgid ""
-"Pin a machine to the top of your lists. Your owner pin wakes it, prevents "
-"automatic suspension, and prevents deletion."
-msgstr "マシンを一覧の先頭に固定します。所有者による固定はマシンを起動し、自動サスペンドと削除を防ぎます。"
-
-#: lib/porsche/ssh/command_messages.ex:50
-#, elixir-autogen, elixir-format
-msgid "Resume a suspended machine's preserved memory."
-msgstr "サスペンドしたマシンを保持したメモリから再開します。"
-
-#: lib/porsche/ssh/command_messages.ex:31
-#, elixir-autogen, elixir-format
-msgid "Resume preserved memory, waiting for capacity or relocation."
-msgstr "保持したメモリから再開します。容量の確保または移動を待機します。"
-
-#: lib/porsche/ssh/command_messages.ex:40
-#, elixir-autogen, elixir-format
-msgid "Stop a machine, retaining its disk and discarding suspended memory."
-msgstr "ディスクを保持し、サスペンド時のメモリを破棄してマシンを停止します。"
-
-#: lib/porsche/ssh/command_messages.ex:20
-#, elixir-autogen, elixir-format
+# Reviewed English fallback pending translation of suspension behavior.
 msgid "Suspend a machine, preserving its memory and disk."
-msgstr "メモリとディスクを保持してマシンをサスペンドします。"
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

@@ -50,7 +50,11 @@ defmodule MarshallWeb.Admin.OperationsLive do
       <section id="admin-operations" class="stack">
         <UI.heading
           title={gettext("Platform status")}
-          subtitle={gettext("Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld.")}
+          subtitle={
+            gettext(
+              "Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
+            )
+          }
         >
           <:actions>
             <span class="muted">{gettext("Updated")}

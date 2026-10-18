@@ -40,7 +40,8 @@ defmodule MarshallWeb.HLDDLive do
   end
 
   def handle_params(_params, _uri, socket) do
-    {:noreply, assign(socket, page_title: gettext("HLDD"), chapter: nil, previous: nil, following: nil)}
+    {:noreply,
+     assign(socket, page_title: gettext("HLDD"), chapter: nil, previous: nil, following: nil)}
   end
 
   @impl true

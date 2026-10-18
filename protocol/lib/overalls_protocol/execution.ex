@@ -374,6 +374,16 @@ defmodule OverallsProtocol.Execution do
   defp checkpoint_outcome(wire), do: decode_outcome(wire)
 
   @spec encode_command(command()) :: map()
+  # @cc [owner:ghuntley,label:protocol] checkpoint-command-wire-encoding
+  # Memory continuation commands MUST encode their nested checkpoint through
+  # its closed wire schema; atom-keyed application data MUST NOT reach the peer.
+  def encode_command(%{checkpoint: checkpoint} = command) do
+    command
+    |> Map.delete(:checkpoint)
+    |> encode_command()
+    |> Map.put("checkpoint", OverallsProtocol.Checkpoint.encode(checkpoint))
+  end
+
   def encode_command(%{git_identity: identity} = command) do
     command
     |> Map.delete(:git_identity)
@@ -386,16 +396,6 @@ defmodule OverallsProtocol.Execution do
     |> Map.delete(:workspace_source)
     |> encode_command()
     |> Map.put("workspace_source", WorkspaceSource.encode(source))
-  end
-
-  # @cc [owner:ghuntley,label:protocol;recovery] command-checkpoint-wire-encoding
-  # Checkpoint-bearing commands MUST encode the nested descriptor through its
-  # closed wire codec, preserving the validated resume command round trip.
-  def encode_command(%{checkpoint: checkpoint} = command) do
-    command
-    |> Map.delete(:checkpoint)
-    |> encode_command()
-    |> Map.put("checkpoint", OverallsProtocol.Checkpoint.encode(checkpoint))
   end
 
   def encode_command(command) do

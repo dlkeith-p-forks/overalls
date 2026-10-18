@@ -27,7 +27,10 @@ defmodule MarshallWeb.TeamsLive do
     case result do
       {:ok, team} ->
         {:noreply,
-         socket |> put_flash(:info, gettext("Team %{value1} created.", value1: team.name)) |> refresh() |> select(team.id)}
+         socket
+         |> put_flash(:info, gettext("Team %{value1} created.", value1: team.name))
+         |> refresh()
+         |> select(team.id)}
 
       {:error, _} ->
         {:noreply, put_flash(socket, :error, gettext("Could not create this team."))}
@@ -65,11 +68,13 @@ defmodule MarshallWeb.TeamsLive do
 
     case result do
       {:ok, _member} ->
-        {:noreply, socket |> put_flash(:info, gettext("Membership updated.")) |> refresh_members()}
+        {:noreply,
+         socket |> put_flash(:info, gettext("Membership updated.")) |> refresh_members()}
 
       {:error, _} ->
         {:noreply,
-         put_flash(socket, :error, gettext("Could not update this membership.")) |> refresh_members()}
+         put_flash(socket, :error, gettext("Could not update this membership."))
+         |> refresh_members()}
     end
   end
 
@@ -83,7 +88,8 @@ defmodule MarshallWeb.TeamsLive do
          |> refresh_members()}
 
       {:error, _} ->
-        {:noreply, put_flash(socket, :error, gettext("Could not offer ownership.")) |> refresh_members()}
+        {:noreply,
+         put_flash(socket, :error, gettext("Could not offer ownership.")) |> refresh_members()}
     end
   end
 
@@ -105,7 +111,8 @@ defmodule MarshallWeb.TeamsLive do
     end
   end
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+  def handle_event(_, _, socket),
+    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   defp refresh(socket) do
     case Teams.list_teams(%{}, actor: socket.assigns.current_user) do
@@ -169,7 +176,11 @@ defmodule MarshallWeb.TeamsLive do
       <section id="teams-page" class="stack">
         <UI.heading
           title={gettext("Teams")}
-          subtitle={gettext("Share machines and integrations with the people you work with. Owners appoint admins, admins manage members.")}
+          subtitle={
+            gettext(
+              "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
+            )
+          }
         />
         <p :if={@teams == []} class="empty-state">
           {gettext("You are not in a team yet. Create one below, or ask a team admin to add you.")}
@@ -189,8 +200,11 @@ defmodule MarshallWeb.TeamsLive do
               <div>
                 <h1>{selected_team(assigns).name}</h1>
                 <p>
-                  {gettext("Your role: %{role}", role: role_label(selected_team(assigns).role))}
-                  · {ngettext("%{count} member", "%{count} members", length(@members))}
+                  {gettext("Your role: %{role}", role: role_label(selected_team(assigns).role))} · {ngettext(
+                    "%{count} member",
+                    "%{count} members",
+                    length(@members)
+                  )}
                 </p>
               </div>
             </header>
@@ -239,7 +253,11 @@ defmodule MarshallWeb.TeamsLive do
                     field={@member_form[:role]}
                     label={gettext("Role")}
                     type="select"
-                    options={[{gettext("Admin"), "admin"}, {gettext("Member"), "member"}, {gettext("Remove"), "removed"}]}
+                    options={[
+                      {gettext("Admin"), "admin"},
+                      {gettext("Member"), "member"},
+                      {gettext("Remove"), "removed"}
+                    ]}
                   />
                 </div>
                 <div class="row actions">
@@ -249,7 +267,9 @@ defmodule MarshallWeb.TeamsLive do
             </UI.panel>
             <UI.panel id="team-ownership" title={gettext("Ownership")}>
               <p class="muted">
-                {gettext("A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin.")}
+                {gettext(
+                  "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
+                )}
               </p>
               <.form
                 :if={selected_team(assigns).role == :owner && !@transfer}
@@ -285,10 +305,15 @@ defmodule MarshallWeb.TeamsLive do
                       now={@now}
                     />
                   </:item>
-                  <:item title={gettext("Status")}><span class="status-label">{gettext("pending")}</span></:item>
+                  <:item title={gettext("Status")}>
+                    <span class="status-label">{gettext("pending")}</span>
+                  </:item>
                 </.kv>
                 <p class="sr-only">
-                  {gettext("Ownership offered by %{value1} to %{value2}.", value1: @transfer.from_email, value2: @transfer.to_email)}
+                  {gettext("Ownership offered by %{value1} to %{value2}.",
+                    value1: @transfer.from_email,
+                    value2: @transfer.to_email
+                  )}
                 </p>
                 <div class="row actions">
                   <button
@@ -348,7 +373,9 @@ defmodule MarshallWeb.TeamsLive do
   defp role_label(_), do: gettext("Member")
 
   @spec role_summary(atom()) :: String.t()
-  defp role_summary(:owner), do: gettext("Everything, including appointing admins and offering ownership.")
+  defp role_summary(:owner),
+    do: gettext("Everything, including appointing admins and offering ownership.")
+
   defp role_summary(:admin), do: gettext("Manage members and team machines.")
   defp role_summary(:member), do: gettext("Use team machines and integrations.")
   defp role_summary(_), do: ""

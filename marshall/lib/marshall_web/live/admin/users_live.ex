@@ -40,7 +40,8 @@ defmodule MarshallWeb.Admin.UsersLive do
 
     case result do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, gettext("Administrator access updated.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:info, gettext("Administrator access updated.")) |> refresh()}
 
       {:error, _} ->
         {:noreply, put_flash(socket, :error, gettext("Could not change administrator access."))}
@@ -75,7 +76,8 @@ defmodule MarshallWeb.Admin.UsersLive do
   def handle_event("reset-mfa", %{"id" => id}, socket),
     do: change_account(socket, :reset_mfa, %{user_id: id})
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+  def handle_event(_, _, socket),
+    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   defp change_account(socket, action, params) do
     case User
@@ -89,7 +91,9 @@ defmodule MarshallWeb.Admin.UsersLive do
          put_flash(
            socket,
            :error,
-           gettext("Could not accept this account change. Check confirmation and verify your passkey.")
+           gettext(
+             "Could not accept this account change. Check confirmation and verify your passkey."
+           )
          )}
     end
   end
@@ -131,7 +135,11 @@ defmodule MarshallWeb.Admin.UsersLive do
       <section id="admin-users" class="stack">
         <UI.heading
           title={gettext("Users")}
-          subtitle={gettext("Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification.")}
+          subtitle={
+            gettext(
+              "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
+            )
+          }
         />
         <UI.panel :if={@admin_authorized} id="invite-panel" title={gettext("Invite a user")}>
           <.form for={to_form(%{})} id="invite-user" phx-submit="invite" class="field-row">
@@ -156,7 +164,9 @@ defmodule MarshallWeb.Admin.UsersLive do
               <p class="muted">
                 {ngettext("%{count} owned machine", "%{count} owned machines", user.owned_count)} · {if user.mfa_enabled,
                   do: gettext("MFA enabled"),
-                  else: gettext("MFA not enrolled")}<span :if={user.id == @current_user.id}> {gettext("· Your account")}</span>
+                  else: gettext("MFA not enrolled")}<span :if={user.id == @current_user.id}>{gettext(
+                  "· Your account"
+                )}</span>
               </p>
               <p :if={user.deletion_status} class="muted">{user.deletion_status}</p>
               <p :if={user.time_zone}>
@@ -181,11 +191,15 @@ defmodule MarshallWeb.Admin.UsersLive do
                       if user.administrator,
                         do: gettext("Remove administrator access for this account?"),
                         else:
-                          gettext("Grant this account access to administer the entire fleet and all machines?")
+                          gettext(
+                            "Grant this account access to administer the entire fleet and all machines?"
+                          )
                     }
                     class="console-button"
                   >
-                    {if user.administrator, do: gettext("Remove administrator"), else: gettext("Make administrator")}
+                    {if user.administrator,
+                      do: gettext("Remove administrator"),
+                      else: gettext("Make administrator")}
                   </button>
                   <button
                     id={"sessions-#{user.id}"}
@@ -198,7 +212,11 @@ defmodule MarshallWeb.Admin.UsersLive do
                     id={"reset-mfa-#{user.id}"}
                     phx-click="reset-mfa"
                     phx-value-id={user.id}
-                    data-confirm={gettext("Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey.")}
+                    data-confirm={
+                      gettext(
+                        "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
+                      )
+                    }
                     class="console-button"
                   >{gettext("Reset MFA")}</button>
                 </div>
@@ -212,11 +230,19 @@ defmodule MarshallWeb.Admin.UsersLive do
                   <.input
                     name="confirmation"
                     value=""
-                    label={gettext("Type the email to delete this account and its %{count} machines", count: user.owned_count)}
+                    label={
+                      gettext("Type the email to delete this account and its %{count} machines",
+                        count: user.owned_count
+                      )
+                    }
                     required
                   />
                   <button
-                    data-confirm={gettext("Permanently delete this account and ALL machines they own, including machines shared with others?")}
+                    data-confirm={
+                      gettext(
+                        "Permanently delete this account and ALL machines they own, including machines shared with others?"
+                      )
+                    }
                     class="console-button danger"
                   >{gettext("Delete user and machines")}</button>
                 </.form>

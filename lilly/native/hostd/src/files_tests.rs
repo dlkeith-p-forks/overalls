@@ -146,6 +146,48 @@ fn native_file_effects_perform_lillys_shapes() {
     );
 }
 
+/// Snapshot memory and state keep the native single-path ownership grammar.
+#[test]
+fn checkpoint_outputs_require_individual_native_ownership_requests() {
+    let directory = tempfile::tempdir().unwrap();
+    let root = directory.path().canonicalize().unwrap();
+    let memory = text(&root.join("memory"));
+    let state = text(&root.join("state"));
+    std::fs::write(&memory, b"memory fixture").unwrap();
+    std::fs::write(&state, b"state fixture").unwrap();
+    let me = rustix::process::geteuid().as_raw();
+    let owner = format!("{me}:{me}");
+
+    // The native boundary accepts one path per request. In an unprivileged
+    // fixture whose primary group differs from its uid the effect fails,
+    // but the request must still pass the closed argument grammar.
+    let expected = if me == 0 || rustix::process::getegid().as_raw() == me {
+        Status::Succeeded
+    } else {
+        Status::Failed
+    };
+    for path in [&memory, &state] {
+        assert_eq!(
+            native(
+                &root,
+                Utility::Chown,
+                &["--no-dereference", &owner, "--", path],
+            ),
+            expected,
+        );
+    }
+    assert_eq!(
+        native(
+            &root,
+            Utility::Chown,
+            &["--no-dereference", &owner, "--", &memory, &state],
+        ),
+        Status::Setup,
+    );
+    assert_eq!(std::fs::read(memory).unwrap(), b"memory fixture");
+    assert_eq!(std::fs::read(state).unwrap(), b"state fixture");
+}
+
 /// Paths outside the roots, symlinked components, other shapes, modes and
 /// owners are refused without any effect.
 #[test]

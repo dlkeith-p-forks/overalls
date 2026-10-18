@@ -97,14 +97,7 @@ def main() -> int:
             # replicas must receive the same pending/epoch pair before recovery.
             pending = marker.with_name(marker.name + ".pending")
             require_fresh_epoch(marker, args.epoch)
-            try:
-                pending.lstat()
-            except FileNotFoundError:
-                pass
-            else:
-                # A prior interrupted restore retains its fence. Never replace
-                # that operator-visible intent with a second archive.
-                raise BackupError("configuration")
+            require_fresh_epoch(pending, args.epoch)
             publish_epoch(pending, args.epoch)
             publish_epoch(marker, args.epoch)
             for instance in args.instance:

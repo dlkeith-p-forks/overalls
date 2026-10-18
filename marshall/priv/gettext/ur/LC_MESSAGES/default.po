@@ -4319,12 +4319,7 @@ msgstr "دوبارہ شروع ہو گیا"
 msgid "Restarting"
 msgstr "دوبارہ شروع ہو رہا ہے"
 
-#: lib/marshall_web/live/machines_live.ex:616
-#, elixir-autogen, elixir-format
-msgid "Restarting the destination; source copy retained"
-msgstr "منزل دوبارہ شروع ہو رہی ہے؛ ماخذ کی نقل محفوظ ہے"
-
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:425
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:427
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "داخلہ بحال کریں"
@@ -7208,38 +7203,92 @@ msgstr "آپ کے ای میل لنک کی تصدیق ہو رہی ہے۔"
 msgid "Stay in the loop"
 msgstr ""
 
-#: lib/marshall_web/live/overview_live.ex:216
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Dismiss"
-msgstr ""
+msgid "4. Git identity"
+msgstr "4. Git identity"
 
-#: lib/marshall_web/live/overview_live.ex:218
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Get tips, tricks and updates about Overalls and AI by email."
-msgstr ""
+msgid "Add Overalls commit attribution"
+msgstr "Add Overalls commit attribution"
 
-#: lib/marshall_web/live/overview_live.ex:221
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Subscribe"
-msgstr ""
+msgid "Enter a valid Git name and email address."
+msgstr "Enter a valid Git name and email address."
 
-#: lib/marshall_web/live/overview_live.ex:225
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Check your inbox and click the link to confirm your subscription."
-msgstr ""
+msgid "Git email"
+msgstr "Git email"
 
-#: lib/marshall_web/live/overview_live.ex:226
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Enter a valid email address."
-msgstr ""
+msgid "Git identity"
+msgstr "Git identity"
 
-#: lib/marshall_web/live/overview_live.ex:227
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "We could not reach the newsletter service. Try again later."
-msgstr ""
+msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
 
-#: lib/marshall_web/live/overview_live.ex:228
+# Reviewed English fallback pending translation of suspension and account behavior.
 #, elixir-autogen, elixir-format
-msgid "Unsubscribe any time."
-msgstr ""
+msgid "Git settings saved."
+msgstr "Git settings saved."
 
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "Git username"
+msgstr "Git username"
+
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "Machine is paused. Resume it or reopen this terminal page."
+msgstr "Machine is paused. Resume it or reopen this terminal page."
+
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "Pause"
+msgstr "Pause"
+
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "Paused"
+
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "Resume machine"
+msgstr "Resume machine"
+
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "Resuming"
+msgstr "Resuming"
+
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "Resuming machine; waiting for capacity…"
+msgstr "Resuming machine; waiting for capacity…"
+
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "Save Git settings"
+msgstr "Save Git settings"
+
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "Suspending"
+msgstr "Suspending"
+
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+
+# Reviewed English fallback pending translation of suspension and account behavior.
+#, elixir-autogen, elixir-format
+msgid "new machines and commit attribution"
+msgstr "new machines and commit attribution"

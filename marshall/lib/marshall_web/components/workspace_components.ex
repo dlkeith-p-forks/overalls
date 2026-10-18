@@ -56,15 +56,20 @@ defmodule MarshallWeb.WorkspaceComponents do
 
   # @cc [owner:ghuntley,label:product] machine-state-label-text-and-tone
   # Every machine status label MUST name the state in text from machine_state/1
-  # (Deleting, Stopping, Starting, or the capitalised observed state) and carry
+  # (Deleting, Stopping, Suspending, Resuming, Starting, or the named observed state) and carry
   # the observed state in `data-state` plus the severity in `data-tone`, decided
   # in the same clause order as the text: pending for every transition
-  # (Deleting, Stopping, Starting, Pending, Unknown), danger for a failed
+  # (Deleting, Stopping, Suspending, Resuming, Starting, Pending, Unknown), danger for a failed
   # machine, success for a settled running machine and no tone for the neutral
-  # settled states (Stopped, Deleted). Colour never carries meaning.
+  # settled states (Paused, Stopped, Deleted). Colour never carries meaning.
   @spec machine_state(map()) :: String.t()
   def machine_state(%{desired_state: :deleted}), do: gettext("Deleting")
   def machine_state(%{desired_state: :stopped, observed_state: :running}), do: gettext("Stopping")
+
+  def machine_state(%{desired_state: :paused, observed_state: :running}),
+    do: gettext("Suspending")
+
+  def machine_state(%{desired_state: :running, observed_state: :paused}), do: gettext("Resuming")
 
   def machine_state(%{desired_state: :running, observed_state: state})
       when state in [:pending, :stopped], do: gettext("Starting")
@@ -74,6 +79,7 @@ defmodule MarshallWeb.WorkspaceComponents do
       :pending -> gettext("Pending")
       :running -> gettext("Running")
       :stopped -> gettext("Stopped")
+      :paused -> gettext("Paused")
       :failed -> gettext("Failed")
       :deleted -> gettext("Deleted")
       :unknown -> gettext("Unknown")
@@ -85,6 +91,8 @@ defmodule MarshallWeb.WorkspaceComponents do
   @spec machine_tone(map()) :: String.t() | nil
   def machine_tone(%{desired_state: :deleted}), do: "pending"
   def machine_tone(%{desired_state: :stopped, observed_state: :running}), do: "pending"
+  def machine_tone(%{desired_state: :paused, observed_state: :running}), do: "pending"
+  def machine_tone(%{desired_state: :running, observed_state: :paused}), do: "pending"
 
   def machine_tone(%{desired_state: :running, observed_state: state})
       when state in [:pending, :stopped], do: "pending"
@@ -194,7 +202,9 @@ defmodule MarshallWeb.WorkspaceComponents do
     assigns = assign(assigns, :pinned, pinned?(assigns.vm))
 
     ~H"""
-    <span :if={@pinned} id={@id} class="status-label pinned-label" data-tone="muted">{gettext("Pinned")}</span>
+    <span :if={@pinned} id={@id} class="status-label pinned-label" data-tone="muted">{gettext(
+      "Pinned"
+    )}</span>
     """
   end
 
@@ -213,6 +223,11 @@ defmodule MarshallWeb.WorkspaceComponents do
   # explanation and no advice to create a machine; missing/unknown status MUST
   # fail closed. Rendering MUST NOT read resources or allocate accounts; the
   # displayed status MUST NOT authorize the launch route.
+
+  # @cc [owner:ghuntley,label:product;recovery] suspended-machine-power-controls
+  # Manage-authorized paused machines MUST expose Resume rather than Start and
+  # retain Stop. Settled running machines MUST expose Pause; rendered controls
+  # MUST submit lifecycle intent through the existing request-key boundary.
   @spec machine_header(map()) :: Phoenix.LiveView.Rendered.t()
   def machine_header(assigns) do
     assigns = assign(assigns, :editor_control, editor_control(assigns.vm))
@@ -233,9 +248,12 @@ defmodule MarshallWeb.WorkspaceComponents do
             >{machine_state(@vm)}</span>
           </div>
           <p class="machine-facts muted">
-            {gettext("%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}", value1: @vm.vcpu, value2: workspace_gib(@vm.memory_bytes), value3: workspace_gib(
-              @vm.disk_bytes
-            ), value4: profile_name(@vm.profile))}
+            {gettext("%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}",
+              value1: @vm.vcpu,
+              value2: workspace_gib(@vm.memory_bytes),
+              value3: workspace_gib(@vm.disk_bytes),
+              value4: profile_name(@vm.profile)
+            )}
           </p>
           <p class="machine-identity">
             <span class="muted">{gettext("ID")}</span>
@@ -278,7 +296,10 @@ defmodule MarshallWeb.WorkspaceComponents do
               class="row"
             >
               <Layouts.action
-                :if={@vm.desired_state != :running || @vm.observed_state == :failed}
+                :if={
+                  (@vm.desired_state not in [:running, :paused] && @vm.observed_state != :paused) ||
+                    @vm.observed_state == :failed
+                }
                 id="start-machine"
                 tone="primary"
                 phx-click="machine-power"
@@ -288,7 +309,26 @@ defmodule MarshallWeb.WorkspaceComponents do
                 {gettext("Start machine")}
               </Layouts.action>
               <Layouts.action
-                :if={@vm.desired_state == :running}
+                :if={@vm.desired_state == :paused || @vm.observed_state == :paused}
+                id="resume-machine"
+                tone="primary"
+                phx-click="machine-power"
+                phx-value-kind="resume"
+                phx-value-key={@power_key}
+              >
+                {gettext("Resume machine")}
+              </Layouts.action>
+              <Layouts.action
+                :if={@vm.desired_state == :running && @vm.observed_state == :running}
+                id="pause-machine"
+                phx-click="machine-power"
+                phx-value-kind="pause"
+                phx-value-key={@power_key}
+              >
+                {gettext("Pause")}
+              </Layouts.action>
+              <Layouts.action
+                :if={@vm.desired_state in [:running, :paused]}
                 id="stop-machine"
                 tone="default"
                 phx-click="machine-power"
@@ -333,7 +373,9 @@ defmodule MarshallWeb.WorkspaceComponents do
           </summary>
           <%= if @connection && capability?(@vm, :ssh) do %>
             <p class="muted">
-              {gettext("Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh.")}
+              {gettext(
+                "Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh."
+              )}
             </p>
             <h3 class="connection-step">{gettext("Install and connect")}</h3>
             <div class="connection-grid">
@@ -372,7 +414,9 @@ defmodule MarshallWeb.WorkspaceComponents do
             <p id="machine-connect-unavailable" class="muted">
               <%= cond do %>
                 <% capability?(@vm, :available) && !capability?(@vm, :ssh) -> %>
-                  {gettext("This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use")}
+                  {gettext(
+                    "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
+                  )}
                   <.link
                     :if={@vm.permissions.read}
                     id="machine-boot-log"

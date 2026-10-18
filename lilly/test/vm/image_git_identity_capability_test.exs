@@ -48,6 +48,7 @@ defmodule Lilly.VM.ImageGitIdentityCapabilityTest do
       end,
       database: :disabled,
       print_blob: false,
+      test_cases: 100,
       seed: 814_029_313
     )
   end

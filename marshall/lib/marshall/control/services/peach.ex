@@ -2,7 +2,7 @@ defmodule Marshall.Control.Services.Peach do
   @behaviour Marshall.Control.Service
   @impl true
   def authenticate(token) when is_binary(token) and byte_size(token) == 80 do
-    case Marshall.Peach.Credentials.authenticate(token) do
+    case Marshall.Galileo.Credentials.authenticate(token) do
       {:ok, %{host_id: host_id}} -> {:ok, %{token: token, host_id: host_id}}
       _ -> :refused
     end

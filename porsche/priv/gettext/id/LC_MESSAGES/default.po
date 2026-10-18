@@ -4,8 +4,134 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/porsche/ssh/onboarding.ex:60
-#, elixir-autogen, elixir-format
+msgid "Porsche machine management. Type help."
+msgstr "Pengelolaan mesin Porsche. Ketik help."
+
+msgid "Docs:"
+msgstr "Dokumentasi:"
+
+msgid "Show command help."
+msgstr "Tampilkan bantuan perintah."
+
+msgid "Show the authenticated account."
+msgstr "Tampilkan akun yang terautentikasi."
+
+msgid "List available images."
+msgstr "Daftar citra yang tersedia."
+
+msgid "List machines you can access."
+msgstr "Daftar mesin yang dapat Anda akses."
+
+msgid "Inspect a machine by name or UUID."
+msgstr "Periksa mesin berdasarkan nama atau UUID."
+
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "Buat mesin. Kapasitas disk maksimum: 500 GiB. --source mengkloning repositori publik GitHub, GitLab, Codeberg, atau Bitbucket di mesin tamu."
+
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "Antrekan salinan seluruh disk mesin yang independen."
+
+msgid "Move a machine to an automatically selected host."
+msgstr "Pindahkan mesin ke host yang dipilih otomatis."
+
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "Ubah CPU dan memori mesin; disk hanya dapat diperbesar. Mesin yang berjalan akan berhenti dan dimulai ulang."
+
+msgid "Retry a failed clone or relocation request."
+msgstr "Coba lagi permintaan kloning atau pemindahan yang gagal."
+
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "Batalkan kloning yang belum dipublikasikan atau permintaan pemindahan yang belum dikomit."
+
+msgid "Start a machine."
+msgstr "Mulai mesin."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
+
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "Hapus mesin beserta disknya. Ditolak selama pemiliknya menyematkannya."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+
+msgid "Remove your pin from a machine."
+msgstr "Lepaskan sematan Anda dari mesin."
+
+msgid "List access grants."
+msgstr "Daftar pemberian akses."
+
+msgid "Grant viewer, operator or manager access."
+msgstr "Berikan akses penampil, operator, atau pengelola."
+
+msgid "Revoke an account's shared access."
+msgstr "Cabut akses bersama suatu akun."
+
+msgid "List your SSH keys."
+msgstr "Daftar kunci SSH Anda."
+
+msgid "Revoke one of your SSH keys."
+msgstr "Cabut salah satu kunci SSH Anda."
+
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "Buat atau ganti integrasi bernama di https://NAME.integration.internal."
+
+msgid "Remove a named integration."
+msgstr "Hapus integrasi bernama."
+
+msgid "List your integrations."
+msgstr "Daftar integrasi Anda."
+
+msgid "Inspect an integration without secrets."
+msgstr "Periksa integrasi tanpa rahasia."
+
+msgid "Make an integration available to a machine."
+msgstr "Sediakan integrasi untuk sebuah mesin."
+
+msgid "Remove a machine's explicit availability."
+msgstr "Hapus ketersediaan eksplisit sebuah mesin."
+
+msgid "Create a team you own."
+msgstr "Buat tim milik Anda."
+
+msgid "List your teams and roles."
+msgstr "Daftar tim dan peran Anda."
+
+msgid "List a team's members."
+msgstr "Daftar anggota tim."
+
+msgid "Add or change an admin or member."
+msgstr "Tambahkan atau ubah admin atau anggota."
+
+msgid "Remove an account's membership."
+msgstr "Hapus keanggotaan akun."
+
+msgid "Offer team ownership to an admin."
+msgstr "Tawarkan kepemilikan tim kepada admin."
+
+msgid "Accept a pending ownership offer."
+msgstr "Terima tawaran kepemilikan yang tertunda."
+
+msgid "Decline a pending ownership offer."
+msgstr "Tolak tawaran kepemilikan yang tertunda."
+
+msgid "Cancel your pending ownership offer."
+msgstr "Batalkan tawaran kepemilikan Anda yang tertunda."
+
+msgid "Inspect a previously accepted request."
+msgstr "Periksa permintaan yang sebelumnya diterima."
+
+msgid "Close this interactive channel."
+msgstr "Tutup saluran interaktif ini."
+
+msgid "We don't recognize this SSH key:\n  "
+msgstr "Kami tidak mengenali kunci SSH ini:\n  "
+
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nBuka tautan ini, masuk, dan setujui sidik jari yang cocok:\n  "
+
 msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr "\n\nBiarkan koneksi SSH ini terbuka saat menyetujui kunci.\n"
 
@@ -234,117 +360,14 @@ msgstr "Permintaan %{id}: mengirim"
 msgid "Request %{id}: waiting for completion"
 msgstr "Permintaan %{id}: menunggu penyelesaian"
 
-#: lib/porsche/ssh/command_messages.ex:26
-#, elixir-autogen, elixir-format
-msgid "Retry a failed clone or relocation request."
-msgstr "Coba lagi permintaan kloning atau pemindahan yang gagal."
-
-#: lib/porsche/ssh/command_messages.ex:34
-#, elixir-autogen, elixir-format
-msgid "Revoke an account's shared access."
-msgstr "Cabut akses bersama suatu akun."
-
-#: lib/porsche/ssh/command_messages.ex:38
-#, elixir-autogen, elixir-format
-msgid "Revoke one of your SSH keys."
-msgstr "Cabut salah satu kunci SSH Anda."
-
-#: lib/porsche/ssh/command_messages.ex:8
-#, elixir-autogen, elixir-format
-msgid "Show command help."
-msgstr "Tampilkan bantuan perintah."
-
-#: lib/porsche/ssh/command_messages.ex:52
-#, elixir-autogen, elixir-format
-msgid "Show the authenticated account."
-msgstr "Tampilkan akun yang terautentikasi."
-
-#: lib/porsche/ssh/command_messages.ex:39
-#, elixir-autogen, elixir-format
-msgid "Start a machine."
-msgstr "Mulai mesin."
-
-#: lib/porsche/ssh/output.ex:73
-#, elixir-autogen, elixir-format
-msgid "The command could not be completed: %{reason}"
-msgstr "Perintah tidak dapat diselesaikan: %{reason}"
-
-#: lib/porsche/ssh/output.ex:67
-#, elixir-autogen, elixir-format
-msgid "The requested resource could not be found."
-msgstr "Sumber daya yang diminta tidak ditemukan."
-
-#: lib/porsche/ssh/output.ex:61
-#, elixir-autogen, elixir-format
-msgid "The service is temporarily unavailable. Please try again shortly."
-msgstr "Layanan sementara tidak tersedia. Coba lagi sebentar lagi."
-
-#: lib/porsche/ssh/onboarding.ex:100
-#, elixir-autogen, elixir-format
-msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
-msgstr "Koneksi SSH ini tidak dapat diotorisasi. Periksa akses mesin Anda dan coba lagi.\n\n"
-
-#: lib/porsche/ssh/output.ex:52
-#, elixir-autogen, elixir-format
-msgid "This connection is not authorized. Please sign in and try again."
-msgstr "Koneksi ini tidak diotorisasi. Silakan masuk dan coba lagi."
-
-#: lib/porsche/ssh/output.ex:70
-#, elixir-autogen, elixir-format
-msgid "Unexpected input. Please open a new SSH connection."
-msgstr "Masukan tidak terduga. Buka koneksi SSH baru."
-
-#: lib/porsche/ssh/onboarding.ex:97
-#, elixir-autogen, elixir-format
-msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
-msgstr "Kami belum dapat memverifikasi kunci SSH ini. Coba lagi sebentar lagi.\n\n"
-
-#: lib/porsche/ssh/onboarding.ex:53
-#, elixir-autogen, elixir-format
-msgid "We don't recognize this SSH key:\n  "
-msgstr "Kami tidak mengenali kunci SSH ini:\n  "
-
-#: lib/porsche/ssh/onboarding.ex:86
-#, elixir-autogen, elixir-format
-msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
-msgstr "Selamat datang di Overalls.\n\nKoneksi ini memerlukan konfigurasi SSH Overalls.\n\n"
-
-#: lib/porsche/ssh/output.ex:55
-#, elixir-autogen, elixir-format
-msgid "You do not have permission to perform this action."
-msgstr "Anda tidak memiliki izin untuk melakukan tindakan ini."
-
-#: lib/porsche/ssh/onboarding.ex:121
-#, elixir-autogen, elixir-format
-msgid "from your machine's page and reconnect without root@.\n"
-msgstr "dari halaman mesin Anda dan hubungkan kembali tanpa root@.\n"
-
-#: lib/porsche/ssh/onboarding.ex:78
-#, elixir-autogen, elixir-format
-msgid "then retry your original command.\n"
-msgstr "lalu coba lagi perintah awal Anda.\n"
-
-#: lib/porsche/ssh/command_messages.ex:21
-#, elixir-autogen, elixir-format
-msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
-msgstr "Sematkan mesin di bagian atas daftar Anda. Sematan Anda sebagai pemilik membangunkannya, mencegah penangguhan otomatis, dan mencegah penghapusan."
-
-#: lib/porsche/ssh/command_messages.ex:50
-#, elixir-autogen, elixir-format
-msgid "Resume a suspended machine's preserved memory."
-msgstr "Lanjutkan mesin yang ditangguhkan dengan memori yang dipertahankan."
-
-#: lib/porsche/ssh/command_messages.ex:31
-#, elixir-autogen, elixir-format
-msgid "Resume preserved memory, waiting for capacity or relocation."
-msgstr "Lanjutkan memori yang dipertahankan, sambil menunggu kapasitas atau relokasi."
-
-#: lib/porsche/ssh/command_messages.ex:40
-#, elixir-autogen, elixir-format
-msgid "Stop a machine, retaining its disk and discarding suspended memory."
-msgstr "Hentikan mesin, pertahankan disknya dan buang memori yang ditangguhkan."
-
-#: lib/porsche/ssh/command_messages.ex:20
-#, elixir-autogen, elixir-format
+# Reviewed English fallback pending translation of suspension behavior.
 msgid "Suspend a machine, preserving its memory and disk."
-msgstr "Tangguhkan mesin dengan mempertahankan memori dan disknya."
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

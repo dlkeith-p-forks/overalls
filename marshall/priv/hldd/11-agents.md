@@ -1,5 +1,15 @@
 # Agent threads and tools
 
+## Thread machine suspension
+
+New `/threads`/Orb provisioning enables a fixed four-hour idle policy. The clock
+records tool admission and completion, not model output, heartbeats or the last
+human message. Admitted tools and queued/running turns defer capture under the
+VM lock. A prompt on a suspended machine requests wake before tool execution.
+Successful wake grants a fresh four-hour window. A running prompt or repeated
+network request does not extend it. Owner pins prevent automatic suspension;
+personal pins held by other users confer no such control.
+
 ## Native guest agent boundary
 
 FreeBSD and illumos guests have a closed Lyra protocol shape for readiness,

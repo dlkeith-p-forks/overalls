@@ -628,7 +628,8 @@ impl Session {
     /// @cc [owner:ghuntley,label:security;concurrency] hostd-lease-commands-serialized
     /// A command under a lease MUST be refused unless this session holds the
     /// lease, no other command is in flight on it and it is not being
-    /// released; a mutating utility MUST be refused without a lease. A lease
+    /// released; a mutating utility, including systemctl stop/kill, MUST be
+    /// refused without a lease. A lease
     /// therefore runs at most one command at a time, as the per-lock helper
     /// did.
     fn run(
@@ -640,7 +641,7 @@ impl Session {
         utility: crate::utilities::Utility,
         arguments: Vec<std::ffi::CString>,
     ) {
-        if lease == 0 && utility.mutating() {
+        if lease == 0 && utility.requires_lease(&arguments) {
             return self.refuse(id, Refusal::LeaseRequired);
         }
         let descriptor = if lease == 0 {

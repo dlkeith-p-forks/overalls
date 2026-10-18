@@ -17,6 +17,5 @@ defmodule Peach.Control.Link do
     {:ok, control}
   end
 
-  @impl true
   def handle_info(_, state), do: {:noreply, state}
 end

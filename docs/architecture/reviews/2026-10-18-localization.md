@@ -1,6 +1,6 @@
 # Localized human surfaces (2026-10-18)
 
-Scope: [ADR-0201](../decisions/0201-localized-human-surfaces.md). Reviewed
+Scope: [ADR-0200](../decisions/0200-localized-human-surfaces.md). Reviewed
 against the requested Marshall web, Porsche interactive output, Localize
 integration, locale preference and RTL behavior.
 

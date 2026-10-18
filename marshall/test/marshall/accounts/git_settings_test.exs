@@ -7,8 +7,7 @@ defmodule Marshall.Accounts.GitSettingsTest do
 
   @spec update_settings(User.t(), map(), User.t()) :: {:ok, User.t()} | {:error, term()}
   defp update_settings(user, params, actor),
-    do:
-      user |> Ash.Changeset.for_update(:git_settings, params) |> Ash.update(actor: actor)
+    do: user |> Ash.Changeset.for_update(:git_settings, params) |> Ash.update(actor: actor)
 
   test "defaults are independent from sign-in identity and foreign writes are refused" do
     owner = user()

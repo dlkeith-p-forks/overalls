@@ -26,6 +26,7 @@ defmodule Marshall.TeamsCreationTest do
   property "creation histories isolate actors, names, retries and archived generations",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
+
     operations =
       draw(
         "operations",

@@ -4,8 +4,134 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/porsche/ssh/onboarding.ex:60
-#, elixir-autogen, elixir-format
+msgid "Porsche machine management. Type help."
+msgstr "Porsche مشین کا انتظام۔ help لکھیں۔"
+
+msgid "Docs:"
+msgstr "دستاویزات:"
+
+msgid "Show command help."
+msgstr "کمانڈ کی مدد دکھائیں۔"
+
+msgid "Show the authenticated account."
+msgstr "تصدیق شدہ اکاؤنٹ دکھائیں۔"
+
+msgid "List available images."
+msgstr "دستیاب امیجز کی فہرست دکھائیں۔"
+
+msgid "List machines you can access."
+msgstr "ان مشینوں کی فہرست دکھائیں جن تک آپ کی رسائی ہے۔"
+
+msgid "Inspect a machine by name or UUID."
+msgstr "نام یا UUID سے مشین کا معائنہ کریں۔"
+
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "مشین بنائیں۔ ڈسک کی زیادہ سے زیادہ گنجائش: 500 GiB۔ --source گیسٹ میں عوامی GitHub، GitLab، Codeberg یا Bitbucket ریپوزٹری کلون کرتا ہے۔"
+
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "مشین کی پوری ڈسک کی آزاد نقل قطار میں ڈالیں۔"
+
+msgid "Move a machine to an automatically selected host."
+msgstr "مشین کو خودکار طور پر منتخب میزبان پر منتقل کریں۔"
+
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "مشین کا CPU اور میموری تبدیل کریں؛ ڈسک صرف بڑھائی جا سکتی ہے۔ چلتی مشین رک کر دوبارہ شروع ہوگی۔"
+
+msgid "Retry a failed clone or relocation request."
+msgstr "ناکام کلون یا منتقلی کی درخواست دوبارہ آزمائیں۔"
+
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "غیر شائع شدہ کلون یا غیر حتمی منتقلی کی درخواست منسوخ کریں۔"
+
+msgid "Start a machine."
+msgstr "مشین شروع کریں۔"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
+
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "مشین اور اس کی ڈسک حذف کریں۔ مالک نے پن کیا ہو تو انکار ہوگا۔"
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+
+msgid "Remove your pin from a machine."
+msgstr "مشین سے اپنا پن ہٹائیں۔"
+
+msgid "List access grants."
+msgstr "رسائی کی اجازتوں کی فہرست دکھائیں۔"
+
+msgid "Grant viewer, operator or manager access."
+msgstr "ناظر، آپریٹر یا منتظم کی رسائی دیں۔"
+
+msgid "Revoke an account's shared access."
+msgstr "اکاؤنٹ کی مشترکہ رسائی واپس لیں۔"
+
+msgid "List your SSH keys."
+msgstr "اپنی SSH کلیدوں کی فہرست دکھائیں۔"
+
+msgid "Revoke one of your SSH keys."
+msgstr "اپنی ایک SSH کلید منسوخ کریں۔"
+
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "https://NAME.integration.internal پر نام والا انضمام بنائیں یا بدلیں۔"
+
+msgid "Remove a named integration."
+msgstr "نام والا انضمام ہٹائیں۔"
+
+msgid "List your integrations."
+msgstr "اپنے انضمامات کی فہرست دکھائیں۔"
+
+msgid "Inspect an integration without secrets."
+msgstr "راز دکھائے بغیر انضمام کا معائنہ کریں۔"
+
+msgid "Make an integration available to a machine."
+msgstr "مشین کے لیے انضمام دستیاب کریں۔"
+
+msgid "Remove a machine's explicit availability."
+msgstr "مشین کی صریح طور پر دی گئی دستیابی ہٹائیں۔"
+
+msgid "Create a team you own."
+msgstr "اپنی ملکیت میں ٹیم بنائیں۔"
+
+msgid "List your teams and roles."
+msgstr "اپنی ٹیموں اور کرداروں کی فہرست دکھائیں۔"
+
+msgid "List a team's members."
+msgstr "ٹیم کے ارکان کی فہرست دکھائیں۔"
+
+msgid "Add or change an admin or member."
+msgstr "منتظم یا رکن شامل کریں یا بدلیں۔"
+
+msgid "Remove an account's membership."
+msgstr "اکاؤنٹ کی رکنیت ہٹائیں۔"
+
+msgid "Offer team ownership to an admin."
+msgstr "منتظم کو ٹیم کی ملکیت کی پیشکش کریں۔"
+
+msgid "Accept a pending ownership offer."
+msgstr "زیر التوا ملکیت کی پیشکش قبول کریں۔"
+
+msgid "Decline a pending ownership offer."
+msgstr "زیر التوا ملکیت کی پیشکش مسترد کریں۔"
+
+msgid "Cancel your pending ownership offer."
+msgstr "اپنی زیر التوا ملکیت کی پیشکش منسوخ کریں۔"
+
+msgid "Inspect a previously accepted request."
+msgstr "پہلے قبول شدہ درخواست کا معائنہ کریں۔"
+
+msgid "Close this interactive channel."
+msgstr "یہ تعاملی چینل بند کریں۔"
+
+msgid "We don't recognize this SSH key:\n  "
+msgstr "ہم اس SSH کلید کو نہیں پہچانتے:\n  "
+
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nیہ لنک کھولیں، سائن ان کریں اور ملتے فنگرپرنٹ کی منظوری دیں:\n  "
+
 msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr "\n\nکلید کی منظوری دیتے وقت یہ SSH کنکشن کھلا رکھیں۔\n"
 
@@ -234,117 +360,14 @@ msgstr "درخواست %{id}: جمع کی جا رہی ہے"
 msgid "Request %{id}: waiting for completion"
 msgstr "درخواست %{id}: تکمیل کا انتظار ہے"
 
-#: lib/porsche/ssh/command_messages.ex:26
-#, elixir-autogen, elixir-format
-msgid "Retry a failed clone or relocation request."
-msgstr "ناکام کلون یا منتقلی کی درخواست دوبارہ آزمائیں۔"
-
-#: lib/porsche/ssh/command_messages.ex:34
-#, elixir-autogen, elixir-format
-msgid "Revoke an account's shared access."
-msgstr "اکاؤنٹ کی مشترکہ رسائی واپس لیں۔"
-
-#: lib/porsche/ssh/command_messages.ex:38
-#, elixir-autogen, elixir-format
-msgid "Revoke one of your SSH keys."
-msgstr "اپنی ایک SSH کلید منسوخ کریں۔"
-
-#: lib/porsche/ssh/command_messages.ex:8
-#, elixir-autogen, elixir-format
-msgid "Show command help."
-msgstr "کمانڈ کی مدد دکھائیں۔"
-
-#: lib/porsche/ssh/command_messages.ex:52
-#, elixir-autogen, elixir-format
-msgid "Show the authenticated account."
-msgstr "تصدیق شدہ اکاؤنٹ دکھائیں۔"
-
-#: lib/porsche/ssh/command_messages.ex:39
-#, elixir-autogen, elixir-format
-msgid "Start a machine."
-msgstr "مشین شروع کریں۔"
-
-#: lib/porsche/ssh/output.ex:73
-#, elixir-autogen, elixir-format
-msgid "The command could not be completed: %{reason}"
-msgstr "کمانڈ مکمل نہیں ہو سکی: %{reason}"
-
-#: lib/porsche/ssh/output.ex:67
-#, elixir-autogen, elixir-format
-msgid "The requested resource could not be found."
-msgstr "درخواست کردہ وسیلہ نہیں ملا۔"
-
-#: lib/porsche/ssh/output.ex:61
-#, elixir-autogen, elixir-format
-msgid "The service is temporarily unavailable. Please try again shortly."
-msgstr "سروس عارضی طور پر دستیاب نہیں۔ کچھ دیر بعد دوبارہ کوشش کریں۔"
-
-#: lib/porsche/ssh/onboarding.ex:100
-#, elixir-autogen, elixir-format
-msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
-msgstr "اس SSH کنکشن کو اجازت نہیں دی جا سکی۔ مشین تک اپنی رسائی دیکھیں اور دوبارہ کوشش کریں۔\n\n"
-
-#: lib/porsche/ssh/output.ex:52
-#, elixir-autogen, elixir-format
-msgid "This connection is not authorized. Please sign in and try again."
-msgstr "اس کنکشن کو اجازت نہیں ہے۔ سائن ان کرکے دوبارہ کوشش کریں۔"
-
-#: lib/porsche/ssh/output.ex:70
-#, elixir-autogen, elixir-format
-msgid "Unexpected input. Please open a new SSH connection."
-msgstr "غیر متوقع ان پٹ۔ نیا SSH کنکشن کھولیں۔"
-
-#: lib/porsche/ssh/onboarding.ex:97
-#, elixir-autogen, elixir-format
-msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
-msgstr "ابھی اس SSH کلید کی تصدیق نہیں ہو سکی۔ کچھ دیر بعد دوبارہ کوشش کریں۔\n\n"
-
-#: lib/porsche/ssh/onboarding.ex:53
-#, elixir-autogen, elixir-format
-msgid "We don't recognize this SSH key:\n  "
-msgstr "ہم اس SSH کلید کو نہیں پہچانتے:\n  "
-
-#: lib/porsche/ssh/onboarding.ex:86
-#, elixir-autogen, elixir-format
-msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
-msgstr "Overalls میں خوش آمدید۔\n\nاس کنکشن کے لیے Overalls SSH کی ترتیب درکار ہے۔\n\n"
-
-#: lib/porsche/ssh/output.ex:55
-#, elixir-autogen, elixir-format
-msgid "You do not have permission to perform this action."
-msgstr "آپ کو یہ کارروائی کرنے کی اجازت نہیں ہے۔"
-
-#: lib/porsche/ssh/onboarding.ex:121
-#, elixir-autogen, elixir-format
-msgid "from your machine's page and reconnect without root@.\n"
-msgstr "اپنی مشین کے صفحے سے اور root@ کے بغیر دوبارہ جڑیں۔\n"
-
-#: lib/porsche/ssh/onboarding.ex:78
-#, elixir-autogen, elixir-format
-msgid "then retry your original command.\n"
-msgstr "پھر اپنی اصل کمانڈ دوبارہ آزمائیں۔\n"
-
-#: lib/porsche/ssh/command_messages.ex:21
-#, elixir-autogen, elixir-format
-msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
-msgstr "مشین کو اپنی فہرستوں میں سب سے اوپر رکھیں۔ مالک کے طور پر آپ کا سرِ فہرست رکھنا اسے جگاتا ہے، خودکار معطلی روکتا ہے اور حذف ہونے سے بچاتا ہے۔"
-
-#: lib/porsche/ssh/command_messages.ex:50
-#, elixir-autogen, elixir-format
-msgid "Resume a suspended machine's preserved memory."
-msgstr "معطل مشین کی محفوظ میموری بحال کریں۔"
-
-#: lib/porsche/ssh/command_messages.ex:31
-#, elixir-autogen, elixir-format
-msgid "Resume preserved memory, waiting for capacity or relocation."
-msgstr "گنجائش یا منتقلی کا انتظار کرتے ہوئے محفوظ میموری بحال کریں۔"
-
-#: lib/porsche/ssh/command_messages.ex:40
-#, elixir-autogen, elixir-format
-msgid "Stop a machine, retaining its disk and discarding suspended memory."
-msgstr "ڈسک رکھتے ہوئے اور معطل میموری ضائع کرتے ہوئے مشین روکیں۔"
-
-#: lib/porsche/ssh/command_messages.ex:20
-#, elixir-autogen, elixir-format
+# Reviewed English fallback pending translation of suspension behavior.
 msgid "Suspend a machine, preserving its memory and disk."
-msgstr "مشین کی میموری اور ڈسک محفوظ رکھتے ہوئے اسے معطل کریں۔"
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

@@ -80,10 +80,13 @@ defmodule Marshall.Accounts.DeliverAuthEmail do
 
   defp payload(record) do
     case Ash.load!(record, :payload, actor: SystemActor.compute()).payload do
-      %{"email" => email, "token" => token} = payload when is_binary(email) and is_binary(token) ->
+      %{"email" => email, "token" => token} = payload
+      when is_binary(email) and is_binary(token) ->
         locale = Marshall.Localization.normalize(payload["locale"]) || "en"
         {:ok, email, token, locale}
-      _ -> :error
+
+      _ ->
+        :error
     end
   rescue
     _ -> :error
@@ -132,15 +135,24 @@ defmodule Marshall.Accounts.DeliverAuthEmail do
             |> subject(gettext("Your Overalls sign-in link"))
             |> header("Message-ID", "<#{delivery_id}@#{@message_id_domain}>")
             |> text_body(
-              gettext("Sign in to Overalls: %{link}\n\nIf you did not request this, ignore this email.", link: link)
+              gettext(
+                "Sign in to Overalls: %{link}\n\nIf you did not request this, ignore this email.",
+                link: link
+              )
             )
             |> html_body(
               "<div lang=\"#{locale}\" dir=\"#{Marshall.Localization.direction(locale)}\"><p>" <>
-                Phoenix.HTML.safe_to_string(Phoenix.HTML.html_escape(gettext("Sign in to Overalls:"))) <>
+                Phoenix.HTML.safe_to_string(
+                  Phoenix.HTML.html_escape(gettext("Sign in to Overalls:"))
+                ) <>
                 "</p><p><a href=\"#{escaped}\">" <>
                 Phoenix.HTML.safe_to_string(Phoenix.HTML.html_escape(gettext("Sign in"))) <>
                 "</a></p><p>" <>
-                Phoenix.HTML.safe_to_string(Phoenix.HTML.html_escape(gettext("If you did not request this, ignore this email."))) <>
+                Phoenix.HTML.safe_to_string(
+                  Phoenix.HTML.html_escape(
+                    gettext("If you did not request this, ignore this email.")
+                  )
+                ) <>
                 "</p></div>"
             )
 

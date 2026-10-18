@@ -9,6 +9,15 @@ requires the immutable editor tuple. The candidate remains outside the selected
 production catalog; `windows-v1` keeps editor false and exact native/browser
 acceptance remains unrecorded.
 
+[ADR-0199](decisions/0199-memory-suspension-and-demand-wake.md) accepts
+memory-preserving suspension, paused relocation and demand wake with automatic
+capacity relocation. New thread/Orb machines use a four-hour tool-idle policy;
+owner pins wake and prevent automatic suspension. Checkpoints retain immutable
+RAM backing independently of disk clones/backups, and authorized connections
+wait through fenced restore or one fleet-gateway relay hop. Implementation and
+native acceptance remain partial in the
+[suspension review](reviews/2026-10-18-memory-suspension.md).
+
 [ADR-0198](decisions/0198-git-attribution-and-guest-identity.md) defines account Git preferences, immutable new-machine Git identity and optional agent commit attribution.
 
 [ADR-0188](decisions/0188-signed-overalls-cachix-substitution.md) adds the
@@ -719,7 +728,7 @@ request withdrawal acceptance passed on `7fda1272`; see the
 Current owner liveness also refuses
 archived teams despite retained memberships and attachments.
 [ADR-0077](decisions/0077-teams-and-shared-resources.md)
-partially adds exe.dev-style teams sharing machines and integrations with
+partially adds sample-host-style teams sharing machines and integrations with
 owner/admin/member roles and a consent-based ownership transfer state
 machine. Current team members can use shared guest SSH, personal terminals and
 profile-permitted agents; ordinary machine management remains owner/admin-only
@@ -1040,11 +1049,12 @@ and local lookup checks, three-frontend HTTP issuance/renewal, Route 53 and
 service-role regressions pass; acceptance scope is tracked in the
 [HTTP-01 review](reviews/2026-09-17-http01-validation.md).
 
-Accepted [ADR-0155](decisions/0155-stopped-only-relocation.md) now makes every
-relocation one stopped full copy: probe-gated stop of a running source, one
-`lilly-b` full stream, adoption, fenced handoff, readiness, then source cleanup.
-Pre-copy, baseline/incremental streams and temporary relocation headroom are
-removed; the pre-copy history below is retained as historical evidence only.
+[ADR-0199](decisions/0199-memory-suspension-and-demand-wake.md) replaces
+ADR-0155's stopped-source reboot with pause, coherent full disk/checkpoint
+transfer and same-memory resume. Already paused machines remain paused after
+an explicit move; stopped machines remain disk-only moves. There is no live
+pre-copy. Historical stopped-copy and pre-copy implementation evidence below
+retains its original revision and does not qualify memory continuation.
 
 Superseded [ADR-0037](decisions/0037-workload-placement-and-relocation.md) accepted explicit
 placement-based relocation through Oban, ZFS pre-copy, restricted per-relocation
@@ -1639,4 +1649,4 @@ escape cleanup or physical storage acceptance; those remain open.
 
 ADR-0186 records the Covenant test-only contract layer used by all Elixir applications. Covenant obligations and tests provide deterministic executable evidence while existing ADR, HLDD, native and integration records remain authoritative for deployment and isolation guarantees.
 
-Localization follows [ADR-0201](decisions/0201-localized-human-surfaces.md): validated user/browser locale selection, offline catalogs and direction-aware human surfaces preserve protocol identifiers and execution authority. Implementation remains partial.
+Localization follows [ADR-0197](decisions/0196-single-account-settings-page.md): validated user/browser locale selection, offline catalogs and direction-aware human surfaces preserve protocol identifiers and execution authority. Implementation remains partial.

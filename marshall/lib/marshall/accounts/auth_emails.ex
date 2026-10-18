@@ -67,7 +67,8 @@ defmodule Marshall.Accounts.AuthEmails do
           payload: %{
             "email" => email,
             "token" => token,
-            "locale" => Marshall.Localization.normalize(Gettext.get_locale(MarshallWeb.Gettext)) || "en"
+            "locale" =>
+              Marshall.Localization.normalize(Gettext.get_locale(MarshallWeb.Gettext)) || "en"
           },
           token_fingerprint: fingerprint,
           recipient_fingerprint: recipient,

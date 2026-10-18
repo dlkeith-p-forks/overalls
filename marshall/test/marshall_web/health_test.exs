@@ -45,6 +45,7 @@ defmodule MarshallWeb.HealthTest do
   @tag :hegel_case_sandbox
   property "unanswered probes keep readiness only within the backstop" do
     Marshall.DataCase.isolate_property_case()
+
     steps =
       draw(
         "steps",

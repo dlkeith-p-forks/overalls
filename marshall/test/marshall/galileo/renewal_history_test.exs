@@ -239,6 +239,7 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   property "renewal tracks combined membership, attachment and ownership histories",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
+
     tail =
       draw(
         "tail",

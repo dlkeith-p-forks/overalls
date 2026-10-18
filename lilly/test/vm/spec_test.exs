@@ -90,9 +90,9 @@ defmodule Lilly.VM.SpecTest do
   end
 
   property "boot attribution never changes storage identity and both transports agree" do
-    name = draw("name", string(:alphanumeric, min_length: 1, max_length: 128))
-    mailbox = draw("mailbox", string(:alphanumeric, min_length: 1, max_length: 40))
-    with_source = draw("with_source", boolean())
+    name = draw("author name", string(:alphanumeric, min_length: 1, max_length: 128))
+    mailbox = draw("author mailbox", string(:alphanumeric, min_length: 1, max_length: 40))
+    with_source = draw("with workspace source", boolean())
     identity = %{name: name, email: mailbox <> "@example.test"}
 
     source = %{

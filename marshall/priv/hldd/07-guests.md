@@ -1,32 +1,14 @@
 # Guest systems and images
 
-## Managed GitHub development tools
+## Snapshot continuation
 
-The accepted `github-com` client path uses managed `gh`, Git HTTPS and Git LFS
-through `https://com-github.integration.internal`, with no real GitHub credential
-in guest configuration, environment or command arguments. Permitted processes,
-including shared writers, exercise the VM owner's connected identity. Guest
-identity strings cannot choose another connection. Anonymous public requests
-remain possible without eligible credentials.
-The managed clients' fixed integration errors retain reviewed English fallback;
-native CLI translation is not established by Marshall's localization catalogs.
-
-Support is intended for NixOS, Ubuntu, Arch, AlmaLinux, Windows, FreeBSD and
-OmniOS, including retained-machine delivery through a fenced update operation.
-`Marshall.Agents.ToolMaintenance` records desired generation and
-`queued/claimed/started/completed/failed/uncertain` progress independently of a
-conversation. Current VM placement, execution epoch and executor lease fence
-artifact reads and receipts. A validated content-addressed manifest supplies
-public tool bytes; it does not authorize activation by itself.
-Retained executors without the tool capability use a separate ToolBootstrap
-state/receipt for a fixed server-authored platform/digest program. It requires
-the current VM/executor fence and the matching completed tool-installation
-receipt. No model output or conversation turn selects or records this bootstrap.
-Image construction, release inventory, update completion and actual per-family
-CLI/provider execution are distinct evidence. Native admission still requires
-the exact immutable promoted image; changed recipes cannot silently qualify a
-rebuilt candidate. Seven-family and retained-machine execution gaps remain in
-the [review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
+A full Firecracker snapshot resumes the original guest boot identity in a fresh
+VMM. Restored listeners must accept new connections after a valid vsock transport
+reset; established and unbound sockets are fenced. Malformed events, foreign CID
+and fatal queue/configuration changes still fail closed. The FreeBSD and OmniOS
+wrappers retain distinct native qualification requirements. Earlier reset receipts
+below describe the former permanently fenced behavior and do not qualify the
+new source. Exact-source machine results belong in the suspension review.
 
 ## Agent project context
 
@@ -1241,10 +1223,10 @@ refusals, exact buffer size, socket-129 refusal and full capacity reuse; their
 final-candidate machine execution remains separate from test presence.
 
 The FreeBSD static driver retains interrupt-visible resources until VM disposal,
-refuses runtime detach/unload and requires a new VM after reset/configuration
-change. Illumos has separate `drv/viosock` and `socketmod/sockvsock` modules plus
-an opt-in sockfs listener failure path: reset fences listeners and idle sockets,
-wakes accepts, and prevents reuse. Its modern virtio ABI requires rebuilding
+refuses runtime detach/unload. Valid transport resets preserve listeners;
+fatal configuration changes still fence the device. Illumos has separate `drv/viosock` and `socketmod/sockvsock` modules plus
+a sockfs reset path: valid reset preserves listeners while fencing connected
+and unbound sockets. Earlier receipts below describe the previous behavior. Its modern virtio ABI requires rebuilding
 all five consumers with the framework. Cross-compiled objects do not establish
 native module linkage, native boot or reset safety. The native
 [link/install helper](repo:nix/domains/artifacts/guest/native-kernels/illumos/native_candidate.py)

@@ -29,19 +29,26 @@ defmodule MarshallWeb.Admin.AccessLive do
 
   def handle_event("revoke-session", %{"id" => id}, socket) do
     case SSH.revoke_session_for_admin(%{id: id}, actor: socket.assigns.current_user) do
-      {:ok, _} -> {:noreply, socket |> put_flash(:info, gettext("SSH session closed.")) |> refresh()}
-      {:error, _} -> {:noreply, put_flash(socket, :error, gettext("Could not close that session."))}
+      {:ok, _} ->
+        {:noreply, socket |> put_flash(:info, gettext("SSH session closed.")) |> refresh()}
+
+      {:error, _} ->
+        {:noreply, put_flash(socket, :error, gettext("Could not close that session."))}
     end
   end
 
   def handle_event("revoke-grant", %{"id" => id}, socket) do
     case Marshall.Access.revoke_grant_for_admin(%{id: id}, actor: socket.assigns.current_user) do
-      {:ok, _} -> {:noreply, socket |> put_flash(:info, gettext("VM access revoked.")) |> refresh()}
-      {:error, _} -> {:noreply, put_flash(socket, :error, gettext("Could not revoke that VM access."))}
+      {:ok, _} ->
+        {:noreply, socket |> put_flash(:info, gettext("VM access revoked.")) |> refresh()}
+
+      {:error, _} ->
+        {:noreply, put_flash(socket, :error, gettext("Could not revoke that VM access."))}
     end
   end
 
-  def handle_event(_, _, socket), do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+  def handle_event(_, _, socket),
+    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
 
   defp refresh(socket) do
     with {:ok, keys} <- SSH.list_keys_for_admin(%{}, actor: socket.assigns.current_user),
@@ -74,7 +81,11 @@ defmodule MarshallWeb.Admin.AccessLive do
       <section id="admin-access" class="stack">
         <UI.heading
           title={gettext("Access authority")}
-          subtitle={gettext("Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown.")}
+          subtitle={
+            gettext(
+              "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
+            )
+          }
         >
           <:actions><span class="muted">{gettext("Updated every 15 seconds")}</span></:actions>
         </UI.heading>
@@ -84,7 +95,9 @@ defmodule MarshallWeb.Admin.AccessLive do
           <:item title={gettext("Active SSH sessions")}>{length(@sessions)}</:item>
         </.kv>
         <UI.panel id="admin-grants" title={gettext("Shared machine access")}>
-          <p :if={@grants == []} class="muted">{gettext("No machine is shared with another account.")}</p>
+          <p :if={@grants == []} class="muted">
+            {gettext("No machine is shared with another account.")}
+          </p>
           <div :if={@grants != []} class="table-flow">
             <table>
               <thead>

@@ -198,7 +198,8 @@ defmodule MarshallWeb.ThreadsLive do
     do: {:noreply, assign(socket, thread_dialog: nil)}
 
   def handle_event("reload_context", _params, socket) do
-    {:noreply, control_action(socket, &Threads.reload_context/2, %{}, gettext("Context reload queued."))}
+    {:noreply,
+     control_action(socket, &Threads.reload_context/2, %{}, gettext("Context reload queued."))}
   end
 
   def handle_event("validate_questions", %{"answers" => answers}, socket) when is_map(answers),
@@ -259,7 +260,8 @@ defmodule MarshallWeb.ThreadsLive do
           %{
             id: query,
             name: query,
-            description: gettext("Select this skill from the workspace catalog when the machine starts."),
+            description:
+              gettext("Select this skill from the workspace catalog when the machine starts."),
             path: gettext("Workspace skill"),
             enabled: true
           }
@@ -372,8 +374,11 @@ defmodule MarshallWeb.ThreadsLive do
     case Threads.retry_provisioning(%{thread_id: socket.assigns.selected.id},
            actor: socket.assigns.current_user
          ) do
-      {:ok, _} -> {:noreply, socket |> put_flash(:info, gettext("Provisioning will retry.")) |> refresh()}
-      {:error, reason} -> {:noreply, assign(socket, error: error_message(reason))}
+      {:ok, _} ->
+        {:noreply, socket |> put_flash(:info, gettext("Provisioning will retry.")) |> refresh()}
+
+      {:error, reason} ->
+        {:noreply, assign(socket, error: error_message(reason))}
     end
   end
 
@@ -636,7 +641,13 @@ defmodule MarshallWeb.ThreadsLive do
       )
 
   defp run_command(socket, :compact),
-    do: control_action(socket, &Threads.compact_context/2, %{}, gettext("Context compaction queued."))
+    do:
+      control_action(
+        socket,
+        &Threads.compact_context/2,
+        %{},
+        gettext("Context compaction queued.")
+      )
 
   defp run_command(socket, :context),
     do: socket |> assign(thread_dialog: :context, error: nil) |> refresh_dialog()
@@ -1154,8 +1165,10 @@ defmodule MarshallWeb.ThreadsLive do
 
   @spec generation_option(Marshall.Threads.Generation.t()) :: {String.t(), integer()}
   defp generation_option(generation) do
-    status = status_label(generation.status)
-    {gettext("Generation %{value1} (%{value2})", value1: generation.ordinal, value2: status), generation.ordinal}
+    status = Atom.to_string(generation.status)
+
+    {gettext("Generation %{value1} (%{value2})", value1: generation.ordinal, value2: status),
+     generation.ordinal}
   end
 
   defp maybe_seed_image(socket, %{images: [image | _]}) do
@@ -1225,48 +1238,70 @@ defmodule MarshallWeb.ThreadsLive do
   @spec error_messages() :: %{atom() => String.t()}
   defp error_messages do
     %{
-    unknown_command:
-      gettext("Unknown command. Open Commands to choose one, or start with a space to send literal text."),
-    command_arguments: gettext("This command does not accept a task. Your draft has been kept."),
-    busy:
-      gettext("Wait for the current work or pending questions to finish before changing this setting."),
-    operation_unavailable: gettext("This command needs a ready thread and current write access."),
-    stale_plan: gettext("The plan has changed. Review the latest proposal before continuing."),
-    stale_proposal: gettext("The plan has changed. Review the latest proposal before continuing."),
-    already_implemented: gettext("Implementation has already started for this plan."),
-    thread_busy:
-      gettext("Wait for the current work or pending questions to finish before changing this setting."),
-    stale_question: gettext("These questions are no longer waiting for an answer."),
-    already_answered: gettext("These questions have already been answered."),
-    invalid_answers: gettext("Answer each question with a choice, your own answer, or both."),
-    context_pending: gettext("Workspace context is being collected. Try again shortly."),
-    context_unavailable: gettext("Workspace context is unavailable. Reload it when the machine is ready."),
-    context_changed: gettext("Workspace files changed during collection. Reload context and try again."),
-    context_too_large:
-      gettext("The required instructions and current message do not fit. Reduce them and try again."),
-    context_limit_exceeded:
-      gettext("The current context exceeds the model allowance. Compact it or reduce the message."),
-    compaction_no_progress:
-      gettext("Compaction could not reduce this context. Reduce required instructions or start a focused thread."),
-    nothing_to_compact: gettext("There is no older context to compact yet."),
-    machine_pinned: gettext("Unpin this thread's machine before deleting it."),
-    skill_failed:
-      gettext("The skill operation failed. The previous installed revision remains available."),
-    skill_ambiguous: gettext("More than one skill has this name. Select its exact source from Skills."),
-    skill_unavailable:
-      gettext("A selected skill is no longer available. Reload Skills and select its current source."),
-    thread_not_ready: gettext("This thread is still provisioning."),
-    invalid_machine_spec: gettext("Choose a valid image and machine size."),
-    insufficient_capacity: gettext("There is not enough capacity for this machine right now."),
-    reopen_unavailable: gettext("This thread is not archived."),
-    not_found: gettext("This thread could not be found."),
-    unavailable: gettext("This thread is temporarily unavailable. Try again shortly."),
-    forbidden: gettext("You do not have access to this thread."),
-    recipient_not_registered: gettext("That email does not belong to a registered account."),
-    owner_protected: gettext("The thread owner's access cannot be changed."),
-    idempotency_conflict:
-      gettext("This request was already used for a different change. Reload this page and try again."),
-    sharing_not_allowed: gettext("Sharing is not available for this thread's machine profile.")
+      unknown_command:
+        gettext(
+          "Unknown command. Open Commands to choose one, or start with a space to send literal text."
+        ),
+      command_arguments:
+        gettext("This command does not accept a task. Your draft has been kept."),
+      busy:
+        gettext(
+          "Wait for the current work or pending questions to finish before changing this setting."
+        ),
+      operation_unavailable:
+        gettext("This command needs a ready thread and current write access."),
+      stale_plan: gettext("The plan has changed. Review the latest proposal before continuing."),
+      stale_proposal:
+        gettext("The plan has changed. Review the latest proposal before continuing."),
+      already_implemented: gettext("Implementation has already started for this plan."),
+      thread_busy:
+        gettext(
+          "Wait for the current work or pending questions to finish before changing this setting."
+        ),
+      stale_question: gettext("These questions are no longer waiting for an answer."),
+      already_answered: gettext("These questions have already been answered."),
+      invalid_answers: gettext("Answer each question with a choice, your own answer, or both."),
+      context_pending: gettext("Workspace context is being collected. Try again shortly."),
+      context_unavailable:
+        gettext("Workspace context is unavailable. Reload it when the machine is ready."),
+      context_changed:
+        gettext("Workspace files changed during collection. Reload context and try again."),
+      context_too_large:
+        gettext(
+          "The required instructions and current message do not fit. Reduce them and try again."
+        ),
+      context_limit_exceeded:
+        gettext(
+          "The current context exceeds the model allowance. Compact it or reduce the message."
+        ),
+      compaction_no_progress:
+        gettext(
+          "Compaction could not reduce this context. Reduce required instructions or start a focused thread."
+        ),
+      nothing_to_compact: gettext("There is no older context to compact yet."),
+      machine_pinned: gettext("Unpin this thread's machine before deleting it."),
+      skill_failed:
+        gettext("The skill operation failed. The previous installed revision remains available."),
+      skill_ambiguous:
+        gettext("More than one skill has this name. Select its exact source from Skills."),
+      skill_unavailable:
+        gettext(
+          "A selected skill is no longer available. Reload Skills and select its current source."
+        ),
+      thread_not_ready: gettext("This thread is still provisioning."),
+      invalid_machine_spec: gettext("Choose a valid image and machine size."),
+      insufficient_capacity: gettext("There is not enough capacity for this machine right now."),
+      reopen_unavailable: gettext("This thread is not archived."),
+      not_found: gettext("This thread could not be found."),
+      unavailable: gettext("This thread is temporarily unavailable. Try again shortly."),
+      forbidden: gettext("You do not have access to this thread."),
+      recipient_not_registered: gettext("That email does not belong to a registered account."),
+      owner_protected: gettext("The thread owner's access cannot be changed."),
+      idempotency_conflict:
+        gettext(
+          "This request was already used for a different change. Reload this page and try again."
+        ),
+      sharing_not_allowed: gettext("Sharing is not available for this thread's machine profile.")
     }
   end
 
@@ -1335,7 +1370,9 @@ defmodule MarshallWeb.ThreadsLive do
             <header class="thread-start-heading">
               <p class="thread-eyebrow">{gettext("A space for your next idea")}</p>
               <h1>{gettext("What are we working on?")}</h1>
-              <p class="muted">{gettext("Describe a task. Your agent gets a machine and gets to work.")}</p>
+              <p class="muted">
+                {gettext("Describe a task. Your agent gets a machine and gets to work.")}
+              </p>
             </header>
             <.form
               for={@form}
@@ -1384,7 +1421,9 @@ defmodule MarshallWeb.ThreadsLive do
                     ]}
                   />
                 </div>
-                <button type="button" data-thread-commands-open class="console-button ghost">{gettext("Commands")}</button>
+                <button type="button" data-thread-commands-open class="console-button ghost">{gettext(
+                  "Commands"
+                )}</button>
                 <button
                   id="create-thread"
                   class="console-button primary"
@@ -1396,7 +1435,8 @@ defmodule MarshallWeb.ThreadsLive do
               </div>
               <details id="thread-machine-settings" class="thread-machine-settings">
                 <summary>
-                  {gettext("Machine settings")} <span class="muted">· {machine_summary(@form.params)}</span>
+                  {gettext("Machine settings")}
+                  <span class="muted">· {machine_summary(@form.params)}</span>
                 </summary>
                 <div class="thread-settings-fields">
                   <.input
@@ -1412,10 +1452,24 @@ defmodule MarshallWeb.ThreadsLive do
                     options={Enum.map(@catalog.images, &{&1.name || &1.id, &1.id})}
                     required
                   />
-                  <.input field={@form[:team_id]} label={gettext("Team (optional)")} placeholder={gettext("Team ID")} />
+                  <.input
+                    field={@form[:team_id]}
+                    label={gettext("Team (optional)")}
+                    placeholder={gettext("Team ID")}
+                  />
                   <.input field={@form[:vcpu]} type="number" label={gettext("CPU")} min="1" max="32" />
-                  <.input field={@form[:memory_mib]} type="number" label={gettext("Memory (MiB)")} min="512" />
-                  <.input field={@form[:disk_gib]} type="number" label={gettext("Disk (GiB)")} min="2" />
+                  <.input
+                    field={@form[:memory_mib]}
+                    type="number"
+                    label={gettext("Memory (MiB)")}
+                    min="512"
+                  />
+                  <.input
+                    field={@form[:disk_gib]}
+                    type="number"
+                    label={gettext("Disk (GiB)")}
+                    min="2"
+                  />
                 </div>
               </details>
               <p :if={@error} id="thread-form-error" class="thread-form-feedback error" role="alert">
@@ -1423,14 +1477,21 @@ defmodule MarshallWeb.ThreadsLive do
               </p>
             </.form>
             <p class="thread-mode-hint muted">
-              {gettext("%{value1} Reasoning stays with this thread. Switch between Plan and Work as needed.", value1: mode_hint(@form.params["mode"]))}
+              {gettext(
+                "%{value1} Reasoning stays with this thread. Switch between Plan and Work as needed.",
+                value1: mode_hint(@form.params["mode"])
+              )}
             </p>
             <div class="thread-start-notes">
               <p>
-                <strong>{gettext("One task. One thread.")}</strong><br /><span class="muted">{gettext("Return to the conversation whenever you need.")}</span>
+                <strong>{gettext("One task. One thread.")}</strong><br /><span class="muted">{gettext(
+                  "Return to the conversation whenever you need."
+                )}</span>
               </p>
               <p>
-                <strong>{gettext("A machine of its own.")}</strong><br /><span class="muted">{gettext("Your agent's work runs in a dedicated environment.")}</span>
+                <strong>{gettext("A machine of its own.")}</strong><br /><span class="muted">{gettext(
+                  "Your agent's work runs in a dedicated environment."
+                )}</span>
               </p>
             </div>
           </div>
@@ -1453,7 +1514,9 @@ defmodule MarshallWeb.ThreadsLive do
               <header class="thread-list-heading">
                 <h1 :if={@live_action == :index}>{gettext("Your threads")}</h1>
                 <h2 :if={@live_action != :index}>{gettext("Recent threads")}</h2>
-                <p :if={@live_action == :index} class="muted">{gettext("Pick up where you left off.")}</p>
+                <p :if={@live_action == :index} class="muted">
+                  {gettext("Pick up where you left off.")}
+                </p>
               </header>
               <p
                 :if={!@threads_available}
@@ -1466,7 +1529,9 @@ defmodule MarshallWeb.ThreadsLive do
               <div :if={@threads_available and @threads_empty} class="thread-empty">
                 <h2>{gettext("Good work starts with a thread.")}</h2>
                 <p class="muted">{gettext("Give your agent a task. Follow the work here.")}</p>
-                <.link navigate={~p"/threads/new"} class="console-button primary">{gettext("New thread")}</.link>
+                <.link navigate={~p"/threads/new"} class="console-button primary">{gettext(
+                  "New thread"
+                )}</.link>
               </div>
               <p
                 :if={@threads_available and @thread_page_empty}
@@ -1499,7 +1564,11 @@ defmodule MarshallWeb.ThreadsLive do
                   value={@thread_filter}
                   type="select"
                   label={gettext("Show")}
-                  options={[{gettext("All threads"), "all"}, {gettext("Active"), "active"}, {gettext("Archived"), "archived"}]}
+                  options={[
+                    {gettext("All threads"), "all"},
+                    {gettext("Active"), "active"},
+                    {gettext("Archived"), "archived"}
+                  ]}
                 />
               </.form>
               <p
@@ -1561,7 +1630,9 @@ defmodule MarshallWeb.ThreadsLive do
               <div id="thread-activity" class="thread-activity">
                 <header class="thread-activity-heading">
                   <div>
-                    <h1>{gettext("Activity")}</h1><p class="muted">{gettext("The latest state of your threads.")}</p>
+                    <h1>{gettext("Activity")}</h1><p class="muted">
+                      {gettext("The latest state of your threads.")}
+                    </p>
                   </div>
                   <.form
                     for={
@@ -1699,9 +1770,9 @@ defmodule MarshallWeb.ThreadsLive do
                       </div>
                     <% _ -> %>
                       <div id="thread-unavailable" class="thread-empty" role="alert">
-                        <h2>{gettext("Thread temporarily unavailable")}</h2><p class="muted">{gettext("Try again shortly.")}</p><.link navigate={
-                          ~p"/threads"
-                        }>{gettext("Back to threads")}</.link>
+                        <h2>{gettext("Thread temporarily unavailable")}</h2><p class="muted">
+                          {gettext("Try again shortly.")}
+                        </p><.link navigate={~p"/threads"}>{gettext("Back to threads")}</.link>
                       </div>
                   <% end %>
                 <% else %>
@@ -1710,9 +1781,12 @@ defmodule MarshallWeb.ThreadsLive do
                       <div class="thread-detail-title">
                         <h1>{@selected.title || gettext("Untitled thread")}</h1>
                         <p class="muted">
-                          <span class="status-label" data-state={@selected.status}>{status_label(@selected.status)}</span><span> {gettext("· %{value1} reasoning · %{value2}", value1: @selected.mode, value2: collaboration_label(
-                            @collaboration_mode
-                          ))}</span>
+                          <span class="status-label" data-state={@selected.status}>{status_label(
+                            @selected.status
+                          )}</span><span>{gettext("· %{value1} reasoning · %{value2}",
+                            value1: @selected.mode,
+                            value2: collaboration_label(@collaboration_mode)
+                          )}</span>
                         </p>
                       </div>
                       <div class="thread-detail-actions">
@@ -1746,7 +1820,9 @@ defmodule MarshallWeb.ThreadsLive do
                           class="thread-terminal-embed"
                           data-thread-terminal
                         >
-                          <summary class="console-button ghost">{gettext("Open terminal here")}</summary>
+                          <summary class="console-button ghost">
+                            {gettext("Open terminal here")}
+                          </summary>
                           <div class="thread-terminal-frame">
                             <iframe
                               id="thread-terminal-frame"
@@ -1773,9 +1849,13 @@ defmodule MarshallWeb.ThreadsLive do
                           }
                           class="thread-actions-menu"
                         >
-                          <summary aria-label={gettext("Thread actions")}>{gettext("Actions")}</summary>
+                          <summary aria-label={gettext("Thread actions")}>
+                            {gettext("Actions")}
+                          </summary>
                           <div class="thread-actions-options">
-                            <button phx-click="archive" class="console-button ghost">{gettext("Archive")}</button>
+                            <button phx-click="archive" class="console-button ghost">{gettext(
+                              "Archive"
+                            )}</button>
                             <button phx-click="delete" class="console-button ghost">{gettext("Delete")}</button>
                           </div>
                         </details>
@@ -1794,11 +1874,15 @@ defmodule MarshallWeb.ThreadsLive do
                     >
                       <header>
                         <h2 id="thread-sharing-heading">{gettext("Share this thread")}</h2><p class="muted">
-                          {gettext("Thread access also applies to its machine. Separate machine grants and team access are managed independently.")}
+                          {gettext(
+                            "Thread access also applies to its machine. Separate machine grants and team access are managed independently."
+                          )}
                         </p>
                       </header>
                       <p :if={!@grants_available} id="thread-grants-unavailable" role="alert">
-                        {gettext("Access details are temporarily unavailable. Close sharing and try again shortly.")}
+                        {gettext(
+                          "Access details are temporarily unavailable. Close sharing and try again shortly."
+                        )}
                       </p>
                       <%= if @grants_available do %>
                         <div :if={@grant_owner} id="thread-grant-owner" class="thread-grant-row">
@@ -1833,7 +1917,9 @@ defmodule MarshallWeb.ThreadsLive do
                             >{gettext("Change")}</button>
                           </div>
                         </div>
-                        <p :if={@grants_empty} class="muted">{gettext("No individual thread grants yet.")}</p>
+                        <p :if={@grants_empty} class="muted">
+                          {gettext("No individual thread grants yet.")}
+                        </p>
                         <div :if={@grant_cursor || @grant_next} class="row actions">
                           <button
                             :if={@grant_cursor}
@@ -1856,7 +1942,9 @@ defmodule MarshallWeb.ThreadsLive do
                           class="thread-access-form"
                         >
                           <p class="muted">
-                            {gettext("Use an existing account's email to grant, change or revoke a thread role.")}
+                            {gettext(
+                              "Use an existing account's email to grant, change or revoke a thread role."
+                            )}
                           </p>
                           <div class="thread-access-fields">
                             <.input
@@ -1883,7 +1971,9 @@ defmodule MarshallWeb.ThreadsLive do
                             >{gettext("Save access")}</button>
                           </div>
                           <p class="muted thread-access-hint">
-                            {gettext("Viewers read. Operators send prompts. Managers also share and manage the thread.")}
+                            {gettext(
+                              "Viewers read. Operators send prompts. Managers also share and manage the thread."
+                            )}
                           </p>
                           <p :if={@share_error} id="thread-share-error" class="error" role="alert">
                             {@share_error}
@@ -1900,7 +1990,9 @@ defmodule MarshallWeb.ThreadsLive do
                       <header>
                         <h2 id="thread-generations-heading">{gettext("Machine generations")}</h2>
                         <p class="muted">
-                          {gettext("Reopened machines keep their earlier transcripts. Select one to read it.")}
+                          {gettext(
+                            "Reopened machines keep their earlier transcripts. Select one to read it."
+                          )}
                         </p>
                       </header>
                       <.form
@@ -1936,16 +2028,22 @@ defmodule MarshallWeb.ThreadsLive do
                       >
                         <strong>{gettext("Preparing your workspace")}</strong>
                         <p class="muted">
-                          {gettext("Your machine is starting. The agent will begin with your objective as soon as it is ready.")}
+                          {gettext(
+                            "Your machine is starting. The agent will begin with your objective as soon as it is ready."
+                          )}
                         </p>
                       </div>
                       <div :if={@selected.status == :failed} class="thread-notice thread-recovery">
                         <div>
-                          <strong id="thread-provision-error">{gettext("Provisioning needs attention.")}</strong><p class="muted">
+                          <strong id="thread-provision-error">{gettext(
+                            "Provisioning needs attention."
+                          )}</strong><p class="muted">
                             {gettext("Your objective is saved. Retry to prepare the workspace again.")}
                           </p>
                         </div>
-                        <button :if={@can_manage} phx-click="retry" class="console-button primary">{gettext("Retry")}</button>
+                        <button :if={@can_manage} phx-click="retry" class="console-button primary">{gettext(
+                          "Retry"
+                        )}</button>
                       </div>
                       <p
                         :if={@selected.status == :deleting}
@@ -1982,7 +2080,10 @@ defmodule MarshallWeb.ThreadsLive do
                         />
                         <input type="hidden" name="prompt[key]" value={@prompt_request_key} />
                         <div class="thread-compose-controls">
-                          <div class="thread-collaboration-options" aria-label={gettext("Collaboration mode")}>
+                          <div
+                            class="thread-collaboration-options"
+                            aria-label={gettext("Collaboration mode")}
+                          >
                             <button
                               :for={mode <- [:work, :plan]}
                               type="button"
@@ -1997,7 +2098,9 @@ defmodule MarshallWeb.ThreadsLive do
                             >{collaboration_label(mode)}</button>
                           </div>
                           <span class="muted">{gettext("%{value1} reasoning", value1: @selected.mode)}</span>
-                          <button type="button" data-thread-commands-open class="console-button ghost">{gettext("Commands")}</button>
+                          <button type="button" data-thread-commands-open class="console-button ghost">{gettext(
+                            "Commands"
+                          )}</button>
                           <button
                             class="console-button primary"
                             type="submit"
@@ -2103,7 +2206,9 @@ defmodule MarshallWeb.ThreadsLive do
                           id="thread-archived"
                           class="thread-notice muted"
                         >
-                          {gettext("Archived thread. The transcript is read-only. Reopen to continue on a new machine.")}
+                          {gettext(
+                            "Archived thread. The transcript is read-only. Reopen to continue on a new machine."
+                          )}
                         </p>
                         <p
                           :if={!@events_available}
@@ -2213,7 +2318,9 @@ defmodule MarshallWeb.ThreadsLive do
           <p :if={@error} role="alert">{@error}</p>
           <%= if @thread_dialog == :help do %>
             <p>
-              {gettext("Use Commands or press Ctrl/Cmd+K while writing. Start a message with / to find a command; use Tab to complete it.")}
+              {gettext(
+                "Use Commands or press Ctrl/Cmd+K while writing. Start a message with / to find a command; use Tab to complete it."
+              )}
             </p>
             <dl class="thread-command-help">
               <%= for {command, label, description} <- ThreadCommands.all() do %>
@@ -2223,15 +2330,21 @@ defmodule MarshallWeb.ThreadsLive do
             <p>
               <code>/plan task</code>
               {gettext("and")} <code>/work task</code>
-              {gettext("choose a mode and submit the task together. Choosing a mode on a new thread does not create a machine.")}
+              {gettext(
+                "choose a mode and submit the task together. Choosing a mode on a new thread does not create a machine."
+              )}
             </p>
             <p>
-              {gettext("Start with a space to send slash-looking text literally. Type $ to choose a skill by its exact source.")}
+              {gettext(
+                "Start with a space to send slash-looking text literally. Type $ to choose a skill by its exact source."
+              )}
             </p>
           <% end %>
           <%= if @thread_dialog == :context do %>
             <p :if={!@context_available} role="status">
-              {gettext("Context details are unavailable. The thread may still be preparing its workspace.")}
+              {gettext(
+                "Context details are unavailable. The thread may still be preparing its workspace."
+              )}
             </p>
             <%= if @context_available do %>
               <dl class="kv">
@@ -2239,9 +2352,13 @@ defmodule MarshallWeb.ThreadsLive do
                   {gettext("Working directory")}
                 </dt><dd class="break">
                   {skill_value(@context_info, :working_directory, gettext("Not collected yet"))}
-                </dd><dt>{gettext("Input tokens")}</dt><dd>{context_usage(@context_info, :input_tokens)}</dd><dt>
+                </dd><dt>{gettext("Input tokens")}</dt><dd>
+                  {context_usage(@context_info, :input_tokens)}
+                </dd><dt>
                   {gettext("Token allowance")}
-                </dt><dd>{context_usage(@context_info, :token_limit)}</dd><dt>{gettext("Context bytes")}</dt><dd>
+                </dt><dd>{context_usage(@context_info, :token_limit)}</dd><dt>
+                  {gettext("Context bytes")}
+                </dt><dd>
                   {context_usage(@context_info, :bytes)}
                 </dd>
               </dl>
@@ -2278,7 +2395,11 @@ defmodule MarshallWeb.ThreadsLive do
             </div>
           <% end %>
           <%= if @thread_dialog == :skills do %>
-            <p>{gettext("Skills add reusable instructions to a task. Choose the source you intend to use.")}</p>
+            <p>
+              {gettext(
+                "Skills add reusable instructions to a task. Choose the source you intend to use."
+              )}
+            </p>
             <p :if={!@skills_available} role="status">
               {gettext("Skills are unavailable until the workspace context has been collected.")}
             </p>
@@ -2334,7 +2455,11 @@ defmodule MarshallWeb.ThreadsLive do
                     label={gettext("Update revision (optional)")}
                     placeholder={gettext("Branch, tag or commit")}
                   />
-                  <button type="submit" class="console-button ghost" phx-disable-with={gettext("Updating…")}>{gettext("Update")}</button>
+                  <button
+                    type="submit"
+                    class="console-button ghost"
+                    phx-disable-with={gettext("Updating…")}
+                  >{gettext("Update")}</button>
                 </.form>
                 <div class="row actions">
                   <button
@@ -2343,7 +2468,9 @@ defmodule MarshallWeb.ThreadsLive do
                     phx-click="set_skill_enabled"
                     phx-value-id={skill_value(skill, :id)}
                     phx-value-enabled={to_string(!skill_value(skill, :enabled, true))}
-                  >{if skill_value(skill, :enabled, true), do: gettext("Disable"), else: gettext("Enable")}</button>
+                  >{if skill_value(skill, :enabled, true),
+                    do: gettext("Disable"),
+                    else: gettext("Enable")}</button>
                   <button
                     type="button"
                     class="console-button compact ghost"
@@ -2374,8 +2501,16 @@ defmodule MarshallWeb.ThreadsLive do
                   label={gettext("Revision (optional)")}
                   placeholder={gettext("Branch, tag or commit")}
                 />
-                <.input field={@skill_form[:subdirectory]} label={gettext("Skill directory")} required />
-                <button type="submit" class="console-button primary" phx-disable-with={gettext("Installing…")}>{gettext("Install skill")}</button>
+                <.input
+                  field={@skill_form[:subdirectory]}
+                  label={gettext("Skill directory")}
+                  required
+                />
+                <button
+                  type="submit"
+                  class="console-button primary"
+                  phx-disable-with={gettext("Installing…")}
+                >{gettext("Install skill")}</button>
               </.form>
             </section>
           <% end %>
@@ -2527,7 +2662,9 @@ defmodule MarshallWeb.ThreadsLive do
         _ -> []
       end)
 
-    if names == [], do: gettext("Tools queued"), else: gettext("Queued: %{tools}", tools: Enum.join(names, ", "))
+    if names == [],
+      do: gettext("Tools queued"),
+      else: gettext("Queued: %{tools}", tools: Enum.join(names, ", "))
   end
 
   defp event_text(%{kind: :tool_queued}), do: gettext("Tools queued")

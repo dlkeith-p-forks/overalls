@@ -96,31 +96,8 @@ defmodule MarshallWeb.IntegrationsLive do
     end
   end
 
-  def handle_event("github-disconnect", _, socket) do
-    github_result(socket, Marshall.GitHub.disconnect(socket.assigns.current_user))
-  end
-
-  def handle_event("github-detach", %{"github_machine" => %{"vm_id" => vm_id}}, socket) do
-    github_result(socket, Marshall.GitHub.set_excluded(socket.assigns.current_user, vm_id, true))
-  end
-
-  def handle_event("github-attach", %{"vm-id" => vm_id}, socket) do
-    github_result(socket, Marshall.GitHub.set_excluded(socket.assigns.current_user, vm_id, false))
-  end
-
   def handle_event(_, _, socket),
     do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
-
-  @spec github_result(Phoenix.LiveView.Socket.t(), {:ok, map()} | {:error, term()}) ::
-          {:noreply, Phoenix.LiveView.Socket.t()}
-  defp github_result(socket, {:ok, _}), do: {:noreply, refresh(socket)}
-
-  defp github_result(socket, {:error, _}) do
-    {:noreply,
-     socket
-     |> put_flash(:error, gettext("Could not update the GitHub connection."))
-     |> refresh()}
-  end
 
   defp refresh(socket) do
     github =

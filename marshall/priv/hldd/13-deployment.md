@@ -430,3 +430,4 @@ and the [multi-OS review](repo:docs/architecture/reviews/2026-10-16-multi-os-gue
 The private frontend routes `reflection.internal` to Peach. Peach is host-bound
 and depends on the Marshall control service; packaged NixOS wiring and guest
 journey evidence remain pending.
+

@@ -155,7 +155,7 @@ defmodule Lilly.VM.CheckpointStorage do
     manifest = JSON.encode!(record["manifest"])
 
     with {:ok, _} <- native(pool, spec, slot, leaf, :either),
-         :ok <- claim_files(out),
+         :ok <- claim_files(pool, spec, slot, leaf, out),
          {:ok, ["memory", "state"]} <- sorted_entries(out),
          {:ok, memory_hash} <- Checkpoint.hash_file(Path.join(out, "memory"), spec.memory_bytes),
          {:ok, %File.Stat{type: :regular, links: 1, size: state_bytes}} <-
@@ -198,32 +198,55 @@ defmodule Lilly.VM.CheckpointStorage do
 
   def seal(_, _, _), do: failure()
 
-  defp claim_files(out) do
+  # @cc [owner:ghuntley,label:security;recovery] checkpoint-seal-native-single-path
+  # Sealing MUST reclaim each snapshot output through hostd's existing
+  # single-path no-dereference chown grammar; a shell-style multi-path chown
+  # MUST NOT prevent a copied checkpoint from becoming immutable and ready.
+  # An interrupted ownership/mode change MUST verify both outputs before
+  # skipping repair. Incomplete files MUST be repaired only in a dataset
+  # independently proven writable; readonly incomplete outputs fail closed.
+  @spec claim_files(Pool.t(), Spec.t(), String.t(), map(), Path.t()) :: :ok | failure()
+  defp claim_files(pool, spec, slot, leaf, out) do
     uid = Privilege.service_uid()
 
-    case Privilege.lstat(Path.join(out, "memory")) do
-      {:ok, %File.Stat{uid: 0, mode: mode}} when band(mode, 0o777) == 0o444 ->
-        :ok
-
-      _ ->
-        with {:ok, %File.Stat{type: :directory}} <- File.lstat(out),
-             {:ok, _} <- Command.run(:chown, ["--no-dereference", "#{uid}:#{uid}", "--", out]),
-             {:ok, ["memory", "state"]} <- sorted_entries(out),
-             {:ok, %File.Stat{type: :regular, links: 1}} <- File.lstat(Path.join(out, "memory")),
-             {:ok, %File.Stat{type: :regular, links: 1}} <- File.lstat(Path.join(out, "state")),
-             {:ok, _} <-
-               Command.run(:chown, [
-                 "--no-dereference",
-                 "#{uid}:#{uid}",
-                 "--",
-                 Path.join(out, "memory"),
-                 Path.join(out, "state")
-               ]),
-             :ok <- Privilege.chmod(out, 0o700),
-             :ok <- Privilege.chmod(Path.join(out, "memory"), 0o444),
-             :ok <- Privilege.chmod(Path.join(out, "state"), 0o444),
-             do: :ok
+    if sealed_outputs?(out) do
+      :ok
+    else
+      with {:ok, _} <- native(pool, spec, slot, leaf, :off),
+           {:ok, %File.Stat{type: :directory}} <- File.lstat(out),
+           {:ok, _} <- Command.run(:chown, ["--no-dereference", "#{uid}:#{uid}", "--", out]),
+           {:ok, ["memory", "state"]} <- sorted_entries(out),
+           {:ok, %File.Stat{type: :regular, links: 1}} <- File.lstat(Path.join(out, "memory")),
+           {:ok, %File.Stat{type: :regular, links: 1}} <- File.lstat(Path.join(out, "state")),
+           {:ok, _} <-
+             Command.run(:chown, [
+               "--no-dereference",
+               "#{uid}:#{uid}",
+               "--",
+               Path.join(out, "memory")
+             ]),
+           {:ok, _} <-
+             Command.run(:chown, [
+               "--no-dereference",
+               "#{uid}:#{uid}",
+               "--",
+               Path.join(out, "state")
+             ]),
+           :ok <- Privilege.chmod(out, 0o700),
+           :ok <- Privilege.chmod(Path.join(out, "memory"), 0o444),
+           :ok <- Privilege.chmod(Path.join(out, "state"), 0o444),
+           do: :ok
     end
+  end
+
+  # @cc [owner:ghuntley,label:recovery;security] both-checkpoint-outputs-sealed
+  # Only two independently verified regular, singly linked, service/root-owned
+  # 0444 output files may skip ownership and mode repair after interruption.
+  @doc false
+  @spec sealed_outputs?(Path.t()) :: boolean()
+  def sealed_outputs?(out) do
+    sealed_file(Path.join(out, "memory")) == :ok and
+      sealed_file(Path.join(out, "state")) == :ok
   end
 
   defp write_manifest(root, bytes) do

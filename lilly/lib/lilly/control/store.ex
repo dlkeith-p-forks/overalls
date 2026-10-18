@@ -215,7 +215,8 @@ defmodule Lilly.Control.Store do
         :clone_id,
         :owner_id,
         :workspace_source,
-        :git_identity
+        :git_identity,
+        :checkpoint
       ])
 
   defp revision(command), do: {command.execution_epoch, command.generation}

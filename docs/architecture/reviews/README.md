@@ -1,9 +1,8 @@
 # Architecture reviews
 
-- [Fleet dependency convergence (2026-10-18)](2026-10-18-fleet-dependency-convergence.md):
-  diagnoses mixed inventory versions and stale Marshall/Porsche dependency
-  snapshots; repairs current release inputs without weakening the lock guard,
-  hostd authority or current protocol. Live convergence is recorded separately.
+- [Memory-preserving suspension and demand wake (2026-10-18)](2026-10-18-memory-suspension.md):
+  ADR-0199, durable lifecycle/wake/checkpoint state machines and authenticated
+  waiting connections; implementation and native acceptance in progress.
 
 - [One account settings page (2026-10-18)](2026-10-18-account-settings-page.md):
   ADR-0196 merges Profile, Security and SSH keys into `/settings` behind the
@@ -643,3 +642,5 @@ needs replacement. Keep checks that were run separate from future test plans.
 - [Antithesis five-attempt bootstrap admission (2026-10-16)](2026-10-16-antithesis-five-attempt-admission.md): verification campaign ledger admits five concurrent hosted attempts and refuses a sixth; no production architecture boundary changes.
 - [Antithesis guest-lifecycle profile (2026-10-17)](2026-10-17-antithesis-guest-lifecycle-profile.md): launchable QEMU TCG guest-lifecycle selection with a labelled stub-storage container Lilly; harness-only, no ADR change and no recorded run.
 - [2026 10 16 Nix Domain Layout](2026-10-16-nix-domain-layout.md)
+
+- [Git attribution and guest identity (2026-10-18)](2026-10-18-git-attribution.md): ADR-0198 settings, immutable snapshots and guest configuration verification.

@@ -87,7 +87,9 @@ defmodule MarshallWeb.MachineWorkspace do
       |> assign(machine_connection: nil)
       |> put_flash(
         :error,
-        gettext("Administrative verification expired. Choose the machine in Fleet workloads and verify your passkey to reopen it.")
+        gettext(
+          "Administrative verification expired. Choose the machine in Fleet workloads and verify your passkey to reopen it."
+        )
       )
       |> push_navigate(to: "/admin/workloads")
     else
@@ -163,7 +165,9 @@ defmodule MarshallWeb.MachineWorkspace do
 
     cond do
       String.contains?(text, "pin_limit") ->
-        gettext("You can pin up to %{value1} machines. Unpin one before pinning another.", value1: Access.Pins.limit())
+        gettext("You can pin up to %{value1} machines. Unpin one before pinning another.",
+          value1: Access.Pins.limit()
+        )
 
       String.contains?(text, "vm_deleted") ->
         gettext("This machine is being deleted and cannot be pinned.")
@@ -215,7 +219,10 @@ defmodule MarshallWeb.MachineWorkspace do
           {:halt,
            socket
            |> assign(machine_connection: nil)
-           |> put_flash(:error, gettext("The machine could not be updated. Refresh and try again."))}
+           |> put_flash(
+             :error,
+             gettext("The machine could not be updated. Refresh and try again.")
+           )}
         end
     end
   end

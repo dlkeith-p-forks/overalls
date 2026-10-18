@@ -36,16 +36,103 @@ msgstr ""
 "Öffnen Sie diesen Link, melden Sie sich an und bestätigen Sie den passenden Fingerabdruck:\n"
 "  "
 
-#: lib/porsche/ssh/onboarding.ex:112
-#, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Or manage your keys at:\n"
-"  "
-msgstr ""
-"\n"
-"Oder verwalten Sie Ihre Schlüssel unter:\n"
-"  "
+msgid "Show the authenticated account."
+msgstr "Das authentifizierte Konto anzeigen."
+
+msgid "List available images."
+msgstr "Verfügbare Images auflisten."
+
+msgid "List machines you can access."
+msgstr "Maschinen auflisten, auf die Sie zugreifen können."
+
+msgid "Inspect a machine by name or UUID."
+msgstr "Eine Maschine anhand ihres Namens oder ihrer UUID untersuchen."
+
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "Eine Maschine erstellen. Maximale Festplatte: 500 GiB. --source klont ein öffentliches GitHub-, GitLab-, Codeberg- oder Bitbucket-Repository in den Gast."
+
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "Eine unabhängige vollständige Festplattenkopie einer Maschine einreihen."
+
+msgid "Move a machine to an automatically selected host."
+msgstr "Eine Maschine auf einen automatisch gewählten Host verschieben."
+
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "CPU und Arbeitsspeicher einer Maschine ändern; die Festplatte kann nur vergrößert werden. Eine laufende Maschine wird angehalten und neu gestartet."
+
+msgid "Retry a failed clone or relocation request."
+msgstr "Eine fehlgeschlagene Klon- oder Verlagerungsanfrage erneut versuchen."
+
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "Eine unveröffentlichte Klonanfrage oder eine noch nicht bestätigte Verlagerungsanfrage abbrechen."
+
+msgid "Start a machine."
+msgstr "Eine Maschine starten."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
+
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "Eine Maschine und ihre Festplatte löschen. Wird verweigert, solange der Eigentümer sie angeheftet hat."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+
+msgid "Remove your pin from a machine."
+msgstr "Ihre Anheftung einer Maschine entfernen."
+
+msgid "List access grants."
+msgstr "Zugriffsberechtigungen auflisten."
+
+msgid "Grant viewer, operator or manager access."
+msgstr "Zugriff als viewer, operator oder manager gewähren."
+
+msgid "Revoke an account's shared access."
+msgstr "Den geteilten Zugriff eines Kontos widerrufen."
+
+msgid "List your SSH keys."
+msgstr "Ihre SSH-Schlüssel auflisten."
+
+msgid "Revoke one of your SSH keys."
+msgstr "Einen Ihrer SSH-Schlüssel widerrufen."
+
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "Eine benannte Integration unter https://NAME.integration.internal erstellen oder ersetzen."
+
+msgid "Remove a named integration."
+msgstr "Eine benannte Integration entfernen."
+
+msgid "List your integrations."
+msgstr "Ihre Integrationen auflisten."
+
+msgid "Inspect an integration without secrets."
+msgstr "Eine Integration ohne Geheimnisse untersuchen."
+
+msgid "Make an integration available to a machine."
+msgstr "Eine Integration für eine Maschine verfügbar machen."
+
+msgid "Remove a machine's explicit availability."
+msgstr "Die explizite Verfügbarkeit einer Maschine entfernen."
+
+msgid "Create a team you own."
+msgstr "Ein Team erstellen, dessen Eigentümer Sie sind."
+
+msgid "List your teams and roles."
+msgstr "Ihre Teams und Rollen auflisten."
+
+msgid "List a team's members."
+msgstr "Die Mitglieder eines Teams auflisten."
+
+msgid "Add or change an admin or member."
+msgstr "Einen Administrator oder ein Mitglied hinzufügen oder ändern."
+
+msgid "Remove an account's membership."
+msgstr "Die Mitgliedschaft eines Kontos entfernen."
+
+msgid "Offer team ownership to an admin."
+msgstr "Einem Administrator die Teameigentümerschaft anbieten."
 
 #: lib/porsche/ssh/command_messages.ex:46
 #, elixir-autogen, elixir-format
@@ -294,156 +381,14 @@ msgstr "Anfrage %{id}: wird übermittelt"
 msgid "Request %{id}: waiting for completion"
 msgstr "Anfrage %{id}: wartet auf Abschluss"
 
-#: lib/porsche/ssh/command_messages.ex:26
-#, elixir-autogen, elixir-format
-msgid "Retry a failed clone or relocation request."
-msgstr "Eine fehlgeschlagene Klon- oder Verlagerungsanfrage erneut versuchen."
-
-#: lib/porsche/ssh/command_messages.ex:34
-#, elixir-autogen, elixir-format
-msgid "Revoke an account's shared access."
-msgstr "Den geteilten Zugriff eines Kontos widerrufen."
-
-#: lib/porsche/ssh/command_messages.ex:38
-#, elixir-autogen, elixir-format
-msgid "Revoke one of your SSH keys."
-msgstr "Einen Ihrer SSH-Schlüssel widerrufen."
-
-#: lib/porsche/ssh/command_messages.ex:8
-#, elixir-autogen, elixir-format
-msgid "Show command help."
-msgstr "Befehlshilfe anzeigen."
-
-#: lib/porsche/ssh/command_messages.ex:52
-#, elixir-autogen, elixir-format
-msgid "Show the authenticated account."
-msgstr "Das authentifizierte Konto anzeigen."
-
-#: lib/porsche/ssh/command_messages.ex:39
-#, elixir-autogen, elixir-format
-msgid "Start a machine."
-msgstr "Eine Maschine starten."
-
-#: lib/porsche/ssh/output.ex:73
-#, elixir-autogen, elixir-format
-msgid "The command could not be completed: %{reason}"
-msgstr "Der Befehl konnte nicht abgeschlossen werden: %{reason}"
-
-#: lib/porsche/ssh/output.ex:67
-#, elixir-autogen, elixir-format
-msgid "The requested resource could not be found."
-msgstr "Die angeforderte Ressource wurde nicht gefunden."
-
-#: lib/porsche/ssh/output.ex:61
-#, elixir-autogen, elixir-format
-msgid "The service is temporarily unavailable. Please try again shortly."
-msgstr ""
-"Der Dienst ist vorübergehend nicht verfügbar. Versuchen Sie es gleich noch "
-"einmal."
-
-#: lib/porsche/ssh/onboarding.ex:100
-#, elixir-autogen, elixir-format
-msgid ""
-"This SSH connection could not be authorized. Check your machine access and try again.\n"
-"\n"
-msgstr ""
-"Diese SSH-Verbindung konnte nicht autorisiert werden. Prüfen Sie Ihren Maschinenzugriff und versuchen Sie es erneut.\n"
-"\n"
-
-#: lib/porsche/ssh/output.ex:52
-#, elixir-autogen, elixir-format
-msgid "This connection is not authorized. Please sign in and try again."
-msgstr ""
-"Diese Verbindung ist nicht autorisiert. Melden Sie sich an und versuchen Sie"
-" es erneut."
-
-#: lib/porsche/ssh/output.ex:70
-#, elixir-autogen, elixir-format
-msgid "Unexpected input. Please open a new SSH connection."
-msgstr "Unerwartete Eingabe. Öffnen Sie eine neue SSH-Verbindung."
-
-#: lib/porsche/ssh/onboarding.ex:97
-#, elixir-autogen, elixir-format
-msgid ""
-"We couldn't verify this SSH key right now. Please try again shortly.\n"
-"\n"
-msgstr ""
-"Dieser SSH-Schlüssel konnte gerade nicht überprüft werden. Versuchen Sie es gleich noch einmal.\n"
-"\n"
-
-#: lib/porsche/ssh/onboarding.ex:53
-#, elixir-autogen, elixir-format
-msgid ""
-"We don't recognize this SSH key:\n"
-"  "
-msgstr ""
-"Dieser SSH-Schlüssel ist uns unbekannt:\n"
-"  "
-
-#: lib/porsche/ssh/onboarding.ex:86
-#, elixir-autogen, elixir-format
-msgid ""
-"Welcome to Overalls.\n"
-"\n"
-"This connection needs the Overalls SSH configuration.\n"
-"\n"
-msgstr ""
-"Willkommen bei Overalls.\n"
-"\n"
-"Diese Verbindung benötigt die SSH-Konfiguration von Overalls.\n"
-"\n"
-
-#: lib/porsche/ssh/output.ex:55
-#, elixir-autogen, elixir-format
-msgid "You do not have permission to perform this action."
-msgstr "Sie haben keine Berechtigung für diese Aktion."
-
-#: lib/porsche/ssh/onboarding.ex:121
-#, elixir-autogen, elixir-format
-msgid "from your machine's page and reconnect without root@.\n"
-msgstr ""
-"auf der Seite Ihrer Maschine aus. Verbinden Sie sich anschließend ohne root@"
-" erneut.\n"
-
-#: lib/porsche/ssh/onboarding.ex:78
-#, elixir-autogen, elixir-format
-msgid "then retry your original command.\n"
-msgstr "und versuchen Sie danach Ihren ursprünglichen Befehl erneut.\n"
-
-#: lib/porsche/ssh/command_messages.ex:21
-#, elixir-autogen, elixir-format
-msgid ""
-"Pin a machine to the top of your lists. Your owner pin wakes it, prevents "
-"automatic suspension, and prevents deletion."
-msgstr ""
-"Eine Maschine oben in Ihren Listen anheften. Ihre Anheftung als Eigentümer "
-"weckt sie, verhindert die automatische Suspendierung und verhindert das "
-"Löschen."
-
-#: lib/porsche/ssh/command_messages.ex:50
-#, elixir-autogen, elixir-format
-msgid "Resume a suspended machine's preserved memory."
-msgstr ""
-"Den gespeicherten Arbeitsspeicher einer suspendierten Maschine "
-"wiederherstellen."
-
-#: lib/porsche/ssh/command_messages.ex:31
-#, elixir-autogen, elixir-format
-msgid "Resume preserved memory, waiting for capacity or relocation."
-msgstr ""
-"Gespeicherten Arbeitsspeicher wiederherstellen und auf Kapazität oder "
-"Verlagerung warten."
-
-#: lib/porsche/ssh/command_messages.ex:40
-#, elixir-autogen, elixir-format
-msgid "Stop a machine, retaining its disk and discarding suspended memory."
-msgstr ""
-"Eine Maschine anhalten, ihre Festplatte behalten und den gespeicherten "
-"Arbeitsspeicher verwerfen."
-
-#: lib/porsche/ssh/command_messages.ex:20
-#, elixir-autogen, elixir-format
+# Reviewed English fallback pending translation of suspension behavior.
 msgid "Suspend a machine, preserving its memory and disk."
-msgstr ""
-"Eine Maschine suspendieren und ihren Arbeitsspeicher und ihre Festplatte "
-"erhalten."
+msgstr "Suspend a machine, preserving its memory and disk."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."

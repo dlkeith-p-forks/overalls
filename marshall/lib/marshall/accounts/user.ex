@@ -46,7 +46,6 @@ defmodule Marshall.Accounts.User do
   postgres do
     table "users"
     repo Marshall.Repo
-    migration_defaults git_email: "\"noreply@overalls.dev\""
   end
 
   actions do
@@ -100,7 +99,7 @@ defmodule Marshall.Accounts.User do
     action :set_locale, :map do
       argument :locale, :string,
         allow_nil?: true,
-        constraints: [max_length: 35, trim?: false, allow_empty?: true]
+        constraints: [max_length: 35, allow_empty?: false]
 
       run Marshall.Accounts.ProfileLocale
     end

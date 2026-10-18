@@ -382,6 +382,7 @@ defmodule Marshall.Compute.CloneHistoryTest do
   property "forward and cleanup uncertainty await the same bound effect without releasing holds",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
+
     cases = [
       {:prepare, :destination},
       {:probe, :source},
@@ -561,6 +562,7 @@ defmodule Marshall.Compute.CloneHistoryTest do
   property "cancellation retains obligations through reordered evidence and revoked requester",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
+
     boundary =
       draw("boundary", member_of([:preparing, :stopping, :capturing, :copying, :publishing]))
 

@@ -47,7 +47,9 @@ defmodule MarshallWeb.SSHApprovalLive do
     |> assign(approval: nil, approval_token: nil)
     |> put_flash(
       :error,
-      gettext("This SSH approval is unavailable or has expired. Start a new SSH connection to try again.")
+      gettext(
+        "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
+      )
     )
   end
 
@@ -66,11 +68,16 @@ defmodule MarshallWeb.SSHApprovalLive do
         <h1>{gettext("Approve SSH key")}</h1>
         <.form :if={@approval} for={@form} id="ssh-approval-form" phx-submit="approve" class="panel">
           <p>
-            {gettext("Approve this key only if you started the SSH connection and its fingerprint matches your SSH client.")}
+            {gettext(
+              "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
+            )}
           </p>
           <pre id="ssh-approval-fingerprint"><code>{@approval.fingerprint}</code></pre>
           <p class="muted">
-            {gettext("This key will sign in as %{value1}. It can manage machines according to your account's permissions.", value1: @current_user.email)}
+            {gettext(
+              "This key will sign in as %{value1}. It can manage machines according to your account's permissions.",
+              value1: @current_user.email
+            )}
           </p>
           <.input
             field={@form[:label]}

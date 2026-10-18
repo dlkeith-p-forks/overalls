@@ -119,7 +119,7 @@ class Repository:
         host = host.partition(":")[0].lower()
         parsed = urlsplit(path)
         query = parse_qs(parsed.query, keep_blank_values=True)
-        path = parsed.path
+        path = parsed.path + (("?" + parsed.query) if parsed.query else "")
         if host == "com-github.integration.internal" and path.startswith("/git/"):
             host, path = HOST, path.removeprefix("/git")
         if host != HOST:
@@ -146,8 +146,7 @@ class Repository:
         if (
             self.allow_writes
             and method == "GET"
-            and path == PREFIX + "/info/refs"
-            and query == {"service": ["git-receive-pack"]}
+            and path == PREFIX + "/info/refs?service=git-receive-pack"
             and not body
         ):
             return Response(
