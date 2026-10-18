@@ -474,6 +474,30 @@ defmodule MarshallWeb.AccountLiveTest do
       assert {:ok, []} = SSH.list_keys(%{}, actor: owner)
     end
 
+    # @cc [owner:ghuntley,label:verification] localized-key-rename
+    # SSH key rename labels and outcomes MUST follow the negotiated locale
+    # without changing the key fingerprint or accepting an overlong description.
+    test "SSH key rename labels and outcomes follow the browser language", %{conn: conn} do
+      owner = user()
+      text = "ssh-ed25519 " <> Base.encode64(<<11::32, "ssh-ed25519", 32::32, 46::256>>)
+      {:ok, key} = SSH.add_key(%{public_key: text, label: "Laptop"}, actor: owner)
+      conn = conn |> signed_in(owner) |> put_req_header("accept-language", "ja")
+      {:ok, view, _} = live(conn, ~p"/settings")
+      assert has_element?(view, "label[for='ssh-key-label-#{key.id}']", "説明")
+
+      view |> form("#rename-ssh-key-#{key.id}", %{label: "Work"}) |> render_submit()
+      assert has_element?(view, "#flash-info", "SSH鍵の名前を変更しました。")
+
+      view
+      |> form("#rename-ssh-key-#{key.id}", %{label: String.duplicate("x", 129)})
+      |> render_submit()
+
+      assert has_element?(view, "#flash-error", "この鍵の名前を変更できませんでした。128文字以内にしてください。")
+      assert {:ok, [saved]} = SSH.list_keys(%{}, actor: owner)
+      assert saved.label == "Work"
+      assert saved.fingerprint == key.fingerprint
+    end
+
     test "a user renames their key's description without changing its identity", %{conn: conn} do
       owner = user()
       text = "ssh-ed25519 " <> Base.encode64(<<11::32, "ssh-ed25519", 32::32, 44::256>>)

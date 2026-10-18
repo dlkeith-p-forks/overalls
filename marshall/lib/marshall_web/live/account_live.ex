@@ -175,12 +175,12 @@ defmodule MarshallWeb.AccountLive do
       when is_binary(id) and is_binary(label) do
     case SSH.rename_key(%{id: id, label: label}, actor: socket.assigns.current_user) do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, "SSH key renamed.") |> refresh_keys()}
+        {:noreply, socket |> put_flash(:info, gettext("SSH key renamed.")) |> refresh_keys()}
 
       {:error, _} ->
         {:noreply,
          socket
-         |> put_flash(:error, "Could not rename this key. Use at most 128 characters.")
+         |> put_flash(:error, gettext("Could not rename this key. Use at most 128 characters."))
          |> refresh_keys()}
     end
   end
@@ -700,7 +700,7 @@ defmodule MarshallWeb.AccountLive do
                 name="label"
                 id={"ssh-key-label-#{key.id}"}
                 value={key.label}
-                label="Description"
+                label={gettext("Description")}
                 maxlength="128"
               />
               <button class="console-button">{gettext("Rename")}</button>
