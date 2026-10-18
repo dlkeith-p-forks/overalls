@@ -143,6 +143,18 @@
       "size": null,
       "source": "email",
       "type": "citext"
+    },
+    {
+      "allow_nil?": false,
+      "default": "false",
+      "generated?": false,
+      "precision": null,
+      "primary_key?": false,
+      "references": null,
+      "scale": null,
+      "size": null,
+      "source": "newsletter_dismissed",
+      "type": "boolean"
     }
   ],
   "base_filter": null,
