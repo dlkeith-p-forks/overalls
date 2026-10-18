@@ -27,6 +27,14 @@ defmodule MarshallWeb.MachinesLiveTest do
     assert has_element?(view, "#machine-install-command-windows", "/bin/install.ps1")
     assert has_element?(view, "#machine-install-command-windows", "-ExecutionPolicy Bypass")
     refute has_element?(view, "#machine-ssh-command-windows")
+
+    # Every Copy control shares one presentation; none is a primary button.
+    copy_buttons =
+      view |> render() |> LazyHTML.from_fragment() |> LazyHTML.query("[data-copy-command]")
+
+    assert Enum.count(copy_buttons) == 4
+    assert Enum.count(LazyHTML.query(copy_buttons, ".console-button.compact.copy-button")) == 4
+    refute has_element?(view, "[data-copy-command].primary")
     refute has_element?(view, "#download-ssh-config")
     refute has_element?(view, "a[href$='/ssh-config']")
 

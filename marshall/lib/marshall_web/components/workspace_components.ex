@@ -161,7 +161,7 @@ defmodule MarshallWeb.WorkspaceComponents do
             <code id="machine-id">{@vm.id}</code>
             <button
               type="button"
-              class="console-button compact"
+              class="console-button compact copy-button"
               data-copy-command="machine-id"
               data-copy-label="Machine ID"
               aria-label="Copy machine ID"
@@ -252,7 +252,7 @@ defmodule MarshallWeb.WorkspaceComponents do
               <pre><code id="machine-install-command">{@connection.install}</code></pre>
               <button
                 type="button"
-                class="console-button primary"
+                class="console-button compact copy-button"
                 data-copy-command="machine-install-command"
                 aria-label="Copy Linux and macOS install command"
               >Copy</button>
@@ -262,7 +262,7 @@ defmodule MarshallWeb.WorkspaceComponents do
               <pre><code id="machine-install-command-windows">{@connection.install_windows}</code></pre>
               <button
                 type="button"
-                class="console-button primary"
+                class="console-button compact copy-button"
                 data-copy-command="machine-install-command-windows"
                 aria-label="Copy Windows PowerShell install command"
               >Copy</button>
@@ -273,7 +273,7 @@ defmodule MarshallWeb.WorkspaceComponents do
             <pre><code id="machine-ssh-command">{@connection.ssh}</code></pre>
             <button
               type="button"
-              class="console-button compact"
+              class="console-button compact copy-button"
               data-copy-command="machine-ssh-command"
               aria-label="Copy SSH command"
             >Copy</button>

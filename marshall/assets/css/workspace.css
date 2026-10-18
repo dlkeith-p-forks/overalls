@@ -129,8 +129,16 @@ button.machine-editor-link {
 .machine-identity code {
   overflow-wrap: anywhere;
 }
-.machine-identity .console-button {
+/* Every Copy control shares one style: compact underlined text, one line tall,
+   with a fixed width so its column lines up across rows. */
+.copy-button {
+  flex: none;
+  min-width: 4ch;
   line-height: var(--line-height);
+}
+/* Beside a command block, sit on the command's first text line, not its padding. */
+.connection-command .copy-button {
+  margin-top: calc(var(--line-height) / 2);
 }
 .machine-actions {
   display: grid;
