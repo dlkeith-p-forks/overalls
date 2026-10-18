@@ -6998,23 +6998,23 @@ msgstr "マシンは一時停止中です。再開するか、このターミナ
 #: lib/marshall_web/components/workspace_components.ex:328
 #, elixir-autogen, elixir-format
 msgid "Pause"
-msgstr "Pause"
+msgstr "一時停止"
 
 #: lib/marshall_web/components/workspace_components.ex:82
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Paused"
-msgstr "Paused"
+msgstr "一時停止中"
 
 #: lib/marshall_web/components/workspace_components.ex:319
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
-msgstr "Resume machine"
+msgstr "マシンを再開"
 
 #: lib/marshall_web/components/workspace_components.ex:72
 #, elixir-autogen, elixir-format
 msgid "Resuming"
-msgstr "Resuming"
+msgstr "再開中"
 
 #: lib/marshall_web/live/terminal_live.ex:110
 #: lib/marshall_web/live/terminal_live.ex:286
@@ -7030,7 +7030,7 @@ msgstr "Git の設定を保存"
 #: lib/marshall_web/components/workspace_components.ex:70
 #, elixir-autogen, elixir-format
 msgid "Suspending"
-msgstr "Suspending"
+msgstr "一時停止処理中"
 
 #: lib/marshall_web/live/account_live.ex:771
 #, elixir-autogen, elixir-format
