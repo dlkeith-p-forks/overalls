@@ -20,7 +20,7 @@ try:
         timeout=800,
     )
     host.succeed(
-        "jq -e '.native_admission == false and (.checks | length == 22)"
+        "jq -e '.native_admission == false and (.checks | length == 25)"
         ' and (.boot_ids | unique | length == 2) and .boot_endings == ["clean","clean"]\''
         " /work/native-services/service-receipt.json"
     )

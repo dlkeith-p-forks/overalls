@@ -21,7 +21,7 @@ try:
     )
     boot_count = 3 if growth else 2
     host.succeed(
-        "jq -e '.native_admission == false and (.checks | length == 22)"
+        "jq -e '.native_admission == false and (.checks | length == 25)"
         f" and (.boot_ids | unique | length == {boot_count})'"
         " /work/native-services/service-receipt.json"
     )
