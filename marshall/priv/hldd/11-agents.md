@@ -72,8 +72,8 @@ complete native service fixture over two clean boots: current-boot identity,
 readiness, trust, flush, workspace, terminal, SSH, executor fencing, retained
 home and clean shutdown all passed. The runner requires status zero and the
 bounded `syncing file systems... done` serial marker before recording a clean
-illumos boot. Growth, policy, supervised daemon recovery, physical isolation and
-image qualification remain pending. The separate OmniOS abrupt-crash receipt
+illumos boot. Policy, supervised daemon recovery, physical isolation and image
+qualification remain pending. The separate OmniOS abrupt-crash receipt
 covers process SIGKILL and same-disk recovery; neither it, the capability table
 nor these
 service receipts establish fleet acceptance. See the
@@ -113,9 +113,10 @@ safe native SSH executable check, read-only receipt extraction/export and clean
 shutdown. Its read-only baseline is
 `/tmp/overalls-omnios-native-ssh-config-final-artifact/`; clone it before booting.
 The [native admission review](repo:docs/architecture/reviews/2026-10-17-native-image-admission.md)
-records exact kit/receipt hashes. Runtime, complete services and admission
-remain false; exact-image boot/service, lease withdrawal, growth, transport/reset,
-isolation and recovery replay remain pending.
+records exact kit/receipt hashes. The historical `wz4r` baseline remains outside
+runtime qualification and admission; current source-qualified service, growth and
+process-crash receipts are recorded separately. Exact-image lease withdrawal,
+transport/reset, isolation and image qualification remain pending.
 
 Application release source now includes `protocol/priv` alongside Protocol's
 library and Mix files so its compile-time exact native registry input enters

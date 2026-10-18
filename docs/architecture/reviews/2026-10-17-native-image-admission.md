@@ -15,8 +15,9 @@ There is no new Ash domain, persistence format, protocol wire identity or deploy
 host/service role. The reviewed authority changes from an unavailable native
 implementation to one approved immutable image. The unqualified `freebsd-v1`
 and `illumos-v1` capability rows remain false. Complete image-qualified identity
-is required, and editor and Inception remain false. OmniOS remains closed while
-its exact service matrix is incomplete. This activation does not claim physical
+is required, and editor and Inception remain false. OmniOS service, growth and
+process-crash receipts are recorded, but network policy, supervised daemon recovery,
+isolation and admission evidence remain incomplete. This activation does not claim physical
 isolation, power-loss durability, reproducible native full-disk assembly or
 Marshall-driven fleet acceptance.
 

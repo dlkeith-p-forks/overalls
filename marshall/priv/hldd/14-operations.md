@@ -127,8 +127,8 @@ source-qualified OmniOS service fixture passed two clean boots with the same
 current-boot, trust, flush, workspace, terminal, SSH and executor-fencing
 oracles. For illumos, a clean result additionally requires process status zero
 and the bounded serial marker `syncing file systems... done`; the patched VMM
-observes that marker before exiting. OmniOS growth and interrupted expansion
-remain unexecuted.
+observes that marker before exiting. The source-qualified OmniOS growth replay is recorded separately; interrupted
+expansion remains unexecuted.
 
 OmniOS assembly applies a stock cloud-init/SSH disabling profile to only the
 cloned root's offline SMF repository. The exact profile passed native validation

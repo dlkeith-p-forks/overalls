@@ -481,8 +481,8 @@ passed the full Firecracker service/growth composition in 334 seconds: three
 clean boots, two 2-GiB increases and root bytes 5,183,107,072 →7,268,753,408
 →9,354,403,840, preserving those authorities and data. The final reviewed image
 with blocking UFS suspension/resume passed the same three-boot growth boundary,
-with exact receipts in the native review. OmniOS and interrupted expansion
-require their own runs. This does not
+with exact receipts in the native review. The source-qualified OmniOS growth
+replay is recorded separately; interrupted expansion remains open. This does not
 change Lilly's physical pool/quota admission accounting or enable native images.
 
 The illumos direct block queue now reserves data plus header/status descriptors

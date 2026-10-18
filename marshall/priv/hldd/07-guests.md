@@ -1040,9 +1040,10 @@ receipt extraction/export and clean administration shutdown. The sealed
 `e7fc0c04bccb4b443dd4bea2edcdabfa2d1481fee6b683891f4338b399625a41`,
 at `/tmp/overalls-omnios-native-ssh-config-final-artifact/`; exact kit/receipt
 identities and logs are in the native review. Clone this read-only baseline
-before runtime checks. Runtime, complete services and admission remain false;
-exact-image boot/service, lease withdrawal, growth, transport/reset, isolation
-and recovery replay remain pending. Native `sshd -t/-T` separately passed with
+before runtime checks. The historical `wz4r` baseline remains outside runtime
+qualification and admission; current source-qualified service, growth and
+process-crash receipts are recorded separately. Exact-image lease withdrawal,
+transport/reset, isolation and image qualification remain pending. Native `sshd -t/-T` separately passed with
 synthetic volatile host-key prerequisites, preserving PAM and public-key-only
 authentication; parser acceptance proves no running SSH session or readiness.
 
@@ -1068,8 +1069,8 @@ arguments; second-boot verification rejects any remaining single-user token.
 This fixes loader selection only. The current source-qualified OmniOS image
 later passed two complete native service boots; the runner required status zero
 and the bounded `syncing file systems... done` serial marker before recording
-clean shutdown. Growth, policy, supervised daemon recovery and physical
-isolation remain pending. The separate OmniOS abrupt-crash receipt covers
+clean shutdown. Policy, supervised daemon recovery and physical isolation remain
+pending. The separate OmniOS abrupt-crash receipt covers
 process SIGKILL and same-disk recovery; physical stable-media and host recovery
 remain unverified.
 
