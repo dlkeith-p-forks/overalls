@@ -21,11 +21,13 @@ let
     "overalls-host-certificate"
   ];
   # @cc [owner:ghuntley,label:verification;recovery] native-supervisor-process-markers
-  # Each supervised daemon MUST publish its child PID as decimal digits and one
-  # newline under /var/run/overalls, remove the marker when reaping that child,
-  # and restart unexpected exits. Readiness MUST also check that the PID lives;
-  # marker presence alone is insufficient. Supervisor shutdown MUST terminate
-  # its watchers and their daemon children.
+  # Each supervised daemon MUST atomically publish its child PID as decimal
+  # digits and one newline under /var/run/overalls, remove the marker when
+  # reaping that child, and restart unexpected exits. A new supervisor MUST
+  # remove markers left by an abruptly terminated predecessor before launching
+  # children. Readiness MUST also check that the PID lives; marker presence
+  # alone is insufficient. Supervisor shutdown MUST terminate its watchers and
+  # their daemon children.
   supervised = [
     "overalls-native-kernel-probed"
     "overalls-native-agentd"
@@ -174,7 +176,9 @@ let
     [ -f "$run_dir/bootstrap.json" ] || exit 1
     stop_file="$run_dir/agents.stop"
     mkdir -p "$run_dir"
-    rm -f "$stop_file" "$run_dir/ssh-ready"
+    stale_markers="$run_dir/ssh-ready ${pkgs.lib.concatStringsSep " " (map (service: "$run_dir/${service}.pid") (supervised ++ [ "sshd" "sshd-native" "overalls-native-ssh-refresh" ]))}"
+    stale_temporary_markers="${pkgs.lib.concatStringsSep " " (map (service: "$run_dir/${service}.pid.tmp.*") (supervised ++ [ "sshd" "overalls-native-ssh-refresh" ]))}"
+    rm -f "$stop_file" $stale_markers $stale_temporary_markers
     supervisor_pids=""
     cleaned=0
 
@@ -194,7 +198,7 @@ let
           :
         fi
       done
-      rm -f "$stop_file" "$run_dir"/*.pid "$run_dir/ssh-ready"
+      rm -f "$stop_file" $stale_markers $stale_temporary_markers
     }
     trap cleanup EXIT
     trap 'exit 0' HUP INT TERM
@@ -238,28 +242,34 @@ let
       shift
       command_path="$1"
       child=""
+      marker="$run_dir/$service_name.pid"
+      marker_prefix="$marker.tmp"
       stop_child() {
         if [ -n "$child" ]; then
           if kill "$child" 2>/dev/null; then :; fi
           if wait "$child" 2>/dev/null; then :; fi
         fi
-        rm -f "$run_dir/$service_name.pid"
+        rm -f "$marker" "$marker_prefix".*
       }
       trap stop_child EXIT
       trap 'exit 0' HUP INT TERM
       while [ ! -e "$stop_file" ]; do
         if [ ! -x "$command_path" ]; then
-          rm -f "$run_dir/$service_name.pid"
+          rm -f "$marker" "$marker_prefix".*
           sleep 1
           continue
         fi
         "$@" &
         child=$!
-        printf '%s\n' "$child" > "$run_dir/$service_name.pid"
+        marker_tmp="$marker_prefix.$child"
+        # Write to a same-directory temporary and rename so readiness never
+        # observes a partially written PID marker.
+        printf '%s\n' "$child" > "$marker_tmp"
+        mv -f "$marker_tmp" "$marker"
         if wait "$child"; then
           :
         fi
-        rm -f "$run_dir/$service_name.pid"
+        rm -f "$marker" "$marker_prefix".*
         if [ ! -e "$stop_file" ]; then
           sleep 1
         fi

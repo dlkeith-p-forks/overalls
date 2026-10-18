@@ -49,7 +49,10 @@ digests and pinned Rust/compiler/linker/SDK inputs. The illumos SDK is a
 userland linker sysroot, not a kernel-module linker or runtime attestation.
 Readiness additionally requires live supervisor PID markers for every daemon,
 including terminald, sshd and the roster/certificate refresh worker, plus a fresh
-volatile SSH-ready marker; marker presence alone cannot grant readiness.
+volatile SSH-ready marker; marker presence alone cannot grant readiness. Each
+supervisor publishes markers through same-directory atomic rename and clears its
+known daemon markers, including `sshd-native`, after an interrupted predecessor;
+the FreeBSD service-manager pidfile is preserved.
 
 The sealed reviewed FreeBSD disk `5022d714` passed all five native service,
 growth, IPv4/router/TAP policy, daemon-recovery and process-SIGKILL recovery

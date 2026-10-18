@@ -117,6 +117,17 @@ assert lib.hasInfix "root:{format:\"raw-gpt\",bytes:$root_bytes,sha256:$root_sha
 # these source assertions do not establish target service-manager execution.
 assert lib.hasInfix "#!/bin/sh" packages.nativeGuestAgents.freebsdSupervisor.text;
 assert lib.hasInfix "printf '%s\\n'" packages.nativeGuestAgents.freebsdSupervisor.text;
+assert lib.hasInfix "stale_markers=" packages.nativeGuestAgents.freebsdSupervisor.text;
+assert lib.hasInfix "ssh-ready" packages.nativeGuestAgents.freebsdSupervisor.text;
+assert lib.hasInfix "sshd-native" packages.nativeGuestAgents.freebsdSupervisor.text;
+assert lib.hasInfix "stale_temporary_markers=" packages.nativeGuestAgents.freebsdSupervisor.text;
+assert lib.hasInfix "overalls-native-ssh-refresh.pid.tmp.*" packages.nativeGuestAgents.freebsdSupervisor.text;
+assert lib.hasInfix "mv -f \"$marker_tmp\" \"$marker\"" packages.nativeGuestAgents.freebsdSupervisor.text;
+assert lib.hasInfix "stale_markers=" packages.nativeGuestAgents.illumosSupervisor.text;
+assert lib.hasInfix "sshd-native" packages.nativeGuestAgents.illumosSupervisor.text;
+assert lib.hasInfix "stale_temporary_markers=" packages.nativeGuestAgents.illumosSupervisor.text;
+assert lib.hasInfix "overalls-native-ssh-refresh.pid.tmp.*" packages.nativeGuestAgents.illumosSupervisor.text;
+assert lib.hasInfix "mv -f \"$marker_tmp\" \"$marker\"" packages.nativeGuestAgents.illumosSupervisor.text;
 assert lib.hasInfix "/usr/local/libexec/overalls-native-kernel-probed" packages.nativeGuestAgents.freebsdSupervisor.text;
 assert lib.hasInfix "/opt/overalls/libexec/overalls-native-kernel-probed" packages.nativeGuestAgents.illumosSupervisor.text;
 assert lib.hasInfix "supervise sshd" packages.nativeGuestAgents.freebsdSupervisor.text;
