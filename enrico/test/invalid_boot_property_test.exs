@@ -59,7 +59,7 @@ defmodule Enrico.InvalidBootPropertyTest do
   # supervisor or reviewed Tasks/Manager/Bandit startup entry points are called.
   # Refusal MUST preserve recursive fixture contents and custody and exclude
   # credentials and fixture paths from diagnostics. Unset is an empty boot.
-  property "generated invalid Enrico configurations refuse fresh OTP startup", profile: :ci, print_blob: false do
+  property "generated invalid Enrico configurations refuse fresh OTP startup", profile: :ci, print_blob: false, test_cases: 1 do
     root = private_directory("k-eb-")
     on_exit(fn -> File.rm_rf!(root) end)
 
@@ -107,7 +107,7 @@ defmodule Enrico.InvalidBootPropertyTest do
   # @cc [owner:ghuntley,label:security;verification] enrico-bind-loader-refusal
   # Generated non-string JSON bind values MUST return fixed loader refusal
   # without an exception or creation of the configured state directory.
-  property "generated non-string bind values refuse without loader side effects" do
+  property "generated non-string bind values refuse without loader side effects", profile: :ci, test_cases: 1 do
     root = private_directory("k-el-")
     on_exit(fn -> File.rm_rf!(root) end)
 

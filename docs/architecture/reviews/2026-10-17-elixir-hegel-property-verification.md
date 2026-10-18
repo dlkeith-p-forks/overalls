@@ -170,3 +170,12 @@ passed 610/100 tests, Covenant15/15 and4/4 and zero-error forced Dialyzer;
 the frozen runtime ledger remained unchanged after all four consumer gates.
 The matrix review retains the exact log and ledger digests. Migration and
 native guarantees remain partial under ADR-0191.
+
+The subsequent integration of upstream `d18a6f11e` imports three Enrico test
+files with eleven property declarations explicitly selecting one generated CI
+case. Assertions and fixed restart/saturation/refresh loops remain intact;
+inner compatibility `max_runs` values do not preserve the former generated
+counts. This reduces randomized exploration and carries no new passing Enrico
+execution record. Enrico is outside the unchanged four-consumer runtime ledger
+and cannot inherit its passing results. The import changes verification scope
+only; ADR-0191 remains accepted/partial with unchanged production contracts.

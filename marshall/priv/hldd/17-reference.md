@@ -1058,6 +1058,14 @@ The [testing guide](repo:docs/development/testing-with-hegel.md) and
 [verification review](repo:docs/architecture/reviews/2026-10-17-elixir-hegel-property-verification.md)
 describe the current API, exact execution evidence and remaining gaps.
 
+The subsequent upstream `d18a6f11e` integration bounds eleven declarations in
+three Enrico property files to one generated CI case. Assertions and fixed
+restart/saturation/refresh loops remain, but inner compatibility `max_runs`
+values do not preserve prior random counts. This reduced exploration has no
+new passing Enrico execution record and lies outside the unchanged four-consumer
+runtime ledger. Production behavior, service placement and authority are
+unchanged; ADR-0191 remains partial.
+
 ## Keeping this handbook current
 
 `/hldd` lists sections. Each `/hldd/SECTION` page loads one chapter; previous and

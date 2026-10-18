@@ -1118,6 +1118,16 @@ browser, actual guest execution, and the earlier frozen runtime test ledger.
 
 ## Verification boundary
 
+After checkpoint `002391dd2`, integration of upstream `d18a6f11e` imports
+three Enrico property files and its prior receipt update. Eleven property
+declarations now explicitly select one CI case; assertions and fixed loops
+remain, while inner compatibility `max_runs` values do not preserve former
+random counts. This narrows exploration without adding a passing Enrico result.
+The four-consumer runtime ledger still verifies unchanged and excludes Enrico.
+The import preserves production behavior, deployment placement and accepted
+architecture; ADR-0191 remains partial. Reviewed merged-source governance
+receipts replace the conflicting historical receipt metadata.
+
 The native and Windows evaluation assertions inspect generated artifact/service
 configuration; they do not start a guest. The pinned Python 3.13 runner suite
 passed all 24 tests with
