@@ -18,6 +18,7 @@ messages =
     "Getting started",
     "Command reference",
     "Automation",
+    "Reflection integration",
     "Options:"
   ])
   |> Kernel.++(Enum.map(OverallsProtocol.SSHCommand.catalog(), & &1.summary))

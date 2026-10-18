@@ -1221,7 +1221,23 @@ changes apply to newly created machines.
 
 Public documentation applies validated browser language negotiation without a login or session cookie. Its standalone HTML declares the negotiated `lang` and explicit `dir`, including RTL for Arabic and Urdu. Controller regression coverage checks English, Arabic, Urdu and Japanese; this does not establish visual bidi correctness or translation completeness.
 
+Plain-text HTTP refusal messages use the negotiated locale for repository launch,
+installer/download and trust failures, editor/sign-in failures, inference/raw Git
+access and missing documentation. Status codes, final newlines and generic
+redaction remain unchanged. Successful installer scripts, archives, manifests,
+checksums, trust JSON, CSV fields and raw Git bytes retain their machine format.
+Public documentation and download routes negotiate without creating sessions.
+Plain-text responses carry no HTML direction attribute; HTML RTL and native
+browser acceptance remain separate verification boundaries.
+
 Porsche catalog verification compares all 25 terminal catalogs with the extracted message inventory and checks placeholders. The recorded full Porsche gate at `1f79f63e6` passed 108 tests and Dialyzer with zero errors. This establishes bounded BEAM/catalog behavior; native SSH onboarding, visual bidi behavior and native-language quality still require separate acceptance.
+
+Porsche's human result renderer translates receipt labels, known receipt statuses
+and reviewed refusal guidance, including pinning limits and protected owner
+access. Command syntax such as `unpin MACHINE`, request/operation identifiers,
+unknown keys, nested result data and all JSON output retain their literal machine
+representation. A translated refusal does not change retry eligibility or grant
+authority; inspect current machine/request state before repeating a mutation.
 
 ## Android display authority
 

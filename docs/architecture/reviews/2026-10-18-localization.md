@@ -94,3 +94,77 @@ At `1f79f63e6`, Porsche `mix precommit` passed: **108 tests passed**, followed b
 The attribute/flash audit found a raw SSH key Description label, two rename flashes and four administrative verification/refusal flashes. They now use existing Gettext source identifiers with translations in all 25 locales. The administrative authority checks and their halting behavior are unchanged. French `Description` is an explicitly reviewed identical cognate, not evidence of a translated English prose fallback. The corrected date-component suite recorded **5 passed**, seed **685749**, in the working tree preceding these UI message additions; this establishes component/date behavior only. Full Marshall execution remains separate and has reported failures outside that focused scope.
 
 The continued controller audit identifies remaining untranslated human HTTP errors in repository launch, installer/download, SSH trust, browser sign-in, editor, inference export and raw Git controllers. Their existing pipelines already apply LocalePlug. Successful scripts, archives, manifests, checksums, CSV schemas, raw Git bytes and redirect/session keys must remain language-neutral; only refusal prose is a localization target. This audit is outstanding implementation work, not a claim of complete source coverage.
+
+## Account regression and documentation checkpoint
+
+The account/admin focused run based on `953ce2633` recorded **41 passed**, seed
+**539767**, using the isolated PostgreSQL fixture. It exercises Japanese SSH key
+rename labels, success and overlong-label refusal, preserving the stored key
+fingerprint. The Git settings assertion follows the fourth sibling section in
+the combined account page. This evidence establishes LiveView behavior, without
+claiming browser layout or native-language review.
+
+Commit `cd61e1f3` adds 656 documentation translations: Arabic 250, Korean 250,
+Japanese 125 and Finnish 31. PO parsing and protected inline-code, link-target
+and placeholder checks passed for those additions. The catalog checker passed
+in its non-strict mode; this mode reports remaining empty and source-equal forms
+and does not establish translation completeness. Documentation completion,
+linguistic review and nonvacuous all-locale browser coverage remain outstanding.
+
+The earlier 45-second Bombadil trace was subsequently audited by aggregating
+only locale/application snapshots, allowlisted route paths and violation counts
+(token-bearing URLs were excluded). All **256** snapshots reported English and
+the application marker; **zero** violations were recorded. This run therefore
+does not establish any language transition, persisted override, reset, RTL or
+cross-locale coverage. The browser acceptance gap remains open and requires
+observed target-language states, rather than successful process exit alone.
+The route histogram contains 244 sign-in states and 11 documentation states;
+the remaining path was redacted. No authenticated settings state was observed.
+The replacement run must assert successful fixture authentication before
+exploring settings, then verify each selected locale after navigation/reload.
+
+The older full Marshall `mix precommit` run was interrupted after subsequent
+trunk merges made its snapshot obsolete and its distributed test pools exhausted
+the scratch PostgreSQL connection limit. It had already reported ordinary and
+distributed setup failures, including a known out-of-scope Inception failure;
+it produced no passing full-gate result. An initial controller-focused run also
+compiled before the last catalog addition and encountered database contention.
+Current-tree acceptance requires a fresh scoped run in its own database
+partition and a later full gate with bounded pools. Neither interrupted nor
+contended execution is counted as passing evidence.
+
+## Porsche human results and refusal guidance
+
+The next renderer audit found raw receipt labels/statuses and pinning guidance
+that was present only in machine hints. The human renderer now has explicit
+Gettext messages for 50 reviewed refusal reasons, five outer receipt labels and
+four receipt statuses. Unknown keys/reasons remain literal identifiers with the
+existing escaping boundary; nested result data and the JSON renderer are
+unchanged. All 59 new messages have translations in all 25 catalogs. Indonesian,
+German and Swedish `Status` are explicitly reviewed same-spelling local words,
+not copied English prose.
+
+The focused Porsche tests passed **9/9**, including Japanese/Arabic pin guidance,
+translated receipt labels/statuses, exact JSON bytes and literal nested/user
+fields. On the pending tree following `c64480791`, pinned Elixir 1.20.4/OTP 29.0.6
+`mix precommit` passed **110 tests**, the contract and Covenant gates, and
+Dialyzer with **zero errors**. These are BEAM/application results and do not
+establish native SSH rendering, linguistic review or packaged fleet acceptance.
+
+## Browser save/reset navigation repair
+
+The authenticated Bombadil investigation exposed the existing locale save/reset
+redirect to `/settings#profile`: a fragment-only navigation can disconnect
+LiveView without reloading the current document, leaving its old language and
+direction visible. Successful persistence now pushes `locale-updated`; the typed
+browser listener calls `location.reload()` to obtain a freshly rendered root,
+including from fragment URLs and repeated saves. Authority and stored locale
+policy remain unchanged. The JavaScript regression recorded **3 passed**; the
+corresponding LiveView assertions and guarded browser rerun remain pending.
+
+Earlier scratch browser attempts also lacked built CSS and raced the normal
+automatic one-use magic-link form submission. These fixture defects were fixed
+before restarting acceptance. They are not recorded as application layout or
+authentication failures, and their successful process exits do not establish
+locale coverage. Scratch Chromium's missing CJK fallback glyphs are a separate
+font-environment limitation, not verified native typography.

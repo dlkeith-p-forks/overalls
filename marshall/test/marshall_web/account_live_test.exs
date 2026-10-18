@@ -118,13 +118,17 @@ defmodule MarshallWeb.AccountLiveTest do
       refute has_element?(view, "#clear-language")
 
       view |> form("#language-form", language: %{locale: "ja"}) |> render_submit()
-      assert_redirect(view, "/settings#profile")
+      assert_push_event(view, "locale-updated", %{})
+      assert saved_locale(owner.id) == "ja"
+
+      view |> form("#language-form", language: %{locale: "ja"}) |> render_submit()
+      assert_push_event(view, "locale-updated", %{})
       assert saved_locale(owner.id) == "ja"
 
       {:ok, view, _} = live(signed_in(conn, owner), ~p"/settings")
       assert has_element?(view, "#language-form option[value=ja][selected]")
       view |> element("#clear-language") |> render_click()
-      assert_redirect(view, "/settings#profile")
+      assert_push_event(view, "locale-updated", %{})
       assert saved_locale(owner.id) == nil
     end
 

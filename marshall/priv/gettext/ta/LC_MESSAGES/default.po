@@ -7450,3 +7450,66 @@ msgstr "முதலில் தற்போதைய சரிபார்ப�
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "செல்லாத நிர்வாகக் கோரிக்கை."
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:34
+#: lib/marshall_web/controllers/editor_controller.ex:52
+#, elixir-autogen, elixir-format
+msgid "Sign-in unavailable"
+msgstr "உள்நுழைவு கிடைக்கவில்லை"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:76
+#, elixir-autogen, elixir-format
+msgid "Installer trust unavailable"
+msgstr "நிறுவியின் நம்பகத்தன்மை சரிபார்ப்பு கிடைக்கவில்லை"
+
+#: lib/marshall_web/controllers/overalls_controller.ex:89
+#, elixir-autogen, elixir-format
+msgid "SSH trust unavailable"
+msgstr "SSH நம்பகத்தன்மை சரிபார்ப்பு கிடைக்கவில்லை"
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#, elixir-autogen, elixir-format
+msgid "This repository link could not be launched. Open the link again."
+msgstr "இந்தக் களஞ்சிய இணைப்பிலிருந்து தொடங்க முடியவில்லை. இணைப்பை மீண்டும் திறக்கவும்."
+
+
+#: lib/marshall_web/controllers/repository_launch_controller.ex:51
+#, elixir-autogen, elixir-format
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "இந்தத் தொடக்கத்தை முடிக்க முடியவில்லை. உள்நுழைந்து இணைப்பை மீண்டும் திறக்கவும்."
+
+#: lib/marshall_web/live/terminal_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "காட்சித் தொடர் இணைப்பு அனுமதிச்சீட்டு வழங்கப்பட்டது."
+
+#: lib/marshall_web/live/terminal_live.ex:83
+#: lib/marshall_web/live/terminal_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Android காட்சி கிடைக்கவில்லை."
+
+#: lib/marshall_web/live/terminal_live.ex:618
+#, elixir-autogen, elixir-format
+msgid "Android display"
+msgstr "Android காட்சி"
+
+#: lib/marshall_web/live/terminal_live.ex:619
+#, elixir-autogen, elixir-format
+msgid "The software-rendered Android display uses the machine relay."
+msgstr "மென்பொருளால் வரையப்படும் Android காட்சி இயந்திரத்தின் தொடர் இணைப்பைப் பயன்படுத்துகிறது."
+
+#: lib/marshall_web/live/terminal_live.ex:622
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "காட்சியைத் திறக்கவும்"
+
+#: lib/marshall_web/live/terminal_live.ex:625
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "கட்டுப்பாட்டைக் கோரவும்"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "ஆவணங்கள் கிடைக்கவில்லை"

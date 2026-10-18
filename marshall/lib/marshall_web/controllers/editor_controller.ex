@@ -14,7 +14,7 @@ defmodule MarshallWeb.EditorController do
       %Marshall.Accounts.User{} = user ->
         case Marshall.Editor.launch(%{vm_id: id}, actor: bound_user(conn, user)) do
           {:ok, result} -> redirect(conn, external: result.origin <> "/")
-          _ -> send_resp(conn, 403, "VS Code is unavailable for this machine.\n")
+          _ -> send_resp(conn, 403, gettext("VS Code is unavailable for this machine.") <> "\n")
         end
 
       _ ->
@@ -23,7 +23,7 @@ defmodule MarshallWeb.EditorController do
           |> put_session(:return_to, "/machines/" <> id <> "/code")
           |> redirect(to: "/sign-in")
         else
-          send_resp(conn, 404, "Unavailable\n")
+          send_resp(conn, 404, gettext("Unavailable") <> "\n")
         end
     end
   end
@@ -49,7 +49,7 @@ defmodule MarshallWeb.EditorController do
               )
 
             _ ->
-              send_resp(conn, 403, "Sign-in unavailable\n")
+              send_resp(conn, 403, gettext("Sign-in unavailable") <> "\n")
           end
 
         _ ->
@@ -58,7 +58,7 @@ defmodule MarshallWeb.EditorController do
           |> redirect(to: "/sign-in")
       end
     else
-      send_resp(conn, 404, "Unavailable\n")
+      send_resp(conn, 404, gettext("Unavailable") <> "\n")
     end
   end
 
