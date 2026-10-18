@@ -232,7 +232,15 @@ The 1,025-attempt receipt-cap campaign ran but stopped silently in hosted run
 `56a1285564c94413812835f74246cf04-65-0`: it abandoned the campaign on the first
 failed fetch, although Enrico retains failed and succeeded receipts alike under
 the same cap. It now counts any settled attempt and logs a fixed
-`Enrico receipt-cap campaign unexercised` reason at every early stop.
+`Enrico receipt-cap campaign unexercised` reason at every early stop. Run
+`3f76c3f47ad4062ba0d1c37896e5f3e9-65-0` showed the campaign is not completable in
+a hosted run (about 5.7 s per attempt, roughly 95 minutes for 1,025), so the cap
+stays covered by Enrico's unit and property tests. The same run produced one
+counterexample to the ninth-refresh refusal: a held fetch hit Enrico's 10 s
+read timeout under a slowed network, freeing a slot that the ninth refresh then
+legitimately took, while a holder snapshot scanned before that change still
+matched. The ninth verdict now requires a snapshot whose scan started after the
+ninth submission, and the observer stamps each snapshot before it scans.
 The optional `recorder-host` profile selects the TCG NixOS recorder VM and the
 three recorder commands. The workload waits for the VM health check, then its
 own read-only probe requires a fresh all-active unit sample, producer and spool

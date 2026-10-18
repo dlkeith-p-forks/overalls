@@ -16,6 +16,8 @@ records=$(mktemp "$output/.records.XXXXXXXX")
 repositories=$(mktemp "$output/.repositories.XXXXXXXX")
 trap 'rm -f "$temporary" "$records" "$repositories"' EXIT
 complete=true
+# Stamp before scanning so a snapshot never claims to postdate any holder it saw.
+observed_at=$(date +%s%3N)
 
 for slot in {0..7}; do
   lock="$state/.enrico-git-slot-$slot.lock"
@@ -77,7 +79,6 @@ for lock in "$state"/.enrico-*.git.lock; do
   done
 done
 
-observed_at=$(date +%s%3N)
 [[ "$observed_at" =~ ^[1-9][0-9]*$ ]] || exit 1
 jq -s --argjson generation "$generation" --argjson observed_at "$observed_at" \
   --argjson complete "$complete" --slurpfile repositories "$repositories" \

@@ -418,6 +418,9 @@ def run_native_admission_after_restart() -> int:
             time.sleep(0.1)
         if before_holders is None:
             LOG.info("Enrico ninth-admission case unexercised: eight slots not witnessed first")
+        # Only a holder snapshot whose scan began after the ninth submission can
+        # show which slots that submission found held.
+        submitted_ms = time.time_ns() // 1_000_000
         runtime.enrico.refresh(ninth_id, ninth_attempt, runtime.fixture.owner, runtime.fixture.name)
         ninth = runtime.enrico.status(ninth_id, ninth_attempt)
         witness_deadline = time.monotonic() + 5
@@ -430,6 +433,7 @@ def run_native_admission_after_restart() -> int:
                 snapshot.state is State.OBSERVED
                 and snapshot.value is not None
                 and snapshot_matches_inodes(snapshot.value, runtime.mirror_root)
+                and snapshot.value.observed_at_unix_ms >= submitted_ms
                 and after.state is State.OBSERVED
                 and after.value is not None
                 and after_snapshot.state is State.OBSERVED
