@@ -56,10 +56,10 @@ msgstr "4. Git 작성자 정보"
 msgid "Account"
 msgstr "계정"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "커밋에 Overalls 기여 정보 추가"
+msgid "Commit attribution"
+msgstr "커밋 귀속"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format
@@ -168,11 +168,6 @@ msgstr "Git 이메일"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git 작성자 정보"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git 작성자 정보 변경 사항은 새 머신에 적용됩니다. 커밋 기여 정보 변경 사항은 이후 에이전트 요청에 적용됩니다."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -420,11 +415,6 @@ msgstr "관리 변경을 수행하거나 암호 키를 변경하기 전에 암�
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "패스키로 확인"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "활성화하면 새 에이전트 커밋에 Co-authored-by: Overalls <noreply@overalls.dev>가 포함됩니다."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

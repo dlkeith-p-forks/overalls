@@ -56,10 +56,10 @@ msgstr "4. Identitas Git"
 msgid "Account"
 msgstr "Akun"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "Tambahkan atribusi commit Overalls"
+msgid "Commit attribution"
+msgstr "Atribusi commit"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format
@@ -166,11 +166,6 @@ msgstr "Email Git"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Identitas Git"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Perubahan identitas Git berlaku untuk mesin baru. Perubahan atribusi commit berlaku untuk permintaan agen berikutnya."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -414,11 +409,6 @@ msgstr "Verifikasi kunci sandi sebelum membuat perubahan administratif atau meng
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "Verifikasi dengan kunci sandi"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "Jika diaktifkan, commit agen baru menyertakan Co-authored-by: Overalls <noreply@overalls.dev>."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

@@ -57,10 +57,10 @@ msgstr "4. Utambulisho wa Git"
 msgid "Account"
 msgstr "Akaunti"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "Ongeza utambuzi wa Overalls kwenye komiti"
+msgid "Commit attribution"
+msgstr "Utambuzi wa commit"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format
@@ -167,11 +167,6 @@ msgstr "Barua pepe ya Git"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Kitambulisho cha Git"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Mabadiliko ya utambulisho wa Git hutumika kwa mashine mpya. Mabadiliko ya utambuzi kwenye komiti hutumika kwa maombi yajayo ya wakala."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -416,11 +411,6 @@ msgstr "Thibitisha nenosiri kabla ya kufanya mabadiliko ya usimamizi au kubadili
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "Thibitisha kwa kutumia nenosiri"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "Ukiwashwa, komiti mpya za wakala hujumuisha Co-authored-by: Overalls <noreply@overalls.dev>."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

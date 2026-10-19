@@ -1513,9 +1513,11 @@ that understands the shapes.
 
 [ADR-0171](repo:docs/architecture/decisions/0171-windows-guest-agents.md) adds a
 third agent set. [`OverallsProtocol.GuestAgents`](repo:protocol/lib/overalls_protocol/guest_agents.ex)
-names the closed set (`linux`, `none`, `windows-v1`, `freebsd-v1` and
-`illumos-v1`) and a pure capability table. Linux has everything, `none` has
-nothing, Windows has its reviewed firmware subset, and unqualified FreeBSD and
+names the closed set (`linux`, `linux-android-v1`, `none`, `windows-v1`,
+`windows-editor-v1`, `freebsd-v1` and `illumos-v1`) and a pure capability table.
+Ordinary Linux has the core capabilities; the Android row adds SDK, ADB, emulator
+and display flags. The `none` row has nothing, Windows has its declared firmware
+subset, and unqualified FreeBSD and
 illumos rows remain all-false transport declarations. Qualified `capabilities/2`
 requires an exact approved FreeBSD or OmniOS identity for the reviewed native subset;
 editor and Inception stay false. Lilly's driver, executor and
@@ -1830,3 +1832,19 @@ Lilly's namespace ingress remains the network authority. The profile reserves
 8 GiB memory and 32 GiB writable disk. Signed ticket verification, browser
 controller/viewer leases and native Firecracker acceptance remain outside this
 guest-only evidence.
+
+The version-4 manifest may explicitly declare `guest_agents: linux-android-v1`;
+that declaration participates in immutable image identity. An omitted declaration
+retains the ordinary Linux identity and does not grant Android capabilities.
+Marshall projects the validated `android_sdk`, `adb`, `android_emulator` and
+`android_display` flags from the protocol capability table. The fleet image
+selection includes the Android SDK NixOS profile; package selection alone is
+not native runtime acceptance.
+
+Marshall's in-memory display registry shares a relay for each machine and
+generation, while the socket separately checks current login and ticket claims
+before attaching a controller or viewer. The noVNC client owns its canvas inside
+a dedicated display target, which is cleared on reconnect. These implementation
+facts do not establish native transport, browser controller/viewer enforcement,
+restart recovery or physical isolation; the existing Android acceptance gaps
+remain open.

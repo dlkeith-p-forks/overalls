@@ -61,10 +61,10 @@ msgstr "4. هوية Git"
 msgid "Account"
 msgstr "الحساب"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "إضافة إسناد Overalls إلى عمليات الإيداع"
+msgid "Commit attribution"
+msgstr "إسناد الالتزام"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format
@@ -177,11 +177,6 @@ msgstr "البريد الإلكتروني لـ Git"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "هوية Git"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "تُطبَّق تغييرات هوية Git على الأجهزة الجديدة. وتُطبَّق تغييرات إسناد الإيداعات على طلبات الوكيل المستقبلية."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -440,11 +435,6 @@ msgstr "تحقق بمفتاح مرور قبل التغييرات الإداري�
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "التحقق بمفتاح المرور"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "عند التمكين، تتضمن إيداعات الوكيل الجديدة Co-authored-by: Overalls <noreply@overalls.dev>."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

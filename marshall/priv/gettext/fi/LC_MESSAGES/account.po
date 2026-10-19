@@ -57,10 +57,10 @@ msgstr "4. Git-identiteetti"
 msgid "Account"
 msgstr "Tili"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "Lisää Overalls tekijätietoihin"
+msgid "Commit attribution"
+msgstr "Commitin tekijätiedot"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format
@@ -167,11 +167,6 @@ msgstr "Git-sähköpostiosoite"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git-identiteetti"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git-identiteetin muutokset koskevat uusia koneita. Tekijätietojen muutokset koskevat tulevia agenttipyyntöjä."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -416,11 +411,6 @@ msgstr "Vahvista pääsyavain ennen ylläpitomuutoksia tai pääsyavainten muutt
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "Vahvista pääsyavaimella"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "Kun asetus on käytössä, agentin uudet commitit sisältävät merkinnän Co-authored-by: Overalls <noreply@overalls.dev>."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

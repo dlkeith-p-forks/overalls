@@ -56,10 +56,10 @@ msgstr "4. Danh tính Git"
 msgid "Account"
 msgstr "Tài khoản"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "Thêm ghi nhận đóng góp của Overalls vào commit"
+msgid "Commit attribution"
+msgstr "Ghi nhận commit"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format
@@ -166,11 +166,6 @@ msgstr "Email Git"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Danh tính Git"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Thay đổi danh tính Git áp dụng cho máy mới. Thay đổi ghi nhận đóng góp trong commit áp dụng cho các yêu cầu tác nhân trong tương lai."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -414,11 +409,6 @@ msgstr "Xác minh khóa truy cập trước khi thực hiện thay đổi quản
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "Xác minh bằng khóa truy cập"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "Khi được bật, các commit mới của tác nhân sẽ bao gồm Co-authored-by: Overalls <noreply@overalls.dev>."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

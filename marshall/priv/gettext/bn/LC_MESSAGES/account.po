@@ -57,10 +57,10 @@ msgstr "৪. Git পরিচয়"
 msgid "Account"
 msgstr "অ্যাকাউন্ট"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "কমিটে Overalls-এর অবদানের স্বীকৃতি যোগ করুন"
+msgid "Commit attribution"
+msgstr "কমিটের স্বীকৃতি"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format
@@ -167,11 +167,6 @@ msgstr "Git ইমেইল"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git পরিচয়"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git পরিচয়ের পরিবর্তন নতুন মেশিনে প্রযোজ্য হবে। কমিটে অবদানের স্বীকৃতির পরিবর্তন ভবিষ্যতের এজেন্ট অনুরোধে প্রযোজ্য হবে।"
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -416,11 +411,6 @@ msgstr "প্রশাসনিক বা পাসকির পরিবর্
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "পাসকি দিয়ে যাচাই করুন"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "সক্রিয় থাকলে, নতুন এজেন্ট কমিটে Co-authored-by: Overalls <noreply@overalls.dev> অন্তর্ভুক্ত হয়।"
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

@@ -3,7 +3,8 @@ defmodule OverallsProtocol.ImageManifest do
   Immutable image identity.
 
   Version 4 describes kernel-booted Linux images (kernel, initrd, ext4 root,
-  boot arguments) with explicit workspace-source and editor capabilities.
+  boot arguments) with explicit workspace-source, editor and optional Android
+  agent capabilities.
   Version 5 describes firmware-booted images (a PVH firmware and a raw GPT
   root disk) that declare no guest agents or the Windows v1 agent set.
   Version 6 adds native FreeBSD and illumos firmware disk images. Version 7
@@ -26,7 +27,7 @@ defmodule OverallsProtocol.ImageManifest do
           boot_kind: :kernel,
           pci: false,
           root_format: :ext4,
-          guest_agents: :linux,
+          guest_agents: :linux | :linux_android_v1,
           boot_args: String.t(),
           minimum_memory_bytes: pos_integer(),
           minimum_disk_bytes: pos_integer(),
@@ -147,9 +148,13 @@ defmodule OverallsProtocol.ImageManifest do
           "workspace_source_version" => workspace_source_version
         } = manifest
       )
-      when map_size(manifest) in [9, 10] do
-    with true <- workspace_source_version in [nil, 2],
-         {:ok, editor} <- editor_descriptor(manifest),
+      when map_size(manifest) in [9, 10, 11] do
+    guest_agents = Map.get(manifest, "guest_agents", "linux")
+
+    with true <- guest_agents in ["linux", "linux-android-v1"],
+         {:ok, guest_agent_set} <- OverallsProtocol.GuestAgents.parse(guest_agents),
+         true <- workspace_source_version in [nil, 2],
+         {:ok, editor} <- editor_descriptor(Map.delete(manifest, "guest_agents")),
          true <- is_binary(boot) and byte_size(boot) in 1..2048,
          true <- String.valid?(boot) and not String.contains?(boot, ["\0", "\n", "\r"]),
          true <- minima?(memory, disk),
@@ -172,13 +177,18 @@ defmodule OverallsProtocol.ImageManifest do
         [rootfs["bytes"], rootfs["sha256"]]
       ]
 
+      identity =
+        if Map.has_key?(manifest, "guest_agents"),
+          do: List.insert_at(identity, 5, guest_agents),
+          else: identity
+
       image = %{
         id: identity_id(identity),
         architecture: :x86_64,
         boot_kind: :kernel,
         pci: false,
         root_format: :ext4,
-        guest_agents: :linux,
+        guest_agents: guest_agent_set,
         boot_args: boot,
         minimum_memory_bytes: memory,
         minimum_disk_bytes: disk,

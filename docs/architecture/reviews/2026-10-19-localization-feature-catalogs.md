@@ -80,7 +80,7 @@ skips. The final focused Porsche run also passed 19 tests, including command-tok
 preservation and exact invariant reviews, followed by extraction freshness and
 forced Dialyzer with zero errors or skips.
 
-The final isolated Marshall source passed the pinned-runtime, architecture,
+The premerge isolated Marshall source passed the pinned-runtime, architecture,
 event-catalog, warning-free compilation, formatting, terminal/workspace assets,
 Monospace, offline localization data, public-document structure and native
 extraction freshness gates. Code-contract coverage and all 19 scanner
@@ -89,7 +89,8 @@ regressions passed. A fresh tagged Covenant run passed all 36 tests in
 36 of 36 obligations. These bounded checks do not establish the normal full
 suite, native isolation or browser acceptance beyond the receipt below.
 
-Marshall's forced Dialyzer analysis completed in 3 minutes 19.5 seconds with
+On the premerge source, Marshall's forced Dialyzer analysis completed in
+3 minutes 19.5 seconds with
 nine errors, zero skipped warnings and zero unnecessary skips, exiting two.
 All remaining findings concern the incoming Android display-ticket, socket and
 terminal paths. The existing compile-time Earmark dependency is now explicit in
@@ -98,7 +99,7 @@ parser capture keeps the foreign result untrusted until the existing recursive
 node validator accepts it. This removes the localization diagnostics without
 suppression or a cast. All ten localized-Markdown tests passed in 0.1 seconds
 with seed `718373`; formatting and documentation extraction freshness passed.
-No green Marshall type gate or normal precommit result is claimed.
+That premerge run did not establish a passing type gate or normal precommit.
 
 Strict catalog coverage passed for all 28 locales after the final prose and exact
 invariant reviews: no empty non-English entries, fuzzy flags, invalid bindings
@@ -131,7 +132,7 @@ production behavior. The handbook Reference already describes per-case SQL and
 process ownership, cleanup ordering and measured aggregate budgets; this test
 fixture correction introduces no new handbook behavior or verification claim.
 
-Current Bombadil settings verification passed against an immutable compiled
+The recorded Bombadil settings verification passed against an immutable compiled
 runtime including the final bundled fonts: exit zero, zero violations, all 28
 locales saved and persisted after reload, and all 112 light/dark and 390/1440-pixel
 combinations. Reset restored Japanese browser inference after reload; repeated
@@ -177,3 +178,40 @@ exhaust that allowance and stop the application, including `Marshall.Repo`.
 The missing-successor assertion precedes the repository setup failures. This run
 does not establish a passing full suite; the unrelated destructive fixture and
 production supervisor policy were left unchanged.
+
+Integrating the later trunk account copy required removing one stale duplicate
+`msgstr` directive from each of its 28 account catalogs while preserving the
+new translation. The optional Android profile also exposed the existing closed
+editor-manifest shape check: the repair validates the finite profile choice
+first, then removes only that validated optional field before the existing
+editor check. New codec regressions cover explicit profile identity and
+serialization with and without an editor, and malformed or unknown inputs.
+Native template regeneration changed only source-reference lines in `account.pot`
+and `terminal.pot`; guarded comparison confirmed unchanged message identities,
+translations and all other templates.
+
+On the repaired merged source, all eight Marshall Android tests passed in
+0.06 seconds with seed `183005`, covering the registry, relay, ticket and host
+bridge fixtures. The display-hook unit passed (1/1), checking the dedicated
+noVNC target, canvas replacement and viewer/controller configuration through a
+simulated client. Workspace units (12/12) and TypeScript, Monospace and formatting
+checks also passed. These BEAM and simulated-client results do not establish a
+native guest-to-browser display journey.
+
+After the incoming account-copy update, the final pinned font check again
+verified all eight complete assets and OFL notices, totaling 13,815,920 bytes.
+CSS-aware coverage includes 2,275 visible codepoints across 137,984 PO string
+units and all 28 locale autonyms, using FontTools 4.63 and Brotli 1.2. The font
+assets are unchanged; this static result does not extend the immutable browser
+receipt to the merged application source.
+
+Final merged-source native extraction freshness, offline localization data,
+public-document structure and strict catalog checks all passed after that
+regeneration. Code-contract verification passed across 150 `CONTRACTS` files,
+3,579 notes, 477 parsed source files and 3,572 covered source files.
+
+At this merged-state review, the full protocol precommit run (seed `417854`),
+the full Lilly precommit run (seed `547342`) and final Marshall forced Dialyzer
+analysis were still in progress against their isolated snapshots. No passing
+completion, consumer Covenant result or final type result is inferred from
+intermediate output. The normal Marshall full-suite gaps above remain open.

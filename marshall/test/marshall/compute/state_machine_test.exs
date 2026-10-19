@@ -129,7 +129,8 @@ defmodule Marshall.Compute.StateMachineTest do
   end
 
   @spec suspension_transition(map(), atom()) :: map()
-  defp suspension_transition(model, :tool_call), do: %{model | state: :running}
+  defp suspension_transition(model, :tool_call),
+    do: %{model | state: :running, checkpoint: false, wake_requests: 0}
 
   defp suspension_transition(%{state: :running} = model, :idle_expire) do
     if model.pinned, do: model, else: %{model | state: :paused, checkpoint: true}
@@ -151,13 +152,13 @@ defmodule Marshall.Compute.StateMachineTest do
     do: %{model | state: :waiting_capacity}
 
   defp suspension_transition(%{state: :paused, wake_requests: 1} = model, :capacity_available),
-    do: %{model | state: :running, wake_requests: 0}
+    do: %{model | state: :running, checkpoint: false, wake_requests: 0}
 
   defp suspension_transition(
          %{state: :waiting_capacity, wake_requests: 1} = model,
          :capacity_available
        ),
-       do: %{model | state: :running, wake_requests: 0}
+       do: %{model | state: :running, checkpoint: false, wake_requests: 0}
 
   defp suspension_transition(%{state: state, checkpoint: true} = model, :relocate)
        when state in [:paused, :waiting_capacity],

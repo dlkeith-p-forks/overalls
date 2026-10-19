@@ -29,6 +29,28 @@ Tested scope: ADR-0201 presentation boundaries with historical bounded BEAM/Live
 
 **Preferred test work:** Add generated negotiation and isolation properties and packaged NixOS account-language/Porsche journeys; broaden browser routes and engines and obtain independent native-speaker review. Preserve the separate native and linguistic evidence boundaries.
 
+## Select the Android software guest profile and attach a generation-bound display controller or viewer
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery.
+
+Boundary: The explicit linux-android-v1 declaration participates in version-4 image identity and projects Android SDK, ADB, emulator and display flags. ADR-0206 requires the NixOS Firecracker guest, software rendering, persistent AVD state and private ADB/display transport. Marshall checks login/ticket claims separately from its shared machine-and-generation relay; controller and viewer roles remain distinct. Source and pure models are not evidence that these layers compose in a native browser journey.
+
+Required refusal: Unsupported manifest versions, profiles, image kinds and malformed artifacts refuse Android qualification. Malformed tickets and mismatched machine, generation or mode refuse. The relay model refuses a second controller, stale-generation frames and input from a viewer. Native expired-login, foreign-owner, stale-execution and transport refusal remain unverified as a composed journey.
+
+Tested scope: Source-backed image codec, capability and in-memory relay boundaries, an independent generated lifecycle model, and a NixOS software-emulator fixture. Each test presence and any later bounded execution must retain its own scope; no native Firecracker display, real browser or production acceptance follows from the models.
+
+- **unit, present**: [Android guest profile is explicit, identity-bound and preserved by serialization](repo:protocol/test/image_manifest_test.exs) — Version-4 acceptance, JSON round trip, distinct identity and four capability flags; a separate test refuses wrong versions, profiles, image kinds and malformed artifacts. Pure image-codec evidence..
+- **property, present**: [lifecycle commands preserve lease and boot fencing](repo:protocol/test/android_emulator_state_machine_property_test.exs) — Two hundred generated histories in an independent lifecycle/lease model check ownership, monotonic generations, boot identity and rejected-command purity. It does not execute an emulator, ADB or a production transport adapter..
+- **unit, recorded**: [shares one relay per machine generation](repo:marshall/test/marshall/android/display_registry_test.exs) — In-memory registry reuse for one machine/generation and separation of a later generation, using a unique test key and exact relay PID cleanup. Passed within the eight-test Android target, seed 183005; no restart or distributed registry claim.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md).
+- **unit, recorded**: [allows viewers, fences one controller and sequences frames](repo:marshall/test/marshall/android/display_relay_test.exs) — BEAM relay roles, one-controller refusal, frame sequencing, stale-generation refusal and viewer-input refusal passed within the eight-test Android target, seed 183005. No authenticated native stream.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md).
+- **unit, recorded**: [claim matching fences machine, generation and mode](repo:marshall/test/marshall/android/display_tickets_test.exs) — Malformed-token and exact claim-field refusal passed within the eight-test Android target, seed 183005. These pure checks do not establish positive signed-ticket issuance, current-login expiry or foreign-owner refusal through the browser socket.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md).
+- **unit, recorded**: [Android display gives noVNC an empty target and replaces its canvas on reconnect](repo:marshall/test/browser/android_display_test.mjs) — Simulated RFB client checks target replacement, disconnect on reconnect and viewer/controller configuration. The Node unit passed 1/1; it is not a real browser or native display stream.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md).
+- **machine, present**: [android-test-emulator.service](repo:nix/verification/tests/machines/android-emulator/default.nix) — Present NixOS fixture uses software rendering without /dev/kvm, waits for Android boot completion and tests marker retention across emulator restart. No passing execution or Marshall/Lilly Firecracker composition is recorded here..
+
+**Gaps:** No recorded native Firecracker guest-to-browser display journey establishes current login/owner authorization, authenticated transport, controller/viewer enforcement, stale-execution fencing, AVD storage continuity, restart recovery or physical isolation. The standalone emulator fixture is not the deployed Marshall/Lilly composition.
+
+**Preferred test work:** Run the NixOS software-emulator fixture, then add a packaged Marshall/Lilly Firecracker browser journey covering readiness, controller/viewer and foreign/stale refusal, AVD retention and bounded recovery. Keep pure property and physical/native evidence separate.
+
 ## Open the single account page, move between its profile, sign-in, SSH key and Git sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint
 
 Coverage: **partial**. Layers: identity, authorization, transport.

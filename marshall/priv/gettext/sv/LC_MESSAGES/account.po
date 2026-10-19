@@ -57,10 +57,10 @@ msgstr "4. Git-identitet"
 msgid "Account"
 msgstr "Konto"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
-msgstr "Lägg till Overalls i upphovsangivelsen för incheckningar"
+msgid "Commit attribution"
+msgstr "Commitets upphov"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format
@@ -167,11 +167,6 @@ msgstr "Git-e-postadress"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git-identitet"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Ändringar av Git-identiteten gäller nya maskiner. Ändringar av upphovsangivelsen gäller framtida agentförfrågningar."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -416,11 +411,6 @@ msgstr "Verifiera en passnyckel innan du gör administrativa ändringar eller ä
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "Verifiera med passnyckel"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "När detta är aktiverat innehåller nya agentincheckningar Co-authored-by: Overalls <noreply@overalls.dev>."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format
