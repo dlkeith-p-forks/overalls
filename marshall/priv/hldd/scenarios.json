@@ -14403,8 +14403,8 @@
       "denial": "A payload command without stdin, an oversized or empty payload, a busy thread, a stale proposal or question, invalid answers and a stranger's thread refuse with closed reasons before any turn is admitted; a reused request id with different text is idempotency_conflict.",
       "scope": "BEAM tests of protocol grammar (Hegel), Marshall dispatch against the real Threads, Agents and Planning domains, Porsche channel/runner custody, and one real SSH + Porsche + HTTPS control journey.",
       "status": "partial",
-      "gaps": "Committed-hint delivery and a NixOS fleet journey have not run; turn execution by a model is outside these tests.",
-      "preferred_gap": "Run the porsche-threads fleet machine test.",
+      "gaps": "Committed-hint delivery to a watch is not exercised end to end; the fleet has no model provider, so turns are only shown queuing.",
+      "preferred_gap": "Run the thread journey on a fleet with a model fixture and a committed hint.",
       "evidence": [
         {
           "kind": "property",
@@ -14453,7 +14453,9 @@
           "path": "nix/verification/tests/machines/fleet/scenarios/porsche-threads.py",
           "assertion": "Porsche thread, web and watch commands drive Marshall domains",
           "scope": "Native OpenSSH, packaged Porsche and Marshall on the fleet fixture.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`porsche-threads` passed"
         }
       ]
     },
@@ -14492,7 +14494,7 @@
       "scope": "BEAM test against the real Ingress domain.",
       "status": "partial",
       "gaps": "No native ingress reachability check follows the change in these tests.",
-      "preferred_gap": "Run the porsche-threads fleet machine test.",
+      "preferred_gap": "Probe the published port through ingress after web set.",
       "evidence": [
         {
           "kind": "unit",
@@ -14506,7 +14508,9 @@
           "path": "nix/verification/tests/machines/fleet/scenarios/porsche-threads.py",
           "assertion": "revision_conflict",
           "scope": "Native fleet revision refusal.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`porsche-threads` passed"
         }
       ]
     },

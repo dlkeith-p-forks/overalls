@@ -94,11 +94,14 @@ every Porsche locale catalog, in the feature domain that owns the command.
   bind registration to the current SSH key and enforce owner-scoped changes.
 - **Gaps:** Committed-hint delivery to a watch is not
   exercised end to end, because sandboxed tests never commit `pg_notify`;
-  Porsche routing is tested with direct hints. Terminal commands are tested
-  only for refusals without a live guest stream. The `porsche-threads` fleet
-  machine test ([`scenarios/porsche-threads.py`](../../../nix/verification/tests/machines/fleet/scenarios/porsche-threads.py))
-  is written but has not run. Run records are in the
-  [Mila client commands review](../reviews/2026-10-18-mila-commands.md).
+  Porsche routing is tested with direct hints. Turns are not executed by a
+  model in the fleet journey, so a prompt is only shown queuing behind the
+  objective's turn. The `porsche-threads` fleet machine test
+  ([`scenarios/porsche-threads.py`](../../../nix/verification/tests/machines/fleet/scenarios/porsche-threads.py))
+  and `porsche-terminal-fleet` (`terminal new` and attach against a live guest)
+  passed on 2026-10-19; run records are in the
+  [Mila client commands review](../reviews/2026-10-18-mila-commands.md) and the
+  [M6 review](../reviews/2026-10-19-mila-m6.md).
 
 - **Mila client:** [`ssh_command.dart`](../../../mila/packages/mila_core/lib/src/ssh_command.dart)
   encodes every client command against the shared `ssh_command_lines.json`;

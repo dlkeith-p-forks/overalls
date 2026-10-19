@@ -4264,11 +4264,11 @@ Tested scope: BEAM tests of protocol grammar (Hegel), Marshall dispatch against 
 - **unit, present**: [thread answer and plan commands keep the domain's question and proposal fences](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Planning question answer, stale proposal refusal and plan approval into a Work turn..
 - **unit, present**: [exec reads prompt payloads from stdin within their bound](repo:porsche/test/ssh_channel_test.exs) — OTP SSH exec channel buffers, bounds and validates the prompt payload..
 - **unit, present**: [porsche-threads: stdin prompts, thread reads and a revocable watch](repo:marshall/test/marshall_web/ssh_transport_test.exs) — Real OpenSSH-protocol client, Porsche listener and Marshall control over verified TLS in one BEAM..
-- **machine, present**: [Porsche thread, web and watch commands drive Marshall domains](repo:nix/verification/tests/machines/fleet/scenarios/porsche-threads.py) — Native OpenSSH, packaged Porsche and Marshall on the fleet fixture..
+- **machine, recorded**: [Porsche thread, web and watch commands drive Marshall domains](repo:nix/verification/tests/machines/fleet/scenarios/porsche-threads.py) — Native OpenSSH, packaged Porsche and Marshall on the fleet fixture.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 
-**Gaps:** Committed-hint delivery and a NixOS fleet journey have not run; turn execution by a model is outside these tests.
+**Gaps:** Committed-hint delivery to a watch is not exercised end to end; the fleet has no model provider, so turns are only shown queuing.
 
-**Preferred test work:** Run the porsche-threads fleet machine test.
+**Preferred test work:** Run the thread journey on a fleet with a model fixture and a committed hint.
 
 ## A reader's unread count in a thread only falls as they read and restarts for a reopened transcript
 
@@ -4297,11 +4297,11 @@ Required refusal: A stale revision refuses revision_conflict, port 4444 reserved
 Tested scope: BEAM test against the real Ingress domain.
 
 - **unit, present**: [web show and web set use the endpoint's optimistic policy revision](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Revision fence, reserved port and receipt provenance..
-- **machine, present**: [revision_conflict](repo:nix/verification/tests/machines/fleet/scenarios/porsche-threads.py) — Native fleet revision refusal..
+- **machine, recorded**: [revision_conflict](repo:nix/verification/tests/machines/fleet/scenarios/porsche-threads.py) — Native fleet revision refusal.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 
 **Gaps:** No native ingress reachability check follows the change in these tests.
 
-**Preferred test work:** Run the porsche-threads fleet machine test.
+**Preferred test work:** Probe the published port through ingress after web set.
 
 ## Mila keeps one SSH exec open to learn which machines, threads and its own session changed
 
