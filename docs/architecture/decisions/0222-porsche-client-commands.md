@@ -95,8 +95,9 @@ every Porsche locale catalog, in the feature domain that owns the command.
 - **Gaps:** Committed-hint delivery to a watch is not
   exercised end to end, because sandboxed tests never commit `pg_notify`;
   Porsche routing is tested with direct hints. Turns are not executed by a
-  model in the fleet journey, so a prompt is only shown queuing behind the
-  objective's turn. The `porsche-threads` fleet machine test
+  model in the fleet journey: a prompt is shown queuing behind the objective's
+  turn, and fixture operator actions stand in for the model's question and
+  plan tool calls before `thread answer` and `thread plan approve`. The `porsche-threads` fleet machine test
   ([`scenarios/porsche-threads.py`](../../../nix/verification/tests/machines/fleet/scenarios/porsche-threads.py))
   and `porsche-terminal-fleet` (`terminal new` and attach against a live guest)
   passed on 2026-10-19; run records are in the

@@ -4270,7 +4270,7 @@ Tested scope: BEAM tests of protocol grammar (Hegel), Marshall dispatch against 
 - **unit, present**: [porsche-threads: stdin prompts, thread reads and a revocable watch](repo:marshall/test/marshall_web/ssh_transport_test.exs) — Real OpenSSH-protocol client, Porsche listener and Marshall control over verified TLS in one BEAM..
 - **machine, recorded**: [Porsche thread, web and watch commands drive Marshall domains](repo:nix/verification/tests/machines/fleet/scenarios/porsche-threads.py) — Native OpenSSH, packaged Porsche and Marshall on the fleet fixture.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 
-**Gaps:** Committed-hint delivery to a watch is not exercised end to end; the fleet has no model provider, so turns are only shown queuing.
+**Gaps:** Committed-hint delivery to a watch is not exercised end to end; the fleet has no model provider, so turns only queue and fixture actions stand in for the model's question and plan tool calls.
 
 **Preferred test work:** Run the thread journey on a fleet with a model fixture and a committed hint.
 
