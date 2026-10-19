@@ -188,7 +188,10 @@ def start(config: Config) -> None:
         "-machine",
         "q35",
         "-accel",
-        "tcg,thread=single",
+        # QEMU's default 1 GiB TCG translation cache plus the 1536 MiB guest
+        # exceeded the container's 3 GiB limit under archive pressure, and the
+        # cgroup killed QEMU (exit 137); 256 MiB keeps the VM inside its budget.
+        "tcg,thread=single,tb-size=256",
         "-cpu",
         "max",
         "-smp",

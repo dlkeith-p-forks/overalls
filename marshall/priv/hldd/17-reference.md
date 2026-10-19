@@ -307,6 +307,15 @@ production quota values or the archive-quota branch. The hint-loss anchor
 cannot fire under hosted faults: Oban reports `:isolated` only after 120 s with
 no notifier ping, beyond any recorded timeline. Its evidence is emulated, not
 native.
+The 60-minute run `c5b8084588217cfe23b52086caf9e624-65-0` exposed two harness
+defects. QEMU's default 1 GiB TCG translation cache plus the 1536 MiB guest
+exceeded the VM container's 3 GiB limit under archive pressure; the cgroup
+killed QEMU (exit 137), and later traces commands failed their readiness
+prerequisite. The recorder VM now caps the cache at 256 MiB. The one-new-batch
+checks also compared an acknowledged batch with the bridge's archive copy,
+which republishes about every 0.2 s; they now wait up to 5 s for that copy, and
+a lost-reply batch no longer re-synchronizes the next check. No product
+behavior changed.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
