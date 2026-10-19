@@ -14,18 +14,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/controllers/editor_controller.ex:52
+#: lib/marshall_web/controllers/editor_controller.ex:59
 #, elixir-autogen, elixir-format
 msgid "Sign-in unavailable"
 msgstr "Inloggning är inte tillgänglig"
 
-#: lib/marshall_web/controllers/editor_controller.ex:26
-#: lib/marshall_web/controllers/editor_controller.ex:61
+#: lib/marshall_web/controllers/editor_controller.ex:33
+#: lib/marshall_web/controllers/editor_controller.ex:68
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Inte tillgänglig"
 
-#: lib/marshall_web/controllers/editor_controller.ex:17
+#: lib/marshall_web/controllers/editor_controller.ex:23
 #, elixir-autogen, elixir-format
 msgid "VS Code is unavailable for this machine."
 msgstr "VS Code är inte tillgängligt för maskinen."

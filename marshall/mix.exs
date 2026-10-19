@@ -10,7 +10,8 @@ defmodule Marshall.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       dialyzer: [
-        plt_add_apps: [:ex_unit, :hegel, :hegel_ex, :audi, :lilly],
+        # Earmark is runtime:false but its Markdown AST API is analyzed here.
+        plt_add_apps: [:ex_unit, :hegel, :hegel_ex, :audi, :lilly, :earmark],
         ignore_warnings: ".dialyzer_ignore.exs",
         list_unused_filters: true
       ],

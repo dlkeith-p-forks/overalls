@@ -1,0 +1,207 @@
+{
+  "apps": {
+    "susan": {
+      "active": 15,
+      "coverage": 1.0,
+      "covered": 15
+    },
+    "system": {
+      "active": 0,
+      "coverage": null,
+      "covered": 0
+    }
+  },
+  "components": {
+    "susan.audit_trail": {
+      "active": 5,
+      "app": "susan",
+      "coverage": 1.0,
+      "covered": 5,
+      "form": "light",
+      "obligations": {
+        "susan.audit_trail.I1": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the database refuses mutation and the resource has no mutating action"
+          ]
+        },
+        "susan.audit_trail.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the chain detects edits, removals and reordering"
+          ]
+        },
+        "susan.audit_trail.I3": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the prune deletes only expired rows and audits itself"
+          ]
+        },
+        "susan.audit_trail.I4": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test install identities follow the documented lifecycle"
+          ]
+        },
+        "susan.audit_trail.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test relay tables have no column that could hold request content"
+          ]
+        }
+      }
+    },
+    "susan.poke_pipeline": {
+      "active": 6,
+      "app": "susan",
+      "coverage": 1.0,
+      "covered": 6,
+      "form": "light",
+      "obligations": {
+        "susan.poke_pipeline.I1": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test sends follow every check and at most two sends happen"
+          ]
+        },
+        "susan.poke_pipeline.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test bad keys and bad signatures look like malformed requests"
+          ]
+        },
+        "susan.poke_pipeline.I3": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test a retried delivery id is not delivered twice"
+          ]
+        },
+        "susan.poke_pipeline.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test replays and stale pokes are refused before sending"
+          ]
+        },
+        "susan.poke_pipeline.I5": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test ten pokes per key then 429"
+          ]
+        },
+        "susan.poke_pipeline.I6": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test provider payloads carry only ciphertext, collapse id and fixed keys"
+          ]
+        }
+      }
+    },
+    "susan.push_keys": {
+      "active": 4,
+      "app": "susan",
+      "coverage": 1.0,
+      "covered": 4,
+      "form": "light",
+      "obligations": {
+        "susan.push_keys.I1": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test any flipped byte is refused"
+          ]
+        },
+        "susan.push_keys.I2": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test rotation keeps retained keys and every key expires after 90 days"
+          ]
+        },
+        "susan.push_keys.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test issuance is closed and binds the deployment"
+          ]
+        },
+        "susan.push_keys.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test a readable or symlinked secret is refused"
+          ]
+        }
+      }
+    },
+    "system": {
+      "active": 0,
+      "app": "system",
+      "coverage": null,
+      "covered": 0,
+      "form": "system",
+      "obligations": {}
+    }
+  },
+  "covenant": "0.2.0",
+  "totals": {
+    "active": 15,
+    "coverage": 1.0,
+    "covered": 15
+  }
+}

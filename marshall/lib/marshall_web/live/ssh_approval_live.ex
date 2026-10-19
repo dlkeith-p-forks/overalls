@@ -7,7 +7,12 @@ defmodule MarshallWeb.SSHApprovalLive do
   @impl true
   def mount(_, _, socket) do
     {:ok,
-     assign(socket, approval: nil, approval_token: nil, form: to_form(%{"label" => ""}, as: :key))}
+     assign(socket,
+       approval: nil,
+       approval_token: nil,
+       approved_link: nil,
+       form: to_form(%{"label" => ""}, as: :key)
+     )}
   end
 
   @impl true
@@ -22,21 +27,30 @@ defmodule MarshallWeb.SSHApprovalLive do
   # Only an explicit authenticated form event MAY consume the displayed approval.
   # The action MUST use the route-bound token and current actor, never client
   # ownership/token fields; replays and stale approval forms MUST fail closed.
+
+  # @cc [owner:ghuntley,label:product;security] ssh-approval-open-mila
+  # After a successful approval the page MUST stay put and offer an "Open Mila"
+  # link built by Marshall.AppRoutes for the approved session's UUID only; the
+  # link MUST NOT carry the approval token, fingerprint or any credential, and
+  # no link is shown before or without a successful approval.
   @impl true
   def handle_event("approve", %{"key" => params}, %{assigns: %{approval_token: token}} = socket)
       when is_map(params) and is_binary(token) do
     case SSH.approve_key(%{token: token, label: Map.get(params, "label", "")},
            actor: socket.assigns.current_user
          ) do
-      {:ok, _} ->
+      {:ok, %{session_id: session_id}} ->
         {:noreply,
          socket
-         |> assign(approval_token: nil)
+         |> assign(
+           approval: nil,
+           approval_token: nil,
+           approved_link: Marshall.AppRoutes.link({:ssh_approved, session_id})
+         )
          |> put_flash(
            :info,
            dgettext("ssh", "SSH key approved. You can return to your SSH client.")
-         )
-         |> push_navigate(to: ~p"/settings#ssh-keys")}
+         )}
 
       {:error, _} ->
         {:noreply, unavailable(socket)}
@@ -100,6 +114,12 @@ defmodule MarshallWeb.SSHApprovalLive do
             {dgettext("ssh", "Approve key")}
           </Layouts.action>
         </.form>
+        <section :if={@approved_link} id="ssh-approval-approved" class="panel">
+          <p>{dgettext("ssh", "SSH key approved. You can return to your SSH client.")}</p>
+          <p>
+            <a id="ssh-approval-open-mila" href={@approved_link}>{dgettext("ssh", "Open Mila")}</a>
+          </p>
+        </section>
         <p>
           <.link navigate={~p"/settings#ssh-keys"}>{dgettext("ssh", "Manage your SSH keys")}</.link>
         </p>

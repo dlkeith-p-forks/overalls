@@ -1,0 +1,21 @@
+# Susan
+
+Susan is the content-free push relay for Mila notifications (ADR-0224).
+Marshall pokes Susan with an end-to-end ciphertext and an opaque push key that
+only Susan can open; Susan forwards the ciphertext to APNs or FCM. Susan never
+sees message content, and Marshall never sees provider tokens.
+
+```mermaid
+flowchart LR
+  Mila["Mila app"] -->|"POST /api/push/v1/keys"| Susan["Susan"]
+  Marshall["Marshall"] -->|"POST /api/push/v1/poke (install-signed)"| Susan
+  Susan -->|"HTTP/2 + .p8 JWT"| APNs["APNs"]
+  Susan -->|"OAuth + FCM v1"| FCM["FCM"]
+  Susan --> DB[("Susan PostgreSQL: identities, receipts, audit")]
+```
+
+- Endpoints: `POST /api/push/v1/keys`, `POST /api/push/v1/poke`, `GET /healthz`.
+- Operator commands: `susan-operator 'Susan.Operator.audit_verify()'` and the
+  other functions in `Susan.Operator` (audit tail/export, deny-list, block).
+- Deployment: `services.susan` (NixOS) or `packages.x86_64-linux.image-susan`
+  (OCI). Secrets are documented in [secrets/README.md](../secrets/README.md#susan-push-relay).

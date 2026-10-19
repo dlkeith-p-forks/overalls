@@ -12,6 +12,7 @@ defmodule MarshallWeb.FleetEndpoint do
   plug MarshallWeb.ControlAPI
   plug MarshallWeb.ProvisionerAPI
   plug MarshallWeb.TerminalPeerAPI
+  plug MarshallWeb.TerminalGatewayAPI
   plug MarshallWeb.SSHAPI
   plug MarshallWeb.IngressAPI
   plug :not_found

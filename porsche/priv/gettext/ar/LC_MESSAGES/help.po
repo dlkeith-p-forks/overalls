@@ -27,9 +27,7 @@ msgstr "إلغاء عرض الملكية المعلّق الخاص بك."
 
 #: lib/porsche/ssh/command_messages.ex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"Change a machine's CPU and memory; disk may only grow. A running machine "
-"stops and restarts."
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
 msgstr ""
 "تغيير معالج الجهاز وذاكرته؛ لا يمكن إلا زيادة حجم القرص. يتوقف الجهاز قيد "
 "التشغيل ثم يعاد تشغيله."
@@ -41,9 +39,7 @@ msgstr "إغلاق هذه القناة التفاعلية."
 
 #: lib/porsche/ssh/command_messages.ex:10
 #, elixir-autogen, elixir-format
-msgid ""
-"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
-"GitLab, Codeberg or Bitbucket repository in the guest."
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
 msgstr ""
 "إنشاء جهاز. الحد الأقصى للقرص: 500 GiB. يستنسخ --source مستودعًا عامًا من "
 "GitHub أو GitLab أو Codeberg أو Bitbucket داخل الضيف."
@@ -55,8 +51,7 @@ msgstr "إنشاء فريق تملكه."
 
 #: lib/porsche/ssh/command_messages.ex:44
 #, elixir-autogen, elixir-format
-msgid ""
-"Create or replace a named integration at https://NAME.integration.internal."
+msgid "Create or replace a named integration at https://NAME.integration.internal."
 msgstr "إنشاء تكامل مسمّى أو استبداله في https://NAME.integration.internal."
 
 #: lib/porsche/ssh/command_messages.ex:60
@@ -141,6 +136,7 @@ msgstr "عرض ملكية الفريق على مسؤول."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:34
+#, elixir-autogen, elixir-format
 msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 msgstr "ثبّت جهازًا في أعلى قوائمك. تثبيتك له بصفتك مالكه يوقظه ويمنع تعليقه تلقائيًا ويمنع حذفه."
 
@@ -171,23 +167,28 @@ msgstr "إزالة تثبيتك لجهاز."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:69
+#, elixir-autogen, elixir-format
 msgid "Resume a suspended machine's preserved memory."
 msgstr "استأنف تشغيل جهاز معلّق باستخدام ذاكرته المحفوظة."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:65
+#, elixir-autogen, elixir-format
 msgid "Resume preserved memory, waiting for capacity or relocation."
 msgstr "استأنف التشغيل من الذاكرة المحفوظة مع انتظار توفر السعة أو النقل."
 
 #: lib/porsche/ssh/command_messages.ex:20
+#, elixir-autogen, elixir-format
 msgid "Retry a failed clone or relocation request."
 msgstr "إعادة محاولة طلب استنساخ أو نقل فاشل."
 
 #: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
 msgid "Revoke an account's shared access."
 msgstr "إلغاء وصول حساب مشترك."
 
 #: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
 msgid "Revoke one of your SSH keys."
 msgstr "إلغاء أحد مفاتيح SSH الخاصة بك."
 
@@ -197,19 +198,123 @@ msgid "Show command help."
 msgstr "اعرض مساعدة الأمر."
 
 #: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
 msgid "Show the authenticated account."
 msgstr "عرض الحساب الذي تم توثيقه."
 
 #: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
 msgid "Start a machine."
 msgstr "تشغيل جهاز."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:26
+#, elixir-autogen, elixir-format
 msgid "Stop a machine, retaining its disk and discarding suspended memory."
 msgstr "أوقف جهازًا مع الاحتفاظ بقرصه والتخلص من ذاكرته المحفوظة عند التعليق."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:64
+#, elixir-autogen, elixir-format
 msgid "Suspend a machine, preserving its memory and disk."
 msgstr "علّق جهازًا مع الاحتفاظ بذاكرته وقرصه."
+
+#: lib/porsche/ssh/command_messages.ex:74
+#, elixir-autogen, elixir-format
+msgid "Answer a thread's pending question with JSON read from standard input."
+msgstr "الإجابة عن السؤال المعلّق في سلسلة باستخدام JSON مقروء من الإدخال القياسي."
+
+#: lib/porsche/ssh/command_messages.ex:78
+#, elixir-autogen, elixir-format
+msgid "Approve a thread's latest plan and start implementing it."
+msgstr "اعتماد أحدث خطة لسلسلة والبدء في تنفيذها."
+
+#: lib/porsche/ssh/command_messages.ex:79
+#, elixir-autogen, elixir-format
+msgid "Ask for a revised plan, reading the feedback from standard input."
+msgstr "طلب خطة معدّلة، مع قراءة الملاحظات من الإدخال القياسي."
+
+#: lib/porsche/ssh/command_messages.ex:98
+#, elixir-autogen, elixir-format
+msgid "Attach this SSH terminal to a shared terminal session; needs ssh -t."
+msgstr "يربط طرفية SSH هذه بجلسة طرفية مشتركة؛ يتطلب ssh -t."
+
+#: lib/porsche/ssh/command_messages.ex:86
+#, elixir-autogen, elixir-format
+msgid "Change a machine's web port or visibility, optionally at an expected revision."
+msgstr "تغيير منفذ الويب أو مستوى الظهور لجهاز، اختياريًا عند مراجعة متوقعة."
+
+#: lib/porsche/ssh/command_messages.ex:84
+#, elixir-autogen, elixir-format
+msgid "Close one of your terminal sessions on a machine."
+msgstr "إغلاق إحدى جلسات الطرفية الخاصة بك على جهاز."
+
+#: lib/porsche/ssh/command_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Inspect a thread, its pending question and latest plan."
+msgstr "فحص سلسلة وسؤالها المعلّق وأحدث خطة لها."
+
+#: lib/porsche/ssh/command_messages.ex:82
+#, elixir-autogen, elixir-format
+msgid "List a machine's terminal sessions you can open."
+msgstr "سرد جلسات الطرفية لجهاز التي يمكنك فتحها."
+
+#: lib/porsche/ssh/command_messages.ex:72
+#, elixir-autogen, elixir-format
+msgid "List a thread's transcript events after a sequence number."
+msgstr "سرد أحداث نص سلسلة بعد رقم تسلسلي."
+
+#: lib/porsche/ssh/command_messages.ex:70
+#, elixir-autogen, elixir-format
+msgid "List agent threads you can read, with unread counts."
+msgstr "سرد سلاسل الوكيل التي يمكنك قراءتها، مع أعداد غير المقروء."
+
+#: lib/porsche/ssh/command_messages.ex:95
+#, elixir-autogen, elixir-format
+msgid "List your push notification devices."
+msgstr "اعرض أجهزة الإشعارات الفورية الخاصة بك."
+
+#: lib/porsche/ssh/command_messages.ex:81
+#, elixir-autogen, elixir-format
+msgid "Mark a thread read up to a transcript sequence number."
+msgstr "تعليم سلسلة كمقروءة حتى رقم تسلسلي في النص."
+
+#: lib/porsche/ssh/command_messages.ex:83
+#, elixir-autogen, elixir-format
+msgid "Open your personal terminal session on a machine."
+msgstr "فتح جلسة الطرفية الشخصية الخاصة بك على جهاز."
+
+#: lib/porsche/ssh/command_messages.ex:91
+#, elixir-autogen, elixir-format
+msgid "Register this device for push notifications. The push key is read from stdin."
+msgstr "سجّل هذا الجهاز لتلقي الإشعارات الفورية. يُقرأ مفتاح الإشعارات من stdin."
+
+#: lib/porsche/ssh/command_messages.ex:96
+#, elixir-autogen, elixir-format
+msgid "Revoke a push notification device."
+msgstr "ألغِ جهاز إشعارات فورية."
+
+#: lib/porsche/ssh/command_messages.ex:73
+#, elixir-autogen, elixir-format
+msgid "Send a prompt read from standard input to a thread."
+msgstr "إرسال طلب مقروء من الإدخال القياسي إلى سلسلة."
+
+#: lib/porsche/ssh/command_messages.ex:85
+#, elixir-autogen, elixir-format
+msgid "Show a machine's web endpoint, port and visibility."
+msgstr "عرض نقطة نهاية الويب والمنفذ ومستوى الظهور لجهاز."
+
+#: lib/porsche/ssh/command_messages.ex:90
+#, elixir-autogen, elixir-format
+msgid "Stream JSON change notices for machines, threads and this session."
+msgstr "بث إشعارات التغيير بتنسيق JSON للأجهزة والسلاسل وهذه الجلسة."
+
+#: lib/porsche/ssh/command_messages.ex:80
+#, elixir-autogen, elixir-format
+msgid "Switch a thread between plan and work collaboration."
+msgstr "تبديل سلسلة بين وضعي التعاون plan و work."
+
+#: lib/porsche/ssh/command_messages.ex:97
+#, elixir-autogen, elixir-format
+msgid "Turn push notifications on or off for one device."
+msgstr "شغّل الإشعارات الفورية أو أوقفها لجهاز واحد."

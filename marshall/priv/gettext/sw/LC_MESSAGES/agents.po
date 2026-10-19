@@ -14,1540 +14,1540 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/threads_live.ex:1480
+#: lib/marshall_web/live/threads_live.ex:1538
 #, elixir-autogen, elixir-format
 msgid "%{value1} Reasoning stays with this thread. Switch between Plan and Work as needed."
 msgstr "%{value1} Ufikiri unabaki katika mazungumzo haya. Badili kati ya Mpango na Kazi inapohitajika."
 
-#: lib/marshall_web/live/threads_live.ex:2100
+#: lib/marshall_web/live/threads_live.ex:2188
 #, elixir-autogen, elixir-format
 msgid "%{value1} reasoning"
 msgstr "ufikiri wa %{value1}"
 
-#: lib/marshall_web/live/threads_live.ex:2614
-#: lib/marshall_web/live/threads_live.ex:2616
+#: lib/marshall_web/live/threads_live.ex:2742
+#: lib/marshall_web/live/threads_live.ex:2745
 #, elixir-autogen, elixir-format
 msgid "A context source could not be fully loaded."
 msgstr "Chanzo cha muktadha hakikuweza kupakiwa kikamilifu."
 
-#: lib/marshall_web/live/threads_live.ex:1492
+#: lib/marshall_web/live/threads_live.ex:1552
 #, elixir-autogen, elixir-format
 msgid "A machine of its own."
 msgstr "Mashine ya aina yake."
 
-#: lib/marshall_web/live/threads_live.ex:1288
+#: lib/marshall_web/live/threads_live.ex:1327
 #, elixir-autogen, elixir-format
 msgid "A selected skill is no longer available. Reload Skills and select its current source."
 msgstr "Ujuzi uliochaguliwa haupatikani tena. Pakia upya Ujuzi na uchague chanzo chake cha sasa."
 
-#: lib/marshall_web/live/threads_live.ex:1371
+#: lib/marshall_web/live/threads_live.ex:1416
 #, elixir-autogen, elixir-format
 msgid "A space for your next idea"
 msgstr "Nafasi ya wazo lako linalofuata"
 
-#: lib/marshall_web/live/threads_live.ex:1883
+#: lib/marshall_web/live/threads_live.ex:1956
 #, elixir-autogen, elixir-format
 msgid "Access details are temporarily unavailable. Close sharing and try again shortly."
 msgstr "Maelezo ya ufikiaji hayapatikani kwa sasa. Funga kushiriki na ujaribu tena baada ya muda mfupi."
 
-#: lib/marshall_web/live/threads_live.ex:1853
+#: lib/marshall_web/live/threads_live.ex:1921
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Vitendo"
 
-#: lib/marshall_web/live/threads_live.ex:1569
+#: lib/marshall_web/live/threads_live.ex:1633
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "Inayotumika"
 
-#: lib/marshall_web/live/threads_live.ex:1359
-#: lib/marshall_web/live/threads_live.ex:1633
+#: lib/marshall_web/live/threads_live.ex:1404
+#: lib/marshall_web/live/threads_live.ex:1698
 #, elixir-autogen, elixir-format
 msgid "Activity"
 msgstr "Shughuli"
 
-#: lib/marshall_web/live/agent_threads_live.ex:111
-#: lib/marshall_web/live/threads_live.ex:2647
+#: lib/marshall_web/live/agent_threads_live.ex:116
+#: lib/marshall_web/live/threads_live.ex:2781
 #, elixir-autogen, elixir-format
 msgid "Agent"
 msgstr "Wakala"
 
-#: lib/marshall_web/live/agent_cli_approval_live.ex:34
+#: lib/marshall_web/live/agent_cli_approval_live.ex:36
 #, elixir-autogen, elixir-format
 msgid "Agent CLI approved for one hour. Return to your terminal."
 msgstr "CLI ya wakala imeidhinishwa kwa saa moja. Rudi kwenye terminali yako."
 
-#: lib/marshall_web/live/agent_threads_live.ex:112
-#: lib/marshall_web/live/agent_threads_live.ex:136
-#: lib/marshall_web/live/threads_live.ex:2655
+#: lib/marshall_web/live/agent_threads_live.ex:117
+#: lib/marshall_web/live/agent_threads_live.ex:141
+#: lib/marshall_web/live/threads_live.ex:2789
 #, elixir-autogen, elixir-format
 msgid "Agent started working"
 msgstr "Wakala alianza kufanya kazi"
 
-#: lib/marshall_web/live/agent_threads_live.ex:162
+#: lib/marshall_web/live/agent_threads_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Agents"
 msgstr "Mawakala"
 
-#: lib/marshall_web/live/threads_live.ex:1108
+#: lib/marshall_web/live/threads_live.ex:1121
 #, elixir-autogen, elixir-format
 msgid "All teams"
 msgstr "Timu zote"
 
-#: lib/marshall_web/live/threads_live.ex:1568
-#: lib/marshall_web/live/threads_live.ex:1660
+#: lib/marshall_web/live/threads_live.ex:1632
+#: lib/marshall_web/live/threads_live.ex:1725
 #, elixir-autogen, elixir-format
 msgid "All threads"
 msgstr "Mazungumzo yote"
 
-#: lib/marshall_web/live/threads_live.ex:1689
+#: lib/marshall_web/live/threads_live.ex:1754
 #, elixir-autogen, elixir-format
 msgid "All visible"
 msgstr "Yote yanaonekana"
 
-#: lib/marshall_web/live/threads_live.ex:2165
+#: lib/marshall_web/live/threads_live.ex:2261
 #, elixir-autogen, elixir-format
 msgid "An operator can answer these questions."
 msgstr "Opereta anaweza kujibu maswali haya."
 
-#: lib/marshall_web/live/threads_live.ex:1263
+#: lib/marshall_web/live/threads_live.ex:1286
 #, elixir-autogen, elixir-format
 msgid "Answer each question with a choice, your own answer, or both."
 msgstr "Jibu kila swali kwa chaguo, jibu lako mwenyewe, au zote mbili."
 
-#: lib/marshall_web/live/threads_live.ex:2119
+#: lib/marshall_web/live/threads_live.ex:2213
 #, elixir-autogen, elixir-format
 msgid "Answer these questions to continue the plan."
 msgstr "Jibu maswali haya ili kuendelea na mpango."
 
-#: lib/marshall_web/live/threads_live.ex:221
+#: lib/marshall_web/live/threads_live.ex:226
 #, elixir-autogen, elixir-format
 msgid "Answers submitted."
 msgstr "Majibu yamewasilishwa."
 
-#: lib/marshall_web/live/threads_live.ex:1676
+#: lib/marshall_web/live/threads_live.ex:1741
 #, elixir-autogen, elixir-format
 msgid "Any time"
 msgstr "Wakati wowote"
 
-#: lib/marshall_web/live/agent_cli_approval_live.ex:76
+#: lib/marshall_web/live/agent_cli_approval_live.ex:79
 #, elixir-autogen, elixir-format
 msgid "Approve CLI access"
 msgstr "Idhinisha ufikiaji wa CLI"
 
-#: lib/marshall_web/live/agent_cli_approval_live.ex:64
+#: lib/marshall_web/live/agent_cli_approval_live.ex:67
 #, elixir-autogen, elixir-format
 msgid "Approve agent CLI"
 msgstr "Idhinisha wakala wa CLI"
 
-#: lib/marshall_web/live/agent_cli_approval_live.ex:74
+#: lib/marshall_web/live/agent_cli_approval_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "Inaidhinisha..."
 
-#: lib/marshall_web/live/threads_live.ex:1856
+#: lib/marshall_web/live/threads_live.ex:1924
 #, elixir-autogen, elixir-format
 msgid "Archive"
 msgstr "Hifadhi"
 
-#: lib/marshall_web/live/threads_live.ex:1570
-#: lib/marshall_web/live/threads_live.ex:1666
-#: lib/marshall_web/live/threads_live.ex:2634
+#: lib/marshall_web/live/threads_live.ex:1634
+#: lib/marshall_web/live/threads_live.ex:1731
+#: lib/marshall_web/live/threads_live.ex:2763
 #, elixir-autogen, elixir-format
 msgid "Archived"
 msgstr "Imehifadhiwa"
 
-#: lib/marshall_web/live/threads_live.ex:2209
+#: lib/marshall_web/live/threads_live.ex:2306
 #, elixir-autogen, elixir-format
 msgid "Archived thread. The transcript is read-only. Reopen to continue on a new machine."
 msgstr "Mazungumzo yamehifadhiwa. Nakala yake ni ya kusoma tu. Fungua tena ili kuendelea kwenye mashine mpya."
 
-#: lib/marshall_web/live/threads_live.ex:2643
+#: lib/marshall_web/live/threads_live.ex:2777
 #, elixir-autogen, elixir-format
 msgid "Archived · conversation retained"
 msgstr "Imehifadhiwa · mazungumzo yamehifadhiwa"
 
-#: lib/marshall_web/live/threads_live.ex:2633
+#: lib/marshall_web/live/threads_live.ex:2762
 #, elixir-autogen, elixir-format
 msgid "Archiving"
 msgstr "Kuhifadhi kumbukumbu"
 
-#: lib/marshall_web/live/threads_live.ex:2053
+#: lib/marshall_web/live/threads_live.ex:2138
 #, elixir-autogen, elixir-format
 msgid "Archiving is in progress. Waiting for the machine to be deleted."
 msgstr "Uhifadhi wa kumbukumbu unaendelea. Inasubiri mashine kufutwa."
 
-#: lib/marshall_web/live/threads_live.ex:394
+#: lib/marshall_web/live/threads_live.ex:403
 #, elixir-autogen, elixir-format
 msgid "Archiving requested. The machine will be deleted before archival completes."
 msgstr "Uhifadhi wa kumbukumbu umeombwa. Mashine itafutwa kabla kumbukumbu kukamilika."
 
-#: lib/marshall_web/live/threads_live.ex:2642
+#: lib/marshall_web/live/threads_live.ex:2776
 #, elixir-autogen, elixir-format
 msgid "Archiving · releasing the machine"
 msgstr "Kuhifadhi kumbukumbu · kutoa mashine"
 
-#: lib/marshall_web/live/threads_live.ex:1763
-#: lib/marshall_web/live/threads_live.ex:1769
-#: lib/marshall_web/live/threads_live.ex:1775
+#: lib/marshall_web/live/threads_live.ex:1828
+#: lib/marshall_web/live/threads_live.ex:1837
+#: lib/marshall_web/live/threads_live.ex:1843
 #, elixir-autogen, elixir-format
 msgid "Back to threads"
 msgstr "Rudi kwenye mazungumzo"
 
-#: lib/marshall_web/live/threads_live.ex:2456
-#: lib/marshall_web/live/threads_live.ex:2502
+#: lib/marshall_web/live/threads_live.ex:2577
+#: lib/marshall_web/live/threads_live.ex:2626
 #, elixir-autogen, elixir-format
 msgid "Branch, tag or commit"
 msgstr "Tawi, tagi au komiti"
 
-#: lib/marshall_web/live/threads_live.ex:1392
+#: lib/marshall_web/live/threads_live.ex:1437
 #, elixir-autogen, elixir-format
 msgid "Build something, fix a bug, explore an idea…"
 msgstr "Unda kitu, rekebisha hitilafu, chunguza wazo..."
 
-#: lib/marshall_web/live/threads_live.ex:1460
+#: lib/marshall_web/live/threads_live.ex:1515
 #, elixir-autogen, elixir-format
 msgid "CPU"
 msgstr "CPU"
 
-#: lib/marshall_web/live/threads_live.ex:1917
+#: lib/marshall_web/live/threads_live.ex:1991
 #, elixir-autogen, elixir-format
 msgid "Change"
 msgstr "Badilisha"
 
-#: lib/marshall_web/live/agent_threads_live.ex:193
+#: lib/marshall_web/live/agent_threads_live.ex:201
 #, elixir-autogen, elixir-format
 msgid "Child thread"
 msgstr "Mazungumzo tanzu"
 
-#: lib/marshall_web/live/agent_threads_live.ex:116
-#: lib/marshall_web/live/agent_threads_live.ex:131
+#: lib/marshall_web/live/agent_threads_live.ex:121
+#: lib/marshall_web/live/agent_threads_live.ex:136
 #, elixir-autogen, elixir-format
 msgid "Child thread created"
 msgstr "Mazungumzo tanzu yameundwa"
 
-#: lib/marshall_web/live/threads_live.ex:1292
+#: lib/marshall_web/live/threads_live.ex:1332
 #, elixir-autogen, elixir-format
 msgid "Choose a valid image and machine size."
 msgstr "Chagua picha sahihi na saizi ya mashine."
 
-#: lib/marshall_web/live/threads_live.ex:2272
-#: lib/marshall_web/live/threads_live.ex:2316
+#: lib/marshall_web/live/threads_live.ex:2373
+#: lib/marshall_web/live/threads_live.ex:2417
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr "Funga"
 
-#: lib/marshall_web/live/threads_live.ex:2085
+#: lib/marshall_web/live/threads_live.ex:2173
 #, elixir-autogen, elixir-format
 msgid "Collaboration mode"
 msgstr "Hali ya ushirikiano"
 
-#: lib/marshall_web/live/threads_live.ex:639
+#: lib/marshall_web/live/threads_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "Collaboration mode updated."
 msgstr "Hali ya kushirikiana imesasishwa."
 
-#: lib/marshall_web/live/threads_live.ex:2533
+#: lib/marshall_web/live/threads_live.ex:2657
 #, elixir-autogen, elixir-format
 msgid "Command suggestions"
 msgstr "Mapendekezo ya amri"
 
-#: lib/marshall_web/live/threads_live.ex:1424
-#: lib/marshall_web/live/threads_live.ex:1798
-#: lib/marshall_web/live/threads_live.ex:2101
-#: lib/marshall_web/live/threads_live.ex:2268
-#: lib/marshall_web/live/threads_live.ex:2289
+#: lib/marshall_web/live/threads_live.ex:1472
+#: lib/marshall_web/live/threads_live.ex:1866
+#: lib/marshall_web/live/threads_live.ex:2191
+#: lib/marshall_web/live/threads_live.ex:2369
+#: lib/marshall_web/live/threads_live.ex:2390
 #, elixir-autogen, elixir-format
 msgid "Commands"
 msgstr "Amri"
 
-#: lib/marshall_web/live/threads_live.ex:2442
+#: lib/marshall_web/live/threads_live.ex:2561
 #, elixir-autogen, elixir-format
 msgid "Commit: %{value1}"
 msgstr "Komiti: %{value1}"
 
-#: lib/marshall_web/live/threads_live.ex:2394
+#: lib/marshall_web/live/threads_live.ex:2505
 #, elixir-autogen, elixir-format
 msgid "Compact context"
 msgstr "Fupisha muktadha"
 
-#: lib/marshall_web/live/threads_live.ex:1278
+#: lib/marshall_web/live/threads_live.ex:1310
 #, elixir-autogen, elixir-format
 msgid "Compaction could not reduce this context. Reduce required instructions or start a focused thread."
 msgstr "Ufupishaji haukuweza kupunguza muktadha huu. Punguza maagizo yanayohitajika au anza mazungumzo yenye lengo maalumu."
 
-#: lib/marshall_web/live/threads_live.ex:2600
+#: lib/marshall_web/live/threads_live.ex:2724
 #, elixir-autogen, elixir-format
 msgid "Composer help"
 msgstr "Msaada wa mtunzi"
 
-#: lib/marshall_web/live/threads_live.ex:2360
+#: lib/marshall_web/live/threads_live.ex:2471
 #, elixir-autogen, elixir-format
 msgid "Context bytes"
 msgstr "Baiti za muktadha"
 
-#: lib/marshall_web/live/agent_threads_live.ex:124
+#: lib/marshall_web/live/agent_threads_live.ex:129
 #, elixir-autogen, elixir-format
 msgid "Context captured"
 msgstr "Muktadha umenaswa"
 
-#: lib/marshall_web/live/agent_threads_live.ex:125
+#: lib/marshall_web/live/agent_threads_live.ex:130
 #, elixir-autogen, elixir-format
 msgid "Context compacted"
 msgstr "Muktadha umefupishwa"
 
-#: lib/marshall_web/live/threads_live.ex:649
+#: lib/marshall_web/live/threads_live.ex:661
 #, elixir-autogen, elixir-format
 msgid "Context compaction queued."
 msgstr "Ufupishaji wa muktadha umewekwa kwenye foleni."
 
-#: lib/marshall_web/live/threads_live.ex:2345
+#: lib/marshall_web/live/threads_live.ex:2449
 #, elixir-autogen, elixir-format
 msgid "Context details are unavailable. The thread may still be preparing its workspace."
 msgstr "Maelezo ya muktadha hayapatikani. Huenda mazungumzo bado yanaandaa eneo lake la kazi."
 
-#: lib/marshall_web/live/threads_live.ex:202
+#: lib/marshall_web/live/threads_live.ex:206
 #, elixir-autogen, elixir-format
 msgid "Context reload queued."
 msgstr "Upakiaji upya wa muktadha umewekwa kwenye foleni."
 
-#: lib/marshall_web/live/threads_live.ex:2071
+#: lib/marshall_web/live/threads_live.ex:2159
 #, elixir-autogen, elixir-format
 msgid "Continue the work…"
 msgstr "Endelea na kazi..."
 
-#: lib/marshall_web/live/agent_threads_live.ex:65
+#: lib/marshall_web/live/agent_threads_live.ex:67
 #, elixir-autogen, elixir-format
 msgid "Could not create a child thread."
 msgstr "Haikuweza kuunda mazungumzo tanzu."
 
-#: lib/marshall_web/live/agent_threads_live.ex:197
+#: lib/marshall_web/live/agent_threads_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "Create child"
 msgstr "Unda mazungumzo tanzu"
 
-#: lib/marshall_web/live/threads_live.ex:1433
+#: lib/marshall_web/live/threads_live.ex:1482
 #, elixir-autogen, elixir-format
 msgid "Create thread"
 msgstr "Unda mazungumzo"
 
-#: lib/marshall_web/live/threads_live.ex:2685
+#: lib/marshall_web/live/threads_live.ex:2819
 #, elixir-autogen, elixir-format
 msgid "Delegated a task"
 msgstr "Amekabidhi jukumu"
 
-#: lib/marshall_web/live/threads_live.ex:1859
+#: lib/marshall_web/live/threads_live.ex:1928
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Futa"
 
-#: lib/marshall_web/live/threads_live.ex:1665
+#: lib/marshall_web/live/threads_live.ex:1730
 #, elixir-autogen, elixir-format
 msgid "Deleting"
 msgstr "Inafuta"
 
-#: lib/marshall_web/live/threads_live.ex:1374
+#: lib/marshall_web/live/threads_live.ex:1419
 #, elixir-autogen, elixir-format
 msgid "Describe a task. Your agent gets a machine and gets to work."
 msgstr "Eleza kazi. Wakala wako anapata mashine na kuanza kazi."
 
-#: lib/marshall_web/live/threads_live.ex:2472
+#: lib/marshall_web/live/threads_live.ex:2593
 #, elixir-autogen, elixir-format
 msgid "Disable"
 msgstr "Zima"
 
-#: lib/marshall_web/live/threads_live.ex:2419
+#: lib/marshall_web/live/threads_live.ex:2534
 #, elixir-autogen, elixir-format
 msgid "Disabled"
 msgstr "Imezimwa"
 
-#: lib/marshall_web/live/threads_live.ex:1470
+#: lib/marshall_web/live/threads_live.ex:1528
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB)"
 msgstr "Diski (GiB)"
 
-#: lib/marshall_web/live/threads_live.ex:2473
+#: lib/marshall_web/live/threads_live.ex:2594
 #, elixir-autogen, elixir-format
 msgid "Enable"
 msgstr "Wezesha"
 
-#: lib/marshall_web/live/threads_live.ex:1664
-#: lib/marshall_web/live/threads_live.ex:2632
+#: lib/marshall_web/live/threads_live.ex:1729
+#: lib/marshall_web/live/threads_live.ex:2761
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Imeshindwa"
 
-#: lib/marshall_web/live/threads_live.ex:2279
+#: lib/marshall_web/live/threads_live.ex:2380
 #, elixir-autogen, elixir-format
 msgid "Find a command"
 msgstr "Tafuta amri"
 
-#: lib/marshall_web/live/threads_live.ex:1557
-#: lib/marshall_web/live/threads_live.ex:1708
+#: lib/marshall_web/live/threads_live.ex:1621
+#: lib/marshall_web/live/threads_live.ex:1773
 #, elixir-autogen, elixir-format
 msgid "Find a task…"
 msgstr "Tafuta kazi..."
 
-#: lib/marshall_web/live/threads_live.ex:1611
-#: lib/marshall_web/live/threads_live.ex:1929
+#: lib/marshall_web/live/threads_live.ex:1676
+#: lib/marshall_web/live/threads_live.ex:2003
 #, elixir-autogen, elixir-format
 msgid "First page"
 msgstr "Ukurasa wa kwanza"
 
-#: lib/marshall_web/live/threads_live.ex:1170
+#: lib/marshall_web/live/threads_live.ex:1185
 #, elixir-autogen, elixir-format
 msgid "Generation %{value1} (%{value2})"
 msgstr "Kizazi %{value1} ( %{value2} )"
 
-#: lib/marshall_web/live/threads_live.ex:1531
+#: lib/marshall_web/live/threads_live.ex:1593
 #, elixir-autogen, elixir-format
 msgid "Give your agent a task. Follow the work here."
 msgstr "Mpe wakala wako kazi. Fuatilia kazi hapa."
 
-#: lib/marshall_web/live/threads_live.ex:1530
+#: lib/marshall_web/live/threads_live.ex:1591
 #, elixir-autogen, elixir-format
 msgid "Good work starts with a thread."
 msgstr "Kazi nzuri huanza na mazungumzo."
 
-#: lib/marshall_web/live/threads_live.ex:1419
+#: lib/marshall_web/live/threads_live.ex:1467
 #, elixir-autogen, elixir-format
 msgid "High"
 msgstr "Juu"
 
-#: lib/marshall_web/live/threads_live.ex:2624
+#: lib/marshall_web/live/threads_live.ex:2753
 #, elixir-autogen, elixir-format
 msgid "High gives difficult work more reasoning time."
 msgstr "Juu inatoa kazi ngumu wakati wa kufikiria zaidi."
 
-#: lib/marshall_web/live/threads_live.ex:1451
+#: lib/marshall_web/live/threads_live.ex:1503
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "Picha"
 
-#: lib/marshall_web/live/threads_live.ex:2192
+#: lib/marshall_web/live/threads_live.ex:2289
 #, elixir-autogen, elixir-format
 msgid "Implement plan"
 msgstr "Tekeleza mpango"
 
-#: lib/marshall_web/live/threads_live.ex:1256
+#: lib/marshall_web/live/threads_live.ex:1277
 #, elixir-autogen, elixir-format
 msgid "Implementation has already started for this plan."
 msgstr "Utekelezaji tayari umeanza kwa mpango huu."
 
-#: lib/marshall_web/live/threads_live.ex:231
+#: lib/marshall_web/live/threads_live.ex:236
 #, elixir-autogen, elixir-format
 msgid "Implementation queued."
 msgstr "Utekelezaji umewekwa kwenye foleni."
 
-#: lib/marshall_web/live/threads_live.ex:2178
+#: lib/marshall_web/live/threads_live.ex:2275
 #, elixir-autogen, elixir-format
 msgid "Implementation started"
 msgstr "Utekelezaji umeanza"
 
-#: lib/marshall_web/live/threads_live.ex:2355
+#: lib/marshall_web/live/threads_live.ex:2466
 #, elixir-autogen, elixir-format
 msgid "Input tokens"
 msgstr "Tokeni za ingizo"
 
-#: lib/marshall_web/live/threads_live.ex:2489
+#: lib/marshall_web/live/threads_live.ex:2610
 #, elixir-autogen, elixir-format
 msgid "Install a skill"
 msgstr "Sakinisha ujuzi"
 
-#: lib/marshall_web/live/threads_live.ex:2513
+#: lib/marshall_web/live/threads_live.ex:2637
 #, elixir-autogen, elixir-format
 msgid "Install skill"
 msgstr "Sakinisha ujuzi"
 
-#: lib/marshall_web/live/threads_live.ex:2512
+#: lib/marshall_web/live/threads_live.ex:2636
 #, elixir-autogen, elixir-format
 msgid "Installing…"
 msgstr "Inasakinisha..."
 
-#: lib/marshall_web/live/threads_live.ex:2365
+#: lib/marshall_web/live/threads_live.ex:2476
 #, elixir-autogen, elixir-format
 msgid "Loaded sources"
 msgstr "Vyanzo vilivyopakiwa"
 
-#: lib/marshall_web/live/threads_live.ex:1417
+#: lib/marshall_web/live/threads_live.ex:1465
 #, elixir-autogen, elixir-format
 msgid "Low"
 msgstr "Chini"
 
-#: lib/marshall_web/live/threads_live.ex:2623
+#: lib/marshall_web/live/threads_live.ex:2752
 #, elixir-autogen, elixir-format
 msgid "Low is for small, well-defined tasks."
 msgstr "Chini ni kwa kazi ndogo, zilizofafanuliwa vizuri."
 
-#: lib/marshall_web/live/threads_live.ex:1991
+#: lib/marshall_web/live/threads_live.ex:2068
 #, elixir-autogen, elixir-format
 msgid "Machine generations"
 msgstr "Vizazi vya mashine"
 
-#: lib/marshall_web/live/agent_threads_live.ex:89
+#: lib/marshall_web/live/agent_threads_live.ex:93
 #, elixir-autogen, elixir-format
 msgid "Machine or agent access is no longer available."
 msgstr "Ufikiaji wa mashine au wakala haupatikani tena."
 
-#: lib/marshall_web/live/threads_live.ex:1445
+#: lib/marshall_web/live/threads_live.ex:1494
 #, elixir-autogen, elixir-format
 msgid "Machine profile"
 msgstr "Wasifu wa mashine"
 
-#: lib/marshall_web/live/threads_live.ex:1438
+#: lib/marshall_web/live/threads_live.ex:1487
 #, elixir-autogen, elixir-format
 msgid "Machine settings"
 msgstr "Mipangilio ya mashine"
 
-#: lib/marshall_web/live/agent_cli_approval_live.ex:65
+#: lib/marshall_web/live/agent_cli_approval_live.ex:68
 #, elixir-autogen, elixir-format
 msgid "Machine:"
 msgstr "Mashine:"
 
-#: lib/marshall_web/live/agent_threads_live.ex:126
+#: lib/marshall_web/live/agent_threads_live.ex:131
 #, elixir-autogen, elixir-format
 msgid "Maintenance finished"
 msgstr "Matengenezo yamekamilika"
 
-#: lib/marshall_web/live/threads_live.ex:2434
+#: lib/marshall_web/live/threads_live.ex:2553
 #, elixir-autogen, elixir-format
 msgid "Managed installations"
 msgstr "Usakinishaji unaosimamiwa"
 
-#: lib/marshall_web/live/threads_live.ex:2422
-#: lib/marshall_web/live/threads_live.ex:2569
+#: lib/marshall_web/live/threads_live.ex:2540
+#: lib/marshall_web/live/threads_live.ex:2693
 #, elixir-autogen, elixir-format
 msgid "Managed skill"
 msgstr "Ustadi uliosimamiwa"
 
-#: lib/marshall_web/live/threads_live.ex:369
+#: lib/marshall_web/live/threads_live.ex:377
 #, elixir-autogen, elixir-format
 msgid "Managed skill removed."
 msgstr "Ustadi unaosimamiwa umeondolewa."
 
-#: lib/marshall_web/live/threads_live.ex:1963
-#: lib/marshall_web/live/threads_live.ex:2702
+#: lib/marshall_web/live/threads_live.ex:2038
+#: lib/marshall_web/live/threads_live.ex:2842
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "Meneja"
 
-#: lib/marshall_web/live/agent_cli_approval_live.ex:67
+#: lib/marshall_web/live/agent_cli_approval_live.ex:70
 #, elixir-autogen, elixir-format
 msgid "Match this request code with your terminal before approving:"
 msgstr "Linganisha nambari hii ya ombi na terminal yako kabla ya kuidhinisha:"
 
-#: lib/marshall_web/live/threads_live.ex:1418
+#: lib/marshall_web/live/threads_live.ex:1466
 #, elixir-autogen, elixir-format
 msgid "Medium"
 msgstr "Kati"
 
-#: lib/marshall_web/live/threads_live.ex:2626
+#: lib/marshall_web/live/threads_live.ex:2755
 #, elixir-autogen, elixir-format
 msgid "Medium is a good starting point for most work."
 msgstr "Wastani ni mahali pazuri pa kuanzia kwa kazi nyingi."
 
-#: lib/marshall_web/live/threads_live.ex:1464
+#: lib/marshall_web/live/threads_live.ex:1522
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "Kumbukumbu (MiB)"
 
-#: lib/marshall_web/live/threads_live.ex:2070
+#: lib/marshall_web/live/threads_live.ex:2158
 #, elixir-autogen, elixir-format
 msgid "Message"
 msgstr "Ujumbe"
 
-#: lib/marshall_web/live/threads_live.ex:1690
+#: lib/marshall_web/live/threads_live.ex:1755
 #, elixir-autogen, elixir-format
 msgid "Mine"
 msgstr "Yangu"
 
-#: lib/marshall_web/live/threads_live.ex:1407
+#: lib/marshall_web/live/threads_live.ex:1452
 #, elixir-autogen, elixir-format
 msgid "Mode"
 msgstr "Hali"
 
-#: lib/marshall_web/live/threads_live.ex:1286
+#: lib/marshall_web/live/threads_live.ex:1322
 #, elixir-autogen, elixir-format
 msgid "More than one skill has this name. Select its exact source from Skills."
 msgstr "Zaidi ya ujuzi mmoja una jina hili. Chagua chanzo chake halisi kutoka kwa Ujuzi."
 
-#: lib/marshall_web/live/threads_live.ex:1363
-#: lib/marshall_web/live/threads_live.ex:1365
-#: lib/marshall_web/live/threads_live.ex:1532
+#: lib/marshall_web/live/threads_live.ex:1408
+#: lib/marshall_web/live/threads_live.ex:1410
+#: lib/marshall_web/live/threads_live.ex:1595
 #, elixir-autogen, elixir-format
 msgid "New thread"
 msgstr "Mazungumzo mapya"
 
-#: lib/marshall_web/live/threads_live.ex:1618
-#: lib/marshall_web/live/threads_live.ex:1935
+#: lib/marshall_web/live/threads_live.ex:1683
+#: lib/marshall_web/live/threads_live.ex:2009
 #, elixir-autogen, elixir-format
 msgid "Next page"
 msgstr "Ukurasa unaofuata"
 
-#: lib/marshall_web/live/threads_live.ex:1727
+#: lib/marshall_web/live/threads_live.ex:1792
 #, elixir-autogen, elixir-format
 msgid "No activity matches this filter."
 msgstr "Hakuna shughuli inayolingana na kichujio hiki."
 
-#: lib/marshall_web/live/threads_live.ex:1921
+#: lib/marshall_web/live/threads_live.ex:1995
 #, elixir-autogen, elixir-format
 msgid "No individual thread grants yet."
 msgstr "Bado hakuna ruhusa za mazungumzo kwa watu binafsi."
 
-#: lib/marshall_web/live/threads_live.ex:2367
+#: lib/marshall_web/live/threads_live.ex:2478
 #, elixir-autogen, elixir-format
 msgid "No instruction sources collected yet."
 msgstr "Bado hakuna vyanzo vya maagizo vilivyokusanywa."
 
-#: lib/marshall_web/live/threads_live.ex:2555
+#: lib/marshall_web/live/threads_live.ex:2679
 #, elixir-autogen, elixir-format
 msgid "No matching skills. Use /skills to inspect the catalog."
 msgstr "Hakuna ujuzi unaolingana. Tumia /skills kukagua katalogi."
 
-#: lib/marshall_web/live/threads_live.ex:1541
+#: lib/marshall_web/live/threads_live.ex:1605
 #, elixir-autogen, elixir-format
 msgid "No older threads are available on this page."
 msgstr "Hakuna mazungumzo ya zamani yanayopatikana kwenye ukurasa huu."
 
-#: lib/marshall_web/live/threads_live.ex:1582
+#: lib/marshall_web/live/threads_live.ex:1646
 #, elixir-autogen, elixir-format
 msgid "No recent threads match your search."
 msgstr "Hakuna mazungumzo ya hivi majuzi yanayolingana na utafutaji wako."
 
-#: lib/marshall_web/live/threads_live.ex:2407
+#: lib/marshall_web/live/threads_live.ex:2522
 #, elixir-autogen, elixir-format
 msgid "No skills were discovered in this workspace."
 msgstr "Hakuna ujuzi uliogunduliwa katika nafasi hii ya kazi."
 
-#: lib/marshall_web/live/threads_live.ex:2354
+#: lib/marshall_web/live/threads_live.ex:2464
 #, elixir-autogen, elixir-format
 msgid "Not collected yet"
 msgstr "Bado haijakusanywa"
 
-#: lib/marshall_web/live/threads_live.ex:1388
-#: lib/marshall_web/live/threads_live.ex:2226
+#: lib/marshall_web/live/threads_live.ex:1433
+#: lib/marshall_web/live/threads_live.ex:2327
 #, elixir-autogen, elixir-format
 msgid "Objective"
 msgstr "Lengo"
 
-#: lib/marshall_web/live/threads_live.ex:2691
+#: lib/marshall_web/live/threads_live.ex:2828
 #, elixir-autogen, elixir-format
 msgid "Older context summarized"
 msgstr "Muktadha wa zamani umefupishwa"
 
-#: lib/marshall_web/live/threads_live.ex:1487
+#: lib/marshall_web/live/threads_live.ex:1546
 #, elixir-autogen, elixir-format
 msgid "One task. One thread."
 msgstr "Kazi moja. Mazungumzo moja."
 
-#: lib/marshall_web/live/threads_live.ex:1844
+#: lib/marshall_web/live/threads_live.ex:1912
 #, elixir-autogen, elixir-format
 msgid "Open VS Code"
 msgstr "Fungua VS Code"
 
-#: lib/marshall_web/live/threads_live.ex:1446
+#: lib/marshall_web/live/threads_live.ex:1497
 #, elixir-autogen, elixir-format
 msgid "Open source"
 msgstr "Chanzo huria"
 
-#: lib/marshall_web/live/threads_live.ex:1815
+#: lib/marshall_web/live/threads_live.ex:1883
 #, elixir-autogen, elixir-format
 msgid "Open terminal"
 msgstr "Fungua terminali"
 
-#: lib/marshall_web/live/threads_live.ex:1824
+#: lib/marshall_web/live/threads_live.ex:1892
 #, elixir-autogen, elixir-format
 msgid "Open terminal here"
 msgstr "Fungua terminali hapa"
 
-#: lib/marshall_web/live/threads_live.ex:1962
-#: lib/marshall_web/live/threads_live.ex:2701
+#: lib/marshall_web/live/threads_live.ex:2037
+#: lib/marshall_web/live/threads_live.ex:2841
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "Mwendeshaji"
 
-#: lib/marshall_web/live/threads_live.ex:1895
+#: lib/marshall_web/live/threads_live.ex:1969
 #, elixir-autogen, elixir-format
 msgid "Owner · cannot be changed"
 msgstr "Mmiliki · haiwezi kubadilishwa"
 
-#: lib/marshall_web/live/threads_live.ex:1679
+#: lib/marshall_web/live/threads_live.ex:1744
 #, elixir-autogen, elixir-format
 msgid "Past 30 days"
 msgstr "Siku 30 zilizopita"
 
-#: lib/marshall_web/live/threads_live.ex:1678
+#: lib/marshall_web/live/threads_live.ex:1743
 #, elixir-autogen, elixir-format
 msgid "Past 7 days"
 msgstr "Siku 7 zilizopita"
 
-#: lib/marshall_web/live/threads_live.ex:1661
-#: lib/marshall_web/live/threads_live.ex:2629
+#: lib/marshall_web/live/threads_live.ex:1726
+#: lib/marshall_web/live/threads_live.ex:2758
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Inasubiri"
 
-#: lib/marshall_web/live/threads_live.ex:1518
+#: lib/marshall_web/live/threads_live.ex:1579
 #, elixir-autogen, elixir-format
 msgid "Pick up where you left off."
 msgstr "Endelea ulipoishia."
 
-#: lib/marshall_web/live/threads_live.ex:1408
-#: lib/marshall_web/live/threads_live.ex:2594
+#: lib/marshall_web/live/threads_live.ex:1455
+#: lib/marshall_web/live/threads_live.ex:2718
 #, elixir-autogen, elixir-format
 msgid "Plan"
 msgstr "Mpango"
 
-#: lib/marshall_web/live/agent_threads_live.ex:123
+#: lib/marshall_web/live/agent_threads_live.ex:128
 #, elixir-autogen, elixir-format
 msgid "Plan proposed"
 msgstr "Mpango umependekezwa"
 
-#: lib/marshall_web/live/threads_live.ex:2639
+#: lib/marshall_web/live/threads_live.ex:2770
 #, elixir-autogen, elixir-format
 msgid "Preparing a machine for this task"
 msgstr "Inaandaa mashine kwa kazi hii"
 
-#: lib/marshall_web/live/threads_live.ex:2029
+#: lib/marshall_web/live/threads_live.ex:2108
 #, elixir-autogen, elixir-format
 msgid "Preparing your workspace"
 msgstr "Inaandaa eneo lako la kazi"
 
-#: lib/marshall_web/live/agent_threads_live.ex:110
-#: lib/marshall_web/live/agent_threads_live.ex:217
-#: lib/marshall_web/live/threads_live.ex:2646
+#: lib/marshall_web/live/agent_threads_live.ex:115
+#: lib/marshall_web/live/agent_threads_live.ex:225
+#: lib/marshall_web/live/threads_live.ex:2780
 #, elixir-autogen, elixir-format
 msgid "Prompt"
 msgstr "Agizo"
 
 #: lib/marshall_web/live/agent_threads_live.ex:49
-#: lib/marshall_web/live/threads_live.ex:614
+#: lib/marshall_web/live/threads_live.ex:626
 #, elixir-autogen, elixir-format
 msgid "Prompt queued."
 msgstr "Agizo limewekwa kwenye foleni."
 
-#: lib/marshall_web/live/agent_threads_live.ex:163
+#: lib/marshall_web/live/agent_threads_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Prompts wake a stopped machine when you have write access."
 msgstr "Maagizo huwasha mashine iliyosimamishwa unapokuwa na ruhusa ya kuandika."
 
-#: lib/marshall_web/live/threads_live.ex:2175
+#: lib/marshall_web/live/threads_live.ex:2272
 #, elixir-autogen, elixir-format
 msgid "Proposed plan"
 msgstr "Mpango uliopendekezwa"
 
-#: lib/marshall_web/live/threads_live.ex:1662
-#: lib/marshall_web/live/threads_live.ex:2630
+#: lib/marshall_web/live/threads_live.ex:1727
+#: lib/marshall_web/live/threads_live.ex:2759
 #, elixir-autogen, elixir-format
 msgid "Provisioning"
 msgstr "Utoaji wa rasilimali"
 
-#: lib/marshall_web/live/threads_live.ex:2038
+#: lib/marshall_web/live/threads_live.ex:2118
 #, elixir-autogen, elixir-format
 msgid "Provisioning needs attention."
 msgstr "Utoaji wa rasilimali unahitaji uangalizi."
 
-#: lib/marshall_web/live/threads_live.ex:378
+#: lib/marshall_web/live/threads_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "Provisioning will retry."
 msgstr "Utoaji wa rasilimali utajaribiwa tena."
 
-#: lib/marshall_web/live/agent_threads_live.ex:121
+#: lib/marshall_web/live/agent_threads_live.ex:126
 #, elixir-autogen, elixir-format
 msgid "Questions answered"
 msgstr "Maswali yamejibiwa"
 
-#: lib/marshall_web/live/agent_threads_live.ex:122
+#: lib/marshall_web/live/agent_threads_live.ex:127
 #, elixir-autogen, elixir-format
 msgid "Questions cancelled"
 msgstr "Maswali yameghairiwa"
 
-#: lib/marshall_web/live/agent_threads_live.ex:120
+#: lib/marshall_web/live/agent_threads_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "Questions requested"
 msgstr "Maswali yaliyoombwa"
 
-#: lib/marshall_web/live/threads_live.ex:2667
+#: lib/marshall_web/live/threads_live.ex:2801
 #, elixir-autogen, elixir-format
 msgid "Queued: %{tools}"
 msgstr "Kwenye foleni: %{tools}"
 
-#: lib/marshall_web/live/threads_live.ex:1663
-#: lib/marshall_web/live/threads_live.ex:2631
+#: lib/marshall_web/live/threads_live.ex:1728
+#: lib/marshall_web/live/threads_live.ex:2760
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Tayari"
 
-#: lib/marshall_web/live/threads_live.ex:1415
+#: lib/marshall_web/live/threads_live.ex:1463
 #, elixir-autogen, elixir-format
 msgid "Reasoning"
 msgstr "Ufikiri"
 
-#: lib/marshall_web/live/threads_live.ex:1516
+#: lib/marshall_web/live/threads_live.ex:1577
 #, elixir-autogen, elixir-format
 msgid "Recent threads"
 msgstr "Mazungumzo ya hivi majuzi"
 
-#: lib/marshall_web/live/threads_live.ex:1953
+#: lib/marshall_web/live/threads_live.ex:2028
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "Barua pepe iliyosajiliwa"
 
-#: lib/marshall_web/live/threads_live.ex:2388
+#: lib/marshall_web/live/threads_live.ex:2499
 #, elixir-autogen, elixir-format
 msgid "Reload context"
 msgstr "Pakia upya muktadha"
 
-#: lib/marshall_web/live/threads_live.ex:2479
-#: lib/marshall_web/live/threads_live.ex:2584
+#: lib/marshall_web/live/threads_live.ex:2600
+#: lib/marshall_web/live/threads_live.ex:2708
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Ondoa"
 
-#: lib/marshall_web/live/threads_live.ex:2583
+#: lib/marshall_web/live/threads_live.ex:2707
 #, elixir-autogen, elixir-format
 msgid "Remove %{skill}"
 msgstr "Ondoa %{skill}"
 
-#: lib/marshall_web/live/threads_live.ex:1866
+#: lib/marshall_web/live/threads_live.ex:1938
 #, elixir-autogen, elixir-format
 msgid "Reopen"
 msgstr "Fungua upya"
 
-#: lib/marshall_web/live/threads_live.ex:1993
+#: lib/marshall_web/live/threads_live.ex:2071
 #, elixir-autogen, elixir-format
 msgid "Reopened machines keep their earlier transcripts. Select one to read it."
 msgstr "Mashine zilizofunguliwa upya huhifadhi nakala zao za awali. Chagua moja ili kuisoma."
 
-#: lib/marshall_web/live/threads_live.ex:2495
+#: lib/marshall_web/live/threads_live.ex:2619
 #, elixir-autogen, elixir-format
 msgid "Repository URL"
 msgstr "URL ya hazina"
 
-#: lib/marshall_web/live/agent_threads_live.ex:113
-#: lib/marshall_web/live/threads_live.ex:2656
+#: lib/marshall_web/live/agent_threads_live.ex:118
+#: lib/marshall_web/live/threads_live.ex:2790
 #, elixir-autogen, elixir-format
 msgid "Response received"
 msgstr "Majibu yamepokelewa"
 
-#: lib/marshall_web/live/threads_live.ex:2044
+#: lib/marshall_web/live/threads_live.ex:2128
 #, elixir-autogen, elixir-format
 msgid "Retry"
 msgstr "Jaribu tena"
 
-#: lib/marshall_web/live/threads_live.ex:1487
+#: lib/marshall_web/live/threads_live.ex:1546
 #, elixir-autogen, elixir-format
 msgid "Return to the conversation whenever you need."
 msgstr "Rudi kwenye mazungumzo wakati wowote unapohitaji."
 
-#: lib/marshall_web/live/threads_live.ex:2200
+#: lib/marshall_web/live/threads_live.ex:2297
 #, elixir-autogen, elixir-format
 msgid "Revise"
 msgstr "Rekebisha"
 
-#: lib/marshall_web/live/threads_live.ex:2501
+#: lib/marshall_web/live/threads_live.ex:2625
 #, elixir-autogen, elixir-format
 msgid "Revision (optional)"
 msgstr "Marekebisho (ya hiari)"
 
-#: lib/marshall_web/live/threads_live.ex:1964
+#: lib/marshall_web/live/threads_live.ex:2039
 #, elixir-autogen, elixir-format
 msgid "Revoke thread grant"
 msgstr "Batilisha ruhusa ya mazungumzo"
 
-#: lib/marshall_web/live/threads_live.ex:2703
+#: lib/marshall_web/live/threads_live.ex:2843
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "Imebatilishwa"
 
-#: lib/marshall_web/live/threads_live.ex:1959
+#: lib/marshall_web/live/threads_live.ex:2034
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Jukumu"
 
-#: lib/marshall_web/live/threads_live.ex:1971
+#: lib/marshall_web/live/threads_live.ex:2046
 #, elixir-autogen, elixir-format
 msgid "Save access"
 msgstr "Hifadhi ufikiaji"
 
-#: lib/marshall_web/live/threads_live.ex:1970
+#: lib/marshall_web/live/threads_live.ex:2045
 #, elixir-autogen, elixir-format
 msgid "Saving…"
 msgstr "Inahifadhi..."
 
-#: lib/marshall_web/live/threads_live.ex:1687
+#: lib/marshall_web/live/threads_live.ex:1752
 #, elixir-autogen, elixir-format
 msgid "Scope"
 msgstr "Upeo"
 
-#: lib/marshall_web/live/threads_live.ex:1707
+#: lib/marshall_web/live/threads_live.ex:1772
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Tafuta"
 
-#: lib/marshall_web/live/threads_live.ex:1555
+#: lib/marshall_web/live/threads_live.ex:1619
 #, elixir-autogen, elixir-format
 msgid "Search recent threads"
 msgstr "Tafuta mazungumzo ya hivi karibuni"
 
-#: lib/marshall_web/live/threads_live.ex:1556
+#: lib/marshall_web/live/threads_live.ex:1620
 #, elixir-autogen, elixir-format
 msgid "Searches this page of threads."
 msgstr "Hutafuta katika ukurasa huu wa mazungumzo."
 
-#: lib/marshall_web/live/threads_live.ex:264
+#: lib/marshall_web/live/threads_live.ex:269
 #, elixir-autogen, elixir-format
 msgid "Select this skill from the workspace catalog when the machine starts."
 msgstr "Chagua ujuzi huu kutoka kwa orodha ya nafasi ya kazi wakati mashine inapoanza."
 
-#: lib/marshall_web/live/threads_live.ex:2109
+#: lib/marshall_web/live/threads_live.ex:2200
 #, elixir-autogen, elixir-format
 msgid "Send"
 msgstr "Tuma"
 
-#: lib/marshall_web/live/agent_threads_live.ex:226
+#: lib/marshall_web/live/agent_threads_live.ex:234
 #, elixir-autogen, elixir-format
 msgid "Send prompt"
 msgstr "Tuma agizo"
 
-#: lib/marshall_web/live/agent_threads_live.ex:225
-#: lib/marshall_web/live/threads_live.ex:2107
+#: lib/marshall_web/live/agent_threads_live.ex:233
+#: lib/marshall_web/live/threads_live.ex:2198
 #, elixir-autogen, elixir-format
 msgid "Sending…"
 msgstr "Inatuma..."
 
-#: lib/marshall_web/live/threads_live.ex:1807
+#: lib/marshall_web/live/threads_live.ex:1875
 #, elixir-autogen, elixir-format
 msgid "Share"
 msgstr "Shiriki"
 
-#: lib/marshall_web/live/threads_live.ex:1876
+#: lib/marshall_web/live/threads_live.ex:1948
 #, elixir-autogen, elixir-format
 msgid "Share this thread"
 msgstr "Shiriki mazungumzo haya"
 
-#: lib/marshall_web/live/threads_live.ex:1691
+#: lib/marshall_web/live/threads_live.ex:1756
 #, elixir-autogen, elixir-format
 msgid "Shared with me"
 msgstr "Imeshirikiwa nami"
 
-#: lib/marshall_web/live/threads_live.ex:1304
+#: lib/marshall_web/live/threads_live.ex:1349
 #, elixir-autogen, elixir-format
 msgid "Sharing is not available for this thread's machine profile."
 msgstr "Kushiriki hakupatikani kwa wasifu wa mashine ya mazungumzo haya."
 
-#: lib/marshall_web/live/threads_live.ex:1566
+#: lib/marshall_web/live/threads_live.ex:1630
 #, elixir-autogen, elixir-format
 msgid "Show"
 msgstr "Onyesha"
 
-#: lib/marshall_web/live/threads_live.ex:358
+#: lib/marshall_web/live/threads_live.ex:366
 #, elixir-autogen, elixir-format
 msgid "Skill availability updated."
 msgstr "Upatikanaji wa ujuzi umesasishwa."
 
-#: lib/marshall_web/live/threads_live.ex:2506
+#: lib/marshall_web/live/threads_live.ex:2630
 #, elixir-autogen, elixir-format
 msgid "Skill directory"
 msgstr "Saraka ya ujuzi"
 
-#: lib/marshall_web/live/threads_live.ex:323
+#: lib/marshall_web/live/threads_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Skill installation queued."
 msgstr "Usakinishaji wa ujuzi umewekwa kwenye foleni."
 
-#: lib/marshall_web/live/threads_live.ex:2552
+#: lib/marshall_web/live/threads_live.ex:2676
 #, elixir-autogen, elixir-format
 msgid "Skill suggestions"
 msgstr "Mapendekezo ya ujuzi"
 
-#: lib/marshall_web/live/threads_live.ex:334
-#: lib/marshall_web/live/threads_live.ex:346
+#: lib/marshall_web/live/threads_live.ex:342
+#: lib/marshall_web/live/threads_live.ex:354
 #, elixir-autogen, elixir-format
 msgid "Skill update queued."
 msgstr "Usasisho wa ujuzi umewekwa kwenye foleni."
 
-#: lib/marshall_web/live/threads_live.ex:2599
+#: lib/marshall_web/live/threads_live.ex:2723
 #, elixir-autogen, elixir-format
 msgid "Skills"
 msgstr "Ujuzi"
 
-#: lib/marshall_web/live/threads_live.ex:2399
+#: lib/marshall_web/live/threads_live.ex:2510
 #, elixir-autogen, elixir-format
 msgid "Skills add reusable instructions to a task. Choose the source you intend to use."
 msgstr "Ujuzi huongeza maagizo yanayoweza kutumika tena kwa kazi. Chagua chanzo unachotaka kutumia."
 
-#: lib/marshall_web/live/threads_live.ex:2404
+#: lib/marshall_web/live/threads_live.ex:2516
 #, elixir-autogen, elixir-format
 msgid "Skills are unavailable until the workspace context has been collected."
 msgstr "Ujuzi haupatikani hadi muktadha wa nafasi ya kazi utakapokusanywa."
 
-#: lib/marshall_web/live/threads_live.ex:1446
+#: lib/marshall_web/live/threads_live.ex:1496
 #, elixir-autogen, elixir-format
 msgid "Standard"
 msgstr "Kawaida"
 
-#: lib/marshall_web/live/threads_live.ex:2338
+#: lib/marshall_web/live/threads_live.ex:2441
 #, elixir-autogen, elixir-format
 msgid "Start with a space to send slash-looking text literally. Type $ to choose a skill by its exact source."
 msgstr "Anza kwa nafasi ili kutuma maandishi yanayoanza kwa mkwaju kama yalivyo. Andika $ kuchagua ujuzi kwa chanzo chake mahususi."
 
-#: lib/marshall_web/live/threads_live.ex:1431
+#: lib/marshall_web/live/threads_live.ex:1480
 #, elixir-autogen, elixir-format
 msgid "Starting…"
 msgstr "Inaanza..."
 
-#: lib/marshall_web/live/threads_live.ex:1658
-#: lib/marshall_web/live/threads_live.ex:2351
+#: lib/marshall_web/live/threads_live.ex:1723
+#: lib/marshall_web/live/threads_live.ex:2456
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Hali"
 
-#: lib/marshall_web/live/threads_live.ex:2161
+#: lib/marshall_web/live/threads_live.ex:2256
 #, elixir-autogen, elixir-format
 msgid "Submit answers"
 msgstr "Peana majibu"
 
-#: lib/marshall_web/live/threads_live.ex:2160
+#: lib/marshall_web/live/threads_live.ex:2255
 #, elixir-autogen, elixir-format
 msgid "Submitting…"
 msgstr "Inawasilisha..."
 
-#: lib/marshall_web/live/threads_live.ex:1699
+#: lib/marshall_web/live/threads_live.ex:1764
 #, elixir-autogen, elixir-format
 msgid "Team"
 msgstr "Timu"
 
-#: lib/marshall_web/live/threads_live.ex:1108
+#: lib/marshall_web/live/threads_live.ex:1122
 #, elixir-autogen, elixir-format
 msgid "Team %{team}"
 msgstr "Timu %{team}"
 
-#: lib/marshall_web/live/threads_live.ex:1457
+#: lib/marshall_web/live/threads_live.ex:1509
 #, elixir-autogen, elixir-format
 msgid "Team (optional)"
 msgstr "Timu (ya hiari)"
 
-#: lib/marshall_web/live/threads_live.ex:1458
+#: lib/marshall_web/live/threads_live.ex:1510
 #, elixir-autogen, elixir-format
 msgid "Team ID"
 msgstr "Kitambulisho cha Timu"
 
-#: lib/marshall_web/live/threads_live.ex:1298
+#: lib/marshall_web/live/threads_live.ex:1341
 #, elixir-autogen, elixir-format
 msgid "That email does not belong to a registered account."
 msgstr "Barua pepe hiyo si ya akaunti iliyosajiliwa."
 
-#: lib/marshall_web/live/agent_threads_live.ex:118
-#: lib/marshall_web/live/agent_threads_live.ex:138
-#: lib/marshall_web/live/threads_live.ex:2687
+#: lib/marshall_web/live/agent_threads_live.ex:123
+#: lib/marshall_web/live/agent_threads_live.ex:145
+#: lib/marshall_web/live/threads_live.ex:2823
 #, elixir-autogen, elixir-format
 msgid "The agent encountered a problem"
 msgstr "Wakala alikumbana na tatizo"
 
-#: lib/marshall_web/live/threads_live.ex:1274
+#: lib/marshall_web/live/threads_live.ex:1305
 #, elixir-autogen, elixir-format
 msgid "The current context exceeds the model allowance. Compact it or reduce the message."
 msgstr "Muktadha wa sasa unazidi posho ya mfano. Unganisha au upunguze ujumbe."
 
-#: lib/marshall_web/live/threads_live.ex:1634
+#: lib/marshall_web/live/threads_live.ex:1699
 #, elixir-autogen, elixir-format
 msgid "The latest state of your threads."
 msgstr "Hali ya hivi punde ya mazungumzo yako."
 
-#: lib/marshall_web/live/agent_threads_live.ex:54
+#: lib/marshall_web/live/agent_threads_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "The machine or your access is no longer available."
 msgstr "Mashine au ufikiaji wako haupatikani tena."
 
-#: lib/marshall_web/live/threads_live.ex:1253
-#: lib/marshall_web/live/threads_live.ex:1255
+#: lib/marshall_web/live/threads_live.ex:1273
+#: lib/marshall_web/live/threads_live.ex:1275
 #, elixir-autogen, elixir-format
 msgid "The plan has changed. Review the latest proposal before continuing."
 msgstr "Mpango umebadilika. Kagua pendekezo la hivi punde kabla ya kuendelea."
 
-#: lib/marshall_web/live/threads_live.ex:1270
+#: lib/marshall_web/live/threads_live.ex:1300
 #, elixir-autogen, elixir-format
 msgid "The required instructions and current message do not fit. Reduce them and try again."
 msgstr "Maagizo yanayohitajika na ujumbe wa sasa vinazidi nafasi. Vipunguze na ujaribu tena."
 
-#: lib/marshall_web/live/threads_live.ex:1284
+#: lib/marshall_web/live/threads_live.ex:1317
 #, elixir-autogen, elixir-format
 msgid "The skill operation failed. The previous installed revision remains available."
 msgstr "Uendeshaji wa ujuzi haukufaulu. Marekebisho yaliyosakinishwa hapo awali bado yanapatikana."
 
-#: lib/marshall_web/live/threads_live.ex:1314
+#: lib/marshall_web/live/threads_live.ex:1359
 #, elixir-autogen, elixir-format
 msgid "The thread operation could not be completed."
 msgstr "Uendeshaji wa mazungumzo haukuweza kukamilika."
 
-#: lib/marshall_web/live/threads_live.ex:1299
+#: lib/marshall_web/live/threads_live.ex:1342
 #, elixir-autogen, elixir-format
 msgid "The thread owner's access cannot be changed."
 msgstr "Ufikiaji wa mmiliki wa mazungumzo hauwezi kubadilishwa."
 
-#: lib/marshall_web/live/threads_live.ex:2219
+#: lib/marshall_web/live/threads_live.ex:2317
 #, elixir-autogen, elixir-format
 msgid "The transcript is temporarily unavailable. Try again shortly."
 msgstr "Nakala haipatikani kwa sasa. Jaribu tena baada ya muda mfupi."
 
-#: lib/marshall_web/live/threads_live.ex:1281
+#: lib/marshall_web/live/threads_live.ex:1314
 #, elixir-autogen, elixir-format
 msgid "There is no older context to compact yet."
 msgstr "Hakuna muktadha wa zamani wa kujumuisha bado."
 
-#: lib/marshall_web/live/threads_live.ex:1293
+#: lib/marshall_web/live/threads_live.ex:1334
 #, elixir-autogen, elixir-format
 msgid "There is not enough capacity for this machine right now."
 msgstr "Hakuna uwezo wa kutosha wa mashine hii kwa sasa."
 
-#: lib/marshall_web/live/threads_live.ex:1261
+#: lib/marshall_web/live/threads_live.ex:1283
 #, elixir-autogen, elixir-format
 msgid "These questions are no longer waiting for an answer."
 msgstr "Maswali haya hayasubiri tena jibu."
 
-#: lib/marshall_web/live/threads_live.ex:1262
+#: lib/marshall_web/live/threads_live.ex:1284
 #, elixir-autogen, elixir-format
 msgid "These questions have already been answered."
 msgstr "Maswali haya tayari yamejibiwa."
 
-#: lib/marshall_web/live/agent_cli_approval_live.ex:49
+#: lib/marshall_web/live/agent_cli_approval_live.ex:52
 #, elixir-autogen, elixir-format
 msgid "This agent CLI approval is unavailable. Start again in your terminal."
 msgstr "Uidhinishaji wa wakala huyu wa CLI haupatikani. Anza tena kwenye terminal yako."
 
-#: lib/marshall_web/live/threads_live.ex:1246
+#: lib/marshall_web/live/threads_live.ex:1264
 #, elixir-autogen, elixir-format
 msgid "This command does not accept a task. Your draft has been kept."
 msgstr "Amri hii haikubali kazi. Rasimu yako imehifadhiwa."
 
-#: lib/marshall_web/live/threads_live.ex:1252
+#: lib/marshall_web/live/threads_live.ex:1271
 #, elixir-autogen, elixir-format
 msgid "This command needs a ready thread and current write access."
 msgstr "Amri hii inahitaji uzi ulio tayari na ufikiaji wa maandishi wa sasa."
 
-#: lib/marshall_web/live/threads_live.ex:1301
+#: lib/marshall_web/live/threads_live.ex:1344
 #, elixir-autogen, elixir-format
 msgid "This request was already used for a different change. Reload this page and try again."
 msgstr "Ombi hili lilikuwa tayari kutumika kwa mabadiliko tofauti. Pakia upya ukurasa huu na ujaribu tena."
 
-#: lib/marshall_web/live/threads_live.ex:1295
+#: lib/marshall_web/live/threads_live.ex:1336
 #, elixir-autogen, elixir-format
 msgid "This thread could not be found."
 msgstr "Mazungumzo haya hayakuweza kupatikana."
 
-#: lib/marshall_web/live/threads_live.ex:1294
+#: lib/marshall_web/live/threads_live.ex:1335
 #, elixir-autogen, elixir-format
 msgid "This thread is not archived."
 msgstr "Mazungumzo haya hayajahifadhiwa."
 
-#: lib/marshall_web/live/threads_live.ex:1291
+#: lib/marshall_web/live/threads_live.ex:1331
 #, elixir-autogen, elixir-format
 msgid "This thread is still provisioning."
 msgstr "Uzi huu bado unaendelea."
 
-#: lib/marshall_web/live/threads_live.ex:1296
+#: lib/marshall_web/live/threads_live.ex:1338
 #, elixir-autogen, elixir-format
 msgid "This thread is temporarily unavailable. Try again shortly."
 msgstr "Mazungumzo haya hayapatikani kwa sasa. Jaribu tena baada ya muda mfupi."
 
-#: lib/marshall_web/live/threads_live.ex:1768
+#: lib/marshall_web/live/threads_live.ex:1833
 #, elixir-autogen, elixir-format
 msgid "This thread may have been deleted or the link is invalid."
 msgstr "Mazungumzo haya yanaweza kuwa yamefutwa au kiungo ni batili."
 
-#: lib/marshall_web/live/agent_threads_live.ex:134
+#: lib/marshall_web/live/agent_threads_live.ex:139
 #, elixir-autogen, elixir-format
 msgid "This tool is not available for the machine profile."
 msgstr "Zana hii haipatikani kwa wasifu wa mashine."
 
-#: lib/marshall_web/live/threads_live.ex:1877
+#: lib/marshall_web/live/threads_live.ex:1949
 #, elixir-autogen, elixir-format
 msgid "Thread access also applies to its machine. Separate machine grants and team access are managed independently."
 msgstr "Ufikiaji wa nyuzi pia hutumika kwa mashine yake. Ruzuku za mashine tofauti na ufikiaji wa timu hudhibitiwa kwa kujitegemea."
 
-#: lib/marshall_web/live/threads_live.ex:502
+#: lib/marshall_web/live/threads_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "Thread access updated."
 msgstr "Ufikiaji wa nyuzi umesasishwa."
 
-#: lib/marshall_web/live/threads_live.ex:1852
+#: lib/marshall_web/live/threads_live.ex:1920
 #, elixir-autogen, elixir-format
 msgid "Thread actions"
 msgstr "Vitendo vya thread"
 
-#: lib/marshall_web/live/threads_live.ex:2598
+#: lib/marshall_web/live/threads_live.ex:2722
 #, elixir-autogen, elixir-format
 msgid "Thread context"
 msgstr "Muktadha wa thread"
 
-#: lib/marshall_web/live/threads_live.ex:410
+#: lib/marshall_web/live/threads_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Thread deletion requested."
 msgstr "Umeomba kufuta uzi."
 
-#: lib/marshall_web/live/threads_live.ex:1767
+#: lib/marshall_web/live/threads_live.ex:1832
 #, elixir-autogen, elixir-format
 msgid "Thread not found"
 msgstr "Mazungumzo hayajapatikana"
 
-#: lib/marshall_web/live/threads_live.ex:425
+#: lib/marshall_web/live/threads_live.ex:437
 #, elixir-autogen, elixir-format
 msgid "Thread reopened; provisioning a new machine."
 msgstr "Thread ilifunguliwa tena; kutoa mashine mpya."
 
-#: lib/marshall_web/live/threads_live.ex:1773
+#: lib/marshall_web/live/threads_live.ex:1841
 #, elixir-autogen, elixir-format
 msgid "Thread temporarily unavailable"
 msgstr "Mazungumzo hayapatikani kwa sasa"
 
-#: lib/marshall_web/live/threads_live.ex:1832
+#: lib/marshall_web/live/threads_live.ex:1900
 #, elixir-autogen, elixir-format
 msgid "Thread terminal"
 msgstr "Terminal ya thread"
 
-#: lib/marshall_web/live/threads_live.ex:1761
+#: lib/marshall_web/live/threads_live.ex:1826
 #, elixir-autogen, elixir-format
 msgid "Thread unavailable"
 msgstr "Mazungumzo hayapatikani"
 
-#: lib/marshall_web/live/agent_threads_live.ex:127
-#: lib/marshall_web/live/agent_threads_live.ex:141
-#: lib/marshall_web/live/threads_live.ex:2693
+#: lib/marshall_web/live/agent_threads_live.ex:132
+#: lib/marshall_web/live/agent_threads_live.ex:149
+#: lib/marshall_web/live/threads_live.ex:2833
 #, elixir-autogen, elixir-format
 msgid "Thread updated"
 msgstr "Uzi umesasishwa"
 
-#: lib/marshall_web/live/threads_live.ex:1354
+#: lib/marshall_web/live/threads_live.ex:1399
 #, elixir-autogen, elixir-format
 msgid "Thread views"
 msgstr "Mionekano ya nyuzi"
 
-#: lib/marshall_web/live/agent_threads_live.ex:170
-#: lib/marshall_web/live/agent_threads_live.ex:173
+#: lib/marshall_web/live/agent_threads_live.ex:178
+#: lib/marshall_web/live/agent_threads_live.ex:181
 #: lib/marshall_web/live/threads_live.ex:21
-#: lib/marshall_web/live/threads_live.ex:1356
-#: lib/marshall_web/live/threads_live.ex:1506
+#: lib/marshall_web/live/threads_live.ex:1401
+#: lib/marshall_web/live/threads_live.ex:1567
 #, elixir-autogen, elixir-format
 msgid "Threads"
 msgstr "Mizizi"
 
-#: lib/marshall_web/live/threads_live.ex:1527
-#: lib/marshall_web/live/threads_live.ex:1720
+#: lib/marshall_web/live/threads_live.ex:1588
+#: lib/marshall_web/live/threads_live.ex:1785
 #, elixir-autogen, elixir-format
 msgid "Threads are temporarily unavailable. Try again shortly."
 msgstr "Mazungumzo hayapatikani kwa sasa. Jaribu tena baada ya muda mfupi."
 
-#: lib/marshall_web/live/threads_live.ex:1677
+#: lib/marshall_web/live/threads_live.ex:1742
 #, elixir-autogen, elixir-format
 msgid "Today"
 msgstr "Leo"
 
-#: lib/marshall_web/live/threads_live.ex:2358
+#: lib/marshall_web/live/threads_live.ex:2469
 #, elixir-autogen, elixir-format
 msgid "Token allowance"
 msgstr "Posho ya ishara"
 
-#: lib/marshall_web/live/threads_live.ex:2676
+#: lib/marshall_web/live/threads_live.ex:2810
 #, elixir-autogen, elixir-format
 msgid "Tool cancelled"
 msgstr "Zana imeghairiwa"
 
-#: lib/marshall_web/live/threads_live.ex:2679
+#: lib/marshall_web/live/threads_live.ex:2813
 #, elixir-autogen, elixir-format
 msgid "Tool completed"
 msgstr "Zana imekamilika"
 
-#: lib/marshall_web/live/threads_live.ex:2673
+#: lib/marshall_web/live/threads_live.ex:2807
 #, elixir-autogen, elixir-format
 msgid "Tool failed"
 msgstr "Zana imeshindwa"
 
-#: lib/marshall_web/live/threads_live.ex:2682
+#: lib/marshall_web/live/threads_live.ex:2816
 #, elixir-autogen, elixir-format
 msgid "Tool outcome uncertain"
 msgstr "Matokeo ya chombo hayana uhakika"
 
-#: lib/marshall_web/live/agent_threads_live.ex:115
-#: lib/marshall_web/live/agent_threads_live.ex:140
-#: lib/marshall_web/live/threads_live.ex:2684
+#: lib/marshall_web/live/agent_threads_live.ex:120
+#: lib/marshall_web/live/agent_threads_live.ex:148
+#: lib/marshall_web/live/threads_live.ex:2818
 #, elixir-autogen, elixir-format
 msgid "Tool result received"
 msgstr "Matokeo ya zana yamepokelewa"
 
-#: lib/marshall_web/live/agent_threads_live.ex:114
-#: lib/marshall_web/live/agent_threads_live.ex:139
-#: lib/marshall_web/live/threads_live.ex:2666
-#: lib/marshall_web/live/threads_live.ex:2670
+#: lib/marshall_web/live/agent_threads_live.ex:119
+#: lib/marshall_web/live/agent_threads_live.ex:147
+#: lib/marshall_web/live/threads_live.ex:2800
+#: lib/marshall_web/live/threads_live.ex:2804
 #, elixir-autogen, elixir-format
 msgid "Tools queued"
 msgstr "Zana zimewekwa kwenye foleni"
 
-#: lib/marshall_web/live/threads_live.ex:2010
+#: lib/marshall_web/live/threads_live.ex:2089
 #, elixir-autogen, elixir-format
 msgid "Transcript"
 msgstr "Nakala"
 
-#: lib/marshall_web/live/threads_live.ex:1774
+#: lib/marshall_web/live/threads_live.ex:1842
 #, elixir-autogen, elixir-format
 msgid "Try again shortly."
 msgstr "Jaribu tena baada ya muda mfupi."
 
-#: lib/marshall_web/live/agent_threads_live.ex:117
-#: lib/marshall_web/live/agent_threads_live.ex:137
-#: lib/marshall_web/live/threads_live.ex:2686
+#: lib/marshall_web/live/agent_threads_live.ex:122
+#: lib/marshall_web/live/agent_threads_live.ex:142
+#: lib/marshall_web/live/threads_live.ex:2820
 #, elixir-autogen, elixir-format
 msgid "Turn complete"
 msgstr "Kugeuka kamili"
 
-#: lib/marshall_web/live/threads_live.ex:1420
+#: lib/marshall_web/live/threads_live.ex:1468
 #, elixir-autogen, elixir-format
 msgid "Ultra"
 msgstr "Juu kabisa"
 
-#: lib/marshall_web/live/threads_live.ex:2625
+#: lib/marshall_web/live/threads_live.ex:2754
 #, elixir-autogen, elixir-format
 msgid "Ultra is for complex, open-ended work."
 msgstr "Ultra ni ya kazi ngumu, isiyo na mwisho."
 
-#: lib/marshall_web/live/threads_live.ex:2635
-#: lib/marshall_web/live/threads_live.ex:2704
+#: lib/marshall_web/live/threads_live.ex:2764
+#: lib/marshall_web/live/threads_live.ex:2844
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Haijulikani"
 
-#: lib/marshall_web/live/threads_live.ex:1242
+#: lib/marshall_web/live/threads_live.ex:1259
 #, elixir-autogen, elixir-format
 msgid "Unknown command. Open Commands to choose one, or start with a space to send literal text."
 msgstr "Amri isiyojulikana. Fungua Amri ili kuchagua moja, au anza na nafasi ya kutuma maandishi halisi."
 
-#: lib/marshall_web/live/threads_live.ex:1282
+#: lib/marshall_web/live/threads_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Unpin this thread's machine before deleting it."
 msgstr "Bandua mashine ya mazungumzo haya kabla ya kuifuta."
 
-#: lib/marshall_web/live/threads_live.ex:1592
-#: lib/marshall_web/live/threads_live.ex:1745
-#: lib/marshall_web/live/threads_live.ex:1782
+#: lib/marshall_web/live/threads_live.ex:1657
+#: lib/marshall_web/live/threads_live.ex:1810
+#: lib/marshall_web/live/threads_live.ex:1850
 #, elixir-autogen, elixir-format
 msgid "Untitled thread"
 msgstr "Thread isiyo na jina"
 
-#: lib/marshall_web/live/threads_live.ex:2462
+#: lib/marshall_web/live/threads_live.ex:2583
 #, elixir-autogen, elixir-format
 msgid "Update"
 msgstr "Sasisha"
 
-#: lib/marshall_web/live/threads_live.ex:2455
+#: lib/marshall_web/live/threads_live.ex:2576
 #, elixir-autogen, elixir-format
 msgid "Update revision (optional)"
 msgstr "Sasisha marekebisho (ya hiari)"
 
-#: lib/marshall_web/live/threads_live.ex:1674
+#: lib/marshall_web/live/threads_live.ex:1739
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "Imesasishwa"
 
-#: lib/marshall_web/live/threads_live.ex:2461
+#: lib/marshall_web/live/threads_live.ex:2582
 #, elixir-autogen, elixir-format
 msgid "Updating…"
 msgstr "Inasasisha..."
 
-#: lib/marshall_web/live/threads_live.ex:2321
+#: lib/marshall_web/live/threads_live.ex:2422
 #, elixir-autogen, elixir-format
 msgid "Use Commands or press Ctrl/Cmd+K while writing. Start a message with / to find a command; use Tab to complete it."
 msgstr "Tumia Amri au bonyeza Ctrl/Cmd+K unapoandika. Anzisha ujumbe na / kupata amri; tumia Tab ili kuikamilisha."
 
-#: lib/marshall_web/live/threads_live.ex:2490
+#: lib/marshall_web/live/threads_live.ex:2611
 #, elixir-autogen, elixir-format
 msgid "Use a public GitHub, GitLab, Codeberg or Bitbucket repository."
 msgstr "Tumia hazina ya umma ya GitHub , GitLab , Codeberg au Bitbucket."
 
-#: lib/marshall_web/live/threads_live.ex:1945
+#: lib/marshall_web/live/threads_live.ex:2019
 #, elixir-autogen, elixir-format
 msgid "Use an existing account's email to grant, change or revoke a thread role."
 msgstr "Tumia barua pepe ya akaunti iliyopo ili kutoa, kubadilisha au kubatilisha jukumu la mazungumzo."
 
-#: lib/marshall_web/live/threads_live.ex:2430
+#: lib/marshall_web/live/threads_live.ex:2549
 #, elixir-autogen, elixir-format
 msgid "Use this skill"
 msgstr "Tumia ujuzi huu"
 
-#: lib/marshall_web/live/threads_live.ex:1625
+#: lib/marshall_web/live/threads_live.ex:1690
 #, elixir-autogen, elixir-format
 msgid "View activity"
 msgstr "Tazama shughuli"
 
-#: lib/marshall_web/live/threads_live.ex:1961
-#: lib/marshall_web/live/threads_live.ex:2700
+#: lib/marshall_web/live/threads_live.ex:2036
+#: lib/marshall_web/live/threads_live.ex:2840
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "Mtazamaji"
 
-#: lib/marshall_web/live/threads_live.ex:1974
+#: lib/marshall_web/live/threads_live.ex:2049
 #, elixir-autogen, elixir-format
 msgid "Viewers read. Operators send prompts. Managers also share and manage the thread."
 msgstr "Watazamaji walisoma. Waendeshaji hutuma vidokezo. Wasimamizi pia hushiriki na kudhibiti mazungumzo."
 
-#: lib/marshall_web/live/threads_live.ex:1248
-#: lib/marshall_web/live/threads_live.ex:1258
+#: lib/marshall_web/live/threads_live.ex:1266
+#: lib/marshall_web/live/threads_live.ex:1279
 #, elixir-autogen, elixir-format
 msgid "Wait for the current work or pending questions to finish before changing this setting."
 msgstr "Subiri kazi ya sasa au maswali yanayosubiri kumaliza kabla ya kubadilisha mpangilio huu."
 
-#: lib/marshall_web/live/threads_live.ex:2638
+#: lib/marshall_web/live/threads_live.ex:2767
 #, elixir-autogen, elixir-format
 msgid "Waiting for a workspace"
 msgstr "Inasubiri nafasi ya kazi"
 
-#: lib/marshall_web/live/agent_threads_live.ex:119
+#: lib/marshall_web/live/agent_threads_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Waiting for machine"
 msgstr "Inasubiri mashine"
 
-#: lib/marshall_web/live/threads_live.ex:2233
+#: lib/marshall_web/live/threads_live.ex:2334
 #, elixir-autogen, elixir-format
 msgid "Waiting for the agent's first update."
 msgstr "Inasubiri sasisho la kwanza la wakala."
 
-#: lib/marshall_web/live/threads_live.ex:2688
+#: lib/marshall_web/live/threads_live.ex:2825
 #, elixir-autogen, elixir-format
 msgid "Waiting for the machine"
 msgstr "Kusubiri kwa mashine"
 
-#: lib/marshall_web/live/threads_live.ex:2689
+#: lib/marshall_web/live/threads_live.ex:2826
 #, elixir-autogen, elixir-format
 msgid "Waiting for your answers"
 msgstr "Kusubiri majibu yako"
 
-#: lib/marshall_web/live/threads_live.ex:2699
+#: lib/marshall_web/live/threads_live.ex:2839
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "Programu za wavuti"
 
-#: lib/marshall_web/live/threads_live.ex:1372
+#: lib/marshall_web/live/threads_live.ex:1417
 #, elixir-autogen, elixir-format
 msgid "What are we working on?"
 msgstr "Je, tunafanyia kazi nini?"
 
-#: lib/marshall_web/live/threads_live.ex:1408
-#: lib/marshall_web/live/threads_live.ex:2595
+#: lib/marshall_web/live/threads_live.ex:1454
+#: lib/marshall_web/live/threads_live.ex:2719
 #, elixir-autogen, elixir-format
 msgid "Work"
 msgstr "Kazi"
 
-#: lib/marshall_web/live/threads_live.ex:2352
+#: lib/marshall_web/live/threads_live.ex:2459
 #, elixir-autogen, elixir-format
 msgid "Working directory"
 msgstr "Saraka ya kufanya kazi"
 
-#: lib/marshall_web/live/threads_live.ex:1264
+#: lib/marshall_web/live/threads_live.ex:1288
 #, elixir-autogen, elixir-format
 msgid "Workspace context is being collected. Try again shortly."
 msgstr "Muktadha wa nafasi ya kazi unakusanywa. Jaribu tena baada ya muda mfupi."
 
-#: lib/marshall_web/live/threads_live.ex:1266
+#: lib/marshall_web/live/threads_live.ex:1290
 #, elixir-autogen, elixir-format
 msgid "Workspace context is unavailable. Reload it when the machine is ready."
 msgstr "Muktadha wa eneo la kazi haupatikani. Upakie tena mashine ikiwa tayari."
 
-#: lib/marshall_web/live/threads_live.ex:2692
+#: lib/marshall_web/live/threads_live.ex:2831
 #, elixir-autogen, elixir-format
 msgid "Workspace context reloaded"
 msgstr "Muktadha wa nafasi ya kazi umepakiwa upya"
 
-#: lib/marshall_web/live/threads_live.ex:1268
+#: lib/marshall_web/live/threads_live.ex:1295
 #, elixir-autogen, elixir-format
 msgid "Workspace files changed during collection. Reload context and try again."
 msgstr "Faili za nafasi ya kazi zilibadilishwa wakati wa mkusanyiko. Pakia upya muktadha na ujaribu tena."
 
-#: lib/marshall_web/live/threads_live.ex:2640
+#: lib/marshall_web/live/threads_live.ex:2773
 #, elixir-autogen, elixir-format
 msgid "Workspace ready · open the conversation"
 msgstr "Nafasi ya kazi iko tayari · fungua mazungumzo"
 
-#: lib/marshall_web/live/threads_live.ex:2641
+#: lib/marshall_web/live/threads_live.ex:2775
 #, elixir-autogen, elixir-format
 msgid "Workspace setup needs attention"
 msgstr "Usanidi wa nafasi ya kazi unahitaji umakini"
 
-#: lib/marshall_web/live/threads_live.ex:265
+#: lib/marshall_web/live/threads_live.ex:273
 #, elixir-autogen, elixir-format
 msgid "Workspace skill"
 msgstr "Ustadi wa nafasi ya kazi"
 
-#: lib/marshall_web/live/threads_live.ex:2374
+#: lib/marshall_web/live/threads_live.ex:2485
 #, elixir-autogen, elixir-format
 msgid "Workspace source"
 msgstr "Chanzo cha nafasi ya kazi"
 
-#: lib/marshall_web/live/agent_threads_live.ex:229
+#: lib/marshall_web/live/agent_threads_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "You can read these threads. Ask for operator or manager access to send prompts."
 msgstr "Unaweza kusoma mazungumzo haya. Omba ruhusa ya mwendeshaji au msimamizi ili kutuma maagizo."
 
-#: lib/marshall_web/live/threads_live.ex:1297
-#: lib/marshall_web/live/threads_live.ex:1762
+#: lib/marshall_web/live/threads_live.ex:1339
+#: lib/marshall_web/live/threads_live.ex:1827
 #, elixir-autogen, elixir-format
 msgid "You do not have access to this thread."
 msgstr "Huna ufikiaji wa mazungumzo haya."
 
-#: lib/marshall_web/live/threads_live.ex:2021
+#: lib/marshall_web/live/threads_live.ex:2100
 #, elixir-autogen, elixir-format
 msgid "You have read-only access to this thread."
 msgstr "Una idhini ya kusoma tu kwa mazungumzo haya."
 
-#: lib/marshall_web/live/threads_live.ex:1492
+#: lib/marshall_web/live/threads_live.ex:1552
 #, elixir-autogen, elixir-format
 msgid "Your agent's work runs in a dedicated environment."
 msgstr "Kazi ya wakala wako inaendeshwa katika mazingira maalum."
 
-#: lib/marshall_web/live/threads_live.ex:2153
+#: lib/marshall_web/live/threads_live.ex:2248
 #, elixir-autogen, elixir-format
 msgid "Your answer or additional detail"
 msgstr "Jibu lako au maelezo ya ziada"
 
-#: lib/marshall_web/live/threads_live.ex:2690
+#: lib/marshall_web/live/threads_live.ex:2827
 #, elixir-autogen, elixir-format
 msgid "Your answers were received"
 msgstr "Majibu yako yamepokelewa"
 
-#: lib/marshall_web/live/threads_live.ex:2118
+#: lib/marshall_web/live/threads_live.ex:2210
 #, elixir-autogen, elixir-format
 msgid "Your input is needed"
 msgstr "Ingizo lako linahitajika"
 
-#: lib/marshall_web/live/threads_live.ex:2031
+#: lib/marshall_web/live/threads_live.ex:2110
 #, elixir-autogen, elixir-format
 msgid "Your machine is starting. The agent will begin with your objective as soon as it is ready."
 msgstr "Mashine yako inaanza. Wakala ataanza na lengo lako pindi tu kitakapokuwa tayari."
 
-#: lib/marshall_web/live/threads_live.ex:2041
+#: lib/marshall_web/live/threads_live.ex:2122
 #, elixir-autogen, elixir-format
 msgid "Your objective is saved. Retry to prepare the workspace again."
 msgstr "Lengo lako limehifadhiwa. Jaribu tena kuandaa nafasi ya kazi tena."
 
-#: lib/marshall_web/live/threads_live.ex:1515
+#: lib/marshall_web/live/threads_live.ex:1576
 #, elixir-autogen, elixir-format
 msgid "Your threads"
 msgstr "Mazungumzo yako"
 
-#: lib/marshall_web/live/threads_live.ex:2332
+#: lib/marshall_web/live/threads_live.ex:2434
 #, elixir-autogen, elixir-format
 msgid "and"
 msgstr "na"
 
-#: lib/marshall_web/live/threads_live.ex:2333
+#: lib/marshall_web/live/threads_live.ex:2435
 #, elixir-autogen, elixir-format
 msgid "choose a mode and submit the task together. Choosing a mode on a new thread does not create a machine."
 msgstr "chagua hali na uwasilishe kazi pamoja. Kuchagua hali katika mazungumzo mapya hakuundi mashine."
 
-#: lib/marshall_web/live/threads_live.ex:1786
+#: lib/marshall_web/live/threads_live.ex:1854
 #, elixir-autogen, elixir-format
 msgid "· %{value1} reasoning · %{value2}"
 msgstr "· ufikiri wa %{value1} · %{value2}"
 
-#: lib/marshall_web/live/threads_live.ex:2301
+#: lib/marshall_web/live/threads_live.ex:2402
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ chagua · Enter tekeleza · Escape funga"

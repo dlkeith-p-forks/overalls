@@ -1,9 +1,9 @@
 {
   "apps": {
     "overalls_protocol": {
-      "active": 14,
+      "active": 15,
       "coverage": 1.0,
-      "covered": 14
+      "covered": 15
     },
     "system": {
       "active": 0,
@@ -13,10 +13,10 @@
   },
   "components": {
     "overalls_protocol.codecs": {
-      "active": 6,
+      "active": 7,
       "app": "overalls_protocol",
       "coverage": 1.0,
-      "covered": 6,
+      "covered": 7,
       "form": "light",
       "obligations": {
         "overalls_protocol.codecs.I1": {
@@ -77,6 +77,16 @@
           "testable": true,
           "tests": [
             "test address pool rejects reserved slots and pairs inception"
+          ]
+        },
+        "overalls_protocol.codecs.I7": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test application routes refuse secrets, fragments and unknown pages"
           ]
         }
       }
@@ -190,8 +200,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 14,
+    "active": 15,
     "coverage": 1.0,
-    "covered": 14
+    "covered": 15
   }
 }

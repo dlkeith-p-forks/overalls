@@ -296,6 +296,20 @@ maintenance. `MARSHALL_AGENT_NATIVE_COMPACTION_VERIFIED=true` is rejected as a
 global switch. The digest is an operator receipt reference and does not replace
 live provider acceptance evidence.
 
+## Push notification switch
+
+`services.marshall.notifications.enable` (default `true`) reaches Marshall as
+`MARSHALL_NOTIFICATIONS_ENABLED` in both the
+[pre-start and serving wrappers](repo:nix/domains/system/marshall.nix), after
+any `EnvironmentFile`, and [runtime configuration](repo:marshall/config/runtime.exs)
+refuses any other value than `true` or `false`. When false, `device register`
+refuses with `push_disabled` (HTTP 409) and the producer is a no-op; queued
+deliveries drop as `preference_off`. The Susan origin
+`https://notifications.overalls.dev` is a
+[compiled constant](repo:marshall/lib/marshall/notifications/susan.ex) verified
+against the operating-system trust store; only a `MIX_ENV=test` build reads an
+override, so no deployment setting can redirect pokes.
+
 ## Lilly role
 
 Provisioning acceleration has no rollout switches (ADR-0159): per-pool sealed

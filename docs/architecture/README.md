@@ -5,6 +5,22 @@ Noto script fallbacks while retaining JetBrains Mono as the primary grid font.
 It replaces only ADR-0161's exclusive-typeface clause; current packaged script
 rendering remains a separate acceptance obligation.
 
+[ADR-0220](decisions/0220-mila-client-over-porsche-ssh.md) through
+[ADR-0228](decisions/0228-strict-host-certificates-in-mila.md) add Mila, the
+Flutter client for iOS and Android (Linux for testing), which works only through
+one Porsche SSH connection with per-deployment P-256 device keys and strict host
+certificates. They also add canonical `overalls://` routes, the Porsche client
+commands, terminal attach over a Marshall gateway stream, the Susan push relay at
+`https://notifications.overalls.dev` and Marshall's Notifications domain with
+end-to-end encrypted pokes. Susan runs on no fleet host. Marshall reaches it
+only at the compiled origin, sending a canonical poke body that its install
+identity signs. Status is in the
+[M1](reviews/2026-10-18-mila-m1.md), [device](reviews/2026-10-18-mila-device.md),
+[notifications](reviews/2026-10-18-mila-notifications.md),
+[terminal attach](reviews/2026-10-19-mila-terminal-attach.md),
+[Susan](reviews/2026-10-19-susan-push-relay.md) and
+[M6](reviews/2026-10-19-mila-m6.md) reviews; all nine decisions are partial.
+
 [ADR-0205](decisions/0205-overview-newsletter.md) accepts a durable account-wide Overview newsletter invitation and fixed server-side Ghost subscription path; implementation remains partial.
 
 [ADR-0204](decisions/0204-git-attribution-and-guest-identity.md) preserves the reconciled duplicate Git attribution decision and its settings-page evidence; implementation remains partial.

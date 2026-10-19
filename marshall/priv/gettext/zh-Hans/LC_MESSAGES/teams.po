@@ -14,43 +14,43 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/teams_live.ex:203
+#: lib/marshall_web/live/teams_live.ex:212
 #, elixir-autogen, elixir-format
 msgid "%{count} member"
 msgid_plural "%{count} members"
 msgstr[0] "%{count} 位成员"
 
-#: lib/marshall_web/live/teams_live.ex:270
+#: lib/marshall_web/live/teams_live.ex:283
 #, elixir-autogen, elixir-format
 msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
 msgstr "每个团队只有一位所有者。只有接收方接受后才会转移所有权；原所有者将成为管理员。"
 
-#: lib/marshall_web/live/teams_live.ex:327
+#: lib/marshall_web/live/teams_live.ex:341
 #, elixir-autogen, elixir-format
 msgid "Accept ownership"
 msgstr "接受所有权"
 
-#: lib/marshall_web/live/teams_live.ex:245
+#: lib/marshall_web/live/teams_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Add, change or remove a member"
 msgstr "添加、修改或移除成员"
 
-#: lib/marshall_web/live/teams_live.ex:257
+#: lib/marshall_web/live/teams_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "管理"
 
-#: lib/marshall_web/live/teams_live.ex:372
+#: lib/marshall_web/live/teams_live.ex:392
 #, elixir-autogen, elixir-format
 msgid "Administrator"
 msgstr "管理员"
 
-#: lib/marshall_web/live/teams_live.ex:218
+#: lib/marshall_web/live/teams_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Can"
 msgstr "可以"
 
-#: lib/marshall_web/live/teams_live.ex:347
+#: lib/marshall_web/live/teams_live.ex:361
 #, elixir-autogen, elixir-format
 msgid "Cancel offer"
 msgstr "取消转让邀请"
@@ -70,50 +70,50 @@ msgstr "无法发出所有权转让邀请。"
 msgid "Could not update this membership."
 msgstr "无法更新此成员关系。"
 
-#: lib/marshall_web/live/teams_live.ex:110
+#: lib/marshall_web/live/teams_live.ex:113
 #, elixir-autogen, elixir-format
 msgid "Could not update this ownership offer."
 msgstr "无法更新此所有权转让邀请。"
 
-#: lib/marshall_web/live/teams_live.ex:358
+#: lib/marshall_web/live/teams_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "Create a team"
 msgstr "创建团队"
 
-#: lib/marshall_web/live/teams_live.ex:362
+#: lib/marshall_web/live/teams_live.ex:382
 #, elixir-autogen, elixir-format
 msgid "Create team"
 msgstr "创建团队"
 
-#: lib/marshall_web/live/teams_live.ex:337
+#: lib/marshall_web/live/teams_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "拒绝"
 
-#: lib/marshall_web/live/teams_live.ex:377
+#: lib/marshall_web/live/teams_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "Everything, including appointing admins and offering ownership."
 msgstr "全部权限，包括任命管理员和转让所有权。"
 
 #: lib/marshall_web/live/teams_live.ex:44
-#: lib/marshall_web/live/teams_live.ex:115
+#: lib/marshall_web/live/teams_live.ex:118
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "无效请求。"
 
-#: lib/marshall_web/live/teams_live.ex:379
+#: lib/marshall_web/live/teams_live.ex:399
 #, elixir-autogen, elixir-format
 msgid "Manage members and team machines."
 msgstr "管理成员和团队机器。"
 
-#: lib/marshall_web/live/teams_live.ex:216
-#: lib/marshall_web/live/teams_live.ex:258
-#: lib/marshall_web/live/teams_live.ex:373
+#: lib/marshall_web/live/teams_live.ex:226
+#: lib/marshall_web/live/teams_live.ex:268
+#: lib/marshall_web/live/teams_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "Member"
 msgstr "成员"
 
-#: lib/marshall_web/live/teams_live.ex:211
+#: lib/marshall_web/live/teams_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Members"
 msgstr "成员"
@@ -123,37 +123,37 @@ msgstr "成员"
 msgid "Membership updated."
 msgstr "成员关系已更新。"
 
-#: lib/marshall_web/live/teams_live.ex:352
+#: lib/marshall_web/live/teams_live.ex:366
 #, elixir-autogen, elixir-format
 msgid "No pending ownership offer."
 msgstr "没有待处理的所有权转让邀请。"
 
-#: lib/marshall_web/live/teams_live.ex:286
+#: lib/marshall_web/live/teams_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Offer ownership"
 msgstr "转让所有权"
 
-#: lib/marshall_web/live/teams_live.ex:283
+#: lib/marshall_web/live/teams_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "Offer ownership to"
 msgstr "将所有权转让给"
 
-#: lib/marshall_web/live/teams_live.ex:290
+#: lib/marshall_web/live/teams_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Offered by"
 msgstr "邀请发出者"
 
-#: lib/marshall_web/live/teams_live.ex:299
+#: lib/marshall_web/live/teams_live.ex:313
 #, elixir-autogen, elixir-format
 msgid "Offered to"
 msgstr "邀请接收者"
 
-#: lib/marshall_web/live/teams_live.ex:371
+#: lib/marshall_web/live/teams_live.ex:391
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "所有者"
 
-#: lib/marshall_web/live/teams_live.ex:268
+#: lib/marshall_web/live/teams_live.ex:281
 #, elixir-autogen, elixir-format
 msgid "Ownership"
 msgstr "所有权"
@@ -163,43 +163,43 @@ msgstr "所有权"
 msgid "Ownership offer sent."
 msgstr "所有权转让邀请已发送。"
 
-#: lib/marshall_web/live/teams_live.ex:107
+#: lib/marshall_web/live/teams_live.ex:109
 #, elixir-autogen, elixir-format
 msgid "Ownership offer updated."
 msgstr "所有权转让邀请已更新。"
 
-#: lib/marshall_web/live/teams_live.ex:313
+#: lib/marshall_web/live/teams_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Ownership offered by %{value1} to %{value2}."
 msgstr "%{value1} 已邀请 %{value2} 接受所有权。"
 
-#: lib/marshall_web/live/teams_live.ex:249
+#: lib/marshall_web/live/teams_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "已登记邮箱"
 
-#: lib/marshall_web/live/teams_live.ex:259
+#: lib/marshall_web/live/teams_live.ex:269
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "移除"
 
-#: lib/marshall_web/live/teams_live.ex:217
-#: lib/marshall_web/live/teams_live.ex:254
+#: lib/marshall_web/live/teams_live.ex:227
+#: lib/marshall_web/live/teams_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "角色"
 
-#: lib/marshall_web/live/teams_live.ex:264
+#: lib/marshall_web/live/teams_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Save member"
 msgstr "保存成员"
 
-#: lib/marshall_web/live/teams_live.ex:180
+#: lib/marshall_web/live/teams_live.ex:183
 #, elixir-autogen, elixir-format
 msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
 msgstr "与同事共享机器和集成。所有者任命管理员，管理员管理成员。"
 
-#: lib/marshall_web/live/teams_live.ex:308
+#: lib/marshall_web/live/teams_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "状态"
@@ -209,58 +209,58 @@ msgstr "状态"
 msgid "Team %{value1} created."
 msgstr "团队 %{value1} 已创建。"
 
-#: lib/marshall_web/live/teams_live.ex:360
+#: lib/marshall_web/live/teams_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Team name"
 msgstr "团队名称"
 
-#: lib/marshall_web/live/teams_live.ex:178
+#: lib/marshall_web/live/teams_live.ex:181
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "团队"
 
-#: lib/marshall_web/live/teams_live.ex:126
+#: lib/marshall_web/live/teams_live.ex:129
 #, elixir-autogen, elixir-format
 msgid "Teams are temporarily unavailable."
 msgstr "团队暂不可用。"
 
-#: lib/marshall_web/live/teams_live.ex:380
+#: lib/marshall_web/live/teams_live.ex:400
 #, elixir-autogen, elixir-format
 msgid "Use team machines and integrations."
 msgstr "使用团队机器和集成。"
 
-#: lib/marshall_web/live/teams_live.ex:186
+#: lib/marshall_web/live/teams_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
 msgstr "你尚未加入团队。请在下方创建团队，或请团队管理员添加你。"
 
-#: lib/marshall_web/live/teams_live.ex:359
+#: lib/marshall_web/live/teams_live.ex:374
 #, elixir-autogen, elixir-format
 msgid "You become its owner and can add members straight away."
 msgstr "你将成为所有者，并可立即添加成员。"
 
-#: lib/marshall_web/live/teams_live.ex:203
+#: lib/marshall_web/live/teams_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Your role: %{role}"
 msgstr "你的角色：%{role}"
 
-#: lib/marshall_web/live/teams_live.ex:189
+#: lib/marshall_web/live/teams_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "Your teams"
 msgstr "你的团队"
 
-#: lib/marshall_web/live/teams_live.ex:309
+#: lib/marshall_web/live/teams_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "pending"
 msgstr "待处理"
 
-#: lib/marshall_web/live/teams_live.ex:360
+#: lib/marshall_web/live/teams_live.ex:379
 #, elixir-autogen, elixir-format
 msgid "platform"
 msgstr "平台"
 
-#: lib/marshall_web/live/teams_live.ex:250
-#: lib/marshall_web/live/teams_live.ex:284
+#: lib/marshall_web/live/teams_live.ex:260
+#: lib/marshall_web/live/teams_live.ex:298
 #, elixir-autogen, elixir-format
 msgid "teammate@example.test"
 msgstr "teammate@example.test"

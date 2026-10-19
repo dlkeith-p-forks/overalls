@@ -14,126 +14,126 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/integrations_live.ex:324
+#: lib/marshall_web/live/integrations_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "**** (write-only)"
 msgstr "**** (書き込み専用)"
 
-#: lib/marshall_web/live/integrations_live.ex:342
+#: lib/marshall_web/live/integrations_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "アクション"
 
-#: lib/marshall_web/live/integrations_live.ex:386
+#: lib/marshall_web/live/integrations_live.ex:421
 #, elixir-autogen, elixir-format
 msgid "Add an integration"
 msgstr "統合を追加する"
 
-#: lib/marshall_web/live/integrations_live.ex:267
-#: lib/marshall_web/live/integrations_live.ex:380
+#: lib/marshall_web/live/integrations_live.ex:288
+#: lib/marshall_web/live/integrations_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "添付する"
 
-#: lib/marshall_web/live/integrations_live.ex:377
+#: lib/marshall_web/live/integrations_live.ex:412
 #, elixir-autogen, elixir-format
 msgid "Attach a machine by ID"
 msgstr "ID でマシンを接続する"
 
-#: lib/marshall_web/live/integrations_live.ex:129
+#: lib/marshall_web/live/integrations_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "Awaiting GitHub authorization"
 msgstr "GitHubの認証を待っています"
 
-#: lib/marshall_web/live/integrations_live.ex:420
+#: lib/marshall_web/live/integrations_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Basic user:pass"
 msgstr "基本ユーザー:パス"
 
-#: lib/marshall_web/live/integrations_live.ex:414
+#: lib/marshall_web/live/integrations_live.ex:450
 #, elixir-autogen, elixir-format
 msgid "Bearer token"
 msgstr "無記名トークン"
 
-#: lib/marshall_web/live/integrations_live.ex:312
-#: lib/marshall_web/live/integrations_live.ex:400
+#: lib/marshall_web/live/integrations_live.ex:334
+#: lib/marshall_web/live/integrations_live.ex:436
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "コメント"
 
-#: lib/marshall_web/live/integrations_live.ex:230
+#: lib/marshall_web/live/integrations_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Connect GitHub"
 msgstr "GitHubを接続"
 
-#: lib/marshall_web/live/integrations_live.ex:215
+#: lib/marshall_web/live/integrations_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
 msgstr "Git、プルリクエスト、Actions、リリースなどの開発ワークフローで使用するGitHubアカウントを接続します。GitHubの認証情報はエッジに保持されます。"
 
-#: lib/marshall_web/live/integrations_live.ex:126
-#: lib/marshall_web/live/integrations_live.ex:127
+#: lib/marshall_web/live/integrations_live.ex:142
+#: lib/marshall_web/live/integrations_live.ex:143
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "接続済み"
 
-#: lib/marshall_web/live/integrations_live.ex:225
+#: lib/marshall_web/live/integrations_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Connected as %{login}"
 msgstr "%{login}として接続済み"
 
-#: lib/marshall_web/live/integrations_live.ex:82
+#: lib/marshall_web/live/integrations_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Could not attach that machine."
 msgstr "そのマシンを接続できませんでした。"
 
-#: lib/marshall_web/live/integrations_live.ex:95
+#: lib/marshall_web/live/integrations_live.ex:107
 #, elixir-autogen, elixir-format
 msgid "Could not detach that machine."
 msgstr "そのマシンを切り離せませんでした。"
 
-#: lib/marshall_web/live/integrations_live.ex:69
+#: lib/marshall_web/live/integrations_live.ex:75
 #, elixir-autogen, elixir-format
 msgid "Could not remove this integration."
 msgstr "この統合を削除できませんでした。"
 
-#: lib/marshall_web/live/integrations_live.ex:55
+#: lib/marshall_web/live/integrations_live.ex:58
 #, elixir-autogen, elixir-format
 msgid "Could not save this integration. Check the name, HTTPS target and header values."
 msgstr "この統合を保存できませんでした。名前、HTTPS ターゲット、ヘッダー値を確認してください。"
 
-#: lib/marshall_web/live/integrations_live.ex:409
+#: lib/marshall_web/live/integrations_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "Credentials"
 msgstr "資格"
 
-#: lib/marshall_web/live/integrations_live.ex:258
-#: lib/marshall_web/live/integrations_live.ex:358
+#: lib/marshall_web/live/integrations_live.ex:279
+#: lib/marshall_web/live/integrations_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "Detach"
 msgstr "切り離す"
 
-#: lib/marshall_web/live/integrations_live.ex:240
+#: lib/marshall_web/live/integrations_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub"
 msgstr "GitHubを切断"
 
-#: lib/marshall_web/live/integrations_live.ex:237
+#: lib/marshall_web/live/integrations_live.ex:256
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub from your machines?"
 msgstr "マシンからGitHubの接続を解除しますか？"
 
-#: lib/marshall_web/live/integrations_live.ex:128
+#: lib/marshall_web/live/integrations_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
 msgstr "未接続"
 
-#: lib/marshall_web/live/integrations_live.ex:133
+#: lib/marshall_web/live/integrations_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Disconnecting GitHub"
 msgstr "GitHubを切断中"
 
-#: lib/marshall_web/live/integrations_live.ex:130
+#: lib/marshall_web/live/integrations_live.ex:146
 #, elixir-autogen, elixir-format
 msgid "Finishing active GitHub requests"
 msgstr "処理中のGitHubリクエストを完了しています"
@@ -143,237 +143,237 @@ msgstr "処理中のGitHubリクエストを完了しています"
 msgid "GitHub connected."
 msgstr "GitHubに接続しました。"
 
-#: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:65
 #, elixir-autogen, elixir-format
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "GitHubに接続できませんでした。「連携」からもう一度お試しください。"
 
-#: lib/marshall_web/live/integrations_live.ex:405
+#: lib/marshall_web/live/integrations_live.ex:441
 #, elixir-autogen, elixir-format
 msgid "HTTPS target"
 msgstr "HTTPS ターゲット"
 
-#: lib/marshall_web/live/integrations_live.ex:319
+#: lib/marshall_web/live/integrations_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Injected credentials"
 msgstr "挿入された認証情報"
 
-#: lib/marshall_web/live/integrations_live.ex:47
+#: lib/marshall_web/live/integrations_live.ex:49
 #, elixir-autogen, elixir-format
 msgid "Integration %{value1} saved."
 msgstr "統合 %{value1} が保存されました。"
 
-#: lib/marshall_web/live/integrations_live.ex:65
+#: lib/marshall_web/live/integrations_live.ex:70
 #, elixir-autogen, elixir-format
 msgid "Integration removed."
 msgstr "統合が削除されました。"
 
-#: lib/marshall_web/live/integrations_live.ex:201
+#: lib/marshall_web/live/integrations_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "統合"
 
-#: lib/marshall_web/live/integrations_live.ex:121
+#: lib/marshall_web/live/integrations_live.ex:136
 #, elixir-autogen, elixir-format
 msgid "Integrations are temporarily unavailable."
 msgstr "統合は一時的に利用できなくなります。"
 
-#: lib/marshall_web/live/integrations_live.ex:100
+#: lib/marshall_web/live/integrations_live.ex:113
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "無効なリクエストです。"
 
-#: lib/marshall_web/live/integrations_live.ex:341
+#: lib/marshall_web/live/integrations_live.ex:374
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "機械"
 
-#: lib/marshall_web/live/integrations_live.ex:255
-#: lib/marshall_web/live/integrations_live.ex:378
+#: lib/marshall_web/live/integrations_live.ex:276
+#: lib/marshall_web/live/integrations_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "Machine UUID"
 msgstr "マシンのUUID"
 
-#: lib/marshall_web/live/integrations_live.ex:78
+#: lib/marshall_web/live/integrations_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Machine attached."
 msgstr "機械が取り付けられています。"
 
-#: lib/marshall_web/live/integrations_live.ex:91
+#: lib/marshall_web/live/integrations_live.ex:102
 #, elixir-autogen, elixir-format
 msgid "Machine detached."
 msgstr "機械が切り離されました。"
 
-#: lib/marshall_web/live/integrations_live.ex:244
+#: lib/marshall_web/live/integrations_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Machines excluded from your GitHub identity"
 msgstr "あなたのGitHubアカウントの利用対象から除外するマシン"
 
-#: lib/marshall_web/live/integrations_live.ex:328
+#: lib/marshall_web/live/integrations_live.ex:355
 #, elixir-autogen, elixir-format
 msgid "Machines with access"
 msgstr "アクセス可能なマシン"
 
-#: lib/marshall_web/live/integrations_live.ex:395
+#: lib/marshall_web/live/integrations_live.ex:431
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "名前"
 
-#: lib/marshall_web/live/integrations_live.ex:388
+#: lib/marshall_web/live/integrations_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
 msgstr ""
 "エンドポイントに名前を付けて HTTPS API "
 "を指すようにするか、別のマシンへのピア接続としてマークします。シークレットは書き込み専用です。シークレットは挿入用に保存され、再度表示されることはありません。"
 
-#: lib/marshall_web/live/integrations_live.ex:203
+#: lib/marshall_web/live/integrations_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
 msgstr ""
 "マシンが到達する名前付きエンドポイント "
 "(https://NAME.integration.internal)。資格情報はエッジで挿入され、マシンからは決して読み取ることができません。"
 
-#: lib/marshall_web/live/integrations_live.ex:333
+#: lib/marshall_web/live/integrations_live.ex:360
 #, elixir-autogen, elixir-format
 msgid "No explicit attachments. Current team members' machines have access."
 msgstr "明示的な添付ファイルはありません。現在のチーム メンバーのマシンはアクセスできます。"
 
-#: lib/marshall_web/live/integrations_live.ex:321
+#: lib/marshall_web/live/integrations_live.ex:347
 #, elixir-autogen, elixir-format
 msgid "No injected headers."
 msgstr "挿入されたヘッダーはありません。"
 
-#: lib/marshall_web/live/integrations_live.ex:274
+#: lib/marshall_web/live/integrations_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
 msgstr "まだ統合はありません。以下に 1 つを追加して、マシンに API または別のマシンへの名前付き接続を与えます。"
 
-#: lib/marshall_web/live/integrations_live.ex:335
+#: lib/marshall_web/live/integrations_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "No machines have access. Attach a machine to use this integration."
 msgstr "アクセスできるマシンはありません。この統合を使用するにはマシンを接続します。"
 
-#: lib/marshall_web/live/integrations_live.ex:307
+#: lib/marshall_web/live/integrations_live.ex:329
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "所有者"
 
-#: lib/marshall_web/live/integrations_live.ex:453
+#: lib/marshall_web/live/integrations_live.ex:493
 #, elixir-autogen, elixir-format
 msgid "Peer integration"
 msgstr "ピア統合"
 
-#: lib/marshall_web/live/integrations_live.ex:304
+#: lib/marshall_web/live/integrations_live.ex:326
 #, elixir-autogen, elixir-format
 msgid "Peer machine"
 msgstr "ピアマシン"
 
-#: lib/marshall_web/live/integrations_live.ex:456
+#: lib/marshall_web/live/integrations_live.ex:498
 #, elixir-autogen, elixir-format
 msgid "Peer machine ID"
 msgstr "ピアマシンID"
 
-#: lib/marshall_web/live/integrations_live.ex:310
+#: lib/marshall_web/live/integrations_live.ex:332
 #, elixir-autogen, elixir-format
 msgid "Personal integration"
 msgstr "個人的な統合"
 
-#: lib/marshall_web/live/integrations_live.ex:132
+#: lib/marshall_web/live/integrations_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "Reconnect required"
 msgstr "再接続が必要です"
 
-#: lib/marshall_web/live/integrations_live.ex:131
+#: lib/marshall_web/live/integrations_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "Refreshing GitHub connection"
 msgstr "GitHub接続を更新中"
 
-#: lib/marshall_web/live/integrations_live.ex:295
+#: lib/marshall_web/live/integrations_live.ex:317
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "取り除く"
 
-#: lib/marshall_web/live/integrations_live.ex:292
+#: lib/marshall_web/live/integrations_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Remove this integration?"
 msgstr "この統合を削除しますか?"
 
-#: lib/marshall_web/live/integrations_live.ex:457
+#: lib/marshall_web/live/integrations_live.ex:499
 #, elixir-autogen, elixir-format
 msgid "Required for peer integrations"
 msgstr "ピア統合に必要"
 
-#: lib/marshall_web/live/integrations_live.ex:438
+#: lib/marshall_web/live/integrations_live.ex:475
 #, elixir-autogen, elixir-format
 msgid "Routing, team ownership and peer connections"
 msgstr "ルーティング、チームの所有権、ピア接続"
 
-#: lib/marshall_web/live/integrations_live.ex:463
+#: lib/marshall_web/live/integrations_live.ex:505
 #, elixir-autogen, elixir-format
 msgid "Save integration"
 msgstr "統合の保存"
 
-#: lib/marshall_web/live/integrations_live.ex:401
+#: lib/marshall_web/live/integrations_live.ex:437
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
 msgstr "ゲストのリフレクション用の短い説明"
 
-#: lib/marshall_web/live/integrations_live.ex:427
+#: lib/marshall_web/live/integrations_live.ex:463
 #, elixir-autogen, elixir-format
 msgid "Static header name"
 msgstr "静的ヘッダー名"
 
-#: lib/marshall_web/live/integrations_live.ex:433
+#: lib/marshall_web/live/integrations_live.ex:469
 #, elixir-autogen, elixir-format
 msgid "Static header value"
 msgstr "静的ヘッダー値"
 
-#: lib/marshall_web/live/integrations_live.ex:443
+#: lib/marshall_web/live/integrations_live.ex:481
 #, elixir-autogen, elixir-format
 msgid "Strip prefix"
 msgstr "ストリッププレフィックス"
 
-#: lib/marshall_web/live/integrations_live.ex:315
+#: lib/marshall_web/live/integrations_live.ex:339
 #, elixir-autogen, elixir-format
 msgid "Strips prefix"
 msgstr "接頭辞を削除します"
 
-#: lib/marshall_web/live/integrations_live.ex:301
+#: lib/marshall_web/live/integrations_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "ターゲット"
 
-#: lib/marshall_web/live/integrations_live.ex:309
+#: lib/marshall_web/live/integrations_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Team %{team}"
 msgstr "チーム%{team}"
 
-#: lib/marshall_web/live/integrations_live.ex:448
+#: lib/marshall_web/live/integrations_live.ex:486
 #, elixir-autogen, elixir-format
 msgid "Team ID"
 msgstr "チームID"
 
-#: lib/marshall_web/live/integrations_live.ex:449
+#: lib/marshall_web/live/integrations_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "Team-owned integration"
 msgstr "チーム所有の統合"
 
-#: lib/marshall_web/live/integrations_live.ex:134
+#: lib/marshall_web/live/integrations_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Temporarily unavailable"
 msgstr "一時的に利用できません"
 
-#: lib/marshall_web/live/integrations_live.ex:220
+#: lib/marshall_web/live/integrations_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "マシンは、接続したあなたのGitHubアカウントを自動的に使用します。共有マシンを使用する共同作業者は、その所有者のGitHub権限を使用できます。切り離されたマシンでも、GitHubの公開リソースには匿名で引き続きアクセスできます。"
 
-#: lib/marshall_web/live/integrations_live.ex:396
+#: lib/marshall_web/live/integrations_live.ex:432
 #, elixir-autogen, elixir-format
 msgid "example-integration"
 msgstr "example-integration"
 
-#: lib/marshall_web/live/integrations_live.ex:428
+#: lib/marshall_web/live/integrations_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"

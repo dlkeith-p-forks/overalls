@@ -28,7 +28,7 @@ msgstr ""
 msgid "+ New"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:722
+#: lib/marshall_web/live/terminal_live.ex:723
 #, elixir-autogen, elixir-format
 msgid "A+"
 msgstr ""
@@ -38,12 +38,12 @@ msgstr ""
 msgid "Access"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:789
+#: lib/marshall_web/live/terminal_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Account email"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:796
+#: lib/marshall_web/live/terminal_live.ex:797
 #, elixir-autogen, elixir-format
 msgid "Allow viewing"
 msgstr ""
@@ -69,7 +69,7 @@ msgstr ""
 msgid "Android display is unavailable."
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:717
+#: lib/marshall_web/live/terminal_live.ex:718
 #, elixir-autogen, elixir-format
 msgid "A−"
 msgstr ""
@@ -80,12 +80,12 @@ msgstr ""
 msgid "Boot log"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:802
+#: lib/marshall_web/live/terminal_live.ex:803
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:757
+#: lib/marshall_web/live/terminal_live.ex:758
 #, elixir-autogen, elixir-format
 msgid "Close search"
 msgstr ""
@@ -105,7 +105,7 @@ msgstr ""
 msgid "Connect from your computer"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:694
+#: lib/marshall_web/live/terminal_live.ex:695
 #, elixir-autogen, elixir-format
 msgid "Connecting…"
 msgstr ""
@@ -143,7 +143,7 @@ msgstr ""
 msgid "Customer"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:716
+#: lib/marshall_web/live/terminal_live.ex:717
 #, elixir-autogen, elixir-format
 msgid "Decrease terminal font size"
 msgstr ""
@@ -163,8 +163,8 @@ msgstr ""
 msgid "Display relay ticket issued."
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:727
-#: lib/marshall_web/live/terminal_live.ex:729
+#: lib/marshall_web/live/terminal_live.ex:728
+#: lib/marshall_web/live/terminal_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr ""
@@ -174,12 +174,12 @@ msgstr ""
 msgid "Failed"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:742
+#: lib/marshall_web/live/terminal_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Find in scrollback"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:764
+#: lib/marshall_web/live/terminal_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Follow boot output"
 msgstr ""
@@ -189,7 +189,7 @@ msgstr ""
 msgid "ID"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:721
+#: lib/marshall_web/live/terminal_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Increase terminal font size"
 msgstr ""
@@ -239,7 +239,7 @@ msgstr ""
 msgid "Machine workspace"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:752
+#: lib/marshall_web/live/terminal_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Next match"
 msgstr ""
@@ -309,12 +309,12 @@ msgstr ""
 msgid "Preparing your terminal…"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:747
+#: lib/marshall_web/live/terminal_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Previous match"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:772
+#: lib/marshall_web/live/terminal_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Read-only boot console"
 msgstr ""
@@ -329,12 +329,12 @@ msgstr ""
 msgid "Reconnecting to the terminal service…"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:705
+#: lib/marshall_web/live/terminal_live.ex:706
 #, elixir-autogen, elixir-format
 msgid "Rename in this browser"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:704
+#: lib/marshall_web/live/terminal_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "Rename terminal"
 msgstr ""
@@ -360,7 +360,7 @@ msgstr ""
 msgid "Resuming machine; waiting for capacity…"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:799
+#: lib/marshall_web/live/terminal_live.ex:800
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr ""
@@ -380,17 +380,17 @@ msgstr ""
 msgid "SSH connection requires write access to this machine."
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:711
+#: lib/marshall_web/live/terminal_live.ex:712
 #, elixir-autogen, elixir-format
 msgid "Search (Ctrl+F)"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:710
+#: lib/marshall_web/live/terminal_live.ex:711
 #, elixir-autogen, elixir-format
 msgid "Search scrollback"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:734
+#: lib/marshall_web/live/terminal_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Search terminal scrollback"
 msgstr ""
@@ -405,7 +405,7 @@ msgstr ""
 msgid "Share terminal %{value1}"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:780
+#: lib/marshall_web/live/terminal_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "Share this terminal"
 msgstr ""
@@ -539,7 +539,7 @@ msgstr ""
 msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:697
+#: lib/marshall_web/live/terminal_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr ""
@@ -586,7 +586,7 @@ msgstr ""
 msgid "VS Code requires a running machine."
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:782
+#: lib/marshall_web/live/terminal_live.ex:783
 #, elixir-autogen, elixir-format
 msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
 msgstr ""
@@ -631,17 +631,17 @@ msgstr ""
 msgid "Your terminal will open when the machine is running and ready."
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:712
+#: lib/marshall_web/live/terminal_live.ex:713
 #, elixir-autogen, elixir-format
 msgid "find"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:730
+#: lib/marshall_web/live/terminal_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "full"
 msgstr ""
 
-#: lib/marshall_web/live/terminal_live.ex:706
+#: lib/marshall_web/live/terminal_live.ex:707
 #, elixir-autogen, elixir-format
 msgid "rename"
 msgstr ""

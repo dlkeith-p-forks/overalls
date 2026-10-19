@@ -101,6 +101,48 @@ defmodule Porsche.RunnerTest do
     end
   end
 
+  test "device refusals keep their closed reason and add a fixed next-step hint" do
+    for {reason, hint} <- [
+          push_disabled: "push notifications turned off",
+          device_limit: "device rm"
+        ] do
+      {options, state} = script([{:error, reason}])
+
+      result =
+        Runner.run(
+          client(),
+          "s",
+          "device rm 5d7a6f0e-2b1c-4e8f-9a3d-6c0b1e2f3a4b --request-id #{@id}",
+          options
+        )
+
+      assert result.exit_status == 2
+      assert result.response["error"] == Atom.to_string(reason)
+      assert result.response["hint"] =~ hint
+      assert length(state.().calls) == 1
+    end
+
+    {options, _state} = script([{:error, :not_found}])
+
+    assert %{exit_status: 2} =
+             Runner.run(
+               client(),
+               "s",
+               "device prefs 5d7a6f0e-2b1c-4e8f-9a3d-6c0b1e2f3a4b --enabled false",
+               options
+             )
+
+    # A push key placeholder must be replaced from stdin before dispatch.
+    enc = Base.url_encode64(:binary.copy(<<5>>, 32), padding: false)
+
+    assert %{exit_status: 2, response: %{"error" => "stdin_secret_required"}} =
+             Runner.run(
+               client(),
+               "s",
+               "device register --platform ios --push-key - --enc-pubkey #{enc}"
+             )
+  end
+
   test "pin refusals keep their closed reason and add a fixed next-step hint" do
     {options, state} = script([{:error, :machine_pinned}])
     result = Runner.run(client(), "s", "rm pinned-machine --request-id #{@id}", options)

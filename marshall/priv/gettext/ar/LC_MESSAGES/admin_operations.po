@@ -14,199 +14,199 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
 
-#: lib/marshall_web/live/admin/operations_live.ex:222
+#: lib/marshall_web/live/admin/operations_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "%{count} · %{enabled} enabled"
 msgstr "%{count} · المفعّل %{enabled}"
 
-#: lib/marshall_web/live/admin/operations_live.ex:127
+#: lib/marshall_web/live/admin/operations_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Addresses"
 msgstr "العناوين"
 
-#: lib/marshall_web/live/admin/operations_live.ex:79
+#: lib/marshall_web/live/admin/operations_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Architecture"
 msgstr "البنية المعمارية"
 
-#: lib/marshall_web/live/admin/operations_live.ex:68
-#: lib/marshall_web/live/admin/operations_live.ex:118
+#: lib/marshall_web/live/admin/operations_live.ex:78
+#: lib/marshall_web/live/admin/operations_live.ex:138
 #, elixir-autogen, elixir-format
 msgid "Audi services"
 msgstr "خدمات Audi"
 
-#: lib/marshall_web/live/admin/operations_live.ex:151
+#: lib/marshall_web/live/admin/operations_live.ex:173
 #, elixir-autogen, elixir-format
 msgid "Certificate expires"
 msgstr "انتهاء الشهادة"
 
-#: lib/marshall_web/live/admin/operations_live.ex:236
+#: lib/marshall_web/live/admin/operations_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "DNS"
 msgstr "DNS"
 
-#: lib/marshall_web/live/admin/operations_live.ex:70
-#: lib/marshall_web/live/admin/operations_live.ex:156
+#: lib/marshall_web/live/admin/operations_live.ex:84
+#: lib/marshall_web/live/admin/operations_live.ex:178
 #, elixir-autogen, elixir-format
 msgid "DNS publications"
 msgstr "منشورات DNS"
 
-#: lib/marshall_web/live/admin/operations_live.ex:212
+#: lib/marshall_web/live/admin/operations_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Disabled"
 msgstr "معطّل"
 
-#: lib/marshall_web/live/admin/operations_live.ex:212
+#: lib/marshall_web/live/admin/operations_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "مفعّل"
 
-#: lib/marshall_web/live/admin/operations_live.ex:103
-#: lib/marshall_web/live/admin/operations_live.ex:237
+#: lib/marshall_web/live/admin/operations_live.ex:123
+#: lib/marshall_web/live/admin/operations_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "Gateway"
 msgstr "البوابة"
 
-#: lib/marshall_web/live/admin/operations_live.ex:104
-#: lib/marshall_web/live/admin/operations_live.ex:126
+#: lib/marshall_web/live/admin/operations_live.ex:124
+#: lib/marshall_web/live/admin/operations_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "Generation"
 msgstr "الجيل"
 
-#: lib/marshall_web/live/admin/operations_live.ex:78
+#: lib/marshall_web/live/admin/operations_live.ex:96
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "الصورة"
 
-#: lib/marshall_web/live/admin/operations_live.ex:72
+#: lib/marshall_web/live/admin/operations_live.ex:88
 #, elixir-autogen, elixir-format
 msgid "Image catalog"
 msgstr "كتالوج الصور"
 
-#: lib/marshall_web/live/admin/operations_live.ex:66
+#: lib/marshall_web/live/admin/operations_live.ex:74
 #, elixir-autogen, elixir-format
 msgid "Images"
 msgstr "الصور"
 
-#: lib/marshall_web/live/admin/operations_live.ex:69
-#: lib/marshall_web/live/admin/operations_live.ex:143
+#: lib/marshall_web/live/admin/operations_live.ex:81
+#: lib/marshall_web/live/admin/operations_live.ex:165
 #, elixir-autogen, elixir-format
 msgid "Ingress routes"
 msgstr "مسارات الدخول"
 
-#: lib/marshall_web/live/admin/operations_live.ex:149
+#: lib/marshall_web/live/admin/operations_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "الآلة"
 
-#: lib/marshall_web/live/admin/operations_live.ex:80
+#: lib/marshall_web/live/admin/operations_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "Minimum RAM"
 msgstr "الحد الأدنى للذاكرة"
 
-#: lib/marshall_web/live/admin/operations_live.ex:81
+#: lib/marshall_web/live/admin/operations_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Minimum disk"
 msgstr "الحد الأدنى للقرص"
 
-#: lib/marshall_web/live/admin/operations_live.ex:119
+#: lib/marshall_web/live/admin/operations_live.ex:140
 #, elixir-autogen, elixir-format
 msgid "No Audi services enrolled."
 msgstr "لا توجد خدمات Audi مسجلة."
 
-#: lib/marshall_web/live/admin/operations_live.ex:160
+#: lib/marshall_web/live/admin/operations_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "No DNS publications are recorded."
 msgstr "لم تُسجّل منشورات DNS."
 
-#: lib/marshall_web/live/admin/operations_live.ex:98
+#: lib/marshall_web/live/admin/operations_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "No gateways enrolled."
 msgstr "لا توجد بوابات مسجلة."
 
-#: lib/marshall_web/live/admin/operations_live.ex:73
+#: lib/marshall_web/live/admin/operations_live.ex:90
 #, elixir-autogen, elixir-format
 msgid "No images in the catalog."
 msgstr "لا توجد صور في الكتالوج."
 
-#: lib/marshall_web/live/admin/operations_live.ex:147
+#: lib/marshall_web/live/admin/operations_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "No ingress routes are published."
 msgstr "لا توجد مسارات دخول منشورة."
 
-#: lib/marshall_web/live/admin/operations_live.ex:25
+#: lib/marshall_web/live/admin/operations_live.ex:31
 #, elixir-autogen, elixir-format
 msgid "Operational status is temporarily unavailable."
 msgstr "حالة التشغيل غير متاحة مؤقتًا."
 
-#: lib/marshall_web/live/admin/operations_live.ex:52
+#: lib/marshall_web/live/admin/operations_live.ex:59
 #, elixir-autogen, elixir-format
 msgid "Platform status"
 msgstr "حالة المنصة"
 
-#: lib/marshall_web/live/admin/operations_live.ex:67
-#: lib/marshall_web/live/admin/operations_live.ex:97
+#: lib/marshall_web/live/admin/operations_live.ex:75
+#: lib/marshall_web/live/admin/operations_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "Porsche gateways"
 msgstr "بوابات Porsche"
 
-#: lib/marshall_web/live/admin/operations_live.ex:54
+#: lib/marshall_web/live/admin/operations_live.ex:61
 #, elixir-autogen, elixir-format
 msgid "Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
 msgstr ""
 "حالة الصور ودخول Audi وبوابات Porsche للقراءة فقط. تُحجب الأسرار ومواد "
 "الشهادات."
 
-#: lib/marshall_web/live/admin/operations_live.ex:150
-#: lib/marshall_web/live/admin/operations_live.ex:161
+#: lib/marshall_web/live/admin/operations_live.ex:172
+#: lib/marshall_web/live/admin/operations_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Revision"
 msgstr "المراجعة"
 
-#: lib/marshall_web/live/admin/operations_live.ex:125
+#: lib/marshall_web/live/admin/operations_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "الدور"
 
-#: lib/marshall_web/live/admin/operations_live.ex:152
+#: lib/marshall_web/live/admin/operations_live.ex:174
 #, elixir-autogen, elixir-format
 msgid "Route expires"
 msgstr "انتهاء المسار"
 
-#: lib/marshall_web/live/admin/operations_live.ex:124
+#: lib/marshall_web/live/admin/operations_live.ex:146
 #, elixir-autogen, elixir-format
 msgid "Service"
 msgstr "الخدمة"
 
-#: lib/marshall_web/live/admin/operations_live.ex:82
-#: lib/marshall_web/live/admin/operations_live.ex:105
-#: lib/marshall_web/live/admin/operations_live.ex:128
+#: lib/marshall_web/live/admin/operations_live.ex:100
+#: lib/marshall_web/live/admin/operations_live.ex:125
+#: lib/marshall_web/live/admin/operations_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "الحالة"
 
-#: lib/marshall_web/live/admin/operations_live.ex:238
+#: lib/marshall_web/live/admin/operations_live.ex:269
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "مجهول"
 
-#: lib/marshall_web/live/admin/operations_live.ex:60
+#: lib/marshall_web/live/admin/operations_live.ex:68
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "محدّث"
 
-#: lib/marshall_web/live/admin/operations_live.ex:161
+#: lib/marshall_web/live/admin/operations_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Zone"
 msgstr "المنطقة"
 
-#: lib/marshall_web/live/admin/operations_live.ex:225
-#: lib/marshall_web/live/admin/operations_live.ex:229
+#: lib/marshall_web/live/admin/operations_live.ex:256
+#: lib/marshall_web/live/admin/operations_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "unknown"
 msgstr "مجهول"
 
-#: lib/marshall_web/live/admin/operations_live.ex:62
+#: lib/marshall_web/live/admin/operations_live.ex:70
 #, elixir-autogen, elixir-format
 msgid "· every 30 seconds"
 msgstr "· كل 30 ثانية"

@@ -83,6 +83,8 @@ defmodule Marshall.Accounts.DeleteUserMachines do
   # cleanup work remains.
   @spec cleanup_access!(Ash.UUID.t()) :: boolean()
   defp cleanup_access!(id) do
+    _ = Marshall.Notifications.revoke_for_user!(id, :account_retired)
+
     resources = [
       {Marshall.SSH.Key, :revoke},
       {Marshall.Access.Grant, :revoke},

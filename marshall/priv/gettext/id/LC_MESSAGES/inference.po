@@ -14,22 +14,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/inference_live.ex:192
+#: lib/marshall_web/live/inference_live.ex:204
 #, elixir-autogen, elixir-format
 msgid "AI request"
 msgstr "Permintaan AI"
 
-#: lib/marshall_web/live/inference_live.ex:101
+#: lib/marshall_web/live/inference_live.ex:104
 #, elixir-autogen, elixir-format
 msgid "AI requests"
 msgstr "Permintaan AI"
 
-#: lib/marshall_web/live/inference_live.ex:106
+#: lib/marshall_web/live/inference_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "AI requests · last 30 days"
 msgstr "Permintaan AI · 30 hari terakhir"
 
-#: lib/marshall_web/live/inference_live.ex:87
+#: lib/marshall_web/live/inference_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
 msgstr "Penggunaan AI dikaitkan dengan pemilik setiap mesin. Penggunaan yang belum lengkap tetap tidak diketahui."
@@ -39,143 +39,143 @@ msgstr "Penggunaan AI dikaitkan dengan pemilik setiap mesin. Penggunaan yang bel
 msgid "AI usage is unavailable."
 msgstr "Penggunaan AI tidak tersedia."
 
-#: lib/marshall_web/live/inference_live.ex:202
+#: lib/marshall_web/live/inference_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "AI usage report"
 msgstr "Laporan penggunaan AI"
 
-#: lib/marshall_web/live/inference_live.ex:129
+#: lib/marshall_web/live/inference_live.ex:139
 #, elixir-autogen, elixir-format
 msgid "All providers"
 msgstr "Semua penyedia"
 
-#: lib/marshall_web/live/inference_live.ex:131
+#: lib/marshall_web/live/inference_live.ex:141
 #, elixir-autogen, elixir-format
 msgid "Anthropic"
 msgstr "Anthropic"
 
-#: lib/marshall_web/live/inference_live.ex:142
+#: lib/marshall_web/live/inference_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "Apply"
 msgstr "Terapkan"
 
-#: lib/marshall_web/live/inference_live.ex:112
+#: lib/marshall_web/live/inference_live.ex:121
 #, elixir-autogen, elixir-format
 msgid "Daily AI request counts over the past 30 days"
 msgstr "Jumlah permintaan AI harian selama 30 hari terakhir"
 
-#: lib/marshall_web/live/inference_live.ex:154
+#: lib/marshall_web/live/inference_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Detail"
 
-#: lib/marshall_web/live/inference_live.ex:137
+#: lib/marshall_web/live/inference_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "Exact model ID"
 msgstr "ID model persis"
 
-#: lib/marshall_web/live/inference_live.ex:97
+#: lib/marshall_web/live/inference_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "Export AI usage"
 msgstr "Ekspor penggunaan AI"
 
-#: lib/marshall_web/live/inference_live.ex:122
+#: lib/marshall_web/live/inference_live.ex:132
 #, elixir-autogen, elixir-format
 msgid "Filter"
 msgstr "Saring"
 
-#: lib/marshall_web/live/inference_live.ex:84
+#: lib/marshall_web/live/inference_live.ex:85
 #, elixir-autogen, elixir-format
 msgid "Fleet AI usage"
 msgstr "Penggunaan AI armada"
 
-#: lib/marshall_web/live/inference_live.ex:102
+#: lib/marshall_web/live/inference_live.ex:105
 #, elixir-autogen, elixir-format
 msgid "Incomplete AI reports"
 msgstr "Laporan AI tidak lengkap"
 
-#: lib/marshall_web/live/inference_live.ex:151
+#: lib/marshall_web/live/inference_live.ex:161
 #, elixir-autogen, elixir-format
 msgid "Input tokens"
 msgstr "Token masukan"
 
-#: lib/marshall_web/live/inference_live.ex:172
+#: lib/marshall_web/live/inference_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Inspect"
 msgstr "Periksa"
 
-#: lib/marshall_web/live/inference_live.ex:195
+#: lib/marshall_web/live/inference_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "Mesin"
 
-#: lib/marshall_web/live/inference_live.ex:136
-#: lib/marshall_web/live/inference_live.ex:150
+#: lib/marshall_web/live/inference_live.ex:146
+#: lib/marshall_web/live/inference_live.ex:160
 #, elixir-autogen, elixir-format
 msgid "Model"
 msgstr "Model AI"
 
-#: lib/marshall_web/live/inference_live.ex:215
+#: lib/marshall_web/live/inference_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "No AI requests match these filters."
 msgstr "Tidak ada permintaan AI yang cocok dengan penyaring ini."
 
-#: lib/marshall_web/live/inference_live.ex:221
+#: lib/marshall_web/live/inference_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Older AI requests →"
 msgstr "Permintaan AI lebih lama →"
 
-#: lib/marshall_web/live/inference_live.ex:115
+#: lib/marshall_web/live/inference_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
 msgstr "Satu kolom per hari, yang paling lama terlebih dahulu; delapan baris █ disesuaikan dengan hari tersibuk. Label menandai tanggal dalam bulan."
 
-#: lib/marshall_web/live/inference_live.ex:130
+#: lib/marshall_web/live/inference_live.ex:140
 #, elixir-autogen, elixir-format
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: lib/marshall_web/live/inference_live.ex:153
+#: lib/marshall_web/live/inference_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Outcome"
 msgstr "Hasil"
 
-#: lib/marshall_web/live/inference_live.ex:152
+#: lib/marshall_web/live/inference_live.ex:162
 #, elixir-autogen, elixir-format
 msgid "Output tokens"
 msgstr "Token keluaran"
 
-#: lib/marshall_web/live/inference_live.ex:198
+#: lib/marshall_web/live/inference_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Placement / epoch"
 msgstr "Penempatan / epok"
 
-#: lib/marshall_web/live/inference_live.ex:182
+#: lib/marshall_web/live/inference_live.ex:194
 #, elixir-autogen, elixir-format
 msgid "Pricing source / version"
 msgstr "Sumber / versi harga"
 
-#: lib/marshall_web/live/inference_live.ex:127
+#: lib/marshall_web/live/inference_live.ex:137
 #, elixir-autogen, elixir-format
 msgid "Provider"
 msgstr "Penyedia"
 
-#: lib/marshall_web/live/inference_live.ex:103
+#: lib/marshall_web/live/inference_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Reported input tokens"
 msgstr "Token masukan yang dilaporkan"
 
-#: lib/marshall_web/live/inference_live.ex:104
+#: lib/marshall_web/live/inference_live.ex:111
 #, elixir-autogen, elixir-format
 msgid "Reported output tokens"
 msgstr "Token keluaran yang dilaporkan"
 
-#: lib/marshall_web/live/inference_live.ex:149
+#: lib/marshall_web/live/inference_live.ex:159
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "Waktu"
 
-#: lib/marshall_web/live/inference_live.ex:175
+#: lib/marshall_web/live/inference_live.ex:187
 #, elixir-autogen, elixir-format
 msgid "Token cost estimate · USD"
 msgstr "Perkiraan biaya token · USD"
@@ -186,19 +186,19 @@ msgid "Unavailable"
 msgstr "Tidak tersedia"
 
 #: lib/marshall_web/live/inference_live.ex:60
-#: lib/marshall_web/live/inference_live.ex:178
-#: lib/marshall_web/live/inference_live.ex:185
-#: lib/marshall_web/live/inference_live.ex:188
+#: lib/marshall_web/live/inference_live.ex:190
+#: lib/marshall_web/live/inference_live.ex:197
+#: lib/marshall_web/live/inference_live.ex:200
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Tidak diketahui"
 
-#: lib/marshall_web/live/inference_live.ex:168
+#: lib/marshall_web/live/inference_live.ex:180
 #, elixir-autogen, elixir-format
 msgid "Unreported"
 msgstr "Tidak dilaporkan"
 
-#: lib/marshall_web/live/inference_live.ex:84
+#: lib/marshall_web/live/inference_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Your AI usage"
 msgstr "Penggunaan AI Anda"

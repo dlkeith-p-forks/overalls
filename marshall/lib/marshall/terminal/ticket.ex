@@ -1,5 +1,5 @@
 defmodule Marshall.Terminal.Ticket do
-  @moduledoc "Hashed, short-lived, single-use browser attachment authority."
+  @moduledoc "Hashed, short-lived, single-use browser or SSH attachment authority."
 
   use Ash.Resource,
     otp_app: :marshall,
@@ -35,7 +35,7 @@ defmodule Marshall.Terminal.Ticket do
 
     create :create do
       primary? true
-      accept [:token_hash, :session_id, :actor_id, :mode, :expires_at]
+      accept [:token_hash, :session_id, :actor_id, :mode, :ssh_session_id, :expires_at]
     end
 
     destroy :purge
@@ -57,6 +57,9 @@ defmodule Marshall.Terminal.Ticket do
     attribute :session_id, :uuid, allow_nil?: false, public?: true
     attribute :actor_id, :uuid, allow_nil?: false, public?: true
     attribute :mode, :atom, allow_nil?: false, public?: true, constraints: [one_of: [:rw, :ro]]
+    # An SSH-issued ticket (ADR-0223) is bound to the issuing Porsche
+    # connection's SSH session; a browser ticket leaves it nil.
+    attribute :ssh_session_id, :uuid, allow_nil?: true, public?: true
     attribute :expires_at, :utc_datetime_usec, allow_nil?: false, public?: true
     create_timestamp :inserted_at
   end

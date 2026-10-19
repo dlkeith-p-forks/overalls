@@ -7,10 +7,7 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:64
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"\n"
-"Keep this SSH connection open while approving the key.\n"
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr ""
 "\n"
 "\n"
@@ -18,19 +15,14 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:81
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open an interactive Porsche connection without a remote command:"
+msgid "\nOpen an interactive Porsche connection without a remote command:"
 msgstr ""
 "\n"
 "打开交互式 Porsche 连接，不指定远程命令："
 
 #: lib/porsche/ssh/onboarding.ex:59
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open this link, sign in, and approve the matching fingerprint:\n"
-"  "
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
 msgstr ""
 "\n"
 "打开此链接，登录并核准匹配的指纹：\n"
@@ -48,9 +40,7 @@ msgstr "核准后，请在此重试命令。\n"
 
 #: lib/porsche/ssh/onboarding.ex:65
 #, elixir-autogen, elixir-format
-msgid ""
-"Approval links expire after %{minutes} minutes or when this connection "
-"closes.\n"
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
 msgstr "核准链接将在 %{minutes} 分钟后或此连接关闭时失效。\n"
 
 #: lib/porsche/ssh/onboarding.ex:138
@@ -65,18 +55,14 @@ msgstr "在浏览器中核准密钥时，请保持该连接打开，\n"
 
 #: lib/porsche/ssh/onboarding.ex:129
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your SSH key in Overalls Account settings > SSH keys.\n"
-"\n"
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
 msgstr ""
 "在 Overalls 账户设置 > SSH 密钥中注册或检查您的 SSH 密钥。\n"
 "\n"
 
 #: lib/porsche/ssh/onboarding.ex:124
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your key by connecting to:\n"
-"  ssh "
+msgid "Register or check your key by connecting to:\n  ssh "
 msgstr ""
 "连接到以下地址以注册或检查密钥：\n"
 "  ssh "

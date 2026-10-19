@@ -12,6 +12,7 @@ with Porsche enabled.
 - [Command reference](/docs/commands.md): syntax and available options.
 - [Automation](/docs/automation.md): JSON, retries and completion.
 - [Reflection integration](/docs/reflection.md): discover guest metadata and available private integrations.
+- [Push notifications](/docs/notifications.md): Mila notifications, devices and privacy.
 
 These pages are public and contain no account or fleet data. Each page is available
 as HTML by removing `.md` from its URL. Language-model clients can start at

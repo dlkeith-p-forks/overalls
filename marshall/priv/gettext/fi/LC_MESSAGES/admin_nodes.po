@@ -14,775 +14,775 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "Aktiivinen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:259
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:302
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "Hyväksyntä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:85
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "Admission settings updated."
 msgstr "Hyväksyntäasetukset päivitetty."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:92
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Admission settings were invalid or the node is not ready."
 msgstr "Hyväksyntäasetukset olivat virheelliset tai solmu ei ole valmis."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:566
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:615
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr "Tämän sivun suuntaa antava esikatselu. Jokainen työkuorma arvioidaan erikseen; kohteet ja vapaa kapasiteetti voivat muuttua. Hyväksyntä tarkistaa ja varaa resurssit uudelleen kunkin siirron alkaessa."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:430
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "Ota hyväksyntäasetukset käyttöön"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "Hyväksy siirron käyttökatko"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:635
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr "Estetty: %{reason}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "Suoritinkapasiteetti varausten jälkeen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "Vapaa suoritinkapasiteetti"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "Suorittimen lisävara (ytimet)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:486
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "Kampanja"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:727
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:804
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr "Kampanja suljettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "Kampanjahistoria"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:798
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr "Kampanja pyydetty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr "Kampanjoiden, työkuormien ja siirtojen virstanpylväät ohjaustason pysyvistä tietueista."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:827
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "Peruutusta pyydetty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:719
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:821
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:915
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "Peruutettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr "Ehdokas: %{name}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:330
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:356
 #, elixir-autogen, elixir-format
 msgid "Capacity explanation"
 msgstr "Kapasiteetin selitys"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:66
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:69
 #, elixir-autogen, elixir-format
 msgid "Capacity information is temporarily unavailable."
 msgstr "Kapasiteettitiedot eivät ole tilapäisesti saatavilla."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:769
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "Tarkistetaan kohteen valmiutta"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
 msgstr "Tarkistetaan siirtoyhteyttä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr "Siivotaan peruutuksen jälkeen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr "Siivotaan lähdettä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:869
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr "Kloonaus käynnissä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:539
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "Suljettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:718
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "Valmis"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:377
 #, elixir-autogen, elixir-format
 msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
 msgstr "Määritetty isännän yleiskulu: %{cores} ydintä · %{memory} muistia. Nämä varaukset sisältyvät hyväksymislaskentaan, ja niitä hallitaan edelleen käyttöönoton asetuksilla."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:508
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "Jatka ajoitusta"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "Kopioinnin ja koonmuutoksen varaukset"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:760
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "Kopioidaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:161
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:166
 #, elixir-autogen, elixir-format
 msgid "Could not accept this change. Refresh and check the workload state."
 msgstr "Tätä muutosta ei voitu hyväksyä. Päivitä sivu ja tarkista työkuorman tila."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:744
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "Poistettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
 msgstr "Poistetaan säilytettyjä kopioita"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr "Tavoite: %{desired} · Havaittu: %{observed}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "Kohteen käynnistys epäonnistui; lähdekopio säilytetty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:824
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr "Kohteen siivous vahvistettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr "Kohteen siivousta pyydetty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:772
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
 msgstr "Kohteen valmiustarkistus epäonnistui; lähdekopio säilytetty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:548
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Tiedot"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "Levytila varausten jälkeen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:860
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr "Käyttökatkon hyväksyntä vaaditaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:836
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr "Käyttökatko hyväksytty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "Käyttökatko hyväksytty tälle työkuormaversiolle"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "Tyhjennetty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:729
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "Tyhjennetään"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "Käytössä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
 msgstr "Tyhjennetäänkö kaikki työkuormat tältä solmulta? Käynnissä olevien virtuaalikoneiden toiminta keskeytyy siirtojen ajaksi. Kokonaiset pysäytetyt kopiot vaativat erillisen hyväksynnän kullekin työkuormalle."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "Evakuoidaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:300
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
 msgstr "Tyhjennys estää uudet sijoitukset nykyisten virtuaalikoneiden palvelun jatkuessa. Käynnissä olevan virtuaalikoneen siirto keskeyttää sen hetkeksi. Kokonainen pysäytetty kopio voi kestää huomattavasti kauemmin ja vaatii hyväksynnän jokaiselle työkuormalle."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "Tyhjennyskampanja"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "Tyhjennyksen aikajana"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:547
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "Tapahtuma"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:272
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "Excluded"
 msgstr "Poissuljettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:341
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:370
 #, elixir-autogen, elixir-format
 msgid "Execution ready"
 msgstr "Suoritus valmis"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Explain capacity"
 msgstr "Selitä kapasiteetti"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:912
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Epäonnistunut"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:277
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "Tuore"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Fresh report"
 msgstr "Tuore raportti"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:763
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "Tuodaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:857
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr "Kapasiteetti ei riitä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Virheellinen pyyntö."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:830
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr "Työn tila"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:276
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Lilly node · %{mode} maintenance"
 msgstr "Lilly-solmu · %{mode}-huolto"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:236
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
 msgstr "Lilly-solmut ja niiden hyväksyntätila. Siirrä solmun työkuormat ennen sen koneen poistamista käytöstä."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:249
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:282
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:258
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:299
 #, elixir-autogen, elixir-format
 msgid "Maintenance"
 msgstr "Huolto"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "Huoltosivut"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:151
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:156
 #, elixir-autogen, elixir-format
 msgid "Maintenance updated."
 msgstr "Huolto päivitetty."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "Muisti varausten jälkeen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "Vapaa muistikapasiteetti"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Seuraava sivu →"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:124
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:140
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:129
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "No active campaign."
 msgstr "Ei aktiivista kampanjaa."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:248
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:280
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:257
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "Node"
 msgstr "Solmu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Node information is unavailable."
 msgstr "Solmun tiedot eivät ole saatavilla."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:234
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "Solmun huolto"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr "Normaali"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:599
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr "Havaittu katkos: %{seconds}s"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:595
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:648
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr "Havaittu katkos: %{seconds}s (jatkuu)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:538
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:587
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "Avattu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "Keskeytä ajoitus"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr "Keskeytys estää uusien siirtojen ajoittamisen. Hyväksytyt siirrot jatkuvat. Huoltovalmius vaatii vahvistetun lähteen siivouksen; pelkät valmistuneet työt eivät riitä."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "Keskeytetty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:742
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Odottaa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:522
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr "Poistetaanko tämä tyhjä solmu pysyvästi käytöstä ja peruutetaanko sen tunnistetiedot?"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:644
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "Vaihe: %{phase}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:440
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "Resurssivaranto"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "Valmistellaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:306
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Preview evacuation"
 msgstr "Esikatsele tyhjennystä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:606
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "Esikatselu: %{blocker}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:814
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:894
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr "Jonossa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "Muistin lisävara (tavua)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:642
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr "Suunnitellaanko tämä työkuorma uudelleen nykyisen sijoituksen ja tavoitetilan perusteella? Aiempi käyttökatkon hyväksyntä poistetaan."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:647
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "Suunnittele työkuorma uudelleen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:333
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:359
 #, elixir-autogen, elixir-format
 msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
 msgstr "Vain luettava hyväksyntälaskenta. Se ei varaa kapasiteettia; tuntemattomat mittaukset estävät hyväksynnän."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Valmis"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:807
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr "Siirto vahvistettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:866
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr "Siirto käynnissä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:761
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:839
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr "Siirto aloitettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "Poistettu tästä lähteestä; odotetaan kampanjan siivouksen vahvistusta."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:307
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:441
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "Raportti"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:863
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
 msgstr "Koonmuutos käynnissä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:515
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "Palauta hyväksyntä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr "Palautetaan lähdettä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "Jatkettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "Poista solmu käytöstä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "Poistettu käytöstä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:818
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:906
 #, elixir-autogen, elixir-format
 msgid "Retrying"
 msgstr "Yritetään uudelleen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr "Yritetään kohteen käynnistystä uudelleen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:817
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:740
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:903
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "Käynnissä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:900
 #, elixir-autogen, elixir-format
 msgid "Scheduled"
 msgstr "Ajoitettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr "Lähteen siivous vahvistettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr "Lähteen siivousta pyydetty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:724
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:801
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr "Lähde valmis"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:810
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "Lähde palautettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:851
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr "Lähde ei ole käytettävissä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:278
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:457
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "Vanhentunut tai tuntematon"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown report"
 msgstr "Vanhentunut tai tuntematon raportti"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:350
 #, elixir-autogen, elixir-format
 msgid "Start evacuation"
 msgstr "Aloita tyhjennys"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "Käynnistysvaraukset"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Tila"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr "Pysäytetäänkö tämä käynnissä oleva työkuorma koko siirron ajaksi? Levyjen kopiointi ja uudelleenkäynnistys kohteessa voivat aiheuttaa pitkän käyttökatkon."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "Pysäytetty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "Pysäytetään lähde"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:819
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:909
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "Onnistunut"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:815
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:897
 #, elixir-autogen, elixir-format
 msgid "Suspended"
 msgstr "Keskeytetty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:766
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "Vaihdetaan sijoitusta"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:293
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
 msgstr "Pääteprotokolla: %{protocol} · Paikallinen virta: %{state}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:546
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "Aika"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:854
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr "Siirto varattu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Ei saatavilla"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:822
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:315
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:749
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:871
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:872
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:874
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:917
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "VM"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:767
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:845
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr "Työkuorma muuttui"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:770
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:848
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr "Työkuorma ei ole vakaa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:833
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr "Työkuorma havaittu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:764
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:842
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr "Työkuorma selvitetty"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "yritys %{attempt}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "kampanja"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:367
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "käytössä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:400
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "poissuljettu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:563
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "työ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:558
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "siirto"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:318
 #, elixir-autogen, elixir-format
 msgid "ready"
 msgstr "valmis"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "unavailable"
 msgstr "ei saatavilla"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:373
 #, elixir-autogen, elixir-format
 msgid "unknown"
 msgstr "tuntematon"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "yes"
 msgstr "kyllä"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· Käyttökatkon hyväksyntä vaaditaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Ensimmäinen sivu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "← Nodes"
 msgstr "← Solmut"

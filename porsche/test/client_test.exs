@@ -193,7 +193,24 @@ defmodule Porsche.ClientTest do
           :machine_pinned,
           :machine_failed,
           :pin_limit,
-          :idempotency_conflict
+          :idempotency_conflict,
+          :thread_not_ready,
+          :thread_busy,
+          :stale_proposal,
+          :stale_question,
+          :already_answered,
+          :already_implemented,
+          :invalid_answers,
+          :awaiting_answers,
+          :machine_unavailable,
+          :revision_conflict,
+          :reserved_editor_port,
+          :web_not_allowed,
+          :terminal_unavailable,
+          :terminal_open_pending,
+          :unknown_session,
+          :too_many_terminal_sessions,
+          :opening_expired
         ] do
       {client, worker} = server(context, {:error, Atom.to_string(reason)})
       assert {:error, ^reason} = Client.request(client, "session", @message)

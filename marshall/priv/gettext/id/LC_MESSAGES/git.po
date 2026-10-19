@@ -85,7 +85,7 @@ msgstr "Repositori"
 msgid "Repository path"
 msgstr "Jalur repositori"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "Repositori tidak tersedia."

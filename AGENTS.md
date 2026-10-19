@@ -3,8 +3,8 @@
 Overalls is the monorepo for Marshall (control plane), Lilly (provisioner), and
 their shared protocol library. Read the [architecture overview](docs/architecture/README.md) and
 relevant [ADRs](docs/architecture/decisions/README.md) before changing a component.
-Also read [Marshall guidance](marshall/AGENTS.md) or [Lilly guidance](lilly/AGENTS.md)
-for the component being changed.
+Also read [Marshall guidance](marshall/AGENTS.md), [Lilly guidance](lilly/AGENTS.md)
+or [Mila guidance](mila/AGENTS.md) for the component being changed.
 
 ## Architecture maintenance
 
@@ -63,7 +63,7 @@ for the component being changed.
   failures.
 - Elixir diagnostic events MUST go through each application's reviewed Events
   catalog (`Marshall.Events`, `Lilly.Events`, `Audi.Events`, `Brady.Events`,
-  `Ziggy.Events`, `Porsche.Events`): add a `defevent` entry first, then emit
+  `Ziggy.Events`, `Porsche.Events`, `Susan.Events`): add a `defevent` entry first, then emit
   with catalogued metadata keys only. Never log credentials, authentication
   tokens, terminal bytes, command arguments or payloads; the catalogs have no
   string metadata type on purpose. Outcome events follow the outer transaction

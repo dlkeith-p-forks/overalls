@@ -5,6 +5,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: lib/porsche/ssh/onboarding.ex:64
+#, elixir-autogen, elixir-format
 msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr "\n\nBiarkan koneksi SSH ini terbuka saat menyetujui kunci.\n"
 
@@ -64,6 +65,7 @@ msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
 msgstr "Kami tidak dapat memverifikasi kunci SSH ini sekarang. Silakan coba lagi sebentar lagi.\n\n"
 
 #: lib/porsche/ssh/onboarding.ex:54
+#, elixir-autogen, elixir-format
 msgid "We don't recognize this SSH key:\n  "
 msgstr "Kami tidak mengenali kunci SSH ini:\n  "
 

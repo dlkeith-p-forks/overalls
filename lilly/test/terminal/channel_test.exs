@@ -12,6 +12,7 @@ defmodule Lilly.Terminal.ChannelTest do
 
     state = %{
       phase: :authenticated,
+      android_channels: %{},
       channels: %{},
       guests: guests,
       runtime: self(),
@@ -37,6 +38,7 @@ defmodule Lilly.Terminal.ChannelTest do
 
     state = %{
       phase: :authenticated,
+      android_channels: %{},
       channels: %{7 => %{pid: channel}},
       websocket: %Connection{socket: transport, transport: :plain, limit: 262_158}
     }

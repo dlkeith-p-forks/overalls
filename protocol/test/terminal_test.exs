@@ -10,7 +10,7 @@ defmodule OverallsProtocol.TerminalTest do
   @id3 "0dd0e1a2-6bd6-4a45-9db2-5de49a7e8b3c"
   @hex_chars Enum.concat(?a..?f, ?0..?9)
   @alphanumeric_chars Enum.concat([?a..?z, ?A..?Z, ?0..?9])
-  @control_types ~w(hello hello_response heartbeat heartbeat_reply input_ack output_ack users users_listed create created attach attached channel_close listing listed kill killed resize closed boot_log boot_log_data creation_query creation_status creation_cancel creation_cancelled)a
+  @control_types ~w(hello hello_response heartbeat heartbeat_reply input_ack output_ack users users_listed create created attach attached channel_close listing listed kill killed resize closed boot_log boot_log_data creation_query creation_status creation_cancel creation_cancelled android_display_open android_display_opened android_display_close)a
 
   property "data frames round trip exactly",
     database: :disabled,
@@ -370,6 +370,33 @@ defmodule OverallsProtocol.TerminalTest do
       creation_cancelled:
         gen all(request_id <- uuid_gen(), ok <- boolean()) do
           %{type: :creation_cancelled, request_id: request_id, ok: ok}
+        end,
+      android_display_open:
+        gen all(mode <- member_of([:viewer, :controller]), channel <- integer(1, 1_000_000)) do
+          %{
+            type: :android_display_open,
+            vm_id: @id,
+            placement_id: @id2,
+            execution_epoch: 1,
+            generation: 2,
+            mode: mode,
+            ticket: "ticket",
+            channel: channel
+          }
+        end,
+      android_display_opened:
+        gen all(ok <- boolean(), channel <- integer(1, 1_000_000)) do
+          %{
+            type: :android_display_opened,
+            channel: channel,
+            generation: 2,
+            ok: ok,
+            reason: if(ok, do: nil, else: :display_unavailable)
+          }
+        end,
+      android_display_close:
+        gen all(channel <- integer(1, 1_000_000)) do
+          %{type: :android_display_close, channel: channel}
         end,
       killed:
         gen all(

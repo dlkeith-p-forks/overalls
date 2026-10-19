@@ -85,7 +85,7 @@ msgstr "저장소"
 msgid "Repository path"
 msgstr "저장소 경로"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "저장소를 사용할 수 없습니다."

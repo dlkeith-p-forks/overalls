@@ -14,127 +14,127 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:117
+#: lib/marshall_web/live/admin/workloads_live.ex:140
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "İşlemler"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:215
+#: lib/marshall_web/live/admin/workloads_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "Bu sanal makine arşivlensin mi?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:217
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Sil"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:150
+#: lib/marshall_web/live/admin/workloads_live.ex:174
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Ayrıntılar"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:97
+#: lib/marshall_web/live/admin/workloads_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included."
 msgstr "Filodaki tüm makineler, sahibinin konsoluyla aynı yaşam döngüsü, boyutlandırma ve taşıma güvenlik denetimleriyle gösterilir. Terminal verileri veya kimlik bilgileri dahil değildir."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:95
+#: lib/marshall_web/live/admin/workloads_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Fleet workloads"
 msgstr "Filo iş yükleri"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:114
+#: lib/marshall_web/live/admin/workloads_live.ex:136
 #, elixir-autogen, elixir-format
 msgid "Host"
 msgstr "Ana makine"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:60
+#: lib/marshall_web/live/admin/workloads_live.ex:71
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Geçersiz istek."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:34
+#: lib/marshall_web/live/admin/workloads_live.ex:36
 #, elixir-autogen, elixir-format
 msgid "Lifecycle request queued."
 msgstr "Yaşam döngüsü isteği kuyruğa alındı."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:68
+#: lib/marshall_web/live/admin/workloads_live.ex:83
 #, elixir-autogen, elixir-format
 msgid "Lifecycle request was rejected."
 msgstr "Yaşam döngüsü isteği reddedildi."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:207
+#: lib/marshall_web/live/admin/workloads_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Taşı"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:108
+#: lib/marshall_web/live/admin/workloads_live.ex:129
 #, elixir-autogen, elixir-format
 msgid "No active workloads."
 msgstr "Etkin iş yükü yok."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:46
+#: lib/marshall_web/live/admin/workloads_live.ex:51
 #, elixir-autogen, elixir-format
 msgid "Relocation request queued."
 msgstr "Taşıma isteği kuyruğa alındı."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:49
+#: lib/marshall_web/live/admin/workloads_live.ex:59
 #, elixir-autogen, elixir-format
 msgid "Relocation request was rejected."
 msgstr "Taşıma isteği reddedildi."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:166
+#: lib/marshall_web/live/admin/workloads_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Boyutlandır"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:115
+#: lib/marshall_web/live/admin/workloads_live.ex:137
 #, elixir-autogen, elixir-format
 msgid "Shape"
 msgstr "Şekil"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:195
+#: lib/marshall_web/live/admin/workloads_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Başlat"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:116
+#: lib/marshall_web/live/admin/workloads_live.ex:138
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "Durum"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:204
+#: lib/marshall_web/live/admin/workloads_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Durdur"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:158
+#: lib/marshall_web/live/admin/workloads_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Uçbirim"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:67
+#: lib/marshall_web/live/admin/workloads_live.ex:79
 #, elixir-autogen, elixir-format
 msgid "The owner has pinned this machine; it cannot be deleted until they unpin it."
 msgstr "Sahibi bu makineyi sabitledi; sabitlemeyi kaldırana kadar silinemez."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:103
+#: lib/marshall_web/live/admin/workloads_live.ex:123
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "Güncellendi"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:113
+#: lib/marshall_web/live/admin/workloads_live.ex:135
 #, elixir-autogen, elixir-format
 msgid "Workload"
 msgstr "İş yükü"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:77
+#: lib/marshall_web/live/admin/workloads_live.ex:95
 #, elixir-autogen, elixir-format
 msgid "Workload inventory is temporarily unavailable."
 msgstr "İş yükü envanteri geçici olarak kullanılamıyor."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:105
+#: lib/marshall_web/live/admin/workloads_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "· every 15 seconds"
 msgstr "· 15 saniyede bir"

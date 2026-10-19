@@ -34,7 +34,7 @@ msgstr "Bu makine için bir yeniden boyutlandırma isteği zaten sürüyor."
 msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr "Bir aktarım bu ana makinenin aktarım yuvasını zaten kullanıyor. Bittikten sonra yeniden deneyin."
 
-#: lib/porsche/ssh/output.ex:319
+#: lib/porsche/ssh/output.ex:373
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr "Kabul edildi"
@@ -44,7 +44,7 @@ msgstr "Kabul edildi"
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "Bu SSH anahtarını tarayıcınızda onaylayın, ardından komutu yeniden deneyin."
 
-#: lib/porsche/ssh/output.ex:321
+#: lib/porsche/ssh/output.ex:375
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Başarısız"
@@ -54,32 +54,32 @@ msgstr "Başarısız"
 msgid "Invalid command. Type help to see available commands."
 msgstr "Geçersiz komut. Kullanılabilir komutları görmek için help yazın."
 
-#: lib/porsche/ssh/output.ex:314
+#: lib/porsche/ssh/output.ex:368
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr "İşlem kimliği"
 
-#: lib/porsche/ssh/output.ex:311
+#: lib/porsche/ssh/output.ex:365
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr "Protokol sürümü"
 
-#: lib/porsche/ssh/output.ex:346
+#: lib/porsche/ssh/output.ex:400
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "İstek %{id}: gönderiliyor"
 
-#: lib/porsche/ssh/output.ex:349
+#: lib/porsche/ssh/output.ex:403
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "İstek %{id}: tamamlanması bekleniyor"
 
-#: lib/porsche/ssh/output.ex:313
+#: lib/porsche/ssh/output.ex:367
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr "İstek kimliği"
 
-#: lib/porsche/ssh/output.ex:315
+#: lib/porsche/ssh/output.ex:369
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr "Sonuç"
@@ -89,17 +89,17 @@ msgstr "Sonuç"
 msgid "Source cleanup is still pending. Wait for cleanup before retrying."
 msgstr "Kaynak temizliği hâlâ bekliyor. Yeniden denemeden önce temizliğin bitmesini bekleyin."
 
-#: lib/porsche/ssh/output.ex:312
+#: lib/porsche/ssh/output.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Durum"
 
-#: lib/porsche/ssh/output.ex:320
+#: lib/porsche/ssh/output.ex:374
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "Başarılı"
 
-#: lib/porsche/ssh/output.ex:322
+#: lib/porsche/ssh/output.ex:376
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "Yerine yenisi geçti"
@@ -119,7 +119,7 @@ msgstr "Onay isteği sınırına ulaşıldı. Kullanılmayan bir bağlantıyı k
 msgid "The available host does not meet the machine image's requirements."
 msgstr "Kullanılabilir ana makine, makine görüntüsünün gereksinimlerini karşılamıyor."
 
-#: lib/porsche/ssh/output.ex:292
+#: lib/porsche/ssh/output.ex:346
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr "Komut tamamlanamadı: %{reason}"
@@ -348,3 +348,91 @@ msgstr "Zaten en fazla sayıda sabitlemeye sahipsiniz; önce birini kaldırın."
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to perform this action."
 msgstr "Bu işlemi gerçekleştirme izniniz yok."
+
+#: lib/porsche/ssh/output.ex:316
+#, elixir-autogen, elixir-format
+msgid "Answer the pending question before sending another prompt."
+msgstr "Başka bir istem göndermeden önce bekleyen soruyu yanıtlayın."
+
+#: lib/porsche/ssh/output.ex:322
+#, elixir-autogen, elixir-format
+msgid "Port 4444 is reserved for the editor."
+msgstr "4444 numaralı bağlantı noktası düzenleyici için ayrılmıştır."
+
+#: lib/porsche/ssh/output.ex:328
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable on this machine right now."
+msgstr "Bu makinede terminaller şu anda kullanılamıyor."
+
+#: lib/porsche/ssh/output.ex:304
+#, elixir-autogen, elixir-format
+msgid "That plan is no longer the latest proposal. Show the thread again."
+msgstr "Bu plan artık en son öneri değil. İş parçacığını yeniden gösterin."
+
+#: lib/porsche/ssh/output.ex:310
+#, elixir-autogen, elixir-format
+msgid "That question has already been answered."
+msgstr "Bu soru zaten yanıtlandı."
+
+#: lib/porsche/ssh/output.ex:307
+#, elixir-autogen, elixir-format
+msgid "That question is no longer pending."
+msgstr "Bu soru artık beklemede değil."
+
+#: lib/porsche/ssh/output.ex:334
+#, elixir-autogen, elixir-format
+msgid "That terminal session no longer exists."
+msgstr "Bu terminal oturumu artık mevcut değil."
+
+#: lib/porsche/ssh/output.ex:313
+#, elixir-autogen, elixir-format
+msgid "The answers do not match the pending question."
+msgstr "Yanıtlar bekleyen soruyla eşleşmiyor."
+
+#: lib/porsche/ssh/output.ex:331
+#, elixir-autogen, elixir-format
+msgid "The machine is waking. Retry the terminal shortly."
+msgstr "Makine uyanıyor. Terminali kısa süre sonra yeniden deneyin."
+
+#: lib/porsche/ssh/output.ex:343
+#, elixir-autogen, elixir-format
+msgid "The standard input is empty or exceeds this command's size limit."
+msgstr "Standart girdi boş veya bu komutun boyut sınırını aşıyor."
+
+#: lib/porsche/ssh/output.ex:319
+#, elixir-autogen, elixir-format
+msgid "The web settings changed since you read them. Show them again and retry."
+msgstr "Web ayarları siz okuduktan sonra değişti. Yeniden gösterip tekrar deneyin."
+
+#: lib/porsche/ssh/output.ex:337
+#, elixir-autogen, elixir-format
+msgid "This command reads its input from standard input. Pipe it in and end the command with -."
+msgstr "Bu komut girdisini standart girdiden okur. Girdiyi pipe ile aktarın ve komutu - ile bitirin."
+
+#: lib/porsche/ssh/output.ex:325
+#, elixir-autogen, elixir-format
+msgid "This machine's profile does not allow web publishing."
+msgstr "Bu makinenin profili web yayınına izin vermiyor."
+
+#: lib/porsche/ssh/output.ex:301
+#, elixir-autogen, elixir-format
+msgid "This thread is busy with a turn. Try again when it finishes."
+msgstr "Bu iş parçacığı bir turla meşgul. Tamamlandığında yeniden deneyin."
+
+#: lib/porsche/ssh/output.ex:298
+#, elixir-autogen, elixir-format
+msgid "This thread is not ready for prompts yet."
+msgstr "Bu iş parçacığı henüz istemlere hazır değil."
+
+#: lib/porsche/ssh/output.ex:292
+#, elixir-autogen, elixir-format
+msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr "terminal attach bir terminal gerektirir. ssh -t ile bağlanın ve komut olarak çalıştırın."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Bu kurulumda anlık bildirimler kapalı; yöneticisine danışın."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "En fazla cihaz sayısına ulaştınız; önce birini kaldırın: device rm DEVICE_ID"

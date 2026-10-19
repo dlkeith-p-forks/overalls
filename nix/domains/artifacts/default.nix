@@ -138,7 +138,7 @@ let
   # Fixed-output Mix dependency fetches and release compilation MUST use the
   # same explicit harness/guest/integrated-host selectors and production Mix
   # environment.
-  dependencies = lib.genAttrs [ "marshall" "lilly" "audi" "porsche" "ziggy" "brady" "galileo" "enrico" "peach" ] (application:
+  dependencies = lib.genAttrs [ "marshall" "lilly" "audi" "porsche" "ziggy" "brady" "galileo" "enrico" "peach" "susan" ] (application:
     beam.fetchMixDeps {
       pname = "overalls-${application}-deps";
       inherit version;
@@ -314,6 +314,12 @@ rec {
   inherit codingClis githubTools;
   inherit lyra lyraLinux lyraWindows lyraNative githubBootstrapRelease;
   marvin = import ./marvin { inherit pkgs; };
+  # Mila, the Flutter client (ADR-0220, ADR-0227); Hegel's Dart binding loads
+  # its pinned engine from the store instead of downloading it.
+  mila = import ./mila {
+    inherit pkgs;
+    libhegelDart = import ../../verification/hegel/libhegel-dart.nix { inherit pkgs; };
+  };
   vscodeWeb = import ./vscode-web { inherit pkgs; };
   updateVscodeExtensions = import ./vscode-web/updater.nix { inherit pkgs vscodeWeb; };
   vscodeWebBroker = import ./vscode-web-broker { inherit pkgs; };
@@ -323,7 +329,10 @@ rec {
   userRecipients = secretPackages.recipients;
   secrets = secretPackages.command;
   inherit mixReleases dependencyPins;
-  inherit (mixReleases) marshall lilly audi brady porsche ziggy galileo enrico peach;
+  inherit (mixReleases) marshall lilly audi brady porsche ziggy galileo enrico peach susan;
+  # Susan's OCI image (ADR-0224); flake.nix passes the source revision.
+  mkSusanImage = revision: import ./susan-image.nix { inherit pkgs revision; release = mixReleases.susan; };
+  susanImage = import ./susan-image.nix { inherit pkgs; release = mixReleases.susan; };
   guest = import ./guest {
     inherit pkgs privateServiceRoots terminald lyraLinux vscodeWeb vscodeWebBroker codingClis;
     minimumMemoryBytes = 2147483648;

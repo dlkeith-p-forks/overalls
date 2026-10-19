@@ -106,17 +106,17 @@ msgstr "%{number}以上である必要があります"
 msgid "must be equal to %{number}"
 msgstr "%{number}と等しい必要があります"
 
-#: lib/marshall_web/controllers/error_html.ex:52
+#: lib/marshall_web/controllers/error_html.ex:57
 #, elixir-autogen, elixir-format
 msgid "Back to Overalls"
 msgstr "オーバーオールに戻る"
 
-#: lib/marshall_web/controllers/error_html.ex:45
+#: lib/marshall_web/controllers/error_html.ex:46
 #, elixir-autogen, elixir-format
 msgid "Overalls is briefly unavailable. This page will retry automatically."
 msgstr "オーバーオールは一時的に入手不可となります。このページは自動的に再試行されます。"
 
-#: lib/marshall_web/controllers/error_html.ex:48
+#: lib/marshall_web/controllers/error_html.ex:52
 #, elixir-autogen, elixir-format
 msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
 msgstr "このページを開けませんでした。ワークスペースに戻るか、しばらくしてから再試行してください。"

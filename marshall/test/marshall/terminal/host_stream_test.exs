@@ -173,6 +173,50 @@ defmodule Marshall.Terminal.HostStreamTest do
     assert state.viewers == %{}
   end
 
+  test "android display opens a fenced channel and forwards opaque frames" do
+    {:ok, state} = HostStream.init({Ash.UUID.generate(), @session_id, 4})
+    state = %{state | hello: true}
+
+    request = %{
+      caller: self(),
+      ref: make_ref(),
+      message: %{
+        type: :android_display_open,
+        vm_id: @vm_id,
+        placement_id: @placement_id,
+        execution_epoch: 4,
+        generation: 9,
+        mode: :viewer,
+        ticket: "ticket",
+        channel: 1
+      }
+    }
+
+    assert {:reply, :ok, {:binary, frame}, pending} =
+             HostStream.handle_info({:relay_control, request}, state)
+
+    assert {:ok, %{message: %{channel: channel}}} = Codec.decode_frame(frame)
+
+    opened = %{
+      type: :android_display_opened,
+      channel: channel,
+      generation: 9,
+      ok: true,
+      reason: nil
+    }
+
+    assert {:ok, opened_state} =
+             HostStream.handle_in(
+               {Codec.encode_control_frame(opened), [opcode: :binary]},
+               pending
+             )
+
+    assert_receive {:relay_reply, _, {:ok, ^opened}}
+    payload = Codec.encode_data_frame(channel, 1, <<1, 2, 3>>)
+    assert {:ok, _} = HostStream.handle_in({payload, [opcode: :binary]}, opened_state)
+    assert_receive {:android_display_frame, 9, 1, <<1, 2, 3>>}
+  end
+
   test "unanswered requests expire without expiring a newer request with the same key" do
     {:ok, state} = HostStream.init({Ash.UUID.generate(), @session_id, 4})
     state = %{state | hello: true}

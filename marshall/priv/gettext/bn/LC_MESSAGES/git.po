@@ -85,7 +85,7 @@ msgstr "সংগ্রহশালাসমূহ"
 msgid "Repository path"
 msgstr "সংগ্রহশালার পথ"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "সংগ্রহশালা পাওয়া যাচ্ছে না।"

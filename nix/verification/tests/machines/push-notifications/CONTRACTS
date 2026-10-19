@@ -1,0 +1,5 @@
+@cc [owner:ghuntley,label:verification;security] push-notifications-real-release
+This suite MUST drive the source-built Marshall release against a local fake
+Susan reached through the compiled origin, OS trust store and verified TLS.
+Synthetic push keys, device private keys and poke bodies MUST stay in private
+guest files; assertions MUST report fixed messages, never values.

@@ -114,17 +114,17 @@ msgstr "dapat mas mataas sa o katumbas ng %{number}"
 msgid "must be equal to %{number}"
 msgstr "dapat katumbas ng %{number}"
 
-#: lib/marshall_web/controllers/error_html.ex:52
+#: lib/marshall_web/controllers/error_html.ex:57
 #, elixir-autogen, elixir-format
 msgid "Back to Overalls"
 msgstr "Bumalik sa Overall"
 
-#: lib/marshall_web/controllers/error_html.ex:45
+#: lib/marshall_web/controllers/error_html.ex:46
 #, elixir-autogen, elixir-format
 msgid "Overalls is briefly unavailable. This page will retry automatically."
 msgstr "Saglit na hindi available ang mga overall. Awtomatikong susubukan muli ang pahinang ito."
 
-#: lib/marshall_web/controllers/error_html.ex:48
+#: lib/marshall_web/controllers/error_html.ex:52
 #, elixir-autogen, elixir-format
 msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
 msgstr "Hindi namin mabuksan ang pahinang ito. Bumalik sa iyong lugar-paggawa, o subukang muli maya-maya."

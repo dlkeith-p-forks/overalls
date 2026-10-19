@@ -1,0 +1,46 @@
+name: mila
+description: "Mila: the Overalls client for iOS, Android and Linux."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_riverpod: ^3.4.3
+  go_router: ^18.1.0
+  intl: ^0.20.3
+  local_auth: ^3.0.2
+  mila_core:
+    path: ../packages/mila_core
+  mila_transport:
+    path: ../packages/mila_transport
+  webview_flutter: ^4.14.1
+  xterm: ^4.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  hegel: ^0.3.0
+
+flutter:
+  # Material supplies widgets only; no Material icon font is shipped (ADR-0226).
+  uses-material-design: false
+  generate: true
+  fonts:
+    - family: JetBrains Mono
+      fonts:
+        - asset: assets/fonts/jetbrains-mono-500.ttf
+          weight: 500
+        - asset: assets/fonts/jetbrains-mono-500-italic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/jetbrains-mono-600.ttf
+          weight: 600
+        - asset: assets/fonts/jetbrains-mono-800.ttf
+          weight: 800

@@ -10,7 +10,8 @@ defmodule Porsche.Client do
   @enforce_keys [:origin, :token]
   defstruct [:origin, :token, :cacertfile, control: Porsche.ControlClient]
 
-  @maximum_request 16_384
+  # Prompt, answer and revision payloads reach 64 KiB before JSON escaping.
+  @maximum_request 409_600
   @maximum_response 1_048_576
   @conflict_errors Map.new(
                      [
@@ -33,7 +34,26 @@ defmodule Porsche.Client do
                        :name_unavailable,
                        :machine_pinned,
                        :machine_failed,
-                       :pin_limit
+                       :pin_limit,
+                       :push_disabled,
+                       :device_limit,
+                       :thread_not_ready,
+                       :thread_busy,
+                       :stale_proposal,
+                       :stale_question,
+                       :already_answered,
+                       :already_implemented,
+                       :invalid_answers,
+                       :awaiting_answers,
+                       :machine_unavailable,
+                       :revision_conflict,
+                       :reserved_editor_port,
+                       :web_not_allowed,
+                       :terminal_unavailable,
+                       :terminal_open_pending,
+                       :unknown_session,
+                       :too_many_terminal_sessions,
+                       :opening_expired
                      ],
                      &{Atom.to_string(&1), &1}
                    )
@@ -73,6 +93,25 @@ defmodule Porsche.Client do
           | :machine_pinned
           | :machine_failed
           | :pin_limit
+          | :push_disabled
+          | :device_limit
+          | :thread_not_ready
+          | :thread_busy
+          | :stale_proposal
+          | :stale_question
+          | :already_answered
+          | :already_implemented
+          | :invalid_answers
+          | :awaiting_answers
+          | :machine_unavailable
+          | :revision_conflict
+          | :reserved_editor_port
+          | :web_not_allowed
+          | :terminal_unavailable
+          | :terminal_open_pending
+          | :unknown_session
+          | :too_many_terminal_sessions
+          | :opening_expired
           | :rate_limited
           | :unsupported_version
           | :temporarily_unavailable
@@ -178,6 +217,7 @@ defmodule Porsche.Client do
     "not_found" => :not_found,
     "request_not_found" => :not_found,
     "key_not_found" => :not_found,
+    "device_not_found" => :not_found,
     "message_too_large" => :message_too_large,
     "unsupported_version" => :unsupported_version,
     "session_limit" => :rate_limited,
@@ -197,8 +237,10 @@ defmodule Porsche.Client do
   end
 
   # @cc [owner:ghuntley,label:security;recovery] porsche-closed-conflict-reasons
-  # Only predefined host/capacity/clone/name-custody and machine-pin reasons
-  # (`machine_pinned`, `machine_failed`, `pin_limit`) may refine a conflict; other conflict names
+  # Only predefined host/capacity/clone/name-custody, machine-pin reasons
+  # (`machine_pinned`, `machine_failed`, `pin_limit`), push-device reasons
+  # (`push_disabled`, `device_limit`) and the thread, terminal and web reasons
+  # of ADR-0222 and ADR-0223 may refine a conflict; other conflict names
   # stay generic and unknown names are an http_error. Remote values MUST NOT
   # create atoms or trigger automatic request redelivery.
   defp response({:error, name}, _client) when is_binary(name) do

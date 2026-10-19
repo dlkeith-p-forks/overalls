@@ -8,28 +8,36 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "# Command reference"),
     dgettext_noop("documentation", "# Getting started"),
     dgettext_noop("documentation", "# Overalls documentation"),
+    dgettext_noop("documentation", "# Push notifications"),
     dgettext_noop("documentation", "# Reflection integration"),
     dgettext_noop("documentation", "## Clone a machine"),
     dgettext_noop("documentation", "## Configure and open a repository"),
     dgettext_noop("documentation", "## Connect"),
+    dgettext_noop("documentation", "## Devices"),
     dgettext_noop("documentation", "## Endpoints"),
     dgettext_noop("documentation", "## First commands"),
     dgettext_noop("documentation", "## Install the Overalls CLI"),
     dgettext_noop("documentation", "## Install the developer archive"),
     dgettext_noop("documentation", "## Metadata controls"),
+    dgettext_noop("documentation", "## Privacy"),
     dgettext_noop("documentation", "## Privacy and availability"),
     dgettext_noop("documentation", "## Register your key"),
     dgettext_noop("documentation", "## Relocate a machine"),
     dgettext_noop("documentation", "## Resize a machine"),
     dgettext_noop("documentation", "## Results and completion"),
     dgettext_noop("documentation", "## Retry safely"),
+    dgettext_noop("documentation", "## Turning notifications off"),
+    dgettext_noop(
+      "documentation",
+      "- An operator can disable notifications for the whole deployment with\n  `services.marshall.notifications.enable = false`. Registration is then\n  refused and nothing is sent to Susan.\n- You can pause a single device with `device prefs DEVICE_ID --enabled false`.\n- You can revoke a device with `device rm DEVICE_ID`."
+    ),
     dgettext_noop(
       "documentation",
       "- Linux and macOS: the `curl … /bin/install.sh | bash` command.\n- Windows: run the Windows `powershell …` command under \"Install and connect\"\n  in PowerShell. Windows needs OpenSSH 9.6 or newer: the installer installs it\n  with winget when the built-in client is older and, after you approve the\n  administrator prompt, makes it the default `ssh` for new terminals."
     ),
     dgettext_noop(
       "documentation",
-      "- [Browser extension](/docs/browser-extension.md): open supported repositories in Overalls.\n- [Getting started](/docs/quickstart.md): register a key and connect.\n- [Command reference](/docs/commands.md): syntax and available options.\n- [Automation](/docs/automation.md): JSON, retries and completion.\n- [Reflection integration](/docs/reflection.md): discover guest metadata and available private integrations."
+      "- [Browser extension](/docs/browser-extension.md): open supported repositories in Overalls.\n- [Getting started](/docs/quickstart.md): register a key and connect.\n- [Command reference](/docs/commands.md): syntax and available options.\n- [Automation](/docs/automation.md): JSON, retries and completion.\n- [Reflection integration](/docs/reflection.md): discover guest metadata and available private integrations.\n- [Push notifications](/docs/notifications.md): Mila notifications, devices and privacy."
     ),
     dgettext_noop(
       "documentation",
@@ -45,7 +53,24 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "An omitted option keeps the current size; a request with no size option is\nrefused. A running machine stops, applies the sizes and restarts; a stopped\nmachine stays stopped and grows its filesystem on the next boot. The receipt\nfollows the request's phases. `request cancel grow-1` is accepted only while the\nmachine is still stopping: the original sizes and holds are kept, and a running\nmachine restarts unchanged. `request retry grow-1` resumes a request that needs\nattention from its recorded phase.\n"
     ),
+    dgettext_noop(
+      "documentation",
+      "Answer a thread's pending question with JSON read from standard input."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Apple and Google deliver notifications only to apps signed by the app's\npublisher, so every Overalls deployment sends notifications through one shared\nrelay, Susan, at `https://notifications.overalls.dev`. Your deployment cannot\nbe configured to use another relay."
+    ),
+    dgettext_noop("documentation", "Approve a thread's latest plan and start implementing it."),
+    dgettext_noop(
+      "documentation",
+      "Ask for a revised plan, reading the feedback from standard input."
+    ),
     dgettext_noop("documentation", "At the Porsche prompt, enter:"),
+    dgettext_noop(
+      "documentation",
+      "Attach this SSH terminal to a shared terminal session; needs ssh -t."
+    ),
     dgettext_noop("documentation", "Automation"),
     dgettext_noop("documentation", "Browser extension"),
     dgettext_noop(
@@ -59,12 +84,17 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Change a machine's web port or visibility, optionally at an expected revision."
+    ),
+    dgettext_noop(
+      "documentation",
       "Choose a stable, unique request ID for each intended mutation. Reuse it when\nretrying that same mutation after losing a reply. Request IDs contain 1–128 ASCII\nletters, digits, underscores, dots, colons or hyphens, and start with a letter or\ndigit. Do not reuse one ID for different operations."
     ),
     dgettext_noop(
       "documentation",
       "Cloning is currently unavailable for the Inception multi-disk profile."
     ),
+    dgettext_noop("documentation", "Close one of your terminal sessions on a machine."),
     dgettext_noop("documentation", "Close this interactive channel."),
     dgettext_noop("documentation", "Command reference"),
     dgettext_noop(
@@ -125,6 +155,7 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop("documentation", "Inspect a machine by name or UUID."),
     dgettext_noop("documentation", "Inspect a previously accepted request."),
+    dgettext_noop("documentation", "Inspect a thread, its pending question and latest plan."),
     dgettext_noop("documentation", "Inspect an integration without secrets."),
     dgettext_noop(
       "documentation",
@@ -134,12 +165,16 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Key removal prevents subsequent commands and status polls from that session.\nAccepted jobs continue. Reconnect using another registered key, or use email login\nto manage your keys in Marshall. Do not put private keys or approval links in logs.\n"
     ),
+    dgettext_noop("documentation", "List a machine's terminal sessions you can open."),
     dgettext_noop("documentation", "List a team's members."),
+    dgettext_noop("documentation", "List a thread's transcript events after a sequence number."),
     dgettext_noop("documentation", "List access grants."),
+    dgettext_noop("documentation", "List agent threads you can read, with unread counts."),
     dgettext_noop("documentation", "List available images."),
     dgettext_noop("documentation", "List machines you can access."),
     dgettext_noop("documentation", "List your SSH keys."),
     dgettext_noop("documentation", "List your integrations."),
+    dgettext_noop("documentation", "List your push notification devices."),
     dgettext_noop("documentation", "List your teams and roles."),
     dgettext_noop(
       "documentation",
@@ -150,7 +185,24 @@ defmodule Marshall.DocumentationMessages do
       "Machine references accept names or UUIDs. Names are lowercase, begin with a letter,\nand contain letters, digits and single separating hyphens, up to 63 characters.\nUUID-shaped names are reserved for machine identifiers.\nCreation without a name generates one. Creation without an image selects the\noperator's default image. Creation without `--profile` selects OSS; use\n`--profile customer` for the restricted Customer environment. Omitted CPU,\nmemory and disk requests use defaults raised to the image minimum; explicitly\nundersized requests fail."
     ),
     dgettext_noop("documentation", "Make an integration available to a machine."),
+    dgettext_noop("documentation", "Mark a thread read up to a transcript sequence number."),
+    dgettext_noop(
+      "documentation",
+      "Mila registers your phone when you allow notifications. The registration is\nbound to the SSH key Mila uses, so removing that key from your account also\nrevokes the device. Each account can have up to ten active devices."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Mila, the Overalls mobile app, can tell you when an agent needs your input:\nwhen a planning turn asks you a question or proposes a plan. A notification\nonly says that something needs attention; opening it takes you to the thread\nin Mila, which then fetches the details over your own SSH connection."
+    ),
     dgettext_noop("documentation", "Move a machine to an automatically selected host."),
+    dgettext_noop(
+      "documentation",
+      "Notifications are a convenience. While Mila is open, it follows your threads\nthrough its own live watch stream, which works even when notifications are\ndisabled or Susan is unavailable.\n"
+    ),
+    dgettext_noop(
+      "documentation",
+      "Notifications go to the devices of every person who can currently act on the\nthread, except the person whose action caused it. People with view-only\naccess are not notified."
+    ),
     dgettext_noop("documentation", "Offer team ownership to an admin."),
     dgettext_noop(
       "documentation",
@@ -160,6 +212,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Open a GitHub, GitLab, Codeberg or Bitbucket Cloud repository in Overalls with a\nsingle toolbar click. The extension carries only the provider origin and path to\nOveralls, so you can move from a repository page to a machine without copying a\nURL by hand."
     ),
+    dgettext_noop("documentation", "Open your personal terminal session on a machine."),
     dgettext_noop("documentation", "Options:"),
     dgettext_noop("documentation", "Overalls documentation"),
     dgettext_noop(
@@ -183,6 +236,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Porsche manages machines; it does not provide a guest shell, guest file transfer,\nport forwarding or an SSH agent forwarding service. Machine console access is\navailable separately in Marshall's web interface, subject to account permissions.\n"
     ),
+    dgettext_noop("documentation", "Push notifications"),
     dgettext_noop("documentation", "Queue an independent full-disk copy of a machine."),
     dgettext_noop(
       "documentation",
@@ -197,6 +251,10 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Reflection is available only through the private network. Requests are bound to\nthe current VM, host, placement, and execution epoch; stopped, relocated,\nretired, stale, or unauthorized guests receive an unavailable response.\n"
     ),
+    dgettext_noop(
+      "documentation",
+      "Register this device for push notifications. The push key is read from stdin."
+    ),
     dgettext_noop("documentation", "Remove a machine's explicit availability."),
     dgettext_noop("documentation", "Remove a named integration."),
     dgettext_noop("documentation", "Remove an account's membership."),
@@ -207,8 +265,11 @@ defmodule Marshall.DocumentationMessages do
       "Resume preserved memory, waiting for capacity or relocation."
     ),
     dgettext_noop("documentation", "Retry a failed clone or relocation request."),
+    dgettext_noop("documentation", "Revoke a push notification device."),
     dgettext_noop("documentation", "Revoke an account's shared access."),
     dgettext_noop("documentation", "Revoke one of your SSH keys."),
+    dgettext_noop("documentation", "Send a prompt read from standard input to a thread."),
+    dgettext_noop("documentation", "Show a machine's web endpoint, port and visibility."),
     dgettext_noop("documentation", "Show command help."),
     dgettext_noop("documentation", "Show the authenticated account."),
     dgettext_noop(
@@ -224,7 +285,24 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Stop retains the disk. `rm MACHINE` deletes the machine and its disk. A name is\navailable for reuse only after cleanup is confirmed. Use `exit` to leave the prompt."
     ),
+    dgettext_noop(
+      "documentation",
+      "Stream JSON change notices for machines, threads and this session."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Susan keeps an append-only audit log of key issues, accepted and refused\nnotifications, rate limits and delivery outcomes. Each entry records only the\naction, reason, a fingerprint of the sending deployment, the push key ID, the\nprovider (Apple or Google), the outcome and a delivery ID. It does not record IP\naddresses, push tokens, keys or encrypted messages. Audit entries are deleted\nafter 90 days."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Susan never sees your prompts, agent output, thread or machine names, email\naddress, SSH keys or any other account data."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Susan sees the IP address of your deployment and when each notification is\nsent, an opaque push key issued to your device, an encrypted message and the\nnotification kind. The message is encrypted on your deployment to a key that\nonly your device holds, so Susan cannot read where the notification leads."
+    ),
     dgettext_noop("documentation", "Suspend a machine, preserving its memory and disk."),
+    dgettext_noop("documentation", "Switch a thread between plan and work collaboration."),
     dgettext_noop(
       "documentation",
       "The Overalls operator chooses whether these immutable archives are available. If\nthe deployment has disabled its browser extension package, the download links return an unavailable response.\nSee the browser distribution notes for package and build details.\n"
@@ -261,6 +339,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "This reference uses the same v1 command grammar as the SSH service."
     ),
+    dgettext_noop("documentation", "Turn push notifications on or off for one device."),
     dgettext_noop(
       "documentation",
       "Use Overalls from your browser or manage machines over SSH with Porsche. Marshall\nprovides the web interface and account permissions. Use the same account in both."
@@ -297,9 +376,18 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "With exec, place the same command after `ssh YOUR_PORSCHE_HOST` and quote it for\nyour local shell when needed. Porsche does not evaluate shell expressions,\npipelines or substitutions. Single and double quotes group command arguments."
     ),
+    dgettext_noop("documentation", "You can review and manage devices with Porsche:"),
+    dgettext_noop(
+      "documentation",
+      "Your deployment keeps delivery records for seven days and stores only a digest\nof each push key in its audit history."
+    ),
     dgettext_noop(
       "documentation",
       "`GET /` returns a versioned object containing `guest`, `integrations`, and the\navailable paths. `GET /guest` returns only guest metadata. `GET /integrations`\nreturns the integrations array directly, which makes it convenient for shell\nscripts and agents."
+    ),
+    dgettext_noop(
+      "documentation",
+      "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
     ),
     dgettext_noop(
       "documentation",

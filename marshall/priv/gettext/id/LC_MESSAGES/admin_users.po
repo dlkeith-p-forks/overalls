@@ -14,178 +14,178 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/admin/users_live.ex:165
+#: lib/marshall_web/live/admin/users_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} mesin yang dimiliki"
 
-#: lib/marshall_web/live/admin/users_live.ex:256
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "Halaman akun"
 
-#: lib/marshall_web/live/admin/users_live.ex:87
+#: lib/marshall_web/live/admin/users_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "Account request accepted."
 msgstr "Permintaan akun diterima."
 
-#: lib/marshall_web/live/admin/users_live.ex:119
+#: lib/marshall_web/live/admin/users_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Accounts are temporarily unavailable."
 msgstr "Akun sementara tidak tersedia."
 
-#: lib/marshall_web/live/admin/users_live.ex:160
+#: lib/marshall_web/live/admin/users_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Administrator"
 msgstr "Administrator"
 
-#: lib/marshall_web/live/admin/users_live.ex:44
+#: lib/marshall_web/live/admin/users_live.ex:45
 #, elixir-autogen, elixir-format
 msgid "Administrator access updated."
 msgstr "Akses administrator diperbarui."
 
-#: lib/marshall_web/live/admin/users_live.ex:63
+#: lib/marshall_web/live/admin/users_live.ex:72
 #, elixir-autogen, elixir-format
 msgid "Browser sessions revoked."
 msgstr "Sesi peramban dicabut."
 
-#: lib/marshall_web/live/admin/users_live.ex:94
+#: lib/marshall_web/live/admin/users_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Could not accept this account change. Check confirmation and verify your passkey."
 msgstr "Tidak dapat menerima perubahan akun ini. Periksa konfirmasi dan verifikasi kunci sandi Anda."
 
-#: lib/marshall_web/live/admin/users_live.ex:47
+#: lib/marshall_web/live/admin/users_live.ex:53
 #, elixir-autogen, elixir-format
 msgid "Could not change administrator access."
 msgstr "Tidak dapat mengubah akses administrator."
 
-#: lib/marshall_web/live/admin/users_live.ex:66
+#: lib/marshall_web/live/admin/users_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Could not revoke browser sessions."
 msgstr "Tidak dapat mencabut sesi peramban."
 
-#: lib/marshall_web/live/admin/users_live.ex:247
+#: lib/marshall_web/live/admin/users_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "Hapus pengguna dan mesin"
 
-#: lib/marshall_web/live/admin/users_live.ex:146
+#: lib/marshall_web/live/admin/users_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "Alamat email"
 
-#: lib/marshall_web/live/admin/users_live.ex:139
+#: lib/marshall_web/live/admin/users_live.ex:154
 #, elixir-autogen, elixir-format
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "Setiap akun pada penerapan ini. Pengguna yang masuk dapat membaca halaman ini; perubahan memerlukan administrator dengan verifikasi kunci sandi terbaru."
 
-#: lib/marshall_web/live/admin/users_live.ex:194
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "Beri akun ini akses untuk mengelola seluruh armada dan semua mesin?"
 
-#: lib/marshall_web/live/admin/users_live.ex:80
+#: lib/marshall_web/live/admin/users_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Permintaan tidak valid."
 
-#: lib/marshall_web/live/admin/users_live.ex:144
+#: lib/marshall_web/live/admin/users_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Invite a user"
 msgstr "Undang pengguna"
 
-#: lib/marshall_web/live/admin/users_live.ex:166
+#: lib/marshall_web/live/admin/users_live.ex:202
 #, elixir-autogen, elixir-format
 msgid "MFA enabled"
 msgstr "MFA diaktifkan"
 
-#: lib/marshall_web/live/admin/users_live.ex:167
+#: lib/marshall_web/live/admin/users_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "MFA not enrolled"
 msgstr "MFA belum didaftarkan"
 
-#: lib/marshall_web/live/admin/users_live.ex:202
+#: lib/marshall_web/live/admin/users_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "Jadikan administrator"
 
-#: lib/marshall_web/live/admin/users_live.ex:262
+#: lib/marshall_web/live/admin/users_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Halaman berikutnya →"
 
-#: lib/marshall_web/live/admin/users_live.ex:254
+#: lib/marshall_web/live/admin/users_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "Tidak ada akun pada halaman ini."
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Hapus permanen akun ini dan SEMUA mesin miliknya, termasuk mesin yang dibagikan dengan orang lain?"
 
-#: lib/marshall_web/live/admin/users_live.ex:201
+#: lib/marshall_web/live/admin/users_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "Hapus administrator"
 
-#: lib/marshall_web/live/admin/users_live.ex:192
+#: lib/marshall_web/live/admin/users_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "Hapus akses administrator untuk akun ini?"
 
-#: lib/marshall_web/live/admin/users_live.ex:221
+#: lib/marshall_web/live/admin/users_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "Setel ulang MFA"
 
-#: lib/marshall_web/live/admin/users_live.ex:216
+#: lib/marshall_web/live/admin/users_live.ex:258
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "Setel ulang MFA pengguna ini dan cabut semua sesi peramban? Pengguna harus mendaftarkan kunci sandi pengganti."
 
-#: lib/marshall_web/live/admin/users_live.ex:147
+#: lib/marshall_web/live/admin/users_live.ex:173
 #, elixir-autogen, elixir-format
 msgid "Send invitation"
 msgstr "Kirim undangan"
 
-#: lib/marshall_web/live/admin/users_live.ex:210
+#: lib/marshall_web/live/admin/users_live.ex:252
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "Keluar dari semua sesi"
 
-#: lib/marshall_web/live/admin/users_live.ex:208
+#: lib/marshall_web/live/admin/users_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "Keluarkan akun ini dari setiap sesi peramban?"
 
-#: lib/marshall_web/live/admin/users_live.ex:234
+#: lib/marshall_web/live/admin/users_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "Ketik email untuk menghapus akun ini dan %{count} mesinnya"
 
-#: lib/marshall_web/live/admin/users_live.ex:160
+#: lib/marshall_web/live/admin/users_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Pengguna"
 
-#: lib/marshall_web/live/admin/users_live.ex:137
+#: lib/marshall_web/live/admin/users_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "Pengguna"
 
-#: lib/marshall_web/live/admin/users_live.ex:151
+#: lib/marshall_web/live/admin/users_live.ex:177
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey · administrative access lasts 15 minutes →"
 msgstr "Verifikasi dengan kunci sandi · akses administratif berlaku 15 menit →"
 
-#: lib/marshall_web/live/admin/users_live.ex:167
+#: lib/marshall_web/live/admin/users_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "· Your account"
 msgstr "· Akun Anda"
 
-#: lib/marshall_web/live/admin/users_live.ex:257
+#: lib/marshall_web/live/admin/users_live.ex:303
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Halaman pertama"

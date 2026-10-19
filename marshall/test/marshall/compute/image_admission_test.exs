@@ -154,6 +154,10 @@ defmodule Marshall.Compute.ImageAdmissionTest do
 
     assert Image.guest_capabilities(windows) == %{
              available: true,
+             adb: false,
+             android_display: false,
+             android_emulator: false,
+             android_sdk: false,
              readiness: false,
              trust: false,
              ssh: false,
@@ -226,8 +230,7 @@ defmodule Marshall.Compute.ImageAdmissionTest do
       )
       |> then(fn {:ok, image} -> image end)
 
-    # A second host with free capacity carries the agent image; the first one
-    # already holds the agentless Windows machine.
+    # A second host carries the Git identity-capable agent image.
     %{host: second} = host_fixture()
 
     Ledger.update!(second, :report, %{
@@ -258,6 +261,8 @@ defmodule Marshall.Compute.ImageAdmissionTest do
                actor: user
              )
 
+    assert with_agents.image_id == agents.id
+
     [operation] =
       Ledger.read!(Marshall.Compute.Operation, vm_id: with_agents.id, kind: :provision)
 
@@ -267,7 +272,9 @@ defmodule Marshall.Compute.ImageAdmissionTest do
     assert DateTime.diff(ready.deadline, ready.admitted_at) == 600
     assert {:ok, projected} = Compute.get_vm(%{vm_id: with_agents.id}, actor: user)
     assert projected.guest_capabilities.ssh and projected.guest_capabilities.terminal
+    assert projected.guest_capabilities.available
     refute projected.guest_capabilities.editor
+    assert projected.editor_image_status in [:unsupported_image, :unavailable]
   end
 
   # @cc [owner:ghuntley,label:verification;security] retained-firmware-fixture-boundary

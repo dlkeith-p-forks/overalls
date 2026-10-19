@@ -8,13 +8,31 @@ defmodule Marshall.Android.DisplaySocket do
         actor: actor,
         login_jti: login_jti,
         generation: generation,
-        mode: mode
+        mode: mode,
+        ticket: ticket
       }) do
     with {:ok, _expiry} <- Marshall.Accounts.Login.present(login_jti, actor.id),
          true <- claim.actor_id == actor.id,
-         {:ok, relay} <- Marshall.Android.DisplayRelay.start_link(generation),
-         :ok <- Marshall.Android.DisplayRelay.attach(relay, self(), mode) do
-      {:ok, %{relay: relay, generation: generation, mode: mode}}
+         {:ok, relay} <- Marshall.Android.DisplayRegistry.relay({claim.machine_id, generation}),
+         :ok <- Marshall.Android.DisplayRelay.attach(relay, self(), mode),
+         {:ok, vm} <- Marshall.Compute.get_vm(%{vm_id: claim.machine_id}, actor: actor),
+         {:ok, host_stream} <- Marshall.Terminal.Relay.stream_for(vm.host_id),
+         {:ok, bridge} <-
+           Marshall.Android.DisplayRegistry.bridge(
+             {claim.machine_id, generation},
+             host_stream,
+             %{
+               type: :android_display_open,
+               vm_id: vm.id,
+               placement_id: vm.current_placement_id,
+               execution_epoch: vm.execution_epoch,
+               generation: generation,
+               mode: mode,
+               ticket: ticket,
+               channel: 1
+             }
+           ) do
+      {:ok, %{relay: relay, bridge: bridge, generation: generation, mode: mode}}
     else
       _ -> {:stop, :unauthorized, %{}}
     end
@@ -48,4 +66,12 @@ defmodule Marshall.Android.DisplaySocket do
   end
 
   def handle_info(_, state), do: {:ok, state}
+
+  @impl true
+  def terminate(_reason, %{relay: relay}) do
+    _ = Marshall.Android.DisplayRelay.detach(relay, self())
+    :ok
+  end
+
+  def terminate(_, _), do: :ok
 end

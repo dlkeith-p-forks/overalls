@@ -14,179 +14,179 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/admin/users_live.ex:165
+#: lib/marshall_web/live/admin/users_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} sahip olunan makine"
 msgstr[1] "%{count} sahip olunan makine"
 
-#: lib/marshall_web/live/admin/users_live.ex:256
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "Hesap sayfaları"
 
-#: lib/marshall_web/live/admin/users_live.ex:87
+#: lib/marshall_web/live/admin/users_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "Account request accepted."
 msgstr "Hesap isteği kabul edildi."
 
-#: lib/marshall_web/live/admin/users_live.ex:119
+#: lib/marshall_web/live/admin/users_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Accounts are temporarily unavailable."
 msgstr "Hesaplar geçici olarak kullanılamıyor."
 
-#: lib/marshall_web/live/admin/users_live.ex:160
+#: lib/marshall_web/live/admin/users_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Administrator"
 msgstr "Yönetici"
 
-#: lib/marshall_web/live/admin/users_live.ex:44
+#: lib/marshall_web/live/admin/users_live.ex:45
 #, elixir-autogen, elixir-format
 msgid "Administrator access updated."
 msgstr "Yönetici erişimi güncellendi."
 
-#: lib/marshall_web/live/admin/users_live.ex:63
+#: lib/marshall_web/live/admin/users_live.ex:72
 #, elixir-autogen, elixir-format
 msgid "Browser sessions revoked."
 msgstr "Tarayıcı oturumları iptal edildi."
 
-#: lib/marshall_web/live/admin/users_live.ex:94
+#: lib/marshall_web/live/admin/users_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Could not accept this account change. Check confirmation and verify your passkey."
 msgstr "Hesap değişikliği kabul edilemedi. Onayı denetleyip geçiş anahtarınızı doğrulayın."
 
-#: lib/marshall_web/live/admin/users_live.ex:47
+#: lib/marshall_web/live/admin/users_live.ex:53
 #, elixir-autogen, elixir-format
 msgid "Could not change administrator access."
 msgstr "Yönetici erişimi değiştirilemedi."
 
-#: lib/marshall_web/live/admin/users_live.ex:66
+#: lib/marshall_web/live/admin/users_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Could not revoke browser sessions."
 msgstr "Tarayıcı oturumları iptal edilemedi."
 
-#: lib/marshall_web/live/admin/users_live.ex:247
+#: lib/marshall_web/live/admin/users_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "Kullanıcıyı ve makineleri sil"
 
-#: lib/marshall_web/live/admin/users_live.ex:146
+#: lib/marshall_web/live/admin/users_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "E-posta adresi"
 
-#: lib/marshall_web/live/admin/users_live.ex:139
+#: lib/marshall_web/live/admin/users_live.ex:154
 #, elixir-autogen, elixir-format
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "Bu dağıtımdaki tüm hesaplar. Giriş yapmış kullanıcılar bu sayfayı okuyabilir; değişiklikler yakın zamanda geçiş anahtarı doğrulamış bir yönetici gerektirir."
 
-#: lib/marshall_web/live/admin/users_live.ex:194
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "Bu hesaba tüm filoyu ve makineleri yönetme erişimi verilsin mi?"
 
-#: lib/marshall_web/live/admin/users_live.ex:80
+#: lib/marshall_web/live/admin/users_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Geçersiz istek."
 
-#: lib/marshall_web/live/admin/users_live.ex:144
+#: lib/marshall_web/live/admin/users_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Invite a user"
 msgstr "Kullanıcı davet et"
 
-#: lib/marshall_web/live/admin/users_live.ex:166
+#: lib/marshall_web/live/admin/users_live.ex:202
 #, elixir-autogen, elixir-format
 msgid "MFA enabled"
 msgstr "Çok faktörlü doğrulama etkin"
 
-#: lib/marshall_web/live/admin/users_live.ex:167
+#: lib/marshall_web/live/admin/users_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "MFA not enrolled"
 msgstr "Çok faktörlü doğrulama kaydı yok"
 
-#: lib/marshall_web/live/admin/users_live.ex:202
+#: lib/marshall_web/live/admin/users_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "Yönetici yap"
 
-#: lib/marshall_web/live/admin/users_live.ex:262
+#: lib/marshall_web/live/admin/users_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Sonraki sayfa →"
 
-#: lib/marshall_web/live/admin/users_live.ex:254
+#: lib/marshall_web/live/admin/users_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "Bu sayfada hesap yok."
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Bu hesap ve başkalarıyla paylaşılanlar dahil sahip olduğu TÜM makineler kalıcı olarak silinsin mi?"
 
-#: lib/marshall_web/live/admin/users_live.ex:201
+#: lib/marshall_web/live/admin/users_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "Yöneticiyi kaldır"
 
-#: lib/marshall_web/live/admin/users_live.ex:192
+#: lib/marshall_web/live/admin/users_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "Bu hesabın yönetici erişimi kaldırılsın mı?"
 
-#: lib/marshall_web/live/admin/users_live.ex:221
+#: lib/marshall_web/live/admin/users_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "Çok faktörlü doğrulamayı sıfırla"
 
-#: lib/marshall_web/live/admin/users_live.ex:216
+#: lib/marshall_web/live/admin/users_live.ex:258
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "Bu kullanıcının çok faktörlü doğrulaması sıfırlanıp tüm tarayıcı oturumları iptal edilsin mi? Yeni bir geçiş anahtarı kaydetmeleri gerekir."
 
-#: lib/marshall_web/live/admin/users_live.ex:147
+#: lib/marshall_web/live/admin/users_live.ex:173
 #, elixir-autogen, elixir-format
 msgid "Send invitation"
 msgstr "Davet gönder"
 
-#: lib/marshall_web/live/admin/users_live.ex:210
+#: lib/marshall_web/live/admin/users_live.ex:252
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "Her yerden çıkış yap"
 
-#: lib/marshall_web/live/admin/users_live.ex:208
+#: lib/marshall_web/live/admin/users_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "Bu hesap tüm tarayıcı oturumlarından çıkarılsın mı?"
 
-#: lib/marshall_web/live/admin/users_live.ex:234
+#: lib/marshall_web/live/admin/users_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "Bu hesabı ve %{count} makinesini silmek için e-postayı yazın"
 
-#: lib/marshall_web/live/admin/users_live.ex:160
+#: lib/marshall_web/live/admin/users_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Kullanıcı"
 
-#: lib/marshall_web/live/admin/users_live.ex:137
+#: lib/marshall_web/live/admin/users_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "Kullanıcılar"
 
-#: lib/marshall_web/live/admin/users_live.ex:151
+#: lib/marshall_web/live/admin/users_live.ex:177
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey · administrative access lasts 15 minutes →"
 msgstr "Geçiş anahtarıyla doğrula · yönetim erişimi 15 dakika geçerlidir →"
 
-#: lib/marshall_web/live/admin/users_live.ex:167
+#: lib/marshall_web/live/admin/users_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "· Your account"
 msgstr "· Hesabınız"
 
-#: lib/marshall_web/live/admin/users_live.ex:257
+#: lib/marshall_web/live/admin/users_live.ex:303
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← İlk sayfa"

@@ -11,7 +11,7 @@ defmodule Marshall.SSH.ControlRequests do
   """
   require Marshall.Events
 
-  @routes ["ready", "sessions", "session", "close", "commands"]
+  @routes ["ready", "sessions", "session", "close", "commands", "watch_subscribe"]
 
   @doc "The routes both transports serve."
   @spec routes() :: [String.t()]
@@ -30,6 +30,7 @@ defmodule Marshall.SSH.ControlRequests do
         "session" -> Marshall.SSH.session_status(params, actor: actor)
         "close" -> Marshall.SSH.close_session(params, actor: actor)
         "commands" -> Marshall.SSH.execute(params, actor: actor)
+        "watch_subscribe" -> Marshall.SSH.watch_subscribe(params, actor: actor)
       end
     end
   rescue
@@ -74,8 +75,22 @@ defmodule Marshall.SSH.ControlRequests do
 
   def classify({:error, :not_a_member}), do: classify({:error, :forbidden})
 
-  def classify({:error, reason}) when reason in [:request_not_found, :key_not_found],
-    do: {:error, 404, Atom.to_string(reason)}
+  def classify({:error, reason})
+      when reason in [:request_not_found, :key_not_found, :device_not_found],
+      do: {:error, 404, Atom.to_string(reason)}
+
+  # A terminal session that is unknown, retired or on another machine is a
+  # definite absence; an unavailable terminal host is a closed conflict.
+  def classify({:error, :unknown_session}), do: {:error, 404, "not_found"}
+
+  def classify({:error, :terminal_unavailable}) do
+    Marshall.Events.emit("api.request_unauthorized", reason: :terminal_unavailable)
+    {:error, 409, "terminal_unavailable"}
+  end
+
+  # A thread, question or plan that does not exist (or was archived away) is a
+  # permanent client refusal, never transient unavailability (ADR-0222).
+  def classify({:error, :not_found}), do: {:error, 404, "not_found"}
 
   # @cc [owner:ghuntley,label:observability;security] ssh-api-closed-refusal-log
   # Expected admission refusals MUST use an event from the finite public reason
@@ -116,7 +131,27 @@ defmodule Marshall.SSH.ControlRequests do
              :recipient_not_registered,
              :workspace_source_not_allowed,
              :workspace_source_unavailable,
-             :invalid_workspace_source
+             :invalid_workspace_source,
+             :push_disabled,
+             :device_limit,
+             # Thread, terminal and web refusals for client commands (ADR-0222).
+             :thread_not_ready,
+             :thread_busy,
+             :stale_proposal,
+             :stale_question,
+             :already_answered,
+             :already_implemented,
+             :invalid_answers,
+             :awaiting_answers,
+             :machine_unavailable,
+             :revision_conflict,
+             :reserved_editor_port,
+             :web_not_allowed,
+             :terminal_unavailable,
+             :terminal_open_pending,
+             :unknown_session,
+             :too_many_terminal_sessions,
+             :opening_expired
            ] do
     Marshall.Events.emit("api.request_unauthorized", reason: reason)
     {:error, 409, Atom.to_string(reason)}

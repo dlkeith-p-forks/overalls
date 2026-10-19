@@ -34,7 +34,7 @@ msgstr "Selle masina suuruse muutmise taotlus on juba pooleli."
 msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr "Üks ülekanne kasutab juba selle hosti ülekandekohta. Proovige uuesti pärast selle lõppu."
 
-#: lib/porsche/ssh/output.ex:319
+#: lib/porsche/ssh/output.ex:373
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr "Vastu võetud"
@@ -44,7 +44,7 @@ msgstr "Vastu võetud"
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "Kinnita see SSH-võti brauseris ja proovi siis käsku uuesti."
 
-#: lib/porsche/ssh/output.ex:321
+#: lib/porsche/ssh/output.ex:375
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Nurjunud"
@@ -54,32 +54,32 @@ msgstr "Nurjunud"
 msgid "Invalid command. Type help to see available commands."
 msgstr "Vigane käsk. Saadaolevate käskude vaatamiseks sisesta help."
 
-#: lib/porsche/ssh/output.ex:314
+#: lib/porsche/ssh/output.ex:368
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr "Toimingu ID"
 
-#: lib/porsche/ssh/output.ex:311
+#: lib/porsche/ssh/output.ex:365
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr "Protokolli versioon"
 
-#: lib/porsche/ssh/output.ex:346
+#: lib/porsche/ssh/output.ex:400
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "Taotlus %{id}: saatmine"
 
-#: lib/porsche/ssh/output.ex:349
+#: lib/porsche/ssh/output.ex:403
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "Taotlus %{id}: ootab lõpetamist"
 
-#: lib/porsche/ssh/output.ex:313
+#: lib/porsche/ssh/output.ex:367
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr "Taotluse ID"
 
-#: lib/porsche/ssh/output.ex:315
+#: lib/porsche/ssh/output.ex:369
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr "Tulemus"
@@ -89,17 +89,17 @@ msgstr "Tulemus"
 msgid "Source cleanup is still pending. Wait for cleanup before retrying."
 msgstr "Lähte puhastamine on veel ootel. Enne uuesti proovimist oodake puhastamise lõppu."
 
-#: lib/porsche/ssh/output.ex:312
+#: lib/porsche/ssh/output.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Olek"
 
-#: lib/porsche/ssh/output.ex:320
+#: lib/porsche/ssh/output.ex:374
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "Õnnestunud"
 
-#: lib/porsche/ssh/output.ex:322
+#: lib/porsche/ssh/output.ex:376
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "Asendatud"
@@ -119,7 +119,7 @@ msgstr "Heakskiidutaotluste piir on saavutatud. Sulgege kasutamata ühendus ja p
 msgid "The available host does not meet the machine image's requirements."
 msgstr "Saadaolev host ei vasta masina tõmmise nõuetele."
 
-#: lib/porsche/ssh/output.ex:292
+#: lib/porsche/ssh/output.ex:346
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr "Käsku ei saanud lõpule viia: %{reason}"
@@ -348,3 +348,91 @@ msgstr "Teil on juba maksimaalne arv kinnitusi; eemaldage esmalt üks."
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to perform this action."
 msgstr "Sul pole selle toimingu tegemiseks õigust."
+
+#: lib/porsche/ssh/output.ex:316
+#, elixir-autogen, elixir-format
+msgid "Answer the pending question before sending another prompt."
+msgstr "Vasta ootel küsimusele enne uue viiba saatmist."
+
+#: lib/porsche/ssh/output.ex:322
+#, elixir-autogen, elixir-format
+msgid "Port 4444 is reserved for the editor."
+msgstr "Port 4444 on reserveeritud redaktori jaoks."
+
+#: lib/porsche/ssh/output.ex:328
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable on this machine right now."
+msgstr "Terminalid pole selles masinas praegu saadaval."
+
+#: lib/porsche/ssh/output.ex:304
+#, elixir-autogen, elixir-format
+msgid "That plan is no longer the latest proposal. Show the thread again."
+msgstr "See plaan pole enam uusim ettepanek. Näita lõime uuesti."
+
+#: lib/porsche/ssh/output.ex:310
+#, elixir-autogen, elixir-format
+msgid "That question has already been answered."
+msgstr "Sellele küsimusele on juba vastatud."
+
+#: lib/porsche/ssh/output.ex:307
+#, elixir-autogen, elixir-format
+msgid "That question is no longer pending."
+msgstr "See küsimus pole enam ootel."
+
+#: lib/porsche/ssh/output.ex:334
+#, elixir-autogen, elixir-format
+msgid "That terminal session no longer exists."
+msgstr "Seda terminaliseanssi pole enam olemas."
+
+#: lib/porsche/ssh/output.ex:313
+#, elixir-autogen, elixir-format
+msgid "The answers do not match the pending question."
+msgstr "Vastused ei vasta ootel küsimusele."
+
+#: lib/porsche/ssh/output.ex:331
+#, elixir-autogen, elixir-format
+msgid "The machine is waking. Retry the terminal shortly."
+msgstr "Masin ärkab. Proovi terminali varsti uuesti."
+
+#: lib/porsche/ssh/output.ex:343
+#, elixir-autogen, elixir-format
+msgid "The standard input is empty or exceeds this command's size limit."
+msgstr "Standardsisend on tühi või ületab selle käsu suurusepiirangu."
+
+#: lib/porsche/ssh/output.ex:319
+#, elixir-autogen, elixir-format
+msgid "The web settings changed since you read them. Show them again and retry."
+msgstr "Veebiseaded on pärast nende lugemist muutunud. Näita neid uuesti ja proovi siis uuesti."
+
+#: lib/porsche/ssh/output.ex:337
+#, elixir-autogen, elixir-format
+msgid "This command reads its input from standard input. Pipe it in and end the command with -."
+msgstr "See käsk loeb sisendi standardsisendist. Suuna see torusse ja lõpeta käsk märgiga -."
+
+#: lib/porsche/ssh/output.ex:325
+#, elixir-autogen, elixir-format
+msgid "This machine's profile does not allow web publishing."
+msgstr "Selle masina profiil ei luba veebis avaldamist."
+
+#: lib/porsche/ssh/output.ex:301
+#, elixir-autogen, elixir-format
+msgid "This thread is busy with a turn. Try again when it finishes."
+msgstr "See lõim on käigu tõttu hõivatud. Proovi uuesti, kui see lõpeb."
+
+#: lib/porsche/ssh/output.ex:298
+#, elixir-autogen, elixir-format
+msgid "This thread is not ready for prompts yet."
+msgstr "See lõim pole veel viipade jaoks valmis."
+
+#: lib/porsche/ssh/output.ex:292
+#, elixir-autogen, elixir-format
+msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr "terminal attach vajab terminali. Ühenda ssh -t abil ja käivita see käsuna."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Selles paigalduses on tõuketeated välja lülitatud; pöördu selle halduri poole."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Sul on juba suurim lubatud arv seadmeid; eemalda esmalt üks: device rm DEVICE_ID"

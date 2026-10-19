@@ -12,7 +12,8 @@ defmodule Marshall.Documentation do
     {"quickstart", "Getting started"},
     {"commands", "Command reference"},
     {"automation", "Automation"},
-    {"reflection", "Reflection integration"}
+    {"reflection", "Reflection integration"},
+    {"notifications", "Push notifications"}
   ]
 
   for {slug, _title} <- @sources do

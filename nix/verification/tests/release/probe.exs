@@ -60,6 +60,26 @@ case application do
     "/users" = apply(Galileo.Strip, :apply, ["/api/v3", "/api/v3/users"])
     "/api/v3x/users" = apply(Galileo.Strip, :apply, ["/api/v3", "/api/v3x/users"])
 
+  "susan" ->
+    for module <- [Marshall.Application, Lilly.Application, Audi.Application, Porsche.Application,
+      Galileo.Application] do
+      if Code.ensure_loaded?(module), do: raise("another Overalls service included in Susan")
+    end
+    if Map.has_key?(metadata, "host_tools") or File.exists?(Path.join(root, "host-tools")),
+      do: raise("privileged host tools included in Susan release")
+    for module <- [Susan.Application, Susan.Config, Susan.HTTP, Susan.Poke, Susan.Poke.Machine,
+      Susan.PushKey, Susan.Audit.Log, Susan.Release, Susan.Operator, Susan.Privacy, Ash, Oban] do
+      if not Code.ensure_loaded?(module), do: raise("Susan release module missing")
+    end
+    if not File.regular?(Path.join(root, "bin/susan")), do: raise("Susan release executable missing")
+    migrations = Path.wildcard(Path.join(root, "lib/susan-*/priv/repo/migrations/*.exs"))
+    if length(migrations) < 4, do: raise("Susan migrations missing from release")
+    {:error, :invalid_runtime_configuration} =
+      apply(Susan.Config, :load, ["/missing-susan-runtime-configuration", "/missing-credentials"])
+    for module <- [Covenant, Hegel, Dialyxir] do
+      if Code.ensure_loaded?(module), do: raise("development dependency included in Susan release")
+    end
+
   "enrico" ->
     for module <- [Marshall.Application, Lilly.Application, Audi.Application, Galileo.Application,
       Ash, Oban, Ecto.Repo] do

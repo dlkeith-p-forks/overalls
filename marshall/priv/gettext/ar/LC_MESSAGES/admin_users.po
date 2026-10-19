@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
 
-#: lib/marshall_web/live/admin/users_live.ex:165
+#: lib/marshall_web/live/admin/users_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
@@ -25,177 +25,177 @@ msgstr[3] "%{count} آلات مملوكة"
 msgstr[4] "%{count} آلة مملوكة"
 msgstr[5] "%{count} آلة مملوكة"
 
-#: lib/marshall_web/live/admin/users_live.ex:256
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "صفحات الحساب"
 
-#: lib/marshall_web/live/admin/users_live.ex:87
+#: lib/marshall_web/live/admin/users_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "Account request accepted."
 msgstr "تم قبول طلب الحساب."
 
-#: lib/marshall_web/live/admin/users_live.ex:119
+#: lib/marshall_web/live/admin/users_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Accounts are temporarily unavailable."
 msgstr "الحسابات غير متاحة مؤقتًا."
 
-#: lib/marshall_web/live/admin/users_live.ex:160
+#: lib/marshall_web/live/admin/users_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Administrator"
 msgstr "مسؤول النظام"
 
-#: lib/marshall_web/live/admin/users_live.ex:44
+#: lib/marshall_web/live/admin/users_live.ex:45
 #, elixir-autogen, elixir-format
 msgid "Administrator access updated."
 msgstr "تم تحديث صلاحيات المسؤول."
 
-#: lib/marshall_web/live/admin/users_live.ex:63
+#: lib/marshall_web/live/admin/users_live.ex:72
 #, elixir-autogen, elixir-format
 msgid "Browser sessions revoked."
 msgstr "تم إبطال جلسات المتصفح."
 
-#: lib/marshall_web/live/admin/users_live.ex:94
+#: lib/marshall_web/live/admin/users_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Could not accept this account change. Check confirmation and verify your passkey."
 msgstr "تعذر قبول تغيير الحساب. راجع التأكيد وتحقق بمفتاح المرور."
 
-#: lib/marshall_web/live/admin/users_live.ex:47
+#: lib/marshall_web/live/admin/users_live.ex:53
 #, elixir-autogen, elixir-format
 msgid "Could not change administrator access."
 msgstr "تعذر تغيير صلاحيات المسؤول."
 
-#: lib/marshall_web/live/admin/users_live.ex:66
+#: lib/marshall_web/live/admin/users_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Could not revoke browser sessions."
 msgstr "تعذر إبطال جلسات المتصفح."
 
-#: lib/marshall_web/live/admin/users_live.ex:247
+#: lib/marshall_web/live/admin/users_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "حذف المستخدم والآلات"
 
-#: lib/marshall_web/live/admin/users_live.ex:146
+#: lib/marshall_web/live/admin/users_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "عنوان البريد الإلكتروني"
 
-#: lib/marshall_web/live/admin/users_live.ex:139
+#: lib/marshall_web/live/admin/users_live.ex:154
 #, elixir-autogen, elixir-format
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr ""
 "جميع الحسابات في هذا النشر. يمكن للمستخدمين المسجلين قراءة الصفحة؛ وتتطلب "
 "التغييرات مسؤولًا تحقق بمفتاح المرور مؤخرًا."
 
-#: lib/marshall_web/live/admin/users_live.ex:194
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "منح هذا الحساب صلاحية إدارة الأسطول بأكمله وجميع الآلات؟"
 
-#: lib/marshall_web/live/admin/users_live.ex:80
+#: lib/marshall_web/live/admin/users_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "طلب غير صالح."
 
-#: lib/marshall_web/live/admin/users_live.ex:144
+#: lib/marshall_web/live/admin/users_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Invite a user"
 msgstr "دعوة مستخدم"
 
-#: lib/marshall_web/live/admin/users_live.ex:166
+#: lib/marshall_web/live/admin/users_live.ex:202
 #, elixir-autogen, elixir-format
 msgid "MFA enabled"
 msgstr "المصادقة المتعددة مفعّلة"
 
-#: lib/marshall_web/live/admin/users_live.ex:167
+#: lib/marshall_web/live/admin/users_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "MFA not enrolled"
 msgstr "المصادقة المتعددة غير مسجلة"
 
-#: lib/marshall_web/live/admin/users_live.ex:202
+#: lib/marshall_web/live/admin/users_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "تعيين مسؤول"
 
-#: lib/marshall_web/live/admin/users_live.ex:262
+#: lib/marshall_web/live/admin/users_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "الصفحة التالية →"
 
-#: lib/marshall_web/live/admin/users_live.ex:254
+#: lib/marshall_web/live/admin/users_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "لا توجد حسابات في هذه الصفحة."
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr ""
 "حذف هذا الحساب نهائيًا وجميع آلاته، بما فيها الآلات المشاركة مع آخرين؟"
 
-#: lib/marshall_web/live/admin/users_live.ex:201
+#: lib/marshall_web/live/admin/users_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "إزالة المسؤول"
 
-#: lib/marshall_web/live/admin/users_live.ex:192
+#: lib/marshall_web/live/admin/users_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "إزالة صلاحيات المسؤول لهذا الحساب؟"
 
-#: lib/marshall_web/live/admin/users_live.ex:221
+#: lib/marshall_web/live/admin/users_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "إعادة تعيين المصادقة المتعددة"
 
-#: lib/marshall_web/live/admin/users_live.ex:216
+#: lib/marshall_web/live/admin/users_live.ex:258
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr ""
 "إعادة تعيين المصادقة المتعددة لهذا المستخدم وإبطال جميع جلسات المتصفح؟ عليه "
 "تسجيل مفتاح مرور بديل."
 
-#: lib/marshall_web/live/admin/users_live.ex:147
+#: lib/marshall_web/live/admin/users_live.ex:173
 #, elixir-autogen, elixir-format
 msgid "Send invitation"
 msgstr "إرسال دعوة"
 
-#: lib/marshall_web/live/admin/users_live.ex:210
+#: lib/marshall_web/live/admin/users_live.ex:252
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "تسجيل الخروج من كل مكان"
 
-#: lib/marshall_web/live/admin/users_live.ex:208
+#: lib/marshall_web/live/admin/users_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "تسجيل خروج هذا الحساب من جميع جلسات المتصفح؟"
 
-#: lib/marshall_web/live/admin/users_live.ex:234
+#: lib/marshall_web/live/admin/users_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "اكتب البريد لحذف هذا الحساب وآلاته البالغ عددها %{count}"
 
-#: lib/marshall_web/live/admin/users_live.ex:160
+#: lib/marshall_web/live/admin/users_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "المستخدم"
 
-#: lib/marshall_web/live/admin/users_live.ex:137
+#: lib/marshall_web/live/admin/users_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "المستخدمون"
 
-#: lib/marshall_web/live/admin/users_live.ex:151
+#: lib/marshall_web/live/admin/users_live.ex:177
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey · administrative access lasts 15 minutes →"
 msgstr "التحقق بمفتاح المرور · يستمر وصول الإدارة 15 دقيقة →"
 
-#: lib/marshall_web/live/admin/users_live.ex:167
+#: lib/marshall_web/live/admin/users_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "· Your account"
 msgstr "· حسابك"
 
-#: lib/marshall_web/live/admin/users_live.ex:257
+#: lib/marshall_web/live/admin/users_live.ex:303
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← الصفحة الأولى"

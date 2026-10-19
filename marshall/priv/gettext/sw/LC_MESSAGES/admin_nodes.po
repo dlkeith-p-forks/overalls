@@ -14,775 +14,775 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "Inayotumika"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:259
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:302
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "Kiingilio"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:85
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "Admission settings updated."
 msgstr "Mipangilio ya kiingilio imesasishwa."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:92
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Admission settings were invalid or the node is not ready."
 msgstr "Mipangilio ya uandikishaji ilikuwa batili au nodi haiko tayari."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:566
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:615
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr "Onyesho la kuchungulia la ushauri kwa ukurasa huu. Kila mzigo wa kazi unatathminiwa kwa kujitegemea; unakoenda na uwezo unaopatikana unaweza kubadilika. Uandikishaji hukagua tena na kuhifadhi rasilimali wakati kila hatua inapoanza."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:430
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "Weka mipangilio ya uandikishaji"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "Idhinisha muda wa kusimama wakati wa uhamishaji"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:635
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr "Imezuiwa: %{reason}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "CPU baada ya kushikilia"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "Uwezo uliobaki wa CPU"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "CPU inayotumiwa na mfumo (viini)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:486
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "Kampeni"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:727
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:804
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr "Kampeni imefungwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "Historia ya kampeni"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:798
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr "Kampeni imeombwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr "Hatua za kampeni, mzigo wa kazi na uhamishaji kutoka rekodi za kudumu za mfumo wa udhibiti."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:827
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "Umeomba kughairiwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:719
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:821
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:915
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "Imeghairiwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr "Mgombea: %{name}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:330
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:356
 #, elixir-autogen, elixir-format
 msgid "Capacity explanation"
 msgstr "Ufafanuzi wa uwezo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:66
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:69
 #, elixir-autogen, elixir-format
 msgid "Capacity information is temporarily unavailable."
 msgstr "Taarifa ya uwezo haipatikani kwa sasa."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:769
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "Inakagua utayari wa lengwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
 msgstr "Inakagua muunganisho wa uhamishaji"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr "Kusafisha baada ya kufuta"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr "Kusafisha chanzo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:869
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr "Kunakili kunaendelea"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:539
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "Imefungwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:718
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "Kamilisha"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:377
 #, elixir-autogen, elixir-format
 msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
 msgstr "Matumizi ya mfumo wa seva pangishi yaliyosanidiwa: viini %{cores} · kumbukumbu %{memory}. Viwango hivi vimejumuishwa katika hesabu za kukubali mizigo na hubaki chini ya udhibiti wa usambazaji."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:508
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "Endelea kuratibu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "Rasilimali zilizohifadhiwa kwa kunakili/kubadilisha ukubwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:760
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "Kunakili"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:161
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:166
 #, elixir-autogen, elixir-format
 msgid "Could not accept this change. Refresh and check the workload state."
 msgstr "Haikuweza kukubali mabadiliko haya. Onyesha upya na uangalie hali ya mzigo wa kazi."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:744
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "Imefutwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
 msgstr "Inafuta nakala zilizohifadhiwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr "Inayohitajika: %{desired} · Imezingatiwa: %{observed}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "Uanzishaji wa lengwa umeshindwa; nakala ya chanzo imehifadhiwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:824
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr "Usafishaji wa lengwa umethibitishwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr "Usafishaji wa lengwa umeombwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:772
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
 msgstr "Utayari wa lengwa umeshindwa; nakala ya chanzo imehifadhiwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:548
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Maelezo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "Diski baada ya uhifadhi wa rasilimali"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:860
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr "Idhini ya muda wa kusimama inahitajika"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:836
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr "Muda wa kusimama umeidhinishwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "Muda wa kusimama umeidhinishwa kwa toleo hili la mzigo wa kazi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "Mizigo imehamishwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:729
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "Inahamisha mizigo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "Imewashwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
 msgstr "Je, ungependa kuondoa mzigo wote wa kazi kwenye nodi hii? Wageni wanaokimbia watakatizwa wakati wa harakati zao. Nakala zilizosimamishwa kamili zinahitaji idhini tofauti ya kila kazi."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "Kuhama"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:300
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
 msgstr "Uhamishaji huzuia nafasi mpya huku wageni waliopo wakiendelea kuhudumiwa. Kusogeza mgeni anayeendesha hukatiza kwa muda mfupi. Nakala kamili iliyosimamishwa inaweza kuchukua muda mrefu zaidi na inahitaji idhini kwa kila mzigo wa kazi."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "Kampeni ya uokoaji"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "Muda wa uokoaji"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:547
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "Tukio"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:272
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "Excluded"
 msgstr "Isiyojumuishwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:341
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:370
 #, elixir-autogen, elixir-format
 msgid "Execution ready"
 msgstr "Utekelezaji tayari"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Explain capacity"
 msgstr "Eleza uwezo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:912
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Imeshindwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:277
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "Safi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Fresh report"
 msgstr "Ripoti mpya"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:763
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "Inaingiza"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:857
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr "Uwezo hautoshi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Ombi batili."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:830
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr "Hali ya kazi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:276
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Lilly node · %{mode} maintenance"
 msgstr "Nodi ya Lilly · %{mode} matengenezo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:236
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
 msgstr "Nodi za Lilly na hali yao ya uandikishaji. Sogeza mizigo ya kazi ya nodi kabla ya kuondoa mashine yake kwenye huduma."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:249
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:282
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:258
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:299
 #, elixir-autogen, elixir-format
 msgid "Maintenance"
 msgstr "Matengenezo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "Kurasa za matengenezo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:151
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:156
 #, elixir-autogen, elixir-format
 msgid "Maintenance updated."
 msgstr "Utunzaji umesasishwa."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "Kumbukumbu baada ya uhifadhi wa rasilimali"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "Uwezo uliobaki wa kumbukumbu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Ukurasa unaofuata →"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:124
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:140
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:129
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "No active campaign."
 msgstr "Hakuna kampeni inayoendelea."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:248
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:280
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:257
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "Node"
 msgstr "Nodi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Node information is unavailable."
 msgstr "Maelezo ya nodi hayapatikani."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:234
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "Matengenezo ya nodi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr "Kawaida"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:599
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr "Ukatizaji unaozingatiwa: %{seconds} s"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:595
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:648
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr "Ukatizaji unaozingatiwa: %{seconds} s (inaendelea)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:538
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:587
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "Imefunguliwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "Sitisha upangaji"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr "Kusitisha huzuia upangaji wa uhamishaji mpya. Uhamishaji uliokubaliwa huendelea. Kuwa tayari kwa matengenezo kunahitaji usafishaji wa chanzo uliothibitishwa; kazi zilizokamilika pekee hazitoshi."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "Imesitishwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:742
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Inasubiri"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:522
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr "Ungependa kuondoa kabisa nodi hii tupu na kubatilisha vitambulisho vyake vya ufikiaji?"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:644
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "Awamu: %{phase}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:440
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "Kundi la rasilimali"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "Inaandaa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:306
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Preview evacuation"
 msgstr "Hakiki uhamishaji wa mizigo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:606
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "Hakiki: %{blocker}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:814
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:894
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr "Imewekwa kwenye foleni"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "RAM inayotumiwa na mfumo (baiti)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:642
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr "Je, ungependa kupanga upya mzigo huu wa kazi kwa kutumia nafasi yake ya sasa na hali unayotaka? Idhini yoyote ya awali ya muda wa chini itafutwa."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:647
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "Panga upya mzigo wa kazi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:333
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:359
 #, elixir-autogen, elixir-format
 msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
 msgstr "Hesabu ya kiingilio cha kusoma tu. Haihifadhi uwezo; vipimo visivyojulikana huzuia kiingilio."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Tayari"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:807
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr "Uhamisho umefanywa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:866
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr "Uhamishaji unaendelea"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:761
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:839
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr "Uhamisho umeanza"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "Imeondolewa kutoka kwa chanzo hiki; inasubiri uthibitisho wa usafishaji wa kampeni."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:307
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:441
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "Ripoti"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:863
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
 msgstr "Kubadilisha ukubwa kunaendelea"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:515
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "Rejesha kiingilio"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr "Kurejesha chanzo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "Imeanza tena"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "Ondoa nodi kabisa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "Imeondolewa kabisa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:818
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:906
 #, elixir-autogen, elixir-format
 msgid "Retrying"
 msgstr "Inajaribu tena"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr "Inajaribu tena kuwasha lengwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:817
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:740
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:903
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "Inafanya kazi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:900
 #, elixir-autogen, elixir-format
 msgid "Scheduled"
 msgstr "Imepangwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr "Usafishaji wa chanzo umethibitishwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr "Usafishaji wa chanzo umeombwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:724
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:801
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr "Chanzo tayari"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:810
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "Chanzo kimerejeshwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:851
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr "Chanzo hakipatikani"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:278
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:457
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "Kichakavu au haijulikani"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown report"
 msgstr "Ripoti ya zamani au isiyojulikana"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:350
 #, elixir-autogen, elixir-format
 msgid "Start evacuation"
 msgstr "Anza uhamishaji"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "Rasilimali zilizohifadhiwa kwa kuwasha"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Hali"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr "Ungependa kukomesha mzigo huu wa kazi kwa hatua nzima? Kunakili diski zake na kuiwasha upya kwenye lengwa kunaweza kusababisha muda wa kukatika kwa muda mrefu."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "Imesimamishwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "Kusimamisha chanzo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:819
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:909
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "Imefaulu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:815
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:897
 #, elixir-autogen, elixir-format
 msgid "Suspended"
 msgstr "Imesitishwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:766
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "Kubadilisha uwekaji"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:293
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
 msgstr "Itifaki ya kituo: %{protocol} · Mtiririko wa ndani: %{state}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:546
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "Wakati"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:854
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr "Uhamisho una shughuli nyingi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Haipatikani"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:822
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:315
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:749
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:871
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:872
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:874
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:917
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Haijulikani"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "VM"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:767
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:845
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr "Mzigo wa kazi umebadilishwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:770
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:848
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr "Mzigo wa kazi sio dhabiti"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:833
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr "Mzigo wa kazi umezingatiwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:764
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:842
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr "Mzigo wa kazi umetatuliwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "jaribu %{attempt}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "kampeni"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:367
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "kuwezeshwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:400
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "kutengwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:563
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "kazi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:558
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "hamisha"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:318
 #, elixir-autogen, elixir-format
 msgid "ready"
 msgstr "tayari"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "unavailable"
 msgstr "haipatikani"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:373
 #, elixir-autogen, elixir-format
 msgid "unknown"
 msgstr "haijulikani"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "yes"
 msgstr "ndio"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· Idhini ya muda wa kusimama inahitajika"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Ukurasa wa kwanza"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "← Nodes"
 msgstr "← Nodi"

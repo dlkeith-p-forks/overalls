@@ -14,22 +14,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n==1 || n==2 || n==3 || (n%10!=4 && n%10!=6 && n%10!=9) ? 0 : 1);\n"
 
-#: lib/marshall_web/live/inference_live.ex:192
+#: lib/marshall_web/live/inference_live.ex:204
 #, elixir-autogen, elixir-format
 msgid "AI request"
 msgstr "kahilingan ng AI"
 
-#: lib/marshall_web/live/inference_live.ex:101
+#: lib/marshall_web/live/inference_live.ex:104
 #, elixir-autogen, elixir-format
 msgid "AI requests"
 msgstr "Mga kahilingan ng AI"
 
-#: lib/marshall_web/live/inference_live.ex:106
+#: lib/marshall_web/live/inference_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "AI requests · last 30 days"
 msgstr "Mga kahilingan sa AI · huling 30 araw"
 
-#: lib/marshall_web/live/inference_live.ex:87
+#: lib/marshall_web/live/inference_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
 msgstr "Ang paggamit ng AI ay iniuugnay sa bawat may-ari ng makina. Nananatiling hindi alam ang hindi kumpletong paggamit ng AI."
@@ -39,143 +39,143 @@ msgstr "Ang paggamit ng AI ay iniuugnay sa bawat may-ari ng makina. Nananatiling
 msgid "AI usage is unavailable."
 msgstr "Hindi available ang paggamit ng AI."
 
-#: lib/marshall_web/live/inference_live.ex:202
+#: lib/marshall_web/live/inference_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "AI usage report"
 msgstr "Ulat sa paggamit ng AI"
 
-#: lib/marshall_web/live/inference_live.ex:129
+#: lib/marshall_web/live/inference_live.ex:139
 #, elixir-autogen, elixir-format
 msgid "All providers"
 msgstr "Lahat ng provider"
 
-#: lib/marshall_web/live/inference_live.ex:131
+#: lib/marshall_web/live/inference_live.ex:141
 #, elixir-autogen, elixir-format
 msgid "Anthropic"
 msgstr "Antropiko"
 
-#: lib/marshall_web/live/inference_live.ex:142
+#: lib/marshall_web/live/inference_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "Apply"
 msgstr "Mag-apply"
 
-#: lib/marshall_web/live/inference_live.ex:112
+#: lib/marshall_web/live/inference_live.ex:121
 #, elixir-autogen, elixir-format
 msgid "Daily AI request counts over the past 30 days"
 msgstr "Ang pang-araw-araw na kahilingan sa AI ay binibilang sa nakalipas na 30 araw"
 
-#: lib/marshall_web/live/inference_live.ex:154
+#: lib/marshall_web/live/inference_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Mga Detalye"
 
-#: lib/marshall_web/live/inference_live.ex:137
+#: lib/marshall_web/live/inference_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "Exact model ID"
 msgstr "Eksaktong ID ng modelo"
 
-#: lib/marshall_web/live/inference_live.ex:97
+#: lib/marshall_web/live/inference_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "Export AI usage"
 msgstr "I-export ang paggamit ng AI"
 
-#: lib/marshall_web/live/inference_live.ex:122
+#: lib/marshall_web/live/inference_live.ex:132
 #, elixir-autogen, elixir-format
 msgid "Filter"
 msgstr "Salain"
 
-#: lib/marshall_web/live/inference_live.ex:84
+#: lib/marshall_web/live/inference_live.ex:85
 #, elixir-autogen, elixir-format
 msgid "Fleet AI usage"
 msgstr "Paggamit ng Fleet AI"
 
-#: lib/marshall_web/live/inference_live.ex:102
+#: lib/marshall_web/live/inference_live.ex:105
 #, elixir-autogen, elixir-format
 msgid "Incomplete AI reports"
 msgstr "Mga hindi kumpletong ulat ng AI"
 
-#: lib/marshall_web/live/inference_live.ex:151
+#: lib/marshall_web/live/inference_live.ex:161
 #, elixir-autogen, elixir-format
 msgid "Input tokens"
 msgstr "Mga token ng input"
 
-#: lib/marshall_web/live/inference_live.ex:172
+#: lib/marshall_web/live/inference_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Inspect"
 msgstr "Siyasatin"
 
-#: lib/marshall_web/live/inference_live.ex:195
+#: lib/marshall_web/live/inference_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "Makina"
 
-#: lib/marshall_web/live/inference_live.ex:136
-#: lib/marshall_web/live/inference_live.ex:150
+#: lib/marshall_web/live/inference_live.ex:146
+#: lib/marshall_web/live/inference_live.ex:160
 #, elixir-autogen, elixir-format
 msgid "Model"
 msgstr "Modelo"
 
-#: lib/marshall_web/live/inference_live.ex:215
+#: lib/marshall_web/live/inference_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "No AI requests match these filters."
 msgstr "Walang mga kahilingan sa AI na tumutugma sa mga filter na ito."
 
-#: lib/marshall_web/live/inference_live.ex:221
+#: lib/marshall_web/live/inference_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Older AI requests →"
 msgstr "Mga lumang kahilingan sa AI →"
 
-#: lib/marshall_web/live/inference_live.ex:115
+#: lib/marshall_web/live/inference_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
 msgstr "Isang column bawat araw, pinakamatanda muna; walong row ng █ scale hanggang sa pinaka-abalang araw. Ang mga label ay minarkahan ang araw ng buwan."
 
-#: lib/marshall_web/live/inference_live.ex:130
+#: lib/marshall_web/live/inference_live.ex:140
 #, elixir-autogen, elixir-format
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: lib/marshall_web/live/inference_live.ex:153
+#: lib/marshall_web/live/inference_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Outcome"
 msgstr "kinalabasan"
 
-#: lib/marshall_web/live/inference_live.ex:152
+#: lib/marshall_web/live/inference_live.ex:162
 #, elixir-autogen, elixir-format
 msgid "Output tokens"
 msgstr "Mga token ng output"
 
-#: lib/marshall_web/live/inference_live.ex:198
+#: lib/marshall_web/live/inference_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Placement / epoch"
 msgstr "Paglalagay / panahon"
 
-#: lib/marshall_web/live/inference_live.ex:182
+#: lib/marshall_web/live/inference_live.ex:194
 #, elixir-autogen, elixir-format
 msgid "Pricing source / version"
 msgstr "Pinagmulan / bersyon ng pagpepresyo"
 
-#: lib/marshall_web/live/inference_live.ex:127
+#: lib/marshall_web/live/inference_live.ex:137
 #, elixir-autogen, elixir-format
 msgid "Provider"
 msgstr "Tagapagbigay"
 
-#: lib/marshall_web/live/inference_live.ex:103
+#: lib/marshall_web/live/inference_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Reported input tokens"
 msgstr "Naiulat na mga token ng input"
 
-#: lib/marshall_web/live/inference_live.ex:104
+#: lib/marshall_web/live/inference_live.ex:111
 #, elixir-autogen, elixir-format
 msgid "Reported output tokens"
 msgstr "Naiulat na mga token ng output"
 
-#: lib/marshall_web/live/inference_live.ex:149
+#: lib/marshall_web/live/inference_live.ex:159
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "Oras"
 
-#: lib/marshall_web/live/inference_live.ex:175
+#: lib/marshall_web/live/inference_live.ex:187
 #, elixir-autogen, elixir-format
 msgid "Token cost estimate · USD"
 msgstr "Tantiyang halaga ng token · USD"
@@ -186,19 +186,19 @@ msgid "Unavailable"
 msgstr "Hindi magagamit"
 
 #: lib/marshall_web/live/inference_live.ex:60
-#: lib/marshall_web/live/inference_live.ex:178
-#: lib/marshall_web/live/inference_live.ex:185
-#: lib/marshall_web/live/inference_live.ex:188
+#: lib/marshall_web/live/inference_live.ex:190
+#: lib/marshall_web/live/inference_live.ex:197
+#: lib/marshall_web/live/inference_live.ex:200
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Hindi alam"
 
-#: lib/marshall_web/live/inference_live.ex:168
+#: lib/marshall_web/live/inference_live.ex:180
 #, elixir-autogen, elixir-format
 msgid "Unreported"
 msgstr "Hindi naiulat"
 
-#: lib/marshall_web/live/inference_live.ex:84
+#: lib/marshall_web/live/inference_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Your AI usage"
 msgstr "Paggamit mo ng AI"

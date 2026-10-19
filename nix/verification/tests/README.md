@@ -247,6 +247,8 @@ counterexample/replay or concurrent schedule evidence must be recorded.
 | `storage-configuration` | `evaluation/storage-configuration.nix` | Mirrored layout, storage properties, budgets and installation boundaries. |
 | `marshall-release`, `lilly-release` | `release/` | Actual source-built release payloads, runtime versions and application independence. |
 | `smtp-relay` | `machines/smtp-relay/` | Actual Marshall mail through synchronous TLS forwarding, failure/retry, loopback isolation and SecretSpec/SOPS rotation. |
+| `push-notifications` | `machines/push-notifications/` | Actual Marshall release pokes a fake Susan at the compiled origin over OS-trusted TLS: 503/503/200 sends once, 410 invalidates, bodies are signed ciphertext only, and the operator switch refuses registration. |
+| `push-relay` | `machines/push-relay/` | Actual Marshall release delivers through the actual Susan release behind TLS at the compiled origin to fake APNs: Susan verifies Marshall's install signature, provider 503/503/200 sends once, only the device key opens what the provider received, and provider 410 invalidates the device. |
 | `service-roles` | `machines/service-roles/` | Neither/either/both roles; three colocated Marshall instances, Lilly, resource limits and proxy failover. |
 | `porsche-fleet` | `machines/fleet/` | Adds real native SSH management, browser approval, lifecycle, revocation and accepted-work recovery to the complete fleet scenarios. |
 | `cloning-fleet` | `machines/fleet/` | Runs the Porsche and clone audit scenarios without the unrelated terminal/capacity scenario set. |

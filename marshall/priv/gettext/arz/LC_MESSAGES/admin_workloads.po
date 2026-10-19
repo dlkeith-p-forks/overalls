@@ -14,127 +14,127 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:117
+#: lib/marshall_web/live/admin/workloads_live.ex:140
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "إجراءات"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:215
+#: lib/marshall_web/live/admin/workloads_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "أرشفة الآلة دي الافتراضية؟"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:217
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "حذف"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:150
+#: lib/marshall_web/live/admin/workloads_live.ex:174
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "التفاصيل"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:97
+#: lib/marshall_web/live/admin/workloads_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included."
 msgstr "كل أجهزة الأسطول، بنفس فحوص سلامة دورة الحياة وتغيير الحجم والنقل اللي في وحدة تحكم المالك. مفيش بيانات طرفية أو بيانات دخول."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:95
+#: lib/marshall_web/live/admin/workloads_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Fleet workloads"
 msgstr "أحمال عمل الأسطول"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:114
+#: lib/marshall_web/live/admin/workloads_live.ex:136
 #, elixir-autogen, elixir-format
 msgid "Host"
 msgstr "المضيف"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:60
+#: lib/marshall_web/live/admin/workloads_live.ex:71
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "طلب غير صالح."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:34
+#: lib/marshall_web/live/admin/workloads_live.ex:36
 #, elixir-autogen, elixir-format
 msgid "Lifecycle request queued."
 msgstr "طلب دورة الحياة دخل الطابور."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:68
+#: lib/marshall_web/live/admin/workloads_live.ex:83
 #, elixir-autogen, elixir-format
 msgid "Lifecycle request was rejected."
 msgstr "رُفض طلب دورة الحياة."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:207
+#: lib/marshall_web/live/admin/workloads_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "نقل"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:108
+#: lib/marshall_web/live/admin/workloads_live.ex:129
 #, elixir-autogen, elixir-format
 msgid "No active workloads."
 msgstr "مفيش أحمال عمل نشطة."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:46
+#: lib/marshall_web/live/admin/workloads_live.ex:51
 #, elixir-autogen, elixir-format
 msgid "Relocation request queued."
 msgstr "طلب النقل دخل الطابور."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:49
+#: lib/marshall_web/live/admin/workloads_live.ex:59
 #, elixir-autogen, elixir-format
 msgid "Relocation request was rejected."
 msgstr "رُفض طلب النقل."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:166
+#: lib/marshall_web/live/admin/workloads_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "تغيير الحجم"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:115
+#: lib/marshall_web/live/admin/workloads_live.ex:137
 #, elixir-autogen, elixir-format
 msgid "Shape"
 msgstr "تكوين الموارد"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:195
+#: lib/marshall_web/live/admin/workloads_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "بدء"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:116
+#: lib/marshall_web/live/admin/workloads_live.ex:138
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "الحالة"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:204
+#: lib/marshall_web/live/admin/workloads_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "إيقاف"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:158
+#: lib/marshall_web/live/admin/workloads_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "الطرفية"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:67
+#: lib/marshall_web/live/admin/workloads_live.ex:79
 #, elixir-autogen, elixir-format
 msgid "The owner has pinned this machine; it cannot be deleted until they unpin it."
 msgstr "ثبّت المالك الآلة دي؛ وما ينفعش حذفها حتى يلغي تثبيتها."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:103
+#: lib/marshall_web/live/admin/workloads_live.ex:123
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "محدّث"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:113
+#: lib/marshall_web/live/admin/workloads_live.ex:135
 #, elixir-autogen, elixir-format
 msgid "Workload"
 msgstr "حمل العمل"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:77
+#: lib/marshall_web/live/admin/workloads_live.ex:95
 #, elixir-autogen, elixir-format
 msgid "Workload inventory is temporarily unavailable."
 msgstr "قائمة أحمال العمل مش متاحة مؤقتًا."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:105
+#: lib/marshall_web/live/admin/workloads_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "· every 15 seconds"
 msgstr "· كل 15 ثانية"

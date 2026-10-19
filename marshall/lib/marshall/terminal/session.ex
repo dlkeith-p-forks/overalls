@@ -108,6 +108,10 @@ defmodule Marshall.Terminal.Session do
     change {Marshall.Control.Hints.Change, kind: :vm, from: :vm_id},
       on: [:create, :update, :destroy],
       where: [action_is([:request_kill, :confirm_kill, :retire_kill, :close])]
+
+    # Session list changes for `watch --machine` (ADR-0222), keyed by machine.
+    change {Marshall.Control.Hints.Change, kind: :terminal_session, from: :vm_id},
+      on: [:create, :update, :destroy]
   end
 
   attributes do
