@@ -1,0 +1,655 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: sw\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/terminal_live.ex:605
+#, elixir-autogen, elixir-format
+msgid "%{user} · %{count} viewing"
+msgid_plural "%{user} · %{count} viewing"
+msgstr[0] "%{user} · wanaotazama %{count}"
+msgstr[1] "%{user} · wanaotazama %{count}"
+
+#: lib/marshall_web/components/workspace_components.ex:255
+#, elixir-autogen, elixir-format
+msgid "%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}"
+msgstr "%{value1} vCPU · kumbukumbu %{value2} GiB · diski %{value3} GiB · %{value4}"
+
+#: lib/marshall_web/live/terminal_live.ex:570
+#, elixir-autogen, elixir-format
+msgid "+ New"
+msgstr "+ Mpya"
+
+#: lib/marshall_web/live/terminal_live.ex:722
+#, elixir-autogen, elixir-format
+msgid "A+"
+msgstr "A+"
+
+#: lib/marshall_web/components/workspace_components.ex:139
+#, elixir-autogen, elixir-format
+msgid "Access"
+msgstr "Ufikiaji"
+
+#: lib/marshall_web/live/terminal_live.ex:789
+#, elixir-autogen, elixir-format
+msgid "Account email"
+msgstr "Barua pepe ya akaunti"
+
+#: lib/marshall_web/live/terminal_live.ex:796
+#, elixir-autogen, elixir-format
+msgid "Allow viewing"
+msgstr "Ruhusu kutazama"
+
+#: lib/marshall_web/components/workspace_components.ex:413
+#, elixir-autogen, elixir-format
+msgid "Already installed"
+msgstr "Tayari imewekwa"
+
+#: lib/marshall_web/live/terminal_live.ex:668
+#, elixir-autogen, elixir-format
+msgid "Android display"
+msgstr "Onyesho la Android"
+
+#: lib/marshall_web/live/terminal_live.ex:686
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Turubai ya kuonyesha ya Android"
+
+#: lib/marshall_web/live/terminal_live.ex:91
+#: lib/marshall_web/live/terminal_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Onyesho la Android halipatikani."
+
+#: lib/marshall_web/live/terminal_live.ex:717
+#, elixir-autogen, elixir-format
+msgid "A−"
+msgstr "A−"
+
+#: lib/marshall_web/components/workspace_components.ex:436
+#: lib/marshall_web/live/terminal_live.ex:655
+#, elixir-autogen, elixir-format
+msgid "Boot log"
+msgstr "Kumbukumbu ya kuwasha"
+
+#: lib/marshall_web/live/terminal_live.ex:802
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Ghairi"
+
+#: lib/marshall_web/live/terminal_live.ex:757
+#, elixir-autogen, elixir-format
+msgid "Close search"
+msgstr "Funga utafutaji"
+
+#: lib/marshall_web/live/terminal_live.ex:631
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "Funga kipindi"
+
+#: lib/marshall_web/live/terminal_live.ex:629
+#, elixir-autogen, elixir-format
+msgid "Close terminal %{value1}"
+msgstr "Funga terminali %{value1}"
+
+#: lib/marshall_web/components/workspace_components.ex:381
+#, elixir-autogen, elixir-format
+msgid "Connect from your computer"
+msgstr "Unganisha kutoka kwa kompyuta yako"
+
+#: lib/marshall_web/live/terminal_live.ex:694
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "Inaunganisha..."
+
+#: lib/marshall_web/components/workspace_components.ex:273
+#: lib/marshall_web/components/workspace_components.ex:400
+#: lib/marshall_web/components/workspace_components.ex:410
+#: lib/marshall_web/components/workspace_components.ex:421
+#, elixir-autogen, elixir-format
+msgid "Copy"
+msgstr "Nakili"
+
+#: lib/marshall_web/components/workspace_components.ex:399
+#, elixir-autogen, elixir-format
+msgid "Copy Linux and macOS install command"
+msgstr "Nakili amri ya kusakinisha kwa Linux na macOS"
+
+#: lib/marshall_web/components/workspace_components.ex:420
+#, elixir-autogen, elixir-format
+msgid "Copy SSH command"
+msgstr "Nakili amri ya SSH"
+
+#: lib/marshall_web/components/workspace_components.ex:409
+#, elixir-autogen, elixir-format
+msgid "Copy Windows PowerShell install command"
+msgstr "Nakili amri ya usakinishaji ya Windows PowerShell"
+
+#: lib/marshall_web/components/workspace_components.ex:272
+#, elixir-autogen, elixir-format
+msgid "Copy machine ID"
+msgstr "Nakili kitambulisho cha mashine"
+
+#: lib/marshall_web/components/workspace_components.ex:550
+#, elixir-autogen, elixir-format
+msgid "Customer"
+msgstr "Customer"
+
+#: lib/marshall_web/live/terminal_live.ex:716
+#, elixir-autogen, elixir-format
+msgid "Decrease terminal font size"
+msgstr "Punguza ukubwa wa herufi za terminali"
+
+#: lib/marshall_web/components/workspace_components.ex:87
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "Imefutwa"
+
+#: lib/marshall_web/components/workspace_components.ex:66
+#, elixir-autogen, elixir-format
+msgid "Deleting"
+msgstr "Inafuta"
+
+#: lib/marshall_web/live/terminal_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "Tikiti ya kuonyesha relay iliyotolewa."
+
+#: lib/marshall_web/live/terminal_live.ex:727
+#: lib/marshall_web/live/terminal_live.ex:729
+#, elixir-autogen, elixir-format
+msgid "Enter full screen"
+msgstr "Ingiza skrini nzima"
+
+#: lib/marshall_web/components/workspace_components.ex:86
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Imeshindwa"
+
+#: lib/marshall_web/live/terminal_live.ex:742
+#, elixir-autogen, elixir-format
+msgid "Find in scrollback"
+msgstr "Tafuta katika historia ya terminali"
+
+#: lib/marshall_web/live/terminal_live.ex:764
+#, elixir-autogen, elixir-format
+msgid "Follow boot output"
+msgstr "Fuata pato la kuwasha"
+
+#: lib/marshall_web/components/workspace_components.ex:265
+#, elixir-autogen, elixir-format
+msgid "ID"
+msgstr "ID"
+
+#: lib/marshall_web/live/terminal_live.ex:721
+#, elixir-autogen, elixir-format
+msgid "Increase terminal font size"
+msgstr "Ongeza ukubwa wa herufi za terminali"
+
+#: lib/marshall_web/components/workspace_components.ex:390
+#, elixir-autogen, elixir-format
+msgid "Install and connect"
+msgstr "Sakinisha na uunganishe"
+
+#: lib/marshall_web/components/workspace_components.ex:385
+#, elixir-autogen, elixir-format
+msgid "Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh."
+msgstr "Husakinisha Overalls, husanidi SSH na kuunganisha kwenye mashine hii. Kwenye Windows kisakinishi pia husakinisha OpenSSH 9.6 au mpya zaidi na, kwa idhini ya msimamizi, huiweka kuwa ssh chaguomsingi."
+
+#: lib/marshall_web/components/workspace_components.ex:392
+#, elixir-autogen, elixir-format
+msgid "Linux / macOS"
+msgstr "Linux / macOS"
+
+#: lib/marshall_web/components/workspace_components.ex:271
+#, elixir-autogen, elixir-format
+msgid "Machine ID"
+msgstr "Kitambulisho cha mashine"
+
+#: lib/marshall_web/live/terminal_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "Machine is paused. Resume it or reopen this terminal page."
+msgstr "Mashine imesitishwa. Iendeleze au fungua tena ukurasa huu wa terminali."
+
+#: lib/marshall_web/live/terminal_live.ex:357
+#, elixir-autogen, elixir-format
+msgid "Machine is stopping or stopped. Choose Start to open a terminal."
+msgstr "Mashine imesimama au imesimamishwa. Chagua Anza ili kufungua terminal."
+
+#: lib/marshall_web/live/terminal_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Machine not found."
+msgstr "Mashine haikupatikana."
+
+#: lib/marshall_web/live/terminal_live.ex:354
+#, elixir-autogen, elixir-format
+msgid "Machine startup failed. Check the machine status and boot log."
+msgstr "Kuwasha mashine kumeshindwa. Kagua hali ya mashine na kumbukumbu ya kuwasha."
+
+#: lib/marshall_web/components/workspace_components.ex:129
+#, elixir-autogen, elixir-format
+msgid "Machine workspace"
+msgstr "Nafasi ya kazi ya mashine"
+
+#: lib/marshall_web/live/terminal_live.ex:752
+#, elixir-autogen, elixir-format
+msgid "Next match"
+msgstr "Inayolingana inayofuata"
+
+#: lib/marshall_web/live/terminal_live.ex:644
+#, elixir-autogen, elixir-format
+msgid "No shared terminals are available to view."
+msgstr "Hakuna terminali zinazoshirikiwa zinazopatikana kutazamwa."
+
+#: lib/marshall_web/live/terminal_live.ex:648
+#, elixir-autogen, elixir-format
+msgid "No terminals are open. Choose New to open your personal shell."
+msgstr "Hakuna terminali iliyo wazi. Chagua Mpya kufungua ganda lako binafsi la amri."
+
+#: lib/marshall_web/components/workspace_components.ex:287
+#: lib/marshall_web/components/workspace_components.ex:297
+#: lib/marshall_web/components/workspace_components.ex:476
+#: lib/marshall_web/components/workspace_components.ex:484
+#, elixir-autogen, elixir-format
+msgid "Open VS Code"
+msgstr "Fungua VS Code"
+
+#: lib/marshall_web/components/workspace_components.ex:475
+#, elixir-autogen, elixir-format
+msgid "Open VS Code for %{value1}"
+msgstr "Fungua VS Code ya %{value1}"
+
+#: lib/marshall_web/live/terminal_live.ex:674
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "Fungua onyesho"
+
+#: lib/marshall_web/live/terminal_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Opening terminal; recovering the same request if the connection was interrupted."
+msgstr "Inafungua terminali; inarejesha ombi lile lile ikiwa muunganisho ulikatizwa."
+
+#: lib/marshall_web/components/workspace_components.ex:334
+#, elixir-autogen, elixir-format
+msgid "Pause"
+msgstr "Sitisha"
+
+#: lib/marshall_web/components/workspace_components.ex:85
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "Imesitishwa"
+
+#: lib/marshall_web/components/workspace_components.ex:82
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Inasubiri"
+
+#: lib/marshall_web/components/workspace_components.ex:208
+#, elixir-autogen, elixir-format
+msgid "Pinned"
+msgstr "Imebandikwa"
+
+#: lib/marshall_web/live/terminal_live.ex:474
+#, elixir-autogen, elixir-format
+msgid "Preparing your guest account…"
+msgstr "Inaandaa akaunti yako ya mashine…"
+
+#: lib/marshall_web/live/terminal_live.ex:413
+#: lib/marshall_web/live/terminal_live.ex:451
+#: lib/marshall_web/live/terminal_live.ex:475
+#, elixir-autogen, elixir-format
+msgid "Preparing your terminal…"
+msgstr "Inaandaa terminali yako…"
+
+#: lib/marshall_web/live/terminal_live.ex:747
+#, elixir-autogen, elixir-format
+msgid "Previous match"
+msgstr "Inayolingana iliyotangulia"
+
+#: lib/marshall_web/live/terminal_live.ex:772
+#, elixir-autogen, elixir-format
+msgid "Read-only boot console"
+msgstr "Kiweko cha kuwasha cha kusoma tu"
+
+#: lib/marshall_web/live/terminal_live.ex:639
+#, elixir-autogen, elixir-format
+msgid "Read-only host boot log. Guest terminal readiness is not required."
+msgstr "Kumbukumbu ya kuwasha ya seva pangishi ya kusoma tu. Terminali ya mashine haihitaji kuwa tayari."
+
+#: lib/marshall_web/live/terminal_live.ex:414
+#, elixir-autogen, elixir-format
+msgid "Reconnecting to the terminal service…"
+msgstr "Inaunganisha tena kwa huduma ya terminal..."
+
+#: lib/marshall_web/live/terminal_live.ex:705
+#, elixir-autogen, elixir-format
+msgid "Rename in this browser"
+msgstr "Ipe jina jipya katika kivinjari hiki"
+
+#: lib/marshall_web/live/terminal_live.ex:704
+#, elixir-autogen, elixir-format
+msgid "Rename terminal"
+msgstr "Badilisha jina la terminal"
+
+#: lib/marshall_web/live/terminal_live.ex:677
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "Udhibiti wa ombi"
+
+#: lib/marshall_web/components/workspace_components.ex:325
+#, elixir-autogen, elixir-format
+msgid "Resume machine"
+msgstr "Endeleza mashine"
+
+#: lib/marshall_web/components/workspace_components.ex:75
+#, elixir-autogen, elixir-format
+msgid "Resuming"
+msgstr "Inaanza tena"
+
+#: lib/marshall_web/live/terminal_live.ex:151
+#: lib/marshall_web/live/terminal_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "Resuming machine; waiting for capacity…"
+msgstr "Inaendeleza mashine; inasubiri uwezo…"
+
+#: lib/marshall_web/live/terminal_live.ex:799
+#, elixir-autogen, elixir-format
+msgid "Revoke"
+msgstr "Batilisha"
+
+#: lib/marshall_web/components/workspace_components.ex:83
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "Inafanya kazi"
+
+#: lib/marshall_web/components/workspace_components.ex:443
+#, elixir-autogen, elixir-format
+msgid "SSH connection details are temporarily unavailable."
+msgstr "Maelezo ya muunganisho wa SSH hayapatikani kwa sasa."
+
+#: lib/marshall_web/components/workspace_components.ex:439
+#, elixir-autogen, elixir-format
+msgid "SSH connection requires write access to this machine."
+msgstr "Muunganisho wa SSH unahitaji ruhusa ya kuandika kwenye mashine hii."
+
+#: lib/marshall_web/live/terminal_live.ex:711
+#, elixir-autogen, elixir-format
+msgid "Search (Ctrl+F)"
+msgstr "Tafuta (Ctrl+F)"
+
+#: lib/marshall_web/live/terminal_live.ex:710
+#, elixir-autogen, elixir-format
+msgid "Search scrollback"
+msgstr "Tafuta historia ya terminali"
+
+#: lib/marshall_web/live/terminal_live.ex:734
+#, elixir-autogen, elixir-format
+msgid "Search terminal scrollback"
+msgstr "Tafuta katika historia ya terminali"
+
+#: lib/marshall_web/components/workspace_components.ex:143
+#, elixir-autogen, elixir-format
+msgid "Settings"
+msgstr "Mipangilio"
+
+#: lib/marshall_web/live/terminal_live.ex:619
+#, elixir-autogen, elixir-format
+msgid "Share terminal %{value1}"
+msgstr "Shiriki terminal %{value1}"
+
+#: lib/marshall_web/live/terminal_live.ex:780
+#, elixir-autogen, elixir-format
+msgid "Share this terminal"
+msgstr "Shiriki terminal hii"
+
+#: lib/marshall_web/live/terminal_live.ex:621
+#, elixir-autogen, elixir-format
+msgid "Share view"
+msgstr "Shiriki mwonekano"
+
+#: lib/marshall_web/components/workspace_components.ex:551
+#, elixir-autogen, elixir-format
+msgid "Standard"
+msgstr "Kawaida"
+
+#: lib/marshall_web/components/workspace_components.ex:315
+#, elixir-autogen, elixir-format
+msgid "Start machine"
+msgstr "Washa mashine"
+
+#: lib/marshall_web/components/workspace_components.ex:78
+#, elixir-autogen, elixir-format
+msgid "Starting"
+msgstr "Inawasha"
+
+#: lib/marshall_web/components/workspace_components.ex:344
+#, elixir-autogen, elixir-format
+msgid "Stop"
+msgstr "Simamisha"
+
+#: lib/marshall_web/components/workspace_components.ex:84
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "Imesimamishwa"
+
+#: lib/marshall_web/components/workspace_components.ex:69
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "Inasimamisha"
+
+#: lib/marshall_web/components/workspace_components.ex:72
+#, elixir-autogen, elixir-format
+msgid "Suspending"
+msgstr "Inasitisha"
+
+#: lib/marshall_web/components/workspace_components.ex:134
+#, elixir-autogen, elixir-format
+msgid "Terminal"
+msgstr "Kituo"
+
+#: lib/marshall_web/live/terminal_live.ex:591
+#, elixir-autogen, elixir-format
+msgid "Terminal %{name}, %{count} viewer, created %{created}"
+msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
+msgstr[0] "Terminal %{name} , %{count} viewer, imeundwa %{created}"
+msgstr[1] "Terminal %{name} , watazamaji wa %{count}, imeundwa %{created}"
+
+#: lib/marshall_web/live/terminal_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "Terminal access ended."
+msgstr "Ufikiaji wa kituo umekamilika."
+
+#: lib/marshall_web/live/terminal_live.ex:173
+#: lib/marshall_web/live/terminal_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "Terminal close requested; waiting for guest confirmation."
+msgstr "Ufungaji wa kituo umeombwa; kusubiri uthibitisho wa mgeni."
+
+#: lib/marshall_web/live/terminal_live.ex:490
+#, elixir-autogen, elixir-format
+msgid "Terminal limit reached for this machine."
+msgstr "Kikomo cha mwisho kimefikiwa kwa mashine hii."
+
+#: lib/marshall_web/live/terminal_live.ex:577
+#, elixir-autogen, elixir-format
+msgid "Terminal sessions"
+msgstr "Vipindi vya terminal"
+
+#: lib/marshall_web/live/terminal_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Terminal viewing access updated."
+msgstr "Ufikiaji wa kutazama wa kituo umesasishwa."
+
+#: lib/marshall_web/live/terminal_live.ex:496
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable while the host is offline."
+msgstr "Vituo havipatikani wakati mwenyeji yuko nje ya mtandao."
+
+#: lib/marshall_web/live/terminal_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "The boot log is unavailable for the current machine execution."
+msgstr "Rekodi ya uanzishaji haipatikani kwa utekelezaji wa mashine ya sasa."
+
+#: lib/marshall_web/live/terminal_live.ex:512
+#, elixir-autogen, elixir-format
+msgid "The guest cannot host more terminal sessions."
+msgstr "Mashine haiwezi kupokea vipindi zaidi vya terminali."
+
+#: lib/marshall_web/live/terminal_live.ex:503
+#, elixir-autogen, elixir-format
+msgid "The previous opening has ended. Choose New to try again."
+msgstr "Ufunguzi uliopita umekwisha. Chagua Mpya ili ujaribu tena."
+
+#: lib/marshall_web/live/terminal_live.ex:670
+#, elixir-autogen, elixir-format
+msgid "The software-rendered Android display uses the machine relay."
+msgstr "Onyesho la Android linalotolewa na programu hutumia relay ya mashine."
+
+#: lib/marshall_web/live/terminal_live.ex:514
+#, elixir-autogen, elixir-format
+msgid "The terminal could not be opened."
+msgstr "Terminal haikuweza kufunguliwa."
+
+#: lib/marshall_web/live/terminal_live.ex:539
+#, elixir-autogen, elixir-format
+msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
+msgstr "Mashine hii imesimamishwa. Anzisha ili kufungua terminal yako. Faili zako zimehifadhiwa."
+
+#: lib/marshall_web/components/workspace_components.ex:352
+#: lib/marshall_web/components/workspace_components.ex:526
+#, elixir-autogen, elixir-format
+msgid "This machine's image does not support the current browser editor."
+msgstr "Picha ya mashine hii haiauni kihariri cha sasa cha kivinjari."
+
+#: lib/marshall_web/components/workspace_components.ex:427
+#, elixir-autogen, elixir-format
+msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
+msgstr "Picha ya mashine hii bado haina mawakala wageni: SSH , terminal ya kivinjari na ajenti hazipatikani. Tumia"
+
+#: lib/marshall_web/live/terminal_live.ex:348
+#, elixir-autogen, elixir-format
+msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
+msgstr "Picha ya mashine hii haina wakala wa terminali, kwa hiyo terminali ya kivinjari haipatikani."
+
+#: lib/marshall_web/live/terminal_live.ex:697
+#, elixir-autogen, elixir-format
+msgid "Type to interact"
+msgstr "Andika ili kuingiliana"
+
+#: lib/marshall_web/live/terminal_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
+msgstr "Imeshindwa kusasisha kipengele cha kushiriki wa terminali. Mpokeaji lazima awe na ufikiaji wa mashine kabla ya kushiriki."
+
+#: lib/marshall_web/components/workspace_components.ex:89
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Haipatikani"
+
+#: lib/marshall_web/components/workspace_components.ex:88
+#: lib/marshall_web/components/workspace_components.ex:553
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Haijulikani"
+
+#: lib/marshall_web/components/workspace_components.ex:441
+#, elixir-autogen, elixir-format
+msgid "Use the browser terminal for this Inception environment."
+msgstr "Tumia terminal ya kivinjari kwa mazingira haya ya Kuanzishwa."
+
+#: lib/marshall_web/components/workspace_components.ex:359
+#, elixir-autogen, elixir-format
+msgid "VS Code is temporarily unavailable for this machine."
+msgstr "VS Code haupatikani kwa mashine hii kwa sasa."
+
+#: lib/marshall_web/components/workspace_components.ex:532
+#, elixir-autogen, elixir-format
+msgid "VS Code is temporarily unavailable."
+msgstr "VS Code haupatikani kwa sasa."
+
+#: lib/marshall_web/components/workspace_components.ex:535
+#, elixir-autogen, elixir-format
+msgid "VS Code is unavailable for this machine."
+msgstr "VS Code haupatikani kwa mashine hii."
+
+#: lib/marshall_web/components/workspace_components.ex:357
+#: lib/marshall_web/components/workspace_components.ex:529
+#, elixir-autogen, elixir-format
+msgid "VS Code requires a running machine."
+msgstr "VS Code unahitaji mashine inayoendesha."
+
+#: lib/marshall_web/live/terminal_live.ex:782
+#, elixir-autogen, elixir-format
+msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
+msgstr "Kuangalia pekee, hata kwa waendeshaji mashine. Mpokeaji lazima awe na ufikiaji wa mashine hii."
+
+#: lib/marshall_web/live/terminal_live.ex:681
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "Inasubiri relay ya kuonyesha."
+
+#: lib/marshall_web/live/terminal_live.ex:362
+#, elixir-autogen, elixir-format
+msgid "Waiting for the machine to start…"
+msgstr "Inasubiri mashine kuanza..."
+
+#: lib/marshall_web/components/workspace_components.ex:402
+#, elixir-autogen, elixir-format
+msgid "Windows"
+msgstr "Windows"
+
+#: lib/marshall_web/live/terminal_live.ex:493
+#, elixir-autogen, elixir-format
+msgid "You do not have terminal access to this machine."
+msgstr "Huna ufikiaji wa terminali ya mashine hii."
+
+#: lib/marshall_web/live/terminal_live.ex:507
+#, elixir-autogen, elixir-format
+msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
+msgstr "Akaunti yako ya mgeni haikuweza kutayarishwa. Hakikisha kuwa huduma ya akaunti ya mgeni inapatikana, kisha uchague Mpya ili kujaribu tena."
+
+#: lib/marshall_web/live/terminal_live.ex:646
+#, elixir-autogen, elixir-format
+msgid "Your personal terminal opens when the machine is ready."
+msgstr "Terminal yako ya kibinafsi hufunguka wakati mashine iko tayari."
+
+#: lib/marshall_web/live/terminal_live.ex:500
+#, elixir-autogen, elixir-format
+msgid "Your previous shell has closed. Choose New to open another terminal."
+msgstr "Sheli yako ya awali imefungwa. Chagua Mpya ili kufungua terminal nyingine."
+
+#: lib/marshall_web/live/terminal_live.ex:544
+#, elixir-autogen, elixir-format
+msgid "Your terminal will open when the machine is running and ready."
+msgstr "Terminal yako itafunguka wakati mashine inafanya kazi na iko tayari."
+
+#: lib/marshall_web/live/terminal_live.ex:712
+#, elixir-autogen, elixir-format
+msgid "find"
+msgstr "tafuta"
+
+#: lib/marshall_web/live/terminal_live.ex:730
+#, elixir-autogen, elixir-format
+msgid "full"
+msgstr "kamili"
+
+#: lib/marshall_web/live/terminal_live.ex:706
+#, elixir-autogen, elixir-format
+msgid "rename"
+msgstr "badilisha jina"
+
+#: lib/marshall_web/components/workspace_components.ex:437
+#, elixir-autogen, elixir-format
+msgid "to view the read-only host console."
+msgstr "kutazama kiweko cha mwenyeji cha kusoma pekee."

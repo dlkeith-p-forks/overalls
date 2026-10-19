@@ -46,7 +46,7 @@ Authorization: the approved Mila plan (2026-10-18).
 ## Consequences
 
 Each command needs localized refusals in `Porsche.SSH.CommandMessages` and
-the 25-locale catalogs.
+every Porsche locale catalog, in the feature domain that owns the command.
 
 ## Invariants and verification
 

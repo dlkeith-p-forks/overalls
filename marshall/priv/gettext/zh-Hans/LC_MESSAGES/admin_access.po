@@ -1,0 +1,351 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: zh-Hans\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/admin/access_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Access authority"
+msgstr "访问授权"
+
+#: lib/marshall_web/live/admin/access_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Access inventory is temporarily unavailable."
+msgstr "访问权限清单暂不可用。"
+
+#: lib/marshall_web/live/admin/access_live.ex:123
+#: lib/marshall_web/live/admin/access_live.ex:169
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "账户"
+
+#: lib/marshall_web/live/admin/access_live.ex:127
+#: lib/marshall_web/live/admin/access_live.ex:173
+#: lib/marshall_web/live/admin/access_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "操作"
+
+#: lib/marshall_web/live/admin/access_live.ex:112
+#: lib/marshall_web/live/admin/access_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "Active SSH sessions"
+msgstr "有效 SSH 会话"
+
+#: lib/marshall_web/live/admin/access_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr "已添加"
+
+#: lib/marshall_web/live_admin_auth.ex:142
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "管理更改未经授权。"
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "管理更改需要管理员权限。"
+
+#: lib/marshall_web/live/admin/access_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "关闭会话"
+
+#: lib/marshall_web/live/admin/access_live.ex:243
+#, elixir-autogen, elixir-format
+msgid "Close this SSH session?"
+msgstr "关闭此 SSH 会话？"
+
+#: lib/marshall_web/live/admin/access_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "Could not close that session."
+msgstr "无法关闭该会话。"
+
+#: lib/marshall_web/live/admin/access_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that VM access."
+msgstr "无法撤销该虚拟机访问权限。"
+
+#: lib/marshall_web/live/admin/access_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that key."
+msgstr "无法撤销该密钥。"
+
+#: lib/marshall_web/live/admin/access_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "到期"
+
+#: lib/marshall_web/live_admin_auth.ex:190
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "请先完成或取消当前验证。"
+
+#: lib/marshall_web/live/admin/access_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "网关"
+
+#: lib/marshall_web/live/admin/access_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Granted"
+msgstr "已授予"
+
+#: lib/marshall_web/live_admin_auth.ex:208
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "无效的管理请求。"
+
+#: lib/marshall_web/live/admin/access_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "无效请求。"
+
+#: lib/marshall_web/live/admin/access_live.ex:170
+#: lib/marshall_web/live/admin/access_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "密钥"
+
+#: lib/marshall_web/live/admin/access_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "机器"
+
+#: lib/marshall_web/live/admin/access_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "Manager"
+msgstr "管理者"
+
+#: lib/marshall_web/live/admin/access_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "No active keys."
+msgstr "没有有效密钥。"
+
+#: lib/marshall_web/live/admin/access_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "No active sessions."
+msgstr "没有有效会话。"
+
+#: lib/marshall_web/live/admin/access_live.ex:116
+#, elixir-autogen, elixir-format
+msgid "No machine is shared with another account."
+msgstr "没有与其他账户共享的机器。"
+
+#: lib/marshall_web/live/admin/access_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "操作员"
+
+#: lib/marshall_web/live/admin/access_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "等待密钥批准"
+
+#: lib/marshall_web/live/admin/access_live.ex:111
+#: lib/marshall_web/live/admin/access_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Registered SSH keys"
+msgstr "已登记的 SSH 密钥"
+
+#: lib/marshall_web/live/admin/access_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "Revoke access"
+msgstr "撤销访问权限"
+
+#: lib/marshall_web/live/admin/access_live.ex:206
+#, elixir-autogen, elixir-format
+msgid "Revoke key"
+msgstr "撤销密钥"
+
+#: lib/marshall_web/live/admin/access_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Revoke this SSH key and close sessions using it?"
+msgstr "撤销此 SSH 密钥并关闭使用它的会话？"
+
+#: lib/marshall_web/live/admin/access_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Revoke this user's VM access?"
+msgstr "撤销此用户的虚拟机访问权限？"
+
+#: lib/marshall_web/live/admin/access_live.ex:266
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "已撤销"
+
+#: lib/marshall_web/live/admin/access_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "角色"
+
+#: lib/marshall_web/live/admin/access_live.ex:189
+#, elixir-autogen, elixir-format
+msgid "SSH key"
+msgstr "SSH 密钥"
+
+#: lib/marshall_web/live/admin/access_live.ex:27
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked."
+msgstr "SSH 密钥已撤销。"
+
+#: lib/marshall_web/live/admin/access_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "SSH session closed."
+msgstr "SSH 会话已关闭。"
+
+#: lib/marshall_web/live/admin/access_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Shared machine access"
+msgstr "共享机器访问权限"
+
+#: lib/marshall_web/live/admin/access_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Shared machine grants"
+msgstr "共享机器授权"
+
+#: lib/marshall_web/live/admin/access_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "未知"
+
+#: lib/marshall_web/live/admin/access_live.ex:106
+#, elixir-autogen, elixir-format
+msgid "Updated every 15 seconds"
+msgstr "每 15 秒更新"
+
+#: lib/marshall_web/live/admin/access_live.ex:51
+#, elixir-autogen, elixir-format
+msgid "VM access revoked."
+msgstr "虚拟机访问权限已撤销。"
+
+#: lib/marshall_web/live/admin/access_live.ex:263
+#, elixir-autogen, elixir-format
+msgid "Viewer"
+msgstr "查看者"
+
+#: lib/marshall_web/live/admin/access_live.ex:262
+#, elixir-autogen, elixir-format
+msgid "Web apps"
+msgstr "Web 应用"
+
+#: lib/marshall_web/live/admin/access_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
+msgstr "谁能通过哪个密钥或会话访问哪台机器。私钥、会话令牌和网关凭据绝不会显示。"
+
+#: lib/marshall_web/admin_elevation.ex:41
+#, elixir-autogen, elixir-format
+msgid "add this Git mirror"
+msgstr "添加此 Git 镜像仓库"
+
+#: lib/marshall_web/admin_elevation.ex:46
+#, elixir-autogen, elixir-format
+msgid "approve this workload downtime"
+msgstr "批准此工作负载停机"
+
+#: lib/marshall_web/admin_elevation.ex:33
+#, elixir-autogen, elixir-format
+msgid "change administrator access"
+msgstr "更改管理员权限"
+
+#: lib/marshall_web/admin_elevation.ex:45
+#, elixir-autogen, elixir-format
+msgid "change this evacuation"
+msgstr "更改此疏散"
+
+#: lib/marshall_web/admin_elevation.ex:48
+#, elixir-autogen, elixir-format
+msgid "change this machine's state"
+msgstr "更改此机器的状态"
+
+#: lib/marshall_web/admin_elevation.ex:52
+#, elixir-autogen, elixir-format
+msgid "change this node's admission settings"
+msgstr "更改此节点的准入设置"
+
+#: lib/marshall_web/admin_elevation.ex:36
+#, elixir-autogen, elixir-format
+msgid "close this SSH session"
+msgstr "关闭此 SSH 会话"
+
+#: lib/marshall_web/admin_elevation.ex:39
+#, elixir-autogen, elixir-format
+msgid "delete this user account"
+msgstr "删除此用户账户"
+
+#: lib/marshall_web/admin_elevation.ex:49
+#, elixir-autogen, elixir-format
+msgid "move this machine"
+msgstr "迁移此机器"
+
+#: lib/marshall_web/admin_elevation.ex:51
+#, elixir-autogen, elixir-format
+msgid "open this machine with administrator access"
+msgstr "以管理员权限打开此机器"
+
+#: lib/marshall_web/admin_elevation.ex:42
+#, elixir-autogen, elixir-format
+msgid "refresh this Git mirror"
+msgstr "刷新此 Git 镜像仓库"
+
+#: lib/marshall_web/admin_elevation.ex:43
+#, elixir-autogen, elixir-format
+msgid "remove this Git mirror"
+msgstr "移除此 Git 镜像仓库"
+
+#: lib/marshall_web/admin_elevation.ex:47
+#, elixir-autogen, elixir-format
+msgid "replan this workload move"
+msgstr "重新规划此工作负载迁移"
+
+#: lib/marshall_web/admin_elevation.ex:40
+#, elixir-autogen, elixir-format
+msgid "reset this account's passkeys"
+msgstr "重置此账户的通行密钥"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "retry this background job"
+msgstr "重试此后台任务"
+
+#: lib/marshall_web/admin_elevation.ex:35
+#, elixir-autogen, elixir-format
+msgid "revoke this SSH key"
+msgstr "撤销此 SSH 密钥"
+
+#: lib/marshall_web/admin_elevation.ex:37
+#, elixir-autogen, elixir-format
+msgid "revoke this VM access"
+msgstr "撤销此虚拟机访问权限"
+
+#: lib/marshall_web/admin_elevation.ex:50
+#, elixir-autogen, elixir-format
+msgid "rotate the fleet certificate"
+msgstr "轮换集群证书"
+
+#: lib/marshall_web/admin_elevation.ex:38
+#, elixir-autogen, elixir-format
+msgid "send this invitation"
+msgstr "发送此邀请"
+
+#: lib/marshall_web/admin_elevation.ex:34
+#, elixir-autogen, elixir-format
+msgid "sign this account out everywhere"
+msgstr "退出此账户的所有设备"
+
+#: lib/marshall_web/admin_elevation.ex:44
+#, elixir-autogen, elixir-format
+msgid "start this node evacuation"
+msgstr "开始疏散此节点"

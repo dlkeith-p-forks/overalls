@@ -1,0 +1,272 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: te\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/teams_live.ex:212
+#, elixir-autogen, elixir-format
+msgid "%{count} member"
+msgid_plural "%{count} members"
+msgstr[0] "%{count} సభ్యుడు"
+msgstr[1] "%{count} సభ్యులు"
+
+#: lib/marshall_web/live/teams_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
+msgstr ""
+"బృందానికి ఒక యజమాని ఉంటారు. స్వీకర్త అంగీకరించినప్పుడే యాజమాన్యం మారుతుంది; "
+"పాత యజమాని నిర్వాహకులవుతారు."
+
+#: lib/marshall_web/live/teams_live.ex:341
+#, elixir-autogen, elixir-format
+msgid "Accept ownership"
+msgstr "యాజమాన్యాన్ని అంగీకరించు"
+
+#: lib/marshall_web/live/teams_live.ex:255
+#, elixir-autogen, elixir-format
+msgid "Add, change or remove a member"
+msgstr "సభ్యుని చేర్చు, మార్చు లేదా తొలగించు"
+
+#: lib/marshall_web/live/teams_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Admin"
+msgstr "నిర్వాహకుడు"
+
+#: lib/marshall_web/live/teams_live.ex:392
+#, elixir-autogen, elixir-format
+msgid "Administrator"
+msgstr "నిర్వాహకుడు"
+
+#: lib/marshall_web/live/teams_live.ex:228
+#, elixir-autogen, elixir-format
+msgid "Can"
+msgstr "చేయగలరు"
+
+#: lib/marshall_web/live/teams_live.ex:361
+#, elixir-autogen, elixir-format
+msgid "Cancel offer"
+msgstr "ప్రతిపాదనను రద్దు చేయి"
+
+#: lib/marshall_web/live/teams_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Could not create this team."
+msgstr "ఈ బృందాన్ని సృష్టించలేకపోయాం."
+
+#: lib/marshall_web/live/teams_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Could not offer ownership."
+msgstr "యాజమాన్యాన్ని ప్రతిపాదించలేకపోయాం."
+
+#: lib/marshall_web/live/teams_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Could not update this membership."
+msgstr "ఈ సభ్యత్వాన్ని నవీకరించలేకపోయాం."
+
+#: lib/marshall_web/live/teams_live.ex:113
+#, elixir-autogen, elixir-format
+msgid "Could not update this ownership offer."
+msgstr "ఈ యాజమాన్య ప్రతిపాదనను నవీకరించలేకపోయాం."
+
+#: lib/marshall_web/live/teams_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "Create a team"
+msgstr "బృందాన్ని సృష్టించు"
+
+#: lib/marshall_web/live/teams_live.ex:382
+#, elixir-autogen, elixir-format
+msgid "Create team"
+msgstr "బృందాన్ని సృష్టించు"
+
+#: lib/marshall_web/live/teams_live.ex:351
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "నిరాకరించు"
+
+#: lib/marshall_web/live/teams_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "Everything, including appointing admins and offering ownership."
+msgstr "నిర్వాహకులను నియమించడం, యాజమాన్య ప్రతిపాదనతో సహా అన్నీ."
+
+#: lib/marshall_web/live/teams_live.ex:44
+#: lib/marshall_web/live/teams_live.ex:118
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "చెల్లని అభ్యర్థన."
+
+#: lib/marshall_web/live/teams_live.ex:399
+#, elixir-autogen, elixir-format
+msgid "Manage members and team machines."
+msgstr "సభ్యులు, బృంద యంత్రాలను నిర్వహించండి."
+
+#: lib/marshall_web/live/teams_live.ex:226
+#: lib/marshall_web/live/teams_live.ex:268
+#: lib/marshall_web/live/teams_live.ex:393
+#, elixir-autogen, elixir-format
+msgid "Member"
+msgstr "సభ్యుడు"
+
+#: lib/marshall_web/live/teams_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Members"
+msgstr "సభ్యులు"
+
+#: lib/marshall_web/live/teams_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Membership updated."
+msgstr "సభ్యత్వం నవీకరించబడింది."
+
+#: lib/marshall_web/live/teams_live.ex:366
+#, elixir-autogen, elixir-format
+msgid "No pending ownership offer."
+msgstr "పెండింగ్ యాజమాన్య ప్రతిపాదన లేదు."
+
+#: lib/marshall_web/live/teams_live.ex:300
+#, elixir-autogen, elixir-format
+msgid "Offer ownership"
+msgstr "యాజమాన్యాన్ని ప్రతిపాదించు"
+
+#: lib/marshall_web/live/teams_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Offer ownership to"
+msgstr "వీరికి యాజమాన్యం ప్రతిపాదించు"
+
+#: lib/marshall_web/live/teams_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Offered by"
+msgstr "ప్రతిపాదించినవారు"
+
+#: lib/marshall_web/live/teams_live.ex:313
+#, elixir-autogen, elixir-format
+msgid "Offered to"
+msgstr "ప్రతిపాదన పొందినవారు"
+
+#: lib/marshall_web/live/teams_live.ex:391
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "యజమాని"
+
+#: lib/marshall_web/live/teams_live.ex:281
+#, elixir-autogen, elixir-format
+msgid "Ownership"
+msgstr "యాజమాన్యం"
+
+#: lib/marshall_web/live/teams_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Ownership offer sent."
+msgstr "యాజమాన్య ప్రతిపాదన పంపబడింది."
+
+#: lib/marshall_web/live/teams_live.ex:109
+#, elixir-autogen, elixir-format
+msgid "Ownership offer updated."
+msgstr "యాజమాన్య ప్రతిపాదన నవీకరించబడింది."
+
+#: lib/marshall_web/live/teams_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Ownership offered by %{value1} to %{value2}."
+msgstr "%{value1} నుంచి %{value2}కు యాజమాన్య ప్రతిపాదన."
+
+#: lib/marshall_web/live/teams_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Registered email"
+msgstr "నమోదైన ఇమెయిల్"
+
+#: lib/marshall_web/live/teams_live.ex:269
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "తొలగించు"
+
+#: lib/marshall_web/live/teams_live.ex:227
+#: lib/marshall_web/live/teams_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "పాత్ర"
+
+#: lib/marshall_web/live/teams_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "Save member"
+msgstr "సభ్యుని సేవ్ చేయి"
+
+#: lib/marshall_web/live/teams_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
+msgstr ""
+"సహచరులతో యంత్రాలు, అనుసంధానాలు పంచుకోండి. యజమానులు నిర్వాహకులను నియమిస్తారు,"
+" నిర్వాహకులు సభ్యులను నిర్వహిస్తారు."
+
+#: lib/marshall_web/live/teams_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "స్థితి"
+
+#: lib/marshall_web/live/teams_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Team %{value1} created."
+msgstr "బృందం %{value1} సృష్టించబడింది."
+
+#: lib/marshall_web/live/teams_live.ex:378
+#, elixir-autogen, elixir-format
+msgid "Team name"
+msgstr "బృంద పేరు"
+
+#: lib/marshall_web/live/teams_live.ex:181
+#, elixir-autogen, elixir-format
+msgid "Teams"
+msgstr "బృందాలు"
+
+#: lib/marshall_web/live/teams_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "Teams are temporarily unavailable."
+msgstr "బృందాలు తాత్కాలికంగా అందుబాటులో లేవు."
+
+#: lib/marshall_web/live/teams_live.ex:400
+#, elixir-autogen, elixir-format
+msgid "Use team machines and integrations."
+msgstr "బృంద యంత్రాలు, అనుసంధానాలు వాడండి."
+
+#: lib/marshall_web/live/teams_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
+msgstr ""
+"ఇంకా బృందంలో లేరు. క్రింద సృష్టించండి లేదా నిర్వాహకుని చేర్చమని అడగండి."
+
+#: lib/marshall_web/live/teams_live.ex:374
+#, elixir-autogen, elixir-format
+msgid "You become its owner and can add members straight away."
+msgstr "యజమాని అవుతారు, వెంటనే సభ్యులను చేర్చవచ్చు."
+
+#: lib/marshall_web/live/teams_live.ex:210
+#, elixir-autogen, elixir-format
+msgid "Your role: %{role}"
+msgstr "మీ పాత్ర: %{role}"
+
+#: lib/marshall_web/live/teams_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Your teams"
+msgstr "మీ బృందాలు"
+
+#: lib/marshall_web/live/teams_live.ex:323
+#, elixir-autogen, elixir-format
+msgid "pending"
+msgstr "పెండింగ్"
+
+#: lib/marshall_web/live/teams_live.ex:379
+#, elixir-autogen, elixir-format
+msgid "platform"
+msgstr "వేదిక"
+
+#: lib/marshall_web/live/teams_live.ex:260
+#: lib/marshall_web/live/teams_live.ex:298
+#, elixir-autogen, elixir-format
+msgid "teammate@example.test"
+msgstr "teammate@example.test"

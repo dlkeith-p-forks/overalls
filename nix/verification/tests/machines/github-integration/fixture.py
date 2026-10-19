@@ -230,7 +230,7 @@ def control_result(operation: str, raw: object) -> tuple[bool, dict[str, object]
                 if len(LEASES) > 4096:
                     return False, "unavailable"
                 LEASES[identifier] = Lease(
-                    vm, current.owner, current.generation, time.monotonic() + 2
+                    vm, current.owner, current.generation, time.monotonic() + 5
                 )
             lease = {
                 "kind": "connected",
@@ -250,7 +250,7 @@ def control_result(operation: str, raw: object) -> tuple[bool, dict[str, object]
             "target": ORIGINS[kind],
             "strip_prefix": None,
             "headers": headers,
-            "ttl": 2000,
+            "ttl": 5000,
             "lease": lease,
         }
     lease = object_dict(body.get("lease"))
@@ -263,7 +263,7 @@ def control_result(operation: str, raw: object) -> tuple[bool, dict[str, object]
     if operation != "galileo.github.renew":
         return False, "invalid_request"
     if lease == {"kind": "anonymous"}:
-        return True, {"version": 1, "ttl": 2000}
+        return True, {"version": 1, "ttl": 5000}
     identifier = lease.get("id")
     if not isinstance(identifier, str):
         return False, "unauthorized"
@@ -280,12 +280,12 @@ def control_result(operation: str, raw: object) -> tuple[bool, dict[str, object]
         ):
             record_refusal = True
         else:
-            LEASES[identifier] = Lease(pin.vm, pin.owner, pin.generation, time.monotonic() + 2)
+            LEASES[identifier] = Lease(pin.vm, pin.owner, pin.generation, time.monotonic() + 5)
             record_refusal = False
     if record_refusal:
         record({"event": "renewal_refused", "owner": current.owner})
         return False, "unauthorized"
-    return True, {"version": 1, "ttl": 2000}
+    return True, {"version": 1, "ttl": 5000}
 
 
 class Server(ThreadingHTTPServer):
@@ -315,13 +315,12 @@ class Handler(BaseHTTPRequestHandler):
     ) -> None:
         self.send_response(status)
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Connection", "close")
         for key, value in (headers or {}).items():
             self.send_header(key, value)
         self.end_headers()
         if self.command != "HEAD":
             self.wfile.write(body)
-        self.close_connection = True
+            self.wfile.flush()
 
     def read_body(self) -> bytes:
         if self.headers.get("Transfer-Encoding", "").lower() != "chunked":
@@ -587,6 +586,9 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(b"6\r\nprefix\r\n")
             self.wfile.flush()
             record({"event": "hold_opened", "owner": owner})
+            # Keep the response open long enough for Galileo's bounded lease
+            # renewal path to run before the authority is withdrawn.
+            time.sleep(3)
             self.connection.settimeout(10)
             try:
                 closed = self.connection.recv(1) == b""

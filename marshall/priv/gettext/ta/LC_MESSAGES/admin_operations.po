@@ -1,0 +1,210 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ta\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/operations_live.ex:250
+#, elixir-autogen, elixir-format
+msgid "%{count} · %{enabled} enabled"
+msgstr "%{count} · %{enabled} இயக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/operations_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Addresses"
+msgstr "முகவரிகள்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Architecture"
+msgstr "கட்டமைப்பு"
+
+#: lib/marshall_web/live/admin/operations_live.ex:78
+#: lib/marshall_web/live/admin/operations_live.ex:138
+#, elixir-autogen, elixir-format
+msgid "Audi services"
+msgstr "Audi சேவைகள்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:173
+#, elixir-autogen, elixir-format
+msgid "Certificate expires"
+msgstr "சான்றிதழ் காலாவதி"
+
+#: lib/marshall_web/live/admin/operations_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "DNS"
+msgstr "டிஎன்எஸ்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:84
+#: lib/marshall_web/live/admin/operations_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "DNS publications"
+msgstr "DNS வெளியீடுகள்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:239
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "முடக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/operations_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "இயக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/operations_live.ex:123
+#: lib/marshall_web/live/admin/operations_live.ex:268
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "நுழைவாயில்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:124
+#: lib/marshall_web/live/admin/operations_live.ex:148
+#, elixir-autogen, elixir-format
+msgid "Generation"
+msgstr "தலைமுறை"
+
+#: lib/marshall_web/live/admin/operations_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "படிமம்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Image catalog"
+msgstr "படிமப் பட்டியல்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Images"
+msgstr "படிமங்கள்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:81
+#: lib/marshall_web/live/admin/operations_live.ex:165
+#, elixir-autogen, elixir-format
+msgid "Ingress routes"
+msgstr "உள்வரும் வழிகள்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "இயந்திரம்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "Minimum RAM"
+msgstr "குறைந்தபட்ச RAM"
+
+#: lib/marshall_web/live/admin/operations_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "Minimum disk"
+msgstr "குறைந்தபட்ச வட்டு"
+
+#: lib/marshall_web/live/admin/operations_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "No Audi services enrolled."
+msgstr "Audi சேவைகள் பதிவுசெய்யப்படவில்லை."
+
+#: lib/marshall_web/live/admin/operations_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "No DNS publications are recorded."
+msgstr "DNS வெளியீடுகள் பதிவுசெய்யப்படவில்லை."
+
+#: lib/marshall_web/live/admin/operations_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "No gateways enrolled."
+msgstr "நுழைவாயில்கள் பதிவுசெய்யப்படவில்லை."
+
+#: lib/marshall_web/live/admin/operations_live.ex:90
+#, elixir-autogen, elixir-format
+msgid "No images in the catalog."
+msgstr "பட்டியலில் படிமங்கள் இல்லை."
+
+#: lib/marshall_web/live/admin/operations_live.ex:169
+#, elixir-autogen, elixir-format
+msgid "No ingress routes are published."
+msgstr "உள்வரும் வழிகள் வெளியிடப்படவில்லை."
+
+#: lib/marshall_web/live/admin/operations_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Operational status is temporarily unavailable."
+msgstr "இயக்க நிலை தற்காலிகமாகக் கிடைக்கவில்லை."
+
+#: lib/marshall_web/live/admin/operations_live.ex:59
+#, elixir-autogen, elixir-format
+msgid "Platform status"
+msgstr "தள நிலை"
+
+#: lib/marshall_web/live/admin/operations_live.ex:75
+#: lib/marshall_web/live/admin/operations_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Porsche gateways"
+msgstr "Porsche நுழைவாயில்கள்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:61
+#, elixir-autogen, elixir-format
+msgid "Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
+msgstr "வாசிக்க மட்டுமே கூடிய படிமம், Audi உள்வரவு மற்றும் Porsche நுழைவாயில் நிலை. ரகசியங்களும் சான்றிதழ் விவரங்களும் காட்டப்படாது."
+
+#: lib/marshall_web/live/admin/operations_live.ex:172
+#: lib/marshall_web/live/admin/operations_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Revision"
+msgstr "பதிப்பு"
+
+#: lib/marshall_web/live/admin/operations_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "பங்கு"
+
+#: lib/marshall_web/live/admin/operations_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "Route expires"
+msgstr "வழி காலாவதி"
+
+#: lib/marshall_web/live/admin/operations_live.ex:146
+#, elixir-autogen, elixir-format
+msgid "Service"
+msgstr "சேவை"
+
+#: lib/marshall_web/live/admin/operations_live.ex:100
+#: lib/marshall_web/live/admin/operations_live.ex:125
+#: lib/marshall_web/live/admin/operations_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "நிலைமை"
+
+#: lib/marshall_web/live/admin/operations_live.ex:269
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "தெரியாதது"
+
+#: lib/marshall_web/live/admin/operations_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "புதுப்பிக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/operations_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Zone"
+msgstr "மண்டலம்"
+
+#: lib/marshall_web/live/admin/operations_live.ex:256
+#: lib/marshall_web/live/admin/operations_live.ex:260
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "தெரியாதது"
+
+#: lib/marshall_web/live/admin/operations_live.ex:70
+#, elixir-autogen, elixir-format
+msgid "· every 30 seconds"
+msgstr "· ஒவ்வொரு 30 வினாடிகளுக்கும்"

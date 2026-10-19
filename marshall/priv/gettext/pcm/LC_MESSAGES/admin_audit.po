@@ -1,0 +1,1011 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: pcm\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/admin/audit_live.ex:280
+#, elixir-autogen, elixir-format
+msgid "; the next due check can then request a new generation."
+msgstr "; di next check wey reach time fit then ask for new generation."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:113
+#, elixir-autogen, elixir-format
+msgid "ACME account"
+msgstr "Di ACME account"
+
+#: lib/marshall_web/live/admin/audit_live.ex:333
+#, elixir-autogen, elixir-format
+msgid "ACME account: %{status}"
+msgstr "Your ACME account: %{status}"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:160
+#: lib/marshall_web/live/admin/audit_labels.ex:453
+#, elixir-autogen, elixir-format
+msgid "Acknowledged"
+msgstr "Dem don acknowledge am"
+
+#: lib/marshall_web/live/admin/audit_live.ex:237
+#: lib/marshall_web/live/admin/audit_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "Wetin to do"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:148
+#, elixir-autogen, elixir-format
+msgid "Activated"
+msgstr "Dem don activate am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:228
+#: lib/marshall_web/live/admin/audit_labels.ex:481
+#, elixir-autogen, elixir-format
+msgid "Activation failed"
+msgstr "Activation don fail"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:251
+#, elixir-autogen, elixir-format
+msgid "Activation observed"
+msgstr "Dem don observe activation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:460
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "E dey work"
+
+#: lib/marshall_web/live/admin/audit_live.ex:305
+#, elixir-autogen, elixir-format
+msgid "Actor"
+msgstr "Person wey do am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:32
+#, elixir-autogen, elixir-format
+msgid "Administrator access granted"
+msgstr "Dem don grant administrator access"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:35
+#, elixir-autogen, elixir-format
+msgid "Administrator access revoked"
+msgstr "Dem don revoke administrator access"
+
+#: lib/marshall_web/live/admin/audit_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Administrator actions"
+msgstr "Things admin fit do"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:29
+#, elixir-autogen, elixir-format
+msgid "Administrator bootstrapped"
+msgstr "Dem don set up di first administrator"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:162
+#, elixir-autogen, elixir-format
+msgid "Advanced"
+msgstr "E don advance"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:165
+#, elixir-autogen, elixir-format
+msgid "Allocated"
+msgstr "Dem don allocate am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:441
+#, elixir-autogen, elixir-format
+msgid "Applied"
+msgstr "Dem don apply am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:170
+#: lib/marshall_web/live/admin/audit_labels.ex:435
+#, elixir-autogen, elixir-format
+msgid "Approved"
+msgstr "Dem don approve am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:171
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "We don archive am"
+
+#: lib/marshall_web/live/admin/audit_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Audit"
+msgstr "Record of wetin happen"
+
+#: lib/marshall_web/live/admin/audit_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Audit history is unavailable."
+msgstr "We no fit show di audit history now."
+
+#: lib/marshall_web/live/admin/audit_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Audit kinds"
+msgstr "Kinds of audit record"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:179
+#: lib/marshall_web/live/admin/audit_labels.ex:436
+#, elixir-autogen, elixir-format
+msgid "Blocked"
+msgstr "Dem don block am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:236
+#, elixir-autogen, elixir-format
+msgid "Cancellation completed"
+msgstr "Cancellation don finish"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:344
+#: lib/marshall_web/live/admin/audit_labels.ex:347
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "Dem don request cancellation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:288
+#, elixir-autogen, elixir-format
+msgid "Cancellation restart recorded"
+msgstr "Dem don record restart for cancellation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:291
+#, elixir-autogen, elixir-format
+msgid "Cancellation stop recorded"
+msgstr "Dem don record stop for cancellation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:180
+#: lib/marshall_web/live/admin/audit_labels.ex:183
+#: lib/marshall_web/live/admin/audit_labels.ex:427
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "We don cancel am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:424
+#, elixir-autogen, elixir-format
+msgid "Cancelling"
+msgstr "We dey cancel am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:411
+#, elixir-autogen, elixir-format
+msgid "Capturing"
+msgstr "E dey capture"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:116
+#, elixir-autogen, elixir-format
+msgid "Certificate"
+msgstr "Di security certificate"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:145
+#, elixir-autogen, elixir-format
+msgid "Certificate issued"
+msgstr "Dem don issue certificate"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:133
+#, elixir-autogen, elixir-format
+msgid "Certificate order attempted"
+msgstr "Dem don try to order certificate"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:136
+#, elixir-autogen, elixir-format
+msgid "Certificate order bound"
+msgstr "Dem don bind di certificate order"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:139
+#, elixir-autogen, elixir-format
+msgid "Certificate proof recorded"
+msgstr "Dem don record certificate proof"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:142
+#, elixir-autogen, elixir-format
+msgid "Certificate proof refreshed"
+msgstr "Dem don refresh certificate proof"
+
+#: lib/marshall_web/live/admin/audit_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "Certificates"
+msgstr "Di certificates"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:475
+#, elixir-autogen, elixir-format
+msgid "Checking destination"
+msgstr "E dey check destination"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:463
+#, elixir-autogen, elixir-format
+msgid "Checking transfer"
+msgstr "E dey check transfer"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:189
+#, elixir-autogen, elixir-format
+msgid "Checkpoint saved"
+msgstr "Dem don save checkpoint"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:419
+#, elixir-autogen, elixir-format
+msgid "Cleaning up"
+msgstr "E dey clean up"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:493
+#, elixir-autogen, elixir-format
+msgid "Cleaning up cancellation"
+msgstr "E dey clean up cancellation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:487
+#, elixir-autogen, elixir-format
+msgid "Cleaning up source"
+msgstr "E dey clean up source"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:194
+#, elixir-autogen, elixir-format
+msgid "Cleanup completed"
+msgstr "Cleanup don finish"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:191
+#: lib/marshall_web/live/admin/audit_labels.ex:421
+#: lib/marshall_web/live/admin/audit_labels.ex:433
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "E don complete"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:196
+#, elixir-autogen, elixir-format
+msgid "Confirmed"
+msgstr "Dem don confirm am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:214
+#, elixir-autogen, elixir-format
+msgid "Continued"
+msgstr "E don continue"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:202
+#, elixir-autogen, elixir-format
+msgid "Copy confirmed"
+msgstr "Dem don confirm copy"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:174
+#, elixir-autogen, elixir-format
+msgid "Copy started"
+msgstr "Copy don start"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:413
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "We dey copy am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:401
+#, elixir-autogen, elixir-format
+msgid "Created"
+msgstr "We don create am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:216
+#, elixir-autogen, elixir-format
+msgid "Deferred"
+msgstr "Dem don postpone am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:458
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "We don delete am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:496
+#, elixir-autogen, elixir-format
+msgid "Deleting copies"
+msgstr "E dey delete copies"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:239
+#, elixir-autogen, elixir-format
+msgid "Deletion completed"
+msgstr "Deletion don finish"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:350
+#: lib/marshall_web/live/admin/audit_labels.ex:353
+#, elixir-autogen, elixir-format
+msgid "Deletion requested"
+msgstr "Dem don request deletion"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:256
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup offered"
+msgstr "Dem don offer destination cleanup"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:297
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup recorded"
+msgstr "Dem don record destination cleanup"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:259
+#, elixir-autogen, elixir-format
+msgid "Destination revocation offered"
+msgstr "Dem don offer destination revocation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:301
+#, elixir-autogen, elixir-format
+msgid "Destination revocation recorded"
+msgstr "Dem don record destination revocation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:222
+#, elixir-autogen, elixir-format
+msgid "Destination work dispatched"
+msgstr "Dem don dispatch destination work"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:219
+#, elixir-autogen, elixir-format
+msgid "Dispatched"
+msgstr "Dem don dispatch am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:448
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "Dem don comot all di work"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:447
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "E dey comot di work"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:107
+#, elixir-autogen, elixir-format
+msgid "Editor credential"
+msgstr "Di editor credential"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:110
+#, elixir-autogen, elixir-format
+msgid "Editor lease"
+msgstr "Di editor access lease"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:104
+#, elixir-autogen, elixir-format
+msgid "Editor sign-in"
+msgstr "Sign-in for editor"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:506
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "E dey evacuate"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:56
+#, elixir-autogen, elixir-format
+msgid "Evacuation approved"
+msgstr "Dem don approve evacuation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:53
+#, elixir-autogen, elixir-format
+msgid "Evacuation changed"
+msgstr "Dem don change evacuation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:59
+#, elixir-autogen, elixir-format
+msgid "Evacuation replanned"
+msgstr "Dem don replan evacuation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:50
+#, elixir-autogen, elixir-format
+msgid "Evacuation requested"
+msgstr "Dem don request evacuation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:151
+#: lib/marshall_web/live/admin/audit_labels.ex:429
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "E fail"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:233
+#, elixir-autogen, elixir-format
+msgid "Fenced"
+msgstr "Dem don fence am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:503
+#, elixir-autogen, elixir-format
+msgid "Fencing"
+msgstr "E dey fence"
+
+#: lib/marshall_web/live/admin/audit_live.ex:214
+#: lib/marshall_web/live/admin/audit_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Filter lifecycle history"
+msgstr "Choose which lifecycle history to show"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:65
+#, elixir-autogen, elixir-format
+msgid "Fleet certificate rotation requested"
+msgstr "Dem don request fleet certificate rotation"
+
+#: lib/marshall_web/live/admin/audit_live.ex:275
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation} has an uncertain ACME order response. The generation can be failed after"
+msgstr "Generation %{generation} get uncertain ACME order response. Dem fit mark di generation as failed after"
+
+#: lib/marshall_web/live/admin/audit_live.ex:338
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation}: %{status}"
+msgstr "Di generation %{generation}: %{status}"
+
+#: lib/marshall_web/live/admin/audit_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "Host ID"
+msgstr "ID for di host"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:62
+#, elixir-autogen, elixir-format
+msgid "Host configured"
+msgstr "Dem don configure host"
+
+#: lib/marshall_web/live/admin/audit_live.ex:258
+#, elixir-autogen, elixir-format
+msgid "Human requests and system recovery transitions. History is retained for 90 days."
+msgstr "Requests wey people make and system recovery transitions. We dey keep history for 90 de."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:245
+#, elixir-autogen, elixir-format
+msgid "Idle policy updated"
+msgstr "Dem don update idle policy"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:205
+#, elixir-autogen, elixir-format
+msgid "Import confirmed"
+msgstr "Dem don confirm import"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:277
+#, elixir-autogen, elixir-format
+msgid "Import prepared"
+msgstr "Dem don prepare import"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:304
+#, elixir-autogen, elixir-format
+msgid "Import recorded"
+msgstr "Dem don record import"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:177
+#, elixir-autogen, elixir-format
+msgid "Import started"
+msgstr "Import don start"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:469
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "E dey import"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:119
+#, elixir-autogen, elixir-format
+msgid "Installation"
+msgstr "Installation work"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:122
+#, elixir-autogen, elixir-format
+msgid "Installed"
+msgstr "Dem don install am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:98
+#, elixir-autogen, elixir-format
+msgid "Integration attached"
+msgstr "Dem don attach integration"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:92
+#, elixir-autogen, elixir-format
+msgid "Integration configured"
+msgstr "Dem don configure integration"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:101
+#, elixir-autogen, elixir-format
+msgid "Integration detached"
+msgstr "Dem don detach integration"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:95
+#, elixir-autogen, elixir-format
+msgid "Integration removed"
+msgstr "Dem don remove integration"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:225
+#, elixir-autogen, elixir-format
+msgid "Key dispatched"
+msgstr "Dem don dispatch key"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:307
+#, elixir-autogen, elixir-format
+msgid "Key recorded"
+msgstr "Dem don record key"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:381
+#, elixir-autogen, elixir-format
+msgid "Key retired"
+msgstr "Dem don retire key"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:262
+#, elixir-autogen, elixir-format
+msgid "Key retirement offered"
+msgstr "Dem don offer key retirement"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:356
+#, elixir-autogen, elixir-format
+msgid "Key retirement requested"
+msgstr "Dem don request key retirement"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:41
+#, elixir-autogen, elixir-format
+msgid "Machine access revoked"
+msgstr "Dem don revoke machine access"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:68
+#, elixir-autogen, elixir-format
+msgid "Machine lifecycle requested"
+msgstr "Dem don request machine lifecycle change"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:71
+#, elixir-autogen, elixir-format
+msgid "Machine relocation requested"
+msgstr "Dem don request machine relocation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:248
+#, elixir-autogen, elixir-format
+msgid "Machine state observed"
+msgstr "Dem don observe machine state"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:20
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication reset"
+msgstr "Dem don reset multi-factor authentication"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:17
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication verified"
+msgstr "Dem don verify multi-factor authentication"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:430
+#, elixir-autogen, elixir-format
+msgid "Offered"
+msgstr "Dem don offer am"
+
+#: lib/marshall_web/live/admin/audit_live.ex:354
+#, elixir-autogen, elixir-format
+msgid "Older events →"
+msgstr "Older things wey happen →"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:310
+#, elixir-autogen, elixir-format
+msgid "Operation recorded"
+msgstr "Dem don record operation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:11
+#, elixir-autogen, elixir-format
+msgid "Passkey added"
+msgstr "Dem don add passkey"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:14
+#, elixir-autogen, elixir-format
+msgid "Passkey removed"
+msgstr "Dem don remove passkey"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:359
+#, elixir-autogen, elixir-format
+msgid "Pause requested"
+msgstr "Dem don request pause"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:271
+#: lib/marshall_web/live/admin/audit_labels.ex:457
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "E don pause"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:402
+#: lib/marshall_web/live/admin/audit_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "E dey wait"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:294
+#, elixir-autogen, elixir-format
+msgid "Placement switch recorded"
+msgstr "Dem don record placement switch"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:242
+#, elixir-autogen, elixir-format
+msgid "Placement switched"
+msgstr "Dem don switch placement"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:274
+#, elixir-autogen, elixir-format
+msgid "Preparation started"
+msgstr "Preparation don start"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:406
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "We dey prepare am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:313
+#, elixir-autogen, elixir-format
+msgid "Progress recorded"
+msgstr "Dem don record progress"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:157
+#, elixir-autogen, elixir-format
+msgid "Progress updated"
+msgstr "Dem don update progress"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:279
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "Dem don publish am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:416
+#, elixir-autogen, elixir-format
+msgid "Publishing"
+msgstr "E dey publish"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:127
+#: lib/marshall_web/live/admin/audit_labels.ex:403
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "E don enter line"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:208
+#: lib/marshall_web/live/admin/audit_labels.ex:211
+#, elixir-autogen, elixir-format
+msgid "Readiness confirmed"
+msgstr "Dem don confirm readiness"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:231
+#: lib/marshall_web/live/admin/audit_labels.ex:478
+#, elixir-autogen, elixir-format
+msgid "Readiness failed"
+msgstr "Readiness don fail"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:280
+#: lib/marshall_web/live/admin/audit_labels.ex:446
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "E don ready"
+
+#: lib/marshall_web/live/admin/audit_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
+msgstr "Recent fleet wildcard generations and gateway installations. We no include private keys and ACME proofs."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:283
+#, elixir-autogen, elixir-format
+msgid "Reconciled"
+msgstr "Dem don reconcile am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:285
+#, elixir-autogen, elixir-format
+msgid "Recorded"
+msgstr "Dem don record am"
+
+#: lib/marshall_web/live/admin/audit_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
+msgstr "Authority changes, lifecycle requests, certificate generations and editor access wey sensitive details hide. We no include payloads, credentials and terminal bytes."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:338
+#, elixir-autogen, elixir-format
+msgid "Reflection metadata updated"
+msgstr "Dem don update Reflection metadata"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:125
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "Don register"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:340
+#, elixir-autogen, elixir-format
+msgid "Replanned"
+msgstr "Dem don replan am"
+
+#: lib/marshall_web/live/admin/audit_live.ex:291
+#, elixir-autogen, elixir-format
+msgid "Request a new wildcard certificate for every Audi gateway?"
+msgstr "Make we ask new wildcard certificate for every Audi gateway?"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:130
+#, elixir-autogen, elixir-format
+msgid "Request saved"
+msgstr "Dem don save request"
+
+#: lib/marshall_web/live/admin/audit_live.ex:294
+#, elixir-autogen, elixir-format
+msgid "Request wildcard rotation"
+msgstr "Ask for wildcard rotation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:341
+#, elixir-autogen, elixir-format
+msgid "Requested"
+msgstr "Dem don request am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:168
+#, elixir-autogen, elixir-format
+msgid "Resize applied"
+msgstr "Dem don apply resize"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:368
+#, elixir-autogen, elixir-format
+msgid "Resize started"
+msgstr "Resize don start"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:498
+#, elixir-autogen, elixir-format
+msgid "Resizing"
+msgstr "We dey change di size"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:370
+#: lib/marshall_web/live/admin/audit_labels.ex:508
+#, elixir-autogen, elixir-format
+msgid "Resolved"
+msgstr "Dem don resolve am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:373
+#, elixir-autogen, elixir-format
+msgid "Restart started"
+msgstr "Restart don start"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:501
+#, elixir-autogen, elixir-format
+msgid "Restarting"
+msgstr "E dey restart"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:490
+#, elixir-autogen, elixir-format
+msgid "Restoring source"
+msgstr "E dey restore source"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:319
+#, elixir-autogen, elixir-format
+msgid "Result recorded"
+msgstr "Dem don record result"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:378
+#: lib/marshall_web/live/admin/audit_labels.ex:449
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "E don continue"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:150
+#: lib/marshall_web/live/admin/audit_labels.ex:450
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "Dem don retire am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:384
+#, elixir-autogen, elixir-format
+msgid "Retry requested"
+msgstr "Dem don request retry"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:484
+#, elixir-autogen, elixir-format
+msgid "Retrying destination"
+msgstr "E dey retry destination"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:455
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "E dey run"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:44
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked"
+msgstr "Dem don revoke SSH key"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:47
+#, elixir-autogen, elixir-format
+msgid "SSH session revoked"
+msgstr "Dem don revoke SSH session"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:387
+#: lib/marshall_web/live/admin/audit_labels.ex:439
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "We don schedule am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:38
+#, elixir-autogen, elixir-format
+msgid "Sessions revoked"
+msgstr "Dem don revoke sessions"
+
+#: lib/marshall_web/live/admin/audit_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "Since (ISO 8601)"
+msgstr "From when (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:199
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture confirmed"
+msgstr "Dem don confirm snapshot capture"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:186
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture started"
+msgstr "Snapshot capture don start"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:322
+#, elixir-autogen, elixir-format
+msgid "Source restoration recorded"
+msgstr "Dem don record source restoration"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:376
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "Dem don restore di source"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:265
+#, elixir-autogen, elixir-format
+msgid "Source revocation offered"
+msgstr "Dem don offer source revocation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:325
+#, elixir-autogen, elixir-format
+msgid "Source revocation recorded"
+msgstr "Dem don record source revocation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:269
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup offered"
+msgstr "Dem don offer source snapshot cleanup"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:329
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup recorded"
+msgstr "Dem don record source snapshot cleanup"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:392
+#, elixir-autogen, elixir-format
+msgid "Source stop started"
+msgstr "Source stop don start"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:362
+#, elixir-autogen, elixir-format
+msgid "Start requested"
+msgstr "Dem don request start"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:332
+#, elixir-autogen, elixir-format
+msgid "Stop recorded"
+msgstr "Dem don record stop"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:365
+#, elixir-autogen, elixir-format
+msgid "Stop requested"
+msgstr "Dem don request stop"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:389
+#, elixir-autogen, elixir-format
+msgid "Stop started"
+msgstr "Stop don start"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:456
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "E don stop"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:408
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "E dey stop"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:466
+#, elixir-autogen, elixir-format
+msgid "Stopping source"
+msgstr "E dey stop source"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:395
+#: lib/marshall_web/live/admin/audit_labels.ex:444
+#, elixir-autogen, elixir-format
+msgid "Superseded"
+msgstr "Another one don replace am"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:472
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "We dey change placement"
+
+#: lib/marshall_web/live/admin/audit_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "Where e dey go"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:74
+#, elixir-autogen, elixir-format
+msgid "Team created"
+msgstr "Dem don create team"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:77
+#, elixir-autogen, elixir-format
+msgid "Team membership changed"
+msgstr "Dem don change team membership"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:83
+#, elixir-autogen, elixir-format
+msgid "Team ownership accepted"
+msgstr "Dem don accept team ownership"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:86
+#, elixir-autogen, elixir-format
+msgid "Team ownership declined"
+msgstr "Dem don reject team ownership"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:89
+#, elixir-autogen, elixir-format
+msgid "Team ownership offer cancelled"
+msgstr "Dem don cancel team ownership offer"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:80
+#, elixir-autogen, elixir-format
+msgid "Team ownership offered"
+msgstr "Dem don offer team ownership"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:316
+#, elixir-autogen, elixir-format
+msgid "Transfer receipt recorded"
+msgstr "Dem don record transfer receipt"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:154
+#, elixir-autogen, elixir-format
+msgid "Uncertain certificate order failed"
+msgstr "Uncertain certificate order don fail"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:335
+#, elixir-autogen, elixir-format
+msgid "Unconfirmed outcome recorded"
+msgstr "Dem don record outcome wey dem never confirm"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:397
+#: lib/marshall_web/live/admin/audit_labels.ex:459
+#: lib/marshall_web/live/admin/audit_labels.ex:509
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "We no know"
+
+#: lib/marshall_web/live/admin/audit_live.ex:239
+#, elixir-autogen, elixir-format
+msgid "Until (ISO 8601)"
+msgstr "Until when (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:26
+#, elixir-autogen, elixir-format
+msgid "User deleted"
+msgstr "Dem don delete user"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:23
+#, elixir-autogen, elixir-format
+msgid "User invited"
+msgstr "Dem don invite user"
+
+#: lib/marshall_web/live/admin/audit_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "VM ID"
+msgstr "ID for di VM"
+
+#: lib/marshall_web/live/admin/audit_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "VM lifecycle"
+msgstr "How VM take live"
+
+#: lib/marshall_web/live/admin/audit_live.ex:211
+#, elixir-autogen, elixir-format
+msgid "VS Code access"
+msgstr "Permission to use VS Code"
+
+#: lib/marshall_web/live/admin/audit_live.ex:303
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "Na when"
+
+#: lib/marshall_web/live/admin/audit_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation could not be requested."
+msgstr "We no fit ask for wildcard rotation."
+
+#: lib/marshall_web/live/admin/audit_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation requested for generation %{generation}."
+msgstr "We don ask wildcard rotation for generation %{generation}."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:253
+#, elixir-autogen, elixir-format
+msgid "Work offered"
+msgstr "Dem don offer work"
+
+#: lib/marshall_web/live/admin/audit_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Workflow ID"
+msgstr "ID for di workflow"

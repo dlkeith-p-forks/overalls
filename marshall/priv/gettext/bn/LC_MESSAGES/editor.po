@@ -1,0 +1,31 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: bn\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/controllers/editor_controller.ex:59
+#, elixir-autogen, elixir-format
+msgid "Sign-in unavailable"
+msgstr "সাইন ইন করা যাচ্ছে না"
+
+#: lib/marshall_web/controllers/editor_controller.ex:33
+#: lib/marshall_web/controllers/editor_controller.ex:68
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "পাওয়া যাচ্ছে না"
+
+#: lib/marshall_web/controllers/editor_controller.ex:23
+#, elixir-autogen, elixir-format
+msgid "VS Code is unavailable for this machine."
+msgstr "এই মেশিনে VS Code পাওয়া যাচ্ছে না।"

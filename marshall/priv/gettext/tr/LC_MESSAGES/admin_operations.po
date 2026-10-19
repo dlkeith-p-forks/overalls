@@ -1,0 +1,210 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: tr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/operations_live.ex:250
+#, elixir-autogen, elixir-format
+msgid "%{count} · %{enabled} enabled"
+msgstr "%{count} · %{enabled} etkin"
+
+#: lib/marshall_web/live/admin/operations_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Addresses"
+msgstr "Adresler"
+
+#: lib/marshall_web/live/admin/operations_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Architecture"
+msgstr "Mimari"
+
+#: lib/marshall_web/live/admin/operations_live.ex:78
+#: lib/marshall_web/live/admin/operations_live.ex:138
+#, elixir-autogen, elixir-format
+msgid "Audi services"
+msgstr "Audi hizmetleri"
+
+#: lib/marshall_web/live/admin/operations_live.ex:173
+#, elixir-autogen, elixir-format
+msgid "Certificate expires"
+msgstr "Sertifika son kullanımı"
+
+#: lib/marshall_web/live/admin/operations_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "DNS"
+msgstr "DNS"
+
+#: lib/marshall_web/live/admin/operations_live.ex:84
+#: lib/marshall_web/live/admin/operations_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "DNS publications"
+msgstr "DNS yayınları"
+
+#: lib/marshall_web/live/admin/operations_live.ex:239
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "Devre dışı"
+
+#: lib/marshall_web/live/admin/operations_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "Etkin"
+
+#: lib/marshall_web/live/admin/operations_live.ex:123
+#: lib/marshall_web/live/admin/operations_live.ex:268
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "Ağ geçidi"
+
+#: lib/marshall_web/live/admin/operations_live.ex:124
+#: lib/marshall_web/live/admin/operations_live.ex:148
+#, elixir-autogen, elixir-format
+msgid "Generation"
+msgstr "Nesil"
+
+#: lib/marshall_web/live/admin/operations_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "İmaj"
+
+#: lib/marshall_web/live/admin/operations_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Image catalog"
+msgstr "İmaj kataloğu"
+
+#: lib/marshall_web/live/admin/operations_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Images"
+msgstr "İmajlar"
+
+#: lib/marshall_web/live/admin/operations_live.ex:81
+#: lib/marshall_web/live/admin/operations_live.ex:165
+#, elixir-autogen, elixir-format
+msgid "Ingress routes"
+msgstr "Giriş yolları"
+
+#: lib/marshall_web/live/admin/operations_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Makine"
+
+#: lib/marshall_web/live/admin/operations_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "Minimum RAM"
+msgstr "En az RAM"
+
+#: lib/marshall_web/live/admin/operations_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "Minimum disk"
+msgstr "En az disk"
+
+#: lib/marshall_web/live/admin/operations_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "No Audi services enrolled."
+msgstr "Kayıtlı Audi hizmeti yok."
+
+#: lib/marshall_web/live/admin/operations_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "No DNS publications are recorded."
+msgstr "Kayıtlı DNS yayını yok."
+
+#: lib/marshall_web/live/admin/operations_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "No gateways enrolled."
+msgstr "Kayıtlı ağ geçidi yok."
+
+#: lib/marshall_web/live/admin/operations_live.ex:90
+#, elixir-autogen, elixir-format
+msgid "No images in the catalog."
+msgstr "Katalogda imaj yok."
+
+#: lib/marshall_web/live/admin/operations_live.ex:169
+#, elixir-autogen, elixir-format
+msgid "No ingress routes are published."
+msgstr "Yayınlanan giriş yolu yok."
+
+#: lib/marshall_web/live/admin/operations_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Operational status is temporarily unavailable."
+msgstr "İşletim durumu geçici olarak kullanılamıyor."
+
+#: lib/marshall_web/live/admin/operations_live.ex:59
+#, elixir-autogen, elixir-format
+msgid "Platform status"
+msgstr "Platform durumu"
+
+#: lib/marshall_web/live/admin/operations_live.ex:75
+#: lib/marshall_web/live/admin/operations_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Porsche gateways"
+msgstr "Porsche ağ geçitleri"
+
+#: lib/marshall_web/live/admin/operations_live.ex:61
+#, elixir-autogen, elixir-format
+msgid "Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
+msgstr "Salt okunur imaj, Audi girişi ve Porsche ağ geçidi durumu. Gizli bilgiler ve sertifika malzemeleri gösterilmez."
+
+#: lib/marshall_web/live/admin/operations_live.ex:172
+#: lib/marshall_web/live/admin/operations_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Revision"
+msgstr "Sürüm"
+
+#: lib/marshall_web/live/admin/operations_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Rol"
+
+#: lib/marshall_web/live/admin/operations_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "Route expires"
+msgstr "Yolun son kullanımı"
+
+#: lib/marshall_web/live/admin/operations_live.ex:146
+#, elixir-autogen, elixir-format
+msgid "Service"
+msgstr "Hizmet"
+
+#: lib/marshall_web/live/admin/operations_live.ex:100
+#: lib/marshall_web/live/admin/operations_live.ex:125
+#: lib/marshall_web/live/admin/operations_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Durum"
+
+#: lib/marshall_web/live/admin/operations_live.ex:269
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Bilinmiyor"
+
+#: lib/marshall_web/live/admin/operations_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "Güncellendi"
+
+#: lib/marshall_web/live/admin/operations_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Zone"
+msgstr "Saat dilimi"
+
+#: lib/marshall_web/live/admin/operations_live.ex:256
+#: lib/marshall_web/live/admin/operations_live.ex:260
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "bilinmiyor"
+
+#: lib/marshall_web/live/admin/operations_live.ex:70
+#, elixir-autogen, elixir-format
+msgid "· every 30 seconds"
+msgstr "· 30 saniyede bir"

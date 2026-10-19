@@ -1,0 +1,73 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Approve SSH key"
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Approve key"
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:109
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:101
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Manage your SSH keys"
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "SSH key approved. You can return to your SSH client."
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:64
+#, elixir-autogen, elixir-format
+msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
+msgstr ""
+
+#: lib/marshall_web/ssh_approval_login.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr ""

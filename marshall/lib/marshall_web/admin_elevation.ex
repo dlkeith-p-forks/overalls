@@ -30,27 +30,27 @@ defmodule MarshallWeb.AdminElevation do
   @spec action_labels() :: %{String.t() => String.t()}
   defp action_labels do
     %{
-      "set-role" => gettext("change administrator access"),
-      "revoke-sessions" => gettext("sign this account out everywhere"),
-      "revoke-key" => gettext("revoke this SSH key"),
-      "revoke-session" => gettext("close this SSH session"),
-      "revoke-grant" => gettext("revoke this VM access"),
-      "invite" => gettext("send this invitation"),
-      "delete-user" => gettext("delete this user account"),
-      "reset-mfa" => gettext("reset this account's passkeys"),
-      "register" => gettext("add this Git mirror"),
-      "refresh" => gettext("refresh this Git mirror"),
-      "remove" => gettext("remove this Git mirror"),
-      "evacuate" => gettext("start this node evacuation"),
-      "control" => gettext("change this evacuation"),
-      "approve" => gettext("approve this workload downtime"),
-      "replan" => gettext("replan this workload move"),
-      "lifecycle" => gettext("change this machine's state"),
-      "relocate" => gettext("move this machine"),
-      "rotate-certificate" => gettext("rotate the fleet certificate"),
-      "admin-override" => gettext("open this machine with administrator access"),
-      "configure" => gettext("change this node's admission settings"),
-      "retry" => gettext("retry this background job")
+      "set-role" => dgettext("admin_access", "change administrator access"),
+      "revoke-sessions" => dgettext("admin_access", "sign this account out everywhere"),
+      "revoke-key" => dgettext("admin_access", "revoke this SSH key"),
+      "revoke-session" => dgettext("admin_access", "close this SSH session"),
+      "revoke-grant" => dgettext("admin_access", "revoke this VM access"),
+      "invite" => dgettext("admin_access", "send this invitation"),
+      "delete-user" => dgettext("admin_access", "delete this user account"),
+      "reset-mfa" => dgettext("admin_access", "reset this account's passkeys"),
+      "register" => dgettext("admin_access", "add this Git mirror"),
+      "refresh" => dgettext("admin_access", "refresh this Git mirror"),
+      "remove" => dgettext("admin_access", "remove this Git mirror"),
+      "evacuate" => dgettext("admin_access", "start this node evacuation"),
+      "control" => dgettext("admin_access", "change this evacuation"),
+      "approve" => dgettext("admin_access", "approve this workload downtime"),
+      "replan" => dgettext("admin_access", "replan this workload move"),
+      "lifecycle" => dgettext("admin_access", "change this machine's state"),
+      "relocate" => dgettext("admin_access", "move this machine"),
+      "rotate-certificate" => dgettext("admin_access", "rotate the fleet certificate"),
+      "admin-override" => dgettext("admin_access", "open this machine with administrator access"),
+      "configure" => dgettext("admin_access", "change this node's admission settings"),
+      "retry" => dgettext("admin_access", "retry this background job")
     }
   end
 

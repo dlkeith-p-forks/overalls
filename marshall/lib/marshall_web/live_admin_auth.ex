@@ -121,7 +121,7 @@ defmodule MarshallWeb.LiveAdminAuth do
          Phoenix.LiveView.put_flash(
            socket,
            :error,
-           gettext("Administrative changes require an administrator.")
+           dgettext("admin_access", "Administrative changes require an administrator.")
          )}
 
       not Security.recent?(socket.assigns.current_user) ->
@@ -139,7 +139,7 @@ defmodule MarshallWeb.LiveAdminAuth do
          Phoenix.LiveView.put_flash(
            socket,
            :error,
-           gettext("Administrative changes are not authorized.")
+           dgettext("admin_access", "Administrative changes are not authorized.")
          )}
     end
   end
@@ -187,7 +187,7 @@ defmodule MarshallWeb.LiveAdminAuth do
            Phoenix.LiveView.put_flash(
              socket,
              :error,
-             gettext("Finish or cancel the current verification first.")
+             dgettext("admin_access", "Finish or cancel the current verification first.")
            )}
         else
           socket = Phoenix.LiveView.put_private(socket, :admin_intent, intent)
@@ -202,7 +202,11 @@ defmodule MarshallWeb.LiveAdminAuth do
     else
       _ ->
         {:halt,
-         Phoenix.LiveView.put_flash(socket, :error, gettext("Invalid administrative request."))}
+         Phoenix.LiveView.put_flash(
+           socket,
+           :error,
+           dgettext("admin_access", "Invalid administrative request.")
+         )}
     end
   end
 

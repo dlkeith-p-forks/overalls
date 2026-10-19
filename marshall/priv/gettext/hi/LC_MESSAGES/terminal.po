@@ -1,0 +1,674 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: hi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/terminal_live.ex:605
+#, elixir-autogen, elixir-format
+msgid "%{user} · %{count} viewing"
+msgid_plural "%{user} · %{count} viewing"
+msgstr[0] "%{user} · %{count} देख रहे हैं"
+msgstr[1] "%{user} · %{count} देख रहे हैं"
+
+#: lib/marshall_web/components/workspace_components.ex:255
+#, elixir-autogen, elixir-format
+msgid "%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}"
+msgstr ""
+"%{value1} vCPU · %{value2} GiB मेमोरी · %{value3} GiB डिस्क · %{value4}"
+
+#: lib/marshall_web/live/terminal_live.ex:570
+#, elixir-autogen, elixir-format
+msgid "+ New"
+msgstr "+ नया"
+
+#: lib/marshall_web/live/terminal_live.ex:722
+#, elixir-autogen, elixir-format
+msgid "A+"
+msgstr "A+"
+
+#: lib/marshall_web/components/workspace_components.ex:139
+#, elixir-autogen, elixir-format
+msgid "Access"
+msgstr "पहुँच"
+
+#: lib/marshall_web/live/terminal_live.ex:789
+#, elixir-autogen, elixir-format
+msgid "Account email"
+msgstr "खाता ईमेल"
+
+#: lib/marshall_web/live/terminal_live.ex:796
+#, elixir-autogen, elixir-format
+msgid "Allow viewing"
+msgstr "देखने की अनुमति दें"
+
+#: lib/marshall_web/components/workspace_components.ex:413
+#, elixir-autogen, elixir-format
+msgid "Already installed"
+msgstr "पहले से स्थापित"
+
+#: lib/marshall_web/live/terminal_live.ex:668
+#, elixir-autogen, elixir-format
+msgid "Android display"
+msgstr "Android डिस्प्ले"
+
+#: lib/marshall_web/live/terminal_live.ex:686
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android डिस्प्ले कैनवस"
+
+#: lib/marshall_web/live/terminal_live.ex:91
+#: lib/marshall_web/live/terminal_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Android डिस्प्ले उपलब्ध नहीं है।"
+
+#: lib/marshall_web/live/terminal_live.ex:717
+#, elixir-autogen, elixir-format
+msgid "A−"
+msgstr "A−"
+
+#: lib/marshall_web/components/workspace_components.ex:436
+#: lib/marshall_web/live/terminal_live.ex:655
+#, elixir-autogen, elixir-format
+msgid "Boot log"
+msgstr "बूट लॉग"
+
+#: lib/marshall_web/live/terminal_live.ex:802
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "रद्द करें"
+
+#: lib/marshall_web/live/terminal_live.ex:757
+#, elixir-autogen, elixir-format
+msgid "Close search"
+msgstr "खोज बंद करें"
+
+#: lib/marshall_web/live/terminal_live.ex:631
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "सत्र बंद करें"
+
+#: lib/marshall_web/live/terminal_live.ex:629
+#, elixir-autogen, elixir-format
+msgid "Close terminal %{value1}"
+msgstr "टर्मिनल %{value1} बंद करें"
+
+#: lib/marshall_web/components/workspace_components.ex:381
+#, elixir-autogen, elixir-format
+msgid "Connect from your computer"
+msgstr "अपने कंप्यूटर से कनेक्ट करें"
+
+#: lib/marshall_web/live/terminal_live.ex:694
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "कनेक्ट किया जा रहा है…"
+
+#: lib/marshall_web/components/workspace_components.ex:273
+#: lib/marshall_web/components/workspace_components.ex:400
+#: lib/marshall_web/components/workspace_components.ex:410
+#: lib/marshall_web/components/workspace_components.ex:421
+#, elixir-autogen, elixir-format
+msgid "Copy"
+msgstr "कॉपी करें"
+
+#: lib/marshall_web/components/workspace_components.ex:399
+#, elixir-autogen, elixir-format
+msgid "Copy Linux and macOS install command"
+msgstr "Linux और macOS इंस्टॉल कमांड कॉपी करें"
+
+#: lib/marshall_web/components/workspace_components.ex:420
+#, elixir-autogen, elixir-format
+msgid "Copy SSH command"
+msgstr "SSH कमांड कॉपी करें"
+
+#: lib/marshall_web/components/workspace_components.ex:409
+#, elixir-autogen, elixir-format
+msgid "Copy Windows PowerShell install command"
+msgstr "Windows PowerShell इंस्टॉल कमांड कॉपी करें"
+
+#: lib/marshall_web/components/workspace_components.ex:272
+#, elixir-autogen, elixir-format
+msgid "Copy machine ID"
+msgstr "मशीन ID कॉपी करें"
+
+#: lib/marshall_web/components/workspace_components.ex:550
+#, elixir-autogen, elixir-format
+msgid "Customer"
+msgstr "ग्राहक"
+
+#: lib/marshall_web/live/terminal_live.ex:716
+#, elixir-autogen, elixir-format
+msgid "Decrease terminal font size"
+msgstr "टर्मिनल फ़ॉन्ट छोटा करें"
+
+#: lib/marshall_web/components/workspace_components.ex:87
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "हटाया गया"
+
+#: lib/marshall_web/components/workspace_components.ex:66
+#, elixir-autogen, elixir-format
+msgid "Deleting"
+msgstr "हटाया जा रहा है"
+
+#: lib/marshall_web/live/terminal_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "डिस्प्ले रिले टिकट जारी किया गया।"
+
+#: lib/marshall_web/live/terminal_live.ex:727
+#: lib/marshall_web/live/terminal_live.ex:729
+#, elixir-autogen, elixir-format
+msgid "Enter full screen"
+msgstr "पूरी स्क्रीन खोलें"
+
+#: lib/marshall_web/components/workspace_components.ex:86
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "विफल"
+
+#: lib/marshall_web/live/terminal_live.ex:742
+#, elixir-autogen, elixir-format
+msgid "Find in scrollback"
+msgstr "पिछले टर्मिनल आउटपुट में खोजें"
+
+#: lib/marshall_web/live/terminal_live.ex:764
+#, elixir-autogen, elixir-format
+msgid "Follow boot output"
+msgstr "बूट आउटपुट के साथ स्क्रॉल करें"
+
+#: lib/marshall_web/components/workspace_components.ex:265
+#, elixir-autogen, elixir-format
+msgid "ID"
+msgstr "ID"
+
+#: lib/marshall_web/live/terminal_live.ex:721
+#, elixir-autogen, elixir-format
+msgid "Increase terminal font size"
+msgstr "टर्मिनल फ़ॉन्ट बड़ा करें"
+
+#: lib/marshall_web/components/workspace_components.ex:390
+#, elixir-autogen, elixir-format
+msgid "Install and connect"
+msgstr "इंस्टॉल करके कनेक्ट करें"
+
+#: lib/marshall_web/components/workspace_components.ex:385
+#, elixir-autogen, elixir-format
+msgid "Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh."
+msgstr ""
+"Overalls इंस्टॉल करता है, SSH कॉन्फ़िगर करता है और इस मशीन से कनेक्ट करता "
+"है। Windows पर इंस्टॉलर OpenSSH 9.6 या नया संस्करण भी इंस्टॉल करता है और "
+"प्रशासक की मंज़ूरी से उसे डिफ़ॉल्ट ssh बनाता है।"
+
+#: lib/marshall_web/components/workspace_components.ex:392
+#, elixir-autogen, elixir-format
+msgid "Linux / macOS"
+msgstr "Linux / macOS"
+
+#: lib/marshall_web/components/workspace_components.ex:271
+#, elixir-autogen, elixir-format
+msgid "Machine ID"
+msgstr "मशीन ID"
+
+#: lib/marshall_web/live/terminal_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "Machine is paused. Resume it or reopen this terminal page."
+msgstr "मशीन रुकी हुई है। उसे फिर से चालू करें या इस टर्मिनल पृष्ठ को दोबारा खोलें।"
+
+#: lib/marshall_web/live/terminal_live.ex:357
+#, elixir-autogen, elixir-format
+msgid "Machine is stopping or stopped. Choose Start to open a terminal."
+msgstr "मशीन बंद हो रही है या बंद है। टर्मिनल खोलने के लिए शुरू करें चुनें।"
+
+#: lib/marshall_web/live/terminal_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Machine not found."
+msgstr "मशीन नहीं मिली।"
+
+#: lib/marshall_web/live/terminal_live.ex:354
+#, elixir-autogen, elixir-format
+msgid "Machine startup failed. Check the machine status and boot log."
+msgstr "मशीन शुरू नहीं हुई। मशीन की स्थिति और बूट लॉग जाँचें।"
+
+#: lib/marshall_web/components/workspace_components.ex:129
+#, elixir-autogen, elixir-format
+msgid "Machine workspace"
+msgstr "मशीन का कार्यक्षेत्र"
+
+#: lib/marshall_web/live/terminal_live.ex:752
+#, elixir-autogen, elixir-format
+msgid "Next match"
+msgstr "अगला मिलान"
+
+#: lib/marshall_web/live/terminal_live.ex:644
+#, elixir-autogen, elixir-format
+msgid "No shared terminals are available to view."
+msgstr "देखने के लिए कोई साझा टर्मिनल उपलब्ध नहीं है।"
+
+#: lib/marshall_web/live/terminal_live.ex:648
+#, elixir-autogen, elixir-format
+msgid "No terminals are open. Choose New to open your personal shell."
+msgstr "कोई टर्मिनल खुला नहीं है। अपना निजी शेल खोलने के लिए नया चुनें।"
+
+#: lib/marshall_web/components/workspace_components.ex:287
+#: lib/marshall_web/components/workspace_components.ex:297
+#: lib/marshall_web/components/workspace_components.ex:476
+#: lib/marshall_web/components/workspace_components.ex:484
+#, elixir-autogen, elixir-format
+msgid "Open VS Code"
+msgstr "VS Code खोलें"
+
+#: lib/marshall_web/components/workspace_components.ex:475
+#, elixir-autogen, elixir-format
+msgid "Open VS Code for %{value1}"
+msgstr "%{value1} के लिए VS Code खोलें"
+
+#: lib/marshall_web/live/terminal_live.ex:674
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "डिस्प्ले खोलें"
+
+#: lib/marshall_web/live/terminal_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Opening terminal; recovering the same request if the connection was interrupted."
+msgstr ""
+"टर्मिनल खोला जा रहा है; कनेक्शन बाधित होने पर वही अनुरोध बहाल किया जा रहा "
+"है।"
+
+#: lib/marshall_web/components/workspace_components.ex:334
+#, elixir-autogen, elixir-format
+msgid "Pause"
+msgstr "रोकें"
+
+#: lib/marshall_web/components/workspace_components.ex:85
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "रुकी हुई"
+
+#: lib/marshall_web/components/workspace_components.ex:82
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "लंबित"
+
+#: lib/marshall_web/components/workspace_components.ex:208
+#, elixir-autogen, elixir-format
+msgid "Pinned"
+msgstr "पिन किया गया"
+
+#: lib/marshall_web/live/terminal_live.ex:474
+#, elixir-autogen, elixir-format
+msgid "Preparing your guest account…"
+msgstr "आपका गेस्ट खाता तैयार किया जा रहा है…"
+
+#: lib/marshall_web/live/terminal_live.ex:413
+#: lib/marshall_web/live/terminal_live.ex:451
+#: lib/marshall_web/live/terminal_live.ex:475
+#, elixir-autogen, elixir-format
+msgid "Preparing your terminal…"
+msgstr "आपका टर्मिनल तैयार किया जा रहा है…"
+
+#: lib/marshall_web/live/terminal_live.ex:747
+#, elixir-autogen, elixir-format
+msgid "Previous match"
+msgstr "पिछला मिलान"
+
+#: lib/marshall_web/live/terminal_live.ex:772
+#, elixir-autogen, elixir-format
+msgid "Read-only boot console"
+msgstr "केवल पढ़ने योग्य बूट कंसोल"
+
+#: lib/marshall_web/live/terminal_live.ex:639
+#, elixir-autogen, elixir-format
+msgid "Read-only host boot log. Guest terminal readiness is not required."
+msgstr ""
+"होस्ट का केवल पढ़ने योग्य बूट लॉग। गेस्ट टर्मिनल तैयार होना ज़रूरी नहीं है।"
+
+#: lib/marshall_web/live/terminal_live.ex:414
+#, elixir-autogen, elixir-format
+msgid "Reconnecting to the terminal service…"
+msgstr "टर्मिनल सेवा से दोबारा कनेक्ट किया जा रहा है…"
+
+#: lib/marshall_web/live/terminal_live.ex:705
+#, elixir-autogen, elixir-format
+msgid "Rename in this browser"
+msgstr "इस ब्राउज़र में नाम बदलें"
+
+#: lib/marshall_web/live/terminal_live.ex:704
+#, elixir-autogen, elixir-format
+msgid "Rename terminal"
+msgstr "टर्मिनल का नाम बदलें"
+
+#: lib/marshall_web/live/terminal_live.ex:677
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "नियंत्रण का अनुरोध करें"
+
+#: lib/marshall_web/components/workspace_components.ex:325
+#, elixir-autogen, elixir-format
+msgid "Resume machine"
+msgstr "मशीन फिर से चालू करें"
+
+#: lib/marshall_web/components/workspace_components.ex:75
+#, elixir-autogen, elixir-format
+msgid "Resuming"
+msgstr "फिर से चालू हो रही है"
+
+#: lib/marshall_web/live/terminal_live.ex:151
+#: lib/marshall_web/live/terminal_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "Resuming machine; waiting for capacity…"
+msgstr "मशीन फिर से चालू हो रही है; क्षमता उपलब्ध होने की प्रतीक्षा है…"
+
+#: lib/marshall_web/live/terminal_live.ex:799
+#, elixir-autogen, elixir-format
+msgid "Revoke"
+msgstr "रद्द करें"
+
+#: lib/marshall_web/components/workspace_components.ex:83
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "चल रहा है"
+
+#: lib/marshall_web/components/workspace_components.ex:443
+#, elixir-autogen, elixir-format
+msgid "SSH connection details are temporarily unavailable."
+msgstr "SSH कनेक्शन का विवरण फ़िलहाल उपलब्ध नहीं है।"
+
+#: lib/marshall_web/components/workspace_components.ex:439
+#, elixir-autogen, elixir-format
+msgid "SSH connection requires write access to this machine."
+msgstr "SSH कनेक्शन के लिए इस मशीन पर लिखने की पहुँच ज़रूरी है।"
+
+#: lib/marshall_web/live/terminal_live.ex:711
+#, elixir-autogen, elixir-format
+msgid "Search (Ctrl+F)"
+msgstr "खोजें (Ctrl+F)"
+
+#: lib/marshall_web/live/terminal_live.ex:710
+#, elixir-autogen, elixir-format
+msgid "Search scrollback"
+msgstr "पिछला आउटपुट खोजें"
+
+#: lib/marshall_web/live/terminal_live.ex:734
+#, elixir-autogen, elixir-format
+msgid "Search terminal scrollback"
+msgstr "पिछले टर्मिनल आउटपुट में खोजें"
+
+#: lib/marshall_web/components/workspace_components.ex:143
+#, elixir-autogen, elixir-format
+msgid "Settings"
+msgstr "सेटिंग"
+
+#: lib/marshall_web/live/terminal_live.ex:619
+#, elixir-autogen, elixir-format
+msgid "Share terminal %{value1}"
+msgstr "टर्मिनल %{value1} साझा करें"
+
+#: lib/marshall_web/live/terminal_live.ex:780
+#, elixir-autogen, elixir-format
+msgid "Share this terminal"
+msgstr "यह टर्मिनल साझा करें"
+
+#: lib/marshall_web/live/terminal_live.ex:621
+#, elixir-autogen, elixir-format
+msgid "Share view"
+msgstr "दृश्य साझा करें"
+
+#: lib/marshall_web/components/workspace_components.ex:551
+#, elixir-autogen, elixir-format
+msgid "Standard"
+msgstr "मानक"
+
+#: lib/marshall_web/components/workspace_components.ex:315
+#, elixir-autogen, elixir-format
+msgid "Start machine"
+msgstr "मशीन शुरू करें"
+
+#: lib/marshall_web/components/workspace_components.ex:78
+#, elixir-autogen, elixir-format
+msgid "Starting"
+msgstr "शुरू हो रहा है"
+
+#: lib/marshall_web/components/workspace_components.ex:344
+#, elixir-autogen, elixir-format
+msgid "Stop"
+msgstr "बंद करें"
+
+#: lib/marshall_web/components/workspace_components.ex:84
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "बंद"
+
+#: lib/marshall_web/components/workspace_components.ex:69
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "बंद हो रहा है"
+
+#: lib/marshall_web/components/workspace_components.ex:72
+#, elixir-autogen, elixir-format
+msgid "Suspending"
+msgstr "निलंबित हो रही है"
+
+#: lib/marshall_web/components/workspace_components.ex:134
+#, elixir-autogen, elixir-format
+msgid "Terminal"
+msgstr "टर्मिनल"
+
+#: lib/marshall_web/live/terminal_live.ex:591
+#, elixir-autogen, elixir-format
+msgid "Terminal %{name}, %{count} viewer, created %{created}"
+msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
+msgstr[0] "टर्मिनल %{name}, %{count} दर्शक, बनाया गया %{created}"
+msgstr[1] "टर्मिनल %{name}, %{count} दर्शक, बनाया गया %{created}"
+
+#: lib/marshall_web/live/terminal_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "Terminal access ended."
+msgstr "टर्मिनल की पहुँच समाप्त हुई।"
+
+#: lib/marshall_web/live/terminal_live.ex:173
+#: lib/marshall_web/live/terminal_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "Terminal close requested; waiting for guest confirmation."
+msgstr "टर्मिनल बंद करने का अनुरोध हुआ; गेस्ट की पुष्टि का इंतज़ार है।"
+
+#: lib/marshall_web/live/terminal_live.ex:490
+#, elixir-autogen, elixir-format
+msgid "Terminal limit reached for this machine."
+msgstr "इस मशीन के टर्मिनल की सीमा पूरी हो गई।"
+
+#: lib/marshall_web/live/terminal_live.ex:577
+#, elixir-autogen, elixir-format
+msgid "Terminal sessions"
+msgstr "टर्मिनल सत्र"
+
+#: lib/marshall_web/live/terminal_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Terminal viewing access updated."
+msgstr "टर्मिनल देखने की पहुँच अपडेट हुई।"
+
+#: lib/marshall_web/live/terminal_live.ex:496
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable while the host is offline."
+msgstr "होस्ट ऑफ़लाइन होने पर टर्मिनल उपलब्ध नहीं हैं।"
+
+#: lib/marshall_web/live/terminal_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "The boot log is unavailable for the current machine execution."
+msgstr "वर्तमान मशीन निष्पादन का बूट लॉग उपलब्ध नहीं है।"
+
+#: lib/marshall_web/live/terminal_live.ex:512
+#, elixir-autogen, elixir-format
+msgid "The guest cannot host more terminal sessions."
+msgstr "गेस्ट और टर्मिनल सत्र नहीं चला सकता।"
+
+#: lib/marshall_web/live/terminal_live.ex:503
+#, elixir-autogen, elixir-format
+msgid "The previous opening has ended. Choose New to try again."
+msgstr "खोलने का पिछला प्रयास समाप्त हुआ। दोबारा कोशिश के लिए नया चुनें।"
+
+#: lib/marshall_web/live/terminal_live.ex:670
+#, elixir-autogen, elixir-format
+msgid "The software-rendered Android display uses the machine relay."
+msgstr "सॉफ़्टवेयर से रेंडर किया गया Android डिस्प्ले मशीन के रिले का उपयोग करता है।"
+
+#: lib/marshall_web/live/terminal_live.ex:514
+#, elixir-autogen, elixir-format
+msgid "The terminal could not be opened."
+msgstr "टर्मिनल नहीं खोला जा सका।"
+
+#: lib/marshall_web/live/terminal_live.ex:539
+#, elixir-autogen, elixir-format
+msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
+msgstr ""
+"यह मशीन बंद है। टर्मिनल खोलने के लिए इसे शुरू करें। आपकी फ़ाइलें सुरक्षित "
+"हैं।"
+
+#: lib/marshall_web/components/workspace_components.ex:352
+#: lib/marshall_web/components/workspace_components.ex:526
+#, elixir-autogen, elixir-format
+msgid "This machine's image does not support the current browser editor."
+msgstr "इस मशीन की इमेज वर्तमान ब्राउज़र एडिटर का समर्थन नहीं करती।"
+
+#: lib/marshall_web/components/workspace_components.ex:427
+#, elixir-autogen, elixir-format
+msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
+msgstr ""
+"इस मशीन की इमेज में अभी गेस्ट एजेंट नहीं हैं: SSH, ब्राउज़र टर्मिनल और एजेंट"
+" उपलब्ध नहीं हैं। उपयोग करें"
+
+#: lib/marshall_web/live/terminal_live.ex:348
+#, elixir-autogen, elixir-format
+msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
+msgstr ""
+"इस मशीन की इमेज में टर्मिनल एजेंट नहीं है, इसलिए ब्राउज़र टर्मिनल उपलब्ध "
+"नहीं है।"
+
+#: lib/marshall_web/live/terminal_live.ex:697
+#, elixir-autogen, elixir-format
+msgid "Type to interact"
+msgstr "बातचीत के लिए टाइप करें"
+
+#: lib/marshall_web/live/terminal_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
+msgstr ""
+"टर्मिनल साझा करना अपडेट नहीं हुआ। साझा करने से पहले प्राप्तकर्ता को मशीन की "
+"पहुँच होनी चाहिए।"
+
+#: lib/marshall_web/components/workspace_components.ex:89
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "अनुपलब्ध"
+
+#: lib/marshall_web/components/workspace_components.ex:88
+#: lib/marshall_web/components/workspace_components.ex:553
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "अज्ञात"
+
+#: lib/marshall_web/components/workspace_components.ex:441
+#, elixir-autogen, elixir-format
+msgid "Use the browser terminal for this Inception environment."
+msgstr "इस Inception परिवेश के लिए ब्राउज़र टर्मिनल उपयोग करें।"
+
+#: lib/marshall_web/components/workspace_components.ex:359
+#, elixir-autogen, elixir-format
+msgid "VS Code is temporarily unavailable for this machine."
+msgstr "इस मशीन के लिए VS Code फ़िलहाल उपलब्ध नहीं है।"
+
+#: lib/marshall_web/components/workspace_components.ex:532
+#, elixir-autogen, elixir-format
+msgid "VS Code is temporarily unavailable."
+msgstr "VS Code फ़िलहाल उपलब्ध नहीं है।"
+
+#: lib/marshall_web/components/workspace_components.ex:535
+#, elixir-autogen, elixir-format
+msgid "VS Code is unavailable for this machine."
+msgstr "इस मशीन के लिए VS Code उपलब्ध नहीं है।"
+
+#: lib/marshall_web/components/workspace_components.ex:357
+#: lib/marshall_web/components/workspace_components.ex:529
+#, elixir-autogen, elixir-format
+msgid "VS Code requires a running machine."
+msgstr "VS Code के लिए चलती मशीन चाहिए।"
+
+#: lib/marshall_web/live/terminal_live.ex:782
+#, elixir-autogen, elixir-format
+msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
+msgstr ""
+"केवल देखना, मशीन ऑपरेटर के लिए भी। प्राप्तकर्ता को इस मशीन की पहुँच पहले से "
+"होनी चाहिए।"
+
+#: lib/marshall_web/live/terminal_live.ex:681
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "डिस्प्ले रिले की प्रतीक्षा की जा रही है।"
+
+#: lib/marshall_web/live/terminal_live.ex:362
+#, elixir-autogen, elixir-format
+msgid "Waiting for the machine to start…"
+msgstr "मशीन शुरू होने का इंतज़ार है…"
+
+#: lib/marshall_web/components/workspace_components.ex:402
+#, elixir-autogen, elixir-format
+msgid "Windows"
+msgstr "Windows"
+
+#: lib/marshall_web/live/terminal_live.ex:493
+#, elixir-autogen, elixir-format
+msgid "You do not have terminal access to this machine."
+msgstr "आपको इस मशीन के टर्मिनल की पहुँच नहीं है।"
+
+#: lib/marshall_web/live/terminal_live.ex:507
+#, elixir-autogen, elixir-format
+msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
+msgstr ""
+"आपका गेस्ट खाता तैयार नहीं हुआ। गेस्ट खाता सेवा की उपलब्धता जाँचें, फिर "
+"दोबारा कोशिश के लिए नया चुनें।"
+
+#: lib/marshall_web/live/terminal_live.ex:646
+#, elixir-autogen, elixir-format
+msgid "Your personal terminal opens when the machine is ready."
+msgstr "मशीन तैयार होने पर आपका निजी टर्मिनल खुलता है।"
+
+#: lib/marshall_web/live/terminal_live.ex:500
+#, elixir-autogen, elixir-format
+msgid "Your previous shell has closed. Choose New to open another terminal."
+msgstr "आपका पिछला शेल बंद हो गया। दूसरा टर्मिनल खोलने के लिए नया चुनें।"
+
+#: lib/marshall_web/live/terminal_live.ex:544
+#, elixir-autogen, elixir-format
+msgid "Your terminal will open when the machine is running and ready."
+msgstr "मशीन चालू और तैयार होने पर आपका टर्मिनल खुलेगा।"
+
+#: lib/marshall_web/live/terminal_live.ex:712
+#, elixir-autogen, elixir-format
+msgid "find"
+msgstr "खोजें"
+
+#: lib/marshall_web/live/terminal_live.ex:730
+#, elixir-autogen, elixir-format
+msgid "full"
+msgstr "पूरा"
+
+#: lib/marshall_web/live/terminal_live.ex:706
+#, elixir-autogen, elixir-format
+msgid "rename"
+msgstr "नाम बदलें"
+
+#: lib/marshall_web/components/workspace_components.ex:437
+#, elixir-autogen, elixir-format
+msgid "to view the read-only host console."
+msgstr "होस्ट का केवल पढ़ने योग्य कंसोल देखने के लिए।"

@@ -1,0 +1,352 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ja\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/admin/access_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Access authority"
+msgstr "アクセス権限"
+
+#: lib/marshall_web/live/admin/access_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Access inventory is temporarily unavailable."
+msgstr "アクセスインベントリは一時的に利用できません。"
+
+#: lib/marshall_web/live/admin/access_live.ex:123
+#: lib/marshall_web/live/admin/access_live.ex:169
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "アカウント"
+
+#: lib/marshall_web/live/admin/access_live.ex:127
+#: lib/marshall_web/live/admin/access_live.ex:173
+#: lib/marshall_web/live/admin/access_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "アクション"
+
+#: lib/marshall_web/live/admin/access_live.ex:112
+#: lib/marshall_web/live/admin/access_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "Active SSH sessions"
+msgstr "アクティブな SSH セッション"
+
+#: lib/marshall_web/live/admin/access_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr "追加した"
+
+#: lib/marshall_web/live_admin_auth.ex:142
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "管理上の変更は許可されていません。"
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "管理上の変更には管理者権限が必要です。"
+
+#: lib/marshall_web/live/admin/access_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "セッションを閉じる"
+
+#: lib/marshall_web/live/admin/access_live.ex:243
+#, elixir-autogen, elixir-format
+msgid "Close this SSH session?"
+msgstr "この SSH セッションを閉じますか?"
+
+#: lib/marshall_web/live/admin/access_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "Could not close that session."
+msgstr "そのセッションを閉じることができませんでした。"
+
+#: lib/marshall_web/live/admin/access_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that VM access."
+msgstr "その VM アクセスを取り消すことができませんでした。"
+
+#: lib/marshall_web/live/admin/access_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that key."
+msgstr "そのキーを取り消すことができませんでした。"
+
+#: lib/marshall_web/live/admin/access_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "有効期限が切れます"
+
+#: lib/marshall_web/live_admin_auth.ex:190
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "現在の検証を完了するかキャンセルしてから続けてください。"
+
+#: lib/marshall_web/live/admin/access_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "ゲートウェイ"
+
+#: lib/marshall_web/live/admin/access_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Granted"
+msgstr "付与された"
+
+#: lib/marshall_web/live_admin_auth.ex:208
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "管理リクエストが無効です。"
+
+#: lib/marshall_web/live/admin/access_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "無効なリクエストです。"
+
+#: lib/marshall_web/live/admin/access_live.ex:170
+#: lib/marshall_web/live/admin/access_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "鍵"
+
+#: lib/marshall_web/live/admin/access_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "機械"
+
+#: lib/marshall_web/live/admin/access_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "Manager"
+msgstr "マネージャー"
+
+#: lib/marshall_web/live/admin/access_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "No active keys."
+msgstr "アクティブなキーがありません。"
+
+#: lib/marshall_web/live/admin/access_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "No active sessions."
+msgstr "アクティブなセッションはありません。"
+
+#: lib/marshall_web/live/admin/access_live.ex:116
+#, elixir-autogen, elixir-format
+msgid "No machine is shared with another account."
+msgstr "他のアカウントとマシンを共有することはありません。"
+
+#: lib/marshall_web/live/admin/access_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "オペレーター"
+
+#: lib/marshall_web/live/admin/access_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "鍵の承認待ち"
+
+#: lib/marshall_web/live/admin/access_live.ex:111
+#: lib/marshall_web/live/admin/access_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Registered SSH keys"
+msgstr "登録されたSSHキー"
+
+#: lib/marshall_web/live/admin/access_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "Revoke access"
+msgstr "アクセスを取り消す"
+
+#: lib/marshall_web/live/admin/access_live.ex:206
+#, elixir-autogen, elixir-format
+msgid "Revoke key"
+msgstr "キーを取り消します"
+
+#: lib/marshall_web/live/admin/access_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Revoke this SSH key and close sessions using it?"
+msgstr "この SSH キーを取り消して、それを使用しているセッションを閉じますか?"
+
+#: lib/marshall_web/live/admin/access_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Revoke this user's VM access?"
+msgstr "このユーザーの VM アクセスを取り消しますか?"
+
+#: lib/marshall_web/live/admin/access_live.ex:266
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "取り消されました"
+
+#: lib/marshall_web/live/admin/access_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "役割"
+
+#: lib/marshall_web/live/admin/access_live.ex:189
+#, elixir-autogen, elixir-format
+msgid "SSH key"
+msgstr "SSHキー"
+
+#: lib/marshall_web/live/admin/access_live.ex:27
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked."
+msgstr "SSH キーが取り消されました。"
+
+#: lib/marshall_web/live/admin/access_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "SSH session closed."
+msgstr "SSH セッションが閉じられました。"
+
+#: lib/marshall_web/live/admin/access_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Shared machine access"
+msgstr "共有マシンアクセス"
+
+#: lib/marshall_web/live/admin/access_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Shared machine grants"
+msgstr "共有マシンの許可"
+
+#: lib/marshall_web/live/admin/access_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "未知"
+
+#: lib/marshall_web/live/admin/access_live.ex:106
+#, elixir-autogen, elixir-format
+msgid "Updated every 15 seconds"
+msgstr "15秒ごとに更新"
+
+#: lib/marshall_web/live/admin/access_live.ex:51
+#, elixir-autogen, elixir-format
+msgid "VM access revoked."
+msgstr "VM アクセスが取り消されました。"
+
+#: lib/marshall_web/live/admin/access_live.ex:263
+#, elixir-autogen, elixir-format
+msgid "Viewer"
+msgstr "ビューア"
+
+#: lib/marshall_web/live/admin/access_live.ex:262
+#, elixir-autogen, elixir-format
+msgid "Web apps"
+msgstr "ウェブアプリ"
+
+#: lib/marshall_web/live/admin/access_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
+msgstr ""
+"誰がどのマシンに、どのキーまたはセッションを使用してアクセスできるか。秘密キー、セッション トークン、ゲートウェイ資格情報は表示されません。"
+
+#: lib/marshall_web/admin_elevation.ex:41
+#, elixir-autogen, elixir-format
+msgid "add this Git mirror"
+msgstr "この Git ミラーを追加します"
+
+#: lib/marshall_web/admin_elevation.ex:46
+#, elixir-autogen, elixir-format
+msgid "approve this workload downtime"
+msgstr "このワークロードのダウンタイムを承認する"
+
+#: lib/marshall_web/admin_elevation.ex:33
+#, elixir-autogen, elixir-format
+msgid "change administrator access"
+msgstr "管理者アクセスを変更する"
+
+#: lib/marshall_web/admin_elevation.ex:45
+#, elixir-autogen, elixir-format
+msgid "change this evacuation"
+msgstr "この避難を変更する"
+
+#: lib/marshall_web/admin_elevation.ex:48
+#, elixir-autogen, elixir-format
+msgid "change this machine's state"
+msgstr "このマシンの状態を変更する"
+
+#: lib/marshall_web/admin_elevation.ex:52
+#, elixir-autogen, elixir-format
+msgid "change this node's admission settings"
+msgstr "このノードのアドミッション設定を変更する"
+
+#: lib/marshall_web/admin_elevation.ex:36
+#, elixir-autogen, elixir-format
+msgid "close this SSH session"
+msgstr "この SSH セッションを閉じます"
+
+#: lib/marshall_web/admin_elevation.ex:39
+#, elixir-autogen, elixir-format
+msgid "delete this user account"
+msgstr "このユーザーアカウントを削除する"
+
+#: lib/marshall_web/admin_elevation.ex:49
+#, elixir-autogen, elixir-format
+msgid "move this machine"
+msgstr "この機械を動かす"
+
+#: lib/marshall_web/admin_elevation.ex:51
+#, elixir-autogen, elixir-format
+msgid "open this machine with administrator access"
+msgstr "管理者アクセスでこのマシンを開きます"
+
+#: lib/marshall_web/admin_elevation.ex:42
+#, elixir-autogen, elixir-format
+msgid "refresh this Git mirror"
+msgstr "この Git ミラーを更新します"
+
+#: lib/marshall_web/admin_elevation.ex:43
+#, elixir-autogen, elixir-format
+msgid "remove this Git mirror"
+msgstr "この Git ミラーを削除します"
+
+#: lib/marshall_web/admin_elevation.ex:47
+#, elixir-autogen, elixir-format
+msgid "replan this workload move"
+msgstr "このワークロードの移動を再計画する"
+
+#: lib/marshall_web/admin_elevation.ex:40
+#, elixir-autogen, elixir-format
+msgid "reset this account's passkeys"
+msgstr "このアカウントのパスキーをリセットする"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "retry this background job"
+msgstr "このバックグラウンドジョブを再試行してください"
+
+#: lib/marshall_web/admin_elevation.ex:35
+#, elixir-autogen, elixir-format
+msgid "revoke this SSH key"
+msgstr "この SSH キーを取り消します"
+
+#: lib/marshall_web/admin_elevation.ex:37
+#, elixir-autogen, elixir-format
+msgid "revoke this VM access"
+msgstr "この VM アクセスを取り消します"
+
+#: lib/marshall_web/admin_elevation.ex:50
+#, elixir-autogen, elixir-format
+msgid "rotate the fleet certificate"
+msgstr "フリート証明書をローテーションする"
+
+#: lib/marshall_web/admin_elevation.ex:38
+#, elixir-autogen, elixir-format
+msgid "send this invitation"
+msgstr "この招待状を送信します"
+
+#: lib/marshall_web/admin_elevation.ex:34
+#, elixir-autogen, elixir-format
+msgid "sign this account out everywhere"
+msgstr "このアカウントをどこからでもサインアウトします"
+
+#: lib/marshall_web/admin_elevation.ex:44
+#, elixir-autogen, elixir-format
+msgid "start this node evacuation"
+msgstr "このノードの退避を開始します"

@@ -1,0 +1,204 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: fi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/inference_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "AI request"
+msgstr "Tekoälypyyntö"
+
+#: lib/marshall_web/live/inference_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "AI requests"
+msgstr "Tekoälypyynnöt"
+
+#: lib/marshall_web/live/inference_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "AI requests · last 30 days"
+msgstr "Tekoälypyynnöt · viimeiset 30 päivää"
+
+#: lib/marshall_web/live/inference_live.ex:89
+#, elixir-autogen, elixir-format
+msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+msgstr "Tekoälyn käyttö kohdistetaan kunkin koneen omistajalle. Puutteellisesti raportoitu tekoälyn käyttö jää tuntemattomaksi."
+
+#: lib/marshall_web/live/inference_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "AI usage is unavailable."
+msgstr "Tekoälyn käyttötiedot eivät ole saatavilla."
+
+#: lib/marshall_web/live/inference_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "AI usage report"
+msgstr "Tekoälyn käyttöraportti"
+
+#: lib/marshall_web/live/inference_live.ex:139
+#, elixir-autogen, elixir-format
+msgid "All providers"
+msgstr "Kaikki palveluntarjoajat"
+
+#: lib/marshall_web/live/inference_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Anthropic"
+msgstr "Anthropic"
+
+#: lib/marshall_web/live/inference_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "Ota käyttöön"
+
+#: lib/marshall_web/live/inference_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Daily AI request counts over the past 30 days"
+msgstr "Päivittäiset tekoälypyynnöt viimeisten 30 päivän aikana"
+
+#: lib/marshall_web/live/inference_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Tiedot"
+
+#: lib/marshall_web/live/inference_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "Exact model ID"
+msgstr "Tarkka mallitunniste"
+
+#: lib/marshall_web/live/inference_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Export AI usage"
+msgstr "Vie tekoälyn käyttötiedot"
+
+#: lib/marshall_web/live/inference_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "Filter"
+msgstr "Suodata"
+
+#: lib/marshall_web/live/inference_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "Laivaston tekoälykäyttö"
+
+#: lib/marshall_web/live/inference_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Incomplete AI reports"
+msgstr "Puutteelliset tekoälyraportit"
+
+#: lib/marshall_web/live/inference_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "Syötetokenit"
+
+#: lib/marshall_web/live/inference_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Inspect"
+msgstr "Tarkastele"
+
+#: lib/marshall_web/live/inference_live.ex:207
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Kone"
+
+#: lib/marshall_web/live/inference_live.ex:146
+#: lib/marshall_web/live/inference_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "Model"
+msgstr "Malli"
+
+#: lib/marshall_web/live/inference_live.ex:227
+#, elixir-autogen, elixir-format
+msgid "No AI requests match these filters."
+msgstr "Yksikään tekoälypyyntö ei vastaa näitä suodattimia."
+
+#: lib/marshall_web/live/inference_live.ex:233
+#, elixir-autogen, elixir-format
+msgid "Older AI requests →"
+msgstr "Vanhemmat tekoälypyynnöt →"
+
+#: lib/marshall_web/live/inference_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
+msgstr "Yksi sarake päivää kohti, vanhin ensin; kahdeksan █-riviä skaalautuu vilkkaimman päivän mukaan. Merkinnät osoittavat kuukauden päivän."
+
+#: lib/marshall_web/live/inference_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "OpenAI"
+msgstr "OpenAI"
+
+#: lib/marshall_web/live/inference_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Outcome"
+msgstr "Tulos"
+
+#: lib/marshall_web/live/inference_live.ex:162
+#, elixir-autogen, elixir-format
+msgid "Output tokens"
+msgstr "Tulostokenit"
+
+#: lib/marshall_web/live/inference_live.ex:210
+#, elixir-autogen, elixir-format
+msgid "Placement / epoch"
+msgstr "Sijoitus / aikakausi"
+
+#: lib/marshall_web/live/inference_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Pricing source / version"
+msgstr "Hinnoittelun lähde / versio"
+
+#: lib/marshall_web/live/inference_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Provider"
+msgstr "Palveluntarjoaja"
+
+#: lib/marshall_web/live/inference_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "Reported input tokens"
+msgstr "Raportoidut syötetokenit"
+
+#: lib/marshall_web/live/inference_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Reported output tokens"
+msgstr "Raportoidut tulostokenit"
+
+#: lib/marshall_web/live/inference_live.ex:159
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "Aika"
+
+#: lib/marshall_web/live/inference_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Token cost estimate · USD"
+msgstr "Tokenien kustannusarvio · USD"
+
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Ei saatavilla"
+
+#: lib/marshall_web/live/inference_live.ex:60
+#: lib/marshall_web/live/inference_live.ex:190
+#: lib/marshall_web/live/inference_live.ex:197
+#: lib/marshall_web/live/inference_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: lib/marshall_web/live/inference_live.ex:180
+#, elixir-autogen, elixir-format
+msgid "Unreported"
+msgstr "Raportoimaton"
+
+#: lib/marshall_web/live/inference_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Your AI usage"
+msgstr "Tekoälyn käyttösi"

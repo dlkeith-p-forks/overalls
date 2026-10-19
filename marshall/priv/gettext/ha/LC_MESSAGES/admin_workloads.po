@@ -1,0 +1,140 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ha\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Ayyuka"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:239
+#, elixir-autogen, elixir-format
+msgid "Archive this VM?"
+msgstr "Ajiye wannan VM?"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:241
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "Share"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Cikakkun bayanai"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:116
+#, elixir-autogen, elixir-format
+msgid "Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included."
+msgstr "Kowane inji a cikin rundunar jiragen ruwa, tare da zagayen rayuwa iri ɗaya, maimaituwa da sake duba lafiyarsa kamar na'urar wasan bidiyo na mai shi. Babu bayanan tasha ko takaddun shaida da aka haɗa."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Fleet workloads"
+msgstr "Nauyin aikin jirgi"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:136
+#, elixir-autogen, elixir-format
+msgid "Host"
+msgstr "Mai watsa shiri"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "nema mara inganci."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Lifecycle request queued."
+msgstr "An yi layi da buƙatun rayuwa."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Lifecycle request was rejected."
+msgstr "An ƙi buƙatar buƙatun rayuwa."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "Move"
+msgstr "Matsar"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "No active workloads."
+msgstr "Babu kayan aiki masu aiki."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:51
+#, elixir-autogen, elixir-format
+msgid "Relocation request queued."
+msgstr "An yi layi da buƙatar ƙaura."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:59
+#, elixir-autogen, elixir-format
+msgid "Relocation request was rejected."
+msgstr "An ƙi amincewa da buƙatar ƙaura."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "Resize"
+msgstr "Maimaita girman"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Shape"
+msgstr "Siffar"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:219
+#, elixir-autogen, elixir-format
+msgid "Start"
+msgstr "Fara"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:138
+#, elixir-autogen, elixir-format
+msgid "State"
+msgstr "Jiha"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:228
+#, elixir-autogen, elixir-format
+msgid "Stop"
+msgstr "Tsaya"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Terminal"
+msgstr "Tasha"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "The owner has pinned this machine; it cannot be deleted until they unpin it."
+msgstr "Mai shi ya lika wannan injin; ba za a iya goge shi ba har sai sun cire shi."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:123
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "An sabunta"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:135
+#, elixir-autogen, elixir-format
+msgid "Workload"
+msgstr "Nauyin aiki"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "Workload inventory is temporarily unavailable."
+msgstr "Jerin nauyin aiki ba ya samuwa na ɗan lokaci."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "· every 15 seconds"
+msgstr "· kowane dakiku 15"

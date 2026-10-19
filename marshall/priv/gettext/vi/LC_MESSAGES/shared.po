@@ -1,0 +1,449 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: vi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/components/time_components.ex:104
+#, elixir-autogen, elixir-format
+msgid "%{value1} local time · %{value2}"
+msgstr "%{value1} giờ địa phương · %{value2}"
+
+#: lib/marshall_web/live/hldd_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "%{value1} · HLDD"
+msgstr "%{value1} · HLDD"
+
+#: lib/marshall_web/components/layouts/root.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "A little space for your next big idea."
+msgstr "Một chút không gian cho ý tưởng lớn tiếp theo của bạn."
+
+#: lib/marshall_web/live/hldd_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "A reference for the system, its configuration, and its operation."
+msgstr "Tài liệu tham khảo về hệ thống, cấu hình và vận hành."
+
+#: lib/marshall_web/components/layouts.ex:337
+#: lib/marshall_web/components/layouts.ex:443
+#, elixir-autogen, elixir-format
+msgid "AI usage"
+msgstr "Mức dùng AI"
+
+#: lib/marshall_web/components/layouts.ex:416
+#: lib/marshall_web/components/layouts.ex:461
+#, elixir-autogen, elixir-format
+msgid "Access authority"
+msgstr "Thẩm quyền truy cập"
+
+#: lib/marshall_web/components/layouts.ex:241
+#: lib/marshall_web/components/layouts.ex:329
+#: lib/marshall_web/components/layouts.ex:449
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "Tài khoản"
+
+#: lib/marshall_web/components/layouts.ex:404
+#, elixir-autogen, elixir-format
+msgid "Accounting"
+msgstr "Hạch toán"
+
+#: lib/marshall_web/components/core_components.ex:333
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Thao tác"
+
+#: lib/marshall_web/live/hldd_live.ex:113
+#, elixir-autogen, elixir-format
+msgid "Adjacent sections"
+msgstr "Phần lân cận"
+
+#: lib/marshall_web/components/layouts.ex:296
+#: lib/marshall_web/components/layouts.ex:413
+#, elixir-autogen, elixir-format
+msgid "Administration"
+msgstr "Quản trị"
+
+#: lib/marshall_web/components/layouts.ex:245
+#: lib/marshall_web/components/layouts.ex:507
+#: lib/marshall_web/components/layouts.ex:508
+#: lib/marshall_web/controllers/docs_html/show.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Appearance"
+msgstr "Giao diện"
+
+#: lib/marshall_web/components/layouts.ex:153
+#: lib/marshall_web/components/layouts.ex:167
+#, elixir-autogen, elixir-format
+msgid "Attempting to reconnect"
+msgstr "Đang thử kết nối lại"
+
+#: lib/marshall_web/components/layouts.ex:418
+#: lib/marshall_web/components/layouts.ex:462
+#, elixir-autogen, elixir-format
+msgid "Audit"
+msgstr "Kiểm toán"
+
+#: lib/marshall_web/components/layouts.ex:71
+#, elixir-autogen, elixir-format
+msgid "Breadcrumb"
+msgstr "Đường dẫn điều hướng"
+
+#: lib/marshall_web/components/layouts.ex:233
+#, elixir-autogen, elixir-format
+msgid "Browser"
+msgstr "Trình duyệt"
+
+#: lib/marshall_web/components/layouts.ex:236
+#: lib/marshall_web/components/layouts.ex:342
+#, elixir-autogen, elixir-format
+msgid "Browser extension"
+msgstr "Tiện ích trình duyệt"
+
+#: lib/marshall_web/components/layouts.ex:119
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Hủy"
+
+#: lib/marshall_web/components/layouts.ex:99
+#, elixir-autogen, elixir-format
+msgid "Cancel verification"
+msgstr "Hủy xác minh"
+
+#: lib/marshall_web/components/layouts.ex:264
+#: lib/marshall_web/components/layouts.ex:278
+#, elixir-autogen, elixir-format
+msgid "Close navigation"
+msgstr "Đóng điều hướng"
+
+#: lib/marshall_web/components/layouts.ex:95
+#, elixir-autogen, elixir-format
+msgid "Confirm administrative change"
+msgstr "Xác nhận thay đổi quản trị"
+
+#: lib/marshall_web/live/hldd_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Contents"
+msgstr "Mục lục"
+
+#: lib/marshall_web/components/layouts.ex:287
+#, elixir-autogen, elixir-format
+msgid "Control room"
+msgstr "Phòng điều khiển"
+
+#: lib/marshall_web/components/layouts.ex:441
+#, elixir-autogen, elixir-format
+msgid "Control room · %{section}"
+msgstr "Phòng điều khiển · %{section}"
+
+#: lib/marshall_web/components/layouts.ex:438
+#, elixir-autogen, elixir-format
+msgid "Control room · AI usage"
+msgstr "Phòng điều khiển · Sử dụng AI"
+
+#: lib/marshall_web/components/layouts.ex:511
+#, elixir-autogen, elixir-format
+msgid "Dark"
+msgstr "Tối"
+
+#: lib/marshall_web/components/layouts.ex:221
+#, elixir-autogen, elixir-format
+msgid "Docs"
+msgstr "Tài liệu"
+
+#: lib/marshall_web/components/layouts.ex:356
+#, elixir-autogen, elixir-format
+msgid "Docs ↗"
+msgstr "Tài liệu ↗"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Documentation"
+msgstr "Hệ thống tài liệu"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Không tìm thấy tài liệu"
+
+#: lib/marshall_web/components/layouts.ex:223
+#: lib/marshall_web/components/layouts.ex:355
+#: lib/marshall_web/controllers/docs_html/show.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Field notes"
+msgstr "Ghi chú thực địa"
+
+#: lib/marshall_web/components/layouts.ex:405
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "Mức sử dụng AI của đội máy"
+
+#: lib/marshall_web/components/layouts.ex:417
+#, elixir-autogen, elixir-format
+msgid "Git mirrors"
+msgstr "Bản sao gương Git"
+
+#: lib/marshall_web/components/layouts.ex:431
+#: lib/marshall_web/components/layouts.ex:454
+#, elixir-autogen, elixir-format
+msgid "Git repositories"
+msgstr "Kho Git"
+
+#: lib/marshall_web/components/layouts.ex:371
+#, elixir-autogen, elixir-format
+msgid "GitHub ↗"
+msgstr "GitHub ↗"
+
+#: lib/marshall_web/components/layouts.ex:364
+#: lib/marshall_web/live/hldd_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "HLDD"
+msgstr "HLDD"
+
+#: lib/marshall_web/live/hldd_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "HLDD · Design and operations"
+msgstr "HLDD · Thiết kế và vận hành"
+
+#: lib/marshall_web/live/hldd_live.ex:74
+#: lib/marshall_web/live/hldd_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Handbook contents"
+msgstr "Mục lục sổ tay"
+
+#: lib/marshall_web/components/layouts.ex:73
+#, elixir-autogen, elixir-format
+msgid "Home"
+msgstr "Trang chủ"
+
+#: lib/marshall_web/components/layouts.ex:430
+#: lib/marshall_web/components/layouts.ex:453
+#, elixir-autogen, elixir-format
+msgid "Integrations"
+msgstr "Tích hợp"
+
+#: lib/marshall_web/components/layouts.ex:410
+#: lib/marshall_web/components/layouts.ex:458
+#, elixir-autogen, elixir-format
+msgid "Jobs"
+msgstr "Tác vụ"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "LLM index"
+msgstr "Chỉ mục LLM"
+
+#: lib/marshall_web/components/layouts.ex:510
+#, elixir-autogen, elixir-format
+msgid "Light"
+msgstr "Sáng"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Machine readable"
+msgstr "Máy có thể đọc"
+
+#: lib/marshall_web/components/layouts.ex:429
+#: lib/marshall_web/components/layouts.ex:452
+#, elixir-autogen, elixir-format
+msgid "Machines"
+msgstr "Máy"
+
+#: lib/marshall_web/components/layouts.ex:281
+#, elixir-autogen, elixir-format
+msgid "Made to get dirty"
+msgstr "Được tạo để làm việc thực tế"
+
+#: lib/marshall_web/components/layouts.ex:297
+#, elixir-autogen, elixir-format
+msgid "Main"
+msgstr "Chính"
+
+#: lib/marshall_web/components/layouts.ex:381
+#, elixir-autogen, elixir-format
+msgid "Make yourself comfy"
+msgstr "Hãy thoải mái"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "Markdown for this page"
+msgstr "Markdown của trang này"
+
+#: lib/marshall_web/components/layouts.ex:259
+#, elixir-autogen, elixir-format
+msgid "Menu"
+msgstr "Trình đơn"
+
+#: lib/marshall_web/components/layouts.ex:408
+#: lib/marshall_web/components/layouts.ex:456
+#, elixir-autogen, elixir-format
+msgid "Node maintenance"
+msgstr "Bảo trì nút"
+
+#: lib/marshall_web/controllers/page_html/home.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Open Overalls"
+msgstr "Mở Overalls"
+
+#: lib/marshall_web/components/layouts.ex:406
+#, elixir-autogen, elixir-format
+msgid "Operations"
+msgstr "Thao tác"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:32
+#: lib/marshall_web/live/hldd_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Overalls"
+msgstr "Overalls"
+
+#: lib/marshall_web/components/layouts.ex:427
+#: lib/marshall_web/components/layouts.ex:450
+#, elixir-autogen, elixir-format
+msgid "Overview"
+msgstr "Tổng quan"
+
+#: lib/marshall_web/components/layouts.ex:411
+#: lib/marshall_web/components/layouts.ex:459
+#, elixir-autogen, elixir-format
+msgid "Platform status"
+msgstr "Trạng thái nền tảng"
+
+#: lib/marshall_web/components/layouts.ex:352
+#: lib/marshall_web/components/layouts.ex:365
+#, elixir-autogen, elixir-format
+msgid "Reference"
+msgstr "Tham chiếu"
+
+#: lib/marshall_web/components/layouts.ex:243
+#: lib/marshall_web/controllers/docs_html/show.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Sign in"
+msgstr "Đăng nhập"
+
+#: lib/marshall_web/components/layouts.ex:393
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "Đăng xuất"
+
+#: lib/marshall_web/components/layouts.ex:214
+#: lib/marshall_web/components/layouts/root.html.heex:38
+#: lib/marshall_web/controllers/docs_html/show.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Skip to content"
+msgstr "Chuyển đến nội dung"
+
+#: lib/marshall_web/components/layouts.ex:159
+#, elixir-autogen, elixir-format
+msgid "Something went wrong!"
+msgstr "Đã xảy ra lỗi!"
+
+#: lib/marshall_web/components/layouts.ex:227
+#, elixir-autogen, elixir-format
+msgid "Source"
+msgstr "Nguồn"
+
+#: lib/marshall_web/components/layouts.ex:370
+#: lib/marshall_web/controllers/docs_html/show.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Source code"
+msgstr "Mã nguồn"
+
+#: lib/marshall_web/components/layouts.ex:509
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "Hệ thống"
+
+#: lib/marshall_web/components/layouts.ex:432
+#: lib/marshall_web/components/layouts.ex:455
+#, elixir-autogen, elixir-format
+msgid "Teams"
+msgstr "Các nhóm"
+
+#: lib/marshall_web/components/layouts.ex:104
+#, elixir-autogen, elixir-format
+msgid "This change needs a fresh passkey verification. Your verification lasts 15 minutes."
+msgstr "Thay đổi này cần xác minh khóa truy cập mới. Xác minh có hiệu lực 15 phút."
+
+#: lib/marshall_web/components/layouts.ex:428
+#: lib/marshall_web/components/layouts.ex:451
+#, elixir-autogen, elixir-format
+msgid "Threads"
+msgstr "Các luồng"
+
+#: lib/marshall_web/components/layouts.ex:388
+#, elixir-autogen, elixir-format
+msgid "Time zone"
+msgstr "Múi giờ"
+
+#: lib/marshall_web/components/layouts.ex:415
+#: lib/marshall_web/components/layouts.ex:460
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr "Người dùng"
+
+#: lib/marshall_web/components/layouts.ex:112
+#, elixir-autogen, elixir-format
+msgid "Verify with passkey"
+msgstr "Xác minh bằng khóa truy cập"
+
+#: lib/marshall_web/components/layouts.ex:145
+#, elixir-autogen, elixir-format
+msgid "We can't find the internet"
+msgstr "Không tìm thấy kết nối internet"
+
+#: lib/marshall_web/components/layouts/root.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Welcome to Overalls. Make yourself at home."
+msgstr "Chào mừng đến với Overalls. Hãy tự nhiên như ở nhà."
+
+#: lib/marshall_web/components/layouts.ex:409
+#: lib/marshall_web/components/layouts.ex:457
+#, elixir-autogen, elixir-format
+msgid "Workloads"
+msgstr "Các khối lượng công việc"
+
+#: lib/marshall_web/components/layouts.ex:283
+#: lib/marshall_web/components/layouts.ex:463
+#, elixir-autogen, elixir-format
+msgid "Workspace"
+msgstr "Không gian làm việc"
+
+#: lib/marshall_web/components/layouts.ex:282
+#, elixir-autogen, elixir-format
+msgid "Workspace mode"
+msgstr "Chế độ không gian làm việc"
+
+#: lib/marshall_web/components/layouts.ex:270
+#, elixir-autogen, elixir-format
+msgid "Workspace navigation"
+msgstr "Điều hướng không gian làm việc"
+
+#: lib/marshall_web/components/layouts.ex:322
+#, elixir-autogen, elixir-format
+msgid "Your account"
+msgstr "Tài khoản của bạn"
+
+#: lib/marshall_web/components/layouts.ex:425
+#, elixir-autogen, elixir-format
+msgid "Your workspace"
+msgstr "Không gian làm việc của bạn"
+
+#: lib/marshall_web/components/core_components.ex:107
+#, elixir-autogen, elixir-format
+msgid "close"
+msgstr "đóng"
+
+#: lib/marshall_web/live/hldd_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "← All sections"
+msgstr "← Tất cả các phần"

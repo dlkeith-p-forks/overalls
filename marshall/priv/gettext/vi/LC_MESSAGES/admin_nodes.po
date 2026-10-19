@@ -1,0 +1,791 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: vi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "Đang hoạt động"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:259
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:302
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:393
+#, elixir-autogen, elixir-format
+msgid "Admission"
+msgstr "Tiếp nhận"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:89
+#, elixir-autogen, elixir-format
+msgid "Admission settings updated."
+msgstr "Đã cập nhật cài đặt tiếp nhận."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Admission settings were invalid or the node is not ready."
+msgstr "Cài đặt tiếp nhận không hợp lệ hoặc nút chưa sẵn sàng."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:615
+#, elixir-autogen, elixir-format
+msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
+msgstr ""
+"Bản xem trước tham khảo của trang này. Mỗi tải công việc được đánh giá độc "
+"lập; đích và dung lượng khả dụng có thể đổi. Tiếp nhận kiểm tra lại và giữ "
+"tài nguyên khi mỗi lần chuyển bắt đầu."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:430
+#, elixir-autogen, elixir-format
+msgid "Apply admission settings"
+msgstr "Áp dụng thiết lập tiếp nhận"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#, elixir-autogen, elixir-format
+msgid "Approve move downtime"
+msgstr "Chấp thuận thời gian ngừng khi di chuyển"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:635
+#, elixir-autogen, elixir-format
+msgid "Blocked: %{reason}"
+msgstr "Bị chặn: %{reason}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
+#, elixir-autogen, elixir-format
+msgid "CPU after holds"
+msgstr "CPU sau khi giữ chỗ"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
+#, elixir-autogen, elixir-format
+msgid "CPU headroom"
+msgstr "Dung lượng CPU còn trống"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#, elixir-autogen, elixir-format
+msgid "CPU overhead (cores)"
+msgstr "Chi phí CPU phụ trội (lõi)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:486
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#, elixir-autogen, elixir-format
+msgid "Campaign"
+msgstr "Chiến dịch"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:804
+#, elixir-autogen, elixir-format
+msgid "Campaign closed"
+msgstr "Chiến dịch đã đóng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#, elixir-autogen, elixir-format
+msgid "Campaign history"
+msgstr "Lịch sử chiến dịch"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:798
+#, elixir-autogen, elixir-format
+msgid "Campaign requested"
+msgstr "Đã yêu cầu chiến dịch"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#, elixir-autogen, elixir-format
+msgid "Campaign, workload and relocation milestones from durable control-plane records."
+msgstr "Các mốc chiến dịch, khối lượng công việc và di chuyển từ bản ghi bền vững của mặt phẳng điều khiển."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:827
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "Đã yêu cầu hủy"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:915
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "Đã hủy"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
+#, elixir-autogen, elixir-format
+msgid "Candidate: %{name}"
+msgstr "Ứng viên: %{name}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:356
+#, elixir-autogen, elixir-format
+msgid "Capacity explanation"
+msgstr "Giải thích dung lượng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Capacity information is temporarily unavailable."
+msgstr "Thông tin dung lượng tạm thời không khả dụng."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:769
+#, elixir-autogen, elixir-format
+msgid "Checking destination readiness"
+msgstr "Đang kiểm tra đích sẵn sàng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
+#, elixir-autogen, elixir-format
+msgid "Checking transfer connectivity"
+msgstr "Đang kiểm tra kết nối truyền"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
+#, elixir-autogen, elixir-format
+msgid "Cleaning up after cancellation"
+msgstr "Đang dọn dẹp sau khi hủy"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
+#, elixir-autogen, elixir-format
+msgid "Cleaning up the source"
+msgstr "Đang dọn dẹp nguồn"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:869
+#, elixir-autogen, elixir-format
+msgid "Clone in progress"
+msgstr "Đang nhân bản"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#, elixir-autogen, elixir-format
+msgid "Closed"
+msgstr "Đã đóng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "Hoàn tất"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:377
+#, elixir-autogen, elixir-format
+msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
+msgstr "Chi phí máy chủ đã cấu hình: %{cores} lõi · %{memory} bộ nhớ. Các mức dự phòng này được tính trong tiếp nhận và vẫn do triển khai kiểm soát."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:508
+#, elixir-autogen, elixir-format
+msgid "Continue scheduling"
+msgstr "Tiếp tục lập lịch"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#, elixir-autogen, elixir-format
+msgid "Copy/resize holds"
+msgstr "Giữ chỗ sao chép/đổi kích thước"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:760
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "Đang sao chép"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:166
+#, elixir-autogen, elixir-format
+msgid "Could not accept this change. Refresh and check the workload state."
+msgstr "Không thể chấp nhận thay đổi này. Làm mới và kiểm tra trạng thái khối lượng công việc."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:744
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "Đã xóa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#, elixir-autogen, elixir-format
+msgid "Deleting retained copies"
+msgstr "Đang xóa các bản sao giữ lại"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
+#, elixir-autogen, elixir-format
+msgid "Desired: %{desired} · Observed: %{observed}"
+msgstr "Mong muốn: %{desired} · Quan sát: %{observed}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
+#, elixir-autogen, elixir-format
+msgid "Destination boot failed; source copy retained"
+msgstr "Đích khởi động thất bại; giữ lại bản sao nguồn"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:824
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup confirmed"
+msgstr "Đã xác nhận dọn dẹp đích"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup requested"
+msgstr "Đã yêu cầu dọn dẹp đích"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:772
+#, elixir-autogen, elixir-format
+msgid "Destination readiness failed; source copy retained"
+msgstr "Đích không sẵn sàng; giữ lại bản sao nguồn"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:548
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Chi tiết"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#, elixir-autogen, elixir-format
+msgid "Disk after holds"
+msgstr "Đĩa sau khi giữ chỗ"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:860
+#, elixir-autogen, elixir-format
+msgid "Downtime approval required"
+msgstr "Cần phê duyệt gián đoạn"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:836
+#, elixir-autogen, elixir-format
+msgid "Downtime approved"
+msgstr "Đã phê duyệt gián đoạn"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
+#, elixir-autogen, elixir-format
+msgid "Downtime approved for this workload revision"
+msgstr "Đã chấp thuận thời gian ngừng cho bản sửa đổi khối lượng công việc này"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "Đã rút hết tải"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:729
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "Đang rút tải"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "Đã bật"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
+msgstr "Di tản mọi khối lượng công việc trên nút này? Máy khách đang chạy sẽ bị gián đoạn khi di chuyển. Sao chép đầy đủ khi dừng cần chấp thuận riêng cho từng khối lượng công việc."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "Đang sơ tán"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
+msgstr "Di tản chặn bố trí mới trong khi vẫn phục vụ máy khách hiện có. Di chuyển máy khách đang chạy gây gián đoạn ngắn. Sao chép đầy đủ khi dừng có thể lâu hơn đáng kể và cần chấp thuận cho từng khối lượng công việc."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#, elixir-autogen, elixir-format
+msgid "Evacuation campaign"
+msgstr "Chiến dịch di tản"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
+#, elixir-autogen, elixir-format
+msgid "Evacuation timeline"
+msgstr "Dòng thời gian di tản"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:547
+#, elixir-autogen, elixir-format
+msgid "Event"
+msgstr "Sự kiện"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:272
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:305
+#, elixir-autogen, elixir-format
+msgid "Excluded"
+msgstr "Đã loại trừ"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:370
+#, elixir-autogen, elixir-format
+msgid "Execution ready"
+msgstr "Sẵn sàng thực thi"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:334
+#, elixir-autogen, elixir-format
+msgid "Explain capacity"
+msgstr "Giải thích dung lượng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:912
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Thất bại"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:277
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:456
+#, elixir-autogen, elixir-format
+msgid "Fresh"
+msgstr "Mới"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "Fresh report"
+msgstr "Báo cáo mới"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:763
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "Đang nhập"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:857
+#, elixir-autogen, elixir-format
+msgid "Insufficient capacity"
+msgstr "Không đủ năng lực"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Yêu cầu không hợp lệ."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:830
+#, elixir-autogen, elixir-format
+msgid "Job state"
+msgstr "Trạng thái tác vụ"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:291
+#, elixir-autogen, elixir-format
+msgid "Lilly node · %{mode} maintenance"
+msgstr "Nút Lilly · bảo trì %{mode}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
+msgstr "Các nút Lilly và trạng thái tiếp nhận. Di chuyển khối lượng công việc của nút trước khi đưa máy ra khỏi dịch vụ."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:258
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:299
+#, elixir-autogen, elixir-format
+msgid "Maintenance"
+msgstr "Bảo trì"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
+#, elixir-autogen, elixir-format
+msgid "Maintenance pages"
+msgstr "Trang bảo trì"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "Maintenance updated."
+msgstr "Đã cập nhật bảo trì."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:445
+#, elixir-autogen, elixir-format
+msgid "Memory after holds"
+msgstr "Bộ nhớ sau khi giữ chỗ"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:443
+#, elixir-autogen, elixir-format
+msgid "Memory headroom"
+msgstr "Bộ nhớ còn trống"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
+#, elixir-autogen, elixir-format
+msgid "Next page →"
+msgstr "Trang tiếp →"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:129
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
+#, elixir-autogen, elixir-format
+msgid "No active campaign."
+msgstr "Không có chiến dịch đang hoạt động."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:257
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Node"
+msgstr "Nút"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Node information is unavailable."
+msgstr "Thông tin nút không khả dụng."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Node maintenance"
+msgstr "Bảo trì nút"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
+#, elixir-autogen, elixir-format
+msgid "Normal"
+msgstr "Bình thường"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s"
+msgstr "Gián đoạn quan sát được: %{seconds} giây"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:648
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s (ongoing)"
+msgstr "Gián đoạn quan sát được: %{seconds} giây (đang tiếp diễn)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:587
+#, elixir-autogen, elixir-format
+msgid "Opened"
+msgstr "Đã mở"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
+#, elixir-autogen, elixir-format
+msgid "Pause scheduling"
+msgstr "Tạm dừng lập lịch"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
+#, elixir-autogen, elixir-format
+msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
+msgstr "Tạm dừng ngăn lập lịch lượt di chuyển mới. Lượt đã chấp nhận vẫn tiếp tục. Sẵn sàng bảo trì cần xác nhận dọn nguồn; chỉ có tác vụ hoàn tất là chưa đủ."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "Đã tạm dừng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:742
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Đang chờ"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:522
+#, elixir-autogen, elixir-format
+msgid "Permanently retire this empty node and revoke its credentials?"
+msgstr "Ngừng vĩnh viễn nút trống này và thu hồi thông tin xác thực?"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:644
+#, elixir-autogen, elixir-format
+msgid "Phase: %{phase}"
+msgstr "Giai đoạn: %{phase}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:440
+#, elixir-autogen, elixir-format
+msgid "Pool"
+msgstr "Nhóm tài nguyên"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "Đang chuẩn bị"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:331
+#, elixir-autogen, elixir-format
+msgid "Preview evacuation"
+msgstr "Xem trước di tản"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
+#, elixir-autogen, elixir-format
+msgid "Preview: %{blocker}"
+msgstr "Xem trước: %{blocker}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:894
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "Đã xếp hàng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:419
+#, elixir-autogen, elixir-format
+msgid "RAM overhead (bytes)"
+msgstr "RAM phụ trội (byte)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
+#, elixir-autogen, elixir-format
+msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
+msgstr "Lập lại kế hoạch khối lượng công việc này bằng vị trí và trạng thái mong muốn hiện tại? Mọi chấp thuận thời gian ngừng trước đó sẽ bị xóa."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Re-plan workload"
+msgstr "Lập lại kế hoạch khối lượng công việc"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:359
+#, elixir-autogen, elixir-format
+msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
+msgstr "Tính toán tiếp nhận chỉ đọc. Không giữ chỗ dung lượng; số đo chưa biết sẽ ngăn tiếp nhận."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:738
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "Sẵn sàng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:807
+#, elixir-autogen, elixir-format
+msgid "Relocation committed"
+msgstr "Đã cam kết di chuyển"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:866
+#, elixir-autogen, elixir-format
+msgid "Relocation in progress"
+msgstr "Đang di chuyển"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:839
+#, elixir-autogen, elixir-format
+msgid "Relocation started"
+msgstr "Đã bắt đầu di chuyển"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
+#, elixir-autogen, elixir-format
+msgid "Removed from this source; awaiting campaign cleanup verification."
+msgstr "Đã xóa khỏi nguồn này; đang chờ xác minh việc dọn dẹp chiến dịch."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:307
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:441
+#, elixir-autogen, elixir-format
+msgid "Report"
+msgstr "Báo cáo"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:863
+#, elixir-autogen, elixir-format
+msgid "Resize in progress"
+msgstr "Đang đổi kích thước"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:515
+#, elixir-autogen, elixir-format
+msgid "Restore admission"
+msgstr "Khôi phục khả năng tiếp nhận"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
+#, elixir-autogen, elixir-format
+msgid "Restoring the source"
+msgstr "Đang khôi phục nguồn"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "Đã tiếp tục"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
+#, elixir-autogen, elixir-format
+msgid "Retire node"
+msgstr "Ngừng sử dụng nút"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:735
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "Đã ngừng sử dụng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:906
+#, elixir-autogen, elixir-format
+msgid "Retrying"
+msgstr "Đang thử lại"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
+#, elixir-autogen, elixir-format
+msgid "Retrying destination boot"
+msgstr "Đang thử khởi động đích lại"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:740
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:903
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "Đang chạy"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:900
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "Đã lên lịch"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
+#, elixir-autogen, elixir-format
+msgid "Source cleanup confirmed"
+msgstr "Đã xác nhận dọn dẹp nguồn"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:813
+#, elixir-autogen, elixir-format
+msgid "Source cleanup requested"
+msgstr "Đã yêu cầu dọn dẹp nguồn"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:801
+#, elixir-autogen, elixir-format
+msgid "Source ready"
+msgstr "Nguồn sẵn sàng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:810
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "Đã khôi phục nguồn"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:851
+#, elixir-autogen, elixir-format
+msgid "Source unavailable"
+msgstr "Nguồn không khả dụng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:278
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:457
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown"
+msgstr "Cũ hoặc không xác định"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:310
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown report"
+msgstr "Báo cáo cũ hoặc không xác định"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:350
+#, elixir-autogen, elixir-format
+msgid "Start evacuation"
+msgstr "Bắt đầu sơ tán"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:447
+#, elixir-autogen, elixir-format
+msgid "Startup holds"
+msgstr "Điều kiện chặn khởi động"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Tình trạng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#, elixir-autogen, elixir-format
+msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
+msgstr "Dừng khối lượng công việc đang chạy trong suốt quá trình di chuyển? Sao chép đĩa và khởi động lại ở đích có thể gây gián đoạn kéo dài."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "Đã dừng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
+#, elixir-autogen, elixir-format
+msgid "Stopping the source"
+msgstr "Đang dừng nguồn"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:909
+#, elixir-autogen, elixir-format
+msgid "Succeeded"
+msgstr "Thành công"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:897
+#, elixir-autogen, elixir-format
+msgid "Suspended"
+msgstr "Đã tạm ngưng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:766
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "Đang chuyển vị trí triển khai"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:314
+#, elixir-autogen, elixir-format
+msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
+msgstr "Giao thức thiết bị đầu cuối: %{protocol} · Luồng cục bộ: %{state}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:546
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "Thời gian"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:854
+#, elixir-autogen, elixir-format
+msgid "Transfer busy"
+msgstr "Truyền tải đang bận"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Không khả dụng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:315
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:749
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:871
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:872
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:874
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:917
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Không xác định"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:556
+#, elixir-autogen, elixir-format
+msgid "VM"
+msgstr "Máy ảo"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:845
+#, elixir-autogen, elixir-format
+msgid "Workload changed"
+msgstr "Khối lượng công việc đã thay đổi"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:848
+#, elixir-autogen, elixir-format
+msgid "Workload is not stable"
+msgstr "Khối lượng công việc chưa ổn định"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:833
+#, elixir-autogen, elixir-format
+msgid "Workload observed"
+msgstr "Đã quan sát khối lượng công việc"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:842
+#, elixir-autogen, elixir-format
+msgid "Workload resolved"
+msgstr "Đã giải quyết khối lượng công việc"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
+#, elixir-autogen, elixir-format
+msgid "attempt %{attempt}"
+msgstr "lần thử %{attempt}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
+#, elixir-autogen, elixir-format
+msgid "campaign"
+msgstr "chiến dịch"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:367
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "enabled"
+msgstr "đã bật"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:400
+#, elixir-autogen, elixir-format
+msgid "excluded"
+msgstr "đã loại trừ"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:563
+#, elixir-autogen, elixir-format
+msgid "job"
+msgstr "tác vụ"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:558
+#, elixir-autogen, elixir-format
+msgid "move"
+msgstr "di chuyển"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:318
+#, elixir-autogen, elixir-format
+msgid "ready"
+msgstr "sẵn sàng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "unavailable"
+msgstr "không khả dụng"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "không xác định"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "yes"
+msgstr "có"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
+#, elixir-autogen, elixir-format
+msgid "· Downtime approval required"
+msgstr "· Cần phê duyệt thời gian gián đoạn"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:709
+#, elixir-autogen, elixir-format
+msgid "← First page"
+msgstr "← Trang đầu"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "← Nodes"
+msgstr "← Nút"

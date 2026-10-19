@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mila_core/mila_core.dart' show isCanonicalUuid;
@@ -23,6 +22,7 @@ import 'features/threads/thread_screen.dart';
 import 'features/threads/threads_screen.dart';
 import 'features/web/web_screen.dart';
 import 'l10n/app_localizations.dart';
+import 'localization/fallback_delegates.dart';
 import 'ui/theme.dart';
 import 'ui/tokens.dart';
 
@@ -170,12 +170,7 @@ class _MilaAppState extends ConsumerState<MilaApp> {
         onGenerateTitle: (context) => MilaLocalizations.of(context).appTitle,
         theme: monoThemeData(tokens, brightness),
         routerConfig: ref.watch(routerProvider),
-        localizationsDelegates: const [
-          MilaLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
+        localizationsDelegates: const [MilaLocalizations.delegate, ...frameworkDelegates],
         supportedLocales: MilaLocalizations.supportedLocales,
         debugShowCheckedModeBanner: false,
         builder: (context, child) => LockGate(child: child ?? const SizedBox.shrink()),

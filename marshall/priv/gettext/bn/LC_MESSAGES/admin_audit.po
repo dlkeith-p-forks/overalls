@@ -1,0 +1,1011 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: bn\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/admin/audit_live.ex:280
+#, elixir-autogen, elixir-format
+msgid "; the next due check can then request a new generation."
+msgstr "; পরবর্তী নির্ধারিত পরীক্ষা নতুন জেনারেশন চাইতে পারে।"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:113
+#, elixir-autogen, elixir-format
+msgid "ACME account"
+msgstr "ACME অ্যাকাউন্ট"
+
+#: lib/marshall_web/live/admin/audit_live.ex:333
+#, elixir-autogen, elixir-format
+msgid "ACME account: %{status}"
+msgstr "ACME অ্যাকাউন্ট: %{status}"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:160
+#: lib/marshall_web/live/admin/audit_labels.ex:453
+#, elixir-autogen, elixir-format
+msgid "Acknowledged"
+msgstr "স্বীকৃত"
+
+#: lib/marshall_web/live/admin/audit_live.ex:237
+#: lib/marshall_web/live/admin/audit_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "পদক্ষেপ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:148
+#, elixir-autogen, elixir-format
+msgid "Activated"
+msgstr "সক্রিয়"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:228
+#: lib/marshall_web/live/admin/audit_labels.ex:481
+#, elixir-autogen, elixir-format
+msgid "Activation failed"
+msgstr "সক্রিয়করণ ব্যর্থ হয়েছে৷"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:251
+#, elixir-autogen, elixir-format
+msgid "Activation observed"
+msgstr "সক্রিয়করণ পর্যবেক্ষণ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:460
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "সক্রিয়"
+
+#: lib/marshall_web/live/admin/audit_live.ex:305
+#, elixir-autogen, elixir-format
+msgid "Actor"
+msgstr "কার্যসম্পাদক"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:32
+#, elixir-autogen, elixir-format
+msgid "Administrator access granted"
+msgstr "অ্যাডমিনিস্ট্রেটর অ্যাক্সেস দেওয়া হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:35
+#, elixir-autogen, elixir-format
+msgid "Administrator access revoked"
+msgstr "প্রশাসকের অ্যাক্সেস প্রত্যাহার করা হয়েছে৷"
+
+#: lib/marshall_web/live/admin/audit_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Administrator actions"
+msgstr "প্রশাসকের পদক্ষেপ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:29
+#, elixir-autogen, elixir-format
+msgid "Administrator bootstrapped"
+msgstr "অ্যাডমিনিস্ট্রেটর বুটস্ট্র্যাপড"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:162
+#, elixir-autogen, elixir-format
+msgid "Advanced"
+msgstr "উন্নত"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:165
+#, elixir-autogen, elixir-format
+msgid "Allocated"
+msgstr "বরাদ্দ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:441
+#, elixir-autogen, elixir-format
+msgid "Applied"
+msgstr "প্রয়োগ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:170
+#: lib/marshall_web/live/admin/audit_labels.ex:435
+#, elixir-autogen, elixir-format
+msgid "Approved"
+msgstr "অনুমোদিত"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:171
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "সংরক্ষণাগারে রাখা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Audit"
+msgstr "নিরীক্ষা"
+
+#: lib/marshall_web/live/admin/audit_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Audit history is unavailable."
+msgstr "নিরীক্ষার ইতিহাস পাওয়া যাচ্ছে না।"
+
+#: lib/marshall_web/live/admin/audit_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Audit kinds"
+msgstr "নিরীক্ষার ধরন"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:179
+#: lib/marshall_web/live/admin/audit_labels.ex:436
+#, elixir-autogen, elixir-format
+msgid "Blocked"
+msgstr "অবরুদ্ধ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:236
+#, elixir-autogen, elixir-format
+msgid "Cancellation completed"
+msgstr "বাতিলকরণ সম্পন্ন হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:344
+#: lib/marshall_web/live/admin/audit_labels.ex:347
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "বাতিলের অনুরোধ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:288
+#, elixir-autogen, elixir-format
+msgid "Cancellation restart recorded"
+msgstr "বাতিলকরণ পুনঃসূচনা রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:291
+#, elixir-autogen, elixir-format
+msgid "Cancellation stop recorded"
+msgstr "বাতিলকরণ স্টপ রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:180
+#: lib/marshall_web/live/admin/audit_labels.ex:183
+#: lib/marshall_web/live/admin/audit_labels.ex:427
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "বাতিল হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:424
+#, elixir-autogen, elixir-format
+msgid "Cancelling"
+msgstr "বাতিল করা হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:411
+#, elixir-autogen, elixir-format
+msgid "Capturing"
+msgstr "ক্যাপচারিং"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:116
+#, elixir-autogen, elixir-format
+msgid "Certificate"
+msgstr "সার্টিফিকেট"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:145
+#, elixir-autogen, elixir-format
+msgid "Certificate issued"
+msgstr "সার্টিফিকেট জারি করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:133
+#, elixir-autogen, elixir-format
+msgid "Certificate order attempted"
+msgstr "সার্টিফিকেট অর্ডার চেষ্টা করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:136
+#, elixir-autogen, elixir-format
+msgid "Certificate order bound"
+msgstr "শংসাপত্র আদেশ আবদ্ধ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:139
+#, elixir-autogen, elixir-format
+msgid "Certificate proof recorded"
+msgstr "সার্টিফিকেট প্রমাণ নথিভুক্ত"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:142
+#, elixir-autogen, elixir-format
+msgid "Certificate proof refreshed"
+msgstr "সার্টিফিকেট প্রমাণ রিফ্রেশ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "Certificates"
+msgstr "সনদসমূহ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:475
+#, elixir-autogen, elixir-format
+msgid "Checking destination"
+msgstr "গন্তব্য চেক করা হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:463
+#, elixir-autogen, elixir-format
+msgid "Checking transfer"
+msgstr "স্থানান্তর চেক করা হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:189
+#, elixir-autogen, elixir-format
+msgid "Checkpoint saved"
+msgstr "চেকপয়েন্ট সংরক্ষণ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:419
+#, elixir-autogen, elixir-format
+msgid "Cleaning up"
+msgstr "পরিষ্কার করা হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:493
+#, elixir-autogen, elixir-format
+msgid "Cleaning up cancellation"
+msgstr "বাতিলকরণ পরিষ্কার করা"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:487
+#, elixir-autogen, elixir-format
+msgid "Cleaning up source"
+msgstr "উৎস পরিষ্কার করা"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:194
+#, elixir-autogen, elixir-format
+msgid "Cleanup completed"
+msgstr "পরিচ্ছন্নতা সম্পন্ন হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:191
+#: lib/marshall_web/live/admin/audit_labels.ex:421
+#: lib/marshall_web/live/admin/audit_labels.ex:433
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "সম্পন্ন"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:196
+#, elixir-autogen, elixir-format
+msgid "Confirmed"
+msgstr "নিশ্চিত করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:214
+#, elixir-autogen, elixir-format
+msgid "Continued"
+msgstr "চলতে থাকে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:202
+#, elixir-autogen, elixir-format
+msgid "Copy confirmed"
+msgstr "কপি নিশ্চিত করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:174
+#, elixir-autogen, elixir-format
+msgid "Copy started"
+msgstr "কপি শুরু হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:413
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "অনুলিপি করা হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:401
+#, elixir-autogen, elixir-format
+msgid "Created"
+msgstr "তৈরি হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:216
+#, elixir-autogen, elixir-format
+msgid "Deferred"
+msgstr "বিলম্বিত"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:458
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "মুছে ফেলা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:496
+#, elixir-autogen, elixir-format
+msgid "Deleting copies"
+msgstr "কপি মুছে ফেলা হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:239
+#, elixir-autogen, elixir-format
+msgid "Deletion completed"
+msgstr "মোছা সম্পূর্ণ হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:350
+#: lib/marshall_web/live/admin/audit_labels.ex:353
+#, elixir-autogen, elixir-format
+msgid "Deletion requested"
+msgstr "মুছে ফেলার অনুরোধ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:256
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup offered"
+msgstr "গন্তব্য পরিচ্ছন্নতার প্রস্তাব"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:297
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup recorded"
+msgstr "গন্তব্য পরিষ্কার রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:259
+#, elixir-autogen, elixir-format
+msgid "Destination revocation offered"
+msgstr "গন্তব্য প্রত্যাহার প্রস্তাব"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:301
+#, elixir-autogen, elixir-format
+msgid "Destination revocation recorded"
+msgstr "গন্তব্য প্রত্যাহার রেকর্ড করা হয়েছে৷"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:222
+#, elixir-autogen, elixir-format
+msgid "Destination work dispatched"
+msgstr "গন্তব্য কাজ পাঠানো হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:219
+#, elixir-autogen, elixir-format
+msgid "Dispatched"
+msgstr "প্রেরিত"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:448
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "খালি করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:447
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "খালি করা হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:107
+#, elixir-autogen, elixir-format
+msgid "Editor credential"
+msgstr "সম্পাদকের শংসাপত্র"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:110
+#, elixir-autogen, elixir-format
+msgid "Editor lease"
+msgstr "সম্পাদক ইজারা"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:104
+#, elixir-autogen, elixir-format
+msgid "Editor sign-in"
+msgstr "সম্পাদক সাইন ইন"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:506
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "সরিয়ে নেওয়া হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:56
+#, elixir-autogen, elixir-format
+msgid "Evacuation approved"
+msgstr "উচ্ছেদ অনুমোদিত"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:53
+#, elixir-autogen, elixir-format
+msgid "Evacuation changed"
+msgstr "উচ্ছেদ পরিবর্তন হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:59
+#, elixir-autogen, elixir-format
+msgid "Evacuation replanned"
+msgstr "সরিয়ে নেওয়ার পরিকল্পনা করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:50
+#, elixir-autogen, elixir-format
+msgid "Evacuation requested"
+msgstr "উচ্ছেদের অনুরোধ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:151
+#: lib/marshall_web/live/admin/audit_labels.ex:429
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "ব্যর্থ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:233
+#, elixir-autogen, elixir-format
+msgid "Fenced"
+msgstr "বেড়া দেওয়া"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:503
+#, elixir-autogen, elixir-format
+msgid "Fencing"
+msgstr "বেড়া"
+
+#: lib/marshall_web/live/admin/audit_live.ex:214
+#: lib/marshall_web/live/admin/audit_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Filter lifecycle history"
+msgstr "জীবনচক্রের ইতিহাস ছাঁকুন"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:65
+#, elixir-autogen, elixir-format
+msgid "Fleet certificate rotation requested"
+msgstr "ফ্লিট সার্টিফিকেট রোটেশন অনুরোধ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_live.ex:275
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation} has an uncertain ACME order response. The generation can be failed after"
+msgstr "জেনারেশন %{generation}-এর একটি অনিশ্চিত ACME অর্ডার প্রতিক্রিয়া আছে। পরবর্তী প্রজন্ম ব্যর্থ হতে পারে"
+
+#: lib/marshall_web/live/admin/audit_live.ex:338
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation}: %{status}"
+msgstr "প্রজন্ম %{generation}: %{status}"
+
+#: lib/marshall_web/live/admin/audit_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "Host ID"
+msgstr "হোস্টের আইডি"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:62
+#, elixir-autogen, elixir-format
+msgid "Host configured"
+msgstr "হোস্ট কনফিগার করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_live.ex:258
+#, elixir-autogen, elixir-format
+msgid "Human requests and system recovery transitions. History is retained for 90 days."
+msgstr "মানুষের অনুরোধ ও সিস্টেম পুনরুদ্ধারের অবস্থা পরিবর্তন। ইতিহাস ৯০ দিন রাখা হয়।"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:245
+#, elixir-autogen, elixir-format
+msgid "Idle policy updated"
+msgstr "নিষ্ক্রিয় নীতি আপডেট করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:205
+#, elixir-autogen, elixir-format
+msgid "Import confirmed"
+msgstr "আমদানি নিশ্চিত করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:277
+#, elixir-autogen, elixir-format
+msgid "Import prepared"
+msgstr "আমদানি প্রস্তুত"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:304
+#, elixir-autogen, elixir-format
+msgid "Import recorded"
+msgstr "আমদানি রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:177
+#, elixir-autogen, elixir-format
+msgid "Import started"
+msgstr "আমদানি শুরু হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:469
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "আমদানি করা হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:119
+#, elixir-autogen, elixir-format
+msgid "Installation"
+msgstr "ইনস্টলেশন"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:122
+#, elixir-autogen, elixir-format
+msgid "Installed"
+msgstr "ইনস্টল করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:98
+#, elixir-autogen, elixir-format
+msgid "Integration attached"
+msgstr "ইন্টিগ্রেশন সংযুক্ত"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:92
+#, elixir-autogen, elixir-format
+msgid "Integration configured"
+msgstr "ইন্টিগ্রেশন কনফিগার করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:101
+#, elixir-autogen, elixir-format
+msgid "Integration detached"
+msgstr "ইন্টিগ্রেশন বিচ্ছিন্ন"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:95
+#, elixir-autogen, elixir-format
+msgid "Integration removed"
+msgstr "ইন্টিগ্রেশন সরানো হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:225
+#, elixir-autogen, elixir-format
+msgid "Key dispatched"
+msgstr "চাবি পাঠানো হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:307
+#, elixir-autogen, elixir-format
+msgid "Key recorded"
+msgstr "কী রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:381
+#, elixir-autogen, elixir-format
+msgid "Key retired"
+msgstr "চাবি অবসরপ্রাপ্ত"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:262
+#, elixir-autogen, elixir-format
+msgid "Key retirement offered"
+msgstr "মূল অবসর প্রস্তাব"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:356
+#, elixir-autogen, elixir-format
+msgid "Key retirement requested"
+msgstr "কী অবসর অনুরোধ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:41
+#, elixir-autogen, elixir-format
+msgid "Machine access revoked"
+msgstr "মেশিন অ্যাক্সেস প্রত্যাহার করা হয়েছে৷"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:68
+#, elixir-autogen, elixir-format
+msgid "Machine lifecycle requested"
+msgstr "মেশিন জীবনচক্র অনুরোধ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:71
+#, elixir-autogen, elixir-format
+msgid "Machine relocation requested"
+msgstr "মেশিন স্থানান্তর অনুরোধ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:248
+#, elixir-autogen, elixir-format
+msgid "Machine state observed"
+msgstr "মেশিনের অবস্থা পর্যবেক্ষণ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:20
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication reset"
+msgstr "মাল্টি-ফ্যাক্টর প্রমাণীকরণ রিসেট"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:17
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication verified"
+msgstr "মাল্টি-ফ্যাক্টর প্রমাণীকরণ যাচাই করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:430
+#, elixir-autogen, elixir-format
+msgid "Offered"
+msgstr "অফার করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_live.ex:354
+#, elixir-autogen, elixir-format
+msgid "Older events →"
+msgstr "পুরোনো ঘটনা →"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:310
+#, elixir-autogen, elixir-format
+msgid "Operation recorded"
+msgstr "অপারেশন রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:11
+#, elixir-autogen, elixir-format
+msgid "Passkey added"
+msgstr "পাসকি যোগ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:14
+#, elixir-autogen, elixir-format
+msgid "Passkey removed"
+msgstr "পাসকি সরানো হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:359
+#, elixir-autogen, elixir-format
+msgid "Pause requested"
+msgstr "বিরতি অনুরোধ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:271
+#: lib/marshall_web/live/admin/audit_labels.ex:457
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "বিরত আছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:402
+#: lib/marshall_web/live/admin/audit_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "অপেক্ষমাণ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:294
+#, elixir-autogen, elixir-format
+msgid "Placement switch recorded"
+msgstr "প্লেসমেন্ট সুইচ রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:242
+#, elixir-autogen, elixir-format
+msgid "Placement switched"
+msgstr "প্লেসমেন্ট সুইচ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:274
+#, elixir-autogen, elixir-format
+msgid "Preparation started"
+msgstr "শুরু হলো প্রস্তুতি"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:406
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "প্রস্তুত করা হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:313
+#, elixir-autogen, elixir-format
+msgid "Progress recorded"
+msgstr "অগ্রগতি রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:157
+#, elixir-autogen, elixir-format
+msgid "Progress updated"
+msgstr "অগ্রগতি আপডেট করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:279
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "প্রকাশিত হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:416
+#, elixir-autogen, elixir-format
+msgid "Publishing"
+msgstr "প্রকাশনা"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:127
+#: lib/marshall_web/live/admin/audit_labels.ex:403
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "সারিতে আছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:208
+#: lib/marshall_web/live/admin/audit_labels.ex:211
+#, elixir-autogen, elixir-format
+msgid "Readiness confirmed"
+msgstr "প্রস্তুতি নিশ্চিত করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:231
+#: lib/marshall_web/live/admin/audit_labels.ex:478
+#, elixir-autogen, elixir-format
+msgid "Readiness failed"
+msgstr "প্রস্তুতি ব্যর্থ হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:280
+#: lib/marshall_web/live/admin/audit_labels.ex:446
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "প্রস্তুত"
+
+#: lib/marshall_web/live/admin/audit_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
+msgstr "মেশিনবহরের সাম্প্রতিক ওয়াইল্ডকার্ড প্রজন্ম ও গেটওয়ে ইনস্টলেশন। গোপন কী ও ACME প্রমাণ বাদ দেওয়া হয়েছে।"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:283
+#, elixir-autogen, elixir-format
+msgid "Reconciled"
+msgstr "মিটমাট"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:285
+#, elixir-autogen, elixir-format
+msgid "Recorded"
+msgstr "রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
+msgstr "সংবেদনশীল তথ্য আড়াল করা কর্তৃত্ব পরিবর্তন, জীবনচক্রের অনুরোধ, সনদের প্রজন্ম ও সম্পাদকে প্রবেশাধিকার। বার্তার উপাদান, প্রমাণীকরণ তথ্য ও টার্মিনালের বাইট বাদ।"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:338
+#, elixir-autogen, elixir-format
+msgid "Reflection metadata updated"
+msgstr "প্রতিফলন মেটাডেটা আপডেট করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:125
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "নিবন্ধিত হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:340
+#, elixir-autogen, elixir-format
+msgid "Replanned"
+msgstr "পুনরায় পরিকল্পনা করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_live.ex:291
+#, elixir-autogen, elixir-format
+msgid "Request a new wildcard certificate for every Audi gateway?"
+msgstr "প্রতিটি Audi গেটওয়ের জন্য নতুন ওয়াইল্ডকার্ড সনদ চাইবেন?"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:130
+#, elixir-autogen, elixir-format
+msgid "Request saved"
+msgstr "অনুরোধ সংরক্ষিত"
+
+#: lib/marshall_web/live/admin/audit_live.ex:294
+#, elixir-autogen, elixir-format
+msgid "Request wildcard rotation"
+msgstr "ওয়াইল্ডকার্ড সনদ নবায়নের অনুরোধ করুন"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:341
+#, elixir-autogen, elixir-format
+msgid "Requested"
+msgstr "অনুরোধ করেছেন"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:168
+#, elixir-autogen, elixir-format
+msgid "Resize applied"
+msgstr "পুনরায় আকার প্রয়োগ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:368
+#, elixir-autogen, elixir-format
+msgid "Resize started"
+msgstr "আকার পরিবর্তন শুরু হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:498
+#, elixir-autogen, elixir-format
+msgid "Resizing"
+msgstr "আকার বদলানো হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:370
+#: lib/marshall_web/live/admin/audit_labels.ex:508
+#, elixir-autogen, elixir-format
+msgid "Resolved"
+msgstr "সমাধান করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:373
+#, elixir-autogen, elixir-format
+msgid "Restart started"
+msgstr "রিস্টার্ট শুরু হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:501
+#, elixir-autogen, elixir-format
+msgid "Restarting"
+msgstr "আবার চালু হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:490
+#, elixir-autogen, elixir-format
+msgid "Restoring source"
+msgstr "উৎস পুনরুদ্ধার করা হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:319
+#, elixir-autogen, elixir-format
+msgid "Result recorded"
+msgstr "ফলাফল রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:378
+#: lib/marshall_web/live/admin/audit_labels.ex:449
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "পুনরায় চালু হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:150
+#: lib/marshall_web/live/admin/audit_labels.ex:450
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "অবসর দেওয়া হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:384
+#, elixir-autogen, elixir-format
+msgid "Retry requested"
+msgstr "পুনরায় চেষ্টা করার অনুরোধ করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:484
+#, elixir-autogen, elixir-format
+msgid "Retrying destination"
+msgstr "গন্তব্যের জন্য আবার চেষ্টা করা হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:455
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "চলছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:44
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked"
+msgstr "SSH কী প্রত্যাহার করা হয়েছে৷"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:47
+#, elixir-autogen, elixir-format
+msgid "SSH session revoked"
+msgstr "SSH অধিবেশন প্রত্যাহার করা হয়েছে৷"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:387
+#: lib/marshall_web/live/admin/audit_labels.ex:439
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "নির্ধারিত"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:38
+#, elixir-autogen, elixir-format
+msgid "Sessions revoked"
+msgstr "সেশন প্রত্যাহার করা হয়েছে৷"
+
+#: lib/marshall_web/live/admin/audit_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "Since (ISO 8601)"
+msgstr "থেকে (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:199
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture confirmed"
+msgstr "স্ন্যাপশট ক্যাপচার নিশ্চিত করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:186
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture started"
+msgstr "স্ন্যাপশট ক্যাপচার শুরু হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:322
+#, elixir-autogen, elixir-format
+msgid "Source restoration recorded"
+msgstr "উৎস পুনরুদ্ধার রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:376
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "উৎস পুনরুদ্ধার হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:265
+#, elixir-autogen, elixir-format
+msgid "Source revocation offered"
+msgstr "উৎস প্রত্যাহার প্রস্তাব"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:325
+#, elixir-autogen, elixir-format
+msgid "Source revocation recorded"
+msgstr "উৎস প্রত্যাহার রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:269
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup offered"
+msgstr "উৎস স্ন্যাপশট পরিস্কার প্রস্তাব"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:329
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup recorded"
+msgstr "উৎস স্ন্যাপশট পরিষ্কার রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:392
+#, elixir-autogen, elixir-format
+msgid "Source stop started"
+msgstr "উৎস বন্ধ শুরু"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:362
+#, elixir-autogen, elixir-format
+msgid "Start requested"
+msgstr "অনুরোধ করা শুরু করুন"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:332
+#, elixir-autogen, elixir-format
+msgid "Stop recorded"
+msgstr "রেকর্ড করা বন্ধ করুন"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:365
+#, elixir-autogen, elixir-format
+msgid "Stop requested"
+msgstr "থামানোর অনুরোধ করা হলো"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:389
+#, elixir-autogen, elixir-format
+msgid "Stop started"
+msgstr "স্টপ শুরু হল"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:456
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "বন্ধ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:408
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "বন্ধ হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:466
+#, elixir-autogen, elixir-format
+msgid "Stopping source"
+msgstr "স্টপিং সোর্স"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:395
+#: lib/marshall_web/live/admin/audit_labels.ex:444
+#, elixir-autogen, elixir-format
+msgid "Superseded"
+msgstr "বাতিল করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:472
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "অবস্থান বদলানো হচ্ছে"
+
+#: lib/marshall_web/live/admin/audit_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "গন্তব্য"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:74
+#, elixir-autogen, elixir-format
+msgid "Team created"
+msgstr "দল তৈরি করেছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:77
+#, elixir-autogen, elixir-format
+msgid "Team membership changed"
+msgstr "দলের সদস্যপদ পরিবর্তিত হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:83
+#, elixir-autogen, elixir-format
+msgid "Team ownership accepted"
+msgstr "দলের মালিকানা গৃহীত"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:86
+#, elixir-autogen, elixir-format
+msgid "Team ownership declined"
+msgstr "দলের মালিকানা প্রত্যাখ্যান করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:89
+#, elixir-autogen, elixir-format
+msgid "Team ownership offer cancelled"
+msgstr "টিম মালিকানা প্রস্তাব বাতিল করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:80
+#, elixir-autogen, elixir-format
+msgid "Team ownership offered"
+msgstr "টিম মালিকানা প্রস্তাব"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:316
+#, elixir-autogen, elixir-format
+msgid "Transfer receipt recorded"
+msgstr "স্থানান্তরের রসিদ রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:154
+#, elixir-autogen, elixir-format
+msgid "Uncertain certificate order failed"
+msgstr "অনিশ্চিত শংসাপত্রের আদেশ ব্যর্থ হয়েছে৷"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:335
+#, elixir-autogen, elixir-format
+msgid "Unconfirmed outcome recorded"
+msgstr "অনিশ্চিত ফলাফল রেকর্ড করা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:397
+#: lib/marshall_web/live/admin/audit_labels.ex:459
+#: lib/marshall_web/live/admin/audit_labels.ex:509
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "অজানা"
+
+#: lib/marshall_web/live/admin/audit_live.ex:239
+#, elixir-autogen, elixir-format
+msgid "Until (ISO 8601)"
+msgstr "পর্যন্ত (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:26
+#, elixir-autogen, elixir-format
+msgid "User deleted"
+msgstr "ব্যবহারকারী মুছে ফেলা হয়েছে"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:23
+#, elixir-autogen, elixir-format
+msgid "User invited"
+msgstr "ব্যবহারকারী আমন্ত্রিত"
+
+#: lib/marshall_web/live/admin/audit_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "VM ID"
+msgstr "ভার্চুয়াল মেশিনের আইডি"
+
+#: lib/marshall_web/live/admin/audit_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "VM lifecycle"
+msgstr "ভার্চুয়াল মেশিনের জীবনচক্র"
+
+#: lib/marshall_web/live/admin/audit_live.ex:211
+#, elixir-autogen, elixir-format
+msgid "VS Code access"
+msgstr "VS Code-এর প্রবেশাধিকার"
+
+#: lib/marshall_web/live/admin/audit_live.ex:303
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "কখন"
+
+#: lib/marshall_web/live/admin/audit_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation could not be requested."
+msgstr "ওয়াইল্ডকার্ড সনদ নবায়নের অনুরোধ করা যায়নি।"
+
+#: lib/marshall_web/live/admin/audit_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation requested for generation %{generation}."
+msgstr "প্রজন্ম %{generation}-এর ওয়াইল্ডকার্ড সনদ নবায়নের অনুরোধ করা হয়েছে।"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:253
+#, elixir-autogen, elixir-format
+msgid "Work offered"
+msgstr "কাজের প্রস্তাব"
+
+#: lib/marshall_web/live/admin/audit_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Workflow ID"
+msgstr "কর্মপ্রবাহের আইডি"

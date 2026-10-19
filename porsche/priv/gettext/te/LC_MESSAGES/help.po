@@ -1,0 +1,325 @@
+#
+msgid ""
+msgstr ""
+"Language: te\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/porsche/ssh/command_messages.ex:59
+#, elixir-autogen, elixir-format
+msgid "Accept a pending ownership offer."
+msgstr "పెండింగ్‌లో ఉన్న యాజమాన్య ప్రతిపాదనను అంగీకరించండి."
+
+#: lib/porsche/ssh/command_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "నిర్వాహకుడిని లేదా సభ్యుడిని జోడించండి లేదా మార్చండి."
+
+#: lib/porsche/ssh/command_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "ప్రచురించని క్లోన్ లేదా ఖరారు కాని తరలింపు అభ్యర్థనను రద్దు చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:61
+#, elixir-autogen, elixir-format
+msgid "Cancel your pending ownership offer."
+msgstr "మీ పెండింగ్ యాజమాన్య ప్రతిపాదనను రద్దు చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr ""
+"యంత్రం CPU మరియు మెమరీని మార్చండి; డిస్క్‌ను పెంచడం మాత్రమే సాధ్యం. "
+"నడుస్తున్న యంత్రం ఆగి తిరిగి ప్రారంభమవుతుంది."
+
+#: lib/porsche/ssh/command_messages.ex:63
+#, elixir-autogen, elixir-format
+msgid "Close this interactive channel."
+msgstr "ఈ పరస్పర సంభాషణ ఛానెల్‌ను మూసివేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr ""
+"యంత్రాన్ని సృష్టించండి. డిస్క్ గరిష్ఠ పరిమాణం: 500 GiB. --source గెస్ట్‌లో "
+"పబ్లిక్ GitHub, GitLab, Codeberg లేదా Bitbucket రిపోజిటరీని క్లోన్ "
+"చేస్తుంది."
+
+#: lib/porsche/ssh/command_messages.ex:53
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "మీ యాజమాన్యంలో బృందాన్ని సృష్టించండి."
+
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr ""
+"https://NAME.integration.internal వద్ద పేరుతో అనుసంధానాన్ని సృష్టించండి లేదా"
+" భర్తీ చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:60
+#, elixir-autogen, elixir-format
+msgid "Decline a pending ownership offer."
+msgstr "పెండింగ్‌లో ఉన్న యాజమాన్య ప్రతిపాదనను తిరస్కరించండి."
+
+#: lib/porsche/ssh/command_messages.ex:30
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr ""
+"యంత్రాన్ని, దాని డిస్క్‌ను తొలగించండి. యజమాని పిన్ చేసి ఉంచితే "
+"నిరాకరించబడుతుంది."
+
+#: lib/porsche/ssh/command_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "వీక్షకుడు, ఆపరేటర్ లేదా నిర్వాహకుడి యాక్సెస్ ఇవ్వండి."
+
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "పేరు లేదా UUID ద్వారా యంత్రాన్ని పరిశీలించండి."
+
+#: lib/porsche/ssh/command_messages.ex:62
+#, elixir-autogen, elixir-format
+msgid "Inspect a previously accepted request."
+msgstr "గతంలో అంగీకరించిన అభ్యర్థనను పరిశీలించండి."
+
+#: lib/porsche/ssh/command_messages.ex:50
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "రహస్యాలు చూపకుండా అనుసంధానాన్ని పరిశీలించండి."
+
+#: lib/porsche/ssh/command_messages.ex:55
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "బృంద సభ్యులను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "యాక్సెస్ అనుమతులను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "అందుబాటులో ఉన్న ఇమేజ్‌లను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "మీరు యాక్సెస్ చేయగల యంత్రాలను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "మీ SSH కీలను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "మీ అనుసంధానాలను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "మీ బృందాలు, పాత్రలను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "యంత్రానికి అనుసంధానాన్ని అందుబాటులో ఉంచండి."
+
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "యంత్రాన్ని స్వయంచాలకంగా ఎంచుకున్న హోస్ట్‌కు తరలించండి."
+
+#: lib/porsche/ssh/command_messages.ex:58
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "నిర్వాహకుడికి బృంద యాజమాన్యాన్ని అందించే ప్రతిపాదన చేయండి."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:34
+#, elixir-autogen, elixir-format
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "మీ జాబితాల పైభాగంలో యంత్రాన్ని పిన్ చేయండి. యజమానిగా మీరు పిన్ చేస్తే అది మేల్కొంటుంది; స్వయంచాలక నిలిపివేత మరియు తొలగింపు నిరోధించబడతాయి."
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "యంత్రం మొత్తం డిస్క్ యొక్క స్వతంత్ర కాపీని వరుసలో ఉంచండి."
+
+#: lib/porsche/ssh/command_messages.ex:52
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "యంత్రానికి ప్రత్యేకంగా ఇచ్చిన అందుబాటును తీసివేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "పేరుతో ఉన్న అనుసంధానాన్ని తీసివేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:57
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "ఖాతా సభ్యత్వాన్ని తీసివేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "యంత్రంపై మీ పిన్‌ను తీసివేయండి."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Resume a suspended machine's preserved memory."
+msgstr "తాత్కాలికంగా నిలిపిన యంత్రాన్ని భద్రపరిచిన మెమరీ నుంచి తిరిగి కొనసాగించండి."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:65
+#, elixir-autogen, elixir-format
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "సామర్థ్యం లేదా స్థానాంతరణ కోసం వేచి ఉంటూ భద్రపరిచిన మెమరీ నుంచి తిరిగి కొనసాగించండి."
+
+#: lib/porsche/ssh/command_messages.ex:20
+#, elixir-autogen, elixir-format
+msgid "Retry a failed clone or relocation request."
+msgstr "విఫలమైన క్లోన్ లేదా తరలింపు అభ్యర్థనను మళ్లీ ప్రయత్నించండి."
+
+#: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Revoke an account's shared access."
+msgstr "ఖాతా భాగస్వామ్య యాక్సెస్‌ను ఉపసంహరించండి."
+
+#: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
+msgid "Revoke one of your SSH keys."
+msgstr "మీ SSH కీలలో ఒకదాన్ని ఉపసంహరించండి."
+
+#: lib/porsche/ssh/command_messages.ex:5
+#, elixir-autogen, elixir-format
+msgid "Show command help."
+msgstr "కమాండ్ సహాయాన్ని చూపించు."
+
+#: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
+msgid "Show the authenticated account."
+msgstr "ధృవీకరించబడిన ఖాతాను చూపించండి."
+
+#: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
+msgid "Start a machine."
+msgstr "యంత్రాన్ని ప్రారంభించండి."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:26
+#, elixir-autogen, elixir-format
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "డిస్క్‌ను ఉంచి, తాత్కాలికంగా నిలిపిన మెమరీని తొలగిస్తూ యంత్రాన్ని ఆపండి."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:64
+#, elixir-autogen, elixir-format
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "మెమరీ మరియు డిస్క్‌ను భద్రపరుస్తూ యంత్రాన్ని తాత్కాలికంగా నిలిపివేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:74
+#, elixir-autogen, elixir-format
+msgid "Answer a thread's pending question with JSON read from standard input."
+msgstr "ప్రామాణిక ఇన్‌పుట్ నుండి చదివిన JSON తో థ్రెడ్ పెండింగ్ ప్రశ్నకు సమాధానం ఇవ్వండి."
+
+#: lib/porsche/ssh/command_messages.ex:78
+#, elixir-autogen, elixir-format
+msgid "Approve a thread's latest plan and start implementing it."
+msgstr "థ్రెడ్ తాజా ప్రణాళికను ఆమోదించి దాని అమలును ప్రారంభించండి."
+
+#: lib/porsche/ssh/command_messages.ex:79
+#, elixir-autogen, elixir-format
+msgid "Ask for a revised plan, reading the feedback from standard input."
+msgstr "సవరించిన ప్రణాళికను అడగండి, అభిప్రాయాన్ని ప్రామాణిక ఇన్‌పుట్ నుండి చదువుతూ."
+
+#: lib/porsche/ssh/command_messages.ex:98
+#, elixir-autogen, elixir-format
+msgid "Attach this SSH terminal to a shared terminal session; needs ssh -t."
+msgstr "ఈ SSH టెర్మినల్‌ను భాగస్వామ్య టెర్మినల్ సెషన్‌కు జోడిస్తుంది; ssh -t అవసరం."
+
+#: lib/porsche/ssh/command_messages.ex:86
+#, elixir-autogen, elixir-format
+msgid "Change a machine's web port or visibility, optionally at an expected revision."
+msgstr "యంత్రం వెబ్ పోర్ట్ లేదా దృశ్యమానతను మార్చండి, ఐచ్ఛికంగా ఆశించిన సవరణ వద్ద."
+
+#: lib/porsche/ssh/command_messages.ex:84
+#, elixir-autogen, elixir-format
+msgid "Close one of your terminal sessions on a machine."
+msgstr "యంత్రంపై మీ టెర్మినల్ సెషన్‌లలో ఒకదాన్ని మూసివేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Inspect a thread, its pending question and latest plan."
+msgstr "థ్రెడ్‌ను, దాని పెండింగ్ ప్రశ్నను మరియు తాజా ప్రణాళికను పరిశీలించండి."
+
+#: lib/porsche/ssh/command_messages.ex:82
+#, elixir-autogen, elixir-format
+msgid "List a machine's terminal sessions you can open."
+msgstr "మీరు తెరవగల యంత్రం టెర్మినల్ సెషన్‌లను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:72
+#, elixir-autogen, elixir-format
+msgid "List a thread's transcript events after a sequence number."
+msgstr "ఒక క్రమ సంఖ్య తర్వాత థ్రెడ్ ట్రాన్స్‌క్రిప్ట్ ఈవెంట్‌లను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:70
+#, elixir-autogen, elixir-format
+msgid "List agent threads you can read, with unread counts."
+msgstr "మీరు చదవగల ఏజెంట్ థ్రెడ్‌లను చదవని సంఖ్యలతో జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:95
+#, elixir-autogen, elixir-format
+msgid "List your push notification devices."
+msgstr "మీ పుష్ నోటిఫికేషన్ పరికరాలను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:81
+#, elixir-autogen, elixir-format
+msgid "Mark a thread read up to a transcript sequence number."
+msgstr "ట్రాన్స్‌క్రిప్ట్ క్రమ సంఖ్య వరకు థ్రెడ్‌ను చదివినట్లు గుర్తించండి."
+
+#: lib/porsche/ssh/command_messages.ex:83
+#, elixir-autogen, elixir-format
+msgid "Open your personal terminal session on a machine."
+msgstr "యంత్రంపై మీ వ్యక్తిగత టెర్మినల్ సెషన్‌ను తెరవండి."
+
+#: lib/porsche/ssh/command_messages.ex:91
+#, elixir-autogen, elixir-format
+msgid "Register this device for push notifications. The push key is read from stdin."
+msgstr "పుష్ నోటిఫికేషన్ల కోసం ఈ పరికరాన్ని నమోదు చేయండి. పుష్ కీ stdin నుండి చదవబడుతుంది."
+
+#: lib/porsche/ssh/command_messages.ex:96
+#, elixir-autogen, elixir-format
+msgid "Revoke a push notification device."
+msgstr "ఒక పుష్ నోటిఫికేషన్ పరికరాన్ని రద్దు చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:73
+#, elixir-autogen, elixir-format
+msgid "Send a prompt read from standard input to a thread."
+msgstr "ప్రామాణిక ఇన్‌పుట్ నుండి చదివిన ప్రాంప్ట్‌ను థ్రెడ్‌కు పంపండి."
+
+#: lib/porsche/ssh/command_messages.ex:85
+#, elixir-autogen, elixir-format
+msgid "Show a machine's web endpoint, port and visibility."
+msgstr "యంత్రం వెబ్ ఎండ్‌పాయింట్, పోర్ట్ మరియు దృశ్యమానతను చూపండి."
+
+#: lib/porsche/ssh/command_messages.ex:90
+#, elixir-autogen, elixir-format
+msgid "Stream JSON change notices for machines, threads and this session."
+msgstr "యంత్రాలు, థ్రెడ్‌లు మరియు ఈ సెషన్ కోసం JSON మార్పు నోటీసులను స్ట్రీమ్ చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:80
+#, elixir-autogen, elixir-format
+msgid "Switch a thread between plan and work collaboration."
+msgstr "థ్రెడ్‌ను plan మరియు work సహకారం మధ్య మార్చండి."
+
+#: lib/porsche/ssh/command_messages.ex:97
+#, elixir-autogen, elixir-format
+msgid "Turn push notifications on or off for one device."
+msgstr "ఒక పరికరం కోసం పుష్ నోటిఫికేషన్లను ఆన్ లేదా ఆఫ్ చేయండి."

@@ -1,0 +1,15 @@
+msgid ""
+msgstr ""
+"Language: fil\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n==1 || n==2 || n==3 || (n%10!=4 && n%10!=6 && n%10!=9) ? 0 : 1);\n"
+
+#: lib/porsche/ssh/channel.ex:154
+#, elixir-autogen, elixir-format
+msgid "Docs:"
+msgstr "Dokumentasyon:"
+
+#: lib/porsche/ssh/channel.ex:152
+#, elixir-autogen, elixir-format
+msgid "Porsche machine management. Type help."
+msgstr "Pamamahala ng mga machine sa Porsche. I-type ang help."

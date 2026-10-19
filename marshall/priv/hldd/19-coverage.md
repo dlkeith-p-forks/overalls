@@ -6,7 +6,7 @@ NixOS machine integration tests and property-based tests are the preferred evide
 
 Coverage: **partial**. Layers: identity, authorization, transport.
 
-Boundary: Saved self-only locale override takes precedence over validated session/browser negotiation and English fallback. Arabic and Urdu use RTL; locale does not grant authority or change machine output.
+Boundary: Saved self-only locale override takes precedence over validated session/browser negotiation and English fallback. Arabic, Egyptian Arabic and Urdu use RTL; locale does not grant authority or change machine output. Public documentation is localized; authenticated handbook chapter titles, bodies and command-reference prose remain source English with LTR direction inside localized reader controls.
 
 Required refusal: Unsupported or malformed locale input cannot persist; a foreign user cannot change the preference; old Porsche protocol peers fall back to English; JSON fields, protocol identifiers and terminal bytes remain language-neutral.
 
@@ -21,6 +21,8 @@ Tested scope: ADR-0201 presentation boundaries with recorded bounded BEAM/LiveVi
 - **unit, present**: [Arabic and Japanese refusals retain transport and privacy contracts](repo:marshall/test/marshall_web/controllers/overalls_controller_test.exs) — Localized public download, missing documentation, export/raw access and editor refusal bodies retain status, newline, Content-Language, cache and cookie boundaries in the BEAM fixture; no browser bidi claim..
 - **unit, present**: [negotiation leaves executable installers and JSON trust policy byte identical](repo:marshall/test/marshall_web/controllers/overalls_controller_test.exs) — Successful shell/PowerShell installer and trust JSON bodies are byte-identical across English, Arabic and Japanese in the controller fixture; does not execute installed clients or establish native trust acceptance..
 - **unit, present**: [repository launch guidance is localized without storing invalid input](repo:marshall/test/marshall_web/controllers/overalls_controller_test.exs) — Invalid repository launch input returns Arabic/Japanese guidance with no staged launch value and unchanged no-store/no-referrer response policy..
+- **unit, present**: [English handbook content keeps its language and direction inside localized chrome](repo:marshall/test/marshall_web/hldd_live_test.exs) — Arabic and Japanese reader chrome surrounds source-English chapter content marked English/LTR. BEAM/LiveView attributes only; no visual browser or complete catalog claim..
+- **unit, present**: [source titles and command help remain English in every reader locale](repo:marshall/test/marshall/handbook_test.exs) — All policy locales preserve the compiled source-English catalog and generated command-reference prose; test presence is distinct from execution evidence..
 
 **Gaps:** Documentation translations and native linguistic review remain incomplete. Packaged NixOS LTR/RTL browser journeys, real browser layout/bidi behavior and native Porsche protocol journeys are not established by the focused BEAM run.
 
@@ -4005,6 +4007,24 @@ Tested scope: NixOS machine test with real X input, packaged Marshall, haproxy a
 **Gaps:** No machine is provisioned, so the list content and machine-page links are exercised only on an empty list and an unknown id.
 
 **Preferred test work:** Run the same journey in a fleet fixture with a provisioned machine.
+
+## Mila shows every Porsche locale with its own strings and the right text direction
+
+Coverage: **partial**. Layers: transport.
+
+Boundary: Mila's ARB catalogs match the Porsche gettext locales with identical placeholders. Locales without a Flutter framework catalog borrow only framework strings, from Arabic or English; Egyptian Arabic, Arabic and Urdu lay out right to left.
+
+Required refusal: A missing or extra locale, a dropped placeholder or an undocumented template message fails the catalog tests; locale never changes command arguments or machine JSON.
+
+Tested scope: Flutter widget tests in the test VM with platform font fallback.
+
+- **unit, present**: [the Porsche locale list matches the gateway catalogs](repo:mila/app/test/localization_test.dart) — Locale set parity with porsche/priv/gettext..
+- **unit, present**: [every Porsche locale has a complete catalog with the same placeholders](repo:mila/app/test/localization_test.dart) — ARB completeness and placeholder parity..
+- **unit, present**: [every Porsche locale renders framework widgets in its direction](repo:mila/app/test/localization_test.dart) — Framework fallback delegates and direction for every locale..
+
+**Gaps:** No device rendering, shaping or native-speaker review; goldens use platform fallback fonts rather than bundled Noto faces.
+
+**Preferred test work:** Run the Linux bundle under the mila-desktop machine test in an RTL locale.
 
 ## Deliver a Mila notification through Susan without revealing content
 

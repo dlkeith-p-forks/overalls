@@ -1,0 +1,210 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ko\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/admin/operations_live.ex:250
+#, elixir-autogen, elixir-format
+msgid "%{count} · %{enabled} enabled"
+msgstr "%{count} · %{enabled} 활성화됨"
+
+#: lib/marshall_web/live/admin/operations_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Addresses"
+msgstr "구애"
+
+#: lib/marshall_web/live/admin/operations_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Architecture"
+msgstr "건축학"
+
+#: lib/marshall_web/live/admin/operations_live.ex:78
+#: lib/marshall_web/live/admin/operations_live.ex:138
+#, elixir-autogen, elixir-format
+msgid "Audi services"
+msgstr "아우디 서비스"
+
+#: lib/marshall_web/live/admin/operations_live.ex:173
+#, elixir-autogen, elixir-format
+msgid "Certificate expires"
+msgstr "인증서가 만료됩니다."
+
+#: lib/marshall_web/live/admin/operations_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "DNS"
+msgstr "DNS"
+
+#: lib/marshall_web/live/admin/operations_live.ex:84
+#: lib/marshall_web/live/admin/operations_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "DNS publications"
+msgstr "DNS 출판물"
+
+#: lib/marshall_web/live/admin/operations_live.ex:239
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "장애가 있는"
+
+#: lib/marshall_web/live/admin/operations_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "활성화됨"
+
+#: lib/marshall_web/live/admin/operations_live.ex:123
+#: lib/marshall_web/live/admin/operations_live.ex:268
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "게이트웨이"
+
+#: lib/marshall_web/live/admin/operations_live.ex:124
+#: lib/marshall_web/live/admin/operations_live.ex:148
+#, elixir-autogen, elixir-format
+msgid "Generation"
+msgstr "세대"
+
+#: lib/marshall_web/live/admin/operations_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "영상"
+
+#: lib/marshall_web/live/admin/operations_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Image catalog"
+msgstr "이미지 카탈로그"
+
+#: lib/marshall_web/live/admin/operations_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Images"
+msgstr "이미지"
+
+#: lib/marshall_web/live/admin/operations_live.ex:81
+#: lib/marshall_web/live/admin/operations_live.ex:165
+#, elixir-autogen, elixir-format
+msgid "Ingress routes"
+msgstr "수신 경로"
+
+#: lib/marshall_web/live/admin/operations_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "기계"
+
+#: lib/marshall_web/live/admin/operations_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "Minimum RAM"
+msgstr "최소 RAM"
+
+#: lib/marshall_web/live/admin/operations_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "Minimum disk"
+msgstr "최소 디스크"
+
+#: lib/marshall_web/live/admin/operations_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "No Audi services enrolled."
+msgstr "등록된 아우디 서비스가 없습니다."
+
+#: lib/marshall_web/live/admin/operations_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "No DNS publications are recorded."
+msgstr "DNS 게시는 기록되지 않습니다."
+
+#: lib/marshall_web/live/admin/operations_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "No gateways enrolled."
+msgstr "등록된 게이트웨이가 없습니다."
+
+#: lib/marshall_web/live/admin/operations_live.ex:90
+#, elixir-autogen, elixir-format
+msgid "No images in the catalog."
+msgstr "카탈로그에 이미지가 없습니다."
+
+#: lib/marshall_web/live/admin/operations_live.ex:169
+#, elixir-autogen, elixir-format
+msgid "No ingress routes are published."
+msgstr "수신 경로가 게시되지 않습니다."
+
+#: lib/marshall_web/live/admin/operations_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Operational status is temporarily unavailable."
+msgstr "일시적으로 작동 상태를 사용할 수 없습니다."
+
+#: lib/marshall_web/live/admin/operations_live.ex:59
+#, elixir-autogen, elixir-format
+msgid "Platform status"
+msgstr "플랫폼 상태"
+
+#: lib/marshall_web/live/admin/operations_live.ex:75
+#: lib/marshall_web/live/admin/operations_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Porsche gateways"
+msgstr "포르쉐 게이트웨이"
+
+#: lib/marshall_web/live/admin/operations_live.ex:61
+#, elixir-autogen, elixir-format
+msgid "Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
+msgstr "읽기 전용 이미지, Audi 수신 및 Porsche 게이트웨이 상태. 비밀과 인증서 자료는 공개되지 않습니다."
+
+#: lib/marshall_web/live/admin/operations_live.ex:172
+#: lib/marshall_web/live/admin/operations_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Revision"
+msgstr "개정"
+
+#: lib/marshall_web/live/admin/operations_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "역할"
+
+#: lib/marshall_web/live/admin/operations_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "Route expires"
+msgstr "경로 만료"
+
+#: lib/marshall_web/live/admin/operations_live.ex:146
+#, elixir-autogen, elixir-format
+msgid "Service"
+msgstr "서비스"
+
+#: lib/marshall_web/live/admin/operations_live.ex:100
+#: lib/marshall_web/live/admin/operations_live.ex:125
+#: lib/marshall_web/live/admin/operations_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "상태"
+
+#: lib/marshall_web/live/admin/operations_live.ex:269
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "알려지지 않은"
+
+#: lib/marshall_web/live/admin/operations_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "업데이트됨"
+
+#: lib/marshall_web/live/admin/operations_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Zone"
+msgstr "존"
+
+#: lib/marshall_web/live/admin/operations_live.ex:256
+#: lib/marshall_web/live/admin/operations_live.ex:260
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "알려지지 않은"
+
+#: lib/marshall_web/live/admin/operations_live.ex:70
+#, elixir-autogen, elixir-format
+msgid "· every 30 seconds"
+msgstr "· 30초마다"

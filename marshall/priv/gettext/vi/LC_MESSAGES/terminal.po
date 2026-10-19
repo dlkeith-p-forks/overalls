@@ -1,0 +1,653 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: vi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/terminal_live.ex:605
+#, elixir-autogen, elixir-format
+msgid "%{user} · %{count} viewing"
+msgid_plural "%{user} · %{count} viewing"
+msgstr[0] "%{user} · %{count} người đang xem"
+
+#: lib/marshall_web/components/workspace_components.ex:255
+#, elixir-autogen, elixir-format
+msgid "%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}"
+msgstr "%{value1} vCPU · %{value2} GiB bộ nhớ · %{value3} GiB đĩa · %{value4}"
+
+#: lib/marshall_web/live/terminal_live.ex:570
+#, elixir-autogen, elixir-format
+msgid "+ New"
+msgstr "+ Mới"
+
+#: lib/marshall_web/live/terminal_live.ex:722
+#, elixir-autogen, elixir-format
+msgid "A+"
+msgstr "A+"
+
+#: lib/marshall_web/components/workspace_components.ex:139
+#, elixir-autogen, elixir-format
+msgid "Access"
+msgstr "Truy cập"
+
+#: lib/marshall_web/live/terminal_live.ex:789
+#, elixir-autogen, elixir-format
+msgid "Account email"
+msgstr "Email tài khoản"
+
+#: lib/marshall_web/live/terminal_live.ex:796
+#, elixir-autogen, elixir-format
+msgid "Allow viewing"
+msgstr "Cho phép xem"
+
+#: lib/marshall_web/components/workspace_components.ex:413
+#, elixir-autogen, elixir-format
+msgid "Already installed"
+msgstr "Đã cài đặt"
+
+#: lib/marshall_web/live/terminal_live.ex:668
+#, elixir-autogen, elixir-format
+msgid "Android display"
+msgstr "Màn hình Android"
+
+#: lib/marshall_web/live/terminal_live.ex:686
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Vùng hiển thị Android"
+
+#: lib/marshall_web/live/terminal_live.ex:91
+#: lib/marshall_web/live/terminal_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Màn hình Android không khả dụng."
+
+#: lib/marshall_web/live/terminal_live.ex:717
+#, elixir-autogen, elixir-format
+msgid "A−"
+msgstr "A−"
+
+#: lib/marshall_web/components/workspace_components.ex:436
+#: lib/marshall_web/live/terminal_live.ex:655
+#, elixir-autogen, elixir-format
+msgid "Boot log"
+msgstr "Nhật ký khởi động"
+
+#: lib/marshall_web/live/terminal_live.ex:802
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Hủy"
+
+#: lib/marshall_web/live/terminal_live.ex:757
+#, elixir-autogen, elixir-format
+msgid "Close search"
+msgstr "Đóng tìm kiếm"
+
+#: lib/marshall_web/live/terminal_live.ex:631
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "Đóng phiên"
+
+#: lib/marshall_web/live/terminal_live.ex:629
+#, elixir-autogen, elixir-format
+msgid "Close terminal %{value1}"
+msgstr "Đóng thiết bị đầu cuối %{value1}"
+
+#: lib/marshall_web/components/workspace_components.ex:381
+#, elixir-autogen, elixir-format
+msgid "Connect from your computer"
+msgstr "Kết nối từ máy tính của bạn"
+
+#: lib/marshall_web/live/terminal_live.ex:694
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "Đang kết nối…"
+
+#: lib/marshall_web/components/workspace_components.ex:273
+#: lib/marshall_web/components/workspace_components.ex:400
+#: lib/marshall_web/components/workspace_components.ex:410
+#: lib/marshall_web/components/workspace_components.ex:421
+#, elixir-autogen, elixir-format
+msgid "Copy"
+msgstr "Sao chép"
+
+#: lib/marshall_web/components/workspace_components.ex:399
+#, elixir-autogen, elixir-format
+msgid "Copy Linux and macOS install command"
+msgstr "Sao chép lệnh cài đặt Linux và macOS"
+
+#: lib/marshall_web/components/workspace_components.ex:420
+#, elixir-autogen, elixir-format
+msgid "Copy SSH command"
+msgstr "Sao chép lệnh SSH"
+
+#: lib/marshall_web/components/workspace_components.ex:409
+#, elixir-autogen, elixir-format
+msgid "Copy Windows PowerShell install command"
+msgstr "Sao chép lệnh cài đặt Windows PowerShell"
+
+#: lib/marshall_web/components/workspace_components.ex:272
+#, elixir-autogen, elixir-format
+msgid "Copy machine ID"
+msgstr "Sao chép ID máy"
+
+#: lib/marshall_web/components/workspace_components.ex:550
+#, elixir-autogen, elixir-format
+msgid "Customer"
+msgstr "Khách hàng"
+
+#: lib/marshall_web/live/terminal_live.ex:716
+#, elixir-autogen, elixir-format
+msgid "Decrease terminal font size"
+msgstr "Giảm cỡ chữ thiết bị đầu cuối"
+
+#: lib/marshall_web/components/workspace_components.ex:87
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "Đã xóa"
+
+#: lib/marshall_web/components/workspace_components.ex:66
+#, elixir-autogen, elixir-format
+msgid "Deleting"
+msgstr "Đang xóa"
+
+#: lib/marshall_web/live/terminal_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "Đã cấp vé chuyển tiếp màn hình."
+
+#: lib/marshall_web/live/terminal_live.ex:727
+#: lib/marshall_web/live/terminal_live.ex:729
+#, elixir-autogen, elixir-format
+msgid "Enter full screen"
+msgstr "Vào toàn màn hình"
+
+#: lib/marshall_web/components/workspace_components.ex:86
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Thất bại"
+
+#: lib/marshall_web/live/terminal_live.ex:742
+#, elixir-autogen, elixir-format
+msgid "Find in scrollback"
+msgstr "Tìm trong lịch sử cuộn"
+
+#: lib/marshall_web/live/terminal_live.ex:764
+#, elixir-autogen, elixir-format
+msgid "Follow boot output"
+msgstr "Theo dõi đầu ra khởi động"
+
+#: lib/marshall_web/components/workspace_components.ex:265
+#, elixir-autogen, elixir-format
+msgid "ID"
+msgstr "ID"
+
+#: lib/marshall_web/live/terminal_live.ex:721
+#, elixir-autogen, elixir-format
+msgid "Increase terminal font size"
+msgstr "Tăng cỡ chữ thiết bị đầu cuối"
+
+#: lib/marshall_web/components/workspace_components.ex:390
+#, elixir-autogen, elixir-format
+msgid "Install and connect"
+msgstr "Cài đặt và kết nối"
+
+#: lib/marshall_web/components/workspace_components.ex:385
+#, elixir-autogen, elixir-format
+msgid "Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh."
+msgstr "Cài Overalls, cấu hình SSH và kết nối với máy này. Trên Windows, trình cài đặt cũng cài OpenSSH 9.6 trở lên và đặt làm ssh mặc định khi được quản trị viên chấp thuận."
+
+#: lib/marshall_web/components/workspace_components.ex:392
+#, elixir-autogen, elixir-format
+msgid "Linux / macOS"
+msgstr "Linux / macOS"
+
+#: lib/marshall_web/components/workspace_components.ex:271
+#, elixir-autogen, elixir-format
+msgid "Machine ID"
+msgstr "ID máy"
+
+#: lib/marshall_web/live/terminal_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "Machine is paused. Resume it or reopen this terminal page."
+msgstr "Máy đã tạm dừng. Tiếp tục máy hoặc mở lại trang terminal này."
+
+#: lib/marshall_web/live/terminal_live.ex:357
+#, elixir-autogen, elixir-format
+msgid "Machine is stopping or stopped. Choose Start to open a terminal."
+msgstr "Máy đang dừng hoặc đã dừng. Chọn Bắt đầu để mở thiết bị đầu cuối."
+
+#: lib/marshall_web/live/terminal_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Machine not found."
+msgstr "Không tìm thấy máy."
+
+#: lib/marshall_web/live/terminal_live.ex:354
+#, elixir-autogen, elixir-format
+msgid "Machine startup failed. Check the machine status and boot log."
+msgstr "Máy khởi động thất bại. Kiểm tra trạng thái máy và nhật ký khởi động."
+
+#: lib/marshall_web/components/workspace_components.ex:129
+#, elixir-autogen, elixir-format
+msgid "Machine workspace"
+msgstr "Không gian làm việc của máy"
+
+#: lib/marshall_web/live/terminal_live.ex:752
+#, elixir-autogen, elixir-format
+msgid "Next match"
+msgstr "Kết quả tiếp theo"
+
+#: lib/marshall_web/live/terminal_live.ex:644
+#, elixir-autogen, elixir-format
+msgid "No shared terminals are available to view."
+msgstr "Không có thiết bị đầu cuối chia sẻ để xem."
+
+#: lib/marshall_web/live/terminal_live.ex:648
+#, elixir-autogen, elixir-format
+msgid "No terminals are open. Choose New to open your personal shell."
+msgstr "Không có thiết bị đầu cuối đang mở. Chọn Mới để mở shell cá nhân."
+
+#: lib/marshall_web/components/workspace_components.ex:287
+#: lib/marshall_web/components/workspace_components.ex:297
+#: lib/marshall_web/components/workspace_components.ex:476
+#: lib/marshall_web/components/workspace_components.ex:484
+#, elixir-autogen, elixir-format
+msgid "Open VS Code"
+msgstr "Mở VS Code"
+
+#: lib/marshall_web/components/workspace_components.ex:475
+#, elixir-autogen, elixir-format
+msgid "Open VS Code for %{value1}"
+msgstr "Mở VS Code cho %{value1}"
+
+#: lib/marshall_web/live/terminal_live.ex:674
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "Mở màn hình"
+
+#: lib/marshall_web/live/terminal_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Opening terminal; recovering the same request if the connection was interrupted."
+msgstr "Đang mở thiết bị đầu cuối; khôi phục cùng yêu cầu nếu kết nối bị gián đoạn."
+
+#: lib/marshall_web/components/workspace_components.ex:334
+#, elixir-autogen, elixir-format
+msgid "Pause"
+msgstr "Tạm dừng"
+
+#: lib/marshall_web/components/workspace_components.ex:85
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "Đã tạm dừng"
+
+#: lib/marshall_web/components/workspace_components.ex:82
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Đang chờ"
+
+#: lib/marshall_web/components/workspace_components.ex:208
+#, elixir-autogen, elixir-format
+msgid "Pinned"
+msgstr "Đã ghim"
+
+#: lib/marshall_web/live/terminal_live.ex:474
+#, elixir-autogen, elixir-format
+msgid "Preparing your guest account…"
+msgstr "Đang chuẩn bị tài khoản máy khách…"
+
+#: lib/marshall_web/live/terminal_live.ex:413
+#: lib/marshall_web/live/terminal_live.ex:451
+#: lib/marshall_web/live/terminal_live.ex:475
+#, elixir-autogen, elixir-format
+msgid "Preparing your terminal…"
+msgstr "Đang chuẩn bị thiết bị đầu cuối…"
+
+#: lib/marshall_web/live/terminal_live.ex:747
+#, elixir-autogen, elixir-format
+msgid "Previous match"
+msgstr "Kết quả trước"
+
+#: lib/marshall_web/live/terminal_live.ex:772
+#, elixir-autogen, elixir-format
+msgid "Read-only boot console"
+msgstr "Bảng điều khiển khởi động chỉ đọc"
+
+#: lib/marshall_web/live/terminal_live.ex:639
+#, elixir-autogen, elixir-format
+msgid "Read-only host boot log. Guest terminal readiness is not required."
+msgstr "Nhật ký khởi động máy chủ chỉ đọc. Không cần thiết bị đầu cuối máy khách sẵn sàng."
+
+#: lib/marshall_web/live/terminal_live.ex:414
+#, elixir-autogen, elixir-format
+msgid "Reconnecting to the terminal service…"
+msgstr "Đang kết nối lại dịch vụ thiết bị đầu cuối…"
+
+#: lib/marshall_web/live/terminal_live.ex:705
+#, elixir-autogen, elixir-format
+msgid "Rename in this browser"
+msgstr "Đổi tên trong trình duyệt này"
+
+#: lib/marshall_web/live/terminal_live.ex:704
+#, elixir-autogen, elixir-format
+msgid "Rename terminal"
+msgstr "Đổi tên thiết bị đầu cuối"
+
+#: lib/marshall_web/live/terminal_live.ex:677
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "Yêu cầu điều khiển"
+
+#: lib/marshall_web/components/workspace_components.ex:325
+#, elixir-autogen, elixir-format
+msgid "Resume machine"
+msgstr "Tiếp tục máy"
+
+#: lib/marshall_web/components/workspace_components.ex:75
+#, elixir-autogen, elixir-format
+msgid "Resuming"
+msgstr "Đang tiếp tục"
+
+#: lib/marshall_web/live/terminal_live.ex:151
+#: lib/marshall_web/live/terminal_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "Resuming machine; waiting for capacity…"
+msgstr "Đang tiếp tục máy; chờ tài nguyên khả dụng…"
+
+#: lib/marshall_web/live/terminal_live.ex:799
+#, elixir-autogen, elixir-format
+msgid "Revoke"
+msgstr "Thu hồi"
+
+#: lib/marshall_web/components/workspace_components.ex:83
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "Đang chạy"
+
+#: lib/marshall_web/components/workspace_components.ex:443
+#, elixir-autogen, elixir-format
+msgid "SSH connection details are temporarily unavailable."
+msgstr "Chi tiết kết nối SSH tạm thời không khả dụng."
+
+#: lib/marshall_web/components/workspace_components.ex:439
+#, elixir-autogen, elixir-format
+msgid "SSH connection requires write access to this machine."
+msgstr "Kết nối SSH yêu cầu quyền ghi vào máy này."
+
+#: lib/marshall_web/live/terminal_live.ex:711
+#, elixir-autogen, elixir-format
+msgid "Search (Ctrl+F)"
+msgstr "Tìm kiếm (Ctrl+F)"
+
+#: lib/marshall_web/live/terminal_live.ex:710
+#, elixir-autogen, elixir-format
+msgid "Search scrollback"
+msgstr "Tìm trong lịch sử cuộn"
+
+#: lib/marshall_web/live/terminal_live.ex:734
+#, elixir-autogen, elixir-format
+msgid "Search terminal scrollback"
+msgstr "Tìm trong lịch sử thiết bị đầu cuối"
+
+#: lib/marshall_web/components/workspace_components.ex:143
+#, elixir-autogen, elixir-format
+msgid "Settings"
+msgstr "Cài đặt"
+
+#: lib/marshall_web/live/terminal_live.ex:619
+#, elixir-autogen, elixir-format
+msgid "Share terminal %{value1}"
+msgstr "Chia sẻ thiết bị đầu cuối %{value1}"
+
+#: lib/marshall_web/live/terminal_live.ex:780
+#, elixir-autogen, elixir-format
+msgid "Share this terminal"
+msgstr "Chia sẻ thiết bị đầu cuối này"
+
+#: lib/marshall_web/live/terminal_live.ex:621
+#, elixir-autogen, elixir-format
+msgid "Share view"
+msgstr "Chia sẻ chế độ xem"
+
+#: lib/marshall_web/components/workspace_components.ex:551
+#, elixir-autogen, elixir-format
+msgid "Standard"
+msgstr "Tiêu chuẩn"
+
+#: lib/marshall_web/components/workspace_components.ex:315
+#, elixir-autogen, elixir-format
+msgid "Start machine"
+msgstr "Khởi động máy"
+
+#: lib/marshall_web/components/workspace_components.ex:78
+#, elixir-autogen, elixir-format
+msgid "Starting"
+msgstr "Đang khởi động"
+
+#: lib/marshall_web/components/workspace_components.ex:344
+#, elixir-autogen, elixir-format
+msgid "Stop"
+msgstr "Dừng"
+
+#: lib/marshall_web/components/workspace_components.ex:84
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "Đã dừng"
+
+#: lib/marshall_web/components/workspace_components.ex:69
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "Đang dừng"
+
+#: lib/marshall_web/components/workspace_components.ex:72
+#, elixir-autogen, elixir-format
+msgid "Suspending"
+msgstr "Đang tạm ngưng"
+
+#: lib/marshall_web/components/workspace_components.ex:134
+#, elixir-autogen, elixir-format
+msgid "Terminal"
+msgstr "Thiết bị đầu cuối"
+
+#: lib/marshall_web/live/terminal_live.ex:591
+#, elixir-autogen, elixir-format
+msgid "Terminal %{name}, %{count} viewer, created %{created}"
+msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
+msgstr[0] "Thiết bị đầu cuối %{name}, %{count} người xem, tạo lúc %{created}"
+
+#: lib/marshall_web/live/terminal_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "Terminal access ended."
+msgstr "Quyền truy cập thiết bị đầu cuối đã kết thúc."
+
+#: lib/marshall_web/live/terminal_live.ex:173
+#: lib/marshall_web/live/terminal_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "Terminal close requested; waiting for guest confirmation."
+msgstr "Đã yêu cầu đóng thiết bị đầu cuối; đang chờ xác nhận từ máy khách."
+
+#: lib/marshall_web/live/terminal_live.ex:490
+#, elixir-autogen, elixir-format
+msgid "Terminal limit reached for this machine."
+msgstr "Đã đạt giới hạn thiết bị đầu cuối của máy này."
+
+#: lib/marshall_web/live/terminal_live.ex:577
+#, elixir-autogen, elixir-format
+msgid "Terminal sessions"
+msgstr "Các phiên thiết bị đầu cuối"
+
+#: lib/marshall_web/live/terminal_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Terminal viewing access updated."
+msgstr "Đã cập nhật quyền xem thiết bị đầu cuối."
+
+#: lib/marshall_web/live/terminal_live.ex:496
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable while the host is offline."
+msgstr "Thiết bị đầu cuối không khả dụng khi máy chủ ngoại tuyến."
+
+#: lib/marshall_web/live/terminal_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "The boot log is unavailable for the current machine execution."
+msgstr "Nhật ký khởi động không khả dụng cho lần chạy máy hiện tại."
+
+#: lib/marshall_web/live/terminal_live.ex:512
+#, elixir-autogen, elixir-format
+msgid "The guest cannot host more terminal sessions."
+msgstr "Máy khách không thể mở thêm phiên thiết bị đầu cuối."
+
+#: lib/marshall_web/live/terminal_live.ex:503
+#, elixir-autogen, elixir-format
+msgid "The previous opening has ended. Choose New to try again."
+msgstr "Lần mở trước đã kết thúc. Chọn Mới để thử lại."
+
+#: lib/marshall_web/live/terminal_live.ex:670
+#, elixir-autogen, elixir-format
+msgid "The software-rendered Android display uses the machine relay."
+msgstr "Màn hình Android kết xuất bằng phần mềm sử dụng bộ chuyển tiếp của máy."
+
+#: lib/marshall_web/live/terminal_live.ex:514
+#, elixir-autogen, elixir-format
+msgid "The terminal could not be opened."
+msgstr "Không thể mở thiết bị đầu cuối."
+
+#: lib/marshall_web/live/terminal_live.ex:539
+#, elixir-autogen, elixir-format
+msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
+msgstr "Máy này đã dừng. Khởi động để mở thiết bị đầu cuối. Các tệp của bạn được giữ lại."
+
+#: lib/marshall_web/components/workspace_components.ex:352
+#: lib/marshall_web/components/workspace_components.ex:526
+#, elixir-autogen, elixir-format
+msgid "This machine's image does not support the current browser editor."
+msgstr "Ảnh hệ thống của máy này không hỗ trợ trình chỉnh sửa trình duyệt hiện tại."
+
+#: lib/marshall_web/components/workspace_components.ex:427
+#, elixir-autogen, elixir-format
+msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
+msgstr "Ảnh hệ thống của máy này chưa có tác nhân máy khách: SSH, thiết bị đầu cuối trình duyệt và tác nhân không khả dụng. Dùng"
+
+#: lib/marshall_web/live/terminal_live.ex:348
+#, elixir-autogen, elixir-format
+msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
+msgstr "Ảnh hệ thống của máy này không có tác nhân thiết bị đầu cuối nên thiết bị đầu cuối trình duyệt không khả dụng."
+
+#: lib/marshall_web/live/terminal_live.ex:697
+#, elixir-autogen, elixir-format
+msgid "Type to interact"
+msgstr "Nhập để tương tác"
+
+#: lib/marshall_web/live/terminal_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
+msgstr "Không thể cập nhật chia sẻ thiết bị đầu cuối. Người nhận phải có quyền truy cập máy trước khi chia sẻ."
+
+#: lib/marshall_web/components/workspace_components.ex:89
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Không khả dụng"
+
+#: lib/marshall_web/components/workspace_components.ex:88
+#: lib/marshall_web/components/workspace_components.ex:553
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Không xác định"
+
+#: lib/marshall_web/components/workspace_components.ex:441
+#, elixir-autogen, elixir-format
+msgid "Use the browser terminal for this Inception environment."
+msgstr "Dùng thiết bị đầu cuối trình duyệt cho môi trường Inception này."
+
+#: lib/marshall_web/components/workspace_components.ex:359
+#, elixir-autogen, elixir-format
+msgid "VS Code is temporarily unavailable for this machine."
+msgstr "VS Code tạm thời không khả dụng cho máy này."
+
+#: lib/marshall_web/components/workspace_components.ex:532
+#, elixir-autogen, elixir-format
+msgid "VS Code is temporarily unavailable."
+msgstr "VS Code tạm thời không khả dụng."
+
+#: lib/marshall_web/components/workspace_components.ex:535
+#, elixir-autogen, elixir-format
+msgid "VS Code is unavailable for this machine."
+msgstr "VS Code không khả dụng cho máy này."
+
+#: lib/marshall_web/components/workspace_components.ex:357
+#: lib/marshall_web/components/workspace_components.ex:529
+#, elixir-autogen, elixir-format
+msgid "VS Code requires a running machine."
+msgstr "VS Code yêu cầu máy đang chạy."
+
+#: lib/marshall_web/live/terminal_live.ex:782
+#, elixir-autogen, elixir-format
+msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
+msgstr "Chỉ được xem, kể cả người vận hành máy. Người nhận phải có sẵn quyền truy cập máy này."
+
+#: lib/marshall_web/live/terminal_live.ex:681
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "Đang chờ chuyển tiếp màn hình."
+
+#: lib/marshall_web/live/terminal_live.ex:362
+#, elixir-autogen, elixir-format
+msgid "Waiting for the machine to start…"
+msgstr "Đang chờ máy khởi động…"
+
+#: lib/marshall_web/components/workspace_components.ex:402
+#, elixir-autogen, elixir-format
+msgid "Windows"
+msgstr "Windows"
+
+#: lib/marshall_web/live/terminal_live.ex:493
+#, elixir-autogen, elixir-format
+msgid "You do not have terminal access to this machine."
+msgstr "Bạn không có quyền truy cập thiết bị đầu cuối của máy này."
+
+#: lib/marshall_web/live/terminal_live.ex:507
+#, elixir-autogen, elixir-format
+msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
+msgstr "Không thể chuẩn bị tài khoản máy khách. Kiểm tra dịch vụ tài khoản máy khách có sẵn, rồi chọn Mới để thử lại."
+
+#: lib/marshall_web/live/terminal_live.ex:646
+#, elixir-autogen, elixir-format
+msgid "Your personal terminal opens when the machine is ready."
+msgstr "Thiết bị đầu cuối cá nhân sẽ mở khi máy sẵn sàng."
+
+#: lib/marshall_web/live/terminal_live.ex:500
+#, elixir-autogen, elixir-format
+msgid "Your previous shell has closed. Choose New to open another terminal."
+msgstr "Shell trước đã đóng. Chọn Mới để mở thiết bị đầu cuối khác."
+
+#: lib/marshall_web/live/terminal_live.ex:544
+#, elixir-autogen, elixir-format
+msgid "Your terminal will open when the machine is running and ready."
+msgstr "Thiết bị đầu cuối sẽ mở khi máy đang chạy và sẵn sàng."
+
+#: lib/marshall_web/live/terminal_live.ex:712
+#, elixir-autogen, elixir-format
+msgid "find"
+msgstr "tìm"
+
+#: lib/marshall_web/live/terminal_live.ex:730
+#, elixir-autogen, elixir-format
+msgid "full"
+msgstr "đầy"
+
+#: lib/marshall_web/live/terminal_live.ex:706
+#, elixir-autogen, elixir-format
+msgid "rename"
+msgstr "đổi tên"
+
+#: lib/marshall_web/components/workspace_components.ex:437
+#, elixir-autogen, elixir-format
+msgid "to view the read-only host console."
+msgstr "để xem bảng điều khiển máy chủ chỉ đọc."

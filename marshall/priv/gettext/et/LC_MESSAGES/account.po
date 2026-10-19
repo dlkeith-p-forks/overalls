@@ -1,0 +1,483 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: et\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/account_live.ex:500
+#, elixir-autogen, elixir-format
+msgid "%{count} registered key"
+msgid_plural "%{count} registered keys"
+msgstr[0] "%{count} registreeritud võti"
+msgstr[1] "%{count} registreeritud võtit"
+
+#: lib/marshall/accounts/time_zones.ex:314
+#, elixir-autogen, elixir-format
+msgid "%{span} ahead of you"
+msgstr "sinust %{span} ees"
+
+#: lib/marshall/accounts/time_zones.ex:315
+#, elixir-autogen, elixir-format
+msgid "%{span} behind you"
+msgstr "sinust %{span} taga"
+
+#: lib/marshall_web/live/account_live.ex:515
+#, elixir-autogen, elixir-format
+msgid "1. Profile"
+msgstr "1. Profiil"
+
+#: lib/marshall_web/live/account_live.ex:595
+#, elixir-autogen, elixir-format
+msgid "2. Sign-in and passkeys"
+msgstr "2. Sisselogimine ja pääsuvõtmed"
+
+#: lib/marshall_web/live/account_live.ex:718
+#, elixir-autogen, elixir-format
+msgid "3. SSH keys"
+msgstr "3. SSH-võtmed"
+
+#: lib/marshall_web/live/account_live.ex:809
+#, elixir-autogen, elixir-format
+msgid "4. Git identity"
+msgstr "4. Giti identiteet"
+
+#: lib/marshall_web/live/account_live.ex:35
+#: lib/marshall_web/live/account_live.ex:480
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "Konto"
+
+#: lib/marshall_web/live/account_live.ex:827
+#, elixir-autogen, elixir-format
+msgid "Add Overalls commit attribution"
+msgstr "Lisa Overalls muudatuse kaasautoriks"
+
+#: lib/marshall_web/live/account_live.ex:801
+#, elixir-autogen, elixir-format
+msgid "Add SSH key"
+msgstr "Lisa SSH-võti"
+
+#: lib/marshall_web/live/account_live.ex:773
+#, elixir-autogen, elixir-format
+msgid "Add a key"
+msgstr "Lisa võti"
+
+#: lib/marshall_web/live/account_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Add passkey"
+msgstr "Lisa pääsuvõti"
+
+#: lib/marshall_web/live/account_live.ex:701
+#: lib/marshall_web/live/account_live.ex:767
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr "Lisatud"
+
+#: lib/marshall_web/live/account_live.ex:799
+#, elixir-autogen, elixir-format
+msgid "Adding…"
+msgstr "Lisamine…"
+
+#: lib/marshall_web/live/account_live.ex:370
+#, elixir-autogen, elixir-format
+msgid "Choose a language from the list."
+msgstr "Vali loendist keel."
+
+#: lib/marshall_web/live/account_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "Choose a time zone from the list."
+msgstr "Vali loendist ajavöönd."
+
+#: lib/marshall_web/live/account_live.ex:586
+#, elixir-autogen, elixir-format
+msgid "Clear saved zone"
+msgstr "Kustuta salvestatud ajavöönd"
+
+#: lib/marshall_web/live/account_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Could not add this key. Paste one supported public key; it must not belong to another account."
+msgstr "Võtit ei saanud lisada. Kleebi üks toetatud avalik võti; see ei tohi kuuluda teisele kontole."
+
+#: lib/marshall_web/live/account_live.ex:240
+#, elixir-autogen, elixir-format
+msgid "Could not clear your time zone."
+msgstr "Ajavööndit ei saanud kustutada."
+
+#: lib/marshall_web/live/account_live.ex:206
+#, elixir-autogen, elixir-format
+msgid "Could not remove this key."
+msgstr "Võtit ei saanud eemaldada."
+
+#: lib/marshall_web/live/account_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "Seda võtit ei saanud ümber nimetada. Kasuta kuni 128 märki."
+
+#: lib/marshall_web/live/account_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "Credential change refused. Names must be 1–80 characters, changes need a passkey verified in the last 15 minutes, and administrators must keep at least one passkey."
+msgstr "Autentimisandmete muutmine keelati. Nimed peavad olema 1–80 märki pikad, muudatused vajavad viimase 15 minuti jooksul kinnitatud pääsuvõtit ning administraatoritel peab alles jääma vähemalt üks pääsuvõti."
+
+#: lib/marshall_web/live/account_live.ex:757
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "Kirjeldus"
+
+#: lib/marshall_web/live/account_live.ex:451
+#, elixir-autogen, elixir-format
+msgid "Detected from your browser: %{value1}. Save it so others can see your local time."
+msgstr "Brauserist tuvastatud: %{value1}. Salvesta see, et teised näeksid sinu kohalikku aega."
+
+#: lib/marshall_web/live/account_live.ex:544
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "E-post"
+
+#: lib/marshall_web/live/account_live.ex:651
+#, elixir-autogen, elixir-format
+msgid "End this verification before the fifteen minutes are up."
+msgstr "Lõpeta see kinnitus enne viieteistkümne minuti möödumist."
+
+#: lib/marshall_web/live/account_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "Enter a valid Git name and email address."
+msgstr "Sisesta kehtiv Giti nimi ja e-posti aadress."
+
+#: lib/marshall_web/live/account_live.ex:763
+#, elixir-autogen, elixir-format
+msgid "Fingerprint"
+msgstr "Sõrmejälg"
+
+#: lib/marshall_web/live/account_live.ex:820
+#, elixir-autogen, elixir-format
+msgid "Git email"
+msgstr "Giti e-posti aadress"
+
+#: lib/marshall_web/live/account_live.ex:508
+#, elixir-autogen, elixir-format
+msgid "Git identity"
+msgstr "Giti identiteet"
+
+#: lib/marshall_web/live/account_live.ex:836
+#, elixir-autogen, elixir-format
+msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Giti identiteedi muudatused kehtivad uutele masinatele. Kaasautori märkimise muudatused kehtivad tulevastele agendipäringutele."
+
+#: lib/marshall_web/live/account_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Git settings saved."
+msgstr "Giti sätted salvestatud."
+
+#: lib/marshall_web/live/account_live.ex:813
+#, elixir-autogen, elixir-format
+msgid "Git username"
+msgstr "Giti kasutajanimi"
+
+#: lib/marshall_web/live/account_live.ex:280
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Vigane taotlus."
+
+#: lib/marshall_web/live/account_live.ex:707
+#, elixir-autogen, elixir-format
+msgid "Keep a backup passkey. If you lose access, another administrator can reset your passkeys."
+msgstr "Hoia alles varupääsuvõti. Kui kaotad juurdepääsu, saab teine administraator sinu pääsuvõtmed lähtestada."
+
+#: lib/marshall_web/live/account_live.ex:720
+#, elixir-autogen, elixir-format
+msgid "Keys registered here open your machines over SSH with the same account and permissions as this site. Remove a key to revoke its access; email sign-in keeps working without any key."
+msgstr "Siin registreeritud võtmed avavad sinu masinad SSH kaudu sama konto ja õigustega nagu sellel veebilehel. Eemalda võti selle juurdepääsu tühistamiseks; e-postiga sisselogimine töötab ka ilma võtmeteta."
+
+#: lib/marshall_web/live/account_live.ex:776
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr "Silt (valikuline)"
+
+#: lib/marshall_web/live/account_live.ex:520
+#, elixir-autogen, elixir-format
+msgid "Language"
+msgstr "Keel"
+
+#: lib/marshall_web/live/account_live.ex:526
+#, elixir-autogen, elixir-format
+msgid "Language is detected from your browser."
+msgstr "Keel tuvastatakse sinu brauserist."
+
+#: lib/marshall_web/live/account_live.ex:545
+#, elixir-autogen, elixir-format
+msgid "Local time"
+msgstr "Kohalik aeg"
+
+#: lib/marshall_web/live/account_live.ex:650
+#, elixir-autogen, elixir-format
+msgid "Lock now"
+msgstr "Lukusta kohe"
+
+#: lib/marshall_web/live/account_live.ex:778
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr "Minu sülearvuti"
+
+#: lib/marshall_web/live/account_live.ex:726
+#, elixir-autogen, elixir-format
+msgid "No SSH keys yet. You can always sign in here using email."
+msgstr "SSH-võtmeid veel pole. Siia saad alati sisse logida e-postiga."
+
+#: lib/marshall_web/live/account_live.ex:662
+#, elixir-autogen, elixir-format
+msgid "No passkeys yet. First enrollment requires a fresh email sign-in completed within the last five minutes. After setup, return to the page you came from and retry the action."
+msgstr "Pääsuvõtmeid veel pole. Esmane registreerimine nõuab viimase viie minuti jooksul tehtud e-postiga sisselogimist. Pärast seadistamist naase eelmisele lehele ja proovi toimingut uuesti."
+
+#: lib/marshall_web/live/account_live.ex:459
+#, elixir-autogen, elixir-format
+msgid "No zone saved and none detected; times are shown in UTC until you choose one."
+msgstr "Ajavööndit pole salvestatud ega tuvastatud; kuni valiku tegemiseni kuvatakse aegu UTC järgi."
+
+#: lib/marshall_web/live/account_live.ex:488
+#, elixir-autogen, elixir-format
+msgid "On this page"
+msgstr "Sellel lehel"
+
+#: lib/marshall_web/live/account_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "Passkey added. Verify it when you need to approve an administrative change."
+msgstr "Pääsuvõti lisatud. Kinnita see, kui pead haldusmuudatuse heaks kiitma."
+
+#: lib/marshall_web/live/account_live.ex:681
+#, elixir-autogen, elixir-format
+msgid "Passkey name"
+msgstr "Pääsuvõtme nimi"
+
+#: lib/marshall_web/live/account_live.ex:148
+#, elixir-autogen, elixir-format
+msgid "Passkey request cancelled or unavailable. You can try again."
+msgstr "Pääsuvõtme taotlus tühistati või pole saadaval. Võid uuesti proovida."
+
+#: lib/marshall_web/live/account_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Passkey verified for 15 minutes."
+msgstr "Pääsuvõti kinnitatud 15 minutiks."
+
+#: lib/marshall_web/live/account_live.ex:606
+#, elixir-autogen, elixir-format
+msgid "Passkey verified · %{count} second remaining."
+msgid_plural "Passkey verified · %{count} seconds remaining."
+msgstr[0] "Pääsuvõti kinnitatud · %{count} sekund jäänud."
+msgstr[1] "Pääsuvõti kinnitatud · %{count} sekundit jäänud."
+
+#: lib/marshall_web/live/account_live.ex:789
+#, elixir-autogen, elixir-format
+msgid "Paste a public key from your .pub file. Never paste a private key."
+msgstr "Kleebi avalik võti oma .pub-failist. Ära kunagi kleebi privaatvõtit."
+
+#: lib/marshall_web/live/account_live.ex:491
+#, elixir-autogen, elixir-format
+msgid "Profile"
+msgstr "Profiil"
+
+#: lib/marshall_web/live/account_live.ex:783
+#, elixir-autogen, elixir-format
+msgid "Public key"
+msgstr "Avalik võti"
+
+#: lib/marshall_web/live/account_live.ex:698
+#: lib/marshall_web/live/account_live.ex:743
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Eemalda"
+
+#: lib/marshall_web/live/account_live.ex:737
+#, elixir-autogen, elixir-format
+msgid "Remove this key's SSH access? Already accepted machine operations will continue."
+msgstr "Kas eemaldada selle võtme SSH-juurdepääs? Juba vastuvõetud masinatoimingud jätkuvad."
+
+#: lib/marshall_web/live/account_live.ex:692
+#, elixir-autogen, elixir-format
+msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
+msgstr "Kas eemaldada see pääsuvõti? Viimase pääsuvõtme eemaldamine logib sind kõikjalt välja."
+
+#: lib/marshall_web/live/account_live.ex:684
+#: lib/marshall_web/live/account_live.ex:760
+#, elixir-autogen, elixir-format
+msgid "Rename"
+msgstr "Nimeta ümber"
+
+#: lib/marshall_web/live/account_live.ex:658
+#, elixir-autogen, elixir-format
+msgid "Return to the requested page and retry the action →"
+msgstr "Naase soovitud lehele ja proovi toimingut uuesti →"
+
+#: lib/marshall_web/live/account_live.ex:465
+#, elixir-autogen, elixir-format
+msgid "SSH key"
+msgstr "SSH-võti"
+
+#: lib/marshall_web/live/account_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "SSH key added."
+msgstr "SSH-võti lisatud."
+
+#: lib/marshall_web/live/account_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "SSH key removed."
+msgstr "SSH-võti eemaldatud."
+
+#: lib/marshall_web/live/account_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH-võti on ümber nimetatud."
+
+#: lib/marshall_web/live/account_live.ex:499
+#, elixir-autogen, elixir-format
+msgid "SSH keys"
+msgstr "SSH-võtmed"
+
+#: lib/marshall_web/live/account_live.ex:349
+#, elixir-autogen, elixir-format
+msgid "SSH keys are temporarily unavailable."
+msgstr "SSH-võtmed pole ajutiselt saadaval."
+
+#: lib/marshall_web/live/account_live.ex:842
+#, elixir-autogen, elixir-format
+msgid "Save Git settings"
+msgstr "Salvesta Giti sätted"
+
+#: lib/marshall_web/live/account_live.ex:530
+#, elixir-autogen, elixir-format
+msgid "Save language"
+msgstr "Salvesta keel"
+
+#: lib/marshall_web/live/account_live.ex:577
+#, elixir-autogen, elixir-format
+msgid "Save time zone"
+msgstr "Salvesta ajavöönd"
+
+#: lib/marshall_web/live/account_live.ex:443
+#, elixir-autogen, elixir-format
+msgid "Saved: %{value1}. Others who share a team, machine or thread with you see your local time."
+msgstr "Salvestatud: %{value1}. Teised, kes jagavad sinuga meeskonda, masinat või vestlust, näevad sinu kohalikku aega."
+
+#: lib/marshall_web/live/account_live.ex:495
+#, elixir-autogen, elixir-format
+msgid "Sign-in and passkeys"
+msgstr "Sisselogimine ja pääsuvõtmed"
+
+#: lib/marshall_web/live/account_live.ex:569
+#, elixir-autogen, elixir-format
+msgid "Time zone"
+msgstr "Ajavöönd"
+
+#: lib/marshall_web/live/account_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "Time zone cleared. Your browser's zone is used."
+msgstr "Ajavöönd kustutatud. Kasutatakse brauseri ajavööndit."
+
+#: lib/marshall_web/live/account_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "Time zone saved."
+msgstr "Ajavöönd salvestatud."
+
+#: lib/marshall_web/live/account_live.ex:766
+#, elixir-autogen, elixir-format
+msgid "Type"
+msgstr "Tüüp"
+
+#: lib/marshall_web/live/account_live.ex:539
+#, elixir-autogen, elixir-format
+msgid "Use browser language"
+msgstr "Kasuta brauseri keelt"
+
+#: lib/marshall_web/live/account_live.ex:113
+#, elixir-autogen, elixir-format
+msgid "Verification could not be completed. Please try again."
+msgstr "Kinnitamist ei saanud lõpetada. Proovi uuesti."
+
+#: lib/marshall_web/live/account_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Verification required. Use an existing passkey, or sign out and request a fresh email link before first enrollment."
+msgstr "Kinnitus nõutav. Kasuta olemasolevat pääsuvõtit või logi välja ja taotle enne esmast registreerimist uut e-posti linki."
+
+#: lib/marshall_web/live/account_live.ex:614
+#, elixir-autogen, elixir-format
+msgid "Verify a passkey before making administrative changes or changing passkeys."
+msgstr "Kinnita pääsuvõti enne haldusmuudatusi või pääsuvõtmete muutmist."
+
+#: lib/marshall_web/live/account_live.ex:641
+#, elixir-autogen, elixir-format
+msgid "Verify with passkey"
+msgstr "Kinnita pääsuvõtmega"
+
+#: lib/marshall_web/live/account_live.ex:830
+#, elixir-autogen, elixir-format
+msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "Kui see on lubatud, sisaldavad agendi uued muudatused märget Co-authored-by: Overalls <noreply@overalls.dev>."
+
+#: lib/marshall_web/live/account_live.ex:482
+#, elixir-autogen, elixir-format
+msgid "Who you are, how you prove it, and the keys that reach your machines."
+msgstr "Kes sa oled, kuidas seda tõestad ning millised võtmed sinu masinatele ligi pääsevad."
+
+#: lib/marshall_web/live/account_live.ex:597
+#, elixir-autogen, elixir-format
+msgid "You sign in with an email link. A passkey proves it is you before administrative changes and before passkey changes; everyday use of your workspace never asks for one."
+msgstr "Logid sisse e-posti lingiga. Pääsuvõti kinnitab sinu isikut enne haldusmuudatusi ja pääsuvõtmete muutmist; tööruumi igapäevane kasutamine seda ei küsi."
+
+#: lib/marshall_web/live/account_live.ex:560
+#, elixir-autogen, elixir-format
+msgid "Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved."
+msgstr "Sinu e-posti aadress on sinu sisselogimistunnus ja seda ei saa siin muuta. Kõiki Overallsi aegu näidatakse sinu ajavööndis; sinuga meeskonda, masinat või vestlust jagavad inimesed ning administraatorid näevad sinu praegust kohalikku aega e-posti aadressi kõrval pärast ajavööndi salvestamist."
+
+#: lib/marshall_web/live/account_live.ex:667
+#, elixir-autogen, elixir-format
+msgid "Your passkeys"
+msgstr "Sinu pääsuvõtmed"
+
+#: lib/marshall_web/live/account_live.ex:621
+#, elixir-autogen, elixir-format
+msgid "Your passkeys were reset. Register a replacement before approving administrative changes."
+msgstr "Sinu pääsuvõtmed lähtestati. Registreeri uus enne haldusmuudatuste kinnitamist."
+
+#: lib/marshall_web/live/account_live.ex:525
+#, elixir-autogen, elixir-format
+msgid "Your saved language overrides browser preferences."
+msgstr "Sinu salvestatud keel alistab brauseri eelistused."
+
+#: lib/marshall_web/live/account_live.ex:613
+#, elixir-autogen, elixir-format
+msgid "[not verified]"
+msgstr "[kinnitamata]"
+
+#: lib/marshall_web/live/account_live.ex:605
+#, elixir-autogen, elixir-format
+msgid "[verified]"
+msgstr "[kinnitatud]"
+
+#: lib/marshall_web/live/account_live.ex:492
+#, elixir-autogen, elixir-format
+msgid "email, time zone and your local clock"
+msgstr "e-post, ajavöönd ja sinu kohalik kell"
+
+#: lib/marshall_web/live/account_live.ex:509
+#, elixir-autogen, elixir-format
+msgid "new machines and commit attribution"
+msgstr "uued masinad ja muudatuste kaasautori märkimine"
+
+#: lib/marshall/accounts/time_zones.ex:300
+#, elixir-autogen, elixir-format
+msgid "same time as you"
+msgstr "sama aeg mis sinul"
+
+#: lib/marshall_web/live/account_live.ex:496
+#, elixir-autogen, elixir-format
+msgid "verification for administrative changes"
+msgstr "haldusmuudatuste kinnitus"

@@ -1,0 +1,534 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: de\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/account_live.ex:500
+#, elixir-autogen, elixir-format
+msgid "%{count} registered key"
+msgid_plural "%{count} registered keys"
+msgstr[0] "%{count} registrierter Schlüssel"
+msgstr[1] "%{count} registrierte Schlüssel"
+
+#: lib/marshall/accounts/time_zones.ex:314
+#, elixir-autogen, elixir-format
+msgid "%{span} ahead of you"
+msgstr "%{span} vor Ihrer Zeit"
+
+#: lib/marshall/accounts/time_zones.ex:315
+#, elixir-autogen, elixir-format
+msgid "%{span} behind you"
+msgstr "%{span} hinter Ihrer Zeit"
+
+#: lib/marshall_web/live/account_live.ex:515
+#, elixir-autogen, elixir-format
+msgid "1. Profile"
+msgstr "1. Profil"
+
+#: lib/marshall_web/live/account_live.ex:595
+#, elixir-autogen, elixir-format
+msgid "2. Sign-in and passkeys"
+msgstr "2. Anmeldung und Passkeys"
+
+#: lib/marshall_web/live/account_live.ex:718
+#, elixir-autogen, elixir-format
+msgid "3. SSH keys"
+msgstr "3. SSH-Schlüssel"
+
+#: lib/marshall_web/live/account_live.ex:809
+#, elixir-autogen, elixir-format
+msgid "4. Git identity"
+msgstr "4. Git-Identität"
+
+#: lib/marshall_web/live/account_live.ex:35
+#: lib/marshall_web/live/account_live.ex:480
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "Konto"
+
+#: lib/marshall_web/live/account_live.ex:827
+#, elixir-autogen, elixir-format
+msgid "Add Overalls commit attribution"
+msgstr "Overalls als Mitautor von Commits nennen"
+
+#: lib/marshall_web/live/account_live.ex:801
+#, elixir-autogen, elixir-format
+msgid "Add SSH key"
+msgstr "SSH-Schlüssel hinzufügen"
+
+#: lib/marshall_web/live/account_live.ex:773
+#, elixir-autogen, elixir-format
+msgid "Add a key"
+msgstr "Schlüssel hinzufügen"
+
+#: lib/marshall_web/live/account_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Add passkey"
+msgstr "Passkey hinzufügen"
+
+#: lib/marshall_web/live/account_live.ex:701
+#: lib/marshall_web/live/account_live.ex:767
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr "Hinzugefügt"
+
+#: lib/marshall_web/live/account_live.ex:799
+#, elixir-autogen, elixir-format
+msgid "Adding…"
+msgstr "Wird hinzugefügt…"
+
+#: lib/marshall_web/live/account_live.ex:370
+#, elixir-autogen, elixir-format
+msgid "Choose a language from the list."
+msgstr "Wählen Sie eine Sprache aus der Liste."
+
+#: lib/marshall_web/live/account_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "Choose a time zone from the list."
+msgstr "Wählen Sie eine Zeitzone aus der Liste."
+
+#: lib/marshall_web/live/account_live.ex:586
+#, elixir-autogen, elixir-format
+msgid "Clear saved zone"
+msgstr "Gespeicherte Zeitzone löschen"
+
+#: lib/marshall_web/live/account_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Could not add this key. Paste one supported public key; it must not belong to another account."
+msgstr ""
+"Dieser Schlüssel konnte nicht hinzugefügt werden. Fügen Sie einen "
+"unterstützten öffentlichen Schlüssel ein; er darf keinem anderen Konto "
+"gehören."
+
+#: lib/marshall_web/live/account_live.ex:240
+#, elixir-autogen, elixir-format
+msgid "Could not clear your time zone."
+msgstr "Ihre Zeitzone konnte nicht gelöscht werden."
+
+#: lib/marshall_web/live/account_live.ex:206
+#, elixir-autogen, elixir-format
+msgid "Could not remove this key."
+msgstr "Dieser Schlüssel konnte nicht entfernt werden."
+
+#: lib/marshall_web/live/account_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "Dieser Schlüssel konnte nicht umbenannt werden. Verwende höchstens 128 Zeichen."
+
+#: lib/marshall_web/live/account_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "Credential change refused. Names must be 1–80 characters, changes need a passkey verified in the last 15 minutes, and administrators must keep at least one passkey."
+msgstr ""
+"Änderung der Anmeldedaten verweigert. Namen müssen 1–80 Zeichen lang sein, "
+"Änderungen erfordern einen in den letzten 15 Minuten verifizierten Passkey "
+"und Administratoren müssen mindestens einen Passkey behalten."
+
+#: lib/marshall_web/live/account_live.ex:757
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "Beschreibung"
+
+#: lib/marshall_web/live/account_live.ex:451
+#, elixir-autogen, elixir-format
+msgid "Detected from your browser: %{value1}. Save it so others can see your local time."
+msgstr ""
+"Von Ihrem Browser erkannt: %{value1}. Speichern Sie dies, damit andere Ihre "
+"Ortszeit sehen können."
+
+#: lib/marshall_web/live/account_live.ex:544
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "E-Mail"
+
+#: lib/marshall_web/live/account_live.ex:651
+#, elixir-autogen, elixir-format
+msgid "End this verification before the fifteen minutes are up."
+msgstr "Beenden Sie diese Verifizierung vor Ablauf der fünfzehn Minuten."
+
+#: lib/marshall_web/live/account_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "Enter a valid Git name and email address."
+msgstr "Geben Sie einen gültigen Git-Namen und eine gültige E-Mail-Adresse ein."
+
+#: lib/marshall_web/live/account_live.ex:763
+#, elixir-autogen, elixir-format
+msgid "Fingerprint"
+msgstr "Fingerabdruck"
+
+#: lib/marshall_web/live/account_live.ex:820
+#, elixir-autogen, elixir-format
+msgid "Git email"
+msgstr "Git-E-Mail-Adresse"
+
+#: lib/marshall_web/live/account_live.ex:508
+#, elixir-autogen, elixir-format
+msgid "Git identity"
+msgstr "Git-Identität"
+
+#: lib/marshall_web/live/account_live.ex:836
+#, elixir-autogen, elixir-format
+msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Änderungen der Git-Identität gelten für neue Maschinen. Änderungen der Mitautorenangabe gelten für zukünftige Anfragen an den Agenten."
+
+#: lib/marshall_web/live/account_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Git settings saved."
+msgstr "Git-Einstellungen gespeichert."
+
+#: lib/marshall_web/live/account_live.ex:813
+#, elixir-autogen, elixir-format
+msgid "Git username"
+msgstr "Git-Benutzername"
+
+#: lib/marshall_web/live/account_live.ex:280
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Ungültige Anfrage."
+
+#: lib/marshall_web/live/account_live.ex:707
+#, elixir-autogen, elixir-format
+msgid "Keep a backup passkey. If you lose access, another administrator can reset your passkeys."
+msgstr ""
+"Bewahren Sie einen Ersatz-Passkey auf. Falls Sie den Zugriff verlieren, kann"
+" ein anderer Administrator Ihre Passkeys zurücksetzen."
+
+#: lib/marshall_web/live/account_live.ex:720
+#, elixir-autogen, elixir-format
+msgid "Keys registered here open your machines over SSH with the same account and permissions as this site. Remove a key to revoke its access; email sign-in keeps working without any key."
+msgstr ""
+"Hier registrierte Schlüssel öffnen Ihre Maschinen per SSH mit demselben "
+"Konto und denselben Berechtigungen wie diese Website. Entfernen Sie einen "
+"Schlüssel, um seinen Zugriff zu widerrufen; E-Mail-Anmeldungen funktionieren"
+" weiterhin ohne Schlüssel."
+
+#: lib/marshall_web/live/account_live.ex:776
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr "Bezeichnung (optional)"
+
+#: lib/marshall_web/live/account_live.ex:520
+#, elixir-autogen, elixir-format
+msgid "Language"
+msgstr "Sprache"
+
+#: lib/marshall_web/live/account_live.ex:526
+#, elixir-autogen, elixir-format
+msgid "Language is detected from your browser."
+msgstr "Die Sprache wird aus Ihrem Browser erkannt."
+
+#: lib/marshall_web/live/account_live.ex:545
+#, elixir-autogen, elixir-format
+msgid "Local time"
+msgstr "Ortszeit"
+
+#: lib/marshall_web/live/account_live.ex:650
+#, elixir-autogen, elixir-format
+msgid "Lock now"
+msgstr "Jetzt sperren"
+
+#: lib/marshall_web/live/account_live.ex:778
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr "Mein Laptop"
+
+#: lib/marshall_web/live/account_live.ex:726
+#, elixir-autogen, elixir-format
+msgid "No SSH keys yet. You can always sign in here using email."
+msgstr ""
+"Noch keine SSH-Schlüssel. Sie können sich hier jederzeit per E-Mail "
+"anmelden."
+
+#: lib/marshall_web/live/account_live.ex:662
+#, elixir-autogen, elixir-format
+msgid "No passkeys yet. First enrollment requires a fresh email sign-in completed within the last five minutes. After setup, return to the page you came from and retry the action."
+msgstr ""
+"Noch keine Passkeys. Die erste Einrichtung erfordert eine neue, innerhalb "
+"der letzten fünf Minuten abgeschlossene E-Mail-Anmeldung. Kehren Sie "
+"anschließend zur vorherigen Seite zurück und wiederholen Sie die Aktion."
+
+#: lib/marshall_web/live/account_live.ex:459
+#, elixir-autogen, elixir-format
+msgid "No zone saved and none detected; times are shown in UTC until you choose one."
+msgstr ""
+"Keine Zeitzone gespeichert oder erkannt; bis zu Ihrer Auswahl werden Zeiten "
+"in UTC angezeigt."
+
+#: lib/marshall_web/live/account_live.ex:488
+#, elixir-autogen, elixir-format
+msgid "On this page"
+msgstr "Auf dieser Seite"
+
+#: lib/marshall_web/live/account_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "Passkey added. Verify it when you need to approve an administrative change."
+msgstr ""
+"Passkey hinzugefügt. Verifizieren Sie ihn, wenn Sie eine "
+"Administratoränderung genehmigen müssen."
+
+#: lib/marshall_web/live/account_live.ex:681
+#, elixir-autogen, elixir-format
+msgid "Passkey name"
+msgstr "Passkeyname"
+
+#: lib/marshall_web/live/account_live.ex:148
+#, elixir-autogen, elixir-format
+msgid "Passkey request cancelled or unavailable. You can try again."
+msgstr ""
+"Passkeyanfrage abgebrochen oder nicht verfügbar. Sie können es erneut "
+"versuchen."
+
+#: lib/marshall_web/live/account_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Passkey verified for 15 minutes."
+msgstr "Passkey für 15 Minuten verifiziert."
+
+#: lib/marshall_web/live/account_live.ex:606
+#, elixir-autogen, elixir-format
+msgid "Passkey verified · %{count} second remaining."
+msgid_plural "Passkey verified · %{count} seconds remaining."
+msgstr[0] "Passkey verifiziert · %{count} Sekunde verbleibt."
+msgstr[1] "Passkey verifiziert · %{count} Sekunden verbleiben."
+
+#: lib/marshall_web/live/account_live.ex:789
+#, elixir-autogen, elixir-format
+msgid "Paste a public key from your .pub file. Never paste a private key."
+msgstr ""
+"Fügen Sie einen öffentlichen Schlüssel aus Ihrer .pub-Datei ein. Niemals "
+"einen privaten Schlüssel einfügen."
+
+#: lib/marshall_web/live/account_live.ex:491
+#, elixir-autogen, elixir-format
+msgid "Profile"
+msgstr "Profil"
+
+#: lib/marshall_web/live/account_live.ex:783
+#, elixir-autogen, elixir-format
+msgid "Public key"
+msgstr "Öffentlicher Schlüssel"
+
+#: lib/marshall_web/live/account_live.ex:698
+#: lib/marshall_web/live/account_live.ex:743
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Entfernen"
+
+#: lib/marshall_web/live/account_live.ex:737
+#, elixir-autogen, elixir-format
+msgid "Remove this key's SSH access? Already accepted machine operations will continue."
+msgstr ""
+"SSH-Zugriff dieses Schlüssels entfernen? Bereits angenommene "
+"Maschinenoperationen laufen weiter."
+
+#: lib/marshall_web/live/account_live.ex:692
+#, elixir-autogen, elixir-format
+msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
+msgstr ""
+"Diesen Passkey entfernen? Das Entfernen Ihres letzten Passkeys meldet Sie "
+"überall ab."
+
+#: lib/marshall_web/live/account_live.ex:684
+#: lib/marshall_web/live/account_live.ex:760
+#, elixir-autogen, elixir-format
+msgid "Rename"
+msgstr "Umbenennen"
+
+#: lib/marshall_web/live/account_live.ex:658
+#, elixir-autogen, elixir-format
+msgid "Return to the requested page and retry the action →"
+msgstr ""
+"Kehren Sie zur angeforderten Seite zurück und wiederholen Sie die Aktion →"
+
+#: lib/marshall_web/live/account_live.ex:465
+#, elixir-autogen, elixir-format
+msgid "SSH key"
+msgstr "SSH-Schlüssel"
+
+#: lib/marshall_web/live/account_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "SSH key added."
+msgstr "SSH-Schlüssel hinzugefügt."
+
+#: lib/marshall_web/live/account_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "SSH key removed."
+msgstr "SSH-Schlüssel entfernt."
+
+#: lib/marshall_web/live/account_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH-Schlüssel umbenannt."
+
+#: lib/marshall_web/live/account_live.ex:499
+#, elixir-autogen, elixir-format
+msgid "SSH keys"
+msgstr "SSH-Schlüssel"
+
+#: lib/marshall_web/live/account_live.ex:349
+#, elixir-autogen, elixir-format
+msgid "SSH keys are temporarily unavailable."
+msgstr "SSH-Schlüssel sind vorübergehend nicht verfügbar."
+
+#: lib/marshall_web/live/account_live.ex:842
+#, elixir-autogen, elixir-format
+msgid "Save Git settings"
+msgstr "Git-Einstellungen speichern"
+
+#: lib/marshall_web/live/account_live.ex:530
+#, elixir-autogen, elixir-format
+msgid "Save language"
+msgstr "Sprache speichern"
+
+#: lib/marshall_web/live/account_live.ex:577
+#, elixir-autogen, elixir-format
+msgid "Save time zone"
+msgstr "Zeitzone speichern"
+
+#: lib/marshall_web/live/account_live.ex:443
+#, elixir-autogen, elixir-format
+msgid "Saved: %{value1}. Others who share a team, machine or thread with you see your local time."
+msgstr ""
+"Gespeichert: %{value1}. Andere, die ein Team, eine Maschine oder einen "
+"Thread mit Ihnen teilen, sehen Ihre Ortszeit."
+
+#: lib/marshall_web/live/account_live.ex:495
+#, elixir-autogen, elixir-format
+msgid "Sign-in and passkeys"
+msgstr "Anmeldung und Passkeys"
+
+#: lib/marshall_web/live/account_live.ex:569
+#, elixir-autogen, elixir-format
+msgid "Time zone"
+msgstr "Zeitzone"
+
+#: lib/marshall_web/live/account_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "Time zone cleared. Your browser's zone is used."
+msgstr "Zeitzone gelöscht. Die Zeitzone Ihres Browsers wird verwendet."
+
+#: lib/marshall_web/live/account_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "Time zone saved."
+msgstr "Zeitzone gespeichert."
+
+#: lib/marshall_web/live/account_live.ex:766
+#, elixir-autogen, elixir-format
+msgid "Type"
+msgstr "Typ"
+
+#: lib/marshall_web/live/account_live.ex:539
+#, elixir-autogen, elixir-format
+msgid "Use browser language"
+msgstr "Browsersprache verwenden"
+
+#: lib/marshall_web/live/account_live.ex:113
+#, elixir-autogen, elixir-format
+msgid "Verification could not be completed. Please try again."
+msgstr ""
+"Verifizierung konnte nicht abgeschlossen werden. Versuchen Sie es erneut."
+
+#: lib/marshall_web/live/account_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Verification required. Use an existing passkey, or sign out and request a fresh email link before first enrollment."
+msgstr ""
+"Verifizierung erforderlich. Verwenden Sie einen vorhandenen Passkey oder "
+"melden Sie sich ab und fordern Sie vor der ersten Einrichtung einen neuen "
+"E-Mail-Link an."
+
+#: lib/marshall_web/live/account_live.ex:614
+#, elixir-autogen, elixir-format
+msgid "Verify a passkey before making administrative changes or changing passkeys."
+msgstr ""
+"Verifizieren Sie einen Passkey vor Administratoränderungen oder "
+"Passkeyänderungen."
+
+#: lib/marshall_web/live/account_live.ex:641
+#, elixir-autogen, elixir-format
+msgid "Verify with passkey"
+msgstr "Mit Passkey verifizieren"
+
+#: lib/marshall_web/live/account_live.ex:830
+#, elixir-autogen, elixir-format
+msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "Wenn diese Option aktiviert ist, enthalten neue Agenten-Commits Co-authored-by: Overalls <noreply@overalls.dev>."
+
+#: lib/marshall_web/live/account_live.ex:482
+#, elixir-autogen, elixir-format
+msgid "Who you are, how you prove it, and the keys that reach your machines."
+msgstr ""
+"Wer Sie sind, wie Sie es nachweisen und welche Schlüssel Ihre Maschinen "
+"erreichen."
+
+#: lib/marshall_web/live/account_live.ex:597
+#, elixir-autogen, elixir-format
+msgid "You sign in with an email link. A passkey proves it is you before administrative changes and before passkey changes; everyday use of your workspace never asks for one."
+msgstr ""
+"Sie melden sich mit einem E-Mail-Link an. Ein Passkey bestätigt Ihre "
+"Identität vor Administrator- und Passkeyänderungen; die tägliche "
+"Arbeitsbereichsnutzung erfordert keinen."
+
+#: lib/marshall_web/live/account_live.ex:560
+#, elixir-autogen, elixir-format
+msgid "Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved."
+msgstr ""
+"Ihre E-Mail ist Ihre Anmeldekennung und kann hier nicht geändert werden. "
+"Alle Zeiten bei Overalls werden in Ihrer Zeitzone angezeigt; Personen mit "
+"gemeinsamem Team, Maschine oder Thread sowie Administratoren sehen Ihre "
+"aktuelle Ortszeit neben Ihrer E-Mail, sobald eine Zeitzone gespeichert ist."
+
+#: lib/marshall_web/live/account_live.ex:667
+#, elixir-autogen, elixir-format
+msgid "Your passkeys"
+msgstr "Ihre Passkeys"
+
+#: lib/marshall_web/live/account_live.ex:621
+#, elixir-autogen, elixir-format
+msgid "Your passkeys were reset. Register a replacement before approving administrative changes."
+msgstr ""
+"Ihre Passkeys wurden zurückgesetzt. Registrieren Sie einen Ersatz, bevor Sie"
+" Administratoränderungen genehmigen."
+
+#: lib/marshall_web/live/account_live.ex:525
+#, elixir-autogen, elixir-format
+msgid "Your saved language overrides browser preferences."
+msgstr "Ihre gespeicherte Sprache hat Vorrang vor den Browsereinstellungen."
+
+#: lib/marshall_web/live/account_live.ex:613
+#, elixir-autogen, elixir-format
+msgid "[not verified]"
+msgstr "[nicht verifiziert]"
+
+#: lib/marshall_web/live/account_live.ex:605
+#, elixir-autogen, elixir-format
+msgid "[verified]"
+msgstr "[verifiziert]"
+
+#: lib/marshall_web/live/account_live.ex:492
+#, elixir-autogen, elixir-format
+msgid "email, time zone and your local clock"
+msgstr "E-Mail, Zeitzone und Ihre Ortszeit"
+
+#: lib/marshall_web/live/account_live.ex:509
+#, elixir-autogen, elixir-format
+msgid "new machines and commit attribution"
+msgstr "neue Maschinen und Mitautorenangabe für Commits"
+
+#: lib/marshall/accounts/time_zones.ex:300
+#, elixir-autogen, elixir-format
+msgid "same time as you"
+msgstr "gleiche Uhrzeit wie bei Ihnen"
+
+#: lib/marshall_web/live/account_live.ex:496
+#, elixir-autogen, elixir-format
+msgid "verification for administrative changes"
+msgstr "Verifizierung für Administratoränderungen"

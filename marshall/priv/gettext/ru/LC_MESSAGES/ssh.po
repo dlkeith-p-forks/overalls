@@ -1,0 +1,82 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Approve SSH key"
+msgstr "Одобрить ключ SSH"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Approve key"
+msgstr "Одобрить ключ"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
+msgstr ""
+"Одобряйте этот ключ, только если вы начали подключение SSH и его отпечаток "
+"совпадает с отпечатком в вашем клиенте SSH."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:109
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr "Одобрение…"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:101
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr "Метка (необязательно)"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Manage your SSH keys"
+msgstr "Управление ключами SSH"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr "Мой ноутбук"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "SSH key approved. You can return to your SSH client."
+msgstr "Ключ SSH одобрен. Можно вернуться в клиент SSH."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:64
+#, elixir-autogen, elixir-format
+msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
+msgstr ""
+"Одобрение SSH недоступно или истекло. Начните новое подключение SSH для "
+"повтора."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
+msgstr ""
+"Этот ключ войдёт как %{value1}. Он сможет управлять машинами согласно правам"
+" вашей учётной записи."
+
+#: lib/marshall_web/ssh_approval_login.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Недоступно"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr "Открыть Mila"

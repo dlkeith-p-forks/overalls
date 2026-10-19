@@ -20,7 +20,8 @@ defmodule MarshallWeb.RepositoryLaunchController do
         send_resp(
           conn,
           422,
-          gettext("This repository link could not be launched. Open the link again.") <> "\n"
+          dgettext("machines", "This repository link could not be launched. Open the link again.") <>
+            "\n"
         )
     end
   end
@@ -52,7 +53,10 @@ defmodule MarshallWeb.RepositoryLaunchController do
         send_resp(
           conn,
           403,
-          gettext("This launch could not be completed. Sign in and open the link again.") <> "\n"
+          dgettext(
+            "machines",
+            "This launch could not be completed. Sign in and open the link again."
+          ) <> "\n"
         )
     end
   end

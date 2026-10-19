@@ -40,3 +40,8 @@ browser capability. See ADR-0084.
 Terminal v2 MUST send actual visible-pane geometry through its versioned resize
 control only after read/write attachment acknowledgement. Read-only viewers MUST
 NOT resize another user's PTY. See ADR-0082 and ADR-0084.
+
+@cc [owner:ghuntley,label:build] browser-entry-esm
+The application JavaScript bundle MUST retain ES-module output and the root
+layout MUST load it as a module. Bundled noVNC asynchronous codec detection MUST
+remain supported without rewriting upstream source or loading remote scripts.

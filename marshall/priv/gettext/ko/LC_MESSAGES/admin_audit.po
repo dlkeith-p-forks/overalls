@@ -1,0 +1,1012 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ko\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/admin/audit_live.ex:280
+#, elixir-autogen, elixir-format
+msgid "; the next due check can then request a new generation."
+msgstr "; 그러면 다음 기한 확인에서 새로운 세대를 요청할 수 있습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:113
+#, elixir-autogen, elixir-format
+msgid "ACME account"
+msgstr "ACME 계정"
+
+#: lib/marshall_web/live/admin/audit_live.ex:333
+#, elixir-autogen, elixir-format
+msgid "ACME account: %{status}"
+msgstr "ACME 계정: %{status}"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:160
+#: lib/marshall_web/live/admin/audit_labels.ex:453
+#, elixir-autogen, elixir-format
+msgid "Acknowledged"
+msgstr "확인됨"
+
+#: lib/marshall_web/live/admin/audit_live.ex:237
+#: lib/marshall_web/live/admin/audit_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "행동"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:148
+#, elixir-autogen, elixir-format
+msgid "Activated"
+msgstr "활성화됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:228
+#: lib/marshall_web/live/admin/audit_labels.ex:481
+#, elixir-autogen, elixir-format
+msgid "Activation failed"
+msgstr "활성화 실패"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:251
+#, elixir-autogen, elixir-format
+msgid "Activation observed"
+msgstr "활성화가 관찰됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:460
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "활동적인"
+
+#: lib/marshall_web/live/admin/audit_live.ex:305
+#, elixir-autogen, elixir-format
+msgid "Actor"
+msgstr "배우"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:32
+#, elixir-autogen, elixir-format
+msgid "Administrator access granted"
+msgstr "관리자 액세스 권한이 부여됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:35
+#, elixir-autogen, elixir-format
+msgid "Administrator access revoked"
+msgstr "관리자 액세스가 취소되었습니다."
+
+#: lib/marshall_web/live/admin/audit_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Administrator actions"
+msgstr "관리자 작업"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:29
+#, elixir-autogen, elixir-format
+msgid "Administrator bootstrapped"
+msgstr "관리자가 부트스트랩됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:162
+#, elixir-autogen, elixir-format
+msgid "Advanced"
+msgstr "고급"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:165
+#, elixir-autogen, elixir-format
+msgid "Allocated"
+msgstr "할당됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:441
+#, elixir-autogen, elixir-format
+msgid "Applied"
+msgstr "적용됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:170
+#: lib/marshall_web/live/admin/audit_labels.ex:435
+#, elixir-autogen, elixir-format
+msgid "Approved"
+msgstr "승인됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:171
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "보관됨"
+
+#: lib/marshall_web/live/admin/audit_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Audit"
+msgstr "심사"
+
+#: lib/marshall_web/live/admin/audit_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Audit history is unavailable."
+msgstr "감사 내역을 확인할 수 없습니다."
+
+#: lib/marshall_web/live/admin/audit_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Audit kinds"
+msgstr "감사 종류"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:179
+#: lib/marshall_web/live/admin/audit_labels.ex:436
+#, elixir-autogen, elixir-format
+msgid "Blocked"
+msgstr "차단됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:236
+#, elixir-autogen, elixir-format
+msgid "Cancellation completed"
+msgstr "취소 완료"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:344
+#: lib/marshall_web/live/admin/audit_labels.ex:347
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "취소 요청됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:288
+#, elixir-autogen, elixir-format
+msgid "Cancellation restart recorded"
+msgstr "취소 재시작이 기록되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:291
+#, elixir-autogen, elixir-format
+msgid "Cancellation stop recorded"
+msgstr "취소 중지가 기록되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:180
+#: lib/marshall_web/live/admin/audit_labels.ex:183
+#: lib/marshall_web/live/admin/audit_labels.ex:427
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "취소"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:424
+#, elixir-autogen, elixir-format
+msgid "Cancelling"
+msgstr "취소 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:411
+#, elixir-autogen, elixir-format
+msgid "Capturing"
+msgstr "캡처"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:116
+#, elixir-autogen, elixir-format
+msgid "Certificate"
+msgstr "인증서"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:145
+#, elixir-autogen, elixir-format
+msgid "Certificate issued"
+msgstr "증명서 발급"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:133
+#, elixir-autogen, elixir-format
+msgid "Certificate order attempted"
+msgstr "인증서 주문이 시도되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:136
+#, elixir-autogen, elixir-format
+msgid "Certificate order bound"
+msgstr "인증서 주문 바인딩"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:139
+#, elixir-autogen, elixir-format
+msgid "Certificate proof recorded"
+msgstr "증명서 증빙이 기록되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:142
+#, elixir-autogen, elixir-format
+msgid "Certificate proof refreshed"
+msgstr "인증서 증명이 새로 고쳐졌습니다."
+
+#: lib/marshall_web/live/admin/audit_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "Certificates"
+msgstr "인증서"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:475
+#, elixir-autogen, elixir-format
+msgid "Checking destination"
+msgstr "목적지 확인 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:463
+#, elixir-autogen, elixir-format
+msgid "Checking transfer"
+msgstr "이체 확인 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:189
+#, elixir-autogen, elixir-format
+msgid "Checkpoint saved"
+msgstr "체크포인트가 저장되었습니다"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:419
+#, elixir-autogen, elixir-format
+msgid "Cleaning up"
+msgstr "청소"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:493
+#, elixir-autogen, elixir-format
+msgid "Cleaning up cancellation"
+msgstr "취소 정리 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:487
+#, elixir-autogen, elixir-format
+msgid "Cleaning up source"
+msgstr "소스 정리"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:194
+#, elixir-autogen, elixir-format
+msgid "Cleanup completed"
+msgstr "정리 완료"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:191
+#: lib/marshall_web/live/admin/audit_labels.ex:421
+#: lib/marshall_web/live/admin/audit_labels.ex:433
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "완벽한"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:196
+#, elixir-autogen, elixir-format
+msgid "Confirmed"
+msgstr "확인됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:214
+#, elixir-autogen, elixir-format
+msgid "Continued"
+msgstr "계속"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:202
+#, elixir-autogen, elixir-format
+msgid "Copy confirmed"
+msgstr "사본 확인됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:174
+#, elixir-autogen, elixir-format
+msgid "Copy started"
+msgstr "복사가 시작되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:413
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "사자"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:401
+#, elixir-autogen, elixir-format
+msgid "Created"
+msgstr "생성됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:216
+#, elixir-autogen, elixir-format
+msgid "Deferred"
+msgstr "연기됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:458
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "삭제됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:496
+#, elixir-autogen, elixir-format
+msgid "Deleting copies"
+msgstr "복사본 삭제"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:239
+#, elixir-autogen, elixir-format
+msgid "Deletion completed"
+msgstr "삭제 완료"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:350
+#: lib/marshall_web/live/admin/audit_labels.ex:353
+#, elixir-autogen, elixir-format
+msgid "Deletion requested"
+msgstr "삭제를 요청했습니다"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:256
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup offered"
+msgstr "목적지 정리 제공"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:297
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup recorded"
+msgstr "목적지 정리가 기록되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:259
+#, elixir-autogen, elixir-format
+msgid "Destination revocation offered"
+msgstr "대상 취소 제공"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:301
+#, elixir-autogen, elixir-format
+msgid "Destination revocation recorded"
+msgstr "대상 취소가 기록되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:222
+#, elixir-autogen, elixir-format
+msgid "Destination work dispatched"
+msgstr "대상 작업 파견됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:219
+#, elixir-autogen, elixir-format
+msgid "Dispatched"
+msgstr "파견됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:448
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "드레인 완료"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:447
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "드레인 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:107
+#, elixir-autogen, elixir-format
+msgid "Editor credential"
+msgstr "편집자 자격증"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:110
+#, elixir-autogen, elixir-format
+msgid "Editor lease"
+msgstr "편집자 임대"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:104
+#, elixir-autogen, elixir-format
+msgid "Editor sign-in"
+msgstr "편집자 로그인"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:506
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "워크로드 대피 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:56
+#, elixir-autogen, elixir-format
+msgid "Evacuation approved"
+msgstr "대피 승인"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:53
+#, elixir-autogen, elixir-format
+msgid "Evacuation changed"
+msgstr "대피 변경됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:59
+#, elixir-autogen, elixir-format
+msgid "Evacuation replanned"
+msgstr "대피 재계획"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:50
+#, elixir-autogen, elixir-format
+msgid "Evacuation requested"
+msgstr "대피 요청"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:151
+#: lib/marshall_web/live/admin/audit_labels.ex:429
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "실패한"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:233
+#, elixir-autogen, elixir-format
+msgid "Fenced"
+msgstr "울타리"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:503
+#, elixir-autogen, elixir-format
+msgid "Fencing"
+msgstr "펜싱"
+
+#: lib/marshall_web/live/admin/audit_live.ex:214
+#: lib/marshall_web/live/admin/audit_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Filter lifecycle history"
+msgstr "수명 주기 기록 필터링"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:65
+#, elixir-autogen, elixir-format
+msgid "Fleet certificate rotation requested"
+msgstr "차량 인증서 순환이 요청되었습니다."
+
+#: lib/marshall_web/live/admin/audit_live.ex:275
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation} has an uncertain ACME order response. The generation can be failed after"
+msgstr "%{generation} 세대의 ACME 주문 응답이 불확실합니다. 다음 이후에는 세대가 실패할 수 있습니다."
+
+#: lib/marshall_web/live/admin/audit_live.ex:338
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation}: %{status}"
+msgstr "%{generation} 세대: %{status}"
+
+#: lib/marshall_web/live/admin/audit_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "Host ID"
+msgstr "호스트 ID"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:62
+#, elixir-autogen, elixir-format
+msgid "Host configured"
+msgstr "호스트가 구성됨"
+
+#: lib/marshall_web/live/admin/audit_live.ex:258
+#, elixir-autogen, elixir-format
+msgid "Human requests and system recovery transitions. History is retained for 90 days."
+msgstr "사람의 요청 및 시스템 복구 전환. 기록은 90일 동안 보관됩니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:245
+#, elixir-autogen, elixir-format
+msgid "Idle policy updated"
+msgstr "유휴 정책이 업데이트되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:205
+#, elixir-autogen, elixir-format
+msgid "Import confirmed"
+msgstr "수입확인됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:277
+#, elixir-autogen, elixir-format
+msgid "Import prepared"
+msgstr "수입 준비 완료"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:304
+#, elixir-autogen, elixir-format
+msgid "Import recorded"
+msgstr "수입기록됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:177
+#, elixir-autogen, elixir-format
+msgid "Import started"
+msgstr "가져오기가 시작되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:469
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "가져오는 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:119
+#, elixir-autogen, elixir-format
+msgid "Installation"
+msgstr "설치"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:122
+#, elixir-autogen, elixir-format
+msgid "Installed"
+msgstr "설치됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:98
+#, elixir-autogen, elixir-format
+msgid "Integration attached"
+msgstr "통합 첨부"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:92
+#, elixir-autogen, elixir-format
+msgid "Integration configured"
+msgstr "통합이 구성됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:101
+#, elixir-autogen, elixir-format
+msgid "Integration detached"
+msgstr "통합 분리됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:95
+#, elixir-autogen, elixir-format
+msgid "Integration removed"
+msgstr "통합이 제거되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:225
+#, elixir-autogen, elixir-format
+msgid "Key dispatched"
+msgstr "열쇠 발송됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:307
+#, elixir-autogen, elixir-format
+msgid "Key recorded"
+msgstr "키가 녹음됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:381
+#, elixir-autogen, elixir-format
+msgid "Key retired"
+msgstr "키 폐기됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:262
+#, elixir-autogen, elixir-format
+msgid "Key retirement offered"
+msgstr "주요 퇴직 제공"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:356
+#, elixir-autogen, elixir-format
+msgid "Key retirement requested"
+msgstr "키 폐기 요청됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:41
+#, elixir-autogen, elixir-format
+msgid "Machine access revoked"
+msgstr "머신 액세스가 취소되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:68
+#, elixir-autogen, elixir-format
+msgid "Machine lifecycle requested"
+msgstr "요청된 머신 수명주기"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:71
+#, elixir-autogen, elixir-format
+msgid "Machine relocation requested"
+msgstr "기계 재배치가 요청되었습니다"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:248
+#, elixir-autogen, elixir-format
+msgid "Machine state observed"
+msgstr "기계 상태가 관찰됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:20
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication reset"
+msgstr "다단계 인증 재설정"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:17
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication verified"
+msgstr "다단계 인증 확인됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:430
+#, elixir-autogen, elixir-format
+msgid "Offered"
+msgstr "제공"
+
+#: lib/marshall_web/live/admin/audit_live.ex:354
+#, elixir-autogen, elixir-format
+msgid "Older events →"
+msgstr "이전 이벤트 →"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:310
+#, elixir-autogen, elixir-format
+msgid "Operation recorded"
+msgstr "작업이 기록되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:11
+#, elixir-autogen, elixir-format
+msgid "Passkey added"
+msgstr "패스키가 추가됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:14
+#, elixir-autogen, elixir-format
+msgid "Passkey removed"
+msgstr "패스키가 삭제되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:359
+#, elixir-autogen, elixir-format
+msgid "Pause requested"
+msgstr "일시중지 요청됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:271
+#: lib/marshall_web/live/admin/audit_labels.ex:457
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "일시 중지됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:402
+#: lib/marshall_web/live/admin/audit_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "보류 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:294
+#, elixir-autogen, elixir-format
+msgid "Placement switch recorded"
+msgstr "배치 전환이 기록되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:242
+#, elixir-autogen, elixir-format
+msgid "Placement switched"
+msgstr "게재위치가 전환됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:274
+#, elixir-autogen, elixir-format
+msgid "Preparation started"
+msgstr "준비가 시작되었습니다"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:406
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "준비 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:313
+#, elixir-autogen, elixir-format
+msgid "Progress recorded"
+msgstr "진행상황이 기록됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:157
+#, elixir-autogen, elixir-format
+msgid "Progress updated"
+msgstr "진행 상황이 업데이트되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:279
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "게시됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:416
+#, elixir-autogen, elixir-format
+msgid "Publishing"
+msgstr "출판"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:127
+#: lib/marshall_web/live/admin/audit_labels.ex:403
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "대기 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:208
+#: lib/marshall_web/live/admin/audit_labels.ex:211
+#, elixir-autogen, elixir-format
+msgid "Readiness confirmed"
+msgstr "준비 확인됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:231
+#: lib/marshall_web/live/admin/audit_labels.ex:478
+#, elixir-autogen, elixir-format
+msgid "Readiness failed"
+msgstr "준비 실패"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:280
+#: lib/marshall_web/live/admin/audit_labels.ex:446
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "준비가 된"
+
+#: lib/marshall_web/live/admin/audit_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
+msgstr "최근 플릿 와일드카드 생성 및 게이트웨이 설치. 개인 키와 ACME 증명은 제외됩니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:283
+#, elixir-autogen, elixir-format
+msgid "Reconciled"
+msgstr "화해됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:285
+#, elixir-autogen, elixir-format
+msgid "Recorded"
+msgstr "녹음됨"
+
+#: lib/marshall_web/live/admin/audit_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
+msgstr ""
+"권한 변경, 수명 주기 요청, 인증서 생성 및 편집자 액세스 권한이 수정되었습니다. 페이로드, 자격 증명 및 터미널 바이트는 제외됩니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:338
+#, elixir-autogen, elixir-format
+msgid "Reflection metadata updated"
+msgstr "반사 메타데이터가 업데이트되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:125
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "등록됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:340
+#, elixir-autogen, elixir-format
+msgid "Replanned"
+msgstr "재계획"
+
+#: lib/marshall_web/live/admin/audit_live.ex:291
+#, elixir-autogen, elixir-format
+msgid "Request a new wildcard certificate for every Audi gateway?"
+msgstr "모든 Audi 게이트웨이에 대해 새로운 와일드카드 인증서를 요청하시겠습니까?"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:130
+#, elixir-autogen, elixir-format
+msgid "Request saved"
+msgstr "요청이 저장되었습니다."
+
+#: lib/marshall_web/live/admin/audit_live.ex:294
+#, elixir-autogen, elixir-format
+msgid "Request wildcard rotation"
+msgstr "와일드카드 순환 요청"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:341
+#, elixir-autogen, elixir-format
+msgid "Requested"
+msgstr "요청됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:168
+#, elixir-autogen, elixir-format
+msgid "Resize applied"
+msgstr "크기 조정 적용됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:368
+#, elixir-autogen, elixir-format
+msgid "Resize started"
+msgstr "크기 조정 시작됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:498
+#, elixir-autogen, elixir-format
+msgid "Resizing"
+msgstr "크기 조정"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:370
+#: lib/marshall_web/live/admin/audit_labels.ex:508
+#, elixir-autogen, elixir-format
+msgid "Resolved"
+msgstr "해결됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:373
+#, elixir-autogen, elixir-format
+msgid "Restart started"
+msgstr "재시작이 시작되었습니다"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:501
+#, elixir-autogen, elixir-format
+msgid "Restarting"
+msgstr "다시 시작하는 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:490
+#, elixir-autogen, elixir-format
+msgid "Restoring source"
+msgstr "소스 복원 중"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:319
+#, elixir-autogen, elixir-format
+msgid "Result recorded"
+msgstr "기록된 결과"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:378
+#: lib/marshall_web/live/admin/audit_labels.ex:449
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "재개됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:150
+#: lib/marshall_web/live/admin/audit_labels.ex:450
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "사용 종료됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:384
+#, elixir-autogen, elixir-format
+msgid "Retry requested"
+msgstr "재시도가 요청되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:484
+#, elixir-autogen, elixir-format
+msgid "Retrying destination"
+msgstr "재시도 대상"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:455
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "달리기"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:44
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked"
+msgstr "SSH 키가 취소되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:47
+#, elixir-autogen, elixir-format
+msgid "SSH session revoked"
+msgstr "SSH 세션이 취소되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:387
+#: lib/marshall_web/live/admin/audit_labels.ex:439
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "예정됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:38
+#, elixir-autogen, elixir-format
+msgid "Sessions revoked"
+msgstr "세션이 취소되었습니다."
+
+#: lib/marshall_web/live/admin/audit_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "Since (ISO 8601)"
+msgstr "이후(ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:199
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture confirmed"
+msgstr "스냅샷 캡처가 확인되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:186
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture started"
+msgstr "스냅샷 캡처가 시작되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:322
+#, elixir-autogen, elixir-format
+msgid "Source restoration recorded"
+msgstr "소스 복원이 기록되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:376
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "원본 복원됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:265
+#, elixir-autogen, elixir-format
+msgid "Source revocation offered"
+msgstr "소스 취소 제공됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:325
+#, elixir-autogen, elixir-format
+msgid "Source revocation recorded"
+msgstr "소스 취소가 기록되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:269
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup offered"
+msgstr "소스 스냅샷 정리 제공"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:329
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup recorded"
+msgstr "소스 스냅샷 정리가 기록되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:392
+#, elixir-autogen, elixir-format
+msgid "Source stop started"
+msgstr "소스 중지가 시작되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:362
+#, elixir-autogen, elixir-format
+msgid "Start requested"
+msgstr "시작이 요청됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:332
+#, elixir-autogen, elixir-format
+msgid "Stop recorded"
+msgstr "녹화 중지"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:365
+#, elixir-autogen, elixir-format
+msgid "Stop requested"
+msgstr "중지 요청됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:389
+#, elixir-autogen, elixir-format
+msgid "Stop started"
+msgstr "중지가 시작되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:456
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "중지됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:408
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "멎는"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:466
+#, elixir-autogen, elixir-format
+msgid "Stopping source"
+msgstr "중지 소스"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:395
+#: lib/marshall_web/live/admin/audit_labels.ex:444
+#, elixir-autogen, elixir-format
+msgid "Superseded"
+msgstr "대체됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:472
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "배치 전환"
+
+#: lib/marshall_web/live/admin/audit_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "목표"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:74
+#, elixir-autogen, elixir-format
+msgid "Team created"
+msgstr "팀이 생성되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:77
+#, elixir-autogen, elixir-format
+msgid "Team membership changed"
+msgstr "팀 구성원이 변경되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:83
+#, elixir-autogen, elixir-format
+msgid "Team ownership accepted"
+msgstr "팀 소유권이 승인됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:86
+#, elixir-autogen, elixir-format
+msgid "Team ownership declined"
+msgstr "팀 소유권이 거부되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:89
+#, elixir-autogen, elixir-format
+msgid "Team ownership offer cancelled"
+msgstr "팀 소유권 제안이 취소되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:80
+#, elixir-autogen, elixir-format
+msgid "Team ownership offered"
+msgstr "팀 소유권 제공"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:316
+#, elixir-autogen, elixir-format
+msgid "Transfer receipt recorded"
+msgstr "이체 영수증이 기록되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:154
+#, elixir-autogen, elixir-format
+msgid "Uncertain certificate order failed"
+msgstr "불확실한 인증서 주문 실패"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:335
+#, elixir-autogen, elixir-format
+msgid "Unconfirmed outcome recorded"
+msgstr "확인되지 않은 결과가 기록됨"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:397
+#: lib/marshall_web/live/admin/audit_labels.ex:459
+#: lib/marshall_web/live/admin/audit_labels.ex:509
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "알려지지 않은"
+
+#: lib/marshall_web/live/admin/audit_live.ex:239
+#, elixir-autogen, elixir-format
+msgid "Until (ISO 8601)"
+msgstr "(ISO 8601)까지"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:26
+#, elixir-autogen, elixir-format
+msgid "User deleted"
+msgstr "사용자가 삭제되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:23
+#, elixir-autogen, elixir-format
+msgid "User invited"
+msgstr "사용자가 초대됨"
+
+#: lib/marshall_web/live/admin/audit_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "VM ID"
+msgstr "VM 식별자"
+
+#: lib/marshall_web/live/admin/audit_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "VM lifecycle"
+msgstr "VM 수명주기"
+
+#: lib/marshall_web/live/admin/audit_live.ex:211
+#, elixir-autogen, elixir-format
+msgid "VS Code access"
+msgstr "VS 코드 액세스"
+
+#: lib/marshall_web/live/admin/audit_live.ex:303
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "언제"
+
+#: lib/marshall_web/live/admin/audit_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation could not be requested."
+msgstr "와일드카드 순환을 요청할 수 없습니다."
+
+#: lib/marshall_web/live/admin/audit_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation requested for generation %{generation}."
+msgstr "%{generation} 세대에 대해 와일드카드 순환이 요청되었습니다."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:253
+#, elixir-autogen, elixir-format
+msgid "Work offered"
+msgstr "제공되는 업무"
+
+#: lib/marshall_web/live/admin/audit_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Workflow ID"
+msgstr "워크플로 ID"

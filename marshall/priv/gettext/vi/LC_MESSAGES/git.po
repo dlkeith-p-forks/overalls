@@ -1,0 +1,127 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: vi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/git_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Binary content"
+msgstr "Nội dung nhị phân"
+
+#: lib/marshall_web/live/git_live.ex:230
+#: lib/marshall_web/live/git_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Commit"
+msgstr "Bản ghi commit"
+
+#: lib/marshall_web/live/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "Commits"
+msgstr "Các commit"
+
+#: lib/marshall_web/live/git_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "Content"
+msgstr "Nội dung"
+
+#: lib/marshall_web/live/git_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Download raw file ↗"
+msgstr "Tải tệp thô ↗"
+
+#: lib/marshall_web/live/git_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Git repositories"
+msgstr "Kho Git"
+
+#: lib/marshall_web/live/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Kind"
+msgstr "Loại"
+
+#: lib/marshall_web/live/git_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Last updated"
+msgstr "Cập nhật lần cuối"
+
+#: lib/marshall_web/live/git_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "Mirror contents are unavailable."
+msgstr "Nội dung bản sao gương không khả dụng."
+
+#: lib/marshall_web/live/git_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Paths"
+msgstr "Đường dẫn"
+
+#: lib/marshall_web/live/git_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Read-only mirrors of public GitHub repositories."
+msgstr "Bản sao gương chỉ đọc của kho GitHub công khai."
+
+#: lib/marshall_web/live/git_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "Ref"
+msgstr "Tham chiếu"
+
+#: lib/marshall_web/live/git_live.ex:157
+#, elixir-autogen, elixir-format
+msgid "Repositories"
+msgstr "Kho mã"
+
+#: lib/marshall_web/live/git_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "Repository path"
+msgstr "Đường dẫn kho mã"
+
+#: lib/marshall_web/live/git_live.ex:275
+#, elixir-autogen, elixir-format
+msgid "Repository unavailable."
+msgstr "Kho mã không khả dụng."
+
+#: lib/marshall_web/live/git_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "Repository views"
+msgstr "Lượt xem kho mã"
+
+#: lib/marshall_web/live/git_live.ex:197
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "Tìm kiếm"
+
+#: lib/marshall_web/live/git_live.ex:181
+#: lib/marshall_web/live/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Search content"
+msgstr "Tìm nội dung"
+
+#: lib/marshall_web/live/git_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Subject"
+msgstr "Chủ đề"
+
+#: lib/marshall_web/controllers/git_raw_controller.ex:24
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Không khả dụng"
+
+#: lib/marshall_web/live/git_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "file"
+msgstr "tệp"
+
+#: lib/marshall_web/live/git_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "← Parent directory"
+msgstr "← Thư mục mẹ"

@@ -1,0 +1,375 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ha\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/integrations_live.ex:351
+#, elixir-autogen, elixir-format
+msgid "**** (write-only)"
+msgstr "**** (rubuta-kawai)"
+
+#: lib/marshall_web/live/integrations_live.ex:376
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Ayyuka"
+
+#: lib/marshall_web/live/integrations_live.ex:421
+#, elixir-autogen, elixir-format
+msgid "Add an integration"
+msgstr "Ƙara haɗin kai"
+
+#: lib/marshall_web/live/integrations_live.ex:288
+#: lib/marshall_web/live/integrations_live.ex:415
+#, elixir-autogen, elixir-format
+msgid "Attach"
+msgstr "Haɗa"
+
+#: lib/marshall_web/live/integrations_live.ex:412
+#, elixir-autogen, elixir-format
+msgid "Attach a machine by ID"
+msgstr "Haɗa inji ta ID"
+
+#: lib/marshall_web/live/integrations_live.ex:145
+#, elixir-autogen, elixir-format
+msgid "Awaiting GitHub authorization"
+msgstr "Ana jiran izinin GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:456
+#, elixir-autogen, elixir-format
+msgid "Basic user:pass"
+msgstr "Mai amfani na asali: wucewa"
+
+#: lib/marshall_web/live/integrations_live.ex:450
+#, elixir-autogen, elixir-format
+msgid "Bearer token"
+msgstr "Alamar mai ɗaukar nauyi"
+
+#: lib/marshall_web/live/integrations_live.ex:334
+#: lib/marshall_web/live/integrations_live.ex:436
+#, elixir-autogen, elixir-format
+msgid "Comment"
+msgstr "Sharhi"
+
+#: lib/marshall_web/live/integrations_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Connect GitHub"
+msgstr "Haɗa GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
+msgstr "Haɗa asusun ku na GitHub don Git, buƙatun ja, Ayyuka, sakewa da sauran ayyukan ci gaba. Takaddun shaida na GitHub suna tsayawa a gefen."
+
+#: lib/marshall_web/live/integrations_live.ex:142
+#: lib/marshall_web/live/integrations_live.ex:143
+#, elixir-autogen, elixir-format
+msgid "Connected"
+msgstr "An haɗa"
+
+#: lib/marshall_web/live/integrations_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Connected as %{login}"
+msgstr "An haɗa shi azaman %{login}"
+
+#: lib/marshall_web/live/integrations_live.ex:91
+#, elixir-autogen, elixir-format
+msgid "Could not attach that machine."
+msgstr "An kasa haɗa na'urar."
+
+#: lib/marshall_web/live/integrations_live.ex:107
+#, elixir-autogen, elixir-format
+msgid "Could not detach that machine."
+msgstr "An kasa cire wannan injin."
+
+#: lib/marshall_web/live/integrations_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Could not remove this integration."
+msgstr "An kasa cire wannan haɗin kai."
+
+#: lib/marshall_web/live/integrations_live.ex:58
+#, elixir-autogen, elixir-format
+msgid "Could not save this integration. Check the name, HTTPS target and header values."
+msgstr "An kasa ajiye wannan haɗin kai. Bincika sunan, manufa HTTPS da ƙimar kan kai."
+
+#: lib/marshall_web/live/integrations_live.ex:445
+#, elixir-autogen, elixir-format
+msgid "Credentials"
+msgstr "Takaddun shaida"
+
+#: lib/marshall_web/live/integrations_live.ex:279
+#: lib/marshall_web/live/integrations_live.ex:393
+#, elixir-autogen, elixir-format
+msgid "Detach"
+msgstr "Ware"
+
+#: lib/marshall_web/live/integrations_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Disconnect GitHub"
+msgstr "Cire haɗin GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:256
+#, elixir-autogen, elixir-format
+msgid "Disconnect GitHub from your machines?"
+msgstr "Cire haɗin GitHub daga injin ku?"
+
+#: lib/marshall_web/live/integrations_live.ex:144
+#, elixir-autogen, elixir-format
+msgid "Disconnected"
+msgstr "An cire haɗin"
+
+#: lib/marshall_web/live/integrations_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Disconnecting GitHub"
+msgstr "Cire haɗin GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:146
+#, elixir-autogen, elixir-format
+msgid "Finishing active GitHub requests"
+msgstr "Ƙarshen buƙatun GitHub mai aiki"
+
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:33
+#, elixir-autogen, elixir-format
+msgid "GitHub connected."
+msgstr "An haɗa GitHub."
+
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:65
+#, elixir-autogen, elixir-format
+msgid "GitHub could not be connected. Try again from Integrations."
+msgstr "Ba za a iya haɗa GitHub ba. A sake gwadawa daga Haɗin kai."
+
+#: lib/marshall_web/live/integrations_live.ex:441
+#, elixir-autogen, elixir-format
+msgid "HTTPS target"
+msgstr "HTTPS manufa"
+
+#: lib/marshall_web/live/integrations_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Injected credentials"
+msgstr "Alamun allura"
+
+#: lib/marshall_web/live/integrations_live.ex:49
+#, elixir-autogen, elixir-format
+msgid "Integration %{value1} saved."
+msgstr "An adana Haɗin kai %{value1}."
+
+#: lib/marshall_web/live/integrations_live.ex:70
+#, elixir-autogen, elixir-format
+msgid "Integration removed."
+msgstr "An cire haɗin kai."
+
+#: lib/marshall_web/live/integrations_live.ex:217
+#, elixir-autogen, elixir-format
+msgid "Integrations"
+msgstr "Haɗin kai"
+
+#: lib/marshall_web/live/integrations_live.ex:136
+#, elixir-autogen, elixir-format
+msgid "Integrations are temporarily unavailable."
+msgstr "Ba a samun haɗin kai na ɗan lokaci."
+
+#: lib/marshall_web/live/integrations_live.ex:113
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "nema mara inganci."
+
+#: lib/marshall_web/live/integrations_live.ex:374
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Inji"
+
+#: lib/marshall_web/live/integrations_live.ex:276
+#: lib/marshall_web/live/integrations_live.ex:413
+#, elixir-autogen, elixir-format
+msgid "Machine UUID"
+msgstr "Inji UUID"
+
+#: lib/marshall_web/live/integrations_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Machine attached."
+msgstr "Injin haɗe."
+
+#: lib/marshall_web/live/integrations_live.ex:102
+#, elixir-autogen, elixir-format
+msgid "Machine detached."
+msgstr "Injin ware."
+
+#: lib/marshall_web/live/integrations_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Machines excluded from your GitHub identity"
+msgstr "An cire injuna daga ainihin GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:355
+#, elixir-autogen, elixir-format
+msgid "Machines with access"
+msgstr "injina tare da shiga"
+
+#: lib/marshall_web/live/integrations_live.ex:431
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "Suna"
+
+#: lib/marshall_web/live/integrations_live.ex:423
+#, elixir-autogen, elixir-format
+msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
+msgstr "Sunan ƙarshen ƙarshen kuma nuna shi a HTTPS API , ko yi masa alama azaman haɗin ƙwararru zuwa wata na'ura. Sirrin rubuta-kawai: ana adana su don allura kuma ba a sake nuna su ba."
+
+#: lib/marshall_web/live/integrations_live.ex:219
+#, elixir-autogen, elixir-format
+msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
+msgstr "Ƙarshen sunaye na injunan ku zuwa https://NAME.integration.internal. Takaddun shaida ana yi musu allura a gefen kuma ba za a taɓa karanta su daga na'ura ba."
+
+#: lib/marshall_web/live/integrations_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "No explicit attachments. Current team members' machines have access."
+msgstr "Babu haɗe-haɗe bayyane. Injin membobin ƙungiyar na yanzu suna da damar shiga."
+
+#: lib/marshall_web/live/integrations_live.ex:347
+#, elixir-autogen, elixir-format
+msgid "No injected headers."
+msgstr "Babu alluran kai."
+
+#: lib/marshall_web/live/integrations_live.ex:295
+#, elixir-autogen, elixir-format
+msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
+msgstr "Babu haɗin kai tukuna. Ƙara ɗaya a ƙasa don baiwa injinan ku haɗin suna zuwa API ko zuwa wata na'ura."
+
+#: lib/marshall_web/live/integrations_live.ex:365
+#, elixir-autogen, elixir-format
+msgid "No machines have access. Attach a machine to use this integration."
+msgstr "Babu injuna da ke da damar shiga. Haɗa inji don amfani da wannan haɗin kai."
+
+#: lib/marshall_web/live/integrations_live.ex:329
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "Mai shi"
+
+#: lib/marshall_web/live/integrations_live.ex:493
+#, elixir-autogen, elixir-format
+msgid "Peer integration"
+msgstr "Haɗin kai"
+
+#: lib/marshall_web/live/integrations_live.ex:326
+#, elixir-autogen, elixir-format
+msgid "Peer machine"
+msgstr "Injin tsara"
+
+#: lib/marshall_web/live/integrations_live.ex:498
+#, elixir-autogen, elixir-format
+msgid "Peer machine ID"
+msgstr "ID na injin peer"
+
+#: lib/marshall_web/live/integrations_live.ex:332
+#, elixir-autogen, elixir-format
+msgid "Personal integration"
+msgstr "Haɗin kai"
+
+#: lib/marshall_web/live/integrations_live.ex:148
+#, elixir-autogen, elixir-format
+msgid "Reconnect required"
+msgstr "Ana buƙatar sake haɗawa"
+
+#: lib/marshall_web/live/integrations_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "Refreshing GitHub connection"
+msgstr "Haɗin GitHub mai wartsakewa"
+
+#: lib/marshall_web/live/integrations_live.ex:317
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Cire"
+
+#: lib/marshall_web/live/integrations_live.ex:314
+#, elixir-autogen, elixir-format
+msgid "Remove this integration?"
+msgstr "Cire wannan haɗin kai?"
+
+#: lib/marshall_web/live/integrations_live.ex:499
+#, elixir-autogen, elixir-format
+msgid "Required for peer integrations"
+msgstr "Da ake buƙata don haɗin gwiwar takwarorinsu"
+
+#: lib/marshall_web/live/integrations_live.ex:475
+#, elixir-autogen, elixir-format
+msgid "Routing, team ownership and peer connections"
+msgstr "Gudanar da hanya, ikon mallakar ƙungiya da haɗin kai"
+
+#: lib/marshall_web/live/integrations_live.ex:505
+#, elixir-autogen, elixir-format
+msgid "Save integration"
+msgstr "Ajiye haɗin kai"
+
+#: lib/marshall_web/live/integrations_live.ex:437
+#, elixir-autogen, elixir-format
+msgid "Short description for guest reflection"
+msgstr "Takaitaccen bayanin don tunanin baƙo"
+
+#: lib/marshall_web/live/integrations_live.ex:463
+#, elixir-autogen, elixir-format
+msgid "Static header name"
+msgstr "Sunan taken a tsaye"
+
+#: lib/marshall_web/live/integrations_live.ex:469
+#, elixir-autogen, elixir-format
+msgid "Static header value"
+msgstr "Ƙimar kai tsaye"
+
+#: lib/marshall_web/live/integrations_live.ex:481
+#, elixir-autogen, elixir-format
+msgid "Strip prefix"
+msgstr "Tufafi prefix"
+
+#: lib/marshall_web/live/integrations_live.ex:339
+#, elixir-autogen, elixir-format
+msgid "Strips prefix"
+msgstr "Takalmi prefix"
+
+#: lib/marshall_web/live/integrations_live.ex:323
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "manufa"
+
+#: lib/marshall_web/live/integrations_live.ex:331
+#, elixir-autogen, elixir-format
+msgid "Team %{team}"
+msgstr "Ƙungiyar %{team}"
+
+#: lib/marshall_web/live/integrations_live.ex:486
+#, elixir-autogen, elixir-format
+msgid "Team ID"
+msgstr "ID na ƙungiyar"
+
+#: lib/marshall_web/live/integrations_live.ex:487
+#, elixir-autogen, elixir-format
+msgid "Team-owned integration"
+msgstr "Haɗin kai mallakar ƙungiya"
+
+#: lib/marshall_web/live/integrations_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Temporarily unavailable"
+msgstr "Babu ɗan lokaci"
+
+#: lib/marshall_web/live/integrations_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
+msgstr "Injinanka suna amfani da shaidar GitHub da ka haɗa kai tsaye. Abokan aiki da ke amfani da injin da aka raba za su iya amfani da izinin GitHub na mai shi. Injina da aka cire haɗinsu suna ci gaba da samun damar GitHub na jama'a ba tare da suna ba."
+
+#: lib/marshall_web/live/integrations_live.ex:432
+#, elixir-autogen, elixir-format
+msgid "example-integration"
+msgstr "misalin-haɗin-gwiwa"
+
+#: lib/marshall_web/live/integrations_live.ex:464
+#, elixir-autogen, elixir-format
+msgid "x-api-token"
+msgstr "x-api-token"

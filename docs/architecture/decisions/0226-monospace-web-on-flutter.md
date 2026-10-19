@@ -70,8 +70,21 @@ generated or run**. Remaining: tables.
 
 Whether to correct the web glyph table comment or substitute glyphs on the web.
 
+[ADR-0207](0207-bundled-multilingual-font-fallback.md) later replaced
+ADR-0161's exclusive-typeface clause for the browser and bundled Noto fallbacks
+there, because browser rendering otherwise depends on the reader's installed
+fonts. Mila keeps JetBrains Mono as its only bundled face. For scripts that face
+lacks (Arabic, Devanagari, Bengali, Telugu, Tamil and CJK among the supported
+locales), Mila uses the platform's system fallback, which iOS and Android ship
+for these scripts. The Linux `flutter test` goldens have no such fallback and
+show placeholder boxes for those scripts. So neither the goldens nor any other
+test establishes Mila's script coverage on devices. Whether Mila should also
+bundle the ADR-0207 Noto faces is open. Device verification of each
+supported script is untested.
+
 ## Related decisions
 
 [ADR-0161](0161-monospace-web-presentation.md),
+[ADR-0207](0207-bundled-multilingual-font-fallback.md),
 [ADR-0201](0201-localized-human-surfaces.md),
 [ADR-0220](0220-mila-client-over-porsche-ssh.md).

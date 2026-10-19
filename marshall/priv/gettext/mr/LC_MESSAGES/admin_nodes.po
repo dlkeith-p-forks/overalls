@@ -1,0 +1,808 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: mr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "सक्रिय"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:259
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:302
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:393
+#, elixir-autogen, elixir-format
+msgid "Admission"
+msgstr "प्रवेशमंजुरी"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:89
+#, elixir-autogen, elixir-format
+msgid "Admission settings updated."
+msgstr "प्रवेशमंजुरी सेटिंग्ज अद्ययावत केली."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Admission settings were invalid or the node is not ready."
+msgstr "प्रवेशमंजुरी सेटिंग्ज चुकीची होती किंवा नोड तयार नाही."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:615
+#, elixir-autogen, elixir-format
+msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
+msgstr ""
+"या पृष्ठाचे सूचक पूर्वावलोकन. प्रत्येक कार्यभार स्वतंत्रपणे तपासला जातो; "
+"गंतव्ये आणि उपलब्ध क्षमता बदलू शकतात. प्रत्येक स्थलांतर सुरू होताना "
+"प्रवेशमंजुरी पुन्हा तपासून संसाधने राखून ठेवते."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:430
+#, elixir-autogen, elixir-format
+msgid "Apply admission settings"
+msgstr "प्रवेशमंजुरी सेटिंग्ज लागू करा"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#, elixir-autogen, elixir-format
+msgid "Approve move downtime"
+msgstr "स्थलांतरातील खंड मंजूर करा"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:635
+#, elixir-autogen, elixir-format
+msgid "Blocked: %{reason}"
+msgstr "अवरोधित: %{reason}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
+#, elixir-autogen, elixir-format
+msgid "CPU after holds"
+msgstr "आरक्षणांनंतर CPU"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
+#, elixir-autogen, elixir-format
+msgid "CPU headroom"
+msgstr "CPU शिल्लक"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#, elixir-autogen, elixir-format
+msgid "CPU overhead (cores)"
+msgstr "CPU अतिरिक्त खर्च (कोर)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:486
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#, elixir-autogen, elixir-format
+msgid "Campaign"
+msgstr "मोहीम"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:804
+#, elixir-autogen, elixir-format
+msgid "Campaign closed"
+msgstr "मोहीम बंद झाली"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#, elixir-autogen, elixir-format
+msgid "Campaign history"
+msgstr "मोहिमेचा इतिहास"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:798
+#, elixir-autogen, elixir-format
+msgid "Campaign requested"
+msgstr "मोहिमेची विनंती केली"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#, elixir-autogen, elixir-format
+msgid "Campaign, workload and relocation milestones from durable control-plane records."
+msgstr "कायम नियंत्रण-स्तर नोंदींमधील मोहीम, कार्यभार आणि स्थलांतर टप्पे."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:827
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "रद्द करण्याची विनंती केली"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:915
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "रद्द"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
+#, elixir-autogen, elixir-format
+msgid "Candidate: %{name}"
+msgstr "उमेदवार: %{name}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:356
+#, elixir-autogen, elixir-format
+msgid "Capacity explanation"
+msgstr "क्षमता स्पष्टीकरण"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Capacity information is temporarily unavailable."
+msgstr "क्षमता माहिती तात्पुरती उपलब्ध नाही."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:769
+#, elixir-autogen, elixir-format
+msgid "Checking destination readiness"
+msgstr "गंतव्याची तयारी तपासत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
+#, elixir-autogen, elixir-format
+msgid "Checking transfer connectivity"
+msgstr "हस्तांतरण जोडणी तपासत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
+#, elixir-autogen, elixir-format
+msgid "Cleaning up after cancellation"
+msgstr "रद्द केल्यानंतर साफसफाई करत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
+#, elixir-autogen, elixir-format
+msgid "Cleaning up the source"
+msgstr "स्रोताची साफसफाई करत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:869
+#, elixir-autogen, elixir-format
+msgid "Clone in progress"
+msgstr "क्लोन तयार होत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#, elixir-autogen, elixir-format
+msgid "Closed"
+msgstr "बंद"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "पूर्ण"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:377
+#, elixir-autogen, elixir-format
+msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
+msgstr "संयोजित होस्ट अधिभार: %{cores} कोअर · %{memory} मेमरी. हे राखीव भाग प्रवेशाच्या गणनेत समाविष्ट आहेत आणि उपयोजनाच्या नियंत्रणाखाली राहतात."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:508
+#, elixir-autogen, elixir-format
+msgid "Continue scheduling"
+msgstr "नियोजन सुरू ठेवा"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#, elixir-autogen, elixir-format
+msgid "Copy/resize holds"
+msgstr "प्रत/आकारबदल आरक्षणे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:760
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "प्रत करत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:166
+#, elixir-autogen, elixir-format
+msgid "Could not accept this change. Refresh and check the workload state."
+msgstr "हा बदल स्वीकारता आला नाही. रीफ्रेश करून कार्यभार स्थिती तपासा."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:744
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "हटवले"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#, elixir-autogen, elixir-format
+msgid "Deleting retained copies"
+msgstr "राखलेल्या प्रती हटवत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
+#, elixir-autogen, elixir-format
+msgid "Desired: %{desired} · Observed: %{observed}"
+msgstr "इच्छित: %{desired} · निरीक्षित: %{observed}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
+#, elixir-autogen, elixir-format
+msgid "Destination boot failed; source copy retained"
+msgstr "गंतव्य बूट अयशस्वी; स्रोत प्रत राखली"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:824
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup confirmed"
+msgstr "गंतव्याच्या साफसफाईची पुष्टी झाली"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup requested"
+msgstr "गंतव्याच्या साफसफाईची विनंती केली"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:772
+#, elixir-autogen, elixir-format
+msgid "Destination readiness failed; source copy retained"
+msgstr "गंतव्य तयारी अयशस्वी; स्रोत प्रत राखली"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:548
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "तपशील"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#, elixir-autogen, elixir-format
+msgid "Disk after holds"
+msgstr "आरक्षणांनंतर डिस्क"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:860
+#, elixir-autogen, elixir-format
+msgid "Downtime approval required"
+msgstr "सेवा खंडित होण्याच्या वेळेस मंजुरी आवश्यक"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:836
+#, elixir-autogen, elixir-format
+msgid "Downtime approved"
+msgstr "सेवा खंडित होण्याच्या वेळेस मंजुरी दिली"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
+#, elixir-autogen, elixir-format
+msgid "Downtime approved for this workload revision"
+msgstr "या कार्यभार आवृत्तीसाठी खंड मंजूर"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "कार्यभार रिकामा केला"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:729
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "कार्यभार रिकामा करत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "सक्षम"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
+msgstr ""
+"या नोडवरील सर्व कार्यभार स्थलांतरित करायचे? स्थलांतरावेळी चालू गेस्टमध्ये "
+"खंड पडेल. पूर्ण थांबवून प्रत करण्यासाठी प्रत्येक कार्यभाराची वेगळी मंजुरी "
+"आवश्यक आहे."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "कार्यभार हलवत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
+msgstr ""
+"रिकामीकरण नवीन वाटप थांबवते, पण विद्यमान गेस्टची सेवा सुरू राहते. चालू गेस्ट"
+" हलवताना थोडा खंड पडतो. पूर्ण थांबवून प्रत करण्यास खूप जास्त वेळ लागू शकतो "
+"आणि प्रत्येक कार्यभारासाठी मंजुरी लागते."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#, elixir-autogen, elixir-format
+msgid "Evacuation campaign"
+msgstr "रिकामीकरण मोहीम"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
+#, elixir-autogen, elixir-format
+msgid "Evacuation timeline"
+msgstr "रिकामीकरण कालरेषा"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:547
+#, elixir-autogen, elixir-format
+msgid "Event"
+msgstr "घटना"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:272
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:305
+#, elixir-autogen, elixir-format
+msgid "Excluded"
+msgstr "वगळलेले"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:370
+#, elixir-autogen, elixir-format
+msgid "Execution ready"
+msgstr "अंमलबजावणी तयार"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:334
+#, elixir-autogen, elixir-format
+msgid "Explain capacity"
+msgstr "क्षमता समजावून सांगा"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:912
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "अयशस्वी"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:277
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:456
+#, elixir-autogen, elixir-format
+msgid "Fresh"
+msgstr "ताजे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "Fresh report"
+msgstr "ताजा अहवाल"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:763
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "आयात करत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:857
+#, elixir-autogen, elixir-format
+msgid "Insufficient capacity"
+msgstr "अपुरी क्षमता"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "अवैध विनंती."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:830
+#, elixir-autogen, elixir-format
+msgid "Job state"
+msgstr "कार्याची स्थिती"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:291
+#, elixir-autogen, elixir-format
+msgid "Lilly node · %{mode} maintenance"
+msgstr "Lilly नोड · %{mode} देखभाल"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
+msgstr ""
+"Lilly नोड आणि त्यांची प्रवेशमंजुरी स्थिती. मशीन सेवेतून काढण्यापूर्वी नोडचे "
+"कार्यभार हलवा."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:258
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:299
+#, elixir-autogen, elixir-format
+msgid "Maintenance"
+msgstr "देखभाल"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
+#, elixir-autogen, elixir-format
+msgid "Maintenance pages"
+msgstr "देखभाल पृष्ठे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "Maintenance updated."
+msgstr "देखभाल अद्ययावत केली."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:445
+#, elixir-autogen, elixir-format
+msgid "Memory after holds"
+msgstr "आरक्षणांनंतर मेमरी"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:443
+#, elixir-autogen, elixir-format
+msgid "Memory headroom"
+msgstr "मेमरी शिल्लक"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
+#, elixir-autogen, elixir-format
+msgid "Next page →"
+msgstr "पुढील पृष्ठ →"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:129
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
+#, elixir-autogen, elixir-format
+msgid "No active campaign."
+msgstr "सक्रिय मोहीम नाही."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:257
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Node"
+msgstr "नोड"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Node information is unavailable."
+msgstr "नोड माहिती उपलब्ध नाही."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Node maintenance"
+msgstr "नोड देखभाल"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
+#, elixir-autogen, elixir-format
+msgid "Normal"
+msgstr "सामान्य"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s"
+msgstr "निरीक्षित व्यत्यय: %{seconds}s"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:648
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s (ongoing)"
+msgstr "निरीक्षित व्यत्यय: %{seconds}s (सुरू आहे)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:587
+#, elixir-autogen, elixir-format
+msgid "Opened"
+msgstr "उघडले"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
+#, elixir-autogen, elixir-format
+msgid "Pause scheduling"
+msgstr "नियोजन थांबवा"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
+#, elixir-autogen, elixir-format
+msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
+msgstr ""
+"थांबवल्याने नवीन स्थलांतरे नियोजित होत नाहीत. स्वीकारलेली स्थलांतरे सुरू "
+"राहतात. देखभाल तयारीसाठी स्रोत स्वच्छतेची पुष्टी हवी; पूर्ण झालेले जॉब "
+"पुरेसे नाहीत."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "विराम दिलेला"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:742
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "प्रलंबित"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:522
+#, elixir-autogen, elixir-format
+msgid "Permanently retire this empty node and revoke its credentials?"
+msgstr "हा रिकामा नोड कायम निवृत्त करून त्याची ओळखमाहिती रद्द करायची?"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:644
+#, elixir-autogen, elixir-format
+msgid "Phase: %{phase}"
+msgstr "टप्पा: %{phase}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:440
+#, elixir-autogen, elixir-format
+msgid "Pool"
+msgstr "पूल"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "तयारी करत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:331
+#, elixir-autogen, elixir-format
+msgid "Preview evacuation"
+msgstr "रिकामीकरण पूर्वावलोकन"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
+#, elixir-autogen, elixir-format
+msgid "Preview: %{blocker}"
+msgstr "पूर्वावलोकन: %{blocker}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:894
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "रांगेत"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:419
+#, elixir-autogen, elixir-format
+msgid "RAM overhead (bytes)"
+msgstr "RAM अतिरिक्त खर्च (बाइट)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
+#, elixir-autogen, elixir-format
+msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
+msgstr ""
+"सध्याचे वाटप आणि अपेक्षित स्थिती वापरून कार्यभाराचे पुनर्नियोजन करायचे? "
+"आधीची खंड मंजुरी पुसली जाईल."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Re-plan workload"
+msgstr "कार्यभार पुनर्नियोजित करा"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:359
+#, elixir-autogen, elixir-format
+msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
+msgstr ""
+"फक्त वाचनीय प्रवेशमंजुरी गणना. क्षमता राखत नाही; अज्ञात मोजमाप प्रवेश "
+"रोखतात."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:738
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "तयार"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:807
+#, elixir-autogen, elixir-format
+msgid "Relocation committed"
+msgstr "स्थलांतर कायम केले"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:866
+#, elixir-autogen, elixir-format
+msgid "Relocation in progress"
+msgstr "स्थलांतर सुरू आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:839
+#, elixir-autogen, elixir-format
+msgid "Relocation started"
+msgstr "स्थलांतर सुरू झाले"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
+#, elixir-autogen, elixir-format
+msgid "Removed from this source; awaiting campaign cleanup verification."
+msgstr "या स्रोतावरून काढले; मोहीम स्वच्छता पडताळणीची वाट पाहत आहे."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:307
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:441
+#, elixir-autogen, elixir-format
+msgid "Report"
+msgstr "अहवाल"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:863
+#, elixir-autogen, elixir-format
+msgid "Resize in progress"
+msgstr "आकारबदल सुरू आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:515
+#, elixir-autogen, elixir-format
+msgid "Restore admission"
+msgstr "प्रवेशमंजुरी पुनर्संचयित करा"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
+#, elixir-autogen, elixir-format
+msgid "Restoring the source"
+msgstr "स्रोत पुनर्स्थापित करत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "पुन्हा सुरू झाले"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
+#, elixir-autogen, elixir-format
+msgid "Retire node"
+msgstr "नोड निवृत्त करा"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:735
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "सेवानिवृत्त"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:906
+#, elixir-autogen, elixir-format
+msgid "Retrying"
+msgstr "पुन्हा प्रयत्न करत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
+#, elixir-autogen, elixir-format
+msgid "Retrying destination boot"
+msgstr "गंतव्य बूट करण्याचा पुन्हा प्रयत्न करत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:740
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:903
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "चालू"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:900
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "नियोजित"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
+#, elixir-autogen, elixir-format
+msgid "Source cleanup confirmed"
+msgstr "स्रोताच्या साफसफाईची पुष्टी झाली"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:813
+#, elixir-autogen, elixir-format
+msgid "Source cleanup requested"
+msgstr "स्रोताच्या साफसफाईची विनंती केली"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:801
+#, elixir-autogen, elixir-format
+msgid "Source ready"
+msgstr "स्रोत तयार"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:810
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "स्रोत पुनर्स्थापित केला"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:851
+#, elixir-autogen, elixir-format
+msgid "Source unavailable"
+msgstr "स्रोत अनुपलब्ध"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:278
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:457
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown"
+msgstr "जुने किंवा अज्ञात"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:310
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown report"
+msgstr "जुना किंवा अज्ञात अहवाल"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:350
+#, elixir-autogen, elixir-format
+msgid "Start evacuation"
+msgstr "रिकामीकरण सुरू करा"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:447
+#, elixir-autogen, elixir-format
+msgid "Startup holds"
+msgstr "सुरुवातीची आरक्षणे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "स्थिती"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#, elixir-autogen, elixir-format
+msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
+msgstr ""
+"संपूर्ण स्थलांतरासाठी हा चालू कार्यभार थांबवायचा? डिस्कची प्रत आणि "
+"गंतव्यावरील रीस्टार्टमुळे मोठा खंड पडू शकतो."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "थांबलेले"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
+#, elixir-autogen, elixir-format
+msgid "Stopping the source"
+msgstr "स्रोत थांबवत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:909
+#, elixir-autogen, elixir-format
+msgid "Succeeded"
+msgstr "यशस्वी"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:897
+#, elixir-autogen, elixir-format
+msgid "Suspended"
+msgstr "निलंबित"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:766
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "वाटप बदलत आहे"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:314
+#, elixir-autogen, elixir-format
+msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
+msgstr "टर्मिनल प्रोटोकॉल: %{protocol} · स्थानिक प्रवाह: %{state}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:546
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "वेळ"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:854
+#, elixir-autogen, elixir-format
+msgid "Transfer busy"
+msgstr "हस्तांतरण व्यस्त"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "उपलब्ध नाही"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:315
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:749
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:871
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:872
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:874
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:917
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "अज्ञात"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:556
+#, elixir-autogen, elixir-format
+msgid "VM"
+msgstr "VM"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:845
+#, elixir-autogen, elixir-format
+msgid "Workload changed"
+msgstr "कार्यभार बदलला"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:848
+#, elixir-autogen, elixir-format
+msgid "Workload is not stable"
+msgstr "कार्यभार स्थिर नाही"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:833
+#, elixir-autogen, elixir-format
+msgid "Workload observed"
+msgstr "कार्यभाराचे निरीक्षण केले"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:842
+#, elixir-autogen, elixir-format
+msgid "Workload resolved"
+msgstr "कार्यभाराचे निराकरण केले"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
+#, elixir-autogen, elixir-format
+msgid "attempt %{attempt}"
+msgstr "प्रयत्न %{attempt}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
+#, elixir-autogen, elixir-format
+msgid "campaign"
+msgstr "मोहीम"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:367
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "enabled"
+msgstr "सक्षम"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:400
+#, elixir-autogen, elixir-format
+msgid "excluded"
+msgstr "वगळलेले"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:563
+#, elixir-autogen, elixir-format
+msgid "job"
+msgstr "जॉब"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:558
+#, elixir-autogen, elixir-format
+msgid "move"
+msgstr "हलवा"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:318
+#, elixir-autogen, elixir-format
+msgid "ready"
+msgstr "तयार"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "unavailable"
+msgstr "उपलब्ध नाही"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "अज्ञात"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "yes"
+msgstr "होय"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
+#, elixir-autogen, elixir-format
+msgid "· Downtime approval required"
+msgstr "· खंड मंजुरी आवश्यक"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:709
+#, elixir-autogen, elixir-format
+msgid "← First page"
+msgstr "← पहिले पृष्ठ"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "← Nodes"
+msgstr "← नोड"

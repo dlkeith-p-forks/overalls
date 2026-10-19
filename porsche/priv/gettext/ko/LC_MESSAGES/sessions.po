@@ -1,0 +1,16 @@
+#
+msgid ""
+msgstr ""
+"Language: ko\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/porsche/ssh/channel.ex:154
+#, elixir-autogen, elixir-format
+msgid "Docs:"
+msgstr "문서:"
+
+#: lib/porsche/ssh/channel.ex:152
+#, elixir-autogen, elixir-format
+msgid "Porsche machine management. Type help."
+msgstr "Porsche 머신 관리입니다. help를 입력하세요."

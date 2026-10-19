@@ -1,0 +1,127 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ta\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/git_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Binary content"
+msgstr "இரும உள்ளடக்கம்"
+
+#: lib/marshall_web/live/git_live.ex:230
+#: lib/marshall_web/live/git_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Commit"
+msgstr "குறியீட்டுப் பதிவு"
+
+#: lib/marshall_web/live/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "Commits"
+msgstr "குறியீட்டுப் பதிவுகள்"
+
+#: lib/marshall_web/live/git_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "Content"
+msgstr "உள்ளடக்கம்"
+
+#: lib/marshall_web/live/git_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Download raw file ↗"
+msgstr "மூலக் கோப்பைப் பதிவிறக்கு ↗"
+
+#: lib/marshall_web/live/git_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Git repositories"
+msgstr "Git களஞ்சியங்கள்"
+
+#: lib/marshall_web/live/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Kind"
+msgstr "வகை"
+
+#: lib/marshall_web/live/git_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Last updated"
+msgstr "கடைசிப் புதுப்பிப்பு"
+
+#: lib/marshall_web/live/git_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "Mirror contents are unavailable."
+msgstr "பிரதியின் உள்ளடக்கம் கிடைக்கவில்லை."
+
+#: lib/marshall_web/live/git_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Paths"
+msgstr "பாதைகள்"
+
+#: lib/marshall_web/live/git_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Read-only mirrors of public GitHub repositories."
+msgstr "பொது GitHub களஞ்சியங்களின் வாசிக்க மட்டுமே கூடிய பிரதிகள்."
+
+#: lib/marshall_web/live/git_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "Ref"
+msgstr "குறிப்பு"
+
+#: lib/marshall_web/live/git_live.ex:157
+#, elixir-autogen, elixir-format
+msgid "Repositories"
+msgstr "களஞ்சியங்கள்"
+
+#: lib/marshall_web/live/git_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "Repository path"
+msgstr "களஞ்சியப் பாதை"
+
+#: lib/marshall_web/live/git_live.ex:275
+#, elixir-autogen, elixir-format
+msgid "Repository unavailable."
+msgstr "களஞ்சியம் கிடைக்கவில்லை."
+
+#: lib/marshall_web/live/git_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "Repository views"
+msgstr "களஞ்சியக் காட்சிகள்"
+
+#: lib/marshall_web/live/git_live.ex:197
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "தேடு"
+
+#: lib/marshall_web/live/git_live.ex:181
+#: lib/marshall_web/live/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Search content"
+msgstr "உள்ளடக்கத்தில் தேடு"
+
+#: lib/marshall_web/live/git_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Subject"
+msgstr "பொருள்"
+
+#: lib/marshall_web/controllers/git_raw_controller.ex:24
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "கிடைக்கவில்லை"
+
+#: lib/marshall_web/live/git_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "file"
+msgstr "கோப்பு"
+
+#: lib/marshall_web/live/git_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "← Parent directory"
+msgstr "← தாய் அடைவு"

@@ -1,7 +1,7 @@
 /* The Monospace Web tokens (ADR-0161). Every colour the application renders
    derives from these four tokens per theme; no other file may declare one. */
 :root {
-  --font-family: "JetBrains Mono", ui-monospace, monospace;
+  --font-family: "JetBrains Mono", "Overalls Noto Mono", "Overalls Noto CJK", "Overalls Noto", "Overalls Noto Symbols", ui-monospace, monospace;
   /* 1.2rem, declared as 1.203125rem (19.25px at 16px, 16.84375px at 14px) so
      browser layout units of 1/64 px stay exact and lines never drift. */
   --line-height: 1.203125rem;

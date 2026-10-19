@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mila/l10n/app_localizations.dart';
+import 'package:mila/localization/fallback_delegates.dart';
 
 /// The Porsche gateway's locales; Mila ships exactly the same set.
 const List<String> _porscheLocales = [
-  'ar', 'bn', 'de', 'en', 'es', 'et', 'fi', 'fil', 'fr', 'hi', 'id', 'ja', 'ko', 'mr', 'pcm', //
-  'pt_BR', 'pt_PT', 'ru', 'sv', 'ta', 'te', 'tr', 'ur', 'vi', 'zh_Hans',
+  'ar', 'arz', 'bn', 'de', 'en', 'es', 'et', 'fi', 'fil', 'fr', 'ha', 'hi', 'id', 'ja', 'ko', //
+  'mr', 'pcm', 'pt_BR', 'pt_PT', 'ru', 'sv', 'sw', 'ta', 'te', 'tr', 'ur', 'vi', 'zh_Hans',
 ];
 
 Map<String, Object?> _arb(String locale) =>
@@ -54,19 +54,61 @@ void main() {
     }
   });
 
+  test('the Porsche locale list matches the gateway catalogs', () {
+    final gateway = Directory('../../porsche/priv/gettext')
+        .listSync()
+        .whereType<Directory>()
+        .map((d) => d.uri.pathSegments.where((s) => s.isNotEmpty).last.replaceAll('-', '_'))
+        .toSet();
+    expect(_porscheLocales.toSet(), gateway);
+  });
+
+  testWidgets('every Porsche locale renders framework widgets in its direction', (tester) async {
+    const rightToLeft = {'ar', 'arz', 'ur'};
+    for (final code in _porscheLocales) {
+      final parts = code.split('_');
+      final locale = parts.length == 1
+          ? Locale(parts.first)
+          : Locale.fromSubtags(
+              languageCode: parts.first,
+              scriptCode: parts.last == 'Hans' ? 'Hans' : null,
+              countryCode: parts.last == 'Hans' ? null : parts.last,
+            );
+      late TextDirection direction;
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: locale,
+          supportedLocales: MilaLocalizations.supportedLocales,
+          localizationsDelegates: const [MilaLocalizations.delegate, ...frameworkDelegates],
+          home: Builder(
+            builder: (context) {
+              direction = Directionality.of(context);
+              return Scaffold(
+                appBar: AppBar(title: Text(MilaLocalizations.of(context).machinesTitle)),
+                body: BackButton(onPressed: () {}),
+              );
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull, reason: code);
+      expect(
+        direction,
+        rightToLeft.contains(parts.first) ? TextDirection.rtl : TextDirection.ltr,
+        reason: code,
+      );
+    }
+  });
+
   testWidgets('Arabic and Urdu lay out right to left', (tester) async {
-    for (final code in ['ar', 'ur']) {
+    for (final code in ['ar', 'arz', 'ur']) {
       late TextDirection direction;
       await tester.pumpWidget(
         MaterialApp(
           locale: Locale(code),
           supportedLocales: MilaLocalizations.supportedLocales,
-          localizationsDelegates: const [
-            MilaLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
+          localizationsDelegates: const [MilaLocalizations.delegate, ...frameworkDelegates],
           home: Builder(
             builder: (context) {
               direction = Directionality.of(context);

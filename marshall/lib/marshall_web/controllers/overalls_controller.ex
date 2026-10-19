@@ -18,11 +18,11 @@ defmodule MarshallWeb.OverallsController do
       |> put_resp_content_type("application/octet-stream")
       |> send_file(200, path)
     else
-      _ -> send_resp(conn, 404, gettext("Unavailable") <> "\n")
+      _ -> send_resp(conn, 404, dgettext("downloads", "Unavailable") <> "\n")
     end
   end
 
-  def artifact(conn, _), do: send_resp(conn, 404, gettext("Unavailable") <> "\n")
+  def artifact(conn, _), do: send_resp(conn, 404, dgettext("downloads", "Unavailable") <> "\n")
 
   @spec manifest(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def manifest(conn, _params) do
@@ -34,7 +34,7 @@ defmodule MarshallWeb.OverallsController do
       |> put_resp_content_type("application/json")
       |> send_resp(200, bytes)
     else
-      _ -> send_resp(conn, 404, gettext("Unavailable") <> "\n")
+      _ -> send_resp(conn, 404, dgettext("downloads", "Unavailable") <> "\n")
     end
   end
 
@@ -47,11 +47,11 @@ defmodule MarshallWeb.OverallsController do
          true <- Regex.match?(~r/\A[0-9a-f]{64}\z/, digest) do
       conn |> put_resp_content_type("text/plain") |> send_resp(200, digest <> "\n")
     else
-      _ -> send_resp(conn, 404, gettext("Unavailable") <> "\n")
+      _ -> send_resp(conn, 404, dgettext("downloads", "Unavailable") <> "\n")
     end
   end
 
-  def checksum(conn, _), do: send_resp(conn, 404, gettext("Unavailable") <> "\n")
+  def checksum(conn, _), do: send_resp(conn, 404, dgettext("downloads", "Unavailable") <> "\n")
 
   @spec install(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def install(conn, _params), do: send_installer(conn, :shell, "text/x-shellscript")
@@ -73,7 +73,7 @@ defmodule MarshallWeb.OverallsController do
       :error ->
         conn
         |> put_resp_content_type("text/plain")
-        |> send_resp(503, gettext("Installer trust unavailable") <> "\n")
+        |> send_resp(503, dgettext("downloads", "Installer trust unavailable") <> "\n")
     end
   end
 
@@ -86,7 +86,7 @@ defmodule MarshallWeb.OverallsController do
         conn |> put_resp_content_type("application/json") |> send_resp(200, Jason.encode!(policy))
 
       _ ->
-        send_resp(conn, 503, gettext("SSH trust unavailable") <> "\n")
+        send_resp(conn, 503, dgettext("downloads", "SSH trust unavailable") <> "\n")
     end
   end
 

@@ -1,0 +1,267 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: sw\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/teams_live.ex:212
+#, elixir-autogen, elixir-format
+msgid "%{count} member"
+msgid_plural "%{count} members"
+msgstr[0] "Mwanachama %{count}"
+msgstr[1] "Wanachama %{count}"
+
+#: lib/marshall_web/live/teams_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
+msgstr "Timu ina mmiliki mmoja. Umiliki huhamishwa tu baada ya anayekabidhiwa kuukubali; mmiliki wa awali huwa msimamizi."
+
+#: lib/marshall_web/live/teams_live.ex:341
+#, elixir-autogen, elixir-format
+msgid "Accept ownership"
+msgstr "Kubali umiliki"
+
+#: lib/marshall_web/live/teams_live.ex:255
+#, elixir-autogen, elixir-format
+msgid "Add, change or remove a member"
+msgstr "Ongeza, badilisha au ondoa mwanachama"
+
+#: lib/marshall_web/live/teams_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Admin"
+msgstr "Msimamizi"
+
+#: lib/marshall_web/live/teams_live.ex:392
+#, elixir-autogen, elixir-format
+msgid "Administrator"
+msgstr "Msimamizi"
+
+#: lib/marshall_web/live/teams_live.ex:228
+#, elixir-autogen, elixir-format
+msgid "Can"
+msgstr "Anaweza"
+
+#: lib/marshall_web/live/teams_live.ex:361
+#, elixir-autogen, elixir-format
+msgid "Cancel offer"
+msgstr "Ghairi ofa"
+
+#: lib/marshall_web/live/teams_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Could not create this team."
+msgstr "Haikuweza kuunda timu hii."
+
+#: lib/marshall_web/live/teams_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Could not offer ownership."
+msgstr "Haikuweza kutoa umiliki."
+
+#: lib/marshall_web/live/teams_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Could not update this membership."
+msgstr "Haikuweza kusasisha uanachama huu."
+
+#: lib/marshall_web/live/teams_live.ex:113
+#, elixir-autogen, elixir-format
+msgid "Could not update this ownership offer."
+msgstr "Haikuweza kusasisha ofa hii ya umiliki."
+
+#: lib/marshall_web/live/teams_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "Create a team"
+msgstr "Unda timu"
+
+#: lib/marshall_web/live/teams_live.ex:382
+#, elixir-autogen, elixir-format
+msgid "Create team"
+msgstr "Unda timu"
+
+#: lib/marshall_web/live/teams_live.ex:351
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "Kataa"
+
+#: lib/marshall_web/live/teams_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "Everything, including appointing admins and offering ownership."
+msgstr "Kila kitu, ikiwa ni pamoja na kuteua wasimamizi na kutoa umiliki."
+
+#: lib/marshall_web/live/teams_live.ex:44
+#: lib/marshall_web/live/teams_live.ex:118
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Ombi batili."
+
+#: lib/marshall_web/live/teams_live.ex:399
+#, elixir-autogen, elixir-format
+msgid "Manage members and team machines."
+msgstr "Dhibiti wanachama na mashine za timu."
+
+#: lib/marshall_web/live/teams_live.ex:226
+#: lib/marshall_web/live/teams_live.ex:268
+#: lib/marshall_web/live/teams_live.ex:393
+#, elixir-autogen, elixir-format
+msgid "Member"
+msgstr "Mwanachama"
+
+#: lib/marshall_web/live/teams_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Members"
+msgstr "Wanachama"
+
+#: lib/marshall_web/live/teams_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Membership updated."
+msgstr "Uanachama umesasishwa."
+
+#: lib/marshall_web/live/teams_live.ex:366
+#, elixir-autogen, elixir-format
+msgid "No pending ownership offer."
+msgstr "Hakuna ofa ya umiliki inayosubiri."
+
+#: lib/marshall_web/live/teams_live.ex:300
+#, elixir-autogen, elixir-format
+msgid "Offer ownership"
+msgstr "Toa umiliki"
+
+#: lib/marshall_web/live/teams_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Offer ownership to"
+msgstr "Toa umiliki kwa"
+
+#: lib/marshall_web/live/teams_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Offered by"
+msgstr "Imetolewa na"
+
+#: lib/marshall_web/live/teams_live.ex:313
+#, elixir-autogen, elixir-format
+msgid "Offered to"
+msgstr "Imetolewa kwa"
+
+#: lib/marshall_web/live/teams_live.ex:391
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "Mmiliki"
+
+#: lib/marshall_web/live/teams_live.ex:281
+#, elixir-autogen, elixir-format
+msgid "Ownership"
+msgstr "Umiliki"
+
+#: lib/marshall_web/live/teams_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Ownership offer sent."
+msgstr "Ofa ya umiliki imetumwa."
+
+#: lib/marshall_web/live/teams_live.ex:109
+#, elixir-autogen, elixir-format
+msgid "Ownership offer updated."
+msgstr "Ofa ya umiliki imesasishwa."
+
+#: lib/marshall_web/live/teams_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Ownership offered by %{value1} to %{value2}."
+msgstr "Umiliki umetolewa na %{value1} kwa %{value2}."
+
+#: lib/marshall_web/live/teams_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Registered email"
+msgstr "Barua pepe iliyosajiliwa"
+
+#: lib/marshall_web/live/teams_live.ex:269
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Ondoa"
+
+#: lib/marshall_web/live/teams_live.ex:227
+#: lib/marshall_web/live/teams_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Jukumu"
+
+#: lib/marshall_web/live/teams_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "Save member"
+msgstr "Hifadhi mwanachama"
+
+#: lib/marshall_web/live/teams_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
+msgstr "Shiriki mashine na miunganisho na watu unaofanya nao kazi. Wamiliki huteua wasimamizi, wasimamizi husimamia wanachama."
+
+#: lib/marshall_web/live/teams_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Hali"
+
+#: lib/marshall_web/live/teams_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Team %{value1} created."
+msgstr "Timu %{value1} imeundwa."
+
+#: lib/marshall_web/live/teams_live.ex:378
+#, elixir-autogen, elixir-format
+msgid "Team name"
+msgstr "Jina la timu"
+
+#: lib/marshall_web/live/teams_live.ex:181
+#, elixir-autogen, elixir-format
+msgid "Teams"
+msgstr "Timu"
+
+#: lib/marshall_web/live/teams_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "Teams are temporarily unavailable."
+msgstr "Timu hazipatikani kwa sasa."
+
+#: lib/marshall_web/live/teams_live.ex:400
+#, elixir-autogen, elixir-format
+msgid "Use team machines and integrations."
+msgstr "Tumia mashine za timu na miunganisho."
+
+#: lib/marshall_web/live/teams_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
+msgstr "Bado hauko kwenye timu. Unda moja hapa chini, au umwombe msimamizi wa timu akuongeze."
+
+#: lib/marshall_web/live/teams_live.ex:374
+#, elixir-autogen, elixir-format
+msgid "You become its owner and can add members straight away."
+msgstr "Unakuwa mmiliki wake na unaweza kuongeza wanachama mara moja."
+
+#: lib/marshall_web/live/teams_live.ex:210
+#, elixir-autogen, elixir-format
+msgid "Your role: %{role}"
+msgstr "Jukumu lako: %{role}"
+
+#: lib/marshall_web/live/teams_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Your teams"
+msgstr "Timu zako"
+
+#: lib/marshall_web/live/teams_live.ex:323
+#, elixir-autogen, elixir-format
+msgid "pending"
+msgstr "inasubiri"
+
+#: lib/marshall_web/live/teams_live.ex:379
+#, elixir-autogen, elixir-format
+msgid "platform"
+msgstr "jukwaa"
+
+#: lib/marshall_web/live/teams_live.ex:260
+#: lib/marshall_web/live/teams_live.ex:298
+#, elixir-autogen, elixir-format
+msgid "teammate@example.test"
+msgstr "teammate@example.test"

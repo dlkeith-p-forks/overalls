@@ -1,4 +1,4 @@
-/* JetBrains Mono, served from this origin only (priv/static/fonts, OFL 1.1). */
+/* JetBrains Mono and script fallbacks, served from this origin only (OFL 1.1). */
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
@@ -26,4 +26,74 @@
   font-weight: 800;
   font-display: swap;
   src: url(/fonts/jetbrains-mono-800.woff2) format("woff2");
+}
+
+/* Keep native shaping and language-specific CJK forms. Unicode ranges load
+   complete script faces on demand; the primary Latin grid remains JetBrains. */
+@font-face {
+  font-family: "Overalls Noto Mono";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/noto-mono.woff2) format("woff2");
+  unicode-range: U+0100-02FF, U+1E00-1EFF;
+}
+@font-face {
+  font-family: "Overalls Noto CJK";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/noto-cjk.woff2) format("woff2");
+  unicode-range: U+1100-11FF, U+2E80-31FF, U+3200-9FFF, U+A960-A97F,
+    U+AC00-D7FF, U+F900-FAFF, U+FE10-FE1F, U+FE30-FE6F, U+FF00-FFEF,
+    U+1AFF0-1B2FF, U+1F200-1F2FF, U+20000-323AF;
+}
+@font-face {
+  font-family: "Overalls Noto";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/noto-arabic.woff2) format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+FB50-FDFF,
+    U+FE70-FEFF, U+10E60-10E7F, U+1EE00-1EEFF;
+}
+@font-face {
+  font-family: "Overalls Noto";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/noto-devanagari.woff2) format("woff2");
+  unicode-range: U+0900-097F, U+1CD0-1CFF, U+A8E0-A8FF, U+11B00-11B5F;
+}
+@font-face {
+  font-family: "Overalls Noto";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/noto-bengali.woff2) format("woff2");
+  unicode-range: U+0980-09FF;
+}
+@font-face {
+  font-family: "Overalls Noto";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/noto-telugu.woff2) format("woff2");
+  unicode-range: U+0C00-0C7F;
+}
+@font-face {
+  font-family: "Overalls Noto";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/fonts/noto-tamil.woff2) format("woff2");
+  unicode-range: U+0B80-0BFF, U+11FC0-11FFF;
+}
+@font-face {
+  font-family: "Overalls Noto Symbols";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/noto-symbols.woff2) format("woff2");
+  unicode-range: U+2000-2BFF, U+1D000-1D3FF, U+1F000-1FBFF;
 }

@@ -1,0 +1,353 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: mr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/admin/access_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Access authority"
+msgstr "प्रवेश अधिकार"
+
+#: lib/marshall_web/live/admin/access_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Access inventory is temporarily unavailable."
+msgstr "प्रवेश सूची तात्पुरती उपलब्ध नाही."
+
+#: lib/marshall_web/live/admin/access_live.ex:123
+#: lib/marshall_web/live/admin/access_live.ex:169
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "खाते"
+
+#: lib/marshall_web/live/admin/access_live.ex:127
+#: lib/marshall_web/live/admin/access_live.ex:173
+#: lib/marshall_web/live/admin/access_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "कृती"
+
+#: lib/marshall_web/live/admin/access_live.ex:112
+#: lib/marshall_web/live/admin/access_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "Active SSH sessions"
+msgstr "सक्रिय SSH सत्रे"
+
+#: lib/marshall_web/live/admin/access_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr "जोडले"
+
+#: lib/marshall_web/live_admin_auth.ex:142
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "प्रशासकीय बदल अधिकृत नाहीत."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "प्रशासकीय बदलांसाठी प्रशासक असणे आवश्यक आहे."
+
+#: lib/marshall_web/live/admin/access_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "सत्र बंद करा"
+
+#: lib/marshall_web/live/admin/access_live.ex:243
+#, elixir-autogen, elixir-format
+msgid "Close this SSH session?"
+msgstr "हे SSH सत्र बंद करायचे?"
+
+#: lib/marshall_web/live/admin/access_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "Could not close that session."
+msgstr "ते सत्र बंद करता आले नाही."
+
+#: lib/marshall_web/live/admin/access_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that VM access."
+msgstr "तो VM प्रवेश रद्द करता आला नाही."
+
+#: lib/marshall_web/live/admin/access_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that key."
+msgstr "ती की रद्द करता आली नाही."
+
+#: lib/marshall_web/live/admin/access_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "मुदत संपते"
+
+#: lib/marshall_web/live_admin_auth.ex:190
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "आधी सध्याची पडताळणी पूर्ण करा किंवा रद्द करा."
+
+#: lib/marshall_web/live/admin/access_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "गेटवे"
+
+#: lib/marshall_web/live/admin/access_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Granted"
+msgstr "दिले"
+
+#: lib/marshall_web/live_admin_auth.ex:208
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "अवैध प्रशासकीय विनंती."
+
+#: lib/marshall_web/live/admin/access_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "अवैध विनंती."
+
+#: lib/marshall_web/live/admin/access_live.ex:170
+#: lib/marshall_web/live/admin/access_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "की"
+
+#: lib/marshall_web/live/admin/access_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "मशीन"
+
+#: lib/marshall_web/live/admin/access_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "Manager"
+msgstr "व्यवस्थापक"
+
+#: lib/marshall_web/live/admin/access_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "No active keys."
+msgstr "सक्रिय की नाहीत."
+
+#: lib/marshall_web/live/admin/access_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "No active sessions."
+msgstr "सक्रिय सत्रे नाहीत."
+
+#: lib/marshall_web/live/admin/access_live.ex:116
+#, elixir-autogen, elixir-format
+msgid "No machine is shared with another account."
+msgstr "दुसऱ्या खात्याशी कोणतेही मशीन सामायिक नाही."
+
+#: lib/marshall_web/live/admin/access_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "ऑपरेटर"
+
+#: lib/marshall_web/live/admin/access_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "कीच्या मंजुरीची प्रतीक्षा आहे"
+
+#: lib/marshall_web/live/admin/access_live.ex:111
+#: lib/marshall_web/live/admin/access_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Registered SSH keys"
+msgstr "नोंदणीकृत SSH की"
+
+#: lib/marshall_web/live/admin/access_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "Revoke access"
+msgstr "प्रवेश रद्द करा"
+
+#: lib/marshall_web/live/admin/access_live.ex:206
+#, elixir-autogen, elixir-format
+msgid "Revoke key"
+msgstr "की रद्द करा"
+
+#: lib/marshall_web/live/admin/access_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Revoke this SSH key and close sessions using it?"
+msgstr "ही SSH की रद्द करून ती वापरणारी सत्रे बंद करायची?"
+
+#: lib/marshall_web/live/admin/access_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Revoke this user's VM access?"
+msgstr "या वापरकर्त्याचा VM प्रवेश रद्द करायचा?"
+
+#: lib/marshall_web/live/admin/access_live.ex:266
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "रद्द केले"
+
+#: lib/marshall_web/live/admin/access_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "भूमिका"
+
+#: lib/marshall_web/live/admin/access_live.ex:189
+#, elixir-autogen, elixir-format
+msgid "SSH key"
+msgstr "SSH की"
+
+#: lib/marshall_web/live/admin/access_live.ex:27
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked."
+msgstr "SSH की रद्द केली."
+
+#: lib/marshall_web/live/admin/access_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "SSH session closed."
+msgstr "SSH सत्र बंद झाले."
+
+#: lib/marshall_web/live/admin/access_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Shared machine access"
+msgstr "सामायिक मशीन प्रवेश"
+
+#: lib/marshall_web/live/admin/access_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Shared machine grants"
+msgstr "सामायिक मशीन अधिकार"
+
+#: lib/marshall_web/live/admin/access_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "अज्ञात"
+
+#: lib/marshall_web/live/admin/access_live.ex:106
+#, elixir-autogen, elixir-format
+msgid "Updated every 15 seconds"
+msgstr "दर 15 सेकंदांनी अद्ययावत"
+
+#: lib/marshall_web/live/admin/access_live.ex:51
+#, elixir-autogen, elixir-format
+msgid "VM access revoked."
+msgstr "VM प्रवेश रद्द केला."
+
+#: lib/marshall_web/live/admin/access_live.ex:263
+#, elixir-autogen, elixir-format
+msgid "Viewer"
+msgstr "दर्शक"
+
+#: lib/marshall_web/live/admin/access_live.ex:262
+#, elixir-autogen, elixir-format
+msgid "Web apps"
+msgstr "वेब अॅप"
+
+#: lib/marshall_web/live/admin/access_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
+msgstr ""
+"कोणत्या मशीनवर कोण कोणत्या कीने किंवा सत्राने पोहोचते. खासगी की, सत्र टोकन "
+"आणि गेटवे ओळखमाहिती कधीही दाखवली जात नाही."
+
+#: lib/marshall_web/admin_elevation.ex:41
+#, elixir-autogen, elixir-format
+msgid "add this Git mirror"
+msgstr "हा Git मिरर जोडा"
+
+#: lib/marshall_web/admin_elevation.ex:46
+#, elixir-autogen, elixir-format
+msgid "approve this workload downtime"
+msgstr "या कार्यभाराचा खंड मंजूर करा"
+
+#: lib/marshall_web/admin_elevation.ex:33
+#, elixir-autogen, elixir-format
+msgid "change administrator access"
+msgstr "प्रशासक प्रवेश बदला"
+
+#: lib/marshall_web/admin_elevation.ex:45
+#, elixir-autogen, elixir-format
+msgid "change this evacuation"
+msgstr "हे रिकामीकरण बदला"
+
+#: lib/marshall_web/admin_elevation.ex:48
+#, elixir-autogen, elixir-format
+msgid "change this machine's state"
+msgstr "या मशीनची स्थिती बदला"
+
+#: lib/marshall_web/admin_elevation.ex:52
+#, elixir-autogen, elixir-format
+msgid "change this node's admission settings"
+msgstr "या नोडची प्रवेशमंजुरी सेटिंग्ज बदला"
+
+#: lib/marshall_web/admin_elevation.ex:36
+#, elixir-autogen, elixir-format
+msgid "close this SSH session"
+msgstr "हे SSH सत्र बंद करा"
+
+#: lib/marshall_web/admin_elevation.ex:39
+#, elixir-autogen, elixir-format
+msgid "delete this user account"
+msgstr "हे वापरकर्ता खाते हटवा"
+
+#: lib/marshall_web/admin_elevation.ex:49
+#, elixir-autogen, elixir-format
+msgid "move this machine"
+msgstr "हे मशीन हलवा"
+
+#: lib/marshall_web/admin_elevation.ex:51
+#, elixir-autogen, elixir-format
+msgid "open this machine with administrator access"
+msgstr "प्रशासक प्रवेशाने हे मशीन उघडा"
+
+#: lib/marshall_web/admin_elevation.ex:42
+#, elixir-autogen, elixir-format
+msgid "refresh this Git mirror"
+msgstr "हा Git मिरर रीफ्रेश करा"
+
+#: lib/marshall_web/admin_elevation.ex:43
+#, elixir-autogen, elixir-format
+msgid "remove this Git mirror"
+msgstr "हा Git मिरर काढा"
+
+#: lib/marshall_web/admin_elevation.ex:47
+#, elixir-autogen, elixir-format
+msgid "replan this workload move"
+msgstr "या कार्यभार स्थलांतराचे पुनर्नियोजन करा"
+
+#: lib/marshall_web/admin_elevation.ex:40
+#, elixir-autogen, elixir-format
+msgid "reset this account's passkeys"
+msgstr "या खात्याच्या पासकी रीसेट करा"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "retry this background job"
+msgstr "हा पार्श्वभूमी जॉब पुन्हा करा"
+
+#: lib/marshall_web/admin_elevation.ex:35
+#, elixir-autogen, elixir-format
+msgid "revoke this SSH key"
+msgstr "ही SSH की रद्द करा"
+
+#: lib/marshall_web/admin_elevation.ex:37
+#, elixir-autogen, elixir-format
+msgid "revoke this VM access"
+msgstr "हा VM प्रवेश रद्द करा"
+
+#: lib/marshall_web/admin_elevation.ex:50
+#, elixir-autogen, elixir-format
+msgid "rotate the fleet certificate"
+msgstr "फ्लीट प्रमाणपत्र बदला"
+
+#: lib/marshall_web/admin_elevation.ex:38
+#, elixir-autogen, elixir-format
+msgid "send this invitation"
+msgstr "हे आमंत्रण पाठवा"
+
+#: lib/marshall_web/admin_elevation.ex:34
+#, elixir-autogen, elixir-format
+msgid "sign this account out everywhere"
+msgstr "हे खाते सर्वत्र साइन आउट करा"
+
+#: lib/marshall_web/admin_elevation.ex:44
+#, elixir-autogen, elixir-format
+msgid "start this node evacuation"
+msgstr "या नोडचे रिकामीकरण सुरू करा"

@@ -1,0 +1,351 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: sw\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/access_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Access authority"
+msgstr "Mamlaka ya ufikiaji"
+
+#: lib/marshall_web/live/admin/access_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Access inventory is temporarily unavailable."
+msgstr "Orodha ya ufikiaji haipatikani kwa sasa."
+
+#: lib/marshall_web/live/admin/access_live.ex:123
+#: lib/marshall_web/live/admin/access_live.ex:169
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "Akaunti"
+
+#: lib/marshall_web/live/admin/access_live.ex:127
+#: lib/marshall_web/live/admin/access_live.ex:173
+#: lib/marshall_web/live/admin/access_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Vitendo"
+
+#: lib/marshall_web/live/admin/access_live.ex:112
+#: lib/marshall_web/live/admin/access_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "Active SSH sessions"
+msgstr "Vipindi vinavyotumika vya SSH"
+
+#: lib/marshall_web/live/admin/access_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr "Imeongezwa"
+
+#: lib/marshall_web/live_admin_auth.ex:142
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "Mabadiliko ya kiutawala hayajaidhinishwa."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "Mabadiliko ya kiutawala yanahitaji msimamizi."
+
+#: lib/marshall_web/live/admin/access_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "Funga kipindi"
+
+#: lib/marshall_web/live/admin/access_live.ex:243
+#, elixir-autogen, elixir-format
+msgid "Close this SSH session?"
+msgstr "Ungependa kufunga kipindi hiki cha SSH?"
+
+#: lib/marshall_web/live/admin/access_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "Could not close that session."
+msgstr "Haikuweza kufunga kipindi hicho."
+
+#: lib/marshall_web/live/admin/access_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that VM access."
+msgstr "Haikuweza kubatilisha ufikiaji huo wa VM."
+
+#: lib/marshall_web/live/admin/access_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that key."
+msgstr "Haikuweza kubatilisha ufunguo huo."
+
+#: lib/marshall_web/live/admin/access_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "Muda wake unaisha"
+
+#: lib/marshall_web/live_admin_auth.ex:190
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "Maliza au ghairi uthibitishaji wa sasa kwanza."
+
+#: lib/marshall_web/live/admin/access_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "Lango"
+
+#: lib/marshall_web/live/admin/access_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Granted"
+msgstr "Imekubaliwa"
+
+#: lib/marshall_web/live_admin_auth.ex:208
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "Ombi batili la usimamizi."
+
+#: lib/marshall_web/live/admin/access_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Ombi batili."
+
+#: lib/marshall_web/live/admin/access_live.ex:170
+#: lib/marshall_web/live/admin/access_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "Ufunguo"
+
+#: lib/marshall_web/live/admin/access_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Mashine"
+
+#: lib/marshall_web/live/admin/access_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "Manager"
+msgstr "Meneja"
+
+#: lib/marshall_web/live/admin/access_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "No active keys."
+msgstr "Hakuna funguo zinazotumika."
+
+#: lib/marshall_web/live/admin/access_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "No active sessions."
+msgstr "Hakuna vipindi vinavyotumika."
+
+#: lib/marshall_web/live/admin/access_live.ex:116
+#, elixir-autogen, elixir-format
+msgid "No machine is shared with another account."
+msgstr "Hakuna mashine inayoshirikiwa na akaunti nyingine."
+
+#: lib/marshall_web/live/admin/access_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "Mwendeshaji"
+
+#: lib/marshall_web/live/admin/access_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "Inasubiri idhini ya ufunguo"
+
+#: lib/marshall_web/live/admin/access_live.ex:111
+#: lib/marshall_web/live/admin/access_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Registered SSH keys"
+msgstr "Vifunguo vya SSH vilivyosajiliwa"
+
+#: lib/marshall_web/live/admin/access_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "Revoke access"
+msgstr "Batilisha ufikiaji"
+
+#: lib/marshall_web/live/admin/access_live.ex:206
+#, elixir-autogen, elixir-format
+msgid "Revoke key"
+msgstr "Batilisha ufunguo"
+
+#: lib/marshall_web/live/admin/access_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Revoke this SSH key and close sessions using it?"
+msgstr "Je, ungependa kubatilisha ufunguo huu wa SSH na ufunge vipindi ukitumia?"
+
+#: lib/marshall_web/live/admin/access_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Revoke this user's VM access?"
+msgstr "Je, ungependa kubatilisha ufikiaji wa VM wa mtumiaji huyu?"
+
+#: lib/marshall_web/live/admin/access_live.ex:266
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "Imebatilishwa"
+
+#: lib/marshall_web/live/admin/access_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Jukumu"
+
+#: lib/marshall_web/live/admin/access_live.ex:189
+#, elixir-autogen, elixir-format
+msgid "SSH key"
+msgstr "Ufunguo wa SSH"
+
+#: lib/marshall_web/live/admin/access_live.ex:27
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked."
+msgstr "Ufunguo wa SSH umebatilishwa."
+
+#: lib/marshall_web/live/admin/access_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "SSH session closed."
+msgstr "Kipindi cha SSH kimefungwa."
+
+#: lib/marshall_web/live/admin/access_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Shared machine access"
+msgstr "Ufikiaji wa mashine iliyoshirikiwa"
+
+#: lib/marshall_web/live/admin/access_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Shared machine grants"
+msgstr "Ruhusa za mashine zinazoshirikiwa"
+
+#: lib/marshall_web/live/admin/access_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Haijulikani"
+
+#: lib/marshall_web/live/admin/access_live.ex:106
+#, elixir-autogen, elixir-format
+msgid "Updated every 15 seconds"
+msgstr "Inasasishwa kila sekunde 15"
+
+#: lib/marshall_web/live/admin/access_live.ex:51
+#, elixir-autogen, elixir-format
+msgid "VM access revoked."
+msgstr "Ufikiaji wa VM umebatilishwa."
+
+#: lib/marshall_web/live/admin/access_live.ex:263
+#, elixir-autogen, elixir-format
+msgid "Viewer"
+msgstr "Mtazamaji"
+
+#: lib/marshall_web/live/admin/access_live.ex:262
+#, elixir-autogen, elixir-format
+msgid "Web apps"
+msgstr "Programu za wavuti"
+
+#: lib/marshall_web/live/admin/access_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
+msgstr "Nani anaweza kufikia mashine gani, na kwa ufunguo gani au kikao. Vifunguo vya faragha, tokeni za kipindi na vitambulisho vya lango havionyeshwi kamwe."
+
+#: lib/marshall_web/admin_elevation.ex:41
+#, elixir-autogen, elixir-format
+msgid "add this Git mirror"
+msgstr "ongeza nakala hii ya hazina ya Git"
+
+#: lib/marshall_web/admin_elevation.ex:46
+#, elixir-autogen, elixir-format
+msgid "approve this workload downtime"
+msgstr "idhinisha muda wa kusimama wa mzigo huu wa kazi"
+
+#: lib/marshall_web/admin_elevation.ex:33
+#, elixir-autogen, elixir-format
+msgid "change administrator access"
+msgstr "badilisha ufikiaji wa msimamizi"
+
+#: lib/marshall_web/admin_elevation.ex:45
+#, elixir-autogen, elixir-format
+msgid "change this evacuation"
+msgstr "badilisha uhamishaji huu"
+
+#: lib/marshall_web/admin_elevation.ex:48
+#, elixir-autogen, elixir-format
+msgid "change this machine's state"
+msgstr "badilisha hali ya mashine hii"
+
+#: lib/marshall_web/admin_elevation.ex:52
+#, elixir-autogen, elixir-format
+msgid "change this node's admission settings"
+msgstr "badilisha mipangilio ya uandikishaji ya nodi hii"
+
+#: lib/marshall_web/admin_elevation.ex:36
+#, elixir-autogen, elixir-format
+msgid "close this SSH session"
+msgstr "funga kipindi hiki cha SSH"
+
+#: lib/marshall_web/admin_elevation.ex:39
+#, elixir-autogen, elixir-format
+msgid "delete this user account"
+msgstr "futa akaunti hii ya mtumiaji"
+
+#: lib/marshall_web/admin_elevation.ex:49
+#, elixir-autogen, elixir-format
+msgid "move this machine"
+msgstr "sogeza mashine hii"
+
+#: lib/marshall_web/admin_elevation.ex:51
+#, elixir-autogen, elixir-format
+msgid "open this machine with administrator access"
+msgstr "fungua mashine hii na ufikiaji wa msimamizi"
+
+#: lib/marshall_web/admin_elevation.ex:42
+#, elixir-autogen, elixir-format
+msgid "refresh this Git mirror"
+msgstr "sasisha nakala hii ya hazina ya Git"
+
+#: lib/marshall_web/admin_elevation.ex:43
+#, elixir-autogen, elixir-format
+msgid "remove this Git mirror"
+msgstr "ondoa nakala hii ya hazina ya Git"
+
+#: lib/marshall_web/admin_elevation.ex:47
+#, elixir-autogen, elixir-format
+msgid "replan this workload move"
+msgstr "panga upya uhamishaji wa mzigo huu wa kazi"
+
+#: lib/marshall_web/admin_elevation.ex:40
+#, elixir-autogen, elixir-format
+msgid "reset this account's passkeys"
+msgstr "weka upya funguo za kuingia za akaunti hii"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "retry this background job"
+msgstr "jaribu tena kazi hii ya usuli"
+
+#: lib/marshall_web/admin_elevation.ex:35
+#, elixir-autogen, elixir-format
+msgid "revoke this SSH key"
+msgstr "batilisha ufunguo huu wa SSH"
+
+#: lib/marshall_web/admin_elevation.ex:37
+#, elixir-autogen, elixir-format
+msgid "revoke this VM access"
+msgstr "kubatilisha ufikiaji huu wa VM"
+
+#: lib/marshall_web/admin_elevation.ex:50
+#, elixir-autogen, elixir-format
+msgid "rotate the fleet certificate"
+msgstr "badilisha cheti cha kundi la mashine"
+
+#: lib/marshall_web/admin_elevation.ex:38
+#, elixir-autogen, elixir-format
+msgid "send this invitation"
+msgstr "tuma mwaliko huu"
+
+#: lib/marshall_web/admin_elevation.ex:34
+#, elixir-autogen, elixir-format
+msgid "sign this account out everywhere"
+msgstr "ondoa akaunti hii kila mahali"
+
+#: lib/marshall_web/admin_elevation.ex:44
+#, elixir-autogen, elixir-format
+msgid "start this node evacuation"
+msgstr "anza uhamishaji wa nodi hii"

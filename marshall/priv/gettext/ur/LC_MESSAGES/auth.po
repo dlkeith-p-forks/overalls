@@ -1,0 +1,132 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ur\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/controllers/auth_controller.ex:94
+#, elixir-autogen, elixir-format
+msgid "An account with this email already exists. We've sent a link to that\naddress - confirm it to finish linking this provider to your account.\n"
+msgstr "اس ای میل کا اکاؤنٹ پہلے سے موجود ہے۔ ہم نے اس پتے پر ایک لنک بھیجا ہے؛\nاس فراہم کنندہ کو اپنے اکاؤنٹ سے جوڑنے کے لیے اس کی تصدیق کریں۔\n"
+
+#: lib/marshall_web/auth_overrides.ex:15
+#: lib/marshall_web/auth_text.ex:29
+#, elixir-autogen, elixir-format
+msgid "Check your email for a sign-in link. Your account will be created automatically when you sign in."
+msgstr "داخلے کے ربط کے لیے ای میل دیکھیں۔ داخل ہوتے وقت آپ کا کھاتا خود بخود بن جائے گا۔"
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Continue to Overalls"
+msgstr "Overalls پر جاری رکھیں"
+
+#: lib/marshall_web/auth_text.ex:23
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "ای میل"
+
+#: lib/marshall_web/auth_text.ex:14
+#, elixir-autogen, elixir-format
+msgid "Email me a sign-in link"
+msgstr "داخلے کا ربط مجھے ای میل کریں"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:154
+#, elixir-autogen, elixir-format
+msgid "If you did not request this, ignore this email."
+msgstr "اگر آپ نے درخواست نہیں کی تو اس ای میل کو نظر انداز کریں۔"
+
+#: lib/marshall_web/controllers/auth_controller.ex:100
+#, elixir-autogen, elixir-format
+msgid "Incorrect email or password"
+msgstr "ای میل یا پاس ورڈ غلط ہے"
+
+#: lib/marshall_web/auth_text.ex:26
+#, elixir-autogen, elixir-format
+msgid "Remember me"
+msgstr "مجھے یاد رکھیں"
+
+#: lib/marshall_web/auth_text.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sending link…"
+msgstr "ربط بھیجا جا رہا ہے…"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:150
+#: lib/marshall_web/auth_text.ex:20
+#, elixir-autogen, elixir-format
+msgid "Sign in"
+msgstr "داخل ہوں"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:147
+#, elixir-autogen, elixir-format
+msgid "Sign in to Overalls:"
+msgstr "Overalls میں داخل ہوں:"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:138
+#, elixir-autogen, elixir-format
+msgid "Sign in to Overalls: %{link}\n\nIf you did not request this, ignore this email."
+msgstr "Overalls میں داخل ہوں: %{link}\n\nاگر آپ نے درخواست نہیں کی تو اس ای میل کو نظر انداز کریں۔"
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Sign-in unavailable"
+msgstr "سائن ان دستیاب نہیں"
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:27
+#, elixir-autogen, elixir-format
+msgid "Signing you in"
+msgstr "آپ کو سائن ان کیا جا رہا ہے"
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:44
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "دستیاب نہیں"
+
+#: lib/marshall_web/controllers/auth_controller.ex:43
+#, elixir-autogen, elixir-format
+msgid "You are now signed in"
+msgstr "اب آپ سائن ان ہیں"
+
+#: lib/marshall_web/controllers/auth_controller.ex:157
+#, elixir-autogen, elixir-format
+msgid "You are now signed out"
+msgstr "اب آپ سائن آؤٹ ہیں"
+
+#: lib/marshall_web/controllers/auth_controller.ex:85
+#, elixir-autogen, elixir-format
+msgid "You have already signed in another way, but have not confirmed your account.\nYou can confirm your account using the link we sent to you, or by resetting your password.\n"
+msgstr "آپ دوسرے طریقے سے پہلے ہی سائن ان کر چکے ہیں، مگر کھاتے کی تصدیق نہیں کی۔\nآپ ہمارے بھیجے ہوئے ربط سے یا پاس ورڈ دوبارہ مقرر کر کے کھاتے کی تصدیق کر سکتے ہیں۔\n"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:135
+#, elixir-autogen, elixir-format
+msgid "Your Overalls sign-in link"
+msgstr "آپ کا Overalls سائن ان ربط"
+
+#: lib/marshall_web/controllers/auth_controller.ex:37
+#, elixir-autogen, elixir-format
+msgid "Your email address has now been confirmed"
+msgstr "اب آپ کے ای میل پتے کی تصدیق ہو گئی ہے"
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:28
+#, elixir-autogen, elixir-format
+msgid "Your email link is being verified."
+msgstr "آپ کے ای میل لنک کی تصدیق ہو رہی ہے۔"
+
+#: lib/marshall_web/controllers/auth_controller.ex:40
+#, elixir-autogen, elixir-format
+msgid "Your password has successfully been reset"
+msgstr "آپ کا پاس ورڈ کامیابی سے دوبارہ مقرر ہو گیا"
+
+#: lib/marshall_web/controllers/auth_controller.ex:63
+#, elixir-autogen, elixir-format
+msgid "Your sign-in is no longer valid. Request a new sign-in link."
+msgstr "آپ کا سائن ان اب درست نہیں ہے۔ نیا سائن ان ربط مانگیں۔"

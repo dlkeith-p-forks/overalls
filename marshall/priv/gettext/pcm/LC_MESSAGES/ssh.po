@@ -1,0 +1,76 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: pcm\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Approve SSH key"
+msgstr "Approve di SSH key"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Approve key"
+msgstr "Approve di key"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
+msgstr "Approve this key only if na you start di SSH connection and di fingerprint match your SSH client."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:109
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr "We dey approve am…"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:101
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr "Label (no be must)"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Manage your SSH keys"
+msgstr "Manage your own SSH keys"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr "My own laptop"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "SSH key approved. You can return to your SSH client."
+msgstr "We don approve SSH key. You fit go back to your SSH client."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:64
+#, elixir-autogen, elixir-format
+msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
+msgstr "This SSH approval no dey available or e don expire. Start new SSH connection to try again."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
+msgstr "This key go enter as %{value1}. E fit manage machines according to permissions wey your account get."
+
+#: lib/marshall_web/ssh_approval_login.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "E no dey available"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr "Open di Mila"

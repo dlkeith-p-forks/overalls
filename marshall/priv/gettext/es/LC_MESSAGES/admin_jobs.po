@@ -1,0 +1,388 @@
+#
+msgid ""
+msgstr ""
+"Language: es\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:285
+#, elixir-autogen, elixir-format
+msgid "24 hours"
+msgstr "24 horas"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:287
+#, elixir-autogen, elixir-format
+msgid "30 days"
+msgstr "30 días"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "7 days"
+msgstr "7 días"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:473
+#, elixir-autogen, elixir-format
+msgid "Acknowledged"
+msgstr "Confirmado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:284
+#, elixir-autogen, elixir-format
+msgid "All retained"
+msgstr "Todas las conservadas"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "All states"
+msgstr "Todos los estados"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:270
+#, elixir-autogen, elixir-format
+msgid "Any queue"
+msgstr "Cualquier cola"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "Archivado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:359
+#, elixir-autogen, elixir-format
+msgid "Archived history · retry unavailable"
+msgstr "Historial archivado · reintento no disponible"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:424
+#, elixir-autogen, elixir-format
+msgid "Attempt"
+msgstr "Intento"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:305
+#: lib/marshall_web/live/admin/jobs_live.ex:369
+#, elixir-autogen, elixir-format
+msgid "Attempts"
+msgstr "Intentos"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "Background work run by Oban. A successful job may have dispatched work whose physical outcome is still pending; follow the related operation for completion."
+msgstr ""
+"Trabajo en segundo plano ejecutado por Oban. Un trabajo completado puede "
+"haber enviado tareas cuyo resultado físico siga pendiente; consulta la "
+"operación relacionada para confirmar su finalización."
+
+#: lib/marshall_web/live/admin/jobs_live.ex:17
+#: lib/marshall_web/live/admin/jobs_live.ex:475
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:422
+#, elixir-autogen, elixir-format
+msgid "Captured"
+msgstr "Capturado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:406
+#: lib/marshall_web/live/admin/jobs_live.ex:474
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "Completado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:252
+#, elixir-autogen, elixir-format
+msgid "Counts cover current and recently retained raw jobs. The list includes redacted history for up to 30 days; older history pruned before deployment is unavailable."
+msgstr ""
+"Los recuentos abarcan los trabajos actuales y los conservados recientemente."
+" La lista incluye historial anonimizado de hasta 30 días; el historial "
+"anterior depurado antes del despliegue no está disponible."
+
+#: lib/marshall_web/live/admin/jobs_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "Created"
+msgstr "Creado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:477
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "Vaciado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:476
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "Vaciando"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:307
+#, elixir-autogen, elixir-format
+msgid "Duration"
+msgstr "Duración"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:468
+#, elixir-autogen, elixir-format
+msgid "Evacuation campaign"
+msgstr "Campaña de evacuación"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Exact worker name"
+msgstr "Nombre exacto del ejecutor"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:417
+#, elixir-autogen, elixir-format
+msgid "Execution history"
+msgstr "Historial de ejecución"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:16
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Fallido"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:258
+#, elixir-autogen, elixir-format
+msgid "Filter"
+msgstr "Filtrar"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:292
+#, elixir-autogen, elixir-format
+msgid "Filter jobs"
+msgstr "Filtrar trabajos"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Solicitud no válida."
+
+#: lib/marshall_web/live/admin/jobs_live.ex:302
+#, elixir-autogen, elixir-format
+msgid "Job"
+msgstr "Trabajo"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Job #%{id}"
+msgstr "Trabajo n.º %{id}"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:217
+#, elixir-autogen, elixir-format
+msgid "Job details"
+msgstr "Detalles del trabajo"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:330
+#, elixir-autogen, elixir-format
+msgid "Job pages"
+msgstr "Páginas de trabajos"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:216
+#, elixir-autogen, elixir-format
+msgid "Jobs"
+msgstr "Trabajos"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Jobs are unavailable or the filters are invalid."
+msgstr "Los trabajos no están disponibles o los filtros no son válidos."
+
+#: lib/marshall_web/live/admin/jobs_live.ex:378
+#, elixir-autogen, elixir-format
+msgid "Last attempt started"
+msgstr "Inicio del último intento"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:381
+#, elixir-autogen, elixir-format
+msgid "Last execution duration"
+msgstr "Duración de la última ejecución"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:282
+#, elixir-autogen, elixir-format
+msgid "Last updated"
+msgstr "Última actualización"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "No jobs match these filters."
+msgstr "Ningún trabajo coincide con estos filtros."
+
+#: lib/marshall_web/live/admin/jobs_live.ex:339
+#, elixir-autogen, elixir-format
+msgid "Older jobs →"
+msgstr "Trabajos anteriores →"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:455
+#, elixir-autogen, elixir-format
+msgid "Older transitions →"
+msgstr "Transiciones anteriores →"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:411
+#, elixir-autogen, elixir-format
+msgid "Open machine →"
+msgstr "Abrir máquina →"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:466
+#, elixir-autogen, elixir-format
+msgid "Operation"
+msgstr "Operación"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "Operation state"
+msgstr "Estado de la operación"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:407
+#: lib/marshall_web/live/admin/jobs_live.ex:472
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Pendiente"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:269
+#: lib/marshall_web/live/admin/jobs_live.ex:365
+#, elixir-autogen, elixir-format
+msgid "Queue"
+msgstr "Cola"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Queue / worker"
+msgstr "Cola / ejecutor"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:352
+#, elixir-autogen, elixir-format
+msgid "Queue another attempt? The operation will recheck its current state."
+msgstr ""
+"¿Poner otro intento en cola? La operación volverá a comprobar su estado "
+"actual."
+
+#: lib/marshall_web/live/admin/jobs_live.ex:10
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "En cola"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:384
+#, elixir-autogen, elixir-format
+msgid "Recorded failures"
+msgstr "Fallos registrados"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:390
+#, elixir-autogen, elixir-format
+msgid "Related record"
+msgstr "Registro relacionado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:467
+#, elixir-autogen, elixir-format
+msgid "Relocation"
+msgstr "Reubicación"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:403
+#, elixir-autogen, elixir-format
+msgid "Relocation complete"
+msgstr "Traslado completado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:478
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "Reanudado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:479
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "Retirado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Retry job"
+msgstr "Reintentar tarea"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Retry queued. The related operation will recheck its current state."
+msgstr ""
+"Reintento en cola. La operación relacionada volverá a comprobar su estado "
+"actual."
+
+#: lib/marshall_web/live/admin/jobs_live.ex:14
+#, elixir-autogen, elixir-format
+msgid "Retrying"
+msgstr "Reintentando"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:13
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "En ejecución"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:12
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "Programado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:375
+#, elixir-autogen, elixir-format
+msgid "Scheduled / next retry"
+msgstr "Programado / próximo reintento"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:263
+#: lib/marshall_web/live/admin/jobs_live.ex:303
+#: lib/marshall_web/live/admin/jobs_live.ex:423
+#, elixir-autogen, elixir-format
+msgid "State"
+msgstr "Estado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:15
+#, elixir-autogen, elixir-format
+msgid "Succeeded"
+msgstr "Completado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:11
+#, elixir-autogen, elixir-format
+msgid "Suspended"
+msgstr "Suspendido"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "This job could not be retried. Its state or your access may have changed."
+msgstr ""
+"No se pudo reintentar esta tarea. Su estado o tu acceso pueden haber "
+"cambiado."
+
+#: lib/marshall_web/live/admin/jobs_live.ex:179
+#, elixir-autogen, elixir-format
+msgid "This job is unavailable or its history has expired."
+msgstr "Esta tarea no está disponible o su historial ha caducado."
+
+#: lib/marshall_web/live/admin/jobs_live.ex:189
+#: lib/marshall_web/live/admin/jobs_live.ex:469
+#: lib/marshall_web/live/admin/jobs_live.ex:480
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:227
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "Actualizado"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Waiting"
+msgstr "En espera"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:275
+#: lib/marshall_web/live/admin/jobs_live.ex:366
+#, elixir-autogen, elixir-format
+msgid "Worker"
+msgstr "Trabajador"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:442
+#, elixir-autogen, elixir-format
+msgid "attempt %{attempt} · %{count} recorded failures"
+msgstr "intento %{attempt} · %{count} fallos registrados"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "· every 5 seconds"
+msgstr "· cada 5 segundos"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:331
+#, elixir-autogen, elixir-format
+msgid "← First page"
+msgstr "← Primera página"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:342
+#, elixir-autogen, elixir-format
+msgid "← Jobs"
+msgstr "← Tareas"

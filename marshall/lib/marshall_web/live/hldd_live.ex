@@ -1,7 +1,7 @@
 defmodule MarshallWeb.HLDDLive do
   @moduledoc "The authenticated Overalls design and operations handbook."
   use MarshallWeb, :live_view
-  on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
+  on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
   alias Marshall.Handbook
 
   # @cc [owner:ghuntley,label:security] handbook-current-reader
@@ -28,7 +28,7 @@ defmodule MarshallWeb.HLDDLive do
 
         {:noreply,
          assign(socket,
-           page_title: gettext("%{value1} · HLDD", value1: chapter.title),
+           page_title: dgettext("shared", "%{value1} · HLDD", value1: chapter.title),
            chapter: chapter,
            previous: List.last(before),
            following: List.first(following)
@@ -41,9 +41,17 @@ defmodule MarshallWeb.HLDDLive do
 
   def handle_params(_params, _uri, socket) do
     {:noreply,
-     assign(socket, page_title: gettext("HLDD"), chapter: nil, previous: nil, following: nil)}
+     assign(socket,
+       page_title: dgettext("shared", "HLDD"),
+       chapter: nil,
+       previous: nil,
+       following: nil
+     )}
   end
 
+  # @cc [owner:ghuntley,label:product] handbook-content-language-direction
+  # Source chapter bodies and titles MUST declare English and LTR direction even
+  # when the surrounding application chrome uses a different reader locale.
   @impl true
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
@@ -57,14 +65,16 @@ defmodule MarshallWeb.HLDDLive do
     >
       <div id="hldd" class="hldd">
         <header class="hldd-heading">
-          <p class="muted">{gettext("HLDD · Design and operations")}</p>
-          <h1>{gettext("Overalls")}</h1>
-          <p>{gettext("A reference for the system, its configuration, and its operation.")}</p>
+          <p class="muted">{dgettext("shared", "HLDD · Design and operations")}</p>
+          <h1>{dgettext("shared", "Overalls")}</h1>
+          <p>
+            {dgettext("shared", "A reference for the system, its configuration, and its operation.")}
+          </p>
         </header>
-        <nav :if={!@chapter} id="hldd-index" aria-label={gettext("Handbook contents")}>
+        <nav :if={!@chapter} id="hldd-index" aria-label={dgettext("shared", "Handbook contents")}>
           <ol class="hldd-index">
             <li :for={{section, number} <- Enum.with_index(@contents, 1)}>
-              <.link patch={~p"/hldd/#{section.id}"}>
+              <.link patch={~p"/hldd/#{section.id}"} lang="en" dir="ltr">
                 <span class="hldd-section-number">{number}</span>{section.title}
               </.link>
             </li>
@@ -72,14 +82,16 @@ defmodule MarshallWeb.HLDDLive do
         </nav>
         <div :if={@chapter} class="hldd-grid">
           <aside class="hldd-contents">
-            <p><.link patch={~p"/hldd"}>{gettext("← All sections")}</.link></p>
+            <p><.link patch={~p"/hldd"}>{dgettext("shared", "← All sections")}</.link></p>
             <details open>
-              <summary>{gettext("Contents")}</summary>
-              <nav aria-label={gettext("Handbook contents")}>
+              <summary>{dgettext("shared", "Contents")}</summary>
+              <nav aria-label={dgettext("shared", "Handbook contents")}>
                 <.link
                   :for={section <- @contents}
                   patch={~p"/hldd/#{section.id}"}
                   aria-current={section.id == @chapter.id && "page"}
+                  lang="en"
+                  dir="ltr"
                 >
                   {section.title}
                 </.link>
@@ -91,17 +103,19 @@ defmodule MarshallWeb.HLDDLive do
               id={"hldd-content-#{@chapter.id}"}
               class="hldd-prose prose"
               data-hldd-section={@chapter.id}
+              lang="en"
+              dir="ltr"
               phx-hook="Handbook"
               phx-update="ignore"
             >
               <section id={@chapter.id}>{raw(@chapter.html)}</section>
             </article>
-            <nav class="hldd-pagination" aria-label={gettext("Adjacent sections")}>
+            <nav class="hldd-pagination" aria-label={dgettext("shared", "Adjacent sections")}>
               <.link :if={@previous} patch={~p"/hldd/#{@previous.id}"} rel="prev">
-                ← {@previous.title}
+                ← <span lang="en" dir="ltr">{@previous.title}</span>
               </.link>
               <.link :if={@following} patch={~p"/hldd/#{@following.id}"} rel="next">
-                {@following.title} →
+                <span lang="en" dir="ltr">{@following.title}</span> →
               </.link>
             </nav>
           </div>

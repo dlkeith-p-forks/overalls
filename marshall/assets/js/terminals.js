@@ -125,7 +125,7 @@ export function clipboardConsent(choice) {
 /** @param {number} milliseconds @param {number} now @returns {string} */
 export function relativeActivity(milliseconds, now = Date.now()) {
   const seconds = Math.max(0, Math.floor((now - milliseconds) / 1000));
-  const locale = typeof document === "undefined" ? "en" : document.documentElement?.lang || "en";
+  const locale = typeof document === "undefined" ? "en" : document.documentElement?.dataset?.formatLocale || document.documentElement?.lang || "en";
   const formatter = new Intl.RelativeTimeFormat(locale, {numeric: "auto"});
   if (seconds < 60) return formatter.format(0, "second");
   if (seconds < 3600) return formatter.format(-Math.floor(seconds / 60), "minute");
@@ -539,7 +539,7 @@ class Pane {
       this.reconnectDelay = 500;
       if (message.from > this.cursor) {
         this.cursor = message.from;
-        this.terminal.write("\r\n\x1b[90m— output before this view is not in the scrollback window —\x1b[0m\r\n");
+        this.terminal.write("\r\n\x1b[90m" + t("— output before this view is not in the scrollback window —") + "\x1b[0m\r\n");
       }
       if (this.replaying) {
         this.setStatus("restoring");
@@ -1182,7 +1182,7 @@ export const TerminalWorkspace = {
   setStatus(status) {
     const element = document.getElementById("terminal-status");
     if (!element) return;
-    const labels = { live: t("● live"), reconnecting: t("⟳ reconnecting…"), restoring: t("⟳ restoring scrollback…"), readonly: t("● read-only"), "boot-log": t("Boot log · read-only"), "input-paused": t("Input buffer full — that input was not sent") };
+    const labels = { connecting: t("Connecting…"), "No terminals": t("No terminals"), live: t("● live"), reconnecting: t("⟳ reconnecting…"), restoring: t("⟳ restoring scrollback…"), readonly: t("● read-only"), "boot-log": t("Boot log · read-only"), "input-paused": t("Input buffer full — that input was not sent") };
     element.textContent = labels[status] || status;
     element.dataset.status = status;
     const input = document.getElementById("terminal-input-hint");

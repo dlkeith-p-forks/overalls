@@ -30,7 +30,7 @@ defmodule MarshallWeb.GitHubConnectionController do
     with {:ok, user, jti} <- current_login(conn),
          {:ok, _status} <- Marshall.GitHub.callback(user, jti, state, code) do
       conn
-      |> put_flash(:info, gettext("GitHub connected."))
+      |> put_flash(:info, dgettext("integrations", "GitHub connected."))
       |> redirect(to: "/integrations")
     else
       :no_login -> redirect(conn, to: "/sign-in")
@@ -60,7 +60,10 @@ defmodule MarshallWeb.GitHubConnectionController do
   @spec failed(Plug.Conn.t()) :: Plug.Conn.t()
   defp failed(conn) do
     conn
-    |> put_flash(:error, gettext("GitHub could not be connected. Try again from Integrations."))
+    |> put_flash(
+      :error,
+      dgettext("integrations", "GitHub could not be connected. Try again from Integrations.")
+    )
     |> redirect(to: "/integrations")
   end
 end

@@ -1,0 +1,1011 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ha\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/audit_live.ex:280
+#, elixir-autogen, elixir-format
+msgid "; the next due check can then request a new generation."
+msgstr "; rajistan rajista na gaba zai iya neman sabon tsara."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:113
+#, elixir-autogen, elixir-format
+msgid "ACME account"
+msgstr "Asusun ACME"
+
+#: lib/marshall_web/live/admin/audit_live.ex:333
+#, elixir-autogen, elixir-format
+msgid "ACME account: %{status}"
+msgstr "ACME lissafi: %{status}"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:160
+#: lib/marshall_web/live/admin/audit_labels.ex:453
+#, elixir-autogen, elixir-format
+msgid "Acknowledged"
+msgstr "An yarda"
+
+#: lib/marshall_web/live/admin/audit_live.ex:237
+#: lib/marshall_web/live/admin/audit_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "Aiki"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:148
+#, elixir-autogen, elixir-format
+msgid "Activated"
+msgstr "An kunna"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:228
+#: lib/marshall_web/live/admin/audit_labels.ex:481
+#, elixir-autogen, elixir-format
+msgid "Activation failed"
+msgstr "Kunnawa ya gaza"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:251
+#, elixir-autogen, elixir-format
+msgid "Activation observed"
+msgstr "An lura da kunnawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:460
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "Mai aiki"
+
+#: lib/marshall_web/live/admin/audit_live.ex:305
+#, elixir-autogen, elixir-format
+msgid "Actor"
+msgstr "Dan wasan kwaikwayo"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:32
+#, elixir-autogen, elixir-format
+msgid "Administrator access granted"
+msgstr "An ba da damar mai gudanarwa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:35
+#, elixir-autogen, elixir-format
+msgid "Administrator access revoked"
+msgstr "An janye damar mai gudanarwa"
+
+#: lib/marshall_web/live/admin/audit_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Administrator actions"
+msgstr "Ayyukan gudanarwa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:29
+#, elixir-autogen, elixir-format
+msgid "Administrator bootstrapped"
+msgstr "An kafa mai gudanarwa na farko"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:162
+#, elixir-autogen, elixir-format
+msgid "Advanced"
+msgstr "Na ci gaba"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:165
+#, elixir-autogen, elixir-format
+msgid "Allocated"
+msgstr "An ware"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:441
+#, elixir-autogen, elixir-format
+msgid "Applied"
+msgstr "An aiwatar"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:170
+#: lib/marshall_web/live/admin/audit_labels.ex:435
+#, elixir-autogen, elixir-format
+msgid "Approved"
+msgstr "An amince"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:171
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "Ajiye"
+
+#: lib/marshall_web/live/admin/audit_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Audit"
+msgstr "Binciken ayyuka"
+
+#: lib/marshall_web/live/admin/audit_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Audit history is unavailable."
+msgstr "Babu tarihin binciken."
+
+#: lib/marshall_web/live/admin/audit_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Audit kinds"
+msgstr "Iri na tantancewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:179
+#: lib/marshall_web/live/admin/audit_labels.ex:436
+#, elixir-autogen, elixir-format
+msgid "Blocked"
+msgstr "An toshe"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:236
+#, elixir-autogen, elixir-format
+msgid "Cancellation completed"
+msgstr "An kammala sokewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:344
+#: lib/marshall_web/live/admin/audit_labels.ex:347
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "An nemi sokewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:288
+#, elixir-autogen, elixir-format
+msgid "Cancellation restart recorded"
+msgstr "An rubuta sake farawa na sokewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:291
+#, elixir-autogen, elixir-format
+msgid "Cancellation stop recorded"
+msgstr "An rubuta tsayawa na sokewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:180
+#: lib/marshall_web/live/admin/audit_labels.ex:183
+#: lib/marshall_web/live/admin/audit_labels.ex:427
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "An soke"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:424
+#, elixir-autogen, elixir-format
+msgid "Cancelling"
+msgstr "Sokewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:411
+#, elixir-autogen, elixir-format
+msgid "Capturing"
+msgstr "Ana ɗauka"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:116
+#, elixir-autogen, elixir-format
+msgid "Certificate"
+msgstr "Takardar shaida"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:145
+#, elixir-autogen, elixir-format
+msgid "Certificate issued"
+msgstr "An bayar da takardar shaida"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:133
+#, elixir-autogen, elixir-format
+msgid "Certificate order attempted"
+msgstr "An gwada neman takardar shaida"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:136
+#, elixir-autogen, elixir-format
+msgid "Certificate order bound"
+msgstr "An ɗaure neman takardar shaida"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:139
+#, elixir-autogen, elixir-format
+msgid "Certificate proof recorded"
+msgstr "An rubuta hujjar takardar shaida"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:142
+#, elixir-autogen, elixir-format
+msgid "Certificate proof refreshed"
+msgstr "An sabunta hujjar takardar shaida"
+
+#: lib/marshall_web/live/admin/audit_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "Certificates"
+msgstr "Takaddun shaida"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:475
+#, elixir-autogen, elixir-format
+msgid "Checking destination"
+msgstr "Ana duba wurin da za a kai"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:463
+#, elixir-autogen, elixir-format
+msgid "Checking transfer"
+msgstr "Ana duba canja wuri"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:189
+#, elixir-autogen, elixir-format
+msgid "Checkpoint saved"
+msgstr "An adana wurin ci gaba"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:419
+#, elixir-autogen, elixir-format
+msgid "Cleaning up"
+msgstr "Ana sharewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:493
+#, elixir-autogen, elixir-format
+msgid "Cleaning up cancellation"
+msgstr "Ana share abubuwan sokewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:487
+#, elixir-autogen, elixir-format
+msgid "Cleaning up source"
+msgstr "Ana share tushen"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:194
+#, elixir-autogen, elixir-format
+msgid "Cleanup completed"
+msgstr "An kammala sharewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:191
+#: lib/marshall_web/live/admin/audit_labels.ex:421
+#: lib/marshall_web/live/admin/audit_labels.ex:433
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "Cikakkun"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:196
+#, elixir-autogen, elixir-format
+msgid "Confirmed"
+msgstr "An tabbatar"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:214
+#, elixir-autogen, elixir-format
+msgid "Continued"
+msgstr "An ci gaba"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:202
+#, elixir-autogen, elixir-format
+msgid "Copy confirmed"
+msgstr "An tabbatar da kwafin"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:174
+#, elixir-autogen, elixir-format
+msgid "Copy started"
+msgstr "An fara kwafi"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:413
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "Ana kwafi"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:401
+#, elixir-autogen, elixir-format
+msgid "Created"
+msgstr "Ƙirƙiri"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:216
+#, elixir-autogen, elixir-format
+msgid "Deferred"
+msgstr "An jinkirta"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:458
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "An share"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:496
+#, elixir-autogen, elixir-format
+msgid "Deleting copies"
+msgstr "Ana goge kwafe"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:239
+#, elixir-autogen, elixir-format
+msgid "Deletion completed"
+msgstr "An kammala gogewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:350
+#: lib/marshall_web/live/admin/audit_labels.ex:353
+#, elixir-autogen, elixir-format
+msgid "Deletion requested"
+msgstr "An nemi gogewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:256
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup offered"
+msgstr "An miƙa share wurin da aka kai"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:297
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup recorded"
+msgstr "An rubuta share wurin da aka kai"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:259
+#, elixir-autogen, elixir-format
+msgid "Destination revocation offered"
+msgstr "An miƙa janye izinin wurin da aka kai"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:301
+#, elixir-autogen, elixir-format
+msgid "Destination revocation recorded"
+msgstr "An rubuta janye izinin wurin da aka kai"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:222
+#, elixir-autogen, elixir-format
+msgid "Destination work dispatched"
+msgstr "An tura aikin wurin da za a kai"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:219
+#, elixir-autogen, elixir-format
+msgid "Dispatched"
+msgstr "An aika"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:448
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "Ruwan ruwa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:447
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "Ruwan ruwa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:107
+#, elixir-autogen, elixir-format
+msgid "Editor credential"
+msgstr "Bayanan shiga edita"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:110
+#, elixir-autogen, elixir-format
+msgid "Editor lease"
+msgstr "Izinin edita na ɗan lokaci"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:104
+#, elixir-autogen, elixir-format
+msgid "Editor sign-in"
+msgstr "Shiga edita"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:506
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "Ficewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:56
+#, elixir-autogen, elixir-format
+msgid "Evacuation approved"
+msgstr "An amince da kwashewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:53
+#, elixir-autogen, elixir-format
+msgid "Evacuation changed"
+msgstr "An canja kwashewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:59
+#, elixir-autogen, elixir-format
+msgid "Evacuation replanned"
+msgstr "An sake tsara kwashewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:50
+#, elixir-autogen, elixir-format
+msgid "Evacuation requested"
+msgstr "An nemi kwashewa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:151
+#: lib/marshall_web/live/admin/audit_labels.ex:429
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Ba a yi nasara ba"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:233
+#, elixir-autogen, elixir-format
+msgid "Fenced"
+msgstr "An katange"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:503
+#, elixir-autogen, elixir-format
+msgid "Fencing"
+msgstr "Ana katangewa"
+
+#: lib/marshall_web/live/admin/audit_live.ex:214
+#: lib/marshall_web/live/admin/audit_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Filter lifecycle history"
+msgstr "Tace tarihin rayuwa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:65
+#, elixir-autogen, elixir-format
+msgid "Fleet certificate rotation requested"
+msgstr "An nemi sauya takardar shaidar runduna"
+
+#: lib/marshall_web/live/admin/audit_live.ex:275
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation} has an uncertain ACME order response. The generation can be failed after"
+msgstr "Zagaye %{generation} yana da amsar neman ACME marar tabbas. Za a iya sa zagayen ya gaza bayan"
+
+#: lib/marshall_web/live/admin/audit_live.ex:338
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation}: %{status}"
+msgstr "Zagaye %{generation}: %{status}"
+
+#: lib/marshall_web/live/admin/audit_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "Host ID"
+msgstr "ID mai masaukin baki"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:62
+#, elixir-autogen, elixir-format
+msgid "Host configured"
+msgstr "An saita runduna"
+
+#: lib/marshall_web/live/admin/audit_live.ex:258
+#, elixir-autogen, elixir-format
+msgid "Human requests and system recovery transitions. History is retained for 90 days."
+msgstr "Buƙatun ɗan adam da sauye-sauyen dawo da tsarin. An ajiye tarihi na kwanaki 90."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:245
+#, elixir-autogen, elixir-format
+msgid "Idle policy updated"
+msgstr "An sabunta manufar rashin aiki"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:205
+#, elixir-autogen, elixir-format
+msgid "Import confirmed"
+msgstr "An tabbatar da shigo da bayanai"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:277
+#, elixir-autogen, elixir-format
+msgid "Import prepared"
+msgstr "An shirya shigo da bayanai"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:304
+#, elixir-autogen, elixir-format
+msgid "Import recorded"
+msgstr "An rubuta shigo da bayanai"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:177
+#, elixir-autogen, elixir-format
+msgid "Import started"
+msgstr "An fara shigo da bayanai"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:469
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "Ana shigo da shi"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:119
+#, elixir-autogen, elixir-format
+msgid "Installation"
+msgstr "Sakawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:122
+#, elixir-autogen, elixir-format
+msgid "Installed"
+msgstr "An sanya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:98
+#, elixir-autogen, elixir-format
+msgid "Integration attached"
+msgstr "An haɗa haɗin gwiwa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:92
+#, elixir-autogen, elixir-format
+msgid "Integration configured"
+msgstr "An saita haɗin gwiwa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:101
+#, elixir-autogen, elixir-format
+msgid "Integration detached"
+msgstr "An cire haɗin gwiwa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:95
+#, elixir-autogen, elixir-format
+msgid "Integration removed"
+msgstr "An goge haɗin gwiwa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:225
+#, elixir-autogen, elixir-format
+msgid "Key dispatched"
+msgstr "An aika maɓalli"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:307
+#, elixir-autogen, elixir-format
+msgid "Key recorded"
+msgstr "An rubuta maɓalli"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:381
+#, elixir-autogen, elixir-format
+msgid "Key retired"
+msgstr "An dakatar da maɓalli"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:262
+#, elixir-autogen, elixir-format
+msgid "Key retirement offered"
+msgstr "An miƙa dakatar da maɓalli"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:356
+#, elixir-autogen, elixir-format
+msgid "Key retirement requested"
+msgstr "An nemi dakatar da maɓalli"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:41
+#, elixir-autogen, elixir-format
+msgid "Machine access revoked"
+msgstr "An janye damar shiga inji"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:68
+#, elixir-autogen, elixir-format
+msgid "Machine lifecycle requested"
+msgstr "An nemi canjin rayuwar inji"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:71
+#, elixir-autogen, elixir-format
+msgid "Machine relocation requested"
+msgstr "An nemi sauya wurin inji"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:248
+#, elixir-autogen, elixir-format
+msgid "Machine state observed"
+msgstr "An lura da yanayin inji"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:20
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication reset"
+msgstr "An sake saita tabbatarwa ta hanyoyi da yawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:17
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication verified"
+msgstr "An tabbatar ta hanyoyi da yawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:430
+#, elixir-autogen, elixir-format
+msgid "Offered"
+msgstr "An miƙa"
+
+#: lib/marshall_web/live/admin/audit_live.ex:354
+#, elixir-autogen, elixir-format
+msgid "Older events →"
+msgstr "Tsofaffin al'amuran →"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:310
+#, elixir-autogen, elixir-format
+msgid "Operation recorded"
+msgstr "An rubuta aikin"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:11
+#, elixir-autogen, elixir-format
+msgid "Passkey added"
+msgstr "An ƙara maɓallin shiga"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:14
+#, elixir-autogen, elixir-format
+msgid "Passkey removed"
+msgstr "An cire maɓallin shiga"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:359
+#, elixir-autogen, elixir-format
+msgid "Pause requested"
+msgstr "An nemi dakatarwa na ɗan lokaci"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:271
+#: lib/marshall_web/live/admin/audit_labels.ex:457
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "An dakata"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:402
+#: lib/marshall_web/live/admin/audit_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Ana jiran"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:294
+#, elixir-autogen, elixir-format
+msgid "Placement switch recorded"
+msgstr "An rubuta sauya wurin aiki"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:242
+#, elixir-autogen, elixir-format
+msgid "Placement switched"
+msgstr "An sauya wurin aiki"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:274
+#, elixir-autogen, elixir-format
+msgid "Preparation started"
+msgstr "An fara shiri"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:406
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "Ana shiryawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:313
+#, elixir-autogen, elixir-format
+msgid "Progress recorded"
+msgstr "An rubuta ci gaba"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:157
+#, elixir-autogen, elixir-format
+msgid "Progress updated"
+msgstr "An sabunta ci gaba"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:279
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "An wallafa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:416
+#, elixir-autogen, elixir-format
+msgid "Publishing"
+msgstr "Ana wallafawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:127
+#: lib/marshall_web/live/admin/audit_labels.ex:403
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "An yi layi"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:208
+#: lib/marshall_web/live/admin/audit_labels.ex:211
+#, elixir-autogen, elixir-format
+msgid "Readiness confirmed"
+msgstr "An tabbatar da shiri"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:231
+#: lib/marshall_web/live/admin/audit_labels.ex:478
+#, elixir-autogen, elixir-format
+msgid "Readiness failed"
+msgstr "Shiri ya gaza"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:280
+#: lib/marshall_web/live/admin/audit_labels.ex:446
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "Shirya"
+
+#: lib/marshall_web/live/admin/audit_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
+msgstr "Kwanan nan tsararrun kati na jirgin ruwa da shigarwar ƙofa. Maɓallai masu zaman kansu da hujjojin ACME an cire su."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:283
+#, elixir-autogen, elixir-format
+msgid "Reconciled"
+msgstr "An daidaita"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:285
+#, elixir-autogen, elixir-format
+msgid "Recorded"
+msgstr "An rubuta"
+
+#: lib/marshall_web/live/admin/audit_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
+msgstr "Canje-canjen iko, buƙatun rayuwa, tsararrun takaddun shaida da samun damar edita. Abubuwan da aka biya, takaddun shaida da bytes na tasha ba a cire su ba."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:338
+#, elixir-autogen, elixir-format
+msgid "Reflection metadata updated"
+msgstr "An sabunta bayanan Reflection"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:125
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "Rajista"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:340
+#, elixir-autogen, elixir-format
+msgid "Replanned"
+msgstr "An sake tsara"
+
+#: lib/marshall_web/live/admin/audit_live.ex:291
+#, elixir-autogen, elixir-format
+msgid "Request a new wildcard certificate for every Audi gateway?"
+msgstr "Nemi sabon takardar shedar kati don kowane ƙofar Audi?"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:130
+#, elixir-autogen, elixir-format
+msgid "Request saved"
+msgstr "An adana buƙata"
+
+#: lib/marshall_web/live/admin/audit_live.ex:294
+#, elixir-autogen, elixir-format
+msgid "Request wildcard rotation"
+msgstr "Nemi jujjuyawar kati"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:341
+#, elixir-autogen, elixir-format
+msgid "Requested"
+msgstr "An nema"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:168
+#, elixir-autogen, elixir-format
+msgid "Resize applied"
+msgstr "An aiwatar da sauya girma"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:368
+#, elixir-autogen, elixir-format
+msgid "Resize started"
+msgstr "An fara sauya girma"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:498
+#, elixir-autogen, elixir-format
+msgid "Resizing"
+msgstr "Ana canza girman"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:370
+#: lib/marshall_web/live/admin/audit_labels.ex:508
+#, elixir-autogen, elixir-format
+msgid "Resolved"
+msgstr "An warware"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:373
+#, elixir-autogen, elixir-format
+msgid "Restart started"
+msgstr "An fara sake kunnawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:501
+#, elixir-autogen, elixir-format
+msgid "Restarting"
+msgstr "Ana sake farawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:490
+#, elixir-autogen, elixir-format
+msgid "Restoring source"
+msgstr "Ana dawo da tushen"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:319
+#, elixir-autogen, elixir-format
+msgid "Result recorded"
+msgstr "An rubuta sakamakon"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:378
+#: lib/marshall_web/live/admin/audit_labels.ex:449
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "Ci gaba"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:150
+#: lib/marshall_web/live/admin/audit_labels.ex:450
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "Yayi ritaya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:384
+#, elixir-autogen, elixir-format
+msgid "Retry requested"
+msgstr "An nemi sake gwadawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:484
+#, elixir-autogen, elixir-format
+msgid "Retrying destination"
+msgstr "Ana sake gwada wurin da za a kai"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:455
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "Gudu"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:44
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked"
+msgstr "An janye maɓallin SSH"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:47
+#, elixir-autogen, elixir-format
+msgid "SSH session revoked"
+msgstr "An janye zaman SSH"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:387
+#: lib/marshall_web/live/admin/audit_labels.ex:439
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "An tsara"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:38
+#, elixir-autogen, elixir-format
+msgid "Sessions revoked"
+msgstr "An janye zaman shiga"
+
+#: lib/marshall_web/live/admin/audit_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "Since (ISO 8601)"
+msgstr "Tun daga (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:199
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture confirmed"
+msgstr "An tabbatar da ɗaukar hoton yanayi"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:186
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture started"
+msgstr "An fara ɗaukar hoton yanayi"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:322
+#, elixir-autogen, elixir-format
+msgid "Source restoration recorded"
+msgstr "An rubuta dawo da tushen"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:376
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "An dawo da tushen"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:265
+#, elixir-autogen, elixir-format
+msgid "Source revocation offered"
+msgstr "An miƙa janye izinin tushen"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:325
+#, elixir-autogen, elixir-format
+msgid "Source revocation recorded"
+msgstr "An rubuta janye izinin tushen"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:269
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup offered"
+msgstr "An miƙa share hoton yanayin tushen"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:329
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup recorded"
+msgstr "An rubuta share hoton yanayin tushen"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:392
+#, elixir-autogen, elixir-format
+msgid "Source stop started"
+msgstr "An fara tsayar da tushen"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:362
+#, elixir-autogen, elixir-format
+msgid "Start requested"
+msgstr "An nemi farawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:332
+#, elixir-autogen, elixir-format
+msgid "Stop recorded"
+msgstr "An rubuta tsayawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:365
+#, elixir-autogen, elixir-format
+msgid "Stop requested"
+msgstr "An nemi tsayawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:389
+#, elixir-autogen, elixir-format
+msgid "Stop started"
+msgstr "An fara tsayawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:456
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "Tsaya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:408
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "Tsayawa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:466
+#, elixir-autogen, elixir-format
+msgid "Stopping source"
+msgstr "Ana tsayar da tushen"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:395
+#: lib/marshall_web/live/admin/audit_labels.ex:444
+#, elixir-autogen, elixir-format
+msgid "Superseded"
+msgstr "Nasara"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:472
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "Canja wurin wuri"
+
+#: lib/marshall_web/live/admin/audit_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "manufa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:74
+#, elixir-autogen, elixir-format
+msgid "Team created"
+msgstr "An ƙirƙiri ƙungiya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:77
+#, elixir-autogen, elixir-format
+msgid "Team membership changed"
+msgstr "An canja kasancewa cikin ƙungiya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:83
+#, elixir-autogen, elixir-format
+msgid "Team ownership accepted"
+msgstr "An karɓi mallakar ƙungiya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:86
+#, elixir-autogen, elixir-format
+msgid "Team ownership declined"
+msgstr "An ƙi mallakar ƙungiya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:89
+#, elixir-autogen, elixir-format
+msgid "Team ownership offer cancelled"
+msgstr "An soke tayin mallakar ƙungiya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:80
+#, elixir-autogen, elixir-format
+msgid "Team ownership offered"
+msgstr "An miƙa mallakar ƙungiya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:316
+#, elixir-autogen, elixir-format
+msgid "Transfer receipt recorded"
+msgstr "An rubuta rasidin canja wuri"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:154
+#, elixir-autogen, elixir-format
+msgid "Uncertain certificate order failed"
+msgstr "Neman takardar shaida marar tabbas ya gaza"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:335
+#, elixir-autogen, elixir-format
+msgid "Unconfirmed outcome recorded"
+msgstr "An rubuta sakamako da ba a tabbatar ba"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:397
+#: lib/marshall_web/live/admin/audit_labels.ex:459
+#: lib/marshall_web/live/admin/audit_labels.ex:509
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Ba a sani ba"
+
+#: lib/marshall_web/live/admin/audit_live.ex:239
+#, elixir-autogen, elixir-format
+msgid "Until (ISO 8601)"
+msgstr "Har zuwa (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:26
+#, elixir-autogen, elixir-format
+msgid "User deleted"
+msgstr "An goge mai amfani"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:23
+#, elixir-autogen, elixir-format
+msgid "User invited"
+msgstr "An gayyaci mai amfani"
+
+#: lib/marshall_web/live/admin/audit_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "VM ID"
+msgstr "Alamar VM"
+
+#: lib/marshall_web/live/admin/audit_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "VM lifecycle"
+msgstr "VM rayuwa"
+
+#: lib/marshall_web/live/admin/audit_live.ex:211
+#, elixir-autogen, elixir-format
+msgid "VS Code access"
+msgstr "Damar shiga VS Code"
+
+#: lib/marshall_web/live/admin/audit_live.ex:303
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "Yaushe"
+
+#: lib/marshall_web/live/admin/audit_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation could not be requested."
+msgstr "Ba a iya neman sauya takardar shaidar wildcard ba."
+
+#: lib/marshall_web/live/admin/audit_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation requested for generation %{generation}."
+msgstr "An nemi sauya takardar shaidar wildcard don zagaye %{generation}."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:253
+#, elixir-autogen, elixir-format
+msgid "Work offered"
+msgstr "An miƙa aiki"
+
+#: lib/marshall_web/live/admin/audit_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Workflow ID"
+msgstr "Alamar tsarin aiki"

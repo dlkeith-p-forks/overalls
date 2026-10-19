@@ -1,0 +1,133 @@
+#
+msgid ""
+msgstr ""
+"Language: fr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/controllers/auth_controller.ex:94
+#, elixir-autogen, elixir-format
+msgid "An account with this email already exists. We've sent a link to that\naddress - confirm it to finish linking this provider to your account.\n"
+msgstr ""
+"Un compte utilise déjà cette adresse e-mail. Nous avons envoyé un lien à cette\n"
+"adresse : confirmez-le pour terminer de lier ce fournisseur à votre compte.\n"
+
+#: lib/marshall_web/auth_overrides.ex:15
+#: lib/marshall_web/auth_text.ex:29
+#, elixir-autogen, elixir-format
+msgid "Check your email for a sign-in link. Your account will be created automatically when you sign in."
+msgstr ""
+"Consultez vos e-mails pour obtenir un lien de connexion. Votre compte sera "
+"créé automatiquement lors de votre connexion."
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Continue to Overalls"
+msgstr "Continuer vers Overalls"
+
+#: lib/marshall_web/auth_text.ex:23
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "E-mail"
+
+#: lib/marshall_web/auth_text.ex:14
+#, elixir-autogen, elixir-format
+msgid "Email me a sign-in link"
+msgstr "M’envoyer un lien de connexion"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:154
+#, elixir-autogen, elixir-format
+msgid "If you did not request this, ignore this email."
+msgstr "Si vous n’avez pas demandé ceci, ignorez cet e-mail."
+
+#: lib/marshall_web/controllers/auth_controller.ex:100
+#, elixir-autogen, elixir-format
+msgid "Incorrect email or password"
+msgstr "Adresse e-mail ou mot de passe incorrect"
+
+#: lib/marshall_web/auth_text.ex:26
+#, elixir-autogen, elixir-format
+msgid "Remember me"
+msgstr "Se souvenir de moi"
+
+#: lib/marshall_web/auth_text.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sending link…"
+msgstr "Envoi du lien…"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:150
+#: lib/marshall_web/auth_text.ex:20
+#, elixir-autogen, elixir-format
+msgid "Sign in"
+msgstr "Se connecter"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:147
+#, elixir-autogen, elixir-format
+msgid "Sign in to Overalls:"
+msgstr "Se connecter à Overalls :"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:138
+#, elixir-autogen, elixir-format
+msgid "Sign in to Overalls: %{link}\n\nIf you did not request this, ignore this email."
+msgstr ""
+"Connectez-vous à Overalls : %{link}\n"
+"\n"
+"Si vous n’avez pas demandé ceci, ignorez cet e-mail."
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Sign-in unavailable"
+msgstr "Connexion indisponible"
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:27
+#, elixir-autogen, elixir-format
+msgid "Signing you in"
+msgstr "Connexion en cours"
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:44
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Indisponible"
+
+#: lib/marshall_web/controllers/auth_controller.ex:43
+#, elixir-autogen, elixir-format
+msgid "You are now signed in"
+msgstr "Vous êtes maintenant connecté"
+
+#: lib/marshall_web/controllers/auth_controller.ex:157
+#, elixir-autogen, elixir-format
+msgid "You are now signed out"
+msgstr "Vous êtes maintenant déconnecté"
+
+#: lib/marshall_web/controllers/auth_controller.ex:85
+#, elixir-autogen, elixir-format
+msgid "You have already signed in another way, but have not confirmed your account.\nYou can confirm your account using the link we sent to you, or by resetting your password.\n"
+msgstr ""
+"Vous vous êtes déjà connecté autrement, mais vous n’avez pas confirmé votre compte.\n"
+"Vous pouvez le confirmer à l’aide du lien envoyé ou en réinitialisant votre mot de passe.\n"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:135
+#, elixir-autogen, elixir-format
+msgid "Your Overalls sign-in link"
+msgstr "Votre lien de connexion Overalls"
+
+#: lib/marshall_web/controllers/auth_controller.ex:37
+#, elixir-autogen, elixir-format
+msgid "Your email address has now been confirmed"
+msgstr "Votre adresse e-mail est maintenant confirmée"
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:28
+#, elixir-autogen, elixir-format
+msgid "Your email link is being verified."
+msgstr "Le lien reçu par e-mail est en cours de vérification."
+
+#: lib/marshall_web/controllers/auth_controller.ex:40
+#, elixir-autogen, elixir-format
+msgid "Your password has successfully been reset"
+msgstr "Votre mot de passe a été réinitialisé"
+
+#: lib/marshall_web/controllers/auth_controller.ex:63
+#, elixir-autogen, elixir-format
+msgid "Your sign-in is no longer valid. Request a new sign-in link."
+msgstr ""
+"Votre connexion n’est plus valide. Demandez un nouveau lien de connexion."

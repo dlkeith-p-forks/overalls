@@ -1,0 +1,85 @@
+msgid ""
+msgstr ""
+"Language: vi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/porsche/ssh/onboarding.ex:64
+#, elixir-autogen, elixir-format
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
+msgstr "\n\nGiữ kết nối SSH này mở trong khi phê duyệt khóa.\n"
+
+#: lib/porsche/ssh/onboarding.ex:81
+#, elixir-autogen, elixir-format
+msgid "\nOpen an interactive Porsche connection without a remote command:"
+msgstr "\nMở kết nối Porsche tương tác mà không có lệnh từ xa:"
+
+#: lib/porsche/ssh/onboarding.ex:59
+#, elixir-autogen, elixir-format
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nMở liên kết này, đăng nhập và phê duyệt dấu vân tay trùng khớp:\n  "
+
+#: lib/porsche/ssh/onboarding.ex:126
+#, elixir-autogen, elixir-format
+msgid "\nOr manage your keys at:\n  "
+msgstr "\nHoặc quản lý khóa tại:\n  "
+
+#: lib/porsche/ssh/onboarding.ex:70
+#, elixir-autogen, elixir-format
+msgid "After approval, retry your command here.\n"
+msgstr "Sau khi phê duyệt, hãy thử lại lệnh tại đây.\n"
+
+#: lib/porsche/ssh/onboarding.ex:65
+#, elixir-autogen, elixir-format
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+msgstr "Liên kết phê duyệt hết hạn sau %{minutes} phút hoặc khi kết nối này đóng.\n"
+
+#: lib/porsche/ssh/onboarding.ex:138
+#, elixir-autogen, elixir-format
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "Làm theo hướng dẫn phê duyệt trong trình duyệt, rồi chạy lệnh thiết lập\n"
+
+#: lib/porsche/ssh/onboarding.ex:83
+#, elixir-autogen, elixir-format
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "Giữ kết nối đó mở trong khi phê duyệt khóa trong trình duyệt,\n"
+
+#: lib/porsche/ssh/onboarding.ex:129
+#, elixir-autogen, elixir-format
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+msgstr "Đăng ký hoặc kiểm tra khóa SSH trong Cài đặt tài khoản Overalls > Khóa SSH.\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:124
+#, elixir-autogen, elixir-format
+msgid "Register or check your key by connecting to:\n  ssh "
+msgstr "Đăng ký hoặc kiểm tra khóa bằng cách kết nối đến:\n  ssh "
+
+#: lib/porsche/ssh/onboarding.ex:113
+#, elixir-autogen, elixir-format
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr "Không thể cấp quyền cho kết nối SSH này. Kiểm tra quyền truy cập máy của bạn và thử lại.\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:107
+#, elixir-autogen, elixir-format
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr "Hiện tại chúng tôi không thể xác minh khóa SSH này. Vui lòng thử lại sau ít phút.\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:54
+#, elixir-autogen, elixir-format
+msgid "We don't recognize this SSH key:\n  "
+msgstr "Chúng tôi không nhận ra khóa SSH này:\n  "
+
+#: lib/porsche/ssh/onboarding.ex:95
+#, elixir-autogen, elixir-format
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr "Chào mừng đến với Overalls.\n\nKết nối này cần cấu hình SSH của Overalls.\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:142
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "từ trang máy của bạn và kết nối lại mà không có root@.\n"
+
+#: lib/porsche/ssh/onboarding.ex:87
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "sau đó thử lại lệnh ban đầu của bạn.\n"

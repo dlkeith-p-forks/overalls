@@ -1,5 +1,10 @@
 # Architecture decision records
 
+[ADR-0207](0207-bundled-multilingual-font-fallback.md) accepts local Noto script
+fallbacks with native shaping and JetBrains Mono as the primary grid font. It
+supersedes only ADR-0161's exclusive-typeface clause and carries forward its other
+presentation constraints. Current browser rendering evidence remains partial.
+
 [ADR-0220](0220-mila-client-over-porsche-ssh.md) through [ADR-0228](0228-strict-host-certificates-in-mila.md) introduce Mila, the Flutter client over one Porsche SSH connection with per-deployment P-256 device keys, canonical `overalls://` routes, the client command set, terminal attach, the Susan push relay and Notifications domain, The Monospace Web on Flutter, the patched dartssh2 toolchain and strict host-certificate trust. All nine are partial: code and tests exist for each, while device builds, real APNs/FCM delivery and Susan hosting remain open.
 
 [ADR-0205](0205-overview-newsletter.md) accepts a durable account-wide Overview newsletter invitation and fixed server-side Ghost subscription path; implementation remains partial.
@@ -10,7 +15,7 @@
 
 [ADR-0202](0202-github-com-owner-integration.md) accepts owner-bound GitHub OAuth custody and managed guest forwarding; implementation remains partial.
 
-[ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, the central 25-locale policy, browser language negotiation and validated account overrides with LTR/RTL presentation; implementation remains partial.
+[ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, the central 28-locale policy, feature catalogs, browser language negotiation and validated account overrides with LTR/RTL presentation. Public guides are translated; HLDD contents remain English. Implementation remains partial.
 
 [ADR-0200](0200-windows-browser-editor-candidate.md) accepts a source-built,
 account-bound Windows editor candidate with a separate `windows-editor-v1`
@@ -285,6 +290,8 @@ removes Tailwind, daisyUI, heroicons, Cinder and the Mishka component set while
 keeping navigation, authorization, terminal and hook contracts. Structural and
 Playwright evidence are recorded in the
 [presentation review](../reviews/2026-10-13-monospace-web-presentation.md).
+[ADR-0207](0207-bundled-multilingual-font-fallback.md) replaces only its
+exclusive-typeface clause with local multilingual script fallbacks.
 
 [ADR-0160](0160-privileged-administrator-step-up.md) replaces ADR-0123's inherited
 administrator step-up with fixed fifteen-minute elevation, inline exact
@@ -485,7 +492,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0164](0164-arc-budget-and-safe-memory-decrease.md) | accepted | partial | ARC budget, dnode limit and safe guest memory decrease |
 | [ADR-0163](0163-bounded-standby-refill-and-capacity-damping.md) | accepted | partial | Bounded standby refill and capacity damping |
 | [ADR-0162](0162-clone-cleanup-liveness.md) | accepted | partial | Clone cleanup liveness and transfer slot release at quiescence |
-| [ADR-0161](0161-monospace-web-presentation.md) | accepted | partial | Monospace Web presentation for Marshall |
+| [ADR-0161](0161-monospace-web-presentation.md) | superseded | partial | Monospace Web presentation for Marshall |
 | [ADR-0160](0160-privileged-administrator-step-up.md) | accepted | partial | Privileged administrator step-up and pending-action continuation |
 | [ADR-0159](0159-remove-legacy-compatibility.md) | superseded | implemented | Remove legacy compatibility after convergence |
 | [ADR-0158](0158-durable-guest-identities.md) | superseded | partial | Durable guest identities independent of email |
@@ -919,6 +926,7 @@ and physical storage acceptance. See the
 ADR-0015/0037 retain their statuses and accepted rationale.
 
 | [ADR-0201](0201-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |
+| [ADR-0207](0207-bundled-multilingual-font-fallback.md) | accepted | partial | Bundled multilingual font fallback |
 | [ADR-0220](0220-mila-client-over-porsche-ssh.md) | accepted | partial | Mila, the Overalls client over Porsche SSH |
 | [ADR-0221](0221-canonical-app-routes.md) | accepted | partial | Canonical `overalls://` app routes |
 | [ADR-0222](0222-porsche-client-commands.md) | accepted | partial | Porsche thread, web, device and watch commands for clients |

@@ -1,0 +1,451 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: de\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/components/time_components.ex:104
+#, elixir-autogen, elixir-format
+msgid "%{value1} local time · %{value2}"
+msgstr "%{value1} Ortszeit · %{value2}"
+
+#: lib/marshall_web/live/hldd_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "%{value1} · HLDD"
+msgstr "%{value1} · HLDD"
+
+#: lib/marshall_web/components/layouts/root.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "A little space for your next big idea."
+msgstr "Ein kleiner Raum für Ihre nächste große Idee."
+
+#: lib/marshall_web/live/hldd_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "A reference for the system, its configuration, and its operation."
+msgstr "Eine Referenz für das System, seine Konfiguration und seinen Betrieb."
+
+#: lib/marshall_web/components/layouts.ex:337
+#: lib/marshall_web/components/layouts.ex:443
+#, elixir-autogen, elixir-format
+msgid "AI usage"
+msgstr "KI-Nutzung"
+
+#: lib/marshall_web/components/layouts.ex:416
+#: lib/marshall_web/components/layouts.ex:461
+#, elixir-autogen, elixir-format
+msgid "Access authority"
+msgstr "Zugriffsberechtigung"
+
+#: lib/marshall_web/components/layouts.ex:241
+#: lib/marshall_web/components/layouts.ex:329
+#: lib/marshall_web/components/layouts.ex:449
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "Konto"
+
+#: lib/marshall_web/components/layouts.ex:404
+#, elixir-autogen, elixir-format
+msgid "Accounting"
+msgstr "Abrechnung"
+
+#: lib/marshall_web/components/core_components.ex:333
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Aktionen"
+
+#: lib/marshall_web/live/hldd_live.ex:113
+#, elixir-autogen, elixir-format
+msgid "Adjacent sections"
+msgstr "Benachbarte Abschnitte"
+
+#: lib/marshall_web/components/layouts.ex:296
+#: lib/marshall_web/components/layouts.ex:413
+#, elixir-autogen, elixir-format
+msgid "Administration"
+msgstr "Verwaltung"
+
+#: lib/marshall_web/components/layouts.ex:245
+#: lib/marshall_web/components/layouts.ex:507
+#: lib/marshall_web/components/layouts.ex:508
+#: lib/marshall_web/controllers/docs_html/show.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Appearance"
+msgstr "Darstellung"
+
+#: lib/marshall_web/components/layouts.ex:153
+#: lib/marshall_web/components/layouts.ex:167
+#, elixir-autogen, elixir-format
+msgid "Attempting to reconnect"
+msgstr "Verbindung wird erneut hergestellt"
+
+#: lib/marshall_web/components/layouts.ex:418
+#: lib/marshall_web/components/layouts.ex:462
+#, elixir-autogen, elixir-format
+msgid "Audit"
+msgstr "Audit"
+
+#: lib/marshall_web/components/layouts.ex:71
+#, elixir-autogen, elixir-format
+msgid "Breadcrumb"
+msgstr "Navigationspfad"
+
+#: lib/marshall_web/components/layouts.ex:233
+#, elixir-autogen, elixir-format
+msgid "Browser"
+msgstr "Browser"
+
+#: lib/marshall_web/components/layouts.ex:236
+#: lib/marshall_web/components/layouts.ex:342
+#, elixir-autogen, elixir-format
+msgid "Browser extension"
+msgstr "Browsererweiterung"
+
+#: lib/marshall_web/components/layouts.ex:119
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: lib/marshall_web/components/layouts.ex:99
+#, elixir-autogen, elixir-format
+msgid "Cancel verification"
+msgstr "Verifizierung abbrechen"
+
+#: lib/marshall_web/components/layouts.ex:264
+#: lib/marshall_web/components/layouts.ex:278
+#, elixir-autogen, elixir-format
+msgid "Close navigation"
+msgstr "Navigation schließen"
+
+#: lib/marshall_web/components/layouts.ex:95
+#, elixir-autogen, elixir-format
+msgid "Confirm administrative change"
+msgstr "Administratoränderung bestätigen"
+
+#: lib/marshall_web/live/hldd_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Contents"
+msgstr "Inhaltsverzeichnis"
+
+#: lib/marshall_web/components/layouts.ex:287
+#, elixir-autogen, elixir-format
+msgid "Control room"
+msgstr "Leitstand"
+
+#: lib/marshall_web/components/layouts.ex:441
+#, elixir-autogen, elixir-format
+msgid "Control room · %{section}"
+msgstr "Leitstand · %{section}"
+
+#: lib/marshall_web/components/layouts.ex:438
+#, elixir-autogen, elixir-format
+msgid "Control room · AI usage"
+msgstr "Leitstand · KI-Nutzung"
+
+#: lib/marshall_web/components/layouts.ex:511
+#, elixir-autogen, elixir-format
+msgid "Dark"
+msgstr "Dunkel"
+
+#: lib/marshall_web/components/layouts.ex:221
+#, elixir-autogen, elixir-format
+msgid "Docs"
+msgstr "Dokumentation"
+
+#: lib/marshall_web/components/layouts.ex:356
+#, elixir-autogen, elixir-format
+msgid "Docs ↗"
+msgstr "Dokumentation ↗"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Documentation"
+msgstr "Dokumentation"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Dokumentation nicht gefunden"
+
+#: lib/marshall_web/components/layouts.ex:223
+#: lib/marshall_web/components/layouts.ex:355
+#: lib/marshall_web/controllers/docs_html/show.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Field notes"
+msgstr "Feldnotizen"
+
+#: lib/marshall_web/components/layouts.ex:405
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "KI-Nutzung der Flotte"
+
+#: lib/marshall_web/components/layouts.ex:417
+#, elixir-autogen, elixir-format
+msgid "Git mirrors"
+msgstr "Git-Spiegel"
+
+#: lib/marshall_web/components/layouts.ex:431
+#: lib/marshall_web/components/layouts.ex:454
+#, elixir-autogen, elixir-format
+msgid "Git repositories"
+msgstr "Git-Repositories"
+
+#: lib/marshall_web/components/layouts.ex:371
+#, elixir-autogen, elixir-format
+msgid "GitHub ↗"
+msgstr "GitHub ↗"
+
+#: lib/marshall_web/components/layouts.ex:364
+#: lib/marshall_web/live/hldd_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "HLDD"
+msgstr "HLDD"
+
+#: lib/marshall_web/live/hldd_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "HLDD · Design and operations"
+msgstr "HLDD · Entwurf und Betrieb"
+
+#: lib/marshall_web/live/hldd_live.ex:74
+#: lib/marshall_web/live/hldd_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Handbook contents"
+msgstr "Handbuchinhalt"
+
+#: lib/marshall_web/components/layouts.ex:73
+#, elixir-autogen, elixir-format
+msgid "Home"
+msgstr "Startseite"
+
+#: lib/marshall_web/components/layouts.ex:430
+#: lib/marshall_web/components/layouts.ex:453
+#, elixir-autogen, elixir-format
+msgid "Integrations"
+msgstr "Integrationen"
+
+#: lib/marshall_web/components/layouts.ex:410
+#: lib/marshall_web/components/layouts.ex:458
+#, elixir-autogen, elixir-format
+msgid "Jobs"
+msgstr "Aufträge"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "LLM index"
+msgstr "LLM-Index"
+
+#: lib/marshall_web/components/layouts.ex:510
+#, elixir-autogen, elixir-format
+msgid "Light"
+msgstr "Hell"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Machine readable"
+msgstr "Maschinenlesbar"
+
+#: lib/marshall_web/components/layouts.ex:429
+#: lib/marshall_web/components/layouts.ex:452
+#, elixir-autogen, elixir-format
+msgid "Machines"
+msgstr "Maschinen"
+
+#: lib/marshall_web/components/layouts.ex:281
+#, elixir-autogen, elixir-format
+msgid "Made to get dirty"
+msgstr "Zum Anpacken gemacht"
+
+#: lib/marshall_web/components/layouts.ex:297
+#, elixir-autogen, elixir-format
+msgid "Main"
+msgstr "Hauptbereich"
+
+#: lib/marshall_web/components/layouts.ex:381
+#, elixir-autogen, elixir-format
+msgid "Make yourself comfy"
+msgstr "Machen Sie es sich bequem"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "Markdown for this page"
+msgstr "Markdown dieser Seite"
+
+#: lib/marshall_web/components/layouts.ex:259
+#, elixir-autogen, elixir-format
+msgid "Menu"
+msgstr "Menü"
+
+#: lib/marshall_web/components/layouts.ex:408
+#: lib/marshall_web/components/layouts.ex:456
+#, elixir-autogen, elixir-format
+msgid "Node maintenance"
+msgstr "Knotenwartung"
+
+#: lib/marshall_web/controllers/page_html/home.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Open Overalls"
+msgstr "Overalls öffnen"
+
+#: lib/marshall_web/components/layouts.ex:406
+#, elixir-autogen, elixir-format
+msgid "Operations"
+msgstr "Operationen"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:32
+#: lib/marshall_web/live/hldd_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Overalls"
+msgstr "Overalls"
+
+#: lib/marshall_web/components/layouts.ex:427
+#: lib/marshall_web/components/layouts.ex:450
+#, elixir-autogen, elixir-format
+msgid "Overview"
+msgstr "Übersicht"
+
+#: lib/marshall_web/components/layouts.ex:411
+#: lib/marshall_web/components/layouts.ex:459
+#, elixir-autogen, elixir-format
+msgid "Platform status"
+msgstr "Plattformzustand"
+
+#: lib/marshall_web/components/layouts.ex:352
+#: lib/marshall_web/components/layouts.ex:365
+#, elixir-autogen, elixir-format
+msgid "Reference"
+msgstr "Referenz"
+
+#: lib/marshall_web/components/layouts.ex:243
+#: lib/marshall_web/controllers/docs_html/show.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Sign in"
+msgstr "Anmelden"
+
+#: lib/marshall_web/components/layouts.ex:393
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "Abmelden"
+
+#: lib/marshall_web/components/layouts.ex:214
+#: lib/marshall_web/components/layouts/root.html.heex:38
+#: lib/marshall_web/controllers/docs_html/show.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Skip to content"
+msgstr "Zum Inhalt springen"
+
+#: lib/marshall_web/components/layouts.ex:159
+#, elixir-autogen, elixir-format
+msgid "Something went wrong!"
+msgstr "Etwas ist schiefgelaufen!"
+
+#: lib/marshall_web/components/layouts.ex:227
+#, elixir-autogen, elixir-format
+msgid "Source"
+msgstr "Quelle"
+
+#: lib/marshall_web/components/layouts.ex:370
+#: lib/marshall_web/controllers/docs_html/show.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Source code"
+msgstr "Quellcode"
+
+#: lib/marshall_web/components/layouts.ex:509
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "System"
+
+#: lib/marshall_web/components/layouts.ex:432
+#: lib/marshall_web/components/layouts.ex:455
+#, elixir-autogen, elixir-format
+msgid "Teams"
+msgstr "Teams"
+
+#: lib/marshall_web/components/layouts.ex:104
+#, elixir-autogen, elixir-format
+msgid "This change needs a fresh passkey verification. Your verification lasts 15 minutes."
+msgstr ""
+"Diese Änderung erfordert eine neue Passkey-Verifizierung. Ihre Verifizierung"
+" gilt 15 Minuten."
+
+#: lib/marshall_web/components/layouts.ex:428
+#: lib/marshall_web/components/layouts.ex:451
+#, elixir-autogen, elixir-format
+msgid "Threads"
+msgstr "Threads"
+
+#: lib/marshall_web/components/layouts.ex:388
+#, elixir-autogen, elixir-format
+msgid "Time zone"
+msgstr "Zeitzone"
+
+#: lib/marshall_web/components/layouts.ex:415
+#: lib/marshall_web/components/layouts.ex:460
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr "Benutzer"
+
+#: lib/marshall_web/components/layouts.ex:112
+#, elixir-autogen, elixir-format
+msgid "Verify with passkey"
+msgstr "Mit Passkey verifizieren"
+
+#: lib/marshall_web/components/layouts.ex:145
+#, elixir-autogen, elixir-format
+msgid "We can't find the internet"
+msgstr "Wir können das Internet nicht erreichen"
+
+#: lib/marshall_web/components/layouts/root.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Welcome to Overalls. Make yourself at home."
+msgstr "Willkommen bei Overalls. Fühlen Sie sich wie zu Hause."
+
+#: lib/marshall_web/components/layouts.ex:409
+#: lib/marshall_web/components/layouts.ex:457
+#, elixir-autogen, elixir-format
+msgid "Workloads"
+msgstr "Arbeitslasten"
+
+#: lib/marshall_web/components/layouts.ex:283
+#: lib/marshall_web/components/layouts.ex:463
+#, elixir-autogen, elixir-format
+msgid "Workspace"
+msgstr "Arbeitsbereich"
+
+#: lib/marshall_web/components/layouts.ex:282
+#, elixir-autogen, elixir-format
+msgid "Workspace mode"
+msgstr "Arbeitsbereichsmodus"
+
+#: lib/marshall_web/components/layouts.ex:270
+#, elixir-autogen, elixir-format
+msgid "Workspace navigation"
+msgstr "Arbeitsbereichsnavigation"
+
+#: lib/marshall_web/components/layouts.ex:322
+#, elixir-autogen, elixir-format
+msgid "Your account"
+msgstr "Ihr Konto"
+
+#: lib/marshall_web/components/layouts.ex:425
+#, elixir-autogen, elixir-format
+msgid "Your workspace"
+msgstr "Ihr Arbeitsbereich"
+
+#: lib/marshall_web/components/core_components.ex:107
+#, elixir-autogen, elixir-format
+msgid "close"
+msgstr "schließen"
+
+#: lib/marshall_web/live/hldd_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "← All sections"
+msgstr "← Alle Abschnitte"

@@ -1,12 +1,14 @@
 ---
 name: monospace-web
-description: Apply and verify The Monospace Web design language in Marshall's web UI: a character grid of 1ch by one line height, JetBrains Mono served from the application origin, four colour tokens per theme, semantic HTML with text glyphs, and both light and dark modes with no external resources. Use for every Marshall template, stylesheet, presentation JavaScript, component or browser-probe change, and when reviewing one.
+description: "Apply and verify The Monospace Web design language in Marshall's web UI: a character grid, locally served JetBrains Mono with multilingual fallbacks, four colour tokens per theme, semantic HTML with text glyphs, and both themes with no external resources. Use for every Marshall template, stylesheet, presentation JavaScript, component or browser-probe change, and when reviewing one."
 ---
 
 # The Monospace Web for Marshall
 
 Marshall's browser presentation is [The Monospace Web](https://owickstrom.github.io/the-monospace-web/)
-by Oskar Wickström (MIT), adopted by ADR-0161. The stylesheet is hand-written
+by Oskar Wickström (MIT), adopted by ADR-0161 and carried forward by
+[ADR-0207](../../../docs/architecture/decisions/0207-bundled-multilingual-font-fallback.md)
+with multilingual font fallback. The stylesheet is hand-written
 in `marshall/assets/css/` and bundled by esbuild; there is no Tailwind, daisyUI,
 component generator or icon set, and nothing loads from another origin. Using
 this skill is not evidence: run the checks in the last section.
@@ -32,7 +34,11 @@ this skill is not evidence: run the checks in the last section.
    words.
 5. **No external resources.** Fonts (`priv/static/fonts`), scripts and
    stylesheets (`assets/vendor`) are served by Marshall. Never add an `@import
-   url(https://…)`, a CDN script or a hosted font.
+   url(https://…)`, a CDN script or a hosted font. JetBrains Mono remains first
+   in `--font-family` and defines the layout grid; local Noto fallback families
+   supply missing glyphs. Preserve native joining, combining marks and
+   language-specific forms. Grid boxes do not require one Latin cell per
+   Unicode code point; never force letter spacing or split graphemes to do so.
 6. **Stable contracts.** Element ids, `data-*` and `aria-*` attributes and hook
    names are consumed by ExUnit tests, the browser probe and NixOS browser
    tests. Presentation work never changes them.
@@ -51,7 +57,11 @@ this skill is not evidence: run the checks in the last section.
    inside renderer-owned DOM (`.xterm`, Mermaid SVG).
 4. Check both themes with the appearance selector and the development grid
    overlay: `window.overallsGrid.debug(true)` in the browser console marks
-   off-grid elements; `window.overallsGrid.check()` lists them.
+   off-grid elements; `window.overallsGrid.check()` lists them. For localized
+   presentation, also read the localization skill and the font inventory in
+   `marshall/priv/static/fonts/README.md`. Check bundled glyph coverage and
+   observe representative script shaping in LTR and RTL at mobile and desktop
+   widths; a font-family declaration alone does not establish actual coverage.
 5. Run the gates in the next section, then update the handbook, ADRs and
    contracts as the repository guidance requires.
 
@@ -67,7 +77,9 @@ mix workspace.check              # TypeScript over the presentation JavaScript
 mix test test/marshall_web       # page tests pin ids and labels
 ```
 
-Browser evidence (both themes, mobile, contrast, grid, no external requests):
+Prefer Bombadil for new browser checks. Record script rendering, both themes,
+mobile layout, contrast, grid and same-origin requests separately from static
+font coverage. The existing disposable fixture/probe remains available:
 
 ```sh
 MIX_ENV=test MIX_TEST_PARTITION=monospace_browser mix ash.setup

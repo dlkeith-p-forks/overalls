@@ -1,0 +1,127 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: pcm\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/git_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Binary content"
+msgstr "Content wey be binary"
+
+#: lib/marshall_web/live/git_live.ex:230
+#: lib/marshall_web/live/git_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Commit"
+msgstr "Git commit"
+
+#: lib/marshall_web/live/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "Commits"
+msgstr "Git commits"
+
+#: lib/marshall_web/live/git_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "Content"
+msgstr "Wetin dey inside"
+
+#: lib/marshall_web/live/git_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Download raw file ↗"
+msgstr "Download di raw file ↗"
+
+#: lib/marshall_web/live/git_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Git repositories"
+msgstr "Di Git repositories"
+
+#: lib/marshall_web/live/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Kind"
+msgstr "Which kind"
+
+#: lib/marshall_web/live/git_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Last updated"
+msgstr "When we last update am"
+
+#: lib/marshall_web/live/git_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "Mirror contents are unavailable."
+msgstr "We no fit show wetin dey inside mirror."
+
+#: lib/marshall_web/live/git_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Paths"
+msgstr "Di paths"
+
+#: lib/marshall_web/live/git_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Read-only mirrors of public GitHub repositories."
+msgstr "Mirrors of public GitHub repositories wey you fit only read."
+
+#: lib/marshall_web/live/git_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "Ref"
+msgstr "Di reference"
+
+#: lib/marshall_web/live/git_live.ex:157
+#, elixir-autogen, elixir-format
+msgid "Repositories"
+msgstr "Di repositories"
+
+#: lib/marshall_web/live/git_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "Repository path"
+msgstr "Path for di repository"
+
+#: lib/marshall_web/live/git_live.ex:275
+#, elixir-autogen, elixir-format
+msgid "Repository unavailable."
+msgstr "Repository no dey available."
+
+#: lib/marshall_web/live/git_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "Repository views"
+msgstr "Views for di repository"
+
+#: lib/marshall_web/live/git_live.ex:197
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "Search am"
+
+#: lib/marshall_web/live/git_live.ex:181
+#: lib/marshall_web/live/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Search content"
+msgstr "Search di content"
+
+#: lib/marshall_web/live/git_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Subject"
+msgstr "Di subject"
+
+#: lib/marshall_web/controllers/git_raw_controller.ex:24
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "E no dey available"
+
+#: lib/marshall_web/live/git_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "file"
+msgstr "di file"
+
+#: lib/marshall_web/live/git_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "← Parent directory"
+msgstr "← Directory wey contain this one"

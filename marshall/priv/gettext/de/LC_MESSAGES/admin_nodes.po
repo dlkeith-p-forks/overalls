@@ -1,0 +1,817 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: de\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "Aktiv"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:259
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:302
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:393
+#, elixir-autogen, elixir-format
+msgid "Admission"
+msgstr "Zulassung"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:89
+#, elixir-autogen, elixir-format
+msgid "Admission settings updated."
+msgstr "Zulassungseinstellungen aktualisiert."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Admission settings were invalid or the node is not ready."
+msgstr ""
+"Die Zulassungseinstellungen waren ungültig oder der Knoten ist nicht bereit."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:615
+#, elixir-autogen, elixir-format
+msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
+msgstr ""
+"Unverbindliche Vorschau für diese Seite. Jeder Workload wird unabhängig "
+"bewertet; Ziele und verfügbare Kapazität können sich ändern. Die Zulassung "
+"prüft und reserviert Ressourcen erneut, wenn jede Verlagerung beginnt."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:430
+#, elixir-autogen, elixir-format
+msgid "Apply admission settings"
+msgstr "Zulassungseinstellungen anwenden"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#, elixir-autogen, elixir-format
+msgid "Approve move downtime"
+msgstr "Ausfallzeit der Verlagerung genehmigen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:635
+#, elixir-autogen, elixir-format
+msgid "Blocked: %{reason}"
+msgstr "Blockiert: %{reason}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
+#, elixir-autogen, elixir-format
+msgid "CPU after holds"
+msgstr "CPU nach Reservierungen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
+#, elixir-autogen, elixir-format
+msgid "CPU headroom"
+msgstr "CPU-Spielraum"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#, elixir-autogen, elixir-format
+msgid "CPU overhead (cores)"
+msgstr "CPU-Zusatzbedarf (Kerne)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:486
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#, elixir-autogen, elixir-format
+msgid "Campaign"
+msgstr "Kampagne"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:804
+#, elixir-autogen, elixir-format
+msgid "Campaign closed"
+msgstr "Kampagne abgeschlossen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#, elixir-autogen, elixir-format
+msgid "Campaign history"
+msgstr "Kampagnenverlauf"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:798
+#, elixir-autogen, elixir-format
+msgid "Campaign requested"
+msgstr "Kampagne angefordert"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#, elixir-autogen, elixir-format
+msgid "Campaign, workload and relocation milestones from durable control-plane records."
+msgstr ""
+"Meilensteine von Kampagnen, Workloads und Verlagerungen aus dauerhaften "
+"Datensätzen der Steuerungsebene."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:827
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "Abbruch angefordert"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:915
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "Abgebrochen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
+#, elixir-autogen, elixir-format
+msgid "Candidate: %{name}"
+msgstr "Kandidat: %{name}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:356
+#, elixir-autogen, elixir-format
+msgid "Capacity explanation"
+msgstr "Kapazitätserklärung"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Capacity information is temporarily unavailable."
+msgstr "Kapazitätsinformationen sind vorübergehend nicht verfügbar."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:769
+#, elixir-autogen, elixir-format
+msgid "Checking destination readiness"
+msgstr "Zielbereitschaft wird geprüft"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
+#, elixir-autogen, elixir-format
+msgid "Checking transfer connectivity"
+msgstr "Übertragungsverbindung wird geprüft"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
+#, elixir-autogen, elixir-format
+msgid "Cleaning up after cancellation"
+msgstr "Bereinigung nach dem Abbruch läuft"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
+#, elixir-autogen, elixir-format
+msgid "Cleaning up the source"
+msgstr "Quelle wird bereinigt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:869
+#, elixir-autogen, elixir-format
+msgid "Clone in progress"
+msgstr "Klonvorgang läuft"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#, elixir-autogen, elixir-format
+msgid "Closed"
+msgstr "Geschlossen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "Abgeschlossen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:377
+#, elixir-autogen, elixir-format
+msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
+msgstr "Konfigurierter Host-Overhead: %{cores} Kerne · %{memory} Arbeitsspeicher. Diese Reserven werden bei der Zulassungsberechnung berücksichtigt und bleiben durch die Bereitstellungskonfiguration gesteuert."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:508
+#, elixir-autogen, elixir-format
+msgid "Continue scheduling"
+msgstr "Planung fortsetzen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#, elixir-autogen, elixir-format
+msgid "Copy/resize holds"
+msgstr "Reservierungen für Kopieren/Größenänderung"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:760
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "Wird kopiert"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:166
+#, elixir-autogen, elixir-format
+msgid "Could not accept this change. Refresh and check the workload state."
+msgstr ""
+"Diese Änderung konnte nicht angenommen werden. Aktualisieren Sie die Seite "
+"und prüfen Sie den Workload-Zustand."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:744
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "Gelöscht"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#, elixir-autogen, elixir-format
+msgid "Deleting retained copies"
+msgstr "Aufbewahrte Kopien werden gelöscht"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
+#, elixir-autogen, elixir-format
+msgid "Desired: %{desired} · Observed: %{observed}"
+msgstr "Soll: %{desired} · Beobachtet: %{observed}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
+#, elixir-autogen, elixir-format
+msgid "Destination boot failed; source copy retained"
+msgstr "Zielstart fehlgeschlagen; Quellkopie aufbewahrt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:824
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup confirmed"
+msgstr "Bereinigung des Ziels bestätigt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup requested"
+msgstr "Bereinigung des Ziels angefordert"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:772
+#, elixir-autogen, elixir-format
+msgid "Destination readiness failed; source copy retained"
+msgstr "Zielbereitschaft fehlgeschlagen; Quellkopie aufbewahrt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:548
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Details"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#, elixir-autogen, elixir-format
+msgid "Disk after holds"
+msgstr "Festplatte nach Reservierungen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:860
+#, elixir-autogen, elixir-format
+msgid "Downtime approval required"
+msgstr "Genehmigung der Ausfallzeit erforderlich"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:836
+#, elixir-autogen, elixir-format
+msgid "Downtime approved"
+msgstr "Ausfallzeit genehmigt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
+#, elixir-autogen, elixir-format
+msgid "Downtime approved for this workload revision"
+msgstr "Ausfallzeit für diese Workload-Revision genehmigt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "Leergeräumt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:729
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "Wird leergeräumt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "Aktiviert"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:344
+#, elixir-autogen, elixir-format
+msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
+msgstr ""
+"Alle Workloads dieses Knotens evakuieren? Laufende Gäste werden während "
+"ihrer Verlagerung unterbrochen. Vollständige Kopien im angehaltenen Zustand "
+"erfordern eine gesonderte Genehmigung pro Workload."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "Wird evakuiert"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
+msgstr ""
+"Die Evakuierung sperrt neue Platzierungen, während bestehende Gäste weiter "
+"bedient werden. Eine Verlagerung unterbricht laufende Gäste kurz. Eine "
+"vollständige Kopie im angehaltenen Zustand kann wesentlich länger dauern und"
+" erfordert eine Genehmigung für jeden Workload."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#, elixir-autogen, elixir-format
+msgid "Evacuation campaign"
+msgstr "Evakuierungskampagne"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
+#, elixir-autogen, elixir-format
+msgid "Evacuation timeline"
+msgstr "Evakuierungsverlauf"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:547
+#, elixir-autogen, elixir-format
+msgid "Event"
+msgstr "Ereignis"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:272
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:305
+#, elixir-autogen, elixir-format
+msgid "Excluded"
+msgstr "Ausgeschlossen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:370
+#, elixir-autogen, elixir-format
+msgid "Execution ready"
+msgstr "Ausführung bereit"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:334
+#, elixir-autogen, elixir-format
+msgid "Explain capacity"
+msgstr "Kapazität erklären"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:912
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Fehlgeschlagen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:277
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:456
+#, elixir-autogen, elixir-format
+msgid "Fresh"
+msgstr "Aktuell"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "Fresh report"
+msgstr "Aktueller Bericht"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:763
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "Wird importiert"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:857
+#, elixir-autogen, elixir-format
+msgid "Insufficient capacity"
+msgstr "Unzureichende Kapazität"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Ungültige Anfrage."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:830
+#, elixir-autogen, elixir-format
+msgid "Job state"
+msgstr "Auftragsstatus"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:291
+#, elixir-autogen, elixir-format
+msgid "Lilly node · %{mode} maintenance"
+msgstr "Lilly-Knoten · Wartung %{mode}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
+msgstr ""
+"Lilly-Knoten und ihr Zulassungszustand. Verlagern Sie die Workloads eines "
+"Knotens, bevor Sie seine Maschine außer Betrieb nehmen."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:258
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:299
+#, elixir-autogen, elixir-format
+msgid "Maintenance"
+msgstr "Wartung"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
+#, elixir-autogen, elixir-format
+msgid "Maintenance pages"
+msgstr "Wartungsseiten"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "Maintenance updated."
+msgstr "Wartung aktualisiert."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:445
+#, elixir-autogen, elixir-format
+msgid "Memory after holds"
+msgstr "Arbeitsspeicher nach Reservierungen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:443
+#, elixir-autogen, elixir-format
+msgid "Memory headroom"
+msgstr "Arbeitsspeicherspielraum"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
+#, elixir-autogen, elixir-format
+msgid "Next page →"
+msgstr "Nächste Seite →"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:129
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
+#, elixir-autogen, elixir-format
+msgid "No active campaign."
+msgstr "Keine aktive Kampagne."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:257
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:297
+#, elixir-autogen, elixir-format
+msgid "Node"
+msgstr "Knoten"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Node information is unavailable."
+msgstr "Knoteninformationen sind nicht verfügbar."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Node maintenance"
+msgstr "Knotenwartung"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
+#, elixir-autogen, elixir-format
+msgid "Normal"
+msgstr "Normal"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s"
+msgstr "Beobachtete Unterbrechung: %{seconds}s"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:648
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s (ongoing)"
+msgstr "Beobachtete Unterbrechung: %{seconds}s (andauernd)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:587
+#, elixir-autogen, elixir-format
+msgid "Opened"
+msgstr "Geöffnet"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
+#, elixir-autogen, elixir-format
+msgid "Pause scheduling"
+msgstr "Planung pausieren"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
+#, elixir-autogen, elixir-format
+msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
+msgstr ""
+"Eine Pause verhindert die Planung neuer Verlagerungen. Angenommene "
+"Verlagerungen laufen weiter. Wartungsbereitschaft erfordert bestätigte "
+"Quellbereinigung; abgeschlossene Aufträge allein reichen nicht aus."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "Pausiert"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:742
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Ausstehend"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:522
+#, elixir-autogen, elixir-format
+msgid "Permanently retire this empty node and revoke its credentials?"
+msgstr ""
+"Diesen leeren Knoten dauerhaft stilllegen und seine Anmeldedaten widerrufen?"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:644
+#, elixir-autogen, elixir-format
+msgid "Phase: %{phase}"
+msgstr "Phase: %{phase}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:440
+#, elixir-autogen, elixir-format
+msgid "Pool"
+msgstr "Pool"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "Wird vorbereitet"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:331
+#, elixir-autogen, elixir-format
+msgid "Preview evacuation"
+msgstr "Evakuierungsvorschau"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
+#, elixir-autogen, elixir-format
+msgid "Preview: %{blocker}"
+msgstr "Vorschau: %{blocker}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:894
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "Eingereiht"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:419
+#, elixir-autogen, elixir-format
+msgid "RAM overhead (bytes)"
+msgstr "RAM-Zusatzbedarf (Bytes)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
+#, elixir-autogen, elixir-format
+msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
+msgstr ""
+"Diesen Workload mit aktueller Platzierung und gewünschtem Zustand neu "
+"planen? Eine frühere Ausfallzeitgenehmigung wird gelöscht."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Re-plan workload"
+msgstr "Workload neu planen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:359
+#, elixir-autogen, elixir-format
+msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
+msgstr ""
+"Schreibgeschützte Zulassungsberechnung. Sie reserviert keine Kapazität; "
+"unbekannte Messungen verhindern die Zulassung."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:738
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "Bereit"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:807
+#, elixir-autogen, elixir-format
+msgid "Relocation committed"
+msgstr "Verlagerung verbindlich übernommen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:866
+#, elixir-autogen, elixir-format
+msgid "Relocation in progress"
+msgstr "Verlagerung läuft"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:839
+#, elixir-autogen, elixir-format
+msgid "Relocation started"
+msgstr "Verlagerung gestartet"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
+#, elixir-autogen, elixir-format
+msgid "Removed from this source; awaiting campaign cleanup verification."
+msgstr ""
+"Aus dieser Quelle entfernt; Überprüfung der Kampagnenbereinigung steht aus."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:307
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:441
+#, elixir-autogen, elixir-format
+msgid "Report"
+msgstr "Bericht"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:863
+#, elixir-autogen, elixir-format
+msgid "Resize in progress"
+msgstr "Größenänderung läuft"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:515
+#, elixir-autogen, elixir-format
+msgid "Restore admission"
+msgstr "Zulassung wiederherstellen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
+#, elixir-autogen, elixir-format
+msgid "Restoring the source"
+msgstr "Quelle wird wiederhergestellt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "Fortgesetzt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
+#, elixir-autogen, elixir-format
+msgid "Retire node"
+msgstr "Knoten stilllegen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:735
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "Außer Betrieb genommen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:906
+#, elixir-autogen, elixir-format
+msgid "Retrying"
+msgstr "Wird erneut versucht"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
+#, elixir-autogen, elixir-format
+msgid "Retrying destination boot"
+msgstr "Start des Ziels wird erneut versucht"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:740
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:903
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "Läuft"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:900
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "Geplant"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
+#, elixir-autogen, elixir-format
+msgid "Source cleanup confirmed"
+msgstr "Bereinigung der Quelle bestätigt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:813
+#, elixir-autogen, elixir-format
+msgid "Source cleanup requested"
+msgstr "Bereinigung der Quelle angefordert"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:801
+#, elixir-autogen, elixir-format
+msgid "Source ready"
+msgstr "Quelle bereit"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:810
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "Quelle wiederhergestellt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:851
+#, elixir-autogen, elixir-format
+msgid "Source unavailable"
+msgstr "Quelle nicht verfügbar"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:278
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:457
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown"
+msgstr "Veraltet oder unbekannt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:310
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown report"
+msgstr "Veralteter oder unbekannter Bericht"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:350
+#, elixir-autogen, elixir-format
+msgid "Start evacuation"
+msgstr "Evakuierung starten"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:447
+#, elixir-autogen, elixir-format
+msgid "Startup holds"
+msgstr "Startreservierungen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Status"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#, elixir-autogen, elixir-format
+msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
+msgstr ""
+"Diesen laufenden Workload während der gesamten Verlagerung anhalten? Das "
+"Kopieren seiner Festplatten und Neustarten am Ziel kann längere "
+"Ausfallzeiten verursachen."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "Angehalten"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
+#, elixir-autogen, elixir-format
+msgid "Stopping the source"
+msgstr "Quelle wird angehalten"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:909
+#, elixir-autogen, elixir-format
+msgid "Succeeded"
+msgstr "Erfolgreich"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:897
+#, elixir-autogen, elixir-format
+msgid "Suspended"
+msgstr "Ausgesetzt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:766
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "Platzierung wird gewechselt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:314
+#, elixir-autogen, elixir-format
+msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
+msgstr "Terminalprotokoll: %{protocol} · Lokaler Datenstrom: %{state}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:546
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "Zeit"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:854
+#, elixir-autogen, elixir-format
+msgid "Transfer busy"
+msgstr "Übertragung belegt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Nicht verfügbar"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:315
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:749
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:871
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:872
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:874
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:917
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:556
+#, elixir-autogen, elixir-format
+msgid "VM"
+msgstr "VM"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:845
+#, elixir-autogen, elixir-format
+msgid "Workload changed"
+msgstr "Arbeitslast geändert"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:848
+#, elixir-autogen, elixir-format
+msgid "Workload is not stable"
+msgstr "Arbeitslast ist nicht stabil"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:833
+#, elixir-autogen, elixir-format
+msgid "Workload observed"
+msgstr "Arbeitslast beobachtet"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:842
+#, elixir-autogen, elixir-format
+msgid "Workload resolved"
+msgstr "Arbeitslast ermittelt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
+#, elixir-autogen, elixir-format
+msgid "attempt %{attempt}"
+msgstr "Versuch %{attempt}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
+#, elixir-autogen, elixir-format
+msgid "campaign"
+msgstr "Kampagne"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:367
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "enabled"
+msgstr "aktiviert"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:400
+#, elixir-autogen, elixir-format
+msgid "excluded"
+msgstr "ausgeschlossen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:563
+#, elixir-autogen, elixir-format
+msgid "job"
+msgstr "Auftrag"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:558
+#, elixir-autogen, elixir-format
+msgid "move"
+msgstr "verlagern"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:318
+#, elixir-autogen, elixir-format
+msgid "ready"
+msgstr "bereit"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "unavailable"
+msgstr "nicht verfügbar"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "unbekannt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "yes"
+msgstr "ja"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
+#, elixir-autogen, elixir-format
+msgid "· Downtime approval required"
+msgstr "· Ausfallzeitgenehmigung erforderlich"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:709
+#, elixir-autogen, elixir-format
+msgid "← First page"
+msgstr "← Erste Seite"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "← Nodes"
+msgstr "← Knoten"

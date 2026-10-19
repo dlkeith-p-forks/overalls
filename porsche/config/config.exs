@@ -29,7 +29,10 @@ config :localize,
     :fil,
     :et,
     :fi,
-    :sv
+    :sv,
+    :"ar-EG",
+    :sw,
+    :ha
   ]
 
 config :overalls_diagnostics, events_catalog: Porsche.Events

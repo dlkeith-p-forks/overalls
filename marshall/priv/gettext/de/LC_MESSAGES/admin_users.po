@@ -1,0 +1,205 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: de\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/users_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "%{count} owned machine"
+msgid_plural "%{count} owned machines"
+msgstr[0] "%{count} eigene Maschine"
+msgstr[1] "%{count} eigene Maschinen"
+
+#: lib/marshall_web/live/admin/users_live.ex:302
+#, elixir-autogen, elixir-format
+msgid "Account pages"
+msgstr "Kontoseiten"
+
+#: lib/marshall_web/live/admin/users_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Account request accepted."
+msgstr "Kontoanfrage angenommen."
+
+#: lib/marshall_web/live/admin/users_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "Accounts are temporarily unavailable."
+msgstr "Konten sind vorübergehend nicht verfügbar."
+
+#: lib/marshall_web/live/admin/users_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "Administrator"
+msgstr "Administrator"
+
+#: lib/marshall_web/live/admin/users_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "Administrator access updated."
+msgstr "Administratorzugriff aktualisiert."
+
+#: lib/marshall_web/live/admin/users_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Browser sessions revoked."
+msgstr "Browsersitzungen widerrufen."
+
+#: lib/marshall_web/live/admin/users_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "Could not accept this account change. Check confirmation and verify your passkey."
+msgstr ""
+"Diese Kontoänderung konnte nicht angenommen werden. Prüfen Sie die "
+"Bestätigung und verifizieren Sie Ihren Passkey."
+
+#: lib/marshall_web/live/admin/users_live.ex:53
+#, elixir-autogen, elixir-format
+msgid "Could not change administrator access."
+msgstr "Administratorzugriff konnte nicht geändert werden."
+
+#: lib/marshall_web/live/admin/users_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Could not revoke browser sessions."
+msgstr "Browsersitzungen konnten nicht widerrufen werden."
+
+#: lib/marshall_web/live/admin/users_live.ex:293
+#, elixir-autogen, elixir-format
+msgid "Delete user and machines"
+msgstr "Benutzer und Maschinen löschen"
+
+#: lib/marshall_web/live/admin/users_live.ex:170
+#, elixir-autogen, elixir-format
+msgid "Email address"
+msgstr "E-Mail-Adresse"
+
+#: lib/marshall_web/live/admin/users_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
+msgstr ""
+"Alle Konten dieser Installation. Angemeldete Benutzer können diese Seite "
+"lesen; Änderungen erfordern einen Administrator mit kürzlich verifiziertem "
+"Passkey."
+
+#: lib/marshall_web/live/admin/users_live.ex:233
+#, elixir-autogen, elixir-format
+msgid "Grant this account access to administer the entire fleet and all machines?"
+msgstr ""
+"Diesem Konto Zugriff zur Verwaltung der gesamten Flotte und aller Maschinen "
+"gewähren?"
+
+#: lib/marshall_web/live/admin/users_live.ex:91
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Ungültige Anfrage."
+
+#: lib/marshall_web/live/admin/users_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Invite a user"
+msgstr "Benutzer einladen"
+
+#: lib/marshall_web/live/admin/users_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "MFA enabled"
+msgstr "MFA aktiviert"
+
+#: lib/marshall_web/live/admin/users_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "MFA not enrolled"
+msgstr "MFA nicht eingerichtet"
+
+#: lib/marshall_web/live/admin/users_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Make administrator"
+msgstr "Zum Administrator machen"
+
+#: lib/marshall_web/live/admin/users_live.ex:308
+#, elixir-autogen, elixir-format
+msgid "Next page →"
+msgstr "Nächste Seite →"
+
+#: lib/marshall_web/live/admin/users_live.ex:300
+#, elixir-autogen, elixir-format
+msgid "No accounts on this page."
+msgstr "Keine Konten auf dieser Seite."
+
+#: lib/marshall_web/live/admin/users_live.ex:287
+#, elixir-autogen, elixir-format
+msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
+msgstr ""
+"Dieses Konto und ALLE eigenen Maschinen dauerhaft löschen, einschließlich "
+"mit anderen geteilter Maschinen?"
+
+#: lib/marshall_web/live/admin/users_live.ex:241
+#, elixir-autogen, elixir-format
+msgid "Remove administrator"
+msgstr "Administrator entfernen"
+
+#: lib/marshall_web/live/admin/users_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "Remove administrator access for this account?"
+msgstr "Administratorzugriff für dieses Konto entfernen?"
+
+#: lib/marshall_web/live/admin/users_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Reset MFA"
+msgstr "MFA zurücksetzen"
+
+#: lib/marshall_web/live/admin/users_live.ex:258
+#, elixir-autogen, elixir-format
+msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
+msgstr ""
+"MFA dieses Benutzers zurücksetzen und alle Browsersitzungen widerrufen? Ein "
+"Ersatz-Passkey muss eingerichtet werden."
+
+#: lib/marshall_web/live/admin/users_live.ex:173
+#, elixir-autogen, elixir-format
+msgid "Send invitation"
+msgstr "Einladung senden"
+
+#: lib/marshall_web/live/admin/users_live.ex:252
+#, elixir-autogen, elixir-format
+msgid "Sign out everywhere"
+msgstr "Überall abmelden"
+
+#: lib/marshall_web/live/admin/users_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Sign this account out of every browser session?"
+msgstr "Dieses Konto aus allen Browsersitzungen abmelden?"
+
+#: lib/marshall_web/live/admin/users_live.ex:277
+#, elixir-autogen, elixir-format
+msgid "Type the email to delete this account and its %{count} machines"
+msgstr ""
+"Geben Sie die E-Mail ein, um dieses Konto und seine %{count} Maschinen zu "
+"löschen"
+
+#: lib/marshall_web/live/admin/users_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "User"
+msgstr "Benutzer"
+
+#: lib/marshall_web/live/admin/users_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr "Benutzer"
+
+#: lib/marshall_web/live/admin/users_live.ex:177
+#, elixir-autogen, elixir-format
+msgid "Verify with passkey · administrative access lasts 15 minutes →"
+msgstr "Mit Passkey verifizieren · Administratorzugriff gilt 15 Minuten →"
+
+#: lib/marshall_web/live/admin/users_live.ex:205
+#, elixir-autogen, elixir-format
+msgid "· Your account"
+msgstr "· Ihr Konto"
+
+#: lib/marshall_web/live/admin/users_live.ex:303
+#, elixir-autogen, elixir-format
+msgid "← First page"
+msgstr "← Erste Seite"

@@ -1,0 +1,132 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: pcm\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/controllers/auth_controller.ex:94
+#, elixir-autogen, elixir-format
+msgid "An account with this email already exists. We've sent a link to that\naddress - confirm it to finish linking this provider to your account.\n"
+msgstr "Account with this email don already dey. We don send link to di\naddress - confirm am to finish joining this provider to your account.\n"
+
+#: lib/marshall_web/auth_overrides.ex:15
+#: lib/marshall_web/auth_text.ex:29
+#, elixir-autogen, elixir-format
+msgid "Check your email for a sign-in link. Your account will be created automatically when you sign in."
+msgstr "Check your email for link to enter. Your account go create by itself when you enter."
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Continue to Overalls"
+msgstr "Continue go Overalls"
+
+#: lib/marshall_web/auth_text.ex:23
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "Email message"
+
+#: lib/marshall_web/auth_text.ex:14
+#, elixir-autogen, elixir-format
+msgid "Email me a sign-in link"
+msgstr "Send link to my email make I enter"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:154
+#, elixir-autogen, elixir-format
+msgid "If you did not request this, ignore this email."
+msgstr "If no be you ask for this, ignore this email."
+
+#: lib/marshall_web/controllers/auth_controller.ex:100
+#, elixir-autogen, elixir-format
+msgid "Incorrect email or password"
+msgstr "Email or password no correct"
+
+#: lib/marshall_web/auth_text.ex:26
+#, elixir-autogen, elixir-format
+msgid "Remember me"
+msgstr "Remember who I be"
+
+#: lib/marshall_web/auth_text.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sending link…"
+msgstr "We dey send link…"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:150
+#: lib/marshall_web/auth_text.ex:20
+#, elixir-autogen, elixir-format
+msgid "Sign in"
+msgstr "Enter your account"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:147
+#, elixir-autogen, elixir-format
+msgid "Sign in to Overalls:"
+msgstr "Enter your Overalls account:"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:138
+#, elixir-autogen, elixir-format
+msgid "Sign in to Overalls: %{link}\n\nIf you did not request this, ignore this email."
+msgstr "Enter your Overalls account: %{link}\n\nIf no be you ask for this, ignore this email."
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Sign-in unavailable"
+msgstr "Sign-in no dey available"
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:27
+#, elixir-autogen, elixir-format
+msgid "Signing you in"
+msgstr "E dey sign you in"
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:44
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "E no dey available"
+
+#: lib/marshall_web/controllers/auth_controller.ex:43
+#, elixir-autogen, elixir-format
+msgid "You are now signed in"
+msgstr "You don enter your account"
+
+#: lib/marshall_web/controllers/auth_controller.ex:157
+#, elixir-autogen, elixir-format
+msgid "You are now signed out"
+msgstr "You don comot from your account"
+
+#: lib/marshall_web/controllers/auth_controller.ex:85
+#, elixir-autogen, elixir-format
+msgid "You have already signed in another way, but have not confirmed your account.\nYou can confirm your account using the link we sent to you, or by resetting your password.\n"
+msgstr "You don already enter another way, but you never confirm your account.\nYou fit confirm your account with di link wey we send you, or by resetting your password.\n"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:135
+#, elixir-autogen, elixir-format
+msgid "Your Overalls sign-in link"
+msgstr "Your link to enter Overalls"
+
+#: lib/marshall_web/controllers/auth_controller.ex:37
+#, elixir-autogen, elixir-format
+msgid "Your email address has now been confirmed"
+msgstr "We don confirm your email address"
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:28
+#, elixir-autogen, elixir-format
+msgid "Your email link is being verified."
+msgstr "Dem dey verify your email link."
+
+#: lib/marshall_web/controllers/auth_controller.ex:40
+#, elixir-autogen, elixir-format
+msgid "Your password has successfully been reset"
+msgstr "We don successfully reset your password"
+
+#: lib/marshall_web/controllers/auth_controller.ex:63
+#, elixir-autogen, elixir-format
+msgid "Your sign-in is no longer valid. Request a new sign-in link."
+msgstr "Your sign-in no valid again. Ask for new sign-in link."

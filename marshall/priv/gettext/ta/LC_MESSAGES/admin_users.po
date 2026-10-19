@@ -1,0 +1,192 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ta\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/users_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "%{count} owned machine"
+msgid_plural "%{count} owned machines"
+msgstr[0] "%{count} சொந்த இயந்திரம்"
+msgstr[1] "%{count} சொந்த இயந்திரங்கள்"
+
+#: lib/marshall_web/live/admin/users_live.ex:302
+#, elixir-autogen, elixir-format
+msgid "Account pages"
+msgstr "கணக்குப் பக்கங்கள்"
+
+#: lib/marshall_web/live/admin/users_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Account request accepted."
+msgstr "கணக்குக் கோரிக்கை ஏற்கப்பட்டது."
+
+#: lib/marshall_web/live/admin/users_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "Accounts are temporarily unavailable."
+msgstr "கணக்குகள் தற்காலிகமாகக் கிடைக்கவில்லை."
+
+#: lib/marshall_web/live/admin/users_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "Administrator"
+msgstr "நிர்வாகி"
+
+#: lib/marshall_web/live/admin/users_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "Administrator access updated."
+msgstr "நிர்வாகி அணுகல் புதுப்பிக்கப்பட்டது."
+
+#: lib/marshall_web/live/admin/users_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Browser sessions revoked."
+msgstr "உலாவி அமர்வுகள் ரத்துசெய்யப்பட்டன."
+
+#: lib/marshall_web/live/admin/users_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "Could not accept this account change. Check confirmation and verify your passkey."
+msgstr "இந்தக் கணக்கு மாற்றத்தை ஏற்க முடியவில்லை. உறுதிப்படுத்தலைச் சரிபார்த்து உங்கள் அணுகல் சாவியைச் சரிபார்க்கவும்."
+
+#: lib/marshall_web/live/admin/users_live.ex:53
+#, elixir-autogen, elixir-format
+msgid "Could not change administrator access."
+msgstr "நிர்வாகி அணுகலை மாற்ற முடியவில்லை."
+
+#: lib/marshall_web/live/admin/users_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Could not revoke browser sessions."
+msgstr "உலாவி அமர்வுகளை ரத்துசெய்ய முடியவில்லை."
+
+#: lib/marshall_web/live/admin/users_live.ex:293
+#, elixir-autogen, elixir-format
+msgid "Delete user and machines"
+msgstr "பயனரையும் இயந்திரங்களையும் நீக்கு"
+
+#: lib/marshall_web/live/admin/users_live.ex:170
+#, elixir-autogen, elixir-format
+msgid "Email address"
+msgstr "மின்னஞ்சல் முகவரி"
+
+#: lib/marshall_web/live/admin/users_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
+msgstr "இந்த நிறுவலின் ஒவ்வொரு கணக்கும். உள்நுழைந்த பயனர்கள் இப்பக்கத்தைப் படிக்கலாம்; மாற்றங்களுக்கு அண்மையில் அணுகல் சாவியைச் சரிபார்த்த நிர்வாகி தேவை."
+
+#: lib/marshall_web/live/admin/users_live.ex:233
+#, elixir-autogen, elixir-format
+msgid "Grant this account access to administer the entire fleet and all machines?"
+msgstr "முழுத் தொகுதியையும் அனைத்து இயந்திரங்களையும் நிர்வகிக்க இந்தக் கணக்கிற்கு அணுகல் வழங்கவா?"
+
+#: lib/marshall_web/live/admin/users_live.ex:91
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "செல்லாத கோரிக்கை."
+
+#: lib/marshall_web/live/admin/users_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Invite a user"
+msgstr "பயனரை அழை"
+
+#: lib/marshall_web/live/admin/users_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "MFA enabled"
+msgstr "பல்காரணி அங்கீகாரம் இயக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/users_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "MFA not enrolled"
+msgstr "பல்காரணி அங்கீகாரம் பதிவுசெய்யப்படவில்லை"
+
+#: lib/marshall_web/live/admin/users_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Make administrator"
+msgstr "நிர்வாகியாக்கு"
+
+#: lib/marshall_web/live/admin/users_live.ex:308
+#, elixir-autogen, elixir-format
+msgid "Next page →"
+msgstr "அடுத்த பக்கம் →"
+
+#: lib/marshall_web/live/admin/users_live.ex:300
+#, elixir-autogen, elixir-format
+msgid "No accounts on this page."
+msgstr "இப்பக்கத்தில் கணக்குகள் இல்லை."
+
+#: lib/marshall_web/live/admin/users_live.ex:287
+#, elixir-autogen, elixir-format
+msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
+msgstr "இந்தக் கணக்கையும், பிறருடன் பகிரப்பட்டவை உட்பட அதற்குச் சொந்தமான அனைத்து இயந்திரங்களையும் நிரந்தரமாக நீக்கவா?"
+
+#: lib/marshall_web/live/admin/users_live.ex:241
+#, elixir-autogen, elixir-format
+msgid "Remove administrator"
+msgstr "நிர்வாகியை நீக்கு"
+
+#: lib/marshall_web/live/admin/users_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "Remove administrator access for this account?"
+msgstr "இந்தக் கணக்கின் நிர்வாகி அணுகலை நீக்கவா?"
+
+#: lib/marshall_web/live/admin/users_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Reset MFA"
+msgstr "பல்காரணி அங்கீகாரத்தை மீட்டமை"
+
+#: lib/marshall_web/live/admin/users_live.ex:258
+#, elixir-autogen, elixir-format
+msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
+msgstr "இந்தப் பயனரின் பல்காரணி அங்கீகாரத்தை மீட்டமைத்து அனைத்து உலாவி அமர்வுகளையும் ரத்துசெய்யவா? அவர் மாற்று அணுகல் சாவியைப் பதிவுசெய்ய வேண்டும்."
+
+#: lib/marshall_web/live/admin/users_live.ex:173
+#, elixir-autogen, elixir-format
+msgid "Send invitation"
+msgstr "அழைப்பை அனுப்பு"
+
+#: lib/marshall_web/live/admin/users_live.ex:252
+#, elixir-autogen, elixir-format
+msgid "Sign out everywhere"
+msgstr "எங்கிருந்தும் வெளியேறு"
+
+#: lib/marshall_web/live/admin/users_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Sign this account out of every browser session?"
+msgstr "இந்தக் கணக்கை அனைத்து உலாவி அமர்வுகளிலிருந்தும் வெளியேற்றவா?"
+
+#: lib/marshall_web/live/admin/users_live.ex:277
+#, elixir-autogen, elixir-format
+msgid "Type the email to delete this account and its %{count} machines"
+msgstr "இந்தக் கணக்கையும் அதன் %{count} இயந்திரங்களையும் நீக்க மின்னஞ்சலை உள்ளிடவும்"
+
+#: lib/marshall_web/live/admin/users_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "User"
+msgstr "பயனர்"
+
+#: lib/marshall_web/live/admin/users_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr "பயனர்கள்"
+
+#: lib/marshall_web/live/admin/users_live.ex:177
+#, elixir-autogen, elixir-format
+msgid "Verify with passkey · administrative access lasts 15 minutes →"
+msgstr "அணுகல் சாவியால் சரிபார் · நிர்வாக அணுகல் 15 நிமிடங்கள் செல்லும் →"
+
+#: lib/marshall_web/live/admin/users_live.ex:205
+#, elixir-autogen, elixir-format
+msgid "· Your account"
+msgstr "· உங்கள் கணக்கு"
+
+#: lib/marshall_web/live/admin/users_live.ex:303
+#, elixir-autogen, elixir-format
+msgid "← First page"
+msgstr "← முதல் பக்கம்"

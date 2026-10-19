@@ -1,0 +1,204 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: sw\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/inference_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "AI request"
+msgstr "Ombi la AI"
+
+#: lib/marshall_web/live/inference_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "AI requests"
+msgstr "Maombi ya AI"
+
+#: lib/marshall_web/live/inference_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "AI requests · last 30 days"
+msgstr "Maombi ya AI · siku 30 zilizopita"
+
+#: lib/marshall_web/live/inference_live.ex:89
+#, elixir-autogen, elixir-format
+msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+msgstr "Matumizi ya AI yanahusishwa na mmiliki wa kila mashine. Utumiaji wa AI ambao haujakamilika bado haujulikani."
+
+#: lib/marshall_web/live/inference_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "AI usage is unavailable."
+msgstr "Matumizi ya AI hayapatikani."
+
+#: lib/marshall_web/live/inference_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "AI usage report"
+msgstr "Ripoti ya matumizi ya AI"
+
+#: lib/marshall_web/live/inference_live.ex:139
+#, elixir-autogen, elixir-format
+msgid "All providers"
+msgstr "Watoa huduma wote"
+
+#: lib/marshall_web/live/inference_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Anthropic"
+msgstr "Anthropic"
+
+#: lib/marshall_web/live/inference_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "Tekeleza"
+
+#: lib/marshall_web/live/inference_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Daily AI request counts over the past 30 days"
+msgstr "Ombi la kila siku la AI huhesabiwa katika siku 30 zilizopita"
+
+#: lib/marshall_web/live/inference_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Maelezo"
+
+#: lib/marshall_web/live/inference_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "Exact model ID"
+msgstr "Kitambulisho halisi cha mfano"
+
+#: lib/marshall_web/live/inference_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Export AI usage"
+msgstr "Hamisha matumizi ya AI"
+
+#: lib/marshall_web/live/inference_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "Filter"
+msgstr "Chuja"
+
+#: lib/marshall_web/live/inference_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "Matumizi ya AI ya kundi la mashine"
+
+#: lib/marshall_web/live/inference_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Incomplete AI reports"
+msgstr "Ripoti za AI ambazo hazijakamilika"
+
+#: lib/marshall_web/live/inference_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "Tokeni za ingizo"
+
+#: lib/marshall_web/live/inference_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Inspect"
+msgstr "Kagua"
+
+#: lib/marshall_web/live/inference_live.ex:207
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Mashine"
+
+#: lib/marshall_web/live/inference_live.ex:146
+#: lib/marshall_web/live/inference_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "Model"
+msgstr "Modeli"
+
+#: lib/marshall_web/live/inference_live.ex:227
+#, elixir-autogen, elixir-format
+msgid "No AI requests match these filters."
+msgstr "Hakuna maombi ya AI yanayolingana na vichujio hivi."
+
+#: lib/marshall_web/live/inference_live.ex:233
+#, elixir-autogen, elixir-format
+msgid "Older AI requests →"
+msgstr "Maombi ya zamani ya AI →"
+
+#: lib/marshall_web/live/inference_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
+msgstr "Safu moja kwa siku, kongwe kwanza; safu mlalo nane za mizani █ hadi siku yenye shughuli nyingi zaidi. Lebo huashiria siku ya mwezi."
+
+#: lib/marshall_web/live/inference_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "OpenAI"
+msgstr "OpenAI"
+
+#: lib/marshall_web/live/inference_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Outcome"
+msgstr "Matokeo"
+
+#: lib/marshall_web/live/inference_live.ex:162
+#, elixir-autogen, elixir-format
+msgid "Output tokens"
+msgstr "Tokeni za matokeo"
+
+#: lib/marshall_web/live/inference_live.ex:210
+#, elixir-autogen, elixir-format
+msgid "Placement / epoch"
+msgstr "Uwekaji / enzi"
+
+#: lib/marshall_web/live/inference_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Pricing source / version"
+msgstr "Chanzo cha bei / toleo"
+
+#: lib/marshall_web/live/inference_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Provider"
+msgstr "Mtoa huduma"
+
+#: lib/marshall_web/live/inference_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "Reported input tokens"
+msgstr "Tokeni za ingizo zilizoripotiwa"
+
+#: lib/marshall_web/live/inference_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Reported output tokens"
+msgstr "Tokeni za matokeo zilizoripotiwa"
+
+#: lib/marshall_web/live/inference_live.ex:159
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "Wakati"
+
+#: lib/marshall_web/live/inference_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Token cost estimate · USD"
+msgstr "Makadirio ya gharama ya tokeni · USD"
+
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Haipatikani"
+
+#: lib/marshall_web/live/inference_live.ex:60
+#: lib/marshall_web/live/inference_live.ex:190
+#: lib/marshall_web/live/inference_live.ex:197
+#: lib/marshall_web/live/inference_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Haijulikani"
+
+#: lib/marshall_web/live/inference_live.ex:180
+#, elixir-autogen, elixir-format
+msgid "Unreported"
+msgstr "Haijaripotiwa"
+
+#: lib/marshall_web/live/inference_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Your AI usage"
+msgstr "Matumizi yako ya AI"

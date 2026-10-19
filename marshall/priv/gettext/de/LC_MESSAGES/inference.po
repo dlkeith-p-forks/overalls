@@ -1,0 +1,208 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: de\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/inference_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "AI request"
+msgstr "KI-Anfrage"
+
+#: lib/marshall_web/live/inference_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "AI requests"
+msgstr "KI-Anfragen"
+
+#: lib/marshall_web/live/inference_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "AI requests · last 30 days"
+msgstr "KI-Anfragen · letzte 30 Tage"
+
+#: lib/marshall_web/live/inference_live.ex:89
+#, elixir-autogen, elixir-format
+msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+msgstr ""
+"Die KI-Nutzung wird dem Eigentümer jeder Maschine zugeordnet. Unvollständig "
+"erfasste KI-Nutzung bleibt unbekannt."
+
+#: lib/marshall_web/live/inference_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "AI usage is unavailable."
+msgstr "Die KI-Nutzung ist nicht verfügbar."
+
+#: lib/marshall_web/live/inference_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "AI usage report"
+msgstr "KI-Nutzungsbericht"
+
+#: lib/marshall_web/live/inference_live.ex:139
+#, elixir-autogen, elixir-format
+msgid "All providers"
+msgstr "Alle Anbieter"
+
+#: lib/marshall_web/live/inference_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Anthropic"
+msgstr "Anthropic"
+
+#: lib/marshall_web/live/inference_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "Anwenden"
+
+#: lib/marshall_web/live/inference_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Daily AI request counts over the past 30 days"
+msgstr "Tägliche KI-Anfragen der letzten 30 Tage"
+
+#: lib/marshall_web/live/inference_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Details"
+
+#: lib/marshall_web/live/inference_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "Exact model ID"
+msgstr "Genaue Modell-ID"
+
+#: lib/marshall_web/live/inference_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Export AI usage"
+msgstr "KI-Nutzung exportieren"
+
+#: lib/marshall_web/live/inference_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "Filter"
+msgstr "Filtern"
+
+#: lib/marshall_web/live/inference_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "KI-Nutzung der Flotte"
+
+#: lib/marshall_web/live/inference_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Incomplete AI reports"
+msgstr "Unvollständige KI-Berichte"
+
+#: lib/marshall_web/live/inference_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "Eingabetokens"
+
+#: lib/marshall_web/live/inference_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Inspect"
+msgstr "Untersuchen"
+
+#: lib/marshall_web/live/inference_live.ex:207
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Maschine"
+
+#: lib/marshall_web/live/inference_live.ex:146
+#: lib/marshall_web/live/inference_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "Model"
+msgstr "Modell"
+
+#: lib/marshall_web/live/inference_live.ex:227
+#, elixir-autogen, elixir-format
+msgid "No AI requests match these filters."
+msgstr "Keine KI-Anfragen entsprechen diesen Filtern."
+
+#: lib/marshall_web/live/inference_live.ex:233
+#, elixir-autogen, elixir-format
+msgid "Older AI requests →"
+msgstr "Ältere KI-Anfragen →"
+
+#: lib/marshall_web/live/inference_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
+msgstr ""
+"Eine Spalte pro Tag, älteste zuerst; acht Zeilen aus █ richten sich nach dem"
+" aktivsten Tag. Beschriftungen zeigen den Tag des Monats."
+
+#: lib/marshall_web/live/inference_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "OpenAI"
+msgstr "OpenAI"
+
+#: lib/marshall_web/live/inference_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Outcome"
+msgstr "Ergebnis"
+
+#: lib/marshall_web/live/inference_live.ex:162
+#, elixir-autogen, elixir-format
+msgid "Output tokens"
+msgstr "Ausgabetokens"
+
+#: lib/marshall_web/live/inference_live.ex:210
+#, elixir-autogen, elixir-format
+msgid "Placement / epoch"
+msgstr "Platzierung / Epoche"
+
+#: lib/marshall_web/live/inference_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Pricing source / version"
+msgstr "Preisquelle / Version"
+
+#: lib/marshall_web/live/inference_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Provider"
+msgstr "Anbieter"
+
+#: lib/marshall_web/live/inference_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "Reported input tokens"
+msgstr "Gemeldete Eingabetokens"
+
+#: lib/marshall_web/live/inference_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Reported output tokens"
+msgstr "Gemeldete Ausgabetokens"
+
+#: lib/marshall_web/live/inference_live.ex:159
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "Zeit"
+
+#: lib/marshall_web/live/inference_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Token cost estimate · USD"
+msgstr "Geschätzte Tokenkosten · USD"
+
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Nicht verfügbar"
+
+#: lib/marshall_web/live/inference_live.ex:60
+#: lib/marshall_web/live/inference_live.ex:190
+#: lib/marshall_web/live/inference_live.ex:197
+#: lib/marshall_web/live/inference_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: lib/marshall_web/live/inference_live.ex:180
+#, elixir-autogen, elixir-format
+msgid "Unreported"
+msgstr "Nicht gemeldet"
+
+#: lib/marshall_web/live/inference_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Your AI usage"
+msgstr "Ihre KI-Nutzung"

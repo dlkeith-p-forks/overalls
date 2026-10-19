@@ -1,0 +1,76 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: zh-Hans\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Approve SSH key"
+msgstr "批准 SSH 密钥"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Approve key"
+msgstr "批准密钥"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
+msgstr "仅当你发起了 SSH 连接且指纹与你的 SSH 客户端一致时，才批准此密钥。"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:109
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr "正在批准…"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:101
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr "标签（可选）"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Manage your SSH keys"
+msgstr "管理 SSH 密钥"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr "我的笔记本电脑"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "SSH key approved. You can return to your SSH client."
+msgstr "SSH 密钥已批准。可以返回 SSH 客户端。"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:64
+#, elixir-autogen, elixir-format
+msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
+msgstr "此 SSH 批准请求不可用或已过期。请发起新的 SSH 连接以重试。"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
+msgstr "此密钥将以 %{value1} 身份登录。它可根据你的账户权限管理机器。"
+
+#: lib/marshall_web/ssh_approval_login.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "不可用"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr "打开 Mila"

@@ -1,0 +1,98 @@
+#
+msgid ""
+msgstr ""
+"Language: ko\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/porsche/ssh/onboarding.ex:64
+#, elixir-autogen, elixir-format
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
+msgstr ""
+"\n"
+"\n"
+"키를 승인하는 동안 이 SSH 연결을 열어 두세요.\n"
+
+#: lib/porsche/ssh/onboarding.ex:81
+#, elixir-autogen, elixir-format
+msgid "\nOpen an interactive Porsche connection without a remote command:"
+msgstr ""
+"\n"
+"원격 명령 없이 대화형 Porsche 연결을 여세요:"
+
+#: lib/porsche/ssh/onboarding.ex:59
+#, elixir-autogen, elixir-format
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr ""
+"\n"
+"이 링크를 열고 로그인한 다음 일치하는 지문을 승인하세요:\n"
+"  "
+
+#: lib/porsche/ssh/onboarding.ex:126
+#, elixir-autogen, elixir-format
+msgid "\nOr manage your keys at:\n  "
+msgstr "\n또는 다음 위치에서 키를 관리하세요:\n  "
+
+#: lib/porsche/ssh/onboarding.ex:70
+#, elixir-autogen, elixir-format
+msgid "After approval, retry your command here.\n"
+msgstr "승인 후 여기에서 명령을 다시 시도하세요.\n"
+
+#: lib/porsche/ssh/onboarding.ex:65
+#, elixir-autogen, elixir-format
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+msgstr "승인 링크는 %{minutes}분 후 또는 이 연결을 닫으면 만료됩니다.\n"
+
+#: lib/porsche/ssh/onboarding.ex:138
+#, elixir-autogen, elixir-format
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "브라우저의 승인 지침을 따른 다음 설정 명령을 실행하세요.\n"
+
+#: lib/porsche/ssh/onboarding.ex:83
+#, elixir-autogen, elixir-format
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "브라우저에서 키를 승인하는 동안 해당 연결을 열어 두고,\n"
+
+#: lib/porsche/ssh/onboarding.ex:129
+#, elixir-autogen, elixir-format
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+msgstr ""
+"Overalls 계정 설정 > SSH 키에서 키를 등록하거나 확인하세요.\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:124
+#, elixir-autogen, elixir-format
+msgid "Register or check your key by connecting to:\n  ssh "
+msgstr ""
+"다음으로 연결하여 키를 등록하거나 확인하세요:\n"
+"  ssh "
+
+#: lib/porsche/ssh/onboarding.ex:113
+#, elixir-autogen, elixir-format
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr "이 SSH 연결을 승인할 수 없습니다. 머신 접근 권한을 확인하고 다시 시도하세요.\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:107
+#, elixir-autogen, elixir-format
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr "지금은 이 SSH 키를 검증할 수 없습니다. 잠시 후 다시 시도하세요.\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:54
+#, elixir-autogen, elixir-format
+msgid "We don't recognize this SSH key:\n  "
+msgstr "이 SSH 키를 인식할 수 없습니다:\n  "
+
+#: lib/porsche/ssh/onboarding.ex:95
+#, elixir-autogen, elixir-format
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr "Overalls에 오신 것을 환영합니다.\n\n이 연결에는 Overalls SSH 설정이 필요합니다.\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:142
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "을(를) 머신 페이지에서 받은 다음 root@ 없이 다시 연결하세요.\n"
+
+#: lib/porsche/ssh/onboarding.ex:87
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "그런 다음 원래 명령을 다시 시도하세요.\n"

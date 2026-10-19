@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang={assigns[:locale] || "en"} dir={assigns[:direction] || :ltr}>
+<html
+  lang={assigns[:locale] || "en"}
+  dir={assigns[:direction] || :ltr}
+  data-format-locale={Marshall.Localization.formatting_locale(assigns[:locale])}
+>
   <head>
     {Application.get_env(:live_debugger, :live_debugger_tags)}
 
@@ -25,17 +29,17 @@
       href={~p"/fonts/jetbrains-mono-500.woff2"}
     />
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
+    <script defer phx-track-static type="module" src={~p"/assets/js/app.js"}>
     </script>
   </head>
   <body>
     <%= if String.starts_with?(@conn.request_path, ["/sign-", "/auth/", "/magic_link/", "/register", "/reset", "/confirm"]) do %>
       <div class="public-page">
-        <a href="#main-content" class="skip-link">{gettext("Skip to content")}</a>
+        <a href="#main-content" class="skip-link">{dgettext("shared", "Skip to content")}</a>
         <main id="main-content">
           <div class="auth-welcome">
-            <h1>{gettext("A little space for your next big idea.")}</h1>
-            <p>{gettext("Welcome to Overalls. Make yourself at home.")}</p>
+            <h1>{dgettext("shared", "A little space for your next big idea.")}</h1>
+            <p>{dgettext("shared", "Welcome to Overalls. Make yourself at home.")}</p>
           </div>
           {@inner_content}
         </main>

@@ -1,0 +1,208 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+#: lib/marshall_web/live/inference_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "AI request"
+msgstr "Запрос ИИ"
+
+#: lib/marshall_web/live/inference_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "AI requests"
+msgstr "Запросы ИИ"
+
+#: lib/marshall_web/live/inference_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "AI requests · last 30 days"
+msgstr "Запросы ИИ · последние 30 дней"
+
+#: lib/marshall_web/live/inference_live.ex:89
+#, elixir-autogen, elixir-format
+msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+msgstr ""
+"Использование ИИ относится к владельцу каждой машины. Неполные данные об "
+"использовании остаются неизвестными."
+
+#: lib/marshall_web/live/inference_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "AI usage is unavailable."
+msgstr "Данные об использовании ИИ недоступны."
+
+#: lib/marshall_web/live/inference_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "AI usage report"
+msgstr "Отчёт об использовании ИИ"
+
+#: lib/marshall_web/live/inference_live.ex:139
+#, elixir-autogen, elixir-format
+msgid "All providers"
+msgstr "Все поставщики"
+
+#: lib/marshall_web/live/inference_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Anthropic"
+msgstr "Anthropic"
+
+#: lib/marshall_web/live/inference_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "Применить"
+
+#: lib/marshall_web/live/inference_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Daily AI request counts over the past 30 days"
+msgstr "Ежедневное число запросов ИИ за последние 30 дней"
+
+#: lib/marshall_web/live/inference_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Подробности"
+
+#: lib/marshall_web/live/inference_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "Exact model ID"
+msgstr "Точный ID модели"
+
+#: lib/marshall_web/live/inference_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Export AI usage"
+msgstr "Экспортировать использование ИИ"
+
+#: lib/marshall_web/live/inference_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "Filter"
+msgstr "Фильтр"
+
+#: lib/marshall_web/live/inference_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "Использование ИИ в парке"
+
+#: lib/marshall_web/live/inference_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Incomplete AI reports"
+msgstr "Неполные отчёты ИИ"
+
+#: lib/marshall_web/live/inference_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "Входные токены"
+
+#: lib/marshall_web/live/inference_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Inspect"
+msgstr "Изучить"
+
+#: lib/marshall_web/live/inference_live.ex:207
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Машина"
+
+#: lib/marshall_web/live/inference_live.ex:146
+#: lib/marshall_web/live/inference_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "Model"
+msgstr "Модель"
+
+#: lib/marshall_web/live/inference_live.ex:227
+#, elixir-autogen, elixir-format
+msgid "No AI requests match these filters."
+msgstr "Нет запросов ИИ с такими фильтрами."
+
+#: lib/marshall_web/live/inference_live.ex:233
+#, elixir-autogen, elixir-format
+msgid "Older AI requests →"
+msgstr "Более старые запросы ИИ →"
+
+#: lib/marshall_web/live/inference_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
+msgstr ""
+"По столбцу на день, сначала старые; восемь строк █ масштабируются по самому "
+"активному дню. Метки обозначают число месяца."
+
+#: lib/marshall_web/live/inference_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "OpenAI"
+msgstr "OpenAI"
+
+#: lib/marshall_web/live/inference_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Outcome"
+msgstr "Результат"
+
+#: lib/marshall_web/live/inference_live.ex:162
+#, elixir-autogen, elixir-format
+msgid "Output tokens"
+msgstr "Выходные токены"
+
+#: lib/marshall_web/live/inference_live.ex:210
+#, elixir-autogen, elixir-format
+msgid "Placement / epoch"
+msgstr "Размещение / эпоха"
+
+#: lib/marshall_web/live/inference_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Pricing source / version"
+msgstr "Источник / версия цен"
+
+#: lib/marshall_web/live/inference_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Provider"
+msgstr "Поставщик"
+
+#: lib/marshall_web/live/inference_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "Reported input tokens"
+msgstr "Заявленные входные токены"
+
+#: lib/marshall_web/live/inference_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Reported output tokens"
+msgstr "Заявленные выходные токены"
+
+#: lib/marshall_web/live/inference_live.ex:159
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "Время"
+
+#: lib/marshall_web/live/inference_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Token cost estimate · USD"
+msgstr "Оценка стоимости токенов · USD"
+
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Недоступно"
+
+#: lib/marshall_web/live/inference_live.ex:60
+#: lib/marshall_web/live/inference_live.ex:190
+#: lib/marshall_web/live/inference_live.ex:197
+#: lib/marshall_web/live/inference_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: lib/marshall_web/live/inference_live.ex:180
+#, elixir-autogen, elixir-format
+msgid "Unreported"
+msgstr "Не сообщено"
+
+#: lib/marshall_web/live/inference_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Your AI usage"
+msgstr "Ваше использование ИИ"

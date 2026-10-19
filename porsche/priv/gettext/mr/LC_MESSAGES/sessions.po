@@ -1,0 +1,16 @@
+#
+msgid ""
+msgstr ""
+"Language: mr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/porsche/ssh/channel.ex:154
+#, elixir-autogen, elixir-format
+msgid "Docs:"
+msgstr "दस्तऐवज:"
+
+#: lib/porsche/ssh/channel.ex:152
+#, elixir-autogen, elixir-format
+msgid "Porsche machine management. Type help."
+msgstr "Porsche मशीन व्यवस्थापन. help टाइप करा."

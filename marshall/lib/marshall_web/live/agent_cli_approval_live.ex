@@ -31,7 +31,10 @@ defmodule MarshallWeb.AgentCLIApprovalLive do
         {:noreply,
          socket
          |> assign(code: nil)
-         |> put_flash(:info, gettext("Agent CLI approved for one hour. Return to your terminal."))
+         |> put_flash(
+           :info,
+           dgettext("agents", "Agent CLI approved for one hour. Return to your terminal.")
+         )
          |> push_navigate(to: ~p"/machines/#{vm_id}/threads")}
 
       _ ->
@@ -46,7 +49,7 @@ defmodule MarshallWeb.AgentCLIApprovalLive do
     |> assign(vm_id: nil, code: nil, vm: nil)
     |> put_flash(
       :error,
-      gettext("This agent CLI approval is unavailable. Start again in your terminal.")
+      dgettext("agents", "This agent CLI approval is unavailable. Start again in your terminal.")
     )
   end
 
@@ -61,19 +64,19 @@ defmodule MarshallWeb.AgentCLIApprovalLive do
       now={@now}
     >
       <section class="stack">
-        <h1>{gettext("Approve agent CLI")}</h1>
-        <p :if={@vm}>{gettext("Machine:")} <code>{@vm.name}</code></p>
+        <h1>{dgettext("agents", "Approve agent CLI")}</h1>
+        <p :if={@vm}>{dgettext("agents", "Machine:")} <code>{@vm.name}</code></p>
         <p :if={@code}>
-          {gettext("Match this request code with your terminal before approving:")}
+          {dgettext("agents", "Match this request code with your terminal before approving:")}
           <strong class="font-mono">{String.slice(@code, 0, 12)}</strong>
         </p>
         <.form :if={@code && @vm} for={to_form(%{})} id="agent-cli-approval" phx-submit="approve">
           <button
             type="submit"
             class="console-button primary"
-            phx-disable-with={gettext("Approving…")}
+            phx-disable-with={dgettext("agents", "Approving…")}
           >
-            {gettext("Approve CLI access")}
+            {dgettext("agents", "Approve CLI access")}
           </button>
         </.form>
       </section>

@@ -1,6 +1,6 @@
 defmodule Marshall.LocaleDataCheck do
   @moduledoc "Checks the vendored CLDR data against the pinned Localize package."
-  @locales ~w(en zh hi es ar fr bn pt pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv und)a
+  @locales ~w(en zh hi es ar fr bn pt pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv ar-EG sw ha und)a
 
   @spec run() :: :ok
   def run do

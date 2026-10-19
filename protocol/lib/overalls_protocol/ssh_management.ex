@@ -1,12 +1,21 @@
 defmodule OverallsProtocol.SSHManagement do
   @moduledoc "Closed Porsche-to-Marshall session envelopes, independent of provisioner control versions."
-  @locales ~w(en zh-Hans hi es ar fr bn pt-BR pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv)
+  @locales ~w(en zh-Hans hi es ar fr bn pt-BR pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv arz sw ha)
 
   # @cc [owner:ghuntley,label:security] ssh-locale-display-only
   # Locale values MUST come from this finite display-only set; they MUST NOT
   # grant account authority or create atoms from peer-controlled text.
   @spec locale?(term()) :: boolean()
   def locale?(value), do: value in @locales
+
+  # @cc [owner:ghuntley,label:product;protocol] locale-cldr-formatting-identity
+  # Egyptian Arabic MUST retain the distinct display/catalog identity `arz` while
+  # CLDR formatting uses `ar-EG`; unsupported values MUST fall back to English.
+  # This mapping MUST NOT change authenticated session locale fields or authority.
+  @spec formatting_locale(term()) :: String.t()
+  def formatting_locale("arz"), do: "ar-EG"
+  def formatting_locale(locale) when locale in @locales, do: locale
+  def formatting_locale(_), do: "en"
 
   @spec request(binary(), term()) :: {:ok, map()} | {:error, atom()}
 

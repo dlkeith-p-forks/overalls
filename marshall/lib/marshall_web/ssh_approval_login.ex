@@ -26,7 +26,7 @@ defmodule MarshallWeb.SSHApprovalLogin do
         end
 
       :error ->
-        conn |> send_resp(404, gettext("Unavailable")) |> halt()
+        conn |> send_resp(404, dgettext("ssh", "Unavailable")) |> halt()
     end
   end
 end

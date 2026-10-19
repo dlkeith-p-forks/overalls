@@ -50,7 +50,7 @@ defmodule MarshallWeb.InferenceExportController do
       |> put_resp_header("content-disposition", "attachment; filename=\"inference-usage.csv\"")
       |> send_resp(200, csv)
     else
-      _ -> send_resp(conn, 404, gettext("Unavailable"))
+      _ -> send_resp(conn, 404, dgettext("inference", "Unavailable"))
     end
   end
 

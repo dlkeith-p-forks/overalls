@@ -19,7 +19,8 @@ defmodule OverallsProtocol.AndroidEmulatorStateMachinePropertyTest do
             phase: phase(),
             owner: owner() | nil,
             generation: non_neg_integer(),
-            boot_id: pos_integer() | nil
+            boot_id: pos_integer() | nil,
+            marker: boolean()
           }
     @type action ::
             {:acquire, owner()}
@@ -28,14 +29,22 @@ defmodule OverallsProtocol.AndroidEmulatorStateMachinePropertyTest do
             | {:stopped, owner()}
             | {:failed, owner()}
             | {:release, owner(), non_neg_integer()}
+            | {:reboot, owner()}
+            | {:write_marker, owner()}
 
     @spec initial() :: t()
-    def initial, do: %{phase: :stopped, owner: nil, generation: 0, boot_id: nil}
+    def initial, do: %{phase: :stopped, owner: nil, generation: 0, boot_id: nil, marker: false}
 
     # @cc [owner:ghuntley,label:security;recovery] emulator-lease-generation-fence
     # A software-emulator lifecycle MUST mutate only under the current owner and
     # generation. A stale or foreign release MUST leave phase, owner, generation and
     # boot identity unchanged.
+    def apply(%{phase: :running, owner: owner} = state, {:reboot, owner}),
+      do: {:ok, %{state | phase: :booting, boot_id: nil}}
+
+    def apply(%{phase: :running, owner: owner} = state, {:write_marker, owner}),
+      do: {:ok, %{state | marker: true}}
+
     @spec apply(t(), action()) :: {:ok, t()} | {:error, atom()}
     def apply(state, {:acquire, owner}) do
       if state.owner == nil and state.phase in [:stopped, :failed] do
@@ -81,7 +90,11 @@ defmodule OverallsProtocol.AndroidEmulatorStateMachinePropertyTest do
     {:release, :alice, 0},
     {:release, :alice, 1},
     {:release, :bob, 0},
-    {:release, :bob, 1}
+    {:release, :bob, 1},
+    {:reboot, :alice},
+    {:reboot, :bob},
+    {:write_marker, :alice},
+    {:write_marker, :bob}
   ]
 
   # @cc [owner:ghuntley,label:verification;recovery] emulator-state-machine-invariants
@@ -116,6 +129,8 @@ defmodule OverallsProtocol.AndroidEmulatorStateMachinePropertyTest do
             else
               assert next.boot_id == nil or next.phase in [:booting, :stopping]
             end
+
+            if before.marker, do: assert(next.marker)
 
             {next, next.generation}
         end

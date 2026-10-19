@@ -1,0 +1,127 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: fil\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n==1 || n==2 || n==3 || (n%10!=4 && n%10!=6 && n%10!=9) ? 0 : 1);\n"
+
+#: lib/marshall_web/live/git_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Binary content"
+msgstr "Binary na nilalaman"
+
+#: lib/marshall_web/live/git_live.ex:230
+#: lib/marshall_web/live/git_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Commit"
+msgstr "Mangako"
+
+#: lib/marshall_web/live/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "Commits"
+msgstr "Nag-commit"
+
+#: lib/marshall_web/live/git_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "Content"
+msgstr "Nilalaman"
+
+#: lib/marshall_web/live/git_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Download raw file ↗"
+msgstr "I-download ang raw file ↗"
+
+#: lib/marshall_web/live/git_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Git repositories"
+msgstr "Mga repositoryo ng Git"
+
+#: lib/marshall_web/live/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Kind"
+msgstr "Mabait"
+
+#: lib/marshall_web/live/git_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Last updated"
+msgstr "Huling na-update"
+
+#: lib/marshall_web/live/git_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "Mirror contents are unavailable."
+msgstr "Hindi available ang mga nilalaman ng salamin."
+
+#: lib/marshall_web/live/git_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Paths"
+msgstr "Mga landas"
+
+#: lib/marshall_web/live/git_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Read-only mirrors of public GitHub repositories."
+msgstr "Read-only na mga salamin ng mga pampublikong GitHub repository."
+
+#: lib/marshall_web/live/git_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "Ref"
+msgstr "Sanggunian"
+
+#: lib/marshall_web/live/git_live.ex:157
+#, elixir-autogen, elixir-format
+msgid "Repositories"
+msgstr "Mga repositoryo"
+
+#: lib/marshall_web/live/git_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "Repository path"
+msgstr "Daan ng imbakan"
+
+#: lib/marshall_web/live/git_live.ex:275
+#, elixir-autogen, elixir-format
+msgid "Repository unavailable."
+msgstr "Hindi available ang repository."
+
+#: lib/marshall_web/live/git_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "Repository views"
+msgstr "Mga view ng imbakan"
+
+#: lib/marshall_web/live/git_live.ex:197
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "Maghanap"
+
+#: lib/marshall_web/live/git_live.ex:181
+#: lib/marshall_web/live/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Search content"
+msgstr "Maghanap sa nilalaman"
+
+#: lib/marshall_web/live/git_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Subject"
+msgstr "Paksa"
+
+#: lib/marshall_web/controllers/git_raw_controller.ex:24
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Hindi magagamit"
+
+#: lib/marshall_web/live/git_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "file"
+msgstr "file ng datos"
+
+#: lib/marshall_web/live/git_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "← Parent directory"
+msgstr "← Magulang na direktoryo"

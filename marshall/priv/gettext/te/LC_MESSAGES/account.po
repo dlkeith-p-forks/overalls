@@ -1,0 +1,516 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: te\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/account_live.ex:500
+#, elixir-autogen, elixir-format
+msgid "%{count} registered key"
+msgid_plural "%{count} registered keys"
+msgstr[0] "%{count} నమోదైన కీ"
+msgstr[1] "నమోదైన కీలు %{count}"
+
+#: lib/marshall/accounts/time_zones.ex:314
+#, elixir-autogen, elixir-format
+msgid "%{span} ahead of you"
+msgstr "మీకంటే %{span} ముందుంది"
+
+#: lib/marshall/accounts/time_zones.ex:315
+#, elixir-autogen, elixir-format
+msgid "%{span} behind you"
+msgstr "మీకంటే %{span} వెనుక ఉంది"
+
+#: lib/marshall_web/live/account_live.ex:515
+#, elixir-autogen, elixir-format
+msgid "1. Profile"
+msgstr "1. ప్రొఫైల్"
+
+#: lib/marshall_web/live/account_live.ex:595
+#, elixir-autogen, elixir-format
+msgid "2. Sign-in and passkeys"
+msgstr "2. సైన్ ఇన్ మరియు పాస్‌కీలు"
+
+#: lib/marshall_web/live/account_live.ex:718
+#, elixir-autogen, elixir-format
+msgid "3. SSH keys"
+msgstr "3. SSH కీలు"
+
+#: lib/marshall_web/live/account_live.ex:809
+#, elixir-autogen, elixir-format
+msgid "4. Git identity"
+msgstr "4. Git గుర్తింపు"
+
+#: lib/marshall_web/live/account_live.ex:35
+#: lib/marshall_web/live/account_live.ex:480
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "ఖాతా"
+
+#: lib/marshall_web/live/account_live.ex:827
+#, elixir-autogen, elixir-format
+msgid "Add Overalls commit attribution"
+msgstr "కమిట్‌లో Overalls సహకారానికి గుర్తింపు జోడించండి"
+
+#: lib/marshall_web/live/account_live.ex:801
+#, elixir-autogen, elixir-format
+msgid "Add SSH key"
+msgstr "SSH కీని చేర్చు"
+
+#: lib/marshall_web/live/account_live.ex:773
+#, elixir-autogen, elixir-format
+msgid "Add a key"
+msgstr "కీని చేర్చు"
+
+#: lib/marshall_web/live/account_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Add passkey"
+msgstr "పాస్‌కీని చేర్చు"
+
+#: lib/marshall_web/live/account_live.ex:701
+#: lib/marshall_web/live/account_live.ex:767
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr "చేర్చబడింది"
+
+#: lib/marshall_web/live/account_live.ex:799
+#, elixir-autogen, elixir-format
+msgid "Adding…"
+msgstr "చేరుస్తోంది…"
+
+#: lib/marshall_web/live/account_live.ex:370
+#, elixir-autogen, elixir-format
+msgid "Choose a language from the list."
+msgstr "జాబితా నుంచి భాషను ఎంచుకోండి."
+
+#: lib/marshall_web/live/account_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "Choose a time zone from the list."
+msgstr "జాబితా నుంచి సమయ మండలాన్ని ఎంచుకోండి."
+
+#: lib/marshall_web/live/account_live.ex:586
+#, elixir-autogen, elixir-format
+msgid "Clear saved zone"
+msgstr "సేవ్ చేసిన మండలాన్ని తొలగించు"
+
+#: lib/marshall_web/live/account_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Could not add this key. Paste one supported public key; it must not belong to another account."
+msgstr ""
+"ఈ కీని చేర్చలేకపోయాం. మద్దతు ఉన్న ఒక పబ్లిక్ కీని పేస్ట్ చేయండి; అది మరో "
+"ఖాతాకు చెందకూడదు."
+
+#: lib/marshall_web/live/account_live.ex:240
+#, elixir-autogen, elixir-format
+msgid "Could not clear your time zone."
+msgstr "మీ సమయ మండలాన్ని తొలగించలేకపోయాం."
+
+#: lib/marshall_web/live/account_live.ex:206
+#, elixir-autogen, elixir-format
+msgid "Could not remove this key."
+msgstr "ఈ కీని తొలగించలేకపోయాం."
+
+#: lib/marshall_web/live/account_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Could not rename this key. Use at most 128 characters."
+msgstr "ఈ కీ పేరు మార్చలేకపోయాము. గరిష్ఠంగా 128 అక్షరాలు ఉపయోగించండి."
+
+#: lib/marshall_web/live/account_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "Credential change refused. Names must be 1–80 characters, changes need a passkey verified in the last 15 minutes, and administrators must keep at least one passkey."
+msgstr ""
+"ఆధారాల మార్పు నిరాకరించబడింది. పేర్లు 1–80 అక్షరాలుండాలి, మార్పులకు గత 15 "
+"నిమిషాల్లో ధృవీకరించిన పాస్‌కీ అవసరం, నిర్వాహకులు కనీసం ఒక పాస్‌కీ ఉంచాలి."
+
+#: lib/marshall_web/live/account_live.ex:757
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "వివరణ"
+
+#: lib/marshall_web/live/account_live.ex:451
+#, elixir-autogen, elixir-format
+msgid "Detected from your browser: %{value1}. Save it so others can see your local time."
+msgstr ""
+"బ్రౌజర్ నుంచి గుర్తించబడింది: %{value1}. ఇతరులకు మీ స్థానిక సమయం "
+"కనిపించడానికి సేవ్ చేయండి."
+
+#: lib/marshall_web/live/account_live.ex:544
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "ఇమెయిల్"
+
+#: lib/marshall_web/live/account_live.ex:651
+#, elixir-autogen, elixir-format
+msgid "End this verification before the fifteen minutes are up."
+msgstr "పదిహేను నిమిషాలు ముగియకముందే ఈ ధృవీకరణను ముగించండి."
+
+#: lib/marshall_web/live/account_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "Enter a valid Git name and email address."
+msgstr "చెల్లుబాటు అయ్యే Git పేరు మరియు ఇమెయిల్ చిరునామా నమోదు చేయండి."
+
+#: lib/marshall_web/live/account_live.ex:763
+#, elixir-autogen, elixir-format
+msgid "Fingerprint"
+msgstr "వేలిముద్ర"
+
+#: lib/marshall_web/live/account_live.ex:820
+#, elixir-autogen, elixir-format
+msgid "Git email"
+msgstr "Git ఇమెయిల్"
+
+#: lib/marshall_web/live/account_live.ex:508
+#, elixir-autogen, elixir-format
+msgid "Git identity"
+msgstr "Git గుర్తింపు"
+
+#: lib/marshall_web/live/account_live.ex:836
+#, elixir-autogen, elixir-format
+msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
+msgstr "Git గుర్తింపులో మార్పులు కొత్త మెషీన్‌లకు వర్తిస్తాయి. కమిట్‌లో సహకార గుర్తింపు మార్పులు భవిష్యత్ ఏజెంట్ అభ్యర్థనలకు వర్తిస్తాయి."
+
+#: lib/marshall_web/live/account_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Git settings saved."
+msgstr "Git సెట్టింగ్‌లు సేవ్ అయ్యాయి."
+
+#: lib/marshall_web/live/account_live.ex:813
+#, elixir-autogen, elixir-format
+msgid "Git username"
+msgstr "Git వినియోగదారు పేరు"
+
+#: lib/marshall_web/live/account_live.ex:280
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "చెల్లని అభ్యర్థన."
+
+#: lib/marshall_web/live/account_live.ex:707
+#, elixir-autogen, elixir-format
+msgid "Keep a backup passkey. If you lose access, another administrator can reset your passkeys."
+msgstr ""
+"బ్యాకప్ పాస్‌కీని ఉంచండి. ప్రాప్యత పోతే మరో నిర్వాహకుడు పాస్‌కీలను రీసెట్ "
+"చేయగలరు."
+
+#: lib/marshall_web/live/account_live.ex:720
+#, elixir-autogen, elixir-format
+msgid "Keys registered here open your machines over SSH with the same account and permissions as this site. Remove a key to revoke its access; email sign-in keeps working without any key."
+msgstr ""
+"ఇక్కడ నమోదైన కీలు ఈ సైట్ ఖాతా, అనుమతులతోనే SSH ద్వారా యంత్రాలను తెరుస్తాయి. "
+"ప్రాప్యత రద్దుకు కీని తొలగించండి; కీ లేకున్నా ఇమెయిల్ సైన్ ఇన్ పనిచేస్తుంది."
+
+#: lib/marshall_web/live/account_live.ex:776
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr "లేబుల్ (ఐచ్ఛికం)"
+
+#: lib/marshall_web/live/account_live.ex:520
+#, elixir-autogen, elixir-format
+msgid "Language"
+msgstr "భాష"
+
+#: lib/marshall_web/live/account_live.ex:526
+#, elixir-autogen, elixir-format
+msgid "Language is detected from your browser."
+msgstr "బ్రౌజర్ నుంచి భాష గుర్తించబడుతుంది."
+
+#: lib/marshall_web/live/account_live.ex:545
+#, elixir-autogen, elixir-format
+msgid "Local time"
+msgstr "స్థానిక సమయం"
+
+#: lib/marshall_web/live/account_live.ex:650
+#, elixir-autogen, elixir-format
+msgid "Lock now"
+msgstr "ఇప్పుడే లాక్ చేయి"
+
+#: lib/marshall_web/live/account_live.ex:778
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr "నా ల్యాప్‌టాప్"
+
+#: lib/marshall_web/live/account_live.ex:726
+#, elixir-autogen, elixir-format
+msgid "No SSH keys yet. You can always sign in here using email."
+msgstr "SSH కీలు ఇంకా లేవు. ఎప్పుడైనా ఇమెయిల్‌తో సైన్ ఇన్ చేయవచ్చు."
+
+#: lib/marshall_web/live/account_live.ex:662
+#, elixir-autogen, elixir-format
+msgid "No passkeys yet. First enrollment requires a fresh email sign-in completed within the last five minutes. After setup, return to the page you came from and retry the action."
+msgstr ""
+"పాస్‌కీలు ఇంకా లేవు. మొదటి నమోదుకు గత ఐదు నిమిషాల్లో పూర్తిచేసిన కొత్త "
+"ఇమెయిల్ సైన్ ఇన్ అవసరం. సెటప్ తర్వాత పాత పేజీకి వెళ్లి చర్యను మళ్లీ చేయండి."
+
+#: lib/marshall_web/live/account_live.ex:459
+#, elixir-autogen, elixir-format
+msgid "No zone saved and none detected; times are shown in UTC until you choose one."
+msgstr ""
+"మండలం సేవ్ కాలేదు, గుర్తించబడలేదు; ఎంచుకునేవరకు సమయాలు UTCలో కనిపిస్తాయి."
+
+#: lib/marshall_web/live/account_live.ex:488
+#, elixir-autogen, elixir-format
+msgid "On this page"
+msgstr "ఈ పేజీలో"
+
+#: lib/marshall_web/live/account_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "Passkey added. Verify it when you need to approve an administrative change."
+msgstr ""
+"పాస్‌కీ చేర్చబడింది. నిర్వాహక మార్పు ఆమోదించాల్సినప్పుడు ధృవీకరించండి."
+
+#: lib/marshall_web/live/account_live.ex:681
+#, elixir-autogen, elixir-format
+msgid "Passkey name"
+msgstr "పాస్‌కీ పేరు"
+
+#: lib/marshall_web/live/account_live.ex:148
+#, elixir-autogen, elixir-format
+msgid "Passkey request cancelled or unavailable. You can try again."
+msgstr ""
+"పాస్‌కీ అభ్యర్థన రద్దయింది లేదా అందుబాటులో లేదు. మళ్లీ ప్రయత్నించవచ్చు."
+
+#: lib/marshall_web/live/account_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Passkey verified for 15 minutes."
+msgstr "పాస్‌కీ 15 నిమిషాలకు ధృవీకరించబడింది."
+
+#: lib/marshall_web/live/account_live.ex:606
+#, elixir-autogen, elixir-format
+msgid "Passkey verified · %{count} second remaining."
+msgid_plural "Passkey verified · %{count} seconds remaining."
+msgstr[0] "పాస్‌కీ ధృవీకరించబడింది · %{count} సెకను మిగిలింది."
+msgstr[1] "పాస్‌కీ ధృవీకరించబడింది · %{count} సెకన్లు మిగిలాయి."
+
+#: lib/marshall_web/live/account_live.ex:789
+#, elixir-autogen, elixir-format
+msgid "Paste a public key from your .pub file. Never paste a private key."
+msgstr ""
+".pub ఫైల్ నుంచి పబ్లిక్ కీని పేస్ట్ చేయండి. ప్రైవేట్ కీని ఎప్పుడూ పేస్ట్ "
+"చేయవద్దు."
+
+#: lib/marshall_web/live/account_live.ex:491
+#, elixir-autogen, elixir-format
+msgid "Profile"
+msgstr "ప్రొఫైల్"
+
+#: lib/marshall_web/live/account_live.ex:783
+#, elixir-autogen, elixir-format
+msgid "Public key"
+msgstr "పబ్లిక్ కీ"
+
+#: lib/marshall_web/live/account_live.ex:698
+#: lib/marshall_web/live/account_live.ex:743
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "తొలగించు"
+
+#: lib/marshall_web/live/account_live.ex:737
+#, elixir-autogen, elixir-format
+msgid "Remove this key's SSH access? Already accepted machine operations will continue."
+msgstr ""
+"ఈ కీ SSH ప్రాప్యతను తొలగించాలా? ఇప్పటికే అంగీకరించిన యంత్ర చర్యలు "
+"కొనసాగుతాయి."
+
+#: lib/marshall_web/live/account_live.ex:692
+#, elixir-autogen, elixir-format
+msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
+msgstr ""
+"ఈ పాస్‌కీని తొలగించాలా? చివరి పాస్‌కీ తొలగిస్తే అన్ని చోట్ల సైన్ అవుట్ "
+"అవుతారు."
+
+#: lib/marshall_web/live/account_live.ex:684
+#: lib/marshall_web/live/account_live.ex:760
+#, elixir-autogen, elixir-format
+msgid "Rename"
+msgstr "పేరు మార్చు"
+
+#: lib/marshall_web/live/account_live.ex:658
+#, elixir-autogen, elixir-format
+msgid "Return to the requested page and retry the action →"
+msgstr "అభ్యర్థించిన పేజీకి తిరిగి వెళ్లి చర్యను మళ్లీ ప్రయత్నించండి →"
+
+#: lib/marshall_web/live/account_live.ex:465
+#, elixir-autogen, elixir-format
+msgid "SSH key"
+msgstr "SSH కీ"
+
+#: lib/marshall_web/live/account_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "SSH key added."
+msgstr "SSH కీ చేర్చబడింది."
+
+#: lib/marshall_web/live/account_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "SSH key removed."
+msgstr "SSH కీ తొలగించబడింది."
+
+#: lib/marshall_web/live/account_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "SSH key renamed."
+msgstr "SSH కీ పేరు మార్చబడింది."
+
+#: lib/marshall_web/live/account_live.ex:499
+#, elixir-autogen, elixir-format
+msgid "SSH keys"
+msgstr "SSH కీలు"
+
+#: lib/marshall_web/live/account_live.ex:349
+#, elixir-autogen, elixir-format
+msgid "SSH keys are temporarily unavailable."
+msgstr "SSH కీలు తాత్కాలికంగా అందుబాటులో లేవు."
+
+#: lib/marshall_web/live/account_live.ex:842
+#, elixir-autogen, elixir-format
+msgid "Save Git settings"
+msgstr "Git సెట్టింగ్‌లను సేవ్ చేయండి"
+
+#: lib/marshall_web/live/account_live.ex:530
+#, elixir-autogen, elixir-format
+msgid "Save language"
+msgstr "భాష సేవ్ చేయి"
+
+#: lib/marshall_web/live/account_live.ex:577
+#, elixir-autogen, elixir-format
+msgid "Save time zone"
+msgstr "సమయ మండలం సేవ్ చేయి"
+
+#: lib/marshall_web/live/account_live.ex:443
+#, elixir-autogen, elixir-format
+msgid "Saved: %{value1}. Others who share a team, machine or thread with you see your local time."
+msgstr ""
+"సేవ్ అయింది: %{value1}. మీతో బృందం, యంత్రం లేదా సంభాషణ పంచుకునేవారికి "
+"స్థానిక సమయం కనిపిస్తుంది."
+
+#: lib/marshall_web/live/account_live.ex:495
+#, elixir-autogen, elixir-format
+msgid "Sign-in and passkeys"
+msgstr "సైన్ ఇన్ మరియు పాస్‌కీలు"
+
+#: lib/marshall_web/live/account_live.ex:569
+#, elixir-autogen, elixir-format
+msgid "Time zone"
+msgstr "సమయ మండలం"
+
+#: lib/marshall_web/live/account_live.ex:235
+#, elixir-autogen, elixir-format
+msgid "Time zone cleared. Your browser's zone is used."
+msgstr "సమయ మండలం తొలగించబడింది. బ్రౌజర్ మండలం వాడబడుతుంది."
+
+#: lib/marshall_web/live/account_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "Time zone saved."
+msgstr "సమయ మండలం సేవ్ అయింది."
+
+#: lib/marshall_web/live/account_live.ex:766
+#, elixir-autogen, elixir-format
+msgid "Type"
+msgstr "రకం"
+
+#: lib/marshall_web/live/account_live.ex:539
+#, elixir-autogen, elixir-format
+msgid "Use browser language"
+msgstr "బ్రౌజర్ భాష వాడు"
+
+#: lib/marshall_web/live/account_live.ex:113
+#, elixir-autogen, elixir-format
+msgid "Verification could not be completed. Please try again."
+msgstr "ధృవీకరణ పూర్తిచేయలేకపోయాం. మళ్లీ ప్రయత్నించండి."
+
+#: lib/marshall_web/live/account_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Verification required. Use an existing passkey, or sign out and request a fresh email link before first enrollment."
+msgstr ""
+"ధృవీకరణ అవసరం. ఉన్న పాస్‌కీ వాడండి లేదా మొదటి నమోదుకు ముందు సైన్ అవుట్ చేసి "
+"కొత్త ఇమెయిల్ లింక్ కోరండి."
+
+#: lib/marshall_web/live/account_live.ex:614
+#, elixir-autogen, elixir-format
+msgid "Verify a passkey before making administrative changes or changing passkeys."
+msgstr "నిర్వాహక లేదా పాస్‌కీ మార్పులకు ముందు పాస్‌కీని ధృవీకరించండి."
+
+#: lib/marshall_web/live/account_live.ex:641
+#, elixir-autogen, elixir-format
+msgid "Verify with passkey"
+msgstr "పాస్‌కీతో ధృవీకరించు"
+
+#: lib/marshall_web/live/account_live.ex:830
+#, elixir-autogen, elixir-format
+msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
+msgstr "ప్రారంభించినప్పుడు, కొత్త ఏజెంట్ కమిట్‌లలో Co-authored-by: Overalls <noreply@overalls.dev> చేర్చబడుతుంది."
+
+#: lib/marshall_web/live/account_live.ex:482
+#, elixir-autogen, elixir-format
+msgid "Who you are, how you prove it, and the keys that reach your machines."
+msgstr "మీరు ఎవరు, ఎలా నిరూపిస్తారు, యంత్రాలకు చేరే కీలు."
+
+#: lib/marshall_web/live/account_live.ex:597
+#, elixir-autogen, elixir-format
+msgid "You sign in with an email link. A passkey proves it is you before administrative changes and before passkey changes; everyday use of your workspace never asks for one."
+msgstr ""
+"ఇమెయిల్ లింక్‌తో సైన్ ఇన్ చేస్తారు. నిర్వాహక, పాస్‌కీ మార్పులకు ముందు "
+"పాస్‌కీ గుర్తింపును నిరూపిస్తుంది; రోజువారీ పని స్థల వినియోగానికి అవసరం "
+"లేదు."
+
+#: lib/marshall_web/live/account_live.ex:560
+#, elixir-autogen, elixir-format
+msgid "Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved."
+msgstr ""
+"ఇమెయిల్ మీ సైన్ ఇన్ గుర్తింపు, ఇక్కడ మార్చలేరు. Overalls సమయాలు మీ మండలంలో "
+"కనిపిస్తాయి; మండలం సేవ్ చేసిన తర్వాత మీతో బృందం, యంత్రం, సంభాషణ "
+"పంచుకునేవారు, నిర్వాహకులు ఇమెయిల్ పక్కన స్థానిక సమయం చూస్తారు."
+
+#: lib/marshall_web/live/account_live.ex:667
+#, elixir-autogen, elixir-format
+msgid "Your passkeys"
+msgstr "మీ పాస్‌కీలు"
+
+#: lib/marshall_web/live/account_live.ex:621
+#, elixir-autogen, elixir-format
+msgid "Your passkeys were reset. Register a replacement before approving administrative changes."
+msgstr ""
+"పాస్‌కీలు రీసెట్ అయ్యాయి. నిర్వాహక మార్పులకు ఆమోదానికి ముందు కొత్తది నమోదు "
+"చేయండి."
+
+#: lib/marshall_web/live/account_live.ex:525
+#, elixir-autogen, elixir-format
+msgid "Your saved language overrides browser preferences."
+msgstr "సేవ్ చేసిన భాష బ్రౌజర్ ప్రాధాన్యతలను అధిగమిస్తుంది."
+
+#: lib/marshall_web/live/account_live.ex:613
+#, elixir-autogen, elixir-format
+msgid "[not verified]"
+msgstr "[ధృవీకరించలేదు]"
+
+#: lib/marshall_web/live/account_live.ex:605
+#, elixir-autogen, elixir-format
+msgid "[verified]"
+msgstr "[ధృవీకరించబడింది]"
+
+#: lib/marshall_web/live/account_live.ex:492
+#, elixir-autogen, elixir-format
+msgid "email, time zone and your local clock"
+msgstr "ఇమెయిల్, సమయ మండలం, స్థానిక గడియారం"
+
+#: lib/marshall_web/live/account_live.ex:509
+#, elixir-autogen, elixir-format
+msgid "new machines and commit attribution"
+msgstr "కొత్త మెషీన్‌లు మరియు కమిట్‌లో సహకార గుర్తింపు"
+
+#: lib/marshall/accounts/time_zones.ex:300
+#, elixir-autogen, elixir-format
+msgid "same time as you"
+msgstr "మీ సమయమే"
+
+#: lib/marshall_web/live/account_live.ex:496
+#, elixir-autogen, elixir-format
+msgid "verification for administrative changes"
+msgstr "నిర్వాహక మార్పులకు ధృవీకరణ"

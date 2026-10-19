@@ -1,0 +1,204 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ja\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/inference_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "AI request"
+msgstr "AIリクエスト"
+
+#: lib/marshall_web/live/inference_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "AI requests"
+msgstr "AIリクエスト"
+
+#: lib/marshall_web/live/inference_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "AI requests · last 30 days"
+msgstr "AI リクエスト · 過去 30 日間"
+
+#: lib/marshall_web/live/inference_live.ex:89
+#, elixir-autogen, elixir-format
+msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+msgstr "AI の使用は各マシンの所有者に帰属します。不完全な AI の使用状況は不明のままです。"
+
+#: lib/marshall_web/live/inference_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "AI usage is unavailable."
+msgstr "AIの使用は利用できません。"
+
+#: lib/marshall_web/live/inference_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "AI usage report"
+msgstr "AI活用レポート"
+
+#: lib/marshall_web/live/inference_live.ex:139
+#, elixir-autogen, elixir-format
+msgid "All providers"
+msgstr "すべてのプロバイダー"
+
+#: lib/marshall_web/live/inference_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Anthropic"
+msgstr "人間的"
+
+#: lib/marshall_web/live/inference_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "適用する"
+
+#: lib/marshall_web/live/inference_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Daily AI request counts over the past 30 days"
+msgstr "過去 30 日間の毎日の AI リクエスト数"
+
+#: lib/marshall_web/live/inference_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "詳細"
+
+#: lib/marshall_web/live/inference_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "Exact model ID"
+msgstr "正確なモデルID"
+
+#: lib/marshall_web/live/inference_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Export AI usage"
+msgstr "AI の使用状況をエクスポートする"
+
+#: lib/marshall_web/live/inference_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "Filter"
+msgstr "フィルター"
+
+#: lib/marshall_web/live/inference_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "フリート AI の使用状況"
+
+#: lib/marshall_web/live/inference_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Incomplete AI reports"
+msgstr "不完全な AI レポート"
+
+#: lib/marshall_web/live/inference_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "入力トークン"
+
+#: lib/marshall_web/live/inference_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Inspect"
+msgstr "検査する"
+
+#: lib/marshall_web/live/inference_live.ex:207
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "機械"
+
+#: lib/marshall_web/live/inference_live.ex:146
+#: lib/marshall_web/live/inference_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "Model"
+msgstr "モデル"
+
+#: lib/marshall_web/live/inference_live.ex:227
+#, elixir-autogen, elixir-format
+msgid "No AI requests match these filters."
+msgstr "これらのフィルターに一致する AI リクエストはありません。"
+
+#: lib/marshall_web/live/inference_live.ex:233
+#, elixir-autogen, elixir-format
+msgid "Older AI requests →"
+msgstr "古い AI リクエスト →"
+
+#: lib/marshall_web/live/inference_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
+msgstr "1 日あたり 1 列、古いものから順に表示されます。最も混雑する日まで █ スケールの 8 行。ラベルは月の日付を示します。"
+
+#: lib/marshall_web/live/inference_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "OpenAI"
+msgstr "OpenAI"
+
+#: lib/marshall_web/live/inference_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Outcome"
+msgstr "結果"
+
+#: lib/marshall_web/live/inference_live.ex:162
+#, elixir-autogen, elixir-format
+msgid "Output tokens"
+msgstr "出力トークン"
+
+#: lib/marshall_web/live/inference_live.ex:210
+#, elixir-autogen, elixir-format
+msgid "Placement / epoch"
+msgstr "配置/エポック"
+
+#: lib/marshall_web/live/inference_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Pricing source / version"
+msgstr "価格のソース/バージョン"
+
+#: lib/marshall_web/live/inference_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Provider"
+msgstr "プロバイダー"
+
+#: lib/marshall_web/live/inference_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "Reported input tokens"
+msgstr "報告された入力トークン"
+
+#: lib/marshall_web/live/inference_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Reported output tokens"
+msgstr "報告された出力トークン"
+
+#: lib/marshall_web/live/inference_live.ex:159
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "時間"
+
+#: lib/marshall_web/live/inference_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Token cost estimate · USD"
+msgstr "トークンコストの見積もり · 米ドル"
+
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "利用不可"
+
+#: lib/marshall_web/live/inference_live.ex:60
+#: lib/marshall_web/live/inference_live.ex:190
+#: lib/marshall_web/live/inference_live.ex:197
+#: lib/marshall_web/live/inference_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "未知"
+
+#: lib/marshall_web/live/inference_live.ex:180
+#, elixir-autogen, elixir-format
+msgid "Unreported"
+msgstr "未報告"
+
+#: lib/marshall_web/live/inference_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Your AI usage"
+msgstr "AIの使用状況"

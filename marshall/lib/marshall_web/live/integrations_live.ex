@@ -44,7 +44,10 @@ defmodule MarshallWeb.IntegrationsLive do
       {:ok, integration} ->
         {:noreply,
          socket
-         |> put_flash(:info, gettext("Integration %{value1} saved.", value1: integration.name))
+         |> put_flash(
+           :info,
+           dgettext("integrations", "Integration %{value1} saved.", value1: integration.name)
+         )
          |> refresh()}
 
       {:error, _} ->
@@ -52,7 +55,8 @@ defmodule MarshallWeb.IntegrationsLive do
          put_flash(
            socket,
            :error,
-           gettext(
+           dgettext(
+             "integrations",
              "Could not save this integration. Check the name, HTTPS target and header values."
            )
          )}
@@ -62,11 +66,14 @@ defmodule MarshallWeb.IntegrationsLive do
   def handle_event("remove", %{"name" => name}, socket) do
     case Galileo.remove_integration(%{name: name}, actor: socket.assigns.current_user) do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, gettext("Integration removed.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:info, dgettext("integrations", "Integration removed.")) |> refresh()}
 
       {:error, _} ->
         {:noreply,
-         socket |> put_flash(:error, gettext("Could not remove this integration.")) |> refresh()}
+         socket
+         |> put_flash(:error, dgettext("integrations", "Could not remove this integration."))
+         |> refresh()}
     end
   end
 
@@ -75,11 +82,14 @@ defmodule MarshallWeb.IntegrationsLive do
            actor: socket.assigns.current_user
          ) do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, gettext("Machine attached.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:info, dgettext("integrations", "Machine attached.")) |> refresh()}
 
       {:error, _} ->
         {:noreply,
-         socket |> put_flash(:error, gettext("Could not attach that machine.")) |> refresh()}
+         socket
+         |> put_flash(:error, dgettext("integrations", "Could not attach that machine."))
+         |> refresh()}
     end
   end
 
@@ -88,16 +98,19 @@ defmodule MarshallWeb.IntegrationsLive do
            actor: socket.assigns.current_user
          ) do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, gettext("Machine detached.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:info, dgettext("integrations", "Machine detached.")) |> refresh()}
 
       {:error, _} ->
         {:noreply,
-         socket |> put_flash(:error, gettext("Could not detach that machine.")) |> refresh()}
+         socket
+         |> put_flash(:error, dgettext("integrations", "Could not detach that machine."))
+         |> refresh()}
     end
   end
 
   def handle_event(_, _, socket),
-    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+    do: {:noreply, put_flash(socket, :error, dgettext("integrations", "Invalid request."))}
 
   defp refresh(socket) do
     github =
@@ -118,20 +131,23 @@ defmodule MarshallWeb.IntegrationsLive do
       {:error, _} ->
         socket
         |> assign(integrations: [])
-        |> put_flash(:error, gettext("Integrations are temporarily unavailable."))
+        |> put_flash(
+          :error,
+          dgettext("integrations", "Integrations are temporarily unavailable.")
+        )
     end
   end
 
   @spec github_state(atom()) :: String.t()
-  defp github_state(:connected), do: gettext("Connected")
-  defp github_state(:ready), do: gettext("Connected")
-  defp github_state(:disconnected), do: gettext("Disconnected")
-  defp github_state(:authorizing), do: gettext("Awaiting GitHub authorization")
-  defp github_state(:draining), do: gettext("Finishing active GitHub requests")
-  defp github_state(:refreshing), do: gettext("Refreshing GitHub connection")
-  defp github_state(:reconnect_required), do: gettext("Reconnect required")
-  defp github_state(:revoking), do: gettext("Disconnecting GitHub")
-  defp github_state(_), do: gettext("Temporarily unavailable")
+  defp github_state(:connected), do: dgettext("integrations", "Connected")
+  defp github_state(:ready), do: dgettext("integrations", "Connected")
+  defp github_state(:disconnected), do: dgettext("integrations", "Disconnected")
+  defp github_state(:authorizing), do: dgettext("integrations", "Awaiting GitHub authorization")
+  defp github_state(:draining), do: dgettext("integrations", "Finishing active GitHub requests")
+  defp github_state(:refreshing), do: dgettext("integrations", "Refreshing GitHub connection")
+  defp github_state(:reconnect_required), do: dgettext("integrations", "Reconnect required")
+  defp github_state(:revoking), do: dgettext("integrations", "Disconnecting GitHub")
+  defp github_state(_), do: dgettext("integrations", "Temporarily unavailable")
 
   defp reset_form(socket) do
     assign(
@@ -198,9 +214,10 @@ defmodule MarshallWeb.IntegrationsLive do
     >
       <section id="integrations-page" class="stack">
         <UI.heading
-          title={gettext("Integrations")}
+          title={dgettext("integrations", "Integrations")}
           subtitle={
-            gettext(
+            dgettext(
+              "integrations",
               "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
             )
           }
@@ -212,36 +229,40 @@ defmodule MarshallWeb.IntegrationsLive do
           </header>
           <p><code>https://com-github.integration.internal</code></p>
           <p>
-            {gettext(
+            {dgettext(
+              "integrations",
               "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
             )}
           </p>
           <p>
-            {gettext(
+            {dgettext(
+              "integrations",
               "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
             )}
           </p>
           <p :if={@github.github_login} id="github-com-identity">
-            {gettext("Connected as %{login}", login: @github.github_login)}
+            {dgettext("integrations", "Connected as %{login}", login: @github.github_login)}
           </p>
           <div class="row">
             <.form for={%{}} id="github-com-connect" action="/auth/github-com/start" method="post">
               <button class="console-button primary" type="submit" disabled={!@github.configured}>
-                {gettext("Connect GitHub")}
+                {dgettext("integrations", "Connect GitHub")}
               </button>
             </.form>
             <button
               :if={@github.phase not in [:disconnected, :unavailable]}
               id="github-com-disconnect"
               phx-click="github-disconnect"
-              data-confirm={gettext("Disconnect GitHub from your machines?")}
+              data-confirm={dgettext("integrations", "Disconnect GitHub from your machines?")}
               class="console-button danger"
             >
-              {gettext("Disconnect GitHub")}
+              {dgettext("integrations", "Disconnect GitHub")}
             </button>
           </div>
           <details id="github-com-machines">
-            <summary>{gettext("Machines excluded from your GitHub identity")}</summary>
+            <summary>
+              {dgettext("integrations", "Machines excluded from your GitHub identity")}
+            </summary>
             <div class="stack">
               <.form
                 for={to_form(%{"vm_id" => ""}, as: :github_machine)}
@@ -252,10 +273,10 @@ defmodule MarshallWeb.IntegrationsLive do
                 <.input
                   name="github_machine[vm_id]"
                   value=""
-                  label={gettext("Machine UUID")}
+                  label={dgettext("integrations", "Machine UUID")}
                   required
                 />
-                <button class="console-button" type="submit">{gettext("Detach")}</button>
+                <button class="console-button" type="submit">{dgettext("integrations", "Detach")}</button>
               </.form>
               <div :for={vm_id <- @github.exclusions} id={"github-com-excluded-#{vm_id}"} class="row">
                 <code class="break">{vm_id}</code>
@@ -264,14 +285,15 @@ defmodule MarshallWeb.IntegrationsLive do
                   phx-value-vm-id={vm_id}
                   class="console-button compact"
                 >
-                  {gettext("Attach")}
+                  {dgettext("integrations", "Attach")}
                 </button>
               </div>
             </div>
           </details>
         </article>
         <p :if={@integrations == []} class="empty-state">
-          {gettext(
+          {dgettext(
+            "integrations",
             "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
           )}
         </p>
@@ -289,57 +311,70 @@ defmodule MarshallWeb.IntegrationsLive do
                   id={"remove-integration-#{integration.id}"}
                   phx-click="remove"
                   phx-value-name={integration.name}
-                  data-confirm={gettext("Remove this integration?")}
+                  data-confirm={dgettext("integrations", "Remove this integration?")}
                   class="console-button danger"
                 >
-                  {gettext("Remove")}
+                  {dgettext("integrations", "Remove")}
                 </button>
               </div>
             </header>
             <div class="panel-body">
               <.kv>
-                <:item :if={integration.target} title={gettext("Target")}>
+                <:item :if={integration.target} title={dgettext("integrations", "Target")}>
                   <span class="break">{integration.target}</span>
                 </:item>
-                <:item :if={!integration.target} title={gettext("Peer machine")}>
+                <:item :if={!integration.target} title={dgettext("integrations", "Peer machine")}>
                   <code class="break">{integration.peer_vm_id}</code>
                 </:item>
-                <:item title={gettext("Owner")}>
+                <:item title={dgettext("integrations", "Owner")}>
                   {if integration.team_id,
-                    do: gettext("Team %{team}", team: integration.team_id),
-                    else: gettext("Personal integration")}
+                    do: dgettext("integrations", "Team %{team}", team: integration.team_id),
+                    else: dgettext("integrations", "Personal integration")}
                 </:item>
-                <:item :if={integration.comment != ""} title={gettext("Comment")}>
+                <:item :if={integration.comment != ""} title={dgettext("integrations", "Comment")}>
                   <span class="break">{integration.comment}</span>
                 </:item>
-                <:item :if={integration.strip_prefix} title={gettext("Strips prefix")}>
+                <:item
+                  :if={integration.strip_prefix}
+                  title={dgettext("integrations", "Strips prefix")}
+                >
                   <code>{integration.strip_prefix}</code>
                 </:item>
               </.kv>
-              <h3>{gettext("Injected credentials")}</h3>
+              <h3>{dgettext("integrations", "Injected credentials")}</h3>
               <div id={"integration-headers-#{integration.id}"}>
-                <p :if={integration.headers == []} class="muted">{gettext("No injected headers.")}</p>
+                <p :if={integration.headers == []} class="muted">
+                  {dgettext("integrations", "No injected headers.")}
+                </p>
                 <.kv :if={integration.headers != []}>
                   <:item :for={header <- integration.headers} title={header.name}>
-                    <span class="muted">{gettext("**** (write-only)")}</span>
+                    <span class="muted">{dgettext("integrations", "**** (write-only)")}</span>
                   </:item>
                 </.kv>
               </div>
-              <h3>{gettext("Machines with access")}</h3>
+              <h3>{dgettext("integrations", "Machines with access")}</h3>
               <div id={"integration-attachments-#{integration.id}"}>
                 <p :if={integration.attachments == []} class="muted">
                   {if integration.team_id,
                     do:
-                      gettext("No explicit attachments. Current team members' machines have access."),
+                      dgettext(
+                        "integrations",
+                        "No explicit attachments. Current team members' machines have access."
+                      ),
                     else:
-                      gettext("No machines have access. Attach a machine to use this integration.")}
+                      dgettext(
+                        "integrations",
+                        "No machines have access. Attach a machine to use this integration."
+                      )}
                 </p>
                 <div :if={integration.attachments != []} class="table-flow">
                   <table>
                     <thead>
                       <tr>
-                        <th class="width-auto">{gettext("Machine")}</th>
-                        <th class="width-min"><span class="sr-only">{gettext("Actions")}</span></th>
+                        <th class="width-auto">{dgettext("integrations", "Machine")}</th>
+                        <th class="width-min">
+                          <span class="sr-only">{dgettext("integrations", "Actions")}</span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -355,7 +390,7 @@ defmodule MarshallWeb.IntegrationsLive do
                             phx-value-vm-id={attachment.vm_id}
                             class="console-button compact"
                           >
-                            {gettext("Detach")}
+                            {dgettext("integrations", "Detach")}
                           </button>
                         </td>
                       </tr>
@@ -374,93 +409,103 @@ defmodule MarshallWeb.IntegrationsLive do
                   id={"attachment-vm-#{integration.id}"}
                   name="attachment[vm_id]"
                   value=""
-                  label={gettext("Attach a machine by ID")}
-                  placeholder={gettext("Machine UUID")}
+                  label={dgettext("integrations", "Attach a machine by ID")}
+                  placeholder={dgettext("integrations", "Machine UUID")}
                 />
-                <button class="console-button">{gettext("Attach")}</button>
+                <button class="console-button">{dgettext("integrations", "Attach")}</button>
               </.form>
             </div>
           </article>
         </div>
         <.form for={@form} id="integration-form" phx-submit="add" class="panel stack">
-          <h2>{gettext("Add an integration")}</h2>
+          <h2>{dgettext("integrations", "Add an integration")}</h2>
           <p class="muted">
-            {gettext(
+            {dgettext(
+              "integrations",
               "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
             )}
           </p>
           <div class="grid">
             <.input
               field={@form[:name]}
-              label={gettext("Name")}
-              placeholder={gettext("example-integration")}
+              label={dgettext("integrations", "Name")}
+              placeholder={dgettext("integrations", "example-integration")}
             />
             <.input
               field={@form[:comment]}
-              label={gettext("Comment")}
-              placeholder={gettext("Short description for guest reflection")}
+              label={dgettext("integrations", "Comment")}
+              placeholder={dgettext("integrations", "Short description for guest reflection")}
             />
             <.input
               field={@form[:target]}
-              label={gettext("HTTPS target")}
+              label={dgettext("integrations", "HTTPS target")}
               placeholder="https://api.example.com"
             />
           </div>
-          <h3>{gettext("Credentials")}</h3>
+          <h3>{dgettext("integrations", "Credentials")}</h3>
           <div class="grid">
             <.input
               id={"integration-bearer-#{@form_generation}"}
               field={@form[:bearer]}
-              label={gettext("Bearer token")}
+              label={dgettext("integrations", "Bearer token")}
               type="password"
             />
             <.input
               id={"integration-basic-#{@form_generation}"}
               field={@form[:basic]}
-              label={gettext("Basic user:pass")}
+              label={dgettext("integrations", "Basic user:pass")}
               type="password"
             />
           </div>
           <div class="grid">
             <.input
               field={@form[:header_name]}
-              label={gettext("Static header name")}
-              placeholder={gettext("x-api-token")}
+              label={dgettext("integrations", "Static header name")}
+              placeholder={dgettext("integrations", "x-api-token")}
             />
             <.input
               id={"integration-header-value-#{@form_generation}"}
               field={@form[:header_value]}
-              label={gettext("Static header value")}
+              label={dgettext("integrations", "Static header value")}
               type="password"
             />
           </div>
           <details class="integration-options">
-            <summary>{gettext("Routing, team ownership and peer connections")}</summary>
+            <summary>
+              {dgettext("integrations", "Routing, team ownership and peer connections")}
+            </summary>
             <div class="stack">
               <div class="grid">
                 <.input
                   field={@form[:strip_prefix]}
-                  label={gettext("Strip prefix")}
+                  label={dgettext("integrations", "Strip prefix")}
                   placeholder="/api/v3"
                 />
                 <.input
                   field={@form[:team_id]}
-                  label={gettext("Team ID")}
-                  placeholder={gettext("Team-owned integration")}
+                  label={dgettext("integrations", "Team ID")}
+                  placeholder={dgettext("integrations", "Team-owned integration")}
                 />
               </div>
               <div class="grid">
-                <.input field={@form[:peer]} label={gettext("Peer integration")} type="checkbox" />
+                <.input
+                  field={@form[:peer]}
+                  label={dgettext("integrations", "Peer integration")}
+                  type="checkbox"
+                />
                 <.input
                   field={@form[:peer_vm_id]}
-                  label={gettext("Peer machine ID")}
-                  placeholder={gettext("Required for peer integrations")}
+                  label={dgettext("integrations", "Peer machine ID")}
+                  placeholder={dgettext("integrations", "Required for peer integrations")}
                 />
               </div>
             </div>
           </details>
           <div class="row actions">
-            <button type="submit" class="console-button primary">{gettext("Save integration")}</button>
+            <button type="submit" class="console-button primary">{dgettext(
+              "integrations",
+              "Save integration"
+            )}</button>
           </div>
         </.form>
       </section>

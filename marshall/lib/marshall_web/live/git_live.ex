@@ -101,7 +101,7 @@ defmodule MarshallWeb.GitLive do
   defp display(bytes) do
     if String.valid?(bytes) and not String.contains?(bytes, <<0>>),
       do: String.slice(bytes, 0, 1_000_000),
-      else: gettext("Binary content")
+      else: dgettext("git", "Binary content")
   end
 
   defp parse_refs(bytes) do
@@ -149,19 +149,19 @@ defmodule MarshallWeb.GitLive do
     >
       <section class="stack">
         <UI.heading
-          title={gettext("Git repositories")}
-          subtitle={gettext("Read-only mirrors of public GitHub repositories.")}
+          title={dgettext("git", "Git repositories")}
+          subtitle={dgettext("git", "Read-only mirrors of public GitHub repositories.")}
         />
         <%= if @repo do %>
-          <nav aria-label={gettext("Repository path")}>
-            <code><.link navigate={~p"/git"}>{gettext("Repositories")}</.link>
+          <nav aria-label={dgettext("git", "Repository path")}>
+            <code><.link navigate={~p"/git"}>{dgettext("git", "Repositories")}</.link>
             / github / {@repo.owner} / {@repo.name}</code>
           </nav>
           <p :if={@repo.last_success_at} class="muted">
-            {gettext("Last updated")}
+            {dgettext("git", "Last updated")}
             <.timestamp at={@repo.last_success_at} zone={@time_zone} format={:datetime} />
           </p>
-          <nav class="machine-tabs" aria-label={gettext("Repository views")}>
+          <nav class="machine-tabs" aria-label={dgettext("git", "Repository views")}>
             <.link
               :for={tab <- ~w(tree history refs diff blame)}
               patch={link(@repo, %{view: tab, ref: @ref, path: @path})}
@@ -171,37 +171,37 @@ defmodule MarshallWeb.GitLive do
               :if={@path != ""}
               patch={link(@repo, %{view: "blob", ref: @ref, path: @path})}
               aria-current={@view == "blob" && "page"}
-            >{gettext("file")}</.link>
+            >{dgettext("git", "file")}</.link>
           </nav>
           <form action={"/git/github/#{@repo.owner}/#{@repo.name}"} method="get" class="field-row">
             <input type="hidden" name="view" value="search" />
             <input type="hidden" name="ref" value={@ref} />
             <div class="field">
               <label>
-                <span class="field-label">{gettext("Search content")}</span>
-                <input name="q" value={@query} placeholder={gettext("Search content")} />
+                <span class="field-label">{dgettext("git", "Search content")}</span>
+                <input name="q" value={@query} placeholder={dgettext("git", "Search content")} />
               </label>
             </div>
             <div class="field">
               <label>
-                <span class="field-label">{gettext("Kind")}</span>
+                <span class="field-label">{dgettext("git", "Kind")}</span>
                 <span class="select">
                   <select name="kind">
-                    <option value="content">{gettext("Content")}</option>
-                    <option value="paths">{gettext("Paths")}</option>
-                    <option value="commits">{gettext("Commits")}</option>
+                    <option value="content">{dgettext("git", "Content")}</option>
+                    <option value="paths">{dgettext("git", "Paths")}</option>
+                    <option value="commits">{dgettext("git", "Commits")}</option>
                   </select>
                 </span>
               </label>
             </div>
-            <button class="console-button">{gettext("Search")}</button>
+            <button class="console-button">{dgettext("git", "Search")}</button>
           </form>
           <p :if={@unavailable?} role="alert" class="error">
-            {gettext("Mirror contents are unavailable.")}
+            {dgettext("git", "Mirror contents are unavailable.")}
           </p>
           <p :if={@view == "tree" and @path != ""}>
             <.link patch={link(@repo, %{view: "tree", ref: @ref, path: parent(@path)})}>
-              {gettext("← Parent directory")}
+              {dgettext("git", "← Parent directory")}
             </.link>
           </p>
           <ul :if={@view == "tree"} class="tree">
@@ -226,8 +226,8 @@ defmodule MarshallWeb.GitLive do
             <table>
               <thead>
                 <tr>
-                  <th class="width-auto">{gettext("Ref")}</th><th class="width-min">
-                    {gettext("Commit")}
+                  <th class="width-auto">{dgettext("git", "Ref")}</th><th class="width-min">
+                    {dgettext("git", "Commit")}
                   </th>
                 </tr>
               </thead>
@@ -245,8 +245,8 @@ defmodule MarshallWeb.GitLive do
             <table>
               <thead>
                 <tr>
-                  <th class="width-min">{gettext("Commit")}</th><th class="width-auto">
-                    {gettext("Subject")}
+                  <th class="width-min">{dgettext("git", "Commit")}</th><th class="width-auto">
+                    {dgettext("git", "Subject")}
                   </th>
                 </tr>
               </thead>
@@ -264,13 +264,16 @@ defmodule MarshallWeb.GitLive do
           </div>
           <p :if={@view == "blob"}>
             <.link href={"/git/github/#{@repo.owner}/#{@repo.name}/raw?" <>
-            URI.encode_query(%{ref: @ref, path: @path})}>{gettext(
+            URI.encode_query(%{ref: @ref, path: @path})}>{dgettext(
+              "git",
               "Download raw file ↗"
             )}</.link>
           </p>
           <pre :if={@view not in ["tree", "refs", "history"]} class="panel">{@content}</pre>
         <% else %>
-          <p :if={@unavailable?} role="alert" class="error">{gettext("Repository unavailable.")}</p>
+          <p :if={@unavailable?} role="alert" class="error">
+            {dgettext("git", "Repository unavailable.")}
+          </p>
           <ul>
             <li :for={repo <- @repos}>
               <.link navigate={link(repo, %{view: "tree"})}>

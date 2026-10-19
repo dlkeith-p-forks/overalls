@@ -1,0 +1,260 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ko\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/admin/git_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "행동"
+
+#: lib/marshall_web/live/admin/git_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "행위"
+
+#: lib/marshall_web/live/admin/git_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Add a mirror"
+msgstr "거울 추가"
+
+#: lib/marshall_web/live/admin/git_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Add mirror"
+msgstr "거울 추가"
+
+#: lib/marshall_web/live/admin/git_live.ex:24
+#, elixir-autogen, elixir-format
+msgid "Could not register repository. Verify your passkey and labels."
+msgstr "저장소를 등록할 수 없습니다. 패스키와 라벨을 확인하세요."
+
+#: lib/marshall_web/live/admin/git_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "실패한"
+
+#: lib/marshall_web/live/admin/git_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Git mirrors"
+msgstr "Git 미러"
+
+#: lib/marshall_web/live/admin/git_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Git operation failed"
+msgstr "Git 작업에 실패했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:91
+#, elixir-autogen, elixir-format
+msgid "GitHub organization"
+msgstr "GitHub 조직"
+
+#: lib/marshall_web/live/admin/git_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "Identifiers"
+msgstr "식별자"
+
+#: lib/marshall_web/live/admin/git_live.ex:106
+#, elixir-autogen, elixir-format
+msgid "Mirrors"
+msgstr "거울"
+
+#: lib/marshall_web/live/admin/git_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "No mirror events recorded."
+msgstr "미러 이벤트가 기록되지 않았습니다."
+
+#: lib/marshall_web/live/admin/git_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "No repositories are mirrored yet."
+msgstr "아직 미러링된 저장소가 없습니다."
+
+#: lib/marshall_web/live/admin/git_live.ex:188
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "보류 중"
+
+#: lib/marshall_web/live/admin/git_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Phase"
+msgstr "단계"
+
+#: lib/marshall_web/live/admin/git_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Public GitHub repositories mirrored for machines. Mirrors refresh hourly; changes require recent passkey verification."
+msgstr ""
+"머신용으로 미러링되는 공개 GitHub 리포지토리입니다. 미러는 매시간 새로 고쳐집니다. 변경하려면 최근 암호 키 확인이 필요합니다."
+
+#: lib/marshall_web/live/admin/git_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "준비가 된"
+
+#: lib/marshall_web/live/admin/git_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "Reason"
+msgstr "이유"
+
+#: lib/marshall_web/live/admin/git_live.ex:145
+#, elixir-autogen, elixir-format
+msgid "Recent mirror audit"
+msgstr "최근 미러 감사"
+
+#: lib/marshall_web/live/admin/git_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Refresh"
+msgstr "새로 고치다"
+
+#: lib/marshall_web/live/admin/git_live.ex:37
+#, elixir-autogen, elixir-format
+msgid "Refresh already in progress."
+msgstr "이미 새로고침이 진행 중입니다."
+
+#: lib/marshall_web/live/admin/git_live.ex:41
+#, elixir-autogen, elixir-format
+msgid "Refresh could not be queued."
+msgstr "새로고침을 대기열에 추가할 수 없습니다."
+
+#: lib/marshall_web/live/admin/git_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "Refresh failed"
+msgstr "새로 고침에 실패했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Refresh queued."
+msgstr "새로고침이 대기 중입니다."
+
+#: lib/marshall_web/live/admin/git_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "Refresh requested"
+msgstr "새로 고침을 요청했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "Refresh succeeded"
+msgstr "새로 고침에 성공했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:189
+#, elixir-autogen, elixir-format
+msgid "Refreshing"
+msgstr "새로 고치는 중"
+
+#: lib/marshall_web/live/admin/git_live.ex:199
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "등록됨"
+
+#: lib/marshall_web/live/admin/git_live.ex:49
+#, elixir-autogen, elixir-format
+msgid "Removal queued."
+msgstr "제거가 대기 중입니다."
+
+#: lib/marshall_web/live/admin/git_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Removal requested"
+msgstr "삭제를 요청했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:138
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "제거하다"
+
+#: lib/marshall_web/live/admin/git_live.ex:136
+#, elixir-autogen, elixir-format
+msgid "Remove mirror?"
+msgstr "거울을 제거하시겠습니까?"
+
+#: lib/marshall_web/live/admin/git_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "Removed"
+msgstr "삭제됨"
+
+#: lib/marshall_web/live/admin/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "Removing"
+msgstr "삭제 중"
+
+#: lib/marshall_web/live/admin/git_live.ex:97
+#: lib/marshall_web/live/admin/git_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Repository"
+msgstr "저장소"
+
+#: lib/marshall_web/live/admin/git_live.ex:53
+#, elixir-autogen, elixir-format
+msgid "Repository could not be removed."
+msgstr "저장소를 제거할 수 없습니다."
+
+#: lib/marshall_web/live/admin/git_live.ex:17
+#, elixir-autogen, elixir-format
+msgid "Repository registered."
+msgstr "저장소가 등록되었습니다."
+
+#: lib/marshall_web/live/admin/git_live.ex:212
+#, elixir-autogen, elixir-format
+msgid "Service unavailable"
+msgstr "서비스를 사용할 수 없습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:209
+#, elixir-autogen, elixir-format
+msgid "TLS verification failed"
+msgstr "TLS 검증에 실패했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:210
+#, elixir-autogen, elixir-format
+msgid "Timed out"
+msgstr "대기 시간이 초과되었습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:211
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "권한이 없습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:193
+#: lib/marshall_web/live/admin/git_live.ex:205
+#: lib/marshall_web/live/admin/git_live.ex:214
+#: lib/marshall_web/live/admin/git_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "알려지지 않은"
+
+#: lib/marshall_web/live/admin/git_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "언제"
+
+#: lib/marshall_web/live/admin/git_live.ex:167
+#, elixir-autogen, elixir-format
+msgid "actor"
+msgstr "배우"
+
+#: lib/marshall_web/live/admin/git_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "attempt"
+msgstr "시도"
+
+#: lib/marshall_web/live/admin/git_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "nixos"
+msgstr "nixos"
+
+#: lib/marshall_web/live/admin/git_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "nixpkgs"
+msgstr "nixpkgs"
+
+#: lib/marshall_web/live/admin/git_live.ex:168
+#, elixir-autogen, elixir-format
+msgid "repository"
+msgstr "저장소"

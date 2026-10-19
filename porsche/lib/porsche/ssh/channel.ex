@@ -149,9 +149,9 @@ defmodule Porsche.SSH.Channel do
       0,
       banner() <>
         "\n" <>
-        gettext("Porsche machine management. Type help.") <>
+        dgettext("sessions", "Porsche machine management. Type help.") <>
         "\n" <>
-        gettext("Docs:") <>
+        dgettext("sessions", "Docs:") <>
         " " <>
         state.config.public_origin <> "/docs\n"
     )

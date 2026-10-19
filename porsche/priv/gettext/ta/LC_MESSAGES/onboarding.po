@@ -1,0 +1,94 @@
+msgid ""
+msgstr ""
+"Language: ta\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/porsche/ssh/onboarding.ex:64
+#, elixir-autogen, elixir-format
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
+msgstr "\n\nசாவியை அங்கீகரிக்கும்போது இந்த SSH இணைப்பைத் திறந்தே வைத்திருக்கவும்.\n"
+
+#: lib/porsche/ssh/onboarding.ex:81
+#, elixir-autogen, elixir-format
+msgid "\nOpen an interactive Porsche connection without a remote command:"
+msgstr "\nதொலைநிலைக் கட்டளை இல்லாமல் ஊடாடும் Porsche இணைப்பைத் திறக்கவும்:"
+
+#: lib/porsche/ssh/onboarding.ex:59
+#, elixir-autogen, elixir-format
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nஇந்த இணைப்பைத் திறந்து, உள்நுழைந்து, பொருந்தும் கைரேகையை அங்கீகரிக்கவும்:\n  "
+
+#: lib/porsche/ssh/onboarding.ex:126
+#, elixir-autogen, elixir-format
+msgid "\nOr manage your keys at:\n  "
+msgstr "\nஅல்லது உங்கள் சாவிகளை இங்கே நிர்வகிக்கவும்:\n  "
+
+#: lib/porsche/ssh/onboarding.ex:70
+#, elixir-autogen, elixir-format
+msgid "After approval, retry your command here.\n"
+msgstr "அங்கீகாரத்திற்குப் பிறகு உங்கள் கட்டளையை இங்கே மீண்டும் முயலவும்.\n"
+
+#: lib/porsche/ssh/onboarding.ex:65
+#, elixir-autogen, elixir-format
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
+msgstr "அங்கீகார இணைப்புகள் %{minutes} நிமிடங்களுக்குப் பிறகு அல்லது இந்த இணைப்பு மூடப்படும்போது காலாவதியாகும்.\n"
+
+#: lib/porsche/ssh/onboarding.ex:138
+#, elixir-autogen, elixir-format
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "உலாவியின் அங்கீகார வழிமுறைகளைப் பின்பற்றி, பின்னர் அமைவுக் கட்டளையை இயக்கவும்\n"
+
+#: lib/porsche/ssh/onboarding.ex:83
+#, elixir-autogen, elixir-format
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "உலாவியில் உங்கள் சாவியை அங்கீகரிக்கும்போது அந்த இணைப்பைத் திறந்தே வைத்திருக்கவும்,\n"
+
+#: lib/porsche/ssh/onboarding.ex:129
+#, elixir-autogen, elixir-format
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+msgstr "Overalls கணக்கு அமைப்புகள் > SSH சாவிகள் பகுதியில் உங்கள் SSH சாவியைப் பதிவு செய்யவும் அல்லது சரிபார்க்கவும்.\n\n"
+
+#: lib/porsche/ssh/onboarding.ex:124
+#, elixir-autogen, elixir-format
+msgid "Register or check your key by connecting to:\n  ssh "
+msgstr "இங்கே இணைந்து உங்கள் சாவியைப் பதிவு செய்யவும் அல்லது சரிபார்க்கவும்:\n  ssh "
+
+#: lib/porsche/ssh/onboarding.ex:113
+#, elixir-autogen, elixir-format
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
+msgstr ""
+"இந்த SSH இணைப்பை அங்கீகரிக்க முடியவில்லை. உங்கள் இயந்திர அணுகலைச் சரிபார்த்து மீண்டும் முயலவும்.\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:107
+#, elixir-autogen, elixir-format
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+msgstr ""
+"இப்போது இந்த SSH விசையைச் சரிபார்க்க முடியவில்லை. சிறிது நேரம் கழித்து மீண்டும் முயலவும்.\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:54
+#, elixir-autogen, elixir-format
+msgid "We don't recognize this SSH key:\n  "
+msgstr "இந்த SSH சாவியை எங்களால் அடையாளம் காண முடியவில்லை:\n  "
+
+#: lib/porsche/ssh/onboarding.ex:95
+#, elixir-autogen, elixir-format
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
+msgstr ""
+"Overallsக்கு வரவேற்கிறோம்.\n"
+"\n"
+"இந்த இணைப்புக்கு Overalls SSH உள்ளமைவு தேவை.\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:142
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr ""
+"உங்கள் இயந்திரத்தின் பக்கத்திலிருந்து, root@ இல்லாமல் மீண்டும் இணைக்கவும்.\n"
+
+#: lib/porsche/ssh/onboarding.ex:87
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "பிறகு உங்கள் அசல் கட்டளையை மீண்டும் முயலவும்.\n"
