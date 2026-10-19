@@ -3,9 +3,9 @@ defmodule Marshall.LocalizationTest do
   alias Marshall.Localization, as: Locale
 
   test "the complete supported set includes requested additions" do
-    assert length(Locale.supported_locales()) == 25
+    assert length(Locale.supported_locales()) == 28
 
-    for locale <- ~w(ja hi fil et fi sv pt-BR pt-PT ar ur ko) do
+    for locale <- ~w(ja hi fil et fi sv pt-BR pt-PT ar ur ko arz sw ha) do
       assert Locale.valid?(locale)
     end
 
@@ -70,5 +70,41 @@ defmodule Marshall.LocalizationTest do
 
     assert Gettext.get_locale(MarshallWeb.Gettext) == "ja"
     Gettext.put_locale(MarshallWeb.Gettext, previous)
+  end
+
+  # Ethnologue 2026 total-speaker ranking, independently transcribed from
+  # Wikipedia revision 1380301586; Arabic varieties are separate ranked entries.
+  test "the reviewed top twenty total-speaker languages remain covered" do
+    for locale <- ~w(en zh-Hans hi es ar fr bn pt-BR id ur ru de ja pcm arz mr vi te sw ha) do
+      assert locale in Locale.supported_locales()
+    end
+  end
+
+  test "top twenty additions preserve catalog identity and use bundled formatting data" do
+    assert Locale.normalize("ARZ") == "arz"
+    assert Locale.formatting_locale("arz") == "ar-EG"
+    assert Locale.direction("arz") == :rtl
+    assert Locale.direction("sw") == :ltr
+    assert Locale.direction("ha") == :ltr
+    assert Locale.negotiate("arz-EG, en;q=0.8") == "arz"
+    assert Locale.negotiate("sw-KE, en;q=0.8") == "sw"
+    assert Locale.negotiate("ha-NG, en;q=0.8") == "ha"
+    assert Locale.negotiate("ha-Arab, ja;q=0.8") == "ja"
+    assert {"مصرى", "arz"} in Locale.options()
+
+    for locale <- ~w(arz sw ha) do
+      assert :ok = Locale.put_locale(locale)
+      assert Gettext.get_locale(MarshallWeb.Gettext) == locale
+      assert {:ok, _} = Localize.Locale.get(Localize.get_locale(), [:layout, :character_order])
+      assert is_binary(Localize.Number.to_string!(1234))
+    end
+  end
+
+  test "Egyptian Arabic uses all six Arabic plural categories" do
+    context = MarshallWeb.GettextPlural.init(%{locale: "arz"})
+    assert MarshallWeb.GettextPlural.nplurals(context) == 6
+
+    assert Enum.map([0, 1, 2, 3, 11, 100], &MarshallWeb.GettextPlural.plural(context, &1)) ==
+             [0, 1, 2, 3, 4, 5]
   end
 end

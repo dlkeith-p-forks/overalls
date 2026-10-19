@@ -29,4 +29,13 @@ defmodule Porsche.GettextInterpolationTest do
       assert rendered == "\u20683\u2069: %{name}"
     end)
   end
+
+  test "Egyptian Arabic isolates mixed-script bindings without changing catalog locale" do
+    Gettext.with_locale(Porsche.Gettext, "arz", fn ->
+      assert {:ok, rendered} =
+               GettextInterpolation.runtime_interpolate("%{name}", %{name: "alice-علي-123"})
+      assert rendered == "\u2068alice-علي-123\u2069"
+      assert Gettext.get_locale(Porsche.Gettext) == "arz"
+    end)
+  end
 end

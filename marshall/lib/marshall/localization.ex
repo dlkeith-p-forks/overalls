@@ -4,7 +4,7 @@ defmodule Marshall.Localization do
   @type locale :: String.t()
   @type direction :: :ltr | :rtl
 
-  @locale_strings ~w(en zh-Hans hi es ar fr bn pt-BR pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv)
+  @locale_strings ~w(en zh-Hans hi es ar fr bn pt-BR pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv arz sw ha)
 
   @spec supported_locales() :: [locale()]
   def supported_locales, do: @locale_strings
@@ -36,9 +36,14 @@ defmodule Marshall.Localization do
 
   def normalize(_), do: nil
 
+  @spec formatting_locale(term()) :: String.t()
+  def formatting_locale(locale) do
+    locale |> normalize() |> OverallsProtocol.SSHManagement.formatting_locale()
+  end
+
   @spec direction(term()) :: direction()
   def direction(locale) do
-    with {:ok, tag} <- Localize.LanguageTag.new(normalize(locale) || default()),
+    with {:ok, tag} <- Localize.LanguageTag.new(formatting_locale(locale)),
          {:ok, direction} when direction in [:rtl, :ltr] <-
            Localize.Locale.get(tag, [:layout, :character_order]) do
       direction
@@ -51,7 +56,7 @@ defmodule Marshall.Localization do
   def options do
     Enum.map(@locale_strings, fn locale ->
       name =
-        case Localize.Locale.display_name(locale, locale: locale) do
+        case native_name(locale) do
           {:ok, name} -> name
           _ -> locale
         end
@@ -59,6 +64,15 @@ defmodule Marshall.Localization do
       {name, locale}
     end)
   end
+
+  # @cc [owner:ghuntley,label:product] egyptian-arabic-autonym
+  # The language selector MUST distinguish Egyptian Arabic from Standard Arabic.
+  # Localize lacks an `arz` display name; its reviewed autonym MUST remain visible.
+  @spec native_name(locale()) :: {:ok, String.t()} | {:error, term()}
+  defp native_name("arz"), do: {:ok, "مصرى"}
+
+  defp native_name(locale),
+    do: Localize.Locale.display_name(locale, locale: formatting_locale(locale))
 
   @spec choose(term(), term(), term()) :: locale()
   def choose(user_override, session_locale, accept_language) do
@@ -70,7 +84,7 @@ defmodule Marshall.Localization do
   def put_locale(locale) do
     locale = normalize(locale) || default()
     Gettext.put_locale(MarshallWeb.Gettext, locale)
-    Localize.put_locale(locale)
+    Localize.put_locale(formatting_locale(locale))
     :ok
   end
 
@@ -98,7 +112,8 @@ defmodule Marshall.Localization do
     |> Localize.AcceptLanguage.tokenize()
     |> Enum.find_value(fn {_quality, requested} ->
       with {:ok, tag} <- Localize.AcceptLanguage.best_match(requested),
-           supported when is_binary(supported) <- canonical_supported(tag.cldr_locale_id),
+           supported when is_binary(supported) <-
+             canonical_supported(if tag.language == :arz, do: :arz, else: tag.cldr_locale_id),
            true <- compatible_script?(requested, supported) do
         supported
       else

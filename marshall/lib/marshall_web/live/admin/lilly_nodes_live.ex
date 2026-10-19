@@ -514,7 +514,9 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                       <code>{event[:campaign_id]}</code></span>
                       <span :if={event.kind == :job_state}>
                         {gettext("job")} <code>{event.job_id}</code>
-                        · {event.state} · {gettext("attempt %{attempt}", attempt: event.attempt)}
+                        · {job_state_label(event.state)} · {gettext("attempt %{attempt}",
+                          attempt: event.attempt
+                        )}
                       </span>
                     </td>
                   </tr>
@@ -804,4 +806,18 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
   defp parse_boolean("true"), do: true
   defp parse_boolean("false"), do: false
   defp parse_boolean(_), do: :invalid
+
+  # @cc [owner:ghuntley,label:product] localized-node-job-states
+  # Timeline job state labels MUST match reviewed Oban display meanings without
+  # changing the retained job state identifiers or terminal outcome semantics.
+  @spec job_state_label(atom() | String.t()) :: String.t()
+  defp job_state_label(state) when state in [:available, "available"], do: gettext("Queued")
+  defp job_state_label(state) when state in [:suspended, "suspended"], do: gettext("Suspended")
+  defp job_state_label(state) when state in [:scheduled, "scheduled"], do: gettext("Scheduled")
+  defp job_state_label(state) when state in [:executing, "executing"], do: gettext("Running")
+  defp job_state_label(state) when state in [:retryable, "retryable"], do: gettext("Retrying")
+  defp job_state_label(state) when state in [:completed, "completed"], do: gettext("Succeeded")
+  defp job_state_label(state) when state in [:discarded, "discarded"], do: gettext("Failed")
+  defp job_state_label(state) when state in [:cancelled, "cancelled"], do: gettext("Cancelled")
+  defp job_state_label(_), do: gettext("Unknown")
 end

@@ -227,3 +227,23 @@ msgstr "⟳ पुन्हा जोडत आहे…"
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ स्क्रोलबॅक पुनर्संचयित करत आहे…"
+
+#: lib/marshall_web/browser_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "जोडणी करत आहे…"
+
+#: lib/marshall_web/browser_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "No terminals"
+msgstr "कोणतेही टर्मिनल नाही"
+
+#: lib/marshall_web/browser_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Diagram unavailable. Source:\n%{source}"
+msgstr "आकृती उपलब्ध नाही. स्रोत:\n%{source}"
+
+#: lib/marshall_web/browser_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "— output before this view is not in the scrollback window —"
+msgstr "— या दृश्यापूर्वीचे आउटपुट स्क्रोलबॅक विंडोमध्ये नाही —"

@@ -233,6 +233,15 @@ def await_running(vm: str) -> None:
         ):
             dumped = True
             dump_guest_diagnostics(provisioners)
+            for machine in provisioners:
+                print(
+                    machine.succeed(
+                        "for cg in /sys/fs/cgroup/lilly.slice/lilly-vm-*.service; do "
+                        '[ -d "$cg" ] || continue; echo ===="$cg"; '
+                        'cat "$cg/cgroup.procs" 2>/dev/null || true; '
+                        "done"
+                    )
+                )
         if state == "failed":
             print(
                 sql_json(

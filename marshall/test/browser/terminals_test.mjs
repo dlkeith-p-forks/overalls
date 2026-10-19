@@ -585,3 +585,34 @@ test("a selected pane deferred by draining writes keeps retrying until it can at
   t.mock.timers.tick(500);
   assert.equal(pushes, 1);
 });
+
+test("connection and empty terminal labels translate while status identifiers stay stable", () => {
+  const previous = globalThis.document;
+  const status = {textContent: "", dataset: {}};
+  const hint = {textContent: ""};
+  const catalog = {"Connecting…": "接続中…", "No terminals": "ターミナルなし", "Type to interact": "入力"};
+  globalThis.document = {
+    querySelector: () => ({getAttribute: () => JSON.stringify(catalog)}),
+    getElementById: (id) => id === "terminal-status" ? status : hint,
+  };
+  try {
+    for (const [identifier, label] of [["connecting", "接続中…"], ["No terminals", "ターミナルなし"]]) {
+      TerminalWorkspace.setStatus(identifier);
+      assert.equal(status.textContent, label);
+      assert.equal(status.dataset.status, identifier);
+      assert.equal(hint.textContent, "入力");
+    }
+  } finally {
+    globalThis.document = previous;
+  }
+});
+
+test("relative activity uses the server formatting locale while the document keeps Egyptian Arabic", () => {
+  const previous = globalThis.document;
+  globalThis.document = {documentElement: {lang: "arz", dataset: {formatLocale: "ar-EG"}}};
+  try {
+    const now = 180000;
+    assert.equal(relativeActivity(0, now), new Intl.RelativeTimeFormat("ar-EG", {numeric: "auto"}).format(-3, "minute"));
+    assert.equal(globalThis.document.documentElement.lang, "arz");
+  } finally { globalThis.document = previous; }
+});

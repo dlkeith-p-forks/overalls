@@ -103,6 +103,29 @@ defmodule MarshallWeb.AgentThreadsLive do
   defp prompt_form,
     do: to_form(%{"text" => "", "key" => Ash.UUID.generate()}, as: :prompt)
 
+  # @cc [owner:ghuntley,label:product] localized-agent-event-labels
+  # Event headings MUST translate reviewed event kinds and MUST NOT translate
+  # user prompts, assistant content or structured event payloads.
+  @spec event_label(atom()) :: String.t()
+  defp event_label(:prompt), do: gettext("Prompt")
+  defp event_label(:assistant), do: gettext("Agent")
+  defp event_label(:turn_started), do: gettext("Agent started working")
+  defp event_label(:model_output), do: gettext("Response received")
+  defp event_label(:tool_queued), do: gettext("Tools queued")
+  defp event_label(:tool_result), do: gettext("Tool result received")
+  defp event_label(:child_spawned), do: gettext("Child thread created")
+  defp event_label(:turn_finished), do: gettext("Turn complete")
+  defp event_label(:turn_failed), do: gettext("The agent encountered a problem")
+  defp event_label(:waiting_for_vm), do: gettext("Waiting for machine")
+  defp event_label(:questions_requested), do: gettext("Questions requested")
+  defp event_label(:questions_answered), do: gettext("Questions answered")
+  defp event_label(:questions_cancelled), do: gettext("Questions cancelled")
+  defp event_label(:plan_proposed), do: gettext("Plan proposed")
+  defp event_label(:context_captured), do: gettext("Context captured")
+  defp event_label(:context_compacted), do: gettext("Context compacted")
+  defp event_label(:maintenance_finished), do: gettext("Maintenance finished")
+  defp event_label(_), do: gettext("Thread updated")
+
   defp event_text(%{kind: :prompt, body: body}), do: Map.get(body, "prompt", "")
   defp event_text(%{kind: :assistant, body: body}), do: Map.get(body, "text", "")
   defp event_text(%{kind: :child_spawned}), do: gettext("Child thread created")
@@ -177,7 +200,7 @@ defmodule MarshallWeb.AgentThreadsLive do
           <div class="stack">
             <div id="agent-events" phx-update="stream" class="panel agent-events">
               <article :for={{id, event} <- @streams.events} id={id} class="agent-message">
-                <p class="muted"><strong>{event.kind}</strong></p>
+                <p class="muted"><strong>{event_label(event.kind)}</strong></p>
                 <pre>{event_text(event)}</pre>
               </article>
             </div>

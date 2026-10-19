@@ -2,7 +2,7 @@ defmodule Marshall.LocalizedMarkdown do
   @moduledoc "Compiled documentation localization units, preserving fenced examples and diagrams."
 
   @type unit :: %{source: String.t(), translatable?: boolean()}
-  @locales ~w(en zh-Hans hi es ar fr bn pt-BR pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv)
+  @locales ~w(en zh-Hans hi es ar fr bn pt-BR pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv arz sw ha)
 
   @spec locales() :: [String.t()]
   def locales, do: @locales
