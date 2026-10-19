@@ -653,3 +653,23 @@ msgstr "نام بدلیں"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "صرف مطالعے والا میزبان کنسول دیکھنے کے لیے۔"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "پن کریں"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "%{name} کو پن کریں"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "پن ہٹائیں"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "%{name} کا پن ہٹائیں"

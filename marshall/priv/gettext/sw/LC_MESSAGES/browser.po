@@ -238,3 +238,13 @@ msgstr "Hakuna terminali"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— matokeo ya kabla ya mwonekano huu hayapo katika historia ya terminali —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "Ingizo la terminali"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "Matokeo ni mengi mno kutangazwa; pitia safu mlalo mwenyewe ili kuyasoma"

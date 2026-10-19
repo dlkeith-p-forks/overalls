@@ -238,3 +238,13 @@ msgstr "مفيش طرفيات"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— المخرجات اللي قبل العرض ده مش موجودة في نافذة السجل —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "الكتابة في التيرمينال"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "المخرجات كتير قوي ومش هينفع تتقري بصوت؛ اتنقل بين الصفوف بنفسك عشان تقراها"

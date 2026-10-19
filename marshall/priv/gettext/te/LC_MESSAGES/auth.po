@@ -139,3 +139,14 @@ msgstr "పాస్‌వర్డ్ విజయవంతంగా రీస�
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "సైన్ ఇన్ ఇక చెల్లదు. కొత్త లింక్ అభ్యర్థించండి."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "మీరు ఖచ్చితంగా సైన్ అవుట్ చేయాలనుకుంటున్నారా?"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "సైన్ అవుట్ చేయండి"

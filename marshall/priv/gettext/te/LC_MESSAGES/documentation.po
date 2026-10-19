@@ -828,3 +828,8 @@ msgstr "మీ విస్తరణ డెలివరీ రికార్డ
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` ఒక పరికరానికి నోటిఫికేషన్లను నిలిపివేస్తుంది లేదా పునఃప్రారంభిస్తుంది. `device rm` దాన్ని శాశ్వతంగా ఉపసంహరిస్తుంది; తదుపరిసారి మీరు నోటిఫికేషన్లను అనుమతించినప్పుడు Mila మళ్లీ నమోదు చేస్తుంది. మీ ఖాతాను తొలగించడం లేదా విరమింపజేయడం దాని అన్ని పరికరాలను ఉపసంహరిస్తుంది."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "డాక్యుమెంటేషన్ కనుగొనబడలేదు"

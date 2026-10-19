@@ -130,3 +130,14 @@ msgstr "உங்கள் கடவுச்சொல் வெற்றிக�
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "உங்கள் உள்நுழைவு இனி செல்லாது. புதிய உள்நுழைவு இணைப்பைக் கோரவும்."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "நிச்சயமாக வெளியேற விரும்புகிறீர்களா?"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "வெளியேறு"

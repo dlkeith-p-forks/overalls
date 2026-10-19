@@ -383,3 +383,9 @@ msgstr "← প্রথম পৃষ্ঠা"
 #, elixir-autogen, elixir-format
 msgid "← Jobs"
 msgstr "← কাজসমূহ"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:389
+#: lib/marshall_web/live/admin/jobs_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "An execution attempt failed. Raw exception details are excluded from administrative history."
+msgstr "কার্যকর করার একটি চেষ্টা ব্যর্থ হয়েছে। ব্যতিক্রমের মূল বিবরণ প্রশাসনিক ইতিহাসে অন্তর্ভুক্ত করা হয় না।"

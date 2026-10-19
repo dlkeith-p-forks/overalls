@@ -838,3 +838,8 @@ msgstr "Ihre Bereitstellung bewahrt Zustelldatensätze sieben Tage lang auf und 
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` pausiert Benachrichtigungen für ein Gerät oder nimmt sie wieder auf. `device rm` widerruft es dauerhaft; Mila registriert es erneut, wenn Sie das nächste Mal Benachrichtigungen erlauben. Wenn Sie Ihr Konto löschen oder stilllegen, werden alle seine Geräte widerrufen."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Dokumentation nicht gefunden"

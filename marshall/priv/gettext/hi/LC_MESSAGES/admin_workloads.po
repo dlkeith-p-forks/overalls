@@ -141,3 +141,43 @@ msgstr "वर्कलोड सूची फ़िलहाल उपलब्
 #, elixir-autogen, elixir-format
 msgid "· every 15 seconds"
 msgstr "· हर 15 सेकंड"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:270
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "हटाया गया"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:269
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "विफल"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:268
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "रुकी हुई"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "लंबित"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:266
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "चल रहा है"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "बंद"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "अज्ञात"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:258
+#, elixir-autogen, elixir-format
+msgid "Unplaced"
+msgstr "अभी आवंटित नहीं"

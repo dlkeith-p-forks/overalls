@@ -653,3 +653,23 @@ msgstr "yeniden adlandır"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "salt okunur ana makine konsolunu görüntülemek için."
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "Sabitle"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "%{name} öğesini sabitle"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Sabitlemeyi kaldır"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "%{name} öğesinin sabitlemesini kaldır"

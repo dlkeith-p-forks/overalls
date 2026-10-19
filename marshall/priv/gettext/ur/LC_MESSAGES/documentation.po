@@ -838,3 +838,8 @@ msgstr "آپ کی تعیناتی ترسیل کے ریکارڈ سات دن تک �
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` کسی ایک آلے کے لیے اطلاعات عارضی طور پر روکتا یا دوبارہ شروع کرتا ہے۔ `device rm` اسے مستقل طور پر منسوخ کرتا ہے؛ اگلی بار جب آپ اطلاعات کی اجازت دیں گے تو Mila دوبارہ رجسٹر کرے گی۔ اپنا اکاؤنٹ حذف یا ریٹائر کرنے سے اس کے تمام آلات منسوخ ہو جاتے ہیں۔"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "دستاویزات نہیں ملیں"

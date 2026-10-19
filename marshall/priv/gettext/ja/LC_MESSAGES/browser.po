@@ -240,3 +240,13 @@ msgstr "ターミナルはありません"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— この表示より前の出力はスクロールバックに含まれていません —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "端末への入力"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "出力が多すぎるため読み上げられません。行を手動で移動して読んでください"

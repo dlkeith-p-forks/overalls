@@ -248,3 +248,13 @@ msgstr "No terminal dey"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— output wey come before this view no dey inside scrollback window —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "Wetin you type for terminal"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "Di output too plenty to read aloud; move go di rows by yourself to read am"

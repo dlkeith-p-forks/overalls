@@ -5,8 +5,11 @@ defmodule Marshall.Terminal.RemoteTest do
   alias Marshall.Terminal.{Directory, PeerBudget, Relay, Remote}
 
   @fixtures Path.expand("../../fixtures/tls", __DIR__)
+  @peer_restart_cases 100
 
-  setup do
+  setup context do
+    if context[:private_peer_budget], do: isolate_peer_budget!()
+
     server =
       start_supervised!(
         {Bandit,
@@ -44,11 +47,54 @@ defmodule Marshall.Terminal.RemoteTest do
     %{remote: remote, fixture: fixture, stream: stream}
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] peer-budget-fixture-supervision
+  # Generated budget deaths MUST use a test-owned supervisor with the same
+  # registered API and capacity. Its restart allowance MUST cover the complete
+  # generated history; the original application child MUST be restored only
+  # after ExUnit has stopped the test supervisor and its replacement budget.
+  @spec isolate_peer_budget!() :: :ok
+  defp isolate_peer_budget! do
+    original = Process.whereis(PeerBudget)
+    assert is_pid(original)
+    assert PeerBudget.used(original) == 0
+    limit = :sys.get_state(original).limit
+    monitor = Process.monitor(original)
+    assert :ok = Supervisor.terminate_child(Marshall.Supervisor, PeerBudget)
+
+    # ExUnit stops all start_supervised! children before running on_exit hooks,
+    # including when setup or a generated case fails.
+    on_exit(fn ->
+      assert is_nil(Process.whereis(PeerBudget))
+      assert {:ok, restored} = Supervisor.restart_child(Marshall.Supervisor, PeerBudget)
+      assert Process.whereis(PeerBudget) == restored
+      assert :sys.get_state(restored).limit == limit
+      assert PeerBudget.used(restored) == 0
+    end)
+
+    assert_receive {:DOWN, ^monitor, :process, ^original, :shutdown}, 1_000
+
+    start_supervised!(%{
+      id: :private_peer_budget,
+      start:
+        {Supervisor, :start_link,
+         [
+           [{PeerBudget, limit: limit}],
+           [strategy: :one_for_one, max_restarts: @peer_restart_cases, max_seconds: 5]
+         ]},
+      type: :supervisor,
+      shutdown: 5_000
+    })
+
+    assert :sys.get_state(PeerBudget).limit == limit
+    :ok
+  end
+
   # @cc [owner:ghuntley,label:verification;capacity;recovery] peer-budget-incarnation-live-sockets
   # Budget death MUST retire every admitted real TLS peer owner before fresh
   # pairs acquire successor slots. The synthetic host stream MUST remain alive;
   # this test MUST NOT claim native guest survival or independent-node recovery.
   @tag :hegel
+  @tag :private_peer_budget
   test "budget restart retires live TLS peers and admits exact replacement pairs", %{
     fixture: fixture,
     stream: stream,
@@ -93,7 +139,7 @@ defmodule Marshall.Terminal.RemoteTest do
 
         assert Process.alive?(stream)
       end,
-      test_cases: 100
+      test_cases: @peer_restart_cases
     )
   end
 

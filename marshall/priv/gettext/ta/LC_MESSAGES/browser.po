@@ -254,3 +254,13 @@ msgstr "முனையங்கள் இல்லை"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— இந்தக் காட்சிக்கு முந்தைய வெளியீடு பின்னுருள் சாளரத்தில் இல்லை —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "முனைய உள்ளீடு"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "வாசித்துச் சொல்ல முடியாத அளவுக்கு வெளியீடு அதிகமாக உள்ளது; படிக்க வரிசைகளுக்குக் கைமுறையாகச் செல்லவும்"

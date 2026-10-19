@@ -194,3 +194,23 @@ msgstr "· حسابك"
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← الصفحة الأولى"
+
+#: lib/marshall_web/live/admin/users_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "اتمسح"
+
+#: lib/marshall_web/live/admin/users_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Deleting machines"
+msgstr "جاري مسح الأجهزة"
+
+#: lib/marshall_web/live/admin/users_live.ex:325
+#, elixir-autogen, elixir-format
+msgid "Retrying machine cleanup"
+msgstr "بنحاول ننضّف الأجهزة تاني"
+
+#: lib/marshall_web/live/admin/users_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "مش متاح"

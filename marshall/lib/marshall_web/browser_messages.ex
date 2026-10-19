@@ -66,6 +66,9 @@ defmodule MarshallWeb.BrowserMessages do
         ),
       "This repository link could not be launched. Open the link again." =>
         dgettext("browser", "This repository link could not be launched. Open the link again."),
+      "Terminal input" => dgettext("browser", "Terminal input"),
+      "Too much output to announce, navigate to rows manually to read" =>
+        dgettext("browser", "Too much output to announce, navigate to rows manually to read"),
       "Type to interact" => dgettext("browser", "Type to interact"),
       "Updating viewing access…" => dgettext("browser", "Updating viewing access…"),
       "Verification could not be completed. Try again." =>

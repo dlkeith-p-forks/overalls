@@ -955,3 +955,8 @@ msgstr "يحتفظ نشرك بسجلات التسليم لمدة سبعة أيا
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "يوقف `device prefs` الإشعارات مؤقتًا لجهاز واحد أو يستأنفها. أما `device rm` فيلغيه نهائيًا؛ ويسجّل Mila الجهاز مجددًا في المرة التالية التي تسمح فيها بالإشعارات. يؤدي حذف حسابك أو إيقافه نهائيًا إلى إلغاء جميع أجهزته."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "لم يتم العثور على الوثائق"
