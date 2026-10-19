@@ -96,9 +96,11 @@ let
   otelAudiSshScenarioParts = lib.splitString
     "\n    # @cc [owner:ghuntley,label:verification] audi-native-slo-journey-boundary"
     audiScenario;
-  suspensionAudiSshSetup = builtins.head (lib.splitString
-    "\n    # @cc [owner:ghuntley,label:verification] audi-native-slo-journey-boundary"
-    (lib.elemAt (lib.splitString "\nwith subtest(\"native OpenSSH reaches" audiScenario) 1));
+  suspensionAudiSshSetup =
+    "with subtest(\"native OpenSSH reaches"
+    + builtins.head (lib.splitString
+      "\n    # @cc [owner:ghuntley,label:verification] audi-native-slo-journey-boundary"
+      (lib.elemAt (lib.splitString "\nwith subtest(\"native OpenSSH reaches" audiScenario) 1));
   # Clone-matrix variants overlap several full-shape source, temporary copy and
   # destination reservations, so their sparse fixtures get a larger dataset quota.
   # Every fixture also retains a sealed template per configured image (ADR-0130);
