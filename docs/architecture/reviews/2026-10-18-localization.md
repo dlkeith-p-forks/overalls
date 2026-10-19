@@ -287,3 +287,47 @@ Fleet launch-failure diagnostics add process identity inspection using
 PID, command name and executable path; they do not print command arguments.
 These harness-only changes preserve the existing ownership, topology and
 acceptance boundaries. No additional native machine execution is claimed.
+
+## Native extraction and continued translation
+
+Native Gettext extraction completed successfully in isolated fresh builds for
+both applications. Marshall's default inventory grows1414→1416 with exactly
+`Android display canvas` and `Waiting for display relay.`; browser41,
+documentation3807 and errors24 remain unchanged. Porsche's128-message template
+is byte-identical. All864 captured source/configuration/catalog hashes stayed
+unchanged during those runs. The two new UI identities now have translations
+in every policy locale, including the English source catalog.
+
+A subsequent documentation batch adds3,042 translations: Bengali1,600,
+Swedish1,000, Japanese400 and Finnish42. A retired Swedish source differing only
+by a trailing newline was reviewed and mapped to its otherwise identical current
+identity; no changed prose inherited an unrelated translation. Swedish action
+Start now reads Starta and its browser live badge reads ● aktiv.
+
+The invariant manifest adds3,360 exact records for140 individually reviewed
+code-only configuration-path headings across24 non-English locales;3,356 were
+previously empty. These headings contain no natural-language prose. Their exact
+Nix identifiers and Markdown code spans remain unchanged. They are reported as
+reviewed technical invariants, separately from translated prose, with no wildcard
+or locale-wide exemption. The full100-catalog structure/identity/placeholder/
+Markdown check passes after these additions. Coverage and linguistic review
+remain incomplete; strict completeness is not claimed.
+
+Marshall and Porsche precommit aliases now retain native
+`gettext.extract --check-up-to-date` before forced Dialyzer. This detects stale
+native source inventories and reference locations, beyond catalog/template
+identity equality, and necessarily force-compiles application sources. Porsche's
+new freshness command passes and its current catalog tests pass3/3. Marshall's
+new freshness run is pending; no complete new Marshall gate is claimed.
+The localization skill documents regeneration and native freshness and passes
+its structural validator. Existing ADR-0201 remains partial; no domain, authority,
+persistence, protocol or production configuration changes arise from this batch.
+
+The existing publications regression timed query detection against a first CTE
+that now follows `approved_editor`. Both test matchers now identify the unchanged
+`clock AS MATERIALIZED` CTE regardless of its position. The focused suite passes
+13 tests with2 ordinary capacity exclusions in18.8seconds, seed0, finite180-second
+aggregate limit, using the isolated current native build and database. Production
+queries, fixture size, assertions and timeout bounds are unchanged. The older
+full Marshall precommit remains running with unrelated failures; this focused
+result does not establish a passing full suite.

@@ -7510,3 +7510,13 @@ msgstr "Taotle juhtimist"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "Dokumentatsiooni ei leitud"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Androidi kuva lõuend"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "Oodatakse kuva edastust."

@@ -276,7 +276,7 @@ defmodule Marshall.Ingress.PublicationsTest do
         handler,
         [:marshall, :repo, :query],
         fn _event, timings, metadata, _ ->
-          if String.contains?(metadata.query, "WITH clock AS MATERIALIZED") do
+          if String.contains?(metadata.query, "clock AS MATERIALIZED") do
             outcome =
               case metadata.result do
                 {:ok, _} -> :ok
@@ -318,7 +318,7 @@ defmodule Marshall.Ingress.PublicationsTest do
         handler,
         [:marshall, :repo, :query],
         fn _, timings, metadata, _ ->
-          if String.contains?(metadata.query, "WITH clock AS MATERIALIZED") do
+          if String.contains?(metadata.query, "clock AS MATERIALIZED") do
             outcome =
               case metadata.result do
                 {:ok, _} ->

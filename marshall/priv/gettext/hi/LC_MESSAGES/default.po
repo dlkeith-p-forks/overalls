@@ -7798,3 +7798,13 @@ msgstr "नियंत्रण का अनुरोध करें"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "दस्तावेज़ नहीं मिले"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android डिस्प्ले कैनवस"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "डिस्प्ले रिले की प्रतीक्षा की जा रही है।"

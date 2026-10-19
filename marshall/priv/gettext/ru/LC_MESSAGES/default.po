@@ -7833,3 +7833,13 @@ msgstr "Запросить управление"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "Документация не найдена"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Область экрана Android"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "Ожидание ретранслятора экрана."

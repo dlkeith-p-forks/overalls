@@ -7797,7 +7797,7 @@ msgstr "Raja: käyttöönottoon sidottu julkisen CA:n käytäntö varmennetusta 
 #: lib/marshall/documentation_messages.ex:4469
 #, elixir-autogen, elixir-format
 msgid "Boundary: Disposable PostgreSQL, migration, two Marshall HTTPS processes, reviewed Lilly enrollment and a fresh connected host report precede the sole workload setup signal. A SELECT-only TLS oracle checks committed migration, positive report sequence, a timestamp within 60 seconds and a durable session matching current session ID, host ID and epoch. Execution and real Control probes enforce wire v4 separately; SQL does not infer a protocol version. Hosted controlled pools report unavailable capacity and false execution readiness."
-msgstr ""
+msgstr "Raja: Kertakäyttöinen PostgreSQL, migraatio, kaksi Marshallin HTTPS-prosessia, katselmoitu Lilly-rekisteröinti ja tuore yhdistetyn isännän raportti edeltävät ainoaa kuorman valmiussignaalia. Vain SELECT-kyselyjä käyttävä TLS-oraakkeli tarkistaa tallennetun migraation, positiivisen raporttijärjestysnumeron, enintään 60 sekunnin ikäisen aikaleiman sekä pysyvän istunnon, joka vastaa nykyistä istuntotunnistetta, isäntätunnistetta ja aikakautta. Suoritus ja todelliset Control-koettimet varmistavat erikseen yhteysprotokollan version 4; SQL ei päättele protokollaversiota. Isännöidyt hallitut poolit ilmoittavat kapasiteetin olevan poissa käytöstä ja suoritusvalmiuden olevan epätosi."
 
 #: lib/marshall/documentation_messages.ex:4473
 #, elixir-autogen, elixir-format
@@ -10597,7 +10597,7 @@ msgstr "Natiivi Linux- ja Windows-polkukäsittely, todennettu jatkaminen, eläv�
 #: lib/marshall/documentation_messages.ex:6601
 #, elixir-autogen, elixir-format
 msgid "Native SSH helpers obtain fresh MMDS authority per invocation and keep host keys,\nlocks and readiness volatile. Separate managed sshd configuration refuses root\nand password login and forces the current-authorization session helper. Exact\npinned sudo bytes alone may regain setuid mode during image assembly; extraction\ndoes not activate package privilege. Periodic roster/certificate refresh removes\nreadiness on failure. Actual authorized SSH, expiry, retained-home and current\nsession refusal still require target-native journeys."
-msgstr ""
+msgstr "Natiivit SSH-apuohjelmat hankkivat tuoreen MMDS-valtuuden jokaisella kutsulla ja pitävät isäntäavaimet, lukot ja valmiustilan väliaikaisina. Erillinen hallittu sshd-kokoonpano estää root- ja salasanakirjautumisen ja pakottaa nykyisen valtuutuksen istuntoapuohjelman käyttöön. Vain täsmälliset kiinnitetyt sudo-tavut voivat saada setuid-tilan takaisin kuvan kokoamisessa; purkaminen ei aktivoi paketin oikeuksia. Säännöllisen luettelo- tai varmennepäivityksen epäonnistuminen poistaa valmiuden. Todellinen valtuutettu SSH, vanheneminen, säilytetty kotihakemisto ja nykyisen istunnon kieltäytyminen tarvitsevat edelleen kohdealustan natiiveja käyttökulkutestejä."
 
 #: lib/marshall/documentation_messages.ex:6605
 #, elixir-autogen, elixir-format
@@ -16457,7 +16457,7 @@ msgstr "Marshallin tietokantapalvelimen kanssa yhteensopivat pg_dump/pg_restore-
 #: lib/marshall/documentation_messages.ex:78
 #, elixir-autogen, elixir-format
 msgid "## A thread machine suspends after four tool-idle hours and resumes its memory on a prompt or authorized SSH, web or editor connection, relocating automatically when its host is full"
-msgstr ""
+msgstr "## Säiekone keskeytetään neljän työkaluttoman tunnin jälkeen, ja sen muisti palautetaan kehotteesta tai valtuutetusta SSH-, verkko- tai editoriyhteydestä; kone siirretään automaattisesti, jos isäntä on täynnä"
 
 #: lib/marshall/documentation_messages.ex:82
 #, elixir-autogen, elixir-format
@@ -16512,7 +16512,7 @@ msgstr "## Muistin säilyttävä keskeytys"
 #: lib/marshall/documentation_messages.ex:552
 #, elixir-autogen, elixir-format
 msgid "## Open the single account page, move between its profile, sign-in, SSH key and Git sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint"
-msgstr ""
+msgstr "## Avaa yhteinen tilisivu, siirry profiili-, kirjautumis-, SSH-avain- ja Git-osioiden välillä ja avaa sivu sivupalkista, lisätunnistautumisen uudelleenohjauksesta, SSH-hyväksyntäsivulta tai komentorivivihjeestä"
 
 #: lib/marshall/documentation_messages.ex:805
 #, elixir-autogen, elixir-format
@@ -16548,22 +16548,22 @@ msgstr "## Keskusteluketjun koneen keskeytys"
 #: lib/marshall/documentation_messages.ex:963
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.address`"
-msgstr ""
+msgstr "## `services.audi.relay.address`"
 
 #: lib/marshall/documentation_messages.ex:964
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.enable`"
-msgstr ""
+msgstr "## `services.audi.relay.enable`"
 
 #: lib/marshall/documentation_messages.ex:965
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.peers`"
-msgstr ""
+msgstr "## `services.audi.relay.peers`"
 
 #: lib/marshall/documentation_messages.ex:966
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.relay.port`"
-msgstr ""
+msgstr "## `services.audi.relay.port`"
 
 #: lib/marshall/documentation_messages.ex:1446
 #, elixir-autogen, elixir-format
@@ -16734,7 +16734,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3937
 #, elixir-autogen, elixir-format
 msgid "After relocation, the original gateway uses one authenticated fleet relay hop to\nthe destination gateway over WireGuard. Its single-use capability is bound to\ncurrent placement and the specific admitted service/account. The destination\nconsumes authority through Marshall and uses its local Lilly connector. Peer\ninput cannot select arbitrary upstream hosts or ports. Revoked, expired, foreign\nor replayed authority refuses before guest connection. TCP acceptance and waiting\nare not evidence of guest readiness."
-msgstr ""
+msgstr "Siirron jälkeen alkuperäinen yhdyskäytävä käyttää yhtä todennettua laivaston välityshyppyä kohdeyhdyskäytävään WireGuardin yli. Sen kertakäyttöinen valtuus on sidottu nykyiseen sijoitteluun ja täsmälliseen hyväksyttyyn palveluun ja tiliin. Kohde kuluttaa valtuuden Marshallin kautta ja käyttää paikallista Lilly-yhdistintään. Vertaisen syöte ei voi valita mielivaltaisia kohdeisäntiä tai portteja. Peruttu, vanhentunut, vieras tai uudelleenkäytetty valtuus hylätään ennen vierasyhteyttä. TCP-yhteyden hyväksyminen ja odottaminen eivät todista vieraan valmiutta."
 
 #: lib/marshall/documentation_messages.ex:3945
 #, elixir-autogen, elixir-format
@@ -16854,7 +16854,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6658
 #, elixir-autogen, elixir-format
 msgid "New `/threads`/Orb provisioning enables a fixed four-hour idle policy. The clock\nrecords tool admission and completion, not model output, heartbeats or the last\nhuman message. Admitted tools and queued/running turns defer capture under the\nVM lock. A prompt on a suspended machine requests wake before tool execution.\nSuccessful wake grants a fresh four-hour window. A running prompt or repeated\nnetwork request does not extend it. Owner pins prevent automatic suspension;\npersonal pins held by other users confer no such control."
-msgstr ""
+msgstr "Uusien `/threads`- ja Orb-koneiden luonti ottaa käyttöön kiinteän neljän tunnin joutokäyntikäytännön. Kello kirjaa työkalujen hyväksynnän ja valmistumisen, ei mallin tulostetta, sykeviestejä tai viimeisintä ihmisviestiä. Hyväksytyt työkalut sekä jonossa olevat ja käynnissä olevat vuorot lykkäävät tilan talteenottoa koneen lukon alaisina. Keskeytetyn koneen kehote pyytää herätystä ennen työkalun suoritusta. Onnistunut herätys antaa uuden neljän tunnin jakson. Käynnissä olevan koneen kehote tai toistuva verkkopyyntö ei pidennä sitä. Omistajan kiinnitykset estävät automaattisen keskeytyksen; muiden käyttäjien henkilökohtaiset kiinnitykset eivät anna tätä hallintavaltaa."
 
 #: lib/marshall/documentation_messages.ex:6670
 #, elixir-autogen, elixir-format
@@ -16979,7 +16979,7 @@ msgstr "Selainlaivaston testiaineisto yrittää kohdistuksen hallintaa uudelleen
 #: lib/marshall/documentation_messages.ex:9525
 #, elixir-autogen, elixir-format
 msgid "The current exploration repair restores ordinary successful properties to the\nengine's default 100 generated cases and retains existing larger budgets.\nEach property has one runner: labelled draws share its case, and nested\n`check all` execution options are rejected. Unsupported StreamData options\n`max_runs` and `max_shrinking_steps` are rejected rather than silently ignored.\nFinite exhaustive matrices may use ordinary tests when every matrix cell and\nassertion remains; one-case negative and replay controls are separately scoped."
-msgstr ""
+msgstr "Nykyinen generointikorjaus palauttaa tavalliset onnistuvat ominaisuustestit moottorin oletusarvoiseen 100 generoituun tapaukseen ja säilyttää nykyiset suuremmat budjetit. Jokaisella ominaisuudella on yksi suorittaja: nimetyt arvonnat jakavat sen tapauksen, ja sisäkkäiset `check all` -suoritusasetukset hylätään. StreamDatan tukemattomat asetukset `max_runs` ja `max_shrinking_steps` hylätään sen sijaan, että ne ohitettaisiin hiljaa. Äärelliset kattavat matriisit voivat käyttää tavallisia testejä, kun jokainen matriisin solu ja tarkistusehto säilyvät; yhden tapauksen kielteiset kontrollit ja toistokontrollit rajataan erikseen."
 
 #: lib/marshall/documentation_messages.ex:9573
 #, elixir-autogen, elixir-format
@@ -17049,7 +17049,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10686
 #, elixir-autogen, elixir-format
 msgid "Wake admission follows identity and fresh authorization, then durable demand,\ncapacity admission and physical readiness, and a fresh connection grant. A pin\nnever grants access. Waiters renew authority; revoked keys, sessions or\npublications must stop waiting. Relay capabilities are single-use and bound to\nboth current gateways and the exact admitted stream over fleet transport.\nDisabled, retired or stale origins cannot admit demand or consume/renew relay\nauthority. Caller input cannot choose arbitrary upstream hosts or ports."
-msgstr ""
+msgstr "Herätyksen hyväksyntä etenee identiteetistä ja tuoreesta valtuutuksesta pysyvään kysyntään, kapasiteetin hyväksyntään, fyysiseen valmiuteen ja uuteen yhteysvaltuutukseen. Kiinnitys ei koskaan myönnä pääsyä. Odottajat uusivat valtuutuksensa; peruttujen avainten, istuntojen tai julkaisujen on lopetettava odottaminen. Välitysvaltuudet ovat kertakäyttöisiä ja sidottuja molempiin nykyisiin yhdyskäytäviin sekä täsmälliseen hyväksyttyyn virtaan laivaston siirtoyhteydellä. Poistetut, käytöstä poistetut tai vanhentuneet alkuperät eivät voi hyväksyä kysyntää eivätkä kuluttaa tai uusia välitysvaltuutta. Kutsujan syöte ei voi valita mielivaltaisia kohdeisäntiä tai portteja."
 
 #: lib/marshall/documentation_messages.ex:10812
 #, elixir-autogen, elixir-format
@@ -17069,12 +17069,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:955
 #, elixir-autogen, elixir-format
 msgid "## `services.audi.editorPackages`"
-msgstr ""
+msgstr "## `services.audi.editorPackages`"
 
 #: lib/marshall/documentation_messages.ex:1115
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.editorPackages`"
-msgstr ""
+msgstr "## `services.marshall.editorPackages`"
 
 #: lib/marshall/documentation_messages.ex:3097
 #, elixir-autogen, elixir-format
@@ -17229,672 +17229,672 @@ msgstr "## Tilaa uutiskirje tai hylkää yleiskatsauksen kutsu pysyvästi"
 #: lib/marshall/documentation_messages.ex:952
 #, elixir-autogen, elixir-format
 msgid "## `overalls.access.users.<name>._module.args`"
-msgstr ""
+msgstr "## `overalls.access.users.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:953
 #, elixir-autogen, elixir-format
 msgid "## `overalls.access.users.<name>._module.check`"
-msgstr ""
+msgstr "## `overalls.access.users.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:954
 #, elixir-autogen, elixir-format
 msgid "## `overalls.access.users.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `overalls.access.users.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:955
 #, elixir-autogen, elixir-format
 msgid "## `overalls.access.users.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `overalls.access.users.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:956
 #, elixir-autogen, elixir-format
 msgid "## `overalls.access.users.<name>.admin`"
-msgstr ""
+msgstr "## `overalls.access.users.<name>.admin`"
 
 #: lib/marshall/documentation_messages.ex:957
 #, elixir-autogen, elixir-format
 msgid "## `overalls.access.users.<name>.extraGroups`"
-msgstr ""
+msgstr "## `overalls.access.users.<name>.extraGroups`"
 
 #: lib/marshall/documentation_messages.ex:958
 #, elixir-autogen, elixir-format
 msgid "## `overalls.access.users.<name>.group`"
-msgstr ""
+msgstr "## `overalls.access.users.<name>.group`"
 
 #: lib/marshall/documentation_messages.ex:959
 #, elixir-autogen, elixir-format
 msgid "## `overalls.access.users.<name>.login`"
-msgstr ""
+msgstr "## `overalls.access.users.<name>.login`"
 
 #: lib/marshall/documentation_messages.ex:960
 #, elixir-autogen, elixir-format
 msgid "## `overalls.access.users.<name>.secretRecovery`"
-msgstr ""
+msgstr "## `overalls.access.users.<name>.secretRecovery`"
 
 #: lib/marshall/documentation_messages.ex:961
 #, elixir-autogen, elixir-format
 msgid "## `overalls.access.users.<name>.sshKeys`"
-msgstr ""
+msgstr "## `overalls.access.users.<name>.sshKeys`"
 
 #: lib/marshall/documentation_messages.ex:963
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.allowedHosts.<name>._module.args`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.allowedHosts.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:967
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.allowedHosts.<name>._module.check`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.allowedHosts.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:971
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.allowedHosts.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.allowedHosts.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:975
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.allowedHosts.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.allowedHosts.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:979
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.allowedHosts.<name>.address`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.allowedHosts.<name>.address`"
 
 #: lib/marshall/documentation_messages.ex:980
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.allowedHosts.<name>.comment`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.allowedHosts.<name>.comment`"
 
 #: lib/marshall/documentation_messages.ex:983
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.publicServices.<name>._module.args`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.publicServices.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:987
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.publicServices.<name>._module.check`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.publicServices.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:991
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.publicServices.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.publicServices.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:995
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.publicServices.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.publicServices.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:999
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.publicServices.<name>.address`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.publicServices.<name>.address`"
 
 #: lib/marshall/documentation_messages.ex:1000
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.publicServices.<name>.comment`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.publicServices.<name>.comment`"
 
 #: lib/marshall/documentation_messages.ex:1001
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.publicServices.<name>.tcpPorts`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.publicServices.<name>.tcpPorts`"
 
 #: lib/marshall/documentation_messages.ex:1002
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetFirewall.publicServices.<name>.udpPorts`"
-msgstr ""
+msgstr "## `overalls.fleetFirewall.publicServices.<name>.udpPorts`"
 
 #: lib/marshall/documentation_messages.ex:1007
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetNetwork.peers.<name>._module.args`"
-msgstr ""
+msgstr "## `overalls.fleetNetwork.peers.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:1008
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetNetwork.peers.<name>._module.check`"
-msgstr ""
+msgstr "## `overalls.fleetNetwork.peers.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:1009
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetNetwork.peers.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `overalls.fleetNetwork.peers.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:1013
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetNetwork.peers.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `overalls.fleetNetwork.peers.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:1014
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetNetwork.peers.<name>.address`"
-msgstr ""
+msgstr "## `overalls.fleetNetwork.peers.<name>.address`"
 
 #: lib/marshall/documentation_messages.ex:1015
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetNetwork.peers.<name>.endpointAddress`"
-msgstr ""
+msgstr "## `overalls.fleetNetwork.peers.<name>.endpointAddress`"
 
 #: lib/marshall/documentation_messages.ex:1016
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetNetwork.peers.<name>.port`"
-msgstr ""
+msgstr "## `overalls.fleetNetwork.peers.<name>.port`"
 
 #: lib/marshall/documentation_messages.ex:1017
 #, elixir-autogen, elixir-format
 msgid "## `overalls.fleetNetwork.peers.<name>.publicKey`"
-msgstr ""
+msgstr "## `overalls.fleetNetwork.peers.<name>.publicKey`"
 
 #: lib/marshall/documentation_messages.ex:1025
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>._module.args`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:1026
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>._module.check`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:1027
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:1031
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:1035
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>.address`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>.address`"
 
 #: lib/marshall/documentation_messages.ex:1036
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>.clientPublicKeys`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>.clientPublicKeys`"
 
 #: lib/marshall/documentation_messages.ex:1040
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>.encryptedFile`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>.encryptedFile`"
 
 #: lib/marshall/documentation_messages.ex:1041
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>.hostPublicKey`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>.hostPublicKey`"
 
 #: lib/marshall/documentation_messages.ex:1042
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>.logicalCpus`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>.logicalCpus`"
 
 #: lib/marshall/documentation_messages.ex:1043
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>.port`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>.port`"
 
 #: lib/marshall/documentation_messages.ex:1044
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>.supportedFeatures`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>.supportedFeatures`"
 
 #: lib/marshall/documentation_messages.ex:1048
 #, elixir-autogen, elixir-format
 msgid "## `overalls.remoteBuilders.machines.<name>.systems`"
-msgstr ""
+msgstr "## `overalls.remoteBuilders.machines.<name>.systems`"
 
 #: lib/marshall/documentation_messages.ex:1225
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.github.clientId`"
-msgstr ""
+msgstr "## `services.marshall.github.clientId`"
 
 #: lib/marshall/documentation_messages.ex:1226
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.github.clientSecretFile`"
-msgstr ""
+msgstr "## `services.marshall.github.clientSecretFile`"
 
 #: lib/marshall/documentation_messages.ex:1227
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.github.redirectUri`"
-msgstr ""
+msgstr "## `services.marshall.github.redirectUri`"
 
 #: lib/marshall/documentation_messages.ex:1228
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.githubBootstrapRelease`"
-msgstr ""
+msgstr "## `services.marshall.githubBootstrapRelease`"
 
 #: lib/marshall/documentation_messages.ex:1229
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.githubRestoreEpochFile`"
-msgstr ""
+msgstr "## `services.marshall.githubRestoreEpochFile`"
 
 #: lib/marshall/documentation_messages.ex:1230
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.githubToolsRelease`"
-msgstr ""
+msgstr "## `services.marshall.githubToolsRelease`"
 
 #: lib/marshall/documentation_messages.ex:1281
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>._module.args`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:1282
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>._module.check`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:1283
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:1287
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:1288
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>.bindAddress`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>.bindAddress`"
 
 #: lib/marshall/documentation_messages.ex:1289
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>.certificateFile`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>.certificateFile`"
 
 #: lib/marshall/documentation_messages.ex:1290
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>.fleetBindAddress`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>.fleetBindAddress`"
 
 #: lib/marshall/documentation_messages.ex:1291
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>.fleetLoopback`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>.fleetLoopback`"
 
 #: lib/marshall/documentation_messages.ex:1292
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>.fleetPort`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>.fleetPort`"
 
 #: lib/marshall/documentation_messages.ex:1293
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>.keyFile`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>.keyFile`"
 
 #: lib/marshall/documentation_messages.ex:1294
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>.port`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>.port`"
 
 #: lib/marshall/documentation_messages.ex:1295
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>.terminalPeerCAFile`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>.terminalPeerCAFile`"
 
 #: lib/marshall/documentation_messages.ex:1296
 #, elixir-autogen, elixir-format
 msgid "## `services.marshall.instances.<name>.terminalPeerUrl`"
-msgstr ""
+msgstr "## `services.marshall.instances.<name>.terminalPeerUrl`"
 
 #: lib/marshall/documentation_messages.ex:1363
 #, elixir-autogen, elixir-format
 msgid "## `services.marshallProxy.backends.<name>._module.args`"
-msgstr ""
+msgstr "## `services.marshallProxy.backends.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:1364
 #, elixir-autogen, elixir-format
 msgid "## `services.marshallProxy.backends.<name>._module.check`"
-msgstr ""
+msgstr "## `services.marshallProxy.backends.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:1365
 #, elixir-autogen, elixir-format
 msgid "## `services.marshallProxy.backends.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `services.marshallProxy.backends.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:1369
 #, elixir-autogen, elixir-format
 msgid "## `services.marshallProxy.backends.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `services.marshallProxy.backends.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:1373
 #, elixir-autogen, elixir-format
 msgid "## `services.marshallProxy.backends.<name>.address`"
-msgstr ""
+msgstr "## `services.marshallProxy.backends.<name>.address`"
 
 #: lib/marshall/documentation_messages.ex:1374
 #, elixir-autogen, elixir-format
 msgid "## `services.marshallProxy.backends.<name>.port`"
-msgstr ""
+msgstr "## `services.marshallProxy.backends.<name>.port`"
 
 #: lib/marshall/documentation_messages.ex:1375
 #, elixir-autogen, elixir-format
 msgid "## `services.marshallProxy.backends.<name>.serverName`"
-msgstr ""
+msgstr "## `services.marshallProxy.backends.<name>.serverName`"
 
 #: lib/marshall/documentation_messages.ex:1393
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsAutoUpdate.marshallHealth.<name>._module.args`"
-msgstr ""
+msgstr "## `services.overallsAutoUpdate.marshallHealth.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:1397
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsAutoUpdate.marshallHealth.<name>._module.check`"
-msgstr ""
+msgstr "## `services.overallsAutoUpdate.marshallHealth.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:1401
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsAutoUpdate.marshallHealth.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `services.overallsAutoUpdate.marshallHealth.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:1405
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsAutoUpdate.marshallHealth.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `services.overallsAutoUpdate.marshallHealth.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:1409
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsAutoUpdate.marshallHealth.<name>.caFile`"
-msgstr ""
+msgstr "## `services.overallsAutoUpdate.marshallHealth.<name>.caFile`"
 
 #: lib/marshall/documentation_messages.ex:1413
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsAutoUpdate.marshallHealth.<name>.serverName`"
-msgstr ""
+msgstr "## `services.overallsAutoUpdate.marshallHealth.<name>.serverName`"
 
 #: lib/marshall/documentation_messages.ex:1444
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsBrowserProbes.instances.<name>._module.args`"
-msgstr ""
+msgstr "## `services.overallsBrowserProbes.instances.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:1448
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsBrowserProbes.instances.<name>._module.check`"
-msgstr ""
+msgstr "## `services.overallsBrowserProbes.instances.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:1452
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsBrowserProbes.instances.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `services.overallsBrowserProbes.instances.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:1456
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsBrowserProbes.instances.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `services.overallsBrowserProbes.instances.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:1460
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsBrowserProbes.instances.<name>.enable`"
-msgstr ""
+msgstr "## `services.overallsBrowserProbes.instances.<name>.enable`"
 
 #: lib/marshall/documentation_messages.ex:1461
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsBrowserProbes.instances.<name>.fixtureFile`"
-msgstr ""
+msgstr "## `services.overallsBrowserProbes.instances.<name>.fixtureFile`"
 
 #: lib/marshall/documentation_messages.ex:1465
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsBrowserProbes.instances.<name>.storageStateFile`"
-msgstr ""
+msgstr "## `services.overallsBrowserProbes.instances.<name>.storageStateFile`"
 
 #: lib/marshall/documentation_messages.ex:1518
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>._module.args`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:1519
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>._module.check`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:1520
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:1524
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:1528
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>.credentialFiles`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>.credentialFiles`"
 
 #: lib/marshall/documentation_messages.ex:1532
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>.enable`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>.enable`"
 
 #: lib/marshall/documentation_messages.ex:1533
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>.endpoint`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>.endpoint`"
 
 #: lib/marshall/documentation_messages.ex:1534
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>.groupPrefix`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>.groupPrefix`"
 
 #: lib/marshall/documentation_messages.ex:1535
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>.plugin`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>.plugin`"
 
 #: lib/marshall/documentation_messages.ex:1536
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>.port`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>.port`"
 
 #: lib/marshall/documentation_messages.ex:1537
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>.queueBytes`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>.queueBytes`"
 
 #: lib/marshall/documentation_messages.ex:1538
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>.region`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>.region`"
 
 #: lib/marshall/documentation_messages.ex:1539
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>.settings`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>.settings`"
 
 #: lib/marshall/documentation_messages.ex:1540
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>.sources`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>.sources`"
 
 #: lib/marshall/documentation_messages.ex:1541
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsLogging.outputs.<name>.type`"
-msgstr ""
+msgstr "## `services.overallsLogging.outputs.<name>.type`"
 
 #: lib/marshall/documentation_messages.ex:1600
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsRequestRecorder.instances.<name>._module.args`"
-msgstr ""
+msgstr "## `services.overallsRequestRecorder.instances.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:1604
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsRequestRecorder.instances.<name>._module.check`"
-msgstr ""
+msgstr "## `services.overallsRequestRecorder.instances.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:1608
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsRequestRecorder.instances.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `services.overallsRequestRecorder.instances.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:1612
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsRequestRecorder.instances.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `services.overallsRequestRecorder.instances.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:1616
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsRequestRecorder.instances.<name>.deadlineSeconds`"
-msgstr ""
+msgstr "## `services.overallsRequestRecorder.instances.<name>.deadlineSeconds`"
 
 #: lib/marshall/documentation_messages.ex:1620
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsRequestRecorder.instances.<name>.enable`"
-msgstr ""
+msgstr "## `services.overallsRequestRecorder.instances.<name>.enable`"
 
 #: lib/marshall/documentation_messages.ex:1624
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsRequestRecorder.instances.<name>.package`"
-msgstr ""
+msgstr "## `services.overallsRequestRecorder.instances.<name>.package`"
 
 #: lib/marshall/documentation_messages.ex:1628
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsRequestRecorder.instances.<name>.producerUnit`"
-msgstr ""
+msgstr "## `services.overallsRequestRecorder.instances.<name>.producerUnit`"
 
 #: lib/marshall/documentation_messages.ex:1632
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsRequestRecorder.instances.<name>.producerUser`"
-msgstr ""
+msgstr "## `services.overallsRequestRecorder.instances.<name>.producerUser`"
 
 #: lib/marshall/documentation_messages.ex:1636
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsRequestRecorder.instances.<name>.source`"
-msgstr ""
+msgstr "## `services.overallsRequestRecorder.instances.<name>.source`"
 
 #: lib/marshall/documentation_messages.ex:1641
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>._module.args`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:1642
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>._module.check`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:1643
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:1647
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:1651
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>.directory`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>.directory`"
 
 #: lib/marshall/documentation_messages.ex:1652
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>.encryptedFile`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>.encryptedFile`"
 
 #: lib/marshall/documentation_messages.ex:1653
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>.group`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>.group`"
 
 #: lib/marshall/documentation_messages.ex:1654
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>.outputs.<name>._module.args`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>.outputs.<name>._module.args`"
 
 #: lib/marshall/documentation_messages.ex:1658
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>.outputs.<name>._module.check`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>.outputs.<name>._module.check`"
 
 #: lib/marshall/documentation_messages.ex:1662
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>.outputs.<name>._module.freeformType`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>.outputs.<name>._module.freeformType`"
 
 #: lib/marshall/documentation_messages.ex:1666
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>.outputs.<name>._module.specialArgs`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>.outputs.<name>._module.specialArgs`"
 
 #: lib/marshall/documentation_messages.ex:1670
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>.outputs.<name>.format`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>.outputs.<name>.format`"
 
 #: lib/marshall/documentation_messages.ex:1674
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>.outputs.<name>.secrets`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>.outputs.<name>.secrets`"
 
 #: lib/marshall/documentation_messages.ex:1678
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>.outputs`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>.outputs`"
 
 #: lib/marshall/documentation_messages.ex:1679
 #, elixir-autogen, elixir-format
 msgid "## `services.overallsSecrets.bundles.<name>.unit`"
-msgstr ""
+msgstr "## `services.overallsSecrets.bundles.<name>.unit`"
 
 #: lib/marshall/documentation_messages.ex:1685
 #, elixir-autogen, elixir-format
 msgid "## `services.peach.caFile`"
-msgstr ""
+msgstr "## `services.peach.caFile`"
 
 #: lib/marshall/documentation_messages.ex:1686
 #, elixir-autogen, elixir-format
 msgid "## `services.peach.controlPlane`"
-msgstr ""
+msgstr "## `services.peach.controlPlane`"
 
 #: lib/marshall/documentation_messages.ex:1687
 #, elixir-autogen, elixir-format
 msgid "## `services.peach.credentialFile`"
-msgstr ""
+msgstr "## `services.peach.credentialFile`"
 
 #: lib/marshall/documentation_messages.ex:1688
 #, elixir-autogen, elixir-format
 msgid "## `services.peach.enable`"
-msgstr ""
+msgstr "## `services.peach.enable`"
 
 #: lib/marshall/documentation_messages.ex:1689
 #, elixir-autogen, elixir-format
 msgid "## `services.peach.hostId`"
-msgstr ""
+msgstr "## `services.peach.hostId`"
 
 #: lib/marshall/documentation_messages.ex:1690
 #, elixir-autogen, elixir-format
 msgid "## `services.peach.package`"
-msgstr ""
+msgstr "## `services.peach.package`"
 
 #: lib/marshall/documentation_messages.ex:1691
 #, elixir-autogen, elixir-format
 msgid "## `services.peach.secretUnits`"
-msgstr ""
+msgstr "## `services.peach.secretUnits`"
 
 #: lib/marshall/documentation_messages.ex:1692
 #, elixir-autogen, elixir-format
 msgid "## `services.peach.secretsFile`"
-msgstr ""
+msgstr "## `services.peach.secretsFile`"
 
 #: lib/marshall/documentation_messages.ex:1693
 #, elixir-autogen, elixir-format
 msgid "## `services.peach.socket`"
-msgstr ""
+msgstr "## `services.peach.socket`"
 
 #: lib/marshall/documentation_messages.ex:1728
 #, elixir-autogen, elixir-format
 msgid "## `services.ziggy.githubBootstrapRelease`"
-msgstr ""
+msgstr "## `services.ziggy.githubBootstrapRelease`"
 
 #: lib/marshall/documentation_messages.ex:1729
 #, elixir-autogen, elixir-format
 msgid "## `services.ziggy.githubToolsRelease`"
-msgstr ""
+msgstr "## `services.ziggy.githubToolsRelease`"
 
 #: lib/marshall/documentation_messages.ex:1745
 #, elixir-autogen, elixir-format
@@ -17919,7 +17919,7 @@ msgstr "**Puutteet:** Dokumentaation käännökset ja äidinkielinen kielentarki
 #: lib/marshall/documentation_messages.ex:1957
 #, elixir-autogen, elixir-format
 msgid "**Gaps:** Fresh/stale execution, credential expiry and generated rotation/revocation histories, host loss and same-host native network isolation need recorded property and machine execution; credential unit tests passed in the focused 40-test Marshall run, and the Peach fixture validates the codec without invoking the HTTP Plug"
-msgstr ""
+msgstr "**Puutteet:** Tuoreet ja vanhentuneet suoritukset, tunnistetietojen vanheneminen, generoidut kierto- ja perumishistoriat, isännän menetys sekä saman isännän natiivi verkkoeristys tarvitsevat kirjattuja ominaisuus- ja konetestejä; tunnistetietojen yksikkötestit läpäisivät kohdennetun 40 testin Marshall-ajon, ja Peach-testijärjestely validoi koodekin kutsumatta HTTP Plugia"
 
 #: lib/marshall/documentation_messages.ex:1989
 #, elixir-autogen, elixir-format
@@ -18034,7 +18034,7 @@ msgstr "Hyväksy odottava omistajuustarjous."
 #: lib/marshall/documentation_messages.ex:4198
 #, elixir-autogen, elixir-format
 msgid "Account discovery returns Marshall's immutable allocated `u<uid>` guest name;\ndo not reconstruct it from email. Same-User email changes preserve the login,\nhome and managed SSH profile. Rerun installer setup after the development\ncutover or a fresh registration to discover its current identity.\nFirst authenticated `whoami` may allocate the identity and records the\nauthenticated user in its audit version; repeated discovery preserves it. Browser\npersonal terminals use the same username and home without requiring an SSH key."
-msgstr ""
+msgstr "Tilin selvitys palauttaa Marshallin muuttumattomasti varaaman vierasnimen `u<uid>`; älä johda sitä sähköpostista. Saman käyttäjän sähköpostimuutokset säilyttävät kirjautumisnimen, kotihakemiston ja hallitun SSH-profiilin. Suorita asentimen käyttöönotto uudelleen kehityssiirtymän tai uuden rekisteröinnin jälkeen selvittääksesi nykyisen identiteetin. Ensimmäinen todennettu `whoami` voi varata identiteetin ja tallentaa todennetun käyttäjän auditointiversioonsa; toistuva selvitys säilyttää identiteetin. Selaimen henkilökohtaiset päätteet käyttävät samaa käyttäjänimeä ja kotihakemistoa vaatimatta SSH-avainta."
 
 #: lib/marshall/documentation_messages.ex:4236
 #, elixir-autogen, elixir-format
@@ -18049,17 +18049,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4440
 #, elixir-autogen, elixir-format
 msgid "Android-capable machines may mint a short-lived, machine- and actor-bound display\nclaim through Marshall. The guest relay remains responsible for current emulator\ngeneration and controller-lease checks; a viewer claim cannot send input. Claims\nare refused for images without the `android_display` capability and do not expose\nADB or RFB through a public browser route."
-msgstr ""
+msgstr "Androidia tukevat koneet voivat luoda Marshallin kautta lyhytikäisen näyttövaltuutuksen, joka on sidottu koneeseen ja toimijaan. Vieraan välitin vastaa edelleen nykyisen emulaattorisukupolven ja ohjausvarauksen tarkistuksista; katseluvaltuutus ei salli syötteiden lähettämistä. Valtuutus evätään kuvilta, joilla ei ole `android_display`-ominaisuutta, eikä se avaa ADB:tä tai RFB:tä julkisen selainreitin kautta."
 
 #: lib/marshall/documentation_messages.ex:4496
 #, elixir-autogen, elixir-format
 msgid "Arrows describe ownership/calls, not deployment units. Seven-family/provider\nexecution, refresh faults and retained updates keep their gaps in\n[coverage](#coverage) and the\n[review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)."
-msgstr ""
+msgstr "Nuolet kuvaavat omistajuutta ja kutsuja, eivät käyttöönottoyksiköitä. Seitsemän perheen ja tarjoajan suoritusten, päivityshäiriöiden ja säilytettyjen päivitysten puutteet säilyvät [kattavuudessa](#coverage) ja [katselmoinnissa](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)."
 
 #: lib/marshall/documentation_messages.ex:4512
 #, elixir-autogen, elixir-format
 msgid "Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`. Administrative SSH ports: 2222.\n<!-- hldd:view:end -->"
-msgstr ""
+msgstr "Nuolet kuvaavat määritettyä palvelujen sijoittelua. Kokoonpano: `overalls`. Marshall-instanssit: `overalls`. Laivaston osoite: `10.90.0.1`. Laivaston vertaiset: `dungarees`. Ylläpidon SSH-portit: 2222.\n<!-- hldd:view:end -->"
 
 #: lib/marshall/documentation_messages.ex:4522
 #, elixir-autogen, elixir-format
@@ -18079,7 +18079,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4653
 #, elixir-autogen, elixir-format
 msgid "Boundary: A User UUID owns one durable GuestAccount UUID and never-reused UID; exact u<uid> login, /home/u<uid> home and editor origin are independent of email. Current login, Cedar write authority and boot/execution fences still gate every access. Retired identities remain permanent reservations."
-msgstr ""
+msgstr "Raja: Käyttäjän UUID omistaa yhden pysyvän GuestAccount-UUID:n ja UID:n, jota ei koskaan käytetä uudelleen; täsmällinen u<uid>-kirjautumisnimi, /home/u<uid>-kotihakemisto ja editorin alkuperä eivät riipu sähköpostista. Nykyinen kirjautuminen, Cedar-kirjoitusoikeus sekä käynnistys- ja suoritusrajaukset ovat edelleen kaiken käytön ehtoja. Poistetut identiteetit jäävät pysyviksi varauksiksi."
 
 #: lib/marshall/documentation_messages.ex:4713
 #, elixir-autogen, elixir-format
@@ -18134,12 +18134,12 @@ msgstr "Sulje tämä vuorovaikutteinen kanava."
 #: lib/marshall/documentation_messages.ex:5532
 #, elixir-autogen, elixir-format
 msgid "Configure `MARSHALL_GITHUB_CLIENT_ID`, `MARSHALL_GITHUB_CLIENT_SECRET_FILE` and\n`MARSHALL_GITHUB_REDIRECT_URI` together. All absent disables setup; partial or\nmalformed configuration refuses startup. Production uses the exact registered\nHTTPS redirect with path `/auth/github-com/callback`, no query, fragment or user\ninformation. Explicit loopback development/test settings may use HTTP."
-msgstr ""
+msgstr "Määritä `MARSHALL_GITHUB_CLIENT_ID`, `MARSHALL_GITHUB_CLIENT_SECRET_FILE` ja `MARSHALL_GITHUB_REDIRECT_URI` yhdessä. Kaikkien puuttuminen estää käyttöönoton; osittainen tai virheellinen kokoonpano estää käynnistyksen. Tuotanto käyttää täsmälleen rekisteröityä HTTPS-uudelleenohjausta polulla `/auth/github-com/callback`, ilman kyselyä, fragmenttia tai käyttäjätietoja. Nimenomaiset kehitys- ja testausasetukset voivat käyttää HTTP:tä loopback-osoitteessa."
 
 #: lib/marshall/documentation_messages.ex:5548
 #, elixir-autogen, elixir-format
 msgid "Connection progress is an explicit state machine: `disconnected`, `connected`,\n`draining`, `refreshing`, `reconnect_required` and `revoking`. OAuth attempts,\nrefresh attempts and generation-bound request leases remain separate resources.\nThe `github` queue has concurrency two; AshOban scheduling and ID-only jobs\nrediscover due work. Delivery does not replace current durable authority."
-msgstr ""
+msgstr "Yhteyden eteneminen on nimenomainen tilakone: `disconnected`, `connected`, `draining`, `refreshing`, `reconnect_required` ja `revoking`. OAuth-yritykset, päivitysyritykset ja sukupolveen sidotut pyyntövaraukset pysyvät erillisinä resursseina. `github`-jonon rinnakkaisuus on kaksi; AshOban-ajastus ja vain tunnisteita sisältävät työt löytävät erääntyneet työt uudelleen. Toimitus ei korvaa nykyistä pysyvää päätösvaltaa."
 
 #: lib/marshall/documentation_messages.ex:5612
 #, elixir-autogen, elixir-format
@@ -18169,7 +18169,7 @@ msgstr "Luo tai korvaa nimetty integraatio osoitteessa https://NAME.integration.
 #: lib/marshall/documentation_messages.ex:5838
 #, elixir-autogen, elixir-format
 msgid "Customer capabilities are a closed set: SSH, terminal and editor. Generic\nprivate-service admission is refused. Owner authorization and the separate\neditor gateway remain mandatory; a shared private execution binding is not a\ngrant to inference, reflection, integrations or telemetry. Audi refuses these\nnon-SSH services from `10.10/16` before asking Lilly for a binding. The reserved\nSSH service retains exact account-pull, boot-roster and host-certificate\npurposes; Lilly still requires current local execution authority."
-msgstr ""
+msgstr "Asiakkaan ominaisuudet muodostavat suljetun joukon: SSH, pääte ja editori. Yleinen pääsy yksityisiin palveluihin evätään. Omistajan valtuutus ja erillinen editoriyhdyskäytävä pysyvät pakollisina; jaettu yksityinen suoritussidos ei myönnä pääsyä päättelyyn, reflektioon, integraatioihin tai telemetriaan. Audi hylkää nämä muut kuin SSH-palvelut verkosta `10.10/16` ennen sidoksen pyytämistä Lillyltä. Varattu SSH-palvelu säilyttää täsmälliset tilinhaun, käynnistysluettelon ja isäntävarmenteen käyttötarkoitukset; Lilly vaatii silti voimassa olevan paikallisen suoritusvaltuuden."
 
 #: lib/marshall/documentation_messages.ex:5856
 #, elixir-autogen, elixir-format
@@ -18194,7 +18194,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6089
 #, elixir-autogen, elixir-format
 msgid "Every guest boot leaves its own timing record in the bounded host boot log\n(`<state_dir>/<placement>/boot.log`, ADR-0154). Operators read it to see where a\ncreate spends its boot and trust time; it is observation only and never gates\nreadiness."
-msgstr ""
+msgstr "Jokainen vieraan käynnistys jättää oman ajoitustietueensa isännän rajattuun käynnistyslokiin (`<state_dir>/<placement>/boot.log`, ADR-0154). Ylläpitäjät näkevät siitä, mihin luonti käyttää käynnistys- ja luottamusaikansa; tietue on vain havainto eikä koskaan valmiuden ehto."
 
 #: lib/marshall/documentation_messages.ex:6105
 #, elixir-autogen, elixir-format
@@ -18204,7 +18204,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6109
 #, elixir-autogen, elixir-format
 msgid "Every running guest can query `https://reflection.internal` for a bounded,\nsecret-free description of itself and the private services currently available\nto its execution."
-msgstr ""
+msgstr "Jokainen käynnissä oleva vieras voi pyytää osoitteesta `https://reflection.internal` rajatun, salaisuuksia sisältämättömän kuvauksen itsestään ja suorituksensa käytettävissä olevista yksityisistä palveluista."
 
 #: lib/marshall/documentation_messages.ex:6225
 #, elixir-autogen, elixir-format
@@ -18219,12 +18219,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6474
 #, elixir-autogen, elixir-format
 msgid "Generated from the default module's evaluated declarations. These are module defaults, not the running fleet configuration. `<name>` selects a named record; `*` selects a list element. Enable a service only after supplying its required configuration and satisfying its assertions. Package store hashes are omitted."
-msgstr ""
+msgstr "Luotu oletusmoduulin evaluoiduista määrityksistä. Nämä ovat moduulin oletusarvoja, eivät käynnissä olevan laivaston kokoonpano. `<name>` valitsee nimetyn tietueen; `*` valitsee luettelon alkion. Ota palvelu käyttöön vasta, kun sen vaatima kokoonpano on annettu ja tarkistusehdot täyttyvät. Pakettien varastotiivisteet on jätetty pois."
 
 #: lib/marshall/documentation_messages.ex:6495
 #, elixir-autogen, elixir-format
 msgid "GitHub stays inside Marshall and owns encrypted identity/lifecycle. Galileo owns\none upstream attempt; Audi/Lilly authenticate current VM execution. Guest tools\nreceive endpoint configuration only. Attempt/generation comparisons fence\nduplicate work and late settlement; provider waits happen outside transactions.\nGeneric Galileo attachments remain separate from built-in owner eligibility."
-msgstr ""
+msgstr "GitHub pysyy Marshallin sisällä ja omistaa salatun identiteetin ja elinkaaren. Galileo omistaa yhden ulkoisen yrityksen; Audi ja Lilly todentavat koneen nykyisen suorituksen. Vieraan työkalut saavat vain päätepisteasetukset. Yritys- ja sukupolviverrokit rajaavat kaksoistyön ja myöhäiset valmistumiset; tarjoajan odotukset tapahtuvat transaktioiden ulkopuolella. Galileon yleiset liitokset pysyvät erillään sisäänrakennetusta omistajakelpoisuudesta."
 
 #: lib/marshall/documentation_messages.ex:6528
 #, elixir-autogen, elixir-format
@@ -18234,12 +18234,12 @@ msgstr "Myönnä katselijan, operaattorin tai hallinnoijan käyttöoikeus."
 #: lib/marshall/documentation_messages.ex:6542
 #, elixir-autogen, elixir-format
 msgid "Guest metadata includes the machine name and ID, profile, architecture,\noperating-system family, vCPU, memory and disk sizes, image identity,\ngeneration, owner email, team name, current Lilly node, labels, and comment.\nOperating-system values come from the validated image manifest."
-msgstr ""
+msgstr "Vieraan metatietoihin kuuluvat koneen nimi ja tunniste, profiili, arkkitehtuuri, käyttöjärjestelmäperhe, vCPU-määrä, muistin ja levyn koko, kuvan tunniste, sukupolvi, omistajan sähköposti, tiimin nimi, nykyinen Lilly-solmu, tunnisteet ja kommentti. Käyttöjärjestelmätiedot tulevat validoidusta kuvaluettelosta."
 
 #: lib/marshall/documentation_messages.ex:6550
 #, elixir-autogen, elixir-format
 msgid "GuestAccount UUIDs and the noncycling UID range are permanent reservations,\nincluding after retirement. Login `u<uid>` and home `/home/u<uid>` belong to that\nallocation, never to the present owner of an email address. Preserve historical\nrows and consumed sequence values; deleting reservations or resetting the\nsequence is not an allocation-exhaustion recovery procedure."
-msgstr ""
+msgstr "GuestAccount-UUID:t ja kiertämätön UID-alue ovat pysyviä varauksia myös käytöstä poistamisen jälkeen. Kirjautumisnimi `u<uid>` ja kotihakemisto `/home/u<uid>` kuuluvat kyseiseen varaukseen, eivät sähköpostiosoitteen nykyiselle omistajalle. Säilytä historialliset rivit ja käytetyt sekvenssiarvot; varausten poistaminen tai sekvenssin nollaaminen ei ole tunnisteavaruuden loppumisen palautumismenettely."
 
 #: lib/marshall/documentation_messages.ex:6642
 #, elixir-autogen, elixir-format
@@ -18284,7 +18284,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6760
 #, elixir-autogen, elixir-format
 msgid "Integration entries describe the internal URL, useful paths, a short `help`\ncommand, a comment, and injected header names and kinds. Header values,\ncredentials, tokens, and upstream target URLs are never returned. The list\ncontains Reflection, LLM, and named integrations authorized for this exact\nmachine execution."
-msgstr ""
+msgstr "Integraatiotietueet kuvaavat sisäisen osoitteen, hyödylliset polut, lyhyen `help`-komennon, kommentin sekä lisättyjen otsakkeiden nimet ja tyypit. Otsakearvoja, tunnistetietoja, tokeneita tai ulkoisia kohdeosoitteita ei koskaan palauteta. Luettelo sisältää Reflectionin, LLM:n ja juuri tälle koneen suoritukselle valtuutetut nimetyt integraatiot."
 
 #: lib/marshall/documentation_messages.ex:6800
 #, elixir-autogen, elixir-format
@@ -18334,7 +18334,7 @@ msgstr "Luettele tiimisi ja roolisi."
 #: lib/marshall/documentation_messages.ex:6970
 #, elixir-autogen, elixir-format
 msgid "Machine managers can edit labels and the machine comment from machine settings.\nLabels are limited to 32 entries and comments to 2 KiB. Integration managers\ncan edit an integration comment from the integrations page. Changes are\naudited without recording comment text or secret values."
-msgstr ""
+msgstr "Koneiden hallinnoijat voivat muokata tunnisteita ja koneen kommenttia koneasetuksissa. Tunnisteita saa olla enintään 32 ja kommentin koko enintään 2 KiB. Integraatioiden hallinnoijat voivat muokata integraation kommenttia integraatiosivulla. Muutokset auditoidaan tallentamatta kommenttitekstiä tai salaisia arvoja."
 
 #: lib/marshall/documentation_messages.ex:6998
 #, elixir-autogen, elixir-format
@@ -18369,7 +18369,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7092
 #, elixir-autogen, elixir-format
 msgid "Matching `services.marshall.githubBootstrapRelease` and\n`services.ziggy.githubBootstrapRelease` provide public source-built executor\nartifacts for retained machines that lack the tool capability. Marshall receives\n`MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE`. The closed inventory and fixed\nbootstrap program remain separate from tool-installation authority and receipts."
-msgstr ""
+msgstr "Toisiaan vastaavat `services.marshall.githubBootstrapRelease` ja `services.ziggy.githubBootstrapRelease` tarjoavat julkiset lähteestä rakennetut suorittaja-artefaktit säilytetyille koneille, joilta puuttuu työkaluominaisuus. Marshall vastaanottaa arvon `MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE`. Suljettu luettelo ja kiinteä alustusohjelma pysyvät erillään työkalujen asennusvaltuuksista ja kuittauksista."
 
 #: lib/marshall/documentation_messages.ex:7141
 #, elixir-autogen, elixir-format
@@ -18419,7 +18419,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7544
 #, elixir-autogen, elixir-format
 msgid "Peach serves the bounded, secret-free `reflection.internal` projection for a\ncurrently running guest. Marshall remains the authorization authority and\nreturns only integrations eligible for the fenced execution."
-msgstr ""
+msgstr "Peach tarjoaa käynnissä olevalle vieraalle rajatun, salaisuuksia sisältämättömän `reflection.internal`-näkymän. Marshall säilyttää valtuutuspäätösvallan ja palauttaa vain kyseiselle suoritukselle kelvolliset integraatiot."
 
 #: lib/marshall/documentation_messages.ex:7585
 #, elixir-autogen, elixir-format
@@ -18434,7 +18434,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:7609
 #, elixir-autogen, elixir-format
 msgid "Porsche catalog verification compares all 25 terminal catalogs with the extracted message inventory and checks placeholders. The recorded full Porsche gate at `1f79f63e6` passed 108 tests and Dialyzer with zero errors. This establishes bounded BEAM/catalog behavior; native SSH onboarding, visual bidi behavior and native-language quality still require separate acceptance."
-msgstr ""
+msgstr "Porschen luettelotarkistus vertaa kaikkia 25 päätekieliluetteloa poimittuun viestiluetteloon ja tarkistaa paikkamerkit. Kirjattu täydellinen Porsche-tarkistus versiossa `1f79f63e6` läpäisi 108 testiä ja Dialyzerin ilman virheitä. Tämä todentaa rajatun BEAM- ja luettelokäyttäytymisen; natiivi SSH-käyttöönotto, visuaalinen kaksisuuntainen teksti ja äidinkielinen laatu tarvitsevat edelleen erillisen hyväksynnän."
 
 #: lib/marshall/documentation_messages.ex:7669
 #, elixir-autogen, elixir-format
@@ -18444,7 +18444,7 @@ msgstr "Yksityinen ajonaikainen GitHub OAuth -asiakassalaisuus, joka toimitetaan
 #: lib/marshall/documentation_messages.ex:7731
 #, elixir-autogen, elixir-format
 msgid "Provider request-start time anchors expiry. Known late or rejected pairs remain\nencrypted in failed attempts until ID-only access-token cleanup clears them;\nminute reconciliation rediscovers cleanup. Missing provider replies still require\nreconnect. Removing optional OAuth settings withdraws private admission and old\nauthenticated renewals immediately, leaving new forwarding anonymous and stored\nencrypted grants pending operator reconfiguration or revocation. Configuration\nremoval is not remote grant revocation."
-msgstr ""
+msgstr "Tarjoajapyynnön aloitusaika määrittää vanhenemisen perustan. Tunnetusti myöhäiset tai hylätyt parit säilyvät salattuina epäonnistuneissa yrityksissä, kunnes vain tunnisteita käyttävä pääsytokenien siivous poistaa ne; minuutittainen täsmäytys löytää siivoustyön uudelleen. Puuttuvat tarjoajavastaukset vaativat silti uudelleenyhdistämistä. Valinnaisten OAuth-asetusten poistaminen peruu yksityisen pääsyn hyväksynnän ja vanhat todennetut uusimiset heti. Uusi välitys jää anonyymiksi ja salatut valtuutukset odottamaan ylläpitäjän uudelleenmääritystä tai perumista. Kokoonpanon poistaminen ei peru etävaltuutusta."
 
 #: lib/marshall/documentation_messages.ex:7777
 #, elixir-autogen, elixir-format
@@ -18454,7 +18454,7 @@ msgstr "Julkinen GitHub OAuth -sovelluksen asiakastunnus. Määritä yhdessä cl
 #: lib/marshall/documentation_messages.ex:7803
 #, elixir-autogen, elixir-format
 msgid "Public documentation applies validated browser language negotiation without a login or session cookie. Its standalone HTML declares the negotiated `lang` and explicit `dir`, including RTL for Arabic and Urdu. Controller regression coverage checks English, Arabic, Urdu and Japanese; this does not establish visual bidi correctness or translation completeness."
-msgstr ""
+msgstr "Julkinen dokumentaatio käyttää validoitua selaimen kielineuvottelua ilman kirjautumista tai istuntoevästettä. Sen itsenäinen HTML ilmoittaa neuvotellun `lang`-arvon ja nimenomaisen `dir`-suunnan, mukaan lukien arabian ja urdun RTL-suunnan. Ohjaimen regressiotestit tarkistavat englannin, arabian, urdun ja japanin; tämä ei todista kaksisuuntaisen tekstin visuaalista oikeellisuutta tai käännösten täydellisyyttä."
 
 #: lib/marshall/documentation_messages.ex:7827
 #, elixir-autogen, elixir-format
@@ -18469,7 +18469,7 @@ msgstr "Reflektio on käytettävissä vain yksityisen verkon kautta. Pyynnöt si
 #: lib/marshall/documentation_messages.ex:7885
 #, elixir-autogen, elixir-format
 msgid "Reflection reveals bounded machine metadata and eligible integration descriptors,\nnever credential values. [ADR-0203](repo:docs/architecture/decisions/0203-guest-reflection.md)\nkeeps projection and credential authority in Marshall. Peach does not own a\ndatabase or retained snapshot authority."
-msgstr ""
+msgstr "Reflection paljastaa rajatut koneen metatiedot ja kelvollisten integraatioiden kuvaukset, ei koskaan tunnistetietojen arvoja. [ADR-0203](repo:docs/architecture/decisions/0203-guest-reflection.md) säilyttää näkymän ja tunnistetietojen päätösvallan Marshallissa. Peach ei omista tietokantaa eikä säilytettyjen tilannekuvien päätösvaltaa."
 
 #: lib/marshall/documentation_messages.ex:7889
 #, elixir-autogen, elixir-format
@@ -18564,7 +18564,7 @@ msgstr "Pääkäyttäjän hallitsema julkinen UUID-raja palautetulle valtuutukse
 #: lib/marshall/documentation_messages.ex:8878
 #, elixir-autogen, elixir-format
 msgid "SSH key rename descriptions, confirmation and refusal flashes, and administrative verification/refusal messages use the active locale catalog. Translation does not change ownership checks, recent-passkey requirements or accepted mutation outcomes. English date-only month/day output follows bundled CLDR ordering (`Oct 18`); the UTC provenance remains unchanged."
-msgstr ""
+msgstr "SSH-avaimen uudelleennimeämisen kuvaukset, vahvistus- ja kieltäytymisilmoitukset sekä ylläpidon tarkistus- ja kieltäytymisviestit käyttävät aktiivisen kielen luetteloa. Kääntäminen ei muuta omistajuustarkistuksia, tuoreen pääsyavaintunnistautumisen vaatimuksia tai hyväksyttyjen muutosten tuloksia. Englannin pelkkien päivämäärien kuukausi- ja päiväesitys noudattaa mukana toimitettua CLDR-järjestystä (`Oct 18`); UTC-alkuperä säilyy muuttumattomana."
 
 #: lib/marshall/documentation_messages.ex:8886
 #, elixir-autogen, elixir-format
@@ -18714,7 +18714,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10996
 #, elixir-autogen, elixir-format
 msgid "Token ciphertext needs Marshall's matching Cloak keyring. A historical backup\nmay contain a refresh token consumed after backup, so decryption does not prove\ncurrent provider authority. An exchange can rotate upstream before its reply or\nlocal commit is lost. Such uncertainty enters `reconnect_required` instead of\nblindly retrying the old token."
-msgstr ""
+msgstr "Tokenin salateksti tarvitsee Marshallin vastaavan Cloak-avainnipun. Historiallinen varmuuskopio voi sisältää varmuuskopioinnin jälkeen käytetyn päivitystokenin, joten salauksen purkaminen ei todista nykyistä tarjoajavaltuutusta. Vaihto voi kierrättää tokenin tarjoajalla ennen vastauksen tai paikallisen tallennuksen katoamista. Tällainen epävarmuus johtaa tilaan `reconnect_required` vanhan tokenin sokean uudelleenyrityksen sijaan."
 
 #: lib/marshall/documentation_messages.ex:11173
 #, elixir-autogen, elixir-format
@@ -18784,7 +18784,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:11801
 #, elixir-autogen, elixir-format
 msgid "`GET /` returns a versioned object containing `guest`, `integrations`, and the\navailable paths. `GET /guest` returns only guest metadata. `GET /integrations`\nreturns the integrations array directly, which makes it convenient for shell\nscripts and agents."
-msgstr ""
+msgstr "`GET /` palauttaa versioidun olion, joka sisältää kentät `guest` ja `integrations` sekä käytettävissä olevat polut. `GET /guest` palauttaa vain vieraan metatiedot. `GET /integrations` palauttaa integraatiotaulukon suoraan, mikä helpottaa käyttöä komentotulkkiskripteissä ja agenteissa."
 
 #: lib/marshall/documentation_messages.ex:11829
 #, elixir-autogen, elixir-format
@@ -18829,7 +18829,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:11925
 #, elixir-autogen, elixir-format
 msgid "| Client | Native configuration and request family |\n| --- | --- |\n| Codex | `/etc/codex/config.toml` selects `https://llm.internal/openai/v1`, HTTP Responses, no OpenAI login or WebSockets, `approval_policy = \"never\"` and `sandbox_mode = \"danger-full-access\"`. |\n| Claude Code | `/etc/claude-code/managed-settings.json` supplies the Anthropic URL, nonsecret sentinel, verified guest CA trust, `permissions.defaultMode = \"bypassPermissions\"`, `sandbox.enabled = false` and `skipDangerousModePermissionPrompt = true`. |"
-msgstr ""
+msgstr "| Asiakas | Natiivi kokoonpano ja pyyntöperhe |\n| --- | --- |\n| Codex | `/etc/codex/config.toml` valitsee osoitteen `https://llm.internal/openai/v1`, HTTP Responses -rajapinnan, ei OpenAI-kirjautumista tai WebSocketeja sekä asetukset `approval_policy = \"never\"` ja `sandbox_mode = \"danger-full-access\"`. |\n| Claude Code | `/etc/claude-code/managed-settings.json` antaa Anthropic-osoitteen, ei-salaisen tunnistearvon, varmennetun vieraan CA-luottamuksen sekä asetukset `permissions.defaultMode = \"bypassPermissions\"`, `sandbox.enabled = false` ja `skipDangerousModePermissionPrompt = true`. |"
 
 #: lib/marshall/documentation_messages.ex:11929
 #, elixir-autogen, elixir-format
@@ -18989,7 +18989,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:12053
 #, elixir-autogen, elixir-format
 msgid "| Token | Light | Dark | Role |\n| --- | --- | --- | --- |\n| `--text-color` | `#000` | `#fff` | text, borders, inverse-video fills |\n| `--text-color-alt` | `#666` | `#aaa` | secondary text and placeholders |\n| `--background-color` | `#fff` | `#000` | page, controls and dialogs |\n| `--background-color-alt` | `#eee` | `#111` | hover, code blocks and terminal selection |"
-msgstr ""
+msgstr "| Muuttuja | Vaalea | Tumma | Tehtävä |\n| --- | --- | --- | --- |\n| `--text-color` | `#000` | `#fff` | teksti, reunat ja käänteiset täytöt |\n| `--text-color-alt` | `#666` | `#aaa` | toissijainen teksti ja paikkamerkit |\n| `--background-color` | `#fff` | `#000` | sivu, ohjaimet ja valintaikkunat |\n| `--background-color-alt` | `#eee` | `#111` | osoituskorostus, koodilohkot ja päätevalinta |"
 
 #: lib/marshall/documentation_messages.ex:7880
 #, elixir-autogen, elixir-format
@@ -19004,7 +19004,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5938
 #, elixir-autogen, elixir-format
 msgid "Display tickets and WebSocket upgrades bind the signed emulator generation; a\nbrowser-supplied generation mismatch is refused before relay creation."
-msgstr ""
+msgstr "Näyttöliput ja WebSocket-päivitykset sitovat allekirjoitetun emulaattorisukupolven; selaimen antama ristiriitainen sukupolvi hylätään ennen välittimen luomista."
 
 #: lib/marshall/documentation_messages.ex:8741
 #, elixir-autogen, elixir-format
@@ -19019,22 +19019,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:9841
 #, elixir-autogen, elixir-format
 msgid "The Android display hook uses a same-origin WebSocket URL supplied by the page,\nkeeps viewer input disabled, and sends controller key/pointer frames only after\na controller ticket is granted. It does not use a foreign iframe or external\nresource."
-msgstr ""
+msgstr "Android-näyttökoukku käyttää sivun antamaa saman alkuperän WebSocket-osoitetta, estää katselijan syötteet ja lähettää ohjaajan näppäin- ja osoitinkehyksiä vasta ohjauslipun myöntämisen jälkeen. Se ei käytä vieraan alkuperän iframe-kehystä tai ulkoista resurssia."
 
 #: lib/marshall/documentation_messages.ex:9845
 #, elixir-autogen, elixir-format
 msgid "The Android relay state machine permits read-only viewers and one controller,\nadvances frame sequence numbers monotonically, and revokes controller authority\nwhen its process exits or the emulator generation changes."
-msgstr ""
+msgstr "Android-välittimen tilakone sallii vain lukuun oikeutetut katselijat ja yhden ohjaajan, kasvattaa kuvien järjestysnumeroita monotonisesti ja peruu ohjausoikeuden prosessin päättyessä tai emulaattorin sukupolven vaihtuessa."
 
 #: lib/marshall/documentation_messages.ex:10098
 #, elixir-autogen, elixir-format
 msgid "The `/android-display` WebSocket upgrade verifies the browser login, signed\nmachine ticket, actor binding, mode and generation before creating a relay\nprocess; failed upgrades return a generic refusal without machine disclosure."
-msgstr ""
+msgstr "WebSocket-päivitys polussa `/android-display` tarkistaa selaimen kirjautumisen, allekirjoitetun konelipun, toimijasidoksen, tilan ja sukupolven ennen välitinprosessin luomista; epäonnistunut päivitys palauttaa yleisen kieltäytymisviestin paljastamatta konetta."
 
 #: lib/marshall/documentation_messages.ex:10476
 #, elixir-autogen, elixir-format
 msgid "The host-stream adapter drops stale Android frames before relay publication and\nroutes input only from controller-authorized sockets back toward Lilly.\n"
-msgstr ""
+msgstr "Isäntävirran sovitin hylkää vanhentuneet Android-kehykset ennen niiden julkaisemista välittimelle ja reitittää syötteet takaisin Lillylle vain ohjaukseen valtuutetuista soketeista.\n"
 
 #: lib/marshall/documentation_messages.ex:10508
 #, elixir-autogen, elixir-format
@@ -19049,4 +19049,4 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10540
 #, elixir-autogen, elixir-format
 msgid "The machine workspace exposes Android display controls only when the image's\n`android_display` capability is present. Viewer and controller ticket requests\nremain authenticated LiveView events; the browser relay must still enforce\ncurrent generation and controller lease before opening RFB."
-msgstr ""
+msgstr "Koneen työtila näyttää Android-näytön ohjaimet vain, kun kuvalla on `android_display`-ominaisuus. Katselija- ja ohjauslippupyynnöt pysyvät todennettuina LiveView-tapahtumina; selainvälittimen on silti tarkistettava nykyinen sukupolvi ja ohjausvaraus ennen RFB:n avaamista."

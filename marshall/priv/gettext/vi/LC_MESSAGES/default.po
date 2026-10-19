@@ -7527,3 +7527,13 @@ msgstr "Yêu cầu điều khiển"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "Không tìm thấy tài liệu"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Vùng hiển thị Android"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "Đang chờ chuyển tiếp màn hình."

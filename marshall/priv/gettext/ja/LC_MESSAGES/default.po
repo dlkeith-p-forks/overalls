@@ -7556,3 +7556,13 @@ msgstr "操作権を要求"
 #, elixir-autogen, elixir-format
 msgid "Documentation not found"
 msgstr "ドキュメントが見つかりません"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android 画面の描画領域"
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "画面中継を待機しています。"
