@@ -23,6 +23,14 @@ transport reset does not preserve established sockets.
 SSH key rename descriptions, confirmation and refusal flashes, and administrative verification/refusal messages use the active locale catalog. Translation does not change ownership checks, recent-passkey requirements or accepted mutation outcomes. English date-only month/day output follows bundled CLDR ordering (`Oct 18`); the UTC provenance remains unchanged.
 
 Catalogs are maintained per language and feature using native Gettext domains.
+The ordinary catalog gate rejects missing, fuzzy and unreviewed English-copy
+forms; diagnostic `--report-only` execution does not establish completeness.
+Human state labels, command descriptions, sign-out confirmation, terminal
+screen-reader announcements and clone failure guidance use their owning feature
+catalogs. Machine state attributes, command tokens, JSON and terminal bytes
+retain their language-neutral values. The authentication library still owns
+sign-out submission and CSRF protection; translated confirmation alone never
+revokes the current login.
 The public `/docs/*` guides are translated. This handbook's chapter titles,
 contents and command reference remain English in every language, with an
 explicit English left-to-right content boundary; reader controls follow the

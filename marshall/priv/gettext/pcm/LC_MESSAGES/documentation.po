@@ -837,3 +837,8 @@ msgstr "Your deployment dey keep delivery records for seven days and e dey store
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` dey pause or resume notifications for one device. `device rm` dey revoke am forever; Mila go register again di next time you allow notifications. If you delete or retire your account, e go revoke all im devices."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "We no find di documentation"

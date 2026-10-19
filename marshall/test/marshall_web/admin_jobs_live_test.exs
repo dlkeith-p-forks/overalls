@@ -32,6 +32,29 @@ defmodule MarshallWeb.AdminJobsLiveTest do
     assert has_element?(view, "#jobs-#{job.id}")
   end
 
+  test "Japanese and Arabic failure detail stays translated and excludes raw exceptions", %{
+    conn: conn
+  } do
+    job = job("discarded")
+
+    source =
+      "An execution attempt failed. Raw exception details are excluded from administrative history."
+
+    for locale <- ["ja", "ar"] do
+      localized =
+        Gettext.with_locale(MarshallWeb.Gettext, locale, fn ->
+          Gettext.dgettext(MarshallWeb.Gettext, "admin_jobs", source)
+        end)
+
+      refute localized == source
+      conn = conn |> put_req_header("accept-language", locale) |> signed_in(user(false))
+      {:ok, view, html} = live(conn, ~p"/admin/jobs/#{job.id}")
+      assert has_element?(view, "#job-failure", localized)
+      refute html =~ "private-job-value"
+      refute html =~ source
+    end
+  end
+
   test "retry uses the displayed job, writes an audit receipt and updates the view", %{conn: conn} do
     admin = user(true)
     job = job("discarded")

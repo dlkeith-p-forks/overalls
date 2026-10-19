@@ -202,3 +202,43 @@ msgstr "அறிவிக்கப்படவில்லை"
 #, elixir-autogen, elixir-format
 msgid "Your AI usage"
 msgstr "உங்கள் செயற்கை நுண்ணறிவுப் பயன்பாடு"
+
+#: lib/marshall_web/live/inference_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "ரத்துசெய்யப்பட்டது"
+
+#: lib/marshall_web/live/inference_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "முழுமையானது"
+
+#: lib/marshall_web/live/inference_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Completed"
+msgstr "முடிந்தது"
+
+#: lib/marshall_web/live/inference_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Interrupted"
+msgstr "இடைநிறுத்தப்பட்டது"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Partial"
+msgstr "பகுதியளவு"
+
+#: lib/marshall_web/live/inference_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "திரும்பப்பெறப்பட்டது"
+
+#: lib/marshall_web/live/inference_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Transport error"
+msgstr "பரிமாற்றப் பிழை"
+
+#: lib/marshall_web/live/inference_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Upstream error"
+msgstr "மூலச் சேவைப் பிழை"

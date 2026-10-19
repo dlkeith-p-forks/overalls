@@ -35,6 +35,35 @@ defmodule MarshallWeb.ThreadsLiveTest do
     assert has_element?(view, "#thread-page-first")
   end
 
+  test "Japanese and Arabic command palettes and missing context usage are localized", c do
+    thread = create_thread(c.owner, "Inspect untranslated context fallback")
+
+    for locale <- ["ja", "ar"] do
+      conn = c.conn |> put_req_header("accept-language", locale) |> signed_in(c.owner)
+      {:ok, view, _} = live(conn, ~p"/threads/#{thread.id}")
+
+      commands =
+        Gettext.with_locale(MarshallWeb.Gettext, locale, &MarshallWeb.ThreadCommands.all/0)
+
+      for {command, label, description} <- commands do
+        assert has_element?(view, "#thread-command-#{command} strong", "/#{command}")
+        assert has_element?(view, "#thread-command-#{command}", label)
+        assert has_element?(view, "#thread-command-#{command}", description)
+      end
+
+      render_click(view, "thread_command", %{"command" => "context"})
+
+      unknown =
+        Gettext.with_locale(MarshallWeb.Gettext, locale, fn ->
+          Gettext.dgettext(MarshallWeb.Gettext, "agents", "Unknown")
+        end)
+
+      refute unknown == "Unknown"
+      assert has_element?(view, "#thread-detail-dialog dd", unknown)
+      refute has_element?(view, "#thread-detail-dialog dd", "Unknown")
+    end
+  end
+
   test "new thread view collects an objective and machine settings", c do
     {:ok, view, _html} = live(signed_in(c.conn, c.owner), ~p"/threads/new")
     assert has_element?(view, "#new-thread-form")

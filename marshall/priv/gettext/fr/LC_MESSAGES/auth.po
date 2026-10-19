@@ -131,3 +131,14 @@ msgstr "Votre mot de passe a été réinitialisé"
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr ""
 "Votre connexion n’est plus valide. Demandez un nouveau lien de connexion."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "Voulez-vous vraiment vous déconnecter ?"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "Se déconnecter"

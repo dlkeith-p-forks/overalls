@@ -838,3 +838,8 @@ msgstr "A sua implantação mantém os registos de entrega durante sete dias e a
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` pausa ou retoma as notificações de um dispositivo. `device rm` revoga-o permanentemente; a Mila regista-o novamente da próxima vez que permitir as notificações. Eliminar ou desativar a sua conta revoga todos os seus dispositivos."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Documentação não encontrada"

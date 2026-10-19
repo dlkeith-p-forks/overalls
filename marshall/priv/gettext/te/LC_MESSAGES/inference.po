@@ -206,3 +206,43 @@ msgstr "నివేదించలేదు"
 #, elixir-autogen, elixir-format
 msgid "Your AI usage"
 msgstr "మీ AI వినియోగం"
+
+#: lib/marshall_web/live/inference_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "రద్దయింది"
+
+#: lib/marshall_web/live/inference_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "పూర్తి"
+
+#: lib/marshall_web/live/inference_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Completed"
+msgstr "పూర్తయింది"
+
+#: lib/marshall_web/live/inference_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Interrupted"
+msgstr "అంతరాయం కలిగింది"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Partial"
+msgstr "పాక్షికం"
+
+#: lib/marshall_web/live/inference_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "ఉపసంహరించబడింది"
+
+#: lib/marshall_web/live/inference_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Transport error"
+msgstr "రవాణా లోపం"
+
+#: lib/marshall_web/live/inference_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Upstream error"
+msgstr "మూల సేవలో లోపం"

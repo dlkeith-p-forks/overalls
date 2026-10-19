@@ -651,3 +651,23 @@ msgstr "ganti nama"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "untuk melihat konsol host hanya-baca."
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "Sematkan"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "Sematkan %{name}"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Lepas sematan"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "Lepas sematan %{name}"

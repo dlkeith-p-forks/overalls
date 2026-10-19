@@ -190,3 +190,23 @@ msgstr "· آپ کا کھاتا"
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "پہلا صفحہ →"
+
+#: lib/marshall_web/live/admin/users_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "حذف کر دیا گیا"
+
+#: lib/marshall_web/live/admin/users_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Deleting machines"
+msgstr "مشینیں حذف کی جا رہی ہیں"
+
+#: lib/marshall_web/live/admin/users_live.ex:325
+#, elixir-autogen, elixir-format
+msgid "Retrying machine cleanup"
+msgstr "مشین کی صفائی کی دوبارہ کوشش جاری ہے"
+
+#: lib/marshall_web/live/admin/users_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "دستیاب نہیں"

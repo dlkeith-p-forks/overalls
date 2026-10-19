@@ -3,9 +3,9 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
 
   alias Marshall.Compute
 
-  on_mount {MarshallWeb.AuthenticationPrivacy, :default}
-  on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
-  on_mount {MarshallWeb.LiveAdminAuth, :required}
+  on_mount({MarshallWeb.AuthenticationPrivacy, :default})
+  on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
+  on_mount({MarshallWeb.LiveAdminAuth, :required})
 
   @impl true
   def mount(_, _, socket) do
@@ -158,9 +158,11 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                 <td><code title={vm.host_id}>{short(vm.host_id)}</code></td>
                 <td class="nowrap">{vm.vcpu} vCPU · {gib(vm.memory_bytes)} GiB</td>
                 <td class="nowrap">
-                  <span class="status-label" data-state={vm.observed_state}>{vm.observed_state}</span>
+                  <span class="status-label" data-state={vm.observed_state}>
+                    {state_label(vm.observed_state)}
+                  </span>
                   <span :if={vm.desired_state != vm.observed_state} class="muted">
-                    → {vm.desired_state}
+                    → {state_label(vm.desired_state)}
                   </span>
                 </td>
                 <td :if={@admin_authorized} class="actions-cell">
@@ -253,6 +255,18 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
 
   defp gib(value), do: Float.round(value / 1_073_741_824, 1)
   @spec short(String.t() | nil) :: String.t()
-  defp short(nil), do: "unplaced"
+  defp short(nil), do: dgettext("admin_workloads", "Unplaced")
   defp short(id), do: String.slice(to_string(id), 0, 8)
+
+  # @cc [owner:ghuntley,label:product] workload-state-presentation
+  # Human workload states MUST use the finite admin_workloads translations while
+  # data-state and action arguments preserve authoritative domain atoms.
+  @spec state_label(term()) :: String.t()
+  defp state_label(:pending), do: dgettext("admin_workloads", "Pending")
+  defp state_label(:running), do: dgettext("admin_workloads", "Running")
+  defp state_label(:stopped), do: dgettext("admin_workloads", "Stopped")
+  defp state_label(:paused), do: dgettext("admin_workloads", "Paused")
+  defp state_label(:failed), do: dgettext("admin_workloads", "Failed")
+  defp state_label(:deleted), do: dgettext("admin_workloads", "Deleted")
+  defp state_label(_), do: dgettext("admin_workloads", "Unknown")
 end

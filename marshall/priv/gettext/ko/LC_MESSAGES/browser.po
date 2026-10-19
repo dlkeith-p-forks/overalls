@@ -239,3 +239,13 @@ msgstr "터미널이 없습니다"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— 이 보기 이전의 출력은 스크롤백 창에 없습니다 —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "터미널 입력"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "출력이 너무 많아 읽어 드릴 수 없습니다. 행을 직접 이동하여 읽으세요"

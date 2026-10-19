@@ -384,8 +384,20 @@ defmodule MarshallWeb.Admin.JobsLive do
                 <:item title={dgettext("admin_jobs", "Recorded failures")}>{@job.error_count}</:item>
               </.kv>
             </UI.panel>
-            <p :if={@job.failure} id="job-failure" class="error">
-              {@job.failure}
+            <p
+              :if={
+                dgettext(
+                  "admin_jobs",
+                  "An execution attempt failed. Raw exception details are excluded from administrative history."
+                )
+              }
+              id="job-failure"
+              class="error"
+            >
+              {dgettext(
+                "admin_jobs",
+                "An execution attempt failed. Raw exception details are excluded from administrative history."
+              )}
             </p>
             <UI.panel :if={@subject} id="job-subject" title={dgettext("admin_jobs", "Related record")}>
               <.kv>

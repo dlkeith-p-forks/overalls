@@ -1590,3 +1590,58 @@ msgstr "· %{value1} తర్కం · %{value2}"
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ ఎంచుకో · Enter అమలు · Escape మూసివేయి"
+
+#: lib/marshall_web/thread_commands.ex:21
+#, elixir-autogen, elixir-format
+msgid "Choose or manage reusable instructions"
+msgstr "పునర్వినియోగ సూచనలను ఎంచుకోండి లేదా నిర్వహించండి"
+
+#: lib/marshall_web/thread_commands.ex:30
+#, elixir-autogen, elixir-format
+msgid "Command help"
+msgstr "కమాండ్ సహాయం"
+
+#: lib/marshall_web/thread_commands.ex:22
+#, elixir-autogen, elixir-format
+msgid "Context"
+msgstr "సందర్భం"
+
+#: lib/marshall_web/thread_commands.ex:15
+#, elixir-autogen, elixir-format
+msgid "Explore the task and agree on a plan"
+msgstr "పనిని పరిశీలించి ప్రణాళికపై అంగీకరించండి"
+
+#: lib/marshall_web/thread_commands.ex:17
+#, elixir-autogen, elixir-format
+msgid "Implement and verify changes"
+msgstr "మార్పులను అమలు చేసి ధృవీకరించండి"
+
+#: lib/marshall_web/thread_commands.ex:23
+#, elixir-autogen, elixir-format
+msgid "Inspect the working directory and loaded sources"
+msgstr "పని డైరెక్టరీని మరియు లోడ్ చేసిన మూలాలను పరిశీలించండి"
+
+#: lib/marshall_web/thread_commands.ex:31
+#, elixir-autogen, elixir-format
+msgid "Learn the composer shortcuts"
+msgstr "సందేశ రచన షార్ట్‌కట్‌లను తెలుసుకోండి"
+
+#: lib/marshall_web/thread_commands.ex:29
+#, elixir-autogen, elixir-format
+msgid "Manage access to the thread and its machine"
+msgstr "థ్రెడ్ మరియు దాని మెషీన్ యాక్సెస్‌ను నిర్వహించండి"
+
+#: lib/marshall_web/thread_commands.ex:27
+#, elixir-autogen, elixir-format
+msgid "Open the editor for this thread's machine"
+msgstr "ఈ థ్రెడ్ మెషీన్ ఎడిటర్‌ను తెరవండి"
+
+#: lib/marshall_web/thread_commands.ex:25
+#, elixir-autogen, elixir-format
+msgid "Open this thread's machine terminal"
+msgstr "ఈ థ్రెడ్ మెషీన్ టెర్మినల్‌ను తెరవండి"
+
+#: lib/marshall_web/thread_commands.ex:19
+#, elixir-autogen, elixir-format
+msgid "Summarize older context for the next turn"
+msgstr "తదుపరి మలుపు కోసం పాత సందర్భాన్ని సంగ్రహించండి"

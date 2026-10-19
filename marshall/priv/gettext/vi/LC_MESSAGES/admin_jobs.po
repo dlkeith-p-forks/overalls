@@ -383,3 +383,9 @@ msgstr "← Trang đầu"
 #, elixir-autogen, elixir-format
 msgid "← Jobs"
 msgstr "← Tác vụ"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:389
+#: lib/marshall_web/live/admin/jobs_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "An execution attempt failed. Raw exception details are excluded from administrative history."
+msgstr "Một lần thực thi đã thất bại. Chi tiết ngoại lệ thô không được đưa vào lịch sử quản trị."

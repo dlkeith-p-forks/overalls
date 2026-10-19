@@ -202,3 +202,43 @@ msgstr "Nobody report am"
 #, elixir-autogen, elixir-format
 msgid "Your AI usage"
 msgstr "How you dey use AI"
+
+#: lib/marshall_web/live/inference_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "Dem don cancel am"
+
+#: lib/marshall_web/live/inference_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "All of am dey"
+
+#: lib/marshall_web/live/inference_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Completed"
+msgstr "E don finish"
+
+#: lib/marshall_web/live/inference_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Interrupted"
+msgstr "E stop for middle"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Partial"
+msgstr "Na only part dey"
+
+#: lib/marshall_web/live/inference_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "Dem don take am back"
+
+#: lib/marshall_web/live/inference_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Transport error"
+msgstr "Error for transfer"
+
+#: lib/marshall_web/live/inference_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Upstream error"
+msgstr "Error for di source service"

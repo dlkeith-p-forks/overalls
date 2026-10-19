@@ -141,3 +141,14 @@ msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr ""
 "Ihre Anmeldung ist nicht mehr gültig. Fordern Sie einen neuen Anmeldelink "
 "an."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "Möchten Sie sich wirklich abmelden?"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "Abmelden"

@@ -247,3 +247,13 @@ msgstr "कोणतेही टर्मिनल नाही"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— या दृश्यापूर्वीचे आउटपुट स्क्रोलबॅक विंडोमध्ये नाही —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "टर्मिनल इनपुट"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "वाचून दाखवण्यासाठी आउटपुट खूप जास्त आहे; वाचण्यासाठी स्वतः ओळींवर जा"

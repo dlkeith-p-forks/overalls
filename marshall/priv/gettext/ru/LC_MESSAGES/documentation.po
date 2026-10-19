@@ -838,3 +838,8 @@ msgstr "Ваше развертывание хранит записи о дос�
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` приостанавливает или возобновляет уведомления для одного устройства. `device rm` отзывает его навсегда; Mila зарегистрирует его снова, когда вы в следующий раз разрешите уведомления. Удаление или вывод из эксплуатации вашей учетной записи отзывает все ее устройства."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Документация не найдена"

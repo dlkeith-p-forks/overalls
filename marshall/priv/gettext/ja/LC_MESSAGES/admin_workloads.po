@@ -139,3 +139,43 @@ msgstr "ワークロード インベントリは一時的に利用できませ�
 #, elixir-autogen, elixir-format
 msgid "· every 15 seconds"
 msgstr "· 15秒ごと"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:270
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "削除済み"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:269
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "失敗した"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:268
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "一時停止中"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "保留中"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:266
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "ランニング"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "停止しました"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "未知"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:258
+#, elixir-autogen, elixir-format
+msgid "Unplaced"
+msgstr "未配置"

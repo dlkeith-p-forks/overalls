@@ -653,3 +653,23 @@ msgstr "badilisha jina"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "kutazama kiweko cha mwenyeji cha kusoma pekee."
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "Bandika"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "Bandika %{name}"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Ondoa bandiko"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "Ondoa bandiko la %{name}"

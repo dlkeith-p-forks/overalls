@@ -10,6 +10,18 @@ import { deliverTicket } from "./terminals/tickets.js";
 import { BootLogPoller } from "./terminals/boot_log.js";
 export { BootLogPoller };
 
+/**
+ * @cc [owner:ghuntley,label:product] terminal-accessibility-catalog
+ * Both emulator creation paths MUST initialize xterm's public accessibility
+ * strings from the current document catalog before creating the terminal.
+ * Guest bytes and terminal selection content MUST remain unchanged.
+ * @returns {void}
+ */
+export function localizeTerminalAccessibility() {
+  Terminal.strings.promptLabel = t("Terminal input");
+  Terminal.strings.tooMuchOutput = t("Too much output to announce, navigate to rows manually to read");
+}
+
 const MAX_OSC52_BYTES = 64 * 1024;
 // Live emulators a workspace keeps; less recently selected panes hibernate.
 const LIVE_PANES = 4;
@@ -216,6 +228,7 @@ class BootLogPane {
   constructor(workspace, container) {
     this.container = container;
     this.cursor = 0;
+    localizeTerminalAccessibility();
     this.terminal = new Terminal({
       allowProposedApi: true,
       convertEol: false,
@@ -300,6 +313,7 @@ class Pane {
    */
   wake() {
     if (this.terminal || this.closed) return;
+    localizeTerminalAccessibility();
     this.terminal = new Terminal({
       convertEol: false,
       cursorBlink: true,

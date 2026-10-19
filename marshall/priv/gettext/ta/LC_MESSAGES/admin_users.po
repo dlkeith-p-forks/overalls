@@ -190,3 +190,23 @@ msgstr "· உங்கள் கணக்கு"
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← முதல் பக்கம்"
+
+#: lib/marshall_web/live/admin/users_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "நீக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/users_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Deleting machines"
+msgstr "கணினிகள் நீக்கப்படுகின்றன"
+
+#: lib/marshall_web/live/admin/users_live.ex:325
+#, elixir-autogen, elixir-format
+msgid "Retrying machine cleanup"
+msgstr "கணினியைச் சுத்தப்படுத்த மீண்டும் முயல்கிறது"
+
+#: lib/marshall_web/live/admin/users_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "கிடைக்கவில்லை"

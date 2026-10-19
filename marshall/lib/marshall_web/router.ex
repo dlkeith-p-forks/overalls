@@ -159,7 +159,13 @@ defmodule MarshallWeb.Router do
     auth_routes(AuthController, Marshall.Accounts.User, path: "/auth")
 
     sign_out_route(AuthController, "/sign-out",
-      overrides: [MarshallWeb.AuthOverrides, AshAuthentication.Phoenix.Overrides.Default]
+      on_mount_prepend: [MarshallWeb.AuthenticationPrivacy],
+      on_mount: [{MarshallWeb.SignOutOverrides, :locale}],
+      overrides: [
+        MarshallWeb.SignOutOverrides,
+        MarshallWeb.AuthOverrides,
+        AshAuthentication.Phoenix.Overrides.Default
+      ]
     )
 
     # Remove these if you'd like to use your own authentication views

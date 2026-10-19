@@ -138,3 +138,14 @@ msgstr "संकेतशब्द यशस्वीपणे रीसेट 
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "तुमचे साइन इन आता वैध नाही. नवीन साइन इन दुवा मागा."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "तुम्हाला नक्की साइन आउट करायचे आहे का?"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "साइन आउट करा"

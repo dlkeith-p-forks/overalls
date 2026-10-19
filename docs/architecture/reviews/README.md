@@ -1,5 +1,6 @@
 # Architecture reviews
 
+- [Localization completion follow-up (2026-10-19)](2026-10-19-localization-completion-follow-up.md): closes raw-source and strict-gate omissions, preserves authentication and machine contracts, and separates committed regression/journey coverage from pending execution.
 - [Localization feature catalogs (2026-10-19)](2026-10-19-localization-feature-catalogs.md): native per-locale/per-feature catalogs and the source-English handbook boundary under ADR-0201; migration and verification evidence remain separately scoped.
 - [MFA property fixture isolation (2026-10-19)](2026-10-19-mfa-property-isolation.md): fresh SQL ownership per generated history under ADR-0191, preserving exploration and separating historical timing from current execution.
 - [Mila M6: integrated client, relay and verification (2026-10-19)](2026-10-19-mila-m6.md):

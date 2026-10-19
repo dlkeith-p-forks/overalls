@@ -130,3 +130,14 @@ msgstr "Parolanız başarıyla sıfırlandı"
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "Girişiniz artık geçerli değil. Yeni giriş bağlantısı isteyin."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "Oturumu kapatmak istediğinizden emin misiniz?"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "Oturumu kapat"

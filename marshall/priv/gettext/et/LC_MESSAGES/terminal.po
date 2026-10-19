@@ -653,3 +653,23 @@ msgstr "nimeta ümber"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "hosti kirjutuskaitstud konsooli vaatamiseks."
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "Kinnita"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "Kinnita %{name}"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Eemalda kinnitus"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "Eemalda %{name} kinnitus"

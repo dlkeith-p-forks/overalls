@@ -1039,3 +1039,8 @@ msgstr "Käyttöönottosi säilyttää toimitustietoja seitsemän päivää ja t
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` keskeyttää tai jatkaa yhden laitteen ilmoituksia. `device rm` peruuttaa laitteen pysyvästi; Mila rekisteröi sen uudelleen, kun seuraavan kerran sallit ilmoitukset. Tilisi poistaminen tai käytöstä poistaminen peruuttaa kaikki sen laitteet."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Dokumentaatiota ei löytynyt"

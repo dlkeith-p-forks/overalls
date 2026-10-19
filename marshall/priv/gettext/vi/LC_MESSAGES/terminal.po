@@ -651,3 +651,23 @@ msgstr "đổi tên"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "để xem bảng điều khiển máy chủ chỉ đọc."
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "Ghim"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "Ghim %{name}"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Bỏ ghim"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "Bỏ ghim %{name}"

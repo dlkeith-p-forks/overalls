@@ -892,3 +892,8 @@ msgstr "배포는 전달 기록을 7일 동안 보관하며, 감사 기록에는
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs`는 기기 하나의 알림을 일시 중지하거나 재개합니다. `device rm`은 기기를 영구적으로 취소합니다. 다음에 알림을 허용하면 Mila가 다시 등록합니다. 계정을 삭제하거나 사용 종료하면 모든 기기가 취소됩니다."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "문서를 찾을 수 없습니다"

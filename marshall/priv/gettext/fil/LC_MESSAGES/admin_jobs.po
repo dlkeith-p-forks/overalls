@@ -383,3 +383,9 @@ msgstr "← Unang pahina"
 #, elixir-autogen, elixir-format
 msgid "← Jobs"
 msgstr "← Mga gawain"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:389
+#: lib/marshall_web/live/admin/jobs_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "An execution attempt failed. Raw exception details are excluded from administrative history."
+msgstr "Nabigo ang isang pagtatangkang magpatakbo. Hindi kasama sa kasaysayang administratibo ang mga hilaw na detalye ng exception."

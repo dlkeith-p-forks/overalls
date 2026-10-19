@@ -653,3 +653,23 @@ msgstr "மறுபெயரிடு"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "வாசிக்க மட்டுமே கூடிய புரவலன் கட்டுப்பாட்டகத்தைப் பார்க்க."
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "பின் செய்"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "%{name} ஐப் பின் செய்"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "பின்னை அகற்று"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "%{name} இன் பின்னை அகற்று"
