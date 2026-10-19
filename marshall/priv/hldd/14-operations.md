@@ -730,6 +730,15 @@ evidence; transport failure or an unpublished route does not establish refusal.
 
 ## Memory suspension and ingress handoff rollout
 
+Configure `services.lilly.checkpointImageIds` only with exact immutable images
+that have recorded native continuation qualification. The empty default retains
+ordinary starts but refuses pause/resume. Converge Lilly reporters and Marshall
+consumers on the required `checkpoint_image_ids` host-inventory field before
+enabling memory operations; reports missing the field are refused. Stage the VM's
+qualified ID on eligible destinations before relocation. Removing qualification
+while RAM is retained blocks subsequent memory operations instead of permitting
+a cold-boot fallback. The native fixture's candidate image list is test-only.
+
 Deploy the coordinated protocol, Marshall migration, Lilly/hostd and Audi builds
 before admitting pause/resume operations. Lilly must retain immutable checkpoint
 memory backing until the restored VMM exits. A failed or incompatible restore

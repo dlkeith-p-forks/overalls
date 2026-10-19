@@ -22,6 +22,7 @@ defmodule Lilly.VM.Config do
     :launch_guard,
     :boot_log_writer,
     guest_trust_roots: [],
+    checkpoint_image_ids: [],
     inception_smtp_file: nil,
     inception_image_id: nil,
     inception_proof_file: nil,
@@ -38,6 +39,7 @@ defmodule Lilly.VM.Config do
           launch_guard: Path.t(),
           boot_log_writer: Path.t(),
           guest_trust_roots: [binary()],
+          checkpoint_image_ids: [String.t()],
           inception_smtp_file: Path.t() | nil,
           inception_image_id: String.t() | nil,
           inception_proof_file: Path.t() | nil,
@@ -59,7 +61,7 @@ defmodule Lilly.VM.Config do
           unshare: unshare
         } = args
       )
-      when map_size(args) in 5..11 do
+      when map_size(args) in 5..12 do
     with true <-
            Map.keys(args) --
              [
@@ -73,8 +75,10 @@ defmodule Lilly.VM.Config do
                :inception_image_id,
                :inception_proof_file,
                :inception_probe_id,
-               :guest_trust_roots
+               :guest_trust_roots,
+               :checkpoint_image_ids
              ] == [],
+         true <- valid_checkpoint_image_ids?(Map.get(args, :checkpoint_image_ids, [])),
          true <- valid_guest_trust_roots?(Map.get(args, :guest_trust_roots, [])),
          true <- is_boolean(Map.get(args, :firecracker_logging, false)),
          true <- inception_inputs?(args),
@@ -106,6 +110,13 @@ defmodule Lilly.VM.Config do
   end
 
   def new(_), do: {:error, :invalid_driver_configuration}
+
+  # @cc [owner:ghuntley,label:security;recovery] checkpoint-qualification-local-only
+  # Qualification MUST be a bounded unique list of exact content-addressed IDs
+  # supplied by trusted operator configuration, never by execution commands.
+  @spec valid_checkpoint_image_ids?(term()) :: boolean()
+  defp valid_checkpoint_image_ids?(ids),
+    do: OverallsProtocol.NativeAdmission.checkpoint_image_ids?(ids)
 
   defp valid_guest_trust_roots?(roots) when is_list(roots) and length(roots) <= 32 do
     Enum.all?(roots, fn pem ->

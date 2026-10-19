@@ -47,6 +47,8 @@ defmodule Marshall.EditorFixture do
   # never mutate an existing immutable image. Provisioning, execution outcomes,
   # gateway authentication and browser login MUST use their production actions.
   # Synthetic execution evidence MUST NOT be claimed as native guest isolation.
+  # Linux editor suspension fixtures MUST explicitly qualify their exact synthetic
+  # image ID; cold artifact availability MUST NOT imply checkpoint qualification.
   @spec new(atom(), platform()) :: t()
   def new(profile \\ :standard, platform \\ :linux) do
     manifest =
@@ -71,6 +73,10 @@ defmodule Marshall.EditorFixture do
     {:ok, image} = Images.register(manifest, "editor-test-image")
     machine = "sha256:" <> Base.encode16(:crypto.strong_rand_bytes(32), case: :lower)
     source = ComputeFixtures.host_fixture(%{machine_id: machine})
+    checkpoint_image_ids =
+      if platform == :linux,
+        do: Enum.uniq([image.id | source.report.inventory["checkpoint_image_ids"]]),
+        else: source.report.inventory["checkpoint_image_ids"]
 
     report = %{
       source.report
@@ -79,6 +85,7 @@ defmodule Marshall.EditorFixture do
         inventory:
           source.report.inventory
           |> Map.put("images", [ComputeFixtures.image_id(), image.id])
+          |> Map.put("checkpoint_image_ids", checkpoint_image_ids)
           |> Map.put("terminal_protocol", 2)
     }
 

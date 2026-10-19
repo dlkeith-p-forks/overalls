@@ -82,6 +82,7 @@ let
       audi_ingress = cfg.ingress.enable;
       private_services = cfg.privateServices.enable;
       guest_trust_roots = map toString guestTrustRootFiles;
+      checkpoint_image_ids = cfg.checkpointImageIds;
       brady = if hasBrady then {
         uid = 0; # Replaced with the deployed dedicated UID before publication.
         http_ports = config.services.brady.httpPorts;
@@ -212,6 +213,11 @@ in
       type = types.ints.positive;
       default = 98304;
       description = "Aggregate guest and VMM memory budget in MiB.";
+    };
+    checkpointImageIds = mkOption {
+      type = types.listOf (types.strMatching "sha256:[0-9a-f]{64}");
+      default = [];
+      description = "Exact immutable image IDs with separately reviewed native memory-continuation qualification. Empty refuses pause/resume while retaining ordinary boot admission.";
     };
     images = mkOption {
       type = types.listOf (types.submodule {

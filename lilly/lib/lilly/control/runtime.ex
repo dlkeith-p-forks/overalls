@@ -529,6 +529,13 @@ defmodule Lilly.Control.Runtime do
                 )
                 |> Map.put("terminal_protocol", if(state.terminal_ready, do: 2, else: 0))
                 |> Map.put(
+                  "checkpoint_image_ids",
+                  if(state.config.execution,
+                    do: state.config.execution.checkpoint_image_ids,
+                    else: []
+                  )
+                )
+                |> Map.put(
                   "checkpoint_compatibility",
                   case Lilly.VM.Checkpoint.compatibility(
                          if(state.config.execution, do: state.config.execution.firecracker)

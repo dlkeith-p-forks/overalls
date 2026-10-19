@@ -191,6 +191,7 @@ defmodule Lilly.Control.Config do
              inception_proof_file: Map.get(value, "inception_proof_file"),
              inception_probe_id: Map.get(value, "inception_probe_id"),
              firecracker_logging: Map.get(value, "firecracker_logging", false),
+             checkpoint_image_ids: Map.get(value, "checkpoint_image_ids", []),
              guest_trust_roots: roots
            }) do
       {:ok, machine, driver}

@@ -236,8 +236,95 @@ defmodule OverallsProtocol.NativeAdmissionTest do
     assert NativeAdmission.reviewed_manifest() == NativeAdmission.reviewed_manifest(:freebsd)
   end
 
+  # @cc [owner:ghuntley,label:verification;recovery] checkpoint-exact-image-qualification
+  # Changing any artifact digest MUST lose qualification while cold admission
+  # remains independent; both validated manifest and portable bundle bind one ID.
+  property "checkpoint qualification follows exact content identity", database: :disabled do
+    digest = draw("qualified_digest", Hegel.Gen.binary(32, 32))
+    digest = Base.encode16(digest, case: :lower)
+    artifact = %{"bytes" => 1024, "sha256" => digest}
+
+    manifest = %{
+      "version" => 4,
+      "workspace_source_version" => nil,
+      "architecture" => "x86_64",
+      "boot_args" => "console=ttyS0",
+      "minimum_memory_bytes" => 536_870_912,
+      "minimum_disk_bytes" => 2_147_483_648,
+      "kernel" => artifact,
+      "initrd" => artifact,
+      "rootfs" => artifact
+    }
+
+    assert {:ok, image} = ImageManifest.validate(manifest)
+    assert NativeAdmission.admitted?(image)
+    refute NativeAdmission.checkpoint_admitted?(image)
+    assert NativeAdmission.checkpoint_admitted?(image, [image.id])
+
+    assert {:ok, bundle} =
+             WorkloadBundle.validate(%{
+               "version" => 1,
+               "image_id" => image.id,
+               "architecture" => "x86_64",
+               "boot_args" => image.boot_args,
+               "kernel_bytes" => 1024,
+               "initrd_bytes" => 1024
+             })
+
+    assert NativeAdmission.checkpoint_admitted?(bundle, [image.id])
+
+    for artifact_name <- ["kernel", "initrd", "rootfs"] do
+      changed =
+        put_in(
+          manifest,
+          [artifact_name, "sha256"],
+          if(digest == String.duplicate("f", 64),
+            do: String.duplicate("e", 64),
+            else: String.duplicate("f", 64)
+          )
+        )
+
+      assert {:ok, changed_image} = ImageManifest.validate(changed)
+      assert NativeAdmission.admitted?(changed_image)
+      refute NativeAdmission.checkpoint_admitted?(changed_image, [image.id])
+
+      refute NativeAdmission.checkpoint_admitted?(%{bundle | image_id: changed_image.id}, [
+               image.id
+             ])
+    end
+
+    for invalid <- [
+          nil,
+          %{},
+          %{guest_agents: :linux, boot_kind: :kernel},
+          %{bundle | image_id: "invalid"},
+          %{bundle | guest_agents: :windows_v1},
+          %{bundle | boot_kind: :firmware}
+        ] do
+      refute NativeAdmission.checkpoint_admitted?(invalid, [image.id])
+    end
+  end
+
+  property "qualification supersets preserve exact per-image admission", database: :disabled do
+    digest = draw("qualified image", Hegel.Gen.binary(32, 32)) |> Base.encode16(case: :lower)
+    image_id = "sha256:" <> digest
+
+    other_id =
+      "sha256:" <>
+        if(digest == String.duplicate("f", 64),
+          do: String.duplicate("e", 64),
+          else: String.duplicate("f", 64)
+        )
+
+    assert NativeAdmission.checkpoint_qualified?(image_id, [image_id])
+    assert NativeAdmission.checkpoint_qualified?(image_id, [other_id, image_id])
+    refute NativeAdmission.checkpoint_qualified?(image_id, [other_id])
+    refute NativeAdmission.checkpoint_qualified?(image_id, nil)
+    refute NativeAdmission.checkpoint_qualified?(image_id, [image_id, image_id])
+  end
+
   test "cold admission does not grant memory continuation to unqualified native images" do
-    assert NativeAdmission.checkpoint_admitted?(%{guest_agents: :linux, boot_kind: :kernel})
+    refute NativeAdmission.checkpoint_admitted?(%{guest_agents: :linux, boot_kind: :kernel})
 
     for os <- [:freebsd, :illumos] do
       assert {:ok, image} = ImageManifest.validate(NativeAdmission.reviewed_manifest(os))

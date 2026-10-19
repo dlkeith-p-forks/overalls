@@ -84,13 +84,28 @@ defmodule Lilly.VM.Observation do
   @spec check_state(Config.t(), Pool.t(), Spec.t(), [API.state()]) ::
           {:ok, vmm()} | {:error, check()}
   def check_state(config, pool, spec, states) do
+    check_process(config, pool, spec, states, :configured)
+  end
+
+  # @cc [owner:ghuntley,label:isolation;recovery] unconfigured-restore-is-preboot-only
+  # Firecracker 1.16.1 installs its main-thread seccomp filter at the end of
+  # build_microvm_from_snapshot (vmm/src/builder.rs), after snapshot/load.
+  # Before that request, this check MUST require an unconfigured API and the
+  # exact unfiltered main thread, retaining every other confinement check.
+  # This proof MUST NOT establish a paused or running guest. Those require
+  # check_state/4 and its configured-thread seccomp filter after snapshot load.
+  @spec preboot(Config.t(), Pool.t(), Spec.t()) :: {:ok, vmm()} | {:error, check()}
+  def preboot(config, pool, spec),
+    do: check_process(config, pool, spec, [:unconfigured], :preboot)
+
+  defp check_process(config, pool, spec, states, phase) do
     with {:unit_not_running, {:ok, :running}} <- {:unit_not_running, Unit.status(spec)},
          {:cgroup_unreadable, {:ok, procs}} <-
            {:cgroup_unreadable, File.read(Path.join(Unit.cgroup(spec), "cgroup.procs"))},
          pids = String.split(procs),
          {:vmm_process_ambiguous, true} <- {:vmm_process_ambiguous, length(pids) in 1..64},
          {:vmm_process_ambiguous, [pid]} <-
-           {:vmm_process_ambiguous, Enum.filter(pids, &vmm?(&1, spec))},
+           {:vmm_process_ambiguous, Enum.filter(pids, &vmm?(&1, spec, phase))},
          {:identity_mismatch, true} <-
            {:identity_mismatch,
             same_files?([
@@ -113,9 +128,20 @@ defmodule Lilly.VM.Observation do
     end
   end
 
-  defp vmm?(pid, spec) do
+  defp vmm?(pid, spec, phase) do
     with true <- Regex.match?(~r/\A[1-9][0-9]{0,9}\z/, pid),
          {:ok, body} <- File.read("/proc/#{pid}/status") do
+      process_status?(body, pid, spec.network.uid, phase)
+    else
+      _ -> false
+    end
+  end
+
+  @doc false
+  @spec process_status?(binary(), String.t(), pos_integer(), :preboot | :configured) :: boolean()
+  def process_status?(body, pid, uid, phase)
+      when phase in [:preboot, :configured] and byte_size(body) <= 65_536 do
+    if String.valid?(body) do
       fields =
         body
         |> String.split("\n", trim: true)
@@ -125,14 +151,19 @@ defmodule Lilly.VM.Observation do
         end)
 
       fields["Name"] == ["firecracker"] and
-        fields["Uid"] == List.duplicate(Integer.to_string(spec.network.uid), 4) and
-        fields["Gid"] == List.duplicate(Integer.to_string(spec.network.uid), 4) and
+        fields["Uid"] == List.duplicate(Integer.to_string(uid), 4) and
+        fields["Gid"] == List.duplicate(Integer.to_string(uid), 4) and
         fields["CapEff"] == ["0000000000000000"] and fields["NoNewPrivs"] == ["1"] and
-        fields["Seccomp"] == ["2"] and fields["NSpid"] == [pid, "1"]
+        fields["Seccomp"] == [if(phase == :preboot, do: "0", else: "2")] and
+        fields["NSpid"] == [pid, "1"]
     else
-      _ -> false
+      false
     end
+  rescue
+    _ -> false
   end
+
+  def process_status?(_, _, _, _), do: false
 
   defp limits?(spec) do
     with {:ok, cpu} <- File.read(Path.join(Unit.cgroup(spec), "cpu.max")),

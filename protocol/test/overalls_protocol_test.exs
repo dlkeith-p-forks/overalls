@@ -60,6 +60,7 @@ defmodule OverallsProtocolTest do
         "execution_ready" => false,
         "terminal_protocol" => 0,
         "inception_image_id" => nil,
+        "checkpoint_image_ids" => [],
         "checkpoint_compatibility" => nil
       },
       pools: [
@@ -103,6 +104,7 @@ defmodule OverallsProtocolTest do
         "execution_ready" => false,
         "terminal_protocol" => 0,
         "inception_image_id" => nil,
+        "checkpoint_image_ids" => [],
         "checkpoint_compatibility" => nil
       },
       pools: [pool]
@@ -142,6 +144,7 @@ defmodule OverallsProtocolTest do
         "execution_ready" => false,
         "terminal_protocol" => 0,
         "inception_image_id" => nil,
+        "checkpoint_image_ids" => [],
         "checkpoint_compatibility" => nil
       },
       pools: [pool]
@@ -216,6 +219,7 @@ defmodule OverallsProtocolTest do
         "execution_ready" => false,
         "terminal_protocol" => 0,
         "inception_image_id" => nil,
+        "checkpoint_image_ids" => [],
         "checkpoint_compatibility" => nil
       },
       "pools" => []

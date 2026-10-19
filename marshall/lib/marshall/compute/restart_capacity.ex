@@ -67,7 +67,12 @@ defmodule Marshall.Compute.RestartCapacity do
          true <- Marshall.Compute.Profiles.host_ready?(vm, host.inventory),
          true <-
            vm.current_checkpoint == nil or
-             host.inventory["checkpoint_compatibility"] == vm.current_checkpoint["compatibility"],
+             (OverallsProtocol.NativeAdmission.checkpoint_qualified?(
+                vm.image_id,
+                host.inventory["checkpoint_image_ids"]
+              ) and
+                host.inventory["checkpoint_compatibility"] ==
+                  vm.current_checkpoint["compatibility"]),
          [pool] <- Ledger.read!(StoragePool, id: reservation.pool_id) do
       if Marshall.Compute.HostLiveness.capacity_fresh?(host.reported_at, now) and
            Marshall.Compute.HostLiveness.capacity_fresh?(pool.reported_at, now) do

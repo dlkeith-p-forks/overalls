@@ -259,10 +259,12 @@ defmodule OverallsProtocol do
            "execution_ready" => ready,
            "terminal_protocol" => terminal,
            "inception_image_id" => inception,
+           "checkpoint_image_ids" => checkpoint_image_ids,
            "checkpoint_compatibility" => compatibility
          } = inventory
        ) do
-    map_size(inventory) == 6 and
+    map_size(inventory) == 7 and
+      OverallsProtocol.NativeAdmission.checkpoint_image_ids?(checkpoint_image_ids) and
       (is_nil(compatibility) or OverallsProtocol.ImageManifest.id?(compatibility)) and
       OverallsProtocol.ImageManifest.ids?(images) and
       is_boolean(ready) and terminal in [0, 2] and

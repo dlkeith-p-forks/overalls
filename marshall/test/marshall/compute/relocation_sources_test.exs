@@ -259,6 +259,19 @@ defmodule Marshall.Compute.RelocationSourcesTest do
     for host <- [c.source.host, c.destination.host],
         do: Ledger.update!(host, :report, %{reported_at: Ledger.now()})
 
+    [destination] = Ledger.read!(Host, id: c.destination.host.id)
+
+    Ledger.update!(destination, :report, %{
+      inventory: Map.put(destination.inventory, "checkpoint_image_ids", [])
+    })
+
+    assert {:ok, :waiting} = Marshall.Compute.RelocationCoordinator.advance(c.relocation.id)
+
+    assert [%{source_stop_operation_id: nil}] =
+             Ledger.read!(Marshall.Compute.Relocation, id: c.relocation.id)
+
+    Ledger.update!(destination, :report, %{inventory: destination.inventory})
+
     assert {:ok, :stopping} = Marshall.Compute.RelocationCoordinator.advance(c.relocation.id)
     assert {:ok, :stopping} = Marshall.Compute.RelocationCoordinator.advance(c.relocation.id)
     [relocation] = Ledger.read!(Marshall.Compute.Relocation, id: c.relocation.id)
@@ -1994,6 +2007,28 @@ defmodule Marshall.Compute.RelocationSourcesTest do
       assert [current] = Ledger.read!(VirtualMachine, id: vm.id)
       assert current.current_placement_id == c.vm.current_placement_id
       assert current.execution_epoch == c.vm.execution_epoch
+      [destination] = Ledger.read!(Host, id: c.destination.host.id)
+
+      Ledger.update!(destination, :report, %{
+        inventory: Map.put(destination.inventory, "checkpoint_image_ids", [])
+      })
+
+      assert {:ok, :stopping} = RelocationCoordinator.advance(relocation.id)
+
+      assert [%{committed_at: nil, activation_operation_id: nil}] =
+               Ledger.read!(Relocation, id: relocation.id)
+
+      assert [unmoved] = Ledger.read!(VirtualMachine, id: vm.id)
+      assert unmoved.current_placement_id == c.vm.current_placement_id
+
+      Ledger.update!(destination, :report, %{
+        inventory:
+          Map.put(destination.inventory, "checkpoint_image_ids", [
+            "sha256:" <> String.duplicate("f", 64),
+            vm.image_id
+          ])
+      })
+
       assert {:ok, :committed} = RelocationCoordinator.advance(relocation.id)
       assert {:ok, :committed} = RelocationCoordinator.advance(relocation.id)
       [committed] = Ledger.read!(Relocation, id: relocation.id)

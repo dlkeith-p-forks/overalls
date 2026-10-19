@@ -244,6 +244,68 @@ defmodule Marshall.Compute.SuspensionTest do
     assert Ledger.read!(Relocation, destination_host_id: destination.host.id) == []
   end
 
+  test "unqualified pause refuses before changing generation or checkpoint reservations", c do
+    [host] = Ledger.read!(Host, id: c.vm.host_id)
+
+    Ledger.update!(host, :report, %{
+      inventory: Map.put(host.inventory, "checkpoint_image_ids", [])
+    })
+
+    assert {:error, error} = lifecycle(c, :pause)
+    assert Exception.message(error) =~ "checkpoint_unavailable"
+    assert current(c.vm).generation == c.vm.generation
+    assert current(c.vm).desired_state == :running
+    assert hold(c.vm).checkpoint_bytes == 0
+  end
+
+  test "local resume waits while exact image qualification is withdrawn", c do
+    pause!(c)
+    [host] = Ledger.read!(Host, id: c.vm.host_id)
+
+    Ledger.update!(host, :report, %{
+      inventory: Map.put(host.inventory, "checkpoint_image_ids", [])
+    })
+
+    {:ok, wake} = lifecycle(c, :resume)
+    assert {:ok, :waiting} = Wake.advance(wake.id)
+    assert Ledger.read!(Operation, vm_id: c.vm.id, kind: :resume) == []
+    assert current(c.vm).observed_state == :paused
+    Ledger.update!(host, :report, %{inventory: host.inventory})
+    assert {:ok, :waiting} = Wake.advance(wake.id)
+    assert [%{kind: :resume}] = Ledger.read!(Operation, vm_id: c.vm.id, kind: :resume)
+  end
+
+  test "paused demand waits for an exactly qualified destination", c do
+    pause!(c)
+    fill_source!(c.source)
+    destination = host_fixture()
+    [host] = Ledger.read!(Host, id: destination.host.id)
+
+    Ledger.update!(host, :report, %{
+      inventory: Map.put(host.inventory, "checkpoint_image_ids", [])
+    })
+
+    {:ok, wake} = lifecycle(c, :resume)
+    assert {:ok, :waiting} = Wake.advance(wake.id)
+    assert Ledger.read!(Relocation, vm_id: c.vm.id) == []
+    assert current(c.vm).observed_state == :paused
+
+    assert [%{status: :waiting_capacity, finished_at: nil}] =
+             Ledger.read!(WakeRequest, id: wake.id)
+
+    Ledger.update!(host, :report, %{
+      inventory:
+        Map.put(host.inventory, "checkpoint_image_ids", [
+          "sha256:" <> String.duplicate("f", 64),
+          c.vm.image_id
+        ])
+    })
+
+    assert {:ok, :waiting} = Wake.advance(wake.id)
+    assert [%{destination_host_id: id}] = Ledger.read!(Relocation, vm_id: c.vm.id)
+    assert id == host.id
+  end
+
   test "local shortage automatically reserves a compatible memory relocation", c do
     pause!(c)
     fill_source!(c.source)

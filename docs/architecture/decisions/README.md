@@ -936,3 +936,12 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0201](0201-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |
 | [ADR-0207](0207-bundled-multilingual-font-fallback.md) | accepted | partial | Bundled multilingual font fallback |
 | [ADR-0208](0208-scim-managed-identity-and-teams.md) | accepted | partial | SCIM-managed identity and teams |
+| [ADR-0220](0220-mila-client-over-porsche-ssh.md) | accepted | partial | Mila, the Overalls client over Porsche SSH |
+| [ADR-0221](0221-canonical-app-routes.md) | accepted | partial | Canonical `overalls://` app routes |
+| [ADR-0222](0222-porsche-client-commands.md) | accepted | partial | Porsche thread, web, device and watch commands for clients |
+| [ADR-0223](0223-porsche-terminal-attach.md) | accepted | partial | Porsche terminal attach through a Marshall gateway stream |
+| [ADR-0224](0224-susan-push-relay.md) | accepted | partial | Susan, the push relay at notifications.overalls.dev |
+| [ADR-0225](0225-marshall-notifications-domain.md) | accepted | partial | Marshall Notifications domain |
+| [ADR-0226](0226-monospace-web-on-flutter.md) | accepted | partial | The Monospace Web on Flutter |
+| [ADR-0227](0227-flutter-toolchain-and-dartssh2-overlay.md) | accepted | partial | Flutter toolchain, patched dartssh2 overlay and Mila checks in Nix |
+| [ADR-0228](0228-strict-host-certificates-in-mila.md) | accepted | partial | Strict SSH host-certificate verification in Mila |
