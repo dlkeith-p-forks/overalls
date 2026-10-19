@@ -28,7 +28,7 @@ hw.lcd.density = 160
 CONFIG
     fi
     exec ${sdkRoot}/emulator/emulator -avd overalls-test \
-      -no-accel -gpu swiftshader_indirect -no-window -noaudio \
+      -no-accel -gpu swiftshader_indirect -noaudio \
       -no-boot-anim -no-snapshot -wipe-data -skip-adb-auth \
       -ports 5554,5555
   '';
