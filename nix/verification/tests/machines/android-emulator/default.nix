@@ -130,7 +130,7 @@ pkgs.testers.runNixOSTest {
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell getprop ro.kernel.qemu | grep -Fx 1")
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 install -r ${fixtureApk} | grep -F Success")
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell am start -n com.overalls.androidfixture/.MainActivity | grep -F cmp=com.overalls.androidfixture/.MainActivity")
-    android.wait_until_succeeds("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell cat /data/data/com.overalls.androidfixture/files/marker | grep -Fx overalls-android-fixture-v1", timeout=60)
+    android.wait_until_succeeds("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell run-as com.overalls.androidfixture cat files/marker | grep -Fx overalls-android-fixture-v1", timeout=60)
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell settings get global animator_duration_scale")
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 exec-out screencap -p > /tmp/android-screencap.png")
     android.succeed("test $(stat -c %s /tmp/android-screencap.png) -gt 100")
@@ -142,6 +142,6 @@ pkgs.testers.runNixOSTest {
     android.wait_until_succeeds("HOME=/var/lib/android-test adb connect 127.0.0.1:5555 | grep -E 'connected|already connected'", timeout=60)
     android.wait_until_succeeds("HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 wait-for-device", timeout=600)
     android.wait_until_succeeds('test "$(HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop sys.boot_completed | tr -d \"\\r\")" = 1', timeout=1200)
-    android.wait_until_succeeds("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell cat /data/data/com.overalls.androidfixture/files/marker | grep -Fx overalls-android-fixture-v1", timeout=120)
+    android.wait_until_succeeds("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell run-as com.overalls.androidfixture cat files/marker | grep -Fx overalls-android-fixture-v1", timeout=120)
   '';
 }

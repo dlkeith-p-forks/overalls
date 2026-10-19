@@ -2,7 +2,7 @@
     package="com.overalls.androidfixture">
     <uses-sdk android:minSdkVersion="34" android:targetSdkVersion="36" />
     <application android:theme="@android:style/Theme.Material.Light.NoActionBar"
-        android:label="Overalls Android fixture">
+        android:label="Overalls Android fixture" android:debuggable="true">
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
