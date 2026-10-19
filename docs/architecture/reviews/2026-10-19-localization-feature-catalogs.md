@@ -32,8 +32,8 @@ hashes. CSS Unicode ranges select the applicable local face. Layout boxes retain
 the character grid while script text uses native shaping. Colour tokens, themes,
 semantic HTML, resource origin, hooks and terminal renderer boundaries remain
 unchanged. Static font integrity and character coverage are separate from
-packaged browser shaping and legibility; current rendering evidence remains
-pending until its exact script, theme and route scope is recorded.
+packaged browser shaping and legibility. The settings matrix below records its
+exact locale, theme and viewport scope; cross-browser shaping remains unverified.
 
 The incoming trunk Android display client imported noVNC without its required
 Pako files and used a bundle format that could not retain upstream top-level
@@ -76,8 +76,29 @@ including the unchanged 100-case handbook authority property within its existing
 
 Porsche's full `mix precommit` passed: 114 tests in 180.3 seconds, four Covenant
 obligations, native extraction freshness and forced Dialyzer with zero errors or
-skips. Later focused catalog checks cover command-token preservation and exact
-invariant reviews; their result is recorded separately when complete.
+skips. The final focused Porsche run also passed 19 tests, including command-token
+preservation and exact invariant reviews, followed by extraction freshness and
+forced Dialyzer with zero errors or skips.
+
+The final isolated Marshall source passed the pinned-runtime, architecture,
+event-catalog, warning-free compilation, formatting, terminal/workspace assets,
+Monospace, offline localization data, public-document structure and native
+extraction freshness gates. Code-contract coverage and all 19 scanner
+regressions passed. A fresh tagged Covenant run passed all 36 tests in
+3.0 seconds with seed `524458`; static and recorded-result checks then confirmed
+36 of 36 obligations. These bounded checks do not establish the normal full
+suite, native isolation or browser acceptance beyond the receipt below.
+
+Marshall's forced Dialyzer analysis completed in 3 minutes 19.5 seconds with
+nine errors, zero skipped warnings and zero unnecessary skips, exiting two.
+All remaining findings concern the incoming Android display-ticket, socket and
+terminal paths. The existing compile-time Earmark dependency is now explicit in
+the PLT. Its pinned AST specification incorrectly promises a binary; the public
+parser capture keeps the foreign result untrusted until the existing recursive
+node validator accepts it. This removes the localization diagnostics without
+suppression or a cast. All ten localized-Markdown tests passed in 0.1 seconds
+with seed `718373`; formatting and documentation extraction freshness passed.
+No green Marshall type gate or normal precommit result is claimed.
 
 Strict catalog coverage passed for all 28 locales after the final prose and exact
 invariant reviews: no empty non-English entries, fuzzy flags, invalid bindings
@@ -96,6 +117,63 @@ unchanged operator-boot property subsequently passed 100 cases in 91.5 seconds
 aggregate budget for those 100 real BEAM subprocess boots, retaining all cases
 and assertions. A clean integrated precommit run remains required.
 
-Validation is in progress. Historical Bombadil settings evidence remains scoped
-to its original 25 locales and revision; it does not establish current 28-locale
-browser acceptance, all-route presentation, native SSH or linguistic review.
+The next full-suite attempt exposed the default-profile browser history's
+60-second aggregate timeout. Source inspection found that its 100 generated
+cases shared one ExUnit-owned SQL sandbox, accumulating host, account and VM
+fixtures. Repeated catalog reads consequently scanned previous cases' enabled
+hosts. The test now uses the existing per-case sandbox helper and registers
+each exact LiveView PID for cleanup before its SQL owner, with a five-second
+stop deadline. All generated cases, bounded histories and draft/idempotency
+assertions remain. All 100 corrected cases passed in the isolated focused run
+within the unchanged 60-second aggregate budget.
+This enforces ADR-0191's existing case-isolation decision without changing
+production behavior. The handbook Reference already describes per-case SQL and
+process ownership, cleanup ordering and measured aggregate budgets; this test
+fixture correction introduces no new handbook behavior or verification claim.
+
+Current Bombadil settings verification passed against an immutable compiled
+runtime including the final bundled fonts: exit zero, zero violations, all 28
+locales saved and persisted after reload, and all 112 light/dark and 390/1440-pixel
+combinations. Reset restored Japanese browser inference after reload; repeated
+save from a fragment also passed. The private runtime receipt records BEAM,
+JavaScript, CSS and font hashes in the committed
+[safe browser receipt](2026-10-19-localization-browser-evidence.json).
+This establishes the settings journey and
+observed layout, not all-route presentation, cross-browser shaping, native SSH
+or independent linguistic review. CSS-aware font coverage separately passed for
+2,275 visible codepoints across 138,101 PO string units and all 28 native locale
+labels. All eight complete font assets reproduced exactly from pinned sources.
+
+The integrated full suite exposed a missing authorized machine-view projection
+for persisted Reflection labels and comment. The repair includes those fields
+for browser settings while explicitly excluding them from SSH machine responses;
+existing Cedar read authority and the protocol shape are preserved (ADR-0203).
+A settings regression covers empty defaults and persisted values. The preexisting
+Reflection metadata save action is absent from the authorization action map and
+remains a separate ADR-0203 implementation gap; this rendering repair does not
+invent mutation authority. The isolated focused run passed 76 of 77 tests in
+681.9 seconds with seed `562021`,
+covering machine pins, settings, SSH commands, firmware admission and all 100
+default-profile histories. Only the earlier MFA source reached its finite
+600-second timeout; that run used the environment's default schedulers and
+64 maximum ExUnit cases. The final MFA cleanup source was retried with
+the four-scheduler configuration used by the main run. That final retry passed
+5 of 7 tests in 600.5 seconds with seed `693066`: the updated MFA property again
+reached its finite 600-second timeout, and the imported suspension state-machine
+property failed `idle_expire` after the generated history
+`[idle_expire, tool_call, pin, idle_expire]` retained a running checkpoint.
+The suspension test and its source are unchanged by localization. These results
+are separate remaining verification gaps; a green normal precommit is not
+claimed. The [MFA review](2026-10-19-mfa-property-isolation.md) records its exact
+fixture, budget and evidence scope.
+
+The approximately 49-minute broad Marshall run was interrupted after an existing
+terminal property stopped the application and caused a repository-unavailable
+cascade (`/tmp/localization-marshall-full-test-final.log`, failures 23 onward).
+`RemoteTest` kills the application-global `PeerBudget` in each of 100 generated
+cases; that permanent child belongs directly to `Marshall.Supervisor`, whose
+default restart allowance is three restarts in five seconds. Repeated fast kills
+exhaust that allowance and stop the application, including `Marshall.Repo`.
+The missing-successor assertion precedes the repository setup failures. This run
+does not establish a passing full suite; the unrelated destructive fixture and
+production supervisor policy were left unchanged.

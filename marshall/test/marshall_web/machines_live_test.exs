@@ -12,6 +12,31 @@ defmodule MarshallWeb.MachinesLiveTest do
     %{owner: owner, fixture: fixture}
   end
 
+  # @cc [owner:ghuntley,label:verification;product] settings-reflection-metadata-projection
+  # Settings MUST render the persisted labels and comment from the authorized
+  # machine projection, including empty defaults on a newly created machine.
+  test "settings renders empty and persisted Reflection metadata", %{conn: conn, owner: owner} do
+    {:ok, vm} = Compute.provision(request(), actor: owner)
+    conn = signed_in(conn, owner)
+    {:ok, view, _} = live(conn, ~p"/machines/#{vm.id}/settings")
+    assert has_element?(view, "#reflection-metadata input[name='metadata[labels]'][value='']")
+    assert has_element?(view, "#reflection-metadata textarea[name='metadata[comment]']")
+
+    Ash.Seed.update!(vm, %{labels: ["production", "project-name"], comment: "Agent workspace"})
+    send(view.pid, :refresh)
+
+    assert has_element?(
+             view,
+             "#reflection-metadata input[name='metadata[labels]'][value='production, project-name']"
+           )
+
+    assert has_element?(
+             view,
+             "#reflection-metadata textarea[name='metadata[comment]']",
+             "Agent workspace"
+           )
+  end
+
   # @cc [owner:ghuntley,label:verification;recovery] suspended-machine-controls
   # Paused machines MUST expose Resume and terminal connection, never Start;
   # transitional labels MUST retain their text and pending severity.

@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "tool": "Bombadil 0.7.7",
+  "exit_code": 0,
+  "authenticated_states": 1113,
+  "locales_observed": 28,
+  "locales_persisted_after_reload": 28,
+  "theme_viewport_combinations": 112,
+  "browser_reset_verified": true,
+  "repeated_save_from_fragment_verified": true,
+  "violations": 0,
+  "scope": "synthetic fixture presentation and locale persistence; no native guest execution claims",
+  "runtime_receipt": {
+    "bundled_javascript_sha256": "7e78f9468191de8088bd43316444803c1f73327a9f63d4126277217cf2bab4e6",
+    "bundled_stylesheet_sha256": "cbfffcbc624f893c9fd6fd3deba446c03f438892ceec6d18782f467e9c89aa6a",
+    "fixture_sha256": "0d9e67a2f2d765a3a5f2a1401bda35f20a1eb8be9d8fe0106203f517145cab1b",
+    "fonts_sha256": "710a1bc51438af267461acd3d88989fa311ea78a9bb886539f7452ca1bca29fe",
+    "marshall_ebin_sha256": "8e868dbbc1d7a5226d82cbf87a166b773a7675c81c8d16e2017be3acfbc9b175"
+  }
+}

@@ -254,9 +254,11 @@ with the boot identity seeded into Firecracker's MMDS from a jail-local
 `metadata.json`, records trust as skipped and provisioning as `unattested`
 (running, never `guest_ready`), and refuses terminals, workspace sources and
 the Inception profile for guests without agents. A SYSTEM task in the Windows
-image reads MMDS and applies the delivered `/32`. Marshall derives a
-`guest_agents_status`, hides and refuses Terminal, Agents, editor and SSH for
-such images and measures only the physical service level. Evidence in the
+image reads MMDS and applies the delivered `/32`. Marshall derives finite guest
+capabilities and hides and refuses Terminal, Agents, editor and SSH for agentless
+images. The original agentless admission measured only the physical service level;
+ADR-0198/0204 now require explicit Git identity support for new machines and refuse
+agentless admission before allocation. Historical Lilly launch evidence remains in the
 [Windows Lilly launch review](../reviews/2026-10-14-windows-lilly-launch.md).
 
 [ADR-0169](0169-firmware-booted-windows-guests.md) proposes firmware-booted

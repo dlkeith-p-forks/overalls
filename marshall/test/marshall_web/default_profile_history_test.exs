@@ -13,9 +13,11 @@ defmodule MarshallWeb.DefaultProfileHistoryTest do
   # reloads MUST preserve the last choice and request identity through admission;
   # replaying the same URL MUST create no additional VM, reservation or operation.
   @tag :hegel
+  @tag :hegel_case_sandbox
   test "profile drafts survive refresh and reload before duplicate submission", %{conn: conn} do
     Hegel.check(
       fn ->
+        Marshall.DataCase.isolate_property_case()
         initial = draw("initial", member_of([nil, :oss, :customer, :standard]))
 
         changes =
@@ -39,7 +41,7 @@ defmodule MarshallWeb.DefaultProfileHistoryTest do
 
         values = if initial, do: Map.put(values, "profile", Atom.to_string(initial)), else: values
         url = "/machines/new?" <> Plug.Conn.Query.encode(%{"machine" => values})
-        {:ok, view, _} = live(conn, url)
+        view = draft_view(conn, url)
         expected = expected_profile(initial)
         assert has_element?(view, "#machine_profile option[selected][value='#{expected}']")
 
@@ -51,8 +53,8 @@ defmodule MarshallWeb.DefaultProfileHistoryTest do
               {view, url, expected}
 
             :reload, {view, url, expected} ->
-              GenServer.stop(view.pid)
-              {:ok, reloaded, _} = live(conn, url)
+              stop_draft_view(view.pid)
+              reloaded = draft_view(conn, url)
 
               assert has_element?(
                        reloaded,
@@ -76,7 +78,7 @@ defmodule MarshallWeb.DefaultProfileHistoryTest do
         assert Atom.to_string(profile) == expected
         assert_redirect(view, "/machines/#{id}")
 
-        {:ok, replay, _} = live(conn, url)
+        replay = draft_view(conn, url)
         replay |> form("#provision-form", machine: %{}) |> render_submit()
         assert_redirect(replay, "/machines/#{id}")
         assert [%{id: ^id}] = Ledger.read!(VirtualMachine, owner_id: owner.id)
@@ -85,6 +87,24 @@ defmodule MarshallWeb.DefaultProfileHistoryTest do
       end,
       test_cases: 100
     )
+  end
+
+  # @cc [owner:ghuntley,label:verification] browser-profile-case-view-custody
+  # Every mounted draft LiveView MUST stop before its generated case's SQL owner.
+  # Cleanup MUST target only the captured PID, tolerate only an already stopped
+  # view and retain a finite operation deadline.
+  @spec draft_view(Plug.Conn.t(), String.t()) :: %Phoenix.LiveViewTest.View{}
+  defp draft_view(conn, url) do
+    {:ok, view, _} = live(conn, url)
+    Hegel.on_cleanup(fn -> stop_draft_view(view.pid) end)
+    view
+  end
+
+  @spec stop_draft_view(pid()) :: :ok
+  defp stop_draft_view(pid) do
+    GenServer.stop(pid, :normal, 5_000)
+  catch
+    :exit, {:noproc, _} -> :ok
   end
 
   @spec expected_profile(selection()) :: String.t()

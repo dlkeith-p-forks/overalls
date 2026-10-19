@@ -157,7 +157,7 @@ defmodule Marshall.SSH.Commands do
 
   # @cc [owner:ghuntley,label:protocol] ssh-machine-workspace-status-private
   # ls/show MUST preserve their public machine response fields without exposing
-  # the workspace-only editor_image_status presentation field.
+  # workspace-only presentation fields or Reflection labels and comment.
   defp read(%{command: "ls", options: opts}, actor) do
     page = Compute.list_vms(%{after: opts["after"]}, actor: actor) |> unwrap!()
     Map.update!(page, :items, &Enum.map(&1, fn vm -> machine_wire_view(vm) end))
@@ -745,7 +745,7 @@ defmodule Marshall.SSH.Commands do
   defp resolve!(ref, actor), do: Compute.resolve_vm(%{reference: ref}, actor: actor) |> unwrap!()
 
   # Browser-only projections (editor eligibility, guest capability booleans and
-  # the caller's pin) stay out of the SSH/Porsche wire format.
+  # the caller's pin) and Reflection metadata stay out of the SSH/Porsche wire format.
   @spec machine_wire_view(map()) :: map()
   defp machine_wire_view(vm),
     do:
@@ -754,7 +754,9 @@ defmodule Marshall.SSH.Commands do
         :guest_capabilities,
         :pinned,
         :owner_email,
-        :owner_time_zone
+        :owner_time_zone,
+        :labels,
+        :comment
       ])
 
   defp unwrap!({:ok, value}), do: value

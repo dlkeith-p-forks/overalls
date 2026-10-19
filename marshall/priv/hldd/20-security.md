@@ -1381,8 +1381,13 @@ production activation. The [Customer scenario](#coverage) retains those gaps.
 ## Windows guest boundaries
 
 The firmware-booted Windows image ([ADR-0169](repo:docs/architecture/decisions/0169-firmware-booted-windows-guests.md),
-[ADR-0170](repo:docs/architecture/decisions/0170-lilly-firmware-guest-launch.md)) is a
-launchable guest without agents, and that is the boundary to keep explicit.
+[ADR-0170](repo:docs/architecture/decisions/0170-lilly-firmware-guest-launch.md)) can
+be launched by Lilly without agents. Current Marshall admission separately
+requires explicit Git identity support under
+[ADR-0198](repo:docs/architecture/decisions/0198-git-attribution-and-guest-identity.md)
+and [ADR-0204](repo:docs/architecture/decisions/0204-git-attribution-and-guest-identity.md).
+Agentless manifests cannot advertise it, so new machine creation refuses before
+allocation. The recorded Lilly-only launch predates that admission restriction.
 Identity: the image carries a documented bootstrap Administrator password and
 no account roster; nothing maps it onto GuestAccount identities. The placement
 identity (placement, execution epoch, boot challenge, address, gateway, MAC)
@@ -1394,8 +1399,9 @@ admits exactly the eight-key version-5 manifest with the agent set `none` or
 table ([ADR-0171](repo:docs/architecture/decisions/0171-windows-guest-agents.md)),
 through Marshall's per-capability image facts and Lilly's driver: for `none`
 Marshall refuses terminals, agent turns, the agent executor, web search and SSH
-connection details, refuses the Inception profile and measures only the
-physical service level, and Lilly refuses readiness, terminals, workspace
+connection details and refuses the Inception profile; physical-only measurement
+applies to retained agentless executions rather than new admissions. Lilly
+refuses readiness, terminals, workspace
 sources and Inception and reports the VM running but never `guest_ready`; for
 `windows-v1` the same gates open only for the capabilities the table grants
 (never the editor or Inception), and readiness, trust, terminals and workspace

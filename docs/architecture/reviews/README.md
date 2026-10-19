@@ -1,6 +1,7 @@
 # Architecture reviews
 
 - [Localization feature catalogs (2026-10-19)](2026-10-19-localization-feature-catalogs.md): native per-locale/per-feature catalogs and the source-English handbook boundary under ADR-0201; migration and verification evidence remain separately scoped.
+- [MFA property fixture isolation (2026-10-19)](2026-10-19-mfa-property-isolation.md): fresh SQL ownership per generated history under ADR-0191, preserving exploration and separating historical timing from current execution.
 
 - [Overview newsletter (2026-10-18)](2026-10-18-overview-newsletter.md): ADR-0205's account-wide durable invitation, self-only dismissal and server-side Ghost subscription boundary; test presence is distinguished from external delivery and packaged browser acceptance.
 - [Guest reflection (2026-10-18)](2026-10-18-guest-reflection.md): ADR-0203's secret-free, execution-fenced Peach projection; protocol and credential tests are present while successful HTTP/native guest execution and fleet enablement remain open.

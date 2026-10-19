@@ -15,6 +15,8 @@ defmodule Marshall.Compute.Views do
     :vcpu,
     :memory_bytes,
     :disk_bytes,
+    :labels,
+    :comment,
     :desired_state,
     :observed_state,
     :failure_reason,
@@ -156,6 +158,9 @@ defmodule Marshall.Compute.Views do
     %{items: items}
   end
 
+  # @cc [owner:ghuntley,label:product] views-reflection-metadata
+  # Authorized machine views MUST retain persisted Reflection labels and comment,
+  # including their empty defaults, so settings renders the stored values.
   @spec view(VirtualMachine.t(), map()) :: map()
   defp view(vm, actor) do
     image = List.first(Ledger.read!(Image, id: vm.image_id))

@@ -128,6 +128,12 @@ no fleet catalog entry and no merge until the phase is complete.
    the binary `guest_agents_status` is replaced by per-capability booleans
    (`Image.guest_capabilities/1`), and each surface keys on its own
    capability; the refusals described here are the `none` row of that table.*
+   *Later admission restriction: [ADR-0198](0198-git-attribution-and-guest-identity.md)
+   and [ADR-0204](0204-git-attribution-and-guest-identity.md) require explicit Git
+   identity support for every new machine. Agentless manifests cannot advertise
+   that support, so current Marshall refuses their admission before allocation;
+   the physical-only path remains relevant to retained executions and Lilly-only
+   fixtures, not new agentless machines.*
 7. **Rollout ordering.** Protocol, Lilly and Marshall land together with no
    Windows image staged; every host converges; only then may an operator stage
    the image in `services.lilly.images` and register it. An old Lilly fails
@@ -181,11 +187,17 @@ no fleet catalog entry and no merge until the phase is complete.
   `lilly/test/vm/provisioning_test.exs`).
 - A firmware image loads with exactly `firmware`, `disk.raw` and the manifest
   (`lilly/test/host/image_test.exs`).
-- Marshall refuses Inception for an agentless image, admits only the physical
-  service level, hides the guest controls and reports `guest_agents_status`
-  (`marshall/test/marshall/compute/image_admission_test.exs`,
-  `image_guest_agents_capability_test.exs`,
-  `marshall/test/marshall_web/editor_workspace_test.exs`).
+- The original agentless Marshall admission measured only the physical service
+  level; the [2026-10-14 review](../reviews/2026-10-14-windows-lilly-launch.md)
+  retains that historical scope. Under ADR-0198/0204, the current
+  [admission test](../../../marshall/test/marshall/compute/image_admission_test.exs)
+  instead requires agentless Git capability refusal with no allocation, and
+  physical plus readiness measurements for a Git-capable `windows-v1` image.
+  The [2026-10-19 focused execution](../reviews/2026-10-19-localization-feature-catalogs.md)
+  passed this admission suite; its BEAM fixture does not establish current native
+  firmware launch acceptance. Capability and hidden-control tests remain in
+  `image_guest_agents_capability_test.exs` and
+  `marshall/test/marshall_web/editor_workspace_test.exs`.
 - The image carries the bootstrap task and an eight-key manifest
   (`nix/verification/tests/evaluation/windows-guest.nix`).
 - The Lilly-mode machine test places the image through the real driver on
