@@ -424,11 +424,40 @@ defmodule ZFSGuestFixture do
           case Readiness.wait(
                  Path.join(Jail.root(pool, spec), "v.sock"),
                  Boot.expectation(boot),
-                 600_000
+                 180_000
                ) do
             {:ok, _receipt} -> :ok
-            error -> raise "Android guest readiness failed: #{inspect(error)}"
+            error ->
+              # Preserve bounded guest-side evidence when the emulator does not
+              # publish readiness.  This is intentionally limited to service
+              # state and process metadata; it never includes ADB keys or
+              # terminal/display bytes.
+              _ =
+                diagnostic_console(
+                  config,
+                  spec,
+                  "systemctl --no-pager --full status overalls-android-emulator.service overalls-android-display.service overalls-android-display-vsock.service || true; " <>
+                    "tail -n 80 /run/overalls-android/xvfb.log 2>/dev/null || true; " <>
+                    "pgrep -af '/emulator/emulator' || true"
+                )
+
+              boot_log = Unit.boot_log(config, spec)
+
+              case File.read(boot_log) do
+                {:ok, bytes} ->
+                  # Firecracker's bounded serial stream contains only kernel and
+                  # systemd boot diagnostics by contract. Keep the tail small so
+                  # a failed test cannot turn this into an unbounded log sink.
+                  IO.puts("android-boot-log-tail:\n" <> binary_part(bytes, max(byte_size(bytes) - 4096, 0), min(byte_size(bytes), 4096)))
+
+                {:error, _reason} ->
+                  :ok
+              end
+
+              raise "Android guest readiness failed: #{inspect(error)}"
           end
+
+        :pass = wait_android_ready(config, spec, 60)
 
         :pass =
           diagnostic_console(
@@ -683,6 +712,27 @@ defmodule ZFSGuestFixture do
       _ -> :unavailable
     end
   end
+
+  @spec wait_android_ready(Config.t(), Spec.t(), pos_integer()) :: :pass | :fail
+  defp wait_android_ready(config, spec, attempts) when attempts > 0 do
+    result =
+      diagnostic_console(
+        config,
+        spec,
+        "systemctl is-active --quiet overalls-android-emulator.service && " <>
+          "adb -s emulator-5554 shell getprop sys.boot_completed 2>/dev/null | " <>
+          "tr -d '\\r' | grep -qx 1"
+      )
+
+    case result do
+      :pass -> :pass
+      _ ->
+        Process.sleep(1_000)
+        wait_android_ready(config, spec, attempts - 1)
+    end
+  end
+
+  defp wait_android_ready(_config, _spec, 0), do: :fail
 
   defp diagnostic_result(socket, marker, until, tail) do
     if System.monotonic_time(:millisecond) >= until do

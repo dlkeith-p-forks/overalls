@@ -92,16 +92,6 @@ CONFIG
           -no-boot-anim -no-snapshot -auth /run/overalls-android/adb_keys \
           -ports 5554,5555
       ''}";
-      ExecStartPost = "${pkgs.writeShellScript "overalls-android-ready" ''
-        set -eu
-        for _ in $(seq 1 600); do
-          if ${sdkRoot}/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed 2>/dev/null | tr -d '\r' | grep -qx 1; then
-            exit 0
-          fi
-          sleep 1
-        done
-        exit 1
-      ''}";
     };
   };
 

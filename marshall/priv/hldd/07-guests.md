@@ -1868,8 +1868,11 @@ New identity-bearing admissions require an image manifest advertising `git_ident
 
 `linux-android-v1` is an additive version-4 NixOS Firecracker guest profile with
 the pinned API 34/35/36 SDK closure, ADB and a persistent API 36 x86_64 AVD. Its
-emulator uses TCG software rendering without host KVM; readiness is bounded at
-600 seconds. ADB and display authority are withheld until emulator readiness.
+emulator uses TCG software rendering without host KVM. Lilly guest readiness is
+independent of emulator startup; the Android service starts after the guest
+reaches `multi-user.target`, and the machine acceptance fixture waits up to 60
+seconds for ADB boot completion before asserting display services. ADB and
+display authority are withheld until emulator readiness.
 The emulator service sets its home and Android user state beneath
 `/var/lib/overalls-android`, creates its `.android` directory and gives AVD
 creation the finite `no` answer. The machine fixture checks the actual service

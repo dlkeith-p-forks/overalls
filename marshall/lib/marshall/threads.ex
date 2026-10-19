@@ -46,6 +46,8 @@ defmodule Marshall.Threads do
     resource Marshall.Threads.ReadMarker do
       define :mark_read, action: :mark_read
     end
+
+    resource Marshall.Threads.ScimArchiveProjection
   end
 
   @type user :: Marshall.Accounts.User.t()
