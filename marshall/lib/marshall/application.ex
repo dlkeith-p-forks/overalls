@@ -101,6 +101,7 @@ defmodule Marshall.Application do
         Marshall.Terminal.PeerBudget,
         Marshall.Terminal.Metrics,
         Marshall.Terminal.Relay,
+        Marshall.Android.DisplayRegistry,
         # Terminal openings run off the LiveView process (ADR-0140 phase 7).
         {Task.Supervisor, name: Marshall.Terminal.OpeningTasks},
         # Start a worker by calling: Marshall.Worker.start_link(arg)

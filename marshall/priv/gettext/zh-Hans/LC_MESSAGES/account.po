@@ -56,9 +56,10 @@ msgstr "4. Git 身份"
 msgid "Account"
 msgstr "账户"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
+msgid "Commit attribution"
+msgstr "提交署名"
 msgstr "添加 Overalls 提交署名"
 
 #: lib/marshall_web/live/account_live.ex:742
@@ -166,11 +167,6 @@ msgstr "Git 电子邮件"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git 身份"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git 身份更改适用于新机器。提交署名更改适用于未来的代理请求。"
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -414,11 +410,6 @@ msgstr "进行管理员更改或更改通行密钥前，请验证通行密钥。
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "使用通行密钥验证"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "启用后，代理的新提交将包含 Co-authored-by: Overalls <noreply@overalls.dev>。"
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format
