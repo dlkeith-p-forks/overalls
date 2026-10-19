@@ -49,13 +49,16 @@ defmodule Marshall.Scim.Configuration do
     end
 
     update :rotate_token do
-      accept [:token_digest]
+      accept [:token_digest, :oidc_issuer, :oidc_client_id, :oidc_client_secret]
       require_atomic? false
     end
 
     action :configure, :map do
       argument :enabled, :boolean, allow_nil?: false
       argument :rotate_token, :boolean, allow_nil?: false, default: false
+      argument :oidc_issuer, :string, allow_nil?: true
+      argument :oidc_client_id, :string, allow_nil?: true
+      argument :oidc_client_secret, :string, allow_nil?: true, sensitive?: true
       run Marshall.Scim.ConfigurationActions
     end
   end
