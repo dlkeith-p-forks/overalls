@@ -320,3 +320,29 @@ and the historical Bombadil settings receipt retain distinct scopes; all-route
 and cross-browser shaping, native Porsche/guest journeys and independent
 linguistic correctness remain unestablished. Independent native-speaker review
 is not a release requirement for this task.
+
+The subsequent `1da714ef2` integration refreshes the locked devenv,
+git-hooks, devenv-nixpkgs and Nixpkgs inputs and restores the suspension fleet
+fixture's existing private SSH issuer enrollment. Application `lib/` source is
+unchanged. The completed application results above retain their earlier locked
+build closures; matching pinned Elixir/OTP versions alone would not establish
+those tests against every refreshed dependency. A fresh shell's pinned-toolchain
+check passed with Elixir 1.20.4 and OTP 29.0.6. The validation command used
+`cachix.enable=false` for that invocation to avoid automatic cache publishing;
+source configuration and verification gates were unchanged. This establishes
+the runtime pins, not a fresh full application suite. The fixture's native
+attempt ended before guest launch and adds no continuation acceptance. These
+changes preserve the accepted dependency, runtime and authority decisions.
+
+The refreshed Nixpkgs exposes Node 24.21.0 where the editor requires its existing
+reviewed 24.19.0 pin. The narrow integration repair builds that exact source and
+hash with the supplied pinned Nixpkgs builder and inherited patch stack, retains
+the matching npm/corepack wrapper, and shares the runtime across the editor,
+extension updater and maintenance check. The release identity includes the new
+runtime helper; Windows retains 24.19.0 and its existing archive hashes. Editor,
+updater and Windows runtime evaluation passed. The hash-verified official Node
+source was realized and the inherited patch and post-patch phases passed. This
+does not establish full Node compilation, editor construction, runtime execution
+or browser acceptance. The repair restores the existing package-input contract
+without adding a package source or changing editor authority; documented editor
+defaults remain the same package rather than an evaluation-error sentinel.

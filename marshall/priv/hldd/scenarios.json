@@ -13480,7 +13480,7 @@
           "scope": "Guest HMAC continuation inside separate current outer placement authority; no guest process or multi-host execution."
         }
       ],
-      "gaps": "Full changed-source fleet execution and native image qualification are in progress. Existing socket migration, physical isolation, host power-loss and production deployment are not established by local application properties.",
+      "gaps": "Full changed-source fleet execution and native image qualification are in progress. The 2026-10-19 rerun completed private-service enrollment but exited with status 137 at fleet wildcard-certificate readiness before guest launch; it establishes no pause/resume or relocation pass, and the kill cause is unestablished. Existing socket migration, physical isolation, host power-loss and production deployment are not established by local application properties.",
       "id": "memory-suspension-demand-wake",
       "journey": "A thread machine suspends after four tool-idle hours and resumes its memory on a prompt or authorized SSH, web or editor connection, relocating automatically when its host is full",
       "layers": [
@@ -13493,7 +13493,7 @@
         "recovery"
       ],
       "preferred_gap": "Run the memory-suspension-fleet NixOS check and record exact-source RAM/cgroup/connection evidence; separately qualify each native image before enabling its checkpoint operations.",
-      "scope": "Ash state machines and Hegel histories exercise BEAM admission, timer boundaries, coalescing and execution fences. Native hostd tests cover API-only restore launch and fixed checkpoint stream derivation. The real fleet test definition asserts repeated capture, RAM-only nonce/PID/boot continuity, cgroup absence, running/paused moves and original authorized connections through measured source memory exhaustion; successful changed-source execution is not yet recorded here.",
+      "scope": "Ash state machines and Hegel histories exercise BEAM admission, timer boundaries, coalescing and execution fences. Native hostd tests cover API-only restore launch and fixed checkpoint stream derivation. The fleet fixture now uses ordinary Galileo/Audi private-issuer, runtime-credential and trust enrollment without bypassing guest readiness. Its composed driver passed type and lint checks; the subsequent native attempt stopped before guest launch. The real fleet test definition asserts repeated capture, RAM-only nonce/PID/boot continuity, cgroup absence, running/paused moves and original authorized connections through measured source memory exhaustion; successful changed-source execution is not yet recorded here.",
       "status": "partial"
     },
     {
