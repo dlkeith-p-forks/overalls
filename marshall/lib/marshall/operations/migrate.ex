@@ -71,7 +71,6 @@ defmodule Marshall.Operations.Migrate do
          ) do
       {:ok, _, _} -> :ok
       {:error, error} -> failed(failure_diagnostic(error))
-      _ -> failed(%{exception_class: :unexpected_result, postgres_code: :unknown})
     end
   rescue
     error -> failed(failure_diagnostic(error))
