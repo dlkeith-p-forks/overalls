@@ -37,8 +37,17 @@ defmodule Marshall.Scim.TeamRetirementWorker do
           Lifecycle.delete_for_team(team.id, vm.id, "scim-team:#{team.id}:#{vm.id}")
       end)
 
-      Ledger.archive!(team, :archive)
-      :ok
+      remaining =
+        VirtualMachine
+        |> Ash.Query.filter(team_id == ^team.id and is_nil(archived_at))
+        |> Ash.read!(actor: SystemActor.compute())
+
+      if remaining == [] do
+        Ledger.archive!(team, :archive)
+        :ok
+      else
+        {:snooze, 300}
+      end
     end
   end
 end

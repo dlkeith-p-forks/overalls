@@ -28,11 +28,11 @@ defmodule Marshall.Accounts.ScimLifecycle do
             DateTime.add(DateTime.utc_now(), 7, :day)
           )
 
-        Ash.Changeset.after_action(changeset, fn _changeset, _record ->
+        Ash.Changeset.after_action(changeset, fn _changeset, record ->
           Marshall.Scim.RetirementWorker.new(%{}, unique: [period: 60, keys: [:worker]])
           |> Oban.insert()
 
-          {:ok, _record}
+          {:ok, record}
         end)
 
       true ->
