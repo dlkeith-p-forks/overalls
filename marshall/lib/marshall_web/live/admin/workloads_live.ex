@@ -156,7 +156,7 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                   <code class="muted">{vm.id}</code>
                 </td>
                 <td><code title={vm.host_id}>{short(vm.host_id)}</code></td>
-                <td class="nowrap">{vm.vcpu} vCPU · {gib(vm.memory_bytes)} GiB</td>
+                <td class="nowrap">{dgettext("machines", "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk", value1: vm.vcpu, value2: gib(vm.memory_bytes), value3: "—")}</td>
                 <td class="nowrap">
                   <span class="status-label" data-state={vm.observed_state}>
                     {state_label(vm.observed_state)}
@@ -200,7 +200,7 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                       phx-value-id={vm.id}
                       phx-value-kind="resume"
                     >
-                      Resume
+                      {dgettext("terminal", "Resume machine")}
                     </Layouts.action>
                     <Layouts.action
                       :if={vm.desired_state == :running && vm.observed_state == :running}
@@ -209,7 +209,7 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                       phx-value-id={vm.id}
                       phx-value-kind="pause"
                     >
-                      Pause
+                      {dgettext("terminal", "Pause")}
                     </Layouts.action>
                     <Layouts.action
                       :if={vm.desired_state == :stopped}
