@@ -8,10 +8,15 @@ All colour and rhythm values live in `marshall/assets/css/tokens.css`.
 | `--text-color-alt` | `#666` | `#aaa` | secondary text (`.muted`), placeholders, dashed borders |
 | `--background-color` | `#fff` | `#000` | page, controls, dialogs |
 | `--background-color-alt` | `#eee` | `#111` | hover, code blocks, selection in the terminal |
-| `--font-family` | JetBrains Mono, ui-monospace, monospace | | every element |
+| `--font-family` | JetBrains Mono, Overalls Noto CJK, Overalls Noto Mono, Overalls Noto, Overalls Noto Symbols, ui-monospace, monospace | | every element |
 | `--line-height` | `1.203125rem` (1.2rem rounded to a 1/64 px layout unit: 19.25px) | | the vertical grid unit |
 | `--border-thickness` | `2px` | | every border; focus raises it to 3px |
 | `--font-weight-normal/medium/bold` | 500 / 600 / 800 | | the vendored faces |
+
+JetBrains Mono supplies the Latin `1ch` grid metric. The Noto families group the
+same-origin fallback faces declared in `assets/css/fonts.css`; consult
+`marshall/priv/static/fonts/README.md` for pins, coverage and verification. Native
+script shaping and fullwidth CJK advances do not change the layout-unit policy.
 
 Theme selection: `:root` (light), `:root[data-theme="dark"]` (explicit dark),
 and `@media (prefers-color-scheme: dark) :root:not([data-theme="light"])`

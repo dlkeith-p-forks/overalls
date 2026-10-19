@@ -25,6 +25,12 @@ Use this skill whenever changing a user-facing string, adding a locale, changing
 - Keep locale data bundled and deterministic in production. Unsupported, malformed, oversized, or ambiguous input must fall back safely without raising from request rendering.
 - Derive `lang` and `dir` from the validated locale. Use logical CSS properties and semantic direction-aware layout; test both LTR and RTL with long strings and interpolated user data. Isolate interpolated values where the formatter supports bidi isolation.
 - Use `Marshall.Localization.direction/1` for repeated direction lookup. Its bounded CLDR-derived table avoids full locale matching for every interpolated message; keep caches limited to the validated supported locale set.
+- Check glyph coverage when adding a locale or translated text. Follow ADR-0207:
+  JetBrains Mono remains the primary/grid font and bundled Noto faces supply
+  missing scripts. Read `marshall/priv/static/fonts/README.md` for the pinned
+  assets and check commands. Preserve native shaping and validated HTML language;
+  do not force complex-script graphemes into Latin character cells or rely on a
+  developer's installed fonts to establish coverage.
 
 ## Catalog and implementation workflow
 
@@ -47,6 +53,11 @@ Put a message in the domain owning its rendering call. Equal English wording in 
 
 - Add focused tests for canonicalization, quality-weighted browser negotiation, fallback, persistence/reset, authorization and cross-session isolation, direction, and malformed input.
 - Test every catalog for syntax, coverage, nonempty messages where required, placeholder/plural parity, and compilability. Test representative long and mixed-script strings.
+- Verify bundled font integrity and coverage of catalog text and locale autonyms.
+  Use Bombadil for new browser checks of representative native script shaping,
+  missing glyphs, long strings, both themes, LTR/RTL and mobile/desktop layout.
+  Character coverage alone does not establish browser legibility or shaping;
+  keep visual evidence scoped to the languages and routes actually inspected.
 - Run the relevant Elixir formatter/compiler/test/type and contract checks, plus Marshall's Monospace Web and browser probes for presentation changes. Run architecture/HLDD maintenance checks when behavior, configuration, protocols, operations, or verification evidence changes. Report missing native-language review honestly.
 
 For detailed repository-specific locale lists or Localize API usage, consult the current localization ADR and any focused references added beside this skill; do not copy stale API examples into application code.

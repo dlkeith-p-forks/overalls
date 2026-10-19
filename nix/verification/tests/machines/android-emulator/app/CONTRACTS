@@ -1,0 +1,2 @@
+@cc [owner:ghuntley,label:verification] android-fixture-sdk-contract
+The fixture APK MUST declare minSdk 34 and targetSdk 36 and MUST be compiled against the API 36 platform. It writes one deterministic marker under app-private storage so the machine test can verify persistence after an emulator restart.

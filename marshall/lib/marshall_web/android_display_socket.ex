@@ -22,7 +22,10 @@ defmodule MarshallWeb.AndroidDisplaySocket do
          {:ok, generation} <-
            bounded_integer(conn.query_params["generation"], 1, 9_223_372_036_854_775_807),
          {:ok, mode} <- mode(conn.query_params["mode"]),
-         true <- claim.generation == generation do
+         true <- claim.generation == generation,
+         true <- claim.mode == mode,
+         true <- claim.machine_id == conn.query_params["machine_id"],
+         true <- Marshall.Android.DisplayTickets.current?(claim, actor) do
       WebSockAdapter.upgrade(
         conn,
         Marshall.Android.DisplaySocket,

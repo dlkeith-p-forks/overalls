@@ -8,8 +8,8 @@ defmodule MarshallWeb.TerminalLive do
   alias MarshallWeb.{MachineWorkspace, TerminalOpening}
   import MarshallWeb.TerminalOpening, only: [is_retryable: 1]
 
-  on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
-  on_mount MarshallWeb.MachineWorkspace
+  on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
+  on_mount(MarshallWeb.MachineWorkspace)
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
@@ -78,7 +78,12 @@ defmodule MarshallWeb.TerminalLive do
         {:noreply,
          socket
          |> assign(android_display_notice: dgettext("terminal", "Display relay ticket issued."))
-         |> push_event("android_display_ticket", %{ticket: ticket, mode: mode})}
+         |> push_event("android_display_ticket", %{
+           ticket: ticket,
+           mode: mode,
+           machine_id: socket.assigns.vm.id,
+           generation: socket.assigns.vm.generation
+         })}
 
       {:error, :forbidden} ->
         {:noreply,
@@ -658,6 +663,7 @@ defmodule MarshallWeb.TerminalLive do
             aria-labelledby="android-display-heading"
             phx-hook="AndroidDisplay"
             data-display-websocket-url="/android-display"
+            data-machine-id={@vm.id}
           >
             <h2 id="android-display-heading">{dgettext("terminal", "Android display")}</h2>
             <p>

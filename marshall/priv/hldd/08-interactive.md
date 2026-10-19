@@ -37,6 +37,16 @@ machine identifiers and valid technical examples may remain unchanged only
 with exact catalog reviews. Repeated direction lookup uses a bounded table
 derived from bundled CLDR for validated supported locales.
 
+JetBrains Mono remains the primary Latin and layout-grid font. Locally bundled
+Noto faces cover CJK, Arabic/Urdu, Devanagari, Bengali, Telugu, Tamil, Hausa's
+extended Latin characters and interface symbols, preserving native shaping and
+language-specific glyph selection. CSS selects
+script faces from this origin; no font service is contacted. Pinned sources,
+licences and asset hashes are maintained with the fonts. Catalog and glyph
+coverage checks do not establish browser legibility, joining, clipping or
+overflow; current packaged rendering evidence remains separately scoped under
+[ADR-0207](repo:docs/architecture/decisions/0207-bundled-multilingual-font-fallback.md).
+
 ## Inline privileged browser actions
 
 The accepted ADR-0160 flow keeps a requested administrator mutation on its current
