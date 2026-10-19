@@ -66,6 +66,43 @@ class NativePhaseDiagnosticsTest(unittest.TestCase):
         self.assertEqual(captured.exception.phase, "authority-server-close")
         self.assertEqual(captured.exception.category, "io")
 
+    def test_shutdown_ssh_stages_never_disclose_debug_bytes(self) -> None:
+        output = io.StringIO()
+        with redirect_stdout(output):
+            runner.shutdown_ssh_stage(
+                b"debug1: Connection established.\n"
+                b"Authenticated to private-peer using private-credential\n"
+                b"debug1: Sending command: private-command\nprivate-payload\n"
+            )
+            runner.shutdown_ssh_stage(None)
+        self.assertEqual(
+            output.getvalue(),
+            "native service shutdown ssh_stage=command-sent\n"
+            "native service shutdown ssh_stage=unobserved\n",
+        )
+
+    def test_shutdown_ssh_timeout_keeps_original_bound_and_closed_diagnostics(self) -> None:
+        output = io.StringIO()
+        timeout = subprocess.TimeoutExpired(
+            ["private-command"],
+            20,
+            stderr=b"debug1: Connection established.\nprivate-credential\n",
+        )
+        with (
+            patch.object(runner.subprocess, "run", side_effect=timeout) as invoked,
+            redirect_stdout(output),
+            self.assertRaises(subprocess.TimeoutExpired),
+        ):
+            runner.ssh(
+                Path("/private-fixture"),
+                Path("/private-known-hosts"),
+                "private-command",
+                shutdown_diagnostics=True,
+            )
+        self.assertEqual(invoked.call_args.kwargs["timeout"], 20)
+        self.assertEqual(invoked.call_args.args[0][-1], "private-command")
+        self.assertEqual(output.getvalue(), "native service shutdown ssh_stage=connected\n")
+
     def test_actual_shutdown_flow_distinguishes_send_and_vmm_wait_timeouts(self) -> None:
         with (
             tempfile.TemporaryDirectory() as temporary,

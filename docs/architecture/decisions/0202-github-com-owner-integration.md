@@ -255,6 +255,14 @@ OAuth or fleet acceptance. The review records the exact execution scope, and the
 HLDD owner-integration scenario records the remaining security acceptance gaps.
 Implementation remains partial.
 
+The common-fleet diagnostic also exposed valid integration AAAA queries returning
+NXDOMAIN before any API request. The
+[private DNS repair](../../../audi/lib/audi/private/dns.ex) restores authoritative
+NOERROR/NODATA with the integration SOA, retaining the fixed A answer and all
+name refusals under ADR-0080. It adds no authentication or target authority.
+Focused DNS execution and the composed fleet result retain separate scope in
+the review; a DNS repair alone does not establish the owner integration journey.
+
 Retained native [tool setup](../../../lyra/src/agent/maintenance.rs) also migrates
 historical broad workspace Git trust only after validating a completed immutable
 source, preserving unrelated settings and configuration rollback. With no source
@@ -262,33 +270,40 @@ it preserves existing policy; native upgrade/reboot results remain separate from
 the Linux-host maintenance tests. This implements the exact shared-checkout
 boundary rather than granting trust to every workspace path.
 
-Fresh native candidate constructors now support explicit allocation Git identity
-version1 only with source-v2 and a native payload. Promoted pins remain unchanged.
-The native qualification harness checks
+Native candidate constructors support explicit allocation Git identity version1
+only with source-v2 and a native payload. The qualification harness checks
 effective personal-user Git configuration and actual commit attribution across
 boot epochs. The [review](../reviews/2026-10-18-github-com-integration.md) records
-fresh FreeBSD image `0150b6d1` passing all five exact-artifact scenarios with 26 checks
-and actual-byte structural verification. Fresh OmniOS image `679f5f8b` passed
-direct two-boot services with 26 checks and exact payload verification; its five-scenario
-matrix remains pending at that checkpoint. Neither result performs cache
-publication, registry admission or catalog activation. Older approved disks
-remain incompatible with the allocation identity gate.
+FreeBSD image `0150b6d1` passing all five exact-artifact scenarios with 26 service
+checks, then repeating all five against current VMM `f0d9275b`. Structural
+verification, signed publication, independent empty-store substitution and
+fresh-byte verification passed before its additive source admission and default
+selection. Older approved disks retain their exact identities and remain
+incompatible with the allocation Git identity gate. OmniOS selection remains
+unchanged; the review preserves its separately scoped candidate results and
+failures. Publication and source selection do not establish live deployment,
+retained-tool acceptance or a Marshall-owned native fleet journey.
 
 The same review identified a retained-restart prerequisite: Lilly repeats exact
 admission on retained portable bundles, so selection must not revoke immutable
 history. The [registry](../../../protocol/lib/overalls_protocol/native_admission.ex)
 now keeps explicit reviewed history independently from selected manifests, and
 [retained staging](../../../fleet/staged-guest-images.nix) preserves exact old
-promotion packages for original provisioning. Nine focused protocol tests and
-the Nix native-OS evaluation gate passed. Current selected/admitted identities
-remain unchanged; existing no-snapshot machines retain their capability absence.
+promotion packages for original provisioning. Nine focused Protocol checks
+passed with the additive FreeBSD identity, old/new portable bundles and refusal
+of capability relabelling; selected package/promotion/native-OS Nix targets also
+passed. Existing no-snapshot machines retain their capability absence.
 This implements the existing immutable-qualification and retained identity
-requirements, not an older-format compatibility reader. Candidate admission,
-activation and native checkpoint qualification remain unperformed. A later
-OmniOS matrix passed growth but failed the other four targets; its earlier
-direct services remain separately scoped. The merged VMM has different bytes,
-so neither candidate's earlier qualification establishes current-runtime
-acceptance.
+requirements, not an older-format compatibility reader. Native checkpoint
+qualification remains unperformed. The historical OmniOS matrix passed growth
+but failed the other four targets against VMM `9815649a`; those results and its
+earlier direct services retain that exact scope. Current-runtime qualification
+cannot be inferred from unchanged disk bytes or version strings.
+The unchanged OmniOS candidate later passed current-VMM services, growth,
+crash recovery and daemon recovery; isolation failed during boot 0's bounded SSH
+shutdown request before the VMM wait. Cleanup completed, but no complete
+isolation receipt or new OmniOS publication/admission/selection exists. The
+review preserves this result separately from the historical matrix.
 
 ## Open questions
 

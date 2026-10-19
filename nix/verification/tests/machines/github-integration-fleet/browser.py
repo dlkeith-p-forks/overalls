@@ -3,8 +3,10 @@
 import json
 import re
 import sys
+import time
 import uuid
 from pathlib import Path
+from typing import Literal
 from urllib.parse import urlsplit
 
 from playwright.sync_api import ConsoleMessage, Page, Request, Response, expect, sync_playwright
@@ -13,6 +15,7 @@ ROOT = Path("/var/lib/fleet-default-oss")
 ORIGIN = "https://control.example.test"
 stage = "arguments"
 observations: dict[str, bool | int] = {}
+SharedWriterStep = Literal["shell", "identity", "sudo", "gh_exit", "owner_match"]
 
 
 def observe_console(message: ConsoleMessage) -> None:
@@ -277,7 +280,9 @@ def shared_writer(family: str, expected_username: str) -> None:
     owner's GitHub identity, despite its separate connected GitHub identity.
     Windows MUST run as the member's exact durable guest account, never an
     owner or system shell. Success MUST require a guest-produced marker; raw
-    terminal text stays private.
+    terminal text stays private. Closed per-step markers MUST distinguish shell,
+    durable account, sudo where applicable, CLI exit and owner match within one
+    aggregate 90-second completion bound; echoed input MUST NOT satisfy them.
     """
     global stage
     machines = fields(ROOT / "github-machines.json")
@@ -297,30 +302,62 @@ def shared_writer(family: str, expected_username: str) -> None:
             page.locator("#terminal-pane-holder > div:not(.hidden) .xterm-helper-textarea").focus()
             # Split the marker so echoed input cannot satisfy the assertion.
             suffix = uuid.uuid4().hex
-            marker = "GITHUB_SHARED_" + suffix
-            stage = "shared member managed owner identity"
+            assert re.fullmatch(r"[a-z][a-z0-9_-]{0,31}", expected_username)
+
+            def marker(step: SharedWriterStep) -> str:
+                return "GITHUB_SHARED_" + suffix + "_" + step
+
+            def shell_mark(step: SharedWriterStep) -> str:
+                return "printf '\\nGITHUB_SHARED_%s_" + step + "\\n' '" + suffix + "'"
+
+            def powershell_mark(step: SharedWriterStep) -> str:
+                return "[Console]::WriteLine(('GITHUB_SHARED_' + '" + suffix + "_" + step + "'))"
+
+            steps: tuple[SharedWriterStep, ...]
             if family == "windows":
-                assert re.fullmatch(r"[a-z][a-z0-9_-]{0,31}", expected_username)
+                steps = ("shell", "identity", "gh_exit", "owner_match")
                 command = (
-                    "& { $ErrorActionPreference = 'Stop'; "
+                    "& { $ErrorActionPreference = 'Stop'; " + powershell_mark("shell") + "; "
                     "if ($env:USERNAME -ine '"
                     + expected_username
                     + "') { throw 'guest_identity' }; "
+                    + powershell_mark("identity")
+                    + "; "
                     "$v = & 'C:\\Program Files\\GitHub CLI\\gh.exe' api user --jq .login; "
-                    "if ($LASTEXITCODE -ne 0 -or $v -ne 'owner-1') { throw 'github_identity' }; "
-                    "[Console]::WriteLine(('GITHUB_SHARED_' + '" + suffix + "')) }"
+                    "if ($LASTEXITCODE -ne 0) { throw 'github_exit' }; "
+                    + powershell_mark("gh_exit")
+                    + "; "
+                    "if ($v -ne 'owner-1') { throw 'github_identity' }; "
+                    + powershell_mark("owner_match")
+                    + " }"
                 )
             else:
+                steps = ("shell", "identity", "sudo", "gh_exit", "owner_match")
                 command = (
-                    'test "$(id -un)" != root && sudo -n true && '
-                    'test "$(gh api user --jq .login)" = owner-1 && '
-                    "printf '\\nGITHUB_SHARED_%s\\n' '" + suffix + "'"
+                    shell_mark("shell")
+                    + ' && test "$(id -un)" = '
+                    + expected_username
+                    + " && "
+                    + shell_mark("identity")
+                    + " && sudo -n true && "
+                    + shell_mark("sudo")
+                    + " && v=$(gh api user --jq .login 2>/dev/null) && "
+                    + shell_mark("gh_exit")
+                    + ' && test "$v" = owner-1 && '
+                    + shell_mark("owner_match")
                 )
+            stage = "shared member command send"
             page.keyboard.type(command, delay=2)
             page.keyboard.press("Enter")
-            expect(
-                page.locator("#terminal-pane-holder > div:not(.hidden) .xterm-accessibility-tree")
-            ).to_contain_text(marker, timeout=90000)
+            deadline = time.monotonic() + 90
+            output = page.locator(
+                "#terminal-pane-holder > div:not(.hidden) .xterm-accessibility-tree"
+            )
+            for step in steps:
+                stage = "shared member " + step
+                remaining_ms = max(1, int((deadline - time.monotonic()) * 1000))
+                expect(output).to_contain_text(marker(step), timeout=remaining_ms)
+                observations["shared_" + step] = True
             context.close()
         finally:
             browser.close()

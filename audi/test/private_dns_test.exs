@@ -28,11 +28,28 @@ defmodule Audi.PrivateDNSTest do
 
     assert <<7::16, _::16, 1::16, 1::16, _::binary>> =
              Audi.Private.DNS.answer(question(["otel", "integration", "internal"], 1), nil, :udp)
+
+    # An IPv6 miss must not claim the existing integration name is absent;
+    # a resolver may query AAAA before A and cache name-wide NXDOMAIN.
+    for {type, answers, authorities} <- [{28, 0, 1}, {1, 1, 0}] do
+      query = question(["com-github", "integration", "internal"], type)
+      :ok = :gen_udp.send(udp, {127, 0, 0, 1}, port, query)
+      assert {:ok, {_, ^port, reply}} = :gen_udp.recv(udp, 0, 1000)
+      assert <<7::16, flags::16, 1::16, ^answers::16, ^authorities::16, _::binary>> = reply
+      assert (flags &&& 0x40F) == 0x400
+      :ok = :gen_tcp.send(tcp, query)
+      assert {:ok, ^reply} = :gen_tcp.recv(tcp, 0, 1000)
+    end
   end
 
   test "AAAA is authoritative NODATA; external names and transfers are refused" do
     for {labels, type, code, aa} <- [
           {["llm", "internal"], 28, 0, 0x400},
+          {["com-github", "integration", "internal"], 28, 0, 0x400},
+          {["ssh", "integration", "internal"], 28, 0, 0x400},
+          {["-bad", "integration", "internal"], 28, 3, 0x400},
+          {["a", "b", "integration", "internal"], 28, 3, 0x400},
+          {["com-github", "integration", "example"], 28, 5, 0},
           {["llm", "example"], 1, 5, 0},
           {["internal"], 252, 5, 0}
         ] do
@@ -77,19 +94,29 @@ defmodule Audi.PrivateDNSTest do
     # The wire decoder canonicalizes labels to lowercase, so queries behave
     # case-insensitively; character validity is checked on the lowercased form.
     label = label |> String.downcase() |> then(&if(upper?, do: String.upcase(&1), else: &1))
-    packet = Audi.Private.DNS.answer(question([label, "integration", "internal"], 1), nil, :udp)
-
     valid =
       label
       |> String.downcase()
       |> then(&Regex.match?(~r/\A[a-z][a-z0-9-]{0,38}[a-z0-9]\z|\A[a-z]\z/, &1))
 
-    case valid do
-      true -> assert <<7::16, _::16, 1::16, 1::16, _::binary>> = packet
-      false -> assert <<7::16, _::16, 1::16, 0::16, _::binary>> = packet
+    for type <- [28, 1] do
+      packet =
+        Audi.Private.DNS.answer(question([label, "integration", "internal"], type), nil, :udp)
+
+      assert <<7::16, flags::16, 1::16, answers::16, _::binary>> = packet
+      assert (flags &&& 0x400) == 0x400
+
+      if valid and String.downcase(label) != "integration" do
+        assert (flags &&& 0xF) == 0
+        assert answers == if(type == 1, do: 1, else: 0)
+      else
+        assert (flags &&& 0xF) == 3
+        assert answers == 0
+      end
     end
   end
 
+  @spec question([String.t()], non_neg_integer()) :: binary()
   defp question(labels, type),
     do: <<7::16, 0x100::16, 1::16, 0::48>> <> Wire.encode_name(labels) <> <<type::16, 1::16>>
 end

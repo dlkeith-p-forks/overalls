@@ -287,6 +287,7 @@ def clean_shutdown(context: BootContext) -> None:
             context.work / "known_hosts",
             f"{context.platform.sudo} -n {context.platform.shutdown} >/dev/null 2>&1",
             network=context.network,
+            shutdown_diagnostics=True,
         )
         if result.returncode not in (0, 255) or result.stdout:
             raise RuntimeError("native SSH shutdown request failed")
@@ -321,6 +322,7 @@ def ssh(
     options: tuple[str, ...] = (),
     network: Network = DEFAULT_NETWORK,
     timeout: float = 20,
+    shutdown_diagnostics: bool = False,
 ) -> subprocess.CompletedProcess[bytes]:
     """Run fixed synthetic probes without emitting commands or output."""
     if not 0 < timeout <= 20:
@@ -351,18 +353,50 @@ def ssh(
         "-o",
         "HostKeyAlgorithms=ssh-ed25519-cert-v01@openssh.com",
         "-o",
-        "LogLevel=ERROR",
+        "LogLevel=DEBUG1" if shutdown_diagnostics else "LogLevel=ERROR",
         *options,
         f"{user}@{network.address}",
     ]
     if command is not None:
         arguments.append(command)
-    result = subprocess.run(
-        arguments, stdin=subprocess.DEVNULL, capture_output=True, check=False, timeout=timeout
-    )
+    try:
+        result = subprocess.run(
+            arguments, stdin=subprocess.DEVNULL, capture_output=True, check=False, timeout=timeout
+        )
+    except subprocess.TimeoutExpired as error:
+        if shutdown_diagnostics:
+            shutdown_ssh_stage(error.stderr)
+        raise
+    if shutdown_diagnostics:
+        shutdown_ssh_stage(result.stderr)
+        # Debug lines remain ephemeral input to the closed projection. Preserve
+        # the original output bound for actual SSH errors and remote output.
+        result.stderr = b"\n".join(
+            line for line in result.stderr.splitlines() if not line.startswith(b"debug1: ")
+        )
     if len(result.stdout) > 4096 or len(result.stderr) > 4096:
         raise RuntimeError("native SSH probe exceeded its output bound")
     return result
+
+
+def shutdown_ssh_stage(stderr: bytes | str | None) -> None:
+    """@cc [owner:ghuntley,label:verification;security] native-shutdown-ssh-closed-stage
+    SSH diagnostic bytes MUST remain ephemeral and project only a fixed stage.
+    They MUST NOT enter output, artifacts or exceptions exposed to the driver.
+    This projection MUST NOT grant shutdown acceptance or alter any deadline.
+    """
+    body = stderr if isinstance(stderr, bytes) else b""
+    stage = "unobserved"
+    for marker, label in (
+        (b"debug1: Connection established.", "connected"),
+        (b"debug1: Server host certificate:", "host-certificate"),
+        (b"Authenticated to ", "authenticated"),
+        (b"debug1: Sending command:", "command-sent"),
+        (b"debug1: Exit status ", "exit-status"),
+    ):
+        if marker in body:
+            stage = label
+    print(f"native service shutdown ssh_stage={stage}", flush=True)
 
 
 def success(result: subprocess.CompletedProcess[bytes], expected: bytes) -> None:

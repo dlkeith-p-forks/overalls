@@ -47,7 +47,7 @@ assert illumos.passthru.upstreamUrl == "https://illumos.org/";
 # constructors. Fleet admission binds each complete immutable identity.
 assert freebsdFleetImage != null;
 assert freebsdFleetImage.package.nativeAdmission;
-assert freebsdFleetImage.package.imageId == "sha256:d141e4266c29da00a1378157b1d39369b1d48e577bca4ce7375e8ff6d399557b";
+assert freebsdFleetImage.package.imageId == "sha256:0150b6d1aee0b30892b937eb0566a3dcebf2c5ca4cec75f7a252bd9ae00beac6";
 assert illumosFleetImage != null;
 assert illumosFleetImage.package.nativeAdmission;
 assert illumosFleetImage.package.runtimeValidated;

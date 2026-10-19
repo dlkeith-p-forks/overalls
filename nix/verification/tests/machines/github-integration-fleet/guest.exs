@@ -92,9 +92,17 @@ defmodule GitHubFleetGuest do
   end
 
   @spec commands(String.t(), String.t()) :: [String.t()]
+  # @cc [owner:ghuntley,label:verification;privacy] github-guest-closed-api-boundaries
+  # Connected identity MUST make one actual API attempt after tool/DNS checks.
+  # Failure codes 80/81/82/83 identify tool/DNS/API/identity boundaries only;
+  # API output MUST remain private and MUST NOT enter failure receipts.
   defp commands("connected", owner) do
     [
-      "test \"$(gh api user --jq .login)\" = owner-#{owner}",
+      "if ! command -v gh >/dev/null 2>&1; then (exit 80); " <>
+        "elif ! getent hosts com-github.integration.internal >/dev/null 2>&1; then (exit 81); " <>
+        "else github_identity=$(gh api user --jq .login 2>/dev/null); github_api_exit=$?; " <>
+        "if test \"$github_api_exit\" != 0; then (exit 82); " <>
+        "elif test \"$github_identity\" != owner-#{owner}; then (exit 83); fi; fi",
       "test \"$(gh api repos/owner/private --jq .private)\" = true",
       "test \"$(gh api user/orgs --jq '.[0].login')\" = fixture-org"
     ]

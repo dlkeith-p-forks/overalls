@@ -136,6 +136,10 @@ defmodule OverallsProtocol.ImageManifestTest do
              ImageManifest.validate(put_in(android, ["rootfs", "sha256"], "invalid"))
   end
 
+  # @cc [owner:ghuntley,label:verification;security] explicit-git-capability-admission
+  # Capability absence and presence MUST change manifest identity across supported
+  # agent kinds. Reviewed native activation MUST preserve refusal of independently
+  # mutated artifact identities, even when their capability syntax is valid.
   property "Git identity capability is explicit, identity-bound and closed across image kinds",
     database: :disabled,
     print_blob: false,
@@ -152,6 +156,7 @@ defmodule OverallsProtocol.ImageManifestTest do
         :illumos -> illumos_manifest()
       end
 
+    base = Map.delete(base, "git_identity_version")
     assert {:ok, original} = ImageManifest.validate(base)
     refute ImageManifest.git_identity?(base)
     capable = Map.put(base, "git_identity_version", 1)
@@ -174,8 +179,14 @@ defmodule OverallsProtocol.ImageManifestTest do
       assert {:error, :invalid_image_manifest} =
                ImageManifest.validate(Map.put(capable, "extra", true))
 
-      if kind in [:freebsd, :illumos],
-        do: refute(OverallsProtocol.NativeAdmission.admitted?(image))
+      if kind in [:freebsd, :illumos] do
+        # Capability syntax does not admit an unreviewed artifact identity.
+        unreviewed = put_in(capable, ["root", "sha256"], String.duplicate("a", 64))
+        assert {:ok, unreviewed_image} = ImageManifest.validate(unreviewed)
+        refute OverallsProtocol.NativeAdmission.admitted?(unreviewed_image)
+
+        if kind == :freebsd, do: assert(OverallsProtocol.NativeAdmission.admitted?(image))
+      end
     end
 
     for value <- [nil, 0, 2, "1", true] do

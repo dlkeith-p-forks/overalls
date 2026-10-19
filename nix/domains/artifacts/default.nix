@@ -355,7 +355,7 @@ rec {
   nativeImagePromotionChecks = nativeImagePromotion.checks;
   mkFreeBSDGuest = import ./guest/freebsd { inherit pkgs; firmware = windowsFirmware.fd; nativeAgents = lyraNative; };
   legacyFreebsdGuest = import ./guest/native-promotion/freebsd.nix { inherit pkgs; elixir = toolchain.elixir; };
-  freebsdGuest = legacyFreebsdGuest;
+  freebsdGuest = import ./guest/native-promotion/freebsd-14.3-db752667-f0d9275b.nix { inherit pkgs; elixir = toolchain.elixir; };
   # Candidate assembly is an explicit build target. The staging constructor
   # stays closed; the catalog consumes only the separately promoted identity.
   mkFreeBSDImageCandidate = extraArgs: import ./guest/freebsd/candidate.nix ({

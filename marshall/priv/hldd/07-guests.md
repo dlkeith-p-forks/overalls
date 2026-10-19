@@ -1876,28 +1876,32 @@ focused 19-test protocol run (seed 218704), including a 100-case composition/ref
 property, passed before these incoming changes; it does not establish current
 native Android or GitHub acceptance.
 
-The currently reviewed native image pins do not declare allocation Git identity
-version1. Current allocation therefore refuses those images with
-`git_identity_unavailable`; historical native admission qualification does not
-imply this later capability. Current native workspace source validates MMDS
-attribution against the boot fence, but fresh immutable images and native
-attribution acceptance must precede promotion. Retained GitHub client upgrades
-do not establish new native allocation support. This remains an unresolved
-implementation gap, rather than a change to the accepted native-admission
-requirement.
+The selected FreeBSD image `0150b6d1` declares allocation Git identity version1.
+The selected OmniOS image still lacks that capability, so current allocation
+refuses it with `git_identity_unavailable`. Historical native admission or a
+retained GitHub client upgrade does not imply this later capability. Native
+workspace source validates MMDS attribution against the boot fence; capability
+selection requires separately qualified immutable image bytes.
 
 Fresh native candidates now opt into an explicit version1 attribution manifest
-field, requiring source-v2 and a native payload. Default constructors omit the
-field. Candidate admission flags remain false and promoted disks retain their
-exact old identities. The fresh FreeBSD image `0150b6d1` passed all five
+field, requiring source-v2 and a native payload. Staging constructors omit the
+field unless requested, and candidate admission flags remain false. FreeBSD image
+`0150b6d1` passed all five
 exact-artifact service/growth/policy/daemon-recovery/SIGKILL-recovery scenarios,
 each with 26 named checks including every boot's current-MMDS personal Git
-configuration and actual commit attribution. Actual-byte structural verification
-passed; cache publication, registry admission and catalog activation have not.
+configuration and actual commit attribution. It then passed all five unchanged
+scenarios against selected VMM `f0d9275b`. Actual-byte structural verification,
+signed publication and independent empty-store content/signature/NAR verification
+passed before additive source admission and default selection. The selected
+package's production verifier and promotion/native-OS Nix checks passed together.
+No new live deployment or Marshall-owned fleet acceptance is established.
 The earlier parallel crash failure remains recorded; its separate passing
 replay does not identify that failure's cause. Fresh OmniOS image `679f5f8b`
-passed direct two-boot services with 26 checks and exact installed payload verification;
-its separate five-scenario nested-NixOS matrix is pending at this checkpoint.
+passed direct two-boot services with 26 checks and exact installed payload
+verification. Its current-VMM nested-NixOS matrix later passed services, growth,
+crash recovery and daemon recovery; isolation failed during the first boot's
+bounded SSH shutdown request. It has no complete isolation receipt or new
+admission.
 The verifier preserves historical 22/25-check sets for unchanged old manifests;
 explicit Git identity v1 requires 26 exact checks on either OS. Its 23-test host
 gate passed, without granting candidate admission or proving fleet acceptance.
@@ -1912,10 +1916,14 @@ includes selected packages and exact retained native promotion packages, with
 package-path deduplication; catalog registration still consumes only selected
 packages. Nine focused protocol tests and the Nix native-OS evaluation gate
 passed, including a simulated selection change retaining the original package.
-Current selected/admitted identities remain unchanged. Historical machines
-without a Git snapshot remain unchanged. New candidate admission, activation and
-native checkpoint qualification remain unperformed; current-format immutable
-image history is not a legacy decoder.
+The selected/admitted FreeBSD identity now includes `0150b6d1` alongside its exact
+original identity. Old manifest and portable-bundle authority remain intact,
+with no Git capability relabelling; the current nine focused Protocol checks
+passed. Historical machines without a Git snapshot remain unchanged. OmniOS
+selection and native checkpoint support are unchanged; current-format immutable
+image history is not a legacy decoder. An ordinary retained native restart
+without catalog lookup and a live journey through the newly selected artifact
+still require separate evidence.
 
 The subsequent OmniOS five-target graph completed in 1,011 seconds with one
 growth pass and four failures. Growth took 981.91 seconds and retained all 26
@@ -1923,5 +1931,16 @@ service checks across three boots and two root expansions. Services failed at
 clean shutdown with a subprocess timeout; crash recovery failed at
 `readiness-withheld`; recovery and isolation reached their outer exit-124 bounds.
 The earlier direct-services pass remains separate. These candidates use VMM
-`9815649a`; the merged selected VMM is `f0d9275b`. Current-runtime qualification,
-full retained-tool acceptance and fleet activation therefore remain open.
+`9815649a`; the merged selected VMM is `f0d9275b`. Current-VMM OmniOS services,
+growth, crash recovery and daemon recovery subsequently passed against the same
+sealed candidate. Isolation then failed at `shutdown-send` with
+`subprocess-timeout`, before the separate VMM shutdown wait. Boot 0 completed
+attribution and executor cancellation/fresh-fence checks; policy restoration and
+authority/VMM cleanup completed. No second boot or complete isolation/service
+receipt exists. This narrows the failed operation without establishing its
+cause, and does not permit OmniOS publication or source selection.
+The single focused diagnostic replay then failed earlier during boot after
+373 seconds, with the native growth SMF service in maintenance; shutdown
+diagnostics were not reached. It supplies no complete isolation receipt and
+does not establish the previous timeout's cause.
+Full retained-tool acceptance and live fleet activation remain open.

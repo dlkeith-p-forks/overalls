@@ -33,6 +33,23 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   @gib 1_073_741_824
   @mem 536_870_912
 
+  @type timing_stage ::
+          :peer_startup
+          | :fixed_windows
+          | :generated_batches
+          | :fixture_cleanup
+          | :generated_history
+          | :lock_history
+          | :race_rpc
+          | :settlement
+          | :oracle
+  @type timing_record :: %{
+          schema_version: 1,
+          stage: timing_stage(),
+          duration_us: non_neg_integer(),
+          completed_histories: non_neg_integer()
+        }
+
   # @cc [owner:ghuntley,label:verification] committed-fixture-suite-preservation
   # Every sample MUST restore the complete pre-test committed row inventory,
   # including historical rows. Teardown checks are separate from body failure.
@@ -58,63 +75,80 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # a peer. Peers start per sample and stop before fixture deletion; a failing
   # sample never shares peers with another run. A failed acquisition MUST stop
   # the current peer and every previously acquired peer before propagating.
+  # Initialization MAY overlap across the three newly acquired peers, with all
+  # exact peer IDs registered for exit cleanup before any initialization task.
+  # All tasks MUST finish or terminate before acquisition returns or fails.
   @spec start_peers() :: [pid()]
   defp start_peers do
     suffix = System.unique_integer([:positive])
 
-    Enum.reduce([:capacity_race_1, :capacity_race_2, :capacity_race_3], [], fn name, acquired ->
-      Cleanup.protect acquired do
-        {:ok, peer} =
-          case :peer.start_link(%{
-                 name: String.to_atom("#{name}_#{suffix}"),
-                 connection: :standard_io,
-                 args: [~c"+S", ~c"2:2", ~c"+SDcpu", ~c"1", ~c"+SDio", ~c"1"],
-                 wait_boot: 30_000
-               }) do
-            {:ok, pid} -> {:ok, pid}
-            {:ok, pid, _node} -> {:ok, pid}
-          end
+    peers =
+      Enum.reduce([:capacity_race_1, :capacity_race_2, :capacity_race_3], [], fn name, acquired ->
+        Cleanup.protect acquired do
+          {:ok, peer} =
+            case :peer.start_link(%{
+                   name: String.to_atom("#{name}_#{suffix}"),
+                   connection: :standard_io,
+                   args: [~c"+S", ~c"2:2", ~c"+SDcpu", ~c"1", ~c"+SDio", ~c"1"],
+                   wait_boot: 30_000
+                 }) do
+              {:ok, pid} -> {:ok, pid}
+              {:ok, pid, _node} -> {:ok, pid}
+            end
 
-        register_timeout_cleanup([peer | acquired])
-
-        Cleanup.protect [peer] do
-          node = :peer.call(peer, :erlang, :node, [])
-          assert node != :nonode@nohost
-          :ok = :peer.call(peer, :code, :add_paths, [:code.get_path()])
-
-          config =
-            for {app, _, _} <- Application.loaded_applications(),
-                app not in [:kernel, :stdlib, :elixir, :logger],
-                do: {app, Application.get_all_env(app)}
-
-          :ok = :peer.call(peer, Application, :put_all_env, [config, [persistent: true]])
-
-          repo_config =
-            Application.fetch_env!(:marshall, Repo)
-            |> Keyword.put(:pool, DBConnection.ConnectionPool)
-            |> Keyword.put(:pool_size, 4)
-
-          :ok =
-            :peer.call(peer, Application, :put_env, [
-              :marshall,
-              Repo,
-              repo_config,
-              [persistent: true]
-            ])
-
-          :ok =
-            :peer.call(peer, Application, :put_env, [:logger, :level, :error, [persistent: true]])
-
-          {:ok, _} = :peer.call(peer, Application, :ensure_all_started, [:marshall], 30_000)
+          register_timeout_cleanup([peer | acquired])
           [peer | acquired]
         after
           :ok
         end
-      after
-        :ok
-      end
-    end)
-    |> Enum.reverse()
+      end)
+      |> Enum.reverse()
+
+    config = peer_configuration()
+
+    Cleanup.protect peers do
+      # Every RPC retains its finite 5s default or explicit 30s bound. The
+      # linked stream cancels remaining tasks if enumeration fails; its own
+      # timer must not replace those bounds or the unchanged 300s test budget.
+      peers
+      |> Task.async_stream(&initialize_peer(&1, config),
+        max_concurrency: 3,
+        ordered: true,
+        timeout: :infinity
+      )
+      |> Enum.each(fn result -> assert {:ok, :ok} = result end)
+
+      peers
+    after
+      :ok
+    end
+  end
+
+  @spec peer_configuration() :: [{atom(), keyword()}]
+  defp peer_configuration do
+    repo_config =
+      Application.fetch_env!(:marshall, Repo)
+      |> Keyword.put(:pool, DBConnection.ConnectionPool)
+      |> Keyword.put(:pool_size, 4)
+
+    config =
+      for {app, _, _} <- Application.loaded_applications(),
+          app not in [:kernel, :stdlib, :elixir, :logger],
+          do: {app, Application.get_all_env(app)}
+
+    config
+    |> Keyword.update!(:marshall, &Keyword.put(&1, Repo, repo_config))
+    |> Keyword.put(:logger, level: :error)
+  end
+
+  @spec initialize_peer(pid(), [{atom(), keyword()}]) :: :ok
+  defp initialize_peer(peer, config) do
+    node = :peer.call(peer, :erlang, :node, [])
+    assert node != :nonode@nohost
+    :ok = :peer.call(peer, :code, :add_paths, [:code.get_path()])
+    :ok = :peer.call(peer, Application, :put_all_env, [config, [persistent: true]])
+    {:ok, _} = :peer.call(peer, Application, :ensure_all_started, [:marshall], 30_000)
+    :ok
   end
 
   @spec stop_peer_if_alive(pid()) :: :ok
@@ -245,7 +279,7 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
     profile: :ci,
     test_cases: 100 do
     batches = draw("batches", schedule_gen())
-    unboxed(fn -> run_sample(batches) end)
+    measure_stage(:generated_history, fn -> unboxed(fn -> run_sample(batches) end) end)
   end
 
   # @cc [owner:ghuntley,label:verification;concurrency] capacity-error-wrapper-regression
@@ -384,6 +418,46 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
 
   # ---------- interpreter ----------
 
+  # @cc [owner:ghuntley,label:verification;privacy] capacity-fixture-timing-artifacts
+  # Optional timing artifacts MUST contain only a fixed stage identifier, actual
+  # elapsed microseconds and completed-history count. They MUST NOT contain
+  # identities, generated inputs, credentials or exceptions. Disabled collection
+  # MUST execute the same body without changing any test or RPC deadline.
+  @spec measure_stage(timing_stage(), (-> value)) :: value when value: term()
+  defp measure_stage(stage, body) do
+    case System.get_env("CAPACITY_RACE_TIMINGS_DIR") do
+      nil ->
+        body.()
+
+      directory ->
+        started = System.monotonic_time(:microsecond)
+        result = body.()
+        completed = Process.get({__MODULE__, :completed_histories}, 0)
+
+        completed =
+          if stage in [:generated_history, :lock_history], do: completed + 1, else: completed
+
+        Process.put({__MODULE__, :completed_histories}, completed)
+
+        record = %{
+          schema_version: 1,
+          stage: stage,
+          duration_us: System.monotonic_time(:microsecond) - started,
+          completed_histories: completed
+        }
+
+        write_timing!(directory, record)
+        result
+    end
+  end
+
+  @spec write_timing!(String.t(), timing_record()) :: :ok
+  defp write_timing!(directory, record) do
+    File.mkdir_p!(directory)
+    filename = "#{System.unique_integer([:positive, :monotonic])}.json"
+    File.write!(Path.join(directory, filename), JSON.encode!(record))
+  end
+
   # @cc [owner:ghuntley,label:verification;durability] capacity-race-timeout-cleanup
   # ExUnit's separate exit process MUST retain the currently acquired peers and
   # exact sample fixture after a forced test timeout bypasses in-process after
@@ -406,7 +480,7 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   @spec run_sample([[op()]]) :: :ok
   defp run_sample(batches) do
     try do
-      peers = start_peers()
+      peers = measure_stage(:peer_startup, &start_peers/0)
 
       {:ok, model} =
         Repo.transaction(fn ->
@@ -433,8 +507,13 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
       model = %{model | pool_total: totals}
 
       Cleanup.protect peers do
-        model = windows(model)
-        _ = Enum.reduce(batches, model, fn batch, acc -> run_generated_batch(acc, batch) end)
+        model = measure_stage(:fixed_windows, fn -> windows(model) end)
+
+        _ =
+          measure_stage(:generated_batches, fn ->
+            Enum.reduce(batches, model, fn batch, acc -> run_generated_batch(acc, batch) end)
+          end)
+
         :ok
       after
         Enum.each(peers, &stop_peer_if_alive/1)
@@ -1546,48 +1625,47 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
     :ok
   end
 
+  # @cc [owner:ghuntley,label:verification] capacity-batched-oracle-equivalence
+  # Batched reads MUST preserve every exact owner, pool and idempotency-key
+  # predicate and invariant assertion at the existing committed phase boundary.
+  # Joining aggregate extras to holds MUST charge extras once per pool.
   @spec assert_startup_disk_within_free(model()) :: :ok
   defp assert_startup_disk_within_free(model) do
     pool_ids = Enum.map(model.hosts, &fixture_for(model, &1).pool.id)
 
+    %{rows: rows} =
+      sql(
+        """
+        SELECT p.id, p.free_bytes, p.overhead_bytes, p.allocations,
+               COALESCE(extras.temporary, 0)::bigint, COALESCE(extras.resize, 0)::bigint,
+               holds.placement_id, holds.disk_bytes
+        FROM compute_storage_pools p
+        LEFT JOIN LATERAL (
+          SELECT SUM(temporary_disk_bytes) AS temporary, SUM(pending_disk_bytes) AS resize
+          FROM compute_reservations WHERE pool_id=p.id
+        ) extras ON true
+        LEFT JOIN compute_reservations holds
+          ON holds.pool_id=p.id AND holds.disk_held AND holds.startup_disk_held
+        WHERE p.id = ANY($1::uuid[])
+        """,
+        [Enum.map(pool_ids, &Ecto.UUID.dump!/1)]
+      )
+
+    pools = Enum.group_by(rows, &hd/1)
+
     for pool_id <- pool_ids do
-      %{rows: [[free, overhead, allocations]]} =
-        Ecto.Adapters.SQL.query!(
-          Repo,
-          "SELECT free_bytes, overhead_bytes, allocations FROM compute_storage_pools WHERE id=$1",
-          [Ecto.UUID.dump!(pool_id)],
-          log: false
-        )
-
-      %{rows: holds} =
-        Ecto.Adapters.SQL.query!(
-          Repo,
-          """
-          SELECT placement_id, disk_bytes, temporary_disk_bytes, pending_disk_bytes
-          FROM compute_reservations
-          WHERE pool_id=$1 AND disk_held AND startup_disk_held
-          """,
-          [Ecto.UUID.dump!(pool_id)],
-          log: false
-        )
-
-      %{rows: extras} =
-        Ecto.Adapters.SQL.query!(
-          Repo,
-          """
-          SELECT COALESCE(SUM(temporary_disk_bytes), 0)::bigint, COALESCE(SUM(pending_disk_bytes), 0)::bigint
-          FROM compute_reservations WHERE pool_id=$1
-          """,
-          [Ecto.UUID.dump!(pool_id)],
-          log: false
-        )
+      holds = Map.fetch!(pools, Ecto.UUID.dump!(pool_id))
+      [[_, free, overhead, allocations, temporary, resize, _, _] | _] = holds
 
       pending =
-        Enum.reduce(holds, 0, fn [placement_id, disk, _temp, _resize], total ->
-          total + disk - min(Map.get(allocations, placement_id, 0), disk)
+        Enum.reduce(holds, 0, fn
+          [_, _, _, _, _, _, nil, nil], total ->
+            total
+
+          [_, _, _, _, _, _, placement_id, disk], total ->
+            total + disk - min(Map.get(allocations, placement_id, 0), disk)
         end)
 
-      [[temporary, resize]] = extras
       charged = pending + temporary + resize
 
       assert charged <= free - overhead,
@@ -1600,85 +1678,46 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # (b) VM/placement/reservation/address/job cardinality === winning keys.
   @spec assert_cardinality(model(), [binary()]) :: :ok
   defp assert_cardinality(model, owners) do
-    %{rows: [[vms]]} =
-      Ecto.Adapters.SQL.query!(
-        Repo,
-        "SELECT count(*) FROM compute_virtual_machines WHERE owner_id = ANY($1::uuid[])",
-        [owners],
-        log: false
-      )
-
-    %{rows: [[addresses]]} =
-      Ecto.Adapters.SQL.query!(
-        Repo,
+    %{rows: [[vms, addresses, placements, reservations, operations, jobs]]} =
+      sql(
         """
-        SELECT count(*) FROM compute_network_addresses
-        WHERE vm_id IN (SELECT id FROM compute_virtual_machines WHERE owner_id = ANY($1::uuid[]))
+        WITH vms AS (
+          SELECT id FROM compute_virtual_machines WHERE owner_id = ANY($1::uuid[])
+        ), operations AS (
+          SELECT id FROM compute_operations WHERE vm_id IN (SELECT id FROM vms)
+        )
+        SELECT
+          (SELECT count(*) FROM vms),
+          (SELECT count(*) FROM compute_network_addresses WHERE vm_id IN (SELECT id FROM vms)),
+          (SELECT count(*) FROM compute_workload_placements WHERE vm_id IN (SELECT id FROM vms)),
+          (SELECT count(*) FROM compute_reservations WHERE vm_id IN (SELECT id FROM vms)),
+          (SELECT count(*) FROM operations),
+          (SELECT count(*) FROM oban_jobs
+           WHERE args->'primary_key'->>'id' IN (SELECT id::text FROM operations))
         """,
-        [owners],
-        log: false
+        [owners]
       )
 
     assert vms == addresses, "#{vms} VMs but #{addresses} addresses"
 
-    %{rows: [[placements]]} =
-      Ecto.Adapters.SQL.query!(
-        Repo,
-        """
-        SELECT count(*) FROM compute_workload_placements
-        WHERE vm_id IN (SELECT id FROM compute_virtual_machines WHERE owner_id = ANY($1::uuid[]))
-        """,
-        [owners],
-        log: false
-      )
-
-    %{rows: [[reservations]]} =
-      Ecto.Adapters.SQL.query!(
-        Repo,
-        """
-        SELECT count(*) FROM compute_reservations
-        WHERE vm_id IN (SELECT id FROM compute_virtual_machines WHERE owner_id = ANY($1::uuid[]))
-        """,
-        [owners],
-        log: false
-      )
-
     assert placements == reservations,
            "#{placements} placements but #{reservations} reservations"
 
-    %{rows: [[operations]]} =
-      Ecto.Adapters.SQL.query!(
-        Repo,
-        """
-        SELECT count(*) FROM compute_operations
-        WHERE vm_id IN (SELECT id FROM compute_virtual_machines WHERE owner_id = ANY($1::uuid[]))
-        """,
-        [owners],
-        log: false
-      )
-
-    %{rows: [[jobs]]} =
-      Ecto.Adapters.SQL.query!(
-        Repo,
-        """
-        SELECT count(*) FROM oban_jobs WHERE args->'primary_key'->>'id' IN
-          (SELECT id::text FROM compute_operations
-           WHERE vm_id IN (SELECT id FROM compute_virtual_machines WHERE owner_id = ANY($1::uuid[])))
-        """,
-        [owners],
-        log: false
-      )
-
     assert operations == jobs, "#{operations} operations but #{jobs} dispatch jobs"
 
+    %{rows: key_rows} =
+      sql(
+        """
+        SELECT idempotency_key, count(*), array_agg(id::text)
+        FROM compute_virtual_machines WHERE owner_id=$1 GROUP BY idempotency_key
+        """,
+        [hd(owners)]
+      )
+
+    keys = Map.new(key_rows, fn [key, count, ids] -> {key, {count, ids}} end)
+
     for {key, {_shape, vm_id}} <- model.keys, is_binary(vm_id) do
-      %{rows: [[count]]} =
-        Ecto.Adapters.SQL.query!(
-          Repo,
-          "SELECT count(*) FROM compute_virtual_machines WHERE owner_id=$1 AND idempotency_key=$2",
-          [hd(owners), key],
-          log: false
-        )
+      {count, ids} = Map.get(keys, key, {0, []})
 
       if count != 1 do
         rows =
@@ -1695,15 +1734,7 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
         )
       end
 
-      %{rows: [[found]]} =
-        Ecto.Adapters.SQL.query!(
-          Repo,
-          "SELECT count(*) FROM compute_virtual_machines WHERE owner_id=$1 AND idempotency_key=$2 AND id=$3",
-          [hd(owners), key, Ecto.UUID.dump!(vm_id)],
-          log: false
-        )
-
-      assert found == 1, "idempotent replay lost its original VM"
+      assert ids == [vm_id], "idempotent replay lost its original VM"
     end
 
     :ok
@@ -1716,45 +1747,28 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   defp assert_hold_invariants(model) do
     owners = [Ecto.UUID.dump!(model.owner.id)]
 
-    disks_lost =
-      count_where(
+    %{rows: [[disks_lost, leaked_temporary, unheld_archived]]} =
+      sql(
         """
-        SELECT count(*) FROM compute_reservations r
-          JOIN compute_virtual_machines v ON v.id = r.vm_id
-        WHERE v.owner_id = ANY($1::uuid[]) AND v.archived_at IS NULL AND NOT r.disk_held
+        SELECT
+          count(*) FILTER (WHERE v.archived_at IS NULL AND NOT r.disk_held),
+          count(*) FILTER (WHERE r.temporary_disk_bytes > 0 AND NOT EXISTS (
+            SELECT 1 FROM compute_clone_requests c
+            WHERE c.source_vm_id = r.vm_id AND c.active
+          )),
+          count(*) FILTER (WHERE NOT (v.archived_at IS NULL)
+            AND (r.compute_held OR r.disk_held OR r.temporary_disk_bytes != 0))
+        FROM compute_reservations r
+        JOIN compute_virtual_machines v ON v.id = r.vm_id
+        WHERE v.owner_id = ANY($1::uuid[])
         """,
         [owners]
       )
 
     assert disks_lost == 0, "non-archived VMs lost disk holds: #{disks_lost}"
 
-    leaked_temporary =
-      count_where(
-        """
-        SELECT count(*) FROM compute_reservations r
-          JOIN compute_virtual_machines v ON v.id = r.vm_id
-        WHERE v.owner_id = ANY($1::uuid[]) AND r.temporary_disk_bytes > 0
-          AND NOT EXISTS (
-            SELECT 1 FROM compute_clone_requests c
-            WHERE c.source_vm_id = r.vm_id AND c.active
-          )
-        """,
-        [owners]
-      )
-
     assert leaked_temporary == 0,
            "temporary copy holds outlive terminal clone state: #{leaked_temporary}"
-
-    unheld_archived =
-      count_where(
-        """
-        SELECT count(*) FROM compute_reservations r
-          JOIN compute_virtual_machines v ON v.id = r.vm_id
-        WHERE v.owner_id = ANY($1::uuid[]) AND NOT (v.archived_at IS NULL)
-          AND (r.compute_held OR r.disk_held OR r.temporary_disk_bytes != 0)
-        """,
-        [owners]
-      )
 
     assert unheld_archived == 0, "archived VMs retained holds: #{unheld_archived}"
     :ok
@@ -1908,15 +1922,15 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # accounting at the commit boundary, settlement reports, then the oracle.
   @spec phase(model(), [map()]) :: {model(), [term()]}
   defp phase(model, steps) do
-    results = run_steps(model, steps)
+    results = measure_stage(:race_rpc, fn -> run_steps(model, steps) end)
 
     model = absorb(model, steps, results)
 
     Enum.zip(steps, results)
     |> Enum.each(fn {step, result} -> assert_refusal_zero_rows(model, step, result) end)
 
-    model = settle(model)
-    oracle!(model)
+    model = measure_stage(:settlement, fn -> settle(model) end)
+    measure_stage(:oracle, fn -> oracle!(model) end)
     {model, results}
   end
 
@@ -2489,7 +2503,8 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # Fixture deletion can lose a transient FK lock race against peers' aborted
   # in-flight work; deletes are idempotent against the same committed target.
   @spec cleanup_sample(model()) :: :ok
-  defp cleanup_sample(model), do: cleanup_sample(model, 3)
+  defp cleanup_sample(model),
+    do: measure_stage(:fixture_cleanup, fn -> cleanup_sample(model, 3) end)
 
   @spec cleanup_sample(model(), non_neg_integer()) :: :ok
   defp cleanup_sample(model, attempts) do
@@ -2622,9 +2637,11 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
     rotation = draw("rotation", member_of([0, 1, 2]))
     reverse = draw("reverse", boolean())
 
-    for fixed_rotation <- Enum.uniq([rotation, 0, 1, 2]) do
-      unboxed(fn -> lock_schedule_sample(fixed_rotation, reverse) end)
-    end
+    measure_stage(:lock_history, fn ->
+      for fixed_rotation <- Enum.uniq([rotation, 0, 1, 2]) do
+        unboxed(fn -> lock_schedule_sample(fixed_rotation, reverse) end)
+      end
+    end)
   end
 
   # @cc [owner:ghuntley,label:verification;durability] lock-fixture-acquisition-atomic
@@ -2632,7 +2649,7 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # failed acquisition MUST stop all acquired peers before propagating.
   @spec lock_schedule_sample(0..2, boolean()) :: :ok
   defp lock_schedule_sample(rotation, reverse) do
-    peers = start_peers()
+    peers = measure_stage(:peer_startup, &start_peers/0)
 
     initial =
       Cleanup.protect peers do

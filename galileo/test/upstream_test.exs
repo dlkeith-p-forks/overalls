@@ -1,5 +1,8 @@
 defmodule Galileo.UpstreamTest do
-  use ExUnit.Case, async: true
+  # These real TLS histories require progress inside 600ms leases. Keep their
+  # fixture execution separate from unrelated ExUnit modules; cancellation and
+  # renewal still run concurrently under the original deadlines in every case.
+  use ExUnit.Case, async: false
   import Hegel
   import Hegel.Gen
   alias Galileo.Upstream
