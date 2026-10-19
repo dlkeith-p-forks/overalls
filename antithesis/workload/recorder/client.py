@@ -207,6 +207,7 @@ class Client:
                 "CREATE TABLE IF NOT EXISTS attempts ("
                 "id INTEGER PRIMARY KEY, kind TEXT NOT NULL, acknowledged INTEGER NOT NULL DEFAULT 0)"
             )
+            db.execute("CREATE TABLE IF NOT EXISTS sequence_blocks (id INTEGER PRIMARY KEY)")
             db.execute(
                 "CREATE TABLE IF NOT EXISTS archive_witness ("
                 "digest TEXT PRIMARY KEY, body_sha256 TEXT NOT NULL, "
@@ -327,6 +328,22 @@ class Client:
             raise ValueError("invalid recorder control result")
         self._ack(attempt_id)
         return ControlReply(status, enospc)
+
+    def reserve_sequences(self, span: int) -> int:
+        """Reserve a fresh block of producer sequences; returns its zero-based start.
+
+        Each sequence selects a distinct trace body, and the spool stores bodies by
+        digest, so a reused sequence would be an idempotent duplicate rather than a
+        new batch. Blocks never overlap within the ledger's 999,999-value space.
+        """
+        if span < 1 or span > 999_999:
+            raise ValueError("sequence span outside reviewed range")
+        with sqlite3.connect(self.config.ledger) as db:
+            cursor = db.execute("INSERT INTO sequence_blocks DEFAULT VALUES")
+            block = cursor.lastrowid
+            db.commit()
+        assert block is not None
+        return ((block - 1) * span) % (999_999 - 999_999 % span)
 
     def counts(self, kind: str) -> tuple[int, int]:
         with sqlite3.connect(self.config.ledger) as db:

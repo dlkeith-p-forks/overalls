@@ -32,6 +32,9 @@ QUOTA_WINDOW_ATTEMPTS = 40
 # The VM bridge republishes its archive copy about every 0.2 s, so an
 # acknowledged batch can precede its observable row; wait up to 5 s.
 SETTLE_ATTEMPTS = 50
+# Sequence offsets one traces command uses (1-based): intake 1-2, pressure and its
+# post-refusal probe 3-260, physical pressure 265-308, pending-quota window 311-350.
+TRACE_SEQUENCE_SPAN = 400
 MAX_PENDING = 4096
 
 
@@ -476,8 +479,8 @@ def run_traces() -> int:
         return 1
     _audit_archive(client, initial)
     prior = initial
-    attempts, _acknowledged = client.counts("trace")
-    sequence = (attempts % 999_999) + 1
+    base = client.reserve_sequences(TRACE_SEQUENCE_SPAN)
+    sequence = base + 1
     first = client.call({"op": "trace", "sequence": sequence, "size": "small"})
     after = _archive(config)
     if first is not None and first.status == "200":
@@ -495,7 +498,7 @@ def run_traces() -> int:
     _audit_archive(client, after)
     prior = after
     synchronized = False
-    lost_sequence = ((attempts + 1) % 999_999) + 1
+    lost_sequence = base + 2
     lost = client.call(
         {"op": "trace", "sequence": lost_sequence, "size": "small", "lose_ack": True}
     )
@@ -534,7 +537,7 @@ def run_traces() -> int:
     for index in range(1, 257):
         if time.monotonic() > deadline:
             break
-        sequence = ((attempts + index + 1) % 999_999) + 1
+        sequence = base + index + 2
         before_filesystem = read_filesystem(config)
         reply = client.call({"op": "trace", "sequence": sequence, "size": "large"})
         current = _archive(config)
@@ -587,8 +590,8 @@ def run_traces() -> int:
         # A reply lost in transport may still commit later, so only an
         # acknowledged batch re-synchronizes the next one-new-batch check.
         synchronized = reply is not None and reply.status == "200"
-    _physical_pressure(client, config, prior, ((attempts + 258) % 999_999) + 1)
-    _pending_quota_window(client, config, ((attempts + 300) % 999_999) + 1)
+    _physical_pressure(client, config, prior, base + 265)
+    _pending_quota_window(client, config, base + 310)
     return 0
 
 
