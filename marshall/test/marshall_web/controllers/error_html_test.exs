@@ -12,10 +12,15 @@ defmodule MarshallWeb.ErrorHTMLTest do
   end
 
   test "renders 500.html" do
-    assert render_to_string(MarshallWeb.ErrorHTML, "500", "html", [])
+    html = render_to_string(MarshallWeb.ErrorHTML, "500", "html", [])
+
+    assert html
            |> LazyHTML.from_fragment()
            |> LazyHTML.query("h1")
            |> LazyHTML.text() == "Internal Server Error"
+
+    refute html =~ "Field notes"
+    refute html =~ "Appearance"
   end
 
   test "a server error retries itself only while the database does not answer" do
