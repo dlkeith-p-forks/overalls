@@ -48,6 +48,10 @@ defmodule Marshall.Accounts.DeleteUserMachines do
               completed_at: if(remaining == 0 and not access_pending, do: Ledger.now(), else: nil)
             })
 
+          if remaining == 0 and not access_pending do
+            Marshall.Accounts.ScimFinalize.finalize!(deletion)
+          end
+
           %{remaining: remaining, complete: not is_nil(deletion.completed_at)}
         end)
 
