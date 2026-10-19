@@ -16,9 +16,20 @@ let
         --force --name overalls-test \
         --package 'system-images;android-36;google_apis;x86_64' \
         --path "$ANDROID_AVD_HOME/overalls-test.avd"
+      cat >> "$ANDROID_AVD_HOME/overalls-test.avd/config.ini" <<'CONFIG'
+hw.gpu.enabled = yes
+hw.gpu.mode = swiftshader_indirect
+hw.keyboard = yes
+hw.cpu.ncore = 4
+hw.ramSize = 4096
+hw.lcd.width = 480
+hw.lcd.height = 800
+hw.lcd.density = 160
+CONFIG
     fi
     exec ${sdkRoot}/emulator/emulator -avd overalls-test \
-      -no-accel -gpu swiftshader_indirect -no-boot-anim -no-snapshot \
+      -no-accel -gpu swiftshader_indirect -no-window -noaudio \
+      -no-boot-anim -no-snapshot \
       -ports 5554,5555
   '';
 in
@@ -27,8 +38,8 @@ pkgs.testers.runNixOSTest {
   globalTimeout = 900;
   nodes.android = { ... }: {
     system.stateVersion = "26.05";
-    virtualisation.memorySize = 6144;
-    virtualisation.cores = 4;
+    virtualisation.memorySize = 8192;
+    virtualisation.cores = 8;
     virtualisation.diskSize = 32768;
     environment.systemPackages = [ pkgs.android-tools pkgs.gawk pkgs.xorg.xorgserver pkgs.jdk sdk ];
     users.users.android-test = {
@@ -79,11 +90,12 @@ pkgs.testers.runNixOSTest {
     assert "-gpu swiftshader_indirect" in cmdline, cmdline
     android.wait_for_open_port(5555)
     android.succeed("adb start-server")
-    android.wait_until_succeeds("timeout 15 adb -s emulator-5554 wait-for-device", timeout=600)
-    android.wait_until_succeeds("test \"$(timeout 15 adb -s emulator-5554 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=600)
-    android.succeed("adb -s emulator-5554 shell getprop ro.kernel.qemu | grep -Fx 1")
-    android.succeed("adb -s emulator-5554 shell settings get global animator_duration_scale")
-    android.succeed("adb -s emulator-5554 exec-out screencap -p > /tmp/android-screencap.png")
+    android.succeed("adb connect 127.0.0.1:5555")
+    android.wait_until_succeeds("timeout 15 adb -s 127.0.0.1:5555 wait-for-device", timeout=600)
+    android.wait_until_succeeds("test \"$(timeout 15 adb -s 127.0.0.1:5555 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=600)
+    android.succeed("adb -s 127.0.0.1:5555 shell getprop ro.kernel.qemu | grep -Fx 1")
+    android.succeed("adb -s 127.0.0.1:5555 shell settings get global animator_duration_scale")
+    android.succeed("adb -s 127.0.0.1:5555 exec-out screencap -p > /tmp/android-screencap.png")
     android.succeed("test $(stat -c %s /tmp/android-screencap.png) -gt 100")
     android.succeed("head -c 8 /tmp/android-screencap.png | od -An -t x1 | grep -F '89 50 4e 47 0d 0a 1a 0a'")
   '';

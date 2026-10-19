@@ -6757,12 +6757,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3605
 #, elixir-autogen, elixir-format
 msgid "- a changed command;\n- a deferral;\n- any other outcome;\n- any watcher report other than armed."
-msgstr ""
+msgstr "- পরিবর্তিত কমান্ড;\n- স্থগিতকরণ;\n- অন্য যেকোনো ফলাফল;\n- armed প্রতিবেদন ছাড়া পর্যবেক্ষকের অন্য যেকোনো প্রতিবেদন।"
 
 #: lib/marshall/documentation_messages.ex:3609
 #, elixir-autogen, elixir-format
 msgid "- its last three reconciles of the unchanged command each recorded the same\n  running outcome;\n- an armed watcher holds the exact VMM behind the current proof."
-msgstr ""
+msgstr "- অপরিবর্তিত কমান্ডটির সর্বশেষ তিনটি সমন্বয়ের প্রতিটিতে একই running ফলাফল নথিভুক্ত হয়েছে;\n- armed পর্যবেক্ষকটি বর্তমান প্রমাণে উল্লিখিত সুনির্দিষ্ট VMM-টিকে ধরে রেখেছে।"
 
 #: lib/marshall/documentation_messages.ex:3613
 #, elixir-autogen, elixir-format
@@ -6777,7 +6777,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3621
 #, elixir-autogen, elixir-format
 msgid "1. capacity snapshots;\n2. creation, deletion, transfer and other mutations;\n3. upkeep."
-msgstr ""
+msgstr "1. ধারণক্ষমতার স্ন্যাপশট;\n2. তৈরি, মুছে ফেলা, স্থানান্তর ও অন্যান্য পরিবর্তন;\n3. রক্ষণাবেক্ষণ।"
 
 #: lib/marshall/documentation_messages.ex:3625
 #, elixir-autogen, elixir-format
@@ -6812,7 +6812,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3649
 #, elixir-autogen, elixir-format
 msgid "A failed SSH signing attempt retains its public generation. Matching retries\ntransition it back to pending, so an unavailable private signer does not append\na history row on every guest synchronization attempt. Changed keys and renewal\nwindows still allocate a new generation.\n"
-msgstr ""
+msgstr "SSH স্বাক্ষরের ব্যর্থ প্রচেষ্টা তার প্রকাশ্য প্রজন্ম ধরে রাখে। মিল থাকা পুনঃপ্রচেষ্টা সেটিকে আবার pending অবস্থায় নেয়, তাই অনুপলব্ধ ব্যক্তিগত স্বাক্ষরকারী প্রতিবার অতিথি সিঙ্কের প্রচেষ্টায় ইতিহাসের নতুন সারি যোগ করে না। পরিবর্তিত কী এবং নবায়নের সময়সীমা এখনও নতুন প্রজন্ম বরাদ্দ করে।\n"
 
 #: lib/marshall/documentation_messages.ex:3653
 #, elixir-autogen, elixir-format
@@ -6872,12 +6872,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3701
 #, elixir-autogen, elixir-format
 msgid "A minimal role fragment uses runtime file paths for private material:"
-msgstr ""
+msgstr "একটি ন্যূনতম ভূমিকার কনফিগারেশন খণ্ডে ব্যক্তিগত উপকরণের জন্য রানটাইম ফাইলের পথ ব্যবহার করা হয়:"
 
 #: lib/marshall/documentation_messages.ex:3705
 #, elixir-autogen, elixir-format
 msgid "A mutation validates the actor, locks relevant rows, checks current authority,\nrecords intent and work, and commits. Outcome diagnostics follow commit. Retry\nwith the original idempotency key after an uncertain response. A new key denotes\na new request and may create a second resource."
-msgstr ""
+msgstr "একটি পরিবর্তনকারী অপারেশন কর্তার পরিচয় যাচাই করে, প্রাসঙ্গিক সারি লক করে, বর্তমান কর্তৃত্ব পরীক্ষা করে, অভিপ্রায় ও কাজ নথিভুক্ত করে এবং কমিট করে। ফলাফলের ডায়াগনস্টিক কমিটের পরে আসে। অনিশ্চিত প্রতিক্রিয়ার পরে মূল পুনরাবৃত্তি-প্রতিরোধ কী দিয়ে আবার চেষ্টা করুন। নতুন কী মানে নতুন অনুরোধ এবং তা দ্বিতীয় রিসোর্স তৈরি করতে পারে।"
 
 #: lib/marshall/documentation_messages.ex:3709
 #, elixir-autogen, elixir-format
@@ -6922,7 +6922,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3745
 #, elixir-autogen, elixir-format
 msgid "A running VM in steady state is not reconciled every second (ADR-0176). An actor\ncounts as steady when all of the following hold:"
-msgstr ""
+msgstr "স্থিতিশীল অবস্থায় চলমান VM-কে প্রতি সেকেন্ডে সমন্বয় করা হয় না (ADR-0176)। নিচের সব শর্ত পূরণ হলে একটি অ্যাক্টরকে স্থিতিশীল ধরা হয়:"
 
 #: lib/marshall/documentation_messages.ex:3749
 #, elixir-autogen, elixir-format
@@ -6932,7 +6932,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3753
 #, elixir-autogen, elixir-format
 msgid "A running guest receives a bounded boot-specific sync request. No freeze occurs;\nan unconfirmed flush is recorded and capture can continue. Guest snapshots are\ncrash-consistent, not a transaction across applications and hosts. Stopped guests\nare not started for backup."
-msgstr ""
+msgstr "চালু অতিথি বুট-নির্দিষ্ট একটি সীমিত সিঙ্ক অনুরোধ পায়। কোনো ফ্রিজ হয় না; নিশ্চিত না হওয়া ফ্লাশ নথিভুক্ত হয় এবং ক্যাপচার চলতে পারে। অতিথির স্ন্যাপশট ক্র্যাশ-সামঞ্জস্যপূর্ণ, অ্যাপ্লিকেশন ও হোস্টজুড়ে একটি ট্রানজ্যাকশন নয়। ব্যাকআপের জন্য বন্ধ অতিথিকে চালু করা হয় না।"
 
 #: lib/marshall/documentation_messages.ex:3757
 #, elixir-autogen, elixir-format
@@ -6962,7 +6962,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3777
 #, elixir-autogen, elixir-format
 msgid "A steady actor skips per-second ticks and reconciles on a 10-second backstop,\nwell inside the 30-second watched deadline. Before this, each running VM took\nthe placement, intent and network locks and ran `systemctl show` once a second.\nAny of these ends steadiness at once:"
-msgstr ""
+msgstr "স্থিতিশীল actor প্রতি সেকেন্ডের টিক এড়িয়ে 10 সেকেন্ডের ব্যাকস্টপে সমন্বয় করে, যা পর্যবেক্ষিত 30 সেকেন্ডের সময়সীমার যথেষ্ট ভেতরে। এর আগে প্রতিটি চালু VM প্রতি সেকেন্ডে placement, intent ও network লক নিত এবং `systemctl show` চালাত। নিচের যেকোনোটি সঙ্গে সঙ্গে স্থিতিশীলতা শেষ করে:"
 
 #: lib/marshall/documentation_messages.ex:3781
 #, elixir-autogen, elixir-format
@@ -6992,7 +6992,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3798
 #, elixir-autogen, elixir-format
 msgid "ADR-0154 keeps only changes whose effect was measured with the boot profile\n(1-vCPU fixture; seconds since guest kernel start):"
-msgstr ""
+msgstr "ADR-0154 শুধু সেই পরিবর্তনগুলো রাখে, যেগুলোর প্রভাব বুট প্রোফাইল দিয়ে মাপা হয়েছে\n(1-vCPU পরীক্ষার ফিক্সচার; গেস্ট কার্নেল শুরুর পর থেকে সেকেন্ড):"
 
 #: lib/marshall/documentation_messages.ex:3802
 #, elixir-autogen, elixir-format
@@ -7037,7 +7037,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3831
 #, elixir-autogen, elixir-format
 msgid "Acceptance requires the deployed revision, healthy required services, current host\nreports, an authorized guest lifecycle, terminal/SSH access, and working configured\nmail/provider paths. A build or push alone proves none of these runtime outcomes."
-msgstr ""
+msgstr "গ্রহণযোগ্যতার জন্য স্থাপিত রিভিশন, প্রয়োজনীয় সুস্থ পরিষেবা, বর্তমান হোস্ট রিপোর্ট, অনুমোদিত অতিথি জীবনচক্র, টার্মিনাল/SSH অ্যাক্সেস এবং কনফিগার করা সচল মেইল/প্রোভাইডার পথ প্রয়োজন। শুধু বিল্ড বা পুশ এই রানটাইম ফলাফলগুলোর কোনোটিই প্রমাণ করে না।"
 
 #: lib/marshall/documentation_messages.ex:3839
 #, elixir-autogen, elixir-format
@@ -7072,12 +7072,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3867
 #, elixir-autogen, elixir-format
 msgid "Actual parent dataset GUID as a decimal string."
-msgstr ""
+msgstr "প্রকৃত মূল ডেটাসেটের GUID দশমিক স্ট্রিং হিসেবে।"
 
 #: lib/marshall/documentation_messages.ex:3868
 #, elixir-autogen, elixir-format
 msgid "Actual unsigned 64-bit zpool GUID as a decimal string."
-msgstr ""
+msgstr "প্রকৃত unsigned 64-বিট zpool GUID দশমিক স্ট্রিং হিসেবে।"
 
 #: lib/marshall/documentation_messages.ex:3869
 #, elixir-autogen, elixir-format
@@ -7087,17 +7087,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3873
 #, elixir-autogen, elixir-format
 msgid "Additional arguments passed to each module in addition to ones\nlike `lib`, `config`,\nand `pkgs`, `modulesPath`."
-msgstr ""
+msgstr "`lib`, `config`,\nও `pkgs`, `modulesPath`-এর মতো আর্গুমেন্টের\nপাশাপাশি প্রতিটি মডিউলে পাঠানো অতিরিক্ত আর্গুমেন্ট।"
 
 #: lib/marshall/documentation_messages.ex:3877
 #, elixir-autogen, elixir-format
 msgid "Additional canonical IPv4 networks denied to guests, including public management endpoints."
-msgstr ""
+msgstr "সর্বজনীন ব্যবস্থাপনা এন্ডপয়েন্টসহ অতিরিক্ত প্রামাণ্য IPv4 নেটওয়ার্ক, যেখানে গেস্টের প্রবেশ নিষিদ্ধ।"
 
 #: lib/marshall/documentation_messages.ex:3881
 #, elixir-autogen, elixir-format
 msgid "Administrative access path. Console-only deployments must disable administrative OpenSSH."
-msgstr ""
+msgstr "প্রশাসনিক প্রবেশপথ। শুধু কনসোল ব্যবহারকারী স্থাপনায় প্রশাসনিক OpenSSH নিষ্ক্রিয় করতে হবে।"
 
 #: lib/marshall/documentation_messages.ex:3885
 #, elixir-autogen, elixir-format
@@ -7117,7 +7117,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3901
 #, elixir-autogen, elixir-format
 msgid "Admit port 80 on the proxy address from any source through the fleet perimeter (ADR-0181), so the public CA can reach HTTP-01 challenges. The listener serves only challenges and HTTPS redirects."
-msgstr ""
+msgstr "ফ্লিটের সীমানা দিয়ে যেকোনো উৎস থেকে প্রক্সি ঠিকানার পোর্ট 80-তে প্রবেশের অনুমতি দিন (ADR-0181), যাতে সর্বজনীন CA HTTP-01 চ্যালেঞ্জে পৌঁছাতে পারে। লিসেনারটি শুধু চ্যালেঞ্জ ও HTTPS পুনর্নির্দেশ পরিবেশন করে।"
 
 #: lib/marshall/documentation_messages.ex:3905
 #, elixir-autogen, elixir-format
@@ -7152,7 +7152,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3941
 #, elixir-autogen, elixir-format
 msgid "After reviewing public users and host inventory, use a retained recovery identity:"
-msgstr ""
+msgstr "সর্বজনীন ব্যবহারকারী ও হোস্ট তালিকা পর্যালোচনার পর, সংরক্ষিত পুনরুদ্ধার পরিচয় ব্যবহার করুন:"
 
 #: lib/marshall/documentation_messages.ex:3949
 #, elixir-autogen, elixir-format
@@ -7167,27 +7167,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3957
 #, elixir-autogen, elixir-format
 msgid "Age passed to nix-collect-garbage --delete-older-than. Generations\nyounger than this are preserved."
-msgstr ""
+msgstr "nix-collect-garbage --delete-older-than-এ পাঠানো বয়স। এর চেয়ে নতুন\nজেনারেশনগুলো সংরক্ষিত থাকে।"
 
 #: lib/marshall/documentation_messages.ex:3965
 #, elixir-autogen, elixir-format
 msgid "Aggregate CPU quota in logical cores for Marshall instances."
-msgstr ""
+msgstr "Marshall ইনস্ট্যান্সগুলোর জন্য লজিক্যাল কোরে মোট CPU কোটা।"
 
 #: lib/marshall/documentation_messages.ex:3969
 #, elixir-autogen, elixir-format
 msgid "Aggregate Marshall memory limit in MiB."
-msgstr ""
+msgstr "Marshall-এর মোট মেমরি সীমা MiB-এ।"
 
 #: lib/marshall/documentation_messages.ex:3970
 #, elixir-autogen, elixir-format
 msgid "Aggregate guest CPU quota in logical cores."
-msgstr ""
+msgstr "অতিথিদের মোট CPU কোটা লজিক্যাল কোরে।"
 
 #: lib/marshall/documentation_messages.ex:3971
 #, elixir-autogen, elixir-format
 msgid "Aggregate guest and VMM memory budget in MiB."
-msgstr ""
+msgstr "অতিথি ও VMM-এর মোট মেমরি বাজেট MiB-এ।"
 
 #: lib/marshall/documentation_messages.ex:3972
 #, elixir-autogen, elixir-format
@@ -7217,12 +7217,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:3992
 #, elixir-autogen, elixir-format
 msgid "Also bind fleet TLS to loopback for colocated clients when the main fleet bind uses a private interface."
-msgstr ""
+msgstr "মূল ফ্লিট বাইন্ড ব্যক্তিগত ইন্টারফেস ব্যবহার করলে একই হোস্টের ক্লায়েন্টদের জন্য ফ্লিট TLS-কে লুপব্যাকেও বাইন্ড করুন।"
 
 #: lib/marshall/documentation_messages.ex:3996
 #, elixir-autogen, elixir-format
 msgid "An Ash domain groups resource actions and their code interfaces. It is a business\nboundary inside an application. It does not create a service, database or process.\nThe diagrams and resource inventory below are extracted from literal declarations."
-msgstr ""
+msgstr "একটি Ash ডোমেইন রিসোর্স অ্যাকশন এবং তাদের কোড ইন্টারফেসকে একত্র করে। এটি অ্যাপ্লিকেশনের ভেতরের একটি ব্যবসায়িক সীমানা। এটি পরিষেবা, ডেটাবেস বা প্রক্রিয়া তৈরি করে না। নিচের চিত্র ও রিসোর্স তালিকা সরাসরি ঘোষণাগুলো থেকে নিষ্কাশিত।"
 
 #: lib/marshall/documentation_messages.ex:4000
 #, elixir-autogen, elixir-format
@@ -7272,7 +7272,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4040
 #, elixir-autogen, elixir-format
 msgid "An elevated administrator can send an invitation from **Users**. The\nrecipient becomes an ordinary account only after explicitly consuming a valid\nemail link. Delivery uses an encrypted outbox; requesting an invitation does not\nprove that a mailbox received it."
-msgstr ""
+msgstr "উন্নীত অধিকারসম্পন্ন প্রশাসক **ব্যবহারকারী** থেকে আমন্ত্রণ পাঠাতে পারেন। প্রাপক কেবল বৈধ ইমেইল লিংক স্পষ্টভাবে ব্যবহার করার পর সাধারণ অ্যাকাউন্ট হন। ডেলিভারিতে এনক্রিপ্ট করা আউটবক্স ব্যবহৃত হয়; আমন্ত্রণ চাওয়া মানেই মেইলবক্সে তা পৌঁছেছে এমন প্রমাণ নয়।"
 
 #: lib/marshall/documentation_messages.ex:4044
 #, elixir-autogen, elixir-format
@@ -7292,7 +7292,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4056
 #, elixir-autogen, elixir-format
 msgid "An identical prompt request key retains the original turn. A user who chooses to\nretry must submit a new invocation/request identity with current write access.\nAn old approved CLI session cannot bypass withdrawn sharing. Inspect effects in\nthe guest before choosing to retry an uncertain operation."
-msgstr ""
+msgstr "একই প্রম্পট অনুরোধ কী মূল পালাটি ধরে রাখে। ব্যবহারকারী আবার চেষ্টা করতে চাইলে বর্তমান লেখার অনুমতিসহ নতুন আহ্বান/অনুরোধ পরিচয় জমা দিতে হবে। পুরোনো অনুমোদিত CLI সেশন প্রত্যাহৃত শেয়ারিং এড়াতে পারে না। অনিশ্চিত অপারেশন আবার চালানোর আগে অতিথির ভেতরে তার প্রভাব পরীক্ষা করুন।"
 
 #: lib/marshall/documentation_messages.ex:4060
 #, elixir-autogen, elixir-format
@@ -7337,7 +7337,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4092
 #, elixir-autogen, elixir-format
 msgid "Application release source now includes `protocol/priv` alongside Protocol's\nlibrary and Mix files so its compile-time exact native registry input enters\nthe release closure. A fresh application release build remains pending; source\ninclusion alone grants no native capability or runtime readiness."
-msgstr ""
+msgstr "অ্যাপ্লিকেশন রিলিজের উৎসে এখন Protocol-এর লাইব্রেরি ও Mix ফাইলের পাশাপাশি `protocol/priv` অন্তর্ভুক্ত, যাতে কম্পাইলের সময় ব্যবহৃত নির্ভুল native registry ইনপুট রিলিজের dependency closure-এ থাকে। নতুন অ্যাপ্লিকেশন রিলিজ বিল্ড এখনও বাকি; শুধু উৎস অন্তর্ভুক্তি কোনো native সক্ষমতা বা রানটাইম প্রস্তুতি দেয় না।"
 
 #: lib/marshall/documentation_messages.ex:4096
 #, elixir-autogen, elixir-format
@@ -7382,17 +7382,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4132
 #, elixir-autogen, elixir-format
 msgid "Arrows mean application ownership, not calls or deployment units. Resources below are literal declarations, deduplicated; extension-generated versions are excluded."
-msgstr ""
+msgstr "তীরচিহ্নগুলো অ্যাপ্লিকেশনের মালিকানা বোঝায়, কল বা স্থাপনার একক নয়। নিচের রিসোর্সগুলো সরাসরি ঘোষিত এবং পুনরাবৃত্তিমুক্ত; এক্সটেনশন থেকে তৈরি সংস্করণগুলো বাদ দেওয়া হয়েছে।"
 
 #: lib/marshall/documentation_messages.ex:4136
 #, elixir-autogen, elixir-format
 msgid "Arrows mean configured service placement. Configuration: `dungarees`. Marshall instances: none. Fleet address: `10.90.0.2`. Fleet peers: `overalls`. Administrative SSH ports: 2222."
-msgstr ""
+msgstr "তীরচিহ্নগুলো কনফিগার করা পরিষেবার অবস্থান বোঝায়। কনফিগারেশন: `dungarees`। Marshall ইনস্ট্যান্স: নেই। ফ্লিট ঠিকানা: `10.90.0.2`। ফ্লিট পিয়ার: `overalls`। প্রশাসনিক SSH পোর্ট: 2222।"
 
 #: lib/marshall/documentation_messages.ex:4140
 #, elixir-autogen, elixir-format
 msgid "At least two independent authoritative nameservers."
-msgstr ""
+msgstr "অন্তত দুটি স্বাধীন authoritative nameserver।"
 
 #: lib/marshall/documentation_messages.ex:4141
 #, elixir-autogen, elixir-format
@@ -7402,7 +7402,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4142
 #, elixir-autogen, elixir-format
 msgid "Atomically published PEM key and full certificate chain, readable by the haproxy group."
-msgstr ""
+msgstr "পরমাণবিকভাবে প্রকাশিত PEM কী ও সম্পূর্ণ সার্টিফিকেট চেইন, যা haproxy গ্রুপ পড়তে পারে।"
 
 #: lib/marshall/documentation_messages.ex:4146
 #, elixir-autogen, elixir-format
@@ -7437,7 +7437,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4174
 #, elixir-autogen, elixir-format
 msgid "Authenticate the installed public host key from the receipt. Publish it in the\nhost inventory. Prepare encrypted Git custody, publish the enrolled configuration,\nthen activate the exact commit:"
-msgstr ""
+msgstr "রসিদ থেকে ইনস্টল করা সর্বজনীন হোস্ট কীটির সত্যতা যাচাই করুন। সেটি\nহোস্ট তালিকায় প্রকাশ করুন। এনক্রিপ্ট করা Git হেফাজত প্রস্তুত করুন, নিবন্ধিত কনফিগারেশন প্রকাশ করুন,\nতারপর সুনির্দিষ্ট কমিটটি সক্রিয় করুন:"
 
 #: lib/marshall/documentation_messages.ex:4178
 #, elixir-autogen, elixir-format
@@ -7452,7 +7452,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4186
 #, elixir-autogen, elixir-format
 msgid "Authoritative Audi DNS replicas checked before challenge acknowledgement."
-msgstr ""
+msgstr "চ্যালেঞ্জের স্বীকৃতি দেওয়ার আগে যাচাই করা প্রামাণ্য Audi DNS রেপ্লিকা।"
 
 #: lib/marshall/documentation_messages.ex:4190
 #, elixir-autogen, elixir-format
@@ -7487,12 +7487,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4209
 #, elixir-autogen, elixir-format
 msgid "Because the console is quiet, routine `Starting`/`Started` lines no longer\nappear in `boot.log`. Unit failures still print, and the boot report timeline\ncovers ordering. Existing writable disks keep their old image layout; the first\nboot after an image change takes the full trust path."
-msgstr ""
+msgstr "কনসোল নীরব হওয়ায় নিয়মিত `Starting`/`Started` লাইন আর `boot.log`-এ দেখা যায় না। ইউনিটের ব্যর্থতা এখনও ছাপা হয়, এবং বুট রিপোর্টের টাইমলাইন ক্রম দেখায়। বিদ্যমান লেখাযোগ্য ডিস্ক পুরোনো ইমেজ বিন্যাস ধরে রাখে; ইমেজ বদলের পর প্রথম বুট পূর্ণ trust path অনুসরণ করে।"
 
 #: lib/marshall/documentation_messages.ex:4213
 #, elixir-autogen, elixir-format
 msgid "Before a schema or protocol rollout, verify compatibility with every serving\nreplica and retained host journal. Never downgrade by deleting journals or undoing\na migration whose rows establish ownership. See [deployment](#deployment) and\n[recovery](#recovery)."
-msgstr ""
+msgstr "স্কিমা বা প্রোটোকল চালুর আগে সেবা দেওয়া প্রতিটি replica এবং সংরক্ষিত হোস্ট জার্নালের সঙ্গে সামঞ্জস্য যাচাই করুন। জার্নাল মুছে বা মালিকানা প্রতিষ্ঠাকারী সারির migration উল্টে কখনো downgrade করবেন না। [স্থাপন](#deployment) ও [পুনরুদ্ধার](#recovery) দেখুন।"
 
 #: lib/marshall/documentation_messages.ex:4217
 #, elixir-autogen, elixir-format
@@ -7552,7 +7552,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4261
 #, elixir-autogen, elixir-format
 msgid "Bound storage pools; filesystem identity must match the actual mount."
-msgstr ""
+msgstr "বাইন্ড করা স্টোরেজ পুল; ফাইলসিস্টেমের পরিচয় অবশ্যই প্রকৃত মাউন্টের সঙ্গে মিলতে হবে।"
 
 #: lib/marshall/documentation_messages.ex:4265
 #, elixir-autogen, elixir-format
@@ -7567,7 +7567,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4273
 #, elixir-autogen, elixir-format
 msgid "Boundary: A current stored login permits ordinary access independently of a passkey. Single-use WebAuthn challenges establish session-specific privileged elevation. Browser magic-link GET leaves the single-use token intact; connected LiveView posts it with remember enabled."
-msgstr ""
+msgstr "সীমানা: বর্তমান সংরক্ষিত লগইন passkey থেকে স্বাধীনভাবে সাধারণ অ্যাক্সেস দেয়। একবার ব্যবহারযোগ্য WebAuthn challenge সেশন-নির্দিষ্ট বিশেষাধিকার উন্নীতকরণ প্রতিষ্ঠা করে। ব্রাউজারের magic-link GET একবার ব্যবহারযোগ্য টোকেন অক্ষত রাখে; সংযুক্ত LiveView remember সক্রিয় করে তা পোস্ট করে।"
 
 #: lib/marshall/documentation_messages.ex:4277
 #, elixir-autogen, elixir-format
@@ -7577,7 +7577,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4281
 #, elixir-autogen, elixir-format
 msgid "Boundary: A direct local QEMU TCG runner boots a NixOS router with real Linux ZFS, Lilly-generated nftables rules and production Brady. Two complete cached bodies replay with the origin stopped, then an acknowledged QMP reset reimports the same mirror and reapplies Brady's 64 MiB quota/refquota."
-msgstr ""
+msgstr "সীমানা: সরাসরি স্থানীয় QEMU TCG runner প্রকৃত Linux ZFS, Lilly-উৎপন্ন nftables নিয়ম এবং production Brady-সহ NixOS router বুট করে। উৎস বন্ধ রেখে দুটি সম্পূর্ণ cached body পুনরায় পরিবেশিত হয়; তারপর স্বীকৃত QMP reset একই mirror পুনরায় import করে এবং Brady-এর 64 MiB quota/refquota আবার প্রয়োগ করে।"
 
 #: lib/marshall/documentation_messages.ex:4285
 #, elixir-autogen, elixir-format
@@ -7587,7 +7587,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4289
 #, elixir-autogen, elixir-format
 msgid "Boundary: A host-owned Rust probe calls only the pinned Underclass tokenless local Unix monitor; a separate collector intake assigns fixed Underclass-monitor and host provenance before Prometheus and private Grafana read it."
-msgstr ""
+msgstr "সীমানা: হোস্টের মালিকানাধীন Rust probe শুধু নির্দিষ্ট Underclass-এর টোকেনবিহীন স্থানীয় Unix monitor ডাকে; পৃথক collector intake Prometheus ও ব্যক্তিগত Grafana পড়ার আগে স্থির Underclass-monitor এবং হোস্ট provenance নির্ধারণ করে।"
 
 #: lib/marshall/documentation_messages.ex:4293
 #, elixir-autogen, elixir-format
@@ -7617,12 +7617,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4313
 #, elixir-autogen, elixir-format
 msgid "Boundary: A selected QEMU TCG NixOS Lilly host prepares a fixed ZFS member and samples pool/dataset GUIDs, capacity, and kernel cgroup CPU/memory. The private 9p witness identifies an image but does not grant Control authority. Enrollment and current authenticated reports must precede admission."
-msgstr ""
+msgstr "সীমানা: নির্বাচিত QEMU TCG NixOS Lilly হোস্ট স্থির ZFS member প্রস্তুত করে এবং pool/dataset GUID, capacity ও kernel cgroup CPU/memory নমুনা নেয়। ব্যক্তিগত 9p witness ইমেজ শনাক্ত করে, কিন্তু Control কর্তৃত্ব দেয় না। ভর্তি করার আগে enrollment ও বর্তমান authenticated report আবশ্যক।"
 
 #: lib/marshall/documentation_messages.ex:4317
 #, elixir-autogen, elixir-format
 msgid "Boundary: A transport refusal does not prove a domain effect completed or authorize lifecycle cleanup; Lilly must preserve the permanent class used by Runtime fencing."
-msgstr ""
+msgstr "সীমানা: পরিবহন প্রত্যাখ্যান কোনো ডোমেইন প্রভাব সম্পন্ন হওয়ার প্রমাণ দেয় না বা জীবনচক্রের পরিষ্কারের অনুমতি দেয় না; Runtime-এর ফেন্সিংয়ে ব্যবহৃত স্থায়ী শ্রেণিটি Lilly-কে অক্ষুণ্ণ রাখতে হবে।"
 
 #: lib/marshall/documentation_messages.ex:4321
 #, elixir-autogen, elixir-format
@@ -7647,37 +7647,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4345
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi DNS counts ordinary in-zone questions after an authoritative UDP or TCP reply and socket send; a mode-0600 numeric snapshot feeds a Rust exporter through an Audi-DNS-only collector intake."
-msgstr ""
+msgstr "সীমানা: Audi DNS প্রামাণ্য UDP বা TCP উত্তর ও সকেটে পাঠানোর পরে সাধারণ ইন-জোন প্রশ্ন গণনা করে; mode-0600 সংখ্যাভিত্তিক স্ন্যাপশট Audi-DNS-নির্দিষ্ট কালেক্টর ইনটেক দিয়ে Rust এক্সপোর্টারে যায়।"
 
 #: lib/marshall/documentation_messages.ex:4349
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi counts only a validated Marshall grant followed by local Lilly connector and SSH exec acknowledgment; a source-group-readable numeric snapshot feeds a separate Rust exporter through an Audi-SSH-only collector intake."
-msgstr ""
+msgstr "সীমানা: Audi শুধু যাচাইকৃত Marshall grant-এর পর স্থানীয় Lilly connector ও SSH exec acknowledgment গোনে; source-group-এর পাঠযোগ্য সংখ্যামূলক snapshot পৃথক Rust exporter-এ যায়, Audi-SSH-নির্দিষ্ট collector intake দিয়ে।"
 
 #: lib/marshall/documentation_messages.ex:4353
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi gets a current Lilly placement binding and forwards an exact private OTLP route to the Rust receiver; only host-bound sanitized guest metrics reach the local collector."
-msgstr ""
+msgstr "সীমানা: Audi বর্তমান Lilly প্লেসমেন্ট বাইন্ডিং পায় এবং সুনির্দিষ্ট ব্যক্তিগত OTLP রুট Rust রিসিভারে পাঠায়; শুধু হোস্টে বাঁধা পরিশোধিত গেস্ট মেট্রিক স্থানীয় কালেক্টরে পৌঁছায়।"
 
 #: lib/marshall/documentation_messages.ex:4357
 #, elixir-autogen, elixir-format
 msgid "Boundary: Audi private counts completed non-OTLP requests only after current Lilly binding and TLS checks; a private fixed numeric snapshot feeds a Rust exporter through an Audi-private-only collector intake."
-msgstr ""
+msgstr "সীমানা: Audi private শুধু বর্তমান Lilly বাইন্ডিং ও TLS যাচাইয়ের পরে সম্পন্ন non-OTLP অনুরোধ গণনা করে; নির্দিষ্ট ব্যক্তিগত সংখ্যাভিত্তিক স্ন্যাপশট Audi-private-নির্দিষ্ট কালেক্টর ইনটেক দিয়ে Rust এক্সপোর্টারে যায়।"
 
 #: lib/marshall/documentation_messages.ex:4361
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authenticated current-incarnation report delivery and reconciled durable authority through the private Unix readiness socket."
-msgstr ""
+msgstr "সীমানা: বর্তমান ইনকারনেশনের প্রমাণীকৃত প্রতিবেদন সরবরাহ এবং ব্যক্তিগত Unix প্রস্তুতি সকেটের মাধ্যমে সমন্বিত স্থায়ী কর্তৃত্ব।"
 
 #: lib/marshall/documentation_messages.ex:4365
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authenticated upgrade principal must become a bound identity through the first hello; a valid envelope alone is not binding."
-msgstr ""
+msgstr "সীমানা: প্রমাণীকৃত আপগ্রেডের প্রিন্সিপালকে প্রথম hello-র মাধ্যমে বাঁধা পরিচয়ে পরিণত হতে হবে; শুধু বৈধ এনভেলপ থাকলেই বাইন্ডিং হয় না।"
 
 #: lib/marshall/documentation_messages.ex:4369
 #, elixir-autogen, elixir-format
 msgid "Boundary: Authored workload commands use OverallsProtocol.Control.Client against a loopback WebSocket peer and inventory exact wire request IDs, caller receipts, busy-without-frame refusal and late retired replies. The peer is a transport fixture outside the Marshall and Lilly service graph."
-msgstr ""
+msgstr "সীমানা: লিখিত workload command loopback WebSocket peer-এর সঙ্গে OverallsProtocol.Control.Client ব্যবহার করে এবং নির্ভুল wire request ID, caller receipt, frame ছাড়া busy refusal ও দেরিতে আসা retired reply তালিকাভুক্ত করে। peer হলো Marshall ও Lilly service graph-এর বাইরের transport fixture।"
 
 #: lib/marshall/documentation_messages.ex:4373
 #, elixir-autogen, elixir-format
@@ -7687,62 +7687,62 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4377
 #, elixir-autogen, elixir-format
 msgid "Boundary: Both adapters delegate to the same durable gateway/session authority; separate session creations issue separate identities."
-msgstr ""
+msgstr "সীমানা: উভয় অ্যাডাপ্টার একই স্থায়ী গেটওয়ে/সেশন কর্তৃত্বের কাছে দায়িত্ব দেয়; আলাদা সেশন তৈরি করলে আলাদা পরিচয় ইস্যু হয়।"
 
 #: lib/marshall/documentation_messages.ex:4381
 #, elixir-autogen, elixir-format
 msgid "Boundary: Both creation entries select OSS by default; an explicit Customer choice remains restricted by the persisted profile policy."
-msgstr ""
+msgstr "সীমানা: তৈরির উভয় প্রবেশপথে ডিফল্ট হিসেবে OSS নির্বাচিত হয়; স্পষ্টভাবে Customer বেছে নিলেও সংরক্ষিত প্রোফাইল নীতির বিধিনিষেধ কার্যকর থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4385
 #, elixir-autogen, elixir-format
 msgid "Boundary: Central Prometheus and private loopback Alertmanager route only the reviewed provisional burn roster to a runtime HTTPS destination."
-msgstr ""
+msgstr "সীমানা: কেন্দ্রীয় Prometheus ও ব্যক্তিগত লুপব্যাক Alertmanager শুধু পর্যালোচিত অস্থায়ী বার্ন তালিকাটিকে রানটাইম HTTPS গন্তব্যে পাঠায়।"
 
 #: lib/marshall/documentation_messages.ex:4389
 #, elixir-autogen, elixir-format
 msgid "Boundary: Common runtime configuration is evaluated before Marshall application callbacks, Repo and listeners."
-msgstr ""
+msgstr "সীমানা: Marshall অ্যাপ্লিকেশনের কলব্যাক, Repo ও লিসেনারের আগে সাধারণ রানটাইম কনফিগারেশন মূল্যায়ন করা হয়।"
 
 #: lib/marshall/documentation_messages.ex:4393
 #, elixir-autogen, elixir-format
 msgid "Boundary: Complete manifest, matching keyring, native ownership and isolated restoration."
-msgstr ""
+msgstr "সীমানা: সম্পূর্ণ ম্যানিফেস্ট, মিলযুক্ত কীরিং, নেটিভ মালিকানা ও বিচ্ছিন্ন পুনরুদ্ধার।"
 
 #: lib/marshall/documentation_messages.ex:4397
 #, elixir-autogen, elixir-format
 msgid "Boundary: Compute owns transactional measurement admissions and retained numeric totals; authenticated physical outcomes and exact-execution readiness evidence supply observations without changing execution or receipt authority."
-msgstr ""
+msgstr "সীমানা: Compute ট্রানজ্যাকশনভিত্তিক measurement admission এবং সংরক্ষিত সংখ্যামূলক মোটের মালিক; authenticated physical outcome ও exact-execution readiness evidence পর্যবেক্ষণ সরবরাহ করে, execution বা receipt কর্তৃত্ব না বদলিয়ে।"
 
 #: lib/marshall/documentation_messages.ex:4401
 #, elixir-autogen, elixir-format
 msgid "Boundary: Control documents and immutable business/security receipts retain authority; diagnostics cannot authorize work, release capacity or rewrite accounting."
-msgstr ""
+msgstr "সীমানা: Control নথি এবং অপরিবর্তনীয় ব্যবসায়িক/নিরাপত্তা রসিদই কর্তৃত্ব ধরে রাখে; ডায়াগনস্টিক কাজের অনুমতি দিতে, ধারণক্ষমতা ছাড়তে বা হিসাব বদলাতে পারে না।"
 
 #: lib/marshall/documentation_messages.ex:4409
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current administrator and passkey elevation share the audited catalog transaction; stored browser login/current registration gate reads; locked current attempt gates publication."
-msgstr ""
+msgstr "সীমানা: বর্তমান প্রশাসক ও পাসকি উন্নীতকরণ একই নিরীক্ষিত ক্যাটালগ লেনদেন ব্যবহার করে; সংরক্ষিত ব্রাউজার লগইন/বর্তমান নিবন্ধন পড়ার অনুমতি নিয়ন্ত্রণ করে; লক করা বর্তমান প্রচেষ্টা প্রকাশ নিয়ন্ত্রণ করে।"
 
 #: lib/marshall/documentation_messages.ex:4413
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current administrator role, stored browser login and recent passkey elevation govern user controls through commit. Accepted fixed-cohort work has separate durable campaign authority."
-msgstr ""
+msgstr "সীমানা: বর্তমান প্রশাসক ভূমিকা, সংরক্ষিত ব্রাউজার লগইন ও সাম্প্রতিক পাসকি উন্নীতকরণ কমিট পর্যন্ত ব্যবহারকারীর নিয়ন্ত্রণ কার্যকর করে। গৃহীত নির্দিষ্ট দলের কাজের জন্য আলাদা স্থায়ী ক্যাম্পেইন কর্তৃত্ব থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4417
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current browser/CLI authority, durable command start, VM placement and executor fence; exact disposable guest process interruption."
-msgstr ""
+msgstr "সীমানা: বর্তমান ব্রাউজার/CLI কর্তৃত্ব, স্থায়ী কমান্ড সূচনা, VM প্লেসমেন্ট ও এক্সিকিউটর ফেন্স; সুনির্দিষ্ট অস্থায়ী গেস্ট প্রক্রিয়ায় বাধা দেওয়া।"
 
 #: lib/marshall/documentation_messages.ex:4421
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current completed login; no administrator requirement and no public documentation fallback."
-msgstr ""
+msgstr "সীমানা: বর্তমানে সম্পন্ন লগইন; প্রশাসক হওয়ার প্রয়োজন নেই এবং সর্বজনীন ডকুমেন্টেশনে ফলব্যাক নেই।"
 
 #: lib/marshall/documentation_messages.ex:4425
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current creator ownership, unique active team name and transactional owner membership."
-msgstr ""
+msgstr "সীমানা: বর্তমান স্রষ্টার মালিকানা, অনন্য সক্রিয় দলের নাম ও লেনদেনভিত্তিক মালিকের সদস্যপদ।"
 
 #: lib/marshall/documentation_messages.ex:4429
 #, elixir-autogen, elixir-format
@@ -7752,47 +7752,47 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4433
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current locally confined Firecracker boot, host-only vsock delivery, installed public trust and readiness ordering."
-msgstr ""
+msgstr "সীমানা: বর্তমানে স্থানীয়ভাবে সীমাবদ্ধ Firecracker বুট, শুধু হোস্টে vsock সরবরাহ, ইনস্টল করা সর্বজনীন আস্থা ও প্রস্তুতির ক্রম।"
 
 #: lib/marshall/documentation_messages.ex:4437
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current management authority, retained draft/request identity, host/VM serialization, immutable physical command and exact target evidence."
-msgstr ""
+msgstr "সীমানা: বর্তমান ব্যবস্থাপনা কর্তৃত্ব, সংরক্ষিত খসড়া/অনুরোধের পরিচয়, হোস্ট/VM-এর ক্রমিক প্রক্রিয়াকরণ, অপরিবর্তনীয় ফিজিক্যাল কমান্ড ও সুনির্দিষ্ট লক্ষ্যপ্রমাণ।"
 
 #: lib/marshall/documentation_messages.ex:4441
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current publication, TLS identity, renewable request lease and current execution. Gateway catalog decoder refuses TTL above five seconds; ordinary web/SSH grants have their separate thirty-second limit."
-msgstr ""
+msgstr "সীমানা: বর্তমান প্রকাশনা, TLS পরিচয়, নবায়নযোগ্য অনুরোধ লিজ ও বর্তমান নির্বাহ। গেটওয়ে ক্যাটালগ ডিকোডার পাঁচ সেকেন্ডের বেশি TTL প্রত্যাখ্যান করে; সাধারণ ওয়েব/SSH অনুমোদনের নিজস্ব ত্রিশ সেকেন্ডের সীমা থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4445
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current stored browser login, administrator role and fixed passkey elevation retained through account mutation and audit commit; retirement keeps its exclusive admission fence before sorted participants."
-msgstr ""
+msgstr "সীমানা: অ্যাকাউন্ট পরিবর্তন ও নিরীক্ষার কমিট পর্যন্ত বর্তমান সংরক্ষিত ব্রাউজার লগইন, প্রশাসক ভূমিকা ও নির্দিষ্ট পাসকি উন্নীতকরণ বজায় থাকে; সাজানো অংশগ্রহণকারীদের আগে অবসর গ্রহণ একচেটিয়া প্রবেশ-ফেন্স ধরে রাখে।"
 
 #: lib/marshall/documentation_messages.ex:4449
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current team role, durable transfer workflow and exactly one active owner."
-msgstr ""
+msgstr "সীমানা: বর্তমান দলীয় ভূমিকা, স্থায়ী স্থানান্তর কার্যপ্রবাহ এবং ঠিক একজন সক্রিয় মালিক।"
 
 #: lib/marshall/documentation_messages.ex:4453
 #, elixir-autogen, elixir-format
 msgid "Boundary: Current thread managers configure managed installations; operators invoke enabled versions. Ash resources own immutable request identity and pinned revision metadata, while fenced guest operations fetch and materialize immutable revision directories outside repository discovery roots."
-msgstr ""
+msgstr "সীমানা: বর্তমান thread manager-রা managed installation কনফিগার করেন; operator-রা enabled version চালান। Ash resource অপরিবর্তনীয় request identity ও নির্দিষ্ট revision metadata-এর মালিক, আর fenced guest operation repository discovery root-এর বাইরে অপরিবর্তনীয় revision directory আনে ও তৈরি করে।"
 
 #: lib/marshall/documentation_messages.ex:4457
 #, elixir-autogen, elixir-format
 msgid "Boundary: Dedicated unprivileged userspace tailnet node per host with its own state and socket; Underclass cgroup limited to loopback behind a privileged exit-node start gate; host tailscaled, routes and other services unchanged."
-msgstr ""
+msgstr "সীমানা: প্রতি হোস্টে নিজস্ব state ও socket-সহ নির্দিষ্ট unprivileged userspace tailnet node; privileged exit-node start gate-এর পেছনে Underclass cgroup শুধু loopback-এ সীমিত; হোস্ট tailscaled, route এবং অন্য পরিষেবা অপরিবর্তিত।"
 
 #: lib/marshall/documentation_messages.ex:4461
 #, elixir-autogen, elixir-format
 msgid "Boundary: Deployment enrollment binds each host to its real machine identity, name and ZFS GUIDs. Retirement is the only way to release host authority permanently; the retired row is never recycled or renamed."
-msgstr ""
+msgstr "সীমানা: স্থাপনা নিবন্ধন প্রতিটি হোস্টকে তার প্রকৃত মেশিন পরিচয়, নাম ও ZFS GUID-এর সঙ্গে বাঁধে। হোস্টের কর্তৃত্ব স্থায়ীভাবে ছাড়ার একমাত্র উপায় অবসর গ্রহণ; অবসরপ্রাপ্ত সারিটি কখনো পুনর্ব্যবহার বা নাম পরিবর্তন করা হয় না।"
 
 #: lib/marshall/documentation_messages.ex:4465
 #, elixir-autogen, elixir-format
 msgid "Boundary: Deployment-bound public CA policy from verified HTTPS and strict account-proof SSH."
-msgstr ""
+msgstr "সীমানা: যাচাইকৃত HTTPS ও কঠোর অ্যাকাউন্ট-প্রমাণ SSH থেকে প্রাপ্ত স্থাপনার সঙ্গে বাঁধা সর্বজনীন CA নীতি।"
 
 #: lib/marshall/documentation_messages.ex:4469
 #, elixir-autogen, elixir-format
@@ -7802,97 +7802,97 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4473
 #, elixir-autogen, elixir-format
 msgid "Boundary: Distinct local guest-terminal PTY/socket pumps and shared drain coordination; authenticated guest authority remains separate."
-msgstr ""
+msgstr "সীমানা: পৃথক স্থানীয় গেস্ট-টার্মিনাল PTY/সকেট পাম্প ও যৌথ ড্রেন সমন্বয়; প্রমাণীকৃত গেস্ট কর্তৃত্ব আলাদা থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4477
 #, elixir-autogen, elixir-format
 msgid "Boundary: Durable Store/Journal attempt authority survives the actor; recorded controlled-executor and native Executor/Firecracker histories retain distinct evidence."
-msgstr ""
+msgstr "সীমানা: স্থায়ী Store/Journal প্রচেষ্টার কর্তৃত্ব অ্যাক্টর শেষ হলেও টিকে থাকে; নথিভুক্ত নিয়ন্ত্রিত-এক্সিকিউটর ও নেটিভ Executor/Firecracker ইতিহাস আলাদা প্রমাণ হিসেবে থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4481
 #, elixir-autogen, elixir-format
 msgid "Boundary: Each host owns its independent account database and refresh tokens; account controls require its admin bearer token."
-msgstr ""
+msgstr "সীমানা: প্রতিটি হোস্ট তার স্বতন্ত্র অ্যাকাউন্ট ডেটাবেস ও রিফ্রেশ টোকেনের মালিক; অ্যাকাউন্ট নিয়ন্ত্রণের জন্য তার প্রশাসনিক বেয়ারার টোকেন প্রয়োজন।"
 
 #: lib/marshall/documentation_messages.ex:4485
 #, elixir-autogen, elixir-format
 msgid "Boundary: Each private fleet API owns bounded decoding and its service credential; monitoring cache/history remains observational and cannot alter Compute authority."
-msgstr ""
+msgstr "সীমানা: প্রতিটি ব্যক্তিগত ফ্লিট API সীমাবদ্ধ ডিকোডিং ও নিজস্ব পরিষেবা শংসাপত্রের মালিক; পর্যবেক্ষণ ক্যাশ/ইতিহাস শুধু পর্যবেক্ষণমূলক থাকে এবং Compute-এর কর্তৃত্ব বদলাতে পারে না।"
 
 #: lib/marshall/documentation_messages.ex:4489
 #, elixir-autogen, elixir-format
 msgid "Boundary: Enrico Manager serializes eight active repository owners; token-authenticated API dispatch cannot bypass admission. Marshall retains durable intent."
-msgstr ""
+msgstr "সীমানা: Enrico Manager আটজন সক্রিয় রিপোজিটরি মালিককে ক্রমানুসারে পরিচালনা করে; টোকেন-প্রমাণীকৃত API ডিসপ্যাচ প্রবেশ নিয়ন্ত্রণ এড়াতে পারে না। Marshall স্থায়ী অভিপ্রায় ধরে রাখে।"
 
 #: lib/marshall/documentation_messages.ex:4493
 #, elixir-autogen, elixir-format
 msgid "Boundary: Enrico owns local worker generations and capped receipts; Marshall owns durable intent and account authority."
-msgstr ""
+msgstr "সীমানা: Enrico স্থানীয় ওয়ার্কার জেনারেশন ও সীমিত রসিদের মালিক; Marshall স্থায়ী অভিপ্রায় ও অ্যাকাউন্ট কর্তৃত্বের মালিক।"
 
 #: lib/marshall/documentation_messages.ex:4497
 #, elixir-autogen, elixir-format
 msgid "Boundary: Enrico's manager counts unique admitted terminal refreshes and exposes fixed cumulative outcomes and duration through its owner-only Unix health socket; Rust exports through an Enrico-only collector intake with Nix-owned service identity."
-msgstr ""
+msgstr "সীমানা: Enrico-এর manager অনন্য admitted terminal refresh গোনে এবং শুধু মালিকের Unix health socket-এ স্থির cumulative outcome ও duration প্রকাশ করে; Rust Nix-মালিকানাধীন service identity দিয়ে Enrico-নির্দিষ্ট collector intake-এ export করে।"
 
 #: lib/marshall/documentation_messages.ex:4501
 #, elixir-autogen, elixir-format
 msgid "Boundary: Exact Git revision, staged secrets, serialized migration, compatible storage identity and readiness."
-msgstr ""
+msgstr "সীমানা: সুনির্দিষ্ট Git রিভিশন, প্রস্তুত রাখা গোপন তথ্য, ক্রমিক মাইগ্রেশন, সামঞ্জস্যপূর্ণ স্টোরেজ পরিচয় ও প্রস্তুতি।"
 
 #: lib/marshall/documentation_messages.ex:4505
 #, elixir-autogen, elixir-format
 msgid "Boundary: Existing boot-bound roster reconciliation owns managed identity, home and executable Bash; global image startup enables interactive Starship with the stock NixOS TERM=dumb skip. Ubuntu initializes interactive Bash even with TERM=dumb. Browser and SSH retain existing admission authority."
-msgstr ""
+msgstr "সীমানা: বিদ্যমান boot-bound roster reconciliation managed identity, home ও executable Bash-এর মালিক; global image startup NixOS-এর স্বাভাবিক TERM=dumb skip-সহ interactive Starship সক্রিয় করে। Ubuntu TERM=dumb হলেও interactive Bash শুরু করে। Browser ও SSH বিদ্যমান admission authority ধরে রাখে।"
 
 #: lib/marshall/documentation_messages.ex:4509
 #, elixir-autogen, elixir-format
 msgid "Boundary: Explicit Overalls IPv4 HTTPS frontend with existing certificate custody; Grafana login authorizes data, and backend/query stores remain private."
-msgstr ""
+msgstr "সীমানা: বিদ্যমান সার্টিফিকেটের হেফাজতসহ স্পষ্ট Overalls IPv4 HTTPS ফ্রন্টএন্ড; Grafana লগইন ডেটায় প্রবেশ অনুমোদন করে এবং ব্যাকএন্ড/কোয়েরি স্টোর ব্যক্তিগত থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4513
 #, elixir-autogen, elixir-format
 msgid "Boundary: Explicit current browser approval binds an in-memory secret digest to one actor and VM for one hour; every API checks current account/write access and exact thread binding, then ordinary model and guest execution fences apply."
-msgstr ""
+msgstr "সীমানা: বর্তমান স্পষ্ট browser approval এক ঘণ্টার জন্য memory-তে থাকা secret digest-কে এক actor ও VM-এর সঙ্গে বাঁধে; প্রতিটি API বর্তমান account/write access ও নির্ভুল thread binding পরীক্ষা করে, তারপর সাধারণ model ও guest execution fence প্রযোজ্য হয়।"
 
 #: lib/marshall/documentation_messages.ex:4517
 #, elixir-autogen, elixir-format
 msgid "Boundary: Explicit personal source attachments (including owner machines), automatic live-team membership, injected secret custody, current peer token and renewal."
-msgstr ""
+msgstr "সীমানা: স্পষ্ট ব্যক্তিগত উৎস সংযুক্তি (মালিকের মেশিনসহ), স্বয়ংক্রিয় সক্রিয়-দলের সদস্যপদ, ইনজেক্ট করা গোপন তথ্যের হেফাজত, বর্তমান পিয়ার টোকেন ও নবায়ন।"
 
 #: lib/marshall/documentation_messages.ex:4521
 #, elixir-autogen, elixir-format
 msgid "Boundary: Fresh measured capacity, atomic reservations and owned physical allocation."
-msgstr ""
+msgstr "সীমানা: সদ্য মাপা ধারণক্ষমতা, পরমাণবিক সংরক্ষণ ও নিজস্ব ফিজিক্যাল বরাদ্দ।"
 
 #: lib/marshall/documentation_messages.ex:4525
 #, elixir-autogen, elixir-format
 msgid "Boundary: Galileo counts only Marshall-authorized attempts and exposes fixed cumulative outcomes and duration through its private Unix socket; Rust exports through a Galileo-only collector intake with collector-owned service identity."
-msgstr ""
+msgstr "সীমানা: Galileo কেবল Marshall-অনুমোদিত attempt গোনে এবং ব্যক্তিগত Unix socket-এ স্থির cumulative outcome ও duration প্রকাশ করে; collector-মালিকানাধীন service identity দিয়ে Rust Galileo-নির্দিষ্ট collector intake-এ export করে।"
 
 #: lib/marshall/documentation_messages.ex:4529
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald current session lifetime and registered PTY/socket ownership after authorized kill; upstream browser/vsock authority is a separate boundary."
-msgstr ""
+msgstr "সীমানা: অনুমোদিতভাবে বন্ধ করার পরে গেস্ট terminald-এর বর্তমান সেশনের আয়ু ও নিবন্ধিত PTY/সকেট মালিকানা; আপস্ট্রিম ব্রাউজার/vsock কর্তৃত্ব আলাদা সীমানা।"
 
 #: lib/marshall/documentation_messages.ex:4533
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald local Linux PTY, viewer queues and shared reservation/backing accounting; authenticated upstream authority remains separate."
-msgstr ""
+msgstr "সীমানা: গেস্ট terminald-এর স্থানীয় Linux PTY, ভিউয়ার কিউ ও যৌথ সংরক্ষণ/ব্যাকিং হিসাব; প্রমাণীকৃত আপস্ট্রিম কর্তৃত্ব আলাদা থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4537
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald local session and atomic ring reservations; authenticated upstream authority remains separate."
-msgstr ""
+msgstr "সীমানা: গেস্ট terminald-এর স্থানীয় সেশন ও পরমাণবিক রিং সংরক্ষণ; প্রমাণীকৃত আপস্ট্রিম কর্তৃত্ব আলাদা থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4541
 #, elixir-autogen, elixir-format
 msgid "Boundary: Guest terminald owns raw scrollback and frame prefix parsing; boot authentication and shared session admission remain independent."
-msgstr ""
+msgstr "সীমানা: গেস্ট terminald কাঁচা স্ক্রলব্যাক ও ফ্রেম প্রিফিক্স পার্সিংয়ের মালিক; বুট প্রমাণীকরণ ও যৌথ সেশনে প্রবেশ নিয়ন্ত্রণ স্বতন্ত্র থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4545
 #, elixir-autogen, elixir-format
 msgid "Boundary: Historical boundary at the captured pre-cutover revision; this reader or ingestion path is retired. A dedicated host monitor bearer and HTTPS bind bounded samples to one physical machine; cache acceptance is not a durable acknowledgment, and monitoring cannot authorize compute admission."
-msgstr ""
+msgstr "সীমানা: ধারণ করা pre-cutover revision-এর ঐতিহাসিক সীমানা; এই reader বা ingestion path অবসরপ্রাপ্ত। নির্দিষ্ট host monitor bearer ও HTTPS সীমিত নমুনাকে এক physical machine-এর সঙ্গে বাঁধে; cache acceptance durable acknowledgment নয়, এবং monitoring compute admission অনুমোদন করতে পারে না।"
 
 #: lib/marshall/documentation_messages.ex:4549
 #, elixir-autogen, elixir-format
@@ -7907,12 +7907,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4557
 #, elixir-autogen, elixir-format
 msgid "Boundary: Immutable seed, verified candidate digest, saved executable identity and real current VM executor fence."
-msgstr ""
+msgstr "সীমানা: অপরিবর্তনীয় সিড, যাচাইকৃত প্রার্থী ডাইজেস্ট, সংরক্ষিত নির্বাহযোগ্য ফাইলের পরিচয় ও প্রকৃত বর্তমান VM এক্সিকিউটর ফেন্স।"
 
 #: lib/marshall/documentation_messages.ex:4561
 #, elixir-autogen, elixir-format
 msgid "Boundary: Incoming/outgoing peers share a process-owned budget and must retire when that accounting incarnation dies; a successor cannot retain live unaccounted peers."
-msgstr ""
+msgstr "সীমানা: আগত/বহির্গত পিয়ার একটি প্রক্রিয়ার মালিকানাধীন বাজেট ভাগ করে এবং হিসাবের সেই ইনকারনেশন শেষ হলে তাদেরও অবসর নিতে হবে; উত্তরসূরি হিসাবের বাইরে থাকা সক্রিয় পিয়ার ধরে রাখতে পারে না।"
 
 #: lib/marshall/documentation_messages.ex:4565
 #, elixir-autogen, elixir-format
@@ -7922,57 +7922,57 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4573
 #, elixir-autogen, elixir-format
 msgid "Boundary: Initial TLS upgrade and hello bind volatile socket identity; each request retains current database-backed credential and session-generation authority."
-msgstr ""
+msgstr "সীমানা: প্রাথমিক TLS আপগ্রেড ও hello অস্থায়ী সকেট পরিচয় বাঁধে; প্রতিটি অনুরোধ বর্তমান ডেটাবেস-সমর্থিত শংসাপত্র ও সেশন-জেনারেশনের কর্তৃত্ব ধরে রাখে।"
 
 #: lib/marshall/documentation_messages.ex:4577
 #, elixir-autogen, elixir-format
 msgid "Boundary: Kernel flow label, current execution proof, verified origin and fail-closed proxy path."
-msgstr ""
+msgstr "সীমানা: কার্নেল ফ্লো লেবেল, বর্তমান নির্বাহের প্রমাণ, যাচাইকৃত উৎস ও ত্রুটিতে বন্ধ থাকা প্রক্সি পথ।"
 
 #: lib/marshall/documentation_messages.ex:4581
 #, elixir-autogen, elixir-format
 msgid "Boundary: Lilly owns each linked/monitored opening worker; worker death cannot occupy an attempt forever or confer stream readiness, and abrupt stream-owner death retires its worker."
-msgstr ""
+msgstr "সীমানা: Lilly প্রতিটি লিঙ্ক করা/পর্যবেক্ষিত ওপেনিং ওয়ার্কারের মালিক; ওয়ার্কার শেষ হলে কোনো প্রচেষ্টা চিরকাল আটকে থাকতে বা স্ট্রিম প্রস্তুতি পেতে পারে না, আর স্ট্রিমের মালিক হঠাৎ শেষ হলে তার ওয়ার্কারও অবসর নেয়।"
 
 #: lib/marshall/documentation_messages.ex:4585
 #, elixir-autogen, elixir-format
 msgid "Boundary: Lilly-resolved attribution and a terminal Brady outcome enter fixed cumulative counters; a private file is checked by a Rust host exporter before separate local OTLP collection."
-msgstr ""
+msgstr "সীমানা: Lilly-নির্ধারিত উৎসপরিচয় ও Brady-এর চূড়ান্ত ফলাফল নির্দিষ্ট ক্রমসঞ্চিত কাউন্টারে যায়; আলাদা স্থানীয় OTLP সংগ্রহের আগে Rust হোস্ট এক্সপোর্টার একটি ব্যক্তিগত ফাইল পরীক্ষা করে।"
 
 #: lib/marshall/documentation_messages.ex:4589
 #, elixir-autogen, elixir-format
 msgid "Boundary: Live stored login and five-minute passkey elevation gate rename/remove through the locked account row; labels are bounded to 80 characters; accounts hold at most ten passkeys and one hundred SSH keys."
-msgstr ""
+msgstr "সীমানা: সক্রিয় সংরক্ষিত লগইন ও পাঁচ মিনিটের পাসকি উন্নীতকরণ লক করা অ্যাকাউন্ট সারির মাধ্যমে নাম পরিবর্তন/অপসারণ নিয়ন্ত্রণ করে; লেবেল সর্বোচ্চ 80 অক্ষর; অ্যাকাউন্টে সর্বোচ্চ দশটি পাসকি ও একশটি SSH কী থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4593
 #, elixir-autogen, elixir-format
 msgid "Boundary: Local guest terminald PTY growth, actual deque backing and reservations; authenticated guest authority remains separate."
-msgstr ""
+msgstr "সীমানা: স্থানীয় গেস্ট terminald-এর PTY বৃদ্ধি, প্রকৃত deque ব্যাকিং ও সংরক্ষণ; প্রমাণীকৃত গেস্ট কর্তৃত্ব আলাদা থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4597
 #, elixir-autogen, elixir-format
 msgid "Boundary: Local terminald PTY EOF, atomic ring reservation and retained viewer threads; authenticated guest authority remains separate."
-msgstr ""
+msgstr "সীমানা: স্থানীয় terminald-এর PTY EOF, পরমাণবিক রিং সংরক্ষণ ও সংরক্ষিত ভিউয়ার থ্রেড; প্রমাণীকৃত গেস্ট কর্তৃত্ব আলাদা থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4601
 #, elixir-autogen, elixir-format
 msgid "Boundary: Loopback Grafana authenticates the operator and reads only the nine Nix-provisioned candidate duration recordings; source-owned histograms enter the collector under assigned application provenance."
-msgstr ""
+msgstr "সীমানা: লুপব্যাক Grafana অপারেটরকে প্রমাণীকরণ করে এবং শুধু Nix-প্রস্তুত নয়টি প্রার্থী সময়কাল রেকর্ড পড়ে; উৎসের মালিকানাধীন হিস্টোগ্রাম নির্ধারিত অ্যাপ্লিকেশন উৎসপরিচয় নিয়ে কালেক্টরে প্রবেশ করে।"
 
 #: lib/marshall/documentation_messages.ex:4605
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall Editor owns single-use account login and renewable current-write execution/release leases; DNS and generic web policy cannot grant editor authority. Each permanent GuestAccount has its own full-UUID origin."
-msgstr ""
+msgstr "সীমানা: Marshall Editor একবার ব্যবহারযোগ্য account login ও নবায়নযোগ্য current-write execution/release lease-এর মালিক; DNS ও generic web policy editor কর্তৃত্ব দিতে পারে না। প্রতিটি স্থায়ী GuestAccount-এর নিজস্ব পূর্ণ-UUID origin থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4609
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall authorizes Start and advances logical generation; Lilly owns the placement and proves native confinement before same-epoch boot journal adoption."
-msgstr ""
+msgstr "সীমানা: Marshall Start-এর অনুমোদন দেয় ও লজিক্যাল জেনারেশন এগিয়ে নেয়; Lilly প্লেসমেন্টের মালিক এবং একই-ইপক বুট জার্নাল গ্রহণের আগে নেটিভ সীমাবদ্ধতা প্রমাণ করে।"
 
 #: lib/marshall/documentation_messages.ex:4613
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall authorizes current guest inference; Ziggy durably reserves bounded usage metadata before provider effects and removes completed receipts only after acknowledgement."
-msgstr ""
+msgstr "সীমানা: Marshall বর্তমান গেস্ট ইনফারেন্সের অনুমোদন দেয়; Ziggy প্রোভাইডারের প্রভাবের আগে সীমিত ব্যবহার মেটাডেটা স্থায়ীভাবে সংরক্ষণ করে এবং স্বীকৃতির পরেই সম্পন্ন রসিদ সরায়।"
 
 #: lib/marshall/documentation_messages.ex:4617
 #, elixir-autogen, elixir-format
@@ -7982,7 +7982,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4621
 #, elixir-autogen, elixir-format
 msgid "Boundary: Marshall counts endpoint responses only after the privacy, health and public machine-API prefilters; a mode-0640 cumulative snapshot in a dynamic-user-owned, mode-0750 directory feeds a static Rust exporter using the Marshall-only collector socket with a Nix-configured replica identity."
-msgstr ""
+msgstr "সীমানা: privacy, health ও public machine-API prefilter পেরোলেই Marshall endpoint response গোনে; dynamic user-এর মালিকানাধীন mode-0750 directory-র mode-0640 cumulative snapshot, Nix-কনফিগার করা replica identity-সহ Marshall-নির্দিষ্ট collector socket দিয়ে static Rust exporter-এ যায়।"
 
 #: lib/marshall/documentation_messages.ex:4625
 #, elixir-autogen, elixir-format
@@ -8007,12 +8007,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4641
 #, elixir-autogen, elixir-format
 msgid "Boundary: Native helpers retain completion custody (the source-export lock; the transfer-stream hostd lease) across descendant process groups/sessions; direct leader exit does not prove cleanup."
-msgstr ""
+msgstr "সীমানা: নেটিভ হেল্পারগুলো বংশধর প্রক্রিয়া গ্রুপ/সেশনজুড়ে সমাপ্তির হেফাজত ধরে রাখে (source-export লক; transfer-stream hostd লিজ); সরাসরি লিডার শেষ হলেই পরিষ্কার সম্পন্ন হয়েছে প্রমাণ হয় না।"
 
 #: lib/marshall/documentation_messages.ex:4645
 #, elixir-autogen, elixir-format
 msgid "Boundary: Native state journals, ownership fences and physical readiness receipts remain authoritative; observer ACKs cannot gate v2 actor progress."
-msgstr ""
+msgstr "সীমানা: নেটিভ অবস্থার জার্নাল, মালিকানার ফেন্স ও ফিজিক্যাল প্রস্তুতির রসিদই কর্তৃত্বশীল থাকে; পর্যবেক্ষকের ACK v2 অ্যাক্টরের অগ্রগতি নিয়ন্ত্রণ করতে পারে না।"
 
 #: lib/marshall/documentation_messages.ex:4649
 #, elixir-autogen, elixir-format
@@ -8027,42 +8027,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4657
 #, elixir-autogen, elixir-format
 msgid "Boundary: Nix provisions Grafana on Overalls loopback for operators. Application candidates repeat source lifetime and sampling-clock guards; ingress additionally requires fresh direct localhost source health. Guest claims cannot enter those series."
-msgstr ""
+msgstr "সীমানা: Nix operator-দের জন্য Overalls loopback-এ Grafana প্রস্তুত করে। application candidate source lifetime ও sampling-clock guard আবার পরীক্ষা করে; ingress-এর জন্য অতিরিক্তভাবে fresh direct localhost source health লাগে। অতিথির দাবি ওই series-এ প্রবেশ করতে পারে না।"
 
 #: lib/marshall/documentation_messages.ex:4661
 #, elixir-autogen, elixir-format
 msgid "Boundary: Nix provisions stable dashboards and datasources; Grafana authenticates the operator while its server-side datasource holds only reader-scoped log-store authority."
-msgstr ""
+msgstr "সীমানা: Nix স্থায়ী ড্যাশবোর্ড ও ডেটাসোর্স প্রস্তুত করে; Grafana অপারেটরকে প্রমাণীকরণ করে, আর তার সার্ভার-পক্ষের ডেটাসোর্স শুধু পাঠকের সীমিত log-store কর্তৃত্ব ধরে রাখে।"
 
 #: lib/marshall/documentation_messages.ex:4665
 #, elixir-autogen, elixir-format
 msgid "Boundary: Nix-owned measurement rosters and numeric diagnostic states; operator Grafana and signed-in Marshall reads; independent read-only loopback storage probe and one 15-bound Underclass duration histogram."
-msgstr ""
+msgstr "সীমানা: Nix-এর মালিকানাধীন পরিমাপ তালিকা ও সংখ্যাভিত্তিক ডায়াগনস্টিক অবস্থা; অপারেটরের Grafana ও লগইন করা Marshall পাঠ; স্বতন্ত্র শুধু-পঠনযোগ্য লুপব্যাক স্টোরেজ প্রোব এবং 15-বাউন্ডের একটি Underclass সময়কাল হিস্টোগ্রাম।"
 
 #: lib/marshall/documentation_messages.ex:4669
 #, elixir-autogen, elixir-format
 msgid "Boundary: Official-source Nix package and broker bind exact boot address/gateway, execution/release/account preface and reconciled UID. Systemd worker/socket ownership is independent of the root broker."
-msgstr ""
+msgstr "সীমানা: অফিশিয়াল উৎসের Nix প্যাকেজ ও ব্রোকার সুনির্দিষ্ট বুট ঠিকানা/গেটওয়ে, নির্বাহ/রিলিজ/অ্যাকাউন্ট প্রিফেস ও সমন্বিত UID বাঁধে। Systemd ওয়ার্কার/সকেটের মালিকানা root ব্রোকার থেকে স্বতন্ত্র।"
 
 #: lib/marshall/documentation_messages.ex:4673
 #, elixir-autogen, elixir-format
 msgid "Boundary: Official-source patch routes Open VSX gallery, dependencies and WEB-targeted installs through the native signature verifier before extraction; package identity includes the reviewed key ring."
-msgstr ""
+msgstr "সীমানা: অফিশিয়াল উৎসের প্যাচ এক্সট্রাকশনের আগে Open VSX গ্যালারি, নির্ভরতা ও WEB-লক্ষ্যযুক্ত ইনস্টলকে নেটিভ স্বাক্ষর যাচাইকারীর মধ্য দিয়ে পাঠায়; প্যাকেজ পরিচয়ে পর্যালোচিত কীরিং থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4681
 #, elixir-autogen, elixir-format
 msgid "Boundary: Only the current connection owns a heartbeat schedule; retired timer messages cannot service its replacement."
-msgstr ""
+msgstr "সীমানা: শুধু বর্তমান সংযোগের মালিকানায় হার্টবিট সময়সূচি থাকে; অবসরপ্রাপ্ত টাইমারের বার্তা তার বদলি সংযোগকে পরিষেবা দিতে পারে না।"
 
 #: lib/marshall/documentation_messages.ex:4685
 #, elixir-autogen, elixir-format
 msgid "Boundary: Operator-owned private configuration is validated before Lilly creates runtime authority or status listeners."
-msgstr ""
+msgstr "সীমানা: Lilly রানটাইম কর্তৃত্ব বা স্ট্যাটাস লিসেনার তৈরির আগেই অপারেটরের মালিকানাধীন ব্যক্তিগত কনফিগারেশন যাচাই করা হয়।"
 
 #: lib/marshall/documentation_messages.ex:4689
 #, elixir-autogen, elixir-format
 msgid "Boundary: Overalls supervisors use private real operator session/guest fixtures and own browser deadlines; distinct durable recorders, numeric readers/exporters and collector sockets preserve outcome authority."
-msgstr ""
+msgstr "সীমানা: Overalls সুপারভাইজারগুলো অপারেটরের প্রকৃত ব্যক্তিগত সেশন/গেস্ট ফিক্সচার ব্যবহার করে এবং ব্রাউজারের সময়সীমার মালিক; পৃথক স্থায়ী রেকর্ডার, সংখ্যাভিত্তিক রিডার/এক্সপোর্টার ও কালেক্টর সকেট ফলাফলের কর্তৃত্ব ধরে রাখে।"
 
 #: lib/marshall/documentation_messages.ex:4693
 #, elixir-autogen, elixir-format
@@ -8072,17 +8072,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4701
 #, elixir-autogen, elixir-format
 msgid "Boundary: Peer activity renews a fifteen-second silence budget; outgoing ping cadence must not postpone retirement beyond that budget."
-msgstr ""
+msgstr "সীমানা: পিয়ারের কার্যকলাপ পনেরো সেকেন্ডের নীরবতার বাজেট নবায়ন করে; বহির্গত পিংয়ের ছন্দ সেই বাজেটের পরে অবসর গ্রহণ পিছিয়ে দিতে পারবে না।"
 
 #: lib/marshall/documentation_messages.ex:4705
 #, elixir-autogen, elixir-format
 msgid "Boundary: Per-producer Unix UID/cgroup identity and private SQLite FULL-WAL archive determine diagnostic custody; the observer holds no application or guest authority."
-msgstr ""
+msgstr "সীমানা: প্রতিটি উৎপাদকের Unix UID/cgroup পরিচয় ও ব্যক্তিগত SQLite FULL-WAL আর্কাইভ ডায়াগনস্টিকের হেফাজত নির্ধারণ করে; পর্যবেক্ষকের কোনো অ্যাপ্লিকেশন বা গেস্ট কর্তৃত্ব থাকে না।"
 
 #: lib/marshall/documentation_messages.ex:4709
 #, elixir-autogen, elixir-format
 msgid "Boundary: Persisted Cedar role governs each action and live capability renewal."
-msgstr ""
+msgstr "সীমানা: সংরক্ষিত Cedar ভূমিকা প্রতিটি ক্রিয়া ও সক্রিয় সক্ষমতার নবায়ন নিয়ন্ত্রণ করে।"
 
 #: lib/marshall/documentation_messages.ex:4713
 #, elixir-autogen, elixir-format
@@ -8092,42 +8092,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4717
 #, elixir-autogen, elixir-format
 msgid "Boundary: Personal account allocation, boot-bound opening receipt, current creator/read-only attachment authority and PTY ownership."
-msgstr ""
+msgstr "সীমানা: ব্যক্তিগত অ্যাকাউন্ট বরাদ্দ, বুটে বাঁধা ওপেনিং রসিদ, বর্তমান স্রষ্টা/শুধু-পঠন সংযুক্তির কর্তৃত্ব ও PTY মালিকানা।"
 
 #: lib/marshall/documentation_messages.ex:4721
 #, elixir-autogen, elixir-format
 msgid "Boundary: Pinned transfer, probe-gated source stop and quiescence, one full stream of the stopped disk, atomic placement handoff and destination readiness before source cleanup (ADR-0155)."
-msgstr ""
+msgstr "সীমানা: পিন করা স্থানান্তর, প্রোব-নিয়ন্ত্রিত উৎস থামানো ও নিষ্ক্রিয় অবস্থা, থামানো ডিস্কের একটি সম্পূর্ণ স্ট্রিম, পরমাণবিক প্লেসমেন্ট হস্তান্তর এবং উৎস পরিষ্কারের আগে গন্তব্যের প্রস্তুতি (ADR-0155)।"
 
 #: lib/marshall/documentation_messages.ex:4725
 #, elixir-autogen, elixir-format
 msgid "Boundary: Porsche counts terminal SSH command dispatch results in fixed cumulative outcomes and duration; a private numeric file feeds a Rust exporter through a Porsche-only collector intake with Nix-owned service identity."
-msgstr ""
+msgstr "সীমানা: Porsche terminal SSH command dispatch-এর ফলাফল স্থির cumulative outcome ও duration হিসেবে গোনে; Nix-মালিকানাধীন service identity-সহ Porsche-নির্দিষ্ট collector intake দিয়ে ব্যক্তিগত সংখ্যামূলক ফাইল Rust exporter-এ যায়।"
 
 #: lib/marshall/documentation_messages.ex:4729
 #, elixir-autogen, elixir-format
 msgid "Boundary: Post-backup revocations, epochs, generations and physical survivors must be reconciled."
-msgstr ""
+msgstr "সীমানা: ব্যাকআপ-পরবর্তী প্রত্যাহার, ইপক, জেনারেশন ও টিকে থাকা ফিজিক্যাল রিসোর্সের সমন্বয় করতে হবে।"
 
 #: lib/marshall/documentation_messages.ex:4733
 #, elixir-autogen, elixir-format
 msgid "Boundary: Presentation changes never alter authorization, terminal transport, element identifiers or hook names; every stylesheet, script and font is served from the application origin."
-msgstr ""
+msgstr "সীমানা: উপস্থাপনার পরিবর্তন কখনো অনুমোদন, টার্মিনাল পরিবহন, এলিমেন্ট শনাক্তকারী বা হুকের নাম বদলায় না; প্রতিটি স্টাইলশিট, স্ক্রিপ্ট ও ফন্ট অ্যাপ্লিকেশনের নিজস্ব উৎস থেকে পরিবেশিত হয়।"
 
 #: lib/marshall/documentation_messages.ex:4737
 #, elixir-autogen, elixir-format
 msgid "Boundary: Private file ownership, global recovery membership, selected host recipients, retained rekey identity, per-document publication, staged compatibility and old-key retention."
-msgstr ""
+msgstr "সীমানা: ব্যক্তিগত ফাইলের মালিকানা, সামগ্রিক পুনরুদ্ধার সদস্যপদ, নির্বাচিত হোস্ট প্রাপক, সংরক্ষিত rekey পরিচয়, প্রতিটি নথির প্রকাশনা, ধাপভিত্তিক সামঞ্জস্য ও পুরোনো কী সংরক্ষণ।"
 
 #: lib/marshall/documentation_messages.ex:4741
 #, elixir-autogen, elixir-format
 msgid "Boundary: Private stable intent lock, exact current-generation payload and trusted absolute exec target; shared custody must precede intent validation."
-msgstr ""
+msgstr "সীমানা: ব্যক্তিগত স্থায়ী অভিপ্রায় লক, সুনির্দিষ্ট বর্তমান-জেনারেশনের পেলোড ও বিশ্বস্ত পরম exec লক্ষ্য; অভিপ্রায় যাচাইয়ের আগে যৌথ হেফাজত থাকতে হবে।"
 
 #: lib/marshall/documentation_messages.ex:4745
 #, elixir-autogen, elixir-format
 msgid "Boundary: Production Lilly Driver and independent systemd VM tree, durable launch authority and authenticated Marshall physical outcome settlement in a disposable fleet."
-msgstr ""
+msgstr "সীমানা: অস্থায়ী ফ্লিটে প্রোডাকশন Lilly Driver ও স্বতন্ত্র systemd VM ট্রি, স্থায়ী লঞ্চ কর্তৃত্ব এবং প্রমাণীকৃত Marshall ফিজিক্যাল ফলাফল নিষ্পত্তি।"
 
 #: lib/marshall/documentation_messages.ex:4749
 #, elixir-autogen, elixir-format
@@ -8142,82 +8142,82 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4757
 #, elixir-autogen, elixir-format
 msgid "Boundary: Pure guest-terminal Ring retention allocation; actual PTY growth, viewer queues and authenticated upstream authority remain separate."
-msgstr ""
+msgstr "সীমানা: পার্শ্বপ্রতিক্রিয়াহীন গেস্ট-টার্মিনাল Ring সংরক্ষণ বরাদ্দ; প্রকৃত PTY বৃদ্ধি, ভিউয়ার কিউ ও প্রমাণীকৃত আপস্ট্রিম কর্তৃত্ব আলাদা থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4761
 #, elixir-autogen, elixir-format
 msgid "Boundary: Registered SSH key, current Cedar decision, CA-authenticated gateway and guest, boot-bound roster, permanently reserved username/UID and durable account discovery."
-msgstr ""
+msgstr "সীমানা: নিবন্ধিত SSH কী, বর্তমান Cedar সিদ্ধান্ত, CA-প্রমাণীকৃত গেটওয়ে ও গেস্ট, বুটে বাঁধা তালিকা, স্থায়ীভাবে সংরক্ষিত ব্যবহারকারীর নাম/UID ও স্থায়ী অ্যাকাউন্ট আবিষ্কার।"
 
 #: lib/marshall/documentation_messages.ex:4765
 #, elixir-autogen, elixir-format
 msgid "Boundary: Required operator fields, IPv4 bind, port, absolute paths, token limits and regular certificate/key references are validated before worker or listener authority starts."
-msgstr ""
+msgstr "সীমানা: ওয়ার্কার বা লিসেনারের কর্তৃত্ব শুরুর আগে আবশ্যক অপারেটর ফিল্ড, IPv4 বাইন্ড, পোর্ট, পরম পথ, টোকেনের সীমা ও সাধারণ সার্টিফিকেট/কী রেফারেন্স যাচাই করা হয়।"
 
 #: lib/marshall/documentation_messages.ex:4769
 #, elixir-autogen, elixir-format
 msgid "Boundary: Reviewed finite producer-health events use trusted journal service/unit, module host identity and the native journal clock; the loopback numeric bridge retains independent application log routing."
-msgstr ""
+msgstr "সীমানা: পর্যালোচিত সীমিত উৎপাদক-স্বাস্থ্যের ইভেন্ট বিশ্বস্ত journal পরিষেবা/ইউনিট, মডিউলের হোস্ট পরিচয় ও নেটিভ journal ঘড়ি ব্যবহার করে; লুপব্যাক সংখ্যাভিত্তিক ব্রিজ অ্যাপ্লিকেশন লগের স্বতন্ত্র রাউটিং বজায় রাখে।"
 
 #: lib/marshall/documentation_messages.ex:4773
 #, elixir-autogen, elixir-format
 msgid "Boundary: Role-specific operator configuration and private credentials/keys are validated before Audi creates listener authority."
-msgstr ""
+msgstr "সীমানা: Audi লিসেনারের কর্তৃত্ব তৈরির আগেই ভূমিকা-নির্দিষ্ট অপারেটর কনফিগারেশন ও ব্যক্তিগত শংসাপত্র/কী যাচাই করা হয়।"
 
 #: lib/marshall/documentation_messages.ex:4777
 #, elixir-autogen, elixir-format
 msgid "Boundary: Runtime schema and file custody are validated before named supervision and SSH or status listeners."
-msgstr ""
+msgstr "সীমানা: নামযুক্ত সুপারভিশন এবং SSH বা স্ট্যাটাস লিসেনারের আগে রানটাইম স্কিমা ও ফাইলের হেফাজত যাচাই করা হয়।"
 
 #: lib/marshall/documentation_messages.ex:4781
 #, elixir-autogen, elixir-format
 msgid "Boundary: Saved self-only locale override takes precedence over validated session/browser negotiation and English fallback. Arabic and Urdu use RTL; locale does not grant authority or change machine output."
-msgstr ""
+msgstr "সীমানা: সংরক্ষিত নিজ-অ্যাকাউন্টের লোকেল ওভাররাইড যাচাইকৃত সেশন/ব্রাউজার নির্বাচন ও ইংরেজি ফলব্যাকের আগে অগ্রাধিকার পায়। আরবি ও উর্দু RTL ব্যবহার করে; লোকেল কোনো কর্তৃত্ব দেয় না বা মেশিন আউটপুট বদলায় না।"
 
 #: lib/marshall/documentation_messages.ex:4785
 #, elixir-autogen, elixir-format
 msgid "Boundary: Schema is validated before named supervision; private matching CA signer material is validated by the first supervised child before cache and transparent listeners."
-msgstr ""
+msgstr "সীমানা: নামযুক্ত সুপারভিশনের আগে স্কিমা যাচাই করা হয়; ক্যাশ ও স্বচ্ছ লিসেনারের আগে প্রথম তত্ত্বাবধানে থাকা চাইল্ড ব্যক্তিগত মিলযুক্ত CA সাইনার উপকরণ যাচাই করে।"
 
 #: lib/marshall/documentation_messages.ex:4789
 #, elixir-autogen, elixir-format
 msgid "Boundary: Shared account admission through the outer manual/approval transaction, exclusive retirement and completed old-UUID credential cleanup."
-msgstr ""
+msgstr "সীমানা: বাইরের ম্যানুয়াল/অনুমোদন লেনদেনের মাধ্যমে যৌথ অ্যাকাউন্ট প্রবেশ নিয়ন্ত্রণ, একচেটিয়া অবসর গ্রহণ ও পুরোনো UUID-এর শংসাপত্র পরিষ্কারের সমাপ্তি।"
 
 #: lib/marshall/documentation_messages.ex:4793
 #, elixir-autogen, elixir-format
 msgid "Boundary: Shared client owns volatile request correlation and at most eight pending callers; disconnect is unproven domain completion and cannot authorize replay."
-msgstr ""
+msgstr "সীমানা: যৌথ ক্লায়েন্ট অস্থায়ী অনুরোধের সম্পর্ক নির্ধারণ ও সর্বোচ্চ আটজন অপেক্ষমাণ কলারের মালিক; সংযোগ বিচ্ছিন্ন হওয়া ডোমেইনের সমাপ্তির প্রমাণ নয় এবং পুনরায় চালানোর অনুমতি দিতে পারে না।"
 
 #: lib/marshall/documentation_messages.ex:4797
 #, elixir-autogen, elixir-format
 msgid "Boundary: Signed-in bounded redacted projections; current elevated administrator, installation/account/raw-job locks and actor/request-bound retry receipt."
-msgstr ""
+msgstr "সীমানা: লগইন করা ব্যবহারকারীর জন্য সীমিত ও সংবেদনশীল তথ্য আড়াল করা প্রক্ষেপণ; বর্তমানে উন্নীত প্রশাসক, ইনস্টলেশন/অ্যাকাউন্ট/কাঁচা-জব লক এবং অ্যাক্টর/অনুরোধে বাঁধা পুনঃচেষ্টার রসিদ।"
 
 #: lib/marshall/documentation_messages.ex:4801
 #, elixir-autogen, elixir-format
 msgid "Boundary: Signed-in read access is separate from administrator membership plus fresh elevation."
-msgstr ""
+msgstr "সীমানা: লগইন করা অবস্থার read access প্রশাসকের সদস্যপদ ও সদ্য উন্নীত অধিকার থেকে পৃথক।"
 
 #: lib/marshall/documentation_messages.ex:4805
 #, elixir-autogen, elixir-format
 msgid "Boundary: Snapshot ownership, audit and current requester authority, serialized publication/cancellation, immutable snapshot, source restoration and independently proven cleanup."
-msgstr ""
+msgstr "সীমানা: snapshot-এর মালিকানা, audit ও বর্তমান অনুরোধকারীর কর্তৃত্ব; ধারাবাহিক publication/cancellation; অপরিবর্তনীয় snapshot; source restoration এবং স্বাধীনভাবে প্রমাণিত cleanup।"
 
 #: lib/marshall/documentation_messages.ex:4809
 #, elixir-autogen, elixir-format
 msgid "Boundary: Stored browser login, current direct/team Cedar rights, exact app cookie and execution/policy-bound five-second request-start lease."
-msgstr ""
+msgstr "সীমানা: সংরক্ষিত browser login, বর্তমান direct/team Cedar অধিকার, নির্ভুল app cookie এবং execution/policy-সংশ্লিষ্ট পাঁচ সেকেন্ডের request-start lease।"
 
 #: lib/marshall/documentation_messages.ex:4813
 #, elixir-autogen, elixir-format
 msgid "Boundary: Strict operator configuration, private service/provider credentials, fixed upstream origins and runtime paths are validated before serving or provider worker authority starts."
-msgstr ""
+msgstr "সীমানা: serving বা provider worker কর্তৃত্ব শুরুর আগে কঠোর operator configuration, ব্যক্তিগত service/provider credential, স্থির upstream origin ও runtime path যাচাই করা হয়।"
 
 #: lib/marshall/documentation_messages.ex:4817
 #, elixir-autogen, elixir-format
 msgid "Boundary: Strict operator schema, control origin, private credential and local socket are validated before Galileo creates serving authority."
-msgstr ""
+msgstr "সীমানা: Galileo serving authority তৈরির আগে কঠোর operator schema, control origin, ব্যক্তিগত credential ও স্থানীয় socket যাচাই করা হয়।"
 
 #: lib/marshall/documentation_messages.ex:4821
 #, elixir-autogen, elixir-format
@@ -8227,17 +8227,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4825
 #, elixir-autogen, elixir-format
 msgid "Boundary: The SSH channel captures request start before backend authorization; StreamGuard must refuse expired admission before invoking the locally configured guest connector."
-msgstr ""
+msgstr "সীমানা: backend authorization-এর আগে SSH channel অনুরোধ শুরুর সময় ধরে; স্থানীয়ভাবে কনফিগার করা guest connector ডাকার আগে StreamGuard-কে expired admission প্রত্যাখ্যান করতে হবে।"
 
 #: lib/marshall/documentation_messages.ex:4829
 #, elixir-autogen, elixir-format
 msgid "Boundary: The disposable native guest uses actual packaged Lilly router and TAP source-guard rules under validated synthetic identity. Every fixed TCP target is proven reachable before rules. Real guard drop counters distinguish source refusal from an unrelated connection failure."
-msgstr ""
+msgstr "সীমানা: অস্থায়ী native guest যাচাইকৃত synthetic identity-তে প্রকৃত packaged Lilly router ও TAP source-guard rule ব্যবহার করে। নিয়মের আগে প্রতিটি fixed TCP target-এর পৌঁছনো সম্ভব প্রমাণ করা হয়। প্রকৃত guard drop counter source refusal-কে অসংশ্লিষ্ট connection failure থেকে আলাদা করে।"
 
 #: lib/marshall/documentation_messages.ex:4833
 #, elixir-autogen, elixir-format
 msgid "Boundary: The encrypted outbox row controls whether a mail attempt may start; each retry carries one stable Message-ID and token payload, while token consumption remains single-use."
-msgstr ""
+msgstr "সীমানা: encrypted outbox row নির্ধারণ করে mail attempt শুরু করা যাবে কি না; প্রতিটি retry একই স্থিতিশীল Message-ID ও token payload বহন করে, কিন্তু token consumption একবার ব্যবহারযোগ্যই থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4837
 #, elixir-autogen, elixir-format
@@ -8247,12 +8247,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4841
 #, elixir-autogen, elixir-format
 msgid "Boundary: The first supervised listener validates certificate signature leaf binding current time and a single principal before the SSH daemon or later serving children."
-msgstr ""
+msgstr "সীমানা: প্রথম supervised listener SSH daemon বা পরের serving child-গুলোর আগে certificate signature, leaf binding, বর্তমান সময় ও একটিমাত্র principal যাচাই করে।"
 
 #: lib/marshall/documentation_messages.ex:4845
 #, elixir-autogen, elixir-format
 msgid "Boundary: The fixture flushes and reads back exact home bytes, requires actual Firecracker SIGKILL, then boots the same disk with fresh MMDS authority. Native filesystem verification and retained bytes are required after recovery; final shutdown must be observed cleanly."
-msgstr ""
+msgstr "সীমানা: fixture home-এর নির্ভুল byte flush করে আবার পড়ে, প্রকৃত Firecracker SIGKILL আবশ্যক করে, তারপর নতুন MMDS কর্তৃত্বে একই disk বুট করে। recovery-এর পরে native filesystem verification ও সংরক্ষিত byte আবশ্যক; final shutdown পরিষ্কারভাবে পর্যবেক্ষণ করতে হবে।"
 
 #: lib/marshall/documentation_messages.ex:4849
 #, elixir-autogen, elixir-format
@@ -8272,7 +8272,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4861
 #, elixir-autogen, elixir-format
 msgid "Boundary: The native helper owns stable command slots and repository writer locks; inherited descriptors retain uncertain descendant authority. Marshall retains durable intent."
-msgstr ""
+msgstr "সীমানা: native helper স্থিতিশীল command slot ও repository writer lock-এর মালিক; inherited descriptor অনিশ্চিত descendant কর্তৃত্ব ধরে রাখে। Marshall durable intent ধরে রাখে।"
 
 #: lib/marshall/documentation_messages.ex:4865
 #, elixir-autogen, elixir-format
@@ -8282,17 +8282,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4869
 #, elixir-autogen, elixir-format
 msgid "Boundary: The pinned Rust proxy validates its bearer and parsed model request before durable admission; an independent exporter reads only a restricted numeric snapshot and a separate collector intake assigns fixed source provenance."
-msgstr ""
+msgstr "সীমানা: নির্দিষ্ট Rust proxy durable admission-এর আগে তার bearer ও parsed model request যাচাই করে; স্বাধীন exporter শুধু সীমিত numeric snapshot পড়ে এবং পৃথক collector intake স্থির source provenance নির্ধারণ করে।"
 
 #: lib/marshall/documentation_messages.ex:4873
 #, elixir-autogen, elixir-format
 msgid "Boundary: The pinned Underclass proxy refuses with 429 and a relative Retry-After only when a fresh selection after the automatic reset attempt still finds no healthy eligible account; requests skip the reset lock while any Codex account is healthy."
-msgstr ""
+msgstr "সীমানা: স্বয়ংক্রিয় reset-এর প্রচেষ্টার পর নতুন selection-এ এখনও সুস্থ eligible account না মিললেই নির্দিষ্ট Underclass proxy 429 ও আপেক্ষিক Retry-After দিয়ে প্রত্যাখ্যান করে; কোনো Codex account সুস্থ থাকলে request reset lock এড়িয়ে যায়।"
 
 #: lib/marshall/documentation_messages.ex:4877
 #, elixir-autogen, elixir-format
 msgid "Boundary: The pinned Underclass proxy stores sanitized stream outcomes and aggregate statistics in its host-local database; the stats API, event import route and CLI require the host administrator bearer token."
-msgstr ""
+msgstr "সীমানা: নির্দিষ্ট Underclass proxy তার host-local database-এ গোপন তথ্য বাদ দেওয়া stream outcome ও aggregate statistic রাখে; stats API, event import route ও CLI-তে host administrator bearer token আবশ্যক।"
 
 #: lib/marshall/documentation_messages.ex:4881
 #, elixir-autogen, elixir-format
@@ -8302,22 +8302,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4885
 #, elixir-autogen, elixir-format
 msgid "Boundary: The reset route, page button and underclass reset command require the host's admin bearer token; a remote --url call must carry UNDERCLASS_UI_TOKEN and never sends a database token."
-msgstr ""
+msgstr "সীমানা: reset route, page button ও underclass reset command-এ হোস্টের admin bearer token লাগে; দূরবর্তী --url call-এ UNDERCLASS_UI_TOKEN থাকতে হবে এবং database token কখনো পাঠানো হয় না।"
 
 #: lib/marshall/documentation_messages.ex:4889
 #, elixir-autogen, elixir-format
 msgid "Boundary: The shared client owns socket retirement; public satellite adapters must preserve its stopped unsupported-version reason when pending calls resolve as unproven."
-msgstr ""
+msgstr "সীমানা: shared client socket retirement-এর মালিক; pending call অপ্রমাণিত হিসেবে resolve হলে public satellite adapter-কে তার থামার unsupported-version কারণ অক্ষত রাখতে হবে।"
 
 #: lib/marshall/documentation_messages.ex:4893
 #, elixir-autogen, elixir-format
 msgid "Boundary: The shared client owns volatile pending requests under the current welcome's validated capacity; service admission and domain authority remain separate."
-msgstr ""
+msgstr "সীমানা: বর্তমান welcome-এর যাচাইকৃত capacity অনুযায়ী shared client অস্থায়ী pending request-এর মালিক; service admission ও domain authority পৃথক থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4897
 #, elixir-autogen, elixir-format
 msgid "Boundary: The shared client owns volatile reconnect scheduling; durable host freshness and domain authority remain independent."
-msgstr ""
+msgstr "সীমানা: shared client অস্থায়ী reconnect scheduling-এর মালিক; durable host freshness ও domain authority স্বাধীন থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4901
 #, elixir-autogen, elixir-format
@@ -8337,32 +8337,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4913
 #, elixir-autogen, elixir-format
 msgid "Boundary: Trusted absolute utility argv, private export lock and all-adopted-child kernel custody; source permit and SSH authority remain separate."
-msgstr ""
+msgstr "সীমানা: বিশ্বস্ত absolute utility argv, private export lock এবং সব adopted child-এর kernel custody; source permit ও SSH কর্তৃত্ব পৃথক থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4917
 #, elixir-autogen, elixir-format
 msgid "Boundary: Unsupported-version close is a terminal transport refusal, and disconnect cannot prove domain completion."
-msgstr ""
+msgstr "সীমানা: unsupported-version close একটি চূড়ান্ত transport refusal, এবং disconnect domain completion প্রমাণ করতে পারে না।"
 
 #: lib/marshall/documentation_messages.ex:4921
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified HTTPS policy and one dedicated host CA; issuance requires locked service or physical boot authority."
-msgstr ""
+msgstr "সীমানা: যাচাইকৃত HTTPS policy ও একটি নির্দিষ্ট host CA; issuance-এর জন্য locked service বা physical boot authority আবশ্যক।"
 
 #: lib/marshall/documentation_messages.ex:4925
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified TLS control upgrade, correlated error and pending-close classes plus local DNS, SSH publisher, Fleet and readiness ownership; Marshall remains publication authority."
-msgstr ""
+msgstr "সীমানা: যাচাইকৃত TLS control upgrade, correlated error ও pending-close class এবং স্থানীয় DNS, SSH publisher, Fleet ও readiness ownership; Marshall publication authority-ই থাকে।"
 
 #: lib/marshall/documentation_messages.ex:4929
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified email identity, current elevated administrator, immediate account revocation and old-UUID cleanup through physical lifecycle fences."
-msgstr ""
+msgstr "সীমানা: যাচাইকৃত email identity, বর্তমান উন্নীত প্রশাসক, তাৎক্ষণিক account revocation এবং physical lifecycle fence দিয়ে পুরোনো UUID cleanup।"
 
 #: lib/marshall/documentation_messages.ex:4933
 #, elixir-autogen, elixir-format
 msgid "Boundary: Verified origin and current profile admission precede shared-cache policy; explicit-public or reviewed anonymous full-commit GitHub classification, complete payloads, exact variants, freshness and process-owned leases govern reuse."
-msgstr ""
+msgstr "সীমানা: shared-cache policy-এর আগে যাচাইকৃত origin ও বর্তমান profile admission; explicit-public বা reviewed anonymous full-commit GitHub classification, complete payload, exact variant, freshness ও process-owned lease পুনর্ব্যবহার নিয়ন্ত্রণ করে।"
 
 #: lib/marshall/documentation_messages.ex:4937
 #, elixir-autogen, elixir-format
@@ -8372,32 +8372,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4941
 #, elixir-autogen, elixir-format
 msgid "Boundary: Versioned authenticated control transport, durable generation, owned physical process and GUID-bound drives."
-msgstr ""
+msgstr "সীমানা: সংস্করণযুক্ত authenticated control transport, durable generation, নিজস্ব physical process এবং GUID-bound drive।"
 
 #: lib/marshall/documentation_messages.ex:4945
 #, elixir-autogen, elixir-format
 msgid "Boundary: Volatile proof binds the exact currently verified VMM; one native observer may outlive proof withdrawal to report its actual terminal outcome, without granting authority."
-msgstr ""
+msgstr "সীমানা: অস্থায়ী proof নির্ভুল বর্তমানে যাচাইকৃত VMM-কে বাঁধে; প্রকৃত terminal outcome জানাতে একটি native observer proof withdrawal-এর পরও থাকতে পারে, কোনো কর্তৃত্ব না দিয়ে।"
 
 #: lib/marshall/documentation_messages.ex:4949
 #, elixir-autogen, elixir-format
 msgid "Boundary: Write permission, profile tool allowlist, model claim and boot-bound executor fence."
-msgstr ""
+msgstr "সীমানা: লেখার অনুমতি, profile tool allowlist, model claim এবং boot-bound executor fence।"
 
 #: lib/marshall/documentation_messages.ex:4953
 #, elixir-autogen, elixir-format
 msgid "Boundary: Ziggy counts a newly durable terminal spool completion, excludes caller cancellation and exports only fixed cumulative numbers through a private file, Rust exporter and Ziggy-only collector intake."
-msgstr ""
+msgstr "সীমানা: Ziggy সদ্য durable হওয়া terminal spool completion গোনে, caller cancellation বাদ দেয়, এবং private file, Rust exporter ও Ziggy-নির্দিষ্ট collector intake দিয়ে শুধু স্থির cumulative সংখ্যা export করে।"
 
 #: lib/marshall/documentation_messages.ex:4957
 #, elixir-autogen, elixir-format
 msgid "Boundary: Ziggy's closed native route type validates the exact beta query separately from the query-free accounting path, forwards native bytes and allowed Anthropic headers, and retains current admission and provider-secret custody."
-msgstr ""
+msgstr "সীমানা: Ziggy-এর closed native route type query-বিহীন accounting path থেকে exact beta query পৃথকভাবে যাচাই করে, native byte ও অনুমোদিত Anthropic header পাঠায় এবং বর্তমান admission ও provider-secret custody ধরে রাখে।"
 
 #: lib/marshall/documentation_messages.ex:4961
 #, elixir-autogen, elixir-format
 msgid "Boundary: lilly-hostd holds each lease's flock on the existing lock inode, grants waiters in arrival order and runs leased utilities from a closed table with the lease descriptor inherited, each in its own command cgroup in production."
-msgstr ""
+msgstr "সীমানা: lilly-hostd বিদ্যমান lock inode-এ প্রতিটি lease-এর flock ধরে, আগমনের ক্রমে waiter-কে অনুমতি দেয় এবং closed table থেকে leased utility চালায়; প্রতিটি lease descriptor উত্তরাধিকারসূত্রে পায় এবং production-এ নিজস্ব command cgroup-এ চলে।"
 
 #: lib/marshall/documentation_messages.ex:4965
 #, elixir-autogen, elixir-format
@@ -8412,7 +8412,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4973
 #, elixir-autogen, elixir-format
 msgid "Brady intercepts permitted guest web TCP before NAT. It verifies the HTTP authority\nor TLS name and connects to the pinned original destination with independent\nupstream TLS verification. Guest identity comes from kernel connection attribution\nand a current execution proof, not guest headers."
-msgstr ""
+msgstr "Brady NAT-এর আগে অনুমোদিত অতিথি web TCP আটকায়। এটি HTTP authority বা TLS নাম যাচাই করে এবং স্বাধীন upstream TLS verification-সহ নির্দিষ্ট মূল destination-এ সংযুক্ত হয়। অতিথির পরিচয় kernel connection attribution ও বর্তমান execution proof থেকে আসে, guest header থেকে নয়।"
 
 #: lib/marshall/documentation_messages.ex:4977
 #, elixir-autogen, elixir-format
@@ -8437,7 +8437,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:4990
 #, elixir-autogen, elixir-format
 msgid "Build hosts need the repository's pinned toolchain and, for native image creation,\nworking KVM. Inspect the resulting `manifest.json`; use its canonical image\nidentity rather than inventing an ID from a filename. Fleet image declarations\nselect installed artifacts and Marshall's default image."
-msgstr ""
+msgstr "বিল্ড হোস্টে repository-র নির্দিষ্ট toolchain, আর native image তৈরির জন্য সচল KVM লাগে। তৈরি হওয়া `manifest.json` পরীক্ষা করুন; filename থেকে ID বানানোর বদলে তার canonical image identity ব্যবহার করুন। Fleet image declaration ইনস্টল করা artifact ও Marshall-এর default image নির্বাচন করে।"
 
 #: lib/marshall/documentation_messages.ex:4994
 #, elixir-autogen, elixir-format
@@ -8457,32 +8457,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5006
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating Marshall backend certificates."
-msgstr ""
+msgstr "Marshall backend certificate যাচাইকারী CA bundle।"
 
 #: lib/marshall/documentation_messages.ex:5007
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating the PostgreSQL endpoint."
-msgstr ""
+msgstr "PostgreSQL endpoint যাচাইকারী CA bundle।"
 
 #: lib/marshall/documentation_messages.ex:5008
 #, elixir-autogen, elixir-format
 msgid "CA bundle authenticating the control-plane endpoint. Lilly reads it through systemd LoadCredential, so the file may be readable by root only."
-msgstr ""
+msgstr "control-plane endpoint যাচাইকারী CA bundle। Lilly এটি systemd LoadCredential দিয়ে পড়ে, তাই ফাইল শুধু root-এর পাঠযোগ্য হতে পারে।"
 
 #: lib/marshall/documentation_messages.ex:5012
 #, elixir-autogen, elixir-format
 msgid "CA certificates authenticating the Marshall HTTPS endpoint."
-msgstr ""
+msgstr "Marshall HTTPS endpoint যাচাইকারী CA certificate।"
 
 #: lib/marshall/documentation_messages.ex:5013
 #, elixir-autogen, elixir-format
 msgid "CA roots authenticating the ACME directory."
-msgstr ""
+msgstr "ACME directory যাচাইকারী CA root।"
 
 #: lib/marshall/documentation_messages.ex:5014
 #, elixir-autogen, elixir-format
 msgid "CA roots validating issued certificate chains."
-msgstr ""
+msgstr "ইস্যু করা certificate chain যাচাইকারী CA root।"
 
 #: lib/marshall/documentation_messages.ex:5015
 #, elixir-autogen, elixir-format
@@ -8517,7 +8517,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5040
 #, elixir-autogen, elixir-format
 msgid "Canonical runtime directory containing the complete published bundle."
-msgstr ""
+msgstr "সম্পূর্ণ প্রকাশিত bundle-সহ canonical runtime directory।"
 
 #: lib/marshall/documentation_messages.ex:5044
 #, elixir-autogen, elixir-format
@@ -8537,7 +8537,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5056
 #, elixir-autogen, elixir-format
 msgid "Central metrics/traces/Grafana store or worker collector."
-msgstr ""
+msgstr "কেন্দ্রীয় metrics/traces/Grafana store অথবা worker collector।"
 
 #: lib/marshall/documentation_messages.ex:5057
 #, elixir-autogen, elixir-format
@@ -8557,7 +8557,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5069
 #, elixir-autogen, elixir-format
 msgid "Choose a stable, unique request ID for each intended mutation. Reuse it when\nretrying that same mutation after losing a reply. Request IDs contain 1–128 ASCII\nletters, digits, underscores, dots, colons or hyphens, and start with a letter or\ndigit. Do not reuse one ID for different operations."
-msgstr ""
+msgstr "প্রতিটি অভিপ্রেত পরিবর্তনের জন্য স্থিতিশীল, অনন্য request ID বাছুন। reply হারানোর পর সেই একই পরিবর্তন আবার চেষ্টা করলে একই ID ব্যবহার করুন। request ID-তে 1–128টি ASCII অক্ষর, সংখ্যা, underscore, dot, colon বা hyphen থাকে এবং তা অক্ষর বা সংখ্যা দিয়ে শুরু হয়। ভিন্ন operation-এর জন্য একই ID আবার ব্যবহার করবেন না।"
 
 #: lib/marshall/documentation_messages.ex:5073
 #, elixir-autogen, elixir-format
@@ -8577,17 +8577,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5085
 #, elixir-autogen, elixir-format
 msgid "Clones queue per source. Distinct requests create distinct private machines and\nindependent disks. Capture may stop the source; restoration and destination cleanup\nremain separate obligations when copying fails or the request is cancelled."
-msgstr ""
+msgstr "প্রতিটি source অনুযায়ী clone সারিবদ্ধ হয়। পৃথক request পৃথক private machine ও independent disk তৈরি করে। capture source বন্ধ করতে পারে; copy ব্যর্থ হলে বা request বাতিল হলে restoration ও destination cleanup পৃথক দায়িত্বই থাকে।"
 
 #: lib/marshall/documentation_messages.ex:5089
 #, elixir-autogen, elixir-format
 msgid "Cloning is currently unavailable for the Inception multi-disk profile."
-msgstr ""
+msgstr "Inception multi-disk profile-এর জন্য cloning বর্তমানে উপলব্ধ নয়।"
 
 #: lib/marshall/documentation_messages.ex:5093
 #, elixir-autogen, elixir-format
 msgid "Closed trusted request-source name; physical measurements stay in PostgreSQL."
-msgstr ""
+msgstr "বিশ্বস্ত request-source-এর বন্ধ তালিকার নাম; physical measurement PostgreSQL-এই থাকে।"
 
 #: lib/marshall/documentation_messages.ex:5101
 #, elixir-autogen, elixir-format
@@ -8627,7 +8627,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5126
 #, elixir-autogen, elixir-format
 msgid "Conservative per-pool artifact budget for sealed image templates (ADR-0130); images larger than the budget use fresh verification for every provision."
-msgstr ""
+msgstr "sealed image template-এর জন্য প্রতি-pool সতর্ক artifact budget (ADR-0130); budget-এর চেয়ে বড় image প্রতিটি provision-এ নতুন verification ব্যবহার করে।"
 
 #: lib/marshall/documentation_messages.ex:5130
 #, elixir-autogen, elixir-format
@@ -8972,7 +8972,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5369
 #, elixir-autogen, elixir-format
 msgid "Create a named SSH account on every participating host."
-msgstr ""
+msgstr "অংশগ্রহণকারী প্রতিটি হোস্টে নামযুক্ত SSH account তৈরি করুন।"
 
 #: lib/marshall/documentation_messages.ex:5370
 #, elixir-autogen, elixir-format
@@ -8992,7 +8992,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5382
 #, elixir-autogen, elixir-format
 msgid "Credential preparation services required before startup."
-msgstr ""
+msgstr "startup-এর আগে প্রয়োজনীয় credential preparation service।"
 
 #: lib/marshall/documentation_messages.ex:5383
 #, elixir-autogen, elixir-format
@@ -9007,27 +9007,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5391
 #, elixir-autogen, elixir-format
 msgid "Current-generation preparation dependencies for Git authentication."
-msgstr ""
+msgstr "Git authentication-এর জন্য current-generation preparation dependency।"
 
 #: lib/marshall/documentation_messages.ex:5395
 #, elixir-autogen, elixir-format
 msgid "Daily inference usage retention in days."
-msgstr ""
+msgstr "দৈনিক inference usage কত দিন রাখা হবে।"
 
 #: lib/marshall/documentation_messages.ex:5396
 #, elixir-autogen, elixir-format
 msgid "Database HA, WAL archival, PITR and independent failure domains are separate from\nthe host logical backup. Test actual restore and key recovery. Retain original\nstate until acceptance, and record RPO/RTO from measured drills."
-msgstr ""
+msgstr "Database HA, WAL archival, PITR ও independent failure domain হোস্টের logical backup থেকে পৃথক। প্রকৃত restore ও key recovery পরীক্ষা করুন। গ্রহণযোগ্যতা নিশ্চিত না হওয়া পর্যন্ত original state রাখুন, এবং পরিমাপ করা মহড়া থেকে RPO/RTO নথিভুক্ত করুন।"
 
 #: lib/marshall/documentation_messages.ex:5400
 #, elixir-autogen, elixir-format
 msgid "Database pool connections per instance."
-msgstr ""
+msgstr "প্রতি instance-এ database pool connection।"
 
 #: lib/marshall/documentation_messages.ex:5401
 #, elixir-autogen, elixir-format
 msgid "Deadline for one root-disk image copy or flush per pool (ADR-0173); expiry fails the placement closed. Raise it only where image I/O is known to be slow, such as nested test hosts reading a non-sparse store."
-msgstr ""
+msgstr "প্রতি pool-এ একটি root-disk image copy বা flush-এর সময়সীমা (ADR-0173); মেয়াদ শেষ হলে placement নিরাপদভাবে প্রত্যাখ্যাত হয়। image I/O ধীর জানা থাকলেই বাড়ান, যেমন non-sparse store পড়া nested test host-এ।"
 
 #: lib/marshall/documentation_messages.ex:5405
 #, elixir-autogen, elixir-format
@@ -9037,7 +9037,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5409
 #, elixir-autogen, elixir-format
 msgid "Dedicated Galileo control credential runtime file."
-msgstr ""
+msgstr "নির্দিষ্ট Galileo control credential-এর runtime file।"
 
 #: lib/marshall/documentation_messages.ex:5410
 #, elixir-autogen, elixir-format
@@ -9047,12 +9047,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5411
 #, elixir-autogen, elixir-format
 msgid "Dedicated Ziggy control credential runtime file."
-msgstr ""
+msgstr "নির্দিষ্ট Ziggy control credential-এর runtime file।"
 
 #: lib/marshall/documentation_messages.ex:5412
 #, elixir-autogen, elixir-format
 msgid "Default immutable image for new SSH machines and initial browser drafts; admission still requires image availability."
-msgstr ""
+msgstr "নতুন SSH machine ও প্রাথমিক browser draft-এর default immutable image; admission-এর জন্য image availability এখনও আবশ্যক।"
 
 #: lib/marshall/documentation_messages.ex:5416
 #, elixir-autogen, elixir-format
@@ -9072,17 +9072,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5425
 #, elixir-autogen, elixir-format
 msgid "Delay between garbage collection checks. The first check runs one\ninterval after boot; missed checks are caught up after downtime."
-msgstr ""
+msgstr "garbage collection পরীক্ষার মধ্যবর্তী বিলম্ব। বুটের এক interval পরে প্রথম পরীক্ষা চলে; downtime-এ বাদ পড়া পরীক্ষাগুলো পরে পূরণ করা হয়।"
 
 #: lib/marshall/documentation_messages.ex:5429
 #, elixir-autogen, elixir-format
 msgid "Delegated Audi application zone, shared by all gateways and DNS replicas. Editor authority requires at least two canonical lowercase DNS labels."
-msgstr ""
+msgstr "Delegated Audi application zone, সব gateway ও DNS replica-তে shared। Editor authority-এর জন্য অন্তত দুটি canonical lowercase DNS label লাগে।"
 
 #: lib/marshall/documentation_messages.ex:5433
 #, elixir-autogen, elixir-format
 msgid "Delegated application DNS zone. Browser editor assets require at least two canonical lowercase DNS labels."
-msgstr ""
+msgstr "Delegated application DNS zone। Browser editor asset-এর জন্য অন্তত দুটি canonical lowercase DNS label লাগে।"
 
 #: lib/marshall/documentation_messages.ex:5437
 #, elixir-autogen, elixir-format
@@ -9097,7 +9097,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5442
 #, elixir-autogen, elixir-format
 msgid "Deletion retains the VM's identity and idempotency history while physical cleanup\nruns. Busy mounts, foreign GUIDs, or uncertain execution retain holds. The native\ncleanup path handles owned mount copies across Linux namespaces; it does not force\nan unverified dataset into a free state."
-msgstr ""
+msgstr "physical cleanup চলার সময় deletion VM-এর identity ও idempotency history ধরে রাখে। busy mount, foreign GUID বা uncertain execution hold বজায় রাখে। native cleanup path Linux namespace জুড়ে নিজস্ব mount copy সামলায়; যাচাই না করা dataset-কে জোর করে free state-এ নেয় না।"
 
 #: lib/marshall/documentation_messages.ex:5446
 #, elixir-autogen, elixir-format
@@ -9122,7 +9122,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5466
 #, elixir-autogen, elixir-format
 msgid "Development builds (`config :marshall, MarshallWeb.SecurityHeaders,\ndevelopment_tooling: true`) add inline and `localhost` sources for live reload,\nLiveDashboard, Oban Web, AshAdmin and `live_debugger`; test builds compile the\nproduction policy, so the browser probe measures what production sends."
-msgstr ""
+msgstr "Development build (`config :marshall, MarshallWeb.SecurityHeaders,\ndevelopment_tooling: true`) live reload, LiveDashboard, Oban Web, AshAdmin ও `live_debugger`-এর জন্য inline ও `localhost` source যোগ করে; test build production policy compile করে, তাই browser probe production যা পাঠায় সেটিই মাপে।"
 
 #: lib/marshall/documentation_messages.ex:5470
 #, elixir-autogen, elixir-format
@@ -9152,7 +9152,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5490
 #, elixir-autogen, elixir-format
 msgid "Domain validation method; DNS-01 uses Route 53."
-msgstr ""
+msgstr "Domain validation পদ্ধতি; DNS-01 Route 53 ব্যবহার করে।"
 
 #: lib/marshall/documentation_messages.ex:5491
 #, elixir-autogen, elixir-format
@@ -9162,22 +9162,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5495
 #, elixir-autogen, elixir-format
 msgid "Durable VM actor directory; maximum 45 bytes for UNIX sockets."
-msgstr ""
+msgstr "durable VM actor directory; UNIX socket-এর জন্য সর্বোচ্চ 45 byte।"
 
 #: lib/marshall/documentation_messages.ex:5499
 #, elixir-autogen, elixir-format
 msgid "Durable control receipt and host ownership directory."
-msgstr ""
+msgstr "durable control receipt ও host ownership directory।"
 
 #: lib/marshall/documentation_messages.ex:5500
 #, elixir-autogen, elixir-format
 msgid "Durable host networking ownership directory."
-msgstr ""
+msgstr "durable host networking ownership directory।"
 
 #: lib/marshall/documentation_messages.ex:5501
 #, elixir-autogen, elixir-format
 msgid "Durable transfer journal root used by Lilly's generated export configuration."
-msgstr ""
+msgstr "Lilly-এর উৎপন্ন export configuration-এ ব্যবহৃত durable transfer journal root।"
 
 #: lib/marshall/documentation_messages.ex:5505
 #, elixir-autogen, elixir-format
@@ -9222,7 +9222,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5537
 #, elixir-autogen, elixir-format
 msgid "Each machine's page shows the machine name, its state, its operating system and\nits machine ID (with a Copy button) at the top, followed by a \"Connect from your\ncomputer\" section with a one-line installer that sets up SSH and connects to\nthat machine:"
-msgstr ""
+msgstr "প্রতিটি machine page-এর ওপরে machine name, state, operating system ও machine ID (Copy button-সহ) দেখা যায়; তার পরে এক লাইনের installer-সহ \"আপনার কম্পিউটার থেকে সংযুক্ত হন\" অংশ থাকে, যা SSH সেটআপ করে ওই machine-এ সংযোগ করে:"
 
 #: lib/marshall/documentation_messages.ex:5541
 #, elixir-autogen, elixir-format
@@ -9257,7 +9257,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5573
 #, elixir-autogen, elixir-format
 msgid "Encrypt private input from a mode-0600 file outside the checkout:"
-msgstr ""
+msgstr "checkout-এর বাইরে mode-0600 file থেকে private input এনক্রিপ্ট করুন:"
 
 #: lib/marshall/documentation_messages.ex:5577
 #, elixir-autogen, elixir-format
@@ -9277,7 +9277,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5589
 #, elixir-autogen, elixir-format
 msgid "Enrolled identity of the local Lilly host."
-msgstr ""
+msgstr "স্থানীয় Lilly host-এর enrolled identity।"
 
 #: lib/marshall/documentation_messages.ex:5590
 #, elixir-autogen, elixir-format
@@ -9292,12 +9292,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5592
 #, elixir-autogen, elixir-format
 msgid "Enrolled, persistent Marshall host resource UUID."
-msgstr ""
+msgstr "enrolled, স্থায়ী Marshall host resource UUID।"
 
 #: lib/marshall/documentation_messages.ex:5593
 #, elixir-autogen, elixir-format
 msgid "Enter UTF-8 text interactively or on stdin. Open the printed approval URL, verify\nthe machine and request code, and approve. Approval lasts one hour, is scoped to\none machine, and is requested for each invocation. The CLI keeps its secret in\nmemory and transmits it only over HTTPS."
-msgstr ""
+msgstr "ইন্টারঅ্যাক্টিভভাবে বা stdin-এ UTF-8 text লিখুন। মুদ্রিত approval URL খুলুন, machine ও request code যাচাই করে approve করুন। approval এক ঘণ্টা কার্যকর, একটি machine-এ সীমিত, এবং প্রতিবার invocation-এ চাওয়া হয়। CLI তার secret memory-তে রাখে এবং শুধু HTTPS দিয়ে পাঠায়।"
 
 #: lib/marshall/documentation_messages.ex:5597
 #, elixir-autogen, elixir-format
@@ -9307,7 +9307,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5601
 #, elixir-autogen, elixir-format
 msgid "Evaluated producer identity inventory for topology and independent health."
-msgstr ""
+msgstr "topology ও independent health-এর জন্য evaluated producer identity inventory।"
 
 #: lib/marshall/documentation_messages.ex:5605
 #, elixir-autogen, elixir-format
@@ -9367,7 +9367,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5653
 #, elixir-autogen, elixir-format
 msgid "Evidence: [backup procedures](repo:docs/operations/backups.md),\n[database recovery limits](repo:docs/operations/database-recovery.md),\n[backup module](repo:nix/domains/system/backups/default.nix)."
-msgstr ""
+msgstr "প্রমাণ: [ব্যাকআপ পদ্ধতি](repo:docs/operations/backups.md), [ডেটাবেস পুনরুদ্ধারের সীমা](repo:docs/operations/database-recovery.md), [ব্যাকআপ মডিউল](repo:nix/domains/system/backups/default.nix)।"
 
 #: lib/marshall/documentation_messages.ex:5657
 #, elixir-autogen, elixir-format
@@ -9377,7 +9377,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5661
 #, elixir-autogen, elixir-format
 msgid "Evidence: [command catalog](repo:protocol/lib/overalls_protocol/ssh_command.ex),\n[test catalog](repo:nix/verification/tests/README.md),\n[architecture index](repo:docs/architecture/decisions/README.md),\n[maintenance skill](repo:.agents/skills/hldd-maintenance/SKILL.md)."
-msgstr ""
+msgstr "প্রমাণ: [কমান্ড তালিকা](repo:protocol/lib/overalls_protocol/ssh_command.ex), [পরীক্ষার তালিকা](repo:nix/verification/tests/README.md), [স্থাপত্য সূচি](repo:docs/architecture/decisions/README.md), [রক্ষণাবেক্ষণ দক্ষতা](repo:.agents/skills/hldd-maintenance/SKILL.md)।"
 
 #: lib/marshall/documentation_messages.ex:5665
 #, elixir-autogen, elixir-format
@@ -9392,7 +9392,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5673
 #, elixir-autogen, elixir-format
 msgid "Evidence: [flake interfaces](repo:flake.nix), [Marshall domains](repo:marshall/lib/marshall/application.ex),\n[Lilly supervision](repo:lilly/lib/lilly/application.ex), [architecture decisions](repo:docs/architecture/decisions/README.md)."
-msgstr ""
+msgstr "প্রমাণ: [flake interface](repo:flake.nix), [Marshall domain](repo:marshall/lib/marshall/application.ex), [Lilly supervision](repo:lilly/lib/lilly/application.ex), [স্থাপত্য সিদ্ধান্ত](repo:docs/architecture/decisions/README.md)।"
 
 #: lib/marshall/documentation_messages.ex:5677
 #, elixir-autogen, elixir-format
@@ -9402,12 +9402,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5681
 #, elixir-autogen, elixir-format
 msgid "Evidence: [host profile](repo:nix/platform/hosts/profile.nix), [Marshall module](repo:nix/domains/system/marshall.nix),\n[Lilly module](repo:nix/domains/system/lilly.nix), [fleet users](repo:docs/operations/fleet-users.md),\n[secret custody](repo:secrets/README.md)."
-msgstr ""
+msgstr "প্রমাণ: [host profile](repo:nix/platform/hosts/profile.nix), [Marshall module](repo:nix/domains/system/marshall.nix), [Lilly module](repo:nix/domains/system/lilly.nix), [fleet user](repo:docs/operations/fleet-users.md), [গোপন তথ্যের হেফাজত](repo:secrets/README.md)।"
 
 #: lib/marshall/documentation_messages.ex:5685
 #, elixir-autogen, elixir-format
 msgid "Evidence: [host tool](repo:docs/operations/host-provisioning.md), [enrollment](repo:docs/operations/provisioner-enrollment.md),\n[deployment](repo:docs/operations/deployment.md), [updater](repo:nix/domains/system/auto-update/runtime.py)."
-msgstr ""
+msgstr "প্রমাণ: [host tool](repo:docs/operations/host-provisioning.md), [enrollment](repo:docs/operations/provisioner-enrollment.md), [স্থাপন](repo:docs/operations/deployment.md), [updater](repo:nix/domains/system/auto-update/runtime.py)।"
 
 #: lib/marshall/documentation_messages.ex:5689
 #, elixir-autogen, elixir-format
@@ -9417,12 +9417,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5693
 #, elixir-autogen, elixir-format
 msgid "Evidence: [native recovery oracle](repo:nix/verification/tests/support/native_recovery.py),\n[machine variant](repo:nix/verification/tests/machines/native-services/default.nix),\n[native review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md)."
-msgstr ""
+msgstr "প্রমাণ: [native recovery oracle](repo:nix/verification/tests/support/native_recovery.py), [machine variant](repo:nix/verification/tests/machines/native-services/default.nix), [native review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md)।"
 
 #: lib/marshall/documentation_messages.ex:5697
 #, elixir-autogen, elixir-format
 msgid "Evidence: [native root helper](repo:lyra/src/native_growth.rs),\n[GPT preflight](repo:lyra/src/native_growth/gpt.rs),\n[native service order](repo:nix/domains/artifacts/guest/native-growth.nix),\n[review](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md)."
-msgstr ""
+msgstr "প্রমাণ: [native root helper](repo:lyra/src/native_growth.rs), [GPT preflight](repo:lyra/src/native_growth/gpt.rs), [native service order](repo:nix/domains/artifacts/guest/native-growth.nix), [পর্যালোচনা](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md)।"
 
 #: lib/marshall/documentation_messages.ex:5701
 #, elixir-autogen, elixir-format
@@ -9432,7 +9432,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5705
 #, elixir-autogen, elixir-format
 msgid "Evidence: [resize](repo:marshall/lib/marshall/compute/resize_request.ex),\n[clone](repo:marshall/lib/marshall/compute/clone_request.ex),\n[relocation](repo:marshall/lib/marshall/compute/relocation.ex),\n[evacuation](repo:marshall/lib/marshall/compute/evacuation.ex)."
-msgstr ""
+msgstr "প্রমাণ: [আকার পরিবর্তন](repo:marshall/lib/marshall/compute/resize_request.ex), [ক্লোন](repo:marshall/lib/marshall/compute/clone_request.ex), [স্থানান্তর](repo:marshall/lib/marshall/compute/relocation.ex), [হোস্ট খালি করা](repo:marshall/lib/marshall/compute/evacuation.ex)।"
 
 #: lib/marshall/documentation_messages.ex:5709
 #, elixir-autogen, elixir-format
@@ -9442,12 +9442,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5713
 #, elixir-autogen, elixir-format
 msgid "Exact cgroup v2 systemd service allowed to admit requests."
-msgstr ""
+msgstr "request admit করার অনুমতিপ্রাপ্ত নির্ভুল cgroup v2 systemd service।"
 
 #: lib/marshall/documentation_messages.ex:5718
 #, elixir-autogen, elixir-format
 msgid "Exact locally installed Inception image allowed to receive the shared SMTP bundle."
-msgstr ""
+msgstr "shared SMTP bundle পাওয়ার অনুমতিপ্রাপ্ত, স্থানীয়ভাবে ইনস্টল করা নির্ভুল Inception image।"
 
 #: lib/marshall/documentation_messages.ex:5722
 #, elixir-autogen, elixir-format
@@ -9462,37 +9462,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5727
 #, elixir-autogen, elixir-format
 msgid "Existing SNS topic ARNs; empty means no notifications."
-msgstr ""
+msgstr "বিদ্যমান SNS topic ARN; ফাঁকা মানে কোনো notification নয়।"
 
 #: lib/marshall/documentation_messages.ex:5728
 #, elixir-autogen, elixir-format
 msgid "Existing administrative directories; never guest disk trees."
-msgstr ""
+msgstr "বিদ্যমান administrative directory; কখনো guest disk tree নয়।"
 
 #: lib/marshall/documentation_messages.ex:5732
 #, elixir-autogen, elixir-format
 msgid "Existing enrolled source host identity. This service never generates or replaces it."
-msgstr ""
+msgstr "বিদ্যমান enrolled source host identity। এই service সেটি তৈরি বা প্রতিস্থাপন করে না।"
 
 #: lib/marshall/documentation_messages.ex:5736
 #, elixir-autogen, elixir-format
 msgid "Existing mounted parent dataset, with LZ4 and no reservations."
-msgstr ""
+msgstr "বিদ্যমান mounted parent dataset, LZ4-সহ এবং reservation ছাড়া।"
 
 #: lib/marshall/documentation_messages.ex:5740
 #, elixir-autogen, elixir-format
 msgid "Expected Linux peer UID of the Lilly connector: the Lilly service user where Lilly runs."
-msgstr ""
+msgstr "Lilly connector-এর প্রত্যাশিত Linux peer UID: Lilly যেখানে চলে সেখানকার Lilly service user।"
 
 #: lib/marshall/documentation_messages.ex:5744
 #, elixir-autogen, elixir-format
 msgid "Expected Unix peer account, including dynamically allocated application users."
-msgstr ""
+msgstr "প্রত্যাশিত Unix peer account, dynamically allocated application user-সহ।"
 
 #: lib/marshall/documentation_messages.ex:5748
 #, elixir-autogen, elixir-format
 msgid "Expected machine IDs for missing-heartbeat alarms."
-msgstr ""
+msgstr "heartbeat না পাওয়ার alarm-এর জন্য প্রত্যাশিত machine ID।"
 
 #: lib/marshall/documentation_messages.ex:5749
 #, elixir-autogen, elixir-format
@@ -9512,32 +9512,32 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5761
 #, elixir-autogen, elixir-format
 msgid "Explicit IPv4 fleet listener address. Remote access requires separate interface-scoped firewall policy."
-msgstr ""
+msgstr "সুনির্দিষ্ট IPv4 fleet listener address। দূরবর্তী অ্যাক্সেসে পৃথক interface-scoped firewall policy লাগে।"
 
 #: lib/marshall/documentation_messages.ex:5765
 #, elixir-autogen, elixir-format
 msgid "Explicit consent to register an ACME account."
-msgstr ""
+msgstr "ACME account নিবন্ধনের স্পষ্ট সম্মতি।"
 
 #: lib/marshall/documentation_messages.ex:5770
 #, elixir-autogen, elixir-format
 msgid "Explicit local IPv4 destination address; never a wildcard."
-msgstr ""
+msgstr "সুনির্দিষ্ট স্থানীয় IPv4 destination address; কখনো wildcard নয়।"
 
 #: lib/marshall/documentation_messages.ex:5771
 #, elixir-autogen, elixir-format
 msgid "Explicit platform service units; VM units are discovered by bounded systemd metadata."
-msgstr ""
+msgstr "সুনির্দিষ্ট platform service unit; bounded systemd metadata দিয়ে VM unit আবিষ্কৃত হয়।"
 
 #: lib/marshall/documentation_messages.ex:5775
 #, elixir-autogen, elixir-format
 msgid "Explicit sources; audit is never implicitly selected."
-msgstr ""
+msgstr "সুনির্দিষ্ট source; audit কখনো implicitভাবে নির্বাচিত হয় না।"
 
 #: lib/marshall/documentation_messages.ex:5776
 #, elixir-autogen, elixir-format
 msgid "Externally provided module arguments that can't be modified from\nwithin a configuration, but can be used in module imports."
-msgstr ""
+msgstr "বাইরে থেকে দেওয়া module argument, যা configuration-এর ভেতর থেকে বদলানো যায় না, তবে module import-এ ব্যবহার করা যায়।"
 
 #: lib/marshall/documentation_messages.ex:5780
 #, elixir-autogen, elixir-format
@@ -9562,27 +9562,27 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5796
 #, elixir-autogen, elixir-format
 msgid "Files in this bundle; all selected secrets are required."
-msgstr ""
+msgstr "এই bundle-এর file; নির্বাচিত সব secret আবশ্যক।"
 
 #: lib/marshall/documentation_messages.ex:5797
 #, elixir-autogen, elixir-format
 msgid "Firefox temporary add-ons are removed when Firefox closes. Permanent Firefox\ninstallation requires Mozilla signing or an explicitly managed browser policy.\nOveralls does not currently publish either archive to a browser store."
-msgstr ""
+msgstr "Firefox বন্ধ হলে temporary add-on সরানো হয়। স্থায়ী Firefox installation-এ Mozilla signing বা স্পষ্ট managed browser policy লাগে। Overalls বর্তমানে কোনো archive-ই browser store-এ প্রকাশ করে না।"
 
 #: lib/marshall/documentation_messages.ex:5801
 #, elixir-autogen, elixir-format
 msgid "Five-minute real authenticated editor journeys; fixtures and operator sessions are private runtime credentials."
-msgstr ""
+msgstr "পাঁচ মিনিট অন্তর বাস্তব authenticated editor journey; fixture ও operator session ব্যক্তিগত runtime credential।"
 
 #: lib/marshall/documentation_messages.ex:5805
 #, elixir-autogen, elixir-format
 msgid "Fixed OpenAI-compatible origin; enrolled hosts use host-local Underclass."
-msgstr ""
+msgstr "স্থির OpenAI-compatible origin; enrolled host host-local Underclass ব্যবহার করে।"
 
 #: lib/marshall/documentation_messages.ex:5809
 #, elixir-autogen, elixir-format
 msgid "Fixed Serper origin; loopback is reserved for the machine-test fixture."
-msgstr ""
+msgstr "স্থির Serper origin; loopback machine-test fixture-এর জন্য সংরক্ষিত।"
 
 #: lib/marshall/documentation_messages.ex:5813
 #, elixir-autogen, elixir-format
@@ -9592,7 +9592,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5817
 #, elixir-autogen, elixir-format
 msgid "Fleet database allocation, including one notifier per instance and ten operator connections."
-msgstr ""
+msgstr "Fleet database allocation, প্রতি instance-এ একটি notifier এবং দশটি operator connection-সহ।"
 
 #: lib/marshall/documentation_messages.ex:5821
 #, elixir-autogen, elixir-format
@@ -9607,12 +9607,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5829
 #, elixir-autogen, elixir-format
 msgid "Fleet wildcard leaf and intermediate PEM chain from the bundle."
-msgstr ""
+msgstr "bundle থেকে fleet wildcard leaf ও intermediate PEM chain।"
 
 #: lib/marshall/documentation_messages.ex:5833
 #, elixir-autogen, elixir-format
 msgid "Fleet wildcard leaf key from the bundle; rotation is operator custody."
-msgstr ""
+msgstr "bundle থেকে fleet wildcard leaf key; rotation operator-এর হেফাজতে।"
 
 #: lib/marshall/documentation_messages.ex:5837
 #, elixir-autogen, elixir-format
@@ -9632,7 +9632,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5849
 #, elixir-autogen, elixir-format
 msgid "For NixOS, the default value for this option includes at least this argument:\n- {var}`pkgs`: The nixpkgs package set according to\n  the {option}`nixpkgs.pkgs` option."
-msgstr ""
+msgstr "NixOS-এর জন্য এই option-এর default value-তে অন্তত এই argument থাকে:\n- {var}`pkgs`: {option}`nixpkgs.pkgs` option অনুযায়ী nixpkgs package set।"
 
 #: lib/marshall/documentation_messages.ex:5853
 #, elixir-autogen, elixir-format
@@ -9647,7 +9647,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5861
 #, elixir-autogen, elixir-format
 msgid "For certificate failure, inspect the selected name, trust roots, validity, current\ncertificate generation, challenge routing, and service readiness. Restore overlap\nbefore removing an old root. Do not disable certificate verification to recover\nconnectivity."
-msgstr ""
+msgstr "certificate failure হলে নির্বাচিত নাম, trust root, validity, current certificate generation, challenge routing ও service readiness পরীক্ষা করুন। পুরোনো root সরানোর আগে overlap ফিরিয়ে আনুন। connectivity ফেরাতে certificate verification বন্ধ করবেন না।"
 
 #: lib/marshall/documentation_messages.ex:5865
 #, elixir-autogen, elixir-format
@@ -9667,12 +9667,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5877
 #, elixir-autogen, elixir-format
 msgid "For nonstandard administrative ports, pass matching `--ssh-port` throughout.\nInstallation also binds `--installer-ssh-port`. Management SSH cannot run host\noperations. Use the declared named administrator and pinned keys."
-msgstr ""
+msgstr "অপ্রচলিত administrative port-এর জন্য সর্বত্র মিল থাকা `--ssh-port` দিন। installation-এ `--installer-ssh-port`-ও বাঁধা থাকে। Management SSH host operation চালাতে পারে না। ঘোষিত named administrator ও pinned key ব্যবহার করুন।"
 
 #: lib/marshall/documentation_messages.ex:5881
 #, elixir-autogen, elixir-format
 msgid "For one-shot exec commands, register the key on Marshall's SSH keys page first,\nor complete approval in an interactive connection before retrying the command."
-msgstr ""
+msgstr "একবারের exec command-এর জন্য আগে Marshall-এর SSH key page-এ key নিবন্ধন করুন, অথবা command আবার চালানোর আগে interactive connection-এ approval সম্পন্ন করুন।"
 
 #: lib/marshall/documentation_messages.ex:5885
 #, elixir-autogen, elixir-format
@@ -9757,7 +9757,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:5949
 #, elixir-autogen, elixir-format
 msgid "Generate a plan for the exact published revision:"
-msgstr ""
+msgstr "প্রকাশিত নির্ভুল revision-এর জন্য plan তৈরি করুন:"
 
 #: lib/marshall/documentation_messages.ex:5950
 #, elixir-autogen, elixir-format
@@ -9867,12 +9867,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6039
 #, elixir-autogen, elixir-format
 msgid "Grant this login user passwordless sudo."
-msgstr ""
+msgstr "এই login user-কে passwordless sudo দিন।"
 
 #: lib/marshall/documentation_messages.ex:6040
 #, elixir-autogen, elixir-format
 msgid "Group under which Audiobookshelf runs."
-msgstr ""
+msgstr "যে group-এর অধীনে Audiobookshelf চলে।"
 
 #: lib/marshall/documentation_messages.ex:6041
 #, elixir-autogen, elixir-format
@@ -9922,7 +9922,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6077
 #, elixir-autogen, elixir-format
 msgid "Historical backups can resurrect revoked credentials and obsolete commands.\nAutomatic historical fleet reconciliation is not available. This manual therefore\ndoes not prescribe a generic final activation command. Preserve uncertain capacity\nuntil physical obligations are settled."
-msgstr ""
+msgstr "ঐতিহাসিক backup প্রত্যাহৃত credential ও অচল command ফিরিয়ে আনতে পারে। স্বয়ংক্রিয় historical fleet reconciliation উপলব্ধ নয়। তাই এই manual কোনো generic final activation command নির্ধারণ করে না। physical obligation নিষ্পত্তি না হওয়া পর্যন্ত uncertain capacity ধরে রাখুন।"
 
 #: lib/marshall/documentation_messages.ex:6081
 #, elixir-autogen, elixir-format
@@ -9932,7 +9932,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6085
 #, elixir-autogen, elixir-format
 msgid "Host attribute under nixosConfigurations."
-msgstr ""
+msgstr "nixosConfigurations-এর অধীনে host attribute।"
 
 #: lib/marshall/documentation_messages.ex:6086
 #, elixir-autogen, elixir-format
@@ -9957,7 +9957,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6102
 #, elixir-autogen, elixir-format
 msgid "Host queue budget; selected per-source output limits must fit. Size from measured rate for 24 hours plus 50% headroom."
-msgstr ""
+msgstr "Host queue budget; নির্বাচিত per-source output limit এর মধ্যে ধরতে হবে। 24 ঘণ্টার পরিমাপ করা rate এবং অতিরিক্ত 50% headroom অনুযায়ী মাপ নির্ধারণ করুন।"
 
 #: lib/marshall/documentation_messages.ex:6106
 #, elixir-autogen, elixir-format
@@ -9967,7 +9967,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6110
 #, elixir-autogen, elixir-format
 msgid "Host uplink carrying routed guest egress."
-msgstr ""
+msgstr "routed guest egress বহনকারী host uplink।"
 
 #: lib/marshall/documentation_messages.ex:6111
 #, elixir-autogen, elixir-format
@@ -9977,7 +9977,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6115
 #, elixir-autogen, elixir-format
 msgid "Host-tool receipt required before polling."
-msgstr ""
+msgstr "polling-এর আগে প্রয়োজনীয় host-tool receipt।"
 
 #: lib/marshall/documentation_messages.ex:6116
 #, elixir-autogen, elixir-format
@@ -10002,12 +10002,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6129
 #, elixir-autogen, elixir-format
 msgid "If set, merge all definitions that don't have an associated option\ntogether using this type. The result then gets combined with the\nvalues of all declared options to produce the final `\nconfig` value."
-msgstr ""
+msgstr "সেট করা থাকলে সংশ্লিষ্ট option নেই এমন সব definition এই type দিয়ে একত্র করা হয়। তারপর ফলটি সব declared option-এর value-এর সঙ্গে মিলিয়ে চূড়ান্ত `\nconfig` value তৈরি করা হয়।"
 
 #: lib/marshall/documentation_messages.ex:6133
 #, elixir-autogen, elixir-format
 msgid "If this is `null`, definitions without an option\nwill throw an error unless {option}`_module.check` is\nturned off."
-msgstr ""
+msgstr "এটি `null` হলে option-বিহীন definition error দেবে, যদি না {option}`_module.check` বন্ধ থাকে।"
 
 #: lib/marshall/documentation_messages.ex:6137
 #, elixir-autogen, elixir-format
@@ -10017,42 +10017,42 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6145
 #, elixir-autogen, elixir-format
 msgid "Immutable image bound exclusively to the Inception development profile; native host eligibility is also required."
-msgstr ""
+msgstr "শুধু Inception development profile-এ বাঁধা immutable image; native host eligibility-ও আবশ্যক।"
 
 #: lib/marshall/documentation_messages.ex:6149
 #, elixir-autogen, elixir-format
 msgid "Immutable local image directory (manifest.json and artifacts) verified by Lilly before advertising."
-msgstr ""
+msgstr "advertise করার আগে Lilly-যাচাইকৃত immutable local image directory (manifest.json ও artifact)।"
 
 #: lib/marshall/documentation_messages.ex:6153
 #, elixir-autogen, elixir-format
 msgid "Immutable local images verified by Lilly before advertising, in operator order."
-msgstr ""
+msgstr "advertise করার আগে Lilly-যাচাইকৃত immutable local image, operator-এর ক্রমে।"
 
 #: lib/marshall/documentation_messages.ex:6157
 #, elixir-autogen, elixir-format
 msgid "Immutable measurement deadline reconciled with this source's request budget."
-msgstr ""
+msgstr "এই source-এর request budget-এর সঙ্গে সমন্বিত immutable measurement deadline।"
 
 #: lib/marshall/documentation_messages.ex:6165
 #, elixir-autogen, elixir-format
 msgid "Immutable per-batch retention, including traces already acknowledged upstream."
-msgstr ""
+msgstr "প্রতি batch-এর immutable retention, upstream-এ ইতিমধ্যে acknowledged trace-সহ।"
 
 #: lib/marshall/documentation_messages.ex:6169
 #, elixir-autogen, elixir-format
 msgid "Immutable platform, disk and persistent identity bindings."
-msgstr ""
+msgstr "অপরিবর্তনীয় platform, disk ও persistent identity binding।"
 
 #: lib/marshall/documentation_messages.ex:6170
 #, elixir-autogen, elixir-format
 msgid "Immutable unsigned Chrome and Firefox browser extension package served at the public /bin routes. Null disables browser extension downloads."
-msgstr ""
+msgstr "public /bin route-এ পরিবেশিত immutable unsigned Chrome ও Firefox browser extension package। Null browser extension download বন্ধ করে।"
 
 #: lib/marshall/documentation_messages.ex:6174
 #, elixir-autogen, elixir-format
 msgid "Inception parent gateway allowed to supply IPv4 PROXY metadata; null for public listeners."
-msgstr ""
+msgstr "IPv4 PROXY metadata দেওয়ার অনুমতিপ্রাপ্ত Inception parent gateway; public listener-এর জন্য null।"
 
 #: lib/marshall/documentation_messages.ex:6178
 #, elixir-autogen, elixir-format
@@ -10062,7 +10062,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6182
 #, elixir-autogen, elixir-format
 msgid "Include these keys in every managed encrypted document."
-msgstr ""
+msgstr "প্রতিটি managed encrypted document-এ এই key-গুলো অন্তর্ভুক্ত করুন।"
 
 #: lib/marshall/documentation_messages.ex:6183
 #, elixir-autogen, elixir-format
@@ -10072,37 +10072,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6191
 #, elixir-autogen, elixir-format
 msgid "Independent bounded native Firecracker diagnostics."
-msgstr ""
+msgstr "স্বাধীন, সীমিত native Firecracker diagnostic।"
 
 #: lib/marshall/documentation_messages.ex:6192
 #, elixir-autogen, elixir-format
 msgid "Independent durable request recorders; enabling requires reviewed producer hooks and source-specific deadlines."
-msgstr ""
+msgstr "স্বাধীন durable request recorder; সক্রিয় করতে reviewed producer hook ও source-specific deadline লাগে।"
 
 #: lib/marshall/documentation_messages.ex:6196
 #, elixir-autogen, elixir-format
 msgid "Independent logging health metrics; never carries records."
-msgstr ""
+msgstr "স্বাধীন logging health metric; কখনো record বহন করে না।"
 
 #: lib/marshall/documentation_messages.ex:6197
 #, elixir-autogen, elixir-format
 msgid "Independent per-producer durable trace custody; failures leave producers running."
-msgstr ""
+msgstr "প্রতি producer-এর স্বাধীন durable trace custody; ব্যর্থতাতেও producer চালু থাকে।"
 
 #: lib/marshall/documentation_messages.ex:6201
 #, elixir-autogen, elixir-format
 msgid "Independent source-built Audi release."
-msgstr ""
+msgstr "উৎস থেকে তৈরি স্বাধীন Audi release।"
 
 #: lib/marshall/documentation_messages.ex:6202
 #, elixir-autogen, elixir-format
 msgid "Independent source-built Porsche release."
-msgstr ""
+msgstr "উৎস থেকে তৈরি স্বাধীন Porsche release।"
 
 #: lib/marshall/documentation_messages.ex:6203
 #, elixir-autogen, elixir-format
 msgid "Inference request metadata retention in days."
-msgstr ""
+msgstr "inference request metadata কত দিন রাখা হবে।"
 
 #: lib/marshall/documentation_messages.ex:6204
 #, elixir-autogen, elixir-format
@@ -10117,7 +10117,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6212
 #, elixir-autogen, elixir-format
 msgid "Initialize only when Restic positively reports that the repository does not exist."
-msgstr ""
+msgstr "Restic নিশ্চিতভাবে repository নেই জানালেই কেবল initialize করুন।"
 
 #: lib/marshall/documentation_messages.ex:6216
 #, elixir-autogen, elixir-format
@@ -10132,7 +10132,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6224
 #, elixir-autogen, elixir-format
 msgid "Inspect failure and cancellation status before resubmitting with a new identity.\nAn already published destination must not be mistaken for a failed submission."
-msgstr ""
+msgstr "নতুন পরিচয়ে আবার জমা দেওয়ার আগে failure ও cancellation status পরীক্ষা করুন। ইতিমধ্যে published destination-কে failed submission ভাবা যাবে না।"
 
 #: lib/marshall/documentation_messages.ex:6228
 #, elixir-autogen, elixir-format
@@ -10157,7 +10157,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6248
 #, elixir-autogen, elixir-format
 msgid "Interfaces counted as external network traffic; excludes bridges and taps unless explicitly selected."
-msgstr ""
+msgstr "external network traffic হিসেবে গণ্য interface; স্পষ্টভাবে নির্বাচিত না হলে bridge ও tap বাদ।"
 
 #: lib/marshall/documentation_messages.ex:6256
 #, elixir-autogen, elixir-format
@@ -10172,17 +10172,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6264
 #, elixir-autogen, elixir-format
 msgid "Just before `launch-attempt.bin` is persisted, `Driver.launch` asks the actor\nwhether the attempt may commit. The actor grants that once, only to its\nin-flight task, and only while that task's command is still the newest\nstored command. After that the task runs to the end."
-msgstr ""
+msgstr "`launch-attempt.bin` সংরক্ষণের ঠিক আগে `Driver.launch` actor-কে জিজ্ঞেস করে attempt commit হতে পারে কি না। actor একবারই অনুমতি দেয়, শুধু তার চলমান task-কে, এবং কেবল সেই task-এর command এখনও newest stored command থাকলে। এরপর task শেষ পর্যন্ত চলে।"
 
 #: lib/marshall/documentation_messages.ex:6268
 #, elixir-autogen, elixir-format
 msgid "Keep four facts separate: desired VM state, observed physical state, workflow\nphase, and cleanup receipts. A successful state transition records intent; it\ncannot prove that a process stopped or a disk disappeared."
-msgstr ""
+msgstr "চারটি তথ্য পৃথক রাখুন: VM-এর কাঙ্ক্ষিত state, পর্যবেক্ষিত physical state, workflow phase এবং cleanup receipt। সফল state transition অভিপ্রায় নথিভুক্ত করে; এটি process বন্ধ হয়েছে বা disk হারিয়েছে প্রমাণ করতে পারে না।"
 
 #: lib/marshall/documentation_messages.ex:6272
 #, elixir-autogen, elixir-format
 msgid "Key removal prevents subsequent commands and status polls from that session.\nAccepted jobs continue. Reconnect using another registered key, or use email login\nto manage your keys in Marshall. Do not put private keys or approval links in logs.\n"
-msgstr ""
+msgstr "key সরালে সেই session-এর পরবর্তী command ও status poll বন্ধ হয়। accepted job চলতে থাকে। অন্য registered key দিয়ে reconnect করুন, অথবা email login দিয়ে Marshall-এ key পরিচালনা করুন। private key বা approval link log-এ রাখবেন না।\n"
 
 #: lib/marshall/documentation_messages.ex:6280
 #, elixir-autogen, elixir-format
@@ -10222,7 +10222,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6308
 #, elixir-autogen, elixir-format
 msgid "Lilly journals also model execution, claims, receives, exports, snapshots, and\nresize effects. Updates occur under native locks and publish state plus revision\natomically. Preserve these journals across daemon upgrades and recovery."
-msgstr ""
+msgstr "Lilly journal execution, claim, receive, export, snapshot এবং resize effect-ও model করে। native lock-এর অধীনে update হয় এবং state ও revision একসঙ্গে প্রকাশিত হয়। daemon upgrade ও recovery জুড়ে এই journal রাখুন।"
 
 #: lib/marshall/documentation_messages.ex:6312
 #, elixir-autogen, elixir-format
@@ -10237,7 +10237,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6320
 #, elixir-autogen, elixir-format
 msgid "Lilly needs root for native execution, networking, and storage. Guests run in the\nmanaged slice with independent VMM supervision. The daemon keeps host mount\nvisibility; restricting it to a private mount namespace can invalidate cleanup."
-msgstr ""
+msgstr "native execution, networking ও storage-এর জন্য Lilly-এর root লাগে। guest managed slice-এ independent VMM supervision-সহ চলে। daemon host mount visibility ধরে রাখে; তাকে private mount namespace-এ সীমাবদ্ধ করলে cleanup অকার্যকর হতে পারে।"
 
 #: lib/marshall/documentation_messages.ex:6324
 #, elixir-autogen, elixir-format
@@ -10252,7 +10252,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6332
 #, elixir-autogen, elixir-format
 msgid "Lilly provisions native ZFS datasets containing sparse raw guest drives. Guest\nfilesystems are distinct from host ZFS. Pool and dataset GUIDs establish identity;\nmatching names or mount paths are insufficient. Host root storage is a separate\ninstallation concern."
-msgstr ""
+msgstr "Lilly sparse raw guest drive-সহ native ZFS dataset provision করে। guest filesystem host ZFS থেকে পৃথক। pool ও dataset GUID পরিচয় প্রতিষ্ঠা করে; নাম বা mount path মেলা যথেষ্ট নয়। host root storage পৃথক installation বিষয়।"
 
 #: lib/marshall/documentation_messages.ex:6336
 #, elixir-autogen, elixir-format
@@ -10277,7 +10277,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6352
 #, elixir-autogen, elixir-format
 msgid "Lilly's VM actors and host sampler run on the cadence. The execution view backs\nattribution, ingress, private services and the roster, and Audi subscribes to\nrevocations. Marshall's host liveness, and Porsche and the remaining edge\nservices, adopt them in later phases."
-msgstr ""
+msgstr "Lilly-এর VM actor ও host sampler নির্ধারিত cadence-এ চলে। execution view attribution, ingress, private service ও roster-এর ভিত্তি, এবং Audi revocation subscribe করে। Marshall-এর host liveness, Porsche এবং বাকি edge service পরের ধাপে এগুলো গ্রহণ করে।"
 
 #: lib/marshall/documentation_messages.ex:6356
 #, elixir-autogen, elixir-format
@@ -10292,7 +10292,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6364
 #, elixir-autogen, elixir-format
 msgid "Lilly's leases live in `lilly-hostd`\n([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md)\ndecision 4):"
-msgstr ""
+msgstr "Lilly-এর lease `lilly-hostd`-তে থাকে ([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md) সিদ্ধান্ত 4):"
 
 #: lib/marshall/documentation_messages.ex:6368
 #, elixir-autogen, elixir-format
@@ -10307,7 +10307,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6376
 #, elixir-autogen, elixir-format
 msgid "List reports host-manifest candidates; inspect validates the selected manifest\nstructure. Neither command proves that every referenced component is available;\nrestoration verifies each component as it is read."
-msgstr ""
+msgstr "List host-manifest candidate জানায়; inspect নির্বাচিত manifest-এর structure যাচাই করে। কোনো command-ই referenced প্রতিটি component উপলব্ধ প্রমাণ করে না; restoration পড়ার সময় প্রতিটি component যাচাই করে।"
 
 #: lib/marshall/documentation_messages.ex:6380
 #, elixir-autogen, elixir-format
@@ -10332,22 +10332,22 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6390
 #, elixir-autogen, elixir-format
 msgid "Local IPv4 address for the dedicated SSH listener."
-msgstr ""
+msgstr "নির্দিষ্ট SSH listener-এর স্থানীয় IPv4 address।"
 
 #: lib/marshall/documentation_messages.ex:6391
 #, elixir-autogen, elixir-format
 msgid "Local Lego responder IP; use a stable private address when configuring peers."
-msgstr ""
+msgstr "স্থানীয় Lego responder IP; peer কনফিগার করতে স্থিতিশীল private address ব্যবহার করুন।"
 
 #: lib/marshall/documentation_messages.ex:6395
 #, elixir-autogen, elixir-format
 msgid "Local Marshall instance consuming the certificate queue."
-msgstr ""
+msgstr "certificate queue ব্যবহারকারী স্থানীয় Marshall instance।"
 
 #: lib/marshall/documentation_messages.ex:6396
 #, elixir-autogen, elixir-format
 msgid "Local fleet services admitted only from configured tunnel peers."
-msgstr ""
+msgstr "শুধু configured tunnel peer থেকে admitted স্থানীয় fleet service।"
 
 #: lib/marshall/documentation_messages.ex:6400
 #, elixir-autogen, elixir-format
@@ -10357,7 +10357,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6404
 #, elixir-autogen, elixir-format
 msgid "Local instances keyed by distinct fleet-wide identities."
-msgstr ""
+msgstr "fleet-জুড়ে পৃথক identity দিয়ে keyed স্থানীয় instance।"
 
 #: lib/marshall/documentation_messages.ex:6405
 #, elixir-autogen, elixir-format
@@ -10367,37 +10367,37 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6409
 #, elixir-autogen, elixir-format
 msgid "Logical archive/SQLite budget per producer, distinct from Tempo quota. New data refuses when full."
-msgstr ""
+msgstr "প্রতি producer-এর logical archive/SQLite budget, Tempo quota থেকে পৃথক। পূর্ণ হলে নতুন data প্রত্যাখ্যাত হয়।"
 
 #: lib/marshall/documentation_messages.ex:6413
 #, elixir-autogen, elixir-format
 msgid "Loopback HTTP port. Underclass is never bound directly to a fleet interface."
-msgstr ""
+msgstr "Loopback HTTP port। Underclass কখনো সরাসরি fleet interface-এ bind হয় না।"
 
 #: lib/marshall/documentation_messages.ex:6417
 #, elixir-autogen, elixir-format
 msgid "Loopback Prometheus resource exporter; no application credentials or ingestion."
-msgstr ""
+msgstr "Loopback Prometheus resource exporter; application credential বা ingestion নেই।"
 
 #: lib/marshall/documentation_messages.ex:6421
 #, elixir-autogen, elixir-format
 msgid "Loopback or authenticated fleet address for independent health scraping."
-msgstr ""
+msgstr "স্বাধীন health scraping-এর জন্য loopback অথবা authenticated fleet address।"
 
 #: lib/marshall/documentation_messages.ex:6425
 #, elixir-autogen, elixir-format
 msgid "Loopback port of the egress node's outbound HTTP proxy."
-msgstr ""
+msgstr "egress node-এর outbound HTTP proxy-এর loopback port।"
 
 #: lib/marshall/documentation_messages.ex:6426
 #, elixir-autogen, elixir-format
 msgid "Loopback-only Fluent Bit numeric application health exporter when fleet telemetry and logging are enabled."
-msgstr ""
+msgstr "fleet telemetry ও logging সক্রিয় থাকলে শুধু loopback-এ Fluent Bit numeric application health exporter।"
 
 #: lib/marshall/documentation_messages.ex:6430
 #, elixir-autogen, elixir-format
 msgid "Loopback-only VictoriaLogs HTTP port."
-msgstr ""
+msgstr "শুধু loopback-এর VictoriaLogs HTTP port।"
 
 #: lib/marshall/documentation_messages.ex:6431
 #, elixir-autogen, elixir-format
@@ -10422,7 +10422,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6447
 #, elixir-autogen, elixir-format
 msgid "Magic links use an encrypted outbox and retryable mail jobs. Configure verified\nremote SMTP or explicitly selected loopback relay mode. Check sender identity,\nprovider TLS and delivery; an accepted SMTP transaction is not inbox evidence.\nNever print the token-bearing message to diagnose delivery."
-msgstr ""
+msgstr "Magic link encrypted outbox ও retryযোগ্য mail job ব্যবহার করে। যাচাইকৃত remote SMTP বা স্পষ্টভাবে নির্বাচিত loopback relay mode কনফিগার করুন। sender identity, provider TLS ও delivery পরীক্ষা করুন; accepted SMTP transaction inbox-এর প্রমাণ নয়। delivery diagnose করতে token-বহনকারী message কখনো ছাপবেন না।"
 
 #: lib/marshall/documentation_messages.ex:6451
 #, elixir-autogen, elixir-format
@@ -10437,12 +10437,12 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6459
 #, elixir-autogen, elixir-format
 msgid "Manage integrations through `/integrations`, `/teams`, or Porsche. Secret values\nare write-only and redacted on read. Configure the independent service credentials\nand private frontend before attaching workloads. See [Galileo](repo:docs/services/galileo.md)."
-msgstr ""
+msgstr "`/integrations`, `/teams` বা Porsche দিয়ে integration পরিচালনা করুন। secret value শুধু লেখা যায় এবং পড়ার সময় আড়াল করা হয়। workload attach করার আগে independent service credential ও private frontend কনফিগার করুন। [Galileo](repo:docs/services/galileo.md) দেখুন।"
 
 #: lib/marshall/documentation_messages.ex:6463
 #, elixir-autogen, elixir-format
 msgid "Managed operations share a host lock. Do not run independent Restic mutations\nconcurrently. Failed cleanup retains ownership evidence and prevents publication\nof a complete point. Never erase a journal to make backup status healthy."
-msgstr ""
+msgstr "managed operation একটি host lock share করে। independent Restic mutation একসঙ্গে চালাবেন না। failed cleanup ownership evidence ধরে রাখে এবং complete point publication আটকায়। backup status সুস্থ দেখাতে journal কখনো মুছবেন না।"
 
 #: lib/marshall/documentation_messages.ex:6467
 #, elixir-autogen, elixir-format
@@ -10452,7 +10452,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6471
 #, elixir-autogen, elixir-format
 msgid "Management-only AWS credentials. Null uses explicit EC2 role mode."
-msgstr ""
+msgstr "শুধু management-এর AWS credential। Null স্পষ্ট EC2 role mode ব্যবহার করে।"
 
 #: lib/marshall/documentation_messages.ex:6475
 #, elixir-autogen, elixir-format
@@ -10462,7 +10462,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6479
 #, elixir-autogen, elixir-format
 msgid "Marshall TLS endpoints, keyed by backend identity."
-msgstr ""
+msgstr "backend identity দিয়ে keyed Marshall TLS endpoint।"
 
 #: lib/marshall/documentation_messages.ex:6480
 #, elixir-autogen, elixir-format
@@ -10472,17 +10472,17 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6484
 #, elixir-autogen, elixir-format
 msgid "Marshall instances share PostgreSQL. Local processes and PubSub improve delivery;\nthey do not replace durable authority. Ash resources define domain actions and\npolicy boundaries. Oban performs retryable background work."
-msgstr ""
+msgstr "Marshall instance PostgreSQL share করে। local process ও PubSub delivery উন্নত করে; durable authority-এর বিকল্প নয়। Ash resource domain action ও policy boundary নির্ধারণ করে। Oban retryযোগ্য background work করে।"
 
 #: lib/marshall/documentation_messages.ex:6488
 #, elixir-autogen, elixir-format
 msgid "Marshall is a private control plane at the apex `https://ghuntley.dev`; nothing it\nserves is meant to appear in a search index. Two independent mechanisms say so:"
-msgstr ""
+msgstr "Marshall apex `https://ghuntley.dev`-এ ব্যক্তিগত control plane; এর পরিবেশিত কিছুই search index-এ থাকার জন্য নয়। দুটি স্বাধীন ব্যবস্থা তা জানায়:"
 
 #: lib/marshall/documentation_messages.ex:6492
 #, elixir-autogen, elixir-format
 msgid "Marshall owns per-VM thread history, prompts, model calls, child-agent joins, and\nrecovery. A user with write access can prompt a stopped VM; the request starts it\nthrough the normal admission path. Deleted or unrunnable machines return an\nunavailable result."
-msgstr ""
+msgstr "Marshall প্রতি VM-এর thread history, prompt, model call, child-agent join ও recovery-এর মালিক। write access থাকা user বন্ধ VM-এ prompt দিতে পারেন; request normal admission path দিয়ে তা চালু করে। deleted বা চালানো যায় না এমন machine unavailable result ফেরত দেয়।"
 
 #: lib/marshall/documentation_messages.ex:6496
 #, elixir-autogen, elixir-format
@@ -10517,7 +10517,7 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:6532
 #, elixir-autogen, elixir-format
 msgid "Maximum receive stream bytes per second, with a 64 KiB burst allowance."
-msgstr ""
+msgstr "প্রতি সেকেন্ডে সর্বোচ্চ receive stream byte, 64 KiB burst allowance-সহ।"
 
 #: lib/marshall/documentation_messages.ex:6536
 #, elixir-autogen, elixir-format
@@ -12607,11 +12607,6 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:8171
 #, elixir-autogen, elixir-format
 msgid "Runtime reader credential; admits only /select/* and health paths."
-msgstr ""
-
-#: lib/marshall/documentation_messages.ex:8175
-#, elixir-autogen, elixir-format
-msgid "Runtime secrets stay in private fixture volumes; only the operator enrolls\nLilly through Marshall's reviewed CLI. Bootstrap checks both TLS endpoints,\nmigration and a fresh authenticated host report before one setup signal.\nThe SQL witness requires a positive report sequence, a report timestamp within\n60 seconds and a durable session matching the host's current session ID, host\nID and epoch. It does not read the retired host `protocol_version` column or\ninfer a wire version from SQL. Production Execution and the real Control\nprobes enforce wire v4 separately. Historical local boot captures predate this\ncurrent-schema witness; local readiness alone does not establish hosted SDK\ningestion or native effects.\nThe optional `repository-origin` profile adds a second gate before the same\nsingle setup signal: the operator-issued repository manifest must match the\nindependent fixture ID, the origin fixture must answer an authenticated state\nread, the SELECT-only oracle must find the registration row and a\n`pending`/`refreshing`/`ready` phase, and Enrico must answer an authenticated\nstatus read for a never-issued attempt. Marshall commits GitHub sources in\ncanonical lowercase, so the operator publishes `github/fixture/demo` exactly as\nregistered and the origin fixture serves that path; an earlier mixed-case\nmanifest and served path never matched the committed row, and Marshall's own\nrefresh failed against the origin, so setup stayed incomplete. The probe now\nreports each distinct unmet prerequisite once per process by condition token,\nobservation state, HTTP status or phase, never by credential or payload.\nThe failed-refresh published-head case was never exercised in hosted runs:\nthe workload image linked Git into its closure but not onto a fixed path, so\nthe native blob oracle could not run Git and every attempt stopped before the\nforce push (run `30a420d501d5d6d22527e679a7f00005-65-0`). The image now links\n`/opt/overalls/git`, the oracle calls it explicitly, and each early stop logs a\nfixed `Enrico published-head case unexercised` reason.\nThe 1,025-attempt receipt-cap campaign ran but stopped silently in hosted run\n`56a1285564c94413812835f74246cf04-65-0`: it abandoned the campaign on the first\nfailed fetch, although Enrico retains failed and succeeded receipts alike under\nthe same cap. It now counts any settled attempt and logs a fixed\n`Enrico receipt-cap campaign unexercised` reason at every early stop. Run\n`3f76c3f47ad4062ba0d1c37896e5f3e9-65-0` measured about 5.7 s per attempt on its\ncleanest timeline, which suggested the campaign could not finish, yet the next\nrun (`ddd07ab2f16fe84d9cf3020e10a648ce-65-0`) completed it once and hit every\ncap assertion (oldest receipt evicted, newest replayable, no second fetch);\nEnrico's unit and property tests remain the primary cap evidence. The 3f76c3f4 run produced one\ncounterexample to the ninth-refresh refusal: a held fetch hit Enrico's 10 s\nread timeout under a slowed network, freeing a slot that the ninth refresh then\nlegitimately took, while a holder snapshot scanned before that change still\nmatched. The ninth verdict now requires a snapshot whose scan started after the\nninth submission, and the observer stamps each snapshot before it scans.\nThe optional `recorder-host` profile selects the TCG NixOS recorder VM and the\nthree recorder commands. The workload waits for the VM health check, then its\nown read-only probe requires a fresh all-active unit sample, producer and spool\nidentities in their reviewed cgroups, a distinct 32–64 MiB archive device, a\ncheckpoint whose pending admissions name only the current producer PID and\nstart ticks, a readable SQLite archive and writable request and ledger volumes.\nMissing or stale evidence leaves setup incomplete. Its first hosted validation\nstopped in initrd emergency mode: the runner's `root=` argument duplicated the\nimage's own root fstab entry and, without `rw`, left the real root read-only,\nso the `/run` bind into it failed. The runner now relies on the image fstab\nalone; a direct local QEMU TCG boot of the rebuilt context, outside any\ncontainer, reached the runner's health check in 66–96 s. Its first hosted run\n(`bbb308949ab76c0f1ce04fd209f1f091-65-0`) failed container setup because the\nAntithesis container filesystem refuses O_DIRECT, which QEMU `cache=none`\nneeds to open the qcow2 backing image. The recorder, host and storage VMM\nrunners now probe O_DIRECT on every disk and its backing image and fall back to\nflush-respecting `cache=writeback` (never `cache=unsafe`), printing the\neffective mode. Hosted run `109aecb1aca881ff09e15403e72802cb-65-0` completed\nsetup but reached no trace spool custody: the guest fixture paths were\ncontext-free strings, so the trace fixtures were absent and the BEAM producer\ncrashed on every trace request; back-to-back recovery restarts also tripped\nsystemd's default start limit, and the pressure loop outran the command window.\nThe fixture paths now carry store context, the producer refuses a failed\nrequest instead of exiting, the two restarted units have no start limit in this\nfixture only, and the pressure loop has a 20 s budget. The next run\n(`acfe129cf2288d30a7972edcbf9b92cf-65-0`) reached spool custody, recovery and\nreal ENOSPC on the dedicated archive, but the one write attempted under ENOSPC\ncommitted into already allocated SQLite pages, so no refusal followed; the\ncommand now keeps writing, up to 32 batches, until the exhausted backing\nrefuses. Archive quota refusal stays out of reach inside the 20 s loop. Run\n`10d727fc7a050a9695a0b16e87a47db9-65-0` reached that refusal and the reopen path\nand reported two oracle races, not recorder defects: the fresh batch after a\nspool restart was sent before the reopened spool had bound ingest (systemd\nreports the restart at exec), and the request SDK heartbeat had already\nrecovered its fsynced `v1:gap` marker to `v1:running` when the saturation\ncheck read it. The reopen check now retries a transport-unavailable reply,\nand the saturation check accepts `v1:running` only with the checkpoint's\nadvanced coverage start as the durable gap. Both acknowledged-custody\nchecks held throughout. Run `d03118781050d16ad698713ce9fb4d61-65-0` reached\nreal ENOSPC 25 times and its refusal 18 times without a counterexample, but the\n20 s organic loop never filled the 57 MB archive, so its exhausted-backing,\nstorage-refusal and saturation checks were never evaluated. The ENOSPC path now\nevaluates those same checks against its confirmed zero-free backing and\nrefused write. Run `eb926cce7fee3dfcad1d6d8172b28d29-65-0` then passed 65 of\n67 properties; only quota refusal and the hint-loss anchor stayed unreached.\nThe 60 MiB archive quota exceeds the 57 MB archive device, so ENOSPC always\ncomes first, and pending custody never drains in this fixture, so the 32 MiB\npending quota needs far more intake than a timeline sends. Each traces command\nnow ends with a bounded window in which the bridge restarts the real spool on a\nfixed configuration whose only change is the minimum pending quota (one body\nlimit), sends large batches until the production admission check refuses with\n`429`, checks that the refusal kept accepted bytes, and restores the default\nquota before returning. It proves the pending-quota refusal path, not the\nproduction quota values or the archive-quota branch. The hint-loss anchor\ncannot fire under hosted faults: Oban reports `:isolated` only after 120 s with\nno notifier ping, beyond any recorded timeline. Its evidence is emulated, not\nnative.\nThe optional `admission-stub` profile runs the atomic-allocation and key-replay\nadmission commands on a harness **stub** storage substrate, which is not ZFS.\nOnly in that profile does the controlled Lilly release report configured stub\npool totals for its enrolled pool identity, measured cgroup memory headroom, a\nlabelled STUB CPU budget of one core capped by the measured cgroup cores, and a tiny non-bootable image it digest-verifies before advertising;\nthe enrollment operator registers that image through Marshall's catalog action\nand then enables lilly-a through the reviewed CLI `enable` action, which\nrefuses until Lilly's stub report is fresh and execution-ready. A fully stub-backed report advertises placement readiness, so Marshall's real\nadmission transaction commits VM, placement, reservation and dispatch rows,\nbut the controlled executor never launches a guest. A delete settles only\nthrough a labelled **STUB** enabled by this profile's explicit opt-in: the\ncontrolled executor reports the deleted facts for a placement only after\nobserving a controlled pool, a journal that never recorded it running, only\npublication records for it and no native execution state, and writes an\nabsence attestation; Marshall's real outcome, release and archive path then\nruns. Run `a8c0a8e424bc48eb017aa2322795fc68-65-0` left archived-key replay\nunreached and later admissions short of vCPU because no delete settled. This\nis never cleanup or physical-absence evidence for anything that existed. Setup requires the enabled normal-mode host and those committed report, pool\nand image rows in SQL; hosted runs before this check never enabled the host,\nso every admission probe stopped at unknown capacity\n(`dd4f5f9cd52da22427ae2e5b79c095bf-65-0`). With the host enabled, the next run\nstill submitted nothing: the pre-submission SQL witness read host and pool from\nthe VM row, which the placement migration had moved to\n`compute_workload_placements`, so every query failed and was reported as\nunavailable (`379970e17a2d5312bff3e5c5e2c17369-65-0`). The witness now joins the\ncurrent placement, and oracle queries log each failing SQLSTATE class once.\nThe following run (`642e01a83533ba33f07ba9e3eb4b17fd-65-0`) settled hundreds of\ndecisions, all refusals, so the acceptance-path assertions held only vacuously;\nthe refusal reason was invisible because the operator discards evaluation\noutput. The workload now logs Marshall's closed refusal token once per process,\nand the operator names the operation whose result became uncertain. CPU and\nmemory headroom here are measured over the whole Antithesis VM, so a refusal\nfor capacity is Marshall's correct decision on a busy host, not a defect.\nCatalog headroom below the request shape no longer withholds a request: a\ndefinite `insufficient_capacity` refusal is Marshall's real decision, checked\nfor absent rows and a bounded one-VM replay. Every stop before a settled\ndecision logs a fixed `Compute admission unexercised` reason; the first hosted\nrun reached no admission assertion because those lines were never emitted.\nRun `6890e1608b75e9b82fe11382bb4aeefc-65-0` still refused every request for\nvCPU: the hosted VM has one logical CPU, so the measured headroom never frees a\nwhole core, hence the stub CPU budget above. The next run\n(`74188918d21886495a53d124a725c7e5-65-0`) admitted requests and failed the\njoined-allocation check once in 267 examples: a partition held a provision\noperation pending across a minute tick, and AshOban's dispatch scheduler\ncorrectly enqueued a repeat hint, so the oracle counted two dispatch jobs. The\noracle now requires at least one dispatch job; placement, reservation, address\nand provision-operation counts remain exact.\nThe results are admission-logic evidence only, never ZFS, physical-capacity,\nKVM or isolation evidence; the measured-capacity command stays in a separate,\nunselected template for the measured host graph.\nThe optional `guest-lifecycle` profile selects the guest lifecycle command with\nthe guest VMM overlay. Its container Lilly is a separate STUB-storage release:\nit reports a fixed synthetic pool with no ZFS and compute headroom for one free\nguest-vmm slot, capped by measured cgroup limits, and sets execution readiness\nonly after a guest-vmm health check and a verified advertised image. The\nenrollment operator registers that image manifest through the catalog action\nand enables lilly-a through the reviewed CLI `enable` action once its report is\nfresh and execution-ready; Marshall's catalog counts no capacity from a disabled\nhost. Bootstrap adds a third gate: the guest-vmm image identity, read through the\nread-only witness bridge, and a Marshall catalog offering that image with known\ncapacity for its shape. The stub admits one emulated QEMU TCG guest only; it is\nnot native ZFS, KVM, Firecracker, isolation or capacity evidence. Its first\nhosted run (`a2edc265384761d6607df51eac50b29d-65-0`) timed out at\n`capacity_unknown` because the host was never enabled; the earlier local pass\nhad inherited an enabled host from a retained PostgreSQL volume, so local\nvalidations now start from empty volumes. With the host enabled, run\n`91c9dfa850d2435808323d8910182d7a-65-0` still admitted no guest: the stub slot\nreported exactly the 2 GiB guest memory, while admission reserves guest memory\nplus the fixed 64 MiB VMM overhead, so Marshall correctly refused every\nprovision for insufficient capacity. The slot now reports guest memory plus\nthat overhead, and the workload capacity gate requires the same sum. Run\n`655477db4745f0857c2c0ffcd8571d7a-65-0` then booted real QEMU guests to port 1024\nreadiness, but no stop ever completed: the guest VMM inventory dropped the\nexecution epoch and generation once a placement stopped, while the fixture\nexecutor binds a stop to that exact boot, so every stop was deferred until the\ndriver gave up and later cycles found the slot held. The inventory now reports\nthe stopped boot tuple from its stop record, and the driver submits a final\nstop on every exit after admission. Run `23988c965cff394cc43e5a8553dc12b0-65-0`\nlogged per-dimension gap reasons: most cycles stopped at\n`compute_catalog_unavailable` because each operator request boots a fresh\nMarshall BEAM whose cold TLS pool missed the production 3 s handshake under\ninjected latency, so the evaluation crashed before reaching Compute; a lost\nfinal stop then left the single slot occupied (`capacity_insufficient_vcpu`).\nOperator request evaluations now use a harness-only small pool with longer\nconnect, handshake and queue budgets, reads and `request_key`-idempotent\nprovision and lifecycle evaluations retry a crashed attempt, the final stop is\nresubmitted with one request key, and the driver waits up to 120 s for a reply.\nProduction Repo settings and the long-lived Marshall nodes are unchanged.\nRun `a574538c77694308d6133a2f478b71d2-65-0` then completed 54 verified boots\nand about 69 product stops, yet observed no stop: the stopped guest record keeps\nthe retained boot's generation while the stop operation carries Marshall's\nbumped generation, and the driver asked the exactly fenced witness for the\nlatter. Most other cycles read the catalog once while the last accepted Lilly\nreport was older than Marshall's 5 s capacity freshness window under injected\nControl faults (`capacity_unknown`). The driver now requests the stopped witness\nwith the provision's tuple, polls the catalog for up to 90 s before\nprovisioning, and retries an `insufficient_capacity` refusal once after a fresh\nwait, logging only the closed refusal token. Marshall's freshness decision is\nunchanged.\nRun `c011420b1c74f586054654f8d1023683-65-0` showed the operator's witness\nfence still required the stop's bumped generation while the guest server keeps\nthe retained boot's: a `guest.witness` read of a VM desired and observed\nstopped now accepts the newest completed provision/start tuple on its\nplacement. Operator `image_unavailable` refusals (a stale host image report\nbetween catalog and provision) are retried like `insufficient_capacity`, each\ncatalog read is bounded to 30 s within a 180 s window, and an expired sample\nlogs its last unmet step.\nIn every other profile the host report has unavailable pool capacity and false\nexecution readiness, so a successful Control connection cannot authorize a\nguest placement. The\ncontrolled executor records requests without claiming physical effects; its\ndefault guest callbacks remain unavailable. An optional integrated TCG adapter\nis authored with a measured inner ZFS host and emulated guest observation, but\nhas no recorded composed journey. Its recovery inventory permits only the\nfixed `lilly.service` and `lilly-guest-emulator.service` cgroups plus exact\ntracked VM units when systemd creates them; unknown or malformed native\ninventory fences recovery, while the emulator inventory independently checks\ntracked placements. The optional TCG guest context\nhas a [recorded local boot](repo:antithesis/verification/guest-boot.md): exact\nport 1024 readiness on three q35-adapted NixOS guest boots, with one restart\non a retained qcow2 overlay and matching offline machine-id bytes. The\nstorage-router VM separately passed a\n[local direct-run smoke](repo:antithesis/verification/storage-boot.md) with\nreal ZFS/Brady, origin-off cache replay and retained marker/quota across QMP\nreset. The four selected control-context exports\npassed at their captured derivations. A later local base Compose project also\nemitted setup and passed six serial Control commands; the selected manifest\nhas four stale runtime-dependency hashes, so no frozen hosted baseline follows."
 msgstr ""
 
 #: lib/marshall/documentation_messages.ex:8179
@@ -18551,11 +18546,6 @@ msgstr ""
 msgid "Retry a failed clone or relocation request."
 msgstr ""
 
-#: lib/marshall/documentation_messages.ex:8737
-#, elixir-autogen, elixir-format
-msgid "Reviewed REST, GraphQL, Git smart-HTTP and LFS requests use fixed GitHub origins\nand validated rewrites. Guest input cannot choose arbitrary credential\nrecipients. Injected Authorization replaces guest copies; unsafe redirects and\nresponse links cannot forward the token to an unreviewed host. Connected requests\npin the owner's credential generation and renewable lease. Detach, disconnect,\nretirement or generation replacement withdraws authority without replaying an\nupstream mutation. Anonymous public forwarding receives no credential. See\n[services](#services), [security](#security) and\n[ADR-0202](repo:docs/architecture/decisions/0202-github-com-owner-integration.md).\nSuspended-machine discovery retains publication and identity lookup without\npretending the guest is reachable. Audi admits wake only after current SSH key,\nweb publication/login or editor authority. A waiting connection joins one durable\nwake and polls with bounded local work; it does not receive an execution grant.\nWhen compatible capacity is unavailable, the wake stays pending rather than\nsilently rebooting or exhausting a short retry budget."
-msgstr ""
-
 #: lib/marshall/documentation_messages.ex:8758
 #, elixir-autogen, elixir-format
 msgid "Revoke an account's shared access."
@@ -18684,11 +18674,6 @@ msgstr ""
 #: lib/marshall/documentation_messages.ex:10387
 #, elixir-autogen, elixir-format
 msgid "The focused 40-test Marshall run records credential rotation/revocation and\nforeign-user refusal in local database fixtures; the native refusal fixture\nremains unexecuted. The recorded focused protocol run covers 100 bounded comment\ncases; Audi's 15-test decoder/refusal run and disabled-Peach Nix evaluation cover\noptional rollout only. The current Peach HTTP-named test exercises only the projection\ncodec. Successful Peach HTTP/guest projection and generated stale/expired histories\nremain gaps, and the declared fleet does not yet enable Peach."
-msgstr ""
-
-#: lib/marshall/documentation_messages.ex:10512
-#, elixir-autogen, elixir-format
-msgid "The machine workspace exposes Android display controls only when the image's\n`android_display` capability is present. Viewer and controller ticket requests\nremain authenticated LiveView events; the browser relay must still enforce\ncurrent generation and controller lease before opening RFB.\n"
 msgstr ""
 
 #: lib/marshall/documentation_messages.ex:10628
@@ -19014,4 +18999,54 @@ msgstr "Reflection ইন্টিগ্রেশন"
 #: lib/marshall/documentation_messages.ex:7637
 #, elixir-autogen, elixir-format
 msgid "Porsche's human result renderer translates receipt labels, known receipt statuses\nand reviewed refusal guidance, including pinning limits and protected owner\naccess. Command syntax such as `unpin MACHINE`, request/operation identifiers,\nunknown keys, nested result data and all JSON output retain their literal machine\nrepresentation. A translated refusal does not change retry eligibility or grant\nauthority; inspect current machine/request state before repeating a mutation."
+msgstr ""
+
+#: lib/marshall/documentation_messages.ex:5938
+#, elixir-autogen, elixir-format
+msgid "Display tickets and WebSocket upgrades bind the signed emulator generation; a\nbrowser-supplied generation mismatch is refused before relay creation."
+msgstr ""
+
+#: lib/marshall/documentation_messages.ex:8741
+#, elixir-autogen, elixir-format
+msgid "Reviewed REST, GraphQL, Git smart-HTTP and LFS requests use fixed GitHub origins\nand validated rewrites. Guest input cannot choose arbitrary credential\nrecipients. Injected Authorization replaces guest copies; unsafe redirects and\nresponse links cannot forward the token to an unreviewed host. Connected requests\npin the owner's credential generation and renewable lease. Detach, disconnect,\nretirement or generation replacement withdraws authority without replaying an\nupstream mutation. Anonymous public forwarding receives no credential. See\n[services](#services), [security](#security) and\n[ADR-0202](repo:docs/architecture/decisions/0202-github-com-owner-integration.md).\nSafe GitHub pagination `Link` headers are rewritten to the private endpoint so\nmanaged clients can continue pagination without receiving an upstream hostname.\nRewritten JSON responses drop the provider's length header; bounded capability\ndownloads retain it only when their body is forwarded unchanged.\nSuspended-machine discovery retains publication and identity lookup without\npretending the guest is reachable. Audi admits wake only after current SSH key,\nweb publication/login or editor authority. A waiting connection joins one durable\nwake and polls with bounded local work; it does not receive an execution grant.\nWhen compatible capacity is unavailable, the wake stays pending rather than\nsilently rebooting or exhausting a short retry budget."
+msgstr ""
+
+#: lib/marshall/documentation_messages.ex:8845
+#, elixir-autogen, elixir-format
+msgid "Runtime secrets stay in private fixture volumes; only the operator enrolls\nLilly through Marshall's reviewed CLI. Bootstrap checks both TLS endpoints,\nmigration and a fresh authenticated host report before one setup signal.\nThe SQL witness requires a positive report sequence, a report timestamp within\n60 seconds and a durable session matching the host's current session ID, host\nID and epoch. It does not read the retired host `protocol_version` column or\ninfer a wire version from SQL. Production Execution and the real Control\nprobes enforce wire v4 separately. Historical local boot captures predate this\ncurrent-schema witness; local readiness alone does not establish hosted SDK\ningestion or native effects.\nThe optional `repository-origin` profile adds a second gate before the same\nsingle setup signal: the operator-issued repository manifest must match the\nindependent fixture ID, the origin fixture must answer an authenticated state\nread, the SELECT-only oracle must find the registration row and a\n`pending`/`refreshing`/`ready` phase, and Enrico must answer an authenticated\nstatus read for a never-issued attempt. Marshall commits GitHub sources in\ncanonical lowercase, so the operator publishes `github/fixture/demo` exactly as\nregistered and the origin fixture serves that path; an earlier mixed-case\nmanifest and served path never matched the committed row, and Marshall's own\nrefresh failed against the origin, so setup stayed incomplete. The probe now\nreports each distinct unmet prerequisite once per process by condition token,\nobservation state, HTTP status or phase, never by credential or payload.\nThe failed-refresh published-head case was never exercised in hosted runs:\nthe workload image linked Git into its closure but not onto a fixed path, so\nthe native blob oracle could not run Git and every attempt stopped before the\nforce push (run `30a420d501d5d6d22527e679a7f00005-65-0`). The image now links\n`/opt/overalls/git`, the oracle calls it explicitly, and each early stop logs a\nfixed `Enrico published-head case unexercised` reason.\nThe 1,025-attempt receipt-cap campaign ran but stopped silently in hosted run\n`56a1285564c94413812835f74246cf04-65-0`: it abandoned the campaign on the first\nfailed fetch, although Enrico retains failed and succeeded receipts alike under\nthe same cap. It now counts any settled attempt and logs a fixed\n`Enrico receipt-cap campaign unexercised` reason at every early stop. Run\n`3f76c3f47ad4062ba0d1c37896e5f3e9-65-0` measured about 5.7 s per attempt on its\ncleanest timeline, which suggested the campaign could not finish, yet the next\nrun (`ddd07ab2f16fe84d9cf3020e10a648ce-65-0`) completed it once and hit every\ncap assertion (oldest receipt evicted, newest replayable, no second fetch);\nEnrico's unit and property tests remain the primary cap evidence. The 3f76c3f4 run produced one\ncounterexample to the ninth-refresh refusal: a held fetch hit Enrico's 10 s\nread timeout under a slowed network, freeing a slot that the ninth refresh then\nlegitimately took, while a holder snapshot scanned before that change still\nmatched. The ninth verdict now requires a snapshot whose scan started after the\nninth submission, and the observer stamps each snapshot before it scans.\nThe optional `recorder-host` profile selects the TCG NixOS recorder VM and the\nthree recorder commands. The workload waits for the VM health check, then its\nown read-only probe requires a fresh all-active unit sample, producer and spool\nidentities in their reviewed cgroups, a distinct 32–64 MiB archive device, a\ncheckpoint whose pending admissions name only the current producer PID and\nstart ticks, a readable SQLite archive and writable request and ledger volumes.\nMissing or stale evidence leaves setup incomplete. Its first hosted validation\nstopped in initrd emergency mode: the runner's `root=` argument duplicated the\nimage's own root fstab entry and, without `rw`, left the real root read-only,\nso the `/run` bind into it failed. The runner now relies on the image fstab\nalone; a direct local QEMU TCG boot of the rebuilt context, outside any\ncontainer, reached the runner's health check in 66–96 s. Its first hosted run\n(`bbb308949ab76c0f1ce04fd209f1f091-65-0`) failed container setup because the\nAntithesis container filesystem refuses O_DIRECT, which QEMU `cache=none`\nneeds to open the qcow2 backing image. The recorder, host and storage VMM\nrunners now probe O_DIRECT on every disk and its backing image and fall back to\nflush-respecting `cache=writeback` (never `cache=unsafe`), printing the\neffective mode. Hosted run `109aecb1aca881ff09e15403e72802cb-65-0` completed\nsetup but reached no trace spool custody: the guest fixture paths were\ncontext-free strings, so the trace fixtures were absent and the BEAM producer\ncrashed on every trace request; back-to-back recovery restarts also tripped\nsystemd's default start limit, and the pressure loop outran the command window.\nThe fixture paths now carry store context, the producer refuses a failed\nrequest instead of exiting, the two restarted units have no start limit in this\nfixture only, and the pressure loop has a 20 s budget. The next run\n(`acfe129cf2288d30a7972edcbf9b92cf-65-0`) reached spool custody, recovery and\nreal ENOSPC on the dedicated archive, but the one write attempted under ENOSPC\ncommitted into already allocated SQLite pages, so no refusal followed; the\ncommand now keeps writing, up to 32 batches, until the exhausted backing\nrefuses. Archive quota refusal stays out of reach inside the 20 s loop. Run\n`10d727fc7a050a9695a0b16e87a47db9-65-0` reached that refusal and the reopen path\nand reported two oracle races, not recorder defects: the fresh batch after a\nspool restart was sent before the reopened spool had bound ingest (systemd\nreports the restart at exec), and the request SDK heartbeat had already\nrecovered its fsynced `v1:gap` marker to `v1:running` when the saturation\ncheck read it. The reopen check now retries a transport-unavailable reply,\nand the saturation check accepts `v1:running` only with the checkpoint's\nadvanced coverage start as the durable gap. Both acknowledged-custody\nchecks held throughout. Run `d03118781050d16ad698713ce9fb4d61-65-0` reached\nreal ENOSPC 25 times and its refusal 18 times without a counterexample, but the\n20 s organic loop never filled the 57 MB archive, so its exhausted-backing,\nstorage-refusal and saturation checks were never evaluated. The ENOSPC path now\nevaluates those same checks against its confirmed zero-free backing and\nrefused write. Run `eb926cce7fee3dfcad1d6d8172b28d29-65-0` then passed 65 of\n67 properties; only quota refusal and the hint-loss anchor stayed unreached.\nThe 60 MiB archive quota exceeds the 57 MB archive device, so ENOSPC always\ncomes first, and pending custody never drains in this fixture, so the 32 MiB\npending quota needs far more intake than a timeline sends. Each traces command\nnow ends with a bounded window in which the bridge restarts the real spool on a\nfixed configuration whose only change is the minimum pending quota (one body\nlimit), sends large batches until the production admission check refuses with\n`429`, checks that the refusal kept accepted bytes, and restores the default\nquota before returning. It proves the pending-quota refusal path, not the\nproduction quota values or the archive-quota branch. The hint-loss anchor\ncannot fire under hosted faults: Oban reports `:isolated` only after 120 s with\nno notifier ping, beyond any recorded timeline. Its evidence is emulated, not\nnative.\nThe optional `admission-stub` profile runs the atomic-allocation and key-replay\nadmission commands on a harness **stub** storage substrate, which is not ZFS.\nOnly in that profile does the controlled Lilly release report configured stub\npool totals for its enrolled pool identity, measured cgroup memory headroom, a\nlabelled STUB CPU budget of one core capped by the measured cgroup cores, and a tiny non-bootable image it digest-verifies before advertising;\nthe enrollment operator registers that image through Marshall's catalog action\nand then enables lilly-a through the reviewed CLI `enable` action, which\nrefuses until Lilly's stub report is fresh and execution-ready. A fully stub-backed report advertises placement readiness, so Marshall's real\nadmission transaction commits VM, placement, reservation and dispatch rows,\nbut the controlled executor never launches a guest. A delete settles only\nthrough a labelled **STUB** enabled by this profile's explicit opt-in: the\ncontrolled executor reports the deleted facts for a placement only after\nobserving a controlled pool, a journal that never recorded it running, only\npublication records for it and no native execution state, and writes an\nabsence attestation; Marshall's real outcome, release and archive path then\nruns. Run `a8c0a8e424bc48eb017aa2322795fc68-65-0` left archived-key replay\nunreached and later admissions short of vCPU because no delete settled. This\nis never cleanup or physical-absence evidence for anything that existed. Setup requires the enabled normal-mode host and those committed report, pool\nand image rows in SQL; hosted runs before this check never enabled the host,\nso every admission probe stopped at unknown capacity\n(`dd4f5f9cd52da22427ae2e5b79c095bf-65-0`). With the host enabled, the next run\nstill submitted nothing: the pre-submission SQL witness read host and pool from\nthe VM row, which the placement migration had moved to\n`compute_workload_placements`, so every query failed and was reported as\nunavailable (`379970e17a2d5312bff3e5c5e2c17369-65-0`). The witness now joins the\ncurrent placement, and oracle queries log each failing SQLSTATE class once.\nThe following run (`642e01a83533ba33f07ba9e3eb4b17fd-65-0`) settled hundreds of\ndecisions, all refusals, so the acceptance-path assertions held only vacuously;\nthe refusal reason was invisible because the operator discards evaluation\noutput. The workload now logs Marshall's closed refusal token once per process,\nand the operator names the operation whose result became uncertain. CPU and\nmemory headroom here are measured over the whole Antithesis VM, so a refusal\nfor capacity is Marshall's correct decision on a busy host, not a defect.\nCatalog headroom below the request shape no longer withholds a request: a\ndefinite `insufficient_capacity` refusal is Marshall's real decision, checked\nfor absent rows and a bounded one-VM replay. Every stop before a settled\ndecision logs a fixed `Compute admission unexercised` reason; the first hosted\nrun reached no admission assertion because those lines were never emitted.\nRun `6890e1608b75e9b82fe11382bb4aeefc-65-0` still refused every request for\nvCPU: the hosted VM has one logical CPU, so the measured headroom never frees a\nwhole core, hence the stub CPU budget above. The next run\n(`74188918d21886495a53d124a725c7e5-65-0`) admitted requests and failed the\njoined-allocation check once in 267 examples: a partition held a provision\noperation pending across a minute tick, and AshOban's dispatch scheduler\ncorrectly enqueued a repeat hint, so the oracle counted two dispatch jobs. The\noracle now requires at least one dispatch job; placement, reservation, address\nand provision-operation counts remain exact.\nThe results are admission-logic evidence only, never ZFS, physical-capacity,\nKVM or isolation evidence; the measured-capacity command stays in a separate,\nunselected template for the measured host graph.\nThe optional `guest-lifecycle` profile selects the guest lifecycle command with\nthe guest VMM overlay. Its container Lilly is a separate STUB-storage release:\nit reports a fixed synthetic pool with no ZFS and compute headroom for one free\nguest-vmm slot, capped by measured cgroup limits, and sets execution readiness\nonly after a guest-vmm health check and a verified advertised image. The\nenrollment operator registers that image manifest through the catalog action\nand enables lilly-a through the reviewed CLI `enable` action once its report is\nfresh and execution-ready; Marshall's catalog counts no capacity from a disabled\nhost. Bootstrap adds a third gate: the guest-vmm image identity, read through the\nread-only witness bridge, and a Marshall catalog offering that image with known\ncapacity for its shape. The stub admits one emulated QEMU TCG guest only; it is\nnot native ZFS, KVM, Firecracker, isolation or capacity evidence. Its first\nhosted run (`a2edc265384761d6607df51eac50b29d-65-0`) timed out at\n`capacity_unknown` because the host was never enabled; the earlier local pass\nhad inherited an enabled host from a retained PostgreSQL volume, so local\nvalidations now start from empty volumes. With the host enabled, run\n`91c9dfa850d2435808323d8910182d7a-65-0` still admitted no guest: the stub slot\nreported exactly the 2 GiB guest memory, while admission reserves guest memory\nplus the fixed 64 MiB VMM overhead, so Marshall correctly refused every\nprovision for insufficient capacity. The slot now reports guest memory plus\nthat overhead, and the workload capacity gate requires the same sum. Run\n`655477db4745f0857c2c0ffcd8571d7a-65-0` then booted real QEMU guests to port 1024\nreadiness, but no stop ever completed: the guest VMM inventory dropped the\nexecution epoch and generation once a placement stopped, while the fixture\nexecutor binds a stop to that exact boot, so every stop was deferred until the\ndriver gave up and later cycles found the slot held. The inventory now reports\nthe stopped boot tuple from its stop record, and the driver submits a final\nstop on every exit after admission. Run `23988c965cff394cc43e5a8553dc12b0-65-0`\nlogged per-dimension gap reasons: most cycles stopped at\n`compute_catalog_unavailable` because each operator request boots a fresh\nMarshall BEAM whose cold TLS pool missed the production 3 s handshake under\ninjected latency, so the evaluation crashed before reaching Compute; a lost\nfinal stop then left the single slot occupied (`capacity_insufficient_vcpu`).\nOperator request evaluations now use a harness-only small pool with longer\nconnect, handshake and queue budgets, reads and `request_key`-idempotent\nprovision and lifecycle evaluations retry a crashed attempt, the final stop is\nresubmitted with one request key, and the driver waits up to 120 s for a reply.\nProduction Repo settings and the long-lived Marshall nodes are unchanged.\nRun `a574538c77694308d6133a2f478b71d2-65-0` then completed 54 verified boots\nand about 69 product stops, yet observed no stop: the stopped guest record keeps\nthe retained boot's generation while the stop operation carries Marshall's\nbumped generation, and the driver asked the exactly fenced witness for the\nlatter. Most other cycles read the catalog once while the last accepted Lilly\nreport was older than Marshall's 5 s capacity freshness window under injected\nControl faults (`capacity_unknown`). The driver now requests the stopped witness\nwith the provision's tuple, polls the catalog for up to 90 s before\nprovisioning, and retries an `insufficient_capacity` refusal once after a fresh\nwait, logging only the closed refusal token. Marshall's freshness decision is\nunchanged.\nRun `c011420b1c74f586054654f8d1023683-65-0` showed the operator's witness\nfence still required the stop's bumped generation while the guest server keeps\nthe retained boot's: a `guest.witness` read of a VM desired and observed\nstopped now accepts the newest completed provision/start tuple on its\nplacement. Operator `image_unavailable` refusals (a stale host image report\nbetween catalog and provision) are retried like `insufficient_capacity`, each\ncatalog read is bounded to 30 s within a 180 s window, and an expired sample\nlogs its last unmet step.\nRun `766b5d3778010731ec34ab191bf48f7c-65-0` reached consistent completed\nprovisions, yet reported the outcome/VM consistency property as never hit: the\ndriver evaluated it only when a contradiction occurred. It now evaluates that\nassertion for every completed outcome it samples, and resubmits a stop or start\nwhose reply was lost with the same deduplicated request key up to three times\ninstead of abandoning the cycle after one lost reply.\nIn every other profile the host report has unavailable pool capacity and false\nexecution readiness, so a successful Control connection cannot authorize a\nguest placement. The\ncontrolled executor records requests without claiming physical effects; its\ndefault guest callbacks remain unavailable. An optional integrated TCG adapter\nis authored with a measured inner ZFS host and emulated guest observation, but\nhas no recorded composed journey. Its recovery inventory permits only the\nfixed `lilly.service` and `lilly-guest-emulator.service` cgroups plus exact\ntracked VM units when systemd creates them; unknown or malformed native\ninventory fences recovery, while the emulator inventory independently checks\ntracked placements. The optional TCG guest context\nhas a [recorded local boot](repo:antithesis/verification/guest-boot.md): exact\nport 1024 readiness on three q35-adapted NixOS guest boots, with one restart\non a retained qcow2 overlay and matching offline machine-id bytes. The\nstorage-router VM separately passed a\n[local direct-run smoke](repo:antithesis/verification/storage-boot.md) with\nreal ZFS/Brady, origin-off cache replay and retained marker/quota across QMP\nreset. The four selected control-context exports\npassed at their captured derivations. A later local base Compose project also\nemitted setup and passed six serial Control commands; the selected manifest\nhas four stale runtime-dependency hashes, so no frozen hosted baseline follows."
+msgstr ""
+
+#: lib/marshall/documentation_messages.ex:9841
+#, elixir-autogen, elixir-format
+msgid "The Android display hook uses a same-origin WebSocket URL supplied by the page,\nkeeps viewer input disabled, and sends controller key/pointer frames only after\na controller ticket is granted. It does not use a foreign iframe or external\nresource."
+msgstr ""
+
+#: lib/marshall/documentation_messages.ex:9845
+#, elixir-autogen, elixir-format
+msgid "The Android relay state machine permits read-only viewers and one controller,\nadvances frame sequence numbers monotonically, and revokes controller authority\nwhen its process exits or the emulator generation changes."
+msgstr ""
+
+#: lib/marshall/documentation_messages.ex:10098
+#, elixir-autogen, elixir-format
+msgid "The `/android-display` WebSocket upgrade verifies the browser login, signed\nmachine ticket, actor binding, mode and generation before creating a relay\nprocess; failed upgrades return a generic refusal without machine disclosure."
+msgstr ""
+
+#: lib/marshall/documentation_messages.ex:10476
+#, elixir-autogen, elixir-format
+msgid "The host-stream adapter drops stale Android frames before relay publication and\nroutes input only from controller-authorized sockets back toward Lilly.\n"
+msgstr ""
+
+#: lib/marshall/documentation_messages.ex:10508
+#, elixir-autogen, elixir-format
+msgid "The later `7c323f197` forward checkpoint retains separate rollout and test\nevidence. Marshall's Covenant run passed 35 of 36 tests and exposed a callback\nreplay guard exception; the explicit non-nil attempt repair preserves all\nstate/login/generation/expiry fences. Pins and Teams generated fixtures now\ncreate a fresh SQL sandbox and authority rows per case and replay, retaining\ntheir 100-case budgets and refusal oracles. The focused timing-only run passed\n23 tests, seed 52647, in 419.4 seconds, including the callback, Pins, Teams and\nsandbox regressions. It measured the full Teams HTTP history at 30.5206 seconds\nand Pins ordered-set history at 276.0067 seconds. Mix implicitly enables\n`--trace` for `--slowest 8`, so these results\ndo not qualify finite ExUnit deadlines. The ordered-set history alone now has\na 600,000-millisecond aggregate timeout; other Pins tests retain the\n300,000-millisecond module timeout, each case retains its 120,000-millisecond\nSQL ownership deadline, and Teams retains its 60,000-millisecond default.\nThe required full Marshall `mix precommit` gate without trace/slowest remains\npending and will verify these tests with their finite deadlines. The\n[matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)\nrecords the exact failure scope, successful Marshall catalog structure check\nand separate three-test Porsche catalog run. The 22:32:58 UTC production\nobservation subsequently found both hosts healthy with fresh six-key inventory,\nand ordinary Windows CLI routing passed through the normal proxy with strict\ncertificate trust. These observations do not qualify browser/editor access or\nthe full native OS matrix. Documentation translation completeness, linguistic\nreview, isolation and recovery acceptance remain separate; no accepted ADR or\ndeployment boundary changes."
+msgstr ""
+
+#: lib/marshall/documentation_messages.ex:10516
+#, elixir-autogen, elixir-format
+msgid "The later forward verification patch preserves the existing authority and\nlocalization decisions. The Gettext plural adapter keeps plain locale/header\ncontext in generated code and reconstructs the opaque plural value through\nGettext's API at runtime, preserving explicit catalog rules and locale fallback\nat the cost of parsing on each plural selection. Viewer attachment retains its\nmonitored relay state; typed guard and contract-syntax repairs preserve the\nexisting limits. Native-admission regressions assert the exact 13-key map,\nretaining seven qualified native capabilities while editor, Inception and all\nfour Android flags remain false. Lilly's incoming network changes are\nformatting only. The Windows browser fixture accepts inherited SYSTEM-only\nreceipt grants only beneath a protected SYSTEM-only parent, retaining foreign\naccess, reparse and ancestor refusals without changing product custody. An\nexplicit Lilly editor-candidate fixture uses four GiB guest RAM and checks the\nexact version-7 image/version-4 bundle editor descriptor through restart;\nordinary Windows expectations and production selection remain separate.\nThe rebuilt receipt fixture passed native inherited-receipt admission and\nforeign-read refusal checks with the installed broker unchanged; this is\nseparate from PTY, browser or recovery acceptance. Adapter regressions, full\nconsumer gates and exact candidate native execution remain pending. The\nearlier mixed-source asset\nbuild does not verify this forward patch or complete browser behavior. The\n[matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)\nrecords the source scope and remaining native, controller-lease, isolation and\nrecovery gaps; partial ADR-0206 and ADR-0200 acceptance are unchanged."
+msgstr ""
+
+#: lib/marshall/documentation_messages.ex:10540
+#, elixir-autogen, elixir-format
+msgid "The machine workspace exposes Android display controls only when the image's\n`android_display` capability is present. Viewer and controller ticket requests\nremain authenticated LiveView events; the browser relay must still enforce\ncurrent generation and controller lease before opening RFB."
 msgstr ""
