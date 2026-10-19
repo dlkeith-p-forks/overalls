@@ -88,4 +88,16 @@ defmodule OverallsProtocol.SSHManagementTest do
                SSHManagement.request("ready", %{"version" => 1, field => "injected"})
     end
   end
+
+  test "top twenty display locales keep Egyptian Arabic distinct from formatting data" do
+    for locale <- ~w(arz sw ha), do: assert(SSHManagement.locale?(locale))
+    assert SSHManagement.formatting_locale("arz") == "ar-EG"
+    assert SSHManagement.formatting_locale("sw") == "sw"
+    assert SSHManagement.formatting_locale("ha") == "ha"
+    assert SSHManagement.formatting_locale("ar") == "ar"
+    for invalid <- [nil, %{}, "../../ar", "ARZ", "zz"] do
+      refute SSHManagement.locale?(invalid)
+      assert SSHManagement.formatting_locale(invalid) == "en"
+    end
+  end
 end

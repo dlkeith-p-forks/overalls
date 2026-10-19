@@ -7515,3 +7515,113 @@ msgstr "Kanvas tampilan Android"
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
 msgstr "Menunggu relai tampilan."
+
+#: lib/marshall_web/live/agent_threads_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Context captured"
+msgstr "Konteks disimpan"
+
+#: lib/marshall_web/live/agent_threads_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Context compacted"
+msgstr "Konteks dipadatkan"
+
+#: lib/marshall_web/live/agent_threads_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Maintenance finished"
+msgstr "Pemeliharaan selesai"
+
+#: lib/marshall_web/live/agent_threads_live.ex:123
+#, elixir-autogen, elixir-format
+msgid "Plan proposed"
+msgstr "Rencana diusulkan"
+
+#: lib/marshall_web/live/agent_threads_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Questions answered"
+msgstr "Pertanyaan dijawab"
+
+#: lib/marshall_web/live/agent_threads_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Questions cancelled"
+msgstr "Pertanyaan dibatalkan"
+
+#: lib/marshall_web/live/agent_threads_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Questions requested"
+msgstr "Pertanyaan diminta"
+
+#: lib/marshall_web/live/agent_threads_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Waiting for machine"
+msgstr "Menunggu mesin"
+
+#: lib/marshall_web/live/admin/access_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "Persetujuan kunci tertunda"
+
+#: lib/marshall_web/live/admin/git_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Git operation failed"
+msgstr "Operasi Git gagal"
+
+#: lib/marshall_web/live/admin/git_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Refresh failed"
+msgstr "Penyegaran gagal"
+
+#: lib/marshall_web/live/admin/git_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Refresh requested"
+msgstr "Penyegaran diminta"
+
+#: lib/marshall_web/live/admin/git_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Refresh succeeded"
+msgstr "Penyegaran berhasil"
+
+#: lib/marshall_web/live/admin/git_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Refreshing"
+msgstr "Sedang menyegarkan"
+
+#: lib/marshall_web/live/admin/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "Terdaftar"
+
+#: lib/marshall_web/live/admin/git_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Removal requested"
+msgstr "Penghapusan diminta"
+
+#: lib/marshall_web/live/admin/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Removed"
+msgstr "Dihapus"
+
+#: lib/marshall_web/live/admin/git_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Removing"
+msgstr "Sedang menghapus"
+
+#: lib/marshall_web/live/admin/git_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Service unavailable"
+msgstr "Layanan tidak tersedia"
+
+#: lib/marshall_web/live/admin/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "TLS verification failed"
+msgstr "Verifikasi TLS gagal"
+
+#: lib/marshall_web/live/admin/git_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Timed out"
+msgstr "Waktu tunggu habis"
+
+#: lib/marshall_web/live/admin/git_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "Tidak diizinkan"

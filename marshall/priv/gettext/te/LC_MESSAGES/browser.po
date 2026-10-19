@@ -230,3 +230,23 @@ msgstr "⟳ మళ్లీ కనెక్ట్ అవుతోంది…"
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ స్క్రోల్‌బ్యాక్ పునరుద్ధరిస్తోంది…"
+
+#: lib/marshall_web/browser_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "కనెక్ట్ అవుతోంది…"
+
+#: lib/marshall_web/browser_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "No terminals"
+msgstr "టెర్మినల్‌లు లేవు"
+
+#: lib/marshall_web/browser_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Diagram unavailable. Source:\n%{source}"
+msgstr "రేఖాచిత్రం అందుబాటులో లేదు. మూలం:\n%{source}"
+
+#: lib/marshall_web/browser_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "— output before this view is not in the scrollback window —"
+msgstr "— ఈ వీక్షణకు ముందున్న అవుట్‌పుట్ స్క్రోల్‌బ్యాక్ విండోలో లేదు —"

@@ -220,3 +220,23 @@ msgstr "⟳ 再接続中…"
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ スクロールバックを復元中…"
+
+#: lib/marshall_web/browser_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "接続中…"
+
+#: lib/marshall_web/browser_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "No terminals"
+msgstr "ターミナルはありません"
+
+#: lib/marshall_web/browser_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Diagram unavailable. Source:\n%{source}"
+msgstr "図を表示できません。ソース:\n%{source}"
+
+#: lib/marshall_web/browser_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "— output before this view is not in the scrollback window —"
+msgstr "— この表示より前の出力はスクロールバックに含まれていません —"

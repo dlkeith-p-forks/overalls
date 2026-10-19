@@ -12,7 +12,7 @@ defmodule Porsche.Locale do
   def put_locale(session) do
     locale = from_session(session)
     Gettext.put_locale(Porsche.Gettext, locale)
-    Localize.put_locale(locale)
+    Localize.put_locale(OverallsProtocol.SSHManagement.formatting_locale(locale))
     :ok
   end
 end

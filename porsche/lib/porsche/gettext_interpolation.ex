@@ -10,7 +10,10 @@ defmodule Porsche.GettextInterpolation do
   @spec runtime_interpolate(String.t(), Gettext.Interpolation.bindings()) ::
           {:ok, String.t()} | {:missing_bindings, String.t(), [atom()]}
   def runtime_interpolate(message, bindings) do
-    locale = Gettext.get_locale(Porsche.Gettext)
+    locale =
+      Porsche.Gettext
+      |> Gettext.get_locale()
+      |> OverallsProtocol.SSHManagement.formatting_locale()
 
     bindings =
       if map_size(bindings) > 0 and rtl?(locale) do

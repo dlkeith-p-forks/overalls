@@ -1,7 +1,7 @@
 defmodule Porsche.LocalizationCatalogTest do
   use ExUnit.Case, async: true
 
-  @locales ~w(en zh-Hans hi es ar fr bn pt-BR pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv)
+  @locales ~w(en zh-Hans hi es ar fr bn pt-BR pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv arz sw ha)
 
   test "every supported locale covers the extracted terminal messages with matching placeholders" do
     sources = messages("default.pot")

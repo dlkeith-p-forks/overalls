@@ -226,3 +226,23 @@ msgstr "⟳ পুনরায় সংযোগ হচ্ছে…"
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ স্ক্রলব্যাক পুনরুদ্ধার হচ্ছে…"
+
+#: lib/marshall_web/browser_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "সংযোগ করা হচ্ছে…"
+
+#: lib/marshall_web/browser_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "No terminals"
+msgstr "কোনো টার্মিনাল নেই"
+
+#: lib/marshall_web/browser_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Diagram unavailable. Source:\n%{source}"
+msgstr "চিত্র অনুপলব্ধ। উৎস:\n%{source}"
+
+#: lib/marshall_web/browser_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "— output before this view is not in the scrollback window —"
+msgstr "— এই দৃশ্যের আগের আউটপুট স্ক্রলব্যাক উইন্ডোতে নেই —"

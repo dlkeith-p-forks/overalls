@@ -123,7 +123,7 @@ defmodule MarshallWeb.Admin.AccessLive do
                       now={@now}
                     />
                   </td>
-                  <td><span class="status-label">{grant.role}</span></td>
+                  <td><span class="status-label">{role_label(grant.role)}</span></td>
                   <td class="muted nowrap">
                     <.timestamp at={grant.inserted_at} zone={@time_zone} format={:date} />
                   </td>
@@ -209,7 +209,9 @@ defmodule MarshallWeb.Admin.AccessLive do
               <tbody>
                 <tr :for={session <- @sessions} id={"admin-session-#{session.id}"}>
                   <td class="break">{session.gateway_name}</td>
-                  <td class="break"><code>{session.fingerprint || "pending key approval"}</code></td>
+                  <td class="break">
+                    <code>{session.fingerprint || gettext("Pending key approval")}</code>
+                  </td>
                   <td class="muted nowrap">
                     <.timestamp at={session.expires_at} zone={@time_zone} format={:datetime} />
                   </td>
@@ -233,4 +235,15 @@ defmodule MarshallWeb.Admin.AccessLive do
     </Layouts.app>
     """
   end
+
+  # @cc [owner:ghuntley,label:product] localized-access-role-labels
+  # Visible access roles MUST use translated labels while role attributes and
+  # action values retain the authoritative domain atoms.
+  @spec role_label(atom()) :: String.t()
+  defp role_label(:web), do: gettext("Web apps")
+  defp role_label(:viewer), do: gettext("Viewer")
+  defp role_label(:operator), do: gettext("Operator")
+  defp role_label(:manager), do: gettext("Manager")
+  defp role_label(:revoked), do: gettext("Revoked")
+  defp role_label(_), do: gettext("Unknown")
 end

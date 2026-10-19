@@ -1,6 +1,7 @@
 defmodule MarshallWeb.Admin.AuditLive do
   use MarshallWeb, :live_view
   alias Marshall.Accounts
+  alias MarshallWeb.Admin.AuditLabels
   on_mount {MarshallWeb.AuthenticationPrivacy, :default}
   on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
   on_mount {MarshallWeb.LiveAdminAuth, :required}
@@ -257,8 +258,10 @@ defmodule MarshallWeb.Admin.AuditLive do
           role="status"
           class="panel dashed"
         >
-          Generation {@uncertain_order.generation} has an uncertain ACME order response.
-          The generation can be failed after
+          {gettext(
+            "Generation %{generation} has an uncertain ACME order response. The generation can be failed after",
+            generation: @uncertain_order.generation
+          )}
           <.timestamp at={@uncertain_order.retry_after} zone={@time_zone} format={:datetime_seconds} />{gettext(
             "; the next due check can then request a new generation."
           )}
@@ -290,7 +293,10 @@ defmodule MarshallWeb.Admin.AuditLive do
                 <td class="nowrap">
                   <.timestamp at={event.inserted_at} zone={@time_zone} format={:datetime_seconds} />
                 </td>
-                <td class="nowrap">{if @lifecycle?, do: event.action, else: event.kind}</td>
+                <td class="nowrap">
+                  {AuditLabels.action(if @lifecycle?, do: event.action, else: event.kind)}
+                  <br /><code>{if @lifecycle?, do: event.action, else: event.kind}</code>
+                </td>
                 <td class="nowrap">
                   <code>{cond do
                     @lifecycle? -> event.actor_id || event.actor_kind
@@ -299,18 +305,23 @@ defmodule MarshallWeb.Admin.AuditLive do
                   end}</code>
                 </td>
                 <td class="break">
-                  <span :if={@lifecycle?}><code>{event.resource_type} {event.resource_id}</code><br />{event.previous_state ||
-                    "created"} → {event.next_state}</span>
+                  <span :if={@lifecycle?}>
+                    <code>{event.resource_type} {event.resource_id}</code><br />
+                    {AuditLabels.state(event.previous_state || "created")} → {AuditLabels.state(
+                      event.next_state
+                    )}
+                    <br /><code>{event.previous_state || "—"} → {event.next_state || "—"}</code>
+                  </span>
                   <span :if={@certificate? and event.kind == :account}>{gettext(
                     "ACME account: %{status}",
-                    status: event.status
-                  )}</span>
+                    status: AuditLabels.action(event.status)
+                  )}<br /><code>{event.status}</code></span>
                   <span :if={@certificate? and event.kind != :account}>{gettext(
                     "Generation %{generation}: %{status}",
                     generation: event.generation,
-                    status: event.status
-                  )}<br /><code>{event.fingerprint ||
-                    "pending"}</code></span>
+                    status: AuditLabels.action(event.status)
+                  )}<br /><code>{event.status}</code><br /><code>{event.fingerprint ||
+                    gettext("Pending")}</code></span>
                   <span :if={!@lifecycle? and !@certificate?}><code>{event.target_id}</code></span>
                 </td>
               </tr>

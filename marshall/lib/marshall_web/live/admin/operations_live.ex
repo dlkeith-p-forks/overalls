@@ -131,7 +131,7 @@ defmodule MarshallWeb.Admin.OperationsLive do
               <tbody>
                 <tr :for={service <- @snapshot.services}>
                   <td class="break">{service.name}</td>
-                  <td>{service.role}</td>
+                  <td>{service_role(service.role)}</td>
                   <td class="num">{service.generation}</td>
                   <td class="num">{length(service.addresses)}</td>
                   <td><.enabled value={service.enabled} /></td>
@@ -228,4 +228,12 @@ defmodule MarshallWeb.Admin.OperationsLive do
   @spec format(String.t() | integer() | nil) :: String.t()
   defp format(nil), do: gettext("unknown")
   defp format(value), do: to_string(value)
+
+  # @cc [owner:ghuntley,label:product] localized-audi-service-roles
+  # Human role labels MUST translate the closed Audi service role enum while
+  # service identifiers and enrollment values remain unchanged.
+  @spec service_role(atom()) :: String.t()
+  defp service_role(:dns), do: gettext("DNS")
+  defp service_role(:gateway), do: gettext("Gateway")
+  defp service_role(_), do: gettext("Unknown")
 end
