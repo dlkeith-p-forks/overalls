@@ -8,21 +8,22 @@ magic-link fencing, user/team lifecycle fields, and the Control Room route.
 
 ## Findings
 
-- **Partial implementation:** endpoint discovery and user mappings compile, and
-  team retirement now has a durable Oban worker that records deadlines and
-  submits machine deletion intents. Group synchronization, OIDC runtime
-  connections, and native machine execution remain incomplete.
+- **Implemented boundary:** endpoint discovery, User and Group mappings,
+  relationship PATCH handling, OIDC browser callback/session issuance, and
+  durable user/team retirement coordinators are present. Native database and
+  NixOS execution evidence remains environment-dependent.
 - **Dependency compatibility:** `ash_scim` 0.1.0 currently requires a stable
   AshAuthentication 5.x range while Marshall uses `5.0.0-rc.14`; the exact
   package source is vendored with only that constraint widened.
 - **Retirement boundary:** native teams are archived and mutation-fenced on
-  enable; attached-resource cleanup requires the remaining Oban coordinator.
+  enable; Oban cleanup revokes attached team authority before machine deletion
+  and final archival.
 
 ## Validation
 
-`mix compile` passes after the dependency and resource changes. Database-backed
-tests could not run because the local PostgreSQL socket was unavailable. NixOS
-execution and HLDD generated checks remain outstanding.
+`mix compile --warnings-as-errors`, ADR checks, HLDD checks, and generated view
+checks pass. Database-backed tests could not run because the local PostgreSQL
+socket was unavailable; NixOS execution remains unrecorded in this environment.
 
 ## Affected decisions
 
