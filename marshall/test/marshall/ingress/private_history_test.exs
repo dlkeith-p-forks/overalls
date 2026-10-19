@@ -77,8 +77,7 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
                   map(member_of([:member, :admin, :removed]), &{:team, &1})
                 ]),
                 max_length: 8
-              ),
-            test_cases: 12
+              )
           ) do
       c = fixture()
 
@@ -196,8 +195,7 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
     teardown: &cleanup/1 do
     check all(
             boundary <- member_of([:policy, :execution, :signout, :close, :expire]),
-            port <- member_of([0, 3000, 9999]),
-            test_cases: 20
+            port <- member_of([0, 3000, 9999])
           ) do
       c = fixture()
 

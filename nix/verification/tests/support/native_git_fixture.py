@@ -173,8 +173,9 @@ class Repository:
 
 def dns_response(packet: bytes, address: str) -> bytes | None:
     """@cc [owner:ghuntley,label:verification;security] native-git-fixture-closed-dns
-    DNS MUST answer only the synthetic Git host's A query with its fixed fixture
-    IPv4 address; AAAA MUST return no addresses and other names MUST return
+    DNS MUST answer only github.com, com-github.integration.internal and
+    llm.internal A queries with the fixed fixture IPv4 address; AAAA MUST return
+    no addresses and other names MUST return
     NXDOMAIN. It MUST NOT forward, accept compressed questions or echo malformed
     framing. One bounded IN question and an optional empty EDNS record are allowed.
     """
@@ -216,7 +217,7 @@ def dns_response(packet: bytes, address: str) -> bytes | None:
             return None
     elif tail:
         return None
-    known = ".".join(labels) in {HOST, "com-github.integration.internal"}
+    known = ".".join(labels) in {HOST, "com-github.integration.internal", "llm.internal"}
     answer = (
         b"\xc0\x0c" + struct.pack("!HHIH", 1, 1, 30, 4) + ipaddress.IPv4Address(address).packed
         if known and kind == 1

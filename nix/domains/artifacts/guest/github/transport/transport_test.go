@@ -1,14 +1,63 @@
 package overalls
 
 import (
+	"encoding/pem"
 	"errors"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"net/url"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"testing/quick"
 )
+
+func TestNativeReviewedTrust(t *testing.T) {
+	for goos, expected := range map[string]string{"freebsd": "/etc/ssl/cert.pem", "illumos": "/etc/ssl/cacert.pem", "solaris": "/etc/ssl/cacert.pem", "linux": "", "windows": ""} {
+		if got := nativeTrustPath(goos); got != expected {
+			t.Fatalf("wrong trust path for %s", goos)
+		}
+	}
+	server := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) { w.WriteHeader(http.StatusNoContent) }))
+	defer server.Close()
+	path := filepath.Join(t.TempDir(), "roots.pem")
+	certificate := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: server.Certificate().Raw})
+	if err := os.WriteFile(path, certificate, 0600); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("SSL_CERT_FILE", filepath.Join(t.TempDir(), "foreign-roots"))
+	roots, err := nativeRoots(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	transport := Direct().(*http.Transport)
+	transport.TLSClientConfig.RootCAs = roots
+	defer transport.CloseIdleConnections()
+	response, err := (&http.Client{Transport: transport}).Get(server.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	response.Body.Close()
+	if response.StatusCode != http.StatusNoContent {
+		t.Fatal("reviewed trust failed actual TLS request")
+	}
+	for _, contents := range [][]byte{nil, []byte("malformed"), []byte(strings.Repeat("x", 2*1024*1024+1))} {
+		if err := os.WriteFile(path, contents, 0600); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := nativeRoots(path); !errors.Is(err, errTrust) {
+			t.Fatal("accepted invalid native roots")
+		}
+	}
+	if _, err := nativeRoots(path + ".absent"); !errors.Is(err, errTrust) {
+		t.Fatal("accepted missing native roots")
+	}
+	if response, err := (refusedTrust{}).RoundTrip(nil); response != nil || !errors.Is(err, errTrust) {
+		t.Fatal("invalid native trust did not refuse dispatch")
+	}
+}
 
 type roundTripper func(*http.Request) (*http.Response, error)
 

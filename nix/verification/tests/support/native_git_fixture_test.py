@@ -227,13 +227,18 @@ class DNSFixtureTest(unittest.TestCase):
 
     def test_exact_dns_answers_and_malformed_queries(self) -> None:
         query = self.question()
-        response = fixture.dns_response(query, "169.254.254.1")
-        self.assertIsNotNone(response)
-        if response is None:
-            self.fail("exact fixture DNS query must respond")
-        self.assertEqual(response[-4:], socket.inet_aton("169.254.254.1"))
-        self.assertEqual(struct.unpack("!6H", response[:12])[3], 1)
-        for host, kind, expected_code in ((fixture.HOST, 28, 0), ("foreign.test", 1, 3)):
+        for host in (fixture.HOST, "com-github.integration.internal", "llm.internal"):
+            response = fixture.dns_response(self.question(host), "169.254.254.1")
+            if response is None:
+                self.fail("exact fixture DNS query must respond")
+            self.assertEqual(response[-4:], socket.inet_aton("169.254.254.1"))
+            self.assertEqual(struct.unpack("!6H", response[:12])[3], 1)
+        for host, kind, expected_code in (
+            (fixture.HOST, 28, 0),
+            ("llm.internal", 28, 0),
+            ("foreign.test", 1, 3),
+            ("llm.internal.foreign.test", 1, 3),
+        ):
             response = fixture.dns_response(self.question(host, kind), "169.254.254.1")
             if response is None:
                 self.fail("valid negative fixture DNS query must respond")

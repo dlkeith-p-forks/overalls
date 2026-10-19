@@ -437,9 +437,14 @@ class AuthorityTest(unittest.TestCase):
                 self.authority.request_withdrawal()
                 payload = json.dumps(lease).encode()
                 with (
-                    socket.create_connection(address, timeout=3) as raw,
+                    socket.create_connection(address, timeout=3) as stalled_raw,
+                    trusted.wrap_socket(stalled_raw, server_hostname="llm.internal") as stalled,
+                    socket.create_connection(address, timeout=1) as raw,
                     trusted.wrap_socket(raw, server_hostname="llm.internal") as stream,
                 ):
+                    # A verified peer blocked mid-request must not prevent an
+                    # independent lease RPC (as a streaming artifact once did).
+                    stalled.sendall(b"POST /agent/v1/heartbeat HTTP/1.1\r\n")
                     stream.sendall(
                         b"POST /agent/v1/heartbeat HTTP/1.1\r\nHost: llm.internal\r\nContent-Length: "
                         + str(len(payload)).encode()

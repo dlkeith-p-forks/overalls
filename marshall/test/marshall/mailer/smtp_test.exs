@@ -17,13 +17,17 @@ defmodule Marshall.Mailer.SMTPTest do
         implicit: "generated implicit post-DATA timeout histories preserve retry identity",
         starttls: "generated starttls post-DATA timeout histories preserve retry identity"
       ] do
-    @tag timeout: 180_000
+    # 100 cases retain up to two real ten-second uncertain attempts each.
+    # Budget 26 seconds per case for their asserted deadlines, plus setup,
+    # final/rejected delivery and cleanup headroom; no exploration is reduced.
+    @tag timeout: 3_600_000, hegel_case_sandbox: true
     # @cc [owner:ghuntley,label:verification;recovery] smtp-uncertain-owner-history
     # Actual accepted-but-unacknowledged DATA MUST time out and close its client
     # connection, preserving pending ciphertext. All retries MUST retain decoded
     # payload and Message-ID, and terminal replay MUST open no SMTP connection.
     # Each case retains its actual ten-second post-DATA timeout attempts.
     property name, profile: :ci, test_cases: 100 do
+      isolate_smtp_case()
       mode = unquote(mode)
 
       uncertain_attempts = draw("uncertain_attempts", integer(1..2))
@@ -297,6 +301,17 @@ defmodule Marshall.Mailer.SMTPTest do
     assert_receive :smtp_closed, 1000
   end
 
+  # @cc [owner:ghuntley,label:verification] smtp-case-fixture-custody
+  # Each generated case MUST own a fresh SQL sandbox, restore the exact prior
+  # Mailer environment, and retire its SMTP listeners before the next replay.
+  @spec isolate_smtp_case() :: :ok
+  defp isolate_smtp_case do
+    isolate_property_case()
+    previous = Application.fetch_env!(:marshall, Marshall.Mailer)
+    Hegel.on_cleanup(fn -> Application.put_env(:marshall, Marshall.Mailer, previous) end)
+  end
+
+  @spec listener(:implicit | :starttls | :plain, keyword()) :: pid()
   defp listener(mode, options \\ []) do
     opts =
       Keyword.merge(
@@ -309,9 +324,10 @@ defmodule Marshall.Mailer.SMTPTest do
         options
       )
 
-    start_supervised!({Marshall.SMTPFixture, opts}, id: make_ref())
+    Overalls.HegelFixtures.start_fixture!({Marshall.SMTPFixture, opts}, id: make_ref())
   end
 
+  @spec configure(pid(), String.t(), keyword()) :: :ok
   defp configure(server, mode, options \\ []) do
     env = %{
       "MARSHALL_SMTP_HOST" => "localhost",

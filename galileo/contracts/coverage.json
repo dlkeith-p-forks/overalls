@@ -2,8 +2,8 @@
   "apps": {
     "galileo": {
       "active": 4,
-      "coverage": 0.0,
-      "covered": 0
+      "coverage": 1.0,
+      "covered": 4
     },
     "system": {
       "active": 0,
@@ -15,41 +15,49 @@
     "galileo.authorized_proxy": {
       "active": 4,
       "app": "galileo",
-      "coverage": 0.0,
-      "covered": 0,
+      "coverage": 1.0,
+      "covered": 4,
       "form": "light",
       "obligations": {
         "galileo.authorized_proxy.I1": {
           "failing": 0,
           "kind": "non_functional",
-          "passing": 0,
+          "passing": 1,
           "status": "active",
           "testable": true,
-          "tests": []
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
         },
         "galileo.authorized_proxy.I2": {
           "failing": 0,
           "kind": "security",
-          "passing": 0,
+          "passing": 1,
           "status": "active",
           "testable": true,
-          "tests": []
+          "tests": [
+            "test strip only removes complete path segments"
+          ]
         },
         "galileo.authorized_proxy.I3": {
           "failing": 0,
           "kind": "functional",
-          "passing": 0,
+          "passing": 1,
           "status": "active",
           "testable": true,
-          "tests": []
+          "tests": [
+            "test prefix stripping handles absent and wildcard prefixes"
+          ]
         },
         "galileo.authorized_proxy.I4": {
           "failing": 0,
           "kind": "functional",
-          "passing": 0,
+          "passing": 1,
           "status": "active",
           "testable": true,
-          "tests": []
+          "tests": [
+            "test SLO actor records outcomes"
+          ]
         }
       }
     },
@@ -65,7 +73,7 @@
   "covenant": "0.2.0",
   "totals": {
     "active": 4,
-    "coverage": 0.0,
-    "covered": 0
+    "coverage": 1.0,
+    "covered": 4
   }
 }

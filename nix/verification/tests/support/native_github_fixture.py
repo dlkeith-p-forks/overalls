@@ -79,6 +79,9 @@ class GitHub:
     completed: bool = False
     bootstrap_started: bool = False
     bootstrap_completed: bool = False
+    bootstrap_failed: bool = False
+    bootstrap_exit_code: int | None = None
+    maintenance_failure: str | None = None
     outcome: str | None = None
     objects: dict[str, bytes] = field(default_factory=dict)
     generation: str = field(init=False)
@@ -156,6 +159,8 @@ class GitHub:
         if artifact is None:
             raise ValueError("unknown native artifact")
         authority.record("github_bootstrap_artifact" if bootstrap else "github_tool_artifact")
+        if not bootstrap:
+            authority.record("github_tool_artifact_" + artifact.name)
         return artifact
 
     def route(
@@ -227,6 +232,12 @@ class GitHub:
             elif status == "completed" and self.completed:
                 self.bootstrap_completed = True
                 authority.record("github_bootstrap_completed")
+            elif status == "failed":
+                self.bootstrap_failed = True
+                result = object_value(request.get("result"))
+                code = result.get("exit_code")
+                if type(code) is int and -1 <= code <= 255:
+                    self.bootstrap_exit_code = code
             elif status != "failed":
                 raise ValueError("invalid native bootstrap receipt")
             return response({"command_id": BOOTSTRAP, "status": status})
@@ -262,6 +273,24 @@ class GitHub:
                 self.completed = True
                 self.outcome = str(result["outcome"])
                 authority.record("github_tools_completed")
+            elif (
+                status == "completed"
+                and self.started
+                and result.get("generation") == self.generation
+                and result.get("outcome") == "rolled_back"
+            ):
+                self.maintenance_failure = "rolled_back"
+                authority.record("github_tools_rolled_back")
+            elif status == "failed":
+                outcome = result.get("outcome")
+                if not isinstance(outcome, str) or outcome not in {
+                    "invalid_artifact",
+                    "activation_failed",
+                    "interrupted",
+                    "unsupported",
+                }:
+                    raise ValueError("invalid native maintenance failure")
+                self.maintenance_failure = str(outcome)
             elif status != "failed":
                 raise ValueError("invalid native maintenance receipt")
             return response({"maintenance_id": MAINTENANCE, "status": status})

@@ -2971,13 +2971,14 @@ Coverage: **partial**. Layers: transport, recovery.
 
 Boundary: Incoming/outgoing peers share a process-owned budget and must retire when that accounting incarnation dies; a successor cannot retain live unaccounted peers.
 
-Required refusal: Old peer owners must terminate after budget death. The replacement starts empty and admits exactly the requested replacement pairs while the synthetic host stream remains alive.
+Required refusal: Old peer owners must terminate after budget death, refusing subsequent old-socket application traffic. The replacement starts empty and admits exactly the requested replacement pairs while the synthetic host stream remains alive.
 
 Tested scope: Generated one to three real verified-TLS peer pairs and persistent attachments through production signed current-location proof validation. Exact owner retirement, successor occupancy and fresh pair admission are checked; host stream/replies are synthetic.
 
-- **property, recorded**: [budget restart retires live TLS peers and admits exact replacement pairs](repo:marshall/test/marshall/terminal/remote_test.exs) — Current merged frontend: three generated real verified-TLS budget restart histories through the production peer-proof API, with synthetic host stream and attachments. Part of the passing 17-test focused rerun; no disabled-shrinking or native claim.; [execution record](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md).
+- **property, recorded**: [budget restart retires live TLS peers and admits exact replacement pairs](repo:marshall/test/marshall/terminal/remote_test.exs) — Historical three-case frontend capture: real verified-TLS budget restart histories through peer-proof API, with synthetic host stream and attachments. Part of the earlier 17-test rerun; does not qualify current 100-case fixture and abortive-close repair.; [execution record](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md).
+- **property, recorded**: [budget restart retires live TLS peers and admits exact replacement pairs](repo:marshall/test/marshall/terminal/remote_test.exs) — Current 100-case loopback verified-TLS histories isolate each budget supervisor and sandbox. Original two-second old-owner termination, stale-socket refusal, successor occupancy and synthetic host-stream survival remain; no native/fleet claim.; [execution record](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
 
-**Gaps:** No native guest survival, physical channel custody, independent-node partition or hosted acceptance. Wrong-budget-PID mutant was caught at old owner retirement and restored four-check execution passed; full Marshall gate/typing remain pending.
+**Gaps:** Current configured100-case abortive-close property passed in the12-test selection,seed656999; the earlier three-case result remains historical. Two unrelated real15-second silence properties hit the pinned engine health limit. No native guest survival, physical channel custody, independent-node partition or hosted acceptance. Full Marshall gate and typing remain separate.
 
 **Preferred test work:** Finish restored/full component verification, then repeat budget-incarnation loss with native guest attachments and independent nodes.
 
@@ -3912,10 +3913,28 @@ Required refusal: Foreign or stale execution and generation authority cannot red
 Tested scope: ADR-0202 owner integration; controlled packaged edge execution is recorded separately from real fleet OAuth, retained images and live GitHub acceptance.
 
 - **machine, recorded**: [withdrawing a current lease closes the same real upstream without retry](repo:nix/verification/tests/machines/github-integration/driver.py) — Packaged Galileo and managed clients with controlled provider and substituted control authority; no fleet/browser OAuth claim.; [execution record](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
-- **property, present**: [connection histories cannot publish before refresh or resurrect after disconnect](repo:marshall/test/marshall/github/state_machine_test.exs) — Generated connection state histories in the BEAM; test presence does not establish current execution or native isolation..
+- **property, recorded**: [connection histories cannot publish before refresh or resurrect after disconnect](repo:marshall/test/marshall/github/state_machine_test.exs) — Generated BEAM/database connection histories passed in the current focused 53-test run; no native isolation, fleet OAuth or live provider claim.; [execution record](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
 - **machine, present**: [current_invocation != previous_invocation](repo:nix/verification/tests/machines/github-integration-fleet/driver.py) — Real owner detach followed by authorized stop/start and changed native execution; test present, execution pending..
 - **machine, present**: [github-fleet-shared-owner-identity](repo:nix/verification/tests/machines/github-integration-fleet/browser.py) — Linux browser shared writer uses owner identity through managed gh in a live personal terminal; Windows terminal acceptance remains separate..
 
 **Gaps:** The controlled edge fixture substitutes Marshall and Lilly authority. Full browser OAuth, scheduled rotation, shared-writer delegation, detach persistence across relocation, seven-family retained updates and live provider consent require separately recorded acceptance. Unknown rotation results require reconnect.
 
 **Preferred test work:** Run the real github-integration-fleet journey and platform variants; record independent state-machine and distributed settlement results, then qualify live GitHub and restore behavior.
+
+## Upgrade retained native GitHub clients and preserve exact completed-workspace ownership across reboot
+
+Coverage: **partial**. Layers: authorization, execution, isolation, storage, recovery.
+
+Boundary: Current placement and executor fences select immutable tool artifacts. Native setup validates completed immutable source and owned checkout before replacing legacy wildcard Git trust with a durable exact include; its journal restores original configuration on failure.
+
+Required refusal: Pending or corrupt source refuses trust migration. Unrelated root-owned repositories must remain refused after upgrade. An absent source preserves historical policy and grants no claim that tightening happened.
+
+Tested scope: ADR-0202 retained tool delivery with ADR-0128 shared checkout ownership; Linux-host setup tests and actual retained native programs are distinct evidence.
+
+- **unit, present**: [retained_native_policy_is_exact_durable_and_preserves_unrelated_settings](repo:lyra/src/agent/maintenance.rs) — Linux-host setup journal, exact Git include, settings preservation and rollback; no native platform or isolation guarantee..
+- **machine, present**: [/work/native-services/github-tools-receipt.json](repo:nix/verification/tests/machines/native-services/driver.py) — Published retained native images with synthetic tool and executor authority; current passing execution not yet recorded..
+- **property, recorded**: [retained executor bootstrap survives replacement and refuses stale receipts without turns](repo:marshall/test/marshall/agents/bootstrap_test.exs) — Current-executor bootstrap idempotency and stale-receipt refusal in generated BEAM/database histories; no native runtime qualification.; [execution record](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
+
+**Gaps:** FreeBSD first-boot managed API, push, LFS and exact ownership checks passed under synthetic authority, but historical executor cancellation failed and reboot is unverified. OmniOS has not published a tool generation. Neither full native check passes; live fleet admission and absent-source later migration remain separate.
+
+**Preferred test work:** Record both published-image retained checks with actual bootstrap, strict unrelated-root refusal, managed gh/Git/LFS and a second boot; then qualify native fleet admission separately.

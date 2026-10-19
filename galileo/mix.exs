@@ -9,7 +9,7 @@ defmodule Galileo.MixProject do
       start_permanent: Mix.env() == :prod,
       elixirc_paths: if(Mix.env() == :test, do: ["lib", "test/support"], else: ["lib"]),
       deps: deps(),
-      dialyzer: [plt_add_apps: [:ex_unit]],
+      dialyzer: [plt_add_apps: [:ex_unit, :hegel, :hegel_ex]],
       aliases: aliases()
     ]
   end

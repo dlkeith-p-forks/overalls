@@ -2,11 +2,31 @@
 
 
 def github_browser(mode: str) -> None:
-    client.succeed(
-        "sudo -u tester env HOME=/home/tester fleet-github-integration-browser "
-        + shlex.quote(mode),
-        timeout=420,
-    )
+    try:
+        client.succeed(
+            "sudo -u tester env HOME=/home/tester fleet-github-integration-browser "
+            + shlex.quote(mode),
+            timeout=420,
+        )
+    except Exception:
+        # Only structural counters leave the database: statements, tokens and
+        # provider requests never enter a failure receipt.
+        counters: dict[str, int] = {}
+        for label, statement in (
+            ("lock_waiters", "SELECT count(*) FROM pg_stat_activity WHERE wait_event_type='Lock'"),
+            (
+                "idle_transactions",
+                "SELECT count(*) FROM pg_stat_activity WHERE state='idle in transaction'",
+            ),
+            ("connections", "SELECT count(*) FROM github_connections"),
+            ("authorization_attempts", "SELECT count(*) FROM github_authorization_attempts"),
+        ):
+            try:
+                counters[label] = int(sql(statement))
+            except Exception:
+                counters[label] = -1
+        print(json.dumps({"event": "github_fleet_authority_failure", "counters": counters}))
+        raise
 
 
 def github_guest(vm_id: str, mode: str, owner: str) -> None:
@@ -96,6 +116,7 @@ with subtest("real browser connects two owner identities and creates actual OSS 
             vm_id = receipt["vm_id"]
             assert isinstance(vm_id, str) and str(uuid.UUID(vm_id)) == vm_id
             github_machines[role] = vm_id
+            running(vm_id)
     else:
         github_browser("create")
         parsed_machines: object = json.loads(

@@ -630,9 +630,12 @@ class Handler(socketserver.BaseRequestHandler):
             return
         stream = self.request
         withdrawal: Withdrawn | None = None
+        streaming_artifact = False
         try:
             stream.do_handshake()
             method, host, path, body = request(stream)
+            if host == "llm.internal" and path == "/agent/v1/heartbeat":
+                self.server.authority.record("heartbeat_request")
             github = self.server.authority.github
             artifact = None
             extra = None
@@ -642,6 +645,7 @@ class Handler(socketserver.BaseRequestHandler):
                     if artifact is None:
                         extra = github.route(method, host, path, body, self.server.authority)
             if artifact is not None:
+                streaming_artifact = True
                 deadline = time.monotonic() + 8
                 stream.sendall(
                     b"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nConnection: close\r\nContent-Length: "
@@ -655,6 +659,7 @@ class Handler(socketserver.BaseRequestHandler):
                             raise TimeoutError("native artifact deadline exceeded")
                         stream.settimeout(remaining)
                         stream.sendall(chunk)
+                self.server.authority.record("github_artifact_stream_completed")
                 return
             git = (
                 extra
@@ -675,6 +680,8 @@ class Handler(socketserver.BaseRequestHandler):
                 )
             status = b"200 OK"
         except (OSError, ValueError, subprocess.SubprocessError) as error:
+            if streaming_artifact:
+                self.server.authority.record("github_artifact_stream_failed")
             if isinstance(error, Withdrawn):
                 withdrawal = error
             status, content_type, payload = (
@@ -702,7 +709,13 @@ class Handler(socketserver.BaseRequestHandler):
             return
 
 
-class Server(socketserver.TCPServer):
+class Server(socketserver.ThreadingTCPServer):
+    """@cc [owner:ghuntley,label:verification;security] native-fixture-concurrent-renewal
+    Artifact streams MUST NOT block concurrent lease renewal. At most eight
+    request handlers may run; each retains its existing TLS/framing deadline and
+    authority state MUST remain protected by its existing lock.
+    """
+
     allow_reuse_address = True
     request_queue_size = 4
 
@@ -716,7 +729,26 @@ class Server(socketserver.TCPServer):
         self.context = context
         self.authority = authority
         self.repository = repository
+        self._slots = threading.BoundedSemaphore(8)
         super().__init__(address, Handler)
+
+    def process_request(
+        self, request: socket.socket | tuple[bytes, socket.socket], client_address: tuple[str, int]
+    ) -> None:
+        self._slots.acquire()
+        try:
+            super().process_request(request, client_address)
+        except BaseException:
+            self._slots.release()
+            raise
+
+    def process_request_thread(
+        self, request: socket.socket | tuple[bytes, socket.socket], client_address: tuple[str, int]
+    ) -> None:
+        try:
+            super().process_request_thread(request, client_address)
+        finally:
+            self._slots.release()
 
     def get_request(self) -> tuple[socket.socket, tuple[str, int]]:
         stream, address = self.socket.accept()

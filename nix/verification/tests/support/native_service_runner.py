@@ -414,6 +414,14 @@ def wait_executor(process: subprocess.Popen[bytes], authority: control.Authority
     while not authority.snapshot().execution_completed:
         alive(process)
         if time.monotonic() >= deadline:
+            print(
+                "native executor fixed deadline: "
+                + " ".join(
+                    f"{event}={authority.count(event)}"
+                    for event in ("register", "claim", "started", "completed")
+                ),
+                flush=True,
+            )
             raise RuntimeError("native fixed execution deadline exceeded")
         time.sleep(0.25)
     if any(authority.count(event) < 1 for event in ("register", "claim", "started", "completed")):
@@ -539,6 +547,7 @@ def executor_withdrawal(context: BootContext) -> None:
     403 and with no cancelled result attempts, then complete a strictly newer
     fence. Observations MUST never kill the group or log PIDs, arguments or output.
     """
+    print("native executor phase=ordinary-completion", flush=True)
     wait_executor(context.process, context.authority)
     root = control.LEASE_PROBE_ROOT
     prepare = f"set -eu; test ! -e {root}; umask 077; mkdir {root}; printf native-lease-prepared"
@@ -551,6 +560,7 @@ def executor_withdrawal(context: BootContext) -> None:
         ),
         b"native-lease-prepared",
     )
+    print("native executor phase=withdrawal-start", flush=True)
     context.authority.arm_withdrawal()
     awaiting = time.monotonic() + 30
     while context.authority.snapshot().started_at is None:
@@ -558,6 +568,7 @@ def executor_withdrawal(context: BootContext) -> None:
         if time.monotonic() >= awaiting:
             raise RuntimeError("native withdrawal command did not start")
         time.sleep(0.1)
+    print("native executor phase=live-group-observation", flush=True)
     identity: tuple[int, int] | None = None
     while identity is None:
         alive(context.process)
@@ -569,6 +580,7 @@ def executor_withdrawal(context: BootContext) -> None:
             identity = (observed.parent, observed.descendant)
         else:
             time.sleep(0.1)
+    print("native executor phase=withdrawn-group-observation", flush=True)
     context.authority.request_withdrawal()
     while True:
         alive(context.process)
@@ -588,6 +600,7 @@ def executor_withdrawal(context: BootContext) -> None:
             context.authority.confirm_group_dead()
             break
         time.sleep(0.1)
+    print("native executor phase=fresh-fence-completion", flush=True)
     awaiting = time.monotonic() + 90
     while True:
         alive(context.process)
@@ -626,14 +639,18 @@ def git_ownership_refused(result: subprocess.CompletedProcess[bytes]) -> None:
         raise RuntimeError("native unrelated repository ownership was not refused")
 
 
-def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
+def checkout(
+    context: BootContext, repository: git_fixture.Repository, *, retained_upgrade: bool = False
+) -> None:
     """@cc [owner:ghuntley,label:verification;security] native-workspace-actual-checkout
     Checkout evidence MUST deliver the source through the boot-bound receiver,
     wait for the actual native Git operation, and verify its commit, shallow
     metadata and fixture file digests through the managed SSH account. A source
     acceptance or a done marker alone MUST NOT establish checkout evidence.
-    Managed-user Git MUST succeed for that exact checkout and MUST reject an
-    unrelated root-owned repository with Git's actual dubious-ownership refusal.
+    Managed-user Git MUST succeed for that exact checkout. For current images,
+    this call MUST additionally run checkout_ownership. Retained images defer
+    that strict oracle until their real updater completes; the caller MUST run
+    checkout_ownership before issuing any retained acceptance receipt.
     """
     print("native workspace phase=source-delivery", flush=True)
     services.workspace(context.uds, context.boot.binding, repository.source())
@@ -666,6 +683,17 @@ def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
         result = probe(f"set -eu; test -w {root}/{name}; cat {root}/{name}")
         if result.returncode != 0 or hashlib.sha256(result.stdout).hexdigest() != expected:
             raise RuntimeError("native workspace checkout bytes differ from the fixture")
+    if not retained_upgrade:
+        checkout_ownership(context)
+
+
+def checkout_ownership(context: BootContext) -> None:
+    """@cc [owner:ghuntley,label:verification;security] native-upgraded-checkout-ownership
+    Managed-user Git MUST reject an unrelated root-owned repository with its
+    actual dubious-ownership refusal after current setup or a real retained
+    upgrade. A transport error, success, or unrelated Git error MUST NOT pass.
+    """
+    probe = partial(ssh, context.fixture, context.work / "known_hosts", network=context.network)
     unrelated = "/workspace/native-unrelated-root-repository"
     print("native workspace phase=unrelated-repository-preparation", flush=True)
     prepare = (
@@ -747,35 +775,94 @@ def github_tools(context: BootContext, generation: int) -> dict[str, object]:
         if complete:
             break
         if time.monotonic() >= deadline:
+            with authority._lock:
+                print(
+                    "native retained GitHub deadline: "
+                    f"bootstrap_started={plugin.bootstrap_started} "
+                    f"bootstrap_completed={plugin.bootstrap_completed} "
+                    f"bootstrap_failed={plugin.bootstrap_failed} "
+                    f"bootstrap_exit_code={plugin.bootstrap_exit_code} "
+                    f"bootstrap_artifact_fetches={authority.count('github_bootstrap_artifact')} "
+                    f"tool_artifact_fetches={authority.count('github_tool_artifact')} "
+                    f"gh_fetches={authority.count('github_tool_artifact_gh')} "
+                    f"lfs_fetches={authority.count('github_tool_artifact_git-lfs')} "
+                    f"config_fetches={authority.count('github_tool_artifact_github.gitconfig')} "
+                    f"streams_completed={authority.count('github_artifact_stream_completed')} "
+                    f"streams_failed={authority.count('github_artifact_stream_failed')} "
+                    f"registrations={authority.count('register')} "
+                    f"heartbeat_requests={authority.count('heartbeat_request')} "
+                    f"heartbeats_accepted={authority.count('heartbeat')} "
+                    f"maintenance_started={plugin.started} "
+                    f"maintenance_completed={plugin.completed} "
+                    f"maintenance_failure={plugin.maintenance_failure}",
+                    flush=True,
+                )
+            for name, argument in (("gh", "--version"), ("git-lfs", "version")):
+                executable = (
+                    f"/var/lib/overalls/github-tools/generations/{plugin.generation}/{name}"
+                )
+                probe = ssh(
+                    context.fixture,
+                    context.work / "known_hosts",
+                    f"test -x {executable} && {executable} {argument} >/dev/null 2>&1",
+                    network=context.network,
+                )
+                print(
+                    f"native staged GitHub health: tool={name} status={probe.returncode}",
+                    flush=True,
+                )
             raise RuntimeError("native retained GitHub bootstrap did not complete")
         time.sleep(0.1)
     branch = f"native-github-{generation}"
     command = (
-        "set -eu; test $(id -u) = 200000; "
+        "set -eu; phase=preserved-config; "
+        'trap \'printf "native-github-phase=%s\\n" "$phase" >&2\' EXIT; '
+        "test $(id -u) = 200000; "
         'test "$(cat "$HOME/github-preserved")" = github-preserved; '
         f'test "$({context.platform.git} config --global fixture.preserved)" = retained; '
+        "phase=cli-version; "
         "gh --version | head -1 | grep -q 'gh version 2.102.0'; "
+        "phase=cli-api; "
         'test "$(gh api user --jq .login)" = native-fixture; '
+        "phase=secret-refusal; "
         "if gh auth token >/dev/null 2>&1; then exit 1; fi; "
         'test ! -e "$HOME/.config/gh/hosts.yml"; test ! -e "$HOME/.git-credentials"; '
+        "phase=initial-clone; "
         f'work="$HOME/github-{generation}"; mkdir "$work"; cd "$work"; '
         f"{context.platform.git} clone -q https://github.com{git_fixture.PREFIX} original; "
         f"cd original; {context.platform.git} checkout -q -b {branch}; "
+        "phase=lfs-commit; "
         f"{context.platform.git} lfs install --local >/dev/null; "
         f"{context.platform.git} lfs track '*.dat' >/dev/null; "
         "printf 'native-github-lfs-proof\\n' > proof.dat; "
         f"{context.platform.git} add .gitattributes proof.dat; "
         f"{context.platform.git} -c user.name=Native -c user.email=native@fixture.test commit -q -m proof; "
-        f"{context.platform.git} push -q origin {branch}; cd ..; "
+        "phase=push; "
+        f"{context.platform.git} push -q origin {branch} >/dev/null; cd ..; "
+        "phase=lfs-clone; "
         f"{context.platform.git} clone -q --branch {branch} https://github.com{git_fixture.PREFIX} verified; "
+        f"{context.platform.git} -C verified lfs install --local >/dev/null; "
+        f"{context.platform.git} -C verified lfs pull >/dev/null; "
         'test "$(cat verified/proof.dat)" = native-github-lfs-proof; '
         'test ! -e "$HOME/.config/gh/hosts.yml"; test ! -e "$HOME/.git-credentials"; '
         "printf native-github-tools-verified"
     )
-    success(
-        ssh(context.fixture, context.work / "known_hosts", command, network=context.network),
-        b"native-github-tools-verified",
-    )
+    result = ssh(context.fixture, context.work / "known_hosts", command, network=context.network)
+    if result.returncode != 0:
+        for phase in (
+            "preserved-config",
+            "cli-version",
+            "cli-api",
+            "secret-refusal",
+            "initial-clone",
+            "lfs-commit",
+            "push",
+            "lfs-clone",
+        ):
+            if result.stderr.endswith(f"native-github-phase={phase}\n".encode()):
+                print(f"native retained GitHub failed phase={phase}", flush=True)
+                break
+    success(result, b"native-github-tools-verified")
     with authority._lock:
         return {"generation": plugin.generation, "outcome": plugin.outcome}
 
@@ -806,6 +893,11 @@ def run(
     The default MUST disable the Firecracker API. Only an explicitly enabled
     test oracle MAY receive the private Unix API socket; no TCP control or
     production control endpoint may be introduced.
+    Retained GitHub checks MUST complete their workflow on both clean boots
+    before the unchanged final-boot cancellation oracle. The first shutdown
+    MUST use independent certified SSH and observed clean VMM exit, never the
+    cancellation command. A failed final oracle MUST prevent success receipts;
+    retained receipts MUST NOT claim cancellation coverage on every boot.
     """
     platform = Platform(os_name)
     if (github_tools_release is None) != (github_executor_release is None):
@@ -896,7 +988,8 @@ def run(
     stage = "boot"
     process: subprocess.Popen[bytes] | None = None
     try:
-        for generation in range(3 if growth else 2):
+        boot_count = 3 if growth else 2
+        for generation in range(boot_count):
             growth_observation: growth_oracle.Guest | None = None
             if growth_check is not None:
                 growth_check.before_boot(generation)
@@ -1018,18 +1111,27 @@ def run(
                                 uds, boot, fixture, work, network, platform, process, authority, api
                             )
                             stage = "workspace-checkout"
-                            checkout(boot_context, repository)
+                            checkout(
+                                boot_context,
+                                repository,
+                                retained_upgrade=authority.github is not None,
+                            )
                             print("native service workspace checkout verified", flush=True)
                             stage = "terminal-session"
                             services.terminal_session(uds, binding, platform.name)
                             print("native service managed PTY verified", flush=True)
-                            stage = "executor"
-                            executor_withdrawal(boot_context)
-                            print("native service fenced execution verified", flush=True)
                             if authority.github is not None:
                                 stage = "retained-github-tools"
                                 github_observations.append(github_tools(boot_context, generation))
-                                print("native retained GitHub tools verified", flush=True)
+                                checkout_ownership(boot_context)
+                                print(
+                                    f"native retained GitHub tools verified boot={generation}",
+                                    flush=True,
+                                )
+                            if authority.github is None or generation == boot_count - 1:
+                                stage = "executor"
+                                executor_withdrawal(boot_context)
+                                print("native service fenced execution verified", flush=True)
                             stage = "retained-home"
                             retained_command = (
                                 'test "$(cat "$HOME/native-retained")" = native-home-retained'
@@ -1082,6 +1184,10 @@ def run(
                                     raise RuntimeError("native SSH shutdown request failed")
                                 wait_clean_shutdown(process, platform, work / "serial.log")
                                 boot_endings.append("clean")
+                                print(
+                                    f"native service clean shutdown verified boot={generation}",
+                                    flush=True,
+                                )
                             if growth_check is not None:
                                 stage = "offline-growth-verification"
                                 if growth_observation is None:
@@ -1147,7 +1253,11 @@ def run(
                 "ssh-host-key-rotated-across-abrupt-restart"
                 if crash_first_boot
                 else "ssh-host-key-rotated-across-clean-reboot",
-                "all-boots-complete-service-oracles",
+                (
+                    "all-boots-core-services-and-final-boot-executor-withdrawal"
+                    if github_tools_release is not None
+                    else "all-boots-complete-service-oracles"
+                ),
             ],
             "native_admission": False,
             "scope": (

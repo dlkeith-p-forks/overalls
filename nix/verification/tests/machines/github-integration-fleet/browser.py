@@ -6,11 +6,40 @@ import uuid
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from playwright.sync_api import Page, expect, sync_playwright
+from playwright.sync_api import ConsoleMessage, Page, Request, Response, expect, sync_playwright
 
 ROOT = Path("/var/lib/fleet-default-oss")
 ORIGIN = "https://control.example.test"
 stage = "arguments"
+observations: dict[str, bool | int] = {}
+
+
+def observe_console(message: ConsoleMessage) -> None:
+    if message.type == "error" and "form-action" in message.text:
+        observations["form_action_refused"] = True
+
+
+def observe_request(request: Request) -> None:
+    destination = urlsplit(request.url)
+    if (
+        destination.hostname == "control.example.test"
+        and destination.path == "/auth/github-com/start"
+    ):
+        observations["start_requested"] = True
+        observations["start_post"] = request.method == "POST"
+    elif destination.hostname == "github.com" and destination.path == "/login/oauth/authorize":
+        observations["provider_requested"] = True
+
+
+def observe_response(response: Response) -> None:
+    destination = urlsplit(response.url)
+    if (
+        destination.hostname == "control.example.test"
+        and destination.path == "/auth/github-com/start"
+    ):
+        observations["start_status"] = response.status
+    elif destination.hostname == "github.com" and destination.path == "/login/oauth/authorize":
+        observations["provider_status"] = response.status
 
 
 def fields(path: Path) -> dict[str, str]:
@@ -24,7 +53,8 @@ def fields(path: Path) -> dict[str, str]:
 
 
 def connected(page: Page) -> None:
-    expect(page.locator("[data-phx-main].phx-connected")).to_be_visible(timeout=30000)
+    # LiveView roots use display: contents and therefore have no visible box.
+    expect(page.locator("[data-phx-main].phx-connected")).to_have_count(1, timeout=30000)
 
 
 def run(*, create: bool = True) -> None:
@@ -45,10 +75,17 @@ def run(*, create: bool = True) -> None:
             for role, owner in (("owner", "1"), ("member", "2")):
                 context = browser.new_context()
                 page = context.new_page()
+                observations.clear()
+                page.on("request", observe_request)
+                page.on("response", observe_response)
+                page.on("console", observe_console)
                 stage = role + " sign in"
                 page.goto(ORIGIN + "/magic_link/" + users[role + "_token"])
                 page.wait_for_url("**/overview", timeout=60000)
-                page.goto(ORIGIN + "/settings")
+                stage = role + " account settings response"
+                settings_response = page.goto(ORIGIN + "/settings")
+                assert settings_response is not None and settings_response.status == 200
+                stage = role + " account settings live connection"
                 connected(page)
                 stage = role + " register public key"
                 page.get_by_label("Public key", exact=True).fill(
@@ -77,9 +114,41 @@ def run(*, create: bool = True) -> None:
                 expect(page.locator("#passkey-list > div")).to_have_count(1)
                 stage = role + " start OAuth"
                 page.goto(ORIGIN + "/integrations")
+                stage = role + " integrations live connection"
                 connected(page)
-                page.locator("#github-com-connect button").click()
-                page.wait_for_url("https://github.com/login/oauth/authorize?**", timeout=30000)
+                stage = role + " connect control enabled"
+                expect(page.locator("#github-com-connect button")).to_be_enabled(timeout=30000)
+                stage = role + " submit OAuth start"
+                form = page.locator("#github-com-connect")
+                observations["form_post"] = form.get_attribute("method") == "post"
+                observations["form_action"] = (
+                    form.get_attribute("action") == "/auth/github-com/start"
+                )
+                observations["form_valid"] = bool(
+                    form.evaluate("element => element.checkValidity()")
+                )
+                with page.expect_response(
+                    lambda response: (
+                        response.request.method == "POST"
+                        and urlsplit(response.url).path == "/auth/github-com/start"
+                    )
+                ) as started:
+                    page.locator("#github-com-connect button").click()
+                stage = role + " OAuth start redirect response"
+                assert started.value.status == 302
+                stage = role + " provider authorization redirect"
+                try:
+                    page.wait_for_url("https://github.com/login/oauth/authorize?**", timeout=30000)
+                except Exception:
+                    destination = urlsplit(page.url)
+                    if destination.hostname == "github.com":
+                        stage = role + " provider authorization document"
+                    elif destination.hostname == "control.example.test":
+                        if destination.path == "/integrations":
+                            stage = role + " OAuth start returned to integrations"
+                        elif destination.path == "/sign-in":
+                            stage = role + " OAuth start returned to sign in"
+                    raise
                 stage = role + " provider consent and callback"
                 page.get_by_label("Fixture owner", exact=True).fill(owner)
                 page.locator("#authorize").click()
@@ -108,6 +177,15 @@ def run(*, create: bool = True) -> None:
                 identifier = urlsplit(page.url).path.split("/")[-1]
                 assert str(uuid.UUID(identifier)) == identifier
                 machines[role] = identifier
+                # This journey verifies owner identity, not concurrent storage
+                # preparation. Let each real boot settle before the next owner
+                # creates a machine on the same native pool.
+                stage = role + " real machine running"
+                page.goto(ORIGIN + "/machines")
+                connected(page)
+                expect(page.locator("#machines-" + identifier + " [data-state]")).to_have_attribute(
+                    "data-state", "running", timeout=180000
+                )
                 context.storage_state(path=str(ROOT / (role + "-github-session.json")))
                 context.close()
         finally:
@@ -214,6 +292,7 @@ except Exception as error:
                 "event": "github_fleet_browser_failed",
                 "stage": stage,
                 "category": type(error).__name__,
+                "observations": observations,
             }
         ),
         file=sys.stderr,

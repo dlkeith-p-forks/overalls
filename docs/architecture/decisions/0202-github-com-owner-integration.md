@@ -49,6 +49,11 @@ establish no connection. OAuth code/state values, token-bearing URLs and provide
 bodies stay out of diagnostics and browser storage. Return only to the fixed
 same-origin Integrations page.
 
+The browser policy in ADR-0194 permits the fixed `https://github.com` origin
+in `form-action`, including the start POST's authorization redirect. Its
+same-origin script, connection and frame restrictions remain unchanged;
+arbitrary HTTPS origins and wildcard subdomains remain refused.
+
 Access and refresh tokens are sensitive Cloak-encrypted attributes in Marshall
 PostgreSQL. Decrypt only for the provider exchange or authorized edge attempt.
 Neither plaintext nor ciphertext enters PaperTrail, administrative job
@@ -250,6 +255,13 @@ OAuth or fleet acceptance. The review records the exact execution scope, and the
 HLDD owner-integration scenario records the remaining security acceptance gaps.
 Implementation remains partial.
 
+Retained native [tool setup](../../../lyra/src/agent/maintenance.rs) also migrates
+historical broad workspace Git trust only after validating a completed immutable
+source, preserving unrelated settings and configuration rollback. With no source
+it preserves existing policy; native upgrade/reboot results remain separate from
+the Linux-host maintenance tests. This implements the exact shared-checkout
+boundary rather than granting trust to every workspace path.
+
 ## Open questions
 
 No product-policy choice remains for this version. OAuth App provisioning, live
@@ -266,3 +278,4 @@ retained-machine upgrade acceptance still require evidence.
 - [ADR-0142](0142-overallsprotocol-control-websocket.md): control transport.
 - [ADR-0186](0186-covenant-contract-verification.md): bounded BEAM contracts.
 - [ADR-0191](0191-elixir-hegel-property-verification.md): typed property histories.
+- [ADR-0194](0194-marshall-http-security-headers.md): fixed-origin OAuth form navigation.

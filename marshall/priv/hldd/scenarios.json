@@ -1238,7 +1238,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/vscode-web/default.nix",
           "assertion": "worker loss starts a fresh personal process without deleting data",
-          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334\u20133357, legitimate origin replacement L3358\u20133389 and worker loss with saved data L3390\u20133407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
+          "scope": "Complete final package 7fdh/release 7d2415 run 70655 passed native tools/UID and all recovery stages on immutable c829s4f5 snapshot: broker continuity L3334–3357, legitimate origin replacement L3358–3389 and worker loss with saved data L3390–3407. Total 342s build/execution, driver 323.30s. Trusted HTTPS with real package/broker and synthetic account authorizer; no Marshall/Audi, Firecracker family or production claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-10-browser-editor.md",
           "record_assertion": "The corrected final-package standalone native check passed, exit 0, in 342 seconds"
@@ -4381,7 +4381,7 @@
           "kind": "property",
           "path": "marshall/test/marshall/accounts/time_zones_property_test.exs",
           "assertion": "every label carries the zone's offset in force at that instant",
-          "scope": "Every curated zone over random instants 2000\u20132040 plus fixed DST edges; half-hour and 45-minute zones pinned",
+          "scope": "Every curated zone over random instants 2000–2040 plus fixed DST edges; half-hour and 45-minute zones pinned",
           "execution": "present"
         },
         {
@@ -5593,7 +5593,7 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/database-recovery/driver.py",
           "assertion": "expected_holder_state",
-          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432\u201327.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
+          "scope": "Recorded six-case native matrix: idle/active holder crossed with machine crash, bidirectional silent loss and asymmetric client-to-server loss, seed-126 waiter submission permutations, actual release Repo and verified PostgreSQL TLS, three independently observed waiters, ten connections and unchanged twenty/thirty-five-second deadlines. All sessions reclaimed in 19.432–27.882 seconds; row reacquired in every case and positive DROP counters observed in each tested direction. Submission order does not establish queue order. No surviving release contender, repeated reconnect, uncertain commit or hosted claim.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-02-database-loss-histories.md",
           "record_assertion": "All six cases preserved the twenty-second holder and thirty-five-second\nall-connection assertions and reacquired the row after reclamation."
@@ -6760,7 +6760,7 @@
       ],
       "boundary": "Complete manifest, matching keyring, native ownership and isolated restoration.",
       "denial": "Reject unrelated decryption keys, malformed manifests, unavailable retained references, busy operator locks and unsafe or nonempty restore targets; keep historical authority isolated.",
-      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore\u2192decrypt\u2192repository-access composition with the historical-generation refusal in synthetic fixtures.",
+      "scope": "Recorded native database/keyring recovery, plus generated public-runtime manifest/reference, host-lock and isolated partial-restore histories against local encrypted Restic; the documented repository-password key ceremony with its zero-failure overlap, the exact repository-label wedge after rotation without it and its previous-generation recovery, and restore→decrypt→repository-access composition with the historical-generation refusal in synthetic fixtures.",
       "status": "partial",
       "gaps": "No generic automated reconciliation makes a historical database authoritative for surviving guests; physical replacement GUID adoption needs operator reconciliation.",
       "preferred_gap": "Native TLS/ZFS/database/keyring and packaged-command acceptance retains its original scope. Local generated command histories cannot establish physical replacement GUID adoption or historical-authority reconciliation; those require explicit operator and native disaster-recovery drills.",
@@ -10281,20 +10281,29 @@
         "recovery"
       ],
       "boundary": "Incoming/outgoing peers share a process-owned budget and must retire when that accounting incarnation dies; a successor cannot retain live unaccounted peers.",
-      "denial": "Old peer owners must terminate after budget death. The replacement starts empty and admits exactly the requested replacement pairs while the synthetic host stream remains alive.",
+      "denial": "Old peer owners must terminate after budget death, refusing subsequent old-socket application traffic. The replacement starts empty and admits exactly the requested replacement pairs while the synthetic host stream remains alive.",
       "scope": "Generated one to three real verified-TLS peer pairs and persistent attachments through production signed current-location proof validation. Exact owner retirement, successor occupancy and fresh pair admission are checked; host stream/replies are synthetic.",
       "status": "partial",
-      "gaps": "No native guest survival, physical channel custody, independent-node partition or hosted acceptance. Wrong-budget-PID mutant was caught at old owner retirement and restored four-check execution passed; full Marshall gate/typing remain pending.",
+      "gaps": "Current configured100-case abortive-close property passed in the12-test selection,seed656999; the earlier three-case result remains historical. Two unrelated real15-second silence properties hit the pinned engine health limit. No native guest survival, physical channel custody, independent-node partition or hosted acceptance. Full Marshall gate and typing remain separate.",
       "preferred_gap": "Finish restored/full component verification, then repeat budget-incarnation loss with native guest attachments and independent nodes.",
       "evidence": [
         {
           "kind": "property",
           "path": "marshall/test/marshall/terminal/remote_test.exs",
           "assertion": "budget restart retires live TLS peers and admits exact replacement pairs",
-          "scope": "Current merged frontend: three generated real verified-TLS budget restart histories through the production peer-proof API, with synthetic host stream and attachments. Part of the passing 17-test focused rerun; no disabled-shrinking or native claim.",
+          "scope": "Historical three-case frontend capture: real verified-TLS budget restart histories through peer-proof API, with synthetic host stream and attachments. Part of the earlier 17-test rerun; does not qualify current 100-case fixture and abortive-close repair.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
           "record_assertion": "The three-file focused rerun passed all 17 tests"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/terminal/remote_test.exs",
+          "assertion": "budget restart retires live TLS peers and admits exact replacement pairs",
+          "scope": "Current 100-case loopback verified-TLS histories isolate each budget supervisor and sandbox. Original two-second old-owner termination, stale-socket refusal, successor occupancy and synthetic host-stream survival remain; no native/fleet claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "the configured 100-case budget property passed"
         }
       ]
     },
@@ -11600,7 +11609,7 @@
           "assertion": "foreign-linux-pam-nosuid-account",
           "scope": "Isolated VM/chroot using the exact pinned installer and PAM: missing-helper9, valid0, expired13, password-change12, unknown10 on nosuid runtime storage; root-owned04755 copy, unchanged0555 source, idempotence and twelve unsafe/argument/nonroot refusals. vmTools source ownership is replaced by a byte-identical root-owned overlay only inside the disposable chroot. No foreign guest SSH/sudo or nonroot elevation acceptance.",
           "record": "docs/architecture/reviews/2026-10-18-guest-os-matrix.md",
-          "record_assertion": "The maintained VM gate records missing-helper9 \u2192 repaired0"
+          "record_assertion": "The maintained VM gate records missing-helper9 → repaired0"
         },
         {
           "kind": "manual",
@@ -13576,8 +13585,10 @@
           "kind": "property",
           "path": "marshall/test/marshall/github/state_machine_test.exs",
           "assertion": "connection histories cannot publish before refresh or resurrect after disconnect",
-          "scope": "Generated connection state histories in the BEAM; test presence does not establish current execution or native isolation.",
-          "execution": "present"
+          "scope": "Generated BEAM/database connection histories passed in the current focused 53-test run; no native isolation, fleet OAuth or live provider claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current Marshall focused verification passed **53 tests**"
         },
         {
           "kind": "machine",
@@ -13592,6 +13603,48 @@
           "assertion": "github-fleet-shared-owner-identity",
           "scope": "Linux browser shared writer uses owner identity through managed gh in a live personal terminal; Windows terminal acceptance remains separate.",
           "execution": "present"
+        }
+      ]
+    },
+    {
+      "id": "github-com-retained-native-tools",
+      "journey": "Upgrade retained native GitHub clients and preserve exact completed-workspace ownership across reboot",
+      "layers": [
+        "authorization",
+        "execution",
+        "isolation",
+        "storage",
+        "recovery"
+      ],
+      "boundary": "Current placement and executor fences select immutable tool artifacts. Native setup validates completed immutable source and owned checkout before replacing legacy wildcard Git trust with a durable exact include; its journal restores original configuration on failure.",
+      "denial": "Pending or corrupt source refuses trust migration. Unrelated root-owned repositories must remain refused after upgrade. An absent source preserves historical policy and grants no claim that tightening happened.",
+      "scope": "ADR-0202 retained tool delivery with ADR-0128 shared checkout ownership; Linux-host setup tests and actual retained native programs are distinct evidence.",
+      "status": "partial",
+      "gaps": "FreeBSD first-boot managed API, push, LFS and exact ownership checks passed under synthetic authority, but historical executor cancellation failed and reboot is unverified. OmniOS has not published a tool generation. Neither full native check passes; live fleet admission and absent-source later migration remain separate.",
+      "preferred_gap": "Record both published-image retained checks with actual bootstrap, strict unrelated-root refusal, managed gh/Git/LFS and a second boot; then qualify native fleet admission separately.",
+      "evidence": [
+        {
+          "kind": "unit",
+          "path": "lyra/src/agent/maintenance.rs",
+          "assertion": "retained_native_policy_is_exact_durable_and_preserves_unrelated_settings",
+          "scope": "Linux-host setup journal, exact Git include, settings preservation and rollback; no native platform or isolation guarantee.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "/work/native-services/github-tools-receipt.json",
+          "scope": "Published retained native images with synthetic tool and executor authority; current passing execution not yet recorded.",
+          "execution": "present"
+        },
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall/agents/bootstrap_test.exs",
+          "assertion": "retained executor bootstrap survives replacement and refuses stale receipts without turns",
+          "scope": "Current-executor bootstrap idempotency and stale-receipt refusal in generated BEAM/database histories; no native runtime qualification.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Current Marshall focused verification passed **53 tests**"
         }
       ]
     }

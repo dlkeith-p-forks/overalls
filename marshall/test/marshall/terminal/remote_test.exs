@@ -6,9 +6,38 @@ defmodule Marshall.Terminal.RemoteTest do
 
   @fixtures Path.expand("../../fixtures/tls", __DIR__)
 
-  setup do
+  setup tags do
+    if tags[:isolated_peer_budget] do
+      :ok = Supervisor.terminate_child(Marshall.Supervisor, PeerBudget)
+
+      on_exit(fn ->
+        {:ok, _budget} = Supervisor.restart_child(Marshall.Supervisor, PeerBudget)
+      end)
+    end
+
+    if tags[:hegel_case_sandbox], do: :ok, else: terminal_case_fixture()
+  end
+
+  # @cc [owner:ghuntley,label:verification;recovery] terminal-generated-fixture-custody
+  # Each generated history MUST own a fresh sandbox, TLS listener and peer processes.
+  # Budget restart histories MUST use a case supervisor, preserving production
+  # restart intensity while proving a successor budget admits replacement peers.
+  @spec terminal_case_fixture(boolean()) :: map()
+  defp terminal_case_fixture(isolated_budget \\ false) do
+    if Hegel.in_property_case?() do
+      isolate_property_case()
+      Hegel.on_cleanup(&drain_terminal_notifications/0)
+    end
+
+    if isolated_budget do
+      Overalls.HegelFixtures.start_fixture!(%{
+        id: make_ref(),
+        start: {Supervisor, :start_link, [[PeerBudget], [strategy: :one_for_one]]}
+      })
+    end
+
     server =
-      start_supervised!(
+      Overalls.HegelFixtures.start_fixture!(
         {Bandit,
          plug: MarshallWeb.TerminalPeerAPI,
          scheme: :https,
@@ -25,17 +54,25 @@ defmodule Marshall.Terminal.RemoteTest do
     Application.put_env(:marshall, :terminal_peer_url, "https://127.0.0.1:#{port}")
     Application.put_env(:marshall, :terminal_peer_ca, Path.join(@fixtures, "ca.pem"))
 
-    on_exit(fn ->
+    restore = fn ->
       Application.put_env(:marshall, :terminal_peer_url, old_url)
       Application.put_env(:marshall, :terminal_peer_ca, old_ca)
-    end)
+    end
+
+    if Hegel.in_property_case?() do
+      on_exit(:terminal_peer_environment, restore)
+      Hegel.on_cleanup(restore)
+    else
+      on_exit(restore)
+    end
 
     fixture = Marshall.TerminalFixtures.terminal_fixture()
-    stream = Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
+    lifetime = if Hegel.in_property_case?(), do: :property, else: :test
+    stream = Marshall.TerminalFixtures.stream_fixture(fixture.host.id, lifetime)
     {:ok, location} = Directory.lookup(fixture.host.id)
 
     remote =
-      start_supervised!(%{
+      Overalls.HegelFixtures.start_fixture!(%{
         id: Remote,
         start: {Remote, :start, [self(), location]},
         restart: :temporary
@@ -49,20 +86,19 @@ defmodule Marshall.Terminal.RemoteTest do
   # pairs acquire successor slots. The synthetic host stream MUST remain alive;
   # this test MUST NOT claim native guest survival or independent-node recovery.
   @tag :hegel
-  test "budget restart retires live TLS peers and admits exact replacement pairs", %{
-    fixture: fixture,
-    stream: stream,
-    remote: initial
-  } do
+  @tag timeout: 600_000, hegel_case_sandbox: true, isolated_peer_budget: true
+  test "budget restart retires live TLS peers and admits exact replacement pairs" do
     # The native runner uses test_cases to bound these real-socket histories.
     Hegel.check(
       fn ->
         count = draw("count", integer(1..3))
+        %{fixture: fixture, stream: stream, remote: initial} = terminal_case_fixture(true)
         {:ok, location} = Directory.lookup(fixture.host.id)
         remotes = for _ <- 1..count, do: start_peer(location)
         remotes = if Process.alive?(initial), do: [initial | remotes], else: remotes
 
         for remote <- remotes, do: healthy_peer(remote, fixture.vm)
+        old_sockets = Enum.map(remotes, &:sys.get_state(&1).socket)
         budget = Process.whereis(PeerBudget)
         assert PeerBudget.used(budget) == 2 * length(remotes)
         owners = Map.keys(:sys.get_state(budget).owners)
@@ -78,6 +114,14 @@ defmodule Marshall.Terminal.RemoteTest do
         assert is_pid(successor)
         assert successor != budget
         assert PeerBudget.used(successor) == 0
+
+        # Old application frames cannot enter a successor incarnation through
+        # sockets whose admitted owners have been retired.
+        for socket <- old_sockets do
+          assert {:error, _} =
+                   OverallsProtocol.WebSocket.Connection.send_frame(socket, {:binary, <<0>>})
+        end
+
         assert Process.alive?(stream)
         assert {:ok, ^location} = Directory.lookup(fixture.host.id)
 
@@ -102,23 +146,15 @@ defmodule Marshall.Terminal.RemoteTest do
   # subsequent silent transport MUST retire the hop within fifteen seconds
   # plus bounded test scheduler allowance. The host stream remains synthetic.
   @tag :hegel
-  test "shifted TLS activity expires without waiting for another heartbeat", %{
-    remote: initial,
-    fixture: fixture
-  } do
-    owners = Map.keys(:sys.get_state(PeerBudget).owners)
-    monitors = Enum.map(owners, &Process.monitor/1)
-    GenServer.stop(initial)
-
-    for {owner, monitor} <- Enum.zip(owners, monitors),
-        do: assert_receive({:DOWN, ^monitor, :process, ^owner, _}, 2_000)
-
-    # Each real silence deadline exceeds fifteen seconds. Keep the original
-    # three generated cases in separate runs below the native slow-input limit.
+  @tag timeout: 6_000_000, hegel_case_sandbox: true
+  test "shifted TLS activity expires without waiting for another heartbeat" do
+    # Preserve all three runs of one hundred real fifteen-second histories.
     for _ <- 1..3 do
       Hegel.check(
         fn ->
           offset = draw("offset", integer(500..1500))
+          %{fixture: fixture, remote: initial} = terminal_case_fixture()
+          stop_initial_peer(initial)
           {:ok, previous_location} = Directory.lookup(fixture.host.id)
           assert :ok = Directory.renew(fixture.host.id, previous_location.nonce)
           {:ok, location} = Directory.lookup(fixture.host.id)
@@ -160,6 +196,27 @@ defmodule Marshall.Terminal.RemoteTest do
     end
   end
 
+  @spec drain_terminal_notifications() :: :ok
+  defp drain_terminal_notifications do
+    receive do
+      {:terminal_closed, _} -> drain_terminal_notifications()
+    after
+      0 -> :ok
+    end
+  end
+
+  @spec stop_initial_peer(pid()) :: :ok
+  defp stop_initial_peer(initial) do
+    owners = Map.keys(:sys.get_state(PeerBudget).owners)
+    monitors = Enum.map(owners, &Process.monitor/1)
+    GenServer.stop(initial)
+
+    for {owner, monitor} <- Enum.zip(owners, monitors),
+        do: assert_receive({:DOWN, ^monitor, :process, ^owner, _}, 2_000)
+
+    :ok
+  end
+
   @spec await_peer_release(pid(), integer()) :: boolean()
   defp await_peer_release(peer, deadline) do
     cond do
@@ -182,23 +239,15 @@ defmodule Marshall.Terminal.RemoteTest do
   # deadline; fifteen subsequent silent seconds MUST terminate its WebSock
   # application and release its slot, independently of server-process lifetime.
   @tag :hegel
-  test "incoming TLS silence retires the application at its renewed deadline", %{
-    remote: initial,
-    fixture: fixture
-  } do
-    owners = Map.keys(:sys.get_state(PeerBudget).owners)
-    monitors = Enum.map(owners, &Process.monitor/1)
-    GenServer.stop(initial)
-
-    for {owner, monitor} <- Enum.zip(owners, monitors),
-        do: assert_receive({:DOWN, ^monitor, :process, ^owner, _}, 2_000)
-
-    # Preserve three generated real-deadline histories without accumulating
-    # their expected runtime into one native slow-input health check.
+  @tag timeout: 6_000_000, hegel_case_sandbox: true
+  test "incoming TLS silence retires the application at its renewed deadline" do
+    # Preserve all three runs of one hundred real fifteen-second histories.
     for _ <- 1..3 do
       Hegel.check(
         fn ->
           offset = draw("offset", integer(500..1500))
+          %{fixture: fixture, remote: initial} = terminal_case_fixture()
+          stop_initial_peer(initial)
           {:ok, location} = Directory.lookup(fixture.host.id)
           assert :ok = Directory.renew(fixture.host.id, location.nonce)
           remote = start_peer(location)
@@ -289,7 +338,7 @@ defmodule Marshall.Terminal.RemoteTest do
 
   @spec start_peer(Marshall.Terminal.Location.t()) :: pid()
   defp start_peer(location) do
-    start_supervised!(%{
+    Overalls.HegelFixtures.start_fixture!(%{
       id: make_ref(),
       start: {Remote, :start, [self(), location]},
       restart: :temporary

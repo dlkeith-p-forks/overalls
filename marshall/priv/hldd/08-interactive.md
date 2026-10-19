@@ -550,6 +550,13 @@ saturate limits of two to eight slots, kill owners without explicit release and
 verify exact reclamation and replacement admission. This checks local monitor
 accounting; it does not exercise distributed sockets or partitions.
 
+Peers monitor the exact budget incarnation that admitted them. Its death aborts
+incoming transport and retires outgoing peers before successor admissions;
+graceful WebSocket closing is insufficient because it can still dispatch
+application callbacks. The loopback TLS restart history requires exact old-owner
+termination and successor slots while preserving the synthetic host stream.
+It does not establish native guest survival or independent-node recovery.
+
 Lilly's host stream and the Marshall peer hop now use the shared active-once
 WebSocket connection (ADR-0142); neither polls its socket. The terminal codec,
 hello and credits are unchanged. Lilly opens the stream outside its process, so

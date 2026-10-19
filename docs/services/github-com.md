@@ -61,6 +61,10 @@ userinfo. The validator does not enforce equality between its host and the
 configured Marshall origin. The browser's final return is the fixed local
 Integrations page.
 
+Marshall's `form-action` policy permits the fixed `https://github.com` origin
+for the authorization POST redirect. It permits no arbitrary HTTPS form target;
+scripts, connections and frames retain their same-origin restrictions.
+
 On NixOS, set `services.marshall.github.clientId`, `clientSecretFile` and
 `redirectUri` together. Their defaults are `null`; partial configuration fails a
 module assertion. The unit wrapper removes inherited GitHub settings and
@@ -111,6 +115,20 @@ matching completed tool-installation receipt. Configure matching
 `MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE`. The inventory contains public
 source-built executor bytes. It does not by itself prove retained-machine
 bootstrap succeeded.
+
+Retained FreeBSD and illumos tool setup validates a completed immutable
+workspace source before replacing the historical `/workspace/*` Git ownership
+exception with a durable include for that exact checkout. It preserves unrelated
+system Git settings and restores the original configuration on setup rollback.
+Pending or corrupt sources refuse migration; an absent source leaves the existing
+ownership policy unchanged. Tightening after a later checkout requires another
+real setup pass; tool installation alone does not establish that migration.
+
+Managed native Go clients read the reviewed system CA bundle explicitly:
+FreeBSD `/etc/ssl/cert.pem`, illumos `/etc/ssl/cacert.pem`. Missing, malformed or
+oversized bundles refuse requests instead of falling back to vendor roots or
+environment-selected trust. The maximum bundle size is two MiB. Linux and
+Windows retain their platform trust behavior.
 
 ## Refresh, withdrawal and recovery
 

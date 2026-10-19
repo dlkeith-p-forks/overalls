@@ -22,6 +22,17 @@ continuity, filesystem coherence and multi-node availability need separately
 recorded machine evidence in the
 [suspension review](repo:docs/architecture/reviews/2026-10-18-memory-suspension.md).
 
+## Terminal peer budget replacement
+
+Authenticated peer transport is bound to the current local stream and the exact
+budget process that admitted it. Loss of that budget aborts incoming transport
+and retires outgoing peers; successor slots cannot authorize old connections.
+A graceful closing state is insufficient because the WebSocket server can still
+dispatch application callbacks while closing. The real-TLS regression requires
+old owner termination before replacement admission, with unchanged slot counts
+and deadlines. The host stream remains synthetic; native guest lifetime and
+independent-node recovery require separate evidence.
+
 ## Locale is presentation, not authority
 
 Language headers and session values are untrusted, bounded and validated against the supported locale set. Only the current user may persist their override; reset restores browser negotiation. Neither locale nor text direction changes login, Cedar, execution fences, storage ownership or recovery authority. The Porsche envelope carries a canonical locale for human prose, with English fallback for older peers; machine identifiers and terminal byte streams stay unchanged. Bidi isolation protects interpolated identifiers from misleading direction changes. See [ADR-0201](repo:docs/architecture/decisions/0201-localized-human-surfaces.md); native/browser execution and linguistic review remain gaps until recorded.
@@ -943,7 +954,7 @@ policies.
 
 | Header | Value and purpose |
 | --- | --- |
-| `content-security-policy` | `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://ghuntley.com; frame-ancestors 'self'; frame-src 'self'; worker-src 'self'; manifest-src 'self'`. Scripts, fonts, WebSockets and frames are same-origin only. Forms additionally permit the fixed newsletter fallback origin under ADR-0205; unrestricted `https:` is refused. `'unsafe-inline'` applies to styles alone because the vendored xterm.js and Mermaid renderers create `<style>` elements and set `style` attributes, which a nonce cannot authorise; Marshall's own templates contain no inline script, style or `style=` attribute. |
+| `content-security-policy` | `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://ghuntley.com https://github.com; frame-ancestors 'self'; frame-src 'self'; worker-src 'self'; manifest-src 'self'`. Scripts, fonts, WebSockets and frames are same-origin only. Forms additionally permit the fixed newsletter fallback origin under ADR-0205 and GitHub OAuth POST redirects under ADR-0202; unrestricted `https:` is refused. `'unsafe-inline'` applies to styles alone because the vendored xterm.js and Mermaid renderers create `<style>` elements and set `style` attributes, which a nonce cannot authorise; Marshall's own templates contain no inline script, style or `style=` attribute. |
 | `permissions-policy` | Sensors, camera, microphone, geolocation, payment, USB, serial, HID, MIDI, autoplay, display capture, idle detection, local fonts, picture-in-picture, wake lock and XR are denied. `clipboard-read` and `clipboard-write` stay allowed for this origin because the terminal pastes from and the copy buttons write to the clipboard. Passkeys and the terminal fullscreen control keep the browser defaults. |
 | `cross-origin-opener-policy: same-origin` | A foreign page that opens Marshall keeps no window reference. |
 | `cross-origin-resource-policy: same-origin` | Browsers refuse to embed Marshall responses as cross-origin subresources. `curl` and PowerShell installer downloads and extension archive navigations are unaffected. |
@@ -972,7 +983,7 @@ working in browsers that visited the apex.
 | Identity | The production session cookie is `__Host-marshall`: Secure, HttpOnly, `Path=/`, no Domain, `SameSite=Lax`, signed and encrypted. The remembered credential is `__Host-remember_me` with the same attributes. Browsers refuse a `__Host-` cookie set by any other host, so a user application on `*.apps.ghuntley.dev` can neither plant nor shadow either cookie. A request that still carries the legacy `_marshall_key` or `remember_me` name receives an expiring `Set-Cookie` for it. |
 | Authorization | Headers and cookies grant nothing: stored-login checks and Cedar decide every read and mutation. User applications are same-site with Marshall, so `SameSite` offers no CSRF protection against them; CSRF tokens on every form and the LiveView socket remain the control. |
 | Transport | HTTPS is forced with HSTS for the apex and its subdomains; the LiveView and terminal WebSockets are same-origin under `connect-src 'self'`. |
-| Execution | `script-src 'self'` and `object-src 'none'` refuse injected, inline or foreign scripts and plugins; `form-action` permits only `'self'` and the fixed `https://ghuntley.com` newsletter fallback origin, refusing other form targets. |
+| Execution | `script-src 'self'` and `object-src 'none'` refuse injected, inline or foreign scripts and plugins; `form-action` permits only `'self'`, the fixed `https://ghuntley.com` newsletter fallback origin and `https://github.com` OAuth origin (including the start POST redirect), refusing other form targets. |
 | Isolation | `frame-ancestors 'self'` and `frame-src 'self'` allow only Marshall to frame Marshall (the thread page embeds its own terminal route); the opener and resource policies isolate Marshall from foreign pages. |
 | Storage | Session contents are encrypted in the cookie; no secret is stored in browser storage, only the appearance preference. |
 | Recovery | Changing the cookie names or encryption signs every browser out once; a remembered browser signs in again with one fresh magic link. Legacy cookies expire on the next response. |

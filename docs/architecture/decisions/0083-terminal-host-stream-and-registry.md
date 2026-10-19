@@ -115,6 +115,14 @@ The [startup recovery review](../reviews/2026-09-25-terminal-startup-recovery.md
 records bounded reply lifetimes in the relay and both local/remote response
 paths, with generated mailbox-isolation and loopback TLS regression evidence.
 
+Local peer admission also binds the budget process incarnation. Incoming peer
+transport aborts when that incarnation dies, rather than entering a graceful
+WebSocket closing phase that may still dispatch callbacks. A replacement budget
+cannot revive those peers; only new authenticated peers acquire its slots. The
+[GitHub closure review](../reviews/2026-10-18-github-com-integration.md) tracks
+this full-gate discovery and its real-TLS regression separately from native
+guest and fleet evidence.
+
 The [frame codec](../../../protocol/lib/overalls_protocol/terminal.ex) and
 [properties](../../../protocol/test/terminal_test.exs) define the wire. Lilly
 implements the dial, hello binding and channel multiplexing in the

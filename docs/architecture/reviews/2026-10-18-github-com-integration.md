@@ -133,8 +133,9 @@ remain available through the accepted account page. These repairs grant no new
 GitHub authority. Current compiler and account-page checks must be recorded separately.
 
 Managed upstream clients have no existing Localize/Gettext integration. Their
-three fixed integration diagnostics use reviewed English fallback: managed
-authentication, unsupported destination and mutation redirect refusal. This
+four fixed integration diagnostics use reviewed English fallback: managed
+authentication, unsupported destination, mutation redirect refusal and unavailable
+managed native trust. This
 change does not invent a second translation-key system or claim translated
 native CLI diagnostics. Marshall UI/documentation remain in the established
 catalog extraction and source-fallback workflow; native linguistic review is a
@@ -147,7 +148,7 @@ decoder and existing regression. This repairs the accepted wire contract and
 introduces no new protocol decision; passing focused GitHub tests alone did not
 establish the complete protocol gate.
 
-## Remaining acceptance
+## Historical gate corrections and acceptance checklist
 
 The later full Protocol gate recorded **371 of 372 tests passing** in
 **910.0 seconds**, seed **700067**. Its sole test failure was the stale private
@@ -213,3 +214,138 @@ directory and load the manifest validator's required GuestAgents module. These
 preserve certificate verification and image validation rather than bypassing
 those controls. Required empty Egyptian Arabic plural forms preserve catalog
 schema and existing translations; the forms remain untranslated fallback gaps.
+
+The retained native fixture's smart-HTTP parser incorrectly compared a path
+containing its query with a query-free advertisement path. The repair keeps path
+and query separate and retains closed service selectors and mutation-query
+refusal. `native-fixture-unit` passed under pinned Nix; its regression includes a
+real verified-TLS shallow clone. This is fixture evidence, not native acceptance.
+
+The repaired fixture exposed historical FreeBSD `/workspace/*` ownership trust:
+checkout bytes passed, but the unchanged unrelated-root repository oracle rightly
+refused acceptance. Current retained tool setup now validates completed immutable
+source and exact owned checkout before installing a durable exact policy, inside
+the existing configuration rollback journal. Absence preserves existing policy;
+pending/corrupt source refuses. This implements ADR-0128's shared checkout model
+within ADR-0202's retained update, without extending trust to unrelated paths.
+Rust maintenance tests cover exact policy, preserved settings, idempotence,
+rollback and late source. Native upgrade/reboot execution remains separately
+required; Linux-host tests cannot establish FreeBSD or illumos behavior.
+
+Closure component gates: Protocol full precommit passed **380 tests**, Covenant
+**14/14**, and forced Dialyzer with **0 errors** (test phase **917.5 seconds**,
+`/tmp/github-closure-protocol-precommit-final.log`). Lilly full precommit passed
+**651 tests**, Covenant **15/15**, and forced Dialyzer with **0 errors**
+(`/tmp/github-closure-lilly-precommit.log`). These are component/BEAM results;
+they do not qualify the native fleet or live provider.
+
+The full Marshall run exposed a duplicate-bootstrap claim defect: repeated polls
+minted a replacement attempt before the first could acknowledge start. Returning
+the same unstarted envelope after current executor/fence validation restores the
+existing maintenance idempotency contract. The generated claim history and fixed
+duplicate assertion passed in the fresh 45-test focused run, seed 625844,
+including distributed cases (`/tmp/github-marshall-fixes.log`).
+This preserves ADR-0202 rather than introducing new delivery authority.
+
+The fleet browser probe also incorrectly required a visible LiveView root even
+though the existing stylesheet uses `display: contents`. Its connection assertion
+now requires exactly one connected root, while subsequent real controls retain
+their own assertions. HTTP response and connection stages remain distinct; no
+page body, token-bearing URL or raw browser exception enters diagnostics.
+
+### Current closure results and remaining failures
+
+Current Marshall focused verification passed **53 tests**, seed **644555**, in
+**91.6 seconds** (`/tmp/github-marshall-csp-fixes.log`). It includes GitHub,
+distributed authority, bootstrap histories, suspension/login fixture corrections,
+the private-history runner correction and the exact CSP form-origin regression.
+This result does not establish a passing full Marshall gate.
+
+Galileo's complete suite passed **59 tests**, seed **817719**, in **3135.3
+seconds** (`/tmp/github-galileo-precommit-20261019.log`). The initial aggregate
+gate then found missing test-only Hegel applications in the Dialyzer PLT. Adding
+them, matching Marshall's test analysis, changes no runtime dependency. Forced
+Dialyzer subsequently passed with **0 errors** and all non-test gate stages
+passed (`/tmp/github-galileo-dialyzer-20261019.log` and
+`/tmp/github-galileo-final-gates-20261019.log`). Covenant records **4/4** passing
+obligations. The focused real-TLS capability suite passed **12 tests**, seed
+**180808**, including binary framing and partial-download withdrawal without
+replay; these remain bounded edge tests.
+
+The fleet browser committed an OAuth attempt but did not navigate to GitHub.
+The production `form-action` allowlist omitted the fixed GitHub origin and could
+block the same-origin POST's external redirect. ADR-0202 amends ADR-0194 with
+exactly `https://github.com`; other CSP directives and arbitrary-origin refusals
+remain unchanged. The focused policy regression passes; complete browser/fleet
+execution after this repair is still separate acceptance.
+
+The retained native fixture now permits the exact `llm.internal` bootstrap
+destination and handles at most eight concurrent authority requests, so a stalled
+artifact reader cannot monopolize lease renewal. Real TLS fixture regressions
+exercise shallow clone, closed DNS and stalled-peer renewal. Native Go clients
+explicitly load the reviewed FreeBSD `/etc/ssl/cert.pem` or illumos
+`/etc/ssl/cacert.pem` bundle, bounded to two MiB, refusing missing/malformed roots
+without vendor or environment fallback. Linux/Windows retain platform trust.
+Pinned Go tests/vet, Rust migration tests/Clippy, Python Ruff/ty and the Nix
+native-fixture-unit gate passed; those checks do not establish native admission.
+
+FreeBSD first-boot managed GitHub API, secret refusals, Git push, LFS transfer
+and exact ownership refusal passed under synthetic native authority in structured
+log `1792379603103-1832815-0.jsonl`. The enclosing check then failed historical
+executor cancellation at withdrawn-group observation; reboot remains unverified.
+OmniOS did not publish an installed generation despite repeated artifact reads.
+Neither complete native check passed. A one-shot tool bootstrap does not replace
+the historical executor daemon.
+
+The full fresh Marshall suite remains unsuccessful. Before a terminal fixture
+exhausted the global supervisor restart intensity and stopped the application,
+it exposed SMTP per-case sandbox/listener lifetime defects, redundant nested
+Hegel options (repaired in the focused run), and expensive generated histories
+exceeding health or aggregate runtime limits. The subsequent Repo-loss cascade
+and interrupted exit are not test results. Preserve exploration counts, real
+operation deadlines and health checks while repairing fixture isolation; rerun
+the full gate rather than inferring it from focused passes.
+
+SMTP fixture repair subsequently passed **6 ordinary tests**, seed **176849**,
+in **12.0 seconds** (`/tmp/github-smtp-fixture-focused-20261019.log`); its two
+long generated properties were excluded from that scoped run. Each generated
+case now owns its sandbox, Mailer environment restoration and exact listener
+cleanup. The existing one hundred cases and actual ten-second attempts remain;
+each property has a finite one-hour aggregate limit. Terminal generated cases
+likewise own fixtures and isolate intentional budget crashes under a case-owned
+supervisor, preserving production supervision intensity.
+
+The pinned `hegeltest-c` 0.43.7 runner's `run_one` accumulates the entire callback
+duration into `total_test_time`; its default `TooSlow` health check requires ten
+valid examples before thirty seconds accumulate. Real fifteen-second terminal
+histories cannot meet that early-run default even with pure bounded generators.
+The fixed C ABI exposes no generator timing scope; early completion would lose
+assertion/replay/shrink authority. No health suppression or case reduction is
+introduced by these repairs. Long-property and complete Marshall passes remain
+unrecorded; a measured generator-time engine facility is a separate upstream
+requirement if the current health policy is to remain unchanged.
+
+Provider compatibility review on 2026-10-19 checked GitHub's current
+[OAuth App authorization documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps).
+It documents `offline_access` opt-in for OAuth Apps, eight-hour access tokens,
+rotating refresh tokens, the returned expiry fields, S256 PKCE and
+`grant_type=refresh_token`. This matches the implemented OAuth App flow;
+GitHub App installation tokens are not substituted. GitHub Enterprise Server
+may omit expiring tokens, but this integration targets GitHub.com and refuses
+nonexpiring/malformed pairs. Documentation compatibility is not live App
+provisioning, consent or rotation evidence.
+
+Terminal restart verification exposed a production refusal defect in addition
+to its fixture isolation defect: normal WebSocket close can retain a Bandit
+connection that still dispatches application callbacks. Incoming PeerSocket now
+aborts transport on loss of its admitting budget incarnation, preserving normal
+close behavior elsewhere. The strict two-second old-owner termination oracle,
+exact successor slots and synthetic host-stream survival remain. The regression
+also attempts an old-socket application frame before replacement admission;
+the configured 100-case budget property passed in the current 12-test selection
+(seed656999,101.4s; `/tmp/github-terminal-fixture-final-20261019.log`).
+Ten tests passed; the only two failures were the real fifteen-second silence
+properties hitting Hegel TooSlow after two valid cases (32.595s and31.412s).
+No application-supervisor collapse or SQL ownership failure occurred.
+This preserves ADR-0083's incarnation boundary,
+without claiming native guest or independent-node recovery from loopback TLS.
