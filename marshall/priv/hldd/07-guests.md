@@ -1854,6 +1854,9 @@ facts do not establish native transport, browser controller/viewer enforcement,
 restart recovery or physical isolation; the existing Android acceptance gaps
 remain open.
 
-The standalone emulator machine fixture checks software rendering and ADB
-behavior; a passing execution is not recorded here. Production Firecracker
-display transport remains an explicit acceptance gap.
+The standalone emulator machine fixture has a recorded passing execution for
+the API 34 AVD, an APK compiled against API 36, authenticated ADB, PNG screencap
+and marker persistence across emulator restart. Its AVD has 4 Android cores and
+4 GiB inside an 8-vCPU/8-GiB NixOS test VM. This does not qualify the production
+API 36 image, TAP firewall, Lilly ticket authority or browser display journey;
+production Firecracker display transport remains an explicit acceptance gap.

@@ -37,8 +37,10 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/android-emulator/default.nix",
           "assertion": "PNG screencap through the real adb client",
-          "scope": "Standalone NixOS emulator fixture; not production Firecracker transport.",
-          "execution": "present"
+          "scope": "Recorded standalone NixOS software-emulator fixture: API 34 AVD, APK compiled against API 36, authenticated ADB, PNG screencap and marker persistence across emulator restart. The 4-core/4-GiB AVD runs inside an 8-vCPU/8-GiB test VM. No production API 36 image, Firecracker transport, TAP firewall, Lilly ticket authority or browser journey claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-android-firecracker.md",
+          "record_assertion": "The fixture was executed through"
         }
       ]
     },
