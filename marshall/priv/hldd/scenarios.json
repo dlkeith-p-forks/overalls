@@ -54,7 +54,7 @@
       ],
       "boundary": "Saved self-only locale override takes precedence over validated session/browser negotiation and English fallback. Arabic, Egyptian Arabic and Urdu use RTL; locale does not grant authority or change machine output. Public documentation is localized; authenticated handbook chapter titles, bodies and command-reference prose remain source English with LTR direction inside localized reader controls.",
       "denial": "Unsupported or malformed locale input cannot persist; a foreign user cannot change the preference; old Porsche protocol peers fall back to English; JSON fields, protocol identifiers and terminal bytes remain language-neutral.",
-      "scope": "ADR-0201 presentation boundaries with historical bounded BEAM/LiveView execution and a recorded Bombadil settings journey across all 28 locales and 112 theme/viewport combinations. Locale persistence after reload, browser-language reset and repeated saves from a fragment passed on the immutable compiled runtime identified by the browser receipt. All-route browser, native Porsche and independent linguistic acceptance remain partial.",
+      "scope": "ADR-0201 presentation boundaries with historical bounded BEAM/LiveView execution, latest strict 28-locale catalog/data/document checks and a recorded Bombadil settings journey across all 28 locales and 112 theme/viewport combinations. Locale persistence after reload, browser-language reset and repeated saves from a fragment passed on the immutable compiled runtime identified by the browser receipt. Latest Porsche notification-guidance assertions preserve command tokens and decoded JSON; they do not extend native SSH or browser acceptance. All-route browser, native Porsche and independent linguistic acceptance remain partial.",
       "status": "partial",
       "gaps": "Independent native-speaker review remains incomplete despite strict catalog coverage and structural Markdown checks. The recorded synthetic browser fixture establishes only its settings journey and observed layout; packaged NixOS account-language/Porsche journeys, all-route and cross-browser bidi/shaping behavior and native Porsche protocol journeys remain unestablished.",
       "preferred_gap": "Add generated negotiation and isolation properties and packaged NixOS account-language/Porsche journeys; broaden browser routes and engines and obtain independent native-speaker review. Preserve the separate native and linguistic evidence boundaries.",
@@ -156,6 +156,15 @@
           "assertion": "source titles and command help remain English in every reader locale",
           "scope": "All policy locales preserve the compiled source-English catalog and generated command-reference prose; test presence is distinct from execution evidence.",
           "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "porsche/test/ssh_output_test.exs",
+          "assertion": "notification refusals give localized guidance while retaining JSON hints",
+          "scope": "Arabic and Japanese human guidance for push_disabled and device_limit uses native feature lookups while device rm DEVICE_ID remains literal and decoded JSON hints remain unchanged. Passed within the latest 140-of-141 Porsche test phase; the unrelated invalid-boot timeout and identical isolated rerun are recorded separately. No native SSH session claim.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
+          "record_assertion": "The latest Porsche test phase passed 140 of 141 tests"
         }
       ]
     },
@@ -173,28 +182,28 @@
       ],
       "boundary": "The explicit linux-android-v1 declaration participates in version-4 image identity and projects Android SDK, ADB, emulator and display flags. ADR-0206 requires the NixOS Firecracker guest, software rendering, persistent AVD state and private ADB/display transport. Marshall checks login/ticket claims separately from its shared machine-and-generation relay; controller and viewer roles remain distinct. Source and pure models are not evidence that these layers compose in a native browser journey.",
       "denial": "Unsupported manifest versions, profiles, image kinds and malformed artifacts refuse Android qualification. Malformed tickets and mismatched machine, generation or mode refuse. The relay model refuses a second controller, stale-generation frames and input from a viewer. Native expired-login, foreign-owner, stale-execution and transport refusal remain unverified as a composed journey.",
-      "scope": "Source-backed image codec, capability and in-memory relay boundaries, an independent generated lifecycle model, and a NixOS software-emulator fixture. Each test presence and any later bounded execution must retain its own scope; no native Firecracker display, real browser or production acceptance follows from the models.",
+      "scope": "Source-backed image codec, capability and in-memory relay boundaries, an independent generated lifecycle model, and a recorded standalone NixOS software-emulator run. Each bounded execution retains its own source and assertion scope; no native Firecracker display, real browser or production acceptance follows from the models or standalone fixture.",
       "status": "partial",
       "gaps": "No recorded native Firecracker guest-to-browser display journey establishes current login/owner authorization, authenticated transport, controller/viewer enforcement, stale-execution fencing, AVD storage continuity, restart recovery or physical isolation. The standalone emulator fixture is not the deployed Marshall/Lilly composition.",
-      "preferred_gap": "Run the NixOS software-emulator fixture, then add a packaged Marshall/Lilly Firecracker browser journey covering readiness, controller/viewer and foreign/stale refusal, AVD retention and bounded recovery. Keep pure property and physical/native evidence separate.",
+      "preferred_gap": "Add a packaged Marshall/Lilly Firecracker browser journey covering readiness, controller/viewer and foreign/stale refusal, AVD retention and bounded recovery. Keep the recorded standalone API34 emulator, pure-property and production native evidence separate.",
       "evidence": [
         {
           "kind": "unit",
           "path": "protocol/test/image_manifest_test.exs",
           "assertion": "Android guest profile is explicit, identity-bound and preserved by serialization",
-          "scope": "Version-4 acceptance, JSON round trip, distinct identity and four capability flags; a separate test refuses wrong versions, profiles, image kinds and malformed artifacts. Passed within the isolated 382-test protocol run before aacb4be2c, seed 417854. Pure image-codec evidence.",
+          "scope": "Version-4 acceptance, JSON round trip, distinct identity and four capability flags; a separate test refuses wrong versions, profiles, image kinds and malformed artifacts. Passed within the latest isolated 418-test protocol gate, seed 778386, with current source hashes matching the validated snapshot. Pure image-codec evidence.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
-          "record_assertion": "all 382 tests passed in"
+          "record_assertion": "all 418 tests passed in"
         },
         {
           "kind": "property",
           "path": "protocol/test/android_emulator_state_machine_property_test.exs",
           "assertion": "lifecycle commands preserve lease and boot fencing",
-          "scope": "Two hundred generated histories in an independent lifecycle/lease model check ownership, monotonic generations, boot identity and rejected-command purity. Passed within the isolated 382-test protocol run before aacb4be2c, seed 417854. It does not execute an emulator, ADB or a production transport adapter.",
+          "scope": "Two hundred generated histories in an independent lifecycle/lease model check ownership, monotonic generations, boot identity and rejected-command purity. Passed within the latest isolated 418-test protocol gate, seed 778386, with current source hashes matching the validated snapshot. It does not execute an emulator, ADB or a production transport adapter.",
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md",
-          "record_assertion": "all 382 tests passed in"
+          "record_assertion": "all 418 tests passed in"
         },
         {
           "kind": "unit",
@@ -236,8 +245,10 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/android-emulator/default.nix",
           "assertion": "android-test-emulator.service",
-          "scope": "Present NixOS fixture uses software rendering without /dev/kvm, waits for Android boot completion and tests marker retention across emulator restart. No passing execution or Marshall/Lilly Firecracker composition is recorded here.",
-          "execution": "present"
+          "scope": "Recorded standalone NixOS fixture runs a software-rendered API34 AVD with acceleration disabled, builds its APK against API36, authenticates ADB, checks PNG screencap and retains its marker across emulator restart. The four-core/4GiB AVD runs inside an eight-vCPU/8GiB test VM. No production API36 guest, TAP firewall, Lilly authority, Firecracker composition or browser journey is established.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-android-firecracker.md",
+          "record_assertion": "The fixture was executed through"
         }
       ]
     },

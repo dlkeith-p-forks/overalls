@@ -219,9 +219,12 @@ Dialyzer analysis against that snapshot also completed normally in
 4 minutes 16.61 seconds with zero errors, skipped warnings or unnecessary skips.
 These results precede the later Mila protocol additions. Lilly's isolated
 test phase also passed all 652 tests in 1,276.0 seconds with seed `547342`,
-and all 15 Covenant obligations passed. Its type-stage continuation remained
-pending after correcting a private scratch-build layout; no full Lilly gate
-completion is claimed. The normal Marshall full-suite gaps above remain open.
+and all 15 Covenant obligations passed. After correcting the private scratch-build
+layout and rebuilding its PLT, the type-stage continuation passed in
+33.36 seconds with zero errors, skipped warnings or unnecessary skips.
+The original aggregate precommit command had exited at that private build-path
+failure, so no single full Lilly gate completion is claimed. The normal Marshall
+full-suite gaps above remain open.
 
 The preceding merged-source, catalog, font and focused-test results describe
 that `6467bcde` integration snapshot. The subsequent `aacb4be2c` trunk update
@@ -262,7 +265,58 @@ guidance and byte-equivalent decoded JSON hints. Moving the existing terminal
 close helper after the grouped control clauses repairs an incoming compiler
 warning without changing its body or behavior.
 
-At the latest source freeze, the expanded protocol precommit (seed `778386`),
-Porsche precommit and focused Marshall SSH/notification/approval checks were
-still in progress; latest Marshall extraction, catalog and forced-type outcomes
-were not yet recorded. Earlier completed checks retain the source scopes above.
+The final follow-up describes application source integrated through `433a1f570`;
+the intervening fixture-build, firewall and recorded-emulator updates do not
+change these application snapshots. A final read-only directory comparison
+confirmed current Marshall, protocol and Lilly `lib/` trees are byte-identical
+to the latest Marshall verification snapshot; Lilly's fixture-only test changes
+were separately validated below. The latest protocol `mix precommit` passed:
+all 418 tests passed in 913.9 seconds with seed `778386` and eight maximum cases,
+all 15 Covenant obligations passed, and both normal and explicit forced Dialyzer
+reported zero errors, skipped warnings or unnecessary skips. All current protocol
+`lib/`, `test/` and `contracts/` hashes match the validated isolated snapshot.
+This closes the ordinary BEAM protocol gate for that source, without extending
+native transport or physical isolation evidence.
+
+The latest Lilly consumer follow-up passed 92 focused terminal, control, actor
+and Android tests in 61.9 seconds with seed `54471` and eight maximum cases.
+Warning-free compilation and formatting passed; forced Dialyzer reported zero
+errors, skipped warnings or unnecessary skips in 25.06 seconds. Its initial
+focused attempt passed 84 of 92 tests: all eight failures came from handbuilt
+stream states missing the required empty `android_channels` map. Seven additions
+across five test files align six runtime fixtures and one typespec with production
+initialization. Production behavior, assertions, generators and budgets are
+unchanged. The earlier 652-test and 15-obligation results retain their historical
+snapshot scope; this follow-up is not a fresh full Lilly test suite.
+
+The latest Marshall focused runs passed 72 tests in 68.5 seconds with seed
+`333393`, covering `ssh/commands_test.exs`, `ssh/client_commands_test.exs`, all
+`notifications/` tests and `ssh_approval_live_test.exs`; and 18 tests in
+54.8 seconds with seed `670403`, covering `terminal/host_stream_test.exs` and all
+`android/` tests. Both used eight maximum cases. These cover the exact SSH wire
+projection, client commands, notification and approval behavior and the bounded
+host-stream/Android fixtures. Offline locale data, public-document freshness,
+strict catalog coverage, contracts, workspace units and TypeScript, and
+Monospace checks also passed. Native extraction freshness passed without
+regeneration. The final forced Dialyzer completed normally in 3 minutes
+59.42 seconds with zero errors, skipped warnings or unnecessary skips, after
+the relocated private PLT rebuilt in 9 minutes 25.25 seconds. The earlier full
+Marshall suite failures remain separate from these bounded passes.
+
+The latest Porsche test phase passed 140 of 141 tests in 326.9 seconds with seed
+`928886` and eight maximum cases. Only the existing invalid-boot property reached
+its 240-second aggregate deadline. An identical isolated rerun of that file
+passed both tests in 225.7 seconds with the same seed, preserving all three
+exhaustive fixture histories and the unchanged 240-second deadline. All seven
+Covenant obligations passed; forced Dialyzer reported zero errors, skipped
+warnings or unnecessary skips in 21.35 seconds after its PLT rebuild. The full
+precommit still exited nonzero on its earlier timeout; the isolated pass does not
+rewrite that outcome. The source, templates and normalized catalogs are unchanged.
+
+The final read-only requirement audit found no additional implementation gap in
+the requested localization scope. The accepted architecture and partial ADR
+statuses remain unchanged. Structural catalog completeness, finite BEAM gates
+and the historical Bombadil settings receipt retain distinct scopes; all-route
+and cross-browser shaping, native Porsche/guest journeys and independent
+linguistic correctness remain unestablished. Independent native-speaker review
+is not a release requirement for this task.
