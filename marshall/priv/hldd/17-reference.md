@@ -322,6 +322,12 @@ sequences from its attempt count plus fixed offsets up to 340, so successive
 commands reused sequences, and the spool correctly stored an identical body
 once. Each command now reserves a disjoint 400-sequence block from the
 workload ledger.
+The 60-minute repository-origin run `87b10ca4372b6665c886027b4fd22872-65-0`
+recorded one unexpected Enrico container exit: the restart case relaunched the
+release during a network partition, it exited before readiness, and the
+container supervisor ended the container. Production's unit restarts Enrico
+after 5 s and allows a 90 s stop, so the supervisor now mirrors both while the
+restart result stays uncertain.
 The sequence space is finite: the modulo allocator reuses a 400-value block
 after 2,499 reservations. The added unit test checks only the first three
 reservations across new client instances; it does not establish uniqueness
