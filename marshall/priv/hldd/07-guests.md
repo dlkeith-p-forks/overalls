@@ -1828,8 +1828,12 @@ emulator uses TCG software rendering without host KVM; readiness is bounded at
 600 seconds. ADB and display authority are withheld until emulator readiness.
 The image's current RFB bridge is loopback-bound for diagnostics only; it is not
 an authenticated display authority. The guest now validates Lilly's bounded
-display preface in a typed fixed-port relay before forwarding to loopback RFB;
-Lilly's namespace ingress remains the network authority. The profile reserves
+display preface in a typed fixed-port relay before forwarding to loopback RFB.
+The guest firewall declares TCP 22 globally and admits the relay's TCP 5900 only
+on `eth0`, the guest TAP interface; raw RFB remains on loopback TCP 5901. This
+interface restriction is separate from signed tickets, current-generation
+checks and Lilly's namespace ingress authority. It records the firewall
+declaration, not a passing native packet-filter test. The profile reserves
 8 GiB memory and 32 GiB writable disk. Signed ticket verification, browser
 controller/viewer leases and native Firecracker acceptance remain outside this
 guest-only evidence.
