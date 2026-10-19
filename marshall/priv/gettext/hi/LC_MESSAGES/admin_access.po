@@ -109,6 +109,7 @@ msgid "Invalid administrative request."
 msgstr "अमान्य प्रशासनिक अनुरोध।"
 
 #: lib/marshall_web/live/admin/access_live.ex:60
+#: lib/marshall_web/live/admin/scim_live.ex:42
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "अमान्य अनुरोध।"
@@ -351,3 +352,53 @@ msgstr "इस खाते को हर जगह से साइन आउ�
 #, elixir-autogen, elixir-format
 msgid "start this node evacuation"
 msgstr "इस नोड की निकासी शुरू करें"
+
+#: lib/marshall_web/live/admin/scim_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Configure directory provisioning, identity lifecycle and managed teams."
+msgstr "निर्देशिका प्रोविज़निंग, पहचान जीवनचक्र और प्रबंधित टीमों को कॉन्फ़िगर करें।"
+
+#: lib/marshall_web/live/admin/scim_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "Copy this bearer token now. It will not be shown again."
+msgstr "इस बियरर टोकन को अभी कॉपी करें। इसे फिर नहीं दिखाया जाएगा।"
+
+#: lib/marshall_web/live/admin/scim_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM"
+msgstr "SCIM अक्षम करें"
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Enable SCIM and generate token"
+msgstr "SCIM सक्षम करें और टोकन बनाएँ"
+
+#: lib/marshall_web/live/admin/scim_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration"
+msgstr "SCIM कॉन्फ़िगरेशन"
+
+#: lib/marshall_web/live/admin/scim_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration could not be updated."
+msgstr "SCIM कॉन्फ़िगरेशन अपडेट नहीं हो सका।"
+
+#: lib/marshall_web/live/admin/scim_live.ex:29
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration updated."
+msgstr "SCIM कॉन्फ़िगरेशन अपडेट किया गया।"
+
+#: lib/marshall_web/live/admin/scim_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "SCIM is disabled."
+msgstr "SCIM अक्षम है।"
+
+#: lib/marshall_web/live/admin/scim_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "SCIM is enabled."
+msgstr "SCIM सक्षम है।"
+
+#: lib/marshall_web/live/admin/scim_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning"
+msgstr "SCIM प्रोविज़निंग"

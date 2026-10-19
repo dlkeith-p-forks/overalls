@@ -20,7 +20,7 @@ msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
 msgstr[0] "拥有 %{count} 台机器"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "账户页面"
@@ -65,7 +65,7 @@ msgstr "无法更改管理员权限。"
 msgid "Could not revoke browser sessions."
 msgstr "无法撤销浏览器会话。"
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "删除用户及其机器"
@@ -80,7 +80,7 @@ msgstr "邮箱地址"
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "此部署中的所有账户。已登录用户可以阅读此页面；更改需要最近验证过通行密钥的管理员。"
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "授予此账户管理整个集群和所有机器的权限？"
@@ -105,42 +105,42 @@ msgstr "已启用多因素验证"
 msgid "MFA not enrolled"
 msgstr "尚未登记多因素验证"
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "设为管理员"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "下一页 →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "本页没有账户。"
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "永久删除此账户及其拥有的全部机器，包括与他人共享的机器？"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "移除管理员"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "移除此账户的管理员权限？"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "重置多因素验证"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "重置此用户的多因素验证并撤销所有浏览器会话？用户必须登记新的通行密钥。"
@@ -150,17 +150,17 @@ msgstr "重置此用户的多因素验证并撤销所有浏览器会话？用户
 msgid "Send invitation"
 msgstr "发送邀请"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "退出所有设备"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "退出此账户的所有浏览器会话？"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "输入邮箱以删除此账户及其 %{count} 台机器"
@@ -185,7 +185,7 @@ msgstr "使用通行密钥验证 · 管理员权限有效期为 15 分钟 →"
 msgid "· Your account"
 msgstr "· 你的账户"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← 第一页"
@@ -195,7 +195,7 @@ msgstr "← 第一页"
 msgid "Deleted"
 msgstr "已删除"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "正在删除机器"
@@ -205,7 +205,7 @@ msgstr "正在删除机器"
 msgid "Retrying machine cleanup"
 msgstr "正在重试清理机器"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "不可用"

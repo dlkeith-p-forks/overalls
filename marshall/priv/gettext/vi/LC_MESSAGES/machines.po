@@ -24,7 +24,7 @@ msgstr " và vẫn đang tăng"
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} giây%{suffix}"
 
-#: lib/marshall_web/live/resize_live.ex:311
+#: lib/marshall_web/live/resize_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "%{value1} CPU"
 msgstr "%{value1} CPU"
@@ -33,12 +33,12 @@ msgstr "%{value1} CPU"
 #: lib/marshall_web/live/machines_live.ex:1043
 #: lib/marshall_web/live/overview_live.ex:315
 #: lib/marshall_web/live/overview_live.ex:320
-#: lib/marshall_web/live/resize_live.ex:317
+#: lib/marshall_web/live/resize_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
 msgstr "%{value1} GiB"
 
-#: lib/marshall_web/live/resize_live.ex:314
+#: lib/marshall_web/live/resize_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "%{value1} MiB"
 msgstr "%{value1} MiB"
@@ -49,7 +49,9 @@ msgstr "%{value1} MiB"
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
 
+#: lib/marshall_web/live/admin/workloads_live.ex:159
 #: lib/marshall_web/live/machines_live.ex:782
+#: lib/marshall_web/live/overview_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB đĩa"
@@ -59,20 +61,20 @@ msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB đĩa"
 msgid "%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} MiB bộ nhớ · %{value3} GiB đĩa"
 
-#: lib/marshall_web/live/resize_live.ex:355
-#: lib/marshall_web/live/resize_live.ex:468
+#: lib/marshall_web/live/resize_live.ex:360
+#: lib/marshall_web/live/resize_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} CPU"
 msgstr "%{value1} → %{value2} CPU"
 
-#: lib/marshall_web/live/resize_live.ex:371
-#: lib/marshall_web/live/resize_live.ex:480
+#: lib/marshall_web/live/resize_live.ex:376
+#: lib/marshall_web/live/resize_live.ex:485
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} GiB"
 msgstr "%{value1} → %{value2} GiB"
 
-#: lib/marshall_web/live/resize_live.ex:361
-#: lib/marshall_web/live/resize_live.ex:474
+#: lib/marshall_web/live/resize_live.ex:366
+#: lib/marshall_web/live/resize_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
@@ -137,7 +139,7 @@ msgstr ""
 "Xác minh quản trị đã hết hạn. Chọn máy trong Tải công việc toàn hệ thống và "
 "xác minh khóa truy cập để mở lại."
 
-#: lib/marshall_web/live/resize_live.ex:278
+#: lib/marshall_web/live/resize_live.ex:283
 #, elixir-autogen, elixir-format
 msgid "Administrative verification expired. Your resize draft is kept in this page's address."
 msgstr ""
@@ -156,24 +158,24 @@ msgstr "Đã xóa mọi bản sao được giữ lại"
 msgid "Allows"
 msgstr "Cho phép"
 
-#: lib/marshall_web/components/clone_components.ex:364
+#: lib/marshall_web/components/clone_components.ex:369
 #, elixir-autogen, elixir-format
 msgid "Another copy or move is using this host's transfer slot. Retry when it finishes."
 msgstr ""
 "Bản sao hoặc lần chuyển khác đang dùng suất truyền của máy chủ. Thử lại khi "
 "hoàn tất."
 
-#: lib/marshall_web/live/resize_live.ex:632
+#: lib/marshall_web/live/resize_live.ex:642
 #, elixir-autogen, elixir-format
 msgid "Apply the new sizes"
 msgstr "Áp dụng kích thước mới"
 
-#: lib/marshall_web/live/resize_live.ex:639
+#: lib/marshall_web/live/resize_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "Apply the new sizes while stopped"
 msgstr "Áp dụng kích thước mới khi đã dừng"
 
-#: lib/marshall_web/live/resize_live.ex:566
+#: lib/marshall_web/live/resize_live.ex:571
 #, elixir-autogen, elixir-format
 msgid "Applying the new CPU, memory and disk sizes on the host."
 msgstr "Đang áp dụng kích thước CPU, bộ nhớ và đĩa mới trên máy chủ."
@@ -183,7 +185,7 @@ msgstr "Đang áp dụng kích thước CPU, bộ nhớ và đĩa mới trên m�
 msgid "Back to overview"
 msgstr "Quay lại tổng quan"
 
-#: lib/marshall_web/components/clone_components.ex:202
+#: lib/marshall_web/components/clone_components.ex:207
 #, elixir-autogen, elixir-format
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "Tạm dừng nguồn trong chốc lát để chụp đĩa an toàn."
@@ -195,10 +197,10 @@ msgstr "Đưa kho GitHub, GitLab, Codeberg hoặc Bitbucket vào Overalls bằng
 
 #: lib/marshall_web/live/machines_live.ex:1036
 #: lib/marshall_web/live/overview_live.ex:311
-#: lib/marshall_web/live/resize_live.ex:310
-#: lib/marshall_web/live/resize_live.ex:354
-#: lib/marshall_web/live/resize_live.ex:442
-#: lib/marshall_web/live/resize_live.ex:467
+#: lib/marshall_web/live/resize_live.ex:315
+#: lib/marshall_web/live/resize_live.ex:359
+#: lib/marshall_web/live/resize_live.ex:447
+#: lib/marshall_web/live/resize_live.ex:472
 #, elixir-autogen, elixir-format
 msgid "CPU"
 msgstr "CPU"
@@ -208,7 +210,7 @@ msgstr "CPU"
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
 
-#: lib/marshall_web/live/resize_live.ex:302
+#: lib/marshall_web/live/resize_live.ex:307
 #, elixir-autogen, elixir-format
 msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "CPU và bộ nhớ có thể tăng hoặc giảm. Kích thước đĩa chỉ có thể tăng."
@@ -229,7 +231,7 @@ msgstr "Không thể chấp nhận hủy. Kích thước đang được áp dụ
 msgid "Cancel move"
 msgstr "Hủy di chuyển"
 
-#: lib/marshall_web/live/resize_live.ex:404
+#: lib/marshall_web/live/resize_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "Cancel resize"
 msgstr "Hủy đổi kích thước"
@@ -239,19 +241,19 @@ msgstr "Hủy đổi kích thước"
 msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr "Đã yêu cầu hủy. Việc dọn dẹp có thể tiếp tục sau khi khôi phục."
 
-#: lib/marshall_web/live/resize_live.ex:537
-#: lib/marshall_web/live/resize_live.ex:589
-#: lib/marshall_web/live/resize_live.ex:603
+#: lib/marshall_web/live/resize_live.ex:542
+#: lib/marshall_web/live/resize_live.ex:594
+#: lib/marshall_web/live/resize_live.ex:608
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "Đã hủy"
 
-#: lib/marshall_web/components/clone_components.ex:318
+#: lib/marshall_web/components/clone_components.ex:323
 #, elixir-autogen, elixir-format
 msgid "Cancelled before the snapshot started."
 msgstr "Đã hủy trước khi bắt đầu chụp nhanh."
 
-#: lib/marshall_web/live/resize_live.ex:536
+#: lib/marshall_web/live/resize_live.ex:541
 #, elixir-autogen, elixir-format
 msgid "Cancelling"
 msgstr "Đang hủy"
@@ -261,17 +263,17 @@ msgstr "Đang hủy"
 msgid "Cancelling and restoring the source"
 msgstr "Đang hủy và khôi phục nguồn"
 
-#: lib/marshall_web/components/clone_components.ex:244
+#: lib/marshall_web/components/clone_components.ex:249
 #, elixir-autogen, elixir-format
 msgid "Cancelling clone"
 msgstr "Đang hủy nhân bản"
 
-#: lib/marshall_web/live/resize_live.ex:553
+#: lib/marshall_web/live/resize_live.ex:558
 #, elixir-autogen, elixir-format
 msgid "Cancelling: waiting for the stop to confirm, then restarting with the current sizes."
 msgstr "Đang hủy: chờ xác nhận dừng rồi khởi động lại với kích thước hiện tại."
 
-#: lib/marshall_web/live/resize_live.ex:560
+#: lib/marshall_web/live/resize_live.ex:565
 #, elixir-autogen, elixir-format
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "Đang hủy: chờ xác nhận dừng; kích thước không đổi."
@@ -286,7 +288,7 @@ msgstr "Đang hủy…"
 msgid "Capacity is checked again when you create a machine."
 msgstr "Dung lượng được kiểm tra lại khi bạn tạo máy."
 
-#: lib/marshall_web/components/clone_components.ex:208
+#: lib/marshall_web/components/clone_components.ex:213
 #, elixir-autogen, elixir-format
 msgid "Capturing the source disk. Copying begins after the snapshot is ready."
 msgstr "Đang chụp đĩa nguồn. Việc sao chép bắt đầu khi bản chụp nhanh sẵn sàng."
@@ -321,12 +323,12 @@ msgstr "Chọn ảnh và tài nguyên cho môi trường của bạn."
 msgid "Choose your environment"
 msgstr "Chọn môi trường của bạn"
 
-#: lib/marshall_web/components/clone_components.ex:252
+#: lib/marshall_web/components/clone_components.ex:257
 #, elixir-autogen, elixir-format
 msgid "Clone cancelled"
 msgstr "Đã hủy nhân bản"
 
-#: lib/marshall_web/components/clone_components.ex:236
+#: lib/marshall_web/components/clone_components.ex:241
 #, elixir-autogen, elixir-format
 msgid "Clone complete"
 msgstr "Đã hoàn tất nhân bản"
@@ -336,7 +338,7 @@ msgstr "Đã hoàn tất nhân bản"
 msgid "Clone machine"
 msgstr "Nhân bản máy"
 
-#: lib/marshall_web/components/clone_components.ex:257
+#: lib/marshall_web/components/clone_components.ex:262
 #, elixir-autogen, elixir-format
 msgid "Clone needs attention"
 msgstr "Nhân bản cần được xử lý"
@@ -366,12 +368,12 @@ msgstr "Giai đoạn nhân bản"
 msgid "Comment"
 msgstr "Bình luận"
 
-#: lib/marshall_web/live/resize_live.ex:535
+#: lib/marshall_web/live/resize_live.ex:540
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "Hoàn tất"
 
-#: lib/marshall_web/live/resize_live.ex:308
+#: lib/marshall_web/live/resize_live.ex:313
 #, elixir-autogen, elixir-format
 msgid "Confirmed resources"
 msgstr "Tài nguyên đã xác nhận"
@@ -387,12 +389,12 @@ msgstr "Kết nối"
 msgid "Connect an integration ↗"
 msgstr "Kết nối tích hợp ↗"
 
-#: lib/marshall_web/components/clone_components.ex:281
+#: lib/marshall_web/components/clone_components.ex:286
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "Đang sao chép"
 
-#: lib/marshall_web/components/clone_components.ex:215
+#: lib/marshall_web/components/clone_components.ex:220
 #, elixir-autogen, elixir-format
 msgid "Copying files"
 msgstr "Đang sao chép tệp"
@@ -424,12 +426,12 @@ msgstr "Tạo máy"
 msgid "Create your first machine"
 msgstr "Tạo máy đầu tiên của bạn"
 
-#: lib/marshall_web/components/clone_components.ex:216
+#: lib/marshall_web/components/clone_components.ex:221
 #, elixir-autogen, elixir-format
 msgid "Creating an independent disk from the snapshot. Source recovery proceeds separately."
 msgstr "Đang tạo đĩa độc lập từ bản chụp nhanh. Nguồn được khôi phục riêng."
 
-#: lib/marshall_web/components/clone_components.ex:223
+#: lib/marshall_web/components/clone_components.ex:228
 #, elixir-autogen, elixir-format
 msgid "Creating cloned machine"
 msgstr "Đang tạo máy nhân bản"
@@ -518,9 +520,9 @@ msgstr "Quyền máy được cấp trực tiếp"
 
 #: lib/marshall_web/live/machines_live.ex:1042
 #: lib/marshall_web/live/overview_live.ex:319
-#: lib/marshall_web/live/resize_live.ex:316
-#: lib/marshall_web/live/resize_live.ex:370
-#: lib/marshall_web/live/resize_live.ex:479
+#: lib/marshall_web/live/resize_live.ex:321
+#: lib/marshall_web/live/resize_live.ex:375
+#: lib/marshall_web/live/resize_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "Disk"
 msgstr "Đĩa"
@@ -530,7 +532,7 @@ msgstr "Đĩa"
 msgid "Disk (GiB)"
 msgstr "Đĩa (GiB)"
 
-#: lib/marshall_web/live/resize_live.ex:459
+#: lib/marshall_web/live/resize_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "Đĩa (GiB) — Tối đa 500 GiB"
@@ -590,12 +592,12 @@ msgstr "Bản sao gồm tệp và thông tin xác thực đã lưu."
 msgid "Find your people ↗"
 msgstr "Tìm đồng đội ↗"
 
-#: lib/marshall_web/components/clone_components.ex:282
+#: lib/marshall_web/components/clone_components.ex:287
 #, elixir-autogen, elixir-format
 msgid "Finishing"
 msgstr "Đang hoàn tất"
 
-#: lib/marshall_web/components/clone_components.ex:228
+#: lib/marshall_web/components/clone_components.ex:233
 #, elixir-autogen, elixir-format
 msgid "Finishing up"
 msgstr "Đang hoàn thiện"
@@ -615,7 +617,7 @@ msgstr "Dành chỗ để phát triển"
 msgid "Grant, change or remove access"
 msgstr "Cấp, đổi hoặc xóa quyền truy cập"
 
-#: lib/marshall_web/live/resize_live.ex:640
+#: lib/marshall_web/live/resize_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Grow the filesystem on next boot"
 msgstr "Mở rộng hệ thống tệp ở lần khởi động tới"
@@ -689,9 +691,9 @@ msgstr "Để trống để tạo tên tự động"
 msgid "Leave blank to generate a name."
 msgstr "Để trống để tạo tên tự động."
 
-#: lib/marshall_web/live/resize_live.ex:584
-#: lib/marshall_web/live/resize_live.ex:598
-#: lib/marshall_web/live/resize_live.ex:614
+#: lib/marshall_web/live/resize_live.ex:589
+#: lib/marshall_web/live/resize_live.ex:603
+#: lib/marshall_web/live/resize_live.ex:619
 #, elixir-autogen, elixir-format
 msgid "Leave stopped"
 msgstr "Giữ trạng thái dừng"
@@ -767,15 +769,15 @@ msgstr "Đo giữa các quan sát dừng và sẵn sàng của mặt phẳng đi
 
 #: lib/marshall_web/live/machines_live.ex:1039
 #: lib/marshall_web/live/overview_live.ex:314
-#: lib/marshall_web/live/resize_live.ex:313
-#: lib/marshall_web/live/resize_live.ex:360
-#: lib/marshall_web/live/resize_live.ex:473
+#: lib/marshall_web/live/resize_live.ex:318
+#: lib/marshall_web/live/resize_live.ex:365
+#: lib/marshall_web/live/resize_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Memory"
 msgstr "Bộ nhớ"
 
 #: lib/marshall_web/live/machines_live.ex:963
-#: lib/marshall_web/live/resize_live.ex:450
+#: lib/marshall_web/live/resize_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "Bộ nhớ (MiB)"
@@ -806,7 +808,7 @@ msgid "Move to another host"
 msgstr "Di chuyển sang máy chủ khác"
 
 #: lib/marshall_web/components/clone_components.ex:135
-#: lib/marshall_web/live/resize_live.ex:337
+#: lib/marshall_web/live/resize_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "Needs attention"
 msgstr "Cần xử lý"
@@ -816,7 +818,7 @@ msgstr "Cần xử lý"
 msgid "New machine name (optional)"
 msgstr "Tên máy mới (tùy chọn)"
 
-#: lib/marshall_web/live/resize_live.ex:417
+#: lib/marshall_web/live/resize_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "New sizes"
 msgstr "Kích thước mới"
@@ -937,7 +939,9 @@ msgstr "Tổng quan"
 msgid "Owner"
 msgstr "Chủ sở hữu"
 
-#: lib/marshall_web/live/resize_live.ex:538
+#: lib/marshall_web/components/clone_components.ex:406
+#: lib/marshall_web/live/resize_live.ex:257
+#: lib/marshall_web/live/resize_live.ex:543
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Đang chờ"
@@ -947,7 +951,7 @@ msgstr "Đang chờ"
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "Xóa vĩnh viễn máy này và đĩa của nó. Không thể hoàn tác."
 
-#: lib/marshall_web/components/clone_components.ex:377
+#: lib/marshall_web/components/clone_components.ex:382
 #, elixir-autogen, elixir-format
 msgid "Permission to clone this machine is no longer available."
 msgstr "Quyền nhân bản máy này không còn khả dụng."
@@ -963,27 +967,27 @@ msgstr "Cá nhân"
 msgid "Phase"
 msgstr "Giai đoạn"
 
-#: lib/marshall_web/live/resize_live.ex:319
+#: lib/marshall_web/live/resize_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Power"
 msgstr "Nguồn điện"
 
-#: lib/marshall_web/live/resize_live.ex:376
+#: lib/marshall_web/live/resize_live.ex:381
 #, elixir-autogen, elixir-format
 msgid "Power afterwards"
 msgstr "Trạng thái nguồn sau đó"
 
-#: lib/marshall_web/components/clone_components.ex:279
+#: lib/marshall_web/components/clone_components.ex:284
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "Đang chuẩn bị"
 
-#: lib/marshall_web/components/clone_components.ex:195
+#: lib/marshall_web/components/clone_components.ex:200
 #, elixir-autogen, elixir-format
 msgid "Preparing clone"
 msgstr "Đang chuẩn bị bản nhân bản"
 
-#: lib/marshall_web/components/clone_components.ex:196
+#: lib/marshall_web/components/clone_components.ex:201
 #, elixir-autogen, elixir-format
 msgid "Preparing space and checking the source before taking a snapshot."
 msgstr "Đang chuẩn bị không gian và kiểm tra nguồn trước khi chụp nhanh."
@@ -1022,12 +1026,13 @@ msgid "Profiles choose access and agent features. Machines remain isolated from 
 msgstr "Hồ sơ chọn tính năng truy cập và tác tử. Các máy vẫn được cách ly với nhau."
 
 #: lib/marshall_web/components/clone_components.ex:64
+#: lib/marshall_web/components/clone_components.ex:156
 #, elixir-autogen, elixir-format
 msgid "Queue position %{value1}"
 msgstr "Vị trí hàng đợi %{value1}"
 
-#: lib/marshall_web/components/clone_components.ex:187
-#: lib/marshall_web/components/clone_components.ex:278
+#: lib/marshall_web/components/clone_components.ex:192
+#: lib/marshall_web/components/clone_components.ex:283
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr "Đã xếp hàng"
@@ -1077,7 +1082,7 @@ msgstr "Đang làm mới…"
 msgid "Registered email"
 msgstr "Email đã đăng ký"
 
-#: lib/marshall_web/components/clone_components.ex:224
+#: lib/marshall_web/components/clone_components.ex:229
 #, elixir-autogen, elixir-format
 msgid "Registering the copied disk as your private machine."
 msgstr "Đang đăng ký đĩa đã sao chép thành máy riêng của bạn."
@@ -1092,7 +1097,7 @@ msgstr "Di chuyển máy"
 msgid "Relocation requested. A destination is selected automatically."
 msgstr "Đã yêu cầu di chuyển. Đích đến được chọn tự động."
 
-#: lib/marshall_web/live/resize_live.ex:380
+#: lib/marshall_web/live/resize_live.ex:385
 #, elixir-autogen, elixir-format
 msgid "Remains stopped; the filesystem grows on the next boot"
 msgstr "Vẫn dừng; hệ thống tệp sẽ mở rộng trong lần khởi động tiếp theo"
@@ -1108,7 +1113,7 @@ msgstr "Xóa quyền truy cập"
 msgid "Requesting cancellation…"
 msgstr "Đang yêu cầu hủy…"
 
-#: lib/marshall_web/live/resize_live.ex:508
+#: lib/marshall_web/live/resize_live.ex:513
 #, elixir-autogen, elixir-format
 msgid "Requesting resize…"
 msgstr "Đang yêu cầu đổi kích thước…"
@@ -1129,11 +1134,12 @@ msgid "Requesting…"
 msgstr "Đang yêu cầu…"
 
 #: lib/marshall_web/live/machines_live.ex:1028
+#: lib/marshall_web/live/resize_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Đổi kích thước"
 
-#: lib/marshall_web/live/resize_live.ex:512
+#: lib/marshall_web/live/resize_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "Resize and restart"
 msgstr "Đổi kích thước và khởi động lại"
@@ -1148,19 +1154,19 @@ msgstr "Đã hủy đổi kích thước."
 msgid "Resize could not be accepted. Check the sizes and current machine state."
 msgstr "Không thể chấp nhận đổi kích thước. Hãy kiểm tra kích thước và trạng thái máy hiện tại."
 
-#: lib/marshall_web/live/resize_live.ex:334
+#: lib/marshall_web/live/resize_live.ex:339
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
 msgstr "Đang đổi kích thước"
 
 #: lib/marshall_web/live/resize_live.ex:12
-#: lib/marshall_web/live/resize_live.ex:300
-#: lib/marshall_web/live/resize_live.ex:513
+#: lib/marshall_web/live/resize_live.ex:305
+#: lib/marshall_web/live/resize_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "Resize machine"
 msgstr "Đổi kích thước máy"
 
-#: lib/marshall_web/live/resize_live.ex:384
+#: lib/marshall_web/live/resize_live.ex:389
 #, elixir-autogen, elixir-format
 msgid "Resize needs attention. Confirmed disk growth is retained. Retry resumes the recorded phase."
 msgstr "Cần xử lý việc đổi kích thước. Phần mở rộng đĩa đã xác nhận được giữ lại. Thử lại sẽ tiếp tục giai đoạn đã ghi nhận."
@@ -1170,12 +1176,12 @@ msgstr "Cần xử lý việc đổi kích thước. Phần mở rộng đĩa đ
 msgid "Resize requested."
 msgstr "Đã yêu cầu đổi kích thước."
 
-#: lib/marshall_web/live/resize_live.ex:343
+#: lib/marshall_web/live/resize_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "Resize stages"
 msgstr "Các giai đoạn đổi kích thước"
 
-#: lib/marshall_web/live/resize_live.ex:532
+#: lib/marshall_web/live/resize_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Resizing"
 msgstr "Đang đổi kích thước"
@@ -1187,29 +1193,29 @@ msgstr "Đang đổi kích thước"
 msgid "Resources"
 msgstr "Tài nguyên"
 
-#: lib/marshall_web/live/resize_live.ex:613
+#: lib/marshall_web/live/resize_live.ex:618
 #, elixir-autogen, elixir-format
 msgid "Restart"
 msgstr "Khởi động lại"
 
-#: lib/marshall_web/live/resize_live.ex:583
-#: lib/marshall_web/live/resize_live.ex:597
+#: lib/marshall_web/live/resize_live.ex:588
+#: lib/marshall_web/live/resize_live.ex:602
 #, elixir-autogen, elixir-format
 msgid "Restart unchanged"
 msgstr "Khởi động lại với cấu hình cũ"
 
-#: lib/marshall_web/live/resize_live.ex:633
+#: lib/marshall_web/live/resize_live.ex:643
 #, elixir-autogen, elixir-format
 msgid "Restart with the new resources"
 msgstr "Khởi động lại với tài nguyên mới"
 
-#: lib/marshall_web/live/resize_live.ex:378
+#: lib/marshall_web/live/resize_live.ex:383
 #, elixir-autogen, elixir-format
 msgid "Restarted"
 msgstr "Đã khởi động lại"
 
-#: lib/marshall_web/live/resize_live.ex:533
-#: lib/marshall_web/live/resize_live.ex:534
+#: lib/marshall_web/live/resize_live.ex:538
+#: lib/marshall_web/live/resize_live.ex:539
 #, elixir-autogen, elixir-format
 msgid "Restarting"
 msgstr "Đang khởi động lại"
@@ -1229,12 +1235,12 @@ msgstr "Không thể chấp nhận yêu cầu thử lại. Dung lượng hoặc 
 msgid "Retry destination boot"
 msgstr "Thử khởi động đích lại"
 
-#: lib/marshall_web/live/resize_live.ex:396
+#: lib/marshall_web/live/resize_live.ex:401
 #, elixir-autogen, elixir-format
 msgid "Retry resize"
 msgstr "Thử đổi kích thước lại"
 
-#: lib/marshall_web/live/resize_live.ex:285
+#: lib/marshall_web/live/resize_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "Return to Fleet workloads and verify your passkey to reopen the machine →"
 msgstr "Quay lại khối lượng công việc của đội máy và xác minh khóa truy cập để mở lại máy →"
@@ -1267,7 +1273,7 @@ msgstr "Không gian để phát triển"
 msgid "Root disk (GiB)"
 msgstr "Đĩa gốc (GiB)"
 
-#: lib/marshall_web/live/resize_live.ex:321
+#: lib/marshall_web/live/resize_live.ex:326
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "Đang chạy"
@@ -1317,17 +1323,17 @@ msgstr "Mô tả ngắn cho tác nhân"
 msgid "Sign in if needed, then Overalls will create your machine."
 msgstr "Đăng nhập nếu cần, sau đó Overalls sẽ tạo máy cho bạn."
 
-#: lib/marshall_web/components/clone_components.ex:280
+#: lib/marshall_web/components/clone_components.ex:285
 #, elixir-autogen, elixir-format
 msgid "Snapshot"
 msgstr "Ảnh chụp nhanh"
 
-#: lib/marshall_web/components/clone_components.ex:315
+#: lib/marshall_web/components/clone_components.ex:320
 #, elixir-autogen, elixir-format
 msgid "Snapshot did not start."
 msgstr "Chụp nhanh chưa bắt đầu."
 
-#: lib/marshall_web/components/clone_components.ex:312
+#: lib/marshall_web/components/clone_components.ex:317
 #, elixir-autogen, elixir-format
 msgid "Snapshot has not started."
 msgstr "Chưa bắt đầu chụp nhanh."
@@ -1337,17 +1343,17 @@ msgstr "Chưa bắt đầu chụp nhanh."
 msgid "Source machine"
 msgstr "Máy nguồn"
 
-#: lib/marshall_web/components/clone_components.ex:326
+#: lib/marshall_web/components/clone_components.ex:331
 #, elixir-autogen, elixir-format
 msgid "Source recovery follows the snapshot."
 msgstr "Khôi phục nguồn diễn ra sau khi chụp nhanh."
 
-#: lib/marshall_web/components/clone_components.ex:306
+#: lib/marshall_web/components/clone_components.ex:311
 #, elixir-autogen, elixir-format
 msgid "Source recovery needs attention."
 msgstr "Cần xử lý việc khôi phục nguồn."
 
-#: lib/marshall_web/components/clone_components.ex:309
+#: lib/marshall_web/components/clone_components.ex:314
 #, elixir-autogen, elixir-format
 msgid "Source recovery retry requested."
 msgstr "Đã yêu cầu thử khôi phục nguồn lại."
@@ -1357,17 +1363,17 @@ msgstr "Đã yêu cầu thử khôi phục nguồn lại."
 msgid "Source restored; destination cleanup pending"
 msgstr "Đã khôi phục nguồn; đang chờ dọn dẹp đích"
 
-#: lib/marshall_web/components/clone_components.ex:303
+#: lib/marshall_web/components/clone_components.ex:308
 #, elixir-autogen, elixir-format
 msgid "Source returned to its original power state."
 msgstr "Nguồn đã trở về trạng thái nguồn điện ban đầu."
 
-#: lib/marshall_web/components/clone_components.ex:300
+#: lib/marshall_web/components/clone_components.ex:305
 #, elixir-autogen, elixir-format
 msgid "Source was kept stopped, matching its state when this request began."
 msgstr "Nguồn được giữ ở trạng thái dừng, giống lúc yêu cầu này bắt đầu."
 
-#: lib/marshall_web/components/clone_components.ex:323
+#: lib/marshall_web/components/clone_components.ex:328
 #, elixir-autogen, elixir-format
 msgid "Source was stopped when this request began."
 msgstr "Nguồn đang dừng khi yêu cầu này bắt đầu."
@@ -1383,7 +1389,7 @@ msgstr "Tiêu chuẩn"
 msgid "Starting"
 msgstr "Đang khởi động"
 
-#: lib/marshall_web/live/resize_live.ex:569
+#: lib/marshall_web/live/resize_live.ex:574
 #, elixir-autogen, elixir-format
 msgid "Starting the machine with its new resources."
 msgstr "Đang khởi động máy với tài nguyên mới."
@@ -1399,44 +1405,45 @@ msgstr "Tình trạng"
 msgid "Stay in the loop"
 msgstr "Theo dõi tin tức mới nhất"
 
-#: lib/marshall_web/components/clone_components.ex:385
+#: lib/marshall_web/components/clone_components.ex:390
 #, elixir-autogen, elixir-format
 msgid "Step %{value1} is waiting on the host: %{value2}"
 msgstr "Bước %{value1} đang chờ trên máy chủ: %{value2}"
 
-#: lib/marshall_web/live/resize_live.ex:587
-#: lib/marshall_web/live/resize_live.ex:601
+#: lib/marshall_web/live/resize_live.ex:592
+#: lib/marshall_web/live/resize_live.ex:606
+#: lib/marshall_web/live/resize_live.ex:622
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Dừng"
 
-#: lib/marshall_web/live/resize_live.ex:631
+#: lib/marshall_web/live/resize_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "Stop the machine"
 msgstr "Dừng máy"
 
-#: lib/marshall_web/live/resize_live.ex:322
+#: lib/marshall_web/live/resize_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "Đã dừng"
 
 #: lib/marshall_web/live/machines_live.ex:637
-#: lib/marshall_web/live/resize_live.ex:531
+#: lib/marshall_web/live/resize_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Stopping"
 msgstr "Đang dừng"
 
-#: lib/marshall_web/components/clone_components.ex:201
+#: lib/marshall_web/components/clone_components.ex:206
 #, elixir-autogen, elixir-format
 msgid "Stopping source for snapshot"
 msgstr "Đang dừng nguồn để chụp nhanh"
 
-#: lib/marshall_web/components/clone_components.ex:245
+#: lib/marshall_web/components/clone_components.ex:250
 #, elixir-autogen, elixir-format
 msgid "Stopping the copy and removing temporary resources. Source recovery is tracked separately."
 msgstr "Đang dừng sao chép và xóa tài nguyên tạm. Việc khôi phục nguồn được theo dõi riêng."
 
-#: lib/marshall_web/live/resize_live.ex:549
+#: lib/marshall_web/live/resize_live.ex:554
 #, elixir-autogen, elixir-format
 msgid "Stopping the machine so its resources can change safely."
 msgstr "Đang dừng máy để thay đổi tài nguyên an toàn."
@@ -1456,7 +1463,7 @@ msgstr "Đăng ký"
 msgid "Switching placement"
 msgstr "Đang chuyển vị trí triển khai"
 
-#: lib/marshall_web/components/clone_components.ex:207
+#: lib/marshall_web/components/clone_components.ex:212
 #, elixir-autogen, elixir-format
 msgid "Taking snapshot"
 msgstr "Đang chụp nhanh"
@@ -1501,12 +1508,12 @@ msgstr "Không thể khởi chạy tham chiếu kho mã đó."
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
 msgstr "Tài khoản phải được đăng ký trước. Lưu vai trò sẽ thay thế vai trò trực tiếp của người đó đối với máy; chọn Xóa quyền truy cập để xóa quyền trực tiếp ấy."
 
-#: lib/marshall_web/components/clone_components.ex:229
+#: lib/marshall_web/components/clone_components.ex:234
 #, elixir-autogen, elixir-format
 msgid "The clone can be opened. Finalizing its power state and cleaning up temporary resources."
 msgstr "Có thể mở bản nhân bản. Đang hoàn tất trạng thái nguồn điện và dọn dẹp tài nguyên tạm."
 
-#: lib/marshall_web/components/clone_components.ex:339
+#: lib/marshall_web/components/clone_components.ex:344
 #, elixir-autogen, elixir-format
 msgid "The clone could not start. Open it to review its status and power controls."
 msgstr "Không thể khởi động bản nhân bản. Mở để xem trạng thái và điều khiển nguồn điện."
@@ -1521,7 +1528,7 @@ msgstr "Ảnh hệ thống mặc định không thể mở kho mã. Chọn ảnh
 msgid "The default machine image is not available right now."
 msgstr "Ảnh hệ thống mặc định hiện không khả dụng."
 
-#: lib/marshall_web/live/resize_live.ex:543
+#: lib/marshall_web/live/resize_live.ex:548
 #, elixir-autogen, elixir-format
 msgid "The last step did not finish. Retry resumes from the recorded phase without repeating completed work."
 msgstr "Bước cuối chưa hoàn tất. Thử lại sẽ tiếp tục từ giai đoạn đã ghi nhận mà không lặp lại công việc đã xong."
@@ -1536,7 +1543,7 @@ msgstr "Không thể tạo máy. Hãy thử lại hoặc tạo thủ công."
 msgid "The machine could not be updated. Refresh and try again."
 msgstr "Không thể cập nhật máy. Hãy làm mới và thử lại."
 
-#: lib/marshall_web/live/resize_live.ex:424
+#: lib/marshall_web/live/resize_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "Máy đã thay đổi kể từ khi tạo bản nháp này. Hãy xem lại tài nguyên đã xác nhận ở trên."
@@ -1561,7 +1568,7 @@ msgstr "Không thể thay đổi quyền truy cập của chủ sở hữu."
 msgid "The pin could not be changed. Refresh and try again."
 msgstr "Không thể thay đổi trạng thái ghim. Hãy làm mới và thử lại."
 
-#: lib/marshall_web/components/clone_components.ex:371
+#: lib/marshall_web/components/clone_components.ex:376
 #, elixir-autogen, elixir-format
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "Bản sao trước của máy vẫn đang giải phóng ảnh chụp nhanh. Hãy thử lại sau giây lát."
@@ -1571,12 +1578,12 @@ msgstr "Bản sao trước của máy vẫn đang giải phóng ảnh chụp nha
 msgid "The request could not be completed. Check the values and try again."
 msgstr "Không thể hoàn tất yêu cầu. Kiểm tra các giá trị và thử lại."
 
-#: lib/marshall_web/components/clone_components.ex:391
+#: lib/marshall_web/components/clone_components.ex:396
 #, elixir-autogen, elixir-format
 msgid "The request encountered a problem. Use the available actions to recover or cancel it."
 msgstr "Yêu cầu gặp sự cố. Dùng các thao tác hiện có để khôi phục hoặc hủy."
 
-#: lib/marshall_web/live/resize_live.ex:573
+#: lib/marshall_web/live/resize_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "The resize has completed; this page refreshes with the confirmed sizes."
 msgstr "Đã đổi kích thước xong; trang này sẽ làm mới với kích thước đã xác nhận."
@@ -1591,22 +1598,22 @@ msgstr "Cùng tùy chọn mạng và quyền truy cập như Tiêu chuẩn, vớ
 msgid "The selected image needs more memory or disk space."
 msgstr "Ảnh hệ thống đã chọn cần thêm bộ nhớ hoặc dung lượng đĩa."
 
-#: lib/marshall_web/components/clone_components.ex:335
+#: lib/marshall_web/components/clone_components.ex:340
 #, elixir-autogen, elixir-format
 msgid "The source could not restart. Retry to request source recovery."
 msgstr "Không thể khởi động lại nguồn. Thử lại để yêu cầu khôi phục nguồn."
 
-#: lib/marshall_web/components/clone_components.ex:360
+#: lib/marshall_web/components/clone_components.ex:365
 #, elixir-autogen, elixir-format
 msgid "The source host is unavailable. Retry once it is available."
 msgstr "Máy chủ nguồn không khả dụng. Hãy thử lại khi máy chủ khả dụng."
 
-#: lib/marshall_web/components/clone_components.ex:380
+#: lib/marshall_web/components/clone_components.ex:385
 #, elixir-autogen, elixir-format
 msgid "The source machine was deleted before this request began."
 msgstr "Máy nguồn đã bị xóa trước khi yêu cầu này bắt đầu."
 
-#: lib/marshall_web/components/clone_components.ex:354
+#: lib/marshall_web/components/clone_components.ex:359
 #, elixir-autogen, elixir-format
 msgid "The source was busy or changed before cloning began. Retry when it is ready."
 msgstr "Nguồn đang bận hoặc đã thay đổi trước khi bắt đầu nhân bản. Thử lại khi nguồn sẵn sàng."
@@ -1621,7 +1628,7 @@ msgstr "Hiện không đủ năng lực khả dụng cho máy mới."
 msgid "There is not enough available capacity for this machine."
 msgstr "Không đủ năng lực khả dụng cho máy này."
 
-#: lib/marshall_web/components/clone_components.ex:346
+#: lib/marshall_web/components/clone_components.ex:351
 #, elixir-autogen, elixir-format
 msgid "There is not enough capacity for this copy. Retry when space is available."
 msgstr "Không đủ dung lượng cho bản sao này. Hãy thử lại khi có chỗ trống."
@@ -1656,7 +1663,7 @@ msgstr "Máy này đang bị xóa và không thể ghim."
 msgid "This machine is being deleted."
 msgstr "Máy này đang bị xóa."
 
-#: lib/marshall_web/live/resize_live.ex:292
+#: lib/marshall_web/live/resize_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "This machine is unavailable or you no longer have management access."
 msgstr "Máy này không khả dụng hoặc bạn không còn quyền quản lý."
@@ -1676,7 +1683,7 @@ msgstr "Máy chủ của máy này hiện không khả dụng."
 msgid "This repository link could not be launched. Open the link again."
 msgstr "Không thể khởi chạy từ liên kết kho mã này. Hãy mở lại liên kết."
 
-#: lib/marshall_web/components/clone_components.ex:258
+#: lib/marshall_web/components/clone_components.ex:263
 #, elixir-autogen, elixir-format
 msgid "This request could not finish. Review the issue below and the available actions."
 msgstr "Yêu cầu này không thể hoàn tất. Xem vấn đề bên dưới và các thao tác hiện có."
@@ -1686,7 +1693,7 @@ msgstr "Yêu cầu này không thể hoàn tất. Xem vấn đề bên dưới v
 msgid "This request has already been used. Refresh before trying again."
 msgstr "Yêu cầu này đã được sử dụng. Làm mới trước khi thử lại."
 
-#: lib/marshall_web/components/clone_components.ex:253
+#: lib/marshall_web/components/clone_components.ex:258
 #, elixir-autogen, elixir-format
 msgid "This request has ended without publishing a clone."
 msgstr "Yêu cầu này đã kết thúc mà không công bố bản nhân bản."
@@ -1728,7 +1735,7 @@ msgstr "Đã cập nhật"
 msgid "Updates automatically"
 msgstr "Tự động cập nhật"
 
-#: lib/marshall_web/live/resize_live.ex:434
+#: lib/marshall_web/live/resize_live.ex:439
 #, elixir-autogen, elixir-format
 msgid "Use current machine state, keeping these sizes"
 msgstr "Dùng trạng thái máy hiện tại và giữ các kích thước này"
@@ -1750,27 +1757,27 @@ msgstr "Xem tất cả →"
 msgid "Viewer"
 msgstr "Người xem"
 
-#: lib/marshall_web/components/clone_components.ex:188
+#: lib/marshall_web/components/clone_components.ex:193
 #, elixir-autogen, elixir-format
 msgid "Waiting for its turn. Each copy takes a fresh snapshot when processing begins."
 msgstr "Đang chờ đến lượt. Mỗi bản sao tạo ảnh chụp nhanh mới khi bắt đầu xử lý."
 
-#: lib/marshall_web/components/clone_components.ex:328
+#: lib/marshall_web/components/clone_components.ex:333
 #, elixir-autogen, elixir-format
 msgid "Waiting for source recovery confirmation."
 msgstr "Đang chờ xác nhận khôi phục nguồn."
 
-#: lib/marshall_web/components/clone_components.ex:162
+#: lib/marshall_web/components/clone_components.ex:167
 #, elixir-autogen, elixir-format
 msgid "Waiting for the host's transfer slot; another copy or move is using it."
 msgstr "Đang chờ lượt truyền của máy chủ; một lần sao chép hoặc di chuyển khác đang sử dụng."
 
-#: lib/marshall_web/components/clone_components.ex:169
+#: lib/marshall_web/components/clone_components.ex:174
 #, elixir-autogen, elixir-format
 msgid "Waiting for the previous copy of this machine to release its snapshot."
 msgstr "Đang chờ bản sao trước của máy giải phóng ảnh chụp nhanh."
 
-#: lib/marshall_web/components/clone_components.ex:320
+#: lib/marshall_web/components/clone_components.ex:325
 #, elixir-autogen, elixir-format
 msgid "Waiting for the source to stop."
 msgstr "Đang chờ nguồn dừng."
@@ -1796,7 +1803,7 @@ msgstr "Ứng dụng web"
 msgid "Web apps only"
 msgstr "Chỉ ứng dụng web"
 
-#: lib/marshall_web/live/resize_live.ex:486
+#: lib/marshall_web/live/resize_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "What happens"
 msgstr "Điều sẽ xảy ra"
@@ -1836,12 +1843,12 @@ msgstr "Đĩa được giữ lại khi máy dừng."
 msgid "Your disk stays with you when the machine is stopped."
 msgstr "Đĩa vẫn thuộc về bạn khi máy dừng."
 
-#: lib/marshall_web/live/resize_live.ex:500
+#: lib/marshall_web/live/resize_live.ex:505
 #, elixir-autogen, elixir-format
 msgid "Your machine will remain stopped. Disk filesystem growth completes on its next boot."
 msgstr "Máy sẽ tiếp tục dừng. Việc mở rộng hệ thống tệp trên đĩa sẽ hoàn tất trong lần khởi động tiếp theo."
 
-#: lib/marshall_web/live/resize_live.ex:495
+#: lib/marshall_web/live/resize_live.ex:500
 #, elixir-autogen, elixir-format
 msgid "Your machine will stop while resources change, then restart. Expect downtime."
 msgstr "Máy sẽ dừng trong khi thay đổi tài nguyên, rồi khởi động lại. Sẽ có thời gian gián đoạn."
@@ -1851,12 +1858,12 @@ msgstr "Máy sẽ dừng trong khi thay đổi tài nguyên, rồi khởi độn
 msgid "Your machines"
 msgstr "Máy của bạn"
 
-#: lib/marshall_web/components/clone_components.ex:237
+#: lib/marshall_web/components/clone_components.ex:242
 #, elixir-autogen, elixir-format
 msgid "Your private copy has been created and temporary resources have been cleaned up."
 msgstr "Đã tạo bản sao riêng và dọn dẹp tài nguyên tạm."
 
-#: lib/marshall_web/components/clone_components.ex:176
+#: lib/marshall_web/components/clone_components.ex:181
 #, elixir-autogen, elixir-format
 msgid "Your private copy has been created. The source snapshot is still being released; the source stays protected until then."
 msgstr "Đã tạo bản sao riêng. Ảnh chụp nhanh nguồn vẫn đang được giải phóng; nguồn được bảo vệ cho đến khi hoàn tất."
@@ -1887,79 +1894,79 @@ msgstr "← Trang đầu"
 msgid "← Machines"
 msgstr "← Máy"
 
-#: lib/marshall_web/live/resize_live.ex:273
+#: lib/marshall_web/live/resize_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "← Settings"
 msgstr "← Cài đặt"
 
-#: lib/marshall_web/components/clone_components.ex:400
+#: lib/marshall_web/components/clone_components.ex:405
 #: lib/marshall_web/live/resize_live.ex:256
 #, elixir-autogen, elixir-format
 msgid "Current"
 msgstr "Hiện tại"
 
-#: lib/marshall_web/components/clone_components.ex:399
+#: lib/marshall_web/components/clone_components.ex:404
 #: lib/marshall_web/live/resize_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Done"
 msgstr "Đã xong"
 
-#: lib/marshall_web/components/clone_components.ex:417
+#: lib/marshall_web/components/clone_components.ex:422
 #, elixir-autogen, elixir-format
 msgid "a snapshot mount could not be released yet."
 msgstr "chưa thể gỡ một điểm gắn ảnh chụp nhanh."
 
-#: lib/marshall_web/components/clone_components.ex:433
+#: lib/marshall_web/components/clone_components.ex:438
 #, elixir-autogen, elixir-format
 msgid "cleanup on the host did not finish yet."
 msgstr "việc dọn dẹp trên máy chủ chưa hoàn tất."
 
-#: lib/marshall_web/components/clone_components.ex:436
+#: lib/marshall_web/components/clone_components.ex:441
 #, elixir-autogen, elixir-format
 msgid "the copied disk could not be prepared yet."
 msgstr "chưa thể chuẩn bị đĩa đã sao chép."
 
-#: lib/marshall_web/components/clone_components.ex:420
+#: lib/marshall_web/components/clone_components.ex:425
 #, elixir-autogen, elixir-format
 msgid "the disk copy did not finish; it resumes automatically."
 msgstr "việc sao chép đĩa chưa hoàn tất; quy trình tự động tiếp tục."
 
-#: lib/marshall_web/components/clone_components.ex:439
+#: lib/marshall_web/components/clone_components.ex:444
 #, elixir-autogen, elixir-format
 msgid "the host could not confirm the step yet."
 msgstr "máy chủ chưa thể xác nhận bước này."
 
-#: lib/marshall_web/components/clone_components.ex:429
+#: lib/marshall_web/components/clone_components.ex:434
 #, elixir-autogen, elixir-format
 msgid "the hosts could not connect; the host retries automatically."
 msgstr "các máy chủ không thể kết nối; máy chủ tự động thử lại."
 
-#: lib/marshall_web/components/clone_components.ex:408
+#: lib/marshall_web/components/clone_components.ex:413
 #, elixir-autogen, elixir-format
 msgid "the machine is mid-operation; the host retries automatically."
 msgstr "máy đang thực hiện thao tác khác; máy chủ tự động thử lại."
 
-#: lib/marshall_web/components/clone_components.ex:411
+#: lib/marshall_web/components/clone_components.ex:416
 #, elixir-autogen, elixir-format
 msgid "the source changed state; it continues once the source settles."
 msgstr "nguồn đã đổi trạng thái; quy trình tiếp tục khi nguồn ổn định."
 
-#: lib/marshall_web/components/clone_components.ex:414
+#: lib/marshall_web/components/clone_components.ex:419
 #, elixir-autogen, elixir-format
 msgid "the source snapshot could not be prepared or released yet."
 msgstr "chưa thể chuẩn bị hoặc giải phóng ảnh chụp nhanh của nguồn."
 
-#: lib/marshall_web/components/clone_components.ex:405
+#: lib/marshall_web/components/clone_components.ex:410
 #, elixir-autogen, elixir-format
 msgid "the storage pool is busy; the host retries automatically."
 msgstr "nhóm lưu trữ đang bận; máy chủ tự động thử lại."
 
-#: lib/marshall_web/components/clone_components.ex:426
+#: lib/marshall_web/components/clone_components.ex:431
 #, elixir-autogen, elixir-format
 msgid "the transfer permit lapsed; it is renewed automatically."
 msgstr "giấy phép truyền đã hết hạn; giấy phép được gia hạn tự động."
 
-#: lib/marshall_web/components/clone_components.ex:423
+#: lib/marshall_web/components/clone_components.ex:428
 #, elixir-autogen, elixir-format
 msgid "the transfer stream was interrupted; it resumes automatically."
 msgstr "luồng truyền bị gián đoạn; quy trình tự động tiếp tục."

@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "إجراءات"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "أرشفة هذه الآلة الافتراضية؟"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "حذف"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "التفاصيل"
@@ -66,7 +66,7 @@ msgstr "أُدرج طلب دورة الحياة في الطابور."
 msgid "Lifecycle request was rejected."
 msgstr "رُفض طلب دورة الحياة."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "نقل"
@@ -86,7 +86,7 @@ msgstr "أُدرج طلب النقل في الطابور."
 msgid "Relocation request was rejected."
 msgstr "رُفض طلب النقل."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "تغيير الحجم"
@@ -96,7 +96,7 @@ msgstr "تغيير الحجم"
 msgid "Shape"
 msgstr "تكوين الموارد"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "بدء"
@@ -106,12 +106,12 @@ msgstr "بدء"
 msgid "State"
 msgstr "الحالة"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "إيقاف"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "الطرفية"

@@ -7,7 +7,20 @@ defmodule Marshall.Compute.LifecycleAuditTest do
   alias Marshall.Compute
   alias Marshall.Compute.{Ledger, LifecycleEvent, VirtualMachine}
 
-  setup do
+  setup context do
+    if context[:hegel_case_sandbox], do: :ok, else: fixture()
+  end
+
+  # @cc [owner:ghuntley,label:verification] retention-history-fixture-isolation
+  # Generated retention cases MUST create their host, account and live VM only
+  # after acquiring that case's fresh SQL sandbox. Ordinary tests retain their
+  # test-owned sandbox; fixture state MUST NOT survive a generated case or replay.
+  @spec fixture() :: %{
+          host: Marshall.Compute.Host.t(),
+          owner: Marshall.Accounts.User.t(),
+          vm: VirtualMachine.t()
+        }
+  defp fixture do
     %{host: host} = host_fixture()
     owner = user()
     {:ok, vm} = Compute.provision(request(), actor: owner)
@@ -140,13 +153,19 @@ defmodule Marshall.Compute.LifecycleAuditTest do
   # Each generated expired backlog MUST drain in batches of at most 1000 rows;
   # every full batch MUST enqueue one maintenance continuation, including an
   # exact multiple of 1000, while a partial or empty batch MUST enqueue none.
-  test "generated expired backlogs drain with one continuation per full batch", c do
+  # The full 100-case matrix processes at least 400000 rows through 700 bounded
+  # retention calls; its previous 60s aggregate expired under the full budget.
+  @tag :hegel_case_sandbox
+  @tag timeout: 300_000
+  test "generated expired backlogs drain with one continuation per full batch" do
     Hegel.check(
       fn ->
+        isolate_property_case()
+        %{vm: vm} = fixture()
         offset = draw("offset", integer(1..200))
 
         for backlog <- [0, offset, 1000, 1000 + offset, 2000] do
-          assert_retention_backlog(backlog, c.vm.id)
+          assert_retention_backlog(backlog, vm.id)
         end
       end,
       test_cases: 100

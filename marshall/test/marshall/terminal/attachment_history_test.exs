@@ -25,7 +25,11 @@ defmodule Marshall.Terminal.AttachmentHistoryTest do
   # Expected attachment authority MUST come from generated user commands and
   # the creator/shared permission table, never from the SUT's authorization
   # answer. Tickets remain bounded by their issued mode and are consumed once.
+
+  # Each of 100 cases performs 5-13 real socket transitions plus replay checks;
+  # retain finite aggregate headroom beyond the old 60s without changing deadlines.
   @tag :hegel_case_sandbox
+  @tag timeout: 600_000
   property "issued tickets compose current roles, explicit sharing and one-use socket lifetimes",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
@@ -212,7 +216,10 @@ defmodule Marshall.Terminal.AttachmentHistoryTest do
 
   for trigger <- [:input, :resize, :idle] do
     @trigger trigger
+    # The full budget performs 600 revocations and 1200 real attachments per
+    # trigger. Keep each socket deadline while allowing the complete SQL history.
     @tag :hegel_case_sandbox
+    @tag timeout: 600_000
     property "live #{@trigger} attachment closes across every authority boundary and needs a fresh socket",
       test_cases: 100 do
       Marshall.DataCase.isolate_property_case()
@@ -286,12 +293,16 @@ defmodule Marshall.Terminal.AttachmentHistoryTest do
     end
   end
 
+  # @cc [owner:ghuntley,label:verification;security] attachment-history-case-custody
+  # Every generated case and replay MUST stop its stream and any surviving
+  # listener before its SQL sandbox owner. Explicit connection/listener teardown
+  # MUST remain, including on failure; process state MUST NOT cross case boundaries.
   @spec fixture() :: fixture()
   defp fixture do
     fixture = Marshall.TerminalFixtures.terminal_fixture()
     member = Marshall.ComputeFixtures.user()
     assert {:ok, _} = Marshall.TerminalFixtures.grant(fixture, member, :operator)
-    stream = start_supervised!({Stream, fixture.host.id}, id: make_ref())
+    stream = Overalls.HegelFixtures.start_supervised!({Stream, fixture.host.id}, id: make_ref())
     Map.merge(fixture, %{member: member, stream: stream})
   end
 
@@ -306,7 +317,7 @@ defmodule Marshall.Terminal.AttachmentHistoryTest do
     id = make_ref()
 
     pid =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         {Bandit,
          plug: {Socket, %{actor: actor, token: token, observer: self()}},
          ip: {127, 0, 0, 1},

@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "Thao tác"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "Lưu trữ máy ảo này?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Xóa"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Chi tiết"
@@ -64,7 +64,7 @@ msgstr "Đã xếp hàng yêu cầu vòng đời."
 msgid "Lifecycle request was rejected."
 msgstr "Yêu cầu vòng đời bị từ chối."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Di chuyển"
@@ -84,7 +84,7 @@ msgstr "Đã đưa yêu cầu di chuyển vào hàng đợi."
 msgid "Relocation request was rejected."
 msgstr "Yêu cầu di chuyển bị từ chối."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Đổi kích thước"
@@ -94,7 +94,7 @@ msgstr "Đổi kích thước"
 msgid "Shape"
 msgstr "Cấu hình"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Bắt đầu"
@@ -104,12 +104,12 @@ msgstr "Bắt đầu"
 msgid "State"
 msgstr "Trạng thái"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Dừng"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Thiết bị đầu cuối"

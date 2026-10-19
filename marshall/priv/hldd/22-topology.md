@@ -173,6 +173,43 @@ admits the dedicated marked connector, while the broker checks boot/source/accou
 and personal systemd ownership. Browser communication expires on lost authority;
 worker processes and home data have their separate native lifetime.
 
+The separate Windows candidate keeps the same Marshall/Audi/Lilly path and
+dedicated gateway-only guest port, with a different native custody boundary:
+
+```mermaid
+flowchart LR
+  Gateway[Current Lilly gateway] -->|TCP 4444 and closed preface| WindowsBroker[EditorBroker SYSTEM task]
+  WindowsBroker -->|Fixed physical-boot SYSTEM-only local pipe| Custodian[EditorCustodian SYSTEM task]
+  Boot[Validated MMDS boot and release] --> WindowsBroker
+  Boot --> Custodian
+  Custodian -->|Locked current account admission| Roster[Lyra roster authorizer]
+  Custodian -->|Atomic launch and retained kill-on-close job| PersonalWorker[Personal SAM and S4U Code OSS worker]
+  Custodian -->|Exact server PID and readiness| PersonalWorker
+  PersonalWorker --> PersonalFiles[Personal profile and extensions]
+```
+
+Both fixed SYSTEM tasks run the same pinned executable with separate role
+configuration and copied trust bundles. They live inside the candidate Windows
+guest; no fleet host, Ash domain, public listener or physical placement role is
+added. The local pipe is derived from the current MMDS physical boot state key.
+Mutual kernel PID/time, SYSTEM-token and executable checks establish the local
+peer; they do not replace independent boot/release/preface/account authorization.
+Only the custodian owns worker launch, receipts, resume, worker pipes and job
+handles. Broker stream loss preserves those handles. Root loss permits replacement
+only after exact-job zero-descendant accounting; failed accounting quarantines.
+The custodian has 64 stable lifetime account slots, while each role separately
+bounds live/retired pipe state to 128 reservations.
+
+The accepted custodian-death behavior requires bounded descendant termination and
+a new worker preserving files. Current source requests kill-on-close but refuses
+every prior same-boot receipt after custodian restart; automatic same-boot
+replacement remains incomplete. A new physical boot gets a new namespace.
+Independent-task peer/capacity/failure execution and a complete newly bound image's
+browser journey remain gaps. The old candidate and its failed broker recovery
+cannot qualify this replacement. See
+[ADR-0208](repo:docs/architecture/decisions/0208-windows-editor-job-custodian.md)
+and its [review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
+
 Declared module/image composition does not claim production activation or a
 second Marshall failure domain. The dedicated native package test has a synthetic
 gateway/roster. Historical NixOS passes and Ubuntu failures retain their revisions.

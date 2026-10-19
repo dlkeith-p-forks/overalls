@@ -1,5 +1,5 @@
-# Fixed SYSTEM task action. The broker owns its runtime diagnostics and performs
-# MMDS, current roster, package, SID, pipe and process custody checks itself.
+# Fixed SYSTEM TCP task action. The broker validates MMDS, gateway and preface
+# admission; the independently supervised custodian owns worker admission/jobs.
 Set-StrictMode -Version 2
 $ErrorActionPreference = 'Stop'
 try {

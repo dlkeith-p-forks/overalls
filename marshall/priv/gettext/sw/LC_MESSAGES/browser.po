@@ -154,67 +154,67 @@ msgstr "Mashine hii inaomba kuandika %{bytes} baiti kwenye ubao wako wa kunakili
 msgid "This repository link could not be launched. Open the link again."
 msgstr "Kiungo hiki cha hazina hakikuweza kuzinduliwa. Fungua kiungo tena."
 
-#: lib/marshall_web/browser_messages.ex:69
+#: lib/marshall_web/browser_messages.ex:72
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "Andika ili kuingiliana"
 
-#: lib/marshall_web/browser_messages.ex:70
+#: lib/marshall_web/browser_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
 msgstr "Inasasisha ufikiaji wa kutazama..."
 
-#: lib/marshall_web/browser_messages.ex:72
+#: lib/marshall_web/browser_messages.ex:75
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
 msgstr "Uthibitishaji haukuweza kukamilika. Jaribu tena."
 
-#: lib/marshall_web/browser_messages.ex:74
+#: lib/marshall_web/browser_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
 msgstr "Thibitisha kwa kutumia nenosiri lako kwa %{action} . Hii inaendeshwa mara moja baada ya uthibitishaji."
 
-#: lib/marshall_web/browser_messages.ex:79
+#: lib/marshall_web/browser_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "View only"
 msgstr "Tazama pekee"
 
-#: lib/marshall_web/browser_messages.ex:80
+#: lib/marshall_web/browser_messages.ex:83
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
 msgstr "Idhini ya kutazama imesasishwa."
 
-#: lib/marshall_web/browser_messages.ex:81
+#: lib/marshall_web/browser_messages.ex:84
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
 msgstr "Inasubiri ufunguo wako wa kuingia…"
 
-#: lib/marshall_web/browser_messages.ex:83
+#: lib/marshall_web/browser_messages.ex:86
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
 msgstr "kamilisha mabadiliko haya ya kiutawala"
 
-#: lib/marshall_web/browser_messages.ex:84
+#: lib/marshall_web/browser_messages.ex:87
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "sasa hivi"
 
-#: lib/marshall_web/browser_messages.ex:85
+#: lib/marshall_web/browser_messages.ex:88
 #, elixir-autogen, elixir-format
 msgid "● live"
 msgstr "● moja kwa moja"
 
-#: lib/marshall_web/browser_messages.ex:86
+#: lib/marshall_web/browser_messages.ex:89
 #, elixir-autogen, elixir-format
 msgid "● read-only"
 msgstr "● kusoma pekee"
 
-#: lib/marshall_web/browser_messages.ex:87
+#: lib/marshall_web/browser_messages.ex:90
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
 msgstr "⟳ inaunganisha tena..."
 
-#: lib/marshall_web/browser_messages.ex:88
+#: lib/marshall_web/browser_messages.ex:91
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ inarejesha historia ya terminali…"

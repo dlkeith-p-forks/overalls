@@ -66,7 +66,7 @@ defmodule Marshall.Teams.Team do
     destroy :archive
 
     update :mark_retiring do
-      accept [:management_mode]
+      accept [:management_mode, :scim_retirement_deadline]
       require_atomic? false
     end
 
@@ -127,6 +127,8 @@ defmodule Marshall.Teams.Team do
       default: :native,
       constraints: [one_of: [:native, :scim_managed, :retiring, :handoff_pending]],
       public?: true
+
+    attribute :scim_retirement_deadline, :utc_datetime_usec, allow_nil?: true, public?: true
 
     create_timestamp :inserted_at
     update_timestamp :updated_at

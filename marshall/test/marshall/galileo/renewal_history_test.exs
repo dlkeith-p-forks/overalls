@@ -26,7 +26,11 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   # Personal-owner histories MUST exercise public attachment changes and derive
   # admission from a separate attachment model. Refusals and every renewal MUST
   # preserve durable credentials, provenance, attachments and mutation audits.
+
+  # Keep all 400-1600 attachment transitions and their three outsider refusals
+  # per transition; the full SQL matrix exceeded its former 60s aggregate.
   @tag :hegel_case_sandbox
+  @tag timeout: 600_000
   property "personal owners require explicit attachments for admission and renewal",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
@@ -235,7 +239,11 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   # test's operation model, not the implementation's authority predicates. Each
   # renewal MUST leave credentials, token rows and configuration receipts intact.
   # Synthetic execution reports establish application admission only.
+
+  # The 100-case matrix retains all 1000-2500 public authority transitions and
+  # real host reports; the old 60s aggregate expired inside the report transaction.
   @tag :hegel_case_sandbox
+  @tag timeout: 600_000
   property "renewal tracks combined membership, attachment and ownership histories",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
@@ -291,7 +299,11 @@ defmodule Marshall.Galileo.RenewalHistoryTest do
   # after direct/peer reconfiguration MUST return exactly TTL/version without
   # minting, consuming, replacing or refreshing that token. Removal MUST refuse
   # renewal and token consumption. This does not assert network cancellation.
+
+  # All 100 cases perform 3-10 configurations and three real renewals each:
+  # 900-3000 renewals plus SQL snapshots exceeded the old 60s aggregate budget.
   @tag :hegel_case_sandbox
+  @tag timeout: 600_000
   property "renewals never reissue peer provenance or credentials after configuration changes",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()

@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "کارروائیاں"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "اس مجازی مشین کو محفوظات میں رکھیں؟"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "حذف کریں"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "تفصیل"
@@ -64,7 +64,7 @@ msgstr "دور حیات کی درخواست قطار میں ہے۔"
 msgid "Lifecycle request was rejected."
 msgstr "دور حیات کی درخواست مسترد ہوئی۔"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "منتقل کریں"
@@ -84,7 +84,7 @@ msgstr "منتقلی کی درخواست قطار میں ہے۔"
 msgid "Relocation request was rejected."
 msgstr "منتقلی کی درخواست مسترد ہوئی۔"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "حجم بدلیں"
@@ -94,7 +94,7 @@ msgstr "حجم بدلیں"
 msgid "Shape"
 msgstr "ترکیب"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "شروع کریں"
@@ -104,12 +104,12 @@ msgstr "شروع کریں"
 msgid "State"
 msgstr "حالت"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "بند کریں"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "ٹرمینل"

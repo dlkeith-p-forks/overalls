@@ -3,12 +3,13 @@ defmodule Marshall.Compute.MachineNamesTest do
   import Hegel
   import Hegel.Gen
   import Marshall.ComputeFixtures
+  alias Marshall.Accounts.User
   alias Marshall.Compute
-  alias Marshall.Compute.{Host, Ledger, Operation, Outcomes, VirtualMachine}
+  alias Marshall.Compute.{Host, HostReports, Ledger, Operation, Outcomes, VirtualMachine}
 
   setup do
-    host_fixture()
-    %{owner: user(), other: user()}
+    fixture = host_fixture()
+    Map.merge(fixture, %{owner: user(), other: user()})
   end
 
   test "names resolve through current account permission and UUIDs remain valid", %{
@@ -83,13 +84,21 @@ defmodule Marshall.Compute.MachineNamesTest do
   end
 
   @tag :hegel
-  test "retries pin the generated or chosen name and reject changing it", %{owner: owner} do
+  test "retries pin the generated or chosen name and reject changing it", %{
+    owner: owner,
+    host: host,
+    epoch: epoch,
+    report: report
+  } do
     Hegel.check(
       fn ->
+        # The 100-case history can outlive the fixture's five-second capacity window.
+        refresh(%{host: host, epoch: epoch, report: report})
         suffix = draw("suffix", integer(1..1_000_000))
         explicit? = draw("explicit?", boolean())
         params = request(%{name: if(explicit?, do: "chosen-#{suffix}")})
         assert {:ok, vm} = Compute.provision(params, actor: owner)
+        Hegel.on_cleanup(fn -> cleanup_vm(vm, owner) end)
         assert OverallsProtocol.MachineName.valid?(vm.name)
         assert {:ok, replay} = Compute.provision(params, actor: owner)
         assert replay.id == vm.id
@@ -99,14 +108,6 @@ defmodule Marshall.Compute.MachineNamesTest do
                  Compute.provision(Map.put(params, :name, "different-#{suffix}"), actor: owner)
 
         assert Exception.message(error) =~ "idempotency_conflict"
-        # Reclaim through the actual outcome path so each generated case leaves capacity.
-        assert {:ok, deletion} =
-                 Compute.lifecycle(
-                   %{vm_id: vm.id, kind: :delete, idempotency_key: Ash.UUID.generate()},
-                   actor: owner
-                 )
-
-        assert {:ok, _} = ingest(vm.host_id, outcome(deletion, 1, :deleted))
       end,
       test_cases: 100
     )
@@ -139,6 +140,33 @@ defmodule Marshall.Compute.MachineNamesTest do
     assert length(Ledger.read!(Operation, vm_id: successor.id)) == 1
   end
 
+  @spec cleanup_vm(VirtualMachine.t(), User.t()) :: :ok
+  defp cleanup_vm(vm, owner) do
+    assert {:ok, deletion} =
+             Compute.lifecycle(
+               %{vm_id: vm.id, kind: :delete, idempotency_key: Ash.UUID.generate()},
+               actor: owner
+             )
+
+    assert {:ok, _} = ingest(vm.host_id, outcome(deletion, 1, :deleted))
+    :ok
+  end
+
+  @spec refresh(%{epoch: non_neg_integer(), host: Host.t(), report: map()}) :: :ok
+  defp refresh(%{host: host, epoch: epoch, report: report}) do
+    [current] = Ledger.read!(Host, id: host.id)
+
+    report = %{
+      report
+      | sequence: current.report_sequence + 1,
+        sampled_at: Ledger.now()
+    }
+
+    assert {:ok, :ok} = HostReports.ingest(host.id, epoch, report)
+    :ok
+  end
+
+  @spec ingest(String.t(), map()) :: {:ok, term()} | {:error, term()}
   defp ingest(host, event) do
     {:ok, event} =
       OverallsProtocol.Execution.outcome(OverallsProtocol.Execution.encode_outcome(event))
@@ -149,6 +177,7 @@ defmodule Marshall.Compute.MachineNamesTest do
     end)
   end
 
+  @spec outcome(Operation.t(), pos_integer(), atom()) :: map()
   defp outcome(operation, sequence, state) do
     %{
       id: Ash.UUID.generate(),

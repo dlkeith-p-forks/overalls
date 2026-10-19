@@ -1,8 +1,34 @@
 defmodule Marshall.Compute.ImageAdmissionTest do
   use Marshall.DataCase, async: false
   import Marshall.ComputeFixtures
-  alias Marshall.Compute.{Host, HostReports, Image, Images, Ledger, NetworkAddress, Reservation}
+
+  alias Marshall.Compute.{
+    AddressAllocation,
+    Host,
+    HostReports,
+    Image,
+    Images,
+    Ledger,
+    NetworkAddress,
+    Operation,
+    Reservation,
+    ServiceLevelAttempt,
+    StoragePool,
+    VirtualMachine,
+    WorkloadPlacement
+  }
+
   alias Marshall.Compute
+
+  @typep firmware_request :: %{
+           idempotency_key: String.t(),
+           architecture: :x86_64,
+           image_id: String.t(),
+           profile: OverallsProtocol.AddressPool.profile(),
+           vcpu: pos_integer(),
+           memory_bytes: pos_integer(),
+           disk_bytes: pos_integer()
+         }
 
   setup do
     Map.put(host_fixture(), :user, user())
@@ -111,12 +137,13 @@ defmodule Marshall.Compute.ImageAdmissionTest do
   end
 
   # @cc [owner:ghuntley,label:verification;security] firmware-image-admission
-  # A version-5 firmware image MUST register through the shared validator, MUST
-  # refuse Inception before allocation and MUST refuse ordinary admission without
-  # Git identity support. A capable windows-v1 image MUST admit physical and ready
-  # service levels with its own readiness budget.
-  test "firmware admission requires Git identity support and refuses Inception",
-       %{host: host, user: user} do
+  # A version-5 firmware image MUST register through the shared validator and
+  # refuse Inception before allocation. ADR-0204 new admissions without Git
+  # identity support MUST refuse without effects. A retained pre-identity VM
+  # without guest agents MUST keep physical-only measurement; an identity-capable
+  # windows-v1 admission MUST additionally measure creation-to-ready.
+  test "firmware admissions require Git identity support while retained agentless VMs keep physical-only measurement",
+       %{host: host, pool: pool, user: user} do
     manifest =
       windows_image_manifest()
       |> put_in(["root", "bytes"], 4_294_967_296)
@@ -127,6 +154,10 @@ defmodule Marshall.Compute.ImageAdmissionTest do
 
     assert Image.guest_capabilities(windows) == %{
              available: true,
+             adb: false,
+             android_display: false,
+             android_emulator: false,
+             android_sdk: false,
              readiness: false,
              trust: false,
              ssh: false,
@@ -164,12 +195,30 @@ defmodule Marshall.Compute.ImageAdmissionTest do
     assert Ledger.read!(Reservation) == []
     assert Ledger.read!(NetworkAddress) == []
 
+    jobs_before = Marshall.Repo.aggregate(Oban.Job, :count)
     assert {:error, error} = Compute.provision(params, actor: user)
     assert Exception.message(error) =~ "git_identity_unavailable"
-    assert Ledger.read!(Marshall.Compute.VirtualMachine) == []
-    assert Ledger.read!(Marshall.Compute.Operation) == []
+    assert Ledger.read!(VirtualMachine) == []
+    assert Ledger.read!(WorkloadPlacement) == []
     assert Ledger.read!(Reservation) == []
     assert Ledger.read!(NetworkAddress) == []
+    assert Ledger.read!(Operation) == []
+    assert Ledger.read!(ServiceLevelAttempt) == []
+    assert Marshall.Repo.aggregate(Oban.Job, :count) == jobs_before
+
+    vm = retained_firmware_fixture(host, pool, user, params)
+    assert vm.image_id == windows.id
+    assert vm.git_identity == nil
+    [operation] = Ledger.read!(Operation, vm_id: vm.id, kind: :provision)
+    refute Map.has_key?(operation.command_snapshot, "git_identity")
+    attempts = Ledger.read!(ServiceLevelAttempt, operation_id: operation.id)
+    assert Enum.map(attempts, & &1.service) == [:lilly_physical]
+
+    assert {:ok, view} = Compute.get_vm(%{vm_id: vm.id}, actor: user)
+    refute view.guest_capabilities.ssh
+    assert view.guest_capabilities.available
+    # Whatever editor release is configured, a firmware image never offers it.
+    assert view.editor_image_status in [:unsupported_image, :unavailable]
 
     agents =
       Images.register(
@@ -226,5 +275,77 @@ defmodule Marshall.Compute.ImageAdmissionTest do
     assert projected.guest_capabilities.available
     refute projected.guest_capabilities.editor
     assert projected.editor_image_status in [:unsupported_image, :unavailable]
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] retained-firmware-fixture-boundary
+  # This sandbox-owned fixture MUST represent pre-identity retained state with a
+  # nil Git snapshot. Only its ordinary operation enqueue tests physical-only
+  # accounting; fixture insertion MUST NOT establish new public admission or
+  # native guest acceptance.
+  @spec retained_firmware_fixture(
+          Host.t(),
+          StoragePool.t(),
+          Marshall.Accounts.User.t(),
+          firmware_request()
+        ) :: VirtualMachine.t()
+  defp retained_firmware_fixture(host, pool, user, params) do
+    {:ok, %VirtualMachine{} = vm} =
+      Ledger.transaction(
+        fn ->
+          slot = AddressAllocation.next_slot!(params.profile)
+          %Host{} = host = Ledger.lock!(Host, host.id)
+          placement_id = Ash.UUID.generate()
+
+          vm =
+            Ledger.create!(
+              VirtualMachine,
+              :allocate,
+              Map.merge(params, %{
+                name: "retained-" <> Ash.UUID.generate(),
+                owner_id: user.id,
+                current_placement_id: placement_id,
+                git_identity: nil
+              })
+            )
+
+          Ledger.create!(WorkloadPlacement, :allocate, %{
+            id: placement_id,
+            vm_id: vm.id,
+            host_id: host.id,
+            pool_id: pool.id
+          })
+
+          Ledger.create!(
+            Reservation,
+            :reserve,
+            Map.merge(OverallsProtocol.VMShape.reservation(params), %{
+              vm_id: vm.id,
+              placement_id: placement_id,
+              host_id: host.id,
+              pool_id: pool.id
+            })
+          )
+
+          Ledger.create!(NetworkAddress, :reserve, %{
+            vm_id: vm.id,
+            profile: vm.profile,
+            slot: slot
+          })
+
+          Ledger.create!(Operation, :enqueue, %{
+            vm_id: vm.id,
+            placement_id: placement_id,
+            execution_epoch: vm.execution_epoch,
+            requested_by_id: user.id,
+            generation: vm.generation,
+            kind: :provision
+          })
+
+          vm
+        end,
+        user
+      )
+
+    vm
   end
 end

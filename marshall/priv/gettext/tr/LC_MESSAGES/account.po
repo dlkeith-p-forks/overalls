@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/account_live.ex:460
+#: lib/marshall_web/live/account_live.ex:500
 #, elixir-autogen, elixir-format
 msgid "%{count} registered key"
 msgid_plural "%{count} registered keys"
@@ -31,369 +31,369 @@ msgstr "Sizden %{span} ileride"
 msgid "%{span} behind you"
 msgstr "Sizden %{span} geride"
 
-#: lib/marshall_web/live/account_live.ex:474
+#: lib/marshall_web/live/account_live.ex:515
 #, elixir-autogen, elixir-format
 msgid "1. Profile"
 msgstr "1. Profil"
 
-#: lib/marshall_web/live/account_live.ex:553
+#: lib/marshall_web/live/account_live.ex:595
 #, elixir-autogen, elixir-format
 msgid "2. Sign-in and passkeys"
 msgstr "2. Oturum açma ve geçiş anahtarları"
 
-#: lib/marshall_web/live/account_live.ex:666
+#: lib/marshall_web/live/account_live.ex:718
 #, elixir-autogen, elixir-format
 msgid "3. SSH keys"
 msgstr "3. SSH anahtarları"
 
-#: lib/marshall_web/live/account_live.ex:750
+#: lib/marshall_web/live/account_live.ex:809
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
 msgstr "4. Git kimliği"
 
 #: lib/marshall_web/live/account_live.ex:35
-#: lib/marshall_web/live/account_live.ex:445
+#: lib/marshall_web/live/account_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Hesap"
 
+# Prior translation for retired source "Add Overalls commit attribution": "Commitlere Overalls katkı bilgisini ekle"
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-# Prior translation for retired source "Add Overalls commit attribution": "Commitlere Overalls katkı bilgisini ekle"
 msgid "Commit attribution"
 msgstr "Commit ilişkilendirmesi"
 
-#: lib/marshall_web/live/account_live.ex:742
+#: lib/marshall_web/live/account_live.ex:801
 #, elixir-autogen, elixir-format
 msgid "Add SSH key"
 msgstr "SSH anahtarı ekle"
 
-#: lib/marshall_web/live/account_live.ex:719
+#: lib/marshall_web/live/account_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Add a key"
 msgstr "Anahtar ekle"
 
-#: lib/marshall_web/live/account_live.ex:587
+#: lib/marshall_web/live/account_live.ex:633
 #, elixir-autogen, elixir-format
 msgid "Add passkey"
 msgstr "Geçiş anahtarı ekle"
 
-#: lib/marshall_web/live/account_live.ex:650
-#: lib/marshall_web/live/account_live.ex:713
+#: lib/marshall_web/live/account_live.ex:701
+#: lib/marshall_web/live/account_live.ex:767
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "Eklendi"
 
-#: lib/marshall_web/live/account_live.ex:740
+#: lib/marshall_web/live/account_live.ex:799
 #, elixir-autogen, elixir-format
 msgid "Adding…"
 msgstr "Ekleniyor…"
 
-#: lib/marshall_web/live/account_live.ex:342
+#: lib/marshall_web/live/account_live.ex:370
 #, elixir-autogen, elixir-format
 msgid "Choose a language from the list."
 msgstr "Listeden bir dil seçin."
 
-#: lib/marshall_web/live/account_live.ex:211
+#: lib/marshall_web/live/account_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Choose a time zone from the list."
 msgstr "Listeden bir saat dilimi seçin."
 
-#: lib/marshall_web/live/account_live.ex:544
+#: lib/marshall_web/live/account_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Clear saved zone"
 msgstr "Kayıtlı saat dilimini temizle"
 
-#: lib/marshall_web/live/account_live.ex:167
+#: lib/marshall_web/live/account_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Could not add this key. Paste one supported public key; it must not belong to another account."
 msgstr "Anahtar eklenemedi. Desteklenen tek bir genel anahtar yapıştırın; başka hesaba ait olmamalıdır."
 
-#: lib/marshall_web/live/account_live.ex:222
+#: lib/marshall_web/live/account_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Could not clear your time zone."
 msgstr "Saat diliminiz temizlenemedi."
 
-#: lib/marshall_web/live/account_live.ex:195
+#: lib/marshall_web/live/account_live.ex:206
 #, elixir-autogen, elixir-format
 msgid "Could not remove this key."
 msgstr "Anahtar kaldırılamadı."
 
-#: lib/marshall_web/live/account_live.ex:183
+#: lib/marshall_web/live/account_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Could not rename this key. Use at most 128 characters."
 msgstr "Bu anahtar yeniden adlandırılamadı. En fazla 128 karakter kullanın."
 
-#: lib/marshall_web/live/account_live.ex:132
+#: lib/marshall_web/live/account_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Credential change refused. Names must be 1–80 characters, changes need a passkey verified in the last 15 minutes, and administrators must keep at least one passkey."
 msgstr "Kimlik bilgisi değişikliği reddedildi. Adlar 1–80 karakter olmalı, değişiklikler son 15 dakikada doğrulanmış bir geçiş anahtarı gerektirir ve yöneticiler en az bir geçiş anahtarı tutmalıdır."
 
-#: lib/marshall_web/live/account_live.ex:703
+#: lib/marshall_web/live/account_live.ex:757
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr "Açıklama"
 
-#: lib/marshall_web/live/account_live.ex:422
+#: lib/marshall_web/live/account_live.ex:451
 #, elixir-autogen, elixir-format
 msgid "Detected from your browser: %{value1}. Save it so others can see your local time."
 msgstr "Tarayıcınızdan algılandı: %{value1}. Başkalarının yerel saatinizi görebilmesi için kaydedin."
 
-#: lib/marshall_web/live/account_live.ex:503
+#: lib/marshall_web/live/account_live.ex:544
 #, elixir-autogen, elixir-format
 msgid "Email"
 msgstr "E-posta"
 
-#: lib/marshall_web/live/account_live.ex:605
+#: lib/marshall_web/live/account_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "End this verification before the fifteen minutes are up."
 msgstr "On beş dakika dolmadan bu doğrulamayı bitir."
 
-#: lib/marshall_web/live/account_live.ex:251
+#: lib/marshall_web/live/account_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
 msgstr "Geçerli bir Git adı ve e-posta adresi girin."
 
-#: lib/marshall_web/live/account_live.ex:709
+#: lib/marshall_web/live/account_live.ex:763
 #, elixir-autogen, elixir-format
 msgid "Fingerprint"
 msgstr "Parmak izi"
 
-#: lib/marshall_web/live/account_live.ex:761
+#: lib/marshall_web/live/account_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Git email"
 msgstr "Git e-postası"
 
-#: lib/marshall_web/live/account_live.ex:467
+#: lib/marshall_web/live/account_live.ex:508
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git kimliği"
 
-#: lib/marshall_web/live/account_live.ex:247
+#: lib/marshall_web/live/account_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
 msgstr "Git ayarları kaydedildi."
 
-#: lib/marshall_web/live/account_live.ex:754
+#: lib/marshall_web/live/account_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Git username"
 msgstr "Git kullanıcı adı"
 
-#: lib/marshall_web/live/account_live.ex:256
+#: lib/marshall_web/live/account_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Geçersiz istek."
 
-#: lib/marshall_web/live/account_live.ex:656
+#: lib/marshall_web/live/account_live.ex:707
 #, elixir-autogen, elixir-format
 msgid "Keep a backup passkey. If you lose access, another administrator can reset your passkeys."
 msgstr "Yedek bir geçiş anahtarı saklayın. Erişiminizi kaybederseniz başka bir yönetici geçiş anahtarlarınızı sıfırlayabilir."
 
-#: lib/marshall_web/live/account_live.ex:668
+#: lib/marshall_web/live/account_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Keys registered here open your machines over SSH with the same account and permissions as this site. Remove a key to revoke its access; email sign-in keeps working without any key."
 msgstr "Burada kayıtlı anahtarlar, bu siteyle aynı hesap ve izinlerle SSH üzerinden makinelerinizi açar. Erişimini iptal etmek için anahtarı kaldırın; anahtar olmadan e-postayla giriş çalışmaya devam eder."
 
-#: lib/marshall_web/live/account_live.ex:722
+#: lib/marshall_web/live/account_live.ex:776
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "Etiket (isteğe bağlı)"
 
-#: lib/marshall_web/live/account_live.ex:479
+#: lib/marshall_web/live/account_live.ex:520
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "Dil"
 
-#: lib/marshall_web/live/account_live.ex:485
+#: lib/marshall_web/live/account_live.ex:526
 #, elixir-autogen, elixir-format
 msgid "Language is detected from your browser."
 msgstr "Dil tarayıcınızdan algılanır."
 
-#: lib/marshall_web/live/account_live.ex:504
+#: lib/marshall_web/live/account_live.ex:545
 #, elixir-autogen, elixir-format
 msgid "Local time"
 msgstr "Yerel saat"
 
-#: lib/marshall_web/live/account_live.ex:604
+#: lib/marshall_web/live/account_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Lock now"
 msgstr "Şimdi kilitle"
 
-#: lib/marshall_web/live/account_live.ex:724
+#: lib/marshall_web/live/account_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "Dizüstü bilgisayarım"
 
-#: lib/marshall_web/live/account_live.ex:673
+#: lib/marshall_web/live/account_live.ex:726
 #, elixir-autogen, elixir-format
 msgid "No SSH keys yet. You can always sign in here using email."
 msgstr "Henüz SSH anahtarı yok. Buraya her zaman e-postayla giriş yapabilirsiniz."
 
-#: lib/marshall_web/live/account_live.ex:613
+#: lib/marshall_web/live/account_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "No passkeys yet. First enrollment requires a fresh email sign-in completed within the last five minutes. After setup, return to the page you came from and retry the action."
 msgstr "Henüz geçiş anahtarı yok. İlk kayıt, son beş dakikada tamamlanmış yeni bir e-posta girişi gerektirir. Kurulumdan sonra geldiğiniz sayfaya dönüp işlemi yeniden deneyin."
 
-#: lib/marshall_web/live/account_live.ex:427
+#: lib/marshall_web/live/account_live.ex:459
 #, elixir-autogen, elixir-format
 msgid "No zone saved and none detected; times are shown in UTC until you choose one."
 msgstr "Saat dilimi kayıtlı değil ve algılanamadı; siz seçene kadar saatler UTC olarak gösterilir."
 
-#: lib/marshall_web/live/account_live.ex:448
+#: lib/marshall_web/live/account_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "On this page"
 msgstr "Bu sayfada"
 
-#: lib/marshall_web/live/account_live.ex:98
+#: lib/marshall_web/live/account_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Passkey added. Verify it when you need to approve an administrative change."
 msgstr "Geçiş anahtarı eklendi. Yönetim değişikliğini onaylamanız gerektiğinde doğrulayın."
 
-#: lib/marshall_web/live/account_live.ex:631
+#: lib/marshall_web/live/account_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "Passkey name"
 msgstr "Geçiş anahtarı adı"
 
-#: lib/marshall_web/live/account_live.ex:145
+#: lib/marshall_web/live/account_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled or unavailable. You can try again."
 msgstr "Geçiş anahtarı isteği iptal edildi veya kullanılamıyor. Yeniden deneyebilirsiniz."
 
-#: lib/marshall_web/live/account_live.ex:101
+#: lib/marshall_web/live/account_live.ex:103
 #, elixir-autogen, elixir-format
 msgid "Passkey verified for 15 minutes."
 msgstr "Geçiş anahtarı 15 dakikalığına doğrulandı."
 
-#: lib/marshall_web/live/account_live.ex:563
+#: lib/marshall_web/live/account_live.ex:606
 #, elixir-autogen, elixir-format
 msgid "Passkey verified · %{count} second remaining."
 msgid_plural "Passkey verified · %{count} seconds remaining."
 msgstr[0] "Geçiş anahtarı doğrulandı · %{count} saniye kaldı."
 msgstr[1] "Geçiş anahtarı doğrulandı · %{count} saniye kaldı."
 
-#: lib/marshall_web/live/account_live.ex:734
+#: lib/marshall_web/live/account_live.ex:789
 #, elixir-autogen, elixir-format
 msgid "Paste a public key from your .pub file. Never paste a private key."
 msgstr ".pub dosyanızdan genel anahtarı yapıştırın. Asla özel anahtar yapıştırmayın."
 
-#: lib/marshall_web/live/account_live.ex:451
+#: lib/marshall_web/live/account_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "Profil"
 
-#: lib/marshall_web/live/account_live.ex:729
+#: lib/marshall_web/live/account_live.ex:783
 #, elixir-autogen, elixir-format
 msgid "Public key"
 msgstr "Genel anahtar"
 
-#: lib/marshall_web/live/account_live.ex:647
-#: lib/marshall_web/live/account_live.ex:689
+#: lib/marshall_web/live/account_live.ex:698
+#: lib/marshall_web/live/account_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Kaldır"
 
-#: lib/marshall_web/live/account_live.ex:684
+#: lib/marshall_web/live/account_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Remove this key's SSH access? Already accepted machine operations will continue."
 msgstr "Bu anahtarın SSH erişimi kaldırılsın mı? Kabul edilmiş makine işlemleri devam eder."
 
-#: lib/marshall_web/live/account_live.ex:642
+#: lib/marshall_web/live/account_live.ex:692
 #, elixir-autogen, elixir-format
 msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
 msgstr "Bu geçiş anahtarı kaldırılsın mı? Son geçiş anahtarını kaldırmak sizi tüm oturumlardan çıkarır."
 
-#: lib/marshall_web/live/account_live.ex:634
-#: lib/marshall_web/live/account_live.ex:706
+#: lib/marshall_web/live/account_live.ex:684
+#: lib/marshall_web/live/account_live.ex:760
 #, elixir-autogen, elixir-format
 msgid "Rename"
 msgstr "Yeniden adlandır"
 
-#: lib/marshall_web/live/account_live.ex:609
+#: lib/marshall_web/live/account_live.ex:658
 #, elixir-autogen, elixir-format
 msgid "Return to the requested page and retry the action →"
 msgstr "İstenen sayfaya dönün ve işlemi yeniden deneyin →"
 
-#: lib/marshall_web/live/account_live.ex:430
+#: lib/marshall_web/live/account_live.ex:465
 #, elixir-autogen, elixir-format
 msgid "SSH key"
 msgstr "SSH anahtarı"
 
-#: lib/marshall_web/live/account_live.ex:160
+#: lib/marshall_web/live/account_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "SSH key added."
 msgstr "SSH anahtarı eklendi."
 
-#: lib/marshall_web/live/account_live.ex:191
+#: lib/marshall_web/live/account_live.ex:201
 #, elixir-autogen, elixir-format
 msgid "SSH key removed."
 msgstr "SSH anahtarı kaldırıldı."
 
-#: lib/marshall_web/live/account_live.ex:178
+#: lib/marshall_web/live/account_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "SSH key renamed."
 msgstr "SSH anahtarı yeniden adlandırıldı."
 
-#: lib/marshall_web/live/account_live.ex:459
+#: lib/marshall_web/live/account_live.ex:499
 #, elixir-autogen, elixir-format
 msgid "SSH keys"
 msgstr "SSH anahtarları"
 
-#: lib/marshall_web/live/account_live.ex:325
+#: lib/marshall_web/live/account_live.ex:349
 #, elixir-autogen, elixir-format
 msgid "SSH keys are temporarily unavailable."
 msgstr "SSH anahtarları geçici olarak kullanılamıyor."
 
-#: lib/marshall_web/live/account_live.ex:781
+#: lib/marshall_web/live/account_live.ex:830
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
 msgstr "Git ayarlarını kaydet"
 
-#: lib/marshall_web/live/account_live.ex:489
+#: lib/marshall_web/live/account_live.ex:530
 #, elixir-autogen, elixir-format
 msgid "Save language"
 msgstr "Dili kaydet"
 
-#: lib/marshall_web/live/account_live.ex:535
+#: lib/marshall_web/live/account_live.ex:577
 #, elixir-autogen, elixir-format
 msgid "Save time zone"
 msgstr "Saat dilimini kaydet"
 
-#: lib/marshall_web/live/account_live.ex:415
+#: lib/marshall_web/live/account_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Saved: %{value1}. Others who share a team, machine or thread with you see your local time."
 msgstr "Kaydedildi: %{value1}. Sizinle takım, makine veya konuşma paylaşanlar yerel saatinizi görür."
 
-#: lib/marshall_web/live/account_live.ex:455
+#: lib/marshall_web/live/account_live.ex:495
 #, elixir-autogen, elixir-format
 msgid "Sign-in and passkeys"
 msgstr "Giriş ve geçiş anahtarları"
 
-#: lib/marshall_web/live/account_live.ex:527
+#: lib/marshall_web/live/account_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "Time zone"
 msgstr "Saat dilimi"
 
-#: lib/marshall_web/live/account_live.ex:219
+#: lib/marshall_web/live/account_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Time zone cleared. Your browser's zone is used."
 msgstr "Saat dilimi temizlendi. Tarayıcınızın saat dilimi kullanılır."
 
-#: lib/marshall_web/live/account_live.ex:208
+#: lib/marshall_web/live/account_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Time zone saved."
 msgstr "Saat dilimi kaydedildi."
 
-#: lib/marshall_web/live/account_live.ex:712
+#: lib/marshall_web/live/account_live.ex:766
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Tür"
 
-#: lib/marshall_web/live/account_live.ex:498
+#: lib/marshall_web/live/account_live.ex:539
 #, elixir-autogen, elixir-format
 msgid "Use browser language"
 msgstr "Tarayıcı dilini kullan"
 
-#: lib/marshall_web/live/account_live.ex:111
+#: lib/marshall_web/live/account_live.ex:113
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Please try again."
 msgstr "Doğrulama tamamlanamadı. Lütfen yeniden deneyin."
@@ -403,62 +403,62 @@ msgstr "Doğrulama tamamlanamadı. Lütfen yeniden deneyin."
 msgid "Verification required. Use an existing passkey, or sign out and request a fresh email link before first enrollment."
 msgstr "Doğrulama gerekli. Mevcut geçiş anahtarını kullanın veya ilk kayıttan önce çıkış yapıp yeni e-posta bağlantısı isteyin."
 
-#: lib/marshall_web/live/account_live.ex:570
+#: lib/marshall_web/live/account_live.ex:614
 #, elixir-autogen, elixir-format
 msgid "Verify a passkey before making administrative changes or changing passkeys."
 msgstr "Yönetim veya geçiş anahtarı değişikliklerinden önce bir geçiş anahtarını doğrulayın."
 
-#: lib/marshall_web/live/account_live.ex:595
+#: lib/marshall_web/live/account_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "Geçiş anahtarıyla doğrula"
 
-#: lib/marshall_web/live/account_live.ex:446
+#: lib/marshall_web/live/account_live.ex:482
 #, elixir-autogen, elixir-format
 msgid "Who you are, how you prove it, and the keys that reach your machines."
 msgstr "Kim olduğunuz, bunu nasıl kanıtladığınız ve makinelerinize erişen anahtarlar."
 
-#: lib/marshall_web/live/account_live.ex:555
+#: lib/marshall_web/live/account_live.ex:597
 #, elixir-autogen, elixir-format
 msgid "You sign in with an email link. A passkey proves it is you before administrative changes and before passkey changes; everyday use of your workspace never asks for one."
 msgstr "E-posta bağlantısıyla giriş yaparsınız. Geçiş anahtarı yönetim ve geçiş anahtarı değişikliklerinden önce kimliğinizi kanıtlar; çalışma alanının günlük kullanımı bunu istemez."
 
-#: lib/marshall_web/live/account_live.ex:519
+#: lib/marshall_web/live/account_live.ex:560
 #, elixir-autogen, elixir-format
 msgid "Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved."
 msgstr "E-postanız giriş kimliğinizdir ve burada düzenlenemez. Overalls'taki tüm saatler sizin saat diliminizde gösterilir; sizinle takım, makine veya konuşma paylaşanlar ve yöneticiler, saat dilimi kaydedildikten sonra e-postanızın yanında yerel saatinizi görür."
 
-#: lib/marshall_web/live/account_live.ex:617
+#: lib/marshall_web/live/account_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Your passkeys"
 msgstr "Geçiş anahtarlarınız"
 
-#: lib/marshall_web/live/account_live.ex:576
+#: lib/marshall_web/live/account_live.ex:621
 #, elixir-autogen, elixir-format
 msgid "Your passkeys were reset. Register a replacement before approving administrative changes."
 msgstr "Geçiş anahtarlarınız sıfırlandı. Yönetim değişikliklerini onaylamadan önce yenisini kaydedin."
 
-#: lib/marshall_web/live/account_live.ex:484
+#: lib/marshall_web/live/account_live.ex:525
 #, elixir-autogen, elixir-format
 msgid "Your saved language overrides browser preferences."
 msgstr "Kayıtlı diliniz tarayıcı tercihlerini geçersiz kılar."
 
-#: lib/marshall_web/live/account_live.ex:569
+#: lib/marshall_web/live/account_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "[not verified]"
 msgstr "[doğrulanmadı]"
 
-#: lib/marshall_web/live/account_live.ex:562
+#: lib/marshall_web/live/account_live.ex:605
 #, elixir-autogen, elixir-format
 msgid "[verified]"
 msgstr "[doğrulandı]"
 
-#: lib/marshall_web/live/account_live.ex:452
+#: lib/marshall_web/live/account_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "email, time zone and your local clock"
 msgstr "e-posta, saat dilimi ve yerel saatiniz"
 
-#: lib/marshall_web/live/account_live.ex:468
+#: lib/marshall_web/live/account_live.ex:509
 #, elixir-autogen, elixir-format
 msgid "new machines and commit attribution"
 msgstr "yeni makineler ve commit katkı bilgisi"
@@ -468,7 +468,7 @@ msgstr "yeni makineler ve commit katkı bilgisi"
 msgid "same time as you"
 msgstr "sizinle aynı saatte"
 
-#: lib/marshall_web/live/account_live.ex:456
+#: lib/marshall_web/live/account_live.ex:496
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "yönetim değişiklikleri için doğrulama"

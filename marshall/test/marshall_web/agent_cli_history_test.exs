@@ -31,9 +31,15 @@ defmodule MarshallWeb.AgentCLIHistoryTest do
   # public direct/team actions. Every step checks both an existing approved secret
   # and a fresh explicit browser approval; refusal MUST preserve complete scoped
   # persisted rows, including prior turns, sessions, audit and wake operations.
+
+  # Five complete SQL/LiveView histories took 34.379s under the default profile's
+  # 30s TooSlow heuristic. At b0dec2a / engine 0.43.7, CI derandomizes from test
+  # identity, disables the example database and only suppresses TooSlow;
+  # shrinking/blob replay and all other health checks remain. Keep all 100 cases.
   @tag :hegel_case_sandbox
   @tag timeout: 900_000
   property "CLI invocations follow direct and team authority histories",
+    profile: :ci,
     test_cases: 100,
     show_statistics: true do
     Marshall.DataCase.isolate_property_case()
@@ -146,8 +152,14 @@ defmodule MarshallWeb.AgentCLIHistoryTest do
   # Synthetic expiry, real retirement and VM deletion MUST all run in every
   # generated order and refuse every subsequent mutation. Generation and
   # shrinking MUST preserve all three boundaries without rejection exhaustion.
+
+  # Eight full three-boundary cases took 30.069s; all 100 cases include 300
+  # SQL/LiveView fixtures and exceed the old 300s aggregate. Use the same pinned
+  # CI settings above, retaining every boundary and each real operation deadline.
   @tag :hegel_case_sandbox
+  @tag timeout: 600_000
   property "browser sign-out and CLI expiry have separate authority boundaries",
+    profile: :ci,
     test_cases: 100,
     show_statistics: true do
     Marshall.DataCase.isolate_property_case()

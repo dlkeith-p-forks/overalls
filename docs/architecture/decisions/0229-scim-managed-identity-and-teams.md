@@ -1,6 +1,6 @@
-# ADR-0208: SCIM-managed identity and teams
+# ADR-0229: SCIM-managed identity and teams
 
-- ID: ADR-0208
+- ID: ADR-0229
 - Date: 2026-10-19
 - Status: accepted
 - Implementation: partial

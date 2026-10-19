@@ -21,7 +21,7 @@ msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} মালিকানাধীন মেশিন"
 msgstr[1] "%{count} মালিকানাধীন মেশিন"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "অ্যাকাউন্টের পৃষ্ঠা"
@@ -66,7 +66,7 @@ msgstr "প্রশাসকের প্রবেশাধিকার বদ�
 msgid "Could not revoke browser sessions."
 msgstr "ব্রাউজার সেশন বাতিল করা যায়নি।"
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "ব্যবহারকারী ও মেশিন মুছে ফেলুন"
@@ -81,7 +81,7 @@ msgstr "ইমেইল ঠিকানা"
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "এই স্থাপনার সব অ্যাকাউন্ট। প্রবেশ করা ব্যবহারকারীরা পৃষ্ঠাটি পড়তে পারেন; পরিবর্তনের জন্য সম্প্রতি পাসকি যাচাই করা প্রশাসক লাগবে।"
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "এই অ্যাকাউন্টকে পুরো মেশিনবহর ও সব মেশিন পরিচালনার অনুমতি দেবেন?"
@@ -106,42 +106,42 @@ msgstr "বহু-ধাপের প্রমাণীকরণ সক্রি
 msgid "MFA not enrolled"
 msgstr "বহু-ধাপের প্রমাণীকরণ নিবন্ধিত নয়"
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "প্রশাসক করুন"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "পরের পৃষ্ঠা →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "এই পৃষ্ঠায় কোনো অ্যাকাউন্ট নেই।"
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "অন্যদের সঙ্গে ভাগ করা মেশিনসহ এই অ্যাকাউন্ট ও এর মালিকানার সব মেশিন স্থায়ীভাবে মুছবেন?"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "প্রশাসক সরান"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "এই অ্যাকাউন্টের প্রশাসনিক প্রবেশাধিকার সরাবেন?"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "বহু-ধাপের প্রমাণীকরণ পুনঃস্থাপন করুন"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "এই ব্যবহারকারীর বহু-ধাপের প্রমাণীকরণ পুনঃস্থাপন করে সব ব্রাউজার সেশন বাতিল করবেন? তাঁকে নতুন পাসকি নিবন্ধন করতে হবে।"
@@ -151,17 +151,17 @@ msgstr "এই ব্যবহারকারীর বহু-ধাপের �
 msgid "Send invitation"
 msgstr "আমন্ত্রণ পাঠান"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "সব জায়গা থেকে প্রস্থান করুন"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "এই অ্যাকাউন্টকে সব ব্রাউজার সেশন থেকে বের করবেন?"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "এই অ্যাকাউন্ট ও এর %{count}টি মেশিন মুছতে ইমেইল লিখুন"
@@ -186,7 +186,7 @@ msgstr "পাসকি দিয়ে যাচাই করুন · প্�
 msgid "· Your account"
 msgstr "· আপনার অ্যাকাউন্ট"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← প্রথম পৃষ্ঠা"
@@ -196,7 +196,7 @@ msgstr "← প্রথম পৃষ্ঠা"
 msgid "Deleted"
 msgstr "মুছে ফেলা হয়েছে"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "মেশিন মুছে ফেলা হচ্ছে"
@@ -206,7 +206,7 @@ msgstr "মেশিন মুছে ফেলা হচ্ছে"
 msgid "Retrying machine cleanup"
 msgstr "মেশিন পরিষ্কারের পুনরায় চেষ্টা চলছে"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "পাওয়া যাচ্ছে না"

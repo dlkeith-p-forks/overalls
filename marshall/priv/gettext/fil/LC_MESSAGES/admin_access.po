@@ -109,6 +109,7 @@ msgid "Invalid administrative request."
 msgstr "Hindi wastong administratibong request."
 
 #: lib/marshall_web/live/admin/access_live.ex:60
+#: lib/marshall_web/live/admin/scim_live.ex:42
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Di-wastong kahilingan."
@@ -349,3 +350,53 @@ msgstr "i-sign out ang account na ito sa lahat ng lugar"
 #, elixir-autogen, elixir-format
 msgid "start this node evacuation"
 msgstr "simulan ang paglilipat palabas sa kompyuter na ito"
+
+#: lib/marshall_web/live/admin/scim_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Configure directory provisioning, identity lifecycle and managed teams."
+msgstr "I-configure ang directory provisioning, lifecycle ng pagkakakilanlan at mga pinamamahalaang team."
+
+#: lib/marshall_web/live/admin/scim_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "Copy this bearer token now. It will not be shown again."
+msgstr "Kopyahin ngayon ang bearer token na ito. Hindi na ito ipapakita muli."
+
+#: lib/marshall_web/live/admin/scim_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM"
+msgstr "I-disable ang SCIM"
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Enable SCIM and generate token"
+msgstr "I-enable ang SCIM at gumawa ng token"
+
+#: lib/marshall_web/live/admin/scim_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration"
+msgstr "Configuration ng SCIM"
+
+#: lib/marshall_web/live/admin/scim_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration could not be updated."
+msgstr "Hindi ma-update ang configuration ng SCIM."
+
+#: lib/marshall_web/live/admin/scim_live.ex:29
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration updated."
+msgstr "Na-update ang configuration ng SCIM."
+
+#: lib/marshall_web/live/admin/scim_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "SCIM is disabled."
+msgstr "Naka-disable ang SCIM."
+
+#: lib/marshall_web/live/admin/scim_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "SCIM is enabled."
+msgstr "Naka-enable ang SCIM."
+
+#: lib/marshall_web/live/admin/scim_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning"
+msgstr "Paglalaan ng SCIM"

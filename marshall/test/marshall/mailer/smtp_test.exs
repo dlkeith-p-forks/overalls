@@ -113,6 +113,34 @@ defmodule Marshall.Mailer.SMTPTest do
     end
   end
 
+  # @cc [owner:ghuntley,label:verification;security] smtp-history-case-isolation
+  # Every generated case and replay MUST own a fresh SQL sandbox and SMTP
+  # listeners. Listener cleanup MUST precede fixture-message and mailer-setting
+  # cleanup, then SQL rollback; real delivery and post-DATA deadlines MUST remain.
+  @spec isolate_smtp_case() :: :ok
+  defp isolate_smtp_case do
+    isolate_property_case()
+    previous = Application.fetch_env!(:marshall, Marshall.Mailer)
+    Hegel.on_cleanup(fn -> Application.put_env(:marshall, Marshall.Mailer, previous) end)
+    Hegel.on_cleanup(&flush_smtp_fixture_messages/0)
+  end
+
+  @spec flush_smtp_fixture_messages() :: :ok
+  defp flush_smtp_fixture_messages do
+    receive do
+      {:smtp_connection, _} -> flush_smtp_fixture_messages()
+      {:smtp_auth, _} -> flush_smtp_fixture_messages()
+      {:smtp_message, _} -> flush_smtp_fixture_messages()
+      {:smtp_data_stalled, _} -> flush_smtp_fixture_messages()
+      {:smtp_data_closed, _} -> flush_smtp_fixture_messages()
+      {:smtp_data_not_closed, _} -> flush_smtp_fixture_messages()
+      :smtp_stalled -> flush_smtp_fixture_messages()
+      :smtp_closed -> flush_smtp_fixture_messages()
+    after
+      0 -> :ok
+    end
+  end
+
   @spec deliver(AuthEmail.t()) :: {:ok, AuthEmail.t()} | {:error, term()}
   defp deliver(record) do
     record
@@ -299,16 +327,6 @@ defmodule Marshall.Mailer.SMTPTest do
     assert elapsed >= 9_000 and elapsed < 13_000
     assert_receive :smtp_stalled
     assert_receive :smtp_closed, 1000
-  end
-
-  # @cc [owner:ghuntley,label:verification] smtp-case-fixture-custody
-  # Each generated case MUST own a fresh SQL sandbox, restore the exact prior
-  # Mailer environment, and retire its SMTP listeners before the next replay.
-  @spec isolate_smtp_case() :: :ok
-  defp isolate_smtp_case do
-    isolate_property_case()
-    previous = Application.fetch_env!(:marshall, Marshall.Mailer)
-    Hegel.on_cleanup(fn -> Application.put_env(:marshall, Marshall.Mailer, previous) end)
   end
 
   @spec listener(:implicit | :starttls | :plain, keyword()) :: pid()

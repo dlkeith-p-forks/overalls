@@ -24,5 +24,7 @@
   # Windows installation is not byte-stable (ADR-0171). Both staging and
   # registration consume the same sealed recursive-hash pin through the signed
   # cache; a cache miss refuses instead of installing a different image.
+  # The unselected windows-editor-v1 candidate is intentionally absent until
+  # its native custody and authenticated browser evidence are reviewed.
   { name = "Windows Server 2025"; package = overallsPackages.windowsGuestPublished; }
 ]

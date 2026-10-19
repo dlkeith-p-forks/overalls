@@ -24,7 +24,7 @@ msgstr " och antalet ökar"
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} sekunder%{suffix}"
 
-#: lib/marshall_web/live/resize_live.ex:311
+#: lib/marshall_web/live/resize_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "%{value1} CPU"
 msgstr "%{value1} CPU"
@@ -33,12 +33,12 @@ msgstr "%{value1} CPU"
 #: lib/marshall_web/live/machines_live.ex:1043
 #: lib/marshall_web/live/overview_live.ex:315
 #: lib/marshall_web/live/overview_live.ex:320
-#: lib/marshall_web/live/resize_live.ex:317
+#: lib/marshall_web/live/resize_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
 msgstr "%{value1} GiB"
 
-#: lib/marshall_web/live/resize_live.ex:314
+#: lib/marshall_web/live/resize_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "%{value1} MiB"
 msgstr "%{value1} MiB"
@@ -49,7 +49,9 @@ msgstr "%{value1} MiB"
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
 
+#: lib/marshall_web/live/admin/workloads_live.ex:159
 #: lib/marshall_web/live/machines_live.ex:782
+#: lib/marshall_web/live/overview_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB diskutrymme"
@@ -59,20 +61,20 @@ msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB diskutrymme"
 msgid "%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} MiB minne · %{value3} GiB disk"
 
-#: lib/marshall_web/live/resize_live.ex:355
-#: lib/marshall_web/live/resize_live.ex:468
+#: lib/marshall_web/live/resize_live.ex:360
+#: lib/marshall_web/live/resize_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} CPU"
 msgstr "%{value1} → %{value2} CPU"
 
-#: lib/marshall_web/live/resize_live.ex:371
-#: lib/marshall_web/live/resize_live.ex:480
+#: lib/marshall_web/live/resize_live.ex:376
+#: lib/marshall_web/live/resize_live.ex:485
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} GiB"
 msgstr "%{value1} → %{value2} GiB"
 
-#: lib/marshall_web/live/resize_live.ex:361
-#: lib/marshall_web/live/resize_live.ex:474
+#: lib/marshall_web/live/resize_live.ex:366
+#: lib/marshall_web/live/resize_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
@@ -132,7 +134,7 @@ msgstr "Konto"
 msgid "Administrative verification expired. Choose the machine in Fleet workloads and verify your passkey to reopen it."
 msgstr "Administratörsverifieringen har gått ut. Välj maskinen i flottans arbetsbelastningar och verifiera din inloggningsnyckel för att öppna den igen."
 
-#: lib/marshall_web/live/resize_live.ex:278
+#: lib/marshall_web/live/resize_live.ex:283
 #, elixir-autogen, elixir-format
 msgid "Administrative verification expired. Your resize draft is kept in this page's address."
 msgstr "Administratörsverifieringen har gått ut. Ditt utkast för storleksändring finns kvar i sidans adress."
@@ -149,22 +151,22 @@ msgstr "Alla bevarade kopior har raderats"
 msgid "Allows"
 msgstr "Tillåter"
 
-#: lib/marshall_web/components/clone_components.ex:364
+#: lib/marshall_web/components/clone_components.ex:369
 #, elixir-autogen, elixir-format
 msgid "Another copy or move is using this host's transfer slot. Retry when it finishes."
 msgstr "En annan kopiering eller flytt använder värdens överföringsplats. Försök igen när den är klar."
 
-#: lib/marshall_web/live/resize_live.ex:632
+#: lib/marshall_web/live/resize_live.ex:642
 #, elixir-autogen, elixir-format
 msgid "Apply the new sizes"
 msgstr "Verkställ de nya storlekarna"
 
-#: lib/marshall_web/live/resize_live.ex:639
+#: lib/marshall_web/live/resize_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "Apply the new sizes while stopped"
 msgstr "Verkställ de nya storlekarna i stoppat läge"
 
-#: lib/marshall_web/live/resize_live.ex:566
+#: lib/marshall_web/live/resize_live.ex:571
 #, elixir-autogen, elixir-format
 msgid "Applying the new CPU, memory and disk sizes on the host."
 msgstr "Verkställer de nya storlekarna för processor, minne och disk på värden."
@@ -174,7 +176,7 @@ msgstr "Verkställer de nya storlekarna för processor, minne och disk på värd
 msgid "Back to overview"
 msgstr "Tillbaka till översikten"
 
-#: lib/marshall_web/components/clone_components.ex:202
+#: lib/marshall_web/components/clone_components.ex:207
 #, elixir-autogen, elixir-format
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "Stoppar källan tillfälligt så att disken kan avbildas säkert."
@@ -186,10 +188,10 @@ msgstr "Ta in ett GitHub-, GitLab-, Codeberg- eller Bitbucket-arkiv i Overalls m
 
 #: lib/marshall_web/live/machines_live.ex:1036
 #: lib/marshall_web/live/overview_live.ex:311
-#: lib/marshall_web/live/resize_live.ex:310
-#: lib/marshall_web/live/resize_live.ex:354
-#: lib/marshall_web/live/resize_live.ex:442
-#: lib/marshall_web/live/resize_live.ex:467
+#: lib/marshall_web/live/resize_live.ex:315
+#: lib/marshall_web/live/resize_live.ex:359
+#: lib/marshall_web/live/resize_live.ex:447
+#: lib/marshall_web/live/resize_live.ex:472
 #, elixir-autogen, elixir-format
 msgid "CPU"
 msgstr "CPU"
@@ -199,7 +201,7 @@ msgstr "CPU"
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
 
-#: lib/marshall_web/live/resize_live.ex:302
+#: lib/marshall_web/live/resize_live.ex:307
 #, elixir-autogen, elixir-format
 msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "Processor och minne kan ökas eller minskas. Diskstorleken kan bara ökas."
@@ -220,7 +222,7 @@ msgstr "Avbrottet kunde inte godkännas. Storlekarna verkställs redan eller mas
 msgid "Cancel move"
 msgstr "Avbryt flytt"
 
-#: lib/marshall_web/live/resize_live.ex:404
+#: lib/marshall_web/live/resize_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "Cancel resize"
 msgstr "Avbryt storleksändring"
@@ -230,19 +232,19 @@ msgstr "Avbryt storleksändring"
 msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr "Avbrott har begärts. Rensningen kan fortsätta efter återställningen."
 
-#: lib/marshall_web/live/resize_live.ex:537
-#: lib/marshall_web/live/resize_live.ex:589
-#: lib/marshall_web/live/resize_live.ex:603
+#: lib/marshall_web/live/resize_live.ex:542
+#: lib/marshall_web/live/resize_live.ex:594
+#: lib/marshall_web/live/resize_live.ex:608
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "Avbruten"
 
-#: lib/marshall_web/components/clone_components.ex:318
+#: lib/marshall_web/components/clone_components.ex:323
 #, elixir-autogen, elixir-format
 msgid "Cancelled before the snapshot started."
 msgstr "Avbröts innan ögonblicksbilden påbörjades."
 
-#: lib/marshall_web/live/resize_live.ex:536
+#: lib/marshall_web/live/resize_live.ex:541
 #, elixir-autogen, elixir-format
 msgid "Cancelling"
 msgstr "Avbryter"
@@ -252,17 +254,17 @@ msgstr "Avbryter"
 msgid "Cancelling and restoring the source"
 msgstr "Avbryter och återställer källan"
 
-#: lib/marshall_web/components/clone_components.ex:244
+#: lib/marshall_web/components/clone_components.ex:249
 #, elixir-autogen, elixir-format
 msgid "Cancelling clone"
 msgstr "Avbryter kloning"
 
-#: lib/marshall_web/live/resize_live.ex:553
+#: lib/marshall_web/live/resize_live.ex:558
 #, elixir-autogen, elixir-format
 msgid "Cancelling: waiting for the stop to confirm, then restarting with the current sizes."
 msgstr "Avbryter: väntar på bekräftat stopp och startar sedan om med nuvarande storlekar."
 
-#: lib/marshall_web/live/resize_live.ex:560
+#: lib/marshall_web/live/resize_live.ex:565
 #, elixir-autogen, elixir-format
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "Avbryter: väntar på bekräftat stopp; storlekarna förblir oförändrade."
@@ -277,7 +279,7 @@ msgstr "Avbryter…"
 msgid "Capacity is checked again when you create a machine."
 msgstr "Kapaciteten kontrolleras igen när du skapar en maskin."
 
-#: lib/marshall_web/components/clone_components.ex:208
+#: lib/marshall_web/components/clone_components.ex:213
 #, elixir-autogen, elixir-format
 msgid "Capturing the source disk. Copying begins after the snapshot is ready."
 msgstr "Avbildar källdisken. Kopieringen börjar när ögonblicksbilden är klar."
@@ -312,12 +314,12 @@ msgstr "Välj en avbildning och resurserna för din miljö."
 msgid "Choose your environment"
 msgstr "Välj din miljö"
 
-#: lib/marshall_web/components/clone_components.ex:252
+#: lib/marshall_web/components/clone_components.ex:257
 #, elixir-autogen, elixir-format
 msgid "Clone cancelled"
 msgstr "Kloningen avbruten"
 
-#: lib/marshall_web/components/clone_components.ex:236
+#: lib/marshall_web/components/clone_components.ex:241
 #, elixir-autogen, elixir-format
 msgid "Clone complete"
 msgstr "Kloningen klar"
@@ -327,7 +329,7 @@ msgstr "Kloningen klar"
 msgid "Clone machine"
 msgstr "Klona maskin"
 
-#: lib/marshall_web/components/clone_components.ex:257
+#: lib/marshall_web/components/clone_components.ex:262
 #, elixir-autogen, elixir-format
 msgid "Clone needs attention"
 msgstr "Kloningen behöver tillsyn"
@@ -357,12 +359,12 @@ msgstr "Kloningssteg"
 msgid "Comment"
 msgstr "Kommentar"
 
-#: lib/marshall_web/live/resize_live.ex:535
+#: lib/marshall_web/live/resize_live.ex:540
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "Klar"
 
-#: lib/marshall_web/live/resize_live.ex:308
+#: lib/marshall_web/live/resize_live.ex:313
 #, elixir-autogen, elixir-format
 msgid "Confirmed resources"
 msgstr "Bekräftade resurser"
@@ -378,12 +380,12 @@ msgstr "Anslut"
 msgid "Connect an integration ↗"
 msgstr "Anslut en integration ↗"
 
-#: lib/marshall_web/components/clone_components.ex:281
+#: lib/marshall_web/components/clone_components.ex:286
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "Kopierar"
 
-#: lib/marshall_web/components/clone_components.ex:215
+#: lib/marshall_web/components/clone_components.ex:220
 #, elixir-autogen, elixir-format
 msgid "Copying files"
 msgstr "Kopierar filer"
@@ -415,12 +417,12 @@ msgstr "Skapa maskin"
 msgid "Create your first machine"
 msgstr "Skapa din första maskin"
 
-#: lib/marshall_web/components/clone_components.ex:216
+#: lib/marshall_web/components/clone_components.ex:221
 #, elixir-autogen, elixir-format
 msgid "Creating an independent disk from the snapshot. Source recovery proceeds separately."
 msgstr "Skapar en oberoende disk från ögonblicksbilden. Källans återställning fortsätter separat."
 
-#: lib/marshall_web/components/clone_components.ex:223
+#: lib/marshall_web/components/clone_components.ex:228
 #, elixir-autogen, elixir-format
 msgid "Creating cloned machine"
 msgstr "Skapar klonad maskin"
@@ -509,9 +511,9 @@ msgstr "Direkta maskinbehörigheter"
 
 #: lib/marshall_web/live/machines_live.ex:1042
 #: lib/marshall_web/live/overview_live.ex:319
-#: lib/marshall_web/live/resize_live.ex:316
-#: lib/marshall_web/live/resize_live.ex:370
-#: lib/marshall_web/live/resize_live.ex:479
+#: lib/marshall_web/live/resize_live.ex:321
+#: lib/marshall_web/live/resize_live.ex:375
+#: lib/marshall_web/live/resize_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "Disk"
 msgstr "Disk"
@@ -521,7 +523,7 @@ msgstr "Disk"
 msgid "Disk (GiB)"
 msgstr "Disk (GiB)"
 
-#: lib/marshall_web/live/resize_live.ex:459
+#: lib/marshall_web/live/resize_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "Disk (GiB) — högst 500 GiB"
@@ -581,12 +583,12 @@ msgstr "Filer och sparade autentiseringsuppgifter ingår i kopian."
 msgid "Find your people ↗"
 msgstr "Hitta dina människor ↗"
 
-#: lib/marshall_web/components/clone_components.ex:282
+#: lib/marshall_web/components/clone_components.ex:287
 #, elixir-autogen, elixir-format
 msgid "Finishing"
 msgstr "Slutför"
 
-#: lib/marshall_web/components/clone_components.ex:228
+#: lib/marshall_web/components/clone_components.ex:233
 #, elixir-autogen, elixir-format
 msgid "Finishing up"
 msgstr "Avslutar"
@@ -606,7 +608,7 @@ msgstr "Ge det utrymme att växa"
 msgid "Grant, change or remove access"
 msgstr "Ge, ändra eller ta bort åtkomst"
 
-#: lib/marshall_web/live/resize_live.ex:640
+#: lib/marshall_web/live/resize_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Grow the filesystem on next boot"
 msgstr "Utöka filsystemet vid nästa start"
@@ -680,9 +682,9 @@ msgstr "Lämna tomt för att skapa ett namn automatiskt"
 msgid "Leave blank to generate a name."
 msgstr "Lämna tomt för att skapa ett namn automatiskt."
 
-#: lib/marshall_web/live/resize_live.ex:584
-#: lib/marshall_web/live/resize_live.ex:598
-#: lib/marshall_web/live/resize_live.ex:614
+#: lib/marshall_web/live/resize_live.ex:589
+#: lib/marshall_web/live/resize_live.ex:603
+#: lib/marshall_web/live/resize_live.ex:619
 #, elixir-autogen, elixir-format
 msgid "Leave stopped"
 msgstr "Lämna stoppad"
@@ -758,15 +760,15 @@ msgstr "Mätt mellan kontrollplanets observationer av stopp och beredskap; gäst
 
 #: lib/marshall_web/live/machines_live.ex:1039
 #: lib/marshall_web/live/overview_live.ex:314
-#: lib/marshall_web/live/resize_live.ex:313
-#: lib/marshall_web/live/resize_live.ex:360
-#: lib/marshall_web/live/resize_live.ex:473
+#: lib/marshall_web/live/resize_live.ex:318
+#: lib/marshall_web/live/resize_live.ex:365
+#: lib/marshall_web/live/resize_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Memory"
 msgstr "Minne"
 
 #: lib/marshall_web/live/machines_live.ex:963
-#: lib/marshall_web/live/resize_live.ex:450
+#: lib/marshall_web/live/resize_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "Minne (MiB)"
@@ -797,7 +799,7 @@ msgid "Move to another host"
 msgstr "Flytta till en annan värd"
 
 #: lib/marshall_web/components/clone_components.ex:135
-#: lib/marshall_web/live/resize_live.ex:337
+#: lib/marshall_web/live/resize_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "Needs attention"
 msgstr "Behöver tillsyn"
@@ -807,7 +809,7 @@ msgstr "Behöver tillsyn"
 msgid "New machine name (optional)"
 msgstr "Nytt maskinnamn (valfritt)"
 
-#: lib/marshall_web/live/resize_live.ex:417
+#: lib/marshall_web/live/resize_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "New sizes"
 msgstr "Nya storlekar"
@@ -928,7 +930,9 @@ msgstr "Översikt"
 msgid "Owner"
 msgstr "Ägare"
 
-#: lib/marshall_web/live/resize_live.ex:538
+#: lib/marshall_web/components/clone_components.ex:406
+#: lib/marshall_web/live/resize_live.ex:257
+#: lib/marshall_web/live/resize_live.ex:543
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Väntar"
@@ -938,7 +942,7 @@ msgstr "Väntar"
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "Ta bort maskinen och dess disk permanent. Detta kan inte ångras."
 
-#: lib/marshall_web/components/clone_components.ex:377
+#: lib/marshall_web/components/clone_components.ex:382
 #, elixir-autogen, elixir-format
 msgid "Permission to clone this machine is no longer available."
 msgstr "Behörigheten att klona maskinen är inte längre tillgänglig."
@@ -954,27 +958,27 @@ msgstr "Personlig"
 msgid "Phase"
 msgstr "Fas"
 
-#: lib/marshall_web/live/resize_live.ex:319
+#: lib/marshall_web/live/resize_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Power"
 msgstr "Ström"
 
-#: lib/marshall_web/live/resize_live.ex:376
+#: lib/marshall_web/live/resize_live.ex:381
 #, elixir-autogen, elixir-format
 msgid "Power afterwards"
 msgstr "Strömtillstånd efteråt"
 
-#: lib/marshall_web/components/clone_components.ex:279
+#: lib/marshall_web/components/clone_components.ex:284
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "Förbereder"
 
-#: lib/marshall_web/components/clone_components.ex:195
+#: lib/marshall_web/components/clone_components.ex:200
 #, elixir-autogen, elixir-format
 msgid "Preparing clone"
 msgstr "Förbereder klon"
 
-#: lib/marshall_web/components/clone_components.ex:196
+#: lib/marshall_web/components/clone_components.ex:201
 #, elixir-autogen, elixir-format
 msgid "Preparing space and checking the source before taking a snapshot."
 msgstr "Förbereder utrymme och kontrollerar källan innan en ögonblicksbild tas."
@@ -1013,12 +1017,13 @@ msgid "Profiles choose access and agent features. Machines remain isolated from 
 msgstr "Profiler väljer åtkomst och agentfunktioner. Maskinerna förblir isolerade från varandra."
 
 #: lib/marshall_web/components/clone_components.ex:64
+#: lib/marshall_web/components/clone_components.ex:156
 #, elixir-autogen, elixir-format
 msgid "Queue position %{value1}"
 msgstr "Köplats %{value1}"
 
-#: lib/marshall_web/components/clone_components.ex:187
-#: lib/marshall_web/components/clone_components.ex:278
+#: lib/marshall_web/components/clone_components.ex:192
+#: lib/marshall_web/components/clone_components.ex:283
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr "Köad"
@@ -1068,7 +1073,7 @@ msgstr "Uppdaterar…"
 msgid "Registered email"
 msgstr "Registrerad e-postadress"
 
-#: lib/marshall_web/components/clone_components.ex:224
+#: lib/marshall_web/components/clone_components.ex:229
 #, elixir-autogen, elixir-format
 msgid "Registering the copied disk as your private machine."
 msgstr "Registrerar den kopierade disken som din privata maskin."
@@ -1083,7 +1088,7 @@ msgstr "Flytta maskin"
 msgid "Relocation requested. A destination is selected automatically."
 msgstr "Flytt har begärts. Ett mål väljs automatiskt."
 
-#: lib/marshall_web/live/resize_live.ex:380
+#: lib/marshall_web/live/resize_live.ex:385
 #, elixir-autogen, elixir-format
 msgid "Remains stopped; the filesystem grows on the next boot"
 msgstr "Förblir stoppad; filsystemet utökas vid nästa start"
@@ -1099,7 +1104,7 @@ msgstr "Ta bort åtkomst"
 msgid "Requesting cancellation…"
 msgstr "Begär avbrott…"
 
-#: lib/marshall_web/live/resize_live.ex:508
+#: lib/marshall_web/live/resize_live.ex:513
 #, elixir-autogen, elixir-format
 msgid "Requesting resize…"
 msgstr "Begär storleksändring…"
@@ -1120,11 +1125,12 @@ msgid "Requesting…"
 msgstr "Begär…"
 
 #: lib/marshall_web/live/machines_live.ex:1028
+#: lib/marshall_web/live/resize_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Ändra storlek"
 
-#: lib/marshall_web/live/resize_live.ex:512
+#: lib/marshall_web/live/resize_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "Resize and restart"
 msgstr "Ändra storlek och starta om"
@@ -1139,19 +1145,19 @@ msgstr "Storleksändringen har avbrutits."
 msgid "Resize could not be accepted. Check the sizes and current machine state."
 msgstr "Storleksändringen kunde inte godkännas. Kontrollera storlekarna och maskinens nuvarande tillstånd."
 
-#: lib/marshall_web/live/resize_live.ex:334
+#: lib/marshall_web/live/resize_live.ex:339
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
 msgstr "Storleksändring pågår"
 
 #: lib/marshall_web/live/resize_live.ex:12
-#: lib/marshall_web/live/resize_live.ex:300
-#: lib/marshall_web/live/resize_live.ex:513
+#: lib/marshall_web/live/resize_live.ex:305
+#: lib/marshall_web/live/resize_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "Resize machine"
 msgstr "Ändra maskinstorlek"
 
-#: lib/marshall_web/live/resize_live.ex:384
+#: lib/marshall_web/live/resize_live.ex:389
 #, elixir-autogen, elixir-format
 msgid "Resize needs attention. Confirmed disk growth is retained. Retry resumes the recorded phase."
 msgstr "Storleksändringen behöver tillsyn. Bekräftad diskutökning bevaras. Ett nytt försök återupptar den registrerade fasen."
@@ -1161,12 +1167,12 @@ msgstr "Storleksändringen behöver tillsyn. Bekräftad diskutökning bevaras. E
 msgid "Resize requested."
 msgstr "Storleksändring har begärts."
 
-#: lib/marshall_web/live/resize_live.ex:343
+#: lib/marshall_web/live/resize_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "Resize stages"
 msgstr "Storleksändringens steg"
 
-#: lib/marshall_web/live/resize_live.ex:532
+#: lib/marshall_web/live/resize_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Resizing"
 msgstr "Ändrar storlek"
@@ -1178,29 +1184,29 @@ msgstr "Ändrar storlek"
 msgid "Resources"
 msgstr "Resurser"
 
-#: lib/marshall_web/live/resize_live.ex:613
+#: lib/marshall_web/live/resize_live.ex:618
 #, elixir-autogen, elixir-format
 msgid "Restart"
 msgstr "Starta om"
 
-#: lib/marshall_web/live/resize_live.ex:583
-#: lib/marshall_web/live/resize_live.ex:597
+#: lib/marshall_web/live/resize_live.ex:588
+#: lib/marshall_web/live/resize_live.ex:602
 #, elixir-autogen, elixir-format
 msgid "Restart unchanged"
 msgstr "Starta om utan ändringar"
 
-#: lib/marshall_web/live/resize_live.ex:633
+#: lib/marshall_web/live/resize_live.ex:643
 #, elixir-autogen, elixir-format
 msgid "Restart with the new resources"
 msgstr "Starta om med de nya resurserna"
 
-#: lib/marshall_web/live/resize_live.ex:378
+#: lib/marshall_web/live/resize_live.ex:383
 #, elixir-autogen, elixir-format
 msgid "Restarted"
 msgstr "Omstartad"
 
-#: lib/marshall_web/live/resize_live.ex:533
-#: lib/marshall_web/live/resize_live.ex:534
+#: lib/marshall_web/live/resize_live.ex:538
+#: lib/marshall_web/live/resize_live.ex:539
 #, elixir-autogen, elixir-format
 msgid "Restarting"
 msgstr "Startar om"
@@ -1220,12 +1226,12 @@ msgstr "Det nya försöket kunde inte godkännas. Kapaciteten eller maskinens ti
 msgid "Retry destination boot"
 msgstr "Försök starta målet igen"
 
-#: lib/marshall_web/live/resize_live.ex:396
+#: lib/marshall_web/live/resize_live.ex:401
 #, elixir-autogen, elixir-format
 msgid "Retry resize"
 msgstr "Försök ändra storlek igen"
 
-#: lib/marshall_web/live/resize_live.ex:285
+#: lib/marshall_web/live/resize_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "Return to Fleet workloads and verify your passkey to reopen the machine →"
 msgstr "Återgå till Flottans arbetsbelastningar och verifiera din passnyckel för att öppna maskinen igen →"
@@ -1258,7 +1264,7 @@ msgstr "Utrymme att växa"
 msgid "Root disk (GiB)"
 msgstr "Rotdisk (GiB)"
 
-#: lib/marshall_web/live/resize_live.ex:321
+#: lib/marshall_web/live/resize_live.ex:326
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "Körs"
@@ -1308,17 +1314,17 @@ msgstr "Kort beskrivning för agenter"
 msgid "Sign in if needed, then Overalls will create your machine."
 msgstr "Logga in vid behov, så skapar Overalls din maskin."
 
-#: lib/marshall_web/components/clone_components.ex:280
+#: lib/marshall_web/components/clone_components.ex:285
 #, elixir-autogen, elixir-format
 msgid "Snapshot"
 msgstr "Ögonblicksbild"
 
-#: lib/marshall_web/components/clone_components.ex:315
+#: lib/marshall_web/components/clone_components.ex:320
 #, elixir-autogen, elixir-format
 msgid "Snapshot did not start."
 msgstr "Ögonblicksbilden påbörjades inte."
 
-#: lib/marshall_web/components/clone_components.ex:312
+#: lib/marshall_web/components/clone_components.ex:317
 #, elixir-autogen, elixir-format
 msgid "Snapshot has not started."
 msgstr "Ögonblicksbilden har inte påbörjats."
@@ -1328,17 +1334,17 @@ msgstr "Ögonblicksbilden har inte påbörjats."
 msgid "Source machine"
 msgstr "Källmaskin"
 
-#: lib/marshall_web/components/clone_components.ex:326
+#: lib/marshall_web/components/clone_components.ex:331
 #, elixir-autogen, elixir-format
 msgid "Source recovery follows the snapshot."
 msgstr "Källans återställning följer efter ögonblicksbilden."
 
-#: lib/marshall_web/components/clone_components.ex:306
+#: lib/marshall_web/components/clone_components.ex:311
 #, elixir-autogen, elixir-format
 msgid "Source recovery needs attention."
 msgstr "Källans återställning behöver tillsyn."
 
-#: lib/marshall_web/components/clone_components.ex:309
+#: lib/marshall_web/components/clone_components.ex:314
 #, elixir-autogen, elixir-format
 msgid "Source recovery retry requested."
 msgstr "Nytt försök att återställa källan har begärts."
@@ -1348,17 +1354,17 @@ msgstr "Nytt försök att återställa källan har begärts."
 msgid "Source restored; destination cleanup pending"
 msgstr "Källan återställd; rensning av målet väntar"
 
-#: lib/marshall_web/components/clone_components.ex:303
+#: lib/marshall_web/components/clone_components.ex:308
 #, elixir-autogen, elixir-format
 msgid "Source returned to its original power state."
 msgstr "Källan återgick till sitt ursprungliga strömtillstånd."
 
-#: lib/marshall_web/components/clone_components.ex:300
+#: lib/marshall_web/components/clone_components.ex:305
 #, elixir-autogen, elixir-format
 msgid "Source was kept stopped, matching its state when this request began."
 msgstr "Källan hölls stoppad, i samma tillstånd som när begäran började."
 
-#: lib/marshall_web/components/clone_components.ex:323
+#: lib/marshall_web/components/clone_components.ex:328
 #, elixir-autogen, elixir-format
 msgid "Source was stopped when this request began."
 msgstr "Källan var stoppad när begäran började."
@@ -1374,7 +1380,7 @@ msgstr "Standard"
 msgid "Starting"
 msgstr "Startar"
 
-#: lib/marshall_web/live/resize_live.ex:569
+#: lib/marshall_web/live/resize_live.ex:574
 #, elixir-autogen, elixir-format
 msgid "Starting the machine with its new resources."
 msgstr "Startar maskinen med de nya resurserna."
@@ -1390,44 +1396,45 @@ msgstr "Status"
 msgid "Stay in the loop"
 msgstr "Håll dig uppdaterad"
 
-#: lib/marshall_web/components/clone_components.ex:385
+#: lib/marshall_web/components/clone_components.ex:390
 #, elixir-autogen, elixir-format
 msgid "Step %{value1} is waiting on the host: %{value2}"
 msgstr "Steg %{value1} väntar på värden: %{value2}"
 
-#: lib/marshall_web/live/resize_live.ex:587
-#: lib/marshall_web/live/resize_live.ex:601
+#: lib/marshall_web/live/resize_live.ex:592
+#: lib/marshall_web/live/resize_live.ex:606
+#: lib/marshall_web/live/resize_live.ex:622
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Stoppa"
 
-#: lib/marshall_web/live/resize_live.ex:631
+#: lib/marshall_web/live/resize_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "Stop the machine"
 msgstr "Stoppa maskinen"
 
-#: lib/marshall_web/live/resize_live.ex:322
+#: lib/marshall_web/live/resize_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "Stoppad"
 
 #: lib/marshall_web/live/machines_live.ex:637
-#: lib/marshall_web/live/resize_live.ex:531
+#: lib/marshall_web/live/resize_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Stopping"
 msgstr "Stoppar"
 
-#: lib/marshall_web/components/clone_components.ex:201
+#: lib/marshall_web/components/clone_components.ex:206
 #, elixir-autogen, elixir-format
 msgid "Stopping source for snapshot"
 msgstr "Stoppar källan för ögonblicksbild"
 
-#: lib/marshall_web/components/clone_components.ex:245
+#: lib/marshall_web/components/clone_components.ex:250
 #, elixir-autogen, elixir-format
 msgid "Stopping the copy and removing temporary resources. Source recovery is tracked separately."
 msgstr "Stoppar kopieringen och tar bort tillfälliga resurser. Källans återställning följs separat."
 
-#: lib/marshall_web/live/resize_live.ex:549
+#: lib/marshall_web/live/resize_live.ex:554
 #, elixir-autogen, elixir-format
 msgid "Stopping the machine so its resources can change safely."
 msgstr "Stoppar maskinen så att resurserna kan ändras säkert."
@@ -1447,7 +1454,7 @@ msgstr "Prenumerera"
 msgid "Switching placement"
 msgstr "Byter placering"
 
-#: lib/marshall_web/components/clone_components.ex:207
+#: lib/marshall_web/components/clone_components.ex:212
 #, elixir-autogen, elixir-format
 msgid "Taking snapshot"
 msgstr "Tar ögonblicksbild"
@@ -1492,12 +1499,12 @@ msgstr "Arkivreferensen kan inte startas."
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
 msgstr "Kontot måste redan vara registrerat. När du sparar en roll ersätts personens direkta maskinroll; välj Ta bort åtkomst för att ta bort den direkta behörigheten."
 
-#: lib/marshall_web/components/clone_components.ex:229
+#: lib/marshall_web/components/clone_components.ex:234
 #, elixir-autogen, elixir-format
 msgid "The clone can be opened. Finalizing its power state and cleaning up temporary resources."
 msgstr "Klonen kan öppnas. Slutför strömtillståndet och rensar tillfälliga resurser."
 
-#: lib/marshall_web/components/clone_components.ex:339
+#: lib/marshall_web/components/clone_components.ex:344
 #, elixir-autogen, elixir-format
 msgid "The clone could not start. Open it to review its status and power controls."
 msgstr "Klonen kunde inte starta. Öppna den för att granska status och strömkontroller."
@@ -1512,7 +1519,7 @@ msgstr "Standardavbildningen kan inte öppna arkiv. Välj en avbildning med den 
 msgid "The default machine image is not available right now."
 msgstr "Standardavbildningen för maskiner är inte tillgänglig just nu."
 
-#: lib/marshall_web/live/resize_live.ex:543
+#: lib/marshall_web/live/resize_live.ex:548
 #, elixir-autogen, elixir-format
 msgid "The last step did not finish. Retry resumes from the recorded phase without repeating completed work."
 msgstr "Det sista steget slutfördes inte. Ett nytt försök fortsätter från den registrerade fasen utan att upprepa slutfört arbete."
@@ -1527,7 +1534,7 @@ msgstr "Maskinen kunde inte skapas. Försök igen eller skapa en manuellt."
 msgid "The machine could not be updated. Refresh and try again."
 msgstr "Maskinen kunde inte uppdateras. Uppdatera sidan och försök igen."
 
-#: lib/marshall_web/live/resize_live.ex:424
+#: lib/marshall_web/live/resize_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "Maskinen har ändrats sedan utkastet skapades. Granska de bekräftade resurserna ovan."
@@ -1552,7 +1559,7 @@ msgstr "Ägarens åtkomst kan inte ändras."
 msgid "The pin could not be changed. Refresh and try again."
 msgstr "Fästningen kunde inte ändras. Uppdatera och försök igen."
 
-#: lib/marshall_web/components/clone_components.ex:371
+#: lib/marshall_web/components/clone_components.ex:376
 #, elixir-autogen, elixir-format
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "Den föregående kopian av maskinen frigör fortfarande sin ögonblicksbild. Försök snart igen."
@@ -1562,12 +1569,12 @@ msgstr "Den föregående kopian av maskinen frigör fortfarande sin ögonblicksb
 msgid "The request could not be completed. Check the values and try again."
 msgstr "Begäran kunde inte slutföras. Kontrollera värdena och försök igen."
 
-#: lib/marshall_web/components/clone_components.ex:391
+#: lib/marshall_web/components/clone_components.ex:396
 #, elixir-autogen, elixir-format
 msgid "The request encountered a problem. Use the available actions to recover or cancel it."
 msgstr "Begäran stötte på ett problem. Använd de tillgängliga åtgärderna för att återställa eller avbryta den."
 
-#: lib/marshall_web/live/resize_live.ex:573
+#: lib/marshall_web/live/resize_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "The resize has completed; this page refreshes with the confirmed sizes."
 msgstr "Storleksändringen är klar; sidan uppdateras med de bekräftade storlekarna."
@@ -1582,22 +1589,22 @@ msgstr "Samma nätverks- och åtkomstalternativ som Standard, med AI-agenter som
 msgid "The selected image needs more memory or disk space."
 msgstr "Den valda avbildningen behöver mer minne eller diskutrymme."
 
-#: lib/marshall_web/components/clone_components.ex:335
+#: lib/marshall_web/components/clone_components.ex:340
 #, elixir-autogen, elixir-format
 msgid "The source could not restart. Retry to request source recovery."
 msgstr "Källan kunde inte starta om. Försök igen för att begära återställning av källan."
 
-#: lib/marshall_web/components/clone_components.ex:360
+#: lib/marshall_web/components/clone_components.ex:365
 #, elixir-autogen, elixir-format
 msgid "The source host is unavailable. Retry once it is available."
 msgstr "Källvärden är inte tillgänglig. Försök igen när den är tillgänglig."
 
-#: lib/marshall_web/components/clone_components.ex:380
+#: lib/marshall_web/components/clone_components.ex:385
 #, elixir-autogen, elixir-format
 msgid "The source machine was deleted before this request began."
 msgstr "Källmaskinen raderades innan begäran började."
 
-#: lib/marshall_web/components/clone_components.ex:354
+#: lib/marshall_web/components/clone_components.ex:359
 #, elixir-autogen, elixir-format
 msgid "The source was busy or changed before cloning began. Retry when it is ready."
 msgstr "Källan var upptagen eller ändrades innan kloningen började. Försök igen när den är redo."
@@ -1612,7 +1619,7 @@ msgstr "Det finns inte tillräckligt med ledig kapacitet för en ny maskin just 
 msgid "There is not enough available capacity for this machine."
 msgstr "Det finns inte tillräckligt med ledig kapacitet för maskinen."
 
-#: lib/marshall_web/components/clone_components.ex:346
+#: lib/marshall_web/components/clone_components.ex:351
 #, elixir-autogen, elixir-format
 msgid "There is not enough capacity for this copy. Retry when space is available."
 msgstr "Det finns inte tillräckligt med kapacitet för kopian. Försök igen när utrymme finns."
@@ -1647,7 +1654,7 @@ msgstr "Maskinen håller på att raderas och kan inte fästas."
 msgid "This machine is being deleted."
 msgstr "Maskinen håller på att raderas."
 
-#: lib/marshall_web/live/resize_live.ex:292
+#: lib/marshall_web/live/resize_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "This machine is unavailable or you no longer have management access."
 msgstr "Maskinen är inte tillgänglig eller du har inte längre hanteringsbehörighet."
@@ -1667,7 +1674,7 @@ msgstr "Maskinens värd är för närvarande otillgänglig."
 msgid "This repository link could not be launched. Open the link again."
 msgstr "Den här arkivlänken kunde inte startas. Öppna länken igen."
 
-#: lib/marshall_web/components/clone_components.ex:258
+#: lib/marshall_web/components/clone_components.ex:263
 #, elixir-autogen, elixir-format
 msgid "This request could not finish. Review the issue below and the available actions."
 msgstr "Begäran kunde inte slutföras. Granska problemet nedan och de tillgängliga åtgärderna."
@@ -1677,7 +1684,7 @@ msgstr "Begäran kunde inte slutföras. Granska problemet nedan och de tillgäng
 msgid "This request has already been used. Refresh before trying again."
 msgstr "Begäran har redan använts. Uppdatera innan du försöker igen."
 
-#: lib/marshall_web/components/clone_components.ex:253
+#: lib/marshall_web/components/clone_components.ex:258
 #, elixir-autogen, elixir-format
 msgid "This request has ended without publishing a clone."
 msgstr "Begäran avslutades utan att publicera en klon."
@@ -1719,7 +1726,7 @@ msgstr "Uppdaterad"
 msgid "Updates automatically"
 msgstr "Uppdateras automatiskt"
 
-#: lib/marshall_web/live/resize_live.ex:434
+#: lib/marshall_web/live/resize_live.ex:439
 #, elixir-autogen, elixir-format
 msgid "Use current machine state, keeping these sizes"
 msgstr "Använd maskinens nuvarande tillstånd och behåll storlekarna"
@@ -1741,27 +1748,27 @@ msgstr "Visa alla →"
 msgid "Viewer"
 msgstr "Läsare"
 
-#: lib/marshall_web/components/clone_components.ex:188
+#: lib/marshall_web/components/clone_components.ex:193
 #, elixir-autogen, elixir-format
 msgid "Waiting for its turn. Each copy takes a fresh snapshot when processing begins."
 msgstr "Väntar på sin tur. Varje kopia tar en ny ögonblicksbild när behandlingen börjar."
 
-#: lib/marshall_web/components/clone_components.ex:328
+#: lib/marshall_web/components/clone_components.ex:333
 #, elixir-autogen, elixir-format
 msgid "Waiting for source recovery confirmation."
 msgstr "Väntar på bekräftelse av källans återställning."
 
-#: lib/marshall_web/components/clone_components.ex:162
+#: lib/marshall_web/components/clone_components.ex:167
 #, elixir-autogen, elixir-format
 msgid "Waiting for the host's transfer slot; another copy or move is using it."
 msgstr "Väntar på värdens överföringsplats; en annan kopiering eller flytt använder den."
 
-#: lib/marshall_web/components/clone_components.ex:169
+#: lib/marshall_web/components/clone_components.ex:174
 #, elixir-autogen, elixir-format
 msgid "Waiting for the previous copy of this machine to release its snapshot."
 msgstr "Väntar på att den föregående kopian av maskinen ska frigöra sin ögonblicksbild."
 
-#: lib/marshall_web/components/clone_components.ex:320
+#: lib/marshall_web/components/clone_components.ex:325
 #, elixir-autogen, elixir-format
 msgid "Waiting for the source to stop."
 msgstr "Väntar på att källan ska stoppas."
@@ -1787,7 +1794,7 @@ msgstr "Webbappar"
 msgid "Web apps only"
 msgstr "Endast webbappar"
 
-#: lib/marshall_web/live/resize_live.ex:486
+#: lib/marshall_web/live/resize_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "What happens"
 msgstr "Vad händer"
@@ -1827,12 +1834,12 @@ msgstr "Din disk bevaras när maskinen är stoppad."
 msgid "Your disk stays with you when the machine is stopped."
 msgstr "Din disk finns kvar när maskinen är stoppad."
 
-#: lib/marshall_web/live/resize_live.ex:500
+#: lib/marshall_web/live/resize_live.ex:505
 #, elixir-autogen, elixir-format
 msgid "Your machine will remain stopped. Disk filesystem growth completes on its next boot."
 msgstr "Maskinen förblir stoppad. Diskens filsystem utökas färdigt vid nästa start."
 
-#: lib/marshall_web/live/resize_live.ex:495
+#: lib/marshall_web/live/resize_live.ex:500
 #, elixir-autogen, elixir-format
 msgid "Your machine will stop while resources change, then restart. Expect downtime."
 msgstr "Maskinen stoppas medan resurserna ändras och startar sedan om. Räkna med driftstopp."
@@ -1842,12 +1849,12 @@ msgstr "Maskinen stoppas medan resurserna ändras och startar sedan om. Räkna m
 msgid "Your machines"
 msgstr "Dina maskiner"
 
-#: lib/marshall_web/components/clone_components.ex:237
+#: lib/marshall_web/components/clone_components.ex:242
 #, elixir-autogen, elixir-format
 msgid "Your private copy has been created and temporary resources have been cleaned up."
 msgstr "Din privata kopia har skapats och tillfälliga resurser har rensats."
 
-#: lib/marshall_web/components/clone_components.ex:176
+#: lib/marshall_web/components/clone_components.ex:181
 #, elixir-autogen, elixir-format
 msgid "Your private copy has been created. The source snapshot is still being released; the source stays protected until then."
 msgstr "Din privata kopia har skapats. Källans ögonblicksbild frigörs fortfarande; källan förblir skyddad tills dess."
@@ -1878,79 +1885,79 @@ msgstr "← Första sidan"
 msgid "← Machines"
 msgstr "← Maskiner"
 
-#: lib/marshall_web/live/resize_live.ex:273
+#: lib/marshall_web/live/resize_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "← Settings"
 msgstr "← Inställningar"
 
-#: lib/marshall_web/components/clone_components.ex:400
+#: lib/marshall_web/components/clone_components.ex:405
 #: lib/marshall_web/live/resize_live.ex:256
 #, elixir-autogen, elixir-format
 msgid "Current"
 msgstr "Aktuell"
 
-#: lib/marshall_web/components/clone_components.ex:399
+#: lib/marshall_web/components/clone_components.ex:404
 #: lib/marshall_web/live/resize_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Done"
 msgstr "Klart"
 
-#: lib/marshall_web/components/clone_components.ex:417
+#: lib/marshall_web/components/clone_components.ex:422
 #, elixir-autogen, elixir-format
 msgid "a snapshot mount could not be released yet."
 msgstr "en montering av en ögonblicksbild kunde ännu inte frigöras."
 
-#: lib/marshall_web/components/clone_components.ex:433
+#: lib/marshall_web/components/clone_components.ex:438
 #, elixir-autogen, elixir-format
 msgid "cleanup on the host did not finish yet."
 msgstr "rensningen på värden är ännu inte klar."
 
-#: lib/marshall_web/components/clone_components.ex:436
+#: lib/marshall_web/components/clone_components.ex:441
 #, elixir-autogen, elixir-format
 msgid "the copied disk could not be prepared yet."
 msgstr "den kopierade disken kunde ännu inte förberedas."
 
-#: lib/marshall_web/components/clone_components.ex:420
+#: lib/marshall_web/components/clone_components.ex:425
 #, elixir-autogen, elixir-format
 msgid "the disk copy did not finish; it resumes automatically."
 msgstr "diskkopieringen slutfördes inte; den återupptas automatiskt."
 
-#: lib/marshall_web/components/clone_components.ex:439
+#: lib/marshall_web/components/clone_components.ex:444
 #, elixir-autogen, elixir-format
 msgid "the host could not confirm the step yet."
 msgstr "värden kunde ännu inte bekräfta steget."
 
-#: lib/marshall_web/components/clone_components.ex:429
+#: lib/marshall_web/components/clone_components.ex:434
 #, elixir-autogen, elixir-format
 msgid "the hosts could not connect; the host retries automatically."
 msgstr "värdarna kunde inte ansluta; värden försöker automatiskt igen."
 
-#: lib/marshall_web/components/clone_components.ex:408
+#: lib/marshall_web/components/clone_components.ex:413
 #, elixir-autogen, elixir-format
 msgid "the machine is mid-operation; the host retries automatically."
 msgstr "maskinen utför en annan åtgärd; värden försöker automatiskt igen."
 
-#: lib/marshall_web/components/clone_components.ex:411
+#: lib/marshall_web/components/clone_components.ex:416
 #, elixir-autogen, elixir-format
 msgid "the source changed state; it continues once the source settles."
 msgstr "källan har ändrat tillstånd; processen fortsätter när källan har stabiliserats."
 
-#: lib/marshall_web/components/clone_components.ex:414
+#: lib/marshall_web/components/clone_components.ex:419
 #, elixir-autogen, elixir-format
 msgid "the source snapshot could not be prepared or released yet."
 msgstr "källans ögonblicksbild kunde ännu inte förberedas eller frigöras."
 
-#: lib/marshall_web/components/clone_components.ex:405
+#: lib/marshall_web/components/clone_components.ex:410
 #, elixir-autogen, elixir-format
 msgid "the storage pool is busy; the host retries automatically."
 msgstr "lagringspoolen är upptagen; värden försöker automatiskt igen."
 
-#: lib/marshall_web/components/clone_components.ex:426
+#: lib/marshall_web/components/clone_components.ex:431
 #, elixir-autogen, elixir-format
 msgid "the transfer permit lapsed; it is renewed automatically."
 msgstr "överföringstillståndet har löpt ut; det förnyas automatiskt."
 
-#: lib/marshall_web/components/clone_components.ex:423
+#: lib/marshall_web/components/clone_components.ex:428
 #, elixir-autogen, elixir-format
 msgid "the transfer stream was interrupted; it resumes automatically."
 msgstr "överföringsströmmen avbröts; den återupptas automatiskt."

@@ -14,57 +14,57 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:83
+#: lib/marshall_web/live/ssh_approval_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr "الموافقة على مفتاح SSH"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:111
+#: lib/marshall_web/live/ssh_approval_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr "الموافقة على المفتاح"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr ""
 "لا توافق على هذا المفتاح إلا إذا بدأت اتصال SSH وكانت بصمته تطابق ما يظهر في"
 " عميل SSH لديك."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:109
+#: lib/marshall_web/live/ssh_approval_live.ex:112
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "تجري الموافقة…"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:101
+#: lib/marshall_web/live/ssh_approval_live.ex:104
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "التسمية (اختيارية)"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:120
+#: lib/marshall_web/live/ssh_approval_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr "إدارة مفاتيح SSH"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:103
+#: lib/marshall_web/live/ssh_approval_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "حاسوبي المحمول"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
-#: lib/marshall_web/live/ssh_approval_live.ex:115
+#: lib/marshall_web/live/ssh_approval_live.ex:52
+#: lib/marshall_web/live/ssh_approval_live.ex:118
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "تمت الموافقة على مفتاح SSH. يمكنك العودة إلى عميل SSH."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:64
+#: lib/marshall_web/live/ssh_approval_live.ex:67
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr ""
 "موافقة SSH هذه غير متاحة أو انتهت صلاحيتها. ابدأ اتصال SSH جديدًا للمحاولة "
 "مجددًا."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:93
+#: lib/marshall_web/live/ssh_approval_live.ex:96
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr ""
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Unavailable"
 msgstr "غير متاح"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:117
+#: lib/marshall_web/live/ssh_approval_live.ex:120
 #, elixir-autogen, elixir-format
 msgid "Open Mila"
 msgstr "افتح Mila"

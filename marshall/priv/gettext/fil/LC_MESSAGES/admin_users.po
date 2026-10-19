@@ -21,7 +21,7 @@ msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} makinang pag-aari"
 msgstr[1] "%{count} makinang pag-aari"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "Mga pahina ng account"
@@ -66,7 +66,7 @@ msgstr "Hindi mabago ang access ng administrator."
 msgid "Could not revoke browser sessions."
 msgstr "Hindi mabawi ang mga session ng browser."
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "Tanggalin ang user at mga makina"
@@ -81,7 +81,7 @@ msgstr "Adres ng email"
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "Bawat account sa deployment na ito. Mababasa ng mga naka-sign in na user ang page na ito; Ang mga pagbabago ay nangangailangan ng isang administrator na may kamakailang pag-verify ng passkey."
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "Bigyan ang account na ito ng access para pangasiwaan ang buong fleet at lahat ng machine?"
@@ -106,42 +106,42 @@ msgstr "Pinagana ang MFA"
 msgid "MFA not enrolled"
 msgstr "Hindi naka-enroll ang MFA"
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "Gumawa ng administrator"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Susunod na pahina →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "Walang mga account sa page na ito."
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Permanenteng tanggalin ang account na ito at LAHAT ng machine na pagmamay-ari nila, kasama ang mga machine na ibinahagi sa iba?"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "Alisin ang administrator"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "Alisin ang access ng administrator para sa account na ito?"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "I-reset ang MFA"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "I-reset ang MFA ng user na ito at bawiin ang lahat ng session ng browser? Dapat silang magpatala ng kapalit na passkey."
@@ -151,17 +151,17 @@ msgstr "I-reset ang MFA ng user na ito at bawiin ang lahat ng session ng browser
 msgid "Send invitation"
 msgstr "Magpadala ng imbitasyon"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "Mag-sign out kahit saan"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "I-sign out ang account na ito sa lahat ng sesyon ng browser?"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "I-type ang email upang burahin ang account na ito at ang %{count} makina nito"
@@ -186,7 +186,7 @@ msgstr "Beripikahin gamit ang passkey · may bisa ang pag-access sa administrasy
 msgid "· Your account"
 msgstr "· Iyong account"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Unang pahina"
@@ -196,7 +196,7 @@ msgstr "← Unang pahina"
 msgid "Deleted"
 msgstr "Na-delete"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "Dine-delete ang mga makina"
@@ -206,7 +206,7 @@ msgstr "Dine-delete ang mga makina"
 msgid "Retrying machine cleanup"
 msgstr "Sinusubukang muli ang paglilinis ng mga makina"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Hindi magagamit"

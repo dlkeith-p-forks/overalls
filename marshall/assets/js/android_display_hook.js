@@ -40,4 +40,3 @@ export function createAndroidDisplay(RFBClient) {
   setStatus(status) { this.status?.setAttribute("data-status", status); },
   };
 }
-

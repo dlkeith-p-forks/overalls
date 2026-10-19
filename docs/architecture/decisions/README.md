@@ -1,15 +1,15 @@
 # Architecture decision records
 
-[ADR-0208](0208-scim-managed-identity-and-teams.md) accepts SCIM-managed users,
+[ADR-0229](0229-scim-managed-identity-and-teams.md) accepts SCIM-managed users,
 groups, identity retirement, runtime OIDC and authoritative team synchronization;
 implementation remains partial.
+
+[ADR-0220](0220-mila-client-over-porsche-ssh.md) through [ADR-0228](0228-strict-host-certificates-in-mila.md) introduce Mila, the Flutter client over one Porsche SSH connection with per-deployment P-256 device keys, canonical `overalls://` routes, the client command set, terminal attach, the Susan push relay and Notifications domain, The Monospace Web on Flutter, the patched dartssh2 toolchain and strict host-certificate trust. All nine are partial: code and tests exist for each, while device builds, real APNs/FCM delivery and Susan hosting remain open.
 
 [ADR-0207](0207-bundled-multilingual-font-fallback.md) accepts local Noto script
 fallbacks with native shaping and JetBrains Mono as the primary grid font. It
 supersedes only ADR-0161's exclusive-typeface clause and carries forward its other
 presentation constraints. Current browser rendering evidence remains partial.
-
-[ADR-0220](0220-mila-client-over-porsche-ssh.md) through [ADR-0228](0228-strict-host-certificates-in-mila.md) introduce Mila, the Flutter client over one Porsche SSH connection with per-deployment P-256 device keys, canonical `overalls://` routes, the client command set, terminal attach, the Susan push relay and Notifications domain, The Monospace Web on Flutter, the patched dartssh2 toolchain and strict host-certificate trust. All nine are partial: code and tests exist for each, while device builds, real APNs/FCM delivery and Susan hosting remain open.
 
 [ADR-0205](0205-overview-newsletter.md) accepts a durable account-wide Overview newsletter invitation and fixed server-side Ghost subscription path; implementation remains partial.
 
@@ -31,6 +31,12 @@ checkpoint acceptance stay separate.
 account-bound Windows editor candidate with a separate `windows-editor-v1`
 manifest-v7/bundle-v4 contract. Native package, image and browser qualification
 remain separate; the selected `windows-v1` editor capability stays false.
+
+[ADR-0208](0208-windows-editor-job-custodian.md) replaces ADR-0200 in full,
+preserving the immutable Windows editor candidate contract while moving worker/job
+custody into an independently supervised SYSTEM task. Implementation remains
+partial pending native custodian failure/recovery and exact-image browser evidence.
+
 
 [ADR-0199](0199-memory-suspension-and-demand-wake.md) accepts full-memory
 suspension, paused relocation, durable demand wake and the four-hour tool-idle
@@ -477,7 +483,8 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0196](0196-single-account-settings-page.md) | accepted | partial | One account settings page |
 | [ADR-0198](0198-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |
 | [ADR-0199](0199-memory-suspension-and-demand-wake.md) | accepted | partial | Memory-preserving suspension, relocation and demand wake |
-| [ADR-0200](0200-windows-browser-editor-candidate.md) | accepted | partial | Account-bound Windows browser editor candidate |
+| [ADR-0200](0200-windows-browser-editor-candidate.md) | superseded | partial | Account-bound Windows browser editor candidate |
+| [ADR-0208](0208-windows-editor-job-custodian.md) | accepted | partial | Independent Windows editor job custodian |
 | [ADR-0202](0202-github-com-owner-integration.md) | accepted | partial | Owner-bound GitHub.com integration |
 | [ADR-0203](0203-guest-reflection.md) | accepted | partial | Guest reflection service |
 | [ADR-0206](0206-android-firecracker-guest.md) | accepted | partial | Software-rendered Android in the Firecracker guest |
@@ -948,4 +955,4 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 | [ADR-0226](0226-monospace-web-on-flutter.md) | accepted | partial | The Monospace Web on Flutter |
 | [ADR-0227](0227-flutter-toolchain-and-dartssh2-overlay.md) | accepted | partial | Flutter toolchain, patched dartssh2 overlay and Mila checks in Nix |
 | [ADR-0228](0228-strict-host-certificates-in-mila.md) | accepted | partial | Strict SSH host-certificate verification in Mila |
-| [ADR-0208](0208-scim-managed-identity-and-teams.md) | accepted | partial | SCIM-managed identity and teams |
+| [ADR-0229](0229-scim-managed-identity-and-teams.md) | accepted | partial | SCIM-managed identity and teams |

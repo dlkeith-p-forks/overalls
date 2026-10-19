@@ -20,7 +20,7 @@ msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
 msgstr[0] "%{user} · %{count} 人正在查看"
 
-#: lib/marshall_web/components/workspace_components.ex:255
+#: lib/marshall_web/components/workspace_components.ex:259
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}"
 msgstr "%{value1} vCPU · %{value2} GiB 内存 · %{value3} GiB 磁盘 · %{value4}"
@@ -30,7 +30,7 @@ msgstr "%{value1} vCPU · %{value2} GiB 内存 · %{value3} GiB 磁盘 · %{valu
 msgid "+ New"
 msgstr "+ 新建"
 
-#: lib/marshall_web/live/terminal_live.ex:722
+#: lib/marshall_web/live/terminal_live.ex:723
 #, elixir-autogen, elixir-format
 msgid "A+"
 msgstr "A+"
@@ -40,17 +40,17 @@ msgstr "A+"
 msgid "Access"
 msgstr "访问权限"
 
-#: lib/marshall_web/live/terminal_live.ex:789
+#: lib/marshall_web/live/terminal_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Account email"
 msgstr "账户邮箱"
 
-#: lib/marshall_web/live/terminal_live.ex:796
+#: lib/marshall_web/live/terminal_live.ex:797
 #, elixir-autogen, elixir-format
 msgid "Allow viewing"
 msgstr "允许查看"
 
-#: lib/marshall_web/components/workspace_components.ex:413
+#: lib/marshall_web/components/workspace_components.ex:417
 #, elixir-autogen, elixir-format
 msgid "Already installed"
 msgstr "已安装"
@@ -71,23 +71,23 @@ msgstr "Android 显示画布"
 msgid "Android display is unavailable."
 msgstr "Android显示不可用。"
 
-#: lib/marshall_web/live/terminal_live.ex:717
+#: lib/marshall_web/live/terminal_live.ex:718
 #, elixir-autogen, elixir-format
 msgid "A−"
 msgstr "A−"
 
-#: lib/marshall_web/components/workspace_components.ex:436
+#: lib/marshall_web/components/workspace_components.ex:440
 #: lib/marshall_web/live/terminal_live.ex:655
 #, elixir-autogen, elixir-format
 msgid "Boot log"
 msgstr "启动日志"
 
-#: lib/marshall_web/live/terminal_live.ex:802
+#: lib/marshall_web/live/terminal_live.ex:803
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "取消"
 
-#: lib/marshall_web/live/terminal_live.ex:757
+#: lib/marshall_web/live/terminal_live.ex:758
 #, elixir-autogen, elixir-format
 msgid "Close search"
 msgstr "关闭搜索"
@@ -102,50 +102,50 @@ msgstr "关闭会话"
 msgid "Close terminal %{value1}"
 msgstr "关闭终端 %{value1}"
 
-#: lib/marshall_web/components/workspace_components.ex:381
+#: lib/marshall_web/components/workspace_components.ex:385
 #, elixir-autogen, elixir-format
 msgid "Connect from your computer"
 msgstr "从你的电脑连接"
 
-#: lib/marshall_web/live/terminal_live.ex:694
+#: lib/marshall_web/live/terminal_live.ex:695
 #, elixir-autogen, elixir-format
 msgid "Connecting…"
 msgstr "正在连接…"
 
-#: lib/marshall_web/components/workspace_components.ex:273
-#: lib/marshall_web/components/workspace_components.ex:400
-#: lib/marshall_web/components/workspace_components.ex:410
-#: lib/marshall_web/components/workspace_components.ex:421
+#: lib/marshall_web/components/workspace_components.ex:277
+#: lib/marshall_web/components/workspace_components.ex:404
+#: lib/marshall_web/components/workspace_components.ex:414
+#: lib/marshall_web/components/workspace_components.ex:425
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "复制"
 
-#: lib/marshall_web/components/workspace_components.ex:399
+#: lib/marshall_web/components/workspace_components.ex:403
 #, elixir-autogen, elixir-format
 msgid "Copy Linux and macOS install command"
 msgstr "复制 Linux 和 macOS 安装命令"
 
-#: lib/marshall_web/components/workspace_components.ex:420
+#: lib/marshall_web/components/workspace_components.ex:424
 #, elixir-autogen, elixir-format
 msgid "Copy SSH command"
 msgstr "复制 SSH 命令"
 
-#: lib/marshall_web/components/workspace_components.ex:409
+#: lib/marshall_web/components/workspace_components.ex:413
 #, elixir-autogen, elixir-format
 msgid "Copy Windows PowerShell install command"
 msgstr "复制 Windows PowerShell 安装命令"
 
-#: lib/marshall_web/components/workspace_components.ex:272
+#: lib/marshall_web/components/workspace_components.ex:276
 #, elixir-autogen, elixir-format
 msgid "Copy machine ID"
 msgstr "复制机器 ID"
 
-#: lib/marshall_web/components/workspace_components.ex:550
+#: lib/marshall_web/components/workspace_components.ex:554
 #, elixir-autogen, elixir-format
 msgid "Customer"
 msgstr "客户"
 
-#: lib/marshall_web/live/terminal_live.ex:716
+#: lib/marshall_web/live/terminal_live.ex:717
 #, elixir-autogen, elixir-format
 msgid "Decrease terminal font size"
 msgstr "缩小终端字号"
@@ -165,8 +165,8 @@ msgstr "正在删除"
 msgid "Display relay ticket issued."
 msgstr "已签发显示中继票据。"
 
-#: lib/marshall_web/live/terminal_live.ex:727
-#: lib/marshall_web/live/terminal_live.ex:729
+#: lib/marshall_web/live/terminal_live.ex:728
+#: lib/marshall_web/live/terminal_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "进入全屏"
@@ -176,44 +176,44 @@ msgstr "进入全屏"
 msgid "Failed"
 msgstr "失败"
 
-#: lib/marshall_web/live/terminal_live.ex:742
+#: lib/marshall_web/live/terminal_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Find in scrollback"
 msgstr "在终端历史中查找"
 
-#: lib/marshall_web/live/terminal_live.ex:764
+#: lib/marshall_web/live/terminal_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Follow boot output"
 msgstr "跟随启动输出"
 
-#: lib/marshall_web/components/workspace_components.ex:265
+#: lib/marshall_web/components/workspace_components.ex:269
 #, elixir-autogen, elixir-format
 msgid "ID"
 msgstr "ID"
 
-#: lib/marshall_web/live/terminal_live.ex:721
+#: lib/marshall_web/live/terminal_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Increase terminal font size"
 msgstr "增大终端字号"
 
-#: lib/marshall_web/components/workspace_components.ex:390
+#: lib/marshall_web/components/workspace_components.ex:394
 #, elixir-autogen, elixir-format
 msgid "Install and connect"
 msgstr "安装并连接"
 
-#: lib/marshall_web/components/workspace_components.ex:385
+#: lib/marshall_web/components/workspace_components.ex:389
 #, elixir-autogen, elixir-format
 msgid "Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh."
 msgstr ""
 "安装 Overalls、配置 SSH 并连接此机器。在 Windows 上，安装程序还会安装 OpenSSH 9.6 "
 "或更新版本，并在管理员批准后将其设为默认 ssh。"
 
-#: lib/marshall_web/components/workspace_components.ex:392
+#: lib/marshall_web/components/workspace_components.ex:396
 #, elixir-autogen, elixir-format
 msgid "Linux / macOS"
 msgstr "Linux / macOS"
 
-#: lib/marshall_web/components/workspace_components.ex:271
+#: lib/marshall_web/components/workspace_components.ex:275
 #, elixir-autogen, elixir-format
 msgid "Machine ID"
 msgstr "机器 ID"
@@ -243,7 +243,7 @@ msgstr "机器启动失败。请检查机器状态和启动日志。"
 msgid "Machine workspace"
 msgstr "机器工作区"
 
-#: lib/marshall_web/live/terminal_live.ex:752
+#: lib/marshall_web/live/terminal_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Next match"
 msgstr "下一个匹配项"
@@ -258,15 +258,15 @@ msgstr "没有可供查看的共享终端。"
 msgid "No terminals are open. Choose New to open your personal shell."
 msgstr "没有打开的终端。选择“新建”以打开个人 shell。"
 
-#: lib/marshall_web/components/workspace_components.ex:287
-#: lib/marshall_web/components/workspace_components.ex:297
-#: lib/marshall_web/components/workspace_components.ex:476
-#: lib/marshall_web/components/workspace_components.ex:484
+#: lib/marshall_web/components/workspace_components.ex:291
+#: lib/marshall_web/components/workspace_components.ex:301
+#: lib/marshall_web/components/workspace_components.ex:480
+#: lib/marshall_web/components/workspace_components.ex:488
 #, elixir-autogen, elixir-format
 msgid "Open VS Code"
 msgstr "打开 VS Code"
 
-#: lib/marshall_web/components/workspace_components.ex:475
+#: lib/marshall_web/components/workspace_components.ex:479
 #, elixir-autogen, elixir-format
 msgid "Open VS Code for %{value1}"
 msgstr "为 %{value1} 打开 VS Code"
@@ -281,7 +281,8 @@ msgstr "打开显示"
 msgid "Opening terminal; recovering the same request if the connection was interrupted."
 msgstr "正在打开终端；如果连接中断，会恢复同一请求。"
 
-#: lib/marshall_web/components/workspace_components.ex:334
+#: lib/marshall_web/components/workspace_components.ex:338
+#: lib/marshall_web/live/admin/workloads_live.ex:212
 #, elixir-autogen, elixir-format
 msgid "Pause"
 msgstr "暂停"
@@ -296,7 +297,7 @@ msgstr "已暂停"
 msgid "Pending"
 msgstr "待处理"
 
-#: lib/marshall_web/components/workspace_components.ex:208
+#: lib/marshall_web/components/workspace_components.ex:212
 #, elixir-autogen, elixir-format
 msgid "Pinned"
 msgstr "已固定"
@@ -313,12 +314,12 @@ msgstr "正在准备客户机账户…"
 msgid "Preparing your terminal…"
 msgstr "正在准备你的终端…"
 
-#: lib/marshall_web/live/terminal_live.ex:747
+#: lib/marshall_web/live/terminal_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Previous match"
 msgstr "上一个匹配项"
 
-#: lib/marshall_web/live/terminal_live.ex:772
+#: lib/marshall_web/live/terminal_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Read-only boot console"
 msgstr "只读启动控制台"
@@ -333,12 +334,12 @@ msgstr "只读主机启动日志。不要求客户机终端就绪。"
 msgid "Reconnecting to the terminal service…"
 msgstr "正在重新连接终端服务…"
 
-#: lib/marshall_web/live/terminal_live.ex:705
+#: lib/marshall_web/live/terminal_live.ex:706
 #, elixir-autogen, elixir-format
 msgid "Rename in this browser"
 msgstr "在此浏览器中重命名"
 
-#: lib/marshall_web/live/terminal_live.ex:704
+#: lib/marshall_web/live/terminal_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "Rename terminal"
 msgstr "重命名终端"
@@ -348,7 +349,8 @@ msgstr "重命名终端"
 msgid "Request control"
 msgstr "请求控制"
 
-#: lib/marshall_web/components/workspace_components.ex:325
+#: lib/marshall_web/components/workspace_components.ex:329
+#: lib/marshall_web/live/admin/workloads_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
 msgstr "恢复机器"
@@ -364,7 +366,7 @@ msgstr "正在恢复"
 msgid "Resuming machine; waiting for capacity…"
 msgstr "正在恢复机器；等待可用容量…"
 
-#: lib/marshall_web/live/terminal_live.ex:799
+#: lib/marshall_web/live/terminal_live.ex:800
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "撤销"
@@ -374,27 +376,27 @@ msgstr "撤销"
 msgid "Running"
 msgstr "运行中"
 
-#: lib/marshall_web/components/workspace_components.ex:443
+#: lib/marshall_web/components/workspace_components.ex:447
 #, elixir-autogen, elixir-format
 msgid "SSH connection details are temporarily unavailable."
 msgstr "SSH 连接详情暂不可用。"
 
-#: lib/marshall_web/components/workspace_components.ex:439
+#: lib/marshall_web/components/workspace_components.ex:443
 #, elixir-autogen, elixir-format
 msgid "SSH connection requires write access to this machine."
 msgstr "SSH 连接需要此机器的写入权限。"
 
-#: lib/marshall_web/live/terminal_live.ex:711
+#: lib/marshall_web/live/terminal_live.ex:712
 #, elixir-autogen, elixir-format
 msgid "Search (Ctrl+F)"
 msgstr "搜索 (Ctrl+F)"
 
-#: lib/marshall_web/live/terminal_live.ex:710
+#: lib/marshall_web/live/terminal_live.ex:711
 #, elixir-autogen, elixir-format
 msgid "Search scrollback"
 msgstr "搜索终端历史"
 
-#: lib/marshall_web/live/terminal_live.ex:734
+#: lib/marshall_web/live/terminal_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Search terminal scrollback"
 msgstr "搜索终端历史"
@@ -409,7 +411,7 @@ msgstr "设置"
 msgid "Share terminal %{value1}"
 msgstr "共享终端 %{value1}"
 
-#: lib/marshall_web/live/terminal_live.ex:780
+#: lib/marshall_web/live/terminal_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "Share this terminal"
 msgstr "共享此终端"
@@ -419,12 +421,12 @@ msgstr "共享此终端"
 msgid "Share view"
 msgstr "共享视图"
 
-#: lib/marshall_web/components/workspace_components.ex:551
+#: lib/marshall_web/components/workspace_components.ex:555
 #, elixir-autogen, elixir-format
 msgid "Standard"
 msgstr "标准"
 
-#: lib/marshall_web/components/workspace_components.ex:315
+#: lib/marshall_web/components/workspace_components.ex:319
 #, elixir-autogen, elixir-format
 msgid "Start machine"
 msgstr "启动机器"
@@ -434,7 +436,7 @@ msgstr "启动机器"
 msgid "Starting"
 msgstr "正在启动"
 
-#: lib/marshall_web/components/workspace_components.ex:344
+#: lib/marshall_web/components/workspace_components.ex:348
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "停止"
@@ -526,13 +528,13 @@ msgstr "无法打开终端。"
 msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
 msgstr "此机器已停止。启动后即可打开终端。文件会保留。"
 
-#: lib/marshall_web/components/workspace_components.ex:352
-#: lib/marshall_web/components/workspace_components.ex:526
+#: lib/marshall_web/components/workspace_components.ex:356
+#: lib/marshall_web/components/workspace_components.ex:530
 #, elixir-autogen, elixir-format
 msgid "This machine's image does not support the current browser editor."
 msgstr "此机器镜像不支持当前浏览器编辑器。"
 
-#: lib/marshall_web/components/workspace_components.ex:427
+#: lib/marshall_web/components/workspace_components.ex:431
 #, elixir-autogen, elixir-format
 msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
 msgstr "此机器镜像尚无客户机智能体：SSH、浏览器终端和智能体不可用。请使用"
@@ -542,7 +544,7 @@ msgstr "此机器镜像尚无客户机智能体：SSH、浏览器终端和智能
 msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
 msgstr "此机器镜像没有终端智能体，因此浏览器终端不可用。"
 
-#: lib/marshall_web/live/terminal_live.ex:697
+#: lib/marshall_web/live/terminal_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "输入以交互"
@@ -558,38 +560,38 @@ msgid "Unavailable"
 msgstr "不可用"
 
 #: lib/marshall_web/components/workspace_components.ex:88
-#: lib/marshall_web/components/workspace_components.ex:553
+#: lib/marshall_web/components/workspace_components.ex:557
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "未知"
 
-#: lib/marshall_web/components/workspace_components.ex:441
+#: lib/marshall_web/components/workspace_components.ex:445
 #, elixir-autogen, elixir-format
 msgid "Use the browser terminal for this Inception environment."
 msgstr "此 Inception 环境请使用浏览器终端。"
 
-#: lib/marshall_web/components/workspace_components.ex:359
+#: lib/marshall_web/components/workspace_components.ex:363
 #, elixir-autogen, elixir-format
 msgid "VS Code is temporarily unavailable for this machine."
 msgstr "此机器的 VS Code 暂不可用。"
 
-#: lib/marshall_web/components/workspace_components.ex:532
+#: lib/marshall_web/components/workspace_components.ex:536
 #, elixir-autogen, elixir-format
 msgid "VS Code is temporarily unavailable."
 msgstr "VS Code 暂不可用。"
 
-#: lib/marshall_web/components/workspace_components.ex:535
+#: lib/marshall_web/components/workspace_components.ex:539
 #, elixir-autogen, elixir-format
 msgid "VS Code is unavailable for this machine."
 msgstr "此机器的 VS Code 不可用。"
 
-#: lib/marshall_web/components/workspace_components.ex:357
-#: lib/marshall_web/components/workspace_components.ex:529
+#: lib/marshall_web/components/workspace_components.ex:361
+#: lib/marshall_web/components/workspace_components.ex:533
 #, elixir-autogen, elixir-format
 msgid "VS Code requires a running machine."
 msgstr "VS Code 需要运行中的机器。"
 
-#: lib/marshall_web/live/terminal_live.ex:782
+#: lib/marshall_web/live/terminal_live.ex:783
 #, elixir-autogen, elixir-format
 msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
 msgstr "仅供查看，即使是机器操作员也一样。接收者必须已拥有此机器的访问权限。"
@@ -604,7 +606,7 @@ msgstr "正在等待显示中继。"
 msgid "Waiting for the machine to start…"
 msgstr "正在等待机器启动…"
 
-#: lib/marshall_web/components/workspace_components.ex:402
+#: lib/marshall_web/components/workspace_components.ex:406
 #, elixir-autogen, elixir-format
 msgid "Windows"
 msgstr "Windows"
@@ -634,22 +636,22 @@ msgstr "先前的 shell 已关闭。选择“新建”以打开另一个终端�
 msgid "Your terminal will open when the machine is running and ready."
 msgstr "机器运行并就绪后，终端会打开。"
 
-#: lib/marshall_web/live/terminal_live.ex:712
+#: lib/marshall_web/live/terminal_live.ex:713
 #, elixir-autogen, elixir-format
 msgid "find"
 msgstr "查找"
 
-#: lib/marshall_web/live/terminal_live.ex:730
+#: lib/marshall_web/live/terminal_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "full"
 msgstr "完整"
 
-#: lib/marshall_web/live/terminal_live.ex:706
+#: lib/marshall_web/live/terminal_live.ex:707
 #, elixir-autogen, elixir-format
 msgid "rename"
 msgstr "重命名"
 
-#: lib/marshall_web/components/workspace_components.ex:437
+#: lib/marshall_web/components/workspace_components.ex:441
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "以查看只读主机控制台。"

@@ -60,9 +60,9 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
   # withdrawal MUST recheck authority on exchange. Gateway-style explicit close
   # after refusal MUST permanently fence that ticket even after re-addition.
   # Synthetic execution reports establish control admission, not network closure.
-  # Twelve database-backed histories exercise all fixed sharing transitions;
-  # the CI profile suppresses the wall-clock generation heuristic only. Every
-  # generated case and replay MUST own and roll back an independent SQL sandbox.
+  # Twelve database-backed histories exercise all fixed sharing transitions
+  # under deterministic CI exploration. Every generated case and replay MUST own
+  # and roll back an independent SQL sandbox.
   property "private browser admission and renewal follow combined sharing histories",
     profile: :ci,
     test_cases: 12,
@@ -260,15 +260,26 @@ defmodule Marshall.Ingress.PrivateHistoryTest do
     end
   end
 
+  # @cc [owner:ghuntley,label:verification] private-history-sandbox-exit-fallback
+  # Each generated case and replay MUST stop only its own SQL sandbox owner.
+  # ExUnit exit MUST also clean that owner after forced termination. An already
+  # stopped owner MAY be ignored; every other cleanup failure MUST fail.
   @spec sandbox() :: %{sandbox_owner: pid()}
   defp sandbox do
-    %{sandbox_owner: Ecto.Adapters.SQL.Sandbox.start_owner!(Marshall.Repo, shared: true)}
+    context = %{
+      sandbox_owner: Ecto.Adapters.SQL.Sandbox.start_owner!(Marshall.Repo, shared: true)
+    }
+
+    on_exit(:private_history_sql_sandbox_owner, fn -> cleanup(context) end)
+    context
   end
 
   @spec cleanup(%{sandbox_owner: pid()}) :: :ok
   defp cleanup(%{sandbox_owner: owner}) do
     Ecto.Adapters.SQL.Sandbox.stop_owner(owner)
     :ok
+  catch
+    :exit, {:noproc, _} -> :ok
   end
 
   @spec allowed?(model()) :: boolean()

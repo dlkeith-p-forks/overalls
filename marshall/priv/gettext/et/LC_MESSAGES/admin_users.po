@@ -21,7 +21,7 @@ msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} omandis masin"
 msgstr[1] "%{count} omandis masinat"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "Konto lehed"
@@ -66,7 +66,7 @@ msgstr "Administraatori juurdepääsu ei saanud muuta."
 msgid "Could not revoke browser sessions."
 msgstr "Brauseriseansse ei saanud tühistada."
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "Kustuta kasutaja ja masinad"
@@ -81,7 +81,7 @@ msgstr "E-posti aadress"
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "Kõik selle paigalduse kontod. Sisselogitud kasutajad saavad seda lehte lugeda; muudatused vajavad administraatorit, kelle pääsuvõti on hiljuti kinnitatud."
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "Kas anda sellele kontole õigus hallata kogu masinaparki ja kõiki masinaid?"
@@ -106,42 +106,42 @@ msgstr "Mitmikautentimine lubatud"
 msgid "MFA not enrolled"
 msgstr "Mitmikautentimine seadistamata"
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "Määra administraatoriks"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Järgmine leht →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "Sellel lehel pole kontosid."
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Kas kustutada jäädavalt see konto ja KÕIK selle masinad, sealhulgas teistega jagatud masinad?"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "Eemalda administraator"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "Kas eemaldada selle konto administraatori juurdepääs?"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "Lähtesta mitmikautentimine"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "Kas lähtestada selle kasutaja mitmikautentimine ja tühistada kõik brauseriseansid? Kasutaja peab registreerima uue pääsuvõtme."
@@ -151,17 +151,17 @@ msgstr "Kas lähtestada selle kasutaja mitmikautentimine ja tühistada kõik bra
 msgid "Send invitation"
 msgstr "Saada kutse"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "Logi kõikjalt välja"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "Kas logida see konto kõigist brauseriseanssidest välja?"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "Sisesta e-posti aadress, et kustutada see konto ja selle %{count} masinat"
@@ -186,7 +186,7 @@ msgstr "Kinnita pääsuvõtmega · haldusõigus kehtib 15 minutit →"
 msgid "· Your account"
 msgstr "· Sinu konto"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Esimene leht"
@@ -196,7 +196,7 @@ msgstr "← Esimene leht"
 msgid "Deleted"
 msgstr "Kustutatud"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "Masinate kustutamine"
@@ -206,7 +206,7 @@ msgstr "Masinate kustutamine"
 msgid "Retrying machine cleanup"
 msgstr "Masinate puhastamist proovitakse uuesti"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Pole saadaval"

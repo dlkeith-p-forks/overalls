@@ -10,6 +10,14 @@ only uses that marker for setup presentation. It creates no resource, listener,
 identity, machine grant or durable authority, so no new domain or resource enters
 the ownership inventory.
 
+The Windows editor's independent SYSTEM custodian is a guest-native process,
+not an Ash domain or resource. `Marshall.Editor` retains current login/write,
+permanent account and exact execution/release authority; Audi and Lilly retain
+their transport/execution fences. The custodian owns only native admitted-worker
+launch, receipts, exact pipes and Job Object lifetime inside the guest. Its
+failure boundary and incomplete same-boot recovery are described in
+[deployment topology](#topology) and [recovery](#recovery).
+
 ## Responsibilities
 
 | Domain | Responsibility and authority |

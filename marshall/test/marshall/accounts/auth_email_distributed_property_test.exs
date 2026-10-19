@@ -42,7 +42,12 @@ defmodule Marshall.Accounts.AuthEmailDistributedPropertyTest do
       @tag :post_ack
     end
 
-    property name, test_cases: 100 do
+    # Real three/four-BEAM cases measured 8-14s each; 100 cases require more
+    # than the old 180s aggregate. Every existing boot/RPC/SMTP deadline remains.
+    # At b0dec2a / engine 0.43.7, CI derandomizes from test identity, disables the
+    # example database and only suppresses TooSlow; shrinking/blob replay remain.
+    @tag timeout: 1_800_000
+    property name, profile: :ci, test_cases: 100 do
       crash? = unquote(crash?)
       phase = unquote(phase)
 
@@ -57,7 +62,11 @@ defmodule Marshall.Accounts.AuthEmailDistributedPropertyTest do
   # the delivery's Message-ID even when the successor's sender domain changes.
   # The separate committed observer MUST still see pending ciphertext before retry.
   @tag :sender_rotation
+  # This also boots four real BEAMs per case. Keep all 100 cases under the same
+  # pinned CI settings and finite aggregate as the crash histories above.
+  @tag timeout: 1_800_000
   property "generated pending mail retries retain Message-ID across sender-domain rotation",
+    profile: :ci,
     test_cases: 100 do
     replays = draw("replays", integer(1..3))
     ordering = draw("ordering", member_of([[0, 1, 2], [1, 2, 0], [2, 0, 1]]))
@@ -80,7 +89,7 @@ defmodule Marshall.Accounts.AuthEmailDistributedPropertyTest do
     supervisor_id = make_ref()
 
     server =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         {SMTP,
          [
            owner: self(),
@@ -91,12 +100,14 @@ defmodule Marshall.Accounts.AuthEmailDistributedPropertyTest do
         id: server_id
       )
 
-    supervisor = start_supervised!(Task.Supervisor, id: supervisor_id)
+    supervisor = Overalls.HegelFixtures.start_supervised!(Task.Supervisor, id: supervisor_id)
     peers = Enum.map(1..3, fn number -> start_peer(number, server) end)
     [first, second, third] = Enum.map(ordering, &Enum.at(peers, &1))
     assert length(Enum.uniq(Enum.map(peers, & &1.node))) == 3
     refute node() in Enum.map(peers, & &1.node)
     fixture = Fixture.enqueue()
+    Hegel.on_cleanup(fn -> cleanup_case(peers, fixture) end)
+    on_exit(:committed_mail_history_rows, fn -> cleanup_case(peers, fixture) end)
 
     Cleanup.protect Enum.map(peers, & &1.controller) do
       assert fixture.jobs != []
@@ -215,7 +226,7 @@ defmodule Marshall.Accounts.AuthEmailDistributedPropertyTest do
     name = "marshall_committed_mail_#{number}_#{System.unique_integer([:positive])}"
 
     controller =
-      start_supervised!(%{
+      Overalls.HegelFixtures.start_supervised!(%{
         id: make_ref(),
         restart: :temporary,
         start:
@@ -230,6 +241,8 @@ defmodule Marshall.Accounts.AuthEmailDistributedPropertyTest do
              }
            ]}
       })
+
+    on_exit({:committed_mail_peer, controller}, fn -> stop_controller!(controller) end)
 
     :ok = :peer.call(controller, :code, :add_paths, [:code.get_path()])
 
@@ -360,19 +373,32 @@ defmodule Marshall.Accounts.AuthEmailDistributedPropertyTest do
     :ok
   end
 
+  # @cc [owner:ghuntley,label:verification;security] distributed-mail-case-cleanup
+  # Every case and replay MUST retire its exact peer processes before deleting
+  # only the captured outbox, token and job identities. Forced ExUnit exit MUST
+  # retain the same ordered fallback; partial peer startup MUST remain owned.
+  @spec cleanup_case([peer()], Fixture.fixture()) :: :ok
+  defp cleanup_case(peers, fixture) do
+    Enum.each(peers, &stop_peer!/1)
+    unboxed(fn -> Fixture.cleanup(fixture) end)
+  end
+
   @spec stop_peer!(peer()) :: :ok
-  defp stop_peer!(peer) do
-    reference = Process.monitor(peer.controller)
+  defp stop_peer!(peer), do: stop_controller!(peer.controller)
+
+  @spec stop_controller!(pid()) :: :ok
+  defp stop_controller!(controller) do
+    reference = Process.monitor(controller)
 
     try do
-      :peer.stop(peer.controller)
+      :peer.stop(controller)
     catch
       :exit, {:noproc, _} -> :ok
       :exit, :noproc -> :ok
     end
 
     receive do
-      {:DOWN, ^reference, :process, _, _} -> :ok
+      {:DOWN, ^reference, :process, ^controller, _} -> :ok
     after
       5000 -> flunk("Mail fixture peer failed to retire before cleanup")
     end

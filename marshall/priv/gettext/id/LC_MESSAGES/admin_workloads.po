@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "Tindakan"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "Arsipkan VM ini?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Hapus"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Detail"
@@ -64,7 +64,7 @@ msgstr "Permintaan siklus hidup diantrekan."
 msgid "Lifecycle request was rejected."
 msgstr "Permintaan siklus hidup ditolak."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Pindahkan"
@@ -84,7 +84,7 @@ msgstr "Permintaan relokasi diantrekan."
 msgid "Relocation request was rejected."
 msgstr "Permintaan relokasi ditolak."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Ubah ukuran"
@@ -94,7 +94,7 @@ msgstr "Ubah ukuran"
 msgid "Shape"
 msgstr "Bentuk"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Mulai"
@@ -104,12 +104,12 @@ msgstr "Mulai"
 msgid "State"
 msgstr "Keadaan"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Hentikan"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Terminal perintah"

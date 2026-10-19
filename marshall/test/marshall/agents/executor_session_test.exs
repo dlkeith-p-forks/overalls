@@ -13,7 +13,7 @@ defmodule Marshall.Agents.ExecutorSessionTest do
   }
 
   alias Marshall.Compute
-  alias Marshall.Compute.{Host, Ledger, Operation, Outcomes}
+  alias Marshall.Compute.{Host, HostReports, Ledger, Operation, Outcomes}
   alias Marshall.Inference.Credentials
 
   # @cc [owner:ghuntley,label:verification;security] executor-rpc-current-host-fixture
@@ -76,7 +76,14 @@ defmodule Marshall.Agents.ExecutorSessionTest do
       "execution_epoch" => vm.execution_epoch
     }
 
-    %{actor: actor, binding: binding, root: root, thread: thread, vm: vm}
+    %{
+      actor: actor,
+      binding: binding,
+      connection_epoch: session["epoch"],
+      root: root,
+      thread: thread,
+      vm: vm
+    }
   end
 
   test "replacement fences stale results and preserves an ambiguous tool as uncertain", c do
@@ -209,6 +216,15 @@ defmodule Marshall.Agents.ExecutorSessionTest do
                "fence_epoch" => fence,
                "command_id" => Ash.UUID.generate(),
                "status" => "other"
+             })
+
+    assert {:ok, :ok} = HostReports.disconnect(c.vm.host_id, c.connection_epoch)
+
+    assert {:error, :unauthorized} =
+             ExecutorRPC.request(token, "claim", %{
+               "binding" => c.binding,
+               "executor_id" => id,
+               "fence_epoch" => fence
              })
   end
 

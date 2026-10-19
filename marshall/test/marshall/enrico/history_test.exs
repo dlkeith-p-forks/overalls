@@ -8,12 +8,37 @@ defmodule Marshall.Enrico.HistoryTest do
   @moduletag :tmp_dir
   @moduletag capture_log: true
   @tls Path.expand("../../fixtures/tls", __DIR__)
+  @configuration_keys [:enrico_url, :enrico_token_file, :enrico_ca_file]
+  @typep configuration_key :: :enrico_url | :enrico_token_file | :enrico_ca_file
+  @typep configuration :: [{configuration_key(), {:ok, term()} | :error}]
 
-  setup %{tmp_dir: dir} do
-    state = start_supervised!({Agent, fn -> %{next: "failed", attempts: %{}, requests: 0} end})
+  setup do
+    previous = environment()
+    on_exit(:restore_enrico_history_environment, fn -> restore_environment(previous) end)
+    :ok
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] enrico-history-case-isolation
+  # Every generated case and replay MUST own a fresh SQL sandbox, service state,
+  # HTTPS listener, token path and environment restoration. Process, environment
+  # and file cleanup MUST precede SQL rollback; forced test exit MUST retain
+  # supervised-process, environment and file cleanup fallbacks.
+  @spec property_fixture(Path.t()) :: pid()
+  defp property_fixture(root) do
+    isolate_property_case()
+    directory = Path.join(root, Ash.UUID.generate())
+    File.mkdir!(directory)
+    File.chmod!(directory, 0o700)
+    Hegel.on_cleanup(fn -> File.rm_rf!(directory) end)
+    on_exit({:enrico_history_case_files, directory}, fn -> File.rm_rf!(directory) end)
+
+    state =
+      Overalls.HegelFixtures.start_supervised!(
+        {Agent, fn -> %{next: "failed", attempts: %{}, requests: 0} end}
+      )
 
     server =
-      start_supervised!(
+      Overalls.HegelFixtures.start_supervised!(
         {Bandit,
          plug: {Service, state: state},
          scheme: :https,
@@ -25,25 +50,33 @@ defmodule Marshall.Enrico.HistoryTest do
       )
 
     {:ok, {_, port}} = ThousandIsland.listener_info(server)
-    token = Path.join(dir, "token")
+    token = Path.join(directory, "token")
     File.write!(token, String.duplicate("a", 32))
+    File.chmod!(token, 0o600)
+    previous = environment()
+    Hegel.on_cleanup(fn -> restore_environment(previous) end)
 
     for {key, value} <- [
           enrico_url: "https://localhost:#{port}",
           enrico_token_file: token,
           enrico_ca_file: Path.join(@tls, "ca.pem")
         ] do
-      old = Application.get_env(:marshall, key)
       Application.put_env(:marshall, key, value)
-
-      on_exit({:restore, key}, fn ->
-        if old == nil,
-          do: Application.delete_env(:marshall, key),
-          else: Application.put_env(:marshall, key, old)
-      end)
     end
 
-    %{state: state}
+    state
+  end
+
+  @spec environment() :: configuration()
+  defp environment,
+    do: Enum.map(@configuration_keys, &{&1, Application.fetch_env(:marshall, &1)})
+
+  @spec restore_environment(configuration()) :: :ok
+  defp restore_environment(configuration) do
+    Enum.each(configuration, fn
+      {key, {:ok, value}} -> Application.put_env(:marshall, key, value)
+      {key, :error} -> Application.delete_env(:marshall, key)
+    end)
   end
 
   # @cc [owner:ghuntley,label:verification] enrico-independent-public-histories
@@ -52,11 +85,15 @@ defmodule Marshall.Enrico.HistoryTest do
   # MUST check failures, ordinary-user refusal, removal and new registration;
   # synthetic HTTPS results MUST NOT be claimed as native Git acceptance.
   @tag :hegel
+  @tag :hegel_case_sandbox
+  @tag timeout: 300_000
   test "refresh failure and removal histories retain only published authority", %{
-    state: state
+    tmp_dir: directory
   } do
     Hegel.check(
       fn ->
+        state = property_fixture(directory)
+
         histories =
           draw(
             "histories",

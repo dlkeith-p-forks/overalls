@@ -48,16 +48,18 @@ selecting it for fleet browser access.
 @cc [owner:ghuntley,label:build;security] windows-editor-candidate-installation
 The optional editorBundle/editorBroker candidate MUST require both packages and
 the Windows agents with terminald. Its native bundle MUST have an exact source
-release descriptor and recursive NAR pin; its fixed SYSTEM task MUST have private
-scheduler custody, failure supervision and no execution time limit. Package and
-authorizer paths MUST prohibit foreign writes and receipt storage MUST be
+release descriptor and recursive NAR pin; its fixed independent SYSTEM broker
+and worker-custodian tasks MUST each have private scheduler custody, failure
+supervision and no execution time limit. Each role MUST use its own checked
+trust snapshot so its restart cannot rewrite the other live role's trust input.
+Package and authorizer paths MUST prohibit foreign writes and receipt storage MUST be
 SYSTEM-only. Every ancestor owner MUST be SYSTEM, Administrators or the exact
 Windows TrustedInstaller SID; leaves MUST NOT accept TrustedInstaller ownership.
 Candidate installation MUST require at least 2 GiB free writable
 headroom, use the separate version-7 windows-editor-v1 manifest with the exact
 editor descriptor, and keep package/image qualification metadata false until
 native acceptance is recorded. Explicitly combining the pair with windows-v1
-MUST refuse. The default v5 and published fleet images MUST NOT acquire the task
+MUST refuse. The default v5 and published fleet images MUST NOT acquire either task
 from runtime-only staging or select the candidate implicitly.
 
 @cc [owner:ghuntley,label:security;network] windows-guest-agents-vsock

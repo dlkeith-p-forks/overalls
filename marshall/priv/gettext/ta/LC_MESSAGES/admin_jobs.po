@@ -29,7 +29,7 @@ msgstr "30 நாட்கள்"
 msgid "7 days"
 msgstr "7 நாட்கள்"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:473
+#: lib/marshall_web/live/admin/jobs_live.ex:485
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr "ஒப்புக்கொள்ளப்பட்டது"
@@ -59,7 +59,7 @@ msgstr "காப்பகப்படுத்தப்பட்டது"
 msgid "Archived history · retry unavailable"
 msgstr "காப்பக வரலாறு · மீண்டும் முயல முடியாது"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:424
+#: lib/marshall_web/live/admin/jobs_live.ex:436
 #, elixir-autogen, elixir-format
 msgid "Attempt"
 msgstr "முயற்சி"
@@ -76,18 +76,18 @@ msgid "Background work run by Oban. A successful job may have dispatched work wh
 msgstr "Oban இயக்கும் பின்னணிப் பணிகள். வெற்றிபெற்ற வேலை அனுப்பிய பணியின் உண்மையான முடிவு இன்னும் நிலுவையில் இருக்கலாம்; முடிவை அறிய தொடர்புடைய செயல்பாட்டைப் பின்தொடரவும்."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
-#: lib/marshall_web/live/admin/jobs_live.ex:475
+#: lib/marshall_web/live/admin/jobs_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "ரத்துசெய்யப்பட்டது"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:422
+#: lib/marshall_web/live/admin/jobs_live.ex:434
 #, elixir-autogen, elixir-format
 msgid "Captured"
 msgstr "பதிவுசெய்யப்பட்டது"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:406
-#: lib/marshall_web/live/admin/jobs_live.ex:474
+#: lib/marshall_web/live/admin/jobs_live.ex:418
+#: lib/marshall_web/live/admin/jobs_live.ex:486
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "முடிந்தது"
@@ -102,12 +102,12 @@ msgstr "எண்ணிக்கைகள் தற்போதைய மற்�
 msgid "Created"
 msgstr "உருவாக்கப்பட்டது"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:477
+#: lib/marshall_web/live/admin/jobs_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "பணிச்சுமை வெளியேற்றப்பட்டது"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:476
+#: lib/marshall_web/live/admin/jobs_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "பணிச்சுமை வெளியேற்றப்படுகிறது"
@@ -117,7 +117,7 @@ msgstr "பணிச்சுமை வெளியேற்றப்படு�
 msgid "Duration"
 msgstr "கால அளவு"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:468
+#: lib/marshall_web/live/admin/jobs_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "வெளியேற்ற நடவடிக்கைத் தொகுப்பு"
@@ -127,7 +127,7 @@ msgstr "வெளியேற்ற நடவடிக்கைத் தொக�
 msgid "Exact worker name"
 msgstr "துல்லியமான பணியாளர் பெயர்"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:417
+#: lib/marshall_web/live/admin/jobs_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "Execution history"
 msgstr "இயக்க வரலாறு"
@@ -207,28 +207,28 @@ msgstr "இந்த வடிகட்டிகளுக்குப் பொ�
 msgid "Older jobs →"
 msgstr "பழைய பணிகள் →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:455
+#: lib/marshall_web/live/admin/jobs_live.ex:467
 #, elixir-autogen, elixir-format
 msgid "Older transitions →"
 msgstr "பழைய நிலைமாற்றங்கள் →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:411
+#: lib/marshall_web/live/admin/jobs_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Open machine →"
 msgstr "இயந்திரத்தைத் திற →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:466
+#: lib/marshall_web/live/admin/jobs_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Operation"
 msgstr "செயல்பாடு"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:397
+#: lib/marshall_web/live/admin/jobs_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "Operation state"
 msgstr "செயல்பாட்டு நிலை"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:407
-#: lib/marshall_web/live/admin/jobs_live.ex:472
+#: lib/marshall_web/live/admin/jobs_live.ex:419
+#: lib/marshall_web/live/admin/jobs_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "நிலுவையில்"
@@ -259,27 +259,27 @@ msgstr "வரிசையில் சேர்க்கப்பட்டத�
 msgid "Recorded failures"
 msgstr "பதிவுசெய்த தோல்விகள்"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:390
+#: lib/marshall_web/live/admin/jobs_live.ex:402
 #, elixir-autogen, elixir-format
 msgid "Related record"
 msgstr "தொடர்புடைய பதிவு"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:467
+#: lib/marshall_web/live/admin/jobs_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "Relocation"
 msgstr "இடமாற்றம்"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:403
+#: lib/marshall_web/live/admin/jobs_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Relocation complete"
 msgstr "இடமாற்றம் முடிந்தது"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:478
+#: lib/marshall_web/live/admin/jobs_live.ex:490
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "தொடரப்பட்டது"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:479
+#: lib/marshall_web/live/admin/jobs_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "பயன்பாட்டிலிருந்து நீக்கப்பட்டது"
@@ -316,7 +316,7 @@ msgstr "அட்டவணை / அடுத்த முயற்சி"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:263
 #: lib/marshall_web/live/admin/jobs_live.ex:303
-#: lib/marshall_web/live/admin/jobs_live.ex:423
+#: lib/marshall_web/live/admin/jobs_live.ex:435
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "நிலை"
@@ -342,8 +342,8 @@ msgid "This job is unavailable or its history has expired."
 msgstr "இந்தப் பணி கிடைக்கவில்லை அல்லது அதன் வரலாறு காலாவதியானது."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:189
-#: lib/marshall_web/live/admin/jobs_live.ex:469
-#: lib/marshall_web/live/admin/jobs_live.ex:480
+#: lib/marshall_web/live/admin/jobs_live.ex:481
+#: lib/marshall_web/live/admin/jobs_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "தெரியாதது"
@@ -364,7 +364,7 @@ msgstr "காத்திருக்கிறது"
 msgid "Worker"
 msgstr "பணியாளர்"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:442
+#: lib/marshall_web/live/admin/jobs_live.ex:454
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "முயற்சி %{attempt} · %{count} பதிவுசெய்த தோல்விகள்"

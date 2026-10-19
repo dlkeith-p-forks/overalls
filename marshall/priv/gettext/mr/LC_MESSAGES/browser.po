@@ -163,67 +163,67 @@ msgstr ""
 msgid "This repository link could not be launched. Open the link again."
 msgstr "ही रेपॉझिटरी लिंक उघडता आली नाही. लिंक पुन्हा उघडा."
 
-#: lib/marshall_web/browser_messages.ex:69
+#: lib/marshall_web/browser_messages.ex:72
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "संवाद साधण्यासाठी टाइप करा"
 
-#: lib/marshall_web/browser_messages.ex:70
+#: lib/marshall_web/browser_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
 msgstr "दृश्य प्रवेश अपडेट करत आहे…"
 
-#: lib/marshall_web/browser_messages.ex:72
+#: lib/marshall_web/browser_messages.ex:75
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
 msgstr "पडताळणी पूर्ण करता आली नाही. पुन्हा प्रयत्न करा."
 
-#: lib/marshall_web/browser_messages.ex:74
+#: lib/marshall_web/browser_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
 msgstr "%{action} करण्यासाठी पासकीने पडताळा. पडताळणीनंतर हे एकदा चालेल."
 
-#: lib/marshall_web/browser_messages.ex:79
+#: lib/marshall_web/browser_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "View only"
 msgstr "फक्त पहा"
 
-#: lib/marshall_web/browser_messages.ex:80
+#: lib/marshall_web/browser_messages.ex:83
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
 msgstr "दृश्य प्रवेश अपडेट झाला."
 
-#: lib/marshall_web/browser_messages.ex:81
+#: lib/marshall_web/browser_messages.ex:84
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
 msgstr "तुमच्या पासकीची प्रतीक्षा…"
 
-#: lib/marshall_web/browser_messages.ex:83
+#: lib/marshall_web/browser_messages.ex:86
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
 msgstr "हा प्रशासकीय बदल पूर्ण करा"
 
-#: lib/marshall_web/browser_messages.ex:84
+#: lib/marshall_web/browser_messages.ex:87
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "आत्ताच"
 
-#: lib/marshall_web/browser_messages.ex:85
+#: lib/marshall_web/browser_messages.ex:88
 #, elixir-autogen, elixir-format
 msgid "● live"
 msgstr "● लाइव्ह"
 
-#: lib/marshall_web/browser_messages.ex:86
+#: lib/marshall_web/browser_messages.ex:89
 #, elixir-autogen, elixir-format
 msgid "● read-only"
 msgstr "● फक्त वाचनीय"
 
-#: lib/marshall_web/browser_messages.ex:87
+#: lib/marshall_web/browser_messages.ex:90
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
 msgstr "⟳ पुन्हा जोडत आहे…"
 
-#: lib/marshall_web/browser_messages.ex:88
+#: lib/marshall_web/browser_messages.ex:91
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ स्क्रोलबॅक पुनर्संचयित करत आहे…"

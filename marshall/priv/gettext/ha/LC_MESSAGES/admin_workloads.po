@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "Ayyuka"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "Ajiye wannan VM?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Share"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Cikakkun bayanai"
@@ -64,7 +64,7 @@ msgstr "An yi layi da buƙatun rayuwa."
 msgid "Lifecycle request was rejected."
 msgstr "An ƙi buƙatar buƙatun rayuwa."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Matsar"
@@ -84,7 +84,7 @@ msgstr "An yi layi da buƙatar ƙaura."
 msgid "Relocation request was rejected."
 msgstr "An ƙi amincewa da buƙatar ƙaura."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Maimaita girman"
@@ -94,7 +94,7 @@ msgstr "Maimaita girman"
 msgid "Shape"
 msgstr "Siffar"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Fara"
@@ -104,12 +104,12 @@ msgstr "Fara"
 msgid "State"
 msgstr "Jiha"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Tsaya"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Tasha"

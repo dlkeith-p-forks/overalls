@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/account_live.ex:460
+#: lib/marshall_web/live/account_live.ex:500
 #, elixir-autogen, elixir-format
 msgid "%{count} registered key"
 msgid_plural "%{count} registered keys"
@@ -30,374 +30,374 @@ msgstr "%{span} 빠름"
 msgid "%{span} behind you"
 msgstr "%{span} 느림"
 
-#: lib/marshall_web/live/account_live.ex:474
+#: lib/marshall_web/live/account_live.ex:515
 #, elixir-autogen, elixir-format
 msgid "1. Profile"
 msgstr "1. 프로필"
 
-#: lib/marshall_web/live/account_live.ex:553
+#: lib/marshall_web/live/account_live.ex:595
 #, elixir-autogen, elixir-format
 msgid "2. Sign-in and passkeys"
 msgstr "2. 로그인 및 비밀번호"
 
-#: lib/marshall_web/live/account_live.ex:666
+#: lib/marshall_web/live/account_live.ex:718
 #, elixir-autogen, elixir-format
 msgid "3. SSH keys"
 msgstr "3. SSH 키"
 
-#: lib/marshall_web/live/account_live.ex:750
+#: lib/marshall_web/live/account_live.ex:809
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
 msgstr "4. Git 작성자 정보"
 
 #: lib/marshall_web/live/account_live.ex:35
-#: lib/marshall_web/live/account_live.ex:445
+#: lib/marshall_web/live/account_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "계정"
 
+# Prior translation for retired source "Add Overalls commit attribution": "커밋에 Overalls 기여 정보 추가"
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-# Prior translation for retired source "Add Overalls commit attribution": "커밋에 Overalls 기여 정보 추가"
 msgid "Commit attribution"
 msgstr "커밋 귀속"
 
-#: lib/marshall_web/live/account_live.ex:742
+#: lib/marshall_web/live/account_live.ex:801
 #, elixir-autogen, elixir-format
 msgid "Add SSH key"
 msgstr "SSH 키 추가"
 
-#: lib/marshall_web/live/account_live.ex:719
+#: lib/marshall_web/live/account_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Add a key"
 msgstr "키 추가"
 
-#: lib/marshall_web/live/account_live.ex:587
+#: lib/marshall_web/live/account_live.ex:633
 #, elixir-autogen, elixir-format
 msgid "Add passkey"
 msgstr "패스키 추가"
 
-#: lib/marshall_web/live/account_live.ex:650
-#: lib/marshall_web/live/account_live.ex:713
+#: lib/marshall_web/live/account_live.ex:701
+#: lib/marshall_web/live/account_live.ex:767
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "추가됨"
 
-#: lib/marshall_web/live/account_live.ex:740
+#: lib/marshall_web/live/account_live.ex:799
 #, elixir-autogen, elixir-format
 msgid "Adding…"
 msgstr "첨가…"
 
-#: lib/marshall_web/live/account_live.ex:342
+#: lib/marshall_web/live/account_live.ex:370
 #, elixir-autogen, elixir-format
 msgid "Choose a language from the list."
 msgstr "목록에서 언어를 선택하세요."
 
-#: lib/marshall_web/live/account_live.ex:211
+#: lib/marshall_web/live/account_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Choose a time zone from the list."
 msgstr "목록에서 시간대를 선택하세요."
 
-#: lib/marshall_web/live/account_live.ex:544
+#: lib/marshall_web/live/account_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Clear saved zone"
 msgstr "저장된 영역 지우기"
 
-#: lib/marshall_web/live/account_live.ex:167
+#: lib/marshall_web/live/account_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Could not add this key. Paste one supported public key; it must not belong to another account."
 msgstr "이 키를 추가할 수 없습니다. 지원되는 공개 키 하나를 붙여넣으세요. 다른 계정에 속해 있어서는 안 됩니다."
 
-#: lib/marshall_web/live/account_live.ex:222
+#: lib/marshall_web/live/account_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Could not clear your time zone."
 msgstr "시간대를 지울 수 없습니다."
 
-#: lib/marshall_web/live/account_live.ex:195
+#: lib/marshall_web/live/account_live.ex:206
 #, elixir-autogen, elixir-format
 msgid "Could not remove this key."
 msgstr "이 키를 제거할 수 없습니다."
 
-#: lib/marshall_web/live/account_live.ex:183
+#: lib/marshall_web/live/account_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Could not rename this key. Use at most 128 characters."
 msgstr "이 키의 이름을 변경할 수 없습니다. 128자 이하로 입력하세요."
 
-#: lib/marshall_web/live/account_live.ex:132
+#: lib/marshall_web/live/account_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Credential change refused. Names must be 1–80 characters, changes need a passkey verified in the last 15 minutes, and administrators must keep at least one passkey."
 msgstr ""
 "자격 증명 변경이 거부되었습니다. 이름은 1~80자여야 하며 변경 사항은 지난 15분 동안 확인된 암호 키가 필요하며 관리자는 하나 "
 "이상의 암호 키를 유지해야 합니다."
 
-#: lib/marshall_web/live/account_live.ex:703
+#: lib/marshall_web/live/account_live.ex:757
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr "설명"
 
-#: lib/marshall_web/live/account_live.ex:422
+#: lib/marshall_web/live/account_live.ex:451
 #, elixir-autogen, elixir-format
 msgid "Detected from your browser: %{value1}. Save it so others can see your local time."
 msgstr "브라우저에서 감지됨: %{value1}. 다른 사람들이 귀하의 현지 시간을 볼 수 있도록 저장하세요."
 
-#: lib/marshall_web/live/account_live.ex:503
+#: lib/marshall_web/live/account_live.ex:544
 #, elixir-autogen, elixir-format
 msgid "Email"
 msgstr "이메일"
 
-#: lib/marshall_web/live/account_live.ex:605
+#: lib/marshall_web/live/account_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "End this verification before the fifteen minutes are up."
 msgstr "15분이 지나기 전에 이 확인을 종료하세요."
 
-#: lib/marshall_web/live/account_live.ex:251
+#: lib/marshall_web/live/account_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
 msgstr "유효한 Git 이름과 이메일 주소를 입력하세요."
 
-#: lib/marshall_web/live/account_live.ex:709
+#: lib/marshall_web/live/account_live.ex:763
 #, elixir-autogen, elixir-format
 msgid "Fingerprint"
 msgstr "지문"
 
-#: lib/marshall_web/live/account_live.ex:761
+#: lib/marshall_web/live/account_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Git email"
 msgstr "Git 이메일"
 
-#: lib/marshall_web/live/account_live.ex:467
+#: lib/marshall_web/live/account_live.ex:508
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git 작성자 정보"
 
-#: lib/marshall_web/live/account_live.ex:247
+#: lib/marshall_web/live/account_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
 msgstr "Git 설정이 저장되었습니다."
 
-#: lib/marshall_web/live/account_live.ex:754
+#: lib/marshall_web/live/account_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Git username"
 msgstr "Git 사용자 이름"
 
-#: lib/marshall_web/live/account_live.ex:256
+#: lib/marshall_web/live/account_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "요청이 잘못되었습니다."
 
-#: lib/marshall_web/live/account_live.ex:656
+#: lib/marshall_web/live/account_live.ex:707
 #, elixir-autogen, elixir-format
 msgid "Keep a backup passkey. If you lose access, another administrator can reset your passkeys."
 msgstr "백업 패스키를 보관하세요. 액세스할 수 없는 경우 다른 관리자가 암호 키를 재설정할 수 있습니다."
 
-#: lib/marshall_web/live/account_live.ex:668
+#: lib/marshall_web/live/account_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Keys registered here open your machines over SSH with the same account and permissions as this site. Remove a key to revoke its access; email sign-in keeps working without any key."
 msgstr ""
 "여기에 등록된 키는 이 사이트와 동일한 계정 및 권한으로 SSH를 통해 컴퓨터를 엽니다. 액세스 권한을 취소하려면 키를 제거하세요. "
 "이메일 로그인은 키 없이도 계속 작동합니다."
 
-#: lib/marshall_web/live/account_live.ex:722
+#: lib/marshall_web/live/account_live.ex:776
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "라벨(선택사항)"
 
-#: lib/marshall_web/live/account_live.ex:479
+#: lib/marshall_web/live/account_live.ex:520
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "언어"
 
-#: lib/marshall_web/live/account_live.ex:485
+#: lib/marshall_web/live/account_live.ex:526
 #, elixir-autogen, elixir-format
 msgid "Language is detected from your browser."
 msgstr "브라우저에서 언어가 감지되었습니다."
 
-#: lib/marshall_web/live/account_live.ex:504
+#: lib/marshall_web/live/account_live.ex:545
 #, elixir-autogen, elixir-format
 msgid "Local time"
 msgstr "현지 시간"
 
-#: lib/marshall_web/live/account_live.ex:604
+#: lib/marshall_web/live/account_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Lock now"
 msgstr "지금 잠그세요"
 
-#: lib/marshall_web/live/account_live.ex:724
+#: lib/marshall_web/live/account_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "내 노트북"
 
-#: lib/marshall_web/live/account_live.ex:673
+#: lib/marshall_web/live/account_live.ex:726
 #, elixir-autogen, elixir-format
 msgid "No SSH keys yet. You can always sign in here using email."
 msgstr "아직 SSH 키가 없습니다. 언제든지 이메일을 사용하여 여기에서 로그인할 수 있습니다."
 
-#: lib/marshall_web/live/account_live.ex:613
+#: lib/marshall_web/live/account_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "No passkeys yet. First enrollment requires a fresh email sign-in completed within the last five minutes. After setup, return to the page you came from and retry the action."
 msgstr ""
 "아직 비밀번호가 없습니다. 처음 등록하려면 마지막 5분 이내에 새로운 이메일 로그인이 완료되어야 합니다. 설정 후 원래 페이지로 돌아가서"
 " 작업을 다시 시도하세요."
 
-#: lib/marshall_web/live/account_live.ex:427
+#: lib/marshall_web/live/account_live.ex:459
 #, elixir-autogen, elixir-format
 msgid "No zone saved and none detected; times are shown in UTC until you choose one."
 msgstr "저장된 영역이 없고 감지된 영역도 없습니다. 시간은 하나를 선택할 때까지 UTC로 표시됩니다."
 
-#: lib/marshall_web/live/account_live.ex:448
+#: lib/marshall_web/live/account_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "On this page"
 msgstr "이 페이지에서"
 
-#: lib/marshall_web/live/account_live.ex:98
+#: lib/marshall_web/live/account_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Passkey added. Verify it when you need to approve an administrative change."
 msgstr "패스키가 추가되었습니다. 관리 변경을 승인해야 할 때 이를 확인하세요."
 
-#: lib/marshall_web/live/account_live.ex:631
+#: lib/marshall_web/live/account_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "Passkey name"
 msgstr "패스키 이름"
 
-#: lib/marshall_web/live/account_live.ex:145
+#: lib/marshall_web/live/account_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled or unavailable. You can try again."
 msgstr "패스키 요청이 취소되었거나 사용할 수 없습니다. 다시 시도해 보세요."
 
-#: lib/marshall_web/live/account_live.ex:101
+#: lib/marshall_web/live/account_live.ex:103
 #, elixir-autogen, elixir-format
 msgid "Passkey verified for 15 minutes."
 msgstr "15분 동안 패스키가 확인되었습니다."
 
-#: lib/marshall_web/live/account_live.ex:563
+#: lib/marshall_web/live/account_live.ex:606
 #, elixir-autogen, elixir-format
 msgid "Passkey verified · %{count} second remaining."
 msgid_plural "Passkey verified · %{count} seconds remaining."
 msgstr[0] "비밀번호가 확인되었습니다. · %{count}초 남았습니다."
 
-#: lib/marshall_web/live/account_live.ex:734
+#: lib/marshall_web/live/account_live.ex:789
 #, elixir-autogen, elixir-format
 msgid "Paste a public key from your .pub file. Never paste a private key."
 msgstr ".pub 파일에서 공개 키를 붙여넣습니다. 개인 키를 붙여넣지 마세요."
 
-#: lib/marshall_web/live/account_live.ex:451
+#: lib/marshall_web/live/account_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "윤곽"
 
-#: lib/marshall_web/live/account_live.ex:729
+#: lib/marshall_web/live/account_live.ex:783
 #, elixir-autogen, elixir-format
 msgid "Public key"
 msgstr "공개키"
 
-#: lib/marshall_web/live/account_live.ex:647
-#: lib/marshall_web/live/account_live.ex:689
+#: lib/marshall_web/live/account_live.ex:698
+#: lib/marshall_web/live/account_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "제거하다"
 
-#: lib/marshall_web/live/account_live.ex:684
+#: lib/marshall_web/live/account_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Remove this key's SSH access? Already accepted machine operations will continue."
 msgstr "이 키의 SSH 액세스를 삭제하시겠습니까? 이미 승인된 기계 작동은 계속됩니다."
 
-#: lib/marshall_web/live/account_live.ex:642
+#: lib/marshall_web/live/account_live.ex:692
 #, elixir-autogen, elixir-format
 msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
 msgstr "이 패스키를 삭제하시겠습니까? 마지막 암호 키를 제거하면 모든 곳에서 로그아웃됩니다."
 
-#: lib/marshall_web/live/account_live.ex:634
-#: lib/marshall_web/live/account_live.ex:706
+#: lib/marshall_web/live/account_live.ex:684
+#: lib/marshall_web/live/account_live.ex:760
 #, elixir-autogen, elixir-format
 msgid "Rename"
 msgstr "이름 바꾸기"
 
-#: lib/marshall_web/live/account_live.ex:609
+#: lib/marshall_web/live/account_live.ex:658
 #, elixir-autogen, elixir-format
 msgid "Return to the requested page and retry the action →"
 msgstr "요청한 페이지로 돌아가서 작업을 다시 시도하세요 →"
 
-#: lib/marshall_web/live/account_live.ex:430
+#: lib/marshall_web/live/account_live.ex:465
 #, elixir-autogen, elixir-format
 msgid "SSH key"
 msgstr "SSH 키"
 
-#: lib/marshall_web/live/account_live.ex:160
+#: lib/marshall_web/live/account_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "SSH key added."
 msgstr "SSH 키가 추가되었습니다."
 
-#: lib/marshall_web/live/account_live.ex:191
+#: lib/marshall_web/live/account_live.ex:201
 #, elixir-autogen, elixir-format
 msgid "SSH key removed."
 msgstr "SSH 키가 제거되었습니다."
 
-#: lib/marshall_web/live/account_live.ex:178
+#: lib/marshall_web/live/account_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "SSH key renamed."
 msgstr "SSH 키 이름을 변경했습니다."
 
-#: lib/marshall_web/live/account_live.ex:459
+#: lib/marshall_web/live/account_live.ex:499
 #, elixir-autogen, elixir-format
 msgid "SSH keys"
 msgstr "SSH 키"
 
-#: lib/marshall_web/live/account_live.ex:325
+#: lib/marshall_web/live/account_live.ex:349
 #, elixir-autogen, elixir-format
 msgid "SSH keys are temporarily unavailable."
 msgstr "SSH 키를 일시적으로 사용할 수 없습니다."
 
-#: lib/marshall_web/live/account_live.ex:781
+#: lib/marshall_web/live/account_live.ex:830
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
 msgstr "Git 설정 저장"
 
-#: lib/marshall_web/live/account_live.ex:489
+#: lib/marshall_web/live/account_live.ex:530
 #, elixir-autogen, elixir-format
 msgid "Save language"
 msgstr "언어 저장"
 
-#: lib/marshall_web/live/account_live.ex:535
+#: lib/marshall_web/live/account_live.ex:577
 #, elixir-autogen, elixir-format
 msgid "Save time zone"
 msgstr "시간대 저장"
 
-#: lib/marshall_web/live/account_live.ex:415
+#: lib/marshall_web/live/account_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Saved: %{value1}. Others who share a team, machine or thread with you see your local time."
 msgstr "저장됨: %{value1}. 귀하와 팀, 머신 또는 스레드를 공유하는 다른 사람들은 귀하의 현지 시간을 볼 수 있습니다."
 
-#: lib/marshall_web/live/account_live.ex:455
+#: lib/marshall_web/live/account_live.ex:495
 #, elixir-autogen, elixir-format
 msgid "Sign-in and passkeys"
 msgstr "로그인 및 암호키"
 
-#: lib/marshall_web/live/account_live.ex:527
+#: lib/marshall_web/live/account_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "Time zone"
 msgstr "시간대"
 
-#: lib/marshall_web/live/account_live.ex:219
+#: lib/marshall_web/live/account_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Time zone cleared. Your browser's zone is used."
 msgstr "시간대가 삭제되었습니다. 귀하의 브라우저 영역이 사용됩니다."
 
-#: lib/marshall_web/live/account_live.ex:208
+#: lib/marshall_web/live/account_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Time zone saved."
 msgstr "시간대가 저장되었습니다."
 
-#: lib/marshall_web/live/account_live.ex:712
+#: lib/marshall_web/live/account_live.ex:766
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "유형"
 
-#: lib/marshall_web/live/account_live.ex:498
+#: lib/marshall_web/live/account_live.ex:539
 #, elixir-autogen, elixir-format
 msgid "Use browser language"
 msgstr "브라우저 언어 사용"
 
-#: lib/marshall_web/live/account_live.ex:111
+#: lib/marshall_web/live/account_live.ex:113
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Please try again."
 msgstr "확인을 완료할 수 없습니다. 다시 시도해 주세요."
@@ -407,66 +407,66 @@ msgstr "확인을 완료할 수 없습니다. 다시 시도해 주세요."
 msgid "Verification required. Use an existing passkey, or sign out and request a fresh email link before first enrollment."
 msgstr "확인이 필요합니다. 기존 암호 키를 사용하거나, 처음 등록하기 전에 로그아웃하고 새로운 이메일 링크를 요청하세요."
 
-#: lib/marshall_web/live/account_live.ex:570
+#: lib/marshall_web/live/account_live.ex:614
 #, elixir-autogen, elixir-format
 msgid "Verify a passkey before making administrative changes or changing passkeys."
 msgstr "관리 변경을 수행하거나 암호 키를 변경하기 전에 암호 키를 확인하십시오."
 
-#: lib/marshall_web/live/account_live.ex:595
+#: lib/marshall_web/live/account_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "패스키로 확인"
 
-#: lib/marshall_web/live/account_live.ex:446
+#: lib/marshall_web/live/account_live.ex:482
 #, elixir-autogen, elixir-format
 msgid "Who you are, how you prove it, and the keys that reach your machines."
 msgstr "당신이 누구인지, 그것을 증명하는 방법, 그리고 당신의 기계에 접근하는 열쇠."
 
-#: lib/marshall_web/live/account_live.ex:555
+#: lib/marshall_web/live/account_live.ex:597
 #, elixir-autogen, elixir-format
 msgid "You sign in with an email link. A passkey proves it is you before administrative changes and before passkey changes; everyday use of your workspace never asks for one."
 msgstr ""
 "이메일 링크로 로그인합니다. 암호 키는 관리 변경 전과 암호 키 변경 전에 본인임을 증명합니다. 일상적인 작업 공간 사용에는 절대 필요한"
 " 것이 없습니다."
 
-#: lib/marshall_web/live/account_live.ex:519
+#: lib/marshall_web/live/account_live.ex:560
 #, elixir-autogen, elixir-format
 msgid "Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved."
 msgstr ""
 "귀하의 이메일은 귀하의 로그인 ID이므로 여기에서 편집할 수 없습니다. 작업복을 입을 때마다 해당 영역에 표시됩니다. 팀, 컴퓨터 또는 "
 "스레드를 귀하와 공유하는 사람들 및 관리자는 영역이 저장되면 이메일 옆에 현재 현지 시간을 볼 수 있습니다."
 
-#: lib/marshall_web/live/account_live.ex:617
+#: lib/marshall_web/live/account_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Your passkeys"
 msgstr "귀하의 패스키"
 
-#: lib/marshall_web/live/account_live.ex:576
+#: lib/marshall_web/live/account_live.ex:621
 #, elixir-autogen, elixir-format
 msgid "Your passkeys were reset. Register a replacement before approving administrative changes."
 msgstr "암호키가 재설정되었습니다. 관리 변경을 승인하기 전에 교체를 등록하십시오."
 
-#: lib/marshall_web/live/account_live.ex:484
+#: lib/marshall_web/live/account_live.ex:525
 #, elixir-autogen, elixir-format
 msgid "Your saved language overrides browser preferences."
 msgstr "저장된 언어는 브라우저 기본 설정보다 우선 적용됩니다."
 
-#: lib/marshall_web/live/account_live.ex:569
+#: lib/marshall_web/live/account_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "[not verified]"
 msgstr "[확인되지 않음]"
 
-#: lib/marshall_web/live/account_live.ex:562
+#: lib/marshall_web/live/account_live.ex:605
 #, elixir-autogen, elixir-format
 msgid "[verified]"
 msgstr "[확인됨]"
 
-#: lib/marshall_web/live/account_live.ex:452
+#: lib/marshall_web/live/account_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "email, time zone and your local clock"
 msgstr "이메일, 시간대 및 현지 시계"
 
-#: lib/marshall_web/live/account_live.ex:468
+#: lib/marshall_web/live/account_live.ex:509
 #, elixir-autogen, elixir-format
 msgid "new machines and commit attribution"
 msgstr "새 머신 및 커밋 기여 정보"
@@ -476,7 +476,7 @@ msgstr "새 머신 및 커밋 기여 정보"
 msgid "same time as you"
 msgstr "동일한 시간"
 
-#: lib/marshall_web/live/account_live.ex:456
+#: lib/marshall_web/live/account_live.ex:496
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "관리 변경 확인"

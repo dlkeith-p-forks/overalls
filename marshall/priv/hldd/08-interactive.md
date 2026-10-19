@@ -125,16 +125,28 @@ this status review, and the captured Alma/Arch receipts retain their earlier
 image and source scope.
 
 Windows has a reviewed native Code OSS bundle and a separately unselected
-candidate image; `windows-v1` retains `editor: false`. The portable model and
-Win32 launcher bind workers to MMDS boot identity, descriptor, placement, epoch,
-GuestAccount/UID, local SAM SID and origin, with SYSTEM-only jobs, profile-backed
-paths, exact process and named-pipe custody, and refusal of foreign or incomplete
-recovery. The candidate installer completed and a separate 2-vCPU/4096-MiB
-Firecracker boot reached Windows Server build 26100 SAC. These narrow results do
-not establish current readiness, image admission, browser sign-in,
-edit/save/readback, PTY, personal-worker or restart recovery. Exact identities
-and evidence digests remain in the
+candidate image; `windows-v1` retains `editor: false`.
+[ADR-0208](repo:docs/architecture/decisions/0208-windows-editor-job-custodian.md)
+separates the gateway-only SYSTEM broker from an independent SYSTEM custodian.
+The custodian owns personal SAM/S4U worker launch, complete SID-bound receipts,
+exact worker pipes and retained kill-on-close jobs. Both roles independently
+validate current MMDS boot/release authority and the other role's kernel process
+identity through one fixed local SYSTEM-only pipe. The custodian keeps at most
+64 stable account slots, including empty and quarantined reservations.
+
+The old design's stock native fixture opened the workbench, ran its extension,
+saved a file and used a real PowerShell PTY, then failed broker recovery. A
+bounded native diagnostic showed that closing its final job handle could leave
+the child alive while the job name disappeared. Those old-design observations
+do not accept the replacement. New custodian source and two-task installation
+exist, but a fresh custodian refuses every prior same-boot receipt until a new
+physical boot namespace because root exit alone cannot prove descendant drainage.
+Same-boot custodian recovery, two-account separation, current revocation and the
+complete exact-image browser journey remain gaps. No candidate is promoted.
+Exact earlier identities and evidence digests remain in the
 [cross-platform review](repo:docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md).
+The [custodian review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md)
+records the changed custody boundary and pending native acceptance.
 
 Every machine page (Terminal, Access, Settings, Agents, Resize and the Boot log view)
 shares one header. A bordered heading box carries the machine name, then an

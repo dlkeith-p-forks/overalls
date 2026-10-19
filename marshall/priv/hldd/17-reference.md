@@ -1299,7 +1299,73 @@ earlier mixed-source asset
 build does not verify this forward patch or complete browser behavior. The
 [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
 records the source scope and remaining native, controller-lease, isolation and
-recovery gaps; partial ADR-0206 and ADR-0200 acceptance are unchanged.
+recovery gaps; ADR-0206 remains partial. ADR-0208 now fully supersedes ADR-0200's
+Windows candidate decision, with its identity and promotion requirements retained.
+
+The next test-fixture repair gives each generated retention, Enrico HTTPS, SMTP,
+terminal attachment and private-ingress case its own SQL/process/environment
+custody and cleanup. Private ingress removes duplicate unsupported inner
+execution options while retaining its outer CI profile and 12/20-case budgets.
+Finite aggregate deadlines accommodate the full 100-case histories without
+changing their per-operation timeouts or assertions, including resize and Galileo
+renewal histories whose 60-second aggregate limits expired. The ordered-set pin property
+uses the pinned Hegel CI profile after the ordinary profile stopped at seven
+cases while counting SQL body cost: CI derives deterministic randomness from the
+test identity unless a seed is explicit, disables stored-example reuse/persistence
+and suppresses only `TooSlow`; shrinking, explicit blob replay, other health
+checks and the complete 100-case oracle remain. The firmware admission test now
+expects the existing missing-Git-identity refusal with no effects, and constructs
+retained pre-identity state only inside its sandbox to test physical-only
+measurement. These are test and evidence-scope repairs, not new admission or
+native guarantees. The older mixed-source Marshall run already failed; it does
+not verify the final repairs, and a complete current-source gate remains pending.
+
+The executor RPC fixture now establishes a real ProvisionerControl session and
+accepted execution report through the existing terminal fixture. A capacity-only
+host connection with no current session cannot authorize the legacy executor
+bootstrap claim. A new assertion disconnects the exact session epoch and expects
+`unauthorized`; production authority is unchanged and this repaired test has not
+run. Four distributed authentication-mail properties retain 100 cases and fresh
+three/four-BEAM fixtures under the same scoped CI settings and finite 1,800-second
+aggregate deadlines. Their old runs hit `TooSlow` after three/four cases in
+31–39 seconds. Case supervision now owns partial peer startup, and exact captured
+outbox/token/job cleanup follows observed peer retirement with exit fallbacks.
+Boot/RPC/SMTP/barrier deadlines and all crash/retry assertions remain unchanged;
+the repaired full histories still await execution. Earlier recorded mail results
+retain their own source/engine scope.
+
+Two Agent CLI histories also use the scoped CI profile after `TooSlow` stopped
+them at five/eight cases. All 100 cases, SQL/LiveView authority assertions and
+per-operation deadlines remain; the direct/team aggregate stays 900 seconds and
+the lifetime aggregate becomes 600 seconds for 300 complete fixtures. Existing
+case-owned SQL and exact-PID LiveView cleanup remains, and the third
+binding/idempotency property is unchanged. These source repairs await runtime
+verification.
+
+The Windows editor custody repair separates two private SYSTEM tasks using the
+same pinned executable. The independent custodian owns atomic suspended job-list
+launch, complete SID-bound receipts, resume/readiness, exact worker pipes and
+kill-on-close handles. Mutual kernel process/SYSTEM/executable checks protect the
+fixed physical-boot local pipe. Its registry keeps 64 lifetime account slots,
+including empty or quarantined starts; each role independently budgets 128
+live/retired pipe reservations. The old stock native fixture reached workbench,
+extension, save and PowerShell PTY before failing broker recovery. A bounded
+old-design experiment showed final handle loss can remove a job name while its
+child remains alive. Neither observation accepts the new design. New installer
+evaluation/PowerShell parsing and the strict TypeScript/Python/refusal harness
+build pass. Thirty current portable library tests pass retained ownership,
+single-flight/64-slot and live-root-probe refusal decisions; Windows all-target
+Clippy and pinned executable/test-library links pass. The exact 38-test library
+then passed as SYSTEM with process-handle-verified exit zero, no failed/ignored
+tests and scratch cleanup. Four new native cases cover a disposable suspended
+SYSTEM root's atomic job membership/kill-on-close exit, exclusive SYSTEM pipe
+custody, same-test-process mutual identity and forged-creation refusal. Personal
+S4U/Code OSS launch, descendants, independent role tasks, capacity/custodian faults
+and the complete browser journey remain pending. A fresh custodian refuses every prior same-boot receipt
+until a new physical boot namespace; safe same-boot replacement remains
+unimplemented. The immutable old candidate is unqualified and unselected. The
+[custodian review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md)
+records source reconciliation and the missing exact-image browser/recovery evidence.
 
 ## Keeping this handbook current
 

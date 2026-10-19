@@ -209,6 +209,30 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   native-freebsd-growth = import ./machines/native-services { pkgs = testPkgs; inherit packages; growth = true; };
   native-freebsd-recovery = import ./machines/native-services { pkgs = testPkgs; inherit packages; recovery = true; };
   native-freebsd-crash-recovery = import ./machines/native-services { pkgs = testPkgs; inherit packages; crash = true; };
+  # OmniOS/illumos uses the separately promoted image. The explicit admission
+  # opt-in keeps these test receipts scoped to verification; each runner still
+  # emits native_admission=false. Formal OmniOS transport/reset remain absent
+  # because their runners require a non-admitted candidate image plus probe.
+  native-omnios-services = import ./machines/native-services {
+    pkgs = testPkgs; inherit packages; image = packages.omniosGuest;
+    osName = "illumos"; allowNativeAdmission = true;
+  };
+  native-omnios-isolation = import ./machines/native-services {
+    pkgs = testPkgs; inherit packages; image = packages.omniosGuest;
+    osName = "illumos"; isolation = true; allowNativeAdmission = true;
+  };
+  native-omnios-growth = import ./machines/native-services {
+    pkgs = testPkgs; inherit packages; image = packages.omniosGuest;
+    osName = "illumos"; growth = true; allowNativeAdmission = true;
+  };
+  native-omnios-recovery = import ./machines/native-services {
+    pkgs = testPkgs; inherit packages; image = packages.omniosGuest;
+    osName = "illumos"; recovery = true; allowNativeAdmission = true;
+  };
+  native-omnios-crash-recovery = import ./machines/native-services {
+    pkgs = testPkgs; inherit packages; image = packages.omniosGuest;
+    osName = "illumos"; crash = true; allowNativeAdmission = true;
+  };
   windows-firmware = packages.windowsFirmware;
   windows-guest-unit = import ./evaluation/windows-guest.nix { pkgs = buildPkgs; inherit packages; };
   # Long-running: builds the evaluation-ISO Windows image (unattended install

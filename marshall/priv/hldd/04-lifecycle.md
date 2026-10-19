@@ -1,5 +1,11 @@
 # Machine lifecycle
 
+SCIM-managed team retirement is coordinated by `Marshall.Scim.TeamRetirementWorker`.
+Enabling SCIM marks native teams retiring, records a seven-day deadline, and
+enqueues durable deletion intents for each attached virtual machine. The worker
+is idempotent and retries through Oban; physical reclamation remains owned by
+`Marshall.Compute.Lifecycle`.
+
 ## Memory-preserving suspension
 
 [ADR-0199](repo:docs/architecture/decisions/0199-memory-suspension-and-demand-wake.md)
@@ -529,6 +535,10 @@ Recorded native execution passed: the submission history took337.69seconds
 within a1036.30-second machine script, with composed driver static checks passed.
 A timeout or disconnection alone is insufficient evidence of the
 intended daemon loss; the scenario observes actual process retirement.
+
+The maintenance worker also submits idempotent pause intents for every running
+machine owned by an inactive SCIM user before the grace deadline. Compute's
+existing lifecycle coordinator remains the authority for the pause operation.
 Initial provisioning, guest data continuity, power loss and hosted
 faults remain separate gaps.
 

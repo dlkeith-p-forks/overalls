@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "చర్యలు"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "ఈ VMను భద్రపరచాలా?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "తొలగించు"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "వివరాలు"
@@ -66,7 +66,7 @@ msgstr "జీవితచక్ర అభ్యర్థన క్యూలో 
 msgid "Lifecycle request was rejected."
 msgstr "జీవితచక్ర అభ్యర్థన తిరస్కరించబడింది."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "తరలించు"
@@ -86,7 +86,7 @@ msgstr "తరలింపు అభ్యర్థన క్యూలో ఉం
 msgid "Relocation request was rejected."
 msgstr "తరలింపు అభ్యర్థన తిరస్కరించబడింది."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "పరిమాణం మార్చు"
@@ -96,7 +96,7 @@ msgstr "పరిమాణం మార్చు"
 msgid "Shape"
 msgstr "వనరుల అమరిక"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "ప్రారంభించు"
@@ -106,12 +106,12 @@ msgstr "ప్రారంభించు"
 msgid "State"
 msgstr "స్థితి"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "ఆపు"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "టెర్మినల్"

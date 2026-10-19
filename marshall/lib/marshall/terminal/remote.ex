@@ -39,31 +39,45 @@ defmodule Marshall.Terminal.Remote do
       limit: 262_158
     ]
 
-    with {:ok, budget} <- Marshall.Terminal.PeerBudget.acquire(),
-         {:ok, socket} <- Connection.open(location.uri, "/api/terminal-peer/v1/stream", options) do
-      Marshall.Terminal.Metrics.opened(:peer)
-      Process.send_after(self(), :check_location, 5000)
-      Process.send_after(self(), :idle_deadline, 10_000)
-      Process.send_after(self(), :heartbeat, @heartbeat_ms)
-      Process.send_after(self(), :silence_deadline, @silence_ms)
-      send(self(), {:pending_frames, Connection.pending(socket)})
+    budget_server = Marshall.Terminal.PeerBudget.server()
 
-      {:ok,
-       %{
-         socket: socket,
-         host_id: location.host_id,
-         nonce: location.nonce,
-         owner: owner,
-         monitor: monitor,
-         budget_monitor: Process.monitor(budget),
-         pending: nil,
-         viewer: nil,
-         channel: nil,
-         sequence: 0,
-         output_sequence: 0,
-         buffer: <<>>,
-         last_seen: System.monotonic_time(:millisecond)
-       }}
+    with {:ok, budget} <- Marshall.Terminal.PeerBudget.acquire(budget_server) do
+      # Keep the transport owner coupled to this accounting incarnation. The
+      # callback monitor below lets Remote retire cleanly; the watcher covers
+      # adapters that consume DOWN messages before callback dispatch.
+      start_budget_watcher(self(), budget)
+
+      case Connection.open(location.uri, "/api/terminal-peer/v1/stream", options) do
+        {:ok, socket} ->
+          Marshall.Terminal.Metrics.opened(:peer)
+          Process.send_after(self(), :check_location, 5000)
+          Process.send_after(self(), :idle_deadline, 10_000)
+          Process.send_after(self(), :heartbeat, @heartbeat_ms)
+          Process.send_after(self(), :silence_deadline, @silence_ms)
+          send(self(), {:pending_frames, Connection.pending(socket)})
+
+          {:ok,
+           %{
+             socket: socket,
+             host_id: location.host_id,
+             nonce: location.nonce,
+             owner: owner,
+             monitor: monitor,
+             budget: budget,
+             budget_monitor: Process.monitor(budget),
+             pending: nil,
+             viewer: nil,
+             channel: nil,
+             sequence: 0,
+             output_sequence: 0,
+             buffer: <<>>,
+             last_seen: System.monotonic_time(:millisecond)
+           }}
+
+        _ ->
+          Marshall.Terminal.PeerBudget.release(budget)
+          {:stop, :peer_unavailable}
+      end
     else
       _ ->
         {:stop, :peer_unavailable}
@@ -131,6 +145,9 @@ defmodule Marshall.Terminal.Remote do
     do: {:stop, :normal, state}
 
   def handle_info({:DOWN, ref, :process, _, _}, %{budget_monitor: ref} = state),
+    do: {:stop, :normal, state}
+
+  def handle_info({:terminal_budget_lost, budget}, %{budget: budget} = state),
     do: {:stop, :normal, state}
 
   def handle_info(:idle_deadline, %{viewer: nil} = state), do: {:stop, :normal, state}
@@ -260,7 +277,7 @@ defmodule Marshall.Terminal.Remote do
 
   @impl true
   def terminate(_, state) do
-    Marshall.Terminal.PeerBudget.release()
+    Marshall.Terminal.PeerBudget.release(state.budget)
     Connection.close(state.socket)
 
     if state.pending,
@@ -268,6 +285,33 @@ defmodule Marshall.Terminal.Remote do
 
     if state.viewer, do: send(state.viewer, {:terminal_closed, %{reason: :stream_unavailable}})
     :ok
+  end
+
+  @spec start_budget_watcher(pid(), pid()) :: pid()
+  defp start_budget_watcher(owner, budget) do
+    spawn(fn -> budget_watcher(owner, budget) end)
+  end
+
+  @spec budget_watcher(pid(), pid()) :: :ok
+  defp budget_watcher(owner, budget) do
+    budget_monitor = Process.monitor(budget)
+    owner_monitor = Process.monitor(owner)
+
+    receive do
+      {:DOWN, ^budget_monitor, :process, ^budget, _reason} ->
+        send(owner, {:terminal_budget_lost, budget})
+
+        receive do
+          {:DOWN, ^owner_monitor, :process, ^owner, _reason} -> :ok
+        after
+          1_000 -> Process.exit(owner, :kill)
+        end
+
+        :ok
+
+      {:DOWN, ^owner_monitor, :process, ^owner, _reason} ->
+        :ok
+    end
   end
 
   @impl true
