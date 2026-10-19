@@ -10,17 +10,17 @@ msgstr ""
 msgid "Actions"
 msgstr "Acciones"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "¿Archivar esta VM?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Eliminar"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Detalles"
@@ -58,7 +58,7 @@ msgstr "Solicitud de ciclo de vida en cola."
 msgid "Lifecycle request was rejected."
 msgstr "La solicitud de ciclo de vida fue rechazada."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Trasladar"
@@ -78,7 +78,7 @@ msgstr "Solicitud de traslado en cola."
 msgid "Relocation request was rejected."
 msgstr "La solicitud de traslado fue rechazada."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Cambiar tamaño"
@@ -88,7 +88,7 @@ msgstr "Cambiar tamaño"
 msgid "Shape"
 msgstr "Configuración de recursos"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Iniciar"
@@ -98,12 +98,12 @@ msgstr "Iniciar"
 msgid "State"
 msgstr "Estado"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Detener"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Terminal"

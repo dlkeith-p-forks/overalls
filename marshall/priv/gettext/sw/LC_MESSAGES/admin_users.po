@@ -21,7 +21,7 @@ msgid_plural "%{count} owned machines"
 msgstr[0] "Mashine %{count} inayomilikiwa"
 msgstr[1] "Mashine %{count} zinazomilikiwa"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "Kurasa za akaunti"
@@ -66,7 +66,7 @@ msgstr "Haikuweza kubadilisha ufikiaji wa msimamizi."
 msgid "Could not revoke browser sessions."
 msgstr "Haikuweza kubatilisha vipindi vya kivinjari."
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "Futa mtumiaji na mashine"
@@ -81,7 +81,7 @@ msgstr "Anwani ya barua pepe"
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "Kila akaunti katika usambazaji huu. Watumiaji walioingia wanaweza kusoma ukurasa huu; mabadiliko yanahitaji msimamizi aliyethibitisha ufunguo wa kuingia hivi karibuni."
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "Je, ungependa kuipa akaunti hii idhini ya kufikia ili kudhibiti kundi zima na mashine zote?"
@@ -106,42 +106,42 @@ msgstr "MFA imewashwa"
 msgid "MFA not enrolled"
 msgstr "MFA haijasajiliwa"
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "Fanya msimamizi"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Ukurasa unaofuata →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "Hakuna akaunti kwenye ukurasa huu."
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Ungependa kufuta kabisa akaunti hii na mashine ZOTE inazomiliki, pamoja na mashine zinazoshirikiwa na wengine?"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "Ondoa msimamizi"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "Je, ungependa kuondoa ufikiaji wa msimamizi wa akaunti hii?"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "Weka upya MFA"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "Ungependa kuweka upya MFA ya mtumiaji huyu na kubatilisha vipindi vyote vya kivinjari? Lazima asajili ufunguo mbadala wa kuingia."
@@ -151,17 +151,17 @@ msgstr "Ungependa kuweka upya MFA ya mtumiaji huyu na kubatilisha vipindi vyote 
 msgid "Send invitation"
 msgstr "Tuma mwaliko"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "Ondoka kila mahali"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "Ungependa kuondoa akaunti hii kwenye kila kipindi cha kivinjari?"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "Andika barua pepe ili kufuta akaunti hii na mashine zake za %{count}"
@@ -186,7 +186,7 @@ msgstr "Thibitisha kwa kutumia nenosiri · ufikiaji wa msimamizi hudumu dakika 1
 msgid "· Your account"
 msgstr "· Akaunti yako"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Ukurasa wa kwanza"
@@ -196,7 +196,7 @@ msgstr "← Ukurasa wa kwanza"
 msgid "Deleted"
 msgstr "Imefutwa"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "Inafuta mashine"
@@ -206,7 +206,7 @@ msgstr "Inafuta mashine"
 msgid "Retrying machine cleanup"
 msgstr "Inajaribu tena kusafisha mashine"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Haipatikani"

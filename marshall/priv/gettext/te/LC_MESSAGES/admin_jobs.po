@@ -29,7 +29,7 @@ msgstr "30 రోజులు"
 msgid "7 days"
 msgstr "7 రోజులు"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:473
+#: lib/marshall_web/live/admin/jobs_live.ex:485
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr "స్వీకరణ ధృవీకరించబడింది"
@@ -59,7 +59,7 @@ msgstr "భద్రపరచబడింది"
 msgid "Archived history · retry unavailable"
 msgstr "భద్రపరచిన చరిత్ర · మళ్లీ ప్రయత్నం అందుబాటులో లేదు"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:424
+#: lib/marshall_web/live/admin/jobs_live.ex:436
 #, elixir-autogen, elixir-format
 msgid "Attempt"
 msgstr "ప్రయత్నం"
@@ -78,18 +78,18 @@ msgstr ""
 "పెండింగ్‌లో ఉండవచ్చు; పూర్తి కావడానికి సంబంధిత చర్యను అనుసరించండి."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
-#: lib/marshall_web/live/admin/jobs_live.ex:475
+#: lib/marshall_web/live/admin/jobs_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "రద్దయింది"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:422
+#: lib/marshall_web/live/admin/jobs_live.ex:434
 #, elixir-autogen, elixir-format
 msgid "Captured"
 msgstr "సంగ్రహించబడింది"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:406
-#: lib/marshall_web/live/admin/jobs_live.ex:474
+#: lib/marshall_web/live/admin/jobs_live.ex:418
+#: lib/marshall_web/live/admin/jobs_live.ex:486
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "పూర్తి"
@@ -107,12 +107,12 @@ msgstr ""
 msgid "Created"
 msgstr "సృష్టించబడింది"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:477
+#: lib/marshall_web/live/admin/jobs_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "పనిభారం ఖాళీ చేయబడింది"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:476
+#: lib/marshall_web/live/admin/jobs_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "పనిభారం ఖాళీ చేస్తోంది"
@@ -122,7 +122,7 @@ msgstr "పనిభారం ఖాళీ చేస్తోంది"
 msgid "Duration"
 msgstr "వ్యవధి"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:468
+#: lib/marshall_web/live/admin/jobs_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "ఖాళీ చేసే ప్రచారం"
@@ -132,7 +132,7 @@ msgstr "ఖాళీ చేసే ప్రచారం"
 msgid "Exact worker name"
 msgstr "ఖచ్చితమైన వర్కర్ పేరు"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:417
+#: lib/marshall_web/live/admin/jobs_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "Execution history"
 msgstr "అమలు చరిత్ర"
@@ -212,28 +212,28 @@ msgstr "వడపోతలకు సరిపడే జాబ్‌లు లే
 msgid "Older jobs →"
 msgstr "పాత జాబ్‌లు →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:455
+#: lib/marshall_web/live/admin/jobs_live.ex:467
 #, elixir-autogen, elixir-format
 msgid "Older transitions →"
 msgstr "పాత మార్పులు →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:411
+#: lib/marshall_web/live/admin/jobs_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Open machine →"
 msgstr "యంత్రాన్ని తెరువు →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:466
+#: lib/marshall_web/live/admin/jobs_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Operation"
 msgstr "చర్య"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:397
+#: lib/marshall_web/live/admin/jobs_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "Operation state"
 msgstr "చర్య స్థితి"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:407
-#: lib/marshall_web/live/admin/jobs_live.ex:472
+#: lib/marshall_web/live/admin/jobs_live.ex:419
+#: lib/marshall_web/live/admin/jobs_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "పెండింగ్"
@@ -266,27 +266,27 @@ msgstr "క్యూలో ఉంది"
 msgid "Recorded failures"
 msgstr "నమోదైన వైఫల్యాలు"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:390
+#: lib/marshall_web/live/admin/jobs_live.ex:402
 #, elixir-autogen, elixir-format
 msgid "Related record"
 msgstr "సంబంధిత రికార్డు"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:467
+#: lib/marshall_web/live/admin/jobs_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "Relocation"
 msgstr "స్థలాంతరణ"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:403
+#: lib/marshall_web/live/admin/jobs_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Relocation complete"
 msgstr "తరలింపు పూర్తయింది"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:478
+#: lib/marshall_web/live/admin/jobs_live.ex:490
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "తిరిగి ప్రారంభమైంది"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:479
+#: lib/marshall_web/live/admin/jobs_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "విరమించబడింది"
@@ -325,7 +325,7 @@ msgstr "షెడ్యూల్ / తదుపరి ప్రయత్నం"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:263
 #: lib/marshall_web/live/admin/jobs_live.ex:303
-#: lib/marshall_web/live/admin/jobs_live.ex:423
+#: lib/marshall_web/live/admin/jobs_live.ex:435
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "స్థితి"
@@ -351,8 +351,8 @@ msgid "This job is unavailable or its history has expired."
 msgstr "ఈ జాబ్ అందుబాటులో లేదు లేదా చరిత్ర గడువు ముగిసింది."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:189
-#: lib/marshall_web/live/admin/jobs_live.ex:469
-#: lib/marshall_web/live/admin/jobs_live.ex:480
+#: lib/marshall_web/live/admin/jobs_live.ex:481
+#: lib/marshall_web/live/admin/jobs_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "తెలియదు"
@@ -373,7 +373,7 @@ msgstr "వేచి ఉంది"
 msgid "Worker"
 msgstr "వర్కర్"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:442
+#: lib/marshall_web/live/admin/jobs_live.ex:454
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "ప్రయత్నం %{attempt} · నమోదైన వైఫల్యాలు %{count}"

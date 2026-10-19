@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "Vitendo"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "Ungependa kuhifadhi VM hii kwenye kumbukumbu?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Futa"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Maelezo"
@@ -64,7 +64,7 @@ msgstr "Ombi la mzunguko wa maisha limewekwa kwenye foleni."
 msgid "Lifecycle request was rejected."
 msgstr "Ombi la mzunguko wa maisha lilikataliwa."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Hamisha"
@@ -84,7 +84,7 @@ msgstr "Ombi la kuhama limewekwa kwenye foleni."
 msgid "Relocation request was rejected."
 msgstr "Ombi la kuhama lilikataliwa."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Badilisha ukubwa"
@@ -94,7 +94,7 @@ msgstr "Badilisha ukubwa"
 msgid "Shape"
 msgstr "Umbo"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Washa"
@@ -104,12 +104,12 @@ msgstr "Washa"
 msgid "State"
 msgstr "Hali"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Simamisha"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Kituo"

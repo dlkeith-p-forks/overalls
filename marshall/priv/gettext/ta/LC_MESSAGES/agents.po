@@ -24,8 +24,8 @@ msgstr "இந்தத் தொடரில் %{value1} பகுத்தற
 msgid "%{value1} reasoning"
 msgstr "%{value1} பகுத்தறிவு"
 
-#: lib/marshall_web/live/threads_live.ex:2742
-#: lib/marshall_web/live/threads_live.ex:2745
+#: lib/marshall_web/live/threads_live.ex:2747
+#: lib/marshall_web/live/threads_live.ex:2750
 #, elixir-autogen, elixir-format
 msgid "A context source could not be fully loaded."
 msgstr "சூழல் மூலத்தை முழுமையாக ஏற்ற முடியவில்லை."
@@ -67,7 +67,7 @@ msgid "Activity"
 msgstr "செயல்பாடு"
 
 #: lib/marshall_web/live/agent_threads_live.ex:116
-#: lib/marshall_web/live/threads_live.ex:2781
+#: lib/marshall_web/live/threads_live.ex:2786
 #, elixir-autogen, elixir-format
 msgid "Agent"
 msgstr "முகவர்"
@@ -79,7 +79,7 @@ msgstr "முகவர் CLI ஒரு மணிநேரத்திற்க
 
 #: lib/marshall_web/live/agent_threads_live.ex:117
 #: lib/marshall_web/live/agent_threads_live.ex:141
-#: lib/marshall_web/live/threads_live.ex:2789
+#: lib/marshall_web/live/threads_live.ex:2794
 #, elixir-autogen, elixir-format
 msgid "Agent started working"
 msgstr "முகவர் வேலை செய்யத் தொடங்கினார்"
@@ -152,7 +152,7 @@ msgstr "காப்பகப்படுத்து"
 
 #: lib/marshall_web/live/threads_live.ex:1634
 #: lib/marshall_web/live/threads_live.ex:1731
-#: lib/marshall_web/live/threads_live.ex:2763
+#: lib/marshall_web/live/threads_live.ex:2768
 #, elixir-autogen, elixir-format
 msgid "Archived"
 msgstr "காப்பகப்படுத்தப்பட்டது"
@@ -162,12 +162,12 @@ msgstr "காப்பகப்படுத்தப்பட்டது"
 msgid "Archived thread. The transcript is read-only. Reopen to continue on a new machine."
 msgstr "காப்பகப்படுத்தப்பட்ட உரையாடல். பதிவை வாசிக்க மட்டுமே முடியும். புதிய இயந்திரத்தில் தொடர மீண்டும் திறக்கவும்."
 
-#: lib/marshall_web/live/threads_live.ex:2777
+#: lib/marshall_web/live/threads_live.ex:2782
 #, elixir-autogen, elixir-format
 msgid "Archived · conversation retained"
 msgstr "காப்பகப்படுத்தப்பட்டது · உரையாடல் பாதுகாக்கப்பட்டது"
 
-#: lib/marshall_web/live/threads_live.ex:2762
+#: lib/marshall_web/live/threads_live.ex:2767
 #, elixir-autogen, elixir-format
 msgid "Archiving"
 msgstr "காப்பகப்படுத்தப்படுகிறது"
@@ -182,7 +182,7 @@ msgstr "காப்பகப்படுத்தல் நடைபெறு�
 msgid "Archiving requested. The machine will be deleted before archival completes."
 msgstr "காப்பகப்படுத்தல் கோரப்பட்டது. காப்பகப்படுத்தல் முடிவதற்கு முன் இயந்திரம் நீக்கப்படும்."
 
-#: lib/marshall_web/live/threads_live.ex:2776
+#: lib/marshall_web/live/threads_live.ex:2781
 #, elixir-autogen, elixir-format
 msgid "Archiving · releasing the machine"
 msgstr "காப்பகப்படுத்தப்படுகிறது · இயந்திரம் விடுவிக்கப்படுகிறது"
@@ -267,6 +267,7 @@ msgid "Commit: %{value1}"
 msgstr "குறியீட்டுப் பதிவு: %{value1}"
 
 #: lib/marshall_web/live/threads_live.ex:2505
+#: lib/marshall_web/thread_commands.ex:18
 #, elixir-autogen, elixir-format
 msgid "Compact context"
 msgstr "சூழலைச் சுருக்கு"
@@ -331,7 +332,7 @@ msgstr "கிளையை உருவாக்கு"
 msgid "Create thread"
 msgstr "உரையாடலை உருவாக்கு"
 
-#: lib/marshall_web/live/threads_live.ex:2819
+#: lib/marshall_web/live/threads_live.ex:2824
 #, elixir-autogen, elixir-format
 msgid "Delegated a task"
 msgstr "பணி ஒப்படைக்கப்பட்டது"
@@ -372,7 +373,7 @@ msgid "Enable"
 msgstr "இயக்கு"
 
 #: lib/marshall_web/live/threads_live.ex:1729
-#: lib/marshall_web/live/threads_live.ex:2761
+#: lib/marshall_web/live/threads_live.ex:2766
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "தோல்வியடைந்தது"
@@ -414,7 +415,7 @@ msgstr "நல்ல வேலை ஓர் உரையாடலில் த�
 msgid "High"
 msgstr "உயர்"
 
-#: lib/marshall_web/live/threads_live.ex:2753
+#: lib/marshall_web/live/threads_live.ex:2758
 #, elixir-autogen, elixir-format
 msgid "High gives difficult work more reasoning time."
 msgstr "உயர் நிலை கடினமான பணிகளுக்கு அதிக சிந்தனை நேரத்தை அளிக்கிறது."
@@ -474,7 +475,7 @@ msgstr "ஏற்றப்பட்ட மூலங்கள்"
 msgid "Low"
 msgstr "குறைந்த"
 
-#: lib/marshall_web/live/threads_live.ex:2752
+#: lib/marshall_web/live/threads_live.ex:2757
 #, elixir-autogen, elixir-format
 msgid "Low is for small, well-defined tasks."
 msgstr "குறைந்த நிலை சிறிய, தெளிவாக வரையறுக்கப்பட்ட பணிகளுக்கானது."
@@ -526,7 +527,7 @@ msgid "Managed skill removed."
 msgstr "நிர்வகிக்கப்படும் திறன் நீக்கப்பட்டது."
 
 #: lib/marshall_web/live/threads_live.ex:2038
-#: lib/marshall_web/live/threads_live.ex:2842
+#: lib/marshall_web/live/threads_live.ex:2847
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "மேலாளர்"
@@ -541,7 +542,7 @@ msgstr "அங்கீகரிக்கும் முன் இந்தக�
 msgid "Medium"
 msgstr "நடுத்தர"
 
-#: lib/marshall_web/live/threads_live.ex:2755
+#: lib/marshall_web/live/threads_live.ex:2760
 #, elixir-autogen, elixir-format
 msgid "Medium is a good starting point for most work."
 msgstr "பெரும்பாலான பணிகளுக்கு நடுத்தர நிலை நல்ல தொடக்கமாகும்."
@@ -630,7 +631,7 @@ msgstr "இன்னும் சேகரிக்கப்படவில்�
 msgid "Objective"
 msgstr "நோக்கம்"
 
-#: lib/marshall_web/live/threads_live.ex:2828
+#: lib/marshall_web/live/threads_live.ex:2833
 #, elixir-autogen, elixir-format
 msgid "Older context summarized"
 msgstr "பழைய சூழல் சுருக்கப்பட்டது"
@@ -641,6 +642,7 @@ msgid "One task. One thread."
 msgstr "ஒரு பணி. ஓர் உரையாடல்."
 
 #: lib/marshall_web/live/threads_live.ex:1912
+#: lib/marshall_web/thread_commands.ex:26
 #, elixir-autogen, elixir-format
 msgid "Open VS Code"
 msgstr "VS Code-ஐத் திற"
@@ -651,6 +653,7 @@ msgid "Open source"
 msgstr "திறந்த மூலம்"
 
 #: lib/marshall_web/live/threads_live.ex:1883
+#: lib/marshall_web/thread_commands.ex:24
 #, elixir-autogen, elixir-format
 msgid "Open terminal"
 msgstr "முனையத்தைத் திற"
@@ -661,7 +664,7 @@ msgid "Open terminal here"
 msgstr "இங்கே முனையத்தைத் திற"
 
 #: lib/marshall_web/live/threads_live.ex:2037
-#: lib/marshall_web/live/threads_live.ex:2841
+#: lib/marshall_web/live/threads_live.ex:2846
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "இயக்குநர்"
@@ -682,7 +685,8 @@ msgid "Past 7 days"
 msgstr "கடந்த 7 நாட்கள்"
 
 #: lib/marshall_web/live/threads_live.ex:1726
-#: lib/marshall_web/live/threads_live.ex:2758
+#: lib/marshall_web/live/threads_live.ex:2727
+#: lib/marshall_web/live/threads_live.ex:2763
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "நிலுவையில்"
@@ -694,6 +698,7 @@ msgstr "விட்ட இடத்திலிருந்து தொடர�
 
 #: lib/marshall_web/live/threads_live.ex:1455
 #: lib/marshall_web/live/threads_live.ex:2718
+#: lib/marshall_web/thread_commands.ex:14
 #, elixir-autogen, elixir-format
 msgid "Plan"
 msgstr "திட்டம்"
@@ -703,7 +708,7 @@ msgstr "திட்டம்"
 msgid "Plan proposed"
 msgstr "திட்டம் முன்மொழியப்பட்டது"
 
-#: lib/marshall_web/live/threads_live.ex:2770
+#: lib/marshall_web/live/threads_live.ex:2775
 #, elixir-autogen, elixir-format
 msgid "Preparing a machine for this task"
 msgstr "இந்தப் பணிக்கு இயந்திரம் தயாராகிறது"
@@ -715,7 +720,7 @@ msgstr "உங்கள் பணியிடம் தயாராகிறத�
 
 #: lib/marshall_web/live/agent_threads_live.ex:115
 #: lib/marshall_web/live/agent_threads_live.ex:225
-#: lib/marshall_web/live/threads_live.ex:2780
+#: lib/marshall_web/live/threads_live.ex:2785
 #, elixir-autogen, elixir-format
 msgid "Prompt"
 msgstr "கட்டளைச் செய்தி"
@@ -737,7 +742,7 @@ msgid "Proposed plan"
 msgstr "முன்மொழியப்பட்ட திட்டம்"
 
 #: lib/marshall_web/live/threads_live.ex:1727
-#: lib/marshall_web/live/threads_live.ex:2759
+#: lib/marshall_web/live/threads_live.ex:2764
 #, elixir-autogen, elixir-format
 msgid "Provisioning"
 msgstr "வழங்கப்படுகிறது"
@@ -767,13 +772,14 @@ msgstr "கேள்விகள் ரத்து செய்யப்பட�
 msgid "Questions requested"
 msgstr "கேள்விகள் கோரப்பட்டன"
 
-#: lib/marshall_web/live/threads_live.ex:2801
+#: lib/marshall_web/live/threads_live.ex:2806
 #, elixir-autogen, elixir-format
 msgid "Queued: %{tools}"
 msgstr "வரிசையில் சேர்க்கப்பட்டது: %{tools}"
 
 #: lib/marshall_web/live/threads_live.ex:1728
-#: lib/marshall_web/live/threads_live.ex:2760
+#: lib/marshall_web/live/threads_live.ex:2728
+#: lib/marshall_web/live/threads_live.ex:2765
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "தயார்"
@@ -825,7 +831,7 @@ msgid "Repository URL"
 msgstr "களஞ்சிய URL"
 
 #: lib/marshall_web/live/agent_threads_live.ex:118
-#: lib/marshall_web/live/threads_live.ex:2790
+#: lib/marshall_web/live/threads_live.ex:2795
 #, elixir-autogen, elixir-format
 msgid "Response received"
 msgstr "பதில் பெறப்பட்டது"
@@ -855,7 +861,7 @@ msgstr "பதிப்பு (விருப்பம்)"
 msgid "Revoke thread grant"
 msgstr "உரையாடல் அனுமதியை ரத்துசெய்"
 
-#: lib/marshall_web/live/threads_live.ex:2843
+#: lib/marshall_web/live/threads_live.ex:2848
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "ரத்துசெய்யப்பட்டது"
@@ -917,6 +923,7 @@ msgid "Sending…"
 msgstr "அனுப்பப்படுகிறது…"
 
 #: lib/marshall_web/live/threads_live.ex:1875
+#: lib/marshall_web/thread_commands.ex:28
 #, elixir-autogen, elixir-format
 msgid "Share"
 msgstr "பகிர்"
@@ -968,6 +975,7 @@ msgid "Skill update queued."
 msgstr "திறன் புதுப்பிப்பு வரிசையில் சேர்க்கப்பட்டது."
 
 #: lib/marshall_web/live/threads_live.ex:2723
+#: lib/marshall_web/thread_commands.ex:20
 #, elixir-autogen, elixir-format
 msgid "Skills"
 msgstr "திறன்கள்"
@@ -1040,7 +1048,7 @@ msgstr "அந்த மின்னஞ்சல் பதிவுசெய்�
 
 #: lib/marshall_web/live/agent_threads_live.ex:123
 #: lib/marshall_web/live/agent_threads_live.ex:145
-#: lib/marshall_web/live/threads_live.ex:2823
+#: lib/marshall_web/live/threads_live.ex:2828
 #, elixir-autogen, elixir-format
 msgid "The agent encountered a problem"
 msgstr "முகவர் ஒரு சிக்கலை எதிர்கொண்டார்"
@@ -1213,7 +1221,7 @@ msgstr "உரையாடல் கிடைக்கவில்லை"
 
 #: lib/marshall_web/live/agent_threads_live.ex:132
 #: lib/marshall_web/live/agent_threads_live.ex:149
-#: lib/marshall_web/live/threads_live.ex:2833
+#: lib/marshall_web/live/threads_live.ex:2838
 #, elixir-autogen, elixir-format
 msgid "Thread updated"
 msgstr "உரையாடல் புதுப்பிக்கப்பட்டது"
@@ -1248,37 +1256,37 @@ msgstr "இன்று"
 msgid "Token allowance"
 msgstr "வில்லை வரம்பு"
 
-#: lib/marshall_web/live/threads_live.ex:2810
+#: lib/marshall_web/live/threads_live.ex:2815
 #, elixir-autogen, elixir-format
 msgid "Tool cancelled"
 msgstr "கருவி ரத்துசெய்யப்பட்டது"
 
-#: lib/marshall_web/live/threads_live.ex:2813
+#: lib/marshall_web/live/threads_live.ex:2818
 #, elixir-autogen, elixir-format
 msgid "Tool completed"
 msgstr "கருவி முடிந்தது"
 
-#: lib/marshall_web/live/threads_live.ex:2807
+#: lib/marshall_web/live/threads_live.ex:2812
 #, elixir-autogen, elixir-format
 msgid "Tool failed"
 msgstr "கருவி தோல்வியடைந்தது"
 
-#: lib/marshall_web/live/threads_live.ex:2816
+#: lib/marshall_web/live/threads_live.ex:2821
 #, elixir-autogen, elixir-format
 msgid "Tool outcome uncertain"
 msgstr "கருவி விளைவு உறுதியற்றது"
 
 #: lib/marshall_web/live/agent_threads_live.ex:120
 #: lib/marshall_web/live/agent_threads_live.ex:148
-#: lib/marshall_web/live/threads_live.ex:2818
+#: lib/marshall_web/live/threads_live.ex:2823
 #, elixir-autogen, elixir-format
 msgid "Tool result received"
 msgstr "கருவி முடிவு பெறப்பட்டது"
 
 #: lib/marshall_web/live/agent_threads_live.ex:119
 #: lib/marshall_web/live/agent_threads_live.ex:147
-#: lib/marshall_web/live/threads_live.ex:2800
-#: lib/marshall_web/live/threads_live.ex:2804
+#: lib/marshall_web/live/threads_live.ex:2805
+#: lib/marshall_web/live/threads_live.ex:2809
 #, elixir-autogen, elixir-format
 msgid "Tools queued"
 msgstr "கருவிகள் வரிசையில் சேர்க்கப்பட்டன"
@@ -1295,7 +1303,7 @@ msgstr "சிறிது நேரத்தில் மீண்டும் 
 
 #: lib/marshall_web/live/agent_threads_live.ex:122
 #: lib/marshall_web/live/agent_threads_live.ex:142
-#: lib/marshall_web/live/threads_live.ex:2820
+#: lib/marshall_web/live/threads_live.ex:2825
 #, elixir-autogen, elixir-format
 msgid "Turn complete"
 msgstr "சுற்று முடிந்தது"
@@ -1305,13 +1313,15 @@ msgstr "சுற்று முடிந்தது"
 msgid "Ultra"
 msgstr "மிக உயர்ந்த"
 
-#: lib/marshall_web/live/threads_live.ex:2754
+#: lib/marshall_web/live/threads_live.ex:2759
 #, elixir-autogen, elixir-format
 msgid "Ultra is for complex, open-ended work."
 msgstr "மிக உயர்ந்த நிலை சிக்கலான, திறந்த முடிவுள்ள பணிகளுக்கானது."
 
-#: lib/marshall_web/live/threads_live.ex:2764
-#: lib/marshall_web/live/threads_live.ex:2844
+#: lib/marshall_web/live/threads_live.ex:2729
+#: lib/marshall_web/live/threads_live.ex:2735
+#: lib/marshall_web/live/threads_live.ex:2769
+#: lib/marshall_web/live/threads_live.ex:2849
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "தெரியாதது"
@@ -1379,7 +1389,7 @@ msgid "View activity"
 msgstr "செயல்பாட்டைப் பார்"
 
 #: lib/marshall_web/live/threads_live.ex:2036
-#: lib/marshall_web/live/threads_live.ex:2840
+#: lib/marshall_web/live/threads_live.ex:2845
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "பார்வையாளர்"
@@ -1395,7 +1405,7 @@ msgstr "பார்வையாளர்கள் படிப்பார்�
 msgid "Wait for the current work or pending questions to finish before changing this setting."
 msgstr "இந்த அமைப்பை மாற்றுமுன் தற்போதைய பணி அல்லது நிலுவைக் கேள்விகள் முடியும் வரை காத்திருக்கவும்."
 
-#: lib/marshall_web/live/threads_live.ex:2767
+#: lib/marshall_web/live/threads_live.ex:2772
 #, elixir-autogen, elixir-format
 msgid "Waiting for a workspace"
 msgstr "பணியிடத்திற்காகக் காத்திருக்கிறது"
@@ -1410,17 +1420,17 @@ msgstr "இயந்திரத்திற்காகக் காத்த�
 msgid "Waiting for the agent's first update."
 msgstr "முகவரின் முதல் புதுப்பிப்பிற்காகக் காத்திருக்கிறது."
 
-#: lib/marshall_web/live/threads_live.ex:2825
+#: lib/marshall_web/live/threads_live.ex:2830
 #, elixir-autogen, elixir-format
 msgid "Waiting for the machine"
 msgstr "இயந்திரத்திற்காகக் காத்திருக்கிறது"
 
-#: lib/marshall_web/live/threads_live.ex:2826
+#: lib/marshall_web/live/threads_live.ex:2831
 #, elixir-autogen, elixir-format
 msgid "Waiting for your answers"
 msgstr "உங்கள் பதில்களுக்காகக் காத்திருக்கிறது"
 
-#: lib/marshall_web/live/threads_live.ex:2839
+#: lib/marshall_web/live/threads_live.ex:2844
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "இணையப் பயன்பாடுகள்"
@@ -1432,6 +1442,7 @@ msgstr "நாம் எதில் பணிபுரிகிறோம்?"
 
 #: lib/marshall_web/live/threads_live.ex:1454
 #: lib/marshall_web/live/threads_live.ex:2719
+#: lib/marshall_web/thread_commands.ex:16
 #, elixir-autogen, elixir-format
 msgid "Work"
 msgstr "வேலை"
@@ -1451,7 +1462,7 @@ msgstr "பணியிடச் சூழல் சேகரிக்கப்�
 msgid "Workspace context is unavailable. Reload it when the machine is ready."
 msgstr "பணியிடச் சூழல் கிடைக்கவில்லை. இயந்திரம் தயாரானபோது மீளேற்றவும்."
 
-#: lib/marshall_web/live/threads_live.ex:2831
+#: lib/marshall_web/live/threads_live.ex:2836
 #, elixir-autogen, elixir-format
 msgid "Workspace context reloaded"
 msgstr "பணியிடச் சூழல் மீளேற்றப்பட்டது"
@@ -1461,12 +1472,12 @@ msgstr "பணியிடச் சூழல் மீளேற்றப்ப�
 msgid "Workspace files changed during collection. Reload context and try again."
 msgstr "சேகரிப்பின்போது பணியிடக் கோப்புகள் மாறின. சூழலை மீளேற்றி மீண்டும் முயலவும்."
 
-#: lib/marshall_web/live/threads_live.ex:2773
+#: lib/marshall_web/live/threads_live.ex:2778
 #, elixir-autogen, elixir-format
 msgid "Workspace ready · open the conversation"
 msgstr "பணியிடம் தயார் · உரையாடலைத் திறக்கவும்"
 
-#: lib/marshall_web/live/threads_live.ex:2775
+#: lib/marshall_web/live/threads_live.ex:2780
 #, elixir-autogen, elixir-format
 msgid "Workspace setup needs attention"
 msgstr "பணியிட அமைப்பிற்குக் கவனம் தேவை"
@@ -1507,7 +1518,7 @@ msgstr "உங்கள் முகவரின் பணி தனியாக
 msgid "Your answer or additional detail"
 msgstr "உங்கள் பதில் அல்லது கூடுதல் விவரம்"
 
-#: lib/marshall_web/live/threads_live.ex:2827
+#: lib/marshall_web/live/threads_live.ex:2832
 #, elixir-autogen, elixir-format
 msgid "Your answers were received"
 msgstr "உங்கள் பதில்கள் பெறப்பட்டன"

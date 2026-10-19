@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "Ações"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "Arquivar esta máquina virtual?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Excluir"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Detalhes"
@@ -67,7 +67,7 @@ msgstr "Solicitação de ciclo de vida enfileirada."
 msgid "Lifecycle request was rejected."
 msgstr "A solicitação de ciclo de vida foi rejeitada."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Transferir"
@@ -87,7 +87,7 @@ msgstr "Solicitação de realocação enfileirada."
 msgid "Relocation request was rejected."
 msgstr "A solicitação de realocação foi rejeitada."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Redimensionar"
@@ -97,7 +97,7 @@ msgstr "Redimensionar"
 msgid "Shape"
 msgstr "Configuração de recursos"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Iniciar"
@@ -107,12 +107,12 @@ msgstr "Iniciar"
 msgid "State"
 msgstr "Estado"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Parar"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Terminal"

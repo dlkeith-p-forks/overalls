@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "Mga aksyon"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "I-archive ang VM na ito?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Tanggalin"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Mga Detalye"
@@ -64,7 +64,7 @@ msgstr "Nakapila ang kahilingan sa lifecycle."
 msgid "Lifecycle request was rejected."
 msgstr "Tinanggihan ang kahilingan sa lifecycle."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Ilipat"
@@ -84,7 +84,7 @@ msgstr "Nakapila ang kahilingan sa relokasyon."
 msgid "Relocation request was rejected."
 msgstr "Tinanggihan ang kahilingan sa relokasyon."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Baguhin ang laki"
@@ -94,7 +94,7 @@ msgstr "Baguhin ang laki"
 msgid "Shape"
 msgstr "Hugis"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Simulan"
@@ -104,12 +104,12 @@ msgstr "Simulan"
 msgid "State"
 msgstr "Kalagayan"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Ihinto"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Terminal"

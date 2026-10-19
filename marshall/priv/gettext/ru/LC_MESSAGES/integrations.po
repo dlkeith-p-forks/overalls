@@ -14,28 +14,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/marshall_web/live/integrations_live.ex:351
+#: lib/marshall_web/live/integrations_live.ex:353
 #, elixir-autogen, elixir-format
 msgid "**** (write-only)"
 msgstr "**** (только запись)"
 
-#: lib/marshall_web/live/integrations_live.ex:376
+#: lib/marshall_web/live/integrations_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Действия"
 
-#: lib/marshall_web/live/integrations_live.ex:421
+#: lib/marshall_web/live/integrations_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Add an integration"
 msgstr "Добавить интеграцию"
 
 #: lib/marshall_web/live/integrations_live.ex:288
-#: lib/marshall_web/live/integrations_live.ex:415
+#: lib/marshall_web/live/integrations_live.ex:417
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "Привязать"
 
-#: lib/marshall_web/live/integrations_live.ex:412
+#: lib/marshall_web/live/integrations_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "Attach a machine by ID"
 msgstr "Привязать машину по ID"
@@ -45,18 +45,18 @@ msgstr "Привязать машину по ID"
 msgid "Awaiting GitHub authorization"
 msgstr "Ожидание авторизации GitHub"
 
-#: lib/marshall_web/live/integrations_live.ex:456
+#: lib/marshall_web/live/integrations_live.ex:458
 #, elixir-autogen, elixir-format
 msgid "Basic user:pass"
 msgstr "Basic пользователь:пароль"
 
-#: lib/marshall_web/live/integrations_live.ex:450
+#: lib/marshall_web/live/integrations_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Bearer token"
 msgstr "Токен Bearer"
 
-#: lib/marshall_web/live/integrations_live.ex:334
-#: lib/marshall_web/live/integrations_live.ex:436
+#: lib/marshall_web/live/integrations_live.ex:336
+#: lib/marshall_web/live/integrations_live.ex:438
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "Комментарий"
@@ -104,13 +104,13 @@ msgstr ""
 "Не удалось сохранить интеграцию. Проверьте имя, цель HTTPS и значения "
 "заголовков."
 
-#: lib/marshall_web/live/integrations_live.ex:445
+#: lib/marshall_web/live/integrations_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Credentials"
 msgstr "Учётные данные"
 
 #: lib/marshall_web/live/integrations_live.ex:279
-#: lib/marshall_web/live/integrations_live.ex:393
+#: lib/marshall_web/live/integrations_live.ex:395
 #, elixir-autogen, elixir-format
 msgid "Detach"
 msgstr "Отвязать"
@@ -150,12 +150,12 @@ msgstr "GitHub подключён."
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "Не удалось подключить GitHub. Повторите попытку в разделе интеграций."
 
-#: lib/marshall_web/live/integrations_live.ex:441
+#: lib/marshall_web/live/integrations_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "HTTPS target"
 msgstr "Цель HTTPS"
 
-#: lib/marshall_web/live/integrations_live.ex:344
+#: lib/marshall_web/live/integrations_live.ex:346
 #, elixir-autogen, elixir-format
 msgid "Injected credentials"
 msgstr "Внедрённые учётные данные"
@@ -185,13 +185,13 @@ msgstr "Интеграции временно недоступны."
 msgid "Invalid request."
 msgstr "Недопустимый запрос."
 
-#: lib/marshall_web/live/integrations_live.ex:374
+#: lib/marshall_web/live/integrations_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "Машина"
 
 #: lib/marshall_web/live/integrations_live.ex:276
-#: lib/marshall_web/live/integrations_live.ex:413
+#: lib/marshall_web/live/integrations_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Machine UUID"
 msgstr "UUID машины"
@@ -211,17 +211,17 @@ msgstr "Машина отвязана."
 msgid "Machines excluded from your GitHub identity"
 msgstr "Машины, не использующие вашу учётную запись GitHub"
 
-#: lib/marshall_web/live/integrations_live.ex:355
+#: lib/marshall_web/live/integrations_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Machines with access"
 msgstr "Машины с доступом"
 
-#: lib/marshall_web/live/integrations_live.ex:431
+#: lib/marshall_web/live/integrations_live.ex:433
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "Имя"
 
-#: lib/marshall_web/live/integrations_live.ex:423
+#: lib/marshall_web/live/integrations_live.ex:425
 #, elixir-autogen, elixir-format
 msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
 msgstr ""
@@ -237,12 +237,12 @@ msgstr ""
 "https://NAME.integration.internal. Учётные данные внедряются на границе сети"
 " и никогда не читаются из машины."
 
-#: lib/marshall_web/live/integrations_live.ex:360
+#: lib/marshall_web/live/integrations_live.ex:362
 #, elixir-autogen, elixir-format
 msgid "No explicit attachments. Current team members' machines have access."
 msgstr "Нет явных привязок. Машины текущих участников команды имеют доступ."
 
-#: lib/marshall_web/live/integrations_live.ex:347
+#: lib/marshall_web/live/integrations_live.ex:349
 #, elixir-autogen, elixir-format
 msgid "No injected headers."
 msgstr "Нет внедрённых заголовков."
@@ -254,34 +254,35 @@ msgstr ""
 "Интеграций пока нет. Добавьте одну ниже, чтобы предоставить машинам "
 "именованное подключение к API или другой машине."
 
-#: lib/marshall_web/live/integrations_live.ex:365
+#: lib/marshall_web/live/integrations_live.ex:367
 #, elixir-autogen, elixir-format
 msgid "No machines have access. Attach a machine to use this integration."
 msgstr ""
 "Ни у одной машины нет доступа. Привяжите машину, чтобы использовать "
 "интеграцию."
 
-#: lib/marshall_web/live/integrations_live.ex:329
+#: lib/marshall_web/live/integrations_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Владелец"
 
-#: lib/marshall_web/live/integrations_live.ex:493
+#: lib/marshall_web/live/integrations_live.ex:495
 #, elixir-autogen, elixir-format
 msgid "Peer integration"
 msgstr "Интеграция между машинами"
 
-#: lib/marshall_web/live/integrations_live.ex:326
+#: lib/marshall_web/live/integrations_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Peer machine"
 msgstr "Связанная машина"
 
-#: lib/marshall_web/live/integrations_live.ex:498
+#: lib/marshall_web/live/integrations_live.ex:500
 #, elixir-autogen, elixir-format
 msgid "Peer machine ID"
 msgstr "ID связанной машины"
 
-#: lib/marshall_web/live/integrations_live.ex:332
+#: lib/marshall_web/live/integrations_live.ex:311
+#: lib/marshall_web/live/integrations_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Personal integration"
 msgstr "Личная интеграция"
@@ -296,72 +297,73 @@ msgstr "Требуется повторное подключение"
 msgid "Refreshing GitHub connection"
 msgstr "Обновление подключения GitHub"
 
-#: lib/marshall_web/live/integrations_live.ex:317
+#: lib/marshall_web/live/integrations_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Удалить"
 
-#: lib/marshall_web/live/integrations_live.ex:314
+#: lib/marshall_web/live/integrations_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Remove this integration?"
 msgstr "Удалить эту интеграцию?"
 
-#: lib/marshall_web/live/integrations_live.ex:499
+#: lib/marshall_web/live/integrations_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Required for peer integrations"
 msgstr "Требуется для интеграций между машинами"
 
-#: lib/marshall_web/live/integrations_live.ex:475
+#: lib/marshall_web/live/integrations_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Routing, team ownership and peer connections"
 msgstr "Маршрутизация, владение команды и связи между машинами"
 
-#: lib/marshall_web/live/integrations_live.ex:505
+#: lib/marshall_web/live/integrations_live.ex:507
 #, elixir-autogen, elixir-format
 msgid "Save integration"
 msgstr "Сохранить интеграцию"
 
-#: lib/marshall_web/live/integrations_live.ex:437
+#: lib/marshall_web/live/integrations_live.ex:439
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
 msgstr "Краткое описание для самоописания гостевой системы"
 
-#: lib/marshall_web/live/integrations_live.ex:463
+#: lib/marshall_web/live/integrations_live.ex:465
 #, elixir-autogen, elixir-format
 msgid "Static header name"
 msgstr "Имя статического заголовка"
 
-#: lib/marshall_web/live/integrations_live.ex:469
+#: lib/marshall_web/live/integrations_live.ex:471
 #, elixir-autogen, elixir-format
 msgid "Static header value"
 msgstr "Значение статического заголовка"
 
-#: lib/marshall_web/live/integrations_live.ex:481
+#: lib/marshall_web/live/integrations_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Strip prefix"
 msgstr "Удалить префикс"
 
-#: lib/marshall_web/live/integrations_live.ex:339
+#: lib/marshall_web/live/integrations_live.ex:341
 #, elixir-autogen, elixir-format
 msgid "Strips prefix"
 msgstr "Удаляет префикс"
 
-#: lib/marshall_web/live/integrations_live.ex:323
+#: lib/marshall_web/live/integrations_live.ex:325
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "Назначение"
 
-#: lib/marshall_web/live/integrations_live.ex:331
+#: lib/marshall_web/live/integrations_live.ex:333
 #, elixir-autogen, elixir-format
 msgid "Team %{team}"
 msgstr "Команда %{team}"
 
-#: lib/marshall_web/live/integrations_live.ex:486
+#: lib/marshall_web/live/integrations_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "Team ID"
 msgstr "ID команды"
 
-#: lib/marshall_web/live/integrations_live.ex:487
+#: lib/marshall_web/live/integrations_live.ex:310
+#: lib/marshall_web/live/integrations_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Team-owned integration"
 msgstr "Интеграция команды"
@@ -376,12 +378,12 @@ msgstr "Временно недоступно"
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "Ваши машины автоматически используют подключённую учётную запись GitHub. Соавторы, работающие на общей машине, могут использовать права её владельца в GitHub. Отключённые машины сохраняют анонимный доступ к общедоступным ресурсам GitHub."
 
-#: lib/marshall_web/live/integrations_live.ex:432
+#: lib/marshall_web/live/integrations_live.ex:434
 #, elixir-autogen, elixir-format
 msgid "example-integration"
 msgstr "example-integration"
 
-#: lib/marshall_web/live/integrations_live.ex:464
+#: lib/marshall_web/live/integrations_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"

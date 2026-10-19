@@ -118,7 +118,7 @@ defmodule OverallsProtocol.NativeAdmission do
     do: identity in @reviewed_identities
 
   def admitted?(%{guest_agents: agents})
-      when agents in [:linux, :none, :windows_v1, :windows_editor_v1],
+      when agents in [:linux, :linux_android_v1, :none, :windows_v1, :windows_editor_v1],
       do: true
 
   def admitted?(_), do: false

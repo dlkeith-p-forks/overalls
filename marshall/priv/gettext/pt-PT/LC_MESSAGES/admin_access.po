@@ -109,6 +109,7 @@ msgid "Invalid administrative request."
 msgstr "Pedido administrativo inválido."
 
 #: lib/marshall_web/live/admin/access_live.ex:60
+#: lib/marshall_web/live/admin/scim_live.ex:42
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Solicitação inválida."
@@ -351,3 +352,53 @@ msgstr "encerrar todas as sessões desta conta"
 #, elixir-autogen, elixir-format
 msgid "start this node evacuation"
 msgstr "iniciar a evacuação deste nó"
+
+#: lib/marshall_web/live/admin/scim_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Configure directory provisioning, identity lifecycle and managed teams."
+msgstr "Configure o aprovisionamento de diretórios, o ciclo de vida das identidades e as equipas geridas."
+
+#: lib/marshall_web/live/admin/scim_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "Copy this bearer token now. It will not be shown again."
+msgstr "Copie agora este token bearer. Não será mostrado novamente."
+
+#: lib/marshall_web/live/admin/scim_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM"
+msgstr "Desativar SCIM"
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Enable SCIM and generate token"
+msgstr "Ativar SCIM e gerar token"
+
+#: lib/marshall_web/live/admin/scim_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration"
+msgstr "Configuração SCIM"
+
+#: lib/marshall_web/live/admin/scim_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration could not be updated."
+msgstr "Não foi possível atualizar a configuração SCIM."
+
+#: lib/marshall_web/live/admin/scim_live.ex:29
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration updated."
+msgstr "Configuração SCIM atualizada."
+
+#: lib/marshall_web/live/admin/scim_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "SCIM is disabled."
+msgstr "O SCIM está desativado."
+
+#: lib/marshall_web/live/admin/scim_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "SCIM is enabled."
+msgstr "O SCIM está ativado."
+
+#: lib/marshall_web/live/admin/scim_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning"
+msgstr "Aprovisionamento SCIM"

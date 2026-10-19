@@ -26,8 +26,8 @@ msgstr ""
 msgid "%{value1} reasoning"
 msgstr "%{value1} रीजनिंग"
 
-#: lib/marshall_web/live/threads_live.ex:2742
-#: lib/marshall_web/live/threads_live.ex:2745
+#: lib/marshall_web/live/threads_live.ex:2747
+#: lib/marshall_web/live/threads_live.ex:2750
 #, elixir-autogen, elixir-format
 msgid "A context source could not be fully loaded."
 msgstr "कॉन्टेक्स्ट स्रोत पूरी तरह लोड नहीं हो सका।"
@@ -72,7 +72,7 @@ msgid "Activity"
 msgstr "गतिविधि"
 
 #: lib/marshall_web/live/agent_threads_live.ex:116
-#: lib/marshall_web/live/threads_live.ex:2781
+#: lib/marshall_web/live/threads_live.ex:2786
 #, elixir-autogen, elixir-format
 msgid "Agent"
 msgstr "एजेंट"
@@ -84,7 +84,7 @@ msgstr "एजेंट CLI को एक घंटे की अनुमति
 
 #: lib/marshall_web/live/agent_threads_live.ex:117
 #: lib/marshall_web/live/agent_threads_live.ex:141
-#: lib/marshall_web/live/threads_live.ex:2789
+#: lib/marshall_web/live/threads_live.ex:2794
 #, elixir-autogen, elixir-format
 msgid "Agent started working"
 msgstr "एजेंट ने काम शुरू किया"
@@ -157,7 +157,7 @@ msgstr "संग्रहित करें"
 
 #: lib/marshall_web/live/threads_live.ex:1634
 #: lib/marshall_web/live/threads_live.ex:1731
-#: lib/marshall_web/live/threads_live.ex:2763
+#: lib/marshall_web/live/threads_live.ex:2768
 #, elixir-autogen, elixir-format
 msgid "Archived"
 msgstr "संग्रहित"
@@ -169,12 +169,12 @@ msgstr ""
 "संग्रहित थ्रेड। बातचीत केवल पढ़ी जा सकती है। नई मशीन पर जारी रखने के लिए इसे"
 " फिर खोलें।"
 
-#: lib/marshall_web/live/threads_live.ex:2777
+#: lib/marshall_web/live/threads_live.ex:2782
 #, elixir-autogen, elixir-format
 msgid "Archived · conversation retained"
 msgstr "संग्रहित · बातचीत सुरक्षित रखी गई"
 
-#: lib/marshall_web/live/threads_live.ex:2762
+#: lib/marshall_web/live/threads_live.ex:2767
 #, elixir-autogen, elixir-format
 msgid "Archiving"
 msgstr "संग्रहित किया जा रहा है"
@@ -190,7 +190,7 @@ msgid "Archiving requested. The machine will be deleted before archival complete
 msgstr ""
 "संग्रहण का अनुरोध किया गया। संग्रहण पूरा होने से पहले मशीन हटा दी जाएगी।"
 
-#: lib/marshall_web/live/threads_live.ex:2776
+#: lib/marshall_web/live/threads_live.ex:2781
 #, elixir-autogen, elixir-format
 msgid "Archiving · releasing the machine"
 msgstr "संग्रहण जारी · मशीन छोड़ी जा रही है"
@@ -275,6 +275,7 @@ msgid "Commit: %{value1}"
 msgstr "कमिट: %{value1}"
 
 #: lib/marshall_web/live/threads_live.ex:2505
+#: lib/marshall_web/thread_commands.ex:18
 #, elixir-autogen, elixir-format
 msgid "Compact context"
 msgstr "संदर्भ संक्षिप्त करें"
@@ -343,7 +344,7 @@ msgstr "उप-थ्रेड बनाएँ"
 msgid "Create thread"
 msgstr "थ्रेड बनाएँ"
 
-#: lib/marshall_web/live/threads_live.ex:2819
+#: lib/marshall_web/live/threads_live.ex:2824
 #, elixir-autogen, elixir-format
 msgid "Delegated a task"
 msgstr "एक काम सौंपा"
@@ -384,7 +385,7 @@ msgid "Enable"
 msgstr "चालू करें"
 
 #: lib/marshall_web/live/threads_live.ex:1729
-#: lib/marshall_web/live/threads_live.ex:2761
+#: lib/marshall_web/live/threads_live.ex:2766
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "विफल"
@@ -426,7 +427,7 @@ msgstr "अच्छे काम की शुरुआत एक थ्रे�
 msgid "High"
 msgstr "अधिक"
 
-#: lib/marshall_web/live/threads_live.ex:2753
+#: lib/marshall_web/live/threads_live.ex:2758
 #, elixir-autogen, elixir-format
 msgid "High gives difficult work more reasoning time."
 msgstr "अधिक विकल्प मुश्किल काम के लिए सोचने का ज़्यादा समय देता है।"
@@ -486,7 +487,7 @@ msgstr "लोड किए गए स्रोत"
 msgid "Low"
 msgstr "कम"
 
-#: lib/marshall_web/live/threads_live.ex:2752
+#: lib/marshall_web/live/threads_live.ex:2757
 #, elixir-autogen, elixir-format
 msgid "Low is for small, well-defined tasks."
 msgstr "कम विकल्प छोटे और स्पष्ट रूप से तय कामों के लिए है।"
@@ -538,7 +539,7 @@ msgid "Managed skill removed."
 msgstr "प्रबंधित स्किल हटाई गई।"
 
 #: lib/marshall_web/live/threads_live.ex:2038
-#: lib/marshall_web/live/threads_live.ex:2842
+#: lib/marshall_web/live/threads_live.ex:2847
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "प्रबंधक"
@@ -553,7 +554,7 @@ msgstr "मंज़ूरी देने से पहले इस अनु�
 msgid "Medium"
 msgstr "मध्यम"
 
-#: lib/marshall_web/live/threads_live.ex:2755
+#: lib/marshall_web/live/threads_live.ex:2760
 #, elixir-autogen, elixir-format
 msgid "Medium is a good starting point for most work."
 msgstr "ज़्यादातर काम शुरू करने के लिए मध्यम अच्छा विकल्प है।"
@@ -642,7 +643,7 @@ msgstr "अभी इकट्ठा नहीं हुआ"
 msgid "Objective"
 msgstr "उद्देश्य"
 
-#: lib/marshall_web/live/threads_live.ex:2828
+#: lib/marshall_web/live/threads_live.ex:2833
 #, elixir-autogen, elixir-format
 msgid "Older context summarized"
 msgstr "पुराने संदर्भ का सार बनाया गया"
@@ -653,6 +654,7 @@ msgid "One task. One thread."
 msgstr "एक काम। एक थ्रेड।"
 
 #: lib/marshall_web/live/threads_live.ex:1912
+#: lib/marshall_web/thread_commands.ex:26
 #, elixir-autogen, elixir-format
 msgid "Open VS Code"
 msgstr "VS Code खोलें"
@@ -663,6 +665,7 @@ msgid "Open source"
 msgstr "ओपन सोर्स"
 
 #: lib/marshall_web/live/threads_live.ex:1883
+#: lib/marshall_web/thread_commands.ex:24
 #, elixir-autogen, elixir-format
 msgid "Open terminal"
 msgstr "टर्मिनल खोलें"
@@ -673,7 +676,7 @@ msgid "Open terminal here"
 msgstr "यहाँ टर्मिनल खोलें"
 
 #: lib/marshall_web/live/threads_live.ex:2037
-#: lib/marshall_web/live/threads_live.ex:2841
+#: lib/marshall_web/live/threads_live.ex:2846
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "ऑपरेटर"
@@ -694,7 +697,8 @@ msgid "Past 7 days"
 msgstr "पिछले 7 दिन"
 
 #: lib/marshall_web/live/threads_live.ex:1726
-#: lib/marshall_web/live/threads_live.ex:2758
+#: lib/marshall_web/live/threads_live.ex:2727
+#: lib/marshall_web/live/threads_live.ex:2763
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "लंबित"
@@ -706,6 +710,7 @@ msgstr "जहाँ छोड़ा था, वहीं से आगे ब�
 
 #: lib/marshall_web/live/threads_live.ex:1455
 #: lib/marshall_web/live/threads_live.ex:2718
+#: lib/marshall_web/thread_commands.ex:14
 #, elixir-autogen, elixir-format
 msgid "Plan"
 msgstr "योजना"
@@ -715,7 +720,7 @@ msgstr "योजना"
 msgid "Plan proposed"
 msgstr "योजना प्रस्तावित की गई"
 
-#: lib/marshall_web/live/threads_live.ex:2770
+#: lib/marshall_web/live/threads_live.ex:2775
 #, elixir-autogen, elixir-format
 msgid "Preparing a machine for this task"
 msgstr "इस काम के लिए मशीन तैयार की जा रही है"
@@ -727,7 +732,7 @@ msgstr "आपका कार्यक्षेत्र तैयार कि
 
 #: lib/marshall_web/live/agent_threads_live.ex:115
 #: lib/marshall_web/live/agent_threads_live.ex:225
-#: lib/marshall_web/live/threads_live.ex:2780
+#: lib/marshall_web/live/threads_live.ex:2785
 #, elixir-autogen, elixir-format
 msgid "Prompt"
 msgstr "प्रॉम्प्ट"
@@ -749,7 +754,7 @@ msgid "Proposed plan"
 msgstr "प्रस्तावित योजना"
 
 #: lib/marshall_web/live/threads_live.ex:1727
-#: lib/marshall_web/live/threads_live.ex:2759
+#: lib/marshall_web/live/threads_live.ex:2764
 #, elixir-autogen, elixir-format
 msgid "Provisioning"
 msgstr "प्रोविज़निंग"
@@ -779,13 +784,14 @@ msgstr "प्रश्न रद्द किए गए"
 msgid "Questions requested"
 msgstr "प्रश्न पूछे गए"
 
-#: lib/marshall_web/live/threads_live.ex:2801
+#: lib/marshall_web/live/threads_live.ex:2806
 #, elixir-autogen, elixir-format
 msgid "Queued: %{tools}"
 msgstr "कतार में: %{tools}"
 
 #: lib/marshall_web/live/threads_live.ex:1728
-#: lib/marshall_web/live/threads_live.ex:2760
+#: lib/marshall_web/live/threads_live.ex:2728
+#: lib/marshall_web/live/threads_live.ex:2765
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "तैयार"
@@ -839,7 +845,7 @@ msgid "Repository URL"
 msgstr "रिपॉज़िटरी URL"
 
 #: lib/marshall_web/live/agent_threads_live.ex:118
-#: lib/marshall_web/live/threads_live.ex:2790
+#: lib/marshall_web/live/threads_live.ex:2795
 #, elixir-autogen, elixir-format
 msgid "Response received"
 msgstr "जवाब मिला"
@@ -869,7 +875,7 @@ msgstr "संशोधन (वैकल्पिक)"
 msgid "Revoke thread grant"
 msgstr "थ्रेड की पहुँच अनुमति रद्द करें"
 
-#: lib/marshall_web/live/threads_live.ex:2843
+#: lib/marshall_web/live/threads_live.ex:2848
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "रद्द"
@@ -931,6 +937,7 @@ msgid "Sending…"
 msgstr "भेजा जा रहा है…"
 
 #: lib/marshall_web/live/threads_live.ex:1875
+#: lib/marshall_web/thread_commands.ex:28
 #, elixir-autogen, elixir-format
 msgid "Share"
 msgstr "साझा करें"
@@ -982,6 +989,7 @@ msgid "Skill update queued."
 msgstr "स्किल अपडेट कतार में जोड़ा गया।"
 
 #: lib/marshall_web/live/threads_live.ex:2723
+#: lib/marshall_web/thread_commands.ex:20
 #, elixir-autogen, elixir-format
 msgid "Skills"
 msgstr "स्किल"
@@ -1058,7 +1066,7 @@ msgstr "वह ईमेल किसी पंजीकृत खाते क�
 
 #: lib/marshall_web/live/agent_threads_live.ex:123
 #: lib/marshall_web/live/agent_threads_live.ex:145
-#: lib/marshall_web/live/threads_live.ex:2823
+#: lib/marshall_web/live/threads_live.ex:2828
 #, elixir-autogen, elixir-format
 msgid "The agent encountered a problem"
 msgstr "एजेंट को समस्या हुई"
@@ -1240,7 +1248,7 @@ msgstr "थ्रेड उपलब्ध नहीं है"
 
 #: lib/marshall_web/live/agent_threads_live.ex:132
 #: lib/marshall_web/live/agent_threads_live.ex:149
-#: lib/marshall_web/live/threads_live.ex:2833
+#: lib/marshall_web/live/threads_live.ex:2838
 #, elixir-autogen, elixir-format
 msgid "Thread updated"
 msgstr "थ्रेड अपडेट हुआ"
@@ -1275,37 +1283,37 @@ msgstr "आज"
 msgid "Token allowance"
 msgstr "टोकन सीमा"
 
-#: lib/marshall_web/live/threads_live.ex:2810
+#: lib/marshall_web/live/threads_live.ex:2815
 #, elixir-autogen, elixir-format
 msgid "Tool cancelled"
 msgstr "टूल रद्द हुआ"
 
-#: lib/marshall_web/live/threads_live.ex:2813
+#: lib/marshall_web/live/threads_live.ex:2818
 #, elixir-autogen, elixir-format
 msgid "Tool completed"
 msgstr "टूल पूरा हुआ"
 
-#: lib/marshall_web/live/threads_live.ex:2807
+#: lib/marshall_web/live/threads_live.ex:2812
 #, elixir-autogen, elixir-format
 msgid "Tool failed"
 msgstr "टूल विफल हुआ"
 
-#: lib/marshall_web/live/threads_live.ex:2816
+#: lib/marshall_web/live/threads_live.ex:2821
 #, elixir-autogen, elixir-format
 msgid "Tool outcome uncertain"
 msgstr "टूल का परिणाम अनिश्चित"
 
 #: lib/marshall_web/live/agent_threads_live.ex:120
 #: lib/marshall_web/live/agent_threads_live.ex:148
-#: lib/marshall_web/live/threads_live.ex:2818
+#: lib/marshall_web/live/threads_live.ex:2823
 #, elixir-autogen, elixir-format
 msgid "Tool result received"
 msgstr "टूल का परिणाम मिला"
 
 #: lib/marshall_web/live/agent_threads_live.ex:119
 #: lib/marshall_web/live/agent_threads_live.ex:147
-#: lib/marshall_web/live/threads_live.ex:2800
-#: lib/marshall_web/live/threads_live.ex:2804
+#: lib/marshall_web/live/threads_live.ex:2805
+#: lib/marshall_web/live/threads_live.ex:2809
 #, elixir-autogen, elixir-format
 msgid "Tools queued"
 msgstr "टूल कतार में जोड़े गए"
@@ -1322,7 +1330,7 @@ msgstr "थोड़ी देर में फिर कोशिश करे�
 
 #: lib/marshall_web/live/agent_threads_live.ex:122
 #: lib/marshall_web/live/agent_threads_live.ex:142
-#: lib/marshall_web/live/threads_live.ex:2820
+#: lib/marshall_web/live/threads_live.ex:2825
 #, elixir-autogen, elixir-format
 msgid "Turn complete"
 msgstr "चरण पूरा"
@@ -1332,13 +1340,15 @@ msgstr "चरण पूरा"
 msgid "Ultra"
 msgstr "अत्यधिक"
 
-#: lib/marshall_web/live/threads_live.ex:2754
+#: lib/marshall_web/live/threads_live.ex:2759
 #, elixir-autogen, elixir-format
 msgid "Ultra is for complex, open-ended work."
 msgstr "अत्यधिक विकल्प जटिल और खुली दिशा वाले काम के लिए है।"
 
-#: lib/marshall_web/live/threads_live.ex:2764
-#: lib/marshall_web/live/threads_live.ex:2844
+#: lib/marshall_web/live/threads_live.ex:2729
+#: lib/marshall_web/live/threads_live.ex:2735
+#: lib/marshall_web/live/threads_live.ex:2769
+#: lib/marshall_web/live/threads_live.ex:2849
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "अज्ञात"
@@ -1413,7 +1423,7 @@ msgid "View activity"
 msgstr "गतिविधि देखें"
 
 #: lib/marshall_web/live/threads_live.ex:2036
-#: lib/marshall_web/live/threads_live.ex:2840
+#: lib/marshall_web/live/threads_live.ex:2845
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "दर्शक"
@@ -1433,7 +1443,7 @@ msgstr ""
 "यह सेटिंग बदलने से पहले वर्तमान काम या लंबित सवालों के पूरा होने का इंतज़ार "
 "करें।"
 
-#: lib/marshall_web/live/threads_live.ex:2767
+#: lib/marshall_web/live/threads_live.ex:2772
 #, elixir-autogen, elixir-format
 msgid "Waiting for a workspace"
 msgstr "कार्यस्थान का इंतज़ार है"
@@ -1448,17 +1458,17 @@ msgstr "मशीन की प्रतीक्षा है"
 msgid "Waiting for the agent's first update."
 msgstr "एजेंट के पहले अपडेट का इंतज़ार है।"
 
-#: lib/marshall_web/live/threads_live.ex:2825
+#: lib/marshall_web/live/threads_live.ex:2830
 #, elixir-autogen, elixir-format
 msgid "Waiting for the machine"
 msgstr "मशीन का इंतज़ार है"
 
-#: lib/marshall_web/live/threads_live.ex:2826
+#: lib/marshall_web/live/threads_live.ex:2831
 #, elixir-autogen, elixir-format
 msgid "Waiting for your answers"
 msgstr "आपके जवाबों का इंतज़ार है"
 
-#: lib/marshall_web/live/threads_live.ex:2839
+#: lib/marshall_web/live/threads_live.ex:2844
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "वेब ऐप"
@@ -1470,6 +1480,7 @@ msgstr "किस काम पर आगे बढ़ें?"
 
 #: lib/marshall_web/live/threads_live.ex:1454
 #: lib/marshall_web/live/threads_live.ex:2719
+#: lib/marshall_web/thread_commands.ex:16
 #, elixir-autogen, elixir-format
 msgid "Work"
 msgstr "काम"
@@ -1490,7 +1501,7 @@ msgid "Workspace context is unavailable. Reload it when the machine is ready."
 msgstr ""
 "कार्यस्थान का संदर्भ उपलब्ध नहीं है। मशीन तैयार होने पर इसे फिर लोड करें।"
 
-#: lib/marshall_web/live/threads_live.ex:2831
+#: lib/marshall_web/live/threads_live.ex:2836
 #, elixir-autogen, elixir-format
 msgid "Workspace context reloaded"
 msgstr "कार्यस्थान का संदर्भ फिर लोड हुआ"
@@ -1502,12 +1513,12 @@ msgstr ""
 "इकट्ठा करते समय कार्यस्थान की फ़ाइलें बदल गईं। संदर्भ फिर लोड करके कोशिश "
 "करें।"
 
-#: lib/marshall_web/live/threads_live.ex:2773
+#: lib/marshall_web/live/threads_live.ex:2778
 #, elixir-autogen, elixir-format
 msgid "Workspace ready · open the conversation"
 msgstr "कार्यस्थान तैयार · बातचीत खोलें"
 
-#: lib/marshall_web/live/threads_live.ex:2775
+#: lib/marshall_web/live/threads_live.ex:2780
 #, elixir-autogen, elixir-format
 msgid "Workspace setup needs attention"
 msgstr "कार्यस्थान सेटअप पर ध्यान देना ज़रूरी है"
@@ -1550,7 +1561,7 @@ msgstr "आपके एजेंट का काम समर्पित प�
 msgid "Your answer or additional detail"
 msgstr "आपका जवाब या अतिरिक्त विवरण"
 
-#: lib/marshall_web/live/threads_live.ex:2827
+#: lib/marshall_web/live/threads_live.ex:2832
 #, elixir-autogen, elixir-format
 msgid "Your answers were received"
 msgstr "आपके जवाब मिल गए"

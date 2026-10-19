@@ -14,28 +14,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
 
-#: lib/marshall_web/live/integrations_live.ex:351
+#: lib/marshall_web/live/integrations_live.ex:353
 #, elixir-autogen, elixir-format
 msgid "**** (write-only)"
 msgstr "**** (للكتابة بس)"
 
-#: lib/marshall_web/live/integrations_live.ex:376
+#: lib/marshall_web/live/integrations_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "إجراءات"
 
-#: lib/marshall_web/live/integrations_live.ex:421
+#: lib/marshall_web/live/integrations_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Add an integration"
 msgstr "إضافة تكامل"
 
 #: lib/marshall_web/live/integrations_live.ex:288
-#: lib/marshall_web/live/integrations_live.ex:415
+#: lib/marshall_web/live/integrations_live.ex:417
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "إرفاق"
 
-#: lib/marshall_web/live/integrations_live.ex:412
+#: lib/marshall_web/live/integrations_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "Attach a machine by ID"
 msgstr "إرفاق آلة بمعرّفها"
@@ -45,18 +45,18 @@ msgstr "إرفاق آلة بمعرّفها"
 msgid "Awaiting GitHub authorization"
 msgstr "في انتظار تفويض GitHub"
 
-#: lib/marshall_web/live/integrations_live.ex:456
+#: lib/marshall_web/live/integrations_live.ex:458
 #, elixir-autogen, elixir-format
 msgid "Basic user:pass"
 msgstr "Basic مستخدم:كلمة مرور"
 
-#: lib/marshall_web/live/integrations_live.ex:450
+#: lib/marshall_web/live/integrations_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Bearer token"
 msgstr "رمز Bearer"
 
-#: lib/marshall_web/live/integrations_live.ex:334
-#: lib/marshall_web/live/integrations_live.ex:436
+#: lib/marshall_web/live/integrations_live.ex:336
+#: lib/marshall_web/live/integrations_live.ex:438
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "تعليق"
@@ -102,13 +102,13 @@ msgstr "ما قدرناش نشيل التكامل ده."
 msgid "Could not save this integration. Check the name, HTTPS target and header values."
 msgstr "ما قدرناش نحفظ التكامل ده. راجع الاسم ووجهة HTTPS وقيم الترويسات."
 
-#: lib/marshall_web/live/integrations_live.ex:445
+#: lib/marshall_web/live/integrations_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Credentials"
 msgstr "بيانات الاعتماد"
 
 #: lib/marshall_web/live/integrations_live.ex:279
-#: lib/marshall_web/live/integrations_live.ex:393
+#: lib/marshall_web/live/integrations_live.ex:395
 #, elixir-autogen, elixir-format
 msgid "Detach"
 msgstr "فصل"
@@ -148,12 +148,12 @@ msgstr "GitHub اتربط."
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "ما قدرناش نربط GitHub. جرّب تاني من صفحة التكاملات."
 
-#: lib/marshall_web/live/integrations_live.ex:441
+#: lib/marshall_web/live/integrations_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "HTTPS target"
 msgstr "وجهة HTTPS"
 
-#: lib/marshall_web/live/integrations_live.ex:344
+#: lib/marshall_web/live/integrations_live.ex:346
 #, elixir-autogen, elixir-format
 msgid "Injected credentials"
 msgstr "بيانات اعتماد محقونة"
@@ -183,13 +183,13 @@ msgstr "التكاملات مش متاحة مؤقتًا."
 msgid "Invalid request."
 msgstr "طلب غير صالح."
 
-#: lib/marshall_web/live/integrations_live.ex:374
+#: lib/marshall_web/live/integrations_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "الآلة"
 
 #: lib/marshall_web/live/integrations_live.ex:276
-#: lib/marshall_web/live/integrations_live.ex:413
+#: lib/marshall_web/live/integrations_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Machine UUID"
 msgstr "UUID الآلة"
@@ -209,17 +209,17 @@ msgstr "الجهاز اتفصل."
 msgid "Machines excluded from your GitHub identity"
 msgstr "الأجهزة المستثناة من هويتك على GitHub"
 
-#: lib/marshall_web/live/integrations_live.ex:355
+#: lib/marshall_web/live/integrations_live.ex:357
 #, elixir-autogen, elixir-format
 msgid "Machines with access"
 msgstr "الآلات ذات الوصول"
 
-#: lib/marshall_web/live/integrations_live.ex:431
+#: lib/marshall_web/live/integrations_live.ex:433
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "الاسم"
 
-#: lib/marshall_web/live/integrations_live.ex:423
+#: lib/marshall_web/live/integrations_live.ex:425
 #, elixir-autogen, elixir-format
 msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
 msgstr "سمّي نقطة الاتصال ووجّهها لـ API على HTTPS، أو حدّدها كاتصال نظير بجهاز تاني. الأسرار للكتابة بس: بتتخزّن عشان تتضاف وقت التشغيل ومش بتظهر تاني أبدًا."
@@ -229,12 +229,12 @@ msgstr "سمّي نقطة الاتصال ووجّهها لـ API على HTTPS، 
 msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
 msgstr "نقاط نهاية مسماة تصل إليها آلاتك عبر https://NAME.integration.internal. تُحقن بيانات الاعتماد عند الحافة وما ينفعش قراءتها من آلة."
 
-#: lib/marshall_web/live/integrations_live.ex:360
+#: lib/marshall_web/live/integrations_live.ex:362
 #, elixir-autogen, elixir-format
 msgid "No explicit attachments. Current team members' machines have access."
 msgstr "مفيش إرفاقات صريحة. لآلات أعضاء الفريق الحاليين حق الوصول."
 
-#: lib/marshall_web/live/integrations_live.ex:347
+#: lib/marshall_web/live/integrations_live.ex:349
 #, elixir-autogen, elixir-format
 msgid "No injected headers."
 msgstr "مفيش ترويسات محقونة."
@@ -244,32 +244,33 @@ msgstr "مفيش ترويسات محقونة."
 msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
 msgstr "مفيش تكاملات بعد. ضيف واحدًا أدناه لمنح آلاتك اتصالًا مسمى بواجهة API أو آلة أخرى."
 
-#: lib/marshall_web/live/integrations_live.ex:365
+#: lib/marshall_web/live/integrations_live.ex:367
 #, elixir-autogen, elixir-format
 msgid "No machines have access. Attach a machine to use this integration."
 msgstr "مفيش أجهزة ليها وصول. اربط جهاز عشان تستخدم التكامل ده."
 
-#: lib/marshall_web/live/integrations_live.ex:329
+#: lib/marshall_web/live/integrations_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "المالك"
 
-#: lib/marshall_web/live/integrations_live.ex:493
+#: lib/marshall_web/live/integrations_live.ex:495
 #, elixir-autogen, elixir-format
 msgid "Peer integration"
 msgstr "تكامل نظير"
 
-#: lib/marshall_web/live/integrations_live.ex:326
+#: lib/marshall_web/live/integrations_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Peer machine"
 msgstr "آلة نظيرة"
 
-#: lib/marshall_web/live/integrations_live.ex:498
+#: lib/marshall_web/live/integrations_live.ex:500
 #, elixir-autogen, elixir-format
 msgid "Peer machine ID"
 msgstr "معرّف الآلة النظيرة"
 
-#: lib/marshall_web/live/integrations_live.ex:332
+#: lib/marshall_web/live/integrations_live.ex:311
+#: lib/marshall_web/live/integrations_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Personal integration"
 msgstr "تكامل شخصي"
@@ -284,72 +285,73 @@ msgstr "إعادة الربط مطلوبة"
 msgid "Refreshing GitHub connection"
 msgstr "جارٍ تحديث اتصال GitHub"
 
-#: lib/marshall_web/live/integrations_live.ex:317
+#: lib/marshall_web/live/integrations_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "إزالة"
 
-#: lib/marshall_web/live/integrations_live.ex:314
+#: lib/marshall_web/live/integrations_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Remove this integration?"
 msgstr "إزالة التكامل ده؟"
 
-#: lib/marshall_web/live/integrations_live.ex:499
+#: lib/marshall_web/live/integrations_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Required for peer integrations"
 msgstr "مطلوب لتكاملات النظير"
 
-#: lib/marshall_web/live/integrations_live.ex:475
+#: lib/marshall_web/live/integrations_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Routing, team ownership and peer connections"
 msgstr "التوجيه وملكية الفريق واتصالات النظير"
 
-#: lib/marshall_web/live/integrations_live.ex:505
+#: lib/marshall_web/live/integrations_live.ex:507
 #, elixir-autogen, elixir-format
 msgid "Save integration"
 msgstr "حفظ التكامل"
 
-#: lib/marshall_web/live/integrations_live.ex:437
+#: lib/marshall_web/live/integrations_live.ex:439
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
 msgstr "وصف موجز لانعكاس معلومات الجهاز الضيف"
 
-#: lib/marshall_web/live/integrations_live.ex:463
+#: lib/marshall_web/live/integrations_live.ex:465
 #, elixir-autogen, elixir-format
 msgid "Static header name"
 msgstr "اسم الترويسة الثابتة"
 
-#: lib/marshall_web/live/integrations_live.ex:469
+#: lib/marshall_web/live/integrations_live.ex:471
 #, elixir-autogen, elixir-format
 msgid "Static header value"
 msgstr "قيمة الترويسة الثابتة"
 
-#: lib/marshall_web/live/integrations_live.ex:481
+#: lib/marshall_web/live/integrations_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Strip prefix"
 msgstr "إزالة البادئة"
 
-#: lib/marshall_web/live/integrations_live.ex:339
+#: lib/marshall_web/live/integrations_live.ex:341
 #, elixir-autogen, elixir-format
 msgid "Strips prefix"
 msgstr "يزيل البادئة"
 
-#: lib/marshall_web/live/integrations_live.ex:323
+#: lib/marshall_web/live/integrations_live.ex:325
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "الوجهة"
 
-#: lib/marshall_web/live/integrations_live.ex:331
+#: lib/marshall_web/live/integrations_live.ex:333
 #, elixir-autogen, elixir-format
 msgid "Team %{team}"
 msgstr "الفريق %{team}"
 
-#: lib/marshall_web/live/integrations_live.ex:486
+#: lib/marshall_web/live/integrations_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "Team ID"
 msgstr "معرّف الفريق"
 
-#: lib/marshall_web/live/integrations_live.ex:487
+#: lib/marshall_web/live/integrations_live.ex:310
+#: lib/marshall_web/live/integrations_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Team-owned integration"
 msgstr "تكامل يملكه الفريق"
@@ -364,12 +366,12 @@ msgstr "مش متاح مؤقتًا"
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "أجهزتك بتستخدم تلقائيًا هوية GitHub اللي ربطتها. المتعاونين على جهاز مشترك يقدروا يستخدموا صلاحيات مالكه على GitHub. الأجهزة المفصولة بتحتفظ بوصول مجهول لموارد GitHub العامة."
 
-#: lib/marshall_web/live/integrations_live.ex:432
+#: lib/marshall_web/live/integrations_live.ex:434
 #, elixir-autogen, elixir-format
 msgid "example-integration"
 msgstr "تكامل-مثال"
 
-#: lib/marshall_web/live/integrations_live.ex:464
+#: lib/marshall_web/live/integrations_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"

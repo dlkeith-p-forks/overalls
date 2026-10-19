@@ -4,6 +4,12 @@ defmodule OverallsProtocol.NativeAdmissionTest do
   import OverallsProtocol.TestProperties, only: [draw: 2]
   alias OverallsProtocol.{GuestAgents, ImageManifest, NativeAdmission, WorkloadBundle}
 
+  test "the reviewed Android guest profile is admitted as a Linux image" do
+    identity = %{guest_agents: :linux_android_v1}
+    assert NativeAdmission.admitted?(identity)
+    refute NativeAdmission.checkpoint_admitted?(Map.put(identity, :boot_kind, :kernel))
+  end
+
   # @cc [owner:ghuntley,label:verification;security] native-admission-refuses-substituted-identity
   # Codec-valid images with any changed content-bound field and portable bundles
   # with substituted identity or provenance MUST remain unadmitted. These pure

@@ -21,7 +21,7 @@ msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} स्वामित्व वाली मशीन"
 msgstr[1] "%{count} स्वामित्व वाली मशीन"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "खाते के पृष्ठ"
@@ -68,7 +68,7 @@ msgstr "प्रशासक की पहुँच नहीं बदली �
 msgid "Could not revoke browser sessions."
 msgstr "ब्राउज़र सत्र रद्द नहीं किए जा सके।"
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "उपयोगकर्ता और मशीनें हटाएँ"
@@ -85,7 +85,7 @@ msgstr ""
 "इस तैनाती के सभी खाते। साइन इन उपयोगकर्ता यह पेज पढ़ सकते हैं; बदलाव के लिए "
 "हाल में पासकी सत्यापित करने वाला प्रशासक चाहिए।"
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "इस खाते को पूरे फ़्लीट और सभी मशीनों का प्रशासन करने की पहुँच दें?"
@@ -110,44 +110,44 @@ msgstr "MFA चालू है"
 msgid "MFA not enrolled"
 msgstr "MFA पंजीकृत नहीं है"
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "प्रशासक बनाएँ"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "अगला पेज →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "इस पेज पर कोई खाता नहीं है।"
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr ""
 "यह खाता और इसके स्वामित्व की सभी मशीनें स्थायी रूप से हटाएँ, जिसमें दूसरों "
 "के साथ साझा मशीनें भी शामिल हैं?"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "प्रशासक हटाएँ"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "इस खाते की प्रशासक पहुँच हटाएँ?"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "MFA रीसेट करें"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr ""
@@ -159,17 +159,17 @@ msgstr ""
 msgid "Send invitation"
 msgstr "निमंत्रण भेजें"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "हर जगह से साइन आउट करें"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "इस खाते को हर ब्राउज़र सत्र से साइन आउट करें?"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "यह खाता और इसकी %{count} मशीनें हटाने के लिए ईमेल टाइप करें"
@@ -194,7 +194,7 @@ msgstr "पासकी से सत्यापित करें · प्�
 msgid "· Your account"
 msgstr "· आपका खाता"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← पहला पेज"
@@ -204,7 +204,7 @@ msgstr "← पहला पेज"
 msgid "Deleted"
 msgstr "हटाया गया"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "मशीनें हटाई जा रही हैं"
@@ -214,7 +214,7 @@ msgstr "मशीनें हटाई जा रही हैं"
 msgid "Retrying machine cleanup"
 msgstr "मशीन की सफ़ाई फिर से की जा रही है"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "अनुपलब्ध"

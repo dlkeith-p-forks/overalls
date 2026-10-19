@@ -157,67 +157,67 @@ msgstr "此机器请求向剪贴板写入 %{bytes} 字节。请输入 once、ses
 msgid "This repository link could not be launched. Open the link again."
 msgstr "无法打开此仓库链接。请再次打开链接。"
 
-#: lib/marshall_web/browser_messages.ex:69
+#: lib/marshall_web/browser_messages.ex:72
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "输入以交互"
 
-#: lib/marshall_web/browser_messages.ex:70
+#: lib/marshall_web/browser_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
 msgstr "正在更新查看权限…"
 
-#: lib/marshall_web/browser_messages.ex:72
+#: lib/marshall_web/browser_messages.ex:75
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
 msgstr "验证未完成。请重试。"
 
-#: lib/marshall_web/browser_messages.ex:74
+#: lib/marshall_web/browser_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
 msgstr "使用通行密钥验证以%{action}。验证后仅运行一次。"
 
-#: lib/marshall_web/browser_messages.ex:79
+#: lib/marshall_web/browser_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "View only"
 msgstr "仅查看"
 
-#: lib/marshall_web/browser_messages.ex:80
+#: lib/marshall_web/browser_messages.ex:83
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
 msgstr "查看权限已更新。"
 
-#: lib/marshall_web/browser_messages.ex:81
+#: lib/marshall_web/browser_messages.ex:84
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
 msgstr "正在等待您的通行密钥…"
 
-#: lib/marshall_web/browser_messages.ex:83
+#: lib/marshall_web/browser_messages.ex:86
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
 msgstr "完成此管理更改"
 
-#: lib/marshall_web/browser_messages.ex:84
+#: lib/marshall_web/browser_messages.ex:87
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "刚刚"
 
-#: lib/marshall_web/browser_messages.ex:85
+#: lib/marshall_web/browser_messages.ex:88
 #, elixir-autogen, elixir-format
 msgid "● live"
 msgstr "● 实时"
 
-#: lib/marshall_web/browser_messages.ex:86
+#: lib/marshall_web/browser_messages.ex:89
 #, elixir-autogen, elixir-format
 msgid "● read-only"
 msgstr "● 只读"
 
-#: lib/marshall_web/browser_messages.ex:87
+#: lib/marshall_web/browser_messages.ex:90
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
 msgstr "⟳ 正在重新连接…"
 
-#: lib/marshall_web/browser_messages.ex:88
+#: lib/marshall_web/browser_messages.ex:91
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ 正在恢复滚动内容…"

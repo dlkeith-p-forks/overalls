@@ -109,6 +109,7 @@ msgid "Invalid administrative request."
 msgstr "잘못된 관리 요청입니다."
 
 #: lib/marshall_web/live/admin/access_live.ex:60
+#: lib/marshall_web/live/admin/scim_live.ex:42
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "요청이 잘못되었습니다."
@@ -351,3 +352,53 @@ msgstr "어디에서나 이 계정에서 로그아웃하세요"
 #, elixir-autogen, elixir-format
 msgid "start this node evacuation"
 msgstr "이 노드 대피를 시작하세요"
+
+#: lib/marshall_web/live/admin/scim_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Configure directory provisioning, identity lifecycle and managed teams."
+msgstr "디렉터리 프로비저닝, ID 수명 주기 및 관리 팀을 구성합니다."
+
+#: lib/marshall_web/live/admin/scim_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "Copy this bearer token now. It will not be shown again."
+msgstr "지금 이 전달자 토큰을 복사하세요. 다시 표시되지 않습니다."
+
+#: lib/marshall_web/live/admin/scim_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM"
+msgstr "SCIM 비활성화"
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Enable SCIM and generate token"
+msgstr "SCIM 활성화 및 토큰 생성"
+
+#: lib/marshall_web/live/admin/scim_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration"
+msgstr "SCIM 구성"
+
+#: lib/marshall_web/live/admin/scim_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration could not be updated."
+msgstr "SCIM 구성을 업데이트할 수 없습니다."
+
+#: lib/marshall_web/live/admin/scim_live.ex:29
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration updated."
+msgstr "SCIM 구성이 업데이트되었습니다."
+
+#: lib/marshall_web/live/admin/scim_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "SCIM is disabled."
+msgstr "SCIM이 비활성화되었습니다."
+
+#: lib/marshall_web/live/admin/scim_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "SCIM is enabled."
+msgstr "SCIM이 활성화되었습니다."
+
+#: lib/marshall_web/live/admin/scim_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning"
+msgstr "SCIM 프로비저닝"

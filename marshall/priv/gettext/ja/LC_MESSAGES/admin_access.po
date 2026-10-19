@@ -109,6 +109,7 @@ msgid "Invalid administrative request."
 msgstr "管理リクエストが無効です。"
 
 #: lib/marshall_web/live/admin/access_live.ex:60
+#: lib/marshall_web/live/admin/scim_live.ex:42
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "無効なリクエストです。"
@@ -350,3 +351,53 @@ msgstr "このアカウントをどこからでもサインアウトします"
 #, elixir-autogen, elixir-format
 msgid "start this node evacuation"
 msgstr "このノードの退避を開始します"
+
+#: lib/marshall_web/live/admin/scim_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Configure directory provisioning, identity lifecycle and managed teams."
+msgstr "ディレクトリプロビジョニング、ID ライフサイクル、管理対象チームを設定します。"
+
+#: lib/marshall_web/live/admin/scim_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "Copy this bearer token now. It will not be shown again."
+msgstr "このベアラートークンを今すぐコピーしてください。再表示されません。"
+
+#: lib/marshall_web/live/admin/scim_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM"
+msgstr "SCIM を無効化"
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Enable SCIM and generate token"
+msgstr "SCIM を有効化してトークンを生成"
+
+#: lib/marshall_web/live/admin/scim_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration"
+msgstr "SCIM 設定"
+
+#: lib/marshall_web/live/admin/scim_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration could not be updated."
+msgstr "SCIM 設定を更新できませんでした。"
+
+#: lib/marshall_web/live/admin/scim_live.ex:29
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration updated."
+msgstr "SCIM 設定を更新しました。"
+
+#: lib/marshall_web/live/admin/scim_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "SCIM is disabled."
+msgstr "SCIM は無効です。"
+
+#: lib/marshall_web/live/admin/scim_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "SCIM is enabled."
+msgstr "SCIM は有効です。"
+
+#: lib/marshall_web/live/admin/scim_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning"
+msgstr "SCIM プロビジョニング"

@@ -152,67 +152,67 @@ msgstr "Hinihiling ng makinang ito na isulat ang %{bytes} byte sa iyong clipboar
 msgid "This repository link could not be launched. Open the link again."
 msgstr "Hindi mailunsad ang link ng repositoryong ito. Buksan muli ang link."
 
-#: lib/marshall_web/browser_messages.ex:69
+#: lib/marshall_web/browser_messages.ex:72
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "Mag-type upang makipag-ugnayan"
 
-#: lib/marshall_web/browser_messages.ex:70
+#: lib/marshall_web/browser_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
 msgstr "Ina-update ang access sa pagtingin..."
 
-#: lib/marshall_web/browser_messages.ex:72
+#: lib/marshall_web/browser_messages.ex:75
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
 msgstr "Hindi makumpleto ang pag-verify. Subukan muli."
 
-#: lib/marshall_web/browser_messages.ex:74
+#: lib/marshall_web/browser_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
 msgstr "I-verify gamit ang iyong passkey sa %{action}. Ito ay tumatakbo nang isang beses pagkatapos ng pag-verify."
 
-#: lib/marshall_web/browser_messages.ex:79
+#: lib/marshall_web/browser_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "View only"
 msgstr "Tingnan lamang"
 
-#: lib/marshall_web/browser_messages.ex:80
+#: lib/marshall_web/browser_messages.ex:83
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
 msgstr "Na-update ang access sa pagtingin."
 
-#: lib/marshall_web/browser_messages.ex:81
+#: lib/marshall_web/browser_messages.ex:84
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
 msgstr "Hinihintay ang iyong passkey..."
 
-#: lib/marshall_web/browser_messages.ex:83
+#: lib/marshall_web/browser_messages.ex:86
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
 msgstr "kumpletuhin ang administratibong pagbabagong ito"
 
-#: lib/marshall_web/browser_messages.ex:84
+#: lib/marshall_web/browser_messages.ex:87
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "ngayon lang"
 
-#: lib/marshall_web/browser_messages.ex:85
+#: lib/marshall_web/browser_messages.ex:88
 #, elixir-autogen, elixir-format
 msgid "● live"
 msgstr "● mabuhay"
 
-#: lib/marshall_web/browser_messages.ex:86
+#: lib/marshall_web/browser_messages.ex:89
 #, elixir-autogen, elixir-format
 msgid "● read-only"
 msgstr "● basahin lang"
 
-#: lib/marshall_web/browser_messages.ex:87
+#: lib/marshall_web/browser_messages.ex:90
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
 msgstr "⟳ muling kumokonekta…"
 
-#: lib/marshall_web/browser_messages.ex:88
+#: lib/marshall_web/browser_messages.ex:91
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ nire-restore ang scrollback..."

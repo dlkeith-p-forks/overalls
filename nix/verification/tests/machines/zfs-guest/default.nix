@@ -1,4 +1,4 @@
-{ pkgs, packages, guest ? packages.guest, ubuntu ? false, backups ? false, namespaceCleanup ? false, cloneMatrix ? false, actorRecovery ? false, bootProfile ? false, hegel ? null }:
+{ pkgs, packages, guest ? packages.guest, ubuntu ? false, android ? false, backups ? false, namespaceCleanup ? false, cloneMatrix ? false, actorRecovery ? false, bootProfile ? false, hegel ? null }:
 let
   runTest =
     if hegel != null && actorRecovery then hegel.runTest
@@ -11,7 +11,7 @@ runTest {
     testCases = 4;
     redact = false;
   };
-  name = if bootProfile then (if ubuntu then "overalls-ubuntu-guest-boot-profile" else "overalls-guest-boot-profile") else if actorRecovery then "overalls-lilly-native-actor-recovery" else if backups then "overalls-guest-backups" else if namespaceCleanup then "overalls-zfs-namespace-cleanup" else if cloneMatrix then "overalls-zfs-guest-clone" else if ubuntu then "overalls-ubuntu-guest" else "overalls-zfs-guest";
+  name = if android then "overalls-android-firecracker" else if bootProfile then (if ubuntu then "overalls-ubuntu-guest-boot-profile" else "overalls-guest-boot-profile") else if actorRecovery then "overalls-lilly-native-actor-recovery" else if backups then "overalls-guest-backups" else if namespaceCleanup then "overalls-zfs-namespace-cleanup" else if cloneMatrix then "overalls-zfs-guest-clone" else if ubuntu then "overalls-ubuntu-guest" else "overalls-zfs-guest";
   requiredFeatures.nested-kvm = true;
   # The full NixOS journey reached its last multi-disk case at the old one-hour
   # deadline. Keep individual operation deadlines and every assertion intact.
@@ -27,7 +27,7 @@ runTest {
     virtualisation.emptyDiskImages = map (_: {
       # Sparse backing disks accommodate manifest-derived fixture quotas. The
       # driver bounds that quota below this mirror's physical capacity.
-      size = 32768;
+      size = if android then 98304 else 32768;
       driveConfig.driveExtraOpts.cache = "writeback";
     # The third disk backs a genuinely independent receive-source zpool for
     # the primary clone journey; it never shares the mirror's capacity identity.
@@ -63,7 +63,7 @@ runTest {
       credentialFile = "/run/zfs-test-credential.json";
       egressInterface = "eth1";
       guestCpuCores = 2;
-      guestMemoryMiB = 1536;
+      guestMemoryMiB = if android then 8192 else 1536;
       # API workers below discover the real fixture pool identity at runtime.
       pools = [{
         id = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
@@ -140,6 +140,7 @@ runTest {
         export ZFS_GUEST_IMAGE="${guest}"
         export ZFS_GUEST_TRUST_ROOTS="''${ZFS_GUEST_TRUST_ROOTS_OVERRIDE:-${lib.concatStringsSep "," (map (path: toString (pkgs.runCommand "zfs-fixture-guest-root.pem" {} ''cp ${path} "$out"'')) config.services.lilly.guestTrustRoots)}}"
         export ZFS_GUEST_UBUNTU="${if ubuntu then "1" else "0"}"
+        export ZFS_GUEST_ANDROID="${if android then "1" else "0"}"
         export ZFS_GUEST_PRIVATE_NIXOS="${if bootProfile && !ubuntu then "1" else "0"}"
         export ZFS_RELEASE_METADATA="${packages.lilly}/overalls-release.json"
         export LILLY_HOSTD_SOCKET=/run/lilly-hostd/control.sock
@@ -151,8 +152,9 @@ runTest {
       '')
     ];
   };
-  testScript = builtins.readFile ./disk_shape.py + "\n"
-    + (if backups || namespaceCleanup || cloneMatrix || actorRecovery then "" else ''ubuntu_guest_fixture: bool = ${if ubuntu then "True" else "False"}
-'') + (if backups || namespaceCleanup || cloneMatrix || actorRecovery then "" else builtins.readFile ./boot_profile.py + "\n")
-    + builtins.readFile (if bootProfile then ./boot-profile.py else if actorRecovery then ./actor-recovery.py else if backups then ./backups.py else if namespaceCleanup then ./namespace-cleanup.py else if cloneMatrix then ./clone-matrix.py else ./driver.py);
+  testScript = ''android_fixture: bool = ${if android then "True" else "False"}
+'' + builtins.readFile ./disk_shape.py + "\n"
+    + (if backups || namespaceCleanup || cloneMatrix || actorRecovery || android then "" else ''ubuntu_guest_fixture: bool = ${if ubuntu then "True" else "False"}
+    '') + (if backups || namespaceCleanup || cloneMatrix || actorRecovery || android then "" else builtins.readFile ./boot_profile.py + "\n")
+    + builtins.readFile (if android then ./android-driver.py else if bootProfile then ./boot-profile.py else if actorRecovery then ./actor-recovery.py else if backups then ./backups.py else if namespaceCleanup then ./namespace-cleanup.py else if cloneMatrix then ./clone-matrix.py else ./driver.py);
 }

@@ -14,57 +14,57 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:83
+#: lib/marshall_web/live/ssh_approval_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr "SSH కీకి ఆమోదం ఇవ్వు"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:111
+#: lib/marshall_web/live/ssh_approval_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr "కీకి ఆమోదం ఇవ్వు"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr ""
 "మీరు SSH కనెక్షన్ ప్రారంభించి, దాని వేలిముద్ర మీ SSH క్లయింట్‌తో సరిపోలితేనే"
 " ఈ కీని ఆమోదించండి."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:109
+#: lib/marshall_web/live/ssh_approval_live.ex:112
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "ఆమోదిస్తోంది…"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:101
+#: lib/marshall_web/live/ssh_approval_live.ex:104
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "లేబుల్ (ఐచ్ఛికం)"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:120
+#: lib/marshall_web/live/ssh_approval_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr "SSH కీలను నిర్వహించండి"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:103
+#: lib/marshall_web/live/ssh_approval_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "నా ల్యాప్‌టాప్"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
-#: lib/marshall_web/live/ssh_approval_live.ex:115
+#: lib/marshall_web/live/ssh_approval_live.ex:52
+#: lib/marshall_web/live/ssh_approval_live.ex:118
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "SSH కీ ఆమోదించబడింది. SSH క్లయింట్‌కు తిరిగి వెళ్లవచ్చు."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:64
+#: lib/marshall_web/live/ssh_approval_live.ex:67
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr ""
 "SSH ఆమోదం అందుబాటులో లేదు లేదా గడువు ముగిసింది. కొత్త SSH కనెక్షన్ "
 "ప్రారంభించండి."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:93
+#: lib/marshall_web/live/ssh_approval_live.ex:96
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr ""
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Unavailable"
 msgstr "అందుబాటులో లేదు"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:117
+#: lib/marshall_web/live/ssh_approval_live.ex:120
 #, elixir-autogen, elixir-format
 msgid "Open Mila"
 msgstr "Mila‌ను తెరవండి"
