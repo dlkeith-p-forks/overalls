@@ -108,6 +108,7 @@ config :marshall, Oban,
     mail: 2,
     maintenance: 2,
     github: 2,
+    notifications: 2,
     certificates: [limit: 1, paused: true]
   ],
   lifeline: [rescue_after: {2, :hours}],
