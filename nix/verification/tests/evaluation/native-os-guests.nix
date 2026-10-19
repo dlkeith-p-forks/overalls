@@ -4,6 +4,7 @@ let
   freebsd = packages.mkFreeBSDGuest { imageName = "freebsd-evaluation"; };
   omnios = packages.mkOmniOSGuest { imageName = "omnios-evaluation"; };
   illumos = packages.mkIllumosGuest { imageName = "illumos-evaluation"; };
+  refusesIdentity = args: !(builtins.tryEval (packages.mkFreeBSDGuest args).name).success;
   fleetImages = import ../../../../fleet/guest-images.nix { overallsPackages = packages; };
   plain = builtins.unsafeDiscardStringContext;
   freebsdCommand = plain freebsd.buildCommand;
@@ -45,6 +46,13 @@ assert !freebsd.passthru.imageAssemblyReady;
 assert !freebsd.passthru.stagingOnly;
 assert !packages.freebsdImageCandidate.nativeAdmission;
 assert !packages.freebsdImageCandidate.runtimeValidated;
+# Attribution is explicit candidate metadata, never inferred for approved disks.
+assert lib.hasInfix "--argjson git_identity null" freebsdCommand;
+assert lib.hasInfix "--argjson git_identity 1" (plain packages.freebsdImageCandidate.stagedImage.buildCommand);
+assert refusesIdentity { gitIdentityVersion = 1; workspaceSourceVersion = null; };
+assert refusesIdentity { gitIdentityVersion = 2; };
+assert refusesIdentity { gitIdentityVersion = 1.0; };
+assert refusesIdentity { gitIdentityVersion = "1"; };
 assert !omnios.passthru.imageAssemblyReady;
 assert !freebsd.passthru.nativeAdmission;
 assert !omnios.passthru.nativeAdmission;

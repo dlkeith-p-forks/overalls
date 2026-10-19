@@ -6,9 +6,15 @@ defmodule Marshall.Compute.Views do
   alias Marshall.Compute.{Budget, Host, Image, Ledger, Reservation, StoragePool, VirtualMachine}
   require Ash.Query
 
+  # @cc [owner:ghuntley,label:product;security] views-reflection-metadata
+  # Every authorized machine view MUST project the persisted labels and comment
+  # consumed by settings. Projection MUST retain the existing read authorization;
+  # metadata visibility MUST NOT grant permission to change it.
   @fields [
     :id,
     :name,
+    :labels,
+    :comment,
     :profile,
     :architecture,
     :image_id,

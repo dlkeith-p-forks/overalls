@@ -1,6 +1,7 @@
 """Real Marshall sessions, WebAuthn enrollment, OAuth consent and owner controls."""
 
 import json
+import re
 import sys
 import uuid
 from pathlib import Path
@@ -195,8 +196,8 @@ def run(*, create: bool = True) -> None:
 
 def control(mode: str) -> None:
     """@cc [owner:ghuntley,label:verification;security] github-fleet-browser-withdrawal
-    Detach, reattach and disconnect MUST use the signed-in owner's visible
-    controls. This helper MUST NOT mutate SQL, jobs, generations or credentials.
+    Detach, reattach, disconnect and reconnect MUST use the signed-in owner's
+    visible controls. Reconnection MUST preserve the excluded machine row. This helper MUST NOT mutate SQL, jobs, generations or credentials.
     Browser URLs/documents and raw exceptions MUST stay inside the client VM.
     """
     global stage
@@ -211,7 +212,41 @@ def control(mode: str) -> None:
             stage = mode + " owner controls"
             page.goto(ORIGIN + "/integrations")
             connected(page)
-            if mode == "detach":
+            if mode == "reconnect":
+                stage = "reconnect disconnect current owner"
+                expect(page.locator("#github-com-state")).to_have_text("Connected")
+                page.on("dialog", lambda dialog: dialog.accept())
+                page.locator("#github-com-disconnect").click()
+                expect(page.locator("#github-com-state")).to_have_text(
+                    "Disconnected", timeout=90000
+                )
+                stage = "reconnect disconnected owner"
+                expect(page.locator("#github-com-connect button")).to_be_enabled(timeout=30000)
+                with page.expect_response(
+                    lambda response: (
+                        response.request.method == "POST"
+                        and urlsplit(response.url).path == "/auth/github-com/start"
+                    )
+                ) as started:
+                    page.locator("#github-com-connect button").click()
+                assert started.value.status == 302
+                stage = "reconnect provider consent"
+                page.wait_for_url("https://github.com/login/oauth/authorize?**", timeout=30000)
+                page.get_by_label("Fixture owner", exact=True).fill("1")
+                page.locator("#authorize").click()
+                page.wait_for_url(ORIGIN + "/integrations", timeout=60000)
+                connected(page)
+                expect(page.locator("#github-com-state")).to_have_text("Connected", timeout=30000)
+                expect(page.locator("#github-com-identity")).to_contain_text("owner-1")
+                assert urlsplit(page.url).query == ""
+                stage = "reconnect exclusion persists"
+                page.locator("#github-com-machines").evaluate("element => element.open = true")
+                expect(page.locator("#github-com-excluded-" + machines["owner"])).to_be_visible()
+                context.storage_state(path=str(ROOT / "owner-github-session.json"))
+            elif mode == "excluded":
+                page.locator("#github-com-machines").evaluate("element => element.open = true")
+                expect(page.locator("#github-com-excluded-" + machines["owner"])).to_be_visible()
+            elif mode == "detach":
                 page.locator("#github-com-machines").evaluate("element => element.open = true")
                 page.locator('#github-com-detach input[name="github_machine[vm_id]"]').fill(
                     machines["owner"]
@@ -235,12 +270,14 @@ def control(mode: str) -> None:
             browser.close()
 
 
-def shared_writer() -> None:
+def shared_writer(family: str, expected_username: str) -> None:
     """@cc [owner:ghuntley,label:verification;security] github-fleet-shared-owner-identity
     A separately authenticated member MUST execute managed gh in its own
     writable browser terminal on the shared machine and observe the machine
     owner's GitHub identity, despite its separate connected GitHub identity.
-    Success MUST require a guest-produced marker; raw terminal text stays private.
+    Windows MUST run as the member's exact durable guest account, never an
+    owner or system shell. Success MUST require a guest-produced marker; raw
+    terminal text stays private.
     """
     global stage
     machines = fields(ROOT / "github-machines.json")
@@ -262,12 +299,24 @@ def shared_writer() -> None:
             suffix = uuid.uuid4().hex
             marker = "GITHUB_SHARED_" + suffix
             stage = "shared member managed owner identity"
-            page.keyboard.type(
-                'test "$(id -un)" != root && sudo -n true && '
-                'test "$(gh api user --jq .login)" = owner-1 && '
-                "printf '\\nGITHUB_SHARED_%s\\n' '" + suffix + "'",
-                delay=2,
-            )
+            if family == "windows":
+                assert re.fullmatch(r"[a-z][a-z0-9_-]{0,31}", expected_username)
+                command = (
+                    "& { $ErrorActionPreference = 'Stop'; "
+                    "if ($env:USERNAME -ine '"
+                    + expected_username
+                    + "') { throw 'guest_identity' }; "
+                    "$v = & 'C:\\Program Files\\GitHub CLI\\gh.exe' api user --jq .login; "
+                    "if ($LASTEXITCODE -ne 0 -or $v -ne 'owner-1') { throw 'github_identity' }; "
+                    "[Console]::WriteLine(('GITHUB_SHARED_' + '" + suffix + "')) }"
+                )
+            else:
+                command = (
+                    'test "$(id -un)" != root && sudo -n true && '
+                    'test "$(gh api user --jq .login)" = owner-1 && '
+                    "printf '\\nGITHUB_SHARED_%s\\n' '" + suffix + "'"
+                )
+            page.keyboard.type(command, delay=2)
             page.keyboard.press("Enter")
             expect(
                 page.locator("#terminal-pane-holder > div:not(.hidden) .xterm-accessibility-tree")
@@ -278,11 +327,25 @@ def shared_writer() -> None:
 
 
 try:
-    mode = sys.argv[1] if len(sys.argv) == 2 else "create"
+    assert len(sys.argv) <= 4
+    mode = sys.argv[1] if len(sys.argv) >= 2 else "create"
+    family = sys.argv[2] if len(sys.argv) >= 3 else "nixos"
+    expected_username = sys.argv[3] if len(sys.argv) == 4 else ""
+    assert family in {"nixos", "ubuntu", "arch", "almalinux", "windows"}
+    assert mode in {
+        "create",
+        "connect",
+        "shared-writer",
+        "detach",
+        "attach",
+        "disconnect",
+        "reconnect",
+        "excluded",
+    }
     if mode in {"create", "connect"}:
         run(create=mode == "create")
     elif mode == "shared-writer":
-        shared_writer()
+        shared_writer(family, expected_username)
     else:
         control(mode)
 except Exception as error:

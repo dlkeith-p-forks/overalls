@@ -13251,6 +13251,13 @@
           "execution": "present"
         },
         {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "all-boots-current-mmds-git-config-and-commit-attribution",
+          "scope": "Fresh capable native candidates must retain all original service checks plus actual personal-user Git configuration and commit attribution for each epoch-distinct boot, with previous boot source authority refused. Candidate runtime execution and promotion remain unrecorded.",
+          "execution": "present"
+        },
+        {
           "kind": "unit",
           "path": "marshall/test/marshall_web/account_live_test.exs",
           "assertion": "the Git settings form persists identity and trailer preference",
@@ -13570,7 +13577,7 @@
       "scope": "ADR-0202 owner integration; controlled packaged edge execution is recorded separately from real fleet OAuth, retained images and live GitHub acceptance.",
       "status": "partial",
       "gaps": "The controlled edge fixture substitutes Marshall and Lilly authority. Full browser OAuth, scheduled rotation, shared-writer delegation, detach persistence across relocation, seven-family retained updates and live provider consent require separately recorded acceptance. Unknown rotation results require reconnect.",
-      "preferred_gap": "Run the real github-integration-fleet journey and platform variants; record independent state-machine and distributed settlement results, then qualify live GitHub and restore behavior.",
+      "preferred_gap": "Run the real github-integration-fleet journey and platform variants, including current relocation, reconnect and Windows shared-writer assertions; then qualify live GitHub and restore behavior.",
       "evidence": [
         {
           "kind": "machine",
@@ -13599,9 +13606,23 @@
         },
         {
           "kind": "machine",
+          "path": "nix/verification/tests/machines/github-integration-fleet/driver.py",
+          "assertion": "assert destination_host.name != source_host.name",
+          "scope": "Detached real VM relocation requires completed destination placement, increased execution epoch and inactive source unit; guest remains anonymous and the exclusion persists. Presence only; no passing run yet.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/github-integration-fleet/driver.py",
+          "assertion": "github_browser(\"reconnect\")",
+          "scope": "Real browser disconnect and new OAuth exchange increase the owner provider exchange count exactly once while exclusion persists; detached guest remains anonymous and independent owner2 remains connected until explicit reattachment. Runtime pending.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
           "path": "nix/verification/tests/machines/github-integration-fleet/browser.py",
           "assertion": "github-fleet-shared-owner-identity",
-          "scope": "Linux browser shared writer uses owner identity through managed gh in a live personal terminal; Windows terminal acceptance remains separate.",
+          "scope": "Browser shared writer uses the VM owner identity through managed gh in a live personal terminal. Linux checks nonroot sudo; Windows checks the durable member username and installed managed gh. Both remain runtime-pending.",
           "execution": "present"
         }
       ]
@@ -13620,7 +13641,7 @@
       "denial": "Pending or corrupt source refuses trust migration. Unrelated root-owned repositories must remain refused after upgrade. An absent source preserves historical policy and grants no claim that tightening happened.",
       "scope": "ADR-0202 retained tool delivery with ADR-0128 shared checkout ownership; Linux-host setup tests and actual retained native programs are distinct evidence.",
       "status": "partial",
-      "gaps": "FreeBSD boot0 and boot1 managed API, push, LFS and exact ownership checks passed under synthetic authority with independently certified clean shutdown between boots; the enclosing270s check still failed historical executor withdrawn-group observation. OmniOS has not published a tool generation. Neither full native check passes; live fleet admission and absent-source later migration remain separate.",
+      "gaps": "FreeBSD boot0 and boot1 managed API, push, LFS and exact ownership checks passed under synthetic authority with independently certified clean shutdown between boots; the enclosing270s check still failed historical executor withdrawn-group observation. OmniOS has not published a tool generation. Neither full native check passes; current approved native pins also lack required allocation Git identity capability. Fresh candidate attribution qualification, live fleet admission and absent-source later migration remain separate.",
       "preferred_gap": "Record both published-image retained checks with actual bootstrap, strict unrelated-root refusal, managed gh/Git/LFS and a second boot; then qualify native fleet admission separately.",
       "evidence": [
         {

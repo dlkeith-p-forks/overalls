@@ -262,6 +262,14 @@ it preserves existing policy; native upgrade/reboot results remain separate from
 the Linux-host maintenance tests. This implements the exact shared-checkout
 boundary rather than granting trust to every workspace path.
 
+Fresh native candidate constructors now support explicit allocation Git identity
+version1 only with source-v2 and a native payload; the current FreeBSD candidate
+opts in. Promoted pins remain unchanged. The native qualification harness checks
+effective personal-user Git configuration and actual commit attribution across
+boot epochs. Until new exact candidates pass qualification and promotion, the
+older approved disks remain incompatible with the allocation identity gate;
+the review records this unresolved requirement rather than weakening admission.
+
 ## Open questions
 
 No product-policy choice remains for this version. OAuth App provisioning, live

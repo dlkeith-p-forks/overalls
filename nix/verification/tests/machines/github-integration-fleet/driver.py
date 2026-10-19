@@ -1,11 +1,13 @@
 """Composed after default-oss/setup.py; all authority is the packaged fleet."""
 
 
-def github_browser(mode: str) -> None:
+def github_browser(mode: str, member_username: str | None = None) -> None:
+    arguments = ["fleet-github-integration-browser", mode, github_guest_os]
+    if member_username is not None:
+        arguments.append(member_username)
     try:
         client.succeed(
-            "sudo -u tester env HOME=/home/tester fleet-github-integration-browser "
-            + shlex.quote(mode),
+            "sudo -u tester env HOME=/home/tester " + shlex.join(arguments),
             timeout=420,
         )
     except Exception:
@@ -117,6 +119,18 @@ with subtest("real browser connects two owner identities and creates actual OSS 
             assert isinstance(vm_id, str) and str(uuid.UUID(vm_id)) == vm_id
             github_machines[role] = vm_id
             running(vm_id)
+        with TemporaryDirectory(prefix="github-machines-") as directory:
+            path = Path(directory) / "github-machines.json"
+            path.write_text(json.dumps(github_machines))
+            os.chmod(path, 0o600)
+            client.copy_from_host(str(path), browser_root + "/github-machines.json")
+        client.succeed(
+            "chown tester:users "
+            + browser_root
+            + "/github-machines.json && chmod 600 "
+            + browser_root
+            + "/github-machines.json"
+        )
     else:
         github_browser("create")
         parsed_machines: object = json.loads(
@@ -131,7 +145,6 @@ with subtest("real browser connects two owner identities and creates actual OSS 
     assert sql("SELECT count(*) FROM github_connections WHERE phase='connected'") == "2"
 
 with subtest("scheduled refresh rotates each provider pair through the real Oban queue"):
-    # @cc [owner:ghuntley,label:verification;recovery] github-fleet-scheduled-refresh
     # Provider expiry alone MUST schedule refresh. The driver MUST observe real
     # provider calls and committed generations without running jobs manually or
     # editing SQL timestamps, phases, credentials or scheduled job arguments.
@@ -158,23 +171,28 @@ with subtest("real guest managed Git clones and pushes a private repository with
         == "real fleet push"
     )
 
-if github_guest_os != "windows":
-    with subtest(
-        "shared member writer uses the VM owner's GitHub identity through browser terminal"
-    ):
-        shared_receipt = operator(
-            {
-                "action": "share",
-                "owner_id": users["owner_id"],
-                "vm_id": github_machines["owner"],
-                "email": users["member_email"],
-                "role": "operator",
-                "key": str(uuid.uuid4()),
-            }
-        )
-        assert shared_receipt.get("shared") is True
-        github_browser("shared-writer")
-        github_guest(github_machines["member"], "connected", "2")
+with subtest("shared member writer uses the VM owner's GitHub identity through browser terminal"):
+    shared_receipt = operator(
+        {
+            "action": "share",
+            "owner_id": users["owner_id"],
+            "vm_id": github_machines["owner"],
+            "email": users["member_email"],
+            "role": "operator",
+            "key": str(uuid.uuid4()),
+        }
+    )
+    assert shared_receipt.get("shared") is True
+    member_id = users["member_id"]
+    assert isinstance(member_id, str) and str(uuid.UUID(member_id)) == member_id
+    member_username = sql(
+        "SELECT username FROM account_guest_accounts WHERE user_id='"
+        + member_id
+        + "' AND retired_at IS NULL"
+    )
+    assert member_username and "\n" not in member_username
+    github_browser("shared-writer", member_username)
+    github_guest(github_machines["member"], "connected", "2")
 
 with subtest("browser detach persists anonymous forwarding and leaves the other owner connected"):
     github_browser("detach")
@@ -218,14 +236,109 @@ with subtest("owner exclusion survives a real stopped guest and fresh native exe
     assert len(current_invocation) == 32 and current_invocation != previous_invocation
     github_guest(detached_vm, "anonymous", "1")
     github_guest(github_machines["member"], "connected", "2")
+
+
+with subtest("owner exclusion survives real relocation and a new OAuth grant"):
+    # Exclusion MUST survive public relocation to a different host and a new
+    # OAuth grant. Observe terminal completion, destination, epoch and source
+    # unit exit before checking anonymous forwarding; never mutate domain rows.
+    detached_vm = github_machines["owner"]
+    source_host, source_placement = current_placement(detached_vm)
+    previous_epoch = int(
+        sql(f"SELECT execution_epoch FROM compute_virtual_machines WHERE id='{detached_vm}'")
+    )
+    request: dict[str, object] = {
+        "action": "relocate",
+        "owner_id": users["owner_id"],
+        "vm_id": detached_vm,
+        "key": str(uuid.uuid4()),
+    }
+    move: dict[str, object] = {}
+
+    def admit_detached_relocation() -> bool:
+        global move
+        move = operator(request)
+        if move.get("accepted") is True:
+            return True
+        assert move in (
+            {"accepted": False, "reason": "insufficient_capacity"},
+            {"accepted": False, "reason": "source_unavailable"},
+        ), "Relocation refused outside closed readiness categories"
+        return False
+
+    eventually(
+        lambda: (
+            sql(
+                "SELECT count(*) FROM compute_hosts WHERE inventory->>'execution_ready'='true' "
+                "AND reported_at > (statement_timestamp() AT TIME ZONE 'UTC') - interval '5 seconds'"
+            )
+            == "2"
+        ),
+        timeout=180,
+    )
+    eventually(admit_detached_relocation, timeout=180)
+    relocation_id = move["id"]
+    destination = move["destination_placement_id"]
+    assert isinstance(relocation_id, str) and str(uuid.UUID(relocation_id)) == relocation_id
+    assert isinstance(destination, str) and str(uuid.UUID(destination)) == destination
+
+    def detached_relocation_complete() -> bool:
+        phase = sql(f"SELECT phase FROM compute_relocations WHERE id='{relocation_id}'")
+        assert phase not in ("failed", "cancelled"), "Detached relocation failed"
+        return (
+            phase == "complete"
+            and sql(
+                f"SELECT finished_at IS NOT NULL FROM compute_relocations WHERE id='{relocation_id}'"
+            )
+            == "t"
+        )
+
+    eventually(detached_relocation_complete, timeout=600)
+    running(detached_vm)
+    destination_host, destination_placement = current_placement(detached_vm)
+    assert destination_placement == destination
+    assert destination_host.name != source_host.name
+    assert (
+        int(sql(f"SELECT execution_epoch FROM compute_virtual_machines WHERE id='{detached_vm}'"))
+        > previous_epoch
+    )
+    source_host.fail("systemctl is-active --quiet lilly-vm-" + source_placement + ".service")
+    github_browser("excluded")
+    github_guest(detached_vm, "anonymous", "1")
+    exchanged_before = len(
+        [
+            row
+            for row in provider_observations()
+            if row.get("event") == "oauth_exchanged" and row.get("owner") == 1
+        ]
+    )
+    github_browser("reconnect")
+    assert (
+        len(
+            [
+                row
+                for row in provider_observations()
+                if row.get("event") == "oauth_exchanged" and row.get("owner") == 1
+            ]
+        )
+        == exchanged_before + 1
+    )
+    github_guest(detached_vm, "anonymous", "1")
+    github_guest(github_machines["member"], "connected", "2")
     github_browser("attach")
-    github_guest(github_machines["owner"], "connected", "1")
+    github_guest(detached_vm, "connected", "1")
 
 with subtest("browser disconnect revokes provider grant and leaves anonymous public forwarding"):
+    revocations_before = len(
+        [row for row in provider_observations() if row.get("event") == "oauth_revocation"]
+    )
     github_browser("disconnect")
     github_guest(github_machines["owner"], "anonymous", "1")
     github_guest(github_machines["member"], "connected", "2")
-    assert any(row.get("event") == "oauth_revocation" for row in provider_observations())
+    assert (
+        len([row for row in provider_observations() if row.get("event") == "oauth_revocation"])
+        == revocations_before + 1
+    )
     for role, owner in (("owner", "1"), ("member", "2")):
         github_guest(github_machines[role], "clean", owner)
     for machine in marshalls + provisioners:

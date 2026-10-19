@@ -354,6 +354,7 @@ rec {
     agentNames = nativeAgentPayload.manifest.agents;
     stagedImage = mkFreeBSDGuest {
       imageName = "overalls-freebsd-native-staging";
+      gitIdentityVersion = 1;
       kernel = nativeKernels.freebsdCandidate;
       stagingOnly = true;
     };

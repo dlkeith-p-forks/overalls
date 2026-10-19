@@ -723,7 +723,37 @@ def checkout_ownership(context: BootContext) -> None:
             raise RuntimeError("native unrelated repository cleanup failed")
 
 
-def metadata(path: Path, binding: services.Binding, network: Network) -> None:
+def git_attribution(context: BootContext) -> None:
+    """@cc [owner:ghuntley,label:verification;security] native-current-boot-git-attribution
+    A capable candidate MUST expose this boot's MMDS public name/email through
+    effective personal-user Git configuration and an actual commit without
+    author overrides on every boot. Epoch-distinct values MUST replace the
+    previous boot's attribution; this synthetic attribution grants no authority.
+    """
+    epoch = context.boot.binding.execution_epoch
+    name = f"Native Fixture {epoch}"
+    email = f"native-{epoch}@fixture.test"
+    git = context.platform.git
+    command = (
+        "set -eu; test $(id -u) = 200000; "
+        f'test "$({git} config user.name)" = {shlex.quote(name)}; '
+        f'test "$({git} config user.email)" = {shlex.quote(email)}; '
+        f'root="$HOME/native-attribution-{epoch}"; mkdir "$root"; '
+        f'{git} -C "$root" init -q; '
+        f'{git} -C "$root" commit -q --allow-empty -m attribution; '
+        f'test "$({git} -C "$root" log -1 --format=%an)" = {shlex.quote(name)}; '
+        f'test "$({git} -C "$root" log -1 --format=%ae)" = {shlex.quote(email)}; '
+        "printf native-current-boot-git-attribution-verified"
+    )
+    success(
+        ssh(context.fixture, context.work / "known_hosts", command, network=context.network),
+        b"native-current-boot-git-attribution-verified",
+    )
+
+
+def metadata(
+    path: Path, binding: services.Binding, network: Network, *, git_identity: bool = False
+) -> None:
     path.write_text(
         json.dumps(
             {
@@ -736,6 +766,17 @@ def metadata(path: Path, binding: services.Binding, network: Network) -> None:
                     "prefix_length": 32,
                     "gateway": network.gateway,
                     "mac": network.mac,
+                    **(
+                        {
+                            "git_identity": {
+                                "version": 1,
+                                "name": f"Native Fixture {binding.execution_epoch}",
+                                "email": f"native-{binding.execution_epoch}@fixture.test",
+                            }
+                        }
+                        if git_identity
+                        else {}
+                    ),
                 }
             }
         ),
@@ -793,7 +834,11 @@ def github_tools(context: BootContext, generation: int) -> dict[str, object]:
                     f"registrations={authority.count('register')} "
                     f"heartbeat_requests={authority.count('heartbeat_request')} "
                     f"heartbeats_accepted={authority.count('heartbeat')} "
+                    f"heartbeat_responses_sent={authority.count('heartbeat_response_sent')} "
+                    f"heartbeat_responses_failed={authority.count('heartbeat_response_failed')} "
+                    f"heartbeat_response_failure_categories={[(category.value, authority.count(f'heartbeat_response_failed_{category.value}')) for category in control.ArtifactStreamFailure]} "
                     f"maintenance_started={plugin.started} "
+                    f"maintenance_start_count={authority.count('github_tools_started')} "
                     f"maintenance_completed={plugin.completed} "
                     f"maintenance_failure={plugin.maintenance_failure}",
                     flush=True,
@@ -997,7 +1042,12 @@ def run(
             binding = services.Binding(
                 "dddddddd-dddd-4ddd-8ddd-000000000201", 7 + generation, secrets.token_hex(32)
             )
-            metadata(metadata_path, binding, network)
+            metadata(
+                metadata_path,
+                binding,
+                network,
+                git_identity=manifest.get("git_identity_version") == 1,
+            )
             for path in work.glob("v.sock*"):
                 path.unlink()
             prepare_api_socket(api, process)
@@ -1081,6 +1131,20 @@ def run(
                                 )
                             stage = "workspace-refusals"
                             services.workspace_refusals(uds, binding)
+                            if generation and manifest.get("git_identity_version") == 1:
+                                services.refused(
+                                    uds,
+                                    1031,
+                                    services.encode(
+                                        {
+                                            "version": 1,
+                                            **boots[0].binding.fields(),
+                                            "nonce": secrets.token_hex(32),
+                                            "source": repository.source(),
+                                        }
+                                    )
+                                    + b"\n",
+                                )
                             stage = "terminal-control"
                             services.terminal(uds, binding)
                             stage = "ssh"
@@ -1118,6 +1182,13 @@ def run(
                                 retained_upgrade=authority.github is not None,
                             )
                             print("native service workspace checkout verified", flush=True)
+                            if manifest.get("git_identity_version") == 1:
+                                stage = "git-attribution"
+                                git_attribution(boot_context)
+                                print(
+                                    f"native current-boot Git attribution verified boot={generation}",
+                                    flush=True,
+                                )
                             stage = "terminal-session"
                             services.terminal_session(uds, binding, platform.name)
                             print("native service managed PTY verified", flush=True)
@@ -1267,6 +1338,11 @@ def run(
                 else "native services with synthetic HTTPS/SSH/Git/DNS authority and clean reboot; no native isolation or crash recovery acceptance"
             ),
         }
+        if manifest.get("git_identity_version") == 1:
+            checks = receipt["checks"]
+            if not isinstance(checks, list):
+                raise RuntimeError("invalid native service receipt checks")
+            checks.append("all-boots-current-mmds-git-config-and-commit-attribution")
         (work / "service-receipt.json").write_text(
             json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8"
         )

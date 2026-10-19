@@ -657,10 +657,12 @@ class Handler(socketserver.BaseRequestHandler):
         stream = self.request
         withdrawal: Withdrawn | None = None
         streaming_artifact = False
+        heartbeat_response = False
         try:
             stream.do_handshake()
             method, host, path, body = request(stream)
             if host == "llm.internal" and path == "/agent/v1/heartbeat":
+                heartbeat_response = True
                 self.server.authority.record("heartbeat_request")
             github = self.server.authority.github
             artifact = None
@@ -732,9 +734,16 @@ class Handler(socketserver.BaseRequestHandler):
                 + b"\r\n\r\n"
                 + payload
             )
+            if heartbeat_response:
+                self.server.authority.record("heartbeat_response_sent")
             if withdrawal is not None:
                 self.server.authority.heartbeat_refusal_sent(withdrawal.fence)
-        except OSError:
+        except OSError as error:
+            if heartbeat_response:
+                self.server.authority.record("heartbeat_response_failed")
+                self.server.authority.record(
+                    f"heartbeat_response_failed_{artifact_stream_failure(error).value}"
+                )
             return
 
 

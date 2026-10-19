@@ -13,7 +13,15 @@ defmodule Marshall.Compute.ViewsImageNameTest do
     ubuntu = ubuntu_image_fixture(c)
     {:ok, vm} = Compute.provision(request(%{image_id: ubuntu.id}), actor: user)
 
+    assert {:ok, _} =
+             Compute.update_reflection_metadata(
+               %{id: vm.id, labels: ["project-a"], comment: "Synthetic test machine"},
+               actor: user
+             )
+
     assert {:ok, view} = Compute.get_vm(%{vm_id: vm.id}, actor: user)
+    assert view.labels == ["project-a"]
+    assert view.comment == "Synthetic test machine"
     assert view.image_name == "Ubuntu 26.04 LTS"
     assert view.image_id == ubuntu.id
     refute Map.has_key?(view, :manifest)
@@ -21,9 +29,11 @@ defmodule Marshall.Compute.ViewsImageNameTest do
 
     assert {:ok, %{items: [listed]}} = Compute.list_vms(%{limit: 10}, actor: user)
     assert listed.image_name == "Ubuntu 26.04 LTS"
+    assert listed.labels == view.labels and listed.comment == view.comment
 
     assert {:ok, resolved} = Compute.resolve_vm(%{reference: vm.name}, actor: user)
     assert resolved.image_name == "Ubuntu 26.04 LTS"
+    assert resolved.labels == view.labels and resolved.comment == view.comment
   end
 
   test "the default image projects its own registered name", %{user: user} do

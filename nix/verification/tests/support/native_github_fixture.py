@@ -264,6 +264,7 @@ class GitHub:
             result = object_value(request.get("result"))
             if status == "started" and result == {}:
                 self.started = True
+                authority.record("github_tools_started")
             elif (
                 status == "completed"
                 and self.started

@@ -476,6 +476,8 @@ class AuthorityTest(unittest.TestCase):
                         response.extend(part)
                 self.assertIn(b"403 Forbidden", response)
                 self.assertEqual(self.authority.count("withdrawal_heartbeat_403"), 1)
+                self.assertEqual(self.authority.count("heartbeat_response_sent"), 1)
+                self.assertEqual(self.authority.count("heartbeat_response_failed"), 0)
                 self.assertEqual(self.authority.snapshot().phase, control.WithdrawalPhase.REJECTED)
                 for context, hostname in (
                     (trusted, "foreign.internal"),

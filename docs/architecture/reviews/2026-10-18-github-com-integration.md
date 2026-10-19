@@ -378,3 +378,40 @@ remain active and retired translations are comments. All696PO/POT catalogs
 parsed with pinned Expo1.1.1 and the strict28-locale/24-domain catalog check
 passed with zero empty, unreviewed, fuzzy or invalid target forms. Full Marshall
 verification is being rerun.
+
+Final Protocol verification of the optional-agent composition repair passed
+**381 tests**, seed **236249**, in **902.7 seconds**. Covenant obligations held;
+both precommit and explicit forced Dialyzer reported zero errors and skips
+(`/tmp/github-android-protocol-precommit-20261019.log`). The separate Lilly
+image consumer result remains15 tests,seed274501, plus forced Dialyzer zero
+errors/skips. Neither result establishes fleet, native or provider acceptance.
+
+Native cold-admission finding (unresolved): the exact reviewed FreeBSD and
+OmniOS manifests lack `git_identity_version:1`, while allocation now requires
+that explicit content-bound capability. The existing exact-native admission
+regression consequently refuses with `git_identity_unavailable`. Preserve both
+closed capability validation and the accepted native-admission requirement;
+changing the test to expect refusal would conceal the conflict. Current native
+workspace source installs validated MMDS attribution under the current boot
+fence and the native service payload includes its Git configuration, but this
+is not evidence that the older pinned disks contain it. Resolution requires
+new immutable candidates, actual attribution propagation/workflow execution
+and promotion of their exact reviewed identities. Retained GitHub tool
+installation evidence does not establish new-machine cold admission.
+
+The native builder correction adds an explicit nullable `gitIdentityVersion`
+opt-in, requiring integer1, source-v2 and a native payload. Only the current
+FreeBSD candidate opts in; default and promoted image identities remain
+unchanged. The evaluated `native-os-guest-unit` check passed in2s
+(`1792384510977-3209837-0.jsonl`), including refusal of missing source,
+unknown version, floating-point and string versions. This is construction-policy
+evidence, not native runtime qualification. The attribution harness checks
+effective personal-user configuration and actual commit authorship on every
+boot; candidate execution remains pending.
+
+Fleet acceptance now includes real detached relocation (completed destination,
+host change, advanced execution epoch and inactive source unit), browser
+disconnect/reconnect with an exact new exchange count and persisted exclusion,
+and Windows shared-writer identity via the actual member terminal account.
+The final disconnect oracle counts a new revocation, excluding the earlier
+reconnect revocation. These assertions are present; runtime results are pending.

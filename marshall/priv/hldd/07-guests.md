@@ -1837,3 +1837,20 @@ Lilly's namespace ingress remains the network authority. The profile reserves
 8 GiB memory and 32 GiB writable disk. Signed ticket verification, browser
 controller/viewer leases and native Firecracker acceptance remain outside this
 guest-only evidence.
+
+The currently reviewed native image pins do not declare allocation Git identity
+version1. Current allocation therefore refuses those images with
+`git_identity_unavailable`; historical native admission qualification does not
+imply this later capability. Current native workspace source validates MMDS
+attribution against the boot fence, but fresh immutable images and native
+attribution acceptance must precede promotion. Retained GitHub client upgrades
+do not establish new native allocation support. This remains an unresolved
+implementation gap, rather than a change to the accepted native-admission
+requirement.
+
+Fresh FreeBSD candidates now opt into an explicit version1 attribution manifest
+field, requiring source-v2 and a native payload. Default constructors omit the
+field. Candidate admission flags remain false and promoted disks retain their
+exact old identities. Native qualification checks epoch-specific personal-user
+Git configuration and actual commit attribution on each boot; presence of that
+oracle is not a recorded successful execution.
