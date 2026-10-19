@@ -684,7 +684,7 @@ let
         publicKey = lib.removeSuffix "\n" (builtins.readFile ../../fixtures/ssh-host-ca/key.pub);
         keyFile = "${root}/ssh-host-ca";
       };
-      github = lib.mkIf githubIntegration {
+      integrations.github = lib.mkIf githubIntegration {
         clientId = "synthetic-fleet-client";
         clientSecretFile = "${root}/github-client-secret";
         redirectUri = "https://control.example.test/auth/github-com/callback";
