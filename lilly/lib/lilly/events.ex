@@ -485,7 +485,12 @@ defmodule Lilly.Events do
   defevent("lilly.intent_conflict",
     level: :warning,
     message: "Durable intent conflict",
-    metadata: [vm_id: :uuid, placement_id: {:uuid, :optional}, reason: :atom]
+    metadata: [
+      vm_id: :uuid,
+      placement_id: {:uuid, :optional},
+      reason: :atom,
+      field: {:atom, :optional}
+    ]
   )
 
   # Relocation transfer: credentials, SSH, snapshots, cleanup

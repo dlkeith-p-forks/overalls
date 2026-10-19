@@ -41,13 +41,26 @@ defmodule Lilly.Control.Store do
          true <- command.host_id == store.host_id,
          {:ok, existing} <- read(store, command.placement_id) do
       cond do
-        existing == nil -> persist(store, command, :stored)
-        existing == command -> persist(store, command, :duplicate)
-        not transition?(existing, command) -> conflict(command, :vm_identity_conflict)
-        revision(existing) > revision(command) -> persist(store, existing, :stale)
-        revision(existing) == revision(command) -> conflict(command, :generation_conflict)
-        existing.id == command.id -> conflict(command, :operation_conflict)
-        true -> persist(store, command, :stored)
+        existing == nil ->
+          persist(store, command, :stored)
+
+        existing == command ->
+          persist(store, command, :duplicate)
+
+        not transition?(existing, command) ->
+          conflict(command, :vm_identity_conflict, mismatch_field(existing, command))
+
+        revision(existing) > revision(command) ->
+          persist(store, existing, :stale)
+
+        revision(existing) == revision(command) ->
+          conflict(command, :generation_conflict)
+
+        existing.id == command.id ->
+          conflict(command, :operation_conflict)
+
+        true ->
+          persist(store, command, :stored)
       end
     else
       _ -> {:error, :invalid_command}
@@ -58,14 +71,24 @@ defmodule Lilly.Control.Store do
   # Intent conflicts MUST report only the command's VM/placement identifiers and
   # the closed conflict reason atom; command payloads and stored records MUST
   # NOT be logged.
-  defp conflict(command, reason) do
+  defp conflict(command, reason, field \\ nil) do
     Lilly.Events.emit("lilly.intent_conflict",
       vm_id: command.vm_id,
       placement_id: command.placement_id,
-      reason: reason
+      reason: reason,
+      field: field
     )
 
     {:error, reason}
+  end
+
+  @spec mismatch_field(command(), command()) :: atom() | nil
+  defp mismatch_field(existing, command) do
+    existing
+    |> immutable()
+    |> Map.keys()
+    |> Enum.sort()
+    |> Enum.find(fn key -> Map.get(existing, key) != Map.get(command, key) end)
   end
 
   @doc "Read the command for one physical placement, never by logical VM identity."
