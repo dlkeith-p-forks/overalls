@@ -26,8 +26,8 @@
       "path": "secrets/overalls-marshall.enc.json"
     },
     {
-      "name": "overalls-github-oauth-placeholder",
-      "path": "secrets/overalls-github-oauth-placeholder.enc.json"
+      "name": "overalls-github-oauth",
+      "path": "secrets/overalls-github-oauth.enc.json"
     },
     {
       "name": "overalls-lilly",

@@ -25,7 +25,7 @@
   };
   services.marshall.integrations.github = {
     clientId = "placeholder-github-client-id";
-    clientSecretFile = "/run/overalls-secrets/github-oauth-placeholder/secret";
+    clientSecretFile = "/run/overalls-secrets/github-oauth/secret";
     redirectUri = "https://ghuntley.dev/auth/github-com/callback";
   };
   systemd.services.cachix-watch-store-agent = {

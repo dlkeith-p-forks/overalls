@@ -34,8 +34,8 @@
       };
       outputs."serper.key" = { format = "raw"; secrets = [ "SERPER_API_KEY" ]; };
     };
-    github-oauth-placeholder = {
-      encryptedFile = "${../../../secrets/overalls-github-oauth-placeholder.enc.json}";
+    github-oauth = {
+      encryptedFile = "${../../../secrets/overalls-github-oauth.enc.json}";
       outputs.secret = { format = "raw"; secrets = [ "GITHUB_CLIENT_SECRET" ]; };
     };
     enrico = {
