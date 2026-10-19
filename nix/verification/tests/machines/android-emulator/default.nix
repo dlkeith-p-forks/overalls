@@ -89,13 +89,13 @@ pkgs.testers.runNixOSTest {
     assert "-no-accel" in cmdline, cmdline
     assert "-gpu swiftshader_indirect" in cmdline, cmdline
     android.wait_for_open_port(5555)
-    android.succeed("adb start-server")
-    android.succeed("adb connect 127.0.0.1:5555")
-    android.wait_until_succeeds("timeout 15 adb -s 127.0.0.1:5555 wait-for-device", timeout=600)
-    android.wait_until_succeeds("test \"$(timeout 15 adb -s 127.0.0.1:5555 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=600)
-    android.succeed("adb -s 127.0.0.1:5555 shell getprop ro.kernel.qemu | grep -Fx 1")
-    android.succeed("adb -s 127.0.0.1:5555 shell settings get global animator_duration_scale")
-    android.succeed("adb -s 127.0.0.1:5555 exec-out screencap -p > /tmp/android-screencap.png")
+    android.succeed("export HOME=/var/lib/android-test; adb kill-server; adb start-server")
+    android.succeed("HOME=/var/lib/android-test adb connect 127.0.0.1:5555")
+    android.wait_until_succeeds("HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 wait-for-device", timeout=600)
+    android.wait_until_succeeds("test \"$(HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=600)
+    android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell getprop ro.kernel.qemu | grep -Fx 1")
+    android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell settings get global animator_duration_scale")
+    android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 exec-out screencap -p > /tmp/android-screencap.png")
     android.succeed("test $(stat -c %s /tmp/android-screencap.png) -gt 100")
     android.succeed("head -c 8 /tmp/android-screencap.png | od -An -t x1 | grep -F '89 50 4e 47 0d 0a 1a 0a'")
   '';
