@@ -77,6 +77,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Mila uses Face ID to unlock the app.</string>
+	<key>MilaKeychainGroup</key>
+	<string>$(AppIdentifierPrefix)dev.overalls.mila.shared</string>
 	<key>FlutterDeepLinkingEnabled</key>
 	<false/>
 </dict>

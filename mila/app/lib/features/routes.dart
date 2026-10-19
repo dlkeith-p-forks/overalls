@@ -11,6 +11,7 @@ String _d(Deployment deployment) => '/d/${Uri.encodeComponent(deployment.toStrin
 String signInPath(Deployment deployment) => '${_d(deployment)}/sign-in';
 String machinesPath(Deployment deployment) => '${_d(deployment)}/machines';
 String machinePath(Deployment deployment, String id) => '${_d(deployment)}/machines/$id';
+String notificationsPath(Deployment deployment) => '${_d(deployment)}/notifications';
 
 /// Decodes the deployment segment of an in-app path.
 Deployment? deploymentFromSegment(String? segment) =>

@@ -3,13 +3,13 @@
 // Linux, used for testing, keeps a software key in a 0600 file. Separate
 // keys per deployment keep deployments from linking one device's sessions.
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:ffi/ffi.dart';
 import 'package:pointycastle/export.dart';
+
+import 'owner_only.dart';
 
 /// The SSH algorithm of every Mila device key.
 const String deviceKeyAlgorithm = 'ecdsa-sha2-nistp256';
@@ -147,26 +147,23 @@ final class FileDeviceKeyStore implements DeviceKeyStore {
   @override
   Future<DeviceKey> keyFor(String host) async {
     final file = File('${directory.path}/$host.json');
-    if (await file.exists()) {
-      if (((await file.stat()).mode & 0x3F) != 0) {
-        throw const FileSystemException('device key is readable by other users');
-      }
-      final key = _decode(await file.readAsBytes());
+    final List<int>? existing;
+    try {
+      existing = await readOwnerOnly(file);
+    } on FileSystemException {
+      throw const FileSystemException('device key is readable by other users');
+    }
+    if (existing != null) {
+      final key = _decode(existing);
       if (key == null) throw const FileSystemException('device key is malformed');
       return key;
     }
-    await directory.create(recursive: true);
-    _chmod(directory.path, 0x1C0); // 0700
-    final staging = File('${file.path}.new');
-    if (await staging.exists()) await staging.delete();
-    await staging.create(exclusive: true);
-    _chmod(staging.path, 0x180); // 0600
     final (key, scalar) = SoftwareDeviceKey.generate(_random);
-    await staging.writeAsBytes(
+    await writeOwnerOnly(
+      directory,
+      '$host.json',
       utf8.encode(jsonEncode({'version': 1, 'scalar': base64.encode(scalar)})),
-      flush: true,
     );
-    await staging.rename(file.path);
     return key;
   }
 
@@ -184,19 +181,6 @@ final class FileDeviceKeyStore implements DeviceKeyStore {
       return SoftwareDeviceKey.fromScalar(base64.decode(scalar));
     } on FormatException {
       return null;
-    }
-  }
-
-  static void _chmod(String path, int mode) {
-    final chmod = DynamicLibrary.process()
-        .lookupFunction<Int32 Function(Pointer<Utf8>, Uint32), int Function(Pointer<Utf8>, int)>(
-          'chmod',
-        );
-    final native = path.toNativeUtf8();
-    try {
-      if (chmod(native, mode) != 0) throw FileSystemException('chmod failed', path);
-    } finally {
-      malloc.free(native);
     }
   }
 }

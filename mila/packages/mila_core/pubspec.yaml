@@ -12,3 +12,5 @@ dev_dependencies:
   test: ^1.31.0
 dependencies:
   pinenacl: ^0.6.0
+  # HKDF-SHA256 and ChaCha20-Poly1305 for E2E pokes; already pinned by mila_transport.
+  pointycastle: ^4.0.0

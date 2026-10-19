@@ -92,8 +92,31 @@ custody needs native code on each platform, which Nix cannot build for iOS.
   transport against the real Porsche release and passed
   ([M1 review](../reviews/2026-10-18-mila-m1.md)).
 
-Remaining: threads, terminal, web, push, biometric lock and offline cache
-(M2–M5); a GUI machine test of the full approval journey.
+- M5 device features ([device review](../reviews/2026-10-18-mila-device.md)):
+  - push registration
+    ([`push_registration.dart`](../../../mila/packages/mila_core/lib/src/push_registration.dart),
+    a Hegel `StateMachine`), with the relay key client and registrar in
+    [`susan.dart`](../../../mila/packages/mila_transport/lib/src/susan.dart) and
+    [`push_registrar.dart`](../../../mila/packages/mila_transport/lib/src/push_registrar.dart);
+  - poke opening against the shared vectors
+    ([`push_poke.dart`](../../../mila/packages/mila_core/lib/src/push_poke.dart));
+  - the app lock policy
+    ([`app_lock.dart`](../../../mila/packages/mila_core/lib/src/app_lock.dart));
+  - the owner-only offline machine snapshot
+    ([`snapshot_cache.dart`](../../../mila/packages/mila_core/lib/src/snapshot_cache.dart),
+    [`snapshot_store.dart`](../../../mila/packages/mila_transport/lib/src/snapshot_store.dart)).
+
+  The `mila-core`, `mila-transport` and `mila-test` checks run them
+  (90, 32 and 39 tests).
+- [`nix/verification/tests/machines/mila-desktop/`](../../../nix/verification/tests/machines/mila-desktop)
+  drives the Linux bundle with real X input against packaged Marshall and
+  Porsche through browser approval, the machine list, forwarded `overalls://`
+  links and a restart; it passed (7 subtests, recorded in the device review).
+
+  **Gap:** the iOS notification extension, the Android messaging service and
+  `local_auth` have not been built or run on a device.
+
+Remaining: threads, terminal and web (M2–M4).
 
 ## Open questions
 

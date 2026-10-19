@@ -8,7 +8,10 @@ import 'package:mila_transport/mila_transport.dart';
 
 import 'features/deployments_screen.dart';
 import 'features/machines/machine_screen.dart';
+import 'features/lock/app_lock_controller.dart';
+import 'features/lock/lock_screen.dart';
 import 'features/machines/machines_screen.dart';
+import 'features/notifications/notifications_screen.dart';
 import 'features/routes.dart';
 import 'features/session.dart';
 import 'features/settings_screen.dart';
@@ -36,6 +39,10 @@ GoRouter buildRouter() {
         builder: (context, state) => deployment(state, (d) => MachinesScreen(deployment: d)),
       ),
       GoRoute(
+        path: '/d/:deployment/notifications',
+        builder: (context, state) => deployment(state, (d) => NotificationsScreen(deployment: d)),
+      ),
+      GoRoute(
         path: '/d/:deployment/machines/:id',
         builder: (context, state) => deployment(
           state,
@@ -61,16 +68,24 @@ class MilaApp extends ConsumerStatefulWidget {
 
 class _MilaAppState extends ConsumerState<MilaApp> {
   StreamSubscription<String>? _links;
+  late final AppLifecycleListener _lifecycle;
 
   @override
   void initState() {
     super.initState();
     _links = ref.read(incomingLinksProvider).listen((link) => followLink(ref, link));
+    // Hidden covers both the app switcher and the background; the lock
+    // policy decides what each means.
+    _lifecycle = AppLifecycleListener(
+      onHide: () => ref.read(appLockProvider.notifier).backgrounded(),
+      onShow: () => ref.read(appLockProvider.notifier).foregrounded(),
+    );
   }
 
   @override
   void dispose() {
     unawaited(_links?.cancel());
+    _lifecycle.dispose();
     super.dispose();
   }
 
@@ -98,6 +113,7 @@ class _MilaAppState extends ConsumerState<MilaApp> {
         ],
         supportedLocales: MilaLocalizations.supportedLocales,
         debugShowCheckedModeBanner: false,
+        builder: (context, child) => LockGate(child: child ?? const SizedBox.shrink()),
       ),
     );
   }

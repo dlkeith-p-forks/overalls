@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mila_core/mila_core.dart';
 import 'package:mila_transport/mila_transport.dart';
 
+import 'preferences.dart';
+
 /// The transport. Overridden at startup (real SSH) and in tests (fake).
 final connectorProvider = Provider<PorscheConnector>(
   (ref) => throw UnimplementedError('connectorProvider must be overridden'),
@@ -23,19 +25,49 @@ final deploymentsProvider = NotifierProvider<DeploymentsNotifier, List<Deploymen
   DeploymentsNotifier.new,
 );
 
+const String _deploymentsKey = 'deployments';
+
 final class DeploymentsNotifier extends Notifier<List<Deployment>> {
   @override
-  List<Deployment> build() => const [];
+  List<Deployment> build() {
+    unawaited(_load());
+    return const [];
+  }
+
+  /// Restores the saved list ahead of anything added meanwhile. Saved
+  /// entries are re-validated: an unparseable one is dropped.
+  Future<void> _load() async {
+    final preferences = ref.read(preferencesProvider.notifier);
+    await preferences.loaded;
+    final saved = ref.read(preferencesProvider)?[_deploymentsKey];
+    if (saved is! List<Object?>) return;
+    final restored = <Deployment>[
+      for (final entry in saved)
+        if (entry is String) ?parseDeployment(entry),
+    ];
+    final merged = <Deployment>[
+      for (final d in restored)
+        if (!state.contains(d)) d,
+      ...state,
+    ];
+    state = List.unmodifiable(merged.toSet().toList());
+  }
+
+  Future<void> _save() => ref.read(preferencesProvider.notifier).put(_deploymentsKey, [
+    for (final d in state) d.toString(),
+  ]);
 
   /// Adds [deployment] once; returns false if it was already present.
   bool add(Deployment deployment) {
     if (state.contains(deployment)) return false;
     state = List.unmodifiable([...state, deployment]);
+    unawaited(_save());
     return true;
   }
 
   void remove(Deployment deployment) {
     state = List.unmodifiable(state.where((d) => d != deployment));
+    unawaited(_save());
   }
 
   /// The deployment a link's host and port name, if added.

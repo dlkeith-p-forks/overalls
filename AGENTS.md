@@ -3,8 +3,8 @@
 Overalls is the monorepo for Marshall (control plane), Lilly (provisioner), and
 their shared protocol library. Read the [architecture overview](docs/architecture/README.md) and
 relevant [ADRs](docs/architecture/decisions/README.md) before changing a component.
-Also read [Marshall guidance](marshall/AGENTS.md) or [Lilly guidance](lilly/AGENTS.md)
-for the component being changed.
+Also read [Marshall guidance](marshall/AGENTS.md), [Lilly guidance](lilly/AGENTS.md)
+or [Mila guidance](mila/AGENTS.md) for the component being changed.
 
 ## Architecture maintenance
 

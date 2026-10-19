@@ -3,12 +3,16 @@
 /// Nothing in this package imports Flutter or performs I/O.
 library;
 
+export 'src/app_lock.dart';
 export 'src/app_route.dart';
 export 'src/backoff.dart';
 export 'src/host_trust.dart';
 export 'src/machine.dart';
 export 'src/porsche_reply.dart';
+export 'src/push_poke.dart';
+export 'src/push_registration.dart';
 export 'src/request_poll.dart';
 export 'src/sign_in.dart';
+export 'src/snapshot_cache.dart';
 export 'src/ssh_command.dart';
 export 'src/workspace_source.dart';

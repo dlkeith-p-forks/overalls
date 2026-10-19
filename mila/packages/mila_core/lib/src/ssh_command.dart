@@ -31,6 +31,7 @@ final class CommandSpec {
     this.options = const [],
     this.mutation = false,
     this.physical = false,
+    this.required = const [],
   });
 
   final String name;
@@ -43,6 +44,9 @@ final class CommandSpec {
 
   /// Physical mutations also accept `--timeout` and `--no-wait`.
   final bool physical;
+
+  /// Options Mila must always send on this command.
+  final List<String> required;
 
   /// Every option Porsche accepts on this command.
   Set<String> get allowedOptions => {
@@ -116,7 +120,29 @@ const Map<String, CommandSpec> catalog = {
     physical: true,
   ),
   'team list': CommandSpec('team list', options: ['after']),
+  // Push devices (ADR-0225). The push key travels on stdin, never in the line.
+  'device register': CommandSpec(
+    'device register',
+    options: ['platform', 'push-key', 'enc-pubkey'],
+    mutation: true,
+    required: ['platform', 'push-key', 'enc-pubkey'],
+  ),
+  'device ls': CommandSpec('device ls'),
+  'device rm': CommandSpec('device rm', minArguments: 1, maxArguments: 1, mutation: true),
+  'device prefs': CommandSpec(
+    'device prefs',
+    minArguments: 1,
+    maxArguments: 1,
+    options: ['enabled'],
+    mutation: true,
+    required: ['enabled'],
+  ),
 };
+
+/// Platforms `device register` accepts.
+const Set<String> pushPlatforms = {'ios', 'android'};
+
+final RegExp _encPublicKey = RegExp(r'^[A-Za-z0-9_-]{43}$');
 
 /// A structured Porsche command before encoding.
 final class PorscheCommand {
@@ -223,6 +249,11 @@ bool _optionValid(String key, Object value) {
     'timeout' => _positive(value, 3600),
     'disk' => _positive(value, maximumDiskGib),
     'cpu' || 'memory' => _positive(value, 2147483647),
+    'platform' => pushPlatforms.contains(value),
+    // The push key is read from stdin: the line only ever says `-`.
+    'push-key' => value == '-',
+    'enc-pubkey' => _encPublicKey.hasMatch(value),
+    'enabled' => value == 'true' || value == 'false',
     _ => false,
   };
 }
@@ -250,7 +281,7 @@ bool _argumentsValid(String name, List<String> args) => switch ((name, args)) {
         const ['viewer', 'operator', 'manager'].contains(role),
   ('share remove', [final machine, final email]) =>
     isMachineReference(machine) && utf8.encode(email).length <= 320,
-  ('ssh-key remove', [final id]) => isCanonicalUuid(id),
+  ('ssh-key remove' || 'device rm' || 'device prefs', [final id]) => isCanonicalUuid(id),
   ('request show' || 'request retry' || 'request cancel', [final id]) => isRequestId(id),
   (_, []) => true,
   _ => false,
@@ -269,6 +300,7 @@ CommandRefusal? validateCommand(PorscheCommand command) {
     if (!allowed.contains(key)) return CommandRefusal.unknownOption;
     if (!_optionValid(key, value)) return CommandRefusal.invalidOption;
   }
+  if (!spec.required.every(command.options.containsKey)) return CommandRefusal.invalidOption;
   if (!_argumentsValid(command.name, command.arguments)) return CommandRefusal.invalidArgument;
   return null;
 }
@@ -374,7 +406,14 @@ PorscheCommand? parseCommandLine(String line) {
       rest,
     ),
     [final group, final sub, ...final rest]
-        when const ['share', 'ssh-key', 'request', 'integration', 'team'].contains(group) =>
+        when const [
+          'share',
+          'ssh-key',
+          'request',
+          'integration',
+          'team',
+          'device',
+        ].contains(group) =>
       ('$group $sub', rest),
     [final name, ...final rest] => (name, rest),
     _ => throw StateError('unreachable: tokens is non-empty'),

@@ -52,6 +52,29 @@ final class FakeDeployment {
 
   /// Every line the fake received, for assertions.
   final List<String> received = [];
+
+  /// Registered push devices by id.
+  final Map<String, FakeDevice> devices = {};
+
+  /// When true, `device register` is refused with `push_disabled`.
+  bool pushDisabled = false;
+  int _nextDevice = 0;
+
+  /// The push keys received on stdin, for assertions that they stay off
+  /// command lines.
+  final List<String> pushKeys = [];
+}
+
+/// A fake registered push device.
+final class FakeDevice {
+  FakeDevice(this.id, this.platform, this.encPubkey);
+
+  final String id;
+  final String platform;
+  final String encPubkey;
+  bool enabled = true;
+
+  Map<String, Object?> toJson() => {'id': id, 'platform': platform, 'enabled': enabled};
 }
 
 final class FakePorscheConnector implements PorscheConnector {
@@ -90,11 +113,11 @@ final class _FakeSession implements PorscheSession {
     final line = encodeCommand(command);
     _fake.received.add(line);
     final parsed = parseCommandLine(line)!;
-    final (exit, envelope) = _run(parsed);
+    final (exit, envelope) = _run(parsed, stdin);
     return ChannelOutcome(exit, decodeReplyLine('${jsonEncode(envelope)}\n'));
   }
 
-  (PorscheExit, Map<String, Object?>) _run(PorscheCommand command) {
+  (PorscheExit, Map<String, Object?>) _run(PorscheCommand command, List<int>? stdin) {
     if (!_fake.approved) {
       return (
         PorscheExit.authority,
@@ -121,7 +144,50 @@ final class _FakeSession implements PorscheSession {
       'result': result,
     };
     Map<String, Object?> error(String reason) => {'version': 1, 'status': 'error', 'error': reason};
+    (PorscheExit, Map<String, Object?>) receipt(String id, Map<String, Object?> result) {
+      final receipt = <String, Object?>{
+        'version': 1,
+        'request_id': id,
+        'status': 'succeeded',
+        'operation_id': null,
+        'result': result,
+      };
+      _fake._receipts[id] = receipt;
+      return (PorscheExit.ok, receipt);
+    }
+
     switch (command.name) {
+      case 'device ls':
+        return (
+          PorscheExit.ok,
+          read({
+            'items': [for (final d in _fake.devices.values) d.toJson()],
+          }),
+        );
+      case 'device register':
+        final id = command.options['request-id']! as String;
+        if (_fake.pushDisabled) return (PorscheExit.invalid, error('push_disabled'));
+        final key = utf8.decode(stdin ?? const []).trim();
+        if (key.isEmpty) return (PorscheExit.invalid, error('invalid_command'));
+        _fake.pushKeys.add(key);
+        final n = (_fake._nextDevice++).toRadixString(16).padLeft(12, '0');
+        final device = FakeDevice(
+          'a1b2c3d4-0000-4000-8000-$n',
+          command.options['platform']! as String,
+          command.options['enc-pubkey']! as String,
+        );
+        _fake.devices[device.id] = device;
+        return receipt(id, {'device': device.toJson()});
+      case 'device rm' || 'device prefs':
+        final id = command.options['request-id']! as String;
+        final device = _fake.devices[command.arguments.single];
+        if (device == null) return (PorscheExit.invalid, error('not_found'));
+        if (command.name == 'device rm') {
+          _fake.devices.remove(device.id);
+        } else {
+          device.enabled = command.options['enabled'] == 'true';
+        }
+        return receipt(id, device.toJson());
       case 'whoami':
         return (PorscheExit.ok, read({'email': 'user@${_fake.host}'}));
       case 'ls':

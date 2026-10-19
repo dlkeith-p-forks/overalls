@@ -1,0 +1,3 @@
+/* Generated from mila/app/lib/l10n/app_tr.arb (pushNeedsInputTitle, pushNeedsInputBody). */
+"MILA_NEEDS_INPUT_TITLE" = "Bir ajan girdinizi bekliyor";
+"MILA_NEEDS_INPUT_BODY" = "Yanıtlamak için Mila'yı açın.";

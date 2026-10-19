@@ -26,6 +26,9 @@ final Generator<String> _uuid =
           '${hex.substring(16, 20)}-${hex.substring(20)}';
     });
 
+/// An unpadded base64url X25519 public key, as `--enc-pubkey` carries it.
+final Generator<String> _encKey = fromRegex(r'[A-Za-z0-9_-]{43}', fullMatch: true);
+
 final Generator<String> _machine = oneOf([
   fromRegex(r'[a-z][a-z0-9]{0,8}(-[a-z0-9]{1,6}){0,2}', fullMatch: true),
   _uuid,
@@ -63,6 +66,24 @@ final Generator<PorscheCommand> _command = oneOf<PorscheCommand>([
     sampledFrom(const ['viewer', 'operator', 'manager']),
   ).map((v) => PorscheCommand('share add', arguments: [v.$1.$1, v.$1.$2, v.$2])),
   tuple2(_machine, _freeText).map((v) => PorscheCommand('share remove', arguments: [v.$1, v.$2])),
+  tuple2(sampledFrom(pushPlatforms.toList()), _encKey).map(
+    (v) => PorscheCommand(
+      'device register',
+      options: {
+        'json': true,
+        'platform': v.$1,
+        'push-key': '-',
+        'enc-pubkey': v.$2,
+        'request-id': allocateRequestId(Random(v.$2.length)),
+      },
+    ),
+  ),
+  just(PorscheCommand('device ls', options: {'json': true})),
+  _uuid.map((id) => PorscheCommand('device rm', arguments: [id], options: {'json': true})),
+  tuple2(
+    _uuid,
+    booleans(),
+  ).map((v) => PorscheCommand('device prefs', arguments: [v.$1], options: {'enabled': '${v.$2}'})),
 ]);
 
 void main() {
@@ -111,6 +132,38 @@ void main() {
       () => encodeCommand(PorscheCommand('integration add', arguments: ['x'])),
       throwsA(isA<CommandRefused>()),
     );
+  });
+
+  test('device commands carry the push key on stdin and only a bounded public key', () {
+    const key = 'lTVivsmQGYBRLZMJOkaiDfgARfzYIk6PmDqwmsRmXEM';
+    final line = encodeCommand(
+      PorscheCommand(
+        'device register',
+        options: {'json': true, 'platform': 'ios', 'push-key': '-', 'enc-pubkey': key},
+      ),
+    );
+    expect(line, 'device register --enc-pubkey=$key --json --platform=ios --push-key=-');
+    for (final options in [
+      {'platform': 'ios', 'push-key': 'secret-key', 'enc-pubkey': key},
+      {'platform': 'windows', 'push-key': '-', 'enc-pubkey': key},
+      {'platform': 'ios', 'push-key': '-', 'enc-pubkey': '$key='},
+      {'platform': 'ios', 'push-key': '-'},
+    ]) {
+      expect(validateCommand(PorscheCommand('device register', options: options)), isNotNull);
+    }
+    expect(
+      validateCommand(
+        PorscheCommand('device prefs', arguments: ['not-a-uuid'], options: {'enabled': 'true'}),
+      ),
+      CommandRefusal.invalidArgument,
+    );
+    expect(
+      validateCommand(
+        PorscheCommand('device prefs', arguments: ['0d9cc041-9db2-4e4c-b28b-1e41d7f472c1']),
+      ),
+      CommandRefusal.invalidOption,
+    );
+    expect(parseCommandLine('device rm 0d9cc041-9db2-4e4c-b28b-1e41d7f472c1')!.name, 'device rm');
   });
 
   test('request ids match the server allocation shape', () {

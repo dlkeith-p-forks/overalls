@@ -1529,3 +1529,30 @@ reason before lifecycle deletion completes.
 ## Git identity configuration
 
 Account authorization controls preference updates. Validated identity is inert execution metadata bound to the machine’s admitted snapshot and current boot. Guest services atomically publish protected Git configuration; malformed metadata refuses. Identity values must not enter diagnostics. Guest sudo and Git local configuration retain their existing authority. Native cross-OS and production rollout acceptance remain separate from BEAM property evidence.
+
+## Mila client boundaries
+
+Mila holds no account authority; every action is a Porsche command that
+Marshall authorizes like any other SSH caller (ADR-0220).
+
+- **Host identity.** Mila accepts only an Ed25519 host certificate from the
+  pinned deployment CA that names the management host and is inside its
+  validity window. The check runs in key exchange, so an untrusted host never
+  receives a device-key signature. No trust-on-first-use, no unsigned
+  fallback; a changed CA, host or zone is refused (ADR-0228).
+- **Device keys.** One P-256 key per deployment, in the Secure Enclave or
+  Android Keystore; the Linux test key is an owner-only `0600` file and a
+  readable key file is refused. Keys, signatures and tokens are never logged.
+- **Links.** `overalls://` links only navigate; they never send a command,
+  add a deployment or approve anything (ADR-0221).
+- **Mila push privacy.** Pokes are end-to-end encrypted to a per-deployment
+  device X25519 key, so the relay learns only that a deployment poked a
+  device. Notification text is fixed, and the route is a validated tap link.
+  The push key reaches Porsche only on stdin. The platform token is sent only
+  to the fixed relay origin and is never stored.
+- **Local data.** Snapshots, settings and keys on Linux are owner-only files;
+  the offline snapshot holds machine rows only, never approval links, tokens
+  or terminal bytes. The optional app lock hides content from rendering and
+  the accessibility tree.
+- **Untested:** native iOS and Android builds on devices (Secure Enclave,
+  Keystore, notification extension and messaging service, `local_auth`).

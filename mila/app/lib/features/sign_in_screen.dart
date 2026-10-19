@@ -5,8 +5,11 @@ import 'package:mila_core/mila_core.dart';
 import 'package:mila_transport/mila_transport.dart';
 
 import '../l10n/app_localizations.dart';
+import '../ui/theme.dart';
 import '../ui/tokens.dart';
 import '../ui/widgets.dart';
+import 'machines/machines_controller.dart';
+import 'machines/machines_screen.dart';
 import 'routes.dart';
 import 'session.dart';
 
@@ -29,6 +32,7 @@ class SignInScreen extends ConsumerWidget {
       }
     });
     final flow = view.flow;
+    final saved = ref.watch(savedSnapshotProvider(deployment)).value;
     final body = switch (flow.phase) {
       SignInPhase.idle => [
         ConsoleButton(
@@ -92,6 +96,19 @@ class SignInScreen extends ConsumerWidget {
           Text(deployment.toString(), textDirection: TextDirection.ltr),
           const SizedBox(height: MonoScale.line),
           ...body,
+          if (saved != null && flow.phase != SignInPhase.signedIn) ...[
+            const SizedBox(height: MonoScale.line),
+            ConsoleButton(
+              key: const Key('sign-in-saved-list'),
+              label: l.machinesTitle,
+              glyph: Glyph.arrowRight,
+              onPressed: () => context.go(machinesPath(deployment)),
+            ),
+            Text(
+              l.machinesSavedAt(formatSavedAt(saved.savedAt)),
+              style: TextStyle(color: MonoTheme.of(context).textAlt),
+            ),
+          ],
         ],
       ),
     );

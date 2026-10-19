@@ -102,6 +102,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   underclass-slo = import ./machines/underclass-slo service;
   porsche-service = import ./machines/porsche-service service;
   mila-porsche = import ./machines/mila-porsche service;
+  mila-desktop = import ./machines/mila-desktop service;
   porsche-secrets = import ./machines/porsche-secrets service;
   porsche-crash-dumps = import ./machines/porsche-crash-dumps service;
   administrative-ssh = import ./machines/administrative-ssh service;

@@ -1,0 +1,3 @@
+/* Generated from mila/app/lib/l10n/app_et.arb (pushNeedsInputTitle, pushNeedsInputBody). */
+"MILA_NEEDS_INPUT_TITLE" = "Agent vajab sinu sisendit";
+"MILA_NEEDS_INPUT_BODY" = "Vastamiseks ava Mila.";

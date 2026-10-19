@@ -96,7 +96,7 @@ let
     preBuild = ''
       mkdir -p ../../../lyra/tests/fixtures ../../../protocol/test/fixtures
       cp ${../../../../lyra/tests/fixtures/workspace_sources.json} ../../../lyra/tests/fixtures/workspace_sources.json
-      for f in app_routes machine_states ssh_command_lines ssh_host_certificates; do
+      for f in app_routes machine_states push_pokes ssh_command_lines ssh_host_certificates; do
         cp ${../../../../protocol/test/fixtures}/$f.json ../../../protocol/test/fixtures/$f.json
       done
     '';
@@ -197,6 +197,13 @@ let
     flutterBuildFlags = [ "--dart-define=MILA_DEMO=true" ];
   });
 
+  # The production build plus the screen probe (lib/integration_probe.dart)
+  # the mila-desktop machine test reads; it talks to a real deployment.
+  integration = app.overrideAttrs (old: {
+    pname = "mila-integration";
+    flutterBuildFlags = [ "--dart-define=MILA_INTEGRATION=true" ];
+  });
+
   appCheck = app.overrideAttrs (old: {
     pname = "mila-check";
     FONTCONFIG_FILE = fonts;
@@ -234,5 +241,5 @@ let
   '';
 in
 {
-  inherit app demo probe coreCheck transportCheck appCheck lockSync;
+  inherit app demo integration probe coreCheck transportCheck appCheck lockSync;
 }

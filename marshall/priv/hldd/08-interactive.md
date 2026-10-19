@@ -1074,7 +1074,76 @@ and its [OpenSSH journeys](repo:mila/packages/mila_transport/test/ssh_porsche_te
 [device keys](repo:mila/packages/mila_transport/lib/src/device_key.dart),
 [dartssh2 patch](repo:nix/platform/patches/dartssh2-host-certificates.patch),
 [real-Porsche machine test](repo:nix/verification/tests/machines/mila-porsche/default.nix)
-(passed against the real Porsche release) and the [M1 review](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+(passed against the real Porsche release), the [desktop journey](repo:nix/verification/tests/machines/mila-desktop/default.nix)
+(browser approval, machine list and forwarded links through the Linux bundle) and the [M1 review](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+
+### Mila notifications, app lock and offline list
+
+Notifications are opt-in per device and per deployment. Mila asks the
+platform for an APNs or FCM token. It exchanges the token for a push key at
+the fixed relay origin `https://notifications.overalls.dev`, then registers
+the device through Porsche with
+`device register --platform P --push-key - --enc-pubkey K`. The push key
+travels only on the command's stdin. The token goes only to the relay. Mila
+stores neither: its saved record holds a token digest, the device id, the key
+id and the key expiry.
+
+| Concern | Behaviour |
+| --- | --- |
+| Registration | A pure state machine. Each step has an operation number, and a reply to an older step is ignored. Turning notifications off while a registration is in flight removes the device once it lands. A new platform token re-registers. The key is rotated within 14 days of expiry. `push_disabled` stops retries. Transient failures back off from 5 s to 30 min. |
+| Poke contents | Pokes are end-to-end encrypted to a per-deployment X25519 key: `0x01 ‖ ephemeral key ‖ nonce ‖ ChaCha20-Poly1305 ciphertext`, with the key derived by HKDF-SHA256 and the deployment host bound in the AAD. The relay sees only ciphertext. The plaintext is exactly `{v, kind: "needs_input", route}`, and the route must be a canonical app route on that host. |
+| Notification text | Fixed and localized ("An agent needs your input"). The decrypted route is used only as the tap link. A poke that fails to open shows the fixed text with no link on iOS (an APNs alert cannot be suppressed); Android shows nothing. |
+| Poke keys | iOS Keychain group shared with the notification extension, readable after first unlock on this device only. On Android, wrapped by a Keystore AES key. Only the public key leaves native code. Removing the device deletes the key. |
+| Device list | Each device can be turned on or off, or removed (`device prefs`, `device rm`). A device missing from `device ls` shows as revoked. |
+| App lock | Optional, with biometrics or the device passcode (`local_auth`). It locks immediately or after 1 or 5 minutes in the background. A saved lock covers Mila from the first frame. Locked content is not painted and not in the accessibility tree. Linux has no lock, and the setting says so. |
+| Offline list | The last complete machine listing per deployment is saved as an owner-only `0600` file holding machine rows only, at most 500. While offline, the saved list is shown with its save time and its actions are disabled. |
+| Linux desktop | One window. A second `mila overalls://…` hands its link to the running window, which only navigates. |
+
+```mermaid
+sequenceDiagram
+    participant M as Mila
+    participant S as Relay (notifications.overalls.dev)
+    participant P as Porsche
+    participant D as Deployment (Marshall)
+    participant N as Notification extension
+    M->>S: POST /api/push/v1/keys (provider token, deployment)
+    S-->>M: push key, key id, expiry
+    M->>P: device register --push-key - (key on stdin) --enc-pubkey
+    P->>D: register device bound to the SSH key
+    D-->>M: receipt with device id (via request show)
+    D->>S: poke = ciphertext to the device X25519 key
+    S->>N: APNs/FCM data message
+    N->>N: open with the deployment key, check host and route
+    N-->>M: fixed localized alert, tap opens overalls://HOST/ROUTE
+```
+
+Failure behaviour:
+
+- A relay refusal or a `push_disabled` deployment leaves notifications off
+  and says why. A blocked system permission is reported without contacting
+  anyone.
+- A tampered, truncated, wrong-host or wrong-schema poke is refused before
+  anything from it is shown.
+- A snapshot file other users can read is deleted rather than read.
+- Mila logs no tokens, push keys, poke bytes or routes.
+
+Evidence:
+
+- [registration machine](repo:mila/packages/mila_core/lib/src/push_registration.dart)
+  and its [stateful property](repo:mila/packages/mila_core/test/push_registration_test.dart);
+- [poke opening](repo:mila/packages/mila_core/lib/src/push_poke.dart) against
+  the [shared vectors](repo:protocol/test/fixtures/push_pokes.json) in
+  [its tests](repo:mila/packages/mila_core/test/push_poke_test.dart);
+- [relay client](repo:mila/packages/mila_transport/lib/src/susan.dart) and
+  [registrar](repo:mila/packages/mila_transport/lib/src/push_registrar.dart)
+  with [their tests](repo:mila/packages/mila_transport/test/push_test.dart);
+- [lock policy](repo:mila/packages/mila_core/lib/src/app_lock.dart),
+  [snapshot cache](repo:mila/packages/mila_core/lib/src/snapshot_cache.dart)
+  and the [app journeys](repo:mila/app/test/device_features_test.dart);
+- native [iOS extension](repo:mila/app/ios/NotificationService/NotificationService.swift)
+  and [Android service](repo:mila/app/android/app/src/main/kotlin/dev/overalls/mila/MilaMessagingService.kt);
+- the [desktop machine test](repo:nix/verification/tests/machines/mila-desktop/default.nix)
+  and the [M5 device review](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
 
 ## Explicit terminal kill under withheld credit
 

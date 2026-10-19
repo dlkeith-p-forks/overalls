@@ -3913,10 +3913,11 @@ Tested scope: Dart device-key encoding, signature and file-custody tests, the He
 - **unit, recorded**: [a key file other users can read is refused, not used](repo:mila/packages/mila_transport/test/device_key_test.dart) — Linux file custody: 0600 key, 0700 directory, readable and malformed files refused.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
 - **unit, recorded**: [a signed P-256 device key proves possession like any other client key](repo:porsche/test/ssh_proof_test.exs) — Porsche SSH proof of possession for an ecdsa-sha2-nistp256 client key in the BEAM test VM.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
 - **machine, recorded**: [the pinned CA's certificate and the device key reach Porsche](repo:nix/verification/tests/machines/mila-porsche/default.nix) — Real Porsche release with the device key from mila-probe; Marshall is absent, so commands end in an authority envelope.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **machine, recorded**: [approval in the browser leads to the machine list](repo:nix/verification/tests/machines/mila-desktop/driver.py) — Linux bundle under X11 against packaged Marshall and Porsche.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
 
 **Gaps:** iOS and Android key custody and link delivery have no device build.
 
-**Preferred test work:** Add a mila-desktop GUI machine test of the browser approval journey, and record device builds.
+**Preferred test work:** Run the signed-in journey in a fleet fixture with a provisioned machine, and record iOS and Android device builds.
 
 ## Mila connects to a deployment only after verifying its Porsche host certificate against the pinned trust document
 
@@ -3936,3 +3937,71 @@ Tested scope: Dart certificate verification against Elixir-issued fixtures, trus
 **Gaps:** The real-Porsche fixture has no Marshall, so a full signed-in command journey through Porsche to Marshall is not yet exercised from Mila.
 
 **Preferred test work:** Extend the mila-desktop NixOS machine test to a signed-in journey through Porsche and Marshall.
+
+## A user turns on notifications for one deployment on their phone and later turns them off
+
+Coverage: **partial**. Layers: identity, authorization, transport, storage.
+
+Boundary: Mila exchanges the platform token for a relay push key at the fixed relay origin and registers through Porsche with the push key on stdin; the deployment binds the device to the registering SSH key. Mila persists only a token digest, device id, key id and expiry.
+
+Required refusal: A relay refusal, a push_disabled deployment or a denied system permission leaves notifications off with a reason; a stale or reordered reply never changes state; turning notifications off during an in-flight registration removes the device once it lands.
+
+Tested scope: Pure Dart registration machine under a Hegel StateMachine with a fake server, relay client and registrar unit tests over fake transports, and Flutter widget journeys over the fake Porsche. Native APNs/FCM token delivery, the real relay and the Marshall device commands are not exercised.
+
+- **property, recorded**: [push registration matches its model](repo:mila/packages/mila_core/test/push_registration_test.dart) — Hegel StateMachine, 1500 cases of 80 steps, with delayed, reordered and stale fake-server replies.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+- **unit, recorded**: [registration sends the push key on stdin and the poke public key in the line](repo:mila/packages/mila_transport/test/push_test.dart) — SusanClient over a fake transport and PushRegistrar over a fake Porsche session.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+- **unit, recorded**: [turning notifications on registers once; the key stays off the line](repo:mila/app/test/device_features_test.dart) — Flutter widget tests over the fake Porsche, fake relay transport and fake push platform.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+**Gaps:** No device build; Susan and the Marshall/Porsche device commands are other workstreams and are not run against Mila.
+
+**Preferred test work:** Add a fleet scenario with a fake relay and the real Porsche device commands driving mila-probe through register, prefs and rm.
+
+## An agent needs input and the user's phone shows a notification that opens the right machine
+
+Coverage: **partial**. Layers: transport, isolation.
+
+Boundary: Pokes are encrypted to a per-deployment device X25519 key with the host in the AAD; only the device opens them, and the notification shows fixed localized text with the validated route as its tap link.
+
+Required refusal: Any flipped byte, truncation, extension, wrong host, unknown version or plaintext outside {v:1, kind:needs_input, route} is refused before anything is shown.
+
+Tested scope: Dart openPoke against every shared vector plus Hegel tamper properties; Kotlin PokeOpener against the same vectors under JUnit. Swift CryptoKit opening and the notification extension are not built or run.
+
+- **property, recorded**: [changing any byte of a sealed poke is never accepted](repo:mila/packages/mila_core/test/push_poke_test.dart) — Pure Dart X25519, HKDF-SHA256 and ChaCha20-Poly1305 over protocol/test/fixtures/push_pokes.json.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+- **unit, recorded**: [invalidVectorsAreRefused](repo:mila/app/android/app/src/test/kotlin/dev/overalls/mila/PokeOpenerTest.kt) — Kotlin PokeOpener compiled with kotlinc 2.3.21 and run under JUnit off-device.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+**Gaps:** The iOS extension and Android messaging service have not been built or run on a device; Marshall's poke producer is another workstream.
+
+**Preferred test work:** Record an iOS simulator and Android emulator run that delivers a fixture poke to the extension and service.
+
+## A user turns on the app lock and Mila asks for biometrics after time in the background
+
+Coverage: **partial**. Layers: identity, isolation.
+
+Boundary: Locked content is offstage and excluded from semantics; the lock fails closed when its setting is saved, and an unlock result from an older attempt is ignored.
+
+Required refusal: A failed or stale authentication leaves Mila locked; a platform without biometrics reports the lock unavailable instead of pretending to lock.
+
+Tested scope: Pure Dart AppLock under a Hegel StateMachine and Flutter widget tests with a fake authenticator; the Linux machine test checks the unavailable setting. local_auth on devices is not run.
+
+- **property, recorded**: [the lock never shows content early (enabled at start)](repo:mila/packages/mila_core/test/app_lock_test.dart) — Hegel StateMachine over lifecycle, delay and unlock events.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+- **machine, recorded**: [after a restart the deployment, lock setting and offline list remain](repo:nix/verification/tests/machines/mila-desktop/driver.py) — Linux bundle under X11 against packaged Marshall and Porsche.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+**Gaps:** No device run of local_auth on iOS or Android.
+
+**Preferred test work:** Record device or emulator runs with enrolled biometrics.
+
+## A Linux user adds a deployment, approves Mila in the browser, sees their machines and follows overalls:// links, and still sees the saved list after a restart
+
+Coverage: **partial**. Layers: identity, authorization, transport, storage.
+
+Boundary: The Linux bundle reaches the deployment only through the pinned trust document and Porsche SSH; approval happens in the authenticated production web page after fingerprint comparison; links only navigate; settings, device keys and snapshots are owner-only.
+
+Required refusal: An unknown deployment's link lands on the deployment list, a second invocation never opens a second window, snapshots hold no approval links or tokens, and a saved list's actions are disabled.
+
+Tested scope: NixOS machine test with real X input, packaged Marshall, haproxy and Porsche, and Playwright Chromium for the approval. Machines are not provisioned (no Lilly), so the live list is empty.
+
+- **machine, recorded**: [approval in the browser leads to the machine list](repo:nix/verification/tests/machines/mila-desktop/driver.py) — Linux bundle under X11 against packaged Marshall and Porsche.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+**Gaps:** No machine is provisioned, so the list content and machine-page links are exercised only on an empty list and an unknown id.
+
+**Preferred test work:** Run the same journey in a fleet fixture with a provisioned machine.

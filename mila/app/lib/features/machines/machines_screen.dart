@@ -12,6 +12,14 @@ import '../labels.dart';
 import '../routes.dart';
 import 'machines_controller.dart';
 
+/// A snapshot time as an identifier-like UTC timestamp, the same in every
+/// locale: `2026-10-18 14:05 UTC`.
+String formatSavedAt(DateTime at) {
+  final utc = at.toUtc();
+  String two(int n) => n.toString().padLeft(2, '0');
+  return '${utc.year}-${two(utc.month)}-${two(utc.day)} ${two(utc.hour)}:${two(utc.minute)} UTC';
+}
+
 class MachinesScreen extends ConsumerStatefulWidget {
   const MachinesScreen({super.key, required this.deployment});
 
@@ -38,6 +46,11 @@ class _MachinesScreenState extends ConsumerState<MachinesScreen> {
         title: Text(l.machinesTitle),
         actions: [
           TextButton(
+            key: const Key('open-notifications'),
+            onPressed: () => context.go(notificationsPath(widget.deployment)),
+            child: Text(l.notificationsTitle.toUpperCase()),
+          ),
+          TextButton(
             key: const Key('machines-refresh'),
             onPressed: ref.read(machinesProvider(widget.deployment).notifier).refresh,
             child: Text(l.refresh.toUpperCase()),
@@ -58,7 +71,14 @@ class _MachinesScreenState extends ConsumerState<MachinesScreen> {
               onChanged: (value) => setState(() => _query = value),
             ),
             const SizedBox(height: MonoScale.line),
-            if (view.failed) Text(l.machinesOffline, key: const Key('machines-offline')),
+            if (view.failed || view.savedAt != null)
+              Text(l.machinesOffline, key: const Key('machines-offline')),
+            if (view.savedAt != null)
+              Text(
+                l.machinesSavedAt(formatSavedAt(view.savedAt!)),
+                key: const Key('machines-saved-at'),
+                style: TextStyle(color: MonoTheme.of(context).textAlt),
+              ),
             if (!view.loading && view.machines.isEmpty) Text(l.machinesEmpty),
             if (view.machines.isNotEmpty && shown.isEmpty) Text(l.machinesNoMatch),
             for (final machine in shown)
@@ -66,6 +86,7 @@ class _MachinesScreenState extends ConsumerState<MachinesScreen> {
                 deployment: widget.deployment,
                 machine: machine,
                 request: view.requests[machine.id],
+                offline: view.savedAt != null,
               ),
           ],
         ),
@@ -75,7 +96,15 @@ class _MachinesScreenState extends ConsumerState<MachinesScreen> {
 }
 
 class _MachineRow extends ConsumerWidget {
-  const _MachineRow({required this.deployment, required this.machine, this.request});
+  const _MachineRow({
+    required this.deployment,
+    required this.machine,
+    this.request,
+    this.offline = false,
+  });
+
+  /// The row comes from the offline snapshot: shown, not acted on.
+  final bool offline;
 
   final Deployment deployment;
   final Machine machine;
@@ -148,7 +177,7 @@ class _MachineRow extends ConsumerWidget {
                     ConsoleButton(
                       key: Key('action-${action.name}-${machine.id}'),
                       label: action.text(l),
-                      onPressed: busy ? null : () => _act(context, ref, action),
+                      onPressed: busy || offline ? null : () => _act(context, ref, action),
                     ),
                 ],
               ),

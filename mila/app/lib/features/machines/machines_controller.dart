@@ -9,6 +9,14 @@ import 'package:mila_transport/mila_transport.dart';
 
 import '../session.dart';
 
+/// The offline snapshot cache; null keeps nothing on disk (tests, demo).
+final snapshotStoreProvider = Provider<SnapshotStore?>((ref) => null);
+
+/// The saved list for a deployment, if any, for offline entry points.
+final savedSnapshotProvider = FutureProvider.family<MachineSnapshot?, Deployment>(
+  (ref, deployment) async => ref.watch(snapshotStoreProvider)?.read(deployment),
+);
+
 /// Lifecycle actions offered on a machine.
 enum MachineAction {
   start('start'),
@@ -44,6 +52,7 @@ final class MachinesView {
     this.loading = false,
     this.failed = false,
     this.requests = const {},
+    this.savedAt,
   });
 
   final List<Machine> machines;
@@ -55,16 +64,23 @@ final class MachinesView {
   /// Tracked requests by machine id.
   final Map<String, RequestPoll> requests;
 
+  /// Set while [machines] come from the offline snapshot rather than a
+  /// listing read in this session: when that snapshot was saved.
+  final DateTime? savedAt;
+
   MachinesView copyWith({
     List<Machine>? machines,
     bool? loading,
     bool? failed,
     Map<String, RequestPoll>? requests,
+    DateTime? savedAt,
+    bool live = false,
   }) => MachinesView(
     machines: machines ?? this.machines,
     loading: loading ?? this.loading,
     failed: failed ?? this.failed,
     requests: requests ?? this.requests,
+    savedAt: live ? null : savedAt ?? this.savedAt,
   );
 }
 
@@ -79,6 +95,7 @@ final class MachinesController extends Notifier<MachinesView> {
   MachinesController(this.deployment);
 
   final Deployment deployment;
+  bool _live = false;
   static const Backoff _backoff = Backoff(
     base: Duration(milliseconds: 500),
     cap: Duration(seconds: 5),
@@ -87,8 +104,19 @@ final class MachinesController extends Notifier<MachinesView> {
   @override
   MachinesView build() {
     final session = ref.watch(sessionProvider(deployment));
+    unawaited(_loadSnapshot());
     if (session != null) Future.microtask(refresh);
     return const MachinesView();
+  }
+
+  /// Shows the saved list until a live listing arrives.
+  Future<void> _loadSnapshot() async {
+    final store = ref.read(snapshotStoreProvider);
+    if (store == null) return;
+    final snapshot = await store.read(deployment);
+    // A live listing that already landed wins over the snapshot.
+    if (snapshot == null || _live) return;
+    state = state.copyWith(machines: snapshot.machines, savedAt: snapshot.savedAt);
   }
 
   PorscheSession? get _session => ref.read(sessionProvider(deployment));
@@ -107,7 +135,22 @@ final class MachinesController extends Notifier<MachinesView> {
           machines: List.unmodifiable(listing.items.toList()..sort(compareMachines)),
           loading: false,
           failed: false,
+          live: true,
         );
+        _live = true;
+        // A complete first page is the whole list for the snapshot; a
+        // paginated listing is not cached rather than cached partially.
+        final store = ref.read(snapshotStoreProvider);
+        if (store != null && listing.nextCursor == null) {
+          await store.write(
+            MachineSnapshot(
+              host: deployment.host,
+              port: deployment.port,
+              savedAt: ref.read(clockProvider)().toUtc(),
+              machines: listing.items,
+            ),
+          );
+        }
         return;
       } on MachineFormatException {
         // Falls through to the failed state below.
