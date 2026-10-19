@@ -18,9 +18,11 @@ import subprocess
 import threading
 import time
 from collections.abc import Callable
+from contextlib import ExitStack
 from dataclasses import dataclass
 from functools import partial
 from pathlib import Path
+from typing import Literal
 
 import native_control as control
 import native_git_fixture as git_fixture
@@ -36,6 +38,68 @@ SSH_LOGIN_EVENT = (
 )
 MAX_SERIAL_VERIFICATION = 4 * 1024 * 1024
 ILLUMOS_SYNC_MARKER = b"syncing file systems... done"
+FailureCategory = Literal[
+    "subprocess-timeout", "subprocess", "protocol", "io", "invalid", "runtime"
+]
+Phase = Literal[
+    "shutdown-send",
+    "shutdown-vmm-wait",
+    "authority-server-stop",
+    "authority-dns-stop",
+    "authority-thread-join",
+    "authority-dns-thread-join",
+    "authority-thread-check",
+    "authority-server-close",
+    "authority-dns-close",
+    "vmm-cleanup",
+    "growth-finalize",
+    "receipt-image-digest",
+    "receipt-firmware-digest",
+    "receipt-vmm-digest",
+    "service-receipt-write",
+    "github-receipt-write",
+]
+
+
+class PhaseFailure(RuntimeError):
+    def __init__(self, phase: Phase, category: FailureCategory) -> None:
+        super().__init__("native service phase failed")
+        self.phase = phase
+        self.category = category
+
+
+def failure_category(error: Exception) -> FailureCategory:
+    if isinstance(error, PhaseFailure):
+        return error.category
+    if isinstance(error, subprocess.TimeoutExpired):
+        return "subprocess-timeout"
+    if isinstance(error, subprocess.SubprocessError):
+        return "subprocess"
+    if isinstance(error, services.ProtocolError):
+        return "protocol"
+    if isinstance(error, OSError):
+        return "io"
+    if isinstance(error, ValueError):
+        return "invalid"
+    return "runtime"
+
+
+def run_phase[T](phase: Phase, operation: Callable[[], T]) -> T:
+    """@cc [owner:ghuntley,label:verification;security] native-closed-phase-diagnostics
+    Phase diagnostics MUST contain only fixed phase/state/category values, never
+    operation arguments, results or exception text. A failed operation MUST remain
+    failed under its own phase after successful cleanup. Existing operation and
+    outer deadlines MUST remain unchanged; progress MUST NOT imply acceptance.
+    """
+    print(f"native service phase={phase} state=started", flush=True)
+    try:
+        result = operation()
+    except PhaseFailure:
+        raise
+    except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
+        raise PhaseFailure(phase, failure_category(error)) from None
+    print(f"native service phase={phase} state=complete", flush=True)
+    return result
 
 
 @dataclass(frozen=True)
@@ -208,6 +272,43 @@ def wait_clean_shutdown(process: subprocess.Popen[bytes], platform: Platform, se
     evidence = serial.read_bytes()
     if ILLUMOS_SYNC_MARKER not in evidence:
         raise RuntimeError("native OmniOS shutdown evidence was incomplete")
+
+
+def clean_shutdown(context: BootContext) -> None:
+    """@cc [owner:ghuntley,label:verification;recovery] native-shutdown-phase-oracles
+    Shutdown MUST retain the bounded SSH request before the zero-exit/sync oracle.
+    Only SSH status zero or 255 with empty stdout MAY reach the unchanged 60-second
+    VMM wait. Distinct fixed phases MUST NOT turn a timeout into successful exit.
+    """
+
+    def send() -> None:
+        result = ssh(
+            context.fixture,
+            context.work / "known_hosts",
+            f"{context.platform.sudo} -n {context.platform.shutdown} >/dev/null 2>&1",
+            network=context.network,
+        )
+        if result.returncode not in (0, 255) or result.stdout:
+            raise RuntimeError("native SSH shutdown request failed")
+
+    run_phase("shutdown-send", send)
+    run_phase(
+        "shutdown-vmm-wait",
+        partial(
+            wait_clean_shutdown, context.process, context.platform, context.work / "serial.log"
+        ),
+    )
+
+
+def cleanup_vm(process: subprocess.Popen[bytes]) -> None:
+    """Retain the bounded terminate/wait/kill cleanup independently from shutdown evidence."""
+    if process.poll() is None:
+        process.terminate()
+        try:
+            process.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=10)
 
 
 def ssh(
@@ -1098,12 +1199,15 @@ def run(
                         authority.github = github_fixture.GitHub(
                             github_tools_release, github_executor_release, os_name + "-amd64"
                         )
-                    with (
-                        control.Server(
+                    with ExitStack() as authority_scope:
+                        server = control.Server(
                             ("169.254.254.1", 443), context, authority, repository=repository
-                        ) as server,
-                        git_fixture.DNSServer(("1.1.1.1", 53), frozenset({network.address})) as dns,
-                    ):
+                        )
+                        authority_scope.callback(
+                            run_phase, "authority-server-close", server.server_close
+                        )
+                        dns = git_fixture.DNSServer(("1.1.1.1", 53), frozenset({network.address}))
+                        authority_scope.callback(run_phase, "authority-dns-close", dns.server_close)
                         thread = threading.Thread(target=server.serve_forever, daemon=True)
                         dns_thread = threading.Thread(target=dns.serve_forever, daemon=True)
                         thread.start()
@@ -1249,15 +1353,7 @@ def run(
                                 boot_endings.append("sigkill")
                             else:
                                 stage = "clean-shutdown"
-                                shutdown = ssh(
-                                    fixture,
-                                    work / "known_hosts",
-                                    f"{platform.sudo} -n {platform.shutdown} >/dev/null 2>&1",
-                                    network=network,
-                                )
-                                if shutdown.returncode not in (0, 255) or shutdown.stdout:
-                                    raise RuntimeError("native SSH shutdown request failed")
-                                wait_clean_shutdown(process, platform, work / "serial.log")
+                                clean_shutdown(boot_context)
                                 boot_endings.append("clean")
                                 print(
                                     f"native service clean shutdown verified boot={generation}",
@@ -1269,24 +1365,22 @@ def run(
                                     raise RuntimeError("native growth observation is missing")
                                 growth_check.after_shutdown(growth_observation)
                         finally:
-                            server.shutdown()
-                            dns.shutdown()
-                            thread.join(timeout=5)
-                            dns_thread.join(timeout=5)
+                            run_phase("authority-server-stop", server.shutdown)
+                            run_phase("authority-dns-stop", dns.shutdown)
+                            run_phase("authority-thread-join", partial(thread.join, timeout=5))
+                            run_phase(
+                                "authority-dns-thread-join", partial(dns_thread.join, timeout=5)
+                            )
                             if thread.is_alive() or dns_thread.is_alive():
-                                raise RuntimeError("native isolated authority did not stop")
+                                raise PhaseFailure("authority-thread-check", "runtime")
                 finally:
-                    if process.poll() is None:
-                        process.terminate()
-                        try:
-                            process.wait(timeout=10)
-                        except subprocess.TimeoutExpired:
-                            process.kill()
-                            process.wait(timeout=10)
+                    run_phase("vmm-cleanup", partial(cleanup_vm, process))
         if len(set(host_keys)) != len(boots):
             raise RuntimeError("native restart retained its SSH host key")
         if growth_check is not None:
-            growth_check.finish([boot.boot_id for boot in boots])
+            run_phase(
+                "growth-finalize", partial(growth_check.finish, [boot.boot_id for boot in boots])
+            )
         receipt = {
             "version": 1,
             "os": platform.name,
@@ -1294,9 +1388,9 @@ def run(
             "boot_endings": boot_endings,
             "kernel_sha256": expected,
             "trust_bundle_digest": trust_digest,
-            "image_sha256": digest(image / "disk.raw"),
-            "firmware_sha256": digest(firmware),
-            "vmm_sha256": digest(vmm),
+            "image_sha256": run_phase("receipt-image-digest", partial(digest, image / "disk.raw")),
+            "firmware_sha256": run_phase("receipt-firmware-digest", partial(digest, firmware)),
+            "vmm_sha256": run_phase("receipt-vmm-digest", partial(digest, vmm)),
             "checks": [
                 "mmdsv2-current-boot-kernel",
                 "assigned-address-reachable",
@@ -1346,49 +1440,48 @@ def run(
             if not isinstance(checks, list):
                 raise RuntimeError("invalid native service receipt checks")
             checks.append("all-boots-current-mmds-git-config-and-commit-attribution")
-        (work / "service-receipt.json").write_text(
-            json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+        run_phase(
+            "service-receipt-write",
+            partial(
+                (work / "service-receipt.json").write_text,
+                json.dumps(receipt, sort_keys=True, indent=2) + "\n",
+                encoding="utf-8",
+            ),
         )
         if github_observations:
-            (work / "github-tools-receipt.json").write_text(
-                json.dumps(
-                    {
-                        "version": 1,
-                        "platform": os_name + "-amd64",
-                        "native_admission": False,
-                        "boots": github_observations,
-                        "checks": [
-                            "retained-executor-fixed-bootstrap-and-fenced-artifact",
-                            "verified-atomic-managed-generation",
-                            "personal-uid-managed-gh-version-and-broker-api",
-                            "personal-uid-git-clone-branch-commit-push",
-                            "personal-uid-lfs-upload-and-download-exact-bytes",
-                            "token-command-refused-and-no-cli-credential-store",
-                            "home-and-existing-git-config-retained",
-                            "clean-reboot-already-current-generation",
-                        ],
-                        "scope": "actual retained native guest programs with isolated synthetic authority; Marshall SQL authorization and production native admission require separate evidence",
-                    },
-                    sort_keys=True,
-                    indent=2,
-                )
-                + "\n",
-                encoding="utf-8",
+            run_phase(
+                "github-receipt-write",
+                partial(
+                    (work / "github-tools-receipt.json").write_text,
+                    json.dumps(
+                        {
+                            "version": 1,
+                            "platform": os_name + "-amd64",
+                            "native_admission": False,
+                            "boots": github_observations,
+                            "checks": [
+                                "retained-executor-fixed-bootstrap-and-fenced-artifact",
+                                "verified-atomic-managed-generation",
+                                "personal-uid-managed-gh-version-and-broker-api",
+                                "personal-uid-git-clone-branch-commit-push",
+                                "personal-uid-lfs-upload-and-download-exact-bytes",
+                                "token-command-refused-and-no-cli-credential-store",
+                                "home-and-existing-git-config-retained",
+                                "clean-reboot-already-current-generation",
+                            ],
+                            "scope": "actual retained native guest programs with isolated synthetic authority; Marshall SQL authorization and production native admission require separate evidence",
+                        },
+                        sort_keys=True,
+                        indent=2,
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                ),
             )
     except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
-        category = (
-            "subprocess-timeout"
-            if isinstance(error, subprocess.TimeoutExpired)
-            else "subprocess"
-            if isinstance(error, subprocess.SubprocessError)
-            else "protocol"
-            if isinstance(error, services.ProtocolError)
-            else "io"
-            if isinstance(error, OSError)
-            else "invalid"
-            if isinstance(error, ValueError)
-            else "runtime"
-        )
+        category = failure_category(error)
+        if isinstance(error, PhaseFailure):
+            stage = error.phase
         print(
             f"native service verification failed at stage {stage} category={category}", flush=True
         )

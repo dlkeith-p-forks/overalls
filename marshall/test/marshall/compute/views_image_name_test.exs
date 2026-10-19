@@ -13,10 +13,14 @@ defmodule Marshall.Compute.ViewsImageNameTest do
     ubuntu = ubuntu_image_fixture(c)
     {:ok, vm} = Compute.provision(request(%{image_id: ubuntu.id}), actor: user)
 
-    assert {:ok, _} =
-             Compute.update_reflection_metadata(
-               %{id: vm.id, labels: ["project-a"], comment: "Synthetic test machine"},
-               actor: user
+    # @cc [owner:ghuntley,label:verification;security] persisted-view-metadata-fixture
+    # Projection coverage MUST seed only this sandboxed VM's persisted metadata;
+    # it MUST NOT grant user mutation authority or claim a mutation workflow.
+    assert %{num_rows: 1} =
+             Ecto.Adapters.SQL.query!(
+               Repo,
+               "UPDATE compute_virtual_machines SET labels=$2, comment=$3 WHERE id=$1",
+               [Ecto.UUID.dump!(vm.id), ["project-a"], "Synthetic test machine"]
              )
 
     assert {:ok, view} = Compute.get_vm(%{vm_id: vm.id}, actor: user)

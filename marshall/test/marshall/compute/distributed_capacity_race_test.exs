@@ -417,6 +417,7 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
           register_timeout_cleanup(peers, fn -> cleanup_sample(model) end)
           model
         end)
+
       [host_a, host_b] = model.hosts
 
       totals = %{

@@ -2,18 +2,116 @@
 
 from __future__ import annotations
 
+import io
 import socket
 import subprocess
 import sys
 import tempfile
 import time
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
 
 import native_control as control
 import native_service_runner as runner
 import native_services as services
+
+
+class NativePhaseDiagnosticsTest(unittest.TestCase):
+    """Closed host diagnostics do not establish native execution evidence."""
+
+    def test_operation_results_and_error_payloads_do_not_enter_diagnostics(self) -> None:
+        output = io.StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(
+                runner.run_phase("receipt-image-digest", lambda: "private-result"), "private-result"
+            )
+
+            def fail() -> None:
+                raise subprocess.TimeoutExpired(
+                    ["private-command"], 20, output=b"private-stdout", stderr=b"private-stderr"
+                )
+
+            with self.assertRaises(runner.PhaseFailure) as captured:
+                runner.run_phase("shutdown-send", fail)
+        self.assertEqual(captured.exception.phase, "shutdown-send")
+        self.assertEqual(captured.exception.category, "subprocess-timeout")
+        self.assertEqual(str(captured.exception), "native service phase failed")
+        self.assertEqual(
+            output.getvalue(),
+            "native service phase=receipt-image-digest state=started\n"
+            "native service phase=receipt-image-digest state=complete\n"
+            "native service phase=shutdown-send state=started\n",
+        )
+
+    def test_successful_cleanup_preserves_the_failed_operation_phase(self) -> None:
+        def fail() -> None:
+            raise services.ProtocolError("private-protocol-payload")
+
+        with redirect_stdout(io.StringIO()), self.assertRaises(runner.PhaseFailure) as captured:
+            try:
+                runner.run_phase("shutdown-vmm-wait", fail)
+            finally:
+                runner.run_phase("authority-server-stop", lambda: None)
+        self.assertEqual(captured.exception.phase, "shutdown-vmm-wait")
+        self.assertEqual(captured.exception.category, "protocol")
+
+    def test_failed_cleanup_reports_its_own_closed_phase(self) -> None:
+        def fail() -> None:
+            raise OSError("private-filesystem-path")
+
+        with redirect_stdout(io.StringIO()), self.assertRaises(runner.PhaseFailure) as captured:
+            runner.run_phase("authority-server-close", fail)
+        self.assertEqual(captured.exception.phase, "authority-server-close")
+        self.assertEqual(captured.exception.category, "io")
+
+    def test_actual_shutdown_flow_distinguishes_send_and_vmm_wait_timeouts(self) -> None:
+        with (
+            tempfile.TemporaryDirectory() as temporary,
+            subprocess.Popen(
+                [sys.executable, "-c", "pass"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            ) as process,
+        ):
+            root = Path(temporary)
+            binding = services.Binding("dddddddd-dddd-4ddd-8ddd-000000000201", 7, "a" * 64)
+            context = runner.BootContext(
+                root / "uds",
+                services.Boot(binding, "dddddddd-dddd-4ddd-8ddd-000000000202"),
+                root,
+                root,
+                runner.DEFAULT_NETWORK,
+                runner.Platform("illumos"),
+                process,
+                control.Authority(
+                    control.Config(root / "ca", "native.fixture.test", frozenset({"127.0.0.1"}))
+                ),
+            )
+            with (
+                patch.object(runner, "ssh", side_effect=subprocess.TimeoutExpired("private", 20)),
+                patch.object(runner, "wait_clean_shutdown") as wait,
+                redirect_stdout(io.StringIO()),
+                self.assertRaises(runner.PhaseFailure) as sent,
+            ):
+                runner.clean_shutdown(context)
+            self.assertEqual(sent.exception.phase, "shutdown-send")
+            wait.assert_not_called()
+            accepted = subprocess.CompletedProcess[bytes](["synthetic-shutdown"], 255, b"", b"")
+            with (
+                patch.object(runner, "ssh", return_value=accepted),
+                patch.object(
+                    runner,
+                    "wait_clean_shutdown",
+                    side_effect=subprocess.TimeoutExpired("private", 60),
+                ),
+                redirect_stdout(io.StringIO()),
+                self.assertRaises(runner.PhaseFailure) as waited,
+            ):
+                runner.clean_shutdown(context)
+            self.assertEqual(waited.exception.phase, "shutdown-vmm-wait")
+            self.assertEqual(waited.exception.category, "subprocess-timeout")
 
 
 class NativeLeaseOracleTest(unittest.TestCase):

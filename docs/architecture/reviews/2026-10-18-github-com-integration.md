@@ -680,3 +680,60 @@ with no aggregate or passing claim. A duplicate Reflection projection field and
 contract were consolidated while preserving labels/comment defaults and read
 authorization; projection grants no mutation authority. Focused and full runtime
 verification of these merged-source repairs remains pending at this checkpoint.
+
+### Closed native phase diagnostics
+
+Read-only examination of the failed OmniOS matrix found that services completed
+boot-0 attribution, workspace, PTY and executor checks before the shutdown
+timeout. The old stage covers both the 20-second SSH request and the 60-second
+VMM wait, so it cannot distinguish those causes. Crash recovery reached the next
+boot's kernel checkpoint, then failed the withheld-readiness protocol check
+before starting the new synthetic authority. Recovery and isolation emitted
+both boots' clean-shutdown, attribution and executor checkpoints before their
+800-second outer timeouts. Those emitted checkpoints do not establish complete
+service/scenario receipts or identify a timeout cause.
+
+The [runner](../../../nix/verification/tests/support/native_service_runner.py)
+now emits fixed started/complete phases for shutdown sending, VMM shutdown wait,
+authority stop/join/close, process cleanup, growth finalization, each artifact
+digest and receipt writing. A typed closed phase exception retains the failed
+operation after successful cleanup and carries only the fixed category; operation
+arguments, result bytes and exception text are excluded. The authority contexts
+retain their original reverse close order. Existing SSH/VMM/join/outer bounds,
+zero-exit/sync requirements and every acceptance oracle remain unchanged.
+
+The pinned all-files Ruff format/check and ty hooks passed inside `devenv shell`
+(`/tmp/github-native-phase-python-static.log`). The Python 3.13.15 host batch
+passed **33 tests** in 5.251 s across the runner and crash/recovery/isolation
+consumers (`/tmp/github-native-phase-focused-tests.log`), including four new
+checks for redaction, failure retention and the actual shutdown-flow split.
+Contract formatting passed (`/tmp/github-native-phase-contracts.log`). These
+are host diagnostic/policy checks, not new native acceptance. One isolated
+OmniOS services run against the merged VMM is queued behind the existing serial
+FreeBSD graph; it has not started at this checkpoint. No broad replay or
+admission/activation has occurred.
+
+The merged Marshall focused batch passed 26 of 27 tests in 189.9 s with seed
+618954; its sole failure was the projection fixture calling a forbidden metadata
+mutation action. The corrected fixture seeds only its exact sandboxed machine
+through bound SQL parameters and preserves the existing authority policy. Its
+separate Views replay passed **3 tests** in 0.7 s with the same seed
+(`/tmp/github-marshall-merged-postgates-20261019.log`). Workspace-source and agent
+backlog generated histories, MachinePins and ExecutorSession retained their
+passing focused scope. Compiler and contract structural checks passed; the
+subsequent Covenant, forced Dialyzer and complete Marshall gate remain pending.
+These separate executions do not establish a full merged-source passing suite
+or a metadata mutation workflow.
+
+The merged common-fleet build also failed before VM execution when managed LFS
+still labelled itself 3.7.1 but inherited the newly pinned Nixpkgs 3.8.0 source.
+The [managed package](../../../nix/domains/artifacts/guest/github/default.nix)
+now fetches the explicit reviewed `git-lfs/git-lfs` tag `v3.7.1` at
+`sha256-N5ckTnyA3mueZre+rMhFZBiAFgEu4pmtzkiUidXnan8=`. The original transport
+patch, module hash, package version and vendor label remain unchanged; the local
+contract requires their release identity to agree independently of Nixpkgs.
+All four Linux/Windows/FreeBSD/illumos package builds passed in 16 s
+(`/tmp/github-lfs-371-pinned-build.log`, structured log
+`1792389981008-485806-0.jsonl`). This repairs provenance under the existing pinned
+source policy. It does not adopt 3.8.0, change broker routing/custody, qualify
+guest execution or turn the earlier common-fleet failure into a pass.

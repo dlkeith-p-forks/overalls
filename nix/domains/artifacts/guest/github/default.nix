@@ -40,7 +40,14 @@ let
   mkLfs = platform: goos: pkgs.buildGo127Module {
     pname = "overalls-managed-git-lfs-${platform}";
     version = "3.7.1";
-    inherit (pkgs.git-lfs) src;
+    # Keep the reviewed patch and module hash bound to this exact release;
+    # the supplied Nixpkgs git-lfs package may advance independently.
+    src = pkgs.fetchFromGitHub {
+      owner = "git-lfs";
+      repo = "git-lfs";
+      tag = "v3.7.1";
+      hash = "sha256-N5ckTnyA3mueZre+rMhFZBiAFgEu4pmtzkiUidXnan8=";
+    };
     proxyVendor = true;
     vendorHash = "sha256-SUnZ9uN43CAw/iHC8cPBm3nYD03d3Pg2pYS2PwjDCnE=";
     patches = [ ./git-lfs.patch ];
