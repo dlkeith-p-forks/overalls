@@ -61,7 +61,6 @@ msgstr "Asusu"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "Siffofin commit"
-msgstr "Ƙara Overalls ƙaddamar da sifa"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

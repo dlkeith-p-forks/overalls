@@ -61,7 +61,6 @@ msgstr "கணக்கு"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "கமிட் உரிமையாளர் குறிப்பிடல்"
-msgstr "கமிட்டில் Overalls பங்களிப்புக்கான அங்கீகாரத்தைச் சேர்க்கவும்"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

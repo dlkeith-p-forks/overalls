@@ -61,7 +61,6 @@ msgstr "Tili"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "Commitin tekijätiedot"
-msgstr "Lisää Overalls tekijätietoihin"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

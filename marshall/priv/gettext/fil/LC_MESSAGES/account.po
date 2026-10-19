@@ -61,7 +61,6 @@ msgstr "Account ng gumagamit"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "Pagkilala sa commit"
-msgstr "Idagdag ang pagkilala sa Overalls sa commit"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

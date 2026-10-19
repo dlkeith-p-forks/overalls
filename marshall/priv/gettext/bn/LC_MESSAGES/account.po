@@ -61,7 +61,6 @@ msgstr "অ্যাকাউন্ট"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "কমিটের স্বীকৃতি"
-msgstr "কমিটে Overalls-এর অবদানের স্বীকৃতি যোগ করুন"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

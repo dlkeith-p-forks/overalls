@@ -62,7 +62,6 @@ msgstr "Учётная запись"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "Авторство коммита"
-msgstr "Добавлять указание авторства Overalls в коммиты"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

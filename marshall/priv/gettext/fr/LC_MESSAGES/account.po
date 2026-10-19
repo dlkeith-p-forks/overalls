@@ -52,7 +52,6 @@ msgstr "Compte"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "Attribution du commit"
-msgstr "Ajouter la mention de contribution d’Overalls aux commits"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

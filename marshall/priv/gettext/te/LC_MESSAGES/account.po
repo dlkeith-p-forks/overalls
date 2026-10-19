@@ -61,7 +61,6 @@ msgstr "ఖాతా"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "కమిట్ ఆపాదింపు"
-msgstr "కమిట్‌లో Overalls సహకారానికి గుర్తింపు జోడించండి"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

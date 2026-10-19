@@ -60,7 +60,6 @@ msgstr "Tài khoản"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "Ghi nhận commit"
-msgstr "Thêm ghi nhận đóng góp của Overalls vào commit"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

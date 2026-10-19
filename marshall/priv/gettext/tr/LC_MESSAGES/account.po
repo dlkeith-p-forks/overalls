@@ -61,7 +61,6 @@ msgstr "Hesap"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "Commit ilişkilendirmesi"
-msgstr "Commitlere Overalls katkı bilgisini ekle"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

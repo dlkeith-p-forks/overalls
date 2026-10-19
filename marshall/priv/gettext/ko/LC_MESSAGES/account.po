@@ -60,7 +60,6 @@ msgstr "계정"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "커밋 귀속"
-msgstr "커밋에 Overalls 기여 정보 추가"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

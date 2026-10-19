@@ -65,7 +65,6 @@ msgstr "الحساب"
 #, elixir-autogen, elixir-format
 msgid "Commit attribution"
 msgstr "إسناد الالتزام"
-msgstr "إضافة إسناد Overalls إلى عمليات الإيداع"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format
