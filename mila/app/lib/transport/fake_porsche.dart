@@ -17,6 +17,9 @@ final class FakeMachine {
   String desired;
   String observed;
   bool pinned = false;
+  int vcpu = 2;
+  int memoryMib = 4096;
+  int diskGib = 50;
 
   Map<String, Object?> toJson(String host) => {
     'id': id,
@@ -28,9 +31,9 @@ final class FakeMachine {
     'permissions': {'read': true, 'write': true, 'manage': true},
     'route': 'overalls://$host/machines/$id',
     'image_name': 'NixOS',
-    'vcpu': 2,
-    'memory_bytes': 4096 * 1024 * 1024,
-    'disk_bytes': 50 * 1024 * 1024 * 1024,
+    'vcpu': vcpu,
+    'memory_bytes': memoryMib * 1024 * 1024,
+    'disk_bytes': diskGib * 1024 * 1024 * 1024,
     'ssh_host': '$name.ssh.$host',
     'profile': 'standard',
     'resize': null,
@@ -56,6 +59,9 @@ final class FakeDeployment {
 
   /// Registered push devices by id.
   final Map<String, FakeDevice> devices = {};
+
+  /// Grants by machine id, then email: the role name.
+  final Map<String, Map<String, String>> shares = {};
 
   /// When true, `device register` is refused with `push_disabled`.
   bool pushDisabled = false;
@@ -465,6 +471,79 @@ final class _FakeSession implements PorscheSession {
         return receipt == null
             ? (PorscheExit.invalid, error('request_not_found'))
             : (PorscheExit.ok, receipt);
+      case 'new':
+        final id = command.options['request-id']! as String;
+        final created = FakeMachine(_fake._id('7c1e2d3c'), switch (command.options['name']) {
+          final String name => name,
+          _ => 'machine-${_fake.machines.length + 1}',
+        });
+        _apply(created, command.options);
+        _fake.machines.add(created);
+        return receipt(id, created.toJson(_fake.host));
+      case 'clone':
+        final m = machine();
+        if (m == null) return (PorscheExit.invalid, error('not_found'));
+        final id = command.options['request-id']! as String;
+        final copy = FakeMachine(_fake._id('7c1e2d3c'), switch (command.options['name']) {
+          final String name => name,
+          _ => '${m.name}-clone',
+        });
+        _fake.machines.add(copy);
+        return receipt(id, copy.toJson(_fake.host));
+      case 'resize':
+        final m = machine();
+        if (m == null) return (PorscheExit.invalid, error('not_found'));
+        final id = command.options['request-id']! as String;
+        final disk = command.options['disk'];
+        if (disk is String && int.parse(disk) < m.diskGib) {
+          return (PorscheExit.invalid, error('invalid_vm_size'));
+        }
+        _apply(m, command.options);
+        return receipt(id, m.toJson(_fake.host));
+      case 'share show':
+        final m = machine();
+        if (m == null) return (PorscheExit.invalid, error('not_found'));
+        final grants = _fake.shares[m.id] ?? const {};
+        return (
+          PorscheExit.ok,
+          read({
+            'owner': {
+              'user_id': '00000000-0000-4000-8000-000000000001',
+              'email': 'user@${_fake.host}',
+              'role': 'owner',
+            },
+            'items': [
+              for (final (index, MapEntry(key: email, value: role)) in grants.entries.indexed)
+                {
+                  'id':
+                      '00000000-0000-4000-8000-${(index + 100).toRadixString(16).padLeft(12, '0')}',
+                  'user_id':
+                      '00000000-0000-4000-9000-${(index + 100).toRadixString(16).padLeft(12, '0')}',
+                  'email': email,
+                  'role': role,
+                },
+            ],
+            'next_cursor': null,
+          }),
+        );
+      case 'share add' || 'share remove':
+        final m = machine();
+        if (m == null) return (PorscheExit.invalid, error('not_found'));
+        final id = command.options['request-id']! as String;
+        final email = command.arguments[1];
+        if (!email.endsWith('@${_fake.host}')) {
+          return (PorscheExit.invalid, error('user_not_found'));
+        }
+        final grants = _fake.shares.putIfAbsent(m.id, () => {});
+        if (command.name == 'share add') {
+          grants[email] = command.arguments[2];
+        } else {
+          grants.remove(email);
+        }
+        return receipt(id, {
+          'vm_id': m.id,
+          'role': command.name == 'share add' ? command.arguments[2] : 'revoked',
+        });
       case 'start' || 'stop' || 'pause' || 'resume' || 'rm' || 'pin' || 'unpin':
         final m = machine();
         if (m == null) return (PorscheExit.invalid, error('not_found'));
@@ -502,6 +581,13 @@ final class _FakeSession implements PorscheSession {
         return (PorscheExit.ok, receipt);
     }
     return (PorscheExit.invalid, error('invalid_command'));
+  }
+
+  /// Applies `--cpu`, `--memory` (MiB) and `--disk` (GiB) to [machine].
+  static void _apply(FakeMachine machine, Map<String, Object> options) {
+    if (options['cpu'] case final String cpu) machine.vcpu = int.parse(cpu);
+    if (options['memory'] case final String memory) machine.memoryMib = int.parse(memory);
+    if (options['disk'] case final String disk) machine.diskGib = int.parse(disk);
   }
 
   /// Thread, terminal and web commands (ADR-0222, ADR-0223).

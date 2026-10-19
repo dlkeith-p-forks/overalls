@@ -267,3 +267,55 @@ class TopTabs extends StatelessWidget {
     );
   }
 }
+
+/// A table on the grid, as the web's tables: a bold header row, a 2px rule
+/// above the table and under the header, a 2px rule under every row, and
+/// one character of space between columns. The last column shrinks to its
+/// content (actions); the others share the rest.
+class MonoTable extends StatelessWidget {
+  const MonoTable({super.key, required this.headers, required this.rows})
+    : assert(headers.length > 0, 'a table has at least one column');
+
+  final List<String> headers;
+
+  /// Each row has one cell per header.
+  final List<List<Widget>> rows;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = MonoTheme.of(context);
+    final rule = BorderSide(color: tokens.text, width: MonoScale.border);
+    Widget cell(Widget child) => Padding(
+      padding: const EdgeInsetsDirectional.only(
+        end: MonoScale.fontSize,
+        top: MonoScale.line / 2,
+        bottom: MonoScale.line / 2 - MonoScale.border,
+      ),
+      child: child,
+    );
+    final last = headers.length - 1;
+    return Table(
+      border: TableBorder(top: rule, bottom: rule, horizontalInside: rule),
+      columnWidths: {
+        for (var i = 0; i < last; i++) i: const FlexColumnWidth(),
+        last: const IntrinsicColumnWidth(),
+      },
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      children: [
+        TableRow(
+          children: [
+            for (final header in headers)
+              cell(Text(header, style: const TextStyle(fontWeight: MonoScale.bold))),
+          ],
+        ),
+        for (final row in rows)
+          TableRow(
+            children: [
+              for (var i = 0; i < headers.length; i++)
+                cell(i < row.length ? row[i] : const SizedBox.shrink()),
+            ],
+          ),
+      ],
+    );
+  }
+}

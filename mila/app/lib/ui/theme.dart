@@ -24,6 +24,7 @@ final class MonoTheme extends InheritedWidget {
 ThemeData monoThemeData(MonoTokens tokens, Brightness brightness) {
   final text = TextStyle(
     fontFamily: MonoScale.fontFamily,
+    fontFamilyFallback: MonoScale.fontFamilyFallback,
     fontSize: MonoScale.fontSize,
     height: MonoScale.lineHeight,
     fontWeight: MonoScale.normal,
@@ -75,6 +76,7 @@ ThemeData monoThemeData(MonoTokens tokens, Brightness brightness) {
     brightness: brightness,
     colorScheme: scheme,
     fontFamily: MonoScale.fontFamily,
+    fontFamilyFallback: MonoScale.fontFamilyFallback,
     scaffoldBackgroundColor: tokens.background,
     canvasColor: tokens.background,
     splashFactory: NoSplash.splashFactory,

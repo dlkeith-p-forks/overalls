@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mila/app.dart';
@@ -13,16 +11,9 @@ import 'package:mila/transport/fake_porsche.dart';
 import 'package:mila/ui/theme.dart';
 import 'package:mila_transport/mila_transport.dart';
 
-const String _host = 'overalls.example';
+import 'support/fonts.dart';
 
-Future<void> _loadFonts() async {
-  final loader = FontLoader('JetBrains Mono');
-  for (final weight in ['500', '500-italic', '600', '800']) {
-    final bytes = File('assets/fonts/jetbrains-mono-$weight.ttf').readAsBytesSync();
-    loader.addFont(Future.value(ByteData.sublistView(Uint8List.fromList(bytes))));
-  }
-  await loader.load();
-}
+const String _host = 'overalls.example';
 
 const String _box = '0d9cc041-9db2-4e4c-b28b-1e41d7f472c1';
 const String _term = '019a0f73-1111-4222-8333-444455556666';
@@ -82,7 +73,7 @@ Future<void> _go(WidgetTester tester, String path) async {
 }
 
 void main() {
-  setUpAll(_loadFonts);
+  setUpAll(loadBundledFonts);
 
   testWidgets('machines, light', (tester) async {
     await _machines(tester, appearance: Appearance.light);
@@ -97,6 +88,18 @@ void main() {
   testWidgets('machines, Arabic', (tester) async {
     await _machines(tester, appearance: Appearance.light, locale: const Locale('ar'));
     await expectLater(find.byType(MaterialApp), matchesGoldenFile('goldens/machines_ar.png'));
+  });
+
+  // The Info tab: resize and clone, and the sharing table (MonoTable).
+  testWidgets('machine info and sharing, light', (tester) async {
+    final fake = await _machines(tester, appearance: Appearance.light);
+    fake.shares[_box] = {'ops@$_host': 'operator', 'viewer@$_host': 'viewer'};
+    await _go(tester, machinePath(const Deployment(_host), _box));
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/machine_info_light.png'),
+    );
+    await _go(tester, machinesPath(const Deployment(_host)));
   });
 
   // Right-to-left layout of the M2/M3 screens; the terminal emulator itself

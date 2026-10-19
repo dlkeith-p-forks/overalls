@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mila/ui/tokens.dart';
 import 'package:mila/ui/widgets.dart';
+
+import 'support/fonts.dart';
 
 /// Patterns The Monospace Web forbids outside `lib/ui/tokens.dart`
 /// (ADR-0161, ADR-0226): colour literals, icon fonts, rounded corners,
@@ -29,58 +30,10 @@ double _contrast(Color a, Color b) {
   return (max(la, lb) + 0.05) / (min(la, lb) + 0.05);
 }
 
-/// The code points a TrueType font maps, from its cmap format 4 and 12 tables.
-Set<int> _cmap(Uint8List font) {
-  final data = ByteData.sublistView(font);
-  final tables = data.getUint16(4);
-  var cmap = -1;
-  for (var i = 0; i < tables; i++) {
-    final record = 12 + 16 * i;
-    if (String.fromCharCodes(font.sublist(record, record + 4)) == 'cmap') {
-      cmap = data.getUint32(record + 8);
-    }
-  }
-  expect(cmap, isNot(-1));
-  final points = <int>{};
-  final subtables = data.getUint16(cmap + 2);
-  for (var i = 0; i < subtables; i++) {
-    final offset = cmap + data.getUint32(cmap + 4 + 8 * i + 4);
-    switch (data.getUint16(offset)) {
-      case 4:
-        final segments = data.getUint16(offset + 6) ~/ 2;
-        final ends = offset + 14;
-        final starts = ends + 2 * segments + 2;
-        final deltas = starts + 2 * segments;
-        final ranges = deltas + 2 * segments;
-        for (var s = 0; s < segments; s++) {
-          final end = data.getUint16(ends + 2 * s);
-          final start = data.getUint16(starts + 2 * s);
-          final delta = data.getInt16(deltas + 2 * s);
-          final range = data.getUint16(ranges + 2 * s);
-          for (var c = start; c <= end && c != 0xFFFF; c++) {
-            final glyph = range == 0
-                ? (c + delta) & 0xFFFF
-                : data.getUint16(ranges + 2 * s + range + 2 * (c - start));
-            if (glyph != 0) points.add(c);
-          }
-        }
-      case 12:
-        final groups = data.getUint32(offset + 12);
-        for (var g = 0; g < groups; g++) {
-          final group = offset + 16 + 12 * g;
-          for (var c = data.getUint32(group); c <= data.getUint32(group + 4); c++) {
-            points.add(c);
-          }
-        }
-    }
-  }
-  return points;
-}
-
 void main() {
   test('every glyph Mila may render is drawn by every bundled weight', () {
     for (final weight in ['500', '500-italic', '600', '800']) {
-      final points = _cmap(File('assets/fonts/jetbrains-mono-$weight.ttf').readAsBytesSync());
+      final points = cmap(File('assets/fonts/jetbrains-mono-$weight.ttf').readAsBytesSync());
       expect(points.length, greaterThan(1000), reason: weight);
       for (final glyph in Glyph.values) {
         expect(points.contains(glyph.char.runes.single), glyph.inFont, reason: '$weight $glyph');

@@ -51,3 +51,6 @@ app.*.map.json
 /lib/l10n/app_localizations*.dart
 # Hegel example database.
 .hegel/
+
+# Pinned Noto fallbacks, linked from the Nix store by devenv (ADR-0207).
+/assets/fonts/noto

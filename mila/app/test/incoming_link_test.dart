@@ -55,7 +55,10 @@ void main() {
     expect(
       fake.received
           .skip(sent.length)
-          .every((line) => line.startsWith('ls') || line.startsWith('show')),
+          .every(
+            (line) =>
+                line.startsWith('ls') || line.startsWith('show') || line.startsWith('share show'),
+          ),
       isTrue,
     );
   });

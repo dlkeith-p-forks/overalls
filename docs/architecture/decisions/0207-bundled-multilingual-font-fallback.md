@@ -99,6 +99,13 @@ conversion and checks asset integrity without changing runtime dependencies.
 The [localization review](../reviews/2026-10-19-localization-feature-catalogs.md)
 records executed checks separately from outstanding browser evidence.
 
+Mila applies the same faces
+([ADR-0226](0226-monospace-web-on-flutter.md)). Its
+[font derivation](../../../nix/domains/artifacts/mila/fonts.nix) fetches the
+original TrueType and OpenType sources pinned in this manifest by their
+recorded digests, because Flutter cannot read WOFF2, and ships each with its
+OFL notice.
+
 Implementation remains partial until current packaged browser evidence establishes
 the stated script, theme and layout scope. Asset presence and structural catalog
 coverage do not establish native-script visual acceptance.

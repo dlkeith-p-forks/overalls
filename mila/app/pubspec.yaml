@@ -32,6 +32,18 @@ flutter:
   # Material supplies widgets only; no Material icon font is shipped (ADR-0226).
   uses-material-design: false
   generate: true
+  # The fonts' SIL Open Font License notices travel with the fonts; main.dart
+  # registers them with the licence registry.
+  assets:
+    - assets/fonts/jetbrainsmono-OFL.txt
+    - assets/fonts/noto/noto-mono-OFL.txt
+    - assets/fonts/noto/noto-arabic-OFL.txt
+    - assets/fonts/noto/noto-devanagari-OFL.txt
+    - assets/fonts/noto/noto-bengali-OFL.txt
+    - assets/fonts/noto/noto-telugu-OFL.txt
+    - assets/fonts/noto/noto-tamil-OFL.txt
+    - assets/fonts/noto/noto-symbols-OFL.txt
+    - assets/fonts/noto/noto-cjk-OFL.txt
   fonts:
     - family: JetBrains Mono
       fonts:
@@ -44,3 +56,31 @@ flutter:
           weight: 600
         - asset: assets/fonts/jetbrains-mono-800.ttf
           weight: 800
+    # Script fallbacks behind JetBrains Mono (ADR-0207): the upstream bytes
+    # Marshall's font manifest pins, linked into the gitignored assets/fonts/noto
+    # by devenv and copied there by the Nix builds. MonoScale.fontFamilyFallback
+    # lists them in this order.
+    - family: Overalls Noto Mono
+      fonts:
+        - asset: assets/fonts/noto/noto-mono.ttf
+    - family: Overalls Noto Arabic
+      fonts:
+        - asset: assets/fonts/noto/noto-arabic.ttf
+    - family: Overalls Noto Devanagari
+      fonts:
+        - asset: assets/fonts/noto/noto-devanagari.ttf
+    - family: Overalls Noto Bengali
+      fonts:
+        - asset: assets/fonts/noto/noto-bengali.ttf
+    - family: Overalls Noto Telugu
+      fonts:
+        - asset: assets/fonts/noto/noto-telugu.ttf
+    - family: Overalls Noto Tamil
+      fonts:
+        - asset: assets/fonts/noto/noto-tamil.ttf
+    - family: Overalls Noto Symbols
+      fonts:
+        - asset: assets/fonts/noto/noto-symbols.ttf
+    - family: Overalls Noto CJK
+      fonts:
+        - asset: assets/fonts/noto/noto-cjk.otf

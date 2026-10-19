@@ -68,11 +68,29 @@ packages, and the devenv `mila:dartssh2` task, `mila-check` script and
 checks carry `meta.ci`, so CI selects them. The subsequent `mila-porsche`
 run passed within the source scope recorded in the
 [M1 review](../reviews/2026-10-18-mila-m1.md); it does not establish a passing
-latest merged tree. There is no Android Nix build.
+latest merged tree.
+
+Optional Android build (2026-10-19):
+[`nix/domains/artifacts/mila/android.nix`](../../../nix/domains/artifacts/mila/android.nix)
+is the flake package `tool-mila-android`. It is not a check, so CI never
+selects it. It reuses the Linux package's source, pub lock, patched dartssh2
+and assets. It adds androidenv from the pinned nixpkgs (platform 36, build-tools
+36.0.0, NDK 28.2.13676358), JDK 17 and Gradle 9. Gradle dependencies are
+fixed by a recorded mitm-cache lock,
+[`android-deps.json`](../../../nix/domains/artifacts/mila/android-deps.json).
+One local sandboxed build produced an arm64 release APK signed with the debug
+key. **Gap:** the APK has not been installed or run, it has no FCM
+configuration, and store signing stays outside Nix.
+
+[`fonts.nix`](../../../nix/domains/artifacts/mila/fonts.nix) supplies the
+ADR-0207 Noto faces to every Mila build. The devenv `mila:fonts` task links the
+same faces for local runs.
 
 ## Open questions
 
-Whether an Android Nix build (androidenv, JDK 17) is worth its cache cost.
+Whether the Android build should enter CI. The derivation exists and builds
+locally, but each Gradle-side dependency change needs its lock re-recorded
+with network access, and its cache cost has not been measured.
 
 ## Related decisions
 

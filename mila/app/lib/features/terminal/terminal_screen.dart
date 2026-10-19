@@ -101,6 +101,7 @@ class TerminalScreen extends ConsumerWidget {
                   theme: monoTerminalTheme(tokens),
                   textStyle: const TerminalStyle(
                     fontFamily: MonoScale.fontFamily,
+                    fontFamilyFallback: MonoScale.fontFamilyFallback,
                     fontSize: MonoScale.fontSize - 1,
                     height: MonoScale.lineHeight,
                   ),
