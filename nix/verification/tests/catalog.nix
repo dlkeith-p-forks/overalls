@@ -190,6 +190,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   native-reset-probes = import ./evaluation/native-reset-probes.nix { pkgs = buildPkgs; inherit packages; };
   native-freebsd-reset = import ./machines/native-reset { pkgs = testPkgs; inherit packages; };
   android-emulator-software = import ./machines/android-emulator { pkgs = testPkgs; inherit packages; };
+  android-guest-unit = import ./evaluation/android-guest.nix { pkgs = buildPkgs; inherit packages; };
   native-freebsd-transport = import ./machines/native-transport { pkgs = testPkgs; inherit packages; };
   native-freebsd-services = import ./machines/native-services { pkgs = testPkgs; inherit packages; };
   github-tools-freebsd-retained = import ./machines/native-services {
