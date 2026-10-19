@@ -414,6 +414,44 @@ defmodule ZFSGuestFixture do
         console(config, spec, guest_prompt_commands())
         console(config, spec, manually_created_user_prompt_commands())
 
+      "android-start" ->
+        :ok = Lilly.Network.setup(network)
+        :ok = start(config, pool, image, spec, generation, deadline(120_000))
+        await(fn -> Observation.running?(config, pool, spec) end, deadline(60_000))
+        {:ok, boot} = Boot.read(Path.join(config.state_dir, spec.id))
+
+        :ok =
+          case Readiness.wait(
+                 Path.join(Jail.root(pool, spec), "v.sock"),
+                 Boot.expectation(boot),
+                 600_000
+               ) do
+            {:ok, _receipt} -> :ok
+            error -> raise "Android guest readiness failed: #{inspect(error)}"
+          end
+
+        :pass =
+          diagnostic_console(
+            config,
+            spec,
+            "systemctl is-active --quiet overalls-android-emulator.service && " <>
+              "systemctl is-active --quiet overalls-android-display.service && " <>
+              "systemctl is-active --quiet overalls-android-display-vsock.service && " <>
+              "test ! -e /dev/kvm && " <>
+              "pgrep -af '/emulator/emulator' | grep -F -- '-no-accel' && " <>
+              "pgrep -af '/emulator/emulator' | grep -F -- '-gpu swiftshader_indirect' && " <>
+              "ss -ltn | grep -F ':5901' && " <>
+              "adb -s emulator-5554 shell getprop ro.kernel.qemu | tr -d '\\r' | grep -Fx 1"
+          )
+
+        IO.puts(JSON.encode!(%{image_id: image.id, generation: generation, android: true}))
+
+      "android-stop" ->
+        :ok = Driver.stop(config, pool, spec, generation: generation)
+
+      "android-delete" ->
+        :ok = Driver.delete(config, pool, spec, generation: generation)
+
       "reject-readiness" ->
         {:error, :readiness_unconfirmed} =
           Driver.ready(config, pool, spec,

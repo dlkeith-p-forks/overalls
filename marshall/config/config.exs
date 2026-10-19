@@ -108,6 +108,7 @@ config :marshall, Oban,
     mail: 2,
     maintenance: 2,
     github: 2,
+    notifications: 2,
     certificates: [limit: 1, paused: true]
   ],
   lifeline: [rescue_after: {2, :hours}],
@@ -195,7 +196,8 @@ config :marshall,
     Marshall.Agents,
     Marshall.Threads,
     Marshall.Administration,
-    Marshall.Scim
+    Marshall.Scim,
+    Marshall.Notifications
   ],
   capacity_freshness_ms: 5_000,
   pool_busy_grace_ms: 15_000,

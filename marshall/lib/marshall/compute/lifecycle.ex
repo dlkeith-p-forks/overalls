@@ -66,6 +66,15 @@ defmodule Marshall.Compute.Lifecycle do
     )
   end
 
+  @doc "Trusted SCIM cleanup pauses an inactive user's machine before the grace deadline."
+  @spec pause_for_scim(String.t(), String.t(), String.t()) :: {:ok, term()} | {:error, term()}
+  def pause_for_scim(user_id, vm_id, request_key) do
+    execute(
+      %{vm_id: vm_id, kind: :pause, idempotency_key: request_key},
+      %{actor: %Marshall.Accounts.User{id: user_id}, scim_id: user_id}
+    )
+  end
+
   @doc "Narrow durable wake for a prompt under fresh VM write authority."
   # @cc [owner:ghuntley,label:security;recovery] lifecycle-agent-wake-narrow
   # Prompt admission MUST retain current write authority and durable demand in
@@ -323,6 +332,13 @@ defmodule Marshall.Compute.Lifecycle do
 
       _ ->
         Ledger.rollback(:forbidden)
+    end
+  end
+
+  defp authorize!(vm, %{scim_id: id}) do
+    case Marshall.Accounts.Security.current(id) do
+      %{id: ^id, active: false, deleted_at: nil} when vm.owner_id == id -> :ok
+      _ -> Ledger.rollback(:forbidden)
     end
   end
 
