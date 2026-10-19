@@ -5,6 +5,44 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::sync::atomic::{AtomicUsize, Ordering};
 
+pub const CUSTODIAN_ACCOUNT_LIMIT: usize = 64;
+
+/// A bounded account registry retains ownership independent of individual streams.
+/// Entries are never evicted implicitly, including empty or quarantined slots.
+pub struct CustodianAccounts<T> {
+    entries: std::sync::Mutex<std::collections::BTreeMap<u32, std::sync::Arc<std::sync::Mutex<T>>>>,
+}
+
+impl<T> Default for CustodianAccounts<T> {
+    fn default() -> Self {
+        Self {
+            entries: std::sync::Mutex::new(std::collections::BTreeMap::new()),
+        }
+    }
+}
+
+impl<T> CustodianAccounts<T> {
+    /// @cc [owner:ghuntley,label:security;capacity] windows-custodian-capacity-ownership
+    /// Admission MUST charge one of at most 64 stable account slots before
+    /// launching. Concurrent admissions for one UID MUST share the same lock
+    /// and retained state. Full or poisoned registries MUST refuse; dropping a
+    /// connection reference MUST NOT evict or release its worker's ownership.
+    pub fn slot(
+        &self,
+        uid: u32,
+        initial: impl FnOnce() -> T,
+    ) -> Result<std::sync::Arc<std::sync::Mutex<T>>, Refusal> {
+        let mut entries = self.entries.lock().map_err(|_| Refusal::Custody)?;
+        if !entries.contains_key(&uid) && entries.len() >= CUSTODIAN_ACCOUNT_LIMIT {
+            return Err(Refusal::Capacity);
+        }
+        Ok(entries
+            .entry(uid)
+            .or_insert_with(|| std::sync::Arc::new(std::sync::Mutex::new(initial())))
+            .clone())
+    }
+}
+
 pub const PIPE_LIMIT: usize = 128;
 
 /// Broker-wide custody budget shared by live pipes and cancelled operations.
@@ -235,6 +273,29 @@ pub fn verify_peer(
     }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum HeldWorkerDecision {
+    Reuse,
+    DrainDeadJob,
+}
+
+/// @cc [owner:ghuntley,label:security;recovery] windows-custodian-live-probe-refusal
+/// A retained live root's failed readiness or pipe-custody probe MUST refuse
+/// without authorizing termination. Only a conclusively dead root whose exact
+/// job handle is still held MAY authorize whole-job drainage before replacement.
+/// Process-observation errors MUST propagate without probing or cleanup.
+pub fn held_worker_decision(
+    root_running: Result<bool, Refusal>,
+    probe: impl FnOnce() -> Result<(), Refusal>,
+) -> Result<HeldWorkerDecision, Refusal> {
+    if root_running? {
+        probe()?;
+        Ok(HeldWorkerDecision::Reuse)
+    } else {
+        Ok(HeldWorkerDecision::DrainDeadJob)
+    }
+}
+
 /// Missing metadata never authorizes destructive cleanup of a possible worker.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum RecoveryDecision {
@@ -407,6 +468,96 @@ pub fn command_line(arguments: &[String]) -> Result<Vec<u16>, Refusal> {
 mod tests {
     use super::*;
     use proptest::prelude::*;
+
+    #[test]
+    fn custody_map_retains_owner_after_stream_references_drop() {
+        struct Owner(std::sync::Arc<AtomicUsize>);
+        impl Drop for Owner {
+            fn drop(&mut self) {
+                self.0.fetch_add(1, Ordering::SeqCst);
+            }
+        }
+        let dropped = std::sync::Arc::new(AtomicUsize::new(0));
+        let registry = CustodianAccounts::default();
+        let stream = registry.slot(200000, || Owner(dropped.clone())).unwrap();
+        drop(stream);
+        assert_eq!(dropped.load(Ordering::SeqCst), 0);
+        let retained = registry
+            .slot(200000, || panic!("must reuse retained owner"))
+            .unwrap();
+        drop(retained);
+        assert_eq!(dropped.load(Ordering::SeqCst), 0);
+        drop(registry);
+        assert_eq!(dropped.load(Ordering::SeqCst), 1);
+    }
+
+    #[test]
+    fn concurrent_account_admission_shares_one_serialized_owner() {
+        let registry = CustodianAccounts::default();
+        let initialized = AtomicUsize::new(0);
+        std::thread::scope(|scope| {
+            for _ in 0..32 {
+                scope.spawn(|| {
+                    let slot = registry
+                        .slot(200000, || {
+                            initialized.fetch_add(1, Ordering::SeqCst);
+                            0_u32
+                        })
+                        .unwrap();
+                    *slot.lock().unwrap() += 1;
+                });
+            }
+        });
+        assert_eq!(initialized.load(Ordering::SeqCst), 1);
+        assert_eq!(*registry.slot(200000, || 0).unwrap().lock().unwrap(), 32);
+    }
+
+    proptest! {
+        #[test]
+        fn full_custodian_registry_never_evicts_retained_accounts(uids in prop::collection::vec(0_u32..128, 1..256)) {
+            let registry = CustodianAccounts::default();
+            let mut accepted = std::collections::BTreeSet::new();
+            for uid in uids {
+                let result = registry.slot(uid, || uid);
+                if accepted.contains(&uid) || accepted.len() < CUSTODIAN_ACCOUNT_LIMIT {
+                    let slot = result.unwrap();
+                    prop_assert_eq!(*slot.lock().unwrap(), uid);
+                    accepted.insert(uid);
+                } else {
+                    prop_assert!(matches!(result, Err(Refusal::Capacity)));
+                }
+            }
+            for uid in accepted {
+                prop_assert_eq!(*registry.slot(uid, || u32::MAX).unwrap().lock().unwrap(), uid);
+            }
+        }
+    }
+
+    #[test]
+    fn live_root_probe_errors_never_authorize_destructive_recovery() {
+        for reason in [
+            Refusal::Custody,
+            Refusal::Account,
+            Refusal::Package,
+            Refusal::Readiness,
+            Refusal::Capacity,
+            Refusal::Transport,
+        ] {
+            assert_eq!(held_worker_decision(Ok(true), || Err(reason)), Err(reason));
+            assert_eq!(
+                held_worker_decision(Err(reason), || panic!("ambiguous root must not probe")),
+                Err(reason)
+            );
+        }
+        assert_eq!(
+            held_worker_decision(Ok(false), || panic!("dead root has no pipe authority")),
+            Ok(HeldWorkerDecision::DrainDeadJob)
+        );
+        assert_eq!(
+            held_worker_decision(Ok(true), || Ok(())),
+            Ok(HeldWorkerDecision::Reuse)
+        );
+    }
 
     fn sid(rid: u32) -> AccountSid {
         let mut bytes = vec![1, 5, 0, 0, 0, 0, 0, 5];

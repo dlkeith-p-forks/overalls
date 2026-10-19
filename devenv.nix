@@ -30,6 +30,9 @@ let
   # (ADR-0227).
   milaFlutter = pkgs.flutterPackages.v3_47;
   milaDartssh2 = (import ./nix/platform/dartssh2.nix pkgs pkgs).dartssh2-overalls;
+  # The pinned Noto fallbacks Mila bundles (ADR-0207); the Nix builds copy
+  # the same store path into the app.
+  milaNotoFonts = import ./nix/domains/artifacts/mila/fonts.nix { inherit pkgs; };
 in
 {
   outputs.guest = import ./nix/domains/artifacts/guest { inherit pkgs; };
@@ -138,6 +141,12 @@ in
     exec = ''
       mkdir -p "$DEVENV_ROOT/mila/packages/mila_transport/.nix"
       ln -sfn ${milaDartssh2} "$DEVENV_ROOT/mila/packages/mila_transport/.nix/dartssh2"
+    '';
+    before = [ "devenv:enterShell" ];
+  };
+  tasks."mila:fonts" = {
+    exec = ''
+      ln -sfn ${milaNotoFonts} "$DEVENV_ROOT/mila/app/assets/fonts/noto"
     '';
     before = [ "devenv:enterShell" ];
   };

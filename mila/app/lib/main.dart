@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mila_transport/mila_transport.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,6 +16,7 @@ import 'features/web/web_controller.dart';
 import 'integration_probe.dart';
 import 'transport/fake_porsche.dart';
 import 'transport/platform.dart';
+import 'ui/font_licences.dart';
 
 /// `--dart-define=MILA_DEMO=true` runs against an in-memory deployment so the
 /// Linux build can be exercised without a control plane.
@@ -26,6 +28,7 @@ const bool _integration = bool.fromEnvironment('MILA_INTEGRATION');
 
 Future<void> main(List<String> arguments) async {
   WidgetsFlutterBinding.ensureInitialized();
+  registerFontLicences(rootBundle);
   if (!_demo) {
     final connector = await platformConnector();
     final data = await milaDataDirectory();

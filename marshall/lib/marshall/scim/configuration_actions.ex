@@ -17,6 +17,7 @@ defmodule Marshall.Scim.ConfigurationActions do
         Security.require_admin!(actor)
         enabled = input.arguments[:enabled]
         rotate? = input.arguments[:rotate_token]
+        oidc = Map.take(input.arguments, [:oidc_issuer, :oidc_client_id, :oidc_client_secret])
         config = current!()
         token = if rotate? or is_nil(config), do: generate_token(), else: nil
 
@@ -25,9 +26,11 @@ defmodule Marshall.Scim.ConfigurationActions do
             if config.state == :enabled and not enabled do
               Ledger.update!(config, :disable, %{})
             else
-              if config.state == :disabled and enabled,
-                do: Ledger.update!(config, :enable, %{}),
-                else: config
+              if config.state == :disabled and enabled do
+                Ledger.update!(config, :enable, %{})
+              else
+                config
+              end
             end
           else
             Ledger.create!(Configuration, :create, %{
@@ -42,6 +45,11 @@ defmodule Marshall.Scim.ConfigurationActions do
         end
 
         config =
+          config
+          |> Ash.Changeset.for_update(:rotate_token, oidc)
+          |> Ash.update!(actor: actor)
+
+        config =
           if is_binary(token) and not is_nil(config) do
             Ledger.update!(config, :rotate_token, %{token_digest: Auth.digest(token)})
           else
@@ -54,7 +62,7 @@ defmodule Marshall.Scim.ConfigurationActions do
           Marshall.Events.emit("scim.configuration_changed", enabled: enabled_state)
         end)
 
-        %{enabled: config.state == :enabled, token: if(rotate?, do: token)}
+        %{enabled: config.state == :enabled, token: if(rotate?, do: token), oidc: oidc}
       end,
       actor
     )

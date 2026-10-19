@@ -109,8 +109,60 @@ defmodule MarshallWeb.IntegrationsLive do
     end
   end
 
+  def handle_event("github-disconnect", _params, socket) do
+    case Marshall.GitHub.disconnect(socket.assigns.current_user) do
+      {:ok, _status} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, dgettext("integrations", "GitHub disconnected."))
+         |> refresh()}
+
+      {:error, _reason} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, dgettext("integrations", "Could not disconnect GitHub."))
+         |> refresh()}
+    end
+  end
+
+  def handle_event("github-detach", %{"github_machine" => %{"vm_id" => vm_id}}, socket) do
+    github_machine(socket, vm_id, true)
+  end
+
+  def handle_event("github-attach", %{"vm-id" => vm_id}, socket) do
+    github_machine(socket, vm_id, false)
+  end
+
   def handle_event(_, _, socket),
     do: {:noreply, put_flash(socket, :error, dgettext("integrations", "Invalid request."))}
+
+  defp github_machine(socket, vm_id, excluded?) do
+    case Marshall.GitHub.set_excluded(socket.assigns.current_user, vm_id, excluded?) do
+      {:ok, _status} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, github_machine_message(excluded?, :success))
+         |> refresh()}
+
+      {:error, _reason} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, github_machine_message(excluded?, :error))
+         |> refresh()}
+    end
+  end
+
+  defp github_machine_message(true, :success),
+    do: dgettext("integrations", "Machine detached.")
+
+  defp github_machine_message(false, :success),
+    do: dgettext("integrations", "Machine attached.")
+
+  defp github_machine_message(true, :error),
+    do: dgettext("integrations", "Could not update the GitHub connection.")
+
+  defp github_machine_message(false, :error),
+    do: dgettext("integrations", "Could not update the GitHub connection.")
 
   defp refresh(socket) do
     github =

@@ -5,14 +5,14 @@ index 513c800..5ba1df9 100644
 @@ -9,6 +9,11 @@ class SSHHostkeyType extends SSHAlgorithm {
    static const ecdsa521 = SSHHostkeyType._('ecdsa-sha2-nistp521');
    static const ed25519 = SSHHostkeyType._('ssh-ed25519');
- 
+
 +  /// An OpenSSH Ed25519 host certificate. The key exchange signature is made
 +  /// by the certified leaf key; whether the certificate itself is trusted is
 +  /// decided by [SSHTransport.onVerifyHostKeyBlob].
 +  static const ed25519Cert = SSHHostkeyType._('ssh-ed25519-cert-v01@openssh.com');
 +
    const SSHHostkeyType._(this.name);
- 
+
    /// The name of the algorithm. For example, `"ssh-rsa`"`.
 diff --git a/lib/src/ssh_client.dart b/lib/src/ssh_client.dart
 index bd344b4..ffc8271 100644
@@ -21,7 +21,7 @@ index bd344b4..ffc8271 100644
 @@ -179,6 +179,11 @@ class SSHClient {
    /// trusted certificate store.
    final SSHHostkeyVerifyHandler? onVerifyHostKey;
- 
+
 +  /// Function called with the full host key blob, such as an OpenSSH host
 +  /// certificate, after its exchange signature verifies. When set, it MUST
 +  /// also accept the host.
@@ -53,7 +53,7 @@ index 4d9c7af..9b7627c 100644
 @@ -44,6 +44,14 @@ typedef SSHHostkeyVerifyHandler = FutureOr<bool> Function(
    Uint8List fingerprint,
  );
- 
+
 +/// Called with the negotiated host key algorithm and the complete host key
 +/// blob the server signed the exchange hash with, such as an OpenSSH host
 +/// certificate. Returns true to accept the host.
@@ -68,7 +68,7 @@ index 4d9c7af..9b7627c 100644
 @@ -99,6 +107,11 @@ class SSHTransport {
    /// hostkey is valid, false to reject key and disconnect.
    final SSHHostkeyVerifyHandler? onVerifyHostKey;
- 
+
 +  /// Function called with the full host key blob once its exchange signature
 +  /// verifies. When set, it MUST also return true for the host to be
 +  /// accepted, in addition to [onVerifyHostKey].
@@ -76,7 +76,7 @@ index 4d9c7af..9b7627c 100644
 +
    /// Function called when the transport is ready to send data.
    final SSHTransportReadyHandler? onReady;
- 
+
 @@ -147,6 +160,7 @@ class SSHTransport {
      this.printTrace,
      this.algorithms = const SSHAlgorithms(),
@@ -123,5 +123,5 @@ index 4d9c7af..9b7627c 100644
 +            ? await Future.value(onVerifyHostKey!(_hostkeyType!.name, fingerprint))
 +            : true);
      printDebug?.call('SSHTransport.onVerifyHostKey = $userVerified');
- 
+
      if (!userVerified) {

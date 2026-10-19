@@ -61,7 +61,8 @@ final class MachinesView {
   /// The last refresh failed; [machines] is the last good list.
   final bool failed;
 
-  /// Tracked requests by machine id.
+  /// Tracked requests by machine id, and a new machine's under
+  /// [newMachineRequest].
   final Map<String, RequestPoll> requests;
 
   /// Set while [machines] come from the offline snapshot rather than a
@@ -83,6 +84,12 @@ final class MachinesView {
     savedAt: live ? null : savedAt ?? this.savedAt,
   );
 }
+
+/// The [MachinesView.requests] key of a machine being created.
+const String newMachineRequest = 'new';
+
+/// Bytes in a gibibyte, the unit Porsche reads disk sizes in.
+const int gibibyte = 1024 * 1024 * 1024;
 
 /// Polls one request may use before Mila stops watching it.
 const int maximumPolls = 120;
@@ -160,23 +167,69 @@ final class MachinesController extends Notifier<MachinesView> {
   }
 
   /// Submits [action] on [machine] once and tracks it to a terminal state.
-  Future<RequestPoll> perform(Machine machine, MachineAction action) async {
+  Future<RequestPoll> perform(Machine machine, MachineAction action) {
+    final spec = catalog[action.command]!;
+    return _submit(
+      machine.id,
+      (requestId) => PorscheCommand(
+        action.command,
+        arguments: [machine.id],
+        options: {'json': true, 'request-id': requestId, if (spec.physical) 'no-wait': true},
+      ),
+    );
+  }
+
+  /// Creates a machine; its progress is tracked under [newMachineRequest].
+  /// Returns null without sending when a value would be refused.
+  Future<RequestPoll?> create({String? name, String? source, MachineShape? shape}) => _submitBuilt(
+    newMachineRequest,
+    (requestId) => createMachineCommand(
+      name: name,
+      source: source,
+      shape: shape ?? const MachineShape(),
+      requestId: requestId,
+    ),
+  );
+
+  /// Clones [machine]; progress is tracked on the source machine.
+  Future<RequestPoll?> clone(Machine machine, {String? name}) => _submitBuilt(
+    machine.id,
+    (requestId) => cloneMachineCommand(machine.id, name: name, requestId: requestId),
+  );
+
+  /// Resizes [machine]; null without sending when nothing changes, the
+  /// disk would shrink or a value would be refused.
+  Future<RequestPoll?> resize(Machine machine, MachineShape shape) => _submitBuilt(
+    machine.id,
+    (requestId) => resizeMachineCommand(
+      machine.id,
+      shape,
+      currentDiskGib: machine.diskBytes == null ? null : machine.diskBytes! ~/ gibibyte,
+      requestId: requestId,
+    ),
+  );
+
+  Future<RequestPoll?> _submitBuilt(String key, PorscheCommand? Function(String) build) async {
+    final command = build(allocateRequestId(ref.read(randomProvider)));
+    if (command == null) return null;
+    return _submit(key, (_) => command);
+  }
+
+  /// Sends the command [build] makes under a fresh request id once, then
+  /// observes it with `request show` until it is terminal, tracking it
+  /// under [key].
+  Future<RequestPoll> _submit(String key, PorscheCommand Function(String) build) async {
     final session = _session;
     if (session == null) {
       return RequestPoll.submitted('')
           .observe(const ChannelOutcome(PorscheExit.authority, ErrorReply(error: 'unauthorized')));
     }
-    final spec = catalog[action.command]!;
-    final requestId = allocateRequestId(ref.read(randomProvider));
-    final command = PorscheCommand(
-      action.command,
-      arguments: [machine.id],
-      options: {'json': true, 'request-id': requestId, if (spec.physical) 'no-wait': true},
-    );
+    final command = build(allocateRequestId(ref.read(randomProvider)));
+    final requestId = command.options['request-id']! as String;
     var poll = RequestPoll.submitted(requestId);
-    _track(machine.id, poll);
+    _track(key, poll);
     poll = poll.observe(await session.exec(command));
-    _track(machine.id, poll);
+    _track(key, poll);
     // A request still running after this many polls stays shown as accepted;
     // the next refresh reports its machine's state.
     while (!poll.terminal && poll.attempts < maximumPolls) {
@@ -187,7 +240,7 @@ final class MachinesController extends Notifier<MachinesView> {
         PorscheCommand('request show', arguments: [requestId], options: const {'json': true}),
       );
       poll = poll.observe(outcome);
-      _track(machine.id, poll);
+      _track(key, poll);
     }
     await refresh();
     return poll;

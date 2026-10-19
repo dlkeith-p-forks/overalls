@@ -74,7 +74,11 @@ def current_copy(vm: str) -> PlacementCopy:
 
 
 def guest_assertion(copy: PlacementRef, action: str) -> None:
-    host_for(copy).succeed(
+    # A restored VMM can report Running before Lilly has recreated the
+    # guest-vsock listener. Keep the user-visible assertion pending through
+    # that narrow handoff window instead of treating a transient connect
+    # refusal as a failed memory oracle.
+    host_for(copy).wait_until_succeeds(
         "fleet-relocation-guest " + shlex.quote(action) + " " + shlex.quote(copy["placement_id"]),
         timeout=240,
     )

@@ -1487,31 +1487,56 @@ The Windows `windows-v1` contract deliberately excludes the browser editor.
 Readiness, roster SSH, ConPTY, workspace and agent evidence therefore remains
 scoped to those capabilities. The staged editor runtime/source keeps
 `editor_capability = false`; the portable broker model and Win32 launcher add
-no authority by their presence. If later admitted, identity would be checked
-at every layer: current MMDS execution and roster pair, the SSH authorizer's
-shared account lock, authenticated gateway preface, canonical local SAM SID and
-profile, SYSTEM-owned job, exact process/PID-time/executable/pipe custody, and
-an immutable receipt before reuse. Foreign, stale or incomplete custody refuses
-without terminating processes or deleting personal files. No native Windows
-listener, image admission or browser origin has been run, so sign-in,
-edit/save/readback, revocation and restart recovery remain gaps. Enabling an
-editor on Windows is a new architecture decision and requires reviewed image,
-agent/protocol, broker and browser evidence rather than an inference from
-existing guest readiness.
-
-[ADR-0200](repo:docs/architecture/decisions/0200-windows-browser-editor-candidate.md)
-records the accepted Windows candidate design, including bounded cancelled-pipe custody,
-package/PATH ACL checks and the fixed SYSTEM task. Its separate
+no authority by their presence.
+[ADR-0208](repo:docs/architecture/decisions/0208-windows-editor-job-custodian.md)
+fully replaces ADR-0200's Windows candidate design while preserving its source,
+identity, immutable image and separate promotion requirements. Its separate
 `windows-editor-v1` manifest v7 requires an immutable editor descriptor; bundle v4
 retains it across placement-local starts. Existing `windows-v1` stays false and
-the candidate remains outside the selected production catalog. Native account,
-task restart, sustained cancellation under worker lifecycle and authenticated
-browser execution remain unrecorded. The native Code OSS bundle passed reviewed
-import; its immutable product policy, signed extensions, licenses and provenance
-were checked. Thirty actual Windows library tests cover named-pipe
-timeout/cancellation and ACL descriptor/refusal checks, and thirteen native
-SYSTEM fixture cases cover installer/task custody. These bounded results and
-harness presence cannot grant deployed image acceptance.
+the candidate remains outside the selected production catalog.
+
+The candidate's layers are current Marshall login/write and immutable release
+authority, Audi's renewed transport lease, Lilly's current execution/gateway fence,
+the gateway-only TCP 4444 broker preface, and a fixed local SYSTEM-only pipe to an
+independent SYSTEM custodian. Both local peers check kernel PID, creation time,
+SYSTEM token and the exact pinned executable; both independently validate MMDS
+boot/release authority. The custodian runs Lyra's locked roster authorizer,
+requires the canonical local SAM SID and matching S4U primary token, checks
+profile/package/PATH custody, and owns atomic suspended job-list launch without
+inherited handles. Its complete SID-bound receipt precedes resume/live commitment.
+No job handle leaves the custodian. Reuse checks the exact root PID/time,
+executable, token, job and pipe-server identity. Foreign, stale or incomplete
+custody refuses without terminating foreign processes or deleting personal files.
+
+Two fixed private SYSTEM tasks supervise the roles independently, with separate
+copied trust bundles and only the broker's gateway-only firewall rule. The
+custodian retains at most 64 lifetime account slots, including empty and
+quarantined entries. Each role has its own 128-slot budget for live pipes and
+undrained cancellation state. Exhaustion must refuse new work while preserving
+existing custody. A retained custodian drains its exact job to zero descendants
+before replacement only after its held root is verified dead; live-root probe and
+process-observation errors refuse without termination. Failed accounting
+quarantines. A fresh custodian refuses
+all prior same-boot receipts until a new physical boot namespace; accepted
+same-boot crash replacement remains incomplete. Full independent-role peer refusal,
+personal launch rollback, sustained cancellation/exhaustion and custodian
+death/root-child termination bounds still need native execution.
+
+The native Code OSS bundle passed reviewed import; product policy, signed
+extensions, licenses and provenance were checked. Thirty earlier Windows library
+tests cover named-pipe timeout/cancellation and ACL descriptor/refusal checks;
+thirteen earlier SYSTEM fixture cases cover installer/task custody. The old
+stock browser fixture opened the workbench, saved a file and used PowerShell PTY,
+then failed broker recovery. The exact new 38-test library passed as SYSTEM with
+verified exit zero and scratch cleanup. It includes a disposable suspended SYSTEM
+root's atomic-job/kill-on-close case and exclusive-pipe/same-process identity/
+forged-time cases; it does not exercise personal S4U Code OSS, descendants or
+independently scheduled roles. New two-task installation and harness builds pass
+static checks, but no exact-image complete browser acceptance is recorded.
+Two-account separation, current revocation and recovery remain explicit
+gaps in the [custodian review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
+These bounded results cannot grant deployed image acceptance or establish
+confidentiality from guest Administrators or physical VM isolation.
 
 The approved editor registry is finite and target-specific. A valid Linux tuple
 cannot authorize a Windows image or vice versa. Each immutable asset receipt is

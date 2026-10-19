@@ -53,6 +53,15 @@ let
     export LD_PRELOAD=${pkgs.nss_wrapper}/lib/libnss_wrapper.so
     exec ${pkgs.openssh}/bin/sshd "$@"
   '';
+  # The pinned Noto fallbacks (ADR-0207); pubspec.yaml declares them under
+  # the gitignored `assets/fonts/noto`, which devenv links to the same path.
+  notoFonts = import ./fonts.nix { inherit pkgs; };
+  copyNotoFonts = ''
+    rm -rf assets/fonts/noto
+    mkdir -p assets/fonts/noto
+    cp ${notoFonts}/* assets/fonts/noto/
+    chmod -R u+w assets/fonts/noto
+  '';
   # Run from a package directory beside packages/mila_transport.
   linkDartssh2 = transport: ''
     chmod u+w ${transport}
@@ -172,7 +181,7 @@ let
     pubspecLock = lib.importJSON (root + "/app/pubspec.lock.json");
     customSourceBuilders = patchedDartssh2;
     targetFlutterPlatform = "linux";
-    postPatch = hegelEngine + linkDartssh2 "../packages/mila_transport";
+    postPatch = hegelEngine + linkDartssh2 "../packages/mila_transport" + copyNotoFonts;
     flutterBuildFlags = [ "--dart-define=MILA_DEMO=${lib.boolToString false}" ];
     # The desktop entry claims overalls:// links; the runner passes the link
     # to Dart's main as its argument (ADR-0221).
@@ -246,7 +255,9 @@ let
     done
     touch $out
   '';
+  # Optional Android APK; a flake package only, never a CI check (ADR-0227).
+  android = import ./android.nix { inherit pkgs app; };
 in
 {
-  inherit app demo integration probe coreCheck transportCheck appCheck lockSync;
+  inherit app demo integration probe coreCheck transportCheck appCheck lockSync android;
 }

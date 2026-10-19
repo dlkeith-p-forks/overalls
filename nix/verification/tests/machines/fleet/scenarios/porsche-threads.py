@@ -4,8 +4,8 @@
 # Ingress domains. Prompt text MUST travel only on stdin and MUST NOT appear
 # in receipts; a watch MUST open through Marshall's subscription authority and
 # renew on heartbeat (revocation is covered by the BEAM transport test). Runs after
-# porsche.py's key approval and authorized dispatch, reusing its client keys,
-# known_hosts and porsche_arguments helper.
+# the complete porsche.py scenario, reusing its client keys, known_hosts and
+# porsche_arguments helper.
 from typing import TypedDict
 
 

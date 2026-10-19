@@ -48,5 +48,14 @@ inventory // {
       hosts = [];
       recoveryOnly = true;
     };
+  } // lib.optionalAttrs (!(builtins.hasAttr "overalls-susan" inventory.documents)) {
+    # Placeholder Susan push-relay values (ADR-0224). Recovery-only until a
+    # Susan host is chosen; that host's `host.json` credentials entry then
+    # takes over this document and `rekey` adds the host recipient.
+    overalls-susan = {
+      path = "secrets/overalls-susan.enc.json";
+      hosts = [];
+      recoveryOnly = true;
+    };
   };
 }

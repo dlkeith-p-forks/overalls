@@ -58,10 +58,10 @@ defmodule Marshall.Compute.CommandSnapshot do
         command
         |> Map.delete(:checkpoint)
         |> put_checkpoint(vm)
-        |> Map.delete(:git_identity)
-        |> put_git_identity(vm)
         |> Map.delete(:workspace_source)
         |> put_workspace_source(vm)
+        |> Map.delete(:git_identity)
+        |> put_git_identity(vm)
         |> OverallsProtocol.Execution.encode_command()
 
       Ash.Changeset.force_change_attribute(changeset, :command_snapshot, snapshot)
@@ -86,8 +86,8 @@ defmodule Marshall.Compute.CommandSnapshot do
     )
     |> Map.put(:slot, address.slot)
     |> put_checkpoint(vm)
-    |> put_git_identity(vm)
     |> put_workspace_source(vm)
+    |> put_git_identity(vm)
     |> OverallsProtocol.Execution.encode_command()
   end
 
@@ -131,6 +131,10 @@ defmodule Marshall.Compute.CommandSnapshot do
   # retained starts; no staging lookup or immutable-snapshot rewrite is allowed.
   # Explicitly supplied snapshots MUST use the authoritative stored source too;
   # caller-provided source data MUST NOT replace it or source an unsourced VM.
+  # Source validation runs before the independent Git identity capability check
+  # so a sourced start with multiple obsolete manifest capabilities reports the
+  # source-specific refusal required by ADR-0157; unsourced starts still reach
+  # the identity guard and retain its refusal reason.
   # The reference remains inert guest data (ADR-0157).
   @spec put_workspace_source(map(), VirtualMachine.t()) :: map()
   defp put_workspace_source(%{kind: kind} = fields, vm) when kind in [:provision, :start] do

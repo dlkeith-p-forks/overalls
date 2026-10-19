@@ -125,16 +125,28 @@ this status review, and the captured Alma/Arch receipts retain their earlier
 image and source scope.
 
 Windows has a reviewed native Code OSS bundle and a separately unselected
-candidate image; `windows-v1` retains `editor: false`. The portable model and
-Win32 launcher bind workers to MMDS boot identity, descriptor, placement, epoch,
-GuestAccount/UID, local SAM SID and origin, with SYSTEM-only jobs, profile-backed
-paths, exact process and named-pipe custody, and refusal of foreign or incomplete
-recovery. The candidate installer completed and a separate 2-vCPU/4096-MiB
-Firecracker boot reached Windows Server build 26100 SAC. These narrow results do
-not establish current readiness, image admission, browser sign-in,
-edit/save/readback, PTY, personal-worker or restart recovery. Exact identities
-and evidence digests remain in the
+candidate image; `windows-v1` retains `editor: false`.
+[ADR-0208](repo:docs/architecture/decisions/0208-windows-editor-job-custodian.md)
+separates the gateway-only SYSTEM broker from an independent SYSTEM custodian.
+The custodian owns personal SAM/S4U worker launch, complete SID-bound receipts,
+exact worker pipes and retained kill-on-close jobs. Both roles independently
+validate current MMDS boot/release authority and the other role's kernel process
+identity through one fixed local SYSTEM-only pipe. The custodian keeps at most
+64 stable account slots, including empty and quarantined reservations.
+
+The old design's stock native fixture opened the workbench, ran its extension,
+saved a file and used a real PowerShell PTY, then failed broker recovery. A
+bounded native diagnostic showed that closing its final job handle could leave
+the child alive while the job name disappeared. Those old-design observations
+do not accept the replacement. New custodian source and two-task installation
+exist, but a fresh custodian refuses every prior same-boot receipt until a new
+physical boot namespace because root exit alone cannot prove descendant drainage.
+Same-boot custodian recovery, two-account separation, current revocation and the
+complete exact-image browser journey remain gaps. No candidate is promoted.
+Exact earlier identities and evidence digests remain in the
 [cross-platform review](repo:docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md).
+The [custodian review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md)
+records the changed custody boundary and pending native acceptance.
 
 Every machine page (Terminal, Access, Settings, Agents, Resize and the Boot log view)
 shares one header. A bordered heading box carries the machine name, then an
@@ -1145,6 +1157,8 @@ Porsche gateway and adds no Marshall API: every command is an ordinary Porsche
 | Host acceptance | Only `ssh-ed25519-cert-v01@openssh.com`. The certificate must come from the pinned CA, name the management host and be inside its validity window. The check runs in key exchange, before user authentication. |
 | Sign-in | Porsche's browser key approval. Mila opens `approval_url` in the system browser and keeps the connection, re-checking `whoami` every 2 seconds. A link expires after 600 seconds and is never replaced while shown. |
 | Mutations | Submitted once with a client `porsche-<32 hex>` request id and `--no-wait`, then polled with `request show`; never resubmitted. |
+| Machines | The list offers a new machine with optional name, repository source, CPU, memory (MiB) and disk (GiB). The Info tab offers resize and clone. Resize refuses an empty change or a shrinking disk before sending. Managers also see sharing: `share show`, `share add EMAIL ROLE`, and `share remove` after confirmation. Marshall decides who may do each. |
+| Type | JetBrains Mono, with the ADR-0207 Noto faces bundled as fallbacks for Arabic, Indic, CJK and symbols. Flutter cannot read WOFF2, so Nix fetches the original TrueType and OpenType files that Marshall's manifest pins, checks their digests and ships each with its OFL notice. |
 | Links | `overalls://HOST/PATH` only navigates. Unknown deployments land on the deployment list; signed-out deployments reach only their sign-in screen. |
 | Language | One ARB catalog per Porsche locale, checked against `porsche/priv/gettext`. Egyptian Arabic, Hausa and Nigerian Pidgin have no Flutter framework catalog, so dialog and tooltip strings borrow Arabic or English while Mila's own strings stay in the locale; Egyptian Arabic keeps right-to-left direction. Terminal output and identifiers stay left to right. |
 

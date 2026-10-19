@@ -248,21 +248,52 @@ authorized. Provider readiness remains false until real keys replace them.
 
 ## Susan push relay
 
-`overalls-susan.enc.json` is **not yet created**: Susan's hosting is still open
-(ADR-0224) and no host recipient exists. When a Susan host is chosen, create the
-document under `overalls-susan.production` with the host's SSH Ed25519 age
-recipient and the recovery recipients, then point `services.susan.secretsFile`
-at it. The `services.overallsSecrets.bundles.susan` bundle publishes each value
-as a raw file, and systemd passes them to Susan as `LoadCredential=` files.
+`overalls-susan.enc.json` contains **placeholder values only**, under
+`overalls-susan.production`. They must be rotated before any real deployment:
+no APNs or FCM provider will accept them. Each value still passes Susan's own
+startup validation, so a test deployment could boot with them:
 
-| Key | Content | Checked at startup |
-| --- | --- | --- |
-| `APNS_KEY_P8` | APNs token-signing key (`.p8`, PKCS#8 EC P-256 PEM) | required when `apnsTopics` is set |
-| `APNS_KEY_ID` | 10-character key id of that `.p8` key | `[A-Z0-9]{10}` |
-| `APNS_TEAM_ID` | 10-character Apple developer team id | `[A-Z0-9]{10}` |
-| `FCM_SERVICE_ACCOUNT_JSON` | Google service-account JSON for FCM v1 | required when `fcmAppIds` is set; `token_uri` must be `https://oauth2.googleapis.com/token`; RSA ≥ 2048 |
-| `SUSAN_PUSH_KEY_SIGNING_KEY` | Push-key keyring JSON `{"active":N,"keys":{"N":"<base64url 32 bytes>"}}` | 1–16 distinct keys, ids 1–255, active id present |
-| `DATABASE_URL` | `postgres://`/`ecto://` URL of Susan's own database | database name `[a-z_][a-z0-9_]*` |
+- `APNS_KEY_P8` and the FCM `private_key` are throwaway P-256 and RSA-2048
+  PKCS#8 keys, generated for this document and never stored elsewhere.
+- `APNS_KEY_ID` is `PLACEHOLD1` and `APNS_TEAM_ID` is `PLACEHOLD2`.
+- The service account names `project_id` `placeholder` and
+  `client_email` `placeholder@placeholder.invalid`.
+- The keyring holds one random id-1 key.
+- `DATABASE_URL` is the local peer-authenticated socket database that
+  `services.susan.database.createLocally` creates.
+
+The plaintext marker `PLACEHOLDER_unencrypted` (excluded from encryption by
+SOPS' `_unencrypted` suffix, ignored by SecretSpec) shows this status without
+decryption. Remove it when the real values are installed.
+
+Susan's hosting is still open (ADR-0224) and no host recipient exists, so the
+document is registered **recovery-only** in
+[`secret-documents.nix`](../nix/policy/secrets/secret-documents.nix) and
+encrypted to the recovery recipients alone. No host config enables
+`services.susan`, so nothing points `services.susan.secretsFile` at it yet. To
+deploy Susan:
+
+1. Add `{ "name": "overalls-susan", "path": "secrets/overalls-susan.enc.json" }`
+   to the chosen host's `host.json` `credentials`. The recovery-only entry steps
+   aside automatically.
+2. Run `nix run .#secrets -- rekey --ssh-key /private/recovery_id_ed25519` to
+   add the host recipient, then `nix run .#secrets -- check`.
+3. Replace the placeholders through private decrypt/edit/encrypt custody,
+   using `encrypt overalls-susan --input /private/susan.json --replace`. Keep
+   the plaintext outside the checkout.
+4. Set `services.susan.secretsFile` to the document in the host configuration.
+
+The `services.overallsSecrets.bundles.susan` bundle publishes each value as a
+raw file, and systemd passes them to Susan as `LoadCredential=` files.
+
+| Key | Content | Checked at startup | Committed value |
+| --- | --- | --- | --- |
+| `APNS_KEY_P8` | APNs token-signing key (`.p8`, PKCS#8 EC P-256 PEM) | required when `apnsTopics` is set | placeholder: throwaway key |
+| `APNS_KEY_ID` | 10-character key id of that `.p8` key | `[A-Z0-9]{10}` | placeholder: `PLACEHOLD1` |
+| `APNS_TEAM_ID` | 10-character Apple developer team id | `[A-Z0-9]{10}` | placeholder: `PLACEHOLD2` |
+| `FCM_SERVICE_ACCOUNT_JSON` | Google service-account JSON for FCM v1 | required when `fcmAppIds` is set; `token_uri` must be `https://oauth2.googleapis.com/token`; RSA ≥ 2048 | placeholder: project `placeholder`, throwaway RSA key |
+| `SUSAN_PUSH_KEY_SIGNING_KEY` | Push-key keyring JSON `{"active":N,"keys":{"N":"<base64url 32 bytes>"}}` | 1–16 distinct keys, ids 1–255, active id present | placeholder: one random id-1 key |
+| `DATABASE_URL` | `postgres://`/`ecto://` URL of Susan's own database | database name `[a-z_][a-z0-9_]*` | local socket database `susan` |
 
 Rotation:
 
@@ -277,6 +308,9 @@ Rotation:
   Google console after the restart.
 - **Database URL.** Rotate the role password in PostgreSQL first, then the
   document.
+- **Placeholders.** Replace every field in one `encrypt --replace` and remove
+  `PLACEHOLDER_unencrypted`. Do not carry the placeholder keyring bytes into
+  the real keyring.
 
 All values are runtime-only: never put them in Nix expressions, the OCI image or
 logs. The container form mounts the same file names at `/run/secrets/susan`

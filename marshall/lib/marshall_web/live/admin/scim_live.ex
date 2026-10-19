@@ -12,8 +12,16 @@ defmodule MarshallWeb.Admin.ScimLive do
   def mount(_, _, socket), do: {:ok, refresh(socket)}
 
   @impl true
-  def handle_event("configure", %{"enabled" => enabled, "rotate_token" => rotate}, socket) do
-    params = %{enabled: enabled == "true", rotate_token: rotate == "true"}
+  def handle_event("configure", raw, socket) do
+    enabled = Map.get(raw, "enabled", "false")
+    rotate = Map.get(raw, "rotate_token", "false")
+
+    params =
+      Map.merge(%{enabled: enabled == "true", rotate_token: rotate == "true"}, %{
+        oidc_issuer: Map.get(raw, "oidc_issuer"),
+        oidc_client_id: Map.get(raw, "oidc_client_id"),
+        oidc_client_secret: Map.get(raw, "oidc_client_secret")
+      })
 
     result =
       Configuration
@@ -87,6 +95,15 @@ defmodule MarshallWeb.Admin.ScimLive do
               }
             />
             <input type="hidden" name="rotate_token" value="true" />
+            <label>OIDC issuer<input
+              name="oidc_issuer"
+              value={(@configuration && @configuration.oidc_issuer) || ""}
+            /></label>
+            <label>OIDC client ID<input
+              name="oidc_client_id"
+              value={(@configuration && @configuration.oidc_client_id) || ""}
+            /></label>
+            <label>OIDC client secret<input type="password" name="oidc_client_secret" /></label>
             <button class="console-button primary" type="submit">
               {if @configuration && @configuration.state == :enabled,
                 do: dgettext("admin_access", "Disable SCIM"),

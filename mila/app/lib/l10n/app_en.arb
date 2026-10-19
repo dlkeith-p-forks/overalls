@@ -819,5 +819,110 @@
   "webConflict": "Someone else changed this setting. The current value is shown; try again.",
   "@webConflict": {
     "description": "Shown when another change was saved first."
+  },
+  "actionNew": "New machine",
+  "@actionNew": {
+    "description": "Button and dialog title for creating a new machine."
+  },
+  "actionCreate": "Create",
+  "@actionCreate": {
+    "description": "Button that submits the new machine form."
+  },
+  "actionResize": "Resize",
+  "@actionResize": {
+    "description": "Button and dialog title for changing a machine's CPU, memory and disk."
+  },
+  "actionClone": "Clone",
+  "@actionClone": {
+    "description": "Button and dialog title for copying a machine into a new one."
+  },
+  "machineNameOptional": "Name (optional)",
+  "@machineNameOptional": {
+    "description": "Field label for a machine's name; leaving it empty lets the deployment choose."
+  },
+  "machineSourceOptional": "Repository URL (optional)",
+  "@machineSourceOptional": {
+    "description": "Field label for a public Git repository URL the new machine clones."
+  },
+  "memoryFieldMib": "Memory (MiB)",
+  "@memoryFieldMib": {
+    "description": "Field label for memory size in mebibytes."
+  },
+  "diskFieldGib": "Disk (GiB)",
+  "@diskFieldGib": {
+    "description": "Field label for disk size in gibibytes."
+  },
+  "machineFieldInvalid": "Check this value.",
+  "@machineFieldInvalid": {
+    "description": "Error under a form field whose value cannot be sent."
+  },
+  "resizeExplain": "Leave a size empty to keep it. A running machine stops and restarts; disk can only grow.",
+  "@resizeExplain": {
+    "description": "Explains the resize form: empty sizes are kept, the machine restarts, disk only grows."
+  },
+  "resizeNothing": "Enter a new size; disk cannot shrink.",
+  "@resizeNothing": {
+    "description": "Error when the resize form changes nothing or would shrink the disk."
+  },
+  "sharingTitle": "Sharing",
+  "@sharingTitle": {
+    "description": "Title of the panel listing who a machine is shared with."
+  },
+  "sharingEmail": "Email",
+  "@sharingEmail": {
+    "description": "Table column and field label: the account's email address."
+  },
+  "sharingRole": "Role",
+  "@sharingRole": {
+    "description": "Table column: the access a share gives."
+  },
+  "shareRoleOwner": "owner",
+  "@shareRoleOwner": {
+    "description": "Role of the machine's owner, shown as a status label."
+  },
+  "shareRoleViewer": "viewer",
+  "@shareRoleViewer": {
+    "description": "Share role: may view the machine."
+  },
+  "shareRoleOperator": "operator",
+  "@shareRoleOperator": {
+    "description": "Share role: may operate the machine."
+  },
+  "shareRoleManager": "manager",
+  "@shareRoleManager": {
+    "description": "Share role: may manage the machine and its sharing."
+  },
+  "sharingAdd": "Share",
+  "@sharingAdd": {
+    "description": "Button that shares the machine with the entered email."
+  },
+  "sharingRemove": "Remove",
+  "@sharingRemove": {
+    "description": "Button that revokes one account's access."
+  },
+  "sharingRemoveConfirm": "Remove access for {email}?",
+  "@sharingRemoveConfirm": {
+    "description": "Confirmation for revoking access. {email} is the account's email address.",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "sharingEmpty": "Not shared with anyone.",
+  "@sharingEmpty": {
+    "description": "Shown when a machine is shared with nobody."
+  },
+  "sharingFailed": "Sharing could not be loaded.",
+  "@sharingFailed": {
+    "description": "Shown when the sharing list could not be read."
+  },
+  "sharingEmailInvalid": "Enter an email address.",
+  "@sharingEmailInvalid": {
+    "description": "Error under the email field."
+  },
+  "sharingMore": "Show more",
+  "@sharingMore": {
+    "description": "Button that loads the next page of shares."
   }
 }

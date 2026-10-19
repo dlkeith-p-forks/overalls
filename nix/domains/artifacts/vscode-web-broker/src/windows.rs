@@ -1,9 +1,9 @@
-//! Staged Windows worker custody/launcher. No listener or guest capability is enabled.
+//! Windows custodian-owned worker custody and atomic launcher.
 //!
 //! The caller must reconcile the account using the current boot-bound roster
 //! authorizer before resolving its SID and constructing an admitted identity.
 //! Package paths come from trusted, immutable deployment configuration. The
-//! caller must single-flight startup and retain a SYSTEM-owned launch receipt.
+//! custodian must single-flight startup and retain a SYSTEM-owned launch receipt.
 
 use crate::Refusal;
 use crate::windows_model::{
@@ -21,9 +21,8 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use std::thread;
 use std::time::{Duration, Instant};
 use windows_sys::Win32::Foundation::{
-    CloseHandle, ERROR_ALREADY_EXISTS, ERROR_FILE_NOT_FOUND, ERROR_INVALID_PARAMETER,
-    ERROR_NOT_ALL_ASSIGNED, FILETIME, GetLastError, HANDLE, LUID, LocalFree, SetLastError,
-    WAIT_OBJECT_0,
+    CloseHandle, ERROR_ALREADY_EXISTS, ERROR_FILE_NOT_FOUND, ERROR_NOT_ALL_ASSIGNED, FILETIME,
+    GetLastError, HANDLE, LUID, LocalFree, SetLastError, WAIT_OBJECT_0,
 };
 use windows_sys::Win32::NetworkManagement::NetManagement::{
     NetApiBufferFree, NetUserGetInfo, UF_ACCOUNTDISABLE, USER_INFO_4,
@@ -55,22 +54,23 @@ use windows_sys::Win32::Storage::FileSystem::{
     SECURITY_SQOS_PRESENT,
 };
 use windows_sys::Win32::System::JobObjects::{
-    AssignProcessToJobObject, CreateJobObjectW, IsProcessInJob, JOB_OBJECT_LIMIT_ACTIVE_PROCESS,
-    JOBOBJECT_BASIC_ACCOUNTING_INFORMATION, JOBOBJECT_EXTENDED_LIMIT_INFORMATION,
-    JobObjectBasicAccountingInformation, JobObjectExtendedLimitInformation, OpenJobObjectW,
-    QueryInformationJobObject, SetInformationJobObject, TerminateJobObject,
+    CreateJobObjectW, IsProcessInJob, JOB_OBJECT_LIMIT_ACTIVE_PROCESS,
+    JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE, JOBOBJECT_BASIC_ACCOUNTING_INFORMATION,
+    JOBOBJECT_EXTENDED_LIMIT_INFORMATION, JobObjectBasicAccountingInformation,
+    JobObjectExtendedLimitInformation, QueryInformationJobObject, SetInformationJobObject,
+    TerminateJobObject,
 };
 use windows_sys::Win32::System::Pipes::{GetNamedPipeServerProcessId, WaitNamedPipeW};
 use windows_sys::Win32::System::Threading::{
     CREATE_BREAKAWAY_FROM_JOB, CREATE_NO_WINDOW, CREATE_SUSPENDED, CREATE_UNICODE_ENVIRONMENT,
-    CreateProcessAsUserW, GetCurrentProcess, GetProcessId, GetProcessTimes, OpenProcess,
-    OpenProcessToken, PROCESS_INFORMATION, PROCESS_QUERY_LIMITED_INFORMATION, PROCESS_SYNCHRONIZE,
-    QueryFullProcessImageNameW, ResumeThread, STARTUPINFOW, TerminateProcess, WaitForSingleObject,
+    CreateProcessAsUserW, DeleteProcThreadAttributeList, EXTENDED_STARTUPINFO_PRESENT,
+    GetCurrentProcess, GetProcessId, GetProcessTimes, InitializeProcThreadAttributeList,
+    OpenProcess, OpenProcessToken, PROC_THREAD_ATTRIBUTE_JOB_LIST, PROCESS_INFORMATION,
+    PROCESS_QUERY_LIMITED_INFORMATION, PROCESS_SYNCHRONIZE, QueryFullProcessImageNameW,
+    ResumeThread, STARTUPINFOEXW, UpdateProcThreadAttribute, WaitForSingleObject,
 };
 use windows_sys::Win32::UI::Shell::GetUserProfileDirectoryW;
 
-const JOB_QUERY: u32 = 4;
-const JOB_TERMINATE: u32 = 8;
 const JOB_ALL_ACCESS: u32 = 0x001f003f;
 
 fn system_sid() -> [u32; 3] {
@@ -746,8 +746,12 @@ fn profile_directory(token: HANDLE) -> Result<LocalPath, Refusal> {
     LocalPath::parse(&text).map_err(|_| Refusal::Account)
 }
 
-/// A named job owned solely by SYSTEM. Handles may close while workers survive.
+/// A named job owned solely by SYSTEM; closing its final handle kills its workers.
 fn new_job(identity: &WorkerIdentity) -> Result<OwnedHandle, Refusal> {
+    new_job_named(&identity.job_name())
+}
+
+fn new_job_named(name: &str) -> Result<OwnedHandle, Refusal> {
     let sddl = wide("O:SYG:SYD:P(A;;0x001f003f;;;SY)");
     let mut descriptor = null_mut();
     if unsafe {
@@ -766,7 +770,7 @@ fn new_job(identity: &WorkerIdentity) -> Result<OwnedHandle, Refusal> {
         lpSecurityDescriptor: descriptor,
         bInheritHandle: 0,
     };
-    let name = wide(&identity.job_name());
+    let name = wide(name);
     unsafe {
         SetLastError(0);
     }
@@ -781,9 +785,10 @@ fn new_job(identity: &WorkerIdentity) -> Result<OwnedHandle, Refusal> {
     }
     system_job(&handle)?;
     let mut limits: JOBOBJECT_EXTENDED_LIMIT_INFORMATION = unsafe { zeroed() };
-    // No kill-on-close and no breakaway: all descendants remain in this job,
-    // and a broker restart cannot kill the independently running worker.
-    limits.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_ACTIVE_PROCESS;
+    // Only the independent custodian owns job handles. Its loss kills the whole
+    // job; a gateway restart closes streams without affecting custody.
+    limits.BasicLimitInformation.LimitFlags =
+        JOB_OBJECT_LIMIT_ACTIVE_PROCESS | JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
     limits.BasicLimitInformation.ActiveProcessLimit = 256;
     if unsafe {
         SetInformationJobObject(
@@ -800,12 +805,21 @@ fn new_job(identity: &WorkerIdentity) -> Result<OwnedHandle, Refusal> {
 }
 
 fn system_job(job: &OwnedHandle) -> Result<(), Refusal> {
+    system_object(raw(job), JOB_ALL_ACCESS)
+}
+
+/// A local custody pipe has one protected SYSTEM-only full-access ACE.
+pub fn system_pipe(pipe: &Pipe) -> Result<(), Refusal> {
+    system_object(pipe.raw_handle().map_err(|_| Refusal::Custody)?, 0x001f01ff)
+}
+
+fn system_object(handle: HANDLE, access: u32) -> Result<(), Refusal> {
     let mut owner = null_mut();
     let mut dacl = null_mut();
     let mut descriptor = null_mut();
     if unsafe {
         GetSecurityInfo(
-            raw(job),
+            handle,
             SE_KERNEL_OBJECT,
             OWNER_SECURITY_INFORMATION | DACL_SECURITY_INFORMATION,
             &mut owner,
@@ -841,7 +855,7 @@ fn system_job(job: &OwnedHandle) -> Result<(), Refusal> {
         if allowed.Header.AceType != 0
             || allowed.Header.AceFlags != 0
             || allowed.Header.AceSize as usize != size_of::<ACCESS_ALLOWED_ACE>() + 8
-            || allowed.Mask != JOB_ALL_ACCESS
+            || allowed.Mask != access
             || unsafe { EqualSid((&raw const allowed.SidStart).cast_mut().cast(), system_sid) } == 0
         {
             return Err(Refusal::Custody);
@@ -945,6 +959,139 @@ fn peer(
     })
 }
 
+/// Attribute backing storage and handle list outlive CreateProcessAsUserW.
+struct JobAttributes {
+    storage: Vec<usize>,
+    job: Box<HANDLE>,
+}
+
+impl JobAttributes {
+    fn new(job: &OwnedHandle) -> Result<Self, Refusal> {
+        let mut bytes = 0;
+        unsafe { InitializeProcThreadAttributeList(null_mut(), 1, 0, &mut bytes) };
+        if bytes == 0 || bytes > 65536 {
+            return Err(Refusal::Startup);
+        }
+        let mut attributes = Self {
+            storage: vec![0; bytes.div_ceil(size_of::<usize>())],
+            job: Box::new(raw(job)),
+        };
+        if unsafe { InitializeProcThreadAttributeList(attributes.pointer(), 1, 0, &mut bytes) } == 0
+        {
+            // An uninitialized attribute list must not be deleted.
+            attributes.storage.clear();
+            return Err(Refusal::Startup);
+        }
+        if unsafe {
+            UpdateProcThreadAttribute(
+                attributes.pointer(),
+                0,
+                PROC_THREAD_ATTRIBUTE_JOB_LIST as usize,
+                (&raw mut *attributes.job).cast(),
+                size_of::<HANDLE>(),
+                null_mut(),
+                null(),
+            )
+        } == 0
+        {
+            return Err(Refusal::Startup);
+        }
+        Ok(attributes)
+    }
+
+    fn pointer(&self) -> windows_sys::Win32::System::Threading::LPPROC_THREAD_ATTRIBUTE_LIST {
+        self.storage.as_ptr().cast_mut().cast()
+    }
+}
+
+impl Drop for JobAttributes {
+    fn drop(&mut self) {
+        if !self.storage.is_empty() {
+            unsafe { DeleteProcThreadAttributeList(self.pointer()) };
+        }
+    }
+}
+
+/// A SYSTEM peer handle pins PID/creation and the exact installed executable.
+pub struct SystemPeer {
+    process: OwnedHandle,
+    identity: ProcessIdentity,
+}
+
+impl SystemPeer {
+    pub fn open(pid: u32, executable: &LocalPath) -> Result<Self, Refusal> {
+        package_file(executable)?;
+        let process = owned(
+            unsafe {
+                OpenProcess(
+                    PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_SYNCHRONIZE,
+                    0,
+                    pid,
+                )
+            },
+            Refusal::Custody,
+        )?;
+        let identity = process_identity(&process)?;
+        let peer = Self { process, identity };
+        peer.verify(executable)?;
+        Ok(peer)
+    }
+
+    pub fn identity(&self) -> ProcessIdentity {
+        self.identity
+    }
+
+    pub fn verify(&self, executable: &LocalPath) -> Result<(), Refusal> {
+        if process_identity(&self.process)? != self.identity
+            || unsafe { WaitForSingleObject(raw(&self.process), 0) }
+                != windows_sys::Win32::Foundation::WAIT_TIMEOUT
+        {
+            return Err(Refusal::Custody);
+        }
+        let mut token = null_mut();
+        if unsafe { OpenProcessToken(raw(&self.process), TOKEN_QUERY, &mut token) } == 0 {
+            return Err(Refusal::Custody);
+        }
+        let token = owned(token, Refusal::Custody)?;
+        let mut length = 0;
+        unsafe { GetTokenInformation(raw(&token), TokenUser, null_mut(), 0, &mut length) };
+        if length == 0 || length > 65536 {
+            return Err(Refusal::Custody);
+        }
+        let mut buffer = vec![0_usize; (length as usize).div_ceil(size_of::<usize>())];
+        if unsafe {
+            GetTokenInformation(
+                raw(&token),
+                TokenUser,
+                buffer.as_mut_ptr().cast(),
+                length,
+                &mut length,
+            )
+        } == 0
+        {
+            return Err(Refusal::Custody);
+        }
+        let user = unsafe { &*buffer.as_ptr().cast::<TOKEN_USER>() };
+        if unsafe { EqualSid(user.User.Sid, system_sid().as_ptr().cast_mut().cast()) } == 0 {
+            return Err(Refusal::Custody);
+        }
+        let mut path = [0_u16; 4096];
+        let mut length = path.len() as u32;
+        if unsafe {
+            QueryFullProcessImageNameW(raw(&self.process), 0, path.as_mut_ptr(), &mut length)
+        } == 0
+            || length as usize >= path.len()
+        {
+            return Err(Refusal::Custody);
+        }
+        let path = String::from_utf16(&path[..length as usize]).map_err(|_| Refusal::Custody)?;
+        if !path.eq_ignore_ascii_case(executable.as_str()) {
+            return Err(Refusal::Custody);
+        }
+        Ok(())
+    }
+}
+
 /// Trusted deployment paths, never selected from an incoming editor preface.
 pub struct Package {
     pub node: LocalPath,
@@ -954,24 +1101,44 @@ pub struct Package {
     pub extra_ca_certs: LocalPath,
 }
 
-/// An owned worker. Dropping this object closes handles and leaves it running.
+/// Failed drain retains the exact job and its capacity charge until shutdown.
+pub struct QuarantinedJob {
+    _job: OwnedHandle,
+}
+
+pub struct LaunchFailure {
+    pub reason: Refusal,
+    pub quarantine: Option<QuarantinedJob>,
+}
+
+impl From<Refusal> for LaunchFailure {
+    fn from(reason: Refusal) -> Self {
+        Self {
+            reason,
+            quarantine: None,
+        }
+    }
+}
+
+/// A custodian-owned worker. Closing its last job handle kills every descendant.
 pub struct Worker {
     process: OwnedHandle,
     job: OwnedHandle,
     identity: WorkerIdentity,
     executable: LocalPath,
     process_identity: ProcessIdentity,
+    suspended_thread: Option<OwnedHandle>,
 }
 
 impl Worker {
     /// @cc [owner:ghuntley,label:security;recovery] windows-editor-suspended-account-launch
     /// Launch MUST verify the current local and S4U token SID, create the exact
     /// configured executable directly with no inherited handles, and assign its
-    /// suspended process to a new SYSTEM-only job before resume. Failure MUST
-    /// terminate the child. Launch MUST request breakaway from the broker's
-    /// service job and refuse if that job prevents independence. Broker handle
-    /// closure or termination MUST NOT end a resumed worker.
-    pub fn launch(identity: WorkerIdentity, package: &Package) -> Result<Self, Refusal> {
+    /// process atomically to a SYSTEM-only kill-on-close job through JOB_LIST.
+    /// It MUST return suspended, without inherited handles, until the custodian
+    /// publishes the receipt. Custodian loss at every intermediate point MUST
+    /// kill the child; the TCP gateway MUST never hold a worker job handle.
+    pub fn launch(identity: WorkerIdentity, package: &Package) -> Result<Self, LaunchFailure> {
         package_file(&package.node)?;
         package_file(&package.server)?;
         package_file(&package.extra_ca_certs)?;
@@ -1032,10 +1199,12 @@ impl Worker {
             .chain([0])
             .collect();
         let job = new_job(&identity)?;
-        let mut startup: STARTUPINFOW = unsafe { zeroed() };
-        startup.cb = size_of::<STARTUPINFOW>() as u32;
+        let attributes = JobAttributes::new(&job)?;
+        let mut startup: STARTUPINFOEXW = unsafe { zeroed() };
+        startup.StartupInfo.cb = size_of::<STARTUPINFOEXW>() as u32;
+        startup.lpAttributeList = attributes.pointer();
         let mut desktop = wide("");
-        startup.lpDesktop = desktop.as_mut_ptr();
+        startup.StartupInfo.lpDesktop = desktop.as_mut_ptr();
         let application = wide(package.node.as_str());
         let directory = wide(home.as_str());
         let mut information: PROCESS_INFORMATION = unsafe { zeroed() };
@@ -1050,31 +1219,38 @@ impl Worker {
                 CREATE_SUSPENDED
                     | CREATE_UNICODE_ENVIRONMENT
                     | CREATE_NO_WINDOW
-                    | CREATE_BREAKAWAY_FROM_JOB,
+                    | CREATE_BREAKAWAY_FROM_JOB
+                    | EXTENDED_STARTUPINFO_PRESENT,
                 environment.as_ptr().cast(),
                 directory.as_ptr(),
-                &startup,
+                &startup.StartupInfo,
                 &mut information,
             )
         } == 0
         {
-            return Err(Refusal::Startup);
+            return Err(Refusal::Startup.into());
         }
-        let process = owned(information.hProcess, Refusal::Startup)?;
-        let thread = owned(information.hThread, Refusal::Startup)?;
-        let launched = (|| {
-            if unsafe { AssignProcessToJobObject(raw(&job), raw(&process)) } == 0 {
-                return Err(Refusal::Startup);
+        let process = owned(information.hProcess, Refusal::Startup);
+        let thread = owned(information.hThread, Refusal::Startup);
+        let (process, thread) = match (process, thread) {
+            (Ok(process), Ok(thread)) => (process, thread),
+            _ => {
+                if let Err(reason) = stop_owned_job(&job) {
+                    return Err(LaunchFailure {
+                        reason,
+                        quarantine: Some(QuarantinedJob { _job: job }),
+                    });
+                }
+                return Err(Refusal::Startup.into());
             }
+        };
+        let launched: Result<ProcessIdentity, Refusal> = (|| {
             let process_identity = process_identity(&process)?;
             verify_peer(
                 &identity,
                 process_identity,
                 &peer(&process, &job, &package.node)?,
             )?;
-            if unsafe { ResumeThread(raw(&thread)) } == u32::MAX {
-                return Err(Refusal::Startup);
-            }
             Ok(process_identity)
         })();
         match launched {
@@ -1084,139 +1260,36 @@ impl Worker {
                 identity,
                 executable: package.node.clone(),
                 process_identity,
+                suspended_thread: Some(thread),
             }),
             Err(error) => {
-                unsafe {
-                    TerminateProcess(raw(&process), 1);
-                    TerminateJobObject(raw(&job), 1);
-                    WaitForSingleObject(raw(&process), 5000);
+                if let Err(reason) = stop_owned_job(&job) {
+                    return Err(LaunchFailure {
+                        reason,
+                        quarantine: Some(QuarantinedJob { _job: job }),
+                    });
                 }
-                Err(error)
+                Err(error.into())
             }
         }
-    }
-
-    /// Reopen only an exact retained process and SYSTEM-owned named job.
-    pub fn adopt(
-        identity: WorkerIdentity,
-        expected: ProcessIdentity,
-        executable: LocalPath,
-    ) -> Result<Self, Refusal> {
-        if expected.pid == 0 || expected.created == 0 {
-            return Err(Refusal::Custody);
-        }
-        package_file(&executable)?;
-        if resolve_account(identity_uid(&identity)?, identity.username())? != *identity.sid() {
-            return Err(Refusal::Account);
-        }
-        let name = wide(&identity.job_name());
-        let job = owned(
-            unsafe { OpenJobObjectW(JOB_QUERY | JOB_TERMINATE | READ_CONTROL, 0, name.as_ptr()) },
-            Refusal::Custody,
-        )?;
-        system_job(&job)?;
-        let process = owned(
-            unsafe {
-                OpenProcess(
-                    PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_SYNCHRONIZE,
-                    0,
-                    expected.pid,
-                )
-            },
-            Refusal::Custody,
-        )?;
-        verify_peer(&identity, expected, &peer(&process, &job, &executable)?)?;
-        Ok(Self {
-            process,
-            job,
-            identity,
-            executable,
-            process_identity: expected,
-        })
     }
 
     pub fn process_identity(&self) -> ProcessIdentity {
         self.process_identity
     }
 
-    /// Reopen a retained worker, distinguishing a conclusively absent process
-    /// from a PID-reused or foreign process. Only the former returns `None`,
-    /// after any proven SYSTEM-owned job descendants have been stopped.
-    pub fn recover(
-        identity: WorkerIdentity,
-        expected: ProcessIdentity,
-        executable: LocalPath,
-    ) -> Result<Option<Self>, Refusal> {
-        if expected.pid == 0 || expected.created == 0 {
-            return Err(Refusal::Custody);
+    pub fn matches(&self, identity: &WorkerIdentity) -> bool {
+        &self.identity == identity
+    }
+
+    /// Resume only after the complete private receipt has been published.
+    pub fn resume(&mut self) -> Result<(), Refusal> {
+        let thread = self.suspended_thread.as_ref().ok_or(Refusal::Custody)?;
+        if unsafe { ResumeThread(raw(thread)) } != 1 {
+            return Err(Refusal::Startup);
         }
-        package_file(&executable)?;
-        if resolve_account(identity_uid(&identity)?, identity.username())? != *identity.sid() {
-            return Err(Refusal::Account);
-        }
-        let name = wide(&identity.job_name());
-        let job =
-            unsafe { OpenJobObjectW(JOB_QUERY | JOB_TERMINATE | READ_CONTROL, 0, name.as_ptr()) };
-        if job.is_null() {
-            return match unsafe { GetLastError() } {
-                ERROR_FILE_NOT_FOUND => {
-                    let process = unsafe {
-                        OpenProcess(
-                            PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_SYNCHRONIZE,
-                            0,
-                            expected.pid,
-                        )
-                    };
-                    if process.is_null() && unsafe { GetLastError() } == ERROR_INVALID_PARAMETER {
-                        Ok(None)
-                    } else {
-                        if !process.is_null() {
-                            unsafe { CloseHandle(process) };
-                        }
-                        Err(Refusal::Custody)
-                    }
-                }
-                _ => Err(Refusal::Custody),
-            };
-        }
-        let job = owned(job, Refusal::Custody)?;
-        system_job(&job)?;
-        let process = unsafe {
-            OpenProcess(
-                PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_SYNCHRONIZE,
-                0,
-                expected.pid,
-            )
-        };
-        if process.is_null() {
-            return match unsafe { GetLastError() } {
-                ERROR_INVALID_PARAMETER => {
-                    stop_owned_job(&job)?;
-                    Ok(None)
-                }
-                _ => Err(Refusal::Custody),
-            };
-        }
-        let process = owned(process, Refusal::Custody)?;
-        if process_identity(&process)? != expected {
-            return Err(Refusal::Custody);
-        }
-        match unsafe { WaitForSingleObject(raw(&process), 0) } {
-            WAIT_OBJECT_0 => {
-                stop_owned_job(&job)?;
-                return Ok(None);
-            }
-            windows_sys::Win32::Foundation::WAIT_TIMEOUT => {}
-            _ => return Err(Refusal::Custody),
-        }
-        verify_peer(&identity, expected, &peer(&process, &job, &executable)?)?;
-        Ok(Some(Self {
-            process,
-            job,
-            identity,
-            executable,
-            process_identity: expected,
-        }))
+        self.suspended_thread = None;
+        Ok(())
     }
 
     /// A retained process is live only when its PID and creation time remain
@@ -1297,6 +1370,68 @@ impl Worker {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// This requires an explicitly SYSTEM-run native test executable. Cross
+    /// compilation does not exercise atomic launch or kill-on-close timing.
+    #[test]
+    fn native_atomic_job_assignment_closes_suspended_orphan_window() {
+        use windows_sys::Win32::System::Threading::CreateProcessW;
+        require_system().expect("native custody tests require SYSTEM");
+        let name = format!(r"Global\overalls-editor-atomic-test-{}", std::process::id());
+        let job = new_job_named(&name).unwrap();
+        let attributes = JobAttributes::new(&job).unwrap();
+        let mut startup: STARTUPINFOEXW = unsafe { zeroed() };
+        startup.StartupInfo.cb = size_of::<STARTUPINFOEXW>() as u32;
+        startup.lpAttributeList = attributes.pointer();
+        let application = wide(r"C:\Windows\System32\cmd.exe");
+        let mut command = command_line(&[
+            r"C:\Windows\System32\cmd.exe".to_owned(),
+            "/c".to_owned(),
+            "exit 0".to_owned(),
+        ])
+        .unwrap();
+        let mut information: PROCESS_INFORMATION = unsafe { zeroed() };
+        assert_ne!(
+            unsafe {
+                CreateProcessW(
+                    application.as_ptr(),
+                    command.as_mut_ptr(),
+                    null(),
+                    null(),
+                    0,
+                    CREATE_SUSPENDED
+                        | CREATE_NO_WINDOW
+                        | CREATE_BREAKAWAY_FROM_JOB
+                        | EXTENDED_STARTUPINFO_PRESENT,
+                    null(),
+                    null(),
+                    &startup.StartupInfo,
+                    &mut information,
+                )
+            },
+            0
+        );
+        let process = owned(information.hProcess, Refusal::Startup).unwrap();
+        let _thread = owned(information.hThread, Refusal::Startup).unwrap();
+        let identity = process_identity(&process).unwrap();
+        let mut member = 0;
+        assert_ne!(
+            unsafe { IsProcessInJob(raw(&process), raw(&job), &mut member) },
+            0
+        );
+        assert_ne!(member, 0);
+        assert_eq!(
+            unsafe { WaitForSingleObject(raw(&process), 0) },
+            windows_sys::Win32::Foundation::WAIT_TIMEOUT
+        );
+        drop(attributes);
+        drop(job);
+        assert_eq!(
+            unsafe { WaitForSingleObject(raw(&process), 5000) },
+            WAIT_OBJECT_0
+        );
+        assert_eq!(process_identity(&process).unwrap(), identity);
+    }
 
     const TRUSTED_INSTALLER: &str =
         "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464";

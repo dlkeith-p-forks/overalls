@@ -6,6 +6,17 @@ defmodule Lilly.Transfer.Source do
   alias Lilly.VM.{Driver, Executor}
   alias OverallsProtocol.{Relocation, RelocationSource}
 
+  @step_reasons [
+    :source_authority_unconfirmed,
+    :source_command_unconfirmed,
+    :source_lease_expired,
+    :source_claim_unconfirmed,
+    :source_lineage_unconfirmed,
+    :checkpoint_unconfirmed,
+    :source_snapshot_unconfirmed,
+    :export_permit_unconfirmed
+  ]
+
   # @cc [owner:ghuntley,label:security;recovery] source-command-guarded-native-grant
   # execute/3 requires the live authenticated runtime and its host-owned store.
   # It MUST match the source command to retained execution identity/shape and
@@ -26,7 +37,7 @@ defmodule Lilly.Transfer.Source do
              store.host_id == config.client.host_id and is_binary(config.transfer_state_dir),
          :ok <- lease(request),
          {:ok, command} <- current(store, request),
-         {:ok, spec} <- Executor.specification(command),
+         {:ok, spec} <- step(Executor.specification(command), :source_command_unconfirmed),
          pool when not is_nil(pool) <-
            Enum.find(config.pools, &(&1.id == request.intent.source.pool_id)) do
       Driver.with_transfer_source(
@@ -39,16 +50,24 @@ defmodule Lilly.Transfer.Source do
           guarded_stream(config.transfer_state_dir, request, fn ->
             Storage.locked(pool, fn ->
               with {:ok, ^command} <- current(store, request),
-                   {:ok, claim} <- ZFSDataset.snapshot_source(pool, spec),
+                   {:ok, claim} <-
+                     step(ZFSDataset.snapshot_source(pool, spec), :source_claim_unconfirmed),
                    :ok <- lineage(pool, spec, request),
-                   :ok <- checkpoint_source(pool, spec, request.intent),
+                   :ok <-
+                     step(
+                       checkpoint_source(pool, spec, request.intent),
+                       :checkpoint_unconfirmed
+                     ),
                    :ok <- lease(request),
                    {:ok, guid} <-
-                     SourceSnapshots.create(
-                       pool,
-                       spec,
-                       request.intent.relocation_id,
-                       request.intent.source_epoch
+                     step(
+                       SourceSnapshots.create(
+                         pool,
+                         spec,
+                         request.intent.relocation_id,
+                         request.intent.source_epoch
+                       ),
+                       :source_snapshot_unconfirmed
                      ),
                    true <- request.to_guid == nil or request.to_guid == guid,
                    descriptor =
@@ -61,24 +80,27 @@ defmodule Lilly.Transfer.Source do
                    {:ok, ^command} <- current(store, request),
                    :ok <- lease(request),
                    :ok <-
-                     Permit.issue(
-                       config.transfer_state_dir,
-                       pool,
-                       wire,
-                       request.public_key,
-                       request.revision,
-                       request.expires_at
+                     step(
+                       Permit.issue(
+                         config.transfer_state_dir,
+                         pool,
+                         wire,
+                         request.public_key,
+                         request.revision,
+                         request.expires_at
+                       ),
+                       :export_permit_unconfirmed
                      ) do
                 {:ok, %{id: request.id, descriptor: descriptor}}
               else
-                _ -> {:error, :source_request_unconfirmed}
+                failure -> failure(failure)
               end
             end)
           end)
         end
       )
     else
-      _ -> {:error, :source_request_unconfirmed}
+      failure -> failure(failure)
     end
   end
 
@@ -101,6 +123,17 @@ defmodule Lilly.Transfer.Source do
   end
 
   defp checkpoint_source(_, _, _), do: :ok
+
+  # @cc [owner:ghuntley,label:observability] source-prepare-step-reasons
+  # A failed prepare step MUST surface its own closed reason atom so the
+  # runtime can report which confirmation failed; any other mismatch MUST stay
+  # the generic source_request_unconfirmed. Native output is never carried.
+  defp step(:ok, _reason), do: :ok
+  defp step({:ok, _} = ok, _reason), do: ok
+  defp step(_, reason), do: {:error, reason}
+
+  defp failure({:error, reason}) when reason in @step_reasons, do: {:error, reason}
+  defp failure(_), do: {:error, :source_request_unconfirmed}
 
   defp lease(request) do
     remaining = request.expires_at - System.system_time(:second)

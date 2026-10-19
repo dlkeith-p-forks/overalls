@@ -67,7 +67,8 @@ function Get-FixtureBroker {
     [OutputType([Microsoft.Management.Infrastructure.CimInstance])]
     param()
     [object[]]$Matches = @(Get-CimInstance Win32_Process -Filter "Name='overalls-vscode-web-broker.exe'" | Where-Object {
-        $_.ExecutablePath -ceq 'C:\overalls\editor-broker\overalls-vscode-web-broker.exe'
+        $_.ExecutablePath -ceq 'C:\overalls\editor-broker\overalls-vscode-web-broker.exe' -and
+        $_.CommandLine -cmatch '^"?C:\\overalls\\editor-broker\\overalls-vscode-web-broker\.exe"? "?C:\\overalls\\editor-broker\\broker\.json"?$'
     })
     if ($Matches.Count -ne 1) { throw 'fixture_broker_count' }
     $Owner = Invoke-CimMethod -InputObject $Matches[0] -MethodName GetOwnerSid
@@ -75,8 +76,67 @@ function Get-FixtureBroker {
     return $Matches[0]
 }
 
+function Get-FixtureCustodian {
+    [OutputType([Microsoft.Management.Infrastructure.CimInstance])]
+    param()
+    [object[]]$Matches = @(Get-CimInstance Win32_Process -Filter "Name='overalls-vscode-web-broker.exe'" | Where-Object {
+        $_.ExecutablePath -ceq 'C:\overalls\editor-broker\overalls-vscode-web-broker.exe' -and
+        $_.CommandLine -cmatch '^"?C:\\overalls\\editor-broker\\overalls-vscode-web-broker\.exe"? --custodian "?C:\\overalls\\editor-broker\\custodian\.json"?$'
+    })
+    if ($Matches.Count -ne 1) { throw 'fixture_custodian_count' }
+    $Owner = Invoke-CimMethod -InputObject $Matches[0] -MethodName GetOwnerSid
+    if ($Owner.ReturnValue -ne 0 -or $Owner.Sid -cne 'S-1-5-18') { throw 'fixture_custodian_sid' }
+    return $Matches[0]
+}
+
+# @cc [owner:ghuntley,label:verification;security;recovery] windows-editor-fixture-independent-supervision
+# Native acceptance MUST require both fixed private SYSTEM tasks and distinct
+# running roles. Broker-loss testing MUST retain the custodian's exact process
+# identity. Process command lines MAY be compared only against fixed role
+# patterns and MUST NOT be emitted as diagnostics or fixture result data.
+function Test-FixtureServiceTasks {
+    [OutputType([void])]
+    param()
+    $Scheduler = New-Object -ComObject 'Schedule.Service'
+    $Scheduler.Connect()
+    foreach ($TaskName in @('EditorBroker', 'EditorCustodian')) {
+        [string]$Launcher = 'C:\overalls\editor-broker\start.ps1'
+        if ($TaskName -ceq 'EditorCustodian') { $Launcher = 'C:\overalls\editor-broker\start-custodian.ps1' }
+        [string]$Arguments = '-NoProfile -NonInteractive -ExecutionPolicy Bypass -File ' + $Launcher
+        $Task = Get-ScheduledTask -TaskPath '\Overalls\' -TaskName $TaskName
+        if ($Task.Principal.UserId -notin @('SYSTEM', 'S-1-5-18') -or
+            $Task.Principal.LogonType -ne 'ServiceAccount' -or $Task.Principal.RunLevel -ne 'Highest' -or
+            @($Task.Actions).Count -ne 1 -or
+            $Task.Actions[0].Execute -cne 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -or
+            $Task.Actions[0].Arguments -cne $Arguments -or
+            $Task.Actions[0].WorkingDirectory -cne 'C:\overalls\editor-broker' -or
+            @($Task.Triggers).Count -ne 1 -or $Task.Triggers[0].CimClass.CimClassName -cne 'MSFT_TaskBootTrigger' -or
+            $Task.Settings.ExecutionTimeLimit -ne 'PT0S' -or $Task.Settings.MultipleInstances -ne 'IgnoreNew' -or
+            $Task.Settings.RestartCount -ne 999 -or $Task.Settings.RestartInterval -ne 'PT1M') { throw 'fixture_task_definition' }
+        [string]$TaskFile = 'C:\Windows\System32\Tasks\Overalls\' + $TaskName
+        Assert-EditorPath -Path $TaskFile
+        if (-not (Get-Acl -LiteralPath $TaskFile).AreAccessRulesProtected) { throw 'fixture_task_acl' }
+        $Registered = $Scheduler.GetFolder('\Overalls').GetTask($TaskName)
+        [Security.AccessControl.RawSecurityDescriptor]$Security = New-Object Security.AccessControl.RawSecurityDescriptor($Registered.GetSecurityDescriptor(7))
+        if ($Security.Owner.Value -cne 'S-1-5-18' -or $Security.Group.Value -cne 'S-1-5-18' -or
+            $Security.DiscretionaryAcl.Count -ne 2) { throw 'fixture_task_acl' }
+        [System.Collections.Generic.HashSet[string]]$Seen = New-Object 'System.Collections.Generic.HashSet[string]'
+        foreach ($Ace in $Security.DiscretionaryAcl) {
+            [string]$Sid = $Ace.SecurityIdentifier.Value
+            [int]$Mask = 0x120089
+            if ($Sid -ceq 'S-1-5-18') { $Mask = 0x1F01FF }
+            if ($Ace.AceType -ne [Security.AccessControl.AceType]::AccessAllowed -or
+                $Sid -notin @('S-1-5-18', 'S-1-5-32-544') -or -not $Seen.Add($Sid) -or
+                $Ace.AceFlags -ne [Security.AccessControl.AceFlags]::None -or $Ace.AccessMask -ne $Mask) { throw 'fixture_task_acl' }
+        }
+    }
+    [Microsoft.Management.Infrastructure.CimInstance]$Broker = Get-FixtureBroker
+    [Microsoft.Management.Infrastructure.CimInstance]$Custodian = Get-FixtureCustodian
+    if ($Broker.ProcessId -eq $Custodian.ProcessId) { throw 'fixture_role_identity' }
+}
+
 # @cc [owner:ghuntley,label:verification;security] windows-editor-fixture-inherited-receipt
-# Broker-written receipts MAY inherit SYSTEM-only grants from their protected
+# Custodian-written receipts MAY inherit SYSTEM-only grants from their protected
 # SYSTEM-only parent. The fixture MUST still reject foreign owners, any effective
 # non-SYSTEM allow, reparse points and unsafe ancestors without changing the ACL.
 function Assert-FixtureReceipt {
@@ -211,10 +271,15 @@ function Get-FixtureReceiptPath {
         [byte[]]$Challenge = [Text.Encoding]::ASCII.GetBytes($Metadata.boot_challenge)
         foreach ($Part in @($Domain, $Placement, $Epoch, $Challenge)) { $InputBytes.Write($Part, 0, $Part.Length) }
         [string]$Key = ([BitConverter]::ToString($Hash.ComputeHash($InputBytes.ToArray()))).Replace('-', '').ToLowerInvariant()
-        return 'C:\overalls\editor-state\b' + $Key + '\u' + $Uid + '\worker.json'
+        return 'C:\overalls\editor-state\custodian-v1\b' + $Key + '\u' + $Uid + '\worker.json'
     } finally { $Hash.Dispose(); $InputBytes.Dispose() }
 }
 
+# @cc [owner:ghuntley,label:verification;security] windows-editor-fixture-receipt-key
+# Native snapshots MUST require the closed custodian-v1 receipt and its complete
+# worker key, and match that key to the actual personal worker's pipe. The pipe
+# server, process creation identity, executable and current SAM SID MUST agree;
+# a key or a receipt by itself MUST NOT establish process custody.
 function Get-FixtureWorker {
     [OutputType([pscustomobject])]
     param()
@@ -224,6 +289,9 @@ function Get-FixtureWorker {
     Assert-EditorPath -Path ([IO.Path]::GetDirectoryName($ReceiptPath)) -Private $true
     Assert-FixtureReceipt -Path $ReceiptPath
     [pscustomobject]$Receipt = Get-Content -LiteralPath $ReceiptPath -Raw | ConvertFrom-Json
+    if (($Receipt.version -isnot [int] -and $Receipt.version -isnot [long]) -or $Receipt.version -ne 1 -or
+        (@($Receipt.PSObject.Properties.Name | Sort-Object) -join ',') -cne 'binding,process,version,worker_key') { throw 'fixture_receipt_version' }
+    if ($Receipt.worker_key -isnot [string] -or $Receipt.worker_key -cnotmatch '^[a-f0-9]{64}$') { throw 'fixture_receipt_key' }
     foreach ($Property in $Binding.binding.PSObject.Properties) {
         if ($Property.Name -in @('session_id', 'generation')) { continue }
         if ($Receipt.binding.($Property.Name) -cne $Property.Value) { throw 'fixture_receipt_binding' }
@@ -240,6 +308,7 @@ function Get-FixtureWorker {
         [uint64]$Process.StartTime.ToFileTimeUtc() -ne $Created) { throw 'fixture_worker_custody' }
     [System.Text.RegularExpressions.Match]$PipeMatch = [regex]::Match($Native.CommandLine, '\\\\\.\\pipe\\(overalls-editor-' + $Uid + '-[a-f0-9]{64})')
     if (-not $PipeMatch.Success) { throw 'fixture_pipe_name' }
+    if ($PipeMatch.Groups[1].Value -cne ('overalls-editor-' + $Uid + '-' + $Receipt.worker_key)) { throw 'fixture_receipt_pipe' }
     if (-not ('OverallsAcceptancePipe' -as [type])) {
         Add-Type -TypeDefinition @'
 using System;
@@ -269,6 +338,7 @@ function Invoke-FixtureOperation {
     if ($Operation -eq 'setup') {
         . 'C:\overalls\editor-broker\custody.ps1'
         Test-FixtureCustody
+        Test-FixtureServiceTasks
         Assert-EditorPath -Path 'C:\overalls\editor-broker\broker.json'
         [pscustomobject]$Configuration = Get-Content -LiteralPath 'C:\overalls\editor-broker\broker.json' -Raw | ConvertFrom-Json
         if ($Configuration.account_authorizer -cne 'C:\overalls\agents\overalls-ssh-sync-windows.exe') { throw 'fixture_real_authorizer_required' }
@@ -304,6 +374,7 @@ function Invoke-FixtureOperation {
     [pscustomobject]$Worker = Get-FixtureWorker
     [Microsoft.Management.Infrastructure.CimInstance]$Broker = Get-FixtureBroker
     if ($Operation -eq 'kill-broker') {
+        [Microsoft.Management.Infrastructure.CimInstance]$Custodian = Get-FixtureCustodian
         Stop-Process -Id $Broker.ProcessId -Force
         [datetime]$Deadline = [datetime]::UtcNow.AddSeconds(100)
         do {
@@ -311,6 +382,9 @@ function Invoke-FixtureOperation {
             try { $Replacement = Get-FixtureBroker } catch { $Replacement = $null }
             if ([datetime]::UtcNow -ge $Deadline) { throw 'fixture_broker_recovery_deadline' }
         } while ($null -eq $Replacement -or $Replacement.ProcessId -eq $Broker.ProcessId)
+        [Microsoft.Management.Infrastructure.CimInstance]$RetainedCustodian = Get-FixtureCustodian
+        if ($RetainedCustodian.ProcessId -ne $Custodian.ProcessId -or
+            $RetainedCustodian.CreationDate -ne $Custodian.CreationDate) { throw 'fixture_custodian_not_retained' }
         [pscustomobject]$Retained = Get-FixtureWorker
         if ($Retained.worker_pid -ne $Worker.worker_pid -or $Retained.worker_created -ne $Worker.worker_created) { throw 'fixture_worker_not_retained' }
     } elseif ($Operation -eq 'kill-worker') {

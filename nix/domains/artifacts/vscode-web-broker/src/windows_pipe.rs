@@ -175,6 +175,52 @@ impl Pipe {
         })
     }
 
+    pub fn raw_handle(&self) -> io::Result<std::os::windows::io::RawHandle> {
+        Ok(self.resources()?.file.as_raw_handle())
+    }
+
+    /// The listener owns bounded OVERLAPPED storage until local connect completes.
+    /// A failed wait retires the exact operation before returning.
+    pub fn accept(&mut self) -> io::Result<()> {
+        use windows_sys::Win32::Foundation::ERROR_PIPE_CONNECTED;
+        use windows_sys::Win32::System::Pipes::ConnectNamedPipe;
+        let resources = self.resources()?;
+        let mut overlapped: OVERLAPPED = unsafe { zeroed() };
+        overlapped.hEvent = resources.event.as_raw_handle();
+        let operation = Operation {
+            overlapped: Box::new(UnsafeCell::new(overlapped)),
+            buffer: Box::new(UnsafeCell::new([0; BUFFER_LIMIT])),
+            length: 0,
+        };
+        if unsafe { ConnectNamedPipe(resources.file.as_raw_handle(), operation.overlapped.get()) }
+            != 0
+        {
+            return Ok(());
+        }
+        let error = io::Error::last_os_error();
+        if error.raw_os_error() == Some(ERROR_PIPE_CONNECTED as i32) {
+            return Ok(());
+        }
+        if error.raw_os_error() != Some(ERROR_IO_PENDING as i32) {
+            return Err(error);
+        }
+        loop {
+            match unsafe { WaitForSingleObject(resources.event.as_raw_handle(), 100) } {
+                WAIT_TIMEOUT => continue,
+                WAIT_OBJECT_0 => match operation.result(resources) {
+                    Ok(Some(_)) => return Ok(()),
+                    Err(error) => return Err(error),
+                    Ok(None) => continue,
+                },
+                _ => {
+                    let error = io::Error::last_os_error();
+                    self.cancel_and_retire(operation);
+                    return Err(error);
+                }
+            }
+        }
+    }
+
     fn resources(&self) -> io::Result<&Resources> {
         self.resources
             .as_ref()

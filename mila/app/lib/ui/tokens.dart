@@ -40,6 +40,22 @@ final class MonoTokens {
 /// The type and grid scale: one cell is one character wide and one line tall.
 abstract final class MonoScale {
   static const String fontFamily = 'JetBrains Mono';
+
+  /// Script fallbacks behind JetBrains Mono, the pinned Noto faces Marshall's
+  /// web stack also uses (ADR-0207). Flutter has no `unicode-range`, so the
+  /// order stands in for it: the Latin, Arabic and Indic faces come before
+  /// the symbol face, and the symbol face before CJK, so that each code point
+  /// reaches the face Marshall's CSS ranges assign it.
+  static const List<String> fontFamilyFallback = [
+    'Overalls Noto Mono',
+    'Overalls Noto Arabic',
+    'Overalls Noto Devanagari',
+    'Overalls Noto Bengali',
+    'Overalls Noto Telugu',
+    'Overalls Noto Tamil',
+    'Overalls Noto Symbols',
+    'Overalls Noto CJK',
+  ];
   static const double fontSize = 14;
   static const double lineHeight = 1.2;
 

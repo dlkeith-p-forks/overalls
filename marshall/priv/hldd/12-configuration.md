@@ -436,8 +436,11 @@ against the stored digest; plaintext tokens are never persisted or logged.
 
 Enabling SCIM archives native teams and starts their retirement workflow.
 Disabling SCIM does not reopen managed teams until an administrator performs
-explicit ownership handoff. Endpoint and UI execution evidence remains partial
-until the NixOS SCIM machine test and durable cleanup worker are executed.
+explicit ownership handoff. The SCIM machine scenario exercises protected
+discovery resources, malformed credentials, English and Arabic Control Room
+responses; Hegel lifecycle properties cover duplicate delivery and the
+pause-before-delete ordering. Full administrator provisioning and seven-day
+clock advancement still require a configured integration environment.
 
 Marshall's common runtime guards reject invalid inference retention, ingress
 ports, relocation readiness timeouts and default/Inception image identities

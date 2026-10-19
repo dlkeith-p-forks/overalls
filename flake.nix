@@ -54,6 +54,7 @@
       lib.mkAlmaLinuxGuest = built.mkAlmaLinuxGuest;
       lib.mkAlmaGuest = built.mkAlmaGuest;
       lib.mkWindowsGuest = built.mkWindowsGuest;
+      lib.mkWindowsEditorCandidate = built.mkWindowsEditorCandidate;
       lib.mkWindowsEditorBundle = built.mkWindowsEditorBundle;
       lib.nativeKernels = built.nativeKernels;
       lib.mkFreeBSDGuest = built.mkFreeBSDGuest;
@@ -114,6 +115,8 @@
         tool-mila-linux = built.mila.app;
         tool-mila-demo = built.mila.demo;
         tool-mila-probe = built.mila.probe;
+        # Optional Android APK, excluded from CI (ADR-0227).
+        tool-mila-android = built.mila.android;
         tool-github-managed = built.githubTools.release;
         tool-browser = built.browser;
         tool-vscode-web = built.vscodeWeb;

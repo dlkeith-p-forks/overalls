@@ -10,6 +10,7 @@ import '../../ui/tokens.dart';
 import '../../ui/widgets.dart';
 import '../labels.dart';
 import '../routes.dart';
+import 'machine_form.dart';
 import 'machines_controller.dart';
 
 /// A snapshot time as an identifier-like UTC timestamp, the same in every
@@ -32,11 +33,21 @@ class MachinesScreen extends ConsumerStatefulWidget {
 class _MachinesScreenState extends ConsumerState<MachinesScreen> {
   String _query = '';
 
+  Future<void> _create() async {
+    final form = await showMachineForm(context, MachineFormKind.create);
+    if (form == null || !mounted) return;
+    await ref
+        .read(machinesProvider(widget.deployment).notifier)
+        .create(name: form.name, source: form.source, shape: form.shape);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = MilaLocalizations.of(context);
     final view = ref.watch(machinesProvider(widget.deployment));
     final shown = searchMachines(view.machines, _query);
+    final creating =
+        view.requests[newMachineRequest] != null && !view.requests[newMachineRequest]!.terminal;
     return Scaffold(
       appBar: AppBar(
         leading: TextButton(
@@ -75,6 +86,18 @@ class _MachinesScreenState extends ConsumerState<MachinesScreen> {
               ),
               onChanged: (value) => setState(() => _query = value),
             ),
+            const SizedBox(height: MonoScale.line / 2),
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: ConsoleButton(
+                key: const Key('machine-new'),
+                label: l.actionNew,
+                glyph: Glyph.plus,
+                onPressed: creating || view.savedAt != null ? null : _create,
+              ),
+            ),
+            if (view.requests[newMachineRequest] != null)
+              Text(view.requests[newMachineRequest]!.text(l), key: const Key('request-new')),
             const SizedBox(height: MonoScale.line),
             if (view.failed || view.savedAt != null)
               Text(l.machinesOffline, key: const Key('machines-offline')),

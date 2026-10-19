@@ -151,6 +151,31 @@ custody needs native code on each platform, which Nix cannot build for iOS.
   test does not yet cover these screens, and the iOS and Android share and
   webview paths have not been built.
 
+- Remaining plan features (2026-10-19). Each is checked against Marshall's
+  wire shapes, sent once with its request id and observed with
+  `request show`:
+  - create, clone and resize
+    ([`machine_change.dart`](../../../mila/packages/mila_core/lib/src/machine_change.dart));
+    resize refuses an empty change or a shrinking disk before sending;
+  - machine sharing with `share show`, `share add` and `share remove`
+    ([`sharing.dart`](../../../mila/packages/mila_core/lib/src/sharing.dart)).
+    It decodes the result shape Marshall's `share show` test pins, skipping
+    and counting grants with a bad id, email or role.
+
+  Hegel properties and examples cover them in `test/machine_change_test.dart`
+  and `test/sharing_test.dart`. The new-machine form on the machine list and
+  the resize, clone and sharing controls on the Info tab are covered by
+  [`test/machine_changes_test.dart`](../../../mila/app/test/machine_changes_test.dart)
+  against the fake Porsche. These pass in local `dart test` and `flutter test`
+  runs; the M6 review records the Nix checks. Marshall still decides who may
+  share or resize. **Gap:** no machine test drives these commands from Mila
+  against a real Porsche.
+- The iOS NotificationService extension is now a target in
+  [`Runner.xcodeproj`](../../../mila/app/ios/Runner.xcodeproj/project.pbxproj),
+  embedded in Runner and signed with the shared Keychain group. The project
+  file parses, and its object references resolve. **Gap:** Xcode is not
+  available here, so neither target has been built or signed.
+
 ## Open questions
 
 None for this decision; per-feature questions are in ADR-0222 to ADR-0225.

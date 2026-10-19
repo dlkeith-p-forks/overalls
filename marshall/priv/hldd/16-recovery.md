@@ -132,7 +132,7 @@ forbidden, while missing route/execution or unanswered login lookup remains
 unavailable. New authentication cannot restore the old credential or expired
 stream.
 
-Systemd owns personal workers and mode-0600 sockets independently of the root
+On Linux, systemd owns personal workers and mode-0600 sockets independently of the root
 broker. Broker restart preserves them and saved personal data only when the
 root-owned launch digest still matches UID/name/protocol/commit/release/origin.
 Changed legitimate identity requires successful stop before replacement;
@@ -143,12 +143,36 @@ deleting home or extension data. Upstream extension-host activity, its five-minu
 idle timer and 1500-second reconnection grace govern automatic shutdown, rather
 than an exact timestamp of the last raw relay close.
 
+The Windows editor candidate has independent `EditorBroker` and
+`EditorCustodian` SYSTEM tasks. The broker owns gateway streams; the custodian
+owns atomic suspended SAM/S4U launch, receipts, readiness, exact worker pipes and
+every kill-on-close job handle. Broker death ends its streams while the retained
+custodian keeps workers. Fresh admission repeats gateway, current boot/release,
+local peer and account checks. A retained custodian replaces a verified-dead held root only
+after terminating its exact job and observing zero descendants; failed accounting
+quarantines the slot. All 64 account slots remain reserved for that custodian's
+lifetime, including empty failed starts. Pipe slots and cancelled operations have
+a separate 128-entry budget in each broker/custodian process.
+Live-root readiness/pipe failures and process-observation errors refuse without
+authorizing termination. Current roster/SAM validation runs inside the UID lock.
+
+Custodian death requests termination of its owned descendants through final job
+handle closure. Current source conservatively refuses any old receipt encountered
+by a fresh custodian in the same physical boot namespace: a dead root or missing
+job name cannot prove old descendants are gone. A new physical boot has a new
+namespace. Safe same-boot automatic replacement preserving personal files remains
+unimplemented; native termination, task restart, root-plus-descendant drainage
+and bounded exhaustion tests remain pending. The old stock browser fixture passed
+its initial workbench/save/PTY stage, then failed broker recovery; it does not
+qualify the replacement or its immutable candidate. See the
+[custodian review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
+
 Operational Login/Credential/Lease/asset-receipt cleanup uses bounded seven-day
 expiry batches, retaining credentials still referenced by leases. Audit versions
 follow the separate ninety-day inventory. Neither pruning nor process restart
 grants identity or cleanup authority over another account. Old guest disks retain
 their immutable package capability; recreate from a matching image to acquire a
-new release. Standalone native and full NixOS Marshall/Audi/Lilly/Firecracker
+new release. Linux standalone native and full NixOS Marshall/Audi/Lilly/Firecracker
 broker restart/worker loss passed with saved data. Actual NixOS stop/start preserved
 placement/epoch, advanced logical generation, rotated challenge and guest boot UUID,
 and required exact current-generation physical running/Provisioning readiness.

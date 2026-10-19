@@ -93,7 +93,13 @@ defmodule FleetTerminal do
       )
 
     Process.put(:fixture_stage, :terminal_vsock)
-    {:ok, control} = Vsock.connect(identity)
+    control =
+      case Vsock.connect(identity) do
+        {:ok, socket} -> socket
+        {:error, reason} when reason in [:connect_failed, :handshake_failed, :timeout, :closed, :rejected] ->
+          Process.put(:fixture_stage, {:terminal_vsock, reason})
+          raise "Fixture terminal vsock unavailable"
+      end
 
     try do
       Process.put(:fixture_stage, :terminal_create)

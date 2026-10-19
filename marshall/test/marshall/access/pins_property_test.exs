@@ -194,10 +194,13 @@ defmodule Marshall.Access.PinsPropertyTest do
   # each user/VM pair keeps at most one live row, and `pinned_vm_ids/1` and the
   # pinned view return exactly the model order and never another user's pins.
 
-  # The full 100-case isolated run measured 276 seconds; retain finite aggregate
-  # headroom while every case keeps its own SQL ownership deadline.
+  # The full 100-case isolated run measured 276 seconds; the default profile's
+  # 30s heuristic counted SQL body costs and stopped after only seven cases.
+  # At b0dec2a / engine 0.43.7, CI derandomizes from test identity, disables the
+  # example database and only suppresses TooSlow. Shrinking/blob replay and other
+  # health checks remain. Keep all cases, the SQL deadline and complete oracle.
   @tag timeout: 600_000
-  property "pin histories match the per-user ordered-set model", test_cases: 100 do
+  property "pin histories match the per-user ordered-set model", profile: :ci, test_cases: 100 do
     property_fixture()
     commands = draw("commands", list_of(pin_commands(), min_length: 3, max_length: 20))
     # Each synthetic host admits two of these machines.

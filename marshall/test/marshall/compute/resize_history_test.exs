@@ -27,7 +27,11 @@ defmodule Marshall.Compute.ResizeHistoryTest do
   # Refusals and exact replays MUST preserve complete durable rows; unknown effects
   # MUST retain holds. Shape expectations MUST include the fixed extra Inception
   # drive and bundle/VMM costs independently of the production accounting helpers.
+
+  # The full 100-case persisted history includes physical phases, replays and
+  # complete row snapshots; the old 60s aggregate expired inside real SQL work.
   @tag :hegel_case_sandbox
+  @tag timeout: 600_000
   property "resize histories preserve identity, evidence boundaries and held resources",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()
@@ -70,7 +74,11 @@ defmodule Marshall.Compute.ResizeHistoryTest do
   # An original request receipt MUST NOT grant authority after management is
   # downgraded or revoked. Retry authorization follows the current persisted grant;
   # automatic phases retain the retrying actor without changing original ownership.
+
+  # Keep all 300-900 generated role transitions and their real authority checks
+  # beyond the old 60s aggregate; per-case SQL ownership retains its own deadline.
   @tag :hegel_case_sandbox
+  @tag timeout: 600_000
   property "management transitions fence original request replays and phase retries",
     test_cases: 100 do
     Marshall.DataCase.isolate_property_case()

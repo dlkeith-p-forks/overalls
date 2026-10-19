@@ -99,7 +99,9 @@ defmodule Lilly.Transfer.PermitJournal do
   # and waiting launchers to be quiescent. It MUST bind the peer key and descriptor
   # identity permanently, accept only increasing revisions of the identical
   # descriptor or identical retries, and never revive a revoked relocation. A
-  # probe may advance only to an export with the same intent and key. New leases
+  # probe may advance only to an export with the same intent and key; a memory
+  # relocation's checkpoint is captured after its running-source probe, so only
+  # that descriptor field is excluded from the probe comparison. New leases
   # MUST expire within 300 seconds of local time.
   @spec grant(Path.t(), map(), String.t(), pos_integer(), integer(), integer()) :: :ok | failure()
   def grant(root, wire, public, revision, expires, now) do
@@ -123,7 +125,7 @@ defmodule Lilly.Transfer.PermitJournal do
 
           %{"state" => "probing", "grant" => previous} ->
             if previous["public_key"] == public and
-                 previous["intent"] == Map.delete(wire, "stream") and
+                 previous["intent"] == Map.drop(wire, ["stream", "checkpoint"]) and
                  now >= previous["issued_at"] do
               {:ok, %{record | "state" => "active", "grant" => grant}}
             else

@@ -33,8 +33,10 @@ contain incoming frames, paths, account identities, origins, arguments or bytes.
 The separate Windows launcher library MUST bind a validated current execution,
 package and canonical roster account to its current local SAM SID. S4U tokens,
 worker processes and named-pipe servers MUST match that exact SID. Processes
-MUST join a SYSTEM-only named job while suspended; broker handle closure MUST
-NOT stop resumed workers. Reuse MUST verify process creation time, executable,
+MUST be assigned atomically at creation to a SYSTEM-only kill-on-close named
+job, suspended and without inherited handles. Only the independent custodian
+MAY hold job handles. Gateway broker loss MUST NOT stop resumed workers;
+custodian loss MUST request termination of every owned job. Reuse MUST verify process creation time, executable,
 job ownership/membership and pipe server PID. Unknown or foreign custody MUST
 refuse without terminating processes or deleting personal files. Library
 presence MUST NOT enable an image capability or a network listener.
@@ -44,8 +46,11 @@ Receipts MUST live in a SYSTEM-only namespace derived from the validated MMDS
 physical boot challenge, placement and epoch. A renewed session/generation MAY
 reuse only the exact validated stable worker identity in that same namespace.
 Prior boot receipts MUST NOT authorize current workers. Every new launch MUST
-publish a complete private receipt or stop its entire owned job; failed cleanup
-MUST surface. Recovery of a conclusively absent retained root process MUST stop
+publish a versioned complete private receipt including the SID-bound stable
+worker identity key before resume or stop its entire owned job; failed cleanup
+MUST surface and retain quarantined custody/capacity. The custodian MUST keep
+at most 64 account slots and retain jobs independently of stream lifetimes.
+Recovery of a conclusively absent retained root process MUST stop
 any remaining proven SYSTEM-owned exact-job descendants before replacement;
 PID reuse and incomplete or foreign custody MUST refuse cleanup.
 
@@ -70,3 +75,19 @@ return. Live and pending cancelled operations MUST share at most 128 pipe
 reservations, acquired before open/duplication; exhaustion MUST refuse new
 pipes. At most one process-wide completion reaper may run. A broker request
 thread MUST NOT remain blocked on a worker pipe after worker loss.
+
+@cc [owner:ghuntley,label:security;recovery] windows-custodian-restart-quarantine
+A fresh custodian MUST refuse every existing same-boot worker receipt without
+its original retained job handle. A dead root, missing named job or requested
+kill-on-close MUST NOT be treated as proof that all descendants have stopped.
+Old non-custodian receipts MUST NOT enter the custodian-v1 boot namespace.
+Same-boot automatic recovery after custodian loss remains unimplemented until
+whole-job quiescence can be established; a new physical boot changes namespace.
+
+@cc [owner:ghuntley,label:security;capacity] windows-custodian-private-stream
+The TCP gateway MUST forward only its validated current preface over the fixed
+MMDS-boot-derived local SYSTEM-only pipe. Both peers MUST verify exact kernel
+PID/creation/SYSTEM/executable identity before frames or streams are accepted.
+Custodian admission MUST independently validate execution, release and account.
+IPC instances and retired operations MUST share the existing 128 pipe budget;
+exhaustion MUST preserve custodian/worker ownership and refuse or backpressure.

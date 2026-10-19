@@ -133,8 +133,9 @@ if exist C:\overalls\editor-broker\install.ps1 (
 rem schtasks gives every task a 72-hour execution limit; the agents are
 rem long-running daemons, so remove the limit, never start a second instance
 rem and ask the scheduler to restart a task that fails.
-rem EditorBroker already has verified private custody and supervision settings.
-powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "$s = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries; Get-ScheduledTask -TaskPath '\Overalls\' | Where-Object { $_.TaskName -notin @('Bootstrap', 'EditorBroker') } | ForEach-Object { Set-ScheduledTask -TaskPath $_.TaskPath -TaskName $_.TaskName -Settings $s | Out-Null; 'settings ' + $_.TaskName }" >> %LOG% 2>&1 && echo OVERALLS-AGENT-TASKS-UNBOUNDED > COM1
+rem EditorBroker and EditorCustodian already have verified private custody and
+rem independent supervision settings.
+powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "$s = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries; Get-ScheduledTask -TaskPath '\Overalls\' | Where-Object { $_.TaskName -notin @('Bootstrap', 'EditorBroker', 'EditorCustodian') } | ForEach-Object { Set-ScheduledTask -TaskPath $_.TaskPath -TaskName $_.TaskName -Settings $s | Out-Null; 'settings ' + $_.TaskName }" >> %LOG% 2>&1 && echo OVERALLS-AGENT-TASKS-UNBOUNDED > COM1
 
 rem Emergency Management Services: Windows boot manager, loader and the kernel
 rem Special Administration Console all use COM1 at 115200 baud from next boot.

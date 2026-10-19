@@ -1149,8 +1149,9 @@ let
       guestCpuCores = 6;
       guestMemoryMiB = fixtureGuestMemoryMiB;
       # Candidate admission is confined to these disposable memory-continuation,
-      # relocation and evacuation tests; it never promotes a production image.
-      checkpointImageIds = lib.optionals (suspension || relocation || maintenanceEvacuation) [ guestImageId ];
+      # relocation and evacuation tests, including the Porsche lifecycle's
+      # running-VM relocate; it never promotes a production image.
+      checkpointImageIds = lib.optionals (suspension || relocation || maintenanceEvacuation || porsche) [ guestImageId ];
       images = [ { path = "${guest}"; } ]
         ++ lib.optionals ubuntu [ { path = "${nixosGuest}"; } ];
       pools = [{
@@ -1385,10 +1386,10 @@ in
 assert !(defaultOss || repositoryLaunch || githubIntegration || resize || accountLifecycle || teamResources || maintenanceEvacuation || cloneCancellation) || audi;
 assert !otelPorsche || (porsche && builtins.length porscheScenarioParts == 2);
 # @cc [owner:ghuntley,label:verification] porsche-threads-fleet-scope
-# The porsche-threads journey MUST follow the Porsche scenario's real key
-# approval and authorized SSH dispatch, whose client keys and helpers it
-# reuses, then provision its own thread machine; guest lifecycle, sharing and
-# relocation stay in porsche-fleet. It never runs in other reduced variants.
+# The porsche-threads journey MUST follow the complete Porsche scenario (real
+# key approval, authorized SSH dispatch, guest lifecycle, sharing, relocation
+# and cloning), whose client keys and helpers it reuses, then provision its own
+# thread machine. It never runs in other reduced variants.
 assert !porscheThreads || (porsche && !terminal && !userSshJourney && !otelPorsche && !porscheLifecycleOnly && builtins.length porscheScenarioParts == 2);
 assert !repositoryLaunch || (porsche && !defaultOss);
 assert !githubIntegration || (galileo && audi && !repositoryLaunch && !defaultOss && !ubuntu);
@@ -1880,7 +1881,7 @@ assert editorFamily == null || (editor && !ubuntu
     + lib.optionalString relocation (builtins.readFile ./relocation-helpers.py)
     + lib.optionalString (porsche && !userSshJourney)
       (if porscheTerminal then builtins.head porscheScenarioParts
-      else if porscheThreads then builtins.head porscheScenarioParts + "\n" + builtins.readFile ./scenarios/porsche-threads.py
+      else if porscheThreads then builtins.readFile ./scenarios/porsche.py + "\n" + builtins.readFile ./scenarios/porsche-threads.py
       else if otelPorsche then builtins.head porscheScenarioParts + "\n" + ''
         m1.wait_for_unit("overalls-request-porsche-exporter.service")
         m1.wait_until_succeeds("jq -e '.service == \"porsche\" and .requests >= 1 and .successes >= 1 and .requests == (.successes + .failures)' /run/overalls-request-porsche-source/slo.json")
