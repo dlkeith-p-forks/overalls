@@ -970,3 +970,26 @@ The composed fleet DNS-repair replay also terminated with a failure
 (`/tmp/github-closure-fleet-dns-aaaa-repair.log`); its final failing boundary
 remains untriaged at this checkpoint. Scoped DNS tests do not establish the full
 browser/OAuth/guest fleet journey or live GitHub acceptance.
+
+### Trunk merge checkpoint
+
+The merge of origin `b2899911f` into checkpoint `6bc6862e` preserves all 209
+scenario IDs and combines the 15 incoming scenario updates with the native and
+GitHub evidence above. Incoming localization, Android host-sequence refusal,
+Susan/push, SSH-attach and Porsche thread/web executions keep their cited source
+and test scope. The suspension pre-guest exit137 remains a failure without an
+established cause. The Antithesis non-bootable admission image's Git declaration
+remains explicitly labelled STUB and does not establish guest attribution.
+
+The editor retains the full 24.21.0 Node/Windows tuple and adds the shared
+source-built runtime helper with the independently verified official source
+SHA256 `a6f54defb6fd7c84f41dba13d61e78e9b4e0961712cf61f29715c05f5ced94fc`.
+The guest journal module selects either pinned NixOS option shape while retaining
+volatile storage; managed LFS retains the exact reviewed 3.7.1 source. These
+compatibility and provenance repairs introduce no new authority or accepted
+design decision. Earlier application gates do not become a full merged-source
+passing gate. Editor derivation evaluation is separate from package/native build
+and browser acceptance. The merged module-configuration check passed
+(`/tmp/github-trunk-merge-module-configuration.log`, structured
+`1792412831497-4005750-0.jsonl`), establishing the evaluated compatibility
+assertions without a new guest or fleet execution.

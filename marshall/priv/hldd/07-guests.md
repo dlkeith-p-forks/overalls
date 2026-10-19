@@ -32,7 +32,9 @@ Both standard images install pinned Codex 0.149.0 (`codex`) and Claude Code
 2.1.238 (`claude`) using their native system configuration. The
 [shared package/settings source](repo:nix/domains/artifacts/guest/coding-clis.nix) selects
 Ziggy's verified private endpoint without provider credentials or custom
-launchers. Automatic client updates are disabled. No model catalog synchronizer
+launchers. Their package archive remains hash-pinned independently of host
+Nixpkgs updates so the reviewed application versions remain fixed. Automatic
+client updates are disabled. No model catalog synchronizer
 is installed; ordinary native model choices/catalogs may differ from Ziggy's
 available models.
 
@@ -1689,9 +1691,12 @@ The merged package graph aligns the Linux Node version and hash-pinned Windows
 runtime, headers and import library on 24.21.0. This restores editor package
 evaluation while preserving official-source compilation and release binding.
 The changed inputs produce a new release tuple: the historical Windows import
-does not qualify this payload. Fresh package/native build and browser acceptance
-remain unrecorded. The NixOS guest journal option uses the pinned module's
-`services.journald.storage = "volatile"`, preserving memory-only guest logs.
+does not qualify this payload. The shared Node builder now consumes the exact
+24.21.0 source hash independently of the pinned Nixpkgs default; editor and
+maintenance commands use that same reviewed runtime. Fresh package/native build
+and browser acceptance remain unrecorded. The NixOS guest module selects the
+available `journald.settings.Journal.Storage` or `journald.storage` option while
+preserving memory-only guest logs under both pinned NixOS module versions.
 
 The staged broker is a SYSTEM-owned boundary around that future payload. Its
 portable model binds boot, descriptor, placement, epoch, GuestAccount UUID,
@@ -1857,7 +1862,12 @@ not native runtime acceptance.
 Marshall's in-memory display registry shares a relay for each machine and
 generation, while the socket separately checks current login and ticket claims
 before attaching a controller or viewer. The noVNC client owns its canvas inside
-a dedicated display target, which is cleared on reconnect. These implementation
+a dedicated display target, which is cleared on reconnect. A future host-stream
+output sequence closes its Android channel, removes the caller monitor and
+notifies the owner with the generation and `sequence_gap` reason; a gap cannot
+silently discard bytes and leave the display stream open. The focused BEAM
+host-stream tests passed this refusal and close-control assertion without
+exercising an authenticated native display stream. These implementation
 facts do not establish native transport, browser controller/viewer enforcement,
 restart recovery or physical isolation; the existing Android acceptance gaps
 remain open.

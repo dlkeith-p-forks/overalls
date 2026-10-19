@@ -15,3 +15,15 @@ persistence across an emulator restart. This records the standalone software
 emulator, not the production API 36 guest image, TAP firewall enforcement,
 Lilly ticket authority or browser control. Authenticated vsock display and
 production Firecracker execution remain open validation work.
+
+The subsequent `41106c6b3` host-stream integration closes an Android channel on
+a future output sequence, removes its caller monitor and notifies the owner with
+the generation and `sequence_gap` reason. The new regression fixture initially
+decoded the WebSock iodata reply directly as a binary; converting that fixture
+reply with `IO.iodata_to_binary/1` preserves the actual callback contract. The
+focused `host_stream_android_test.exs` and `host_stream_test.exs` run passed all
+11 tests in 61.6 seconds with seed `452775`, eight maximum cases and the existing
+100-case property budgets unchanged. Production source and the corrected test
+match that validated snapshot. This is codec and BEAM channel-state evidence,
+without native host transport, Firecracker, browser or physical isolation
+acceptance; ADR-0206 remains partial.

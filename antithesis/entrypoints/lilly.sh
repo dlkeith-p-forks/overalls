@@ -26,6 +26,9 @@ unset machine_hex
 # a fixed private substrate file naming configured (not measured) totals for
 # the enrolled pool identity, and a tiny non-bootable image whose manifest is
 # published for the operator to register. Nothing here creates or observes ZFS.
+# STUB: the manifest declares git_identity_version 1 because ADR-0198 admission
+# refuses images without it; the image never boots, so no Git identity is
+# consumed and this is not guest identity evidence.
 case "${OVERALLS_ANTITHESIS_STORAGE_STUB:-0}" in
   0) storage_stub=0 ;;
   1) storage_stub=1 ;;
@@ -46,7 +49,7 @@ if [[ "$storage_stub" == 1 ]]; then
     head -c 4096 /dev/zero > "$state/.stub-image.new/rootfs.ext4"
     jq -n --argjson kernel "$(stub_artifact kernel)" --argjson initrd "$(stub_artifact initrd)" \
       --argjson rootfs "$(stub_artifact rootfs.ext4)" \
-      '{version:4,architecture:"x86_64",boot_args:"console=ttyS0 overalls.antithesis.storage_stub=1",minimum_memory_bytes:536870912,minimum_disk_bytes:1073741824,kernel:$kernel,initrd:$initrd,rootfs:$rootfs,workspace_source_version:null}' \
+      '{version:4,architecture:"x86_64",boot_args:"console=ttyS0 overalls.antithesis.storage_stub=1",minimum_memory_bytes:536870912,minimum_disk_bytes:1073741824,kernel:$kernel,initrd:$initrd,rootfs:$rootfs,workspace_source_version:null,git_identity_version:1}' \
       > "$state/.stub-image.new/manifest.json"
     chmod 0444 "$state/.stub-image.new"/*
     mv -T "$state/.stub-image.new" "$stub_image"

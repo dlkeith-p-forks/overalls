@@ -19,6 +19,14 @@ Prompts and authorized network access wake sleeping machines; requests to an
 already running machine do not continually reset the tool clock. Only the owner's
 pin prevents automatic suspension, and pinning a suspended machine requests wake.
 
+The suspension fleet fixture now enrolls the same private Galileo/Audi issuer,
+runtime credentials and trust as ordinary fleet guests before SSH host-certificate
+readiness. Its 2026-10-19 rerun passed composed-driver type and lint checks and
+completed private-service enrollment, then exited with status 137 while waiting
+for the fleet wildcard certificate, before guest launch. This records neither
+pause/resume nor relocation acceptance; the exit status does not identify why
+the process was killed. Changed-source native continuation remains unverified.
+
 ```mermaid
 stateDiagram-v2
   running --> paused: capture and compute-empty proof

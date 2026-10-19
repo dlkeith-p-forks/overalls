@@ -272,6 +272,8 @@ completed private-service enrollment but exited with status 137 while waiting
 for the fleet wildcard certificate, before guest launch. This is not passing
 pause/resume or relocation evidence. Concurrent native builds were present;
 the exit status alone does not establish why the process was killed.
+These driver and native results precede the dependency refresh in `1da714ef2`;
+they do not validate its refreshed locked closure.
 
 The accepted decision is unchanged by the merge reconciliation and bounded
 repairs. Source review and focused contention/reopen execution resolve the
