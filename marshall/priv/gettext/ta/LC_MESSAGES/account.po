@@ -57,9 +57,10 @@ msgstr "4. Git அடையாளம்"
 msgid "Account"
 msgstr "கணக்கு"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
+msgid "Commit attribution"
+msgstr "கமிட் உரிமையாளர் குறிப்பிடல்"
 msgstr "கமிட்டில் Overalls பங்களிப்புக்கான அங்கீகாரத்தைச் சேர்க்கவும்"
 
 #: lib/marshall_web/live/account_live.ex:742
@@ -169,11 +170,6 @@ msgstr "Git மின்னஞ்சல்"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git அடையாளம்"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git அடையாள மாற்றங்கள் புதிய கணினிகளுக்குப் பொருந்தும். கமிட்டில் பங்களிப்புக்கான அங்கீகார மாற்றங்கள் எதிர்கால முகவர் கோரிக்கைகளுக்குப் பொருந்தும்."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -418,11 +414,6 @@ msgstr "நிர்வாக மாற்றங்கள் அல்லது 
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "அணுகல் சாவியால் சரிபார்"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "இயக்கப்பட்டால், புதிய முகவர் கமிட்டுகளில் Co-authored-by: Overalls <noreply@overalls.dev> சேர்க்கப்படும்."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

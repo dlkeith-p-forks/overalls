@@ -57,9 +57,10 @@ msgstr "4. Pagkakakilanlan sa Git"
 msgid "Account"
 msgstr "Account ng gumagamit"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
+msgid "Commit attribution"
+msgstr "Pagkilala sa commit"
 msgstr "Idagdag ang pagkilala sa Overalls sa commit"
 
 #: lib/marshall_web/live/account_live.ex:742
@@ -167,11 +168,6 @@ msgstr "Email sa Git"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Pagkakakilanlan sa Git"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Ang mga pagbabago sa pagkakakilanlan sa Git ay ilalapat sa mga bagong makina. Ang mga pagbabago sa pagkilala sa commit ay ilalapat sa mga susunod na kahilingan sa agent."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -416,11 +412,6 @@ msgstr "Beripikahin ang passkey bago gumawa ng mga pagbabagong pang-administrasy
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "Beripikahin gamit ang passkey"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "Kapag naka-enable, kasama sa mga bagong commit ng agent ang Co-authored-by: Overalls <noreply@overalls.dev>."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

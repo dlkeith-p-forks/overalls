@@ -57,9 +57,10 @@ msgstr "4. Git kimliği"
 msgid "Account"
 msgstr "Hesap"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
+msgid "Commit attribution"
+msgstr "Commit ilişkilendirmesi"
 msgstr "Commitlere Overalls katkı bilgisini ekle"
 
 #: lib/marshall_web/live/account_live.ex:742
@@ -167,11 +168,6 @@ msgstr "Git e-postası"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git kimliği"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git kimliği değişiklikleri yeni makinelere uygulanır. Commit katkı bilgisi değişiklikleri gelecekteki ajan isteklerine uygulanır."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -416,11 +412,6 @@ msgstr "Yönetim veya geçiş anahtarı değişikliklerinden önce bir geçiş a
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "Geçiş anahtarıyla doğrula"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "Etkinleştirildiğinde, yeni ajan commitleri Co-authored-by: Overalls <noreply@overalls.dev> içerir."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format
