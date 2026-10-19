@@ -91,6 +91,12 @@ class Artifacts:
 def command_output(result: subprocess.CompletedProcess[bytes]) -> bytes:
     """Accept only the exact successful production login event, with bounded output."""
     if result.returncode != 0 or result.stderr != SSH_LOGIN_EVENT or len(result.stdout) > 4096:
+        print(
+            f"native crash command refused: status={result.returncode} "
+            f"stdout_bytes={len(result.stdout)} stderr_bytes={len(result.stderr)} "
+            f"login_event_exact={result.stderr == SSH_LOGIN_EVENT}",
+            flush=True,
+        )
         raise services.ProtocolError("native crash recovery guest command refused")
     return result.stdout
 
@@ -295,7 +301,9 @@ def hash_value(value: object) -> str:
     return value
 
 
-def service_evidence(body: bytes, before: Observation, after: Observation) -> Artifacts:
+def service_evidence(
+    body: bytes, before: Observation, after: Observation, *, git_identity: bool = False
+) -> Artifacts:
     """Reject incomplete or clean-reboot receipts before a crash claim is published."""
     new_authority(before.boot, after.boot)
     if before.os_name != after.os_name:
@@ -324,7 +332,10 @@ def service_evidence(body: bytes, before: Observation, after: Observation) -> Ar
             "image_sha256": artifacts.image,
             "firmware_sha256": artifacts.firmware,
             "vmm_sha256": artifacts.vmm,
-            "checks": list(SERVICE_CHECKS),
+            "checks": list(SERVICE_CHECKS)
+            + (
+                ["all-boots-current-mmds-git-config-and-commit-attribution"] if git_identity else []
+            ),
             "native_admission": False,
             "scope": SERVICE_SCOPE,
         },
@@ -333,8 +344,9 @@ def service_evidence(body: bytes, before: Observation, after: Observation) -> Ar
 
 
 class Oracle:
-    def __init__(self, work: Path) -> None:
+    def __init__(self, work: Path, *, git_identity: bool = False) -> None:
         self.work = work
+        self.git_identity = git_identity
         self.before: Observation | None = None
         self.after: Observation | None = None
         self.checked_integrity: Integrity | None = None
@@ -416,7 +428,10 @@ class Oracle:
         if self.after.process.poll() != 0:
             raise services.ProtocolError("native crash final clean exit was not observed")
         artifacts = service_evidence(
-            (self.work / "service-receipt.json").read_bytes(), self.before, self.after
+            (self.work / "service-receipt.json").read_bytes(),
+            self.before,
+            self.after,
+            git_identity=self.git_identity,
         )
         receipt: dict[str, object] = {
             "version": 1,
@@ -465,7 +480,9 @@ def main() -> None:
     parser.add_argument("--work", type=Path, required=True)
     parser.add_argument("--os-name", choices=("freebsd", "illumos"), default="freebsd")
     arguments = parser.parse_args(namespace=Options())
-    oracle = Oracle(arguments.work)
+    manifest = services.decode_object((arguments.image / "manifest.json").read_bytes())
+    version = manifest.get("git_identity_version")
+    oracle = Oracle(arguments.work, git_identity=type(version) is int and version == 1)
     runner.run(
         arguments.image,
         arguments.vmm,

@@ -12,6 +12,9 @@ rendering remains a separate acceptance obligation.
 [ADR-0203](decisions/0203-guest-reflection.md) accepts a secret-free, execution-fenced reflection projection over the private service path; implementation remains partial.
 
 [ADR-0202](decisions/0202-github-com-owner-integration.md) accepts owner-bound GitHub OAuth custody and managed guest forwarding; implementation remains partial.
+Fresh native attribution evidence remains separate from publication and admission.
+Changing selected native defaults first requires preserving immutable admission
+history so existing portable bundles retain cold-restart authority.
 
 [ADR-0201](decisions/0201-localized-human-surfaces.md) accepts Localize-backed human surfaces with validated language preferences, LTR/RTL presentation and native Gettext catalogs partitioned by locale and feature. Public guides are localized; authenticated handbook chapters remain source English. Translation and native browser acceptance remain partial.
 

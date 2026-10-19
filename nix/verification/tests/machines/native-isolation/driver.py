@@ -1,5 +1,8 @@
 """Boot native agents inside a router with actual Lilly policy and closed sinks."""
 
+import json
+import shlex
+
 host.start()
 host.wait_for_unit("multi-user.target")
 host.succeed("test -c /dev/kvm")
@@ -37,9 +40,44 @@ try:
         f" --work /work/native-services --os {os_name}",
         timeout=800,
     )
+    expected_checks: list[str] = [
+        "mmdsv2-current-boot-kernel",
+        "assigned-address-reachable",
+        "readiness-withheld-without-ssh-authority",
+        "trust-installed-and-stale-refused",
+        "flush-current-boot-and-refusals",
+        "workspace-stale-foreign-malformed-refused",
+        "workspace-native-https-shallow-checkout-and-exact-bytes",
+        "workspace-exact-git-ownership-and-unrelated-root-refusal",
+        "terminal-hello-ping-and-refusals",
+        "terminal-managed-pty-input-resize-replay-and-token-refusal",
+        "kernel-current-boot-rechecked",
+        "complete-readiness-after-isolated-authority",
+        "ssh-certified-host-and-foreign-ca-refusal",
+        "ssh-managed-uid-gid-bash-and-passwordless-sudo",
+        "ssh-foreign-key-root-foreign-user-and-password-refusals",
+        "ssh-login-receipt-before-startup-and-client-environment",
+        "executor-private-https-fixed-command-completed",
+        "executor-current-heartbeat-withdrawal-before-command-deadline",
+        "executor-whole-group-death-no-result-and-fresh-fence-completion",
+        "ssh-triggered-clean-guest-shutdown",
+        "new-mmds-epoch-challenge-and-boot-id",
+        "previous-boot-protocol-refused",
+        "home-bytes-retained-across-clean-reboot",
+        "ssh-host-key-rotated-across-clean-reboot",
+        "all-boots-complete-service-oracles",
+    ]
+    receipt_filter: str = (
+        ".native_admission == false and "
+        "((.checks | sort) == (($base + (if $manifest[0].git_identity_version == 1 "
+        'then ["all-boots-current-mmds-git-config-and-commit-attribution"] else [] end)) | sort))'
+        " and (.boot_ids | unique | length == 2)"
+    )
     host.succeed(
-        "jq -e '.native_admission == false and (.checks | length == 22)"
-        " and (.boot_ids | unique | length == 2)' /work/native-services/service-receipt.json"
+        "jq -e --slurpfile manifest /etc/overalls-native-service-image/manifest.json"
+        f" --argjson base {shlex.quote(json.dumps(expected_checks))} "
+        + shlex.quote(receipt_filter)
+        + " /work/native-services/service-receipt.json"
     )
     host.succeed(
         "test $(find /work/native-services -path '*/isolation-*/receipt.json' | wc -l) -eq 2"

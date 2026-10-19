@@ -12977,7 +12977,7 @@
       "scope": "The sealed FreeBSD disk5022d714/image d141e426 retains its five recorded native service/growth/policy/daemon-recovery/SIGKILL-recovery results. Exact identity, artifact publication and consumer refusal have separate bounded tests; adding the new registry does not reclassify older candidate receipts or establish a Marshall-driven native guest journey. Complete Marshall and Lilly gates passed on clean589ff7fe5 with 1690 and 610 checks respectively, both with zero-error forced Dialyzer. Public trusted-NAR verification and fresh-store substitution passed separately. These records predate later source/test changes. The current promotion gate requires exact named service oracles: the immutable FreeBSD 22 and OmniOS 25 including workspace ownership and executor withdrawal/cancellation. Current verifier units and the sealed FreeBSD package build passed. A separate live promoted-FreeBSD subset passed ordinary create, exact-OS personal-account CLI SSH and orderly stop; restart and repeat exact-OS CLI SSH also passed; final cleanup returned deleted receipts for the owned subset. Exact OmniOS disk 45983bb7/image 98b23b now binds all five direct host-KVM scenario sets to a signed immutable no-reference candidate NAR. Independent Dungarees substitution/content/signature verification, exact promotion build and six dual-family focused checks including 64 generated substitutions passed. Full exact-source protocol precommit passed 302 tests, Covenant 14/14 and Dialyzer with zero errors/skips. Both OmniOS package aliases now select the exact immutable promotion, yielding seven source-selected catalog rows. The catalog evaluation, promotion gate and actual unchanged promoted package build passed; selected-release host builds, deployment and live CLI acceptance remain separate. Both selected-release host builds and healthy exact deployment passed. The exact OmniOS 16 GiB image separately passed ordinary create, strict CLI SSH identity, terminal stopped, restart, repeated strict CLI identity and terminal deleted cleanup after a narrowly corrected release-label oracle; the original failed oracle is retained. Fresh 122228 then independently passed the full seven-stage lifecycle with a separate current-owner stopped checkpoint and completed deletion; its exact receipts and final healthy d0eaddbc9 catalog observation are bound in the matrix review.",
       "status": "partial",
       "gaps": "The final frozen 132bc28b5 Protocol/Marshall/Lilly/Porsche gates retain their exact source scope. Later imported Porsche and Lilly test changes have separate targeted passing executions, without transferring the full-gate claim to changed test source. Fresh exact OmniOS 122228 adds an independent current-owner stopped checkpoint and completed deletion to a second ordinary lifecycle; the original 091638 observation remains unchanged. All-enabled-capability/revocation, independent physical absence, shell-supervisor death, direct native-peer/jail isolation, repeated reset/DMA stress, physical power loss and relocation remain gaps. Owner stopped-state checkpoints do not establish physical absence.",
-      "preferred_gap": "Run a NixOS machine journey through ordinary Marshall admission and Lilly launch using the exact promoted artifact, exercise its seven enabled capabilities and false editor/Inception surfaces, and reject changed manifests, stale portable identity and revoked execution. Preserve the existing native and generated refusal scopes separately.",
+      "preferred_gap": "Before selecting attribution-capable native defaults, preserve old manifests/promotion pins additively and verify old/new manifest and bundle admission, altered identity refusal, unchanged old capability absence and catalog-free retained restart. Keep old staging until original provisioning settles. Then run an ordinary Marshall/Lilly journey through the exact newly promoted artifact, all enabled capabilities and false editor/Inception surfaces. Preserve historical execution scopes separately.",
       "evidence": [
         {
           "kind": "manual",
@@ -13175,9 +13175,9 @@
       ],
       "boundary": "Marshall owns executor fences and transitions; the guest uses only verified private HTTPS. Native exec_command forwards the existing lease/stop callback before spawn and during authority polling. A separate scoped collector owns the child, concurrently bounds both output streams and enforces the 20-second deadline independently of a blocking lease RPC.",
       "denial": "A refused pre-spawn callback must create no child. Running refusal must cancel the separate process group, reap the direct child and discard output; execute must not publish a result under the failed lease. Missing/failed private authority and supervisor stop fail closed without logging command bytes.",
-      "scope": "The production native callback wiring and scoped cancellation/deadline collector are implemented. All six local real-process command tests passed, including no-spawn refusal, running cancellation/reaping/output suppression and a blocked lease RPC. The current source-qualified OmniOS service receipt records heartbeat withdrawal before the command deadline, process-group death with no result, and fresh-fence completion on both clean boots. Exact current-payload FreeBSD lease-withdrawal execution remains unrecorded.",
+      "scope": "The production native callback wiring and scoped cancellation/deadline collector are implemented. All six local real-process command tests passed, including no-spawn refusal, running cancellation/reaping/output suppression and a blocked lease RPC. Historical source-qualified OmniOS service evidence is retained. Fresh FreeBSD image 0150b6d1 passed all five exact-artifact scenarios with executor withdrawal/cancellation and fresh-fence completion on every boot. Fresh OmniOS image 679f5f8b passed the same boundary in direct two-boot services; its separate five-scenario matrix remains pending at the recorded checkpoint.",
       "status": "partial",
-      "gaps": "No fresh FreeBSD exact-image machine history withdraws a real executor lease while a command is running; the OmniOS receipt covers that boundary on the current source-qualified image. Deliberate descendants escaping the process group are outside this cleanup guarantee. Local Linux process tests cannot establish native host isolation or revocation timing.",
+      "gaps": "The fresh OmniOS five-scenario nested-NixOS matrix, Marshall-owned native fleet execution and production rollout remain unrecorded at this checkpoint. Deliberate descendants escaping the process group are outside this cleanup guarantee. Local process tests and isolated synthetic native authority cannot establish physical host isolation or live control-plane revocation timing.",
       "preferred_gap": "Run a NixOS machine history on each current native image: observe a started command, withdraw its actual lease or supervisor stop authority, prove its managed process group terminates and no result commits, then admit a fresh fence. Preserve bounded output and command-deadline checks during an unavailable lease endpoint.",
       "evidence": [
         {
@@ -13206,6 +13206,24 @@
           "scope": "Local real-process fixture blocks the authority callback longer than the short child budget and checks the command cannot reach a later side effect; no native guest or actual network outage.",
           "record": "docs/architecture/reviews/2026-10-17-native-image-admission.md",
           "record_assertion": "passed all six local real-process command tests"
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "executor-whole-group-death-no-result-and-fresh-fence-completion",
+          "scope": "Fresh exact FreeBSD 0150b6d1 passed all five nested-NixOS scenarios with 26 exact service checks, including running lease withdrawal, process-group cancellation and fresh-fence completion on every boot. Isolated synthetic private authority; no Marshall fleet or live GitHub claim.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "The fresh FreeBSD candidate passed all five exact-artifact scenarios."
+        },
+        {
+          "kind": "manual",
+          "execution": "recorded",
+          "path": "nix/verification/tests/support/native_service_runner.py",
+          "assertion": "executor-current-heartbeat-withdrawal-before-command-deadline",
+          "scope": "Fresh exact OmniOS 679f5f8b passed direct host-KVM services with both boot epochs, all 26 checks and exact running payload verification. Separate nested-NixOS five-scenario qualification remains pending.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "The fresh OmniOS candidate passed direct two-boot services and exact payload verification."
         }
       ]
     },
@@ -13219,9 +13237,9 @@
         "storage",
         "recovery"
       ],
-      "scope": "Account preference, codec and immutable snapshot property coverage; a fresh FreeBSD crash candidate separately recorded two current-MMDS native Git configuration/commit checkpoints and executor withdrawal/fresh-fence completion before its enclosing crash failure.",
+      "scope": "Account preference, codec and immutable snapshot property coverage; fresh FreeBSD 0150b6d1 passed all five exact-artifact native scenarios with current-MMDS Git configuration and actual commit attribution on every boot. Fresh OmniOS 679f5f8b passed direct two-boot 26-check services and exact payload verification, with separate five-scenario qualification pending. Historical partial runs and failures remain recorded.",
       "status": "partial",
-      "gaps": "Production rollout, complete cross-OS native Git commit acceptance and five-variant candidate qualification remain unrecorded. The FreeBSD crash candidate failed after its two attribution checkpoints; the other four in-progress variants were interrupted without completed outcomes. No image promotion or new Marshall admission passed.",
+      "gaps": "Production rollout, complete cross-OS native Git commit acceptance and the fresh OmniOS five-scenario matrix remain unrecorded at this checkpoint. The fresh FreeBSD matrix and structural verification do not publish, admit or activate its new identity. Additive admission history must preserve old manifests/bundles before selecting new defaults; older approved disks still refuse new Git-identity-bearing allocations.",
       "preferred_gap": "Run real guest commits under managed login accounts after setting custom identity and after reboot; retain native and property scopes separately.",
       "evidence": [
         {
@@ -13263,8 +13281,10 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/native-services/driver.py",
           "assertion": "all-boots-current-mmds-git-config-and-commit-attribution",
-          "scope": "Fresh capable native candidates must retain all original service checks plus actual personal-user Git configuration and commit attribution for each epoch-distinct boot, with previous boot source authority refused. Complete receipt execution and promotion remain unrecorded; separate partial native checkpoint observations do not establish this enclosing oracle.",
-          "execution": "present"
+          "scope": "Fresh FreeBSD 0150b6d1 passed all five exact-artifact scenarios with 26 exact named checks, epoch-distinct personal-user Git configuration/actual commit attribution and previous-boot refusal. All receipts retain false admission. This does not establish publication, registry admission, Marshall allocation or live GitHub.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "The fresh FreeBSD candidate passed all five exact-artifact scenarios."
         },
         {
           "kind": "manual",
@@ -13274,6 +13294,24 @@
           "execution": "recorded",
           "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
           "record_assertion": "**Both native boot attribution checkpoints passed.**"
+        },
+        {
+          "kind": "manual",
+          "path": "nix/verification/tests/support/native_service_runner.py",
+          "assertion": "native-current-boot-git-attribution-verified",
+          "scope": "Fresh exact OmniOS 679f5f8b passed current-MMDS Git configuration and actual commit attribution on direct host-KVM boots at epochs 7/8, all 26 service checks, exact running payload verification and independently observed clean shutdown. Its separate nested-NixOS five-scenario matrix is pending at this checkpoint.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "The fresh OmniOS candidate passed direct two-boot services and exact payload verification."
+        },
+        {
+          "kind": "unit",
+          "path": "nix/domains/artifacts/guest/native-promotion/test_verify.exs",
+          "assertion": "refuses missing, substituted, duplicated or extra capable",
+          "scope": "The 23-test host promotion gate passed historical 22/25-oracle preservation, explicit-v1 26-oracle requirements, malformed-capability refusal and refusal to admit a structurally complete unregistered candidate. Actual FreeBSD bytes/five-scenario receipts passed separate structural verification. No publication or runtime admission.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "gate passed **23 tests**"
         },
         {
           "kind": "unit",

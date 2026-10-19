@@ -483,3 +483,113 @@ uses Python 3.13.15 and ty 0.0.73 with typed framework-injected globals
 (`/tmp/github-composed-driver-ty.log`). Corrected fixture runtime remains pending.
 These diagnostic and fixture changes preserve the accepted authority and native
 qualification boundaries; they introduce no architectural decision.
+
+### Native qualification checkpoint on 2026-10-19
+
+**The fresh FreeBSD candidate passed all five exact-artifact scenarios.**
+Image `sha256:0150b6d1aee0b30892b937eb0566a3dcebf2c5ca4cec75f7a252bd9ae00beac6`
+declares manifest v6, source v2 and Git identity v1. Its immutable identities are:
+
+| Artifact | SHA256 |
+| --- | --- |
+| Raw disk | `db752667ec8b3deaa1fe797d466789339f80f80dc972bb252c1b4b15c2441175` |
+| Kernel | `20e38f12f5f7d19de54e3d7f7cf2b3a18e059ba9bccd838f49b1b1ccbc7e3384` |
+| Firmware | `261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2` |
+| Firecracker | `9815649a9bed84194ca45c5aef4c9307a596c7ffbe1f9f0e881c1ae536226d02` |
+
+Structured graph log `1792386874057-3638536-0.jsonl` records services 621.10 s,
+growth 651.03 s, isolation 646.25 s and daemon recovery 634.81 s. The parallel crash
+attempt failed at the integrity command before an fsck status was available;
+that failure remains recorded. A separate reduced owned-load crash run passed
+in 323.20 s, log `1792387617111-3914170-0.jsonl`, output
+`/nix/store/x7v7bndpd45m9jixxi4dwq39ilrrj63d-vm-test-run-overalls-freebsd-native-crash-recovery`.
+Other VM/build activity remained, so the passing replay does not establish
+contention as the earlier failure's cause. The unchanged 20 s SSH bound and
+zero-only `fsck_ufs -B -f /dev/gpt/rootfs` integrity requirement remain.
+
+All five service receipts bind the same disk/kernel/firmware/VMM, distinct boot
+identities, all 26 exact named checks and the scenario's required endings. Growth
+has three boots; other scenarios have two. The checks include current-MMDS
+personal-user Git configuration and actual commit attribution on every boot,
+workspace ownership and executor withdrawal/cancellation with fresh-fence
+completion. Supporting receipts cover the same boots. Every receipt retains
+`native_admission=false`. The actual production structural verifier `verify!`
+passed all artifact bytes and five evidence sets in
+`/tmp/github-freebsd-qualified-review-20261019.pesqsY/verification.log`;
+`approval-review.json` SHA256 is
+`c94ad916d529205e4496d73025d5d462f52f916eaf82aabf8be7c4bd35691d81`.
+This local review has performed no cache publication, registry admission or
+catalog activation. It does not establish a Marshall-driven or live GitHub journey.
+
+**The fresh OmniOS candidate passed direct two-boot services and exact payload verification.**
+Its image ID is
+`sha256:679f5f8bd16c6e0df68602b1fe7f3dfe985647dd94ff1d906e868c637930637e`,
+raw disk SHA256
+`069571c6f46c029f51cd77500603d6853cea0e9cd14471101b78eb613565ee96` and kernel
+SHA256 `c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21`.
+Firmware and VMM match the table above. Fresh target-native assembly linked
+nine modules from 26 objects and verified 765 installed payload records.
+Direct host-KVM execution observed boot IDs
+`23e557e5-1506-4fb5-858d-ad6e3995f768` and
+`ded6c831-794b-4ad9-8be8-d659ca716546`: both passed all 26 service checks,
+current-MMDS Git configuration/commit attribution at epochs 7/8, exact running
+kernel/module/static payload verification, disabled vendor automation and
+independently observed clean shutdown. Receipt
+`/tmp/github-omnios-candidate-20261019.oLpWda/direct-services-receipt.json`
+has SHA256 `e238eec7294ede8a88468a59e8576783cade970fab545908de7fb91d59cae936`.
+The candidate remains unadmitted. Its separate five-scenario nested-NixOS
+qualification is pending at this checkpoint; the earlier graph was explicitly
+deferred and interrupted, not recorded as a native failure. Direct services and
+assembly cannot stand in for the five-scenario matrix or retained-tool acceptance.
+
+The promotion verifier now preserves the historical 22-check FreeBSD and 25-check
+OmniOS sets when Git identity is absent. An explicitly validated integer-v1
+capability requires all 25 current baseline checks plus attribution for either
+OS. Missing, extra, substituted or duplicated names refuse. Generic manifest
+validation plus an explicit native-v6 guard prevents malformed capability values
+from bypassing the wrapper; `verify_approved!` separately requires exact registry
+admission. The Nix `native-image-promotion` gate passed **23 tests** in 4 s
+(`1792387107999-3746948-0.jsonl`), including malformed-capability and
+structurally-complete-but-unadmitted candidate refusals. These are host verifier
+tests, not additional native executions.
+
+Current closed diagnostics report only fixed command/transport stages, bounded
+counts/gauges, exit status and byte counts. No error text, commands, URLs or
+credentials are emitted. Transport overlap means a parsed heartbeat or response
+while an artifact stream is active; it does not prove a particular worker's lease
+renewed. Pinned Ruff/ty and **9 crash-boundary tests** passed
+(`/tmp/github-native-closed-command-check.log`); native-control Ruff/ty and
+**16 focused tests** passed (`/tmp/github-native-transport-test.log`,
+`/tmp/github-native-transport-ty.log`). Generated receipt filters accepted exact
+25/26-check sets and refused duplicate, foreign, missing and extra names
+(`/tmp/github-native-receipt-consumer-check.log`). Contract formatting passed
+(`/tmp/github-native-final-contract-format.log`); that is syntax/discovery
+evidence, not semantic or fleet acceptance.
+
+### Preserve immutable admission history before changing native defaults
+
+The current registry derives admitted manifests and portable bundles from only
+the selected FreeBSD and OmniOS files. Overwriting either file would revoke the
+previous exact identity. [Lilly restart](../../../lilly/lib/lilly/vm/driver.ex)
+validates the retained placement bundle and repeats native admission before
+launch, while explicitly refusing to consult or recreate a catalog artifact.
+Existing guests would therefore lose cold restart and their row-bound capabilities
+even with intact disks. [Image registration](../../../marshall/lib/marshall/compute/images.ex)
+also requires immutable stored content.
+
+Before activation, preserve old manifests and immutable promotion/cache pins
+and add newly qualified identities to a separately maintained admission history;
+select the default from that history independently. Keep old staging until
+in-flight original provisioning no longer needs its exact `config.images`
+entry. Retained restart/relocation use the portable bundle rather than staged
+images. Historical machines without a Git snapshot continue omitting Git
+metadata; new allocations and clones still require real Git identity capability.
+Native pause/resume remains separately unqualified and Linux-only.
+
+This is an unresolved implementation finding under ADR-0190, ADR-0202 and
+ADR-0204, not a new product policy. Current-format v6/v3 immutable authorization
+records are not an older decoder or compatibility path under ADR-0159. Require
+regressions for old/new manifests and bundles, modified-identity refusal,
+unchanged old capability absence, capable default selection and catalog-free
+retained restart before changing defaults. No history migration or activation
+has been performed at this checkpoint.

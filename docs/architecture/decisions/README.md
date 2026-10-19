@@ -12,6 +12,9 @@ presentation constraints. Current browser rendering evidence remains partial.
 [ADR-0203](0203-guest-reflection.md) accepts a secret-free, execution-fenced reflection projection over the private service path; implementation remains partial.
 
 [ADR-0202](0202-github-com-owner-integration.md) accepts owner-bound GitHub OAuth custody and managed guest forwarding, adding its fixed OAuth form origin to ADR-0194; implementation remains partial.
+Its latest checkpoint records fresh FreeBSD five-scenario attribution evidence,
+OmniOS direct services and the unresolved additive admission-history prerequisite;
+new native artifacts remain unadmitted and unselected.
 
 [ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, the central 28-locale policy, feature catalogs, browser language negotiation and validated account overrides with LTR/RTL presentation. Public guides are translated; HLDD contents remain English. Implementation remains partial.
 

@@ -1848,13 +1848,30 @@ do not establish new native allocation support. This remains an unresolved
 implementation gap, rather than a change to the accepted native-admission
 requirement.
 
-Fresh FreeBSD candidates now opt into an explicit version1 attribution manifest
+Fresh native candidates now opt into an explicit version1 attribution manifest
 field, requiring source-v2 and a native payload. Default constructors omit the
 field. Candidate admission flags remain false and promoted disks retain their
-exact old identities. A fresh FreeBSD crash candidate recorded epoch-specific
-personal-user Git configuration and actual commit attribution on both boots,
-plus complete executor withdrawal and fresh-fence completion. Its enclosing
-crash oracle then failed; the other four qualification variants were interrupted
-without completed outcomes. No complete qualification or promotion passed.
+exact old identities. The fresh FreeBSD image `0150b6d1` passed all five
+exact-artifact service/growth/policy/daemon-recovery/SIGKILL-recovery scenarios,
+each with 26 named checks including every boot's current-MMDS personal Git
+configuration and actual commit attribution. Actual-byte structural verification
+passed; cache publication, registry admission and catalog activation have not.
+The earlier parallel crash failure remains recorded; its separate passing
+replay does not identify that failure's cause. Fresh OmniOS image `679f5f8b`
+passed direct two-boot services with 26 checks and exact installed payload verification;
+its separate five-scenario nested-NixOS matrix is pending at this checkpoint.
+The verifier preserves historical 22/25-check sets for unchanged old manifests;
+explicit Git identity v1 requires 26 exact checks on either OS. Its 23-test host
+gate passed, without granting candidate admission or proving fleet acceptance.
 The [GitHub review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)
-retains the exact source/log scope and unchanged native admission gap.
+retains exact identities, receipts and earlier failures.
+
+Native defaults and admitted identity history must remain separate. Retained
+restart verifies the existing portable bundle and repeats exact registry
+admission without loading a staged image. Replacing the current registry pin
+alone would therefore revoke old retained restart and guest capabilities.
+Before activation, preserve old manifests/promotion pins and add new exact
+identities; retain old staging while original provision operations still need
+it. Historical machines without a Git snapshot remain unchanged. This history
+migration, new allocation admission and native checkpoint qualification remain
+unimplemented; current-format immutable image history is not a legacy decoder.

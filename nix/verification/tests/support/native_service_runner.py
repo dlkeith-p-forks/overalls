@@ -837,6 +837,9 @@ def github_tools(context: BootContext, generation: int) -> dict[str, object]:
                     f"heartbeat_responses_sent={authority.count('heartbeat_response_sent')} "
                     f"heartbeat_responses_failed={authority.count('heartbeat_response_failed')} "
                     f"heartbeat_response_failure_categories={[(category.value, authority.count(f'heartbeat_response_failed_{category.value}')) for category in control.ArtifactStreamFailure]} "
+                    f"transport_stages={[(event.value, authority.count(event.value)) for event in control.TransportEvent]} "
+                    f"transport_during_artifact={[(event.value, authority.count(event.value + '_during_artifact')) for event in (control.TransportEvent.ACCEPTED, control.TransportEvent.HANDSHAKE_STARTED, control.TransportEvent.HANDSHAKE_SUCCEEDED, control.TransportEvent.HEARTBEAT_HEADERS, control.TransportEvent.HEARTBEAT_RESPONSE)]} "
+                    f"transport_gauges={[(gauge, authority.count(gauge)) for gauge in ('transport_handlers_active', 'transport_handlers_highwater', 'transport_artifacts_active', 'transport_artifacts_highwater')]} "
                     f"maintenance_started={plugin.started} "
                     f"maintenance_start_count={authority.count('github_tools_started')} "
                     f"maintenance_completed={plugin.completed} "
@@ -1372,8 +1375,23 @@ def run(
                 + "\n",
                 encoding="utf-8",
             )
-    except (OSError, RuntimeError, ValueError, subprocess.SubprocessError):
-        print(f"native service verification failed at stage {stage}", flush=True)
+    except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
+        category = (
+            "subprocess-timeout"
+            if isinstance(error, subprocess.TimeoutExpired)
+            else "subprocess"
+            if isinstance(error, subprocess.SubprocessError)
+            else "protocol"
+            if isinstance(error, services.ProtocolError)
+            else "io"
+            if isinstance(error, OSError)
+            else "invalid"
+            if isinstance(error, ValueError)
+            else "runtime"
+        )
+        print(
+            f"native service verification failed at stage {stage} category={category}", flush=True
+        )
         raise RuntimeError("native service verification failed") from None
     finally:
         metadata_path.unlink(missing_ok=True)

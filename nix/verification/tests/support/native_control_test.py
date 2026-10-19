@@ -407,6 +407,38 @@ class AuthorityTest(unittest.TestCase):
             with self.assertRaises(control.Refused):
                 self.authority.dispatch("GET", host, "/ssh/v1/roster", b"")
 
+    def test_transport_metrics_keep_concurrent_gauges_and_closed_overlap_counts(self) -> None:
+        entered = threading.Barrier(9, timeout=3)
+        finished = threading.Barrier(9, timeout=3)
+
+        def handler() -> None:
+            self.authority.transport(control.TransportEvent.HANDLER_OPEN)
+            entered.wait()
+            finished.wait()
+            self.authority.transport(control.TransportEvent.HANDLER_CLOSE)
+
+        threads = [threading.Thread(target=handler) for _ in range(8)]
+        for thread in threads:
+            thread.start()
+        entered.wait()
+        self.assertEqual(self.authority.count("transport_handlers_active"), 8)
+        self.assertEqual(self.authority.count("transport_handlers_highwater"), 8)
+        self.authority.transport(control.TransportEvent.ARTIFACT_OPEN)
+        self.authority.transport(control.TransportEvent.HEARTBEAT_HEADERS)
+        self.authority.transport(control.TransportEvent.HEARTBEAT_RESPONSE)
+        self.authority.transport(control.TransportEvent.ARTIFACT_CLOSE)
+        self.authority.transport(control.TransportEvent.HEARTBEAT_HEADERS)
+        self.assertEqual(self.authority.count("transport_heartbeat_headers"), 2)
+        self.assertEqual(self.authority.count("transport_heartbeat_headers_during_artifact"), 1)
+        self.assertEqual(self.authority.count("transport_heartbeat_response_during_artifact"), 1)
+        finished.wait()
+        for thread in threads:
+            thread.join(timeout=3)
+            self.assertFalse(thread.is_alive())
+        self.assertEqual(self.authority.count("transport_handlers_active"), 0)
+        self.assertEqual(self.authority.count("transport_artifacts_active"), 0)
+        self.assertEqual(self.authority.count("transport_artifacts_highwater"), 1)
+
     def test_tls_verifies_hostname_and_refuses_foreign_roots(self) -> None:
         cert, private = self.root / "tls.pem", self.root / "tls.key"
         subprocess.run(
@@ -478,6 +510,10 @@ class AuthorityTest(unittest.TestCase):
                 self.assertEqual(self.authority.count("withdrawal_heartbeat_403"), 1)
                 self.assertEqual(self.authority.count("heartbeat_response_sent"), 1)
                 self.assertEqual(self.authority.count("heartbeat_response_failed"), 0)
+                self.assertEqual(self.authority.count("transport_heartbeat_headers"), 1)
+                self.assertEqual(self.authority.count("transport_heartbeat_response"), 1)
+                self.assertGreaterEqual(self.authority.count("transport_handlers_highwater"), 2)
+                self.assertEqual(self.authority.count("transport_handshake_succeeded"), 3)
                 self.assertEqual(self.authority.snapshot().phase, control.WithdrawalPhase.REJECTED)
                 for context, hostname in (
                     (trusted, "foreign.internal"),

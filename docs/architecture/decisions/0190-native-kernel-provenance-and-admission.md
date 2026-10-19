@@ -641,6 +641,27 @@ gap without adding a physical absence, capability or recovery guarantee to
 either journey. The original `091638` result and failed release-label oracle
 retain their own scope.
 
+The [GitHub integration checkpoint](../reviews/2026-10-18-github-com-integration.md)
+records new attribution-capable native artifacts separately from the existing
+promotions. Fresh FreeBSD image `0150b6d1` passed all five exact-artifact scenarios
+with 26 named service checks and actual-byte structural verification. Fresh
+OmniOS image `679f5f8b` passed direct two-boot services with 26 checks and exact installed
+payload verification; its separate nested-NixOS matrix is pending at that
+checkpoint. The verifier's 23-test gate preserves old 22/25-check sets and requires
+all 25 current baseline checks plus attribution only for explicitly validated
+Git identity v1 images. These results do not publish, admit or activate new images.
+
+The current two-file selected registry also makes admission-history maintenance
+a prerequisite to changing defaults: Lilly repeats exact native admission on
+retained boot bundles during restart. Preserve existing immutable manifests and
+promotion/cache pins, add each newly qualified identity, and select defaults
+independently so old retained guests keep their reviewed capability subset.
+Keep old staged images until in-flight original provisioning settles; ordinary
+retained restart does not load catalog artifacts. Both histories use current
+v6/v3 codecs, so this is immutable authorization data rather than an older-format
+compatibility reader under ADR-0159. This correction remains unimplemented;
+native memory-continuation qualification remains separate and disabled.
+
 ## Open questions
 
 - Which further signed FreeBSD and OmniOS/illumos inputs should be accepted. OmniOS is

@@ -263,12 +263,26 @@ the Linux-host maintenance tests. This implements the exact shared-checkout
 boundary rather than granting trust to every workspace path.
 
 Fresh native candidate constructors now support explicit allocation Git identity
-version1 only with source-v2 and a native payload; the current FreeBSD candidate
-opts in. Promoted pins remain unchanged. The native qualification harness checks
+version1 only with source-v2 and a native payload. Promoted pins remain unchanged.
+The native qualification harness checks
 effective personal-user Git configuration and actual commit attribution across
-boot epochs. Until new exact candidates pass qualification and promotion, the
-older approved disks remain incompatible with the allocation identity gate;
-the review records this unresolved requirement rather than weakening admission.
+boot epochs. The [review](../reviews/2026-10-18-github-com-integration.md) records
+fresh FreeBSD image `0150b6d1` passing all five exact-artifact scenarios with 26 checks
+and actual-byte structural verification. Fresh OmniOS image `679f5f8b` passed
+direct two-boot services with 26 checks and exact payload verification; its five-scenario
+matrix remains pending at that checkpoint. Neither result performs cache
+publication, registry admission or catalog activation. Older approved disks
+remain incompatible with the allocation identity gate.
+
+The same review identifies a retained-restart prerequisite: the compiled
+registry currently contains only selected manifests, while Lilly repeats exact
+admission on retained portable bundles. Preserve old immutable manifests and
+promotion pins additively before selecting new defaults, with old staging kept
+until original provisioning no longer needs it. Existing no-snapshot machines
+retain their capability absence; native checkpoint qualification remains
+independent. This implements the existing immutable-qualification and retained
+identity requirements, not an older-format compatibility reader. History
+migration and activation remain unimplemented.
 
 ## Open questions
 
