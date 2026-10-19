@@ -1194,7 +1194,9 @@ Type: `attribute set of package`.
 Default:
 
 ```nix
-<derived from required configuration>
+{
+  linux-x64 = <derivation overalls-vscode-web-1.141.0>;
+}
 ```
 
 
@@ -3464,7 +3466,9 @@ Type: `attribute set of package`.
 Default:
 
 ```nix
-<derived from required configuration>
+{
+  linux-x64 = <derivation overalls-vscode-web-1.141.0>;
+}
 ```
 
 

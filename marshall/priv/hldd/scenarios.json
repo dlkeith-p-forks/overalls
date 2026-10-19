@@ -13186,9 +13186,9 @@
       ],
       "boundary": "Marshall owns executor fences and transitions; the guest uses only verified private HTTPS. Native exec_command forwards the existing lease/stop callback before spawn and during authority polling. A separate scoped collector owns the child, concurrently bounds both output streams and enforces the 20-second deadline independently of a blocking lease RPC.",
       "denial": "A refused pre-spawn callback must create no child. Running refusal must cancel the separate process group, reap the direct child and discard output; execute must not publish a result under the failed lease. Missing/failed private authority and supervisor stop fail closed without logging command bytes.",
-      "scope": "The production native callback wiring and scoped cancellation/deadline collector are implemented. All six local real-process command tests passed, including no-spawn refusal, running cancellation/reaping/output suppression and a blocked lease RPC. Historical source-qualified OmniOS service evidence is retained. Fresh FreeBSD image 0150b6d1 passed all five exact-artifact scenarios with executor withdrawal/cancellation and fresh-fence completion on every boot. Fresh OmniOS image 679f5f8b passed the same boundary in direct two-boot services; its separate five-scenario matrix remains pending at the recorded checkpoint.",
+      "scope": "The production native callback wiring and scoped cancellation/deadline collector are implemented. All six local real-process command tests passed, including no-spawn refusal, running cancellation/reaping/output suppression and a blocked lease RPC. Historical source-qualified OmniOS service evidence is retained. Fresh FreeBSD image 0150b6d1 passed all five exact-artifact scenarios with executor withdrawal/cancellation and fresh-fence completion on every boot. Fresh OmniOS image 679f5f8b passed the same boundary in direct two-boot services and the later nested-NixOS growth target across three complete service boots; the other four targets failed. These exact receipts use VMM 9815649a and do not qualify merged selected VMM f0d9275b.",
       "status": "partial",
-      "gaps": "The fresh OmniOS five-scenario nested-NixOS matrix, Marshall-owned native fleet execution and production rollout remain unrecorded at this checkpoint. Deliberate descendants escaping the process group are outside this cleanup guarantee. Local process tests and isolated synthetic native authority cannot establish physical host isolation or live control-plane revocation timing.",
+      "gaps": "The later OmniOS matrix failed services at clean-shutdown subprocess-timeout, crash at readiness-withheld protocol, and recovery/isolation at unchanged outer exit 124 bounds. Exact current-runtime five-scenario qualification, Marshall-owned native fleet execution and production rollout remain open. Deliberate descendants escaping the process group are outside this cleanup guarantee. Local process tests and isolated synthetic native authority cannot establish physical host isolation or live control-plane revocation timing.",
       "preferred_gap": "Run a NixOS machine history on each current native image: observe a started command, withdraw its actual lease or supervisor stop authority, prove its managed process group terminates and no result commits, then admit a fresh fence. Preserve bounded output and command-deadline checks during an unavailable lease endpoint.",
       "evidence": [
         {
@@ -13232,9 +13232,18 @@
           "execution": "recorded",
           "path": "nix/verification/tests/support/native_service_runner.py",
           "assertion": "executor-current-heartbeat-withdrawal-before-command-deadline",
-          "scope": "Fresh exact OmniOS 679f5f8b passed direct host-KVM services with both boot epochs, all 26 checks and exact running payload verification. Separate nested-NixOS five-scenario qualification remains pending.",
+          "scope": "Fresh exact OmniOS 679f5f8b passed direct host-KVM services with both boot epochs, all 26 checks and exact running payload verification. The later nested-NixOS graph passed growth but failed four other targets; these direct-service observations remain independently scoped.",
           "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
           "record_assertion": "The fresh OmniOS candidate passed direct two-boot services and exact payload verification."
+        },
+        {
+          "kind": "machine",
+          "execution": "recorded",
+          "path": "nix/verification/tests/machines/native-services/driver.py",
+          "assertion": "executor-whole-group-death-no-result-and-fresh-fence-completion",
+          "scope": "Fresh exact OmniOS 679f5f8b passed the growth target across three complete service boots with all 26 checks, including executor withdrawal and fresh-fence completion. Isolated synthetic private authority and VMM 9815649a; no current merged-runtime, full matrix, Marshall fleet or live GitHub claim.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "The later OmniOS graph passed growth and failed four other targets."
         }
       ]
     },

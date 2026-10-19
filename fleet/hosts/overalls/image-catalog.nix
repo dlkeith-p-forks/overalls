@@ -2,6 +2,7 @@
 let
   marshall = config.services.marshall;
   images = import ../../guest-images.nix { inherit overallsPackages; };
+  stagedImages = import ../../staged-guest-images.nix { inherit overallsPackages; };
   catalog = pkgs.writeText "overalls-images.json" (builtins.toJSON (map (image: {
     inherit (image) name;
     manifest = "${image.package}/manifest.json";
@@ -51,7 +52,7 @@ in
   # The exact guest manifest staged on Lilly MUST be registered through Marshall's
   # idempotent operator catalog before serving starts. Registration MUST preserve
   # existing catalog identity/state and use private runtime database credentials.
-  services.lilly.images = map (image: { path = toString image.package; }) images;
+  services.lilly.images = map (image: { path = toString image.package; }) stagedImages;
   services.marshall.defaultImageId = builtins.readFile imageIdentity;
   services.marshall.secretUnits = [ "overalls-image-catalog.service" ];
   systemd.services.overalls-image-catalog = {

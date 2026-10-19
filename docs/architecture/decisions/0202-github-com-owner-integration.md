@@ -274,15 +274,21 @@ matrix remains pending at that checkpoint. Neither result performs cache
 publication, registry admission or catalog activation. Older approved disks
 remain incompatible with the allocation identity gate.
 
-The same review identifies a retained-restart prerequisite: the compiled
-registry currently contains only selected manifests, while Lilly repeats exact
-admission on retained portable bundles. Preserve old immutable manifests and
-promotion pins additively before selecting new defaults, with old staging kept
-until original provisioning no longer needs it. Existing no-snapshot machines
-retain their capability absence; native checkpoint qualification remains
-independent. This implements the existing immutable-qualification and retained
-identity requirements, not an older-format compatibility reader. History
-migration and activation remain unimplemented.
+The same review identified a retained-restart prerequisite: Lilly repeats exact
+admission on retained portable bundles, so selection must not revoke immutable
+history. The [registry](../../../protocol/lib/overalls_protocol/native_admission.ex)
+now keeps explicit reviewed history independently from selected manifests, and
+[retained staging](../../../fleet/staged-guest-images.nix) preserves exact old
+promotion packages for original provisioning. Nine focused protocol tests and
+the Nix native-OS evaluation gate passed. Current selected/admitted identities
+remain unchanged; existing no-snapshot machines retain their capability absence.
+This implements the existing immutable-qualification and retained identity
+requirements, not an older-format compatibility reader. Candidate admission,
+activation and native checkpoint qualification remain unperformed. A later
+OmniOS matrix passed growth but failed the other four targets; its earlier
+direct services remain separately scoped. The merged VMM has different bytes,
+so neither candidate's earlier qualification establishes current-runtime
+acceptance.
 
 ## Open questions
 

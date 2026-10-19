@@ -354,7 +354,8 @@ rec {
   mkPublishedNativeCandidate = nativeImagePromotion.publishedCandidate;
   nativeImagePromotionChecks = nativeImagePromotion.checks;
   mkFreeBSDGuest = import ./guest/freebsd { inherit pkgs; firmware = windowsFirmware.fd; nativeAgents = lyraNative; };
-  freebsdGuest = import ./guest/native-promotion/freebsd.nix { inherit pkgs; elixir = toolchain.elixir; };
+  legacyFreebsdGuest = import ./guest/native-promotion/freebsd.nix { inherit pkgs; elixir = toolchain.elixir; };
+  freebsdGuest = legacyFreebsdGuest;
   # Candidate assembly is an explicit build target. The staging constructor
   # stays closed; the catalog consumes only the separately promoted identity.
   mkFreeBSDImageCandidate = extraArgs: import ./guest/freebsd/candidate.nix ({
@@ -390,10 +391,11 @@ rec {
   # Stock constructors remain closed. Only the separately reviewed immutable
   # OmniOS promotion selects an admitted image for fleet staging and catalog.
   mkOmniOSGuest = import ./guest/omnios { inherit pkgs; firmware = windowsFirmware.fd; };
-  omniosGuest = import ./guest/native-promotion/omnios.nix {
+  legacyOmniosGuest = import ./guest/native-promotion/omnios.nix {
     inherit pkgs;
     elixir = toolchain.elixir;
   };
+  omniosGuest = legacyOmniosGuest;
   # illumos.org is the upstream project; its installable downstream image is
   # exposed through an explicit constructor so callers do not mistake the
   # OmniOS distribution name for a second image source.

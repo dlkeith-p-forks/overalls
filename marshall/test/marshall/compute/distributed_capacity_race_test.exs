@@ -75,6 +75,8 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
             {:ok, pid, _node} -> {:ok, pid}
           end
 
+        register_timeout_cleanup([peer | acquired])
+
         Cleanup.protect [peer] do
           node = :peer.call(peer, :erlang, :node, [])
           assert node != :nonode@nohost
@@ -382,14 +384,39 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
 
   # ---------- interpreter ----------
 
+  # @cc [owner:ghuntley,label:verification;durability] capacity-race-timeout-cleanup
+  # ExUnit's separate exit process MUST retain the currently acquired peers and
+  # exact sample fixture after a forced test timeout bypasses in-process after
+  # blocks. Fixture cleanup MUST be registered before acquisition commits.
+  # Peers MUST stop before deletion. Successful cleanup MUST disarm the
+  # fallback so later histories cannot delete an unrelated fixture.
+  @spec register_timeout_cleanup([pid()], (-> :ok)) :: :ok
+  defp register_timeout_cleanup(peers, cleanup \\ fn -> :ok end) do
+    on_exit(:capacity_race_current_sample, fn ->
+      Enum.each(peers, &stop_peer_if_alive/1)
+      cleanup.()
+    end)
+  end
+
+  @spec disarm_timeout_cleanup() :: :ok
+  defp disarm_timeout_cleanup do
+    on_exit(:capacity_race_current_sample, fn -> :ok end)
+  end
+
   @spec run_sample([[op()]]) :: :ok
   defp run_sample(batches) do
     try do
       peers = start_peers()
-      first = host_fixture()
-      second = host_fixture()
-      actor = user()
-      model = model_init(peers, actor, first, second)
+
+      {:ok, model} =
+        Repo.transaction(fn ->
+          first = host_fixture()
+          second = host_fixture()
+          actor = user()
+          model = model_init(peers, actor, first, second)
+          register_timeout_cleanup(peers, fn -> cleanup_sample(model) end)
+          model
+        end)
       [host_a, host_b] = model.hosts
 
       totals = %{
@@ -409,8 +436,9 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
         _ = Enum.reduce(batches, model, fn batch, acc -> run_generated_batch(acc, batch) end)
         :ok
       after
-        cleanup_sample(model)
         Enum.each(peers, &stop_peer_if_alive/1)
+        cleanup_sample(model)
+        disarm_timeout_cleanup()
       end
     catch
       kind, reason ->
@@ -2619,7 +2647,9 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
                 {id, hd(fixture.report.pools).total_bytes}
               end)
 
-            %{model | pool_total: totals}
+            model = %{model | pool_total: totals}
+            register_timeout_cleanup(peers, fn -> cleanup_sample(model) end)
+            model
           end)
 
         fixture_model
@@ -2706,6 +2736,7 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
     after
       Enum.each(peers, &stop_peer_if_alive/1)
       cleanup_sample(initial)
+      disarm_timeout_cleanup()
     end
   end
 

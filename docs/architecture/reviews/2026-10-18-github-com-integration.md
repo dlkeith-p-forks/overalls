@@ -568,7 +568,7 @@ evidence, not semantic or fleet acceptance.
 
 ### Preserve immutable admission history before changing native defaults
 
-The current registry derives admitted manifests and portable bundles from only
+At this checkpoint the registry derived admitted manifests and portable bundles from only
 the selected FreeBSD and OmniOS files. Overwriting either file would revoke the
 previous exact identity. [Lilly restart](../../../lilly/lib/lilly/vm/driver.ex)
 validates the retained placement bundle and repeats native admission before
@@ -593,3 +593,90 @@ regressions for old/new manifests and bundles, modified-identity refusal,
 unchanged old capability absence, capable default selection and catalog-free
 retained restart before changing defaults. No history migration or activation
 has been performed at this checkpoint.
+
+### Merged-source admission history and native qualification follow-up
+
+**The admission-history mechanism is implemented without changing selected or admitted images.**
+The [registry](../../../protocol/lib/overalls_protocol/native_admission.ex)
+keeps separate selected-file and explicit immutable per-OS history declarations.
+Compilation validates current v6 manifests, refuses empty/duplicate histories
+and requires the selected manifest to belong to its history. Admission covers
+each exact normalized image and corresponding portable bundle, including an
+explicit Git identity capability when present. Adding an unrelated JSON file
+does not grant admission. The current history still contains only the existing
+selected identities; the new content-named FreeBSD candidate manifest/pin is
+not consumed by selection, admission or staging.
+
+[Worker staging](../../../fleet/staged-guest-images.nix) includes selected
+packages plus explicit retained FreeBSD/OmniOS promotion packages, deduplicated
+by exact package path. Both workers consume this list. Marshall registration
+continues consuming only the selected list. This preserves artifacts needed by
+original in-flight provisioning while retained restart uses its stored portable
+bundle independently. Nine focused protocol tests passed
+(`/tmp/github-additive-native-admission-test.log`, seed 952849), including exact
+retained bundle admission and modified-identity refusals. The Nix
+`native-os-guest-unit` gate passed in 18 s
+(`1792389088006-37034-0.jsonl`), including a simulated changed selection retaining
+the original package and avoiding duplicates. These are policy/evaluation
+results. A real multi-entry registry activation, catalog-free native restart of
+an old machine after default replacement and candidate fleet allocation remain
+unperformed. Native memory continuation remains independently unqualified.
+
+**The later OmniOS graph passed growth and failed four other targets.**
+The unchanged five-target keep-going graph completed exit 1 in 1,011 s, log
+`1792388005690-4064685-0.jsonl`:
+
+| Target | Observed outcome |
+| --- | --- |
+| Growth | Passed; script 981.91 s, VM test phase 981.86 s |
+| Services | Failed `clean-shutdown`, category `subprocess-timeout`; command exit 1 |
+| Crash recovery | Failed `readiness-withheld`, category `protocol`; command exit 1 |
+| Daemon recovery | Failed at unchanged outer bound, command exit 124 |
+| Isolation | Failed at unchanged outer bound, command exit 124 |
+
+Growth output is
+`/nix/store/k4jjjrxd74hf9apri1hhrdlrlbr744v1-vm-test-run-overalls-illumos-native-growth`,
+from derivation `7d986r860zbfbcgy0scxmwl516j7ianm`. Its receipts bind the exact
+candidate disk/kernel/firmware/VMM, all 26 named service checks on three distinct
+boots and eight growth checks. Root bytes increase from 6,882,697,216 to
+8,963,035,136 to 11,043,311,616 across physical 8/10/12-GiB disks; home bytes,
+pinned pool/vdev identities and the foreign disk are preserved. Admission stays
+false. The earlier direct-services pass and explicitly deferred graph retain
+their original scope. No cause has been established for the four failures;
+concurrent VM/build activity alone does not establish contention as a cause.
+
+The qualification artifacts use VMM SHA256
+`9815649a9bed84194ca45c5aef4c9307a596c7ffbe1f9f0e881c1ae536226d02`.
+The merged selected VMM at
+`/nix/store/i05mpf2gsdafv1nwnmck08zbriaz6j76-firecracker-static-x86_64-unknown-linux-musl-1.16.1/bin/firecracker`
+instead has SHA256
+`f0d9275b2dcf2e788a1a643722622950402a5c8fe6d442b294f1306a5e0e9fd9`.
+An unchanged version string does not make those bytes interchangeable. Earlier
+FreeBSD/OmniOS candidate receipts therefore do not qualify the merged selected
+runtime; exact current-runtime native qualification remains required before
+admission/activation.
+
+The merged editor graph also exposed a Node version assertion: pinned Nixpkgs
+provides 24.21.0 while the editor input declared 24.19.0. The repaired input and
+Windows runtime/header/import-library hashes consistently select 24.21.0.
+Upstream checksum comparison and Linux editor derivation evaluation passed;
+the generated option reference again reports concrete `linux-x64` defaults.
+The existing official-source, immutable-release and false Windows staging
+capability contracts are preserved. Changed inputs create a new release tuple;
+historical native Windows import evidence does not qualify it. Fresh compilation
+and browser acceptance remain unrecorded. Guest journal configuration now uses
+the pinned NixOS module's supported `services.journald.storage = "volatile"`
+option, preserving the existing memory-only log policy. These merged build
+repairs introduce no new architecture decision.
+
+The merged Marshall cleanup repair preserves the existing 100-case CI history
+and 300-second test bound. A keyed ExUnit exit callback progressively retains
+acquired peer processes and records the exact sample fixture inside its
+acquisition transaction before commit; ordinary cleanup stops peers before
+deleting owned rows and disarms the callback. This closes a forced-timeout leak
+that left six durable seed-machine rows and contaminated later empty/singleton
+SSH assertions. The earlier full run's 27 indexed failures remain diagnostic,
+with no aggregate or passing claim. A duplicate Reflection projection field and
+contract were consolidated while preserving labels/comment defaults and read
+authorization; projection grants no mutation authority. Focused and full runtime
+verification of these merged-source repairs remains pending at this checkpoint.

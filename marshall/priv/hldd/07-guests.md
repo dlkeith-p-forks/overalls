@@ -1685,6 +1685,14 @@ policy, licenses and native provenance; its digest and bounded scope are in the
 Image admission and a Windows browser sign-in/edit/readback/recovery run remain
 unrecorded.
 
+The merged package graph aligns the Linux Node version and hash-pinned Windows
+runtime, headers and import library on 24.21.0. This restores editor package
+evaluation while preserving official-source compilation and release binding.
+The changed inputs produce a new release tuple: the historical Windows import
+does not qualify this payload. Fresh package/native build and browser acceptance
+remain unrecorded. The NixOS guest journal option uses the pinned module's
+`services.journald.storage = "volatile"`, preserving memory-only guest logs.
+
 The staged broker is a SYSTEM-owned boundary around that future payload. Its
 portable model binds boot, descriptor, placement, epoch, GuestAccount UUID,
 roster UID, canonical account name, local SAM SID and editor origin; identity
@@ -1896,12 +1904,24 @@ gate passed, without granting candidate admission or proving fleet acceptance.
 The [GitHub review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)
 retains exact identities, receipts and earlier failures.
 
-Native defaults and admitted identity history must remain separate. Retained
-restart verifies the existing portable bundle and repeats exact registry
-admission without loading a staged image. Replacing the current registry pin
-alone would therefore revoke old retained restart and guest capabilities.
-Before activation, preserve old manifests/promotion pins and add new exact
-identities; retain old staging while original provision operations still need
-it. Historical machines without a Git snapshot remain unchanged. This history
-migration, new allocation admission and native checkpoint qualification remain
-unimplemented; current-format immutable image history is not a legacy decoder.
+Native defaults and admitted identity history remain separate. Retained restart
+verifies the existing portable bundle and repeats exact registry admission
+without loading a staged image. The registry now keeps explicit immutable
+per-OS history and requires selected manifests to belong to it. Worker staging
+includes selected packages and exact retained native promotion packages, with
+package-path deduplication; catalog registration still consumes only selected
+packages. Nine focused protocol tests and the Nix native-OS evaluation gate
+passed, including a simulated selection change retaining the original package.
+Current selected/admitted identities remain unchanged. Historical machines
+without a Git snapshot remain unchanged. New candidate admission, activation and
+native checkpoint qualification remain unperformed; current-format immutable
+image history is not a legacy decoder.
+
+The subsequent OmniOS five-target graph completed in 1,011 seconds with one
+growth pass and four failures. Growth took 981.91 seconds and retained all 26
+service checks across three boots and two root expansions. Services failed at
+clean shutdown with a subprocess timeout; crash recovery failed at
+`readiness-withheld`; recovery and isolation reached their outer exit-124 bounds.
+The earlier direct-services pass remains separate. These candidates use VMM
+`9815649a`; the merged selected VMM is `f0d9275b`. Current-runtime qualification,
+full retained-tool acceptance and fleet activation therefore remain open.

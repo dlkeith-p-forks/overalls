@@ -29,8 +29,10 @@ identity signs. Status is in the
 
 [ADR-0202](decisions/0202-github-com-owner-integration.md) accepts owner-bound GitHub OAuth custody and managed guest forwarding; implementation remains partial.
 Fresh native attribution evidence remains separate from publication and admission.
-Changing selected native defaults first requires preserving immutable admission
-history so existing portable bundles retain cold-restart authority.
+Explicit immutable admission history and retained-native staging now separate
+selected defaults from existing portable bundles' cold-restart authority.
+The selected and admitted native identities remain unchanged; current-runtime
+qualification and candidate activation remain open.
 
 [ADR-0201](decisions/0201-localized-human-surfaces.md) accepts Localize-backed human surfaces with validated language preferences, LTR/RTL presentation and native Gettext catalogs partitioned by locale and feature. Public guides are localized; authenticated handbook chapters remain source English. Translation and native browser acceptance remain partial.
 

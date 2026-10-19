@@ -651,16 +651,22 @@ checkpoint. The verifier's 23-test gate preserves old 22/25-check sets and requi
 all 25 current baseline checks plus attribution only for explicitly validated
 Git identity v1 images. These results do not publish, admit or activate new images.
 
-The current two-file selected registry also makes admission-history maintenance
-a prerequisite to changing defaults: Lilly repeats exact native admission on
-retained boot bundles during restart. Preserve existing immutable manifests and
-promotion/cache pins, add each newly qualified identity, and select defaults
-independently so old retained guests keep their reviewed capability subset.
-Keep old staged images until in-flight original provisioning settles; ordinary
-retained restart does not load catalog artifacts. Both histories use current
-v6/v3 codecs, so this is immutable authorization data rather than an older-format
-compatibility reader under ADR-0159. This correction remains unimplemented;
-native memory-continuation qualification remains separate and disabled.
+The original two-file selected registry made admission-history maintenance a
+prerequisite to changing defaults: Lilly repeats exact native admission on
+retained boot bundles during restart. The [registry](../../../protocol/lib/overalls_protocol/native_admission.ex)
+now keeps explicit per-OS immutable history and validates each selected default
+against it. [Retained staging](../../../fleet/staged-guest-images.nix) keeps exact
+old promotion packages alongside selected packages for in-flight original
+provisioning; ordinary retained restart does not load catalog artifacts.
+The current selected and admitted identities remain unchanged. Nine focused
+protocol tests and the Nix native-OS evaluation gate passed; the latter simulates
+a changed selection and verifies retained staging without activating an image.
+Both histories use current v6/v3 codecs, so this is immutable authorization data
+rather than an older-format compatibility reader under ADR-0159. Adding newly
+qualified identities, changing defaults and native memory-continuation
+qualification remain separate and unperformed. The later OmniOS graph's growth
+pass and four failures, plus the changed merged VMM digest, remain scoped in the
+[GitHub review](../reviews/2026-10-18-github-com-integration.md).
 
 ## Open questions
 

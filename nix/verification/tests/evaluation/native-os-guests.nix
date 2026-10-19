@@ -6,6 +6,14 @@ let
   illumos = packages.mkIllumosGuest { imageName = "illumos-evaluation"; };
   refusesIdentity = args: !(builtins.tryEval (packages.mkFreeBSDGuest args).name).success;
   fleetImages = import ../../../../fleet/guest-images.nix { overallsPackages = packages; };
+  stagedImages = import ../../../../fleet/staged-guest-images.nix { overallsPackages = packages; };
+  stagedPaths = map (entry: toString entry.package) stagedImages;
+  selectedPaths = map (entry: toString entry.package) fleetImages;
+  # Simulate a future default change without activating the qualified candidate.
+  changedPackages = packages // { freebsdGuest = packages.freebsdGuest.overrideAttrs (_: { name = "native-selected-staging-policy-test"; }); };
+  changedSelected = import ../../../../fleet/guest-images.nix { overallsPackages = changedPackages; };
+  changedStaged = import ../../../../fleet/staged-guest-images.nix { overallsPackages = changedPackages; };
+  changedPaths = map (entry: toString entry.package) changedStaged;
   plain = builtins.unsafeDiscardStringContext;
   freebsdCommand = plain freebsd.buildCommand;
   omniosCommand = plain omnios.buildCommand;
@@ -15,6 +23,14 @@ let
 in
 # This is an evaluation gate: it checks source pins, closed artifact assembly
 # and v6 manifest fields without downloading or installing a guest image.
+assert lib.all (path: builtins.elem path stagedPaths) selectedPaths;
+assert builtins.length stagedPaths == builtins.length (lib.unique stagedPaths);
+assert builtins.elem (toString packages.legacyFreebsdGuest) stagedPaths;
+assert builtins.elem (toString packages.legacyOmniosGuest) stagedPaths;
+assert builtins.elem (toString packages.legacyFreebsdGuest) changedPaths;
+assert builtins.elem (toString changedPackages.freebsdGuest) changedPaths;
+assert !builtins.any (entry: toString entry.package == toString packages.legacyFreebsdGuest) changedSelected;
+assert builtins.length changedPaths == builtins.length (lib.unique changedPaths);
 assert freebsd.passthru.os == "freebsd";
 assert freebsd.passthru.release == "14.3-RELEASE";
 assert toString freebsd.passthru.firmware == toString packages.windowsFirmware.fd;

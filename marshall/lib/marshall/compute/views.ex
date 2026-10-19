@@ -6,10 +6,6 @@ defmodule Marshall.Compute.Views do
   alias Marshall.Compute.{Budget, Host, Image, Ledger, Reservation, StoragePool, VirtualMachine}
   require Ash.Query
 
-  # @cc [owner:ghuntley,label:product;security] views-reflection-metadata
-  # Every authorized machine view MUST project the persisted labels and comment
-  # consumed by settings. Projection MUST retain the existing read authorization;
-  # metadata visibility MUST NOT grant permission to change it.
   @fields [
     :id,
     :name,
@@ -21,8 +17,6 @@ defmodule Marshall.Compute.Views do
     :vcpu,
     :memory_bytes,
     :disk_bytes,
-    :labels,
-    :comment,
     :desired_state,
     :observed_state,
     :failure_reason,
@@ -164,9 +158,11 @@ defmodule Marshall.Compute.Views do
     %{items: items}
   end
 
-  # @cc [owner:ghuntley,label:product] views-reflection-metadata
+  # @cc [owner:ghuntley,label:product;security] views-reflection-metadata
   # Authorized machine views MUST retain persisted Reflection labels and comment,
   # including their empty defaults, so settings renders the stored values.
+  # Projection MUST retain the existing read authorization; metadata visibility
+  # MUST NOT grant permission to change it.
   @spec view(VirtualMachine.t(), map()) :: map()
   defp view(vm, actor) do
     image = List.first(Ledger.read!(Image, id: vm.image_id))

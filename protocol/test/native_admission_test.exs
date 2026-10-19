@@ -137,6 +137,68 @@ defmodule OverallsProtocol.NativeAdmissionTest do
     end
   end
 
+  test "selected defaults belong to explicit immutable history and every retained identity remains admitted" do
+    for os <- [:freebsd, :illumos] do
+      history = NativeAdmission.reviewed_manifests(os)
+      assert NativeAdmission.reviewed_manifest(os) in history
+      assert history != []
+
+      ids =
+        Enum.map(history, fn manifest ->
+          assert {:ok, image} = ImageManifest.validate(manifest)
+          assert NativeAdmission.admitted?(image)
+          refute NativeAdmission.checkpoint_admitted?(image)
+
+          bundle = %{
+            image_id: image.id,
+            architecture: image.architecture,
+            boot_kind: image.boot_kind,
+            os: image.os,
+            guest_agents: image.guest_agents,
+            pci: image.pci,
+            firmware_bytes: manifest["boot"]["firmware"]["bytes"],
+            kernel: image.kernel
+          }
+
+          bundle =
+            if Map.get(image, :git_identity_version) == 1,
+              do: Map.put(bundle, :git_identity_version, 1),
+              else: bundle
+
+          assert {:ok, ^bundle} = bundle |> WorkloadBundle.encode() |> WorkloadBundle.validate()
+          assert NativeAdmission.admitted?(bundle)
+          refute NativeAdmission.checkpoint_admitted?(bundle)
+
+          refute NativeAdmission.admitted?(%{
+                   bundle
+                   | image_id: "sha256:" <> String.duplicate("0", 64)
+                 })
+
+          image.id
+        end)
+
+      assert Enum.uniq(ids) == ids
+    end
+  end
+
+  test "a qualified Git identity candidate file alone does not activate admission or replace legacy defaults" do
+    candidate =
+      Path.expand("../priv/native/freebsd-14.3-db752667.json", __DIR__)
+      |> File.read!()
+      |> JSON.decode!()
+
+    assert {:ok, %{git_identity_version: 1} = image} = ImageManifest.validate(candidate)
+    refute NativeAdmission.admitted?(image)
+    refute NativeAdmission.checkpoint_admitted?(image)
+    refute candidate in NativeAdmission.reviewed_manifests(:freebsd)
+
+    for os <- [:freebsd, :illumos] do
+      {:ok, legacy} = ImageManifest.validate(NativeAdmission.reviewed_manifest(os))
+      refute Map.has_key?(legacy, :git_identity_version)
+      assert NativeAdmission.admitted?(legacy)
+    end
+  end
+
   test "the default reviewed manifest remains the FreeBSD identity" do
     assert NativeAdmission.reviewed_manifest() == NativeAdmission.reviewed_manifest(:freebsd)
   end
