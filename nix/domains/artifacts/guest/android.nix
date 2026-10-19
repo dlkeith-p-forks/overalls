@@ -18,10 +18,9 @@ in
   # SDK and system image closure.
 
   # @cc [owner:ghuntley,label:security] android-display-loopback-only
-  # The guest display bridge MUST bind RFB to loopback. This module does not
-  # claim authenticated host display access; no new guest ingress port is opened
-  # and an authenticated display relay remains a separate integration.
-  environment.systemPackages = [ androidSdk pkgs.gawk pkgs.jdk pkgs.xorg.xorgserver pkgs.x11vnc pkgs.socat ];
+  # The RFB server MUST bind loopback. A typed relay owns the fixed TAP ingress
+  # port and accepts only Lilly's bounded display preface before proxying RFB.
+  environment.systemPackages = [ androidSdk pkgs.gawk pkgs.jdk pkgs.python3 pkgs.xorg.xorgserver pkgs.x11vnc ];
 
   users.users.overalls-android = {
     isSystemUser = true;
@@ -54,6 +53,7 @@ in
       RuntimeDirectoryMode = "0750";
       Restart = "always";
       RestartSec = 5;
+      TimeoutStartSec = "600s";
       NoNewPrivileges = true;
       PrivateTmp = true;
       ProtectSystem = "strict";
@@ -80,7 +80,17 @@ CONFIG
         trap 'kill "$xvfb_pid" 2>/dev/null || true' EXIT
         exec ${sdkRoot}/emulator/emulator \
           -avd ${avdName} -no-accel -gpu swiftshader_indirect \
-          -no-boot-anim -no-snapshot -skip-adb-auth -ports 5554,5555
+          -no-boot-anim -no-snapshot -ports 5554,5555
+      ''}";
+      ExecStartPost = "${pkgs.writeShellScript "overalls-android-ready" ''
+        set -eu
+        for _ in $(seq 1 600); do
+          if ${sdkRoot}/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed 2>/dev/null | tr -d '\r' | grep -qx 1; then
+            exit 0
+          fi
+          sleep 1
+        done
+        exit 1
       ''}";
     };
   };
@@ -98,22 +108,13 @@ CONFIG
       RestartSec = 2;
       NoNewPrivileges = true;
       PrivateTmp = true;
-      ExecStart = "${pkgs.writeShellScript "overalls-android-display" ''
-        set -eu
-        password_file=/run/overalls-android/rfb.pass
-        if [ ! -s "$password_file" ]; then
-          umask 077
-          password=$(head -c 18 /dev/urandom | base64 -w0 | cut -c1-8)
-          ${pkgs.x11vnc}/bin/x11vnc -storepasswd "$password" "$password_file" >/dev/null
-        fi
-        exec ${pkgs.x11vnc}/bin/x11vnc -display :0 -rfbport 5900 -localhost -forever -shared -rfbauth "$password_file" -quiet
-      ''}";
+      ExecStart = "${pkgs.x11vnc}/bin/x11vnc -display :0 -rfbport 5901 -localhost -forever -shared -nopw -quiet";
     };
   };
 
-  # The only guest-side display transport is a vsock relay to the loopback RFB
-  # server. Lilly must still authenticate and authorize the host-side connection;
-  # this service does not make RFB public or mint browser authority.
+  # The typed relay terminates Lilly's fixed TAP ingress and forwards only to
+  # loopback RFB. Lilly authenticates the signed ticket and the relay validates
+  # its closed shape before forwarding bytes; no public RFB listener is used.
   systemd.services.overalls-android-display-vsock = {
     description = "Android display vsock relay";
     wantedBy = [ "multi-user.target" ];
@@ -127,7 +128,13 @@ CONFIG
       RestartSec = 2;
       NoNewPrivileges = true;
       PrivateTmp = true;
-      ExecStart = "${pkgs.socat}/bin/socat VSOCK-LISTEN:5900,reuseaddr,fork TCP:127.0.0.1:5900";
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      RestrictAddressFamilies = [ "AF_INET" "AF_INET6" ];
+      CapabilityBoundingSet = "";
+      MemoryMax = "128M";
+      TasksMax = 32;
+      ExecStart = "${pkgs.python3}/bin/python3 ${./android_display_relay.py}";
     };
   };
 

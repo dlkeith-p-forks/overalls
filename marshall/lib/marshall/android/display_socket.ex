@@ -38,9 +38,13 @@ defmodule Marshall.Android.DisplaySocket do
 
   @impl true
   def handle_info({:android_display_frame, generation, sequence, bytes}, state) do
-    case OverallsProtocol.AndroidDisplayStream.encode_data(generation, sequence, bytes) do
-      {:ok, frame} -> {:reply, :ok, {:binary, frame}, state}
-      _ -> {:stop, :normal, state}
+    if generation == state.generation and is_integer(sequence) and sequence > 0 and
+         is_binary(bytes) and byte_size(bytes) in 1..262_144 do
+      # RFB is a byte stream. Generation and sequencing are enforced by the
+      # relay; no application frame header may be inserted before noVNC bytes.
+      {:reply, :ok, {:binary, bytes}, state}
+    else
+      {:stop, :normal, state}
     end
   end
 

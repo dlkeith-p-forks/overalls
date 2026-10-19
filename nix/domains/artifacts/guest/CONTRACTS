@@ -70,8 +70,11 @@ The Android emulator guest MUST be a Linux version-4 guest artifact assembled fr
 the pinned Android SDK/system-image closure. Its emulator service MUST run with
 software rendering and no accelerator, and its AVD state MUST live under a
 systemd-managed writable state directory separate from the immutable image root.
+The service MUST fail closed if ADB does not report `sys.boot_completed=1` within
+the fixed 600-second startup budget.
 
 @cc [owner:ghuntley,label:security] android-display-ingress
-The Android display bridge MUST bind only to guest loopback. The image MUST NOT
-open a new externally reachable display port or claim authenticated display
-access without a separately reviewed relay and runtime evidence.
+The Android emulator's RFB server MUST bind only to guest loopback. A separate
+typed relay MAY bind the fixed guest display port, but MUST validate Lilly's
+bounded display preface before forwarding and MUST NOT expose RFB or ADB as a
+public listener or claim browser authentication.
