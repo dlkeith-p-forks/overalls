@@ -171,6 +171,15 @@ with subtest("real guest managed Git clones and pushes a private repository with
         == "real fleet push"
     )
 
+# The common Linux journey verifies LFS independently of the platform matrix.
+if github_guest_os != "windows":
+    with subtest("real guest managed LFS uploads and downloads without retained guest authority"):
+        github_guest(github_machines["owner"], "lfs", "1")
+        uploads = [entry for entry in provider_observations() if entry.get("event") == "lfs_upload"]
+        assert len(uploads) == 1
+        assert uploads[0].get("owner") == 1
+        assert uploads[0].get("bytes") == len(b"real fleet LFS transfer\n")
+
 with subtest("shared member writer uses the VM owner's GitHub identity through browser terminal"):
     shared_receipt = operator(
         {

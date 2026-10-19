@@ -993,3 +993,65 @@ and browser acceptance. The merged module-configuration check passed
 (`/tmp/github-trunk-merge-module-configuration.log`, structured
 `1792412831497-4005750-0.jsonl`), establishing the evaluated compatibility
 assertions without a new guest or fleet execution.
+
+### OAuth App refresh source conformance
+
+On 2026-10-19 the review inspected GitHub's
+[2026-08-14 OAuth App announcement](https://github.blog/changelog/2026-08-14-multiple-redirect-uris-and-token-refresh-for-oauth-apps/)
+and [OAuth App authorization documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps).
+The announcement explicitly adds expiring access and refresh tokens to OAuth
+Apps. The authorization guide documents an eight-hour access token and a refresh
+token valid for six months without use. Requesting `offline_access` selects that
+pair even when the registered app has not globally enabled expiring tokens.
+`offline_access` is not tracked as a normal granted scope and need not appear in
+the returned scope list. GitHub Enterprise Server may lack this behavior; the
+accepted integration targets GitHub.com only and refuses a missing pair.
+
+The documented refresh endpoint is
+`POST https://github.com/login/oauth/access_token` with `client_id`,
+`client_secret`, `grant_type=refresh_token` and `refresh_token`. Successful use
+invalidates both the consumed refresh token and the previous access token. The
+replacement retains the prior permission scopes; refresh cannot expand them.
+The response example uses `expires_in=28800` and
+`refresh_token_expires_in=15897600`. Invalid or expired refresh tokens yield
+`bad_refresh_token` and require a new authorization flow. These facts support
+ADR-0202's existing pair rotation, drain and uncertain-exchange recovery; they do
+not require a replacement credential architecture.
+
+The source review inspected the
+[provider](../../../marshall/lib/marshall/github/provider.ex) and
+[grant decoder](../../../marshall/lib/marshall/github/grant.ex): fixed HTTPS
+origins, JSON response selection, authorization code/state/PKCE parameters,
+refresh form without a scope parameter, explicit `token_type=bearer`, required
+positive bounded token expiry fields and no automatic retry or redirect. The
+documented pair fits the parser; missing refresh credentials refuse. Returned
+permission scopes intentionally exclude `offline_access` from required scope
+membership and account for parent
+scope normalization. This is source conformance. Parser/mocked replies and
+controlled wire fixtures remain separate from a registered-app grant.
+
+Provider Req fixture execution: **5 passed** in **0.2 seconds**, seed **618954**,
+exit 0, using `mix test test/marshall/github/provider_wire_test.exs
+test/marshall/github/provider_test.exs --warnings-as-errors` under `devenv shell`
+(`/tmp/github-provider-wire-v2.log`). The three
+[production-provider fixtures](../../../marshall/test/marshall/github/provider_wire_test.exs)
+inspect the production Req request path through `Req.Test`: fixed token origin,
+authorization parameters, accepted scopes/PKCE, exact exchange/refresh form
+fields, explicit bearer type, documented pair lifetimes, omitted `offline_access`
+in returned scopes and replacement token bytes. Refusal cases cover provider
+errors, incomplete/non-expiring pairs and missing/other token types. Redirects
+and transient failure replies produce one token attempt without replay. Two
+existing parser/scope tests also passed.
+
+These are controlled BEAM request/response fixtures, without a network socket,
+TLS handshake, live provider effect or browser consent. They do not establish a
+full Marshall precommit pass. The bearer validation tightens the existing typed
+external grant boundary without changing accepted credential custody, refresh
+authority or permissions under ADR-0202.
+
+No live Overalls OAuth App consent or real GitHub token rotation is recorded by
+this review. Registered callback behavior, actual returned scopes and deadlines,
+numeric identity revalidation, rotation and provider revocation still need a
+credential-safe operator acceptance run. Organization approval and SAML SSO
+remain provider policy boundaries. The review retains implementation `partial`
+and all native, fleet and production acceptance gaps.

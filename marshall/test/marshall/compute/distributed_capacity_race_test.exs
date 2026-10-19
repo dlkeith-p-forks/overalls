@@ -35,6 +35,10 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
 
   @type timing_stage ::
           :peer_startup
+          | :peer_boot_wait
+          | :peer_paths
+          | :peer_environment
+          | :peer_applications
           | :fixed_windows
           | :generated_batches
           | :fixture_cleanup
@@ -78,35 +82,47 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # Initialization MAY overlap across the three newly acquired peers, with all
   # exact peer IDs registered for exit cleanup before any initialization task.
   # All tasks MUST finish or terminate before acquisition returns or fails.
+  # OTP's concurrent dependency startup MUST start the complete declared DAG,
+  # preserving dependency ordering and the existing 30s application RPC bound.
   @spec start_peers() :: [pid()]
   defp start_peers do
     suffix = System.unique_integer([:positive])
 
-    peers =
-      Enum.reduce([:capacity_race_1, :capacity_race_2, :capacity_race_3], [], fn name, acquired ->
+    {peers, boots} =
+      Enum.reduce([:capacity_race_1, :capacity_race_2, :capacity_race_3], {[], []}, fn name,
+                                                                                       {acquired,
+                                                                                        boots} ->
         Cleanup.protect acquired do
+          tag = make_ref()
+          deadline = System.monotonic_time(:millisecond) + 30_000
+
           {:ok, peer} =
             case :peer.start_link(%{
                    name: String.to_atom("#{name}_#{suffix}"),
                    connection: :standard_io,
                    args: [~c"+S", ~c"2:2", ~c"+SDcpu", ~c"1", ~c"+SDio", ~c"1"],
-                   wait_boot: 30_000
+                   wait_boot: {self(), tag}
                  }) do
               {:ok, pid} -> {:ok, pid}
               {:ok, pid, _node} -> {:ok, pid}
             end
 
           register_timeout_cleanup([peer | acquired])
-          [peer | acquired]
+          {[peer | acquired], [{peer, tag, deadline} | boots]}
         after
           :ok
         end
       end)
-      |> Enum.reverse()
+
+    peers = Enum.reverse(peers)
 
     config = peer_configuration()
 
     Cleanup.protect peers do
+      measure_stage(:peer_boot_wait, fn ->
+        Enum.each(Enum.reverse(boots), &await_peer_boot!/1)
+      end)
+
       # Every RPC retains its finite 5s default or explicit 30s bound. The
       # linked stream cancels remaining tasks if enumeration fails; its own
       # timer must not replace those bounds or the unchanged 300s test budget.
@@ -121,6 +137,24 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
       peers
     after
       :ok
+    end
+  end
+
+  # Boot overlap MUST retain each peer's original 30s deadline from its
+  # acquisition, rather than granting a fresh timeout when its turn is awaited.
+  @spec await_peer_boot!({pid(), reference(), integer()}) :: :ok
+  defp await_peer_boot!({peer, tag, deadline}) do
+    remaining = max(deadline - System.monotonic_time(:millisecond), 0)
+
+    receive do
+      {^tag, {:started, node, ^peer}} ->
+        assert node != :nonode@nohost
+        :ok
+
+      {^tag, {:boot_failed, reason, ^peer}} ->
+        flunk("fresh capacity peer failed to boot: #{inspect(reason)}")
+    after
+      remaining -> flunk("fresh capacity peer exceeded its 30s boot deadline")
     end
   end
 
@@ -145,9 +179,28 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   defp initialize_peer(peer, config) do
     node = :peer.call(peer, :erlang, :node, [])
     assert node != :nonode@nohost
-    :ok = :peer.call(peer, :code, :add_paths, [:code.get_path()])
-    :ok = :peer.call(peer, Application, :put_all_env, [config, [persistent: true]])
-    {:ok, _} = :peer.call(peer, Application, :ensure_all_started, [:marshall], 30_000)
+
+    :ok =
+      measure_stage(:peer_paths, fn ->
+        :peer.call(peer, :code, :add_paths, [:code.get_path()])
+      end)
+
+    :ok =
+      measure_stage(:peer_environment, fn ->
+        :peer.call(peer, Application, :put_all_env, [config, [persistent: true]])
+      end)
+
+    {:ok, _} =
+      measure_stage(:peer_applications, fn ->
+        :peer.call(
+          peer,
+          :application,
+          :ensure_all_started,
+          [[:marshall], :temporary, :concurrent],
+          30_000
+        )
+      end)
+
     :ok
   end
 
@@ -719,7 +772,9 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   # @cc [owner:ghuntley,label:verification] capacity-race-step-failure-isolation
   # Step execution MUST run on non-linked supervised tasks so a raised or
   # exited step is reported with its step content instead of crashing the
-  # property process behind a dead-peer exit.
+  # property process behind a dead-peer exit. Each phase MUST stop its own
+  # supervisor after all tasks finish or fail, rather than retaining thousands
+  # of empty supervisors until the generated property exits.
   @spec run_steps(model(), [map()]) :: [term()]
   defp run_steps(model, steps) do
     unique = System.unique_integer([:positive])
@@ -730,29 +785,33 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
         start: {Task.Supervisor, :start_link, [[]]}
       })
 
-    tasks =
-      Enum.map(Enum.with_index(steps), fn {step, index} ->
-        Task.Supervisor.async_nolink(supervisor, fn ->
-          execute_step(model, step, rem(index, 3))
+    try do
+      tasks =
+        Enum.map(Enum.with_index(steps), fn {step, index} ->
+          Task.Supervisor.async_nolink(supervisor, fn ->
+            execute_step(model, step, rem(index, 3))
+          end)
         end)
+
+      Enum.zip(steps, tasks)
+      |> Enum.map(fn {step, task} ->
+        case Task.yield(task, 60_000) || Task.shutdown(task) do
+          {:ok, result} ->
+            validate_step_result!(result)
+            result
+
+          {:exit, reason} ->
+            flunk(
+              "step #{inspect(step, limit: 8, printable_limit: 4_000)} exited: #{inspect(reason)}"
+            )
+
+          nil ->
+            flunk("step #{inspect(step, limit: 8, printable_limit: 4_000)} timed out")
+        end
       end)
-
-    Enum.zip(steps, tasks)
-    |> Enum.map(fn {step, task} ->
-      case Task.yield(task, 60_000) || Task.shutdown(task) do
-        {:ok, result} ->
-          validate_step_result!(result)
-          result
-
-        {:exit, reason} ->
-          flunk(
-            "step #{inspect(step, limit: 8, printable_limit: 4_000)} exited: #{inspect(reason)}"
-          )
-
-        nil ->
-          flunk("step #{inspect(step, limit: 8, printable_limit: 4_000)} timed out")
-      end
-    end)
+    after
+      :ok = stop_supervised({Task.Supervisor, unique})
+    end
   end
 
   @spec validate_step_result!(term()) :: :ok
@@ -2783,10 +2842,11 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
   defp locked_steps(model, steps, rotation) do
     owner = self()
     ref = make_ref()
+    supervisor_id = {Task.Supervisor, make_ref()}
 
     supervisor =
       start_supervised!(%{
-        id: {Task.Supervisor, make_ref()},
+        id: supervisor_id,
         start: {Task.Supervisor, :start_link, [[]]}
       })
 
@@ -2856,6 +2916,7 @@ defmodule Marshall.Compute.DistributedCapacityRaceTest do
     after
       send(holder.pid, {:release_host_rows, ref})
       Task.shutdown(holder, :brutal_kill)
+      :ok = stop_supervised(supervisor_id)
     end
   end
 

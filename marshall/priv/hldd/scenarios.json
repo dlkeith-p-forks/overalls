@@ -13742,9 +13742,18 @@
       "denial": "Foreign or stale execution and generation authority cannot redeem capabilities; detach and disconnect withdraw authenticated admission. Guests cannot select credential recipients. Fresh anonymous requests carry no OAuth bearer.",
       "scope": "ADR-0202 owner integration; controlled packaged edge execution is recorded separately from real fleet OAuth, retained images and live GitHub acceptance.",
       "status": "partial",
-      "gaps": "The controlled edge fixture substitutes Marshall and Lilly authority. Full browser OAuth, scheduled rotation, shared-writer delegation, detach persistence across relocation, seven-family retained updates and live provider consent require separately recorded acceptance. Unknown rotation results require reconnect.",
+      "gaps": "The controlled edge fixture substitutes Marshall and Lilly authority. Full browser OAuth, scheduled rotation, shared-writer delegation, detach persistence across relocation, seven-family retained updates and live provider consent require separately recorded acceptance. GitHub's dated primary documentation supports OAuth App offline_access and rotating pairs; it does not establish a grant or rotation by the registered Overalls app. Unknown rotation results require reconnect.",
       "preferred_gap": "Run the real github-integration-fleet journey and platform variants, including current relocation, reconnect and Windows shared-writer assertions; then qualify live GitHub and restore behavior.",
       "evidence": [
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/github/provider_wire_test.exs",
+          "assertion": "documented OAuth App authorization, exchange and refresh preserve the rotating grant",
+          "scope": "Five focused provider tests passed, including three production Req request/response fixtures covering the fixed OAuth origin, PKCE/scopes, documented rotating bearer pair, incomplete/non-expiring/non-bearer refusals and no replay after redirect/transient failure. Req.Test only: no socket, TLS, live provider effects, registered-app consent or full Marshall gate.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "Provider Req fixture execution: **5 passed**"
+        },
         {
           "kind": "unit",
           "path": "audi/test/private_dns_test.exs",

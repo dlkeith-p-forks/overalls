@@ -126,6 +126,24 @@ defmodule GitHubFleetGuest do
     ]
   end
 
+  # @cc [owner:ghuntley,label:verification;security] github-fleet-lfs-real-transfer
+  # Linux LFS MUST upload through the managed client and fetch again after both
+  # fixture checkout and local object cache are removed. Fixed synthetic content
+  # MUST match after checkout; no provider authority may enter the guest.
+  defp commands("lfs", _owner) do
+    [
+      "git -C /root/github-private lfs install --local",
+      "git -C /root/github-private lfs track '*.fleet-lfs'",
+      "printf 'real fleet LFS transfer\\n' >/root/github-private/payload.fleet-lfs && git -C /root/github-private add .gitattributes payload.fleet-lfs",
+      "git -C /root/github-private -c user.name=Fixture -c user.email=fixture@example.test commit -m fleet-lfs",
+      "git -C /root/github-private push origin fleet-feature",
+      "rm -rf /root/github-private/.git/lfs/objects && rm /root/github-private/payload.fleet-lfs",
+      "git -C /root/github-private lfs fetch origin fleet-feature",
+      "git -C /root/github-private lfs checkout",
+      "test \"$(cat /root/github-private/payload.fleet-lfs)\" = 'real fleet LFS transfer'"
+    ]
+  end
+
   defp commands("clean", _owner) do
     [
       "! env | grep -E 'synthetic-owner-|synthetic-refresh-owner-'",

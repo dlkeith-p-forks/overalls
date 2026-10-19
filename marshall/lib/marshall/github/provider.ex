@@ -6,6 +6,13 @@ defmodule Marshall.GitHub.Provider do
   @scopes ~w(repo workflow read:org project gist notifications read:user user:email read:packages write:packages offline_access)
   @type identity :: %{id: pos_integer(), login: binary()}
   @type error :: :unavailable | :invalid_response | :unauthorized
+  @type token_parameters :: %{
+          optional(:code) => binary(),
+          optional(:code_verifier) => binary(),
+          optional(:redirect_uri) => binary(),
+          optional(:grant_type) => binary(),
+          optional(:refresh_token) => binary()
+        }
   @callback exchange(binary(), binary()) :: {:ok, Grant.t()} | {:error, error()}
   @callback refresh(binary()) :: {:ok, Grant.t()} | {:error, error()}
   @callback identity(binary()) :: {:ok, identity()} | {:error, error()}
@@ -123,6 +130,11 @@ defmodule Marshall.GitHub.Provider do
     _ -> {:error, :unavailable}
   end
 
+  # @cc [owner:ghuntley,label:security;protocol] github-provider-rotating-bearer-grant
+  # Provider token responses MUST explicitly identify bearer authority and supply
+  # the complete bounded rotating pair. Missing or other token types, nonexpiring
+  # grants and provider error bodies MUST NOT establish usable credentials.
+  @spec token_request(token_parameters()) :: {:ok, Grant.t()} | {:error, error()}
   defp token_request(parameters) do
     with {:ok, secret} <- secret(),
          id when is_binary(id) <- Application.get_env(:marshall, :github_client_id),
@@ -132,7 +144,7 @@ defmodule Marshall.GitHub.Provider do
              url: "https://github.com/login/oauth/access_token",
              form: Map.merge(parameters, %{client_id: id, client_secret: secret})
            ),
-         {:ok, decoded} <- decode(body) do
+         {:ok, %{"token_type" => "bearer"} = decoded} <- decode(body) do
       Grant.decode(decoded)
     else
       _ -> {:error, :unavailable}

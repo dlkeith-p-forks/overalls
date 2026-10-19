@@ -41,6 +41,16 @@ notifications and packages within the consenting user's GitHub rights. They do
 not override organization approval, SAML SSO, repository permissions or GitHub
 policy. Do not request organization administration or repository deletion.
 
+GitHub's [2026-08-14 OAuth App announcement](https://github.blog/changelog/2026-08-14-multiple-redirect-uris-and-token-refresh-for-oauth-apps/)
+and [authorization documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps),
+reviewed on 2026-10-19, document this credential model for GitHub.com. Requesting
+`offline_access` obtains an eight-hour access token and a refresh token valid for
+six months without use, even when the app has not globally enabled expiring
+tokens. It is not a normal granted scope and need not appear in the returned
+scope list. This is documented provider support, not evidence of consent or a
+successful exchange by the registered Overalls app. GitHub Enterprise Server and
+non-expiring-token fallback are outside this decision.
+
 `POST /auth/github-com/start` begins authorization under the current completed
 Marshall login and CSRF protection. `GET /auth/github-com/callback` accepts only
 the current one-use, expiring attempt bound to that account and browser login.
@@ -131,6 +141,12 @@ withdraw remaining leases before exchanging refresh credentials. Commit the
 complete replacement access/refresh pair and expiry metadata atomically. Lease
 expiry, token expiry and the drain deadline remain separate facts; none proves
 an upstream request completed successfully.
+
+The provider's documented refresh exchange invalidates both the consumed refresh
+token and the previous access token. It returns a new pair with the previous
+permission scopes; refresh cannot request additional scopes. An expired or
+invalid refresh token returns `bad_refresh_token` and requires new browser
+authorization. These semantics motivate draining and the recovery fence below.
 
 A provider may rotate a token before Marshall commits its reply. An unanswered
 exchange, lost worker or uncertain post-exchange commit must enter explicit
@@ -233,6 +249,17 @@ only settlement of the same received pair, never the provider exchange. The
 requires complete settings and a fixed HTTPS callback path; it does not require
 the registered callback host to equal the configured Marshall origin.
 
+The [provider transport](../../../marshall/lib/marshall/github/provider.ex)
+requests `offline_access`, uses the documented fixed token endpoint and sends
+`grant_type=refresh_token` without a new scope request. Token replies must declare
+`token_type=bearer`. Its [grant parser](../../../marshall/lib/marshall/github/grant.ex)
+requires both tokens
+and bounded positive expiry fields; the documented 28,800/15,897,600-second
+response fits that contract. Missing refresh credentials are refused rather than
+silently becoming a non-expiring connection. Source conformance and controlled
+fixtures do not establish the registered app's actual consent, rotating exchange
+or organization approval.
+
 The [wire route contract](../../../protocol/lib/overalls_protocol/github.ex),
 [Marshall admission](../../../marshall/lib/marshall/galileo/github.ex),
 [response rewrite](../../../galileo/lib/galileo/github/response.ex) and
@@ -307,9 +334,11 @@ review preserves this result separately from the historical matrix.
 
 ## Open questions
 
-No product-policy choice remains for this version. OAuth App provisioning, live
-`offline_access`, provider/organization consent, seven-family runtime and
-retained-machine upgrade acceptance still require evidence.
+No product-policy choice remains for this version. OAuth App provisioning,
+registered-app `offline_access` consent and rotation, provider/organization
+approval, seven-family runtime and retained-machine upgrade acceptance still
+require evidence. The dated primary sources establish documented OAuth App
+refresh support, not these operational results.
 
 ## Related decisions
 

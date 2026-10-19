@@ -15,7 +15,9 @@ ROOT = Path("/var/lib/fleet-default-oss")
 ORIGIN = "https://control.example.test"
 stage = "arguments"
 observations: dict[str, bool | int] = {}
-SharedWriterStep = Literal["shell", "identity", "sudo", "gh_exit", "owner_match"]
+SharedWriterStep = Literal[
+    "shell", "identity", "sudo", "cli_available", "dns", "trust", "gh_exit", "owner_match"
+]
 
 
 def observe_console(message: ConsoleMessage) -> None:
@@ -281,7 +283,7 @@ def shared_writer(family: str, expected_username: str) -> None:
     Windows MUST run as the member's exact durable guest account, never an
     owner or system shell. Success MUST require a guest-produced marker; raw
     terminal text stays private. Closed per-step markers MUST distinguish shell,
-    durable account, sudo where applicable, CLI exit and owner match within one
+    durable account, sudo and CLI/DNS/trust where applicable, CLI exit and owner match within one
     aggregate 90-second completion bound; echoed input MUST NOT satisfy them.
     """
     global stage
@@ -332,7 +334,16 @@ def shared_writer(family: str, expected_username: str) -> None:
                     + " }"
                 )
             else:
-                steps = ("shell", "identity", "sudo", "gh_exit", "owner_match")
+                steps = (
+                    "shell",
+                    "identity",
+                    "sudo",
+                    "cli_available",
+                    "dns",
+                    "trust",
+                    "gh_exit",
+                    "owner_match",
+                )
                 command = (
                     shell_mark("shell")
                     + ' && test "$(id -un)" = '
@@ -341,6 +352,12 @@ def shared_writer(family: str, expected_username: str) -> None:
                     + shell_mark("identity")
                     + " && sudo -n true && "
                     + shell_mark("sudo")
+                    + " && command -v gh >/dev/null 2>&1 && gh --version >/dev/null 2>&1 && "
+                    + shell_mark("cli_available")
+                    + " && getent hosts com-github.integration.internal >/dev/null 2>&1 && "
+                    + shell_mark("dns")
+                    + " && test -r /etc/ssl/certs/ca-certificates.crt && "
+                    + shell_mark("trust")
                     + " && v=$(gh api user --jq .login 2>/dev/null) && "
                     + shell_mark("gh_exit")
                     + ' && test "$v" = owner-1 && '

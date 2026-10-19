@@ -386,6 +386,21 @@ admissions. Existing authenticated leases cannot change identity or become
 anonymous. GitHub remains responsible for repository, organization,
 SAML SSO and consent policy.
 
+GitHub's OAuth App authorization documentation, reviewed on 2026-10-19,
+supports the selected `offline_access` model: eight-hour access credentials and
+refresh credentials valid for six months without use. `offline_access` need not
+appear in the returned permission scopes. Marshall requires an explicit bearer
+type and complete expiring pair; incomplete or non-expiring responses refuse.
+A successful refresh invalidates both old tokens; invalid or expired refresh
+authority requires reconnection. The
+[provider guide](repo:docs/services/github-com.md) links the dated primary
+sources. Documented capability and source conformance do not establish consent
+or rotation by the registered app; GitHub Enterprise Server is outside scope.
+The recorded five-test provider focus checks production Req construction and
+synthetic replies through `Req.Test`, including complete bearer-pair validation
+and no replay after redirects/errors. It does not exercise sockets, TLS or live
+provider effects.
+
 Connection progress is an explicit state machine: `disconnected`, `connected`,
 `draining`, `refreshing`, `reconnect_required` and `revoking`. OAuth attempts,
 refresh attempts and generation-bound request leases remain separate resources.
