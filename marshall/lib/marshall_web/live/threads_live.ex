@@ -1907,7 +1907,7 @@ defmodule MarshallWeb.ThreadsLive do
                               viewer_zone={@time_zone}
                               now={@now}
                             />
-                            <span class="status-label" data-role={grant.role}>{grant.role}</span>
+                            <span class="status-label" data-role={grant.role}>{role_label(grant.role)}</span>
                             <button
                               type="button"
                               class="console-button compact ghost"
@@ -2691,4 +2691,15 @@ defmodule MarshallWeb.ThreadsLive do
   defp event_text(%{kind: :context_compacted}), do: gettext("Older context summarized")
   defp event_text(%{kind: :context_reloaded}), do: gettext("Workspace context reloaded")
   defp event_text(_event), do: gettext("Thread updated")
+
+  # @cc [owner:ghuntley,label:product] localized-access-role-labels
+  # Visible access roles MUST use translated labels while role attributes and
+  # action values retain the authoritative domain atoms.
+  @spec role_label(atom()) :: String.t()
+  defp role_label(:web), do: gettext("Web apps")
+  defp role_label(:viewer), do: gettext("Viewer")
+  defp role_label(:operator), do: gettext("Operator")
+  defp role_label(:manager), do: gettext("Manager")
+  defp role_label(:revoked), do: gettext("Revoked")
+  defp role_label(_), do: gettext("Unknown")
 end

@@ -55,6 +55,24 @@ defmodule MarshallWeb.AgentThreadsLiveTest do
            )
   end
 
+  test "browser locale translates event headings while prompt payload stays literal", c do
+    literal = "context_captured — user supplied text"
+
+    Ledger.create!(Event, :append, %{
+      thread_id: c.thread.id,
+      sequence: c.thread.next_event_sequence,
+      kind: :prompt,
+      body: %{"prompt" => literal}
+    })
+
+    conn = c.conn |> put_req_header("accept-language", "ja") |> signed_in(c.owner)
+    {:ok, view, _} = live(conn, ~p"/machines/#{c.vm.id}/threads")
+
+    assert has_element?(view, "#agent-events article strong", "プロンプト")
+    assert has_element?(view, "#agent-events article pre", literal)
+    refute has_element?(view, "#agent-events article strong", "prompt")
+  end
+
   test "a thread URL cannot be combined with a different machine path", c do
     {:ok, other_vm} = Marshall.Compute.provision(request(), actor: c.owner)
     [other_root] = Ledger.read!(Root, vm_id: other_vm.id)

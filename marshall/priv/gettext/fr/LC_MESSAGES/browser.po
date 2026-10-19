@@ -222,3 +222,23 @@ msgstr "⟳ reconnexion…"
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ restauration de l’historique du terminal…"
+
+#: lib/marshall_web/browser_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "Connexion en cours…"
+
+#: lib/marshall_web/browser_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "No terminals"
+msgstr "Aucun terminal"
+
+#: lib/marshall_web/browser_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Diagram unavailable. Source:\n%{source}"
+msgstr "Diagramme indisponible. Source :\n%{source}"
+
+#: lib/marshall_web/browser_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "— output before this view is not in the scrollback window —"
+msgstr "— la sortie précédant cette vue ne figure pas dans l’historique de défilement —"

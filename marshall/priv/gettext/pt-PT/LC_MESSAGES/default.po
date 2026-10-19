@@ -7922,3 +7922,113 @@ msgstr "Área de apresentação do Android"
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
 msgstr "A aguardar o retransmissor de ecrã."
+
+#: lib/marshall_web/live/agent_threads_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Context captured"
+msgstr "Contexto guardado"
+
+#: lib/marshall_web/live/agent_threads_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Context compacted"
+msgstr "Contexto compactado"
+
+#: lib/marshall_web/live/agent_threads_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Maintenance finished"
+msgstr "Manutenção concluída"
+
+#: lib/marshall_web/live/agent_threads_live.ex:123
+#, elixir-autogen, elixir-format
+msgid "Plan proposed"
+msgstr "Plano proposto"
+
+#: lib/marshall_web/live/agent_threads_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Questions answered"
+msgstr "Perguntas respondidas"
+
+#: lib/marshall_web/live/agent_threads_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Questions cancelled"
+msgstr "Perguntas canceladas"
+
+#: lib/marshall_web/live/agent_threads_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Questions requested"
+msgstr "Perguntas solicitadas"
+
+#: lib/marshall_web/live/agent_threads_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Waiting for machine"
+msgstr "A aguardar a máquina"
+
+#: lib/marshall_web/live/admin/access_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "Aprovação de chave pendente"
+
+#: lib/marshall_web/live/admin/git_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Git operation failed"
+msgstr "A operação do Git falhou"
+
+#: lib/marshall_web/live/admin/git_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Refresh failed"
+msgstr "A atualização falhou"
+
+#: lib/marshall_web/live/admin/git_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Refresh requested"
+msgstr "Atualização solicitada"
+
+#: lib/marshall_web/live/admin/git_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Refresh succeeded"
+msgstr "Atualização concluída"
+
+#: lib/marshall_web/live/admin/git_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Refreshing"
+msgstr "A atualizar"
+
+#: lib/marshall_web/live/admin/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "Registado"
+
+#: lib/marshall_web/live/admin/git_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Removal requested"
+msgstr "Remoção solicitada"
+
+#: lib/marshall_web/live/admin/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Removed"
+msgstr "Removido"
+
+#: lib/marshall_web/live/admin/git_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Removing"
+msgstr "A remover"
+
+#: lib/marshall_web/live/admin/git_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Service unavailable"
+msgstr "Serviço indisponível"
+
+#: lib/marshall_web/live/admin/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "TLS verification failed"
+msgstr "A verificação TLS falhou"
+
+#: lib/marshall_web/live/admin/git_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Timed out"
+msgstr "Tempo de espera esgotado"
+
+#: lib/marshall_web/live/admin/git_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "Não autorizado"

@@ -7702,3 +7702,113 @@ msgstr "لوحة عرض Android"
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
 msgstr "في انتظار مرحّل العرض."
+
+#: lib/marshall_web/live/agent_threads_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Context captured"
+msgstr "تم حفظ السياق"
+
+#: lib/marshall_web/live/agent_threads_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Context compacted"
+msgstr "تم اختصار السياق"
+
+#: lib/marshall_web/live/agent_threads_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Maintenance finished"
+msgstr "اكتملت الصيانة"
+
+#: lib/marshall_web/live/agent_threads_live.ex:123
+#, elixir-autogen, elixir-format
+msgid "Plan proposed"
+msgstr "تم اقتراح خطة"
+
+#: lib/marshall_web/live/agent_threads_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Questions answered"
+msgstr "تمت الإجابة عن الأسئلة"
+
+#: lib/marshall_web/live/agent_threads_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Questions cancelled"
+msgstr "تم إلغاء الأسئلة"
+
+#: lib/marshall_web/live/agent_threads_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Questions requested"
+msgstr "طُلبت أسئلة"
+
+#: lib/marshall_web/live/agent_threads_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Waiting for machine"
+msgstr "في انتظار الجهاز"
+
+#: lib/marshall_web/live/admin/access_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "في انتظار الموافقة على المفتاح"
+
+#: lib/marshall_web/live/admin/git_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Git operation failed"
+msgstr "فشلت عملية Git"
+
+#: lib/marshall_web/live/admin/git_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Refresh failed"
+msgstr "فشل التحديث"
+
+#: lib/marshall_web/live/admin/git_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Refresh requested"
+msgstr "طُلب التحديث"
+
+#: lib/marshall_web/live/admin/git_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Refresh succeeded"
+msgstr "نجح التحديث"
+
+#: lib/marshall_web/live/admin/git_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Refreshing"
+msgstr "جارٍ التحديث"
+
+#: lib/marshall_web/live/admin/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "تم التسجيل"
+
+#: lib/marshall_web/live/admin/git_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Removal requested"
+msgstr "طُلبت الإزالة"
+
+#: lib/marshall_web/live/admin/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Removed"
+msgstr "تمت الإزالة"
+
+#: lib/marshall_web/live/admin/git_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Removing"
+msgstr "جارٍ الإزالة"
+
+#: lib/marshall_web/live/admin/git_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Service unavailable"
+msgstr "الخدمة غير متاحة"
+
+#: lib/marshall_web/live/admin/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "TLS verification failed"
+msgstr "فشل التحقق من TLS"
+
+#: lib/marshall_web/live/admin/git_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Timed out"
+msgstr "انتهت مهلة الانتظار"
+
+#: lib/marshall_web/live/admin/git_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "غير مصرح به"

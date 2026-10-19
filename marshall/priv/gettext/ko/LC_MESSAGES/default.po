@@ -7573,3 +7573,113 @@ msgstr "Android 화면 캔버스"
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
 msgstr "화면 중계를 기다리는 중입니다."
+
+#: lib/marshall_web/live/agent_threads_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Context captured"
+msgstr "컨텍스트를 저장했습니다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Context compacted"
+msgstr "컨텍스트를 압축했습니다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Maintenance finished"
+msgstr "유지 관리가 완료되었습니다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:123
+#, elixir-autogen, elixir-format
+msgid "Plan proposed"
+msgstr "계획을 제안했습니다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Questions answered"
+msgstr "질문에 답변했습니다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Questions cancelled"
+msgstr "질문을 취소했습니다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Questions requested"
+msgstr "질문을 요청했습니다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Waiting for machine"
+msgstr "머신을 기다리는 중"
+
+#: lib/marshall_web/live/admin/access_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "키 승인 대기 중"
+
+#: lib/marshall_web/live/admin/git_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Git operation failed"
+msgstr "Git 작업에 실패했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Refresh failed"
+msgstr "새로 고침에 실패했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Refresh requested"
+msgstr "새로 고침을 요청했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Refresh succeeded"
+msgstr "새로 고침에 성공했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Refreshing"
+msgstr "새로 고치는 중"
+
+#: lib/marshall_web/live/admin/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "등록됨"
+
+#: lib/marshall_web/live/admin/git_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Removal requested"
+msgstr "삭제를 요청했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Removed"
+msgstr "삭제됨"
+
+#: lib/marshall_web/live/admin/git_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Removing"
+msgstr "삭제 중"
+
+#: lib/marshall_web/live/admin/git_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Service unavailable"
+msgstr "서비스를 사용할 수 없습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "TLS verification failed"
+msgstr "TLS 검증에 실패했습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Timed out"
+msgstr "대기 시간이 초과되었습니다"
+
+#: lib/marshall_web/live/admin/git_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "권한이 없습니다"

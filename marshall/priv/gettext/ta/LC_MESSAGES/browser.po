@@ -234,3 +234,23 @@ msgstr "⟳ மீண்டும் இணைக்கிறது…"
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ ஸ்க்ரோல்பேக்கை மீட்டமைக்கிறது…"
+
+#: lib/marshall_web/browser_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "இணைக்கிறது…"
+
+#: lib/marshall_web/browser_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "No terminals"
+msgstr "முனையங்கள் இல்லை"
+
+#: lib/marshall_web/browser_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Diagram unavailable. Source:\n%{source}"
+msgstr "வரைபடம் கிடைக்கவில்லை. மூலம்:\n%{source}"
+
+#: lib/marshall_web/browser_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "— output before this view is not in the scrollback window —"
+msgstr "— இந்தக் காட்சிக்கு முந்தைய வெளியீடு பின்னுருள் சாளரத்தில் இல்லை —"

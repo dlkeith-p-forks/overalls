@@ -1,0 +1,240 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ha\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/browser_messages.ex:17
+#, elixir-autogen, elixir-format
+msgid "%{count}d ago"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:18
+#, elixir-autogen, elixir-format
+msgid "%{count}h ago"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:19
+#, elixir-autogen, elixir-format
+msgid "%{count}m ago"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:20
+#, elixir-autogen, elixir-format
+msgid "%{label} copied."
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid "%{name} · %{count} viewing"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:12
+#, elixir-autogen, elixir-format
+msgid "%{name} · %{count} viewing · %{activity}"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "%{name} · Terminals"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "+ New"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:22
+#, elixir-autogen, elixir-format
+msgid "Applying administrative change…"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:23
+#, elixir-autogen, elixir-format
+msgid "Boot log · read-only"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:24
+#, elixir-autogen, elixir-format
+msgid "Close this terminal session?"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:25
+#, elixir-autogen, elixir-format
+msgid "Command"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:27
+#, elixir-autogen, elixir-format
+msgid "Could not copy. Select the text and copy it manually."
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:29
+#, elixir-autogen, elixir-format
+msgid "Could not update access. Check the account's machine access."
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:31
+#, elixir-autogen, elixir-format
+msgid "Design diagram; explanation follows in the handbook"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:32
+#, elixir-autogen, elixir-format
+msgid "Enter full screen"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:33
+#, elixir-autogen, elixir-format
+msgid "Exit full screen"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:35
+#, elixir-autogen, elixir-format
+msgid "Input buffer full — that input was not sent"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:36
+#, elixir-autogen, elixir-format
+msgid "Match found"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "No matches"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "Open this link?\n\n%{url}"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "Opening…"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "Passkey request cancelled. You can try again."
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid "Passkey verification failed or unavailable. Try again."
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:46
+#, elixir-autogen, elixir-format
+msgid "Terminal name (this browser only; empty restores the generated name)"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "The result could not be confirmed. Reload the page and check the result before retrying."
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:62
+#, elixir-autogen, elixir-format
+msgid "This repository link could not be launched. Open the link again."
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:63
+#, elixir-autogen, elixir-format
+msgid "Type to interact"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:64
+#, elixir-autogen, elixir-format
+msgid "Updating viewing access…"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:66
+#, elixir-autogen, elixir-format
+msgid "Verification could not be completed. Try again."
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:68
+#, elixir-autogen, elixir-format
+msgid "Verify with your passkey to %{action}. This runs once after verification."
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:73
+#, elixir-autogen, elixir-format
+msgid "View only"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:74
+#, elixir-autogen, elixir-format
+msgid "Viewing access updated."
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:75
+#, elixir-autogen, elixir-format
+msgid "Waiting for your passkey…"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:77
+#, elixir-autogen, elixir-format
+msgid "complete this administrative change"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:78
+#, elixir-autogen, elixir-format
+msgid "just now"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:79
+#, elixir-autogen, elixir-format
+msgid "● live"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:80
+#, elixir-autogen, elixir-format
+msgid "● read-only"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:81
+#, elixir-autogen, elixir-format
+msgid "⟳ reconnecting…"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:82
+#, elixir-autogen, elixir-format
+msgid "⟳ restoring scrollback…"
+msgstr ""
+
+#: lib/marshall_web/browser_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "Connecting…"
+
+#: lib/marshall_web/browser_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "No terminals"
+msgstr "No terminals"
+
+#: lib/marshall_web/browser_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Diagram unavailable. Source:\n%{source}"
+msgstr "Diagram unavailable. Source:\n%{source}"
+
+#: lib/marshall_web/browser_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "— output before this view is not in the scrollback window —"
+msgstr "— output before this view is not in the scrollback window —"

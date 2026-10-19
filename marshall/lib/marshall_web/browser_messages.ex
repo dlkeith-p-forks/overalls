@@ -33,6 +33,12 @@ defmodule MarshallWeb.BrowserMessages do
       "Exit full screen" => dgettext("browser", "Exit full screen"),
       "Input buffer full — that input was not sent" =>
         dgettext("browser", "Input buffer full — that input was not sent"),
+      "— output before this view is not in the scrollback window —" =>
+        dgettext("browser", "— output before this view is not in the scrollback window —"),
+      "Connecting…" => dgettext("browser", "Connecting…"),
+      "No terminals" => dgettext("browser", "No terminals"),
+      "Diagram unavailable. Source:\n%{source}" =>
+        dgettext("browser", "Diagram unavailable. Source:\n%{source}", source: "%{source}"),
       "Match found" => dgettext("browser", "Match found"),
       "No matches" => dgettext("browser", "No matches"),
       "Open this link?\n\n%{url}" =>

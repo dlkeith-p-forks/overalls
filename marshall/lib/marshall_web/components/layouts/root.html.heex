@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang={assigns[:locale] || "en"} dir={assigns[:direction] || :ltr}>
+<html
+  lang={assigns[:locale] || "en"}
+  dir={assigns[:direction] || :ltr}
+  data-format-locale={Marshall.Localization.formatting_locale(assigns[:locale])}
+>
   <head>
     {Application.get_env(:live_debugger, :live_debugger_tags)}
 
