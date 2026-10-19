@@ -18,17 +18,6 @@ def assert_suspended(copy: PlacementRef) -> None:
     machine.succeed("python3 -c " + shlex.quote(program))
 
 
-vm = provision_when_available(m1, "standard")
-await_running(vm["vm_id"])
-route = operator(
-    m1,
-    dict(action="audi-policy", owner_id=users["owner_id"], vm_id=vm["vm_id"], visibility="public"),
-)
-hostname = str(route["label"]) + ".apps.example.test"
-ssh_arguments: list[str] = []
-ssh_environment = ""
-
-
 with subtest("pause releases execution and resume preserves RAM, PID and boot UUID"):
     suspension_vm = str(vm["vm_id"])
     await_running(suspension_vm)

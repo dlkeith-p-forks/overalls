@@ -1933,8 +1933,22 @@ assert editorFamily == null || (editor && !ubuntu
             client.execute("systemctl reset-failed audi-slo-held.service")
         assert process_snapshot(vm) == audi_slo_guest_before
       ''
-      else if suspension then builtins.head (lib.splitString "\nwith subtest(\"real guest HTTP reaches" audiScenario)
-        + "\n" + builtins.readFile ./scenarios/suspension.py
+      else if suspension then
+        builtins.head (lib.splitString "\nwith subtest(\"real guest HTTP reaches" audiScenario)
+          + "\n" + ''
+            vm = provision_when_available(m1, "standard")
+            await_running(vm["vm_id"])
+            route = operator(
+                m1,
+                dict(action="audi-policy", owner_id=users["owner_id"], vm_id=vm["vm_id"], visibility="public"),
+            )
+            hostname = str(route["label"]) + ".apps.example.test"
+          ''
+          + builtins.head (lib.splitString
+            "\n    # @cc [owner:ghuntley,label=verification] audi-native-slo-journey-boundary"
+            (lib.elemAt (lib.splitString "\nwith subtest(\"native OpenSSH reaches" audiScenario) 1))
+        )
+        + builtins.readFile ./scenarios/suspension.py
       else if ubuntu && audi then builtins.readFile ./scenarios/audi.py
         + lib.optionalString relocation (builtins.readFile ./scenarios/audi-relocation.py)
       else if ubuntu then builtins.readFile ./scenarios/relocation.py
