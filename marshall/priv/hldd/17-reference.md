@@ -956,6 +956,16 @@ retain the complete mutation matrix and generated exploration. Measured aggregat
 budgets can reach three hours; each individual boot retains a 30-second deadline
 and a five-second forced-termination allowance.
 
+The pinned native engine's default slow-input check counts full callback wall
+time, including fixture setup and real network waits, until ten valid examples
+are reached; its early-run threshold is thirty seconds. Extending ExUnit's
+aggregate timeout does not change this check. Real fifteen-second silence
+histories can therefore fail the health check despite bounded, fast generators.
+Keep case counts, real operation deadlines and existing health policies intact;
+a fixture repair alone is not evidence that the complete consumer gate passes.
+The [GitHub closure review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)
+records the current fixture repairs and unresolved full-suite execution.
+
 The frontend preserves original BEAM failures when the native engine reports a
 flaky run. Its native installer stages and atomically renames the shared library:
 compilation must not truncate an inode mapped into another running BEAM. The
@@ -1340,3 +1350,8 @@ Certificate-specific verification includes
 issuance tests. The current decision is
 [unified host CA](repo:docs/architecture/decisions/0124-unified-ssh-host-ca.md);
 [operations](repo:docs/operations/porsche-operations.md) describes trust and renewal.
+
+Version-4 kernel manifest validation independently checks optional explicit Linux
+or Android agents and editor descriptors, retaining the agent declaration in
+immutable identity. The generated Android image catalog entry grants no native
+acceptance; the focused composition/refusal property is BEAM-only evidence.

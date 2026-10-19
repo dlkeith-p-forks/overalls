@@ -59,6 +59,7 @@ msgstr "ఖాతా"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "కమిట్‌లో Overalls సహకారానికి గుర్తింపు జోడించండి"
 msgid "Commit attribution"
 msgstr "కమిట్ ఆపాదింపు"
 

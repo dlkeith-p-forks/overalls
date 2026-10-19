@@ -31,8 +31,21 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   ]
 
   @big 1_099_511_627_776
+  @type fixture :: %{
+          host: Marshall.Compute.Host.t(),
+          pool: Marshall.Compute.StoragePool.t(),
+          epoch: pos_integer(),
+          report: OverallsProtocol.report(),
+          user: Marshall.Accounts.User.t(),
+          sequence: pos_integer()
+        }
 
-  setup do
+  setup tags do
+    if tags[:hegel_case_sandbox], do: :ok, else: workspace_fixture()
+  end
+
+  @spec workspace_fixture() :: fixture()
+  defp workspace_fixture do
     fixture = host_fixture()
     fixture |> Map.put(:user, user()) |> Map.put(:sequence, 1) |> refresh()
   end
@@ -41,12 +54,17 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   # Generated admissions MUST return the original VM for the same key and source,
   # conflict for the same key with any other source (including none), and refuse
   # a source on a profile without egress without creating any allocation.
-  test "the workspace source joins idempotent admission identity", c do
+  # Each history MUST own its sandbox so earlier generated admissions cannot
+  # consume the next history's measured capacity.
+  @tag hegel_case_sandbox: true
+  test "the workspace source joins idempotent admission identity" do
     Hegel.check(
       fn ->
         first = draw("first", member_of([nil | @sources]))
         second = draw("second", member_of([nil | @sources]))
         profile = draw("profile", member_of([:standard, :oss]))
+        isolate_property_case()
+        c = workspace_fixture()
         refresh(Map.put(c, :sequence, System.unique_integer([:positive, :monotonic]) + 1))
         key = Ash.UUID.generate()
         first_source = source(first)
@@ -192,8 +210,10 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
 
   # @cc [owner:ghuntley,label:verification;recovery] workspace-source-retained-start-cutover
   # A fresh sourced start MUST roll back unchanged allocations and existing
-  # snapshots when its durable image lacks current source capability. An
-  # unsourced retained start MUST remain independent of obsolete image staging.
+  # snapshots when its durable image identity is obsolete. Source preflight MUST
+  # also independently refuse that identity; the earlier Git identity guard MAY
+  # determine the lifecycle refusal. A valid unsourced retained start MUST remain
+  # independent of the enabled catalog staging flag.
   test "obsolete sourced starts refuse without changing retained state or snapshots", c do
     assert {:ok, sourced} =
              Compute.provision(request(Ash.UUID.generate(), :oss, source(hd(@sources))),
@@ -219,7 +239,10 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
         [manifest, image.id]
       )
 
-      assert {:error, %{errors: [%Compute.Error{reason: :workspace_source_unavailable}]}} =
+      refute CommandSnapshot.workspace_source_available?(sourced)
+      assert CommandSnapshot.workspace_source_available?(plain)
+
+      assert {:error, %{errors: [%Compute.Error{reason: :git_identity_unavailable}]}} =
                Compute.lifecycle(
                  %{vm_id: sourced.id, kind: :start, idempotency_key: Ash.UUID.generate()},
                  actor: c.user
@@ -229,6 +252,12 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
       assert Ledger.read!(Reservation) == before_reservations
       assert Ledger.history!(VirtualMachine, []) == before_vms
     end
+
+    Ecto.Adapters.SQL.query!(
+      Marshall.Repo,
+      "UPDATE compute_images SET manifest = $1 WHERE id = $2",
+      [image.manifest, image.id]
+    )
 
     assert {:ok, unsourced_start} =
              Compute.lifecycle(
@@ -255,7 +284,7 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   end
 
   # Re-reports generous capacity with a fresh sample so generated admissions fit.
-  @spec refresh(map()) :: map()
+  @spec refresh(fixture()) :: fixture()
   defp refresh(fixture) do
     [pool] = fixture.report.pools
 

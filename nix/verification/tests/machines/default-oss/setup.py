@@ -348,6 +348,11 @@ with subtest("authenticated native observations supply admission capacity"):
         machine.succeed("fleet-seal-audi-private")
         machine.wait_for_unit("ziggy.service")
         machine.wait_for_unit("galileo.service")
+        # Credential provisioning can start Audi while Ziggy's first boot is
+        # still failing. A later successful Ziggy restart does not replay the
+        # failed dependent start job. Initialize Audi after its real services
+        # are ready, retaining the bounded readiness assertion below.
+        machine.succeed("systemctl start audi-private.service", timeout=900)
         machine.wait_for_unit("audi-private.service")
         address = str(
             ipaddress.IPv4Address(

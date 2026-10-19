@@ -1,0 +1,31 @@
+{
+  "architecture": "x86_64",
+  "boot": {
+    "firmware": {
+      "bytes": 4194304,
+      "sha256": "261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2"
+    },
+    "kind": "firmware",
+    "pci": true
+  },
+  "git_identity_version": 1,
+  "guest_agents": "freebsd-v1",
+  "kernel": {
+    "bytes": 29195032,
+    "compiler": "clang-19.1.7 (x86_64-unknown-freebsd14.3)",
+    "configuration_hash": "66fe08755af3346fb81ffb0e29b3e4d41891e78ffc9fc5384999772ac333b0eb",
+    "patch_hash": "7cc66cd28f45638c7dae0dbe130880b39e2756470b8cb433a20e6c2383200cfd",
+    "sha256": "20e38f12f5f7d19de54e3d7f7cf2b3a18e059ba9bccd838f49b1b1ccbc7e3384",
+    "source_revision": "833d39bd2e38421a14ea489a956261a0fa993fbc"
+  },
+  "minimum_disk_bytes": 68719476736,
+  "minimum_memory_bytes": 1073741824,
+  "os": "freebsd",
+  "root": {
+    "bytes": 6477687296,
+    "format": "raw-gpt",
+    "sha256": "db752667ec8b3deaa1fe797d466789339f80f80dc972bb252c1b4b15c2441175"
+  },
+  "version": 6,
+  "workspace_source_version": 2
+}

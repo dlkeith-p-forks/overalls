@@ -16,8 +16,28 @@ defmodule Marshall.Agents.ExecutorSessionTest do
   alias Marshall.Compute.{Host, Ledger, Operation, Outcomes}
   alias Marshall.Inference.Credentials
 
+  # @cc [owner:ghuntley,label:verification;security] executor-rpc-current-host-fixture
+  # Authenticated bootstrap claims MUST exercise a real current provisioner
+  # session and fresh report, not bypass host-liveness authority with seeded fields.
   setup do
-    host_fixture()
+    fixture = host_fixture()
+    {:ok, credential} = Marshall.Compute.Credentials.rotate(fixture.host.id, 3600)
+
+    {:ok, session} =
+      Marshall.Compute.ProvisionerControl.open_execution(credential.token, %{
+        session_id: Ash.UUID.generate(),
+        machine_id: fixture.host.machine_id
+      })
+
+    {:ok, _} =
+      Marshall.Compute.ProvisionerControl.exchange_execution(credential.token, %{
+        session_id: session["session_id"],
+        epoch: session["epoch"],
+        report: fixture.report,
+        acknowledgements: [],
+        outcomes: []
+      })
+
     actor = user()
     {:ok, vm} = Compute.provision(request(), actor: actor)
     [operation] = Ledger.read!(Operation, vm_id: vm.id)

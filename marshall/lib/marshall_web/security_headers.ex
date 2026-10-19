@@ -34,7 +34,7 @@ defmodule MarshallWeb.SecurityHeaders do
     {"connect-src", "'self'"},
     {"object-src", "'none'"},
     {"base-uri", "'self'"},
-    {"form-action", "'self' https://ghuntley.com"},
+    {"form-action", "'self' https://ghuntley.com https://github.com"},
     {"frame-ancestors", "'self'"},
     {"frame-src", "'self'"},
     {"worker-src", "'self'"},
@@ -89,6 +89,11 @@ defmodule MarshallWeb.SecurityHeaders do
   # probes, early /api refusals, JSON and error pages, MUST carry this exact
   # header set. No route or pipeline may send a second, conflicting
   # content-security-policy header.
+
+  # @cc [owner:ghuntley,label:security] browser-form-fixed-external-origins
+  # Form navigation MUST allow only this origin, the reviewed newsletter origin
+  # and GitHub.com's fixed OAuth origin, including the authorization POST redirect.
+  # Arbitrary HTTPS origins and wildcard subdomains MUST remain excluded.
   @impl true
   @spec call(Plug.Conn.t(), Plug.opts()) :: Plug.Conn.t()
   def call(conn, _options) do

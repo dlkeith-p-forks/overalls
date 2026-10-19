@@ -339,6 +339,14 @@ certificate SANs. Brady has separate offline recovery authority and a distinct
 encrypted signer per Lilly host. Public trust roots may enter images or boot
 bundles; private signing keys may not.
 
+Private integration DNS answers valid single-label
+`NAME.integration.internal` A questions with the fixed private frontend address.
+AAAA questions for those same names return authoritative NOERROR/NODATA with the
+integration-zone SOA, so an IPv6 probe cannot mark a valid IPv4 name absent.
+Malformed or deeper internal names retain NXDOMAIN and external names remain
+REFUSED. These DNS answers grant no integration or VM authority; TLS, current
+execution binding and Marshall admission remain independent checks.
+
 Each guest request to an Audi private service holds one authenticated
 subscription to Lilly for its source address (ADR-0140).
 - Lilly grants the binding from its execution view: the live proof for

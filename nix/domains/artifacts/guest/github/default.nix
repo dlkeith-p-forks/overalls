@@ -40,8 +40,8 @@ let
   mkLfs = platform: goos: pkgs.buildGo127Module {
     pname = "overalls-managed-git-lfs-${platform}";
     version = "3.7.1";
-    # Pinned to the release the patch targets, independent of the build package
-    # set's git-lfs version.
+    # Keep the reviewed patch and module hash bound to this exact release;
+    # the supplied Nixpkgs git-lfs package may advance independently.
     src = pkgs.fetchFromGitHub {
       owner = "git-lfs";
       repo = "git-lfs";

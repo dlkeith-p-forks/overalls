@@ -48,6 +48,46 @@ LEASE_PROBE_COMMAND = (
 WITHDRAWAL_SECONDS = 15.0
 
 
+class ArtifactStreamFailure(StrEnum):
+    TIMEOUT = "timeout"
+    TLS = "tls"
+    PEER = "peer"
+    OS = "os"
+    INVALID = "invalid"
+    PROCESS = "process"
+
+
+def artifact_stream_failure(
+    error: OSError | ValueError | subprocess.SubprocessError,
+) -> ArtifactStreamFailure:
+    """Classify transport failures without retaining exception text or request data."""
+    if isinstance(error, TimeoutError):
+        return ArtifactStreamFailure.TIMEOUT
+    if isinstance(error, ssl.SSLError):
+        return ArtifactStreamFailure.TLS
+    if isinstance(error, ConnectionError):
+        return ArtifactStreamFailure.PEER
+    if isinstance(error, OSError):
+        return ArtifactStreamFailure.OS
+    if isinstance(error, ValueError):
+        return ArtifactStreamFailure.INVALID
+    return ArtifactStreamFailure.PROCESS
+
+
+class TransportEvent(StrEnum):
+    ACCEPTED = "transport_accepted"
+    HANDLER_OPEN = "transport_handler_open"
+    HANDLER_CLOSE = "transport_handler_close"
+    HANDSHAKE_STARTED = "transport_handshake_started"
+    HANDSHAKE_SUCCEEDED = "transport_handshake_succeeded"
+    HANDSHAKE_TIMEOUT = "transport_handshake_timeout"
+    HANDSHAKE_FAILED = "transport_handshake_failed"
+    ARTIFACT_OPEN = "transport_artifact_open"
+    ARTIFACT_CLOSE = "transport_artifact_close"
+    HEARTBEAT_HEADERS = "transport_heartbeat_headers"
+    HEARTBEAT_RESPONSE = "transport_heartbeat_response"
+
+
 class Refused(ValueError):
     """A closed diagnostic containing no request data."""
 
@@ -290,6 +330,43 @@ class Authority:
                 temporary = self.config.receipt.with_suffix(".tmp")
                 temporary.write_text(json.dumps(receipt, sort_keys=True) + "\n")
                 temporary.replace(self.config.receipt)
+
+    def transport(self, event: TransportEvent) -> None:
+        """@cc [owner:ghuntley,label:verification;privacy] native-transport-diagnostics
+        Transport observations MUST contain only closed stage counts and bounded
+        active/highwater gauges. Heartbeat overlap MUST mean a parsed request or
+        sent response while an artifact stream is active; shared lease counters
+        MUST NOT be treated as proof that a particular worker renewed its lease.
+        """
+        with self._lock:
+            for opening, closing, gauge, highwater in (
+                (
+                    TransportEvent.HANDLER_OPEN,
+                    TransportEvent.HANDLER_CLOSE,
+                    "transport_handlers_active",
+                    "transport_handlers_highwater",
+                ),
+                (
+                    TransportEvent.ARTIFACT_OPEN,
+                    TransportEvent.ARTIFACT_CLOSE,
+                    "transport_artifacts_active",
+                    "transport_artifacts_highwater",
+                ),
+            ):
+                if event in (opening, closing):
+                    active = self.counters.get(gauge, 0) + (1 if event == opening else -1)
+                    assert 0 <= active <= 8
+                    self.counters[gauge] = active
+                    self.counters[highwater] = max(active, self.counters.get(highwater, 0))
+            if self.counters.get("transport_artifacts_active", 0) > 0 and event in (
+                TransportEvent.ACCEPTED,
+                TransportEvent.HANDSHAKE_STARTED,
+                TransportEvent.HANDSHAKE_SUCCEEDED,
+                TransportEvent.HEARTBEAT_HEADERS,
+                TransportEvent.HEARTBEAT_RESPONSE,
+            ):
+                self.record(event.value + "_during_artifact")
+            self.record(event.value)
 
     def certificate(self, public: object) -> dict[str, object]:
         public_key = key(public)
@@ -630,9 +707,24 @@ class Handler(socketserver.BaseRequestHandler):
             return
         stream = self.request
         withdrawal: Withdrawn | None = None
+        streaming_artifact = False
+        heartbeat_response = False
         try:
-            stream.do_handshake()
+            self.server.authority.transport(TransportEvent.HANDSHAKE_STARTED)
+            try:
+                stream.do_handshake()
+            except TimeoutError:
+                self.server.authority.transport(TransportEvent.HANDSHAKE_TIMEOUT)
+                raise
+            except OSError:
+                self.server.authority.transport(TransportEvent.HANDSHAKE_FAILED)
+                raise
+            self.server.authority.transport(TransportEvent.HANDSHAKE_SUCCEEDED)
             method, host, path, body = request(stream)
+            if host == "llm.internal" and path == "/agent/v1/heartbeat":
+                heartbeat_response = True
+                self.server.authority.transport(TransportEvent.HEARTBEAT_HEADERS)
+                self.server.authority.record("heartbeat_request")
             github = self.server.authority.github
             artifact = None
             extra = None
@@ -642,19 +734,25 @@ class Handler(socketserver.BaseRequestHandler):
                     if artifact is None:
                         extra = github.route(method, host, path, body, self.server.authority)
             if artifact is not None:
-                deadline = time.monotonic() + 8
-                stream.sendall(
-                    b"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nConnection: close\r\nContent-Length: "
-                    + str(artifact.bytes).encode()
-                    + b"\r\n\r\n"
-                )
-                with artifact.path.open("rb") as source:
-                    while chunk := source.read(65536):
-                        remaining = deadline - time.monotonic()
-                        if remaining <= 0:
-                            raise TimeoutError("native artifact deadline exceeded")
-                        stream.settimeout(remaining)
-                        stream.sendall(chunk)
+                streaming_artifact = True
+                self.server.authority.transport(TransportEvent.ARTIFACT_OPEN)
+                try:
+                    deadline = time.monotonic() + 8
+                    stream.sendall(
+                        b"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nConnection: close\r\nContent-Length: "
+                        + str(artifact.bytes).encode()
+                        + b"\r\n\r\n"
+                    )
+                    with artifact.path.open("rb") as source:
+                        while chunk := source.read(65536):
+                            remaining = deadline - time.monotonic()
+                            if remaining <= 0:
+                                raise TimeoutError("native artifact deadline exceeded")
+                            stream.settimeout(remaining)
+                            stream.sendall(chunk)
+                    self.server.authority.record("github_artifact_stream_completed")
+                finally:
+                    self.server.authority.transport(TransportEvent.ARTIFACT_CLOSE)
                 return
             git = (
                 extra
@@ -675,6 +773,11 @@ class Handler(socketserver.BaseRequestHandler):
                 )
             status = b"200 OK"
         except (OSError, ValueError, subprocess.SubprocessError) as error:
+            if streaming_artifact:
+                self.server.authority.record("github_artifact_stream_failed")
+                self.server.authority.record(
+                    f"github_artifact_stream_failed_{artifact_stream_failure(error).value}"
+                )
             if isinstance(error, Withdrawn):
                 withdrawal = error
             status, content_type, payload = (
@@ -696,13 +799,27 @@ class Handler(socketserver.BaseRequestHandler):
                 + b"\r\n\r\n"
                 + payload
             )
+            if heartbeat_response:
+                self.server.authority.transport(TransportEvent.HEARTBEAT_RESPONSE)
+                self.server.authority.record("heartbeat_response_sent")
             if withdrawal is not None:
                 self.server.authority.heartbeat_refusal_sent(withdrawal.fence)
-        except OSError:
+        except OSError as error:
+            if heartbeat_response:
+                self.server.authority.record("heartbeat_response_failed")
+                self.server.authority.record(
+                    f"heartbeat_response_failed_{artifact_stream_failure(error).value}"
+                )
             return
 
 
-class Server(socketserver.TCPServer):
+class Server(socketserver.ThreadingTCPServer):
+    """@cc [owner:ghuntley,label:verification;security] native-fixture-concurrent-renewal
+    Artifact streams MUST NOT block concurrent lease renewal. At most eight
+    request handlers may run; each retains its existing TLS/framing deadline and
+    authority state MUST remain protected by its existing lock.
+    """
+
     allow_reuse_address = True
     request_queue_size = 4
 
@@ -716,7 +833,29 @@ class Server(socketserver.TCPServer):
         self.context = context
         self.authority = authority
         self.repository = repository
+        self._slots = threading.BoundedSemaphore(8)
         super().__init__(address, Handler)
+
+    def process_request(
+        self, request: socket.socket | tuple[bytes, socket.socket], client_address: tuple[str, int]
+    ) -> None:
+        self._slots.acquire()
+        self.authority.transport(TransportEvent.HANDLER_OPEN)
+        try:
+            super().process_request(request, client_address)
+        except BaseException:
+            self.authority.transport(TransportEvent.HANDLER_CLOSE)
+            self._slots.release()
+            raise
+
+    def process_request_thread(
+        self, request: socket.socket | tuple[bytes, socket.socket], client_address: tuple[str, int]
+    ) -> None:
+        try:
+            super().process_request_thread(request, client_address)
+        finally:
+            self.authority.transport(TransportEvent.HANDLER_CLOSE)
+            self._slots.release()
 
     def get_request(self) -> tuple[socket.socket, tuple[str, int]]:
         stream, address = self.socket.accept()
@@ -724,6 +863,7 @@ class Server(socketserver.TCPServer):
             stream.close()
             raise OSError("foreign fixture client")
         stream.settimeout(DEADLINE)
+        self.authority.transport(TransportEvent.ACCEPTED)
         try:
             wrapped = self.context.wrap_socket(
                 stream, server_side=True, do_handshake_on_connect=False

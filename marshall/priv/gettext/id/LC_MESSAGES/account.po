@@ -58,6 +58,7 @@ msgstr "Akun"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "Tambahkan atribusi commit Overalls"
 msgid "Commit attribution"
 msgstr "Atribusi commit"
 

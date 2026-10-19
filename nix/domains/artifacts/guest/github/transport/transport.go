@@ -4,9 +4,13 @@ package overalls
 
 import (
 	"crypto/tls"
+	"crypto/x509"
 	"errors"
+	"io"
 	"net/http"
 	"net/url"
+	"os"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -19,6 +23,44 @@ const Managed = true
 var ErrManaged = errors.New("GitHub authentication is managed in Marshall")
 var ErrOrigin = errors.New("unsupported managed GitHub destination")
 var ErrRedirect = errors.New("managed GitHub mutations cannot follow redirects")
+var errTrust = errors.New("managed GitHub trust unavailable")
+
+type refusedTrust struct{}
+
+func (refusedTrust) RoundTrip(*http.Request) (*http.Response, error) { return nil, errTrust }
+
+func nativeTrustPath(goos string) string {
+	switch goos {
+	case "freebsd":
+		return "/etc/ssl/cert.pem"
+	case "illumos", "solaris":
+		return "/etc/ssl/cacert.pem"
+	default:
+		return ""
+	}
+}
+
+// @cc [owner:ghuntley,label:security] managed-native-reviewed-trust
+// Native managed clients MUST load only the reviewed OS trust bundle, bounded
+// to 2 MiB. Missing, oversized or unparseable roots MUST refuse dispatch without
+// falling back to vendor roots or environment-selected certificate files.
+func nativeRoots(path string) (*x509.CertPool, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, errTrust
+	}
+	defer file.Close()
+	const maximum = 2 * 1024 * 1024
+	pem, err := io.ReadAll(io.LimitReader(file, maximum+1))
+	if err != nil || len(pem) > maximum {
+		return nil, errTrust
+	}
+	roots := x509.NewCertPool()
+	if !roots.AppendCertsFromPEM(pem) {
+		return nil, errTrust
+	}
+	return roots, nil
+}
 
 var prefixes = map[string]string{
 	"api.github.com":             "/api",
@@ -33,9 +75,17 @@ var prefixes = map[string]string{
 // In particular, environment proxies, TLS bypass settings and a reused
 // connection's transparent transport retry cannot change this policy.
 func Direct() http.RoundTripper {
+	tlsConfig := &tls.Config{MinVersion: tls.VersionTLS12}
+	if path := nativeTrustPath(runtime.GOOS); path != "" {
+		roots, err := nativeRoots(path)
+		if err != nil {
+			return refusedTrust{}
+		}
+		tlsConfig.RootCAs = roots
+	}
 	return &http.Transport{
 		Proxy:                 nil,
-		TLSClientConfig:       &tls.Config{MinVersion: tls.VersionTLS12},
+		TLSClientConfig:       tlsConfig,
 		TLSNextProto:          map[string]func(string, *tls.Conn) http.RoundTripper{},
 		DisableKeepAlives:     true,
 		ForceAttemptHTTP2:     false,

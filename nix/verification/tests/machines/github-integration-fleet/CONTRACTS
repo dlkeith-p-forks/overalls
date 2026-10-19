@@ -10,3 +10,15 @@ synthetic credentials only. Logs and failure receipts MUST contain closed stage
 categories and structural observations, never URLs with OAuth state/codes,
 credentials, request bodies, browser documents or terminal bytes. Passing this
 fixture MUST NOT be described as live GitHub or seven-family runtime evidence.
+
+@cc [owner:ghuntley,label:verification;recovery] github-fleet-detach-relocation
+The GitHub journey MUST preserve browser-created machine exclusion through public
+relocation to a different host and a fresh OAuth grant. Before asserting anonymous
+forwarding, it MUST observe completed relocation, the admitted destination,
+an advanced execution epoch and the old native unit's exit. It MUST NOT mutate
+domain rows to establish those outcomes.
+
+@cc [owner:ghuntley,label:verification;recovery] github-fleet-scheduled-refresh
+Provider expiry alone MUST schedule refresh. The GitHub journey MUST observe real
+provider calls and committed credential generations without running jobs manually
+or editing SQL timestamps, phases, credentials or scheduled job arguments.

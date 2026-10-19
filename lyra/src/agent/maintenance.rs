@@ -165,6 +165,14 @@ fn transition(
 }
 
 pub(super) fn poll(host: &impl Host, lease: &LeaseRequest<'_>) -> Result<bool, AgentError> {
+    poll_observed(host, lease, &mut |_| {})
+}
+
+fn poll_observed(
+    host: &impl Host,
+    lease: &LeaseRequest<'_>,
+    failed: &mut impl FnMut(super::RpcFailure),
+) -> Result<bool, AgentError> {
     let claim: Claim = rpc("maintenance/claim", lease)?;
     let Some(job) = claim.maintenance else {
         return Ok(false);
@@ -180,7 +188,7 @@ pub(super) fn poll(host: &impl Host, lease: &LeaseRequest<'_>) -> Result<bool, A
             authority = false;
         }
         if authority && heartbeat_at.elapsed() >= Duration::from_secs(2) {
-            authority = rpc::<Value, _>("heartbeat", lease).is_ok();
+            authority = super::rpc_observed::<Value, _>("heartbeat", lease, failed).is_ok();
             heartbeat_at = Instant::now();
         }
         authority
@@ -593,11 +601,18 @@ pub fn bootstrap_invocation() -> Option<i32> {
         executor_id: &arguments[1],
         fence_epoch: epoch,
     };
-    Some(if reconcile().is_ok() && poll(&Bootstrap, &lease).is_ok() {
-        0
-    } else {
-        1
-    })
+    // Closed renewal diagnostics change only the nonzero exit category. They
+    // never retry a refused request or authorize continued installation.
+    let mut failure = None;
+    Some(
+        if reconcile().is_ok()
+            && poll_observed(&Bootstrap, &lease, &mut |value| failure = Some(value)).is_ok()
+        {
+            0
+        } else {
+            failure.map_or(1, super::RpcFailure::diagnostic_code)
+        },
+    )
 }
 
 pub(super) fn reconcile() -> io::Result<()> {
@@ -777,6 +792,78 @@ impl Drop for Setup {
     }
 }
 
+/**
+ * @cc [owner:ghuntley,label:security;recovery] retained-native-exact-workspace-trust
+ * Native setup MUST replace the historical direct workspace wildcard Git ownership
+ * exception only after validating immutable completed workspace source and its
+ * exact owned checkout. The replacement MUST survive reboot, preserve unrelated
+ * system Git settings, and remain covered by setup's configuration rollback.
+ * Pending or corrupt persisted sources MUST refuse before removing the exception.
+ * Without persisted source, setup MUST leave workspace policy unchanged so a
+ * historical daemon can complete a later source delivery before a future repair.
+ */
+#[cfg(any(
+    target_os = "freebsd",
+    target_os = "illumos",
+    target_os = "solaris",
+    test
+))]
+fn native_workspace_policy(
+    root: &Path,
+    mut paths: crate::workspace_receiver::Paths,
+    config: &Path,
+    git: &Path,
+) -> io::Result<()> {
+    use crate::workspace_receiver::Receiver;
+    // Historical workspaced cannot recreate a new /run policy on reboot. The
+    // source is immutable, so retain its validated exact policy durably instead.
+    paths.run = root.join("workspace-policy");
+    let receiver = Receiver::new(paths.clone())?.with_shared_git_configuration();
+    if receiver.persisted()?.is_none() {
+        return Ok(());
+    }
+    if !receiver.done() {
+        return Err(io::Error::other("workspace checkout incomplete"));
+    }
+    receiver.start()?;
+    if config.exists() {
+        let status = Command::new(git)
+            .args(["config", "--file"])
+            .arg(config)
+            .args(["--unset-all", "safe.directory", r"^/workspace/\*$"])
+            .env_clear()
+            .env("PATH", "/usr/local/bin:/usr/bin:/bin")
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status()?;
+        // Git uses 5 when the specified value is absent. Other errors withhold
+        // activation; the enclosing Setup journal restores the original config.
+        if !status.success() && status.code() != Some(5) {
+            return Err(io::Error::other("workspace policy replacement failed"));
+        }
+    }
+    let mut bytes = fs::read(config).or_else(|error| {
+        if error.kind() == io::ErrorKind::NotFound {
+            Ok(Vec::new())
+        } else {
+            Err(error)
+        }
+    })?;
+    let include = format!(
+        "\n[include]\n\tpath = \"{}\"\n",
+        paths.git_configuration().to_string_lossy()
+    );
+    if !bytes
+        .windows(include.len())
+        .any(|part| part == include.as_bytes())
+    {
+        bytes.extend(include.as_bytes());
+        atomic(config, &bytes, false)?;
+    }
+    Ok(())
+}
+
 fn setup(root: &Path) -> io::Result<()> {
     let source = fs::read(std::env::current_exe()?)?;
     for name in ["gh", "git-lfs"] {
@@ -791,6 +878,17 @@ fn setup(root: &Path) -> io::Result<()> {
         }
     }
     let config = Path::new(system_gitconfig());
+    #[cfg(any(target_os = "freebsd", target_os = "illumos", target_os = "solaris"))]
+    native_workspace_policy(
+        root,
+        crate::workspace_receiver::Paths::guest(),
+        config,
+        Path::new(if cfg!(target_os = "freebsd") {
+            "/usr/local/bin/git"
+        } else {
+            "/usr/bin/git"
+        }),
+    )?;
     let mut bytes = match fs::read(config) {
         Ok(bytes) => bytes,
         Err(error) if error.kind() == io::ErrorKind::NotFound => Vec::new(),
@@ -1019,6 +1117,81 @@ fn windows_acl_spec(root: &Path, descriptor_text: &str) -> io::Result<()> {
 mod tests {
     use super::*;
     use hegel::{generators as gs, TestCase};
+
+    #[test]
+    #[cfg(unix)]
+    fn retained_native_policy_is_exact_durable_and_preserves_unrelated_settings() {
+        let guest = tempfile::tempdir().unwrap();
+        let tools = tempfile::tempdir().unwrap();
+        let paths = crate::workspace_receiver::Paths::under(guest.path());
+        crate::workspace_receiver::Receiver::new(paths.clone()).unwrap();
+        let config = guest.path().join("system.gitconfig");
+        let original = b"[safe]\n\tdirectory = /workspace/*\n\tdirectory = /operator/kept\n[user]\n\tname = Preserved\n";
+        fs::write(&config, original).unwrap();
+        native_workspace_policy(
+            tools.path(),
+            paths.clone(),
+            &config,
+            Path::new("/unreachable/git"),
+        )
+        .unwrap();
+        assert_eq!(fs::read(&config).unwrap(), original);
+        assert!(!tools.path().join("workspace-policy/gitconfig").exists());
+        // A historical daemon may deliver and finish the immutable source after
+        // the first tools update. The next real setup then tightens its policy.
+        fs::write(paths.source(), br#"{"version":2,"provider":"github","namespace":["owner"],"repository":"repo","revision":{"kind":"default"}}"#).unwrap();
+        fs::write(paths.done(), b"done\n").unwrap();
+        fs::create_dir_all(paths.workspace.join("repo")).unwrap();
+        let git = std::env::split_paths(&std::env::var_os("PATH").unwrap())
+            .map(|directory| directory.join("git"))
+            .find(|candidate| candidate.is_file())
+            .unwrap();
+        let journal = Setup::begin_at(tools.path(), vec![(config.clone(), false)]).unwrap();
+        native_workspace_policy(tools.path(), paths.clone(), &config, &git).unwrap();
+        let first = fs::read(&config).unwrap();
+        native_workspace_policy(tools.path(), paths.clone(), &config, &git).unwrap();
+        assert_eq!(fs::read(&config).unwrap(), first);
+        let values = Command::new(&git)
+            .args(["config", "--file"])
+            .arg(&config)
+            .args(["--includes", "--get-all", "safe.directory"])
+            .output()
+            .unwrap();
+        assert!(values.status.success());
+        let text = String::from_utf8(values.stdout).unwrap();
+        assert_eq!(
+            text.lines().collect::<Vec<_>>(),
+            vec![
+                "/operator/kept",
+                paths.workspace.join("repo").to_str().unwrap()
+            ]
+        );
+        assert!(String::from_utf8(first)
+            .unwrap()
+            .contains("name = Preserved"));
+        fs::remove_dir_all(&paths.run).unwrap();
+        assert!(tools.path().join("workspace-policy/gitconfig").is_file());
+        std::mem::forget(journal);
+        Setup::recover_at(tools.path(), vec![(config.clone(), false)]).unwrap();
+        assert_eq!(fs::read(config).unwrap(), original);
+    }
+
+    #[test]
+    #[cfg(unix)]
+    fn retained_native_policy_refuses_pending_or_corrupt_source_before_config_changes() {
+        let guest = tempfile::tempdir().unwrap();
+        let tools = tempfile::tempdir().unwrap();
+        let paths = crate::workspace_receiver::Paths::under(guest.path());
+        crate::workspace_receiver::Receiver::new(paths.clone()).unwrap();
+        let config = guest.path().join("system.gitconfig");
+        let original = b"[safe]\n\tdirectory = /workspace/*\n";
+        fs::write(&config, original).unwrap();
+        for source in [br#"{"version":2,"provider":"github","namespace":["owner"],"repository":"repo","revision":{"kind":"default"}}"#.as_slice(), b"invalid"] {
+            fs::write(paths.source(), source).unwrap();
+            assert!(native_workspace_policy(tools.path(), paths.clone(), &config, Path::new("/unreachable/git")).is_err());
+            assert_eq!(fs::read(&config).unwrap(), original);
+        }
+    }
     use std::collections::BTreeMap;
 
     fn fixture(seed: u64, succeeds: bool) -> (Maintenance, BTreeMap<String, Vec<u8>>) {

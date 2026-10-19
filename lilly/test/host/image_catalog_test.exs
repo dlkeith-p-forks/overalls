@@ -1,5 +1,7 @@
 defmodule Lilly.Host.ImageCatalogTest do
-  use ExUnit.Case, async: true
+  # Image validation deliberately exercises the shared OTP file server heavily.
+  # Keep the full 100-case filesystem model outside other async I/O fixtures.
+  use ExUnit.Case, async: false
   import Hegel
   import Hegel.Gen
   alias Lilly.Host.{Image, ImageCatalog}
@@ -31,22 +33,27 @@ defmodule Lilly.Host.ImageCatalogTest do
         File.chmod!(base, 0o700)
         paths = for index <- 0..(count - 1), do: image(base, index)
         table = table()
-        {staged, pid} = restart(table, paths, nil)
 
-        model = %{
-          valid: Map.new(0..(count - 1), &{&1, true}),
-          advertisable: MapSet.new(0..(count - 1))
-        }
+        try do
+          {staged, pid} = restart(table, paths, nil)
 
-        {staged, pid, _model} =
-          Enum.reduce(commands, {staged, pid, model}, fn command, {staged, pid, model} ->
-            {staged, pid, model} = step(command, table, paths, staged, pid, model)
-            assert_projection(table, staged, model)
-            {staged, pid, model}
-          end)
+          model = %{
+            valid: Map.new(0..(count - 1), &{&1, true}),
+            advertisable: MapSet.new(0..(count - 1))
+          }
 
-        GenServer.stop(pid)
-        assert ImageCatalog.verified(table, staged) == []
+          {staged, _pid, _model} =
+            Enum.reduce(commands, {staged, pid, model}, fn command, {staged, pid, model} ->
+              {staged, pid, model} = step(command, table, paths, staged, pid, model)
+              assert_projection(table, staged, model)
+              {staged, pid, model}
+            end)
+
+          stop_supervised!(table)
+          assert ImageCatalog.verified(table, staged) == []
+        after
+          assert stop_supervised(table) in [:ok, {:error, :not_found}]
+        end
       end,
       test_cases: 100
     )
@@ -117,9 +124,9 @@ defmodule Lilly.Host.ImageCatalogTest do
   end
 
   defp restart(table, paths, pid) do
-    if pid, do: GenServer.stop(pid)
+    if pid, do: stop_supervised!(table)
     staged = Enum.map(paths, &(Image.stage(&1) |> elem(1)))
-    {:ok, pid} = ImageCatalog.start_link(name: table, images: staged)
+    pid = start_supervised!({ImageCatalog, name: table, images: staged}, id: table)
     _ = :sys.get_state(pid)
     {staged, pid}
   end

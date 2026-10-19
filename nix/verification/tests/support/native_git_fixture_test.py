@@ -55,9 +55,35 @@ class GitFixtureTest(unittest.TestCase):
             ("GET", fixture.PREFIX + "/info/refs?service=git-receive-pack", b""),
             ("POST", fixture.PREFIX + "/git-upload-pack", b"x" * 16_385),
             ("POST", fixture.PREFIX + "/git-upload-pack", b"not-a-git-packet"),
+            ("POST", fixture.PREFIX + "/git-upload-pack?service=git-upload-pack", b"0000"),
+            ("GET", fixture.PREFIX + "/info/refs?service=git-upload-pack&extra=1", b""),
+            (
+                "GET",
+                fixture.PREFIX + "/info/refs?service=git-upload-pack&service=git-upload-pack",
+                b"",
+            ),
         ):
             with self.subTest(path=path), self.assertRaises(ValueError):
                 self.repository.response(method, fixture.HOST, path, body)
+
+    def test_advertisements_match_service_query_separately_from_repository_path(self) -> None:
+        writable = fixture.Repository.create(self.root / "writable", self.git, allow_writes=True)
+        for host, prefix in (
+            (fixture.HOST + ":443", fixture.PREFIX),
+            ("com-github.integration.internal", "/git" + fixture.PREFIX),
+        ):
+            for service in ("git-upload-pack", "git-receive-pack"):
+                with self.subTest(host=host, service=service):
+                    result = writable.response(
+                        "GET", host, prefix + "/info/refs?service=" + service, b""
+                    )
+                    self.assertIsNotNone(result)
+                    assert result is not None
+                    self.assertEqual(
+                        result.content_type,
+                        ("application/x-" + service + "-advertisement").encode(),
+                    )
+                    self.assertIn(writable.commit.encode(), result.body)
 
     def test_real_shallow_git_clone_requires_fixture_ca_and_has_exact_tree(self) -> None:
         ca, ca_key = self.root / "ca.pem", self.root / "ca.key"
@@ -201,13 +227,18 @@ class DNSFixtureTest(unittest.TestCase):
 
     def test_exact_dns_answers_and_malformed_queries(self) -> None:
         query = self.question()
-        response = fixture.dns_response(query, "169.254.254.1")
-        self.assertIsNotNone(response)
-        if response is None:
-            self.fail("exact fixture DNS query must respond")
-        self.assertEqual(response[-4:], socket.inet_aton("169.254.254.1"))
-        self.assertEqual(struct.unpack("!6H", response[:12])[3], 1)
-        for host, kind, expected_code in ((fixture.HOST, 28, 0), ("foreign.test", 1, 3)):
+        for host in (fixture.HOST, "com-github.integration.internal", "llm.internal"):
+            response = fixture.dns_response(self.question(host), "169.254.254.1")
+            if response is None:
+                self.fail("exact fixture DNS query must respond")
+            self.assertEqual(response[-4:], socket.inet_aton("169.254.254.1"))
+            self.assertEqual(struct.unpack("!6H", response[:12])[3], 1)
+        for host, kind, expected_code in (
+            (fixture.HOST, 28, 0),
+            ("llm.internal", 28, 0),
+            ("foreign.test", 1, 3),
+            ("llm.internal.foreign.test", 1, 3),
+        ):
             response = fixture.dns_response(self.question(host, kind), "169.254.254.1")
             if response is None:
                 self.fail("valid negative fixture DNS query must respond")

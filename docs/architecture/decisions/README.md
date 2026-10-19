@@ -15,7 +15,13 @@ presentation constraints. Current browser rendering evidence remains partial.
 
 [ADR-0203](0203-guest-reflection.md) accepts a secret-free, execution-fenced reflection projection over the private service path; implementation remains partial.
 
-[ADR-0202](0202-github-com-owner-integration.md) accepts owner-bound GitHub OAuth custody and managed guest forwarding; implementation remains partial.
+[ADR-0202](0202-github-com-owner-integration.md) accepts owner-bound GitHub OAuth custody and managed guest forwarding, adding its fixed OAuth form origin to ADR-0194; implementation remains partial.
+FreeBSD image `0150b6d1` now passed all five current-VMM scenarios, signed-cache
+and independent fresh-store verification, then additive admission and default
+selection. Immutable history/staging preserves the older identity and capability
+absence. OmniOS selection remains unchanged; its historical failures and later
+exact-runtime results remain scoped in the review. Live fleet/provider and native
+checkpoint acceptance stay separate.
 
 [ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, the central 28-locale policy, feature catalogs, browser language negotiation and validated account overrides with LTR/RTL presentation. Public guides are translated; HLDD contents remain English. Implementation remains partial.
 

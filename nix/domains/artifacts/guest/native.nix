@@ -46,12 +46,18 @@ let
   # The FreeBSD builder MUST use the reviewed 14.3 source pin, preserve its
   # complete GPT/EFI/UFS disk for the CloudHv firmware boot path, and bind
   # every emitted artifact's exact byte length and SHA-256 in the v6 manifest.
+
+  # @cc [owner:ghuntley,label:build;protocol] native-candidate-git-identity
+  # Explicit version-1 attribution MUST require source-v2 and the native payload.
+  # Its declaration changes candidate identity; it MUST NOT relabel published
+  # immutable disks or establish admission without exact native qualification.
   mkFreeBSD = { imageName ? "lilly-freebsd-14_3-x86_64", minimumMemoryBytes ? 1073741824
-    , minimumDiskBytes ? 68719476736, workspaceSourceVersion ? 2
+    , minimumDiskBytes ? 68719476736, workspaceSourceVersion ? 2, gitIdentityVersion ? null
     , kernel ? nativeKernels.freebsd
     , kernelProvenance ? (if kernel ? provenance then kernel.provenance else null)
     , stagingOnly ? false }:
     assert workspaceSourceVersion == null || nativeAgents != null || lyra != null;
+    assert gitIdentityVersion == null || (builtins.isInt gitIdentityVersion && gitIdentityVersion == 1 && workspaceSourceVersion == 2 && nativePayload != null);
     let
       kernelDescriptor = if kernelProvenance == null
         then "${kernel}/share/overalls/native-kernel/provenance.json"
@@ -165,20 +171,22 @@ EOF
       root_sha256=$(sha256sum "$out/disk.raw" | cut -d' ' -f1)
       jq -n \
         --argjson memory ${toString minimumMemoryBytes} --argjson disk ${toString minimumDiskBytes} \
+        --argjson git_identity ${if gitIdentityVersion == null then "null" else toString gitIdentityVersion} \
         --argjson source ${lib.optionalString (workspaceSourceVersion == null) "null"}${lib.optionalString (workspaceSourceVersion != null) (toString workspaceSourceVersion)} \
         --slurpfile kernel ${kernelDescriptor} \
         --argjson firmware_bytes "$firmware_bytes" --arg firmware_sha256 "$firmware_sha256" \
         --argjson root_bytes "$root_bytes" --arg root_sha256 "$root_sha256" \
-        '{version:6,os:"freebsd",architecture:"x86_64",boot:{kind:"firmware",pci:true,firmware:{bytes:$firmware_bytes,sha256:$firmware_sha256}},kernel:$kernel[0],root:{format:"raw-gpt",bytes:$root_bytes,sha256:$root_sha256},guest_agents:"freebsd-v1",minimum_memory_bytes:$memory,minimum_disk_bytes:$disk,workspace_source_version:$source}' > "$out/manifest.json"
+        '{version:6,os:"freebsd",architecture:"x86_64",boot:{kind:"firmware",pci:true,firmware:{bytes:$firmware_bytes,sha256:$firmware_sha256}},kernel:$kernel[0],root:{format:"raw-gpt",bytes:$root_bytes,sha256:$root_sha256},guest_agents:"freebsd-v1",minimum_memory_bytes:$memory,minimum_disk_bytes:$disk,workspace_source_version:$source} + (if $git_identity == 1 then {git_identity_version:1} else {} end)' > "$out/manifest.json"
     '';
   # @cc [owner:ghuntley,label:build;protocol] omnios-native-image-pinned
   # The OmniOS builder MUST use the immutable r151050 cloud raw pin and emit
   # the v6 illumos firmware/raw-GPT shape; it MUST NOT reuse a Linux ext4
   # builder or infer its agent capability from installed files.
   mkOmniOS = { imageName ? "lilly-omnios-r151050-x86_64", minimumMemoryBytes ? 2147483648
-    , minimumDiskBytes ? 17179869184, workspaceSourceVersion ? null
+    , minimumDiskBytes ? 17179869184, workspaceSourceVersion ? null, gitIdentityVersion ? null
     , kernel ? nativeKernels.illumos, kernelProvenance ? kernel.provenance }:
     assert workspaceSourceVersion == null || nativeAgents != null || lyra != null;
+    assert gitIdentityVersion == null || (builtins.isInt gitIdentityVersion && gitIdentityVersion == 1 && workspaceSourceVersion == 2 && nativePayload != null);
     pkgs.runCommand imageName { nativeBuildInputs = [ pkgs.coreutils pkgs.jq pkgs.util-linux pkgs.zstd ]; preferLocalBuild = true;
       passthru = {
         os = "illumos";
@@ -236,11 +244,12 @@ EOF
       root_sha256=$(sha256sum "$out/disk.raw" | cut -d' ' -f1)
       jq -n \
         --argjson memory ${toString minimumMemoryBytes} --argjson disk ${toString minimumDiskBytes} \
+        --argjson git_identity ${if gitIdentityVersion == null then "null" else toString gitIdentityVersion} \
         --argjson source ${lib.optionalString (workspaceSourceVersion == null) "null"}${lib.optionalString (workspaceSourceVersion != null) (toString workspaceSourceVersion)} \
         --argjson kernel '${builtins.toJSON kernelProvenance}' \
         --argjson firmware_bytes "$firmware_bytes" --arg firmware_sha256 "$firmware_sha256" \
         --argjson root_bytes "$root_bytes" --arg root_sha256 "$root_sha256" \
-        '{version:6,os:"illumos",architecture:"x86_64",boot:{kind:"firmware",pci:true,firmware:{bytes:$firmware_bytes,sha256:$firmware_sha256}},kernel:$kernel,root:{format:"raw-gpt",bytes:$root_bytes,sha256:$root_sha256},guest_agents:"illumos-v1",minimum_memory_bytes:$memory,minimum_disk_bytes:$disk,workspace_source_version:$source}' > "$out/manifest.json"
+        '{version:6,os:"illumos",architecture:"x86_64",boot:{kind:"firmware",pci:true,firmware:{bytes:$firmware_bytes,sha256:$firmware_sha256}},kernel:$kernel,root:{format:"raw-gpt",bytes:$root_bytes,sha256:$root_sha256},guest_agents:"illumos-v1",minimum_memory_bytes:$memory,minimum_disk_bytes:$disk,workspace_source_version:$source} + (if $git_identity == 1 then {git_identity_version:1} else {} end)' > "$out/manifest.json"
     '';
   # @cc [owner:ghuntley,label:build;protocol] illumos-downstream-image
   # The generic illumos constructor MUST use the pinned OmniOS downstream
@@ -248,8 +257,8 @@ EOF
   # illumos.org is an upstream source project, not an image distribution, so a
   # direct URL cannot be used as a guest root without selecting a downstream.
   mkIllumos = { imageName ? "lilly-illumos-r151050-x86_64", minimumMemoryBytes ? 2147483648
-    , minimumDiskBytes ? 17179869184, workspaceSourceVersion ? null
+    , minimumDiskBytes ? 17179869184, workspaceSourceVersion ? null, gitIdentityVersion ? null
     , kernel ? nativeKernels.illumos, kernelProvenance ? kernel.provenance }:
-    mkOmniOS { inherit imageName minimumMemoryBytes minimumDiskBytes workspaceSourceVersion kernel kernelProvenance; };
+    mkOmniOS { inherit imageName minimumMemoryBytes minimumDiskBytes workspaceSourceVersion gitIdentityVersion kernel kernelProvenance; };
 in
 { inherit mkFreeBSD mkOmniOS mkIllumos mkFreeBSDSource mkOmniOSSource illumosUpstreamUrl nativeKernels; }

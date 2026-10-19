@@ -2,7 +2,7 @@
 Marshall-injected credential values exist only inside per-request authorization
 responses. They MUST NOT be persisted, logged, cached or exposed on any status
 surface. GitHub transfer action headers and signed URLs MAY remain in bounded
-ephemeral capability memory for at most sixty seconds under ADR-0198; they MUST
+ephemeral capability memory for at most sixty seconds under ADR-0202; they MUST
 NOT enter durable storage, diagnostics, status surfaces or guest responses.
 Guests can use integrations but never read their secrets.
 

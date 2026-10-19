@@ -641,6 +641,53 @@ gap without adding a physical absence, capability or recovery guarantee to
 either journey. The original `091638` result and failed release-label oracle
 retain their own scope.
 
+The [GitHub integration checkpoint](../reviews/2026-10-18-github-com-integration.md)
+records new attribution-capable native artifacts separately from the existing
+promotions. Fresh FreeBSD image `0150b6d1` passed all five exact-artifact scenarios
+with 26 named service checks and actual-byte structural verification. Fresh
+OmniOS image `679f5f8b` passed direct two-boot services with 26 checks and exact installed
+payload verification; its separate nested-NixOS matrix is pending at that
+checkpoint. The verifier's 23-test gate preserves old 22/25-check sets and requires
+all 25 current baseline checks plus attribution only for explicitly validated
+Git identity v1 images. Those checkpoint results did not publish, admit or activate
+new images.
+
+The original two-file selected registry made admission-history maintenance a
+prerequisite to changing defaults: Lilly repeats exact native admission on
+retained boot bundles during restart. The [registry](../../../protocol/lib/overalls_protocol/native_admission.ex)
+now keeps explicit per-OS immutable history and validates each selected default
+against it. [Retained staging](../../../fleet/staged-guest-images.nix) keeps exact
+old promotion packages alongside selected packages for in-flight original
+provisioning; ordinary retained restart does not load catalog artifacts.
+Nine focused protocol tests and the Nix native-OS evaluation gate initially
+passed without changing selected identities; the latter simulated a selection
+change and verified retained staging.
+Both histories use current v6/v3 codecs, so this is immutable authorization data
+rather than an older-format compatibility reader under ADR-0159.
+
+FreeBSD image `0150b6d1` subsequently passed all five unchanged scenarios against
+current VMM `f0d9275b`, followed by structural verification, signed publication
+and independent empty-store substitution/content/signature verification. The
+fresh-downloaded bytes passed the production verifier. Its
+[current-VMM promotion](../../../nix/domains/artifacts/guest/native-promotion/freebsd-14.3-db752667-f0d9275b.nix)
+is now the source-selected default and its exact manifest is appended to
+admission history. Old manifest/bundle identities, original promotion and worker
+staging remain intact without Git capability relabelling. Nine focused Protocol
+checks and the selected package/promotion/native-OS Nix targets passed, including
+production `verify_approved!`. OmniOS selection remains unchanged. Native memory
+continuation, new live deployment and a Marshall-owned journey through the new
+FreeBSD artifact remain separate obligations. The earlier OmniOS growth pass
+and four failures retain their old-VMM scope in the
+[GitHub review](../reviews/2026-10-18-github-com-integration.md).
+
+The unchanged OmniOS candidate `679f5f8b` subsequently passed services, growth,
+crash recovery and daemon recovery against current VMM `f0d9275b`. Isolation
+failed at the first boot's bounded SSH `shutdown-send` operation with
+`subprocess-timeout`, before the separate VMM wait. The runner completed
+authority and VMM cleanup but produced no second boot or complete
+isolation/service receipt. This four-pass/one-failure matrix does not qualify
+publication, admission or selection; the failure cause remains unestablished.
+
 ## Open questions
 
 - Which further signed FreeBSD and OmniOS/illumos inputs should be accepted. OmniOS is

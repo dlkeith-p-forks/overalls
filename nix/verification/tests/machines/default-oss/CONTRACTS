@@ -1,0 +1,7 @@
+@cc [owner:ghuntley,label:verification;recovery] default-oss-private-service-initialization
+After sealing private service credentials, shared fleet setup MUST observe Ziggy
+and Galileo ready before explicitly starting Audi private services and checking
+Audi readiness. An earlier dependency-failed Audi start MUST NOT leave setup
+waiting for a start job that successful dependency restarts do not recreate.
+Production service dependencies, native authority and bounded readiness checks
+MUST remain intact.

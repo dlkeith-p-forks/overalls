@@ -59,6 +59,7 @@ msgstr "கணக்கு"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "கமிட்டில் Overalls பங்களிப்புக்கான அங்கீகாரத்தைச் சேர்க்கவும்"
 msgid "Commit attribution"
 msgstr "கமிட் உரிமையாளர் குறிப்பிடல்"
 

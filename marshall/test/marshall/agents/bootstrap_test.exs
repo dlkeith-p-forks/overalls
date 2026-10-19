@@ -53,6 +53,7 @@ defmodule Marshall.Agents.BootstrapTest do
     assert command.call_id == "executor-bootstrap"
     assert command.arguments["cmd"] =~ "__github-tools-bootstrap"
     assert command.arguments["cmd"] =~ "--proxy" or command.arguments["cmd"] =~ "ProxyHandler({})"
+    assert {:ok, %{command: ^command}} = rpc(c, executor, "claim")
     [row] = Ledger.read!(ToolBootstrap, vm_id: c.vm_id)
     selector = %{"bootstrap_id" => row.attempt_id, "digest" => row.artifact_sha256}
     assert {:error, :unauthorized} = rpc(c, executor, "bootstrap_artifact", selector)

@@ -386,6 +386,21 @@ admissions. Existing authenticated leases cannot change identity or become
 anonymous. GitHub remains responsible for repository, organization,
 SAML SSO and consent policy.
 
+GitHub's OAuth App authorization documentation, reviewed on 2026-10-19,
+supports the selected `offline_access` model: eight-hour access credentials and
+refresh credentials valid for six months without use. `offline_access` need not
+appear in the returned permission scopes. Marshall requires an explicit bearer
+type and complete expiring pair; incomplete or non-expiring responses refuse.
+A successful refresh invalidates both old tokens; invalid or expired refresh
+authority requires reconnection. The
+[provider guide](repo:docs/services/github-com.md) links the dated primary
+sources. Documented capability and source conformance do not establish consent
+or rotation by the registered app; GitHub Enterprise Server is outside scope.
+The recorded five-test provider focus checks production Req construction and
+synthetic replies through `Req.Test`, including complete bearer-pair validation
+and no replay after redirects/errors. It does not exercise sockets, TLS or live
+provider effects.
+
 Connection progress is an explicit state machine: `disconnected`, `connected`,
 `draining`, `refreshing`, `reconnect_required` and `revoking`. OAuth attempts,
 refresh attempts and generation-bound request leases remain separate resources.
@@ -443,6 +458,28 @@ evidence remain separate. The [guide](repo:docs/services/github-com.md) describe
 operator inputs; the
 [review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)
 records source/tests and remaining provider/native gaps.
+
+Repeated bootstrap polls from the same current executor and fence preserve the
+unstarted attempt; replacement authority cannot complete its predecessor.
+One-shot bootstrap renewal failures use closed numeric exit categories described
+in [monitoring](#monitoring), preserving refusal without retry or added authority.
+
+OAuth form navigation permits the fixed `https://github.com` origin, including
+the same-origin start POST's redirect. Script, connection and frame sources
+remain same-origin; arbitrary external form origins remain refused.
+
+Native managed Go clients load only the reviewed OS CA bundle (FreeBSD
+`/etc/ssl/cert.pem`, illumos `/etc/ssl/cacert.pem`), bounded to two MiB.
+Missing or malformed roots refuse dispatch without vendor/environment fallback.
+Linux and Windows keep their existing platform trust behavior.
+
+Retained FreeBSD and illumos tool setup validates a completed immutable
+workspace source before replacing the historical `/workspace/*` Git ownership
+exception with a durable include for that exact checkout. It preserves unrelated
+system Git settings and restores the original configuration on setup rollback.
+Pending or corrupt sources refuse migration; an absent source leaves the existing
+ownership policy unchanged. Tightening after a later checkout requires another
+real setup pass; tool installation alone does not establish that migration.
 
 Named integrations forward to reviewed HTTP targets or peer VMs. Marshall owns
 attachments, team access, encrypted injected credentials, and renewable admission.
