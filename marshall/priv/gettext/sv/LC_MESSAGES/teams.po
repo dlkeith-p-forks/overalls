@@ -14,44 +14,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/teams_live.ex:203
+#: lib/marshall_web/live/teams_live.ex:212
 #, elixir-autogen, elixir-format
 msgid "%{count} member"
 msgid_plural "%{count} members"
 msgstr[0] "%{count} medlem"
 msgstr[1] "%{count} medlemmar"
 
-#: lib/marshall_web/live/teams_live.ex:270
+#: lib/marshall_web/live/teams_live.ex:283
 #, elixir-autogen, elixir-format
 msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
 msgstr "Ett team har en ägare. Ägarskap flyttas bara när personen som får erbjudandet accepterar; den tidigare ägaren blir administratör."
 
-#: lib/marshall_web/live/teams_live.ex:327
+#: lib/marshall_web/live/teams_live.ex:341
 #, elixir-autogen, elixir-format
 msgid "Accept ownership"
 msgstr "Acceptera ägarskap"
 
-#: lib/marshall_web/live/teams_live.ex:245
+#: lib/marshall_web/live/teams_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Add, change or remove a member"
 msgstr "Lägg till, ändra eller ta bort en medlem"
 
-#: lib/marshall_web/live/teams_live.ex:257
+#: lib/marshall_web/live/teams_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "Admin"
 msgstr "Administratör"
 
-#: lib/marshall_web/live/teams_live.ex:372
+#: lib/marshall_web/live/teams_live.ex:392
 #, elixir-autogen, elixir-format
 msgid "Administrator"
 msgstr "Administratör"
 
-#: lib/marshall_web/live/teams_live.ex:218
+#: lib/marshall_web/live/teams_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Can"
 msgstr "Kan"
 
-#: lib/marshall_web/live/teams_live.ex:347
+#: lib/marshall_web/live/teams_live.ex:361
 #, elixir-autogen, elixir-format
 msgid "Cancel offer"
 msgstr "Avbryt erbjudande"
@@ -71,50 +71,50 @@ msgstr "Ägarskap kunde inte erbjudas."
 msgid "Could not update this membership."
 msgstr "Medlemskapet kunde inte uppdateras."
 
-#: lib/marshall_web/live/teams_live.ex:110
+#: lib/marshall_web/live/teams_live.ex:113
 #, elixir-autogen, elixir-format
 msgid "Could not update this ownership offer."
 msgstr "Ägarskapserbjudandet kunde inte uppdateras."
 
-#: lib/marshall_web/live/teams_live.ex:358
+#: lib/marshall_web/live/teams_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "Create a team"
 msgstr "Skapa ett team"
 
-#: lib/marshall_web/live/teams_live.ex:362
+#: lib/marshall_web/live/teams_live.ex:382
 #, elixir-autogen, elixir-format
 msgid "Create team"
 msgstr "Skapa team"
 
-#: lib/marshall_web/live/teams_live.ex:337
+#: lib/marshall_web/live/teams_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "Decline"
 msgstr "Avböj"
 
-#: lib/marshall_web/live/teams_live.ex:377
+#: lib/marshall_web/live/teams_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "Everything, including appointing admins and offering ownership."
 msgstr "Allt, inklusive att utse administratörer och erbjuda ägarskap."
 
 #: lib/marshall_web/live/teams_live.ex:44
-#: lib/marshall_web/live/teams_live.ex:115
+#: lib/marshall_web/live/teams_live.ex:118
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Ogiltig begäran."
 
-#: lib/marshall_web/live/teams_live.ex:379
+#: lib/marshall_web/live/teams_live.ex:399
 #, elixir-autogen, elixir-format
 msgid "Manage members and team machines."
 msgstr "Hantera medlemmar och teamets maskiner."
 
-#: lib/marshall_web/live/teams_live.ex:216
-#: lib/marshall_web/live/teams_live.ex:258
-#: lib/marshall_web/live/teams_live.ex:373
+#: lib/marshall_web/live/teams_live.ex:226
+#: lib/marshall_web/live/teams_live.ex:268
+#: lib/marshall_web/live/teams_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "Member"
 msgstr "Medlem"
 
-#: lib/marshall_web/live/teams_live.ex:211
+#: lib/marshall_web/live/teams_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Members"
 msgstr "Medlemmar"
@@ -124,37 +124,37 @@ msgstr "Medlemmar"
 msgid "Membership updated."
 msgstr "Medlemskapet har uppdaterats."
 
-#: lib/marshall_web/live/teams_live.ex:352
+#: lib/marshall_web/live/teams_live.ex:366
 #, elixir-autogen, elixir-format
 msgid "No pending ownership offer."
 msgstr "Inget väntande ägarskapserbjudande."
 
-#: lib/marshall_web/live/teams_live.ex:286
+#: lib/marshall_web/live/teams_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "Offer ownership"
 msgstr "Erbjud ägarskap"
 
-#: lib/marshall_web/live/teams_live.ex:283
+#: lib/marshall_web/live/teams_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "Offer ownership to"
 msgstr "Erbjud ägarskap till"
 
-#: lib/marshall_web/live/teams_live.ex:290
+#: lib/marshall_web/live/teams_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Offered by"
 msgstr "Erbjudet av"
 
-#: lib/marshall_web/live/teams_live.ex:299
+#: lib/marshall_web/live/teams_live.ex:313
 #, elixir-autogen, elixir-format
 msgid "Offered to"
 msgstr "Erbjudet till"
 
-#: lib/marshall_web/live/teams_live.ex:371
+#: lib/marshall_web/live/teams_live.ex:391
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "Ägare"
 
-#: lib/marshall_web/live/teams_live.ex:268
+#: lib/marshall_web/live/teams_live.ex:281
 #, elixir-autogen, elixir-format
 msgid "Ownership"
 msgstr "Ägarskap"
@@ -164,43 +164,43 @@ msgstr "Ägarskap"
 msgid "Ownership offer sent."
 msgstr "Ägarskapserbjudandet har skickats."
 
-#: lib/marshall_web/live/teams_live.ex:107
+#: lib/marshall_web/live/teams_live.ex:109
 #, elixir-autogen, elixir-format
 msgid "Ownership offer updated."
 msgstr "Ägarskapserbjudandet har uppdaterats."
 
-#: lib/marshall_web/live/teams_live.ex:313
+#: lib/marshall_web/live/teams_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Ownership offered by %{value1} to %{value2}."
 msgstr "Ägarskap erbjudet av %{value1} till %{value2}."
 
-#: lib/marshall_web/live/teams_live.ex:249
+#: lib/marshall_web/live/teams_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Registered email"
 msgstr "Registrerad e-postadress"
 
-#: lib/marshall_web/live/teams_live.ex:259
+#: lib/marshall_web/live/teams_live.ex:269
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "Ta bort"
 
-#: lib/marshall_web/live/teams_live.ex:217
-#: lib/marshall_web/live/teams_live.ex:254
+#: lib/marshall_web/live/teams_live.ex:227
+#: lib/marshall_web/live/teams_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Roll"
 
-#: lib/marshall_web/live/teams_live.ex:264
+#: lib/marshall_web/live/teams_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Save member"
 msgstr "Spara medlem"
 
-#: lib/marshall_web/live/teams_live.ex:180
+#: lib/marshall_web/live/teams_live.ex:183
 #, elixir-autogen, elixir-format
 msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
 msgstr "Dela maskiner och integrationer med dem du arbetar med. Ägare utser administratörer, administratörer hanterar medlemmar."
 
-#: lib/marshall_web/live/teams_live.ex:308
+#: lib/marshall_web/live/teams_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Status"
@@ -210,58 +210,58 @@ msgstr "Status"
 msgid "Team %{value1} created."
 msgstr "Team %{value1} har skapats."
 
-#: lib/marshall_web/live/teams_live.ex:360
+#: lib/marshall_web/live/teams_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Team name"
 msgstr "Teamnamn"
 
-#: lib/marshall_web/live/teams_live.ex:178
+#: lib/marshall_web/live/teams_live.ex:181
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "Team"
 
-#: lib/marshall_web/live/teams_live.ex:126
+#: lib/marshall_web/live/teams_live.ex:129
 #, elixir-autogen, elixir-format
 msgid "Teams are temporarily unavailable."
 msgstr "Teamen är tillfälligt otillgängliga."
 
-#: lib/marshall_web/live/teams_live.ex:380
+#: lib/marshall_web/live/teams_live.ex:400
 #, elixir-autogen, elixir-format
 msgid "Use team machines and integrations."
 msgstr "Använd teamets maskiner och integrationer."
 
-#: lib/marshall_web/live/teams_live.ex:186
+#: lib/marshall_web/live/teams_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
 msgstr "Du är inte med i ett team ännu. Skapa ett nedan eller be en teamadministratör att lägga till dig."
 
-#: lib/marshall_web/live/teams_live.ex:359
+#: lib/marshall_web/live/teams_live.ex:374
 #, elixir-autogen, elixir-format
 msgid "You become its owner and can add members straight away."
 msgstr "Du blir ägare och kan lägga till medlemmar direkt."
 
-#: lib/marshall_web/live/teams_live.ex:203
+#: lib/marshall_web/live/teams_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Your role: %{role}"
 msgstr "Din roll: %{role}"
 
-#: lib/marshall_web/live/teams_live.ex:189
+#: lib/marshall_web/live/teams_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "Your teams"
 msgstr "Dina team"
 
-#: lib/marshall_web/live/teams_live.ex:309
+#: lib/marshall_web/live/teams_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "pending"
 msgstr "väntar"
 
-#: lib/marshall_web/live/teams_live.ex:360
+#: lib/marshall_web/live/teams_live.ex:379
 #, elixir-autogen, elixir-format
 msgid "platform"
 msgstr "plattform"
 
-#: lib/marshall_web/live/teams_live.ex:250
-#: lib/marshall_web/live/teams_live.ex:284
+#: lib/marshall_web/live/teams_live.ex:260
+#: lib/marshall_web/live/teams_live.ex:298
 #, elixir-autogen, elixir-format
 msgid "teammate@example.test"
 msgstr "teammate@example.test"

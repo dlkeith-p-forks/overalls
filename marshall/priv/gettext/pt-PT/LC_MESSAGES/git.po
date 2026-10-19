@@ -85,7 +85,7 @@ msgstr "Repositórios"
 msgid "Repository path"
 msgstr "Caminho do repositório"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "Repositório indisponível."

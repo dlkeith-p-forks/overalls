@@ -7,10 +7,7 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:64
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"\n"
-"Keep this SSH connection open while approving the key.\n"
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr ""
 "\n"
 "\n"
@@ -18,19 +15,14 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:81
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open an interactive Porsche connection without a remote command:"
+msgid "\nOpen an interactive Porsche connection without a remote command:"
 msgstr ""
 "\n"
 "원격 명령 없이 대화형 Porsche 연결을 여세요:"
 
 #: lib/porsche/ssh/onboarding.ex:59
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open this link, sign in, and approve the matching fingerprint:\n"
-"  "
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
 msgstr ""
 "\n"
 "이 링크를 열고 로그인한 다음 일치하는 지문을 승인하세요:\n"
@@ -48,9 +40,7 @@ msgstr "승인 후 여기에서 명령을 다시 시도하세요.\n"
 
 #: lib/porsche/ssh/onboarding.ex:65
 #, elixir-autogen, elixir-format
-msgid ""
-"Approval links expire after %{minutes} minutes or when this connection "
-"closes.\n"
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
 msgstr "승인 링크는 %{minutes}분 후 또는 이 연결을 닫으면 만료됩니다.\n"
 
 #: lib/porsche/ssh/onboarding.ex:138
@@ -65,18 +55,14 @@ msgstr "브라우저에서 키를 승인하는 동안 해당 연결을 열어 �
 
 #: lib/porsche/ssh/onboarding.ex:129
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your SSH key in Overalls Account settings > SSH keys.\n"
-"\n"
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
 msgstr ""
 "Overalls 계정 설정 > SSH 키에서 키를 등록하거나 확인하세요.\n"
 "\n"
 
 #: lib/porsche/ssh/onboarding.ex:124
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your key by connecting to:\n"
-"  ssh "
+msgid "Register or check your key by connecting to:\n  ssh "
 msgstr ""
 "다음으로 연결하여 키를 등록하거나 확인하세요:\n"
 "  ssh "

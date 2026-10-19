@@ -14,120 +14,120 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:267
+#: lib/marshall_web/live/admin/jobs_live.ex:285
 #, elixir-autogen, elixir-format
 msgid "24 hours"
 msgstr "২৪ ঘণ্টা"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:269
+#: lib/marshall_web/live/admin/jobs_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "30 days"
 msgstr "৩০ দিন"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:268
+#: lib/marshall_web/live/admin/jobs_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "7 days"
 msgstr "৭ দিন"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:430
+#: lib/marshall_web/live/admin/jobs_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr "স্বীকৃত"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:266
+#: lib/marshall_web/live/admin/jobs_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "All retained"
 msgstr "সব সংরক্ষিত"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:247
+#: lib/marshall_web/live/admin/jobs_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "All states"
 msgstr "সব অবস্থা"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:252
+#: lib/marshall_web/live/admin/jobs_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "Any queue"
 msgstr "যেকোনো সারি"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:294
+#: lib/marshall_web/live/admin/jobs_live.ex:315
 #, elixir-autogen, elixir-format
 msgid "Archived"
 msgstr "সংরক্ষণাগারে রাখা হয়েছে"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:334
+#: lib/marshall_web/live/admin/jobs_live.ex:359
 #, elixir-autogen, elixir-format
 msgid "Archived history · retry unavailable"
 msgstr "সংরক্ষিত ইতিহাস · আবার চেষ্টা করা যাবে না"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:381
+#: lib/marshall_web/live/admin/jobs_live.ex:424
 #, elixir-autogen, elixir-format
 msgid "Attempt"
 msgstr "চেষ্টা"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:284
-#: lib/marshall_web/live/admin/jobs_live.ex:341
+#: lib/marshall_web/live/admin/jobs_live.ex:305
+#: lib/marshall_web/live/admin/jobs_live.ex:369
 #, elixir-autogen, elixir-format
 msgid "Attempts"
 msgstr "চেষ্টাসমূহ"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:204
+#: lib/marshall_web/live/admin/jobs_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Background work run by Oban. A successful job may have dispatched work whose physical outcome is still pending; follow the related operation for completion."
 msgstr "Oban দ্বারা চালিত পটভূমির কাজ। সফল কাজ এমন কার্যক্রম শুরু করে থাকতে পারে যার বাস্তব ফল এখনো অপেক্ষমাণ; সমাপ্তির জন্য সংশ্লিষ্ট কার্যক্রম অনুসরণ করুন।"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
-#: lib/marshall_web/live/admin/jobs_live.ex:432
+#: lib/marshall_web/live/admin/jobs_live.ex:475
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "বাতিল হয়েছে"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:379
+#: lib/marshall_web/live/admin/jobs_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Captured"
 msgstr "ধারণ করা হয়েছে"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:367
-#: lib/marshall_web/live/admin/jobs_live.ex:431
+#: lib/marshall_web/live/admin/jobs_live.ex:406
+#: lib/marshall_web/live/admin/jobs_live.ex:474
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "সম্পন্ন"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:235
+#: lib/marshall_web/live/admin/jobs_live.ex:252
 #, elixir-autogen, elixir-format
 msgid "Counts cover current and recently retained raw jobs. The list includes redacted history for up to 30 days; older history pruned before deployment is unavailable."
 msgstr "সংখ্যাগুলো বর্তমান ও সম্প্রতি সংরক্ষিত মূল কাজ অন্তর্ভুক্ত করে। তালিকায় সর্বোচ্চ ৩০ দিনের সংবেদনশীল তথ্য আড়াল করা ইতিহাস আছে; স্থাপনের আগে বাদ দেওয়া পুরোনো ইতিহাস পাওয়া যাবে না।"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:342
+#: lib/marshall_web/live/admin/jobs_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "Created"
 msgstr "তৈরি হয়েছে"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:434
+#: lib/marshall_web/live/admin/jobs_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "খালি করা হয়েছে"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:433
+#: lib/marshall_web/live/admin/jobs_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "খালি করা হচ্ছে"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:286
+#: lib/marshall_web/live/admin/jobs_live.ex:307
 #, elixir-autogen, elixir-format
 msgid "Duration"
 msgstr "সময়কাল"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:425
+#: lib/marshall_web/live/admin/jobs_live.ex:468
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "খালি করার অভিযান"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:258
+#: lib/marshall_web/live/admin/jobs_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Exact worker name"
 msgstr "সঠিক কর্মীর নাম"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:374
+#: lib/marshall_web/live/admin/jobs_live.ex:417
 #, elixir-autogen, elixir-format
 msgid "Execution history"
 msgstr "সম্পাদনের ইতিহাস"
@@ -137,114 +137,114 @@ msgstr "সম্পাদনের ইতিহাস"
 msgid "Failed"
 msgstr "ব্যর্থ"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:240
+#: lib/marshall_web/live/admin/jobs_live.ex:258
 #, elixir-autogen, elixir-format
 msgid "Filter"
 msgstr "ছাঁকুন"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:274
+#: lib/marshall_web/live/admin/jobs_live.ex:292
 #, elixir-autogen, elixir-format
 msgid "Filter jobs"
 msgstr "কাজ ছাঁকুন"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:109
+#: lib/marshall_web/live/admin/jobs_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "অবৈধ অনুরোধ।"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:281
+#: lib/marshall_web/live/admin/jobs_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Job"
 msgstr "কাজ"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:322
+#: lib/marshall_web/live/admin/jobs_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Job #%{id}"
 msgstr "কাজ #%{id}"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:202
+#: lib/marshall_web/live/admin/jobs_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Job details"
 msgstr "কাজের বিবরণ"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:309
+#: lib/marshall_web/live/admin/jobs_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Job pages"
 msgstr "কাজের পৃষ্ঠা"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:202
+#: lib/marshall_web/live/admin/jobs_live.ex:216
 #, elixir-autogen, elixir-format
 msgid "Jobs"
 msgstr "কাজসমূহ"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:145
+#: lib/marshall_web/live/admin/jobs_live.ex:153
 #, elixir-autogen, elixir-format
 msgid "Jobs are unavailable or the filters are invalid."
 msgstr "কাজ পাওয়া যাচ্ছে না অথবা ছাঁকনি ভুল।"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:348
+#: lib/marshall_web/live/admin/jobs_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Last attempt started"
 msgstr "শেষ চেষ্টা শুরু"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:351
+#: lib/marshall_web/live/admin/jobs_live.ex:381
 #, elixir-autogen, elixir-format
 msgid "Last execution duration"
 msgstr "শেষ সম্পাদনের সময়কাল"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:264
+#: lib/marshall_web/live/admin/jobs_live.ex:282
 #, elixir-autogen, elixir-format
 msgid "Last updated"
 msgstr "শেষ হালনাগাদ"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:307
+#: lib/marshall_web/live/admin/jobs_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "No jobs match these filters."
 msgstr "এই ছাঁকনিতে কোনো কাজ মেলেনি।"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:317
+#: lib/marshall_web/live/admin/jobs_live.ex:339
 #, elixir-autogen, elixir-format
 msgid "Older jobs →"
 msgstr "পুরোনো কাজ →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:412
+#: lib/marshall_web/live/admin/jobs_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Older transitions →"
 msgstr "পুরোনো অবস্থা পরিবর্তন →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:371
+#: lib/marshall_web/live/admin/jobs_live.ex:411
 #, elixir-autogen, elixir-format
 msgid "Open machine →"
 msgstr "মেশিন খুলুন →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:423
+#: lib/marshall_web/live/admin/jobs_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "Operation"
 msgstr "কার্যক্রম"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:363
+#: lib/marshall_web/live/admin/jobs_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "Operation state"
 msgstr "কার্যক্রমের অবস্থা"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:367
-#: lib/marshall_web/live/admin/jobs_live.ex:429
+#: lib/marshall_web/live/admin/jobs_live.ex:407
+#: lib/marshall_web/live/admin/jobs_live.ex:472
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "অপেক্ষমাণ"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:251
-#: lib/marshall_web/live/admin/jobs_live.ex:339
+#: lib/marshall_web/live/admin/jobs_live.ex:269
+#: lib/marshall_web/live/admin/jobs_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "Queue"
 msgstr "সারি"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:283
+#: lib/marshall_web/live/admin/jobs_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Queue / worker"
 msgstr "সারি / কর্মী"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:330
+#: lib/marshall_web/live/admin/jobs_live.ex:352
 #, elixir-autogen, elixir-format
 msgid "Queue another attempt? The operation will recheck its current state."
 msgstr "আরেকটি চেষ্টা সারিতে রাখবেন? কার্যক্রমটি বর্তমান অবস্থা আবার পরীক্ষা করবে।"
@@ -254,37 +254,37 @@ msgstr "আরেকটি চেষ্টা সারিতে রাখবে
 msgid "Queued"
 msgstr "সারিতে আছে"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:352
+#: lib/marshall_web/live/admin/jobs_live.ex:384
 #, elixir-autogen, elixir-format
 msgid "Recorded failures"
 msgstr "নথিভুক্ত ব্যর্থতা"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:358
+#: lib/marshall_web/live/admin/jobs_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "Related record"
 msgstr "সংশ্লিষ্ট নথি"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:424
+#: lib/marshall_web/live/admin/jobs_live.ex:467
 #, elixir-autogen, elixir-format
 msgid "Relocation"
 msgstr "স্থানান্তর"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:366
+#: lib/marshall_web/live/admin/jobs_live.ex:403
 #, elixir-autogen, elixir-format
 msgid "Relocation complete"
 msgstr "স্থানান্তর সম্পন্ন"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:435
+#: lib/marshall_web/live/admin/jobs_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "পুনরায় চালু হয়েছে"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:436
+#: lib/marshall_web/live/admin/jobs_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "অবসর দেওয়া হয়েছে"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:333
+#: lib/marshall_web/live/admin/jobs_live.ex:358
 #, elixir-autogen, elixir-format
 msgid "Retry job"
 msgstr "কাজ আবার চেষ্টা করুন"
@@ -309,14 +309,14 @@ msgstr "চলছে"
 msgid "Scheduled"
 msgstr "নির্ধারিত"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:345
+#: lib/marshall_web/live/admin/jobs_live.ex:375
 #, elixir-autogen, elixir-format
 msgid "Scheduled / next retry"
 msgstr "নির্ধারিত / পরের চেষ্টা"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:245
-#: lib/marshall_web/live/admin/jobs_live.ex:282
-#: lib/marshall_web/live/admin/jobs_live.ex:380
+#: lib/marshall_web/live/admin/jobs_live.ex:263
+#: lib/marshall_web/live/admin/jobs_live.ex:303
+#: lib/marshall_web/live/admin/jobs_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "অবস্থা"
@@ -331,55 +331,55 @@ msgstr "সফল"
 msgid "Suspended"
 msgstr "স্থগিত"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:102
+#: lib/marshall_web/live/admin/jobs_live.ex:105
 #, elixir-autogen, elixir-format
 msgid "This job could not be retried. Its state or your access may have changed."
 msgstr "কাজ আবার চেষ্টা করা যায়নি। এর অবস্থা বা আপনার প্রবেশাধিকার বদলে থাকতে পারে।"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:168
+#: lib/marshall_web/live/admin/jobs_live.ex:179
 #, elixir-autogen, elixir-format
 msgid "This job is unavailable or its history has expired."
 msgstr "কাজ পাওয়া যাচ্ছে না বা ইতিহাসের মেয়াদ শেষ।"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:177
-#: lib/marshall_web/live/admin/jobs_live.ex:426
-#: lib/marshall_web/live/admin/jobs_live.ex:437
+#: lib/marshall_web/live/admin/jobs_live.ex:189
+#: lib/marshall_web/live/admin/jobs_live.ex:469
+#: lib/marshall_web/live/admin/jobs_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "অজানা"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:210
+#: lib/marshall_web/live/admin/jobs_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "হালনাগাদ হয়েছে"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:285
+#: lib/marshall_web/live/admin/jobs_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "Waiting"
 msgstr "অপেক্ষমাণ"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:257
-#: lib/marshall_web/live/admin/jobs_live.ex:340
+#: lib/marshall_web/live/admin/jobs_live.ex:275
+#: lib/marshall_web/live/admin/jobs_live.ex:366
 #, elixir-autogen, elixir-format
 msgid "Worker"
 msgstr "কর্মী"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:399
+#: lib/marshall_web/live/admin/jobs_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "চেষ্টা %{attempt} · %{count}টি নথিভুক্ত ব্যর্থতা"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:212
+#: lib/marshall_web/live/admin/jobs_live.ex:229
 #, elixir-autogen, elixir-format
 msgid "· every 5 seconds"
 msgstr "· প্রতি ৫ সেকেন্ডে"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:310
+#: lib/marshall_web/live/admin/jobs_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← প্রথম পৃষ্ঠা"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:320
+#: lib/marshall_web/live/admin/jobs_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "← Jobs"
 msgstr "← কাজসমূহ"

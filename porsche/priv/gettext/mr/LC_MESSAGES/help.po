@@ -27,9 +27,7 @@ msgstr "तुमचा प्रलंबित मालकी प्रस्
 
 #: lib/porsche/ssh/command_messages.ex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"Change a machine's CPU and memory; disk may only grow. A running machine "
-"stops and restarts."
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
 msgstr ""
 "मशीनचे CPU आणि मेमरी बदला; डिस्क फक्त वाढवता येते. चालू मशीन थांबेल आणि "
 "पुन्हा सुरू होईल."
@@ -41,9 +39,7 @@ msgstr "हा परस्परसंवादी चॅनल बंद क�
 
 #: lib/porsche/ssh/command_messages.ex:10
 #, elixir-autogen, elixir-format
-msgid ""
-"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
-"GitLab, Codeberg or Bitbucket repository in the guest."
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
 msgstr ""
 "मशीन तयार करा. डिस्कची कमाल क्षमता: 500 GiB. --source गेस्टमध्ये सार्वजनिक "
 "GitHub, GitLab, Codeberg किंवा Bitbucket रिपॉझिटरी क्लोन करते."
@@ -55,8 +51,7 @@ msgstr "तुमच्या मालकीचा संघ तयार क�
 
 #: lib/porsche/ssh/command_messages.ex:44
 #, elixir-autogen, elixir-format
-msgid ""
-"Create or replace a named integration at https://NAME.integration.internal."
+msgid "Create or replace a named integration at https://NAME.integration.internal."
 msgstr ""
 "https://NAME.integration.internal येथे नाव असलेले एकत्रीकरण तयार करा किंवा "
 "बदला."
@@ -143,6 +138,7 @@ msgstr "प्रशासकाला संघाच्या मालकी�
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:34
+#, elixir-autogen, elixir-format
 msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 msgstr "मशीन तुमच्या सूचींच्या सर्वात वर पिन करा. मालक म्हणून तुम्ही पिन केल्यावर ते जागे होते आणि त्याचे स्वयंचलित निलंबन व हटवणे टाळले जाते."
 
@@ -173,23 +169,28 @@ msgstr "मशीनवरील तुमचे पिन काढा."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:69
+#, elixir-autogen, elixir-format
 msgid "Resume a suspended machine's preserved memory."
 msgstr "निलंबित मशीनचे काम त्याच्या जतन केलेल्या मेमरीतून पुन्हा सुरू करा."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:65
+#, elixir-autogen, elixir-format
 msgid "Resume preserved memory, waiting for capacity or relocation."
 msgstr "क्षमता किंवा स्थलांतराची वाट पाहत जतन केलेल्या मेमरीतून पुन्हा सुरू करा."
 
 #: lib/porsche/ssh/command_messages.ex:20
+#, elixir-autogen, elixir-format
 msgid "Retry a failed clone or relocation request."
 msgstr "अयशस्वी क्लोन किंवा स्थलांतर विनंतीचा पुन्हा प्रयत्न करा."
 
 #: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
 msgid "Revoke an account's shared access."
 msgstr "खात्याचा सामायिक प्रवेश रद्द करा."
 
 #: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
 msgid "Revoke one of your SSH keys."
 msgstr "तुमची एक SSH की रद्द करा."
 
@@ -199,19 +200,123 @@ msgid "Show command help."
 msgstr "कमांडची मदत दाखवा."
 
 #: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
 msgid "Show the authenticated account."
 msgstr "प्रमाणित खाते दाखवा."
 
 #: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
 msgid "Start a machine."
 msgstr "मशीन सुरू करा."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:26
+#, elixir-autogen, elixir-format
 msgid "Stop a machine, retaining its disk and discarding suspended memory."
 msgstr "डिस्क जतन करून आणि निलंबित अवस्थेतील मेमरी काढून मशीन थांबवा."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:64
+#, elixir-autogen, elixir-format
 msgid "Suspend a machine, preserving its memory and disk."
 msgstr "मेमरी आणि डिस्क जतन करून मशीन निलंबित करा."
+
+#: lib/porsche/ssh/command_messages.ex:74
+#, elixir-autogen, elixir-format
+msgid "Answer a thread's pending question with JSON read from standard input."
+msgstr "मानक इनपुटमधून वाचलेल्या JSON ने थ्रेडच्या प्रलंबित प्रश्नाचे उत्तर द्या."
+
+#: lib/porsche/ssh/command_messages.ex:78
+#, elixir-autogen, elixir-format
+msgid "Approve a thread's latest plan and start implementing it."
+msgstr "थ्रेडची नवीनतम योजना मंजूर करा आणि तिची अंमलबजावणी सुरू करा."
+
+#: lib/porsche/ssh/command_messages.ex:79
+#, elixir-autogen, elixir-format
+msgid "Ask for a revised plan, reading the feedback from standard input."
+msgstr "सुधारित योजना मागा, अभिप्राय मानक इनपुटमधून वाचून."
+
+#: lib/porsche/ssh/command_messages.ex:98
+#, elixir-autogen, elixir-format
+msgid "Attach this SSH terminal to a shared terminal session; needs ssh -t."
+msgstr "हा SSH टर्मिनल सामायिक टर्मिनल सत्राशी जोडतो; ssh -t आवश्यक आहे."
+
+#: lib/porsche/ssh/command_messages.ex:86
+#, elixir-autogen, elixir-format
+msgid "Change a machine's web port or visibility, optionally at an expected revision."
+msgstr "मशीनचा वेब पोर्ट किंवा दृश्यमानता बदला, पर्यायाने अपेक्षित आवृत्तीवर."
+
+#: lib/porsche/ssh/command_messages.ex:84
+#, elixir-autogen, elixir-format
+msgid "Close one of your terminal sessions on a machine."
+msgstr "मशीनवरील तुमच्या टर्मिनल सत्रांपैकी एक बंद करा."
+
+#: lib/porsche/ssh/command_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Inspect a thread, its pending question and latest plan."
+msgstr "थ्रेड, त्याचा प्रलंबित प्रश्न आणि नवीनतम योजना तपासा."
+
+#: lib/porsche/ssh/command_messages.ex:82
+#, elixir-autogen, elixir-format
+msgid "List a machine's terminal sessions you can open."
+msgstr "तुम्ही उघडू शकता अशा मशीनच्या टर्मिनल सत्रांची यादी दाखवा."
+
+#: lib/porsche/ssh/command_messages.ex:72
+#, elixir-autogen, elixir-format
+msgid "List a thread's transcript events after a sequence number."
+msgstr "अनुक्रम क्रमांकानंतरच्या थ्रेडच्या ट्रान्सक्रिप्ट घटनांची यादी दाखवा."
+
+#: lib/porsche/ssh/command_messages.ex:70
+#, elixir-autogen, elixir-format
+msgid "List agent threads you can read, with unread counts."
+msgstr "तुम्ही वाचू शकता असे एजंट थ्रेड न वाचलेल्या संख्येसह दाखवा."
+
+#: lib/porsche/ssh/command_messages.ex:95
+#, elixir-autogen, elixir-format
+msgid "List your push notification devices."
+msgstr "तुमची पुश सूचना डिव्हाइसेस सूचीबद्ध करा."
+
+#: lib/porsche/ssh/command_messages.ex:81
+#, elixir-autogen, elixir-format
+msgid "Mark a thread read up to a transcript sequence number."
+msgstr "ट्रान्सक्रिप्ट अनुक्रम क्रमांकापर्यंत थ्रेड वाचलेला म्हणून चिन्हांकित करा."
+
+#: lib/porsche/ssh/command_messages.ex:83
+#, elixir-autogen, elixir-format
+msgid "Open your personal terminal session on a machine."
+msgstr "मशीनवर तुमचे वैयक्तिक टर्मिनल सत्र उघडा."
+
+#: lib/porsche/ssh/command_messages.ex:91
+#, elixir-autogen, elixir-format
+msgid "Register this device for push notifications. The push key is read from stdin."
+msgstr "पुश सूचनांसाठी हे डिव्हाइस नोंदणी करा. पुश की stdin मधून वाचली जाते."
+
+#: lib/porsche/ssh/command_messages.ex:96
+#, elixir-autogen, elixir-format
+msgid "Revoke a push notification device."
+msgstr "एक पुश सूचना डिव्हाइस रद्द करा."
+
+#: lib/porsche/ssh/command_messages.ex:73
+#, elixir-autogen, elixir-format
+msgid "Send a prompt read from standard input to a thread."
+msgstr "मानक इनपुटमधून वाचलेला प्रॉम्प्ट थ्रेडला पाठवा."
+
+#: lib/porsche/ssh/command_messages.ex:85
+#, elixir-autogen, elixir-format
+msgid "Show a machine's web endpoint, port and visibility."
+msgstr "मशीनचा वेब एंडपॉइंट, पोर्ट आणि दृश्यमानता दाखवा."
+
+#: lib/porsche/ssh/command_messages.ex:90
+#, elixir-autogen, elixir-format
+msgid "Stream JSON change notices for machines, threads and this session."
+msgstr "मशीन, थ्रेड आणि या सत्रासाठी JSON बदल सूचना प्रवाहित करा."
+
+#: lib/porsche/ssh/command_messages.ex:80
+#, elixir-autogen, elixir-format
+msgid "Switch a thread between plan and work collaboration."
+msgstr "थ्रेड plan आणि work सहयोगादरम्यान बदला."
+
+#: lib/porsche/ssh/command_messages.ex:97
+#, elixir-autogen, elixir-format
+msgid "Turn push notifications on or off for one device."
+msgstr "एका डिव्हाइससाठी पुश सूचना चालू किंवा बंद करा."

@@ -74,6 +74,68 @@ defmodule OverallsProtocol.ImageManifestTest do
     }
   end
 
+  test "Android guest profile is explicit, identity-bound and preserved by serialization" do
+    base = manifest()
+    android = Map.put(base, "guest_agents", "linux-android-v1")
+    assert {:ok, original} = ImageManifest.validate(base)
+    assert {:ok, image} = ImageManifest.validate(android)
+    assert image.guest_agents == :linux_android_v1
+    refute image.id == original.id
+    assert ImageManifest.encode(image) == android
+    assert {:ok, ^image} = android |> JSON.encode!() |> JSON.decode!() |> ImageManifest.validate()
+
+    capabilities = OverallsProtocol.GuestAgents.capabilities(image.guest_agents)
+    assert capabilities.android_sdk
+    assert capabilities.adb
+    assert capabilities.android_emulator
+    assert capabilities.android_display
+
+    assert {:ok, ordinary} = ImageManifest.validate(Map.put(base, "guest_agents", "linux"))
+    refute ordinary.id == image.id
+    refute OverallsProtocol.GuestAgents.capabilities(ordinary.guest_agents).android_display
+
+    editor = %{
+      "protocol" => 1,
+      "commit" => String.duplicate("b", 40),
+      "release" => String.duplicate("c", 64)
+    }
+
+    with_editor = Map.put(android, "editor", editor)
+    assert {:ok, editor_image} = ImageManifest.validate(with_editor)
+    refute editor_image.id == image.id
+    assert ImageManifest.encode(editor_image) == with_editor
+
+    assert {:ok, ^editor_image} =
+             with_editor |> JSON.encode!() |> JSON.decode!() |> ImageManifest.validate()
+
+    for value <- [android, with_editor] do
+      assert {:error, :invalid_image_manifest} =
+               ImageManifest.validate(Map.put(value, "arbitrary_extra", true))
+    end
+  end
+
+  test "Android profile refuses unsupported versions, agent profiles and image kinds" do
+    android = Map.put(manifest(), "guest_agents", "linux-android-v1")
+
+    for version <- [0, 3, 5, 6] do
+      assert {:error, :invalid_image_manifest} =
+               ImageManifest.validate(Map.put(android, "version", version))
+    end
+
+    for agents <- [nil, true, "linux-android-v2", "windows-v1", "none"] do
+      assert {:error, :invalid_image_manifest} =
+               ImageManifest.validate(Map.put(android, "guest_agents", agents))
+    end
+
+    for incompatible <- [firmware_manifest(), illumos_manifest()] do
+      assert {:error, :invalid_image_manifest} =
+               ImageManifest.validate(Map.put(incompatible, "guest_agents", "linux-android-v1"))
+    end
+
+    assert {:error, :invalid_image_manifest} =
+             ImageManifest.validate(put_in(android, ["rootfs", "sha256"], "invalid"))
+  end
+
   property "Git identity capability is explicit, identity-bound and closed across image kinds",
     database: :disabled,
     print_blob: false,

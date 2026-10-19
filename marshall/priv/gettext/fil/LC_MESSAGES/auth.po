@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n==1 || n==2 || n==3 || (n%10!=4 && n%10!=6 && n%10!=9) ? 0 : 1);\n"
 
-#: lib/marshall_web/controllers/auth_controller.ex:89
+#: lib/marshall_web/controllers/auth_controller.ex:94
 #, elixir-autogen, elixir-format
 msgid "An account with this email already exists. We've sent a link to that\naddress - confirm it to finish linking this provider to your account.\n"
 msgstr "Mayroon nang account na may ganitong email. Nagpadala kami ng link doon\naddress - kumpirmahin ito upang tapusin ang pag-link sa provider na ito sa iyong account.\n"
@@ -40,12 +40,12 @@ msgstr "Email"
 msgid "Email me a sign-in link"
 msgstr "Mag-email sa akin ng link sa pag-sign in"
 
-#: lib/marshall/accounts/deliver_auth_email.ex:153
+#: lib/marshall/accounts/deliver_auth_email.ex:154
 #, elixir-autogen, elixir-format
 msgid "If you did not request this, ignore this email."
 msgstr "Kung hindi mo ito hiniling, huwag pansinin ang email na ito."
 
-#: lib/marshall_web/controllers/auth_controller.ex:95
+#: lib/marshall_web/controllers/auth_controller.ex:100
 #, elixir-autogen, elixir-format
 msgid "Incorrect email or password"
 msgstr "Maling email o password"
@@ -60,13 +60,13 @@ msgstr "Tandaan mo ako"
 msgid "Sending link…"
 msgstr "Ipinapadala ang link…"
 
-#: lib/marshall/accounts/deliver_auth_email.ex:149
+#: lib/marshall/accounts/deliver_auth_email.ex:150
 #: lib/marshall_web/auth_text.ex:20
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "Mag-sign in"
 
-#: lib/marshall/accounts/deliver_auth_email.ex:146
+#: lib/marshall/accounts/deliver_auth_email.ex:147
 #, elixir-autogen, elixir-format
 msgid "Sign in to Overalls:"
 msgstr "Mag-sign in sa Overalls:"
@@ -91,17 +91,17 @@ msgstr "Isinasagawa ang iyong pag-sign in"
 msgid "Unavailable"
 msgstr "Hindi magagamit"
 
-#: lib/marshall_web/controllers/auth_controller.ex:38
+#: lib/marshall_web/controllers/auth_controller.ex:43
 #, elixir-autogen, elixir-format
 msgid "You are now signed in"
 msgstr "Naka-sign in ka na"
 
-#: lib/marshall_web/controllers/auth_controller.ex:152
+#: lib/marshall_web/controllers/auth_controller.ex:157
 #, elixir-autogen, elixir-format
 msgid "You are now signed out"
 msgstr "Naka-sign out ka na"
 
-#: lib/marshall_web/controllers/auth_controller.ex:80
+#: lib/marshall_web/controllers/auth_controller.ex:85
 #, elixir-autogen, elixir-format
 msgid "You have already signed in another way, but have not confirmed your account.\nYou can confirm your account using the link we sent to you, or by resetting your password.\n"
 msgstr "Nakapag-sign in ka na sa ibang paraan, ngunit hindi mo pa nakukumpirma ang iyong account.\nMaaari mong kumpirmahin ang iyong account gamit ang link na ipinadala namin sa iyo, o sa pamamagitan ng pag-reset ng iyong password.\n"
@@ -111,7 +111,7 @@ msgstr "Nakapag-sign in ka na sa ibang paraan, ngunit hindi mo pa nakukumpirma a
 msgid "Your Overalls sign-in link"
 msgstr "Ang link mo para mag-sign in sa Overalls"
 
-#: lib/marshall_web/controllers/auth_controller.ex:36
+#: lib/marshall_web/controllers/auth_controller.ex:37
 #, elixir-autogen, elixir-format
 msgid "Your email address has now been confirmed"
 msgstr "Nakumpirma na ang iyong adres ng email"
@@ -121,12 +121,12 @@ msgstr "Nakumpirma na ang iyong adres ng email"
 msgid "Your email link is being verified."
 msgstr "Bineberipika ang link sa iyong email."
 
-#: lib/marshall_web/controllers/auth_controller.ex:37
+#: lib/marshall_web/controllers/auth_controller.ex:40
 #, elixir-autogen, elixir-format
 msgid "Your password has successfully been reset"
 msgstr "Matagumpay na na-reset ang iyong password"
 
-#: lib/marshall_web/controllers/auth_controller.ex:58
+#: lib/marshall_web/controllers/auth_controller.ex:63
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "Hindi na wasto ang iyong pag-sign in. Humiling ng bagong link para mag-sign in."

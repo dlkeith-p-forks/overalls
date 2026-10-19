@@ -11,8 +11,7 @@ msgstr "இந்த இயந்திரத்திற்கான நகல�
 
 #: lib/porsche/ssh/output.ex:79
 #, elixir-autogen, elixir-format
-msgid ""
-"A failed machine cannot be pinned; an existing pin can still be removed."
+msgid "A failed machine cannot be pinned; an existing pin can still be removed."
 msgstr ""
 "தோல்வியடைந்த இயந்திரத்தைப் பின் செய்ய முடியாது; ஏற்கெனவே உள்ள பினை "
 "அகற்றலாம்."
@@ -34,14 +33,12 @@ msgstr "இந்த இயந்திரத்தின் அளவை மா
 
 #: lib/porsche/ssh/output.ex:121
 #, elixir-autogen, elixir-format
-msgid ""
-"A transfer is already using this host's transfer slot. Please try again "
-"after it finishes."
+msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr ""
 "இந்தப் புரவலனின் பரிமாற்ற இடத்தை மற்றொரு பரிமாற்றம் பயன்படுத்துகிறது. அது "
 "முடிந்ததும் மீண்டும் முயலவும்."
 
-#: lib/porsche/ssh/output.ex:319
+#: lib/porsche/ssh/output.ex:373
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr "ஏற்கப்பட்டது"
@@ -51,7 +48,7 @@ msgstr "ஏற்கப்பட்டது"
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "உலாவியில் இந்த SSH சாவியை அங்கீகரித்து, பின்னர் கட்டளையை மீண்டும் முயலவும்."
 
-#: lib/porsche/ssh/output.ex:321
+#: lib/porsche/ssh/output.ex:375
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "தோல்வியடைந்தது"
@@ -61,32 +58,32 @@ msgstr "தோல்வியடைந்தது"
 msgid "Invalid command. Type help to see available commands."
 msgstr "செல்லாத கட்டளை. கிடைக்கும் கட்டளைகளைக் காண help எனத் தட்டச்சு செய்யவும்."
 
-#: lib/porsche/ssh/output.ex:314
+#: lib/porsche/ssh/output.ex:368
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr "செயல் ID"
 
-#: lib/porsche/ssh/output.ex:311
+#: lib/porsche/ssh/output.ex:365
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr "நெறிமுறைப் பதிப்பு"
 
-#: lib/porsche/ssh/output.ex:346
+#: lib/porsche/ssh/output.ex:400
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "கோரிக்கை %{id}: சமர்ப்பிக்கப்படுகிறது"
 
-#: lib/porsche/ssh/output.ex:349
+#: lib/porsche/ssh/output.ex:403
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "கோரிக்கை %{id}: நிறைவடையக் காத்திருக்கிறது"
 
-#: lib/porsche/ssh/output.ex:313
+#: lib/porsche/ssh/output.ex:367
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr "கோரிக்கை ID"
 
-#: lib/porsche/ssh/output.ex:315
+#: lib/porsche/ssh/output.ex:369
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr "முடிவு"
@@ -98,17 +95,17 @@ msgstr ""
 "மூலத்தைத் தூய்மைப்படுத்துவது இன்னும் நிலுவையில் உள்ளது. அது முடியும் வரை "
 "காத்திருந்து மீண்டும் முயலவும்."
 
-#: lib/porsche/ssh/output.ex:312
+#: lib/porsche/ssh/output.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "நிலை"
 
-#: lib/porsche/ssh/output.ex:320
+#: lib/porsche/ssh/output.ex:374
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "வெற்றியடைந்தது"
 
-#: lib/porsche/ssh/output.ex:322
+#: lib/porsche/ssh/output.ex:376
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "மாற்றப்பட்டது"
@@ -120,9 +117,7 @@ msgstr "SSH பொது விசை செல்லாது. விசைய�
 
 #: lib/porsche/ssh/output.ex:283
 #, elixir-autogen, elixir-format
-msgid ""
-"The approval request limit has been reached. Close an unused connection and "
-"try again."
+msgid "The approval request limit has been reached. Close an unused connection and try again."
 msgstr ""
 "ஒப்புதல் கோரிக்கை வரம்பை அடைந்துவிட்டீர்கள். பயன்படுத்தாத இணைப்பை மூடிவிட்டு"
 " மீண்டும் முயலவும்."
@@ -133,34 +128,28 @@ msgid "The available host does not meet the machine image's requirements."
 msgstr ""
 "கிடைக்கும் புரவலன் இயந்திரப் படிமத்தின் தேவைகளைப் பூர்த்திசெய்யவில்லை."
 
-#: lib/porsche/ssh/output.ex:292
+#: lib/porsche/ssh/output.ex:346
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr "கட்டளையை நிறைவு செய்ய முடியவில்லை: %{reason}"
 
 #: lib/porsche/ssh/output.ex:184
 #, elixir-autogen, elixir-format
-msgid ""
-"The connection to the control service was interrupted. Check the request "
-"status before submitting it again."
+msgid "The connection to the control service was interrupted. Check the request status before submitting it again."
 msgstr ""
 "கட்டுப்பாட்டுச் சேவைக்கான இணைப்பு தடைப்பட்டது. மீண்டும் அனுப்பும் முன் "
 "கோரிக்கையின் நிலையைச் சரிபார்க்கவும்."
 
 #: lib/porsche/ssh/output.ex:196
 #, elixir-autogen, elixir-format
-msgid ""
-"The control service refused the request. Check the request status before "
-"submitting it again."
+msgid "The control service refused the request. Check the request status before submitting it again."
 msgstr ""
 "கட்டுப்பாட்டுச் சேவை கோரிக்கையை நிராகரித்தது. மீண்டும் அனுப்பும் முன் "
 "கோரிக்கையின் நிலையைச் சரிபார்க்கவும்."
 
 #: lib/porsche/ssh/output.ex:190
 #, elixir-autogen, elixir-format
-msgid ""
-"The control service returned an invalid response. Check the request status "
-"before submitting it again."
+msgid "The control service returned an invalid response. Check the request status before submitting it again."
 msgstr ""
 "கட்டுப்பாட்டுச் சேவை செல்லாத பதிலைத் தந்தது. மீண்டும் அனுப்பும் முன் "
 "கோரிக்கையின் நிலையைச் சரிபார்க்கவும்."
@@ -172,9 +161,7 @@ msgstr "இந்தச் செயலுக்காக இயந்திர�
 
 #: lib/porsche/ssh/output.ex:262
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's execution generation has changed. Inspect its current state "
-"before retrying."
+msgid "The machine's execution generation has changed. Inspect its current state before retrying."
 msgstr ""
 "இயந்திரத்தின் செயலாக்கத் தலைமுறை மாறிவிட்டது. மீண்டும் முயலும் முன் தற்போதைய"
 " நிலையைச் சரிபார்க்கவும்."
@@ -187,27 +174,21 @@ msgstr ""
 
 #: lib/porsche/ssh/output.ex:151
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's placement has changed. Inspect its current state before "
-"retrying."
+msgid "The machine's placement has changed. Inspect its current state before retrying."
 msgstr ""
 "இயந்திரத்தின் ஒதுக்கீட்டு இடம் மாறிவிட்டது. மீண்டும் முயலும் முன் தற்போதைய "
 "நிலையைச் சரிபார்க்கவும்."
 
 #: lib/porsche/ssh/output.ex:256
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's stop has not been confirmed. Inspect its state before "
-"retrying."
+msgid "The machine's stop has not been confirmed. Inspect its state before retrying."
 msgstr ""
 "இயந்திரம் நின்றது உறுதிசெய்யப்படவில்லை. மீண்டும் முயலும் முன் நிலையைச் "
 "சரிபார்க்கவும்."
 
 #: lib/porsche/ssh/output.ex:112
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's workload is not stable enough for this operation. Check its "
-"state before retrying."
+msgid "The machine's workload is not stable enough for this operation. Check its state before retrying."
 msgstr ""
 "இந்தச் செயலுக்கு இயந்திரத்தின் பணிச்சுமை போதுமான அளவு நிலையாக இல்லை. "
 "மீண்டும் முயலும் முன் நிலையைச் சரிபார்க்கவும்."
@@ -226,8 +207,7 @@ msgstr "பெறுநருக்குப் பதிவுசெய்ய�
 
 #: lib/porsche/ssh/output.ex:244
 #, elixir-autogen, elixir-format
-msgid ""
-"The repository source is invalid. Use a supported public repository URL."
+msgid "The repository source is invalid. Use a supported public repository URL."
 msgstr ""
 "களஞ்சிய மூலம் செல்லாது. ஆதரிக்கப்படும் பொதுக் களஞ்சிய URL பயன்படுத்தவும்."
 
@@ -238,9 +218,7 @@ msgstr "களஞ்சிய மூலம் கிடைக்கவில்�
 
 #: lib/porsche/ssh/output.ex:163
 #, elixir-autogen, elixir-format
-msgid ""
-"The request conflicts with the current state. Inspect the machine or request"
-" before retrying."
+msgid "The request conflicts with the current state. Inspect the machine or request before retrying."
 msgstr ""
 "கோரிக்கை தற்போதைய நிலையுடன் முரண்படுகிறது. மீண்டும் முயலும் முன் இயந்திரம் "
 "அல்லது கோரிக்கையைச் சரிபார்க்கவும்."
@@ -272,9 +250,7 @@ msgstr "கோரிய இயந்திரப் படிமம் கிட
 
 #: lib/porsche/ssh/output.ex:217
 #, elixir-autogen, elixir-format
-msgid ""
-"The requested machine size is invalid. Check the CPU, memory and disk "
-"limits."
+msgid "The requested machine size is invalid. Check the CPU, memory and disk limits."
 msgstr ""
 "கோரிய இயந்திர அளவு செல்லாது. CPU, நினைவகம் மற்றும் வட்டு வரம்புகளைச் "
 "சரிபார்க்கவும்."
@@ -291,9 +267,7 @@ msgstr "சேவை உள்ளமைவு செல்லாது. உங�
 
 #: lib/porsche/ssh/output.ex:178
 #, elixir-autogen, elixir-format
-msgid ""
-"The service does not support this protocol version. Ask your operator to "
-"update the compatible services."
+msgid "The service does not support this protocol version. Ask your operator to update the compatible services."
 msgstr ""
 "இந்த நெறிமுறைப் பதிப்பைச் சேவை ஆதரிக்கவில்லை. இணக்கமான சேவைகளைப் "
 "புதுப்பிக்குமாறு உங்கள் இயக்குநரிடம் கேட்கவும்."
@@ -306,9 +280,7 @@ msgstr ""
 
 #: lib/porsche/ssh/output.ex:277
 #, elixir-autogen, elixir-format
-msgid ""
-"The session limit has been reached. Close an unused connection and try "
-"again."
+msgid "The session limit has been reached. Close an unused connection and try again."
 msgstr ""
 "அமர்வு வரம்பை அடைந்துவிட்டீர்கள். பயன்படுத்தாத இணைப்பை மூடிவிட்டு மீண்டும் "
 "முயலவும்."
@@ -330,8 +302,7 @@ msgstr "இந்தச் செயல் உரிமையாளரின் 
 
 #: lib/porsche/ssh/output.ex:94
 #, elixir-autogen, elixir-format
-msgid ""
-"This clone has already been published and cannot be retried or cancelled."
+msgid "This clone has already been published and cannot be retried or cancelled."
 msgstr ""
 "இந்த நகல் ஏற்கெனவே வெளியிடப்பட்டது; மீண்டும் முயலவோ ரத்துசெய்யவோ முடியாது."
 
@@ -359,9 +330,7 @@ msgstr "இந்த இயந்திரம் நீக்கப்பட்�
 
 #: lib/porsche/ssh/output.ex:226
 #, elixir-autogen, elixir-format
-msgid ""
-"This machine has reached its execution generation limit. Contact your "
-"operator."
+msgid "This machine has reached its execution generation limit. Contact your operator."
 msgstr ""
 "இந்த இயந்திரம் செயலாக்கத் தலைமுறை வரம்பை அடைந்துவிட்டது. உங்கள் இயக்குநரைத் "
 "தொடர்புகொள்ளவும்."
@@ -383,16 +352,13 @@ msgstr "இந்த இடமாற்றம் ஏற்கெனவே மு
 
 #: lib/porsche/ssh/output.ex:139
 #, elixir-autogen, elixir-format
-msgid ""
-"This relocation has committed its handoff and can no longer be cancelled."
+msgid "This relocation has committed its handoff and can no longer be cancelled."
 msgstr ""
 "இந்த இடமாற்றத்தின் ஒப்படைப்பு உறுதிசெய்யப்பட்டது; இனி ரத்துசெய்ய முடியாது."
 
 #: lib/porsche/ssh/output.ex:106
 #, elixir-autogen, elixir-format
-msgid ""
-"This request ID was already used for a different command. Use the original "
-"command or a new request ID."
+msgid "This request ID was already used for a different command. Use the original command or a new request ID."
 msgstr ""
 "இந்தக் கோரிக்கை ID வேறொரு கட்டளைக்குப் பயன்படுத்தப்பட்டது. அசல் கட்டளை "
 "அல்லது புதிய கோரிக்கை ID பயன்படுத்தவும்."
@@ -410,9 +376,7 @@ msgstr ""
 
 #: lib/porsche/ssh/output.ex:172
 #, elixir-autogen, elixir-format
-msgid ""
-"Too many sessions or approval requests are active. Close an unused "
-"connection and try again."
+msgid "Too many sessions or approval requests are active. Close an unused connection and try again."
 msgstr ""
 "மிக அதிகமான அமர்வுகள் அல்லது ஒப்புதல் கோரிக்கைகள் செயல்பாட்டில் உள்ளன. "
 "பயன்படுத்தாத இணைப்பை மூடிவிட்டு மீண்டும் முயலவும்."
@@ -433,3 +397,91 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to perform this action."
 msgstr "இந்தச் செயலைச் செய்ய உங்களுக்கு அனுமதி இல்லை."
+
+#: lib/porsche/ssh/output.ex:316
+#, elixir-autogen, elixir-format
+msgid "Answer the pending question before sending another prompt."
+msgstr "மற்றொரு தூண்டுதலை அனுப்பும் முன் நிலுவையிலுள்ள கேள்விக்குப் பதிலளிக்கவும்."
+
+#: lib/porsche/ssh/output.ex:322
+#, elixir-autogen, elixir-format
+msgid "Port 4444 is reserved for the editor."
+msgstr "போர்ட் 4444 திருத்திக்காக ஒதுக்கப்பட்டுள்ளது."
+
+#: lib/porsche/ssh/output.ex:328
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable on this machine right now."
+msgstr "இந்த இயந்திரத்தில் இப்போது முனையங்கள் கிடைக்கவில்லை."
+
+#: lib/porsche/ssh/output.ex:304
+#, elixir-autogen, elixir-format
+msgid "That plan is no longer the latest proposal. Show the thread again."
+msgstr "அந்தத் திட்டம் இனி சமீபத்திய முன்மொழிவு அல்ல. இழையை மீண்டும் காட்டவும்."
+
+#: lib/porsche/ssh/output.ex:310
+#, elixir-autogen, elixir-format
+msgid "That question has already been answered."
+msgstr "அந்தக் கேள்விக்கு ஏற்கனவே பதிலளிக்கப்பட்டுள்ளது."
+
+#: lib/porsche/ssh/output.ex:307
+#, elixir-autogen, elixir-format
+msgid "That question is no longer pending."
+msgstr "அந்தக் கேள்வி இனி நிலுவையில் இல்லை."
+
+#: lib/porsche/ssh/output.ex:334
+#, elixir-autogen, elixir-format
+msgid "That terminal session no longer exists."
+msgstr "அந்த முனைய அமர்வு இனி இல்லை."
+
+#: lib/porsche/ssh/output.ex:313
+#, elixir-autogen, elixir-format
+msgid "The answers do not match the pending question."
+msgstr "பதில்கள் நிலுவையிலுள்ள கேள்வியுடன் பொருந்தவில்லை."
+
+#: lib/porsche/ssh/output.ex:331
+#, elixir-autogen, elixir-format
+msgid "The machine is waking. Retry the terminal shortly."
+msgstr "இயந்திரம் விழித்தெழுகிறது. சிறிது நேரத்தில் முனையத்தை மீண்டும் முயலவும்."
+
+#: lib/porsche/ssh/output.ex:343
+#, elixir-autogen, elixir-format
+msgid "The standard input is empty or exceeds this command's size limit."
+msgstr "நிலையான உள்ளீடு காலியாக உள்ளது அல்லது இந்தக் கட்டளையின் அளவு வரம்பை மீறுகிறது."
+
+#: lib/porsche/ssh/output.ex:319
+#, elixir-autogen, elixir-format
+msgid "The web settings changed since you read them. Show them again and retry."
+msgstr "நீங்கள் படித்த பிறகு வலை அமைப்புகள் மாறிவிட்டன. அவற்றை மீண்டும் காட்டி மீண்டும் முயலவும்."
+
+#: lib/porsche/ssh/output.ex:337
+#, elixir-autogen, elixir-format
+msgid "This command reads its input from standard input. Pipe it in and end the command with -."
+msgstr "இந்தக் கட்டளை தனது உள்ளீட்டை நிலையான உள்ளீட்டிலிருந்து படிக்கிறது. அதை pipe மூலம் அனுப்பி, கட்டளையை - கொண்டு முடிக்கவும்."
+
+#: lib/porsche/ssh/output.ex:325
+#, elixir-autogen, elixir-format
+msgid "This machine's profile does not allow web publishing."
+msgstr "இந்த இயந்திரத்தின் சுயவிவரம் வலை வெளியீட்டை அனுமதிக்காது."
+
+#: lib/porsche/ssh/output.ex:301
+#, elixir-autogen, elixir-format
+msgid "This thread is busy with a turn. Try again when it finishes."
+msgstr "இந்த இழை ஒரு சுற்றில் மும்முரமாக உள்ளது. அது முடிந்ததும் மீண்டும் முயலவும்."
+
+#: lib/porsche/ssh/output.ex:298
+#, elixir-autogen, elixir-format
+msgid "This thread is not ready for prompts yet."
+msgstr "இந்த இழை இன்னும் தூண்டுதல்களுக்குத் தயாராக இல்லை."
+
+#: lib/porsche/ssh/output.ex:292
+#, elixir-autogen, elixir-format
+msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr "terminal attach க்கு முனையம் தேவை. ssh -t மூலம் இணைந்து அதைக் கட்டளையாக இயக்கவும்."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "இந்த நிறுவலில் புஷ் அறிவிப்புகள் முடக்கப்பட்டுள்ளன; அதன் நிர்வாகியை அணுகவும்."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "உங்கள் சாதனங்களின் எண்ணிக்கை அதிகபட்ச வரம்பை எட்டியுள்ளது; முதலில் ஒன்றை அகற்றவும்: device rm DEVICE_ID"

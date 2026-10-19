@@ -150,7 +150,11 @@ def run() -> None:
                     expect(page.locator("#ssh-approval-fingerprint")).to_have_text(fingerprint)
                     stage = role + " approval submission"
                     page.locator("#approve-ssh-key").click()
-                    page.wait_for_url("**/settings*")
+                    # Approval stays on the page and offers the Mila link.
+                    expect(page.locator("#ssh-approval-approved")).to_be_visible()
+                    expect(page.locator("#ssh-approval-open-mila")).to_be_visible()
+                    stage = role + " approved key visibility"
+                    page.goto("https://control.example.test/settings")
                     expect(page.locator("article")).to_contain_text(fingerprint)
                     context.close()
                     continue

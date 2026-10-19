@@ -152,7 +152,7 @@ msgstr ""
 #: lib/marshall_web/browser_messages.ex:68
 #, elixir-autogen, elixir-format
 msgid "This repository link could not be launched. Open the link again."
-msgstr ""
+msgstr "This repository link could not be launched. Open the link again."
 
 #: lib/marshall_web/browser_messages.ex:69
 #, elixir-autogen, elixir-format

@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "description": "One example `result` document per Mila client command (ADR-0222). Read commands return the document as the envelope's result; mutations return it inside a receipt {version, request_id, status, operation_id, result}. Marshall's client_commands_test asserts dispatcher keys and JSON types against these examples; nulls mark optional values and an empty object marks a free-form event body.",
+  "results": {
+    "thread ls": {
+      "items": [
+        {
+          "id": "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1",
+          "title": "Improve the workspace",
+          "status": "ready",
+          "failure_reason": null,
+          "collaboration_mode": "work",
+          "machine_id": "019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a",
+          "team_id": null,
+          "mine": true,
+          "archived": false,
+          "inserted_at": "2026-10-18T09:12:44.120391Z",
+          "updated_at": "2026-10-18T09:15:02.554812Z",
+          "read_sequence": 3,
+          "last_sequence": 7,
+          "unread": 4,
+          "route": "overalls://marshall.example.test/threads/0d9cc041-9db2-4e4c-b28b-1e41d7f472c1"
+        }
+      ],
+      "next_cursor": null
+    },
+    "thread show": {
+      "id": "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1",
+      "title": "Improve the workspace",
+      "status": "ready",
+      "failure_reason": null,
+      "collaboration_mode": "plan",
+      "machine_id": "019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a",
+      "team_id": null,
+      "mine": true,
+      "archived": false,
+      "inserted_at": "2026-10-18T09:12:44.120391Z",
+      "updated_at": "2026-10-18T09:15:02.554812Z",
+      "read_sequence": 3,
+      "last_sequence": 7,
+      "unread": 4,
+      "route": "overalls://marshall.example.test/threads/0d9cc041-9db2-4e4c-b28b-1e41d7f472c1",
+      "busy": false,
+      "pending_question": null,
+      "latest_plan": null
+    },
+    "thread turns": {
+      "thread_id": "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1",
+      "items": [
+        {
+          "sequence": 4,
+          "kind": "assistant",
+          "turn_id": null,
+          "body": {},
+          "inserted_at": "2026-10-18T09:14:51.002144Z"
+        }
+      ],
+      "next_after": null
+    },
+    "thread prompt": {
+      "thread_id": "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1",
+      "turn_id": "019a0f71-2b3c-7d4e-8f5a-6b7c8d9e0f1a",
+      "status": "queued"
+    },
+    "thread answer": {
+      "thread_id": "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1",
+      "question_id": "6f1e2d3c-4b5a-4987-8a6b-5c4d3e2f1a0b",
+      "status": "answered"
+    },
+    "thread plan approve": {
+      "thread_id": "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1",
+      "plan_id": "019a0f72-0a1b-7c2d-8e3f-4a5b6c7d8e9f",
+      "turn_id": "019a0f72-1b2c-7d3e-8f4a-5b6c7d8e9f0a",
+      "collaboration_mode": "work"
+    },
+    "thread plan revise": {
+      "thread_id": "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1",
+      "plan_id": "019a0f72-0a1b-7c2d-8e3f-4a5b6c7d8e9f",
+      "turn_id": "019a0f72-2c3d-7e4f-8a5b-6c7d8e9f0a1b",
+      "status": "queued"
+    },
+    "thread mode": {
+      "thread_id": "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1",
+      "collaboration_mode": "plan",
+      "busy": false
+    },
+    "thread read": {
+      "thread_id": "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1",
+      "read_sequence": 7,
+      "last_sequence": 7,
+      "unread": 0
+    },
+    "terminal ls": {
+      "machine_id": "019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a",
+      "items": [
+        {
+          "id": "019a0f73-3d4e-7f5a-8b6c-7d8e9f0a1b2c",
+          "guest_session_id": "3f2e1d0c-9b8a-4766-8544-332211009988",
+          "guest_user": "dev",
+          "cols": 120,
+          "rows": 40,
+          "viewers": 1,
+          "created_ms": 1792314891002,
+          "last_ms": 1792314951002,
+          "mine": true,
+          "can_kill": true,
+          "kill_status": "idle",
+          "route": "overalls://marshall.example.test/machines/019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a/terminals/019a0f73-3d4e-7f5a-8b6c-7d8e9f0a1b2c"
+        }
+      ]
+    },
+    "terminal new": {
+      "machine_id": "019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a",
+      "session_id": "019a0f73-3d4e-7f5a-8b6c-7d8e9f0a1b2c",
+      "guest_session_id": "3f2e1d0c-9b8a-4766-8544-332211009988",
+      "route": "overalls://marshall.example.test/machines/019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a/terminals/019a0f73-3d4e-7f5a-8b6c-7d8e9f0a1b2c"
+    },
+    "terminal kill": {
+      "machine_id": "019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a",
+      "session_id": "019a0f73-3d4e-7f5a-8b6c-7d8e9f0a1b2c",
+      "closed": true
+    },
+    "web show": {
+      "machine_id": "019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a",
+      "label": "web-box-k3x9",
+      "port": 8080,
+      "visibility": "private",
+      "policy_revision": 1,
+      "url": null,
+      "route": "overalls://marshall.example.test/machines/019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a/web"
+    },
+    "web set": {
+      "machine_id": "019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a",
+      "label": "web-box-k3x9",
+      "port": 8081,
+      "visibility": "public",
+      "policy_revision": 2,
+      "url": null,
+      "route": "overalls://marshall.example.test/machines/019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a/web"
+    }
+  },
+  "watch": [
+    {"version": 1, "event": "watching", "session_id": "019a0f74-4e5f-7a6b-8c7d-8e9f0a1b2c3d", "machines": ["019a0f6e-7c1d-7b52-9b1e-4c3a2d1e0f9a"], "threads": ["0d9cc041-9db2-4e4c-b28b-1e41d7f472c1"]},
+    {"version": 1, "event": "thread", "id": "0d9cc041-9db2-4e4c-b28b-1e41d7f472c1"},
+    {"version": 1, "event": "heartbeat"}
+  ]
+}

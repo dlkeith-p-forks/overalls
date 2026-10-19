@@ -18,6 +18,7 @@ defmodule Marshall.SSH.CommandsTest do
   alias Marshall.Authorization.SystemActor
   alias Marshall.Access.Grant
   alias Marshall.SSH.{Request, Token}
+  alias OverallsProtocol.AppRoute
 
   setup do
     fixture = host_fixture()
@@ -216,7 +217,9 @@ defmodule Marshall.SSH.CommandsTest do
     refute Map.has_key?(hd(listed.result["items"]), "host_id")
     refute Map.has_key?(hd(listed.result["items"]), "current_placement_id")
     refute Map.has_key?(hd(listed.result["items"]), "editor_image_status")
-    refute Map.has_key?(hd(listed.result["items"]), "pinned")
+    assert hd(listed.result["items"])["pinned"] == false
+    assert hd(listed.result["items"])["route"] == Marshall.AppRoutes.link({:machine, id})
+    assert {:ok, %{page: {:machine, ^id}}} = AppRoute.parse(hd(listed.result["items"])["route"])
     refute Map.has_key?(hd(listed.result["items"]), "owner_email")
     refute Map.has_key?(hd(listed.result["items"]), "owner_time_zone")
 
@@ -230,9 +233,18 @@ defmodule Marshall.SSH.CommandsTest do
     refute Map.has_key?(shown.result, "owner_time_zone")
 
     fields =
-      ~w(architecture desired_state disk_bytes execution_ref failure_reason generation host id image_id image_name inserted_at memory_bytes name observed_state owner permissions profile relocation resize ssh_host vcpu)
+      ~w(architecture desired_state disk_bytes execution_ref failure_reason generation host id image_id image_name inserted_at memory_bytes name observed_state owner permissions pinned profile relocation resize route ssh_host vcpu)
 
     assert Map.keys(shown.result) |> Enum.sort() == fields
+
+    assert {:ok, _} = command(c, "pin placed-machine")
+    assert {:ok, pinned} = command(c, "show placed-machine")
+    assert pinned.result["pinned"] == true
+
+    assert pinned.result["route"] ==
+             "overalls://" <>
+               URI.parse(MarshallWeb.Endpoint.url()).host <> route_port() <> "/machines/" <> id
+
     assert Map.keys(hd(listed.result["items"])) |> Enum.sort() == fields
     assert shown.result["execution_ref"] == hd(listed.result["items"])["execution_ref"]
 
@@ -932,7 +944,8 @@ defmodule Marshall.SSH.CommandsTest do
   # `pin`/`unpin` MUST succeed idempotently through the SSH path with a
   # synchronous receipt, `rm` MUST refuse with `machine_pinned` while the owner
   # holds the pin and leave intent/operations unchanged, and `rm` MUST be
-  # admitted after `unpin`. `show`/`ls` MUST NOT gain a `pinned` key.
+  # admitted after `unpin`. `show`/`ls` MUST report only the caller's own pin as
+  # `pinned` (ADR-0222).
   test "pin and unpin fence rm through the SSH command path", c do
     assert {:ok, created} = command(c, "new --name keeper --request-id keeper-create")
     vm_id = created.result["id"]
@@ -947,7 +960,7 @@ defmodule Marshall.SSH.CommandsTest do
     assert [_] = Ledger.read!(Marshall.Access.Pin, vm_id: vm_id, user_id: c.actor.id)
 
     assert {:ok, shown} = command(c, "show keeper")
-    refute Map.has_key?(shown.result, "pinned")
+    assert shown.result["pinned"] == true
 
     operations = Ledger.read!(Operation, vm_id: vm_id)
     assert {:error, refused} = command(c, "rm keeper --request-id rm-pinned")
@@ -1603,5 +1616,12 @@ defmodule Marshall.SSH.CommandsTest do
       cleanup_complete: state == :deleted,
       reason: if(state == :failed, do: :execution_failed, else: :none)
     }
+  end
+
+  defp route_port do
+    case URI.parse(MarshallWeb.Endpoint.url()).port do
+      port when port in [nil, 443] -> ""
+      port -> ":" <> Integer.to_string(port)
+    end
   end
 end

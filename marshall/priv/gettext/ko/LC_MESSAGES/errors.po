@@ -106,17 +106,17 @@ msgstr "%{number} 이상이어야 합니다"
 msgid "must be equal to %{number}"
 msgstr "%{number}와 같아야 합니다"
 
-#: lib/marshall_web/controllers/error_html.ex:52
+#: lib/marshall_web/controllers/error_html.ex:57
 #, elixir-autogen, elixir-format
 msgid "Back to Overalls"
 msgstr "작업복(으)로 돌아가기"
 
-#: lib/marshall_web/controllers/error_html.ex:45
+#: lib/marshall_web/controllers/error_html.ex:46
 #, elixir-autogen, elixir-format
 msgid "Overalls is briefly unavailable. This page will retry automatically."
 msgstr "작업복은 잠시 사용할 수 없습니다. 이 페이지는 자동으로 다시 시도됩니다."
 
-#: lib/marshall_web/controllers/error_html.ex:48
+#: lib/marshall_web/controllers/error_html.ex:52
 #, elixir-autogen, elixir-format
 msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
 msgstr "이 페이지를 열 수 없습니다. 작업공간으로 돌아가거나 잠시 후에 다시 시도해 보세요."

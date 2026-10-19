@@ -122,17 +122,17 @@ msgstr "lazima iwe kubwa kuliko au sawa na %{number}"
 msgid "must be equal to %{number}"
 msgstr "lazima iwe sawa na %{number}"
 
-#: lib/marshall_web/controllers/error_html.ex:52
+#: lib/marshall_web/controllers/error_html.ex:57
 #, elixir-autogen, elixir-format
 msgid "Back to Overalls"
 msgstr "Rudi kwa Overalls"
 
-#: lib/marshall_web/controllers/error_html.ex:45
+#: lib/marshall_web/controllers/error_html.ex:46
 #, elixir-autogen, elixir-format
 msgid "Overalls is briefly unavailable. This page will retry automatically."
 msgstr "Overalls haipatikani kwa muda mfupi. Ukurasa huu utajaribu tena kiotomatiki."
 
-#: lib/marshall_web/controllers/error_html.ex:48
+#: lib/marshall_web/controllers/error_html.ex:52
 #, elixir-autogen, elixir-format
 msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
 msgstr "Hatukuweza kufungua ukurasa huu. Rudi kwenye nafasi yako ya kazi, au ujaribu tena baada ya muda mfupi."

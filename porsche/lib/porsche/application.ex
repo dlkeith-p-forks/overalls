@@ -38,9 +38,12 @@ defmodule Porsche.Application do
         [
           {Registry, keys: :unique, name: Porsche.SSH.Proofs},
           {Registry, keys: :unique, name: Porsche.SSH.Sessions},
+          Porsche.Watchers,
           {DynamicSupervisor,
            strategy: :one_for_one, name: Porsche.SSH.Connections, max_children: 4096},
-          {Task.Supervisor, name: Porsche.SSH.Commands, max_children: 4096}
+          {Task.Supervisor, name: Porsche.SSH.Commands, max_children: 4096},
+          {DynamicSupervisor,
+           strategy: :one_for_one, name: Porsche.Terminal.Attachments, max_children: 4096}
         ]
 
     with {:ok, serving} <- listener_children(System.get_env("PORSCHE_CONFIG_FILE")) do

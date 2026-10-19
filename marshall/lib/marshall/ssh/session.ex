@@ -94,6 +94,25 @@ defmodule Marshall.SSH.Session do
       run {Marshall.SSH.Authority, operation: :close}
     end
 
+    action :watch_subscribe, :map do
+      argument :gateway_token, :string,
+        allow_nil?: false,
+        sensitive?: true,
+        constraints: [max_length: 80]
+
+      argument :session_token, :string,
+        allow_nil?: false,
+        sensitive?: true,
+        constraints: [max_length: 80]
+
+      argument :machines, {:array, :string},
+        allow_nil?: false,
+        constraints: [max_length: 16, items: [min_length: 1, max_length: 63]]
+
+      argument :threads, {:array, :uuid}, allow_nil?: false, constraints: [max_length: 16]
+      run Marshall.SSH.Watch
+    end
+
     action :list_for_admin, {:array, :map} do
       argument :after, :uuid
       argument :limit, :integer, allow_nil?: false, default: 100, constraints: [min: 1, max: 100]
@@ -104,6 +123,19 @@ defmodule Marshall.SSH.Session do
       argument :id, :uuid, allow_nil?: false
       run {Marshall.SSH.AdminActions, operation: :revoke_session}
     end
+  end
+
+  # @cc [owner:ghuntley,label:protocol;security] ssh-session-change-hint
+  # Approval and closure MUST emit an `:ssh_session` hint carrying only the
+  # session UUID, delivered on commit, so `watch --session` learns of approval
+  # without polling. Porsche re-reads the session status; the hint grants nothing.
+  #
+  # A closed or revoked session also wakes its attached gateway terminal
+  # streams at once (ADR-0223); their recheck is the backstop.
+  changes do
+    change {Marshall.Control.Hints.Change, kind: :ssh_session, from: :id},
+      on: [:update],
+      where: [action_is([:approve, :close])]
   end
 
   attributes do

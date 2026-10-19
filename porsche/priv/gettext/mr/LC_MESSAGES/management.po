@@ -12,8 +12,7 @@ msgstr "या मशीनची क्लोन विनंती आधी�
 
 #: lib/porsche/ssh/output.ex:79
 #, elixir-autogen, elixir-format
-msgid ""
-"A failed machine cannot be pinned; an existing pin can still be removed."
+msgid "A failed machine cannot be pinned; an existing pin can still be removed."
 msgstr "अयशस्वी मशीन पिन करता येत नाही; विद्यमान पिन काढता येतो."
 
 #: lib/porsche/ssh/output.ex:136
@@ -33,14 +32,12 @@ msgstr "या मशीनचा आकार बदलण्याची व�
 
 #: lib/porsche/ssh/output.ex:121
 #, elixir-autogen, elixir-format
-msgid ""
-"A transfer is already using this host's transfer slot. Please try again "
-"after it finishes."
+msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr ""
 "या होस्टचा हस्तांतरण स्लॉट आधीच एका हस्तांतरणात वापरला जात आहे. ते पूर्ण "
 "झाल्यावर पुन्हा प्रयत्न करा."
 
-#: lib/porsche/ssh/output.ex:319
+#: lib/porsche/ssh/output.ex:373
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr "स्वीकारले"
@@ -51,7 +48,7 @@ msgid "Approve this SSH key in your browser, then retry the command."
 msgstr ""
 "ब्राउझरमध्ये या SSH कीला मंजुरी द्या, नंतर कमांडचा पुन्हा प्रयत्न करा."
 
-#: lib/porsche/ssh/output.ex:321
+#: lib/porsche/ssh/output.ex:375
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "अयशस्वी"
@@ -61,32 +58,32 @@ msgstr "अयशस्वी"
 msgid "Invalid command. Type help to see available commands."
 msgstr "अवैध कमांड. उपलब्ध कमांड पाहण्यासाठी help टाइप करा."
 
-#: lib/porsche/ssh/output.ex:314
+#: lib/porsche/ssh/output.ex:368
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr "कृती ID"
 
-#: lib/porsche/ssh/output.ex:311
+#: lib/porsche/ssh/output.ex:365
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr "प्रोटोकॉल आवृत्ती"
 
-#: lib/porsche/ssh/output.ex:346
+#: lib/porsche/ssh/output.ex:400
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "विनंती %{id}: सादर करत आहे"
 
-#: lib/porsche/ssh/output.ex:349
+#: lib/porsche/ssh/output.ex:403
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "विनंती %{id}: पूर्ण होण्याची वाट पाहत आहे"
 
-#: lib/porsche/ssh/output.ex:313
+#: lib/porsche/ssh/output.ex:367
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr "विनंती ID"
 
-#: lib/porsche/ssh/output.ex:315
+#: lib/porsche/ssh/output.ex:369
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr "निकाल"
@@ -98,17 +95,17 @@ msgstr ""
 "स्रोताची स्वच्छता अजून प्रलंबित आहे. पुन्हा प्रयत्न करण्यापूर्वी स्वच्छता "
 "पूर्ण होण्याची वाट पहा."
 
-#: lib/porsche/ssh/output.ex:312
+#: lib/porsche/ssh/output.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "स्थिती"
 
-#: lib/porsche/ssh/output.ex:320
+#: lib/porsche/ssh/output.ex:374
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "यशस्वी"
 
-#: lib/porsche/ssh/output.ex:322
+#: lib/porsche/ssh/output.ex:376
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "बदललेले"
@@ -120,9 +117,7 @@ msgstr "SSH सार्वजनिक कळ अवैध आहे. कळ �
 
 #: lib/porsche/ssh/output.ex:283
 #, elixir-autogen, elixir-format
-msgid ""
-"The approval request limit has been reached. Close an unused connection and "
-"try again."
+msgid "The approval request limit has been reached. Close an unused connection and try again."
 msgstr ""
 "मंजुरी विनंत्यांची मर्यादा गाठली आहे. न वापरलेले कनेक्शन बंद करून पुन्हा "
 "प्रयत्न करा."
@@ -132,33 +127,27 @@ msgstr ""
 msgid "The available host does not meet the machine image's requirements."
 msgstr "उपलब्ध होस्ट मशीन प्रतिमेच्या आवश्यकता पूर्ण करत नाही."
 
-#: lib/porsche/ssh/output.ex:292
+#: lib/porsche/ssh/output.ex:346
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr "कमांड पूर्ण करता आली नाही: %{reason}"
 
 #: lib/porsche/ssh/output.ex:184
 #, elixir-autogen, elixir-format
-msgid ""
-"The connection to the control service was interrupted. Check the request "
-"status before submitting it again."
+msgid "The connection to the control service was interrupted. Check the request status before submitting it again."
 msgstr ""
 "नियंत्रण सेवेशी कनेक्शन खंडित झाले. पुन्हा पाठवण्यापूर्वी विनंतीची स्थिती "
 "तपासा."
 
 #: lib/porsche/ssh/output.ex:196
 #, elixir-autogen, elixir-format
-msgid ""
-"The control service refused the request. Check the request status before "
-"submitting it again."
+msgid "The control service refused the request. Check the request status before submitting it again."
 msgstr ""
 "नियंत्रण सेवेने विनंती नाकारली. पुन्हा पाठवण्यापूर्वी विनंतीची स्थिती तपासा."
 
 #: lib/porsche/ssh/output.ex:190
 #, elixir-autogen, elixir-format
-msgid ""
-"The control service returned an invalid response. Check the request status "
-"before submitting it again."
+msgid "The control service returned an invalid response. Check the request status before submitting it again."
 msgstr ""
 "नियंत्रण सेवेने अवैध प्रतिसाद दिला. पुन्हा पाठवण्यापूर्वी विनंतीची स्थिती "
 "तपासा."
@@ -170,9 +159,7 @@ msgstr "मशीनची डिस्क या कृतीसाठी आ�
 
 #: lib/porsche/ssh/output.ex:262
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's execution generation has changed. Inspect its current state "
-"before retrying."
+msgid "The machine's execution generation has changed. Inspect its current state before retrying."
 msgstr ""
 "मशीनची अंमलबजावणी पिढी बदलली आहे. पुन्हा प्रयत्न करण्यापूर्वी त्याची सध्याची"
 " स्थिती तपासा."
@@ -184,27 +171,21 @@ msgstr "मशीनचा होस्ट अनुपलब्ध आहे. �
 
 #: lib/porsche/ssh/output.ex:151
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's placement has changed. Inspect its current state before "
-"retrying."
+msgid "The machine's placement has changed. Inspect its current state before retrying."
 msgstr ""
 "मशीनचे स्थान बदलले आहे. पुन्हा प्रयत्न करण्यापूर्वी त्याची सध्याची स्थिती "
 "तपासा."
 
 #: lib/porsche/ssh/output.ex:256
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's stop has not been confirmed. Inspect its state before "
-"retrying."
+msgid "The machine's stop has not been confirmed. Inspect its state before retrying."
 msgstr ""
 "मशीन थांबल्याची पुष्टी झालेली नाही. पुन्हा प्रयत्न करण्यापूर्वी त्याची "
 "स्थिती तपासा."
 
 #: lib/porsche/ssh/output.ex:112
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's workload is not stable enough for this operation. Check its "
-"state before retrying."
+msgid "The machine's workload is not stable enough for this operation. Check its state before retrying."
 msgstr ""
 "या कृतीसाठी मशीनचा वर्कलोड पुरेसा स्थिर नाही. पुन्हा प्रयत्न करण्यापूर्वी "
 "त्याची स्थिती तपासा."
@@ -221,8 +202,7 @@ msgstr "प्राप्तकर्त्याचे नोंदणीक�
 
 #: lib/porsche/ssh/output.ex:244
 #, elixir-autogen, elixir-format
-msgid ""
-"The repository source is invalid. Use a supported public repository URL."
+msgid "The repository source is invalid. Use a supported public repository URL."
 msgstr "रिपॉझिटरी स्रोत अवैध आहे. समर्थित सार्वजनिक रिपॉझिटरी URL वापरा."
 
 #: lib/porsche/ssh/output.ex:241
@@ -232,9 +212,7 @@ msgstr "रिपॉझिटरी स्रोत अनुपलब्ध आ
 
 #: lib/porsche/ssh/output.ex:163
 #, elixir-autogen, elixir-format
-msgid ""
-"The request conflicts with the current state. Inspect the machine or request"
-" before retrying."
+msgid "The request conflicts with the current state. Inspect the machine or request before retrying."
 msgstr ""
 "विनंती सध्याच्या स्थितीशी विसंगत आहे. पुन्हा प्रयत्न करण्यापूर्वी मशीन किंवा"
 " विनंती तपासा."
@@ -266,9 +244,7 @@ msgstr "विनंती केलेली मशीन प्रतिमा
 
 #: lib/porsche/ssh/output.ex:217
 #, elixir-autogen, elixir-format
-msgid ""
-"The requested machine size is invalid. Check the CPU, memory and disk "
-"limits."
+msgid "The requested machine size is invalid. Check the CPU, memory and disk limits."
 msgstr "विनंती केलेला मशीन आकार अवैध आहे. CPU, मेमरी आणि डिस्क मर्यादा तपासा."
 
 #: lib/porsche/ssh/output.ex:70
@@ -283,9 +259,7 @@ msgstr "सेवेचे कॉन्फिगरेशन अवैध आह
 
 #: lib/porsche/ssh/output.ex:178
 #, elixir-autogen, elixir-format
-msgid ""
-"The service does not support this protocol version. Ask your operator to "
-"update the compatible services."
+msgid "The service does not support this protocol version. Ask your operator to update the compatible services."
 msgstr ""
 "सेवा या प्रोटोकॉल आवृत्तीला समर्थन देत नाही. आपल्या ऑपरेटरला सुसंगत सेवा "
 "अपडेट करण्यास सांगा."
@@ -297,9 +271,7 @@ msgstr "सेवा तात्पुरती अनुपलब्ध आह
 
 #: lib/porsche/ssh/output.ex:277
 #, elixir-autogen, elixir-format
-msgid ""
-"The session limit has been reached. Close an unused connection and try "
-"again."
+msgid "The session limit has been reached. Close an unused connection and try again."
 msgstr ""
 "सत्रांची मर्यादा गाठली आहे. न वापरलेले कनेक्शन बंद करून पुन्हा प्रयत्न करा."
 
@@ -320,8 +292,7 @@ msgstr "ही कृती मालकाचा संरक्षित प�
 
 #: lib/porsche/ssh/output.ex:94
 #, elixir-autogen, elixir-format
-msgid ""
-"This clone has already been published and cannot be retried or cancelled."
+msgid "This clone has already been published and cannot be retried or cancelled."
 msgstr ""
 "हा क्लोन आधीच प्रकाशित झाला आहे; त्याचा पुन्हा प्रयत्न किंवा तो रद्द करता "
 "येत नाही."
@@ -349,9 +320,7 @@ msgstr "हे मशीन हटवले गेले आहे."
 
 #: lib/porsche/ssh/output.ex:226
 #, elixir-autogen, elixir-format
-msgid ""
-"This machine has reached its execution generation limit. Contact your "
-"operator."
+msgid "This machine has reached its execution generation limit. Contact your operator."
 msgstr ""
 "हे मशीन अंमलबजावणी पिढीच्या मर्यादेवर पोहोचले आहे. आपल्या ऑपरेटरशी संपर्क "
 "साधा."
@@ -373,15 +342,12 @@ msgstr "हे स्थलांतर आधीच पूर्ण झाल�
 
 #: lib/porsche/ssh/output.ex:139
 #, elixir-autogen, elixir-format
-msgid ""
-"This relocation has committed its handoff and can no longer be cancelled."
+msgid "This relocation has committed its handoff and can no longer be cancelled."
 msgstr "या स्थलांतराचे हस्तांतरण कमिट झाले आहे; आता ते रद्द करता येत नाही."
 
 #: lib/porsche/ssh/output.ex:106
 #, elixir-autogen, elixir-format
-msgid ""
-"This request ID was already used for a different command. Use the original "
-"command or a new request ID."
+msgid "This request ID was already used for a different command. Use the original command or a new request ID."
 msgstr ""
 "हा विनंती ID वेगळ्या कमांडसाठी आधीच वापरला आहे. मूळ कमांड किंवा नवीन विनंती "
 "ID वापरा."
@@ -398,9 +364,7 @@ msgstr "सध्याच्या स्थितीत या आकारब
 
 #: lib/porsche/ssh/output.ex:172
 #, elixir-autogen, elixir-format
-msgid ""
-"Too many sessions or approval requests are active. Close an unused "
-"connection and try again."
+msgid "Too many sessions or approval requests are active. Close an unused connection and try again."
 msgstr ""
 "खूप सत्रे किंवा मंजुरी विनंत्या सक्रिय आहेत. न वापरलेले कनेक्शन बंद करून "
 "पुन्हा प्रयत्न करा."
@@ -419,3 +383,91 @@ msgstr "आपल्या पिनची संख्या कमाल म�
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to perform this action."
 msgstr "आपल्याला ही कृती करण्याची परवानगी नाही."
+
+#: lib/porsche/ssh/output.ex:316
+#, elixir-autogen, elixir-format
+msgid "Answer the pending question before sending another prompt."
+msgstr "दुसरा प्रॉम्प्ट पाठवण्यापूर्वी प्रलंबित प्रश्नाचे उत्तर द्या."
+
+#: lib/porsche/ssh/output.ex:322
+#, elixir-autogen, elixir-format
+msgid "Port 4444 is reserved for the editor."
+msgstr "पोर्ट 4444 संपादकासाठी राखीव आहे."
+
+#: lib/porsche/ssh/output.ex:328
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable on this machine right now."
+msgstr "या मशीनवर टर्मिनल सध्या उपलब्ध नाहीत."
+
+#: lib/porsche/ssh/output.ex:304
+#, elixir-autogen, elixir-format
+msgid "That plan is no longer the latest proposal. Show the thread again."
+msgstr "ती योजना आता नवीनतम प्रस्ताव नाही. थ्रेड पुन्हा पाहा."
+
+#: lib/porsche/ssh/output.ex:310
+#, elixir-autogen, elixir-format
+msgid "That question has already been answered."
+msgstr "त्या प्रश्नाचे उत्तर आधीच दिले आहे."
+
+#: lib/porsche/ssh/output.ex:307
+#, elixir-autogen, elixir-format
+msgid "That question is no longer pending."
+msgstr "तो प्रश्न आता प्रलंबित नाही."
+
+#: lib/porsche/ssh/output.ex:334
+#, elixir-autogen, elixir-format
+msgid "That terminal session no longer exists."
+msgstr "ते टर्मिनल सत्र आता अस्तित्वात नाही."
+
+#: lib/porsche/ssh/output.ex:313
+#, elixir-autogen, elixir-format
+msgid "The answers do not match the pending question."
+msgstr "उत्तरे प्रलंबित प्रश्नाशी जुळत नाहीत."
+
+#: lib/porsche/ssh/output.ex:331
+#, elixir-autogen, elixir-format
+msgid "The machine is waking. Retry the terminal shortly."
+msgstr "मशीन जागी होत आहे. थोड्या वेळाने टर्मिनल पुन्हा वापरून पाहा."
+
+#: lib/porsche/ssh/output.ex:343
+#, elixir-autogen, elixir-format
+msgid "The standard input is empty or exceeds this command's size limit."
+msgstr "मानक इनपुट रिकामे आहे किंवा या कमांडच्या आकार मर्यादेपेक्षा जास्त आहे."
+
+#: lib/porsche/ssh/output.ex:319
+#, elixir-autogen, elixir-format
+msgid "The web settings changed since you read them. Show them again and retry."
+msgstr "तुम्ही वाचल्यानंतर वेब सेटिंग्ज बदलल्या आहेत. त्या पुन्हा पाहा आणि पुन्हा प्रयत्न करा."
+
+#: lib/porsche/ssh/output.ex:337
+#, elixir-autogen, elixir-format
+msgid "This command reads its input from standard input. Pipe it in and end the command with -."
+msgstr "ही कमांड तिचे इनपुट मानक इनपुटमधून वाचते. ते पाइप करा आणि कमांड - ने संपवा."
+
+#: lib/porsche/ssh/output.ex:325
+#, elixir-autogen, elixir-format
+msgid "This machine's profile does not allow web publishing."
+msgstr "या मशीनची प्रोफाइल वेब प्रकाशनास परवानगी देत नाही."
+
+#: lib/porsche/ssh/output.ex:301
+#, elixir-autogen, elixir-format
+msgid "This thread is busy with a turn. Try again when it finishes."
+msgstr "हा थ्रेड एका टर्नमध्ये व्यस्त आहे. तो पूर्ण झाल्यावर पुन्हा प्रयत्न करा."
+
+#: lib/porsche/ssh/output.ex:298
+#, elixir-autogen, elixir-format
+msgid "This thread is not ready for prompts yet."
+msgstr "हा थ्रेड अद्याप प्रॉम्प्टसाठी तयार नाही."
+
+#: lib/porsche/ssh/output.ex:292
+#, elixir-autogen, elixir-format
+msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr "terminal attach साठी टर्मिनल आवश्यक आहे. ssh -t ने कनेक्ट करा आणि ते कमांड म्हणून चालवा."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "या उपयोजनात पुश सूचना बंद आहेत; त्याच्या संचालकाशी संपर्क साधा."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "तुमच्या उपकरणांची संख्या कमाल मर्यादेपर्यंत पोहोचली आहे; आधी एक उपकरण काढा: device rm DEVICE_ID"

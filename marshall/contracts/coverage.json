@@ -1,9 +1,9 @@
 {
   "apps": {
     "marshall": {
-      "active": 32,
-      "coverage": 1.0,
-      "covered": 32
+      "active": 36,
+      "coverage": 0.9167,
+      "covered": 33
     },
     "system": {
       "active": 0,
@@ -57,6 +57,45 @@
           "testable": true,
           "tests": [
             "test the owner-pin refusal is a closed compute reason across the SSH control API"
+          ]
+        }
+      }
+    },
+    "marshall.github": {
+      "active": 3,
+      "app": "marshall",
+      "coverage": 0.0,
+      "covered": 0,
+      "form": "light",
+      "obligations": {
+        "marshall.github.I1": {
+          "failing": 1,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test another live login cannot consume a ceremony and replay cannot exchange again"
+          ]
+        },
+        "marshall.github.I2": {
+          "failing": 1,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test disconnect refuses old pins and returns credential-free anonymous admission"
+          ]
+        },
+        "marshall.github.I3": {
+          "failing": 1,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test a restore epoch removes credentials and ceremonies and is idempotent"
           ]
         }
       }
@@ -288,10 +327,10 @@
       }
     },
     "marshall.web_surface": {
-      "active": 9,
+      "active": 10,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 9,
+      "covered": 10,
       "form": "light",
       "obligations": {
         "marshall.web_surface.I1": {
@@ -302,6 +341,16 @@
           "testable": true,
           "tests": [
             "test declared modules compile and remain loadable"
+          ]
+        },
+        "marshall.web_surface.I10": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test validated preferences determine locale and direction and responses vary by selection"
           ]
         },
         "marshall.web_surface.I2": {
@@ -397,8 +446,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 32,
-    "coverage": 1.0,
-    "covered": 32
+    "active": 36,
+    "coverage": 0.9167,
+    "covered": 33
   }
 }

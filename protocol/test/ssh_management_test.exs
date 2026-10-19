@@ -95,6 +95,7 @@ defmodule OverallsProtocol.SSHManagementTest do
     assert SSHManagement.formatting_locale("sw") == "sw"
     assert SSHManagement.formatting_locale("ha") == "ha"
     assert SSHManagement.formatting_locale("ar") == "ar"
+
     for invalid <- [nil, %{}, "../../ar", "ARZ", "zz"] do
       refute SSHManagement.locale?(invalid)
       assert SSHManagement.formatting_locale(invalid) == "en"

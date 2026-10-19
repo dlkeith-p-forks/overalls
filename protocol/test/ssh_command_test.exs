@@ -278,6 +278,69 @@ defmodule OverallsProtocol.SSHCommandTest do
     assert {:error, :invalid_command} = SSHCommand.parse("lock vm-one")
   end
 
+  test "device commands require their options, stdin push keys and canonical identifiers" do
+    key = Base.url_encode64(:binary.copy(<<7>>, 32), padding: false)
+    id = "5d7a6f0e-2b1c-4e8f-9a3d-6c0b1e2f3a4b"
+
+    assert {:ok, command} =
+             SSHCommand.parse(
+               "device register --platform ios --push-key - --enc-pubkey #{key} --label phone --json"
+             )
+
+    assert command.command == "device register"
+    assert SSHCommand.mutation?("device register")
+    refute SSHCommand.physical?("device register")
+    assert SSHCommand.stdin_secret?(command)
+    push_key = String.duplicate("Ab_-", 8)
+    assert {:ok, replaced} = SSHCommand.put_stdin_secret(command, push_key)
+    assert replaced.options["push-key"] == push_key
+    refute SSHCommand.stdin_secret?(replaced)
+
+    for bad <- ["", "short", "has space in it.......", String.duplicate("A", 701)] do
+      assert {:error, :invalid_command} = SSHCommand.put_stdin_secret(command, bad)
+    end
+
+    for text <- [
+          "device register --platform ios --push-key -",
+          "device register --platform windows --push-key - --enc-pubkey #{key}",
+          "device register --platform ios --push-key - --enc-pubkey AAAA",
+          "device register --platform ios --push-key - --enc-pubkey #{key}=",
+          "device register extra --platform ios --push-key - --enc-pubkey #{key}",
+          "device ls #{id}",
+          "device rm not-a-uuid",
+          "device prefs #{id}",
+          "device prefs #{id} --enabled yes",
+          "device wipe #{id}"
+        ] do
+      assert {:error, :invalid_command} = SSHCommand.parse(text), text
+    end
+
+    assert {:ok, %{command: "device ls"}} = SSHCommand.parse("device ls --json")
+    refute SSHCommand.mutation?("device ls")
+    assert {:ok, %{arguments: [^id]}} = SSHCommand.parse("device rm #{id}")
+    assert SSHCommand.mutation?("device rm")
+
+    assert {:ok, %{options: %{"enabled" => "false"}}} =
+             SSHCommand.parse("device prefs #{id} --enabled false")
+
+    assert SSHCommand.mutation?("device prefs")
+    assert SSHCommand.device_public_key?(key)
+    refute SSHCommand.device_public_key?(nil)
+
+    # The shared Mila fixture's example commands stay valid catalog commands.
+    fixture =
+      Path.expand("fixtures/porsche_device_results.json", __DIR__)
+      |> File.read!()
+      |> JSON.decode!()
+
+    for {name, %{"command" => text, "response" => response}} <- fixture["commands"] do
+      assert {:ok, %{command: ^name}} = SSHCommand.parse(text), text
+      refute inspect(response) =~ "enc-pubkey"
+    end
+
+    for %{"command" => text} <- fixture["refusals"], do: assert({:ok, _} = SSHCommand.parse(text))
+  end
+
   test "integration stdin credential markers are replaced only through shared validation" do
     assert {:ok, command} =
              SSHCommand.parse("integration add api --target https://api.test --bearer -")

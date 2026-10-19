@@ -85,7 +85,7 @@ msgstr "Tietovarastot"
 msgid "Repository path"
 msgstr "Tietovaraston polku"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "Tietovarasto ei ole saatavilla."

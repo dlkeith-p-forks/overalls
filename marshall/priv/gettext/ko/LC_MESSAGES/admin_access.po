@@ -14,36 +14,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/admin/access_live.ex:83
+#: lib/marshall_web/live/admin/access_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "접근권한"
 
-#: lib/marshall_web/live/admin/access_live.ex:65
+#: lib/marshall_web/live/admin/access_live.ex:78
 #, elixir-autogen, elixir-format
 msgid "Access inventory is temporarily unavailable."
 msgstr "일시적으로 인벤토리에 액세스할 수 없습니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:106
-#: lib/marshall_web/live/admin/access_live.ex:152
+#: lib/marshall_web/live/admin/access_live.ex:123
+#: lib/marshall_web/live/admin/access_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "계정"
 
-#: lib/marshall_web/live/admin/access_live.ex:110
-#: lib/marshall_web/live/admin/access_live.ex:156
-#: lib/marshall_web/live/admin/access_live.ex:205
+#: lib/marshall_web/live/admin/access_live.ex:127
+#: lib/marshall_web/live/admin/access_live.ex:173
+#: lib/marshall_web/live/admin/access_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "행위"
 
-#: lib/marshall_web/live/admin/access_live.ex:95
-#: lib/marshall_web/live/admin/access_live.ex:195
+#: lib/marshall_web/live/admin/access_live.ex:112
+#: lib/marshall_web/live/admin/access_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "Active SSH sessions"
 msgstr "활성 SSH 세션"
 
-#: lib/marshall_web/live/admin/access_live.ex:154
+#: lib/marshall_web/live/admin/access_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "추가됨"
@@ -58,32 +58,32 @@ msgstr "관리 설정 변경이 승인되지 않았습니다."
 msgid "Administrative changes require an administrator."
 msgstr "관리 설정을 변경하려면 관리자 권한이 필요합니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:226
+#: lib/marshall_web/live/admin/access_live.ex:245
 #, elixir-autogen, elixir-format
 msgid "Close session"
 msgstr "세션 닫기"
 
-#: lib/marshall_web/live/admin/access_live.ex:224
+#: lib/marshall_web/live/admin/access_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Close this SSH session?"
 msgstr "이 SSH 세션을 닫으시겠습니까?"
 
-#: lib/marshall_web/live/admin/access_live.ex:36
+#: lib/marshall_web/live/admin/access_live.ex:43
 #, elixir-autogen, elixir-format
 msgid "Could not close that session."
 msgstr "해당 세션을 닫을 수 없습니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:46
+#: lib/marshall_web/live/admin/access_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "Could not revoke that VM access."
 msgstr "해당 VM 액세스를 취소할 수 없습니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:26
+#: lib/marshall_web/live/admin/access_live.ex:31
 #, elixir-autogen, elixir-format
 msgid "Could not revoke that key."
 msgstr "해당 키를 취소할 수 없습니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:203
+#: lib/marshall_web/live/admin/access_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Expires"
 msgstr "만료"
@@ -93,154 +93,154 @@ msgstr "만료"
 msgid "Finish or cancel the current verification first."
 msgstr "먼저 현재 인증을 완료하거나 취소하세요."
 
-#: lib/marshall_web/live/admin/access_live.ex:201
+#: lib/marshall_web/live/admin/access_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Gateway"
 msgstr "게이트웨이"
 
-#: lib/marshall_web/live/admin/access_live.ex:108
+#: lib/marshall_web/live/admin/access_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "Granted"
 msgstr "부여된"
 
-#: lib/marshall_web/live_admin_auth.ex:205
+#: lib/marshall_web/live_admin_auth.ex:208
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "잘못된 관리 요청입니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:51
+#: lib/marshall_web/live/admin/access_live.ex:60
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "요청이 잘못되었습니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:153
-#: lib/marshall_web/live/admin/access_live.ex:202
+#: lib/marshall_web/live/admin/access_live.ex:170
+#: lib/marshall_web/live/admin/access_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Key"
 msgstr "열쇠"
 
-#: lib/marshall_web/live/admin/access_live.ex:105
+#: lib/marshall_web/live/admin/access_live.ex:122
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "기계"
 
-#: lib/marshall_web/live/admin/access_live.ex:246
+#: lib/marshall_web/live/admin/access_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "관리자"
 
-#: lib/marshall_web/live/admin/access_live.ex:147
+#: lib/marshall_web/live/admin/access_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "No active keys."
 msgstr "활성 키가 없습니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:196
+#: lib/marshall_web/live/admin/access_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "No active sessions."
 msgstr "활성 세션이 없습니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:99
+#: lib/marshall_web/live/admin/access_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "No machine is shared with another account."
 msgstr "어떤 머신도 다른 계정과 공유되지 않습니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:245
+#: lib/marshall_web/live/admin/access_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "연산자"
 
-#: lib/marshall_web/live/admin/access_live.ex:213
+#: lib/marshall_web/live/admin/access_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Pending key approval"
 msgstr "키 승인 대기 중"
 
-#: lib/marshall_web/live/admin/access_live.ex:94
-#: lib/marshall_web/live/admin/access_live.ex:146
+#: lib/marshall_web/live/admin/access_live.ex:111
+#: lib/marshall_web/live/admin/access_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Registered SSH keys"
 msgstr "등록된 SSH 키"
 
-#: lib/marshall_web/live/admin/access_live.ex:138
+#: lib/marshall_web/live/admin/access_live.ex:155
 #, elixir-autogen, elixir-format
 msgid "Revoke access"
 msgstr "액세스 취소"
 
-#: lib/marshall_web/live/admin/access_live.ex:187
+#: lib/marshall_web/live/admin/access_live.ex:206
 #, elixir-autogen, elixir-format
 msgid "Revoke key"
 msgstr "키 취소"
 
-#: lib/marshall_web/live/admin/access_live.ex:185
+#: lib/marshall_web/live/admin/access_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Revoke this SSH key and close sessions using it?"
 msgstr "이 SSH 키를 취소하고 이를 사용하여 세션을 닫으시겠습니까?"
 
-#: lib/marshall_web/live/admin/access_live.ex:136
+#: lib/marshall_web/live/admin/access_live.ex:153
 #, elixir-autogen, elixir-format
 msgid "Revoke this user's VM access?"
 msgstr "이 사용자의 VM 액세스를 취소하시겠습니까?"
 
-#: lib/marshall_web/live/admin/access_live.ex:247
+#: lib/marshall_web/live/admin/access_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "취소됨"
 
-#: lib/marshall_web/live/admin/access_live.ex:107
+#: lib/marshall_web/live/admin/access_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "역할"
 
-#: lib/marshall_web/live/admin/access_live.ex:172
+#: lib/marshall_web/live/admin/access_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "SSH key"
 msgstr "SSH 키"
 
-#: lib/marshall_web/live/admin/access_live.ex:25
+#: lib/marshall_web/live/admin/access_live.ex:27
 #, elixir-autogen, elixir-format
 msgid "SSH key revoked."
 msgstr "SSH 키가 취소되었습니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:33
+#: lib/marshall_web/live/admin/access_live.ex:39
 #, elixir-autogen, elixir-format
 msgid "SSH session closed."
 msgstr "SSH 세션이 종료되었습니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:97
+#: lib/marshall_web/live/admin/access_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Shared machine access"
 msgstr "공유 머신 액세스"
 
-#: lib/marshall_web/live/admin/access_live.ex:93
+#: lib/marshall_web/live/admin/access_live.ex:110
 #, elixir-autogen, elixir-format
 msgid "Shared machine grants"
 msgstr "공유 머신 부여"
 
-#: lib/marshall_web/live/admin/access_live.ex:248
+#: lib/marshall_web/live/admin/access_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "알려지지 않은"
 
-#: lib/marshall_web/live/admin/access_live.ex:90
+#: lib/marshall_web/live/admin/access_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Updated every 15 seconds"
 msgstr "15초마다 업데이트됨"
 
-#: lib/marshall_web/live/admin/access_live.ex:43
+#: lib/marshall_web/live/admin/access_live.ex:51
 #, elixir-autogen, elixir-format
 msgid "VM access revoked."
 msgstr "VM 액세스가 취소되었습니다."
 
-#: lib/marshall_web/live/admin/access_live.ex:244
+#: lib/marshall_web/live/admin/access_live.ex:263
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "뷰어"
 
-#: lib/marshall_web/live/admin/access_live.ex:243
+#: lib/marshall_web/live/admin/access_live.ex:262
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "웹 앱"
 
-#: lib/marshall_web/live/admin/access_live.ex:85
+#: lib/marshall_web/live/admin/access_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
 msgstr ""

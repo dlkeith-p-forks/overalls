@@ -1513,9 +1513,11 @@ that understands the shapes.
 
 [ADR-0171](repo:docs/architecture/decisions/0171-windows-guest-agents.md) adds a
 third agent set. [`OverallsProtocol.GuestAgents`](repo:protocol/lib/overalls_protocol/guest_agents.ex)
-names the closed set (`linux`, `none`, `windows-v1`, `freebsd-v1` and
-`illumos-v1`) and a pure capability table. Linux has everything, `none` has
-nothing, Windows has its reviewed firmware subset, and unqualified FreeBSD and
+names the closed set (`linux`, `linux-android-v1`, `none`, `windows-v1`,
+`windows-editor-v1`, `freebsd-v1` and `illumos-v1`) and a pure capability table.
+Ordinary Linux has the core capabilities; the Android row adds SDK, ADB, emulator
+and display flags. The `none` row has nothing, Windows has its declared firmware
+subset, and unqualified FreeBSD and
 illumos rows remain all-false transport declarations. Qualified `capabilities/2`
 requires an exact approved FreeBSD or OmniOS identity for the reviewed native subset;
 editor and Inception stay false. Lilly's driver, executor and
@@ -1820,13 +1822,41 @@ New identity-bearing admissions require an image manifest advertising `git_ident
 
 ## Android software guest
 
-`linux-android-v1` is an additive NixOS Firecracker guest profile. Its emulator
-uses TCG software rendering and persistent AVD state; readiness is bounded at
+`linux-android-v1` is an additive version-4 NixOS Firecracker guest profile with
+the pinned API 34/35/36 SDK closure, ADB and a persistent API 36 x86_64 AVD. Its
+emulator uses TCG software rendering without host KVM; readiness is bounded at
 600 seconds. ADB and display authority are withheld until emulator readiness.
 The image's current RFB bridge is loopback-bound for diagnostics only; it is not
 an authenticated display authority. The guest now validates Lilly's bounded
-display preface in a typed fixed-port relay before forwarding to loopback RFB;
-Lilly's namespace ingress remains the network authority. The profile reserves
+display preface in a typed fixed-port relay before forwarding to loopback RFB.
+The guest firewall declares TCP 22 globally and admits the relay's TCP 5900 only
+on `eth0`, the guest TAP interface; raw RFB remains on loopback TCP 5901. This
+interface restriction is separate from signed tickets, current-generation
+checks and Lilly's namespace ingress authority. It records the firewall
+declaration, not a passing native packet-filter test. The profile reserves
 8 GiB memory and 32 GiB writable disk. Signed ticket verification, browser
 controller/viewer leases and native Firecracker acceptance remain outside this
 guest-only evidence.
+
+The version-4 manifest may explicitly declare `guest_agents: linux-android-v1`;
+that declaration participates in immutable image identity. An omitted declaration
+retains the ordinary Linux identity and does not grant Android capabilities.
+Marshall projects the validated `android_sdk`, `adb`, `android_emulator` and
+`android_display` flags from the protocol capability table. The fleet image
+selection includes the Android SDK NixOS profile; package selection alone is
+not native runtime acceptance.
+
+Marshall's in-memory display registry shares a relay for each machine and
+generation, while the socket separately checks current login and ticket claims
+before attaching a controller or viewer. The noVNC client owns its canvas inside
+a dedicated display target, which is cleared on reconnect. These implementation
+facts do not establish native transport, browser controller/viewer enforcement,
+restart recovery or physical isolation; the existing Android acceptance gaps
+remain open.
+
+The standalone emulator machine fixture has a recorded passing execution for
+the API 34 AVD, an APK compiled against API 36, authenticated ADB, PNG screencap
+and marker persistence across emulator restart. Its AVD has 4 Android cores and
+4 GiB inside an 8-vCPU/8-GiB NixOS test VM. This does not qualify the production
+API 36 image, TAP firewall, Lilly ticket authority or browser display journey;
+production Firecracker display transport remains an explicit acceptance gap.

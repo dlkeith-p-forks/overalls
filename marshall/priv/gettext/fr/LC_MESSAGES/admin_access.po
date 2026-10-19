@@ -5,36 +5,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/marshall_web/live/admin/access_live.ex:83
+#: lib/marshall_web/live/admin/access_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "Autorité d’accès"
 
-#: lib/marshall_web/live/admin/access_live.ex:65
+#: lib/marshall_web/live/admin/access_live.ex:78
 #, elixir-autogen, elixir-format
 msgid "Access inventory is temporarily unavailable."
 msgstr "L’inventaire des accès est temporairement indisponible."
 
-#: lib/marshall_web/live/admin/access_live.ex:106
-#: lib/marshall_web/live/admin/access_live.ex:152
+#: lib/marshall_web/live/admin/access_live.ex:123
+#: lib/marshall_web/live/admin/access_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Compte"
 
-#: lib/marshall_web/live/admin/access_live.ex:110
-#: lib/marshall_web/live/admin/access_live.ex:156
-#: lib/marshall_web/live/admin/access_live.ex:205
+#: lib/marshall_web/live/admin/access_live.ex:127
+#: lib/marshall_web/live/admin/access_live.ex:173
+#: lib/marshall_web/live/admin/access_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Actions"
 
-#: lib/marshall_web/live/admin/access_live.ex:95
-#: lib/marshall_web/live/admin/access_live.ex:195
+#: lib/marshall_web/live/admin/access_live.ex:112
+#: lib/marshall_web/live/admin/access_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "Active SSH sessions"
 msgstr "Sessions SSH actives"
 
-#: lib/marshall_web/live/admin/access_live.ex:154
+#: lib/marshall_web/live/admin/access_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "Ajouté"
@@ -49,32 +49,32 @@ msgstr "Les modifications administratives ne sont pas autorisées."
 msgid "Administrative changes require an administrator."
 msgstr "Les modifications administratives nécessitent un administrateur."
 
-#: lib/marshall_web/live/admin/access_live.ex:226
+#: lib/marshall_web/live/admin/access_live.ex:245
 #, elixir-autogen, elixir-format
 msgid "Close session"
 msgstr "Fermer la session"
 
-#: lib/marshall_web/live/admin/access_live.ex:224
+#: lib/marshall_web/live/admin/access_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Close this SSH session?"
 msgstr "Fermer cette session SSH ?"
 
-#: lib/marshall_web/live/admin/access_live.ex:36
+#: lib/marshall_web/live/admin/access_live.ex:43
 #, elixir-autogen, elixir-format
 msgid "Could not close that session."
 msgstr "Impossible de fermer cette session."
 
-#: lib/marshall_web/live/admin/access_live.ex:46
+#: lib/marshall_web/live/admin/access_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "Could not revoke that VM access."
 msgstr "Impossible de révoquer cet accès VM."
 
-#: lib/marshall_web/live/admin/access_live.ex:26
+#: lib/marshall_web/live/admin/access_live.ex:31
 #, elixir-autogen, elixir-format
 msgid "Could not revoke that key."
 msgstr "Impossible de révoquer cette clé."
 
-#: lib/marshall_web/live/admin/access_live.ex:203
+#: lib/marshall_web/live/admin/access_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Expires"
 msgstr "Expire"
@@ -84,154 +84,154 @@ msgstr "Expire"
 msgid "Finish or cancel the current verification first."
 msgstr "Terminez ou annulez d’abord la vérification en cours."
 
-#: lib/marshall_web/live/admin/access_live.ex:201
+#: lib/marshall_web/live/admin/access_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Gateway"
 msgstr "Passerelle"
 
-#: lib/marshall_web/live/admin/access_live.ex:108
+#: lib/marshall_web/live/admin/access_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "Granted"
 msgstr "Accordé"
 
-#: lib/marshall_web/live_admin_auth.ex:205
+#: lib/marshall_web/live_admin_auth.ex:208
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "Demande administrative non valide."
 
-#: lib/marshall_web/live/admin/access_live.ex:51
+#: lib/marshall_web/live/admin/access_live.ex:60
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Demande invalide."
 
-#: lib/marshall_web/live/admin/access_live.ex:153
-#: lib/marshall_web/live/admin/access_live.ex:202
+#: lib/marshall_web/live/admin/access_live.ex:170
+#: lib/marshall_web/live/admin/access_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Key"
 msgstr "Clé"
 
-#: lib/marshall_web/live/admin/access_live.ex:105
+#: lib/marshall_web/live/admin/access_live.ex:122
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "Machine"
 
-#: lib/marshall_web/live/admin/access_live.ex:246
+#: lib/marshall_web/live/admin/access_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "Gestionnaire"
 
-#: lib/marshall_web/live/admin/access_live.ex:147
+#: lib/marshall_web/live/admin/access_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "No active keys."
 msgstr "Aucune clé active."
 
-#: lib/marshall_web/live/admin/access_live.ex:196
+#: lib/marshall_web/live/admin/access_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "No active sessions."
 msgstr "Aucune session active."
 
-#: lib/marshall_web/live/admin/access_live.ex:99
+#: lib/marshall_web/live/admin/access_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "No machine is shared with another account."
 msgstr "Aucune machine n’est partagée avec un autre compte."
 
-#: lib/marshall_web/live/admin/access_live.ex:245
+#: lib/marshall_web/live/admin/access_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "Opérateur"
 
-#: lib/marshall_web/live/admin/access_live.ex:213
+#: lib/marshall_web/live/admin/access_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Pending key approval"
 msgstr "Approbation de la clé en attente"
 
-#: lib/marshall_web/live/admin/access_live.ex:94
-#: lib/marshall_web/live/admin/access_live.ex:146
+#: lib/marshall_web/live/admin/access_live.ex:111
+#: lib/marshall_web/live/admin/access_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Registered SSH keys"
 msgstr "Clés SSH enregistrées"
 
-#: lib/marshall_web/live/admin/access_live.ex:138
+#: lib/marshall_web/live/admin/access_live.ex:155
 #, elixir-autogen, elixir-format
 msgid "Revoke access"
 msgstr "Révoquer l’accès"
 
-#: lib/marshall_web/live/admin/access_live.ex:187
+#: lib/marshall_web/live/admin/access_live.ex:206
 #, elixir-autogen, elixir-format
 msgid "Revoke key"
 msgstr "Révoquer la clé"
 
-#: lib/marshall_web/live/admin/access_live.ex:185
+#: lib/marshall_web/live/admin/access_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Revoke this SSH key and close sessions using it?"
 msgstr "Révoquer cette clé SSH et fermer les sessions qui l’utilisent ?"
 
-#: lib/marshall_web/live/admin/access_live.ex:136
+#: lib/marshall_web/live/admin/access_live.ex:153
 #, elixir-autogen, elixir-format
 msgid "Revoke this user's VM access?"
 msgstr "Révoquer l’accès VM de cet utilisateur ?"
 
-#: lib/marshall_web/live/admin/access_live.ex:247
+#: lib/marshall_web/live/admin/access_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "Révoqué"
 
-#: lib/marshall_web/live/admin/access_live.ex:107
+#: lib/marshall_web/live/admin/access_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "Rôle"
 
-#: lib/marshall_web/live/admin/access_live.ex:172
+#: lib/marshall_web/live/admin/access_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "SSH key"
 msgstr "Clé SSH"
 
-#: lib/marshall_web/live/admin/access_live.ex:25
+#: lib/marshall_web/live/admin/access_live.ex:27
 #, elixir-autogen, elixir-format
 msgid "SSH key revoked."
 msgstr "Clé SSH révoquée."
 
-#: lib/marshall_web/live/admin/access_live.ex:33
+#: lib/marshall_web/live/admin/access_live.ex:39
 #, elixir-autogen, elixir-format
 msgid "SSH session closed."
 msgstr "Session SSH fermée."
 
-#: lib/marshall_web/live/admin/access_live.ex:97
+#: lib/marshall_web/live/admin/access_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Shared machine access"
 msgstr "Accès partagé aux machines"
 
-#: lib/marshall_web/live/admin/access_live.ex:93
+#: lib/marshall_web/live/admin/access_live.ex:110
 #, elixir-autogen, elixir-format
 msgid "Shared machine grants"
 msgstr "Autorisations partagées sur les machines"
 
-#: lib/marshall_web/live/admin/access_live.ex:248
+#: lib/marshall_web/live/admin/access_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: lib/marshall_web/live/admin/access_live.ex:90
+#: lib/marshall_web/live/admin/access_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Updated every 15 seconds"
 msgstr "Actualisé toutes les 15 secondes"
 
-#: lib/marshall_web/live/admin/access_live.ex:43
+#: lib/marshall_web/live/admin/access_live.ex:51
 #, elixir-autogen, elixir-format
 msgid "VM access revoked."
 msgstr "Accès VM révoqué."
 
-#: lib/marshall_web/live/admin/access_live.ex:244
+#: lib/marshall_web/live/admin/access_live.ex:263
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "Lecteur"
 
-#: lib/marshall_web/live/admin/access_live.ex:243
+#: lib/marshall_web/live/admin/access_live.ex:262
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "Applications web"
 
-#: lib/marshall_web/live/admin/access_live.ex:85
+#: lib/marshall_web/live/admin/access_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
 msgstr ""

@@ -85,7 +85,7 @@ msgstr "仓库"
 msgid "Repository path"
 msgstr "仓库路径"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "仓库不可用。"

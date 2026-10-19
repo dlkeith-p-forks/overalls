@@ -14,126 +14,126 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/integrations_live.ex:324
+#: lib/marshall_web/live/integrations_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "**** (write-only)"
 msgstr "****(쓰기 전용)"
 
-#: lib/marshall_web/live/integrations_live.ex:342
+#: lib/marshall_web/live/integrations_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "행위"
 
-#: lib/marshall_web/live/integrations_live.ex:386
+#: lib/marshall_web/live/integrations_live.ex:421
 #, elixir-autogen, elixir-format
 msgid "Add an integration"
 msgstr "통합 추가"
 
-#: lib/marshall_web/live/integrations_live.ex:267
-#: lib/marshall_web/live/integrations_live.ex:380
+#: lib/marshall_web/live/integrations_live.ex:288
+#: lib/marshall_web/live/integrations_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "붙이다"
 
-#: lib/marshall_web/live/integrations_live.ex:377
+#: lib/marshall_web/live/integrations_live.ex:412
 #, elixir-autogen, elixir-format
 msgid "Attach a machine by ID"
 msgstr "ID로 머신 연결"
 
-#: lib/marshall_web/live/integrations_live.ex:129
+#: lib/marshall_web/live/integrations_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "Awaiting GitHub authorization"
 msgstr "GitHub 승인 대기 중"
 
-#: lib/marshall_web/live/integrations_live.ex:420
+#: lib/marshall_web/live/integrations_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Basic user:pass"
 msgstr "기본 사용자:통과"
 
-#: lib/marshall_web/live/integrations_live.ex:414
+#: lib/marshall_web/live/integrations_live.ex:450
 #, elixir-autogen, elixir-format
 msgid "Bearer token"
 msgstr "무기명 토큰"
 
-#: lib/marshall_web/live/integrations_live.ex:312
-#: lib/marshall_web/live/integrations_live.ex:400
+#: lib/marshall_web/live/integrations_live.ex:334
+#: lib/marshall_web/live/integrations_live.ex:436
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "댓글"
 
-#: lib/marshall_web/live/integrations_live.ex:230
+#: lib/marshall_web/live/integrations_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Connect GitHub"
 msgstr "GitHub 연결"
 
-#: lib/marshall_web/live/integrations_live.ex:215
+#: lib/marshall_web/live/integrations_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
 msgstr "Git, 풀 리퀘스트, Actions, 릴리스 및 기타 개발 워크플로를 위해 GitHub 계정을 연결하세요. GitHub 자격 증명은 엣지에 유지됩니다."
 
-#: lib/marshall_web/live/integrations_live.ex:126
-#: lib/marshall_web/live/integrations_live.ex:127
+#: lib/marshall_web/live/integrations_live.ex:142
+#: lib/marshall_web/live/integrations_live.ex:143
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "연결됨"
 
-#: lib/marshall_web/live/integrations_live.ex:225
+#: lib/marshall_web/live/integrations_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Connected as %{login}"
 msgstr "%{login}(으)로 연결됨"
 
-#: lib/marshall_web/live/integrations_live.ex:82
+#: lib/marshall_web/live/integrations_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Could not attach that machine."
 msgstr "해당 컴퓨터를 연결할 수 없습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:95
+#: lib/marshall_web/live/integrations_live.ex:107
 #, elixir-autogen, elixir-format
 msgid "Could not detach that machine."
 msgstr "해당 컴퓨터를 분리할 수 없습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:69
+#: lib/marshall_web/live/integrations_live.ex:75
 #, elixir-autogen, elixir-format
 msgid "Could not remove this integration."
 msgstr "이 통합을 삭제할 수 없습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:55
+#: lib/marshall_web/live/integrations_live.ex:58
 #, elixir-autogen, elixir-format
 msgid "Could not save this integration. Check the name, HTTPS target and header values."
 msgstr "이 통합을 저장할 수 없습니다. 이름, HTTPS 대상, 헤더 값을 확인하세요."
 
-#: lib/marshall_web/live/integrations_live.ex:409
+#: lib/marshall_web/live/integrations_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "Credentials"
 msgstr "신임장"
 
-#: lib/marshall_web/live/integrations_live.ex:258
-#: lib/marshall_web/live/integrations_live.ex:358
+#: lib/marshall_web/live/integrations_live.ex:279
+#: lib/marshall_web/live/integrations_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "Detach"
 msgstr "분리하다"
 
-#: lib/marshall_web/live/integrations_live.ex:240
+#: lib/marshall_web/live/integrations_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub"
 msgstr "GitHub 연결 해제"
 
-#: lib/marshall_web/live/integrations_live.ex:237
+#: lib/marshall_web/live/integrations_live.ex:256
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub from your machines?"
 msgstr "머신에서 GitHub 연결을 해제하시겠습니까?"
 
-#: lib/marshall_web/live/integrations_live.ex:128
+#: lib/marshall_web/live/integrations_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
 msgstr "연결 해제됨"
 
-#: lib/marshall_web/live/integrations_live.ex:133
+#: lib/marshall_web/live/integrations_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Disconnecting GitHub"
 msgstr "GitHub 연결 해제 중"
 
-#: lib/marshall_web/live/integrations_live.ex:130
+#: lib/marshall_web/live/integrations_live.ex:146
 #, elixir-autogen, elixir-format
 msgid "Finishing active GitHub requests"
 msgstr "진행 중인 GitHub 요청 마무리 중"
@@ -143,237 +143,237 @@ msgstr "진행 중인 GitHub 요청 마무리 중"
 msgid "GitHub connected."
 msgstr "GitHub가 연결되었습니다."
 
-#: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:65
 #, elixir-autogen, elixir-format
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "GitHub를 연결하지 못했습니다. 통합에서 다시 시도하세요."
 
-#: lib/marshall_web/live/integrations_live.ex:405
+#: lib/marshall_web/live/integrations_live.ex:441
 #, elixir-autogen, elixir-format
 msgid "HTTPS target"
 msgstr "HTTPS 대상"
 
-#: lib/marshall_web/live/integrations_live.ex:319
+#: lib/marshall_web/live/integrations_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Injected credentials"
 msgstr "주입된 자격 증명"
 
-#: lib/marshall_web/live/integrations_live.ex:47
+#: lib/marshall_web/live/integrations_live.ex:49
 #, elixir-autogen, elixir-format
 msgid "Integration %{value1} saved."
 msgstr "통합 %{value1}가 저장되었습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:65
+#: lib/marshall_web/live/integrations_live.ex:70
 #, elixir-autogen, elixir-format
 msgid "Integration removed."
 msgstr "통합이 제거되었습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:201
+#: lib/marshall_web/live/integrations_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "통합"
 
-#: lib/marshall_web/live/integrations_live.ex:121
+#: lib/marshall_web/live/integrations_live.ex:136
 #, elixir-autogen, elixir-format
 msgid "Integrations are temporarily unavailable."
 msgstr "일시적으로 통합을 사용할 수 없습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:100
+#: lib/marshall_web/live/integrations_live.ex:113
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "요청이 잘못되었습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:341
+#: lib/marshall_web/live/integrations_live.ex:374
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "기계"
 
-#: lib/marshall_web/live/integrations_live.ex:255
-#: lib/marshall_web/live/integrations_live.ex:378
+#: lib/marshall_web/live/integrations_live.ex:276
+#: lib/marshall_web/live/integrations_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "Machine UUID"
 msgstr "머신 UUID"
 
-#: lib/marshall_web/live/integrations_live.ex:78
+#: lib/marshall_web/live/integrations_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Machine attached."
 msgstr "기계가 부착되어 있습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:91
+#: lib/marshall_web/live/integrations_live.ex:102
 #, elixir-autogen, elixir-format
 msgid "Machine detached."
 msgstr "기계가 분리되었습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:244
+#: lib/marshall_web/live/integrations_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Machines excluded from your GitHub identity"
 msgstr "GitHub ID 사용에서 제외된 머신"
 
-#: lib/marshall_web/live/integrations_live.ex:328
+#: lib/marshall_web/live/integrations_live.ex:355
 #, elixir-autogen, elixir-format
 msgid "Machines with access"
 msgstr "접근 가능한 기계"
 
-#: lib/marshall_web/live/integrations_live.ex:395
+#: lib/marshall_web/live/integrations_live.ex:431
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "이름"
 
-#: lib/marshall_web/live/integrations_live.ex:388
+#: lib/marshall_web/live/integrations_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
 msgstr ""
 "엔드포인트의 이름을 지정하고 HTTPS API를 가리키거나 다른 머신에 대한 피어 연결로 표시하세요. 비밀은 쓰기 전용입니다. 주입을 "
 "위해 저장되며 다시 표시되지 않습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:203
+#: lib/marshall_web/live/integrations_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
 msgstr ""
 "https://NAME.integration.internal에서 머신이 도달하는 명명된 엔드포인트입니다. 자격 증명은 엣지에 삽입되며 "
 "머신에서 읽을 수 없습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:333
+#: lib/marshall_web/live/integrations_live.ex:360
 #, elixir-autogen, elixir-format
 msgid "No explicit attachments. Current team members' machines have access."
 msgstr "명시적인 첨부 파일이 없습니다. 현재 팀 구성원의 컴퓨터에 액세스할 수 있습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:321
+#: lib/marshall_web/live/integrations_live.ex:347
 #, elixir-autogen, elixir-format
 msgid "No injected headers."
 msgstr "삽입된 헤더가 없습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:274
+#: lib/marshall_web/live/integrations_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
 msgstr "아직 통합이 없습니다. 아래에 하나를 추가하여 귀하의 컴퓨터에 API 또는 다른 컴퓨터에 대한 명명된 연결을 제공하세요."
 
-#: lib/marshall_web/live/integrations_live.ex:335
+#: lib/marshall_web/live/integrations_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "No machines have access. Attach a machine to use this integration."
 msgstr "접근할 수 있는 기계가 없습니다. 이 통합을 사용하려면 머신을 연결하세요."
 
-#: lib/marshall_web/live/integrations_live.ex:307
+#: lib/marshall_web/live/integrations_live.ex:329
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "소유자"
 
-#: lib/marshall_web/live/integrations_live.ex:453
+#: lib/marshall_web/live/integrations_live.ex:493
 #, elixir-autogen, elixir-format
 msgid "Peer integration"
 msgstr "동료 통합"
 
-#: lib/marshall_web/live/integrations_live.ex:304
+#: lib/marshall_web/live/integrations_live.ex:326
 #, elixir-autogen, elixir-format
 msgid "Peer machine"
 msgstr "피어 머신"
 
-#: lib/marshall_web/live/integrations_live.ex:456
+#: lib/marshall_web/live/integrations_live.ex:498
 #, elixir-autogen, elixir-format
 msgid "Peer machine ID"
 msgstr "피어 머신 ID"
 
-#: lib/marshall_web/live/integrations_live.ex:310
+#: lib/marshall_web/live/integrations_live.ex:332
 #, elixir-autogen, elixir-format
 msgid "Personal integration"
 msgstr "개인 통합"
 
-#: lib/marshall_web/live/integrations_live.ex:132
+#: lib/marshall_web/live/integrations_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "Reconnect required"
 msgstr "다시 연결해야 함"
 
-#: lib/marshall_web/live/integrations_live.ex:131
+#: lib/marshall_web/live/integrations_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "Refreshing GitHub connection"
 msgstr "GitHub 연결 갱신 중"
 
-#: lib/marshall_web/live/integrations_live.ex:295
+#: lib/marshall_web/live/integrations_live.ex:317
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "제거하다"
 
-#: lib/marshall_web/live/integrations_live.ex:292
+#: lib/marshall_web/live/integrations_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Remove this integration?"
 msgstr "이 통합을 삭제하시겠습니까?"
 
-#: lib/marshall_web/live/integrations_live.ex:457
+#: lib/marshall_web/live/integrations_live.ex:499
 #, elixir-autogen, elixir-format
 msgid "Required for peer integrations"
 msgstr "피어 통합에 필요"
 
-#: lib/marshall_web/live/integrations_live.ex:438
+#: lib/marshall_web/live/integrations_live.ex:475
 #, elixir-autogen, elixir-format
 msgid "Routing, team ownership and peer connections"
 msgstr "라우팅, 팀 소유권 및 동료 연결"
 
-#: lib/marshall_web/live/integrations_live.ex:463
+#: lib/marshall_web/live/integrations_live.ex:505
 #, elixir-autogen, elixir-format
 msgid "Save integration"
 msgstr "통합 저장"
 
-#: lib/marshall_web/live/integrations_live.ex:401
+#: lib/marshall_web/live/integrations_live.ex:437
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
 msgstr "게스트 리플렉션용 짧은 설명"
 
-#: lib/marshall_web/live/integrations_live.ex:427
+#: lib/marshall_web/live/integrations_live.ex:463
 #, elixir-autogen, elixir-format
 msgid "Static header name"
 msgstr "정적 헤더 이름"
 
-#: lib/marshall_web/live/integrations_live.ex:433
+#: lib/marshall_web/live/integrations_live.ex:469
 #, elixir-autogen, elixir-format
 msgid "Static header value"
 msgstr "정적 헤더 값"
 
-#: lib/marshall_web/live/integrations_live.ex:443
+#: lib/marshall_web/live/integrations_live.ex:481
 #, elixir-autogen, elixir-format
 msgid "Strip prefix"
 msgstr "스트립 접두사"
 
-#: lib/marshall_web/live/integrations_live.ex:315
+#: lib/marshall_web/live/integrations_live.ex:339
 #, elixir-autogen, elixir-format
 msgid "Strips prefix"
 msgstr "스트립 접두사"
 
-#: lib/marshall_web/live/integrations_live.ex:301
+#: lib/marshall_web/live/integrations_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "목표"
 
-#: lib/marshall_web/live/integrations_live.ex:309
+#: lib/marshall_web/live/integrations_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Team %{team}"
 msgstr "팀 %{team}"
 
-#: lib/marshall_web/live/integrations_live.ex:448
+#: lib/marshall_web/live/integrations_live.ex:486
 #, elixir-autogen, elixir-format
 msgid "Team ID"
 msgstr "팀 ID"
 
-#: lib/marshall_web/live/integrations_live.ex:449
+#: lib/marshall_web/live/integrations_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "Team-owned integration"
 msgstr "팀 소유 통합"
 
-#: lib/marshall_web/live/integrations_live.ex:134
+#: lib/marshall_web/live/integrations_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Temporarily unavailable"
 msgstr "일시적으로 사용할 수 없음"
 
-#: lib/marshall_web/live/integrations_live.ex:220
+#: lib/marshall_web/live/integrations_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "머신은 연결된 GitHub ID를 자동으로 사용합니다. 공유 머신을 사용하는 공동 작업자는 소유자의 GitHub 권한을 사용할 수 있습니다. 연결이 분리된 머신은 공개 GitHub 리소스에 익명으로 계속 접근할 수 있습니다."
 
-#: lib/marshall_web/live/integrations_live.ex:396
+#: lib/marshall_web/live/integrations_live.ex:432
 #, elixir-autogen, elixir-format
 msgid "example-integration"
 msgstr "example-integration"
 
-#: lib/marshall_web/live/integrations_live.ex:428
+#: lib/marshall_web/live/integrations_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"

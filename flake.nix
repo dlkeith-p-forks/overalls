@@ -73,6 +73,8 @@
         service-galileo = built.galileo;
         service-enrico = built.enrico;
         service-brady = built.brady;
+        service-susan = built.susan;
+        image-susan = built.mkSusanImage (self.rev or self.dirtyRev or "unknown");
         guest-nixos = built.guest;
         android-sdk = built.androidSdk;
         guest-android = built.androidGuest;
@@ -109,6 +111,9 @@
         tool-nix-compact = nix-compact.lib.mkPackage { inherit pkgs; };
         tool-nix-compact-host = nix-compact.lib.mkPackage { pkgs = nixpkgs.legacyPackages.${system}; };
         tool-lyra = built.lyra;
+        tool-mila-linux = built.mila.app;
+        tool-mila-demo = built.mila.demo;
+        tool-mila-probe = built.mila.probe;
         tool-github-managed = built.githubTools.release;
         tool-browser = built.browser;
         tool-vscode-web = built.vscodeWeb;
@@ -127,6 +132,7 @@
         security-ziggy-encrypted-dumps = built.encrypted.ziggy;
         security-galileo-encrypted-dumps = built.encrypted.galileo;
         security-enrico-encrypted-dumps = built.encrypted.enrico;
+        security-susan-encrypted-dumps = built.encrypted.susan;
       } // (pkgs.lib.mapAttrs' (name: context:
         pkgs.lib.nameValuePair "antithesis-${name}-context" context
       ) antithesisImages.contexts);
@@ -144,6 +150,7 @@
           ziggy = import ./nix/domains/system/ziggy.nix { packages = built; };
           galileo = import ./nix/domains/system/galileo.nix { packages = built; };
           enrico = import ./nix/domains/system/enrico.nix { packages = built; };
+          susan = import ./nix/domains/system/susan.nix { packages = built; };
           audi = import ./nix/domains/system/audi.nix { packages = built; };
         };
         platform = {
@@ -243,6 +250,11 @@
         overalls-install-ps1 = import ./nix/verification/tests/overalls-install-ps1.nix { inherit pkgs; };
         lyra = built.lyra.tests;
         marvin = built.marvin.tests;
+        # mila-test covers golden images too: goldens are flutter tests.
+        mila-core = built.mila.coreCheck;
+        mila-transport = built.mila.transportCheck;
+        mila-test = built.mila.appCheck;
+        mila-lock-sync = built.mila.lockSync;
       }; };
     };
 }

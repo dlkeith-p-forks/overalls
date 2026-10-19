@@ -45,3 +45,12 @@ guest to sync and power off with VMM exit zero; timeout termination cannot count
 
 @cc [owner:ghuntley,label:protocol;recovery] firecracker-omnios-serial-shutdown
 The x86 serial output path MUST signal the existing VMM exit event only after the exact contiguous OmniOS filesystem-sync marker has been written, preserve bounded partial matches across output calls, and retain no guest output bytes in diagnostics.
+
+@cc [owner:ghuntley,label:security;protocol] dartssh2-host-certificate-blob
+The patched dartssh2 MUST negotiate `ssh-ed25519-cert-v01@openssh.com` only
+when the caller lists it, verify the exchange signature with the certified
+leaf key, and fail a truncated or mistyped certificate as a verification
+failure. When the caller supplies the host key blob callback, the host MUST
+be accepted only if that callback returns true, before NEWKEYS; a rekey MUST
+present the same blob. Certificate trust (CA, principal, validity) stays
+with the caller. See ADR-0228.

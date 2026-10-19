@@ -11,52 +11,53 @@
 msgid ""
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:72
+#: lib/marshall_web/live/ssh_approval_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:100
+#: lib/marshall_web/live/ssh_approval_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:75
+#: lib/marshall_web/live/ssh_approval_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:98
+#: lib/marshall_web/live/ssh_approval_live.ex:112
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:90
+#: lib/marshall_web/live/ssh_approval_live.ex:104
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:104
+#: lib/marshall_web/live/ssh_approval_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:92
+#: lib/marshall_web/live/ssh_approval_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:37
+#: lib/marshall_web/live/ssh_approval_live.ex:52
+#: lib/marshall_web/live/ssh_approval_live.ex:118
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:53
+#: lib/marshall_web/live/ssh_approval_live.ex:67
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:82
+#: lib/marshall_web/live/ssh_approval_live.ex:96
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr ""
@@ -64,4 +65,9 @@ msgstr ""
 #: lib/marshall_web/ssh_approval_login.ex:29
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
 msgstr ""

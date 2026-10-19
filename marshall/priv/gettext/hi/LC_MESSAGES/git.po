@@ -85,7 +85,7 @@ msgstr "रिपॉज़िटरी"
 msgid "Repository path"
 msgstr "रिपॉज़िटरी का पथ"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "रिपॉज़िटरी उपलब्ध नहीं है।"

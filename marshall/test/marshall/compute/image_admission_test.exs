@@ -112,9 +112,10 @@ defmodule Marshall.Compute.ImageAdmissionTest do
 
   # @cc [owner:ghuntley,label:verification;security] firmware-image-admission
   # A version-5 firmware image MUST register through the shared validator, MUST
-  # refuse the Inception profile before any allocation, and a Customer/Standard
-  # admission MUST admit only the physical service level, never creation-to-ready.
-  test "a firmware image admits ordinary profiles without a readiness measurement and refuses Inception",
+  # refuse Inception before allocation and MUST refuse ordinary admission without
+  # Git identity support. A capable windows-v1 image MUST admit physical and ready
+  # service levels with its own readiness budget.
+  test "firmware admission requires Git identity support and refuses Inception",
        %{host: host, user: user} do
     manifest =
       windows_image_manifest()
@@ -163,29 +164,24 @@ defmodule Marshall.Compute.ImageAdmissionTest do
     assert Ledger.read!(Reservation) == []
     assert Ledger.read!(NetworkAddress) == []
 
-    assert {:ok, vm} = Compute.provision(params, actor: user)
-    assert vm.image_id == windows.id
-    [operation] = Ledger.read!(Marshall.Compute.Operation, vm_id: vm.id, kind: :provision)
-    attempts = Ledger.read!(Marshall.Compute.ServiceLevelAttempt, operation_id: operation.id)
-    assert Enum.map(attempts, & &1.service) == [:lilly_physical]
-
-    assert {:ok, view} = Compute.get_vm(%{vm_id: vm.id}, actor: user)
-    refute view.guest_capabilities.ssh
-    assert view.guest_capabilities.available
-    # Whatever editor release is configured, a firmware image never offers it.
-    assert view.editor_image_status in [:unsupported_image, :unavailable]
+    assert {:error, error} = Compute.provision(params, actor: user)
+    assert Exception.message(error) =~ "git_identity_unavailable"
+    assert Ledger.read!(Marshall.Compute.VirtualMachine) == []
+    assert Ledger.read!(Marshall.Compute.Operation) == []
+    assert Ledger.read!(Reservation) == []
+    assert Ledger.read!(NetworkAddress) == []
 
     agents =
       Images.register(
         manifest
         |> Map.put("guest_agents", "windows-v1")
-        |> Map.put("workspace_source_version", 2),
+        |> Map.put("workspace_source_version", 2)
+        |> Map.put("git_identity_version", 1),
         "Windows Server 2025 (agents)"
       )
       |> then(fn {:ok, image} -> image end)
 
-    # A second host with free capacity carries the agent image; the first one
-    # already holds the agentless Windows machine.
+    # A second host carries the Git identity-capable agent image.
     %{host: second} = host_fixture()
 
     Ledger.update!(second, :report, %{
@@ -216,6 +212,8 @@ defmodule Marshall.Compute.ImageAdmissionTest do
                actor: user
              )
 
+    assert with_agents.image_id == agents.id
+
     [operation] =
       Ledger.read!(Marshall.Compute.Operation, vm_id: with_agents.id, kind: :provision)
 
@@ -225,6 +223,8 @@ defmodule Marshall.Compute.ImageAdmissionTest do
     assert DateTime.diff(ready.deadline, ready.admitted_at) == 600
     assert {:ok, projected} = Compute.get_vm(%{vm_id: with_agents.id}, actor: user)
     assert projected.guest_capabilities.ssh and projected.guest_capabilities.terminal
+    assert projected.guest_capabilities.available
     refute projected.guest_capabilities.editor
+    assert projected.editor_image_status in [:unsupported_image, :unavailable]
   end
 end

@@ -106,17 +106,17 @@ msgstr "phải lớn hơn hoặc bằng %{number}"
 msgid "must be equal to %{number}"
 msgstr "phải bằng %{number}"
 
-#: lib/marshall_web/controllers/error_html.ex:52
+#: lib/marshall_web/controllers/error_html.ex:57
 #, elixir-autogen, elixir-format
 msgid "Back to Overalls"
 msgstr "Quay lại Overalls"
 
-#: lib/marshall_web/controllers/error_html.ex:45
+#: lib/marshall_web/controllers/error_html.ex:46
 #, elixir-autogen, elixir-format
 msgid "Overalls is briefly unavailable. This page will retry automatically."
 msgstr "Overalls tạm thời không khả dụng. Trang sẽ tự động thử lại."
 
-#: lib/marshall_web/controllers/error_html.ex:48
+#: lib/marshall_web/controllers/error_html.ex:52
 #, elixir-autogen, elixir-format
 msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
 msgstr "Không thể mở trang này. Hãy quay lại không gian làm việc hoặc thử lại sau giây lát."

@@ -50,7 +50,16 @@ defmodule Marshall.Control.ZiggyPorscheServiceTest do
   test "Porsche binds its gateway with an empty hello", c do
     assert {:ok, %{gateway_id: id} = principal} = Porsche.authenticate(c.gateway)
     assert Porsche.authenticate("porsche_gateway_" <> String.duplicate("Z", 43)) == :refused
-    assert {:ok, ^principal, [{:service, ^id}]} = Porsche.bind(principal, %{})
+
+    assert {:ok, ^principal,
+            [
+              {:service, ^id},
+              {:vm, :all},
+              {:thread, :all},
+              {:terminal_session, :all},
+              {:ssh_session, :all}
+            ]} = Porsche.bind(principal, %{})
+
     assert Porsche.bind(principal, %{"x" => 1}) == {:close, :refused}
     assert Marshall.Control.Service.limits(Porsche).in_flight == 256
     assert Porsche.handle_request("ziggy.identity", %{}, principal) == {:error, "invalid_request"}

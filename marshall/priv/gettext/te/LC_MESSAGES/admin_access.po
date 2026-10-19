@@ -14,36 +14,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/admin/access_live.ex:83
+#: lib/marshall_web/live/admin/access_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "ప్రాప్యత అధికారం"
 
-#: lib/marshall_web/live/admin/access_live.ex:65
+#: lib/marshall_web/live/admin/access_live.ex:78
 #, elixir-autogen, elixir-format
 msgid "Access inventory is temporarily unavailable."
 msgstr "ప్రాప్యత జాబితా తాత్కాలికంగా అందుబాటులో లేదు."
 
-#: lib/marshall_web/live/admin/access_live.ex:106
-#: lib/marshall_web/live/admin/access_live.ex:152
+#: lib/marshall_web/live/admin/access_live.ex:123
+#: lib/marshall_web/live/admin/access_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "ఖాతా"
 
-#: lib/marshall_web/live/admin/access_live.ex:110
-#: lib/marshall_web/live/admin/access_live.ex:156
-#: lib/marshall_web/live/admin/access_live.ex:205
+#: lib/marshall_web/live/admin/access_live.ex:127
+#: lib/marshall_web/live/admin/access_live.ex:173
+#: lib/marshall_web/live/admin/access_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "చర్యలు"
 
-#: lib/marshall_web/live/admin/access_live.ex:95
-#: lib/marshall_web/live/admin/access_live.ex:195
+#: lib/marshall_web/live/admin/access_live.ex:112
+#: lib/marshall_web/live/admin/access_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "Active SSH sessions"
 msgstr "సక్రియ SSH సెషన్లు"
 
-#: lib/marshall_web/live/admin/access_live.ex:154
+#: lib/marshall_web/live/admin/access_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "చేర్చబడింది"
@@ -58,32 +58,32 @@ msgstr "నిర్వాహక మార్పులకు అధికార�
 msgid "Administrative changes require an administrator."
 msgstr "నిర్వాహక మార్పులకు నిర్వాహకుడై ఉండాలి."
 
-#: lib/marshall_web/live/admin/access_live.ex:226
+#: lib/marshall_web/live/admin/access_live.ex:245
 #, elixir-autogen, elixir-format
 msgid "Close session"
 msgstr "సెషన్‌ను మూసివేయి"
 
-#: lib/marshall_web/live/admin/access_live.ex:224
+#: lib/marshall_web/live/admin/access_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Close this SSH session?"
 msgstr "ఈ SSH సెషన్‌ను మూసివేయాలా?"
 
-#: lib/marshall_web/live/admin/access_live.ex:36
+#: lib/marshall_web/live/admin/access_live.ex:43
 #, elixir-autogen, elixir-format
 msgid "Could not close that session."
 msgstr "ఆ సెషన్‌ను మూసివేయలేకపోయాం."
 
-#: lib/marshall_web/live/admin/access_live.ex:46
+#: lib/marshall_web/live/admin/access_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "Could not revoke that VM access."
 msgstr "ఆ VM ప్రాప్యతను రద్దు చేయలేకపోయాం."
 
-#: lib/marshall_web/live/admin/access_live.ex:26
+#: lib/marshall_web/live/admin/access_live.ex:31
 #, elixir-autogen, elixir-format
 msgid "Could not revoke that key."
 msgstr "ఆ కీని రద్దు చేయలేకపోయాం."
 
-#: lib/marshall_web/live/admin/access_live.ex:203
+#: lib/marshall_web/live/admin/access_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Expires"
 msgstr "గడువు ముగుస్తుంది"
@@ -93,154 +93,154 @@ msgstr "గడువు ముగుస్తుంది"
 msgid "Finish or cancel the current verification first."
 msgstr "ముందుగా ప్రస్తుత ధృవీకరణను పూర్తి చేయండి లేదా రద్దు చేయండి."
 
-#: lib/marshall_web/live/admin/access_live.ex:201
+#: lib/marshall_web/live/admin/access_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Gateway"
 msgstr "గేట్‌వే"
 
-#: lib/marshall_web/live/admin/access_live.ex:108
+#: lib/marshall_web/live/admin/access_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "Granted"
 msgstr "ఇవ్వబడింది"
 
-#: lib/marshall_web/live_admin_auth.ex:205
+#: lib/marshall_web/live_admin_auth.ex:208
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "చెల్లని నిర్వాహక అభ్యర్థన."
 
-#: lib/marshall_web/live/admin/access_live.ex:51
+#: lib/marshall_web/live/admin/access_live.ex:60
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "చెల్లని అభ్యర్థన."
 
-#: lib/marshall_web/live/admin/access_live.ex:153
-#: lib/marshall_web/live/admin/access_live.ex:202
+#: lib/marshall_web/live/admin/access_live.ex:170
+#: lib/marshall_web/live/admin/access_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Key"
 msgstr "కీ"
 
-#: lib/marshall_web/live/admin/access_live.ex:105
+#: lib/marshall_web/live/admin/access_live.ex:122
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "యంత్రం"
 
-#: lib/marshall_web/live/admin/access_live.ex:246
+#: lib/marshall_web/live/admin/access_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "మేనేజర్"
 
-#: lib/marshall_web/live/admin/access_live.ex:147
+#: lib/marshall_web/live/admin/access_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "No active keys."
 msgstr "సక్రియ కీలు లేవు."
 
-#: lib/marshall_web/live/admin/access_live.ex:196
+#: lib/marshall_web/live/admin/access_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "No active sessions."
 msgstr "సక్రియ సెషన్లు లేవు."
 
-#: lib/marshall_web/live/admin/access_live.ex:99
+#: lib/marshall_web/live/admin/access_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "No machine is shared with another account."
 msgstr "మరో ఖాతాతో ఏ యంత్రమూ పంచుకోలేదు."
 
-#: lib/marshall_web/live/admin/access_live.ex:245
+#: lib/marshall_web/live/admin/access_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "ఆపరేటర్"
 
-#: lib/marshall_web/live/admin/access_live.ex:213
+#: lib/marshall_web/live/admin/access_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Pending key approval"
 msgstr "కీ ఆమోదం పెండింగ్‌లో ఉంది"
 
-#: lib/marshall_web/live/admin/access_live.ex:94
-#: lib/marshall_web/live/admin/access_live.ex:146
+#: lib/marshall_web/live/admin/access_live.ex:111
+#: lib/marshall_web/live/admin/access_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Registered SSH keys"
 msgstr "నమోదైన SSH కీలు"
 
-#: lib/marshall_web/live/admin/access_live.ex:138
+#: lib/marshall_web/live/admin/access_live.ex:155
 #, elixir-autogen, elixir-format
 msgid "Revoke access"
 msgstr "ప్రాప్యతను రద్దు చేయి"
 
-#: lib/marshall_web/live/admin/access_live.ex:187
+#: lib/marshall_web/live/admin/access_live.ex:206
 #, elixir-autogen, elixir-format
 msgid "Revoke key"
 msgstr "కీని రద్దు చేయి"
 
-#: lib/marshall_web/live/admin/access_live.ex:185
+#: lib/marshall_web/live/admin/access_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Revoke this SSH key and close sessions using it?"
 msgstr "ఈ SSH కీని రద్దు చేసి వాడుతున్న సెషన్లను మూసివేయాలా?"
 
-#: lib/marshall_web/live/admin/access_live.ex:136
+#: lib/marshall_web/live/admin/access_live.ex:153
 #, elixir-autogen, elixir-format
 msgid "Revoke this user's VM access?"
 msgstr "ఈ వినియోగదారు VM ప్రాప్యతను రద్దు చేయాలా?"
 
-#: lib/marshall_web/live/admin/access_live.ex:247
+#: lib/marshall_web/live/admin/access_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "రద్దు చేయబడింది"
 
-#: lib/marshall_web/live/admin/access_live.ex:107
+#: lib/marshall_web/live/admin/access_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "పాత్ర"
 
-#: lib/marshall_web/live/admin/access_live.ex:172
+#: lib/marshall_web/live/admin/access_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "SSH key"
 msgstr "SSH కీ"
 
-#: lib/marshall_web/live/admin/access_live.ex:25
+#: lib/marshall_web/live/admin/access_live.ex:27
 #, elixir-autogen, elixir-format
 msgid "SSH key revoked."
 msgstr "SSH కీ రద్దు చేయబడింది."
 
-#: lib/marshall_web/live/admin/access_live.ex:33
+#: lib/marshall_web/live/admin/access_live.ex:39
 #, elixir-autogen, elixir-format
 msgid "SSH session closed."
 msgstr "SSH సెషన్ మూసివేయబడింది."
 
-#: lib/marshall_web/live/admin/access_live.ex:97
+#: lib/marshall_web/live/admin/access_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Shared machine access"
 msgstr "పంచుకున్న యంత్ర ప్రాప్యత"
 
-#: lib/marshall_web/live/admin/access_live.ex:93
+#: lib/marshall_web/live/admin/access_live.ex:110
 #, elixir-autogen, elixir-format
 msgid "Shared machine grants"
 msgstr "పంచుకున్న యంత్ర అనుమతులు"
 
-#: lib/marshall_web/live/admin/access_live.ex:248
+#: lib/marshall_web/live/admin/access_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "తెలియదు"
 
-#: lib/marshall_web/live/admin/access_live.ex:90
+#: lib/marshall_web/live/admin/access_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Updated every 15 seconds"
 msgstr "ప్రతి 15 సెకన్లకు నవీకరణ"
 
-#: lib/marshall_web/live/admin/access_live.ex:43
+#: lib/marshall_web/live/admin/access_live.ex:51
 #, elixir-autogen, elixir-format
 msgid "VM access revoked."
 msgstr "VM ప్రాప్యత రద్దయింది."
 
-#: lib/marshall_web/live/admin/access_live.ex:244
+#: lib/marshall_web/live/admin/access_live.ex:263
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "వీక్షకుడు"
 
-#: lib/marshall_web/live/admin/access_live.ex:243
+#: lib/marshall_web/live/admin/access_live.ex:262
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "వెబ్ యాప్‌లు"
 
-#: lib/marshall_web/live/admin/access_live.ex:85
+#: lib/marshall_web/live/admin/access_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
 msgstr ""

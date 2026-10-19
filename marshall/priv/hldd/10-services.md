@@ -747,3 +747,10 @@ Peach serves the bounded, secret-free `reflection.internal` projection for a
 currently running guest. Marshall remains the authorization authority and
 returns only integrations eligible for the fenced execution.
 
+## Android display service
+
+Lilly derives the Android display target from the current placement, profile,
+slot, capability and emulator generation before opening the fixed relay port.
+The display socket is owned by a supervised process and is torn down with the
+authenticated host stream or execution generation. Marshall shares one bridge
+per machine generation across browser viewers and controllers.

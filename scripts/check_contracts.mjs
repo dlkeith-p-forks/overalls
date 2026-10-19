@@ -11,7 +11,9 @@ const cli = join(root, "tools/code-contracts/node_modules/@spolu/cc-check/dist/c
 const require = createRequire(import.meta.url)
 const javascriptExtensions = new Set([".js", ".mjs", ".cjs", ".jsx"])
 const upstreamExtensions = new Set([".ts", ".tsx", ".mts", ".cts", ".py", ".pyi", ".rs", ".go"])
-const nativeExtensions = new Set([".ex", ".exs", ".nix", ".sh", ".c", ".h", ".service", ".slice", ".example"])
+const nativeExtensions = new Set([".ex", ".exs", ".nix", ".sh", ".c", ".h", ".service", ".slice", ".example", ".dart", ".kt", ".swift"])
+// Languages whose notes are contiguous `//` or `///` line comments.
+const slashExtensions = new Set([".dart", ".kt", ".swift"])
 
 function nativeFile(path) {
   return nativeExtensions.has(extname(path)) || basename(path) === ".envrc"
@@ -77,7 +79,8 @@ export function discoverFiles(directory) {
 /**
  * @cc [owner:ghuntley,label:verification] native-notes-single-directive
  * Each native source note MUST contain exactly one directive in a contiguous hash
- * comment group or C documentation block. Extraction MUST retain original line
+ * comment group, C documentation block or (Dart, Kotlin, Swift) contiguous
+ * `//`/`///` line-comment group. Extraction MUST retain original line
  * numbers and MUST NOT claim to resolve declarations or their ancestors.
  */
 export function extractNativeNotes(path, source) {
@@ -90,6 +93,16 @@ export function extractNativeNotes(path, source) {
       const body = match[0].slice(3, -2)
       groups.push({line, lines: body.split("\n").map((text, index) =>
         (index === 0 ? text.replace(/^[ \t]+/, "") : text.replace(/^\s*\* ?/, "")).trimEnd())})
+    }
+  } else if (slashExtensions.has(extname(path))) {
+    for (let i = 0; i < lines.length; i++) {
+      if (!/^\s*\/\//.test(lines[i])) continue
+      const group = {line: i + 1, lines: []}
+      while (i < lines.length && /^\s*\/\//.test(lines[i])) {
+        group.lines.push(lines[i].replace(/^\s*\/\/\/? ?/, ""))
+        i++
+      }
+      groups.push(group)
     }
   } else {
     for (let i = 0; i < lines.length; i++) {

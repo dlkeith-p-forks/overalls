@@ -1,0 +1,68 @@
+{
+  "format": {
+    "aad": "\"overalls-mila-poke-v1\" || 0x00 || deployment host (ASCII)",
+    "key": "HKDF-SHA256(ikm=X25519(ephemeral, device), salt=ephemeral_public||device_public, info=\"overalls-mila-poke-v1\", length=32)",
+    "layout": "version(1)=0x01 || ephemeral_x25519_public(32) || nonce(12) || chacha20_poly1305_ciphertext || tag(16), base64url without padding",
+    "plaintext": "JSON object with exactly v=1, kind (closed enum: needs_input) and route (canonical app route); at most 512 bytes"
+  },
+  "invalid": [
+    {
+      "device_private": "03204de92e11fc8c528139be419065920eb83dbff1a4663bbea455aa6e9702bd",
+      "host": "control.example.test",
+      "name": "tampered ciphertext",
+      "poke": "AWU0ylVBFgk84-DCEbfhgeWp-8Dn6rRa2enkrWwB05Rknj8VYyTULw6ktvT8EdB9-7ukrAA_P2lfpER4-bytMbsWM4-DIkUWpFLLYHf6GHg-pIH6ZBx4FP9CPx3yeCBmXJYZeBcX5j4eN016siuvQsifIzA9_b4su9tYuq5XmaPNEvmgGQtT2G8k8LQ1KWHuc8b4Fs6Zmztg0YCpuL1MOBNn582M-P_-_BLDYOevdDIB-6UwXUORRg3u7r4UYGA",
+      "reason": "authentication"
+    },
+    {
+      "device_private": "03204de92e11fc8c528139be419065920eb83dbff1a4663bbea455aa6e9702bd",
+      "host": "control.example.test",
+      "name": "tampered ephemeral key",
+      "poke": "AWU0ylVAFgk84-DCEbfhgeWp-8Dn6rRa2enkrWwB05Rknj8VYyTULw6ktvT8EdB9-7ulrAA_P2lfpER4-bytMbsWM4-DIkUWpFLLYHf6GHg-pIH6ZBx4FP9CPx3yeCBmXJYZeBcX5j4eN016siuvQsifIzA9_b4su9tYuq5XmaPNEvmgGQtT2G8k8LQ1KWHuc8b4Fs6Zmztg0YCpuL1MOBNn582M-P_-_BLDYOevdDIB-6UwXUORRg3u7r4UYGA",
+      "reason": "authentication"
+    },
+    {
+      "device_private": "03204de92e11fc8c528139be419065920eb83dbff1a4663bbea455aa6e9702bd",
+      "host": "control.example.test",
+      "name": "unknown version",
+      "poke": "AmU0ylVBFgk84-DCEbfhgeWp-8Dn6rRa2enkrWwB05Rknj8VYyTULw6ktvT8EdB9-7ulrAA_P2lfpER4-bytMbsWM4-DIkUWpFLLYHf6GHg-pIH6ZBx4FP9CPx3yeCBmXJYZeBcX5j4eN016siuvQsifIzA9_b4su9tYuq5XmaPNEvmgGQtT2G8k8LQ1KWHuc8b4Fs6Zmztg0YCpuL1MOBNn582M-P_-_BLDYOevdDIB-6UwXUORRg3u7r4UYGA",
+      "reason": "version"
+    },
+    {
+      "device_private": "03204de92e11fc8c528139be419065920eb83dbff1a4663bbea455aa6e9702bd",
+      "host": "control.example.test",
+      "name": "truncated",
+      "poke": "AWU0ylVBFgk84-DCEbfhgeWp-8Dn6rRa2enkrWwB05Rknj8VYyTULw6ktvT8EdB9-7ulrAA_P2lfpER4",
+      "reason": "length"
+    },
+    {
+      "device_private": "03204de92e11fc8c528139be419065920eb83dbff1a4663bbea455aa6e9702bd",
+      "host": "other.example.test",
+      "name": "other deployment",
+      "poke": "AWU0ylVBFgk84-DCEbfhgeWp-8Dn6rRa2enkrWwB05Rknj8VYyTULw6ktvT8EdB9-7ulrAA_P2lfpER4-bytMbsWM4-DIkUWpFLLYHf6GHg-pIH6ZBx4FP9CPx3yeCBmXJYZeBcX5j4eN016siuvQsifIzA9_b4su9tYuq5XmaPNEvmgGQtT2G8k8LQ1KWHuc8b4Fs6Zmztg0YCpuL1MOBNn582M-P_-_BLDYOevdDIB-6UwXUORRg3u7r4UYGA",
+      "reason": "authentication"
+    }
+  ],
+  "valid": [
+    {
+      "device_private": "03204de92e11fc8c528139be419065920eb83dbff1a4663bbea455aa6e9702bd",
+      "device_public": "953562bec9901980512d93093a46a20df80045fcd8224e8f983ab09ac4665c43",
+      "ephemeral_private": "339e22998bb7508ccaabe3aa15254752b61917d96e013930b2b82d92ad912fe2",
+      "host": "control.example.test",
+      "name": "needs input 1",
+      "nonce": "9e3f156324d42f0ea4b6f4fc",
+      "plaintext": "{\"kind\":\"needs_input\",\"route\":\"/machines/2f0b8f8e-3c1d-4a8e-9b3e-0c6f1d2a7b11/threads/7a1c0e44-91f2-4d1e-8a5b-3e2f6c9d0a12\",\"v\":1}",
+      "poke": "AWU0ylVBFgk84-DCEbfhgeWp-8Dn6rRa2enkrWwB05Rknj8VYyTULw6ktvT8EdB9-7ulrAA_P2lfpER4-bytMbsWM4-DIkUWpFLLYHf6GHg-pIH6ZBx4FP9CPx3yeCBmXJYZeBcX5j4eN016siuvQsifIzA9_b4su9tYuq5XmaPNEvmgGQtT2G8k8LQ1KWHuc8b4Fs6Zmztg0YCpuL1MOBNn582M-P_-_BLDYOevdDIB-6UwXUORRg3u7r4UYGA"
+    },
+    {
+      "device_private": "588605bf5362e8b7f170c8b2926c4061ab09a7d95c74c6ff9b45140b6787e0de",
+      "device_public": "db253adf1e64b6d3fed7ac50915bee644ba655009eb53ac81447e9f6e5a69c46",
+      "ephemeral_private": "c2f18a8f50fe4dacf1dc18a4a889bdd6c28a8baf6c3d25dd8d4c47336e92dbab",
+      "host": "control.example.test",
+      "name": "needs input 2",
+      "nonce": "7474c1e7ed929af580fe66e4",
+      "plaintext": "{\"kind\":\"needs_input\",\"route\":\"/threads/7a1c0e44-91f2-4d1e-8a5b-3e2f6c9d0a12\",\"v\":1}",
+      "poke": "AdgAhFkKTFO0D5_KI8HIKOMcYzdwTZZQvlclpFQhzZwKdHTB5-2SmvWA_mbkcyDe5n1tTWh8Oe1jmgoy0JG-ZFkCFBGmzdXTSemTvE8EnmwzOw36eJd_zYcR_xT5YutT9Tv6cfopxl18l3BcYP0ijixzhkzmwXUJxGHhxiqYuFXSQUFw1trC4oyN67rH6jXnTA"
+    }
+  ],
+  "version": 1
+}

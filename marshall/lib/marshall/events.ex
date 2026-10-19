@@ -659,6 +659,23 @@ defmodule Marshall.Events do
     metadata: [session_id: :uuid, key_id: :uuid]
   )
 
+  defevent("ssh.watch_subscription_refused",
+    level: :warning,
+    message: "SSH watch subscription refused",
+    metadata: [
+      reason:
+        {:enum,
+         [
+           :unauthorized,
+           :approval_required,
+           :forbidden,
+           :not_found,
+           :invalid_request,
+           :unavailable
+         ]}
+    ]
+  )
+
   defevent("ssh.key_added",
     message: "Account SSH key added",
     metadata: [key_id: :uuid, user_id: :uuid]
@@ -823,6 +840,83 @@ defmodule Marshall.Events do
     metadata: [reason: :atom]
   )
 
+  # Push notifications (ADR-0225): identifiers and closed reasons only, never
+  # push keys, device keys, routes, ciphertext or Susan bodies.
+  defevent("notifications.device_registered",
+    message: "Push notification device registered",
+    metadata: [device_id: :uuid, user_id: :uuid, platform: {:enum, [:ios, :android]}]
+  )
+
+  defevent("notifications.device_transition",
+    message: "Push notification device changed",
+    metadata: [
+      device_id: :uuid,
+      state: {:enum, [:pending, :active, :invalidated, :revoked]},
+      reason:
+        {:enum,
+         [
+           :refreshed,
+           :removed,
+           :key_revoked,
+           :account_retired,
+           :provider_unregistered,
+           :preference_on,
+           :preference_off
+         ]}
+    ]
+  )
+
+  defevent("notifications.delivery_transition",
+    message: "Push notification delivery changed",
+    metadata: [
+      delivery_id: :uuid,
+      device_id: :uuid,
+      state: {:enum, [:queued, :sending, :delivered, :retry_wait, :failed_permanent, :dropped]},
+      reason:
+        {:enum,
+         [
+           :produced,
+           :begin_send,
+           :sent,
+           :device_inactive,
+           :preference_off,
+           :coalesced,
+           :expired,
+           :transport,
+           :timeout,
+           :server_error,
+           :rate_limited,
+           :rejected,
+           :request_too_large,
+           :exhausted,
+           :unsealable
+         ]}
+    ]
+  )
+
+  defevent("notifications.poke_refused",
+    level: :warning,
+    message: "Push notification poke refused",
+    metadata: [
+      reason: {:enum, [:producer_failed, :rejected, :request_too_large, :unsealable]},
+      status: {:int, :optional}
+    ]
+  )
+
+  defevent("notifications.susan_unavailable",
+    level: :warning,
+    message: "Push relay unavailable; delivery will retry",
+    metadata: [
+      reason: {:enum, [:transport, :timeout, :server_error, :rate_limited]},
+      status: {:int, :optional}
+    ]
+  )
+
+  defevent("notifications.deliveries_pruned",
+    message: "Push notification delivery retention batch deleted",
+    metadata: [deleted_count: :int]
+  )
+
   defevent("inference.retention_deleted",
     message: "Inference retention batch deleted",
     metadata: [deleted_count: :int]
@@ -985,7 +1079,12 @@ defmodule Marshall.Events do
 
   defevent("terminal.attached",
     message: "Terminal viewer attached",
-    metadata: [vm_id: :uuid, session_id: :uuid, actor_id: :uuid]
+    metadata: [
+      vm_id: :uuid,
+      session_id: :uuid,
+      actor_id: :uuid,
+      origin: {:enum, [:browser, :ssh]}
+    ]
   )
 
   defevent("control.connected",

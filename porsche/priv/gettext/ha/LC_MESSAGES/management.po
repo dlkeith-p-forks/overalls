@@ -12,8 +12,7 @@ msgstr "An riga an fara buƙatar buƙatar kwafi don wannan injin."
 
 #: lib/porsche/ssh/output.ex:79
 #, elixir-autogen, elixir-format
-msgid ""
-"A failed machine cannot be pinned; an existing pin can still be removed."
+msgid "A failed machine cannot be pinned; an existing pin can still be removed."
 msgstr "Ba za a iya liƙa injin da ya gaza ba; Ana iya cire fil ɗin da ke wanzu."
 
 #: lib/porsche/ssh/output.ex:136
@@ -33,12 +32,10 @@ msgstr "An riga an fara buƙatar sake girman wannan na'ura."
 
 #: lib/porsche/ssh/output.ex:121
 #, elixir-autogen, elixir-format
-msgid ""
-"A transfer is already using this host's transfer slot. Please try again "
-"after it finishes."
+msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr "An riga an canja wurin yin amfani da ramin canja wuri na mai masaukin baki. Da fatan za a sake gwadawa bayan ya ƙare."
 
-#: lib/porsche/ssh/output.ex:319
+#: lib/porsche/ssh/output.ex:373
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr "Karba"
@@ -48,7 +45,7 @@ msgstr "Karba"
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "Amince da wannan maɓallin SSH a cikin burauzar ku, sannan sake gwada umarnin."
 
-#: lib/porsche/ssh/output.ex:321
+#: lib/porsche/ssh/output.ex:375
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Ba a yi nasara ba"
@@ -58,32 +55,32 @@ msgstr "Ba a yi nasara ba"
 msgid "Invalid command. Type help to see available commands."
 msgstr "Umarni marar inganci. Rubuta help don ganin umarnin da ake da su."
 
-#: lib/porsche/ssh/output.ex:314
+#: lib/porsche/ssh/output.ex:368
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr "ID na aiki"
 
-#: lib/porsche/ssh/output.ex:311
+#: lib/porsche/ssh/output.ex:365
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr "Sigar yarjejeniya"
 
-#: lib/porsche/ssh/output.ex:346
+#: lib/porsche/ssh/output.ex:400
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "Nemi %{id}: ƙaddamarwa"
 
-#: lib/porsche/ssh/output.ex:349
+#: lib/porsche/ssh/output.ex:403
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "Nemi %{id}: jiran kammalawa"
 
-#: lib/porsche/ssh/output.ex:313
+#: lib/porsche/ssh/output.ex:367
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr "Neman ID"
 
-#: lib/porsche/ssh/output.ex:315
+#: lib/porsche/ssh/output.ex:369
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr "Sakamako"
@@ -93,17 +90,17 @@ msgstr "Sakamako"
 msgid "Source cleanup is still pending. Wait for cleanup before retrying."
 msgstr "Har yanzu ana jiran tsaftace tushe. Jira tsaftacewa kafin sake gwadawa."
 
-#: lib/porsche/ssh/output.ex:312
+#: lib/porsche/ssh/output.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Matsayi"
 
-#: lib/porsche/ssh/output.ex:320
+#: lib/porsche/ssh/output.ex:374
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "Nasara"
 
-#: lib/porsche/ssh/output.ex:322
+#: lib/porsche/ssh/output.ex:376
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "Nasara"
@@ -115,9 +112,7 @@ msgstr "Maɓallin jama'a na SSH ba daidai ba ne. Duba maɓallin kuma sake gwadaw
 
 #: lib/porsche/ssh/output.ex:283
 #, elixir-autogen, elixir-format
-msgid ""
-"The approval request limit has been reached. Close an unused connection and "
-"try again."
+msgid "The approval request limit has been reached. Close an unused connection and try again."
 msgstr "An kai iyakar buƙatar amincewa. Rufe haɗin da ba a yi amfani da shi ba kuma a sake gwadawa."
 
 #: lib/porsche/ssh/output.ex:211
@@ -125,30 +120,24 @@ msgstr "An kai iyakar buƙatar amincewa. Rufe haɗin da ba a yi amfani da shi ba
 msgid "The available host does not meet the machine image's requirements."
 msgstr "Mai masaukin baki bai cika buƙatun hoton na'ura ba."
 
-#: lib/porsche/ssh/output.ex:292
+#: lib/porsche/ssh/output.ex:346
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr "An kasa kammala umarnin: %{reason}"
 
 #: lib/porsche/ssh/output.ex:184
 #, elixir-autogen, elixir-format
-msgid ""
-"The connection to the control service was interrupted. Check the request "
-"status before submitting it again."
+msgid "The connection to the control service was interrupted. Check the request status before submitting it again."
 msgstr "An katse haɗin kai zuwa sabis ɗin sarrafawa. Duba halin buƙatar kafin sake ƙaddamar da shi."
 
 #: lib/porsche/ssh/output.ex:196
 #, elixir-autogen, elixir-format
-msgid ""
-"The control service refused the request. Check the request status before "
-"submitting it again."
+msgid "The control service refused the request. Check the request status before submitting it again."
 msgstr "Sabis ɗin sarrafawa ya ƙi buƙatar. Duba halin buƙatar kafin sake ƙaddamar da shi."
 
 #: lib/porsche/ssh/output.ex:190
 #, elixir-autogen, elixir-format
-msgid ""
-"The control service returned an invalid response. Check the request status "
-"before submitting it again."
+msgid "The control service returned an invalid response. Check the request status before submitting it again."
 msgstr "Sabis ɗin sarrafawa ya mayar da martani mara inganci. Duba halin buƙatar kafin sake ƙaddamar da shi."
 
 #: lib/porsche/ssh/output.ex:223
@@ -158,9 +147,7 @@ msgstr "Ba a tanadar faifan injin don wannan aiki ba."
 
 #: lib/porsche/ssh/output.ex:262
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's execution generation has changed. Inspect its current state "
-"before retrying."
+msgid "The machine's execution generation has changed. Inspect its current state before retrying."
 msgstr "Tsarin aiwatar da injin ya canza. Bincika halin da yake ciki yanzu kafin a sake gwadawa."
 
 #: lib/porsche/ssh/output.ex:91
@@ -170,23 +157,17 @@ msgstr "Babu mai masaukin injin. Da fatan za a sake gwadawa ba da jimawa ba."
 
 #: lib/porsche/ssh/output.ex:151
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's placement has changed. Inspect its current state before "
-"retrying."
+msgid "The machine's placement has changed. Inspect its current state before retrying."
 msgstr "Wurin injin ɗin ya canza. Bincika halin da yake ciki yanzu kafin a sake gwadawa."
 
 #: lib/porsche/ssh/output.ex:256
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's stop has not been confirmed. Inspect its state before "
-"retrying."
+msgid "The machine's stop has not been confirmed. Inspect its state before retrying."
 msgstr "Ba a tabbatar da tsayawar injin ɗin ba. Duba yanayinta kafin a sake gwadawa."
 
 #: lib/porsche/ssh/output.ex:112
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's workload is not stable enough for this operation. Check its "
-"state before retrying."
+msgid "The machine's workload is not stable enough for this operation. Check its state before retrying."
 msgstr "Nauyin aikin na'ura ba shi da kwanciyar hankali don wannan aiki. Duba yanayin sa kafin a sake gwadawa."
 
 #: lib/porsche/ssh/output.ex:76
@@ -201,8 +182,7 @@ msgstr "Mai karɓa bashi da asusun rijista."
 
 #: lib/porsche/ssh/output.ex:244
 #, elixir-autogen, elixir-format
-msgid ""
-"The repository source is invalid. Use a supported public repository URL."
+msgid "The repository source is invalid. Use a supported public repository URL."
 msgstr "Tushen ma'ajiya bata aiki. Yi amfani da ma'ajiyar jama'a mai goyan bayan URL ."
 
 #: lib/porsche/ssh/output.ex:241
@@ -212,9 +192,7 @@ msgstr "Babu tushen ma'ajiya."
 
 #: lib/porsche/ssh/output.ex:163
 #, elixir-autogen, elixir-format
-msgid ""
-"The request conflicts with the current state. Inspect the machine or request"
-" before retrying."
+msgid "The request conflicts with the current state. Inspect the machine or request before retrying."
 msgstr "Bukatar ta ci karo da halin da ake ciki. Bincika injin ko nema kafin sake gwadawa."
 
 #: lib/porsche/ssh/output.ex:160
@@ -244,9 +222,7 @@ msgstr "Babu hoton injin da ake nema."
 
 #: lib/porsche/ssh/output.ex:217
 #, elixir-autogen, elixir-format
-msgid ""
-"The requested machine size is invalid. Check the CPU, memory and disk "
-"limits."
+msgid "The requested machine size is invalid. Check the CPU, memory and disk limits."
 msgstr "Girman injin da ake nema bashi da inganci. Duba CPU , ƙwaƙwalwar ajiya da iyakoki."
 
 #: lib/porsche/ssh/output.ex:70
@@ -261,9 +237,7 @@ msgstr "Tsarin sabis ɗin bashi da inganci. Tuntuɓi afaretan ku."
 
 #: lib/porsche/ssh/output.ex:178
 #, elixir-autogen, elixir-format
-msgid ""
-"The service does not support this protocol version. Ask your operator to "
-"update the compatible services."
+msgid "The service does not support this protocol version. Ask your operator to update the compatible services."
 msgstr "Sabis ɗin baya goyan bayan wannan sigar yarjejeniya. Tambayi afaretan ku don sabunta ayyukan da suka dace."
 
 #: lib/porsche/ssh/output.ex:61
@@ -273,9 +247,7 @@ msgstr "Babu sabis na ɗan lokaci. Da fatan za a sake gwadawa ba da jimawa ba."
 
 #: lib/porsche/ssh/output.ex:277
 #, elixir-autogen, elixir-format
-msgid ""
-"The session limit has been reached. Close an unused connection and try "
-"again."
+msgid "The session limit has been reached. Close an unused connection and try again."
 msgstr "An kai iyakar zaman. Rufe haɗin da ba a yi amfani da shi ba kuma a sake gwadawa."
 
 #: lib/porsche/ssh/output.ex:118
@@ -295,8 +267,7 @@ msgstr "Wannan aikin ba zai iya cire kariyar damar mai shi ba."
 
 #: lib/porsche/ssh/output.ex:94
 #, elixir-autogen, elixir-format
-msgid ""
-"This clone has already been published and cannot be retried or cancelled."
+msgid "This clone has already been published and cannot be retried or cancelled."
 msgstr "An riga an buga wannan kwafi kuma ba za a iya sake gwadawa ko sokewa ba."
 
 #: lib/porsche/ssh/output.ex:100
@@ -321,9 +292,7 @@ msgstr "An goge wannan injin."
 
 #: lib/porsche/ssh/output.ex:226
 #, elixir-autogen, elixir-format
-msgid ""
-"This machine has reached its execution generation limit. Contact your "
-"operator."
+msgid "This machine has reached its execution generation limit. Contact your operator."
 msgstr "Wannan na'ura ta kai iyakar aiwatar da aikinta. Tuntuɓi afaretan ku."
 
 #: lib/porsche/ssh/output.ex:157
@@ -343,15 +312,12 @@ msgstr "An riga an gama wannan ƙaura."
 
 #: lib/porsche/ssh/output.ex:139
 #, elixir-autogen, elixir-format
-msgid ""
-"This relocation has committed its handoff and can no longer be cancelled."
+msgid "This relocation has committed its handoff and can no longer be cancelled."
 msgstr "Wannan ƙaura ya yi aikin sa kuma ba za a iya soke shi ba."
 
 #: lib/porsche/ssh/output.ex:106
 #, elixir-autogen, elixir-format
-msgid ""
-"This request ID was already used for a different command. Use the original "
-"command or a new request ID."
+msgid "This request ID was already used for a different command. Use the original command or a new request ID."
 msgstr "An riga an yi amfani da wannan ID ɗin buƙatar don wani umarni na daban. Yi amfani da ainihin umarnin ko sabon ID ɗin buƙata."
 
 #: lib/porsche/ssh/output.ex:253
@@ -366,9 +332,7 @@ msgstr "Ba za a iya sake gwada wannan buƙatun ba a yanayin da yake yanzu."
 
 #: lib/porsche/ssh/output.ex:172
 #, elixir-autogen, elixir-format
-msgid ""
-"Too many sessions or approval requests are active. Close an unused "
-"connection and try again."
+msgid "Too many sessions or approval requests are active. Close an unused connection and try again."
 msgstr "Yawancin lokuta ko buƙatun amincewa suna aiki. Rufe haɗin da ba a yi amfani da shi ba kuma a sake gwadawa."
 
 #: lib/porsche/ssh/output.ex:73
@@ -385,3 +349,91 @@ msgstr "Ka riga ka riƙe iyakar adadin injina; fara sakin ɗaya."
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to perform this action."
 msgstr "Ba ka da izinin yin wannan aikin."
+
+#: lib/porsche/ssh/output.ex:316
+#, elixir-autogen, elixir-format
+msgid "Answer the pending question before sending another prompt."
+msgstr "Amsa tambayar da ke jira kafin aika wata buƙata."
+
+#: lib/porsche/ssh/output.ex:322
+#, elixir-autogen, elixir-format
+msgid "Port 4444 is reserved for the editor."
+msgstr "An keɓe port 4444 ga edita."
+
+#: lib/porsche/ssh/output.ex:328
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable on this machine right now."
+msgstr "Babu tasha a wannan inji a yanzu."
+
+#: lib/porsche/ssh/output.ex:304
+#, elixir-autogen, elixir-format
+msgid "That plan is no longer the latest proposal. Show the thread again."
+msgstr "Wannan shirin ba shi ne sabuwar shawara ba kuma. Sake nuna zaren."
+
+#: lib/porsche/ssh/output.ex:310
+#, elixir-autogen, elixir-format
+msgid "That question has already been answered."
+msgstr "An riga an amsa wannan tambayar."
+
+#: lib/porsche/ssh/output.ex:307
+#, elixir-autogen, elixir-format
+msgid "That question is no longer pending."
+msgstr "Wannan tambayar ba ta jira kuma."
+
+#: lib/porsche/ssh/output.ex:334
+#, elixir-autogen, elixir-format
+msgid "That terminal session no longer exists."
+msgstr "Wannan zaman tasha ba ya wanzu kuma."
+
+#: lib/porsche/ssh/output.ex:313
+#, elixir-autogen, elixir-format
+msgid "The answers do not match the pending question."
+msgstr "Amsoshin ba su dace da tambayar da ke jira ba."
+
+#: lib/porsche/ssh/output.ex:331
+#, elixir-autogen, elixir-format
+msgid "The machine is waking. Retry the terminal shortly."
+msgstr "Injin yana farkawa. Sake gwada tashar nan ba da jimawa ba."
+
+#: lib/porsche/ssh/output.ex:343
+#, elixir-autogen, elixir-format
+msgid "The standard input is empty or exceeds this command's size limit."
+msgstr "Daidaitaccen shigarwa babu komai a ciki ko ya zarce iyakar girman wannan umarni."
+
+#: lib/porsche/ssh/output.ex:319
+#, elixir-autogen, elixir-format
+msgid "The web settings changed since you read them. Show them again and retry."
+msgstr "Saitunan yanar gizo sun canza tun da ka karanta su. Sake nuna su kuma sake gwadawa."
+
+#: lib/porsche/ssh/output.ex:337
+#, elixir-autogen, elixir-format
+msgid "This command reads its input from standard input. Pipe it in and end the command with -."
+msgstr "Wannan umarni yana karanta shigarwarsa daga daidaitaccen shigarwa. Tura ta ta bututu kuma ka ƙare umarnin da -."
+
+#: lib/porsche/ssh/output.ex:325
+#, elixir-autogen, elixir-format
+msgid "This machine's profile does not allow web publishing."
+msgstr "Bayanin martabar wannan inji ba ya ba da izinin bugawa a yanar gizo."
+
+#: lib/porsche/ssh/output.ex:301
+#, elixir-autogen, elixir-format
+msgid "This thread is busy with a turn. Try again when it finishes."
+msgstr "Wannan zaren yana cikin wani zagaye. Sake gwadawa idan ya gama."
+
+#: lib/porsche/ssh/output.ex:298
+#, elixir-autogen, elixir-format
+msgid "This thread is not ready for prompts yet."
+msgstr "Wannan zaren bai shirya karɓar buƙatu ba tukuna."
+
+#: lib/porsche/ssh/output.ex:292
+#, elixir-autogen, elixir-format
+msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr "terminal attach yana buƙatar tasha. Haɗa da ssh -t kuma ka gudanar da shi a matsayin umarnin."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "An kashe sanarwar turawa a wannan tsarin; tuntuɓi mai kula da shi."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Yawan na'urorinka ya kai iyaka; fara cire ɗaya: device rm DEVICE_ID"

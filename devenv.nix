@@ -26,6 +26,10 @@ let
   ]);
   harnessPython = pkgs.python313.withPackages (p: [ p.cryptography ]);
   antithesisWheels = import ./antithesis/nix/python-wheels.nix { inherit pkgs; };
+  # Mila builds with the same Flutter and patched dartssh2 as its Nix checks
+  # (ADR-0227).
+  milaFlutter = pkgs.flutterPackages.v3_47;
+  milaDartssh2 = (import ./nix/platform/dartssh2.nix pkgs pkgs).dartssh2-overalls;
 in
 {
   outputs.guest = import ./nix/domains/artifacts/guest { inherit pkgs; };
@@ -71,6 +75,7 @@ in
     pkgs.ruff
     pkgs.ty
     toolchain.erlang
+    milaFlutter
   ];
 
   # https://devenv.sh/languages/
@@ -126,6 +131,32 @@ in
   #   "devenv:enterShell".after = [ "myproj:setup" ];
   # };
 
+  # @cc [owner:ghuntley,label:build] mila-patched-dartssh2-link
+  # Mila's `.nix/dartssh2` path dependency MUST resolve to the overlay's
+  # patched store path, never to an unpatched pub.dev download.
+  tasks."mila:dartssh2" = {
+    exec = ''
+      mkdir -p "$DEVENV_ROOT/mila/packages/mila_transport/.nix"
+      ln -sfn ${milaDartssh2} "$DEVENV_ROOT/mila/packages/mila_transport/.nix/dartssh2"
+    '';
+    before = [ "devenv:enterShell" ];
+  };
+  scripts.mila-check.exec = ''
+    set -e
+    cd "$DEVENV_ROOT/mila/packages/mila_core"
+    dart format --line-length 100 --set-exit-if-changed lib test
+    dart analyze --fatal-infos
+    dart test
+    cd "$DEVENV_ROOT/mila/packages/mila_transport"
+    dart format --line-length 100 --set-exit-if-changed bin lib test
+    dart analyze --fatal-infos
+    dart test
+    cd "$DEVENV_ROOT/mila/app"
+    dart format --line-length 100 --set-exit-if-changed lib test
+    flutter analyze --fatal-infos
+    flutter test
+  '';
+
   # https://devenv.sh/tests/
   enterTest = ''
     echo "Running tests"
@@ -177,6 +208,31 @@ in
         language = "system";
         always_run = true;
         pass_filenames = false;
+      };
+      mila-dart-format = {
+        enable = true;
+        name = "mila-dart-format";
+        description = "Check Mila's Dart formatting";
+        # The language version is passed explicitly, as in the Nix checks:
+        # without resolved packages the formatter would fall back to the
+        # short style.
+        entry = "${pkgs.writeShellScript "mila-dart-format" ''
+          status=0
+          app=() packages=()
+          for file in "$@"; do
+            case "$file" in mila/app/*) app+=("$file") ;; *) packages+=("$file") ;; esac
+          done
+          format() {
+            ${milaFlutter}/bin/dart format --line-length 100 --set-exit-if-changed \
+              --language-version="$1" "''${@:2}" || status=1
+          }
+          [ ''${#app[@]} -eq 0 ] || format 3.13 "''${app[@]}"
+          [ ''${#packages[@]} -eq 0 ] || format 3.9 "''${packages[@]}"
+          exit $status
+        ''}";
+        language = "system";
+        files = "^mila/.*\\.dart$";
+        excludes = [ "^mila/app/lib/l10n/app_localizations.*\\.dart$" ];
       };
       python-ruff-format = {
         enable = true;
@@ -237,6 +293,15 @@ in
         entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs galileo";
         language = "system";
         files = "^(galileo/(lib|config)/.*\\.exs?$|galileo/mix\\.exs$|scripts/check_logging\\.exs$)";
+        pass_filenames = false;
+      };
+      elixir-logging-susan = {
+        enable = true;
+        name = "logging-check-susan";
+        description = "Enforce the Susan structured-event catalog";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs susan";
+        language = "system";
+        files = "^(susan/(lib|config)/.*\\.exs?$|susan/mix\\.exs$|scripts/check_logging\\.exs$)";
         pass_filenames = false;
       };
       elixir-logging-enrico = {

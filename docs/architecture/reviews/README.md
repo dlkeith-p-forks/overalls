@@ -1,7 +1,31 @@
 # Architecture reviews
 
 - [Localization feature catalogs (2026-10-19)](2026-10-19-localization-feature-catalogs.md): native per-locale/per-feature catalogs and the source-English handbook boundary under ADR-0201; migration and verification evidence remain separately scoped.
-
+- [MFA property fixture isolation (2026-10-19)](2026-10-19-mfa-property-isolation.md): fresh SQL ownership per generated history under ADR-0191, preserving exploration and separating historical timing from current execution.
+- [Mila M6: integrated client, relay and verification (2026-10-19)](2026-10-19-mila-m6.md):
+  ADR-0220–0228 across the integrated Mila, Porsche, Marshall and Susan
+  changes; records which machine and unit runs passed on the integrated tree.
+- [Susan push relay (2026-10-19)](2026-10-19-susan-push-relay.md): ADR-0224's
+  account-free relay, canonical domain-separated poke signature shared with
+  Marshall, append-only audit and per-node limits; real APNs/FCM and hosting open.
+- [Mila terminal attach (2026-10-19)](2026-10-19-mila-terminal-attach.md):
+  ADR-0223's Porsche attach through the Marshall terminal-gateway stream with an
+  unpinned ticket and credit after local send.
+- [Mila M2–M4 screens (2026-10-18)](2026-10-18-mila-ui.md): terminal, thread
+  and web screens over the client commands and attach channel; payloads only on
+  stdin and private endpoints only in the system browser.
+- [Mila client commands (2026-10-18)](2026-10-18-mila-commands.md): ADR-0222's
+  thread, terminal, web and watch commands, monotonic read markers and
+  digest-only stdin payload receipts.
+- [Mila notifications (2026-10-18)](2026-10-18-mila-notifications.md): ADR-0225's
+  Notifications domain, after-commit producer, fenced delivery worker and
+  content-free E2E pokes to the compiled Susan origin.
+- [Mila device features (2026-10-18)](2026-10-18-mila-device.md): push
+  registration, v1 poke opening, app lock and the offline snapshot cache.
+- [Mila M1: client, transport and host trust (2026-10-18)](2026-10-18-mila-m1.md):
+  ADR-0220–0228; per-deployment P-256 keys, strict host certificates checked in
+  key exchange, the patched dartssh2 overlay and link navigation; native custody
+  and the real-Porsche machine test remain unrun.
 - [Overview newsletter (2026-10-18)](2026-10-18-overview-newsletter.md): ADR-0205's account-wide durable invitation, self-only dismissal and server-side Ghost subscription boundary; test presence is distinguished from external delivery and packaged browser acceptance.
 - [Guest reflection (2026-10-18)](2026-10-18-guest-reflection.md): ADR-0203's secret-free, execution-fenced Peach projection; protocol and credential tests are present while successful HTTP/native guest execution and fleet enablement remain open.
 - [GitHub.com owner integration (2026-10-18)](2026-10-18-github-com-integration.md): ADR-0202's owner-bound OAuth custody and managed guest route; source and focused tests are recorded while live provider and native rollout remain open.

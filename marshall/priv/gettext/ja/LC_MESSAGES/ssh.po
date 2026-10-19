@@ -14,52 +14,53 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:68
+#: lib/marshall_web/live/ssh_approval_live.ex:83
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr "SSHキーを承認する"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:94
+#: lib/marshall_web/live/ssh_approval_live.ex:111
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr "承認キー"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:71
+#: lib/marshall_web/live/ssh_approval_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr "SSH 接続を開始し、そのフィンガープリントが SSH クライアントと一致する場合にのみ、このキーを承認します。"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:92
+#: lib/marshall_web/live/ssh_approval_live.ex:109
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "承認中…"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:84
+#: lib/marshall_web/live/ssh_approval_live.ex:101
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "ラベル (オプション)"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:97
+#: lib/marshall_web/live/ssh_approval_live.ex:120
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr "SSH キーを管理する"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:103
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "私のラップトップ"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:35
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "SSH キーが承認されました。 SSH クライアントに戻ることができます。"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr "この SSH 承認は利用できないか、期限が切れています。新しい SSH 接続を開始して、再試行してください。"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:77
+#: lib/marshall_web/live/ssh_approval_live.ex:93
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr "このキーは %{value1} としてサインインします。アカウントの権限に従ってマシンを管理できます。"
@@ -68,3 +69,8 @@ msgstr "このキーは %{value1} としてサインインします。アカウ�
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "利用不可"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr "Mila を開く"

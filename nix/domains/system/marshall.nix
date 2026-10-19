@@ -101,6 +101,16 @@ in
       type = types.strMatching "[a-zA-Z0-9][a-zA-Z0-9.-]*";
       description = "Public DNS name used by sign-in links and origin checks.";
     };
+    # @cc [owner:ghuntley,label:security;deployment] marshall-notifications-switch
+    # services.marshall.notifications.enable (default true) MUST reach Marshall
+    # only through the final launch wrapper, overriding any EnvironmentFile
+    # value. false refuses `device register` with push_disabled and makes the
+    # needs-input producer a no-op (ADR-0225).
+    notifications.enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Send content-free, end-to-end encrypted Mila push pokes through the Susan relay at https://notifications.overalls.dev. When false, device registration is refused with push_disabled and no deliveries are produced.";
+    };
     inference = {
       detailDays = mkOption { type = types.ints.between 1 36500; default = 90; description = "Inference request metadata retention in days."; };
       aggregateDays = mkOption { type = types.ints.between 1 36500; default = 365; description = "Daily inference usage retention in days."; };
@@ -370,6 +380,7 @@ in
             MARSHALL_DB_TLS=verify MARSHALL_DB_CA_CERTFILE="$CREDENTIALS_DIRECTORY/database-ca.crt" \
             MARSHALL_REPLICA_COUNT=${toString cfg.replicaCount} POOL_SIZE=${toString cfg.poolSize} \
             MARSHALL_DB_CONNECTION_BUDGET=${toString cfg.databaseConnectionBudget} \
+            MARSHALL_NOTIFICATIONS_ENABLED=${if cfg.notifications.enable then "true" else "false"} \
             ${cfg.package}/bin/marshall eval 'Marshall.GitHub.invalidate_restored_credentials_before_serving!()'
       '';
       script = ''
@@ -393,6 +404,7 @@ in
           ${lib.optionalString fleetOtelEnabled "MARSHALL_SLO_SNAPSHOT=/run/marshall-slo-${name}/slo.json"} \
           ${lib.optionalString fleetOtelEnabled "MARSHALL_SLO_CATALOG=${sloCatalog}"} \
           MARSHALL_INGRESS_EDITOR_RELEASES=${lib.escapeShellArg (builtins.toJSON editorReleases)} \
+          MARSHALL_NOTIFICATIONS_ENABLED=${if cfg.notifications.enable then "true" else "false"} \
 \
           OVERALLS_MARVIN_RELEASE=${lib.escapeShellArg (if cfg.marvinPackage == null then "" else toString cfg.marvinPackage)} \
           ${lib.optionalString (fleetOtelEnabled && name == "overalls") "MARSHALL_SERVICE_LEVEL_DIRECTORY=/run/marshall-slo-overalls"} \

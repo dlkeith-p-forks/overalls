@@ -7,25 +7,17 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:64
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"\n"
-"Keep this SSH connection open while approving the key.\n"
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr "\n\nWeka muunganisho huu wa SSH wazi huku ukiidhinisha ufunguo.\n"
 
 #: lib/porsche/ssh/onboarding.ex:81
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open an interactive Porsche connection without a remote command:"
+msgid "\nOpen an interactive Porsche connection without a remote command:"
 msgstr "\nFungua muunganisho unaoingiliana wa Porsche bila amri ya mbali:"
 
 #: lib/porsche/ssh/onboarding.ex:59
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open this link, sign in, and approve the matching fingerprint:\n"
-"  "
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
 msgstr "\nFungua kiungo hiki, ingia, na uidhinishe alama ya vidole inayolingana:\n  "
 
 #: lib/porsche/ssh/onboarding.ex:126
@@ -40,9 +32,7 @@ msgstr "Baada ya idhini, jaribu tena amri yako hapa.\n"
 
 #: lib/porsche/ssh/onboarding.ex:65
 #, elixir-autogen, elixir-format
-msgid ""
-"Approval links expire after %{minutes} minutes or when this connection "
-"closes.\n"
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
 msgstr "Viungo vya uidhinishaji huisha baada ya dakika %{minutes} au muunganisho huu unapofungwa.\n"
 
 #: lib/porsche/ssh/onboarding.ex:138
@@ -57,16 +47,12 @@ msgstr "Weka muunganisho huo wazi unapoidhinisha ufunguo wako kwenye kivinjari,\
 
 #: lib/porsche/ssh/onboarding.ex:129
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your SSH key in Overalls Account settings > SSH keys.\n"
-"\n"
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
 msgstr "Sajili au kagua ufunguo wako wa SSH katika Mipangilio ya akaunti ya Overalls > Funguo za SSH.\n\n"
 
 #: lib/porsche/ssh/onboarding.ex:124
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your key by connecting to:\n"
-"  ssh "
+msgid "Register or check your key by connecting to:\n  ssh "
 msgstr "Sajili au kagua ufunguo wako kwa kuunganisha kwenye:\n  ssh "
 
 #: lib/porsche/ssh/onboarding.ex:113

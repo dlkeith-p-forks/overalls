@@ -8,7 +8,8 @@ defmodule Overalls.Diagnostics.Formatter do
     Ziggy.Events => :ziggy,
     Porsche.Events => :porsche,
     Enrico.Events => :enrico,
-    Galileo.Events => :galileo
+    Galileo.Events => :galileo,
+    Susan.Events => :susan
   }
   @runtime_categories ~w(
     application_exit

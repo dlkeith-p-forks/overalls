@@ -14,36 +14,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/admin/access_live.ex:83
+#: lib/marshall_web/live/admin/access_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "அணுகல் அதிகாரம்"
 
-#: lib/marshall_web/live/admin/access_live.ex:65
+#: lib/marshall_web/live/admin/access_live.ex:78
 #, elixir-autogen, elixir-format
 msgid "Access inventory is temporarily unavailable."
 msgstr "அணுகல் சரக்கு தற்காலிகமாக கிடைக்கவில்லை."
 
-#: lib/marshall_web/live/admin/access_live.ex:106
-#: lib/marshall_web/live/admin/access_live.ex:152
+#: lib/marshall_web/live/admin/access_live.ex:123
+#: lib/marshall_web/live/admin/access_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "கணக்கு"
 
-#: lib/marshall_web/live/admin/access_live.ex:110
-#: lib/marshall_web/live/admin/access_live.ex:156
-#: lib/marshall_web/live/admin/access_live.ex:205
+#: lib/marshall_web/live/admin/access_live.ex:127
+#: lib/marshall_web/live/admin/access_live.ex:173
+#: lib/marshall_web/live/admin/access_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "செயல்கள்"
 
-#: lib/marshall_web/live/admin/access_live.ex:95
-#: lib/marshall_web/live/admin/access_live.ex:195
+#: lib/marshall_web/live/admin/access_live.ex:112
+#: lib/marshall_web/live/admin/access_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "Active SSH sessions"
 msgstr "செயலில் உள்ள SSH அமர்வுகள்"
 
-#: lib/marshall_web/live/admin/access_live.ex:154
+#: lib/marshall_web/live/admin/access_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "சேர்க்கப்பட்டது"
@@ -58,32 +58,32 @@ msgstr "நிர்வாக மாற்றங்கள் அங்கீக�
 msgid "Administrative changes require an administrator."
 msgstr "நிர்வாக மாற்றங்களைச் செய்ய நிர்வாகியாக இருக்க வேண்டும்."
 
-#: lib/marshall_web/live/admin/access_live.ex:226
+#: lib/marshall_web/live/admin/access_live.ex:245
 #, elixir-autogen, elixir-format
 msgid "Close session"
 msgstr "அமர்வை மூடு"
 
-#: lib/marshall_web/live/admin/access_live.ex:224
+#: lib/marshall_web/live/admin/access_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Close this SSH session?"
 msgstr "இந்த SSH அமர்வை மூடவா?"
 
-#: lib/marshall_web/live/admin/access_live.ex:36
+#: lib/marshall_web/live/admin/access_live.ex:43
 #, elixir-autogen, elixir-format
 msgid "Could not close that session."
 msgstr "அந்த அமர்வை மூட முடியவில்லை."
 
-#: lib/marshall_web/live/admin/access_live.ex:46
+#: lib/marshall_web/live/admin/access_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "Could not revoke that VM access."
 msgstr "அந்த மெய்நிகர் இயந்திர அணுகலை ரத்துசெய்ய முடியவில்லை."
 
-#: lib/marshall_web/live/admin/access_live.ex:26
+#: lib/marshall_web/live/admin/access_live.ex:31
 #, elixir-autogen, elixir-format
 msgid "Could not revoke that key."
 msgstr "அந்தச் சாவியை ரத்துசெய்ய முடியவில்லை."
 
-#: lib/marshall_web/live/admin/access_live.ex:203
+#: lib/marshall_web/live/admin/access_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Expires"
 msgstr "காலாவதி"
@@ -93,154 +93,154 @@ msgstr "காலாவதி"
 msgid "Finish or cancel the current verification first."
 msgstr "முதலில் தற்போதைய சரிபார்ப்பை முடிக்கவும் அல்லது ரத்துசெய்யவும்."
 
-#: lib/marshall_web/live/admin/access_live.ex:201
+#: lib/marshall_web/live/admin/access_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Gateway"
 msgstr "நுழைவாயில்"
 
-#: lib/marshall_web/live/admin/access_live.ex:108
+#: lib/marshall_web/live/admin/access_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "Granted"
 msgstr "வழங்கப்பட்டது"
 
-#: lib/marshall_web/live_admin_auth.ex:205
+#: lib/marshall_web/live_admin_auth.ex:208
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "செல்லாத நிர்வாகக் கோரிக்கை."
 
-#: lib/marshall_web/live/admin/access_live.ex:51
+#: lib/marshall_web/live/admin/access_live.ex:60
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "செல்லாத கோரிக்கை."
 
-#: lib/marshall_web/live/admin/access_live.ex:153
-#: lib/marshall_web/live/admin/access_live.ex:202
+#: lib/marshall_web/live/admin/access_live.ex:170
+#: lib/marshall_web/live/admin/access_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Key"
 msgstr "சாவி"
 
-#: lib/marshall_web/live/admin/access_live.ex:105
+#: lib/marshall_web/live/admin/access_live.ex:122
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "இயந்திரம்"
 
-#: lib/marshall_web/live/admin/access_live.ex:246
+#: lib/marshall_web/live/admin/access_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "மேலாளர்"
 
-#: lib/marshall_web/live/admin/access_live.ex:147
+#: lib/marshall_web/live/admin/access_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "No active keys."
 msgstr "செயலில் உள்ள சாவிகள் இல்லை."
 
-#: lib/marshall_web/live/admin/access_live.ex:196
+#: lib/marshall_web/live/admin/access_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "No active sessions."
 msgstr "செயலில் உள்ள அமர்வுகள் இல்லை."
 
-#: lib/marshall_web/live/admin/access_live.ex:99
+#: lib/marshall_web/live/admin/access_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "No machine is shared with another account."
 msgstr "வேறொரு கணக்குடன் எந்த இயந்திரமும் பகிரப்படவில்லை."
 
-#: lib/marshall_web/live/admin/access_live.ex:245
+#: lib/marshall_web/live/admin/access_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "இயக்குநர்"
 
-#: lib/marshall_web/live/admin/access_live.ex:213
+#: lib/marshall_web/live/admin/access_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Pending key approval"
 msgstr "விசை ஒப்புதலுக்காகக் காத்திருக்கிறது"
 
-#: lib/marshall_web/live/admin/access_live.ex:94
-#: lib/marshall_web/live/admin/access_live.ex:146
+#: lib/marshall_web/live/admin/access_live.ex:111
+#: lib/marshall_web/live/admin/access_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Registered SSH keys"
 msgstr "பதிவுசெய்த SSH சாவிகள்"
 
-#: lib/marshall_web/live/admin/access_live.ex:138
+#: lib/marshall_web/live/admin/access_live.ex:155
 #, elixir-autogen, elixir-format
 msgid "Revoke access"
 msgstr "அணுகலை ரத்துசெய்"
 
-#: lib/marshall_web/live/admin/access_live.ex:187
+#: lib/marshall_web/live/admin/access_live.ex:206
 #, elixir-autogen, elixir-format
 msgid "Revoke key"
 msgstr "சாவியை ரத்துசெய்"
 
-#: lib/marshall_web/live/admin/access_live.ex:185
+#: lib/marshall_web/live/admin/access_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Revoke this SSH key and close sessions using it?"
 msgstr "இந்த SSH சாவியை ரத்துசெய்து இதைப் பயன்படுத்தும் அமர்வுகளை மூடவா?"
 
-#: lib/marshall_web/live/admin/access_live.ex:136
+#: lib/marshall_web/live/admin/access_live.ex:153
 #, elixir-autogen, elixir-format
 msgid "Revoke this user's VM access?"
 msgstr "இந்தப் பயனரின் மெய்நிகர் இயந்திர அணுகலை ரத்துசெய்யவா?"
 
-#: lib/marshall_web/live/admin/access_live.ex:247
+#: lib/marshall_web/live/admin/access_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "ரத்துசெய்யப்பட்டது"
 
-#: lib/marshall_web/live/admin/access_live.ex:107
+#: lib/marshall_web/live/admin/access_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "பங்கு"
 
-#: lib/marshall_web/live/admin/access_live.ex:172
+#: lib/marshall_web/live/admin/access_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "SSH key"
 msgstr "SSH சாவி"
 
-#: lib/marshall_web/live/admin/access_live.ex:25
+#: lib/marshall_web/live/admin/access_live.ex:27
 #, elixir-autogen, elixir-format
 msgid "SSH key revoked."
 msgstr "SSH சாவி ரத்துசெய்யப்பட்டது."
 
-#: lib/marshall_web/live/admin/access_live.ex:33
+#: lib/marshall_web/live/admin/access_live.ex:39
 #, elixir-autogen, elixir-format
 msgid "SSH session closed."
 msgstr "SSH அமர்வு மூடப்பட்டது."
 
-#: lib/marshall_web/live/admin/access_live.ex:97
+#: lib/marshall_web/live/admin/access_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Shared machine access"
 msgstr "பகிரப்பட்ட இயந்திர அணுகல்"
 
-#: lib/marshall_web/live/admin/access_live.ex:93
+#: lib/marshall_web/live/admin/access_live.ex:110
 #, elixir-autogen, elixir-format
 msgid "Shared machine grants"
 msgstr "பகிரப்பட்ட இயந்திர அனுமதிகள்"
 
-#: lib/marshall_web/live/admin/access_live.ex:248
+#: lib/marshall_web/live/admin/access_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "தெரியாதது"
 
-#: lib/marshall_web/live/admin/access_live.ex:90
+#: lib/marshall_web/live/admin/access_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Updated every 15 seconds"
 msgstr "15 வினாடிகளுக்கு ஒருமுறை புதுப்பிக்கப்படும்"
 
-#: lib/marshall_web/live/admin/access_live.ex:43
+#: lib/marshall_web/live/admin/access_live.ex:51
 #, elixir-autogen, elixir-format
 msgid "VM access revoked."
 msgstr "மெய்நிகர் இயந்திர அணுகல் ரத்துசெய்யப்பட்டது."
 
-#: lib/marshall_web/live/admin/access_live.ex:244
+#: lib/marshall_web/live/admin/access_live.ex:263
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "பார்வையாளர்"
 
-#: lib/marshall_web/live/admin/access_live.ex:243
+#: lib/marshall_web/live/admin/access_live.ex:262
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "இணையப் பயன்பாடுகள்"
 
-#: lib/marshall_web/live/admin/access_live.ex:85
+#: lib/marshall_web/live/admin/access_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
 msgstr "எந்த இயந்திரத்தை யார் எந்தச் சாவி அல்லது அமர்வால் அணுகலாம். தனிச் சாவிகள், அமர்வு வில்லைகள் மற்றும் நுழைவாயில் அடையாளச் சான்றுகள் ஒருபோதும் காட்டப்படாது."

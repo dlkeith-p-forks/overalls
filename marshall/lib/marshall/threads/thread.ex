@@ -73,6 +73,7 @@ defmodule Marshall.Threads.Thread do
 
     action :list_page_for_user, :map do
       argument :after, :uuid
+      argument :machine_id, :uuid
       argument :limit, :integer, default: 50, constraints: [min: 1, max: 100]
       run {Marshall.Threads.Coordinator, operation: :list_page}
     end
@@ -290,6 +291,16 @@ defmodule Marshall.Threads.Thread do
     end
 
     destroy :archive
+  end
+
+  # @cc [owner:ghuntley,label:protocol;observability] thread-change-hint
+  # Every committed thread change, including the activity projection that
+  # follows each durable agent event, MUST emit a `:thread` hint carrying only
+  # the thread UUID. The hint is delivered after the outer commit (pg_notify)
+  # and is never authority: watchers re-read through authorized commands.
+  changes do
+    change {Marshall.Control.Hints.Change, kind: :thread, from: :id},
+      on: [:create, :update, :destroy]
   end
 
   attributes do

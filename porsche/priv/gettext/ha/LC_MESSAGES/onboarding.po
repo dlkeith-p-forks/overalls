@@ -7,25 +7,17 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:64
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"\n"
-"Keep this SSH connection open while approving the key.\n"
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr "\n\nCi gaba da buɗe wannan haɗin SSH yayin amincewa da maɓallin.\n"
 
 #: lib/porsche/ssh/onboarding.ex:81
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open an interactive Porsche connection without a remote command:"
+msgid "\nOpen an interactive Porsche connection without a remote command:"
 msgstr "\nBuɗe haɗin Porsche mai mu'amala ba tare da umarni mai nisa ba:"
 
 #: lib/porsche/ssh/onboarding.ex:59
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open this link, sign in, and approve the matching fingerprint:\n"
-"  "
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
 msgstr "\nBude wannan hanyar haɗin yanar gizon, shiga, kuma yarda da madaidaicin sawun yatsa:\n  "
 
 #: lib/porsche/ssh/onboarding.ex:126
@@ -40,9 +32,7 @@ msgstr "Bayan amincewa, sake gwada umarnin ku anan.\n"
 
 #: lib/porsche/ssh/onboarding.ex:65
 #, elixir-autogen, elixir-format
-msgid ""
-"Approval links expire after %{minutes} minutes or when this connection "
-"closes.\n"
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
 msgstr "Hanyoyin haɗin kai suna ƙarewa bayan mintuna %{minutes} ko lokacin da wannan haɗin ke rufe.\n"
 
 #: lib/porsche/ssh/onboarding.ex:138
@@ -57,16 +47,12 @@ msgstr "Ci gaba da buɗe wannan haɗin yayin da kake amincewa da maɓallin ku a 
 
 #: lib/porsche/ssh/onboarding.ex:129
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your SSH key in Overalls Account settings > SSH keys.\n"
-"\n"
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
 msgstr "Yi rijista ko duba maɓallin SSH ɗin ku a cikin saitunan asusun Overalls> Maɓallan SSH.\n\n"
 
 #: lib/porsche/ssh/onboarding.ex:124
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your key by connecting to:\n"
-"  ssh "
+msgid "Register or check your key by connecting to:\n  ssh "
 msgstr "Yi rijista ko duba maɓallin ku ta haɗa zuwa: \n ssh "
 
 #: lib/porsche/ssh/onboarding.ex:113

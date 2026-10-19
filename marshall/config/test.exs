@@ -59,3 +59,9 @@ config :phoenix_live_view,
 # Sort query params output of verified routes for robust url comparisons
 config :phoenix,
   sort_verified_routes_query_params: true
+
+# Susan's origin is a compiled constant; only MIX_ENV=test reads this override
+# (ADR-0225). Requests go to an in-process Req.Test stub, never the network.
+config :marshall, Marshall.Notifications.Susan,
+  origin: "https://susan.test",
+  req_options: [plug: {Req.Test, Marshall.Notifications.Susan}]

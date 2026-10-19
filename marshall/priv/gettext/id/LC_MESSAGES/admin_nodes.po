@@ -14,775 +14,775 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "Aktif"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:259
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:302
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "Penerimaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:85
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "Admission settings updated."
 msgstr "Pengaturan penerimaan diperbarui."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:92
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Admission settings were invalid or the node is not ready."
 msgstr "Pengaturan penerimaan tidak valid atau simpul belum siap."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:566
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:615
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr "Pratinjau panduan untuk halaman ini. Setiap beban kerja dievaluasi secara terpisah; tujuan dan kapasitas tersedia dapat berubah. Penerimaan memeriksa ulang dan mencadangkan sumber daya saat setiap pemindahan dimulai."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:430
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "Terapkan pengaturan penerimaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "Setujui waktu henti pemindahan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:635
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr "Terhalang: %{reason}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "CPU setelah pencadangan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "Kapasitas CPU tersisa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "Beban tambahan CPU (inti)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:486
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "Kampanye"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:727
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:804
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr "Kampanye ditutup"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "Riwayat kampanye"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:798
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr "Kampanye diminta"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr "Tonggak kampanye, beban kerja, dan relokasi dari catatan bidang kontrol yang persisten."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:827
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "Pembatalan diminta"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:719
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:821
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:915
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "Dibatalkan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr "Kandidat: %{name}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:330
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:356
 #, elixir-autogen, elixir-format
 msgid "Capacity explanation"
 msgstr "Penjelasan kapasitas"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:66
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:69
 #, elixir-autogen, elixir-format
 msgid "Capacity information is temporarily unavailable."
 msgstr "Informasi kapasitas sementara tidak tersedia."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:769
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "Memeriksa kesiapan tujuan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
 msgstr "Memeriksa konektivitas transfer"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr "Membersihkan setelah pembatalan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr "Membersihkan sumber"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:869
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr "Kloning berlangsung"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:539
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "Ditutup"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:718
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "Selesai"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:377
 #, elixir-autogen, elixir-format
 msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
 msgstr "Overhead host yang dikonfigurasi: %{cores} inti · %{memory} memori. Cadangan ini termasuk dalam perhitungan penerimaan dan tetap dikendalikan oleh penerapan."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:508
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "Lanjutkan penjadwalan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "Pencadangan untuk salin/ubah ukuran"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:760
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "Menyalin"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:161
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:166
 #, elixir-autogen, elixir-format
 msgid "Could not accept this change. Refresh and check the workload state."
 msgstr "Tidak dapat menerima perubahan ini. Muat ulang dan periksa keadaan beban kerja."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:744
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "Dihapus"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
 msgstr "Menghapus salinan yang disimpan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr "Diinginkan: %{desired} · Teramati: %{observed}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "Boot tujuan gagal; salinan sumber disimpan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:824
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr "Pembersihan tujuan dikonfirmasi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr "Pembersihan tujuan diminta"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:772
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
 msgstr "Kesiapan tujuan gagal; salinan sumber disimpan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:548
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Detail"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "Disk setelah pencadangan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:860
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr "Persetujuan waktu henti diperlukan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:836
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr "Waktu henti disetujui"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "Waktu henti disetujui untuk revisi beban kerja ini"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "Beban dikosongkan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:729
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "Mengosongkan beban"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "Diaktifkan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
 msgstr "Evakuasi semua beban kerja pada node ini? Tamu yang berjalan akan terputus saat dipindahkan. Salinan penuh dalam keadaan berhenti memerlukan persetujuan terpisah untuk setiap beban kerja."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "Mengevakuasi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:300
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
 msgstr "Evakuasi memblokir penempatan baru sementara tamu yang ada tetap dilayani. Memindahkan tamu yang berjalan akan mengganggunya sebentar. Salinan penuh dalam keadaan berhenti dapat memakan waktu jauh lebih lama dan memerlukan persetujuan untuk setiap beban kerja."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "Kampanye evakuasi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "Linimasa evakuasi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:547
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "Peristiwa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:272
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "Excluded"
 msgstr "Dikecualikan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:341
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:370
 #, elixir-autogen, elixir-format
 msgid "Execution ready"
 msgstr "Eksekusi siap"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Explain capacity"
 msgstr "Jelaskan kapasitas"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:912
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Gagal"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:277
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "Baru"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Fresh report"
 msgstr "Laporan baru"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:763
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "Mengimpor"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:857
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr "Kapasitas tidak mencukupi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Permintaan tidak valid."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:830
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr "Status pekerjaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:276
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Lilly node · %{mode} maintenance"
 msgstr "Node Lilly · pemeliharaan %{mode}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:236
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
 msgstr "Node Lilly dan keadaan penerimaannya. Pindahkan beban kerja node sebelum mengeluarkan mesinnya dari layanan."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:249
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:282
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:258
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:299
 #, elixir-autogen, elixir-format
 msgid "Maintenance"
 msgstr "Pemeliharaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "Halaman pemeliharaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:151
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:156
 #, elixir-autogen, elixir-format
 msgid "Maintenance updated."
 msgstr "Pemeliharaan diperbarui."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "Memori setelah pencadangan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "Kapasitas memori tersisa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Halaman berikutnya →"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:124
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:140
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:129
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "No active campaign."
 msgstr "Tidak ada kampanye aktif."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:248
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:280
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:257
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "Node"
 msgstr "Simpul"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Node information is unavailable."
 msgstr "Informasi node tidak tersedia."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:234
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "Pemeliharaan node"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr "Biasa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:599
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr "Gangguan teramati: %{seconds} dtk"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:595
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:648
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr "Gangguan teramati: %{seconds} dtk (berlangsung)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:538
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:587
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "Dibuka"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "Jeda penjadwalan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr "Jeda menghentikan penjadwalan pemindahan baru. Pemindahan yang diterima tetap berlanjut. Kesiapan pemeliharaan memerlukan konfirmasi pembersihan sumber; tugas yang selesai saja tidak cukup."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "Dijeda"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:742
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Tertunda"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:522
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr "Pensiunkan node kosong ini secara permanen dan cabut kredensialnya?"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:644
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "Tahap: %{phase}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:440
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "Kelompok sumber daya"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "Menyiapkan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:306
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Preview evacuation"
 msgstr "Pratinjau evakuasi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:606
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "Pratinjau: %{blocker}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:814
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:894
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr "Diantrekan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "Beban tambahan RAM (byte)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:642
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr "Rencanakan ulang beban kerja ini dengan penempatan dan keadaan yang diinginkan saat ini? Persetujuan waktu henti sebelumnya akan dihapus."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:647
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "Rencanakan ulang beban kerja"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:333
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:359
 #, elixir-autogen, elixir-format
 msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
 msgstr "Perhitungan penerimaan hanya-baca. Tidak mencadangkan kapasitas; pengukuran yang tidak diketahui menahan penerimaan."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "Siap"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:807
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr "Relokasi ditetapkan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:866
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr "Relokasi berlangsung"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:761
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:839
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr "Relokasi dimulai"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "Dihapus dari sumber ini; menunggu verifikasi pembersihan kampanye."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:307
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:441
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "Laporan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:863
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
 msgstr "Perubahan ukuran berlangsung"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:515
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "Pulihkan penerimaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr "Memulihkan sumber"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "Dilanjutkan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "Pensiunkan node"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "Dinonaktifkan permanen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:818
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:906
 #, elixir-autogen, elixir-format
 msgid "Retrying"
 msgstr "Mencoba lagi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr "Mencoba boot tujuan lagi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:817
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:740
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:903
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "Berjalan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:900
 #, elixir-autogen, elixir-format
 msgid "Scheduled"
 msgstr "Dijadwalkan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr "Pembersihan sumber dikonfirmasi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr "Pembersihan sumber diminta"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:724
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:801
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr "Sumber siap"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:810
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "Sumber dipulihkan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:851
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr "Sumber tidak tersedia"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:278
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:457
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "Kedaluwarsa atau tidak diketahui"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown report"
 msgstr "Laporan kedaluwarsa atau tidak diketahui"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:350
 #, elixir-autogen, elixir-format
 msgid "Start evacuation"
 msgstr "Mulai evakuasi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "Penahanan saat mulai"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Status keadaan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr "Hentikan beban kerja yang berjalan ini selama seluruh pemindahan? Menyalin disk dan memulai ulang pada tujuan dapat menyebabkan waktu henti panjang."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "Berhenti"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "Menghentikan sumber"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:819
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:909
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "Berhasil"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:815
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:897
 #, elixir-autogen, elixir-format
 msgid "Suspended"
 msgstr "Ditangguhkan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:766
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "Mengalihkan penempatan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:293
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
 msgstr "Protokol terminal: %{protocol} · Aliran lokal: %{state}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:546
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "Waktu"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:854
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr "Transfer sibuk"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Tidak tersedia"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:822
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:315
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:749
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:871
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:872
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:874
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:917
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Tidak diketahui"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "VM"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:767
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:845
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr "Beban kerja berubah"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:770
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:848
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr "Beban kerja tidak stabil"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:833
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr "Beban kerja teramati"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:764
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:842
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr "Beban kerja terselesaikan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "percobaan %{attempt}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "kampanye"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:367
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "diaktifkan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:400
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "dikecualikan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:563
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "tugas"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:558
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "pindahkan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:318
 #, elixir-autogen, elixir-format
 msgid "ready"
 msgstr "siap"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "unavailable"
 msgstr "tidak tersedia"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:373
 #, elixir-autogen, elixir-format
 msgid "unknown"
 msgstr "tidak diketahui"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "yes"
 msgstr "ya"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· Persetujuan waktu henti diperlukan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Halaman pertama"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "← Nodes"
 msgstr "← Node"

@@ -960,7 +960,7 @@ histories pass 171 refusals across 57 cases, including control/public origin,
 listener bounds, paths, config/credential/key custody and CA defects. Refusals
 preserve recursive fixture bytes, types, permissions, ownership and link counts,
 and diagnostics exclude original/mutated credentials, host-key/CA bytes and
-fixture paths. The unset control starts exactly five live named base children
+fixture paths. The unset control starts exactly seven live named base children
 without listener or status startup. These are test-build checks. Baseline
 synthetic host-key bytes establish loader custody acceptance only; configured
 SSH/host-certificate startup, packaged refusal, file-replacement races, native
@@ -988,6 +988,71 @@ Evidence: [personal workspace](repo:docs/architecture/decisions/0117-personal-te
 [SSH guidance](repo:docs/architecture/decisions/0120-ssh-onboarding-guidance.md),
 [Porsche operations](repo:docs/operations/porsche-operations.md).
 
+### Mila client commands
+
+Mila (ADR-0220) drives Marshall only through Porsche's command catalog
+(ADR-0222). Thread commands (`thread ls|show|turns|prompt|answer|plan
+approve|plan revise|mode|read`), terminal commands (`terminal ls|new|kill`),
+web commands (`web show|set`) and the streaming `watch` share the existing
+shared parser, Marshall session authority and pinned `ssh_requests` receipts.
+Marshall answers identifiers, states, unread counts and canonical
+`overalls://` routes; thread objectives, machine specifications and skill
+selections never reach the wire.
+
+Prompt, answer and plan-revision text arrives only on standard input after a
+final `-`, bounded per command at 64 KiB; the integration secret keeps its own
+4098-byte kind. Porsche buffers to that bound, validates through
+`SSHCommand.put_stdin_payload/2` and logs only a closed
+`porsche.stdin_payload_rejected` reason. Marshall stores receipts with the
+payload replaced by a SHA-256 digest and with the caller's SSH key id, so a
+Porsche-originated prompt, answer, plan approval or web change is attributable
+without retaining its text. Read markers are per reader and agent transcript
+and never move backwards; `thread ls` derives unread counts from them.
+
+`web set` passes the caller's expected `policy_revision` (or the one it just
+read) to Ingress, which rechecks manage authority under the VM lock and
+refuses `revision_conflict`. Terminal commands run outside the receipt
+transaction because the terminal domain commits its opening intent before
+guest dispatch; `terminal new` derives its opening identity from the account
+and request id, so a retry rejoins the same shell.
+
+```mermaid
+sequenceDiagram
+  participant Mila
+  participant Porsche
+  participant Marshall
+  Mila->>Porsche: exec "watch --thread T --session"
+  Porsche->>Marshall: porsche.watch_subscribe(session, machines, threads)
+  Marshall-->>Porsche: canonical ids readable now (or refusal)
+  Porsche-->>Mila: {"event":"watching",...}
+  Marshall--)Porsche: hint thread T (after commit)
+  Porsche-->>Mila: {"event":"thread","id":T} (debounced)
+  Mila->>Porsche: exec "thread show T --json"
+  loop every 15 s
+    Porsche->>Marshall: watch_subscribe again
+    Porsche-->>Mila: {"event":"heartbeat"} or close with exit 3
+  end
+```
+
+A hint is never authority: Porsche routes `{kind, id}` hints only to channels
+registered for identifiers Marshall authorized, and the client re-reads
+through ordinary commands. Porsche's gateway binding subscribes to every
+thread and terminal-session hint, so the trusted gateway learns change
+identifiers across accounts but never their content. Revocation ends a watch
+within one heartbeat.
+
+Evidence: [command grammar](repo:protocol/lib/overalls_protocol/ssh_command.ex),
+[protocol properties](repo:protocol/test/ssh_client_commands_test.exs),
+[dispatch](repo:marshall/lib/marshall/ssh/commands.ex),
+[watch authority](repo:marshall/lib/marshall/ssh/watch.ex),
+[read markers](repo:marshall/lib/marshall/threads/read_markers.ex),
+[Marshall command tests](repo:marshall/test/marshall/ssh/client_commands_test.exs),
+[Porsche watch routing](repo:porsche/lib/porsche/watchers.ex),
+[Porsche tests](repo:porsche/test/client_commands_test.exs),
+[real SSH transport test](repo:marshall/test/marshall_web/ssh_transport_test.exs).
+Committed-hint delivery, live terminal openings and a NixOS machine journey
+remain unexercised.
+
 ### Local host-certificate startup evidence
 
 Native guest SSH refusal checks distinguish recognized users denied by VM or
@@ -1006,7 +1071,7 @@ custody and material/path-safe output. Signed invalid type/options/principal
 cases retain valid cryptographic signatures.
 
 A separate configured control starts the real default-callback loopback daemon,
-checks seven direct children, readiness, private status socket and an actual SSH
+checks nine direct children, readiness, private status socket and an actual SSH
 banner, then stops the application and removes its owned socket. This establishes
 local startup only. Certificate negotiation/client CA trust, account proof and
 authorized Marshall management, production release/systemd startup, native
@@ -1050,6 +1115,224 @@ native Lilly, remote peer authentication, partitions and hosted faults retain
 their separate evidence and gaps. Evidence:
 [takeover property](repo:marshall/test/marshall/terminal/host_takeover_history_test.exs)
 and [execution review](repo:docs/architecture/reviews/2026-09-29-antithesis-property-audit.md).
+
+## Mila
+
+Mila is the Overalls client for iOS and Android; its Linux build exists for
+testing. It manages machines through one SSH connection to the deployment's
+Porsche gateway and adds no Marshall API: every command is an ordinary Porsche
+`--json` command, authorized by Marshall's domains like any other SSH caller.
+
+| Concern | Behaviour |
+| --- | --- |
+| Device identity | One P-256 key per deployment: Secure Enclave (iOS), Android Keystore with StrongBox where present, an owner-only `0600` file on Linux. A readable Linux key file is refused. |
+| Host trust | `https://HOST/bin/ssh-trust.json` is fetched over HTTPS without redirects and pinned. A later document with another CA, host or zone is refused; a failed fetch uses only an unretired pin. |
+| Host acceptance | Only `ssh-ed25519-cert-v01@openssh.com`. The certificate must come from the pinned CA, name the management host and be inside its validity window. The check runs in key exchange, before user authentication. |
+| Sign-in | Porsche's browser key approval. Mila opens `approval_url` in the system browser and keeps the connection, re-checking `whoami` every 2 seconds. A link expires after 600 seconds and is never replaced while shown. |
+| Mutations | Submitted once with a client `porsche-<32 hex>` request id and `--no-wait`, then polled with `request show`; never resubmitted. |
+| Links | `overalls://HOST/PATH` only navigates. Unknown deployments land on the deployment list; signed-out deployments reach only their sign-in screen. |
+| Language | One ARB catalog per Porsche locale, checked against `porsche/priv/gettext`. Egyptian Arabic, Hausa and Nigerian Pidgin have no Flutter framework catalog, so dialog and tooltip strings borrow Arabic or English while Mila's own strings stay in the locale; Egyptian Arabic keeps right-to-left direction. Terminal output and identifiers stay left to right. |
+
+```mermaid
+sequenceDiagram
+    participant M as Mila
+    participant W as Deployment HTTPS
+    participant P as Porsche
+    participant B as Browser
+    M->>W: GET /bin/ssh-trust.json
+    W-->>M: CA, management host, zone
+    M->>P: key exchange, certificate host key only
+    P-->>M: host certificate and exchange signature
+    M->>M: verify CA, principal, validity, signature
+    M->>P: publickey with the device key
+    M->>P: whoami --json
+    P-->>M: approval_required and approval URL
+    M->>B: open approval URL
+    B->>P: user approves the key
+    M->>P: whoami --json on a new channel
+    P-->>M: succeeded
+```
+
+Failure behaviour: an untrusted host ends the connection before any command and
+before the device key signs anything; an unreachable origin with no pin is
+reported as unreachable rather than untrusted. Mila stores no terminal bytes,
+tokens or reply bodies; it logs nothing about keys or commands.
+
+Evidence: [transport](repo:mila/packages/mila_transport/lib/src/ssh_porsche.dart)
+and its [OpenSSH journeys](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart),
+[host certificates](repo:mila/packages/mila_core/lib/src/host_trust.dart),
+[sign-in machine](repo:mila/packages/mila_core/lib/src/sign_in.dart),
+[device keys](repo:mila/packages/mila_transport/lib/src/device_key.dart),
+[dartssh2 patch](repo:nix/platform/patches/dartssh2-host-certificates.patch),
+[real-Porsche machine test](repo:nix/verification/tests/machines/mila-porsche/default.nix)
+(passed against the real Porsche release), the [desktop journey](repo:nix/verification/tests/machines/mila-desktop/default.nix)
+(browser approval, machine list and forwarded links through the Linux bundle) and the [M1 review](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+
+### Mila notifications, app lock and offline list
+
+Notifications are opt-in per device and per deployment. Mila asks the
+platform for an APNs or FCM token. It exchanges the token for a push key at
+the fixed relay origin `https://notifications.overalls.dev`, then registers
+the device through Porsche with
+`device register --platform P --push-key - --enc-pubkey K`. The push key
+travels only on the command's stdin. The token goes only to the relay. Mila
+stores neither: its saved record holds a token digest, the device id, the key
+id and the key expiry.
+
+| Concern | Behaviour |
+| --- | --- |
+| Registration | A pure state machine. Each step has an operation number, and a reply to an older step is ignored. Turning notifications off while a registration is in flight removes the device once it lands. A new platform token re-registers. The key is rotated within 14 days of expiry. `push_disabled` stops retries. Transient failures back off from 5 s to 30 min. |
+| Poke contents | Pokes are end-to-end encrypted to a per-deployment X25519 key: `0x01 ‖ ephemeral key ‖ nonce ‖ ChaCha20-Poly1305 ciphertext`, with the key derived by HKDF-SHA256 and the deployment host bound in the AAD. The relay sees only ciphertext. The plaintext is exactly `{v, kind: "needs_input", route}`, and the route must be a canonical app route on that host. |
+| Notification text | Fixed and localized ("An agent needs your input"). The decrypted route is used only as the tap link. A poke that fails to open shows the fixed text with no link on iOS (an APNs alert cannot be suppressed); Android shows nothing. |
+| Poke keys | iOS Keychain group shared with the notification extension, readable after first unlock on this device only. On Android, wrapped by a Keystore AES key. Only the public key leaves native code. Removing the device deletes the key. |
+| Device list | Each device can be turned on or off, or removed (`device prefs`, `device rm`). A device missing from `device ls` shows as revoked. |
+| App lock | Optional, with biometrics or the device passcode (`local_auth`). It locks immediately or after 1 or 5 minutes in the background. A saved lock covers Mila from the first frame. Locked content is not painted and not in the accessibility tree. Linux has no lock, and the setting says so. |
+| Offline list | The last complete machine listing per deployment is saved as an owner-only `0600` file holding machine rows only, at most 500. While offline, the saved list is shown with its save time and its actions are disabled. |
+| Linux desktop | One window. A second `mila overalls://…` hands its link to the running window, which only navigates. |
+
+```mermaid
+sequenceDiagram
+    participant M as Mila
+    participant S as Relay (notifications.overalls.dev)
+    participant P as Porsche
+    participant D as Deployment (Marshall)
+    participant N as Notification extension
+    M->>S: POST /api/push/v1/keys (provider token, deployment)
+    S-->>M: push key, key id, expiry
+    M->>P: device register --push-key - (key on stdin) --enc-pubkey
+    P->>D: register device bound to the SSH key
+    D-->>M: receipt with device id (via request show)
+    D->>S: poke = ciphertext to the device X25519 key
+    S->>N: APNs/FCM data message
+    N->>N: open with the deployment key, check host and route
+    N-->>M: fixed localized alert, tap opens overalls://HOST/ROUTE
+```
+
+Failure behaviour:
+
+- A relay refusal or a `push_disabled` deployment leaves notifications off
+  and says why. A blocked system permission is reported without contacting
+  anyone.
+- A tampered, truncated, wrong-host or wrong-schema poke is refused before
+  anything from it is shown.
+- A snapshot file other users can read is deleted rather than read.
+- Mila logs no tokens, push keys, poke bytes or routes.
+
+Evidence:
+
+- [registration machine](repo:mila/packages/mila_core/lib/src/push_registration.dart)
+  and its [stateful property](repo:mila/packages/mila_core/test/push_registration_test.dart);
+- [poke opening](repo:mila/packages/mila_core/lib/src/push_poke.dart) against
+  the [shared vectors](repo:protocol/test/fixtures/push_pokes.json) in
+  [its tests](repo:mila/packages/mila_core/test/push_poke_test.dart);
+- [relay client](repo:mila/packages/mila_transport/lib/src/susan.dart) and
+  [registrar](repo:mila/packages/mila_transport/lib/src/push_registrar.dart)
+  with [their tests](repo:mila/packages/mila_transport/test/push_test.dart);
+- [lock policy](repo:mila/packages/mila_core/lib/src/app_lock.dart),
+  [snapshot cache](repo:mila/packages/mila_core/lib/src/snapshot_cache.dart)
+  and the [app journeys](repo:mila/app/test/device_features_test.dart);
+- native [iOS extension](repo:mila/app/ios/NotificationService/NotificationService.swift)
+  and [Android service](repo:mila/app/android/app/src/main/kotlin/dev/overalls/mila/MilaMessagingService.kt);
+- the [desktop machine test](repo:nix/verification/tests/machines/mila-desktop/default.nix)
+  and the [M5 device review](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+### Mila terminals, threads and web
+
+Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid
+lists threads across machines. Every action is an ordinary Porsche command
+(ADR-0222). Each mutation carries a request id and is submitted once, then
+polled through `request show`. Prompts, answers and plan revisions are sent on
+the exec channel's stdin, never on the command line, and are limited to 64 KiB.
+Links to these pages only navigate.
+
+| Concern | Behaviour |
+| --- | --- |
+| Terminal attach | `terminal attach M S [--cursor N] [--read-only]` on a PTY sized to the view, with window-change on resize. One JSON header line on stderr (at most 512 bytes) states `from`, `replay_bytes` and `mode`. Output before it is dropped. |
+| Cursor resume | A dropped channel reattaches from the bytes already shown. When the header's `from` differs from the cursor, Mila resets the screen and counts a documented jump; otherwise the cursor only moves forward. |
+| Read-only | Chosen or granted, read-only never sends keys, pastes or resizes. Choosing control again reattaches writable. |
+| Retry | Exit 5 (transport) retries with backoff, at most 8 attempts. Exits 1 (refused), 2 (invalid) and 3 (authority) end the view with a localized reason. |
+| Threads | Lists, transcript pages (`thread turns --after`), questions, plan approve and revise, plan or work mode. The read marker only moves forward (`thread read`). |
+| Watch | `watch` JSON lines trigger re-reads; Mila never takes state from them. More than 40 s of silence reopens the stream. Transport loss reconnects after 1 to 60 s; authority loss stops it. |
+| Web | `web show`, and `web set` at the shown `policy_revision`, so a concurrent change is a conflict. Only HTTPS URLs on DNS hosts are opened. Public endpoints open in a webview on iOS and Android; private endpoints always open in the system browser. |
+
+```mermaid
+sequenceDiagram
+    participant M as Mila
+    participant P as Porsche
+    participant G as Guest PTY
+    M->>P: terminal attach M S --cursor N (pty)
+    P-->>M: stderr {attached:true, from, replay_bytes, mode}
+    P-->>M: replayed bytes, then live output
+    M->>P: keys (rw only), window-change
+    P-->>M: exit 5 (transport)
+    M->>P: terminal attach M S --cursor N' (after backoff)
+```
+
+Failure behaviour: terminal bytes exist only in the in-memory emulator. They
+are never written to disk, the offline cache, preferences or logs. A paste is
+bracketed and cannot carry control sequences.
+
+Evidence:
+- [command catalogue](repo:mila/packages/mila_core/lib/src/ssh_command.dart);
+- [attach state machine](repo:mila/packages/mila_core/lib/src/terminal_attach.dart);
+- [watch supervisor](repo:mila/packages/mila_core/lib/src/watch.dart);
+- [channels](repo:mila/packages/mila_transport/lib/src/channels.dart) and the
+  [OpenSSH journeys](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart);
+- [app flows](repo:mila/app/test/client_flow_test.dart);
+- the [UI review](repo:docs/architecture/reviews/2026-10-18-mila-ui.md).
+
+All of these tests are present; none has a recorded passing run yet.
+
+## Terminal attach over SSH
+
+`ssh -t control.example.test terminal attach MACHINE SESSION [--cursor N] [--read-only]`
+joins a registry terminal session (the same session the browser shows) from
+any SSH client. It needs a pty and is never an ordinary command; without
+`-t` it exits 2 with `attach_requires_pty`. Porsche writes one JSON header
+line on stderr (`{"attached":true,"mode":"rw|ro","from":N,...}` or
+`{"attached":false,"error":...}`) and then relays raw terminal bytes.
+
+| Exit | Meaning |
+| --- | --- |
+| 0 | The session closed or the client detached (end of input). |
+| 1 | Refused: unknown session, another machine's session, forbidden, conflict. |
+| 2 | Invalid: bad arguments or no pty. |
+| 3 | Authority: the SSH key, approval, session or gateway credential was revoked. |
+| 5 | Transport: Marshall unreachable, inconclusive authority, silence over 15 s. |
+
+```mermaid
+sequenceDiagram
+    participant C as SSH client
+    participant P as Porsche
+    participant M as Marshall
+    participant V as Terminal viewer
+    C->>P: pty-req, exec "terminal attach M S"
+    P->>M: commands "terminal attach" (control link)
+    M-->>P: single-use ticket bound to this SSH session
+    P->>M: GET /api/terminal-gateway/v1/stream (gateway bearer, SSH session, ticket)
+    M->>M: session_live? before upgrade
+    M->>V: upgrade with {:ssh, gateway, session} authority
+    V-->>P: attached, mode, replay from cursor
+    P-->>C: stderr header, then output (ack after local send)
+    C->>P: input (only when rw, within 16 frames / 256 KiB credit)
+    V->>M: recheck every 5 s and on ssh_session/user hints
+    V-->>P: close 4001 on revocation
+    P-->>C: exit 3
+```
+
+Evidence: [command grammar](repo:protocol/lib/overalls_protocol/ssh_command.ex),
+[closed tables](repo:protocol/lib/overalls_protocol/terminal_attach.ex) and
+[fixture](repo:protocol/test/fixtures/terminal_attach.json);
+[gateway stream](repo:marshall/lib/marshall_web/terminal_gateway_api.ex),
+[viewer](repo:marshall/lib/marshall/terminal/viewer.ex),
+[Porsche attachment](repo:porsche/lib/porsche/terminal/attachment.ex) and
+[credit](repo:porsche/lib/porsche/terminal/credit.ex);
+[end-to-end test](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs),
+[Porsche relay tests](repo:porsche/test/terminal_attachment_test.exs),
+[credit model property](repo:porsche/test/terminal_credit_property_test.exs) and the
+[fleet journey](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py)
+(not yet recorded passing). See [ADR-0223](repo:docs/architecture/decisions/0223-porsche-terminal-attach.md)
+and the [S2 review](repo:docs/architecture/reviews/2026-10-19-mila-terminal-attach.md).
 
 ## Explicit terminal kill under withheld credit
 
@@ -1295,3 +1578,13 @@ browser-supplied generation mismatch is refused before relay creation.
 
 The host-stream adapter drops stale Android frames before relay publication and
 routes input only from controller-authorized sockets back toward Lilly.
+# Android display transport
+
+Android-capable Linux guests expose a software-rendered emulator display through
+the authenticated terminal host stream. Marshall issues a short-lived machine
+and generation-bound ticket; the shared relay permits multiple read-only viewers
+and one controller. RFB bytes remain opaque and bounded, and generation or host
+stream loss closes the bridge. Native Firecracker and browser journey evidence
+remains partial until the composed acceptance test is recorded.
+The bridge is shared per machine generation, so additional browser viewers reuse
+the authenticated guest channel rather than opening independent guest sockets.

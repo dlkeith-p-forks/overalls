@@ -85,7 +85,7 @@ msgstr "களஞ்சியங்கள்"
 msgid "Repository path"
 msgstr "களஞ்சியப் பாதை"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "களஞ்சியம் கிடைக்கவில்லை."

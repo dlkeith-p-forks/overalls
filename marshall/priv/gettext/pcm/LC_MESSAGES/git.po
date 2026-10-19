@@ -85,7 +85,7 @@ msgstr "Di repositories"
 msgid "Repository path"
 msgstr "Path for di repository"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "Repository no dey available."

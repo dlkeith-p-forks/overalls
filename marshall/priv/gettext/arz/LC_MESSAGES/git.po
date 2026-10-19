@@ -85,7 +85,7 @@ msgstr "المستودعات"
 msgid "Repository path"
 msgstr "مسار المستودع"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "المستودع مش متاح."

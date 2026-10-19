@@ -148,6 +148,8 @@ defmodule Lilly.VM.Actor do
           execution_epoch: command.execution_epoch,
           generation: command.generation,
           guest_identity: Keyword.get(options, :guest_identity),
+          profile: command.profile,
+          slot: command.slot,
           boot_challenge: boot_challenge
         }}, state}
     else

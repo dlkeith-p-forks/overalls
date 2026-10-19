@@ -34,7 +34,7 @@ msgstr "May kasalukuyang kahilingan sa pagbabago ng laki para sa makinang ito."
 msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr "May paglilipat na gumagamit ng puwesto sa paglilipat ng host na ito. Subukan muli kapag natapos ito."
 
-#: lib/porsche/ssh/output.ex:319
+#: lib/porsche/ssh/output.ex:373
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr "Tinanggap"
@@ -44,7 +44,7 @@ msgstr "Tinanggap"
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "Aprubahan ang SSH key na ito sa iyong browser, pagkatapos subukang muli ang command."
 
-#: lib/porsche/ssh/output.ex:321
+#: lib/porsche/ssh/output.ex:375
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Nabigo"
@@ -54,32 +54,32 @@ msgstr "Nabigo"
 msgid "Invalid command. Type help to see available commands."
 msgstr "Hindi wastong command. I-type ang help upang makita ang mga available na command."
 
-#: lib/porsche/ssh/output.ex:314
+#: lib/porsche/ssh/output.ex:368
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr "ID ng operasyon"
 
-#: lib/porsche/ssh/output.ex:311
+#: lib/porsche/ssh/output.ex:365
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr "Bersyon ng protocol"
 
-#: lib/porsche/ssh/output.ex:346
+#: lib/porsche/ssh/output.ex:400
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "Kahilingang %{id}: isinusumite"
 
-#: lib/porsche/ssh/output.ex:349
+#: lib/porsche/ssh/output.ex:403
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "Kahilingang %{id}: hinihintay ang pagkumpleto"
 
-#: lib/porsche/ssh/output.ex:313
+#: lib/porsche/ssh/output.ex:367
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr "ID ng kahilingan"
 
-#: lib/porsche/ssh/output.ex:315
+#: lib/porsche/ssh/output.ex:369
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr "Resulta"
@@ -89,17 +89,17 @@ msgstr "Resulta"
 msgid "Source cleanup is still pending. Wait for cleanup before retrying."
 msgstr "Nakabinbin pa ang paglilinis sa pinagmulan. Hintaying matapos ang paglilinis bago subukan muli."
 
-#: lib/porsche/ssh/output.ex:312
+#: lib/porsche/ssh/output.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Kalagayan"
 
-#: lib/porsche/ssh/output.ex:320
+#: lib/porsche/ssh/output.ex:374
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "Nagtagumpay"
 
-#: lib/porsche/ssh/output.ex:322
+#: lib/porsche/ssh/output.ex:376
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "Napalitan"
@@ -119,7 +119,7 @@ msgstr "Naabot na ang limitasyon sa mga kahilingan sa pag-apruba. Isara ang hind
 msgid "The available host does not meet the machine image's requirements."
 msgstr "Hindi natutugunan ng magagamit na host ang mga kinakailangan ng image ng makina."
 
-#: lib/porsche/ssh/output.ex:292
+#: lib/porsche/ssh/output.ex:346
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr "Hindi makumpleto ang utos: %{reason}"
@@ -348,3 +348,91 @@ msgstr "Hawak mo na ang pinakamataas na bilang ng mga pin; alisin muna ang isa."
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to perform this action."
 msgstr "Wala kang pahintulot na isagawa ang aksiyong ito."
+
+#: lib/porsche/ssh/output.ex:316
+#, elixir-autogen, elixir-format
+msgid "Answer the pending question before sending another prompt."
+msgstr "Sagutin muna ang nakabinbing tanong bago magpadala ng isa pang prompt."
+
+#: lib/porsche/ssh/output.ex:322
+#, elixir-autogen, elixir-format
+msgid "Port 4444 is reserved for the editor."
+msgstr "Nakalaan ang port 4444 para sa editor."
+
+#: lib/porsche/ssh/output.ex:328
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable on this machine right now."
+msgstr "Hindi available ang mga terminal sa machine na ito ngayon."
+
+#: lib/porsche/ssh/output.ex:304
+#, elixir-autogen, elixir-format
+msgid "That plan is no longer the latest proposal. Show the thread again."
+msgstr "Hindi na pinakabagong mungkahi ang planong iyon. Ipakitang muli ang thread."
+
+#: lib/porsche/ssh/output.ex:310
+#, elixir-autogen, elixir-format
+msgid "That question has already been answered."
+msgstr "Nasagot na ang tanong na iyon."
+
+#: lib/porsche/ssh/output.ex:307
+#, elixir-autogen, elixir-format
+msgid "That question is no longer pending."
+msgstr "Hindi na nakabinbin ang tanong na iyon."
+
+#: lib/porsche/ssh/output.ex:334
+#, elixir-autogen, elixir-format
+msgid "That terminal session no longer exists."
+msgstr "Wala na ang terminal session na iyon."
+
+#: lib/porsche/ssh/output.ex:313
+#, elixir-autogen, elixir-format
+msgid "The answers do not match the pending question."
+msgstr "Hindi tugma ang mga sagot sa nakabinbing tanong."
+
+#: lib/porsche/ssh/output.ex:331
+#, elixir-autogen, elixir-format
+msgid "The machine is waking. Retry the terminal shortly."
+msgstr "Ginigising ang machine. Subukang muli ang terminal maya-maya."
+
+#: lib/porsche/ssh/output.ex:343
+#, elixir-autogen, elixir-format
+msgid "The standard input is empty or exceeds this command's size limit."
+msgstr "Walang laman ang standard input o lumampas ito sa limitasyon ng laki ng command na ito."
+
+#: lib/porsche/ssh/output.ex:319
+#, elixir-autogen, elixir-format
+msgid "The web settings changed since you read them. Show them again and retry."
+msgstr "Nagbago ang mga web setting mula nang basahin mo ang mga ito. Ipakita muli at subukang muli."
+
+#: lib/porsche/ssh/output.ex:337
+#, elixir-autogen, elixir-format
+msgid "This command reads its input from standard input. Pipe it in and end the command with -."
+msgstr "Binabasa ng command na ito ang input nito mula sa standard input. I-pipe ito at tapusin ang command gamit ang -."
+
+#: lib/porsche/ssh/output.ex:325
+#, elixir-autogen, elixir-format
+msgid "This machine's profile does not allow web publishing."
+msgstr "Hindi pinapayagan ng profile ng machine na ito ang web publishing."
+
+#: lib/porsche/ssh/output.ex:301
+#, elixir-autogen, elixir-format
+msgid "This thread is busy with a turn. Try again when it finishes."
+msgstr "Abala ang thread na ito sa isang turn. Subukang muli kapag natapos ito."
+
+#: lib/porsche/ssh/output.ex:298
+#, elixir-autogen, elixir-format
+msgid "This thread is not ready for prompts yet."
+msgstr "Hindi pa handa ang thread na ito para sa mga prompt."
+
+#: lib/porsche/ssh/output.ex:292
+#, elixir-autogen, elixir-format
+msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr "Kailangan ng terminal attach ang isang terminal. Kumonekta gamit ang ssh -t at patakbuhin ito bilang command."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Naka-off ang mga push notification sa deployment na ito; makipag-ugnayan sa operator nito."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Naabot mo na ang pinakamataas na bilang ng device; mag-alis muna ng isa: device rm DEVICE_ID"

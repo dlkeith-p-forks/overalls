@@ -14,782 +14,782 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "アクティブ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:259
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:302
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "入場料"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:85
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "Admission settings updated."
 msgstr "入場設定を更新しました。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:92
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Admission settings were invalid or the node is not ready."
 msgstr "アドミッション設定が無効か、ノードの準備ができていません。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:566
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:615
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr ""
 "このページのアドバイザリー "
 "プレビュー。各ワークロードは独立して評価されます。宛先と利用可能な容量は変更される可能性があります。各移動が開始されると、入場が再チェックされ、リソースが予約されます。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:430
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "アドミッション設定を適用する"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "移動のダウンタイムを承認する"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:635
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr "ブロック中：%{reason}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "ホールド後のCPU"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "CPU ヘッドルーム"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "CPU オーバーヘッド (コア)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:486
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "キャンペーン"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:727
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:804
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr "キャンペーン終了"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "キャンペーン履歴"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:798
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr "キャンペーンをリクエスト済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr "耐久性のあるコントロール プレーンの記録からのキャンペーン、ワークロード、および再配置のマイルストーン。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:827
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "キャンセルをリクエスト済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:719
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:821
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:915
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "キャンセル"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr "候補：%{name}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:330
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:356
 #, elixir-autogen, elixir-format
 msgid "Capacity explanation"
 msgstr "容量説明"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:66
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:69
 #, elixir-autogen, elixir-format
 msgid "Capacity information is temporarily unavailable."
 msgstr "容量情報は一時的に利用できません。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:769
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "目的地の準備状況を確認する"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
 msgstr "転送接続を確認しています"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr "キャンセル後のクリーンアップ中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr "移行元をクリーンアップ中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:869
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr "クローンを作成中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:539
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "閉店"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:718
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "完了"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:377
 #, elixir-autogen, elixir-format
 msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
 msgstr "設定済みのホスト用余裕容量：%{cores}コア・メモリ%{memory}。これらの余裕容量は受け入れ可否の計算に含まれ、引き続きデプロイ設定によって管理されます。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:508
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "スケジュールを継続する"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "ホールドのコピー/サイズ変更"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:760
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "コピーする"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:161
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:166
 #, elixir-autogen, elixir-format
 msgid "Could not accept this change. Refresh and check the workload state."
 msgstr "この変更を受け入れることができませんでした。ワークロードの状態を更新して確認します。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:744
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "削除されました"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
 msgstr "保存されたコピーを削除する"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr "期待値：%{desired}・観測値：%{observed}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "宛先のブートに失敗しました。ソースコピーが保持される"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:824
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr "移行先のクリーンアップを確認済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr "移行先のクリーンアップをリクエスト済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:772
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
 msgstr "宛先の準備ができませんでした。ソースコピーが保持される"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:548
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "詳細"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "ホールド後のディスク"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:860
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr "ダウンタイムの承認が必要です"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:836
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr "ダウンタイム承認済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "このワークロード リビジョンではダウンタイムが承認されました"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "ドレイン完了"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:729
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "ドレイン中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "有効"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
 msgstr ""
 "このノード上のすべてのワークロードを退避しますか?実行中のゲストは移動中に中断されます。完全に停止されたコピーには、ワークロードごとに個別の承認が必要です。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "退避中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:300
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
 msgstr ""
 "退避すると、既存のゲストは引き続きサービスを受けながら、新しいプレースメントがブロックされます。実行中のゲストを移動すると、ゲストが一時的に中断されます。完全に停止したコピーには大幅に時間がかかる可能性があり、ワークロードごとに承認が必要です。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "避難運動"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "避難スケジュール"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:547
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "イベント"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:272
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "Excluded"
 msgstr "除外される"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:341
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:370
 #, elixir-autogen, elixir-format
 msgid "Execution ready"
 msgstr "実行準備完了"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Explain capacity"
 msgstr "容量の説明"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:912
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "失敗した"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:277
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "新鮮な"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Fresh report"
 msgstr "フレッシュレポート"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:763
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "インポート中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:857
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr "容量不足"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "無効なリクエストです。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:830
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr "ジョブの状態"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:276
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Lilly node · %{mode} maintenance"
 msgstr "リリーノード・%{mode}メンテナンス"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:236
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
 msgstr "Lilly ノードとそのアドミッション状態。マシンのサービスを停止する前に、ノードのワークロードを移動します。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:249
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:282
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:258
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:299
 #, elixir-autogen, elixir-format
 msgid "Maintenance"
 msgstr "メンテナンス"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "メンテナンスページ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:151
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:156
 #, elixir-autogen, elixir-format
 msgid "Maintenance updated."
 msgstr "メンテナンスを更新しました。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "ホールド後の記憶"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "メモリのヘッドルーム"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "次のページ→"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:124
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:140
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:129
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "No active campaign."
 msgstr "アクティブなキャンペーンはありません。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:248
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:280
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:257
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "Node"
 msgstr "ノード"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Node information is unavailable."
 msgstr "ノード情報が利用できません。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:234
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "ノードのメンテナンス"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr "通常"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:599
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr "観測された中断時間：%{seconds}秒"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:595
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:648
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr "観測された中断時間：%{seconds}秒（継続中）"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:538
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:587
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "開いた"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "スケジュールを一時停止する"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr ""
 "一時停止すると、新しい移動のスケジュールが停止されます。受け入れられた移動は続行されます。メンテナンス対応には確認済みのソース "
 "クリーンアップが必要です。完了した仕事だけでは不十分です。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "一時停止中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:742
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "保留中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:522
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr "この空のノードを永久に廃止し、その資格情報を取り消しますか?"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:644
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "位相: %{phase}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:440
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "プール"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "準備中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:306
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Preview evacuation"
 msgstr "避難のプレビュー"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:606
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "プレビュー: %{blocker}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:814
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:894
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr "キューに入れられました"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "RAM オーバーヘッド (バイト)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:642
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr "現在の配置と望ましい状態を使用してこのワークロードを再計画しますか?以前のダウンタイムの承認はすべてクリアされます。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:647
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "ワークロードを再計画する"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:333
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:359
 #, elixir-autogen, elixir-format
 msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
 msgstr "読み取り専用の入場算術。容量は予約されません。測定値が不明な場合は入場をお断りします。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "準備ができて"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:807
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr "移行確定済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:866
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr "移行中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:761
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:839
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr "移行開始済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "このソースから削除されました。キャンペーンのクリーンアップの検証を待っています。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:307
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:441
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "報告"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:863
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
 msgstr "サイズ変更中です"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:515
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "復元入場"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr "移行元を復元中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "再開済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "ノードを廃止する"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "廃止済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:818
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:906
 #, elixir-autogen, elixir-format
 msgid "Retrying"
 msgstr "再試行中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr "移行先の起動を再試行中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:817
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:740
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:903
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "ランニング"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:900
 #, elixir-autogen, elixir-format
 msgid "Scheduled"
 msgstr "予定されている"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr "移行元のクリーンアップを確認済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr "移行元のクリーンアップをリクエスト済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:724
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:801
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr "移行元の準備完了"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:810
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "移行元の復元完了"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:851
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr "移行元を利用できません"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:278
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:457
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "古い、または不明"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown report"
 msgstr "古いレポートまたは不明なレポート"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:350
 #, elixir-autogen, elixir-format
 msgid "Start evacuation"
 msgstr "避難開始"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "スタートアップホールド"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "状態"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr ""
 "移動全体にわたって、この実行中のワークロードを停止しますか?ディスクをコピーしてコピー先で再起動すると、ダウンタイムが長引く可能性があります。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "停止しました"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "ソースを停止する"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:819
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:909
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "成功しました"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:815
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:897
 #, elixir-autogen, elixir-format
 msgid "Suspended"
 msgstr "一時停止中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:766
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "配置を切り替える"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:293
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
 msgstr "ターミナルプロトコル：%{protocol}・ローカルストリーム：%{state}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:546
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "時間"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:854
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr "転送処理中"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "利用不可"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:822
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:315
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:749
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:871
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:872
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:874
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:917
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "未知"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "VM"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:767
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:845
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr "ワークロード変更済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:770
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:848
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr "ワークロードが安定していません"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:833
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr "ワークロード観測済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:764
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:842
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr "ワークロード解決済み"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "%{attempt} を試みます"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "キャンペーン"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:367
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "有効"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:400
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "除外される"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:563
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "仕事"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:558
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "動く"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:318
 #, elixir-autogen, elixir-format
 msgid "ready"
 msgstr "準備ができて"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "unavailable"
 msgstr "利用不可"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:373
 #, elixir-autogen, elixir-format
 msgid "unknown"
 msgstr "未知"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "yes"
 msgstr "はい"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· ダウンタイムの承認が必要"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← 最初のページ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "← Nodes"
 msgstr "← ノード"
