@@ -47,7 +47,10 @@ defmodule MarshallWeb.SSHApprovalLive do
            approval_token: nil,
            approved_link: Marshall.AppRoutes.link({:ssh_approved, session_id})
          )
-         |> put_flash(:info, dgettext("ssh", "SSH key approved. You can return to your SSH client."))}
+         |> put_flash(
+           :info,
+           dgettext("ssh", "SSH key approved. You can return to your SSH client.")
+         )}
 
       {:error, _} ->
         {:noreply, unavailable(socket)}
@@ -117,7 +120,9 @@ defmodule MarshallWeb.SSHApprovalLive do
             <a id="ssh-approval-open-mila" href={@approved_link}>{dgettext("ssh", "Open Mila")}</a>
           </p>
         </section>
-        <p><.link navigate={~p"/settings#ssh-keys"}>{dgettext("ssh", "Manage your SSH keys")}</.link></p>
+        <p>
+          <.link navigate={~p"/settings#ssh-keys"}>{dgettext("ssh", "Manage your SSH keys")}</.link>
+        </p>
       </section>
     </Layouts.app>
     """

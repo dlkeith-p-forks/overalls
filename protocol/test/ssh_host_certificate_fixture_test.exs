@@ -13,7 +13,13 @@ defmodule OverallsProtocol.SSHHostCertificateFixtureTest do
 
     for row <- rows do
       result =
-        SSHHostCertificate.verify(row["line"], row["ca"], row["leaf"], row["principal"], row["now"])
+        SSHHostCertificate.verify(
+          row["line"],
+          row["ca"],
+          row["leaf"],
+          row["principal"],
+          row["now"]
+        )
 
       assert match?({:ok, _}, result) == row["valid"], inspect(Map.delete(row, "line"))
     end

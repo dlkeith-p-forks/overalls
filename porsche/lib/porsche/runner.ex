@@ -53,16 +53,16 @@ defmodule Porsche.Runner do
   # `terminal attach` returns a single-use ticket, so the command runner MUST
   # refuse it (interactive lines and structured dispatch alike) without
   # contacting Marshall; only a PTY attach channel may request its ticket.
-  # @cc [owner:ghuntley,label:security] porsche-stdin-payload-required
-  # A command that reads a secret or a text payload from stdin MUST NOT be
-  # dispatched until the channel has supplied it as a validated structure.
-  # `watch` streams only over an exec channel and is never a single request.
   defp run_validated(client, session, command, options) do
     if SSHCommand.attach?(command),
       do: failure(:attach_requires_pty, nil, 2),
       else: run_payload_checked(client, session, command, options)
   end
 
+  # @cc [owner:ghuntley,label:security] porsche-stdin-payload-required
+  # A command that reads a secret or a text payload from stdin MUST NOT be
+  # dispatched until the channel has supplied it as a validated structure.
+  # `watch` streams only over an exec channel and is never a single request.
   defp run_payload_checked(client, session, command, options) do
     case SSHCommand.stdin_payload?(command) do
       {:secret, _} ->

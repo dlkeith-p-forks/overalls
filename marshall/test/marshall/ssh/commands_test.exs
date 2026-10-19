@@ -240,7 +240,11 @@ defmodule Marshall.SSH.CommandsTest do
     assert {:ok, _} = command(c, "pin placed-machine")
     assert {:ok, pinned} = command(c, "show placed-machine")
     assert pinned.result["pinned"] == true
-    assert pinned.result["route"] == "overalls://" <> URI.parse(MarshallWeb.Endpoint.url()).host <> route_port() <> "/machines/" <> id
+
+    assert pinned.result["route"] ==
+             "overalls://" <>
+               URI.parse(MarshallWeb.Endpoint.url()).host <> route_port() <> "/machines/" <> id
+
     assert Map.keys(hd(listed.result["items"])) |> Enum.sort() == fields
     assert shown.result["execution_ref"] == hd(listed.result["items"])["execution_ref"]
 

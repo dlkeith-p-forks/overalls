@@ -79,7 +79,16 @@ defmodule Susan.Fixtures do
   @spec install() :: {binary(), binary()}
   def install, do: :crypto.generate_key(:eddsa, :ed25519)
 
-  @doc "Builds a signed poke input for `Susan.Poke.handle/2`."
+  @doc "The opaque 22-character collapse id Marshall would send for a collapse group label."
+  @spec collapse_id(String.t()) :: String.t()
+  def collapse_id(label),
+    do: :crypto.hash(:sha256, label) |> Base.url_encode64(padding: false) |> binary_part(0, 22)
+
+  @doc """
+  Builds a signed poke input for `Susan.Poke.handle/2`. `:collapse_id` names a
+  collapse group label; the body carries its opaque id. The signature covers
+  `OverallsProtocol.SusanPoke.signed_message/1` of `:signed_body` (default: the body).
+  """
   @spec poke(String.t(), {binary(), binary()}, keyword()) :: Susan.Poke.input()
   def poke(push_key, {public, private}, options \\ []) do
     now = Keyword.get(options, :now, System.os_time(:second))
@@ -95,7 +104,7 @@ defmodule Susan.Fixtures do
             Base.url_encode64(:crypto.strong_rand_bytes(140), padding: false)
           ),
         "kind" => "needs_input",
-        "collapse_id" => Keyword.get(options, :collapse_id, "thread-1"),
+        "collapse_id" => collapse_id(Keyword.get(options, :collapse_id, "thread-1")),
         "delivery_id" => Keyword.get_lazy(options, :delivery_id, &PushKey.uuid/0),
         "nonce" =>
           Base.url_encode64(
@@ -108,7 +117,12 @@ defmodule Susan.Fixtures do
       |> JSON.encode!()
 
     signature =
-      :crypto.sign(:eddsa, :none, Keyword.get(options, :signed_body, body), [private, :ed25519])
+      :crypto.sign(
+        :eddsa,
+        :none,
+        OverallsProtocol.SusanPoke.signed_message(Keyword.get(options, :signed_body, body)),
+        [private, :ed25519]
+      )
 
     %{
       body: body,

@@ -23,7 +23,7 @@ defmodule Susan.PokeTest do
     assert request.url == "https://api.push.apple.com/3/device/" <> ctx.key.token
     headers = Map.new(request.headers)
     assert headers["apns-topic"] == "dev.overalls.mila"
-    assert headers["apns-collapse-id"] == "thread-9"
+    assert headers["apns-collapse-id"] == Fixtures.collapse_id("thread-9")
     assert headers["apns-push-type"] == "alert"
     assert "bearer " <> _ = headers["authorization"]
     payload = JSON.decode!(request.body)
@@ -62,7 +62,7 @@ defmodule Susan.PokeTest do
     assert message["token"] == key.token
     refute Map.has_key?(message, "notification")
     assert message["data"]["overalls_k"] == "needs_input"
-    assert message["android"]["collapse_key"] == "thread-1"
+    assert message["android"]["collapse_key"] == Fixtures.collapse_id("thread-1")
   end
 
   test "a retried delivery id is answered without a second provider send", ctx do

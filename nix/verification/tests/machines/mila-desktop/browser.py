@@ -46,7 +46,11 @@ def run(token_file: Path, url_file: Path, fingerprint: str) -> None:
             expect(page.locator("#ssh-approval-fingerprint")).to_have_text(fingerprint)
             stage = "approval submission"
             page.locator("#approve-ssh-key").click()
-            page.wait_for_url("**/settings*")
+            # Approval stays on the page and offers the Mila link.
+            expect(page.locator("#ssh-approval-approved")).to_be_visible()
+            expect(page.locator("#ssh-approval-open-mila")).to_be_visible()
+            stage = "approved key visibility"
+            page.goto(f"{parts.scheme}://{parts.netloc}/settings")
             expect(page.locator("article")).to_contain_text(fingerprint)
             context.close()
         finally:

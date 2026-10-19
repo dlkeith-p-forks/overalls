@@ -104,8 +104,10 @@ let
     buildPhase = ''
       runHook preBuild
       dart format --line-length 100 --language-version=3.9 --set-exit-if-changed lib test
-      dart analyze --fatal-infos
+      # Analyze against pub's package config, which records each package's
+      # language version; nixpkgs' generated config does not.
       ${offlinePub "dart"}
+      dart analyze --fatal-infos
       dart test --reporter expanded
       runHook postBuild
     '';
@@ -133,8 +135,10 @@ let
     buildPhase = ''
       runHook preBuild
       dart format --line-length 100 --language-version=3.9 --set-exit-if-changed bin lib test
-      dart analyze --fatal-infos
+      # Analyze against pub's package config, which records each package's
+      # language version; nixpkgs' generated config does not.
       ${offlinePub "dart"}
+      dart analyze --fatal-infos
       dart test --reporter expanded
       runHook postBuild
     '';
@@ -211,6 +215,9 @@ let
       cp -r ${../../../../marshall/lib/marshall_web/components} /build/core_components_source
       mkdir -p ../../marshall/lib/marshall_web
       ln -s /build/core_components_source ../../marshall/lib/marshall_web/components
+      # The localization test checks Mila's locales against Porsche's catalogs.
+      mkdir -p ../../porsche/priv
+      ln -s ${../../../../porsche/priv/gettext} ../../porsche/priv/gettext
     '';
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.jq ];
     buildPhase = ''

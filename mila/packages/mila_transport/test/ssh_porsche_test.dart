@@ -102,7 +102,10 @@ final class _Sshd {
       '$path/authorized_keys',
     ).writeAsStringSync('$deviceKeyAlgorithm ${base64.encode(device.publicBlob)}\n');
     // Porsche's exec contract: one JSON line on stdout and a closed exit code.
+    // sshd gives a forced command its own default PATH; keep the test's tools.
+    final tools = Platform.environment['PATH'] ?? '/usr/bin:/bin';
     File('$path/porsche.sh').writeAsStringSync('''#!/bin/sh
+export PATH='$tools'
 printf '%s\\n' "\$SSH_ORIGINAL_COMMAND" >> $path/received
 echo "progress for people" >&2
 case "\$SSH_ORIGINAL_COMMAND" in

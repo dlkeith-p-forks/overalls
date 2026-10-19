@@ -13,6 +13,18 @@ class ThreadsRun(TypedDict):
     stdout: str
 
 
+def porsche_threads_object(value: object) -> dict[str, object] | None:
+    """Narrows parsed JSON to a string-keyed object, or None for any other value."""
+    if not isinstance(value, dict):
+        return None
+    narrowed: dict[str, object] = {}
+    for key, item in value.items():
+        if not isinstance(key, str):
+            return None
+        narrowed[key] = item
+    return narrowed
+
+
 def porsche_threads_run(command: str, stdin: str = "", timeout: int = 120) -> ThreadsRun:
     """Runs one exec as the owner, keeping private output inside the client VM."""
     arguments = porsche_arguments(command)
@@ -34,10 +46,14 @@ def porsche_threads_run(command: str, stdin: str = "", timeout: int = 120) -> Th
         "    out={'returncode': -1, 'stdout': data}\n"
         "print(json.dumps(out))"
     )
-    raw: object = json.loads(
-        client.succeed("sudo -u tester python3 -c " + shlex.quote(program), timeout=timeout + 30)
+    raw = porsche_threads_object(
+        json.loads(
+            client.succeed(
+                "sudo -u tester python3 -c " + shlex.quote(program), timeout=timeout + 30
+            )
+        )
     )
-    if not isinstance(raw, dict):
+    if raw is None:
         raise AssertionError("invalid Porsche run result")
     returncode = raw.get("returncode")
     stdout = raw.get("stdout")
@@ -48,16 +64,16 @@ def porsche_threads_run(command: str, stdin: str = "", timeout: int = 120) -> Th
 
 def porsche_threads_json(command: str, stdin: str = "") -> dict[str, object]:
     run = porsche_threads_run(command, stdin)
-    value: object = json.loads(run["stdout"])
-    if not isinstance(value, dict):
+    value = porsche_threads_object(json.loads(run["stdout"]))
+    if value is None:
         raise AssertionError("invalid Porsche JSON document")
     assert run["returncode"] == 0, "Porsche thread command failed: " + str(value.get("error"))
     return value
 
 
 def porsche_threads_result(value: dict[str, object]) -> dict[str, object]:
-    result = value.get("result")
-    if not isinstance(result, dict):
+    result = porsche_threads_object(value.get("result"))
+    if result is None:
         raise AssertionError("missing Porsche result")
     return result
 
@@ -92,7 +108,7 @@ with subtest("Porsche thread, web and watch commands drive Marshall domains"):
     listed = porsche_threads_result(porsche_threads_json("thread ls"))
     items = listed.get("items")
     assert isinstance(items, list) and any(
-        isinstance(item, dict) and item.get("id") == thread_id for item in items
+        (porsche_threads_object(item) or {}).get("id") == thread_id for item in items
     )
 
     secret_prompt = "Report the hostname for porsche-threads " + str(uuid.uuid4())

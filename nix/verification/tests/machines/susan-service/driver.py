@@ -1,3 +1,5 @@
+import base64
+import hashlib
 import json
 from typing import TypedDict
 
@@ -13,6 +15,8 @@ class ProviderRequest(TypedDict):
 
 client = "python3 /etc/susan-client.py"
 operator = "susan-operator"
+# The client sends this opaque 22-character id for the "thread-1" collapse group.
+collapse_id = base64.urlsafe_b64encode(hashlib.sha256(b"thread-1").digest()).decode()[:22]
 
 
 def call(command: str) -> dict[str, object]:
@@ -77,7 +81,7 @@ with subtest("APNs poke is content-free and over HTTP/2 with verified TLS"):
     apns = sent[0]
     assert apns["host"] == "api.push.apple.com" and apns["http_version"] == "2", apns
     assert apns["authorization"] == "bearer", apns
-    assert apns["headers"]["apns-collapse-id"] == "thread-1", apns
+    assert apns["headers"]["apns-collapse-id"] == collapse_id, apns
     assert apns["headers"]["apns-push-type"] == "alert", apns
     payload = json.loads(apns["body"])
     assert payload["aps"]["mutable-content"] == 1, payload
@@ -170,7 +174,7 @@ with subtest("FCM v1 data-only message after a service-account OAuth exchange"):
         "overalls_title_loc_key",
         "overalls_body_loc_key",
     }, message
-    assert message["android"]["collapse_key"] == "thread-1", message
+    assert message["android"]["collapse_key"] == collapse_id, message
 
 with subtest("install identity states and audit chain"):
     fingerprint = relay.succeed(f"{client} fingerprint b").strip()

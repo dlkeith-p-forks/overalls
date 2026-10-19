@@ -1,6 +1,6 @@
 // One terminal view: an xterm emulator fed by successive `terminal attach`
 // PTY channels, driven by the pure `TerminalAttach` state machine.
-//
+
 // @cc [owner:ghuntley,label:security;privacy] mila-terminal-bytes-never-at-rest
 // Terminal output and input MUST only pass between the attach channel and
 // the in-memory emulator: never written to disk, the offline cache,

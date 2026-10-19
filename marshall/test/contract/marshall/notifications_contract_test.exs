@@ -80,7 +80,9 @@ defmodule MarshallNotificationsContractTest do
              PushPoke.open(request.ciphertext, private, request.deployment)
 
     {_, stranger} = PushPoke.generate_key_pair()
-    assert {:error, :authentication} = PushPoke.open(request.ciphertext, stranger, request.deployment)
+
+    assert {:error, :authentication} =
+             PushPoke.open(request.ciphertext, stranger, request.deployment)
   end
 
   @tag obligation: "marshall.notifications.I3"
@@ -100,6 +102,7 @@ defmodule MarshallNotificationsContractTest do
 
     for attempt <- 1..3, do: perform(delivery, attempt)
     assert [%{state: :delivered}] = Ledger.read!(Delivery, id: delivery.id)
+
     sent =
       for _ <- 1..3 do
         receive do
@@ -108,6 +111,7 @@ defmodule MarshallNotificationsContractTest do
           0 -> flunk("missing Susan request")
         end
       end
+
     assert Enum.map(sent, &elem(&1, 1)) |> Enum.uniq() == [delivery.id]
     assert Enum.count(sent, &(elem(&1, 2) in 200..299)) == 1
 
@@ -116,7 +120,10 @@ defmodule MarshallNotificationsContractTest do
     assert_received {:sent, gone_id, 410}
     assert gone_id == gone.id
     assert [%{state: :invalidated}] = Ledger.read!(Device, id: device.id)
-    assert [%{state: :dropped, drop_reason: :device_inactive}] = Ledger.read!(Delivery, id: gone.id)
+
+    assert [%{state: :dropped, drop_reason: :device_inactive}] =
+             Ledger.read!(Delivery, id: gone.id)
+
     later = delivery_fixture(device, "needs_input:later")
     assert :ok = perform(later, 1)
     refute_received {:sent, _, _}
@@ -176,15 +183,24 @@ defmodule MarshallNotificationsContractTest do
     {:ok, _} = SSH.remove_key(%{id: key.id}, actor: owner)
     assert [%{state: :revoked, state_reason: :key_revoked}] = Ledger.read!(Device, id: device.id)
 
-    Req.Test.stub(Susan, fn conn -> flunk("revoked device contacted Susan: #{conn.request_path}") end)
+    Req.Test.stub(Susan, fn conn ->
+      flunk("revoked device contacted Susan: #{conn.request_path}")
+    end)
+
     delivery = delivery_fixture(device)
     assert :ok = perform(delivery, 1)
-    assert [%{state: :dropped, drop_reason: :device_inactive}] = Ledger.read!(Delivery, id: delivery.id)
+
+    assert [%{state: :dropped, drop_reason: :device_inactive}] =
+             Ledger.read!(Delivery, id: delivery.id)
 
     other = user()
     {second, _} = device_fixture(other)
-    {:ok, 1} = Ledger.transaction(fn -> Notifications.revoke_for_user!(other.id, :account_retired) end)
-    assert [%{state: :revoked, state_reason: :account_retired}] = Ledger.read!(Device, id: second.id)
+
+    {:ok, 1} =
+      Ledger.transaction(fn -> Notifications.revoke_for_user!(other.id, :account_retired) end)
+
+    assert [%{state: :revoked, state_reason: :account_retired}] =
+             Ledger.read!(Device, id: second.id)
   end
 
   @tag obligation: "marshall.notifications.I6"
@@ -194,10 +210,14 @@ defmodule MarshallNotificationsContractTest do
     public_key = "ssh-ed25519 " <> Base.encode64(<<11::32, "ssh-ed25519", 32::32, raw::binary>>)
     {:ok, _} = SSH.add_key(%{public_key: public_key}, actor: owner)
     {gateway, _} = SSH.Token.issue(:gateway)
-    {:ok, _} = SSH.configure_gateway(%{name: "contract", token: gateway}, actor: SystemActor.compute())
+
+    {:ok, _} =
+      SSH.configure_gateway(%{name: "contract", token: gateway}, actor: SystemActor.compute())
 
     {:ok, session} =
-      SSH.open_session(%{gateway_token: gateway, public_key: public_key}, actor: SystemActor.compute())
+      SSH.open_session(%{gateway_token: gateway, public_key: public_key},
+        actor: SystemActor.compute()
+      )
 
     {enc, _} = PushPoke.generate_key_pair()
     push_key = Base.url_encode64(:crypto.strong_rand_bytes(48), padding: false)

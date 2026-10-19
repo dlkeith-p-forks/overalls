@@ -3,7 +3,7 @@ import Config
 transport =
   case System.get_env("PGHOST") do
     socket when is_binary(socket) and socket != "" ->
-      [socket_dir: socket, username: System.get_env("PGUSER", "postgres")]
+      [socket_dir: socket, username: System.get_env("PGUSER", System.get_env("USER"))]
 
     _ ->
       [hostname: "localhost", username: "postgres", password: "postgres"]

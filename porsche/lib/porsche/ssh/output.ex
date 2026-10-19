@@ -301,7 +301,10 @@ defmodule Porsche.SSH.Output do
         dgettext("management", "This thread is busy with a turn. Try again when it finishes.")
 
       "stale_proposal" ->
-        dgettext("management", "That plan is no longer the latest proposal. Show the thread again.")
+        dgettext(
+          "management",
+          "That plan is no longer the latest proposal. Show the thread again."
+        )
 
       "stale_question" ->
         dgettext("management", "That question is no longer pending.")
@@ -316,7 +319,10 @@ defmodule Porsche.SSH.Output do
         dgettext("management", "Answer the pending question before sending another prompt.")
 
       "revision_conflict" ->
-        dgettext("management", "The web settings changed since you read them. Show them again and retry.")
+        dgettext(
+          "management",
+          "The web settings changed since you read them. Show them again and retry."
+        )
 
       "reserved_editor_port" ->
         dgettext("management", "Port 4444 is reserved for the editor.")
@@ -340,7 +346,10 @@ defmodule Porsche.SSH.Output do
         )
 
       "stdin_payload_invalid" ->
-        dgettext("management", "The standard input is empty or exceeds this command's size limit.")
+        dgettext(
+          "management",
+          "The standard input is empty or exceeds this command's size limit."
+        )
 
       _ ->
         dgettext("management", "The command could not be completed: %{reason}",

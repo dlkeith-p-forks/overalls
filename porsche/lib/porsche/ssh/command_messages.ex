@@ -76,7 +76,10 @@ defmodule Porsche.SSH.CommandMessages do
                 "Answer a thread's pending question with JSON read from standard input."
               )
   @message_46 dgettext_noop("help", "Approve a thread's latest plan and start implementing it.")
-  @message_47 dgettext_noop("help", "Ask for a revised plan, reading the feedback from standard input.")
+  @message_47 dgettext_noop(
+                "help",
+                "Ask for a revised plan, reading the feedback from standard input."
+              )
   @message_48 dgettext_noop("help", "Switch a thread between plan and work collaboration.")
   @message_49 dgettext_noop("help", "Mark a thread read up to a transcript sequence number.")
   @message_50 dgettext_noop("help", "List a machine's terminal sessions you can open.")
@@ -87,7 +90,10 @@ defmodule Porsche.SSH.CommandMessages do
                 "help",
                 "Change a machine's web port or visibility, optionally at an expected revision."
               )
-  @message_55 dgettext_noop("help", "Stream JSON change notices for machines, threads and this session.")
+  @message_55 dgettext_noop(
+                "help",
+                "Stream JSON change notices for machines, threads and this session."
+              )
   @message_56 dgettext_noop(
                 "help",
                 "Register this device for push notifications. The push key is read from stdin."
