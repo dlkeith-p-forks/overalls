@@ -9,7 +9,7 @@
 let
   inherit (pkgs) lib;
   inputs = import ./inputs.nix;
-  nodejs = pkgs.nodejs_24;
+  nodejs = import ./node-runtime.nix { inherit pkgs; };
   browserPython = pkgs.python313.withPackages (packages: [ packages.playwright ]);
   browserFontConfig = pkgs.makeFontsConf { fontDirectories = [ pkgs.dejavu_fonts ]; };
   directories = builtins.fromJSON (builtins.readFile ./npm-directories.json);
@@ -64,6 +64,7 @@ let
     bundledUpdateCheck = builtins.hashFile "sha256" ./check-bundled-updates.mts;
     patches = map (patch: builtins.hashFile "sha256" patch) patchStack;
     recipe = builtins.hashFile "sha256" ./default.nix;
+    nodeRuntimeRecipe = builtins.hashFile "sha256" ./node-runtime.nix;
     npmDirectories = builtins.hashFile "sha256" ./npm-directories.json;
     runtimeCheck = builtins.hashFile "sha256" ./check-runtime.mts;
     accountCheck = builtins.hashFile "sha256" ./check-no-account.mts;

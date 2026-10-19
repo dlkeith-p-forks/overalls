@@ -219,9 +219,12 @@ Dialyzer analysis against that snapshot also completed normally in
 4 minutes 16.61 seconds with zero errors, skipped warnings or unnecessary skips.
 These results precede the later Mila protocol additions. Lilly's isolated
 test phase also passed all 652 tests in 1,276.0 seconds with seed `547342`,
-and all 15 Covenant obligations passed. Its type-stage continuation remained
-pending after correcting a private scratch-build layout; no full Lilly gate
-completion is claimed. The normal Marshall full-suite gaps above remain open.
+and all 15 Covenant obligations passed. After correcting the private scratch-build
+layout and rebuilding its PLT, the type-stage continuation passed in
+33.36 seconds with zero errors, skipped warnings or unnecessary skips.
+The original aggregate precommit command had exited at that private build-path
+failure, so no single full Lilly gate completion is claimed. The normal Marshall
+full-suite gaps above remain open.
 
 The preceding merged-source, catalog, font and focused-test results describe
 that `6467bcde` integration snapshot. The subsequent `aacb4be2c` trunk update
@@ -262,7 +265,106 @@ guidance and byte-equivalent decoded JSON hints. Moving the existing terminal
 close helper after the grouped control clauses repairs an incoming compiler
 warning without changing its body or behavior.
 
-At the latest source freeze, the expanded protocol precommit (seed `778386`),
-Porsche precommit and focused Marshall SSH/notification/approval checks were
-still in progress; latest Marshall extraction, catalog and forced-type outcomes
-were not yet recorded. Earlier completed checks retain the source scopes above.
+The final follow-up describes application source integrated through `433a1f570`;
+the intervening fixture-build, firewall and recorded-emulator updates do not
+change these application snapshots. A final read-only directory comparison
+confirmed current Marshall, protocol and Lilly `lib/` trees are byte-identical
+to the latest Marshall verification snapshot; Lilly's fixture-only test changes
+were separately validated below. The latest protocol `mix precommit` passed:
+all 418 tests passed in 913.9 seconds with seed `778386` and eight maximum cases,
+all 15 Covenant obligations passed, and both normal and explicit forced Dialyzer
+reported zero errors, skipped warnings or unnecessary skips. All current protocol
+`lib/`, `test/` and `contracts/` hashes match the validated isolated snapshot.
+This closes the ordinary BEAM protocol gate for that source, without extending
+native transport or physical isolation evidence.
+
+The latest Lilly consumer follow-up passed 92 focused terminal, control, actor
+and Android tests in 61.9 seconds with seed `54471` and eight maximum cases.
+Warning-free compilation and formatting passed; forced Dialyzer reported zero
+errors, skipped warnings or unnecessary skips in 25.06 seconds. Its initial
+focused attempt passed 84 of 92 tests: all eight failures came from handbuilt
+stream states missing the required empty `android_channels` map. Seven additions
+across five test files align six runtime fixtures and one typespec with production
+initialization. Production behavior, assertions, generators and budgets are
+unchanged. The earlier 652-test and 15-obligation results retain their historical
+snapshot scope; this follow-up is not a fresh full Lilly test suite.
+
+The latest Marshall focused runs passed 72 tests in 68.5 seconds with seed
+`333393`, covering `ssh/commands_test.exs`, `ssh/client_commands_test.exs`, all
+`notifications/` tests and `ssh_approval_live_test.exs`; and 18 tests in
+54.8 seconds with seed `670403`, covering `terminal/host_stream_test.exs` and all
+`android/` tests. Both used eight maximum cases. These cover the exact SSH wire
+projection, client commands, notification and approval behavior and the bounded
+host-stream/Android fixtures. Offline locale data, public-document freshness,
+strict catalog coverage, contracts, workspace units and TypeScript, and
+Monospace checks also passed. Native extraction freshness passed without
+regeneration. The final forced Dialyzer completed normally in 3 minutes
+59.42 seconds with zero errors, skipped warnings or unnecessary skips, after
+the relocated private PLT rebuilt in 9 minutes 25.25 seconds. The earlier full
+Marshall suite failures remain separate from these bounded passes.
+
+The latest Porsche test phase passed 140 of 141 tests in 326.9 seconds with seed
+`928886` and eight maximum cases. Only the existing invalid-boot property reached
+its 240-second aggregate deadline. An identical isolated rerun of that file
+passed both tests in 225.7 seconds with the same seed, preserving all three
+exhaustive fixture histories and the unchanged 240-second deadline. All seven
+Covenant obligations passed; forced Dialyzer reported zero errors, skipped
+warnings or unnecessary skips in 21.35 seconds after its PLT rebuild. The full
+precommit still exited nonzero on its earlier timeout; the isolated pass does not
+rewrite that outcome. The source, templates and normalized catalogs are unchanged.
+
+The final read-only requirement audit found no additional implementation gap in
+the requested localization scope. The accepted architecture and partial ADR
+statuses remain unchanged. Structural catalog completeness, finite BEAM gates
+and the historical Bombadil settings receipt retain distinct scopes; all-route
+and cross-browser shaping, native Porsche/guest journeys and independent
+linguistic correctness remain unestablished. Independent native-speaker review
+is not a release requirement for this task.
+
+The subsequent `1da714ef2` integration refreshes the locked devenv,
+git-hooks, devenv-nixpkgs and Nixpkgs inputs and restores the suspension fleet
+fixture's existing private SSH issuer enrollment. Application `lib/` source is
+unchanged. The completed application results above retain their earlier locked
+build closures; matching pinned Elixir/OTP versions alone would not establish
+those tests against every refreshed dependency. A fresh shell's pinned-toolchain
+check passed with Elixir 1.20.4 and OTP 29.0.6. The validation command used
+`cachix.enable=false` for that invocation to avoid automatic cache publishing;
+source configuration and verification gates were unchanged. This establishes
+the runtime pins, not a fresh full application suite. The fixture's native
+attempt ended before guest launch and adds no continuation acceptance. These
+changes preserve the accepted dependency, runtime and authority decisions.
+
+The refreshed Nixpkgs exposes Node 24.21.0 where the editor requires its existing
+reviewed 24.19.0 pin. The narrow integration repair builds that exact source and
+hash with the supplied pinned Nixpkgs builder and inherited patch stack, retains
+the matching npm/corepack wrapper, and shares the runtime across the editor,
+extension updater and maintenance check. The release identity includes the new
+runtime helper; Windows retains 24.19.0 and its existing archive hashes. Editor,
+updater and Windows runtime evaluation passed. The hash-verified official Node
+source was realized and the inherited patch and post-patch phases passed. This
+does not establish full Node compilation, editor construction, runtime execution
+or browser acceptance. The repair restores the existing package-input contract
+without adding a package source or changing editor authority; documented editor
+defaults remain the same package rather than an evaluation-error sentinel.
+
+The later `41106c6b3` through `3cfcae787` integration adds Android host-stream
+sequence-gap closure, updates the guest journald option to the current spelling
+while retaining volatile storage, and pins the existing guest coding-CLI package
+source by archive hash independently from the host package refresh. Codex remains
+0.149.0 and Claude Code 2.1.238; their native settings and update controls are
+unchanged. Claude's narrowly permitted import retains the supplied overlays;
+the separate Codex import uses the archive's package set without inheriting
+overlays. No native guest CLI execution or new package-source build acceptance
+is inferred from this configuration review.
+
+The Android change introduces no human-facing string or locale identity. Its
+new BEAM regression initially decoded a WebSock iodata reply as binary; the
+fixture now uses `IO.iodata_to_binary/1`. The focused
+`host_stream_android_test.exs` and `host_stream_test.exs` run passed all 11 tests
+in 61.6 seconds with seed `452775`, eight maximum cases and unchanged 100-case
+property budgets. The production host-stream and corrected regression source
+match the validated isolated snapshot. This bounds the new sequence-gap behavior
+and does not extend earlier full-suite, type, native host or browser evidence.
+The Android review and handbook retain the unverified composed Firecracker
+journey. These changes preserve the accepted runtime, transport authority and
+volatile-log decisions; no ADR implementation status is promoted.

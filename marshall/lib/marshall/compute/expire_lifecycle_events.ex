@@ -44,6 +44,8 @@ defmodule Marshall.Compute.ExpireLifecycleEvents do
     ingress_web_logins_versions
     ingress_web_streams_versions
     machine_pins_versions
+    notification_deliveries_versions
+    notification_devices_versions
     peach_credentials_versions
     ssh_keys_versions
     team_members_versions

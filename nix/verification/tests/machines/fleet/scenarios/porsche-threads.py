@@ -3,8 +3,9 @@
 # packaged Porsche gateway and verified Marshall control into the Threads and
 # Ingress domains. Prompt text MUST travel only on stdin and MUST NOT appear
 # in receipts; a watch MUST open through Marshall's subscription authority and
-# renew on heartbeat (revocation is covered by the BEAM transport test). Runs after porsche.py,
-# reusing its client keys, known_hosts and porsche_arguments helper.
+# renew on heartbeat (revocation is covered by the BEAM transport test). Runs after
+# porsche.py's key approval and authorized dispatch, reusing its client keys,
+# known_hosts and porsche_arguments helper.
 from typing import TypedDict
 
 
@@ -94,16 +95,8 @@ with subtest("Porsche thread, web and watch commands drive Marshall domains"):
         lambda: sql(f"SELECT status FROM threads WHERE id='{thread_id}'") == "ready",
         timeout=600,
     )
-    eventually(
-        lambda: (
-            sql(
-                "SELECT count(*) FROM agent_turns t JOIN threads h ON h.agent_thread_id=t.thread_id "
-                f"WHERE h.id='{thread_id}' AND t.status IN ('queued','running')"
-            )
-            == "0"
-        ),
-        timeout=600,
-    )
+    # This fleet has no model provider, so the objective's first turn stays
+    # active; a same-mode prompt queues behind it rather than being refused.
 
     listed = porsche_threads_result(porsche_threads_json("thread ls"))
     items = listed.get("items")

@@ -331,6 +331,10 @@ admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
 pool totals for its enrolled pool identity, measured cgroup memory headroom, a
 labelled STUB CPU budget of one core capped by the measured cgroup cores, and a tiny non-bootable image it digest-verifies before advertising;
+its manifest declares Git identity version 1 as a labelled STUB because
+ADR-0198 admission refuses images without it (run
+`219976fe92d70537b4a0e8cca1fa6be3-65-0` refused every admission); the image never
+boots, so this is not guest identity evidence;
 the enrollment operator registers that image through Marshall's catalog action
 and then enables lilly-a through the reviewed CLI `enable` action, which
 refuses until Lilly's stub report is fresh and execution-ready. A fully stub-backed report advertises placement readiness, so Marshall's real

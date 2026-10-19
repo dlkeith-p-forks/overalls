@@ -2,6 +2,26 @@
 
 NixOS machine integration tests and property-based tests are the preferred evidence. Unit tests establish narrower behavior. **Present** means a test exists and its assertion was inspected; **recorded** links a historical execution record, not a rerun of the current tree. Partial coverage does not mean the feature is broken. Gaps identify what the evidence cannot establish.
 
+## Open an Android machine display as a viewer or controller and observe generation fencing
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, recovery.
+
+Boundary: A signed short-lived ticket binds the current actor, Android capability, machine and execution generation. One shared relay fans out RFB bytes to viewers and forwards input only from its controller.
+
+Required refusal: Foreign, stale, expired, non-Android and second-controller requests are refused; host-stream or emulator loss closes the display channel. A future host output sequence closes its Android channel and notifies its generation-bound owner rather than silently dropping bytes.
+
+Tested scope: Typed protocol, relay and browser-hook evidence exists; composed Firecracker, Lilly ingress and authenticated browser acceptance remain partial.
+
+- **property, present**: [generations and boot identity fencing](repo:protocol/test/android_emulator_state_machine_property_test.exs) — BEAM state model only; no native VM or browser claim..
+- **unit, present**: [allows viewers, fences one controller and sequences frames](repo:marshall/test/marshall/android/display_relay_test.exs) — Relay process state only; no host transport claim..
+- **unit, present**: [replaces its canvas on reconnect](repo:marshall/test/browser/android_display_test.mjs) — Browser hook fixture only; no authenticated browser journey claim..
+- **unit, recorded**: [a future Android output sequence closes the channel and notifies its owner](repo:marshall/test/marshall/terminal/host_stream_android_test.exs) — Codec and BEAM host-stream callback state: future sequence yields close control, generation-bound owner notice and removed channel. Passed within the 11-test focused host-stream run in 61.6 seconds, seed 452775, with eight maximum cases and existing 100-case property budgets unchanged. No authenticated native display stream or browser journey.; [execution record](repo:docs/architecture/reviews/2026-10-18-android-firecracker.md).
+- **machine, recorded**: [PNG screencap through the real adb client](repo:nix/verification/tests/machines/android-emulator/default.nix) — Recorded standalone NixOS software-emulator fixture: API 34 AVD, APK compiled against API 36, authenticated ADB, PNG screencap and marker persistence across emulator restart. The 4-core/4-GiB AVD runs inside an 8-vCPU/8-GiB test VM. No production API 36 image, Firecracker transport, TAP firewall, Lilly ticket authority or browser journey claim.; [execution record](repo:docs/architecture/reviews/2026-10-18-android-firecracker.md).
+
+**Gaps:** No recorded production Firecracker image boot with the relay and no recorded real /machines/:id browser journey.
+
+**Preferred test work:** Run the production Android image through Firecracker, connect Marshall and Lilly, and record viewer/controller, stale-generation and host-loss assertions.
+
 ## Select a language, reset to the browser default, and use LTR/RTL human surfaces
 
 Coverage: **partial**. Layers: identity, authorization, transport.
@@ -10,8 +30,9 @@ Boundary: Saved self-only locale override takes precedence over validated sessio
 
 Required refusal: Unsupported or malformed locale input cannot persist; a foreign user cannot change the preference; old Porsche protocol peers fall back to English; JSON fields, protocol identifiers and terminal bytes remain language-neutral.
 
-Tested scope: ADR-0201 presentation boundaries with recorded bounded BEAM/LiveView execution; full browser, native Porsche and linguistic acceptance remain partial.
+Tested scope: ADR-0201 presentation boundaries with historical bounded BEAM/LiveView execution, latest strict 28-locale catalog/data/document checks and a recorded Bombadil settings journey across all 28 locales and 112 theme/viewport combinations. Locale persistence after reload, browser-language reset and repeated saves from a fragment passed on the immutable compiled runtime identified by the browser receipt. Latest Porsche notification-guidance assertions preserve command tokens and decoded JSON; they do not extend native SSH or browser acceptance. All-route browser, native Porsche and independent linguistic acceptance remain partial.
 
+- **manual, recorded**: ["locales_persisted_after_reload": 28](repo:docs/architecture/reviews/2026-10-19-localization-browser-evidence.json) — Bombadil 0.7.7 exited zero with zero violations across 1,113 authenticated states: all 28 locales saved and persisted after reload; all 112 light/dark and 390/1440-pixel combinations were observed; reset restored Japanese browser inference after reload, and repeated save from a fragment passed. The receipt binds the immutable compiled BEAM, fixture, JavaScript, CSS and bundled fonts by SHA-256. Synthetic settings presentation and persistence only; no all-route, cross-browser, native guest, native Porsche or independent linguistic claim.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-browser-evidence.json).
 - **unit, recorded**: [a user cannot change another account or persist unsupported input](repo:marshall/test/marshall/accounts/locale_test.exs) — Persisted override self-only/unsupported-input refusal within the BEAM fixture; no native transport claim.; [execution record](repo:docs/architecture/reviews/2026-10-18-localization.md).
 - **unit, recorded**: [request processes have independent translation locale state](repo:marshall/test/marshall_web/locale_test.exs) — Negotiation and isolated request-process locale state; no browser rendering claim.; [execution record](repo:docs/architecture/reviews/2026-10-18-localization.md).
 - **unit, recorded**: [RTL interpolation isolates a mixed-script value through the configured backend](repo:marshall/test/marshall_web/gettext_interpolation_test.exs) — Configured Arabic Gettext interpolation wraps a mixed-script value through Localize; no browser visual-order claim.; [execution record](repo:docs/architecture/reviews/2026-10-18-localization.md).
@@ -23,10 +44,34 @@ Tested scope: ADR-0201 presentation boundaries with recorded bounded BEAM/LiveVi
 - **unit, present**: [repository launch guidance is localized without storing invalid input](repo:marshall/test/marshall_web/controllers/overalls_controller_test.exs) — Invalid repository launch input returns Arabic/Japanese guidance with no staged launch value and unchanged no-store/no-referrer response policy..
 - **unit, present**: [English handbook content keeps its language and direction inside localized chrome](repo:marshall/test/marshall_web/hldd_live_test.exs) — Arabic and Japanese reader chrome surrounds source-English chapter content marked English/LTR. BEAM/LiveView attributes only; no visual browser or complete catalog claim..
 - **unit, present**: [source titles and command help remain English in every reader locale](repo:marshall/test/marshall/handbook_test.exs) — All policy locales preserve the compiled source-English catalog and generated command-reference prose; test presence is distinct from execution evidence..
+- **unit, recorded**: [notification refusals give localized guidance while retaining JSON hints](repo:porsche/test/ssh_output_test.exs) — Arabic and Japanese human guidance for push_disabled and device_limit uses native feature lookups while device rm DEVICE_ID remains literal and decoded JSON hints remain unchanged. Passed within the latest 140-of-141 Porsche test phase; the unrelated invalid-boot timeout and identical isolated rerun are recorded separately. No native SSH session claim.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md).
 
-**Gaps:** Documentation translations and native linguistic review remain incomplete. Packaged NixOS LTR/RTL browser journeys, real browser layout/bidi behavior and native Porsche protocol journeys are not established by the focused BEAM run.
+**Gaps:** Independent native-speaker review remains incomplete despite strict catalog coverage and structural Markdown checks. The recorded synthetic browser fixture establishes only its settings journey and observed layout; packaged NixOS account-language/Porsche journeys, all-route and cross-browser bidi/shaping behavior and native Porsche protocol journeys remain unestablished.
 
-**Preferred test work:** Add generated negotiation and isolation properties, complete catalog checks, LTR/RTL browser journeys and a packaged NixOS account-language/Porsche journey; record exact outcomes.
+**Preferred test work:** Add generated negotiation and isolation properties and packaged NixOS account-language/Porsche journeys; broaden browser routes and engines and obtain independent native-speaker review. Preserve the separate native and linguistic evidence boundaries.
+
+## Select the Android software guest profile and attach a generation-bound display controller or viewer
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery.
+
+Boundary: The explicit linux-android-v1 declaration participates in version-4 image identity and projects Android SDK, ADB, emulator and display flags. ADR-0206 requires the NixOS Firecracker guest, software rendering, persistent AVD state and private ADB/display transport. Marshall checks login/ticket claims separately from its shared machine-and-generation relay; controller and viewer roles remain distinct. Source and pure models are not evidence that these layers compose in a native browser journey.
+
+Required refusal: Unsupported manifest versions, profiles, image kinds and malformed artifacts refuse Android qualification. Malformed tickets and mismatched machine, generation or mode refuse. The relay model refuses a second controller, stale-generation frames and input from a viewer. A future host output sequence closes its channel and notifies the generation-bound owner. Native expired-login, foreign-owner, stale-execution and transport refusal remain unverified as a composed journey.
+
+Tested scope: Source-backed image codec, capability and in-memory relay boundaries, an independent generated lifecycle model, and a recorded standalone NixOS software-emulator run. Each bounded execution retains its own source and assertion scope; no native Firecracker display, real browser or production acceptance follows from the models or standalone fixture.
+
+- **unit, recorded**: [Android guest profile is explicit, identity-bound and preserved by serialization](repo:protocol/test/image_manifest_test.exs) — Version-4 acceptance, JSON round trip, distinct identity and four capability flags; a separate test refuses wrong versions, profiles, image kinds and malformed artifacts. Passed within the latest isolated 418-test protocol gate, seed 778386, with current source hashes matching the validated snapshot. Pure image-codec evidence.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md).
+- **property, recorded**: [lifecycle commands preserve lease and boot fencing](repo:protocol/test/android_emulator_state_machine_property_test.exs) — Two hundred generated histories in an independent lifecycle/lease model check ownership, monotonic generations, boot identity and rejected-command purity. Passed within the latest isolated 418-test protocol gate, seed 778386, with current source hashes matching the validated snapshot. It does not execute an emulator, ADB or a production transport adapter.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md).
+- **unit, recorded**: [shares one relay per machine generation](repo:marshall/test/marshall/android/display_registry_test.exs) — In-memory registry reuse for one machine/generation and separation of a later generation, using a unique test key and exact relay PID cleanup. Passed within the eight-test Android target, seed 183005; no restart or distributed registry claim.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md).
+- **unit, recorded**: [allows viewers, fences one controller and sequences frames](repo:marshall/test/marshall/android/display_relay_test.exs) — BEAM relay roles, one-controller refusal, frame sequencing, stale-generation refusal and viewer-input refusal passed within the eight-test Android target, seed 183005. No authenticated native stream.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md).
+- **unit, recorded**: [claim matching fences machine, generation and mode](repo:marshall/test/marshall/android/display_tickets_test.exs) — Malformed-token and exact claim-field refusal passed within the eight-test Android target, seed 183005. These pure checks do not establish positive signed-ticket issuance, current-login expiry or foreign-owner refusal through the browser socket.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md).
+- **unit, recorded**: [a future Android output sequence closes the channel and notifies its owner](repo:marshall/test/marshall/terminal/host_stream_android_test.exs) — Future sequence yields close control, generation-bound owner notice and removed channel in the BEAM callback fixture. Passed within the 11-test focused host-stream run in 61.6 seconds, seed 452775. The fixture normalizes WebSock reply iodata before decoding. No Lilly transport, native guest, browser or isolation claim.; [execution record](repo:docs/architecture/reviews/2026-10-18-android-firecracker.md).
+- **unit, recorded**: [Android display gives noVNC an empty target and replaces its canvas on reconnect](repo:marshall/test/browser/android_display_test.mjs) — Simulated RFB client checks target replacement, disconnect on reconnect and viewer/controller configuration. The Node unit passed 1/1; it is not a real browser or native display stream.; [execution record](repo:docs/architecture/reviews/2026-10-19-localization-feature-catalogs.md).
+- **machine, recorded**: [android-test-emulator.service](repo:nix/verification/tests/machines/android-emulator/default.nix) — Recorded standalone NixOS fixture runs a software-rendered API34 AVD with acceleration disabled, builds its APK against API36, authenticates ADB, checks PNG screencap and retains its marker across emulator restart. The four-core/4GiB AVD runs inside an eight-vCPU/8GiB test VM. No production API36 guest, TAP firewall, Lilly authority, Firecracker composition or browser journey is established.; [execution record](repo:docs/architecture/reviews/2026-10-18-android-firecracker.md).
+
+**Gaps:** No recorded native Firecracker guest-to-browser display journey establishes current login/owner authorization, authenticated transport, controller/viewer enforcement, stale-execution fencing, AVD storage continuity, restart recovery or physical isolation. The standalone emulator fixture is not the deployed Marshall/Lilly composition.
+
+**Preferred test work:** Add a packaged Marshall/Lilly Firecracker browser journey covering readiness, controller/viewer and foreign/stale refusal, AVD retention and bounded recovery. Keep the recorded standalone API34 emulator, pure-property and production native evidence separate.
 
 ## Open the single account page, move between its profile, sign-in, SSH key and Git sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint
 
@@ -36,7 +81,7 @@ Boundary: One LiveView at /settings mounts through the AuthenticationPrivacy tag
 
 Required refusal: Refuse anonymous visitors with a sign-in redirect; answer 404 on /settings/profile, /settings/security and /settings/ssh-keys; refuse unknown events with a fixed flash and no change; a revoked login halts the next SSH key event or clock tick with a sign-in redirect; a weaker mount (optional, current_user or none) fails the pin test.
 
-Tested scope: LiveView tests of the merged page (sections, single navigation entry, the step-up redirect and Users link to /settings?return_to=%2Fadmin%2Fusers#security, the SSH approval navigation to /settings#ssh-keys, every former Security, SSH key and profile assertion) and a structural pin of the lifecycle ids and route; the synthetic browser probe checks the single sidebar entry, section order, anchors landing at the top, the zone round trip and grid alignment in both themes and at 390 px.
+Tested scope: LiveView tests of the merged page (sections, single navigation entry, the step-up redirect and Users link to /settings?return_to=%2Fadmin%2Fusers#security, the SSH approval confirmation, which stays on the approval page with the Open Mila link (ADR-0221) rather than navigating to /settings#ssh-keys, every former Security, SSH key and profile assertion) and a structural pin of the lifecycle ids and route; the synthetic browser probe checks the single sidebar entry, section order, anchors landing at the top, the zone round trip and grid alignment in both themes and at 390 px.
 
 - **unit, present**: [the merged page keeps the strict security mount of the former Security page](repo:marshall/test/marshall_web/account_live_test.exs) — Exact lifecycle mount ids [{AuthenticationPrivacy, :default}, {LiveUserAuth, :security}] and the /settings route to AccountLive.
 - **unit, present**: [the page renders every section behind one Account navigation entry](repo:marshall/test/marshall_web/account_live_test.exs) — All four section ids and index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile.
@@ -1000,7 +1045,7 @@ Tested scope: Generated adapter/verified-TLS timeout retries and committed three
 - **property, recorded**: [generated post-ack mail owner crashes preserve pending identity until retry commits](repo:marshall/test/marshall/accounts/auth_email_distributed_property_test.exs) — Actual SMTP250 then nonce-correlated open transaction/delivered/nil gate, independent committed pending ciphertext, exact row waiter, halt137, identical successor identity and replacement terminal replay. Historical three-property file passed70.4seconds; Current combined execution passed exit0,seed0,266.0s,19checks (9properties,10tests), including all four distributed properties; /tmp/overalls-mail-stable-identity-combined.log. Full typing/integration remain pending. Sender-derived-header mutant failed actual first/retry identity comparison (exit2,seed0,73.6s), with equal token/body digests; restored focused rotation passed1property,3excluded,seed0,28.1s. No later terminal observations after mutant failure are credited.; [execution record](repo:docs/architecture/reviews/2026-10-05-auth-mail-post-ack-runtime.md).
 - **property, recorded**: [generated pending mail retries retain Message-ID across sender-domain rotation](repo:marshall/test/marshall/accounts/auth_email_distributed_property_test.exs) — Actual verified-TLS SMTP and independent pools; successor sender domain changes after held post-ACK transaction, with independently verified configuration and complete first/retry identity comparison. Old source failed21.0seconds; first corrected selection passed22.9seconds before namespace-independent oracle refinement. Current combined execution passed exit0,seed0,266.0s,19checks (9properties,10tests), including all four distributed properties; /tmp/overalls-mail-stable-identity-combined.log. Full typing/integration remain pending. Sender-derived-header mutant failed actual first/retry identity comparison (exit2,seed0,73.6s), with equal token/body digests; restored focused rotation passed1property,3excluded,seed0,28.1s. No later terminal observations after mutant failure are credited.; [execution record](repo:docs/architecture/reviews/2026-10-05-auth-mail-post-ack-runtime.md).
 
-**Gaps:** The earlier combined current-format run passed 19 checks (9 properties, 10 tests), seed 0, 266.0 seconds, at its own source/engine checkpoint. Later full 100-case distributed histories hit TooSlow after 3–4 cases in 31–39 seconds; source now uses scoped CI, finite 1,800-second aggregates and exact case-owned peer/row cleanup, with unchanged per-operation deadlines and crash/retry oracles. Repaired execution and full typing/integration remain pending. Prior recorded SMTP/worker runs retain the older identifier format. An uncertain delivery spanning the old/new Message-ID format transition cannot reconstruct its previously emitted ID. Oban duplicate-job scheduling, complete sign-in consumption/session issuance, exact natural expiry, token changes after validation, body/origin stability under endpoint rotation, host relay composition, inbox delivery, native machine and hosted faults remain open.
+**Gaps:** Combined current-format mail execution passed19checks (9properties,10tests),seed0,266.0s; full typing/integration gates remain pending. Prior recorded SMTP/worker runs retain the older identifier format. An uncertain delivery spanning the old/new Message-ID format transition cannot reconstruct its previously emitted ID. Oban duplicate-job scheduling, complete sign-in consumption/session issuance, exact natural expiry, token changes after validation, body/origin stability under endpoint rotation, host relay composition, inbox delivery, native machine and hosted faults remain open.
 
 **Preferred test work:** Run a native or hosted fault workload with a controlled SMTP relay and independent Marshall workers; retain the local generated retry property as bounded state-machine evidence.
 
@@ -1127,7 +1172,7 @@ Tested scope: Real signed WebAuthn fixtures and generated independent-login hist
 - **unit, present**: [replayed and cross-session challenges fail](repo:marshall/test/marshall/accounts/security_test.exs) — Fixture WebAuthn replay and cross-session denial..
 - **machine, recorded**: [native-control-room-authority](repo:nix/verification/tests/machines/control-room/browser.py) — Browser first enrollment and elevation using virtual WebAuthn, followed by stored-session revocation and expiry; one serving replica.; [execution record](repo:docs/architecture/reviews/2026-09-25-control-room-verification.md).
 - **machine, recorded**: [native-control-room-authority](repo:nix/verification/tests/machines/control-room/browser.py) — Current packaged verified-TLS browser with virtual WebAuthn: stored-login revocation and mounted expiry/export404, followed by real sign-out revoking independent remembered authority and fresh sign-in/export404 refusal. One serving replica; no hardware-authenticator or independent-host acceptance.; [execution record](repo:docs/architecture/reviews/2026-10-09-observability-decoupling.md).
-- **property, recorded**: [subsequent login histories separate ordinary access from passkey elevation](repo:marshall/test/marshall_web/mfa_login_history_test.exs) — The current two-login signed-assertion property passed all twenty histories/oracles in the 91.7-second pinned-test target, seed 922579, and in the complete c5747868 Marshall gate: 1,476 checks in 1,400.4 seconds, with zero failures/invalids. The narrow 240-second SQL owner tag matches the existing test budget, preserves the default when absent, async sharing, cleanup and all operation-matrix assertions. The earlier full run lost its 120-second SQL owner inside live overview before any failed MFA assertion; the target finished below 120 seconds and does not establish owner-expiry stress. The interrupted development-format target has no acceptance. Production authentication and native-browser behavior are unchanged.; [execution record](repo:docs/architecture/reviews/2026-10-13-native-guest-coding-clis.md).
+- **property, recorded**: [subsequent login histories separate ordinary access from passkey elevation](repo:marshall/test/marshall_web/mfa_login_history_test.exs) — Historical c5747868 evidence: the two-login signed-assertion property passed twenty histories/oracles in the 91.7-second pinned-test target, seed 922579, and the complete Marshall gate passed 1,476 checks in 1,400.4 seconds with zero failures/invalids. That source used one test-wide SQL owner with a 240-second tag. The restored 100-history property now starts and rolls back a separate sandbox for each generated history and replay, preserving all operation-matrix assertions and the default finite per-owner timeout, with a finite 600-second aggregate budget. The corrected current attempts reached that timeout with seeds 562021 and 693066; the latter used four BEAM schedulers and the final comprehensive LiveView cleanup. Neither completed 100 histories or failed an authorization oracle. The current timeout evidence is recorded in docs/architecture/reviews/2026-10-19-mfa-property-isolation.md; the historical twenty-history pass does not verify the corrected lifecycle or an adequate current aggregate budget. The earlier full run lost its 120-second SQL owner inside live overview before any failed MFA assertion; the historical target finished below 120 seconds and does not establish owner-expiry stress. The interrupted development-format target has no acceptance. Production authentication and native-browser behavior are unchanged.; [execution record](repo:docs/architecture/reviews/2026-10-13-native-guest-coding-clis.md).
 - **machine, recorded**: [native-subsequent-mfa-login](repo:nix/verification/tests/machines/mfa-login/browser.py) — Three colocated serving replicas, virtual WebAuthn, subsequent magic-link and remembered login, actual backend and WebSocket observations, admin-UI mounted/copied-cookie revocation including a no-MFA account.; [execution record](repo:docs/architecture/reviews/2026-09-25-mfa-login-verification.md).
 - **unit, recorded**: [remembered login exchange and Sign out everywhere serialize in both orders on three nodes](repo:marshall/test/marshall/compute/distributed_admission_test.exs) — Three independent BEAMs sharing committed PostgreSQL; both lock orders, copied-credential refusal, mutation-sensitive gates and bounded failure cleanup. No independent-host claim.; [execution record](repo:docs/architecture/reviews/2026-09-25-mfa-login-verification.md).
 - **unit, present**: [remembered enrolled login allows reads, requires its own admin elevation and revokes copied cookies](repo:marshall/test/marshall_web/remember_me_login_test.exs) — Updated real HTTP-issued remember cookie test permits ordinary reads, keeps independent admin elevation and preserves copied-cookie revocation. The September 25 recorded run covered the earlier login-MFA policy, not this updated test..
@@ -1959,7 +2004,7 @@ Tested scope: Generated PostgreSQL role/consent histories and a three-account Ni
 - **property, recorded**: [HTTP histories preserve pinned receipts and permanent team refusals](repo:marshall/test/marshall_web/teams_ssh_api_test.exs) — Generated real HTTP command histories compare complete durable team, version, audit and request rows across refusals, transfer/removal and trusted archived-name reuse.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-ssh-verification.md).
 - **machine, recorded**: [consenting target transfers ownership and stale users remain refused](repo:nix/verification/tests/machines/team-ssh/driver.py) — Two NixOS VMs, source-built Marshall, packaged Porsche, strict SSH host trust and verified internal TLS, three persisted ordinary identities and CLI Teams mutations; no guests.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-ssh-verification.md).
 - **property, recorded**: [current team membership admits guest use without granting member management](repo:marshall/test/marshall/teams_resource_history_test.exs) — Generated actual membership, read, guest-roster, SSH admission and sharing actions track current roles and Customer isolation. Synthetic host outcomes establish control-plane admission only.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-resource-verification.md).
-- **unit, recorded**: [and full retirement serialize](repo:marshall/test/marshall/teams_retirement_distributed_test.exs) — Four deterministic production-action schedules across three independent Marshall BEAMs verify account-fence contention, committed owner/membership/transfer/audit state and no-VM cleanup; coordinator excluded.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-resource-verification.md).
+- **unit, present**: [and full retirement serialize](repo:marshall/test/marshall/teams_retirement_distributed_test.exs) — Four deterministic production-action schedules across three independent Marshall BEAMs verify account-fence contention, committed owner/membership/transfer/audit state and no-VM cleanup; coordinator excluded..
 - **machine, recorded**: [member uses shared guest but cannot manage; foreign and Customer refuse](repo:nix/verification/tests/machines/team-resources/driver.py) — Captured aaba77ee-based nine-machine fleet: ordinary browser key registration/Porsche creation, certified shared guest use, member management and foreign/Customer refusals, admin stop/start with retained home, fresh removal/re-addition SSH and private HTTP decisions. SSH denials preserve ingress/login receipts and require fresh unauthorized evidence; the isolated HTTP 503 denial preserves the TLS origin count and requires exactly one fresh unauthorized event across three Marshall journals.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-resource-verification.md).
 - **property, recorded**: [team integration access follows membership histories without attachments](repo:marshall/test/marshall/teams_resource_history_test.exs) — Generated real membership and integration actions verify automatic member-owned VM eligibility, removal/re-addition, admin-only configuration and Customer refusal; no native transport is simulated as acceptance.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-resource-verification.md).
 - **property, recorded**: [Galileo refusal reasons survive authentication filtering without private payloads](repo:marshall/test/marshall/mailer/log_filter_test.exs) — Generated secret values verify the exact authorization-denied event retains only four reviewed reason atoms; arbitrary values, unrelated events and simultaneous mail tags retain redaction.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-resource-verification.md).
@@ -3321,32 +3366,23 @@ Tested scope: The frozen Lyra gate passed 223 portable tests with Linux Clippy, 
 
 Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery.
 
-Boundary: ADR-0208 fully replaces ADR-0200 with a source-built native Code OSS candidate, gateway-only SYSTEM broker on TCP 4444 and independent SYSTEM job custodian. Both tasks use the pinned executable and independently validate MMDS boot/release authority; mutual kernel PID/time, SYSTEM-token and executable checks guard their fixed physical-boot local pipe. Only the custodian owns locked roster/SAM/S4U admission, profile and package/PATH custody, atomic suspended job-list launch, complete SID-bound receipts, resume/readiness, exact worker pipes and retained kill-on-close handles. It retains 64 lifetime account slots including empty/quarantined starts; each process separately bounds live/retired pipe state to 128 reservations. The separate windows-editor-v1 manifest-v7 and bundle-v4 tuple, target-specific registry and immutable image authority remain unchanged. Existing windows-v1/v5 stays editor false and no production catalog selects the candidate.
+Boundary: ADR-0200 accepts a source-built native Code OSS candidate and SYSTEM broker on dedicated gateway-only TCP 4444. The separate windows-editor-v1 row requires manifest v7 with a closed immutable editor descriptor; portable bundle v4 retains that tuple. Marshall selects only the exact win32-x64 registry descriptor for a validated Windows candidate, independently of the concurrent Linux tuple. Existing windows-v1/v5 remains editor false and no production catalog selects the candidate. The candidate binds current MMDS execution, the closed preface, locked roster reconciliation, canonical local SAM SID and S4U token, personal profile, exact Job Object/process/pipe custody and a private recovery receipt.
 
-Required refusal: Missing/mismatched immutable descriptors, current login/write or execution authority, foreign gateway/local peer, stale roster/SID, ambiguous package/PATH custody, wrong process/job/pipe and exhausted admission/I/O capacity must refuse while preserving existing custody. Only a verified-dead held root permits exact-job zero-descendant accounting before replacement; live-root probe and process-observation errors refuse without termination, and failed accounting quarantines. A fresh custodian refuses every prior same-boot receipt until a new physical boot namespace, since root exit or missing job name cannot prove descendant quiescence. Foreign processes cannot be adopted or terminated. Portable or cross-link results cannot qualify native browser admission.
+Required refusal: The accepted windows-v1 editor capability remains false. Missing or mismatched image descriptors, foreign gateway or execution, stale roster account, ambiguous package/PATH custody, wrong SID/process/job/pipe and exhausted pending-I/O capacity must refuse. A foreign process cannot be terminated or adopted without exact custody; a portable test or cross-link cannot qualify native Windows browser admission.
 
-Tested scope: The reviewed native source build/import for exact release fbd3ccab8ae104bf2aee689e77deb6e47a3e9f12b2e4cbe3eeccdaf8afcb7dfe retains four signed extensions, product policy, licenses and provenance. Protocol/Lilly tests cover immutable v7/v4 identity, release preservation and old-row refusal. Earlier 30 actual Windows library tests cover pipe timeout/cancellation and ACL refusals; earlier 13 SYSTEM fixture cases cover installer/task custody. The old stock native browser fixture completed workbench/extension/save/PowerShell PTY, then failed broker recovery. Scoped old-design diagnostics demonstrate lost named-job custody after final handle close while the child lives. Current 30 portable tests pass retained-account ownership/single-flight/capacity and live-root-probe refusal decisions; Windows all-target Clippy and pinned links pass. The exact 38-test library then passed as SYSTEM with verified exit zero and scratch cleanup, including disposable suspended-root atomic membership/kill-on-close and exclusive-pipe/same-process identity/forged-time cases. These bounded results and static installer/harness builds do not establish personal S4U Code OSS launch, descendant drainage, independent task/custodian faults or exact-image browser acceptance.
+Tested scope: The native Code OSS source build and reviewed import completed for exact release fbd3ccab8ae104bf2aee689e77deb6e47a3e9f12b2e4cbe3eeccdaf8afcb7dfe with four signed extensions, product policy, licenses and native provenance checked. Focused protocol and Lilly tests cover immutable v7/v4 identity, release preservation and old-row refusal. Portable tests cover finite identity, path and capacity decisions. Thirty native Windows library tests pass, including actual named-pipe timeout/cancellation and Windows ACL descriptor/refusal checks; thirteen SYSTEM fixture cases cover installer/task custody. No admitted Windows image, Win32 listener/account/worker/task lifecycle or authenticated Windows browser journey is recorded.
 
 - **manual, recorded**: [native-build-complete](repo:nix/domains/artifacts/vscode-web/windows-bundle.nix) — Actual Windows source build and exact reviewed recursive-NAR import at release fbd3ccab8ae104bf2aee689e77deb6e47a3e9f12b2e4cbe3eeccdaf8afcb7dfe. Validated descriptor, product policy, four signed extensions, licenses and provenance; refused links/store references. Build/import only, no installed image, native worker or browser acceptance.; [execution record](repo:docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md).
 - **unit, present**: [Linux and Windows approve distinct releases together without cross-target substitution](repo:marshall/test/marshall/compute/image_editor_capability_test.exs) — Pure validated image capability checks retain separate exact target tuples, reject swapped descriptors and preserve empty-registry refusal. No Windows guest, package execution or browser admission runs..
 - **unit, present**: [same_account_pipe_requires_job_and_executable_custody](repo:nix/domains/artifacts/vscode-web-broker/src/windows_model.rs) — Portable modeled custody rejects a same-account pipe without exact retained job and executable identity; no native SAM, Job Object or pipe API runs..
 - **unit, present**: [pipe_slots_remain_reserved_until_retained_operation_is_released](repo:nix/domains/artifacts/vscode-web-broker/src/windows_model.rs) — Portable slot reservations remain bounded until retained state drops; no native overlapped cancellation or completion is exercised..
-- **property, recorded**: [full_custodian_registry_never_evicts_retained_accounts](repo:nix/domains/artifacts/vscode-web-broker/src/windows_model.rs) — Generated portable account histories retain existing slots and refuse new accounts after 64 unique reservations; no native processes, jobs, tasks or pipes execute.; [execution record](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
-- **unit, recorded**: [concurrent_account_admission_shares_one_serialized_owner](repo:nix/domains/artifacts/vscode-web-broker/src/windows_model.rs) — Portable concurrent threads share one account initializer and serialized owner; this does not establish native account, launch or failure behavior.; [execution record](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
-- **unit, recorded**: [live_root_probe_errors_never_authorize_destructive_recovery](repo:nix/domains/artifacts/vscode-web-broker/src/windows_model.rs) — Production-used portable decision propagates live-root readiness/pipe and process-observation errors without destructive recovery; only a conclusively dead held root requests job drainage. No actual native process/job runs.; [execution record](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
-- **unit, recorded**: [native_atomic_job_assignment_closes_suspended_orphan_window](repo:nix/domains/artifacts/vscode-web-broker/src/windows.rs) — Executed as SYSTEM: disposable cmd.exe is created suspended with atomic job-list attachment, verified membership and live root; final job close makes the held root exit within a five-second wait. No personal S4U Code OSS, resumed descendants, custodian crash or task/browser lifecycle executes.; [execution record](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
-- **unit, recorded**: [native_local_endpoint_is_exclusive_and_system_only](repo:nix/domains/artifacts/vscode-web-broker/src/windows_ipc.rs) — Executed native listener has inspected SYSTEM-only ACL custody and rejects a second first-instance listener. No foreign-user/remote connection or independently scheduled role process executes.; [execution record](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
-- **unit, recorded**: [native_peer_handshake_refuses_forged_creation_time](repo:nix/domains/artifacts/vscode-web-broker/src/windows_ipc.rs) — Executed native pipe rejects a deliberately changed creation claim from the SYSTEM test process. No PID-reuse, wrong-executable, foreign-boot or complete two-role refusal matrix executes.; [execution record](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
-- **unit, recorded**: [native_peers_complete_exact_identity_handshake_before_stream_bytes](repo:nix/domains/artifacts/vscode-web-broker/src/windows_ipc.rs) — Two threads in the same SYSTEM test process complete mutual native kernel-identity handshake before a bounded frame. No installed cross-process broker/custodian, personal account/release lifecycle or browser stream executes.; [execution record](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
-- **manual, recorded**: [child remained live](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md) — Bounded old-design SYSTEM diagnostic creates/assigns a disposable child and observes the job name disappear after final handle close while the child remains live; explicit cleanup completed. It disproves the old reopening assumption and does not accept new kill-on-close behavior.; [execution record](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
 - **property, recorded**: [Windows editor identity binds its release and survives portable storage](repo:protocol/test/windows_editor_image_test.exs) — Pure generated v7 identity and v4 bundle round trips, field mutations and closed refusal. Existing Windows v1 remains false; no native image runs.; [execution record](repo:docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md).
 - **unit, recorded**: [native_pipe_copies_completed_bytes_and_retires_timeout_without_caller_storage](repo:nix/domains/artifacts/vscode-web-broker/src/windows_pipe.rs) — Executed real Windows named-pipe completion and timeout with copied operation storage; not the full worker or browser lifecycle.; [execution record](repo:docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md).
 - **machine, present**: [windows-editor-native-browser-journey](repo:nix/verification/tests/machines/windows-editor/browser.py) — Source-present actual relay/workbench, native save/PTY and broker/worker recovery harness. Static compilation and boundary checks do not execute Windows or authenticate a browser journey..
-- **machine, present**: [fixture_custodian_not_retained](repo:nix/verification/tests/machines/windows-editor/control.ps1) — Fixture source requires both exact private SYSTEM tasks and independent role processes; broker-loss assertion checks the custodian retains its PID/creation identity. Build/parse checks alone do not execute these native assertions or custodian crash recovery..
 
-**Gaps:** Safe same-boot replacement after custodian crash is unimplemented; all existing same-boot receipts refuse. Native atomic launch rollback, mutual peer refusals, per-process capacity/cancellation exhaustion, root-plus-descendant drainage, custodian kill-on-close bounds, task crash/reboot supervision and exact new bundle/image qualification remain pending. Complete two-account browser separation, save/readback, current revocation and broker/worker recovery are unrecorded for the replacement. Guest Administrator confidentiality and physical isolation remain separate boundaries.
+**Gaps:** Native Windows SAM/S4U/profile and executable/PATH lifecycle custody, sustained/interrupted overlapped cancellation, task crash/reboot supervision, exact bundle/image qualification, two-account browser separation, edit/readback, revocation, broker adoption and worker-loss recovery remain unrecorded. Guest administrator authority and physical isolation are separate boundaries.
 
-**Preferred test work:** Implement a stronger descendant-quiescence mechanism for fresh-custodian same-boot replacement, then run native root-first/descendant and launch/peer/capacity fault cases plus the isolated two-task Windows machine/browser harness against the exact new image. Complete protocol and both consumer gates before reviewing production image selection.
+**Preferred test work:** Run the isolated native Windows machine/browser harness against the exact reviewed bundle and candidate image, complete protocol and both consumer gates, then review exact production image selection.
 
 ## Give Windows guests an agent set with a capability table, reach a guest-side listener over virtio-vsock through the viosock driver, and make the fleet ready to stage the image
 
@@ -3382,7 +3418,7 @@ Tested scope: Protocol tests pin the capability table and the windows-v1 manifes
 
 Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, storage, recovery.
 
-Boundary: The protocol admits exactly the eight-key version-5 manifest and the seven-key version-2 firmware bundle beside the unchanged version-4 and version-1 shapes; artifact names come from the protocol only. Lilly keeps rootfs.ext4 as the pool-side root slot, bind-mounts the firmware read-only, seeds the boot identity (placement, execution epoch, boot challenge, /32, gateway, MAC; never the generation) into Firecracker's MMDS from a root-owned jail-local metadata.json before launch, boots /firmware with the Hyper-V CPU template and --enable-pci, and runs the guest under the jailer, seccomp observation and the per-tap guard. The guest's SYSTEM bootstrap task reads MMDS with a V2 session token, validates every field including the adapter MAC and applies exactly the delivered /32. Marshall projects per-capability guest facts (guest_capabilities) from the immutable image, all false for the agentless set.
+Boundary: The protocol admits exactly the eight-key version-5 manifest and the seven-key version-2 firmware bundle beside the unchanged version-4 and version-1 shapes; artifact names come from the protocol only. Lilly keeps rootfs.ext4 as the pool-side root slot, bind-mounts the firmware read-only, seeds the boot identity (placement, execution epoch, boot challenge, /32, gateway, MAC; never the generation) into Firecracker's MMDS from a root-owned jail-local metadata.json before launch, boots /firmware with the Hyper-V CPU template and --enable-pci, and runs the guest under the jailer, seccomp observation and the per-tap guard. The guest's SYSTEM bootstrap task reads MMDS with a V2 session token, validates every field including the adapter MAC and applies exactly the delivered /32. Marshall projects per-capability guest facts (guest_capabilities) from the immutable image, all service capabilities false for the agentless set.
 
 Required refusal: A bundle with guest_agents none never reports guest_ready: trust is recorded as skipped for the exact boot, provisioning ends in the terminal unattested phase (no boot UUID, no path to ready), and readiness, terminal options, workspace sources and the Inception profile are refused before any host effect. Marshall refuses terminal sessions, agent turns, the agent executor binding, web search and Inception admission for such an image, hides the corresponding controls, and refuses new machine admission with git_identity_unavailable because agentless manifests cannot advertise the Git identity capability required by ADR-0198/0204. Physical-only measurement remains relevant to retained executions and the historical Lilly-only fixture. New admissions without Git identity support refuse with no allocation effects. An older Lilly fails closed on a firmware bundle, which is why the converged push precedes any placement. Lilly's host policy drops every unmarked packet between the host and a Customer guest, so nothing on the host reaches the Windows guest except the SSH and editor ingress paths it does not yet have. The guest bootstrap refuses an MMDS document whose fields fail validation or whose MAC is not the adapter's and never logs the token or boot challenge.
 
@@ -3845,7 +3881,7 @@ Boundary: Current Cedar/key/publication/editor authority admits coalesced durabl
 
 Required refusal: Foreign or revoked authority, missing/corrupt/incompatible checkpoints, replayed restore and arbitrary relay targets refuse. Network activity cannot override explicit stop intent; a user prompt or explicit start may start a stopped VM. Full compatible-fleet capacity leaves wake pending; it never cold boots to replace memory.
 
-Tested scope: Ash state machines and Hegel histories exercise BEAM admission, timer boundaries, coalescing and execution fences. Native hostd tests cover API-only restore launch and fixed checkpoint stream derivation. The real fleet test definition asserts repeated capture, RAM-only nonce/PID/boot continuity, cgroup absence, running/paused moves and original authorized connections through measured source memory exhaustion; successful changed-source execution is not yet recorded here.
+Tested scope: Ash state machines and Hegel histories exercise BEAM admission, timer boundaries, coalescing and execution fences. Native hostd tests cover API-only restore launch and fixed checkpoint stream derivation. The fleet fixture now uses ordinary Galileo/Audi private-issuer, runtime-credential and trust enrollment without bypassing guest readiness. Its composed driver passed type and lint checks; the subsequent native attempt stopped before guest launch. The real fleet test definition asserts repeated capture, RAM-only nonce/PID/boot continuity, cgroup absence, running/paused moves and original authorized connections through measured source memory exhaustion; successful changed-source execution is not yet recorded here.
 
 - **machine, present**: [pause releases execution and resume preserves RAM, PID and boot UUID](repo:nix/verification/tests/machines/fleet/scenarios/suspension.py) — The NixOS test definition asserts real Firecracker lifecycle and repeated same-memory continuation, running and paused relocation, and original waiting SSH/HTTPS/editor connections. Presence does not record a successful run..
 - **property, present**: [idle deadline is exactly four hours and opt-out never expires](repo:marshall/test/marshall/compute/suspension_test.exs) — Application policy, serialized durable idle timing and synthetic outcome accounting; no physical RAM continuity..
@@ -3858,7 +3894,7 @@ Tested scope: Ash state machines and Hegel histories exercise BEAM admission, ti
 - **property, recorded**: [pool contention cannot discard an acknowledged capture result](repo:lilly/test/vm/checkpoint_test.exs) — 100 default Hegel cases passed within a28-test/six-file focused run in8.4seconds. A real held hostd pool lease and reopened private journal verify acknowledged capture recording under the configured selected live placement lease; unrelated selected lease, foreign pool and stale authority refuse. Owned dataset/slot state and readyRAM authority do not advance. Firecracker API success, ZFS effects and full fleet continuation remain outside this BEAM/lease property.; [execution record](repo:docs/architecture/reviews/2026-10-18-memory-suspension.md).
 - **property, present**: [restore changes host authority without changing guest hello identity](repo:lilly/test/terminal/vsock_test.exs) — Guest HMAC continuation inside separate current outer placement authority; no guest process or multi-host execution..
 
-**Gaps:** Full changed-source fleet execution and native image qualification are in progress. Existing socket migration, physical isolation, host power-loss and production deployment are not established by local application properties.
+**Gaps:** Full changed-source fleet execution and native image qualification are in progress. The 2026-10-19 rerun completed private-service enrollment but exited with status 137 at fleet wildcard-certificate readiness before guest launch; it establishes no pause/resume or relocation pass, and the kill cause is unestablished. Existing socket migration, physical isolation, host power-loss and production deployment are not established by local application properties.
 
 **Preferred test work:** Run the memory-suspension-fleet NixOS check and record exact-source RAM/cgroup/connection evidence; separately qualify each native image before enabling its checkpoint operations.
 
@@ -3909,3 +3945,450 @@ Tested scope: Declared reflection protocol, dedicated Peach control role and pro
 **Gaps:** Fresh/stale execution, credential expiry and generated rotation/revocation histories, host loss and same-host native network isolation need recorded property and machine execution; credential unit tests passed in the focused 40-test Marshall run, and the Peach fixture validates the codec without invoking the HTTP Plug
 
 **Preferred test work:** Add generated current/stale execution and dedicated credential histories, then run a packaged NixOS guest allowed/refused projection journey with Peach enabled and retain exact outcomes
+
+## A user signs Mila in to a deployment by approving its per-deployment device key in the browser
+
+Coverage: **partial**. Layers: identity, authorization, storage.
+
+Boundary: Mila holds one P-256 device key per deployment in platform custody (owner-only file on Linux) and authenticates to Porsche with it; Marshall's existing browser key approval grants the account, and Mila only re-checks whoami.
+
+Required refusal: A Linux key file readable by group or other users, or malformed, is refused rather than used; a stale or expired approval link is never shown; an unapproved key reaches only approval_required.
+
+Tested scope: Dart device-key encoding, signature and file-custody tests, the Hegel stateful sign-in machine, and an Elixir proof that Porsche accepts a signed P-256 client key. Native Secure Enclave and Android Keystore custody are not compiled or run.
+
+- **property, recorded**: [sign-in never shows a stale or expired link](repo:mila/packages/mila_core/test/domain_test.dart) — Hegel stateful sign-in machine over a fake clock and Porsche replies.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **unit, recorded**: [a key file other users can read is refused, not used](repo:mila/packages/mila_transport/test/device_key_test.dart) — Linux file custody: 0600 key, 0700 directory, readable and malformed files refused.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **unit, recorded**: [a signed P-256 device key proves possession like any other client key](repo:porsche/test/ssh_proof_test.exs) — Porsche SSH proof of possession for an ecdsa-sha2-nistp256 client key in the BEAM test VM.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **machine, recorded**: [the pinned CA's certificate and the device key reach Porsche](repo:nix/verification/tests/machines/mila-porsche/default.nix) — Real Porsche release with the device key from mila-probe; Marshall is absent, so commands end in an authority envelope.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **machine, recorded**: [approval in the browser leads to the machine list](repo:nix/verification/tests/machines/mila-desktop/driver.py) — Linux bundle under X11 against packaged Marshall and Porsche.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+**Gaps:** iOS and Android key custody and link delivery have no device build.
+
+**Preferred test work:** Run the signed-in journey in a fleet fixture with a provisioned machine, and record iOS and Android device builds.
+
+## Mila connects to a deployment only after verifying its Porsche host certificate against the pinned trust document
+
+Coverage: **partial**. Layers: identity, transport, recovery.
+
+Boundary: Mila fetches https://HOST/bin/ssh-trust.json without redirects, pins it, and in key exchange accepts only an Ed25519 host certificate from the pinned CA naming the management host inside its validity window, before user authentication.
+
+Required refusal: Another CA, another principal, an expired certificate or a plain host key ends the connection before the device key signs; a conflicting later trust document is refused and the pin kept; an unreachable origin uses only an unretired pin.
+
+Tested scope: Dart certificate verification against Elixir-issued fixtures, trust resolution, and five journeys against a stock OpenSSH server in the Nix sandbox; mutation-checked by disabling the host check.
+
+- **unit, recorded**: [a certificate from another CA is refused before authentication](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Stock OpenSSH server presenting host certificates in the mila-transport Nix check.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **unit, recorded**: [a different CA is refused and the pin is kept](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Trust document pinning and reconciliation.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **unit, recorded**: [server-issued certificates verify in Mila](repo:mila/packages/mila_core/test/host_trust_test.dart) — Elixir-issued certificate fixtures get the same verdict in Dart.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+- **machine, recorded**: [a certificate from another CA is refused before authentication](repo:nix/verification/tests/machines/mila-porsche/default.nix) — Real Porsche release refusing a rogue CA without an authentication record; Marshall is absent, so commands end in an authority envelope.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).
+
+**Gaps:** The real-Porsche fixture has no Marshall, so a full signed-in command journey through Porsche to Marshall is not yet exercised from Mila.
+
+**Preferred test work:** Extend the mila-desktop NixOS machine test to a signed-in journey through Porsche and Marshall.
+
+## A user turns on notifications for one deployment on their phone and later turns them off
+
+Coverage: **partial**. Layers: identity, authorization, transport, storage.
+
+Boundary: Mila exchanges the platform token for a relay push key at the fixed relay origin and registers through Porsche with the push key on stdin; the deployment binds the device to the registering SSH key. Mila persists only a token digest, device id, key id and expiry.
+
+Required refusal: A relay refusal, a push_disabled deployment or a denied system permission leaves notifications off with a reason; a stale or reordered reply never changes state; turning notifications off during an in-flight registration removes the device once it lands.
+
+Tested scope: Pure Dart registration machine under a Hegel StateMachine with a fake server, relay client and registrar unit tests over fake transports, and Flutter widget journeys over the fake Porsche. Native APNs/FCM token delivery, the real relay and the Marshall device commands are not exercised.
+
+- **property, recorded**: [push registration matches its model](repo:mila/packages/mila_core/test/push_registration_test.dart) — Hegel StateMachine, 1500 cases of 80 steps, with delayed, reordered and stale fake-server replies.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+- **unit, recorded**: [registration sends the push key on stdin and the poke public key in the line](repo:mila/packages/mila_transport/test/push_test.dart) — SusanClient over a fake transport and PushRegistrar over a fake Porsche session.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+- **unit, recorded**: [turning notifications on registers once; the key stays off the line](repo:mila/app/test/device_features_test.dart) — Flutter widget tests over the fake Porsche, fake relay transport and fake push platform.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+**Gaps:** No device build; Susan and the Marshall/Porsche device commands are other workstreams and are not run against Mila.
+
+**Preferred test work:** Add a fleet scenario with a fake relay and the real Porsche device commands driving mila-probe through register, prefs and rm.
+
+## An agent needs input and the user's phone shows a notification that opens the right machine
+
+Coverage: **partial**. Layers: transport, isolation.
+
+Boundary: Pokes are encrypted to a per-deployment device X25519 key with the host in the AAD; only the device opens them, and the notification shows fixed localized text with the validated route as its tap link.
+
+Required refusal: Any flipped byte, truncation, extension, wrong host, unknown version or plaintext outside {v:1, kind:needs_input, route} is refused before anything is shown.
+
+Tested scope: Dart openPoke against every shared vector plus Hegel tamper properties; Kotlin PokeOpener against the same vectors under JUnit. Swift CryptoKit opening and the notification extension are not built or run.
+
+- **property, recorded**: [changing any byte of a sealed poke is never accepted](repo:mila/packages/mila_core/test/push_poke_test.dart) — Pure Dart X25519, HKDF-SHA256 and ChaCha20-Poly1305 over protocol/test/fixtures/push_pokes.json.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+- **unit, recorded**: [invalidVectorsAreRefused](repo:mila/app/android/app/src/test/kotlin/dev/overalls/mila/PokeOpenerTest.kt) — Kotlin PokeOpener compiled with kotlinc 2.3.21 and run under JUnit off-device.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+**Gaps:** The iOS extension and Android messaging service have not been built or run on a device; Marshall's poke producer is another workstream.
+
+**Preferred test work:** Record an iOS simulator and Android emulator run that delivers a fixture poke to the extension and service.
+
+## A user turns on the app lock and Mila asks for biometrics after time in the background
+
+Coverage: **partial**. Layers: identity, isolation.
+
+Boundary: Locked content is offstage and excluded from semantics; the lock fails closed when its setting is saved, and an unlock result from an older attempt is ignored.
+
+Required refusal: A failed or stale authentication leaves Mila locked; a platform without biometrics reports the lock unavailable instead of pretending to lock.
+
+Tested scope: Pure Dart AppLock under a Hegel StateMachine and Flutter widget tests with a fake authenticator; the Linux machine test checks the unavailable setting. local_auth on devices is not run.
+
+- **property, recorded**: [the lock never shows content early (enabled at start)](repo:mila/packages/mila_core/test/app_lock_test.dart) — Hegel StateMachine over lifecycle, delay and unlock events.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+- **machine, recorded**: [after a restart the deployment, lock setting and offline list remain](repo:nix/verification/tests/machines/mila-desktop/driver.py) — Linux bundle under X11 against packaged Marshall and Porsche.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+**Gaps:** No device run of local_auth on iOS or Android.
+
+**Preferred test work:** Record device or emulator runs with enrolled biometrics.
+
+## A Linux user adds a deployment, approves Mila in the browser, sees their machines and follows overalls:// links, and still sees the saved list after a restart
+
+Coverage: **partial**. Layers: identity, authorization, transport, storage.
+
+Boundary: The Linux bundle reaches the deployment only through the pinned trust document and Porsche SSH; approval happens in the authenticated production web page after fingerprint comparison; links only navigate; settings, device keys and snapshots are owner-only.
+
+Required refusal: An unknown deployment's link lands on the deployment list, a second invocation never opens a second window, snapshots hold no approval links or tokens, and a saved list's actions are disabled.
+
+Tested scope: NixOS machine test with real X input, packaged Marshall, haproxy and Porsche, and Playwright Chromium for the approval. Machines are not provisioned (no Lilly), so the live list is empty.
+
+- **machine, recorded**: [approval in the browser leads to the machine list](repo:nix/verification/tests/machines/mila-desktop/driver.py) — Linux bundle under X11 against packaged Marshall and Porsche.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+**Gaps:** No machine is provisioned, so the list content and machine-page links are exercised only on an empty list and an unknown id.
+
+**Preferred test work:** Run the same journey in a fleet fixture with a provisioned machine.
+
+## Mila shows every Porsche locale with its own strings and the right text direction
+
+Coverage: **partial**. Layers: transport.
+
+Boundary: Mila's ARB catalogs match the Porsche gettext locales with identical placeholders. Locales without a Flutter framework catalog borrow only framework strings, from Arabic or English; Egyptian Arabic, Arabic and Urdu lay out right to left.
+
+Required refusal: A missing or extra locale, a dropped placeholder or an undocumented template message fails the catalog tests; locale never changes command arguments or machine JSON.
+
+Tested scope: Flutter widget tests in the test VM with platform font fallback.
+
+- **unit, present**: [the Porsche locale list matches the gateway catalogs](repo:mila/app/test/localization_test.dart) — Locale set parity with porsche/priv/gettext..
+- **unit, present**: [every Porsche locale has a complete catalog with the same placeholders](repo:mila/app/test/localization_test.dart) — ARB completeness and placeholder parity..
+- **unit, present**: [every Porsche locale renders framework widgets in its direction](repo:mila/app/test/localization_test.dart) — Framework fallback delegates and direction for every locale..
+
+**Gaps:** No device rendering, shaping or native-speaker review; goldens use platform fallback fonts rather than bundled Noto faces.
+
+**Preferred test work:** Run the Linux bundle under the mila-desktop machine test in an RTL locale.
+
+## Deliver a Mila notification through Susan without revealing content
+
+Coverage: **partial**. Layers: identity, authorization, transport, storage.
+
+Boundary: Only a push key Susan can open plus a valid install signature admits a poke; providers receive only ciphertext, collapse id and fixed loc-keys.
+
+Required refusal: Forged signatures, unknown/denied keys and malformed bodies answer the same 404/400 body and write nothing.
+
+Tested scope: Packaged release, real SOPS bundle, local PostgreSQL and verify_peer TLS to local fake APNs/OAuth/FCM origins.
+
+- **machine, recorded**: [APNs poke is content-free and over HTTP/2 with verified TLS](repo:nix/verification/tests/machines/susan-service/driver.py) — Fake provider origins behind a private CA.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+- **property, present**: [arbitrary event sequences never send before every check and always answer once](repo:susan/test/susan/machine_property_test.exs) — Pure FSM..
+
+**Gaps:** No real Apple or Google acceptance; hosting and TLS placement open.
+
+**Preferred test work:** Exercise sandbox APNs and FCM with publisher credentials once hosting is chosen.
+
+## Retry a poke without double notification and bound abuse
+
+Coverage: **partial**. Layers: execution, recovery.
+
+Boundary: A sent delivery id is answered 204 without a second send; per-key, install, source and global token buckets bound throughput.
+
+Required refusal: Replays answer 400; the eleventh burst poke answers 429 with Retry-After; deny-listed keys answer 404; unregistered tokens answer 410 and stay cached.
+
+Tested scope: susan-service machine test and Hegel token-bucket/replay properties.
+
+- **machine, recorded**: [provider 503 retries once in-request, then a later retry succeeds once](repo:nix/verification/tests/machines/susan-service/driver.py) — Single node.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+- **property, present**: [admissions never exceed burst plus refill and refusals name a sufficient wait](repo:susan/test/susan/token_bucket_property_test.exs) — Pure arithmetic..
+
+**Gaps:** Buckets are per node; multi-instance limits are untested.
+
+**Preferred test work:** Machine test with two Susan nodes behind one proxy.
+
+## Operate Susan's secrets and audit trail
+
+Coverage: **partial**. Layers: storage, recovery, identity.
+
+Boundary: Secrets arrive only through the host-bound SOPS bundle and systemd credentials; the audit trail is append-only and hash chained.
+
+Required refusal: Another host cannot decrypt the bundle; a missing secret keeps the previous bundle and fences startup; unsafe credential files and invalid keyrings refuse startup; UPDATE/DELETE/TRUNCATE on audit rows fail.
+
+Tested scope: susan-secrets and susan-service machine tests; susan-image for the container form.
+
+- **machine, recorded**: [keyring rotation is audited and older push keys still open](repo:nix/verification/tests/machines/susan-secrets/driver.py) — Single host plus a wrong-host node.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+- **machine, recorded**: [no secret bytes in image layers or the container filesystem](repo:nix/verification/tests/machines/susan-image/driver.py) — Rootful podman.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+
+**Gaps:** secrets/overalls-susan.enc.json does not exist yet; no production host recipient.
+
+**Preferred test work:** Create the document for the chosen host and repeat susan-secrets against it.
+
+## An agent asks a planning question and the thread's writers get a Mila notification that opens the thread, without Susan learning what it is about
+
+Coverage: **partial**. Layers: identity, authorization, transport, isolation, storage, recovery.
+
+Boundary: After the planning transaction commits, Marshall queues one delivery per active, enabled device of current thread writers other than the actor, seals the route to the device X25519 key and sends Susan only a signed ciphertext body; 503s retry under the same delivery id and 410 invalidates the device.
+
+Required refusal: Viewers, the actor, paused, revoked and invalidated devices receive nothing; a rolled-back question produces nothing; a stranger key cannot open the poke; the operator switch refuses registration with push_disabled.
+
+Tested scope: BEAM unit, Hegel and Covenant tests against PostgreSQL with a Req.Test Susan stub, plus a NixOS machine test of the release against a fake Susan at the compiled origin over OS-trusted TLS.
+
+- **unit, present**: [an agent question notifies current writers' devices after commit, not viewers](repo:marshall/test/marshall/notifications/producer_test.exs) — Producer recipients, coalescing and after-commit timing in the BEAM..
+- **unit, present**: [503, 503, 200 sends once successfully; 410 invalidates the device](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I3 with an in-process Susan stub..
+- **property, present**: [the retry mapping matches the ADR-0225 table](repo:marshall/test/marshall/notifications/delivery_worker_test.exs) — Hegel over status, Retry-After and final attempt..
+- **property, present**: [flipping any bit of a sealed poke is refused](repo:protocol/test/push_poke_test.exs) — PushPoke round-trip and tamper refusal over generated inputs..
+- **machine, recorded**: [Susan 503, 503, then 200 yields exactly one provider send](repo:nix/verification/tests/machines/push-notifications/driver.py) — Release against fake Susan at the compiled origin with OS-trusted TLS.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+
+**Gaps:** Real Susan, APNs/FCM delivery and Mila decryption on a device are not exercised.
+
+**Preferred test work:** A fleet journey with the Susan service, a fake provider and the Mila client decrypting the poke.
+
+## A Mila user registers, pauses and removes a push device over Porsche, and removing the SSH key or retiring the account revokes it
+
+Coverage: **partial**. Layers: identity, authorization, storage, recovery.
+
+Boundary: device register binds the device to the session SSH key, reads the push key only from stdin and retains only its digest in receipts and versions; at most ten live devices per user.
+
+Required refusal: Another user's device id refuses device_not_found; an eleventh device refuses device_limit; a key not owned by the actor refuses; a revoked device is never poked.
+
+Tested scope: BEAM Covenant and unit tests through SSH.execute and the domain API; Porsche runner and channel tests for stdin and refusal hints.
+
+- **unit, present**: [SSH key removal and account retirement revoke bound devices](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I5..
+- **unit, present**: [device versions and registration receipts keep only the push-key digest](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I6 through SSH.execute..
+
+**Gaps:** No machine test drives device commands through a real Porsche SSH session.
+
+**Preferred test work:** Extend mila-porsche to register, list and remove a device through Porsche to Marshall.
+
+## A needs-input poke travels from the packaged Marshall release through the packaged Susan release to a provider, and only the registered device can open it
+
+Coverage: **partial**. Layers: identity, transport, isolation, storage, recovery.
+
+Boundary: Marshall signs the canonical SusanPoke body with its install identity and sends it over verified TLS to the compiled Susan origin; Susan verifies the domain-separated signature, opens the push key it issued and forwards only ciphertext, retrying provider 503s without a second send under the same delivery id.
+
+Required refusal: A stranger X25519 key cannot open the forwarded ciphertext; a provider 410 invalidates the device and later pokes drop as device_inactive; neither journal holds the push key, the device key, the route or a poke ciphertext.
+
+Tested scope: NixOS machine test with a Marshall role node and a Susan relay node behind TLS for notifications.overalls.dev; local fake APNs/OAuth/FCM origins stand in for Apple and Google.
+
+- **machine, recorded**: [provider 503 twice, then 200: Susan accepts Marshall's signature and sends once](repo:nix/verification/tests/machines/push-relay/driver.py) — Packaged Marshall and Susan releases with a fake provider.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+- **machine, recorded**: [only the device can open what the provider received](repo:nix/verification/tests/machines/push-relay/driver.py) — Device and stranger keys opening the provider-received ciphertext.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+- **machine, recorded**: [provider 410 invalidates the device and later pokes are never sent](repo:nix/verification/tests/machines/push-relay/driver.py) — Provider unregistration propagated through Susan to Marshall.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+- **unit, present**: [non-canonical bodies and signatures over the bare body are refused](repo:susan/test/susan/request_test.exs) — Susan verifier against the shared SusanPoke fixture..
+
+**Gaps:** Real APNs/FCM acceptance and decryption in the iOS/Android notification extensions are not exercised.
+
+**Preferred test work:** A device-farm journey with store-signed builds against provider sandboxes.
+
+## A user attaches an SSH terminal to the same persistent terminal session the browser shows, with replay, and detaches
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, storage.
+
+Boundary: Porsche obtains a single-use ticket bound to the SSH session through the control link, then opens Marshall's gateway stream with the gateway bearer and SSH session; the stream upgrades into the production terminal viewer.
+
+Required refusal: An unknown or another machine's session exits 1 (not_found); attach without a pty exits 2 before any ticket is requested; a browser ticket on the gateway route, or an SSH ticket on the browser route, closes 4003.
+
+Tested scope: BEAM end-to-end through a real Porsche listener, control link and TLS FleetEndpoint against a fake host stream; Porsche relay against a fake gateway; the native fleet journey on a real guest is implemented but not yet recorded passing.
+
+- **unit, present**: [an SSH attach relays the shared session through the production viewer](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs) — Real Porsche listener and control link, TLS FleetEndpoint, production viewer, fake host stream in the BEAM test VM..
+- **property, present**: [every close code, status and refusal maps into the closed exit table](repo:protocol/test/terminal_attach_test.exs) — Hegel property over the shared closed tables and header codec..
+- **machine, recorded**: [Porsche SSH attach shares the browser terminal session](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — Real OpenSSH client through Porsche into the personal session opened by TerminalLive's production call on a real guest.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+
+**Gaps:** The recorded journey attaches from the OpenSSH client; Mila's terminal view is covered by unit and transport tests only.
+
+**Preferred test work:** Drive the Mila terminal view against a provisioned guest in a fleet machine test.
+
+## A user attaches read-only and watches a shared session without being able to type into it
+
+Coverage: **partial**. Layers: authorization, isolation.
+
+Boundary: The ticket mode never escalates (rw only for the owner with write access and without --read-only); Porsche's credit discards read-only input before the websocket and never sends resize.
+
+Required refusal: Typed input on a read-only attach never reaches the session, even if Marshall granted rw.
+
+Tested scope: BEAM end-to-end and Porsche relay tests plus a Hegel credit model; native guest effect not yet recorded.
+
+- **property, present**: [input release respects the window, ordering and read-only refusal](repo:porsche/test/terminal_credit_property_test.exs) — Hegel reference model of Porsche input credit..
+- **unit, present**: [a read-only SSH attach never reaches the session with input](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs) — Real Porsche listener against the production viewer in the BEAM test VM..
+- **machine, recorded**: [read-only SSH attach input never reaches the guest](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — Guest shell output proves read-only input was never evaluated.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+
+**Gaps:** Recorded for one read-only OpenSSH viewer; Mila's read-only mode is covered by unit tests only.
+
+**Preferred test work:** Drive read-only attach from Mila in a fleet machine test.
+
+## Removing a user's SSH key or closing their SSH session ends a live terminal attach
+
+Coverage: **partial**. Layers: identity, execution, recovery.
+
+Boundary: The viewer rechecks SSH.Authority.session_live?/2 every 5 seconds and on ssh_session/user hints; a refused credential closes 4001 and Porsche exits 3; an inconclusive check closes 1011 (exit 5).
+
+Required refusal: A revoked key or closed SSH session cannot keep reading or writing the terminal beyond the 5-second recheck.
+
+Tested scope: BEAM end-to-end bound under 6.5 s including teardown; the native 5-second bound from commit is implemented in the fleet journey but not yet recorded.
+
+- **unit, present**: [key revocation closes a live attachment with exit 3 within five seconds](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs) — Real Porsche listener, production SSH key removal and viewer recheck in the BEAM test VM..
+- **machine, recorded**: [SSH key revocation closes a live attach within five seconds](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — Production key removal through the fixture operator; exit time compared with the post-commit wall clock.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+
+**Gaps:** Revocation latency while an SSH client stalls output is unmeasured.
+
+**Preferred test work:** Measure revocation latency with a stalled SSH client.
+
+## Terminal bytes, tickets and tokens used by an SSH attach never reach logs
+
+Coverage: **partial**. Layers: storage, transport.
+
+Boundary: Porsche attachments are porsche_private processes with redacted status; only catalogued enum-metadata events are emitted; Marshall's terminal log filter keeps only allowed reason atoms.
+
+Required refusal: No journal on any fleet machine contains typed or echoed attach bytes.
+
+Tested scope: Captured-log assertions in the Porsche relay test; native journal scan implemented but not yet recorded.
+
+- **unit, present**: [a writable attach relays output after delivery, input within credit and resizes](repo:porsche/test/terminal_attachment_test.exs) — Fake gateway; asserts captured logs contain no bytes, ticket or token..
+- **machine, recorded**: [no SSH attach terminal bytes reach any journal](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — journalctl scan of every Marshall, provisioner and client machine for a random marker.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+
+**Gaps:** Recorded for the fleet journals only; device-side logs are outside the test.
+
+**Preferred test work:** Inspect Mila device logs in a device-farm run.
+
+## Mila lists, reads, prompts, answers and approves plans in agent threads through Porsche SSH
+
+Coverage: **partial**. Layers: identity, authorization, transport, storage.
+
+Boundary: Porsche dispatches the shared-parser command under Marshall session authority; the Threads domain checks thread read/write with the SSH actor; prompt, answer and revision text arrives only as a bounded stdin payload and receipts keep only its digest and the SSH key id.
+
+Required refusal: A payload command without stdin, an oversized or empty payload, a busy thread, a stale proposal or question, invalid answers and a stranger's thread refuse with closed reasons before any turn is admitted; a reused request id with different text is idempotency_conflict.
+
+Tested scope: BEAM tests of protocol grammar (Hegel), Marshall dispatch against the real Threads, Agents and Planning domains, Porsche channel/runner custody, and one real SSH + Porsche + HTTPS control journey.
+
+- **property, present**: [client commands format to canonical lines that parse back unchanged](repo:protocol/test/ssh_client_commands_test.exs) — Canonical line form round-trips and mutation classification for all 15 commands..
+- **property, present**: [stdin payloads are bounded valid text and never accepted on the command line](repo:protocol/test/ssh_client_commands_test.exs) — Stdin payload kinds, limits and command-line refusal..
+- **unit, present**: [thread commands list, show, prompt and mark read through the domain](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Dispatch, unread counts, digest-only receipts with SSH key id, replay and conflict..
+- **unit, present**: [thread answer and plan commands keep the domain's question and proposal fences](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Planning question answer, stale proposal refusal and plan approval into a Work turn..
+- **unit, present**: [exec reads prompt payloads from stdin within their bound](repo:porsche/test/ssh_channel_test.exs) — OTP SSH exec channel buffers, bounds and validates the prompt payload..
+- **unit, present**: [porsche-threads: stdin prompts, thread reads and a revocable watch](repo:marshall/test/marshall_web/ssh_transport_test.exs) — Real OpenSSH-protocol client, Porsche listener and Marshall control over verified TLS in one BEAM..
+- **machine, recorded**: [Porsche thread, web and watch commands drive Marshall domains](repo:nix/verification/tests/machines/fleet/scenarios/porsche-threads.py) — Native OpenSSH, packaged Porsche and Marshall on the fleet fixture.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+
+**Gaps:** Committed-hint delivery to a watch is not exercised end to end; the fleet has no model provider, so turns are only shown queuing.
+
+**Preferred test work:** Run the thread journey on a fleet with a model fixture and a committed hint.
+
+## A reader's unread count in a thread only falls as they read and restarts for a reopened transcript
+
+Coverage: **partial**. Layers: storage, authorization.
+
+Boundary: Marshall.Threads.ReadMarker is keyed per user and agent transcript, written only under an advisory transaction lock after current thread read authority; positions clamp to the last durable event.
+
+Required refusal: A smaller position leaves the stored marker unchanged; a thread without a bound transcript refuses thread_not_ready; a reader without thread read is forbidden.
+
+Tested scope: Hegel property over arbitrary mark-read sequences against PostgreSQL in the BEAM sandbox.
+
+- **property, present**: [read marker positions never decrease](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Running-maximum invariant and unread counts..
+
+**Gaps:** Concurrent writers across nodes are serialized by the lock but not exercised by a distributed test.
+
+**Preferred test work:** Add a distributed property with concurrent mark-read writers.
+
+## Mila changes a machine's web port or visibility only against the revision it read
+
+Coverage: **partial**. Layers: authorization, storage.
+
+Boundary: web set keeps unnamed settings, passes the caller's or freshly read policy_revision to Ingress.configure_endpoint, which rechecks manage authority under the VM lock.
+
+Required refusal: A stale revision refuses revision_conflict, port 4444 reserved_editor_port and a profile without web web_not_allowed; the endpoint stays unchanged.
+
+Tested scope: BEAM test against the real Ingress domain.
+
+- **unit, present**: [web show and web set use the endpoint's optimistic policy revision](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Revision fence, reserved port and receipt provenance..
+- **machine, recorded**: [revision_conflict](repo:nix/verification/tests/machines/fleet/scenarios/porsche-threads.py) — Native fleet revision refusal.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+
+**Gaps:** No native ingress reachability check follows the change in these tests.
+
+**Preferred test work:** Probe the published port through ingress after web set.
+
+## Mila keeps one SSH exec open to learn which machines, threads and its own session changed
+
+Coverage: **partial**. Layers: authorization, transport, recovery.
+
+Boundary: porsche.watch_subscribe authorizes every named machine and thread for the session; Porsche registers only the returned identifiers, coalesces hints and repeats the subscription each heartbeat; notices carry identifiers only.
+
+Required refusal: A stranger's thread refuses the whole subscription (403); a pending key without --session gets approval instructions; a revoked key ends the stream with exit 3 at the next heartbeat.
+
+Tested scope: Marshall subscription authority, Porsche routing (Hegel coalescing property), OTP channel stream and a real SSH transport journey.
+
+- **unit, present**: [watch subscriptions authorize every named machine and thread](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Subscription authority and control route classification..
+- **property, present**: [queued hints drain to one identifier notice per distinct hint](repo:porsche/test/client_commands_test.exs) — Debounce coalescing and identifier-only notices..
+- **unit, present**: [watch streams identifier notices, renews on heartbeat and ends on revocation](repo:porsche/test/ssh_channel_test.exs) — OTP SSH exec watch stream..
+- **unit, present**: [porsche-threads: stdin prompts, thread reads and a revocable watch](repo:marshall/test/marshall_web/ssh_transport_test.exs) — Real SSH, Porsche and HTTPS control..
+
+**Gaps:** Delivery of a hint from a committed domain change is not exercised (sandboxed tests never commit pg_notify).
+
+**Preferred test work:** Run the porsche-threads fleet machine test with a committed thread change.
+
+## A user opens a shared terminal session from Mila, types, survives a dropped connection and can watch read-only
+
+Coverage: **partial**. Layers: transport, execution, isolation.
+
+Boundary: Mila attaches with terminal attach on a PTY through Porsche, resumes from its byte cursor, and fences input locally when read-only; Marshall and Porsche authorize the attach.
+
+Required refusal: Output before the header is dropped; a read-only attachment sends no keys, paste or resize; refused, invalid and authority exits end the view; transport retries stop after 8 attempts.
+
+Tested scope: Hegel stateful attach machine, in-memory channel header tests, a stock OpenSSH PTY journey and widget flows against the fake Porsche. No native PTY or real Porsche attach.
+
+- **property, present**: [terminal attach matches its model](repo:mila/packages/mila_core/test/terminal_attach_test.dart) — Hegel StateMachine over attach, header, output, end, reset and read-only events..
+- **unit, present**: [the stderr header, output and exit become signals in order](repo:mila/packages/mila_transport/test/channels_test.dart) — In-memory stderr/stdout/exit streams..
+- **unit, present**: [terminal attach runs on a pty sized to the view, with resize and exit mapping](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Stock OpenSSH ForceCommand emulating attach..
+- **unit, present**: [view-only mode never sends keys or pastes](repo:mila/app/test/client_flow_test.dart) — Widget flow against the fake Porsche..
+
+**Gaps:** The stderr header path cannot be shown through stock OpenSSH; no machine test drives the terminal screen.
+
+**Preferred test work:** Extend mila-desktop with a provisioned guest and attach through the real Porsche release.
+
+## A user reads an agent thread in Mila, sends a prompt, answers a question and approves a plan
+
+Coverage: **partial**. Layers: authorization, transport, storage.
+
+Boundary: Every thread action is a Porsche thread command with a request id; text travels on stdin; Marshall's thread domain authorizes and records it.
+
+Required refusal: Text over 64 KiB or invalid UTF-8 is refused before sending; a busy thread or stale plan is refused by the server and shown; the read marker never moves back.
+
+Tested scope: Hegel properties for read markers, search and payload bounds; fixture decoding; widget flows against the fake Porsche.
+
+- **property, present**: [read markers only move forward](repo:mila/packages/mila_core/test/thread_test.dart) — UnreadState and readMarkerToSend..
+- **property, present**: [payloads up to the limit are accepted and never enter the line](repo:mila/packages/mila_core/test/thread_test.dart) — payloadCommand over generated text..
+- **unit, present**: [a prompt travels on stdin, never on the command line](repo:mila/app/test/client_flow_test.dart) — Widget flow against the fake Porsche..
+
+**Gaps:** No run against Marshall's thread domain through Porsche.
+
+**Preferred test work:** A NixOS machine test sending a prompt from the Linux bundle through Porsche to Marshall.
+
+## A user opens, copies, shares or changes the visibility of a machine's web address from Mila
+
+Coverage: **partial**. Layers: authorization, transport, identity.
+
+Boundary: web show and web set through Porsche at the shown policy revision; private endpoints open in the system browser where Marshall's browser session authorizes them.
+
+Required refusal: A non-HTTPS or credentialed URL is not opened; a concurrent change is reported as a conflict; an out-of-range port is refused before sending; the webview refuses non-HTTPS navigation.
+
+Tested scope: Fixture decoding and widget flows against the fake Porsche; no device webview.
+
+- **unit, present**: [terminal and web results decode](repo:mila/packages/mila_core/test/client_results_test.dart) — Shared result fixture..
+- **unit, present**: [a concurrent change is reported, not overwritten](repo:mila/app/test/client_flow_test.dart) — Widget flow against the fake Porsche..
+
+**Gaps:** iOS and Android webview and share sheet are not built or run.
+
+**Preferred test work:** Record device builds; drive the web tab in mila-desktop.
+
+## Mila refreshes machines, terminals and threads when Porsche's watch stream reports a change
+
+Coverage: **partial**. Layers: transport, recovery, authorization.
+
+Boundary: Mila runs watch with at most 16 filters and re-reads through ordinary commands; it takes no state from watch lines.
+
+Required refusal: Overlong or malformed lines are refused; silence beyond 40 s reopens; authority loss stops the watch.
+
+Tested scope: Hegel stateful supervisor, framing property and OpenSSH reconnect journey.
+
+- **property, present**: [the watch supervisor matches its model](repo:mila/packages/mila_core/test/watch_test.dart) — Hegel StateMachine over open, receive, end and close..
+- **unit, present**: [a watch feed reads JSON lines, reconnects after exit 5 and stops on exit 3](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Stock OpenSSH ForceCommand emulating watch..
+
+**Gaps:** No run against Porsche's real watch.
+
+**Preferred test work:** A NixOS machine test observing a thread change through watch.

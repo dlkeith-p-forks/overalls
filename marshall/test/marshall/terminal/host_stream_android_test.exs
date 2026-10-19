@@ -53,7 +53,7 @@ defmodule Marshall.Terminal.HostStreamAndroidTest do
              HostStream.handle_in({gap, [opcode: :binary]}, opened_state)
 
     assert {:ok, %{message: %{type: :android_display_close, channel: ^channel}}} =
-             Codec.decode_frame(close_frame)
+             Codec.decode_frame(IO.iodata_to_binary(close_frame))
 
     assert_receive {:android_display_closed, ^channel, 9, :sequence_gap}
     assert closed_state.android_channels == %{}

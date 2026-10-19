@@ -16,6 +16,12 @@ and terminal service in the signed guest, with the browser workbench from that
 same build. It does not repackage Microsoft VS Code, VSCodium, code-server or
 OpenVSCode Server binaries.
 
+`inputs.nix` pins the Linux Node source version and hash independently of
+Nixpkgs package updates. `node-runtime.nix` uses the supplied pinned Nixpkgs
+builder and patches, including its matching npm/corepack outputs. The editor,
+extension updater and maintenance check share that runtime; Windows inputs
+retain the same reviewed Node version with their own archive hashes.
+
 OpenVSCode Server's Nix source-build recipe informed the offline npm cache and
 REH-web build layout. The maintained patch is applied directly to official
 Microsoft source. Code OSS uses MIT (`LICENSE.txt`); the output retains upstream

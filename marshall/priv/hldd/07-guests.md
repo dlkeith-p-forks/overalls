@@ -32,7 +32,9 @@ Both standard images install pinned Codex 0.149.0 (`codex`) and Claude Code
 2.1.238 (`claude`) using their native system configuration. The
 [shared package/settings source](repo:nix/domains/artifacts/guest/coding-clis.nix) selects
 Ziggy's verified private endpoint without provider credentials or custom
-launchers. Automatic client updates are disabled. No model catalog synchronizer
+launchers. Their package archive remains hash-pinned independently of host
+Nixpkgs updates so the reviewed application versions remain fixed. Automatic
+client updates are disabled. No model catalog synchronizer
 is installed; ordinary native model choices/catalogs may differ from Ziggy's
 available models.
 
@@ -1869,7 +1871,12 @@ not native runtime acceptance.
 Marshall's in-memory display registry shares a relay for each machine and
 generation, while the socket separately checks current login and ticket claims
 before attaching a controller or viewer. The noVNC client owns its canvas inside
-a dedicated display target, which is cleared on reconnect. These implementation
+a dedicated display target, which is cleared on reconnect. A future host-stream
+output sequence closes its Android channel, removes the caller monitor and
+notifies the owner with the generation and `sequence_gap` reason; a gap cannot
+silently discard bytes and leave the display stream open. The focused BEAM
+host-stream tests passed this refusal and close-control assertion without
+exercising an authenticated native display stream. These implementation
 facts do not establish native transport, browser controller/viewer enforcement,
 restart recovery or physical isolation; the existing Android acceptance gaps
 remain open.

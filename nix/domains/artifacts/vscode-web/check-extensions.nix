@@ -1,6 +1,7 @@
 { pkgs, vscodeWeb }:
 let
   python = pkgs.python313.withPackages (packages: [ packages.hypothesis packages.cryptography ]);
+  node = import ./node-runtime.nix { inherit pkgs; };
 in
 # @cc [owner:ghuntley,label:verification] extension-maintenance-check-scope
 # This check MUST run updater/helper failure and property tests and the actual
@@ -12,7 +13,7 @@ pkgs.runCommand "overalls-vscode-extension-maintenance" {
   export XDG_CACHE_HOME="$TMPDIR/cache"
   export PYTHONDONTWRITEBYTECODE=1
   export HYPOTHESIS_STORAGE_DIRECTORY="$TMPDIR/hypothesis"
-  export TEST_NODE=${pkgs.nodejs_24}/bin/node
+  export TEST_NODE=${node}/bin/node
   export TEST_VALIDATOR=${vscodeWeb}/lib/overalls-maintenance/check-extension.mts
   export TEST_SHELL=${pkgs.runtimeShell}
   maintained=nix/domains/artifacts/vscode-web

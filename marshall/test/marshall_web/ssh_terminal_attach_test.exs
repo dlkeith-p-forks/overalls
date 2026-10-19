@@ -65,6 +65,7 @@ defmodule MarshallWeb.SSHTerminalAttachTest do
     {:ok, _} = Application.ensure_all_started(:ssh)
     start_supervised!({Registry, keys: :unique, name: Porsche.SSH.Proofs})
     start_supervised!({Registry, keys: :unique, name: Porsche.SSH.Sessions})
+    start_supervised!(Porsche.Watchers)
     start_supervised!({DynamicSupervisor, strategy: :one_for_one, name: Porsche.SSH.Connections})
     start_supervised!({Task.Supervisor, name: Porsche.SSH.Commands})
 
