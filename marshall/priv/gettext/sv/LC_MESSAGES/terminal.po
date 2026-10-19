@@ -1,0 +1,655 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: sv\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/terminal_live.ex:578
+#, elixir-autogen, elixir-format
+msgid "%{user} · %{count} viewing"
+msgid_plural "%{user} · %{count} viewing"
+msgstr[0] "%{user} · %{count} tittar"
+msgstr[1] "%{user} · %{count} tittar"
+
+#: lib/marshall_web/components/workspace_components.ex:251
+#, elixir-autogen, elixir-format
+msgid "%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}"
+msgstr "%{value1} vCPU · %{value2} GiB minne · %{value3} GiB disk · %{value4}"
+
+#: lib/marshall_web/live/terminal_live.ex:544
+#, elixir-autogen, elixir-format
+msgid "+ New"
+msgstr "+ Ny"
+
+#: lib/marshall_web/live/terminal_live.ex:674
+#, elixir-autogen, elixir-format
+msgid "A+"
+msgstr "A+"
+
+#: lib/marshall_web/components/workspace_components.ex:136
+#, elixir-autogen, elixir-format
+msgid "Access"
+msgstr "Åtkomst"
+
+#: lib/marshall_web/live/terminal_live.ex:738
+#, elixir-autogen, elixir-format
+msgid "Account email"
+msgstr "Kontots e-postadress"
+
+#: lib/marshall_web/live/terminal_live.ex:745
+#, elixir-autogen, elixir-format
+msgid "Allow viewing"
+msgstr "Tillåt visning"
+
+#: lib/marshall_web/components/workspace_components.ex:403
+#, elixir-autogen, elixir-format
+msgid "Already installed"
+msgstr "Redan installerad"
+
+#: lib/marshall_web/live/terminal_live.ex:629
+#, elixir-autogen, elixir-format
+msgid "Android display"
+msgstr "Android-skärm"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android-skärmens rityta"
+
+#: lib/marshall_web/live/terminal_live.ex:85
+#: lib/marshall_web/live/terminal_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Android-skärmen är inte tillgänglig."
+
+#: lib/marshall_web/live/terminal_live.ex:669
+#, elixir-autogen, elixir-format
+msgid "A−"
+msgstr "A−"
+
+#: lib/marshall_web/components/workspace_components.ex:425
+#: lib/marshall_web/live/terminal_live.ex:617
+#, elixir-autogen, elixir-format
+msgid "Boot log"
+msgstr "Startlogg"
+
+#: lib/marshall_web/live/terminal_live.ex:751
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: lib/marshall_web/live/terminal_live.ex:708
+#, elixir-autogen, elixir-format
+msgid "Close search"
+msgstr "Stäng sökningen"
+
+#: lib/marshall_web/live/terminal_live.ex:599
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "Stäng session"
+
+#: lib/marshall_web/live/terminal_live.ex:598
+#, elixir-autogen, elixir-format
+msgid "Close terminal %{value1}"
+msgstr "Stäng terminal %{value1}"
+
+#: lib/marshall_web/components/workspace_components.ex:372
+#, elixir-autogen, elixir-format
+msgid "Connect from your computer"
+msgstr "Anslut från din dator"
+
+#: lib/marshall_web/live/terminal_live.ex:649
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "Ansluter…"
+
+#: lib/marshall_web/components/workspace_components.ex:267
+#: lib/marshall_web/components/workspace_components.ex:390
+#: lib/marshall_web/components/workspace_components.ex:400
+#: lib/marshall_web/components/workspace_components.ex:411
+#, elixir-autogen, elixir-format
+msgid "Copy"
+msgstr "Kopiera"
+
+#: lib/marshall_web/components/workspace_components.ex:389
+#, elixir-autogen, elixir-format
+msgid "Copy Linux and macOS install command"
+msgstr "Kopiera installationskommandot för Linux och macOS"
+
+#: lib/marshall_web/components/workspace_components.ex:410
+#, elixir-autogen, elixir-format
+msgid "Copy SSH command"
+msgstr "Kopiera SSH-kommandot"
+
+#: lib/marshall_web/components/workspace_components.ex:399
+#, elixir-autogen, elixir-format
+msgid "Copy Windows PowerShell install command"
+msgstr "Kopiera installationskommandot för Windows PowerShell"
+
+#: lib/marshall_web/components/workspace_components.ex:266
+#, elixir-autogen, elixir-format
+msgid "Copy machine ID"
+msgstr "Kopiera maskin-ID"
+
+#: lib/marshall_web/components/workspace_components.ex:534
+#, elixir-autogen, elixir-format
+msgid "Customer"
+msgstr "Kund"
+
+#: lib/marshall_web/live/terminal_live.ex:668
+#, elixir-autogen, elixir-format
+msgid "Decrease terminal font size"
+msgstr "Minska terminalens textstorlek"
+
+#: lib/marshall_web/components/workspace_components.ex:84
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "Raderad"
+
+#: lib/marshall_web/components/workspace_components.ex:66
+#, elixir-autogen, elixir-format
+msgid "Deleting"
+msgstr "Raderar"
+
+#: lib/marshall_web/live/terminal_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "Biljett för bildskärmsreläet utfärdad."
+
+#: lib/marshall_web/live/terminal_live.ex:679
+#: lib/marshall_web/live/terminal_live.ex:681
+#, elixir-autogen, elixir-format
+msgid "Enter full screen"
+msgstr "Öppna helskärm"
+
+#: lib/marshall_web/components/workspace_components.ex:83
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Misslyckad"
+
+#: lib/marshall_web/live/terminal_live.ex:693
+#, elixir-autogen, elixir-format
+msgid "Find in scrollback"
+msgstr "Sök i rullningshistoriken"
+
+#: lib/marshall_web/live/terminal_live.ex:715
+#, elixir-autogen, elixir-format
+msgid "Follow boot output"
+msgstr "Följ startutdata"
+
+#: lib/marshall_web/components/workspace_components.ex:259
+#, elixir-autogen, elixir-format
+msgid "ID"
+msgstr "ID"
+
+#: lib/marshall_web/live/terminal_live.ex:673
+#, elixir-autogen, elixir-format
+msgid "Increase terminal font size"
+msgstr "Öka terminalens textstorlek"
+
+#: lib/marshall_web/components/workspace_components.ex:380
+#, elixir-autogen, elixir-format
+msgid "Install and connect"
+msgstr "Installera och anslut"
+
+#: lib/marshall_web/components/workspace_components.ex:376
+#, elixir-autogen, elixir-format
+msgid "Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh."
+msgstr "Installerar Overalls, konfigurerar SSH och ansluter till maskinen. I Windows installerar installationsprogrammet även OpenSSH 9.6 eller senare och gör det till standardprogram för ssh efter administratörens godkännande."
+
+#: lib/marshall_web/components/workspace_components.ex:382
+#, elixir-autogen, elixir-format
+msgid "Linux / macOS"
+msgstr "Linux / macOS"
+
+#: lib/marshall_web/components/workspace_components.ex:265
+#, elixir-autogen, elixir-format
+msgid "Machine ID"
+msgstr "Maskin-ID"
+
+#: lib/marshall_web/live/terminal_live.ex:338
+#, elixir-autogen, elixir-format
+msgid "Machine is paused. Resume it or reopen this terminal page."
+msgstr "Maskinen är pausad. Återuppta den eller öppna den här terminalsidan igen."
+
+#: lib/marshall_web/live/terminal_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "Machine is stopping or stopped. Choose Start to open a terminal."
+msgstr "Maskinen stoppas eller är stoppad. Välj Starta för att öppna en terminal."
+
+#: lib/marshall_web/live/terminal_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Machine not found."
+msgstr "Maskinen hittades inte."
+
+#: lib/marshall_web/live/terminal_live.ex:332
+#, elixir-autogen, elixir-format
+msgid "Machine startup failed. Check the machine status and boot log."
+msgstr "Maskinstarten misslyckades. Kontrollera maskinens status och startlogg."
+
+#: lib/marshall_web/components/workspace_components.ex:126
+#, elixir-autogen, elixir-format
+msgid "Machine workspace"
+msgstr "Maskinens arbetsyta"
+
+#: lib/marshall_web/live/terminal_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Next match"
+msgstr "Nästa träff"
+
+#: lib/marshall_web/live/terminal_live.ex:609
+#, elixir-autogen, elixir-format
+msgid "No shared terminals are available to view."
+msgstr "Inga delade terminaler är tillgängliga för visning."
+
+#: lib/marshall_web/live/terminal_live.ex:613
+#, elixir-autogen, elixir-format
+msgid "No terminals are open. Choose New to open your personal shell."
+msgstr "Inga terminaler är öppna. Välj Ny för att öppna ditt personliga skal."
+
+#: lib/marshall_web/components/workspace_components.ex:281
+#: lib/marshall_web/components/workspace_components.ex:291
+#: lib/marshall_web/components/workspace_components.ex:465
+#: lib/marshall_web/components/workspace_components.ex:473
+#, elixir-autogen, elixir-format
+msgid "Open VS Code"
+msgstr "Öppna VS Code"
+
+#: lib/marshall_web/components/workspace_components.ex:464
+#, elixir-autogen, elixir-format
+msgid "Open VS Code for %{value1}"
+msgstr "Öppna VS Code för %{value1}"
+
+#: lib/marshall_web/live/terminal_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "Öppna skärm"
+
+#: lib/marshall_web/live/terminal_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "Opening terminal; recovering the same request if the connection was interrupted."
+msgstr "Öppnar terminalen; återupptar samma begäran om anslutningen avbröts."
+
+#: lib/marshall_web/components/workspace_components.ex:328
+#, elixir-autogen, elixir-format
+msgid "Pause"
+msgstr "Pausa"
+
+#: lib/marshall_web/components/workspace_components.ex:82
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "Pausad"
+
+#: lib/marshall_web/components/workspace_components.ex:79
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Väntar"
+
+#: lib/marshall_web/components/workspace_components.ex:205
+#, elixir-autogen, elixir-format
+msgid "Pinned"
+msgstr "Fäst"
+
+#: lib/marshall_web/live/terminal_live.ex:452
+#, elixir-autogen, elixir-format
+msgid "Preparing your guest account…"
+msgstr "Förbereder ditt gästkonto…"
+
+#: lib/marshall_web/live/terminal_live.ex:391
+#: lib/marshall_web/live/terminal_live.ex:429
+#: lib/marshall_web/live/terminal_live.ex:453
+#, elixir-autogen, elixir-format
+msgid "Preparing your terminal…"
+msgstr "Förbereder din terminal…"
+
+#: lib/marshall_web/live/terminal_live.ex:698
+#, elixir-autogen, elixir-format
+msgid "Previous match"
+msgstr "Föregående träff"
+
+#: lib/marshall_web/live/terminal_live.ex:722
+#, elixir-autogen, elixir-format
+msgid "Read-only boot console"
+msgstr "Skrivskyddad startkonsol"
+
+#: lib/marshall_web/live/terminal_live.ex:607
+#, elixir-autogen, elixir-format
+msgid "Read-only host boot log. Guest terminal readiness is not required."
+msgstr "Skrivskyddad startlogg för värden. Gästterminalen behöver inte vara redo."
+
+#: lib/marshall_web/live/terminal_live.ex:392
+#, elixir-autogen, elixir-format
+msgid "Reconnecting to the terminal service…"
+msgstr "Återansluter till terminaltjänsten…"
+
+#: lib/marshall_web/live/terminal_live.ex:657
+#, elixir-autogen, elixir-format
+msgid "Rename in this browser"
+msgstr "Byt namn i den här webbläsaren"
+
+#: lib/marshall_web/live/terminal_live.ex:656
+#, elixir-autogen, elixir-format
+msgid "Rename terminal"
+msgstr "Byt namn på terminal"
+
+#: lib/marshall_web/live/terminal_live.ex:636
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "Begär kontroll"
+
+#: lib/marshall_web/components/workspace_components.ex:319
+#, elixir-autogen, elixir-format
+msgid "Resume machine"
+msgstr "Återuppta maskinen"
+
+#: lib/marshall_web/components/workspace_components.ex:72
+#, elixir-autogen, elixir-format
+msgid "Resuming"
+msgstr "Återupptar"
+
+#: lib/marshall_web/live/terminal_live.ex:140
+#: lib/marshall_web/live/terminal_live.ex:316
+#, elixir-autogen, elixir-format
+msgid "Resuming machine; waiting for capacity…"
+msgstr "Återupptar maskinen; väntar på kapacitet…"
+
+#: lib/marshall_web/live/terminal_live.ex:748
+#, elixir-autogen, elixir-format
+msgid "Revoke"
+msgstr "Återkalla"
+
+#: lib/marshall_web/components/workspace_components.ex:80
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "Körs"
+
+#: lib/marshall_web/components/workspace_components.ex:432
+#, elixir-autogen, elixir-format
+msgid "SSH connection details are temporarily unavailable."
+msgstr "SSH-anslutningsuppgifterna är tillfälligt otillgängliga."
+
+#: lib/marshall_web/components/workspace_components.ex:428
+#, elixir-autogen, elixir-format
+msgid "SSH connection requires write access to this machine."
+msgstr "SSH-anslutning kräver skrivbehörighet till maskinen."
+
+#: lib/marshall_web/live/terminal_live.ex:663
+#, elixir-autogen, elixir-format
+msgid "Search (Ctrl+F)"
+msgstr "Sök (Ctrl+F)"
+
+#: lib/marshall_web/live/terminal_live.ex:662
+#, elixir-autogen, elixir-format
+msgid "Search scrollback"
+msgstr "Sök i rullningshistoriken"
+
+#: lib/marshall_web/live/terminal_live.ex:686
+#, elixir-autogen, elixir-format
+msgid "Search terminal scrollback"
+msgstr "Sök i terminalens rullningshistorik"
+
+#: lib/marshall_web/components/workspace_components.ex:140
+#, elixir-autogen, elixir-format
+msgid "Settings"
+msgstr "Inställningar"
+
+#: lib/marshall_web/live/terminal_live.ex:590
+#, elixir-autogen, elixir-format
+msgid "Share terminal %{value1}"
+msgstr "Dela terminal %{value1}"
+
+#: lib/marshall_web/live/terminal_live.ex:730
+#, elixir-autogen, elixir-format
+msgid "Share this terminal"
+msgstr "Dela terminalen"
+
+#: lib/marshall_web/live/terminal_live.ex:591
+#, elixir-autogen, elixir-format
+msgid "Share view"
+msgstr "Dela vy"
+
+#: lib/marshall_web/components/workspace_components.ex:535
+#, elixir-autogen, elixir-format
+msgid "Standard"
+msgstr "Standard"
+
+#: lib/marshall_web/components/workspace_components.ex:309
+#, elixir-autogen, elixir-format
+msgid "Start machine"
+msgstr "Starta maskin"
+
+#: lib/marshall_web/components/workspace_components.ex:75
+#, elixir-autogen, elixir-format
+msgid "Starting"
+msgstr "Startar"
+
+#: lib/marshall_web/components/workspace_components.ex:338
+#, elixir-autogen, elixir-format
+msgid "Stop"
+msgstr "Stoppa"
+
+#: lib/marshall_web/components/workspace_components.ex:81
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "Stoppad"
+
+#: lib/marshall_web/components/workspace_components.ex:67
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "Stoppar"
+
+#: lib/marshall_web/components/workspace_components.ex:70
+#, elixir-autogen, elixir-format
+msgid "Suspending"
+msgstr "Försätter i viloläge"
+
+#: lib/marshall_web/components/workspace_components.ex:131
+#, elixir-autogen, elixir-format
+msgid "Terminal"
+msgstr "Terminal"
+
+#: lib/marshall_web/live/terminal_live.ex:565
+#, elixir-autogen, elixir-format
+msgid "Terminal %{name}, %{count} viewer, created %{created}"
+msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
+msgstr[0] "Terminal %{name}, %{count} åskådare, skapad %{created}"
+msgstr[1] "Terminal %{name}, %{count} åskådare, skapad %{created}"
+
+#: lib/marshall_web/live/terminal_live.ex:144
+#, elixir-autogen, elixir-format
+msgid "Terminal access ended."
+msgstr "Terminalåtkomsten har upphört."
+
+#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:351
+#, elixir-autogen, elixir-format
+msgid "Terminal close requested; waiting for guest confirmation."
+msgstr "Stängning av terminalen har begärts; väntar på gästens bekräftelse."
+
+#: lib/marshall_web/live/terminal_live.ex:468
+#, elixir-autogen, elixir-format
+msgid "Terminal limit reached for this machine."
+msgstr "Maskinens terminalgräns har nåtts."
+
+#: lib/marshall_web/live/terminal_live.ex:551
+#, elixir-autogen, elixir-format
+msgid "Terminal sessions"
+msgstr "Terminalsessioner"
+
+#: lib/marshall_web/live/terminal_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Terminal viewing access updated."
+msgstr "Terminalens visningsbehörighet har uppdaterats."
+
+#: lib/marshall_web/live/terminal_live.ex:473
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable while the host is offline."
+msgstr "Terminaler är inte tillgängliga när värden är frånkopplad."
+
+#: lib/marshall_web/live/terminal_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "The boot log is unavailable for the current machine execution."
+msgstr "Startloggen är inte tillgänglig för den aktuella maskinkörningen."
+
+#: lib/marshall_web/live/terminal_live.ex:487
+#, elixir-autogen, elixir-format
+msgid "The guest cannot host more terminal sessions."
+msgstr "Gästen kan inte ha fler terminalsessioner."
+
+#: lib/marshall_web/live/terminal_live.ex:479
+#, elixir-autogen, elixir-format
+msgid "The previous opening has ended. Choose New to try again."
+msgstr "Den föregående öppningen har avslutats. Välj Ny för att försöka igen."
+
+#: lib/marshall_web/live/terminal_live.ex:630
+#, elixir-autogen, elixir-format
+msgid "The software-rendered Android display uses the machine relay."
+msgstr "Den programvarurenderade Android-skärmen använder maskinens relä."
+
+#: lib/marshall_web/live/terminal_live.ex:489
+#, elixir-autogen, elixir-format
+msgid "The terminal could not be opened."
+msgstr "Terminalen kunde inte öppnas."
+
+#: lib/marshall_web/live/terminal_live.ex:514
+#, elixir-autogen, elixir-format
+msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
+msgstr "Maskinen är stoppad. Starta den för att öppna terminalen. Dina filer bevaras."
+
+#: lib/marshall_web/components/workspace_components.ex:346
+#: lib/marshall_web/components/workspace_components.ex:515
+#, elixir-autogen, elixir-format
+msgid "This machine's image does not support the current browser editor."
+msgstr "Maskinens avbildning stöder inte den aktuella webbläsarredigeraren."
+
+#: lib/marshall_web/components/workspace_components.ex:417
+#, elixir-autogen, elixir-format
+msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
+msgstr "Maskinens avbildning har ännu inga gästagenter: SSH, webbläsarterminalen och agenter är inte tillgängliga. Använd"
+
+#: lib/marshall_web/live/terminal_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
+msgstr "Maskinens avbildning saknar terminalagent, så webbläsarterminalen är inte tillgänglig."
+
+#: lib/marshall_web/live/terminal_live.ex:652
+#, elixir-autogen, elixir-format
+msgid "Type to interact"
+msgstr "Skriv för att interagera"
+
+#: lib/marshall_web/live/terminal_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
+msgstr "Terminaldelningen kunde inte uppdateras. Mottagaren måste ha maskinåtkomst före delningen."
+
+#: lib/marshall_web/components/workspace_components.ex:86
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Inte tillgänglig"
+
+#: lib/marshall_web/components/workspace_components.ex:85
+#: lib/marshall_web/components/workspace_components.ex:537
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Okänd"
+
+#: lib/marshall_web/components/workspace_components.ex:430
+#, elixir-autogen, elixir-format
+msgid "Use the browser terminal for this Inception environment."
+msgstr "Använd webbläsarterminalen för den här Inception-miljön."
+
+#: lib/marshall_web/components/workspace_components.ex:350
+#, elixir-autogen, elixir-format
+msgid "VS Code is temporarily unavailable for this machine."
+msgstr "VS Code är tillfälligt otillgängligt för maskinen."
+
+#: lib/marshall_web/components/workspace_components.ex:518
+#, elixir-autogen, elixir-format
+msgid "VS Code is temporarily unavailable."
+msgstr "VS Code är tillfälligt otillgängligt."
+
+#: lib/marshall_web/components/workspace_components.ex:519
+#, elixir-autogen, elixir-format
+msgid "VS Code is unavailable for this machine."
+msgstr "VS Code är inte tillgängligt för maskinen."
+
+#: lib/marshall_web/components/workspace_components.ex:348
+#: lib/marshall_web/components/workspace_components.ex:517
+#, elixir-autogen, elixir-format
+msgid "VS Code requires a running machine."
+msgstr "VS Code kräver en maskin som körs."
+
+#: lib/marshall_web/live/terminal_live.ex:732
+#, elixir-autogen, elixir-format
+msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
+msgstr "Endast visning, även för maskinoperatörer. Mottagaren måste redan ha åtkomst till maskinen."
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "Väntar på bildskärmsreläet."
+
+#: lib/marshall_web/live/terminal_live.ex:340
+#, elixir-autogen, elixir-format
+msgid "Waiting for the machine to start…"
+msgstr "Väntar på att maskinen ska starta…"
+
+#: lib/marshall_web/components/workspace_components.ex:392
+#, elixir-autogen, elixir-format
+msgid "Windows"
+msgstr "Windows"
+
+#: lib/marshall_web/live/terminal_live.ex:470
+#, elixir-autogen, elixir-format
+msgid "You do not have terminal access to this machine."
+msgstr "Du har inte terminalåtkomst till maskinen."
+
+#: lib/marshall_web/live/terminal_live.ex:483
+#, elixir-autogen, elixir-format
+msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
+msgstr "Ditt gästkonto kunde inte förberedas. Kontrollera att gästkontotjänsten är tillgänglig och välj sedan Ny för att försöka igen."
+
+#: lib/marshall_web/live/terminal_live.ex:611
+#, elixir-autogen, elixir-format
+msgid "Your personal terminal opens when the machine is ready."
+msgstr "Din personliga terminal öppnas när maskinen är redo."
+
+#: lib/marshall_web/live/terminal_live.ex:476
+#, elixir-autogen, elixir-format
+msgid "Your previous shell has closed. Choose New to open another terminal."
+msgstr "Ditt föregående skal har stängts. Välj Ny för att öppna en annan terminal."
+
+#: lib/marshall_web/live/terminal_live.ex:518
+#, elixir-autogen, elixir-format
+msgid "Your terminal will open when the machine is running and ready."
+msgstr "Terminalen öppnas när maskinen körs och är redo."
+
+#: lib/marshall_web/live/terminal_live.ex:664
+#, elixir-autogen, elixir-format
+msgid "find"
+msgstr "sök"
+
+#: lib/marshall_web/live/terminal_live.ex:682
+#, elixir-autogen, elixir-format
+msgid "full"
+msgstr "fullständig"
+
+#: lib/marshall_web/live/terminal_live.ex:658
+#, elixir-autogen, elixir-format
+msgid "rename"
+msgstr "byt namn"
+
+#: lib/marshall_web/components/workspace_components.ex:426
+#, elixir-autogen, elixir-format
+msgid "to view the read-only host console."
+msgstr "för att visa värdens skrivskyddade konsol."

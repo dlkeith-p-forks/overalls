@@ -1,0 +1,67 @@
+#
+msgid ""
+msgstr ""
+"Language: fr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "Approve SSH key"
+msgstr "Approuver la clé SSH"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:94
+#, elixir-autogen, elixir-format
+msgid "Approve key"
+msgstr "Approuver la clé"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
+msgstr ""
+"Approuvez cette clé uniquement si vous avez démarré la connexion SSH et si "
+"son empreinte correspond à celle de votre client SSH."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr "Approbation…"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr "Libellé (facultatif)"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Manage your SSH keys"
+msgstr "Gérer vos clés SSH"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr "Mon ordinateur portable"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:35
+#, elixir-autogen, elixir-format
+msgid "SSH key approved. You can return to your SSH client."
+msgstr "Clé SSH approuvée. Vous pouvez revenir à votre client SSH."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#, elixir-autogen, elixir-format
+msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
+msgstr ""
+"Cette approbation SSH est indisponible ou a expiré. Démarrez une nouvelle "
+"connexion SSH pour réessayer."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
+msgstr ""
+"Cette clé se connectera en tant que %{value1}. Elle peut gérer les machines "
+"selon les autorisations de votre compte."
+
+#: lib/marshall_web/ssh_approval_login.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Indisponible"

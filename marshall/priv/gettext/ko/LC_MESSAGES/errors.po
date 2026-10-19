@@ -105,3 +105,219 @@ msgstr "%{number} 이상이어야 합니다"
 
 msgid "must be equal to %{number}"
 msgstr "%{number}와 같아야 합니다"
+
+#: lib/marshall_web/controllers/error_html.ex:52
+#, elixir-autogen, elixir-format
+msgid "Back to Overalls"
+msgstr "작업복(으)로 돌아가기"
+
+#: lib/marshall_web/controllers/error_html.ex:45
+#, elixir-autogen, elixir-format
+msgid "Overalls is briefly unavailable. This page will retry automatically."
+msgstr "작업복은 잠시 사용할 수 없습니다. 이 페이지는 자동으로 다시 시도됩니다."
+
+#: lib/marshall_web/controllers/error_html.ex:48
+#, elixir-autogen, elixir-format
+msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
+msgstr "이 페이지를 열 수 없습니다. 작업공간으로 돌아가거나 잠시 후에 다시 시도해 보세요."
+
+#: lib/marshall_web/controllers/error_html.ex:103
+#, elixir-autogen, elixir-format
+msgid "Bad Gateway"
+msgstr "나쁜 게이트웨이"
+
+#: lib/marshall_web/controllers/error_html.ex:72
+#, elixir-autogen, elixir-format
+msgid "Bad Request"
+msgstr "잘못된 요청"
+
+#: lib/marshall_web/controllers/error_html.ex:81
+#, elixir-autogen, elixir-format
+msgid "Conflict"
+msgstr "갈등"
+
+#: lib/marshall_web/controllers/error_html.ex:89
+#, elixir-autogen, elixir-format
+msgid "Expectation Failed"
+msgstr "예상 실패"
+
+#: lib/marshall_web/controllers/error_html.ex:94
+#, elixir-autogen, elixir-format
+msgid "Failed Dependency"
+msgstr "실패한 종속성"
+
+#: lib/marshall_web/controllers/error_html.ex:75
+#, elixir-autogen, elixir-format
+msgid "Forbidden"
+msgstr "금지됨"
+
+#: lib/marshall_web/controllers/error_html.ex:105
+#, elixir-autogen, elixir-format
+msgid "Gateway Timeout"
+msgstr "게이트웨이 시간 초과"
+
+#: lib/marshall_web/controllers/error_html.ex:82
+#, elixir-autogen, elixir-format
+msgid "Gone"
+msgstr "사라짐"
+
+#: lib/marshall_web/controllers/error_html.ex:106
+#, elixir-autogen, elixir-format
+msgid "HTTP Version Not Supported"
+msgstr "HTTP 버전이 지원되지 않음"
+
+#: lib/marshall_web/controllers/error_html.ex:90
+#, elixir-autogen, elixir-format
+msgid "I'm a teapot"
+msgstr "나는 찻주전자다"
+
+#: lib/marshall_web/controllers/error_html.ex:108
+#, elixir-autogen, elixir-format
+msgid "Insufficient Storage"
+msgstr "저장 공간 부족"
+
+#: lib/marshall_web/controllers/error_html.ex:101
+#: lib/marshall_web/controllers/error_html.ex:112
+#, elixir-autogen, elixir-format
+msgid "Internal Server Error"
+msgstr "내부 서버 오류"
+
+#: lib/marshall_web/controllers/error_html.ex:83
+#, elixir-autogen, elixir-format
+msgid "Length Required"
+msgstr "필요한 길이"
+
+#: lib/marshall_web/controllers/error_html.ex:93
+#, elixir-autogen, elixir-format
+msgid "Locked"
+msgstr "잠김"
+
+#: lib/marshall_web/controllers/error_html.ex:109
+#, elixir-autogen, elixir-format
+msgid "Loop Detected"
+msgstr "루프 감지됨"
+
+#: lib/marshall_web/controllers/error_html.ex:77
+#, elixir-autogen, elixir-format
+msgid "Method Not Allowed"
+msgstr "허용되지 않는 방법"
+
+#: lib/marshall_web/controllers/error_html.ex:91
+#, elixir-autogen, elixir-format
+msgid "Misdirected Request"
+msgstr "잘못된 요청"
+
+#: lib/marshall_web/controllers/error_html.ex:111
+#, elixir-autogen, elixir-format
+msgid "Network Authentication Required"
+msgstr "네트워크 인증 필요"
+
+#: lib/marshall_web/controllers/error_html.ex:78
+#, elixir-autogen, elixir-format
+msgid "Not Acceptable"
+msgstr "허용되지 않음"
+
+#: lib/marshall_web/controllers/error_html.ex:110
+#, elixir-autogen, elixir-format
+msgid "Not Extended"
+msgstr "확장되지 않음"
+
+#: lib/marshall_web/controllers/error_html.ex:76
+#, elixir-autogen, elixir-format
+msgid "Not Found"
+msgstr "찾을 수 없음"
+
+#: lib/marshall_web/controllers/error_html.ex:102
+#, elixir-autogen, elixir-format
+msgid "Not Implemented"
+msgstr "구현되지 않음"
+
+#: lib/marshall_web/controllers/error_html.ex:74
+#, elixir-autogen, elixir-format
+msgid "Payment Required"
+msgstr "결제 필요"
+
+#: lib/marshall_web/controllers/error_html.ex:84
+#, elixir-autogen, elixir-format
+msgid "Precondition Failed"
+msgstr "전제조건 실패"
+
+#: lib/marshall_web/controllers/error_html.ex:97
+#, elixir-autogen, elixir-format
+msgid "Precondition Required"
+msgstr "전제조건 필요"
+
+#: lib/marshall_web/controllers/error_html.ex:79
+#, elixir-autogen, elixir-format
+msgid "Proxy Authentication Required"
+msgstr "프록시 인증 필요"
+
+#: lib/marshall_web/controllers/error_html.ex:85
+#, elixir-autogen, elixir-format
+msgid "Request Entity Too Large"
+msgstr "요청 엔터티가 너무 큼"
+
+#: lib/marshall_web/controllers/error_html.ex:99
+#, elixir-autogen, elixir-format
+msgid "Request Header Fields Too Large"
+msgstr "요청 헤더 필드가 너무 큼"
+
+#: lib/marshall_web/controllers/error_html.ex:80
+#, elixir-autogen, elixir-format
+msgid "Request Timeout"
+msgstr "요청 시간 초과"
+
+#: lib/marshall_web/controllers/error_html.ex:86
+#, elixir-autogen, elixir-format
+msgid "Request-URI Too Long"
+msgstr "요청-URI가 너무 김"
+
+#: lib/marshall_web/controllers/error_html.ex:88
+#, elixir-autogen, elixir-format
+msgid "Requested Range Not Satisfiable"
+msgstr "요청된 범위가 만족스럽지 않음"
+
+#: lib/marshall_web/controllers/error_html.ex:104
+#, elixir-autogen, elixir-format
+msgid "Service Unavailable"
+msgstr "서비스를 이용할 수 없습니다"
+
+#: lib/marshall_web/controllers/error_html.ex:95
+#, elixir-autogen, elixir-format
+msgid "Too Early"
+msgstr "너무 이르다"
+
+#: lib/marshall_web/controllers/error_html.ex:98
+#, elixir-autogen, elixir-format
+msgid "Too Many Requests"
+msgstr "요청이 너무 많습니다"
+
+#: lib/marshall_web/controllers/error_html.ex:73
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "승인되지 않은"
+
+#: lib/marshall_web/controllers/error_html.ex:100
+#, elixir-autogen, elixir-format
+msgid "Unavailable For Legal Reasons"
+msgstr "법적인 이유로 이용할 수 없음"
+
+#: lib/marshall_web/controllers/error_html.ex:92
+#, elixir-autogen, elixir-format
+msgid "Unprocessable Content"
+msgstr "처리할 수 없는 콘텐츠"
+
+#: lib/marshall_web/controllers/error_html.ex:87
+#, elixir-autogen, elixir-format
+msgid "Unsupported Media Type"
+msgstr "지원되지 않는 미디어 유형"
+
+#: lib/marshall_web/controllers/error_html.ex:96
+#, elixir-autogen, elixir-format
+msgid "Upgrade Required"
+msgstr "업그레이드 필요"
+
+#: lib/marshall_web/controllers/error_html.ex:107
+#, elixir-autogen, elixir-format
+msgid "Variant Also Negotiates"
+msgstr "변종도 협상함"

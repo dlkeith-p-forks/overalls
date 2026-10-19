@@ -113,3 +113,219 @@ msgstr "peab olema suurem või võrdne väärtusega %{number}"
 
 msgid "must be equal to %{number}"
 msgstr "peab võrduma väärtusega %{number}"
+
+#: lib/marshall_web/controllers/error_html.ex:52
+#, elixir-autogen, elixir-format
+msgid "Back to Overalls"
+msgstr "Tagasi Overallsi"
+
+#: lib/marshall_web/controllers/error_html.ex:45
+#, elixir-autogen, elixir-format
+msgid "Overalls is briefly unavailable. This page will retry automatically."
+msgstr "Overalls pole korraks saadaval. See leht proovib automaatselt uuesti."
+
+#: lib/marshall_web/controllers/error_html.ex:48
+#, elixir-autogen, elixir-format
+msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
+msgstr "Seda lehte ei saanud avada. Naase oma tööruumi või proovi hetke pärast uuesti."
+
+#: lib/marshall_web/controllers/error_html.ex:103
+#, elixir-autogen, elixir-format
+msgid "Bad Gateway"
+msgstr "Halb värav"
+
+#: lib/marshall_web/controllers/error_html.ex:72
+#, elixir-autogen, elixir-format
+msgid "Bad Request"
+msgstr "Halb taotlus"
+
+#: lib/marshall_web/controllers/error_html.ex:81
+#, elixir-autogen, elixir-format
+msgid "Conflict"
+msgstr "Konflikt"
+
+#: lib/marshall_web/controllers/error_html.ex:89
+#, elixir-autogen, elixir-format
+msgid "Expectation Failed"
+msgstr "Ootus ebaõnnestus"
+
+#: lib/marshall_web/controllers/error_html.ex:94
+#, elixir-autogen, elixir-format
+msgid "Failed Dependency"
+msgstr "Ebaõnnestunud sõltuvus"
+
+#: lib/marshall_web/controllers/error_html.ex:75
+#, elixir-autogen, elixir-format
+msgid "Forbidden"
+msgstr "Keelatud"
+
+#: lib/marshall_web/controllers/error_html.ex:105
+#, elixir-autogen, elixir-format
+msgid "Gateway Timeout"
+msgstr "Lüüsi ajalõpp"
+
+#: lib/marshall_web/controllers/error_html.ex:82
+#, elixir-autogen, elixir-format
+msgid "Gone"
+msgstr "Läinud"
+
+#: lib/marshall_web/controllers/error_html.ex:106
+#, elixir-autogen, elixir-format
+msgid "HTTP Version Not Supported"
+msgstr "HTTP versiooni ei toetata"
+
+#: lib/marshall_web/controllers/error_html.ex:90
+#, elixir-autogen, elixir-format
+msgid "I'm a teapot"
+msgstr "Ma olen teekann"
+
+#: lib/marshall_web/controllers/error_html.ex:108
+#, elixir-autogen, elixir-format
+msgid "Insufficient Storage"
+msgstr "Ebapiisav salvestusruum"
+
+#: lib/marshall_web/controllers/error_html.ex:101
+#: lib/marshall_web/controllers/error_html.ex:112
+#, elixir-autogen, elixir-format
+msgid "Internal Server Error"
+msgstr "Serveri sisemine viga"
+
+#: lib/marshall_web/controllers/error_html.ex:83
+#, elixir-autogen, elixir-format
+msgid "Length Required"
+msgstr "Nõutav pikkus"
+
+#: lib/marshall_web/controllers/error_html.ex:93
+#, elixir-autogen, elixir-format
+msgid "Locked"
+msgstr "Lukustatud"
+
+#: lib/marshall_web/controllers/error_html.ex:109
+#, elixir-autogen, elixir-format
+msgid "Loop Detected"
+msgstr "Loop tuvastatud"
+
+#: lib/marshall_web/controllers/error_html.ex:77
+#, elixir-autogen, elixir-format
+msgid "Method Not Allowed"
+msgstr "Meetod pole lubatud"
+
+#: lib/marshall_web/controllers/error_html.ex:91
+#, elixir-autogen, elixir-format
+msgid "Misdirected Request"
+msgstr "Valesti suunatud taotlus"
+
+#: lib/marshall_web/controllers/error_html.ex:111
+#, elixir-autogen, elixir-format
+msgid "Network Authentication Required"
+msgstr "Nõutav võrgu autentimine"
+
+#: lib/marshall_web/controllers/error_html.ex:78
+#, elixir-autogen, elixir-format
+msgid "Not Acceptable"
+msgstr "Ei ole vastuvõetav"
+
+#: lib/marshall_web/controllers/error_html.ex:110
+#, elixir-autogen, elixir-format
+msgid "Not Extended"
+msgstr "Ei ole pikendatud"
+
+#: lib/marshall_web/controllers/error_html.ex:76
+#, elixir-autogen, elixir-format
+msgid "Not Found"
+msgstr "Ei leitud"
+
+#: lib/marshall_web/controllers/error_html.ex:102
+#, elixir-autogen, elixir-format
+msgid "Not Implemented"
+msgstr "Pole rakendatud"
+
+#: lib/marshall_web/controllers/error_html.ex:74
+#, elixir-autogen, elixir-format
+msgid "Payment Required"
+msgstr "Nõutav makse"
+
+#: lib/marshall_web/controllers/error_html.ex:84
+#, elixir-autogen, elixir-format
+msgid "Precondition Failed"
+msgstr "Eeltingimus ebaõnnestus"
+
+#: lib/marshall_web/controllers/error_html.ex:97
+#, elixir-autogen, elixir-format
+msgid "Precondition Required"
+msgstr "Nõutav eeltingimus"
+
+#: lib/marshall_web/controllers/error_html.ex:79
+#, elixir-autogen, elixir-format
+msgid "Proxy Authentication Required"
+msgstr "Nõutav puhverserveri autentimine"
+
+#: lib/marshall_web/controllers/error_html.ex:85
+#, elixir-autogen, elixir-format
+msgid "Request Entity Too Large"
+msgstr "Taotluse üksus on liiga suur"
+
+#: lib/marshall_web/controllers/error_html.ex:99
+#, elixir-autogen, elixir-format
+msgid "Request Header Fields Too Large"
+msgstr "Taotluse päise väljad on liiga suured"
+
+#: lib/marshall_web/controllers/error_html.ex:80
+#, elixir-autogen, elixir-format
+msgid "Request Timeout"
+msgstr "Taotle ajalõpu"
+
+#: lib/marshall_web/controllers/error_html.ex:86
+#, elixir-autogen, elixir-format
+msgid "Request-URI Too Long"
+msgstr "Päringu-URI on liiga pikk"
+
+#: lib/marshall_web/controllers/error_html.ex:88
+#, elixir-autogen, elixir-format
+msgid "Requested Range Not Satisfiable"
+msgstr "Soovitud vahemik ei ole rahuldav"
+
+#: lib/marshall_web/controllers/error_html.ex:104
+#, elixir-autogen, elixir-format
+msgid "Service Unavailable"
+msgstr "Teenus pole saadaval"
+
+#: lib/marshall_web/controllers/error_html.ex:95
+#, elixir-autogen, elixir-format
+msgid "Too Early"
+msgstr "Liiga vara"
+
+#: lib/marshall_web/controllers/error_html.ex:98
+#, elixir-autogen, elixir-format
+msgid "Too Many Requests"
+msgstr "Liiga palju taotlusi"
+
+#: lib/marshall_web/controllers/error_html.ex:73
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "Volitamata"
+
+#: lib/marshall_web/controllers/error_html.ex:100
+#, elixir-autogen, elixir-format
+msgid "Unavailable For Legal Reasons"
+msgstr "Pole juriidilistel põhjustel saadaval"
+
+#: lib/marshall_web/controllers/error_html.ex:92
+#, elixir-autogen, elixir-format
+msgid "Unprocessable Content"
+msgstr "Töötlematu sisu"
+
+#: lib/marshall_web/controllers/error_html.ex:87
+#, elixir-autogen, elixir-format
+msgid "Unsupported Media Type"
+msgstr "Toetamata meediatüüp"
+
+#: lib/marshall_web/controllers/error_html.ex:96
+#, elixir-autogen, elixir-format
+msgid "Upgrade Required"
+msgstr "Uuendamine on vajalik"
+
+#: lib/marshall_web/controllers/error_html.ex:107
+#, elixir-autogen, elixir-format
+msgid "Variant Also Negotiates"
+msgstr "Variant peab ka läbirääkimisi"

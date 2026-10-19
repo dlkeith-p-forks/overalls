@@ -1,0 +1,70 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: vi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "Approve SSH key"
+msgstr "Chấp thuận khóa SSH"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:94
+#, elixir-autogen, elixir-format
+msgid "Approve key"
+msgstr "Chấp thuận khóa"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
+msgstr "Chỉ chấp thuận khóa này nếu bạn đã khởi tạo kết nối SSH và dấu vân tay khớp với máy khách SSH của bạn."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr "Đang chấp thuận…"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr "Nhãn (tùy chọn)"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Manage your SSH keys"
+msgstr "Quản lý khóa SSH"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr "Máy tính xách tay của tôi"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:35
+#, elixir-autogen, elixir-format
+msgid "SSH key approved. You can return to your SSH client."
+msgstr "Đã phê duyệt khóa SSH. Bạn có thể quay lại ứng dụng SSH."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#, elixir-autogen, elixir-format
+msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
+msgstr "Phê duyệt SSH này không khả dụng hoặc đã hết hạn. Hãy tạo kết nối SSH mới để thử lại."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
+msgstr "Khóa này sẽ đăng nhập với danh tính %{value1}. Khóa có thể quản lý máy theo quyền của tài khoản bạn."
+
+#: lib/marshall_web/ssh_approval_login.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Không khả dụng"

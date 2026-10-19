@@ -21,8 +21,15 @@ defmodule MarshallWeb.Admin.OperationsLive do
 
   defp refresh(socket) do
     case Operations.snapshot(socket.assigns.current_user) do
-      {:ok, snapshot} -> assign(socket, snapshot: snapshot, refreshed_at: DateTime.utc_now())
-      _ -> put_flash(socket, :error, gettext("Operational status is temporarily unavailable."))
+      {:ok, snapshot} ->
+        assign(socket, snapshot: snapshot, refreshed_at: DateTime.utc_now())
+
+      _ ->
+        put_flash(
+          socket,
+          :error,
+          dgettext("admin_operations", "Operational status is temporarily unavailable.")
+        )
     end
   end
 
@@ -49,37 +56,48 @@ defmodule MarshallWeb.Admin.OperationsLive do
     >
       <section id="admin-operations" class="stack">
         <UI.heading
-          title={gettext("Platform status")}
+          title={dgettext("admin_operations", "Platform status")}
           subtitle={
-            gettext(
+            dgettext(
+              "admin_operations",
               "Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
             )
           }
         >
           <:actions>
-            <span class="muted">{gettext("Updated")}
+            <span class="muted">{dgettext("admin_operations", "Updated")}
             <.timestamp at={@refreshed_at} zone={@time_zone} format={:datetime_seconds} />
-            {gettext("· every 30 seconds")}</span>
+            {dgettext("admin_operations", "· every 30 seconds")}</span>
           </:actions>
         </UI.heading>
         <.kv id="platform-summary">
-          <:item title={gettext("Images")}>{tally(@snapshot.images)}</:item>
-          <:item title={gettext("Porsche gateways")}>{tally(@snapshot.gateways)}</:item>
-          <:item title={gettext("Audi services")}>{tally(@snapshot.services)}</:item>
-          <:item title={gettext("Ingress routes")}>{length(@snapshot.routes)}</:item>
-          <:item title={gettext("DNS publications")}>{length(@snapshot.publications)}</:item>
+          <:item title={dgettext("admin_operations", "Images")}>{tally(@snapshot.images)}</:item>
+          <:item title={dgettext("admin_operations", "Porsche gateways")}>
+            {tally(@snapshot.gateways)}
+          </:item>
+          <:item title={dgettext("admin_operations", "Audi services")}>
+            {tally(@snapshot.services)}
+          </:item>
+          <:item title={dgettext("admin_operations", "Ingress routes")}>
+            {length(@snapshot.routes)}
+          </:item>
+          <:item title={dgettext("admin_operations", "DNS publications")}>
+            {length(@snapshot.publications)}
+          </:item>
         </.kv>
-        <UI.panel id="image-catalog" title={gettext("Image catalog")}>
-          <p :if={@snapshot.images == []} class="muted">{gettext("No images in the catalog.")}</p>
+        <UI.panel id="image-catalog" title={dgettext("admin_operations", "Image catalog")}>
+          <p :if={@snapshot.images == []} class="muted">
+            {dgettext("admin_operations", "No images in the catalog.")}
+          </p>
           <div :if={@snapshot.images != []} class="table-flow">
             <table>
               <thead>
                 <tr>
-                  <th class="width-auto">{gettext("Image")}</th>
-                  <th class="width-min">{gettext("Architecture")}</th>
-                  <th class="width-min num">{gettext("Minimum RAM")}</th>
-                  <th class="width-min num">{gettext("Minimum disk")}</th>
-                  <th class="width-min">{gettext("Status")}</th>
+                  <th class="width-auto">{dgettext("admin_operations", "Image")}</th>
+                  <th class="width-min">{dgettext("admin_operations", "Architecture")}</th>
+                  <th class="width-min num">{dgettext("admin_operations", "Minimum RAM")}</th>
+                  <th class="width-min num">{dgettext("admin_operations", "Minimum disk")}</th>
+                  <th class="width-min">{dgettext("admin_operations", "Status")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -94,15 +112,17 @@ defmodule MarshallWeb.Admin.OperationsLive do
             </table>
           </div>
         </UI.panel>
-        <UI.panel id="porsche-gateways" title={gettext("Porsche gateways")}>
-          <p :if={@snapshot.gateways == []} class="muted">{gettext("No gateways enrolled.")}</p>
+        <UI.panel id="porsche-gateways" title={dgettext("admin_operations", "Porsche gateways")}>
+          <p :if={@snapshot.gateways == []} class="muted">
+            {dgettext("admin_operations", "No gateways enrolled.")}
+          </p>
           <div :if={@snapshot.gateways != []} class="table-flow">
             <table>
               <thead>
                 <tr>
-                  <th class="width-auto">{gettext("Gateway")}</th>
-                  <th class="width-min num">{gettext("Generation")}</th>
-                  <th class="width-min">{gettext("Status")}</th>
+                  <th class="width-auto">{dgettext("admin_operations", "Gateway")}</th>
+                  <th class="width-min num">{dgettext("admin_operations", "Generation")}</th>
+                  <th class="width-min">{dgettext("admin_operations", "Status")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -115,17 +135,19 @@ defmodule MarshallWeb.Admin.OperationsLive do
             </table>
           </div>
         </UI.panel>
-        <UI.panel id="audi-services" title={gettext("Audi services")}>
-          <p :if={@snapshot.services == []} class="muted">{gettext("No Audi services enrolled.")}</p>
+        <UI.panel id="audi-services" title={dgettext("admin_operations", "Audi services")}>
+          <p :if={@snapshot.services == []} class="muted">
+            {dgettext("admin_operations", "No Audi services enrolled.")}
+          </p>
           <div :if={@snapshot.services != []} class="table-flow">
             <table>
               <thead>
                 <tr>
-                  <th class="width-auto">{gettext("Service")}</th>
-                  <th class="width-min">{gettext("Role")}</th>
-                  <th class="width-min num">{gettext("Generation")}</th>
-                  <th class="width-min num">{gettext("Addresses")}</th>
-                  <th class="width-min">{gettext("Status")}</th>
+                  <th class="width-auto">{dgettext("admin_operations", "Service")}</th>
+                  <th class="width-min">{dgettext("admin_operations", "Role")}</th>
+                  <th class="width-min num">{dgettext("admin_operations", "Generation")}</th>
+                  <th class="width-min num">{dgettext("admin_operations", "Addresses")}</th>
+                  <th class="width-min">{dgettext("admin_operations", "Status")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -140,25 +162,28 @@ defmodule MarshallWeb.Admin.OperationsLive do
             </table>
           </div>
         </UI.panel>
-        <UI.panel id="ingress-routes" title={gettext("Ingress routes")}>
+        <UI.panel id="ingress-routes" title={dgettext("admin_operations", "Ingress routes")}>
           <.status_list
             rows={@snapshot.routes}
             zone={@time_zone}
-            empty={gettext("No ingress routes are published.")}
+            empty={dgettext("admin_operations", "No ingress routes are published.")}
             fields={[
-              {:vm_id, gettext("Machine")},
-              {:revision, gettext("Revision")},
-              {:certificate_expires_at, gettext("Certificate expires")},
-              {:expires_at, gettext("Route expires")}
+              {:vm_id, dgettext("admin_operations", "Machine")},
+              {:revision, dgettext("admin_operations", "Revision")},
+              {:certificate_expires_at, dgettext("admin_operations", "Certificate expires")},
+              {:expires_at, dgettext("admin_operations", "Route expires")}
             ]}
           />
         </UI.panel>
-        <UI.panel id="dns-publications" title={gettext("DNS publications")}>
+        <UI.panel id="dns-publications" title={dgettext("admin_operations", "DNS publications")}>
           <.status_list
             rows={@snapshot.publications}
             zone={@time_zone}
-            empty={gettext("No DNS publications are recorded.")}
-            fields={[{:zone, gettext("Zone")}, {:revision, gettext("Revision")}]}
+            empty={dgettext("admin_operations", "No DNS publications are recorded.")}
+            fields={[
+              {:zone, dgettext("admin_operations", "Zone")},
+              {:revision, dgettext("admin_operations", "Revision")}
+            ]}
           />
         </UI.panel>
       </section>
@@ -209,7 +234,9 @@ defmodule MarshallWeb.Admin.OperationsLive do
   defp enabled(assigns) do
     ~H"""
     <span class="status-label" data-tone={if @value, do: "success", else: "muted"}>
-      {if @value, do: gettext("Enabled"), else: gettext("Disabled")}
+      {if @value,
+        do: dgettext("admin_operations", "Enabled"),
+        else: dgettext("admin_operations", "Disabled")}
     </span>
     """
   end
@@ -219,21 +246,25 @@ defmodule MarshallWeb.Admin.OperationsLive do
 
   defp tally(rows) do
     enabled = Enum.count(rows, & &1.enabled)
-    gettext("%{count} · %{enabled} enabled", count: length(rows), enabled: enabled)
+
+    dgettext("admin_operations", "%{count} · %{enabled} enabled",
+      count: length(rows),
+      enabled: enabled
+    )
   end
 
-  defp bytes(nil), do: gettext("unknown")
+  defp bytes(nil), do: dgettext("admin_operations", "unknown")
   defp bytes(value), do: "#{Float.round(value / 1_073_741_824, 1)} GiB"
 
   @spec format(String.t() | integer() | nil) :: String.t()
-  defp format(nil), do: gettext("unknown")
+  defp format(nil), do: dgettext("admin_operations", "unknown")
   defp format(value), do: to_string(value)
 
   # @cc [owner:ghuntley,label:product] localized-audi-service-roles
   # Human role labels MUST translate the closed Audi service role enum while
   # service identifiers and enrollment values remain unchanged.
   @spec service_role(atom()) :: String.t()
-  defp service_role(:dns), do: gettext("DNS")
-  defp service_role(:gateway), do: gettext("Gateway")
-  defp service_role(_), do: gettext("Unknown")
+  defp service_role(:dns), do: dgettext("admin_operations", "DNS")
+  defp service_role(:gateway), do: dgettext("admin_operations", "Gateway")
+  defp service_role(_), do: dgettext("admin_operations", "Unknown")
 end

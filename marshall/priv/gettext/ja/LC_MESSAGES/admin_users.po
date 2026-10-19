@@ -1,0 +1,192 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ja\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/admin/users_live.ex:165
+#, elixir-autogen, elixir-format
+msgid "%{count} owned machine"
+msgid_plural "%{count} owned machines"
+msgstr[0] "%{count}所有機"
+
+#: lib/marshall_web/live/admin/users_live.ex:256
+#, elixir-autogen, elixir-format
+msgid "Account pages"
+msgstr "アカウントページ"
+
+#: lib/marshall_web/live/admin/users_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Account request accepted."
+msgstr "アカウントリクエストが受け入れられました。"
+
+#: lib/marshall_web/live/admin/users_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Accounts are temporarily unavailable."
+msgstr "アカウントは一時的に利用できません。"
+
+#: lib/marshall_web/live/admin/users_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "Administrator"
+msgstr "管理者"
+
+#: lib/marshall_web/live/admin/users_live.ex:44
+#, elixir-autogen, elixir-format
+msgid "Administrator access updated."
+msgstr "管理者アクセスが更新されました。"
+
+#: lib/marshall_web/live/admin/users_live.ex:63
+#, elixir-autogen, elixir-format
+msgid "Browser sessions revoked."
+msgstr "ブラウザセッションが取り消されました。"
+
+#: lib/marshall_web/live/admin/users_live.ex:94
+#, elixir-autogen, elixir-format
+msgid "Could not accept this account change. Check confirmation and verify your passkey."
+msgstr "このアカウントの変更を受け入れることができませんでした。確認を確認し、パスキーを確認します。"
+
+#: lib/marshall_web/live/admin/users_live.ex:47
+#, elixir-autogen, elixir-format
+msgid "Could not change administrator access."
+msgstr "管理者アクセスを変更できませんでした。"
+
+#: lib/marshall_web/live/admin/users_live.ex:66
+#, elixir-autogen, elixir-format
+msgid "Could not revoke browser sessions."
+msgstr "ブラウザセッションを取り消すことができませんでした。"
+
+#: lib/marshall_web/live/admin/users_live.ex:247
+#, elixir-autogen, elixir-format
+msgid "Delete user and machines"
+msgstr "ユーザーとマシンを削除する"
+
+#: lib/marshall_web/live/admin/users_live.ex:146
+#, elixir-autogen, elixir-format
+msgid "Email address"
+msgstr "電子メールアドレス"
+
+#: lib/marshall_web/live/admin/users_live.ex:139
+#, elixir-autogen, elixir-format
+msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
+msgstr ""
+"この展開上のすべてのアカウント。サインインしているユーザーはこのページを読むことができます。変更には、最新のパスキー検証を持つ管理者が必要です。"
+
+#: lib/marshall_web/live/admin/users_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Grant this account access to administer the entire fleet and all machines?"
+msgstr "フリート全体とすべてのマシンを管理するためのアクセス権をこのアカウントに付与しますか?"
+
+#: lib/marshall_web/live/admin/users_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "無効なリクエストです。"
+
+#: lib/marshall_web/live/admin/users_live.ex:144
+#, elixir-autogen, elixir-format
+msgid "Invite a user"
+msgstr "ユーザーを招待する"
+
+#: lib/marshall_web/live/admin/users_live.ex:166
+#, elixir-autogen, elixir-format
+msgid "MFA enabled"
+msgstr "MFA が有効になっている"
+
+#: lib/marshall_web/live/admin/users_live.ex:167
+#, elixir-autogen, elixir-format
+msgid "MFA not enrolled"
+msgstr "MFA が登録されていません"
+
+#: lib/marshall_web/live/admin/users_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "Make administrator"
+msgstr "管理者にする"
+
+#: lib/marshall_web/live/admin/users_live.ex:262
+#, elixir-autogen, elixir-format
+msgid "Next page →"
+msgstr "次のページ→"
+
+#: lib/marshall_web/live/admin/users_live.ex:254
+#, elixir-autogen, elixir-format
+msgid "No accounts on this page."
+msgstr "このページにはアカウントがありません。"
+
+#: lib/marshall_web/live/admin/users_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
+msgstr "このアカウントとそのアカウントが所有するすべてのマシン (他の人と共有しているマシンも含む) を完全に削除しますか?"
+
+#: lib/marshall_web/live/admin/users_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "Remove administrator"
+msgstr "管理者の削除"
+
+#: lib/marshall_web/live/admin/users_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "Remove administrator access for this account?"
+msgstr "このアカウントの管理者アクセスを削除しますか?"
+
+#: lib/marshall_web/live/admin/users_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Reset MFA"
+msgstr "MFA をリセット"
+
+#: lib/marshall_web/live/admin/users_live.ex:216
+#, elixir-autogen, elixir-format
+msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
+msgstr "このユーザーの MFA をリセットし、すべてのブラウザー セッションを取り消しますか?交換用のパスキーを登録する必要があります。"
+
+#: lib/marshall_web/live/admin/users_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "Send invitation"
+msgstr "招待状を送信する"
+
+#: lib/marshall_web/live/admin/users_live.ex:210
+#, elixir-autogen, elixir-format
+msgid "Sign out everywhere"
+msgstr "どこでもサインアウト"
+
+#: lib/marshall_web/live/admin/users_live.ex:208
+#, elixir-autogen, elixir-format
+msgid "Sign this account out of every browser session?"
+msgstr "すべてのブラウザ セッションからこのアカウントをサインアウトしますか?"
+
+#: lib/marshall_web/live/admin/users_live.ex:234
+#, elixir-autogen, elixir-format
+msgid "Type the email to delete this account and its %{count} machines"
+msgstr "このアカウントとその %{count} マシンを削除するには、電子メールを入力してください"
+
+#: lib/marshall_web/live/admin/users_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "User"
+msgstr "ユーザー"
+
+#: lib/marshall_web/live/admin/users_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr "ユーザー"
+
+#: lib/marshall_web/live/admin/users_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Verify with passkey · administrative access lasts 15 minutes →"
+msgstr "パスキーによる検証 · 管理アクセスは 15 分間継続 →"
+
+#: lib/marshall_web/live/admin/users_live.ex:167
+#, elixir-autogen, elixir-format
+msgid "· Your account"
+msgstr "· あなたのアカウント"
+
+#: lib/marshall_web/live/admin/users_live.ex:257
+#, elixir-autogen, elixir-format
+msgid "← First page"
+msgstr "← 最初のページ"

@@ -1,0 +1,208 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: te\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/inference_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "AI request"
+msgstr "AI అభ్యర్థన"
+
+#: lib/marshall_web/live/inference_live.ex:101
+#, elixir-autogen, elixir-format
+msgid "AI requests"
+msgstr "AI అభ్యర్థనలు"
+
+#: lib/marshall_web/live/inference_live.ex:106
+#, elixir-autogen, elixir-format
+msgid "AI requests · last 30 days"
+msgstr "AI అభ్యర్థనలు · గత 30 రోజులు"
+
+#: lib/marshall_web/live/inference_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+msgstr ""
+"AI వినియోగం ప్రతి యంత్ర యజమానికి ఆపాదించబడుతుంది. అసంపూర్ణ వినియోగం "
+"తెలియనిదిగానే ఉంటుంది."
+
+#: lib/marshall_web/live/inference_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "AI usage is unavailable."
+msgstr "AI వినియోగం అందుబాటులో లేదు."
+
+#: lib/marshall_web/live/inference_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "AI usage report"
+msgstr "AI వినియోగ నివేదిక"
+
+#: lib/marshall_web/live/inference_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "All providers"
+msgstr "అన్ని ప్రొవైడర్లు"
+
+#: lib/marshall_web/live/inference_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Anthropic"
+msgstr "Anthropic"
+
+#: lib/marshall_web/live/inference_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "వర్తింపజేయి"
+
+#: lib/marshall_web/live/inference_live.ex:112
+#, elixir-autogen, elixir-format
+msgid "Daily AI request counts over the past 30 days"
+msgstr "గత 30 రోజుల రోజువారీ AI అభ్యర్థనల లెక్కలు"
+
+#: lib/marshall_web/live/inference_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "వివరాలు"
+
+#: lib/marshall_web/live/inference_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Exact model ID"
+msgstr "ఖచ్చితమైన మోడల్ ID"
+
+#: lib/marshall_web/live/inference_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Export AI usage"
+msgstr "AI వినియోగాన్ని ఎగుమతి చేయి"
+
+#: lib/marshall_web/live/inference_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Filter"
+msgstr "వడపోత"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "ఫ్లీట్ AI వినియోగం"
+
+#: lib/marshall_web/live/inference_live.ex:102
+#, elixir-autogen, elixir-format
+msgid "Incomplete AI reports"
+msgstr "అసంపూర్ణ AI నివేదికలు"
+
+#: lib/marshall_web/live/inference_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "ఇన్‌పుట్ టోకెన్లు"
+
+#: lib/marshall_web/live/inference_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Inspect"
+msgstr "పరిశీలించు"
+
+#: lib/marshall_web/live/inference_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "యంత్రం"
+
+#: lib/marshall_web/live/inference_live.ex:136
+#: lib/marshall_web/live/inference_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Model"
+msgstr "మోడల్"
+
+#: lib/marshall_web/live/inference_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "No AI requests match these filters."
+msgstr "ఈ వడపోతలకు సరిపడే AI అభ్యర్థనలు లేవు."
+
+#: lib/marshall_web/live/inference_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Older AI requests →"
+msgstr "పాత AI అభ్యర్థనలు →"
+
+#: lib/marshall_web/live/inference_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
+msgstr ""
+"రోజుకు ఒక నిలువు వరుస, పాతవి ముందు; █ యొక్క ఎనిమిది వరుసలు అత్యంత బిజీ "
+"రోజుకు అనుగుణంగా ఉంటాయి. లేబుళ్లు నెలలో తేదీ చూపుతాయి."
+
+#: lib/marshall_web/live/inference_live.ex:130
+#, elixir-autogen, elixir-format
+msgid "OpenAI"
+msgstr "OpenAI"
+
+#: lib/marshall_web/live/inference_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Outcome"
+msgstr "ఫలితం"
+
+#: lib/marshall_web/live/inference_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Output tokens"
+msgstr "అవుట్‌పుట్ టోకెన్లు"
+
+#: lib/marshall_web/live/inference_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Placement / epoch"
+msgstr "కేటాయింపు / యుగం"
+
+#: lib/marshall_web/live/inference_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Pricing source / version"
+msgstr "ధర మూలం / వెర్షన్"
+
+#: lib/marshall_web/live/inference_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Provider"
+msgstr "ప్రొవైడర్"
+
+#: lib/marshall_web/live/inference_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Reported input tokens"
+msgstr "నివేదించిన ఇన్‌పుట్ టోకెన్లు"
+
+#: lib/marshall_web/live/inference_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Reported output tokens"
+msgstr "నివేదించిన అవుట్‌పుట్ టోకెన్లు"
+
+#: lib/marshall_web/live/inference_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "సమయం"
+
+#: lib/marshall_web/live/inference_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Token cost estimate · USD"
+msgstr "టోకెన్ వ్యయ అంచనా · USD"
+
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "అందుబాటులో లేదు"
+
+#: lib/marshall_web/live/inference_live.ex:60
+#: lib/marshall_web/live/inference_live.ex:178
+#: lib/marshall_web/live/inference_live.ex:185
+#: lib/marshall_web/live/inference_live.ex:188
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "తెలియదు"
+
+#: lib/marshall_web/live/inference_live.ex:168
+#, elixir-autogen, elixir-format
+msgid "Unreported"
+msgstr "నివేదించలేదు"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Your AI usage"
+msgstr "మీ AI వినియోగం"

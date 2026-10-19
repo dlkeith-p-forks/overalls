@@ -1,0 +1,351 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: tr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/access_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Access authority"
+msgstr "Erişim yetkisi"
+
+#: lib/marshall_web/live/admin/access_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Access inventory is temporarily unavailable."
+msgstr "Erişim envanteri geçici olarak kullanılamıyor."
+
+#: lib/marshall_web/live/admin/access_live.ex:106
+#: lib/marshall_web/live/admin/access_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "Hesap"
+
+#: lib/marshall_web/live/admin/access_live.ex:110
+#: lib/marshall_web/live/admin/access_live.ex:156
+#: lib/marshall_web/live/admin/access_live.ex:205
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "İşlemler"
+
+#: lib/marshall_web/live/admin/access_live.ex:95
+#: lib/marshall_web/live/admin/access_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Active SSH sessions"
+msgstr "Etkin SSH oturumları"
+
+#: lib/marshall_web/live/admin/access_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr "Eklendi"
+
+#: lib/marshall_web/live_admin_auth.ex:142
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "Yönetim değişikliklerine izin verilmiyor."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "Yönetim değişiklikleri için yönetici gerekir."
+
+#: lib/marshall_web/live/admin/access_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "Oturumu kapat"
+
+#: lib/marshall_web/live/admin/access_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "Close this SSH session?"
+msgstr "Bu SSH oturumu kapatılsın mı?"
+
+#: lib/marshall_web/live/admin/access_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Could not close that session."
+msgstr "Oturum kapatılamadı."
+
+#: lib/marshall_web/live/admin/access_live.ex:46
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that VM access."
+msgstr "Sanal makine erişimi iptal edilemedi."
+
+#: lib/marshall_web/live/admin/access_live.ex:26
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that key."
+msgstr "Anahtar iptal edilemedi."
+
+#: lib/marshall_web/live/admin/access_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "Son kullanım"
+
+#: lib/marshall_web/live_admin_auth.ex:190
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "Önce mevcut doğrulamayı tamamlayın veya iptal edin."
+
+#: lib/marshall_web/live/admin/access_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "Ağ geçidi"
+
+#: lib/marshall_web/live/admin/access_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "Granted"
+msgstr "Verildi"
+
+#: lib/marshall_web/live_admin_auth.ex:205
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "Geçersiz yönetim isteği."
+
+#: lib/marshall_web/live/admin/access_live.ex:51
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Geçersiz istek."
+
+#: lib/marshall_web/live/admin/access_live.ex:153
+#: lib/marshall_web/live/admin/access_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "Anahtar"
+
+#: lib/marshall_web/live/admin/access_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Makine"
+
+#: lib/marshall_web/live/admin/access_live.ex:246
+#, elixir-autogen, elixir-format
+msgid "Manager"
+msgstr "Yönetici"
+
+#: lib/marshall_web/live/admin/access_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "No active keys."
+msgstr "Etkin anahtar yok."
+
+#: lib/marshall_web/live/admin/access_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "No active sessions."
+msgstr "Etkin oturum yok."
+
+#: lib/marshall_web/live/admin/access_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "No machine is shared with another account."
+msgstr "Başka bir hesapla paylaşılan makine yok."
+
+#: lib/marshall_web/live/admin/access_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "Operatör"
+
+#: lib/marshall_web/live/admin/access_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "Anahtar onayı bekleniyor"
+
+#: lib/marshall_web/live/admin/access_live.ex:94
+#: lib/marshall_web/live/admin/access_live.ex:146
+#, elixir-autogen, elixir-format
+msgid "Registered SSH keys"
+msgstr "Kayıtlı SSH anahtarları"
+
+#: lib/marshall_web/live/admin/access_live.ex:138
+#, elixir-autogen, elixir-format
+msgid "Revoke access"
+msgstr "Erişimi iptal et"
+
+#: lib/marshall_web/live/admin/access_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Revoke key"
+msgstr "Anahtarı iptal et"
+
+#: lib/marshall_web/live/admin/access_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Revoke this SSH key and close sessions using it?"
+msgstr "Bu SSH anahtarı iptal edilip onu kullanan oturumlar kapatılsın mı?"
+
+#: lib/marshall_web/live/admin/access_live.ex:136
+#, elixir-autogen, elixir-format
+msgid "Revoke this user's VM access?"
+msgstr "Bu kullanıcının sanal makine erişimi iptal edilsin mi?"
+
+#: lib/marshall_web/live/admin/access_live.ex:247
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "İptal edildi"
+
+#: lib/marshall_web/live/admin/access_live.ex:107
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Rol"
+
+#: lib/marshall_web/live/admin/access_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "SSH key"
+msgstr "SSH anahtarı"
+
+#: lib/marshall_web/live/admin/access_live.ex:25
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked."
+msgstr "SSH anahtarı iptal edildi."
+
+#: lib/marshall_web/live/admin/access_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "SSH session closed."
+msgstr "SSH oturumu kapatıldı."
+
+#: lib/marshall_web/live/admin/access_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Shared machine access"
+msgstr "Paylaşılan makine erişimi"
+
+#: lib/marshall_web/live/admin/access_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Shared machine grants"
+msgstr "Paylaşılan makine izinleri"
+
+#: lib/marshall_web/live/admin/access_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Bilinmiyor"
+
+#: lib/marshall_web/live/admin/access_live.ex:90
+#, elixir-autogen, elixir-format
+msgid "Updated every 15 seconds"
+msgstr "15 saniyede bir güncellenir"
+
+#: lib/marshall_web/live/admin/access_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "VM access revoked."
+msgstr "Sanal makine erişimi iptal edildi."
+
+#: lib/marshall_web/live/admin/access_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Viewer"
+msgstr "İzleyici"
+
+#: lib/marshall_web/live/admin/access_live.ex:243
+#, elixir-autogen, elixir-format
+msgid "Web apps"
+msgstr "Web uygulamaları"
+
+#: lib/marshall_web/live/admin/access_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
+msgstr "Hangi makineye kimin, hangi anahtar veya oturumla erişebildiği. Özel anahtarlar, oturum belirteçleri ve ağ geçidi kimlik bilgileri asla gösterilmez."
+
+#: lib/marshall_web/admin_elevation.ex:41
+#, elixir-autogen, elixir-format
+msgid "add this Git mirror"
+msgstr "bu Git aynasını ekle"
+
+#: lib/marshall_web/admin_elevation.ex:46
+#, elixir-autogen, elixir-format
+msgid "approve this workload downtime"
+msgstr "bu iş yükü kesintisini onayla"
+
+#: lib/marshall_web/admin_elevation.ex:33
+#, elixir-autogen, elixir-format
+msgid "change administrator access"
+msgstr "yönetici erişimini değiştir"
+
+#: lib/marshall_web/admin_elevation.ex:45
+#, elixir-autogen, elixir-format
+msgid "change this evacuation"
+msgstr "bu boşaltmayı değiştir"
+
+#: lib/marshall_web/admin_elevation.ex:48
+#, elixir-autogen, elixir-format
+msgid "change this machine's state"
+msgstr "bu makinenin durumunu değiştir"
+
+#: lib/marshall_web/admin_elevation.ex:52
+#, elixir-autogen, elixir-format
+msgid "change this node's admission settings"
+msgstr "bu düğümün kabul ayarlarını değiştir"
+
+#: lib/marshall_web/admin_elevation.ex:36
+#, elixir-autogen, elixir-format
+msgid "close this SSH session"
+msgstr "bu SSH oturumunu kapat"
+
+#: lib/marshall_web/admin_elevation.ex:39
+#, elixir-autogen, elixir-format
+msgid "delete this user account"
+msgstr "bu kullanıcı hesabını sil"
+
+#: lib/marshall_web/admin_elevation.ex:49
+#, elixir-autogen, elixir-format
+msgid "move this machine"
+msgstr "bu makineyi taşı"
+
+#: lib/marshall_web/admin_elevation.ex:51
+#, elixir-autogen, elixir-format
+msgid "open this machine with administrator access"
+msgstr "bu makineyi yönetici erişimiyle aç"
+
+#: lib/marshall_web/admin_elevation.ex:42
+#, elixir-autogen, elixir-format
+msgid "refresh this Git mirror"
+msgstr "bu Git aynasını yenile"
+
+#: lib/marshall_web/admin_elevation.ex:43
+#, elixir-autogen, elixir-format
+msgid "remove this Git mirror"
+msgstr "bu Git aynasını kaldır"
+
+#: lib/marshall_web/admin_elevation.ex:47
+#, elixir-autogen, elixir-format
+msgid "replan this workload move"
+msgstr "bu iş yükü taşımasını yeniden planla"
+
+#: lib/marshall_web/admin_elevation.ex:40
+#, elixir-autogen, elixir-format
+msgid "reset this account's passkeys"
+msgstr "bu hesabın geçiş anahtarlarını sıfırla"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "retry this background job"
+msgstr "bu arka plan görevini yeniden dene"
+
+#: lib/marshall_web/admin_elevation.ex:35
+#, elixir-autogen, elixir-format
+msgid "revoke this SSH key"
+msgstr "bu SSH anahtarını iptal et"
+
+#: lib/marshall_web/admin_elevation.ex:37
+#, elixir-autogen, elixir-format
+msgid "revoke this VM access"
+msgstr "bu sanal makine erişimini iptal et"
+
+#: lib/marshall_web/admin_elevation.ex:50
+#, elixir-autogen, elixir-format
+msgid "rotate the fleet certificate"
+msgstr "filo sertifikasını yenile"
+
+#: lib/marshall_web/admin_elevation.ex:38
+#, elixir-autogen, elixir-format
+msgid "send this invitation"
+msgstr "bu daveti gönder"
+
+#: lib/marshall_web/admin_elevation.ex:34
+#, elixir-autogen, elixir-format
+msgid "sign this account out everywhere"
+msgstr "bu hesabı her yerden çıkar"
+
+#: lib/marshall_web/admin_elevation.ex:44
+#, elixir-autogen, elixir-format
+msgid "start this node evacuation"
+msgstr "bu düğüm boşaltmasını başlat"

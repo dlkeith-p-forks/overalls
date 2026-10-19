@@ -20,6 +20,7 @@ defmodule Porsche.LocaleTest do
 
     context = Porsche.GettextPlural.init(%{locale: "arz"})
     assert Porsche.GettextPlural.nplurals(context) == 6
+
     assert Enum.map([0, 1, 2, 3, 11, 100], &Porsche.GettextPlural.plural(context, &1)) ==
              [0, 1, 2, 3, 4, 5]
   end

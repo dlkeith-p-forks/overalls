@@ -115,5 +115,5 @@ defmodule MarshallWeb.MarvinDownloadController do
   defp cache(conn), do: put_resp_header(conn, "cache-control", "public, max-age=300")
 
   @spec unavailable(Plug.Conn.t()) :: Plug.Conn.t()
-  defp unavailable(conn), do: send_resp(conn, 404, gettext("Unavailable") <> "\n")
+  defp unavailable(conn), do: send_resp(conn, 404, dgettext("downloads", "Unavailable") <> "\n")
 end

@@ -2,57 +2,71 @@ defmodule Porsche.SSH.CommandMessages do
   @moduledoc "Extraction markers for shared command descriptions."
   use Gettext, backend: Porsche.Gettext
 
-  @message_0 gettext_noop("Show command help.")
-  @message_1 gettext_noop("Show the authenticated account.")
-  @message_2 gettext_noop("List available images.")
-  @message_3 gettext_noop("List machines you can access.")
-  @message_4 gettext_noop("Inspect a machine by name or UUID.")
-  @message_5 gettext_noop(
+  @message_0 dgettext_noop("help", "Show command help.")
+  @message_1 dgettext_noop("help", "Show the authenticated account.")
+  @message_2 dgettext_noop("help", "List available images.")
+  @message_3 dgettext_noop("help", "List machines you can access.")
+  @message_4 dgettext_noop("help", "Inspect a machine by name or UUID.")
+  @message_5 dgettext_noop(
+               "help",
                "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
              )
-  @message_6 gettext_noop("Queue an independent full-disk copy of a machine.")
-  @message_7 gettext_noop("Move a machine to an automatically selected host.")
-  @message_8 gettext_noop(
+  @message_6 dgettext_noop("help", "Queue an independent full-disk copy of a machine.")
+  @message_7 dgettext_noop("help", "Move a machine to an automatically selected host.")
+  @message_8 dgettext_noop(
+               "help",
                "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
              )
-  @message_9 gettext_noop("Retry a failed clone or relocation request.")
-  @message_10 gettext_noop("Cancel an unpublished clone or uncommitted relocation request.")
-  @message_11 gettext_noop("Start a machine.")
-  @message_12 gettext_noop("Stop a machine, retaining its disk and discarding suspended memory.")
-  @message_13 gettext_noop(
+  @message_9 dgettext_noop("help", "Retry a failed clone or relocation request.")
+  @message_10 dgettext_noop(
+                "help",
+                "Cancel an unpublished clone or uncommitted relocation request."
+              )
+  @message_11 dgettext_noop("help", "Start a machine.")
+  @message_12 dgettext_noop(
+                "help",
+                "Stop a machine, retaining its disk and discarding suspended memory."
+              )
+  @message_13 dgettext_noop(
+                "help",
                 "Delete a machine and its disk. Refused while its owner has it pinned."
               )
-  @message_14 gettext_noop(
+  @message_14 dgettext_noop(
+                "help",
                 "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
               )
-  @message_15 gettext_noop("Remove your pin from a machine.")
-  @message_16 gettext_noop("List access grants.")
-  @message_17 gettext_noop("Grant viewer, operator or manager access.")
-  @message_18 gettext_noop("Revoke an account's shared access.")
-  @message_19 gettext_noop("List your SSH keys.")
-  @message_20 gettext_noop("Revoke one of your SSH keys.")
-  @message_21 gettext_noop(
+  @message_15 dgettext_noop("help", "Remove your pin from a machine.")
+  @message_16 dgettext_noop("help", "List access grants.")
+  @message_17 dgettext_noop("help", "Grant viewer, operator or manager access.")
+  @message_18 dgettext_noop("help", "Revoke an account's shared access.")
+  @message_19 dgettext_noop("help", "List your SSH keys.")
+  @message_20 dgettext_noop("help", "Revoke one of your SSH keys.")
+  @message_21 dgettext_noop(
+                "help",
                 "Create or replace a named integration at https://NAME.integration.internal."
               )
-  @message_22 gettext_noop("Remove a named integration.")
-  @message_23 gettext_noop("List your integrations.")
-  @message_24 gettext_noop("Inspect an integration without secrets.")
-  @message_25 gettext_noop("Make an integration available to a machine.")
-  @message_26 gettext_noop("Remove a machine's explicit availability.")
-  @message_27 gettext_noop("Create a team you own.")
-  @message_28 gettext_noop("List your teams and roles.")
-  @message_29 gettext_noop("List a team's members.")
-  @message_30 gettext_noop("Add or change an admin or member.")
-  @message_31 gettext_noop("Remove an account's membership.")
-  @message_32 gettext_noop("Offer team ownership to an admin.")
-  @message_33 gettext_noop("Accept a pending ownership offer.")
-  @message_34 gettext_noop("Decline a pending ownership offer.")
-  @message_35 gettext_noop("Cancel your pending ownership offer.")
-  @message_36 gettext_noop("Inspect a previously accepted request.")
-  @message_37 gettext_noop("Close this interactive channel.")
-  @message_38 gettext_noop("Suspend a machine, preserving its memory and disk.")
-  @message_39 gettext_noop("Resume preserved memory, waiting for capacity or relocation.")
-  @message_40 gettext_noop("Resume a suspended machine's preserved memory.")
+  @message_22 dgettext_noop("help", "Remove a named integration.")
+  @message_23 dgettext_noop("help", "List your integrations.")
+  @message_24 dgettext_noop("help", "Inspect an integration without secrets.")
+  @message_25 dgettext_noop("help", "Make an integration available to a machine.")
+  @message_26 dgettext_noop("help", "Remove a machine's explicit availability.")
+  @message_27 dgettext_noop("help", "Create a team you own.")
+  @message_28 dgettext_noop("help", "List your teams and roles.")
+  @message_29 dgettext_noop("help", "List a team's members.")
+  @message_30 dgettext_noop("help", "Add or change an admin or member.")
+  @message_31 dgettext_noop("help", "Remove an account's membership.")
+  @message_32 dgettext_noop("help", "Offer team ownership to an admin.")
+  @message_33 dgettext_noop("help", "Accept a pending ownership offer.")
+  @message_34 dgettext_noop("help", "Decline a pending ownership offer.")
+  @message_35 dgettext_noop("help", "Cancel your pending ownership offer.")
+  @message_36 dgettext_noop("help", "Inspect a previously accepted request.")
+  @message_37 dgettext_noop("help", "Close this interactive channel.")
+  @message_38 dgettext_noop("help", "Suspend a machine, preserving its memory and disk.")
+  @message_39 dgettext_noop(
+                "help",
+                "Resume preserved memory, waiting for capacity or relocation."
+              )
+  @message_40 dgettext_noop("help", "Resume a suspended machine's preserved memory.")
 
   @spec sources() :: [String.t()]
   def sources,

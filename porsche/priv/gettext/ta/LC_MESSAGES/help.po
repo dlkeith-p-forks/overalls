@@ -1,0 +1,204 @@
+msgid ""
+msgstr ""
+"Language: ta\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/porsche/ssh/command_messages.ex:59
+#, elixir-autogen, elixir-format
+msgid "Accept a pending ownership offer."
+msgstr "நிலுவையிலுள்ள உரிமை வழங்கலை ஏற்றுக்கொள்."
+
+#: lib/porsche/ssh/command_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "நிர்வாகி அல்லது உறுப்பினரைச் சேர் அல்லது மாற்று."
+
+#: lib/porsche/ssh/command_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "வெளியிடப்படாத நகலை அல்லது உறுதியாகாத இடமாற்றக் கோரிக்கையை ரத்துசெய்."
+
+#: lib/porsche/ssh/command_messages.ex:61
+#, elixir-autogen, elixir-format
+msgid "Cancel your pending ownership offer."
+msgstr "உங்கள் நிலுவையிலுள்ள உரிமை வழங்கலை ரத்துசெய்."
+
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "இயந்திரத்தின் CPU மற்றும் நினைவகத்தை மாற்று; வட்டை விரிவாக்க மட்டுமே முடியும். இயங்கும் இயந்திரம் நிறுத்தப்பட்டு மீண்டும் தொடங்கும்."
+
+#: lib/porsche/ssh/command_messages.ex:63
+#, elixir-autogen, elixir-format
+msgid "Close this interactive channel."
+msgstr "இந்த ஊடாடும் வழியை மூடு."
+
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "இயந்திரத்தை உருவாக்கு. வட்டின் அதிகபட்ச அளவு: 500 GiB. --source விருந்தினர் இயந்திரத்தில் பொது GitHub, GitLab, Codeberg அல்லது Bitbucket களஞ்சியத்தை நகலெடுக்கும்."
+
+#: lib/porsche/ssh/command_messages.ex:53
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "உங்களுக்குச் சொந்தமான குழுவை உருவாக்கு."
+
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "https://NAME.integration.internal இல் பெயரிடப்பட்ட ஒருங்கிணைப்பை உருவாக்கு அல்லது மாற்று."
+
+#: lib/porsche/ssh/command_messages.ex:60
+#, elixir-autogen, elixir-format
+msgid "Decline a pending ownership offer."
+msgstr "நிலுவையிலுள்ள உரிமை வழங்கலை நிராகரி."
+
+#: lib/porsche/ssh/command_messages.ex:30
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "இயந்திரத்தையும் அதன் வட்டையும் நீக்கு. உரிமையாளர் பொருத்தி வைத்திருந்தால் மறுக்கப்படும்."
+
+#: lib/porsche/ssh/command_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "பார்வையாளர், இயக்குபவர் அல்லது மேலாளர் அணுகலை வழங்கு."
+
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "பெயர் அல்லது UUID மூலம் இயந்திரத்தை ஆய்வு செய்."
+
+#: lib/porsche/ssh/command_messages.ex:62
+#, elixir-autogen, elixir-format
+msgid "Inspect a previously accepted request."
+msgstr "முன்பு ஏற்கப்பட்ட கோரிக்கையை ஆய்வு செய்."
+
+#: lib/porsche/ssh/command_messages.ex:50
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "ரகசியங்களைக் காட்டாமல் ஒருங்கிணைப்பை ஆய்வு செய்."
+
+#: lib/porsche/ssh/command_messages.ex:55
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "குழுவின் உறுப்பினர்களைப் பட்டியலிடு."
+
+#: lib/porsche/ssh/command_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "வழங்கப்பட்ட அணுகல் அனுமதிகளைப் பட்டியலிடு."
+
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "கிடைக்கும் இயந்திரப் படிமங்களைப் பட்டியலிடு."
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "நீங்கள் அணுகக்கூடிய இயந்திரங்களைப் பட்டியலிடு."
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "உங்கள் SSH சாவிகளைப் பட்டியலிடு."
+
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "உங்கள் ஒருங்கிணைப்புகளைப் பட்டியலிடு."
+
+#: lib/porsche/ssh/command_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "உங்கள் குழுக்களையும் பொறுப்புகளையும் பட்டியலிடு."
+
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "இயந்திரத்திற்கு ஒருங்கிணைப்பைக் கிடைக்கச் செய்."
+
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "தானாகத் தேர்ந்தெடுக்கப்பட்ட வழங்கிக்கு இயந்திரத்தை நகர்த்து."
+
+#: lib/porsche/ssh/command_messages.ex:58
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "நிர்வாகிக்குக் குழு உரிமையை வழங்க முன்வா."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:34
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "உங்கள் பட்டியல்களின் மேலே ஒரு இயந்திரத்தைப் பொருத்தவும். உரிமையாளராக நீங்கள் பொருத்துவது அதை எழுப்பி, தானியங்கி இடைநிறுத்தத்தையும் நீக்குதலையும் தடுக்கிறது."
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "இயந்திரத்தின் முழு வட்டின் தனித்த நகலை வரிசையில் சேர்."
+
+#: lib/porsche/ssh/command_messages.ex:52
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "இயந்திரத்திற்குத் தனியாக வழங்கப்பட்ட கிடைப்பை நீக்கு."
+
+#: lib/porsche/ssh/command_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "பெயரிடப்பட்ட ஒருங்கிணைப்பை நீக்கு."
+
+#: lib/porsche/ssh/command_messages.ex:57
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "கணக்கின் உறுப்பினர் நிலையை நீக்கு."
+
+#: lib/porsche/ssh/command_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "இயந்திரத்தில் உங்கள் பொருத்தலை நீக்கு."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:69
+msgid "Resume a suspended machine's preserved memory."
+msgstr "இடைநிறுத்தப்பட்ட இயந்திரத்தை அதன் சேமித்த நினைவகத்திலிருந்து மீண்டும் தொடரவும்."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:65
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "திறன் அல்லது இடமாற்றத்திற்காகக் காத்திருந்து சேமித்த நினைவகத்திலிருந்து மீண்டும் தொடரவும்."
+
+#: lib/porsche/ssh/command_messages.ex:20
+msgid "Retry a failed clone or relocation request."
+msgstr "தோல்வியடைந்த நகலெடுப்பு அல்லது இடமாற்றக் கோரிக்கையை மீண்டும் முயல்."
+
+#: lib/porsche/ssh/command_messages.ex:41
+msgid "Revoke an account's shared access."
+msgstr "கணக்கின் பகிரப்பட்ட அணுகலைத் திரும்பப் பெறு."
+
+#: lib/porsche/ssh/command_messages.ex:43
+msgid "Revoke one of your SSH keys."
+msgstr "உங்கள் SSH சாவிகளில் ஒன்றை ரத்துசெய்."
+
+#: lib/porsche/ssh/command_messages.ex:5
+msgid "Show command help."
+msgstr "கட்டளை உதவியைக் காட்டு."
+
+#: lib/porsche/ssh/command_messages.ex:6
+msgid "Show the authenticated account."
+msgstr "அங்கீகரிக்கப்பட்ட கணக்கைக் காட்டு."
+
+#: lib/porsche/ssh/command_messages.ex:25
+msgid "Start a machine."
+msgstr "இயந்திரத்தைத் தொடங்கு."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:26
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "வட்டை வைத்துக்கொண்டு இடைநிறுத்தப்பட்ட நினைவகத்தை நீக்கி இயந்திரத்தை நிறுத்தவும்."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:64
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "நினைவகத்தையும் வட்டையும் பாதுகாத்து இயந்திரத்தை இடைநிறுத்தவும்."

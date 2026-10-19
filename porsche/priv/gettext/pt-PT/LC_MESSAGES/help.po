@@ -1,0 +1,222 @@
+#
+msgid ""
+msgstr ""
+"Language: pt-PT\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/porsche/ssh/command_messages.ex:59
+#, elixir-autogen, elixir-format
+msgid "Accept a pending ownership offer."
+msgstr "Aceitar uma oferta de propriedade pendente."
+
+#: lib/porsche/ssh/command_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "Adicionar ou alterar um administrador ou membro."
+
+#: lib/porsche/ssh/command_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr ""
+"Cancelar um pedido de clonagem não publicado ou de relocalização não "
+"confirmado."
+
+#: lib/porsche/ssh/command_messages.ex:61
+#, elixir-autogen, elixir-format
+msgid "Cancel your pending ownership offer."
+msgstr "Cancelar a sua oferta de propriedade pendente."
+
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Change a machine's CPU and memory; disk may only grow. A running machine "
+"stops and restarts."
+msgstr ""
+"Alterar a CPU e a memória de uma máquina; o disco só pode aumentar. Uma "
+"máquina em execução é parada e reiniciada."
+
+#: lib/porsche/ssh/command_messages.ex:63
+#, elixir-autogen, elixir-format
+msgid "Close this interactive channel."
+msgstr "Fechar este canal interativo."
+
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
+"GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr ""
+"Criar uma máquina. Disco máximo: 500 GiB. --source clona um repositório "
+"público do GitHub, GitLab, Codeberg ou Bitbucket no sistema convidado."
+
+#: lib/porsche/ssh/command_messages.ex:53
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "Criar uma equipa da qual seja proprietário."
+
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid ""
+"Create or replace a named integration at https://NAME.integration.internal."
+msgstr ""
+"Criar ou substituir uma integração nomeada em "
+"https://NAME.integration.internal."
+
+#: lib/porsche/ssh/command_messages.ex:60
+#, elixir-autogen, elixir-format
+msgid "Decline a pending ownership offer."
+msgstr "Recusar uma oferta de propriedade pendente."
+
+#: lib/porsche/ssh/command_messages.ex:30
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr ""
+"Eliminar uma máquina e o seu disco. Recusado enquanto o proprietário a "
+"mantiver fixada."
+
+#: lib/porsche/ssh/command_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "Conceder acesso viewer, operator ou manager."
+
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "Inspecionar uma máquina pelo nome ou UUID."
+
+#: lib/porsche/ssh/command_messages.ex:62
+#, elixir-autogen, elixir-format
+msgid "Inspect a previously accepted request."
+msgstr "Inspecionar um pedido aceite anteriormente."
+
+#: lib/porsche/ssh/command_messages.ex:50
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "Inspecionar uma integração sem segredos."
+
+#: lib/porsche/ssh/command_messages.ex:55
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "Listar os membros de uma equipa."
+
+#: lib/porsche/ssh/command_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "Listar as concessões de acesso."
+
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "Listar as imagens disponíveis."
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "Listar as máquinas às quais tem acesso."
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "Listar as suas chaves SSH."
+
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "Listar as suas integrações."
+
+#: lib/porsche/ssh/command_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "Listar as suas equipas e funções."
+
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "Disponibilizar uma integração para uma máquina."
+
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "Mover uma máquina para um host selecionado automaticamente."
+
+#: lib/porsche/ssh/command_messages.ex:58
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "Oferecer a propriedade da equipa a um administrador."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:34
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Fixar uma máquina no topo das suas listas. Como proprietário, a sua fixação ativa-a e impede a suspensão automática e a eliminação."
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr ""
+"Colocar em fila uma cópia independente do disco completo de uma máquina."
+
+#: lib/porsche/ssh/command_messages.ex:52
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "Remover a disponibilidade explícita de uma máquina."
+
+#: lib/porsche/ssh/command_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "Remover uma integração nomeada."
+
+#: lib/porsche/ssh/command_messages.ex:57
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "Remover a associação de uma conta."
+
+#: lib/porsche/ssh/command_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "Remover a sua fixação de uma máquina."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:69
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Retomar uma máquina suspensa a partir da memória preservada."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:65
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Retomar a partir da memória preservada, aguardando capacidade ou relocalização."
+
+#: lib/porsche/ssh/command_messages.ex:20
+msgid "Retry a failed clone or relocation request."
+msgstr "Repetir um pedido de clonagem ou relocalização que falhou."
+
+#: lib/porsche/ssh/command_messages.ex:41
+msgid "Revoke an account's shared access."
+msgstr "Revogar o acesso partilhado de uma conta."
+
+#: lib/porsche/ssh/command_messages.ex:43
+msgid "Revoke one of your SSH keys."
+msgstr "Revogar uma das suas chaves SSH."
+
+#: lib/porsche/ssh/command_messages.ex:5
+#, elixir-autogen, elixir-format
+msgid "Show command help."
+msgstr "Mostrar a ajuda do comando."
+
+#: lib/porsche/ssh/command_messages.ex:6
+msgid "Show the authenticated account."
+msgstr "Mostrar a conta autenticada."
+
+#: lib/porsche/ssh/command_messages.ex:25
+msgid "Start a machine."
+msgstr "Iniciar uma máquina."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:26
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Parar uma máquina, preservando o disco e descartando a memória suspensa."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:64
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspender uma máquina, preservando a memória e o disco."

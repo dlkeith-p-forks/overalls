@@ -1,0 +1,204 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ko\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/inference_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "AI request"
+msgstr "AI 요청"
+
+#: lib/marshall_web/live/inference_live.ex:101
+#, elixir-autogen, elixir-format
+msgid "AI requests"
+msgstr "AI 요청"
+
+#: lib/marshall_web/live/inference_live.ex:106
+#, elixir-autogen, elixir-format
+msgid "AI requests · last 30 days"
+msgstr "AI 요청 · 지난 30일"
+
+#: lib/marshall_web/live/inference_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+msgstr "AI 사용량은 각 머신의 소유자에게 귀속됩니다. 불완전한 AI 사용은 아직 알려지지 않았습니다."
+
+#: lib/marshall_web/live/inference_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "AI usage is unavailable."
+msgstr "AI 사용이 불가능합니다."
+
+#: lib/marshall_web/live/inference_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "AI usage report"
+msgstr "AI 사용 보고서"
+
+#: lib/marshall_web/live/inference_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "All providers"
+msgstr "모든 제공업체"
+
+#: lib/marshall_web/live/inference_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Anthropic"
+msgstr "인류학"
+
+#: lib/marshall_web/live/inference_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "적용하다"
+
+#: lib/marshall_web/live/inference_live.ex:112
+#, elixir-autogen, elixir-format
+msgid "Daily AI request counts over the past 30 days"
+msgstr "지난 30일 동안의 일일 AI 요청 수"
+
+#: lib/marshall_web/live/inference_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "세부"
+
+#: lib/marshall_web/live/inference_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Exact model ID"
+msgstr "정확한 모델 ID"
+
+#: lib/marshall_web/live/inference_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Export AI usage"
+msgstr "AI 사용량 내보내기"
+
+#: lib/marshall_web/live/inference_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Filter"
+msgstr "필터"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "함대 AI 사용"
+
+#: lib/marshall_web/live/inference_live.ex:102
+#, elixir-autogen, elixir-format
+msgid "Incomplete AI reports"
+msgstr "불완전한 AI 보고서"
+
+#: lib/marshall_web/live/inference_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "입력 토큰"
+
+#: lib/marshall_web/live/inference_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Inspect"
+msgstr "검사"
+
+#: lib/marshall_web/live/inference_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "기계"
+
+#: lib/marshall_web/live/inference_live.ex:136
+#: lib/marshall_web/live/inference_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Model"
+msgstr "모델"
+
+#: lib/marshall_web/live/inference_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "No AI requests match these filters."
+msgstr "이 필터와 일치하는 AI 요청이 없습니다."
+
+#: lib/marshall_web/live/inference_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Older AI requests →"
+msgstr "이전 AI 요청 →"
+
+#: lib/marshall_web/live/inference_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
+msgstr "하루에 한 열씩, 가장 오래된 열부터 시작됩니다. 가장 바쁜 날까지 █ 규모의 8줄. 라벨은 해당 월의 날짜를 표시합니다."
+
+#: lib/marshall_web/live/inference_live.ex:130
+#, elixir-autogen, elixir-format
+msgid "OpenAI"
+msgstr "오픈AI"
+
+#: lib/marshall_web/live/inference_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Outcome"
+msgstr "결과"
+
+#: lib/marshall_web/live/inference_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Output tokens"
+msgstr "출력 토큰"
+
+#: lib/marshall_web/live/inference_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Placement / epoch"
+msgstr "배치/시대"
+
+#: lib/marshall_web/live/inference_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Pricing source / version"
+msgstr "가격 소스/버전"
+
+#: lib/marshall_web/live/inference_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Provider"
+msgstr "공급자"
+
+#: lib/marshall_web/live/inference_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Reported input tokens"
+msgstr "보고된 입력 토큰"
+
+#: lib/marshall_web/live/inference_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Reported output tokens"
+msgstr "보고된 출력 토큰"
+
+#: lib/marshall_web/live/inference_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "시간"
+
+#: lib/marshall_web/live/inference_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Token cost estimate · USD"
+msgstr "토큰 비용 추정 · USD"
+
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "없는"
+
+#: lib/marshall_web/live/inference_live.ex:60
+#: lib/marshall_web/live/inference_live.ex:178
+#: lib/marshall_web/live/inference_live.ex:185
+#: lib/marshall_web/live/inference_live.ex:188
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "알려지지 않은"
+
+#: lib/marshall_web/live/inference_live.ex:168
+#, elixir-autogen, elixir-format
+msgid "Unreported"
+msgstr "보고되지 않음"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Your AI usage"
+msgstr "귀하의 AI 사용량"

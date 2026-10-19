@@ -1,0 +1,1017 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: te\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/audit_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "; the next due check can then request a new generation."
+msgstr "; తదుపరి నిర్ణీత తనిఖీ కొత్త తరాన్ని అభ్యర్థించవచ్చు."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:101
+#, elixir-autogen, elixir-format
+msgid "ACME account"
+msgstr "ACME ఖాతా"
+
+#: lib/marshall_web/live/admin/audit_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "ACME account: %{status}"
+msgstr "ACME ఖాతా: %{status}"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:132
+#: lib/marshall_web/live/admin/audit_labels.ex:350
+#, elixir-autogen, elixir-format
+msgid "Acknowledged"
+msgstr "స్వీకరణ ధృవీకరించబడింది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:230
+#: lib/marshall_web/live/admin/audit_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "చర్య"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:124
+#, elixir-autogen, elixir-format
+msgid "Activated"
+msgstr "యాక్టివేట్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:176
+#: lib/marshall_web/live/admin/audit_labels.ex:374
+#, elixir-autogen, elixir-format
+msgid "Activation failed"
+msgstr "యాక్టివేషన్ విఫలమైంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:197
+#, elixir-autogen, elixir-format
+msgid "Activation observed"
+msgstr "యాక్టివేషన్ గమనించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:356
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "సక్రియం"
+
+#: lib/marshall_web/live/admin/audit_live.ex:287
+#, elixir-autogen, elixir-format
+msgid "Actor"
+msgstr "చర్యకర్త"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:27
+#, elixir-autogen, elixir-format
+msgid "Administrator access granted"
+msgstr "అడ్మినిస్ట్రేటర్ యాక్సెస్ మంజూరు చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:28
+#, elixir-autogen, elixir-format
+msgid "Administrator access revoked"
+msgstr "అడ్మినిస్ట్రేటర్ యాక్సెస్ రద్దు చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Administrator actions"
+msgstr "నిర్వాహక చర్యలు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:25
+#, elixir-autogen, elixir-format
+msgid "Administrator bootstrapped"
+msgstr "అడ్మినిస్ట్రేటర్ బూట్‌స్ట్రాప్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:133
+#, elixir-autogen, elixir-format
+msgid "Advanced"
+msgstr "అధునాతనమైనది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:134
+#, elixir-autogen, elixir-format
+msgid "Allocated"
+msgstr "కేటాయించారు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:343
+#, elixir-autogen, elixir-format
+msgid "Applied"
+msgstr "దరఖాస్తు చేసుకున్నారు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:136
+#: lib/marshall_web/live/admin/audit_labels.ex:340
+#, elixir-autogen, elixir-format
+msgid "Approved"
+msgstr "ఆమోదించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:137
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "భద్రపరచబడింది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:179
+#, elixir-autogen, elixir-format
+msgid "Audit"
+msgstr "ఆడిట్"
+
+#: lib/marshall_web/live/admin/audit_live.ex:279
+#, elixir-autogen, elixir-format
+msgid "Audit history is unavailable."
+msgstr "ఆడిట్ చరిత్ర అందుబాటులో లేదు."
+
+#: lib/marshall_web/live/admin/audit_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Audit kinds"
+msgstr "ఆడిట్ రకాలు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:140
+#: lib/marshall_web/live/admin/audit_labels.ex:341
+#, elixir-autogen, elixir-format
+msgid "Blocked"
+msgstr "నిరోధించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:184
+#, elixir-autogen, elixir-format
+msgid "Cancellation completed"
+msgstr "రద్దు పూర్తయింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:283
+#: lib/marshall_web/live/admin/audit_labels.ex:286
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "రద్దు అభ్యర్థించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:229
+#, elixir-autogen, elixir-format
+msgid "Cancellation restart recorded"
+msgstr "రద్దు పునఃప్రారంభం రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:232
+#, elixir-autogen, elixir-format
+msgid "Cancellation stop recorded"
+msgstr "రద్దు స్టాప్ రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:141
+#: lib/marshall_web/live/admin/audit_labels.ex:142
+#: lib/marshall_web/live/admin/audit_labels.ex:336
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "రద్దయింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:335
+#, elixir-autogen, elixir-format
+msgid "Cancelling"
+msgstr "రద్దు చేస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:330
+#, elixir-autogen, elixir-format
+msgid "Capturing"
+msgstr "పట్టుకోవడం"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:102
+#, elixir-autogen, elixir-format
+msgid "Certificate"
+msgstr "సర్టిఫికేట్"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:122
+#, elixir-autogen, elixir-format
+msgid "Certificate issued"
+msgstr "సర్టిఫికెట్ జారీ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:110
+#, elixir-autogen, elixir-format
+msgid "Certificate order attempted"
+msgstr "సర్టిఫికేట్ ఆర్డర్ ప్రయత్నించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:113
+#, elixir-autogen, elixir-format
+msgid "Certificate order bound"
+msgstr "సర్టిఫికేట్ ఆర్డర్ బౌండ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:116
+#, elixir-autogen, elixir-format
+msgid "Certificate proof recorded"
+msgstr "సర్టిఫికేట్ రుజువు నమోదు చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:119
+#, elixir-autogen, elixir-format
+msgid "Certificate proof refreshed"
+msgstr "సర్టిఫికేట్ రుజువు రిఫ్రెష్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Certificates"
+msgstr "సర్టిఫికెట్లు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:368
+#, elixir-autogen, elixir-format
+msgid "Checking destination"
+msgstr "గమ్యాన్ని తనిఖీ చేస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:359
+#, elixir-autogen, elixir-format
+msgid "Checking transfer"
+msgstr "బదిలీని తనిఖీ చేస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:144
+#, elixir-autogen, elixir-format
+msgid "Checkpoint saved"
+msgstr "తనిఖీ కేంద్రం సేవ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:333
+#, elixir-autogen, elixir-format
+msgid "Cleaning up"
+msgstr "శుభ్రపరచడం"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:386
+#, elixir-autogen, elixir-format
+msgid "Cleaning up cancellation"
+msgstr "రద్దును శుభ్రపరచడం"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:380
+#, elixir-autogen, elixir-format
+msgid "Cleaning up source"
+msgstr "మూలాన్ని శుభ్రపరచడం"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:148
+#, elixir-autogen, elixir-format
+msgid "Cleanup completed"
+msgstr "క్లీనప్ పూర్తయింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:145
+#: lib/marshall_web/live/admin/audit_labels.ex:334
+#: lib/marshall_web/live/admin/audit_labels.ex:339
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "పూర్తి"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:150
+#, elixir-autogen, elixir-format
+msgid "Confirmed"
+msgstr "నిర్ధారించారు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:166
+#, elixir-autogen, elixir-format
+msgid "Continued"
+msgstr "కొనసాగింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:155
+#, elixir-autogen, elixir-format
+msgid "Copy confirmed"
+msgstr "కాపీ ధృవీకరించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:138
+#, elixir-autogen, elixir-format
+msgid "Copy started"
+msgstr "కాపీ ప్రారంభించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:331
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "కాపీ చేస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:325
+#, elixir-autogen, elixir-format
+msgid "Created"
+msgstr "సృష్టించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:167
+#, elixir-autogen, elixir-format
+msgid "Deferred"
+msgstr "వాయిదా పడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:354
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "తొలగించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:389
+#, elixir-autogen, elixir-format
+msgid "Deleting copies"
+msgstr "కాపీలను తొలగిస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:187
+#, elixir-autogen, elixir-format
+msgid "Deletion completed"
+msgstr "తొలగింపు పూర్తయింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:289
+#: lib/marshall_web/live/admin/audit_labels.ex:292
+#, elixir-autogen, elixir-format
+msgid "Deletion requested"
+msgstr "తొలగింపు అభ్యర్థించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:202
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup offered"
+msgstr "డెస్టినేషన్ క్లీనప్ అందించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:238
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup recorded"
+msgstr "డెస్టినేషన్ క్లీనప్ రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:205
+#, elixir-autogen, elixir-format
+msgid "Destination revocation offered"
+msgstr "గమ్యస్థాన ఉపసంహరణ అందించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:242
+#, elixir-autogen, elixir-format
+msgid "Destination revocation recorded"
+msgstr "గమ్యం ఉపసంహరణ రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:171
+#, elixir-autogen, elixir-format
+msgid "Destination work dispatched"
+msgstr "గమ్యం పని పంపబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:168
+#, elixir-autogen, elixir-format
+msgid "Dispatched"
+msgstr "పంపబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:347
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "పనిభారం ఖాళీ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:346
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "పనిభారం ఖాళీ చేస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:98
+#, elixir-autogen, elixir-format
+msgid "Editor credential"
+msgstr "ఎడిటర్ క్రెడెన్షియల్"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:100
+#, elixir-autogen, elixir-format
+msgid "Editor lease"
+msgstr "ఎడిటర్ లీజు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:95
+#, elixir-autogen, elixir-format
+msgid "Editor sign-in"
+msgstr "ఎడిటర్ సైన్-ఇన్"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:394
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "పనిభారాన్ని తరలిస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:49
+#, elixir-autogen, elixir-format
+msgid "Evacuation approved"
+msgstr "తరలింపు ఆమోదించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:46
+#, elixir-autogen, elixir-format
+msgid "Evacuation changed"
+msgstr "తరలింపు మార్చబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:52
+#, elixir-autogen, elixir-format
+msgid "Evacuation replanned"
+msgstr "తరలింపు మళ్లీ ప్లాన్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:43
+#, elixir-autogen, elixir-format
+msgid "Evacuation requested"
+msgstr "తరలింపు అభ్యర్థించారు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:126
+#: lib/marshall_web/live/admin/audit_labels.ex:337
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "విఫలమైంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:181
+#, elixir-autogen, elixir-format
+msgid "Fenced"
+msgstr "కంచె వేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:393
+#, elixir-autogen, elixir-format
+msgid "Fencing"
+msgstr "ఫెన్సింగ్"
+
+#: lib/marshall_web/live/admin/audit_live.ex:207
+#: lib/marshall_web/live/admin/audit_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Filter lifecycle history"
+msgstr "జీవితచక్ర చరిత్రను వడపోయి"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:58
+#, elixir-autogen, elixir-format
+msgid "Fleet certificate rotation requested"
+msgstr "ఫ్లీట్ సర్టిఫికెట్ రొటేషన్ అభ్యర్థించబడింది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:261
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation} has an uncertain ACME order response. The generation can be failed after"
+msgstr "జనరేషన్ %{generation}కి అనిశ్చిత ACME ఆర్డర్ ప్రతిస్పందన ఉంది. తరం తర్వాత విఫలం కావచ్చు"
+
+#: lib/marshall_web/live/admin/audit_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation}: %{status}"
+msgstr "తరం %{generation}: %{status}"
+
+#: lib/marshall_web/live/admin/audit_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "Host ID"
+msgstr "హోస్ట్ ID"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:55
+#, elixir-autogen, elixir-format
+msgid "Host configured"
+msgstr "హోస్ట్ కాన్ఫిగర్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Human requests and system recovery transitions. History is retained for 90 days."
+msgstr ""
+"మానవ అభ్యర్థనలు, వ్యవస్థ పునరుద్ధరణ మార్పులు. చరిత్ర 90 రోజులు నిలుస్తుంది."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:192
+#, elixir-autogen, elixir-format
+msgid "Idle policy updated"
+msgstr "నిష్క్రియ విధానం నవీకరించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:158
+#, elixir-autogen, elixir-format
+msgid "Import confirmed"
+msgstr "దిగుమతి నిర్ధారించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:221
+#, elixir-autogen, elixir-format
+msgid "Import prepared"
+msgstr "దిగుమతి సిద్ధమైంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:245
+#, elixir-autogen, elixir-format
+msgid "Import recorded"
+msgstr "దిగుమతి రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:139
+#, elixir-autogen, elixir-format
+msgid "Import started"
+msgstr "దిగుమతి ప్రారంభమైంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:364
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "దిగుమతి చేస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:103
+#, elixir-autogen, elixir-format
+msgid "Installation"
+msgstr "సంస్థాపన"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:104
+#, elixir-autogen, elixir-format
+msgid "Installed"
+msgstr "ఇన్‌స్టాల్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:90
+#, elixir-autogen, elixir-format
+msgid "Integration attached"
+msgstr "ఇంటిగ్రేషన్ జోడించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:84
+#, elixir-autogen, elixir-format
+msgid "Integration configured"
+msgstr "ఇంటిగ్రేషన్ కాన్ఫిగర్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:93
+#, elixir-autogen, elixir-format
+msgid "Integration detached"
+msgstr "ఇంటిగ్రేషన్ వేరు చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:87
+#, elixir-autogen, elixir-format
+msgid "Integration removed"
+msgstr "ఇంటిగ్రేషన్ తీసివేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:173
+#, elixir-autogen, elixir-format
+msgid "Key dispatched"
+msgstr "కీ పంపబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:247
+#, elixir-autogen, elixir-format
+msgid "Key recorded"
+msgstr "కీ రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:312
+#, elixir-autogen, elixir-format
+msgid "Key retired"
+msgstr "కీ పదవీ విరమణ చేశారు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:208
+#, elixir-autogen, elixir-format
+msgid "Key retirement offered"
+msgstr "కీలక పదవీ విరమణ అందించారు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:295
+#, elixir-autogen, elixir-format
+msgid "Key retirement requested"
+msgstr "కీలక పదవీ విరమణ అభ్యర్థించారు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:34
+#, elixir-autogen, elixir-format
+msgid "Machine access revoked"
+msgstr "మెషిన్ యాక్సెస్ రద్దు చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:61
+#, elixir-autogen, elixir-format
+msgid "Machine lifecycle requested"
+msgstr "యంత్ర జీవితచక్రం అభ్యర్థించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:64
+#, elixir-autogen, elixir-format
+msgid "Machine relocation requested"
+msgstr "మెషిన్ స్థానచలనం అభ్యర్థించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:194
+#, elixir-autogen, elixir-format
+msgid "Machine state observed"
+msgstr "యంత్ర స్థితి గమనించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:19
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication reset"
+msgstr "బహుళ-కారకాల ప్రమాణీకరణ రీసెట్"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:16
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication verified"
+msgstr "బహుళ-కారకాల ప్రమాణీకరణ ధృవీకరించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:338
+#, elixir-autogen, elixir-format
+msgid "Offered"
+msgstr "ఇచ్చింది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:334
+#, elixir-autogen, elixir-format
+msgid "Older events →"
+msgstr "పాత ఈవెంట్‌లు →"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:250
+#, elixir-autogen, elixir-format
+msgid "Operation recorded"
+msgstr "ఆపరేషన్ రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:10
+#, elixir-autogen, elixir-format
+msgid "Passkey added"
+msgstr "పాస్‌కీ జోడించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:13
+#, elixir-autogen, elixir-format
+msgid "Passkey removed"
+msgstr "పాస్‌కీ తీసివేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:298
+#, elixir-autogen, elixir-format
+msgid "Pause requested"
+msgstr "పాజ్ అభ్యర్థించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:217
+#: lib/marshall_web/live/admin/audit_labels.ex:353
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "విరామంలో ఉంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:326
+#: lib/marshall_web/live/admin/audit_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "పెండింగ్"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:235
+#, elixir-autogen, elixir-format
+msgid "Placement switch recorded"
+msgstr "ప్లేస్‌మెంట్ స్విచ్ రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:189
+#, elixir-autogen, elixir-format
+msgid "Placement switched"
+msgstr "ప్లేస్‌మెంట్ మార్చబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:218
+#, elixir-autogen, elixir-format
+msgid "Preparation started"
+msgstr "తయారీ మొదలైంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:328
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "సిద్ధం చేస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:253
+#, elixir-autogen, elixir-format
+msgid "Progress recorded"
+msgstr "పురోగతి నమోదు చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:131
+#, elixir-autogen, elixir-format
+msgid "Progress updated"
+msgstr "పురోగతి నవీకరించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:223
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "ప్రచురించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:332
+#, elixir-autogen, elixir-format
+msgid "Publishing"
+msgstr "ప్రచురిస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:106
+#: lib/marshall_web/live/admin/audit_labels.ex:327
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "క్యూలో ఉంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:161
+#: lib/marshall_web/live/admin/audit_labels.ex:164
+#, elixir-autogen, elixir-format
+msgid "Readiness confirmed"
+msgstr "సంసిద్ధత నిర్ధారించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:179
+#: lib/marshall_web/live/admin/audit_labels.ex:371
+#, elixir-autogen, elixir-format
+msgid "Readiness failed"
+msgstr "సంసిద్ధత విఫలమైంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:224
+#: lib/marshall_web/live/admin/audit_labels.ex:345
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "సిద్ధం"
+
+#: lib/marshall_web/live/admin/audit_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
+msgstr ""
+"ఇటీవలి ఫ్లీట్ వైల్డ్‌కార్డ్ తరాలు, గేట్‌వే ఇన్‌స్టాలేషన్‌లు. ప్రైవేట్ కీలు, "
+"ACME రుజువులు మినహాయించబడ్డాయి."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:225
+#, elixir-autogen, elixir-format
+msgid "Reconciled"
+msgstr "రాజీ పడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:226
+#, elixir-autogen, elixir-format
+msgid "Recorded"
+msgstr "రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:181
+#, elixir-autogen, elixir-format
+msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
+msgstr ""
+"సున్నిత సమాచారం తొలగించిన అధికార మార్పులు, జీవితచక్ర అభ్యర్థనలు, సర్టిఫికెట్"
+" తరాలు, ఎడిటర్ ప్రాప్యత. పేలోడ్లు, ఆధారాలు, టెర్మినల్ బైట్లు "
+"మినహాయించబడ్డాయి."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:277
+#, elixir-autogen, elixir-format
+msgid "Reflection metadata updated"
+msgstr "ప్రతిబింబం మెటాడేటా నవీకరించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:105
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "నమోదైంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:279
+#, elixir-autogen, elixir-format
+msgid "Replanned"
+msgstr "రీప్లాన్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "Request a new wildcard certificate for every Audi gateway?"
+msgstr "ప్రతి Audi గేట్‌వేకు కొత్త వైల్డ్‌కార్డ్ సర్టిఫికెట్ అభ్యర్థించాలా?"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:107
+#, elixir-autogen, elixir-format
+msgid "Request saved"
+msgstr "అభ్యర్థన సేవ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Request wildcard rotation"
+msgstr "వైల్డ్‌కార్డ్ మార్పును అభ్యర్థించు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:280
+#, elixir-autogen, elixir-format
+msgid "Requested"
+msgstr "అభ్యర్థించారు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:135
+#, elixir-autogen, elixir-format
+msgid "Resize applied"
+msgstr "పునఃపరిమాణం వర్తింపజేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:304
+#, elixir-autogen, elixir-format
+msgid "Resize started"
+msgstr "పునఃపరిమాణం ప్రారంభించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:391
+#, elixir-autogen, elixir-format
+msgid "Resizing"
+msgstr "పరిమాణం మారుస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:305
+#: lib/marshall_web/live/admin/audit_labels.ex:395
+#, elixir-autogen, elixir-format
+msgid "Resolved"
+msgstr "పరిష్కరించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:306
+#, elixir-autogen, elixir-format
+msgid "Restart started"
+msgstr "పునఃప్రారంభించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:392
+#, elixir-autogen, elixir-format
+msgid "Restarting"
+msgstr "పునఃప్రారంభిస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:383
+#, elixir-autogen, elixir-format
+msgid "Restoring source"
+msgstr "మూలాన్ని పునరుద్ధరిస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:259
+#, elixir-autogen, elixir-format
+msgid "Result recorded"
+msgstr "ఫలితం నమోదు చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:311
+#: lib/marshall_web/live/admin/audit_labels.ex:348
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "తిరిగి ప్రారంభమైంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:125
+#: lib/marshall_web/live/admin/audit_labels.ex:349
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "విరమించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:313
+#, elixir-autogen, elixir-format
+msgid "Retry requested"
+msgstr "మళ్లీ ప్రయత్నించమని అభ్యర్థించారు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:377
+#, elixir-autogen, elixir-format
+msgid "Retrying destination"
+msgstr "గమ్యస్థానాన్ని మళ్లీ ప్రయత్నిస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:351
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "నడుస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:37
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked"
+msgstr "SSH కీ ఉపసంహరించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:40
+#, elixir-autogen, elixir-format
+msgid "SSH session revoked"
+msgstr "SSH సెషన్ రద్దు చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:314
+#: lib/marshall_web/live/admin/audit_labels.ex:342
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "షెడ్యూల్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:31
+#, elixir-autogen, elixir-format
+msgid "Sessions revoked"
+msgstr "సెషన్లు రద్దు చేయబడ్డాయి"
+
+#: lib/marshall_web/live/admin/audit_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "Since (ISO 8601)"
+msgstr "నుంచి (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:153
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture confirmed"
+msgstr "స్నాప్‌షాట్ క్యాప్చర్ నిర్ధారించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:143
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture started"
+msgstr "స్నాప్‌షాట్ క్యాప్చర్ ప్రారంభించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:262
+#, elixir-autogen, elixir-format
+msgid "Source restoration recorded"
+msgstr "మూల పునరుద్ధరణ రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:309
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "మూలం పునరుద్ధరించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:211
+#, elixir-autogen, elixir-format
+msgid "Source revocation offered"
+msgstr "మూల ఉపసంహరణ అందించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:265
+#, elixir-autogen, elixir-format
+msgid "Source revocation recorded"
+msgstr "మూల ఉపసంహరణ రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:215
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup offered"
+msgstr "సోర్స్ స్నాప్‌షాట్ క్లీనప్ అందించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:269
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup recorded"
+msgstr "సోర్స్ స్నాప్‌షాట్ క్లీనప్ రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:318
+#, elixir-autogen, elixir-format
+msgid "Source stop started"
+msgstr "సోర్స్ స్టాప్ ప్రారంభమైంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:301
+#, elixir-autogen, elixir-format
+msgid "Start requested"
+msgstr "ప్రారంభించండి అభ్యర్థించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:271
+#, elixir-autogen, elixir-format
+msgid "Stop recorded"
+msgstr "ఆపు రికార్డ్ చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:303
+#, elixir-autogen, elixir-format
+msgid "Stop requested"
+msgstr "ఆపు అభ్యర్థించారు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:315
+#, elixir-autogen, elixir-format
+msgid "Stop started"
+msgstr "ఆపు ప్రారంభమైంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:352
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "ఆపివుంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:329
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "ఆపుతోంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:362
+#, elixir-autogen, elixir-format
+msgid "Stopping source"
+msgstr "మూలాన్ని ఆపడం"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:320
+#: lib/marshall_web/live/admin/audit_labels.ex:344
+#, elixir-autogen, elixir-format
+msgid "Superseded"
+msgstr "సూపర్‌సీడ్"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:365
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "కేటాయింపు మారుస్తోంది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:288
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "గమ్యం"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:66
+#, elixir-autogen, elixir-format
+msgid "Team created"
+msgstr "బృందం సృష్టించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:69
+#, elixir-autogen, elixir-format
+msgid "Team membership changed"
+msgstr "జట్టు సభ్యత్వం మార్చబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:75
+#, elixir-autogen, elixir-format
+msgid "Team ownership accepted"
+msgstr "జట్టు యాజమాన్యం ఆమోదించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:78
+#, elixir-autogen, elixir-format
+msgid "Team ownership declined"
+msgstr "జట్టు యాజమాన్యం నిరాకరించింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:81
+#, elixir-autogen, elixir-format
+msgid "Team ownership offer cancelled"
+msgstr "జట్టు యాజమాన్యం ఆఫర్ రద్దు చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:72
+#, elixir-autogen, elixir-format
+msgid "Team ownership offered"
+msgstr "జట్టు యాజమాన్యం అందించబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:256
+#, elixir-autogen, elixir-format
+msgid "Transfer receipt recorded"
+msgstr "బదిలీ రసీదు నమోదు చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:129
+#, elixir-autogen, elixir-format
+msgid "Uncertain certificate order failed"
+msgstr "అనిశ్చిత సర్టిఫికేట్ ఆర్డర్ విఫలమైంది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:274
+#, elixir-autogen, elixir-format
+msgid "Unconfirmed outcome recorded"
+msgstr "ధృవీకరించని ఫలితం నమోదు చేయబడింది"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:321
+#: lib/marshall_web/live/admin/audit_labels.ex:355
+#: lib/marshall_web/live/admin/audit_labels.ex:396
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "తెలియదు"
+
+#: lib/marshall_web/live/admin/audit_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Until (ISO 8601)"
+msgstr "వరకు (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:22
+#, elixir-autogen, elixir-format
+msgid "User deleted"
+msgstr "వినియోగదారు తొలగించబడ్డారు"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:21
+#, elixir-autogen, elixir-format
+msgid "User invited"
+msgstr "వినియోగదారు ఆహ్వానించబడ్డారు"
+
+#: lib/marshall_web/live/admin/audit_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "VM ID"
+msgstr "VM ID"
+
+#: lib/marshall_web/live/admin/audit_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "VM lifecycle"
+msgstr "VM జీవితచక్రం"
+
+#: lib/marshall_web/live/admin/audit_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "VS Code access"
+msgstr "VS Code ప్రాప్యత"
+
+#: lib/marshall_web/live/admin/audit_live.ex:285
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "ఎప్పుడు"
+
+#: lib/marshall_web/live/admin/audit_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation could not be requested."
+msgstr "వైల్డ్‌కార్డ్ మార్పు అభ్యర్థించలేకపోయాం."
+
+#: lib/marshall_web/live/admin/audit_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation requested for generation %{generation}."
+msgstr "తరం %{generation}కి వైల్డ్‌కార్డ్ మార్పు అభ్యర్థించబడింది."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:199
+#, elixir-autogen, elixir-format
+msgid "Work offered"
+msgstr "పని ఇచ్చింది"
+
+#: lib/marshall_web/live/admin/audit_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "Workflow ID"
+msgstr "వర్క్‌ఫ్లో ID"

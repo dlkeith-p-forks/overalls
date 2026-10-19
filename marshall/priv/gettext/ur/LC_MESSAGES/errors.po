@@ -114,3 +114,219 @@ msgstr "%{number} سے زیادہ یا برابر ہونا ضروری ہے"
 
 msgid "must be equal to %{number}"
 msgstr "%{number} کے برابر ہونا ضروری ہے"
+
+#: lib/marshall_web/controllers/error_html.ex:52
+#, elixir-autogen, elixir-format
+msgid "Back to Overalls"
+msgstr "Overalls پر واپس جائیں"
+
+#: lib/marshall_web/controllers/error_html.ex:45
+#, elixir-autogen, elixir-format
+msgid "Overalls is briefly unavailable. This page will retry automatically."
+msgstr "Overalls مختصر وقت دستیاب نہیں۔ یہ صفحہ خودکار دوبارہ کوشش کرے گا۔"
+
+#: lib/marshall_web/controllers/error_html.ex:48
+#, elixir-autogen, elixir-format
+msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
+msgstr "ہم یہ صفحہ نہیں کھول سکے۔ اپنی کام گاہ پر واپس جائیں یا کچھ دیر بعد دوبارہ کوشش کریں۔"
+
+#: lib/marshall_web/controllers/error_html.ex:103
+#, elixir-autogen, elixir-format
+msgid "Bad Gateway"
+msgstr "خراب گیٹ وے"
+
+#: lib/marshall_web/controllers/error_html.ex:72
+#, elixir-autogen, elixir-format
+msgid "Bad Request"
+msgstr "بری درخواست"
+
+#: lib/marshall_web/controllers/error_html.ex:81
+#, elixir-autogen, elixir-format
+msgid "Conflict"
+msgstr "تنازعہ"
+
+#: lib/marshall_web/controllers/error_html.ex:89
+#, elixir-autogen, elixir-format
+msgid "Expectation Failed"
+msgstr "توقع ناکام ہوگئی"
+
+#: lib/marshall_web/controllers/error_html.ex:94
+#, elixir-autogen, elixir-format
+msgid "Failed Dependency"
+msgstr "ناکام انحصار"
+
+#: lib/marshall_web/controllers/error_html.ex:75
+#, elixir-autogen, elixir-format
+msgid "Forbidden"
+msgstr "حرام"
+
+#: lib/marshall_web/controllers/error_html.ex:105
+#, elixir-autogen, elixir-format
+msgid "Gateway Timeout"
+msgstr "گیٹ وے ٹائم آؤٹ"
+
+#: lib/marshall_web/controllers/error_html.ex:82
+#, elixir-autogen, elixir-format
+msgid "Gone"
+msgstr "چلا گیا"
+
+#: lib/marshall_web/controllers/error_html.ex:106
+#, elixir-autogen, elixir-format
+msgid "HTTP Version Not Supported"
+msgstr "HTTP ورژن تعاون یافتہ نہیں ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:90
+#, elixir-autogen, elixir-format
+msgid "I'm a teapot"
+msgstr "میں چائے والا ہوں۔"
+
+#: lib/marshall_web/controllers/error_html.ex:108
+#, elixir-autogen, elixir-format
+msgid "Insufficient Storage"
+msgstr "ناکافی اسٹوریج"
+
+#: lib/marshall_web/controllers/error_html.ex:101
+#: lib/marshall_web/controllers/error_html.ex:112
+#, elixir-autogen, elixir-format
+msgid "Internal Server Error"
+msgstr "اندرونی سرور کی خرابی۔"
+
+#: lib/marshall_web/controllers/error_html.ex:83
+#, elixir-autogen, elixir-format
+msgid "Length Required"
+msgstr "لمبائی درکار ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:93
+#, elixir-autogen, elixir-format
+msgid "Locked"
+msgstr "مقفل"
+
+#: lib/marshall_web/controllers/error_html.ex:109
+#, elixir-autogen, elixir-format
+msgid "Loop Detected"
+msgstr "لوپ کا پتہ چلا"
+
+#: lib/marshall_web/controllers/error_html.ex:77
+#, elixir-autogen, elixir-format
+msgid "Method Not Allowed"
+msgstr "طریقہ کی اجازت نہیں ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:91
+#, elixir-autogen, elixir-format
+msgid "Misdirected Request"
+msgstr "غلط ہدایت کی درخواست"
+
+#: lib/marshall_web/controllers/error_html.ex:111
+#, elixir-autogen, elixir-format
+msgid "Network Authentication Required"
+msgstr "نیٹ ورک کی توثیق کی ضرورت ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:78
+#, elixir-autogen, elixir-format
+msgid "Not Acceptable"
+msgstr "قابل قبول نہیں۔"
+
+#: lib/marshall_web/controllers/error_html.ex:110
+#, elixir-autogen, elixir-format
+msgid "Not Extended"
+msgstr "توسیعی نہیں"
+
+#: lib/marshall_web/controllers/error_html.ex:76
+#, elixir-autogen, elixir-format
+msgid "Not Found"
+msgstr "نہیں ملا"
+
+#: lib/marshall_web/controllers/error_html.ex:102
+#, elixir-autogen, elixir-format
+msgid "Not Implemented"
+msgstr "لاگو نہیں ہوا۔"
+
+#: lib/marshall_web/controllers/error_html.ex:74
+#, elixir-autogen, elixir-format
+msgid "Payment Required"
+msgstr "ادائیگی کی ضرورت ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:84
+#, elixir-autogen, elixir-format
+msgid "Precondition Failed"
+msgstr "پیشگی شرط ناکام ہو گئی۔"
+
+#: lib/marshall_web/controllers/error_html.ex:97
+#, elixir-autogen, elixir-format
+msgid "Precondition Required"
+msgstr "پیشگی شرط درکار ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:79
+#, elixir-autogen, elixir-format
+msgid "Proxy Authentication Required"
+msgstr "پراکسی توثیق درکار ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:85
+#, elixir-autogen, elixir-format
+msgid "Request Entity Too Large"
+msgstr "ہستی کی درخواست بہت بڑی ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:99
+#, elixir-autogen, elixir-format
+msgid "Request Header Fields Too Large"
+msgstr "درخواست ہیڈر فیلڈز بہت بڑے ہیں۔"
+
+#: lib/marshall_web/controllers/error_html.ex:80
+#, elixir-autogen, elixir-format
+msgid "Request Timeout"
+msgstr "ٹائم آؤٹ کی درخواست کریں۔"
+
+#: lib/marshall_web/controllers/error_html.ex:86
+#, elixir-autogen, elixir-format
+msgid "Request-URI Too Long"
+msgstr "درخواست - URI بہت طویل ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:88
+#, elixir-autogen, elixir-format
+msgid "Requested Range Not Satisfiable"
+msgstr "درخواست کردہ حد قابل اطمینان نہیں ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:104
+#, elixir-autogen, elixir-format
+msgid "Service Unavailable"
+msgstr "سروس دستیاب نہیں ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:95
+#, elixir-autogen, elixir-format
+msgid "Too Early"
+msgstr "بہت جلدی"
+
+#: lib/marshall_web/controllers/error_html.ex:98
+#, elixir-autogen, elixir-format
+msgid "Too Many Requests"
+msgstr "بہت ساری درخواستیں"
+
+#: lib/marshall_web/controllers/error_html.ex:73
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "غیر مجاز"
+
+#: lib/marshall_web/controllers/error_html.ex:100
+#, elixir-autogen, elixir-format
+msgid "Unavailable For Legal Reasons"
+msgstr "قانونی وجوہات کی بناء پر دستیاب نہیں ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:92
+#, elixir-autogen, elixir-format
+msgid "Unprocessable Content"
+msgstr "ناقابل عمل مواد"
+
+#: lib/marshall_web/controllers/error_html.ex:87
+#, elixir-autogen, elixir-format
+msgid "Unsupported Media Type"
+msgstr "غیر تعاون یافتہ میڈیا کی قسم"
+
+#: lib/marshall_web/controllers/error_html.ex:96
+#, elixir-autogen, elixir-format
+msgid "Upgrade Required"
+msgstr "اپ گریڈ کی ضرورت ہے۔"
+
+#: lib/marshall_web/controllers/error_html.ex:107
+#, elixir-autogen, elixir-format
+msgid "Variant Also Negotiates"
+msgstr "متغیر بھی بات چیت کرتا ہے۔"

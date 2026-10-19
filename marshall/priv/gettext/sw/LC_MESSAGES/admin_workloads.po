@@ -1,0 +1,140 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: sw\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Vitendo"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "Archive this VM?"
+msgstr "Ungependa kuhifadhi VM hii kwenye kumbukumbu?"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:217
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "Futa"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Maelezo"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included."
+msgstr "Kila mashine katika kundi, yenye ukaguzi ule ule wa usalama wa mzunguko wa maisha, ukubwa na uhamishaji kama kiweko cha mmiliki. Hakuna data ya terminali wala vitambulisho vya ufikiaji vilivyojumuishwa."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "Fleet workloads"
+msgstr "Mizigo ya kazi ya kundi"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Host"
+msgstr "Seva pangishi"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Ombi batili."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Lifecycle request queued."
+msgstr "Ombi la mzunguko wa maisha limewekwa kwenye foleni."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "Lifecycle request was rejected."
+msgstr "Ombi la mzunguko wa maisha lilikataliwa."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:207
+#, elixir-autogen, elixir-format
+msgid "Move"
+msgstr "Hamisha"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "No active workloads."
+msgstr "Hakuna mzigo wa kazi unaoendelea."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:46
+#, elixir-autogen, elixir-format
+msgid "Relocation request queued."
+msgstr "Ombi la kuhama limewekwa kwenye foleni."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:49
+#, elixir-autogen, elixir-format
+msgid "Relocation request was rejected."
+msgstr "Ombi la kuhama lilikataliwa."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:166
+#, elixir-autogen, elixir-format
+msgid "Resize"
+msgstr "Badilisha ukubwa"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Shape"
+msgstr "Umbo"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Start"
+msgstr "Washa"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:116
+#, elixir-autogen, elixir-format
+msgid "State"
+msgstr "Hali"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "Stop"
+msgstr "Simamisha"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:158
+#, elixir-autogen, elixir-format
+msgid "Terminal"
+msgstr "Kituo"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "The owner has pinned this machine; it cannot be deleted until they unpin it."
+msgstr "Mmiliki amebandika mashine hii; haiwezi kufutwa hadi waibandue."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "Imesasishwa"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:113
+#, elixir-autogen, elixir-format
+msgid "Workload"
+msgstr "Mzigo wa kazi"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Workload inventory is temporarily unavailable."
+msgstr "Orodha ya mzigo wa kazi haipatikani kwa sasa."
+
+#: lib/marshall_web/live/admin/workloads_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "· every 15 seconds"
+msgstr "· kila sekunde 15"

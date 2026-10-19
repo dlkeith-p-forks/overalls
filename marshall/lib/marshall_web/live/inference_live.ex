@@ -36,7 +36,7 @@ defmodule MarshallWeb.InferenceLive do
       _ ->
         {:noreply,
          socket
-         |> put_flash(:error, gettext("AI usage is unavailable."))
+         |> put_flash(:error, dgettext("inference", "AI usage is unavailable."))
          |> redirect(to: ~p"/machines")}
     end
   end
@@ -57,7 +57,7 @@ defmodule MarshallWeb.InferenceLive do
   defp number(nil), do: "0"
   defp number(%Decimal{} = number), do: Decimal.to_string(number, :normal)
   defp number(number), do: to_string(number)
-  defp tokens(nil, _), do: gettext("Unknown")
+  defp tokens(nil, _), do: dgettext("inference", "Unknown")
 
   defp tokens(completion, field) do
     case completion["tokens"][field] do
@@ -81,10 +81,13 @@ defmodule MarshallWeb.InferenceLive do
       <section id="inference-usage" class="stack">
         <UI.heading
           title={
-            if @live_action == :admin, do: gettext("Fleet AI usage"), else: gettext("Your AI usage")
+            if @live_action == :admin,
+              do: dgettext("inference", "Fleet AI usage"),
+              else: dgettext("inference", "Your AI usage")
           }
           subtitle={
-            gettext(
+            dgettext(
+              "inference",
               "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
             )
           }
@@ -94,64 +97,71 @@ defmodule MarshallWeb.InferenceLive do
               id="usage-export"
               href={base(@live_action) <> "/export?" <> URI.encode_query(@filters)}
               class="console-button"
-            >{gettext("Export AI usage")}</.link>
+            >{dgettext("inference", "Export AI usage")}</.link>
           </:actions>
         </UI.heading>
         <.kv id="usage-totals">
-          <:item title={gettext("AI requests")}>{number(@totals[:requests])}</:item>
-          <:item title={gettext("Incomplete AI reports")}>{number(@totals[:unknown_requests])}</:item>
-          <:item title={gettext("Reported input tokens")}>{number(@totals[:input_tokens])}</:item>
-          <:item title={gettext("Reported output tokens")}>{number(@totals[:output_tokens])}</:item>
+          <:item title={dgettext("inference", "AI requests")}>{number(@totals[:requests])}</:item>
+          <:item title={dgettext("inference", "Incomplete AI reports")}>
+            {number(@totals[:unknown_requests])}
+          </:item>
+          <:item title={dgettext("inference", "Reported input tokens")}>
+            {number(@totals[:input_tokens])}
+          </:item>
+          <:item title={dgettext("inference", "Reported output tokens")}>
+            {number(@totals[:output_tokens])}
+          </:item>
         </.kv>
-        <UI.panel title={gettext("AI requests · last 30 days")}>
+        <UI.panel title={dgettext("inference", "AI requests · last 30 days")}>
           <figure>
             <pre
               id="usage-chart"
               class="columns"
               role="img"
-              aria-label={gettext("Daily AI request counts over the past 30 days")}
+              aria-label={dgettext("inference", "Daily AI request counts over the past 30 days")}
             >{usage_chart(@chart)}</pre>
             <figcaption>
-              {gettext(
+              {dgettext(
+                "inference",
                 "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
               )}
             </figcaption>
           </figure>
         </UI.panel>
         <.form for={@form} id="usage-filter" phx-submit="filter" class="panel stack">
-          <h2>{gettext("Filter")}</h2>
+          <h2>{dgettext("inference", "Filter")}</h2>
           <div class="grid">
             <.input
               field={@form[:provider]}
               type="select"
-              label={gettext("Provider")}
+              label={dgettext("inference", "Provider")}
               options={[
-                {gettext("All providers"), ""},
-                {gettext("OpenAI"), "openai"},
-                {gettext("Anthropic"), "anthropic"}
+                {dgettext("inference", "All providers"), ""},
+                {dgettext("inference", "OpenAI"), "openai"},
+                {dgettext("inference", "Anthropic"), "anthropic"}
               ]}
             />
             <.input
               field={@form[:model]}
-              label={gettext("Model")}
-              placeholder={gettext("Exact model ID")}
+              label={dgettext("inference", "Model")}
+              placeholder={dgettext("inference", "Exact model ID")}
               maxlength="256"
             />
           </div>
           <div class="row actions">
-            <button class="console-button primary">{gettext("Apply")}</button>
+            <button class="console-button primary">{dgettext("inference", "Apply")}</button>
           </div>
         </.form>
         <div :if={!@empty?} class="table-flow">
           <table>
             <thead>
               <tr>
-                <th class="width-min">{gettext("Time")}</th>
-                <th class="width-auto">{gettext("Model")}</th>
-                <th class="width-min num">{gettext("Input tokens")}</th>
-                <th class="width-min num">{gettext("Output tokens")}</th>
-                <th class="width-min">{gettext("Outcome")}</th>
-                <th class="width-min">{gettext("Details")}</th>
+                <th class="width-min">{dgettext("inference", "Time")}</th>
+                <th class="width-auto">{dgettext("inference", "Model")}</th>
+                <th class="width-min num">{dgettext("inference", "Input tokens")}</th>
+                <th class="width-min num">{dgettext("inference", "Output tokens")}</th>
+                <th class="width-min">{dgettext("inference", "Outcome")}</th>
+                <th class="width-min">{dgettext("inference", "Details")}</th>
               </tr>
             </thead>
             <tbody id="usage-rows" phx-update="stream">
@@ -165,41 +175,43 @@ defmodule MarshallWeb.InferenceLive do
                 <td class="num">{tokens(row.completion, "input_tokens")}</td>
                 <td class="num">{tokens(row.completion, "output_tokens")}</td>
                 <td>
-                  {if row.completion, do: row.completion["outcome"], else: gettext("Unreported")}
+                  {if row.completion,
+                    do: row.completion["outcome"],
+                    else: dgettext("inference", "Unreported")}
                 </td>
                 <td>
                   <details>
-                    <summary>{gettext("Inspect")}</summary>
+                    <summary>{dgettext("inference", "Inspect")}</summary>
                     <dl class="kv stacked">
                       <div>
-                        <dt>{gettext("Token cost estimate · USD")}</dt>
+                        <dt>{dgettext("inference", "Token cost estimate · USD")}</dt>
                         <dd>
                           {get_in(row.completion || %{}, ["cost_estimate", "usd"]) ||
-                            gettext("Unknown")}
+                            dgettext("inference", "Unknown")}
                         </dd>
                       </div>
                       <div>
-                        <dt>{gettext("Pricing source / version")}</dt>
+                        <dt>{dgettext("inference", "Pricing source / version")}</dt>
                         <dd>
                           {get_in(row.completion || %{}, ["cost_estimate", "source"]) ||
-                            gettext("Unknown")} / {get_in(
+                            dgettext("inference", "Unknown")} / {get_in(
                             row.completion || %{},
                             ["cost_estimate", "version"]
-                          ) || gettext("Unknown")}
+                          ) || dgettext("inference", "Unknown")}
                         </dd>
                       </div>
                       <div>
-                        <dt>{gettext("AI request")}</dt><dd><code>{row.id}</code></dd>
+                        <dt>{dgettext("inference", "AI request")}</dt><dd><code>{row.id}</code></dd>
                       </div>
                       <div>
-                        <dt>{gettext("Machine")}</dt><dd><code>{row.vm_id}</code></dd>
+                        <dt>{dgettext("inference", "Machine")}</dt><dd><code>{row.vm_id}</code></dd>
                       </div>
                       <div>
-                        <dt>{gettext("Placement / epoch")}</dt>
+                        <dt>{dgettext("inference", "Placement / epoch")}</dt>
                         <dd><code>{row.placement_id}</code> / {row.execution_epoch}</dd>
                       </div>
                       <div>
-                        <dt>{gettext("AI usage report")}</dt>
+                        <dt>{dgettext("inference", "AI usage report")}</dt>
                         <dd>
                           {if row.completion, do: row.completion["completeness"], else: "unknown"}
                         </dd>
@@ -212,13 +224,13 @@ defmodule MarshallWeb.InferenceLive do
           </table>
         </div>
         <p :if={@empty?} id="usage-empty" class="empty-state">
-          {gettext("No AI requests match these filters.")}
+          {dgettext("inference", "No AI requests match these filters.")}
         </p>
         <p :if={@next}>
           <.link
             id="usage-next"
             patch={base(@live_action) <> "?" <> URI.encode_query(Map.put(@filters, "after", @next))}
-          >{gettext("Older AI requests →")}</.link>
+          >{dgettext("inference", "Older AI requests →")}</.link>
         </p>
       </section>
     </Layouts.app>

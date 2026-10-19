@@ -105,3 +105,219 @@ msgstr "%{number}以上である必要があります"
 
 msgid "must be equal to %{number}"
 msgstr "%{number}と等しい必要があります"
+
+#: lib/marshall_web/controllers/error_html.ex:52
+#, elixir-autogen, elixir-format
+msgid "Back to Overalls"
+msgstr "オーバーオールに戻る"
+
+#: lib/marshall_web/controllers/error_html.ex:45
+#, elixir-autogen, elixir-format
+msgid "Overalls is briefly unavailable. This page will retry automatically."
+msgstr "オーバーオールは一時的に入手不可となります。このページは自動的に再試行されます。"
+
+#: lib/marshall_web/controllers/error_html.ex:48
+#, elixir-autogen, elixir-format
+msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
+msgstr "このページを開けませんでした。ワークスペースに戻るか、しばらくしてから再試行してください。"
+
+#: lib/marshall_web/controllers/error_html.ex:103
+#, elixir-autogen, elixir-format
+msgid "Bad Gateway"
+msgstr "不正なゲートウェイ"
+
+#: lib/marshall_web/controllers/error_html.ex:72
+#, elixir-autogen, elixir-format
+msgid "Bad Request"
+msgstr "不正なリクエスト"
+
+#: lib/marshall_web/controllers/error_html.ex:81
+#, elixir-autogen, elixir-format
+msgid "Conflict"
+msgstr "紛争"
+
+#: lib/marshall_web/controllers/error_html.ex:89
+#, elixir-autogen, elixir-format
+msgid "Expectation Failed"
+msgstr "期待は外れました"
+
+#: lib/marshall_web/controllers/error_html.ex:94
+#, elixir-autogen, elixir-format
+msgid "Failed Dependency"
+msgstr "失敗した依存関係"
+
+#: lib/marshall_web/controllers/error_html.ex:75
+#, elixir-autogen, elixir-format
+msgid "Forbidden"
+msgstr "禁止"
+
+#: lib/marshall_web/controllers/error_html.ex:105
+#, elixir-autogen, elixir-format
+msgid "Gateway Timeout"
+msgstr "ゲートウェイのタイムアウト"
+
+#: lib/marshall_web/controllers/error_html.ex:82
+#, elixir-autogen, elixir-format
+msgid "Gone"
+msgstr "消えた"
+
+#: lib/marshall_web/controllers/error_html.ex:106
+#, elixir-autogen, elixir-format
+msgid "HTTP Version Not Supported"
+msgstr "HTTP バージョンはサポートされていません"
+
+#: lib/marshall_web/controllers/error_html.ex:90
+#, elixir-autogen, elixir-format
+msgid "I'm a teapot"
+msgstr "私はティーポットです"
+
+#: lib/marshall_web/controllers/error_html.ex:108
+#, elixir-autogen, elixir-format
+msgid "Insufficient Storage"
+msgstr "ストレージが不十分です"
+
+#: lib/marshall_web/controllers/error_html.ex:101
+#: lib/marshall_web/controllers/error_html.ex:112
+#, elixir-autogen, elixir-format
+msgid "Internal Server Error"
+msgstr "内部サーバーエラー"
+
+#: lib/marshall_web/controllers/error_html.ex:83
+#, elixir-autogen, elixir-format
+msgid "Length Required"
+msgstr "必要な長さ"
+
+#: lib/marshall_web/controllers/error_html.ex:93
+#, elixir-autogen, elixir-format
+msgid "Locked"
+msgstr "ロックされています"
+
+#: lib/marshall_web/controllers/error_html.ex:109
+#, elixir-autogen, elixir-format
+msgid "Loop Detected"
+msgstr "ループが検出されました"
+
+#: lib/marshall_web/controllers/error_html.ex:77
+#, elixir-autogen, elixir-format
+msgid "Method Not Allowed"
+msgstr "許可されていないメソッド"
+
+#: lib/marshall_web/controllers/error_html.ex:91
+#, elixir-autogen, elixir-format
+msgid "Misdirected Request"
+msgstr "誤った宛先のリクエスト"
+
+#: lib/marshall_web/controllers/error_html.ex:111
+#, elixir-autogen, elixir-format
+msgid "Network Authentication Required"
+msgstr "ネットワーク認証が必要です"
+
+#: lib/marshall_web/controllers/error_html.ex:78
+#, elixir-autogen, elixir-format
+msgid "Not Acceptable"
+msgstr "受け入れられない"
+
+#: lib/marshall_web/controllers/error_html.ex:110
+#, elixir-autogen, elixir-format
+msgid "Not Extended"
+msgstr "延長されていません"
+
+#: lib/marshall_web/controllers/error_html.ex:76
+#, elixir-autogen, elixir-format
+msgid "Not Found"
+msgstr "見つかりません"
+
+#: lib/marshall_web/controllers/error_html.ex:102
+#, elixir-autogen, elixir-format
+msgid "Not Implemented"
+msgstr "未実装"
+
+#: lib/marshall_web/controllers/error_html.ex:74
+#, elixir-autogen, elixir-format
+msgid "Payment Required"
+msgstr "支払いが必要です"
+
+#: lib/marshall_web/controllers/error_html.ex:84
+#, elixir-autogen, elixir-format
+msgid "Precondition Failed"
+msgstr "前提条件が失敗しました"
+
+#: lib/marshall_web/controllers/error_html.ex:97
+#, elixir-autogen, elixir-format
+msgid "Precondition Required"
+msgstr "前提条件が必要です"
+
+#: lib/marshall_web/controllers/error_html.ex:79
+#, elixir-autogen, elixir-format
+msgid "Proxy Authentication Required"
+msgstr "プロキシ認証が必要です"
+
+#: lib/marshall_web/controllers/error_html.ex:85
+#, elixir-autogen, elixir-format
+msgid "Request Entity Too Large"
+msgstr "リクエストエンティティが大きすぎます"
+
+#: lib/marshall_web/controllers/error_html.ex:99
+#, elixir-autogen, elixir-format
+msgid "Request Header Fields Too Large"
+msgstr "リクエストヘッダーフィールドが大きすぎます"
+
+#: lib/marshall_web/controllers/error_html.ex:80
+#, elixir-autogen, elixir-format
+msgid "Request Timeout"
+msgstr "リクエストのタイムアウト"
+
+#: lib/marshall_web/controllers/error_html.ex:86
+#, elixir-autogen, elixir-format
+msgid "Request-URI Too Long"
+msgstr "リクエスト URI が長すぎます"
+
+#: lib/marshall_web/controllers/error_html.ex:88
+#, elixir-autogen, elixir-format
+msgid "Requested Range Not Satisfiable"
+msgstr "要求された範囲が満たされません"
+
+#: lib/marshall_web/controllers/error_html.ex:104
+#, elixir-autogen, elixir-format
+msgid "Service Unavailable"
+msgstr "サービスが利用できません"
+
+#: lib/marshall_web/controllers/error_html.ex:95
+#, elixir-autogen, elixir-format
+msgid "Too Early"
+msgstr "早すぎる"
+
+#: lib/marshall_web/controllers/error_html.ex:98
+#, elixir-autogen, elixir-format
+msgid "Too Many Requests"
+msgstr "リクエストが多すぎます"
+
+#: lib/marshall_web/controllers/error_html.ex:73
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "無許可"
+
+#: lib/marshall_web/controllers/error_html.ex:100
+#, elixir-autogen, elixir-format
+msgid "Unavailable For Legal Reasons"
+msgstr "法的理由により利用不可"
+
+#: lib/marshall_web/controllers/error_html.ex:92
+#, elixir-autogen, elixir-format
+msgid "Unprocessable Content"
+msgstr "処理できないコンテンツ"
+
+#: lib/marshall_web/controllers/error_html.ex:87
+#, elixir-autogen, elixir-format
+msgid "Unsupported Media Type"
+msgstr "サポートされていないメディア タイプ"
+
+#: lib/marshall_web/controllers/error_html.ex:96
+#, elixir-autogen, elixir-format
+msgid "Upgrade Required"
+msgstr "アップグレードが必要です"
+
+#: lib/marshall_web/controllers/error_html.ex:107
+#, elixir-autogen, elixir-format
+msgid "Variant Also Negotiates"
+msgstr "バリアントもネゴシエートします"

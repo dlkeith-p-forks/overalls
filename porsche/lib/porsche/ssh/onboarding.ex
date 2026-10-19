@@ -50,18 +50,24 @@ defmodule Porsche.SSH.Onboarding do
   # Unknown-key wording MUST NOT claim to identify an account or its key count.
   @spec unknown(binary()) :: binary()
   def unknown(fingerprint),
-    do: gettext("We don't recognize this SSH key:\n  ") <> safe(fingerprint) <> "\n"
+    do:
+      dgettext("onboarding", "We don't recognize this SSH key:\n  ") <> safe(fingerprint) <> "\n"
 
   @spec approval(binary(), binary()) :: binary()
   def approval(fingerprint, url) do
     unknown(fingerprint) <>
-      gettext("\nOpen this link, sign in, and approve the matching fingerprint:\n  ") <>
+      dgettext(
+        "onboarding",
+        "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+      ) <>
       safe(url) <>
-      gettext("\n\nKeep this SSH connection open while approving the key.\n") <>
-      gettext("Approval links expire after %{minutes} minutes or when this connection closes.\n",
+      dgettext("onboarding", "\n\nKeep this SSH connection open while approving the key.\n") <>
+      dgettext(
+        "onboarding",
+        "Approval links expire after %{minutes} minutes or when this connection closes.\n",
         minutes: div(approval_ttl_seconds(), 60)
       ) <>
-      gettext("After approval, retry your command here.\n")
+      dgettext("onboarding", "After approval, retry your command here.\n")
   end
 
   @spec retry_interactively(binary(), binary() | nil) :: binary()
@@ -72,10 +78,13 @@ defmodule Porsche.SSH.Onboarding do
         else: "\n"
 
     unknown(fingerprint) <>
-      gettext("\nOpen an interactive Porsche connection without a remote command:") <>
+      dgettext("onboarding", "\nOpen an interactive Porsche connection without a remote command:") <>
       command <>
-      gettext("Keep that connection open while approving your key in the browser,\n") <>
-      gettext("then retry your original command.\n")
+      dgettext(
+        "onboarding",
+        "Keep that connection open while approving your key in the browser,\n"
+      ) <>
+      dgettext("onboarding", "then retry your original command.\n")
   end
 
   @spec guidance(diagnosis(), binary(), binary() | nil, :direct | :proxy) :: binary()
@@ -83,7 +92,8 @@ defmodule Porsche.SSH.Onboarding do
     heading =
       if mode == :direct,
         do:
-          gettext(
+          dgettext(
+            "onboarding",
             "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
           ),
         else: ""
@@ -94,10 +104,14 @@ defmodule Porsche.SSH.Onboarding do
           unknown(fingerprint) <> "\n"
 
         :unavailable ->
-          gettext("We couldn't verify this SSH key right now. Please try again shortly.\n\n")
+          dgettext(
+            "onboarding",
+            "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
+          )
 
         :denied ->
-          gettext(
+          dgettext(
+            "onboarding",
             "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
           )
 
@@ -107,18 +121,25 @@ defmodule Porsche.SSH.Onboarding do
 
     steps =
       if public_origin?(origin) do
-        gettext("Register or check your key by connecting to:\n  ssh ") <>
+        dgettext("onboarding", "Register or check your key by connecting to:\n  ssh ") <>
           URI.parse(origin).host <>
-          gettext("\nOr manage your keys at:\n  ") <> origin <> "/settings#ssh-keys\n\n"
+          dgettext("onboarding", "\nOr manage your keys at:\n  ") <>
+          origin <> "/settings#ssh-keys\n\n"
       else
-        gettext("Register or check your SSH key in Overalls Account settings > SSH keys.\n\n")
+        dgettext(
+          "onboarding",
+          "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
+        )
       end
 
     heading <>
       reason <>
       steps <>
-      gettext("Follow the browser approval instructions, then run the setup command\n") <>
-      gettext("from your machine's page and reconnect without root@.\n")
+      dgettext(
+        "onboarding",
+        "Follow the browser approval instructions, then run the setup command\n"
+      ) <>
+      dgettext("onboarding", "from your machine's page and reconnect without root@.\n")
   end
 
   # @cc [owner:ghuntley,label:protocol] porsche-human-terminal-lines

@@ -11,6 +11,8 @@ defmodule Marshall.Operations.OperatorBootPropertyTest do
   # @cc [owner:ghuntley,label:verification;security] operator-boot-isolation-property
   # Every valid operator-mode boot MUST initialize a non-serving endpoint and
   # PubSub, disable Oban consumers, and use the exact reduced child set.
+  # One hundred real BEAM subprocess boots require a bounded aggregate budget.
+  @tag timeout: 180_000
   property "operator boots retain serving and queue isolation across valid environments",
     test_cases: 100 do
     server = draw("server", member_of(["false", ""]))

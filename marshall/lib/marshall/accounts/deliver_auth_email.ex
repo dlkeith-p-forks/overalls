@@ -132,10 +132,11 @@ defmodule Marshall.Accounts.DeliverAuthEmail do
             new()
             |> from(Application.fetch_env!(:marshall, :mail_from))
             |> to(email)
-            |> subject(gettext("Your Overalls sign-in link"))
+            |> subject(dgettext("auth", "Your Overalls sign-in link"))
             |> header("Message-ID", "<#{delivery_id}@#{@message_id_domain}>")
             |> text_body(
-              gettext(
+              dgettext(
+                "auth",
                 "Sign in to Overalls: %{link}\n\nIf you did not request this, ignore this email.",
                 link: link
               )
@@ -143,14 +144,14 @@ defmodule Marshall.Accounts.DeliverAuthEmail do
             |> html_body(
               "<div lang=\"#{locale}\" dir=\"#{Marshall.Localization.direction(locale)}\"><p>" <>
                 Phoenix.HTML.safe_to_string(
-                  Phoenix.HTML.html_escape(gettext("Sign in to Overalls:"))
+                  Phoenix.HTML.html_escape(dgettext("auth", "Sign in to Overalls:"))
                 ) <>
                 "</p><p><a href=\"#{escaped}\">" <>
-                Phoenix.HTML.safe_to_string(Phoenix.HTML.html_escape(gettext("Sign in"))) <>
+                Phoenix.HTML.safe_to_string(Phoenix.HTML.html_escape(dgettext("auth", "Sign in"))) <>
                 "</a></p><p>" <>
                 Phoenix.HTML.safe_to_string(
                   Phoenix.HTML.html_escape(
-                    gettext("If you did not request this, ignore this email.")
+                    dgettext("auth", "If you did not request this, ignore this email.")
                   )
                 ) <>
                 "</p></div>"

@@ -1,0 +1,375 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: zh-Hans\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/integrations_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "**** (write-only)"
+msgstr "****（仅可写入）"
+
+#: lib/marshall_web/live/integrations_live.ex:342
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "操作"
+
+#: lib/marshall_web/live/integrations_live.ex:386
+#, elixir-autogen, elixir-format
+msgid "Add an integration"
+msgstr "添加集成"
+
+#: lib/marshall_web/live/integrations_live.ex:267
+#: lib/marshall_web/live/integrations_live.ex:380
+#, elixir-autogen, elixir-format
+msgid "Attach"
+msgstr "关联"
+
+#: lib/marshall_web/live/integrations_live.ex:377
+#, elixir-autogen, elixir-format
+msgid "Attach a machine by ID"
+msgstr "通过 ID 关联机器"
+
+#: lib/marshall_web/live/integrations_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "Awaiting GitHub authorization"
+msgstr "等待 GitHub 授权"
+
+#: lib/marshall_web/live/integrations_live.ex:420
+#, elixir-autogen, elixir-format
+msgid "Basic user:pass"
+msgstr "Basic 用户名:密码"
+
+#: lib/marshall_web/live/integrations_live.ex:414
+#, elixir-autogen, elixir-format
+msgid "Bearer token"
+msgstr "Bearer 令牌"
+
+#: lib/marshall_web/live/integrations_live.ex:312
+#: lib/marshall_web/live/integrations_live.ex:400
+#, elixir-autogen, elixir-format
+msgid "Comment"
+msgstr "备注"
+
+#: lib/marshall_web/live/integrations_live.ex:230
+#, elixir-autogen, elixir-format
+msgid "Connect GitHub"
+msgstr "连接 GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
+msgstr "连接您的 GitHub 账户，以使用 Git、拉取请求、Actions、发布及其他开发工作流。GitHub 凭据保留在边缘端。"
+
+#: lib/marshall_web/live/integrations_live.ex:126
+#: lib/marshall_web/live/integrations_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Connected"
+msgstr "已连接"
+
+#: lib/marshall_web/live/integrations_live.ex:225
+#, elixir-autogen, elixir-format
+msgid "Connected as %{login}"
+msgstr "已以 %{login} 的身份连接"
+
+#: lib/marshall_web/live/integrations_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "Could not attach that machine."
+msgstr "无法关联该机器。"
+
+#: lib/marshall_web/live/integrations_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "Could not detach that machine."
+msgstr "无法解除该机器的关联。"
+
+#: lib/marshall_web/live/integrations_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Could not remove this integration."
+msgstr "无法移除此集成。"
+
+#: lib/marshall_web/live/integrations_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Could not save this integration. Check the name, HTTPS target and header values."
+msgstr "无法保存此集成。请检查名称、HTTPS 目标和请求头值。"
+
+#: lib/marshall_web/live/integrations_live.ex:409
+#, elixir-autogen, elixir-format
+msgid "Credentials"
+msgstr "凭据"
+
+#: lib/marshall_web/live/integrations_live.ex:258
+#: lib/marshall_web/live/integrations_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Detach"
+msgstr "解除关联"
+
+#: lib/marshall_web/live/integrations_live.ex:240
+#, elixir-autogen, elixir-format
+msgid "Disconnect GitHub"
+msgstr "断开 GitHub 连接"
+
+#: lib/marshall_web/live/integrations_live.ex:237
+#, elixir-autogen, elixir-format
+msgid "Disconnect GitHub from your machines?"
+msgstr "要断开您的机器与 GitHub 的连接吗？"
+
+#: lib/marshall_web/live/integrations_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "Disconnected"
+msgstr "已断开连接"
+
+#: lib/marshall_web/live/integrations_live.ex:133
+#, elixir-autogen, elixir-format
+msgid "Disconnecting GitHub"
+msgstr "正在断开 GitHub 连接"
+
+#: lib/marshall_web/live/integrations_live.ex:130
+#, elixir-autogen, elixir-format
+msgid "Finishing active GitHub requests"
+msgstr "正在完成进行中的 GitHub 请求"
+
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:33
+#, elixir-autogen, elixir-format
+msgid "GitHub connected."
+msgstr "已连接 GitHub。"
+
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
+#, elixir-autogen, elixir-format
+msgid "GitHub could not be connected. Try again from Integrations."
+msgstr "无法连接 GitHub。请在“集成”页面重试。"
+
+#: lib/marshall_web/live/integrations_live.ex:405
+#, elixir-autogen, elixir-format
+msgid "HTTPS target"
+msgstr "HTTPS 目标"
+
+#: lib/marshall_web/live/integrations_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "Injected credentials"
+msgstr "注入的凭据"
+
+#: lib/marshall_web/live/integrations_live.ex:47
+#, elixir-autogen, elixir-format
+msgid "Integration %{value1} saved."
+msgstr "集成 %{value1} 已保存。"
+
+#: lib/marshall_web/live/integrations_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Integration removed."
+msgstr "集成已移除。"
+
+#: lib/marshall_web/live/integrations_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "Integrations"
+msgstr "集成"
+
+#: lib/marshall_web/live/integrations_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Integrations are temporarily unavailable."
+msgstr "集成暂不可用。"
+
+#: lib/marshall_web/live/integrations_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "无效请求。"
+
+#: lib/marshall_web/live/integrations_live.ex:341
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "机器"
+
+#: lib/marshall_web/live/integrations_live.ex:255
+#: lib/marshall_web/live/integrations_live.ex:378
+#, elixir-autogen, elixir-format
+msgid "Machine UUID"
+msgstr "机器 UUID"
+
+#: lib/marshall_web/live/integrations_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Machine attached."
+msgstr "机器已关联。"
+
+#: lib/marshall_web/live/integrations_live.ex:91
+#, elixir-autogen, elixir-format
+msgid "Machine detached."
+msgstr "机器已解除关联。"
+
+#: lib/marshall_web/live/integrations_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Machines excluded from your GitHub identity"
+msgstr "不使用您的 GitHub 身份的机器"
+
+#: lib/marshall_web/live/integrations_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Machines with access"
+msgstr "拥有访问权限的机器"
+
+#: lib/marshall_web/live/integrations_live.ex:395
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "名称"
+
+#: lib/marshall_web/live/integrations_live.ex:388
+#, elixir-autogen, elixir-format
+msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
+msgstr "命名端点并指向 HTTPS API，或标记为连接另一台机器的对等连接。机密仅可写入：保存后用于注入，不会再次显示。"
+
+#: lib/marshall_web/live/integrations_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
+msgstr "机器可通过 https://NAME.integration.internal 访问的命名端点。凭据在网络边缘注入，机器内部永远无法读取。"
+
+#: lib/marshall_web/live/integrations_live.ex:333
+#, elixir-autogen, elixir-format
+msgid "No explicit attachments. Current team members' machines have access."
+msgstr "没有显式关联。当前团队成员的机器具有访问权限。"
+
+#: lib/marshall_web/live/integrations_live.ex:321
+#, elixir-autogen, elixir-format
+msgid "No injected headers."
+msgstr "没有注入的请求头。"
+
+#: lib/marshall_web/live/integrations_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
+msgstr "还没有集成。在下方添加集成，为机器提供通往 API 或其他机器的命名连接。"
+
+#: lib/marshall_web/live/integrations_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "No machines have access. Attach a machine to use this integration."
+msgstr "没有机器具有访问权限。关联机器后即可使用此集成。"
+
+#: lib/marshall_web/live/integrations_live.ex:307
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "所有者"
+
+#: lib/marshall_web/live/integrations_live.ex:453
+#, elixir-autogen, elixir-format
+msgid "Peer integration"
+msgstr "对等集成"
+
+#: lib/marshall_web/live/integrations_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Peer machine"
+msgstr "对等机器"
+
+#: lib/marshall_web/live/integrations_live.ex:456
+#, elixir-autogen, elixir-format
+msgid "Peer machine ID"
+msgstr "对等机器 ID"
+
+#: lib/marshall_web/live/integrations_live.ex:310
+#, elixir-autogen, elixir-format
+msgid "Personal integration"
+msgstr "个人集成"
+
+#: lib/marshall_web/live/integrations_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "Reconnect required"
+msgstr "需要重新连接"
+
+#: lib/marshall_web/live/integrations_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Refreshing GitHub connection"
+msgstr "正在刷新 GitHub 连接"
+
+#: lib/marshall_web/live/integrations_live.ex:295
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "移除"
+
+#: lib/marshall_web/live/integrations_live.ex:292
+#, elixir-autogen, elixir-format
+msgid "Remove this integration?"
+msgstr "移除此集成？"
+
+#: lib/marshall_web/live/integrations_live.ex:457
+#, elixir-autogen, elixir-format
+msgid "Required for peer integrations"
+msgstr "对等集成必填"
+
+#: lib/marshall_web/live/integrations_live.ex:438
+#, elixir-autogen, elixir-format
+msgid "Routing, team ownership and peer connections"
+msgstr "路由、团队所有权与对等连接"
+
+#: lib/marshall_web/live/integrations_live.ex:463
+#, elixir-autogen, elixir-format
+msgid "Save integration"
+msgstr "保存集成"
+
+#: lib/marshall_web/live/integrations_live.ex:401
+#, elixir-autogen, elixir-format
+msgid "Short description for guest reflection"
+msgstr "供客户机自省使用的简短描述"
+
+#: lib/marshall_web/live/integrations_live.ex:427
+#, elixir-autogen, elixir-format
+msgid "Static header name"
+msgstr "静态请求头名称"
+
+#: lib/marshall_web/live/integrations_live.ex:433
+#, elixir-autogen, elixir-format
+msgid "Static header value"
+msgstr "静态请求头值"
+
+#: lib/marshall_web/live/integrations_live.ex:443
+#, elixir-autogen, elixir-format
+msgid "Strip prefix"
+msgstr "移除前缀"
+
+#: lib/marshall_web/live/integrations_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "Strips prefix"
+msgstr "移除前缀"
+
+#: lib/marshall_web/live/integrations_live.ex:301
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "目标"
+
+#: lib/marshall_web/live/integrations_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "Team %{team}"
+msgstr "团队 %{team}"
+
+#: lib/marshall_web/live/integrations_live.ex:448
+#, elixir-autogen, elixir-format
+msgid "Team ID"
+msgstr "团队 ID"
+
+#: lib/marshall_web/live/integrations_live.ex:449
+#, elixir-autogen, elixir-format
+msgid "Team-owned integration"
+msgstr "团队拥有的集成"
+
+#: lib/marshall_web/live/integrations_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "Temporarily unavailable"
+msgstr "暂时不可用"
+
+#: lib/marshall_web/live/integrations_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
+msgstr "您的机器会自动使用您已连接的 GitHub 身份。使用共享机器的协作者可以使用机器所有者的 GitHub 权限。已断开关联的机器仍可匿名访问 GitHub 上的公开资源。"
+
+#: lib/marshall_web/live/integrations_live.ex:396
+#, elixir-autogen, elixir-format
+msgid "example-integration"
+msgstr "example-integration"
+
+#: lib/marshall_web/live/integrations_live.ex:428
+#, elixir-autogen, elixir-format
+msgid "x-api-token"
+msgstr "x-api-token"

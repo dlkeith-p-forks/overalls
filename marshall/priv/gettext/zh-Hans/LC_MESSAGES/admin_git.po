@@ -1,0 +1,259 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: zh-Hans\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/admin/git_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "操作"
+
+#: lib/marshall_web/live/admin/git_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "操作"
+
+#: lib/marshall_web/live/admin/git_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Add a mirror"
+msgstr "添加镜像仓库"
+
+#: lib/marshall_web/live/admin/git_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Add mirror"
+msgstr "添加镜像仓库"
+
+#: lib/marshall_web/live/admin/git_live.ex:23
+#, elixir-autogen, elixir-format
+msgid "Could not register repository. Verify your passkey and labels."
+msgstr "无法登记仓库。请验证通行密钥并检查标签。"
+
+#: lib/marshall_web/live/admin/git_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "失败"
+
+#: lib/marshall_web/live/admin/git_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Git mirrors"
+msgstr "Git 镜像仓库"
+
+#: lib/marshall_web/live/admin/git_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Git operation failed"
+msgstr "Git 操作失败"
+
+#: lib/marshall_web/live/admin/git_live.ex:81
+#, elixir-autogen, elixir-format
+msgid "GitHub organization"
+msgstr "GitHub 组织"
+
+#: lib/marshall_web/live/admin/git_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Identifiers"
+msgstr "标识符"
+
+#: lib/marshall_web/live/admin/git_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Mirrors"
+msgstr "镜像仓库"
+
+#: lib/marshall_web/live/admin/git_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "No mirror events recorded."
+msgstr "没有镜像仓库事件记录。"
+
+#: lib/marshall_web/live/admin/git_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "No repositories are mirrored yet."
+msgstr "还没有镜像仓库。"
+
+#: lib/marshall_web/live/admin/git_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "待处理"
+
+#: lib/marshall_web/live/admin/git_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Phase"
+msgstr "阶段"
+
+#: lib/marshall_web/live/admin/git_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Public GitHub repositories mirrored for machines. Mirrors refresh hourly; changes require recent passkey verification."
+msgstr "为机器镜像的 GitHub 公开仓库。镜像每小时刷新；更改需要最近验证过的通行密钥。"
+
+#: lib/marshall_web/live/admin/git_live.ex:173
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "就绪"
+
+#: lib/marshall_web/live/admin/git_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Reason"
+msgstr "原因"
+
+#: lib/marshall_web/live/admin/git_live.ex:133
+#, elixir-autogen, elixir-format
+msgid "Recent mirror audit"
+msgstr "近期镜像仓库审计"
+
+#: lib/marshall_web/live/admin/git_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Refresh"
+msgstr "刷新"
+
+#: lib/marshall_web/live/admin/git_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Refresh already in progress."
+msgstr "刷新已在进行中。"
+
+#: lib/marshall_web/live/admin/git_live.ex:37
+#, elixir-autogen, elixir-format
+msgid "Refresh could not be queued."
+msgstr "无法将刷新加入队列。"
+
+#: lib/marshall_web/live/admin/git_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Refresh failed"
+msgstr "刷新失败"
+
+#: lib/marshall_web/live/admin/git_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Refresh queued."
+msgstr "刷新已加入队列。"
+
+#: lib/marshall_web/live/admin/git_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Refresh requested"
+msgstr "已请求刷新"
+
+#: lib/marshall_web/live/admin/git_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Refresh succeeded"
+msgstr "刷新成功"
+
+#: lib/marshall_web/live/admin/git_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Refreshing"
+msgstr "正在刷新"
+
+#: lib/marshall_web/live/admin/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "已注册"
+
+#: lib/marshall_web/live/admin/git_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "Removal queued."
+msgstr "移除已加入队列。"
+
+#: lib/marshall_web/live/admin/git_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Removal requested"
+msgstr "已请求移除"
+
+#: lib/marshall_web/live/admin/git_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "移除"
+
+#: lib/marshall_web/live/admin/git_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Remove mirror?"
+msgstr "移除镜像仓库？"
+
+#: lib/marshall_web/live/admin/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Removed"
+msgstr "已移除"
+
+#: lib/marshall_web/live/admin/git_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Removing"
+msgstr "正在移除"
+
+#: lib/marshall_web/live/admin/git_live.ex:87
+#: lib/marshall_web/live/admin/git_live.ex:102
+#, elixir-autogen, elixir-format
+msgid "Repository"
+msgstr "仓库"
+
+#: lib/marshall_web/live/admin/git_live.ex:44
+#, elixir-autogen, elixir-format
+msgid "Repository could not be removed."
+msgstr "无法移除仓库。"
+
+#: lib/marshall_web/live/admin/git_live.ex:16
+#, elixir-autogen, elixir-format
+msgid "Repository registered."
+msgstr "仓库已登记。"
+
+#: lib/marshall_web/live/admin/git_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Service unavailable"
+msgstr "服务不可用"
+
+#: lib/marshall_web/live/admin/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "TLS verification failed"
+msgstr "TLS 验证失败"
+
+#: lib/marshall_web/live/admin/git_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Timed out"
+msgstr "已超时"
+
+#: lib/marshall_web/live/admin/git_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "未经授权"
+
+#: lib/marshall_web/live/admin/git_live.ex:176
+#: lib/marshall_web/live/admin/git_live.ex:188
+#: lib/marshall_web/live/admin/git_live.ex:197
+#: lib/marshall_web/live/admin/git_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "未知"
+
+#: lib/marshall_web/live/admin/git_live.ex:139
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "时间"
+
+#: lib/marshall_web/live/admin/git_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "actor"
+msgstr "操作者"
+
+#: lib/marshall_web/live/admin/git_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "attempt"
+msgstr "尝试"
+
+#: lib/marshall_web/live/admin/git_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "nixos"
+msgstr "nixos"
+
+#: lib/marshall_web/live/admin/git_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "nixpkgs"
+msgstr "nixpkgs"
+
+#: lib/marshall_web/live/admin/git_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "repository"
+msgstr "仓库"

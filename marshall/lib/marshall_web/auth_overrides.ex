@@ -12,7 +12,8 @@ defmodule MarshallWeb.AuthOverrides do
   @spec magic_link_request_feedback() :: String.t()
   def magic_link_request_feedback,
     do:
-      gettext(
+      dgettext(
+        "auth",
         "Check your email for a sign-in link. Your account will be created automatically when you sign in."
       )
 

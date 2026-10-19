@@ -297,7 +297,7 @@ defmodule Marshall.Accounts.TimeZones do
   end
 
   @spec difference_text(integer()) :: String.t()
-  defp difference_text(0), do: gettext("same time as you")
+  defp difference_text(0), do: dgettext("account", "same time as you")
 
   defp difference_text(minutes) do
     hours = div(abs(minutes), 60)
@@ -311,8 +311,8 @@ defmodule Marshall.Accounts.TimeZones do
       end
 
     if minutes > 0,
-      do: gettext("%{span} ahead of you", span: span),
-      else: gettext("%{span} behind you", span: span)
+      do: dgettext("account", "%{span} ahead of you", span: span),
+      else: dgettext("account", "%{span} behind you", span: span)
   end
 
   @spec localized_unit(non_neg_integer(), String.t()) :: String.t()

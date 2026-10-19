@@ -37,6 +37,11 @@ terminal bytes.
    compatibility after convergence under ADR-0159.
 5. Persist only the validated override. Authorization, session isolation,
    fallback behavior and translation completeness are tested as contracts.
+6. Organize native Gettext catalogs by locale and feature domain. Source strings,
+   contexts and plurals retain their identity within the owning feature; reusable
+   components own shared messages. Public `/docs/*` prose is localized. Handbook
+   chapter contents, titles and generated command references remain English,
+   independently of the reader controls' active language.
 
 ## Consequences
 
@@ -62,7 +67,8 @@ The baseline human surfaces are [AccountLive](../../../marshall/lib/marshall_web
 
 ## Open questions
 
-Native linguistic review and packaged browser/Porsche execution remain unverified.
+Packaged browser/Porsche execution and complete translation coverage remain
+unverified. Native-speaker review is not a release requirement for this task.
 
 ## Related decisions
 

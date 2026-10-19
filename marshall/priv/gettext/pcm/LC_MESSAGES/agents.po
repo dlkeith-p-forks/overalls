@@ -1,0 +1,1553 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: pcm\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/threads_live.ex:1480
+#, elixir-autogen, elixir-format
+msgid "%{value1} Reasoning stays with this thread. Switch between Plan and Work as needed."
+msgstr "%{value1} reasoning go remain for this discussion. Change between Plan and Work as you need."
+
+#: lib/marshall_web/live/threads_live.ex:2100
+#, elixir-autogen, elixir-format
+msgid "%{value1} reasoning"
+msgstr "%{value1} reasoning level"
+
+#: lib/marshall_web/live/threads_live.ex:2614
+#: lib/marshall_web/live/threads_live.ex:2616
+#, elixir-autogen, elixir-format
+msgid "A context source could not be fully loaded."
+msgstr "We no fit load all di information from one context source."
+
+#: lib/marshall_web/live/threads_live.ex:1492
+#, elixir-autogen, elixir-format
+msgid "A machine of its own."
+msgstr "Machine wey belong to am alone."
+
+#: lib/marshall_web/live/threads_live.ex:1288
+#, elixir-autogen, elixir-format
+msgid "A selected skill is no longer available. Reload Skills and select its current source."
+msgstr "One skill wey you choose no dey again. Load Skills again and choose di source wey dey now."
+
+#: lib/marshall_web/live/threads_live.ex:1371
+#, elixir-autogen, elixir-format
+msgid "A space for your next idea"
+msgstr "Space for your next idea"
+
+#: lib/marshall_web/live/threads_live.ex:1883
+#, elixir-autogen, elixir-format
+msgid "Access details are temporarily unavailable. Close sharing and try again shortly."
+msgstr "We no fit show access details now. Close sharing and try again small time."
+
+#: lib/marshall_web/live/threads_live.ex:1853
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Things you fit do"
+
+#: lib/marshall_web/live/threads_live.ex:1569
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "E dey work"
+
+#: lib/marshall_web/live/threads_live.ex:1359
+#: lib/marshall_web/live/threads_live.ex:1633
+#, elixir-autogen, elixir-format
+msgid "Activity"
+msgstr "Wetin dey happen"
+
+#: lib/marshall_web/live/agent_threads_live.ex:111
+#: lib/marshall_web/live/threads_live.ex:2647
+#, elixir-autogen, elixir-format
+msgid "Agent"
+msgstr "Di agent"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Agent CLI approved for one hour. Return to your terminal."
+msgstr "We don approve agent CLI for one awa. Go back to your terminal."
+
+#: lib/marshall_web/live/agent_threads_live.ex:112
+#: lib/marshall_web/live/agent_threads_live.ex:136
+#: lib/marshall_web/live/threads_live.ex:2655
+#, elixir-autogen, elixir-format
+msgid "Agent started working"
+msgstr "Agent don start work"
+
+#: lib/marshall_web/live/agent_threads_live.ex:162
+#, elixir-autogen, elixir-format
+msgid "Agents"
+msgstr "Di agents"
+
+#: lib/marshall_web/live/threads_live.ex:1108
+#, elixir-autogen, elixir-format
+msgid "All teams"
+msgstr "All di teams"
+
+#: lib/marshall_web/live/threads_live.ex:1568
+#: lib/marshall_web/live/threads_live.ex:1660
+#, elixir-autogen, elixir-format
+msgid "All threads"
+msgstr "All di discussions"
+
+#: lib/marshall_web/live/threads_live.ex:1689
+#, elixir-autogen, elixir-format
+msgid "All visible"
+msgstr "All wey you fit see"
+
+#: lib/marshall_web/live/threads_live.ex:2165
+#, elixir-autogen, elixir-format
+msgid "An operator can answer these questions."
+msgstr "Operator fit answer these questions."
+
+#: lib/marshall_web/live/threads_live.ex:1263
+#, elixir-autogen, elixir-format
+msgid "Answer each question with a choice, your own answer, or both."
+msgstr "For each question, choose option, write your own answer, or do both."
+
+#: lib/marshall_web/live/threads_live.ex:2119
+#, elixir-autogen, elixir-format
+msgid "Answer these questions to continue the plan."
+msgstr "Answer these questions make di plan fit continue."
+
+#: lib/marshall_web/live/threads_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Answers submitted."
+msgstr "We don send di answers."
+
+#: lib/marshall_web/live/threads_live.ex:1676
+#, elixir-autogen, elixir-format
+msgid "Any time"
+msgstr "Any time at all"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Approve CLI access"
+msgstr "Approve person to use CLI"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:64
+#, elixir-autogen, elixir-format
+msgid "Approve agent CLI"
+msgstr "Approve di agent CLI"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr "We dey approve am…"
+
+#: lib/marshall_web/live/threads_live.ex:1856
+#, elixir-autogen, elixir-format
+msgid "Archive"
+msgstr "Keep for archive"
+
+#: lib/marshall_web/live/threads_live.ex:1570
+#: lib/marshall_web/live/threads_live.ex:1666
+#: lib/marshall_web/live/threads_live.ex:2634
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "We don archive am"
+
+#: lib/marshall_web/live/threads_live.ex:2209
+#, elixir-autogen, elixir-format
+msgid "Archived thread. The transcript is read-only. Reopen to continue on a new machine."
+msgstr "We don archive this discussion. You fit only read di transcript. Open am again to continue for new machine."
+
+#: lib/marshall_web/live/threads_live.ex:2643
+#, elixir-autogen, elixir-format
+msgid "Archived · conversation retained"
+msgstr "We don archive am · we keep di discussion"
+
+#: lib/marshall_web/live/threads_live.ex:2633
+#, elixir-autogen, elixir-format
+msgid "Archiving"
+msgstr "We dey archive am"
+
+#: lib/marshall_web/live/threads_live.ex:2053
+#, elixir-autogen, elixir-format
+msgid "Archiving is in progress. Waiting for the machine to be deleted."
+msgstr "Archiving dey go on. We dey wait make di machine delete."
+
+#: lib/marshall_web/live/threads_live.ex:394
+#, elixir-autogen, elixir-format
+msgid "Archiving requested. The machine will be deleted before archival completes."
+msgstr "You don ask to archive am. We go delete di machine before archiving finish."
+
+#: lib/marshall_web/live/threads_live.ex:2642
+#, elixir-autogen, elixir-format
+msgid "Archiving · releasing the machine"
+msgstr "We dey archive am · we dey release di machine"
+
+#: lib/marshall_web/live/threads_live.ex:1763
+#: lib/marshall_web/live/threads_live.ex:1769
+#: lib/marshall_web/live/threads_live.ex:1775
+#, elixir-autogen, elixir-format
+msgid "Back to threads"
+msgstr "Go back to discussions"
+
+#: lib/marshall_web/live/threads_live.ex:2456
+#: lib/marshall_web/live/threads_live.ex:2502
+#, elixir-autogen, elixir-format
+msgid "Branch, tag or commit"
+msgstr "Branch, tag or commit to use"
+
+#: lib/marshall_web/live/threads_live.ex:1392
+#, elixir-autogen, elixir-format
+msgid "Build something, fix a bug, explore an idea…"
+msgstr "Build something, repair bug, check one idea…"
+
+#: lib/marshall_web/live/threads_live.ex:1460
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#: lib/marshall_web/live/threads_live.ex:1917
+#, elixir-autogen, elixir-format
+msgid "Change"
+msgstr "Change am"
+
+#: lib/marshall_web/live/agent_threads_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Child thread"
+msgstr "Pikin discussion"
+
+#: lib/marshall_web/live/agent_threads_live.ex:116
+#: lib/marshall_web/live/agent_threads_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Child thread created"
+msgstr "We don create pikin discussion"
+
+#: lib/marshall_web/live/threads_live.ex:1292
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image and machine size."
+msgstr "Choose correct image and machine size."
+
+#: lib/marshall_web/live/threads_live.ex:2272
+#: lib/marshall_web/live/threads_live.ex:2316
+#, elixir-autogen, elixir-format
+msgid "Close"
+msgstr "Close am"
+
+#: lib/marshall_web/live/threads_live.ex:2085
+#, elixir-autogen, elixir-format
+msgid "Collaboration mode"
+msgstr "How una go work together"
+
+#: lib/marshall_web/live/threads_live.ex:639
+#, elixir-autogen, elixir-format
+msgid "Collaboration mode updated."
+msgstr "We don update collaboration mode."
+
+#: lib/marshall_web/live/threads_live.ex:2533
+#, elixir-autogen, elixir-format
+msgid "Command suggestions"
+msgstr "Commands wey we suggest"
+
+#: lib/marshall_web/live/threads_live.ex:1424
+#: lib/marshall_web/live/threads_live.ex:1798
+#: lib/marshall_web/live/threads_live.ex:2101
+#: lib/marshall_web/live/threads_live.ex:2268
+#: lib/marshall_web/live/threads_live.ex:2289
+#, elixir-autogen, elixir-format
+msgid "Commands"
+msgstr "Di commands"
+
+#: lib/marshall_web/live/threads_live.ex:2442
+#, elixir-autogen, elixir-format
+msgid "Commit: %{value1}"
+msgstr "Git commit: %{value1}"
+
+#: lib/marshall_web/live/threads_live.ex:2394
+#, elixir-autogen, elixir-format
+msgid "Compact context"
+msgstr "Summarize di context"
+
+#: lib/marshall_web/live/threads_live.ex:1278
+#, elixir-autogen, elixir-format
+msgid "Compaction could not reduce this context. Reduce required instructions or start a focused thread."
+msgstr "Summary no fit reduce this context. Reduce di instructions wey must dey or start discussion wey focus on one thing."
+
+#: lib/marshall_web/live/threads_live.ex:2600
+#, elixir-autogen, elixir-format
+msgid "Composer help"
+msgstr "Help to write message"
+
+#: lib/marshall_web/live/threads_live.ex:2360
+#, elixir-autogen, elixir-format
+msgid "Context bytes"
+msgstr "How many bytes context get"
+
+#: lib/marshall_web/live/agent_threads_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Context captured"
+msgstr "Don save context"
+
+#: lib/marshall_web/live/agent_threads_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Context compacted"
+msgstr "Don shorten context"
+
+#: lib/marshall_web/live/threads_live.ex:649
+#, elixir-autogen, elixir-format
+msgid "Context compaction queued."
+msgstr "We don put context summary for line."
+
+#: lib/marshall_web/live/threads_live.ex:2345
+#, elixir-autogen, elixir-format
+msgid "Context details are unavailable. The thread may still be preparing its workspace."
+msgstr "Context details no dey available. Di discussion fit still dey prepare im workspace."
+
+#: lib/marshall_web/live/threads_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "Context reload queued."
+msgstr "We don put context reload for line."
+
+#: lib/marshall_web/live/threads_live.ex:2071
+#, elixir-autogen, elixir-format
+msgid "Continue the work…"
+msgstr "Continue di work…"
+
+#: lib/marshall_web/live/agent_threads_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Could not create a child thread."
+msgstr "We no fit create pikin discussion."
+
+#: lib/marshall_web/live/agent_threads_live.ex:197
+#, elixir-autogen, elixir-format
+msgid "Create child"
+msgstr "Make pikin discussion"
+
+#: lib/marshall_web/live/threads_live.ex:1433
+#, elixir-autogen, elixir-format
+msgid "Create thread"
+msgstr "Start discussion"
+
+#: lib/marshall_web/live/threads_live.ex:2685
+#, elixir-autogen, elixir-format
+msgid "Delegated a task"
+msgstr "E don give another agent task"
+
+#: lib/marshall_web/live/threads_live.ex:1859
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "Delete am"
+
+#: lib/marshall_web/live/threads_live.ex:1665
+#, elixir-autogen, elixir-format
+msgid "Deleting"
+msgstr "We dey delete am"
+
+#: lib/marshall_web/live/threads_live.ex:1374
+#, elixir-autogen, elixir-format
+msgid "Describe a task. Your agent gets a machine and gets to work."
+msgstr "Describe di task. Your agent go get machine and start work."
+
+#: lib/marshall_web/live/threads_live.ex:2472
+#, elixir-autogen, elixir-format
+msgid "Disable"
+msgstr "Turn am off"
+
+#: lib/marshall_web/live/threads_live.ex:2419
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "E dey off"
+
+#: lib/marshall_web/live/threads_live.ex:1470
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "Disk space (GiB)"
+
+#: lib/marshall_web/live/threads_live.ex:2473
+#, elixir-autogen, elixir-format
+msgid "Enable"
+msgstr "Turn am on"
+
+#: lib/marshall_web/live/threads_live.ex:1664
+#: lib/marshall_web/live/threads_live.ex:2632
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "E fail"
+
+#: lib/marshall_web/live/threads_live.ex:2279
+#, elixir-autogen, elixir-format
+msgid "Find a command"
+msgstr "Find one command"
+
+#: lib/marshall_web/live/threads_live.ex:1557
+#: lib/marshall_web/live/threads_live.ex:1708
+#, elixir-autogen, elixir-format
+msgid "Find a task…"
+msgstr "Find one task…"
+
+#: lib/marshall_web/live/threads_live.ex:1611
+#: lib/marshall_web/live/threads_live.ex:1929
+#, elixir-autogen, elixir-format
+msgid "First page"
+msgstr "Di first page"
+
+#: lib/marshall_web/live/threads_live.ex:1170
+#, elixir-autogen, elixir-format
+msgid "Generation %{value1} (%{value2})"
+msgstr "Di generation %{value1} (%{value2})"
+
+#: lib/marshall_web/live/threads_live.ex:1531
+#, elixir-autogen, elixir-format
+msgid "Give your agent a task. Follow the work here."
+msgstr "Give your agent task. Follow di work here."
+
+#: lib/marshall_web/live/threads_live.ex:1530
+#, elixir-autogen, elixir-format
+msgid "Good work starts with a thread."
+msgstr "Better work dey start with discussion."
+
+#: lib/marshall_web/live/threads_live.ex:1419
+#, elixir-autogen, elixir-format
+msgid "High"
+msgstr "High level"
+
+#: lib/marshall_web/live/threads_live.ex:2624
+#, elixir-autogen, elixir-format
+msgid "High gives difficult work more reasoning time."
+msgstr "High level go give hard work more time to reason."
+
+#: lib/marshall_web/live/threads_live.ex:1451
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Machine image"
+
+#: lib/marshall_web/live/threads_live.ex:2192
+#, elixir-autogen, elixir-format
+msgid "Implement plan"
+msgstr "Do di plan"
+
+#: lib/marshall_web/live/threads_live.ex:1256
+#, elixir-autogen, elixir-format
+msgid "Implementation has already started for this plan."
+msgstr "Work don already start for this plan."
+
+#: lib/marshall_web/live/threads_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "Implementation queued."
+msgstr "We don put di work for line."
+
+#: lib/marshall_web/live/threads_live.ex:2178
+#, elixir-autogen, elixir-format
+msgid "Implementation started"
+msgstr "Di work don start"
+
+#: lib/marshall_web/live/threads_live.ex:2355
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "Tokens wey enter"
+
+#: lib/marshall_web/live/threads_live.ex:2489
+#, elixir-autogen, elixir-format
+msgid "Install a skill"
+msgstr "Install one skill"
+
+#: lib/marshall_web/live/threads_live.ex:2513
+#, elixir-autogen, elixir-format
+msgid "Install skill"
+msgstr "Install di skill"
+
+#: lib/marshall_web/live/threads_live.ex:2512
+#, elixir-autogen, elixir-format
+msgid "Installing…"
+msgstr "We dey install am…"
+
+#: lib/marshall_web/live/threads_live.ex:2365
+#, elixir-autogen, elixir-format
+msgid "Loaded sources"
+msgstr "Sources wey load"
+
+#: lib/marshall_web/live/threads_live.ex:1417
+#, elixir-autogen, elixir-format
+msgid "Low"
+msgstr "Low level"
+
+#: lib/marshall_web/live/threads_live.ex:2623
+#, elixir-autogen, elixir-format
+msgid "Low is for small, well-defined tasks."
+msgstr "Low level na for small tasks wey clear well."
+
+#: lib/marshall_web/live/threads_live.ex:1991
+#, elixir-autogen, elixir-format
+msgid "Machine generations"
+msgstr "Generations for di machine"
+
+#: lib/marshall_web/live/agent_threads_live.ex:89
+#, elixir-autogen, elixir-format
+msgid "Machine or agent access is no longer available."
+msgstr "Machine or agent access no dey again."
+
+#: lib/marshall_web/live/threads_live.ex:1445
+#, elixir-autogen, elixir-format
+msgid "Machine profile"
+msgstr "Profile for di machine"
+
+#: lib/marshall_web/live/threads_live.ex:1438
+#, elixir-autogen, elixir-format
+msgid "Machine settings"
+msgstr "Settings for di machine"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Machine:"
+msgstr "Di machine:"
+
+#: lib/marshall_web/live/agent_threads_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Maintenance finished"
+msgstr "Maintenance don finish"
+
+#: lib/marshall_web/live/threads_live.ex:2434
+#, elixir-autogen, elixir-format
+msgid "Managed installations"
+msgstr "Installations wey we manage"
+
+#: lib/marshall_web/live/threads_live.ex:2422
+#: lib/marshall_web/live/threads_live.ex:2569
+#, elixir-autogen, elixir-format
+msgid "Managed skill"
+msgstr "Skill wey we manage"
+
+#: lib/marshall_web/live/threads_live.ex:369
+#, elixir-autogen, elixir-format
+msgid "Managed skill removed."
+msgstr "We don remove di managed skill."
+
+#: lib/marshall_web/live/threads_live.ex:1963
+#: lib/marshall_web/live/threads_live.ex:2702
+#, elixir-autogen, elixir-format
+msgid "Manager"
+msgstr "Di manager"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "Match this request code with your terminal before approving:"
+msgstr "Match this request code with your terminal before you approve:"
+
+#: lib/marshall_web/live/threads_live.ex:1418
+#, elixir-autogen, elixir-format
+msgid "Medium"
+msgstr "Middle level"
+
+#: lib/marshall_web/live/threads_live.ex:2626
+#, elixir-autogen, elixir-format
+msgid "Medium is a good starting point for most work."
+msgstr "Middle level na good place to start for most work."
+
+#: lib/marshall_web/live/threads_live.ex:1464
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "Machine memory (MiB)"
+
+#: lib/marshall_web/live/threads_live.ex:2070
+#, elixir-autogen, elixir-format
+msgid "Message"
+msgstr "Di message"
+
+#: lib/marshall_web/live/threads_live.ex:1690
+#, elixir-autogen, elixir-format
+msgid "Mine"
+msgstr "My own"
+
+#: lib/marshall_web/live/threads_live.ex:1407
+#, elixir-autogen, elixir-format
+msgid "Mode"
+msgstr "Di mode"
+
+#: lib/marshall_web/live/threads_live.ex:1286
+#, elixir-autogen, elixir-format
+msgid "More than one skill has this name. Select its exact source from Skills."
+msgstr "More than one skill get this name. Choose di exact source from Skills."
+
+#: lib/marshall_web/live/threads_live.ex:1363
+#: lib/marshall_web/live/threads_live.ex:1365
+#: lib/marshall_web/live/threads_live.ex:1532
+#, elixir-autogen, elixir-format
+msgid "New thread"
+msgstr "New discussion"
+
+#: lib/marshall_web/live/threads_live.ex:1618
+#: lib/marshall_web/live/threads_live.ex:1935
+#, elixir-autogen, elixir-format
+msgid "Next page"
+msgstr "Di next page"
+
+#: lib/marshall_web/live/threads_live.ex:1727
+#, elixir-autogen, elixir-format
+msgid "No activity matches this filter."
+msgstr "Nothing wey happen match this filter."
+
+#: lib/marshall_web/live/threads_live.ex:1921
+#, elixir-autogen, elixir-format
+msgid "No individual thread grants yet."
+msgstr "No individual discussion permission yet."
+
+#: lib/marshall_web/live/threads_live.ex:2367
+#, elixir-autogen, elixir-format
+msgid "No instruction sources collected yet."
+msgstr "We never collect any instruction source."
+
+#: lib/marshall_web/live/threads_live.ex:2555
+#, elixir-autogen, elixir-format
+msgid "No matching skills. Use /skills to inspect the catalog."
+msgstr "No skill match. Use /skills to check di catalog."
+
+#: lib/marshall_web/live/threads_live.ex:1541
+#, elixir-autogen, elixir-format
+msgid "No older threads are available on this page."
+msgstr "No older discussion dey available for this page."
+
+#: lib/marshall_web/live/threads_live.ex:1582
+#, elixir-autogen, elixir-format
+msgid "No recent threads match your search."
+msgstr "No recent discussion match wetin you search."
+
+#: lib/marshall_web/live/threads_live.ex:2407
+#, elixir-autogen, elixir-format
+msgid "No skills were discovered in this workspace."
+msgstr "We no find skill for this workspace."
+
+#: lib/marshall_web/live/threads_live.ex:2354
+#, elixir-autogen, elixir-format
+msgid "Not collected yet"
+msgstr "We never collect am"
+
+#: lib/marshall_web/live/threads_live.ex:1388
+#: lib/marshall_web/live/threads_live.ex:2226
+#, elixir-autogen, elixir-format
+msgid "Objective"
+msgstr "Wetin you wan achieve"
+
+#: lib/marshall_web/live/threads_live.ex:2691
+#, elixir-autogen, elixir-format
+msgid "Older context summarized"
+msgstr "We don summarize older context"
+
+#: lib/marshall_web/live/threads_live.ex:1487
+#, elixir-autogen, elixir-format
+msgid "One task. One thread."
+msgstr "One task. One discussion."
+
+#: lib/marshall_web/live/threads_live.ex:1844
+#, elixir-autogen, elixir-format
+msgid "Open VS Code"
+msgstr "Open di VS Code"
+
+#: lib/marshall_web/live/threads_live.ex:1446
+#, elixir-autogen, elixir-format
+msgid "Open source"
+msgstr "Source code wey open"
+
+#: lib/marshall_web/live/threads_live.ex:1815
+#, elixir-autogen, elixir-format
+msgid "Open terminal"
+msgstr "Open di terminal"
+
+#: lib/marshall_web/live/threads_live.ex:1824
+#, elixir-autogen, elixir-format
+msgid "Open terminal here"
+msgstr "Open di terminal here"
+
+#: lib/marshall_web/live/threads_live.ex:1962
+#: lib/marshall_web/live/threads_live.ex:2701
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "Di operator"
+
+#: lib/marshall_web/live/threads_live.ex:1895
+#, elixir-autogen, elixir-format
+msgid "Owner · cannot be changed"
+msgstr "Di owner · you no fit change am"
+
+#: lib/marshall_web/live/threads_live.ex:1679
+#, elixir-autogen, elixir-format
+msgid "Past 30 days"
+msgstr "Di last 30 de"
+
+#: lib/marshall_web/live/threads_live.ex:1678
+#, elixir-autogen, elixir-format
+msgid "Past 7 days"
+msgstr "Di last 7 de"
+
+#: lib/marshall_web/live/threads_live.ex:1661
+#: lib/marshall_web/live/threads_live.ex:2629
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "E dey wait"
+
+#: lib/marshall_web/live/threads_live.ex:1518
+#, elixir-autogen, elixir-format
+msgid "Pick up where you left off."
+msgstr "Continue from where you stop."
+
+#: lib/marshall_web/live/threads_live.ex:1408
+#: lib/marshall_web/live/threads_live.ex:2594
+#, elixir-autogen, elixir-format
+msgid "Plan"
+msgstr "Di plan"
+
+#: lib/marshall_web/live/agent_threads_live.ex:123
+#, elixir-autogen, elixir-format
+msgid "Plan proposed"
+msgstr "Don suggest plan"
+
+#: lib/marshall_web/live/threads_live.ex:2639
+#, elixir-autogen, elixir-format
+msgid "Preparing a machine for this task"
+msgstr "We dey prepare machine for this task"
+
+#: lib/marshall_web/live/threads_live.ex:2029
+#, elixir-autogen, elixir-format
+msgid "Preparing your workspace"
+msgstr "We dey prepare your workspace"
+
+#: lib/marshall_web/live/agent_threads_live.ex:110
+#: lib/marshall_web/live/agent_threads_live.ex:217
+#: lib/marshall_web/live/threads_live.ex:2646
+#, elixir-autogen, elixir-format
+msgid "Prompt"
+msgstr "Instruction to agent"
+
+#: lib/marshall_web/live/agent_threads_live.ex:49
+#: lib/marshall_web/live/threads_live.ex:614
+#, elixir-autogen, elixir-format
+msgid "Prompt queued."
+msgstr "We don put instruction for line."
+
+#: lib/marshall_web/live/agent_threads_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Prompts wake a stopped machine when you have write access."
+msgstr "Instructions go wake machine wey stop if you get permission to write."
+
+#: lib/marshall_web/live/threads_live.ex:2175
+#, elixir-autogen, elixir-format
+msgid "Proposed plan"
+msgstr "Plan wey we suggest"
+
+#: lib/marshall_web/live/threads_live.ex:1662
+#: lib/marshall_web/live/threads_live.ex:2630
+#, elixir-autogen, elixir-format
+msgid "Provisioning"
+msgstr "We dey set machine up"
+
+#: lib/marshall_web/live/threads_live.ex:2038
+#, elixir-autogen, elixir-format
+msgid "Provisioning needs attention."
+msgstr "Machine setup need attention."
+
+#: lib/marshall_web/live/threads_live.ex:378
+#, elixir-autogen, elixir-format
+msgid "Provisioning will retry."
+msgstr "Machine setup go try again."
+
+#: lib/marshall_web/live/agent_threads_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Questions answered"
+msgstr "Don answer questions"
+
+#: lib/marshall_web/live/agent_threads_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Questions cancelled"
+msgstr "Don cancel questions"
+
+#: lib/marshall_web/live/agent_threads_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Questions requested"
+msgstr "Don ask questions"
+
+#: lib/marshall_web/live/threads_live.ex:2667
+#, elixir-autogen, elixir-format
+msgid "Queued: %{tools}"
+msgstr "E don enter line: %{tools}"
+
+#: lib/marshall_web/live/threads_live.ex:1663
+#: lib/marshall_web/live/threads_live.ex:2631
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "E don ready"
+
+#: lib/marshall_web/live/threads_live.ex:1415
+#, elixir-autogen, elixir-format
+msgid "Reasoning"
+msgstr "How e dey reason"
+
+#: lib/marshall_web/live/threads_live.ex:1516
+#, elixir-autogen, elixir-format
+msgid "Recent threads"
+msgstr "Recent discussions"
+
+#: lib/marshall_web/live/threads_live.ex:1953
+#, elixir-autogen, elixir-format
+msgid "Registered email"
+msgstr "Email wey register"
+
+#: lib/marshall_web/live/threads_live.ex:2388
+#, elixir-autogen, elixir-format
+msgid "Reload context"
+msgstr "Load di context again"
+
+#: lib/marshall_web/live/threads_live.ex:2479
+#: lib/marshall_web/live/threads_live.ex:2584
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Remove am"
+
+#: lib/marshall_web/live/threads_live.ex:2583
+#, elixir-autogen, elixir-format
+msgid "Remove %{skill}"
+msgstr "Remove di %{skill}"
+
+#: lib/marshall_web/live/threads_live.ex:1866
+#, elixir-autogen, elixir-format
+msgid "Reopen"
+msgstr "Open am again"
+
+#: lib/marshall_web/live/threads_live.ex:1993
+#, elixir-autogen, elixir-format
+msgid "Reopened machines keep their earlier transcripts. Select one to read it."
+msgstr "Machines wey open again dey keep their old transcripts. Choose one to read am."
+
+#: lib/marshall_web/live/threads_live.ex:2495
+#, elixir-autogen, elixir-format
+msgid "Repository URL"
+msgstr "URL for di repository"
+
+#: lib/marshall_web/live/agent_threads_live.ex:113
+#: lib/marshall_web/live/threads_live.ex:2656
+#, elixir-autogen, elixir-format
+msgid "Response received"
+msgstr "We don receive response"
+
+#: lib/marshall_web/live/threads_live.ex:2044
+#, elixir-autogen, elixir-format
+msgid "Retry"
+msgstr "Try am again"
+
+#: lib/marshall_web/live/threads_live.ex:1487
+#, elixir-autogen, elixir-format
+msgid "Return to the conversation whenever you need."
+msgstr "Go back to di discussion anytime you need."
+
+#: lib/marshall_web/live/threads_live.ex:2200
+#, elixir-autogen, elixir-format
+msgid "Revise"
+msgstr "Review and change am"
+
+#: lib/marshall_web/live/threads_live.ex:2501
+#, elixir-autogen, elixir-format
+msgid "Revision (optional)"
+msgstr "Revision (no be must)"
+
+#: lib/marshall_web/live/threads_live.ex:1964
+#, elixir-autogen, elixir-format
+msgid "Revoke thread grant"
+msgstr "Cancel di discussion permission"
+
+#: lib/marshall_web/live/threads_live.ex:2703
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "We don cancel di permission"
+
+#: lib/marshall_web/live/threads_live.ex:1959
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Di role"
+
+#: lib/marshall_web/live/threads_live.ex:1971
+#, elixir-autogen, elixir-format
+msgid "Save access"
+msgstr "Save di permission"
+
+#: lib/marshall_web/live/threads_live.ex:1970
+#, elixir-autogen, elixir-format
+msgid "Saving…"
+msgstr "We dey save am…"
+
+#: lib/marshall_web/live/threads_live.ex:1687
+#, elixir-autogen, elixir-format
+msgid "Scope"
+msgstr "Wetin e cover"
+
+#: lib/marshall_web/live/threads_live.ex:1707
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "Search am"
+
+#: lib/marshall_web/live/threads_live.ex:1555
+#, elixir-autogen, elixir-format
+msgid "Search recent threads"
+msgstr "Search recent discussions"
+
+#: lib/marshall_web/live/threads_live.ex:1556
+#, elixir-autogen, elixir-format
+msgid "Searches this page of threads."
+msgstr "E dey search discussions for this page."
+
+#: lib/marshall_web/live/threads_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Select this skill from the workspace catalog when the machine starts."
+msgstr "Choose this skill from di workspace catalog when machine start."
+
+#: lib/marshall_web/live/threads_live.ex:2109
+#, elixir-autogen, elixir-format
+msgid "Send"
+msgstr "Send am"
+
+#: lib/marshall_web/live/agent_threads_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Send prompt"
+msgstr "Send instruction"
+
+#: lib/marshall_web/live/agent_threads_live.ex:225
+#: lib/marshall_web/live/threads_live.ex:2107
+#, elixir-autogen, elixir-format
+msgid "Sending…"
+msgstr "We dey send am…"
+
+#: lib/marshall_web/live/threads_live.ex:1807
+#, elixir-autogen, elixir-format
+msgid "Share"
+msgstr "Share am"
+
+#: lib/marshall_web/live/threads_live.ex:1876
+#, elixir-autogen, elixir-format
+msgid "Share this thread"
+msgstr "Share this discussion"
+
+#: lib/marshall_web/live/threads_live.ex:1691
+#, elixir-autogen, elixir-format
+msgid "Shared with me"
+msgstr "Wetin dem share with me"
+
+#: lib/marshall_web/live/threads_live.ex:1304
+#, elixir-autogen, elixir-format
+msgid "Sharing is not available for this thread's machine profile."
+msgstr "Sharing no dey available for machine profile of this discussion."
+
+#: lib/marshall_web/live/threads_live.ex:1566
+#, elixir-autogen, elixir-format
+msgid "Show"
+msgstr "Show am"
+
+#: lib/marshall_web/live/threads_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Skill availability updated."
+msgstr "We don update skill availability."
+
+#: lib/marshall_web/live/threads_live.ex:2506
+#, elixir-autogen, elixir-format
+msgid "Skill directory"
+msgstr "Directory for di skill"
+
+#: lib/marshall_web/live/threads_live.ex:323
+#, elixir-autogen, elixir-format
+msgid "Skill installation queued."
+msgstr "We don put skill installation for line."
+
+#: lib/marshall_web/live/threads_live.ex:2552
+#, elixir-autogen, elixir-format
+msgid "Skill suggestions"
+msgstr "Skills wey we suggest"
+
+#: lib/marshall_web/live/threads_live.ex:334
+#: lib/marshall_web/live/threads_live.ex:346
+#, elixir-autogen, elixir-format
+msgid "Skill update queued."
+msgstr "We don put skill update for line."
+
+#: lib/marshall_web/live/threads_live.ex:2599
+#, elixir-autogen, elixir-format
+msgid "Skills"
+msgstr "Di skills"
+
+#: lib/marshall_web/live/threads_live.ex:2399
+#, elixir-autogen, elixir-format
+msgid "Skills add reusable instructions to a task. Choose the source you intend to use."
+msgstr "Skills dey add instructions wey you fit use again to task. Choose di source wey you want use."
+
+#: lib/marshall_web/live/threads_live.ex:2404
+#, elixir-autogen, elixir-format
+msgid "Skills are unavailable until the workspace context has been collected."
+msgstr "Skills no go available until we collect workspace context."
+
+#: lib/marshall_web/live/threads_live.ex:1446
+#, elixir-autogen, elixir-format
+msgid "Standard"
+msgstr "Normal level"
+
+#: lib/marshall_web/live/threads_live.ex:2338
+#, elixir-autogen, elixir-format
+msgid "Start with a space to send slash-looking text literally. Type $ to choose a skill by its exact source."
+msgstr "Start with space to send text wey look like slash command exactly as e be. Type $ to choose skill by im exact source."
+
+#: lib/marshall_web/live/threads_live.ex:1431
+#, elixir-autogen, elixir-format
+msgid "Starting…"
+msgstr "E dey start…"
+
+#: lib/marshall_web/live/threads_live.ex:1658
+#: lib/marshall_web/live/threads_live.ex:2351
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "How far e don go"
+
+#: lib/marshall_web/live/threads_live.ex:2161
+#, elixir-autogen, elixir-format
+msgid "Submit answers"
+msgstr "Send di answers"
+
+#: lib/marshall_web/live/threads_live.ex:2160
+#, elixir-autogen, elixir-format
+msgid "Submitting…"
+msgstr "We dey submit am…"
+
+#: lib/marshall_web/live/threads_live.ex:1699
+#, elixir-autogen, elixir-format
+msgid "Team"
+msgstr "Di team"
+
+#: lib/marshall_web/live/threads_live.ex:1108
+#, elixir-autogen, elixir-format
+msgid "Team %{team}"
+msgstr "Di team %{team}"
+
+#: lib/marshall_web/live/threads_live.ex:1457
+#, elixir-autogen, elixir-format
+msgid "Team (optional)"
+msgstr "Team (no be must)"
+
+#: lib/marshall_web/live/threads_live.ex:1458
+#, elixir-autogen, elixir-format
+msgid "Team ID"
+msgstr "ID for di team"
+
+#: lib/marshall_web/live/threads_live.ex:1298
+#, elixir-autogen, elixir-format
+msgid "That email does not belong to a registered account."
+msgstr "That email no belong to account wey register."
+
+#: lib/marshall_web/live/agent_threads_live.ex:118
+#: lib/marshall_web/live/agent_threads_live.ex:138
+#: lib/marshall_web/live/threads_live.ex:2687
+#, elixir-autogen, elixir-format
+msgid "The agent encountered a problem"
+msgstr "Di agent get problem"
+
+#: lib/marshall_web/live/threads_live.ex:1274
+#, elixir-autogen, elixir-format
+msgid "The current context exceeds the model allowance. Compact it or reduce the message."
+msgstr "Di context wey dey now pass di model limit. Summarize am or reduce di message."
+
+#: lib/marshall_web/live/threads_live.ex:1634
+#, elixir-autogen, elixir-format
+msgid "The latest state of your threads."
+msgstr "How your discussions dey now."
+
+#: lib/marshall_web/live/agent_threads_live.ex:54
+#, elixir-autogen, elixir-format
+msgid "The machine or your access is no longer available."
+msgstr "Di machine or your access no dey again."
+
+#: lib/marshall_web/live/threads_live.ex:1253
+#: lib/marshall_web/live/threads_live.ex:1255
+#, elixir-autogen, elixir-format
+msgid "The plan has changed. Review the latest proposal before continuing."
+msgstr "Di plan don change. Check di latest proposal before you continue."
+
+#: lib/marshall_web/live/threads_live.ex:1270
+#, elixir-autogen, elixir-format
+msgid "The required instructions and current message do not fit. Reduce them and try again."
+msgstr "Di required instructions and current message no fit enter. Reduce dem and try again."
+
+#: lib/marshall_web/live/threads_live.ex:1284
+#, elixir-autogen, elixir-format
+msgid "The skill operation failed. The previous installed revision remains available."
+msgstr "Di skill operation fail. Di revision wey install before go still dey available."
+
+#: lib/marshall_web/live/threads_live.ex:1314
+#, elixir-autogen, elixir-format
+msgid "The thread operation could not be completed."
+msgstr "We no fit complete di discussion operation."
+
+#: lib/marshall_web/live/threads_live.ex:1299
+#, elixir-autogen, elixir-format
+msgid "The thread owner's access cannot be changed."
+msgstr "You no fit change access of di discussion owner."
+
+#: lib/marshall_web/live/threads_live.ex:2219
+#, elixir-autogen, elixir-format
+msgid "The transcript is temporarily unavailable. Try again shortly."
+msgstr "Di transcript no dey available now. Try again small time."
+
+#: lib/marshall_web/live/threads_live.ex:1281
+#, elixir-autogen, elixir-format
+msgid "There is no older context to compact yet."
+msgstr "No older context dey to summarize yet."
+
+#: lib/marshall_web/live/threads_live.ex:1293
+#, elixir-autogen, elixir-format
+msgid "There is not enough capacity for this machine right now."
+msgstr "Capacity no enough for this machine now."
+
+#: lib/marshall_web/live/threads_live.ex:1261
+#, elixir-autogen, elixir-format
+msgid "These questions are no longer waiting for an answer."
+msgstr "These questions no dey wait for answer again."
+
+#: lib/marshall_web/live/threads_live.ex:1262
+#, elixir-autogen, elixir-format
+msgid "These questions have already been answered."
+msgstr "Person don already answer these questions."
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:49
+#, elixir-autogen, elixir-format
+msgid "This agent CLI approval is unavailable. Start again in your terminal."
+msgstr "This agent CLI approval no dey available. Start again for your terminal."
+
+#: lib/marshall_web/live/threads_live.ex:1246
+#, elixir-autogen, elixir-format
+msgid "This command does not accept a task. Your draft has been kept."
+msgstr "This command no dey accept task. We keep your draft."
+
+#: lib/marshall_web/live/threads_live.ex:1252
+#, elixir-autogen, elixir-format
+msgid "This command needs a ready thread and current write access."
+msgstr "This command need discussion wey ready and current write access."
+
+#: lib/marshall_web/live/threads_live.ex:1301
+#, elixir-autogen, elixir-format
+msgid "This request was already used for a different change. Reload this page and try again."
+msgstr "This request don already used for another change. Reload this page and try again."
+
+#: lib/marshall_web/live/threads_live.ex:1295
+#, elixir-autogen, elixir-format
+msgid "This thread could not be found."
+msgstr "We no fit find this discussion."
+
+#: lib/marshall_web/live/threads_live.ex:1294
+#, elixir-autogen, elixir-format
+msgid "This thread is not archived."
+msgstr "This discussion no dey archived."
+
+#: lib/marshall_web/live/threads_live.ex:1291
+#, elixir-autogen, elixir-format
+msgid "This thread is still provisioning."
+msgstr "This discussion still dey prepare machine."
+
+#: lib/marshall_web/live/threads_live.ex:1296
+#, elixir-autogen, elixir-format
+msgid "This thread is temporarily unavailable. Try again shortly."
+msgstr "This discussion no dey available now. Try again small time."
+
+#: lib/marshall_web/live/threads_live.ex:1768
+#, elixir-autogen, elixir-format
+msgid "This thread may have been deleted or the link is invalid."
+msgstr "This discussion fit don delete or di link no correct."
+
+#: lib/marshall_web/live/agent_threads_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "This tool is not available for the machine profile."
+msgstr "This tool no dey available for di machine profile."
+
+#: lib/marshall_web/live/threads_live.ex:1877
+#, elixir-autogen, elixir-format
+msgid "Thread access also applies to its machine. Separate machine grants and team access are managed independently."
+msgstr "Discussion access also work for im machine. We dey manage separate machine permissions and team access by themselves."
+
+#: lib/marshall_web/live/threads_live.ex:502
+#, elixir-autogen, elixir-format
+msgid "Thread access updated."
+msgstr "We don update discussion access."
+
+#: lib/marshall_web/live/threads_live.ex:1852
+#, elixir-autogen, elixir-format
+msgid "Thread actions"
+msgstr "Things you fit do for discussion"
+
+#: lib/marshall_web/live/threads_live.ex:2598
+#, elixir-autogen, elixir-format
+msgid "Thread context"
+msgstr "Context for di discussion"
+
+#: lib/marshall_web/live/threads_live.ex:410
+#, elixir-autogen, elixir-format
+msgid "Thread deletion requested."
+msgstr "You don ask to delete discussion."
+
+#: lib/marshall_web/live/threads_live.ex:1767
+#, elixir-autogen, elixir-format
+msgid "Thread not found"
+msgstr "We no see di discussion"
+
+#: lib/marshall_web/live/threads_live.ex:425
+#, elixir-autogen, elixir-format
+msgid "Thread reopened; provisioning a new machine."
+msgstr "We don open discussion again; we dey prepare new machine."
+
+#: lib/marshall_web/live/threads_live.ex:1773
+#, elixir-autogen, elixir-format
+msgid "Thread temporarily unavailable"
+msgstr "Discussion no dey available now"
+
+#: lib/marshall_web/live/threads_live.ex:1832
+#, elixir-autogen, elixir-format
+msgid "Thread terminal"
+msgstr "Terminal for di discussion"
+
+#: lib/marshall_web/live/threads_live.ex:1761
+#, elixir-autogen, elixir-format
+msgid "Thread unavailable"
+msgstr "Discussion no dey available"
+
+#: lib/marshall_web/live/agent_threads_live.ex:127
+#: lib/marshall_web/live/agent_threads_live.ex:141
+#: lib/marshall_web/live/threads_live.ex:2693
+#, elixir-autogen, elixir-format
+msgid "Thread updated"
+msgstr "We don update discussion"
+
+#: lib/marshall_web/live/threads_live.ex:1354
+#, elixir-autogen, elixir-format
+msgid "Thread views"
+msgstr "Views of di discussion"
+
+#: lib/marshall_web/live/agent_threads_live.ex:170
+#: lib/marshall_web/live/agent_threads_live.ex:173
+#: lib/marshall_web/live/threads_live.ex:21
+#: lib/marshall_web/live/threads_live.ex:1356
+#: lib/marshall_web/live/threads_live.ex:1506
+#, elixir-autogen, elixir-format
+msgid "Threads"
+msgstr "Di discussions"
+
+#: lib/marshall_web/live/threads_live.ex:1527
+#: lib/marshall_web/live/threads_live.ex:1720
+#, elixir-autogen, elixir-format
+msgid "Threads are temporarily unavailable. Try again shortly."
+msgstr "Discussions no dey available now. Try again small time."
+
+#: lib/marshall_web/live/threads_live.ex:1677
+#, elixir-autogen, elixir-format
+msgid "Today"
+msgstr "Na today"
+
+#: lib/marshall_web/live/threads_live.ex:2358
+#, elixir-autogen, elixir-format
+msgid "Token allowance"
+msgstr "How many tokens you fit use"
+
+#: lib/marshall_web/live/threads_live.ex:2676
+#, elixir-autogen, elixir-format
+msgid "Tool cancelled"
+msgstr "We don cancel tool"
+
+#: lib/marshall_web/live/threads_live.ex:2679
+#, elixir-autogen, elixir-format
+msgid "Tool completed"
+msgstr "Tool don finish"
+
+#: lib/marshall_web/live/threads_live.ex:2673
+#, elixir-autogen, elixir-format
+msgid "Tool failed"
+msgstr "Tool fail"
+
+#: lib/marshall_web/live/threads_live.ex:2682
+#, elixir-autogen, elixir-format
+msgid "Tool outcome uncertain"
+msgstr "We no sure wetin tool do"
+
+#: lib/marshall_web/live/agent_threads_live.ex:115
+#: lib/marshall_web/live/agent_threads_live.ex:140
+#: lib/marshall_web/live/threads_live.ex:2684
+#, elixir-autogen, elixir-format
+msgid "Tool result received"
+msgstr "We don receive tool result"
+
+#: lib/marshall_web/live/agent_threads_live.ex:114
+#: lib/marshall_web/live/agent_threads_live.ex:139
+#: lib/marshall_web/live/threads_live.ex:2666
+#: lib/marshall_web/live/threads_live.ex:2670
+#, elixir-autogen, elixir-format
+msgid "Tools queued"
+msgstr "Tools don enter line"
+
+#: lib/marshall_web/live/threads_live.ex:2010
+#, elixir-autogen, elixir-format
+msgid "Transcript"
+msgstr "Record of di discussion"
+
+#: lib/marshall_web/live/threads_live.ex:1774
+#, elixir-autogen, elixir-format
+msgid "Try again shortly."
+msgstr "Try again small time."
+
+#: lib/marshall_web/live/agent_threads_live.ex:117
+#: lib/marshall_web/live/agent_threads_live.ex:137
+#: lib/marshall_web/live/threads_live.ex:2686
+#, elixir-autogen, elixir-format
+msgid "Turn complete"
+msgstr "This turn don finish"
+
+#: lib/marshall_web/live/threads_live.ex:1420
+#, elixir-autogen, elixir-format
+msgid "Ultra"
+msgstr "Very high level"
+
+#: lib/marshall_web/live/threads_live.ex:2625
+#, elixir-autogen, elixir-format
+msgid "Ultra is for complex, open-ended work."
+msgstr "Very high level na for complex work wey no get fixed end."
+
+#: lib/marshall_web/live/threads_live.ex:2635
+#: lib/marshall_web/live/threads_live.ex:2704
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "We no know"
+
+#: lib/marshall_web/live/threads_live.ex:1242
+#, elixir-autogen, elixir-format
+msgid "Unknown command. Open Commands to choose one, or start with a space to send literal text."
+msgstr "We no know this command. Open Commands to choose one, or start with space to send text exactly as e be."
+
+#: lib/marshall_web/live/threads_live.ex:1282
+#, elixir-autogen, elixir-format
+msgid "Unpin this thread's machine before deleting it."
+msgstr "Unpin machine for this discussion before you delete am."
+
+#: lib/marshall_web/live/threads_live.ex:1592
+#: lib/marshall_web/live/threads_live.ex:1745
+#: lib/marshall_web/live/threads_live.ex:1782
+#, elixir-autogen, elixir-format
+msgid "Untitled thread"
+msgstr "Discussion wey no get title"
+
+#: lib/marshall_web/live/threads_live.ex:2462
+#, elixir-autogen, elixir-format
+msgid "Update"
+msgstr "Update am"
+
+#: lib/marshall_web/live/threads_live.ex:2455
+#, elixir-autogen, elixir-format
+msgid "Update revision (optional)"
+msgstr "Update revision (no be must)"
+
+#: lib/marshall_web/live/threads_live.ex:1674
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "We don update am"
+
+#: lib/marshall_web/live/threads_live.ex:2461
+#, elixir-autogen, elixir-format
+msgid "Updating…"
+msgstr "We dey update am…"
+
+#: lib/marshall_web/live/threads_live.ex:2321
+#, elixir-autogen, elixir-format
+msgid "Use Commands or press Ctrl/Cmd+K while writing. Start a message with / to find a command; use Tab to complete it."
+msgstr "Use Commands or press Ctrl/Cmd+K as you dey write. Start message with / to find command; use Tab to complete am."
+
+#: lib/marshall_web/live/threads_live.ex:2490
+#, elixir-autogen, elixir-format
+msgid "Use a public GitHub, GitLab, Codeberg or Bitbucket repository."
+msgstr "Use public repository for GitHub, GitLab, Codeberg or Bitbucket."
+
+#: lib/marshall_web/live/threads_live.ex:1945
+#, elixir-autogen, elixir-format
+msgid "Use an existing account's email to grant, change or revoke a thread role."
+msgstr "Use email of account wey already dey to give, change or cancel discussion role."
+
+#: lib/marshall_web/live/threads_live.ex:2430
+#, elixir-autogen, elixir-format
+msgid "Use this skill"
+msgstr "Use this your skill"
+
+#: lib/marshall_web/live/threads_live.ex:1625
+#, elixir-autogen, elixir-format
+msgid "View activity"
+msgstr "See wetin dey happen"
+
+#: lib/marshall_web/live/threads_live.ex:1961
+#: lib/marshall_web/live/threads_live.ex:2700
+#, elixir-autogen, elixir-format
+msgid "Viewer"
+msgstr "Person wey dey watch"
+
+#: lib/marshall_web/live/threads_live.ex:1974
+#, elixir-autogen, elixir-format
+msgid "Viewers read. Operators send prompts. Managers also share and manage the thread."
+msgstr "Viewers dey read. Operators dey send instructions. Managers also dey share and manage di discussion."
+
+#: lib/marshall_web/live/threads_live.ex:1248
+#: lib/marshall_web/live/threads_live.ex:1258
+#, elixir-autogen, elixir-format
+msgid "Wait for the current work or pending questions to finish before changing this setting."
+msgstr "Wait make current work or questions wey dey wait finish before you change this setting."
+
+#: lib/marshall_web/live/threads_live.ex:2638
+#, elixir-autogen, elixir-format
+msgid "Waiting for a workspace"
+msgstr "E dey wait for workspace"
+
+#: lib/marshall_web/live/agent_threads_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Waiting for machine"
+msgstr "Dey wait for machine"
+
+#: lib/marshall_web/live/threads_live.ex:2233
+#, elixir-autogen, elixir-format
+msgid "Waiting for the agent's first update."
+msgstr "We dey wait for di agent first update."
+
+#: lib/marshall_web/live/threads_live.ex:2688
+#, elixir-autogen, elixir-format
+msgid "Waiting for the machine"
+msgstr "We dey wait for di machine"
+
+#: lib/marshall_web/live/threads_live.ex:2689
+#, elixir-autogen, elixir-format
+msgid "Waiting for your answers"
+msgstr "We dey wait for your answers"
+
+#: lib/marshall_web/live/threads_live.ex:2699
+#, elixir-autogen, elixir-format
+msgid "Web apps"
+msgstr "Di web apps"
+
+#: lib/marshall_web/live/threads_live.ex:1372
+#, elixir-autogen, elixir-format
+msgid "What are we working on?"
+msgstr "Wetin we dey work on?"
+
+#: lib/marshall_web/live/threads_live.ex:1408
+#: lib/marshall_web/live/threads_live.ex:2595
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "Di work"
+
+#: lib/marshall_web/live/threads_live.ex:2352
+#, elixir-autogen, elixir-format
+msgid "Working directory"
+msgstr "Directory wey work dey happen"
+
+#: lib/marshall_web/live/threads_live.ex:1264
+#, elixir-autogen, elixir-format
+msgid "Workspace context is being collected. Try again shortly."
+msgstr "We dey collect workspace context. Try again small time."
+
+#: lib/marshall_web/live/threads_live.ex:1266
+#, elixir-autogen, elixir-format
+msgid "Workspace context is unavailable. Reload it when the machine is ready."
+msgstr "Workspace context no dey available. Reload am when machine ready."
+
+#: lib/marshall_web/live/threads_live.ex:2692
+#, elixir-autogen, elixir-format
+msgid "Workspace context reloaded"
+msgstr "We don load workspace context again"
+
+#: lib/marshall_web/live/threads_live.ex:1268
+#, elixir-autogen, elixir-format
+msgid "Workspace files changed during collection. Reload context and try again."
+msgstr "Workspace files change as we dey collect. Reload context and try again."
+
+#: lib/marshall_web/live/threads_live.ex:2640
+#, elixir-autogen, elixir-format
+msgid "Workspace ready · open the conversation"
+msgstr "Workspace don ready · open di discussion"
+
+#: lib/marshall_web/live/threads_live.ex:2641
+#, elixir-autogen, elixir-format
+msgid "Workspace setup needs attention"
+msgstr "Workspace setup need attention"
+
+#: lib/marshall_web/live/threads_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "Workspace skill"
+msgstr "Skill for di workspace"
+
+#: lib/marshall_web/live/threads_live.ex:2374
+#, elixir-autogen, elixir-format
+msgid "Workspace source"
+msgstr "Source for di workspace"
+
+#: lib/marshall_web/live/agent_threads_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "You can read these threads. Ask for operator or manager access to send prompts."
+msgstr "You fit read these discussions. Ask for operator or manager access to send instructions."
+
+#: lib/marshall_web/live/threads_live.ex:1297
+#: lib/marshall_web/live/threads_live.ex:1762
+#, elixir-autogen, elixir-format
+msgid "You do not have access to this thread."
+msgstr "You no get access to this discussion."
+
+#: lib/marshall_web/live/threads_live.ex:2021
+#, elixir-autogen, elixir-format
+msgid "You have read-only access to this thread."
+msgstr "You fit only read this discussion."
+
+#: lib/marshall_web/live/threads_live.ex:1492
+#, elixir-autogen, elixir-format
+msgid "Your agent's work runs in a dedicated environment."
+msgstr "Your agent work dey run for environment wey belong to am alone."
+
+#: lib/marshall_web/live/threads_live.ex:2153
+#, elixir-autogen, elixir-format
+msgid "Your answer or additional detail"
+msgstr "Your answer or extra detail"
+
+#: lib/marshall_web/live/threads_live.ex:2690
+#, elixir-autogen, elixir-format
+msgid "Your answers were received"
+msgstr "We don receive your answers"
+
+#: lib/marshall_web/live/threads_live.ex:2118
+#, elixir-autogen, elixir-format
+msgid "Your input is needed"
+msgstr "We need your answer"
+
+#: lib/marshall_web/live/threads_live.ex:2031
+#, elixir-autogen, elixir-format
+msgid "Your machine is starting. The agent will begin with your objective as soon as it is ready."
+msgstr "Your machine dey start. Di agent go begin your objective as soon as e ready."
+
+#: lib/marshall_web/live/threads_live.ex:2041
+#, elixir-autogen, elixir-format
+msgid "Your objective is saved. Retry to prepare the workspace again."
+msgstr "We don save your objective. Try again to prepare di workspace again."
+
+#: lib/marshall_web/live/threads_live.ex:1515
+#, elixir-autogen, elixir-format
+msgid "Your threads"
+msgstr "Your discussions"
+
+#: lib/marshall_web/live/threads_live.ex:2332
+#, elixir-autogen, elixir-format
+msgid "and"
+msgstr "and also"
+
+#: lib/marshall_web/live/threads_live.ex:2333
+#, elixir-autogen, elixir-format
+msgid "choose a mode and submit the task together. Choosing a mode on a new thread does not create a machine."
+msgstr "choose mode and submit task together. If you choose mode for new discussion, e no go create machine."
+
+#: lib/marshall_web/live/threads_live.ex:1786
+#, elixir-autogen, elixir-format
+msgid "· %{value1} reasoning · %{value2}"
+msgstr "· %{value1} reasoning level · %{value2}"
+
+#: lib/marshall_web/live/threads_live.ex:2301
+#, elixir-autogen, elixir-format
+msgid "↑ ↓ choose · Enter run · Escape close"
+msgstr "↑ ↓ choose · Enter run am · Escape close am"

@@ -1,0 +1,788 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ta\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "செயலில் உள்ளது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#, elixir-autogen, elixir-format
+msgid "Admission"
+msgstr "அனுமதி"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Admission settings updated."
+msgstr "அனுமதி அமைப்புகள் புதுப்பிக்கப்பட்டன."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Admission settings were invalid or the node is not ready."
+msgstr "அனுமதி அமைப்புகள் செல்லாதவை அல்லது முனை தயாராக இல்லை."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:566
+#, elixir-autogen, elixir-format
+msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
+msgstr "இந்தப் பக்கத்திற்கான ஆலோசனை முன்னோட்டம். ஒவ்வொரு பணிச்சுமையும் தனித்தனியாக மதிப்பிடப்படுகிறது; இலக்குகளும் கிடைக்கும் திறனும் மாறலாம். ஒவ்வொரு நகர்வும் தொடங்கும்போது அனுமதிச் செயல்முறை வளங்களை மீண்டும் சரிபார்த்து ஒதுக்கி வைக்கிறது."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
+#, elixir-autogen, elixir-format
+msgid "Apply admission settings"
+msgstr "அனுமதி அமைப்புகளைப் பயன்படுத்து"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
+#, elixir-autogen, elixir-format
+msgid "Approve move downtime"
+msgstr "இடமாற்றச் செயலிழப்பு நேரத்தை அங்கீகரி"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#, elixir-autogen, elixir-format
+msgid "Blocked: %{reason}"
+msgstr "தடுக்கப்பட்டது: %{reason}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#, elixir-autogen, elixir-format
+msgid "CPU after holds"
+msgstr "ஒதுக்கீடுகளுக்குப் பின் CPU"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#, elixir-autogen, elixir-format
+msgid "CPU headroom"
+msgstr "மீதமுள்ள CPU கொள்ளளவு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
+#, elixir-autogen, elixir-format
+msgid "CPU overhead (cores)"
+msgstr "CPU கூடுதல் செலவு (கருக்கள்)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
+#, elixir-autogen, elixir-format
+msgid "Campaign"
+msgstr "நடவடிக்கைத் தொகுப்பு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:727
+#, elixir-autogen, elixir-format
+msgid "Campaign closed"
+msgstr "இயக்கம் மூடப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#, elixir-autogen, elixir-format
+msgid "Campaign history"
+msgstr "நடவடிக்கைத் தொகுப்பு வரலாறு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
+#, elixir-autogen, elixir-format
+msgid "Campaign requested"
+msgstr "இயக்கம் கோரப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
+#, elixir-autogen, elixir-format
+msgid "Campaign, workload and relocation milestones from durable control-plane records."
+msgstr "நிலையான கட்டுப்பாட்டுத் தளப் பதிவுகளிலிருந்து நடவடிக்கைத் தொகுப்பு, பணிச்சுமை மற்றும் இடமாற்ற மைல்கற்கள்."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "ரத்துசெய்தல் கோரப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:719
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:821
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "ரத்துசெய்யப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+#, elixir-autogen, elixir-format
+msgid "Candidate: %{name}"
+msgstr "தேர்வு: %{name}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:330
+#, elixir-autogen, elixir-format
+msgid "Capacity explanation"
+msgstr "கொள்ளளவு விளக்கம்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:66
+#, elixir-autogen, elixir-format
+msgid "Capacity information is temporarily unavailable."
+msgstr "கொள்ளளவுத் தகவல் தற்காலிகமாகக் கிடைக்கவில்லை."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#, elixir-autogen, elixir-format
+msgid "Checking destination readiness"
+msgstr "இலக்கின் தயார்நிலை சரிபார்க்கப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#, elixir-autogen, elixir-format
+msgid "Checking transfer connectivity"
+msgstr "பரிமாற்ற இணைப்பு சரிபார்க்கப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
+#, elixir-autogen, elixir-format
+msgid "Cleaning up after cancellation"
+msgstr "ரத்துசெய்த பிறகு சுத்தம் செய்யப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
+#, elixir-autogen, elixir-format
+msgid "Cleaning up the source"
+msgstr "மூலம் சுத்தம் செய்யப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#, elixir-autogen, elixir-format
+msgid "Clone in progress"
+msgstr "நகலாக்கம் நடைபெறுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:539
+#, elixir-autogen, elixir-format
+msgid "Closed"
+msgstr "மூடப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:718
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "முடிந்தது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
+#, elixir-autogen, elixir-format
+msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
+msgstr "அமைக்கப்பட்ட புரவலன் கூடுதல் செலவு: %{cores} மையங்கள் · %{memory} நினைவகம். இந்த ஒதுக்கீடுகள் சேர்க்கைக் கணக்கில் அடங்கும்; அவை தொடர்ந்து நிறுவலால் கட்டுப்படுத்தப்படுகின்றன."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
+#, elixir-autogen, elixir-format
+msgid "Continue scheduling"
+msgstr "அட்டவணையிடலைத் தொடர்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
+#, elixir-autogen, elixir-format
+msgid "Copy/resize holds"
+msgstr "நகலாக்கம்/அளவு மாற்ற ஒதுக்கீடுகள்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "நகலெடுக்கப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Could not accept this change. Refresh and check the workload state."
+msgstr "இந்த மாற்றத்தை ஏற்க முடியவில்லை. புதுப்பித்துப் பணிச்சுமையின் நிலையைச் சரிபார்க்கவும்."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "நீக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
+#, elixir-autogen, elixir-format
+msgid "Deleting retained copies"
+msgstr "தக்கவைக்கப்பட்ட நகல்கள் நீக்கப்படுகின்றன"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#, elixir-autogen, elixir-format
+msgid "Desired: %{desired} · Observed: %{observed}"
+msgstr "விரும்பியது: %{desired} · காணப்பட்டது: %{observed}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#, elixir-autogen, elixir-format
+msgid "Destination boot failed; source copy retained"
+msgstr "இலக்கு தொடக்கம் தோல்வியடைந்தது; மூல நகல் பாதுகாக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup confirmed"
+msgstr "இலக்குச் சுத்தப்படுத்தல் உறுதிசெய்யப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup requested"
+msgstr "இலக்குச் சுத்தப்படுத்தல் கோரப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#, elixir-autogen, elixir-format
+msgid "Destination readiness failed; source copy retained"
+msgstr "இலக்கு தயார்நிலை தோல்வியடைந்தது; மூல நகல் பாதுகாக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "விவரங்கள்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
+#, elixir-autogen, elixir-format
+msgid "Disk after holds"
+msgstr "ஒதுக்கீடுகளுக்குப் பின் வட்டு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
+#, elixir-autogen, elixir-format
+msgid "Downtime approval required"
+msgstr "செயலிழப்பு நேரத்திற்கு ஒப்புதல் தேவை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
+#, elixir-autogen, elixir-format
+msgid "Downtime approved"
+msgstr "செயலிழப்பு நேரம் ஒப்புதல்பெற்றது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#, elixir-autogen, elixir-format
+msgid "Downtime approved for this workload revision"
+msgstr "இந்தப் பணிச்சுமைப் பதிப்பிற்குச் செயலிழப்பு நேரம் அங்கீகரிக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "பணிச்சுமை வெளியேற்றப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "பணிச்சுமை வெளியேற்றப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "இயக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
+msgstr "இந்த முனையிலுள்ள அனைத்துப் பணிச்சுமைகளையும் வெளியேற்றவா? இயங்கும் விருந்தினர் இயந்திரங்கள் இடமாற்றத்தின்போது தடைப்படும். முழுமையாக நிறுத்தப்பட்ட நகல்களுக்கு ஒவ்வொரு பணிச்சுமைக்கும் தனி அங்கீகாரம் தேவை."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "வெளியேற்றப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:300
+#, elixir-autogen, elixir-format
+msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
+msgstr "வெளியேற்றம் புதிய அமைவுகளைத் தடுக்கும்; ஏற்கெனவே உள்ள விருந்தினர்களுக்குச் சேவை தொடரும். இயங்கும் விருந்தினரை நகர்த்துவது சிறிய தடையை ஏற்படுத்தும். முழுமையாக நிறுத்தப்பட்ட நகல் மிக நீண்ட நேரம் எடுக்கலாம்; ஒவ்வொரு பணிச்சுமைக்கும் அங்கீகாரம் தேவை."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
+#, elixir-autogen, elixir-format
+msgid "Evacuation campaign"
+msgstr "வெளியேற்ற நடவடிக்கைத் தொகுப்பு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
+#, elixir-autogen, elixir-format
+msgid "Evacuation timeline"
+msgstr "வெளியேற்றக் காலவரிசை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
+#, elixir-autogen, elixir-format
+msgid "Event"
+msgstr "நிகழ்வு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Excluded"
+msgstr "விலக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:341
+#, elixir-autogen, elixir-format
+msgid "Execution ready"
+msgstr "இயக்கத் தயார்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "Explain capacity"
+msgstr "கொள்ளளவை விளக்கு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "தோல்வியடைந்தது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#, elixir-autogen, elixir-format
+msgid "Fresh"
+msgstr "புதியது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#, elixir-autogen, elixir-format
+msgid "Fresh report"
+msgstr "புதிய அறிக்கை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "இறக்குமதி செய்யப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
+#, elixir-autogen, elixir-format
+msgid "Insufficient capacity"
+msgstr "போதுமான திறன் இல்லை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "செல்லாத கோரிக்கை."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
+#, elixir-autogen, elixir-format
+msgid "Job state"
+msgstr "பணியின் நிலை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Lilly node · %{mode} maintenance"
+msgstr "Lilly முனை · %{mode} பராமரிப்பு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
+msgstr "Lilly முனைகளும் அவற்றின் அனுமதி நிலையும். ஒரு முனையின் இயந்திரத்தைச் சேவையிலிருந்து நீக்குமுன் அதன் பணிச்சுமைகளை நகர்த்தவும்."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:249
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:282
+#, elixir-autogen, elixir-format
+msgid "Maintenance"
+msgstr "பராமரிப்பு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#, elixir-autogen, elixir-format
+msgid "Maintenance pages"
+msgstr "பராமரிப்புப் பக்கங்கள்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Maintenance updated."
+msgstr "பராமரிப்பு புதுப்பிக்கப்பட்டது."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
+#, elixir-autogen, elixir-format
+msgid "Memory after holds"
+msgstr "ஒதுக்கீடுகளுக்குப் பின் நினைவகம்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#, elixir-autogen, elixir-format
+msgid "Memory headroom"
+msgstr "மீதமுள்ள நினைவகக் கொள்ளளவு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#, elixir-autogen, elixir-format
+msgid "Next page →"
+msgstr "அடுத்த பக்கம் →"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:124
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "No active campaign."
+msgstr "செயலில் உள்ள நடவடிக்கைத் தொகுப்பு இல்லை."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:248
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:280
+#, elixir-autogen, elixir-format
+msgid "Node"
+msgstr "முனை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Node information is unavailable."
+msgstr "முனைத் தகவல் கிடைக்கவில்லை."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:234
+#, elixir-autogen, elixir-format
+msgid "Node maintenance"
+msgstr "முனைப் பராமரிப்பு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
+#, elixir-autogen, elixir-format
+msgid "Normal"
+msgstr "இயல்பானது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:599
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s"
+msgstr "காணப்பட்ட இடையூறு: %{seconds} வினாடிகள்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:595
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s (ongoing)"
+msgstr "காணப்பட்ட இடையூறு: %{seconds} வினாடிகள் (தொடர்கிறது)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:538
+#, elixir-autogen, elixir-format
+msgid "Opened"
+msgstr "திறக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
+#, elixir-autogen, elixir-format
+msgid "Pause scheduling"
+msgstr "அட்டவணையிடலை இடைநிறுத்து"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#, elixir-autogen, elixir-format
+msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
+msgstr "இடைநிறுத்தம் புதிய இடமாற்றங்களை அட்டவணையிடுவதை நிறுத்தும். ஏற்கப்பட்ட இடமாற்றங்கள் தொடரும். பராமரிப்புத் தயார்நிலைக்கு உறுதிப்படுத்தப்பட்ட மூலத் தூய்மைப்படுத்தல் தேவை; முடிந்த பணிகள் மட்டும் போதாது."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "இடைநிறுத்தப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "நிலுவையில்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#, elixir-autogen, elixir-format
+msgid "Permanently retire this empty node and revoke its credentials?"
+msgstr "இந்தக் காலியான முனையை நிரந்தரமாக ஓய்வுபெறச் செய்து அதன் அடையாளச் சான்றுகளை ரத்துசெய்யவா?"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#, elixir-autogen, elixir-format
+msgid "Phase: %{phase}"
+msgstr "நிலை: %{phase}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#, elixir-autogen, elixir-format
+msgid "Pool"
+msgstr "வளத் தொகுப்பு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "தயாராகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Preview evacuation"
+msgstr "வெளியேற்றத்தை முன்னோட்டமிடு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:606
+#, elixir-autogen, elixir-format
+msgid "Preview: %{blocker}"
+msgstr "முன்னோட்டம்: %{blocker}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:814
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "வரிசையில் சேர்க்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
+#, elixir-autogen, elixir-format
+msgid "RAM overhead (bytes)"
+msgstr "RAM கூடுதல் செலவு (பைட்டுகள்)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
+msgstr "இந்தப் பணிச்சுமையை அதன் தற்போதைய அமைவு மற்றும் விரும்பிய நிலையில் மீண்டும் திட்டமிடவா? முந்தைய செயலிழப்பு நேர அங்கீகாரம் நீக்கப்படும்."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:647
+#, elixir-autogen, elixir-format
+msgid "Re-plan workload"
+msgstr "பணிச்சுமையை மீண்டும் திட்டமிடு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:333
+#, elixir-autogen, elixir-format
+msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
+msgstr "வாசிக்க மட்டுமே கூடிய அனுமதிக் கணக்கீடு. இது கொள்ளளவை ஒதுக்காது; தெரியாத அளவீடுகள் அனுமதியை நிறுத்திவைக்கும்."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "தயார்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
+#, elixir-autogen, elixir-format
+msgid "Relocation committed"
+msgstr "இடமாற்றம் உறுதிப்படுத்தப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
+#, elixir-autogen, elixir-format
+msgid "Relocation in progress"
+msgstr "இடமாற்றம் நடைபெறுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:761
+#, elixir-autogen, elixir-format
+msgid "Relocation started"
+msgstr "இடமாற்றம் தொடங்கியது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#, elixir-autogen, elixir-format
+msgid "Removed from this source; awaiting campaign cleanup verification."
+msgstr "இந்த மூலத்திலிருந்து நீக்கப்பட்டது; நடவடிக்கைத் தொகுப்பு தூய்மைப்படுத்தல் சரிபார்ப்புக்காகக் காத்திருக்கிறது."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#, elixir-autogen, elixir-format
+msgid "Report"
+msgstr "அறிக்கை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
+#, elixir-autogen, elixir-format
+msgid "Resize in progress"
+msgstr "அளவு மாற்றம் நடைபெறுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
+#, elixir-autogen, elixir-format
+msgid "Restore admission"
+msgstr "அனுமதியை மீட்டெடு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#, elixir-autogen, elixir-format
+msgid "Restoring the source"
+msgstr "மூலம் மீட்டமைக்கப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "தொடரப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
+#, elixir-autogen, elixir-format
+msgid "Retire node"
+msgstr "முனையை ஓய்வுபெறச் செய்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "பயன்பாட்டிலிருந்து நீக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:818
+#, elixir-autogen, elixir-format
+msgid "Retrying"
+msgstr "மீண்டும் முயல்கிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#, elixir-autogen, elixir-format
+msgid "Retrying destination boot"
+msgstr "இலக்குத் துவக்கம் மீண்டும் முயற்சிக்கப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:817
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "இயங்குகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "அட்டவணையிடப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
+#, elixir-autogen, elixir-format
+msgid "Source cleanup confirmed"
+msgstr "மூலச் சுத்தப்படுத்தல் உறுதிசெய்யப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
+#, elixir-autogen, elixir-format
+msgid "Source cleanup requested"
+msgstr "மூலச் சுத்தப்படுத்தல் கோரப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:724
+#, elixir-autogen, elixir-format
+msgid "Source ready"
+msgstr "மூலம் தயார்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "மூலம் மீட்டமைக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
+#, elixir-autogen, elixir-format
+msgid "Source unavailable"
+msgstr "மூலம் கிடைக்கவில்லை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown"
+msgstr "பழையது அல்லது தெரியாதது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown report"
+msgstr "பழைய அல்லது தெரியாத அறிக்கை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "Start evacuation"
+msgstr "வெளியேற்றத்தைத் தொடங்கு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
+#, elixir-autogen, elixir-format
+msgid "Startup holds"
+msgstr "தொடக்க ஒதுக்கீடுகள்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "நிலைமை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
+#, elixir-autogen, elixir-format
+msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
+msgstr "முழு இடமாற்றத்திற்கும் இயங்கும் இந்தப் பணிச்சுமையை நிறுத்தவா? அதன் வட்டுகளை நகலெடுத்து இலக்கில் மீண்டும் தொடங்குவது நீண்ட செயலிழப்பு நேரத்தை ஏற்படுத்தலாம்."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "நிறுத்தப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#, elixir-autogen, elixir-format
+msgid "Stopping the source"
+msgstr "மூல இயந்திரம் நிறுத்தப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:819
+#, elixir-autogen, elixir-format
+msgid "Succeeded"
+msgstr "வெற்றிபெற்றது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:815
+#, elixir-autogen, elixir-format
+msgid "Suspended"
+msgstr "இடைநிறுத்தப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "அமைவு மாற்றப்படுகிறது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:293
+#, elixir-autogen, elixir-format
+msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
+msgstr "முனைய நெறிமுறை: %{protocol} · உள்ளூர் ஓடை: %{state}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "நேரம்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
+#, elixir-autogen, elixir-format
+msgid "Transfer busy"
+msgstr "பரிமாற்றம் பணியில் உள்ளது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "கிடைக்கவில்லை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:822
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "தெரியாதது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
+#, elixir-autogen, elixir-format
+msgid "VM"
+msgstr "மெய்நிகர் இயந்திரம்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:767
+#, elixir-autogen, elixir-format
+msgid "Workload changed"
+msgstr "பணிச்சுமை மாறியது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:770
+#, elixir-autogen, elixir-format
+msgid "Workload is not stable"
+msgstr "பணிச்சுமை நிலையாக இல்லை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
+#, elixir-autogen, elixir-format
+msgid "Workload observed"
+msgstr "பணிச்சுமை காணப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:764
+#, elixir-autogen, elixir-format
+msgid "Workload resolved"
+msgstr "பணிச்சுமை தீர்க்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
+#, elixir-autogen, elixir-format
+msgid "attempt %{attempt}"
+msgstr "முயற்சி %{attempt}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#, elixir-autogen, elixir-format
+msgid "campaign"
+msgstr "நடவடிக்கைத் தொகுப்பு"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#, elixir-autogen, elixir-format
+msgid "enabled"
+msgstr "இயக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#, elixir-autogen, elixir-format
+msgid "excluded"
+msgstr "விலக்கப்பட்டது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
+#, elixir-autogen, elixir-format
+msgid "job"
+msgstr "பணி"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
+#, elixir-autogen, elixir-format
+msgid "move"
+msgstr "நகர்த்து"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#, elixir-autogen, elixir-format
+msgid "ready"
+msgstr "தயார்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#, elixir-autogen, elixir-format
+msgid "unavailable"
+msgstr "கிடைக்கவில்லை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "தெரியாதது"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#, elixir-autogen, elixir-format
+msgid "yes"
+msgstr "ஆம்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#, elixir-autogen, elixir-format
+msgid "· Downtime approval required"
+msgstr "· செயலிழப்பு நேர அங்கீகாரம் தேவை"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#, elixir-autogen, elixir-format
+msgid "← First page"
+msgstr "← முதல் பக்கம்"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "← Nodes"
+msgstr "← முனைகள்"

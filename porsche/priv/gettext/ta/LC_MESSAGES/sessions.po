@@ -1,0 +1,15 @@
+msgid ""
+msgstr ""
+"Language: ta\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/porsche/ssh/channel.ex:115
+#, elixir-autogen, elixir-format
+msgid "Docs:"
+msgstr "ஆவணங்கள்:"
+
+#: lib/porsche/ssh/channel.ex:113
+#, elixir-autogen, elixir-format
+msgid "Porsche machine management. Type help."
+msgstr "Porsche இயந்திர மேலாண்மை. help எனத் தட்டச்சு செய்யவும்."

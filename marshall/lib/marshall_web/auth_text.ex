@@ -11,28 +11,29 @@ defmodule MarshallWeb.AuthText do
   def translate(msgid, bindings) when is_binary(msgid) do
     case msgid do
       "Request magic link" ->
-        gettext("Email me a sign-in link", bindings)
+        dgettext("auth", "Email me a sign-in link", bindings)
 
       "Requesting ..." ->
-        gettext("Sending link…", bindings)
+        dgettext("auth", "Sending link…", bindings)
 
       "Sign in" ->
-        gettext("Sign in", bindings)
+        dgettext("auth", "Sign in", bindings)
 
       "Email" ->
-        gettext("Email", bindings)
+        dgettext("auth", "Email", bindings)
 
       "Remember me" ->
-        gettext("Remember me", bindings)
+        dgettext("auth", "Remember me", bindings)
 
       "Check your email for a sign-in link. Your account will be created automatically when you sign in." ->
-        gettext(
+        dgettext(
+          "auth",
           "Check your email for a sign-in link. Your account will be created automatically when you sign in.",
           bindings
         )
 
       _ ->
-        Gettext.gettext(MarshallWeb.Gettext, msgid, bindings)
+        Gettext.dgettext(MarshallWeb.Gettext, "auth", msgid, bindings)
     end
   end
 end

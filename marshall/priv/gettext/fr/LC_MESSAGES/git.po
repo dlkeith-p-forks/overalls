@@ -1,0 +1,118 @@
+#
+msgid ""
+msgstr ""
+"Language: fr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/git_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Binary content"
+msgstr "Contenu binaire"
+
+#: lib/marshall_web/live/git_live.ex:230
+#: lib/marshall_web/live/git_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Commit"
+msgstr "Commit"
+
+#: lib/marshall_web/live/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "Commits"
+msgstr "Commits"
+
+#: lib/marshall_web/live/git_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "Content"
+msgstr "Contenu"
+
+#: lib/marshall_web/live/git_live.ex:267
+#, elixir-autogen, elixir-format
+msgid "Download raw file ↗"
+msgstr "Télécharger le fichier brut ↗"
+
+#: lib/marshall_web/live/git_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Git repositories"
+msgstr "Dépôts Git"
+
+#: lib/marshall_web/live/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Kind"
+msgstr "Type"
+
+#: lib/marshall_web/live/git_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Last updated"
+msgstr "Dernière modification"
+
+#: lib/marshall_web/live/git_live.ex:200
+#, elixir-autogen, elixir-format
+msgid "Mirror contents are unavailable."
+msgstr "Le contenu du miroir est indisponible."
+
+#: lib/marshall_web/live/git_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Paths"
+msgstr "Chemins"
+
+#: lib/marshall_web/live/git_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Read-only mirrors of public GitHub repositories."
+msgstr "Miroirs de dépôts GitHub publics en lecture seule."
+
+#: lib/marshall_web/live/git_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "Ref"
+msgstr "Référence"
+
+#: lib/marshall_web/live/git_live.ex:157
+#, elixir-autogen, elixir-format
+msgid "Repositories"
+msgstr "Dépôts"
+
+#: lib/marshall_web/live/git_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "Repository path"
+msgstr "Chemin du dépôt"
+
+#: lib/marshall_web/live/git_live.ex:273
+#, elixir-autogen, elixir-format
+msgid "Repository unavailable."
+msgstr "Dépôt indisponible."
+
+#: lib/marshall_web/live/git_live.ex:164
+#, elixir-autogen, elixir-format
+msgid "Repository views"
+msgstr "Vues du dépôt"
+
+#: lib/marshall_web/live/git_live.ex:197
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "Rechercher"
+
+#: lib/marshall_web/live/git_live.ex:181
+#: lib/marshall_web/live/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Search content"
+msgstr "Rechercher du contenu"
+
+#: lib/marshall_web/live/git_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Subject"
+msgstr "Sujet"
+
+#: lib/marshall_web/controllers/git_raw_controller.ex:24
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Indisponible"
+
+#: lib/marshall_web/live/git_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "file"
+msgstr "fichier"
+
+#: lib/marshall_web/live/git_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "← Parent directory"
+msgstr "← Répertoire parent"

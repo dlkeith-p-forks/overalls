@@ -1,0 +1,140 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: bn\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "পদক্ষেপসমূহ"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "Archive this VM?"
+msgstr "এই ভার্চুয়াল মেশিনটি সংরক্ষণাগারে রাখবেন?"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:217
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "মুছে ফেলুন"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "বিবরণ"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included."
+msgstr "মেশিনবহরের সব মেশিন, মালিকের কনসোলের মতো একই জীবনচক্র, আকার পরিবর্তন ও স্থানান্তরের নিরাপত্তা যাচাইসহ। টার্মিনালের তথ্য বা প্রমাণীকরণ তথ্য অন্তর্ভুক্ত নয়।"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "Fleet workloads"
+msgstr "মেশিনবহরের কাজের চাপ"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Host"
+msgstr "হোস্ট"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "অবৈধ অনুরোধ।"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Lifecycle request queued."
+msgstr "জীবনচক্রের অনুরোধ সারিতে রাখা হয়েছে।"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "Lifecycle request was rejected."
+msgstr "জীবনচক্রের অনুরোধ প্রত্যাখ্যাত হয়েছে।"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:207
+#, elixir-autogen, elixir-format
+msgid "Move"
+msgstr "সরান"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "No active workloads."
+msgstr "সক্রিয় কাজের চাপ নেই।"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:46
+#, elixir-autogen, elixir-format
+msgid "Relocation request queued."
+msgstr "স্থানান্তরের অনুরোধ সারিতে রাখা হয়েছে।"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:49
+#, elixir-autogen, elixir-format
+msgid "Relocation request was rejected."
+msgstr "স্থানান্তরের অনুরোধ প্রত্যাখ্যাত হয়েছে।"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:166
+#, elixir-autogen, elixir-format
+msgid "Resize"
+msgstr "আকার বদলান"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Shape"
+msgstr "বিন্যাস"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Start"
+msgstr "চালু করুন"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:116
+#, elixir-autogen, elixir-format
+msgid "State"
+msgstr "অবস্থা"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "Stop"
+msgstr "বন্ধ করুন"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:158
+#, elixir-autogen, elixir-format
+msgid "Terminal"
+msgstr "টার্মিনাল"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "The owner has pinned this machine; it cannot be deleted until they unpin it."
+msgstr "মালিক মেশিনটি পিন করেছেন; পিন না সরানো পর্যন্ত মুছতে পারবেন না।"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "হালনাগাদ হয়েছে"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:113
+#, elixir-autogen, elixir-format
+msgid "Workload"
+msgstr "কাজের চাপ"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Workload inventory is temporarily unavailable."
+msgstr "কাজের চাপের তালিকা সাময়িকভাবে পাওয়া যাচ্ছে না।"
+
+#: lib/marshall_web/live/admin/workloads_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "· every 15 seconds"
+msgstr "· প্রতি ১৫ সেকেন্ডে"

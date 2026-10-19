@@ -1,0 +1,380 @@
+#
+msgid ""
+msgstr ""
+"Language: es\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/integrations_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "**** (write-only)"
+msgstr "**** (solo escritura)"
+
+#: lib/marshall_web/live/integrations_live.ex:342
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Acciones"
+
+#: lib/marshall_web/live/integrations_live.ex:386
+#, elixir-autogen, elixir-format
+msgid "Add an integration"
+msgstr "Añadir una integración"
+
+#: lib/marshall_web/live/integrations_live.ex:267
+#: lib/marshall_web/live/integrations_live.ex:380
+#, elixir-autogen, elixir-format
+msgid "Attach"
+msgstr "Adjuntar"
+
+#: lib/marshall_web/live/integrations_live.ex:377
+#, elixir-autogen, elixir-format
+msgid "Attach a machine by ID"
+msgstr "Adjuntar una máquina por ID"
+
+#: lib/marshall_web/live/integrations_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "Awaiting GitHub authorization"
+msgstr "A la espera de la autorización de GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:420
+#, elixir-autogen, elixir-format
+msgid "Basic user:pass"
+msgstr "Básica user:pass"
+
+#: lib/marshall_web/live/integrations_live.ex:414
+#, elixir-autogen, elixir-format
+msgid "Bearer token"
+msgstr "Token Bearer"
+
+#: lib/marshall_web/live/integrations_live.ex:312
+#: lib/marshall_web/live/integrations_live.ex:400
+#, elixir-autogen, elixir-format
+msgid "Comment"
+msgstr "Comentario"
+
+#: lib/marshall_web/live/integrations_live.ex:230
+#, elixir-autogen, elixir-format
+msgid "Connect GitHub"
+msgstr "Conectar GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
+msgstr "Conecta tu cuenta de GitHub para Git, solicitudes de incorporación de cambios, Actions, versiones y otros flujos de trabajo de desarrollo. Las credenciales de GitHub permanecen en el perímetro."
+
+#: lib/marshall_web/live/integrations_live.ex:126
+#: lib/marshall_web/live/integrations_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Connected"
+msgstr "Conectado"
+
+#: lib/marshall_web/live/integrations_live.ex:225
+#, elixir-autogen, elixir-format
+msgid "Connected as %{login}"
+msgstr "Conectado como %{login}"
+
+#: lib/marshall_web/live/integrations_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "Could not attach that machine."
+msgstr "No se pudo adjuntar esa máquina."
+
+#: lib/marshall_web/live/integrations_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "Could not detach that machine."
+msgstr "No se pudo desvincular esa máquina."
+
+#: lib/marshall_web/live/integrations_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Could not remove this integration."
+msgstr "No se pudo eliminar esta integración."
+
+#: lib/marshall_web/live/integrations_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Could not save this integration. Check the name, HTTPS target and header values."
+msgstr ""
+"No se pudo guardar esta integración. Revisa el nombre, el destino HTTPS y "
+"los valores de las cabeceras."
+
+#: lib/marshall_web/live/integrations_live.ex:409
+#, elixir-autogen, elixir-format
+msgid "Credentials"
+msgstr "Credenciales"
+
+#: lib/marshall_web/live/integrations_live.ex:258
+#: lib/marshall_web/live/integrations_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Detach"
+msgstr "Desvincular"
+
+#: lib/marshall_web/live/integrations_live.ex:240
+#, elixir-autogen, elixir-format
+msgid "Disconnect GitHub"
+msgstr "Desconectar GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:237
+#, elixir-autogen, elixir-format
+msgid "Disconnect GitHub from your machines?"
+msgstr "¿Desconectar GitHub de tus máquinas?"
+
+#: lib/marshall_web/live/integrations_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "Disconnected"
+msgstr "Desconectado"
+
+#: lib/marshall_web/live/integrations_live.ex:133
+#, elixir-autogen, elixir-format
+msgid "Disconnecting GitHub"
+msgstr "Desconectando GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:130
+#, elixir-autogen, elixir-format
+msgid "Finishing active GitHub requests"
+msgstr "Finalizando las solicitudes activas a GitHub"
+
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:33
+#, elixir-autogen, elixir-format
+msgid "GitHub connected."
+msgstr "GitHub conectado."
+
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
+#, elixir-autogen, elixir-format
+msgid "GitHub could not be connected. Try again from Integrations."
+msgstr "No se pudo conectar GitHub. Inténtalo de nuevo desde Integraciones."
+
+#: lib/marshall_web/live/integrations_live.ex:405
+#, elixir-autogen, elixir-format
+msgid "HTTPS target"
+msgstr "Destino HTTPS"
+
+#: lib/marshall_web/live/integrations_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "Injected credentials"
+msgstr "Credenciales inyectadas"
+
+#: lib/marshall_web/live/integrations_live.ex:47
+#, elixir-autogen, elixir-format
+msgid "Integration %{value1} saved."
+msgstr "Integración %{value1} guardada."
+
+#: lib/marshall_web/live/integrations_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Integration removed."
+msgstr "Integración eliminada."
+
+#: lib/marshall_web/live/integrations_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "Integrations"
+msgstr "Integraciones"
+
+#: lib/marshall_web/live/integrations_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Integrations are temporarily unavailable."
+msgstr "Las integraciones no están disponibles temporalmente."
+
+#: lib/marshall_web/live/integrations_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Solicitud no válida."
+
+#: lib/marshall_web/live/integrations_live.ex:341
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Máquina"
+
+#: lib/marshall_web/live/integrations_live.ex:255
+#: lib/marshall_web/live/integrations_live.ex:378
+#, elixir-autogen, elixir-format
+msgid "Machine UUID"
+msgstr "UUID de máquina"
+
+#: lib/marshall_web/live/integrations_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Machine attached."
+msgstr "Máquina adjuntada."
+
+#: lib/marshall_web/live/integrations_live.ex:91
+#, elixir-autogen, elixir-format
+msgid "Machine detached."
+msgstr "Máquina desvinculada."
+
+#: lib/marshall_web/live/integrations_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Machines excluded from your GitHub identity"
+msgstr "Máquinas excluidas de tu identidad de GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Machines with access"
+msgstr "Máquinas con acceso"
+
+#: lib/marshall_web/live/integrations_live.ex:395
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "Nombre"
+
+#: lib/marshall_web/live/integrations_live.ex:388
+#, elixir-autogen, elixir-format
+msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
+msgstr ""
+"Asigna un nombre al punto de conexión y una API HTTPS de destino, o márcalo "
+"como conexión entre pares con otra máquina. Los secretos son de solo "
+"escritura: se almacenan para su inyección y nunca se vuelven a mostrar."
+
+#: lib/marshall_web/live/integrations_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
+msgstr ""
+"Puntos de conexión con nombre a los que tus máquinas acceden en "
+"https://NAME.integration.internal. Las credenciales se inyectan en el "
+"perímetro y nunca se pueden leer desde una máquina."
+
+#: lib/marshall_web/live/integrations_live.ex:333
+#, elixir-autogen, elixir-format
+msgid "No explicit attachments. Current team members' machines have access."
+msgstr ""
+"No hay máquinas adjuntadas explícitamente. Las máquinas de los miembros "
+"actuales del equipo tienen acceso."
+
+#: lib/marshall_web/live/integrations_live.ex:321
+#, elixir-autogen, elixir-format
+msgid "No injected headers."
+msgstr "No hay cabeceras inyectadas."
+
+#: lib/marshall_web/live/integrations_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
+msgstr ""
+"Aún no hay integraciones. Añade una abajo para dar a tus máquinas una "
+"conexión con nombre a una API o a otra máquina."
+
+#: lib/marshall_web/live/integrations_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "No machines have access. Attach a machine to use this integration."
+msgstr ""
+"Ninguna máquina tiene acceso. Adjunta una máquina para usar esta "
+"integración."
+
+#: lib/marshall_web/live/integrations_live.ex:307
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "Propietario"
+
+#: lib/marshall_web/live/integrations_live.ex:453
+#, elixir-autogen, elixir-format
+msgid "Peer integration"
+msgstr "Integración entre pares"
+
+#: lib/marshall_web/live/integrations_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Peer machine"
+msgstr "Máquina par"
+
+#: lib/marshall_web/live/integrations_live.ex:456
+#, elixir-autogen, elixir-format
+msgid "Peer machine ID"
+msgstr "ID de máquina par"
+
+#: lib/marshall_web/live/integrations_live.ex:310
+#, elixir-autogen, elixir-format
+msgid "Personal integration"
+msgstr "Integración personal"
+
+#: lib/marshall_web/live/integrations_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "Reconnect required"
+msgstr "Se requiere volver a conectar"
+
+#: lib/marshall_web/live/integrations_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Refreshing GitHub connection"
+msgstr "Actualizando la conexión con GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:295
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Eliminar"
+
+#: lib/marshall_web/live/integrations_live.ex:292
+#, elixir-autogen, elixir-format
+msgid "Remove this integration?"
+msgstr "¿Eliminar esta integración?"
+
+#: lib/marshall_web/live/integrations_live.ex:457
+#, elixir-autogen, elixir-format
+msgid "Required for peer integrations"
+msgstr "Obligatorio para integraciones entre pares"
+
+#: lib/marshall_web/live/integrations_live.ex:438
+#, elixir-autogen, elixir-format
+msgid "Routing, team ownership and peer connections"
+msgstr "Enrutamiento, propiedad del equipo y conexiones entre pares"
+
+#: lib/marshall_web/live/integrations_live.ex:463
+#, elixir-autogen, elixir-format
+msgid "Save integration"
+msgstr "Guardar integración"
+
+#: lib/marshall_web/live/integrations_live.ex:401
+#, elixir-autogen, elixir-format
+msgid "Short description for guest reflection"
+msgstr "Descripción breve para la reflexión del huésped"
+
+#: lib/marshall_web/live/integrations_live.ex:427
+#, elixir-autogen, elixir-format
+msgid "Static header name"
+msgstr "Nombre de cabecera estática"
+
+#: lib/marshall_web/live/integrations_live.ex:433
+#, elixir-autogen, elixir-format
+msgid "Static header value"
+msgstr "Valor de cabecera estática"
+
+#: lib/marshall_web/live/integrations_live.ex:443
+#, elixir-autogen, elixir-format
+msgid "Strip prefix"
+msgstr "Eliminar prefijo"
+
+#: lib/marshall_web/live/integrations_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "Strips prefix"
+msgstr "Elimina el prefijo"
+
+#: lib/marshall_web/live/integrations_live.ex:301
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "Destino"
+
+#: lib/marshall_web/live/integrations_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "Team %{team}"
+msgstr "Equipo %{team}"
+
+#: lib/marshall_web/live/integrations_live.ex:448
+#, elixir-autogen, elixir-format
+msgid "Team ID"
+msgstr "ID del equipo"
+
+#: lib/marshall_web/live/integrations_live.ex:449
+#, elixir-autogen, elixir-format
+msgid "Team-owned integration"
+msgstr "Integración del equipo"
+
+#: lib/marshall_web/live/integrations_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "Temporarily unavailable"
+msgstr "No disponible temporalmente"
+
+#: lib/marshall_web/live/integrations_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
+msgstr "Tus máquinas usan automáticamente tu identidad de GitHub conectada. Los colaboradores que utilicen una máquina compartida pueden usar los permisos de GitHub de su propietario. Las máquinas desvinculadas conservan el acceso público anónimo a GitHub."
+
+#: lib/marshall_web/live/integrations_live.ex:396
+#, elixir-autogen, elixir-format
+msgid "example-integration"
+msgstr "integracion-ejemplo"
+
+#: lib/marshall_web/live/integrations_live.ex:428
+#, elixir-autogen, elixir-format
+msgid "x-api-token"
+msgstr "x-api-token"

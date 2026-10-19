@@ -1,0 +1,375 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: sw\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/integrations_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "**** (write-only)"
+msgstr "**** (andika-pekee)"
+
+#: lib/marshall_web/live/integrations_live.ex:342
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Vitendo"
+
+#: lib/marshall_web/live/integrations_live.ex:386
+#, elixir-autogen, elixir-format
+msgid "Add an integration"
+msgstr "Ongeza muunganisho"
+
+#: lib/marshall_web/live/integrations_live.ex:267
+#: lib/marshall_web/live/integrations_live.ex:380
+#, elixir-autogen, elixir-format
+msgid "Attach"
+msgstr "Ambatisha"
+
+#: lib/marshall_web/live/integrations_live.ex:377
+#, elixir-autogen, elixir-format
+msgid "Attach a machine by ID"
+msgstr "Ambatisha mashine kwa kitambulisho"
+
+#: lib/marshall_web/live/integrations_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "Awaiting GitHub authorization"
+msgstr "Inasubiri idhini ya GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:420
+#, elixir-autogen, elixir-format
+msgid "Basic user:pass"
+msgstr "Basic mtumiaji:nenosiri"
+
+#: lib/marshall_web/live/integrations_live.ex:414
+#, elixir-autogen, elixir-format
+msgid "Bearer token"
+msgstr "Tokeni ya Bearer"
+
+#: lib/marshall_web/live/integrations_live.ex:312
+#: lib/marshall_web/live/integrations_live.ex:400
+#, elixir-autogen, elixir-format
+msgid "Comment"
+msgstr "Maoni"
+
+#: lib/marshall_web/live/integrations_live.ex:230
+#, elixir-autogen, elixir-format
+msgid "Connect GitHub"
+msgstr "Unganisha GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
+msgstr "Unganisha akaunti yako ya GitHub kwa Git, maombi ya kuvuta, Actions, matoleo na michakato mingine ya uundaji. Vitambulisho vya ufikiaji wa GitHub hubaki kwenye mpaka wa mfumo."
+
+#: lib/marshall_web/live/integrations_live.ex:126
+#: lib/marshall_web/live/integrations_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Connected"
+msgstr "Imeunganishwa"
+
+#: lib/marshall_web/live/integrations_live.ex:225
+#, elixir-autogen, elixir-format
+msgid "Connected as %{login}"
+msgstr "Imeunganishwa kama %{login}"
+
+#: lib/marshall_web/live/integrations_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "Could not attach that machine."
+msgstr "Haikuweza kuambatisha mashine hiyo."
+
+#: lib/marshall_web/live/integrations_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "Could not detach that machine."
+msgstr "Haikuweza kutenganisha mashine hiyo."
+
+#: lib/marshall_web/live/integrations_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Could not remove this integration."
+msgstr "Haikuweza kuondoa muunganisho huu."
+
+#: lib/marshall_web/live/integrations_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Could not save this integration. Check the name, HTTPS target and header values."
+msgstr "Haikuweza kuhifadhi muunganisho huu. Angalia jina, HTTPS lengwa na thamani za kichwa."
+
+#: lib/marshall_web/live/integrations_live.ex:409
+#, elixir-autogen, elixir-format
+msgid "Credentials"
+msgstr "Hati tambulishi"
+
+#: lib/marshall_web/live/integrations_live.ex:258
+#: lib/marshall_web/live/integrations_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Detach"
+msgstr "Tenganisha"
+
+#: lib/marshall_web/live/integrations_live.ex:240
+#, elixir-autogen, elixir-format
+msgid "Disconnect GitHub"
+msgstr "Tenganisha GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:237
+#, elixir-autogen, elixir-format
+msgid "Disconnect GitHub from your machines?"
+msgstr "Je, ungependa kutenganisha GitHub kutoka kwa mashine zako?"
+
+#: lib/marshall_web/live/integrations_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "Disconnected"
+msgstr "Imetenganishwa"
+
+#: lib/marshall_web/live/integrations_live.ex:133
+#, elixir-autogen, elixir-format
+msgid "Disconnecting GitHub"
+msgstr "Inatenganisha GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:130
+#, elixir-autogen, elixir-format
+msgid "Finishing active GitHub requests"
+msgstr "Inakamilisha maombi amilifu ya GitHub"
+
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:33
+#, elixir-autogen, elixir-format
+msgid "GitHub connected."
+msgstr "GitHub imeunganishwa."
+
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
+#, elixir-autogen, elixir-format
+msgid "GitHub could not be connected. Try again from Integrations."
+msgstr "GitHub haikuweza kuunganishwa. Jaribu tena kutoka kwa Ujumuishaji."
+
+#: lib/marshall_web/live/integrations_live.ex:405
+#, elixir-autogen, elixir-format
+msgid "HTTPS target"
+msgstr "Lengo la HTTPS"
+
+#: lib/marshall_web/live/integrations_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "Injected credentials"
+msgstr "Kitambulisho kilichoingizwa"
+
+#: lib/marshall_web/live/integrations_live.ex:47
+#, elixir-autogen, elixir-format
+msgid "Integration %{value1} saved."
+msgstr "Ujumuishaji %{value1} umehifadhiwa."
+
+#: lib/marshall_web/live/integrations_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Integration removed."
+msgstr "Ujumuishaji umeondolewa."
+
+#: lib/marshall_web/live/integrations_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "Integrations"
+msgstr "Miunganisho"
+
+#: lib/marshall_web/live/integrations_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Integrations are temporarily unavailable."
+msgstr "Miunganisho haipatikani kwa sasa."
+
+#: lib/marshall_web/live/integrations_live.ex:100
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Ombi batili."
+
+#: lib/marshall_web/live/integrations_live.ex:341
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Mashine"
+
+#: lib/marshall_web/live/integrations_live.ex:255
+#: lib/marshall_web/live/integrations_live.ex:378
+#, elixir-autogen, elixir-format
+msgid "Machine UUID"
+msgstr "Mashine UUID"
+
+#: lib/marshall_web/live/integrations_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Machine attached."
+msgstr "Mashine imeunganishwa."
+
+#: lib/marshall_web/live/integrations_live.ex:91
+#, elixir-autogen, elixir-format
+msgid "Machine detached."
+msgstr "Mashine imejitenga."
+
+#: lib/marshall_web/live/integrations_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Machines excluded from your GitHub identity"
+msgstr "Mashine ambazo hazijajumuishwa kwenye utambulisho wako wa GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Machines with access"
+msgstr "Mashine zilizo na ufikiaji"
+
+#: lib/marshall_web/live/integrations_live.ex:395
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "Jina"
+
+#: lib/marshall_web/live/integrations_live.ex:388
+#, elixir-autogen, elixir-format
+msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
+msgstr "Ipe sehemu ya kufikia huduma jina na uielekeze kwenye API ya HTTPS, au uiweke kuwa muunganisho wa rika kwa mashine nyingine. Siri ni za kuandika pekee: huhifadhiwa ili kuingizwa kwenye maombi na hazionyeshwi tena."
+
+#: lib/marshall_web/live/integrations_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
+msgstr "Sehemu za kufikia huduma zenye majina ambazo mashine zako hufikia kupitia https://NAME.integration.internal. Vitambulisho vya ufikiaji huingizwa kwenye mpaka wa mfumo na haviwezi kusomwa kamwe kutoka mashine."
+
+#: lib/marshall_web/live/integrations_live.ex:333
+#, elixir-autogen, elixir-format
+msgid "No explicit attachments. Current team members' machines have access."
+msgstr "Hakuna viambatisho dhahiri. Mashine za sasa za washiriki wa timu zinaweza kufikia."
+
+#: lib/marshall_web/live/integrations_live.ex:321
+#, elixir-autogen, elixir-format
+msgid "No injected headers."
+msgstr "Hakuna vichwa vilivyoingizwa."
+
+#: lib/marshall_web/live/integrations_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
+msgstr "Bado hakuna miunganisho. Ongeza moja hapa chini ili kuzipa mashine zako muunganisho uliopewa jina kwa API au kwa mashine nyingine."
+
+#: lib/marshall_web/live/integrations_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "No machines have access. Attach a machine to use this integration."
+msgstr "Hakuna mashine zinazoweza kufikia. Ambatisha mashine ili kutumia muunganisho huu."
+
+#: lib/marshall_web/live/integrations_live.ex:307
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "Mmiliki"
+
+#: lib/marshall_web/live/integrations_live.ex:453
+#, elixir-autogen, elixir-format
+msgid "Peer integration"
+msgstr "Muunganisho wa rika"
+
+#: lib/marshall_web/live/integrations_live.ex:304
+#, elixir-autogen, elixir-format
+msgid "Peer machine"
+msgstr "Mashine rika"
+
+#: lib/marshall_web/live/integrations_live.ex:456
+#, elixir-autogen, elixir-format
+msgid "Peer machine ID"
+msgstr "Kitambulisho cha mashine rika"
+
+#: lib/marshall_web/live/integrations_live.ex:310
+#, elixir-autogen, elixir-format
+msgid "Personal integration"
+msgstr "Muunganisho binafsi"
+
+#: lib/marshall_web/live/integrations_live.ex:132
+#, elixir-autogen, elixir-format
+msgid "Reconnect required"
+msgstr "Unganisha upya inahitajika"
+
+#: lib/marshall_web/live/integrations_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Refreshing GitHub connection"
+msgstr "Inaonyesha upya muunganisho wa GitHub"
+
+#: lib/marshall_web/live/integrations_live.ex:295
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Ondoa"
+
+#: lib/marshall_web/live/integrations_live.ex:292
+#, elixir-autogen, elixir-format
+msgid "Remove this integration?"
+msgstr "Ungependa kuondoa muunganisho huu?"
+
+#: lib/marshall_web/live/integrations_live.ex:457
+#, elixir-autogen, elixir-format
+msgid "Required for peer integrations"
+msgstr "Inahitajika kwa miunganisho ya rika"
+
+#: lib/marshall_web/live/integrations_live.ex:438
+#, elixir-autogen, elixir-format
+msgid "Routing, team ownership and peer connections"
+msgstr "Uelekezaji, umiliki wa timu na miunganisho ya rika"
+
+#: lib/marshall_web/live/integrations_live.ex:463
+#, elixir-autogen, elixir-format
+msgid "Save integration"
+msgstr "Hifadhi muunganisho"
+
+#: lib/marshall_web/live/integrations_live.ex:401
+#, elixir-autogen, elixir-format
+msgid "Short description for guest reflection"
+msgstr "Maelezo mafupi kwa Reflection ya mashine"
+
+#: lib/marshall_web/live/integrations_live.ex:427
+#, elixir-autogen, elixir-format
+msgid "Static header name"
+msgstr "Jina la kichwa tuli"
+
+#: lib/marshall_web/live/integrations_live.ex:433
+#, elixir-autogen, elixir-format
+msgid "Static header value"
+msgstr "Thamani ya kichwa tuli"
+
+#: lib/marshall_web/live/integrations_live.ex:443
+#, elixir-autogen, elixir-format
+msgid "Strip prefix"
+msgstr "Ondoa kiambishi awali"
+
+#: lib/marshall_web/live/integrations_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "Strips prefix"
+msgstr "Huondoa kiambishi awali"
+
+#: lib/marshall_web/live/integrations_live.ex:301
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "Lengo"
+
+#: lib/marshall_web/live/integrations_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "Team %{team}"
+msgstr "Timu %{team}"
+
+#: lib/marshall_web/live/integrations_live.ex:448
+#, elixir-autogen, elixir-format
+msgid "Team ID"
+msgstr "Kitambulisho cha Timu"
+
+#: lib/marshall_web/live/integrations_live.ex:449
+#, elixir-autogen, elixir-format
+msgid "Team-owned integration"
+msgstr "Ujumuishaji unaomilikiwa na timu"
+
+#: lib/marshall_web/live/integrations_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "Temporarily unavailable"
+msgstr "Haipatikani kwa muda"
+
+#: lib/marshall_web/live/integrations_live.ex:220
+#, elixir-autogen, elixir-format
+msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
+msgstr "Mashine zako hutumia kiotomatiki utambulisho wako uliounganishwa wa GitHub. Washirika wanaotumia mashine iliyoshirikiwa wanaweza kutumia ruhusa za GitHub za mmiliki wake. Mashine zilizotenganishwa huhifadhi ufikiaji usiohitaji utambulisho wa GitHub ya umma."
+
+#: lib/marshall_web/live/integrations_live.ex:396
+#, elixir-autogen, elixir-format
+msgid "example-integration"
+msgstr "mfano-muunganisho"
+
+#: lib/marshall_web/live/integrations_live.ex:428
+#, elixir-autogen, elixir-format
+msgid "x-api-token"
+msgstr "x-api-token"

@@ -5,7 +5,11 @@ defmodule Porsche.GettextInterpolationTest do
 
   test "RTL interpolation isolates a mixed-script value through the configured backend" do
     Gettext.with_locale(Porsche.Gettext, "ar", fn ->
-      rendered = Gettext.gettext(Porsche.Gettext, "Request %{id}: submitting", id: "alice-123")
+      rendered =
+        Gettext.dgettext(Porsche.Gettext, "management", "Request %{id}: submitting",
+          id: "alice-123"
+        )
+
       assert rendered =~ "\u2068alice-123\u2069"
       refute rendered =~ "\u2068\u2068"
     end)
@@ -34,8 +38,20 @@ defmodule Porsche.GettextInterpolationTest do
     Gettext.with_locale(Porsche.Gettext, "arz", fn ->
       assert {:ok, rendered} =
                GettextInterpolation.runtime_interpolate("%{name}", %{name: "alice-علي-123"})
+
       assert rendered == "\u2068alice-علي-123\u2069"
       assert Gettext.get_locale(Porsche.Gettext) == "arz"
     end)
+  end
+
+  test "all catalog locales preserve direction after repeated interpolation" do
+    for locale <- Gettext.known_locales(Porsche.Gettext), _ <- 1..2 do
+      Gettext.with_locale(Porsche.Gettext, locale, fn ->
+        expected = if locale in ~w(ar ur arz), do: "\u2068value\u2069", else: "value"
+
+        assert GettextInterpolation.runtime_interpolate("%{name}", %{name: "value"}) ==
+                 {:ok, expected}
+      end)
+    end
   end
 end

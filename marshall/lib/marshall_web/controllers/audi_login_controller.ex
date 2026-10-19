@@ -32,7 +32,7 @@ defmodule MarshallWeb.AudiLoginController do
               )
 
             _ ->
-              send_resp(conn, 403, gettext("Sign-in unavailable") <> "\n")
+              send_resp(conn, 403, dgettext("auth", "Sign-in unavailable") <> "\n")
           end
 
         _ ->
@@ -41,7 +41,7 @@ defmodule MarshallWeb.AudiLoginController do
           |> redirect(to: "/sign-in")
       end
     else
-      send_resp(conn, 404, gettext("Unavailable") <> "\n")
+      send_resp(conn, 404, dgettext("auth", "Unavailable") <> "\n")
     end
   end
 end

@@ -1,0 +1,788 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ha\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "Mai aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#, elixir-autogen, elixir-format
+msgid "Admission"
+msgstr "Shiga"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Admission settings updated."
+msgstr "An sabunta saitunan shiga."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Admission settings were invalid or the node is not ready."
+msgstr "Saitunan shiga ba su da inganci ko kumburin bai shirya ba."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:566
+#, elixir-autogen, elixir-format
+msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
+msgstr "Binciken shawarwari don wannan shafin. Ana kimanta kowane nauyin aiki da kansa; wurare da kuma damar da ake da su na iya canzawa. Shigar da sake dubawa da adana albarkatu lokacin da kowane motsi ya fara."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
+#, elixir-autogen, elixir-format
+msgid "Apply admission settings"
+msgstr "Aiwatar da saitunan shiga"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
+#, elixir-autogen, elixir-format
+msgid "Approve move downtime"
+msgstr "Amince lokacin koma baya"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#, elixir-autogen, elixir-format
+msgid "Blocked: %{reason}"
+msgstr "An katange: %{reason}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#, elixir-autogen, elixir-format
+msgid "CPU after holds"
+msgstr "CPU bayan riko"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#, elixir-autogen, elixir-format
+msgid "CPU headroom"
+msgstr "Bayanan Bayani na CPU"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
+#, elixir-autogen, elixir-format
+msgid "CPU overhead (cores)"
+msgstr "CPU sama (cibiyoyi)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
+#, elixir-autogen, elixir-format
+msgid "Campaign"
+msgstr "Gangamin"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:727
+#, elixir-autogen, elixir-format
+msgid "Campaign closed"
+msgstr "An rufe kamfen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#, elixir-autogen, elixir-format
+msgid "Campaign history"
+msgstr "Tarihin yakin"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
+#, elixir-autogen, elixir-format
+msgid "Campaign requested"
+msgstr "Yakin neman zabe"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
+#, elixir-autogen, elixir-format
+msgid "Campaign, workload and relocation milestones from durable control-plane records."
+msgstr "Yaƙin neman zaɓe, nauyin aiki da ƙaura daga madaidaitan bayanan kula da jirgin sama."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "An nemi sokewa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:719
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:821
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "An soke"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+#, elixir-autogen, elixir-format
+msgid "Candidate: %{name}"
+msgstr "Dan takara: %{name}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:330
+#, elixir-autogen, elixir-format
+msgid "Capacity explanation"
+msgstr "Bayanin iya aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:66
+#, elixir-autogen, elixir-format
+msgid "Capacity information is temporarily unavailable."
+msgstr "Babu bayanin iya aiki na ɗan lokaci."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#, elixir-autogen, elixir-format
+msgid "Checking destination readiness"
+msgstr "Duba shirye-shiryen manufa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#, elixir-autogen, elixir-format
+msgid "Checking transfer connectivity"
+msgstr "Ana duba haɗin kai na canja wuri"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
+#, elixir-autogen, elixir-format
+msgid "Cleaning up after cancellation"
+msgstr "Ana tsaftacewa bayan sokewa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
+#, elixir-autogen, elixir-format
+msgid "Cleaning up the source"
+msgstr "Tsabtace tushen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#, elixir-autogen, elixir-format
+msgid "Clone in progress"
+msgstr "kwafi yana ci gaba"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:539
+#, elixir-autogen, elixir-format
+msgid "Closed"
+msgstr "An rufe"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:718
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "Cikakkun"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
+#, elixir-autogen, elixir-format
+msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
+msgstr "Haɓaka mai masaukin baki: maƙallan %{cores} · ƙwaƙwalwar %{memory}. Waɗannan iyakokin an haɗa su cikin lissafin shiga kuma suna ci gaba da sarrafa turawa."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
+#, elixir-autogen, elixir-format
+msgid "Continue scheduling"
+msgstr "Ci gaba da tsarawa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
+#, elixir-autogen, elixir-format
+msgid "Copy/resize holds"
+msgstr "Kwafi/girma yana riƙe"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "Ana kwafi"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Could not accept this change. Refresh and check the workload state."
+msgstr "An kasa karɓar wannan canjin. Sake sabunta kuma duba yanayin nauyin aiki."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "An share"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
+#, elixir-autogen, elixir-format
+msgid "Deleting retained copies"
+msgstr "Share kwafin da aka riƙe"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#, elixir-autogen, elixir-format
+msgid "Desired: %{desired} · Observed: %{observed}"
+msgstr "Wanda ake so: %{desired} · An lura: %{observed}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#, elixir-autogen, elixir-format
+msgid "Destination boot failed; source copy retained"
+msgstr "farawa ɗin ya gaza; ana ajiye kwafin tushe"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup confirmed"
+msgstr "An tabbatar da tsabtace wurin"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup requested"
+msgstr "An nemi tsaftace wurin"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#, elixir-autogen, elixir-format
+msgid "Destination readiness failed; source copy retained"
+msgstr "Shirye-shiryen zuwa ya kasa; ana ajiye kwafin tushe"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Cikakkun bayanai"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
+#, elixir-autogen, elixir-format
+msgid "Disk after holds"
+msgstr "faifai bayan rikewa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
+#, elixir-autogen, elixir-format
+msgid "Downtime approval required"
+msgstr "Ana buƙatar amincewar lokacin hutu"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
+#, elixir-autogen, elixir-format
+msgid "Downtime approved"
+msgstr "An amince da lokacin hutu"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#, elixir-autogen, elixir-format
+msgid "Downtime approved for this workload revision"
+msgstr "An amince da raguwar lokaci don wannan bita na yawan aikin"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "Ruwan ruwa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "Ruwan ruwa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "An kunna"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
+msgstr "Korar duk nauyin aiki akan wannan kumburin? Za a katse baƙi masu gudu yayin tafiyarsu. Cikakkun kwafin da aka dakatar suna buƙatar amincewar kowane nau'in aiki daban."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "Ficewa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:300
+#, elixir-autogen, elixir-format
+msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
+msgstr "Ficewa ya toshe sabbin wuraren zama yayin da baƙon da ke ciki ya kasance yana hidima. Motsa baƙo mai gudu yana katse shi a takaice. Cikakken kwafin da aka dakatar zai iya ɗaukar tsayi sosai kuma yana buƙatar amincewa ga kowane nauyin aiki."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
+#, elixir-autogen, elixir-format
+msgid "Evacuation campaign"
+msgstr "Yakin ficewa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
+#, elixir-autogen, elixir-format
+msgid "Evacuation timeline"
+msgstr "Lokacin fitarwa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
+#, elixir-autogen, elixir-format
+msgid "Event"
+msgstr "Lamarin"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Excluded"
+msgstr "Banda"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:341
+#, elixir-autogen, elixir-format
+msgid "Execution ready"
+msgstr "An shirya kisa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "Explain capacity"
+msgstr "Bayyana iya aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Ba a yi nasara ba"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#, elixir-autogen, elixir-format
+msgid "Fresh"
+msgstr "Sabo"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#, elixir-autogen, elixir-format
+msgid "Fresh report"
+msgstr "Sabon rahoto"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "Ana shigo da shi"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
+#, elixir-autogen, elixir-format
+msgid "Insufficient capacity"
+msgstr "Rashin isasshen iya aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "nema mara inganci."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
+#, elixir-autogen, elixir-format
+msgid "Job state"
+msgstr "Jihar aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Lilly node · %{mode} maintenance"
+msgstr "Kumburi na Lilly · Gyaran %{mode}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
+msgstr "Lilly nodes da halin shigar su. Matsar da aikin kumburin kumburi kafin cire injinsa daga aiki."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:249
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:282
+#, elixir-autogen, elixir-format
+msgid "Maintenance"
+msgstr "Kulawa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#, elixir-autogen, elixir-format
+msgid "Maintenance pages"
+msgstr "Shafukan kulawa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Maintenance updated."
+msgstr "An sabunta kulawa."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
+#, elixir-autogen, elixir-format
+msgid "Memory after holds"
+msgstr "Ƙwaƙwalwar ajiya bayan riƙewa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#, elixir-autogen, elixir-format
+msgid "Memory headroom"
+msgstr "Dakin kai na ƙwaƙwalwar ajiya"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#, elixir-autogen, elixir-format
+msgid "Next page →"
+msgstr "shafi na gaba →"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:124
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "No active campaign."
+msgstr "Babu yakin neman zabe."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:248
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:280
+#, elixir-autogen, elixir-format
+msgid "Node"
+msgstr "Na’urar runduna"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Node information is unavailable."
+msgstr "Babu bayanin node."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:234
+#, elixir-autogen, elixir-format
+msgid "Node maintenance"
+msgstr "Kula da kumburi"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
+#, elixir-autogen, elixir-format
+msgid "Normal"
+msgstr "Na al'ada"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:599
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s"
+msgstr "Katsewar da aka lura: %{seconds} s"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:595
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s (ongoing)"
+msgstr "Katsewar da aka lura: %{seconds} s (a ci gaba)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:538
+#, elixir-autogen, elixir-format
+msgid "Opened"
+msgstr "Bude"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
+#, elixir-autogen, elixir-format
+msgid "Pause scheduling"
+msgstr "Dakatar da jadawalin"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#, elixir-autogen, elixir-format
+msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
+msgstr "Dakatawar yana dakatar da sabbin motsi daga shiryawa. Ana ci gaba da yunƙurin da aka karɓa. Shirye-shiryen kulawa yana buƙatar tabbatar da tsabtace tushe; ayyukan da aka kammala su kaɗai ba su isa ba."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "An dakata"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Ana jiran"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#, elixir-autogen, elixir-format
+msgid "Permanently retire this empty node and revoke its credentials?"
+msgstr "Yi ritaya na dindindin wannan kumburin mara komai kuma ya soke takaddun shaidarsa?"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#, elixir-autogen, elixir-format
+msgid "Phase: %{phase}"
+msgstr "Mataki: %{phase}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#, elixir-autogen, elixir-format
+msgid "Pool"
+msgstr "Rukuni"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "Ana shiryawa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Preview evacuation"
+msgstr "Fitar da samfoti"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:606
+#, elixir-autogen, elixir-format
+msgid "Preview: %{blocker}"
+msgstr "Saukewa: %{blocker}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:814
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "An yi layi"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
+#, elixir-autogen, elixir-format
+msgid "RAM overhead (bytes)"
+msgstr "RAM sama (bytes)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
+msgstr "Sake tsara wannan aikin ta amfani da wurin da yake yanzu da yanayin da ake so? Za a share duk wani amincewar lokacin faɗuwar da ta gabata."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:647
+#, elixir-autogen, elixir-format
+msgid "Re-plan workload"
+msgstr "Sake tsara nauyin aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:333
+#, elixir-autogen, elixir-format
+msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
+msgstr "Lissafin shigar karatu kawai. Ba ya tanadin iya aiki; ma'aunin da ba a sani ba suna hana shiga."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "Shirya"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
+#, elixir-autogen, elixir-format
+msgid "Relocation committed"
+msgstr "An ƙaddamar da ƙaura"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
+#, elixir-autogen, elixir-format
+msgid "Relocation in progress"
+msgstr "Ana ci gaba da ƙaura"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:761
+#, elixir-autogen, elixir-format
+msgid "Relocation started"
+msgstr "An fara ƙaura"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#, elixir-autogen, elixir-format
+msgid "Removed from this source; awaiting campaign cleanup verification."
+msgstr "An cire daga wannan tushe; jiran tabbacin tsaftace yakin neman zabe."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#, elixir-autogen, elixir-format
+msgid "Report"
+msgstr "Rahoton"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
+#, elixir-autogen, elixir-format
+msgid "Resize in progress"
+msgstr "Ana ci gaba da ƙara girma"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
+#, elixir-autogen, elixir-format
+msgid "Restore admission"
+msgstr "Dawo da shiga"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#, elixir-autogen, elixir-format
+msgid "Restoring the source"
+msgstr "Ana dawo da tushen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "Ci gaba"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
+#, elixir-autogen, elixir-format
+msgid "Retire node"
+msgstr "Kudi mai ritaya"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "Yayi ritaya"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:818
+#, elixir-autogen, elixir-format
+msgid "Retrying"
+msgstr "Sake gwadawa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#, elixir-autogen, elixir-format
+msgid "Retrying destination boot"
+msgstr "Ana sake gwadawa taya"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:817
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "Gudu"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "An tsara"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
+#, elixir-autogen, elixir-format
+msgid "Source cleanup confirmed"
+msgstr "An tabbatar da tsabtace tushen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
+#, elixir-autogen, elixir-format
+msgid "Source cleanup requested"
+msgstr "An nemi tsabtace tushen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:724
+#, elixir-autogen, elixir-format
+msgid "Source ready"
+msgstr "Source shirye"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "An dawo da tushen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
+#, elixir-autogen, elixir-format
+msgid "Source unavailable"
+msgstr "Babu tushen tushe"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown"
+msgstr "Tsaye ko ba a sani ba"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown report"
+msgstr "Rahoton da ba a sani ba ko ba a sani ba"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "Start evacuation"
+msgstr "Fara ƙaura"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
+#, elixir-autogen, elixir-format
+msgid "Startup holds"
+msgstr "Farawa yana riƙe"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Matsayi"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
+#, elixir-autogen, elixir-format
+msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
+msgstr "Dakatar da wannan aiki na aiki don duka motsi? Kwafi faifan diski da sake kunna shi akan inda ake nufi zai iya haifar da tsawan lokaci."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "Tsaya"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#, elixir-autogen, elixir-format
+msgid "Stopping the source"
+msgstr "Tsayawa tushen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:819
+#, elixir-autogen, elixir-format
+msgid "Succeeded"
+msgstr "Nasara"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:815
+#, elixir-autogen, elixir-format
+msgid "Suspended"
+msgstr "An dakatar"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "Canja wurin wuri"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:293
+#, elixir-autogen, elixir-format
+msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
+msgstr "Yarjejeniya ta ƙarshe: %{protocol} · Rafi na gida: %{state}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "Lokaci"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
+#, elixir-autogen, elixir-format
+msgid "Transfer busy"
+msgstr "Canja wurin aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Babu"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:822
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Ba a sani ba"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
+#, elixir-autogen, elixir-format
+msgid "VM"
+msgstr "Injin kama-da-wane"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:767
+#, elixir-autogen, elixir-format
+msgid "Workload changed"
+msgstr "An sauya nauyin aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:770
+#, elixir-autogen, elixir-format
+msgid "Workload is not stable"
+msgstr "Nauyin aiki bai daidaita ba"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
+#, elixir-autogen, elixir-format
+msgid "Workload observed"
+msgstr "An lura da nauyin aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:764
+#, elixir-autogen, elixir-format
+msgid "Workload resolved"
+msgstr "An warware nauyin aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
+#, elixir-autogen, elixir-format
+msgid "attempt %{attempt}"
+msgstr "yunƙuri %{attempt}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#, elixir-autogen, elixir-format
+msgid "campaign"
+msgstr "kamfen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#, elixir-autogen, elixir-format
+msgid "enabled"
+msgstr "an kunna"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#, elixir-autogen, elixir-format
+msgid "excluded"
+msgstr "an ware"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
+#, elixir-autogen, elixir-format
+msgid "job"
+msgstr "aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
+#, elixir-autogen, elixir-format
+msgid "move"
+msgstr "matsa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#, elixir-autogen, elixir-format
+msgid "ready"
+msgstr "a shirye"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#, elixir-autogen, elixir-format
+msgid "unavailable"
+msgstr "ba ya samuwa"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "ba a sani ba"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#, elixir-autogen, elixir-format
+msgid "yes"
+msgstr "eh"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#, elixir-autogen, elixir-format
+msgid "· Downtime approval required"
+msgstr "· Ana buƙatar amincewa da katsewar aiki"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#, elixir-autogen, elixir-format
+msgid "← First page"
+msgstr "← Shafin farko"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "← Nodes"
+msgstr "← Rundunoni"

@@ -1,0 +1,210 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: vi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/admin/operations_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "%{count} · %{enabled} enabled"
+msgstr "%{count} · %{enabled} đã bật"
+
+#: lib/marshall_web/live/admin/operations_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Addresses"
+msgstr "Địa chỉ"
+
+#: lib/marshall_web/live/admin/operations_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Architecture"
+msgstr "Kiến trúc"
+
+#: lib/marshall_web/live/admin/operations_live.ex:68
+#: lib/marshall_web/live/admin/operations_live.ex:118
+#, elixir-autogen, elixir-format
+msgid "Audi services"
+msgstr "Dịch vụ Audi"
+
+#: lib/marshall_web/live/admin/operations_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Certificate expires"
+msgstr "Chứng chỉ hết hạn"
+
+#: lib/marshall_web/live/admin/operations_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "DNS"
+msgstr "DNS"
+
+#: lib/marshall_web/live/admin/operations_live.ex:70
+#: lib/marshall_web/live/admin/operations_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "DNS publications"
+msgstr "Bản công bố DNS"
+
+#: lib/marshall_web/live/admin/operations_live.ex:212
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "Đã vô hiệu hóa"
+
+#: lib/marshall_web/live/admin/operations_live.ex:212
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "Đã bật"
+
+#: lib/marshall_web/live/admin/operations_live.ex:103
+#: lib/marshall_web/live/admin/operations_live.ex:237
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "Cổng kết nối"
+
+#: lib/marshall_web/live/admin/operations_live.ex:104
+#: lib/marshall_web/live/admin/operations_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Generation"
+msgstr "Thế hệ"
+
+#: lib/marshall_web/live/admin/operations_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Ảnh máy"
+
+#: lib/marshall_web/live/admin/operations_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Image catalog"
+msgstr "Danh mục ảnh máy"
+
+#: lib/marshall_web/live/admin/operations_live.ex:66
+#, elixir-autogen, elixir-format
+msgid "Images"
+msgstr "Ảnh máy"
+
+#: lib/marshall_web/live/admin/operations_live.ex:69
+#: lib/marshall_web/live/admin/operations_live.ex:143
+#, elixir-autogen, elixir-format
+msgid "Ingress routes"
+msgstr "Tuyến vào"
+
+#: lib/marshall_web/live/admin/operations_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Máy"
+
+#: lib/marshall_web/live/admin/operations_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Minimum RAM"
+msgstr "RAM tối thiểu"
+
+#: lib/marshall_web/live/admin/operations_live.ex:81
+#, elixir-autogen, elixir-format
+msgid "Minimum disk"
+msgstr "Đĩa tối thiểu"
+
+#: lib/marshall_web/live/admin/operations_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "No Audi services enrolled."
+msgstr "Chưa đăng ký dịch vụ Audi."
+
+#: lib/marshall_web/live/admin/operations_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "No DNS publications are recorded."
+msgstr "Chưa ghi nhận bản công bố DNS."
+
+#: lib/marshall_web/live/admin/operations_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "No gateways enrolled."
+msgstr "Chưa đăng ký cổng kết nối."
+
+#: lib/marshall_web/live/admin/operations_live.ex:73
+#, elixir-autogen, elixir-format
+msgid "No images in the catalog."
+msgstr "Không có ảnh trong danh mục."
+
+#: lib/marshall_web/live/admin/operations_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "No ingress routes are published."
+msgstr "Chưa công bố tuyến vào."
+
+#: lib/marshall_web/live/admin/operations_live.ex:25
+#, elixir-autogen, elixir-format
+msgid "Operational status is temporarily unavailable."
+msgstr "Trạng thái vận hành tạm thời không khả dụng."
+
+#: lib/marshall_web/live/admin/operations_live.ex:52
+#, elixir-autogen, elixir-format
+msgid "Platform status"
+msgstr "Trạng thái nền tảng"
+
+#: lib/marshall_web/live/admin/operations_live.ex:67
+#: lib/marshall_web/live/admin/operations_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Porsche gateways"
+msgstr "Cổng kết nối Porsche"
+
+#: lib/marshall_web/live/admin/operations_live.ex:54
+#, elixir-autogen, elixir-format
+msgid "Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
+msgstr "Trạng thái ảnh, lối vào Audi và cổng Porsche chỉ đọc. Bí mật và tài liệu chứng chỉ không được hiển thị."
+
+#: lib/marshall_web/live/admin/operations_live.ex:150
+#: lib/marshall_web/live/admin/operations_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Revision"
+msgstr "Bản sửa đổi"
+
+#: lib/marshall_web/live/admin/operations_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Vai trò"
+
+#: lib/marshall_web/live/admin/operations_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Route expires"
+msgstr "Tuyến hết hạn"
+
+#: lib/marshall_web/live/admin/operations_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Service"
+msgstr "Dịch vụ"
+
+#: lib/marshall_web/live/admin/operations_live.ex:82
+#: lib/marshall_web/live/admin/operations_live.ex:105
+#: lib/marshall_web/live/admin/operations_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Tình trạng"
+
+#: lib/marshall_web/live/admin/operations_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Không xác định"
+
+#: lib/marshall_web/live/admin/operations_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "Đã cập nhật"
+
+#: lib/marshall_web/live/admin/operations_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Zone"
+msgstr "Múi giờ"
+
+#: lib/marshall_web/live/admin/operations_live.ex:225
+#: lib/marshall_web/live/admin/operations_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "không xác định"
+
+#: lib/marshall_web/live/admin/operations_live.ex:62
+#, elixir-autogen, elixir-format
+msgid "· every 30 seconds"
+msgstr "· mỗi 30 giây"

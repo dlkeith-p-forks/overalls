@@ -111,14 +111,18 @@ defmodule MarshallWeb.Admin.AuditLive do
          |> certificate_history()
          |> put_flash(
            :info,
-           gettext("Wildcard rotation requested for generation %{generation}.",
+           dgettext("admin_audit", "Wildcard rotation requested for generation %{generation}.",
              generation: generation
            )
          )}
 
       _ ->
         {:noreply,
-         put_flash(socket, :error, gettext("Wildcard rotation could not be requested."))}
+         put_flash(
+           socket,
+           :error,
+           dgettext("admin_audit", "Wildcard rotation could not be requested.")
+         )}
     end
   end
 
@@ -176,43 +180,46 @@ defmodule MarshallWeb.Admin.AuditLive do
     >
       <section id="admin-audit" class="stack">
         <UI.heading
-          title={gettext("Audit")}
+          title={dgettext("admin_audit", "Audit")}
           subtitle={
-            gettext(
+            dgettext(
+              "admin_audit",
               "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
             )
           }
         />
-        <nav class="machine-tabs" aria-label={gettext("Audit kinds")}>
+        <nav class="machine-tabs" aria-label={dgettext("admin_audit", "Audit kinds")}>
           <.link
             patch={~p"/admin/audit"}
             aria-current={
               (!@lifecycle? and !@certificate? and Map.get(@filters, :kind) != "editor") && "page"
             }
           >
-            {gettext("Administrator actions")}
+            {dgettext("admin_audit", "Administrator actions")}
           </.link>
-          <.link patch={~p"/admin/audit?kind=lifecycle"} aria-current={@lifecycle? && "page"}>{gettext(
+          <.link patch={~p"/admin/audit?kind=lifecycle"} aria-current={@lifecycle? && "page"}>{dgettext(
+            "admin_audit",
             "VM lifecycle"
           )}</.link>
-          <.link patch={~p"/admin/audit?kind=certificates"} aria-current={@certificate? && "page"}>{gettext(
+          <.link patch={~p"/admin/audit?kind=certificates"} aria-current={@certificate? && "page"}>{dgettext(
+            "admin_audit",
             "Certificates"
           )}</.link>
           <.link
             patch={~p"/admin/audit?kind=editor"}
             aria-current={Map.get(@filters, :kind) == "editor" && "page"}
-          >{gettext("VS Code access")}</.link>
+          >{dgettext("admin_audit", "VS Code access")}</.link>
         </nav>
         <form :if={@lifecycle?} action={~p"/admin/audit"} method="get" class="panel stack">
-          <h2>{gettext("Filter lifecycle history")}</h2>
+          <h2>{dgettext("admin_audit", "Filter lifecycle history")}</h2>
           <input type="hidden" name="kind" value="lifecycle" />
           <div class="grid">
             <div
               :for={
                 {key, label} <- [
-                  {"vm_id", gettext("VM ID")},
-                  {"workflow_id", gettext("Workflow ID")},
-                  {"host_id", gettext("Host ID")}
+                  {"vm_id", dgettext("admin_audit", "VM ID")},
+                  {"workflow_id", dgettext("admin_audit", "Workflow ID")},
+                  {"host_id", dgettext("admin_audit", "Host ID")}
                 ]
               }
               class="field"
@@ -227,9 +234,9 @@ defmodule MarshallWeb.Admin.AuditLive do
             <div
               :for={
                 {key, label} <- [
-                  {"action", gettext("Action")},
-                  {"since", gettext("Since (ISO 8601)")},
-                  {"until", gettext("Until (ISO 8601)")}
+                  {"action", dgettext("admin_audit", "Action")},
+                  {"since", dgettext("admin_audit", "Since (ISO 8601)")},
+                  {"until", dgettext("admin_audit", "Until (ISO 8601)")}
                 ]
               }
               class="field"
@@ -241,14 +248,21 @@ defmodule MarshallWeb.Admin.AuditLive do
             </div>
           </div>
           <div class="row actions">
-            <button type="submit" class="console-button primary">{gettext("Filter lifecycle history")}</button>
+            <button type="submit" class="console-button primary">{dgettext(
+              "admin_audit",
+              "Filter lifecycle history"
+            )}</button>
           </div>
         </form>
         <p :if={@lifecycle?} class="muted">
-          {gettext("Human requests and system recovery transitions. History is retained for 90 days.")}
+          {dgettext(
+            "admin_audit",
+            "Human requests and system recovery transitions. History is retained for 90 days."
+          )}
         </p>
         <p :if={@certificate?} class="muted">
-          {gettext(
+          {dgettext(
+            "admin_audit",
             "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
           )}
         </p>
@@ -258,11 +272,13 @@ defmodule MarshallWeb.Admin.AuditLive do
           role="status"
           class="panel dashed"
         >
-          {gettext(
+          {dgettext(
+            "admin_audit",
             "Generation %{generation} has an uncertain ACME order response. The generation can be failed after",
             generation: @uncertain_order.generation
           )}
-          <.timestamp at={@uncertain_order.retry_after} zone={@time_zone} format={:datetime_seconds} />{gettext(
+          <.timestamp at={@uncertain_order.retry_after} zone={@time_zone} format={:datetime_seconds} />{dgettext(
+            "admin_audit",
             "; the next due check can then request a new generation."
           )}
         </p>
@@ -271,21 +287,23 @@ defmodule MarshallWeb.Admin.AuditLive do
             id="rotate-fleet-certificate"
             type="button"
             phx-click="rotate-certificate"
-            data-confirm={gettext("Request a new wildcard certificate for every Audi gateway?")}
+            data-confirm={
+              dgettext("admin_audit", "Request a new wildcard certificate for every Audi gateway?")
+            }
             class="console-button"
-          >{gettext("Request wildcard rotation")}</button>
+          >{dgettext("admin_audit", "Request wildcard rotation")}</button>
         </div>
         <p :if={@unavailable?} role="alert" class="error">
-          {gettext("Audit history is unavailable.")}
+          {dgettext("admin_audit", "Audit history is unavailable.")}
         </p>
         <div id="audit-events" class="table-flow">
           <table>
             <thead>
               <tr>
-                <th class="width-min">{gettext("When")}</th>
-                <th class="width-min">{gettext("Action")}</th>
-                <th class="width-min">{gettext("Actor")}</th>
-                <th class="width-auto">{gettext("Target")}</th>
+                <th class="width-min">{dgettext("admin_audit", "When")}</th>
+                <th class="width-min">{dgettext("admin_audit", "Action")}</th>
+                <th class="width-min">{dgettext("admin_audit", "Actor")}</th>
+                <th class="width-auto">{dgettext("admin_audit", "Target")}</th>
               </tr>
             </thead>
             <tbody id="audit-event-rows" phx-update="stream">
@@ -312,16 +330,18 @@ defmodule MarshallWeb.Admin.AuditLive do
                     )}
                     <br /><code>{event.previous_state || "—"} → {event.next_state || "—"}</code>
                   </span>
-                  <span :if={@certificate? and event.kind == :account}>{gettext(
+                  <span :if={@certificate? and event.kind == :account}>{dgettext(
+                    "admin_audit",
                     "ACME account: %{status}",
                     status: AuditLabels.action(event.status)
                   )}<br /><code>{event.status}</code></span>
-                  <span :if={@certificate? and event.kind != :account}>{gettext(
+                  <span :if={@certificate? and event.kind != :account}>{dgettext(
+                    "admin_audit",
                     "Generation %{generation}: %{status}",
                     generation: event.generation,
                     status: AuditLabels.action(event.status)
                   )}<br /><code>{event.status}</code><br /><code>{event.fingerprint ||
-                    gettext("Pending")}</code></span>
+                    dgettext("admin_audit", "Pending")}</code></span>
                   <span :if={!@lifecycle? and !@certificate?}><code>{event.target_id}</code></span>
                 </td>
               </tr>
@@ -331,7 +351,7 @@ defmodule MarshallWeb.Admin.AuditLive do
         <p :if={@next_cursor}>
           <.link patch={
             ~p"/admin/audit?#{Map.merge(@filters, if(@lifecycle?, do: %{kind: "lifecycle", before: @next_cursor}, else: %{before: @next_cursor}))}"
-          }>{gettext("Older events →")}</.link>
+          }>{dgettext("admin_audit", "Older events →")}</.link>
         </p>
       </section>
     </Layouts.app>

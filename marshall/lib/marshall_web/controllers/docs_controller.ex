@@ -32,7 +32,7 @@ defmodule MarshallWeb.DocsController do
       :error ->
         conn
         |> put_resp_content_type("text/plain")
-        |> send_resp(404, gettext("Documentation not found") <> "\n")
+        |> send_resp(404, dgettext("shared", "Documentation not found") <> "\n")
     end
   end
 

@@ -384,6 +384,7 @@ Where the server handled it via:
 
 ## Localization
 
+- Keep messages in native Gettext feature domains, following the localization skill. Do not grow `default.po`. Public `/docs/*` prose is localized; HLDD chapter contents and titles stay English while reader controls use the active language.
 - Load the [localization skill](../.agents/skills/localization/SKILL.md) before changing any user-facing HEEx, LiveView, mailer, browser JavaScript, documentation, or locale setting behavior.
 - Route strings through the existing Localize/Gettext integration and stable source identifiers. Keep IDs, hooks, machine-oriented data attributes, logs, JSON fields, and protocol names stable and language-neutral; translate human-facing accessibility labels and descriptions.
 - Use the central typed locale policy for user override, validated `Accept-Language` negotiation, fallback, `lang`/`dir`, and CLDR formatting. Preserve Monospace Web constraints and use logical CSS properties for RTL. Verify catalogs, placeholders, both directions, long translations, and browser probes.

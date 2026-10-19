@@ -1,0 +1,70 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ha\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "Approve SSH key"
+msgstr "Amince da maɓallin SSH"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:94
+#, elixir-autogen, elixir-format
+msgid "Approve key"
+msgstr "Yarda da maɓalli"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
+msgstr "Yarda da wannan maɓallin kawai idan kun fara haɗin SSH kuma hoton yatsansa ya dace da abokin cinikin ku na SSH."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr "Ana amincewa…"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr "Label (na zaɓi)"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Manage your SSH keys"
+msgstr "Sarrafa maɓallan SSH"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr "Laptop dina"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:35
+#, elixir-autogen, elixir-format
+msgid "SSH key approved. You can return to your SSH client."
+msgstr "An amince da maɓallin SSH. Kuna iya komawa zuwa ga abokin ciniki na SSH."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#, elixir-autogen, elixir-format
+msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
+msgstr "Wannan amincewar SSH ba ta samuwa ko ta ƙare. Fara sabon haɗin SSH don sake gwadawa."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
+msgstr "Wannan maɓallin zai shiga azaman %{value1} . Yana iya sarrafa inji bisa ga izinin asusun ku."
+
+#: lib/marshall_web/ssh_approval_login.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Babu"

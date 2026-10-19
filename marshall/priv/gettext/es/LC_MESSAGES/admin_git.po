@@ -1,0 +1,255 @@
+#
+msgid ""
+msgstr ""
+"Language: es\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/git_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "Acción"
+
+#: lib/marshall_web/live/admin/git_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Acciones"
+
+#: lib/marshall_web/live/admin/git_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Add a mirror"
+msgstr "Añadir un espejo"
+
+#: lib/marshall_web/live/admin/git_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Add mirror"
+msgstr "Añadir espejo"
+
+#: lib/marshall_web/live/admin/git_live.ex:23
+#, elixir-autogen, elixir-format
+msgid "Could not register repository. Verify your passkey and labels."
+msgstr ""
+"No se pudo registrar el repositorio. Verifica tu clave de acceso y las "
+"etiquetas."
+
+#: lib/marshall_web/live/admin/git_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Fallido"
+
+#: lib/marshall_web/live/admin/git_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Git mirrors"
+msgstr "Espejos Git"
+
+#: lib/marshall_web/live/admin/git_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Git operation failed"
+msgstr "La operación de Git falló"
+
+#: lib/marshall_web/live/admin/git_live.ex:81
+#, elixir-autogen, elixir-format
+msgid "GitHub organization"
+msgstr "Organización de GitHub"
+
+#: lib/marshall_web/live/admin/git_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Identifiers"
+msgstr "Identificadores"
+
+#: lib/marshall_web/live/admin/git_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Mirrors"
+msgstr "Espejos"
+
+#: lib/marshall_web/live/admin/git_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "No mirror events recorded."
+msgstr "No hay eventos de espejos registrados."
+
+#: lib/marshall_web/live/admin/git_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "No repositories are mirrored yet."
+msgstr "Aún no hay repositorios replicados."
+
+#: lib/marshall_web/live/admin/git_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Pendiente"
+
+#: lib/marshall_web/live/admin/git_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Phase"
+msgstr "Fase"
+
+#: lib/marshall_web/live/admin/git_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Public GitHub repositories mirrored for machines. Mirrors refresh hourly; changes require recent passkey verification."
+msgstr ""
+"Repositorios públicos de GitHub replicados para las máquinas. Los espejos se"
+" actualizan cada hora; los cambios requieren verificación reciente de clave "
+"de acceso."
+
+#: lib/marshall_web/live/admin/git_live.ex:173
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "Listo"
+
+#: lib/marshall_web/live/admin/git_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Reason"
+msgstr "Motivo"
+
+#: lib/marshall_web/live/admin/git_live.ex:133
+#, elixir-autogen, elixir-format
+msgid "Recent mirror audit"
+msgstr "Auditoría reciente de espejos"
+
+#: lib/marshall_web/live/admin/git_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Refresh"
+msgstr "Actualizar"
+
+#: lib/marshall_web/live/admin/git_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Refresh already in progress."
+msgstr "Ya hay una actualización en curso."
+
+#: lib/marshall_web/live/admin/git_live.ex:37
+#, elixir-autogen, elixir-format
+msgid "Refresh could not be queued."
+msgstr "No se pudo poner la actualización en cola."
+
+#: lib/marshall_web/live/admin/git_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Refresh failed"
+msgstr "La actualización falló"
+
+#: lib/marshall_web/live/admin/git_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Refresh queued."
+msgstr "Actualización en cola."
+
+#: lib/marshall_web/live/admin/git_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Refresh requested"
+msgstr "Actualización solicitada"
+
+#: lib/marshall_web/live/admin/git_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Refresh succeeded"
+msgstr "Actualización completada"
+
+#: lib/marshall_web/live/admin/git_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Refreshing"
+msgstr "Actualizando"
+
+#: lib/marshall_web/live/admin/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "Registrado"
+
+#: lib/marshall_web/live/admin/git_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "Removal queued."
+msgstr "Eliminación en cola."
+
+#: lib/marshall_web/live/admin/git_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Removal requested"
+msgstr "Eliminación solicitada"
+
+#: lib/marshall_web/live/admin/git_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Eliminar"
+
+#: lib/marshall_web/live/admin/git_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Remove mirror?"
+msgstr "¿Eliminar espejo?"
+
+#: lib/marshall_web/live/admin/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Removed"
+msgstr "Eliminado"
+
+#: lib/marshall_web/live/admin/git_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Removing"
+msgstr "Eliminando"
+
+#: lib/marshall_web/live/admin/git_live.ex:87
+#: lib/marshall_web/live/admin/git_live.ex:102
+#, elixir-autogen, elixir-format
+msgid "Repository"
+msgstr "Repositorio"
+
+#: lib/marshall_web/live/admin/git_live.ex:44
+#, elixir-autogen, elixir-format
+msgid "Repository could not be removed."
+msgstr "No se pudo eliminar el repositorio."
+
+#: lib/marshall_web/live/admin/git_live.ex:16
+#, elixir-autogen, elixir-format
+msgid "Repository registered."
+msgstr "Repositorio registrado."
+
+#: lib/marshall_web/live/admin/git_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Service unavailable"
+msgstr "Servicio no disponible"
+
+#: lib/marshall_web/live/admin/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "TLS verification failed"
+msgstr "La verificación TLS falló"
+
+#: lib/marshall_web/live/admin/git_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Timed out"
+msgstr "Se agotó el tiempo de espera"
+
+#: lib/marshall_web/live/admin/git_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "Sin autorización"
+
+#: lib/marshall_web/live/admin/git_live.ex:176
+#: lib/marshall_web/live/admin/git_live.ex:188
+#: lib/marshall_web/live/admin/git_live.ex:197
+#: lib/marshall_web/live/admin/git_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: lib/marshall_web/live/admin/git_live.ex:139
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "Cuándo"
+
+#: lib/marshall_web/live/admin/git_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "actor"
+msgstr "actor"
+
+#: lib/marshall_web/live/admin/git_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "attempt"
+msgstr "intento"
+
+#: lib/marshall_web/live/admin/git_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "nixos"
+msgstr "nixos"
+
+#: lib/marshall_web/live/admin/git_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "nixpkgs"
+msgstr "nixpkgs"
+
+#: lib/marshall_web/live/admin/git_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "repository"
+msgstr "repositorio"
