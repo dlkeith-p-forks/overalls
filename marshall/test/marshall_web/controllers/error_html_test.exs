@@ -5,17 +5,35 @@ defmodule MarshallWeb.ErrorHTMLTest do
   import Phoenix.Template, only: [render_to_string: 4]
 
   test "renders 404.html" do
-    assert render_to_string(MarshallWeb.ErrorHTML, "404", "html", [])
+    html = render_to_string(MarshallWeb.ErrorHTML, "404", "html", [])
+
+    assert html
            |> LazyHTML.from_fragment()
            |> LazyHTML.query("h1")
            |> LazyHTML.text() == "Not Found"
+
+    refute html =~ "Field notes"
+    refute html =~ "Appearance"
+  end
+
+  test "renders 400-series pages without navigation" do
+    html = render_to_string(MarshallWeb.ErrorHTML, "400", "html", [])
+
+    assert html =~ "Bad Request"
+    refute html =~ "Field notes"
+    refute html =~ "Appearance"
   end
 
   test "renders 500.html" do
-    assert render_to_string(MarshallWeb.ErrorHTML, "500", "html", [])
+    html = render_to_string(MarshallWeb.ErrorHTML, "500", "html", [])
+
+    assert html
            |> LazyHTML.from_fragment()
            |> LazyHTML.query("h1")
            |> LazyHTML.text() == "Internal Server Error"
+
+    refute html =~ "Field notes"
+    refute html =~ "Appearance"
   end
 
   test "a server error retries itself only while the database does not answer" do

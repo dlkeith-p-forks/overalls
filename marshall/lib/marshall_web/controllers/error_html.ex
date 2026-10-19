@@ -37,7 +37,6 @@ defmodule MarshallWeb.ErrorHTML do
       </head>
       <body>
         <div class="public-page">
-          <Layouts.console_header />
           <main id="main-content" class="error-page">
             <pre aria-hidden="true">{@cat}</pre>
             <h1>{@message}</h1>
