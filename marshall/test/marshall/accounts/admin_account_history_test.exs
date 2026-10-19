@@ -27,9 +27,15 @@ defmodule Marshall.Accounts.AdminAccountHistoryTest do
   # permission from command history, never from Cedar or Security.recent?. Every
   # refusal MUST preserve the complete fixture inventory, including tokens,
   # credentials, outbox/jobs, retirement and audit rows.
+
+  # Each 100-case property performs 300 real passkey enrollments and 1,200-2,600
+  # SQL-backed authority transitions with full model/inventory checks. The old
+  # 60s aggregate expired inside real retirement authorization. Preserve every
+  # case, default profile and per-operation deadline under a finite 300s budget.
   for operation <- [:role, :sessions, :reset, :retire, :invite] do
     @operation operation
     @tag :hegel_case_sandbox
+    @tag timeout: 300_000
     property "#{@operation} follows current role, login and elevation history", test_cases: 100 do
       Marshall.DataCase.isolate_property_case()
 

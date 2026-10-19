@@ -1658,10 +1658,11 @@ use OpenSSL, because rustls rejects the deployed private leaf.
 
 ### Windows editor payload staging (not admitted)
 
-[ADR-0200](repo:docs/architecture/decisions/0200-windows-browser-editor-candidate.md)
+[ADR-0207](repo:docs/architecture/decisions/0207-windows-editor-job-custodian.md)
 accepts the account-bound native Windows candidate: a source-built Code OSS
-bundle, SYSTEM gateway broker, verified local SAM/S4U workers, exact job/pipe
-recovery and a supervised fixed task. Implementation remains partial. The
+bundle, SYSTEM gateway broker, independent SYSTEM job custodian and verified local
+SAM/S4U workers. Two fixed private tasks supervise the roles independently.
+Implementation and native recovery acceptance remain partial. The
 existing `windows-v1` false editor row is unchanged. Only the separate
 `windows-editor-v1` candidate uses manifest v7 with a required content-bound
 editor tuple and portable bundle v4 preserving that tuple. The candidate is
@@ -1680,29 +1681,42 @@ editor descriptor or publish a browser origin. The completed native Windows
 bundle passed reviewed import with exact source/release identity, product
 policy, licenses and native provenance; its digest and bounded scope are in the
 [cross-platform review](repo:docs/architecture/reviews/2026-10-18-cross-platform-editor-status.md).
-Image admission and a Windows browser sign-in/edit/readback/recovery run remain
-unrecorded.
+Image admission and a complete newly bound Windows image's browser
+sign-in/edit/readback/recovery journey remain unrecorded.
 
-The staged broker is a SYSTEM-owned boundary around that future payload. Its
-portable model binds boot, descriptor, placement, epoch, GuestAccount UUID,
-roster UID, canonical account name, local SAM SID and editor origin; identity
-derived pipe/job names and process creation time prevent foreign reuse. The
-Win32 launcher resolves the current local account, obtains an explicit S4U
-token, uses the SID-backed profile, starts a direct Node process suspended in a
-SYSTEM-only job, and verifies PID/time/SID/executable/job and named-pipe peer
-custody before forwarding. `windows_main.rs` fetches MMDS identity, runs the
-closed SSH authorizer and serializes one account startup; durable receipts
-permit only exact adoption after broker restart. Ambiguous paths, incomplete
-custody, stale roster pairs and foreign processes refuse without cleanup. The
-broker's 26 portable library and 7 Linux binary tests passed, with one deliberate
-subprocess fixture ignored; both Linux and Windows clippy checks passed. A
-production Windows cross-link and 30 actual native Windows library tests passed,
-including named-pipe timeout/cancellation and Windows ACL descriptor/refusal
-checks. These do not establish a listener/personal-worker lifecycle, candidate
-image or browser acceptance. The
-[native harness](repo:nix/verification/tests/machines/windows-editor/README.md)
-has six passing portable boundary/relay tests and static/type checks; its real
-Windows/browser assertions have not run.
+Both SYSTEM roles independently bind current MMDS boot, descriptor and execution
+authority. The gateway-only TCP broker forwards its closed preface through a
+fixed physical-boot local pipe with mutual kernel PID/time, SYSTEM-token and exact
+executable checks. The custodian runs the locked roster authorizer and SAM
+validation inside its per-UID lock. It owns the explicit S4U token, SID-backed
+profile, direct suspended Node creation atomically attached to a SYSTEM-only
+kill-on-close job, complete SID-bound receipt publication before resume and exact
+worker-pipe readiness. Every job handle stays with the custodian. Its map retains
+64 lifetime account slots, including empty and quarantined starts; each role
+separately reserves at most 128 live/retired pipe slots. Reuse requires exact
+PID/time/SID/executable/job/pipe identity. Live-root probe and observation errors
+refuse without termination; only a verified-dead held root permits exact-job
+zero-descendant drainage before replacement. A fresh custodian refuses all prior
+same-boot receipts until a new physical boot namespace. Safe same-boot automatic
+replacement remains unimplemented.
+
+Thirty current portable tests pass retained ownership, single-flight/capacity and
+live-root-probe refusal decisions; Windows all-target Clippy and pinned runtime/
+test-library links pass. The exact 38-test library subsequently ran as SYSTEM
+with exit zero, no failures/ignored tests and verified scratch cleanup. Its four
+new native cases cover one disposable suspended SYSTEM root's atomic membership
+and kill-on-close exit, exclusive SYSTEM pipe custody, same-test-process mutual
+identity and forged-creation refusal. They do not execute personal S4U launch,
+descendants, independently scheduled roles or a custodian/browser recovery.
+Earlier 30 actual Windows library tests cover pipe timeout/cancellation and ACL
+refusals. The old stock browser fixture reached workbench/extension/save/PowerShell
+PTY, then failed broker recovery. A scoped old-design experiment observed lost
+job-name custody while a child stayed alive. New two-task installer evaluation,
+PowerShell parsing and strict harness build checks pass; complete role-peer,
+personal launch, capacity, custodian failure and exact-image browser assertions
+remain pending.
+The [custodian review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md)
+records these scopes separately. None qualifies the old immutable candidate.
 
 Tools in Windows images ([ADR-0173](repo:docs/architecture/decisions/0173-windows-images-winget-desktop-experience.md)):
 Windows images install Windows Server 2025 **Desktop Experience**, because
@@ -1823,6 +1837,12 @@ New identity-bearing admissions require an image manifest advertising `git_ident
 `linux-android-v1` is an additive NixOS Firecracker guest profile. Its emulator
 uses TCG software rendering and persistent AVD state; readiness is bounded at
 600 seconds. ADB and display authority are withheld until emulator readiness.
+The emulator service sets its home and Android user state beneath
+`/var/lib/overalls-android`, creates its `.android` directory and gives AVD
+creation the finite `no` answer. The machine fixture checks the actual service
+process and bounds each ADB wait attempt to fifteen seconds within its existing
+600-second readiness window. These startup/verification repairs do not record a
+new native emulator pass.
 The image's current RFB bridge is loopback-bound for diagnostics only; it is not
 an authenticated display authority. An authenticated vsock relay with one input
 controller and read-only viewers remains pending, as does native Firecracker

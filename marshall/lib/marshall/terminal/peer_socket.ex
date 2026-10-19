@@ -14,8 +14,15 @@ defmodule Marshall.Terminal.PeerSocket do
   def init({host_id, nonce}) do
     Logger.metadata(marshall_terminal: true)
 
+    budget_server = Marshall.Terminal.PeerBudget.server()
+
     with {:ok, stream} <- Marshall.Terminal.Relay.local_stream(host_id, nonce),
-         {:ok, budget} <- Marshall.Terminal.PeerBudget.acquire() do
+         {:ok, budget} <- Marshall.Terminal.PeerBudget.acquire(budget_server) do
+      # The adapter owns this process and may consume monitor DOWN messages;
+      # a watcher asks the callback to stop for this exact incarnation, with
+      # an untrappable kill only as a bounded fallback.
+      start_budget_watcher(self(), budget)
+
       Marshall.Terminal.Metrics.opened(:peer)
       Process.send_after(self(), :idle_deadline, 10_000)
       Process.send_after(self(), :liveness, @liveness_ms)
@@ -24,6 +31,7 @@ defmodule Marshall.Terminal.PeerSocket do
        %{
          stream: stream,
          monitor: Process.monitor(stream),
+         budget: budget,
          budget_monitor: Process.monitor(budget),
          channel: nil,
          input: 0,
@@ -139,6 +147,9 @@ defmodule Marshall.Terminal.PeerSocket do
   def handle_info({:DOWN, ref, :process, _, _}, %{budget_monitor: ref} = state),
     do: {:stop, :normal, state}
 
+  def handle_info({:terminal_budget_lost, budget}, %{budget: budget} = state),
+    do: {:stop, :normal, state}
+
   # @cc [owner:ghuntley,label:recovery] peer-socket-liveness
   # A peer that has sent nothing for fifteen seconds MUST be treated as lost:
   # the socket stops, which detaches its channel from the host stream without
@@ -161,13 +172,42 @@ defmodule Marshall.Terminal.PeerSocket do
   def handle_info(_, state), do: {:ok, state}
 
   @impl true
-  def terminate(_, %{channel: channel, stream: stream}) when is_integer(channel) do
-    Marshall.Terminal.PeerBudget.release()
+  def terminate(_, %{channel: channel, stream: stream, budget: budget})
+      when is_integer(channel) do
+    Marshall.Terminal.PeerBudget.release(budget)
     send(stream, {:viewer_gone, channel})
     :ok
   end
 
-  def terminate(_, _), do: Marshall.Terminal.PeerBudget.release()
+  def terminate(_, %{budget: budget}), do: Marshall.Terminal.PeerBudget.release(budget)
+  def terminate(_, _), do: :ok
+
+  @spec start_budget_watcher(pid(), pid()) :: pid()
+  defp start_budget_watcher(owner, budget) do
+    spawn(fn -> budget_watcher(owner, budget) end)
+  end
+
+  @spec budget_watcher(pid(), pid()) :: :ok
+  defp budget_watcher(owner, budget) do
+    budget_monitor = Process.monitor(budget)
+    owner_monitor = Process.monitor(owner)
+
+    receive do
+      {:DOWN, ^budget_monitor, :process, ^budget, _reason} ->
+        send(owner, {:terminal_budget_lost, budget})
+
+        receive do
+          {:DOWN, ^owner_monitor, :process, ^owner, _reason} -> :ok
+        after
+          1_000 -> Process.exit(owner, :kill)
+        end
+
+        :ok
+
+      {:DOWN, ^owner_monitor, :process, ^owner, _reason} ->
+        :ok
+    end
+  end
 
   defp reply(message, state),
     do: {:reply, :ok, {:binary, Codec.encode_control_frame(message)}, state}

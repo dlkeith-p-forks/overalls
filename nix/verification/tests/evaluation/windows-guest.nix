@@ -10,6 +10,8 @@ let
   manifestScript = plain image.buildCommand;
   installDriver = builtins.readFile ../../../domains/artifacts/guest/windows/install.py;
   installEditor = builtins.readFile ../../../domains/artifacts/guest/windows/install-editor.ps1;
+  startEditor = builtins.readFile ../../../domains/artifacts/guest/windows/start-editor.ps1;
+  startCustodian = builtins.readFile ../../../domains/artifacts/guest/windows/start-custodian.ps1;
   setupComplete = builtins.readFile ../../../domains/artifacts/guest/windows/SetupComplete.cmd;
   specialize = builtins.readFile ../../../domains/artifacts/guest/windows/specialize.cmd;
   firstLogon = builtins.readFile ../../../domains/artifacts/guest/windows/FirstLogon.cmd;
@@ -32,9 +34,9 @@ let
       targetPlatform = "win32-x64";
       nativeBundle = true;
       editorCapability = false;
-      editorProtocol = 1;
-      sourceCommit = lib.concatStrings (lib.replicate 40 "a");
-      releaseId = lib.concatStrings (lib.replicate 64 "b");
+      editorProtocol = packages.windowsEditorSource.editorProtocol;
+      sourceCommit = packages.windowsEditorSource.sourceCommit;
+      releaseId = packages.windowsEditorSource.releaseId;
     };
   } "touch $out";
   editorArgs = {
@@ -43,9 +45,16 @@ let
     editorBundle = editorFixture;
     editorBroker = packages.windowsEditorBroker;
   };
-  editorCandidate = packages.mkWindowsGuest editorArgs;
+  editorCandidate = packages.mkWindowsEditorCandidate {
+    nativeBuild = editorFixture;
+    # Constructor fixture only; this does not point at a published bundle or
+    # establish native Windows evidence.
+    narHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+  };
   candidateMedia = plain editorCandidate.passthru.configMedia.buildCommand;
   candidateManifest = plain editorCandidate.buildCommand;
+  brokerConfiguration = builtins.fromJSON (plain editorCandidate.passthru.editorConfiguration.text);
+  custodianConfiguration = builtins.fromJSON (plain editorCandidate.passthru.editorCustodianConfiguration.text);
 in
 # @cc [owner:ghuntley,label:verification;deployment] windows-fleet-sealed-selection
 # The shared fleet list MUST select the reviewed recursive-hash Windows pin,
@@ -75,6 +84,7 @@ assert published.passthru.manifest.root == {
 assert builtins.length fleetWindows == 1;
 assert (builtins.head fleetWindows).package.drvPath == published.drvPath;
 assert published.drvPath != packages.windowsGuestAgents.drvPath;
+assert !(lib.any (entry: (entry.package.passthru.guestAgents or null) == "windows-editor-v1") fleetImages);
 # @cc [owner:ghuntley,label:verification] windows-guest-offline-kvm-assembly
 # The cheap evaluation gate MUST prove the builder keeps the installation in a
 # KVM sandbox with restricted user networking, modern-only virtio-pci devices,
@@ -172,10 +182,14 @@ assert accepts editorArgs;
 assert editorCandidate.passthru.guestAgents == "windows-editor-v1";
 assert !editorCandidate.passthru.editorCapability;
 assert editorCandidate.passthru.editorDescriptor == { protocol = 1; commit = editorFixture.sourceCommit; release = editorFixture.releaseId; };
+assert editorCandidate.passthru.editorBundle.drvAttrs.outputHash == "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+assert editorCandidate.passthru.editorBundle.drvAttrs.outputHashMode == "recursive";
 assert lib.hasInfix "--argjson minimum_memory_bytes 4294967296" candidateManifest;
 assert lib.hasInfix "OVERALLS-EDITOR-CANDIDATE-INSTALLED" candidateManifest;
 assert lib.hasInfix ''{version:7,os:"windows",editor:$editor_descriptor}'' candidateManifest;
 assert lib.hasInfix "tree/overalls/editor-broker/start.ps1" candidateMedia;
+assert lib.hasInfix "tree/overalls/editor-broker/start-custodian.ps1" candidateMedia;
+assert lib.hasInfix "tree/overalls/editor-broker/custodian.json" candidateMedia;
 assert lib.hasInfix "stage-editor.py" candidateMedia;
 assert lib.hasInfix "Install-EditorArchive" installEditor;
 assert lib.hasInfix "editor.inventory.json" installEditor;
@@ -184,7 +198,26 @@ assert lib.hasInfix "Get-FileHash -LiteralPath $Archive" installEditor;
 assert lib.hasInfix "tar.exe" installEditor;
 assert lib.hasInfix "editor_archive_nonregular" installEditor;
 assert lib.hasInfix "editor_archive_file_mismatch" installEditor;
-assert lib.hasInfix "'Bootstrap', 'EditorBroker'" setupComplete;
+# @cc [owner:ghuntley,label:verification;security;recovery] windows-editor-independent-task-declarations
+# Both fixed SYSTEM roles MUST have separate task actions and checked trust
+# snapshots with the same immutable worker/release configuration. Declaration
+# and parse checks MUST NOT establish native scheduler or Job Object recovery.
+assert lib.hasInfix "'Bootstrap', 'EditorBroker', 'EditorCustodian'" setupComplete;
+assert lib.hasInfix "Register-EditorTask -TaskName 'EditorBroker'" installEditor;
+assert lib.hasInfix "Register-EditorTask -TaskName 'EditorCustodian'" installEditor;
+assert lib.hasInfix "ValidateSet('EditorBroker', 'EditorCustodian')" installEditor;
+assert lib.hasInfix "O:SYG:SYD:P(A;;FA;;;SY)(A;;FR;;;BA)" installEditor;
+assert lib.hasInfix "-ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew" installEditor;
+assert lib.hasInfix "-RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1)" installEditor;
+assert lib.hasInfix "New-ScheduledTaskTrigger -AtStartup" installEditor;
+assert lib.hasInfix "'--custodian' 'C:\\overalls\\editor-broker\\custodian.json'" startCustodian;
+assert !(lib.hasInfix "'--custodian'" startEditor);
+assert lib.all (source: lib.hasInfix "if ($LASTEXITCODE -eq 0) { exit 0 }" source && lib.hasInfix "exit 1" source) [ startEditor startCustodian ];
+assert brokerConfiguration.ca_bundle == "C:\\overalls\\editor-broker\\ca-bundle.pem";
+assert custodianConfiguration.ca_bundle == "C:\\overalls\\editor-broker\\custodian-ca-bundle.pem";
+assert builtins.removeAttrs brokerConfiguration [ "ca_bundle" ] == builtins.removeAttrs custodianConfiguration [ "ca_bundle" ];
+assert lib.hasInfix "-Destination 'C:\\overalls\\editor-broker\\ca-bundle.pem'" startEditor;
+assert lib.hasInfix "-Destination 'C:\\overalls\\editor-broker\\custodian-ca-bundle.pem'" startCustodian;
 assert !(lib.hasInfix "tree/overalls/editor-broker/" mediaScript);
 assert !(lib.hasInfix "tree/overalls/editor-broker/" (plain packages.windowsGuestRuntime.passthru.configMedia.buildCommand));
 assert !accepts (editorArgs // { editorBroker = null; });
@@ -353,13 +386,19 @@ assert firmwarePatches == [
 assert accepts { wimImageName = "Windows Server 2025 SERVERDATACENTERCORE"; };
 assert accepts { diskBytes = 68719476736; };
 pkgs.runCommand "windows-guest-unit" {
-  nativeBuildInputs = [ pkgs.python3 pkgs.ruff ];
+  nativeBuildInputs = [ pkgs.python3 pkgs.ruff pkgs.powershell ];
 } ''
   cp ${../../../domains/artifacts/guest/windows/install.py} install.py
   cp ${../../../../pyproject.toml} pyproject.toml
   ruff check --no-cache --config pyproject.toml --select ANN,E,F,I,W install.py
   ruff format --check --config pyproject.toml install.py
   python3 -I -c 'import ast, sys; ast.parse(open("install.py").read())'
+  cp ${../../../domains/artifacts/guest/windows/install-editor.ps1} install-editor.ps1
+  cp ${../../../domains/artifacts/guest/windows/start-editor.ps1} start-editor.ps1
+  cp ${../../../domains/artifacts/guest/windows/start-custodian.ps1} start-custodian.ps1
+  cp ${../../../domains/artifacts/guest/windows/editor-custody.ps1} editor-custody.ps1
+  pwsh -NoLogo -NoProfile -NonInteractive -Command \
+    '$files = @("install-editor.ps1", "start-editor.ps1", "start-custodian.ps1", "editor-custody.ps1"); foreach ($file in $files) { $tokens = $null; $errors = $null; [void][System.Management.Automation.Language.Parser]::ParseFile((Join-Path (Get-Location) $file), [ref]$tokens, [ref]$errors); if ($errors.Count -ne 0) { throw "windows_editor_source_parse_failed" } }'
   python3 -I - <<'PY'
 import subprocess, sys
 # The driver must refuse to start without every required path.

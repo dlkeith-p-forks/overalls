@@ -1,6 +1,5 @@
 defmodule Marshall.Agents.ExecutorSessionTest do
   use Marshall.DataCase, async: false
-  import Marshall.ComputeFixtures
 
   alias Marshall.Agents.{
     AuditEvent,
@@ -12,39 +11,18 @@ defmodule Marshall.Agents.ExecutorSessionTest do
     Turn
   }
 
-  alias Marshall.Compute
-  alias Marshall.Compute.{Host, Ledger, Operation, Outcomes}
+  alias Marshall.Compute.{HostReports, Ledger}
   alias Marshall.Inference.Credentials
 
+  # @cc [owner:ghuntley,label:verification;security] executor-rpc-live-host-fixture
+  # Host-authenticated executor RPCs MUST use a real provisioner-control session
+  # and its accepted execution report. A capacity-only HostReports connection
+  # with no current session MUST NOT stand in for live host authority or make
+  # the legacy executor's bootstrap claim bypass that authority check.
   setup do
-    host_fixture()
-    actor = user()
-    {:ok, vm} = Compute.provision(request(), actor: actor)
-    [operation] = Ledger.read!(Operation, vm_id: vm.id)
-
-    event = %{
-      id: Ash.UUID.generate(),
-      vm_id: vm.id,
-      placement_id: operation.placement_id,
-      execution_epoch: operation.execution_epoch,
-      operation_id: operation.id,
-      generation: operation.generation,
-      sequence: 1,
-      state: :running,
-      compute_empty: false,
-      disk_present: true,
-      cleanup_complete: false,
-      reason: :none
-    }
-
-    {:ok, parsed} =
-      OverallsProtocol.Execution.outcome(OverallsProtocol.Execution.encode_outcome(event))
-
-    {:ok, _} =
-      Ledger.transaction(fn ->
-        Ledger.lock!(Host, vm.host_id)
-        Outcomes.ingest_locked!(vm.host_id, [parsed])
-      end)
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    actor = fixture.owner
+    vm = fixture.vm
 
     [root] = Ledger.read!(Root, vm_id: vm.id)
     [thread] = Ledger.read!(Thread, root_id: root.id)
@@ -56,7 +34,14 @@ defmodule Marshall.Agents.ExecutorSessionTest do
       "execution_epoch" => vm.execution_epoch
     }
 
-    %{actor: actor, binding: binding, root: root, thread: thread, vm: vm}
+    %{
+      actor: actor,
+      binding: binding,
+      connection: fixture.connection,
+      root: root,
+      thread: thread,
+      vm: vm
+    }
   end
 
   test "replacement fences stale results and preserves an ambiguous tool as uncertain", c do
@@ -189,6 +174,15 @@ defmodule Marshall.Agents.ExecutorSessionTest do
                "fence_epoch" => fence,
                "command_id" => Ash.UUID.generate(),
                "status" => "other"
+             })
+
+    assert {:ok, :ok} = HostReports.disconnect(c.vm.host_id, c.connection.epoch)
+
+    assert {:error, :unauthorized} =
+             ExecutorRPC.request(token, "claim", %{
+               "binding" => c.binding,
+               "executor_id" => id,
+               "fence_epoch" => fence
              })
   end
 

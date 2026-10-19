@@ -1,5 +1,5 @@
-# Candidate-only image installation. Task Scheduler supplies boot and failure
-# supervision; this console broker does not claim an SCM service entry point.
+# Candidate-only image installation. Task Scheduler supplies independent boot
+# and failure supervision; these console processes do not claim SCM entry points.
 Set-StrictMode -Version 2
 $ErrorActionPreference = 'Stop'
 . 'C:\overalls\editor-broker\custody.ps1'
@@ -134,8 +134,10 @@ function Install-EditorArchive {
 # @cc [owner:ghuntley,label:security] windows-editor-task-installation
 # Candidate installation MUST restrict package/configuration/authorizer writes
 # to SYSTEM and Administrators and receipts to SYSTEM, register only the fixed
-# SYSTEM boot task, and verify its action, principal, unlimited lifetime and
-# private scheduler DACL. Any failed prerequisite MUST prevent completion.
+# independent SYSTEM broker and custodian boot tasks, and verify each action,
+# principal, unlimited lifetime and private scheduler DACL. Neither task may
+# share its process lifetime with the other. Any failed prerequisite MUST
+# prevent completion.
 Set-EditorAcl -Item (Get-Item -LiteralPath 'C:\overalls' -Force)
 Set-EditorTreeAcl -Path 'C:\overalls\editor-broker'
 Install-EditorArchive
@@ -147,11 +149,13 @@ Set-EditorAcl -Item (Get-Item -LiteralPath 'C:\overalls\editor-state' -Force) -P
 Assert-EditorPath -Path 'C:\overalls\agents\overalls-ssh-sync-windows.exe'
 [System.IO.DriveInfo]$SystemDrive = New-Object System.IO.DriveInfo 'C:'
 if ($SystemDrive.AvailableFreeSpace -lt 2GB) { throw 'editor_disk_headroom_insufficient' }
-[pscustomobject]$Configuration = Get-Content -LiteralPath 'C:\overalls\editor-broker\broker.json' -Raw | ConvertFrom-Json
 [pscustomobject]$Release = Get-Content -LiteralPath 'C:\overalls\editor\overalls-editor-release.json' -Raw | ConvertFrom-Json
-if ($Configuration.descriptor.protocol -ne $Release.editor_protocol -or
-    $Configuration.descriptor.commit -cne $Release.source_commit -or
-    $Configuration.descriptor.release -cne $Release.release_id) { throw 'editor_release_mismatch' }
+foreach ($ConfigurationPath in @('C:\overalls\editor-broker\broker.json', 'C:\overalls\editor-broker\custodian.json')) {
+    [pscustomobject]$Configuration = Get-Content -LiteralPath $ConfigurationPath -Raw | ConvertFrom-Json
+    if ($Configuration.descriptor.protocol -ne $Release.editor_protocol -or
+        $Configuration.descriptor.commit -cne $Release.source_commit -or
+        $Configuration.descriptor.release -cne $Release.release_id) { throw 'editor_release_mismatch' }
+}
 [pscustomobject]$Manifest = Get-Content -LiteralPath 'C:\overalls\editor-broker\manifest.json' -Raw | ConvertFrom-Json
 [System.IO.FileInfo]$Executable = Get-Item -LiteralPath 'C:\overalls\editor-broker\overalls-vscode-web-broker.exe'
 if ($Manifest.version -ne 1 -or $Manifest.target -cne 'win32-x64' -or $Manifest.editor_capability -ne $false -or
@@ -160,49 +164,60 @@ if ($Manifest.version -ne 1 -or $Manifest.target -cne 'win32-x64' -or $Manifest.
     $Manifest.broker.sha256 -cne (Get-FileHash -LiteralPath $Executable.FullName -Algorithm SHA256).Hash.ToLowerInvariant()) {
     throw 'editor_broker_manifest_mismatch'
 }
-[string]$PowerShell = 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
-[string]$Arguments = '-NoProfile -NonInteractive -ExecutionPolicy Bypass -File C:\overalls\editor-broker\start.ps1'
-$Action = New-ScheduledTaskAction -Execute $PowerShell -Argument $Arguments -WorkingDirectory 'C:\overalls\editor-broker'
-$Principal = New-ScheduledTaskPrincipal -UserId 'S-1-5-18' -LogonType ServiceAccount -RunLevel Highest
-$Trigger = New-ScheduledTaskTrigger -AtStartup
-$Settings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew `
-    -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
-[void](Register-ScheduledTask -TaskPath '\Overalls\' -TaskName 'EditorBroker' -Action $Action -Principal $Principal -Trigger $Trigger -Settings $Settings -Force)
-$Scheduler = New-Object -ComObject 'Schedule.Service'
-$Scheduler.Connect()
-$Task = $Scheduler.GetFolder('\Overalls').GetTask('EditorBroker')
-# TASK_DONT_ADD_PRINCIPAL_ACE prevents the scheduler appending a redundant
-# principal Read ACE. Its API omits DACL-protection flags when reading back;
-# verify protection on the exact task file in addition to the API descriptor.
-$Task.SetSecurityDescriptor('O:SYG:SYD:P(A;;FA;;;SY)(A;;FR;;;BA)', 0x10)
-[System.Security.AccessControl.RawSecurityDescriptor]$Security = New-Object System.Security.AccessControl.RawSecurityDescriptor($Task.GetSecurityDescriptor(7))
-if ($Security.DiscretionaryAcl.Count -ne 2 -or $Security.Owner.Value -cne 'S-1-5-18' -or
-    $Security.Group.Value -cne 'S-1-5-18') {
-    throw 'editor_task_acl_mismatch'
-}
-[System.Collections.Generic.HashSet[string]]$TaskSids = New-Object 'System.Collections.Generic.HashSet[string]'
-foreach ($Ace in $Security.DiscretionaryAcl) {
-    if ($Ace.AceType -ne [System.Security.AccessControl.AceType]::AccessAllowed -or
-        $Ace.SecurityIdentifier.Value -notin @('S-1-5-18', 'S-1-5-32-544') -or
-        -not $TaskSids.Add($Ace.SecurityIdentifier.Value) -or $Ace.AceFlags -ne [System.Security.AccessControl.AceFlags]::None) {
+function Register-EditorTask {
+    [OutputType([void])]
+    param([Parameter(Mandatory = $true)][ValidateSet('EditorBroker', 'EditorCustodian')][string]$TaskName)
+    [string]$PowerShell = 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
+    [string]$Launcher = 'C:\overalls\editor-broker\start.ps1'
+    if ($TaskName -ceq 'EditorCustodian') { $Launcher = 'C:\overalls\editor-broker\start-custodian.ps1' }
+    Assert-EditorPath -Path $Launcher
+    [string]$Arguments = '-NoProfile -NonInteractive -ExecutionPolicy Bypass -File ' + $Launcher
+    $Action = New-ScheduledTaskAction -Execute $PowerShell -Argument $Arguments -WorkingDirectory 'C:\overalls\editor-broker'
+    $Principal = New-ScheduledTaskPrincipal -UserId 'S-1-5-18' -LogonType ServiceAccount -RunLevel Highest
+    $Trigger = New-ScheduledTaskTrigger -AtStartup
+    $Settings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew `
+        -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+    [void](Register-ScheduledTask -TaskPath '\Overalls\' -TaskName $TaskName -Action $Action -Principal $Principal -Trigger $Trigger -Settings $Settings -Force)
+    $Scheduler = New-Object -ComObject 'Schedule.Service'
+    $Scheduler.Connect()
+    $Task = $Scheduler.GetFolder('\Overalls').GetTask($TaskName)
+    # TASK_DONT_ADD_PRINCIPAL_ACE prevents the scheduler appending a redundant
+    # principal Read ACE. Its API omits DACL-protection flags when reading back;
+    # verify protection on the exact task file in addition to the API descriptor.
+    $Task.SetSecurityDescriptor('O:SYG:SYD:P(A;;FA;;;SY)(A;;FR;;;BA)', 0x10)
+    [System.Security.AccessControl.RawSecurityDescriptor]$Security = New-Object System.Security.AccessControl.RawSecurityDescriptor($Task.GetSecurityDescriptor(7))
+    if ($Security.DiscretionaryAcl.Count -ne 2 -or $Security.Owner.Value -cne 'S-1-5-18' -or
+        $Security.Group.Value -cne 'S-1-5-18') {
         throw 'editor_task_acl_mismatch'
     }
-    [int]$ExpectedMask = 0x120089
-    if ($Ace.SecurityIdentifier.Value -eq 'S-1-5-18') { $ExpectedMask = 0x1F01FF }
-    if ($Ace.AccessMask -ne $ExpectedMask) { throw 'editor_task_acl_mismatch' }
+    [System.Collections.Generic.HashSet[string]]$TaskSids = New-Object 'System.Collections.Generic.HashSet[string]'
+    foreach ($Ace in $Security.DiscretionaryAcl) {
+        if ($Ace.AceType -ne [System.Security.AccessControl.AceType]::AccessAllowed -or
+            $Ace.SecurityIdentifier.Value -notin @('S-1-5-18', 'S-1-5-32-544') -or
+            -not $TaskSids.Add($Ace.SecurityIdentifier.Value) -or $Ace.AceFlags -ne [System.Security.AccessControl.AceFlags]::None) {
+            throw 'editor_task_acl_mismatch'
+        }
+        [int]$ExpectedMask = 0x120089
+        if ($Ace.SecurityIdentifier.Value -eq 'S-1-5-18') { $ExpectedMask = 0x1F01FF }
+        if ($Ace.AccessMask -ne $ExpectedMask) { throw 'editor_task_acl_mismatch' }
+    }
+    [string]$TaskPath = 'C:\Windows\System32\Tasks\Overalls\' + $TaskName
+    Assert-EditorPath -Path $TaskPath
+    if (-not (Get-Acl -LiteralPath $TaskPath).AreAccessRulesProtected) { throw 'editor_task_acl_mismatch' }
+    $Installed = Get-ScheduledTask -TaskPath '\Overalls\' -TaskName $TaskName
+    if ($Installed.Principal.UserId -notin @('SYSTEM', 'S-1-5-18') -or
+        $Installed.Principal.LogonType -ne 'ServiceAccount' -or $Installed.Principal.RunLevel -ne 'Highest' -or
+        @($Installed.Actions).Count -ne 1 -or $Installed.Actions[0].Execute -cne $PowerShell -or
+        $Installed.Actions[0].Arguments -cne $Arguments -or
+        $Installed.Actions[0].WorkingDirectory -cne 'C:\overalls\editor-broker' -or
+        @($Installed.Triggers).Count -ne 1 -or $Installed.Triggers[0].CimClass.CimClassName -cne 'MSFT_TaskBootTrigger' -or
+        $Installed.Settings.ExecutionTimeLimit -ne 'PT0S' -or $Installed.Settings.RestartInterval -ne 'PT1M' -or
+        $Installed.Settings.MultipleInstances -ne 'IgnoreNew' -or $Installed.Settings.RestartCount -ne 999) {
+        throw 'editor_task_definition_mismatch'
+    }
 }
-Assert-EditorPath -Path 'C:\Windows\System32\Tasks\Overalls\EditorBroker'
-if (-not (Get-Acl -LiteralPath 'C:\Windows\System32\Tasks\Overalls\EditorBroker').AreAccessRulesProtected) {
-    throw 'editor_task_acl_mismatch'
-}
-$Installed = Get-ScheduledTask -TaskPath '\Overalls\' -TaskName 'EditorBroker'
-if ($Installed.Principal.UserId -notin @('SYSTEM', 'S-1-5-18') -or
-    $Installed.Principal.LogonType -ne 'ServiceAccount' -or $Installed.Principal.RunLevel -ne 'Highest' -or
-    @($Installed.Actions).Count -ne 1 -or $Installed.Actions[0].Execute -cne $PowerShell -or
-    $Installed.Actions[0].Arguments -cne $Arguments -or $Installed.Settings.ExecutionTimeLimit -ne 'PT0S' -or
-    $Installed.Settings.MultipleInstances -ne 'IgnoreNew' -or $Installed.Settings.RestartCount -ne 999) {
-    throw 'editor_task_definition_mismatch'
-}
+Register-EditorTask -TaskName 'EditorCustodian'
+Register-EditorTask -TaskName 'EditorBroker'
 Get-NetFirewallRule -Name 'OverallsEditorBroker' -ErrorAction SilentlyContinue | Remove-NetFirewallRule
 [void](New-NetFirewallRule -Name 'OverallsEditorBroker' -DisplayName 'Overalls editor broker' -Direction Inbound `
     -Action Allow -Protocol TCP -LocalPort 4444 -RemoteAddress @('10.10.0.1', '10.20.0.1', '10.30.0.1', '10.40.0.1') `

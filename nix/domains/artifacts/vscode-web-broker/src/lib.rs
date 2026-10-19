@@ -9,6 +9,8 @@ use url::Url;
 pub mod mmds;
 #[cfg(windows)]
 pub mod windows;
+#[cfg(windows)]
+pub mod windows_ipc;
 pub mod windows_model;
 #[cfg(windows)]
 pub mod windows_pipe;

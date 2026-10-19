@@ -29,6 +29,20 @@ let
   windowsEditorSource = import ./vscode-web/windows-source.nix { inherit pkgs; };
   mkWindowsEditorBundle = import ./vscode-web/windows-bundle.nix { inherit pkgs; source = windowsEditorSource; };
   windowsEditorBroker = import ./vscode-web-broker/windows.nix { inherit pkgs; inherit (lyra) toolchain; };
+  # @cc [owner:ghuntley,label:build;security] windows-editor-candidate-constructor
+  # The Windows editor candidate MUST be assembled only from a caller-supplied
+  # native bundle directory and its reviewed recursive NAR hash. The helper
+  # selects the separate v7 windows-editor-v1 contract and keeps the image's
+  # editor capability false; it MUST NOT alter the selected fleet catalog.
+  mkWindowsEditorCandidate = { nativeBuild, narHash, imageName ? "lilly-windows-editor-candidate-x86_64" }:
+    assert builtins.match "sha256-[A-Za-z0-9+/]{43}=" narHash != null;
+    let editorBundle = mkWindowsEditorBundle { inherit nativeBuild narHash; };
+    in mkWindowsGuest {
+      inherit imageName editorBundle;
+      agents = lyraWindows;
+      terminald = terminaldWindows;
+      editorBroker = windowsEditorBroker;
+    };
   codingClis = import ./guest/coding-clis.nix { inherit pkgs; };
   # Google emulator/system-image inputs are accepted explicitly here so the
   # Android guest remains reproducible and does not depend on host SDK state.
@@ -295,7 +309,7 @@ let
     };
 in
 rec {
-  inherit dependencies cedarCargo hostTools toolchain vmm windowsFirmware windowsFirmwareDebug mkWindowsGuest windowsGuest windowsGuestAgents windowsGuestRuntime windowsGuestPublished windowsGuestDrvload windowsBoot windowsEditorRuntime windowsEditorSource windowsEditorBroker mkWindowsEditorBundle androidSdk;
+  inherit dependencies cedarCargo hostTools toolchain vmm windowsFirmware windowsFirmwareDebug mkWindowsGuest mkWindowsEditorCandidate windowsGuest windowsGuestAgents windowsGuestRuntime windowsGuestPublished windowsGuestDrvload windowsBoot windowsEditorRuntime windowsEditorSource windowsEditorBroker mkWindowsEditorBundle androidSdk;
   inherit terminald terminaldChecks terminaldWindows;
   inherit codingClis githubTools;
   inherit lyra lyraLinux lyraWindows lyraNative githubBootstrapRelease;

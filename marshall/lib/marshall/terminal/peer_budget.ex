@@ -23,6 +23,17 @@ defmodule Marshall.Terminal.PeerBudget do
     end
   end
 
+  @doc "Returns the configured local admission-budget server."
+  @spec server() :: GenServer.server()
+  def server do
+    case Application.get_env(:marshall, :terminal_peer_budget, __MODULE__) do
+      server when is_atom(server) or is_pid(server) -> server
+      {:global, _name} = server -> server
+      {:via, _module, _term} = server -> server
+      _invalid -> __MODULE__
+    end
+  end
+
   # @cc [owner:ghuntley,label:capacity;recovery] terminal-peer-process-budget
   # Incoming and outgoing peer connections MUST share a finite local budget.
   # Admission MUST precede outgoing TLS dial or incoming forwarding. Slots belong

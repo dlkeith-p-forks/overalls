@@ -33,8 +33,9 @@
   # are reviewed. Presence MUST NOT change the manifest capability row.
 , editorRuntime ? null
   # Reviewed native source-built bundle and broker for isolated bring-up only.
-  # This installs a supervised SYSTEM task under the separate v7 candidate
-  # contract. Its metadata stays unqualified and the fleet remains unchanged.
+  # This installs independent supervised SYSTEM broker and custodian tasks
+  # under the separate v7 candidate contract. Its metadata stays unqualified
+  # and the fleet remains unchanged.
 , editorBundle ? null
 , editorBroker ? null
 }:
@@ -59,14 +60,13 @@ let
     commit = editorBundle.sourceCommit;
     release = editorBundle.releaseId;
   };
-  editorConfiguration = if editorBundle == null then null else pkgs.writeText "overalls-windows-editor-broker.json" (builtins.toJSON {
+  editorConfigurationFields = {
     descriptor = editorDescriptor;
     node = "C:\\overalls\\editor\\node.exe";
     server = "C:\\overalls\\editor\\out\\server-main.js";
     system_root = "C:\\Windows";
     account_authorizer = "C:\\overalls\\agents\\overalls-ssh-sync-windows.exe";
     state_directory = "C:\\overalls\\editor-state";
-    ca_bundle = "C:\\overalls\\editor-broker\\ca-bundle.pem";
     worker_path = lib.concatStringsSep ";" [
       "C:\\overalls\\editor\\project-language-adapters"
       "C:\\overalls\\editor"
@@ -75,7 +75,13 @@ let
       "C:\\Windows"
       "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
     ];
-  });
+  };
+  editorConfiguration = if editorBundle == null then null else pkgs.writeText "overalls-windows-editor-broker.json" (builtins.toJSON (editorConfigurationFields // {
+    ca_bundle = "C:\\overalls\\editor-broker\\ca-bundle.pem";
+  }));
+  editorCustodianConfiguration = if editorBundle == null then null else pkgs.writeText "overalls-windows-editor-custodian.json" (builtins.toJSON (editorConfigurationFields // {
+    ca_bundle = "C:\\overalls\\editor-broker\\custodian-ca-bundle.pem";
+  }));
   # viosock is the virtio-vsock driver and Winsock provider the guest agents
   # use to reach Lilly (ADR-0171); it binds PCI\VEN_1AF4&DEV_1053 at first boot.
   driverDirectories = [ "viostor" "NetKVM" "vioserial" "viorng" "Balloon" "viosock" ];
@@ -263,9 +269,11 @@ let
       cp ${editorBroker}/bin/overalls-vscode-web-broker.exe tree/overalls/editor-broker/
       cp ${editorBroker}/manifest.json tree/overalls/editor-broker/manifest.json
       cp ${editorConfiguration} tree/overalls/editor-broker/broker.json
+      cp ${editorCustodianConfiguration} tree/overalls/editor-broker/custodian.json
       cp ${./editor-custody.ps1} tree/overalls/editor-broker/custody.ps1
       cp ${./install-editor.ps1} tree/overalls/editor-broker/install.ps1
       cp ${./start-editor.ps1} tree/overalls/editor-broker/start.ps1
+      cp ${./start-custodian.ps1} tree/overalls/editor-broker/start-custodian.ps1
     ''}
     chmod -R u+w tree
     xorriso -as mkisofs -iso-level 3 -J -R -V OVERALLS_SETUP \
@@ -366,7 +374,7 @@ pkgs.runCommand imageName {
   # pre-distribution copies it to every host).
   allowedReferences = [ disk firmware.fd ];
   passthru = {
-    inherit disk firmware configMedia bootWim bootFiles driverTree answerFile windowsIso wimImageName diskBytes agents guestAgents editorRuntime editorBundle editorBroker editorConfiguration editorDescriptor wingetPayload;
+    inherit disk firmware configMedia bootWim bootFiles driverTree answerFile windowsIso wimImageName diskBytes agents guestAgents editorRuntime editorBundle editorBroker editorConfiguration editorCustodianConfiguration editorDescriptor wingetPayload;
     editorCapability = false;
   };
 } ''

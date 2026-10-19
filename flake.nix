@@ -54,6 +54,7 @@
       lib.mkAlmaLinuxGuest = built.mkAlmaLinuxGuest;
       lib.mkAlmaGuest = built.mkAlmaGuest;
       lib.mkWindowsGuest = built.mkWindowsGuest;
+      lib.mkWindowsEditorCandidate = built.mkWindowsEditorCandidate;
       lib.mkWindowsEditorBundle = built.mkWindowsEditorBundle;
       lib.nativeKernels = built.nativeKernels;
       lib.mkFreeBSDGuest = built.mkFreeBSDGuest;

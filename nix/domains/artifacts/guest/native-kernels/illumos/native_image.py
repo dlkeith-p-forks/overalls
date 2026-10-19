@@ -693,6 +693,22 @@ def check_console_configuration(root: Path, files: list[Entry]) -> None:
             raise ValueError("installed native console configuration differs")
 
 
+def cleanup_assembly_workspace(imported_here: bool) -> None:
+    """@cc [owner:ghuntley,label:recovery;security] native-assembly-cleanup
+    When the candidate pool was imported, the workspace MUST be removed only
+    after a successful export. If export refuses, the helper MUST preserve the
+    workspace and propagate the export failure so an operator can recover the
+    still-imported pool. A workspace created before import may be removed on
+    failure because it contains no imported guest dataset.
+    """
+    if imported_here:
+        # Do not put this call in a ``try`` that falls through to rmtree: an
+        # export refusal means the workspace may still contain mounted ZFS
+        # datasets, and removing it would destroy the recovery path.
+        kernel.command(["/usr/sbin/zpool", "export", POOL], 120)
+    shutil.rmtree(WORK)
+
+
 def assemble(kit: Path, device: Path, guid: str, expected: str) -> None:
     """@cc [owner:ghuntley,label:build;isolation;verification] native-scratch-pool-assembly
     Assembly MUST import only the explicitly selected, previously unimported
@@ -800,9 +816,7 @@ def assemble(kit: Path, device: Path, guid: str, expected: str) -> None:
         kernel.command(["/usr/sbin/zfs", "set", "mountpoint=legacy", TARGET])
         kernel.command(["/usr/sbin/zpool", "set", f"bootfs={TARGET}", POOL])
     finally:
-        if imported_here:
-            kernel.command(["/usr/sbin/zpool", "export", POOL], 120)
-        shutil.rmtree(WORK)
+        cleanup_assembly_workspace(imported_here)
 
 
 def verify(expected: str) -> None:

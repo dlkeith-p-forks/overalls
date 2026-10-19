@@ -17,13 +17,17 @@ defmodule Marshall.Mailer.SMTPTest do
         implicit: "generated implicit post-DATA timeout histories preserve retry identity",
         starttls: "generated starttls post-DATA timeout histories preserve retry identity"
       ] do
-    @tag timeout: 180_000
+    # Full exploration includes up to 200 real post-DATA stalls, each bounded by
+    # the unchanged 13s assertion. Retain finite headroom for TLS and quiet windows.
+    @tag :hegel_case_sandbox
+    @tag timeout: 3_600_000
     # @cc [owner:ghuntley,label:verification;recovery] smtp-uncertain-owner-history
     # Actual accepted-but-unacknowledged DATA MUST time out and close its client
     # connection, preserving pending ciphertext. All retries MUST retain decoded
     # payload and Message-ID, and terminal replay MUST open no SMTP connection.
     # Each case retains its actual ten-second post-DATA timeout attempts.
     property name, profile: :ci, test_cases: 100 do
+      isolate_smtp_case()
       mode = unquote(mode)
 
       uncertain_attempts = draw("uncertain_attempts", integer(1..2))
@@ -106,6 +110,34 @@ defmodule Marshall.Mailer.SMTPTest do
       refute_receive {:smtp_connection, _}
       refute_receive {:smtp_auth, _}
       refute_receive {:smtp_message, _}
+    end
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] smtp-history-case-isolation
+  # Every generated case and replay MUST own a fresh SQL sandbox and SMTP
+  # listeners. Listener cleanup MUST precede fixture-message and mailer-setting
+  # cleanup, then SQL rollback; real delivery and post-DATA deadlines MUST remain.
+  @spec isolate_smtp_case() :: :ok
+  defp isolate_smtp_case do
+    isolate_property_case()
+    previous = Application.fetch_env!(:marshall, Marshall.Mailer)
+    Hegel.on_cleanup(fn -> Application.put_env(:marshall, Marshall.Mailer, previous) end)
+    Hegel.on_cleanup(&flush_smtp_fixture_messages/0)
+  end
+
+  @spec flush_smtp_fixture_messages() :: :ok
+  defp flush_smtp_fixture_messages do
+    receive do
+      {:smtp_connection, _} -> flush_smtp_fixture_messages()
+      {:smtp_auth, _} -> flush_smtp_fixture_messages()
+      {:smtp_message, _} -> flush_smtp_fixture_messages()
+      {:smtp_data_stalled, _} -> flush_smtp_fixture_messages()
+      {:smtp_data_closed, _} -> flush_smtp_fixture_messages()
+      {:smtp_data_not_closed, _} -> flush_smtp_fixture_messages()
+      :smtp_stalled -> flush_smtp_fixture_messages()
+      :smtp_closed -> flush_smtp_fixture_messages()
+    after
+      0 -> :ok
     end
   end
 
@@ -297,6 +329,7 @@ defmodule Marshall.Mailer.SMTPTest do
     assert_receive :smtp_closed, 1000
   end
 
+  @spec listener(:implicit | :starttls | :plain, keyword()) :: pid()
   defp listener(mode, options \\ []) do
     opts =
       Keyword.merge(
@@ -309,7 +342,7 @@ defmodule Marshall.Mailer.SMTPTest do
         options
       )
 
-    start_supervised!({Marshall.SMTPFixture, opts}, id: make_ref())
+    Overalls.HegelFixtures.start_fixture!({Marshall.SMTPFixture, opts}, id: make_ref())
   end
 
   defp configure(server, mode, options \\ []) do

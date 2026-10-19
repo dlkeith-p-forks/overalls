@@ -2,11 +2,11 @@
 
 - ID: ADR-0200
 - Date: 2026-10-18
-- Status: accepted
+- Status: superseded
 - Implementation: partial
 - Components: Marshall Editor, Audi, Lilly, shared protocol, Windows image, Code OSS package, Windows editor broker, Lyra account reconciler
 - Supersedes: none
-- Superseded by: none
+- Superseded by: ADR-0207
 
 ## Context
 
@@ -224,6 +224,10 @@ restart semantics and interrupted native cancellation require executed evidence.
 None of these gaps authorizes changing the current false capability row.
 
 ## Related decisions
+
+[ADR-0207](0207-windows-editor-job-custodian.md) supersedes this decision in full,
+carrying forward the candidate identity and promotion requirements while
+replacing broker-owned job lifetime with an independent SYSTEM custodian.
 
 [ADR-0153](0153-official-source-browser-editor.md),
 [ADR-0158](0158-durable-guest-identities.md),

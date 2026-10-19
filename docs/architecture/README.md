@@ -10,12 +10,18 @@
 
 [ADR-0201](decisions/0201-localized-human-surfaces.md) accepts Localize-backed human surfaces with validated language preferences and LTR/RTL presentation; translation and native browser acceptance remain partial.
 
-[ADR-0200](decisions/0200-windows-browser-editor-candidate.md) accepts a native
-Windows browser editor with a SYSTEM gateway broker and personal SAM/S4U workers.
+[ADR-0207](decisions/0207-windows-editor-job-custodian.md) replaces
+[ADR-0200](decisions/0200-windows-browser-editor-candidate.md) with an independent
+SYSTEM job custodian behind the native Windows editor's SYSTEM gateway broker.
+The custodian owns atomic personal SAM/S4U worker launch, receipts and retained
+kill-on-close jobs; both independently supervised roles validate their local
+peer and current execution/release authority.
 Its separate `windows-editor-v1` manifest-v7 and bundle-v4 candidate contract
 requires the immutable editor tuple. The candidate remains outside the selected
-production catalog; `windows-v1` keeps editor false and exact native/browser
-acceptance remains unrecorded.
+production catalog; `windows-v1` keeps editor false. Implementation remains
+partial: a fresh custodian refuses prior same-boot receipts until a new physical
+boot namespace, and native custodian failure/recovery plus exact-image browser
+acceptance remain unrecorded.
 
 [ADR-0199](decisions/0199-memory-suspension-and-demand-wake.md) accepts
 memory-preserving suspension, paused relocation and demand wake with automatic

@@ -1,5 +1,11 @@
 # Architecture decision records
 
+[ADR-0207](0207-windows-editor-job-custodian.md) replaces ADR-0200 in full,
+preserving its personal-account and immutable candidate contracts while moving
+Windows worker/job custody into an independently supervised SYSTEM task and
+boot-bound local streaming proxy. Implementation and native recovery remain
+partial; production Windows editor selection is unchanged.
+
 [ADR-0205](0205-overview-newsletter.md) accepts a durable account-wide Overview newsletter invitation and fixed server-side Ghost subscription path; implementation remains partial.
 
 [ADR-0204](0204-git-attribution-and-guest-identity.md) preserves the reconciled duplicate Git attribution decision and its settings-page evidence; implementation remains partial.
@@ -10,10 +16,10 @@
 
 [ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, the central 25-locale policy, browser language negotiation and validated account overrides with LTR/RTL presentation; implementation remains partial.
 
-[ADR-0200](0200-windows-browser-editor-candidate.md) accepts a source-built,
-account-bound Windows editor candidate with a separate `windows-editor-v1`
-manifest-v7/bundle-v4 contract. Native package, image and browser qualification
-remain separate; the selected `windows-v1` editor capability stays false.
+[ADR-0200](0200-windows-browser-editor-candidate.md) records the original
+source-built, account-bound Windows candidate and is superseded in full by
+ADR-0207. Its manifest-v7/bundle-v4 identity and promotion requirements continue
+in that replacement; the selected `windows-v1` editor capability stays false.
 
 [ADR-0199](0199-memory-suspension-and-demand-wake.md) accepts full-memory
 suspension, paused relocation, durable demand wake and the four-hour tool-idle
@@ -456,10 +462,11 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0196](0196-single-account-settings-page.md) | accepted | partial | One account settings page |
 | [ADR-0198](0198-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |
 | [ADR-0199](0199-memory-suspension-and-demand-wake.md) | accepted | partial | Memory-preserving suspension, relocation and demand wake |
-| [ADR-0200](0200-windows-browser-editor-candidate.md) | accepted | partial | Account-bound Windows browser editor candidate |
+| [ADR-0200](0200-windows-browser-editor-candidate.md) | superseded | partial | Account-bound Windows browser editor candidate |
 | [ADR-0202](0202-github-com-owner-integration.md) | accepted | partial | Owner-bound GitHub.com integration |
 | [ADR-0203](0203-guest-reflection.md) | accepted | partial | Guest reflection service |
 | [ADR-0206](0206-android-firecracker-guest.md) | accepted | partial | Software-rendered Android in the Firecracker guest |
+| [ADR-0207](0207-windows-editor-job-custodian.md) | accepted | partial | Independent Windows editor job custodian |
 | [ADR-0204](0204-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |
 | [ADR-0205](0205-overview-newsletter.md) | accepted | partial | Overview newsletter signup |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |

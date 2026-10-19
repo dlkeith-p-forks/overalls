@@ -56,6 +56,28 @@ class NativeImageTest(unittest.TestCase):
         base.write_bytes(b"pinned-whole-gpt-image")
         image.pack(root, BUILD, PYTHON, base)
 
+    def test_assembly_cleanup_removes_workspace_only_after_export(self) -> None:
+        with (
+            mock.patch.object(image.kernel, "command", return_value="") as command,
+            mock.patch.object(image.shutil, "rmtree") as remove,
+        ):
+            image.cleanup_assembly_workspace(True)
+        command.assert_called_once_with(["/usr/sbin/zpool", "export", image.POOL], 120)
+        remove.assert_called_once_with(image.WORK)
+
+    def test_assembly_cleanup_preserves_workspace_when_export_refuses(self) -> None:
+        with (
+            mock.patch.object(
+                image.kernel,
+                "command",
+                side_effect=RuntimeError("pool is still busy"),
+            ),
+            mock.patch.object(image.shutil, "rmtree") as remove,
+            self.assertRaisesRegex(RuntimeError, "still busy"),
+        ):
+            image.cleanup_assembly_workspace(True)
+        remove.assert_not_called()
+
     def test_exact_payload_and_symlinks(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary) / "kit"

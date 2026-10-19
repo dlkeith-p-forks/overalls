@@ -1,6 +1,11 @@
 defmodule Galileo.MixProject do
   use Mix.Project
 
+  # @cc [owner:ghuntley,label:verification] galileo-test-fixture-plt
+  # Dialyzer MUST include both pinned Hegel applications when checking compiled
+  # test-support fixtures. Their development/test-only, runtime-disabled
+  # dependency status MUST remain; unknown application calls MUST NOT be ignored.
+  @spec project() :: keyword()
   def project do
     [
       app: :galileo,
@@ -9,7 +14,7 @@ defmodule Galileo.MixProject do
       start_permanent: Mix.env() == :prod,
       elixirc_paths: if(Mix.env() == :test, do: ["lib", "test/support"], else: ["lib"]),
       deps: deps(),
-      dialyzer: [plt_add_apps: [:ex_unit]],
+      dialyzer: [plt_add_apps: [:ex_unit, :hegel, :hegel_ex]],
       aliases: aliases()
     ]
   end

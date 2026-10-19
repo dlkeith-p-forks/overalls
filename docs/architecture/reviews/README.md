@@ -1,5 +1,7 @@
 # Architecture reviews
 
+- [Windows editor job custodian (2026-10-18)](2026-10-18-windows-editor-job-custodian.md): ADR-0207 replaces broker-owned job lifetime with an independent SYSTEM custodian, atomic job-list creation and a boot-bound local streaming proxy. Portable/static and bounded SYSTEM library checks pass; same-boot custodian replacement remains incomplete and exact-image browser/recovery acceptance remains pending.
+
 - [Overview newsletter (2026-10-18)](2026-10-18-overview-newsletter.md): ADR-0205's account-wide durable invitation, self-only dismissal and server-side Ghost subscription boundary; test presence is distinguished from external delivery and packaged browser acceptance.
 - [Guest reflection (2026-10-18)](2026-10-18-guest-reflection.md): ADR-0203's secret-free, execution-fenced Peach projection; protocol and credential tests are present while successful HTTP/native guest execution and fleet enablement remain open.
 - [GitHub.com owner integration (2026-10-18)](2026-10-18-github-com-integration.md): ADR-0202's owner-bound OAuth custody and managed guest route; source and focused tests are recorded while live provider and native rollout remain open.
@@ -28,10 +30,11 @@
   explicit FreeBSD, OmniOS/illumos and Windows editor refusals and their remaining
   implementation and native-browser gaps. Windows runtime/source staging,
   portable broker custody tests and the roster authorizer lock are recorded as
-  partial evidence; ADR-0200 accepts a separate manifest-v7/bundle-v4 Windows
-  editor candidate without changing selected Windows images. Native pipe/ACL
-  library checks are recorded; personal account/task execution and the complete
-  Windows browser journey remain unrecorded.
+  partial evidence for the original ADR-0200 candidate, now superseded by
+  ADR-0207 with its separate manifest-v7/bundle-v4 identity retained and selected
+  Windows images unchanged. That review's native pipe/ACL library checks retain
+  their checkpoint; the complete exact-image Windows browser journey remains
+  unrecorded.
 - [User time zones (2026-10-18)](2026-10-18-user-time-zones.md): ADR-0195's
   per-user display zone, self-only validated writes, saved → browser → UTC
   viewer resolution, UTC-provenance timestamps, people's local time in team,

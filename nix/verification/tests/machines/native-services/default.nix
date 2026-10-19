@@ -1,7 +1,7 @@
 { pkgs, packages, image ? packages.freebsdImageCandidate, osName ? "freebsd"
 , isolation ? false, growth ? false, recovery ? false, crash ? false
 , transport ? false, transportReset ? false, transportProbe ? null
-, transportBuildId ? "", github ? false }:
+, transportBuildId ? "", github ? false, allowNativeAdmission ? false }:
 let
   scenario = if github then "github-retained" else if transportReset then "transport-reset" else if transport then "ordinary-transport" else if isolation then "isolation" else if growth then "growth" else if recovery then "recovery" else if crash then "crash-recovery" else "services";
   tools = pkgs.runCommand "overalls-native-service-tools" {
@@ -63,7 +63,7 @@ let
     done
   '';
 in
-assert github || !image.nativeAdmission;
+assert github || allowNativeAdmission || !image.nativeAdmission;
 assert builtins.elem osName [ "freebsd" "illumos" ];
 assert (!transport && !transportReset) || (osName == "illumos" && transportProbe != null && builtins.match "[0-9a-f]{64}" transportBuildId != null);
 assert pkgs.lib.count (enabled: enabled) [ isolation growth recovery crash transport transportReset github ] <= 1;
@@ -92,6 +92,8 @@ assert pkgs.lib.count (enabled: enabled) [ isolation growth recovery crash trans
 # Reset transport MUST observe an actual private VMM event after that baseline
 # and dispose its VM after independent serial verification; it MUST NOT create
 # an ordinary service receipt or claim restored service or clean shutdown.
+# An admitted image MAY be selected only with the explicit allowNativeAdmission opt-in;
+# receipts remain native_admission=false and do not extend production admission.
 # The GitHub variant MUST use only a disposable copy of the retained image,
 # bootstrap public verified tools through its existing executor and exercise
 # actual personal-UID gh, Git and LFS before and after clean reboot. Its separate

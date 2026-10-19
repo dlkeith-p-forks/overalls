@@ -3103,7 +3103,7 @@
       "denial": "Refuse a new SMTP attempt after the delivery commits delivered or expired; an uncertain earlier provider acceptance may be duplicated with the same identity.",
       "scope": "Generated adapter/verified-TLS timeout retries and committed three-peer contention/crash properties exercise locked Ash delivery. Waiting peers independently recheck removed or expired stored tokens after explicit SMTP rejection.",
       "status": "partial",
-      "gaps": "Combined current-format mail execution passed19checks (9properties,10tests),seed0,266.0s; full typing/integration gates remain pending. Prior recorded SMTP/worker runs retain the older identifier format. An uncertain delivery spanning the old/new Message-ID format transition cannot reconstruct its previously emitted ID. Oban duplicate-job scheduling, complete sign-in consumption/session issuance, exact natural expiry, token changes after validation, body/origin stability under endpoint rotation, host relay composition, inbox delivery, native machine and hosted faults remain open.",
+      "gaps": "The earlier combined current-format run passed 19 checks (9 properties, 10 tests), seed 0, 266.0 seconds, at its own source/engine checkpoint. Later full 100-case distributed histories hit TooSlow after 3–4 cases in 31–39 seconds; source now uses scoped CI, finite 1,800-second aggregates and exact case-owned peer/row cleanup, with unchanged per-operation deadlines and crash/retry oracles. Repaired execution and full typing/integration remain pending. Prior recorded SMTP/worker runs retain the older identifier format. An uncertain delivery spanning the old/new Message-ID format transition cannot reconstruct its previously emitted ID. Oban duplicate-job scheduling, complete sign-in consumption/session issuance, exact natural expiry, token changes after validation, body/origin stability under endpoint rotation, host relay composition, inbox delivery, native machine and hosted faults remain open.",
       "preferred_gap": "Run a native or hosted fault workload with a controlled SMTP relay and independent Marshall workers; retain the local generated retry property as bounded state-machine evidence.",
       "evidence": [
         {
@@ -11299,12 +11299,12 @@
         "storage",
         "recovery"
       ],
-      "boundary": "ADR-0200 accepts a source-built native Code OSS candidate and SYSTEM broker on dedicated gateway-only TCP 4444. The separate windows-editor-v1 row requires manifest v7 with a closed immutable editor descriptor; portable bundle v4 retains that tuple. Marshall selects only the exact win32-x64 registry descriptor for a validated Windows candidate, independently of the concurrent Linux tuple. Existing windows-v1/v5 remains editor false and no production catalog selects the candidate. The candidate binds current MMDS execution, the closed preface, locked roster reconciliation, canonical local SAM SID and S4U token, personal profile, exact Job Object/process/pipe custody and a private recovery receipt.",
-      "denial": "The accepted windows-v1 editor capability remains false. Missing or mismatched image descriptors, foreign gateway or execution, stale roster account, ambiguous package/PATH custody, wrong SID/process/job/pipe and exhausted pending-I/O capacity must refuse. A foreign process cannot be terminated or adopted without exact custody; a portable test or cross-link cannot qualify native Windows browser admission.",
-      "scope": "The native Code OSS source build and reviewed import completed for exact release fbd3ccab8ae104bf2aee689e77deb6e47a3e9f12b2e4cbe3eeccdaf8afcb7dfe with four signed extensions, product policy, licenses and native provenance checked. Focused protocol and Lilly tests cover immutable v7/v4 identity, release preservation and old-row refusal. Portable tests cover finite identity, path and capacity decisions. Thirty native Windows library tests pass, including actual named-pipe timeout/cancellation and Windows ACL descriptor/refusal checks; thirteen SYSTEM fixture cases cover installer/task custody. No admitted Windows image, Win32 listener/account/worker/task lifecycle or authenticated Windows browser journey is recorded.",
+      "boundary": "ADR-0207 fully replaces ADR-0200 with a source-built native Code OSS candidate, gateway-only SYSTEM broker on TCP 4444 and independent SYSTEM job custodian. Both tasks use the pinned executable and independently validate MMDS boot/release authority; mutual kernel PID/time, SYSTEM-token and executable checks guard their fixed physical-boot local pipe. Only the custodian owns locked roster/SAM/S4U admission, profile and package/PATH custody, atomic suspended job-list launch, complete SID-bound receipts, resume/readiness, exact worker pipes and retained kill-on-close handles. It retains 64 lifetime account slots including empty/quarantined starts; each process separately bounds live/retired pipe state to 128 reservations. The separate windows-editor-v1 manifest-v7 and bundle-v4 tuple, target-specific registry and immutable image authority remain unchanged. Existing windows-v1/v5 stays editor false and no production catalog selects the candidate.",
+      "denial": "Missing/mismatched immutable descriptors, current login/write or execution authority, foreign gateway/local peer, stale roster/SID, ambiguous package/PATH custody, wrong process/job/pipe and exhausted admission/I/O capacity must refuse while preserving existing custody. Only a verified-dead held root permits exact-job zero-descendant accounting before replacement; live-root probe and process-observation errors refuse without termination, and failed accounting quarantines. A fresh custodian refuses every prior same-boot receipt until a new physical boot namespace, since root exit or missing job name cannot prove descendant quiescence. Foreign processes cannot be adopted or terminated. Portable or cross-link results cannot qualify native browser admission.",
+      "scope": "The reviewed native source build/import for exact release fbd3ccab8ae104bf2aee689e77deb6e47a3e9f12b2e4cbe3eeccdaf8afcb7dfe retains four signed extensions, product policy, licenses and provenance. Protocol/Lilly tests cover immutable v7/v4 identity, release preservation and old-row refusal. Earlier 30 actual Windows library tests cover pipe timeout/cancellation and ACL refusals; earlier 13 SYSTEM fixture cases cover installer/task custody. The old stock native browser fixture completed workbench/extension/save/PowerShell PTY, then failed broker recovery. Scoped old-design diagnostics demonstrate lost named-job custody after final handle close while the child lives. Current 30 portable tests pass retained-account ownership/single-flight/capacity and live-root-probe refusal decisions; Windows all-target Clippy and pinned links pass. The exact 38-test library then passed as SYSTEM with verified exit zero and scratch cleanup, including disposable suspended-root atomic membership/kill-on-close and exclusive-pipe/same-process identity/forged-time cases. These bounded results and static installer/harness builds do not establish personal S4U Code OSS launch, descendant drainage, independent task/custodian faults or exact-image browser acceptance.",
       "status": "partial",
-      "gaps": "Native Windows SAM/S4U/profile and executable/PATH lifecycle custody, sustained/interrupted overlapped cancellation, task crash/reboot supervision, exact bundle/image qualification, two-account browser separation, edit/readback, revocation, broker adoption and worker-loss recovery remain unrecorded. Guest administrator authority and physical isolation are separate boundaries.",
-      "preferred_gap": "Run the isolated native Windows machine/browser harness against the exact reviewed bundle and candidate image, complete protocol and both consumer gates, then review exact production image selection.",
+      "gaps": "Safe same-boot replacement after custodian crash is unimplemented; all existing same-boot receipts refuse. Native atomic launch rollback, mutual peer refusals, per-process capacity/cancellation exhaustion, root-plus-descendant drainage, custodian kill-on-close bounds, task crash/reboot supervision and exact new bundle/image qualification remain pending. Complete two-account browser separation, save/readback, current revocation and broker/worker recovery are unrecorded for the replacement. Guest Administrator confidentiality and physical isolation remain separate boundaries.",
+      "preferred_gap": "Implement a stronger descendant-quiescence mechanism for fresh-custodian same-boot replacement, then run native root-first/descendant and launch/peer/capacity fault cases plus the isolated two-task Windows machine/browser harness against the exact new image. Complete protocol and both consumer gates before reviewing production image selection.",
       "evidence": [
         {
           "kind": "manual",
@@ -11338,6 +11338,78 @@
         },
         {
           "kind": "property",
+          "path": "nix/domains/artifacts/vscode-web-broker/src/windows_model.rs",
+          "assertion": "full_custodian_registry_never_evicts_retained_accounts",
+          "scope": "Generated portable account histories retain existing slots and refuse new accounts after 64 unique reservations; no native processes, jobs, tasks or pipes execute.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md",
+          "record_assertion": "30 portable library tests passed"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/domains/artifacts/vscode-web-broker/src/windows_model.rs",
+          "assertion": "concurrent_account_admission_shares_one_serialized_owner",
+          "scope": "Portable concurrent threads share one account initializer and serialized owner; this does not establish native account, launch or failure behavior.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md",
+          "record_assertion": "30 portable library tests passed"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/domains/artifacts/vscode-web-broker/src/windows_model.rs",
+          "assertion": "live_root_probe_errors_never_authorize_destructive_recovery",
+          "scope": "Production-used portable decision propagates live-root readiness/pipe and process-observation errors without destructive recovery; only a conclusively dead held root requests job drainage. No actual native process/job runs.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md",
+          "record_assertion": "30 portable library tests passed"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/domains/artifacts/vscode-web-broker/src/windows.rs",
+          "assertion": "native_atomic_job_assignment_closes_suspended_orphan_window",
+          "scope": "Executed as SYSTEM: disposable cmd.exe is created suspended with atomic job-list attachment, verified membership and live root; final job close makes the held root exit within a five-second wait. No personal S4U Code OSS, resumed descendants, custodian crash or task/browser lifecycle executes.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md",
+          "record_assertion": "38 tests passed, 0 failed, 0 ignored"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/domains/artifacts/vscode-web-broker/src/windows_ipc.rs",
+          "assertion": "native_local_endpoint_is_exclusive_and_system_only",
+          "scope": "Executed native listener has inspected SYSTEM-only ACL custody and rejects a second first-instance listener. No foreign-user/remote connection or independently scheduled role process executes.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md",
+          "record_assertion": "38 tests passed, 0 failed, 0 ignored"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/domains/artifacts/vscode-web-broker/src/windows_ipc.rs",
+          "assertion": "native_peer_handshake_refuses_forged_creation_time",
+          "scope": "Executed native pipe rejects a deliberately changed creation claim from the SYSTEM test process. No PID-reuse, wrong-executable, foreign-boot or complete two-role refusal matrix executes.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md",
+          "record_assertion": "38 tests passed, 0 failed, 0 ignored"
+        },
+        {
+          "kind": "unit",
+          "path": "nix/domains/artifacts/vscode-web-broker/src/windows_ipc.rs",
+          "assertion": "native_peers_complete_exact_identity_handshake_before_stream_bytes",
+          "scope": "Two threads in the same SYSTEM test process complete mutual native kernel-identity handshake before a bounded frame. No installed cross-process broker/custodian, personal account/release lifecycle or browser stream executes.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md",
+          "record_assertion": "38 tests passed, 0 failed, 0 ignored"
+        },
+        {
+          "kind": "manual",
+          "path": "docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md",
+          "assertion": "child remained live",
+          "scope": "Bounded old-design SYSTEM diagnostic creates/assigns a disposable child and observes the job name disappear after final handle close while the child remains live; explicit cleanup completed. It disproves the old reopening assumption and does not accept new kill-on-close behavior.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md",
+          "record_assertion": "child remained live"
+        },
+        {
+          "kind": "property",
           "path": "protocol/test/windows_editor_image_test.exs",
           "assertion": "Windows editor identity binds its release and survives portable storage",
           "scope": "Pure generated v7 identity and v4 bundle round trips, field mutations and closed refusal. Existing Windows v1 remains false; no native image runs.",
@@ -11359,6 +11431,13 @@
           "path": "nix/verification/tests/machines/windows-editor/browser.py",
           "assertion": "windows-editor-native-browser-journey",
           "scope": "Source-present actual relay/workbench, native save/PTY and broker/worker recovery harness. Static compilation and boundary checks do not execute Windows or authenticate a browser journey.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/windows-editor/control.ps1",
+          "assertion": "fixture_custodian_not_retained",
+          "scope": "Fixture source requires both exact private SYSTEM tasks and independent role processes; broker-loss assertion checks the custodian retains its PID/creation identity. Build/parse checks alone do not execute these native assertions or custodian crash recovery.",
           "execution": "present"
         }
       ]
@@ -11506,7 +11585,7 @@
         "recovery"
       ],
       "boundary": "The protocol admits exactly the eight-key version-5 manifest and the seven-key version-2 firmware bundle beside the unchanged version-4 and version-1 shapes; artifact names come from the protocol only. Lilly keeps rootfs.ext4 as the pool-side root slot, bind-mounts the firmware read-only, seeds the boot identity (placement, execution epoch, boot challenge, /32, gateway, MAC; never the generation) into Firecracker's MMDS from a root-owned jail-local metadata.json before launch, boots /firmware with the Hyper-V CPU template and --enable-pci, and runs the guest under the jailer, seccomp observation and the per-tap guard. The guest's SYSTEM bootstrap task reads MMDS with a V2 session token, validates every field including the adapter MAC and applies exactly the delivered /32. Marshall projects per-capability guest facts (guest_capabilities) from the immutable image, all false for the agentless set.",
-      "denial": "A bundle with guest_agents none never reports guest_ready: trust is recorded as skipped for the exact boot, provisioning ends in the terminal unattested phase (no boot UUID, no path to ready), and readiness, terminal options, workspace sources and the Inception profile are refused before any host effect. Marshall refuses terminal sessions, agent turns, the agent executor binding, web search and Inception admission for such an image, hides the corresponding controls, and admits only the physical service level. An older Lilly fails closed on a firmware bundle, which is why the converged push precedes any placement. Lilly's host policy drops every unmarked packet between the host and a Customer guest, so nothing on the host reaches the Windows guest except the SSH and editor ingress paths it does not yet have. The guest bootstrap refuses an MMDS document whose fields fail validation or whose MAC is not the adapter's and never logs the token or boot challenge.",
+      "denial": "A bundle with guest_agents none never reports guest_ready: trust is recorded as skipped for the exact boot, provisioning ends in the terminal unattested phase (no boot UUID, no path to ready), and readiness, terminal options, workspace sources and the Inception profile are refused before any host effect. Marshall refuses terminal sessions, agent turns, the agent executor binding, web search and Inception admission for such an image, hides the corresponding controls, and retained pre-identity machines measure only the physical service level. New admissions require Git identity support; an older image without it refuses with no allocation effects. An older Lilly fails closed on a firmware bundle, which is why the converged push precedes any placement. Lilly's host policy drops every unmarked packet between the host and a Customer guest, so nothing on the host reaches the Windows guest except the SSH and editor ingress paths it does not yet have. The guest bootstrap refuses an MMDS document whose fields fail validation or whose MAC is not the adapter's and never logs the token or boot challenge.",
       "scope": "Protocol unit and property tests pin independent identity vectors for both manifest versions and the byte-identical version-1 bundle encoding; Lilly tests pin the kernel jail configuration and unit arguments unchanged and check the firmware variants, lifecycle edges (unattested, skipped) and firmware image loading; Marshall tests cover the capability property, admission refusal and service-level admission, and the hidden controls. The windows-lilly-guest machine test drives the real Lilly driver on nested KVM: Inception refusal before any dataset, firmware bundle on the dataset with sparse usage, skipped trust and unattested provisioning from the journals, SAC> on the boot log, the guest's bootstrap log and applied identity read from the EFI system partition of the live disk without a login, ICMP and TCP 22 on the delivered /32 from Lilly's network namespace through a test-only accept for that address in the host policy (the tap guard stays intact and its accept counter is asserted), restart from the portable bundle without the image, stop and delete. Recorded on 2026-10-14: the windows-lilly-guest test passed end to end on nested KVM (2688 s).",
       "status": "partial",
       "gaps": "Agentless launch is recorded. C: growth after a host-side extension and timekeeping under load remain unobserved; the host reachability probe is a test-only policy allowance, not a product path or Marshall observation. Agent trust/readiness, terminal, workspace, roster and executor coverage belongs to the windows-v1 scenario. Independent-host recovery and a repeatable Marshall-driven Windows matrix remain unverified.",
@@ -11536,8 +11615,8 @@
         {
           "kind": "unit",
           "path": "marshall/test/marshall/compute/image_admission_test.exs",
-          "assertion": "a firmware image admits ordinary profiles without a readiness measurement and refuses Inception",
-          "scope": "Marshall registers the version-5 image, refuses Inception before allocation, admits only the physical service level and projects guest_agents_status none. Database-backed unit evidence.",
+          "assertion": "firmware admissions require Git identity support while retained agentless VMs keep physical-only measurement",
+          "scope": "Database-backed unit source registers the version-5 image, refuses Inception and new admission lacking Git identity support without allocation/job effects, then inserts retained pre-identity state only in its sandbox and checks physical-only measurement. An identity-capable windows-v1 admission additionally measures creation-to-ready. No native guest or new unsupported admission is established.",
           "execution": "present"
         },
         {

@@ -6,7 +6,7 @@ defmodule Marshall.Terminal.RemoteTest do
 
   @fixtures Path.expand("../../fixtures/tls", __DIR__)
 
-  setup do
+  setup tags do
     server =
       start_supervised!(
         {Bandit,
@@ -30,18 +30,127 @@ defmodule Marshall.Terminal.RemoteTest do
       Application.put_env(:marshall, :terminal_peer_ca, old_ca)
     end)
 
+    if tags[:hegel_case_sandbox] do
+      :ok
+    else
+      %{fixture: fixture, stream: stream, remote: remote} = ordinary_context()
+      %{fixture: fixture, stream: stream, remote: remote}
+    end
+  end
+
+  @spec ordinary_context() :: %{
+          fixture: map(),
+          stream: pid(),
+          remote: pid()
+        }
+  defp ordinary_context do
     fixture = Marshall.TerminalFixtures.terminal_fixture()
     stream = Marshall.TerminalFixtures.stream_fixture(fixture.host.id)
     {:ok, location} = Directory.lookup(fixture.host.id)
+    remote = start_remote(location, fn spec -> start_supervised!(spec) end)
+    %{fixture: fixture, stream: stream, remote: remote}
+  end
 
-    remote =
-      start_supervised!(%{
-        id: Remote,
-        start: {Remote, :start, [self(), location]},
-        restart: :temporary
-      })
+  @spec property_context() :: %{
+          fixture: map(),
+          stream: pid(),
+          remote: pid(),
+          budget: pid(),
+          budget_id: reference()
+        }
+  defp property_context do
+    Marshall.DataCase.isolate_property_case()
+    %{pid: budget, id: budget_id} = start_case_budget()
+    previous_budget = Application.get_env(:marshall, :terminal_peer_budget)
+    Application.put_env(:marshall, :terminal_peer_budget, budget)
 
-    %{remote: remote, fixture: fixture, stream: stream}
+    Hegel.on_cleanup(fn ->
+      if is_nil(previous_budget),
+        do: Application.delete_env(:marshall, :terminal_peer_budget),
+        else: Application.put_env(:marshall, :terminal_peer_budget, previous_budget)
+    end)
+
+    fixture = Marshall.TerminalFixtures.terminal_fixture()
+    stream = Marshall.TerminalFixtures.stream_fixture(fixture.host.id, :property)
+    {:ok, location} = Directory.lookup(fixture.host.id)
+    remote = start_remote(location, &Overalls.HegelFixtures.start_supervised!/1)
+    %{fixture: fixture, stream: stream, remote: remote, budget: budget, budget_id: budget_id}
+  end
+
+  @spec teardown_property_context(map()) :: :ok
+  defp teardown_property_context(%{remote: remote, stream: stream, budget: budget}) do
+    if Process.alive?(remote), do: GenServer.stop(remote)
+    if Process.alive?(stream), do: Process.exit(stream, :shutdown)
+    await_budget_empty(budget, System.monotonic_time(:millisecond) + 2_000)
+  end
+
+  @spec start_case_budget() :: %{id: reference(), pid: pid()}
+  defp start_case_budget do
+    id = make_ref()
+    pid = start_supervised!({PeerBudget, name: nil, limit: 512}, id: id)
+    Hegel.on_cleanup(fn -> stop_case_budget(id) end)
+    %{id: id, pid: pid}
+  end
+
+  @spec start_remote(Marshall.Terminal.Location.t(), (map() -> pid())) :: pid()
+  defp start_remote(location, starter) do
+    starter.(%{
+      id: make_ref(),
+      start: {Remote, :start, [self(), location]},
+      restart: :temporary
+    })
+  end
+
+  @spec await_budget_empty(pid(), integer()) :: :ok
+  defp await_budget_empty(budget, deadline) do
+    cond do
+      not Process.alive?(budget) ->
+        :ok
+
+      PeerBudget.used(budget) == 0 ->
+        :ok
+
+      System.monotonic_time(:millisecond) >= deadline ->
+        :ok
+
+      true ->
+        receive do
+        after
+          1 -> await_budget_empty(budget, deadline)
+        end
+    end
+  end
+
+  @spec current_case_budget(reference()) :: pid() | nil
+  defp current_case_budget(id) do
+    {:ok, supervisor} = ExUnit.fetch_test_supervisor()
+
+    case List.keyfind(Supervisor.which_children(supervisor), id, 0) do
+      {^id, pid, _, _} when is_pid(pid) -> pid
+      _ -> nil
+    end
+  end
+
+  @spec stop_case_budget(reference()) :: :ok
+  defp stop_case_budget(id) do
+    {:ok, supervisor} = ExUnit.fetch_test_supervisor()
+
+    case List.keyfind(Supervisor.which_children(supervisor), id, 0) do
+      nil ->
+        :ok
+
+      {^id, :undefined, _, _} ->
+        :ok = Supervisor.delete_child(supervisor, id)
+
+      {^id, pid, _, _} when is_pid(pid) ->
+        :ok = Supervisor.terminate_child(supervisor, id)
+
+        case Supervisor.delete_child(supervisor, id) do
+          :ok -> :ok
+          {:error, :not_found} -> :ok
+          other -> raise "case peer budget cleanup failed: #{inspect(other)}"
+        end
+    end
   end
 
   # @cc [owner:ghuntley,label:verification;capacity;recovery] peer-budget-incarnation-live-sockets
@@ -49,21 +158,21 @@ defmodule Marshall.Terminal.RemoteTest do
   # pairs acquire successor slots. The synthetic host stream MUST remain alive;
   # this test MUST NOT claim native guest survival or independent-node recovery.
   @tag :hegel
-  test "budget restart retires live TLS peers and admits exact replacement pairs", %{
-    fixture: fixture,
-    stream: stream,
-    remote: initial
-  } do
+  @tag :hegel_case_sandbox
+  @tag timeout: 600_000
+  test "budget restart retires live TLS peers and admits exact replacement pairs" do
     # The native runner uses test_cases to bound these real-socket histories.
     Hegel.check(
       fn ->
+        context = property_context()
+        Hegel.on_cleanup(fn -> teardown_property_context(context) end)
+        %{fixture: fixture, stream: stream, remote: initial, budget: budget} = context
         count = draw("count", integer(1..3))
         {:ok, location} = Directory.lookup(fixture.host.id)
         remotes = for _ <- 1..count, do: start_peer(location)
         remotes = if Process.alive?(initial), do: [initial | remotes], else: remotes
 
         for remote <- remotes, do: healthy_peer(remote, fixture.vm)
-        budget = Process.whereis(PeerBudget)
         assert PeerBudget.used(budget) == 2 * length(remotes)
         owners = Map.keys(:sys.get_state(budget).owners)
         monitors = Enum.map(owners, &Process.monitor/1)
@@ -74,9 +183,12 @@ defmodule Marshall.Terminal.RemoteTest do
         for {owner, monitor} <- Enum.zip(owners, monitors),
             do: assert_receive({:DOWN, ^monitor, :process, ^owner, _}, 2_000)
 
-        successor = await_budget(budget, System.monotonic_time(:millisecond) + 2_000)
+        successor =
+          await_budget(context.budget_id, budget, System.monotonic_time(:millisecond) + 2_000)
+
         assert is_pid(successor)
         assert successor != budget
+        Application.put_env(:marshall, :terminal_peer_budget, successor)
         assert PeerBudget.used(successor) == 0
         assert Process.alive?(stream)
         assert {:ok, ^location} = Directory.lookup(fixture.host.id)
@@ -93,6 +205,7 @@ defmodule Marshall.Terminal.RemoteTest do
 
         assert Process.alive?(stream)
       end,
+      profile: :ci,
       test_cases: 100
     )
   end
@@ -102,29 +215,32 @@ defmodule Marshall.Terminal.RemoteTest do
   # subsequent silent transport MUST retire the hop within fifteen seconds
   # plus bounded test scheduler allowance. The host stream remains synthetic.
   @tag :hegel
-  test "shifted TLS activity expires without waiting for another heartbeat", %{
-    remote: initial,
-    fixture: fixture
-  } do
-    owners = Map.keys(:sys.get_state(PeerBudget).owners)
-    monitors = Enum.map(owners, &Process.monitor/1)
-    GenServer.stop(initial)
-
-    for {owner, monitor} <- Enum.zip(owners, monitors),
-        do: assert_receive({:DOWN, ^monitor, :process, ^owner, _}, 2_000)
-
+  @tag :hegel_case_sandbox
+  @tag timeout: 5_400_000
+  test "shifted TLS activity expires without waiting for another heartbeat" do
     # Each real silence deadline exceeds fifteen seconds. Keep the original
     # three generated cases in separate runs below the native slow-input limit.
     for _ <- 1..3 do
       Hegel.check(
         fn ->
+          context = property_context()
+          Hegel.on_cleanup(fn -> teardown_property_context(context) end)
+          %{fixture: fixture, remote: initial, budget: budget} = context
+
+          owners = Map.keys(:sys.get_state(budget).owners)
+          monitors = Enum.map(owners, &Process.monitor/1)
+          GenServer.stop(initial)
+
+          for {owner, monitor} <- Enum.zip(owners, monitors),
+              do: assert_receive({:DOWN, ^monitor, :process, ^owner, _}, 2_000)
+
           offset = draw("offset", integer(500..1500))
           {:ok, previous_location} = Directory.lookup(fixture.host.id)
           assert :ok = Directory.renew(fixture.host.id, previous_location.nonce)
           {:ok, location} = Directory.lookup(fixture.host.id)
           remote = start_peer(location)
           healthy_peer(remote, fixture.vm)
-          [peer] = Map.keys(:sys.get_state(PeerBudget).owners) -- [remote]
+          [peer] = Map.keys(:sys.get_state(budget).owners) -- [remote]
           marker = make_ref()
           Process.send_after(self(), {:shifted_activity, marker}, offset)
           assert_receive {:shifted_activity, ^marker}, 2_000
@@ -152,18 +268,19 @@ defmodule Marshall.Terminal.RemoteTest do
           assert elapsed <= 15_250
           assert_receive {:terminal_closed, %{reason: :stream_unavailable}}, 1_000
           :ok = :sys.resume(peer)
-          assert await_peer_release(peer, System.monotonic_time(:millisecond) + 2_000)
-          assert PeerBudget.used() == 0
+          assert await_peer_release(peer, budget, System.monotonic_time(:millisecond) + 2_000)
+          assert PeerBudget.used(budget) == 0
         end,
+        profile: :ci,
         test_cases: 100
       )
     end
   end
 
-  @spec await_peer_release(pid(), integer()) :: boolean()
-  defp await_peer_release(peer, deadline) do
+  @spec await_peer_release(pid(), pid(), integer()) :: boolean()
+  defp await_peer_release(peer, budget, deadline) do
     cond do
-      not Map.has_key?(:sys.get_state(PeerBudget).owners, peer) ->
+      not Map.has_key?(:sys.get_state(budget).owners, peer) ->
         true
 
       System.monotonic_time(:millisecond) >= deadline ->
@@ -172,7 +289,7 @@ defmodule Marshall.Terminal.RemoteTest do
       true ->
         receive do
         after
-          1 -> await_peer_release(peer, deadline)
+          1 -> await_peer_release(peer, budget, deadline)
         end
     end
   end
@@ -182,28 +299,31 @@ defmodule Marshall.Terminal.RemoteTest do
   # deadline; fifteen subsequent silent seconds MUST terminate its WebSock
   # application and release its slot, independently of server-process lifetime.
   @tag :hegel
-  test "incoming TLS silence retires the application at its renewed deadline", %{
-    remote: initial,
-    fixture: fixture
-  } do
-    owners = Map.keys(:sys.get_state(PeerBudget).owners)
-    monitors = Enum.map(owners, &Process.monitor/1)
-    GenServer.stop(initial)
-
-    for {owner, monitor} <- Enum.zip(owners, monitors),
-        do: assert_receive({:DOWN, ^monitor, :process, ^owner, _}, 2_000)
-
+  @tag :hegel_case_sandbox
+  @tag timeout: 5_400_000
+  test "incoming TLS silence retires the application at its renewed deadline" do
     # Preserve three generated real-deadline histories without accumulating
     # their expected runtime into one native slow-input health check.
     for _ <- 1..3 do
       Hegel.check(
         fn ->
+          context = property_context()
+          Hegel.on_cleanup(fn -> teardown_property_context(context) end)
+          %{fixture: fixture, remote: initial, budget: budget} = context
+
+          owners = Map.keys(:sys.get_state(budget).owners)
+          monitors = Enum.map(owners, &Process.monitor/1)
+          GenServer.stop(initial)
+
+          for {owner, monitor} <- Enum.zip(owners, monitors),
+              do: assert_receive({:DOWN, ^monitor, :process, ^owner, _}, 2_000)
+
           offset = draw("offset", integer(500..1500))
           {:ok, location} = Directory.lookup(fixture.host.id)
           assert :ok = Directory.renew(fixture.host.id, location.nonce)
           remote = start_peer(location)
           healthy_peer(remote, fixture.vm)
-          [peer] = Map.keys(:sys.get_state(PeerBudget).owners) -- [remote]
+          [peer] = Map.keys(:sys.get_state(budget).owners) -- [remote]
           previous = peer_last_seen(peer)
           marker = make_ref()
           Process.send_after(self(), {:incoming_activity, marker}, offset)
@@ -240,7 +360,7 @@ defmodule Marshall.Terminal.RemoteTest do
               remaining + 250 ->
                 {_socket, %{connection: connection}} = :sys.get_state(peer)
                 renewed_by = connection.websock_state.last_seen - last_seen
-                occupied = Map.has_key?(:sys.get_state(PeerBudget).owners, peer)
+                occupied = Map.has_key?(:sys.get_state(budget).owners, peer)
 
                 flunk(
                   "termination unobserved: state=#{connection.state}, renewed_by_ms=#{renewed_by}, occupied=#{occupied}"
@@ -250,13 +370,14 @@ defmodule Marshall.Terminal.RemoteTest do
           elapsed = System.convert_time_unit(timestamp, :native, :millisecond) - last_seen
           assert elapsed >= 15_000
           assert elapsed <= 15_250
-          assert await_peer_release(peer, System.monotonic_time(:millisecond) + 2_000)
+          assert await_peer_release(peer, budget, System.monotonic_time(:millisecond) + 2_000)
           monitor = Process.monitor(remote)
           :ok = :sys.resume(remote)
           assert_receive {:DOWN, ^monitor, :process, ^remote, :normal}, 2_000
           assert_receive {:terminal_closed, %{reason: :stream_unavailable}}, 1_000
-          assert PeerBudget.used() == 0
+          assert PeerBudget.used(budget) == 0
         end,
+        profile: :ci,
         test_cases: 100
       )
     end
@@ -289,11 +410,20 @@ defmodule Marshall.Terminal.RemoteTest do
 
   @spec start_peer(Marshall.Terminal.Location.t()) :: pid()
   defp start_peer(location) do
-    start_supervised!(%{
+    start_owned(%{
       id: make_ref(),
       start: {Remote, :start, [self(), location]},
       restart: :temporary
     })
+  end
+
+  @spec start_owned(map()) :: pid()
+  defp start_owned(spec) do
+    if Hegel.in_property_case?() do
+      Overalls.HegelFixtures.start_supervised!(spec)
+    else
+      start_supervised!(spec)
+    end
   end
 
   @spec healthy_peer(pid(), Marshall.Compute.VirtualMachine.t()) :: :ok
@@ -324,9 +454,9 @@ defmodule Marshall.Terminal.RemoteTest do
     :ok
   end
 
-  @spec await_budget(pid(), integer()) :: pid() | nil
-  defp await_budget(previous, deadline) do
-    current = Process.whereis(PeerBudget)
+  @spec await_budget(reference(), pid(), integer()) :: pid() | nil
+  defp await_budget(id, previous, deadline) do
+    current = current_case_budget(id)
 
     cond do
       is_pid(current) and current != previous ->
@@ -338,7 +468,7 @@ defmodule Marshall.Terminal.RemoteTest do
       true ->
         receive do
         after
-          1 -> await_budget(previous, deadline)
+          1 -> await_budget(id, previous, deadline)
         end
     end
   end

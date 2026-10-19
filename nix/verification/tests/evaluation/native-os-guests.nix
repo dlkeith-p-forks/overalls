@@ -37,8 +37,13 @@ assert illumosFleetImage.package.runtimeValidated;
 assert illumosFleetImage.package.imageAssemblyReady;
 assert illumosFleetImage.package.imageId == "sha256:98b23b7931bc52d55b3c5b38cc20c97c1c967be96cf301940f88b01c715530d8";
 assert toString packages.omniosGuest == toString packages.illumosGuest;
+assert packages.omniosGuest.nativeAdmission;
+assert packages.omniosGuest.runtimeValidated;
 assert !packages.omniosImageCandidateKit.nativeAdmission;
 assert !packages.omniosImageCandidateKit.runtimeValidated;
+# Formal OmniOS transport/reset catalog entries remain closed until a
+# non-admitted candidate image and separate illumos probe are published.
+assert !(packages ? illumosTransportProbeImage);
 assert !freebsd.passthru.kernelReady;
 assert !omnios.passthru.kernelReady;
 assert !freebsd.passthru.imageAssemblyReady;

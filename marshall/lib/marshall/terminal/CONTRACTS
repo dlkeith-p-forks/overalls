@@ -13,3 +13,12 @@ Tickets are single-use, short-lived and mode-bound.
 Every VM-scoped control sent to a host stream MUST carry the exact placement
 and execution epoch; input frames MUST carry strictly increasing per-channel
 sequences so replays cannot execute twice.
+
+@cc [owner:ghuntley,label:capacity;recovery] terminal-peer-budget-incarnation-is-explicit
+Incoming and outgoing peer processes MUST acquire from the configured local
+peer-budget server, retain the returned budget incarnation, monitor that exact
+process, and release the same incarnation on termination. The default server
+MUST remain `Marshall.Terminal.PeerBudget`; an isolated validated server MAY be
+selected for a test fixture without changing production capacity settings. An
+adapter boundary that can consume the callback's monitor message MUST also
+terminate its transport owner when that incarnation disappears.
