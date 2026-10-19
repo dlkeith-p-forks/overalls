@@ -75,7 +75,7 @@ in
       default = "https://google.serper.dev";
       description = "Fixed Serper origin; loopback is reserved for the machine-test fixture.";
     };
-    github = {
+    integrations.github = {
       clientId = mkOption {
         type = types.nullOr (types.strMatching "[A-Za-z0-9_.-]{1,200}");
         default = null;
@@ -259,8 +259,8 @@ in
     services.overallsCrashDumpRetention.directories = lib.mkIf cfg.crashDumps.enable (map (name: "/var/lib/marshall-${name}-crash-dumps") (builtins.attrNames cfg.instances));
     systemd.coredump.settings.Coredump = lib.mkIf cfg.crashDumps.enable { Storage = "none"; ProcessSizeMax = 0; };
     assertions = [
-      { assertion = (cfg.github.clientId == null) == (cfg.github.clientSecretFile == null) &&
-          (cfg.github.clientId == null) == (cfg.github.redirectUri == null);
+      { assertion = (cfg.integrations.github.clientId == null) == (cfg.integrations.github.clientSecretFile == null) &&
+          (cfg.integrations.github.clientId == null) == (cfg.integrations.github.redirectUri == null);
         message = "Marshall GitHub OAuth clientId, clientSecretFile and redirectUri must be configured together."; }
       # @cc [owner:ghuntley,label:protocol;reliability] editor-module-zone-boundary
       # A configured editor zone MUST satisfy the canonical multi-label protocol
@@ -397,9 +397,9 @@ in
           -u MARSHALL_GITHUB_CLIENT_ID -u MARSHALL_GITHUB_CLIENT_SECRET_FILE -u MARSHALL_GITHUB_REDIRECT_URI -u MARSHALL_GITHUB_TOOLS_MANIFEST_FILE -u MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE \
           ${mailEnvironment}          PHX_SERVER=true RELEASE_DISTRIBUTION=none \
           ${lib.optionalString (cfg.githubBootstrapRelease != null) ("MARSHALL_EXECUTOR_BOOTSTRAP_MANIFEST_FILE=" + lib.escapeShellArg "${cfg.githubBootstrapRelease}/manifest.json")} \
-          ${lib.optionalString (cfg.github.clientId != null) ("MARSHALL_GITHUB_CLIENT_ID=" + lib.escapeShellArg cfg.github.clientId)} \
-          ${lib.optionalString (cfg.github.clientSecretFile != null) ''MARSHALL_GITHUB_CLIENT_SECRET_FILE="$CREDENTIALS_DIRECTORY/github-oauth-secret"''} \
-          ${lib.optionalString (cfg.github.redirectUri != null) ("MARSHALL_GITHUB_REDIRECT_URI=" + lib.escapeShellArg cfg.github.redirectUri)} \
+          ${lib.optionalString (cfg.integrations.github.clientId != null) ("MARSHALL_GITHUB_CLIENT_ID=" + lib.escapeShellArg cfg.integrations.github.clientId)} \
+          ${lib.optionalString (cfg.integrations.github.clientSecretFile != null) ''MARSHALL_GITHUB_CLIENT_SECRET_FILE="$CREDENTIALS_DIRECTORY/github-oauth-secret"''} \
+          ${lib.optionalString (cfg.integrations.github.redirectUri != null) ("MARSHALL_GITHUB_REDIRECT_URI=" + lib.escapeShellArg cfg.integrations.github.redirectUri)} \
           ${lib.optionalString (cfg.githubToolsRelease != null) ("MARSHALL_GITHUB_TOOLS_MANIFEST_FILE=" + lib.escapeShellArg "${cfg.githubToolsRelease}/manifest.json")} \
           ${lib.optionalString fleetOtelEnabled "MARSHALL_SLO_SNAPSHOT=/run/marshall-slo-${name}/slo.json"} \
           ${lib.optionalString fleetOtelEnabled "MARSHALL_SLO_CATALOG=${sloCatalog}"} \
@@ -449,7 +449,7 @@ in
           "database-ca.crt:${cfg.databaseCAFile}"
         ] ++ lib.optional (cfg.sshHostCa.keyFile != null) "ssh-host-ca:${cfg.sshHostCa.keyFile}"
           ++ lib.optional (cfg.serperKeyFile != null) "serper.key:${cfg.serperKeyFile}"
-          ++ lib.optional (cfg.github.clientSecretFile != null) "github-oauth-secret:${cfg.github.clientSecretFile}"
+          ++ lib.optional (cfg.integrations.github.clientSecretFile != null) "github-oauth-secret:${cfg.integrations.github.clientSecretFile}"
           ++ lib.optional (cfg.publicHostFile != null) "public-host:${cfg.publicHostFile}"
           ++ lib.optional (instance.terminalPeerCAFile != null) "terminal-peer-ca.crt:${instance.terminalPeerCAFile}"
           ++ lib.optional (cfg.defaultImageIdFile != null) "default-image-id:${cfg.defaultImageIdFile}"

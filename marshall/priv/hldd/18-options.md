@@ -3517,45 +3517,6 @@ Default:
 ```
 
 
-## `services.marshall.github.clientId`
-
-Public GitHub OAuth application client identity. Configure together with clientSecretFile and redirectUri.
-
-Type: `null or string matching the pattern [A-Za-z0-9_.-]{1,200}`.
-
-Default:
-
-```nix
-null
-```
-
-
-## `services.marshall.github.clientSecretFile`
-
-Private runtime GitHub OAuth client secret, delivered through systemd credentials.
-
-Type: `null or string matching the pattern /[a-zA-Z0-9_./:+-]+`.
-
-Default:
-
-```nix
-null
-```
-
-
-## `services.marshall.github.redirectUri`
-
-Registered HTTPS GitHub OAuth callback URL.
-
-Type: `null or string matching the pattern https://[A-Za-z0-9.-]+(:[0-9]+)?/auth/github-com/callback`.
-
-Default:
-
-```nix
-null
-```
-
-
 ## `services.marshall.githubBootstrapRelease`
 
 Immutable source-built executor inventory for retained-machine tool maintenance.
@@ -4179,6 +4140,45 @@ null
 Verified HTTPS origin of this instance's fleet listener for terminal peer routing.
 
 Type: `null or string matching the pattern https://[A-Za-z0-9.-]+(:[0-9]+)?/?`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshall.integrations.github.clientId`
+
+Public GitHub OAuth application client identity. Configure together with clientSecretFile and redirectUri.
+
+Type: `null or string matching the pattern [A-Za-z0-9_.-]{1,200}`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshall.integrations.github.clientSecretFile`
+
+Private runtime GitHub OAuth client secret, delivered through systemd credentials.
+
+Type: `null or string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.marshall.integrations.github.redirectUri`
+
+Registered HTTPS GitHub OAuth callback URL.
+
+Type: `null or string matching the pattern https://[A-Za-z0-9.-]+(:[0-9]+)?/auth/github-com/callback`.
 
 Default:
 
