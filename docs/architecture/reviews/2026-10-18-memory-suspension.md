@@ -262,6 +262,17 @@ see the operations handbook. Git integration does not perform live deployment.
 
 ## Remaining verification
 
+The 2026-10-19 native rerun exposed missing suspension-fixture prerequisites:
+the fixture excluded the Galileo/Audi private issuer and skipped its runtime
+credential/trust enrollment even though guest SSH host-certificate bootstrap
+requires that edge. The fixture now includes the same private-service module
+and enrollment as ordinary fleet guests, without bypassing guest readiness.
+The composed NixOS driver passed its type and lint checks. The subsequent run
+completed private-service enrollment but exited with status 137 while waiting
+for the fleet wildcard certificate, before guest launch. This is not passing
+pause/resume or relocation evidence. Concurrent native builds were present;
+the exit status alone does not establish why the process was killed.
+
 The accepted decision is unchanged by the merge reconciliation and bounded
 repairs. Source review and focused contention/reopen execution resolve the
 specific capture-journal lock defect within their stated scope. Source and
