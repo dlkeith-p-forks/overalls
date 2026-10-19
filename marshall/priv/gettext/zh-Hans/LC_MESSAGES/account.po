@@ -58,6 +58,7 @@ msgstr "账户"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "添加 Overalls 提交署名"
 msgid "Commit attribution"
 msgstr "提交署名"
 

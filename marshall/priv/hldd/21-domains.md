@@ -15,25 +15,29 @@ the ownership inventory.
 | Domain | Responsibility and authority |
 | --- | --- |
 | `Marshall.Accounts` | User identity, login tokens, email verification, passkeys, account deletion and permanent GuestAccount UUID/UID reservations. Immutable `u<uid>` guest identity belongs to the User UUID independently of its email. Authentication identifies a caller; resource policy still decides access. |
+| `Marshall.Scim` | SCIM bearer configuration, directory user and group synchronization, managed-team authority, and durable identity/team retirement orchestration. The domain owns the provisioning boundary; Compute remains authoritative for machine lifecycle and Accounts for identity records. |
 | `Marshall.Access` | Persisted machine grants, grant changes and per-user machine pins. Cedar evaluates current ownership, direct VM sharing, team membership and canonical current-thread grants; a cached permission cannot authorize a later mutation. A pin confers no authority; the owner's pin is read by the lifecycle coordinator as a deletion fence (ADR-0193). |
 | `Marshall.Administration` | Administrative job snapshots, retries and audit projections. Read access and elevated administrative mutations have separate checks. |
 | `Marshall.Agents` | Agent roots, threads, turns, events, commands, model calls and executor leases. Active context snapshots/checkpoints, planning questions/proposals and managed skill configuration extend this same authority under ADR-0178/0179. ToolMaintenance owns desired public tool generations and executor-fenced installation receipts independently of conversations. Persisted leases and current authority fence execution. |
-| `Marshall.Threads` | User-level objectives, titles, modes, durable provisioning, canonical sharing grants, immutable sharing results and per-reader monotonic transcript read markers. The current thread-to-VM binding contributes grants to machine authority; the coordinator delegates admission, execution and teardown to the existing domains. |
-| `Marshall.Notifications` | Mila push devices bound to the registering SSH key, needs-input deliveries and the per-install Ed25519 identity. It reads SSH keys, accounts and agent threads but never writes them; SSH key archive and account retirement call its revocation functions inside their own transactions. Susan is an external relay it reaches only at the compiled origin. |
+| `Marshall.Threads` | User-level objectives, titles, modes, durable provisioning, canonical sharing grants and immutable sharing results. The current thread-to-VM binding contributes grants to machine authority; the coordinator delegates admission, execution and teardown to the existing domains. |
 | `Marshall.Compute` | Host enrollment, pools, reservations, VM intent, placements, operation receipts and lifecycle workflows. The ledger owns admission and durable execution authority, including immutable source2 provider/namespace/revision `WorkspaceSource` references pinned in provision/start commands. Current manifest4 image identity/capability gates source admission and new source-bearing command snapshots, including retained starts; the signed pending browser cookie owns no domain authority. |
 | `Marshall.Editor` | Personal browser Login, Credential and Lease authority. Current stored login/write, permanent account and exact execution/release locks hold through the outer ledger commit; generic web/DNS visibility cannot authorize the editor. |
 | `Marshall.Enrico` | Repository registration, refresh state and audit. The Enrico service holds the quota-bound mirror cache; the domain holds control-plane intent. |
 | `Marshall.Galileo` | Integration definitions, encrypted header custody, attachments and peer tokens. Current attachment policy governs each authorized service interaction. |
 | `Marshall.GitHub` | Personal OAuth connections, authorization/refresh attempts, persistent machine exclusions, generation-bound request leases and payload-free audit. The current VM owner selects the grant; guest claims, queued work and cached projections confer no authority. |
 | `Marshall.Inference` | Provider credentials, request admission and daily usage. Request authority and accounting remain distinct from provider-side execution. |
+| `Marshall.Notifications` | Notification delivery identities, devices and delivery receipts. It records delivery state while authentication and account authority remain owned by Accounts. |
 | `Marshall.Ingress` | Public services, publications, DNS, TLS custody, readiness and ingress sessions, including short-lived immutable EditorAssetsReceipt. Discovery binds current placement/assets but does not grant Editor authority. |
 | `Marshall.Peach` | Dedicated private-reflection host credentials. Rotation serializes on the Compute host, retains only a secret digest, revokes prior Peach credentials and never changes compute credentials, sessions, reports or reservations. Current host state, expiry and revocation fence each projection request. |
 | `Marshall.SSH` | Account keys, browser approvals, gateway sessions, management requests, guest login and public host-certificate generations. Signing locks current service or boot authority through publication; the private CA remains outside PostgreSQL. Management authority does not grant host administrative SSH. |
 | `Marshall.Teams` | Teams, membership and resource transfers. Mutations enter Compute's ledger commit scope so authority changes share its transaction boundary. |
 | `Marshall.Terminal` | Grants, locations, openings, sessions, events and tickets. Exclusive writer leases and current execution fences govern terminal access. |
+| `Marshall.Notifications` | Device registration and notification delivery receipts. The domain authorizes delivery from current account/device state; it does not grant machine or integration authority. |
+| `Susan.Audit` | Durable audit entries for notification and relay operations. Audit records are append-only evidence and cannot authorize delivery or identity changes. |
+| `Susan.Relay` | Push relay registrations, key denials and delivery receipts. The relay enforces current device registration and key state; it does not own account identity or application actions. |
 | `Lilly.Lifecycle` | OS-locked execution, dataset, snapshot, import, same-pool clone-copy, resize, trust, workspace-source delivery, provisioning, template and permit journals. Provisioning progress records readiness without granting launch or cleanup authority. A clone-copy journal (ADR-0145) binds a same-pool clone destination to its verified source snapshot and its own ordinary claim; it grants neither execution authority nor capacity credit. Host-local physical ownership does not depend on PostgreSQL availability. |
-| `Susan.Relay` | Susan's install identities (`unknown → trusted → rate_limited → blocked`), key-id deny-list, keyed-digest negative cache for unregistered provider tokens and per-install delivery receipts. Authority comes only from a push key Susan can open plus a valid install signature; no Marshall or Mila account exists here. |
-| `Susan.Audit` | Append-only, hash-chained audit entries with closed action and reason enums. The database refuses UPDATE/TRUNCATE and permits DELETE only to the audited 90-day prune; operators read and export through `bin/susan rpc`. |
+| `Susan.Audit` | Susan audit entries retain payload-free operational evidence and security history. Audit records are evidence only and do not grant application authority. |
+| `Susan.Relay` | Susan relay identities, denial records and delivery receipts mediate notification transport. Relay state does not grant identity or authorization. |
 
 ## Authority and interactions
 
@@ -66,25 +70,6 @@ domains share PostgreSQL and may compose actions in one transaction. For example
 [Compute.Ledger](repo:marshall/lib/marshall/compute/ledger.ex).
 [Authorization](repo:marshall/lib/marshall/authorization/cedar.ex) checks current facts;
 process identity or a domain name alone grants no permission.
-
-```mermaid
-flowchart LR
-  Planning[Agents planning commit] -->|after outer commit| Notify[Marshall.Notifications]
-  Accounts[Accounts and SSH revocation] -->|same transaction| Notify
-  Access[Current machine and thread write authority] -->|recipient selection| Notify
-  Notify -->|sealed poke and install signature| Relay[Susan.Relay]
-  Relay -->|closed audit facts| Audit[Susan.Audit]
-  Relay -->|content-free provider payload| Provider[APNs and FCM]
-```
-
-Notifications shares Marshall's PostgreSQL authority; Susan has its own database
-and never authorizes Marshall actions. Revocation owns device state changes in
-the revoking transaction, while planning publishes notification work only after
-its outer commit. Historical fake-relay and provider-fixture runs retain the
-scope in their [notifications](repo:docs/architecture/reviews/2026-10-18-mila-notifications.md)
-and [Susan](repo:docs/architecture/reviews/2026-10-19-susan-push-relay.md) reviews.
-They do not establish real APNs/FCM delivery, device decryption or acceptance of
-the latest merged source.
 
 `Marshall.Threads` is a user-facing orchestration boundary above
 `Marshall.Compute` and `Marshall.Agents`. A pending thread is durable before its
@@ -171,9 +156,10 @@ flowchart LR
   app --> d11["Marshall.Notifications"]
   app --> d12["Marshall.Peach"]
   app --> d13["Marshall.SSH"]
-  app --> d14["Marshall.Teams"]
-  app --> d15["Marshall.Terminal"]
-  app --> d16["Marshall.Threads"]
+  app --> d14["Marshall.Scim"]
+  app --> d15["Marshall.Teams"]
+  app --> d16["Marshall.Terminal"]
+  app --> d17["Marshall.Threads"]
 ```
 
 ```mermaid
@@ -200,6 +186,7 @@ flowchart LR
 | [`Marshall.Notifications`](repo:marshall/lib/marshall/notifications.ex) | `Delivery`, `Device`, `Marshall.Notifications.InstallIdentity` |
 | [`Marshall.Peach`](repo:marshall/lib/marshall/peach.ex) | `Marshall.Peach.Credential`, `Marshall.Peach.Credential.Version` |
 | [`Marshall.SSH`](repo:marshall/lib/marshall/ssh.ex) | `Marshall.SSH.Approval`, `Marshall.SSH.Gateway`, `Marshall.SSH.GuestLogin`, `Marshall.SSH.HostCertificate`, `Marshall.SSH.Key`, `Marshall.SSH.Request`, `Marshall.SSH.Session` |
+| [`Marshall.Scim`](repo:marshall/lib/marshall/scim.ex) | `Marshall.Scim.Configuration` |
 | [`Marshall.Teams`](repo:marshall/lib/marshall/teams.ex) | `Marshall.Teams.Team`, `Marshall.Teams.TeamMember`, `Marshall.Teams.Transfer` |
 | [`Marshall.Terminal`](repo:marshall/lib/marshall/terminal.ex) | `Marshall.Terminal.Event`, `Marshall.Terminal.Grant`, `Marshall.Terminal.Location`, `Marshall.Terminal.Opening`, `Marshall.Terminal.Session`, `Marshall.Terminal.Ticket` |
 | [`Marshall.Threads`](repo:marshall/lib/marshall/threads.ex) | `Marshall.Threads.AccessChange`, `Marshall.Threads.Generation`, `Marshall.Threads.Grant`, `Marshall.Threads.ReadMarker`, `Marshall.Threads.Thread` |
@@ -270,6 +257,13 @@ Workflow attempts commit with their canonical SSH mutation receipts. They retain
 clone sequence and retry operation binding, terminal exclusions for cancelled or
 superseded original intents, and independent cancellation-command outcomes.
 These measurements provide no workflow, reservation or execution authority.
+
+`Marshall.Scim` owns persisted SCIM configuration and bearer authentication.
+SCIM calls the Accounts and Teams domains through `ash_scim`; Teams remains the
+authority for membership and exactly-one-owner enforcement. Enabling SCIM moves
+native teams into retirement and creates only directory-managed teams thereafter.
+The hidden service owner is an implementation identity and is excluded from
+ordinary people and SCIM member projections.
 
 [View properties and units](repo:marshall/test/architecture/hldd_views_test.exs)
 check source drift, domain/resource ownership and missing explanations. The

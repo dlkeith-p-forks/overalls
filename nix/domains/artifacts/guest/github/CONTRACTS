@@ -11,3 +11,7 @@ An ambiguous upstream result MUST remain ambiguous and MUST NOT trigger replay.
 Managed client packages MUST build from hash-pinned upstream sources with the
 supplied Nixpkgs Go toolchain. Cross-compilation alone MUST NOT establish guest
 runtime qualification or alter an admitted immutable native image identity.
+
+@cc [owner:ghuntley,label:build;security] managed-lfs-reviewed-release
+The managed LFS source tag/hash, package version, vendor label, patch and module
+hash MUST identify the same reviewed release independently of Nixpkgs git-lfs.

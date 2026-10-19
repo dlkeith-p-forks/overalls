@@ -61,6 +61,25 @@ userinfo. The validator does not enforce equality between its host and the
 configured Marshall origin. The browser's final return is the fixed local
 Integrations page.
 
+GitHub's [2026-08-14 announcement](https://github.blog/changelog/2026-08-14-multiple-redirect-uris-and-token-refresh-for-oauth-apps/)
+and [OAuth App authorization guide](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps),
+reviewed on 2026-10-19, document expiring OAuth App tokens on GitHub.com. Marshall
+always requests `offline_access`, which requests an eight-hour access token and
+a refresh token valid for six months without use even if the app's global
+expiring-token option is disabled. That option does not convert previously
+issued long-lived tokens; obtain a fresh connection through Marshall. The
+integration requires `token_type=bearer`, both tokens and their expiry fields.
+Missing fields or another token type refuse the connection. GitHub Enterprise
+Server is outside this provider.
+`offline_access` is not tracked as a normal granted scope and need not appear
+in the returned scope list. Verify actual consent and rotation with the
+registered app before deployment; documentation and fixture replies do not
+establish those results.
+
+Marshall's `form-action` policy permits the fixed `https://github.com` origin
+for the authorization POST redirect. It permits no arbitrary HTTPS form target;
+scripts, connections and frames retain their same-origin restrictions.
+
 On NixOS, set `services.marshall.github.clientId`, `clientSecretFile` and
 `redirectUri` together. Their defaults are `null`; partial configuration fails a
 module assertion. The unit wrapper removes inherited GitHub settings and
@@ -112,7 +131,29 @@ matching completed tool-installation receipt. Configure matching
 source-built executor bytes. It does not by itself prove retained-machine
 bootstrap succeeded.
 
+Retained FreeBSD and illumos tool setup validates a completed immutable
+workspace source before replacing the historical `/workspace/*` Git ownership
+exception with a durable include for that exact checkout. It preserves unrelated
+system Git settings and restores the original configuration on setup rollback.
+Pending or corrupt sources refuse migration; an absent source leaves the existing
+ownership policy unchanged. Tightening after a later checkout requires another
+real setup pass; tool installation alone does not establish that migration.
+
+Managed native Go clients read the reviewed system CA bundle explicitly:
+FreeBSD `/etc/ssl/cert.pem`, illumos `/etc/ssl/cacert.pem`. Missing, malformed or
+oversized bundles refuse requests instead of falling back to vendor roots or
+environment-selected trust. The maximum bundle size is two MiB. Linux and
+Windows retain their platform trust behavior.
+
 ## Refresh, withdrawal and recovery
+
+GitHub documents `POST https://github.com/login/oauth/access_token` with
+`grant_type=refresh_token` as the refresh exchange. A successful exchange
+invalidates both the previous access token and the consumed refresh token and
+returns a new pair with unchanged permission scopes. The documented example has
+`expires_in=28800` and `refresh_token_expires_in=15897600`; Marshall uses the
+validated response deadlines rather than a hard-coded lifetime. Invalid or
+expired refresh authority returns `bad_refresh_token` and requires reconnection.
 
 Refresh begins ten minutes before access-token expiry. New old-generation
 admissions stop during a drain of at most five minutes; remaining leases are
@@ -179,3 +220,10 @@ needs recorded execution. The review and authenticated HLDD ledger distinguish
 presence from results. Parsers, mocked token replies, installed CLIs and
 structural gates do not establish live GitHub, organization consent,
 seven-family runtime or production acceptance.
+
+The 2026-10-19 controlled packaged edge run passed managed gh, Git, LFS,
+binary downloads, lease withdrawal and credential-redaction scenarios. It uses
+substituted Marshall/Lilly authority. Consult the
+[execution review](../architecture/reviews/2026-10-18-github-com-integration.md)
+for the revision and bounded result; browser OAuth, scheduled refresh and retained
+native fleet acceptance need their own records.

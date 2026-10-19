@@ -28,6 +28,13 @@ identity signs. Status is in the
 [ADR-0203](decisions/0203-guest-reflection.md) accepts a secret-free, execution-fenced reflection projection over the private service path; implementation remains partial.
 
 [ADR-0202](decisions/0202-github-com-owner-integration.md) accepts owner-bound GitHub OAuth custody and managed guest forwarding; implementation remains partial.
+FreeBSD attribution-capable image `0150b6d1` now has all-five current-VMM
+qualification, signed publication, fresh-store verification and additive source
+admission/default selection. Immutable history and retained-native staging
+preserve the old image's cold-restart authority without adding capabilities.
+OmniOS selection, live fleet acceptance and native checkpoint support remain
+separate; exact results and historical failures are in the
+[GitHub review](reviews/2026-10-18-github-com-integration.md).
 
 [ADR-0201](decisions/0201-localized-human-surfaces.md) accepts Localize-backed human surfaces with validated language preferences, LTR/RTL presentation and native Gettext catalogs partitioned by locale and feature. Public guides are localized; authenticated handbook chapters remain source English. Translation and native browser acceptance remain partial.
 

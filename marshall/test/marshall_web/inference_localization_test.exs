@@ -33,42 +33,42 @@ defmodule MarshallWeb.InferenceLocalizationTest do
               })
             ]
 
-        document = render_usage(rows) |> Floki.parse_document!()
+        document = render_usage(rows) |> LazyHTML.from_fragment()
 
         for id <- ["missing", "missing-fields"] do
-          cells = Floki.find(document, "#usage-#{id} > td")
-          assert cells |> Enum.at(2) |> Floki.text() == unknown
-          assert cells |> Enum.at(3) |> Floki.text() == unknown
-          assert cells |> Enum.at(5) |> Floki.text() =~ unknown
+          cells = LazyHTML.query(document, "#usage-#{id} > td")
+          assert cells |> Enum.at(2) |> LazyHTML.text() == unknown
+          assert cells |> Enum.at(3) |> LazyHTML.text() == unknown
+          assert cells |> Enum.at(5) |> LazyHTML.text() =~ unknown
         end
 
-        assert Floki.find(document, "#usage-missing > td")
+        assert LazyHTML.query(document, "#usage-missing > td")
                |> Enum.at(4)
-               |> Floki.text()
+               |> LazyHTML.text()
                |> String.trim() == translated("Unreported")
 
-        assert Floki.find(document, "#usage-missing-fields > td")
+        assert LazyHTML.query(document, "#usage-missing-fields > td")
                |> Enum.at(4)
-               |> Floki.text()
+               |> LazyHTML.text()
                |> String.trim() == unknown
 
         for {{_, source}, index} <- Enum.with_index(outcomes) do
-          cells = Floki.find(document, "#usage-known-#{index} > td")
-          assert cells |> Enum.at(2) |> Floki.text() == "17"
-          assert cells |> Enum.at(3) |> Floki.text() == unknown
-          assert cells |> Enum.at(4) |> Floki.text() |> String.trim() == translated(source)
-          assert cells |> Enum.at(5) |> Floki.text() =~ translated("Complete")
+          cells = LazyHTML.query(document, "#usage-known-#{index} > td")
+          assert cells |> Enum.at(2) |> LazyHTML.text() == "17"
+          assert cells |> Enum.at(3) |> LazyHTML.text() == unknown
+          assert cells |> Enum.at(4) |> LazyHTML.text() |> String.trim() == translated(source)
+          assert cells |> Enum.at(5) |> LazyHTML.text() =~ translated("Complete")
         end
 
-        assert Floki.find(document, "#usage-partial > td")
+        assert LazyHTML.query(document, "#usage-partial > td")
                |> Enum.at(4)
-               |> Floki.text()
+               |> LazyHTML.text()
                |> String.trim() == unknown
 
-        assert Floki.find(document, "#usage-partial > td") |> Enum.at(5) |> Floki.text() =~
+        assert LazyHTML.query(document, "#usage-partial > td") |> Enum.at(5) |> LazyHTML.text() =~
                  translated("Partial")
 
-        refute Floki.text(document) =~ "unexpected-value"
+        refute LazyHTML.text(document) =~ "unexpected-value"
       end)
     end
   end

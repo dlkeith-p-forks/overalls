@@ -558,6 +558,13 @@ saturate limits of two to eight slots, kill owners without explicit release and
 verify exact reclamation and replacement admission. This checks local monitor
 accounting; it does not exercise distributed sockets or partitions.
 
+Peers monitor the exact budget incarnation that admitted them. Its death aborts
+incoming transport and retires outgoing peers before successor admissions;
+graceful WebSocket closing is insufficient because it can still dispatch
+application callbacks. The loopback TLS restart history requires exact old-owner
+termination and successor slots while preserving the synthetic host stream.
+It does not establish native guest survival or independent-node recovery.
+
 Lilly's host stream and the Marshall peer hop now use the shared active-once
 WebSocket connection (ADR-0142); neither polls its socket. The terminal codec,
 hello and credits are unchanged. Lilly opens the stream outside its process, so
@@ -1578,8 +1585,10 @@ a controller ticket is granted. It does not use a foreign iframe or external
 resource.
 
 The `/android-display` WebSocket upgrade verifies the browser login, signed
-machine ticket, actor binding, mode and generation before creating a relay
-process; failed upgrades return a generic refusal without machine disclosure.
+machine ticket, actor binding, mode and generation before obtaining the shared
+relay from the machine-and-generation registry. Sockets for that generation
+share controller custody; failed upgrades return a generic refusal without
+machine disclosure.
 
 Display tickets and WebSocket upgrades bind the signed emulator generation; a
 browser-supplied generation mismatch is refused before relay creation.

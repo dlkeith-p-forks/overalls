@@ -4,7 +4,16 @@ let
   freebsd = packages.mkFreeBSDGuest { imageName = "freebsd-evaluation"; };
   omnios = packages.mkOmniOSGuest { imageName = "omnios-evaluation"; };
   illumos = packages.mkIllumosGuest { imageName = "illumos-evaluation"; };
+  refusesIdentity = args: !(builtins.tryEval (packages.mkFreeBSDGuest args).name).success;
   fleetImages = import ../../../../fleet/guest-images.nix { overallsPackages = packages; };
+  stagedImages = import ../../../../fleet/staged-guest-images.nix { overallsPackages = packages; };
+  stagedPaths = map (entry: toString entry.package) stagedImages;
+  selectedPaths = map (entry: toString entry.package) fleetImages;
+  # Simulate a future default change without activating the qualified candidate.
+  changedPackages = packages // { freebsdGuest = packages.freebsdGuest.overrideAttrs (_: { name = "native-selected-staging-policy-test"; }); };
+  changedSelected = import ../../../../fleet/guest-images.nix { overallsPackages = changedPackages; };
+  changedStaged = import ../../../../fleet/staged-guest-images.nix { overallsPackages = changedPackages; };
+  changedPaths = map (entry: toString entry.package) changedStaged;
   plain = builtins.unsafeDiscardStringContext;
   freebsdCommand = plain freebsd.buildCommand;
   omniosCommand = plain omnios.buildCommand;
@@ -14,6 +23,14 @@ let
 in
 # This is an evaluation gate: it checks source pins, closed artifact assembly
 # and v6 manifest fields without downloading or installing a guest image.
+assert lib.all (path: builtins.elem path stagedPaths) selectedPaths;
+assert builtins.length stagedPaths == builtins.length (lib.unique stagedPaths);
+assert builtins.elem (toString packages.legacyFreebsdGuest) stagedPaths;
+assert builtins.elem (toString packages.legacyOmniosGuest) stagedPaths;
+assert builtins.elem (toString packages.legacyFreebsdGuest) changedPaths;
+assert builtins.elem (toString changedPackages.freebsdGuest) changedPaths;
+assert !builtins.any (entry: toString entry.package == toString packages.legacyFreebsdGuest) changedSelected;
+assert builtins.length changedPaths == builtins.length (lib.unique changedPaths);
 assert freebsd.passthru.os == "freebsd";
 assert freebsd.passthru.release == "14.3-RELEASE";
 assert toString freebsd.passthru.firmware == toString packages.windowsFirmware.fd;
@@ -30,7 +47,7 @@ assert illumos.passthru.upstreamUrl == "https://illumos.org/";
 # constructors. Fleet admission binds each complete immutable identity.
 assert freebsdFleetImage != null;
 assert freebsdFleetImage.package.nativeAdmission;
-assert freebsdFleetImage.package.imageId == "sha256:d141e4266c29da00a1378157b1d39369b1d48e577bca4ce7375e8ff6d399557b";
+assert freebsdFleetImage.package.imageId == "sha256:0150b6d1aee0b30892b937eb0566a3dcebf2c5ca4cec75f7a252bd9ae00beac6";
 assert illumosFleetImage != null;
 assert illumosFleetImage.package.nativeAdmission;
 assert illumosFleetImage.package.runtimeValidated;
@@ -45,6 +62,13 @@ assert !freebsd.passthru.imageAssemblyReady;
 assert !freebsd.passthru.stagingOnly;
 assert !packages.freebsdImageCandidate.nativeAdmission;
 assert !packages.freebsdImageCandidate.runtimeValidated;
+# Attribution is explicit candidate metadata, never inferred for approved disks.
+assert lib.hasInfix "--argjson git_identity null" freebsdCommand;
+assert lib.hasInfix "--argjson git_identity 1" (plain packages.freebsdImageCandidate.stagedImage.buildCommand);
+assert refusesIdentity { gitIdentityVersion = 1; workspaceSourceVersion = null; };
+assert refusesIdentity { gitIdentityVersion = 2; };
+assert refusesIdentity { gitIdentityVersion = 1.0; };
+assert refusesIdentity { gitIdentityVersion = "1"; };
 assert !omnios.passthru.imageAssemblyReady;
 assert !freebsd.passthru.nativeAdmission;
 assert !omnios.passthru.nativeAdmission;

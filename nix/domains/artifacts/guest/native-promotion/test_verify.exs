@@ -31,6 +31,67 @@ defmodule Overalls.NativeImagePromotionTest do
     end
   end
 
+  for os <- ~w(freebsd illumos) do
+    test "requires all current oracles for Git identity capable #{os}", %{root: root} do
+      fixture = fixture(root, unquote(os), true)
+      assert :ok == Promotion.verify!(fixture.approval_path, fixture.output)
+    end
+
+    test "refuses missing, substituted, duplicated or extra capable #{os} oracles", %{root: root} do
+      fixture = fixture(root, unquote(os), true)
+      attribution = "all-boots-current-mmds-git-config-and-commit-attribution"
+      ownership = "workspace-exact-git-ownership-and-unrelated-root-refusal"
+      withdrawal = "executor-current-heartbeat-withdrawal-before-command-deadline"
+      cancellation = "executor-whole-group-death-no-result-and-fresh-fence-completion"
+
+      for {change, reason} <- [
+            {fn checks -> List.delete(checks, attribution) end, "complete_services"},
+            {fn checks -> List.delete(checks, ownership) end, "complete_services"},
+            {fn checks -> List.delete(checks, withdrawal) end, "complete_services"},
+            {fn checks -> List.delete(checks, cancellation) end, "complete_services"},
+            {fn checks -> [attribution | List.delete(checks, ownership)] end, "receipt_checks"},
+            {fn checks -> ["foreign-oracle" | List.delete(checks, attribution)] end,
+             "complete_services"},
+            {fn checks -> [attribution | checks] end, "receipt_checks"}
+          ] do
+        alter_service(fixture, &Map.update!(&1, "checks", change))
+        refused!(fixture, reason)
+      end
+    end
+
+    test "refuses unadvertised attribution for historical #{os}", %{root: root} do
+      fixture = fixture(root, unquote(os))
+
+      alter_service(fixture, fn receipt ->
+        Map.update!(receipt, "checks", fn checks ->
+          ["all-boots-current-mmds-git-config-and-commit-attribution" | checks]
+        end)
+      end)
+
+      refused!(fixture, "complete_services")
+    end
+  end
+
+  test "refuses malformed Git identity capability declarations", %{root: root} do
+    fixture = fixture(root, "freebsd", true)
+
+    for value <- [nil, false, 0, 1.0, 2, "1"] do
+      manifest = Map.put(fixture.approval["manifest"], "git_identity_version", value)
+      write_json(fixture.approval_path, Map.put(fixture.approval, "manifest", manifest))
+      refused!(fixture, "manifest")
+    end
+  end
+
+  test "does not admit a structurally complete capable candidate", %{root: root} do
+    fixture = fixture(root, "freebsd", true)
+
+    assert_raise ArgumentError, ~r/unapproved_image/, fn ->
+      Promotion.verify_approved!(fixture.approval_path, fixture.output)
+    end
+
+    refute File.exists?(Path.join(fixture.output, "manifest.json"))
+  end
+
   test "refuses an artifact mutation of the same length before publishing a manifest", %{
     root: root
   } do
@@ -224,8 +285,8 @@ defmodule Overalls.NativeImagePromotionTest do
     write_json(fixture.approval_path, Map.put(fixture.approval, "scenarios", [scenario | rest]))
   end
 
-  @spec fixture(String.t(), String.t()) :: fixture()
-  defp fixture(root, os) do
+  @spec fixture(String.t(), String.t(), boolean()) :: fixture()
+  defp fixture(root, os, git_identity? \\ false) do
     output = Path.join(root, "output")
     File.mkdir!(output)
     disk = "guest disk"
@@ -253,6 +314,7 @@ defmodule Overalls.NativeImagePromotionTest do
       "workspace_source_version" => 2
     }
 
+    manifest = if git_identity?, do: Map.put(manifest, "git_identity_version", 1), else: manifest
     {:ok, image} = ImageManifest.validate(manifest)
     vmm = hash("reviewed VMM")
 
@@ -286,7 +348,7 @@ defmodule Overalls.NativeImagePromotionTest do
             "kernel_sha256" => image.kernel.sha256,
             "firmware_sha256" => hash(firmware),
             "vmm_sha256" => vmm,
-            "checks" => service_oracles(os, name == "crash-recovery")
+            "checks" => service_oracles(os, name == "crash-recovery", git_identity?)
           })
 
         supporting =
@@ -325,8 +387,8 @@ defmodule Overalls.NativeImagePromotionTest do
     %{root: root, output: output, approval: approval, approval_path: approval_path}
   end
 
-  @spec service_oracles(String.t(), boolean()) :: [String.t()]
-  defp service_oracles(os, crash?) do
+  @spec service_oracles(String.t(), boolean(), boolean()) :: [String.t()]
+  defp service_oracles(os, crash?, git_identity?) do
     checks = ~w(
       mmdsv2-current-boot-kernel assigned-address-reachable
       readiness-withheld-without-ssh-authority trust-installed-and-stale-refused
@@ -356,7 +418,7 @@ defmodule Overalls.NativeImagePromotionTest do
       end
 
     additional =
-      if os == "illumos" do
+      if os == "illumos" or git_identity? do
         ~w(workspace-exact-git-ownership-and-unrelated-root-refusal
           executor-current-heartbeat-withdrawal-before-command-deadline
           executor-whole-group-death-no-result-and-fresh-fence-completion)
@@ -364,7 +426,12 @@ defmodule Overalls.NativeImagePromotionTest do
         []
       end
 
-    checks ++ endings ++ additional
+    attribution =
+      if git_identity?,
+        do: ["all-boots-current-mmds-git-config-and-commit-attribution"],
+        else: []
+
+    checks ++ endings ++ additional ++ attribution
   end
 
   @spec artifact(binary()) :: %{String.t() => pos_integer() | String.t()}

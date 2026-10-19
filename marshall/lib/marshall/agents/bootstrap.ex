@@ -12,6 +12,10 @@ defmodule Marshall.Agents.Bootstrap do
   # completion MUST revalidate the live executor and current execution; only a
   # completed desired tool receipt establishes bootstrap success. Bounded failures
   # MAY retry using verified public artifacts without replaying GitHub mutations.
+
+  # @cc [owner:ghuntley,label:recovery] executor-bootstrap-claim-idempotency
+  # Repeated claims by the same current executor and fence MUST return the same
+  # unstarted attempt. A repeated poll MUST NOT invalidate its later start receipt.
   @spec claim_locked!(binding(), String.t(), pos_integer()) :: envelope() | nil
   def claim_locked!(binding, id, fence) do
     {executor, vm} = ExecutorSession.maintenance_lease!(binding, id, fence)
@@ -50,6 +54,9 @@ defmodule Marshall.Agents.Bootstrap do
         row.phase == :completed ->
           nil
 
+        row.phase == :claimed ->
+          envelope(row)
+
         row.phase == :started and DateTime.diff(Ledger.now(), row.updated_at) < 30 ->
           nil
 
@@ -74,16 +81,21 @@ defmodule Marshall.Agents.Bootstrap do
               execution_epoch: vm.execution_epoch
             })
 
-          %{
-            id: row.attempt_id,
-            call_id: "executor-bootstrap",
-            tool: :exec_command,
-            arguments: %{"cmd" => script(row)}
-          }
+          envelope(row)
       end
     else
       _ -> nil
     end
+  end
+
+  @spec envelope(ToolBootstrap.t()) :: envelope()
+  defp envelope(row) do
+    %{
+      id: row.attempt_id,
+      call_id: "executor-bootstrap",
+      tool: :exec_command,
+      arguments: %{"cmd" => script(row)}
+    }
   end
 
   @spec transition_locked!(binding(), String.t(), pos_integer(), String.t(), atom(), map()) ::

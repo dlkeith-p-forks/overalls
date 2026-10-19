@@ -104,6 +104,11 @@ defmodule OverallsProtocol.NativeAdmissionTest do
         kernel: image.kernel
       }
 
+      bundle =
+        if Map.get(image, :git_identity_version) == 1,
+          do: Map.put(bundle, :git_identity_version, 1),
+          else: bundle
+
       assert {:ok, ^bundle} = bundle |> WorkloadBundle.encode() |> WorkloadBundle.validate()
       assert NativeAdmission.admitted?(bundle)
       assert GuestAgents.capabilities(@agents, bundle).terminal
@@ -135,6 +140,96 @@ defmodule OverallsProtocol.NativeAdmissionTest do
         refute GuestAgents.capabilities(@agents, invalid).readiness
       end
     end
+  end
+
+  test "selected defaults belong to explicit immutable history and every retained identity remains admitted" do
+    for os <- [:freebsd, :illumos] do
+      history = NativeAdmission.reviewed_manifests(os)
+      assert NativeAdmission.reviewed_manifest(os) in history
+      assert history != []
+
+      ids =
+        Enum.map(history, fn manifest ->
+          assert {:ok, image} = ImageManifest.validate(manifest)
+          assert NativeAdmission.admitted?(image)
+          refute NativeAdmission.checkpoint_admitted?(image)
+
+          bundle = %{
+            image_id: image.id,
+            architecture: image.architecture,
+            boot_kind: image.boot_kind,
+            os: image.os,
+            guest_agents: image.guest_agents,
+            pci: image.pci,
+            firmware_bytes: manifest["boot"]["firmware"]["bytes"],
+            kernel: image.kernel
+          }
+
+          bundle =
+            if Map.get(image, :git_identity_version) == 1,
+              do: Map.put(bundle, :git_identity_version, 1),
+              else: bundle
+
+          assert {:ok, ^bundle} = bundle |> WorkloadBundle.encode() |> WorkloadBundle.validate()
+          assert NativeAdmission.admitted?(bundle)
+          refute NativeAdmission.checkpoint_admitted?(bundle)
+
+          refute NativeAdmission.admitted?(%{
+                   bundle
+                   | image_id: "sha256:" <> String.duplicate("0", 64)
+                 })
+
+          image.id
+        end)
+
+      assert Enum.uniq(ids) == ids
+    end
+  end
+
+  test "Git identity selection preserves immutable legacy admission without relabelling" do
+    candidate = NativeAdmission.reviewed_manifest(:freebsd)
+    assert {:ok, %{git_identity_version: 1} = image} = ImageManifest.validate(candidate)
+    assert NativeAdmission.admitted?(image)
+    refute NativeAdmission.checkpoint_admitted?(image)
+    assert candidate in NativeAdmission.reviewed_manifests(:freebsd)
+    refute NativeAdmission.admitted?(Map.delete(image, :git_identity_version))
+
+    legacy_manifest =
+      Path.expand("../priv/native/freebsd-14.3.json", __DIR__)
+      |> File.read!()
+      |> JSON.decode!()
+
+    assert {:ok, legacy} = ImageManifest.validate(legacy_manifest)
+    assert legacy.id != image.id
+    refute Map.has_key?(legacy, :git_identity_version)
+    assert NativeAdmission.admitted?(legacy)
+    refute NativeAdmission.admitted?(Map.put(legacy, :git_identity_version, 1))
+    refute NativeAdmission.checkpoint_admitted?(legacy)
+
+    for current <- [legacy, image] do
+      bundle = %{
+        image_id: current.id,
+        architecture: current.architecture,
+        boot_kind: current.boot_kind,
+        os: current.os,
+        guest_agents: current.guest_agents,
+        pci: current.pci,
+        firmware_bytes: current.manifest["boot"]["firmware"]["bytes"],
+        kernel: current.kernel
+      }
+
+      if current == legacy do
+        assert NativeAdmission.admitted?(bundle)
+        refute NativeAdmission.admitted?(Map.put(bundle, :git_identity_version, 1))
+      else
+        refute NativeAdmission.admitted?(bundle)
+        assert NativeAdmission.admitted?(Map.put(bundle, :git_identity_version, 1))
+      end
+    end
+
+    assert {:ok, omnios} = ImageManifest.validate(NativeAdmission.reviewed_manifest(:illumos))
+    refute Map.has_key?(omnios, :git_identity_version)
+    assert NativeAdmission.admitted?(omnios)
   end
 
   test "the default reviewed manifest remains the FreeBSD identity" do

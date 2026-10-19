@@ -9,14 +9,14 @@ defmodule Marshall.EditorLoginCheckTest do
   # login from a caller whose unshared sandbox cannot answer the lookup. An
   # unavailable lookup MUST NOT be misclassified as stale authentication.
   test "current, revoked and unanswered stored logins retain different control classes" do
-    fixture = Marshall.TerminalFixtures.terminal_fixture()
-    {:ok, jti, expiry} = Login.verify(fixture.token, fixture.owner)
-    assert Authority.check_login(jti, fixture.owner.id) == {:ok, expiry}
+    {owner, token} = Marshall.PasskeyFixture.user() |> Marshall.PasskeyFixture.login()
+    {:ok, jti, expiry} = Login.verify(token, owner)
+    assert Authority.check_login(jti, owner.id) == {:ok, expiry}
 
     parent = self()
 
     spawn(fn ->
-      send(parent, {:unanswered, Authority.check_login(jti, fixture.owner.id)})
+      send(parent, {:unanswered, Authority.check_login(jti, owner.id)})
     end)
 
     assert_receive {:unanswered, {:error, :unavailable}}, 5_000
@@ -25,6 +25,6 @@ defmodule Marshall.EditorLoginCheckTest do
       log: false
     )
 
-    assert Authority.check_login(jti, fixture.owner.id) == {:error, :authentication_required}
+    assert Authority.check_login(jti, owner.id) == {:error, :authentication_required}
   end
 end

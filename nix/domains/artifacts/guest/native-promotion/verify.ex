@@ -67,9 +67,12 @@ defmodule Overalls.NativeImagePromotion do
     require!(value["version"] == 1, :approval_version)
 
     image =
-      case ImageManifest.validate_native(value["manifest"]) do
-        {:ok, image} -> image
-        _ -> refuse!(:manifest)
+      case ImageManifest.validate(value["manifest"]) do
+        {:ok, %{manifest: %{"version" => 6}, os: os} = image} when os in [:freebsd, :illumos] ->
+          image
+
+        _ ->
+          refuse!(:manifest)
       end
 
     require!(image.id == value["image_id"], :image_id)
@@ -139,7 +142,7 @@ defmodule Overalls.NativeImagePromotion do
 
     require!(
       Enum.sort(receipt["checks"]) ==
-        Enum.sort(service_checks(approval.image.os, scenario.name == "crash-recovery")),
+        Enum.sort(service_checks(approval.image, scenario.name == "crash-recovery")),
       :complete_services
     )
 
@@ -174,9 +177,12 @@ defmodule Overalls.NativeImagePromotion do
   # scenario's clean or abrupt shutdown checks. The immutable FreeBSD approval
   # retains its 22 recorded checks; OmniOS MUST additionally verify workspace
   # ownership and executor heartbeat withdrawal and whole-group cancellation.
+  # Explicit version-1 Git identity images MUST require those three oracles on
+  # both OS families and current-MMDS Git configuration/commit attribution.
   # Equal-length unknown checks MUST NOT substitute for any required oracle.
-  @spec service_checks(:freebsd | :illumos, boolean()) :: [String.t()]
-  defp service_checks(os, crash?) do
+  @spec service_checks(ImageManifest.native_image(), boolean()) :: [String.t()]
+  defp service_checks(image, crash?) do
+    git_identity? = Map.get(image, :git_identity_version) === 1
     common = ~w(
       mmdsv2-current-boot-kernel
       assigned-address-reachable
@@ -211,17 +217,20 @@ defmodule Overalls.NativeImagePromotion do
       end
 
     additional =
-      case os do
-        :freebsd ->
-          []
-
-        :illumos ->
-          ~w(workspace-exact-git-ownership-and-unrelated-root-refusal
+      if image.os == :illumos or git_identity? do
+        ~w(workspace-exact-git-ownership-and-unrelated-root-refusal
             executor-current-heartbeat-withdrawal-before-command-deadline
             executor-whole-group-death-no-result-and-fresh-fence-completion)
+      else
+        []
       end
 
-    common ++ endings ++ additional
+    attribution =
+      if git_identity?,
+        do: ["all-boots-current-mmds-git-config-and-commit-attribution"],
+        else: []
+
+    common ++ endings ++ additional ++ attribution
   end
 
   @spec common_receipt!(map(), approval()) :: :ok

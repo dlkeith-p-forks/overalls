@@ -135,6 +135,11 @@ defmodule OverallsProtocol.ImageManifest do
 
   def validate(%{"git_identity_version" => _}), do: {:error, :invalid_image_manifest}
 
+  # @cc [owner:ghuntley,label:protocol;security] image-kernel-agent-shape
+  # Version-4 kernel images MUST admit only the optional linux or linux-android-v1
+  # agent declaration alongside the independently validated editor descriptor.
+  # Missing agents retain the existing Linux identity; an explicit declaration
+  # MUST bind immutable image identity. Unknown keys and cross-OS agents refuse.
   def validate(
         %{
           "version" => 4,
@@ -403,7 +408,8 @@ defmodule OverallsProtocol.ImageManifest do
 
   # @cc [owner:ghuntley,label:security;protocol] image-guest-agents-no-inference
   # Guest agent capability MUST come only from a validated manifest: version 4 images
-  # carry Linux, version 5 declares `none`/`windows-v1`, and version 6 declares
+  # carry Linux or explicitly linux-android-v1, version 5 declares `none`/`windows-v1`,
+  # and version 6 declares
   # the matching native OS agent set. Version 7 alone carries windows-editor-v1.
   # Installed guest software, package presence or caller hints MUST NOT grant or
   # remove agent capability; what a set can do is OverallsProtocol.GuestAgents'

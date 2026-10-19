@@ -63,6 +63,13 @@ def receipt(before: services.Boot, after: services.Boot) -> dict[str, object]:
 
 
 class CrashBoundaryTest(unittest.TestCase):
+    def test_fsck_exit_status_is_closed_and_bounded(self) -> None:
+        for body, expected in ((b"0", 0), (b"1", 1), (b"255", 255)):
+            self.assertEqual(crash.ufs_integrity_status(body), expected)
+        for body in (b"", b"00", b"-1", b"256", b"0\n", b"0secret", b"9" * 4096):
+            with self.subTest(size=len(body)), self.assertRaises(services.ProtocolError):
+                crash.ufs_integrity_status(body)
+
     def test_ssh_accepts_only_exact_login_event_and_bounded_success(self) -> None:
         self.assertEqual(
             crash.command_output(
@@ -215,6 +222,32 @@ class CrashBoundaryTest(unittest.TestCase):
             ):
                 with self.subTest(body=body), self.assertRaises(services.ProtocolError):
                     crash.service_evidence(body, first, second)
+
+    def test_service_attribution_check_requires_exact_capability(self) -> None:
+        before, after = boots()
+        attribution = "all-boots-current-mmds-git-config-and-commit-attribution"
+        with child() as process:
+            first = crash.Observation(before, process, "freebsd")
+            second = crash.Observation(after, process, "freebsd")
+            original = receipt(before, after)
+            capable = original | {"checks": [*crash.SERVICE_CHECKS, attribution]}
+            crash.service_evidence(json.dumps(capable).encode(), first, second, git_identity=True)
+            for value, expected_identity in (
+                (capable, False),
+                (original, True),
+                (capable | {"checks": [*crash.SERVICE_CHECKS, attribution, attribution]}, True),
+                (
+                    capable | {"checks": [*crash.SERVICE_CHECKS[:-1], attribution, attribution]},
+                    True,
+                ),
+            ):
+                with (
+                    self.subTest(capable=expected_identity),
+                    self.assertRaises(services.ProtocolError),
+                ):
+                    crash.service_evidence(
+                        json.dumps(value).encode(), first, second, git_identity=expected_identity
+                    )
 
     def test_incomplete_observations_publish_no_receipt(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

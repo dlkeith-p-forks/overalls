@@ -5,6 +5,15 @@ defmodule Marshall.Compute.StateMachineTest do
   alias Marshall.Compute.{CloneRequest, Operation, ReadinessRequest, ResizeRequest, WakeRequest}
   alias Marshall.Authorization.SystemActor
 
+  # checkpoint models an available paused restore, not mapped checkpoint
+  # provenance that production retains after the restore has been consumed.
+  @type suspension_model :: %{
+          state: :running | :paused | :waiting_capacity | :relocating,
+          pinned: boolean(),
+          checkpoint: boolean(),
+          wake_requests: 0 | 1
+        }
+
   property "clone histories cannot skip snapshots or publish after cancellation" do
     transitions = %{
       queued: %{prepare: :preparing, cancel: :cancelled, fail: :failed},
@@ -150,7 +159,21 @@ defmodule Marshall.Compute.StateMachineTest do
 
         assert next.wake_requests in 0..1
         assert next.checkpoint or next.state not in [:paused, :waiting_capacity, :relocating]
-        refute next.state == :running and next.checkpoint and action == :idle_expire
+
+        if action == :idle_expire do
+          if model.state == :running and not model.pinned do
+            assert next.state == :paused and next.checkpoint
+          else
+            assert next == model
+          end
+        end
+
+        if action == :tool_call, do: assert(next == model)
+
+        if model.state in [:paused, :waiting_capacity] and model.wake_requests == 1 and
+             action == :capacity_available do
+          assert next.state == :running and not next.checkpoint and next.wake_requests == 0
+        end
 
         next
       end)
@@ -158,9 +181,12 @@ defmodule Marshall.Compute.StateMachineTest do
     assert final.state in [:running, :paused, :waiting_capacity, :relocating]
   end
 
-  @spec suspension_transition(map(), atom()) :: map()
-  defp suspension_transition(model, :tool_call),
-    do: %{model | state: :running, checkpoint: false, wake_requests: 0}
+  # @cc [owner:ghuntley,label:verification;recovery] suspension-model-tool-fence
+  # Tool activity MUST NOT invent a lifecycle transition or consume a retained
+  # checkpoint; only the explicit capacity-approved wake may resume the model,
+  # consuming the checkpoint on successful resume as required by ADR-0199.
+  @spec suspension_transition(suspension_model(), atom()) :: suspension_model()
+  defp suspension_transition(model, :tool_call), do: model
 
   defp suspension_transition(%{state: :running} = model, :idle_expire) do
     if model.pinned, do: model, else: %{model | state: :paused, checkpoint: true}

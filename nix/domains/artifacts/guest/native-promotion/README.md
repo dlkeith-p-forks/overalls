@@ -22,7 +22,12 @@ service checks, and record clean exits except the crash scenario's observed
 SIGKILL. The immutable FreeBSD approval retains its 22 reviewed checks. OmniOS
 requires 25, additionally covering workspace Git ownership and unrelated-root
 refusal, executor heartbeat withdrawal and whole-process-group cancellation.
-Missing or substituted oracle names refuse even when the check count matches.
+Those historical sets remain unchanged for manifests without Git identity support.
+An explicit `git_identity_version = 1` manifest requires all 25 current baseline
+checks on either OS, plus `all-boots-current-mmds-git-config-and-commit-attribution`.
+The capability is validated by the shared manifest validator and binds the image
+identity; receipt contents cannot enable it. Missing, substituted, duplicate or
+extra oracle names refuse, including equal-count substitutions.
 Supporting receipts must cover those same boots. All original candidate
 receipts retain `native_admission=false`; the approval and runtime capability
 registry are separate authorities.
@@ -70,4 +75,6 @@ or Marshall-driven fleet acceptance.
 The `native-image-promotion` check exercises both native manifest families and
 refuses mutated artifacts, foreign or changed evidence, replayed boot IDs,
 incomplete scenarios and extra output files. It is a host verifier test, not
-native runtime acceptance.
+native runtime acceptance. Passing this structural verifier does not qualify a
+new image, enter it in the exact admission registry, publish its bytes or activate
+its catalog selection; each remains a separate reviewed prerequisite.

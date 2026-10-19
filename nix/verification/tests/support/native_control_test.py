@@ -16,6 +16,26 @@ from unittest.mock import patch
 import native_control as control
 
 
+class ArtifactStreamFailureTest(unittest.TestCase):
+    def test_closed_categories_do_not_include_exception_text(self) -> None:
+        cases: tuple[
+            tuple[OSError | ValueError | subprocess.SubprocessError, control.ArtifactStreamFailure],
+            ...,
+        ] = (
+            (TimeoutError("sensitive"), control.ArtifactStreamFailure.TIMEOUT),
+            (ssl.SSLError("sensitive"), control.ArtifactStreamFailure.TLS),
+            (BrokenPipeError("sensitive"), control.ArtifactStreamFailure.PEER),
+            (ConnectionResetError("sensitive"), control.ArtifactStreamFailure.PEER),
+            (OSError("sensitive"), control.ArtifactStreamFailure.OS),
+            (ValueError("sensitive"), control.ArtifactStreamFailure.INVALID),
+            (subprocess.SubprocessError("sensitive"), control.ArtifactStreamFailure.PROCESS),
+        )
+        for error, expected in cases:
+            with self.subTest(category=expected):
+                self.assertEqual(control.artifact_stream_failure(error), expected)
+                self.assertNotIn("sensitive", expected.value)
+
+
 class AuthorityTest(unittest.TestCase):
     def setUp(self) -> None:
         self.directory = tempfile.TemporaryDirectory(prefix="native-control-test-")
@@ -387,6 +407,38 @@ class AuthorityTest(unittest.TestCase):
             with self.assertRaises(control.Refused):
                 self.authority.dispatch("GET", host, "/ssh/v1/roster", b"")
 
+    def test_transport_metrics_keep_concurrent_gauges_and_closed_overlap_counts(self) -> None:
+        entered = threading.Barrier(9, timeout=3)
+        finished = threading.Barrier(9, timeout=3)
+
+        def handler() -> None:
+            self.authority.transport(control.TransportEvent.HANDLER_OPEN)
+            entered.wait()
+            finished.wait()
+            self.authority.transport(control.TransportEvent.HANDLER_CLOSE)
+
+        threads = [threading.Thread(target=handler) for _ in range(8)]
+        for thread in threads:
+            thread.start()
+        entered.wait()
+        self.assertEqual(self.authority.count("transport_handlers_active"), 8)
+        self.assertEqual(self.authority.count("transport_handlers_highwater"), 8)
+        self.authority.transport(control.TransportEvent.ARTIFACT_OPEN)
+        self.authority.transport(control.TransportEvent.HEARTBEAT_HEADERS)
+        self.authority.transport(control.TransportEvent.HEARTBEAT_RESPONSE)
+        self.authority.transport(control.TransportEvent.ARTIFACT_CLOSE)
+        self.authority.transport(control.TransportEvent.HEARTBEAT_HEADERS)
+        self.assertEqual(self.authority.count("transport_heartbeat_headers"), 2)
+        self.assertEqual(self.authority.count("transport_heartbeat_headers_during_artifact"), 1)
+        self.assertEqual(self.authority.count("transport_heartbeat_response_during_artifact"), 1)
+        finished.wait()
+        for thread in threads:
+            thread.join(timeout=3)
+            self.assertFalse(thread.is_alive())
+        self.assertEqual(self.authority.count("transport_handlers_active"), 0)
+        self.assertEqual(self.authority.count("transport_artifacts_active"), 0)
+        self.assertEqual(self.authority.count("transport_artifacts_highwater"), 1)
+
     def test_tls_verifies_hostname_and_refuses_foreign_roots(self) -> None:
         cert, private = self.root / "tls.pem", self.root / "tls.key"
         subprocess.run(
@@ -437,9 +489,14 @@ class AuthorityTest(unittest.TestCase):
                 self.authority.request_withdrawal()
                 payload = json.dumps(lease).encode()
                 with (
-                    socket.create_connection(address, timeout=3) as raw,
+                    socket.create_connection(address, timeout=3) as stalled_raw,
+                    trusted.wrap_socket(stalled_raw, server_hostname="llm.internal") as stalled,
+                    socket.create_connection(address, timeout=1) as raw,
                     trusted.wrap_socket(raw, server_hostname="llm.internal") as stream,
                 ):
+                    # A verified peer blocked mid-request must not prevent an
+                    # independent lease RPC (as a streaming artifact once did).
+                    stalled.sendall(b"POST /agent/v1/heartbeat HTTP/1.1\r\n")
                     stream.sendall(
                         b"POST /agent/v1/heartbeat HTTP/1.1\r\nHost: llm.internal\r\nContent-Length: "
                         + str(len(payload)).encode()
@@ -451,6 +508,12 @@ class AuthorityTest(unittest.TestCase):
                         response.extend(part)
                 self.assertIn(b"403 Forbidden", response)
                 self.assertEqual(self.authority.count("withdrawal_heartbeat_403"), 1)
+                self.assertEqual(self.authority.count("heartbeat_response_sent"), 1)
+                self.assertEqual(self.authority.count("heartbeat_response_failed"), 0)
+                self.assertEqual(self.authority.count("transport_heartbeat_headers"), 1)
+                self.assertEqual(self.authority.count("transport_heartbeat_response"), 1)
+                self.assertGreaterEqual(self.authority.count("transport_handlers_highwater"), 2)
+                self.assertEqual(self.authority.count("transport_handshake_succeeded"), 3)
                 self.assertEqual(self.authority.snapshot().phase, control.WithdrawalPhase.REJECTED)
                 for context, hostname in (
                     (trusted, "foreign.internal"),

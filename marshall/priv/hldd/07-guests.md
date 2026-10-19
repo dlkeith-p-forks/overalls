@@ -1687,6 +1687,17 @@ policy, licenses and native provenance; its digest and bounded scope are in the
 Image admission and a Windows browser sign-in/edit/readback/recovery run remain
 unrecorded.
 
+The merged package graph aligns the Linux Node version and hash-pinned Windows
+runtime, headers and import library on 24.21.0. This restores editor package
+evaluation while preserving official-source compilation and release binding.
+The changed inputs produce a new release tuple: the historical Windows import
+does not qualify this payload. The shared Node builder now consumes the exact
+24.21.0 source hash independently of the pinned Nixpkgs default; editor and
+maintenance commands use that same reviewed runtime. Fresh package/native build
+and browser acceptance remain unrecorded. The NixOS guest module selects the
+available `journald.settings.Journal.Storage` or `journald.storage` option while
+preserving memory-only guest logs under both pinned NixOS module versions.
+
 The staged broker is a SYSTEM-owned boundary around that future payload. Its
 portable model binds boot, descriptor, placement, epoch, GuestAccount UUID,
 roster UID, canonical account name, local SAM SID and editor origin; identity
@@ -1867,3 +1878,79 @@ and marker persistence across emulator restart. Its AVD has 4 Android cores and
 4 GiB inside an 8-vCPU/8-GiB NixOS test VM. This does not qualify the production
 API 36 image, TAP firewall, Lilly ticket authority or browser display journey;
 production Firecracker display transport remains an explicit acceptance gap.
+
+Version-4 kernel manifests also compose independently validated editor and
+workspace-source metadata with their explicit Linux agent declaration. Unknown
+fields, malformed editor descriptors and cross-OS agent sets refuse. The earlier
+focused 19-test protocol run (seed 218704), including a 100-case composition/refusal
+property, passed before these incoming changes; it does not establish current
+native Android or GitHub acceptance.
+
+The selected FreeBSD image `0150b6d1` declares allocation Git identity version1.
+The selected OmniOS image still lacks that capability, so current allocation
+refuses it with `git_identity_unavailable`. Historical native admission or a
+retained GitHub client upgrade does not imply this later capability. Native
+workspace source validates MMDS attribution against the boot fence; capability
+selection requires separately qualified immutable image bytes.
+
+Fresh native candidates now opt into an explicit version1 attribution manifest
+field, requiring source-v2 and a native payload. Staging constructors omit the
+field unless requested, and candidate admission flags remain false. FreeBSD image
+`0150b6d1` passed all five
+exact-artifact service/growth/policy/daemon-recovery/SIGKILL-recovery scenarios,
+each with 26 named checks including every boot's current-MMDS personal Git
+configuration and actual commit attribution. It then passed all five unchanged
+scenarios against selected VMM `f0d9275b`. Actual-byte structural verification,
+signed publication and independent empty-store content/signature/NAR verification
+passed before additive source admission and default selection. The selected
+package's production verifier and promotion/native-OS Nix checks passed together.
+No new live deployment or Marshall-owned fleet acceptance is established.
+The earlier parallel crash failure remains recorded; its separate passing
+replay does not identify that failure's cause. Fresh OmniOS image `679f5f8b`
+passed direct two-boot services with 26 checks and exact installed payload
+verification. Its current-VMM nested-NixOS matrix later passed services, growth,
+crash recovery and daemon recovery; isolation failed during the first boot's
+bounded SSH shutdown request. It has no complete isolation receipt or new
+admission.
+The verifier preserves historical 22/25-check sets for unchanged old manifests;
+explicit Git identity v1 requires 26 exact checks on either OS. Its 23-test host
+gate passed, without granting candidate admission or proving fleet acceptance.
+The [GitHub review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)
+retains exact identities, receipts and earlier failures.
+
+Native defaults and admitted identity history remain separate. Retained restart
+verifies the existing portable bundle and repeats exact registry admission
+without loading a staged image. The registry now keeps explicit immutable
+per-OS history and requires selected manifests to belong to it. Worker staging
+includes selected packages and exact retained native promotion packages, with
+package-path deduplication; catalog registration still consumes only selected
+packages. Nine focused protocol tests and the Nix native-OS evaluation gate
+passed, including a simulated selection change retaining the original package.
+The selected/admitted FreeBSD identity now includes `0150b6d1` alongside its exact
+original identity. Old manifest and portable-bundle authority remain intact,
+with no Git capability relabelling; the current nine focused Protocol checks
+passed. Historical machines without a Git snapshot remain unchanged. OmniOS
+selection and native checkpoint support are unchanged; current-format immutable
+image history is not a legacy decoder. An ordinary retained native restart
+without catalog lookup and a live journey through the newly selected artifact
+still require separate evidence.
+
+The subsequent OmniOS five-target graph completed in 1,011 seconds with one
+growth pass and four failures. Growth took 981.91 seconds and retained all 26
+service checks across three boots and two root expansions. Services failed at
+clean shutdown with a subprocess timeout; crash recovery failed at
+`readiness-withheld`; recovery and isolation reached their outer exit-124 bounds.
+The earlier direct-services pass remains separate. These candidates use VMM
+`9815649a`; the merged selected VMM is `f0d9275b`. Current-VMM OmniOS services,
+growth, crash recovery and daemon recovery subsequently passed against the same
+sealed candidate. Isolation then failed at `shutdown-send` with
+`subprocess-timeout`, before the separate VMM shutdown wait. Boot 0 completed
+attribution and executor cancellation/fresh-fence checks; policy restoration and
+authority/VMM cleanup completed. No second boot or complete isolation/service
+receipt exists. This narrows the failed operation without establishing its
+cause, and does not permit OmniOS publication or source selection.
+The single focused diagnostic replay then failed earlier during boot after
+373 seconds, with the native growth SMF service in maintenance; shutdown
+diagnostics were not reached. It supplies no complete isolation receipt and
+does not establish the previous timeout's cause.
+Full retained-tool acceptance and live fleet activation remain open.

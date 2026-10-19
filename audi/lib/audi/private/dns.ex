@@ -36,9 +36,9 @@ defmodule Audi.Private.DNS do
   defp resolve(%{labels: ["reflection", "internal"], type: 1}),
     do: {0, [{["reflection", "internal"], 1, 20, <<169, 254, 254, 1>>}], [], true}
 
-  defp resolve(%{labels: [label | zone], type: 1})
-       when zone == @integration_zone and label != "integration",
-       do: integration_address(label)
+  defp resolve(%{labels: [label | zone], type: type})
+       when zone == @integration_zone and label != "integration" and type in [1, 28],
+       do: integration_address(label, type)
 
   defp resolve(%{labels: @integration_zone, type: 6}), do: {0, [integration_soa()], [], true}
 
@@ -57,10 +57,17 @@ defmodule Audi.Private.DNS do
     if List.last(labels) == "internal", do: {3, [], [soa()], true}, else: {5, [], [], false}
   end
 
-  defp integration_address(label) when is_binary(label) do
-    if Regex.match?(@label_regex, label),
-      do: {0, [{[label | @integration_zone], 1, 20, <<169, 254, 254, 1>>}], [], true},
-      else: {3, [], [soa()], true}
+  @spec integration_address(String.t(), 1 | 28) ::
+          {non_neg_integer(), [Wire.resource_record()], [Wire.resource_record()], boolean()}
+  defp integration_address(label, type) when is_binary(label) do
+    if Regex.match?(@label_regex, label) do
+      case type do
+        1 -> {0, [{[label | @integration_zone], 1, 20, <<169, 254, 254, 1>>}], [], true}
+        28 -> {0, [], [integration_soa()], true}
+      end
+    else
+      {3, [], [soa()], true}
+    end
   end
 
   defp soa do

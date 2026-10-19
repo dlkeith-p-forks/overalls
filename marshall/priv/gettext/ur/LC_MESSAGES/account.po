@@ -59,6 +59,7 @@ msgstr "اکاؤنٹ"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "کمٹس میں Overalls کی شراکت کا انتساب شامل کریں"
 msgid "Commit attribution"
 msgstr "کمٹ کا انتساب"
 

@@ -167,6 +167,15 @@ unauthorized answer is still a refusal, and a version refusal (426 at upgrade)
 still keeps its distinct permanent class. Renewal outcomes are observed
 through the catalogued `galileo.lease_renewal` event.
 
+The [private DNS implementation](../../../audi/lib/audi/private/dns.ex) returns
+authoritative NOERROR/NODATA with the integration SOA for AAAA queries of valid
+single-label integration names. It retains their fixed IPv4 A answer and
+malformed/deep/internal NXDOMAIN or external REFUSED behavior. This repairs the
+existing closed DNS contract: an IPv6 query must not negatively cache the whole
+valid name. It adds no service destination or authentication authority. The
+[GitHub review](../reviews/2026-10-18-github-com-integration.md) records the scoped
+UDP/TCP and generated-label evidence separately from the fleet journey.
+
 ## Open questions
 
 The [production review](../reviews/2026-10-02-galileo-production.md) records

@@ -1234,4 +1234,20 @@ defmodule Marshall.Events do
       trace_export_failed: :int64
     ]
   )
+
+  defevent("scim.configuration_changed",
+    message: "SCIM configuration changed",
+    metadata: [enabled: :atom]
+  )
+
+  defevent("scim.team_retirement_started",
+    message: "Native team retirement started for SCIM",
+    metadata: [team_id: :uuid]
+  )
+
+  defevent("scim.request_refused",
+    level: :warning,
+    message: "SCIM request refused",
+    metadata: [reason: :atom]
+  )
 end
