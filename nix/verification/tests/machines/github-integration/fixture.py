@@ -315,14 +315,12 @@ class Handler(BaseHTTPRequestHandler):
     ) -> None:
         self.send_response(status)
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Connection", "close")
         for key, value in (headers or {}).items():
             self.send_header(key, value)
         self.end_headers()
         if self.command != "HEAD":
             self.wfile.write(body)
             self.wfile.flush()
-        self.close_connection = True
 
     def read_body(self) -> bytes:
         if self.headers.get("Transfer-Encoding", "").lower() != "chunked":

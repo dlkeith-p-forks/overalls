@@ -113,7 +113,7 @@ defmodule MarshallWeb.Admin.GitLive do
                       <code>github/{repo.owner}/{repo.name}</code>
                     </.link>
                   </td>
-                  <td><span class="status-label">{repo.phase}</span></td>
+                  <td><span class="status-label">{phase_label(repo.phase)}</span></td>
                   <td :if={@admin_authorized} class="nowrap">
                     <button phx-click="refresh" phx-value-id={repo.id} class="console-button">
                       {gettext("Refresh")}
@@ -147,8 +147,8 @@ defmodule MarshallWeb.Admin.GitLive do
                   <td class="nowrap">
                     <.timestamp at={event.inserted_at} zone={@time_zone} format={:datetime} />
                   </td>
-                  <td>{event.kind}</td>
-                  <td class="break">{event.failure_reason || "—"}</td>
+                  <td>{action_label(event.kind)}</td>
+                  <td class="break">{reason_label(event.failure_reason)}</td>
                   <td class="break muted">
                     {gettext("actor")}
                     <code>{event.actor_id || "system"}</code><br /> {gettext("repository")}
@@ -164,4 +164,36 @@ defmodule MarshallWeb.Admin.GitLive do
     </Layouts.app>
     """
   end
+
+  # @cc [owner:ghuntley,label:product] localized-repository-phase-labels
+  # Repository phase labels MUST be translated without modifying domain phases.
+  @spec phase_label(atom()) :: String.t()
+  defp phase_label(:pending), do: gettext("Pending")
+  defp phase_label(:refreshing), do: gettext("Refreshing")
+  defp phase_label(:ready), do: gettext("Ready")
+  defp phase_label(:failed), do: gettext("Failed")
+  defp phase_label(:removing), do: gettext("Removing")
+  defp phase_label(_), do: gettext("Unknown")
+
+  # @cc [owner:ghuntley,label:product] localized-mirror-audit-labels
+  # Audit action and refusal labels MUST be translated without changing stored
+  # event kinds, failure reasons or identifiers.
+  @spec action_label(atom()) :: String.t()
+  defp action_label(:registered), do: gettext("Registered")
+  defp action_label(:refresh_requested), do: gettext("Refresh requested")
+  defp action_label(:refresh_succeeded), do: gettext("Refresh succeeded")
+  defp action_label(:refresh_failed), do: gettext("Refresh failed")
+  defp action_label(:remove_requested), do: gettext("Removal requested")
+  defp action_label(:removed), do: gettext("Removed")
+  defp action_label(_), do: gettext("Unknown")
+
+  @spec reason_label(atom() | nil) :: String.t()
+  defp reason_label(nil), do: "—"
+  defp reason_label(:tls_untrusted), do: gettext("TLS verification failed")
+  defp reason_label(:timeout), do: gettext("Timed out")
+  defp reason_label(:unauthorized), do: gettext("Unauthorized")
+  defp reason_label(:service_unavailable), do: gettext("Service unavailable")
+  defp reason_label(:git_failed), do: gettext("Git operation failed")
+  defp reason_label(:unknown), do: gettext("Unknown")
+  defp reason_label(_), do: gettext("Unknown")
 end

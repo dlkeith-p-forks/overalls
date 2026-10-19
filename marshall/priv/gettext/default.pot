@@ -523,6 +523,7 @@ msgstr ""
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr ""
 
+#: lib/marshall_web/live/agent_threads_live.ex:111
 #: lib/marshall_web/live/threads_live.ex:2647
 #, elixir-autogen, elixir-format
 msgid "Agent"
@@ -533,13 +534,14 @@ msgstr ""
 msgid "Agent CLI approved for one hour. Return to your terminal."
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:113
+#: lib/marshall_web/live/agent_threads_live.ex:112
+#: lib/marshall_web/live/agent_threads_live.ex:136
 #: lib/marshall_web/live/threads_live.ex:2655
 #, elixir-autogen, elixir-format
 msgid "Agent started working"
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:139
+#: lib/marshall_web/live/agent_threads_live.ex:162
 #, elixir-autogen, elixir-format
 msgid "Agents"
 msgstr ""
@@ -1108,12 +1110,13 @@ msgstr ""
 msgid "Checking transfer connectivity"
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:170
+#: lib/marshall_web/live/agent_threads_live.ex:193
 #, elixir-autogen, elixir-format
 msgid "Child thread"
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:108
+#: lib/marshall_web/live/agent_threads_live.ex:116
+#: lib/marshall_web/live/agent_threads_live.ex:131
 #, elixir-autogen, elixir-format
 msgid "Child thread created"
 msgstr ""
@@ -1210,7 +1213,7 @@ msgstr ""
 msgid "Close search"
 msgstr ""
 
-#: lib/marshall_web/live/admin/access_live.ex:224
+#: lib/marshall_web/live/admin/access_live.ex:226
 #: lib/marshall_web/live/terminal_live.ex:599
 #, elixir-autogen, elixir-format
 msgid "Close session"
@@ -1221,7 +1224,7 @@ msgstr ""
 msgid "Close terminal %{value1}"
 msgstr ""
 
-#: lib/marshall_web/live/admin/access_live.ex:222
+#: lib/marshall_web/live/admin/access_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Close this SSH session?"
 msgstr ""
@@ -1549,7 +1552,7 @@ msgstr ""
 msgid "Create a team"
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:174
+#: lib/marshall_web/live/agent_threads_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "Create child"
 msgstr ""
@@ -1970,6 +1973,7 @@ msgid "Export AI usage"
 msgstr ""
 
 #: lib/marshall_web/components/workspace_components.ex:83
+#: lib/marshall_web/live/admin/git_live.ex:174
 #: lib/marshall_web/live/admin/jobs_live.ex:16
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
 #: lib/marshall_web/live/threads_live.ex:1664
@@ -2776,10 +2780,12 @@ msgstr ""
 msgid "Management access is required to change the remaining settings."
 msgstr ""
 
+#: lib/marshall_web/live/admin/access_live.ex:246
 #: lib/marshall_web/live/machines_live.ex:594
 #: lib/marshall_web/live/machines_live.ex:1090
 #: lib/marshall_web/live/machines_live.ex:1099
 #: lib/marshall_web/live/threads_live.ex:1963
+#: lib/marshall_web/live/threads_live.ex:2702
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr ""
@@ -3393,10 +3399,12 @@ msgstr ""
 msgid "Operations"
 msgstr ""
 
+#: lib/marshall_web/live/admin/access_live.ex:245
 #: lib/marshall_web/live/machines_live.ex:593
 #: lib/marshall_web/live/machines_live.ex:1089
 #: lib/marshall_web/live/machines_live.ex:1098
 #: lib/marshall_web/live/threads_live.ex:1962
+#: lib/marshall_web/live/threads_live.ex:2701
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr ""
@@ -3541,6 +3549,7 @@ msgid "Peer machine ID"
 msgstr ""
 
 #: lib/marshall_web/components/workspace_components.ex:79
+#: lib/marshall_web/live/admin/git_live.ex:171
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:429
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
@@ -3734,7 +3743,8 @@ msgstr ""
 msgid "Profiles choose access and agent features. Machines remain isolated from one another."
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:194
+#: lib/marshall_web/live/agent_threads_live.ex:110
+#: lib/marshall_web/live/agent_threads_live.ex:217
 #: lib/marshall_web/live/threads_live.ex:2646
 #, elixir-autogen, elixir-format
 msgid "Prompt"
@@ -3746,7 +3756,7 @@ msgstr ""
 msgid "Prompt queued."
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:140
+#: lib/marshall_web/live/agent_threads_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Prompts wake a stopped machine when you have write access."
 msgstr ""
@@ -3880,6 +3890,7 @@ msgstr ""
 msgid "Read-only mirrors of public GitHub repositories."
 msgstr ""
 
+#: lib/marshall_web/live/admin/git_live.ex:173
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #: lib/marshall_web/live/threads_live.ex:1663
 #: lib/marshall_web/live/threads_live.ex:2631
@@ -4289,6 +4300,7 @@ msgstr ""
 msgid "Resources"
 msgstr ""
 
+#: lib/marshall_web/live/agent_threads_live.ex:113
 #: lib/marshall_web/live/threads_live.ex:2656
 #, elixir-autogen, elixir-format
 msgid "Response received"
@@ -4428,7 +4440,9 @@ msgstr ""
 msgid "Revoke thread grant"
 msgstr ""
 
+#: lib/marshall_web/live/admin/access_live.ex:247
 #: lib/marshall_web/live/machines_live.ex:595
+#: lib/marshall_web/live/threads_live.ex:2703
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr ""
@@ -4639,7 +4653,7 @@ msgstr ""
 msgid "Send invitation"
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:203
+#: lib/marshall_web/live/agent_threads_live.ex:226
 #, elixir-autogen, elixir-format
 msgid "Send prompt"
 msgstr ""
@@ -4649,7 +4663,7 @@ msgstr ""
 msgid "Sending link…"
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:202
+#: lib/marshall_web/live/agent_threads_live.ex:225
 #: lib/marshall_web/live/threads_live.ex:2107
 #, elixir-autogen, elixir-format
 msgid "Sending…"
@@ -5256,7 +5270,8 @@ msgstr ""
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:115
+#: lib/marshall_web/live/agent_threads_live.ex:118
+#: lib/marshall_web/live/agent_threads_live.ex:138
 #: lib/marshall_web/live/threads_live.ex:2687
 #, elixir-autogen, elixir-format
 msgid "The agent encountered a problem"
@@ -5624,7 +5639,7 @@ msgstr ""
 msgid "This thread may have been deleted or the link is invalid."
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:111
+#: lib/marshall_web/live/agent_threads_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "This tool is not available for the machine profile."
 msgstr ""
@@ -5679,7 +5694,8 @@ msgstr ""
 msgid "Thread unavailable"
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:118
+#: lib/marshall_web/live/agent_threads_live.ex:127
+#: lib/marshall_web/live/agent_threads_live.ex:141
 #: lib/marshall_web/live/threads_live.ex:2693
 #, elixir-autogen, elixir-format
 msgid "Thread updated"
@@ -5692,8 +5708,8 @@ msgstr ""
 
 #: lib/marshall_web/components/layouts.ex:413
 #: lib/marshall_web/components/layouts.ex:436
-#: lib/marshall_web/live/agent_threads_live.ex:147
-#: lib/marshall_web/live/agent_threads_live.ex:150
+#: lib/marshall_web/live/agent_threads_live.ex:170
+#: lib/marshall_web/live/agent_threads_live.ex:173
 #: lib/marshall_web/live/threads_live.ex:21
 #: lib/marshall_web/live/threads_live.ex:1356
 #: lib/marshall_web/live/threads_live.ex:1506
@@ -5764,13 +5780,15 @@ msgstr ""
 msgid "Tool outcome uncertain"
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:117
+#: lib/marshall_web/live/agent_threads_live.ex:115
+#: lib/marshall_web/live/agent_threads_live.ex:140
 #: lib/marshall_web/live/threads_live.ex:2684
 #, elixir-autogen, elixir-format
 msgid "Tool result received"
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:116
+#: lib/marshall_web/live/agent_threads_live.ex:114
+#: lib/marshall_web/live/agent_threads_live.ex:139
 #: lib/marshall_web/live/threads_live.ex:2666
 #: lib/marshall_web/live/threads_live.ex:2670
 #, elixir-autogen, elixir-format
@@ -5787,7 +5805,8 @@ msgstr ""
 msgid "Try again shortly."
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:114
+#: lib/marshall_web/live/agent_threads_live.ex:117
+#: lib/marshall_web/live/agent_threads_live.ex:137
 #: lib/marshall_web/live/threads_live.ex:2686
 #, elixir-autogen, elixir-format
 msgid "Turn complete"
@@ -5846,6 +5865,11 @@ msgstr ""
 
 #: lib/marshall_web/components/workspace_components.ex:85
 #: lib/marshall_web/components/workspace_components.ex:537
+#: lib/marshall_web/live/admin/access_live.ex:248
+#: lib/marshall_web/live/admin/git_live.ex:176
+#: lib/marshall_web/live/admin/git_live.ex:188
+#: lib/marshall_web/live/admin/git_live.ex:197
+#: lib/marshall_web/live/admin/git_live.ex:198
 #: lib/marshall_web/live/admin/jobs_live.ex:177
 #: lib/marshall_web/live/admin/jobs_live.ex:426
 #: lib/marshall_web/live/admin/jobs_live.ex:437
@@ -5860,6 +5884,7 @@ msgstr ""
 #: lib/marshall_web/live/inference_live.ex:188
 #: lib/marshall_web/live/machines_live.ex:596
 #: lib/marshall_web/live/threads_live.ex:2635
+#: lib/marshall_web/live/threads_live.ex:2704
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr ""
@@ -6075,10 +6100,12 @@ msgstr ""
 msgid "View all →"
 msgstr ""
 
+#: lib/marshall_web/live/admin/access_live.ex:244
 #: lib/marshall_web/live/machines_live.ex:592
 #: lib/marshall_web/live/machines_live.ex:1088
 #: lib/marshall_web/live/machines_live.ex:1097
 #: lib/marshall_web/live/threads_live.ex:1961
+#: lib/marshall_web/live/threads_live.ex:2700
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr ""
@@ -6169,7 +6196,9 @@ msgstr ""
 msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
 msgstr ""
 
+#: lib/marshall_web/live/admin/access_live.ex:243
 #: lib/marshall_web/live/machines_live.ex:591
+#: lib/marshall_web/live/threads_live.ex:2699
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr ""
@@ -6350,7 +6379,7 @@ msgstr ""
 msgid "You can pin up to %{value1} machines. Unpin one before pinning another."
 msgstr ""
 
-#: lib/marshall_web/live/agent_threads_live.ex:206
+#: lib/marshall_web/live/agent_threads_live.ex:229
 #, elixir-autogen, elixir-format
 msgid "You can read these threads. Ask for operator or manager access to send prompts."
 msgstr ""
@@ -7529,4 +7558,114 @@ msgstr ""
 #: lib/marshall_web/live/terminal_live.ex:640
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
+msgstr ""
+
+#: lib/marshall_web/live/agent_threads_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Context captured"
+msgstr ""
+
+#: lib/marshall_web/live/agent_threads_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Context compacted"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Git operation failed"
+msgstr ""
+
+#: lib/marshall_web/live/agent_threads_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Maintenance finished"
+msgstr ""
+
+#: lib/marshall_web/live/admin/access_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr ""
+
+#: lib/marshall_web/live/agent_threads_live.ex:123
+#, elixir-autogen, elixir-format
+msgid "Plan proposed"
+msgstr ""
+
+#: lib/marshall_web/live/agent_threads_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Questions answered"
+msgstr ""
+
+#: lib/marshall_web/live/agent_threads_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Questions cancelled"
+msgstr ""
+
+#: lib/marshall_web/live/agent_threads_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Questions requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Refresh failed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Refresh requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Refresh succeeded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Refreshing"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Removal requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Removed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Removing"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Service unavailable"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "TLS verification failed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Timed out"
+msgstr ""
+
+#: lib/marshall_web/live/admin/git_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr ""
+
+#: lib/marshall_web/live/agent_threads_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Waiting for machine"
 msgstr ""

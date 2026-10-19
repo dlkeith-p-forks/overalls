@@ -58,7 +58,7 @@ async function render(hook) {
     } catch {
       if (hook.disposed || hook.revision !== revision) return;
       pre.classList.remove("hldd-diagram");
-      pre.textContent = `Diagram unavailable. Source:\n${source}`;
+      pre.textContent = t("Diagram unavailable. Source:\n%{source}", {source});
     }
   }
   if (!hook.disposed && hook.revision === revision) hook.el.dataset.hlddRenderedTheme = theme;

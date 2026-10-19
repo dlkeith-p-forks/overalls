@@ -5,7 +5,6 @@ defmodule Galileo.GitHub.HTTP do
   alias Galileo.GitHub.{Capabilities, Response}
   require Galileo.Events
   @json_limit 8_388_608
-  @capability_buffer_limit 16_777_216
   @redirect_limit 3
   @state_key {__MODULE__, :response}
   @success_key {__MODULE__, :success}
@@ -247,9 +246,6 @@ defmodule Galileo.GitHub.HTTP do
             json? ->
               :json
 
-            route.kind == :capability and capability_length(safe) <= @capability_buffer_limit ->
-              :buffered
-
             true ->
               :stream
           end
@@ -284,9 +280,6 @@ defmodule Galileo.GitHub.HTTP do
         update(
           &Map.merge(&1, %{bytes: [bytes | state.bytes], size: state.size + byte_size(bytes)})
         )
-
-      :buffered when state.size + byte_size(bytes) <= @capability_buffer_limit ->
-        update(&Map.merge(&1, %{bytes: [bytes | &1.bytes], size: state.size + byte_size(bytes)}))
 
       :redirect when state.size + byte_size(bytes) <= 65_536 ->
         update(&Map.put(&1, :size, state.size + byte_size(bytes)))
@@ -338,12 +331,6 @@ defmodule Galileo.GitHub.HTTP do
     end
   end
 
-  defp finish(%{mode: :buffered} = state, _, _, _, _, _, _) do
-    Process.put(@success_key, state.status < 500)
-    body = state.bytes |> Enum.reverse() |> IO.iodata_to_binary()
-    state.conn |> put_headers(state.headers) |> send_resp(state.status, body)
-  end
-
   defp finish(
          %{mode: :redirect} = state,
          config,
@@ -385,20 +372,6 @@ defmodule Galileo.GitHub.HTTP do
   end
 
   defp finish(state, _, _, _, _, _, _), do: error(state.conn, 502, "unsupported_redirect")
-
-  @spec capability_length([{String.t(), String.t()}]) :: non_neg_integer()
-  defp capability_length(headers) do
-    case List.keyfind(headers, "content-length", 0) do
-      {_, value} ->
-        case Integer.parse(value) do
-          {length, ""} when length in 0..@capability_buffer_limit -> length
-          _ -> @capability_buffer_limit + 1
-        end
-
-      nil ->
-        @capability_buffer_limit + 1
-    end
-  end
 
   # @cc [owner:ghuntley,label:security] github-control-latency-consumes-lease
   # Authorization and renewal lifetimes MUST start before their authority call.

@@ -331,3 +331,60 @@ aggregate limit, using the isolated current native build and database. Productio
 queries, fixture size, assertions and timeout bounds are unchanged. The older
 full Marshall precommit remains running with unrelated failures; this focused
 result does not establish a passing full suite.
+
+## Continued human-surface audit and documentation freshness
+
+The previously pending Marshall native freshness command completed successfully
+against the published f2d7f793 source/catalog batch. This is scoped native
+extraction evidence, not a passing full Marshall precommit.
+
+The next batch adds1,020 documentation translations: Bengali600, Swedish300 and
+Japanese120. The existing100-catalog structural checker passes for this batch;
+coverage and linguistic review remain incomplete. A further source audit replaces
+raw access-role, repository-phase/action/refusal and agent-event headings with
+finite translated labels. Domain atoms, data-status/data-role values, event
+payloads and user prompts stay unchanged. The terminal connection, empty-session
+and synthetic scrollback notices and diagram fallback text use the existing
+browser catalog. Diagram source continues to enter textContent as a binding;
+terminal ANSI framing remains unchanged. No new authority, persistence, protocol
+or production dependency is introduced by these presentation changes (ADR-0201,
+ADR-0161). Their native extraction and new catalog reconciliation remain pending.
+
+JavaScript terminal/localization regressions pass36/36; the workspace TypeScript
+checker and Monospace structural checker pass. A focused LiveView regression
+requires a Japanese event heading while preserving the user-supplied prompt;
+its execution is pending. These checks do not establish all-route browser or
+native SSH acceptance. The prior Bombadil evidence retains its original revision
+and25-locale scope.
+
+The documentation generator already supports a deterministic --check mode, but
+native Gettext extraction cannot detect prose omitted from stale generated source.
+Marshall precommit now explicitly runs localization.documentation before catalog
+validation. Positive and deliberately stale negative controls pass in a private
+copy with the existing native helpers; the normal alias execution remains pending.
+The localization skill explains both freshness boundaries. ADR-0201 remains partial.
+
+A scope audit of the requested top20 uses total first- and second-language
+speakers. The secondary Ethnologue2026 table at Wikipedia revision1380301586
+lists Egyptian Arabic, Swahili and Hausa in the top20; these are absent from the
+published25-locale set. The primary Ethnologue endpoint was unavailable to this
+environment. A separate implementation is being prepared; no support for those
+three additions is claimed by the present source/catalog batch. All previously
+requested languages remain required.
+
+## Scope clarification and top20 additions
+
+The human-readable HLDD chapter bodies are excluded from the remaining prose
+translation batches; they remain authoritative English operational documentation.
+Future source selection is limited to `priv/docs` and generated command summaries.
+Existing HLDD-only catalog translations were removed from all locales and their exact-review records; entries shared with `priv/docs` remain eligible for translation.
+
+The total-speaker top20 audit identified Egyptian Arabic (`arz`), Swahili (`sw`)
+and Hausa (`ha`) in addition to the original policy set. The implementation adds
+these validated tags while retaining all requested locales, keeps `arz` as the
+Gettext identity, and maps only Localize/CLDR formatting to `ar-EG`. Direction,
+Arabic six-form plural selection, mixed-script isolation, CLDR number/date data,
+locale negotiation and browser `lang` versus formatting-locale behavior have
+native primitive evidence. Bundled CLDR data is copied into Marshall and Porsche.
+Catalog translation quality for the three new locales remains an explicit gap;
+no full linguistic-completeness claim is made.

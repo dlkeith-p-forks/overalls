@@ -1824,6 +1824,9 @@ New identity-bearing admissions require an image manifest advertising `git_ident
 uses TCG software rendering and persistent AVD state; readiness is bounded at
 600 seconds. ADB and display authority are withheld until emulator readiness.
 The image's current RFB bridge is loopback-bound for diagnostics only; it is not
-an authenticated display authority. An authenticated vsock relay with one input
-controller and read-only viewers remains pending, as does native Firecracker
-acceptance.
+an authenticated display authority. The guest now validates Lilly's bounded
+display preface in a typed fixed-port relay before forwarding to loopback RFB;
+Lilly's namespace ingress remains the network authority. The profile reserves
+8 GiB memory and 32 GiB writable disk. Signed ticket verification, browser
+controller/viewer leases and native Firecracker acceptance remain outside this
+guest-only evidence.
