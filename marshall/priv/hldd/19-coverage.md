@@ -15,7 +15,7 @@ Tested scope: Typed protocol, relay and browser-hook evidence exists; composed F
 - **property, present**: [generations and boot identity fencing](repo:protocol/test/android_emulator_state_machine_property_test.exs) — BEAM state model only; no native VM or browser claim..
 - **unit, present**: [allows viewers, fences one controller and sequences frames](repo:marshall/test/marshall/android/display_relay_test.exs) — Relay process state only; no host transport claim..
 - **unit, present**: [replaces its canvas on reconnect](repo:marshall/test/browser/android_display_test.mjs) — Browser hook fixture only; no authenticated browser journey claim..
-- **machine, present**: [PNG screencap through the real adb client](repo:nix/verification/tests/machines/android-emulator/default.nix) — Standalone NixOS emulator fixture; not production Firecracker transport..
+- **machine, recorded**: [PNG screencap through the real adb client](repo:nix/verification/tests/machines/android-emulator/default.nix) — Standalone NixOS emulator fixture; not production Firecracker transport.; [execution record](repo:docs/architecture/reviews/2026-10-18-android-firecracker.md).
 
 **Gaps:** No recorded production Firecracker image boot with the relay and no recorded real /machines/:id browser journey.
 

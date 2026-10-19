@@ -38,7 +38,9 @@
           "path": "nix/verification/tests/machines/android-emulator/default.nix",
           "assertion": "PNG screencap through the real adb client",
           "scope": "Standalone NixOS emulator fixture; not production Firecracker transport.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-android-firecracker.md",
+          "record_assertion": "The fixture was executed through"
         }
       ]
     },
