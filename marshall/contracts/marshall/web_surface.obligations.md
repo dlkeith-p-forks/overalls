@@ -46,7 +46,7 @@ The component's declared Elixir modules remain present, compilable, and owned by
 
 ### marshall.web_surface.I7 — Every response carries the browser security headers
 - **scope:** `MarshallWeb.SecurityHeaders`
-- **must:** The plug MUST set exactly one `content-security-policy` whose `script-src` is `'self'` alone, plus `permissions-policy`, `cross-origin-opener-policy: same-origin`, `cross-origin-resource-policy: same-origin`, `referrer-policy`, `x-content-type-options: nosniff`, `x-frame-options: SAMEORIGIN` and `x-permitted-cross-domain-policies: none`; the test build MUST compile the production policy. Browser rendering under this policy is evidenced by the Playwright probe, not by this BEAM test.
+- **must:** The plug MUST set exactly one `content-security-policy` whose `script-src` is `'self'` plus `'wasm-unsafe-eval'` alone (ADR-0230: WebAssembly compilation for the terminal image decoder, never JavaScript eval or inline/foreign script), plus `permissions-policy`, `cross-origin-opener-policy: same-origin`, `cross-origin-resource-policy: same-origin`, `referrer-policy`, `x-content-type-options: nosniff`, `x-frame-options: SAMEORIGIN` and `x-permitted-cross-domain-policies: none`; the test build MUST compile the production policy. Browser rendering under this policy is evidenced by the Playwright probe, not by this BEAM test.
 - **kind:** security
 - **status:** active
 

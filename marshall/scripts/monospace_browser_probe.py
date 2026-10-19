@@ -228,9 +228,9 @@ def visit(page: Page, origin: str, route: str) -> None:
     # violation watch then proves the page renders within it.
     assert response is not None, "Navigation produced no response"
     policy = response.headers.get("content-security-policy", "")
-    assert "script-src 'self';" in policy and "frame-ancestors 'self';" in policy, (
-        f"Missing strict Content-Security-Policy on {route}"
-    )
+    assert (
+        "script-src 'self' 'wasm-unsafe-eval';" in policy and "frame-ancestors 'self';" in policy
+    ), f"Missing strict Content-Security-Policy on {route}"
     expect(page.locator("#main-content")).to_be_visible()
     page.locator("[data-phx-main]").wait_for(state="attached")
     page.locator("[data-phx-main].phx-connected").wait_for(state="attached")

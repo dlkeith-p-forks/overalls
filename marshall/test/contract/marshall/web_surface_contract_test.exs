@@ -148,7 +148,7 @@ defmodule MarshallWebSurfaceContractTest do
     end
 
     [policy] = Plug.Conn.get_resp_header(conn, "content-security-policy")
-    assert "script-src 'self'" in String.split(policy, "; ")
+    assert "script-src 'self' 'wasm-unsafe-eval'" in String.split(policy, "; ")
     refute MarshallWeb.SecurityHeaders.development_tooling?()
     assert policy == MarshallWeb.SecurityHeaders.policy(false)
 
