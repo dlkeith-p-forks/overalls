@@ -828,3 +828,8 @@ msgstr "Turawarka tana ajiye bayanan isarwa na kwanaki bakwai kuma tana adana ta
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` yana dakatarwa ko ci gaba da sanarwa ga na'ura ɗaya. `device rm` yana soke ta na dindindin; Mila za ta sake yin rijista a lokaci na gaba da ka ba da izinin sanarwa. Share ko ritayar asusunka yana soke dukkan na'urorinsa."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Ba a sami takaddun ba"

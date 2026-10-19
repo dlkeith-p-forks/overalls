@@ -132,3 +132,14 @@ msgstr "Mật khẩu của bạn đã được đặt lại thành công"
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "Phiên đăng nhập không còn hợp lệ. Hãy yêu cầu liên kết đăng nhập mới."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "Bạn có chắc muốn đăng xuất không?"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "Đăng xuất"

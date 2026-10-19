@@ -1028,3 +1028,8 @@ msgstr "আপনার deployment ডেলিভারির রেকর্�
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` একটি ডিভাইসের নোটিফিকেশন থামায় বা আবার চালু করে। `device rm` সেটিকে স্থায়ীভাবে বাতিল করে; পরের বার আপনি নোটিফিকেশনের অনুমতি দিলে Mila আবার নিবন্ধন করে। আপনার অ্যাকাউন্ট মুছে ফেললে বা অবসরে পাঠালে তার সব ডিভাইস বাতিল হয়।"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "নথি পাওয়া যায়নি"

@@ -50,20 +50,45 @@ with subtest("Porsche SSH attach shares the browser terminal session"):
 
     attach_sessions: list[str] = []
 
+    def attach_object(value: object) -> dict[str, object]:
+        """Narrows parsed JSON to a string-keyed object."""
+        assert isinstance(value, dict), "expected a JSON object"
+        narrowed: dict[str, object] = {}
+        for key, item in value.items():
+            assert isinstance(key, str), "expected string keys"
+            narrowed[key] = item
+        return narrowed
+
     def attach_personal_session() -> bool:
-        opened = operator(
-            m1,
-            dict(
-                action="terminal-personal-session",
-                owner_id=users["owner_id"],
-                vm_id=terminal_vm["vm_id"],
-            ),
+        # Opens the owner's personal session the way Mila does: `terminal new`
+        # through native OpenSSH and Porsche into the running Marshall. Each
+        # attempt uses a fresh request id; only readiness refusals retry.
+        command = "terminal new " + terminal_vm["vm_id"] + " --request-id " + str(uuid.uuid4())
+        program = (
+            "import subprocess,json,sys\n"
+            "r=subprocess.run(json.loads(sys.argv[1]),capture_output=True,text=True,timeout=120)\n"
+            "print(json.dumps({'returncode': r.returncode, 'stdout': r.stdout}))"
         )
-        if opened["session_id"] is None:
-            # Only readiness refusals (a host stream still registering) retry.
-            assert opened["reason"] in ("terminal_unavailable", "terminal_open_pending"), opened
+        run = attach_object(
+            json.loads(
+                client.succeed(
+                    "sudo -u tester python3 -c "
+                    + shlex.quote(program)
+                    + " "
+                    + shlex.quote(json.dumps(porsche_arguments(command))),
+                    timeout=180,
+                )
+            )
+        )
+        stdout = run["stdout"]
+        assert isinstance(stdout, str), "missing Porsche output"
+        reply = attach_object(json.loads(stdout))
+        if run["returncode"] != 0 or reply.get("status") != "succeeded":
+            assert reply.get("error") in ("terminal_unavailable", "temporarily_unavailable"), reply
             return False
-        attach_sessions.append(str(opened["session_id"]))
+        session_id = attach_object(reply.get("result")).get("session_id")
+        assert isinstance(session_id, str), reply
+        attach_sessions.append(session_id)
         return True
 
     eventually(attach_personal_session, timeout=180)

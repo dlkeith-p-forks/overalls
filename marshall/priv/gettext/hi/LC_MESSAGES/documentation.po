@@ -841,3 +841,8 @@ msgstr "आपका परिनियोजन डिलीवरी रिक
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` किसी एक डिवाइस के लिए सूचनाएँ रोकता या फिर से शुरू करता है। `device rm` उसे स्थायी रूप से निरस्त करता है; अगली बार सूचनाओं की अनुमति देने पर Mila फिर से पंजीकरण करता है। अपना खाता हटाने या सेवानिवृत्त करने पर उसके सभी डिवाइस निरस्त हो जाते हैं।"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "दस्तावेज़ नहीं मिले"

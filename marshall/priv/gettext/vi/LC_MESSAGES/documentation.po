@@ -866,3 +866,8 @@ msgstr "Bản triển khai của bạn giữ hồ sơ gửi trong bảy ngày v�
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` tạm dừng hoặc tiếp tục thông báo cho một thiết bị. `device rm` thu hồi thiết bị vĩnh viễn; Mila sẽ đăng ký lại vào lần tới bạn cho phép thông báo. Xóa hoặc ngừng sử dụng tài khoản sẽ thu hồi tất cả thiết bị của tài khoản."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Không tìm thấy tài liệu"

@@ -654,3 +654,23 @@ msgstr "이름 바꾸기"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "읽기 전용 호스트 콘솔을 보려면"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "고정"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "%{name} 고정"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "고정 해제"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "%{name} 고정 해제"

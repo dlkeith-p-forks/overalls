@@ -304,10 +304,23 @@ defmodule Marshall.Terminal.HostStream do
         {put_in(state, [:android_channels, channel, :output_sequence], sequence), frames}
 
       %{output_sequence: previous} when sequence > previous + 1 ->
-        {state, frames}
+        close_android_channel(state, channel, :sequence_gap, frames)
 
       _ ->
         forward_in_sequence(state, channel, sequence, bytes, frames)
+    end
+  end
+
+  defp close_android_channel(state, channel, reason, frames) do
+    case Map.pop(state.android_channels, channel) do
+      {nil, _} ->
+        {state, frames}
+
+      {%{caller: caller, generation: generation, monitor: monitor}, channels} ->
+        Process.demonitor(monitor, [:flush])
+        send(caller, {:android_display_closed, channel, generation, reason})
+        close = Codec.encode_control_frame(%{type: :android_display_close, channel: channel})
+        {%{state | android_channels: channels}, [close | frames]}
     end
   end
 
@@ -372,7 +385,8 @@ defmodule Marshall.Terminal.HostStream do
               caller: request.caller,
               generation: message.generation,
               input_sequence: 0,
-              output_sequence: 0
+              output_sequence: 0,
+              monitor: Process.monitor(request.caller)
             })
           else
             state

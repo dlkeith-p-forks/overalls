@@ -202,3 +202,43 @@ msgstr "보고되지 않음"
 #, elixir-autogen, elixir-format
 msgid "Your AI usage"
 msgstr "귀하의 AI 사용량"
+
+#: lib/marshall_web/live/inference_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "취소됨"
+
+#: lib/marshall_web/live/inference_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "완전함"
+
+#: lib/marshall_web/live/inference_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Completed"
+msgstr "완료됨"
+
+#: lib/marshall_web/live/inference_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Interrupted"
+msgstr "중단됨"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Partial"
+msgstr "부분적"
+
+#: lib/marshall_web/live/inference_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "철회됨"
+
+#: lib/marshall_web/live/inference_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Transport error"
+msgstr "전송 오류"
+
+#: lib/marshall_web/live/inference_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Upstream error"
+msgstr "상위 서비스 오류"

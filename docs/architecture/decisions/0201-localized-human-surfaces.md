@@ -94,6 +94,12 @@ script-font integrity and character coverage follow ADR-0207. The review records
 the interrupted broad Marshall run separately; no passing normal precommit is
 claimed. Implementation remains partial.
 
+The [completion follow-up](../reviews/2026-10-19-localization-completion-follow-up.md)
+records additional raw-source omissions, default strict catalog enforcement,
+library-owned sign-out presentation and reusable packaged localization journeys.
+Its new regression and acceptance execution remains pending at the requested
+commit-before-tests publication boundary.
+
 ## Open questions
 
 Packaged NixOS account-language and native Porsche journeys, all-route browser

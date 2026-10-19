@@ -851,3 +851,8 @@ msgstr "Nagtatago ang iyong deployment ng mga record ng paghahatid nang pitong a
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "Ipinapahinto o ipinagpapatuloy ng `device prefs` ang mga notification para sa isang device. Permanenteng binabawi ito ng `device rm`; muling magrerehistro ang Mila sa susunod na payagan mo ang mga notification. Ang pagbura o pagreretiro ng iyong account ay bumabawi sa lahat ng device nito."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Hindi nahanap ang dokumentasyon"

@@ -245,3 +245,13 @@ msgstr "لا توجد جلسات طرفية"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— المخرجات السابقة لهذا العرض غير موجودة في سجل التمرير —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "إدخال الطرفية"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "المخرجات كثيرة جدًا ولا يمكن إعلانها؛ انتقل يدويًا إلى الصفوف لقراءتها"

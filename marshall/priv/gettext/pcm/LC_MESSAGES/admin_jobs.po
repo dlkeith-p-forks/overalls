@@ -383,3 +383,9 @@ msgstr "← Di first page"
 #, elixir-autogen, elixir-format
 msgid "← Jobs"
 msgstr "← Di jobs"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:389
+#: lib/marshall_web/live/admin/jobs_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "An execution attempt failed. Raw exception details are excluded from administrative history."
+msgstr "One attempt to run am fail. Dem no put di raw exception details inside admin history."

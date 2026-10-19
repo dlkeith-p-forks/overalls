@@ -202,3 +202,43 @@ msgstr "Hindi naiulat"
 #, elixir-autogen, elixir-format
 msgid "Your AI usage"
 msgstr "Paggamit mo ng AI"
+
+#: lib/marshall_web/live/inference_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "Kinansela"
+
+#: lib/marshall_web/live/inference_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "Kumpleto"
+
+#: lib/marshall_web/live/inference_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Completed"
+msgstr "Natapos"
+
+#: lib/marshall_web/live/inference_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Interrupted"
+msgstr "Naantala"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Partial"
+msgstr "Bahagya"
+
+#: lib/marshall_web/live/inference_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "Binawi"
+
+#: lib/marshall_web/live/inference_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Transport error"
+msgstr "Error sa paglilipat"
+
+#: lib/marshall_web/live/inference_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Upstream error"
+msgstr "Error sa pinagmulang serbisyo"

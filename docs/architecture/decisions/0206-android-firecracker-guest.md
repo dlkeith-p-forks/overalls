@@ -44,6 +44,11 @@ display relay; native transport and browser rendering remain unverified.
 
 [Android guest module](../../../nix/domains/artifacts/guest/android.nix), [protocol capability](../../../protocol/lib/overalls_protocol/guest_agents.ex), [Hegel property](../../../protocol/test/android_emulator_state_machine_property_test.exs), and [machine fixture](../../../nix/verification/tests/machines/android-emulator/default.nix) provide partial evidence.
 
+The [host-stream sequence-gap regression](../../../marshall/test/marshall/terminal/host_stream_android_test.exs)
+and [reviewed focused execution](../reviews/2026-10-18-android-firecracker.md)
+record channel closure, close-control output and generation-bound owner notice
+in the BEAM. This does not establish authenticated native display transport.
+
 ## Open questions
 
 Native Firecracker transport, controller lease integration, browser rendering and

@@ -67,6 +67,40 @@ defmodule MarshallWeb.AdminUsersLiveTest do
     assert_redirect(view, ~p"/sign-in")
   end
 
+  test "deletion progress uses the administrator's active language", %{conn: conn} do
+    admin = user(true)
+    target = user(false)
+
+    deletion =
+      Ash.Seed.seed!(Marshall.Accounts.UserDeletion, %{
+        user_id: target.id,
+        requested_by_id: admin.id,
+        email: target.email
+      })
+
+    for {locale, progress, source} <- [
+          {"ja", %{blocked: false, completed_at: nil}, "Deleting machines"},
+          {"ar", %{blocked: true, completed_at: nil}, "Retrying machine cleanup"},
+          {"ja", %{blocked: false, completed_at: DateTime.utc_now()}, "Deleted"}
+        ] do
+      Ledger.update!(deletion, :progress, progress)
+
+      {:ok, view, _} =
+        conn
+        |> signed_in(admin)
+        |> put_req_header("accept-language", locale)
+        |> live(~p"/admin/users")
+
+      translated =
+        Gettext.with_locale(MarshallWeb.Gettext, locale, fn ->
+          Gettext.dgettext(MarshallWeb.Gettext, "admin_users", source)
+        end)
+
+      refute translated == source
+      assert has_element?(view, "#users-#{target.id} p.muted", translated)
+    end
+  end
+
   defp user(admin),
     do:
       Ash.Seed.seed!(User, %{email: "#{Ash.UUID.generate()}@example.test", administrator: admin})

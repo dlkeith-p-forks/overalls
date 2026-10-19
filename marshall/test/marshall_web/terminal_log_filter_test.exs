@@ -21,7 +21,13 @@ defmodule MarshallWeb.TerminalLogFilterTest do
           :output_window,
           :input_ack,
           :output_ack,
-          :slow_viewer
+          :slow_viewer,
+          :gateway_session,
+          :gateway_unavailable,
+          :gateway_ticket,
+          :stream_unavailable,
+          :attach_timeout,
+          :attach_refused
         ])
       )
 

@@ -736,6 +736,80 @@ defmodule FleetOperator do
     %{thread_id: thread.id, status: thread.status}
   end
 
+  # @cc [owner:ghuntley,label:verification;security] fleet-porsche-planning-stand-in
+  # The porsche-threads fleet has no model provider. These fixtures stand in
+  # only for the model's question and plan tool calls, through the same
+  # Planning domain functions; answers and approval MUST still travel through
+  # Porsche. They settle earlier fixture turns first and return identifiers only.
+  def run(%{"action" => "thread-question", "owner_id" => owner, "thread_id" => id}) do
+    actor = Ash.get!(Marshall.Accounts.User, owner, authorize?: false)
+    [thread] = Ledger.read!(Marshall.Threads.Thread, id: id)
+
+    {:ok, question} =
+      Ledger.transaction(fn ->
+        agent = Ledger.lock!(Marshall.Agents.Thread, thread.agent_thread_id)
+        turns = Ledger.read!(Marshall.Agents.Turn, thread_id: agent.id)
+        Enum.each(turns, &settle_turn/1)
+
+        turn =
+          Ledger.create!(Marshall.Agents.Turn, :enqueue, %{
+            thread_id: agent.id,
+            actor_id: actor.id,
+            request_key: Ash.UUID.generate(),
+            ordinal: length(turns) + 1,
+            prompt: "Choose the implementation approach.",
+            collaboration_mode: :plan
+          })
+
+        turn = Ledger.update!(turn, :transition, %{status: :running, started_at: Ledger.now()})
+        agent = Ledger.update!(agent, :set_context, %{collaboration_mode: :plan})
+        agent = Ledger.update!(agent, :advance, %{active_turn_id: turn.id})
+
+        Marshall.Agents.Planning.request_questions_locked!(agent, turn, %{
+          id: "fleet-question",
+          arguments: %{
+            "questions" => [
+              %{
+                "id" => "approach",
+                "header" => "Approach",
+                "question" => "Which approach should the plan use?",
+                "options" => [
+                  %{"label" => "First", "description" => "Keep the current interface."},
+                  %{"label" => "Second", "description" => "Add a new interface."}
+                ]
+              }
+            ]
+          }
+        })
+      end)
+
+    %{question_id: question.id}
+  end
+
+  def run(%{"action" => "thread-proposal", "thread_id" => id}) do
+    [thread] = Ledger.read!(Marshall.Threads.Thread, id: id)
+
+    {:ok, proposal} =
+      Ledger.transaction(fn ->
+        agent = Ledger.lock!(Marshall.Agents.Thread, thread.agent_thread_id)
+        turns = Ledger.read!(Marshall.Agents.Turn, thread_id: agent.id)
+        Enum.each(turns, &settle_turn/1)
+        Ledger.update!(agent, :advance, %{active_turn_id: nil})
+        turn = Enum.max_by(turns, & &1.ordinal)
+        text = "Inspect the route, implement the change, and verify the response."
+
+        Ledger.create!(Marshall.Agents.PlanProposal, :record, %{
+          thread_id: agent.id,
+          turn_id: turn.id,
+          event_sequence: agent.next_event_sequence,
+          text: text,
+          digest: :crypto.hash(:sha256, text) |> Base.encode16(case: :lower)
+        })
+      end)
+
+    %{plan_id: proposal.id}
+  end
+
   def run(%{"action" => "agent-result", "actor_id" => actor_id, "turn_id" => turn_id}) do
     actor = Ash.get!(Marshall.Accounts.User, actor_id, authorize?: false)
     {:ok, result} = Marshall.Agents.Conversation.turn(turn_id, actor)
@@ -1107,6 +1181,11 @@ defmodule FleetOperator do
 
     %{shared: true}
   end
+
+  defp settle_turn(%{status: status} = turn) when status in [:queued, :running],
+    do: Ledger.update!(turn, :transition, %{status: :completed, finished_at: Ledger.now()})
+
+  defp settle_turn(turn), do: turn
 
   defp create_with_id(resource, attributes, id) do
     resource

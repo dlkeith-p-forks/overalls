@@ -1551,3 +1551,58 @@ msgstr "· %{value1} যুক্তিচিন্তা · %{value2}"
 #, elixir-autogen, elixir-format
 msgid "↑ ↓ choose · Enter run · Escape close"
 msgstr "↑ ↓ বাছুন · Enter চালান · Escape বন্ধ করুন"
+
+#: lib/marshall_web/thread_commands.ex:21
+#, elixir-autogen, elixir-format
+msgid "Choose or manage reusable instructions"
+msgstr "পুনর্ব্যবহারযোগ্য নির্দেশনা বাছুন বা পরিচালনা করুন"
+
+#: lib/marshall_web/thread_commands.ex:30
+#, elixir-autogen, elixir-format
+msgid "Command help"
+msgstr "কমান্ড সহায়তা"
+
+#: lib/marshall_web/thread_commands.ex:22
+#, elixir-autogen, elixir-format
+msgid "Context"
+msgstr "প্রসঙ্গ"
+
+#: lib/marshall_web/thread_commands.ex:15
+#, elixir-autogen, elixir-format
+msgid "Explore the task and agree on a plan"
+msgstr "কাজটি অনুসন্ধান করে একটি পরিকল্পনায় একমত হন"
+
+#: lib/marshall_web/thread_commands.ex:17
+#, elixir-autogen, elixir-format
+msgid "Implement and verify changes"
+msgstr "পরিবর্তন বাস্তবায়ন ও যাচাই করুন"
+
+#: lib/marshall_web/thread_commands.ex:23
+#, elixir-autogen, elixir-format
+msgid "Inspect the working directory and loaded sources"
+msgstr "কাজের ডিরেক্টরি এবং লোড করা উৎসগুলো দেখুন"
+
+#: lib/marshall_web/thread_commands.ex:31
+#, elixir-autogen, elixir-format
+msgid "Learn the composer shortcuts"
+msgstr "বার্তা লেখার শর্টকাট জানুন"
+
+#: lib/marshall_web/thread_commands.ex:29
+#, elixir-autogen, elixir-format
+msgid "Manage access to the thread and its machine"
+msgstr "থ্রেড ও তার মেশিনে প্রবেশাধিকার পরিচালনা করুন"
+
+#: lib/marshall_web/thread_commands.ex:27
+#, elixir-autogen, elixir-format
+msgid "Open the editor for this thread's machine"
+msgstr "এই থ্রেডের মেশিনের সম্পাদক খুলুন"
+
+#: lib/marshall_web/thread_commands.ex:25
+#, elixir-autogen, elixir-format
+msgid "Open this thread's machine terminal"
+msgstr "এই থ্রেডের মেশিনের টার্মিনাল খুলুন"
+
+#: lib/marshall_web/thread_commands.ex:19
+#, elixir-autogen, elixir-format
+msgid "Summarize older context for the next turn"
+msgstr "পরের পালার জন্য পুরোনো প্রসঙ্গের সারাংশ তৈরি করুন"

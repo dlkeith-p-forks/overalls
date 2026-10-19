@@ -162,11 +162,6 @@ msgstr "Documentación ↗"
 msgid "Documentation"
 msgstr "Documentación"
 
-#: lib/marshall_web/controllers/docs_controller.ex:35
-#, elixir-autogen, elixir-format
-msgid "Documentation not found"
-msgstr "No se encontró la documentación"
-
 #: lib/marshall_web/components/layouts.ex:223
 #: lib/marshall_web/components/layouts.ex:355
 #: lib/marshall_web/controllers/docs_html/show.html.heex:45

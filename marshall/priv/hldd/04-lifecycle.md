@@ -19,18 +19,13 @@ Prompts and authorized network access wake sleeping machines; requests to an
 already running machine do not continually reset the tool clock. Only the owner's
 pin prevents automatic suspension, and pinning a suspended machine requests wake.
 
-Lilly's trusted `services.lilly.checkpointImageIds` configuration admits exact
-content-addressed Linux kernel image IDs for memory operations. Its empty default
-refuses pause and resume while preserving ordinary boot admission. Add production
-IDs only after separately recorded native continuation qualification for those
-artifacts. The suspension machine fixture opts in only its derived test image;
-that candidate admission does not qualify production images or other Linux families.
-Authenticated host reports carry the required bounded `checkpoint_image_ids`
-inventory. Marshall requires the VM's exact image before pause, restored capacity
-admission and memory relocation, and rechecks the destination before handoff.
-Qualification lists may differ between hosts; an unrelated additional qualified
-image does not make their physical checkpoint compatibility differ. Removing an
-ID blocks its subsequent memory operations, including resume of retained RAM.
+The suspension fleet fixture now enrolls the same private Galileo/Audi issuer,
+runtime credentials and trust as ordinary fleet guests before SSH host-certificate
+readiness. Its 2026-10-19 rerun passed composed-driver type and lint checks and
+completed private-service enrollment, then exited with status 137 while waiting
+for the fleet wildcard certificate, before guest launch. This records neither
+pause/resume nor relocation acceptance; the exit status does not identify why
+the process was killed. Changed-source native continuation remains unverified.
 
 ```mermaid
 stateDiagram-v2
@@ -547,9 +542,16 @@ with three library properties and six integration checks, rustfmt and Clippy.
 This verifies local lock/intent ordering, not journal/systemd/Firecracker recovery.
 See the [waiting-intent review](repo:docs/architecture/reviews/2026-10-05-launch-guard-waiting-intent.md).
 
-Restore first proves the confined VMM is still unconfigured. Firecracker installs
-its main-thread seccomp filter during snapshot load, so this preboot proof
-requires its expected unfiltered state and grants no guest execution. After
-load, Lilly proves the paused VMM has its seccomp filter before resuming;
-running observations require the same filter. Namespace, jail identity,
-privileges and resource limits remain checked in both phases.
+Memory-preserving restore has a distinct preboot observation. Firecracker installs
+its main-thread seccomp filter during snapshot load, so Lilly first requires the
+exact unconfigured API state and the expected preboot process status while still
+checking jail, namespace, UID/GID, capabilities, no-new-privileges, limits and
+unit identity. After snapshot load, paused and running observations require the
+configured seccomp filter before execution can resume.
+
+Lilly's trusted `services.lilly.checkpointImageIds` configuration admits exact
+content-addressed Linux kernel image IDs for memory operations. Its empty default
+refuses pause and resume while preserving ordinary boot admission. Authenticated
+host reports carry bounded qualification IDs, and Marshall checks the VM's exact
+image before pause, restored capacity admission, memory relocation and final
+handoff.

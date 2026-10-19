@@ -3,8 +3,9 @@
 # packaged Porsche gateway and verified Marshall control into the Threads and
 # Ingress domains. Prompt text MUST travel only on stdin and MUST NOT appear
 # in receipts; a watch MUST open through Marshall's subscription authority and
-# renew on heartbeat (revocation is covered by the BEAM transport test). Runs after porsche.py,
-# reusing its client keys, known_hosts and porsche_arguments helper.
+# renew on heartbeat (revocation is covered by the BEAM transport test). Runs after
+# porsche.py's key approval and authorized dispatch, reusing its client keys,
+# known_hosts and porsche_arguments helper.
 from typing import TypedDict
 
 
@@ -94,16 +95,8 @@ with subtest("Porsche thread, web and watch commands drive Marshall domains"):
         lambda: sql(f"SELECT status FROM threads WHERE id='{thread_id}'") == "ready",
         timeout=600,
     )
-    eventually(
-        lambda: (
-            sql(
-                "SELECT count(*) FROM agent_turns t JOIN threads h ON h.agent_thread_id=t.thread_id "
-                f"WHERE h.id='{thread_id}' AND t.status IN ('queued','running')"
-            )
-            == "0"
-        ),
-        timeout=600,
-    )
+    # This fleet has no model provider, so the objective's first turn stays
+    # active; a same-mode prompt queues behind it rather than being refused.
 
     listed = porsche_threads_result(porsche_threads_json("thread ls"))
     items = listed.get("items")
@@ -165,3 +158,41 @@ with subtest("Porsche thread, web and watch commands drive Marshall domains"):
     assert lines and lines[0].get("event") == "watching"
     assert lines[0].get("threads") == [thread_id]
     assert any(line.get("event") == "heartbeat" for line in lines)
+
+    # The fleet has no model provider; the operator stands in for the model's
+    # question and plan tool calls, and Porsche carries the answer and approval.
+    question_id = str(
+        operator(
+            m1, dict(action="thread-question", owner_id=users["owner_id"], thread_id=thread_id)
+        )["question_id"]
+    )
+    pending = porsche_threads_object(
+        porsche_threads_result(porsche_threads_json(f"thread show {thread_id}")).get(
+            "pending_question"
+        )
+    )
+    assert pending is not None and pending.get("id") == question_id
+    refused = porsche_threads_run(
+        f"thread answer {thread_id} {question_id} - --request-id {uuid.uuid4()}",
+        '{"approach":{"selected":"Third","text":""}}',
+    )
+    assert refused["returncode"] == 2 and "invalid_answers" in refused["stdout"]
+    answered = porsche_threads_result(
+        porsche_threads_json(
+            f"thread answer {thread_id} {question_id} - --request-id {uuid.uuid4()}",
+            '{"approach":{"selected":"First","text":""}}',
+        )
+    )
+    assert answered.get("status") == "answered"
+    assert (
+        sql(f"SELECT status FROM agent_planning_questions WHERE id='{question_id}'") == "answered"
+    )
+
+    plan_id = str(operator(m1, dict(action="thread-proposal", thread_id=thread_id))["plan_id"])
+    approved = porsche_threads_result(
+        porsche_threads_json(
+            f"thread plan approve {thread_id} {plan_id} --request-id {uuid.uuid4()}"
+        )
+    )
+    assert approved.get("collaboration_mode") == "work"
+    assert isinstance(approved.get("turn_id"), str)

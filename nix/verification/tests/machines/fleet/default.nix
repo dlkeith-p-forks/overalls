@@ -1385,9 +1385,11 @@ in
 assert !(defaultOss || repositoryLaunch || githubIntegration || resize || accountLifecycle || teamResources || maintenanceEvacuation || cloneCancellation) || audi;
 assert !otelPorsche || (porsche && builtins.length porscheScenarioParts == 2);
 # @cc [owner:ghuntley,label:verification] porsche-threads-fleet-scope
-# The porsche-threads journey MUST follow the full Porsche scenario, whose
-# client keys and helpers it reuses; it never runs in reduced Porsche variants.
-assert !porscheThreads || (porsche && !userSshJourney && !otelPorsche && !porscheLifecycleOnly);
+# The porsche-threads journey MUST follow the Porsche scenario's real key
+# approval and authorized SSH dispatch, whose client keys and helpers it
+# reuses, then provision its own thread machine; guest lifecycle, sharing and
+# relocation stay in porsche-fleet. It never runs in other reduced variants.
+assert !porscheThreads || (porsche && !terminal && !userSshJourney && !otelPorsche && !porscheLifecycleOnly && builtins.length porscheScenarioParts == 2);
 assert !repositoryLaunch || (porsche && !defaultOss);
 assert !githubIntegration || (galileo && audi && !repositoryLaunch && !defaultOss && !ubuntu);
 assert githubFamily == null || (githubIntegration && builtins.elem githubFamily [ "nixos" "ubuntu" "arch" "almalinux" "windows" ]);
@@ -1878,13 +1880,13 @@ assert editorFamily == null || (editor && !ubuntu
     + lib.optionalString relocation (builtins.readFile ./relocation-helpers.py)
     + lib.optionalString (porsche && !userSshJourney)
       (if porscheTerminal then builtins.head porscheScenarioParts
+      else if porscheThreads then builtins.head porscheScenarioParts + "\n" + builtins.readFile ./scenarios/porsche-threads.py
       else if otelPorsche then builtins.head porscheScenarioParts + "\n" + ''
         m1.wait_for_unit("overalls-request-porsche-exporter.service")
         m1.wait_until_succeeds("jq -e '.service == \"porsche\" and .requests >= 1 and .successes >= 1 and .requests == (.successes + .failures)' /run/overalls-request-porsche-source/slo.json")
         m1.wait_until_succeeds("curl -fsS http://127.0.0.1:9464/metrics | grep -E 'overalls_outer_porsche_successes_total.* [1-9][0-9]*$'")
-      '' + builtins.readFile ./porsche-slo-faults.py else builtins.readFile ./scenarios/porsche.py
-        + lib.optionalString porscheThreads ("\n" + builtins.readFile ./scenarios/porsche-threads.py))
-    + (if otelPorsche || porscheLifecycleOnly then "" else if porscheTerminal then lib.concatMapStringsSep "\n" builtins.readFile [
+      '' + builtins.readFile ./porsche-slo-faults.py else builtins.readFile ./scenarios/porsche.py)
+    + (if otelPorsche || porscheLifecycleOnly || porscheThreads then "" else if porscheTerminal then lib.concatMapStringsSep "\n" builtins.readFile [
       ./scenarios/terminal-setup.py
       ./scenarios/porsche-terminal.py
     ] else if sshBootstrap then builtins.readFile ./scenarios/ssh-bootstrap.py

@@ -75,7 +75,7 @@ defmodule MarshallWeb.CloneComponents do
           aria-current={state == :current && "step"}
         >
           <span class="clone-step-marker" aria-hidden="true"></span>
-          <span>{label}<span class="sr-only"> — {state}</span></span>
+          <span>{label}<span class="sr-only"> — {step_state_label(state)}</span></span>
         </li>
       </ol>
       <div class="clone-source">
@@ -395,41 +395,46 @@ defmodule MarshallWeb.CloneComponents do
     end
   end
 
+  @spec step_state_label(:done | :current | :pending) :: String.t()
+  defp step_state_label(:done), do: dgettext("machines", "Done")
+  defp step_state_label(:current), do: dgettext("machines", "Current")
+  defp step_state_label(:pending), do: dgettext("machines", "Pending")
+
   @spec host_reason_message(Marshall.Compute.CloneFailure.reason()) :: String.t()
   defp host_reason_message(:storage_busy),
-    do: "the storage pool is busy; the host retries automatically."
+    do: dgettext("machines", "the storage pool is busy; the host retries automatically.")
 
   defp host_reason_message(:execution_unavailable),
-    do: "the machine is mid-operation; the host retries automatically."
+    do: dgettext("machines", "the machine is mid-operation; the host retries automatically.")
 
   defp host_reason_message(:source_authority_unconfirmed),
-    do: "the source changed state; it continues once the source settles."
+    do: dgettext("machines", "the source changed state; it continues once the source settles.")
 
   defp host_reason_message(:snapshot_unconfirmed),
-    do: "the source snapshot could not be prepared or released yet."
+    do: dgettext("machines", "the source snapshot could not be prepared or released yet.")
 
   defp host_reason_message(:mount_unconfirmed),
-    do: "a snapshot mount could not be released yet."
+    do: dgettext("machines", "a snapshot mount could not be released yet.")
 
   defp host_reason_message(:copy_unconfirmed),
-    do: "the disk copy did not finish; it resumes automatically."
+    do: dgettext("machines", "the disk copy did not finish; it resumes automatically.")
 
   defp host_reason_message(reason) when reason in [:stream_unconfirmed, :receive_unconfirmed],
-    do: "the transfer stream was interrupted; it resumes automatically."
+    do: dgettext("machines", "the transfer stream was interrupted; it resumes automatically.")
 
   defp host_reason_message(reason) when reason in [:lease_unconfirmed, :permit_unconfirmed],
-    do: "the transfer permit lapsed; it is renewed automatically."
+    do: dgettext("machines", "the transfer permit lapsed; it is renewed automatically.")
 
   defp host_reason_message(reason) when reason in [:key_unconfirmed, :ssh_unconfirmed],
-    do: "the hosts could not connect; the host retries automatically."
+    do: dgettext("machines", "the hosts could not connect; the host retries automatically.")
 
   defp host_reason_message(reason)
        when reason in [:export_revocation_unconfirmed, :import_cleanup_unconfirmed],
-       do: "cleanup on the host did not finish yet."
+       do: dgettext("machines", "cleanup on the host did not finish yet.")
 
   defp host_reason_message(:disk_unconfirmed),
-    do: "the copied disk could not be prepared yet."
+    do: dgettext("machines", "the copied disk could not be prepared yet.")
 
   defp host_reason_message(_),
-    do: "the host could not confirm the step yet."
+    do: dgettext("machines", "the host could not confirm the step yet.")
 end

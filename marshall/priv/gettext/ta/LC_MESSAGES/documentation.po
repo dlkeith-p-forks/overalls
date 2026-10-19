@@ -828,3 +828,8 @@ msgstr "உங்கள் வரிசைப்படுத்தல் வி�
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` ஒரு சாதனத்துக்கான அறிவிப்புகளை இடைநிறுத்துகிறது அல்லது மீண்டும் தொடங்குகிறது. `device rm` அதை நிரந்தரமாகத் திரும்பப் பெறுகிறது; அடுத்த முறை நீங்கள் அறிவிப்புகளை அனுமதிக்கும்போது Mila மீண்டும் பதிவுசெய்யும். உங்கள் கணக்கை நீக்கினால் அல்லது ஓய்வுபெறச் செய்தால் அதன் எல்லாச் சாதனங்களும் திரும்பப் பெறப்படும்."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "ஆவணங்கள் கிடைக்கவில்லை"

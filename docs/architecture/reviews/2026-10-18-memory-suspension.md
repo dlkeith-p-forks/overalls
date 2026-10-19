@@ -313,6 +313,8 @@ completed private-service enrollment but exited with status 137 while waiting
 for the fleet wildcard certificate, before guest launch. This is not passing
 pause/resume or relocation evidence. Concurrent native builds were present;
 the exit status alone does not establish why the process was killed.
+These driver and native results precede the dependency refresh in `1da714ef2`;
+they do not validate its refreshed locked closure.
 
 A subsequent execution of
 `0jx1wjrk12g9j78bjgh0kk729hzbv27f-vm-test-run-overalls-memory-suspension-fleet.drv`

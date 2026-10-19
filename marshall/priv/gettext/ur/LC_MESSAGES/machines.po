@@ -1882,3 +1882,82 @@ msgstr "مشینیں →"
 #, elixir-autogen, elixir-format
 msgid "← Settings"
 msgstr "ترتیبات →"
+
+#: lib/marshall_web/components/clone_components.ex:400
+#: lib/marshall_web/live/resize_live.ex:256
+#, elixir-autogen, elixir-format
+msgid "Current"
+msgstr "موجودہ مرحلہ"
+
+#: lib/marshall_web/components/clone_components.ex:399
+#: lib/marshall_web/live/resize_live.ex:255
+#, elixir-autogen, elixir-format
+msgid "Done"
+msgstr "مکمل"
+
+#: lib/marshall_web/components/clone_components.ex:417
+#, elixir-autogen, elixir-format
+msgid "a snapshot mount could not be released yet."
+msgstr "اسنیپ شاٹ ماؤنٹ ابھی آزاد نہیں کیا جا سکا۔"
+
+#: lib/marshall_web/components/clone_components.ex:433
+#, elixir-autogen, elixir-format
+msgid "cleanup on the host did not finish yet."
+msgstr "ہوسٹ پر صفائی ابھی مکمل نہیں ہوئی۔"
+
+#: lib/marshall_web/components/clone_components.ex:436
+#, elixir-autogen, elixir-format
+msgid "the copied disk could not be prepared yet."
+msgstr "نقل کی گئی ڈسک ابھی تیار نہیں کی جا سکی۔"
+
+#: lib/marshall_web/components/clone_components.ex:420
+#, elixir-autogen, elixir-format
+msgid "the disk copy did not finish; it resumes automatically."
+msgstr "ڈسک کی نقل مکمل نہیں ہوئی؛ یہ خود بخود دوبارہ جاری ہوگی۔"
+
+#: lib/marshall_web/components/clone_components.ex:439
+#, elixir-autogen, elixir-format
+msgid "the host could not confirm the step yet."
+msgstr "ہوسٹ ابھی اس مرحلے کی تصدیق نہیں کر سکا۔"
+
+#: lib/marshall_web/components/clone_components.ex:429
+#, elixir-autogen, elixir-format
+msgid "the hosts could not connect; the host retries automatically."
+msgstr "ہوسٹ ایک دوسرے سے جڑ نہیں سکے؛ ہوسٹ خود بخود دوبارہ کوشش کرتا ہے۔"
+
+#: lib/marshall_web/components/clone_components.ex:408
+#, elixir-autogen, elixir-format
+msgid "the machine is mid-operation; the host retries automatically."
+msgstr "مشین پر دوسری کارروائی جاری ہے؛ ہوسٹ خود بخود دوبارہ کوشش کرتا ہے۔"
+
+#: lib/marshall_web/components/clone_components.ex:411
+#, elixir-autogen, elixir-format
+msgid "the source changed state; it continues once the source settles."
+msgstr "ماخذ کی حالت بدل گئی ہے؛ ماخذ کی حالت مستحکم ہونے پر کام جاری رہے گا۔"
+
+#: lib/marshall_web/components/clone_components.ex:414
+#, elixir-autogen, elixir-format
+msgid "the source snapshot could not be prepared or released yet."
+msgstr "ماخذ کا اسنیپ شاٹ ابھی تیار یا آزاد نہیں کیا جا سکا۔"
+
+#: lib/marshall_web/components/clone_components.ex:405
+#, elixir-autogen, elixir-format
+msgid "the storage pool is busy; the host retries automatically."
+msgstr "اسٹوریج پول مصروف ہے؛ ہوسٹ خود بخود دوبارہ کوشش کرتا ہے۔"
+
+#: lib/marshall_web/components/clone_components.ex:426
+#, elixir-autogen, elixir-format
+msgid "the transfer permit lapsed; it is renewed automatically."
+msgstr "منتقلی کی اجازت کی مدت ختم ہوگئی؛ اس کی خود بخود تجدید ہوتی ہے۔"
+
+#: lib/marshall_web/components/clone_components.ex:423
+#, elixir-autogen, elixir-format
+msgid "the transfer stream was interrupted; it resumes automatically."
+msgstr "منتقلی کا سلسلہ منقطع ہوگیا؛ یہ خود بخود دوبارہ جاری ہوگا۔"
+
+#: lib/marshall_web/live/resize_live.ex:625
+#: lib/marshall_web/live/resize_live.ex:644
+#: lib/marshall_web/live/resize_live.ex:651
+#, elixir-autogen, elixir-format
+msgid "Confirm"
+msgstr "تصدیق کریں"

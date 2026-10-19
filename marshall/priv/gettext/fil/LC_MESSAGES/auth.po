@@ -130,3 +130,14 @@ msgstr "Matagumpay na na-reset ang iyong password"
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "Hindi na wasto ang iyong pag-sign in. Humiling ng bagong link para mag-sign in."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "Sigurado ka bang gusto mong mag-sign out?"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "Mag-sign out"

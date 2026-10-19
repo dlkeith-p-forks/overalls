@@ -138,3 +138,14 @@ msgstr "أُعيد تعيين كلمة مرورك بنجاح"
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "لم يعد تسجيل دخولك صالحًا. اطلب رابط دخول جديدًا."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "هل أنت متأكد من رغبتك في تسجيل الخروج؟"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "تسجيل الخروج"

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, modulesPath, ... }@arguments:
+{ config, lib, options, pkgs, modulesPath, ... }@arguments:
 let
   codingClis = arguments.codingClis or (import ./coding-clis.nix { inherit pkgs; });
   githubTools = import ./github { inherit pkgs; };
@@ -250,6 +250,12 @@ in
     };
   };
 
-  # Keep guest system logs in memory.
-  services.journald.extraConfig = "Storage=volatile";
+  # Keep guest system logs in memory. Guest images and the fleet machine tests
+  # evaluate this module under different pinned NixOS revisions; newer ones
+  # replace `storage` with freeform `settings`.
+  services.journald =
+    if options.services.journald ? settings then
+      { settings.Journal.Storage = "volatile"; }
+    else
+      { storage = "volatile"; };
 }

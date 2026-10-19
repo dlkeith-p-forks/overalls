@@ -837,3 +837,8 @@ msgstr "Penerapan Anda menyimpan catatan pengiriman selama tujuh hari dan hanya 
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` menjeda atau melanjutkan notifikasi untuk satu perangkat. `device rm` mencabutnya secara permanen; Mila mendaftar lagi saat Anda berikutnya mengizinkan notifikasi. Menghapus atau mempensiunkan akun Anda akan mencabut semua perangkatnya."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "Dokumentasi tidak ditemukan"

@@ -154,7 +154,7 @@ defmodule Marshall.MixProject do
       "hldd.check": [&check_hldd/1],
       "workspace.check": [&check_workspace/1],
       "monospace.check": [&check_monospace/1],
-      "localization.catalogs": ["run --no-start scripts/check_locale_catalogs.exs"],
+      "localization.catalogs": ["run --no-start scripts/check_locale_catalogs.exs --strict"],
       "localization.documentation": ["run --no-start scripts/extract_documentation.exs --check"],
       "localization.data": [fn _ -> Code.eval_file("scripts/check_locale_data.exs", __DIR__) end],
       precommit: [

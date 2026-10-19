@@ -322,6 +322,12 @@ sequences from its attempt count plus fixed offsets up to 340, so successive
 commands reused sequences, and the spool correctly stored an identical body
 once. Each command now reserves a disjoint 400-sequence block from the
 workload ledger.
+The 60-minute repository-origin run `87b10ca4372b6665c886027b4fd22872-65-0`
+recorded one unexpected Enrico container exit: the restart case relaunched the
+release during a network partition, it exited before readiness, and the
+container supervisor ended the container. Production's unit restarts Enrico
+after 5 s and allows a 90 s stop, so the supervisor now mirrors both while the
+restart result stays uncertain.
 The sequence space is finite: the modulo allocator reuses a 400-value block
 after 2,499 reservations. The added unit test checks only the first three
 reservations across new client instances; it does not establish uniqueness
@@ -331,6 +337,10 @@ admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
 pool totals for its enrolled pool identity, measured cgroup memory headroom, a
 labelled STUB CPU budget of one core capped by the measured cgroup cores, and a tiny non-bootable image it digest-verifies before advertising;
+its manifest declares Git identity version 1 as a labelled STUB because
+ADR-0198 admission refuses images without it (run
+`219976fe92d70537b4a0e8cca1fa6be3-65-0` refused every admission); the image never
+boots, so this is not guest identity evidence;
 the enrollment operator registers that image through Marshall's catalog action
 and then enables lilly-a through the reviewed CLI `enable` action, which
 refuses until Lilly's stub report is fresh and execution-ready. A fully stub-backed report advertises placement readiness, so Marshall's real

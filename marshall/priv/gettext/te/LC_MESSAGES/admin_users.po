@@ -198,3 +198,23 @@ msgstr "· మీ ఖాతా"
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← మొదటి పేజీ"
+
+#: lib/marshall_web/live/admin/users_live.ex:322
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "తొలగించబడింది"
+
+#: lib/marshall_web/live/admin/users_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Deleting machines"
+msgstr "మెషీన్‌లను తొలగిస్తోంది"
+
+#: lib/marshall_web/live/admin/users_live.ex:325
+#, elixir-autogen, elixir-format
+msgid "Retrying machine cleanup"
+msgstr "మెషీన్ శుభ్రపరిచే ప్రయత్నం మళ్లీ జరుగుతోంది"
+
+#: lib/marshall_web/live/admin/users_live.ex:328
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "అందుబాటులో లేదు"

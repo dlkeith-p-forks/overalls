@@ -828,3 +828,8 @@ msgstr "तुमचे उपयोजन वितरण नोंदी स�
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` एका डिव्हाइससाठी सूचना थांबवते किंवा पुन्हा सुरू करते. `device rm` ते कायमचे रद्द करते; पुढच्या वेळी तुम्ही सूचनांना परवानगी दिल्यावर Mila पुन्हा नोंदणी करते. तुमचे खाते हटवल्यास किंवा निवृत्त केल्यास त्याची सर्व डिव्हाइस रद्द होतात."
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "दस्तऐवज सापडले नाहीत"
