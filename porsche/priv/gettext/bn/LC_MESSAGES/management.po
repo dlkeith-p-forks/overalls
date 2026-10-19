@@ -460,3 +460,11 @@ msgstr "এই থ্রেড এখনও প্রম্পটের জন�
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach-এর জন্য একটি টার্মিনাল প্রয়োজন। ssh -t দিয়ে সংযোগ করুন এবং এটি কমান্ড হিসেবে চালান।"
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "এই স্থাপনায় পুশ বিজ্ঞপ্তি বন্ধ আছে; এর পরিচালকের সঙ্গে যোগাযোগ করুন।"
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "আপনার ডিভাইসের সংখ্যা সর্বোচ্চ সীমায় পৌঁছেছে; আগে একটি সরান: device rm DEVICE_ID"

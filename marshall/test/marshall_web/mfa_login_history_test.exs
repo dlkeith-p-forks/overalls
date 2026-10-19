@@ -7,9 +7,10 @@ defmodule MarshallWeb.MFALoginHistoryTest do
   alias Marshall.Accounts.{Login, Security, User, Verification}
   alias Marshall.Compute.Ledger
   alias Marshall.PasskeyFixture, as: Fixture
-  # Twenty histories repeatedly mount real LiveViews; retain the full matrix on
-  # loaded CI hosts without turning a slow but advancing case into a timeout.
-  @moduletag timeout: 240_000, ownership_timeout: 240_000
+  # One hundred histories repeatedly mount real LiveViews. The aggregate budget
+  # includes load margin above the recorded 91.7-second twenty-history run;
+  # each history retains the default finite SQL ownership timeout.
+  @moduletag timeout: 600_000
 
   @typep state :: %{live: boolean(), completed: boolean(), elevated: boolean()}
   @typep operation :: :verify | :uv | :expired | :wrong_session | :expire | :lock | :revoke
@@ -20,12 +21,19 @@ defmodule MarshallWeb.MFALoginHistoryTest do
   # Each login's independent model MUST predict browser/export access from its
   # stored login and administrative access from its own passkey proof. Verifying
   # one login MUST NOT elevate another; revoked logins MUST lose mounted reads.
+
+  # @cc [owner:ghuntley,label:verification] subsequent-mfa-history-fixtures
+  # Every generated history and replay MUST begin with a fresh SQL sandbox and
+  # roll back its users, tokens, passkeys and audit rows before the next history.
   @tag :hegel
+  @tag :hegel_case_sandbox
   test "subsequent login histories separate ordinary access from passkey elevation", %{
     conn: conn
   } do
     Hegel.check(
       fn ->
+        Marshall.DataCase.isolate_property_case()
+
         events =
           draw(
             "events",
@@ -155,7 +163,7 @@ defmodule MarshallWeb.MFALoginHistoryTest do
   defp mount_readers(sessions, states) do
     for {{_, _, conn}, state} <- Enum.zip(sessions, states) do
       if state.live do
-        {:ok, view, _} = live(conn, "/admin/users")
+        {:ok, view, _} = history_live(conn, "/admin/users")
         view
       end
     end
@@ -168,7 +176,7 @@ defmodule MarshallWeb.MFALoginHistoryTest do
 
       if state.live do
         assert has_element?(view, "#main-content")
-        GenServer.stop(view.pid)
+        stop_history_view(view.pid)
       else
         assert_redirect(view, "/sign-in")
       end
@@ -191,16 +199,42 @@ defmodule MarshallWeb.MFALoginHistoryTest do
 
       for path <- ["/overview", "/admin/users", "/hldd"] do
         if allowed do
-          {:ok, view, _} = live(conn, path)
+          {:ok, view, _} = history_live(conn, path)
           assert has_element?(view, "#main-content")
-          GenServer.stop(view.pid)
+          stop_history_view(view.pid)
         else
-          assert {:error, {:redirect, %{to: "/sign-in"}}} = live(conn, path)
+          assert {:error, {:redirect, %{to: "/sign-in"}}} = history_live(conn, path)
         end
       end
     end
 
     :ok
+  end
+
+  # @cc [owner:ghuntley,label:verification] subsequent-mfa-case-view-custody
+  # Every successful LiveView mount, including an unexpected success in a refusal
+  # assertion, MUST register cleanup before its generated case's SQL owner stops.
+  # Cleanup MUST target only the captured PID, tolerate only an already stopped
+  # view and retain a finite operation deadline.
+  @spec history_live(Plug.Conn.t(), String.t()) ::
+          {:ok, %Phoenix.LiveViewTest.View{}, String.t()}
+          | {:error, {:redirect | :live_redirect, map()}}
+  defp history_live(conn, path) do
+    case live(conn, path) do
+      {:ok, view, _html} = result ->
+        Hegel.on_cleanup(fn -> stop_history_view(view.pid) end)
+        result
+
+      {:error, _redirect} = result ->
+        result
+    end
+  end
+
+  @spec stop_history_view(pid()) :: :ok
+  defp stop_history_view(pid) do
+    GenServer.stop(pid, :normal, 5_000)
+  catch
+    :exit, {:noproc, _} -> :ok
   end
 
   @spec signed_in(Plug.Conn.t(), User.t(), String.t()) :: Plug.Conn.t()

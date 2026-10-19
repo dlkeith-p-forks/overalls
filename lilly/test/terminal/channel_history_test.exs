@@ -17,6 +17,7 @@ defmodule Lilly.Terminal.ChannelHistoryTest do
           buffer: binary(),
           guests: map(),
           backoff: pos_integer(),
+          android_channels: %{},
           channels: %{
             pos_integer() => %{
               pid: pid(),
@@ -574,6 +575,7 @@ defmodule Lilly.Terminal.ChannelHistoryTest do
       buffer: <<>>,
       guests: %{},
       backoff: 30_000,
+      android_channels: %{},
       channels: %{number => %{pid: channel, last_input: 0, input_window: Window.new()}},
       websocket: %Connection{socket: transport, transport: :plain, limit: 262_158}
     }

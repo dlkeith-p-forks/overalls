@@ -52,6 +52,7 @@ defmodule Lilly.Terminal.Stream do
         phase: :disconnected,
         buffer: <<>>,
         channels: %{},
+        android_channels: %{},
         guests: %{},
         next_channel: 1,
         backoff: @dial_backoff_min
@@ -309,6 +310,24 @@ defmodule Lilly.Terminal.Stream do
     {:noreply, next}
   end
 
+  def handle_info({:android_display_frame, channel, generation, bytes}, state)
+      when is_integer(channel) and is_integer(generation) and is_binary(bytes) do
+    state =
+      case state.android_channels[channel] do
+        %{generation: ^generation} -> reply_data(state, channel, bytes)
+        _ -> state
+      end
+
+    {:noreply, state}
+  end
+
+  def handle_info({:android_display_closed, channel, generation, _reason}, state) do
+    if match?(%{generation: ^generation}, state.android_channels[channel]),
+      do: reply(state, %{type: :closed, channel: channel, reason: :dial_failed})
+
+    {:noreply, %{state | android_channels: Map.delete(state.android_channels, channel)}}
+  end
+
   def handle_info(message, %{websocket: %Connection{} = connection} = state),
     do: {:noreply, transport(state, Connection.stream(connection, message))}
 
@@ -327,6 +346,11 @@ defmodule Lilly.Terminal.Stream do
 
     retire_opening_connection(state)
     if state.websocket, do: Connection.close(state.websocket)
+
+    Enum.each(state.android_channels, fn {_channel, entry} ->
+      _ = Lilly.Terminal.AndroidDisplay.stop(entry.pid)
+    end)
+
     :ok
   end
 
@@ -442,7 +466,15 @@ defmodule Lilly.Terminal.Stream do
         end
 
       _ ->
-        state
+        case state.android_channels[channel] do
+          %{pid: pid, generation: generation, last_input: last}
+          when is_integer(generation) and sequence == last + 1 ->
+            _ = Lilly.Terminal.AndroidDisplay.input(pid, bytes)
+            put_in(state, [:android_channels, channel, :last_input], sequence)
+
+          _ ->
+            state
+        end
     end
   end
 
@@ -676,6 +708,65 @@ defmodule Lilly.Terminal.Stream do
     end
   end
 
+  defp control(state, %{type: :android_display_open} = message) do
+    result =
+      with {:ok, identity} <- terminal_identity(state, message),
+           {:ok, config} <- Lilly.Control.Runtime.network_config(state.runtime),
+           {:ok, guest} <- Lilly.Network.Guest.new(message.vm_id, identity.profile, identity.slot),
+           {:ok, pid} <-
+             Lilly.Terminal.AndroidDisplay.start_link(
+               self(),
+               config,
+               guest,
+               %{ticket: message.ticket, mode: message.mode},
+               message.generation,
+               message.channel
+             ) do
+        {:ok, pid}
+      else
+        _ -> {:error, :display_unavailable}
+      end
+
+    case result do
+      {:ok, pid} ->
+        reply(state, %{
+          type: :android_display_opened,
+          channel: message.channel,
+          generation: message.generation,
+          ok: true,
+          reason: nil
+        })
+
+        put_in(state, [:android_channels, message.channel], %{
+          pid: pid,
+          generation: message.generation,
+          last_input: 0
+        })
+
+      {:error, reason} ->
+        reply(state, %{
+          type: :android_display_opened,
+          channel: message.channel,
+          generation: message.generation,
+          ok: false,
+          reason: reason
+        })
+
+        state
+    end
+  end
+
+  defp control(state, %{type: :android_display_close, channel: channel}) do
+    case Map.pop(state.android_channels, channel) do
+      {nil, _} ->
+        state
+
+      {%{pid: pid}, channels} ->
+        _ = Lilly.Terminal.AndroidDisplay.stop(pid)
+        %{state | android_channels: channels}
+    end
+  end
+
   defp control(state, %{type: :boot_log} = message) do
     result =
       with {:ok, actor} <-
@@ -801,6 +892,12 @@ defmodule Lilly.Terminal.Stream do
     maybe_send(state.websocket, Codec.encode_control_frame(control))
   end
 
+  defp reply_data(state, channel, bytes) do
+    sequence = Map.get(state.android_channels[channel], :output_sequence, 0) + 1
+    maybe_send(state.websocket, Codec.encode_data_frame(channel, sequence, bytes))
+    put_in(state, [:android_channels, channel, :output_sequence], sequence)
+  end
+
   defp maybe_send(%Connection{} = websocket, frame) do
     case Connection.send_frame(websocket, {:binary, frame}) do
       :ok -> :ok
@@ -833,8 +930,20 @@ defmodule Lilly.Terminal.Stream do
     if state.websocket, do: Connection.close(state.websocket)
     Enum.each(state.channels, fn {_channel, entry} -> _ = Channel.stop(entry.pid) end)
 
+    Enum.each(state.android_channels, fn {_channel, entry} ->
+      _ = Lilly.Terminal.AndroidDisplay.stop(entry.pid)
+    end)
+
     Process.send_after(self(), :connect, state.backoff)
-    %{state | websocket: nil, phase: :disconnected, buffer: <<>>, channels: %{}}
+
+    %{
+      state
+      | websocket: nil,
+        phase: :disconnected,
+        buffer: <<>>,
+        channels: %{},
+        android_channels: %{}
+    }
   end
 
   defp log_connected(state) do

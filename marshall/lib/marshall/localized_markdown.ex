@@ -101,9 +101,12 @@ defmodule Marshall.LocalizedMarkdown do
 
   @spec structure(String.t()) :: {:ok, structure()} | :error
   defp structure(value) when byte_size(value) <= @max_prose_bytes do
-    value
-    |> Earmark.as_ast!()
-    |> structure_nodes(%{})
+    # Earmark 1.4.49 incorrectly specifies its AST as binary(). Capture the
+    # public parser at this foreign boundary; its result remains untrusted until
+    # structure_nodes/2 validates every node recursively. Remove this boundary
+    # when the pinned dependency correctly specifies its list-shaped AST.
+    parser = Function.capture(Earmark, :as_ast!, 1)
+    structure_nodes(parser.(value), %{})
   rescue
     Earmark.Error -> :error
   end

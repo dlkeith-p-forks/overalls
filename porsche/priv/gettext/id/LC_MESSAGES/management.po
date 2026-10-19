@@ -428,3 +428,11 @@ msgstr "Utas ini belum siap menerima prompt."
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach memerlukan terminal. Sambungkan dengan ssh -t dan jalankan sebagai perintah."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Notifikasi push dinonaktifkan pada penerapan ini; hubungi operatornya."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Jumlah perangkat Anda sudah mencapai batas maksimum; hapus satu terlebih dahulu: device rm DEVICE_ID"

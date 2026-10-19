@@ -29,7 +29,14 @@ defmodule MarshallWeb.AndroidDisplaySocket do
       WebSockAdapter.upgrade(
         conn,
         Marshall.Android.DisplaySocket,
-        %{claim: claim, actor: actor, login_jti: login_jti, generation: generation, mode: mode},
+        %{
+          claim: claim,
+          actor: actor,
+          login_jti: login_jti,
+          generation: generation,
+          mode: mode,
+          ticket: ticket
+        },
         timeout: :infinity,
         max_frame_size: 262_144,
         compress: false

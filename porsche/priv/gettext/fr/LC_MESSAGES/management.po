@@ -430,3 +430,11 @@ msgstr "Ce fil n'est pas encore prêt à recevoir des instructions."
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach nécessite un terminal. Connectez-vous avec ssh -t et exécutez-le comme commande."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Les notifications push sont désactivées sur ce déploiement ; contactez son opérateur."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Vous avez atteint le nombre maximal d’appareils ; supprimez-en un d’abord : device rm DEVICE_ID"

@@ -467,3 +467,11 @@ msgstr "ఈ థ్రెడ్ ఇంకా ప్రాంప్ట్‌లక
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach కు టెర్మినల్ అవసరం. ssh -t తో కనెక్ట్ అయి దాన్ని కమాండ్‌గా అమలు చేయండి."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "ఈ అమలులో పుష్ నోటిఫికేషన్‌లు నిలిపివేయబడ్డాయి; నిర్వాహకుడిని సంప్రదించండి."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "మీ పరికరాల సంఖ్య గరిష్ఠ పరిమితికి చేరుకుంది; ముందుగా ఒకదాన్ని తీసివేయండి: device rm DEVICE_ID"

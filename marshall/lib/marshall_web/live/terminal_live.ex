@@ -684,7 +684,8 @@ defmodule MarshallWeb.TerminalLive do
               data-display-target
               role="img"
               aria-label={dgettext("terminal", "Android display canvas")}
-            ></div>
+            >
+            </div>
           </section>
 
           <div id="terminal-display" class="machine-terminal-display">

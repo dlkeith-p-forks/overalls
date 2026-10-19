@@ -1,6 +1,7 @@
 # Architecture reviews
 
 - [Localization feature catalogs (2026-10-19)](2026-10-19-localization-feature-catalogs.md): native per-locale/per-feature catalogs and the source-English handbook boundary under ADR-0201; migration and verification evidence remain separately scoped.
+- [MFA property fixture isolation (2026-10-19)](2026-10-19-mfa-property-isolation.md): fresh SQL ownership per generated history under ADR-0191, preserving exploration and separating historical timing from current execution.
 - [Mila M6: integrated client, relay and verification (2026-10-19)](2026-10-19-mila-m6.md):
   ADR-0220–0228 across the integrated Mila, Porsche, Marshall and Susan
   changes; records which machine and unit runs passed on the integrated tree.

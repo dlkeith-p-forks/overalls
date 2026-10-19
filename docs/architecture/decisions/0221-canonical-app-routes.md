@@ -69,9 +69,14 @@ fixture row in the same change.
   `mila/app/android/app/src/main/{AndroidManifest.xml,kotlin/…/MainActivity.kt}`,
   and the desktop item in [`nix/domains/artifacts/mila/default.nix`](../../../nix/domains/artifacts/mila/default.nix).
 
-Gaps: the Marshall tests have not run (Marshall does not currently compile on
-this branch's base); the "Open Mila" link on the SSH approval page and push
-payload routes are not implemented; native link delivery is uncompiled.
+The [SSH approval page](../../../marshall/lib/marshall_web/live/ssh_approval_live.ex)
+now emits the localized "Open Mila" link, and
+[Notifications.Producer](../../../marshall/lib/marshall/notifications/producer.ex)
+constructs validated route paths for sealed pokes. Historical Marshall and
+client runs retain the source scope recorded in the
+[commands review](../reviews/2026-10-18-mila-commands.md) and
+[device review](../reviews/2026-10-18-mila-device.md). These results do not
+establish the latest merged tree or native iOS/Android link delivery.
 
 ## Open questions
 

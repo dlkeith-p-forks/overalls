@@ -428,3 +428,11 @@ msgstr "Dis thread never ready for prompt yet."
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach need terminal. Connect with ssh -t and run am as di command."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Push notification dey off for this deployment; ask the person wey dey run am."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Your devices don reach the highest number wey we allow; first remove one: device rm DEVICE_ID"

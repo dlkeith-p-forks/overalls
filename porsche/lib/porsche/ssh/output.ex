@@ -339,6 +339,18 @@ defmodule Porsche.SSH.Output do
       "unknown_session" ->
         dgettext("management", "That terminal session no longer exists.")
 
+      "push_disabled" ->
+        dgettext(
+          "management",
+          "This deployment has push notifications turned off; ask its operator."
+        )
+
+      "device_limit" ->
+        dgettext(
+          "management",
+          "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+        )
+
       "stdin_payload_required" ->
         dgettext(
           "management",

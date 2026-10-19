@@ -375,8 +375,8 @@ defmodule Marshall.SSH.Commands do
 
   # @cc [owner:ghuntley,label:protocol] ssh-machine-workspace-status-private
   # ls/show MUST preserve their public machine response fields without exposing
-  # the workspace-only editor_image_status presentation field. They expose the
-  # caller's own `pinned` flag and a canonical `route` link (ADR-0222).
+  # workspace-only presentation fields or Reflection labels and comment. They
+  # expose the caller's own `pinned` flag and canonical `route` link (ADR-0222).
   defp read(%{command: "ls", options: opts}, actor) do
     page = Compute.list_vms(%{after: opts["after"]}, actor: actor) |> unwrap!()
     Map.update!(page, :items, &Enum.map(&1, fn vm -> machine_wire_view(vm) end))
@@ -1274,12 +1274,20 @@ defmodule Marshall.SSH.Commands do
   defp resolve!(ref, actor), do: Compute.resolve_vm(%{reference: ref}, actor: actor) |> unwrap!()
 
   # Browser-only projections (editor eligibility, guest capability booleans and
-  # owner contact details) stay out of the SSH/Porsche wire format. The caller's
-  # own pin and the machine's app link are public to the caller (ADR-0222).
+  # owner contact details) and Reflection metadata stay out of the SSH/Porsche
+  # wire format. The caller's own pin and the machine's app link are public to
+  # the caller (ADR-0222).
   @spec machine_wire_view(map()) :: map()
   defp machine_wire_view(vm) do
     vm
-    |> Map.drop([:editor_image_status, :guest_capabilities, :owner_email, :owner_time_zone])
+    |> Map.drop([
+      :editor_image_status,
+      :guest_capabilities,
+      :owner_email,
+      :owner_time_zone,
+      :labels,
+      :comment
+    ])
     |> Map.put(:route, Marshall.AppRoutes.link({:machine, vm.id}))
   end
 

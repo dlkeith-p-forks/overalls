@@ -764,11 +764,15 @@ let
       exec ${packages.marshall}/bin/marshall eval 'Code.eval_file("/etc/fleet-operator.exs")' "$@"
     '') ];
   };
+  # @cc [owner:ghuntley,label:verification;security] suspension-private-ssh-prerequisites
+  # Suspension guests MUST use the same private certificate issuer and runtime
+  # credential enrollment as other fleet guests. The fixture MUST NOT bypass
+  # host-certificate readiness to reach checkpoint assertions.
   lilly = name: { config, nodes, lib, ... }:
     let host = hosts.${name}; in {
     imports = [ ziggyFixture.lilly ]
       ++ [ (import ./audi.nix { inherit pkgs ubuntu; role = "gateway"; hostId = host.host; }) ]
-      ++ lib.optional (!suspension) galileoFixture.lilly
+      ++ [ galileoFixture.lilly ]
       ++ lib.optional (otelAudiSsh || observabilityRecovery || suspension) (otelAudiSshHost name);
     security.pki.certificateFiles = lib.optionals githubIntegration [ "${githubFixture}/root.pem" ];
     services.audi.editorPackages = lib.optionalAttrs (editor || suspension) {
@@ -1686,7 +1690,7 @@ assert editorFamily == null || (editor && !ubuntu
     relocation_enabled = False
     audi_enabled = True
     galileo_enabled = False
-    ssh_private_enabled = ${if suspension then "False" else "True"}
+    ssh_private_enabled = True
     agent_enabled = False
     coding_cli_guest_image = "${guest}"
     coding_cli_provider_ca = "${ziggyFixture.tls}/ca.pem"
@@ -1738,7 +1742,7 @@ assert editorFamily == null || (editor && !ubuntu
     relocation_enabled = False
     audi_enabled = True
     galileo_enabled = False
-    ssh_private_enabled = ${if suspension then "False" else "True"}
+    ssh_private_enabled = True
     agent_enabled = False
   '' + lib.concatMapStringsSep "\n" builtins.readFile [
     ./driver.py
@@ -1845,7 +1849,7 @@ assert editorFamily == null || (editor && !ubuntu
     relocation_enabled = ${if relocation then "True" else "False"}
     audi_enabled = True
     galileo_enabled = ${if galileo then "True" else "False"}
-    ssh_private_enabled = ${if suspension then "False" else "True"}
+    ssh_private_enabled = True
     agent_enabled = ${if agent then "True" else "False"}
     otel_guest_enabled = ${if otelGuest then "True" else "False"}
     otel_galileo_enabled = ${if otelGalileo then "True" else "False"}

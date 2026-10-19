@@ -40,6 +40,7 @@ defmodule Lilly.Terminal.OpeningSocketPropertyTest do
         opening: make_ref(),
         phase: :disconnected,
         buffer: <<>>,
+        android_channels: %{},
         channels: %{},
         guests: %{},
         next_channel: 1,

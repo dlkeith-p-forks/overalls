@@ -114,8 +114,10 @@ Implemented in this change, with these refinements of the decision text:
 
 Remaining for `implemented`: real APNs/FCM acceptance (the machine tests use
 local fake origins behind a private CA), the encrypted
-`secrets/overalls-susan.enc.json`, hosting and TLS placement, and Marshall's
-poke client (ADR-0225).
+`secrets/overalls-susan.enc.json`, and hosting and TLS placement. Marshall's
+[poke client](../../../marshall/lib/marshall/notifications/susan.ex) is now
+present under ADR-0225; historical fake-relay execution does not establish
+real provider acceptance or the latest integrated relay verifier.
 
 ## Open questions
 

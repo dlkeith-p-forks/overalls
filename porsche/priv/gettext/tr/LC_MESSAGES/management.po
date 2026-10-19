@@ -428,3 +428,11 @@ msgstr "Bu iş parçacığı henüz istemlere hazır değil."
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach bir terminal gerektirir. ssh -t ile bağlanın ve komut olarak çalıştırın."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Bu kurulumda anlık bildirimler kapalı; yöneticisine danışın."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "En fazla cihaz sayısına ulaştınız; önce birini kaldırın: device rm DEVICE_ID"

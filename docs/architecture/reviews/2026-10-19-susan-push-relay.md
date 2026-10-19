@@ -56,9 +56,11 @@ Recorded in the Susan workstream before the signature reconciliation:
 - The `image-susan` package and the `susan-release` check both built.
 
 Those runs predate the change to the verifier and the fixture, so they are not
-evidence for the integrated tree. The integrated runs, including the new
-`push-relay` Marshall→Susan→provider machine test, are recorded in the
-[Mila M6 review](2026-10-19-mila-m6.md).
+evidence for the integrated tree. The
+[Mila M6 review](2026-10-19-mila-m6.md) remains the record for subsequent
+integrated results, including the new `push-relay`
+Marshall→Susan→provider machine test; that review currently records no
+completed Phase 2 verification pass.
 
 ## Gaps
 

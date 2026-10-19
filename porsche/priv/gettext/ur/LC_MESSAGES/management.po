@@ -460,3 +460,11 @@ msgstr "یہ تھریڈ ابھی پرامپٹس کے لیے تیار نہیں ہ
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach کو ٹرمینل درکار ہے۔ ssh -t سے جڑیں اور اسے کمانڈ کے طور پر چلائیں۔"
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "اس تنصیب میں پش اطلاعات بند ہیں؛ اس کے منتظم سے رابطہ کریں۔"
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "آپ کے آلات کی تعداد زیادہ سے زیادہ حد تک پہنچ گئی ہے؛ پہلے ایک آلہ ہٹائیں: device rm DEVICE_ID"

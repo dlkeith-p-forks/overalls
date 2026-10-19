@@ -1,7 +1,7 @@
 { pkgs, vscodeWeb }:
 let
   python = pkgs.python313;
-  node = pkgs.nodejs_24;
+  node = import ./node-runtime.nix { inherit pkgs; };
   maintained = pkgs.runCommand "overalls-extension-maintenance-source" { } ''
     mkdir -p "$out"
     cp ${./extensions.py} "$out/extensions.py"

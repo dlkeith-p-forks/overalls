@@ -429,3 +429,11 @@ msgstr "Эта ветка ещё не готова принимать запро
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach требует терминал. Подключитесь с ssh -t и запустите его как команду."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Push-уведомления в этом развёртывании отключены; обратитесь к его оператору."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Достигнуто максимальное число устройств; сначала удалите одно: device rm DEVICE_ID"

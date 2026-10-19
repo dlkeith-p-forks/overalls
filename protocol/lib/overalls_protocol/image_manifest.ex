@@ -154,7 +154,7 @@ defmodule OverallsProtocol.ImageManifest do
     with true <- guest_agents in ["linux", "linux-android-v1"],
          {:ok, guest_agent_set} <- OverallsProtocol.GuestAgents.parse(guest_agents),
          true <- workspace_source_version in [nil, 2],
-         {:ok, editor} <- editor_descriptor(manifest),
+         {:ok, editor} <- editor_descriptor(Map.delete(manifest, "guest_agents")),
          true <- is_binary(boot) and byte_size(boot) in 1..2048,
          true <- String.valid?(boot) and not String.contains?(boot, ["\0", "\n", "\r"]),
          true <- minima?(memory, disk),

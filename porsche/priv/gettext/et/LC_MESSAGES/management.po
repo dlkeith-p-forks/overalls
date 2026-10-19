@@ -428,3 +428,11 @@ msgstr "See lõim pole veel viipade jaoks valmis."
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach vajab terminali. Ühenda ssh -t abil ja käivita see käsuna."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Selles paigalduses on tõuketeated välja lülitatud; pöördu selle halduri poole."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Sul on juba suurim lubatud arv seadmeid; eemalda esmalt üks: device rm DEVICE_ID"

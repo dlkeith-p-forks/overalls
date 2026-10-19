@@ -429,3 +429,11 @@ msgstr "Wannan zaren bai shirya karɓar buƙatu ba tukuna."
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach yana buƙatar tasha. Haɗa da ssh -t kuma ka gudanar da shi a matsayin umarnin."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "An kashe sanarwar turawa a wannan tsarin; tuntuɓi mai kula da shi."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Yawan na'urorinka ya kai iyaka; fara cire ɗaya: device rm DEVICE_ID"

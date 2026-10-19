@@ -429,3 +429,11 @@ msgstr "此线程尚未准备好接收提示。"
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach 需要终端。请使用 ssh -t 连接并将其作为命令运行。"
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "此部署已关闭推送通知；请咨询其管理员。"
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "你的设备数量已达上限；请先移除一个：device rm DEVICE_ID"

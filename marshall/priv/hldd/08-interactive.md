@@ -1578,3 +1578,13 @@ browser-supplied generation mismatch is refused before relay creation.
 
 The host-stream adapter drops stale Android frames before relay publication and
 routes input only from controller-authorized sockets back toward Lilly.
+# Android display transport
+
+Android-capable Linux guests expose a software-rendered emulator display through
+the authenticated terminal host stream. Marshall issues a short-lived machine
+and generation-bound ticket; the shared relay permits multiple read-only viewers
+and one controller. RFB bytes remain opaque and bounded, and generation or host
+stream loss closes the bridge. Native Firecracker and browser journey evidence
+remains partial until the composed acceptance test is recorded.
+The bridge is shared per machine generation, so additional browser viewers reuse
+the authenticated guest channel rather than opening independent guest sockets.

@@ -463,3 +463,11 @@ msgstr "यह थ्रेड अभी प्रॉम्प्ट के ल�
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach के लिए टर्मिनल चाहिए। ssh -t से कनेक्ट करें और इसे कमांड के रूप में चलाएँ।"
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "इस परिनियोजन में पुश सूचनाएँ बंद हैं; इसके संचालक से संपर्क करें।"
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "आपके उपकरणों की संख्या अधिकतम सीमा तक पहुँच गई है; पहले एक उपकरण हटाएँ: device rm DEVICE_ID"

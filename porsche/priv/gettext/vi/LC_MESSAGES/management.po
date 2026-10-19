@@ -428,3 +428,11 @@ msgstr "Luồng này chưa sẵn sàng nhận lời nhắc."
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach cần một terminal. Hãy kết nối bằng ssh -t và chạy nó như lệnh."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Thông báo đẩy đã bị tắt trên bản triển khai này; hãy liên hệ người vận hành."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Bạn đã đạt số lượng thiết bị tối đa; hãy xóa một thiết bị trước: device rm DEVICE_ID"

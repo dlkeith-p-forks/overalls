@@ -437,3 +437,11 @@ msgstr "هذه السلسلة غير جاهزة لاستقبال الطلبات 
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "يحتاج terminal attach إلى طرفية. اتصل باستخدام ssh -t وشغّله كأمر."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "إشعارات الدفع معطلة في هذا النشر؛ تواصل مع مشغّله."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "لقد بلغت الحد الأقصى لعدد الأجهزة؛ أزل جهازًا أولًا: device rm DEVICE_ID"

@@ -19,6 +19,14 @@ Prompts and authorized network access wake sleeping machines; requests to an
 already running machine do not continually reset the tool clock. Only the owner's
 pin prevents automatic suspension, and pinning a suspended machine requests wake.
 
+The suspension fleet fixture now enrolls the same private Galileo/Audi issuer,
+runtime credentials and trust as ordinary fleet guests before SSH host-certificate
+readiness. Its 2026-10-19 rerun passed composed-driver type and lint checks and
+completed private-service enrollment, then exited with status 137 while waiting
+for the fleet wildcard certificate, before guest launch. This records neither
+pause/resume nor relocation acceptance; the exit status does not identify why
+the process was killed. Changed-source native continuation remains unverified.
+
 ```mermaid
 stateDiagram-v2
   running --> paused: capture and compute-empty proof
@@ -252,8 +260,14 @@ A guest whose boot bundle declares no agents (a firmware-booted image,
 readiness: Lilly records trust as `skipped` for the exact boot instead of
 delivering it, advances provisioning to the terminal `unattested` phase (a boot
 challenge, never a boot UUID, no path to `ready`) and reports the VM running
-without a `guest_ready` fact. Marshall admits only the physical service level
-for such an operation. Whether a boot exchanges readiness and trust, and how
+without a `guest_ready` fact. Physical-only measurement describes retained
+agentless executions and the historical Lilly-only launch fixture. Current
+Marshall admission requires explicit Git identity support
+([ADR-0198](repo:docs/architecture/decisions/0198-git-attribution-and-guest-identity.md),
+[ADR-0204](repo:docs/architecture/decisions/0204-git-attribution-and-guest-identity.md));
+an agentless image cannot advertise it and refuses new machine creation before
+allocation. A Git-capable `windows-v1` image admits both physical and readiness
+measurements. Whether a boot exchanges readiness and trust, and how
 long readiness may take, is decided per agent set by the protocol's capability
 table ([ADR-0171](repo:docs/architecture/decisions/0171-windows-guest-agents.md)):
 Linux guests keep the 120 s budget (2400 s for Inception), `windows-v1` guests

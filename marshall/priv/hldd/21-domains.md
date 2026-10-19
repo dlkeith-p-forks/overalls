@@ -67,6 +67,25 @@ domains share PostgreSQL and may compose actions in one transaction. For example
 [Authorization](repo:marshall/lib/marshall/authorization/cedar.ex) checks current facts;
 process identity or a domain name alone grants no permission.
 
+```mermaid
+flowchart LR
+  Planning[Agents planning commit] -->|after outer commit| Notify[Marshall.Notifications]
+  Accounts[Accounts and SSH revocation] -->|same transaction| Notify
+  Access[Current machine and thread write authority] -->|recipient selection| Notify
+  Notify -->|sealed poke and install signature| Relay[Susan.Relay]
+  Relay -->|closed audit facts| Audit[Susan.Audit]
+  Relay -->|content-free provider payload| Provider[APNs and FCM]
+```
+
+Notifications shares Marshall's PostgreSQL authority; Susan has its own database
+and never authorizes Marshall actions. Revocation owns device state changes in
+the revoking transaction, while planning publishes notification work only after
+its outer commit. Historical fake-relay and provider-fixture runs retain the
+scope in their [notifications](repo:docs/architecture/reviews/2026-10-18-mila-notifications.md)
+and [Susan](repo:docs/architecture/reviews/2026-10-19-susan-push-relay.md) reviews.
+They do not establish real APNs/FCM delivery, device decryption or acceptance of
+the latest merged source.
+
 `Marshall.Threads` is a user-facing orchestration boundary above
 `Marshall.Compute` and `Marshall.Agents`. A pending thread is durable before its
 Oban provisioning worker runs; the thread mutation and job insert share a

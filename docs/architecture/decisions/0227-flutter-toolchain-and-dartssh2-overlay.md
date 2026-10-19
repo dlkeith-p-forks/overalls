@@ -65,8 +65,10 @@ login shell.
 patch, [`nix/verification/hegel/libhegel-dart.nix`](../../../nix/verification/hegel/libhegel-dart.nix), [`flake.nix`](../../../flake.nix) checks and
 packages, and the devenv `mila:dartssh2` task, `mila-check` script and
 `mila-dart-format` hook. All Mila checks and packages build locally; the
-checks carry `meta.ci`, so CI selects them. Gaps: `mila-porsche` is blocked by
-the pre-existing Porsche release failure; there is no Android Nix build.
+checks carry `meta.ci`, so CI selects them. The subsequent `mila-porsche`
+run passed within the source scope recorded in the
+[M1 review](../reviews/2026-10-18-mila-m1.md); it does not establish a passing
+latest merged tree. There is no Android Nix build.
 
 ## Open questions
 

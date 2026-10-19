@@ -429,3 +429,11 @@ msgstr "このスレッドはまだプロンプトを受け付ける準備がで
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach には端末が必要です。ssh -t で接続し、コマンドとして実行してください。"
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "この環境ではプッシュ通知が無効になっています。運用担当者にお問い合わせください。"
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "デバイス数が上限に達しています。先に1台削除してください: device rm DEVICE_ID"

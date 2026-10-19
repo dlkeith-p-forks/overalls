@@ -251,5 +251,5 @@ in
   };
 
   # Keep guest system logs in memory.
-  services.journald.extraConfig = "Storage=volatile";
+  services.journald.settings.Journal.Storage = "volatile";
 }

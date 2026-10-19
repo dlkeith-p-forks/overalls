@@ -88,8 +88,11 @@ every Porsche locale catalog, in the feature domain that owns the command.
 - Terminal commands (`terminal ls|new|kill`) are implemented on the same
   receipt model, outside the receipt transaction because the terminal domain
   commits its opening intent before guest dispatch.
-- **Gaps:** `device register|ls|rm|prefs` belong to the Notifications work
-  (ADR-0225) and are not here. Committed-hint delivery to a watch is not
+- `device register|ls|rm|prefs` dispatch to the Notifications domain
+  ([ADR-0225](0225-marshall-notifications-domain.md)); its
+  [device actions](../../../marshall/lib/marshall/notifications/device_actions.ex)
+  bind registration to the current SSH key and enforce owner-scoped changes.
+- **Gaps:** Committed-hint delivery to a watch is not
   exercised end to end, because sandboxed tests never commit `pg_notify`;
   Porsche routing is tested with direct hints. Terminal commands are tested
   only for refusals without a live guest stream. The `porsche-threads` fleet

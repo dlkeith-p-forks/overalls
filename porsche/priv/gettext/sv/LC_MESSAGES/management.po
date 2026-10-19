@@ -428,3 +428,11 @@ msgstr "Den här tråden är inte redo för prompter ännu."
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
 msgstr "terminal attach behöver en terminal. Anslut med ssh -t och kör det som kommando."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Pushnotiser är avstängda i den här installationen; kontakta dess operatör."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Du har nått det högsta antalet enheter; ta först bort en: device rm DEVICE_ID"

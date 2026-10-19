@@ -41,7 +41,7 @@ msgstr ""
 msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:382
+#: lib/porsche/ssh/output.ex:394
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr ""
@@ -51,7 +51,7 @@ msgstr ""
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:384
+#: lib/porsche/ssh/output.ex:396
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr ""
@@ -61,32 +61,32 @@ msgstr ""
 msgid "Invalid command. Type help to see available commands."
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:377
+#: lib/porsche/ssh/output.ex:389
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:374
+#: lib/porsche/ssh/output.ex:386
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:409
+#: lib/porsche/ssh/output.ex:421
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:412
+#: lib/porsche/ssh/output.ex:424
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:376
+#: lib/porsche/ssh/output.ex:388
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:378
+#: lib/porsche/ssh/output.ex:390
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr ""
@@ -96,17 +96,17 @@ msgstr ""
 msgid "Source cleanup is still pending. Wait for cleanup before retrying."
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:375
+#: lib/porsche/ssh/output.ex:387
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:383
+#: lib/porsche/ssh/output.ex:395
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:385
+#: lib/porsche/ssh/output.ex:397
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr ""
@@ -126,7 +126,7 @@ msgstr ""
 msgid "The available host does not meet the machine image's requirements."
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:355
+#: lib/porsche/ssh/output.ex:367
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr ""
@@ -401,7 +401,7 @@ msgstr ""
 msgid "The machine is waking. Retry the terminal shortly."
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:349
+#: lib/porsche/ssh/output.ex:361
 #, elixir-autogen, elixir-format
 msgid "The standard input is empty or exceeds this command's size limit."
 msgstr ""
@@ -411,7 +411,7 @@ msgstr ""
 msgid "The web settings changed since you read them. Show them again and retry."
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:343
+#: lib/porsche/ssh/output.ex:355
 #, elixir-autogen, elixir-format
 msgid "This command reads its input from standard input. Pipe it in and end the command with -."
 msgstr ""
@@ -434,4 +434,14 @@ msgstr ""
 #: lib/porsche/ssh/output.ex:292
 #, elixir-autogen, elixir-format
 msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:343
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:349
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
 msgstr ""
