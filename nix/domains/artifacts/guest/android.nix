@@ -24,7 +24,8 @@ in
   # The host-side Lilly connector reaches the typed relay through the guest
   # TAP. The relay is the only process on this fixed port; RFB stays on
   # loopback at 5901.
-  networking.firewall.allowedTCPPorts = [ 22 5900 ];
+  networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.interfaces.eth0.allowedTCPPorts = [ 5900 ];
 
   users.users.overalls-android = {
     isSystemUser = true;
