@@ -14,52 +14,53 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:68
+#: lib/marshall_web/live/ssh_approval_live.ex:83
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr "SSH কী অনুমোদন করুন"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:94
+#: lib/marshall_web/live/ssh_approval_live.ex:111
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr "কী অনুমোদন করুন"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:71
+#: lib/marshall_web/live/ssh_approval_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr "শুধু আপনি SSH সংযোগটি শুরু করলে এবং এর আঙুলের ছাপ আপনার SSH ক্লায়েন্টের সঙ্গে মিললে এই কী অনুমোদন করুন।"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:92
+#: lib/marshall_web/live/ssh_approval_live.ex:109
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "অনুমোদন করা হচ্ছে…"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:84
+#: lib/marshall_web/live/ssh_approval_live.ex:101
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "লেবেল (ঐচ্ছিক)"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:97
+#: lib/marshall_web/live/ssh_approval_live.ex:120
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr "আপনার SSH কী পরিচালনা করুন"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:103
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "আমার ল্যাপটপ"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:35
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "SSH কী অনুমোদিত। SSH ক্লায়েন্টে ফিরতে পারেন।"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr "এই SSH অনুমোদন নেই বা মেয়াদোত্তীর্ণ। আবার চেষ্টার জন্য নতুন SSH সংযোগ শুরু করুন।"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:77
+#: lib/marshall_web/live/ssh_approval_live.ex:93
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr "এই কী %{value1} হিসেবে প্রবেশ করবে। আপনার অ্যাকাউন্টের অনুমতি অনুযায়ী মেশিন পরিচালনা করতে পারবে।"
@@ -68,3 +69,8 @@ msgstr "এই কী %{value1} হিসেবে প্রবেশ করব�
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "পাওয়া যাচ্ছে না"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr "Mila খুলুন"

@@ -1,13 +1,26 @@
 { pkgs }:
 let
   inherit (pkgs) lib;
+  # Codex is pinned independently from the host package set.  Guest images
+  # may evaluate against a newer nixpkgs input while the accepted guest CLI
+  # contract remains on the reviewed 0.149.0 application package.
+  codexPkgs = import (builtins.fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/c8f90650c15282fa8656a041bfbbd2403997a9a7.tar.gz";
+    sha256 = "sha256-pRGOQSClnXNI2iLUG6DYpsGvYcuw0drOutVZFTJNw90=";
+  }) {
+    system = pkgs.stdenv.hostPlatform.system;
+    config = pkgs.config;
+  };
   bundle = "/etc/ssl/certs/ca-certificates.crt";
   # @cc [owner:ghuntley,label:build] guest-coding-cli-pinned-packages
   # Both clients MUST come from the supplied pinned package source. Allowing
   # Claude Code's license MUST NOT permit other unfree packages or replace the
   # supplied package overlays. Their image defaults MUST disable automatic
   # client update checks, binary updates and forced plugin updates.
-  claudePkgs = import pkgs.path {
+  claudePkgs = import (builtins.fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/c8f90650c15282fa8656a041bfbbd2403997a9a7.tar.gz";
+    sha256 = "sha256-pRGOQSClnXNI2iLUG6DYpsGvYcuw0drOutVZFTJNw90=";
+  }) {
     localSystem = pkgs.stdenv.hostPlatform;
     overlays = pkgs.overlays;
     config = pkgs.config // {
@@ -67,9 +80,9 @@ assert (lib.types.attrsOf lib.types.str).check environmentVariables;
 {
   inherit codexSettings claudeSettings environmentVariables;
   packages = [
-    (assert lib.assertMsg (pkgs.codex.version == "0.149.0")
+    (assert lib.assertMsg (codexPkgs.codex.version == "0.149.0")
       "Guest Codex version changed; supply the pinned application package when evaluating another host package set";
-      pkgs.codex)
+      codexPkgs.codex)
     (assert lib.assertMsg (claudeCode.version == "2.1.238")
       "Guest Claude Code version changed; supply the pinned application package when evaluating another host package set";
       claudeCode)

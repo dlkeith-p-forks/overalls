@@ -1194,9 +1194,7 @@ Type: `attribute set of package`.
 Default:
 
 ```nix
-{
-  linux-x64 = <derivation overalls-vscode-web-1.141.0>;
-}
+<derived from required configuration>
 ```
 
 
@@ -3466,9 +3464,7 @@ Type: `attribute set of package`.
 Default:
 
 ```nix
-{
-  linux-x64 = <derivation overalls-vscode-web-1.141.0>;
-}
+<derived from required configuration>
 ```
 
 
@@ -4197,6 +4193,19 @@ Default:
 
 ```nix
 8192
+```
+
+
+## `services.marshall.notifications.enable`
+
+Send content-free, end-to-end encrypted Mila push pokes through the Susan relay at https://notifications.overalls.dev. When false, device registration is refused with push_disabled and no deliveries are produced.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+true
 ```
 
 
@@ -8140,6 +8149,298 @@ Default:
 
 ```nix
 [ ]
+```
+
+
+## `services.susan.apnsTopics`
+
+Accepted APNs topics (Mila bundle identifiers).
+
+Type: `list of string`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
+## `services.susan.bind`
+
+Listener address behind the TLS-terminating proxy.
+
+Type: `string`.
+
+Default:
+
+```nix
+"127.0.0.1"
+```
+
+
+## `services.susan.cpuCores`
+
+No additional description is declared by the module.
+
+Type: `positive integer, meaning >0`.
+
+Default:
+
+```nix
+2
+```
+
+
+## `services.susan.database.createLocally`
+
+Create a local PostgreSQL database and peer-authenticated role named susan.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+true
+```
+
+
+## `services.susan.enable`
+
+Whether to enable the Susan push relay for content-free Mila notifications (ADR-0224).
+
+Type: `boolean`.
+
+Default:
+
+```nix
+false
+```
+
+Example:
+
+```nix
+true
+```
+
+
+## `services.susan.fcmAppIds`
+
+Accepted FCM application identifiers.
+
+Type: `list of string`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
+## `services.susan.limits`
+
+Optional token-bucket overrides keyed by key, install, source, global or issue.
+
+Type: `attribute set of (submodule)`.
+
+Default:
+
+```nix
+{ }
+```
+
+
+## `services.susan.limits.<name>._module.args`
+
+Additional arguments passed to each module in addition to ones
+like `lib`, `config`,
+and `pkgs`, `modulesPath`.
+
+This option is also available to all submodules. Submodules do not
+inherit args from their parent module, nor do they provide args to
+their parent module or sibling submodules. The sole exception to
+this is the argument `name` which is provided by
+parent modules to a submodule and contains the attribute name
+the submodule is bound to, or a unique generated name if it is
+not bound to an attribute.
+
+Some arguments are already passed by default, of which the
+following *cannot* be changed with this option:
+- {var}`lib`: The nixpkgs library.
+- {var}`config`: The results of all options after merging the values from all modules together.
+- {var}`options`: The options declared in all modules.
+- {var}`specialArgs`: The `specialArgs` argument passed to `evalModules`.
+- All attributes of {var}`specialArgs`
+
+  Whereas option values can generally depend on other option values
+  thanks to laziness, this does not apply to `imports`, which
+  must be computed statically before anything else.
+
+  For this reason, callers of the module system can provide `specialArgs`
+  which are available during import resolution.
+
+  For NixOS, `specialArgs` includes
+  {var}`modulesPath`, which allows you to import
+  extra modules from the nixpkgs package tree without having to
+  somehow make the module aware of the location of the
+  `nixpkgs` or NixOS directories.
+  ```
+  { modulesPath, ... }: {
+    imports = [
+      (modulesPath + "/profiles/minimal.nix")
+    ];
+  }
+  ```
+
+For NixOS, the default value for this option includes at least this argument:
+- {var}`pkgs`: The nixpkgs package set according to
+  the {option}`nixpkgs.pkgs` option.
+
+
+Type: `lazy attribute set of raw value`.
+
+Default:
+
+```nix
+{ }
+```
+
+
+## `services.susan.limits.<name>._module.check`
+
+Whether to check whether all option definitions have matching declarations.
+
+Type: `boolean`.
+
+Default:
+
+```nix
+true
+```
+
+
+## `services.susan.limits.<name>._module.freeformType`
+
+If set, merge all definitions that don't have an associated option
+together using this type. The result then gets combined with the
+values of all declared options to produce the final `
+config` value.
+
+If this is `null`, definitions without an option
+will throw an error unless {option}`_module.check` is
+turned off.
+
+
+Type: `null or optionType`.
+
+Default:
+
+```nix
+null
+```
+
+
+## `services.susan.limits.<name>._module.specialArgs`
+
+Externally provided module arguments that can't be modified from
+within a configuration, but can be used in module imports.
+
+
+Type: `unspecified value`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `services.susan.limits.<name>.burst`
+
+No additional description is declared by the module.
+
+Type: `integer between 1 and 100000 (both inclusive)`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `services.susan.limits.<name>.per_hour`
+
+No additional description is declared by the module.
+
+Type: `integer between 1 and 10000000 (both inclusive)`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `services.susan.memoryMiB`
+
+No additional description is declared by the module.
+
+Type: `positive integer, meaning >0`.
+
+Default:
+
+```nix
+1024
+```
+
+
+## `services.susan.package`
+
+Susan OTP release.
+
+Type: `package`.
+
+Default:
+
+```nix
+<derivation overalls-susan-0.1.0>
+```
+
+
+## `services.susan.port`
+
+Plain HTTP listener port; TLS terminates at the fronting proxy.
+
+Type: `16 bit unsigned integer; between 0 and 65535 (both inclusive)`.
+
+Default:
+
+```nix
+4100
+```
+
+
+## `services.susan.secretUnits`
+
+No additional description is declared by the module.
+
+Type: `list of string matching the pattern [a-zA-Z0-9_.@-]+\.service`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
+## `services.susan.secretsFile`
+
+SOPS document secrets/overalls-susan.enc.json with the six Susan secrets.
+
+Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
+
+Default: Required when its service or enclosing record is selected.
+
+
+## `services.susan.trustedProxies`
+
+Peers whose last X-Forwarded-For hop is believed for per-source rate limits.
+
+Type: `list of string`.
+
+Default:
+
+```nix
+[
+  "127.0.0.1"
+]
 ```
 
 

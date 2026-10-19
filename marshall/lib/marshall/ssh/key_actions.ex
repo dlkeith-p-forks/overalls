@@ -108,6 +108,8 @@ defmodule Marshall.SSH.KeyActions do
     case Ledger.lock!(Key, id) do
       %{user_id: owner} = key when owner == user.id ->
         :ok = Ledger.archive!(key, :revoke)
+        # Push devices registered through this key lose their binding with it (ADR-0225).
+        _ = Marshall.Notifications.revoke_for_key!(key.id, :key_revoked)
         {%{id: id, revoked: true}, {:key_removed, id, user.id}}
 
       _ ->

@@ -5,6 +5,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: lib/porsche/ssh/onboarding.ex:64
+#, elixir-autogen, elixir-format
 msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr "\n\nکلید کی منظوری دیتے وقت یہ SSH کنکشن کھلا رکھیں۔\n"
 
@@ -55,33 +56,26 @@ msgstr "یہاں جڑ کر اپنی کلید رجسٹر کریں یا جانچی
 
 #: lib/porsche/ssh/onboarding.ex:113
 #, elixir-autogen, elixir-format
-msgid ""
-"This SSH connection could not be authorized. Check your machine access and try again.\n"
-"\n"
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
 msgstr ""
 "اس SSH کنکشن کو مجاز نہیں کیا جا سکا۔ اپنی مشین تک رسائی جانچیں اور دوبارہ کوشش کریں۔\n"
 "\n"
 
 #: lib/porsche/ssh/onboarding.ex:107
 #, elixir-autogen, elixir-format
-msgid ""
-"We couldn't verify this SSH key right now. Please try again shortly.\n"
-"\n"
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
 msgstr ""
 "ہم ابھی اس SSH کلید کی تصدیق نہیں کر سکے۔ براہ کرم تھوڑی دیر بعد دوبارہ کوشش کریں۔\n"
 "\n"
 
 #: lib/porsche/ssh/onboarding.ex:54
+#, elixir-autogen, elixir-format
 msgid "We don't recognize this SSH key:\n  "
 msgstr "ہم اس SSH کلید کو نہیں پہچانتے:\n  "
 
 #: lib/porsche/ssh/onboarding.ex:95
 #, elixir-autogen, elixir-format
-msgid ""
-"Welcome to Overalls.\n"
-"\n"
-"This connection needs the Overalls SSH configuration.\n"
-"\n"
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
 msgstr ""
 "Overalls میں خوش آمدید۔\n"
 "\n"

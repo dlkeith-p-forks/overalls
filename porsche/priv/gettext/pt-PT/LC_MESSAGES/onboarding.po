@@ -7,10 +7,7 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:64
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"\n"
-"Keep this SSH connection open while approving the key.\n"
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr ""
 "\n"
 "\n"
@@ -18,19 +15,14 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:81
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open an interactive Porsche connection without a remote command:"
+msgid "\nOpen an interactive Porsche connection without a remote command:"
 msgstr ""
 "\n"
 "Abra uma ligação interativa do Porsche sem um comando remoto:"
 
 #: lib/porsche/ssh/onboarding.ex:59
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open this link, sign in, and approve the matching fingerprint:\n"
-"  "
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
 msgstr ""
 "\n"
 "Abra esta ligação, inicie sessão e aprove a impressão digital correspondente:\n"
@@ -48,9 +40,7 @@ msgstr "Após a aprovação, tente executar o seu comando novamente aqui.\n"
 
 #: lib/porsche/ssh/onboarding.ex:65
 #, elixir-autogen, elixir-format
-msgid ""
-"Approval links expire after %{minutes} minutes or when this connection "
-"closes.\n"
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
 msgstr ""
 "As ligações de aprovação expiram após %{minutes} minutos ou quando esta "
 "ligação for fechada.\n"
@@ -70,18 +60,14 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:129
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your SSH key in Overalls Account settings > SSH keys.\n"
-"\n"
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
 msgstr ""
 "Registe ou verifique a sua chave SSH em Definições da conta Overalls > Chaves SSH.\n"
 "\n"
 
 #: lib/porsche/ssh/onboarding.ex:124
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your key by connecting to:\n"
-"  ssh "
+msgid "Register or check your key by connecting to:\n  ssh "
 msgstr ""
 "Registe ou verifique a sua chave ligando-se a:\n"
 "  ssh "

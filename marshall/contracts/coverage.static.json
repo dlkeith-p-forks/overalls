@@ -1,9 +1,9 @@
 {
   "apps": {
     "marshall": {
-      "active": 32,
+      "active": 42,
       "coverage": 1.0,
-      "covered": 32
+      "covered": 42
     },
     "system": {
       "active": 0,
@@ -57,6 +57,45 @@
           "testable": true,
           "tests": [
             "test the owner-pin refusal is a closed compute reason across the SSH control API"
+          ]
+        }
+      }
+    },
+    "marshall.github": {
+      "active": 3,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 3,
+      "form": "light",
+      "obligations": {
+        "marshall.github.I1": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test another live login cannot consume a ceremony and replay cannot exchange again"
+          ]
+        },
+        "marshall.github.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test disconnect refuses old pins and returns credential-free anonymous admission"
+          ]
+        },
+        "marshall.github.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test a restore epoch removes credentials and ceremonies and is idempotent"
           ]
         }
       }
@@ -179,6 +218,75 @@
         }
       }
     },
+    "marshall.notifications": {
+      "active": 6,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 6,
+      "form": "light",
+      "obligations": {
+        "marshall.notifications.I1": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the Susan origin is compiled and only the test branch reads configuration"
+          ]
+        },
+        "marshall.notifications.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test Susan receives only signed ciphertext that the device alone can open"
+          ]
+        },
+        "marshall.notifications.I3": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test 503, 503, 200 sends once successfully; 410 invalidates the device"
+          ]
+        },
+        "marshall.notifications.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the operator switch refuses registration and silences the producer"
+          ]
+        },
+        "marshall.notifications.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test SSH key removal and account retirement revoke bound devices"
+          ]
+        },
+        "marshall.notifications.I6": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test device versions and registration receipts keep only the push-key digest"
+          ]
+        }
+      }
+    },
     "marshall.ssh_terminal": {
       "active": 3,
       "app": "marshall",
@@ -288,10 +396,10 @@
       }
     },
     "marshall.web_surface": {
-      "active": 9,
+      "active": 10,
       "app": "marshall",
       "coverage": 1.0,
-      "covered": 9,
+      "covered": 10,
       "form": "light",
       "obligations": {
         "marshall.web_surface.I1": {
@@ -302,6 +410,16 @@
           "testable": true,
           "tests": [
             "test declared modules compile and remain loadable"
+          ]
+        },
+        "marshall.web_surface.I10": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 0,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test validated preferences determine locale and direction and responses vary by selection"
           ]
         },
         "marshall.web_surface.I2": {
@@ -398,8 +516,8 @@
   "covenant": "0.2.0",
   "mode": "static",
   "totals": {
-    "active": 32,
+    "active": 42,
     "coverage": 1.0,
-    "covered": 32
+    "covered": 42
   }
 }

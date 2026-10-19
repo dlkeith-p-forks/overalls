@@ -90,12 +90,19 @@ defmodule Marshall.Threads.Coordinator do
 
   # @cc [owner:ghuntley,label:security;durability] thread-list-keyset-page
   # Thread pages MUST keyset paginate the same authorized query with a stable
-  # inserted_at/id ordering. An unknown or unauthorized cursor returns an empty
-  # page and never broadens the caller's read scope.
+  # inserted_at/id ordering, optionally narrowed to one machine. An unknown or
+  # unauthorized cursor returns an empty page and never broadens the caller's
+  # read scope.
   defp execute(:list_page, args, actor) do
     limit = args[:limit] || 50
 
-    case page_query(thread_query(actor), args[:after], actor) do
+    query =
+      case args[:machine_id] do
+        nil -> thread_query(actor)
+        machine_id -> Ash.Query.filter(thread_query(actor), machine_id == ^machine_id)
+      end
+
+    case page_query(query, args[:after], actor) do
       {:ok, query} ->
         case authorized_page(query, actor, limit) do
           {:ok, {rows, has_more?}} ->

@@ -41,6 +41,7 @@ let
     ../../../../marshall/assets
     ../../../../marshall/priv
   ] ++ lib.optionals (application == "audi") [ ../../../../audi/priv ]
+    ++ lib.optionals (application == "susan") [ ../../../../susan/priv ]
     ++ lib.optionals (application == "porsche") [ ../../../../porsche/priv ];
   selected = lib.fileset.unions inputs;
   generated = lib.fileset.unions [
@@ -52,7 +53,7 @@ let
       ../../../../marshall/priv/static)
   ];
 in
-assert builtins.elem application [ "marshall" "lilly" "audi" "porsche" "ziggy" "brady" "galileo" "enrico" "peach" ];
+assert builtins.elem application [ "marshall" "lilly" "audi" "porsche" "ziggy" "brady" "galileo" "enrico" "peach" "susan" ];
 lib.fileset.toSource {
   inherit root;
   fileset = lib.fileset.difference selected generated;

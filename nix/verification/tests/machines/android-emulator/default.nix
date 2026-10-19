@@ -6,18 +6,20 @@ let
     nativeBuildInputs = [ pkgs.jdk pkgs.unzip pkgs.zip ];
   } ''
     set -euo pipefail
-    buildTools=$(find ${sdkRoot}/build-tools -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)
+    buildTools=$(find -L ${sdkRoot}/build-tools -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)
     platform=${sdkRoot}/platforms/android-36
     test -x "$buildTools/aapt2" -a -x "$buildTools/d8" -a -x "$buildTools/apksigner"
     test -f "$platform/android.jar"
+    export HOME="$TMPDIR/home"
     mkdir -p src/classes dex linked apk "$HOME/.android"
     keytool -genkeypair -keystore "$HOME/.android/debug.keystore" -storepass android \
       -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US" \
-      -keyalg RSA -validity 10_000 >/dev/null 2>&1
+      -keyalg RSA -validity 10000
     cp ${./app/AndroidManifest.xml} src/AndroidManifest.xml
     cp ${./app/MainActivity.java} src/MainActivity.java
     javac --release 8 -classpath "$platform/android.jar" -d src/classes src/MainActivity.java
-    "$buildTools/d8" --lib "$platform/android.jar" --output dex src/classes
+    ${pkgs.jdk}/bin/jar cf classes.jar -C src/classes .
+    "$buildTools/d8" --lib "$platform/android.jar" --output dex classes.jar
     "$buildTools/aapt2" link -I "$platform/android.jar" \
       --manifest src/AndroidManifest.xml -o linked/unsigned.apk
     cd apk
@@ -38,6 +40,10 @@ let
     export ANDROID_AVD_HOME=/var/lib/android-test/avd
     export DISPLAY=:0
     mkdir -p "$HOME/.android"
+    if [ ! -f "$HOME/.android/adbkey" ]; then
+      ${pkgs.android-tools}/bin/adb keygen "$HOME/.android/adbkey"
+    fi
+    cp "$HOME/.android/adbkey.pub" /var/lib/android-test/adb_keys
     mkdir -p "$ANDROID_AVD_HOME"
     if [ ! -f "$ANDROID_AVD_HOME/overalls-test.avd/config.ini" ]; then
       printf 'no\n' | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
@@ -57,7 +63,7 @@ CONFIG
     fi
     exec ${sdkRoot}/emulator/emulator -avd overalls-test \
       -no-accel -gpu swiftshader_indirect -noaudio \
-      -no-boot-anim -no-snapshot -skip-adb-auth \
+      -no-boot-anim -no-snapshot -auth /var/lib/android-test/adb_keys \
       -ports 5554,5555
   '';
 in

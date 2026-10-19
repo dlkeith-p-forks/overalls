@@ -1,6 +1,6 @@
 defmodule Overalls.Diagnostics.GenerateSchema do
   @moduledoc "Derive a finite vocabulary from repository-owned production source literals."
-  @services ~w(marshall lilly audi brady porsche ziggy enrico galileo)
+  @services ~w(marshall lilly audi brady porsche ziggy enrico galileo susan)
   @operations ~w(lilly.host.utility lilly.transfer.stream enrico.git.utility marshall.http audi.http brady.http galileo.http ziggy.http porsche.ssh.dispatch)
   @uuid ~w(event_id resource_id request_id host_id vm_id placement_id session_id user_id team_id operation_id execution_id workflow_id backup_id image_id account_id clone_id transfer_id source_id destination_id pool_id)
   @enums ~w(resource_type action previous_state next_state reason outcome state stage effect utility method mode source status operation kind phase)

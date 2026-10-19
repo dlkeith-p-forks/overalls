@@ -14,247 +14,247 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/admin/git_live.ex:140
+#: lib/marshall_web/live/admin/git_live.ex:154
 #, elixir-autogen, elixir-format
 msgid "Action"
 msgstr "アクション"
 
-#: lib/marshall_web/live/admin/git_live.ex:105
+#: lib/marshall_web/live/admin/git_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "アクション"
 
-#: lib/marshall_web/live/admin/git_live.ex:77
+#: lib/marshall_web/live/admin/git_live.ex:87
 #, elixir-autogen, elixir-format
 msgid "Add a mirror"
 msgstr "ミラーを追加する"
 
-#: lib/marshall_web/live/admin/git_live.ex:93
+#: lib/marshall_web/live/admin/git_live.ex:103
 #, elixir-autogen, elixir-format
 msgid "Add mirror"
 msgstr "ミラーを追加する"
 
-#: lib/marshall_web/live/admin/git_live.ex:23
+#: lib/marshall_web/live/admin/git_live.ex:24
 #, elixir-autogen, elixir-format
 msgid "Could not register repository. Verify your passkey and labels."
 msgstr "リポジトリを登録できませんでした。パスキーとラベルを確認してください。"
 
-#: lib/marshall_web/live/admin/git_live.ex:174
+#: lib/marshall_web/live/admin/git_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "失敗した"
 
-#: lib/marshall_web/live/admin/git_live.ex:69
+#: lib/marshall_web/live/admin/git_live.ex:78
 #, elixir-autogen, elixir-format
 msgid "Git mirrors"
 msgstr "Git ミラー"
 
-#: lib/marshall_web/live/admin/git_live.ex:196
+#: lib/marshall_web/live/admin/git_live.ex:213
 #, elixir-autogen, elixir-format
 msgid "Git operation failed"
 msgstr "Git の操作に失敗しました"
 
-#: lib/marshall_web/live/admin/git_live.ex:81
+#: lib/marshall_web/live/admin/git_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "GitHub organization"
 msgstr "GitHub 組織"
 
-#: lib/marshall_web/live/admin/git_live.ex:142
+#: lib/marshall_web/live/admin/git_live.ex:156
 #, elixir-autogen, elixir-format
 msgid "Identifiers"
 msgstr "識別子"
 
-#: lib/marshall_web/live/admin/git_live.ex:96
+#: lib/marshall_web/live/admin/git_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Mirrors"
 msgstr "鏡"
 
-#: lib/marshall_web/live/admin/git_live.ex:134
+#: lib/marshall_web/live/admin/git_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "No mirror events recorded."
 msgstr "ミラー イベントは記録されませんでした。"
 
-#: lib/marshall_web/live/admin/git_live.ex:97
+#: lib/marshall_web/live/admin/git_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "No repositories are mirrored yet."
 msgstr "まだミラーリングされているリポジトリはありません。"
 
-#: lib/marshall_web/live/admin/git_live.ex:171
+#: lib/marshall_web/live/admin/git_live.ex:188
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "保留中"
 
-#: lib/marshall_web/live/admin/git_live.ex:103
+#: lib/marshall_web/live/admin/git_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "段階"
 
-#: lib/marshall_web/live/admin/git_live.ex:71
+#: lib/marshall_web/live/admin/git_live.ex:80
 #, elixir-autogen, elixir-format
 msgid "Public GitHub repositories mirrored for machines. Mirrors refresh hourly; changes require recent passkey verification."
 msgstr ""
 "マシン用にミラーリングされたパブリック GitHub リポジトリ。ミラーは 1 時間ごとに更新されます。変更には最新のパスキーの検証が必要です。"
 
-#: lib/marshall_web/live/admin/git_live.ex:173
+#: lib/marshall_web/live/admin/git_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "準備ができて"
 
-#: lib/marshall_web/live/admin/git_live.ex:141
+#: lib/marshall_web/live/admin/git_live.ex:155
 #, elixir-autogen, elixir-format
 msgid "Reason"
 msgstr "理由"
 
-#: lib/marshall_web/live/admin/git_live.ex:133
+#: lib/marshall_web/live/admin/git_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "Recent mirror audit"
 msgstr "最近のミラー監査"
 
-#: lib/marshall_web/live/admin/git_live.ex:119
+#: lib/marshall_web/live/admin/git_live.ex:131
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "リフレッシュ"
 
-#: lib/marshall_web/live/admin/git_live.ex:34
+#: lib/marshall_web/live/admin/git_live.ex:37
 #, elixir-autogen, elixir-format
 msgid "Refresh already in progress."
 msgstr "更新はすでに進行中です。"
 
-#: lib/marshall_web/live/admin/git_live.ex:37
+#: lib/marshall_web/live/admin/git_live.ex:41
 #, elixir-autogen, elixir-format
 msgid "Refresh could not be queued."
 msgstr "更新をキューに入れることができませんでした。"
 
-#: lib/marshall_web/live/admin/git_live.ex:185
+#: lib/marshall_web/live/admin/git_live.ex:202
 #, elixir-autogen, elixir-format
 msgid "Refresh failed"
 msgstr "更新に失敗しました"
 
-#: lib/marshall_web/live/admin/git_live.ex:31
+#: lib/marshall_web/live/admin/git_live.ex:33
 #, elixir-autogen, elixir-format
 msgid "Refresh queued."
 msgstr "更新がキューに入れられました。"
 
-#: lib/marshall_web/live/admin/git_live.ex:183
+#: lib/marshall_web/live/admin/git_live.ex:200
 #, elixir-autogen, elixir-format
 msgid "Refresh requested"
 msgstr "更新をリクエストしました"
 
-#: lib/marshall_web/live/admin/git_live.ex:184
+#: lib/marshall_web/live/admin/git_live.ex:201
 #, elixir-autogen, elixir-format
 msgid "Refresh succeeded"
 msgstr "更新に成功しました"
 
-#: lib/marshall_web/live/admin/git_live.ex:172
+#: lib/marshall_web/live/admin/git_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "Refreshing"
 msgstr "更新中"
 
-#: lib/marshall_web/live/admin/git_live.ex:182
+#: lib/marshall_web/live/admin/git_live.ex:199
 #, elixir-autogen, elixir-format
 msgid "Registered"
 msgstr "登録済み"
 
-#: lib/marshall_web/live/admin/git_live.ex:43
+#: lib/marshall_web/live/admin/git_live.ex:49
 #, elixir-autogen, elixir-format
 msgid "Removal queued."
 msgstr "削除が待機中です。"
 
-#: lib/marshall_web/live/admin/git_live.ex:186
+#: lib/marshall_web/live/admin/git_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Removal requested"
 msgstr "削除をリクエストしました"
 
-#: lib/marshall_web/live/admin/git_live.ex:126
+#: lib/marshall_web/live/admin/git_live.ex:138
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "取り除く"
 
-#: lib/marshall_web/live/admin/git_live.ex:124
+#: lib/marshall_web/live/admin/git_live.ex:136
 #, elixir-autogen, elixir-format
 msgid "Remove mirror?"
 msgstr "ミラーを取り外しますか?"
 
-#: lib/marshall_web/live/admin/git_live.ex:187
+#: lib/marshall_web/live/admin/git_live.ex:204
 #, elixir-autogen, elixir-format
 msgid "Removed"
 msgstr "削除済み"
 
-#: lib/marshall_web/live/admin/git_live.ex:175
+#: lib/marshall_web/live/admin/git_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Removing"
 msgstr "削除中"
 
-#: lib/marshall_web/live/admin/git_live.ex:87
-#: lib/marshall_web/live/admin/git_live.ex:102
+#: lib/marshall_web/live/admin/git_live.ex:97
+#: lib/marshall_web/live/admin/git_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Repository"
 msgstr "リポジトリ"
 
-#: lib/marshall_web/live/admin/git_live.ex:44
+#: lib/marshall_web/live/admin/git_live.ex:53
 #, elixir-autogen, elixir-format
 msgid "Repository could not be removed."
 msgstr "リポジトリを削除できませんでした。"
 
-#: lib/marshall_web/live/admin/git_live.ex:16
+#: lib/marshall_web/live/admin/git_live.ex:17
 #, elixir-autogen, elixir-format
 msgid "Repository registered."
 msgstr "リポジトリが登録されました。"
 
-#: lib/marshall_web/live/admin/git_live.ex:195
+#: lib/marshall_web/live/admin/git_live.ex:212
 #, elixir-autogen, elixir-format
 msgid "Service unavailable"
 msgstr "サービスを利用できません"
 
-#: lib/marshall_web/live/admin/git_live.ex:192
+#: lib/marshall_web/live/admin/git_live.ex:209
 #, elixir-autogen, elixir-format
 msgid "TLS verification failed"
 msgstr "TLS の検証に失敗しました"
 
-#: lib/marshall_web/live/admin/git_live.ex:193
+#: lib/marshall_web/live/admin/git_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Timed out"
 msgstr "タイムアウトしました"
 
-#: lib/marshall_web/live/admin/git_live.ex:194
+#: lib/marshall_web/live/admin/git_live.ex:211
 #, elixir-autogen, elixir-format
 msgid "Unauthorized"
 msgstr "権限がありません"
 
-#: lib/marshall_web/live/admin/git_live.ex:176
-#: lib/marshall_web/live/admin/git_live.ex:188
-#: lib/marshall_web/live/admin/git_live.ex:197
-#: lib/marshall_web/live/admin/git_live.ex:198
+#: lib/marshall_web/live/admin/git_live.ex:193
+#: lib/marshall_web/live/admin/git_live.ex:205
+#: lib/marshall_web/live/admin/git_live.ex:214
+#: lib/marshall_web/live/admin/git_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "未知"
 
-#: lib/marshall_web/live/admin/git_live.ex:139
+#: lib/marshall_web/live/admin/git_live.ex:153
 #, elixir-autogen, elixir-format
 msgid "When"
 msgstr "いつ"
 
-#: lib/marshall_web/live/admin/git_live.ex:153
+#: lib/marshall_web/live/admin/git_live.ex:167
 #, elixir-autogen, elixir-format
 msgid "actor"
 msgstr "俳優"
 
-#: lib/marshall_web/live/admin/git_live.ex:155
+#: lib/marshall_web/live/admin/git_live.ex:172
 #, elixir-autogen, elixir-format
 msgid "attempt"
 msgstr "試み"
 
-#: lib/marshall_web/live/admin/git_live.ex:82
+#: lib/marshall_web/live/admin/git_live.ex:92
 #, elixir-autogen, elixir-format
 msgid "nixos"
 msgstr "nixos"
 
-#: lib/marshall_web/live/admin/git_live.ex:88
+#: lib/marshall_web/live/admin/git_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "nixpkgs"
 msgstr "nixpkgs"
 
-#: lib/marshall_web/live/admin/git_live.ex:154
+#: lib/marshall_web/live/admin/git_live.ex:168
 #, elixir-autogen, elixir-format
 msgid "repository"
 msgstr "リポジトリ"

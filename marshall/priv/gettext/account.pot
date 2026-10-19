@@ -339,7 +339,7 @@ msgstr ""
 msgid "SSH keys are temporarily unavailable."
 msgstr ""
 
-#: lib/marshall_web/live/account_live.ex:842
+#: lib/marshall_web/live/account_live.ex:830
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
 msgstr ""

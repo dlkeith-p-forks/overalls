@@ -13,7 +13,8 @@ defmodule Overalls.Diagnostics.Privacy do
     ziggy: :ziggy_observability_privacy,
     porsche: :porsche_observability_privacy,
     enrico: :enrico_observability_privacy,
-    galileo: :galileo_observability_privacy
+    galileo: :galileo_observability_privacy,
+    susan: :susan_observability_privacy
   }
 
   @doc "Install a source privacy filter for an application's reviewed catalog."
@@ -167,6 +168,7 @@ defmodule Overalls.Diagnostics.Privacy do
   defp private_tag?(metadata, :marshall), do: Map.get(metadata, :marshall_private, false)
   defp private_tag?(metadata, :porsche), do: Map.get(metadata, :porsche_private, false)
   defp private_tag?(metadata, :ziggy), do: Map.get(metadata, :ziggy_private, false)
+  defp private_tag?(metadata, :susan), do: Map.get(metadata, :susan_private, false)
   defp private_tag?(_, _), do: false
 
   defp category_label({:gen_server, :terminate}), do: :process_crash

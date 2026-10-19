@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/controllers/auth_controller.ex:89
+#: lib/marshall_web/controllers/auth_controller.ex:94
 #, elixir-autogen, elixir-format
 msgid "An account with this email already exists. We've sent a link to that\naddress - confirm it to finish linking this provider to your account.\n"
 msgstr "Bu e-posta adresiyle bir hesap zaten var. Bu adrese bir bağlantı\ngönderdik; bu sağlayıcıyı hesabınıza bağlamayı tamamlamak için onaylayın.\n"
@@ -40,12 +40,12 @@ msgstr "E-posta"
 msgid "Email me a sign-in link"
 msgstr "Bana giriş bağlantısı gönder"
 
-#: lib/marshall/accounts/deliver_auth_email.ex:153
+#: lib/marshall/accounts/deliver_auth_email.ex:154
 #, elixir-autogen, elixir-format
 msgid "If you did not request this, ignore this email."
 msgstr "Bunu siz istemediyseniz bu e-postayı yok sayın."
 
-#: lib/marshall_web/controllers/auth_controller.ex:95
+#: lib/marshall_web/controllers/auth_controller.ex:100
 #, elixir-autogen, elixir-format
 msgid "Incorrect email or password"
 msgstr "Yanlış e-posta veya parola"
@@ -60,13 +60,13 @@ msgstr "Beni hatırla"
 msgid "Sending link…"
 msgstr "Bağlantı gönderiliyor…"
 
-#: lib/marshall/accounts/deliver_auth_email.ex:149
+#: lib/marshall/accounts/deliver_auth_email.ex:150
 #: lib/marshall_web/auth_text.ex:20
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "Giriş yap"
 
-#: lib/marshall/accounts/deliver_auth_email.ex:146
+#: lib/marshall/accounts/deliver_auth_email.ex:147
 #, elixir-autogen, elixir-format
 msgid "Sign in to Overalls:"
 msgstr "Overalls'a giriş yapın:"
@@ -91,17 +91,17 @@ msgstr "Oturumunuz açılıyor"
 msgid "Unavailable"
 msgstr "Kullanılamıyor"
 
-#: lib/marshall_web/controllers/auth_controller.ex:38
+#: lib/marshall_web/controllers/auth_controller.ex:43
 #, elixir-autogen, elixir-format
 msgid "You are now signed in"
 msgstr "Giriş yaptınız"
 
-#: lib/marshall_web/controllers/auth_controller.ex:152
+#: lib/marshall_web/controllers/auth_controller.ex:157
 #, elixir-autogen, elixir-format
 msgid "You are now signed out"
 msgstr "Çıkış yaptınız"
 
-#: lib/marshall_web/controllers/auth_controller.ex:80
+#: lib/marshall_web/controllers/auth_controller.ex:85
 #, elixir-autogen, elixir-format
 msgid "You have already signed in another way, but have not confirmed your account.\nYou can confirm your account using the link we sent to you, or by resetting your password.\n"
 msgstr "Başka bir yolla giriş yaptınız ancak hesabınızı doğrulamadınız.\nGönderdiğimiz bağlantıyla veya parolanızı sıfırlayarak hesabınızı doğrulayabilirsiniz.\n"
@@ -111,7 +111,7 @@ msgstr "Başka bir yolla giriş yaptınız ancak hesabınızı doğrulamadınız
 msgid "Your Overalls sign-in link"
 msgstr "Overalls giriş bağlantınız"
 
-#: lib/marshall_web/controllers/auth_controller.ex:36
+#: lib/marshall_web/controllers/auth_controller.ex:37
 #, elixir-autogen, elixir-format
 msgid "Your email address has now been confirmed"
 msgstr "E-posta adresiniz doğrulandı"
@@ -121,12 +121,12 @@ msgstr "E-posta adresiniz doğrulandı"
 msgid "Your email link is being verified."
 msgstr "E-posta bağlantınız doğrulanıyor."
 
-#: lib/marshall_web/controllers/auth_controller.ex:37
+#: lib/marshall_web/controllers/auth_controller.ex:40
 #, elixir-autogen, elixir-format
 msgid "Your password has successfully been reset"
 msgstr "Parolanız başarıyla sıfırlandı"
 
-#: lib/marshall_web/controllers/auth_controller.ex:58
+#: lib/marshall_web/controllers/auth_controller.ex:63
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "Girişiniz artık geçerli değil. Yeni giriş bağlantısı isteyin."

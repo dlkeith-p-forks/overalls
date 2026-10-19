@@ -220,7 +220,9 @@ defmodule Marshall.SSH.Authority do
     })
 
     Ledger.update!(approval, :consume, %{user_id: user.id, consumed_at: Ledger.now()})
-    {%{approved: true, fingerprint: approval.fingerprint}, {:key_approved, session.id, key.id}}
+
+    {%{approved: true, fingerprint: approval.fingerprint, session_id: session.id},
+     {:key_approved, session.id, key.id}}
   end
 
   defp perform(_, _, _), do: Ledger.rollback(:unauthorized)
@@ -336,6 +338,58 @@ defmodule Marshall.SSH.Authority do
     bind_gateway!(session, gateway)
     live_session!(session)
     session
+  end
+
+  # @cc [owner:ghuntley,label:security;recovery] ssh-session-live-recheck
+  # session_actor/2 and session_live?/2 MUST recheck the enabled gateway and
+  # its generation, the session's expiry and closure, approval, the unarchived
+  # key and the undeleted owner under shared locks only, and MUST NOT write.
+  # A conclusive refusal is :authority_credential (false); only an unanswered
+  # lookup is :unavailable (ADR-0140). Neither result carries a credential.
+  @doc """
+  The approved account behind a live gateway-bound SSH session, for a gateway
+  terminal stream (ADR-0223).
+  """
+  @spec session_actor(binary(), binary()) ::
+          {:ok, %{user: Marshall.Accounts.User.t(), ssh_session_id: String.t()}}
+          | {:error, :authority_credential | :unavailable}
+  def session_actor(gateway_token, session_token)
+      when is_binary(gateway_token) and is_binary(session_token) do
+    result =
+      Ledger.transaction(fn ->
+        gateway = gateway!(gateway_token)
+        session = session!(session_token, gateway)
+        approved!(session)
+        {user, _key} = actor!(session)
+        %{user: user, ssh_session_id: session.id}
+      end)
+
+    case result do
+      {:ok, value} -> {:ok, value}
+      {:error, reason} when is_atom(reason) -> {:error, :authority_credential}
+      _ -> {:error, :unavailable}
+    end
+  rescue
+    _ -> {:error, :unavailable}
+  catch
+    :exit, _ -> {:error, :unavailable}
+  end
+
+  def session_actor(_gateway_token, _session_token), do: {:error, :authority_credential}
+
+  @doc """
+  Whether the SSH session is still live and approved for an undeleted owner of
+  an unarchived key: the five-second (and hint-driven) recheck of an attached
+  gateway terminal stream. A session's key, and so its account, never changes
+  after approval.
+  """
+  @spec session_live?(binary(), binary()) :: boolean() | :unavailable
+  def session_live?(gateway_token, session_token) do
+    case session_actor(gateway_token, session_token) do
+      {:ok, _actor} -> true
+      {:error, :authority_credential} -> false
+      {:error, :unavailable} -> :unavailable
+    end
   end
 
   @doc """

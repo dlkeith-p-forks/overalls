@@ -112,4 +112,7 @@ defmodule Marshall.TerminalAttachmentStream do
 
   def handle_info({:viewer_gone, channel}, state),
     do: {:noreply, %{state | effects: [{:gone, channel} | state.effects]}}
+
+  # Output credit receipts are flow control, not an observable session effect.
+  def handle_info({:viewer_output_ack, _channel, _frames, _bytes}, state), do: {:noreply, state}
 end

@@ -27,9 +27,7 @@ msgstr "대기 중인 소유권 이전 제안을 취소합니다."
 
 #: lib/porsche/ssh/command_messages.ex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"Change a machine's CPU and memory; disk may only grow. A running machine "
-"stops and restarts."
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
 msgstr "머신의 CPU와 메모리를 변경합니다. 디스크는 확장만 가능합니다. 실행 중인 머신은 중지 후 다시 시작됩니다."
 
 #: lib/porsche/ssh/command_messages.ex:63
@@ -39,9 +37,7 @@ msgstr "이 대화형 채널을 닫습니다."
 
 #: lib/porsche/ssh/command_messages.ex:10
 #, elixir-autogen, elixir-format
-msgid ""
-"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
-"GitLab, Codeberg or Bitbucket repository in the guest."
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
 msgstr ""
 "머신을 만듭니다. 디스크 최대 크기는 500 GiB입니다. --source는 공개 GitHub, GitLab, Codeberg 또는 "
 "Bitbucket 저장소를 게스트에 복제합니다."
@@ -53,8 +49,7 @@ msgstr "소유할 팀을 만듭니다."
 
 #: lib/porsche/ssh/command_messages.ex:44
 #, elixir-autogen, elixir-format
-msgid ""
-"Create or replace a named integration at https://NAME.integration.internal."
+msgid "Create or replace a named integration at https://NAME.integration.internal."
 msgstr "https://NAME.integration.internal에 이름이 지정된 통합을 만들거나 교체합니다."
 
 #: lib/porsche/ssh/command_messages.ex:60
@@ -139,6 +134,7 @@ msgstr "관리자에게 팀 소유권 이전을 제안합니다."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:34
+#, elixir-autogen, elixir-format
 msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
 msgstr "목록 맨 위에 머신을 고정합니다. 소유자가 고정하면 머신이 깨어나고 자동 일시 중단과 삭제가 방지됩니다."
 
@@ -169,23 +165,28 @@ msgstr "머신 고정을 해제합니다."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:69
+#, elixir-autogen, elixir-format
 msgid "Resume a suspended machine's preserved memory."
 msgstr "일시 중단된 머신을 보존된 메모리에서 다시 시작합니다."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:65
+#, elixir-autogen, elixir-format
 msgid "Resume preserved memory, waiting for capacity or relocation."
 msgstr "보존된 메모리에서 다시 시작하며 용량 확보나 재배치를 기다립니다."
 
 #: lib/porsche/ssh/command_messages.ex:20
+#, elixir-autogen, elixir-format
 msgid "Retry a failed clone or relocation request."
 msgstr "실패한 복제 또는 이동 요청을 다시 시도합니다."
 
 #: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
 msgid "Revoke an account's shared access."
 msgstr "계정의 공유 접근 권한을 취소합니다."
 
 #: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
 msgid "Revoke one of your SSH keys."
 msgstr "SSH 키 하나를 취소합니다."
 
@@ -195,19 +196,123 @@ msgid "Show command help."
 msgstr "명령 도움말을 표시합니다."
 
 #: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
 msgid "Show the authenticated account."
 msgstr "인증된 계정을 표시합니다."
 
 #: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
 msgid "Start a machine."
 msgstr "머신을 시작합니다."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:26
+#, elixir-autogen, elixir-format
 msgid "Stop a machine, retaining its disk and discarding suspended memory."
 msgstr "디스크를 유지하고 일시 중단된 메모리를 버리면서 머신을 중지합니다."
 
 # Reviewed English fallback pending translation of suspension behavior.
 #: lib/porsche/ssh/command_messages.ex:64
+#, elixir-autogen, elixir-format
 msgid "Suspend a machine, preserving its memory and disk."
 msgstr "메모리와 디스크를 보존하면서 머신을 일시 중단합니다."
+
+#: lib/porsche/ssh/command_messages.ex:74
+#, elixir-autogen, elixir-format
+msgid "Answer a thread's pending question with JSON read from standard input."
+msgstr "표준 입력에서 읽은 JSON으로 스레드의 대기 중인 질문에 답합니다."
+
+#: lib/porsche/ssh/command_messages.ex:78
+#, elixir-autogen, elixir-format
+msgid "Approve a thread's latest plan and start implementing it."
+msgstr "스레드의 최신 계획을 승인하고 구현을 시작합니다."
+
+#: lib/porsche/ssh/command_messages.ex:79
+#, elixir-autogen, elixir-format
+msgid "Ask for a revised plan, reading the feedback from standard input."
+msgstr "표준 입력에서 피드백을 읽어 수정된 계획을 요청합니다."
+
+#: lib/porsche/ssh/command_messages.ex:98
+#, elixir-autogen, elixir-format
+msgid "Attach this SSH terminal to a shared terminal session; needs ssh -t."
+msgstr "이 SSH 터미널을 공유 터미널 세션에 연결합니다. ssh -t가 필요합니다."
+
+#: lib/porsche/ssh/command_messages.ex:86
+#, elixir-autogen, elixir-format
+msgid "Change a machine's web port or visibility, optionally at an expected revision."
+msgstr "머신의 웹 포트 또는 공개 범위를 변경합니다. 필요하면 예상 리비전을 지정할 수 있습니다."
+
+#: lib/porsche/ssh/command_messages.ex:84
+#, elixir-autogen, elixir-format
+msgid "Close one of your terminal sessions on a machine."
+msgstr "머신에서 내 터미널 세션 중 하나를 닫습니다."
+
+#: lib/porsche/ssh/command_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Inspect a thread, its pending question and latest plan."
+msgstr "스레드와 대기 중인 질문, 최신 계획을 확인합니다."
+
+#: lib/porsche/ssh/command_messages.ex:82
+#, elixir-autogen, elixir-format
+msgid "List a machine's terminal sessions you can open."
+msgstr "열 수 있는 머신의 터미널 세션을 나열합니다."
+
+#: lib/porsche/ssh/command_messages.ex:72
+#, elixir-autogen, elixir-format
+msgid "List a thread's transcript events after a sequence number."
+msgstr "시퀀스 번호 이후의 스레드 기록 이벤트를 나열합니다."
+
+#: lib/porsche/ssh/command_messages.ex:70
+#, elixir-autogen, elixir-format
+msgid "List agent threads you can read, with unread counts."
+msgstr "읽을 수 있는 에이전트 스레드를 읽지 않은 개수와 함께 나열합니다."
+
+#: lib/porsche/ssh/command_messages.ex:95
+#, elixir-autogen, elixir-format
+msgid "List your push notification devices."
+msgstr "푸시 알림 기기 목록을 표시합니다."
+
+#: lib/porsche/ssh/command_messages.ex:81
+#, elixir-autogen, elixir-format
+msgid "Mark a thread read up to a transcript sequence number."
+msgstr "기록 시퀀스 번호까지 스레드를 읽음으로 표시합니다."
+
+#: lib/porsche/ssh/command_messages.ex:83
+#, elixir-autogen, elixir-format
+msgid "Open your personal terminal session on a machine."
+msgstr "머신에서 개인 터미널 세션을 엽니다."
+
+#: lib/porsche/ssh/command_messages.ex:91
+#, elixir-autogen, elixir-format
+msgid "Register this device for push notifications. The push key is read from stdin."
+msgstr "이 기기를 푸시 알림용으로 등록합니다. 푸시 키는 stdin에서 읽습니다."
+
+#: lib/porsche/ssh/command_messages.ex:96
+#, elixir-autogen, elixir-format
+msgid "Revoke a push notification device."
+msgstr "푸시 알림 기기를 취소합니다."
+
+#: lib/porsche/ssh/command_messages.ex:73
+#, elixir-autogen, elixir-format
+msgid "Send a prompt read from standard input to a thread."
+msgstr "표준 입력에서 읽은 프롬프트를 스레드로 보냅니다."
+
+#: lib/porsche/ssh/command_messages.ex:85
+#, elixir-autogen, elixir-format
+msgid "Show a machine's web endpoint, port and visibility."
+msgstr "머신의 웹 엔드포인트, 포트 및 공개 범위를 표시합니다."
+
+#: lib/porsche/ssh/command_messages.ex:90
+#, elixir-autogen, elixir-format
+msgid "Stream JSON change notices for machines, threads and this session."
+msgstr "머신, 스레드 및 이 세션의 JSON 변경 알림을 스트리밍합니다."
+
+#: lib/porsche/ssh/command_messages.ex:80
+#, elixir-autogen, elixir-format
+msgid "Switch a thread between plan and work collaboration."
+msgstr "스레드를 plan 및 work 협업 모드 간에 전환합니다."
+
+#: lib/porsche/ssh/command_messages.ex:97
+#, elixir-autogen, elixir-format
+msgid "Turn push notifications on or off for one device."
+msgstr "기기 하나의 푸시 알림을 켜거나 끕니다."

@@ -30,7 +30,8 @@ defmodule Marshall.SSH.Request do
         :wake_request_id,
         :status,
         :measurement_started_at,
-        :result
+        :result,
+        :ssh_key_id
       ]
     end
 
@@ -69,6 +70,12 @@ defmodule Marshall.SSH.Request do
 
     attribute :result, :map, allow_nil?: false, sensitive?: true
     attribute :measurement_started_at, :utc_datetime_usec
+
+    # @cc [owner:ghuntley,label:security;observability] ssh-request-key-provenance
+    # A receipt MUST record the SSH key whose session admitted it, so a
+    # Porsche-originated change (thread prompt/answer/plan, web policy) names
+    # its channel and key. Payload text is reduced to digests before storage.
+    attribute :ssh_key_id, :uuid
     create_timestamp :inserted_at
     update_timestamp :updated_at
   end

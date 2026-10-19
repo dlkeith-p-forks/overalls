@@ -14,179 +14,179 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/admin/users_live.ex:165
+#: lib/marshall_web/live/admin/users_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} omistettu kone"
 msgstr[1] "%{count} omistettua konetta"
 
-#: lib/marshall_web/live/admin/users_live.ex:256
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "Tilin sivut"
 
-#: lib/marshall_web/live/admin/users_live.ex:87
+#: lib/marshall_web/live/admin/users_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "Account request accepted."
 msgstr "Tilipyyntö hyväksytty."
 
-#: lib/marshall_web/live/admin/users_live.ex:119
+#: lib/marshall_web/live/admin/users_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Accounts are temporarily unavailable."
 msgstr "Tilit eivät ole tilapäisesti saatavilla."
 
-#: lib/marshall_web/live/admin/users_live.ex:160
+#: lib/marshall_web/live/admin/users_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Administrator"
 msgstr "Ylläpitäjä"
 
-#: lib/marshall_web/live/admin/users_live.ex:44
+#: lib/marshall_web/live/admin/users_live.ex:45
 #, elixir-autogen, elixir-format
 msgid "Administrator access updated."
 msgstr "Ylläpitäjän käyttöoikeudet päivitetty."
 
-#: lib/marshall_web/live/admin/users_live.ex:63
+#: lib/marshall_web/live/admin/users_live.ex:72
 #, elixir-autogen, elixir-format
 msgid "Browser sessions revoked."
 msgstr "Selainistunnot peruutettu."
 
-#: lib/marshall_web/live/admin/users_live.ex:94
+#: lib/marshall_web/live/admin/users_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Could not accept this account change. Check confirmation and verify your passkey."
 msgstr "Tätä tilimuutosta ei voitu hyväksyä. Tarkista vahvistus ja vahvista pääsyavaimesi."
 
-#: lib/marshall_web/live/admin/users_live.ex:47
+#: lib/marshall_web/live/admin/users_live.ex:53
 #, elixir-autogen, elixir-format
 msgid "Could not change administrator access."
 msgstr "Ylläpitäjän käyttöoikeuksia ei voitu muuttaa."
 
-#: lib/marshall_web/live/admin/users_live.ex:66
+#: lib/marshall_web/live/admin/users_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Could not revoke browser sessions."
 msgstr "Selainistuntoja ei voitu peruuttaa."
 
-#: lib/marshall_web/live/admin/users_live.ex:247
+#: lib/marshall_web/live/admin/users_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "Poista käyttäjä ja koneet"
 
-#: lib/marshall_web/live/admin/users_live.ex:146
+#: lib/marshall_web/live/admin/users_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "Sähköpostiosoite"
 
-#: lib/marshall_web/live/admin/users_live.ex:139
+#: lib/marshall_web/live/admin/users_live.ex:154
 #, elixir-autogen, elixir-format
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "Kaikki tämän käyttöönoton tilit. Kirjautuneet käyttäjät voivat lukea tätä sivua; muutokset vaativat ylläpitäjän, jonka pääsyavain on vahvistettu äskettäin."
 
-#: lib/marshall_web/live/admin/users_live.ex:194
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "Myönnetäänkö tälle tilille oikeus hallita koko laivastoa ja kaikkia koneita?"
 
-#: lib/marshall_web/live/admin/users_live.ex:80
+#: lib/marshall_web/live/admin/users_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Virheellinen pyyntö."
 
-#: lib/marshall_web/live/admin/users_live.ex:144
+#: lib/marshall_web/live/admin/users_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Invite a user"
 msgstr "Kutsu käyttäjä"
 
-#: lib/marshall_web/live/admin/users_live.ex:166
+#: lib/marshall_web/live/admin/users_live.ex:202
 #, elixir-autogen, elixir-format
 msgid "MFA enabled"
 msgstr "Monivaiheinen tunnistautuminen käytössä"
 
-#: lib/marshall_web/live/admin/users_live.ex:167
+#: lib/marshall_web/live/admin/users_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "MFA not enrolled"
 msgstr "Monivaiheista tunnistautumista ei ole otettu käyttöön"
 
-#: lib/marshall_web/live/admin/users_live.ex:202
+#: lib/marshall_web/live/admin/users_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "Nimeä ylläpitäjäksi"
 
-#: lib/marshall_web/live/admin/users_live.ex:262
+#: lib/marshall_web/live/admin/users_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "Seuraava sivu →"
 
-#: lib/marshall_web/live/admin/users_live.ex:254
+#: lib/marshall_web/live/admin/users_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "Tällä sivulla ei ole tilejä."
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Poistetaanko tämä tili ja KAIKKI sen omistamat koneet pysyvästi, myös muille jaetut koneet?"
 
-#: lib/marshall_web/live/admin/users_live.ex:201
+#: lib/marshall_web/live/admin/users_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "Poista ylläpitäjä"
 
-#: lib/marshall_web/live/admin/users_live.ex:192
+#: lib/marshall_web/live/admin/users_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "Poistetaanko tämän tilin ylläpitäjäoikeudet?"
 
-#: lib/marshall_web/live/admin/users_live.ex:221
+#: lib/marshall_web/live/admin/users_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "Nollaa monivaiheinen tunnistautuminen"
 
-#: lib/marshall_web/live/admin/users_live.ex:216
+#: lib/marshall_web/live/admin/users_live.ex:258
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "Nollataanko tämän käyttäjän monivaiheinen tunnistautuminen ja peruutetaanko kaikki selainistunnot? Käyttäjän on rekisteröitävä korvaava pääsyavain."
 
-#: lib/marshall_web/live/admin/users_live.ex:147
+#: lib/marshall_web/live/admin/users_live.ex:173
 #, elixir-autogen, elixir-format
 msgid "Send invitation"
 msgstr "Lähetä kutsu"
 
-#: lib/marshall_web/live/admin/users_live.ex:210
+#: lib/marshall_web/live/admin/users_live.ex:252
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "Kirjaudu ulos kaikkialta"
 
-#: lib/marshall_web/live/admin/users_live.ex:208
+#: lib/marshall_web/live/admin/users_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "Kirjataanko tämä tili ulos kaikista selainistunnoista?"
 
-#: lib/marshall_web/live/admin/users_live.ex:234
+#: lib/marshall_web/live/admin/users_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "Kirjoita sähköpostiosoite poistaaksesi tämän tilin ja sen %{count} konetta"
 
-#: lib/marshall_web/live/admin/users_live.ex:160
+#: lib/marshall_web/live/admin/users_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Käyttäjä"
 
-#: lib/marshall_web/live/admin/users_live.ex:137
+#: lib/marshall_web/live/admin/users_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "Käyttäjät"
 
-#: lib/marshall_web/live/admin/users_live.ex:151
+#: lib/marshall_web/live/admin/users_live.ex:177
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey · administrative access lasts 15 minutes →"
 msgstr "Vahvista pääsyavaimella · ylläpito-oikeus on voimassa 15 minuuttia →"
 
-#: lib/marshall_web/live/admin/users_live.ex:167
+#: lib/marshall_web/live/admin/users_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "· Your account"
 msgstr "· Tilisi"
 
-#: lib/marshall_web/live/admin/users_live.ex:257
+#: lib/marshall_web/live/admin/users_live.ex:303
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Ensimmäinen sivu"

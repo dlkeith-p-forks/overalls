@@ -43,7 +43,7 @@ in
 # Every current required check MUST be explicitly exported. Superseded checks
 # MUST be replaced in the documented catalog without compatibility aliases.
 # Release checks MUST use buildPkgs; machine checks MUST use testPkgs.
-buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "porsche-release" "ziggy-release" "brady-release" "galileo-release" "enrico-release" ] (name:
+buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "porsche-release" "ziggy-release" "brady-release" "galileo-release" "enrico-release" "susan-release" ] (name:
   let application = buildPkgs.lib.removeSuffix "-release" name;
   in import ./release {
     pkgs = buildPkgs;
@@ -101,7 +101,16 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   underclass-egress = import ./machines/underclass-egress service;
   underclass-slo = import ./machines/underclass-slo service;
   porsche-service = import ./machines/porsche-service service;
+  mila-porsche = import ./machines/mila-porsche service;
+  mila-desktop = import ./machines/mila-desktop service;
+  push-notifications = import ./machines/push-notifications service;
+  push-relay = import ./machines/push-relay service;
   porsche-secrets = import ./machines/porsche-secrets service;
+  # Susan push relay (ADR-0224): service limits/replay/audit, SOPS custody and
+  # the OCI image. Susan is deployed independently of every Marshall.
+  susan-service = import ./machines/susan-service service;
+  susan-secrets = import ./machines/susan-secrets service;
+  susan-image = import ./machines/susan-image { pkgs = testPkgs; inherit packages; };
   porsche-crash-dumps = import ./machines/porsche-crash-dumps service;
   administrative-ssh = import ./machines/administrative-ssh service;
   porsche-configuration = import ./evaluation/porsche.nix { pkgs = testPkgs; module = modules.default; };
@@ -321,6 +330,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   });
   ubuntu-fleet = featureFleets.ubuntu-fleet;
   porsche-fleet = featureFleets.porsche-fleet;
+  porsche-threads = featureFleet { porsche = true; porscheThreads = true; };
   porsche-lifecycle-fleet = featureFleet { porsche = true; porscheLifecycleOnly = true; };
   porsche-lifecycle-ubuntu-fleet = featureFleet {
     porsche = true; porscheLifecycleOnly = true; ubuntu = true; relocation = true;
@@ -380,6 +390,9 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   fleet = featureFleets.fleet;
   terminal-fleet = import ./machines/fleet (service // { hostFixture = fixtures.hetzner-uefi; terminal = true; audi = true; });
   terminal-ubuntu-fleet = import ./machines/fleet (service // { hostFixture = fixtures.hetzner-uefi; terminal = true; audi = true; ubuntu = true; });
+  # SSH attach (ADR-0223): Porsche `terminal attach` into the browser's
+  # personal session, read-only refusal, revocation and journal privacy.
+  porsche-terminal-fleet = import ./machines/fleet (service // { hostFixture = fixtures.hetzner-uefi; terminal = true; audi = true; porsche = true; porscheTerminal = true; });
   customer-isolation-fleet = featureFleets.customer-isolation-fleet;
   relocation-fleet = featureFleets.relocation-fleet;
   memory-suspension-fleet = featureFleets.memory-suspension-fleet;

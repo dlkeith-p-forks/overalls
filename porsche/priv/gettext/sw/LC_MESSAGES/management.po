@@ -12,8 +12,7 @@ msgstr "Ombi la kuiga mashine hii tayari linaendelea."
 
 #: lib/porsche/ssh/output.ex:79
 #, elixir-autogen, elixir-format
-msgid ""
-"A failed machine cannot be pinned; an existing pin can still be removed."
+msgid "A failed machine cannot be pinned; an existing pin can still be removed."
 msgstr "Mashine iliyoshindwa haiwezi kubandikwa; pini iliyopo bado inaweza kuondolewa."
 
 #: lib/porsche/ssh/output.ex:136
@@ -33,12 +32,10 @@ msgstr "Ombi la kubadilisha ukubwa tayari linaendelea kwa mashine hii."
 
 #: lib/porsche/ssh/output.ex:121
 #, elixir-autogen, elixir-format
-msgid ""
-"A transfer is already using this host's transfer slot. Please try again "
-"after it finishes."
+msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr "Uhamisho tayari unatumia nafasi ya uhamishaji ya seva pangishi hii. Tafadhali jaribu tena baada ya kukamilika."
 
-#: lib/porsche/ssh/output.ex:319
+#: lib/porsche/ssh/output.ex:373
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr "Imekubaliwa"
@@ -48,7 +45,7 @@ msgstr "Imekubaliwa"
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "Idhinisha ufunguo huu wa SSH kwenye kivinjari chako, kisha ujaribu tena amri."
 
-#: lib/porsche/ssh/output.ex:321
+#: lib/porsche/ssh/output.ex:375
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Imeshindwa"
@@ -58,32 +55,32 @@ msgstr "Imeshindwa"
 msgid "Invalid command. Type help to see available commands."
 msgstr "Amri batili. Andika help kuona amri zinazopatikana."
 
-#: lib/porsche/ssh/output.ex:314
+#: lib/porsche/ssh/output.ex:368
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr "Kitambulisho cha shughuli"
 
-#: lib/porsche/ssh/output.ex:311
+#: lib/porsche/ssh/output.ex:365
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr "Toleo la itifaki"
 
-#: lib/porsche/ssh/output.ex:346
+#: lib/porsche/ssh/output.ex:400
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "Ombi %{id} : kuwasilisha"
 
-#: lib/porsche/ssh/output.ex:349
+#: lib/porsche/ssh/output.ex:403
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "Ombi %{id} : kusubiri kukamilika"
 
-#: lib/porsche/ssh/output.ex:313
+#: lib/porsche/ssh/output.ex:367
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr "Kitambulisho cha ombi"
 
-#: lib/porsche/ssh/output.ex:315
+#: lib/porsche/ssh/output.ex:369
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr "Matokeo"
@@ -93,17 +90,17 @@ msgstr "Matokeo"
 msgid "Source cleanup is still pending. Wait for cleanup before retrying."
 msgstr "Usafishaji wa chanzo bado unasubiri. Subiri kusafishwa kabla ya kujaribu tena."
 
-#: lib/porsche/ssh/output.ex:312
+#: lib/porsche/ssh/output.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Hali"
 
-#: lib/porsche/ssh/output.ex:320
+#: lib/porsche/ssh/output.ex:374
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "Imefaulu"
 
-#: lib/porsche/ssh/output.ex:322
+#: lib/porsche/ssh/output.ex:376
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "Imebadilishwa"
@@ -115,9 +112,7 @@ msgstr "Ufunguo wa umma wa SSH ni batili. Angalia ufunguo na ujaribu tena."
 
 #: lib/porsche/ssh/output.ex:283
 #, elixir-autogen, elixir-format
-msgid ""
-"The approval request limit has been reached. Close an unused connection and "
-"try again."
+msgid "The approval request limit has been reached. Close an unused connection and try again."
 msgstr "Kikomo cha ombi la idhini kimefikiwa. Funga muunganisho ambao haujatumiwa na ujaribu tena."
 
 #: lib/porsche/ssh/output.ex:211
@@ -125,30 +120,24 @@ msgstr "Kikomo cha ombi la idhini kimefikiwa. Funga muunganisho ambao haujatumiw
 msgid "The available host does not meet the machine image's requirements."
 msgstr "Kipangishi kinachopatikana hakitimizii mahitaji ya picha ya mashine."
 
-#: lib/porsche/ssh/output.ex:292
+#: lib/porsche/ssh/output.ex:346
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr "Amri haikuweza kukamilika: %{reason}"
 
 #: lib/porsche/ssh/output.ex:184
 #, elixir-autogen, elixir-format
-msgid ""
-"The connection to the control service was interrupted. Check the request "
-"status before submitting it again."
+msgid "The connection to the control service was interrupted. Check the request status before submitting it again."
 msgstr "Muunganisho wa huduma ya udhibiti ulikatizwa. Angalia hali ya ombi kabla ya kuliwasilisha tena."
 
 #: lib/porsche/ssh/output.ex:196
 #, elixir-autogen, elixir-format
-msgid ""
-"The control service refused the request. Check the request status before "
-"submitting it again."
+msgid "The control service refused the request. Check the request status before submitting it again."
 msgstr "Huduma ya udhibiti ilikataa ombi. Angalia hali ya ombi kabla ya kuliwasilisha tena."
 
 #: lib/porsche/ssh/output.ex:190
 #, elixir-autogen, elixir-format
-msgid ""
-"The control service returned an invalid response. Check the request status "
-"before submitting it again."
+msgid "The control service returned an invalid response. Check the request status before submitting it again."
 msgstr "Huduma ya udhibiti ilileta jibu lisilo sahihi. Angalia hali ya ombi kabla ya kuliwasilisha tena."
 
 #: lib/porsche/ssh/output.ex:223
@@ -158,9 +147,7 @@ msgstr "Diski ya mashine haijahifadhiwa kwa operesheni hii."
 
 #: lib/porsche/ssh/output.ex:262
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's execution generation has changed. Inspect its current state "
-"before retrying."
+msgid "The machine's execution generation has changed. Inspect its current state before retrying."
 msgstr "Uzalishaji wa utekelezaji wa mashine umebadilika. Kagua hali yake ya sasa kabla ya kujaribu tena."
 
 #: lib/porsche/ssh/output.ex:91
@@ -170,23 +157,17 @@ msgstr "Mwenyeji wa mashine hapatikani. Tafadhali jaribu tena baada ya muda mfup
 
 #: lib/porsche/ssh/output.ex:151
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's placement has changed. Inspect its current state before "
-"retrying."
+msgid "The machine's placement has changed. Inspect its current state before retrying."
 msgstr "Uwekaji wa mashine umebadilika. Kagua hali yake ya sasa kabla ya kujaribu tena."
 
 #: lib/porsche/ssh/output.ex:256
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's stop has not been confirmed. Inspect its state before "
-"retrying."
+msgid "The machine's stop has not been confirmed. Inspect its state before retrying."
 msgstr "Kisimamo cha mashine hakijathibitishwa. Kagua hali yake kabla ya kujaribu tena."
 
 #: lib/porsche/ssh/output.ex:112
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's workload is not stable enough for this operation. Check its "
-"state before retrying."
+msgid "The machine's workload is not stable enough for this operation. Check its state before retrying."
 msgstr "Mzigo wa kazi wa mashine hauko thabiti vya kutosha kwa operesheni hii. Angalia hali yake kabla ya kujaribu tena."
 
 #: lib/porsche/ssh/output.ex:76
@@ -201,8 +182,7 @@ msgstr "Mpokeaji hana akaunti iliyosajiliwa."
 
 #: lib/porsche/ssh/output.ex:244
 #, elixir-autogen, elixir-format
-msgid ""
-"The repository source is invalid. Use a supported public repository URL."
+msgid "The repository source is invalid. Use a supported public repository URL."
 msgstr "Chanzo cha hazina ni batili. Tumia hazina ya umma inayotumika URL ."
 
 #: lib/porsche/ssh/output.ex:241
@@ -212,9 +192,7 @@ msgstr "Chanzo cha hazina hakipatikani."
 
 #: lib/porsche/ssh/output.ex:163
 #, elixir-autogen, elixir-format
-msgid ""
-"The request conflicts with the current state. Inspect the machine or request"
-" before retrying."
+msgid "The request conflicts with the current state. Inspect the machine or request before retrying."
 msgstr "Ombi hilo linakinzana na hali ya sasa. Kagua mashine au ombi kabla ya kujaribu tena."
 
 #: lib/porsche/ssh/output.ex:160
@@ -244,9 +222,7 @@ msgstr "Picha ya mashine iliyoombwa haipatikani."
 
 #: lib/porsche/ssh/output.ex:217
 #, elixir-autogen, elixir-format
-msgid ""
-"The requested machine size is invalid. Check the CPU, memory and disk "
-"limits."
+msgid "The requested machine size is invalid. Check the CPU, memory and disk limits."
 msgstr "Saizi ya mashine iliyoombwa si sahihi. Angalia CPU , kumbukumbu na mipaka ya diski."
 
 #: lib/porsche/ssh/output.ex:70
@@ -261,9 +237,7 @@ msgstr "Mipangilio ya huduma ni batili. Wasiliana na opereta wako."
 
 #: lib/porsche/ssh/output.ex:178
 #, elixir-autogen, elixir-format
-msgid ""
-"The service does not support this protocol version. Ask your operator to "
-"update the compatible services."
+msgid "The service does not support this protocol version. Ask your operator to update the compatible services."
 msgstr "Huduma haiauni toleo hili la itifaki. Uliza opereta wako kusasisha huduma zinazooana."
 
 #: lib/porsche/ssh/output.ex:61
@@ -273,9 +247,7 @@ msgstr "Huduma haipatikani kwa sasa. Tafadhali jaribu tena baada ya muda mfupi."
 
 #: lib/porsche/ssh/output.ex:277
 #, elixir-autogen, elixir-format
-msgid ""
-"The session limit has been reached. Close an unused connection and try "
-"again."
+msgid "The session limit has been reached. Close an unused connection and try again."
 msgstr "Kikomo cha kipindi kimefikiwa. Funga muunganisho ambao haujatumiwa na ujaribu tena."
 
 #: lib/porsche/ssh/output.ex:118
@@ -295,8 +267,7 @@ msgstr "Kitendo hiki hakiwezi kuondoa ufikiaji uliolindwa wa mmiliki."
 
 #: lib/porsche/ssh/output.ex:94
 #, elixir-autogen, elixir-format
-msgid ""
-"This clone has already been published and cannot be retried or cancelled."
+msgid "This clone has already been published and cannot be retried or cancelled."
 msgstr "Nakala hii tayari imechapishwa na haiwezi kujaribiwa tena au kughairiwa."
 
 #: lib/porsche/ssh/output.ex:100
@@ -321,9 +292,7 @@ msgstr "Mashine hii imefutwa."
 
 #: lib/porsche/ssh/output.ex:226
 #, elixir-autogen, elixir-format
-msgid ""
-"This machine has reached its execution generation limit. Contact your "
-"operator."
+msgid "This machine has reached its execution generation limit. Contact your operator."
 msgstr "Mashine hii imefikia kikomo chake cha uzalishaji. Wasiliana na opereta wako."
 
 #: lib/porsche/ssh/output.ex:157
@@ -343,15 +312,12 @@ msgstr "Uhamishaji huu tayari umekamilika."
 
 #: lib/porsche/ssh/output.ex:139
 #, elixir-autogen, elixir-format
-msgid ""
-"This relocation has committed its handoff and can no longer be cancelled."
+msgid "This relocation has committed its handoff and can no longer be cancelled."
 msgstr "Uhamishaji huu umefanya kazi yake ya kukabidhiana na hauwezi kughairiwa tena."
 
 #: lib/porsche/ssh/output.ex:106
 #, elixir-autogen, elixir-format
-msgid ""
-"This request ID was already used for a different command. Use the original "
-"command or a new request ID."
+msgid "This request ID was already used for a different command. Use the original command or a new request ID."
 msgstr "Kitambulisho hiki cha ombi kilikuwa tayari kinatumika kwa amri tofauti. Tumia amri ya asili au kitambulisho kipya cha ombi."
 
 #: lib/porsche/ssh/output.ex:253
@@ -366,9 +332,7 @@ msgstr "Ombi hili la kubadilisha ukubwa haliwezi kujaribiwa tena katika hali yak
 
 #: lib/porsche/ssh/output.ex:172
 #, elixir-autogen, elixir-format
-msgid ""
-"Too many sessions or approval requests are active. Close an unused "
-"connection and try again."
+msgid "Too many sessions or approval requests are active. Close an unused connection and try again."
 msgstr "Vipindi vingi sana au maombi ya idhini yanatumika. Funga muunganisho ambao haujatumiwa na ujaribu tena."
 
 #: lib/porsche/ssh/output.ex:73
@@ -385,3 +349,91 @@ msgstr "Tayari unashikilia idadi ya juu zaidi ya pini; bandua moja kwanza."
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to perform this action."
 msgstr "Huna ruhusa ya kutekeleza kitendo hiki."
+
+#: lib/porsche/ssh/output.ex:316
+#, elixir-autogen, elixir-format
+msgid "Answer the pending question before sending another prompt."
+msgstr "Jibu swali linalosubiri kabla ya kutuma agizo lingine."
+
+#: lib/porsche/ssh/output.ex:322
+#, elixir-autogen, elixir-format
+msgid "Port 4444 is reserved for the editor."
+msgstr "Mlango 4444 umetengwa kwa ajili ya kihariri."
+
+#: lib/porsche/ssh/output.ex:328
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable on this machine right now."
+msgstr "Terminali hazipatikani kwenye mashine hii kwa sasa."
+
+#: lib/porsche/ssh/output.ex:304
+#, elixir-autogen, elixir-format
+msgid "That plan is no longer the latest proposal. Show the thread again."
+msgstr "Mpango huo si pendekezo la hivi punde tena. Onyesha mazungumzo tena."
+
+#: lib/porsche/ssh/output.ex:310
+#, elixir-autogen, elixir-format
+msgid "That question has already been answered."
+msgstr "Swali hilo tayari limejibiwa."
+
+#: lib/porsche/ssh/output.ex:307
+#, elixir-autogen, elixir-format
+msgid "That question is no longer pending."
+msgstr "Swali hilo halisubiri tena."
+
+#: lib/porsche/ssh/output.ex:334
+#, elixir-autogen, elixir-format
+msgid "That terminal session no longer exists."
+msgstr "Kipindi hicho cha terminali hakipo tena."
+
+#: lib/porsche/ssh/output.ex:313
+#, elixir-autogen, elixir-format
+msgid "The answers do not match the pending question."
+msgstr "Majibu hayalingani na swali linalosubiri."
+
+#: lib/porsche/ssh/output.ex:331
+#, elixir-autogen, elixir-format
+msgid "The machine is waking. Retry the terminal shortly."
+msgstr "Mashine inaamka. Jaribu terminali tena baada ya muda mfupi."
+
+#: lib/porsche/ssh/output.ex:343
+#, elixir-autogen, elixir-format
+msgid "The standard input is empty or exceeds this command's size limit."
+msgstr "Ingizo la kawaida ni tupu au linazidi kikomo cha ukubwa cha amri hii."
+
+#: lib/porsche/ssh/output.ex:319
+#, elixir-autogen, elixir-format
+msgid "The web settings changed since you read them. Show them again and retry."
+msgstr "Mipangilio ya wavuti imebadilika tangu ulipoisoma. Ionyeshe tena kisha ujaribu tena."
+
+#: lib/porsche/ssh/output.ex:337
+#, elixir-autogen, elixir-format
+msgid "This command reads its input from standard input. Pipe it in and end the command with -."
+msgstr "Amri hii husoma ingizo lake kutoka kwa ingizo la kawaida. Lipitishe kwa bomba na umalize amri kwa -."
+
+#: lib/porsche/ssh/output.ex:325
+#, elixir-autogen, elixir-format
+msgid "This machine's profile does not allow web publishing."
+msgstr "Wasifu wa mashine hii hauruhusu uchapishaji wa wavuti."
+
+#: lib/porsche/ssh/output.ex:301
+#, elixir-autogen, elixir-format
+msgid "This thread is busy with a turn. Try again when it finishes."
+msgstr "Mazungumzo haya yana shughuli ya zamu. Jaribu tena itakapokamilika."
+
+#: lib/porsche/ssh/output.ex:298
+#, elixir-autogen, elixir-format
+msgid "This thread is not ready for prompts yet."
+msgstr "Mazungumzo haya bado hayako tayari kupokea maagizo."
+
+#: lib/porsche/ssh/output.ex:292
+#, elixir-autogen, elixir-format
+msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr "terminal attach inahitaji terminali. Unganisha kwa ssh -t na uiendeshe kama amri."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Arifa zinazotumwa zimezimwa katika usakinishaji huu; wasiliana na msimamizi wake."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Umefikia idadi ya juu zaidi ya vifaa; ondoa kimoja kwanza: device rm DEVICE_ID"

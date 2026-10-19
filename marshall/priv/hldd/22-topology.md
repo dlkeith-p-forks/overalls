@@ -788,3 +788,45 @@ authority histories for changes to these boundaries. Production failure-domain,
 public DNS/gateway failover and host-loss acceptance require separately recorded
 evidence. See [scenario coverage](#coverage) and [recovery](#recovery) for the
 remaining security and recovery gaps.
+
+### Notifications ownership
+
+[`Marshall.Notifications`](repo:marshall/lib/marshall/notifications.ex) owns
+devices, deliveries and the install identity. It reads SSH keys, accounts and
+agent threads but never writes them; SSH and Accounts call its revocation
+functions inside their own transactions. Susan is an external service at
+`notifications.overalls.dev`, outside every Overalls host; its outage only
+delays notifications and Mila's watch stream still works while open.
+
+## Susan placement and fixed egress
+
+Susan is a separate deployment, not a role on fleet hosts. It is either the
+NixOS service [`services.susan`](repo:nix/domains/system/susan.nix) with a local
+PostgreSQL or the OCI image
+[`image-susan`](repo:nix/domains/artifacts/susan-image.nix). The image is
+streamLayeredImage with uid 65532, no shell, a read-only root, tmpfs `/tmp` and
+a fixed creation time. Migrations run as a separate release command. Hosting,
+registry and TLS placement are open (ADR-0224), so no inventory host enables it
+yet and the generated topology has no Susan node.
+
+```mermaid
+flowchart LR
+  Internet["Mila apps and Marshalls"] -->|"HTTPS notifications.overalls.dev"| Proxy["TLS proxy (placement open)"]
+  Proxy -->|"HTTP 127.0.0.1:4100"| Susan["Susan release / container"]
+  Susan --> PG[("Susan PostgreSQL")]
+  Susan -->|"HTTPS h2"| APNs["api.push.apple.com / api.sandbox.push.apple.com"]
+  Susan -->|"HTTPS"| Google["oauth2.googleapis.com, fcm.googleapis.com"]
+  Operator["susan-operator (loopback distribution)"] --> Susan
+```
+
+These are the failure boundaries:
+
+- When Susan is down, notifications are delayed. Marshall's watch stream still
+  works.
+- When PostgreSQL is down, `/healthz` answers 503 and pokes answer 503.
+- When a provider has an outage, pokes answer 503 with that provider's
+  Retry-After.
+
+Egress is fixed in code, not configuration. The container uses a
+loopback-only, epmd-less distribution ([`Susan.Epmd`](repo:susan/lib/susan/epmd.ex))
+because it has no shell from which to start epmd.

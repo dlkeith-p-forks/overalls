@@ -1392,8 +1392,13 @@ production activation. The [Customer scenario](#coverage) retains those gaps.
 ## Windows guest boundaries
 
 The firmware-booted Windows image ([ADR-0169](repo:docs/architecture/decisions/0169-firmware-booted-windows-guests.md),
-[ADR-0170](repo:docs/architecture/decisions/0170-lilly-firmware-guest-launch.md)) is a
-launchable guest without agents, and that is the boundary to keep explicit.
+[ADR-0170](repo:docs/architecture/decisions/0170-lilly-firmware-guest-launch.md)) can
+be launched by Lilly without agents. Current Marshall admission separately
+requires explicit Git identity support under
+[ADR-0198](repo:docs/architecture/decisions/0198-git-attribution-and-guest-identity.md)
+and [ADR-0204](repo:docs/architecture/decisions/0204-git-attribution-and-guest-identity.md).
+Agentless manifests cannot advertise it, so new machine creation refuses before
+allocation. The recorded Lilly-only launch predates that admission restriction.
 Identity: the image carries a documented bootstrap Administrator password and
 no account roster; nothing maps it onto GuestAccount identities. The placement
 identity (placement, execution epoch, boot challenge, address, gateway, MAC)
@@ -1405,8 +1410,9 @@ admits exactly the eight-key version-5 manifest with the agent set `none` or
 table ([ADR-0171](repo:docs/architecture/decisions/0171-windows-guest-agents.md)),
 through Marshall's per-capability image facts and Lilly's driver: for `none`
 Marshall refuses terminals, agent turns, the agent executor, web search and SSH
-connection details, refuses the Inception profile and measures only the
-physical service level, and Lilly refuses readiness, terminals, workspace
+connection details and refuses the Inception profile; physical-only measurement
+applies to retained agentless executions rather than new admissions. Lilly
+refuses readiness, terminals, workspace
 sources and Inception and reports the VM running but never `guest_ready`; for
 `windows-v1` the same gates open only for the capabilities the table grants
 (never the editor or Inception), and readiness, trust, terminals and workspace
@@ -1540,3 +1546,170 @@ reason before lifecycle deletion completes.
 ## Git identity configuration
 
 Account authorization controls preference updates. Validated identity is inert execution metadata bound to the machine’s admitted snapshot and current boot. Guest services atomically publish protected Git configuration; malformed metadata refuses. Identity values must not enter diagnostics. Guest sudo and Git local configuration retain their existing authority. Native cross-OS and production rollout acceptance remain separate from BEAM property evidence.
+
+## Push notification custody and refusal
+
+Susan learns that a deployment notified some device, never what about
+([ADR-0224](repo:docs/architecture/decisions/0224-susan-push-relay.md),
+[ADR-0225](repo:docs/architecture/decisions/0225-marshall-notifications-domain.md)).
+
+| Layer | Authority and expected refusal |
+| --- | --- |
+| Identity | A device is bound to the SSH key of the Porsche session that registered it; a key not owned by the actor refuses `unauthorized`. Each install signs pokes with an Ed25519 identity whose seed is AshCloak-encrypted. |
+| Authorization | Only the device owner lists, pauses or removes it; others receive `device_not_found`. Recipients are re-derived from current write authority at production time; viewers and the actor are excluded. More than ten live devices refuse `device_limit`. |
+| Transport | Pokes go only to the compiled origin over verified TLS with the system trust store, `retry: false`, no redirects; the canonical signed body is ≤1 KiB. |
+| Execution | Delivery attempts are fenced by the `attempts` counter, so a stale job cannot overwrite a newer outcome; expired, revoked, invalidated or preference-off deliveries drop before sending. |
+| Isolation | The route is sealed to the device's X25519 key with deployment-bound HKDF; the body carries only ciphertext, an opaque per-install collapse id, the delivery id, deployment host, kind, nonce, issue time and Susan's push key. |
+| Storage | The push key is AshCloak-encrypted; versions, receipts and events retain only a 16-hex digest. Events carry enum/int metadata only. |
+| Recovery | 429/5xx/transport retry with jittered backoff honouring `Retry-After` (8 attempts); 404/410 invalidates the device; SSH key archive and account retirement revoke devices in the same transaction; a reconciler re-enqueues stuck rows. |
+
+Sensitive operations: `device register` (stdin push key), `device rm`,
+`device prefs`, operator disable. Expected refusals: `push_disabled`,
+`device_limit`, `device_not_found`, `unauthorized`, `invalid_request`.
+Untested: real Susan/APNs/FCM delivery, Mila-side decryption on hardware.
+
+## SSH terminal attach gateway stream
+
+[ADR-0223](repo:docs/architecture/decisions/0223-porsche-terminal-attach.md)
+adds `GET /api/terminal-gateway/v1/stream` on the private fleet listener. It
+upgrades into the existing terminal viewer, so every browser terminal
+boundary still applies; the rows below are what attach adds.
+
+| Layer | Authority and required refusal |
+| --- | --- |
+| Identity | Porsche gateway bearer plus the attaching connection's live SSH session token plus a single-use terminal ticket. Missing, malformed or oversized credentials refuse with 401/400 before a socket exists; browser cookies and login tokens grant nothing here. |
+| Authorization | The ticket is issued by `terminal attach` only after current registry and Cedar checks for that machine and session (`unknown_session` → 404, `forbidden` → 403). Mode never escalates: rw only for the owner with current write access and without `--read-only`. |
+| Transport | TLS on the fleet listener. Tickets are bound to their origin: an SSH-bound ticket refuses on the browser route and a browser ticket refuses here (close 4003). Tickets and tokens are never printed, logged or pinned in receipts. |
+| Execution | The viewer rechecks `SSH.Authority.session_live?/2` every 5 seconds and on `:ssh_session`/user control hints; key, approval or session revocation closes 4001 and Porsche exits 3. An unanswered check closes 1011 (exit 5), never continuing on stale authority. |
+| Isolation | Read-only attaches never send input or resize; Porsche discards their input before the websocket. Attach joins only registry sessions on the named machine; the guest identity is the session owner's personal account. |
+| Storage | Only the ticket row (with `ssh_session_id`) is persisted and it is consumed on upgrade. Terminal bytes, tickets and tokens never reach journals: Porsche attachments are `porsche_private` with redacted status, and events carry enum metadata only. |
+| Recovery | A lost control link, gateway stream or 15 seconds of silence ends the attach with exit 5; the guest session survives and can be reattached from a cursor. Output is acknowledged only after local SSH delivery, so replay is never skipped. |
+
+Untested boundaries: the native fleet journey
+([scenario](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py))
+has not yet recorded a passing run. Revocation latency while an SSH client
+stalls output (a blocked 30-second local send) is not measured.
+
+## Porsche client command payloads and hints
+
+Porsche stdin payloads (prompt, answers, plan revision) are bounded per
+command, validated before dispatch and stored only as digests in
+`ssh_requests`, with the submitting SSH key id. The Porsche gateway binding
+receives all thread, terminal-session and SSH-session hint identifiers; they
+carry no content and grant nothing; watch subscriptions are re-authorized
+every heartbeat. Expected refusals: `stdin_payload_invalid`,
+`stdin_payload_required`, `revision_conflict`, `stale_proposal`,
+`thread_busy`, `forbidden` for a stranger's watch.
+
+## Mila client boundaries
+
+Mila holds no account authority; every action is a Porsche command that
+Marshall authorizes like any other SSH caller (ADR-0220).
+
+- **Host identity.** Mila accepts only an Ed25519 host certificate from the
+  pinned deployment CA that names the management host and is inside its
+  validity window. The check runs in key exchange, so an untrusted host never
+  receives a device-key signature. No trust-on-first-use, no unsigned
+  fallback; a changed CA, host or zone is refused (ADR-0228).
+- **Device keys.** One P-256 key per deployment, in the Secure Enclave or
+  Android Keystore; the Linux test key is an owner-only `0600` file and a
+  readable key file is refused. Keys, signatures and tokens are never logged.
+- **Links.** `overalls://` links only navigate; they never send a command,
+  add a deployment or approve anything (ADR-0221).
+- **Mila push privacy.** Pokes are end-to-end encrypted to a per-deployment
+  device X25519 key, so the relay learns only that a deployment poked a
+  device. Notification text is fixed, and the route is a validated tap link.
+  The push key reaches Porsche only on stdin. The platform token is sent only
+  to the fixed relay origin and is never stored.
+- **Local data.** Snapshots, settings and keys on Linux are owner-only files;
+  the offline snapshot holds machine rows only, never approval links, tokens
+  or terminal bytes. The optional app lock hides content from rendering and
+  the accessibility tree.
+- **Untested:** native iOS and Android builds on devices (Secure Enclave,
+  Keystore, notification extension and messaging service, `local_auth`).
+- **Mila terminal fencing.** Read-only attachments never send input or
+  resizes. The attach header is closed and bounded, and output before it is
+  dropped. Terminal bytes never leave memory.
+- **Mila payloads.** Prompt, answer and plan-revision text goes only on stdin
+  (at most 64 KiB) and never on a command line, in a log or in the cache.
+- **Mila web.** Only HTTPS URLs on DNS hosts, without user info or fragment, are
+  opened. Private endpoints go to the system browser, so Marshall browser
+  credentials never enter a webview. The webview allows only HTTPS navigation.
+- **Untested:** the stderr attach header through real OpenSSH (it is merged into
+  the PTY there), device builds of the share sheet and webview, and these
+  screens in the `mila-desktop` machine test.
+
+## Susan push relay layers
+
+Susan sits outside every Marshall's trust boundary and is designed so that a
+compromise of it reveals neither notification content nor routes.
+
+```mermaid
+flowchart TB
+  subgraph Untrusted["Internet"]
+    Mila["Mila app"]
+    Marshall["Any Marshall"]
+  end
+  subgraph Susan["Susan (own host, own database)"]
+    HTTP["Susan.HTTP: 1 KiB bound, 400≡404"]
+    FSM["Poke FSM: key → signature → replay → rate → claim"]
+    Audit[("audit_entries: append-only, hash chained")]
+    Secrets["$CREDENTIALS_DIRECTORY: .p8, service account, keyring, DB URL"]
+  end
+  Providers["APNs / FCM (fixed origins, verify_peer)"]
+  Mila --> HTTP
+  Marshall --> HTTP
+  HTTP --> FSM --> Providers
+  FSM --> Audit
+  Secrets --> FSM
+```
+
+- **Identity.** A poke is authenticated twice. Only Susan can open the push key
+  (AEAD under a keyring that never leaves Susan), and the request is signed with
+  the Marshall's Ed25519 install key. Both checks always run.
+  - Failure answers 404 with the same body as malformed input, and it writes
+    nothing.
+  - The install fingerprint (SHA-256 of the public key) drives the
+    `InstallIdentity` state machine, `unknown → trusted → rate_limited → blocked`.
+- **Authorization.**
+  - The key's deployment binding must match the poke.
+  - The key id must not be on the deny-list.
+  - The install must not be blocked.
+  - The token must not be in the negative cache of unregistered tokens.
+- **Transport.** TLS terminates at the fronting proxy. `X-Forwarded-For` is
+  believed only from configured proxies. Egress goes only to the four compiled
+  provider origins, with system trust and peer verification
+  ([`Susan.Provider.Finch`](repo:susan/lib/susan/provider/finch.ex)).
+  A service account naming another token endpoint is refused at startup.
+- **Execution fencing.** A `DeliveryReceipt` is unique per install and delivery
+  id. Reclaiming a failed or stale `sending` receipt is an atomic conditional
+  update, so concurrent retries cannot double-send.
+- **Privacy and storage.**
+  - Susan has no plaintext content.
+  - Source addresses are reduced to an HMAC under a daily random salt held in
+    memory.
+  - Tokens, envelopes, ciphertext and install keys are never stored or logged.
+    `Susan.Events` carries enum and integer metadata only.
+  - The audit trail stores closed action and reason enums, the fingerprint, key
+    id, provider and delivery id.
+  - The audit trail is append-only through a PostgreSQL trigger and REVOKE. It is
+    hash chained, and an audited Oban prune removes entries after 90 days.
+- **Secrets.** All six secrets arrive as systemd credentials from the host-bound
+  `overallsSecrets` bundle, or as a container secrets mount. Each file passes the
+  canonical-path, ancestor, single-link, owner and mode checks
+  ([`Susan.Credentials`](repo:susan/lib/susan/credentials.ex)). Any failure is
+  one fixed startup error.
+- **Expected refusals:**
+  - 400 malformed, replayed or stale;
+  - 404 unknown, expired, deny-listed, mismatched, badly signed or blocked;
+  - 410 unregistered;
+  - 429 limited or in-flight;
+  - the database refuses UPDATE, DELETE and TRUNCATE on audit rows;
+  - another host cannot decrypt the bundle.
+- **Untested gaps.**
+  - Real APNs/FCM acceptance: the machine tests use local fake origins behind a
+    private CA.
+  - Production hosting and TLS.
+  - Multi-instance rate limiting: the buckets are per node and in memory.
+  - Keyring rotation resets the negative cache, because the digest key derives
+    from the active keyring key.

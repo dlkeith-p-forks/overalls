@@ -1,0 +1,125 @@
+{
+  "commands": {
+    "device ls": {
+      "command": "device ls --json",
+      "exit_status": 0,
+      "response": {
+        "result": {
+          "items": [
+            {
+              "enabled": true,
+              "id": "5d7a6f0e-2b1c-4e8f-9a3d-6c0b1e2f3a4b",
+              "inserted_at": "2026-10-18T23:00:00.000000Z",
+              "key_id": "0b8f2f0e-3c1d-4a8e-9b3e-0c6f1d2a7b11",
+              "label": "Pixel",
+              "platform": "android",
+              "route": "overalls://control.example.test/settings",
+              "state": "active"
+            }
+          ],
+          "limit": 10,
+          "push_enabled": true
+        },
+        "status": "succeeded",
+        "version": 1
+      }
+    },
+    "device prefs": {
+      "command": "device prefs 5d7a6f0e-2b1c-4e8f-9a3d-6c0b1e2f3a4b --enabled false --json",
+      "exit_status": 0,
+      "response": {
+        "operation_id": null,
+        "request_id": "porsche-1123456789abcdef0123456789abcdef",
+        "result": {
+          "enabled": false,
+          "id": "5d7a6f0e-2b1c-4e8f-9a3d-6c0b1e2f3a4b",
+          "inserted_at": "2026-10-18T23:00:00.000000Z",
+          "key_id": "0b8f2f0e-3c1d-4a8e-9b3e-0c6f1d2a7b11",
+          "label": "Pixel",
+          "platform": "android",
+          "route": "overalls://control.example.test/settings",
+          "state": "active"
+        },
+        "status": "succeeded",
+        "version": 1
+      }
+    },
+    "device register": {
+      "command": "device register --platform android --push-key - --enc-pubkey BQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU --label Pixel --json",
+      "exit_status": 0,
+      "response": {
+        "operation_id": null,
+        "request_id": "porsche-0123456789abcdef0123456789abcdef",
+        "result": {
+          "enabled": true,
+          "id": "5d7a6f0e-2b1c-4e8f-9a3d-6c0b1e2f3a4b",
+          "inserted_at": "2026-10-18T23:00:00.000000Z",
+          "key_id": "0b8f2f0e-3c1d-4a8e-9b3e-0c6f1d2a7b11",
+          "label": "Pixel",
+          "platform": "android",
+          "route": "overalls://control.example.test/settings",
+          "state": "active"
+        },
+        "status": "succeeded",
+        "version": 1
+      },
+      "stdin": "opaque Susan push key (base64url, 16..700 characters)"
+    },
+    "device rm": {
+      "command": "device rm 5d7a6f0e-2b1c-4e8f-9a3d-6c0b1e2f3a4b --json",
+      "exit_status": 0,
+      "response": {
+        "operation_id": null,
+        "request_id": "porsche-2123456789abcdef0123456789abcdef",
+        "result": {
+          "enabled": false,
+          "id": "5d7a6f0e-2b1c-4e8f-9a3d-6c0b1e2f3a4b",
+          "inserted_at": "2026-10-18T23:00:00.000000Z",
+          "key_id": "0b8f2f0e-3c1d-4a8e-9b3e-0c6f1d2a7b11",
+          "label": "Pixel",
+          "platform": "android",
+          "route": "overalls://control.example.test/settings",
+          "state": "revoked"
+        },
+        "status": "succeeded",
+        "version": 1
+      }
+    }
+  },
+  "description": "One example Porsche --json result per device command (ADR-0222, ADR-0225). Results never contain push keys or device public keys.",
+  "refusals": [
+    {
+      "command": "device register --platform ios --push-key - --enc-pubkey BQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU --json",
+      "exit_status": 2,
+      "response": {
+        "error": "push_disabled",
+        "hint": "This deployment has push notifications turned off; ask its operator.",
+        "request_id": "porsche-3123456789abcdef0123456789abcdef",
+        "status": "error",
+        "version": 1
+      }
+    },
+    {
+      "command": "device register --platform ios --push-key - --enc-pubkey BQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU --json",
+      "exit_status": 2,
+      "response": {
+        "error": "device_limit",
+        "hint": "You already have the maximum number of devices; remove one first: device rm DEVICE_ID",
+        "request_id": "porsche-4123456789abcdef0123456789abcdef",
+        "status": "error",
+        "version": 1
+      }
+    },
+    {
+      "command": "device rm 9d7a6f0e-2b1c-4e8f-9a3d-6c0b1e2f3a4b --json",
+      "exit_status": 2,
+      "response": {
+        "error": "not_found",
+        "request_id": "porsche-5123456789abcdef0123456789abcdef",
+        "status": "error",
+        "version": 1
+      }
+    }
+  ],
+  "version": 1
+}

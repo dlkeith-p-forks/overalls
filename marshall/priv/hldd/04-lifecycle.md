@@ -252,8 +252,14 @@ A guest whose boot bundle declares no agents (a firmware-booted image,
 readiness: Lilly records trust as `skipped` for the exact boot instead of
 delivering it, advances provisioning to the terminal `unattested` phase (a boot
 challenge, never a boot UUID, no path to `ready`) and reports the VM running
-without a `guest_ready` fact. Marshall admits only the physical service level
-for such an operation. Whether a boot exchanges readiness and trust, and how
+without a `guest_ready` fact. Physical-only measurement describes retained
+agentless executions and the historical Lilly-only launch fixture. Current
+Marshall admission requires explicit Git identity support
+([ADR-0198](repo:docs/architecture/decisions/0198-git-attribution-and-guest-identity.md),
+[ADR-0204](repo:docs/architecture/decisions/0204-git-attribution-and-guest-identity.md));
+an agentless image cannot advertise it and refuses new machine creation before
+allocation. A Git-capable `windows-v1` image admits both physical and readiness
+measurements. Whether a boot exchanges readiness and trust, and how
 long readiness may take, is decided per agent set by the protocol's capability
 table ([ADR-0171](repo:docs/architecture/decisions/0171-windows-guest-agents.md)):
 Linux guests keep the 120 s budget (2400 s for Inception), `windows-v1` guests

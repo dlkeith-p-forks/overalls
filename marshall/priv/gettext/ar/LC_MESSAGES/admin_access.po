@@ -14,36 +14,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
 
-#: lib/marshall_web/live/admin/access_live.ex:83
+#: lib/marshall_web/live/admin/access_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "سلطة الوصول"
 
-#: lib/marshall_web/live/admin/access_live.ex:65
+#: lib/marshall_web/live/admin/access_live.ex:78
 #, elixir-autogen, elixir-format
 msgid "Access inventory is temporarily unavailable."
 msgstr "قائمة الوصول غير متاحة مؤقتًا."
 
-#: lib/marshall_web/live/admin/access_live.ex:106
-#: lib/marshall_web/live/admin/access_live.ex:152
+#: lib/marshall_web/live/admin/access_live.ex:123
+#: lib/marshall_web/live/admin/access_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "الحساب"
 
-#: lib/marshall_web/live/admin/access_live.ex:110
-#: lib/marshall_web/live/admin/access_live.ex:156
-#: lib/marshall_web/live/admin/access_live.ex:205
+#: lib/marshall_web/live/admin/access_live.ex:127
+#: lib/marshall_web/live/admin/access_live.ex:173
+#: lib/marshall_web/live/admin/access_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "إجراءات"
 
-#: lib/marshall_web/live/admin/access_live.ex:95
-#: lib/marshall_web/live/admin/access_live.ex:195
+#: lib/marshall_web/live/admin/access_live.ex:112
+#: lib/marshall_web/live/admin/access_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "Active SSH sessions"
 msgstr "جلسات SSH النشطة"
 
-#: lib/marshall_web/live/admin/access_live.ex:154
+#: lib/marshall_web/live/admin/access_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "تمت الإضافة"
@@ -58,32 +58,32 @@ msgstr "التغييرات الإدارية غير مخوّلة."
 msgid "Administrative changes require an administrator."
 msgstr "تتطلّب التغييرات الإدارية أن تكون مسؤولًا."
 
-#: lib/marshall_web/live/admin/access_live.ex:226
+#: lib/marshall_web/live/admin/access_live.ex:245
 #, elixir-autogen, elixir-format
 msgid "Close session"
 msgstr "إغلاق الجلسة"
 
-#: lib/marshall_web/live/admin/access_live.ex:224
+#: lib/marshall_web/live/admin/access_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Close this SSH session?"
 msgstr "إغلاق جلسة SSH هذه؟"
 
-#: lib/marshall_web/live/admin/access_live.ex:36
+#: lib/marshall_web/live/admin/access_live.ex:43
 #, elixir-autogen, elixir-format
 msgid "Could not close that session."
 msgstr "تعذر إغلاق تلك الجلسة."
 
-#: lib/marshall_web/live/admin/access_live.ex:46
+#: lib/marshall_web/live/admin/access_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "Could not revoke that VM access."
 msgstr "تعذر إبطال ذلك الوصول إلى الآلة الافتراضية."
 
-#: lib/marshall_web/live/admin/access_live.ex:26
+#: lib/marshall_web/live/admin/access_live.ex:31
 #, elixir-autogen, elixir-format
 msgid "Could not revoke that key."
 msgstr "تعذر إبطال ذلك المفتاح."
 
-#: lib/marshall_web/live/admin/access_live.ex:203
+#: lib/marshall_web/live/admin/access_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Expires"
 msgstr "تنتهي الصلاحية"
@@ -93,154 +93,154 @@ msgstr "تنتهي الصلاحية"
 msgid "Finish or cancel the current verification first."
 msgstr "أكمل عملية التحقّق الحالية أو ألغِها أولًا."
 
-#: lib/marshall_web/live/admin/access_live.ex:201
+#: lib/marshall_web/live/admin/access_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Gateway"
 msgstr "البوابة"
 
-#: lib/marshall_web/live/admin/access_live.ex:108
+#: lib/marshall_web/live/admin/access_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "Granted"
 msgstr "ممنوح"
 
-#: lib/marshall_web/live_admin_auth.ex:205
+#: lib/marshall_web/live_admin_auth.ex:208
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "طلب إداري غير صالح."
 
-#: lib/marshall_web/live/admin/access_live.ex:51
+#: lib/marshall_web/live/admin/access_live.ex:60
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "طلب غير صالح."
 
-#: lib/marshall_web/live/admin/access_live.ex:153
-#: lib/marshall_web/live/admin/access_live.ex:202
+#: lib/marshall_web/live/admin/access_live.ex:170
+#: lib/marshall_web/live/admin/access_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Key"
 msgstr "مفتاح"
 
-#: lib/marshall_web/live/admin/access_live.ex:105
+#: lib/marshall_web/live/admin/access_live.ex:122
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "الآلة"
 
-#: lib/marshall_web/live/admin/access_live.ex:246
+#: lib/marshall_web/live/admin/access_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "Manager"
 msgstr "مدير"
 
-#: lib/marshall_web/live/admin/access_live.ex:147
+#: lib/marshall_web/live/admin/access_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "No active keys."
 msgstr "لا توجد مفاتيح نشطة."
 
-#: lib/marshall_web/live/admin/access_live.ex:196
+#: lib/marshall_web/live/admin/access_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "No active sessions."
 msgstr "لا توجد جلسات نشطة."
 
-#: lib/marshall_web/live/admin/access_live.ex:99
+#: lib/marshall_web/live/admin/access_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "No machine is shared with another account."
 msgstr "لا توجد آلة مشاركة مع حساب آخر."
 
-#: lib/marshall_web/live/admin/access_live.ex:245
+#: lib/marshall_web/live/admin/access_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Operator"
 msgstr "مشغّل"
 
-#: lib/marshall_web/live/admin/access_live.ex:213
+#: lib/marshall_web/live/admin/access_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Pending key approval"
 msgstr "في انتظار الموافقة على المفتاح"
 
-#: lib/marshall_web/live/admin/access_live.ex:94
-#: lib/marshall_web/live/admin/access_live.ex:146
+#: lib/marshall_web/live/admin/access_live.ex:111
+#: lib/marshall_web/live/admin/access_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Registered SSH keys"
 msgstr "مفاتيح SSH المسجلة"
 
-#: lib/marshall_web/live/admin/access_live.ex:138
+#: lib/marshall_web/live/admin/access_live.ex:155
 #, elixir-autogen, elixir-format
 msgid "Revoke access"
 msgstr "إبطال الوصول"
 
-#: lib/marshall_web/live/admin/access_live.ex:187
+#: lib/marshall_web/live/admin/access_live.ex:206
 #, elixir-autogen, elixir-format
 msgid "Revoke key"
 msgstr "إبطال المفتاح"
 
-#: lib/marshall_web/live/admin/access_live.ex:185
+#: lib/marshall_web/live/admin/access_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Revoke this SSH key and close sessions using it?"
 msgstr "إبطال مفتاح SSH هذا وإغلاق الجلسات التي تستخدمه؟"
 
-#: lib/marshall_web/live/admin/access_live.ex:136
+#: lib/marshall_web/live/admin/access_live.ex:153
 #, elixir-autogen, elixir-format
 msgid "Revoke this user's VM access?"
 msgstr "إبطال وصول هذا المستخدم إلى الآلة الافتراضية؟"
 
-#: lib/marshall_web/live/admin/access_live.ex:247
+#: lib/marshall_web/live/admin/access_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Revoked"
 msgstr "مُبطل"
 
-#: lib/marshall_web/live/admin/access_live.ex:107
+#: lib/marshall_web/live/admin/access_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "الدور"
 
-#: lib/marshall_web/live/admin/access_live.ex:172
+#: lib/marshall_web/live/admin/access_live.ex:189
 #, elixir-autogen, elixir-format
 msgid "SSH key"
 msgstr "مفتاح SSH"
 
-#: lib/marshall_web/live/admin/access_live.ex:25
+#: lib/marshall_web/live/admin/access_live.ex:27
 #, elixir-autogen, elixir-format
 msgid "SSH key revoked."
 msgstr "أُبطل مفتاح SSH."
 
-#: lib/marshall_web/live/admin/access_live.ex:33
+#: lib/marshall_web/live/admin/access_live.ex:39
 #, elixir-autogen, elixir-format
 msgid "SSH session closed."
 msgstr "أُغلقت جلسة SSH."
 
-#: lib/marshall_web/live/admin/access_live.ex:97
+#: lib/marshall_web/live/admin/access_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Shared machine access"
 msgstr "الوصول إلى الآلات المشاركة"
 
-#: lib/marshall_web/live/admin/access_live.ex:93
+#: lib/marshall_web/live/admin/access_live.ex:110
 #, elixir-autogen, elixir-format
 msgid "Shared machine grants"
 msgstr "أذونات الآلات المشاركة"
 
-#: lib/marshall_web/live/admin/access_live.ex:248
+#: lib/marshall_web/live/admin/access_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "مجهول"
 
-#: lib/marshall_web/live/admin/access_live.ex:90
+#: lib/marshall_web/live/admin/access_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Updated every 15 seconds"
 msgstr "يُحدّث كل 15 ثانية"
 
-#: lib/marshall_web/live/admin/access_live.ex:43
+#: lib/marshall_web/live/admin/access_live.ex:51
 #, elixir-autogen, elixir-format
 msgid "VM access revoked."
 msgstr "أُبطل الوصول إلى الآلة الافتراضية."
 
-#: lib/marshall_web/live/admin/access_live.ex:244
+#: lib/marshall_web/live/admin/access_live.ex:263
 #, elixir-autogen, elixir-format
 msgid "Viewer"
 msgstr "مشاهد"
 
-#: lib/marshall_web/live/admin/access_live.ex:243
+#: lib/marshall_web/live/admin/access_live.ex:262
 #, elixir-autogen, elixir-format
 msgid "Web apps"
 msgstr "تطبيقات الويب"
 
-#: lib/marshall_web/live/admin/access_live.ex:85
+#: lib/marshall_web/live/admin/access_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
 msgstr ""

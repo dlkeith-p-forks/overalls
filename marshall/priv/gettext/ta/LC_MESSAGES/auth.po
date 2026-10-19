@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/controllers/auth_controller.ex:89
+#: lib/marshall_web/controllers/auth_controller.ex:94
 #, elixir-autogen, elixir-format
 msgid "An account with this email already exists. We've sent a link to that\naddress - confirm it to finish linking this provider to your account.\n"
 msgstr "இந்த மின்னஞ்சலில் ஏற்கனவே ஒரு கணக்கு உள்ளது. அந்த முகவரிக்கு ஒரு இணைப்பை அனுப்பியுள்ளோம்;\nஇந்த வழங்குநரை உங்கள் கணக்குடன் இணைப்பதை முடிக்க அதை உறுதிப்படுத்தவும்.\n"
@@ -40,12 +40,12 @@ msgstr "மின்னஞ்சல்"
 msgid "Email me a sign-in link"
 msgstr "உள்நுழைவு இணைப்பை எனக்கு மின்னஞ்சல் செய்"
 
-#: lib/marshall/accounts/deliver_auth_email.ex:153
+#: lib/marshall/accounts/deliver_auth_email.ex:154
 #, elixir-autogen, elixir-format
 msgid "If you did not request this, ignore this email."
 msgstr "இதை நீங்கள் கோரவில்லையெனில் இந்த மின்னஞ்சலைப் புறக்கணிக்கவும்."
 
-#: lib/marshall_web/controllers/auth_controller.ex:95
+#: lib/marshall_web/controllers/auth_controller.ex:100
 #, elixir-autogen, elixir-format
 msgid "Incorrect email or password"
 msgstr "தவறான மின்னஞ்சல் அல்லது கடவுச்சொல்"
@@ -60,13 +60,13 @@ msgstr "என்னை நினைவில் வை"
 msgid "Sending link…"
 msgstr "இணைப்பு அனுப்பப்படுகிறது…"
 
-#: lib/marshall/accounts/deliver_auth_email.ex:149
+#: lib/marshall/accounts/deliver_auth_email.ex:150
 #: lib/marshall_web/auth_text.ex:20
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "உள்நுழை"
 
-#: lib/marshall/accounts/deliver_auth_email.ex:146
+#: lib/marshall/accounts/deliver_auth_email.ex:147
 #, elixir-autogen, elixir-format
 msgid "Sign in to Overalls:"
 msgstr "Overalls-இல் உள்நுழையுங்கள்:"
@@ -91,17 +91,17 @@ msgstr "உங்களை உள்நுழைக்கிறது"
 msgid "Unavailable"
 msgstr "கிடைக்கவில்லை"
 
-#: lib/marshall_web/controllers/auth_controller.ex:38
+#: lib/marshall_web/controllers/auth_controller.ex:43
 #, elixir-autogen, elixir-format
 msgid "You are now signed in"
 msgstr "நீங்கள் உள்நுழைந்துள்ளீர்கள்"
 
-#: lib/marshall_web/controllers/auth_controller.ex:152
+#: lib/marshall_web/controllers/auth_controller.ex:157
 #, elixir-autogen, elixir-format
 msgid "You are now signed out"
 msgstr "நீங்கள் வெளியேறிவிட்டீர்கள்"
 
-#: lib/marshall_web/controllers/auth_controller.ex:80
+#: lib/marshall_web/controllers/auth_controller.ex:85
 #, elixir-autogen, elixir-format
 msgid "You have already signed in another way, but have not confirmed your account.\nYou can confirm your account using the link we sent to you, or by resetting your password.\n"
 msgstr "நீங்கள் வேறொரு முறையில் உள்நுழைந்துள்ளீர்கள்; ஆனால் கணக்கை உறுதிசெய்யவில்லை.\nநாங்கள் அனுப்பிய இணைப்பு அல்லது கடவுச்சொல் மீட்டமைப்பு மூலம் கணக்கை உறுதிசெய்யலாம்.\n"
@@ -111,7 +111,7 @@ msgstr "நீங்கள் வேறொரு முறையில் உள
 msgid "Your Overalls sign-in link"
 msgstr "உங்கள் Overalls உள்நுழைவு இணைப்பு"
 
-#: lib/marshall_web/controllers/auth_controller.ex:36
+#: lib/marshall_web/controllers/auth_controller.ex:37
 #, elixir-autogen, elixir-format
 msgid "Your email address has now been confirmed"
 msgstr "உங்கள் மின்னஞ்சல் முகவரி உறுதிசெய்யப்பட்டது"
@@ -121,12 +121,12 @@ msgstr "உங்கள் மின்னஞ்சல் முகவரி உ
 msgid "Your email link is being verified."
 msgstr "உங்கள் மின்னஞ்சல் இணைப்பு சரிபார்க்கப்படுகிறது."
 
-#: lib/marshall_web/controllers/auth_controller.ex:37
+#: lib/marshall_web/controllers/auth_controller.ex:40
 #, elixir-autogen, elixir-format
 msgid "Your password has successfully been reset"
 msgstr "உங்கள் கடவுச்சொல் வெற்றிகரமாக மீட்டமைக்கப்பட்டது"
 
-#: lib/marshall_web/controllers/auth_controller.ex:58
+#: lib/marshall_web/controllers/auth_controller.ex:63
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "உங்கள் உள்நுழைவு இனி செல்லாது. புதிய உள்நுழைவு இணைப்பைக் கோரவும்."

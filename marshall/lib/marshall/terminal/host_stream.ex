@@ -30,6 +30,7 @@ defmodule Marshall.Terminal.HostStream do
       hello: false,
       buffer: <<>>,
       channels: %{},
+      android_channels: %{},
       viewers: %{},
       pending: %{},
       next_channel: 1
@@ -79,6 +80,19 @@ defmodule Marshall.Terminal.HostStream do
     end
   end
 
+  def handle_info(
+        {:relay_control, %{message: %{type: :android_display_open}} = request},
+        %{hello: true} = state
+      ) do
+    channel = state.next_channel
+    message = Map.put(request.message, :channel, channel)
+    request = Map.merge(request, %{message: message, channel: channel})
+    pending = track(state.pending, {:android_display_open, channel}, request)
+
+    {:reply, :ok, {:binary, Codec.encode_control_frame(message)},
+     %{state | pending: pending, next_channel: channel + 1}}
+  end
+
   def handle_info({:relay_control, request}, state) do
     if state.hello == true and not Map.has_key?(state.pending, control_key(request.message)) do
       pending = track(state.pending, control_key(request.message), request)
@@ -115,6 +129,21 @@ defmodule Marshall.Terminal.HostStream do
           _ ->
             close_viewer(state, channel)
         end
+
+      _ ->
+        {:ok, state}
+    end
+  end
+
+  def handle_info({:android_display_input, channel, generation, bytes}, state)
+      when is_integer(generation) and generation > 0 and is_binary(bytes) and
+             byte_size(bytes) in 1..4096 do
+    case state.android_channels[channel] do
+      %{generation: ^generation, input_sequence: sequence} = entry ->
+        frame = Codec.encode_data_frame(channel, sequence + 1, bytes)
+
+        {:reply, :ok, {:binary, frame},
+         put_in(state, [:android_channels, channel], %{entry | input_sequence: sequence + 1})}
 
       _ ->
         {:ok, state}
@@ -178,9 +207,15 @@ defmodule Marshall.Terminal.HostStream do
   def handle_info(:relay_replaced, state), do: {:stop, :normal, state}
 
   def handle_info({:DOWN, monitor, :process, _pid, _reason}, state) do
-    case Enum.find(state.channels, fn {_channel, entry} -> entry[:monitor] == monitor end) do
-      {channel, _} -> handle_info({:viewer_gone, channel}, state)
-      nil -> {:ok, state}
+    case Enum.find(state.android_channels, fn {_channel, entry} -> entry[:monitor] == monitor end) do
+      {channel, _} ->
+        {:ok, %{state | android_channels: Map.delete(state.android_channels, channel)}}
+
+      nil ->
+        case Enum.find(state.channels, fn {_channel, entry} -> entry[:monitor] == monitor end) do
+          {channel, _} -> handle_info({:viewer_gone, channel}, state)
+          nil -> {:ok, state}
+        end
     end
   end
 
@@ -251,7 +286,7 @@ defmodule Marshall.Terminal.HostStream do
 
       {:ok, %{channel: channel, sequence: sequence, bytes: bytes}, trailing} ->
         state = %{state | buffer: trailing}
-        {state, frames} = forward_in_sequence(state, channel, sequence, bytes, frames)
+        {state, frames} = forward_android_or_terminal(state, channel, sequence, bytes, frames)
         consume(state, frames)
 
       :partial ->
@@ -259,6 +294,33 @@ defmodule Marshall.Terminal.HostStream do
 
       {:error, _reason} ->
         {%{state | hello: :rejected, buffer: <<>>}, frames}
+    end
+  end
+
+  defp forward_android_or_terminal(state, channel, sequence, bytes, frames) do
+    case state.android_channels[channel] do
+      %{caller: caller, output_sequence: previous} = entry when sequence == previous + 1 ->
+        send(caller, {:android_display_frame, entry.generation, sequence, bytes})
+        {put_in(state, [:android_channels, channel, :output_sequence], sequence), frames}
+
+      %{output_sequence: previous} when sequence > previous + 1 ->
+        close_android_channel(state, channel, :sequence_gap, frames)
+
+      _ ->
+        forward_in_sequence(state, channel, sequence, bytes, frames)
+    end
+  end
+
+  defp close_android_channel(state, channel, reason, frames) do
+    case Map.pop(state.android_channels, channel) do
+      {nil, _} ->
+        {state, frames}
+
+      {%{caller: caller, generation: generation, monitor: monitor}, channels} ->
+        Process.demonitor(monitor, [:flush])
+        send(caller, {:android_display_closed, channel, generation, reason})
+        close = Codec.encode_control_frame(%{type: :android_display_close, channel: channel})
+        {%{state | android_channels: channels}, [close | frames]}
     end
   end
 
@@ -309,6 +371,46 @@ defmodule Marshall.Terminal.HostStream do
       {state,
        [Codec.encode_control_frame(%{type: :heartbeat_reply, sequence: sequence}) | frames]}
 
+  defp apply_control(state, %{type: :android_display_opened, channel: channel} = message, frames) do
+    case Map.pop(state.pending, {:android_display_open, channel}) do
+      {nil, _pending} ->
+        {state, frames}
+
+      {request, pending} ->
+        reply_to(request, {:ok, message})
+
+        next_state =
+          if message.ok do
+            put_in(state, [:android_channels, channel], %{
+              caller: request.caller,
+              generation: message.generation,
+              input_sequence: 0,
+              output_sequence: 0,
+              monitor: Process.monitor(request.caller)
+            })
+          else
+            state
+          end
+
+        {%{next_state | pending: pending}, frames}
+    end
+  end
+
+  defp apply_control(state, %{type: :android_display_close, channel: channel}, frames),
+    do: {%{state | android_channels: Map.delete(state.android_channels, channel)}, frames}
+
+  defp apply_control(state, %{type: :closed, channel: channel, reason: reason}, frames) do
+    case Map.pop(state.android_channels, channel) do
+      {nil, _} ->
+        apply_terminal_closed(state, channel, reason, frames)
+
+      {%{caller: caller, generation: generation, monitor: monitor}, android_channels} ->
+        Process.demonitor(monitor, [:flush])
+        send(caller, {:android_display_closed, channel, generation, reason})
+        {%{state | android_channels: android_channels}, frames}
+    end
+  end
+
   defp apply_control(state, %{type: :attached} = message, frames) do
     case Map.pop(state.pending, {:attach, message.channel}) do
       {nil, _pending} ->
@@ -354,19 +456,6 @@ defmodule Marshall.Terminal.HostStream do
     end
   end
 
-  defp apply_control(state, %{type: :closed, channel: channel} = message, frames) do
-    notify_viewer(state.viewers[channel], message)
-
-    if state.channels[channel] && state.channels[channel][:monitor],
-      do: Process.demonitor(state.channels[channel].monitor, [:flush])
-
-    {%{
-       state
-       | viewers: Map.delete(state.viewers, channel),
-         channels: Map.delete(state.channels, channel)
-     }, frames}
-  end
-
   defp apply_control(state, message, frames) do
     case Map.pop(state.pending, control_key(message)) do
       {nil, _pending} ->
@@ -382,6 +471,20 @@ defmodule Marshall.Terminal.HostStream do
 
         {%{state | pending: pending}, frames}
     end
+  end
+
+  defp apply_terminal_closed(state, channel, reason, frames) do
+    message = %{type: :closed, channel: channel, reason: reason}
+    notify_viewer(state.viewers[channel], message)
+
+    if state.channels[channel] && state.channels[channel][:monitor],
+      do: Process.demonitor(state.channels[channel].monitor, [:flush])
+
+    {%{
+       state
+       | viewers: Map.delete(state.viewers, channel),
+         channels: Map.delete(state.channels, channel)
+     }, frames}
   end
 
   defp notify_viewer(nil, _message), do: :ok

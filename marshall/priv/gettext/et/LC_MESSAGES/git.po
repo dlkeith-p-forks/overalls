@@ -85,7 +85,7 @@ msgstr "Hoidlad"
 msgid "Repository path"
 msgstr "Hoidla asukohatee"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "Hoidla pole saadaval."

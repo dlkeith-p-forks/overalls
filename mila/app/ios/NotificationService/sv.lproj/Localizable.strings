@@ -1,0 +1,3 @@
+/* Generated from mila/app/lib/l10n/app_sv.arb (pushNeedsInputTitle, pushNeedsInputBody). */
+"MILA_NEEDS_INPUT_TITLE" = "En agent behöver ditt svar";
+"MILA_NEEDS_INPUT_BODY" = "Öppna Mila för att svara.";

@@ -5,6 +5,8 @@ fallbacks with native shaping and JetBrains Mono as the primary grid font. It
 supersedes only ADR-0161's exclusive-typeface clause and carries forward its other
 presentation constraints. Current browser rendering evidence remains partial.
 
+[ADR-0220](0220-mila-client-over-porsche-ssh.md) through [ADR-0228](0228-strict-host-certificates-in-mila.md) introduce Mila, the Flutter client over one Porsche SSH connection with per-deployment P-256 device keys, canonical `overalls://` routes, the client command set, terminal attach, the Susan push relay and Notifications domain, The Monospace Web on Flutter, the patched dartssh2 toolchain and strict host-certificate trust. All nine are partial: code and tests exist for each, while device builds, real APNs/FCM delivery and Susan hosting remain open.
+
 [ADR-0205](0205-overview-newsletter.md) accepts a durable account-wide Overview newsletter invitation and fixed server-side Ghost subscription path; implementation remains partial.
 
 [ADR-0204](0204-git-attribution-and-guest-identity.md) preserves the reconciled duplicate Git attribution decision and its settings-page evidence; implementation remains partial.
@@ -257,9 +259,11 @@ with the boot identity seeded into Firecracker's MMDS from a jail-local
 `metadata.json`, records trust as skipped and provisioning as `unattested`
 (running, never `guest_ready`), and refuses terminals, workspace sources and
 the Inception profile for guests without agents. A SYSTEM task in the Windows
-image reads MMDS and applies the delivered `/32`. Marshall derives a
-`guest_agents_status`, hides and refuses Terminal, Agents, editor and SSH for
-such images and measures only the physical service level. Evidence in the
+image reads MMDS and applies the delivered `/32`. Marshall derives finite guest
+capabilities and hides and refuses Terminal, Agents, editor and SSH for agentless
+images. The original agentless admission measured only the physical service level;
+ADR-0198/0204 now require explicit Git identity support for new machines and refuse
+agentless admission before allocation. Historical Lilly launch evidence remains in the
 [Windows Lilly launch review](../reviews/2026-10-14-windows-lilly-launch.md).
 
 [ADR-0169](0169-firmware-booted-windows-guests.md) proposes firmware-booted
@@ -928,3 +932,12 @@ ADR-0015/0037 retain their statuses and accepted rationale.
 
 | [ADR-0201](0201-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |
 | [ADR-0207](0207-bundled-multilingual-font-fallback.md) | accepted | partial | Bundled multilingual font fallback |
+| [ADR-0220](0220-mila-client-over-porsche-ssh.md) | accepted | partial | Mila, the Overalls client over Porsche SSH |
+| [ADR-0221](0221-canonical-app-routes.md) | accepted | partial | Canonical `overalls://` app routes |
+| [ADR-0222](0222-porsche-client-commands.md) | accepted | partial | Porsche thread, web, device and watch commands for clients |
+| [ADR-0223](0223-porsche-terminal-attach.md) | accepted | partial | Porsche terminal attach through a Marshall gateway stream |
+| [ADR-0224](0224-susan-push-relay.md) | accepted | partial | Susan, the push relay at notifications.overalls.dev |
+| [ADR-0225](0225-marshall-notifications-domain.md) | accepted | partial | Marshall Notifications domain |
+| [ADR-0226](0226-monospace-web-on-flutter.md) | accepted | partial | The Monospace Web on Flutter |
+| [ADR-0227](0227-flutter-toolchain-and-dartssh2-overlay.md) | accepted | partial | Flutter toolchain, patched dartssh2 overlay and Mila checks in Nix |
+| [ADR-0228](0228-strict-host-certificates-in-mila.md) | accepted | partial | Strict SSH host-certificate verification in Mila |

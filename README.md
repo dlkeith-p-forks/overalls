@@ -24,7 +24,7 @@ with no API keys on the machine and every token accounted for.
 
 Open any repository, branch or pull request in a fresh machine with one click,
 share it with your coworkers, and work from the browser, SSH, VS Code or the
-`overalls` CLI. Put hosts in every region your team works in.
+`overalls` CLI, or from your phone with the Mila app. Put hosts in every region your team works in.
 
 There is no hosted version to sign up for: you install it and run it yourself.
 

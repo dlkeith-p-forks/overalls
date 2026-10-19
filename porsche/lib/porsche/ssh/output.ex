@@ -288,6 +288,81 @@ defmodule Porsche.SSH.Output do
       "invalid_public_key" ->
         dgettext("management", "The SSH public key is invalid. Check the key and try again.")
 
+      "attach_requires_pty" ->
+        dgettext(
+          "management",
+          "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+        )
+
+      "thread_not_ready" ->
+        dgettext("management", "This thread is not ready for prompts yet.")
+
+      "thread_busy" ->
+        dgettext("management", "This thread is busy with a turn. Try again when it finishes.")
+
+      "stale_proposal" ->
+        dgettext(
+          "management",
+          "That plan is no longer the latest proposal. Show the thread again."
+        )
+
+      "stale_question" ->
+        dgettext("management", "That question is no longer pending.")
+
+      "already_answered" ->
+        dgettext("management", "That question has already been answered.")
+
+      "invalid_answers" ->
+        dgettext("management", "The answers do not match the pending question.")
+
+      "awaiting_answers" ->
+        dgettext("management", "Answer the pending question before sending another prompt.")
+
+      "revision_conflict" ->
+        dgettext(
+          "management",
+          "The web settings changed since you read them. Show them again and retry."
+        )
+
+      "reserved_editor_port" ->
+        dgettext("management", "Port 4444 is reserved for the editor.")
+
+      "web_not_allowed" ->
+        dgettext("management", "This machine's profile does not allow web publishing.")
+
+      "terminal_unavailable" ->
+        dgettext("management", "Terminals are unavailable on this machine right now.")
+
+      "terminal_open_pending" ->
+        dgettext("management", "The machine is waking. Retry the terminal shortly.")
+
+      "unknown_session" ->
+        dgettext("management", "That terminal session no longer exists.")
+
+      "push_disabled" ->
+        dgettext(
+          "management",
+          "This deployment has push notifications turned off; ask its operator."
+        )
+
+      "device_limit" ->
+        dgettext(
+          "management",
+          "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+        )
+
+      "stdin_payload_required" ->
+        dgettext(
+          "management",
+          "This command reads its input from standard input. Pipe it in and end the command with -."
+        )
+
+      "stdin_payload_invalid" ->
+        dgettext(
+          "management",
+          "The standard input is empty or exceeds this command's size limit."
+        )
+
       _ ->
         dgettext("management", "The command could not be completed: %{reason}",
           reason: safe(reason)

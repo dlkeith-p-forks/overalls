@@ -14,120 +14,120 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:267
+#: lib/marshall_web/live/admin/jobs_live.ex:285
 #, elixir-autogen, elixir-format
 msgid "24 hours"
 msgstr "Saa 24"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:269
+#: lib/marshall_web/live/admin/jobs_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "30 days"
 msgstr "siku 30"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:268
+#: lib/marshall_web/live/admin/jobs_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "7 days"
 msgstr "siku 7"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:430
+#: lib/marshall_web/live/admin/jobs_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr "Imekubaliwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:266
+#: lib/marshall_web/live/admin/jobs_live.ex:284
 #, elixir-autogen, elixir-format
 msgid "All retained"
 msgstr "Yote yamehifadhiwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:247
+#: lib/marshall_web/live/admin/jobs_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "All states"
 msgstr "Hali zote"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:252
+#: lib/marshall_web/live/admin/jobs_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "Any queue"
 msgstr "Foleni yoyote"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:294
+#: lib/marshall_web/live/admin/jobs_live.ex:315
 #, elixir-autogen, elixir-format
 msgid "Archived"
 msgstr "Imehifadhiwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:334
+#: lib/marshall_web/live/admin/jobs_live.ex:359
 #, elixir-autogen, elixir-format
 msgid "Archived history · retry unavailable"
 msgstr "Historia iliyohifadhiwa · jaribu tena haipatikani"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:381
+#: lib/marshall_web/live/admin/jobs_live.ex:424
 #, elixir-autogen, elixir-format
 msgid "Attempt"
 msgstr "Jaribio"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:284
-#: lib/marshall_web/live/admin/jobs_live.ex:341
+#: lib/marshall_web/live/admin/jobs_live.ex:305
+#: lib/marshall_web/live/admin/jobs_live.ex:369
 #, elixir-autogen, elixir-format
 msgid "Attempts"
 msgstr "Majaribio"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:204
+#: lib/marshall_web/live/admin/jobs_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Background work run by Oban. A successful job may have dispatched work whose physical outcome is still pending; follow the related operation for completion."
 msgstr "Kazi ya usuli inayoendeshwa na Oban. Kazi yenye mafanikio inaweza kuwa imetuma kazi ambayo matokeo yake ya kimwili bado yanasubiri; fuata operesheni inayohusiana ili kukamilika."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
-#: lib/marshall_web/live/admin/jobs_live.ex:432
+#: lib/marshall_web/live/admin/jobs_live.ex:475
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "Imeghairiwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:379
+#: lib/marshall_web/live/admin/jobs_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Captured"
 msgstr "Imetekwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:367
-#: lib/marshall_web/live/admin/jobs_live.ex:431
+#: lib/marshall_web/live/admin/jobs_live.ex:406
+#: lib/marshall_web/live/admin/jobs_live.ex:474
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "Kamilisha"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:235
+#: lib/marshall_web/live/admin/jobs_live.ex:252
 #, elixir-autogen, elixir-format
 msgid "Counts cover current and recently retained raw jobs. The list includes redacted history for up to 30 days; older history pruned before deployment is unavailable."
 msgstr "Hesabu hujumuisha kazi ghafi za sasa na zilizobakia hivi majuzi. Orodha inajumuisha historia iliyorekebishwa kwa hadi siku 30; historia ya zamani iliyokatwa kabla ya kupelekwa haipatikani."
 
-#: lib/marshall_web/live/admin/jobs_live.ex:342
+#: lib/marshall_web/live/admin/jobs_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "Created"
 msgstr "Imeundwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:434
+#: lib/marshall_web/live/admin/jobs_live.ex:477
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "Mizigo imehamishwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:433
+#: lib/marshall_web/live/admin/jobs_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "Inahamisha mizigo"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:286
+#: lib/marshall_web/live/admin/jobs_live.ex:307
 #, elixir-autogen, elixir-format
 msgid "Duration"
 msgstr "Muda"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:425
+#: lib/marshall_web/live/admin/jobs_live.ex:468
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "Kampeni ya uokoaji"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:258
+#: lib/marshall_web/live/admin/jobs_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Exact worker name"
 msgstr "Jina kamili la mfanyakazi"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:374
+#: lib/marshall_web/live/admin/jobs_live.ex:417
 #, elixir-autogen, elixir-format
 msgid "Execution history"
 msgstr "Historia ya utekelezaji"
@@ -137,114 +137,114 @@ msgstr "Historia ya utekelezaji"
 msgid "Failed"
 msgstr "Imeshindwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:240
+#: lib/marshall_web/live/admin/jobs_live.ex:258
 #, elixir-autogen, elixir-format
 msgid "Filter"
 msgstr "Chuja"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:274
+#: lib/marshall_web/live/admin/jobs_live.ex:292
 #, elixir-autogen, elixir-format
 msgid "Filter jobs"
 msgstr "Chuja kazi"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:109
+#: lib/marshall_web/live/admin/jobs_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "Ombi batili."
 
-#: lib/marshall_web/live/admin/jobs_live.ex:281
+#: lib/marshall_web/live/admin/jobs_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Job"
 msgstr "Kazi"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:322
+#: lib/marshall_web/live/admin/jobs_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Job #%{id}"
 msgstr "Kazi # %{id}"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:202
+#: lib/marshall_web/live/admin/jobs_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Job details"
 msgstr "Maelezo ya kazi"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:309
+#: lib/marshall_web/live/admin/jobs_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Job pages"
 msgstr "Kurasa za kazi"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:202
+#: lib/marshall_web/live/admin/jobs_live.ex:216
 #, elixir-autogen, elixir-format
 msgid "Jobs"
 msgstr "Kazi"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:145
+#: lib/marshall_web/live/admin/jobs_live.ex:153
 #, elixir-autogen, elixir-format
 msgid "Jobs are unavailable or the filters are invalid."
 msgstr "Kazi hazipatikani au vichujio ni batili."
 
-#: lib/marshall_web/live/admin/jobs_live.ex:348
+#: lib/marshall_web/live/admin/jobs_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Last attempt started"
 msgstr "Jaribio la mwisho lilianza"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:351
+#: lib/marshall_web/live/admin/jobs_live.ex:381
 #, elixir-autogen, elixir-format
 msgid "Last execution duration"
 msgstr "Muda wa mwisho wa utekelezaji"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:264
+#: lib/marshall_web/live/admin/jobs_live.ex:282
 #, elixir-autogen, elixir-format
 msgid "Last updated"
 msgstr "Ilisasishwa mwisho"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:307
+#: lib/marshall_web/live/admin/jobs_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "No jobs match these filters."
 msgstr "Hakuna kazi zinazolingana na vichujio hivi."
 
-#: lib/marshall_web/live/admin/jobs_live.ex:317
+#: lib/marshall_web/live/admin/jobs_live.ex:339
 #, elixir-autogen, elixir-format
 msgid "Older jobs →"
 msgstr "Kazi za zamani →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:412
+#: lib/marshall_web/live/admin/jobs_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Older transitions →"
 msgstr "Mabadiliko ya zamani →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:371
+#: lib/marshall_web/live/admin/jobs_live.ex:411
 #, elixir-autogen, elixir-format
 msgid "Open machine →"
 msgstr "Fungua mashine →"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:423
+#: lib/marshall_web/live/admin/jobs_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "Operation"
 msgstr "Shughuli"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:363
+#: lib/marshall_web/live/admin/jobs_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "Operation state"
 msgstr "Hali ya shughuli"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:367
-#: lib/marshall_web/live/admin/jobs_live.ex:429
+#: lib/marshall_web/live/admin/jobs_live.ex:407
+#: lib/marshall_web/live/admin/jobs_live.ex:472
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Inasubiri"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:251
-#: lib/marshall_web/live/admin/jobs_live.ex:339
+#: lib/marshall_web/live/admin/jobs_live.ex:269
+#: lib/marshall_web/live/admin/jobs_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "Queue"
 msgstr "Foleni"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:283
+#: lib/marshall_web/live/admin/jobs_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Queue / worker"
 msgstr "Foleni / mfanyakazi"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:330
+#: lib/marshall_web/live/admin/jobs_live.ex:352
 #, elixir-autogen, elixir-format
 msgid "Queue another attempt? The operation will recheck its current state."
 msgstr "Je, ungependa kupanga jaribio lingine? Operesheni itaangalia upya hali yake ya sasa."
@@ -254,37 +254,37 @@ msgstr "Je, ungependa kupanga jaribio lingine? Operesheni itaangalia upya hali y
 msgid "Queued"
 msgstr "Imewekwa kwenye foleni"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:352
+#: lib/marshall_web/live/admin/jobs_live.ex:384
 #, elixir-autogen, elixir-format
 msgid "Recorded failures"
 msgstr "Kushindwa kulikorekodiwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:358
+#: lib/marshall_web/live/admin/jobs_live.ex:390
 #, elixir-autogen, elixir-format
 msgid "Related record"
 msgstr "Rekodi inayohusiana"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:424
+#: lib/marshall_web/live/admin/jobs_live.ex:467
 #, elixir-autogen, elixir-format
 msgid "Relocation"
 msgstr "Uhamisho"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:366
+#: lib/marshall_web/live/admin/jobs_live.ex:403
 #, elixir-autogen, elixir-format
 msgid "Relocation complete"
 msgstr "Uhamishaji umekamilika"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:435
+#: lib/marshall_web/live/admin/jobs_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "Imeanza tena"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:436
+#: lib/marshall_web/live/admin/jobs_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "Imeondolewa kabisa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:333
+#: lib/marshall_web/live/admin/jobs_live.ex:358
 #, elixir-autogen, elixir-format
 msgid "Retry job"
 msgstr "Jaribu kazi tena"
@@ -309,14 +309,14 @@ msgstr "Inafanya kazi"
 msgid "Scheduled"
 msgstr "Imepangwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:345
+#: lib/marshall_web/live/admin/jobs_live.ex:375
 #, elixir-autogen, elixir-format
 msgid "Scheduled / next retry"
 msgstr "Imeratibiwa / jaribu tena ijayo"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:245
-#: lib/marshall_web/live/admin/jobs_live.ex:282
-#: lib/marshall_web/live/admin/jobs_live.ex:380
+#: lib/marshall_web/live/admin/jobs_live.ex:263
+#: lib/marshall_web/live/admin/jobs_live.ex:303
+#: lib/marshall_web/live/admin/jobs_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "Hali"
@@ -331,55 +331,55 @@ msgstr "Imefaulu"
 msgid "Suspended"
 msgstr "Imesitishwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:102
+#: lib/marshall_web/live/admin/jobs_live.ex:105
 #, elixir-autogen, elixir-format
 msgid "This job could not be retried. Its state or your access may have changed."
 msgstr "Kazi hii haikuweza kujaribiwa tena. Hali yake au ufikiaji wako unaweza kuwa umebadilika."
 
-#: lib/marshall_web/live/admin/jobs_live.ex:168
+#: lib/marshall_web/live/admin/jobs_live.ex:179
 #, elixir-autogen, elixir-format
 msgid "This job is unavailable or its history has expired."
 msgstr "Kazi hii haipatikani au historia yake imekwisha muda wake."
 
-#: lib/marshall_web/live/admin/jobs_live.ex:177
-#: lib/marshall_web/live/admin/jobs_live.ex:426
-#: lib/marshall_web/live/admin/jobs_live.ex:437
+#: lib/marshall_web/live/admin/jobs_live.ex:189
+#: lib/marshall_web/live/admin/jobs_live.ex:469
+#: lib/marshall_web/live/admin/jobs_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Haijulikani"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:210
+#: lib/marshall_web/live/admin/jobs_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "Imesasishwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:285
+#: lib/marshall_web/live/admin/jobs_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "Waiting"
 msgstr "Kusubiri"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:257
-#: lib/marshall_web/live/admin/jobs_live.ex:340
+#: lib/marshall_web/live/admin/jobs_live.ex:275
+#: lib/marshall_web/live/admin/jobs_live.ex:366
 #, elixir-autogen, elixir-format
 msgid "Worker"
 msgstr "Mfanyakazi"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:399
+#: lib/marshall_web/live/admin/jobs_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "jaribu %{attempt} · %{count} zilizorekodiwa kushindwa"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:212
+#: lib/marshall_web/live/admin/jobs_live.ex:229
 #, elixir-autogen, elixir-format
 msgid "· every 5 seconds"
 msgstr "· kila sekunde 5"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:310
+#: lib/marshall_web/live/admin/jobs_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Ukurasa wa kwanza"
 
-#: lib/marshall_web/live/admin/jobs_live.ex:320
+#: lib/marshall_web/live/admin/jobs_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "← Jobs"
 msgstr "← Kazi"

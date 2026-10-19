@@ -14,126 +14,126 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/marshall_web/live/integrations_live.ex:324
+#: lib/marshall_web/live/integrations_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "**** (write-only)"
 msgstr "**** (শুধু লিখনযোগ্য)"
 
-#: lib/marshall_web/live/integrations_live.ex:342
+#: lib/marshall_web/live/integrations_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "পদক্ষেপসমূহ"
 
-#: lib/marshall_web/live/integrations_live.ex:386
+#: lib/marshall_web/live/integrations_live.ex:421
 #, elixir-autogen, elixir-format
 msgid "Add an integration"
 msgstr "একটি ইন্টিগ্রেশন যোগ করুন"
 
-#: lib/marshall_web/live/integrations_live.ex:267
-#: lib/marshall_web/live/integrations_live.ex:380
+#: lib/marshall_web/live/integrations_live.ex:288
+#: lib/marshall_web/live/integrations_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Attach"
 msgstr "সংযুক্ত করুন"
 
-#: lib/marshall_web/live/integrations_live.ex:377
+#: lib/marshall_web/live/integrations_live.ex:412
 #, elixir-autogen, elixir-format
 msgid "Attach a machine by ID"
 msgstr "আইডি দিয়ে মেশিন সংযুক্ত করুন"
 
-#: lib/marshall_web/live/integrations_live.ex:129
+#: lib/marshall_web/live/integrations_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "Awaiting GitHub authorization"
 msgstr "GitHub অনুমোদনের অপেক্ষায়"
 
-#: lib/marshall_web/live/integrations_live.ex:420
+#: lib/marshall_web/live/integrations_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Basic user:pass"
 msgstr "মৌলিক প্রমাণীকরণ ব্যবহারকারী:পাসওয়ার্ড"
 
-#: lib/marshall_web/live/integrations_live.ex:414
+#: lib/marshall_web/live/integrations_live.ex:450
 #, elixir-autogen, elixir-format
 msgid "Bearer token"
 msgstr "বেয়ারার টোকেন"
 
-#: lib/marshall_web/live/integrations_live.ex:312
-#: lib/marshall_web/live/integrations_live.ex:400
+#: lib/marshall_web/live/integrations_live.ex:334
+#: lib/marshall_web/live/integrations_live.ex:436
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "মন্তব্য"
 
-#: lib/marshall_web/live/integrations_live.ex:230
+#: lib/marshall_web/live/integrations_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Connect GitHub"
 msgstr "GitHub সংযুক্ত করুন"
 
-#: lib/marshall_web/live/integrations_live.ex:215
+#: lib/marshall_web/live/integrations_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Connect your GitHub account for Git, pull requests, Actions, releases and other development workflows. GitHub credentials stay at the edge."
 msgstr "Git, পুল রিকোয়েস্ট, Actions, রিলিজ এবং অন্যান্য উন্নয়ন কর্মপ্রবাহের জন্য আপনার GitHub অ্যাকাউন্ট সংযুক্ত করুন। GitHub পরিচয়পত্র এজেই থাকে।"
 
-#: lib/marshall_web/live/integrations_live.ex:126
-#: lib/marshall_web/live/integrations_live.ex:127
+#: lib/marshall_web/live/integrations_live.ex:142
+#: lib/marshall_web/live/integrations_live.ex:143
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "সংযুক্ত"
 
-#: lib/marshall_web/live/integrations_live.ex:225
+#: lib/marshall_web/live/integrations_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Connected as %{login}"
 msgstr "%{login} হিসেবে সংযুক্ত"
 
-#: lib/marshall_web/live/integrations_live.ex:82
+#: lib/marshall_web/live/integrations_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Could not attach that machine."
 msgstr "মেশিনটি সংযুক্ত করা যায়নি।"
 
-#: lib/marshall_web/live/integrations_live.ex:95
+#: lib/marshall_web/live/integrations_live.ex:107
 #, elixir-autogen, elixir-format
 msgid "Could not detach that machine."
 msgstr "মেশিনটি বিচ্ছিন্ন করা যায়নি।"
 
-#: lib/marshall_web/live/integrations_live.ex:69
+#: lib/marshall_web/live/integrations_live.ex:75
 #, elixir-autogen, elixir-format
 msgid "Could not remove this integration."
 msgstr "ইন্টিগ্রেশনটি সরানো যায়নি।"
 
-#: lib/marshall_web/live/integrations_live.ex:55
+#: lib/marshall_web/live/integrations_live.ex:58
 #, elixir-autogen, elixir-format
 msgid "Could not save this integration. Check the name, HTTPS target and header values."
 msgstr "ইন্টিগ্রেশন সংরক্ষণ করা যায়নি। নাম, HTTPS গন্তব্য ও হেডারের মান পরীক্ষা করুন।"
 
-#: lib/marshall_web/live/integrations_live.ex:409
+#: lib/marshall_web/live/integrations_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "Credentials"
 msgstr "প্রমাণীকরণ তথ্য"
 
-#: lib/marshall_web/live/integrations_live.ex:258
-#: lib/marshall_web/live/integrations_live.ex:358
+#: lib/marshall_web/live/integrations_live.ex:279
+#: lib/marshall_web/live/integrations_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "Detach"
 msgstr "বিচ্ছিন্ন করুন"
 
-#: lib/marshall_web/live/integrations_live.ex:240
+#: lib/marshall_web/live/integrations_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub"
 msgstr "GitHub সংযোগ বিচ্ছিন্ন করুন"
 
-#: lib/marshall_web/live/integrations_live.ex:237
+#: lib/marshall_web/live/integrations_live.ex:256
 #, elixir-autogen, elixir-format
 msgid "Disconnect GitHub from your machines?"
 msgstr "আপনার মেশিনগুলি থেকে GitHub সংযোগ বিচ্ছিন্ন করবেন?"
 
-#: lib/marshall_web/live/integrations_live.ex:128
+#: lib/marshall_web/live/integrations_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Disconnected"
 msgstr "সংযোগ বিচ্ছিন্ন"
 
-#: lib/marshall_web/live/integrations_live.ex:133
+#: lib/marshall_web/live/integrations_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Disconnecting GitHub"
 msgstr "GitHub সংযোগ বিচ্ছিন্ন করা হচ্ছে"
 
-#: lib/marshall_web/live/integrations_live.ex:130
+#: lib/marshall_web/live/integrations_live.ex:146
 #, elixir-autogen, elixir-format
 msgid "Finishing active GitHub requests"
 msgstr "সক্রিয় GitHub অনুরোধগুলি শেষ করা হচ্ছে"
@@ -143,233 +143,233 @@ msgstr "সক্রিয় GitHub অনুরোধগুলি শেষ �
 msgid "GitHub connected."
 msgstr "GitHub সংযুক্ত হয়েছে।"
 
-#: lib/marshall_web/controllers/git_hub_connection_controller.ex:63
+#: lib/marshall_web/controllers/git_hub_connection_controller.ex:65
 #, elixir-autogen, elixir-format
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "GitHub সংযুক্ত করা যায়নি। Integrations থেকে আবার চেষ্টা করুন।"
 
-#: lib/marshall_web/live/integrations_live.ex:405
+#: lib/marshall_web/live/integrations_live.ex:441
 #, elixir-autogen, elixir-format
 msgid "HTTPS target"
 msgstr "HTTPS গন্তব্য"
 
-#: lib/marshall_web/live/integrations_live.ex:319
+#: lib/marshall_web/live/integrations_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Injected credentials"
 msgstr "সন্নিবেশিত প্রমাণীকরণ তথ্য"
 
-#: lib/marshall_web/live/integrations_live.ex:47
+#: lib/marshall_web/live/integrations_live.ex:49
 #, elixir-autogen, elixir-format
 msgid "Integration %{value1} saved."
 msgstr "ইন্টিগ্রেশন %{value1} সংরক্ষিত হয়েছে।"
 
-#: lib/marshall_web/live/integrations_live.ex:65
+#: lib/marshall_web/live/integrations_live.ex:70
 #, elixir-autogen, elixir-format
 msgid "Integration removed."
 msgstr "ইন্টিগ্রেশন সরানো হয়েছে।"
 
-#: lib/marshall_web/live/integrations_live.ex:201
+#: lib/marshall_web/live/integrations_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "ইন্টিগ্রেশনসমূহ"
 
-#: lib/marshall_web/live/integrations_live.ex:121
+#: lib/marshall_web/live/integrations_live.ex:136
 #, elixir-autogen, elixir-format
 msgid "Integrations are temporarily unavailable."
 msgstr "ইন্টিগ্রেশন সাময়িকভাবে পাওয়া যাচ্ছে না।"
 
-#: lib/marshall_web/live/integrations_live.ex:100
+#: lib/marshall_web/live/integrations_live.ex:113
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "অবৈধ অনুরোধ।"
 
-#: lib/marshall_web/live/integrations_live.ex:341
+#: lib/marshall_web/live/integrations_live.ex:374
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "মেশিন"
 
-#: lib/marshall_web/live/integrations_live.ex:255
-#: lib/marshall_web/live/integrations_live.ex:378
+#: lib/marshall_web/live/integrations_live.ex:276
+#: lib/marshall_web/live/integrations_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "Machine UUID"
 msgstr "মেশিনের UUID"
 
-#: lib/marshall_web/live/integrations_live.ex:78
+#: lib/marshall_web/live/integrations_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Machine attached."
 msgstr "মেশিন সংযুক্ত হয়েছে।"
 
-#: lib/marshall_web/live/integrations_live.ex:91
+#: lib/marshall_web/live/integrations_live.ex:102
 #, elixir-autogen, elixir-format
 msgid "Machine detached."
 msgstr "মেশিন বিচ্ছিন্ন হয়েছে।"
 
-#: lib/marshall_web/live/integrations_live.ex:244
+#: lib/marshall_web/live/integrations_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Machines excluded from your GitHub identity"
 msgstr "আপনার GitHub পরিচয় থেকে বাদ দেওয়া মেশিনগুলি"
 
-#: lib/marshall_web/live/integrations_live.ex:328
+#: lib/marshall_web/live/integrations_live.ex:355
 #, elixir-autogen, elixir-format
 msgid "Machines with access"
 msgstr "প্রবেশাধিকার থাকা মেশিন"
 
-#: lib/marshall_web/live/integrations_live.ex:395
+#: lib/marshall_web/live/integrations_live.ex:431
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "নাম"
 
-#: lib/marshall_web/live/integrations_live.ex:388
+#: lib/marshall_web/live/integrations_live.ex:423
 #, elixir-autogen, elixir-format
 msgid "Name the endpoint and point it at an HTTPS API, or mark it as a peer connection to another machine. Secrets are write-only: they are stored for injection and never shown again."
 msgstr "প্রান্তবিন্দুর নাম দিয়ে HTTPS API-তে নির্দেশ করুন অথবা অন্য মেশিনের সঙ্গে সরাসরি সংযোগ হিসেবে চিহ্নিত করুন। গোপন তথ্য শুধু লেখা যায়: সন্নিবেশের জন্য রাখা হয়, আর কখনো দেখানো হয় না।"
 
-#: lib/marshall_web/live/integrations_live.ex:203
+#: lib/marshall_web/live/integrations_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "Named endpoints your machines reach at https://NAME.integration.internal. Credentials are injected at the edge and are never readable from a machine."
 msgstr "নামযুক্ত প্রান্তবিন্দু, যা মেশিনগুলো https://NAME.integration.internal-এ পায়। প্রমাণীকরণ তথ্য প্রান্তে যোগ হয় এবং মেশিন থেকে কখনো পড়া যায় না।"
 
-#: lib/marshall_web/live/integrations_live.ex:333
+#: lib/marshall_web/live/integrations_live.ex:360
 #, elixir-autogen, elixir-format
 msgid "No explicit attachments. Current team members' machines have access."
 msgstr "আলাদাভাবে যুক্ত মেশিন নেই। বর্তমান দলের সদস্যদের মেশিনে প্রবেশাধিকার আছে।"
 
-#: lib/marshall_web/live/integrations_live.ex:321
+#: lib/marshall_web/live/integrations_live.ex:347
 #, elixir-autogen, elixir-format
 msgid "No injected headers."
 msgstr "কোনো সন্নিবেশিত হেডার নেই।"
 
-#: lib/marshall_web/live/integrations_live.ex:274
+#: lib/marshall_web/live/integrations_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "No integrations yet. Add one below to give your machines a named connection to an API or to another machine."
 msgstr "এখনো ইন্টিগ্রেশন নেই। মেশিনকে API বা অন্য মেশিনের নামযুক্ত সংযোগ দিতে নিচে একটি যোগ করুন।"
 
-#: lib/marshall_web/live/integrations_live.ex:335
+#: lib/marshall_web/live/integrations_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "No machines have access. Attach a machine to use this integration."
 msgstr "কোনো মেশিনের প্রবেশাধিকার নেই। ইন্টিগ্রেশন ব্যবহার করতে মেশিন যুক্ত করুন।"
 
-#: lib/marshall_web/live/integrations_live.ex:307
+#: lib/marshall_web/live/integrations_live.ex:329
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr "মালিক"
 
-#: lib/marshall_web/live/integrations_live.ex:453
+#: lib/marshall_web/live/integrations_live.ex:493
 #, elixir-autogen, elixir-format
 msgid "Peer integration"
 msgstr "সরাসরি ইন্টিগ্রেশন"
 
-#: lib/marshall_web/live/integrations_live.ex:304
+#: lib/marshall_web/live/integrations_live.ex:326
 #, elixir-autogen, elixir-format
 msgid "Peer machine"
 msgstr "সংযুক্ত অপর মেশিন"
 
-#: lib/marshall_web/live/integrations_live.ex:456
+#: lib/marshall_web/live/integrations_live.ex:498
 #, elixir-autogen, elixir-format
 msgid "Peer machine ID"
 msgstr "অপর মেশিনের আইডি"
 
-#: lib/marshall_web/live/integrations_live.ex:310
+#: lib/marshall_web/live/integrations_live.ex:332
 #, elixir-autogen, elixir-format
 msgid "Personal integration"
 msgstr "ব্যক্তিগত ইন্টিগ্রেশন"
 
-#: lib/marshall_web/live/integrations_live.ex:132
+#: lib/marshall_web/live/integrations_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "Reconnect required"
 msgstr "পুনরায় সংযোগ প্রয়োজন"
 
-#: lib/marshall_web/live/integrations_live.ex:131
+#: lib/marshall_web/live/integrations_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "Refreshing GitHub connection"
 msgstr "GitHub সংযোগ নবায়ন করা হচ্ছে"
 
-#: lib/marshall_web/live/integrations_live.ex:295
+#: lib/marshall_web/live/integrations_live.ex:317
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "সরান"
 
-#: lib/marshall_web/live/integrations_live.ex:292
+#: lib/marshall_web/live/integrations_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Remove this integration?"
 msgstr "এই ইন্টিগ্রেশন সরাবেন?"
 
-#: lib/marshall_web/live/integrations_live.ex:457
+#: lib/marshall_web/live/integrations_live.ex:499
 #, elixir-autogen, elixir-format
 msgid "Required for peer integrations"
 msgstr "সরাসরি ইন্টিগ্রেশনের জন্য আবশ্যক"
 
-#: lib/marshall_web/live/integrations_live.ex:438
+#: lib/marshall_web/live/integrations_live.ex:475
 #, elixir-autogen, elixir-format
 msgid "Routing, team ownership and peer connections"
 msgstr "পথ নির্ধারণ, দলের মালিকানা ও সরাসরি সংযোগ"
 
-#: lib/marshall_web/live/integrations_live.ex:463
+#: lib/marshall_web/live/integrations_live.ex:505
 #, elixir-autogen, elixir-format
 msgid "Save integration"
 msgstr "ইন্টিগ্রেশন সংরক্ষণ করুন"
 
-#: lib/marshall_web/live/integrations_live.ex:401
+#: lib/marshall_web/live/integrations_live.ex:437
 #, elixir-autogen, elixir-format
 msgid "Short description for guest reflection"
 msgstr "গেস্ট রিফ্লেকশনের জন্য সংক্ষিপ্ত বিবরণ"
 
-#: lib/marshall_web/live/integrations_live.ex:427
+#: lib/marshall_web/live/integrations_live.ex:463
 #, elixir-autogen, elixir-format
 msgid "Static header name"
 msgstr "স্থির হেডারের নাম"
 
-#: lib/marshall_web/live/integrations_live.ex:433
+#: lib/marshall_web/live/integrations_live.ex:469
 #, elixir-autogen, elixir-format
 msgid "Static header value"
 msgstr "স্থির হেডারের মান"
 
-#: lib/marshall_web/live/integrations_live.ex:443
+#: lib/marshall_web/live/integrations_live.ex:481
 #, elixir-autogen, elixir-format
 msgid "Strip prefix"
 msgstr "শুরুর অংশ বাদ দিন"
 
-#: lib/marshall_web/live/integrations_live.ex:315
+#: lib/marshall_web/live/integrations_live.ex:339
 #, elixir-autogen, elixir-format
 msgid "Strips prefix"
 msgstr "শুরুর অংশ বাদ দেয়"
 
-#: lib/marshall_web/live/integrations_live.ex:301
+#: lib/marshall_web/live/integrations_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "গন্তব্য"
 
-#: lib/marshall_web/live/integrations_live.ex:309
+#: lib/marshall_web/live/integrations_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Team %{team}"
 msgstr "দল %{team}"
 
-#: lib/marshall_web/live/integrations_live.ex:448
+#: lib/marshall_web/live/integrations_live.ex:486
 #, elixir-autogen, elixir-format
 msgid "Team ID"
 msgstr "দলের আইডি"
 
-#: lib/marshall_web/live/integrations_live.ex:449
+#: lib/marshall_web/live/integrations_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "Team-owned integration"
 msgstr "দলের মালিকানার ইন্টিগ্রেশন"
 
-#: lib/marshall_web/live/integrations_live.ex:134
+#: lib/marshall_web/live/integrations_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Temporarily unavailable"
 msgstr "সাময়িকভাবে অনুপলব্ধ"
 
-#: lib/marshall_web/live/integrations_live.ex:220
+#: lib/marshall_web/live/integrations_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "আপনার মেশিনগুলি স্বয়ংক্রিয়ভাবে আপনার সংযুক্ত GitHub পরিচয় ব্যবহার করে। শেয়ার করা মেশিনের সহযোগীরা মালিকের GitHub অনুমতি ব্যবহার করতে পারেন। বিচ্ছিন্ন মেশিনগুলি পরিচয়বিহীনভাবে সর্বজনীন GitHub ব্যবহারের সুবিধা বজায় রাখে।"
 
-#: lib/marshall_web/live/integrations_live.ex:396
+#: lib/marshall_web/live/integrations_live.ex:432
 #, elixir-autogen, elixir-format
 msgid "example-integration"
 msgstr "example-integration"
 
-#: lib/marshall_web/live/integrations_live.ex:428
+#: lib/marshall_web/live/integrations_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "x-api-token"
 msgstr "x-api-token"

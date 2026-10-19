@@ -27,6 +27,7 @@ defmodule Lilly.Terminal.HeartbeatTest do
       runtime: self(),
       client: %{host_id: "11111111-1111-4111-8111-111111111111"},
       websocket: nil,
+      android_channels: %{},
       channels: %{},
       buffer: <<>>,
       backoff: 1000
