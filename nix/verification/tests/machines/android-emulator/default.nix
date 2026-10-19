@@ -95,9 +95,9 @@ pkgs.testers.runNixOSTest {
     try:
       android.wait_until_succeeds("test \"$(HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=1200)
     except Exception:
-      android.succeed("HOME=/var/lib/android-test adb devices -l || true")
-      android.succeed("systemctl status android-test-emulator.service --no-pager || true")
-      android.succeed("HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop || true")
+      print(android.succeed("HOME=/var/lib/android-test adb devices -l || true"))
+      print(android.succeed("systemctl status android-test-emulator.service --no-pager || true"))
+      print(android.succeed("HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop || true"))
       raise
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell getprop ro.kernel.qemu | grep -Fx 1")
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell settings get global animator_duration_scale")
