@@ -3,15 +3,18 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   import Hegel
   import Hegel.Gen
   import Marshall.ComputeFixtures
+  alias Marshall.Accounts.User
   alias OverallsProtocol.{Execution, WorkspaceSource}
   alias Marshall.Compute
 
   alias Marshall.Compute.{
     CommandSnapshot,
+    Host,
     Image,
     Images,
     Ledger,
     Operation,
+    Outcomes,
     Reservation,
     VirtualMachine
   }
@@ -54,6 +57,11 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
 
         assert {:ok, vm} =
                  Compute.provision(request(key, profile, first_source), actor: c.user)
+
+        # Every generated case commits a VM outside the case's transaction.  Release its
+        # reservation through the same lifecycle and physical outcome path as a host would use so
+        # later cases can exercise admission instead of exhausting the fixture's capacity.
+        Hegel.on_cleanup(fn -> cleanup_vm(vm, c.user) end)
 
         before = counts()
 
@@ -193,7 +201,8 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
   # @cc [owner:ghuntley,label:verification;recovery] workspace-source-retained-start-cutover
   # A fresh sourced start MUST roll back unchanged allocations and existing
   # snapshots when its durable image lacks current source capability. An
-  # unsourced retained start MUST remain independent of obsolete image staging.
+  # unsourced retained start MUST bypass the workspace-source guard, while its
+  # independent Git identity guard still refuses the same obsolete image.
   test "obsolete sourced starts refuse without changing retained state or snapshots", c do
     assert {:ok, sourced} =
              Compute.provision(request(Ash.UUID.generate(), :oss, source(hd(@sources))),
@@ -230,13 +239,15 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
       assert Ledger.history!(VirtualMachine, []) == before_vms
     end
 
-    assert {:ok, unsourced_start} =
+    assert {:error, %{errors: [%Compute.Error{reason: :git_identity_unavailable}]}} =
              Compute.lifecycle(
                %{vm_id: plain.id, kind: :start, idempotency_key: Ash.UUID.generate()},
                actor: c.user
              )
 
-    refute Map.has_key?(unsourced_start.command_snapshot, "workspace_source")
+    assert Ledger.read!(Operation) == before_operations
+    assert Ledger.read!(Reservation) == before_reservations
+    assert Ledger.history!(VirtualMachine, []) == before_vms
 
     Ecto.Adapters.SQL.query!(
       Marshall.Repo,
@@ -302,4 +313,45 @@ defmodule Marshall.Compute.WorkspaceSourceAdmissionTest do
       reservations: length(Ledger.read!(Reservation)),
       sources: length(Ledger.read!(StoredSource))
     }
+
+  @spec cleanup_vm(VirtualMachine.t(), User.t()) :: :ok
+  defp cleanup_vm(vm, user) do
+    assert {:ok, deletion} =
+             Compute.lifecycle(
+               %{vm_id: vm.id, kind: :delete, idempotency_key: Ash.UUID.generate()},
+               actor: user
+             )
+
+    assert {:ok, _} = ingest(vm.host_id, outcome(deletion, 1, :deleted))
+    :ok
+  end
+
+  @spec ingest(String.t(), map()) :: {:ok, term()} | {:error, term()}
+  defp ingest(host, event) do
+    {:ok, event} =
+      OverallsProtocol.Execution.outcome(OverallsProtocol.Execution.encode_outcome(event))
+
+    Ledger.transaction(fn ->
+      Ledger.lock!(Host, host)
+      Outcomes.ingest_locked!(host, [event])
+    end)
+  end
+
+  @spec outcome(Operation.t(), pos_integer(), atom()) :: map()
+  defp outcome(operation, sequence, state) do
+    %{
+      id: Ash.UUID.generate(),
+      vm_id: operation.vm_id,
+      placement_id: operation.placement_id,
+      execution_epoch: operation.execution_epoch,
+      operation_id: operation.id,
+      generation: operation.generation,
+      sequence: sequence,
+      state: state,
+      compute_empty: state == :deleted,
+      disk_present: state != :deleted,
+      cleanup_complete: state == :deleted,
+      reason: if(state == :unknown, do: :unknown, else: :none)
+    }
+  end
 end

@@ -317,7 +317,8 @@ defmodule Marshall.Galileo.Configurations do
         :peer,
         :peer_vm_id,
         :owner_id,
-        :team_id
+        :team_id,
+        :comment
       ])
       |> Map.put(:headers, headers)
       |> Map.put(:attachments, attachments)

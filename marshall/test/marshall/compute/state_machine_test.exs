@@ -120,7 +120,11 @@ defmodule Marshall.Compute.StateMachineTest do
 
         assert next.wake_requests in 0..1
         assert next.checkpoint or next.state not in [:paused, :waiting_capacity, :relocating]
-        refute next.state == :running and next.checkpoint and action == :idle_expire
+
+        if action == :idle_expire and model.state == :running and not model.pinned do
+          assert next.state == :paused
+          assert next.checkpoint
+        end
 
         next
       end)
