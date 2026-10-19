@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "Toiminnot"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "Arkistoidaanko tämä virtuaalikone?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Poista"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "Tiedot"
@@ -64,7 +64,7 @@ msgstr "Elinkaaripyyntö lisätty jonoon."
 msgid "Lifecycle request was rejected."
 msgstr "Elinkaaripyyntö hylättiin."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "Siirrä"
@@ -84,7 +84,7 @@ msgstr "Siirtopyyntö lisätty jonoon."
 msgid "Relocation request was rejected."
 msgstr "Siirtopyyntö hylättiin."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Muuta kokoa"
@@ -94,7 +94,7 @@ msgstr "Muuta kokoa"
 msgid "Shape"
 msgstr "Kokoonpano"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "Käynnistä"
@@ -104,12 +104,12 @@ msgstr "Käynnistä"
 msgid "State"
 msgstr "Tila"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Pysäytä"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "Pääte"

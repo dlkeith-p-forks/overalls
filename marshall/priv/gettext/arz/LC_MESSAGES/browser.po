@@ -154,67 +154,67 @@ msgstr "الجهاز ده عايز يكتب %{bytes} بايت في الحافظ�
 msgid "This repository link could not be launched. Open the link again."
 msgstr "ما قدرناش نشغّل رابط المستودع ده. افتحه تاني."
 
-#: lib/marshall_web/browser_messages.ex:69
+#: lib/marshall_web/browser_messages.ex:72
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "اكتب عشان تتفاعل"
 
-#: lib/marshall_web/browser_messages.ex:70
+#: lib/marshall_web/browser_messages.ex:73
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
 msgstr "بنحدّث صلاحية المشاهدة…"
 
-#: lib/marshall_web/browser_messages.ex:72
+#: lib/marshall_web/browser_messages.ex:75
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
 msgstr "ما قدرناش نكمّل التحقق. جرّب تاني."
 
-#: lib/marshall_web/browser_messages.ex:74
+#: lib/marshall_web/browser_messages.ex:77
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
 msgstr "اتأكد بمفتاح المرور بتاعك عشان %{action}. ده بيتنفّذ مرة واحدة بعد التحقق."
 
-#: lib/marshall_web/browser_messages.ex:79
+#: lib/marshall_web/browser_messages.ex:82
 #, elixir-autogen, elixir-format
 msgid "View only"
 msgstr "مشاهدة بس"
 
-#: lib/marshall_web/browser_messages.ex:80
+#: lib/marshall_web/browser_messages.ex:83
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
 msgstr "صلاحية المشاهدة اتحدّثت."
 
-#: lib/marshall_web/browser_messages.ex:81
+#: lib/marshall_web/browser_messages.ex:84
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
 msgstr "مستنّيين مفتاح المرور بتاعك…"
 
-#: lib/marshall_web/browser_messages.ex:83
+#: lib/marshall_web/browser_messages.ex:86
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
 msgstr "تكمّل التغيير الإداري ده"
 
-#: lib/marshall_web/browser_messages.ex:84
+#: lib/marshall_web/browser_messages.ex:87
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "دلوقتي حالًا"
 
-#: lib/marshall_web/browser_messages.ex:85
+#: lib/marshall_web/browser_messages.ex:88
 #, elixir-autogen, elixir-format
 msgid "● live"
 msgstr "● مباشر"
 
-#: lib/marshall_web/browser_messages.ex:86
+#: lib/marshall_web/browser_messages.ex:89
 #, elixir-autogen, elixir-format
 msgid "● read-only"
 msgstr "● قراءة بس"
 
-#: lib/marshall_web/browser_messages.ex:87
+#: lib/marshall_web/browser_messages.ex:90
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
 msgstr "⟳ بنتصل تاني…"
 
-#: lib/marshall_web/browser_messages.ex:88
+#: lib/marshall_web/browser_messages.ex:91
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ بنرجّع سجل الطرفية…"

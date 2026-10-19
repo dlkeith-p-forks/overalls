@@ -20,7 +20,7 @@ msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} 소유 머신"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "계정 페이지"
@@ -65,7 +65,7 @@ msgstr "관리자 액세스를 변경할 수 없습니다."
 msgid "Could not revoke browser sessions."
 msgstr "브라우저 세션을 취소할 수 없습니다."
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "사용자 및 컴퓨터 삭제"
@@ -81,7 +81,7 @@ msgid "Every account on this deployment. Signed-in users can read this page; cha
 msgstr ""
 "이 배포의 모든 계정입니다. 로그인한 사용자는 이 페이지를 읽을 수 있습니다. 변경하려면 관리자가 최근 암호 키를 확인해야 합니다."
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "전체 차량과 모든 시스템을 관리하려면 이 계정에 액세스 권한을 부여하시겠습니까?"
@@ -106,42 +106,42 @@ msgstr "MFA 활성화됨"
 msgid "MFA not enrolled"
 msgstr "MFA가 등록되지 않았습니다."
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "관리자로 만들기"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "다음 페이지 →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "이 페이지에는 계정이 없습니다."
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "이 계정과 다른 사람과 공유된 컴퓨터를 포함하여 소유한 모든 컴퓨터를 영구적으로 삭제하시겠습니까?"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "관리자 삭제"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "이 계정의 관리자 액세스 권한을 삭제하시겠습니까?"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "MFA 재설정"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "이 사용자의 MFA를 재설정하고 모든 브라우저 세션을 취소하시겠습니까? 대체 암호키를 등록해야 합니다."
@@ -151,17 +151,17 @@ msgstr "이 사용자의 MFA를 재설정하고 모든 브라우저 세션을 �
 msgid "Send invitation"
 msgstr "초대장 보내기"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "어디서나 로그아웃"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "모든 브라우저 세션에서 이 계정을 로그아웃하시겠습니까?"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "이 계정과 해당 %{count} 시스템을 삭제하려면 이메일을 입력하세요."
@@ -186,7 +186,7 @@ msgstr "패스키로 확인 · 관리 액세스는 15분 동안 지속됩니다 
 msgid "· Your account"
 msgstr "· 귀하의 계정"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← 첫 페이지"
@@ -196,7 +196,7 @@ msgstr "← 첫 페이지"
 msgid "Deleted"
 msgstr "삭제됨"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "머신 삭제 중"
@@ -206,7 +206,7 @@ msgstr "머신 삭제 중"
 msgid "Retrying machine cleanup"
 msgstr "머신 정리 다시 시도 중"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "없는"

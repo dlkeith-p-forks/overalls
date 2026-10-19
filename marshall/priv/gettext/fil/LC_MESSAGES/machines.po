@@ -24,7 +24,7 @@ msgstr " at nagbibilang"
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} segundo%{suffix}"
 
-#: lib/marshall_web/live/resize_live.ex:311
+#: lib/marshall_web/live/resize_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "%{value1} CPU"
 msgstr "%{value1} CPU"
@@ -33,12 +33,12 @@ msgstr "%{value1} CPU"
 #: lib/marshall_web/live/machines_live.ex:1043
 #: lib/marshall_web/live/overview_live.ex:315
 #: lib/marshall_web/live/overview_live.ex:320
-#: lib/marshall_web/live/resize_live.ex:317
+#: lib/marshall_web/live/resize_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
 msgstr "%{value1} GiB"
 
-#: lib/marshall_web/live/resize_live.ex:314
+#: lib/marshall_web/live/resize_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "%{value1} MiB"
 msgstr "%{value1} MiB"
@@ -49,7 +49,9 @@ msgstr "%{value1} MiB"
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
 
+#: lib/marshall_web/live/admin/workloads_live.ex:159
 #: lib/marshall_web/live/machines_live.ex:782
+#: lib/marshall_web/live/overview_live.ex:197
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB na disk"
@@ -59,20 +61,20 @@ msgstr "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB na disk"
 msgid "%{value1} vCPU · %{value2} MiB memory · %{value3} GiB disk"
 msgstr "%{value1} vCPU · %{value2} MiB na memorya · %{value3} GiB na disk"
 
-#: lib/marshall_web/live/resize_live.ex:355
-#: lib/marshall_web/live/resize_live.ex:468
+#: lib/marshall_web/live/resize_live.ex:360
+#: lib/marshall_web/live/resize_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} CPU"
 msgstr "%{value1} → %{value2} CPU"
 
-#: lib/marshall_web/live/resize_live.ex:371
-#: lib/marshall_web/live/resize_live.ex:480
+#: lib/marshall_web/live/resize_live.ex:376
+#: lib/marshall_web/live/resize_live.ex:485
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} GiB"
 msgstr "%{value1} → %{value2} GiB"
 
-#: lib/marshall_web/live/resize_live.ex:361
-#: lib/marshall_web/live/resize_live.ex:474
+#: lib/marshall_web/live/resize_live.ex:366
+#: lib/marshall_web/live/resize_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "%{value1} → %{value2} MiB"
 msgstr "%{value1} → %{value2} MiB"
@@ -132,7 +134,7 @@ msgstr "Account ng gumagamit"
 msgid "Administrative verification expired. Choose the machine in Fleet workloads and verify your passkey to reopen it."
 msgstr "Nag-expire ang administratibong pag-verify. Piliin ang makina sa mga workload ng Fleet at i-verify ang iyong passkey upang muling mabuksan ito."
 
-#: lib/marshall_web/live/resize_live.ex:278
+#: lib/marshall_web/live/resize_live.ex:283
 #, elixir-autogen, elixir-format
 msgid "Administrative verification expired. Your resize draft is kept in this page's address."
 msgstr "Nag-expire ang administratibong pag-verify. Ang iyong draft sa pagbabago ng laki ay nakatago sa address ng page na ito."
@@ -149,22 +151,22 @@ msgstr "Ang lahat ng mga nananatiling kopya ay tinanggal"
 msgid "Allows"
 msgstr "Pinapayagan"
 
-#: lib/marshall_web/components/clone_components.ex:364
+#: lib/marshall_web/components/clone_components.ex:369
 #, elixir-autogen, elixir-format
 msgid "Another copy or move is using this host's transfer slot. Retry when it finishes."
 msgstr "Ang isa pang kopya o paglipat ay gumagamit ng puwang ng paglilipat ng host na ito. Subukan muli kapag natapos na."
 
-#: lib/marshall_web/live/resize_live.ex:632
+#: lib/marshall_web/live/resize_live.ex:642
 #, elixir-autogen, elixir-format
 msgid "Apply the new sizes"
 msgstr "Ilapat ang mga bagong laki"
 
-#: lib/marshall_web/live/resize_live.ex:639
+#: lib/marshall_web/live/resize_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "Apply the new sizes while stopped"
 msgstr "Ilapat ang mga bagong laki habang huminto"
 
-#: lib/marshall_web/live/resize_live.ex:566
+#: lib/marshall_web/live/resize_live.ex:571
 #, elixir-autogen, elixir-format
 msgid "Applying the new CPU, memory and disk sizes on the host."
 msgstr "Paglalapat ng bagong CPU, memory at mga laki ng disk sa host."
@@ -174,7 +176,7 @@ msgstr "Paglalapat ng bagong CPU, memory at mga laki ng disk sa host."
 msgid "Back to overview"
 msgstr "Bumalik sa pangkalahatang-ideya"
 
-#: lib/marshall_web/components/clone_components.ex:202
+#: lib/marshall_web/components/clone_components.ex:207
 #, elixir-autogen, elixir-format
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "Saglit na ihinto ang pinagmulan upang ligtas na makuha ang disk nito."
@@ -186,10 +188,10 @@ msgstr "Magdala ng GitHub, GitLab, Codeberg o Bitbucket repository sa Overalls g
 
 #: lib/marshall_web/live/machines_live.ex:1036
 #: lib/marshall_web/live/overview_live.ex:311
-#: lib/marshall_web/live/resize_live.ex:310
-#: lib/marshall_web/live/resize_live.ex:354
-#: lib/marshall_web/live/resize_live.ex:442
-#: lib/marshall_web/live/resize_live.ex:467
+#: lib/marshall_web/live/resize_live.ex:315
+#: lib/marshall_web/live/resize_live.ex:359
+#: lib/marshall_web/live/resize_live.ex:447
+#: lib/marshall_web/live/resize_live.ex:472
 #, elixir-autogen, elixir-format
 msgid "CPU"
 msgstr "CPU"
@@ -199,7 +201,7 @@ msgstr "CPU"
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
 
-#: lib/marshall_web/live/resize_live.ex:302
+#: lib/marshall_web/live/resize_live.ex:307
 #, elixir-autogen, elixir-format
 msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "Maaaring tumaas o bumaba ang CPU at memorya. Ang laki ng disk ay maaari lamang lumaki."
@@ -220,7 +222,7 @@ msgstr "Hindi matanggap ang pagkansela. Inilapat na ang mga sukat o hindi nakump
 msgid "Cancel move"
 msgstr "Kanselahin ang paglipat"
 
-#: lib/marshall_web/live/resize_live.ex:404
+#: lib/marshall_web/live/resize_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "Cancel resize"
 msgstr "Kanselahin ang resize"
@@ -230,19 +232,19 @@ msgstr "Kanselahin ang resize"
 msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr "Hiniling ang pagkansela. Maaaring magpatuloy ang paglilinis pagkatapos mabawi."
 
-#: lib/marshall_web/live/resize_live.ex:537
-#: lib/marshall_web/live/resize_live.ex:589
-#: lib/marshall_web/live/resize_live.ex:603
+#: lib/marshall_web/live/resize_live.ex:542
+#: lib/marshall_web/live/resize_live.ex:594
+#: lib/marshall_web/live/resize_live.ex:608
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "Kinansela"
 
-#: lib/marshall_web/components/clone_components.ex:318
+#: lib/marshall_web/components/clone_components.ex:323
 #, elixir-autogen, elixir-format
 msgid "Cancelled before the snapshot started."
 msgstr "Kinansela bago magsimula ang snapshot."
 
-#: lib/marshall_web/live/resize_live.ex:536
+#: lib/marshall_web/live/resize_live.ex:541
 #, elixir-autogen, elixir-format
 msgid "Cancelling"
 msgstr "Kinakansela"
@@ -252,17 +254,17 @@ msgstr "Kinakansela"
 msgid "Cancelling and restoring the source"
 msgstr "Pagkansela at pagpapanumbalik ng pinagmulan"
 
-#: lib/marshall_web/components/clone_components.ex:244
+#: lib/marshall_web/components/clone_components.ex:249
 #, elixir-autogen, elixir-format
 msgid "Cancelling clone"
 msgstr "Kinakansela ang clone"
 
-#: lib/marshall_web/live/resize_live.ex:553
+#: lib/marshall_web/live/resize_live.ex:558
 #, elixir-autogen, elixir-format
 msgid "Cancelling: waiting for the stop to confirm, then restarting with the current sizes."
 msgstr "Pagkansela: naghihintay na makumpirma ang paghinto, pagkatapos ay mag-restart gamit ang mga kasalukuyang laki."
 
-#: lib/marshall_web/live/resize_live.ex:560
+#: lib/marshall_web/live/resize_live.ex:565
 #, elixir-autogen, elixir-format
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "Pagkansela: naghihintay para sa paghinto upang makumpirma; ang mga sukat ay nananatiling hindi nagbabago."
@@ -277,7 +279,7 @@ msgstr "Kinakansela…"
 msgid "Capacity is checked again when you create a machine."
 msgstr "Sinusuri muli ang kapasidad kapag gumawa ka ng makina."
 
-#: lib/marshall_web/components/clone_components.ex:208
+#: lib/marshall_web/components/clone_components.ex:213
 #, elixir-autogen, elixir-format
 msgid "Capturing the source disk. Copying begins after the snapshot is ready."
 msgstr "Kinukuha ang source disk. Magsisimula ang pagkopya pagkatapos handa na ang snapshot."
@@ -312,12 +314,12 @@ msgstr "Pumili ng larawan at mga mapagkukunan para sa iyong kapaligiran."
 msgid "Choose your environment"
 msgstr "Piliin ang iyong kapaligiran"
 
-#: lib/marshall_web/components/clone_components.ex:252
+#: lib/marshall_web/components/clone_components.ex:257
 #, elixir-autogen, elixir-format
 msgid "Clone cancelled"
 msgstr "Kinansela ang clone"
 
-#: lib/marshall_web/components/clone_components.ex:236
+#: lib/marshall_web/components/clone_components.ex:241
 #, elixir-autogen, elixir-format
 msgid "Clone complete"
 msgstr "Kumpleto ang clone"
@@ -327,7 +329,7 @@ msgstr "Kumpleto ang clone"
 msgid "Clone machine"
 msgstr "I-clone ang makina"
 
-#: lib/marshall_web/components/clone_components.ex:257
+#: lib/marshall_web/components/clone_components.ex:262
 #, elixir-autogen, elixir-format
 msgid "Clone needs attention"
 msgstr "Kailangan ng clone ng atensyon"
@@ -357,12 +359,12 @@ msgstr "I-clone ang mga yugto"
 msgid "Comment"
 msgstr "Komento"
 
-#: lib/marshall_web/live/resize_live.ex:535
+#: lib/marshall_web/live/resize_live.ex:540
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "Kumpleto"
 
-#: lib/marshall_web/live/resize_live.ex:308
+#: lib/marshall_web/live/resize_live.ex:313
 #, elixir-autogen, elixir-format
 msgid "Confirmed resources"
 msgstr "Mga nakumpirma na mapagkukunan"
@@ -378,12 +380,12 @@ msgstr "Kumonekta"
 msgid "Connect an integration ↗"
 msgstr "Ikonekta ang isang pagsasama ↗"
 
-#: lib/marshall_web/components/clone_components.ex:281
+#: lib/marshall_web/components/clone_components.ex:286
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "Nangongopya"
 
-#: lib/marshall_web/components/clone_components.ex:215
+#: lib/marshall_web/components/clone_components.ex:220
 #, elixir-autogen, elixir-format
 msgid "Copying files"
 msgstr "Pagkopya ng mga file"
@@ -415,12 +417,12 @@ msgstr "Lumikha ng makina"
 msgid "Create your first machine"
 msgstr "Lumikha ng iyong unang makina"
 
-#: lib/marshall_web/components/clone_components.ex:216
+#: lib/marshall_web/components/clone_components.ex:221
 #, elixir-autogen, elixir-format
 msgid "Creating an independent disk from the snapshot. Source recovery proceeds separately."
 msgstr "Paglikha ng isang independiyenteng disk mula sa snapshot. Ang pagbawi ng pinagmulan ay nagpapatuloy nang hiwalay."
 
-#: lib/marshall_web/components/clone_components.ex:223
+#: lib/marshall_web/components/clone_components.ex:228
 #, elixir-autogen, elixir-format
 msgid "Creating cloned machine"
 msgstr "Paglikha ng cloned machine"
@@ -509,9 +511,9 @@ msgstr "Mga gawad ng direktang makina"
 
 #: lib/marshall_web/live/machines_live.ex:1042
 #: lib/marshall_web/live/overview_live.ex:319
-#: lib/marshall_web/live/resize_live.ex:316
-#: lib/marshall_web/live/resize_live.ex:370
-#: lib/marshall_web/live/resize_live.ex:479
+#: lib/marshall_web/live/resize_live.ex:321
+#: lib/marshall_web/live/resize_live.ex:375
+#: lib/marshall_web/live/resize_live.ex:484
 #, elixir-autogen, elixir-format
 msgid "Disk"
 msgstr "Disk"
@@ -521,7 +523,7 @@ msgstr "Disk"
 msgid "Disk (GiB)"
 msgstr "Disk (GiB)"
 
-#: lib/marshall_web/live/resize_live.ex:459
+#: lib/marshall_web/live/resize_live.ex:464
 #, elixir-autogen, elixir-format
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "Disk (GiB) — Pinakamataas na 500 GiB"
@@ -581,12 +583,12 @@ msgstr "Ang mga file at nakaimbak na kredensyal ay kasama sa kopya."
 msgid "Find your people ↗"
 msgstr "Hanapin ang iyong mga tao ↗"
 
-#: lib/marshall_web/components/clone_components.ex:282
+#: lib/marshall_web/components/clone_components.ex:287
 #, elixir-autogen, elixir-format
 msgid "Finishing"
 msgstr "Pagtatapos"
 
-#: lib/marshall_web/components/clone_components.ex:228
+#: lib/marshall_web/components/clone_components.ex:233
 #, elixir-autogen, elixir-format
 msgid "Finishing up"
 msgstr "Pagtatapos"
@@ -606,7 +608,7 @@ msgstr "Bigyan ito ng puwang upang lumago"
 msgid "Grant, change or remove access"
 msgstr "Bigyan, baguhin o alisin ang access"
 
-#: lib/marshall_web/live/resize_live.ex:640
+#: lib/marshall_web/live/resize_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Grow the filesystem on next boot"
 msgstr "Palakihin ang filesystem sa susunod na boot"
@@ -680,9 +682,9 @@ msgstr "Iwanang blangko upang makabuo ng pangalan"
 msgid "Leave blank to generate a name."
 msgstr "Iwanang blangko upang makabuo ng pangalan."
 
-#: lib/marshall_web/live/resize_live.ex:584
-#: lib/marshall_web/live/resize_live.ex:598
-#: lib/marshall_web/live/resize_live.ex:614
+#: lib/marshall_web/live/resize_live.ex:589
+#: lib/marshall_web/live/resize_live.ex:603
+#: lib/marshall_web/live/resize_live.ex:619
 #, elixir-autogen, elixir-format
 msgid "Leave stopped"
 msgstr "Huminto ang pag-alis"
@@ -758,15 +760,15 @@ msgstr "Sinusukat sa pagitan ng control-plane stop at mga obserbasyon sa pagigin
 
 #: lib/marshall_web/live/machines_live.ex:1039
 #: lib/marshall_web/live/overview_live.ex:314
-#: lib/marshall_web/live/resize_live.ex:313
-#: lib/marshall_web/live/resize_live.ex:360
-#: lib/marshall_web/live/resize_live.ex:473
+#: lib/marshall_web/live/resize_live.ex:318
+#: lib/marshall_web/live/resize_live.ex:365
+#: lib/marshall_web/live/resize_live.ex:478
 #, elixir-autogen, elixir-format
 msgid "Memory"
 msgstr "Alaala"
 
 #: lib/marshall_web/live/machines_live.ex:963
-#: lib/marshall_web/live/resize_live.ex:450
+#: lib/marshall_web/live/resize_live.ex:455
 #, elixir-autogen, elixir-format
 msgid "Memory (MiB)"
 msgstr "Memorya (MiB)"
@@ -797,7 +799,7 @@ msgid "Move to another host"
 msgstr "Lumipat sa ibang host"
 
 #: lib/marshall_web/components/clone_components.ex:135
-#: lib/marshall_web/live/resize_live.ex:337
+#: lib/marshall_web/live/resize_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "Needs attention"
 msgstr "Kailangan ng atensyon"
@@ -807,7 +809,7 @@ msgstr "Kailangan ng atensyon"
 msgid "New machine name (optional)"
 msgstr "Bagong pangalan ng makina (opsyonal)"
 
-#: lib/marshall_web/live/resize_live.ex:417
+#: lib/marshall_web/live/resize_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "New sizes"
 msgstr "Mga bagong sukat"
@@ -928,7 +930,9 @@ msgstr "Pangkalahatang-ideya"
 msgid "Owner"
 msgstr "May-ari"
 
-#: lib/marshall_web/live/resize_live.ex:538
+#: lib/marshall_web/components/clone_components.ex:406
+#: lib/marshall_web/live/resize_live.ex:257
+#: lib/marshall_web/live/resize_live.ex:543
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "Nakabinbin"
@@ -938,7 +942,7 @@ msgstr "Nakabinbin"
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "Permanenteng alisin ang makinang ito at ang disk nito. Hindi na ito maaaring bawiin."
 
-#: lib/marshall_web/components/clone_components.ex:377
+#: lib/marshall_web/components/clone_components.ex:382
 #, elixir-autogen, elixir-format
 msgid "Permission to clone this machine is no longer available."
 msgstr "Hindi na available ang pahintulot na i-clone ang makinang ito."
@@ -954,27 +958,27 @@ msgstr "Pansarili"
 msgid "Phase"
 msgstr "Yugto"
 
-#: lib/marshall_web/live/resize_live.ex:319
+#: lib/marshall_web/live/resize_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Power"
 msgstr "kapangyarihan"
 
-#: lib/marshall_web/live/resize_live.ex:376
+#: lib/marshall_web/live/resize_live.ex:381
 #, elixir-autogen, elixir-format
 msgid "Power afterwards"
 msgstr "Power pagkatapos"
 
-#: lib/marshall_web/components/clone_components.ex:279
+#: lib/marshall_web/components/clone_components.ex:284
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "Naghahanda"
 
-#: lib/marshall_web/components/clone_components.ex:195
+#: lib/marshall_web/components/clone_components.ex:200
 #, elixir-autogen, elixir-format
 msgid "Preparing clone"
 msgstr "Paghahanda ng clone"
 
-#: lib/marshall_web/components/clone_components.ex:196
+#: lib/marshall_web/components/clone_components.ex:201
 #, elixir-autogen, elixir-format
 msgid "Preparing space and checking the source before taking a snapshot."
 msgstr "Paghahanda ng espasyo at pagsuri sa pinagmulan bago kumuha ng snapshot."
@@ -1013,12 +1017,13 @@ msgid "Profiles choose access and agent features. Machines remain isolated from 
 msgstr "Pinipili ng mga profile ang access at mga feature ng ahente. Ang mga makina ay nananatiling nakahiwalay sa isa't isa."
 
 #: lib/marshall_web/components/clone_components.ex:64
+#: lib/marshall_web/components/clone_components.ex:156
 #, elixir-autogen, elixir-format
 msgid "Queue position %{value1}"
 msgstr "Posisyon ng pila %{value1}"
 
-#: lib/marshall_web/components/clone_components.ex:187
-#: lib/marshall_web/components/clone_components.ex:278
+#: lib/marshall_web/components/clone_components.ex:192
+#: lib/marshall_web/components/clone_components.ex:283
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr "Nakapila"
@@ -1068,7 +1073,7 @@ msgstr "Nire-refresh…"
 msgid "Registered email"
 msgstr "Nakarehistrong email"
 
-#: lib/marshall_web/components/clone_components.ex:224
+#: lib/marshall_web/components/clone_components.ex:229
 #, elixir-autogen, elixir-format
 msgid "Registering the copied disk as your private machine."
 msgstr "Pagrerehistro sa nakopyang disk bilang iyong pribadong makina."
@@ -1083,7 +1088,7 @@ msgstr "Ilipat ang makina"
 msgid "Relocation requested. A destination is selected automatically."
 msgstr "Hiniling ang relokasyon. Awtomatikong pinipili ang isang destinasyon."
 
-#: lib/marshall_web/live/resize_live.ex:380
+#: lib/marshall_web/live/resize_live.ex:385
 #, elixir-autogen, elixir-format
 msgid "Remains stopped; the filesystem grows on the next boot"
 msgstr "Nananatiling tumigil; lumalaki ang filesystem sa susunod na boot"
@@ -1099,7 +1104,7 @@ msgstr "Alisin ang access"
 msgid "Requesting cancellation…"
 msgstr "Humihiling ng pagkansela..."
 
-#: lib/marshall_web/live/resize_live.ex:508
+#: lib/marshall_web/live/resize_live.ex:513
 #, elixir-autogen, elixir-format
 msgid "Requesting resize…"
 msgstr "Humihiling ng resize..."
@@ -1120,11 +1125,12 @@ msgid "Requesting…"
 msgstr "Humihiling…"
 
 #: lib/marshall_web/live/machines_live.ex:1028
+#: lib/marshall_web/live/resize_live.ex:623
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "Baguhin ang laki"
 
-#: lib/marshall_web/live/resize_live.ex:512
+#: lib/marshall_web/live/resize_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "Resize and restart"
 msgstr "Baguhin ang laki at i-restart"
@@ -1139,19 +1145,19 @@ msgstr "Kinansela ang pag-resize."
 msgid "Resize could not be accepted. Check the sizes and current machine state."
 msgstr "Hindi matanggap ang pag-resize. Suriin ang mga laki at kasalukuyang estado ng makina."
 
-#: lib/marshall_web/live/resize_live.ex:334
+#: lib/marshall_web/live/resize_live.ex:339
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
 msgstr "Kasalukuyang baguhin ang laki"
 
 #: lib/marshall_web/live/resize_live.ex:12
-#: lib/marshall_web/live/resize_live.ex:300
-#: lib/marshall_web/live/resize_live.ex:513
+#: lib/marshall_web/live/resize_live.ex:305
+#: lib/marshall_web/live/resize_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "Resize machine"
 msgstr "Baguhin ang laki ng makina"
 
-#: lib/marshall_web/live/resize_live.ex:384
+#: lib/marshall_web/live/resize_live.ex:389
 #, elixir-autogen, elixir-format
 msgid "Resize needs attention. Confirmed disk growth is retained. Retry resumes the recorded phase."
 msgstr "Ang pagbabago ng laki ay nangangailangan ng pansin. Ang kumpirmadong paglaki ng disk ay pinananatili. Ipagpatuloy ang naitalang yugto."
@@ -1161,12 +1167,12 @@ msgstr "Ang pagbabago ng laki ay nangangailangan ng pansin. Ang kumpirmadong pag
 msgid "Resize requested."
 msgstr "Hiniling na baguhin ang laki."
 
-#: lib/marshall_web/live/resize_live.ex:343
+#: lib/marshall_web/live/resize_live.ex:348
 #, elixir-autogen, elixir-format
 msgid "Resize stages"
 msgstr "Baguhin ang laki ng mga yugto"
 
-#: lib/marshall_web/live/resize_live.ex:532
+#: lib/marshall_web/live/resize_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Resizing"
 msgstr "Pagbabago ng laki"
@@ -1178,29 +1184,29 @@ msgstr "Pagbabago ng laki"
 msgid "Resources"
 msgstr "Mga mapagkukunan"
 
-#: lib/marshall_web/live/resize_live.ex:613
+#: lib/marshall_web/live/resize_live.ex:618
 #, elixir-autogen, elixir-format
 msgid "Restart"
 msgstr "I-restart"
 
-#: lib/marshall_web/live/resize_live.ex:583
-#: lib/marshall_web/live/resize_live.ex:597
+#: lib/marshall_web/live/resize_live.ex:588
+#: lib/marshall_web/live/resize_live.ex:602
 #, elixir-autogen, elixir-format
 msgid "Restart unchanged"
 msgstr "I-restart nang hindi nagbabago"
 
-#: lib/marshall_web/live/resize_live.ex:633
+#: lib/marshall_web/live/resize_live.ex:643
 #, elixir-autogen, elixir-format
 msgid "Restart with the new resources"
 msgstr "I-restart gamit ang mga bagong mapagkukunan"
 
-#: lib/marshall_web/live/resize_live.ex:378
+#: lib/marshall_web/live/resize_live.ex:383
 #, elixir-autogen, elixir-format
 msgid "Restarted"
 msgstr "Na-restart"
 
-#: lib/marshall_web/live/resize_live.ex:533
-#: lib/marshall_web/live/resize_live.ex:534
+#: lib/marshall_web/live/resize_live.ex:538
+#: lib/marshall_web/live/resize_live.ex:539
 #, elixir-autogen, elixir-format
 msgid "Restarting"
 msgstr "Nagsisimula muli"
@@ -1220,12 +1226,12 @@ msgstr "Hindi matanggap ang muling subukan. Maaaring nagbago ang kapasidad o est
 msgid "Retry destination boot"
 msgstr "Subukan muli ang patutunguhang boot"
 
-#: lib/marshall_web/live/resize_live.ex:396
+#: lib/marshall_web/live/resize_live.ex:401
 #, elixir-autogen, elixir-format
 msgid "Retry resize"
 msgstr "Subukan muli ang resize"
 
-#: lib/marshall_web/live/resize_live.ex:285
+#: lib/marshall_web/live/resize_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "Return to Fleet workloads and verify your passkey to reopen the machine →"
 msgstr "Bumalik sa mga workload ng Fleet at i-verify ang iyong passkey para muling buksan ang makina →"
@@ -1258,7 +1264,7 @@ msgstr "Kwarto para lumaki"
 msgid "Root disk (GiB)"
 msgstr "Pangunahing disk (GiB)"
 
-#: lib/marshall_web/live/resize_live.ex:321
+#: lib/marshall_web/live/resize_live.ex:326
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "Tumatakbo"
@@ -1308,17 +1314,17 @@ msgstr "Maikling paglalarawan para sa mga agent"
 msgid "Sign in if needed, then Overalls will create your machine."
 msgstr "Mag-sign in kung kinakailangan, pagkatapos ay gagawin ng Overalls ang iyong makina."
 
-#: lib/marshall_web/components/clone_components.ex:280
+#: lib/marshall_web/components/clone_components.ex:285
 #, elixir-autogen, elixir-format
 msgid "Snapshot"
 msgstr "Kopya ng kasalukuyang estado"
 
-#: lib/marshall_web/components/clone_components.ex:315
+#: lib/marshall_web/components/clone_components.ex:320
 #, elixir-autogen, elixir-format
 msgid "Snapshot did not start."
 msgstr "Hindi nagsimula ang pagkopya ng kasalukuyang estado."
 
-#: lib/marshall_web/components/clone_components.ex:312
+#: lib/marshall_web/components/clone_components.ex:317
 #, elixir-autogen, elixir-format
 msgid "Snapshot has not started."
 msgstr "Hindi pa nagsisimula ang pagkopya ng kasalukuyang estado."
@@ -1328,17 +1334,17 @@ msgstr "Hindi pa nagsisimula ang pagkopya ng kasalukuyang estado."
 msgid "Source machine"
 msgstr "Pinagmulang makina"
 
-#: lib/marshall_web/components/clone_components.ex:326
+#: lib/marshall_web/components/clone_components.ex:331
 #, elixir-autogen, elixir-format
 msgid "Source recovery follows the snapshot."
 msgstr "Susunod ang pagbawi ng pinagmulan pagkatapos ng pagkopya ng estado."
 
-#: lib/marshall_web/components/clone_components.ex:306
+#: lib/marshall_web/components/clone_components.ex:311
 #, elixir-autogen, elixir-format
 msgid "Source recovery needs attention."
 msgstr "Kailangang asikasuhin ang pagbawi ng pinagmulan."
 
-#: lib/marshall_web/components/clone_components.ex:309
+#: lib/marshall_web/components/clone_components.ex:314
 #, elixir-autogen, elixir-format
 msgid "Source recovery retry requested."
 msgstr "Hiniling ang muling pagsubok sa pagbawi ng pinagmulan."
@@ -1348,17 +1354,17 @@ msgstr "Hiniling ang muling pagsubok sa pagbawi ng pinagmulan."
 msgid "Source restored; destination cleanup pending"
 msgstr "Naibalik ang pinagmulan; hinihintay ang paglilinis sa patutunguhan"
 
-#: lib/marshall_web/components/clone_components.ex:303
+#: lib/marshall_web/components/clone_components.ex:308
 #, elixir-autogen, elixir-format
 msgid "Source returned to its original power state."
 msgstr "Naibalik ang pinagmulan sa orihinal nitong kalagayan ng pagtakbo."
 
-#: lib/marshall_web/components/clone_components.ex:300
+#: lib/marshall_web/components/clone_components.ex:305
 #, elixir-autogen, elixir-format
 msgid "Source was kept stopped, matching its state when this request began."
 msgstr "Ang pinagmulan ay pinananatiling itinigil, na tumutugma sa estado nito noong nagsimula ang kahilingang ito."
 
-#: lib/marshall_web/components/clone_components.ex:323
+#: lib/marshall_web/components/clone_components.ex:328
 #, elixir-autogen, elixir-format
 msgid "Source was stopped when this request began."
 msgstr "Nakahinto ang pinagmulan nang simulan ang kahilingang ito."
@@ -1374,7 +1380,7 @@ msgstr "Karaniwan"
 msgid "Starting"
 msgstr "Sinisimulan"
 
-#: lib/marshall_web/live/resize_live.ex:569
+#: lib/marshall_web/live/resize_live.ex:574
 #, elixir-autogen, elixir-format
 msgid "Starting the machine with its new resources."
 msgstr "Pinapagana ang makina gamit ang mga bagong mapagkukunan nito."
@@ -1390,44 +1396,45 @@ msgstr "Katayuan"
 msgid "Stay in the loop"
 msgstr "Manatiling may alam sa mga balita"
 
-#: lib/marshall_web/components/clone_components.ex:385
+#: lib/marshall_web/components/clone_components.ex:390
 #, elixir-autogen, elixir-format
 msgid "Step %{value1} is waiting on the host: %{value2}"
 msgstr "Naghihintay ang hakbang %{value1} sa host: %{value2}"
 
-#: lib/marshall_web/live/resize_live.ex:587
-#: lib/marshall_web/live/resize_live.ex:601
+#: lib/marshall_web/live/resize_live.ex:592
+#: lib/marshall_web/live/resize_live.ex:606
+#: lib/marshall_web/live/resize_live.ex:622
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Ihinto"
 
-#: lib/marshall_web/live/resize_live.ex:631
+#: lib/marshall_web/live/resize_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "Stop the machine"
 msgstr "Ihinto ang makina"
 
-#: lib/marshall_web/live/resize_live.ex:322
+#: lib/marshall_web/live/resize_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "Nakahinto"
 
 #: lib/marshall_web/live/machines_live.ex:637
-#: lib/marshall_web/live/resize_live.ex:531
+#: lib/marshall_web/live/resize_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Stopping"
 msgstr "Inihihinto"
 
-#: lib/marshall_web/components/clone_components.ex:201
+#: lib/marshall_web/components/clone_components.ex:206
 #, elixir-autogen, elixir-format
 msgid "Stopping source for snapshot"
 msgstr "Inihihinto ang pinagmulan para kopyahin ang estado"
 
-#: lib/marshall_web/components/clone_components.ex:245
+#: lib/marshall_web/components/clone_components.ex:250
 #, elixir-autogen, elixir-format
 msgid "Stopping the copy and removing temporary resources. Source recovery is tracked separately."
 msgstr "Inihihinto ang pagkopya at inaalis ang mga pansamantalang mapagkukunan. Hiwalay na sinusubaybayan ang pagbawi ng pinagmulan."
 
-#: lib/marshall_web/live/resize_live.ex:549
+#: lib/marshall_web/live/resize_live.ex:554
 #, elixir-autogen, elixir-format
 msgid "Stopping the machine so its resources can change safely."
 msgstr "Inihihinto ang makina upang ligtas na mabago ang mga mapagkukunan nito."
@@ -1447,7 +1454,7 @@ msgstr "Mag-subscribe"
 msgid "Switching placement"
 msgstr "Inililipat ang pagkakalagay"
 
-#: lib/marshall_web/components/clone_components.ex:207
+#: lib/marshall_web/components/clone_components.ex:212
 #, elixir-autogen, elixir-format
 msgid "Taking snapshot"
 msgstr "Kinokopya ang kasalukuyang estado"
@@ -1492,12 +1499,12 @@ msgstr "Hindi mailulunsad ang sanggunian ng repositoryong iyon."
 msgid "The account must already be registered. Saving a role replaces that person's direct machine role; choose Remove access to remove that direct grant."
 msgstr "Dapat nakarehistro na ang account. Pinapalitan ng pag-save ng tungkulin ang direktang tungkulin ng taong iyon sa makina; piliin ang Alisin ang pag-access upang bawiin ang direktang pahintulot na iyon."
 
-#: lib/marshall_web/components/clone_components.ex:229
+#: lib/marshall_web/components/clone_components.ex:234
 #, elixir-autogen, elixir-format
 msgid "The clone can be opened. Finalizing its power state and cleaning up temporary resources."
 msgstr "Maaari nang buksan ang kopya. Tinatapos ang kalagayan ng pagtakbo nito at nililinis ang mga pansamantalang mapagkukunan."
 
-#: lib/marshall_web/components/clone_components.ex:339
+#: lib/marshall_web/components/clone_components.ex:344
 #, elixir-autogen, elixir-format
 msgid "The clone could not start. Open it to review its status and power controls."
 msgstr "Hindi nagsimula ang kopya. Buksan ito upang suriin ang katayuan at mga kontrol sa pagpapatakbo."
@@ -1512,7 +1519,7 @@ msgstr "Hindi makapagbukas ng mga repositoryo ang paunang imahe. Pumili ng imahe
 msgid "The default machine image is not available right now."
 msgstr "Hindi magagamit ngayon ang paunang imahe ng makina."
 
-#: lib/marshall_web/live/resize_live.ex:543
+#: lib/marshall_web/live/resize_live.ex:548
 #, elixir-autogen, elixir-format
 msgid "The last step did not finish. Retry resumes from the recorded phase without repeating completed work."
 msgstr "Hindi natapos ang huling hakbang. Magpapatuloy ang muling pagsubok mula sa naitalang yugto nang hindi inuulit ang natapos na gawain."
@@ -1527,7 +1534,7 @@ msgstr "Hindi malikha ang makina. Subukang muli, o lumikha nang manu-mano."
 msgid "The machine could not be updated. Refresh and try again."
 msgstr "Hindi ma-update ang makina. I-refresh at subukang muli."
 
-#: lib/marshall_web/live/resize_live.ex:424
+#: lib/marshall_web/live/resize_live.ex:429
 #, elixir-autogen, elixir-format
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "Nagbago ang makina mula nang likhain ang burador na ito. Suriin ang nakumpirmang mapagkukunan sa itaas."
@@ -1552,7 +1559,7 @@ msgstr "Hindi mababago ang pag-access ng may-ari."
 msgid "The pin could not be changed. Refresh and try again."
 msgstr "Hindi mabago ang pag-pin. I-refresh at subukang muli."
 
-#: lib/marshall_web/components/clone_components.ex:371
+#: lib/marshall_web/components/clone_components.ex:376
 #, elixir-autogen, elixir-format
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "Inilalabas pa ng naunang kopya ng makinang ito ang kopya ng estado nito. Subukang muli maya-maya."
@@ -1562,12 +1569,12 @@ msgstr "Inilalabas pa ng naunang kopya ng makinang ito ang kopya ng estado nito.
 msgid "The request could not be completed. Check the values and try again."
 msgstr "Hindi makumpleto ang kahilingan. Suriin ang mga halaga at subukang muli."
 
-#: lib/marshall_web/components/clone_components.ex:391
+#: lib/marshall_web/components/clone_components.ex:396
 #, elixir-autogen, elixir-format
 msgid "The request encountered a problem. Use the available actions to recover or cancel it."
 msgstr "Nagkaproblema ang kahilingan. Gamitin ang mga magagamit na aksiyon upang mabawi o makansela ito."
 
-#: lib/marshall_web/live/resize_live.ex:573
+#: lib/marshall_web/live/resize_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "The resize has completed; this page refreshes with the confirmed sizes."
 msgstr "Natapos ang pagbabago ng laki; magre-refresh ang pahinang ito gamit ang mga nakumpirmang laki."
@@ -1582,22 +1589,22 @@ msgstr "Parehong mga pagpipilian sa network at pag-access gaya ng Karaniwan, kas
 msgid "The selected image needs more memory or disk space."
 msgstr "Nangangailangan ang napiling imahe ng higit na memorya o espasyo sa disk."
 
-#: lib/marshall_web/components/clone_components.ex:335
+#: lib/marshall_web/components/clone_components.ex:340
 #, elixir-autogen, elixir-format
 msgid "The source could not restart. Retry to request source recovery."
 msgstr "Hindi muling umandar ang pinagmulan. Subukang muli upang humiling ng pagbawi ng pinagmulan."
 
-#: lib/marshall_web/components/clone_components.ex:360
+#: lib/marshall_web/components/clone_components.ex:365
 #, elixir-autogen, elixir-format
 msgid "The source host is unavailable. Retry once it is available."
 msgstr "Hindi magagamit ang pinagmulang host. Subukang muli kapag magagamit na ito."
 
-#: lib/marshall_web/components/clone_components.ex:380
+#: lib/marshall_web/components/clone_components.ex:385
 #, elixir-autogen, elixir-format
 msgid "The source machine was deleted before this request began."
 msgstr "Nabura ang pinagmulang makina bago nagsimula ang kahilingang ito."
 
-#: lib/marshall_web/components/clone_components.ex:354
+#: lib/marshall_web/components/clone_components.ex:359
 #, elixir-autogen, elixir-format
 msgid "The source was busy or changed before cloning began. Retry when it is ready."
 msgstr "Abala o nagbago ang pinagmulan bago nagsimula ang pagkopya. Subukang muli kapag handa na ito."
@@ -1612,7 +1619,7 @@ msgstr "Kulang ang magagamit na kapasidad para sa bagong makina ngayon."
 msgid "There is not enough available capacity for this machine."
 msgstr "Kulang ang magagamit na kapasidad para sa makinang ito."
 
-#: lib/marshall_web/components/clone_components.ex:346
+#: lib/marshall_web/components/clone_components.ex:351
 #, elixir-autogen, elixir-format
 msgid "There is not enough capacity for this copy. Retry when space is available."
 msgstr "Kulang ang kapasidad para sa kopyang ito. Subukang muli kapag may espasyo na."
@@ -1647,7 +1654,7 @@ msgstr "Binubura ang makinang ito at hindi ito maaaring i-pin."
 msgid "This machine is being deleted."
 msgstr "Binubura ang makinang ito."
 
-#: lib/marshall_web/live/resize_live.ex:292
+#: lib/marshall_web/live/resize_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "This machine is unavailable or you no longer have management access."
 msgstr "Hindi magagamit ang makinang ito o wala ka nang pahintulot na mamahala."
@@ -1667,7 +1674,7 @@ msgstr "Kasalukuyang hindi magagamit ang host ng makinang ito."
 msgid "This repository link could not be launched. Open the link again."
 msgstr "Hindi mailunsad ang link ng repositoryong ito. Buksan muli ang link."
 
-#: lib/marshall_web/components/clone_components.ex:258
+#: lib/marshall_web/components/clone_components.ex:263
 #, elixir-autogen, elixir-format
 msgid "This request could not finish. Review the issue below and the available actions."
 msgstr "Hindi matapos ang kahilingang ito. Suriin ang problema sa ibaba at ang mga magagamit na aksiyon."
@@ -1677,7 +1684,7 @@ msgstr "Hindi matapos ang kahilingang ito. Suriin ang problema sa ibaba at ang m
 msgid "This request has already been used. Refresh before trying again."
 msgstr "Nagamit na ang kahilingang ito. I-refresh bago subukang muli."
 
-#: lib/marshall_web/components/clone_components.ex:253
+#: lib/marshall_web/components/clone_components.ex:258
 #, elixir-autogen, elixir-format
 msgid "This request has ended without publishing a clone."
 msgstr "Natapos ang kahilingang ito nang hindi naglalathala ng kopya."
@@ -1719,7 +1726,7 @@ msgstr "Na-update"
 msgid "Updates automatically"
 msgstr "Awtomatikong nag-a-update"
 
-#: lib/marshall_web/live/resize_live.ex:434
+#: lib/marshall_web/live/resize_live.ex:439
 #, elixir-autogen, elixir-format
 msgid "Use current machine state, keeping these sizes"
 msgstr "Gamitin ang kasalukuyang kalagayan ng makina at panatilihin ang mga laking ito"
@@ -1741,27 +1748,27 @@ msgstr "Tingnan lahat →"
 msgid "Viewer"
 msgstr "Tagatingin"
 
-#: lib/marshall_web/components/clone_components.ex:188
+#: lib/marshall_web/components/clone_components.ex:193
 #, elixir-autogen, elixir-format
 msgid "Waiting for its turn. Each copy takes a fresh snapshot when processing begins."
 msgstr "Naghihintay ng pagkakataon nito. Bawat kopya ay kumukuha ng bagong kopya ng estado kapag nagsisimula ang pagproseso."
 
-#: lib/marshall_web/components/clone_components.ex:328
+#: lib/marshall_web/components/clone_components.ex:333
 #, elixir-autogen, elixir-format
 msgid "Waiting for source recovery confirmation."
 msgstr "Naghihintay ng kumpirmasyon sa pagbawi ng pinagmulan."
 
-#: lib/marshall_web/components/clone_components.ex:162
+#: lib/marshall_web/components/clone_components.ex:167
 #, elixir-autogen, elixir-format
 msgid "Waiting for the host's transfer slot; another copy or move is using it."
 msgstr "Naghihintay ng puwang para sa paglilipat sa host; ginagamit ito ng ibang pagkopya o paglilipat."
 
-#: lib/marshall_web/components/clone_components.ex:169
+#: lib/marshall_web/components/clone_components.ex:174
 #, elixir-autogen, elixir-format
 msgid "Waiting for the previous copy of this machine to release its snapshot."
 msgstr "Hinihintay na ilabas ng naunang kopya ng makinang ito ang kopya ng estado nito."
 
-#: lib/marshall_web/components/clone_components.ex:320
+#: lib/marshall_web/components/clone_components.ex:325
 #, elixir-autogen, elixir-format
 msgid "Waiting for the source to stop."
 msgstr "Hinihintay na huminto ang pinagmulan."
@@ -1787,7 +1794,7 @@ msgstr "Mga web app"
 msgid "Web apps only"
 msgstr "Mga web app lamang"
 
-#: lib/marshall_web/live/resize_live.ex:486
+#: lib/marshall_web/live/resize_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "What happens"
 msgstr "Ano ang mangyayari"
@@ -1827,12 +1834,12 @@ msgstr "Nananatili ang iyong disk kapag nakahinto ang makina."
 msgid "Your disk stays with you when the machine is stopped."
 msgstr "Nananatili sa iyo ang iyong disk kapag nakahinto ang makina."
 
-#: lib/marshall_web/live/resize_live.ex:500
+#: lib/marshall_web/live/resize_live.ex:505
 #, elixir-autogen, elixir-format
 msgid "Your machine will remain stopped. Disk filesystem growth completes on its next boot."
 msgstr "Mananatiling nakahinto ang iyong makina. Matatapos ang pagpapalawak ng sistema ng file sa disk sa susunod nitong pag-andar."
 
-#: lib/marshall_web/live/resize_live.ex:495
+#: lib/marshall_web/live/resize_live.ex:500
 #, elixir-autogen, elixir-format
 msgid "Your machine will stop while resources change, then restart. Expect downtime."
 msgstr "Hihinto ang iyong makina habang binabago ang mga mapagkukunan, pagkatapos ay muling aandar. Asahan ang pagkaantala."
@@ -1842,12 +1849,12 @@ msgstr "Hihinto ang iyong makina habang binabago ang mga mapagkukunan, pagkatapo
 msgid "Your machines"
 msgstr "Iyong mga makina"
 
-#: lib/marshall_web/components/clone_components.ex:237
+#: lib/marshall_web/components/clone_components.ex:242
 #, elixir-autogen, elixir-format
 msgid "Your private copy has been created and temporary resources have been cleaned up."
 msgstr "Nalikha ang iyong pribadong kopya at nalinis ang mga pansamantalang mapagkukunan."
 
-#: lib/marshall_web/components/clone_components.ex:176
+#: lib/marshall_web/components/clone_components.ex:181
 #, elixir-autogen, elixir-format
 msgid "Your private copy has been created. The source snapshot is still being released; the source stays protected until then."
 msgstr "Nalikha ang iyong pribadong kopya. Inilalabas pa ang kopya ng estado ng pinagmulan; mananatiling protektado ang pinagmulan hanggang matapos iyon."
@@ -1878,79 +1885,79 @@ msgstr "← Unang pahina"
 msgid "← Machines"
 msgstr "← Mga makina"
 
-#: lib/marshall_web/live/resize_live.ex:273
+#: lib/marshall_web/live/resize_live.ex:278
 #, elixir-autogen, elixir-format
 msgid "← Settings"
 msgstr "← Mga setting"
 
-#: lib/marshall_web/components/clone_components.ex:400
+#: lib/marshall_web/components/clone_components.ex:405
 #: lib/marshall_web/live/resize_live.ex:256
 #, elixir-autogen, elixir-format
 msgid "Current"
 msgstr "Kasalukuyan"
 
-#: lib/marshall_web/components/clone_components.ex:399
+#: lib/marshall_web/components/clone_components.ex:404
 #: lib/marshall_web/live/resize_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Done"
 msgstr "Tapos na"
 
-#: lib/marshall_web/components/clone_components.ex:417
+#: lib/marshall_web/components/clone_components.ex:422
 #, elixir-autogen, elixir-format
 msgid "a snapshot mount could not be released yet."
 msgstr "hindi pa maalis ang pagkaka-mount ng isang snapshot."
 
-#: lib/marshall_web/components/clone_components.ex:433
+#: lib/marshall_web/components/clone_components.ex:438
 #, elixir-autogen, elixir-format
 msgid "cleanup on the host did not finish yet."
 msgstr "hindi pa tapos ang paglilinis sa host."
 
-#: lib/marshall_web/components/clone_components.ex:436
+#: lib/marshall_web/components/clone_components.ex:441
 #, elixir-autogen, elixir-format
 msgid "the copied disk could not be prepared yet."
 msgstr "hindi pa maihanda ang kinopyang disk."
 
-#: lib/marshall_web/components/clone_components.ex:420
+#: lib/marshall_web/components/clone_components.ex:425
 #, elixir-autogen, elixir-format
 msgid "the disk copy did not finish; it resumes automatically."
 msgstr "hindi pa tapos ang pagkopya ng disk; awtomatiko itong magpapatuloy."
 
-#: lib/marshall_web/components/clone_components.ex:439
+#: lib/marshall_web/components/clone_components.ex:444
 #, elixir-autogen, elixir-format
 msgid "the host could not confirm the step yet."
 msgstr "hindi pa makumpirma ng host ang hakbang."
 
-#: lib/marshall_web/components/clone_components.ex:429
+#: lib/marshall_web/components/clone_components.ex:434
 #, elixir-autogen, elixir-format
 msgid "the hosts could not connect; the host retries automatically."
 msgstr "hindi makakonekta ang mga host; awtomatikong susubok muli ang host."
 
-#: lib/marshall_web/components/clone_components.ex:408
+#: lib/marshall_web/components/clone_components.ex:413
 #, elixir-autogen, elixir-format
 msgid "the machine is mid-operation; the host retries automatically."
 msgstr "may ibang operasyong ginagawa ang makina; awtomatikong susubok muli ang host."
 
-#: lib/marshall_web/components/clone_components.ex:411
+#: lib/marshall_web/components/clone_components.ex:416
 #, elixir-autogen, elixir-format
 msgid "the source changed state; it continues once the source settles."
 msgstr "nagbago ang estado ng pinagmulan; magpapatuloy kapag matatag na ito."
 
-#: lib/marshall_web/components/clone_components.ex:414
+#: lib/marshall_web/components/clone_components.ex:419
 #, elixir-autogen, elixir-format
 msgid "the source snapshot could not be prepared or released yet."
 msgstr "hindi pa maihanda o mailabas ang snapshot ng pinagmulan."
 
-#: lib/marshall_web/components/clone_components.ex:405
+#: lib/marshall_web/components/clone_components.ex:410
 #, elixir-autogen, elixir-format
 msgid "the storage pool is busy; the host retries automatically."
 msgstr "abala ang pool ng imbakan; awtomatikong susubok muli ang host."
 
-#: lib/marshall_web/components/clone_components.ex:426
+#: lib/marshall_web/components/clone_components.ex:431
 #, elixir-autogen, elixir-format
 msgid "the transfer permit lapsed; it is renewed automatically."
 msgstr "nag-expire ang pahintulot sa paglilipat; awtomatiko itong mare-renew."
 
-#: lib/marshall_web/components/clone_components.ex:423
+#: lib/marshall_web/components/clone_components.ex:428
 #, elixir-autogen, elixir-format
 msgid "the transfer stream was interrupted; it resumes automatically."
 msgstr "naputol ang daloy ng paglilipat; awtomatiko itong magpapatuloy."

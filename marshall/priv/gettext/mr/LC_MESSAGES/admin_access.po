@@ -109,6 +109,7 @@ msgid "Invalid administrative request."
 msgstr "अवैध प्रशासकीय विनंती."
 
 #: lib/marshall_web/live/admin/access_live.ex:60
+#: lib/marshall_web/live/admin/scim_live.ex:42
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "अवैध विनंती."
@@ -351,3 +352,53 @@ msgstr "हे खाते सर्वत्र साइन आउट कर�
 #, elixir-autogen, elixir-format
 msgid "start this node evacuation"
 msgstr "या नोडचे रिकामीकरण सुरू करा"
+
+#: lib/marshall_web/live/admin/scim_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Configure directory provisioning, identity lifecycle and managed teams."
+msgstr "डिरेक्टरी प्रोव्हिजनिंग, ओळख जीवनचक्र आणि व्यवस्थापित टीम कॉन्फिगर करा."
+
+#: lib/marshall_web/live/admin/scim_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "Copy this bearer token now. It will not be shown again."
+msgstr "हा बेअरर टोकन आत्ता कॉपी करा. तो पुन्हा दाखवला जाणार नाही."
+
+#: lib/marshall_web/live/admin/scim_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Disable SCIM"
+msgstr "SCIM अक्षम करा"
+
+#: lib/marshall_web/live/admin/scim_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Enable SCIM and generate token"
+msgstr "SCIM सक्षम करा आणि टोकन तयार करा"
+
+#: lib/marshall_web/live/admin/scim_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration"
+msgstr "SCIM कॉन्फिगरेशन"
+
+#: lib/marshall_web/live/admin/scim_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration could not be updated."
+msgstr "SCIM कॉन्फिगरेशन अपडेट करता आले नाही."
+
+#: lib/marshall_web/live/admin/scim_live.ex:29
+#, elixir-autogen, elixir-format
+msgid "SCIM configuration updated."
+msgstr "SCIM कॉन्फिगरेशन अपडेट केले."
+
+#: lib/marshall_web/live/admin/scim_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "SCIM is disabled."
+msgstr "SCIM अक्षम आहे."
+
+#: lib/marshall_web/live/admin/scim_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "SCIM is enabled."
+msgstr "SCIM सक्षम आहे."
+
+#: lib/marshall_web/live/admin/scim_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning"
+msgstr "SCIM प्रोव्हिजनिंग"

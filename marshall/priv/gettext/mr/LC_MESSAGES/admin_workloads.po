@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "कृती"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "ही VM संग्रहित करायची?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "हटवा"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "तपशील"
@@ -66,7 +66,7 @@ msgstr "जीवनचक्र विनंती रांगेत टाक
 msgid "Lifecycle request was rejected."
 msgstr "जीवनचक्र विनंती नाकारली."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "हलवा"
@@ -86,7 +86,7 @@ msgstr "स्थलांतर विनंती रांगेत टाक
 msgid "Relocation request was rejected."
 msgstr "स्थलांतर विनंती नाकारली."
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "आकार बदला"
@@ -96,7 +96,7 @@ msgstr "आकार बदला"
 msgid "Shape"
 msgstr "संसाधन रचना"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "सुरू करा"
@@ -106,12 +106,12 @@ msgstr "सुरू करा"
 msgid "State"
 msgstr "स्थिती"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "थांबवा"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "टर्मिनल"

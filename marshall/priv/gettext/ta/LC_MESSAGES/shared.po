@@ -35,20 +35,20 @@ msgid "A reference for the system, its configuration, and its operation."
 msgstr "அமைப்பு, அதன் கட்டமைப்பு மற்றும் செயல்பாட்டுக்கான குறிப்பு."
 
 #: lib/marshall_web/components/layouts.ex:337
-#: lib/marshall_web/components/layouts.ex:443
+#: lib/marshall_web/components/layouts.ex:444
 #, elixir-autogen, elixir-format
 msgid "AI usage"
 msgstr "AI பயன்பாடு"
 
 #: lib/marshall_web/components/layouts.ex:416
-#: lib/marshall_web/components/layouts.ex:461
+#: lib/marshall_web/components/layouts.ex:462
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "அணுகல் அதிகாரம்"
 
 #: lib/marshall_web/components/layouts.ex:241
 #: lib/marshall_web/components/layouts.ex:329
-#: lib/marshall_web/components/layouts.ex:449
+#: lib/marshall_web/components/layouts.ex:450
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "கணக்கு"
@@ -75,8 +75,8 @@ msgid "Administration"
 msgstr "நிர்வாகம்"
 
 #: lib/marshall_web/components/layouts.ex:245
-#: lib/marshall_web/components/layouts.ex:507
-#: lib/marshall_web/components/layouts.ex:508
+#: lib/marshall_web/components/layouts.ex:509
+#: lib/marshall_web/components/layouts.ex:510
 #: lib/marshall_web/controllers/docs_html/show.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Appearance"
@@ -89,7 +89,7 @@ msgid "Attempting to reconnect"
 msgstr "மீண்டும் இணைக்க முயல்கிறது"
 
 #: lib/marshall_web/components/layouts.ex:418
-#: lib/marshall_web/components/layouts.ex:462
+#: lib/marshall_web/components/layouts.ex:463
 #, elixir-autogen, elixir-format
 msgid "Audit"
 msgstr "தணிக்கை"
@@ -141,17 +141,17 @@ msgstr "பொருளடக்கம்"
 msgid "Control room"
 msgstr "கட்டுப்பாட்டு அறை"
 
-#: lib/marshall_web/components/layouts.ex:441
+#: lib/marshall_web/components/layouts.ex:442
 #, elixir-autogen, elixir-format
 msgid "Control room · %{section}"
 msgstr "கட்டுப்பாட்டு அறை · %{section}"
 
-#: lib/marshall_web/components/layouts.ex:438
+#: lib/marshall_web/components/layouts.ex:439
 #, elixir-autogen, elixir-format
 msgid "Control room · AI usage"
 msgstr "கட்டுப்பாட்டு அறை · செயற்கை நுண்ணறிவுப் பயன்பாடு"
 
-#: lib/marshall_web/components/layouts.ex:511
+#: lib/marshall_web/components/layouts.ex:513
 #, elixir-autogen, elixir-format
 msgid "Dark"
 msgstr "இருள்"
@@ -188,8 +188,8 @@ msgstr "இயந்திரத் தொகுதியின் செயற�
 msgid "Git mirrors"
 msgstr "Git பிரதிகள்"
 
-#: lib/marshall_web/components/layouts.ex:431
-#: lib/marshall_web/components/layouts.ex:454
+#: lib/marshall_web/components/layouts.ex:432
+#: lib/marshall_web/components/layouts.ex:455
 #, elixir-autogen, elixir-format
 msgid "Git repositories"
 msgstr "Git களஞ்சியங்கள்"
@@ -221,14 +221,14 @@ msgstr "கையேட்டுப் பொருளடக்கம்"
 msgid "Home"
 msgstr "முகப்பு"
 
-#: lib/marshall_web/components/layouts.ex:430
-#: lib/marshall_web/components/layouts.ex:453
+#: lib/marshall_web/components/layouts.ex:431
+#: lib/marshall_web/components/layouts.ex:454
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "ஒருங்கிணைப்புகள்"
 
 #: lib/marshall_web/components/layouts.ex:410
-#: lib/marshall_web/components/layouts.ex:458
+#: lib/marshall_web/components/layouts.ex:459
 #, elixir-autogen, elixir-format
 msgid "Jobs"
 msgstr "பணிகள்"
@@ -238,7 +238,7 @@ msgstr "பணிகள்"
 msgid "LLM index"
 msgstr "LLM சுட்டி"
 
-#: lib/marshall_web/components/layouts.ex:510
+#: lib/marshall_web/components/layouts.ex:512
 #, elixir-autogen, elixir-format
 msgid "Light"
 msgstr "ஒளி"
@@ -248,8 +248,8 @@ msgstr "ஒளி"
 msgid "Machine readable"
 msgstr "இயந்திரம் படிக்கக்கூடியது"
 
-#: lib/marshall_web/components/layouts.ex:429
-#: lib/marshall_web/components/layouts.ex:452
+#: lib/marshall_web/components/layouts.ex:430
+#: lib/marshall_web/components/layouts.ex:453
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "இயந்திரங்கள்"
@@ -280,7 +280,7 @@ msgid "Menu"
 msgstr "பட்டியல்"
 
 #: lib/marshall_web/components/layouts.ex:408
-#: lib/marshall_web/components/layouts.ex:456
+#: lib/marshall_web/components/layouts.ex:457
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "முனைப் பராமரிப்பு"
@@ -301,14 +301,14 @@ msgstr "செயல்பாடுகள்"
 msgid "Overalls"
 msgstr "Overalls"
 
-#: lib/marshall_web/components/layouts.ex:427
-#: lib/marshall_web/components/layouts.ex:450
+#: lib/marshall_web/components/layouts.ex:428
+#: lib/marshall_web/components/layouts.ex:451
 #, elixir-autogen, elixir-format
 msgid "Overview"
 msgstr "கண்ணோட்டம்"
 
 #: lib/marshall_web/components/layouts.ex:411
-#: lib/marshall_web/components/layouts.ex:459
+#: lib/marshall_web/components/layouts.ex:460
 #, elixir-autogen, elixir-format
 msgid "Platform status"
 msgstr "தள நிலை"
@@ -353,13 +353,13 @@ msgstr "மூலம்"
 msgid "Source code"
 msgstr "மூலக் குறியீடு"
 
-#: lib/marshall_web/components/layouts.ex:509
+#: lib/marshall_web/components/layouts.ex:511
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "முறைமை"
 
-#: lib/marshall_web/components/layouts.ex:432
-#: lib/marshall_web/components/layouts.ex:455
+#: lib/marshall_web/components/layouts.ex:433
+#: lib/marshall_web/components/layouts.ex:456
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "குழுக்கள்"
@@ -369,8 +369,8 @@ msgstr "குழுக்கள்"
 msgid "This change needs a fresh passkey verification. Your verification lasts 15 minutes."
 msgstr "இந்த மாற்றத்திற்குப் புதிய அணுகல் சாவிச் சரிபார்ப்பு தேவை. உங்கள் சரிபார்ப்பு 15 நிமிடங்கள் செல்லும்."
 
-#: lib/marshall_web/components/layouts.ex:428
-#: lib/marshall_web/components/layouts.ex:451
+#: lib/marshall_web/components/layouts.ex:429
+#: lib/marshall_web/components/layouts.ex:452
 #, elixir-autogen, elixir-format
 msgid "Threads"
 msgstr "உரையாடல்கள்"
@@ -381,7 +381,7 @@ msgid "Time zone"
 msgstr "நேர மண்டலம்"
 
 #: lib/marshall_web/components/layouts.ex:415
-#: lib/marshall_web/components/layouts.ex:460
+#: lib/marshall_web/components/layouts.ex:461
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "பயனர்கள்"
@@ -402,13 +402,13 @@ msgid "Welcome to Overalls. Make yourself at home."
 msgstr "Overalls-க்கு வரவேற்கிறோம். உங்கள் வீட்டைப் போல உணருங்கள்."
 
 #: lib/marshall_web/components/layouts.ex:409
-#: lib/marshall_web/components/layouts.ex:457
+#: lib/marshall_web/components/layouts.ex:458
 #, elixir-autogen, elixir-format
 msgid "Workloads"
 msgstr "பணிச்சுமைகள்"
 
 #: lib/marshall_web/components/layouts.ex:283
-#: lib/marshall_web/components/layouts.ex:463
+#: lib/marshall_web/components/layouts.ex:465
 #, elixir-autogen, elixir-format
 msgid "Workspace"
 msgstr "பணியிடம்"
@@ -428,7 +428,7 @@ msgstr "பணியிட வழிசெலுத்தல்"
 msgid "Your account"
 msgstr "உங்கள் கணக்கு"
 
-#: lib/marshall_web/components/layouts.ex:425
+#: lib/marshall_web/components/layouts.ex:426
 #, elixir-autogen, elixir-format
 msgid "Your workspace"
 msgstr "உங்கள் பணியிடம்"
@@ -442,3 +442,9 @@ msgstr "மூடு"
 #, elixir-autogen, elixir-format
 msgid "← All sections"
 msgstr "← அனைத்துப் பிரிவுகளும்"
+
+#: lib/marshall_web/components/layouts.ex:419
+#: lib/marshall_web/components/layouts.ex:464
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning"
+msgstr "SCIM வழங்கல்"

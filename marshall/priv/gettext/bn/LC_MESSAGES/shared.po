@@ -35,20 +35,20 @@ msgid "A reference for the system, its configuration, and its operation."
 msgstr "সিস্টেম, এর কনফিগারেশন ও কার্যপ্রণালীর রেফারেন্স।"
 
 #: lib/marshall_web/components/layouts.ex:337
-#: lib/marshall_web/components/layouts.ex:443
+#: lib/marshall_web/components/layouts.ex:444
 #, elixir-autogen, elixir-format
 msgid "AI usage"
 msgstr "AI ব্যবহার"
 
 #: lib/marshall_web/components/layouts.ex:416
-#: lib/marshall_web/components/layouts.ex:461
+#: lib/marshall_web/components/layouts.ex:462
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "অ্যাক্সেস কর্তৃত্ব"
 
 #: lib/marshall_web/components/layouts.ex:241
 #: lib/marshall_web/components/layouts.ex:329
-#: lib/marshall_web/components/layouts.ex:449
+#: lib/marshall_web/components/layouts.ex:450
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "অ্যাকাউন্ট"
@@ -75,8 +75,8 @@ msgid "Administration"
 msgstr "প্রশাসন"
 
 #: lib/marshall_web/components/layouts.ex:245
-#: lib/marshall_web/components/layouts.ex:507
-#: lib/marshall_web/components/layouts.ex:508
+#: lib/marshall_web/components/layouts.ex:509
+#: lib/marshall_web/components/layouts.ex:510
 #: lib/marshall_web/controllers/docs_html/show.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Appearance"
@@ -89,7 +89,7 @@ msgid "Attempting to reconnect"
 msgstr "আবার সংযোগের চেষ্টা চলছে"
 
 #: lib/marshall_web/components/layouts.ex:418
-#: lib/marshall_web/components/layouts.ex:462
+#: lib/marshall_web/components/layouts.ex:463
 #, elixir-autogen, elixir-format
 msgid "Audit"
 msgstr "নিরীক্ষা"
@@ -141,17 +141,17 @@ msgstr "সূচিপত্র"
 msgid "Control room"
 msgstr "নিয়ন্ত্রণকক্ষ"
 
-#: lib/marshall_web/components/layouts.ex:441
+#: lib/marshall_web/components/layouts.ex:442
 #, elixir-autogen, elixir-format
 msgid "Control room · %{section}"
 msgstr "নিয়ন্ত্রণকক্ষ · %{section}"
 
-#: lib/marshall_web/components/layouts.ex:438
+#: lib/marshall_web/components/layouts.ex:439
 #, elixir-autogen, elixir-format
 msgid "Control room · AI usage"
 msgstr "নিয়ন্ত্রণকক্ষ · কৃত্রিম বুদ্ধিমত্তার ব্যবহার"
 
-#: lib/marshall_web/components/layouts.ex:511
+#: lib/marshall_web/components/layouts.ex:513
 #, elixir-autogen, elixir-format
 msgid "Dark"
 msgstr "গাঢ়"
@@ -188,8 +188,8 @@ msgstr "মেশিনবহরের কৃত্রিম বুদ্ধি�
 msgid "Git mirrors"
 msgstr "Git-এর প্রতিরূপ"
 
-#: lib/marshall_web/components/layouts.ex:431
-#: lib/marshall_web/components/layouts.ex:454
+#: lib/marshall_web/components/layouts.ex:432
+#: lib/marshall_web/components/layouts.ex:455
 #, elixir-autogen, elixir-format
 msgid "Git repositories"
 msgstr "Git সংগ্রহশালা"
@@ -221,14 +221,14 @@ msgstr "সহায়িকায় যা আছে"
 msgid "Home"
 msgstr "প্রচ্ছদ"
 
-#: lib/marshall_web/components/layouts.ex:430
-#: lib/marshall_web/components/layouts.ex:453
+#: lib/marshall_web/components/layouts.ex:431
+#: lib/marshall_web/components/layouts.ex:454
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "ইন্টিগ্রেশনসমূহ"
 
 #: lib/marshall_web/components/layouts.ex:410
-#: lib/marshall_web/components/layouts.ex:458
+#: lib/marshall_web/components/layouts.ex:459
 #, elixir-autogen, elixir-format
 msgid "Jobs"
 msgstr "কাজসমূহ"
@@ -238,7 +238,7 @@ msgstr "কাজসমূহ"
 msgid "LLM index"
 msgstr "LLM সূচি"
 
-#: lib/marshall_web/components/layouts.ex:510
+#: lib/marshall_web/components/layouts.ex:512
 #, elixir-autogen, elixir-format
 msgid "Light"
 msgstr "হালকা"
@@ -248,8 +248,8 @@ msgstr "হালকা"
 msgid "Machine readable"
 msgstr "মেশিনে পাঠযোগ্য"
 
-#: lib/marshall_web/components/layouts.ex:429
-#: lib/marshall_web/components/layouts.ex:452
+#: lib/marshall_web/components/layouts.ex:430
+#: lib/marshall_web/components/layouts.ex:453
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "মেশিনসমূহ"
@@ -280,7 +280,7 @@ msgid "Menu"
 msgstr "মেনু"
 
 #: lib/marshall_web/components/layouts.ex:408
-#: lib/marshall_web/components/layouts.ex:456
+#: lib/marshall_web/components/layouts.ex:457
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "নোডের রক্ষণাবেক্ষণ"
@@ -301,14 +301,14 @@ msgstr "কার্যক্রম"
 msgid "Overalls"
 msgstr "Overalls"
 
-#: lib/marshall_web/components/layouts.ex:427
-#: lib/marshall_web/components/layouts.ex:450
+#: lib/marshall_web/components/layouts.ex:428
+#: lib/marshall_web/components/layouts.ex:451
 #, elixir-autogen, elixir-format
 msgid "Overview"
 msgstr "সারসংক্ষেপ"
 
 #: lib/marshall_web/components/layouts.ex:411
-#: lib/marshall_web/components/layouts.ex:459
+#: lib/marshall_web/components/layouts.ex:460
 #, elixir-autogen, elixir-format
 msgid "Platform status"
 msgstr "প্ল্যাটফর্মের অবস্থা"
@@ -353,13 +353,13 @@ msgstr "উৎস"
 msgid "Source code"
 msgstr "উৎস কোড"
 
-#: lib/marshall_web/components/layouts.ex:509
+#: lib/marshall_web/components/layouts.ex:511
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "সিস্টেম"
 
-#: lib/marshall_web/components/layouts.ex:432
-#: lib/marshall_web/components/layouts.ex:455
+#: lib/marshall_web/components/layouts.ex:433
+#: lib/marshall_web/components/layouts.ex:456
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "দলসমূহ"
@@ -369,8 +369,8 @@ msgstr "দলসমূহ"
 msgid "This change needs a fresh passkey verification. Your verification lasts 15 minutes."
 msgstr "এই পরিবর্তনে নতুন পাসকি যাচাই লাগবে। যাচাই ১৫ মিনিট থাকে।"
 
-#: lib/marshall_web/components/layouts.ex:428
-#: lib/marshall_web/components/layouts.ex:451
+#: lib/marshall_web/components/layouts.ex:429
+#: lib/marshall_web/components/layouts.ex:452
 #, elixir-autogen, elixir-format
 msgid "Threads"
 msgstr "আলোচনাসমূহ"
@@ -381,7 +381,7 @@ msgid "Time zone"
 msgstr "সময় অঞ্চল"
 
 #: lib/marshall_web/components/layouts.ex:415
-#: lib/marshall_web/components/layouts.ex:460
+#: lib/marshall_web/components/layouts.ex:461
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "ব্যবহারকারীগণ"
@@ -402,13 +402,13 @@ msgid "Welcome to Overalls. Make yourself at home."
 msgstr "Overalls-এ স্বাগতম। নিজের বাড়ির মতো থাকুন।"
 
 #: lib/marshall_web/components/layouts.ex:409
-#: lib/marshall_web/components/layouts.ex:457
+#: lib/marshall_web/components/layouts.ex:458
 #, elixir-autogen, elixir-format
 msgid "Workloads"
 msgstr "কাজের চাপসমূহ"
 
 #: lib/marshall_web/components/layouts.ex:283
-#: lib/marshall_web/components/layouts.ex:463
+#: lib/marshall_web/components/layouts.ex:465
 #, elixir-autogen, elixir-format
 msgid "Workspace"
 msgstr "কর্মক্ষেত্র"
@@ -428,7 +428,7 @@ msgstr "কর্মক্ষেত্রের নেভিগেশন"
 msgid "Your account"
 msgstr "আপনার অ্যাকাউন্ট"
 
-#: lib/marshall_web/components/layouts.ex:425
+#: lib/marshall_web/components/layouts.ex:426
 #, elixir-autogen, elixir-format
 msgid "Your workspace"
 msgstr "আপনার কর্মক্ষেত্র"
@@ -442,3 +442,9 @@ msgstr "বন্ধ করুন"
 #, elixir-autogen, elixir-format
 msgid "← All sections"
 msgstr "← সব বিভাগ"
+
+#: lib/marshall_web/components/layouts.ex:419
+#: lib/marshall_web/components/layouts.ex:464
+#, elixir-autogen, elixir-format
+msgid "SCIM provisioning"
+msgstr "SCIM প্রভিশনিং"

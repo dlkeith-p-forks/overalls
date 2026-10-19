@@ -20,7 +20,7 @@ msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
 msgstr[0] "%{user} · %{count} người đang xem"
 
-#: lib/marshall_web/components/workspace_components.ex:255
+#: lib/marshall_web/components/workspace_components.ex:259
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}"
 msgstr "%{value1} vCPU · %{value2} GiB bộ nhớ · %{value3} GiB đĩa · %{value4}"
@@ -30,7 +30,7 @@ msgstr "%{value1} vCPU · %{value2} GiB bộ nhớ · %{value3} GiB đĩa · %{v
 msgid "+ New"
 msgstr "+ Mới"
 
-#: lib/marshall_web/live/terminal_live.ex:722
+#: lib/marshall_web/live/terminal_live.ex:723
 #, elixir-autogen, elixir-format
 msgid "A+"
 msgstr "A+"
@@ -40,17 +40,17 @@ msgstr "A+"
 msgid "Access"
 msgstr "Truy cập"
 
-#: lib/marshall_web/live/terminal_live.ex:789
+#: lib/marshall_web/live/terminal_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Account email"
 msgstr "Email tài khoản"
 
-#: lib/marshall_web/live/terminal_live.ex:796
+#: lib/marshall_web/live/terminal_live.ex:797
 #, elixir-autogen, elixir-format
 msgid "Allow viewing"
 msgstr "Cho phép xem"
 
-#: lib/marshall_web/components/workspace_components.ex:413
+#: lib/marshall_web/components/workspace_components.ex:417
 #, elixir-autogen, elixir-format
 msgid "Already installed"
 msgstr "Đã cài đặt"
@@ -71,23 +71,23 @@ msgstr "Vùng hiển thị Android"
 msgid "Android display is unavailable."
 msgstr "Màn hình Android không khả dụng."
 
-#: lib/marshall_web/live/terminal_live.ex:717
+#: lib/marshall_web/live/terminal_live.ex:718
 #, elixir-autogen, elixir-format
 msgid "A−"
 msgstr "A−"
 
-#: lib/marshall_web/components/workspace_components.ex:436
+#: lib/marshall_web/components/workspace_components.ex:440
 #: lib/marshall_web/live/terminal_live.ex:655
 #, elixir-autogen, elixir-format
 msgid "Boot log"
 msgstr "Nhật ký khởi động"
 
-#: lib/marshall_web/live/terminal_live.ex:802
+#: lib/marshall_web/live/terminal_live.ex:803
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Hủy"
 
-#: lib/marshall_web/live/terminal_live.ex:757
+#: lib/marshall_web/live/terminal_live.ex:758
 #, elixir-autogen, elixir-format
 msgid "Close search"
 msgstr "Đóng tìm kiếm"
@@ -102,50 +102,50 @@ msgstr "Đóng phiên"
 msgid "Close terminal %{value1}"
 msgstr "Đóng thiết bị đầu cuối %{value1}"
 
-#: lib/marshall_web/components/workspace_components.ex:381
+#: lib/marshall_web/components/workspace_components.ex:385
 #, elixir-autogen, elixir-format
 msgid "Connect from your computer"
 msgstr "Kết nối từ máy tính của bạn"
 
-#: lib/marshall_web/live/terminal_live.ex:694
+#: lib/marshall_web/live/terminal_live.ex:695
 #, elixir-autogen, elixir-format
 msgid "Connecting…"
 msgstr "Đang kết nối…"
 
-#: lib/marshall_web/components/workspace_components.ex:273
-#: lib/marshall_web/components/workspace_components.ex:400
-#: lib/marshall_web/components/workspace_components.ex:410
-#: lib/marshall_web/components/workspace_components.ex:421
+#: lib/marshall_web/components/workspace_components.ex:277
+#: lib/marshall_web/components/workspace_components.ex:404
+#: lib/marshall_web/components/workspace_components.ex:414
+#: lib/marshall_web/components/workspace_components.ex:425
 #, elixir-autogen, elixir-format
 msgid "Copy"
 msgstr "Sao chép"
 
-#: lib/marshall_web/components/workspace_components.ex:399
+#: lib/marshall_web/components/workspace_components.ex:403
 #, elixir-autogen, elixir-format
 msgid "Copy Linux and macOS install command"
 msgstr "Sao chép lệnh cài đặt Linux và macOS"
 
-#: lib/marshall_web/components/workspace_components.ex:420
+#: lib/marshall_web/components/workspace_components.ex:424
 #, elixir-autogen, elixir-format
 msgid "Copy SSH command"
 msgstr "Sao chép lệnh SSH"
 
-#: lib/marshall_web/components/workspace_components.ex:409
+#: lib/marshall_web/components/workspace_components.ex:413
 #, elixir-autogen, elixir-format
 msgid "Copy Windows PowerShell install command"
 msgstr "Sao chép lệnh cài đặt Windows PowerShell"
 
-#: lib/marshall_web/components/workspace_components.ex:272
+#: lib/marshall_web/components/workspace_components.ex:276
 #, elixir-autogen, elixir-format
 msgid "Copy machine ID"
 msgstr "Sao chép ID máy"
 
-#: lib/marshall_web/components/workspace_components.ex:550
+#: lib/marshall_web/components/workspace_components.ex:554
 #, elixir-autogen, elixir-format
 msgid "Customer"
 msgstr "Khách hàng"
 
-#: lib/marshall_web/live/terminal_live.ex:716
+#: lib/marshall_web/live/terminal_live.ex:717
 #, elixir-autogen, elixir-format
 msgid "Decrease terminal font size"
 msgstr "Giảm cỡ chữ thiết bị đầu cuối"
@@ -165,8 +165,8 @@ msgstr "Đang xóa"
 msgid "Display relay ticket issued."
 msgstr "Đã cấp vé chuyển tiếp màn hình."
 
-#: lib/marshall_web/live/terminal_live.ex:727
-#: lib/marshall_web/live/terminal_live.ex:729
+#: lib/marshall_web/live/terminal_live.ex:728
+#: lib/marshall_web/live/terminal_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "Vào toàn màn hình"
@@ -176,42 +176,42 @@ msgstr "Vào toàn màn hình"
 msgid "Failed"
 msgstr "Thất bại"
 
-#: lib/marshall_web/live/terminal_live.ex:742
+#: lib/marshall_web/live/terminal_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Find in scrollback"
 msgstr "Tìm trong lịch sử cuộn"
 
-#: lib/marshall_web/live/terminal_live.ex:764
+#: lib/marshall_web/live/terminal_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Follow boot output"
 msgstr "Theo dõi đầu ra khởi động"
 
-#: lib/marshall_web/components/workspace_components.ex:265
+#: lib/marshall_web/components/workspace_components.ex:269
 #, elixir-autogen, elixir-format
 msgid "ID"
 msgstr "ID"
 
-#: lib/marshall_web/live/terminal_live.ex:721
+#: lib/marshall_web/live/terminal_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Increase terminal font size"
 msgstr "Tăng cỡ chữ thiết bị đầu cuối"
 
-#: lib/marshall_web/components/workspace_components.ex:390
+#: lib/marshall_web/components/workspace_components.ex:394
 #, elixir-autogen, elixir-format
 msgid "Install and connect"
 msgstr "Cài đặt và kết nối"
 
-#: lib/marshall_web/components/workspace_components.ex:385
+#: lib/marshall_web/components/workspace_components.ex:389
 #, elixir-autogen, elixir-format
 msgid "Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh."
 msgstr "Cài Overalls, cấu hình SSH và kết nối với máy này. Trên Windows, trình cài đặt cũng cài OpenSSH 9.6 trở lên và đặt làm ssh mặc định khi được quản trị viên chấp thuận."
 
-#: lib/marshall_web/components/workspace_components.ex:392
+#: lib/marshall_web/components/workspace_components.ex:396
 #, elixir-autogen, elixir-format
 msgid "Linux / macOS"
 msgstr "Linux / macOS"
 
-#: lib/marshall_web/components/workspace_components.ex:271
+#: lib/marshall_web/components/workspace_components.ex:275
 #, elixir-autogen, elixir-format
 msgid "Machine ID"
 msgstr "ID máy"
@@ -241,7 +241,7 @@ msgstr "Máy khởi động thất bại. Kiểm tra trạng thái máy và nh�
 msgid "Machine workspace"
 msgstr "Không gian làm việc của máy"
 
-#: lib/marshall_web/live/terminal_live.ex:752
+#: lib/marshall_web/live/terminal_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Next match"
 msgstr "Kết quả tiếp theo"
@@ -256,15 +256,15 @@ msgstr "Không có thiết bị đầu cuối chia sẻ để xem."
 msgid "No terminals are open. Choose New to open your personal shell."
 msgstr "Không có thiết bị đầu cuối đang mở. Chọn Mới để mở shell cá nhân."
 
-#: lib/marshall_web/components/workspace_components.ex:287
-#: lib/marshall_web/components/workspace_components.ex:297
-#: lib/marshall_web/components/workspace_components.ex:476
-#: lib/marshall_web/components/workspace_components.ex:484
+#: lib/marshall_web/components/workspace_components.ex:291
+#: lib/marshall_web/components/workspace_components.ex:301
+#: lib/marshall_web/components/workspace_components.ex:480
+#: lib/marshall_web/components/workspace_components.ex:488
 #, elixir-autogen, elixir-format
 msgid "Open VS Code"
 msgstr "Mở VS Code"
 
-#: lib/marshall_web/components/workspace_components.ex:475
+#: lib/marshall_web/components/workspace_components.ex:479
 #, elixir-autogen, elixir-format
 msgid "Open VS Code for %{value1}"
 msgstr "Mở VS Code cho %{value1}"
@@ -279,7 +279,8 @@ msgstr "Mở màn hình"
 msgid "Opening terminal; recovering the same request if the connection was interrupted."
 msgstr "Đang mở thiết bị đầu cuối; khôi phục cùng yêu cầu nếu kết nối bị gián đoạn."
 
-#: lib/marshall_web/components/workspace_components.ex:334
+#: lib/marshall_web/components/workspace_components.ex:338
+#: lib/marshall_web/live/admin/workloads_live.ex:212
 #, elixir-autogen, elixir-format
 msgid "Pause"
 msgstr "Tạm dừng"
@@ -294,7 +295,7 @@ msgstr "Đã tạm dừng"
 msgid "Pending"
 msgstr "Đang chờ"
 
-#: lib/marshall_web/components/workspace_components.ex:208
+#: lib/marshall_web/components/workspace_components.ex:212
 #, elixir-autogen, elixir-format
 msgid "Pinned"
 msgstr "Đã ghim"
@@ -311,12 +312,12 @@ msgstr "Đang chuẩn bị tài khoản máy khách…"
 msgid "Preparing your terminal…"
 msgstr "Đang chuẩn bị thiết bị đầu cuối…"
 
-#: lib/marshall_web/live/terminal_live.ex:747
+#: lib/marshall_web/live/terminal_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Previous match"
 msgstr "Kết quả trước"
 
-#: lib/marshall_web/live/terminal_live.ex:772
+#: lib/marshall_web/live/terminal_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Read-only boot console"
 msgstr "Bảng điều khiển khởi động chỉ đọc"
@@ -331,12 +332,12 @@ msgstr "Nhật ký khởi động máy chủ chỉ đọc. Không cần thiết 
 msgid "Reconnecting to the terminal service…"
 msgstr "Đang kết nối lại dịch vụ thiết bị đầu cuối…"
 
-#: lib/marshall_web/live/terminal_live.ex:705
+#: lib/marshall_web/live/terminal_live.ex:706
 #, elixir-autogen, elixir-format
 msgid "Rename in this browser"
 msgstr "Đổi tên trong trình duyệt này"
 
-#: lib/marshall_web/live/terminal_live.ex:704
+#: lib/marshall_web/live/terminal_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "Rename terminal"
 msgstr "Đổi tên thiết bị đầu cuối"
@@ -346,7 +347,8 @@ msgstr "Đổi tên thiết bị đầu cuối"
 msgid "Request control"
 msgstr "Yêu cầu điều khiển"
 
-#: lib/marshall_web/components/workspace_components.ex:325
+#: lib/marshall_web/components/workspace_components.ex:329
+#: lib/marshall_web/live/admin/workloads_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "Resume machine"
 msgstr "Tiếp tục máy"
@@ -362,7 +364,7 @@ msgstr "Đang tiếp tục"
 msgid "Resuming machine; waiting for capacity…"
 msgstr "Đang tiếp tục máy; chờ tài nguyên khả dụng…"
 
-#: lib/marshall_web/live/terminal_live.ex:799
+#: lib/marshall_web/live/terminal_live.ex:800
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "Thu hồi"
@@ -372,27 +374,27 @@ msgstr "Thu hồi"
 msgid "Running"
 msgstr "Đang chạy"
 
-#: lib/marshall_web/components/workspace_components.ex:443
+#: lib/marshall_web/components/workspace_components.ex:447
 #, elixir-autogen, elixir-format
 msgid "SSH connection details are temporarily unavailable."
 msgstr "Chi tiết kết nối SSH tạm thời không khả dụng."
 
-#: lib/marshall_web/components/workspace_components.ex:439
+#: lib/marshall_web/components/workspace_components.ex:443
 #, elixir-autogen, elixir-format
 msgid "SSH connection requires write access to this machine."
 msgstr "Kết nối SSH yêu cầu quyền ghi vào máy này."
 
-#: lib/marshall_web/live/terminal_live.ex:711
+#: lib/marshall_web/live/terminal_live.ex:712
 #, elixir-autogen, elixir-format
 msgid "Search (Ctrl+F)"
 msgstr "Tìm kiếm (Ctrl+F)"
 
-#: lib/marshall_web/live/terminal_live.ex:710
+#: lib/marshall_web/live/terminal_live.ex:711
 #, elixir-autogen, elixir-format
 msgid "Search scrollback"
 msgstr "Tìm trong lịch sử cuộn"
 
-#: lib/marshall_web/live/terminal_live.ex:734
+#: lib/marshall_web/live/terminal_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Search terminal scrollback"
 msgstr "Tìm trong lịch sử thiết bị đầu cuối"
@@ -407,7 +409,7 @@ msgstr "Cài đặt"
 msgid "Share terminal %{value1}"
 msgstr "Chia sẻ thiết bị đầu cuối %{value1}"
 
-#: lib/marshall_web/live/terminal_live.ex:780
+#: lib/marshall_web/live/terminal_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "Share this terminal"
 msgstr "Chia sẻ thiết bị đầu cuối này"
@@ -417,12 +419,12 @@ msgstr "Chia sẻ thiết bị đầu cuối này"
 msgid "Share view"
 msgstr "Chia sẻ chế độ xem"
 
-#: lib/marshall_web/components/workspace_components.ex:551
+#: lib/marshall_web/components/workspace_components.ex:555
 #, elixir-autogen, elixir-format
 msgid "Standard"
 msgstr "Tiêu chuẩn"
 
-#: lib/marshall_web/components/workspace_components.ex:315
+#: lib/marshall_web/components/workspace_components.ex:319
 #, elixir-autogen, elixir-format
 msgid "Start machine"
 msgstr "Khởi động máy"
@@ -432,7 +434,7 @@ msgstr "Khởi động máy"
 msgid "Starting"
 msgstr "Đang khởi động"
 
-#: lib/marshall_web/components/workspace_components.ex:344
+#: lib/marshall_web/components/workspace_components.ex:348
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "Dừng"
@@ -524,13 +526,13 @@ msgstr "Không thể mở thiết bị đầu cuối."
 msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
 msgstr "Máy này đã dừng. Khởi động để mở thiết bị đầu cuối. Các tệp của bạn được giữ lại."
 
-#: lib/marshall_web/components/workspace_components.ex:352
-#: lib/marshall_web/components/workspace_components.ex:526
+#: lib/marshall_web/components/workspace_components.ex:356
+#: lib/marshall_web/components/workspace_components.ex:530
 #, elixir-autogen, elixir-format
 msgid "This machine's image does not support the current browser editor."
 msgstr "Ảnh hệ thống của máy này không hỗ trợ trình chỉnh sửa trình duyệt hiện tại."
 
-#: lib/marshall_web/components/workspace_components.ex:427
+#: lib/marshall_web/components/workspace_components.ex:431
 #, elixir-autogen, elixir-format
 msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
 msgstr "Ảnh hệ thống của máy này chưa có tác nhân máy khách: SSH, thiết bị đầu cuối trình duyệt và tác nhân không khả dụng. Dùng"
@@ -540,7 +542,7 @@ msgstr "Ảnh hệ thống của máy này chưa có tác nhân máy khách: SSH
 msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
 msgstr "Ảnh hệ thống của máy này không có tác nhân thiết bị đầu cuối nên thiết bị đầu cuối trình duyệt không khả dụng."
 
-#: lib/marshall_web/live/terminal_live.ex:697
+#: lib/marshall_web/live/terminal_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "Nhập để tương tác"
@@ -556,38 +558,38 @@ msgid "Unavailable"
 msgstr "Không khả dụng"
 
 #: lib/marshall_web/components/workspace_components.ex:88
-#: lib/marshall_web/components/workspace_components.ex:553
+#: lib/marshall_web/components/workspace_components.ex:557
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "Không xác định"
 
-#: lib/marshall_web/components/workspace_components.ex:441
+#: lib/marshall_web/components/workspace_components.ex:445
 #, elixir-autogen, elixir-format
 msgid "Use the browser terminal for this Inception environment."
 msgstr "Dùng thiết bị đầu cuối trình duyệt cho môi trường Inception này."
 
-#: lib/marshall_web/components/workspace_components.ex:359
+#: lib/marshall_web/components/workspace_components.ex:363
 #, elixir-autogen, elixir-format
 msgid "VS Code is temporarily unavailable for this machine."
 msgstr "VS Code tạm thời không khả dụng cho máy này."
 
-#: lib/marshall_web/components/workspace_components.ex:532
+#: lib/marshall_web/components/workspace_components.ex:536
 #, elixir-autogen, elixir-format
 msgid "VS Code is temporarily unavailable."
 msgstr "VS Code tạm thời không khả dụng."
 
-#: lib/marshall_web/components/workspace_components.ex:535
+#: lib/marshall_web/components/workspace_components.ex:539
 #, elixir-autogen, elixir-format
 msgid "VS Code is unavailable for this machine."
 msgstr "VS Code không khả dụng cho máy này."
 
-#: lib/marshall_web/components/workspace_components.ex:357
-#: lib/marshall_web/components/workspace_components.ex:529
+#: lib/marshall_web/components/workspace_components.ex:361
+#: lib/marshall_web/components/workspace_components.ex:533
 #, elixir-autogen, elixir-format
 msgid "VS Code requires a running machine."
 msgstr "VS Code yêu cầu máy đang chạy."
 
-#: lib/marshall_web/live/terminal_live.ex:782
+#: lib/marshall_web/live/terminal_live.ex:783
 #, elixir-autogen, elixir-format
 msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
 msgstr "Chỉ được xem, kể cả người vận hành máy. Người nhận phải có sẵn quyền truy cập máy này."
@@ -602,7 +604,7 @@ msgstr "Đang chờ chuyển tiếp màn hình."
 msgid "Waiting for the machine to start…"
 msgstr "Đang chờ máy khởi động…"
 
-#: lib/marshall_web/components/workspace_components.ex:402
+#: lib/marshall_web/components/workspace_components.ex:406
 #, elixir-autogen, elixir-format
 msgid "Windows"
 msgstr "Windows"
@@ -632,22 +634,22 @@ msgstr "Shell trước đã đóng. Chọn Mới để mở thiết bị đầu 
 msgid "Your terminal will open when the machine is running and ready."
 msgstr "Thiết bị đầu cuối sẽ mở khi máy đang chạy và sẵn sàng."
 
-#: lib/marshall_web/live/terminal_live.ex:712
+#: lib/marshall_web/live/terminal_live.ex:713
 #, elixir-autogen, elixir-format
 msgid "find"
 msgstr "tìm"
 
-#: lib/marshall_web/live/terminal_live.ex:730
+#: lib/marshall_web/live/terminal_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "full"
 msgstr "đầy"
 
-#: lib/marshall_web/live/terminal_live.ex:706
+#: lib/marshall_web/live/terminal_live.ex:707
 #, elixir-autogen, elixir-format
 msgid "rename"
 msgstr "đổi tên"
 
-#: lib/marshall_web/components/workspace_components.ex:437
+#: lib/marshall_web/components/workspace_components.ex:441
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "để xem bảng điều khiển máy chủ chỉ đọc."

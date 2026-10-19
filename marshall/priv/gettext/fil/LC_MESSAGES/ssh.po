@@ -14,53 +14,53 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n==1 || n==2 || n==3 || (n%10!=4 && n%10!=6 && n%10!=9) ? 0 : 1);\n"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:83
+#: lib/marshall_web/live/ssh_approval_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr "Aprubahan ang SSH key"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:111
+#: lib/marshall_web/live/ssh_approval_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr "Aprubahan ang susi"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr "Aprubahan lang ang key na ito kung sinimulan mo ang koneksyon sa SSH at tumutugma ang fingerprint nito sa iyong SSH client."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:109
+#: lib/marshall_web/live/ssh_approval_live.ex:112
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "Inaprubahan…"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:101
+#: lib/marshall_web/live/ssh_approval_live.ex:104
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "Label (opsyonal)"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:120
+#: lib/marshall_web/live/ssh_approval_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr "Pamahalaan ang iyong mga SSH key"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:103
+#: lib/marshall_web/live/ssh_approval_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "Yung laptop ko"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
-#: lib/marshall_web/live/ssh_approval_live.ex:115
+#: lib/marshall_web/live/ssh_approval_live.ex:52
+#: lib/marshall_web/live/ssh_approval_live.ex:118
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "Naaprubahan ang SSH key. Maaari kang bumalik sa iyong SSH client."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:64
+#: lib/marshall_web/live/ssh_approval_live.ex:67
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr "Hindi magagamit o nag-expire na ang pag-apruba sa SSH na ito. Magsimula ng bagong koneksiyong SSH upang subukang muli."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:93
+#: lib/marshall_web/live/ssh_approval_live.ex:96
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr "Magsa-sign in ang susing ito bilang %{value1}. Maaari itong mamahala ng mga makina ayon sa mga pahintulot ng iyong account."
@@ -70,7 +70,7 @@ msgstr "Magsa-sign in ang susing ito bilang %{value1}. Maaari itong mamahala ng 
 msgid "Unavailable"
 msgstr "Hindi magagamit"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:117
+#: lib/marshall_web/live/ssh_approval_live.ex:120
 #, elixir-autogen, elixir-format
 msgid "Open Mila"
 msgstr "Buksan ang Mila"

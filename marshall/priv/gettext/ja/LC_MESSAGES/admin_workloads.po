@@ -19,17 +19,17 @@ msgstr ""
 msgid "Actions"
 msgstr "アクション"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:239
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "この VM をアーカイブしますか?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:241
+#: lib/marshall_web/live/admin/workloads_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "消去"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:174
+#: lib/marshall_web/live/admin/workloads_live.ex:176
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "詳細"
@@ -65,7 +65,7 @@ msgstr "ライフサイクルリクエストがキューに入れられました
 msgid "Lifecycle request was rejected."
 msgstr "ライフサイクル要求が拒否されました。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:231
+#: lib/marshall_web/live/admin/workloads_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "動く"
@@ -85,7 +85,7 @@ msgstr "再配置リクエストがキューに入れられました。"
 msgid "Relocation request was rejected."
 msgstr "移転要求は拒否されました。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:190
+#: lib/marshall_web/live/admin/workloads_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "サイズ変更"
@@ -95,7 +95,7 @@ msgstr "サイズ変更"
 msgid "Shape"
 msgstr "形"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:219
+#: lib/marshall_web/live/admin/workloads_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "始める"
@@ -105,12 +105,12 @@ msgstr "始める"
 msgid "State"
 msgstr "州"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:228
+#: lib/marshall_web/live/admin/workloads_live.ex:230
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "停止"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:182
+#: lib/marshall_web/live/admin/workloads_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "ターミナル"

@@ -25,7 +25,7 @@ msgstr[3] "%{count} آلات مملوكة"
 msgstr[4] "%{count} آلة مملوكة"
 msgstr[5] "%{count} آلة مملوكة"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "صفحات الحساب"
@@ -70,7 +70,7 @@ msgstr "تعذر تغيير صلاحيات المسؤول."
 msgid "Could not revoke browser sessions."
 msgstr "تعذر إبطال جلسات المتصفح."
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "حذف المستخدم والآلات"
@@ -87,7 +87,7 @@ msgstr ""
 "جميع الحسابات في هذا النشر. يمكن للمستخدمين المسجلين قراءة الصفحة؛ وتتطلب "
 "التغييرات مسؤولًا تحقق بمفتاح المرور مؤخرًا."
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "منح هذا الحساب صلاحية إدارة الأسطول بأكمله وجميع الآلات؟"
@@ -112,43 +112,43 @@ msgstr "المصادقة المتعددة مفعّلة"
 msgid "MFA not enrolled"
 msgstr "المصادقة المتعددة غير مسجلة"
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "تعيين مسؤول"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "الصفحة التالية →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "لا توجد حسابات في هذه الصفحة."
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr ""
 "حذف هذا الحساب نهائيًا وجميع آلاته، بما فيها الآلات المشاركة مع آخرين؟"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "إزالة المسؤول"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "إزالة صلاحيات المسؤول لهذا الحساب؟"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "إعادة تعيين المصادقة المتعددة"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr ""
@@ -160,17 +160,17 @@ msgstr ""
 msgid "Send invitation"
 msgstr "إرسال دعوة"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "تسجيل الخروج من كل مكان"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "تسجيل خروج هذا الحساب من جميع جلسات المتصفح؟"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "اكتب البريد لحذف هذا الحساب وآلاته البالغ عددها %{count}"
@@ -195,7 +195,7 @@ msgstr "التحقق بمفتاح المرور · يستمر وصول الإدا
 msgid "· Your account"
 msgstr "· حسابك"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← الصفحة الأولى"
@@ -205,7 +205,7 @@ msgstr "← الصفحة الأولى"
 msgid "Deleted"
 msgstr "محذوف"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "جارٍ حذف الأجهزة"
@@ -215,7 +215,7 @@ msgstr "جارٍ حذف الأجهزة"
 msgid "Retrying machine cleanup"
 msgstr "إعادة محاولة تنظيف الأجهزة"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "غير متاح"

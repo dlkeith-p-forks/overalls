@@ -21,7 +21,7 @@ msgid_plural "%{count} owned machines"
 msgstr[0] "Injin mallakar %{count}"
 msgstr[1] "%{count} injuna"
 
-#: lib/marshall_web/live/admin/users_live.ex:302
+#: lib/marshall_web/live/admin/users_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "Shafukan asusun"
@@ -66,7 +66,7 @@ msgstr "An kasa canza hanyar shiga mai gudanarwa."
 msgid "Could not revoke browser sessions."
 msgstr "An kasa soke zaman mai lilo."
 
-#: lib/marshall_web/live/admin/users_live.ex:293
+#: lib/marshall_web/live/admin/users_live.ex:295
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "Share mai amfani da injuna"
@@ -81,7 +81,7 @@ msgstr "Adireshin i-mel"
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr "Kowane asusun akan wannan turawa. Masu amfani da suka shiga suna iya karanta wannan shafin; canje-canje na buƙatar mai gudanarwa tare da tabbacin maɓalli na kwanan nan."
 
-#: lib/marshall_web/live/admin/users_live.ex:233
+#: lib/marshall_web/live/admin/users_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "Bada damar wannan asusun don gudanar da dukkan jiragen ruwa da duk injuna?"
@@ -106,42 +106,42 @@ msgstr "An kunna MFA"
 msgid "MFA not enrolled"
 msgstr "MFA ba a yi rajista ba"
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "Yi admin"
 
-#: lib/marshall_web/live/admin/users_live.ex:308
+#: lib/marshall_web/live/admin/users_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "shafi na gaba →"
 
-#: lib/marshall_web/live/admin/users_live.ex:300
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "Babu asusu a wannan shafin."
 
-#: lib/marshall_web/live/admin/users_live.ex:287
+#: lib/marshall_web/live/admin/users_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Share wannan asusun har abada da DUKKAN injinan da suka mallaka, gami da injinan da aka raba wa wasu?"
 
-#: lib/marshall_web/live/admin/users_live.ex:241
+#: lib/marshall_web/live/admin/users_live.ex:243
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "Cire mai gudanarwa"
 
-#: lib/marshall_web/live/admin/users_live.ex:231
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "Cire damar shiga mai gudanarwa na wannan asusun?"
 
-#: lib/marshall_web/live/admin/users_live.ex:264
+#: lib/marshall_web/live/admin/users_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "Sake saita MFA"
 
-#: lib/marshall_web/live/admin/users_live.ex:258
+#: lib/marshall_web/live/admin/users_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr "Sake saita MFA ɗin wannan mai amfani kuma a soke duk zaman mai lilo? Dole ne su yi rajistar maɓalli mai maye."
@@ -151,17 +151,17 @@ msgstr "Sake saita MFA ɗin wannan mai amfani kuma a soke duk zaman mai lilo? Do
 msgid "Send invitation"
 msgstr "Aika gayyata"
 
-#: lib/marshall_web/live/admin/users_live.ex:252
+#: lib/marshall_web/live/admin/users_live.ex:254
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "Fita a ko'ina"
 
-#: lib/marshall_web/live/admin/users_live.ex:249
+#: lib/marshall_web/live/admin/users_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "Fitar da wannan asusu daga kowane zaman mai bincike?"
 
-#: lib/marshall_web/live/admin/users_live.ex:277
+#: lib/marshall_web/live/admin/users_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "Buga imel ɗin don share wannan asusun da injin ɗin %{count}"
@@ -186,7 +186,7 @@ msgstr "Tabbatar da maɓallin shiga · damar gudanarwa tana ɗaukar mintuna 15 �
 msgid "· Your account"
 msgstr "· Asusunka"
 
-#: lib/marshall_web/live/admin/users_live.ex:303
+#: lib/marshall_web/live/admin/users_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← Shafin farko"
@@ -196,7 +196,7 @@ msgstr "← Shafin farko"
 msgid "Deleted"
 msgstr "An goge"
 
-#: lib/marshall_web/live/admin/users_live.ex:327
+#: lib/marshall_web/live/admin/users_live.ex:328
 #, elixir-autogen, elixir-format
 msgid "Deleting machines"
 msgstr "Ana goge injuna"
@@ -206,7 +206,7 @@ msgstr "Ana goge injuna"
 msgid "Retrying machine cleanup"
 msgstr "Ana sake gwada tsabtace injuna"
 
-#: lib/marshall_web/live/admin/users_live.ex:328
+#: lib/marshall_web/live/admin/users_live.ex:330
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Babu"

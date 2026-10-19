@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/account_live.ex:460
+#: lib/marshall_web/live/account_live.ex:500
 #, elixir-autogen, elixir-format
 msgid "%{count} registered key"
 msgid_plural "%{count} registered keys"
@@ -31,371 +31,371 @@ msgstr "உங்களை விட %{span} முன்னால்"
 msgid "%{span} behind you"
 msgstr "உங்களை விட %{span} பின்னால்"
 
-#: lib/marshall_web/live/account_live.ex:474
+#: lib/marshall_web/live/account_live.ex:515
 #, elixir-autogen, elixir-format
 msgid "1. Profile"
 msgstr "1. சுயவிவரம்"
 
-#: lib/marshall_web/live/account_live.ex:553
+#: lib/marshall_web/live/account_live.ex:595
 #, elixir-autogen, elixir-format
 msgid "2. Sign-in and passkeys"
 msgstr "2. உள்நுழைவு மற்றும் கடவுச்சொல் விசைகள்"
 
-#: lib/marshall_web/live/account_live.ex:666
+#: lib/marshall_web/live/account_live.ex:718
 #, elixir-autogen, elixir-format
 msgid "3. SSH keys"
 msgstr "3. SSH விசைகள்"
 
-#: lib/marshall_web/live/account_live.ex:750
+#: lib/marshall_web/live/account_live.ex:809
 #, elixir-autogen, elixir-format
 msgid "4. Git identity"
 msgstr "4. Git அடையாளம்"
 
 #: lib/marshall_web/live/account_live.ex:35
-#: lib/marshall_web/live/account_live.ex:445
+#: lib/marshall_web/live/account_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "கணக்கு"
 
+# Prior translation for retired source "Add Overalls commit attribution": "கமிட்டில் Overalls பங்களிப்புக்கான அங்கீகாரத்தைச் சேர்க்கவும்"
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-# Prior translation for retired source "Add Overalls commit attribution": "கமிட்டில் Overalls பங்களிப்புக்கான அங்கீகாரத்தைச் சேர்க்கவும்"
 msgid "Commit attribution"
 msgstr "கமிட் உரிமையாளர் குறிப்பிடல்"
 
-#: lib/marshall_web/live/account_live.ex:742
+#: lib/marshall_web/live/account_live.ex:801
 #, elixir-autogen, elixir-format
 msgid "Add SSH key"
 msgstr "SSH விசையைச் சேர்"
 
-#: lib/marshall_web/live/account_live.ex:719
+#: lib/marshall_web/live/account_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Add a key"
 msgstr "விசையைச் சேர்"
 
-#: lib/marshall_web/live/account_live.ex:587
+#: lib/marshall_web/live/account_live.ex:633
 #, elixir-autogen, elixir-format
 msgid "Add passkey"
 msgstr "அணுகுவிசையைச் சேர்"
 
-#: lib/marshall_web/live/account_live.ex:650
-#: lib/marshall_web/live/account_live.ex:713
+#: lib/marshall_web/live/account_live.ex:701
+#: lib/marshall_web/live/account_live.ex:767
 #, elixir-autogen, elixir-format
 msgid "Added"
 msgstr "சேர்க்கப்பட்டது"
 
-#: lib/marshall_web/live/account_live.ex:740
+#: lib/marshall_web/live/account_live.ex:799
 #, elixir-autogen, elixir-format
 msgid "Adding…"
 msgstr "சேர்க்கிறது…"
 
-#: lib/marshall_web/live/account_live.ex:342
+#: lib/marshall_web/live/account_live.ex:370
 #, elixir-autogen, elixir-format
 msgid "Choose a language from the list."
 msgstr "பட்டியலிலிருந்து மொழியைத் தேர்ந்தெடுக்கவும்."
 
-#: lib/marshall_web/live/account_live.ex:211
+#: lib/marshall_web/live/account_live.ex:224
 #, elixir-autogen, elixir-format
 msgid "Choose a time zone from the list."
 msgstr "பட்டியலிலிருந்து நேர மண்டலத்தைத் தேர்ந்தெடுக்கவும்."
 
-#: lib/marshall_web/live/account_live.ex:544
+#: lib/marshall_web/live/account_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Clear saved zone"
 msgstr "சேமித்த நேர மண்டலத்தை நீக்கு"
 
-#: lib/marshall_web/live/account_live.ex:167
+#: lib/marshall_web/live/account_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Could not add this key. Paste one supported public key; it must not belong to another account."
 msgstr "இந்தச் சாவியைச் சேர்க்க முடியவில்லை. ஆதரிக்கப்படும் ஒரு பொதுச் சாவியை ஒட்டவும்; அது வேறொரு கணக்கிற்கு உரியதாக இருக்கக் கூடாது."
 
-#: lib/marshall_web/live/account_live.ex:222
+#: lib/marshall_web/live/account_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Could not clear your time zone."
 msgstr "உங்கள் நேர மண்டலத்தை நீக்க முடியவில்லை."
 
-#: lib/marshall_web/live/account_live.ex:195
+#: lib/marshall_web/live/account_live.ex:206
 #, elixir-autogen, elixir-format
 msgid "Could not remove this key."
 msgstr "இந்தச் சாவியை நீக்க முடியவில்லை."
 
-#: lib/marshall_web/live/account_live.ex:183
+#: lib/marshall_web/live/account_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Could not rename this key. Use at most 128 characters."
 msgstr ""
 "இந்த விசையின் பெயரை மாற்ற முடியவில்லை. அதிகபட்சம் 128 எழுத்துகளைப் "
 "பயன்படுத்தவும்."
 
-#: lib/marshall_web/live/account_live.ex:132
+#: lib/marshall_web/live/account_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Credential change refused. Names must be 1–80 characters, changes need a passkey verified in the last 15 minutes, and administrators must keep at least one passkey."
 msgstr "அடையாளச் சான்று மாற்றம் மறுக்கப்பட்டது. பெயர்கள் 1–80 எழுத்துகளாக இருக்க வேண்டும், மாற்றங்களுக்கு கடந்த 15 நிமிடங்களில் சரிபார்க்கப்பட்ட அணுகல் சாவி தேவை, நிர்வாகிகள் குறைந்தது ஓர் அணுகல் சாவியையாவது வைத்திருக்க வேண்டும்."
 
-#: lib/marshall_web/live/account_live.ex:703
+#: lib/marshall_web/live/account_live.ex:757
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr "விளக்கம்"
 
-#: lib/marshall_web/live/account_live.ex:422
+#: lib/marshall_web/live/account_live.ex:451
 #, elixir-autogen, elixir-format
 msgid "Detected from your browser: %{value1}. Save it so others can see your local time."
 msgstr "உங்கள் உலாவியிலிருந்து கண்டறியப்பட்டது: %{value1}. மற்றவர்கள் உங்கள் உள்ளூர் நேரத்தைப் பார்க்க இதைச் சேமிக்கவும்."
 
-#: lib/marshall_web/live/account_live.ex:503
+#: lib/marshall_web/live/account_live.ex:544
 #, elixir-autogen, elixir-format
 msgid "Email"
 msgstr "மின்னஞ்சல்"
 
-#: lib/marshall_web/live/account_live.ex:605
+#: lib/marshall_web/live/account_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "End this verification before the fifteen minutes are up."
 msgstr "பதினைந்து நிமிடங்கள் முடிவதற்கு முன் இந்தச் சரிபார்ப்பை முடி."
 
-#: lib/marshall_web/live/account_live.ex:251
+#: lib/marshall_web/live/account_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Enter a valid Git name and email address."
 msgstr "செல்லுபடியாகும் Git பெயரையும் மின்னஞ்சல் முகவரியையும் உள்ளிடவும்."
 
-#: lib/marshall_web/live/account_live.ex:709
+#: lib/marshall_web/live/account_live.ex:763
 #, elixir-autogen, elixir-format
 msgid "Fingerprint"
 msgstr "கைரேகை"
 
-#: lib/marshall_web/live/account_live.ex:761
+#: lib/marshall_web/live/account_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Git email"
 msgstr "Git மின்னஞ்சல்"
 
-#: lib/marshall_web/live/account_live.ex:467
+#: lib/marshall_web/live/account_live.ex:508
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git அடையாளம்"
 
-#: lib/marshall_web/live/account_live.ex:247
+#: lib/marshall_web/live/account_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "Git settings saved."
 msgstr "Git அமைப்புகள் சேமிக்கப்பட்டன."
 
-#: lib/marshall_web/live/account_live.ex:754
+#: lib/marshall_web/live/account_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Git username"
 msgstr "Git பயனர்பெயர்"
 
-#: lib/marshall_web/live/account_live.ex:256
+#: lib/marshall_web/live/account_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "செல்லாத கோரிக்கை."
 
-#: lib/marshall_web/live/account_live.ex:656
+#: lib/marshall_web/live/account_live.ex:707
 #, elixir-autogen, elixir-format
 msgid "Keep a backup passkey. If you lose access, another administrator can reset your passkeys."
 msgstr "மாற்று அணுகல் சாவியை வைத்திருங்கள். அணுகலை இழந்தால் மற்றொரு நிர்வாகி உங்கள் அணுகல் சாவிகளை மீட்டமைக்கலாம்."
 
-#: lib/marshall_web/live/account_live.ex:668
+#: lib/marshall_web/live/account_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Keys registered here open your machines over SSH with the same account and permissions as this site. Remove a key to revoke its access; email sign-in keeps working without any key."
 msgstr "இங்கே பதிவுசெய்த சாவிகள் இத்தளத்தின் அதே கணக்கு மற்றும் அனுமதிகளுடன் SSH வழியாக உங்கள் இயந்திரங்களைத் திறக்கும். அணுகலை ரத்துசெய்ய சாவியை நீக்கவும்; எந்தச் சாவியும் இல்லாமல் மின்னஞ்சல் உள்நுழைவு தொடர்ந்து இயங்கும்."
 
-#: lib/marshall_web/live/account_live.ex:722
+#: lib/marshall_web/live/account_live.ex:776
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "பெயர்ச்சீட்டு (விருப்பம்)"
 
-#: lib/marshall_web/live/account_live.ex:479
+#: lib/marshall_web/live/account_live.ex:520
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "மொழி"
 
-#: lib/marshall_web/live/account_live.ex:485
+#: lib/marshall_web/live/account_live.ex:526
 #, elixir-autogen, elixir-format
 msgid "Language is detected from your browser."
 msgstr "உங்கள் உலாவியிலிருந்து மொழி கண்டறியப்படுகிறது."
 
-#: lib/marshall_web/live/account_live.ex:504
+#: lib/marshall_web/live/account_live.ex:545
 #, elixir-autogen, elixir-format
 msgid "Local time"
 msgstr "உள்ளூர் நேரம்"
 
-#: lib/marshall_web/live/account_live.ex:604
+#: lib/marshall_web/live/account_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Lock now"
 msgstr "இப்போது பூட்டு"
 
-#: lib/marshall_web/live/account_live.ex:724
+#: lib/marshall_web/live/account_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "எனது மடிக்கணினி"
 
-#: lib/marshall_web/live/account_live.ex:673
+#: lib/marshall_web/live/account_live.ex:726
 #, elixir-autogen, elixir-format
 msgid "No SSH keys yet. You can always sign in here using email."
 msgstr "இன்னும் SSH சாவிகள் இல்லை. மின்னஞ்சலைப் பயன்படுத்தி எப்போதும் இங்கே உள்நுழையலாம்."
 
-#: lib/marshall_web/live/account_live.ex:613
+#: lib/marshall_web/live/account_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "No passkeys yet. First enrollment requires a fresh email sign-in completed within the last five minutes. After setup, return to the page you came from and retry the action."
 msgstr "இன்னும் அணுகல் சாவிகள் இல்லை. முதல் பதிவிற்கு கடந்த ஐந்து நிமிடங்களில் முடிக்கப்பட்ட புதிய மின்னஞ்சல் உள்நுழைவு தேவை. அமைத்த பிறகு நீங்கள் வந்த பக்கத்திற்குத் திரும்பி செயலை மீண்டும் முயலவும்."
 
-#: lib/marshall_web/live/account_live.ex:427
+#: lib/marshall_web/live/account_live.ex:459
 #, elixir-autogen, elixir-format
 msgid "No zone saved and none detected; times are shown in UTC until you choose one."
 msgstr "நேர மண்டலம் சேமிக்கப்படவோ கண்டறியப்படவோ இல்லை; நீங்கள் ஒன்றைத் தேர்ந்தெடுக்கும் வரை நேரங்கள் UTC-இல் காட்டப்படும்."
 
-#: lib/marshall_web/live/account_live.ex:448
+#: lib/marshall_web/live/account_live.ex:488
 #, elixir-autogen, elixir-format
 msgid "On this page"
 msgstr "இப்பக்கத்தில்"
 
-#: lib/marshall_web/live/account_live.ex:98
+#: lib/marshall_web/live/account_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Passkey added. Verify it when you need to approve an administrative change."
 msgstr "அணுகல் சாவி சேர்க்கப்பட்டது. நிர்வாக மாற்றத்தை அங்கீகரிக்க வேண்டும்போது சரிபார்க்கவும்."
 
-#: lib/marshall_web/live/account_live.ex:631
+#: lib/marshall_web/live/account_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "Passkey name"
 msgstr "அணுகல் சாவிப் பெயர்"
 
-#: lib/marshall_web/live/account_live.ex:145
+#: lib/marshall_web/live/account_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled or unavailable. You can try again."
 msgstr "அணுகல் சாவிக் கோரிக்கை ரத்துசெய்யப்பட்டது அல்லது கிடைக்கவில்லை. மீண்டும் முயலலாம்."
 
-#: lib/marshall_web/live/account_live.ex:101
+#: lib/marshall_web/live/account_live.ex:103
 #, elixir-autogen, elixir-format
 msgid "Passkey verified for 15 minutes."
 msgstr "அணுகல் சாவி 15 நிமிடங்களுக்கு சரிபார்க்கப்பட்டது."
 
-#: lib/marshall_web/live/account_live.ex:563
+#: lib/marshall_web/live/account_live.ex:606
 #, elixir-autogen, elixir-format
 msgid "Passkey verified · %{count} second remaining."
 msgid_plural "Passkey verified · %{count} seconds remaining."
 msgstr[0] "அணுகல் சாவி சரிபார்க்கப்பட்டது · %{count} வினாடி மீதமுள்ளது."
 msgstr[1] "அணுகல் சாவி சரிபார்க்கப்பட்டது · %{count} வினாடிகள் மீதமுள்ளன."
 
-#: lib/marshall_web/live/account_live.ex:734
+#: lib/marshall_web/live/account_live.ex:789
 #, elixir-autogen, elixir-format
 msgid "Paste a public key from your .pub file. Never paste a private key."
 msgstr "உங்கள் .pub கோப்பிலிருந்து பொதுச் சாவியை ஒட்டவும். தனிச் சாவியை ஒருபோதும் ஒட்ட வேண்டாம்."
 
-#: lib/marshall_web/live/account_live.ex:451
+#: lib/marshall_web/live/account_live.ex:491
 #, elixir-autogen, elixir-format
 msgid "Profile"
 msgstr "சுயவிவரம்"
 
-#: lib/marshall_web/live/account_live.ex:729
+#: lib/marshall_web/live/account_live.ex:783
 #, elixir-autogen, elixir-format
 msgid "Public key"
 msgstr "பொதுச் சாவி"
 
-#: lib/marshall_web/live/account_live.ex:647
-#: lib/marshall_web/live/account_live.ex:689
+#: lib/marshall_web/live/account_live.ex:698
+#: lib/marshall_web/live/account_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr "நீக்கு"
 
-#: lib/marshall_web/live/account_live.ex:684
+#: lib/marshall_web/live/account_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Remove this key's SSH access? Already accepted machine operations will continue."
 msgstr "இந்தச் சாவியின் SSH அணுகலை நீக்கவா? ஏற்கெனவே ஏற்ற இயந்திரச் செயல்பாடுகள் தொடரும்."
 
-#: lib/marshall_web/live/account_live.ex:642
+#: lib/marshall_web/live/account_live.ex:692
 #, elixir-autogen, elixir-format
 msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
 msgstr "இந்த அணுகல் சாவியை நீக்கவா? கடைசி அணுகல் சாவியை நீக்கினால் அனைத்து அமர்வுகளிலிருந்தும் வெளியேற்றப்படுவீர்கள்."
 
-#: lib/marshall_web/live/account_live.ex:634
-#: lib/marshall_web/live/account_live.ex:706
+#: lib/marshall_web/live/account_live.ex:684
+#: lib/marshall_web/live/account_live.ex:760
 #, elixir-autogen, elixir-format
 msgid "Rename"
 msgstr "மறுபெயரிடு"
 
-#: lib/marshall_web/live/account_live.ex:609
+#: lib/marshall_web/live/account_live.ex:658
 #, elixir-autogen, elixir-format
 msgid "Return to the requested page and retry the action →"
 msgstr "கோரிய பக்கத்திற்குத் திரும்பி செயலை மீண்டும் முயலவும் →"
 
-#: lib/marshall_web/live/account_live.ex:430
+#: lib/marshall_web/live/account_live.ex:465
 #, elixir-autogen, elixir-format
 msgid "SSH key"
 msgstr "SSH சாவி"
 
-#: lib/marshall_web/live/account_live.ex:160
+#: lib/marshall_web/live/account_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "SSH key added."
 msgstr "SSH சாவி சேர்க்கப்பட்டது."
 
-#: lib/marshall_web/live/account_live.ex:191
+#: lib/marshall_web/live/account_live.ex:201
 #, elixir-autogen, elixir-format
 msgid "SSH key removed."
 msgstr "SSH சாவி நீக்கப்பட்டது."
 
-#: lib/marshall_web/live/account_live.ex:178
+#: lib/marshall_web/live/account_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "SSH key renamed."
 msgstr "SSH விசையின் பெயர் மாற்றப்பட்டது."
 
-#: lib/marshall_web/live/account_live.ex:459
+#: lib/marshall_web/live/account_live.ex:499
 #, elixir-autogen, elixir-format
 msgid "SSH keys"
 msgstr "SSH சாவிகள்"
 
-#: lib/marshall_web/live/account_live.ex:325
+#: lib/marshall_web/live/account_live.ex:349
 #, elixir-autogen, elixir-format
 msgid "SSH keys are temporarily unavailable."
 msgstr "SSH சாவிகள் தற்காலிகமாகக் கிடைக்கவில்லை."
 
-#: lib/marshall_web/live/account_live.ex:781
+#: lib/marshall_web/live/account_live.ex:830
 #, elixir-autogen, elixir-format
 msgid "Save Git settings"
 msgstr "Git அமைப்புகளைச் சேமிக்கவும்"
 
-#: lib/marshall_web/live/account_live.ex:489
+#: lib/marshall_web/live/account_live.ex:530
 #, elixir-autogen, elixir-format
 msgid "Save language"
 msgstr "மொழியைச் சேமி"
 
-#: lib/marshall_web/live/account_live.ex:535
+#: lib/marshall_web/live/account_live.ex:577
 #, elixir-autogen, elixir-format
 msgid "Save time zone"
 msgstr "நேர மண்டலத்தைச் சேமி"
 
-#: lib/marshall_web/live/account_live.ex:415
+#: lib/marshall_web/live/account_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Saved: %{value1}. Others who share a team, machine or thread with you see your local time."
 msgstr "சேமிக்கப்பட்டது: %{value1}. உங்களுடன் குழு, இயந்திரம் அல்லது உரையாடலைப் பகிர்பவர்கள் உங்கள் உள்ளூர் நேரத்தைப் பார்ப்பார்கள்."
 
-#: lib/marshall_web/live/account_live.ex:455
+#: lib/marshall_web/live/account_live.ex:495
 #, elixir-autogen, elixir-format
 msgid "Sign-in and passkeys"
 msgstr "உள்நுழைவு மற்றும் அணுகல் சாவிகள்"
 
-#: lib/marshall_web/live/account_live.ex:527
+#: lib/marshall_web/live/account_live.ex:569
 #, elixir-autogen, elixir-format
 msgid "Time zone"
 msgstr "நேர மண்டலம்"
 
-#: lib/marshall_web/live/account_live.ex:219
+#: lib/marshall_web/live/account_live.ex:235
 #, elixir-autogen, elixir-format
 msgid "Time zone cleared. Your browser's zone is used."
 msgstr "நேர மண்டலம் நீக்கப்பட்டது. உங்கள் உலாவியின் நேர மண்டலம் பயன்படுத்தப்படும்."
 
-#: lib/marshall_web/live/account_live.ex:208
+#: lib/marshall_web/live/account_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "Time zone saved."
 msgstr "நேர மண்டலம் சேமிக்கப்பட்டது."
 
-#: lib/marshall_web/live/account_live.ex:712
+#: lib/marshall_web/live/account_live.ex:766
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "வகை"
 
-#: lib/marshall_web/live/account_live.ex:498
+#: lib/marshall_web/live/account_live.ex:539
 #, elixir-autogen, elixir-format
 msgid "Use browser language"
 msgstr "உலாவி மொழியைப் பயன்படுத்து"
 
-#: lib/marshall_web/live/account_live.ex:111
+#: lib/marshall_web/live/account_live.ex:113
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Please try again."
 msgstr "சரிபார்ப்பை முடிக்க முடியவில்லை. மீண்டும் முயலவும்."
@@ -405,62 +405,62 @@ msgstr "சரிபார்ப்பை முடிக்க முடிய�
 msgid "Verification required. Use an existing passkey, or sign out and request a fresh email link before first enrollment."
 msgstr "சரிபார்ப்பு தேவை. இருக்கும் அணுகல் சாவியைப் பயன்படுத்தவும் அல்லது முதல் பதிவுக்கு முன் வெளியேறிப் புதிய மின்னஞ்சல் இணைப்பைக் கோரவும்."
 
-#: lib/marshall_web/live/account_live.ex:570
+#: lib/marshall_web/live/account_live.ex:614
 #, elixir-autogen, elixir-format
 msgid "Verify a passkey before making administrative changes or changing passkeys."
 msgstr "நிர்வாக மாற்றங்கள் அல்லது அணுகல் சாவி மாற்றங்களுக்கு முன் அணுகல் சாவியைச் சரிபார்க்கவும்."
 
-#: lib/marshall_web/live/account_live.ex:595
+#: lib/marshall_web/live/account_live.ex:641
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "அணுகல் சாவியால் சரிபார்"
 
-#: lib/marshall_web/live/account_live.ex:446
+#: lib/marshall_web/live/account_live.ex:482
 #, elixir-autogen, elixir-format
 msgid "Who you are, how you prove it, and the keys that reach your machines."
 msgstr "நீங்கள் யார், அதை எவ்வாறு நிரூபிக்கிறீர்கள், உங்கள் இயந்திரங்களை அணுகும் சாவிகள்."
 
-#: lib/marshall_web/live/account_live.ex:555
+#: lib/marshall_web/live/account_live.ex:597
 #, elixir-autogen, elixir-format
 msgid "You sign in with an email link. A passkey proves it is you before administrative changes and before passkey changes; everyday use of your workspace never asks for one."
 msgstr "மின்னஞ்சல் இணைப்பால் உள்நுழைகிறீர்கள். நிர்வாக மாற்றங்கள் மற்றும் அணுகல் சாவி மாற்றங்களுக்கு முன் அணுகல் சாவி உங்கள் அடையாளத்தை நிரூபிக்கும்; பணியிடத்தின் தினசரிப் பயன்பாட்டில் அது கேட்கப்படாது."
 
-#: lib/marshall_web/live/account_live.ex:519
+#: lib/marshall_web/live/account_live.ex:560
 #, elixir-autogen, elixir-format
 msgid "Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved."
 msgstr "உங்கள் மின்னஞ்சல் உள்நுழைவு அடையாளமாகும்; இங்கே திருத்த முடியாது. Overalls நேரங்கள் அனைத்தும் உங்கள் நேர மண்டலத்தில் காட்டப்படும்; நேர மண்டலம் சேமிக்கப்பட்டதும் உங்களுடன் குழு, இயந்திரம் அல்லது உரையாடலைப் பகிர்பவர்களும் நிர்வாகிகளும் உங்கள் மின்னஞ்சலுக்கு அருகே உள்ளூர் நேரத்தைக் காண்பார்கள்."
 
-#: lib/marshall_web/live/account_live.ex:617
+#: lib/marshall_web/live/account_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Your passkeys"
 msgstr "உங்கள் அணுகல் சாவிகள்"
 
-#: lib/marshall_web/live/account_live.ex:576
+#: lib/marshall_web/live/account_live.ex:621
 #, elixir-autogen, elixir-format
 msgid "Your passkeys were reset. Register a replacement before approving administrative changes."
 msgstr "உங்கள் அணுகல் சாவிகள் மீட்டமைக்கப்பட்டன. நிர்வாக மாற்றங்களை அங்கீகரிக்குமுன் மாற்றுச் சாவியைப் பதிவுசெய்யவும்."
 
-#: lib/marshall_web/live/account_live.ex:484
+#: lib/marshall_web/live/account_live.ex:525
 #, elixir-autogen, elixir-format
 msgid "Your saved language overrides browser preferences."
 msgstr "சேமித்த மொழி உலாவி விருப்பங்களை மீறும்."
 
-#: lib/marshall_web/live/account_live.ex:569
+#: lib/marshall_web/live/account_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "[not verified]"
 msgstr "[சரிபார்க்கப்படவில்லை]"
 
-#: lib/marshall_web/live/account_live.ex:562
+#: lib/marshall_web/live/account_live.ex:605
 #, elixir-autogen, elixir-format
 msgid "[verified]"
 msgstr "[சரிபார்க்கப்பட்டது]"
 
-#: lib/marshall_web/live/account_live.ex:452
+#: lib/marshall_web/live/account_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "email, time zone and your local clock"
 msgstr "மின்னஞ்சல், நேர மண்டலம் மற்றும் உங்கள் உள்ளூர் கடிகாரம்"
 
-#: lib/marshall_web/live/account_live.ex:468
+#: lib/marshall_web/live/account_live.ex:509
 #, elixir-autogen, elixir-format
 msgid "new machines and commit attribution"
 msgstr "புதிய கணினிகளும் கமிட்டில் பங்களிப்புக்கான அங்கீகாரமும்"
@@ -470,7 +470,7 @@ msgstr "புதிய கணினிகளும் கமிட்டில�
 msgid "same time as you"
 msgstr "உங்களுடைய அதே நேரம்"
 
-#: lib/marshall_web/live/account_live.ex:456
+#: lib/marshall_web/live/account_live.ex:496
 #, elixir-autogen, elixir-format
 msgid "verification for administrative changes"
 msgstr "நிர்வாக மாற்றங்களுக்கான சரிபார்ப்பு"
