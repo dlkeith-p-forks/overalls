@@ -1830,3 +1830,11 @@ Lilly's namespace ingress remains the network authority. The profile reserves
 8 GiB memory and 32 GiB writable disk. Signed ticket verification, browser
 controller/viewer leases and native Firecracker acceptance remain outside this
 guest-only evidence.
+# Android guest profile
+
+The Android profile is a version-4 NixOS guest with the pinned API 34/35/36 SDK
+closure, ADB, and a persistent API 36 x86_64 AVD. The emulator uses TCG software
+rendering and no host KVM. x11vnc binds guest loopback; a typed relay accepts
+only Lilly's bounded generation preface. The standalone emulator machine fixture
+proves software rendering and ADB behavior, while production Firecracker display
+transport remains an explicit acceptance gap.

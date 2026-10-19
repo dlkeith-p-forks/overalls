@@ -2,6 +2,25 @@
 
 NixOS machine integration tests and property-based tests are the preferred evidence. Unit tests establish narrower behavior. **Present** means a test exists and its assertion was inspected; **recorded** links a historical execution record, not a rerun of the current tree. Partial coverage does not mean the feature is broken. Gaps identify what the evidence cannot establish.
 
+## Open an Android machine display as a viewer or controller and observe generation fencing
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, isolation, recovery.
+
+Boundary: A signed short-lived ticket binds the current actor, Android capability, machine and execution generation. One shared relay fans out RFB bytes to viewers and forwards input only from its controller.
+
+Required refusal: Foreign, stale, expired, non-Android and second-controller requests are refused; host-stream or emulator loss closes the display channel.
+
+Tested scope: Typed protocol, relay and browser-hook evidence exists; composed Firecracker, Lilly ingress and authenticated browser acceptance remain partial.
+
+- **property, present**: [generations and boot identity fencing](repo:protocol/test/android_emulator_state_machine_property_test.exs) — BEAM state model only; no native VM or browser claim..
+- **unit, present**: [allows viewers, fences one controller and sequences frames](repo:marshall/test/marshall/android/display_relay_test.exs) — Relay process state only; no host transport claim..
+- **unit, present**: [replaces its canvas on reconnect](repo:marshall/test/browser/android_display_test.mjs) — Browser hook fixture only; no authenticated browser journey claim..
+- **machine, present**: [PNG screencap through the real adb client](repo:nix/verification/tests/machines/android-emulator/default.nix) — Standalone NixOS emulator fixture; not production Firecracker transport..
+
+**Gaps:** No recorded production Firecracker image boot with the relay and no recorded real /machines/:id browser journey.
+
+**Preferred test work:** Run the production Android image through Firecracker, connect Marshall and Lilly, and record viewer/controller, stale-generation and host-loss assertions.
+
 ## Select a language, reset to the browser default, and use LTR/RTL human surfaces
 
 Coverage: **partial**. Layers: identity, authorization, transport.
@@ -1959,7 +1978,7 @@ Tested scope: Generated PostgreSQL role/consent histories and a three-account Ni
 - **property, recorded**: [HTTP histories preserve pinned receipts and permanent team refusals](repo:marshall/test/marshall_web/teams_ssh_api_test.exs) — Generated real HTTP command histories compare complete durable team, version, audit and request rows across refusals, transfer/removal and trusted archived-name reuse.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-ssh-verification.md).
 - **machine, recorded**: [consenting target transfers ownership and stale users remain refused](repo:nix/verification/tests/machines/team-ssh/driver.py) — Two NixOS VMs, source-built Marshall, packaged Porsche, strict SSH host trust and verified internal TLS, three persisted ordinary identities and CLI Teams mutations; no guests.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-ssh-verification.md).
 - **property, recorded**: [current team membership admits guest use without granting member management](repo:marshall/test/marshall/teams_resource_history_test.exs) — Generated actual membership, read, guest-roster, SSH admission and sharing actions track current roles and Customer isolation. Synthetic host outcomes establish control-plane admission only.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-resource-verification.md).
-- **unit, recorded**: [and full retirement serialize](repo:marshall/test/marshall/teams_retirement_distributed_test.exs) — Four deterministic production-action schedules across three independent Marshall BEAMs verify account-fence contention, committed owner/membership/transfer/audit state and no-VM cleanup; coordinator excluded.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-resource-verification.md).
+- **unit, present**: [and full retirement serialize](repo:marshall/test/marshall/teams_retirement_distributed_test.exs) — Four deterministic production-action schedules across three independent Marshall BEAMs verify account-fence contention, committed owner/membership/transfer/audit state and no-VM cleanup; coordinator excluded..
 - **machine, recorded**: [member uses shared guest but cannot manage; foreign and Customer refuse](repo:nix/verification/tests/machines/team-resources/driver.py) — Captured aaba77ee-based nine-machine fleet: ordinary browser key registration/Porsche creation, certified shared guest use, member management and foreign/Customer refusals, admin stop/start with retained home, fresh removal/re-addition SSH and private HTTP decisions. SSH denials preserve ingress/login receipts and require fresh unauthorized evidence; the isolated HTTP 503 denial preserves the TLS origin count and requires exactly one fresh unauthorized event across three Marshall journals.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-resource-verification.md).
 - **property, recorded**: [team integration access follows membership histories without attachments](repo:marshall/test/marshall/teams_resource_history_test.exs) — Generated real membership and integration actions verify automatic member-owned VM eligibility, removal/re-addition, admin-only configuration and Customer refusal; no native transport is simulated as acceptance.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-resource-verification.md).
 - **property, recorded**: [Galileo refusal reasons survive authentication filtering without private payloads](repo:marshall/test/marshall/mailer/log_filter_test.exs) — Generated secret values verify the exact authorization-denied event retains only four reviewed reason atoms; arbitrary values, unrelated events and simultaneous mail tags retain redaction.; [execution record](repo:docs/architecture/reviews/2026-09-25-team-resource-verification.md).

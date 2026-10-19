@@ -67,6 +67,10 @@ in
         set -eu
         mkdir -p "$HOME/.android"
         mkdir -p "$ANDROID_AVD_HOME"
+        if [ ! -f "$HOME/.android/adbkey" ]; then
+          ${sdkRoot}/platform-tools/adb keygen "$HOME/.android/adbkey"
+        fi
+        cp "$HOME/.android/adbkey.pub" /run/overalls-android/adb_keys
         if [ ! -f "$ANDROID_AVD_HOME/${avdName}.avd/config.ini" ]; then
           printf 'no\n' | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
             --force --name ${avdName} \
@@ -84,7 +88,8 @@ CONFIG
         trap 'kill "$xvfb_pid" 2>/dev/null || true' EXIT
         exec ${sdkRoot}/emulator/emulator \
           -avd ${avdName} -no-accel -gpu swiftshader_indirect \
-          -no-boot-anim -no-snapshot -ports 5554,5555
+          -no-boot-anim -no-snapshot -auth /run/overalls-android/adb_keys \
+          -ports 5554,5555
       ''}";
       ExecStartPost = "${pkgs.writeShellScript "overalls-android-ready" ''
         set -eu

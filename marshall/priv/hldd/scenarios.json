@@ -2,6 +2,47 @@
   "version": 1,
   "scenarios": [
     {
+      "id": "android-display",
+      "journey": "Open an Android machine display as a viewer or controller and observe generation fencing",
+      "layers": ["identity", "authorization", "transport", "execution", "isolation", "recovery"],
+      "boundary": "A signed short-lived ticket binds the current actor, Android capability, machine and execution generation. One shared relay fans out RFB bytes to viewers and forwards input only from its controller.",
+      "denial": "Foreign, stale, expired, non-Android and second-controller requests are refused; host-stream or emulator loss closes the display channel.",
+      "scope": "Typed protocol, relay and browser-hook evidence exists; composed Firecracker, Lilly ingress and authenticated browser acceptance remain partial.",
+      "status": "partial",
+      "gaps": "No recorded production Firecracker image boot with the relay and no recorded real /machines/:id browser journey.",
+      "preferred_gap": "Run the production Android image through Firecracker, connect Marshall and Lilly, and record viewer/controller, stale-generation and host-loss assertions.",
+      "evidence": [
+        {
+          "kind": "property",
+          "path": "protocol/test/android_emulator_state_machine_property_test.exs",
+          "assertion": "generations and boot identity fencing",
+          "scope": "BEAM state model only; no native VM or browser claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/android/display_relay_test.exs",
+          "assertion": "allows viewers, fences one controller and sequences frames",
+          "scope": "Relay process state only; no host transport claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/browser/android_display_test.mjs",
+          "assertion": "replaces its canvas on reconnect",
+          "scope": "Browser hook fixture only; no authenticated browser journey claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/android-emulator/default.nix",
+          "assertion": "PNG screencap through the real adb client",
+          "scope": "Standalone NixOS emulator fixture; not production Firecracker transport.",
+          "execution": "present"
+        }
+      ]
+    },
+    {
       "id": "localization",
       "journey": "Select a language, reset to the browser default, and use LTR/RTL human surfaces",
       "layers": [
@@ -7195,7 +7236,7 @@
           "scope": "Four deterministic production-action schedules across three independent Marshall BEAMs verify account-fence contention, committed owner/membership/transfer/audit state and no-VM cleanup; coordinator excluded.",
           "record": "docs/architecture/reviews/2026-09-25-team-resource-verification.md",
           "record_assertion": "The four full-retirement schedules passed with real public actions across three",
-          "execution": "recorded"
+          "execution": "present"
         },
         {
           "kind": "machine",

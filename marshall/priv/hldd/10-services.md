@@ -747,47 +747,10 @@ Peach serves the bounded, secret-free `reflection.internal` projection for a
 currently running guest. Marshall remains the authorization authority and
 returns only integrations eligible for the fenced execution.
 
-## Susan push relay
+# Android display service
 
-[ADR-0224](repo:docs/architecture/decisions/0224-susan-push-relay.md) adds Susan,
-an independently deployed Elixir service with its own PostgreSQL database that
-relays content-free notifications for the store-distributed Mila app. Mila asks
-Susan for a push key ([`Susan.Keys`](repo:susan/lib/susan/keys.ex)): an
-AES-256-GCM envelope sealing the provider token, application, environment and
-the deployment host, under a keyring id with a 90-day expiry
-([`Susan.PushKey`](repo:susan/lib/susan/push_key.ex)). Mila hands the opaque key
-to its Marshall. Marshall later pokes Susan with the key, an end-to-end
-ciphertext, the closed kind `needs_input`, a collapse id, a delivery id, a nonce
-and the issue time, signed with its Ed25519 install identity over the domain label
-`overalls-susan-poke-v1`, a zero byte and the exact body bytes ([`OverallsProtocol.SusanPoke`](repo:protocol/lib/overalls_protocol/susan_poke.ex)). Susan opens the key, forwards only the ciphertext, collapse id and fixed
-localization keys to APNs (HTTP/2, `.p8` JWT) or FCM v1 (service-account OAuth),
-and answers with a bounded status.
-
-```mermaid
-sequenceDiagram
-  participant Mila
-  participant Susan
-  participant Marshall
-  participant Provider as APNs / FCM
-  Mila->>Susan: POST /api/push/v1/keys {provider, token, app_id, environment, deployment}
-  Susan-->>Mila: 201 {push_key, key_id, expires_at}
-  Mila->>Marshall: push_key (device register)
-  Marshall->>Susan: POST /api/push/v1/poke (≤1 KiB, install-signed)
-  Susan->>Susan: validate, open key, verify signature, replay, rate, claim
-  Susan->>Provider: ciphertext + collapse id + loc-keys
-  Provider-->>Susan: 200 / 410 / 429 / 5xx
-  Susan-->>Marshall: 204 / 400 / 404 / 410 / 429 / 503
-```
-
-The pipeline is the pure state machine
-[`Susan.Poke.Machine`](repo:susan/lib/susan/poke/machine.ex), interpreted by
-[`Susan.Poke`](repo:susan/lib/susan/poke.ex). Token buckets are per key (burst 10,
-60/h), install, source digest and global
-([`Susan.RateLimiter`](repo:susan/lib/susan/rate_limiter.ex)). Replay uses a
-±5-minute nonce window plus a per-install `delivery_id` receipt, so a retried
-poke never notifies twice. A provider 429/5xx is retried once in the request,
-then answers 503 with the provider's `Retry-After`. Operators use only
-`susan-operator` (`bin/susan rpc` on loopback distribution) through
-[`Susan.Operator`](repo:susan/lib/susan/operator.ex): audit tail, export and
-verify, key deny-list, install block and unblock. Hosting and TLS placement
-remain open; the service listens on plain HTTP behind a TLS-terminating proxy.
+Lilly derives the Android display target from the current placement, profile,
+slot, capability and emulator generation before opening the fixed relay port.
+The display socket is owned by a supervised process and is torn down with the
+authenticated host stream or execution generation. Marshall shares one bridge
+per machine generation across browser viewers and controllers.

@@ -35,7 +35,9 @@ defmodule Lilly.Terminal.Vsock do
           optional(:guest_identity) => OverallsProtocol.Readiness.expectation() | nil,
           optional(:actor_pid) => pid(),
           optional(:host_id) => String.t(),
-          optional(:generation) => pos_integer()
+          optional(:generation) => pos_integer(),
+          optional(:profile) => OverallsProtocol.AddressPool.profile(),
+          optional(:slot) => pos_integer()
         }
   @type guest_session :: %{
           required(:guest_session_id) => pos_integer(),

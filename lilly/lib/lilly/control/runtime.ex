@@ -110,6 +110,9 @@ defmodule Lilly.Control.Runtime do
   def terminal_actor(server, vm_id, placement, epoch),
     do: GenServer.call(server, {:terminal_actor, vm_id, placement, epoch})
 
+  @spec network_config(GenServer.server()) :: {:ok, Lilly.Network.Config.t()} | {:error, atom()}
+  def network_config(server), do: GenServer.call(server, :terminal_network_config)
+
   # @cc [owner:ghuntley,label:security] ingress-current-observed-execution
   # Local ingress MUST match the complete host/VM/placement/epoch/generation of a
   # current execution (Lilly.Execution.current/1: connected runtime, identical
@@ -440,6 +443,14 @@ defmodule Lilly.Control.Runtime do
            else: (_ -> {:error, :terminal_unavailable})
 
     {:reply, reply, state}
+  end
+
+  def handle_call(
+        :terminal_network_config,
+        {caller, _},
+        %{terminal: caller, phase: :connected} = state
+      ) do
+    {:reply, {:ok, state.config.execution.network}, state}
   end
 
   def handle_call(_, _, state), do: {:reply, {:error, :not_terminal_owner}, state}
