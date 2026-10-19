@@ -28,11 +28,11 @@ defmodule MarshallWeb.LocalizationRemainingUITest do
             }
           )
 
-        document = Floki.parse_document!(html)
-        assert Floki.find(document, "button") |> Floki.text() |> String.trim() == expected
-        assert Floki.attribute(document, "button", "aria-pressed") == [to_string(pinned)]
-        assert Floki.attribute(document, "button", "phx-value-id") == ["machine-123"]
-        [label] = Floki.attribute(document, "button", "aria-label")
+        document = LazyHTML.from_fragment(html)
+        assert LazyHTML.query(document, "button") |> LazyHTML.text() |> String.trim() == expected
+        assert document |> LazyHTML.query("button") |> LazyHTML.attribute("aria-pressed") == [to_string(pinned)]
+        assert document |> LazyHTML.query("button") |> LazyHTML.attribute("phx-value-id") == ["machine-123"]
+        [label] = document |> LazyHTML.query("button") |> LazyHTML.attribute("aria-label")
         assert label =~ name
         if locale == "ar", do: assert(label =~ "\u2068#{name}\u2069")
         refute html =~ "<123>"
@@ -68,14 +68,14 @@ defmodule MarshallWeb.LocalizationRemainingUITest do
         end
 
         html = render_component(&CloneComponents.card/1, id: "clone-localized", clone: clone(nil))
-        document = Floki.parse_document!(html)
+        document = LazyHTML.from_fragment(html)
 
-        for node <- Floki.find(document, "li[data-state]") do
-          [state] = Floki.attribute(node, "data-state")
+        for node <- LazyHTML.query(document, "li[data-state]") do
+          [state] = node |> LazyHTML.attribute("data-state")
           source = %{"done" => "Done", "current" => "Current", "pending" => "Pending"}[state]
           expected = Gettext.dgettext(MarshallWeb.Gettext, "machines", source)
           refute expected == source
-          assert Floki.find(node, ".sr-only") |> Floki.text() == " — " <> expected
+          assert LazyHTML.query(node, ".sr-only") |> LazyHTML.text() == " — " <> expected
         end
       end)
     end
