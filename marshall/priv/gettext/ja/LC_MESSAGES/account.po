@@ -56,9 +56,10 @@ msgstr "4. Git のユーザー情報"
 msgid "Account"
 msgstr "アカウント"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
+msgid "Commit attribution"
+msgstr "コミットの帰属"
 msgstr "コミットに Overalls のクレジットを追加する"
 
 #: lib/marshall_web/live/account_live.ex:742
@@ -168,11 +169,6 @@ msgstr "Git のメールアドレス"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git のユーザー情報"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git のユーザー情報の変更は、新しく作成するマシンに適用されます。コミットのクレジット設定の変更は、今後のエージェントへのリクエストに適用されます。"
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -420,11 +416,6 @@ msgstr "管理上の変更を加えたり、パスキーを変更したりする
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "パスキーで認証する"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "有効にすると、エージェントによる今後のコミットに Co-authored-by: Overalls <noreply@overalls.dev> が含まれます。"
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

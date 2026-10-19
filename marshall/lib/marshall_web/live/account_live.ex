@@ -824,20 +824,8 @@ defmodule MarshallWeb.AccountLive do
             <.input
               field={@git_form[:commit_trailers_enabled]}
               type="checkbox"
-              label={dgettext("account", "Add Overalls commit attribution")}
+              label={dgettext("account", "Commit attribution")}
             />
-            <p>
-              {dgettext(
-                "account",
-                "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-              )}
-            </p>
-            <p>
-              {dgettext(
-                "account",
-                "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-              )}
-            </p>
             <Layouts.action id="save-git-settings" type="submit" tone="primary">
               {dgettext("account", "Save Git settings")}
             </Layouts.action>

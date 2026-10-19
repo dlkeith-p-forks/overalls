@@ -57,9 +57,10 @@ msgstr "४. Git ओळख"
 msgid "Account"
 msgstr "खाते"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
+msgid "Commit attribution"
+msgstr "कमिटचे श्रेय"
 msgstr "कमिटमध्ये Overalls च्या योगदानाचे श्रेय जोडा"
 
 #: lib/marshall_web/live/account_live.ex:742
@@ -172,11 +173,6 @@ msgstr "Git ईमेल"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git ओळख"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Git ओळखीतील बदल नवीन मशीनना लागू होतात. कमिटमधील योगदानाच्या श्रेयातील बदल भविष्यातील एजंट विनंत्यांना लागू होतात."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -434,11 +430,6 @@ msgstr "प्रशासकीय बदल किंवा पासकी �
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "पासकीने पडताळा"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "सक्षम केल्यावर, नवीन एजंट कमिटमध्ये Co-authored-by: Overalls <noreply@overalls.dev> समाविष्ट होते."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

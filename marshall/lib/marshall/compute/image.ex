@@ -21,7 +21,11 @@ defmodule Marshall.Compute.Image do
           flush: boolean(),
           agents: boolean(),
           editor: boolean(),
-          inception: boolean()
+          inception: boolean(),
+          android_sdk: boolean(),
+          adb: boolean(),
+          android_emulator: boolean(),
+          android_display: boolean()
         }
   @type editor_capability :: %{
           editor_protocol: 1,
@@ -163,7 +167,11 @@ defmodule Marshall.Compute.Image do
         flush: capabilities.flush,
         agents: capabilities.agents,
         editor: capabilities.editor,
-        inception: capabilities.inception
+        inception: capabilities.inception,
+        android_sdk: capabilities.android_sdk,
+        adb: capabilities.adb,
+        android_emulator: capabilities.android_emulator,
+        android_display: capabilities.android_display
       }
     else
       _ ->
@@ -177,7 +185,11 @@ defmodule Marshall.Compute.Image do
           flush: false,
           agents: false,
           editor: false,
-          inception: false
+          inception: false,
+          android_sdk: false,
+          adb: false,
+          android_emulator: false,
+          android_display: false
         }
     end
   end

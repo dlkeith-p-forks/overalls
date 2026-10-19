@@ -16,6 +16,26 @@ from unittest.mock import patch
 import native_control as control
 
 
+class ArtifactStreamFailureTest(unittest.TestCase):
+    def test_closed_categories_do_not_include_exception_text(self) -> None:
+        cases: tuple[
+            tuple[OSError | ValueError | subprocess.SubprocessError, control.ArtifactStreamFailure],
+            ...,
+        ] = (
+            (TimeoutError("sensitive"), control.ArtifactStreamFailure.TIMEOUT),
+            (ssl.SSLError("sensitive"), control.ArtifactStreamFailure.TLS),
+            (BrokenPipeError("sensitive"), control.ArtifactStreamFailure.PEER),
+            (ConnectionResetError("sensitive"), control.ArtifactStreamFailure.PEER),
+            (OSError("sensitive"), control.ArtifactStreamFailure.OS),
+            (ValueError("sensitive"), control.ArtifactStreamFailure.INVALID),
+            (subprocess.SubprocessError("sensitive"), control.ArtifactStreamFailure.PROCESS),
+        )
+        for error, expected in cases:
+            with self.subTest(category=expected):
+                self.assertEqual(control.artifact_stream_failure(error), expected)
+                self.assertNotIn("sensitive", expected.value)
+
+
 class AuthorityTest(unittest.TestCase):
     def setUp(self) -> None:
         self.directory = tempfile.TemporaryDirectory(prefix="native-control-test-")

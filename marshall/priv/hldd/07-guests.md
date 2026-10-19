@@ -1820,7 +1820,14 @@ New identity-bearing admissions require an image manifest advertising `git_ident
 
 ## Android software guest
 
-`linux-android-v1` is an additive NixOS Firecracker guest profile. Its emulator
+`linux-android-v1` is an additive NixOS Firecracker guest profile in the image
+catalog. Version-4 kernel manifests may explicitly declare `linux` or
+`linux-android-v1`; the declaration binds immutable image identity and composes
+with independently validated editor and workspace-source metadata. An absent
+declaration retains the historical Linux identity. Unknown fields, malformed
+editor descriptors and cross-OS agent sets refuse. The focused 19-test protocol
+run (seed218704) passed, including a 100-case composition/refusal property; this
+does not establish native Android or GitHub acceptance. Its emulator
 uses TCG software rendering and persistent AVD state; readiness is bounded at
 600 seconds. ADB and display authority are withheld until emulator readiness.
 The image's current RFB bridge is loopback-bound for diagnostics only; it is not

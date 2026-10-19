@@ -789,6 +789,7 @@ def github_tools(context: BootContext, generation: int) -> dict[str, object]:
                     f"config_fetches={authority.count('github_tool_artifact_github.gitconfig')} "
                     f"streams_completed={authority.count('github_artifact_stream_completed')} "
                     f"streams_failed={authority.count('github_artifact_stream_failed')} "
+                    f"stream_failure_categories={[(category.value, authority.count(f'github_artifact_stream_failed_{category.value}')) for category in control.ArtifactStreamFailure]} "
                     f"registrations={authority.count('register')} "
                     f"heartbeat_requests={authority.count('heartbeat_request')} "
                     f"heartbeats_accepted={authority.count('heartbeat')} "

@@ -210,6 +210,59 @@ defmodule OverallsProtocol.ImageManifestTest do
              ImageManifest.validate(manifest())
   end
 
+  # @cc [owner:ghuntley,label:verification;protocol] kernel-agent-editor-composition
+  # Explicit Linux/Android agents MUST compose with source and editor metadata,
+  # bind identity, and round-trip; malformed, cross-OS or extra fields refuse.
+  property "kernel agent declarations compose with editor and source metadata",
+    database: :disabled,
+    print_blob: false,
+    test_cases: 100 do
+    wire = draw("agents", member_of(["linux", "linux-android-v1"]))
+    source = draw("source", member_of([nil, 2]))
+    editor? = draw("editor", boolean())
+    bytes = draw("root_bytes", integer(1..536_870_912))
+
+    base =
+      manifest()
+      |> Map.put("workspace_source_version", source)
+      |> put_in(["rootfs", "bytes"], bytes)
+
+    base =
+      if editor? do
+        Map.put(base, "editor", %{
+          "protocol" => 1,
+          "commit" => String.duplicate("b", 40),
+          "release" => String.duplicate("c", 64)
+        })
+      else
+        base
+      end
+
+    assert {:ok, original} = ImageManifest.validate(base)
+    value = Map.put(base, "guest_agents", wire)
+    assert {:ok, image} = ImageManifest.validate(value)
+    expected = if wire == "linux", do: :linux, else: :linux_android_v1
+    assert ImageManifest.guest_agents(image) == expected
+    assert ImageManifest.encode(image) == value
+    assert image.id != original.id
+    assert ImageManifest.editor(image) == ImageManifest.editor(original)
+
+    capabilities = OverallsProtocol.GuestAgents.capabilities(image.guest_agents)
+    assert capabilities.android_display == (wire == "linux-android-v1")
+    assert capabilities.terminal
+
+    for invalid <- [nil, "none", "windows-v1", "freebsd-v1", "linux-android-v2"] do
+      assert {:error, :invalid_image_manifest} =
+               ImageManifest.validate(Map.put(value, "guest_agents", invalid))
+    end
+
+    assert {:error, :invalid_image_manifest} =
+             ImageManifest.validate(Map.put(value, "extra", true))
+
+    assert {:error, :invalid_image_manifest} =
+             ImageManifest.validate(Map.put(value, "editor", %{"protocol" => 1}))
+  end
+
   test "kernel images expose the Linux boot kind, ext4 root and agent set" do
     assert {:ok, image} = ImageManifest.validate(manifest())
 

@@ -48,6 +48,32 @@ LEASE_PROBE_COMMAND = (
 WITHDRAWAL_SECONDS = 15.0
 
 
+class ArtifactStreamFailure(StrEnum):
+    TIMEOUT = "timeout"
+    TLS = "tls"
+    PEER = "peer"
+    OS = "os"
+    INVALID = "invalid"
+    PROCESS = "process"
+
+
+def artifact_stream_failure(
+    error: OSError | ValueError | subprocess.SubprocessError,
+) -> ArtifactStreamFailure:
+    """Classify transport failures without retaining exception text or request data."""
+    if isinstance(error, TimeoutError):
+        return ArtifactStreamFailure.TIMEOUT
+    if isinstance(error, ssl.SSLError):
+        return ArtifactStreamFailure.TLS
+    if isinstance(error, ConnectionError):
+        return ArtifactStreamFailure.PEER
+    if isinstance(error, OSError):
+        return ArtifactStreamFailure.OS
+    if isinstance(error, ValueError):
+        return ArtifactStreamFailure.INVALID
+    return ArtifactStreamFailure.PROCESS
+
+
 class Refused(ValueError):
     """A closed diagnostic containing no request data."""
 
@@ -682,6 +708,9 @@ class Handler(socketserver.BaseRequestHandler):
         except (OSError, ValueError, subprocess.SubprocessError) as error:
             if streaming_artifact:
                 self.server.authority.record("github_artifact_stream_failed")
+                self.server.authority.record(
+                    f"github_artifact_stream_failed_{artifact_stream_failure(error).value}"
+                )
             if isinstance(error, Withdrawn):
                 withdrawal = error
             status, content_type, payload = (

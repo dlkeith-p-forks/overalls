@@ -57,9 +57,10 @@ msgstr "4. Git-Identität"
 msgid "Account"
 msgstr "Konto"
 
-#: lib/marshall_web/live/account_live.ex:768
+#: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
-msgid "Add Overalls commit attribution"
+msgid "Commit attribution"
+msgstr "Commit-Zuordnung"
 msgstr "Overalls als Mitautor von Commits nennen"
 
 #: lib/marshall_web/live/account_live.ex:742
@@ -175,11 +176,6 @@ msgstr "Git-E-Mail-Adresse"
 #, elixir-autogen, elixir-format
 msgid "Git identity"
 msgstr "Git-Identität"
-
-#: lib/marshall_web/live/account_live.ex:776
-#, elixir-autogen, elixir-format
-msgid "Git identity changes apply to new machines. Commit attribution changes apply to future agent requests."
-msgstr "Änderungen der Git-Identität gelten für neue Maschinen. Änderungen der Mitautorenangabe gelten für zukünftige Anfragen an den Agenten."
 
 #: lib/marshall_web/live/account_live.ex:247
 #, elixir-autogen, elixir-format
@@ -456,11 +452,6 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "Mit Passkey verifizieren"
-
-#: lib/marshall_web/live/account_live.ex:771
-#, elixir-autogen, elixir-format
-msgid "When enabled, new agent commits include Co-authored-by: Overalls <noreply@overalls.dev>."
-msgstr "Wenn diese Option aktiviert ist, enthalten neue Agenten-Commits Co-authored-by: Overalls <noreply@overalls.dev>."
 
 #: lib/marshall_web/live/account_live.ex:446
 #, elixir-autogen, elixir-format

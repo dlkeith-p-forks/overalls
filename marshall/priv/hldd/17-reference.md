@@ -1336,3 +1336,8 @@ Certificate-specific verification includes
 issuance tests. The current decision is
 [unified host CA](repo:docs/architecture/decisions/0124-unified-ssh-host-ca.md);
 [operations](repo:docs/operations/porsche-operations.md) describes trust and renewal.
+
+Version-4 kernel manifest validation independently checks optional explicit Linux
+or Android agents and editor descriptors, retaining the agent declaration in
+immutable identity. The generated Android image catalog entry grants no native
+acceptance; the focused composition/refusal property is BEAM-only evidence.

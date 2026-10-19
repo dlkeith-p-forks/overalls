@@ -1294,8 +1294,10 @@ a controller ticket is granted. It does not use a foreign iframe or external
 resource.
 
 The `/android-display` WebSocket upgrade verifies the browser login, signed
-machine ticket, actor binding, mode and generation before creating a relay
-process; failed upgrades return a generic refusal without machine disclosure.
+machine ticket, actor binding, mode and generation before obtaining the shared
+relay from the machine-and-generation registry. Sockets for that generation
+share controller custody; failed upgrades return a generic refusal without
+machine disclosure.
 
 Display tickets and WebSocket upgrades bind the signed emulator generation; a
 browser-supplied generation mismatch is refused before relay creation.
