@@ -29,7 +29,7 @@ CONFIG
     fi
     exec ${sdkRoot}/emulator/emulator -avd overalls-test \
       -no-accel -gpu swiftshader_indirect -no-window -noaudio \
-      -no-boot-anim -no-snapshot \
+      -no-boot-anim -no-snapshot -skip-adb-auth \
       -ports 5554,5555
   '';
 in
