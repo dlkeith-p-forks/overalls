@@ -29,6 +29,9 @@ ENOSPC_WRITE_ATTEMPTS = 32
 REOPEN_ANSWER_ATTEMPTS = 60
 # Large batches tried while the minimum pending quota is selected.
 QUOTA_WINDOW_ATTEMPTS = 40
+# The VM bridge republishes its archive copy about every 0.2 s, so an
+# acknowledged batch can precede its observable row; wait up to 5 s.
+SETTLE_ATTEMPTS = 50
 MAX_PENDING = 4096
 
 
@@ -44,6 +47,18 @@ def _archive(config: Config) -> dict[str, Batch] | None:
         return read_archive(config.archive)
     except (OSError, ValueError, sqlite3.Error):
         return None
+
+
+def _settled(
+    config: Config, prior: dict[str, Batch], current: dict[str, Batch] | None
+) -> dict[str, Batch] | None:
+    """Re-read the published archive until it shows a batch absent from prior."""
+    for _ in range(SETTLE_ATTEMPTS):
+        if current is not None and set(current) - set(prior):
+            return current
+        time.sleep(0.1)
+        current = _archive(config)
+    return current
 
 
 def _conserved(state: RecorderState) -> bool:
@@ -425,6 +440,8 @@ def _physical_pressure(
         LOG.info("Trace spool reopen intake unexercised: reopened spool never answered")
         return
     fresh_archive = _archive(config)
+    if fresh.status == "200":
+        fresh_archive = _settled(config, reopened_archive, fresh_archive)
     fresh_custody = (
         fresh is not None
         and fresh.status == "200"
@@ -463,6 +480,8 @@ def run_traces() -> int:
     sequence = (attempts % 999_999) + 1
     first = client.call({"op": "trace", "sequence": sequence, "size": "small"})
     after = _archive(config)
+    if first is not None and first.status == "200":
+        after = _settled(config, prior, after)
     if after is None:
         return 0
     if first is not None and first.status == "200":
@@ -519,6 +538,8 @@ def run_traces() -> int:
         before_filesystem = read_filesystem(config)
         reply = client.call({"op": "trace", "sequence": sequence, "size": "large"})
         current = _archive(config)
+        if reply is not None and reply.status == "200":
+            current = _settled(config, prior, current)
         if current is None:
             synchronized = False
             continue
@@ -563,7 +584,9 @@ def run_traces() -> int:
                 )
             break
         prior = current
-        synchronized = True
+        # A reply lost in transport may still commit later, so only an
+        # acknowledged batch re-synchronizes the next one-new-batch check.
+        synchronized = reply is not None and reply.status == "200"
     _physical_pressure(client, config, prior, ((attempts + 258) % 999_999) + 1)
     _pending_quota_window(client, config, ((attempts + 300) % 999_999) + 1)
     return 0
