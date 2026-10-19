@@ -110,6 +110,7 @@ defmodule MarshallWeb.Router do
       live "/admin/access", Admin.AccessLive, :index
       live "/admin/workloads", Admin.WorkloadsLive, :index
       live "/admin/operations", Admin.OperationsLive, :index
+      live "/admin/scim", Admin.ScimLive, :index
       live "/usage", InferenceLive, :index
       live "/integrations", IntegrationsLive, :index
       live "/git", GitLive, :index

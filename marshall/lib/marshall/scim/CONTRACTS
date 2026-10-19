@@ -1,0 +1,9 @@
+@cc [owner:ghuntley,label:security] scim-token-digest-boundary
+SCIM bearer tokens MUST be compared against a persisted digest and MUST NOT be
+stored, emitted in diagnostics, or returned after the one-time generation
+response.
+
+@cc [owner:ghuntley,label:recovery] scim-retirement-durable-boundary
+SCIM identity and team retirement MUST remain represented by PostgreSQL state
+and retryable Oban work; an endpoint response or process-local flag MUST NOT
+claim final deletion.

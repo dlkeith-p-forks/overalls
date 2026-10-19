@@ -70,6 +70,7 @@ defmodule Marshall.Teams.Coordinator do
   @spec create(creation_arguments(), Marshall.Accounts.User.t()) ::
           {Team.t(), creation_event() | nil}
   defp create(arguments, actor) do
+    if Marshall.Scim.enabled?(), do: Ledger.rollback(:scim_managed)
     Marshall.Accounts.AccountLifecycle.admit!(actor.id)
 
     Ecto.Adapters.SQL.query!(
@@ -118,6 +119,8 @@ defmodule Marshall.Teams.Coordinator do
   @spec set_member(membership_arguments(), Marshall.Accounts.User.t()) ::
           {membership_result(), membership_event() | nil}
   defp set_member(arguments, actor) do
+    if Marshall.Scim.enabled?(), do: Ledger.rollback(:scim_managed)
+
     user =
       Marshall.Accounts.User
       |> Ash.Query.for_read(:internal_lookup)

@@ -415,7 +415,8 @@ defmodule MarshallWeb.Layouts do
          {"users", dgettext("shared", "Users"), "/admin/users"},
          {"access", dgettext("shared", "Access authority"), "/admin/access"},
          {"git", dgettext("shared", "Git mirrors"), "/admin/git"},
-         {"audit", dgettext("shared", "Audit"), "/admin/audit"}
+         {"audit", dgettext("shared", "Audit"), "/admin/audit"},
+         {"scim", dgettext("shared", "SCIM provisioning"), "/admin/scim"}
        ]}
     ]
   end
@@ -459,7 +460,8 @@ defmodule MarshallWeb.Layouts do
       "operations" => dgettext("shared", "Platform status"),
       "users" => dgettext("shared", "Users"),
       "access" => dgettext("shared", "Access authority"),
-      "audit" => dgettext("shared", "Audit")
+      "audit" => dgettext("shared", "Audit"),
+      "scim" => dgettext("shared", "SCIM provisioning")
     }[key] || dgettext("shared", "Workspace")
   end
 

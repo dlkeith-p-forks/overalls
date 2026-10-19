@@ -426,6 +426,19 @@ principal still matches. OpenSSH CA keys themselves have no embedded expiry.
 
 ## Common runtime startup refusal evidence
 
+## SCIM configuration
+
+`Marshall.Scim.Configuration` is the persisted singleton for SCIM enablement,
+token digest rotation and runtime identity settings. The Control Room route
+`/admin/scim` is administrator-only. The public `/scim/v2` plug rejects every
+request until the configuration is enabled and compares bearer credentials
+against the stored digest; plaintext tokens are never persisted or logged.
+
+Enabling SCIM archives native teams and starts their retirement workflow.
+Disabling SCIM does not reopen managed teams until an administrator performs
+explicit ownership handoff. Endpoint and UI execution evidence remains partial
+until the NixOS SCIM machine test and durable cleanup worker are executed.
+
 Marshall's common runtime guards reject invalid inference retention, ingress
 ports, relocation readiness timeouts and default/Inception image identities
 before application startup. The fresh Mix property checks 34 cases in three

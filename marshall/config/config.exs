@@ -108,7 +108,6 @@ config :marshall, Oban,
     mail: 2,
     maintenance: 2,
     github: 2,
-    notifications: 5,
     certificates: [limit: 1, paused: true]
   ],
   lifeline: [rescue_after: {2, :hours}],
@@ -119,6 +118,7 @@ config :marshall, Oban,
      crontab: [
        {"* * * * *", Marshall.Enrico.Worker},
        {"* * * * *", Marshall.Compute.IdleWorker},
+       {"* * * * *", Marshall.Scim.RetirementWorker},
        {"* * * * *", Marshall.GitHub.Worker, args: %{"op" => "reconcile"}}
      ]}
   ]
@@ -194,8 +194,8 @@ config :marshall,
     Marshall.Terminal,
     Marshall.Agents,
     Marshall.Threads,
-    Marshall.Notifications,
-    Marshall.Administration
+    Marshall.Administration,
+    Marshall.Scim
   ],
   capacity_freshness_ms: 5_000,
   pool_busy_grace_ms: 15_000,
