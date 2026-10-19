@@ -5,7 +5,7 @@ defmodule Marshall.Accounts.UserDeletion do
     domain: Marshall.Accounts,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
-    extensions: [AshOban]
+    extensions: [AshOban, AshStateMachine]
 
   postgres do
     table "account_user_deletions"
@@ -32,6 +32,17 @@ defmodule Marshall.Accounts.UserDeletion do
     end
   end
 
+  state_machine do
+    initial_states [:scheduled]
+    default_initial_state :scheduled
+
+    transitions do
+      transition :cancel, from: [:scheduled], to: :cancelled
+      transition :begin_finalization, from: [:scheduled], to: :finalizing
+      transition :complete, from: [:finalizing], to: :completed
+    end
+  end
+
   actions do
     defaults [:read]
 
@@ -41,7 +52,22 @@ defmodule Marshall.Accounts.UserDeletion do
     end
 
     update :progress do
-      accept [:completed_at, :remaining, :blocked]
+      accept [:completed_at, :remaining, :blocked, :state]
+    end
+
+    update :cancel do
+      accept []
+      change transition_state(:cancelled)
+    end
+
+    update :begin_finalization do
+      accept []
+      change transition_state(:finalizing)
+    end
+
+    update :complete do
+      accept []
+      change transition_state(:completed)
     end
 
     action :advance, :map do
@@ -59,6 +85,12 @@ defmodule Marshall.Accounts.UserDeletion do
   attributes do
     uuid_primary_key :id
     attribute :email, Marshall.Accounts.EmailAddress, allow_nil?: false
+
+    attribute :state, :atom,
+      allow_nil?: false,
+      default: :scheduled,
+      constraints: [one_of: [:scheduled, :finalizing, :cancelled, :completed]]
+
     attribute :remaining, :integer, allow_nil?: false, default: 0
     attribute :blocked, :boolean, allow_nil?: false, default: false
     attribute :completed_at, :utc_datetime_usec

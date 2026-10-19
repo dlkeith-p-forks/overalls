@@ -81,6 +81,7 @@ defmodule Marshall.MixProject do
       {:ash_admin, "~> 1.0"},
       {:ash_authentication_phoenix, "== 3.0.0-rc.11"},
       {:ash_authentication, "== 5.0.0-rc.14"},
+      {:ash_scim, path: "../vendor/ash_scim"},
       {:wax_, "~> 0.7"},
       {:ash_postgres, "~> 2.0"},
       {:ash_phoenix, "~> 2.0"},

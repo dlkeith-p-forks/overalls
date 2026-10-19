@@ -509,6 +509,16 @@ storage can be reclaimed; a failed kill reply alone proves neither outcome.
 
 ## Native submission and daemon-loss verification
 
+## SCIM identity retirement
+
+SCIM `DELETE` and `active=false` record a seven-day retirement deadline on the
+user while preserving the UUID. Owned machines are paused through the existing
+lifecycle coordinator; finalization must revoke credentials, ghost the identity
+and enqueue physical deletion through Oban. `active=true` before finalization
+cancels the deadline but does not resume machines automatically. The current
+implementation records the deadline and state-machine shape; durable worker,
+thread archive projection and native execution remain open evidence.
+
 Launch authority is persisted before native unit submission. A daemon lost before
 submission must refuse that generation; a new public start can issue a distinct
 authority. Loss after successful submission must adopt the original independent

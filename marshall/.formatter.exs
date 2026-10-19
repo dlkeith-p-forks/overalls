@@ -8,6 +8,7 @@
     :ash_admin,
     :ash_authentication_phoenix,
     :ash_authentication,
+    :ash_scim,
     :ash_postgres,
     :ash_phoenix,
     :ash,
