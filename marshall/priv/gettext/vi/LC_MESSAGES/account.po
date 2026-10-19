@@ -58,9 +58,9 @@ msgstr "Tài khoản"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "Thêm ghi nhận đóng góp của Overalls vào commit"
 msgid "Commit attribution"
 msgstr "Ghi nhận commit"
-msgstr "Thêm ghi nhận đóng góp của Overalls vào commit"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

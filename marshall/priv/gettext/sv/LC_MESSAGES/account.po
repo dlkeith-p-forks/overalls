@@ -59,9 +59,9 @@ msgstr "Konto"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "Lägg till Overalls i upphovsangivelsen för incheckningar"
 msgid "Commit attribution"
 msgstr "Commitets upphov"
-msgstr "Lägg till Overalls i upphovsangivelsen för incheckningar"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

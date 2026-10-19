@@ -59,9 +59,9 @@ msgstr "অ্যাকাউন্ট"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "কমিটে Overalls-এর অবদানের স্বীকৃতি যোগ করুন"
 msgid "Commit attribution"
 msgstr "কমিটের স্বীকৃতি"
-msgstr "কমিটে Overalls-এর অবদানের স্বীকৃতি যোগ করুন"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

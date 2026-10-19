@@ -59,9 +59,9 @@ msgstr "Akaunti"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "Ongeza utambuzi wa Overalls kwenye komiti"
 msgid "Commit attribution"
 msgstr "Utambuzi wa commit"
-msgstr "Ongeza utambuzi wa Overalls kwenye komiti"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

@@ -60,9 +60,9 @@ msgstr "Учётная запись"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "Добавлять указание авторства Overalls в коммиты"
 msgid "Commit attribution"
 msgstr "Авторство коммита"
-msgstr "Добавлять указание авторства Overalls в коммиты"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

@@ -13620,7 +13620,7 @@
       "denial": "Pending or corrupt source refuses trust migration. Unrelated root-owned repositories must remain refused after upgrade. An absent source preserves historical policy and grants no claim that tightening happened.",
       "scope": "ADR-0202 retained tool delivery with ADR-0128 shared checkout ownership; Linux-host setup tests and actual retained native programs are distinct evidence.",
       "status": "partial",
-      "gaps": "FreeBSD first-boot managed API, push, LFS and exact ownership checks passed under synthetic authority, but historical executor cancellation failed and reboot is unverified. OmniOS has not published a tool generation. Neither full native check passes; live fleet admission and absent-source later migration remain separate.",
+      "gaps": "FreeBSD boot0 and boot1 managed API, push, LFS and exact ownership checks passed under synthetic authority with independently certified clean shutdown between boots; the enclosing270s check still failed historical executor withdrawn-group observation. OmniOS has not published a tool generation. Neither full native check passes; live fleet admission and absent-source later migration remain separate.",
       "preferred_gap": "Record both published-image retained checks with actual bootstrap, strict unrelated-root refusal, managed gh/Git/LFS and a second boot; then qualify native fleet admission separately.",
       "evidence": [
         {

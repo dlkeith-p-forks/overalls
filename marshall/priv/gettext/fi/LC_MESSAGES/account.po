@@ -59,9 +59,9 @@ msgstr "Tili"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "Lisää Overalls tekijätietoihin"
 msgid "Commit attribution"
 msgstr "Commitin tekijätiedot"
-msgstr "Lisää Overalls tekijätietoihin"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

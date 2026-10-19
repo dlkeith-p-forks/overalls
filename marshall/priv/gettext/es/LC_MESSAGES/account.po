@@ -50,9 +50,9 @@ msgstr "Cuenta"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "Añadir la atribución de Overalls a los commits"
 msgid "Commit attribution"
 msgstr "Atribución del commit"
-msgstr "Añadir la atribución de Overalls a los commits"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

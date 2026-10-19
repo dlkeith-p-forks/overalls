@@ -349,3 +349,32 @@ properties hitting Hegel TooSlow after two valid cases (32.595s and31.412s).
 No application-supervisor collapse or SQL ownership failure occurred.
 This preserves ADR-0083's incarnation boundary,
 without claiming native guest or independent-node recovery from loopback TLS.
+
+The subsequent FreeBSD retained run established both boot0 and boot1 GitHub
+workflows, with an independently certified clean shutdown between boots:
+managed API, credential absence, Git push, LFS transfer/content and exact
+workspace ownership refusal passed. Structured log
+`1792382859702-2804140-0.jsonl` records the two tool-verification markers and
+clean shutdown (events1537/1538/1557). The enclosing check still failed after
+270s at the unchanged historical daemon withdrawn-group observation
+(events1558–1562); this is scoped two-boot feature evidence, not a complete
+native check pass or executor upgrade. OmniOS diagnostic run
+`1792382487609-2733808-0.jsonl` recorded43 failed GH artifact streams,
+zero LFS/config fetches and49/49 accepted heartbeats; no installed generation.
+This isolates first-artifact transfer failure without attributing it to lease
+refusal or changing the real timeout bounds.
+
+Merge review of origin `eaca39a46` found optional version-4 Android agent
+metadata rejected by the editor descriptor shape check. Separately validated
+agent metadata is now excluded only from that shape check and retained in
+immutable identity. The focused protocol run passed19 tests,seed218704,
+including a100-case composition/refusal property. Lilly image consumer tests
+passed15 checks,seed274501, with forced Dialyzer reporting zero errors/skips.
+ADR and generated HLDD checks passed after merge; evaluated Nix HLDD passed
+in10s (`1792383088496-2839730-0.jsonl`). These are scoped checks, not
+Android or live GitHub acceptance. Incoming account catalog duplicate-msgstr
+syntax failures were patched forward across28locales: current translations
+remain active and retired translations are comments. All696PO/POT catalogs
+parsed with pinned Expo1.1.1 and the strict28-locale/24-domain catalog check
+passed with zero empty, unreviewed, fuzzy or invalid target forms. Full Marshall
+verification is being rerun.

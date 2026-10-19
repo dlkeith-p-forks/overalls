@@ -58,9 +58,9 @@ msgstr "アカウント"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "コミットに Overalls のクレジットを追加する"
 msgid "Commit attribution"
 msgstr "コミットの帰属"
-msgstr "コミットに Overalls のクレジットを追加する"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

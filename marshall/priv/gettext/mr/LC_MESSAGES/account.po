@@ -59,9 +59,9 @@ msgstr "खाते"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "कमिटमध्ये Overalls च्या योगदानाचे श्रेय जोडा"
 msgid "Commit attribution"
 msgstr "कमिटचे श्रेय"
-msgstr "कमिटमध्ये Overalls च्या योगदानाचे श्रेय जोडा"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

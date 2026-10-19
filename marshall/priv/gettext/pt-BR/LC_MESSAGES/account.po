@@ -59,9 +59,9 @@ msgstr "Conta"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "Adicionar atribuição ao Overalls nos commits"
 msgid "Commit attribution"
 msgstr "Atribuição do commit"
-msgstr "Adicionar atribuição ao Overalls nos commits"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format

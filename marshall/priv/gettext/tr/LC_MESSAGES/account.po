@@ -59,9 +59,9 @@ msgstr "Hesap"
 
 #: lib/marshall_web/live/account_live.ex:827
 #, elixir-autogen, elixir-format
+# Prior translation for retired source "Add Overalls commit attribution": "Commitlere Overalls katkı bilgisini ekle"
 msgid "Commit attribution"
 msgstr "Commit ilişkilendirmesi"
-msgstr "Commitlere Overalls katkı bilgisini ekle"
 
 #: lib/marshall_web/live/account_live.ex:742
 #, elixir-autogen, elixir-format
