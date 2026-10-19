@@ -14,7 +14,7 @@ let
     if [ ! -f "$ANDROID_AVD_HOME/overalls-test.avd/config.ini" ]; then
       printf 'no\n' | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
         --force --name overalls-test \
-        --package 'system-images;android-36;google_apis;x86_64' \
+        --package 'system-images;android-34;google_apis;x86_64' \
         --path "$ANDROID_AVD_HOME/overalls-test.avd"
       cat >> "$ANDROID_AVD_HOME/overalls-test.avd/config.ini" <<'CONFIG'
 hw.gpu.enabled = yes
