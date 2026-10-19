@@ -14,22 +14,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/inference_live.ex:192
+#: lib/marshall_web/live/inference_live.ex:204
 #, elixir-autogen, elixir-format
 msgid "AI request"
 msgstr "AI درخواست"
 
-#: lib/marshall_web/live/inference_live.ex:101
+#: lib/marshall_web/live/inference_live.ex:104
 #, elixir-autogen, elixir-format
 msgid "AI requests"
 msgstr "AI درخواستیں"
 
-#: lib/marshall_web/live/inference_live.ex:106
+#: lib/marshall_web/live/inference_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "AI requests · last 30 days"
 msgstr "AI درخواستیں · گزشتہ 30 دن"
 
-#: lib/marshall_web/live/inference_live.ex:87
+#: lib/marshall_web/live/inference_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
 msgstr "AI استعمال ہر مشین کے مالک سے منسوب ہے۔ نامکمل استعمال نامعلوم رہتا ہے۔"
@@ -39,143 +39,143 @@ msgstr "AI استعمال ہر مشین کے مالک سے منسوب ہے۔ ن�
 msgid "AI usage is unavailable."
 msgstr "AI استعمال دستیاب نہیں۔"
 
-#: lib/marshall_web/live/inference_live.ex:202
+#: lib/marshall_web/live/inference_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "AI usage report"
 msgstr "AI استعمال رپورٹ"
 
-#: lib/marshall_web/live/inference_live.ex:129
+#: lib/marshall_web/live/inference_live.ex:139
 #, elixir-autogen, elixir-format
 msgid "All providers"
 msgstr "تمام فراہم کنندگان"
 
-#: lib/marshall_web/live/inference_live.ex:131
+#: lib/marshall_web/live/inference_live.ex:141
 #, elixir-autogen, elixir-format
 msgid "Anthropic"
 msgstr "Anthropic"
 
-#: lib/marshall_web/live/inference_live.ex:142
+#: lib/marshall_web/live/inference_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "Apply"
 msgstr "لاگو کریں"
 
-#: lib/marshall_web/live/inference_live.ex:112
+#: lib/marshall_web/live/inference_live.ex:121
 #, elixir-autogen, elixir-format
 msgid "Daily AI request counts over the past 30 days"
 msgstr "گزشتہ ۳۰ دن کی یومیہ مصنوعی ذہانت درخواستوں کی تعداد"
 
-#: lib/marshall_web/live/inference_live.ex:154
+#: lib/marshall_web/live/inference_live.ex:164
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "تفصیل"
 
-#: lib/marshall_web/live/inference_live.ex:137
+#: lib/marshall_web/live/inference_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "Exact model ID"
 msgstr "درست ماڈل شناخت"
 
-#: lib/marshall_web/live/inference_live.ex:97
+#: lib/marshall_web/live/inference_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "Export AI usage"
 msgstr "مصنوعی ذہانت کا استعمال برآمد کریں"
 
-#: lib/marshall_web/live/inference_live.ex:122
+#: lib/marshall_web/live/inference_live.ex:132
 #, elixir-autogen, elixir-format
 msgid "Filter"
 msgstr "چھانٹیں"
 
-#: lib/marshall_web/live/inference_live.ex:84
+#: lib/marshall_web/live/inference_live.ex:85
 #, elixir-autogen, elixir-format
 msgid "Fleet AI usage"
 msgstr "بیڑے کا مصنوعی ذہانت استعمال"
 
-#: lib/marshall_web/live/inference_live.ex:102
+#: lib/marshall_web/live/inference_live.ex:105
 #, elixir-autogen, elixir-format
 msgid "Incomplete AI reports"
 msgstr "نامکمل مصنوعی ذہانت رپورٹس"
 
-#: lib/marshall_web/live/inference_live.ex:151
+#: lib/marshall_web/live/inference_live.ex:161
 #, elixir-autogen, elixir-format
 msgid "Input tokens"
 msgstr "ان پٹ ٹوکن"
 
-#: lib/marshall_web/live/inference_live.ex:172
+#: lib/marshall_web/live/inference_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Inspect"
 msgstr "معائنہ کریں"
 
-#: lib/marshall_web/live/inference_live.ex:195
+#: lib/marshall_web/live/inference_live.ex:207
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "مشین"
 
-#: lib/marshall_web/live/inference_live.ex:136
-#: lib/marshall_web/live/inference_live.ex:150
+#: lib/marshall_web/live/inference_live.ex:146
+#: lib/marshall_web/live/inference_live.ex:160
 #, elixir-autogen, elixir-format
 msgid "Model"
 msgstr "ماڈل"
 
-#: lib/marshall_web/live/inference_live.ex:215
+#: lib/marshall_web/live/inference_live.ex:227
 #, elixir-autogen, elixir-format
 msgid "No AI requests match these filters."
 msgstr "ان معیاروں سے کوئی مصنوعی ذہانت درخواست نہیں ملتی۔"
 
-#: lib/marshall_web/live/inference_live.ex:221
+#: lib/marshall_web/live/inference_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Older AI requests →"
 msgstr "پرانی مصنوعی ذہانت درخواستیں →"
 
-#: lib/marshall_web/live/inference_live.ex:115
+#: lib/marshall_web/live/inference_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
 msgstr "ہر دن ایک کالم، پرانا پہلے؛ █ کی آٹھ قطاریں مصروف ترین دن کے لحاظ سے دکھتی ہیں۔ لیبل مہینے کا دن بتاتے ہیں۔"
 
-#: lib/marshall_web/live/inference_live.ex:130
+#: lib/marshall_web/live/inference_live.ex:140
 #, elixir-autogen, elixir-format
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: lib/marshall_web/live/inference_live.ex:153
+#: lib/marshall_web/live/inference_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Outcome"
 msgstr "نتیجہ"
 
-#: lib/marshall_web/live/inference_live.ex:152
+#: lib/marshall_web/live/inference_live.ex:162
 #, elixir-autogen, elixir-format
 msgid "Output tokens"
 msgstr "آؤٹ پٹ ٹوکن"
 
-#: lib/marshall_web/live/inference_live.ex:198
+#: lib/marshall_web/live/inference_live.ex:210
 #, elixir-autogen, elixir-format
 msgid "Placement / epoch"
 msgstr "تعیناتی / عہد"
 
-#: lib/marshall_web/live/inference_live.ex:182
+#: lib/marshall_web/live/inference_live.ex:194
 #, elixir-autogen, elixir-format
 msgid "Pricing source / version"
 msgstr "قیمت کا ماخذ / نسخہ"
 
-#: lib/marshall_web/live/inference_live.ex:127
+#: lib/marshall_web/live/inference_live.ex:137
 #, elixir-autogen, elixir-format
 msgid "Provider"
 msgstr "خدمت فراہم کنندہ"
 
-#: lib/marshall_web/live/inference_live.ex:103
+#: lib/marshall_web/live/inference_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Reported input tokens"
 msgstr "رپورٹ شدہ ان پٹ ٹوکن"
 
-#: lib/marshall_web/live/inference_live.ex:104
+#: lib/marshall_web/live/inference_live.ex:111
 #, elixir-autogen, elixir-format
 msgid "Reported output tokens"
 msgstr "رپورٹ شدہ آؤٹ پٹ ٹوکن"
 
-#: lib/marshall_web/live/inference_live.ex:149
+#: lib/marshall_web/live/inference_live.ex:159
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "وقت"
 
-#: lib/marshall_web/live/inference_live.ex:175
+#: lib/marshall_web/live/inference_live.ex:187
 #, elixir-autogen, elixir-format
 msgid "Token cost estimate · USD"
 msgstr "ٹوکن کی تخمینی لاگت · امریکی ڈالر"
@@ -186,19 +186,19 @@ msgid "Unavailable"
 msgstr "دستیاب نہیں"
 
 #: lib/marshall_web/live/inference_live.ex:60
-#: lib/marshall_web/live/inference_live.ex:178
-#: lib/marshall_web/live/inference_live.ex:185
-#: lib/marshall_web/live/inference_live.ex:188
+#: lib/marshall_web/live/inference_live.ex:190
+#: lib/marshall_web/live/inference_live.ex:197
+#: lib/marshall_web/live/inference_live.ex:200
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "نامعلوم"
 
-#: lib/marshall_web/live/inference_live.ex:168
+#: lib/marshall_web/live/inference_live.ex:180
 #, elixir-autogen, elixir-format
 msgid "Unreported"
 msgstr "اطلاع نہیں دی گئی"
 
-#: lib/marshall_web/live/inference_live.ex:84
+#: lib/marshall_web/live/inference_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Your AI usage"
 msgstr "آپ کا مصنوعی ذہانت کا استعمال"

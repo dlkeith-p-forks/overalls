@@ -14,7 +14,8 @@ defmodule Overalls.Diagnostics.Processor do
     Porsche.Events => "porsche.observability_health",
     Ziggy.Events => "ziggy.observability_health",
     Enrico.Events => "enrico.observability_health",
-    Galileo.Events => "galileo.observability_health"
+    Galileo.Events => "galileo.observability_health",
+    Susan.Events => "susan.observability_health"
   }
   @type state :: %{counters: :atomics.atomics_ref(), catalog: module() | nil}
 

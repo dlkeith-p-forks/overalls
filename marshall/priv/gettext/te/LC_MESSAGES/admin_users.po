@@ -14,187 +14,187 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/admin/users_live.ex:165
+#: lib/marshall_web/live/admin/users_live.ex:196
 #, elixir-autogen, elixir-format
 msgid "%{count} owned machine"
 msgid_plural "%{count} owned machines"
 msgstr[0] "%{count} సొంత యంత్రం"
 msgstr[1] "సొంత యంత్రాలు %{count}"
 
-#: lib/marshall_web/live/admin/users_live.ex:256
+#: lib/marshall_web/live/admin/users_live.ex:302
 #, elixir-autogen, elixir-format
 msgid "Account pages"
 msgstr "ఖాతా పేజీలు"
 
-#: lib/marshall_web/live/admin/users_live.ex:87
+#: lib/marshall_web/live/admin/users_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "Account request accepted."
 msgstr "ఖాతా అభ్యర్థన అంగీకరించబడింది."
 
-#: lib/marshall_web/live/admin/users_live.ex:119
+#: lib/marshall_web/live/admin/users_live.ex:134
 #, elixir-autogen, elixir-format
 msgid "Accounts are temporarily unavailable."
 msgstr "ఖాతాలు తాత్కాలికంగా అందుబాటులో లేవు."
 
-#: lib/marshall_web/live/admin/users_live.ex:160
+#: lib/marshall_web/live/admin/users_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Administrator"
 msgstr "నిర్వాహకుడు"
 
-#: lib/marshall_web/live/admin/users_live.ex:44
+#: lib/marshall_web/live/admin/users_live.ex:45
 #, elixir-autogen, elixir-format
 msgid "Administrator access updated."
 msgstr "నిర్వాహక ప్రాప్యత నవీకరించబడింది."
 
-#: lib/marshall_web/live/admin/users_live.ex:63
+#: lib/marshall_web/live/admin/users_live.ex:72
 #, elixir-autogen, elixir-format
 msgid "Browser sessions revoked."
 msgstr "బ్రౌజర్ సెషన్లు రద్దు చేయబడ్డాయి."
 
-#: lib/marshall_web/live/admin/users_live.ex:94
+#: lib/marshall_web/live/admin/users_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Could not accept this account change. Check confirmation and verify your passkey."
 msgstr ""
 "ఈ ఖాతా మార్పును అంగీకరించలేకపోయాం. నిర్ధారణను పరిశీలించి పాస్‌కీతో "
 "ధృవీకరించండి."
 
-#: lib/marshall_web/live/admin/users_live.ex:47
+#: lib/marshall_web/live/admin/users_live.ex:53
 #, elixir-autogen, elixir-format
 msgid "Could not change administrator access."
 msgstr "నిర్వాహక ప్రాప్యతను మార్చలేకపోయాం."
 
-#: lib/marshall_web/live/admin/users_live.ex:66
+#: lib/marshall_web/live/admin/users_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "Could not revoke browser sessions."
 msgstr "బ్రౌజర్ సెషన్లను రద్దు చేయలేకపోయాం."
 
-#: lib/marshall_web/live/admin/users_live.ex:247
+#: lib/marshall_web/live/admin/users_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "Delete user and machines"
 msgstr "వినియోగదారుని, యంత్రాలను తొలగించు"
 
-#: lib/marshall_web/live/admin/users_live.ex:146
+#: lib/marshall_web/live/admin/users_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "ఇమెయిల్ చిరునామా"
 
-#: lib/marshall_web/live/admin/users_live.ex:139
+#: lib/marshall_web/live/admin/users_live.ex:154
 #, elixir-autogen, elixir-format
 msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
 msgstr ""
 "ఈ డిప్లాయ్‌లోని అన్ని ఖాతాలు. సైన్ ఇన్ చేసినవారు పేజీని చదవవచ్చు; మార్పులకు "
 "ఇటీవల పాస్‌కీ ధృవీకరించిన నిర్వాహకులు అవసరం."
 
-#: lib/marshall_web/live/admin/users_live.ex:194
+#: lib/marshall_web/live/admin/users_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "Grant this account access to administer the entire fleet and all machines?"
 msgstr "ఈ ఖాతాకు మొత్తం ఫ్లీట్, అన్ని యంత్రాల నిర్వహణ ప్రాప్యత ఇవ్వాలా?"
 
-#: lib/marshall_web/live/admin/users_live.ex:80
+#: lib/marshall_web/live/admin/users_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "చెల్లని అభ్యర్థన."
 
-#: lib/marshall_web/live/admin/users_live.ex:144
+#: lib/marshall_web/live/admin/users_live.ex:163
 #, elixir-autogen, elixir-format
 msgid "Invite a user"
 msgstr "వినియోగదారుని ఆహ్వానించు"
 
-#: lib/marshall_web/live/admin/users_live.ex:166
+#: lib/marshall_web/live/admin/users_live.ex:202
 #, elixir-autogen, elixir-format
 msgid "MFA enabled"
 msgstr "MFA ప్రారంభించబడింది"
 
-#: lib/marshall_web/live/admin/users_live.ex:167
+#: lib/marshall_web/live/admin/users_live.ex:203
 #, elixir-autogen, elixir-format
 msgid "MFA not enrolled"
 msgstr "MFA నమోదు కాలేదు"
 
-#: lib/marshall_web/live/admin/users_live.ex:202
+#: lib/marshall_web/live/admin/users_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Make administrator"
 msgstr "నిర్వాహకునిగా చేయి"
 
-#: lib/marshall_web/live/admin/users_live.ex:262
+#: lib/marshall_web/live/admin/users_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "తదుపరి పేజీ →"
 
-#: lib/marshall_web/live/admin/users_live.ex:254
+#: lib/marshall_web/live/admin/users_live.ex:300
 #, elixir-autogen, elixir-format
 msgid "No accounts on this page."
 msgstr "ఈ పేజీలో ఖాతాలు లేవు."
 
-#: lib/marshall_web/live/admin/users_live.ex:242
+#: lib/marshall_web/live/admin/users_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr ""
 "ఈ ఖాతాను, ఇతరులతో పంచుకున్నవాటితో సహా దాని అన్ని యంత్రాలను శాశ్వతంగా "
 "తొలగించాలా?"
 
-#: lib/marshall_web/live/admin/users_live.ex:201
+#: lib/marshall_web/live/admin/users_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Remove administrator"
 msgstr "నిర్వాహకుని తొలగించు"
 
-#: lib/marshall_web/live/admin/users_live.ex:192
+#: lib/marshall_web/live/admin/users_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Remove administrator access for this account?"
 msgstr "ఈ ఖాతా నిర్వాహక ప్రాప్యతను తొలగించాలా?"
 
-#: lib/marshall_web/live/admin/users_live.ex:221
+#: lib/marshall_web/live/admin/users_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Reset MFA"
 msgstr "MFA రీసెట్ చేయి"
 
-#: lib/marshall_web/live/admin/users_live.ex:216
+#: lib/marshall_web/live/admin/users_live.ex:258
 #, elixir-autogen, elixir-format
 msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
 msgstr ""
 "ఈ వినియోగదారు MFAని రీసెట్ చేసి అన్ని బ్రౌజర్ సెషన్లు రద్దు చేయాలా? బదులుగా "
 "కొత్త పాస్‌కీ నమోదు చేయాలి."
 
-#: lib/marshall_web/live/admin/users_live.ex:147
+#: lib/marshall_web/live/admin/users_live.ex:173
 #, elixir-autogen, elixir-format
 msgid "Send invitation"
 msgstr "ఆహ్వానం పంపు"
 
-#: lib/marshall_web/live/admin/users_live.ex:210
+#: lib/marshall_web/live/admin/users_live.ex:252
 #, elixir-autogen, elixir-format
 msgid "Sign out everywhere"
 msgstr "అన్ని చోట్ల సైన్ అవుట్"
 
-#: lib/marshall_web/live/admin/users_live.ex:208
+#: lib/marshall_web/live/admin/users_live.ex:249
 #, elixir-autogen, elixir-format
 msgid "Sign this account out of every browser session?"
 msgstr "ఈ ఖాతాను అన్ని బ్రౌజర్ సెషన్ల నుంచి సైన్ అవుట్ చేయాలా?"
 
-#: lib/marshall_web/live/admin/users_live.ex:234
+#: lib/marshall_web/live/admin/users_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "ఈ ఖాతాను, దాని %{count} యంత్రాలను తొలగించడానికి ఇమెయిల్ టైప్ చేయండి"
 
-#: lib/marshall_web/live/admin/users_live.ex:160
+#: lib/marshall_web/live/admin/users_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "వినియోగదారు"
 
-#: lib/marshall_web/live/admin/users_live.ex:137
+#: lib/marshall_web/live/admin/users_live.ex:152
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "వినియోగదారులు"
 
-#: lib/marshall_web/live/admin/users_live.ex:151
+#: lib/marshall_web/live/admin/users_live.ex:177
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey · administrative access lasts 15 minutes →"
 msgstr "పాస్‌కీతో ధృవీకరించు · నిర్వాహక ప్రాప్యత 15 నిమిషాలు ఉంటుంది →"
 
-#: lib/marshall_web/live/admin/users_live.ex:167
+#: lib/marshall_web/live/admin/users_live.ex:205
 #, elixir-autogen, elixir-format
 msgid "· Your account"
 msgstr "· మీ ఖాతా"
 
-#: lib/marshall_web/live/admin/users_live.ex:257
+#: lib/marshall_web/live/admin/users_live.ex:303
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← మొదటి పేజీ"

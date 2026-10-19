@@ -14,197 +14,197 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/admin/operations_live.ex:222
+#: lib/marshall_web/live/admin/operations_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "%{count} · %{enabled} enabled"
 msgstr "%{count} · 已启用 %{enabled}"
 
-#: lib/marshall_web/live/admin/operations_live.ex:127
+#: lib/marshall_web/live/admin/operations_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Addresses"
 msgstr "地址"
 
-#: lib/marshall_web/live/admin/operations_live.ex:79
+#: lib/marshall_web/live/admin/operations_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Architecture"
 msgstr "架构"
 
-#: lib/marshall_web/live/admin/operations_live.ex:68
-#: lib/marshall_web/live/admin/operations_live.ex:118
+#: lib/marshall_web/live/admin/operations_live.ex:78
+#: lib/marshall_web/live/admin/operations_live.ex:138
 #, elixir-autogen, elixir-format
 msgid "Audi services"
 msgstr "Audi 服务"
 
-#: lib/marshall_web/live/admin/operations_live.ex:151
+#: lib/marshall_web/live/admin/operations_live.ex:173
 #, elixir-autogen, elixir-format
 msgid "Certificate expires"
 msgstr "证书到期时间"
 
-#: lib/marshall_web/live/admin/operations_live.ex:236
+#: lib/marshall_web/live/admin/operations_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "DNS"
 msgstr "域名系统"
 
-#: lib/marshall_web/live/admin/operations_live.ex:70
-#: lib/marshall_web/live/admin/operations_live.ex:156
+#: lib/marshall_web/live/admin/operations_live.ex:84
+#: lib/marshall_web/live/admin/operations_live.ex:178
 #, elixir-autogen, elixir-format
 msgid "DNS publications"
 msgstr "DNS 发布"
 
-#: lib/marshall_web/live/admin/operations_live.ex:212
+#: lib/marshall_web/live/admin/operations_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Disabled"
 msgstr "已禁用"
 
-#: lib/marshall_web/live/admin/operations_live.ex:212
+#: lib/marshall_web/live/admin/operations_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "已启用"
 
-#: lib/marshall_web/live/admin/operations_live.ex:103
-#: lib/marshall_web/live/admin/operations_live.ex:237
+#: lib/marshall_web/live/admin/operations_live.ex:123
+#: lib/marshall_web/live/admin/operations_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "Gateway"
 msgstr "网关"
 
-#: lib/marshall_web/live/admin/operations_live.ex:104
-#: lib/marshall_web/live/admin/operations_live.ex:126
+#: lib/marshall_web/live/admin/operations_live.ex:124
+#: lib/marshall_web/live/admin/operations_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "Generation"
 msgstr "代次"
 
-#: lib/marshall_web/live/admin/operations_live.ex:78
+#: lib/marshall_web/live/admin/operations_live.ex:96
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "镜像"
 
-#: lib/marshall_web/live/admin/operations_live.ex:72
+#: lib/marshall_web/live/admin/operations_live.ex:88
 #, elixir-autogen, elixir-format
 msgid "Image catalog"
 msgstr "镜像目录"
 
-#: lib/marshall_web/live/admin/operations_live.ex:66
+#: lib/marshall_web/live/admin/operations_live.ex:74
 #, elixir-autogen, elixir-format
 msgid "Images"
 msgstr "镜像"
 
-#: lib/marshall_web/live/admin/operations_live.ex:69
-#: lib/marshall_web/live/admin/operations_live.ex:143
+#: lib/marshall_web/live/admin/operations_live.ex:81
+#: lib/marshall_web/live/admin/operations_live.ex:165
 #, elixir-autogen, elixir-format
 msgid "Ingress routes"
 msgstr "入站路由"
 
-#: lib/marshall_web/live/admin/operations_live.ex:149
+#: lib/marshall_web/live/admin/operations_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "机器"
 
-#: lib/marshall_web/live/admin/operations_live.ex:80
+#: lib/marshall_web/live/admin/operations_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "Minimum RAM"
 msgstr "最低内存"
 
-#: lib/marshall_web/live/admin/operations_live.ex:81
+#: lib/marshall_web/live/admin/operations_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Minimum disk"
 msgstr "最小磁盘"
 
-#: lib/marshall_web/live/admin/operations_live.ex:119
+#: lib/marshall_web/live/admin/operations_live.ex:140
 #, elixir-autogen, elixir-format
 msgid "No Audi services enrolled."
 msgstr "尚未登记 Audi 服务。"
 
-#: lib/marshall_web/live/admin/operations_live.ex:160
+#: lib/marshall_web/live/admin/operations_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "No DNS publications are recorded."
 msgstr "没有 DNS 发布记录。"
 
-#: lib/marshall_web/live/admin/operations_live.ex:98
+#: lib/marshall_web/live/admin/operations_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "No gateways enrolled."
 msgstr "尚未登记网关。"
 
-#: lib/marshall_web/live/admin/operations_live.ex:73
+#: lib/marshall_web/live/admin/operations_live.ex:90
 #, elixir-autogen, elixir-format
 msgid "No images in the catalog."
 msgstr "目录中没有镜像。"
 
-#: lib/marshall_web/live/admin/operations_live.ex:147
+#: lib/marshall_web/live/admin/operations_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "No ingress routes are published."
 msgstr "尚未发布入站路由。"
 
-#: lib/marshall_web/live/admin/operations_live.ex:25
+#: lib/marshall_web/live/admin/operations_live.ex:31
 #, elixir-autogen, elixir-format
 msgid "Operational status is temporarily unavailable."
 msgstr "运行状态暂不可用。"
 
-#: lib/marshall_web/live/admin/operations_live.ex:52
+#: lib/marshall_web/live/admin/operations_live.ex:59
 #, elixir-autogen, elixir-format
 msgid "Platform status"
 msgstr "平台状态"
 
-#: lib/marshall_web/live/admin/operations_live.ex:67
-#: lib/marshall_web/live/admin/operations_live.ex:97
+#: lib/marshall_web/live/admin/operations_live.ex:75
+#: lib/marshall_web/live/admin/operations_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "Porsche gateways"
 msgstr "Porsche 网关"
 
-#: lib/marshall_web/live/admin/operations_live.ex:54
+#: lib/marshall_web/live/admin/operations_live.ex:61
 #, elixir-autogen, elixir-format
 msgid "Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
 msgstr "只读镜像、Audi 入站及 Porsche 网关状态。机密和证书材料不会显示。"
 
-#: lib/marshall_web/live/admin/operations_live.ex:150
-#: lib/marshall_web/live/admin/operations_live.ex:161
+#: lib/marshall_web/live/admin/operations_live.ex:172
+#: lib/marshall_web/live/admin/operations_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Revision"
 msgstr "修订版"
 
-#: lib/marshall_web/live/admin/operations_live.ex:125
+#: lib/marshall_web/live/admin/operations_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "角色"
 
-#: lib/marshall_web/live/admin/operations_live.ex:152
+#: lib/marshall_web/live/admin/operations_live.ex:174
 #, elixir-autogen, elixir-format
 msgid "Route expires"
 msgstr "路由到期时间"
 
-#: lib/marshall_web/live/admin/operations_live.ex:124
+#: lib/marshall_web/live/admin/operations_live.ex:146
 #, elixir-autogen, elixir-format
 msgid "Service"
 msgstr "服务"
 
-#: lib/marshall_web/live/admin/operations_live.ex:82
-#: lib/marshall_web/live/admin/operations_live.ex:105
-#: lib/marshall_web/live/admin/operations_live.ex:128
+#: lib/marshall_web/live/admin/operations_live.ex:100
+#: lib/marshall_web/live/admin/operations_live.ex:125
+#: lib/marshall_web/live/admin/operations_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "状态"
 
-#: lib/marshall_web/live/admin/operations_live.ex:238
+#: lib/marshall_web/live/admin/operations_live.ex:269
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "未知"
 
-#: lib/marshall_web/live/admin/operations_live.ex:60
+#: lib/marshall_web/live/admin/operations_live.ex:68
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "已更新"
 
-#: lib/marshall_web/live/admin/operations_live.ex:161
+#: lib/marshall_web/live/admin/operations_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Zone"
 msgstr "时区"
 
-#: lib/marshall_web/live/admin/operations_live.ex:225
-#: lib/marshall_web/live/admin/operations_live.ex:229
+#: lib/marshall_web/live/admin/operations_live.ex:256
+#: lib/marshall_web/live/admin/operations_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "unknown"
 msgstr "未知"
 
-#: lib/marshall_web/live/admin/operations_live.ex:62
+#: lib/marshall_web/live/admin/operations_live.ex:70
 #, elixir-autogen, elixir-format
 msgid "· every 30 seconds"
 msgstr "· 每 30 秒"

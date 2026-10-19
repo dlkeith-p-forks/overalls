@@ -14,983 +14,983 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/admin/audit_live.ex:265
+#: lib/marshall_web/live/admin/audit_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "; the next due check can then request a new generation."
 msgstr "；下一次到期检查即可请求新一代证书。"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:101
+#: lib/marshall_web/live/admin/audit_labels.ex:113
 #, elixir-autogen, elixir-format
 msgid "ACME account"
 msgstr "ACME账户"
 
-#: lib/marshall_web/live/admin/audit_live.ex:315
+#: lib/marshall_web/live/admin/audit_live.ex:333
 #, elixir-autogen, elixir-format
 msgid "ACME account: %{status}"
 msgstr "ACME 账户：%{status}"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:132
-#: lib/marshall_web/live/admin/audit_labels.ex:350
+#: lib/marshall_web/live/admin/audit_labels.ex:160
+#: lib/marshall_web/live/admin/audit_labels.ex:453
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr "已确认"
 
-#: lib/marshall_web/live/admin/audit_live.ex:230
-#: lib/marshall_web/live/admin/audit_live.ex:286
+#: lib/marshall_web/live/admin/audit_live.ex:237
+#: lib/marshall_web/live/admin/audit_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Action"
 msgstr "操作"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:124
+#: lib/marshall_web/live/admin/audit_labels.ex:148
 #, elixir-autogen, elixir-format
 msgid "Activated"
 msgstr "已激活"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:176
-#: lib/marshall_web/live/admin/audit_labels.ex:374
+#: lib/marshall_web/live/admin/audit_labels.ex:228
+#: lib/marshall_web/live/admin/audit_labels.ex:481
 #, elixir-autogen, elixir-format
 msgid "Activation failed"
 msgstr "激活失败"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:197
+#: lib/marshall_web/live/admin/audit_labels.ex:251
 #, elixir-autogen, elixir-format
 msgid "Activation observed"
 msgstr "观察到激活"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:356
+#: lib/marshall_web/live/admin/audit_labels.ex:460
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "有效"
 
-#: lib/marshall_web/live/admin/audit_live.ex:287
+#: lib/marshall_web/live/admin/audit_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "Actor"
 msgstr "操作者"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:27
+#: lib/marshall_web/live/admin/audit_labels.ex:32
 #, elixir-autogen, elixir-format
 msgid "Administrator access granted"
 msgstr "已授予管理员访问权限"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:28
+#: lib/marshall_web/live/admin/audit_labels.ex:35
 #, elixir-autogen, elixir-format
 msgid "Administrator access revoked"
 msgstr "管理员访问权限被撤销"
 
-#: lib/marshall_web/live/admin/audit_live.ex:193
+#: lib/marshall_web/live/admin/audit_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Administrator actions"
 msgstr "管理员操作"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:25
+#: lib/marshall_web/live/admin/audit_labels.ex:29
 #, elixir-autogen, elixir-format
 msgid "Administrator bootstrapped"
 msgstr "管理员引导"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:133
+#: lib/marshall_web/live/admin/audit_labels.ex:162
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "高级"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:134
+#: lib/marshall_web/live/admin/audit_labels.ex:165
 #, elixir-autogen, elixir-format
 msgid "Allocated"
 msgstr "已分配"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:343
+#: lib/marshall_web/live/admin/audit_labels.ex:441
 #, elixir-autogen, elixir-format
 msgid "Applied"
 msgstr "应用"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:136
-#: lib/marshall_web/live/admin/audit_labels.ex:340
+#: lib/marshall_web/live/admin/audit_labels.ex:170
+#: lib/marshall_web/live/admin/audit_labels.ex:435
 #, elixir-autogen, elixir-format
 msgid "Approved"
 msgstr "已批准"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:137
+#: lib/marshall_web/live/admin/audit_labels.ex:171
 #, elixir-autogen, elixir-format
 msgid "Archived"
 msgstr "已归档"
 
-#: lib/marshall_web/live/admin/audit_live.ex:179
+#: lib/marshall_web/live/admin/audit_live.ex:183
 #, elixir-autogen, elixir-format
 msgid "Audit"
 msgstr "审计"
 
-#: lib/marshall_web/live/admin/audit_live.ex:279
+#: lib/marshall_web/live/admin/audit_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "Audit history is unavailable."
 msgstr "审计历史不可用。"
 
-#: lib/marshall_web/live/admin/audit_live.ex:186
+#: lib/marshall_web/live/admin/audit_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Audit kinds"
 msgstr "审计类型"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:140
-#: lib/marshall_web/live/admin/audit_labels.ex:341
+#: lib/marshall_web/live/admin/audit_labels.ex:179
+#: lib/marshall_web/live/admin/audit_labels.ex:436
 #, elixir-autogen, elixir-format
 msgid "Blocked"
 msgstr "被阻止"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:184
+#: lib/marshall_web/live/admin/audit_labels.ex:236
 #, elixir-autogen, elixir-format
 msgid "Cancellation completed"
 msgstr "取消已完成"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:283
-#: lib/marshall_web/live/admin/audit_labels.ex:286
+#: lib/marshall_web/live/admin/audit_labels.ex:344
+#: lib/marshall_web/live/admin/audit_labels.ex:347
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "已请求取消"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:229
+#: lib/marshall_web/live/admin/audit_labels.ex:288
 #, elixir-autogen, elixir-format
 msgid "Cancellation restart recorded"
 msgstr "已记录取消重启"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:232
+#: lib/marshall_web/live/admin/audit_labels.ex:291
 #, elixir-autogen, elixir-format
 msgid "Cancellation stop recorded"
 msgstr "取消停止记录"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:141
-#: lib/marshall_web/live/admin/audit_labels.ex:142
-#: lib/marshall_web/live/admin/audit_labels.ex:336
+#: lib/marshall_web/live/admin/audit_labels.ex:180
+#: lib/marshall_web/live/admin/audit_labels.ex:183
+#: lib/marshall_web/live/admin/audit_labels.ex:427
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "已取消"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:335
+#: lib/marshall_web/live/admin/audit_labels.ex:424
 #, elixir-autogen, elixir-format
 msgid "Cancelling"
 msgstr "正在取消"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:330
+#: lib/marshall_web/live/admin/audit_labels.ex:411
 #, elixir-autogen, elixir-format
 msgid "Capturing"
 msgstr "捕捉"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:102
+#: lib/marshall_web/live/admin/audit_labels.ex:116
 #, elixir-autogen, elixir-format
 msgid "Certificate"
 msgstr "证书"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:122
+#: lib/marshall_web/live/admin/audit_labels.ex:145
 #, elixir-autogen, elixir-format
 msgid "Certificate issued"
 msgstr "颁发证书"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:110
+#: lib/marshall_web/live/admin/audit_labels.ex:133
 #, elixir-autogen, elixir-format
 msgid "Certificate order attempted"
 msgstr "尝试订购证书"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:113
+#: lib/marshall_web/live/admin/audit_labels.ex:136
 #, elixir-autogen, elixir-format
 msgid "Certificate order bound"
 msgstr "证书订单绑定"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:116
+#: lib/marshall_web/live/admin/audit_labels.ex:139
 #, elixir-autogen, elixir-format
 msgid "Certificate proof recorded"
 msgstr "记录的证书证明"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:119
+#: lib/marshall_web/live/admin/audit_labels.ex:142
 #, elixir-autogen, elixir-format
 msgid "Certificate proof refreshed"
 msgstr "证书证明已刷新"
 
-#: lib/marshall_web/live/admin/audit_live.ex:198
+#: lib/marshall_web/live/admin/audit_live.ex:204
 #, elixir-autogen, elixir-format
 msgid "Certificates"
 msgstr "证书"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:368
+#: lib/marshall_web/live/admin/audit_labels.ex:475
 #, elixir-autogen, elixir-format
 msgid "Checking destination"
 msgstr "检查目的地"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:359
+#: lib/marshall_web/live/admin/audit_labels.ex:463
 #, elixir-autogen, elixir-format
 msgid "Checking transfer"
 msgstr "支票转账"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:144
+#: lib/marshall_web/live/admin/audit_labels.ex:189
 #, elixir-autogen, elixir-format
 msgid "Checkpoint saved"
 msgstr "检查点已保存"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:333
+#: lib/marshall_web/live/admin/audit_labels.ex:419
 #, elixir-autogen, elixir-format
 msgid "Cleaning up"
 msgstr "清理"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:386
+#: lib/marshall_web/live/admin/audit_labels.ex:493
 #, elixir-autogen, elixir-format
 msgid "Cleaning up cancellation"
 msgstr "清理取消"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:380
+#: lib/marshall_web/live/admin/audit_labels.ex:487
 #, elixir-autogen, elixir-format
 msgid "Cleaning up source"
 msgstr "清理源头"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:148
+#: lib/marshall_web/live/admin/audit_labels.ex:194
 #, elixir-autogen, elixir-format
 msgid "Cleanup completed"
 msgstr "清理完成"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:145
-#: lib/marshall_web/live/admin/audit_labels.ex:334
-#: lib/marshall_web/live/admin/audit_labels.ex:339
+#: lib/marshall_web/live/admin/audit_labels.ex:191
+#: lib/marshall_web/live/admin/audit_labels.ex:421
+#: lib/marshall_web/live/admin/audit_labels.ex:433
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "完成"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:150
+#: lib/marshall_web/live/admin/audit_labels.ex:196
 #, elixir-autogen, elixir-format
 msgid "Confirmed"
 msgstr "已确认"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:166
+#: lib/marshall_web/live/admin/audit_labels.ex:214
 #, elixir-autogen, elixir-format
 msgid "Continued"
 msgstr "续"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:155
+#: lib/marshall_web/live/admin/audit_labels.ex:202
 #, elixir-autogen, elixir-format
 msgid "Copy confirmed"
 msgstr "复制确认"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:138
+#: lib/marshall_web/live/admin/audit_labels.ex:174
 #, elixir-autogen, elixir-format
 msgid "Copy started"
 msgstr "复制开始"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:331
+#: lib/marshall_web/live/admin/audit_labels.ex:413
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "正在复制"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:325
+#: lib/marshall_web/live/admin/audit_labels.ex:401
 #, elixir-autogen, elixir-format
 msgid "Created"
 msgstr "已创建"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:167
+#: lib/marshall_web/live/admin/audit_labels.ex:216
 #, elixir-autogen, elixir-format
 msgid "Deferred"
 msgstr "延期"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:354
+#: lib/marshall_web/live/admin/audit_labels.ex:458
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "已删除"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:389
+#: lib/marshall_web/live/admin/audit_labels.ex:496
 #, elixir-autogen, elixir-format
 msgid "Deleting copies"
 msgstr "删除副本"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:187
+#: lib/marshall_web/live/admin/audit_labels.ex:239
 #, elixir-autogen, elixir-format
 msgid "Deletion completed"
 msgstr "删除完成"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:289
-#: lib/marshall_web/live/admin/audit_labels.ex:292
+#: lib/marshall_web/live/admin/audit_labels.ex:350
+#: lib/marshall_web/live/admin/audit_labels.ex:353
 #, elixir-autogen, elixir-format
 msgid "Deletion requested"
 msgstr "已请求删除"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:202
+#: lib/marshall_web/live/admin/audit_labels.ex:256
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup offered"
 msgstr "提供目的地清理服务"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:238
+#: lib/marshall_web/live/admin/audit_labels.ex:297
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup recorded"
 msgstr "目的地清理记录"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:205
+#: lib/marshall_web/live/admin/audit_labels.ex:259
 #, elixir-autogen, elixir-format
 msgid "Destination revocation offered"
 msgstr "提供目的地撤销"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:242
+#: lib/marshall_web/live/admin/audit_labels.ex:301
 #, elixir-autogen, elixir-format
 msgid "Destination revocation recorded"
 msgstr "已记录目的地撤销"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:171
+#: lib/marshall_web/live/admin/audit_labels.ex:222
 #, elixir-autogen, elixir-format
 msgid "Destination work dispatched"
 msgstr "目的地工作派遣"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:168
+#: lib/marshall_web/live/admin/audit_labels.ex:219
 #, elixir-autogen, elixir-format
 msgid "Dispatched"
 msgstr "已派遣"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:347
+#: lib/marshall_web/live/admin/audit_labels.ex:448
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "已完成排空"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:346
+#: lib/marshall_web/live/admin/audit_labels.ex:447
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "正在排空"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:98
+#: lib/marshall_web/live/admin/audit_labels.ex:107
 #, elixir-autogen, elixir-format
 msgid "Editor credential"
 msgstr "编辑证书"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:100
+#: lib/marshall_web/live/admin/audit_labels.ex:110
 #, elixir-autogen, elixir-format
 msgid "Editor lease"
 msgstr "编辑租赁"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:95
+#: lib/marshall_web/live/admin/audit_labels.ex:104
 #, elixir-autogen, elixir-format
 msgid "Editor sign-in"
 msgstr "编辑登录"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:394
+#: lib/marshall_web/live/admin/audit_labels.ex:506
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "正在疏散"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:49
+#: lib/marshall_web/live/admin/audit_labels.ex:56
 #, elixir-autogen, elixir-format
 msgid "Evacuation approved"
 msgstr "撤离已获批准"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:46
+#: lib/marshall_web/live/admin/audit_labels.ex:53
 #, elixir-autogen, elixir-format
 msgid "Evacuation changed"
 msgstr "疏散变更"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:52
+#: lib/marshall_web/live/admin/audit_labels.ex:59
 #, elixir-autogen, elixir-format
 msgid "Evacuation replanned"
 msgstr "重新计划疏散"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:43
+#: lib/marshall_web/live/admin/audit_labels.ex:50
 #, elixir-autogen, elixir-format
 msgid "Evacuation requested"
 msgstr "要求疏散"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:126
-#: lib/marshall_web/live/admin/audit_labels.ex:337
+#: lib/marshall_web/live/admin/audit_labels.ex:151
+#: lib/marshall_web/live/admin/audit_labels.ex:429
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "失败"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:181
+#: lib/marshall_web/live/admin/audit_labels.ex:233
 #, elixir-autogen, elixir-format
 msgid "Fenced"
 msgstr "围栏"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:393
+#: lib/marshall_web/live/admin/audit_labels.ex:503
 #, elixir-autogen, elixir-format
 msgid "Fencing"
 msgstr "击剑"
 
-#: lib/marshall_web/live/admin/audit_live.ex:207
-#: lib/marshall_web/live/admin/audit_live.ex:244
+#: lib/marshall_web/live/admin/audit_live.ex:214
+#: lib/marshall_web/live/admin/audit_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Filter lifecycle history"
 msgstr "筛选生命周期历史"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:58
+#: lib/marshall_web/live/admin/audit_labels.ex:65
 #, elixir-autogen, elixir-format
 msgid "Fleet certificate rotation requested"
 msgstr "请求船队证书轮换"
 
-#: lib/marshall_web/live/admin/audit_live.ex:261
+#: lib/marshall_web/live/admin/audit_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Generation %{generation} has an uncertain ACME order response. The generation can be failed after"
 msgstr "第 %{generation} 代具有不确定的 ACME 顺序响应。之后生成可能会失败"
 
-#: lib/marshall_web/live/admin/audit_live.ex:319
+#: lib/marshall_web/live/admin/audit_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Generation %{generation}: %{status}"
 msgstr "代次 %{generation}：%{status}"
 
-#: lib/marshall_web/live/admin/audit_live.ex:215
+#: lib/marshall_web/live/admin/audit_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Host ID"
 msgstr "主机 ID"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:55
+#: lib/marshall_web/live/admin/audit_labels.ex:62
 #, elixir-autogen, elixir-format
 msgid "Host configured"
 msgstr "主机配置"
 
-#: lib/marshall_web/live/admin/audit_live.ex:248
+#: lib/marshall_web/live/admin/audit_live.ex:258
 #, elixir-autogen, elixir-format
 msgid "Human requests and system recovery transitions. History is retained for 90 days."
 msgstr "人工请求和系统恢复状态转换。历史保留 90 天。"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:192
+#: lib/marshall_web/live/admin/audit_labels.ex:245
 #, elixir-autogen, elixir-format
 msgid "Idle policy updated"
 msgstr "闲置政策已更新"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:158
+#: lib/marshall_web/live/admin/audit_labels.ex:205
 #, elixir-autogen, elixir-format
 msgid "Import confirmed"
 msgstr "进口已确认"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:221
+#: lib/marshall_web/live/admin/audit_labels.ex:277
 #, elixir-autogen, elixir-format
 msgid "Import prepared"
 msgstr "导入准备"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:245
+#: lib/marshall_web/live/admin/audit_labels.ex:304
 #, elixir-autogen, elixir-format
 msgid "Import recorded"
 msgstr "导入记录"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:139
+#: lib/marshall_web/live/admin/audit_labels.ex:177
 #, elixir-autogen, elixir-format
 msgid "Import started"
 msgstr "导入开始"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:364
+#: lib/marshall_web/live/admin/audit_labels.ex:469
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "正在导入"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:103
+#: lib/marshall_web/live/admin/audit_labels.ex:119
 #, elixir-autogen, elixir-format
 msgid "Installation"
 msgstr "安装"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:104
+#: lib/marshall_web/live/admin/audit_labels.ex:122
 #, elixir-autogen, elixir-format
 msgid "Installed"
 msgstr "已安装"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:90
+#: lib/marshall_web/live/admin/audit_labels.ex:98
 #, elixir-autogen, elixir-format
 msgid "Integration attached"
 msgstr "附整合"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:84
+#: lib/marshall_web/live/admin/audit_labels.ex:92
 #, elixir-autogen, elixir-format
 msgid "Integration configured"
 msgstr "集成已配置"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:93
+#: lib/marshall_web/live/admin/audit_labels.ex:101
 #, elixir-autogen, elixir-format
 msgid "Integration detached"
 msgstr "集成分离"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:87
+#: lib/marshall_web/live/admin/audit_labels.ex:95
 #, elixir-autogen, elixir-format
 msgid "Integration removed"
 msgstr "集成已删除"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:173
+#: lib/marshall_web/live/admin/audit_labels.ex:225
 #, elixir-autogen, elixir-format
 msgid "Key dispatched"
 msgstr "钥匙已发送"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:247
+#: lib/marshall_web/live/admin/audit_labels.ex:307
 #, elixir-autogen, elixir-format
 msgid "Key recorded"
 msgstr "按键记录"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:312
+#: lib/marshall_web/live/admin/audit_labels.ex:381
 #, elixir-autogen, elixir-format
 msgid "Key retired"
 msgstr "钥匙已退役"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:208
+#: lib/marshall_web/live/admin/audit_labels.ex:262
 #, elixir-autogen, elixir-format
 msgid "Key retirement offered"
 msgstr "提供关键退休金"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:295
+#: lib/marshall_web/live/admin/audit_labels.ex:356
 #, elixir-autogen, elixir-format
 msgid "Key retirement requested"
 msgstr "请求关键退役"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:34
+#: lib/marshall_web/live/admin/audit_labels.ex:41
 #, elixir-autogen, elixir-format
 msgid "Machine access revoked"
 msgstr "机器访问权限被撤销"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:61
+#: lib/marshall_web/live/admin/audit_labels.ex:68
 #, elixir-autogen, elixir-format
 msgid "Machine lifecycle requested"
 msgstr "要求机器生命周期"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:64
+#: lib/marshall_web/live/admin/audit_labels.ex:71
 #, elixir-autogen, elixir-format
 msgid "Machine relocation requested"
 msgstr "要求机器搬迁"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:194
+#: lib/marshall_web/live/admin/audit_labels.ex:248
 #, elixir-autogen, elixir-format
 msgid "Machine state observed"
 msgstr "观察机器状态"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:19
+#: lib/marshall_web/live/admin/audit_labels.ex:20
 #, elixir-autogen, elixir-format
 msgid "Multi-factor authentication reset"
 msgstr "多重身份验证重置"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:16
+#: lib/marshall_web/live/admin/audit_labels.ex:17
 #, elixir-autogen, elixir-format
 msgid "Multi-factor authentication verified"
 msgstr "多重身份验证已验证"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:338
+#: lib/marshall_web/live/admin/audit_labels.ex:430
 #, elixir-autogen, elixir-format
 msgid "Offered"
 msgstr "提供"
 
-#: lib/marshall_web/live/admin/audit_live.ex:334
+#: lib/marshall_web/live/admin/audit_live.ex:354
 #, elixir-autogen, elixir-format
 msgid "Older events →"
 msgstr "更早的事件 →"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:250
+#: lib/marshall_web/live/admin/audit_labels.ex:310
 #, elixir-autogen, elixir-format
 msgid "Operation recorded"
 msgstr "操作记录"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:10
+#: lib/marshall_web/live/admin/audit_labels.ex:11
 #, elixir-autogen, elixir-format
 msgid "Passkey added"
 msgstr "添加了密钥"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:13
+#: lib/marshall_web/live/admin/audit_labels.ex:14
 #, elixir-autogen, elixir-format
 msgid "Passkey removed"
 msgstr "密钥已删除"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:298
+#: lib/marshall_web/live/admin/audit_labels.ex:359
 #, elixir-autogen, elixir-format
 msgid "Pause requested"
 msgstr "请求暂停"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:217
-#: lib/marshall_web/live/admin/audit_labels.ex:353
+#: lib/marshall_web/live/admin/audit_labels.ex:271
+#: lib/marshall_web/live/admin/audit_labels.ex:457
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "已暂停"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:326
-#: lib/marshall_web/live/admin/audit_live.ex:324
+#: lib/marshall_web/live/admin/audit_labels.ex:402
+#: lib/marshall_web/live/admin/audit_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "待处理"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:235
+#: lib/marshall_web/live/admin/audit_labels.ex:294
 #, elixir-autogen, elixir-format
 msgid "Placement switch recorded"
 msgstr "记录放置开关"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:189
+#: lib/marshall_web/live/admin/audit_labels.ex:242
 #, elixir-autogen, elixir-format
 msgid "Placement switched"
 msgstr "位置切换"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:218
+#: lib/marshall_web/live/admin/audit_labels.ex:274
 #, elixir-autogen, elixir-format
 msgid "Preparation started"
 msgstr "准备工作开始"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:328
+#: lib/marshall_web/live/admin/audit_labels.ex:406
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "正在准备"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:253
+#: lib/marshall_web/live/admin/audit_labels.ex:313
 #, elixir-autogen, elixir-format
 msgid "Progress recorded"
 msgstr "记录进度"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:131
+#: lib/marshall_web/live/admin/audit_labels.ex:157
 #, elixir-autogen, elixir-format
 msgid "Progress updated"
 msgstr "更新进度"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:223
+#: lib/marshall_web/live/admin/audit_labels.ex:279
 #, elixir-autogen, elixir-format
 msgid "Published"
 msgstr "已发表"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:332
+#: lib/marshall_web/live/admin/audit_labels.ex:416
 #, elixir-autogen, elixir-format
 msgid "Publishing"
 msgstr "出版"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:106
-#: lib/marshall_web/live/admin/audit_labels.ex:327
+#: lib/marshall_web/live/admin/audit_labels.ex:127
+#: lib/marshall_web/live/admin/audit_labels.ex:403
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr "已排队"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:161
-#: lib/marshall_web/live/admin/audit_labels.ex:164
+#: lib/marshall_web/live/admin/audit_labels.ex:208
+#: lib/marshall_web/live/admin/audit_labels.ex:211
 #, elixir-autogen, elixir-format
 msgid "Readiness confirmed"
 msgstr "准备就绪已确认"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:179
-#: lib/marshall_web/live/admin/audit_labels.ex:371
+#: lib/marshall_web/live/admin/audit_labels.ex:231
+#: lib/marshall_web/live/admin/audit_labels.ex:478
 #, elixir-autogen, elixir-format
 msgid "Readiness failed"
 msgstr "准备失败"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:224
-#: lib/marshall_web/live/admin/audit_labels.ex:345
+#: lib/marshall_web/live/admin/audit_labels.ex:280
+#: lib/marshall_web/live/admin/audit_labels.ex:446
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "就绪"
 
-#: lib/marshall_web/live/admin/audit_live.ex:251
+#: lib/marshall_web/live/admin/audit_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
 msgstr "近期集群通配符证书代次和网关安装。不包含私钥和 ACME 证明。"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:225
+#: lib/marshall_web/live/admin/audit_labels.ex:283
 #, elixir-autogen, elixir-format
 msgid "Reconciled"
 msgstr "和解了"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:226
+#: lib/marshall_web/live/admin/audit_labels.ex:285
 #, elixir-autogen, elixir-format
 msgid "Recorded"
 msgstr "已录制"
 
-#: lib/marshall_web/live/admin/audit_live.ex:181
+#: lib/marshall_web/live/admin/audit_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
 msgstr "已脱敏的授权更改、生命周期请求、证书代次和编辑器访问。不包含载荷、凭据和终端字节。"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:277
+#: lib/marshall_web/live/admin/audit_labels.ex:338
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata updated"
 msgstr "反射元数据已更新"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:105
+#: lib/marshall_web/live/admin/audit_labels.ex:125
 #, elixir-autogen, elixir-format
 msgid "Registered"
 msgstr "已注册"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:279
+#: lib/marshall_web/live/admin/audit_labels.ex:340
 #, elixir-autogen, elixir-format
 msgid "Replanned"
 msgstr "重新规划"
 
-#: lib/marshall_web/live/admin/audit_live.ex:274
+#: lib/marshall_web/live/admin/audit_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Request a new wildcard certificate for every Audi gateway?"
 msgstr "为每个 Audi 网关请求新的通配符证书？"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:107
+#: lib/marshall_web/live/admin/audit_labels.ex:130
 #, elixir-autogen, elixir-format
 msgid "Request saved"
 msgstr "请求已保存"
 
-#: lib/marshall_web/live/admin/audit_live.ex:276
+#: lib/marshall_web/live/admin/audit_live.ex:294
 #, elixir-autogen, elixir-format
 msgid "Request wildcard rotation"
 msgstr "请求轮换通配符证书"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:280
+#: lib/marshall_web/live/admin/audit_labels.ex:341
 #, elixir-autogen, elixir-format
 msgid "Requested"
 msgstr "已请求"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:135
+#: lib/marshall_web/live/admin/audit_labels.ex:168
 #, elixir-autogen, elixir-format
 msgid "Resize applied"
 msgstr "已应用调整大小"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:304
+#: lib/marshall_web/live/admin/audit_labels.ex:368
 #, elixir-autogen, elixir-format
 msgid "Resize started"
 msgstr "调整大小已开始"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:391
+#: lib/marshall_web/live/admin/audit_labels.ex:498
 #, elixir-autogen, elixir-format
 msgid "Resizing"
 msgstr "正在调整大小"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:305
-#: lib/marshall_web/live/admin/audit_labels.ex:395
+#: lib/marshall_web/live/admin/audit_labels.ex:370
+#: lib/marshall_web/live/admin/audit_labels.ex:508
 #, elixir-autogen, elixir-format
 msgid "Resolved"
 msgstr "已解决"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:306
+#: lib/marshall_web/live/admin/audit_labels.ex:373
 #, elixir-autogen, elixir-format
 msgid "Restart started"
 msgstr "重新启动开始"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:392
+#: lib/marshall_web/live/admin/audit_labels.ex:501
 #, elixir-autogen, elixir-format
 msgid "Restarting"
 msgstr "正在重启"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:383
+#: lib/marshall_web/live/admin/audit_labels.ex:490
 #, elixir-autogen, elixir-format
 msgid "Restoring source"
 msgstr "恢复源"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:259
+#: lib/marshall_web/live/admin/audit_labels.ex:319
 #, elixir-autogen, elixir-format
 msgid "Result recorded"
 msgstr "结果记录"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:311
-#: lib/marshall_web/live/admin/audit_labels.ex:348
+#: lib/marshall_web/live/admin/audit_labels.ex:378
+#: lib/marshall_web/live/admin/audit_labels.ex:449
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "已恢复"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:125
-#: lib/marshall_web/live/admin/audit_labels.ex:349
+#: lib/marshall_web/live/admin/audit_labels.ex:150
+#: lib/marshall_web/live/admin/audit_labels.ex:450
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "已退役"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:313
+#: lib/marshall_web/live/admin/audit_labels.ex:384
 #, elixir-autogen, elixir-format
 msgid "Retry requested"
 msgstr "请求重试"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:377
+#: lib/marshall_web/live/admin/audit_labels.ex:484
 #, elixir-autogen, elixir-format
 msgid "Retrying destination"
 msgstr "正在重试目的地"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:351
+#: lib/marshall_web/live/admin/audit_labels.ex:455
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "运行中"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:37
+#: lib/marshall_web/live/admin/audit_labels.ex:44
 #, elixir-autogen, elixir-format
 msgid "SSH key revoked"
 msgstr "SSH 密钥已撤销"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:40
+#: lib/marshall_web/live/admin/audit_labels.ex:47
 #, elixir-autogen, elixir-format
 msgid "SSH session revoked"
 msgstr "SSH 会话已撤销"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:314
-#: lib/marshall_web/live/admin/audit_labels.ex:342
+#: lib/marshall_web/live/admin/audit_labels.ex:387
+#: lib/marshall_web/live/admin/audit_labels.ex:439
 #, elixir-autogen, elixir-format
 msgid "Scheduled"
 msgstr "已调度"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:31
+#: lib/marshall_web/live/admin/audit_labels.ex:38
 #, elixir-autogen, elixir-format
 msgid "Sessions revoked"
 msgstr "会话被撤销"
 
-#: lib/marshall_web/live/admin/audit_live.ex:231
+#: lib/marshall_web/live/admin/audit_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "Since (ISO 8601)"
 msgstr "开始时间 (ISO 8601)"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:153
+#: lib/marshall_web/live/admin/audit_labels.ex:199
 #, elixir-autogen, elixir-format
 msgid "Snapshot capture confirmed"
 msgstr "快照捕获已确认"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:143
+#: lib/marshall_web/live/admin/audit_labels.ex:186
 #, elixir-autogen, elixir-format
 msgid "Snapshot capture started"
 msgstr "快照捕捉开始"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:262
+#: lib/marshall_web/live/admin/audit_labels.ex:322
 #, elixir-autogen, elixir-format
 msgid "Source restoration recorded"
 msgstr "源恢复记录"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:309
+#: lib/marshall_web/live/admin/audit_labels.ex:376
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "源端已恢复"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:211
+#: lib/marshall_web/live/admin/audit_labels.ex:265
 #, elixir-autogen, elixir-format
 msgid "Source revocation offered"
 msgstr "提供源撤销"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:265
+#: lib/marshall_web/live/admin/audit_labels.ex:325
 #, elixir-autogen, elixir-format
 msgid "Source revocation recorded"
 msgstr "源撤销已记录"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:215
+#: lib/marshall_web/live/admin/audit_labels.ex:269
 #, elixir-autogen, elixir-format
 msgid "Source snapshot cleanup offered"
 msgstr "提供源快照清理"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:269
+#: lib/marshall_web/live/admin/audit_labels.ex:329
 #, elixir-autogen, elixir-format
 msgid "Source snapshot cleanup recorded"
 msgstr "源快照清理记录"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:318
+#: lib/marshall_web/live/admin/audit_labels.ex:392
 #, elixir-autogen, elixir-format
 msgid "Source stop started"
 msgstr "源停止开始"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:301
+#: lib/marshall_web/live/admin/audit_labels.ex:362
 #, elixir-autogen, elixir-format
 msgid "Start requested"
 msgstr "请求开始"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:271
+#: lib/marshall_web/live/admin/audit_labels.ex:332
 #, elixir-autogen, elixir-format
 msgid "Stop recorded"
 msgstr "停止记录"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:303
+#: lib/marshall_web/live/admin/audit_labels.ex:365
 #, elixir-autogen, elixir-format
 msgid "Stop requested"
 msgstr "请求停止"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:315
+#: lib/marshall_web/live/admin/audit_labels.ex:389
 #, elixir-autogen, elixir-format
 msgid "Stop started"
 msgstr "停止已开始"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:352
+#: lib/marshall_web/live/admin/audit_labels.ex:456
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "已停止"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:329
+#: lib/marshall_web/live/admin/audit_labels.ex:408
 #, elixir-autogen, elixir-format
 msgid "Stopping"
 msgstr "正在停止"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:362
+#: lib/marshall_web/live/admin/audit_labels.ex:466
 #, elixir-autogen, elixir-format
 msgid "Stopping source"
 msgstr "停止源"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:320
-#: lib/marshall_web/live/admin/audit_labels.ex:344
+#: lib/marshall_web/live/admin/audit_labels.ex:395
+#: lib/marshall_web/live/admin/audit_labels.ex:444
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "取代"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:365
+#: lib/marshall_web/live/admin/audit_labels.ex:472
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "正在切换分配"
 
-#: lib/marshall_web/live/admin/audit_live.ex:288
+#: lib/marshall_web/live/admin/audit_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "目标"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:66
+#: lib/marshall_web/live/admin/audit_labels.ex:74
 #, elixir-autogen, elixir-format
 msgid "Team created"
 msgstr "团队创建"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:69
+#: lib/marshall_web/live/admin/audit_labels.ex:77
 #, elixir-autogen, elixir-format
 msgid "Team membership changed"
 msgstr "团队成员变更"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:75
+#: lib/marshall_web/live/admin/audit_labels.ex:83
 #, elixir-autogen, elixir-format
 msgid "Team ownership accepted"
 msgstr "接受团队所有权"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:78
+#: lib/marshall_web/live/admin/audit_labels.ex:86
 #, elixir-autogen, elixir-format
 msgid "Team ownership declined"
 msgstr "球队所有权下降"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:81
+#: lib/marshall_web/live/admin/audit_labels.ex:89
 #, elixir-autogen, elixir-format
 msgid "Team ownership offer cancelled"
 msgstr "球队所有权报价被取消"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:72
+#: lib/marshall_web/live/admin/audit_labels.ex:80
 #, elixir-autogen, elixir-format
 msgid "Team ownership offered"
 msgstr "提供团队所有权"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:256
+#: lib/marshall_web/live/admin/audit_labels.ex:316
 #, elixir-autogen, elixir-format
 msgid "Transfer receipt recorded"
 msgstr "已记录转账收据"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:129
+#: lib/marshall_web/live/admin/audit_labels.ex:154
 #, elixir-autogen, elixir-format
 msgid "Uncertain certificate order failed"
 msgstr "不确定的证书订单失败"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:274
+#: lib/marshall_web/live/admin/audit_labels.ex:335
 #, elixir-autogen, elixir-format
 msgid "Unconfirmed outcome recorded"
 msgstr "记录未经证实的结果"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:321
-#: lib/marshall_web/live/admin/audit_labels.ex:355
-#: lib/marshall_web/live/admin/audit_labels.ex:396
+#: lib/marshall_web/live/admin/audit_labels.ex:397
+#: lib/marshall_web/live/admin/audit_labels.ex:459
+#: lib/marshall_web/live/admin/audit_labels.ex:509
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "未知"
 
-#: lib/marshall_web/live/admin/audit_live.ex:232
+#: lib/marshall_web/live/admin/audit_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Until (ISO 8601)"
 msgstr "结束时间 (ISO 8601)"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:22
+#: lib/marshall_web/live/admin/audit_labels.ex:26
 #, elixir-autogen, elixir-format
 msgid "User deleted"
 msgstr "用户已删除"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:21
+#: lib/marshall_web/live/admin/audit_labels.ex:23
 #, elixir-autogen, elixir-format
 msgid "User invited"
 msgstr "用户已邀请"
 
-#: lib/marshall_web/live/admin/audit_live.ex:213
+#: lib/marshall_web/live/admin/audit_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "VM ID"
 msgstr "虚拟机 ID"
 
-#: lib/marshall_web/live/admin/audit_live.ex:195
+#: lib/marshall_web/live/admin/audit_live.ex:200
 #, elixir-autogen, elixir-format
 msgid "VM lifecycle"
 msgstr "虚拟机生命周期"
 
-#: lib/marshall_web/live/admin/audit_live.ex:204
+#: lib/marshall_web/live/admin/audit_live.ex:211
 #, elixir-autogen, elixir-format
 msgid "VS Code access"
 msgstr "VS Code 访问"
 
-#: lib/marshall_web/live/admin/audit_live.ex:285
+#: lib/marshall_web/live/admin/audit_live.ex:303
 #, elixir-autogen, elixir-format
 msgid "When"
 msgstr "时间"
 
-#: lib/marshall_web/live/admin/audit_live.ex:121
+#: lib/marshall_web/live/admin/audit_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Wildcard rotation could not be requested."
 msgstr "无法请求轮换通配符证书。"
@@ -1000,12 +1000,12 @@ msgstr "无法请求轮换通配符证书。"
 msgid "Wildcard rotation requested for generation %{generation}."
 msgstr "已为代次 %{generation} 请求轮换通配符证书。"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:199
+#: lib/marshall_web/live/admin/audit_labels.ex:253
 #, elixir-autogen, elixir-format
 msgid "Work offered"
 msgstr "提供的工作"
 
-#: lib/marshall_web/live/admin/audit_live.ex:214
+#: lib/marshall_web/live/admin/audit_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Workflow ID"
 msgstr "工作流 ID"

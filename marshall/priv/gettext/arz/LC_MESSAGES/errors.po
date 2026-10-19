@@ -158,17 +158,17 @@ msgstr "لازم يكون أكبر من أو يساوي %{number}"
 msgid "must be equal to %{number}"
 msgstr "لازم يساوي %{number}"
 
-#: lib/marshall_web/controllers/error_html.ex:52
+#: lib/marshall_web/controllers/error_html.ex:57
 #, elixir-autogen, elixir-format
 msgid "Back to Overalls"
 msgstr "العودة إلى Overalls"
 
-#: lib/marshall_web/controllers/error_html.ex:45
+#: lib/marshall_web/controllers/error_html.ex:46
 #, elixir-autogen, elixir-format
 msgid "Overalls is briefly unavailable. This page will retry automatically."
 msgstr "Overalls مش متاح لفترة قصيرة. الصفحة هتجرّب تاني تلقائيًا."
 
-#: lib/marshall_web/controllers/error_html.ex:48
+#: lib/marshall_web/controllers/error_html.ex:52
 #, elixir-autogen, elixir-format
 msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
 msgstr "ما قدرناش نفتح الصفحة. عد إلى مساحة عملك أو جرّب تاني بعد قليل."

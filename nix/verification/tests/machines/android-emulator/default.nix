@@ -38,6 +38,10 @@ let
     export ANDROID_AVD_HOME=/var/lib/android-test/avd
     export DISPLAY=:0
     mkdir -p "$HOME/.android"
+    if [ ! -f "$HOME/.android/adbkey" ]; then
+      ${pkgs.android-tools}/bin/adb keygen "$HOME/.android/adbkey"
+    fi
+    cp "$HOME/.android/adbkey.pub" /var/lib/android-test/adb_keys
     mkdir -p "$ANDROID_AVD_HOME"
     if [ ! -f "$ANDROID_AVD_HOME/overalls-test.avd/config.ini" ]; then
       printf 'no\n' | ${sdkRoot}/cmdline-tools/22.0/bin/avdmanager create avd \
@@ -57,7 +61,7 @@ CONFIG
     fi
     exec ${sdkRoot}/emulator/emulator -avd overalls-test \
       -no-accel -gpu swiftshader_indirect -noaudio \
-      -no-boot-anim -no-snapshot -skip-adb-auth \
+      -no-boot-anim -no-snapshot -auth /var/lib/android-test/adb_keys \
       -ports 5554,5555
   '';
 in

@@ -29,31 +29,31 @@ msgstr "%{value1} · HLDD"
 msgid "A little space for your next big idea."
 msgstr "Isang maliit na espasyo para sa iyong susunod na malaking ideya."
 
-#: lib/marshall_web/live/hldd_live.ex:70
+#: lib/marshall_web/live/hldd_live.ex:71
 #, elixir-autogen, elixir-format
 msgid "A reference for the system, its configuration, and its operation."
 msgstr "Isang sanggunian para sa system, pagsasaayos nito, at pagpapatakbo nito."
 
-#: lib/marshall_web/components/layouts.ex:328
-#: lib/marshall_web/components/layouts.ex:428
+#: lib/marshall_web/components/layouts.ex:337
+#: lib/marshall_web/components/layouts.ex:443
 #, elixir-autogen, elixir-format
 msgid "AI usage"
 msgstr "paggamit ng AI"
 
-#: lib/marshall_web/components/layouts.ex:401
-#: lib/marshall_web/components/layouts.ex:446
+#: lib/marshall_web/components/layouts.ex:416
+#: lib/marshall_web/components/layouts.ex:461
 #, elixir-autogen, elixir-format
 msgid "Access authority"
 msgstr "I-access ang awtoridad"
 
-#: lib/marshall_web/components/layouts.ex:238
-#: lib/marshall_web/components/layouts.ex:320
-#: lib/marshall_web/components/layouts.ex:434
+#: lib/marshall_web/components/layouts.ex:241
+#: lib/marshall_web/components/layouts.ex:329
+#: lib/marshall_web/components/layouts.ex:449
 #, elixir-autogen, elixir-format
 msgid "Account"
 msgstr "Account ng gumagamit"
 
-#: lib/marshall_web/components/layouts.ex:390
+#: lib/marshall_web/components/layouts.ex:404
 #, elixir-autogen, elixir-format
 msgid "Accounting"
 msgstr "Pagtutuos"
@@ -63,33 +63,33 @@ msgstr "Pagtutuos"
 msgid "Actions"
 msgstr "Mga aksyon"
 
-#: lib/marshall_web/live/hldd_live.ex:111
+#: lib/marshall_web/live/hldd_live.ex:113
 #, elixir-autogen, elixir-format
 msgid "Adjacent sections"
 msgstr "Mga katabing seksyon"
 
-#: lib/marshall_web/components/layouts.ex:289
-#: lib/marshall_web/components/layouts.ex:398
+#: lib/marshall_web/components/layouts.ex:296
+#: lib/marshall_web/components/layouts.ex:413
 #, elixir-autogen, elixir-format
 msgid "Administration"
 msgstr "Pangangasiwa"
 
-#: lib/marshall_web/components/layouts.ex:242
-#: lib/marshall_web/components/layouts.ex:492
-#: lib/marshall_web/components/layouts.ex:493
-#: lib/marshall_web/controllers/docs_html/show.html.heex:68
+#: lib/marshall_web/components/layouts.ex:245
+#: lib/marshall_web/components/layouts.ex:507
+#: lib/marshall_web/components/layouts.ex:508
+#: lib/marshall_web/controllers/docs_html/show.html.heex:71
 #, elixir-autogen, elixir-format
 msgid "Appearance"
 msgstr "Hitsura"
 
-#: lib/marshall_web/components/layouts.ex:152
-#: lib/marshall_web/components/layouts.ex:166
+#: lib/marshall_web/components/layouts.ex:153
+#: lib/marshall_web/components/layouts.ex:167
 #, elixir-autogen, elixir-format
 msgid "Attempting to reconnect"
 msgstr "Sinusubukang kumonekta muli"
 
-#: lib/marshall_web/components/layouts.ex:403
-#: lib/marshall_web/components/layouts.ex:447
+#: lib/marshall_web/components/layouts.ex:418
+#: lib/marshall_web/components/layouts.ex:462
 #, elixir-autogen, elixir-format
 msgid "Audit"
 msgstr "Pag-audit"
@@ -99,18 +99,18 @@ msgstr "Pag-audit"
 msgid "Breadcrumb"
 msgstr "Landas ng nabigasyon"
 
-#: lib/marshall_web/components/layouts.ex:230
+#: lib/marshall_web/components/layouts.ex:233
 #, elixir-autogen, elixir-format
 msgid "Browser"
 msgstr "Pang-browse"
 
-#: lib/marshall_web/components/layouts.ex:233
-#: lib/marshall_web/components/layouts.ex:333
+#: lib/marshall_web/components/layouts.ex:236
+#: lib/marshall_web/components/layouts.ex:342
 #, elixir-autogen, elixir-format
 msgid "Browser extension"
 msgstr "Extension ng browser"
 
-#: lib/marshall_web/components/layouts.ex:118
+#: lib/marshall_web/components/layouts.ex:119
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Kanselahin"
@@ -120,8 +120,8 @@ msgstr "Kanselahin"
 msgid "Cancel verification"
 msgstr "Kanselahin ang pag-verify"
 
-#: lib/marshall_web/components/layouts.ex:261
-#: lib/marshall_web/components/layouts.ex:275
+#: lib/marshall_web/components/layouts.ex:264
+#: lib/marshall_web/components/layouts.ex:278
 #, elixir-autogen, elixir-format
 msgid "Close navigation"
 msgstr "Isara ang nabigasyon"
@@ -131,37 +131,37 @@ msgstr "Isara ang nabigasyon"
 msgid "Confirm administrative change"
 msgstr "Kumpirmahin ang administratibong pagbabago"
 
-#: lib/marshall_web/live/hldd_live.ex:85
+#: lib/marshall_web/live/hldd_live.ex:87
 #, elixir-autogen, elixir-format
 msgid "Contents"
 msgstr "Mga nilalaman"
 
-#: lib/marshall_web/components/layouts.ex:283
+#: lib/marshall_web/components/layouts.ex:287
 #, elixir-autogen, elixir-format
 msgid "Control room"
 msgstr "Silid-kontrol"
 
-#: lib/marshall_web/components/layouts.ex:426
+#: lib/marshall_web/components/layouts.ex:441
 #, elixir-autogen, elixir-format
 msgid "Control room · %{section}"
 msgstr "Silid-kontrol · %{section}"
 
-#: lib/marshall_web/components/layouts.ex:423
+#: lib/marshall_web/components/layouts.ex:438
 #, elixir-autogen, elixir-format
 msgid "Control room · AI usage"
 msgstr "Control room · Paggamit ng AI"
 
-#: lib/marshall_web/components/layouts.ex:496
+#: lib/marshall_web/components/layouts.ex:511
 #, elixir-autogen, elixir-format
 msgid "Dark"
 msgstr "Madilim"
 
-#: lib/marshall_web/components/layouts.ex:220
+#: lib/marshall_web/components/layouts.ex:221
 #, elixir-autogen, elixir-format
 msgid "Docs"
 msgstr "Dokumentasyon"
 
-#: lib/marshall_web/components/layouts.ex:347
+#: lib/marshall_web/components/layouts.ex:356
 #, elixir-autogen, elixir-format
 msgid "Docs ↗"
 msgstr "Dokumentasyon ↗"
@@ -176,35 +176,35 @@ msgstr "Dokumentasyon"
 msgid "Documentation not found"
 msgstr "Hindi nahanap ang dokumentasyon"
 
-#: lib/marshall_web/components/layouts.ex:221
-#: lib/marshall_web/components/layouts.ex:346
-#: lib/marshall_web/controllers/docs_html/show.html.heex:42
+#: lib/marshall_web/components/layouts.ex:223
+#: lib/marshall_web/components/layouts.ex:355
+#: lib/marshall_web/controllers/docs_html/show.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Field notes"
 msgstr "Mga tala sa field"
 
-#: lib/marshall_web/components/layouts.ex:390
+#: lib/marshall_web/components/layouts.ex:405
 #, elixir-autogen, elixir-format
 msgid "Fleet AI usage"
 msgstr "Paggamit ng Fleet AI"
 
-#: lib/marshall_web/components/layouts.ex:402
+#: lib/marshall_web/components/layouts.ex:417
 #, elixir-autogen, elixir-format
 msgid "Git mirrors"
 msgstr "Mga salamin ng Git"
 
-#: lib/marshall_web/components/layouts.ex:416
-#: lib/marshall_web/components/layouts.ex:439
+#: lib/marshall_web/components/layouts.ex:431
+#: lib/marshall_web/components/layouts.ex:454
 #, elixir-autogen, elixir-format
 msgid "Git repositories"
 msgstr "Mga repositoryo ng Git"
 
-#: lib/marshall_web/components/layouts.ex:360
+#: lib/marshall_web/components/layouts.ex:371
 #, elixir-autogen, elixir-format
 msgid "GitHub ↗"
 msgstr "GitHub ↗"
 
-#: lib/marshall_web/components/layouts.ex:355
+#: lib/marshall_web/components/layouts.ex:364
 #: lib/marshall_web/live/hldd_live.ex:45
 #, elixir-autogen, elixir-format
 msgid "HLDD"
@@ -215,8 +215,8 @@ msgstr "HLDD"
 msgid "HLDD · Design and operations"
 msgstr "HLDD · Disenyo at pagpapatakbo"
 
-#: lib/marshall_web/live/hldd_live.ex:72
-#: lib/marshall_web/live/hldd_live.ex:86
+#: lib/marshall_web/live/hldd_live.ex:74
+#: lib/marshall_web/live/hldd_live.ex:88
 #, elixir-autogen, elixir-format
 msgid "Handbook contents"
 msgstr "Mga nilalaman ng handbook"
@@ -226,66 +226,66 @@ msgstr "Mga nilalaman ng handbook"
 msgid "Home"
 msgstr "Bahay"
 
-#: lib/marshall_web/components/layouts.ex:415
-#: lib/marshall_web/components/layouts.ex:438
+#: lib/marshall_web/components/layouts.ex:430
+#: lib/marshall_web/components/layouts.ex:453
 #, elixir-autogen, elixir-format
 msgid "Integrations"
 msgstr "Mga pagsasama"
 
-#: lib/marshall_web/components/layouts.ex:395
-#: lib/marshall_web/components/layouts.ex:443
+#: lib/marshall_web/components/layouts.ex:410
+#: lib/marshall_web/components/layouts.ex:458
 #, elixir-autogen, elixir-format
 msgid "Jobs"
 msgstr "Mga trabaho"
 
-#: lib/marshall_web/controllers/docs_html/show.html.heex:55
+#: lib/marshall_web/controllers/docs_html/show.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "LLM index"
 msgstr "Indeks ng LLM"
 
-#: lib/marshall_web/components/layouts.ex:495
+#: lib/marshall_web/components/layouts.ex:510
 #, elixir-autogen, elixir-format
 msgid "Light"
 msgstr "Liwanag"
 
-#: lib/marshall_web/controllers/docs_html/show.html.heex:53
+#: lib/marshall_web/controllers/docs_html/show.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Machine readable"
 msgstr "Nababasa ng makina"
 
-#: lib/marshall_web/components/layouts.ex:414
-#: lib/marshall_web/components/layouts.ex:437
+#: lib/marshall_web/components/layouts.ex:429
+#: lib/marshall_web/components/layouts.ex:452
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "Mga makina"
 
-#: lib/marshall_web/components/layouts.ex:278
+#: lib/marshall_web/components/layouts.ex:281
 #, elixir-autogen, elixir-format
 msgid "Made to get dirty"
 msgstr "Ginawa para madumihan"
 
-#: lib/marshall_web/components/layouts.ex:289
+#: lib/marshall_web/components/layouts.ex:297
 #, elixir-autogen, elixir-format
 msgid "Main"
 msgstr "Pangunahing"
 
-#: lib/marshall_web/components/layouts.ex:370
+#: lib/marshall_web/components/layouts.ex:381
 #, elixir-autogen, elixir-format
 msgid "Make yourself comfy"
 msgstr "Gawin ang iyong sarili kumportable"
 
-#: lib/marshall_web/controllers/docs_html/show.html.heex:60
+#: lib/marshall_web/controllers/docs_html/show.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Markdown for this page"
 msgstr "Markdown para sa page na ito"
 
-#: lib/marshall_web/components/layouts.ex:256
+#: lib/marshall_web/components/layouts.ex:259
 #, elixir-autogen, elixir-format
 msgid "Menu"
 msgstr "Mga pagpipilian"
 
-#: lib/marshall_web/components/layouts.ex:393
-#: lib/marshall_web/components/layouts.ex:441
+#: lib/marshall_web/components/layouts.ex:408
+#: lib/marshall_web/components/layouts.ex:456
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "Pagpapanatili ng node"
@@ -295,7 +295,7 @@ msgstr "Pagpapanatili ng node"
 msgid "Open Overalls"
 msgstr "Buksan ang Overall"
 
-#: lib/marshall_web/components/layouts.ex:391
+#: lib/marshall_web/components/layouts.ex:406
 #, elixir-autogen, elixir-format
 msgid "Operations"
 msgstr "Mga operasyon"
@@ -306,65 +306,65 @@ msgstr "Mga operasyon"
 msgid "Overalls"
 msgstr "Overalls"
 
-#: lib/marshall_web/components/layouts.ex:412
-#: lib/marshall_web/components/layouts.ex:435
+#: lib/marshall_web/components/layouts.ex:427
+#: lib/marshall_web/components/layouts.ex:450
 #, elixir-autogen, elixir-format
 msgid "Overview"
 msgstr "Pangkalahatang-ideya"
 
-#: lib/marshall_web/components/layouts.ex:396
-#: lib/marshall_web/components/layouts.ex:444
+#: lib/marshall_web/components/layouts.ex:411
+#: lib/marshall_web/components/layouts.ex:459
 #, elixir-autogen, elixir-format
 msgid "Platform status"
 msgstr "Katayuan ng platform"
 
-#: lib/marshall_web/components/layouts.ex:343
-#: lib/marshall_web/components/layouts.ex:355
+#: lib/marshall_web/components/layouts.ex:352
+#: lib/marshall_web/components/layouts.ex:365
 #, elixir-autogen, elixir-format
 msgid "Reference"
 msgstr "Sanggunian"
 
-#: lib/marshall_web/components/layouts.ex:240
+#: lib/marshall_web/components/layouts.ex:243
 #: lib/marshall_web/controllers/docs_html/show.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "Mag-sign in"
 
-#: lib/marshall_web/components/layouts.ex:379
+#: lib/marshall_web/components/layouts.ex:393
 #, elixir-autogen, elixir-format
 msgid "Sign out"
 msgstr "Mag-sign out"
 
-#: lib/marshall_web/components/layouts.ex:213
+#: lib/marshall_web/components/layouts.ex:214
 #: lib/marshall_web/components/layouts/root.html.heex:38
 #: lib/marshall_web/controllers/docs_html/show.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Skip to content"
 msgstr "Lumaktaw sa nilalaman"
 
-#: lib/marshall_web/components/layouts.ex:158
+#: lib/marshall_web/components/layouts.ex:159
 #, elixir-autogen, elixir-format
 msgid "Something went wrong!"
 msgstr "May naganap na problema!"
 
-#: lib/marshall_web/components/layouts.ex:224
+#: lib/marshall_web/components/layouts.ex:227
 #, elixir-autogen, elixir-format
 msgid "Source"
 msgstr "Pinagmulan"
 
-#: lib/marshall_web/components/layouts.ex:360
+#: lib/marshall_web/components/layouts.ex:370
 #: lib/marshall_web/controllers/docs_html/show.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Source code"
 msgstr "Pinagmulang kodigo"
 
-#: lib/marshall_web/components/layouts.ex:494
+#: lib/marshall_web/components/layouts.ex:509
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Sistema"
 
-#: lib/marshall_web/components/layouts.ex:417
-#: lib/marshall_web/components/layouts.ex:440
+#: lib/marshall_web/components/layouts.ex:432
+#: lib/marshall_web/components/layouts.ex:455
 #, elixir-autogen, elixir-format
 msgid "Teams"
 msgstr "Mga koponan"
@@ -374,29 +374,29 @@ msgstr "Mga koponan"
 msgid "This change needs a fresh passkey verification. Your verification lasts 15 minutes."
 msgstr "Kailangan ng pagbabagong ito ng bagong beripikasyon ng passkey. May bisa ang iyong beripikasyon sa loob ng 15 minuto."
 
-#: lib/marshall_web/components/layouts.ex:413
-#: lib/marshall_web/components/layouts.ex:436
+#: lib/marshall_web/components/layouts.ex:428
+#: lib/marshall_web/components/layouts.ex:451
 #, elixir-autogen, elixir-format
 msgid "Threads"
 msgstr "Mga usapan"
 
-#: lib/marshall_web/components/layouts.ex:377
+#: lib/marshall_web/components/layouts.ex:388
 #, elixir-autogen, elixir-format
 msgid "Time zone"
 msgstr "Sona ng oras"
 
-#: lib/marshall_web/components/layouts.ex:400
-#: lib/marshall_web/components/layouts.ex:445
+#: lib/marshall_web/components/layouts.ex:415
+#: lib/marshall_web/components/layouts.ex:460
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr "Mga gumagamit"
 
-#: lib/marshall_web/components/layouts.ex:111
+#: lib/marshall_web/components/layouts.ex:112
 #, elixir-autogen, elixir-format
 msgid "Verify with passkey"
 msgstr "Beripikahin gamit ang passkey"
 
-#: lib/marshall_web/components/layouts.ex:144
+#: lib/marshall_web/components/layouts.ex:145
 #, elixir-autogen, elixir-format
 msgid "We can't find the internet"
 msgstr "Hindi namin mahanap ang internet"
@@ -406,34 +406,34 @@ msgstr "Hindi namin mahanap ang internet"
 msgid "Welcome to Overalls. Make yourself at home."
 msgstr "Maligayang pagdating sa Overalls. Maging komportable ka."
 
-#: lib/marshall_web/components/layouts.ex:394
-#: lib/marshall_web/components/layouts.ex:442
+#: lib/marshall_web/components/layouts.ex:409
+#: lib/marshall_web/components/layouts.ex:457
 #, elixir-autogen, elixir-format
 msgid "Workloads"
 msgstr "Mga gawaing pinoproseso"
 
-#: lib/marshall_web/components/layouts.ex:280
-#: lib/marshall_web/components/layouts.ex:448
+#: lib/marshall_web/components/layouts.ex:283
+#: lib/marshall_web/components/layouts.ex:463
 #, elixir-autogen, elixir-format
 msgid "Workspace"
 msgstr "Lugar-paggawa"
 
-#: lib/marshall_web/components/layouts.ex:279
+#: lib/marshall_web/components/layouts.ex:282
 #, elixir-autogen, elixir-format
 msgid "Workspace mode"
 msgstr "Paraan ng lugar-paggawa"
 
-#: lib/marshall_web/components/layouts.ex:267
+#: lib/marshall_web/components/layouts.ex:270
 #, elixir-autogen, elixir-format
 msgid "Workspace navigation"
 msgstr "Nabigasyon ng lugar-paggawa"
 
-#: lib/marshall_web/components/layouts.ex:313
+#: lib/marshall_web/components/layouts.ex:322
 #, elixir-autogen, elixir-format
 msgid "Your account"
 msgstr "Iyong account"
 
-#: lib/marshall_web/components/layouts.ex:410
+#: lib/marshall_web/components/layouts.ex:425
 #, elixir-autogen, elixir-format
 msgid "Your workspace"
 msgstr "Iyong lugar-paggawa"
@@ -443,7 +443,7 @@ msgstr "Iyong lugar-paggawa"
 msgid "close"
 msgstr "isara"
 
-#: lib/marshall_web/live/hldd_live.ex:83
+#: lib/marshall_web/live/hldd_live.ex:85
 #, elixir-autogen, elixir-format
 msgid "← All sections"
 msgstr "← Lahat ng seksiyon"

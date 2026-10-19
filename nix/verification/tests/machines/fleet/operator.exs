@@ -343,6 +343,32 @@ defmodule FleetOperator do
     %{revoked: true}
   end
 
+  # @cc [owner:ghuntley,label:verification;security] fleet-ssh-terminal-attach-actions
+  # SSH attach acceptance MUST open the browser's personal session through
+  # the same production call and deterministic request TerminalLive uses,
+  # and revoke the gateway key through the owner's production removal
+  # action. Only identifiers and the post-commit wall clock leave the action.
+  def run(%{"action" => "terminal-personal-session", "owner_id" => owner, "vm_id" => vm}) do
+    true = OverallsProtocol.uuid?(owner) and OverallsProtocol.uuid?(vm)
+    actor = Ash.get!(Marshall.Accounts.User, owner, authorize?: false)
+
+    # Readiness refusals (for example a host stream not yet registered) are
+    # closed atoms; the scenario retries them within its own deadline.
+    case Marshall.Terminal.Authority.open_personal_session(%{id: vm}, actor, :default, :connect) do
+      {:ok, session} -> %{session_id: session.id}
+      {:error, reason} when is_atom(reason) -> %{session_id: nil, reason: reason}
+    end
+  end
+
+  def run(%{"action" => "ssh-key-revoke", "owner_id" => owner, "public_key" => public}) do
+    actor = Ash.get!(Marshall.Accounts.User, owner, authorize?: false)
+    {:ok, parsed} = OverallsProtocol.SSHKey.parse(public)
+    {:ok, keys} = Marshall.SSH.list_keys(actor: actor)
+    [key] = Enum.filter(keys, &(&1.fingerprint == parsed.fingerprint))
+    {:ok, _} = Marshall.SSH.remove_key(%{id: key.id}, actor: actor)
+    %{revoked_at_ms: System.os_time(:millisecond)}
+  end
+
   # @cc [owner:ghuntley,label:verification;security] galileo-fleet-domain-actions
   # Galileo acceptance setup MUST use production credential and Ash domain
   # actions. The fixture exposes only two fixed synthetic integrations and
@@ -678,6 +704,36 @@ defmodule FleetOperator do
       )
 
     %{thread_id: thread.id, turn_id: result.turn_id, status: result.status}
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] fleet-porsche-thread-fixture
+  # The porsche-threads fixture MUST create its thread through the authorized
+  # Threads action with the owner actor and the manifest-derived default shape.
+  # It returns only identifiers and status, never the objective text.
+  def run(%{"action" => "thread-create", "owner_id" => owner, "image_id" => image, "key" => key}) do
+    actor = Ash.get!(Marshall.Accounts.User, owner, authorize?: false)
+    [catalog_image] = Ledger.read!(Marshall.Compute.Image, id: image)
+
+    {:ok, thread} =
+      Marshall.Threads.create_thread(
+        %{
+          objective: "Report this machine's hostname",
+          mode: :medium,
+          idempotency_key: key,
+          machine_spec: %{
+            idempotency_key: key,
+            architecture: :x86_64,
+            image_id: image,
+            profile: :standard,
+            vcpu: 1,
+            memory_bytes: max(536_870_912, catalog_image.minimum_memory_bytes),
+            disk_bytes: max(3_221_225_472, catalog_image.minimum_disk_bytes)
+          }
+        },
+        actor: actor
+      )
+
+    %{thread_id: thread.id, status: thread.status}
   end
 
   def run(%{"action" => "agent-result", "actor_id" => actor_id, "turn_id" => turn_id}) do

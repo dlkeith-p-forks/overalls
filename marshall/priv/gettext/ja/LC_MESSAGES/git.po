@@ -85,7 +85,7 @@ msgstr "リポジトリ"
 msgid "Repository path"
 msgstr "リポジトリのパス"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "リポジトリが利用できません。"

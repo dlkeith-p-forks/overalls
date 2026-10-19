@@ -54,7 +54,10 @@ defmodule Porsche.Listener do
     origin = Keyword.fetch!(options, :public_origin)
     {:ok, _} = Client.new(origin, client.token)
     request = Keyword.get(options, :request, &Client.request/4)
-    config = %{client: client, public_origin: String.trim_trailing(origin, "/"), request: request}
+
+    config =
+      %{client: client, public_origin: String.trim_trailing(origin, "/"), request: request}
+      |> Map.merge(Map.new(Keyword.take(options, [:terminal_connect])))
 
     connected = fn user, peer, method ->
       :ok = Proof.authenticated(user, peer, method)

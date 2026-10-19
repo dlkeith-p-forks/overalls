@@ -210,8 +210,59 @@ public-document structure and strict catalog checks all passed after that
 regeneration. Code-contract verification passed across 150 `CONTRACTS` files,
 3,579 notes, 477 parsed source files and 3,572 covered source files.
 
-At this merged-state review, the full protocol precommit run (seed `417854`),
-the full Lilly precommit run (seed `547342`) and final Marshall forced Dialyzer
-analysis were still in progress against their isolated snapshots. No passing
-completion, consumer Covenant result or final type result is inferred from
-intermediate output. The normal Marshall full-suite gaps above remain open.
+The isolated protocol `mix precommit` against `eaca39a46` plus the repairs
+committed in `6467bcde` completed successfully: all 382 tests passed in
+909.2 seconds with seed `417854` and eight maximum cases. All 14 Covenant
+obligations passed, the recorded-result check held, and Dialyzer reported zero
+errors, skipped warnings or unnecessary skips. The final Marshall forced
+Dialyzer analysis against that snapshot also completed normally in
+4 minutes 16.61 seconds with zero errors, skipped warnings or unnecessary skips.
+These results precede the later Mila protocol additions. Lilly's isolated
+test phase also passed all 652 tests in 1,276.0 seconds with seed `547342`,
+and all 15 Covenant obligations passed. Its type-stage continuation remained
+pending after correcting a private scratch-build layout; no full Lilly gate
+completion is claimed. The normal Marshall full-suite gaps above remain open.
+
+The preceding merged-source, catalog, font and focused-test results describe
+that `6467bcde` integration snapshot. The subsequent `aacb4be2c` trunk update
+brings the accepted, partially implemented ADR-0220–0228 client, canonical route,
+watch, terminal-attach and notification work. These changes retain Marshall's
+domain authority, add the Notifications domain and the independent Susan relay,
+and introduce shared protocol codecs and the Flutter client. Susan has no fleet
+host placement; the generated topology and maintained interaction diagram keep
+its database, provider egress and authority separate from Marshall.
+
+The SSH projection conflict was resolved by preserving both accepted obligations:
+the caller's own pin and canonical route remain on the client wire, while
+Reflection labels and comment stay private to the browser projection. The review
+index retains the MFA and all incoming Mila/Susan reviews. Stale ADR gap text
+now points to the present approval link, device dispatch and Marshall poke client
+and to the historical Mila-Porsche run. Their accepted decisions, partial status,
+prior failures and native/device/provider gaps are preserved. The incoming
+[M6 review](2026-10-19-mila-m6.md) still records no completed integrated Phase 2
+pass. No earlier full-suite, type or browser result establishes the latest tree.
+
+The final static font check against the later trunk catalogs and two added
+notification refusals passed for 2,299 visible codepoints across 135,469 PO
+string units. All eight complete font assets and OFL notices verified at the
+unchanged total of 13,815,920 bytes. The changed PO-unit count reflects incoming
+catalog normalization; this check establishes glyph coverage, not linguistic
+correctness or a new browser shaping result.
+
+The latest shared contract-scanner regression run passed all 20 tests in
+7.36 seconds with no skips or cancellations, including the added Dart, Kotlin
+and Swift contiguous-comment case. This verifies scanner behavior and contract
+discovery; it does not establish semantic compliance of every client or relay.
+
+The latest source audit found two notification refusals still using the
+transport's English hint. `push_disabled` and `device_limit` now use native
+`management` domain lookups and translations in all 28 Porsche catalogs;
+`device rm DEVICE_ID` remains literal. A regression checks Arabic and Japanese
+guidance and byte-equivalent decoded JSON hints. Moving the existing terminal
+close helper after the grouped control clauses repairs an incoming compiler
+warning without changing its body or behavior.
+
+At the latest source freeze, the expanded protocol precommit (seed `778386`),
+Porsche precommit and focused Marshall SSH/notification/approval checks were
+still in progress; latest Marshall extraction, catalog and forced-type outcomes
+were not yet recorded. Earlier completed checks retain the source scopes above.

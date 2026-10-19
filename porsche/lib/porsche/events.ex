@@ -48,6 +48,32 @@ defmodule Porsche.Events do
     metadata: [reason: :atom]
   )
 
+  defevent("porsche.terminal_attached",
+    message: "SSH terminal attachment established",
+    metadata: [mode: {:enum, [:rw, :ro]}]
+  )
+
+  defevent("porsche.terminal_detached",
+    message: "SSH terminal attachment ended",
+    metadata: [reason: {:enum, [:closed, :refused, :invalid, :authority, :transport, :client]}]
+  )
+
+  defevent("porsche.watch_opened",
+    message: "SSH watch stream opened",
+    metadata: [machines: :int64, threads: :int64, session: {:enum, [:watched, :unwatched]}]
+  )
+
+  defevent("porsche.watch_closed",
+    message: "SSH watch stream closed",
+    metadata: [reason: {:enum, [:closed, :revoked, :refused, :unavailable, :approval_expired]}]
+  )
+
+  defevent("porsche.stdin_payload_rejected",
+    level: :warning,
+    message: "SSH stdin payload rejected",
+    metadata: [reason: {:enum, [:too_large, :invalid]}]
+  )
+
   defevent("porsche.listener_lost",
     level: :warning,
     message: "SSH listener lost",

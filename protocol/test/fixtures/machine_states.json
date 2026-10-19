@@ -1,0 +1,173 @@
+{
+ "version": 1,
+ "states": [
+  {
+   "desired_state": "running",
+   "observed_state": "pending",
+   "label": "Starting",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "running",
+   "observed_state": "running",
+   "label": "Running",
+   "tone": "success"
+  },
+  {
+   "desired_state": "running",
+   "observed_state": "stopped",
+   "label": "Starting",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "running",
+   "observed_state": "paused",
+   "label": "Resuming",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "running",
+   "observed_state": "unknown",
+   "label": "Unknown",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "running",
+   "observed_state": "failed",
+   "label": "Failed",
+   "tone": "danger"
+  },
+  {
+   "desired_state": "running",
+   "observed_state": "deleted",
+   "label": "Deleted",
+   "tone": null
+  },
+  {
+   "desired_state": "stopped",
+   "observed_state": "pending",
+   "label": "Pending",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "stopped",
+   "observed_state": "running",
+   "label": "Stopping",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "stopped",
+   "observed_state": "stopped",
+   "label": "Stopped",
+   "tone": null
+  },
+  {
+   "desired_state": "stopped",
+   "observed_state": "paused",
+   "label": "Paused",
+   "tone": null
+  },
+  {
+   "desired_state": "stopped",
+   "observed_state": "unknown",
+   "label": "Unknown",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "stopped",
+   "observed_state": "failed",
+   "label": "Failed",
+   "tone": "danger"
+  },
+  {
+   "desired_state": "stopped",
+   "observed_state": "deleted",
+   "label": "Deleted",
+   "tone": null
+  },
+  {
+   "desired_state": "paused",
+   "observed_state": "pending",
+   "label": "Pending",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "paused",
+   "observed_state": "running",
+   "label": "Suspending",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "paused",
+   "observed_state": "stopped",
+   "label": "Stopped",
+   "tone": null
+  },
+  {
+   "desired_state": "paused",
+   "observed_state": "paused",
+   "label": "Paused",
+   "tone": null
+  },
+  {
+   "desired_state": "paused",
+   "observed_state": "unknown",
+   "label": "Unknown",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "paused",
+   "observed_state": "failed",
+   "label": "Failed",
+   "tone": "danger"
+  },
+  {
+   "desired_state": "paused",
+   "observed_state": "deleted",
+   "label": "Deleted",
+   "tone": null
+  },
+  {
+   "desired_state": "deleted",
+   "observed_state": "pending",
+   "label": "Deleting",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "deleted",
+   "observed_state": "running",
+   "label": "Deleting",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "deleted",
+   "observed_state": "stopped",
+   "label": "Deleting",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "deleted",
+   "observed_state": "paused",
+   "label": "Deleting",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "deleted",
+   "observed_state": "unknown",
+   "label": "Deleting",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "deleted",
+   "observed_state": "failed",
+   "label": "Deleting",
+   "tone": "pending"
+  },
+  {
+   "desired_state": "deleted",
+   "observed_state": "deleted",
+   "label": "Deleting",
+   "tone": "pending"
+  }
+ ]
+}

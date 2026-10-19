@@ -14,197 +14,197 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/admin/operations_live.ex:222
+#: lib/marshall_web/live/admin/operations_live.ex:250
 #, elixir-autogen, elixir-format
 msgid "%{count} · %{enabled} enabled"
 msgstr "%{count} · %{enabled} 활성화됨"
 
-#: lib/marshall_web/live/admin/operations_live.ex:127
+#: lib/marshall_web/live/admin/operations_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Addresses"
 msgstr "구애"
 
-#: lib/marshall_web/live/admin/operations_live.ex:79
+#: lib/marshall_web/live/admin/operations_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Architecture"
 msgstr "건축학"
 
-#: lib/marshall_web/live/admin/operations_live.ex:68
-#: lib/marshall_web/live/admin/operations_live.ex:118
+#: lib/marshall_web/live/admin/operations_live.ex:78
+#: lib/marshall_web/live/admin/operations_live.ex:138
 #, elixir-autogen, elixir-format
 msgid "Audi services"
 msgstr "아우디 서비스"
 
-#: lib/marshall_web/live/admin/operations_live.ex:151
+#: lib/marshall_web/live/admin/operations_live.ex:173
 #, elixir-autogen, elixir-format
 msgid "Certificate expires"
 msgstr "인증서가 만료됩니다."
 
-#: lib/marshall_web/live/admin/operations_live.ex:236
+#: lib/marshall_web/live/admin/operations_live.ex:267
 #, elixir-autogen, elixir-format
 msgid "DNS"
 msgstr "DNS"
 
-#: lib/marshall_web/live/admin/operations_live.ex:70
-#: lib/marshall_web/live/admin/operations_live.ex:156
+#: lib/marshall_web/live/admin/operations_live.ex:84
+#: lib/marshall_web/live/admin/operations_live.ex:178
 #, elixir-autogen, elixir-format
 msgid "DNS publications"
 msgstr "DNS 출판물"
 
-#: lib/marshall_web/live/admin/operations_live.ex:212
+#: lib/marshall_web/live/admin/operations_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Disabled"
 msgstr "장애가 있는"
 
-#: lib/marshall_web/live/admin/operations_live.ex:212
+#: lib/marshall_web/live/admin/operations_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "활성화됨"
 
-#: lib/marshall_web/live/admin/operations_live.ex:103
-#: lib/marshall_web/live/admin/operations_live.ex:237
+#: lib/marshall_web/live/admin/operations_live.ex:123
+#: lib/marshall_web/live/admin/operations_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "Gateway"
 msgstr "게이트웨이"
 
-#: lib/marshall_web/live/admin/operations_live.ex:104
-#: lib/marshall_web/live/admin/operations_live.ex:126
+#: lib/marshall_web/live/admin/operations_live.ex:124
+#: lib/marshall_web/live/admin/operations_live.ex:148
 #, elixir-autogen, elixir-format
 msgid "Generation"
 msgstr "세대"
 
-#: lib/marshall_web/live/admin/operations_live.ex:78
+#: lib/marshall_web/live/admin/operations_live.ex:96
 #, elixir-autogen, elixir-format
 msgid "Image"
 msgstr "영상"
 
-#: lib/marshall_web/live/admin/operations_live.ex:72
+#: lib/marshall_web/live/admin/operations_live.ex:88
 #, elixir-autogen, elixir-format
 msgid "Image catalog"
 msgstr "이미지 카탈로그"
 
-#: lib/marshall_web/live/admin/operations_live.ex:66
+#: lib/marshall_web/live/admin/operations_live.ex:74
 #, elixir-autogen, elixir-format
 msgid "Images"
 msgstr "이미지"
 
-#: lib/marshall_web/live/admin/operations_live.ex:69
-#: lib/marshall_web/live/admin/operations_live.ex:143
+#: lib/marshall_web/live/admin/operations_live.ex:81
+#: lib/marshall_web/live/admin/operations_live.ex:165
 #, elixir-autogen, elixir-format
 msgid "Ingress routes"
 msgstr "수신 경로"
 
-#: lib/marshall_web/live/admin/operations_live.ex:149
+#: lib/marshall_web/live/admin/operations_live.ex:171
 #, elixir-autogen, elixir-format
 msgid "Machine"
 msgstr "기계"
 
-#: lib/marshall_web/live/admin/operations_live.ex:80
+#: lib/marshall_web/live/admin/operations_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "Minimum RAM"
 msgstr "최소 RAM"
 
-#: lib/marshall_web/live/admin/operations_live.ex:81
+#: lib/marshall_web/live/admin/operations_live.ex:99
 #, elixir-autogen, elixir-format
 msgid "Minimum disk"
 msgstr "최소 디스크"
 
-#: lib/marshall_web/live/admin/operations_live.ex:119
+#: lib/marshall_web/live/admin/operations_live.ex:140
 #, elixir-autogen, elixir-format
 msgid "No Audi services enrolled."
 msgstr "등록된 아우디 서비스가 없습니다."
 
-#: lib/marshall_web/live/admin/operations_live.ex:160
+#: lib/marshall_web/live/admin/operations_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "No DNS publications are recorded."
 msgstr "DNS 게시는 기록되지 않습니다."
 
-#: lib/marshall_web/live/admin/operations_live.ex:98
+#: lib/marshall_web/live/admin/operations_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "No gateways enrolled."
 msgstr "등록된 게이트웨이가 없습니다."
 
-#: lib/marshall_web/live/admin/operations_live.ex:73
+#: lib/marshall_web/live/admin/operations_live.ex:90
 #, elixir-autogen, elixir-format
 msgid "No images in the catalog."
 msgstr "카탈로그에 이미지가 없습니다."
 
-#: lib/marshall_web/live/admin/operations_live.ex:147
+#: lib/marshall_web/live/admin/operations_live.ex:169
 #, elixir-autogen, elixir-format
 msgid "No ingress routes are published."
 msgstr "수신 경로가 게시되지 않습니다."
 
-#: lib/marshall_web/live/admin/operations_live.ex:25
+#: lib/marshall_web/live/admin/operations_live.ex:31
 #, elixir-autogen, elixir-format
 msgid "Operational status is temporarily unavailable."
 msgstr "일시적으로 작동 상태를 사용할 수 없습니다."
 
-#: lib/marshall_web/live/admin/operations_live.ex:52
+#: lib/marshall_web/live/admin/operations_live.ex:59
 #, elixir-autogen, elixir-format
 msgid "Platform status"
 msgstr "플랫폼 상태"
 
-#: lib/marshall_web/live/admin/operations_live.ex:67
-#: lib/marshall_web/live/admin/operations_live.ex:97
+#: lib/marshall_web/live/admin/operations_live.ex:75
+#: lib/marshall_web/live/admin/operations_live.ex:115
 #, elixir-autogen, elixir-format
 msgid "Porsche gateways"
 msgstr "포르쉐 게이트웨이"
 
-#: lib/marshall_web/live/admin/operations_live.ex:54
+#: lib/marshall_web/live/admin/operations_live.ex:61
 #, elixir-autogen, elixir-format
 msgid "Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
 msgstr "읽기 전용 이미지, Audi 수신 및 Porsche 게이트웨이 상태. 비밀과 인증서 자료는 공개되지 않습니다."
 
-#: lib/marshall_web/live/admin/operations_live.ex:150
-#: lib/marshall_web/live/admin/operations_live.ex:161
+#: lib/marshall_web/live/admin/operations_live.ex:172
+#: lib/marshall_web/live/admin/operations_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Revision"
 msgstr "개정"
 
-#: lib/marshall_web/live/admin/operations_live.ex:125
+#: lib/marshall_web/live/admin/operations_live.ex:147
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr "역할"
 
-#: lib/marshall_web/live/admin/operations_live.ex:152
+#: lib/marshall_web/live/admin/operations_live.ex:174
 #, elixir-autogen, elixir-format
 msgid "Route expires"
 msgstr "경로 만료"
 
-#: lib/marshall_web/live/admin/operations_live.ex:124
+#: lib/marshall_web/live/admin/operations_live.ex:146
 #, elixir-autogen, elixir-format
 msgid "Service"
 msgstr "서비스"
 
-#: lib/marshall_web/live/admin/operations_live.ex:82
-#: lib/marshall_web/live/admin/operations_live.ex:105
-#: lib/marshall_web/live/admin/operations_live.ex:128
+#: lib/marshall_web/live/admin/operations_live.ex:100
+#: lib/marshall_web/live/admin/operations_live.ex:125
+#: lib/marshall_web/live/admin/operations_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "상태"
 
-#: lib/marshall_web/live/admin/operations_live.ex:238
+#: lib/marshall_web/live/admin/operations_live.ex:269
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "알려지지 않은"
 
-#: lib/marshall_web/live/admin/operations_live.ex:60
+#: lib/marshall_web/live/admin/operations_live.ex:68
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "업데이트됨"
 
-#: lib/marshall_web/live/admin/operations_live.ex:161
+#: lib/marshall_web/live/admin/operations_live.ex:184
 #, elixir-autogen, elixir-format
 msgid "Zone"
 msgstr "존"
 
-#: lib/marshall_web/live/admin/operations_live.ex:225
-#: lib/marshall_web/live/admin/operations_live.ex:229
+#: lib/marshall_web/live/admin/operations_live.ex:256
+#: lib/marshall_web/live/admin/operations_live.ex:260
 #, elixir-autogen, elixir-format
 msgid "unknown"
 msgstr "알려지지 않은"
 
-#: lib/marshall_web/live/admin/operations_live.ex:62
+#: lib/marshall_web/live/admin/operations_live.ex:70
 #, elixir-autogen, elixir-format
 msgid "· every 30 seconds"
 msgstr "· 30초마다"

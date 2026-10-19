@@ -77,6 +77,30 @@ defmodule Porsche.SSH.OutputTest do
     end
   end
 
+  test "notification refusals give localized guidance while retaining JSON hints" do
+    for {locale, notification_text} <- [{"ja", "通知"}, {"ar", "إشعارات"}] do
+      Gettext.put_locale(Porsche.Gettext, locale)
+
+      for reason <- ["push_disabled", "device_limit"] do
+        response = %{
+          "version" => 1,
+          "status" => "error",
+          "error" => reason,
+          "hint" => "raw English transport hint"
+        }
+
+        human = Output.render(response, false)
+        refute human =~ reason
+        refute human =~ response["hint"]
+        assert JSON.decode!(Output.render(response, true)) == response
+
+        if reason == "push_disabled",
+          do: assert(human =~ notification_text),
+          else: assert(human =~ "device rm DEVICE_ID")
+      end
+    end
+  end
+
   test "unknown reason remains escaped as an identifier in localized fallback" do
     Gettext.put_locale(Porsche.Gettext, "ja")
     reason = "future_reason" <> "\e[2J"

@@ -85,7 +85,7 @@ msgstr "రిపోజిటరీలు"
 msgid "Repository path"
 msgstr "రిపోజిటరీ మార్గం"
 
-#: lib/marshall_web/live/git_live.ex:273
+#: lib/marshall_web/live/git_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Repository unavailable."
 msgstr "రిపోజిటరీ అందుబాటులో లేదు."

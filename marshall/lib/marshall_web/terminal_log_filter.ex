@@ -36,6 +36,7 @@ defmodule MarshallWeb.TerminalLogFilter do
                :authority_session,
                :authority_host,
                :authority_writer,
+               :authority_credential,
                :input_window,
                :output_window,
                :input_ack,

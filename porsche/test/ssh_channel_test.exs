@@ -1,6 +1,8 @@
 defmodule Porsche.SSH.ChannelTest do
   use ExUnit.Case, async: false
   @id "11111111-1111-4111-8111-111111111111"
+  @machine "33333333-3333-4333-8333-333333333333"
+  @thread "44444444-4444-4444-8444-444444444444"
   @token "porsche_session_" <> Base.url_encode64(<<0::256>>, padding: false)
 
   setup context do
@@ -27,7 +29,7 @@ defmodule Porsche.SSH.ChannelTest do
       start_supervised!(
         {Agent,
          fn ->
-           %{approved: context[:pending] != true, completed: false, calls: []}
+           %{approved: context[:pending] != true, completed: false, revoked: false, calls: []}
          end}
       )
 
@@ -131,6 +133,40 @@ defmodule Porsche.SSH.ChannelTest do
            end)
   end
 
+  test "exec reads a device push key from stdin and never echoes it", context do
+    connection = connect(context)
+    push_key = String.duplicate("PushKey_-", 6)
+    enc = Base.url_encode64(:binary.copy(<<5>>, 32), padding: false)
+
+    result =
+      exec_with_stdin(
+        connection,
+        "device register --platform android --push-key - --enc-pubkey #{enc} --json",
+        push_key <> "\n"
+      )
+
+    assert result.status == 0
+    refute result.out =~ push_key
+    refute result.err =~ push_key
+
+    assert Enum.any?(calls(context), fn
+             {"commands", %{"command" => %{"command" => "device register", "options" => options}}} ->
+               options["push-key"] == push_key and options["enc-pubkey"] == enc
+
+             _ ->
+               false
+           end)
+
+    refused =
+      exec_with_stdin(
+        connection,
+        "device register --platform android --push-key - --enc-pubkey #{enc} --json",
+        "not a push key\n"
+      )
+
+    assert refused.status == 2
+  end
+
   test "channels share one connection session and keep progress on stderr", context do
     connection = connect(context)
     result = exec(connection, "new --no-wait --request-id native-test --json")
@@ -219,6 +255,114 @@ defmodule Porsche.SSH.ChannelTest do
              {"commands", %{"command" => %{"command" => "whoami"}}} -> true
              _ -> false
            end) == 1
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] porsche-stdin-payload-channel
+  # Prompt text MUST travel only as the validated stdin payload, bounded by its
+  # command's kind; an oversized or empty payload never reaches Marshall.
+  test "exec reads prompt payloads from stdin within their bound", context do
+    connection = connect(context)
+    prompt = "Explain the failing route.\n"
+
+    result =
+      exec_with_stdin(connection, "thread prompt #{@thread} - --json", prompt)
+
+    assert result.status == 0
+
+    assert %{"status" => "succeeded", "result" => %{"status" => "queued"}} =
+             JSON.decode!(result.out)
+
+    refute result.out =~ "failing route"
+
+    assert [%{"arguments" => [@thread, "-"], "options" => %{"stdin" => ^prompt}}] =
+             for(
+               {"commands", %{"command" => %{"command" => "thread prompt"} = sent}} <-
+                 calls(context),
+               do: sent
+             )
+
+    big = exec_with_stdin(connection, "thread prompt #{@thread} -", String.duplicate("a", 65_537))
+    assert big.status == 2
+    assert big.out =~ "size limit"
+    empty = exec_with_stdin(connection, "thread prompt #{@thread} - --json", "")
+    assert %{"error" => "stdin_payload_invalid"} = JSON.decode!(empty.out)
+
+    assert Enum.count(
+             calls(context),
+             &match?({"commands", %{"command" => %{"command" => "thread prompt"}}}, &1)
+           ) ==
+             1
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] porsche-watch-stream-lines
+  # A watch MUST write a watching line naming only Marshall's identifiers,
+  # coalesce routed hints into identifier-only notices, renew on heartbeat and
+  # end with an authority exit status once renewal is refused.
+  test "watch streams identifier notices, renews on heartbeat and ends on revocation", context do
+    previous = Application.get_env(:porsche, :watch_heartbeat_ms)
+    Application.put_env(:porsche, :watch_heartbeat_ms, 300)
+
+    on_exit(fn ->
+      if previous,
+        do: Application.put_env(:porsche, :watch_heartbeat_ms, previous),
+        else: Application.delete_env(:porsche, :watch_heartbeat_ms)
+    end)
+
+    connection = connect(context)
+    {:ok, channel} = :ssh_connection.session_channel(connection, 5000)
+
+    :success =
+      :ssh_connection.exec(connection, channel, "watch --machine box-1 --thread #{@thread}", 5000)
+
+    first = until_text(connection, channel, "\"watching\"", "")
+    [watching] = first |> String.split("\n", trim: true) |> Enum.map(&JSON.decode!/1)
+    assert watching["machines"] == [@machine]
+    assert watching["threads"] == [@thread]
+    refute first =~ "box-1"
+
+    for _ <- 1..3, do: Porsche.Watchers.hint("thread", @thread)
+    Porsche.Watchers.hint("vm", @machine)
+    Porsche.Watchers.hint("thread", "55555555-5555-4555-8555-555555555555")
+    notices = until_text(connection, channel, "\"machine\"", "")
+    notices = until_text(connection, channel, "\"thread\"", notices)
+    lines = notices |> String.split("\n", trim: true) |> Enum.map(&JSON.decode!/1)
+    assert %{"event" => "thread", "id" => @thread, "version" => 1} in lines
+    assert %{"event" => "machine", "id" => @machine, "version" => 1} in lines
+    refute notices =~ "55555555"
+    assert Enum.count(lines, &(&1["event"] == "thread")) == 1
+
+    until_text(connection, channel, "\"heartbeat\"", "")
+    Agent.update(context.backend, &%{&1 | revoked: true})
+    result = collect(connection, channel, %{out: "", err: "", status: nil})
+    assert result.status == 3
+    assert result.out =~ "forbidden"
+    assert Enum.count(calls(context), &(elem(&1, 0) == "watch_subscribe")) >= 3
+  end
+
+  @tag pending: true
+  test "watch --session waits for approval through a fresh session snapshot", context do
+    connection = connect(context)
+    {:ok, channel} = :ssh_connection.session_channel(connection, 5000)
+    :success = :ssh_connection.exec(connection, channel, "watch --session", 5000)
+    pending = until_text(connection, channel, "\"pending\"", "")
+    assert %{"event" => "session", "status" => "pending", "id" => @id} = JSON.decode!(pending)
+    refute Enum.any?(calls(context), &(elem(&1, 0) == "watch_subscribe"))
+
+    Agent.update(context.backend, &%{&1 | approved: true})
+    Porsche.Watchers.hint("ssh_session", @id)
+    approved = until_text(connection, channel, "\"watching\"", "")
+    assert approved =~ "\"authenticated\""
+    assert Enum.count(calls(context), &(elem(&1, 0) == "watch_subscribe")) == 1
+    :ok = :ssh_connection.close(connection, channel)
+  end
+
+  @tag pending: true
+  test "watch without --session refuses a pending key with approval instructions", context do
+    connection = connect(context)
+    result = exec(connection, "watch --thread #{@thread}")
+    assert result.status == 3
+    assert %{"status" => "approval_required"} = JSON.decode!(result.out)
+    refute Enum.any?(calls(context), &(elem(&1, 0) == "watch_subscribe"))
   end
 
   test "abrupt listener death does not leave the old daemon serving connections", context do
@@ -567,6 +711,18 @@ defmodule Porsche.SSH.ChannelTest do
 
   defp backend_reply("close", _, _), do: {:ok, %{"session_id" => @id, "closed" => true}}
 
+  defp backend_reply("watch_subscribe", %{"session_token" => @token} = message, state) do
+    if state.revoked or not state.approved,
+      do: {:error, :forbidden},
+      else:
+        {:ok,
+         %{
+           "session_id" => @id,
+           "machines" => Enum.map(message["machines"], fn _ -> @machine end),
+           "threads" => message["threads"]
+         }}
+  end
+
   defp backend_reply("commands", %{"command" => command, "session_token" => @token}, state) do
     case command do
       %{"command" => "whoami"} ->
@@ -582,6 +738,26 @@ defmodule Porsche.SSH.ChannelTest do
 
       %{"command" => "new", "options" => %{"request-id" => id}} ->
         {:ok, receipt(id, "accepted")}
+
+      %{"command" => "device register"} ->
+        {:ok,
+         %{
+           "version" => 1,
+           "request_id" => command["options"]["request-id"],
+           "operation_id" => nil,
+           "status" => "succeeded",
+           "result" => %{"id" => @id, "platform" => "android", "state" => "active"}
+         }}
+
+      %{"command" => "thread prompt", "options" => %{"stdin" => _} = options} ->
+        {:ok,
+         %{
+           "version" => 1,
+           "request_id" => options["request-id"],
+           "operation_id" => nil,
+           "status" => "succeeded",
+           "result" => %{"thread_id" => hd(command["arguments"]), "status" => "queued"}
+         }}
 
       %{"command" => "integration add"} ->
         {:ok,

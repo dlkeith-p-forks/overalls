@@ -47,12 +47,27 @@ defmodule MarshallWeb.SSHApprovalLiveTest do
     {:ok, view, _} = live(signed_in(c.conn, c.owner), c.pending.approval_path)
     assert has_element?(view, "#ssh-approval-fingerprint", c.pending.fingerprint)
     assert {:ok, %{status: "pending"}} = status(c)
-    view |> form("#ssh-approval-form", key: %{label: "Laptop"}) |> render_submit()
-    assert_redirect(view, ~p"/settings#ssh-keys")
+    refute has_element?(view, "#ssh-approval-open-mila")
+    html = view |> form("#ssh-approval-form", key: %{label: "Laptop"}) |> render_submit()
     assert {:ok, %{status: "authenticated", user: %{id: id}}} = status(c)
     assert id == c.owner.id
+    refute has_element?(view, "#approve-ssh-key")
+
+    # The approved page offers the canonical Mila link for this session only.
+    link = Marshall.AppRoutes.link({:ssh_approved, c.pending.session_id})
+    assert link =~ "overalls://"
+    assert link =~ "/ssh/approved?session=" <> c.pending.session_id
+    assert has_element?(view, ~s(#ssh-approval-open-mila[href="#{link}"]))
+
+    assert {:ok, %{host: _, page: {:ssh_approved, session}}} =
+             OverallsProtocol.AppRoute.parse(link)
+
+    assert session == c.pending.session_id
+    token = String.replace_prefix(c.pending.approval_path, "/ssh/approve/", "")
+    refute html =~ token
     {:ok, replay, _} = live(signed_in(build_conn(), c.owner), c.pending.approval_path)
     refute has_element?(replay, "#approve-ssh-key")
+    refute has_element?(replay, "#ssh-approval-open-mila")
   end
 
   test "revoked browser login cannot approve through an already mounted form", c do

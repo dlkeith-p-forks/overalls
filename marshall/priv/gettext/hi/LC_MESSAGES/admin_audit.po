@@ -14,989 +14,989 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/marshall_web/live/admin/audit_live.ex:265
+#: lib/marshall_web/live/admin/audit_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "; the next due check can then request a new generation."
 msgstr "; अगली नियत जाँच नया जनरेशन माँग सकती है।"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:101
+#: lib/marshall_web/live/admin/audit_labels.ex:113
 #, elixir-autogen, elixir-format
 msgid "ACME account"
 msgstr "एसीएमई खाता"
 
-#: lib/marshall_web/live/admin/audit_live.ex:315
+#: lib/marshall_web/live/admin/audit_live.ex:333
 #, elixir-autogen, elixir-format
 msgid "ACME account: %{status}"
 msgstr "ACME खाता: %{status}"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:132
-#: lib/marshall_web/live/admin/audit_labels.ex:350
+#: lib/marshall_web/live/admin/audit_labels.ex:160
+#: lib/marshall_web/live/admin/audit_labels.ex:453
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr "प्राप्ति स्वीकार की गई"
 
-#: lib/marshall_web/live/admin/audit_live.ex:230
-#: lib/marshall_web/live/admin/audit_live.ex:286
+#: lib/marshall_web/live/admin/audit_live.ex:237
+#: lib/marshall_web/live/admin/audit_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Action"
 msgstr "कार्रवाई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:124
+#: lib/marshall_web/live/admin/audit_labels.ex:148
 #, elixir-autogen, elixir-format
 msgid "Activated"
 msgstr "सक्रिय"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:176
-#: lib/marshall_web/live/admin/audit_labels.ex:374
+#: lib/marshall_web/live/admin/audit_labels.ex:228
+#: lib/marshall_web/live/admin/audit_labels.ex:481
 #, elixir-autogen, elixir-format
 msgid "Activation failed"
 msgstr "सक्रियण विफल"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:197
+#: lib/marshall_web/live/admin/audit_labels.ex:251
 #, elixir-autogen, elixir-format
 msgid "Activation observed"
 msgstr "सक्रियता देखी गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:356
+#: lib/marshall_web/live/admin/audit_labels.ex:460
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "सक्रिय"
 
-#: lib/marshall_web/live/admin/audit_live.ex:287
+#: lib/marshall_web/live/admin/audit_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "Actor"
 msgstr "कर्ता"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:27
+#: lib/marshall_web/live/admin/audit_labels.ex:32
 #, elixir-autogen, elixir-format
 msgid "Administrator access granted"
 msgstr "व्यवस्थापक पहुंच प्रदान की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:28
+#: lib/marshall_web/live/admin/audit_labels.ex:35
 #, elixir-autogen, elixir-format
 msgid "Administrator access revoked"
 msgstr "व्यवस्थापक पहुंच निरस्त कर दी गई"
 
-#: lib/marshall_web/live/admin/audit_live.ex:193
+#: lib/marshall_web/live/admin/audit_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Administrator actions"
 msgstr "व्यवस्थापक की कार्रवाइयाँ"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:25
+#: lib/marshall_web/live/admin/audit_labels.ex:29
 #, elixir-autogen, elixir-format
 msgid "Administrator bootstrapped"
 msgstr "प्रशासक बूटस्ट्रैप्ड"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:133
+#: lib/marshall_web/live/admin/audit_labels.ex:162
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "उन्नत"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:134
+#: lib/marshall_web/live/admin/audit_labels.ex:165
 #, elixir-autogen, elixir-format
 msgid "Allocated"
 msgstr "आवंटित"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:343
+#: lib/marshall_web/live/admin/audit_labels.ex:441
 #, elixir-autogen, elixir-format
 msgid "Applied"
 msgstr "लागू"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:136
-#: lib/marshall_web/live/admin/audit_labels.ex:340
+#: lib/marshall_web/live/admin/audit_labels.ex:170
+#: lib/marshall_web/live/admin/audit_labels.ex:435
 #, elixir-autogen, elixir-format
 msgid "Approved"
 msgstr "स्वीकृत"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:137
+#: lib/marshall_web/live/admin/audit_labels.ex:171
 #, elixir-autogen, elixir-format
 msgid "Archived"
 msgstr "संग्रहित"
 
-#: lib/marshall_web/live/admin/audit_live.ex:179
+#: lib/marshall_web/live/admin/audit_live.ex:183
 #, elixir-autogen, elixir-format
 msgid "Audit"
 msgstr "ऑडिट"
 
-#: lib/marshall_web/live/admin/audit_live.ex:279
+#: lib/marshall_web/live/admin/audit_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "Audit history is unavailable."
 msgstr "ऑडिट इतिहास उपलब्ध नहीं है।"
 
-#: lib/marshall_web/live/admin/audit_live.ex:186
+#: lib/marshall_web/live/admin/audit_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Audit kinds"
 msgstr "ऑडिट के प्रकार"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:140
-#: lib/marshall_web/live/admin/audit_labels.ex:341
+#: lib/marshall_web/live/admin/audit_labels.ex:179
+#: lib/marshall_web/live/admin/audit_labels.ex:436
 #, elixir-autogen, elixir-format
 msgid "Blocked"
 msgstr "अवरुद्ध"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:184
+#: lib/marshall_web/live/admin/audit_labels.ex:236
 #, elixir-autogen, elixir-format
 msgid "Cancellation completed"
 msgstr "रद्दीकरण पूरा हुआ"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:283
-#: lib/marshall_web/live/admin/audit_labels.ex:286
+#: lib/marshall_web/live/admin/audit_labels.ex:344
+#: lib/marshall_web/live/admin/audit_labels.ex:347
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "रद्द करने का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:229
+#: lib/marshall_web/live/admin/audit_labels.ex:288
 #, elixir-autogen, elixir-format
 msgid "Cancellation restart recorded"
 msgstr "रद्दीकरण पुनः प्रारंभ दर्ज किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:232
+#: lib/marshall_web/live/admin/audit_labels.ex:291
 #, elixir-autogen, elixir-format
 msgid "Cancellation stop recorded"
 msgstr "रद्दीकरण रोक दर्ज की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:141
-#: lib/marshall_web/live/admin/audit_labels.ex:142
-#: lib/marshall_web/live/admin/audit_labels.ex:336
+#: lib/marshall_web/live/admin/audit_labels.ex:180
+#: lib/marshall_web/live/admin/audit_labels.ex:183
+#: lib/marshall_web/live/admin/audit_labels.ex:427
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "रद्द किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:335
+#: lib/marshall_web/live/admin/audit_labels.ex:424
 #, elixir-autogen, elixir-format
 msgid "Cancelling"
 msgstr "रद्द किया जा रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:330
+#: lib/marshall_web/live/admin/audit_labels.ex:411
 #, elixir-autogen, elixir-format
 msgid "Capturing"
 msgstr "कब्जा करना"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:102
+#: lib/marshall_web/live/admin/audit_labels.ex:116
 #, elixir-autogen, elixir-format
 msgid "Certificate"
 msgstr "प्रमाणपत्र"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:122
+#: lib/marshall_web/live/admin/audit_labels.ex:145
 #, elixir-autogen, elixir-format
 msgid "Certificate issued"
 msgstr "प्रमाण पत्र जारी किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:110
+#: lib/marshall_web/live/admin/audit_labels.ex:133
 #, elixir-autogen, elixir-format
 msgid "Certificate order attempted"
 msgstr "प्रमाणपत्र आदेश का प्रयास किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:113
+#: lib/marshall_web/live/admin/audit_labels.ex:136
 #, elixir-autogen, elixir-format
 msgid "Certificate order bound"
 msgstr "प्रमाणपत्र आदेश बाध्य"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:116
+#: lib/marshall_web/live/admin/audit_labels.ex:139
 #, elixir-autogen, elixir-format
 msgid "Certificate proof recorded"
 msgstr "प्रमाणपत्र प्रमाण दर्ज किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:119
+#: lib/marshall_web/live/admin/audit_labels.ex:142
 #, elixir-autogen, elixir-format
 msgid "Certificate proof refreshed"
 msgstr "प्रमाणपत्र प्रमाण ताज़ा किया गया"
 
-#: lib/marshall_web/live/admin/audit_live.ex:198
+#: lib/marshall_web/live/admin/audit_live.ex:204
 #, elixir-autogen, elixir-format
 msgid "Certificates"
 msgstr "प्रमाणपत्र"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:368
+#: lib/marshall_web/live/admin/audit_labels.ex:475
 #, elixir-autogen, elixir-format
 msgid "Checking destination"
 msgstr "गंतव्य की जाँच हो रही है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:359
+#: lib/marshall_web/live/admin/audit_labels.ex:463
 #, elixir-autogen, elixir-format
 msgid "Checking transfer"
 msgstr "स्थानांतरण की जाँच की जा रही है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:144
+#: lib/marshall_web/live/admin/audit_labels.ex:189
 #, elixir-autogen, elixir-format
 msgid "Checkpoint saved"
 msgstr "चेकपॉइंट सहेजा गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:333
+#: lib/marshall_web/live/admin/audit_labels.ex:419
 #, elixir-autogen, elixir-format
 msgid "Cleaning up"
 msgstr "सफ़ाई करना"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:386
+#: lib/marshall_web/live/admin/audit_labels.ex:493
 #, elixir-autogen, elixir-format
 msgid "Cleaning up cancellation"
 msgstr "रद्दीकरण की सफ़ाई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:380
+#: lib/marshall_web/live/admin/audit_labels.ex:487
 #, elixir-autogen, elixir-format
 msgid "Cleaning up source"
 msgstr "स्रोत की सफाई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:148
+#: lib/marshall_web/live/admin/audit_labels.ex:194
 #, elixir-autogen, elixir-format
 msgid "Cleanup completed"
 msgstr "सफ़ाई पूरी हो गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:145
-#: lib/marshall_web/live/admin/audit_labels.ex:334
-#: lib/marshall_web/live/admin/audit_labels.ex:339
+#: lib/marshall_web/live/admin/audit_labels.ex:191
+#: lib/marshall_web/live/admin/audit_labels.ex:421
+#: lib/marshall_web/live/admin/audit_labels.ex:433
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "पूरा"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:150
+#: lib/marshall_web/live/admin/audit_labels.ex:196
 #, elixir-autogen, elixir-format
 msgid "Confirmed"
 msgstr "पुष्टि की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:166
+#: lib/marshall_web/live/admin/audit_labels.ex:214
 #, elixir-autogen, elixir-format
 msgid "Continued"
 msgstr "जारी"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:155
+#: lib/marshall_web/live/admin/audit_labels.ex:202
 #, elixir-autogen, elixir-format
 msgid "Copy confirmed"
 msgstr "प्रतिलिपि की पुष्टि की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:138
+#: lib/marshall_web/live/admin/audit_labels.ex:174
 #, elixir-autogen, elixir-format
 msgid "Copy started"
 msgstr "प्रतिलिपि प्रारंभ हुई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:331
+#: lib/marshall_web/live/admin/audit_labels.ex:413
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "कॉपी किया जा रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:325
+#: lib/marshall_web/live/admin/audit_labels.ex:401
 #, elixir-autogen, elixir-format
 msgid "Created"
 msgstr "बनाया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:167
+#: lib/marshall_web/live/admin/audit_labels.ex:216
 #, elixir-autogen, elixir-format
 msgid "Deferred"
 msgstr "स्थगित"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:354
+#: lib/marshall_web/live/admin/audit_labels.ex:458
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "हटाया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:389
+#: lib/marshall_web/live/admin/audit_labels.ex:496
 #, elixir-autogen, elixir-format
 msgid "Deleting copies"
 msgstr "प्रतियाँ हटाना"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:187
+#: lib/marshall_web/live/admin/audit_labels.ex:239
 #, elixir-autogen, elixir-format
 msgid "Deletion completed"
 msgstr "विलोपन पूरा हुआ"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:289
-#: lib/marshall_web/live/admin/audit_labels.ex:292
+#: lib/marshall_web/live/admin/audit_labels.ex:350
+#: lib/marshall_web/live/admin/audit_labels.ex:353
 #, elixir-autogen, elixir-format
 msgid "Deletion requested"
 msgstr "हटाने का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:202
+#: lib/marshall_web/live/admin/audit_labels.ex:256
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup offered"
 msgstr "गंतव्य सफ़ाई की पेशकश की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:238
+#: lib/marshall_web/live/admin/audit_labels.ex:297
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup recorded"
 msgstr "गंतव्य सफ़ाई दर्ज की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:205
+#: lib/marshall_web/live/admin/audit_labels.ex:259
 #, elixir-autogen, elixir-format
 msgid "Destination revocation offered"
 msgstr "गंतव्य निरस्तीकरण की पेशकश की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:242
+#: lib/marshall_web/live/admin/audit_labels.ex:301
 #, elixir-autogen, elixir-format
 msgid "Destination revocation recorded"
 msgstr "गंतव्य निरस्तीकरण दर्ज किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:171
+#: lib/marshall_web/live/admin/audit_labels.ex:222
 #, elixir-autogen, elixir-format
 msgid "Destination work dispatched"
 msgstr "गंतव्य कार्य भेजा गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:168
+#: lib/marshall_web/live/admin/audit_labels.ex:219
 #, elixir-autogen, elixir-format
 msgid "Dispatched"
 msgstr "भेजा गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:347
+#: lib/marshall_web/live/admin/audit_labels.ex:448
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "खाली कर दिया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:346
+#: lib/marshall_web/live/admin/audit_labels.ex:447
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "खाली किया जा रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:98
+#: lib/marshall_web/live/admin/audit_labels.ex:107
 #, elixir-autogen, elixir-format
 msgid "Editor credential"
 msgstr "संपादक का परिचय"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:100
+#: lib/marshall_web/live/admin/audit_labels.ex:110
 #, elixir-autogen, elixir-format
 msgid "Editor lease"
 msgstr "संपादक पट्टा"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:95
+#: lib/marshall_web/live/admin/audit_labels.ex:104
 #, elixir-autogen, elixir-format
 msgid "Editor sign-in"
 msgstr "संपादक साइन-इन"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:394
+#: lib/marshall_web/live/admin/audit_labels.ex:506
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "कार्यभार हटाया जा रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:49
+#: lib/marshall_web/live/admin/audit_labels.ex:56
 #, elixir-autogen, elixir-format
 msgid "Evacuation approved"
 msgstr "निकासी को मंजूरी दी गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:46
+#: lib/marshall_web/live/admin/audit_labels.ex:53
 #, elixir-autogen, elixir-format
 msgid "Evacuation changed"
 msgstr "निकासी बदल गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:52
+#: lib/marshall_web/live/admin/audit_labels.ex:59
 #, elixir-autogen, elixir-format
 msgid "Evacuation replanned"
 msgstr "निकासी की पुनः योजना बनाई गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:43
+#: lib/marshall_web/live/admin/audit_labels.ex:50
 #, elixir-autogen, elixir-format
 msgid "Evacuation requested"
 msgstr "निकासी का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:126
-#: lib/marshall_web/live/admin/audit_labels.ex:337
+#: lib/marshall_web/live/admin/audit_labels.ex:151
+#: lib/marshall_web/live/admin/audit_labels.ex:429
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "विफल"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:181
+#: lib/marshall_web/live/admin/audit_labels.ex:233
 #, elixir-autogen, elixir-format
 msgid "Fenced"
 msgstr "बाड़ लगाना"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:393
+#: lib/marshall_web/live/admin/audit_labels.ex:503
 #, elixir-autogen, elixir-format
 msgid "Fencing"
 msgstr "बाड़ लगाना"
 
-#: lib/marshall_web/live/admin/audit_live.ex:207
-#: lib/marshall_web/live/admin/audit_live.ex:244
+#: lib/marshall_web/live/admin/audit_live.ex:214
+#: lib/marshall_web/live/admin/audit_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Filter lifecycle history"
 msgstr "जीवनचक्र इतिहास फ़िल्टर करें"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:58
+#: lib/marshall_web/live/admin/audit_labels.ex:65
 #, elixir-autogen, elixir-format
 msgid "Fleet certificate rotation requested"
 msgstr "फ़्लीट प्रमाणपत्र रोटेशन का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/audit_live.ex:261
+#: lib/marshall_web/live/admin/audit_live.ex:275
 #, elixir-autogen, elixir-format
 msgid "Generation %{generation} has an uncertain ACME order response. The generation can be failed after"
 msgstr "जेनरेशन %{generation} में अनिश्चित ACME ऑर्डर प्रतिक्रिया है। इसके बाद की पीढ़ी विफल हो सकती है"
 
-#: lib/marshall_web/live/admin/audit_live.ex:319
+#: lib/marshall_web/live/admin/audit_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Generation %{generation}: %{status}"
 msgstr "पीढ़ी %{generation}: %{status}"
 
-#: lib/marshall_web/live/admin/audit_live.ex:215
+#: lib/marshall_web/live/admin/audit_live.ex:222
 #, elixir-autogen, elixir-format
 msgid "Host ID"
 msgstr "होस्ट ID"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:55
+#: lib/marshall_web/live/admin/audit_labels.ex:62
 #, elixir-autogen, elixir-format
 msgid "Host configured"
 msgstr "होस्ट कॉन्फ़िगर किया गया"
 
-#: lib/marshall_web/live/admin/audit_live.ex:248
+#: lib/marshall_web/live/admin/audit_live.ex:258
 #, elixir-autogen, elixir-format
 msgid "Human requests and system recovery transitions. History is retained for 90 days."
 msgstr ""
 "उपयोगकर्ता अनुरोध और सिस्टम रिकवरी के स्थिति बदलाव। इतिहास 90 दिनों तक रखा "
 "जाता है।"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:192
+#: lib/marshall_web/live/admin/audit_labels.ex:245
 #, elixir-autogen, elixir-format
 msgid "Idle policy updated"
 msgstr "निष्क्रिय नीति अद्यतन की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:158
+#: lib/marshall_web/live/admin/audit_labels.ex:205
 #, elixir-autogen, elixir-format
 msgid "Import confirmed"
 msgstr "आयात की पुष्टि की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:221
+#: lib/marshall_web/live/admin/audit_labels.ex:277
 #, elixir-autogen, elixir-format
 msgid "Import prepared"
 msgstr "आयात तैयार"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:245
+#: lib/marshall_web/live/admin/audit_labels.ex:304
 #, elixir-autogen, elixir-format
 msgid "Import recorded"
 msgstr "आयात दर्ज किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:139
+#: lib/marshall_web/live/admin/audit_labels.ex:177
 #, elixir-autogen, elixir-format
 msgid "Import started"
 msgstr "आयात शुरू हुआ"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:364
+#: lib/marshall_web/live/admin/audit_labels.ex:469
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "आयात किया जा रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:103
+#: lib/marshall_web/live/admin/audit_labels.ex:119
 #, elixir-autogen, elixir-format
 msgid "Installation"
 msgstr "स्थापना"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:104
+#: lib/marshall_web/live/admin/audit_labels.ex:122
 #, elixir-autogen, elixir-format
 msgid "Installed"
 msgstr "स्थापित"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:90
+#: lib/marshall_web/live/admin/audit_labels.ex:98
 #, elixir-autogen, elixir-format
 msgid "Integration attached"
 msgstr "एकीकरण संलग्न"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:84
+#: lib/marshall_web/live/admin/audit_labels.ex:92
 #, elixir-autogen, elixir-format
 msgid "Integration configured"
 msgstr "एकीकरण कॉन्फ़िगर किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:93
+#: lib/marshall_web/live/admin/audit_labels.ex:101
 #, elixir-autogen, elixir-format
 msgid "Integration detached"
 msgstr "एकीकरण अलग"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:87
+#: lib/marshall_web/live/admin/audit_labels.ex:95
 #, elixir-autogen, elixir-format
 msgid "Integration removed"
 msgstr "एकीकरण हटा दिया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:173
+#: lib/marshall_web/live/admin/audit_labels.ex:225
 #, elixir-autogen, elixir-format
 msgid "Key dispatched"
 msgstr "कुंजी भेज दी गई है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:247
+#: lib/marshall_web/live/admin/audit_labels.ex:307
 #, elixir-autogen, elixir-format
 msgid "Key recorded"
 msgstr "कुंजी दर्ज की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:312
+#: lib/marshall_web/live/admin/audit_labels.ex:381
 #, elixir-autogen, elixir-format
 msgid "Key retired"
 msgstr "कुंजी सेवानिवृत्त हो गए"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:208
+#: lib/marshall_web/live/admin/audit_labels.ex:262
 #, elixir-autogen, elixir-format
 msgid "Key retirement offered"
 msgstr "प्रमुख सेवानिवृत्ति की पेशकश की"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:295
+#: lib/marshall_web/live/admin/audit_labels.ex:356
 #, elixir-autogen, elixir-format
 msgid "Key retirement requested"
 msgstr "मुख्य सेवानिवृत्ति का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:34
+#: lib/marshall_web/live/admin/audit_labels.ex:41
 #, elixir-autogen, elixir-format
 msgid "Machine access revoked"
 msgstr "मशीन का उपयोग निरस्त कर दिया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:61
+#: lib/marshall_web/live/admin/audit_labels.ex:68
 #, elixir-autogen, elixir-format
 msgid "Machine lifecycle requested"
 msgstr "मशीन जीवनचक्र का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:64
+#: lib/marshall_web/live/admin/audit_labels.ex:71
 #, elixir-autogen, elixir-format
 msgid "Machine relocation requested"
 msgstr "मशीन स्थानांतरण का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:194
+#: lib/marshall_web/live/admin/audit_labels.ex:248
 #, elixir-autogen, elixir-format
 msgid "Machine state observed"
 msgstr "मशीन की स्थिति का अवलोकन किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:19
+#: lib/marshall_web/live/admin/audit_labels.ex:20
 #, elixir-autogen, elixir-format
 msgid "Multi-factor authentication reset"
 msgstr "बहु-कारक प्रमाणीकरण रीसेट"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:16
+#: lib/marshall_web/live/admin/audit_labels.ex:17
 #, elixir-autogen, elixir-format
 msgid "Multi-factor authentication verified"
 msgstr "बहु-कारक प्रमाणीकरण सत्यापित"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:338
+#: lib/marshall_web/live/admin/audit_labels.ex:430
 #, elixir-autogen, elixir-format
 msgid "Offered"
 msgstr "की पेशकश की"
 
-#: lib/marshall_web/live/admin/audit_live.ex:334
+#: lib/marshall_web/live/admin/audit_live.ex:354
 #, elixir-autogen, elixir-format
 msgid "Older events →"
 msgstr "पुरानी घटनाएँ →"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:250
+#: lib/marshall_web/live/admin/audit_labels.ex:310
 #, elixir-autogen, elixir-format
 msgid "Operation recorded"
 msgstr "ऑपरेशन रिकॉर्ड किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:10
+#: lib/marshall_web/live/admin/audit_labels.ex:11
 #, elixir-autogen, elixir-format
 msgid "Passkey added"
 msgstr "पासकी ने जोड़ा"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:13
+#: lib/marshall_web/live/admin/audit_labels.ex:14
 #, elixir-autogen, elixir-format
 msgid "Passkey removed"
 msgstr "पासकी हटा दी गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:298
+#: lib/marshall_web/live/admin/audit_labels.ex:359
 #, elixir-autogen, elixir-format
 msgid "Pause requested"
 msgstr "रोकने का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:217
-#: lib/marshall_web/live/admin/audit_labels.ex:353
+#: lib/marshall_web/live/admin/audit_labels.ex:271
+#: lib/marshall_web/live/admin/audit_labels.ex:457
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "रुकी हुई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:326
-#: lib/marshall_web/live/admin/audit_live.ex:324
+#: lib/marshall_web/live/admin/audit_labels.ex:402
+#: lib/marshall_web/live/admin/audit_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "लंबित"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:235
+#: lib/marshall_web/live/admin/audit_labels.ex:294
 #, elixir-autogen, elixir-format
 msgid "Placement switch recorded"
 msgstr "प्लेसमेंट स्विच रिकॉर्ड किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:189
+#: lib/marshall_web/live/admin/audit_labels.ex:242
 #, elixir-autogen, elixir-format
 msgid "Placement switched"
 msgstr "प्लेसमेंट स्विच किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:218
+#: lib/marshall_web/live/admin/audit_labels.ex:274
 #, elixir-autogen, elixir-format
 msgid "Preparation started"
 msgstr "तैयारी शुरू हो गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:328
+#: lib/marshall_web/live/admin/audit_labels.ex:406
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "तैयार किया जा रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:253
+#: lib/marshall_web/live/admin/audit_labels.ex:313
 #, elixir-autogen, elixir-format
 msgid "Progress recorded"
 msgstr "प्रगति दर्ज की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:131
+#: lib/marshall_web/live/admin/audit_labels.ex:157
 #, elixir-autogen, elixir-format
 msgid "Progress updated"
 msgstr "प्रगति अद्यतन की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:223
+#: lib/marshall_web/live/admin/audit_labels.ex:279
 #, elixir-autogen, elixir-format
 msgid "Published"
 msgstr "प्रकाशित"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:332
+#: lib/marshall_web/live/admin/audit_labels.ex:416
 #, elixir-autogen, elixir-format
 msgid "Publishing"
 msgstr "प्रकाशन"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:106
-#: lib/marshall_web/live/admin/audit_labels.ex:327
+#: lib/marshall_web/live/admin/audit_labels.ex:127
+#: lib/marshall_web/live/admin/audit_labels.ex:403
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr "कतार में"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:161
-#: lib/marshall_web/live/admin/audit_labels.ex:164
+#: lib/marshall_web/live/admin/audit_labels.ex:208
+#: lib/marshall_web/live/admin/audit_labels.ex:211
 #, elixir-autogen, elixir-format
 msgid "Readiness confirmed"
 msgstr "तत्परता की पुष्टि की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:179
-#: lib/marshall_web/live/admin/audit_labels.ex:371
+#: lib/marshall_web/live/admin/audit_labels.ex:231
+#: lib/marshall_web/live/admin/audit_labels.ex:478
 #, elixir-autogen, elixir-format
 msgid "Readiness failed"
 msgstr "तत्परता विफल रही"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:224
-#: lib/marshall_web/live/admin/audit_labels.ex:345
+#: lib/marshall_web/live/admin/audit_labels.ex:280
+#: lib/marshall_web/live/admin/audit_labels.ex:446
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "तैयार"
 
-#: lib/marshall_web/live/admin/audit_live.ex:251
+#: lib/marshall_web/live/admin/audit_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
 msgstr ""
 "फ़्लीट के हाल के वाइल्डकार्ड प्रमाणपत्र संस्करण और गेटवे इंस्टॉलेशन। निजी "
 "कुंजियाँ और ACME प्रमाण शामिल नहीं हैं।"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:225
+#: lib/marshall_web/live/admin/audit_labels.ex:283
 #, elixir-autogen, elixir-format
 msgid "Reconciled"
 msgstr "सुलह हो गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:226
+#: lib/marshall_web/live/admin/audit_labels.ex:285
 #, elixir-autogen, elixir-format
 msgid "Recorded"
 msgstr "रिकार्ड किया गया"
 
-#: lib/marshall_web/live/admin/audit_live.ex:181
+#: lib/marshall_web/live/admin/audit_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
 msgstr ""
 "संवेदनशील जानकारी हटाए हुए अधिकार बदलाव, जीवनचक्र अनुरोध, प्रमाणपत्र संस्करण"
 " और एडिटर पहुँच। पेलोड, क्रेडेंशियल और टर्मिनल बाइट शामिल नहीं हैं।"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:277
+#: lib/marshall_web/live/admin/audit_labels.ex:338
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata updated"
 msgstr "प्रतिबिंब मेटाडेटा अद्यतन किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:105
+#: lib/marshall_web/live/admin/audit_labels.ex:125
 #, elixir-autogen, elixir-format
 msgid "Registered"
 msgstr "पंजीकृत"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:279
+#: lib/marshall_web/live/admin/audit_labels.ex:340
 #, elixir-autogen, elixir-format
 msgid "Replanned"
 msgstr "पुनः नियोजित"
 
-#: lib/marshall_web/live/admin/audit_live.ex:274
+#: lib/marshall_web/live/admin/audit_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Request a new wildcard certificate for every Audi gateway?"
 msgstr "हर Audi गेटवे के लिए नया वाइल्डकार्ड प्रमाणपत्र माँगें?"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:107
+#: lib/marshall_web/live/admin/audit_labels.ex:130
 #, elixir-autogen, elixir-format
 msgid "Request saved"
 msgstr "अनुरोध सहेजा गया"
 
-#: lib/marshall_web/live/admin/audit_live.ex:276
+#: lib/marshall_web/live/admin/audit_live.ex:294
 #, elixir-autogen, elixir-format
 msgid "Request wildcard rotation"
 msgstr "वाइल्डकार्ड प्रमाणपत्र बदलने का अनुरोध करें"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:280
+#: lib/marshall_web/live/admin/audit_labels.ex:341
 #, elixir-autogen, elixir-format
 msgid "Requested"
 msgstr "अनुरोध किया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:135
+#: lib/marshall_web/live/admin/audit_labels.ex:168
 #, elixir-autogen, elixir-format
 msgid "Resize applied"
 msgstr "आकार परिवर्तन लागू किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:304
+#: lib/marshall_web/live/admin/audit_labels.ex:368
 #, elixir-autogen, elixir-format
 msgid "Resize started"
 msgstr "आकार बदलना प्रारंभ हुआ"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:391
+#: lib/marshall_web/live/admin/audit_labels.ex:498
 #, elixir-autogen, elixir-format
 msgid "Resizing"
 msgstr "आकार बदला जा रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:305
-#: lib/marshall_web/live/admin/audit_labels.ex:395
+#: lib/marshall_web/live/admin/audit_labels.ex:370
+#: lib/marshall_web/live/admin/audit_labels.ex:508
 #, elixir-autogen, elixir-format
 msgid "Resolved"
 msgstr "सुलझ गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:306
+#: lib/marshall_web/live/admin/audit_labels.ex:373
 #, elixir-autogen, elixir-format
 msgid "Restart started"
 msgstr "पुनः प्रारंभ प्रारंभ हुआ"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:392
+#: lib/marshall_web/live/admin/audit_labels.ex:501
 #, elixir-autogen, elixir-format
 msgid "Restarting"
 msgstr "दोबारा शुरू हो रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:383
+#: lib/marshall_web/live/admin/audit_labels.ex:490
 #, elixir-autogen, elixir-format
 msgid "Restoring source"
 msgstr "स्रोत पुनर्स्थापित किया जा रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:259
+#: lib/marshall_web/live/admin/audit_labels.ex:319
 #, elixir-autogen, elixir-format
 msgid "Result recorded"
 msgstr "परिणाम दर्ज किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:311
-#: lib/marshall_web/live/admin/audit_labels.ex:348
+#: lib/marshall_web/live/admin/audit_labels.ex:378
+#: lib/marshall_web/live/admin/audit_labels.ex:449
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "फिर से शुरू हो गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:125
-#: lib/marshall_web/live/admin/audit_labels.ex:349
+#: lib/marshall_web/live/admin/audit_labels.ex:150
+#: lib/marshall_web/live/admin/audit_labels.ex:450
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "सेवा से हटा दिया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:313
+#: lib/marshall_web/live/admin/audit_labels.ex:384
 #, elixir-autogen, elixir-format
 msgid "Retry requested"
 msgstr "पुनः प्रयास का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:377
+#: lib/marshall_web/live/admin/audit_labels.ex:484
 #, elixir-autogen, elixir-format
 msgid "Retrying destination"
 msgstr "गंतव्य पुनः प्रयास कर रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:351
+#: lib/marshall_web/live/admin/audit_labels.ex:455
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "चल रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:37
+#: lib/marshall_web/live/admin/audit_labels.ex:44
 #, elixir-autogen, elixir-format
 msgid "SSH key revoked"
 msgstr "SSH कुंजी निरस्त कर दी गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:40
+#: lib/marshall_web/live/admin/audit_labels.ex:47
 #, elixir-autogen, elixir-format
 msgid "SSH session revoked"
 msgstr "SSH सत्र रद्द कर दिया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:314
-#: lib/marshall_web/live/admin/audit_labels.ex:342
+#: lib/marshall_web/live/admin/audit_labels.ex:387
+#: lib/marshall_web/live/admin/audit_labels.ex:439
 #, elixir-autogen, elixir-format
 msgid "Scheduled"
 msgstr "शेड्यूल किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:31
+#: lib/marshall_web/live/admin/audit_labels.ex:38
 #, elixir-autogen, elixir-format
 msgid "Sessions revoked"
 msgstr "सत्र निरस्त कर दिया गया"
 
-#: lib/marshall_web/live/admin/audit_live.ex:231
+#: lib/marshall_web/live/admin/audit_live.ex:238
 #, elixir-autogen, elixir-format
 msgid "Since (ISO 8601)"
 msgstr "इस समय से (ISO 8601)"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:153
+#: lib/marshall_web/live/admin/audit_labels.ex:199
 #, elixir-autogen, elixir-format
 msgid "Snapshot capture confirmed"
 msgstr "स्नैपशॉट कैप्चर की पुष्टि की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:143
+#: lib/marshall_web/live/admin/audit_labels.ex:186
 #, elixir-autogen, elixir-format
 msgid "Snapshot capture started"
 msgstr "स्नैपशॉट कैप्चर प्रारंभ हुआ"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:262
+#: lib/marshall_web/live/admin/audit_labels.ex:322
 #, elixir-autogen, elixir-format
 msgid "Source restoration recorded"
 msgstr "स्रोत पुनर्स्थापना दर्ज की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:309
+#: lib/marshall_web/live/admin/audit_labels.ex:376
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "स्रोत बहाल हो गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:211
+#: lib/marshall_web/live/admin/audit_labels.ex:265
 #, elixir-autogen, elixir-format
 msgid "Source revocation offered"
 msgstr "स्रोत निरस्तीकरण की पेशकश की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:265
+#: lib/marshall_web/live/admin/audit_labels.ex:325
 #, elixir-autogen, elixir-format
 msgid "Source revocation recorded"
 msgstr "स्रोत निरसन दर्ज किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:215
+#: lib/marshall_web/live/admin/audit_labels.ex:269
 #, elixir-autogen, elixir-format
 msgid "Source snapshot cleanup offered"
 msgstr "स्रोत स्नैपशॉट क्लीनअप की पेशकश की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:269
+#: lib/marshall_web/live/admin/audit_labels.ex:329
 #, elixir-autogen, elixir-format
 msgid "Source snapshot cleanup recorded"
 msgstr "स्रोत स्नैपशॉट क्लीनअप रिकॉर्ड किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:318
+#: lib/marshall_web/live/admin/audit_labels.ex:392
 #, elixir-autogen, elixir-format
 msgid "Source stop started"
 msgstr "स्रोत बंद होना शुरू हो गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:301
+#: lib/marshall_web/live/admin/audit_labels.ex:362
 #, elixir-autogen, elixir-format
 msgid "Start requested"
 msgstr "आरंभ का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:271
+#: lib/marshall_web/live/admin/audit_labels.ex:332
 #, elixir-autogen, elixir-format
 msgid "Stop recorded"
 msgstr "रिकॉर्ड बंद करो"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:303
+#: lib/marshall_web/live/admin/audit_labels.ex:365
 #, elixir-autogen, elixir-format
 msgid "Stop requested"
 msgstr "रुकने का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:315
+#: lib/marshall_web/live/admin/audit_labels.ex:389
 #, elixir-autogen, elixir-format
 msgid "Stop started"
 msgstr "रुकना शुरू हो गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:352
+#: lib/marshall_web/live/admin/audit_labels.ex:456
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "बंद"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:329
+#: lib/marshall_web/live/admin/audit_labels.ex:408
 #, elixir-autogen, elixir-format
 msgid "Stopping"
 msgstr "बंद हो रहा है"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:362
+#: lib/marshall_web/live/admin/audit_labels.ex:466
 #, elixir-autogen, elixir-format
 msgid "Stopping source"
 msgstr "स्रोत रोकना"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:320
-#: lib/marshall_web/live/admin/audit_labels.ex:344
+#: lib/marshall_web/live/admin/audit_labels.ex:395
+#: lib/marshall_web/live/admin/audit_labels.ex:444
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "अधिक्रमण किया हुआ"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:365
+#: lib/marshall_web/live/admin/audit_labels.ex:472
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "तैनाती बदली जा रही है"
 
-#: lib/marshall_web/live/admin/audit_live.ex:288
+#: lib/marshall_web/live/admin/audit_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "Target"
 msgstr "गंतव्य"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:66
+#: lib/marshall_web/live/admin/audit_labels.ex:74
 #, elixir-autogen, elixir-format
 msgid "Team created"
 msgstr "टीम बनाई गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:69
+#: lib/marshall_web/live/admin/audit_labels.ex:77
 #, elixir-autogen, elixir-format
 msgid "Team membership changed"
 msgstr "टीम की सदस्यता बदल गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:75
+#: lib/marshall_web/live/admin/audit_labels.ex:83
 #, elixir-autogen, elixir-format
 msgid "Team ownership accepted"
 msgstr "टीम का स्वामित्व स्वीकार किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:78
+#: lib/marshall_web/live/admin/audit_labels.ex:86
 #, elixir-autogen, elixir-format
 msgid "Team ownership declined"
 msgstr "टीम के स्वामित्व में गिरावट आई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:81
+#: lib/marshall_web/live/admin/audit_labels.ex:89
 #, elixir-autogen, elixir-format
 msgid "Team ownership offer cancelled"
 msgstr "टीम स्वामित्व प्रस्ताव रद्द कर दिया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:72
+#: lib/marshall_web/live/admin/audit_labels.ex:80
 #, elixir-autogen, elixir-format
 msgid "Team ownership offered"
 msgstr "टीम स्वामित्व की पेशकश की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:256
+#: lib/marshall_web/live/admin/audit_labels.ex:316
 #, elixir-autogen, elixir-format
 msgid "Transfer receipt recorded"
 msgstr "स्थानांतरण रसीद दर्ज की गई"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:129
+#: lib/marshall_web/live/admin/audit_labels.ex:154
 #, elixir-autogen, elixir-format
 msgid "Uncertain certificate order failed"
 msgstr "अनिश्चित प्रमाणपत्र आदेश विफल रहा"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:274
+#: lib/marshall_web/live/admin/audit_labels.ex:335
 #, elixir-autogen, elixir-format
 msgid "Unconfirmed outcome recorded"
 msgstr "अपुष्ट परिणाम दर्ज किया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:321
-#: lib/marshall_web/live/admin/audit_labels.ex:355
-#: lib/marshall_web/live/admin/audit_labels.ex:396
+#: lib/marshall_web/live/admin/audit_labels.ex:397
+#: lib/marshall_web/live/admin/audit_labels.ex:459
+#: lib/marshall_web/live/admin/audit_labels.ex:509
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "अज्ञात"
 
-#: lib/marshall_web/live/admin/audit_live.ex:232
+#: lib/marshall_web/live/admin/audit_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Until (ISO 8601)"
 msgstr "इस समय तक (ISO 8601)"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:22
+#: lib/marshall_web/live/admin/audit_labels.ex:26
 #, elixir-autogen, elixir-format
 msgid "User deleted"
 msgstr "उपयोगकर्ता हटा दिया गया"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:21
+#: lib/marshall_web/live/admin/audit_labels.ex:23
 #, elixir-autogen, elixir-format
 msgid "User invited"
 msgstr "उपयोगकर्ता को आमंत्रित किया गया"
 
-#: lib/marshall_web/live/admin/audit_live.ex:213
+#: lib/marshall_web/live/admin/audit_live.ex:220
 #, elixir-autogen, elixir-format
 msgid "VM ID"
 msgstr "VM आईडी"
 
-#: lib/marshall_web/live/admin/audit_live.ex:195
+#: lib/marshall_web/live/admin/audit_live.ex:200
 #, elixir-autogen, elixir-format
 msgid "VM lifecycle"
 msgstr "VM का जीवनचक्र"
 
-#: lib/marshall_web/live/admin/audit_live.ex:204
+#: lib/marshall_web/live/admin/audit_live.ex:211
 #, elixir-autogen, elixir-format
 msgid "VS Code access"
 msgstr "VS Code की पहुँच"
 
-#: lib/marshall_web/live/admin/audit_live.ex:285
+#: lib/marshall_web/live/admin/audit_live.ex:303
 #, elixir-autogen, elixir-format
 msgid "When"
 msgstr "कब"
 
-#: lib/marshall_web/live/admin/audit_live.ex:121
+#: lib/marshall_web/live/admin/audit_live.ex:124
 #, elixir-autogen, elixir-format
 msgid "Wildcard rotation could not be requested."
 msgstr "वाइल्डकार्ड प्रमाणपत्र बदलने का अनुरोध नहीं हुआ।"
@@ -1007,12 +1007,12 @@ msgid "Wildcard rotation requested for generation %{generation}."
 msgstr ""
 "पीढ़ी %{generation} के लिए वाइल्डकार्ड प्रमाणपत्र बदलने का अनुरोध हुआ।"
 
-#: lib/marshall_web/live/admin/audit_labels.ex:199
+#: lib/marshall_web/live/admin/audit_labels.ex:253
 #, elixir-autogen, elixir-format
 msgid "Work offered"
 msgstr "काम की पेशकश की"
 
-#: lib/marshall_web/live/admin/audit_live.ex:214
+#: lib/marshall_web/live/admin/audit_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Workflow ID"
 msgstr "वर्कफ़्लो ID"

@@ -11,12 +11,12 @@
 msgid ""
 msgstr ""
 
-#: lib/porsche/ssh/channel.ex:115
+#: lib/porsche/ssh/channel.ex:154
 #, elixir-autogen, elixir-format
 msgid "Docs:"
 msgstr ""
 
-#: lib/porsche/ssh/channel.ex:113
+#: lib/porsche/ssh/channel.ex:152
 #, elixir-autogen, elixir-format
 msgid "Porsche machine management. Type help."
 msgstr ""

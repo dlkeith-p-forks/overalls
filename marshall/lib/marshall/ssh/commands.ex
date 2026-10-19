@@ -16,23 +16,40 @@ defmodule Marshall.SSH.Commands do
   }
 
   alias Marshall.SSH.{Authority, Request}
+  alias Marshall.Threads.ReadMarkers
   require Marshall.Events
+
+  # Terminal commands reach the guest through the host stream. Their domain
+  # actions commit intent before dispatch, so they run outside the receipt
+  # transaction: admission and replay first, the effect, then the receipt.
+  @detached ["terminal ls", "terminal new", "terminal kill"]
+
+  # Transcript pages stay well inside Porsche's 1 MiB response bound.
+  @turns_limit 100
+  @turns_budget 524_288
 
   @impl true
   def run(input, _, _) do
-    with {:ok, command} <- SSHCommand.validate(input.arguments.command) do
-      result =
-        Ledger.transaction(fn ->
-          Authority.with_actor!(
-            input.arguments.gateway_token,
-            input.arguments.session_token,
-            fn actor, session ->
-              dispatch(command, actor, session)
-            end,
-            SSHCommand.mutation?(command.command) or command.command == "whoami"
-          )
-        end)
-        |> SSH.Error.result()
+    with {:ok, command} <- SSHCommand.validate(input.arguments.command),
+         false <- SSHCommand.stdin_payload?(command),
+         false <- command.command == "watch" do
+      outcome =
+        if command.command in @detached do
+          detached(command, input.arguments)
+        else
+          Ledger.transaction(fn ->
+            Authority.with_actor!(
+              input.arguments.gateway_token,
+              input.arguments.session_token,
+              fn actor, session ->
+                dispatch(command, actor, session)
+              end,
+              SSHCommand.mutation?(command.command) or command.command == "whoami"
+            )
+          end)
+        end
+
+      result = SSH.Error.result(outcome)
 
       # @cc [owner:ghuntley,label:observability] ssh-log-after-outer-commit
       # Admission diagnostics MUST follow the outer receipt/domain commit and
@@ -48,7 +65,7 @@ defmodule Marshall.SSH.Commands do
 
   defp dispatch(command, actor, session) do
     if SSHCommand.mutation?(command.command) do
-      mutate(command, actor)
+      mutate(command, actor, session)
     else
       case command do
         %{command: "whoami"} ->
@@ -76,11 +93,54 @@ defmodule Marshall.SSH.Commands do
         %{command: "request show", arguments: [id]} ->
           request!(id, actor) |> receipt(actor)
 
+        %{command: "terminal attach"} ->
+          terminal_attach!(command, actor, session)
+
         _ ->
           %{version: 1, status: "succeeded", result: json(read(command, actor))}
       end
     end
   end
+
+  # @cc [owner:ghuntley,label:security] ssh-terminal-attach-ticket
+  # `terminal attach` MUST resolve the machine and a registry terminal session
+  # of that machine through Terminal.Authority, and issue only a single-use
+  # ticket bound to this actor and SSH session: read-only when requested or
+  # without owner write authority. It is a read, so no receipt pins the ticket,
+  # and the result is consumed by Porsche's attach channel, never printed.
+  @spec terminal_attach!(SSHCommand.t(), Marshall.Accounts.User.t(), SSH.Session.t()) :: map()
+  defp terminal_attach!(%{arguments: [ref, session_id], options: options}, actor, ssh_session) do
+    vm = resolve!(ref, actor)
+
+    terminal =
+      case Marshall.Terminal.Authority.session_for(session_id, actor, :connect) do
+        {:ok, %{vm_id: vm_id} = terminal} when vm_id == vm.id -> terminal
+        {:ok, _other_machine} -> Ledger.rollback(:unknown_session)
+        {:error, reason} -> Ledger.rollback(terminal_refusal(reason))
+      end
+
+    ticket =
+      case Marshall.Terminal.Authority.ticket(terminal, actor,
+             ssh_session_id: ssh_session.id,
+             read_only: options["read-only"] == true
+           ) do
+        {:ok, ticket} -> ticket
+        {:error, reason} -> Ledger.rollback(terminal_refusal(reason))
+      end
+
+    %{
+      version: 1,
+      status: "succeeded",
+      result: %{ticket: ticket, session_id: terminal.id, machine_id: vm.id}
+    }
+  end
+
+  @spec terminal_refusal(term()) :: atom()
+  defp terminal_refusal(reason)
+       when reason in [:forbidden, :unknown_session, :terminal_unavailable, :vm_deleted],
+       do: reason
+
+  defp terminal_refusal(_reason), do: :temporarily_unavailable
 
   @spec guest_identity!(Marshall.Accounts.User.t()) :: Marshall.Accounts.GuestAccount.t()
   defp guest_identity!(actor) do
@@ -95,18 +155,9 @@ defmodule Marshall.SSH.Commands do
   # A same-user retry MUST compare semantic inputs before returning pinned results,
   # without resolving names, image defaults or recipients again. Presentation/wait
   # options MUST NOT change operation identity. Different inputs MUST conflict.
-  defp mutate(command, actor) do
-    id = Map.get(command.options, "request-id", Ash.UUID.generate())
-
-    semantic =
-      %{
-        command
-        | options:
-            Map.drop(command.options, ["request-id", "json", "timeout", "no-wait"])
-            |> canonical_source()
-            |> redact_secrets()
-      }
-      |> json()
+  defp mutate(command, actor, session) do
+    id = request_id(command)
+    semantic = semantic(command)
 
     case Ledger.read!(Request, user_id: actor.id, request_id: id) do
       [existing] ->
@@ -117,7 +168,7 @@ defmodule Marshall.SSH.Commands do
         # Database time precedes the mutation: synchronous cancellation evidence
         # must not fall outside its newly created receipt's measurement window.
         measurement_started_at = Ledger.now()
-        execution = command |> perform(actor, Ash.UUID.generate()) |> execution()
+        execution = command |> perform_bound(actor, session) |> execution()
 
         request =
           Ledger.create!(Request, :record, %{
@@ -133,7 +184,8 @@ defmodule Marshall.SSH.Commands do
             resize_request_id: execution.resize_request_id,
             wake_request_id: execution.wake_request_id,
             status: if(execution.physical?, do: :accepted, else: :succeeded),
-            result: json(execution.result)
+            result: json(execution.result),
+            ssh_key_id: session.key_id
           })
 
         # The mutation's action has already authorized admission; sharing may
@@ -141,6 +193,172 @@ defmodule Marshall.SSH.Commands do
         # this session. Subsequent calls must authorize from current state.
         envelope(request)
     end
+  end
+
+  @spec request_id(SSHCommand.t()) :: String.t()
+  defp request_id(command), do: Map.get(command.options, "request-id", Ash.UUID.generate())
+
+  # Presentation and wait options never change a request's identity; secrets
+  # and stdin payloads persist only as digests.
+  @spec semantic(SSHCommand.t()) :: map()
+  defp semantic(command) do
+    %{
+      command
+      | options:
+          Map.drop(command.options, ["request-id", "json", "timeout", "no-wait"])
+          |> canonical_source()
+          |> redact_secrets()
+    }
+    |> json()
+  end
+
+  # @cc [owner:ghuntley,label:recovery;security] ssh-terminal-detached-receipt
+  # Terminal commands MUST authorize and check replay before any guest effect,
+  # run the Terminal.Authority action outside the receipt transaction (it
+  # commits its own intent before dispatch), then pin a receipt after fresh
+  # session authority. `terminal new` derives its opening identity from the
+  # account and request id, so a retry after a lost receipt rejoins the same
+  # opening instead of creating a second shell. Tickets are never issued here.
+  @spec detached(SSHCommand.t(), map()) :: {:ok, map()} | {:error, term()}
+  defp detached(command, arguments) do
+    mutation? = SSHCommand.mutation?(command.command)
+
+    admitted =
+      Ledger.transaction(fn ->
+        Authority.with_actor!(
+          arguments.gateway_token,
+          arguments.session_token,
+          fn actor, _session ->
+            vm = resolve!(hd(command.arguments), actor)
+            id = if mutation?, do: request_id(command)
+
+            case mutation? && Ledger.read!(Request, user_id: actor.id, request_id: id) do
+              [existing] ->
+                if existing.command != semantic(command),
+                  do: Ledger.rollback(:idempotency_conflict)
+
+                {:replay, receipt(existing, actor)}
+
+              _ ->
+                {:perform, actor, vm, id}
+            end
+          end,
+          false
+        )
+      end)
+
+    with {:ok, {:perform, actor, vm, id}} <- admitted,
+         {:ok, result} <- terminal(command, vm, actor, id) do
+      if mutation?,
+        do: pin_detached(command, arguments, id, vm, result),
+        else: {:ok, %{version: 1, status: "succeeded", result: json(result)}}
+    else
+      {:ok, {:replay, envelope}} -> {:ok, envelope}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @spec pin_detached(SSHCommand.t(), map(), String.t(), map(), map()) ::
+          {:ok, map()} | {:error, term()}
+  defp pin_detached(command, arguments, id, vm, result) do
+    Ledger.transaction(fn ->
+      Authority.with_actor!(
+        arguments.gateway_token,
+        arguments.session_token,
+        fn actor, session ->
+          semantic = semantic(command)
+
+          case Ledger.read!(Request, user_id: actor.id, request_id: id) do
+            [existing] ->
+              if existing.command != semantic, do: Ledger.rollback(:idempotency_conflict)
+              receipt(existing, actor)
+
+            [] ->
+              Ledger.create!(Request, :record, %{
+                request_id: id,
+                measurement_started_at: Ledger.now(),
+                user_id: actor.id,
+                command: semantic,
+                vm_id: vm.id,
+                status: :succeeded,
+                result: json(result),
+                ssh_key_id: session.key_id
+              })
+              |> envelope()
+          end
+        end
+      )
+    end)
+  end
+
+  @spec terminal(SSHCommand.t(), map(), Marshall.Accounts.User.t(), String.t() | nil) ::
+          {:ok, map()} | {:error, atom()}
+  defp terminal(%{command: "terminal ls"}, vm, actor, _id) do
+    with {:ok, sessions} <- Marshall.Terminal.Authority.list_sessions(vm, actor, :observe) do
+      writable = Marshall.Terminal.Authority.writable?(vm.id, actor)
+
+      {:ok,
+       %{
+         machine_id: vm.id,
+         items: Enum.map(sessions, &terminal_view(&1, vm, actor, writable))
+       }}
+    end
+  end
+
+  defp terminal(%{command: "terminal new"}, vm, actor, id) do
+    with {:ok, session} <-
+           Marshall.Terminal.Authority.open_personal_session(
+             vm,
+             actor,
+             terminal_request(actor, id),
+             :connect
+           ) do
+      {:ok,
+       %{
+         machine_id: vm.id,
+         session_id: session.id,
+         guest_session_id: session.guest_session_id,
+         route: Marshall.AppRoutes.link({:machine_terminal, vm.id, session.id})
+       }}
+    end
+  end
+
+  defp terminal(%{command: "terminal kill", arguments: [_, session_id]}, vm, actor, _id) do
+    with [session] <- Ledger.read!(Marshall.Terminal.Session, id: session_id, vm_id: vm.id),
+         :ok <- Marshall.Terminal.Authority.close_session(session, actor) do
+      {:ok, %{machine_id: vm.id, session_id: session.id, closed: true}}
+    else
+      [] -> {:error, :unknown_session}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @spec terminal_view(map(), map(), Marshall.Accounts.User.t(), boolean()) :: map()
+  defp terminal_view(session, vm, actor, writable) do
+    %{
+      id: session.id,
+      guest_session_id: session.guest_session_id,
+      guest_user: session.user,
+      cols: session.cols,
+      rows: session.rows,
+      viewers: session.viewers,
+      created_ms: session.created_ms,
+      last_ms: session.last_ms,
+      mine: session.owner_id == actor.id,
+      can_kill: session.kill_status == :idle and session.owner_id == actor.id and writable,
+      kill_status: session.kill_status,
+      route: Marshall.AppRoutes.link({:machine_terminal, vm.id, session.id})
+    }
+  end
+
+  # A namespaced deterministic UUIDv8 from the account and its request id.
+  @spec terminal_request(Marshall.Accounts.User.t(), String.t()) :: String.t()
+  defp terminal_request(actor, id) do
+    <<a::48, _::4, b::12, _::2, c::62, _::binary>> =
+      :crypto.hash(:sha256, JSON.encode!(["porsche-terminal-v1", actor.id, id]))
+
+    {:ok, uuid} = Ecto.UUID.load(<<a::48, 8::4, b::12, 2::2, c::62>>)
+    uuid
   end
 
   defp read(%{command: "help", arguments: args}, _) do
@@ -157,7 +375,8 @@ defmodule Marshall.SSH.Commands do
 
   # @cc [owner:ghuntley,label:protocol] ssh-machine-workspace-status-private
   # ls/show MUST preserve their public machine response fields without exposing
-  # workspace-only presentation fields or Reflection labels and comment.
+  # workspace-only presentation fields or Reflection labels and comment. They
+  # expose the caller's own `pinned` flag and canonical `route` link (ADR-0222).
   defp read(%{command: "ls", options: opts}, actor) do
     page = Compute.list_vms(%{after: opts["after"]}, actor: actor) |> unwrap!()
     Map.update!(page, :items, &Enum.map(&1, fn vm -> machine_wire_view(vm) end))
@@ -215,7 +434,161 @@ defmodule Marshall.SSH.Commands do
       |> Enum.map(&Map.delete(&1, :time_zone))
       |> then(&%{members: &1})
 
+  defp read(%{command: "device ls"}, actor) do
+    Marshall.Notifications.list_devices(%{}, actor: actor)
+    |> unwrap!()
+    |> Map.update!(:items, &Enum.map(&1, fn device -> device_wire_view(device) end))
+  end
+
+  # @cc [owner:ghuntley,label:protocol;security] ssh-thread-wire-view
+  # Thread results MUST carry identifiers, state, unread counts and a canonical
+  # route, never the objective, machine specification or skill selections.
+  # Transcript, question and plan content is returned only through `thread
+  # show`/`thread turns` after the domain's current read check.
+  defp read(%{command: "thread ls", options: opts}, actor) do
+    machine_id = if ref = opts["machine"], do: resolve!(ref, actor).id
+
+    page =
+      Marshall.Threads.list_thread_page(%{after: opts["after"], machine_id: machine_id},
+        actor: actor
+      )
+      |> domain!()
+
+    unread = ReadMarkers.unread(actor.id, page.items)
+
+    %{
+      items: Enum.map(page.items, &thread_view(&1, unread[&1.id], actor)),
+      next_cursor: page.next_cursor
+    }
+  end
+
+  defp read(%{command: "thread show", arguments: [id]}, actor) do
+    thread = Marshall.Threads.get_thread(%{thread_id: id}, actor: actor) |> domain!()
+    controls = Marshall.Threads.thread_controls(%{thread_id: id}, actor: actor) |> domain!()
+    unread = ReadMarkers.unread(actor.id, [thread])
+
+    thread
+    |> thread_view(unread[thread.id], actor)
+    |> Map.merge(%{
+      collaboration_mode: controls.collaboration_mode,
+      busy: controls.busy,
+      pending_question: question_view(controls.pending_question),
+      latest_plan: plan_view(controls.latest_plan)
+    })
+  end
+
+  defp read(%{command: "thread turns", arguments: [id], options: opts}, actor) do
+    after_sequence = String.to_integer(opts["after"] || "0")
+
+    events =
+      case Marshall.Threads.events_after(id, actor, nil, after_sequence, @turns_limit) do
+        {:ok, events} -> events
+        {:error, reason} -> Ledger.rollback(Marshall.Threads.error_reason(reason))
+      end
+
+    {items, truncated?} = budgeted(Enum.map(events, &event_view/1))
+
+    %{
+      thread_id: id,
+      items: items,
+      next_after:
+        if((truncated? or length(events) == @turns_limit) and items != [],
+          do: List.last(items).sequence
+        )
+    }
+  end
+
+  defp read(%{command: "web show", arguments: [ref]}, actor) do
+    vm = resolve!(ref, actor)
+    endpoint = Marshall.Ingress.get_endpoint(%{vm_id: vm.id}, actor: actor) |> domain!()
+    web_view(vm, endpoint)
+  end
+
   defp read(%{command: "exit"}, _), do: %{closed: true}
+
+  @spec thread_view(map(), ReadMarkers.unread() | nil, Marshall.Accounts.User.t()) :: map()
+  defp thread_view(thread, unread, actor) do
+    unread = unread || %{read_sequence: 0, last_sequence: 0, unread: 0}
+
+    %{
+      id: thread.id,
+      title: thread.title,
+      status: thread.status,
+      failure_reason: thread.failure_reason,
+      collaboration_mode: thread.collaboration_mode,
+      machine_id: thread.machine_id,
+      team_id: thread.team_id,
+      mine: thread.creator_id == actor.id,
+      archived: thread.archived_at != nil,
+      inserted_at: thread.inserted_at,
+      updated_at: thread.updated_at,
+      read_sequence: unread.read_sequence,
+      last_sequence: unread.last_sequence,
+      unread: unread.unread,
+      route: Marshall.AppRoutes.link({:thread, thread.id})
+    }
+  end
+
+  defp question_view(nil), do: nil
+
+  defp question_view(question),
+    do: %{id: question.id, questions: question.questions, inserted_at: question.inserted_at}
+
+  defp plan_view(nil), do: nil
+
+  defp plan_view(plan),
+    do: %{
+      id: plan.id,
+      text: plan.text,
+      digest: plan.digest,
+      event_sequence: plan.event_sequence,
+      implemented: plan.implementing_turn_id != nil,
+      inserted_at: plan.inserted_at
+    }
+
+  defp event_view(event),
+    do: %{
+      sequence: event.sequence,
+      kind: event.kind,
+      turn_id: event.turn_id,
+      body: event.body,
+      inserted_at: event.inserted_at
+    }
+
+  # Keeps whole events up to the byte budget; the first event always stays so
+  # a page makes progress.
+  @spec budgeted([map()]) :: {[map()], boolean()}
+  defp budgeted(items) do
+    {kept, _bytes, truncated?} =
+      Enum.reduce(items, {[], 0, false}, fn
+        _item, {kept, bytes, true} ->
+          {kept, bytes, true}
+
+        item, {kept, bytes, false} ->
+          size = item |> Jason.encode!() |> byte_size()
+
+          if kept != [] and bytes + size > @turns_budget,
+            do: {kept, bytes, true},
+            else: {[item | kept], bytes + size, false}
+      end)
+
+    {Enum.reverse(kept), truncated?}
+  end
+
+  @spec web_view(map(), map()) :: map()
+  defp web_view(vm, endpoint) do
+    zone = Application.get_env(:marshall, :ingress_zone)
+
+    %{
+      machine_id: vm.id,
+      label: endpoint.label,
+      port: endpoint.primary_port,
+      visibility: endpoint.visibility,
+      policy_revision: endpoint.policy_revision,
+      url: if(is_binary(zone), do: "https://" <> endpoint.label <> "." <> zone),
+      route: Marshall.AppRoutes.link({:machine_web, vm.id})
+    }
+  end
 
   @spec listing([map()]) :: %{items: [map()], next_cursor: binary() | nil}
   defp listing(rows) do
@@ -223,6 +596,29 @@ defmodule Marshall.SSH.Commands do
     cursor = if length(rows) > 50, do: List.last(items).id
     %{items: items, next_cursor: cursor}
   end
+
+  # @cc [owner:ghuntley,label:security;protocol] ssh-device-commands
+  # Device registration MUST bind the device to the authenticated session's
+  # SSH key and read the push key only from the validated (stdin) option; the
+  # receipt keeps only its digest. Results MUST NOT echo push or device keys.
+  defp perform_bound(%{command: "device register", options: opts}, actor, session) do
+    device =
+      Marshall.Notifications.register_device(
+        %{
+          platform: Map.fetch!(%{"ios" => :ios, "android" => :android}, opts["platform"]),
+          push_key: opts["push-key"],
+          enc_public_key: opts["enc-pubkey"],
+          label: opts["label"],
+          key_id: session.key_id
+        },
+        actor: actor
+      )
+      |> unwrap!()
+
+    {device_wire_view(device), nil, nil}
+  end
+
+  defp perform_bound(command, actor, _session), do: perform(command, actor, Ash.UUID.generate())
 
   defp perform(%{command: "clone", arguments: [ref], options: opts}, actor, key) do
     vm = resolve!(ref, actor)
@@ -463,6 +859,22 @@ defmodule Marshall.SSH.Commands do
     {Map.take(change, [:vm_id, :user_id, :role]), vm.id, nil}
   end
 
+  defp perform(%{command: "device rm", arguments: [id]}, actor, _key) do
+    device = Marshall.Notifications.remove_device(%{id: id}, actor: actor) |> unwrap!()
+    {device_wire_view(device), nil, nil}
+  end
+
+  defp perform(%{command: "device prefs", arguments: [id], options: opts}, actor, _key) do
+    device =
+      Marshall.Notifications.set_device_preference(
+        %{id: id, enabled: opts["enabled"] == "true"},
+        actor: actor
+      )
+      |> unwrap!()
+
+    {device_wire_view(device), nil, nil}
+  end
+
   defp perform(%{command: "ssh-key remove", arguments: [id]}, actor, _key),
     do: {SSH.remove_key(%{id: id}, actor: actor) |> unwrap!(), nil, nil}
 
@@ -586,6 +998,123 @@ defmodule Marshall.SSH.Commands do
     {%{transfer_id: transfer.id, state: transfer.state}, nil, nil}
   end
 
+  # @cc [owner:ghuntley,label:security;durability] ssh-thread-mutations-domain
+  # Thread mutations MUST delegate authority, locking and idempotency to the
+  # Threads domain with the current SSH actor. Prompt and revision text comes
+  # only from the validated stdin payload; a revision MUST name the latest
+  # proposal or refuse as stale_proposal before any prompt is admitted.
+  defp perform(%{command: "thread prompt", arguments: [id, "-"], options: opts}, actor, key) do
+    result =
+      Marshall.Threads.submit_prompt(
+        %{thread_id: id, prompt: opts["stdin"], request_key: key},
+        actor: actor
+      )
+      |> domain!()
+
+    {%{thread_id: id, turn_id: result.turn_id, status: result.status}, nil, nil}
+  end
+
+  defp perform(
+         %{command: "thread answer", arguments: [id, question, "-"], options: opts},
+         actor,
+         key
+       ) do
+    answers = Jason.decode!(opts["stdin"])
+
+    result =
+      Marshall.Threads.answer_questions(
+        %{thread_id: id, question_id: question, answers: answers, request_key: key},
+        actor: actor
+      )
+      |> domain!()
+
+    {%{thread_id: id, question_id: result.question_id, status: result.status}, nil, nil}
+  end
+
+  defp perform(%{command: "thread plan approve", arguments: [id, plan]}, actor, key) do
+    result =
+      Marshall.Threads.implement_plan(%{thread_id: id, plan_id: plan, request_key: key},
+        actor: actor
+      )
+      |> domain!()
+
+    {%{thread_id: id, plan_id: plan, turn_id: result.turn_id, collaboration_mode: :work}, nil,
+     nil}
+  end
+
+  defp perform(
+         %{command: "thread plan revise", arguments: [id, plan, "-"], options: opts},
+         actor,
+         key
+       ) do
+    controls = Marshall.Threads.thread_controls(%{thread_id: id}, actor: actor) |> domain!()
+
+    unless match?(%{latest_plan: %{id: ^plan}}, controls), do: Ledger.rollback(:stale_proposal)
+
+    result =
+      Marshall.Threads.submit_prompt(
+        %{thread_id: id, prompt: opts["stdin"], request_key: key, collaboration_mode: :plan},
+        actor: actor
+      )
+      |> domain!()
+
+    {%{thread_id: id, plan_id: plan, turn_id: result.turn_id, status: result.status}, nil, nil}
+  end
+
+  defp perform(%{command: "thread mode", arguments: [id, mode]}, actor, _key) do
+    mode = if mode == "plan", do: :plan, else: :work
+
+    controls =
+      Marshall.Threads.set_collaboration_mode(%{thread_id: id, collaboration_mode: mode},
+        actor: actor
+      )
+      |> domain!()
+
+    {%{thread_id: id, collaboration_mode: controls.collaboration_mode, busy: controls.busy}, nil,
+     nil}
+  end
+
+  defp perform(%{command: "thread read", arguments: [id, sequence]}, actor, _key) do
+    result =
+      Marshall.Threads.mark_read(%{thread_id: id, position: String.to_integer(sequence)},
+        actor: actor
+      )
+      |> domain!()
+
+    {result, nil, nil}
+  end
+
+  # @cc [owner:ghuntley,label:security;concurrency] ssh-web-set-optimistic
+  # `web set` MUST change only the named settings, keep the others at their
+  # current values and pass an expected policy revision (the caller's, or the
+  # one just read) to Ingress.configure_endpoint, which rechecks manage
+  # authority under the VM lock and refuses a stale revision.
+  defp perform(%{command: "web set", arguments: [ref], options: opts}, actor, _key) do
+    vm = resolve!(ref, actor)
+    current = Marshall.Ingress.get_endpoint(%{vm_id: vm.id}, actor: actor) |> domain!()
+
+    visibility =
+      cond do
+        opts["public"] == true -> :public
+        opts["private"] == true -> :private
+        true -> current.visibility
+      end
+
+    endpoint =
+      Marshall.Ingress.configure_endpoint(
+        %{
+          vm_id: vm.id,
+          expected_revision: integer(opts, "revision", current.policy_revision),
+          primary_port: integer(opts, "port", current.primary_port),
+          visibility: visibility
+        },
+        actor: actor
+      )
+      |> domain!()
+
+    {web_view(vm, endpoint), vm.id, nil}
+  end
+
   defp control_resize(command, original, actor) do
     [resize] = Ledger.read!(Marshall.Compute.ResizeRequest, id: original.resize_request_id)
     [vm] = Ledger.history!(VirtualMachine, id: resize.vm_id)
@@ -647,7 +1176,7 @@ defmodule Marshall.SSH.Commands do
     }
   end
 
-  @secret_options ~w(bearer basic header)
+  @secret_options ~w(bearer basic header push-key stdin)
 
   @spec workspace_source!(String.t() | nil, atom()) :: OverallsProtocol.WorkspaceSource.t() | nil
   defp workspace_source!(nil, _profile), do: nil
@@ -745,19 +1274,32 @@ defmodule Marshall.SSH.Commands do
   defp resolve!(ref, actor), do: Compute.resolve_vm(%{reference: ref}, actor: actor) |> unwrap!()
 
   # Browser-only projections (editor eligibility, guest capability booleans and
-  # the caller's pin) and Reflection metadata stay out of the SSH/Porsche wire format.
+  # owner contact details) and Reflection metadata stay out of the SSH/Porsche
+  # wire format. The caller's own pin and the machine's app link are public to
+  # the caller (ADR-0222).
   @spec machine_wire_view(map()) :: map()
-  defp machine_wire_view(vm),
-    do:
-      Map.drop(vm, [
-        :editor_image_status,
-        :guest_capabilities,
-        :pinned,
-        :owner_email,
-        :owner_time_zone,
-        :labels,
-        :comment
-      ])
+  defp machine_wire_view(vm) do
+    vm
+    |> Map.drop([
+      :editor_image_status,
+      :guest_capabilities,
+      :owner_email,
+      :owner_time_zone,
+      :labels,
+      :comment
+    ])
+    |> Map.put(:route, Marshall.AppRoutes.link({:machine, vm.id}))
+  end
+
+  # Devices carry an app link to the settings screen that manages them.
+  @spec device_wire_view(map()) :: map()
+  defp device_wire_view(device),
+    do: Map.put(device, :route, Marshall.AppRoutes.link(:settings))
+
+  # Domain actions that wrap closed refusals in Ash errors keep their reason.
+  @spec domain!({:ok, term()} | {:error, term()}) :: term()
+  defp domain!({:ok, value}), do: value
+  defp domain!({:error, reason}), do: Ledger.rollback(Marshall.Threads.error_reason(reason))
 
   defp unwrap!({:ok, value}), do: value
   # @cc [owner:ghuntley,label:product;recovery] ssh-coordinator-atom-refusals

@@ -14,128 +14,128 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:117
+#: lib/marshall_web/live/admin/workloads_live.ex:140
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "アクション"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:215
+#: lib/marshall_web/live/admin/workloads_live.ex:239
 #, elixir-autogen, elixir-format
 msgid "Archive this VM?"
 msgstr "この VM をアーカイブしますか?"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:217
+#: lib/marshall_web/live/admin/workloads_live.ex:241
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "消去"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:150
+#: lib/marshall_web/live/admin/workloads_live.ex:174
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "詳細"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:97
+#: lib/marshall_web/live/admin/workloads_live.ex:116
 #, elixir-autogen, elixir-format
 msgid "Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included."
 msgstr ""
 "フリート内のすべてのマシンは、所有者のコンソールと同じライフサイクル、サイズ変更および再配置の安全性をチェックします。端末データや認証情報は含まれません。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:95
+#: lib/marshall_web/live/admin/workloads_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Fleet workloads"
 msgstr "フリートのワークロード"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:114
+#: lib/marshall_web/live/admin/workloads_live.ex:136
 #, elixir-autogen, elixir-format
 msgid "Host"
 msgstr "ホスト"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:60
+#: lib/marshall_web/live/admin/workloads_live.ex:71
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "無効なリクエストです。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:34
+#: lib/marshall_web/live/admin/workloads_live.ex:36
 #, elixir-autogen, elixir-format
 msgid "Lifecycle request queued."
 msgstr "ライフサイクルリクエストがキューに入れられました。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:68
+#: lib/marshall_web/live/admin/workloads_live.ex:83
 #, elixir-autogen, elixir-format
 msgid "Lifecycle request was rejected."
 msgstr "ライフサイクル要求が拒否されました。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:207
+#: lib/marshall_web/live/admin/workloads_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Move"
 msgstr "動く"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:108
+#: lib/marshall_web/live/admin/workloads_live.ex:129
 #, elixir-autogen, elixir-format
 msgid "No active workloads."
 msgstr "アクティブなワークロードはありません。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:46
+#: lib/marshall_web/live/admin/workloads_live.ex:51
 #, elixir-autogen, elixir-format
 msgid "Relocation request queued."
 msgstr "再配置リクエストがキューに入れられました。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:49
+#: lib/marshall_web/live/admin/workloads_live.ex:59
 #, elixir-autogen, elixir-format
 msgid "Relocation request was rejected."
 msgstr "移転要求は拒否されました。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:166
+#: lib/marshall_web/live/admin/workloads_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Resize"
 msgstr "サイズ変更"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:115
+#: lib/marshall_web/live/admin/workloads_live.ex:137
 #, elixir-autogen, elixir-format
 msgid "Shape"
 msgstr "形"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:195
+#: lib/marshall_web/live/admin/workloads_live.ex:219
 #, elixir-autogen, elixir-format
 msgid "Start"
 msgstr "始める"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:116
+#: lib/marshall_web/live/admin/workloads_live.ex:138
 #, elixir-autogen, elixir-format
 msgid "State"
 msgstr "州"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:204
+#: lib/marshall_web/live/admin/workloads_live.ex:228
 #, elixir-autogen, elixir-format
 msgid "Stop"
 msgstr "停止"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:158
+#: lib/marshall_web/live/admin/workloads_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Terminal"
 msgstr "ターミナル"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:67
+#: lib/marshall_web/live/admin/workloads_live.ex:79
 #, elixir-autogen, elixir-format
 msgid "The owner has pinned this machine; it cannot be deleted until they unpin it."
 msgstr "所有者はこのマシンを固定しました。固定を解除するまで削除できません。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:103
+#: lib/marshall_web/live/admin/workloads_live.ex:123
 #, elixir-autogen, elixir-format
 msgid "Updated"
 msgstr "更新されました"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:113
+#: lib/marshall_web/live/admin/workloads_live.ex:135
 #, elixir-autogen, elixir-format
 msgid "Workload"
 msgstr "ワークロード"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:77
+#: lib/marshall_web/live/admin/workloads_live.ex:95
 #, elixir-autogen, elixir-format
 msgid "Workload inventory is temporarily unavailable."
 msgstr "ワークロード インベントリは一時的に利用できません。"
 
-#: lib/marshall_web/live/admin/workloads_live.ex:105
+#: lib/marshall_web/live/admin/workloads_live.ex:125
 #, elixir-autogen, elixir-format
 msgid "· every 15 seconds"
 msgstr "· 15秒ごと"

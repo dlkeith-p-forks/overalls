@@ -35,7 +35,7 @@ msgstr "Für diese Maschine läuft bereits eine Größenänderung."
 msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr "Ein Transfer belegt bereits den Transferplatz dieses Hosts. Versuchen Sie es nach dessen Abschluss erneut."
 
-#: lib/porsche/ssh/output.ex:319
+#: lib/porsche/ssh/output.ex:373
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr "Angenommen"
@@ -47,7 +47,7 @@ msgstr ""
 "Bestätigen Sie diesen SSH-Schlüssel im Browser und versuchen Sie den Befehl "
 "erneut."
 
-#: lib/porsche/ssh/output.ex:321
+#: lib/porsche/ssh/output.ex:375
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Fehlgeschlagen"
@@ -59,32 +59,32 @@ msgstr ""
 "Ungültiger Befehl. Geben Sie help ein, um die verfügbaren Befehle "
 "anzuzeigen."
 
-#: lib/porsche/ssh/output.ex:314
+#: lib/porsche/ssh/output.ex:368
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr "Vorgangs-ID"
 
-#: lib/porsche/ssh/output.ex:311
+#: lib/porsche/ssh/output.ex:365
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr "Protokollversion"
 
-#: lib/porsche/ssh/output.ex:346
+#: lib/porsche/ssh/output.ex:400
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "Anfrage %{id}: wird übermittelt"
 
-#: lib/porsche/ssh/output.ex:349
+#: lib/porsche/ssh/output.ex:403
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "Anfrage %{id}: wartet auf Abschluss"
 
-#: lib/porsche/ssh/output.ex:313
+#: lib/porsche/ssh/output.ex:367
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr "Anfrage-ID"
 
-#: lib/porsche/ssh/output.ex:315
+#: lib/porsche/ssh/output.ex:369
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr "Ergebnis"
@@ -94,17 +94,17 @@ msgstr "Ergebnis"
 msgid "Source cleanup is still pending. Wait for cleanup before retrying."
 msgstr "Die Bereinigung der Quelle steht noch aus. Warten Sie vor einem erneuten Versuch auf die Bereinigung."
 
-#: lib/porsche/ssh/output.ex:312
+#: lib/porsche/ssh/output.ex:366
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Status"
 
-#: lib/porsche/ssh/output.ex:320
+#: lib/porsche/ssh/output.ex:374
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "Erfolgreich"
 
-#: lib/porsche/ssh/output.ex:322
+#: lib/porsche/ssh/output.ex:376
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "Ersetzt"
@@ -124,7 +124,7 @@ msgstr "Die Grenze für Genehmigungsanfragen wurde erreicht. Schließen Sie eine
 msgid "The available host does not meet the machine image's requirements."
 msgstr "Der verfügbare Host erfüllt die Anforderungen des Maschinenabbilds nicht."
 
-#: lib/porsche/ssh/output.ex:292
+#: lib/porsche/ssh/output.ex:346
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr "Der Befehl konnte nicht abgeschlossen werden: %{reason}"
@@ -353,3 +353,91 @@ msgstr "Sie haben bereits die maximale Anzahl an Pins; lösen Sie zuerst einen."
 #, elixir-autogen, elixir-format
 msgid "You do not have permission to perform this action."
 msgstr "Du hast keine Berechtigung, diese Aktion auszuführen."
+
+#: lib/porsche/ssh/output.ex:316
+#, elixir-autogen, elixir-format
+msgid "Answer the pending question before sending another prompt."
+msgstr "Beantworte die offene Frage, bevor du einen weiteren Prompt sendest."
+
+#: lib/porsche/ssh/output.ex:322
+#, elixir-autogen, elixir-format
+msgid "Port 4444 is reserved for the editor."
+msgstr "Port 4444 ist für den Editor reserviert."
+
+#: lib/porsche/ssh/output.ex:328
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable on this machine right now."
+msgstr "Terminals sind auf dieser Maschine derzeit nicht verfügbar."
+
+#: lib/porsche/ssh/output.ex:304
+#, elixir-autogen, elixir-format
+msgid "That plan is no longer the latest proposal. Show the thread again."
+msgstr "Dieser Plan ist nicht mehr der neueste Vorschlag. Zeige den Thread erneut an."
+
+#: lib/porsche/ssh/output.ex:310
+#, elixir-autogen, elixir-format
+msgid "That question has already been answered."
+msgstr "Diese Frage wurde bereits beantwortet."
+
+#: lib/porsche/ssh/output.ex:307
+#, elixir-autogen, elixir-format
+msgid "That question is no longer pending."
+msgstr "Diese Frage ist nicht mehr offen."
+
+#: lib/porsche/ssh/output.ex:334
+#, elixir-autogen, elixir-format
+msgid "That terminal session no longer exists."
+msgstr "Diese Terminalsitzung existiert nicht mehr."
+
+#: lib/porsche/ssh/output.ex:313
+#, elixir-autogen, elixir-format
+msgid "The answers do not match the pending question."
+msgstr "Die Antworten passen nicht zur offenen Frage."
+
+#: lib/porsche/ssh/output.ex:331
+#, elixir-autogen, elixir-format
+msgid "The machine is waking. Retry the terminal shortly."
+msgstr "Die Maschine wird aufgeweckt. Versuche das Terminal in Kürze erneut."
+
+#: lib/porsche/ssh/output.ex:343
+#, elixir-autogen, elixir-format
+msgid "The standard input is empty or exceeds this command's size limit."
+msgstr "Die Standardeingabe ist leer oder überschreitet die Größenbegrenzung dieses Befehls."
+
+#: lib/porsche/ssh/output.ex:319
+#, elixir-autogen, elixir-format
+msgid "The web settings changed since you read them. Show them again and retry."
+msgstr "Die Web-Einstellungen haben sich geändert, seit du sie gelesen hast. Zeige sie erneut an und versuche es noch einmal."
+
+#: lib/porsche/ssh/output.ex:337
+#, elixir-autogen, elixir-format
+msgid "This command reads its input from standard input. Pipe it in and end the command with -."
+msgstr "Dieser Befehl liest seine Eingabe von der Standardeingabe. Leite sie per Pipe weiter und beende den Befehl mit -."
+
+#: lib/porsche/ssh/output.ex:325
+#, elixir-autogen, elixir-format
+msgid "This machine's profile does not allow web publishing."
+msgstr "Das Profil dieser Maschine erlaubt keine Web-Veröffentlichung."
+
+#: lib/porsche/ssh/output.ex:301
+#, elixir-autogen, elixir-format
+msgid "This thread is busy with a turn. Try again when it finishes."
+msgstr "Dieser Thread ist mit einem Durchgang beschäftigt. Versuche es erneut, wenn er abgeschlossen ist."
+
+#: lib/porsche/ssh/output.ex:298
+#, elixir-autogen, elixir-format
+msgid "This thread is not ready for prompts yet."
+msgstr "Dieser Thread ist noch nicht bereit für Prompts."
+
+#: lib/porsche/ssh/output.ex:292
+#, elixir-autogen, elixir-format
+msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr "terminal attach benötigt ein Terminal. Verbinde dich mit ssh -t und führe es als Befehl aus."
+
+#, elixir-autogen, elixir-format
+msgid "This deployment has push notifications turned off; ask its operator."
+msgstr "Push-Benachrichtigungen sind in dieser Bereitstellung deaktiviert; wenden Sie sich an den Betreiber."
+
+#, elixir-autogen, elixir-format
+msgid "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+msgstr "Sie haben die maximale Anzahl an Geräten erreicht; entfernen Sie zuerst eines: device rm DEVICE_ID"

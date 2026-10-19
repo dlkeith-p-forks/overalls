@@ -14,784 +14,784 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Active"
 msgstr "활동적인"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:259
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:302
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:393
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "가입"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:85
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:89
 #, elixir-autogen, elixir-format
 msgid "Admission settings updated."
 msgstr "입학 설정이 업데이트되었습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:92
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:97
 #, elixir-autogen, elixir-format
 msgid "Admission settings were invalid or the node is not ready."
 msgstr "허용 설정이 잘못되었거나 노드가 준비되지 않았습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:566
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:615
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr ""
 "이 페이지에 대한 권고 미리보기입니다. 각 워크로드는 독립적으로 평가됩니다. 목적지와 사용 가능한 용량은 변경될 수 있습니다. 입학은 각"
 " 이동이 시작될 때 자원을 재확인하고 예약합니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:430
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "허용 설정 적용"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "이동 중단 시간 승인"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:635
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr "차단됨: %{reason}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "보류 후 CPU"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "CPU 헤드룸"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "CPU 오버헤드(코어)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:486
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "운동"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:727
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:804
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr "캠페인 종료됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "캠페인 내역"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:798
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr "캠페인 요청됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr "내구성 있는 제어 영역 기록을 통해 캠페인, 워크로드 및 재배치 마일스톤을 확인할 수 있습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:827
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "취소 요청됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:719
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:821
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:915
 #, elixir-autogen, elixir-format
 msgid "Cancelled"
 msgstr "취소"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr "후보: %{name}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:330
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:356
 #, elixir-autogen, elixir-format
 msgid "Capacity explanation"
 msgstr "용량 설명"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:66
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:69
 #, elixir-autogen, elixir-format
 msgid "Capacity information is temporarily unavailable."
 msgstr "일시적으로 용량 정보를 이용할 수 없습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:769
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "목적지 준비 확인"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
 msgstr "전송 연결 확인 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr "취소 후 정리 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr "원본 정리 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:869
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr "복제 진행 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:539
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "닫은"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:718
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr "완벽한"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:377
 #, elixir-autogen, elixir-format
 msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
 msgstr "설정된 호스트 오버헤드: 코어 %{cores}개 · 메모리 %{memory}. 이 여유분은 수용 가능 여부 계산에 포함되며 배포 설정으로 계속 제어됩니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:508
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "예약 계속하기"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "복사/크기 조정 보류"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:760
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "사자"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:161
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:166
 #, elixir-autogen, elixir-format
 msgid "Could not accept this change. Refresh and check the workload state."
 msgstr "이 변경사항을 수락할 수 없습니다. 워크로드 상태를 새로 고치고 확인합니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:744
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "삭제됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
 msgstr "보관된 복사본 삭제"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr "목표: %{desired} · 관측: %{observed}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "대상 부팅에 실패했습니다. 원본 복사본이 유지됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:824
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr "대상 정리 확인됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr "대상 정리 요청됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:772
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
 msgstr "대상 준비에 실패했습니다. 원본 복사본이 유지됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:548
 #, elixir-autogen, elixir-format
 msgid "Details"
 msgstr "세부"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "보류 후 디스크"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:860
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr "서비스 중단 승인 필요"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:836
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr "서비스 중단 승인됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "이 워크로드 버전에 대해 다운타임이 승인되었습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "드레인 완료"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:729
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "드레인 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:304
 #, elixir-autogen, elixir-format
 msgid "Enabled"
 msgstr "활성화됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:344
 #, elixir-autogen, elixir-format
 msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
 msgstr ""
 "이 노드의 모든 워크로드를 제거하시겠습니까? 달리는 손님은 이동하는 동안 중단됩니다. 완전히 중지된 복사본에는 별도의 워크로드별 승인이 "
 "필요합니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "워크로드 대피 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:300
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
 msgstr ""
 "대피로 인해 기존 손님에게 서비스가 계속 제공되는 동안 새로운 배치가 차단됩니다. 실행 중인 게스트를 이동하면 잠시 중단됩니다. 완전히 "
 "중지된 복사본은 훨씬 더 오랜 시간이 걸릴 수 있으며 각 워크로드에 대한 승인이 필요합니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "피난 캠페인"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "대피 일정"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:547
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "이벤트"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:272
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:305
 #, elixir-autogen, elixir-format
 msgid "Excluded"
 msgstr "제외된"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:341
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:370
 #, elixir-autogen, elixir-format
 msgid "Execution ready"
 msgstr "실행 준비 완료"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Explain capacity"
 msgstr "용량 설명"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:912
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "실패한"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:277
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:456
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "신선한"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Fresh report"
 msgstr "신선한 보고서"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:763
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "가져오는 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:857
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr "용량 부족"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Invalid request."
 msgstr "요청이 잘못되었습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:830
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr "작업 상태"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:276
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Lilly node · %{mode} maintenance"
 msgstr "릴리 노드 · %{mode} 유지 관리"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:236
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
 msgstr "Lilly 노드 및 해당 입학 상태. 머신의 서비스를 중단하기 전에 노드의 워크로드를 이동하세요."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:249
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:282
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:258
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:299
 #, elixir-autogen, elixir-format
 msgid "Maintenance"
 msgstr "유지"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "유지보수 페이지"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:151
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:156
 #, elixir-autogen, elixir-format
 msgid "Maintenance updated."
 msgstr "유지보수가 업데이트되었습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "보류 후 메모리"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:443
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "메모리 헤드룸"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
 #, elixir-autogen, elixir-format
 msgid "Next page →"
 msgstr "다음 페이지 →"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:124
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:140
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:129
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
 #, elixir-autogen, elixir-format
 msgid "No active campaign."
 msgstr "활성 캠페인이 없습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:248
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:280
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:257
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:297
 #, elixir-autogen, elixir-format
 msgid "Node"
 msgstr "마디"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Node information is unavailable."
 msgstr "노드 정보를 사용할 수 없습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:234
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Node maintenance"
 msgstr "노드 유지 관리"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr "정상"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:599
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr "관측된 중단: %{seconds}초"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:595
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:648
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr "관측된 중단: %{seconds}초(진행 중)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:538
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:587
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "개설됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "일정 일시 중지"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr ""
 "일시 중지하면 새 동작이 예약되지 않습니다. 허용된 움직임은 계속됩니다. 유지 관리 준비에는 확인된 소스 정리가 필요합니다. 완료된 "
 "작업만으로는 부족합니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "일시 중지됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:742
 #, elixir-autogen, elixir-format
 msgid "Pending"
 msgstr "보류 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:522
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr "이 빈 노드를 영구적으로 폐기하고 해당 자격 증명을 취소하시겠습니까?"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:644
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "단계: %{phase}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:440
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "수영장"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "준비 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:306
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:331
 #, elixir-autogen, elixir-format
 msgid "Preview evacuation"
 msgstr "미리보기 대피"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:606
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "미리보기: %{blocker}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:814
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:894
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr "대기 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:419
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "RAM 오버헤드(바이트)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:642
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr "현재 배치와 원하는 상태를 사용하여 이 워크로드를 다시 계획하시겠습니까? 이전의 다운타임 승인은 모두 지워집니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:647
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "워크로드 재계획"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:333
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:359
 #, elixir-autogen, elixir-format
 msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
 msgstr "읽기 전용 허용 산술입니다. 용량을 예약하지 않습니다. 알 수 없는 측정값으로 인해 입장이 보류됩니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Ready"
 msgstr "준비가 된"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:807
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr "재배치 확정됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:866
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr "재배치 진행 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:761
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:839
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr "재배치 시작됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "이 소스에서 삭제되었습니다. 캠페인 정리 확인을 기다리는 중입니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:307
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:441
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "보고서"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:863
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
 msgstr "크기 조정 진행 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:515
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "입학 복원"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr "원본 복원 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "재개됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "노드 폐기"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:735
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "사용 종료됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:818
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:906
 #, elixir-autogen, elixir-format
 msgid "Retrying"
 msgstr "재시도 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr "대상 부팅 재시도 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:817
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:740
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:903
 #, elixir-autogen, elixir-format
 msgid "Running"
 msgstr "달리기"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:900
 #, elixir-autogen, elixir-format
 msgid "Scheduled"
 msgstr "예정됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr "원본 정리 확인됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:813
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr "원본 정리 요청됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:724
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:801
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr "원본 준비됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:810
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "원본 복원됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:851
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr "원본 사용 불가"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:278
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:457
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "오래되었거나 알 수 없음"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown report"
 msgstr "오래되었거나 알 수 없는 보고서"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:350
 #, elixir-autogen, elixir-format
 msgid "Start evacuation"
 msgstr "대피 시작"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:447
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "시동 보류"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "상태"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr ""
 "전체 이동에 대해 실행 중인 워크로드를 중지하시겠습니까? 디스크를 복사하고 대상에서 다시 시작하면 가동 중지 시간이 길어질 수 있습니다."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr "중지됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
 msgstr "소스 중지"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:819
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:909
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "성공함"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:815
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:897
 #, elixir-autogen, elixir-format
 msgid "Suspended"
 msgstr "정지된"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:766
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
 msgstr "배치 전환"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:293
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
 msgstr "터미널 프로토콜: %{protocol} · 로컬 스트림: %{state}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:546
 #, elixir-autogen, elixir-format
 msgid "Time"
 msgstr "시간"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:854
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr "전송 처리 중"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "없는"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:822
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:315
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:749
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:871
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:872
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:874
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:917
 #, elixir-autogen, elixir-format
 msgid "Unknown"
 msgstr "알려지지 않은"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:556
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "VM"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:767
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:845
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr "워크로드 변경됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:770
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:848
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr "워크로드가 안정적이지 않음"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:833
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr "워크로드 관측됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:764
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:842
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr "워크로드 해결됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "%{attempt} 시도"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "운동"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:367
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "활성화됨"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:400
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "제외된"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:563
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "직업"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:558
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "이동하다"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:318
 #, elixir-autogen, elixir-format
 msgid "ready"
 msgstr "준비가 된"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "unavailable"
 msgstr "없는"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:373
 #, elixir-autogen, elixir-format
 msgid "unknown"
 msgstr "알려지지 않은"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
 #, elixir-autogen, elixir-format
 msgid "yes"
 msgstr "예"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· 다운타임 승인 필요"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:709
 #, elixir-autogen, elixir-format
 msgid "← First page"
 msgstr "← 첫 페이지"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
 #, elixir-autogen, elixir-format
 msgid "← Nodes"
 msgstr "← 노드"

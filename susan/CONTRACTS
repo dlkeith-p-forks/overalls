@@ -1,0 +1,30 @@
+@cc [owner:ghuntley,label:privacy;security] susan-content-free-relay
+Susan relays only an opaque end-to-end ciphertext, a collapse id and a closed
+notification kind. It MUST NOT receive, derive or store message content,
+terminal bytes, routes or Marshall identifiers beyond the delivery id used for
+dedupe. Provider payloads carry only the ciphertext, collapse id and
+localization keys chosen from the kind.
+
+@cc [owner:ghuntley,label:privacy] susan-no-addresses-or-tokens-at-rest
+Provider tokens exist only inside AEAD-sealed push keys held by Marshall.
+Susan MUST NOT persist or log provider tokens, push-key envelopes, ciphertext,
+install public keys or source addresses. Source addresses are reduced in memory
+to an HMAC under a daily random salt; the negative cache stores only a keyed
+token digest.
+
+@cc [owner:ghuntley,label:security] susan-audit-append-only
+Audit entries are append-only in PostgreSQL (trigger plus REVOKE), hash
+chained through prev_digest and pruned only by the audited 90-day retention
+job. Operators read, verify and export the trail only through bin/susan rpc;
+there is no network admin surface.
+
+@cc [owner:ghuntley,label:security] susan-fixed-provider-egress
+Outbound HTTP MUST go only to the fixed APNs, Google OAuth and FCM origins with
+verify_peer TLS against the system trust store. Configuration cannot add an
+origin; service accounts naming any other token endpoint are refused.
+
+@cc [owner:ghuntley,label:security] susan-runtime-secret-custody
+Secrets arrive only as files in $CREDENTIALS_DIRECTORY (systemd credentials
+from the overallsSecrets bundle, or a container secrets mount). Every file
+passes the canonical-path, ancestor, single-link, ownership and mode checks;
+any failure is the single fixed startup error without contents or paths.

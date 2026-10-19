@@ -31,6 +31,9 @@ defmodule OverallsProtocol.Terminal do
           | :creation_status
           | :creation_cancel
           | :creation_cancelled
+          | :android_display_open
+          | :android_display_opened
+          | :android_display_close
   @type control_frame :: %{channel: 0, message: control_message()}
   @type control_message ::
           %{type: :users, vm_id: uuid(), placement_id: uuid(), execution_epoch: pos_integer()}
@@ -64,6 +67,24 @@ defmodule OverallsProtocol.Terminal do
               guest_session_id: pos_integer() | nil
             }
           | %{type: :creation_cancelled, request_id: uuid(), ok: boolean()}
+          | %{
+              type: :android_display_open,
+              vm_id: uuid(),
+              placement_id: uuid(),
+              execution_epoch: pos_integer(),
+              generation: pos_integer(),
+              mode: :viewer | :controller,
+              ticket: String.t(),
+              channel: pos_integer()
+            }
+          | %{
+              type: :android_display_opened,
+              channel: pos_integer(),
+              generation: pos_integer(),
+              ok: boolean(),
+              reason: :display_unavailable | :fenced | :controller_busy | nil
+            }
+          | %{type: :android_display_close, channel: pos_integer()}
           | %{
               type: :hello,
               host_id: uuid(),
@@ -359,6 +380,41 @@ defmodule OverallsProtocol.Terminal do
          do: {:ok, Map.put(result, :type, :creation_cancelled)}
   end
 
+  defp control(value, "android_display_open") do
+    with {:ok, result} <-
+           object(value,
+             vm_id: :uuid,
+             placement_id: :uuid,
+             execution_epoch: :positive,
+             generation: :positive,
+             mode: {:enum, [:viewer, :controller]},
+             ticket: {:string, 1, 4096},
+             channel: :positive
+           ) do
+      {:ok, struct_from(:android_display_open, result)}
+    end
+  end
+
+  defp control(value, "android_display_opened") do
+    with {:ok, result} <-
+           object(value,
+             channel: :positive,
+             generation: :positive,
+             ok: :boolean,
+             reason: {:nullable, {:enum, [:display_unavailable, :fenced, :controller_busy]}}
+           ),
+         true <- coherent_android_opened?(result) do
+      {:ok, struct_from(:android_display_opened, result)}
+    else
+      _ -> {:error, :invalid_message}
+    end
+  end
+
+  defp control(value, "android_display_close") do
+    with {:ok, result} <- object(value, channel: :positive),
+         do: {:ok, struct_from(:android_display_close, result)}
+  end
+
   defp control(value, "create") do
     with {:ok, result} <-
            object(value,
@@ -530,6 +586,10 @@ defmodule OverallsProtocol.Terminal do
   end
 
   defp control(_, _), do: {:error, :invalid_message}
+
+  defp coherent_android_opened?(%{ok: true, reason: nil}), do: true
+  defp coherent_android_opened?(%{ok: false, reason: reason}) when reason != nil, do: true
+  defp coherent_android_opened?(_), do: false
 
   defp user_name(value) when is_binary(value) and byte_size(value) in 1..64 do
     if String.valid?(value) and not String.contains?(value, [<<0>>, "\n", "\r"]),

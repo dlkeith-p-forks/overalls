@@ -18,7 +18,8 @@ the ownership inventory.
 | `Marshall.Access` | Persisted machine grants, grant changes and per-user machine pins. Cedar evaluates current ownership, direct VM sharing, team membership and canonical current-thread grants; a cached permission cannot authorize a later mutation. A pin confers no authority; the owner's pin is read by the lifecycle coordinator as a deletion fence (ADR-0193). |
 | `Marshall.Administration` | Administrative job snapshots, retries and audit projections. Read access and elevated administrative mutations have separate checks. |
 | `Marshall.Agents` | Agent roots, threads, turns, events, commands, model calls and executor leases. Active context snapshots/checkpoints, planning questions/proposals and managed skill configuration extend this same authority under ADR-0178/0179. ToolMaintenance owns desired public tool generations and executor-fenced installation receipts independently of conversations. Persisted leases and current authority fence execution. |
-| `Marshall.Threads` | User-level objectives, titles, modes, durable provisioning, canonical sharing grants and immutable sharing results. The current thread-to-VM binding contributes grants to machine authority; the coordinator delegates admission, execution and teardown to the existing domains. |
+| `Marshall.Threads` | User-level objectives, titles, modes, durable provisioning, canonical sharing grants, immutable sharing results and per-reader monotonic transcript read markers. The current thread-to-VM binding contributes grants to machine authority; the coordinator delegates admission, execution and teardown to the existing domains. |
+| `Marshall.Notifications` | Mila push devices bound to the registering SSH key, needs-input deliveries and the per-install Ed25519 identity. It reads SSH keys, accounts and agent threads but never writes them; SSH key archive and account retirement call its revocation functions inside their own transactions. Susan is an external relay it reaches only at the compiled origin. |
 | `Marshall.Compute` | Host enrollment, pools, reservations, VM intent, placements, operation receipts and lifecycle workflows. The ledger owns admission and durable execution authority, including immutable source2 provider/namespace/revision `WorkspaceSource` references pinned in provision/start commands. Current manifest4 image identity/capability gates source admission and new source-bearing command snapshots, including retained starts; the signed pending browser cookie owns no domain authority. |
 | `Marshall.Editor` | Personal browser Login, Credential and Lease authority. Current stored login/write, permanent account and exact execution/release locks hold through the outer ledger commit; generic web/DNS visibility cannot authorize the editor. |
 | `Marshall.Enrico` | Repository registration, refresh state and audit. The Enrico service holds the quota-bound mirror cache; the domain holds control-plane intent. |
@@ -31,6 +32,8 @@ the ownership inventory.
 | `Marshall.Teams` | Teams, membership and resource transfers. Mutations enter Compute's ledger commit scope so authority changes share its transaction boundary. |
 | `Marshall.Terminal` | Grants, locations, openings, sessions, events and tickets. Exclusive writer leases and current execution fences govern terminal access. |
 | `Lilly.Lifecycle` | OS-locked execution, dataset, snapshot, import, same-pool clone-copy, resize, trust, workspace-source delivery, provisioning, template and permit journals. Provisioning progress records readiness without granting launch or cleanup authority. A clone-copy journal (ADR-0145) binds a same-pool clone destination to its verified source snapshot and its own ordinary claim; it grants neither execution authority nor capacity credit. Host-local physical ownership does not depend on PostgreSQL availability. |
+| `Susan.Relay` | Susan's install identities (`unknown → trusted → rate_limited → blocked`), key-id deny-list, keyed-digest negative cache for unregistered provider tokens and per-install delivery receipts. Authority comes only from a push key Susan can open plus a valid install signature; no Marshall or Mila account exists here. |
+| `Susan.Audit` | Append-only, hash-chained audit entries with closed action and reason enums. The database refuses UPDATE/TRUNCATE and permits DELETE only to the audited 90-day prune; operators read and export through `bin/susan rpc`. |
 
 ## Authority and interactions
 
@@ -63,6 +66,25 @@ domains share PostgreSQL and may compose actions in one transaction. For example
 [Compute.Ledger](repo:marshall/lib/marshall/compute/ledger.ex).
 [Authorization](repo:marshall/lib/marshall/authorization/cedar.ex) checks current facts;
 process identity or a domain name alone grants no permission.
+
+```mermaid
+flowchart LR
+  Planning[Agents planning commit] -->|after outer commit| Notify[Marshall.Notifications]
+  Accounts[Accounts and SSH revocation] -->|same transaction| Notify
+  Access[Current machine and thread write authority] -->|recipient selection| Notify
+  Notify -->|sealed poke and install signature| Relay[Susan.Relay]
+  Relay -->|closed audit facts| Audit[Susan.Audit]
+  Relay -->|content-free provider payload| Provider[APNs and FCM]
+```
+
+Notifications shares Marshall's PostgreSQL authority; Susan has its own database
+and never authorizes Marshall actions. Revocation owns device state changes in
+the revoking transaction, while planning publishes notification work only after
+its outer commit. Historical fake-relay and provider-fixture runs retain the
+scope in their [notifications](repo:docs/architecture/reviews/2026-10-18-mila-notifications.md)
+and [Susan](repo:docs/architecture/reviews/2026-10-19-susan-push-relay.md) reviews.
+They do not establish real APNs/FCM delivery, device decryption or acceptance of
+the latest merged source.
 
 `Marshall.Threads` is a user-facing orchestration boundary above
 `Marshall.Compute` and `Marshall.Agents`. A pending thread is durable before its
@@ -146,11 +168,19 @@ flowchart LR
   app --> d8["Marshall.GitHub"]
   app --> d9["Marshall.Inference"]
   app --> d10["Marshall.Ingress"]
-  app --> d11["Marshall.Peach"]
-  app --> d12["Marshall.SSH"]
-  app --> d13["Marshall.Teams"]
-  app --> d14["Marshall.Terminal"]
-  app --> d15["Marshall.Threads"]
+  app --> d11["Marshall.Notifications"]
+  app --> d12["Marshall.Peach"]
+  app --> d13["Marshall.SSH"]
+  app --> d14["Marshall.Teams"]
+  app --> d15["Marshall.Terminal"]
+  app --> d16["Marshall.Threads"]
+```
+
+```mermaid
+flowchart LR
+  app["Susan application"]
+  app --> d0["Susan.Audit"]
+  app --> d1["Susan.Relay"]
 ```
 
 | Ash domain | Declared resources |
@@ -167,11 +197,14 @@ flowchart LR
 | [`Marshall.GitHub`](repo:marshall/lib/marshall/github.ex) | `Marshall.GitHub.AuditEvent`, `Marshall.GitHub.AuthorizationAttempt`, `Marshall.GitHub.Connection`, `Marshall.GitHub.Exclusion`, `Marshall.GitHub.RefreshAttempt`, `Marshall.GitHub.RequestLease`, `Marshall.GitHub.RestoreEpoch` |
 | [`Marshall.Inference`](repo:marshall/lib/marshall/inference.ex) | `Marshall.Inference.Credential`, `Marshall.Inference.Daily`, `Marshall.Inference.Request` |
 | [`Marshall.Ingress`](repo:marshall/lib/marshall/ingress.ex) | `Marshall.Ingress.EditorAssetsReceipt`, `Marshall.Ingress.Endpoint`, `Marshall.Ingress.Environment`, `Marshall.Ingress.EnvironmentPublication`, `Marshall.Ingress.EnvironmentStream`, `Marshall.Ingress.FleetCertificate`, `Marshall.Ingress.FleetCertificateAccount`, `Marshall.Ingress.FleetCertificateInstallation`, `Marshall.Ingress.Publication`, `Marshall.Ingress.Relay`, `Marshall.Ingress.Route`, `Marshall.Ingress.Service`, `Marshall.Ingress.Session`, `Marshall.Ingress.WebCredential`, `Marshall.Ingress.WebLogin`, `Marshall.Ingress.WebStream` |
+| [`Marshall.Notifications`](repo:marshall/lib/marshall/notifications.ex) | `Delivery`, `Device`, `Marshall.Notifications.InstallIdentity` |
 | [`Marshall.Peach`](repo:marshall/lib/marshall/peach.ex) | `Marshall.Peach.Credential`, `Marshall.Peach.Credential.Version` |
 | [`Marshall.SSH`](repo:marshall/lib/marshall/ssh.ex) | `Marshall.SSH.Approval`, `Marshall.SSH.Gateway`, `Marshall.SSH.GuestLogin`, `Marshall.SSH.HostCertificate`, `Marshall.SSH.Key`, `Marshall.SSH.Request`, `Marshall.SSH.Session` |
 | [`Marshall.Teams`](repo:marshall/lib/marshall/teams.ex) | `Marshall.Teams.Team`, `Marshall.Teams.TeamMember`, `Marshall.Teams.Transfer` |
 | [`Marshall.Terminal`](repo:marshall/lib/marshall/terminal.ex) | `Marshall.Terminal.Event`, `Marshall.Terminal.Grant`, `Marshall.Terminal.Location`, `Marshall.Terminal.Opening`, `Marshall.Terminal.Session`, `Marshall.Terminal.Ticket` |
-| [`Marshall.Threads`](repo:marshall/lib/marshall/threads.ex) | `Marshall.Threads.AccessChange`, `Marshall.Threads.Generation`, `Marshall.Threads.Grant`, `Marshall.Threads.Thread` |
+| [`Marshall.Threads`](repo:marshall/lib/marshall/threads.ex) | `Marshall.Threads.AccessChange`, `Marshall.Threads.Generation`, `Marshall.Threads.Grant`, `Marshall.Threads.ReadMarker`, `Marshall.Threads.Thread` |
+| [`Susan.Audit`](repo:susan/lib/susan/audit.ex) | `Susan.Audit.AuditEntry` |
+| [`Susan.Relay`](repo:susan/lib/susan/relay.ex) | `Susan.Relay.DeliveryReceipt`, `Susan.Relay.InstallIdentity`, `Susan.Relay.KeyDenial`, `Susan.Relay.UnregisteredToken` |
 <!-- hldd:view:end -->
 
 ## Verification and gaps

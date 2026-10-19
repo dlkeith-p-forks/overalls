@@ -67,6 +67,44 @@ defmodule Porsche.SSH.CommandMessages do
                 "Resume preserved memory, waiting for capacity or relocation."
               )
   @message_40 dgettext_noop("help", "Resume a suspended machine's preserved memory.")
+  @message_41 dgettext_noop("help", "List agent threads you can read, with unread counts.")
+  @message_42 dgettext_noop("help", "Inspect a thread, its pending question and latest plan.")
+  @message_43 dgettext_noop("help", "List a thread's transcript events after a sequence number.")
+  @message_44 dgettext_noop("help", "Send a prompt read from standard input to a thread.")
+  @message_45 dgettext_noop(
+                "help",
+                "Answer a thread's pending question with JSON read from standard input."
+              )
+  @message_46 dgettext_noop("help", "Approve a thread's latest plan and start implementing it.")
+  @message_47 dgettext_noop(
+                "help",
+                "Ask for a revised plan, reading the feedback from standard input."
+              )
+  @message_48 dgettext_noop("help", "Switch a thread between plan and work collaboration.")
+  @message_49 dgettext_noop("help", "Mark a thread read up to a transcript sequence number.")
+  @message_50 dgettext_noop("help", "List a machine's terminal sessions you can open.")
+  @message_51 dgettext_noop("help", "Open your personal terminal session on a machine.")
+  @message_52 dgettext_noop("help", "Close one of your terminal sessions on a machine.")
+  @message_53 dgettext_noop("help", "Show a machine's web endpoint, port and visibility.")
+  @message_54 dgettext_noop(
+                "help",
+                "Change a machine's web port or visibility, optionally at an expected revision."
+              )
+  @message_55 dgettext_noop(
+                "help",
+                "Stream JSON change notices for machines, threads and this session."
+              )
+  @message_56 dgettext_noop(
+                "help",
+                "Register this device for push notifications. The push key is read from stdin."
+              )
+  @message_57 dgettext_noop("help", "List your push notification devices.")
+  @message_58 dgettext_noop("help", "Revoke a push notification device.")
+  @message_59 dgettext_noop("help", "Turn push notifications on or off for one device.")
+  @message_terminal_attach dgettext_noop(
+                             "help",
+                             "Attach this SSH terminal to a shared terminal session; needs ssh -t."
+                           )
 
   @spec sources() :: [String.t()]
   def sources,
@@ -111,6 +149,26 @@ defmodule Porsche.SSH.CommandMessages do
       @message_37,
       @message_38,
       @message_39,
-      @message_40
+      @message_40,
+      @message_41,
+      @message_42,
+      @message_43,
+      @message_44,
+      @message_45,
+      @message_46,
+      @message_47,
+      @message_48,
+      @message_49,
+      @message_50,
+      @message_51,
+      @message_52,
+      @message_53,
+      @message_54,
+      @message_55,
+      @message_56,
+      @message_57,
+      @message_58,
+      @message_59,
+      @message_terminal_attach
     ]
 end

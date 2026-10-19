@@ -1,0 +1,3 @@
+/* Generated from mila/app/lib/l10n/app_mr.arb (pushNeedsInputTitle, pushNeedsInputBody). */
+"MILA_NEEDS_INPUT_TITLE" = "एका एजंटला तुमच्या इनपुटची गरज आहे";
+"MILA_NEEDS_INPUT_BODY" = "उत्तर देण्यासाठी Mila उघडा.";

@@ -362,18 +362,27 @@ defmodule Marshall.Terminal.Authority do
     end
   end
 
-  @spec ticket(Terminal.Session.t(), map()) :: {:ok, String.t()} | {:error, atom()}
-  def ticket(session, actor) do
+  @type ticket_option :: {:read_only, boolean()} | {:ssh_session_id, String.t()}
+
+  # @cc [owner:ghuntley,label:security] terminal-ticket-mode-never-escalates
+  # A ticket is writable only for the owner with current Cedar write and no
+  # read-only request; `read_only: true` always yields a read-only ticket. An
+  # SSH ticket (ADR-0223) is additionally bound to the issuing SSH session.
+  @spec ticket(Terminal.Session.t(), map(), [ticket_option()]) ::
+          {:ok, String.t()} | {:error, atom()}
+  def ticket(session, actor, options \\ []) do
     with {:ok, session} <- session_for(session.id, actor, :connect),
          {:ok, vm} <- live_vm(session.vm_id, actor, "read"),
          true <- current_session?(session, vm) || {:error, :unknown_session},
          {:ok, host} <- capability(vm),
          true <- Marshall.Terminal.Relay.ready?(host.id) || {:error, :terminal_unavailable},
          {:ok, writable} <- authorized_mode(vm, actor) do
-      if session.owner_id == actor.id and writable do
-        Marshall.Terminal.Tickets.issue(session.id, actor.id, :rw)
+      ssh_session_id = Keyword.get(options, :ssh_session_id)
+
+      if session.owner_id == actor.id and writable and not Keyword.get(options, :read_only, false) do
+        Marshall.Terminal.Tickets.issue(session.id, actor.id, :rw, ssh_session_id)
       else
-        Marshall.Terminal.Tickets.issue(session.id, actor.id, :ro)
+        Marshall.Terminal.Tickets.issue(session.id, actor.id, :ro, ssh_session_id)
       end
     end
   end

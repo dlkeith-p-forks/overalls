@@ -7,10 +7,7 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:64
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"\n"
-"Keep this SSH connection open while approving the key.\n"
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr ""
 "\n"
 "\n"
@@ -18,19 +15,14 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:81
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open an interactive Porsche connection without a remote command:"
+msgid "\nOpen an interactive Porsche connection without a remote command:"
 msgstr ""
 "\n"
 "Откройте интерактивное соединение Porsche без удалённой команды:"
 
 #: lib/porsche/ssh/onboarding.ex:59
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open this link, sign in, and approve the matching fingerprint:\n"
-"  "
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
 msgstr ""
 "\n"
 "Откройте эту ссылку, войдите и подтвердите соответствующий отпечаток:\n"
@@ -48,9 +40,7 @@ msgstr "После подтверждения повторите команду 
 
 #: lib/porsche/ssh/onboarding.ex:65
 #, elixir-autogen, elixir-format
-msgid ""
-"Approval links expire after %{minutes} minutes or when this connection "
-"closes.\n"
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
 msgstr ""
 "Ссылки подтверждения действуют %{minutes} минут или до закрытия этого "
 "соединения.\n"
@@ -69,18 +59,14 @@ msgstr "Не закрывайте это соединение, пока подт
 
 #: lib/porsche/ssh/onboarding.ex:129
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your SSH key in Overalls Account settings > SSH keys.\n"
-"\n"
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
 msgstr ""
 "Зарегистрируйте или проверьте свой SSH-ключ в настройках учётной записи Overalls > SSH-ключи.\n"
 "\n"
 
 #: lib/porsche/ssh/onboarding.ex:124
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your key by connecting to:\n"
-"  ssh "
+msgid "Register or check your key by connecting to:\n  ssh "
 msgstr ""
 "Зарегистрируйте или проверьте свой ключ, подключившись к:\n"
 "  ssh "

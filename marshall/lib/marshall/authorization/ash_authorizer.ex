@@ -93,6 +93,7 @@ defmodule Marshall.Authorization.AshAuthorizer do
     Marshall.Threads.Grant.Version => [:read, :create],
     Marshall.Threads.AccessChange => [:read, :record],
     Marshall.Threads.Generation => [:read, :open, :bind, :state],
+    Marshall.Threads.ReadMarker => [:read, :record, :advance],
     Marshall.Compute.WakeRequest => [:read, :request, :advance],
     Marshall.Compute.WakeRequestKey => [:read, :record],
     Marshall.Compute.LifecycleEvent => [:read, :record, :expire],
@@ -319,11 +320,38 @@ defmodule Marshall.Authorization.AshAuthorizer do
       :prune,
       :open_session,
       :session_status,
-      :close_session
+      :close_session,
+      :watch_subscribe
     ],
     Marshall.SSH.Approval => [:read, :record, :consume, :purge],
     Marshall.SSH.Key => [:read, :history, :register, :relabel, :revoke],
     Marshall.SSH.Key.Version => [:read, :create],
+    Marshall.Notifications.Device => [
+      :read,
+      :history,
+      :register,
+      :activate,
+      :refresh,
+      :set_preference,
+      :invalidate,
+      :revoke
+    ],
+    Marshall.Notifications.Device.Version => [:read, :create],
+    Marshall.Notifications.Delivery => [
+      :read,
+      :history,
+      :enqueue,
+      :record_coalesced,
+      :begin_send,
+      :deliver,
+      :retry_later,
+      :fail_permanent,
+      :drop,
+      :prune,
+      :reconcile
+    ],
+    Marshall.Notifications.Delivery.Version => [:read, :create],
+    Marshall.Notifications.InstallIdentity => [:read, :generate],
     Marshall.Accounts.AuthEmail => [:read, :enqueue, :deliver, :purge],
     Marshall.Terminal.Event => [:read, :record, :recent],
     Marshall.Terminal.Grant => [:read, :history, :grant, :revoke, :archive],
@@ -609,6 +637,13 @@ defmodule Marshall.Authorization.AshAuthorizer do
                       :rename_for_user,
                       :remove_for_user
                     ]) or
+                 (state.resource == Marshall.Notifications.Device and
+                    state.action in [
+                      :register_for_user,
+                      :list_for_user,
+                      :remove_for_user,
+                      :set_preference_for_user
+                    ]) or
                  (state.resource == Marshall.Compute.VirtualMachine and
                     state.action in [
                       :clone,
@@ -636,6 +671,7 @@ defmodule Marshall.Authorization.AshAuthorizer do
                     state.action in [:pin_machine, :unpin_machine]) or
                  (state.resource == Marshall.Threads.Grant and
                     state.action in [:set_access, :list_grants]) or
+                 (state.resource == Marshall.Threads.ReadMarker and state.action == :mark_read) or
                  (state.resource == Marshall.Galileo.Integration and
                     state.action in [
                       :configure,

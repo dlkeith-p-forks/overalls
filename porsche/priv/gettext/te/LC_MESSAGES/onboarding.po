@@ -7,10 +7,7 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:64
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"\n"
-"Keep this SSH connection open while approving the key.\n"
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr ""
 "\n"
 "\n"
@@ -18,19 +15,14 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:81
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open an interactive Porsche connection without a remote command:"
+msgid "\nOpen an interactive Porsche connection without a remote command:"
 msgstr ""
 "\n"
 "రిమోట్ ఆదేశం లేకుండా పరస్పర Porsche కనెక్షన్‌ను తెరవండి:"
 
 #: lib/porsche/ssh/onboarding.ex:59
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open this link, sign in, and approve the matching fingerprint:\n"
-"  "
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
 msgstr ""
 "\n"
 "ఈ లింక్ తెరిచి, సైన్ ఇన్ చేసి, సరిపోలే వేలిముద్రను ఆమోదించండి:\n"
@@ -38,10 +30,7 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:126
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Or manage your keys at:\n"
-"  "
+msgid "\nOr manage your keys at:\n  "
 msgstr ""
 "\n"
 "లేదా మీ కీలను ఇక్కడ నిర్వహించండి:\n"
@@ -54,9 +43,7 @@ msgstr "ఆమోదం తర్వాత మీ ఆదేశాన్ని �
 
 #: lib/porsche/ssh/onboarding.ex:65
 #, elixir-autogen, elixir-format
-msgid ""
-"Approval links expire after %{minutes} minutes or when this connection "
-"closes.\n"
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
 msgstr ""
 "ఆమోద లింక్‌లు %{minutes} నిమిషాల తర్వాత లేదా ఈ కనెక్షన్ మూసినప్పుడు గడువు "
 "ముగుస్తాయి.\n"
@@ -73,56 +60,42 @@ msgstr "బ్రౌజర్‌లో మీ కీని ఆమోదిస్
 
 #: lib/porsche/ssh/onboarding.ex:129
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your SSH key in Overalls Account settings > SSH keys.\n"
-"\n"
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
 msgstr ""
 "Overalls ఖాతా సెట్టింగ్‌లు > SSH కీలలో మీ SSH కీని నమోదు చేయండి లేదా తనిఖీ చేయండి.\n"
 "\n"
 
 #: lib/porsche/ssh/onboarding.ex:124
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your key by connecting to:\n"
-"  ssh "
+msgid "Register or check your key by connecting to:\n  ssh "
 msgstr ""
 "ఇక్కడ కనెక్ట్ చేసి మీ కీని నమోదు చేయండి లేదా తనిఖీ చేయండి:\n"
 "  ssh "
 
 #: lib/porsche/ssh/onboarding.ex:113
 #, elixir-autogen, elixir-format
-msgid ""
-"This SSH connection could not be authorized. Check your machine access and try again.\n"
-"\n"
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
 msgstr ""
 "ఈ SSH కనెక్షన్‌కు అధికారం ఇవ్వలేకపోయాము. మీ మెషీన్ యాక్సెస్‌ను తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.\n"
 "\n"
 
 #: lib/porsche/ssh/onboarding.ex:107
 #, elixir-autogen, elixir-format
-msgid ""
-"We couldn't verify this SSH key right now. Please try again shortly.\n"
-"\n"
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
 msgstr ""
 "ప్రస్తుతం ఈ SSH కీని ధృవీకరించలేకపోయాము. దయచేసి కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.\n"
 "\n"
 
 #: lib/porsche/ssh/onboarding.ex:54
 #, elixir-autogen, elixir-format
-msgid ""
-"We don't recognize this SSH key:\n"
-"  "
+msgid "We don't recognize this SSH key:\n  "
 msgstr ""
 "ఈ SSH కీ మాకు తెలియదు:\n"
 "  "
 
 #: lib/porsche/ssh/onboarding.ex:95
 #, elixir-autogen, elixir-format
-msgid ""
-"Welcome to Overalls.\n"
-"\n"
-"This connection needs the Overalls SSH configuration.\n"
-"\n"
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
 msgstr ""
 "Overallsకు స్వాగతం.\n"
 "\n"

@@ -2,7 +2,7 @@ defmodule OverallsProtocol.SSHCommand do
   @moduledoc "Porsche v1 command catalog and bounded, shell-independent parser."
   @maximum 8192
   @commands %{
-    "help" => {0, 2, [], "help [COMMAND]", "Show command help."},
+    "help" => {0, 3, [], "help [COMMAND]", "Show command help."},
     "whoami" => {0, 0, [], "whoami", "Show the authenticated account."},
     "images" => {0, 0, [], "images", "List available images."},
     "ls" => {0, 0, ["after"], "ls [--after CURSOR]", "List machines you can access."},
@@ -88,7 +88,62 @@ defmodule OverallsProtocol.SSHCommand do
       {1, 1, [], "team transfer cancel TRANSFER_ID", "Cancel your pending ownership offer."},
     "request show" =>
       {1, 1, [], "request show REQUEST_ID", "Inspect a previously accepted request."},
-    "exit" => {0, 0, [], "exit", "Close this interactive channel."}
+    "thread ls" =>
+      {0, 0, ["machine", "after"], "thread ls [--machine MACHINE] [--after CURSOR]",
+       "List agent threads you can read, with unread counts."},
+    "thread show" =>
+      {1, 1, [], "thread show THREAD", "Inspect a thread, its pending question and latest plan."},
+    "thread turns" =>
+      {1, 1, ["after"], "thread turns THREAD [--after SEQUENCE]",
+       "List a thread's transcript events after a sequence number."},
+    "thread prompt" =>
+      {2, 2, [], "thread prompt THREAD -", "Send a prompt read from standard input to a thread."},
+    "thread answer" =>
+      {3, 3, [], "thread answer THREAD QUESTION -",
+       "Answer a thread's pending question with JSON read from standard input."},
+    "thread plan approve" =>
+      {2, 2, [], "thread plan approve THREAD PLAN",
+       "Approve a thread's latest plan and start implementing it."},
+    "thread plan revise" =>
+      {3, 3, [], "thread plan revise THREAD PLAN -",
+       "Ask for a revised plan, reading the feedback from standard input."},
+    "thread mode" =>
+      {2, 2, [], "thread mode THREAD plan|work",
+       "Switch a thread between plan and work collaboration."},
+    "thread read" =>
+      {2, 2, [], "thread read THREAD SEQUENCE",
+       "Mark a thread read up to a transcript sequence number."},
+    "terminal ls" =>
+      {1, 1, [], "terminal ls MACHINE", "List a machine's terminal sessions you can open."},
+    "terminal new" =>
+      {1, 1, [], "terminal new MACHINE", "Open your personal terminal session on a machine."},
+    "terminal kill" =>
+      {2, 2, [], "terminal kill MACHINE SESSION",
+       "Close one of your terminal sessions on a machine."},
+    "web show" =>
+      {1, 1, [], "web show MACHINE", "Show a machine's web endpoint, port and visibility."},
+    "web set" =>
+      {1, 1, ["port", "public", "private", "revision"],
+       "web set MACHINE [--port N] [--public|--private] [--revision R]",
+       "Change a machine's web port or visibility, optionally at an expected revision."},
+    "watch" =>
+      {0, 0, ["machine", "thread", "session"],
+       "watch [--machine MACHINE]... [--thread THREAD]... [--session]",
+       "Stream JSON change notices for machines, threads and this session."},
+    "device register" =>
+      {0, 0, ["platform", "push-key", "enc-pubkey", "label"],
+       "device register --platform ios|android --push-key - --enc-pubkey KEY [--label LABEL]",
+       "Register this device for push notifications. The push key is read from stdin."},
+    "device ls" => {0, 0, [], "device ls", "List your push notification devices."},
+    "device rm" => {1, 1, [], "device rm DEVICE_ID", "Revoke a push notification device."},
+    "device prefs" =>
+      {1, 1, ["enabled"], "device prefs DEVICE_ID --enabled true|false",
+       "Turn push notifications on or off for one device."},
+    "exit" => {0, 0, [], "exit", "Close this interactive channel."},
+    "terminal attach" =>
+      {2, 2, ["cursor", "read-only"],
+       "terminal attach MACHINE SESSION [--cursor N] [--read-only]",
+       "Attach this SSH terminal to a shared terminal session; needs ssh -t."}
   }
   @physical [
     "new",
@@ -123,14 +178,41 @@ defmodule OverallsProtocol.SSHCommand do
                  "team transfer offer",
                  "team transfer accept",
                  "team transfer decline",
-                 "team transfer cancel"
+                 "team transfer cancel",
+                 "device register",
+                 "device rm",
+                 "device prefs",
+                 "thread prompt",
+                 "thread answer",
+                 "thread plan approve",
+                 "thread plan revise",
+                 "thread mode",
+                 "thread read",
+                 "terminal new",
+                 "terminal kill",
+                 "web set"
                ]
   # @cc [owner:ghuntley,label:protocol] ssh-peer-flag-no-value
   # The advertised integration --peer flag MUST parse without consuming the
   # next argument. Boolean parsing MUST NOT permit flags outside a command's catalog.
-  @booleans ["json", "no-wait", "peer"]
+  @booleans ["json", "no-wait", "peer", "public", "private", "read-only", "session"]
+  # Options that may repeat; a repeated value collects into a list.
+  @repeatable ["header", "machine", "thread"]
+  # @cc [owner:ghuntley,label:security;capacity] ssh-command-stdin-payload-bounded
+  # Prompt, answer and plan-revision text MUST arrive on stdin (the final `-`
+  # argument), at most 64 KiB of valid UTF-8 without NUL, and only through
+  # put_stdin_payload/2. A command line MUST NOT carry the payload option itself.
+  @payloads %{
+    "thread prompt" => {:prompt, 65_536},
+    "thread answer" => {:answers, 65_536},
+    "thread plan revise" => {:revision, 65_536}
+  }
+  @secret_limit 4098
+  # Watch filters stay small: each names one subscription.
+  @watch_filters 16
   @type t :: %{version: 1, command: binary(), arguments: [binary()], options: map()}
   @type error :: :invalid_command | :command_too_large
+  @type payload_kind :: :secret | :prompt | :answers | :revision
 
   @spec catalog() :: [map()]
   def catalog do
@@ -141,7 +223,7 @@ defmodule OverallsProtocol.SSHCommand do
         name: name,
         usage: usage,
         summary: summary,
-        options: options(name),
+        options: options(name) -- ["stdin"],
         mutation: name in @mutations
       }
     end)
@@ -164,7 +246,8 @@ defmodule OverallsProtocol.SSHCommand do
          false <- String.contains?(text, [<<0>>, "\n", "\r"]),
          {:ok, tokens} <- lex(text, :plain, false, [], [], false),
          {:ok, name, rest} <- command(tokens),
-         {:ok, arguments, options} <- arguments(rest, [], %{}, false) do
+         {:ok, arguments, options} <- arguments(rest, [], %{}, false),
+         false <- Map.has_key?(options, "stdin") do
       validate(%{
         "version" => 1,
         "command" => name,
@@ -177,6 +260,53 @@ defmodule OverallsProtocol.SSHCommand do
   end
 
   def parse(_), do: {:error, :invalid_command}
+
+  @doc """
+  Formats a validated command as one canonical line that `parse/1` reads back
+  to the same command (Mila's encoder uses the same quoting). A command whose
+  stdin payload is already supplied has no line form.
+  """
+  @spec format(t()) :: {:ok, binary()} | {:error, error()}
+  def format(%{options: %{"stdin" => _}}), do: {:error, :invalid_command}
+
+  def format(%{version: 1, command: name, arguments: args, options: opts} = command)
+      when is_binary(name) and is_list(args) and is_map(opts) do
+    with {:ok, ^command} <-
+           validate(%{"version" => 1, "command" => name, "arguments" => args, "options" => opts}) do
+      flags =
+        opts
+        |> Enum.sort()
+        |> Enum.flat_map(fn
+          {key, true} ->
+            ["--" <> key]
+
+          {key, values} when is_list(values) ->
+            Enum.map(values, &("--" <> key <> "=" <> quote_token(&1)))
+
+          {key, value} ->
+            ["--" <> key <> "=" <> quote_token(value)]
+        end)
+
+      separator = if Enum.any?(args, &String.starts_with?(&1, "--")), do: ["--"], else: []
+      tokens = String.split(name, " ") ++ flags ++ separator ++ Enum.map(args, &quote_token/1)
+      line = Enum.join(tokens, " ")
+
+      if length(tokens) <= 32 and byte_size(line) <= @maximum,
+        do: {:ok, line},
+        else: {:error, :command_too_large}
+    else
+      _ -> {:error, :invalid_command}
+    end
+  end
+
+  def format(_), do: {:error, :invalid_command}
+
+  @spec quote_token(binary()) :: binary()
+  defp quote_token(token) do
+    if Regex.match?(~r/\A[A-Za-z0-9@%+=:,.\/_-]+\z/, token),
+      do: token,
+      else: "'" <> String.replace(token, "'", "'\\''") <> "'"
+  end
 
   # @cc [owner:ghuntley,label:protocol] ssh-command-closed-version
   # Gateway wire commands MUST use the exact v1 envelope, finite command/option
@@ -195,7 +325,7 @@ defmodule OverallsProtocol.SSHCommand do
          true <- map_size(opts) <= 12,
          true <-
            Enum.all?(Map.to_list(opts), fn {key, value} ->
-             key in options(name) and option?(key, value)
+             key in options(name) and command_option?(name, key, value)
            end),
          true <- command_options_valid?(name, opts),
          true <- arguments_valid?(name, args) do
@@ -221,6 +351,7 @@ defmodule OverallsProtocol.SSHCommand do
     {_, _, extra, _, _} = Map.fetch!(@commands, name)
 
     ["json" | extra] ++
+      if(Map.has_key?(@payloads, name), do: ["stdin"], else: []) ++
       if(name in @mutations, do: ["request-id"], else: []) ++
       if(name in @physical, do: ["timeout", "no-wait"], else: [])
   end
@@ -228,8 +359,20 @@ defmodule OverallsProtocol.SSHCommand do
   defp command(["team", sub, sub2 | rest]) when sub in ["member", "transfer"],
     do: {:ok, "team " <> sub <> " " <> sub2, rest}
 
+  defp command(["thread", "plan", sub | rest]), do: {:ok, "thread plan " <> sub, rest}
+
   defp command([group, sub | rest])
-       when group in ["share", "ssh-key", "request", "integration", "team"],
+       when group in [
+              "share",
+              "ssh-key",
+              "request",
+              "integration",
+              "team",
+              "device",
+              "thread",
+              "terminal",
+              "web"
+            ],
        do: {:ok, group <> " " <> sub, rest}
 
   defp command([name | rest]), do: {:ok, name, rest}
@@ -259,23 +402,48 @@ defmodule OverallsProtocol.SSHCommand do
 
   defp put_option(rest, args, opts, key, value) do
     cond do
-      Map.has_key?(opts, key) and key != "header" ->
+      Map.has_key?(opts, key) and key not in @repeatable ->
         :error
 
-      key == "header" ->
+      key in @repeatable ->
         updated =
           case opts do
-            %{"header" => [_ | _] = previous} -> %{"header" => previous ++ [value]}
-            %{"header" => single} -> %{"header" => [single, value]}
-            _ -> %{"header" => value}
+            %{^key => [_ | _] = previous} -> previous ++ [value]
+            %{^key => single} -> [single, value]
+            _ -> value
           end
 
-        arguments(rest, args, Map.merge(opts, updated), false)
+        arguments(rest, args, Map.put(opts, key, updated), false)
 
       true ->
         arguments(rest, args, Map.put(opts, key, value), false)
     end
   end
+
+  # Option values whose grammar depends on the command; everything else is
+  # validated by the shared per-key grammar below.
+  @spec command_option?(binary(), binary(), term()) :: boolean()
+  defp command_option?("thread turns", "after", value), do: sequence?(value)
+
+  defp command_option?(name, key, value)
+       when name != "watch" and key in ["machine", "thread"] and is_list(value),
+       do: false
+
+  defp command_option?("thread ls", "machine", value), do: machine?(value)
+
+  defp command_option?("watch", key, values)
+       when key in ["machine", "thread"] and is_list(values),
+       do:
+         length(values) <= @watch_filters and
+           Enum.all?(values, &command_option?("watch", key, &1))
+
+  defp command_option?("watch", "machine", value), do: machine?(value)
+  defp command_option?("watch", "thread", value), do: OverallsProtocol.uuid?(value)
+  defp command_option?("web set", "port", value), do: positive?(value, 65_535)
+  defp command_option?("web set", "revision", value), do: positive?(value, 2_147_483_647)
+  defp command_option?(name, "stdin", value), do: stdin_text?(name, value)
+
+  defp command_option?(_name, key, value), do: option?(key, value)
 
   defp option?(key, value) when key in @booleans, do: is_boolean(value)
   defp option?("name", value), do: name?(value)
@@ -324,7 +492,23 @@ defmodule OverallsProtocol.SSHCommand do
   defp option?("source", value),
     do: match?({:ok, _}, OverallsProtocol.WorkspaceSource.parse_url(value))
 
+  # @cc [owner:ghuntley,label:protocol;security] ssh-device-register-options
+  # Device registration MUST name a closed platform and a raw 32-byte X25519
+  # public key, and SHOULD read the Susan push key from stdin (`-`). A literal
+  # push key is accepted only in the opaque Susan key alphabet and bounds.
+  defp option?("platform", value), do: value in ["ios", "android"]
+  defp option?("push-key", "-"), do: true
+  defp option?("push-key", value), do: OverallsProtocol.SusanPoke.push_key?(value)
+  defp option?("enc-pubkey", value), do: device_public_key?(value)
+  defp option?("enabled", value), do: value in ["true", "false"]
+
+  defp option?("label", value) when is_binary(value),
+    do: byte_size(value) in 1..64 and text?(value)
+
+  defp option?("label", _), do: false
+
   defp option?("request-id", value), do: request_id?(value)
+  defp option?("cursor", value), do: cursor?(value)
   defp option?("timeout", value), do: positive?(value, 3600)
 
   # @cc [owner:ghuntley,label:product] ssh-disk-limit
@@ -339,7 +523,42 @@ defmodule OverallsProtocol.SSHCommand do
   defp command_options_valid?("integration add", options),
     do: not (Map.has_key?(options, "bearer") and Map.has_key?(options, "basic"))
 
+  defp command_options_valid?("device register", options),
+    do: Enum.all?(["platform", "push-key", "enc-pubkey"], &Map.has_key?(options, &1))
+
+  defp command_options_valid?("device prefs", options), do: Map.has_key?(options, "enabled")
+
+  # A web change names at least one setting and never both visibilities.
+  defp command_options_valid?("web set", options),
+    do:
+      not (Map.has_key?(options, "public") and Map.has_key?(options, "private")) and
+        Enum.any?(["port", "public", "private"], &Map.has_key?(options, &1))
+
+  defp command_options_valid?("watch", options),
+    do: Enum.any?(["machine", "thread", "session"], &Map.has_key?(options, &1))
+
   defp command_options_valid?(_, _), do: true
+
+  @doc "True for a base64url (unpadded) raw 32-byte X25519 public key."
+  @spec device_public_key?(term()) :: boolean()
+  def device_public_key?(value) when is_binary(value) and byte_size(value) == 43 do
+    case Base.url_decode64(value, padding: false) do
+      {:ok, <<_::binary-size(32)>> = raw} -> Base.url_encode64(raw, padding: false) == value
+      _ -> false
+    end
+  end
+
+  def device_public_key?(_), do: false
+
+  # Transcript sequences start at 1; zero names the position before the first.
+  defp sequence?(value) when is_binary(value) and byte_size(value) in 1..10 do
+    case Integer.parse(value) do
+      {n, ""} -> n >= 0 and n <= 2_147_483_647 and Integer.to_string(n) == value
+      _ -> false
+    end
+  end
+
+  defp sequence?(_), do: false
 
   defp positive?(value, maximum) when is_binary(value) and byte_size(value) in 1..10 do
     case Integer.parse(value) do
@@ -349,6 +568,16 @@ defmodule OverallsProtocol.SSHCommand do
   end
 
   defp positive?(_, _), do: false
+
+  # A replay cursor is a canonical non-negative signed 64-bit byte offset.
+  defp cursor?(value) when is_binary(value) and byte_size(value) in 1..19 do
+    case Integer.parse(value) do
+      {n, ""} -> n >= 0 and n <= 9_223_372_036_854_775_807 and Integer.to_string(n) == value
+      _ -> false
+    end
+  end
+
+  defp cursor?(_), do: false
 
   defp text?(value) when is_binary(value) and byte_size(value) in 1..4096,
     do:
@@ -376,16 +605,92 @@ defmodule OverallsProtocol.SSHCommand do
 
   defp machine?(value), do: name?(value) or OverallsProtocol.uuid?(value)
 
+  # @cc [owner:ghuntley,label:security;protocol] ssh-terminal-attach-not-printed
+  # `terminal attach` is a read that returns a single-use terminal ticket
+  # (ADR-0223). It MUST NOT be a mutation, so its ticket is never pinned in a
+  # receipt, and gateways MUST dispatch it only from a PTY attach channel that
+  # consumes the ticket without printing it.
+  @spec attach?(t()) :: boolean()
+  def attach?(%{command: "terminal attach"}), do: true
+  def attach?(_), do: false
+
   # @cc [owner:ghuntley,label:security;protocol] ssh-command-stdin-secret
-  # Only an integration-add bearer/basic value of `-` may request stdin. Exactly
-  # one marker is allowed, and replacement MUST validate the bounded secret
-  # through the shared integration credential constraint before dispatch.
+  # Only an integration-add bearer/basic value of `-`, or a device-register
+  # push key of `-`, may request a stdin secret. Exactly one marker is allowed,
+  # and replacement MUST validate the bounded secret through the shared
+  # integration credential or Susan push-key constraint before dispatch.
   @spec stdin_secret?(t()) :: boolean()
-  def stdin_secret?(%{command: "integration add", options: options}) do
-    Enum.count([options["bearer"], options["basic"]], &(&1 == "-")) == 1
+  def stdin_secret?(command), do: match?({:secret, _}, stdin_payload?(command))
+
+  @doc """
+  The stdin payload a validated command still needs, as its kind and byte
+  limit, or `false` once supplied (or when the command reads no stdin).
+  """
+  @spec stdin_payload?(t()) :: {payload_kind(), pos_integer()} | false
+  def stdin_payload?(%{command: "integration add", options: options}) do
+    if Enum.count([options["bearer"], options["basic"]], &(&1 == "-")) == 1,
+      do: {:secret, @secret_limit},
+      else: false
   end
 
-  def stdin_secret?(_), do: false
+  def stdin_payload?(%{command: name, options: options}) when is_map_key(@payloads, name) do
+    if Map.has_key?(options, "stdin"), do: false, else: Map.fetch!(@payloads, name)
+  end
+
+  def stdin_payload?(%{command: "device register", options: %{"push-key" => "-"}}),
+    do: {:secret, @secret_limit}
+
+  def stdin_payload?(_), do: false
+
+  @doc """
+  Supplies a command's stdin bytes: a secret replaces its `-` option value;
+  other payloads join the options as `stdin` after their grammar and limit
+  check. Anything else refuses before dispatch.
+  """
+  @spec put_stdin_payload(t(), term()) :: {:ok, t()} | {:error, :invalid_command}
+  def put_stdin_payload(command, bytes) when is_binary(bytes) do
+    case stdin_payload?(command) do
+      {:secret, _} ->
+        put_stdin_secret(command, bytes)
+
+      {_kind, limit} when byte_size(bytes) <= limit ->
+        validate(%{
+          "version" => command.version,
+          "command" => command.command,
+          "arguments" => command.arguments,
+          "options" => Map.put(command.options, "stdin", bytes)
+        })
+
+      _ ->
+        {:error, :invalid_command}
+    end
+  end
+
+  def put_stdin_payload(_, _), do: {:error, :invalid_command}
+
+  @spec stdin_text?(binary(), term()) :: boolean()
+  defp stdin_text?(name, value) when is_binary(value) do
+    case Map.fetch(@payloads, name) do
+      {:ok, {kind, limit}} ->
+        byte_size(value) in 1..limit and String.valid?(value) and
+          not String.contains?(value, <<0>>) and payload_grammar?(kind, value)
+
+      :error ->
+        false
+    end
+  end
+
+  defp stdin_text?(_, _), do: false
+
+  # Answers are one JSON object; Marshall validates it against the question.
+  defp payload_grammar?(:answers, value) do
+    case JSON.decode(value) do
+      {:ok, decoded} when is_map(decoded) -> true
+      _ -> false
+    end
+  end
+
+  defp payload_grammar?(_kind, value), do: String.trim(value) != ""
 
   @spec put_stdin_secret(t(), term()) :: {:ok, t()} | {:error, :invalid_command}
   def put_stdin_secret(%{command: "integration add", options: options} = command, secret)
@@ -398,6 +703,21 @@ defmodule OverallsProtocol.SSHCommand do
         "command" => command.command,
         "arguments" => command.arguments,
         "options" => Map.put(options, kind, secret)
+      })
+    else
+      _ -> {:error, :invalid_command}
+    end
+  end
+
+  def put_stdin_secret(%{command: "device register", options: options} = command, secret)
+      when is_binary(secret) do
+    with true <- stdin_secret?(command),
+         true <- OverallsProtocol.SusanPoke.push_key?(secret) do
+      validate(%{
+        "version" => command.version,
+        "command" => command.command,
+        "arguments" => command.arguments,
+        "options" => Map.put(options, "push-key", secret)
       })
     else
       _ -> {:error, :invalid_command}
@@ -439,6 +759,9 @@ defmodule OverallsProtocol.SSHCommand do
 
   defp arguments_valid?("ssh-key remove", [id]), do: OverallsProtocol.uuid?(id)
 
+  defp arguments_valid?(name, [id]) when name in ["device rm", "device prefs"],
+    do: OverallsProtocol.uuid?(id)
+
   defp arguments_valid?("integration add", [name]),
     do: OverallsProtocol.Integration.name?(name)
 
@@ -466,6 +789,34 @@ defmodule OverallsProtocol.SSHCommand do
 
   defp arguments_valid?(name, [id])
        when name in ["request show", "request retry", "request cancel"], do: request_id?(id)
+
+  defp arguments_valid?(name, [thread]) when name in ["thread show", "thread turns"],
+    do: OverallsProtocol.uuid?(thread)
+
+  defp arguments_valid?("thread prompt", [thread, "-"]), do: OverallsProtocol.uuid?(thread)
+
+  defp arguments_valid?("thread answer", [thread, question, "-"]),
+    do: OverallsProtocol.uuid?(thread) and OverallsProtocol.uuid?(question)
+
+  defp arguments_valid?("thread plan approve", [thread, plan]),
+    do: OverallsProtocol.uuid?(thread) and OverallsProtocol.uuid?(plan)
+
+  defp arguments_valid?("thread plan revise", [thread, plan, "-"]),
+    do: OverallsProtocol.uuid?(thread) and OverallsProtocol.uuid?(plan)
+
+  defp arguments_valid?("thread mode", [thread, mode]),
+    do: OverallsProtocol.uuid?(thread) and mode in ["plan", "work"]
+
+  defp arguments_valid?("thread read", [thread, sequence]),
+    do: OverallsProtocol.uuid?(thread) and sequence?(sequence)
+
+  defp arguments_valid?(name, [machine])
+       when name in ["terminal ls", "terminal new", "web show", "web set"],
+       do: machine?(machine)
+
+  defp arguments_valid?(name, [machine, session])
+       when name in ["terminal kill", "terminal attach"],
+       do: machine?(machine) and OverallsProtocol.uuid?(session)
 
   defp arguments_valid?("help", []), do: true
   defp arguments_valid?("help", args), do: Map.has_key?(@commands, Enum.join(args, " "))

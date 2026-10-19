@@ -1822,8 +1822,9 @@ New identity-bearing admissions require an image manifest advertising `git_ident
 
 ## Android software guest
 
-`linux-android-v1` is an additive NixOS Firecracker guest profile. Its emulator
-uses TCG software rendering and persistent AVD state; readiness is bounded at
+`linux-android-v1` is an additive version-4 NixOS Firecracker guest profile with
+the pinned API 34/35/36 SDK closure, ADB and a persistent API 36 x86_64 AVD. Its
+emulator uses TCG software rendering without host KVM; readiness is bounded at
 600 seconds. ADB and display authority are withheld until emulator readiness.
 The image's current RFB bridge is loopback-bound for diagnostics only; it is not
 an authenticated display authority. The guest now validates Lilly's bounded
@@ -1848,3 +1849,7 @@ a dedicated display target, which is cleared on reconnect. These implementation
 facts do not establish native transport, browser controller/viewer enforcement,
 restart recovery or physical isolation; the existing Android acceptance gaps
 remain open.
+
+The standalone emulator machine fixture checks software rendering and ADB
+behavior; a passing execution is not recorded here. Production Firecracker
+display transport remains an explicit acceptance gap.

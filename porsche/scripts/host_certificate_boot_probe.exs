@@ -12,6 +12,8 @@ defmodule Porsche.HostCertificateBootProbe do
     Porsche.SSH.Sessions,
     Porsche.SSH.Connections,
     Porsche.SSH.Commands,
+    Porsche.Watchers,
+    Porsche.Terminal.Attachments,
     Porsche.Observability
   ]
   @type flags :: %{
@@ -115,7 +117,7 @@ defmodule Porsche.HostCertificateBootProbe do
     names = @base_names ++ [Porsche.Listener]
     pids = Enum.map(children, fn {_, pid, _, _} -> pid end)
 
-    length(children) == 8 and
+    length(children) == 10 and
       Enum.all?(names, fn name ->
         pid = Process.whereis(name)
         is_pid(pid) and pid in pids
