@@ -183,7 +183,7 @@ msgstr ""
 msgid "7 days"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:262
+#: lib/marshall_web/live/admin/audit_live.ex:265
 #, elixir-autogen, elixir-format
 msgid "; the next due check can then request a new generation."
 msgstr ""
@@ -204,7 +204,7 @@ msgstr ""
 msgid "A good day to make something."
 msgstr ""
 
-#: lib/marshall_web/components/layouts/root.html.heex:37
+#: lib/marshall_web/components/layouts/root.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "A little space for your next big idea."
 msgstr ""
@@ -249,7 +249,7 @@ msgstr ""
 msgid "A+"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:304
+#: lib/marshall_web/live/admin/audit_live.ex:315
 #, elixir-autogen, elixir-format
 msgid "ACME account: %{status}"
 msgstr ""
@@ -364,8 +364,8 @@ msgstr ""
 msgid "Accounts are temporarily unavailable."
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:229
-#: lib/marshall_web/live/admin/audit_live.ex:283
+#: lib/marshall_web/live/admin/audit_live.ex:230
+#: lib/marshall_web/live/admin/audit_live.ex:286
 #: lib/marshall_web/live/admin/git_live.ex:140
 #, elixir-autogen, elixir-format
 msgid "Action"
@@ -383,7 +383,8 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/audit_labels.ex:356
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #: lib/marshall_web/live/threads_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Active"
@@ -401,7 +402,7 @@ msgstr ""
 msgid "Activity"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:284
+#: lib/marshall_web/live/admin/audit_live.ex:287
 #, elixir-autogen, elixir-format
 msgid "Actor"
 msgstr ""
@@ -495,7 +496,7 @@ msgstr ""
 msgid "Administrator access updated."
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:192
+#: lib/marshall_web/live/admin/audit_live.ex:193
 #, elixir-autogen, elixir-format
 msgid "Administrator actions"
 msgstr ""
@@ -518,7 +519,7 @@ msgstr ""
 msgid "Admission settings were invalid or the node is not ready."
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:566
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr ""
@@ -697,7 +698,7 @@ msgstr ""
 msgid "Approve key"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr ""
@@ -728,6 +729,7 @@ msgstr ""
 msgid "Archive this VM?"
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:137
 #: lib/marshall_web/live/admin/jobs_live.ex:294
 #: lib/marshall_web/live/threads_live.ex:1570
 #: lib/marshall_web/live/threads_live.ex:1666
@@ -807,17 +809,17 @@ msgstr ""
 
 #: lib/marshall_web/components/layouts.ex:403
 #: lib/marshall_web/components/layouts.ex:447
-#: lib/marshall_web/live/admin/audit_live.ex:178
+#: lib/marshall_web/live/admin/audit_live.ex:179
 #, elixir-autogen, elixir-format
 msgid "Audit"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:276
+#: lib/marshall_web/live/admin/audit_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Audit history is unavailable."
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:185
+#: lib/marshall_web/live/admin/audit_live.ex:186
 #, elixir-autogen, elixir-format
 msgid "Audit kinds"
 msgstr ""
@@ -827,7 +829,7 @@ msgstr ""
 msgid "A−"
 msgstr ""
 
-#: lib/marshall_web/controllers/error_html.ex:52
+#: lib/marshall_web/controllers/error_html.ex:51
 #, elixir-autogen, elixir-format
 msgid "Back to Overalls"
 msgstr ""
@@ -949,12 +951,12 @@ msgid "CPU overhead (cores)"
 msgstr ""
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr ""
@@ -1007,9 +1009,13 @@ msgstr ""
 msgid "Cancellation requested. Cleanup may continue after recovery."
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:141
+#: lib/marshall_web/live/admin/audit_labels.ex:142
+#: lib/marshall_web/live/admin/audit_labels.ex:336
 #: lib/marshall_web/live/admin/jobs_live.ex:17
 #: lib/marshall_web/live/admin/jobs_live.ex:432
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:717
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:719
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:821
 #: lib/marshall_web/live/resize_live.ex:503
 #: lib/marshall_web/live/resize_live.ex:540
 #: lib/marshall_web/live/resize_live.ex:548
@@ -1022,6 +1028,7 @@ msgstr ""
 msgid "Cancelled before the snapshot started."
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:335
 #: lib/marshall_web/live/resize_live.ex:502
 #, elixir-autogen, elixir-format
 msgid "Cancelling"
@@ -1082,7 +1089,7 @@ msgstr ""
 msgid "Certificate expires"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:197
+#: lib/marshall_web/live/admin/audit_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Certificates"
 msgstr ""
@@ -1098,13 +1105,13 @@ msgstr ""
 msgid "Check your email for a sign-in link. Your account will be created automatically when you sign in."
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
 #: lib/marshall_web/live/machines_live.ex:655
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
 #: lib/marshall_web/live/machines_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
@@ -1229,7 +1236,7 @@ msgstr ""
 msgid "Close this SSH session?"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:539
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr ""
@@ -1284,9 +1291,12 @@ msgstr ""
 msgid "Compaction could not reduce this context. Reduce required instructions or start a focused thread."
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:145
+#: lib/marshall_web/live/admin/audit_labels.ex:334
+#: lib/marshall_web/live/admin/audit_labels.ex:339
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:431
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:718
 #: lib/marshall_web/live/resize_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Complete"
@@ -1417,7 +1427,8 @@ msgid "Copy/resize holds"
 msgstr ""
 
 #: lib/marshall_web/components/clone_components.ex:254
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/audit_labels.ex:331
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr ""
@@ -1579,6 +1590,7 @@ msgstr ""
 msgid "Create your first machine"
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:325
 #: lib/marshall_web/live/admin/jobs_live.ex:342
 #, elixir-autogen, elixir-format
 msgid "Created"
@@ -1691,7 +1703,8 @@ msgid "Delete user and machines"
 msgstr ""
 
 #: lib/marshall_web/components/workspace_components.ex:84
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/audit_labels.ex:354
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr ""
@@ -1703,7 +1716,7 @@ msgstr ""
 msgid "Deleting"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:714
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
 #: lib/marshall_web/live/machines_live.ex:661
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
@@ -1714,13 +1727,13 @@ msgstr ""
 msgid "Describe a task. Your agent gets a machine and gets to work."
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
 #: lib/marshall_web/live/machines_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
 #: lib/marshall_web/live/machines_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
@@ -1815,7 +1828,7 @@ msgstr ""
 msgid "Download raw file ↗"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:630
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr ""
@@ -1973,9 +1986,12 @@ msgid "Export AI usage"
 msgstr ""
 
 #: lib/marshall_web/components/workspace_components.ex:83
+#: lib/marshall_web/live/admin/audit_labels.ex:126
+#: lib/marshall_web/live/admin/audit_labels.ex:337
 #: lib/marshall_web/live/admin/git_live.ex:174
 #: lib/marshall_web/live/admin/jobs_live.ex:16
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
 #: lib/marshall_web/live/threads_live.ex:1664
 #: lib/marshall_web/live/threads_live.ex:2632
 #, elixir-autogen, elixir-format
@@ -2010,8 +2026,8 @@ msgstr ""
 msgid "Filter jobs"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:206
-#: lib/marshall_web/live/admin/audit_live.ex:243
+#: lib/marshall_web/live/admin/audit_live.ex:207
+#: lib/marshall_web/live/admin/audit_live.ex:244
 #, elixir-autogen, elixir-format
 msgid "Filter lifecycle history"
 msgstr ""
@@ -2087,6 +2103,7 @@ msgstr ""
 
 #: lib/marshall_web/live/admin/access_live.ex:201
 #: lib/marshall_web/live/admin/operations_live.ex:103
+#: lib/marshall_web/live/admin/operations_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "Gateway"
 msgstr ""
@@ -2097,7 +2114,7 @@ msgstr ""
 msgid "Generation"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:308
+#: lib/marshall_web/live/admin/audit_live.ex:319
 #, elixir-autogen, elixir-format
 msgid "Generation %{generation}: %{status}"
 msgstr ""
@@ -2215,12 +2232,12 @@ msgstr ""
 msgid "Host"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:214
+#: lib/marshall_web/live/admin/audit_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "Host ID"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:247
+#: lib/marshall_web/live/admin/audit_live.ex:248
 #, elixir-autogen, elixir-format
 msgid "Human requests and system recovery transitions. History is retained for 90 days."
 msgstr ""
@@ -2719,7 +2736,7 @@ msgstr ""
 msgid "Maintenance"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:650
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr ""
@@ -2990,7 +3007,7 @@ msgstr ""
 msgid "Next page"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
 #: lib/marshall_web/live/admin/users_live.ex:262
 #: lib/marshall_web/live/machines_live.ex:795
 #: lib/marshall_web/live/machines_live.ex:1063
@@ -3264,7 +3281,7 @@ msgstr ""
 msgid "Older context summarized"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:323
+#: lib/marshall_web/live/admin/audit_live.ex:334
 #, elixir-autogen, elixir-format
 msgid "Older events →"
 msgstr ""
@@ -3369,7 +3386,7 @@ msgstr ""
 msgid "OpenAI"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:538
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr ""
@@ -3430,7 +3447,7 @@ msgstr ""
 msgid "Overalls"
 msgstr ""
 
-#: lib/marshall_web/controllers/error_html.ex:45
+#: lib/marshall_web/controllers/error_html.ex:44
 #, elixir-autogen, elixir-format
 msgid "Overalls is briefly unavailable. This page will retry automatically."
 msgstr ""
@@ -3549,10 +3566,12 @@ msgid "Peer machine ID"
 msgstr ""
 
 #: lib/marshall_web/components/workspace_components.ex:79
+#: lib/marshall_web/live/admin/audit_labels.ex:326
+#: lib/marshall_web/live/admin/audit_live.ex:324
 #: lib/marshall_web/live/admin/git_live.ex:171
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:429
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
 #: lib/marshall_web/live/resize_live.ex:504
 #: lib/marshall_web/live/threads_live.ex:1661
 #: lib/marshall_web/live/threads_live.ex:2629
@@ -3597,7 +3616,7 @@ msgstr ""
 msgid "Phase"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:589
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr ""
@@ -3652,7 +3671,8 @@ msgid "Power afterwards"
 msgstr ""
 
 #: lib/marshall_web/components/clone_components.ex:252
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/audit_labels.ex:328
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr ""
@@ -3709,7 +3729,7 @@ msgstr ""
 msgid "Preview evacuation"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:604
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:606
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr ""
@@ -3820,7 +3840,10 @@ msgstr ""
 
 #: lib/marshall_web/components/clone_components.ex:171
 #: lib/marshall_web/components/clone_components.ex:251
+#: lib/marshall_web/live/admin/audit_labels.ex:106
+#: lib/marshall_web/live/admin/audit_labels.ex:327
 #: lib/marshall_web/live/admin/jobs_live.ex:10
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:814
 #, elixir-autogen, elixir-format
 msgid "Queued"
 msgstr ""
@@ -3840,12 +3863,12 @@ msgstr ""
 msgid "RAM overhead (bytes)"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:640
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:642
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:645
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:647
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr ""
@@ -3890,8 +3913,10 @@ msgstr ""
 msgid "Read-only mirrors of public GitHub repositories."
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:224
+#: lib/marshall_web/live/admin/audit_labels.ex:345
 #: lib/marshall_web/live/admin/git_live.ex:173
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
 #: lib/marshall_web/live/threads_live.ex:1663
 #: lib/marshall_web/live/threads_live.ex:2631
 #, elixir-autogen, elixir-format
@@ -3913,7 +3938,7 @@ msgstr ""
 msgid "Reasoning"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:250
+#: lib/marshall_web/live/admin/audit_live.ex:251
 #, elixir-autogen, elixir-format
 msgid "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
 msgstr ""
@@ -3938,7 +3963,7 @@ msgstr ""
 msgid "Recorded failures"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:180
+#: lib/marshall_web/live/admin/audit_live.ex:181
 #, elixir-autogen, elixir-format
 msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
 msgstr ""
@@ -4100,7 +4125,7 @@ msgstr ""
 msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr ""
@@ -4189,12 +4214,12 @@ msgstr ""
 msgid "Repository views"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:271
+#: lib/marshall_web/live/admin/audit_live.ex:274
 #, elixir-autogen, elixir-format
 msgid "Request a new wildcard certificate for every Audi gateway?"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:273
+#: lib/marshall_web/live/admin/audit_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Request wildcard rotation"
 msgstr ""
@@ -4260,7 +4285,7 @@ msgstr ""
 msgid "Resize could not be accepted. Check the sizes and current machine state."
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:782
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
 #: lib/marshall_web/live/resize_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
@@ -4288,6 +4313,7 @@ msgstr ""
 msgid "Resize stages"
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:391
 #: lib/marshall_web/live/resize_live.ex:498
 #, elixir-autogen, elixir-format
 msgid "Resizing"
@@ -4327,6 +4353,7 @@ msgstr ""
 msgid "Restarted"
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:392
 #: lib/marshall_web/live/resize_live.ex:499
 #: lib/marshall_web/live/resize_live.ex:500
 #, elixir-autogen, elixir-format
@@ -4375,6 +4402,7 @@ msgid "Retry resize"
 msgstr ""
 
 #: lib/marshall_web/live/admin/jobs_live.ex:14
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:818
 #, elixir-autogen, elixir-format
 msgid "Retrying"
 msgstr ""
@@ -4486,8 +4514,10 @@ msgid "Routing, team ownership and peer connections"
 msgstr ""
 
 #: lib/marshall_web/components/workspace_components.ex:80
+#: lib/marshall_web/live/admin/audit_labels.ex:351
 #: lib/marshall_web/live/admin/jobs_live.ex:13
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:817
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Running"
@@ -4581,7 +4611,10 @@ msgstr ""
 msgid "Saving…"
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:314
+#: lib/marshall_web/live/admin/audit_labels.ex:342
 #: lib/marshall_web/live/admin/jobs_live.ex:12
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
 #, elixir-autogen, elixir-format
 msgid "Scheduled"
 msgstr ""
@@ -4797,7 +4830,7 @@ msgstr ""
 msgid "Sign-in and passkeys"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:230
+#: lib/marshall_web/live/admin/audit_live.ex:231
 #, elixir-autogen, elixir-format
 msgid "Since (ISO 8601)"
 msgstr ""
@@ -4844,7 +4877,7 @@ msgid "Skills are unavailable until the workspace context has been collected."
 msgstr ""
 
 #: lib/marshall_web/components/layouts.ex:213
-#: lib/marshall_web/components/layouts/root.html.heex:34
+#: lib/marshall_web/components/layouts/root.html.heex:38
 #: lib/marshall_web/controllers/docs_html/show.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Skip to content"
@@ -4999,7 +5032,7 @@ msgstr ""
 msgid "Static header value"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:535
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #: lib/marshall_web/live/admin/operations_live.ex:82
 #: lib/marshall_web/live/admin/operations_live.ex:105
 #: lib/marshall_web/live/admin/operations_live.ex:128
@@ -5030,19 +5063,21 @@ msgstr ""
 msgid "Stop the machine"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:624
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr ""
 
 #: lib/marshall_web/components/workspace_components.ex:81
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/audit_labels.ex:352
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Stopped"
 msgstr ""
 
 #: lib/marshall_web/components/workspace_components.ex:67
+#: lib/marshall_web/live/admin/audit_labels.ex:329
 #: lib/marshall_web/live/machines_live.ex:610
 #: lib/marshall_web/live/resize_live.ex:497
 #, elixir-autogen, elixir-format
@@ -5064,7 +5099,7 @@ msgstr ""
 msgid "Stopping the machine so its resources can change safely."
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
 #: lib/marshall_web/live/machines_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
@@ -5096,16 +5131,19 @@ msgid "Submitting…"
 msgstr ""
 
 #: lib/marshall_web/live/admin/jobs_live.ex:15
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:819
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr ""
 
 #: lib/marshall_web/live/admin/jobs_live.ex:11
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:815
 #, elixir-autogen, elixir-format
 msgid "Suspended"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/audit_labels.ex:365
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
 #: lib/marshall_web/live/machines_live.ex:654
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
@@ -5121,7 +5159,7 @@ msgstr ""
 msgid "Taking snapshot"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:285
+#: lib/marshall_web/live/admin/audit_live.ex:288
 #: lib/marshall_web/live/integrations_live.ex:301
 #, elixir-autogen, elixir-format
 msgid "Target"
@@ -5854,7 +5892,7 @@ msgstr ""
 #: lib/marshall_web/controllers/overalls_controller.ex:37
 #: lib/marshall_web/controllers/overalls_controller.ex:50
 #: lib/marshall_web/controllers/overalls_controller.ex:54
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
 #: lib/marshall_web/live/machines_live.ex:750
 #: lib/marshall_web/live/machines_live.ex:964
 #: lib/marshall_web/live/machines_live.ex:974
@@ -5866,6 +5904,9 @@ msgstr ""
 #: lib/marshall_web/components/workspace_components.ex:85
 #: lib/marshall_web/components/workspace_components.ex:537
 #: lib/marshall_web/live/admin/access_live.ex:248
+#: lib/marshall_web/live/admin/audit_labels.ex:321
+#: lib/marshall_web/live/admin/audit_labels.ex:355
+#: lib/marshall_web/live/admin/audit_labels.ex:396
 #: lib/marshall_web/live/admin/git_live.ex:176
 #: lib/marshall_web/live/admin/git_live.ex:188
 #: lib/marshall_web/live/admin/git_live.ex:197
@@ -5874,10 +5915,12 @@ msgstr ""
 #: lib/marshall_web/live/admin/jobs_live.ex:426
 #: lib/marshall_web/live/admin/jobs_live.ex:437
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:791
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:822
+#: lib/marshall_web/live/admin/operations_live.ex:238
 #: lib/marshall_web/live/inference_live.ex:60
 #: lib/marshall_web/live/inference_live.ex:178
 #: lib/marshall_web/live/inference_live.ex:185
@@ -5914,7 +5957,7 @@ msgstr ""
 msgid "Unreported"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:231
+#: lib/marshall_web/live/admin/audit_live.ex:232
 #, elixir-autogen, elixir-format
 msgid "Until (ISO 8601)"
 msgstr ""
@@ -6017,7 +6060,7 @@ msgstr ""
 msgid "VM"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:212
+#: lib/marshall_web/live/admin/audit_live.ex:213
 #, elixir-autogen, elixir-format
 msgid "VM ID"
 msgstr ""
@@ -6027,12 +6070,12 @@ msgstr ""
 msgid "VM access revoked."
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:194
+#: lib/marshall_web/live/admin/audit_live.ex:195
 #, elixir-autogen, elixir-format
 msgid "VM lifecycle"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:203
+#: lib/marshall_web/live/admin/audit_live.ex:204
 #, elixir-autogen, elixir-format
 msgid "VS Code access"
 msgstr ""
@@ -6191,7 +6234,7 @@ msgstr ""
 msgid "We couldn't launch that repository"
 msgstr ""
 
-#: lib/marshall_web/controllers/error_html.ex:48
+#: lib/marshall_web/controllers/error_html.ex:47
 #, elixir-autogen, elixir-format
 msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
 msgstr ""
@@ -6209,7 +6252,7 @@ msgstr ""
 msgid "Web apps only"
 msgstr ""
 
-#: lib/marshall_web/components/layouts/root.html.heex:38
+#: lib/marshall_web/components/layouts/root.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Welcome to Overalls. Make yourself at home."
 msgstr ""
@@ -6224,7 +6267,7 @@ msgstr ""
 msgid "What happens"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:282
+#: lib/marshall_web/live/admin/audit_live.ex:285
 #: lib/marshall_web/live/admin/git_live.ex:139
 #, elixir-autogen, elixir-format
 msgid "When"
@@ -6245,12 +6288,12 @@ msgstr ""
 msgid "Who you are, how you prove it, and the keys that reach your machines."
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:120
+#: lib/marshall_web/live/admin/audit_live.ex:121
 #, elixir-autogen, elixir-format
 msgid "Wildcard rotation could not be requested."
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:113
+#: lib/marshall_web/live/admin/audit_live.ex:114
 #, elixir-autogen, elixir-format
 msgid "Wildcard rotation requested for generation %{generation}."
 msgstr ""
@@ -6272,7 +6315,7 @@ msgstr ""
 msgid "Worker"
 msgstr ""
 
-#: lib/marshall_web/live/admin/audit_live.ex:213
+#: lib/marshall_web/live/admin/audit_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "Workflow ID"
 msgstr ""
@@ -6875,7 +6918,7 @@ msgstr ""
 msgid "· %{value1} reasoning · %{value2}"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr ""
@@ -6906,7 +6949,7 @@ msgid "← All sections"
 msgstr ""
 
 #: lib/marshall_web/live/admin/jobs_live.ex:310
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
 #: lib/marshall_web/live/admin/users_live.ex:257
 #: lib/marshall_web/live/machines_live.ex:794
 #: lib/marshall_web/live/machines_live.ex:1060
@@ -6995,7 +7038,9 @@ msgid "Pause"
 msgstr ""
 
 #: lib/marshall_web/components/workspace_components.ex:82
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/audit_labels.ex:217
+#: lib/marshall_web/live/admin/audit_labels.ex:353
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr ""
@@ -7046,6 +7091,8 @@ msgstr ""
 msgid "%{span} behind you"
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:132
+#: lib/marshall_web/live/admin/audit_labels.ex:350
 #: lib/marshall_web/live/admin/jobs_live.ex:430
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
@@ -7056,27 +7103,29 @@ msgstr ""
 msgid "Awaiting GitHub authorization"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:725
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:727
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:720
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:748
+#: lib/marshall_web/live/admin/audit_labels.ex:283
+#: lib/marshall_web/live/admin/audit_labels.ex:286
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:607
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr ""
@@ -7086,17 +7135,17 @@ msgstr ""
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:711
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:788
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr ""
@@ -7139,17 +7188,17 @@ msgstr ""
 msgid "Continue to Overalls"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:577
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:745
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr ""
@@ -7179,24 +7228,26 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:779
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:756
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:347
 #: lib/marshall_web/live/admin/jobs_live.ex:434
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:346
 #: lib/marshall_web/live/admin/jobs_live.ex:433
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr ""
@@ -7206,7 +7257,8 @@ msgstr ""
 msgid "Enter a valid email address."
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/audit_labels.ex:394
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr ""
@@ -7231,17 +7283,18 @@ msgstr ""
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
+#: lib/marshall_web/live/admin/audit_labels.ex:364
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:776
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr ""
@@ -7261,17 +7314,17 @@ msgstr ""
 msgid "Machines excluded from your GitHub identity"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:597
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:599
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:593
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:595
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr ""
@@ -7301,39 +7354,43 @@ msgstr ""
 msgid "Relocation"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:785
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:759
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:761
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:311
+#: lib/marshall_web/live/admin/audit_labels.ex:348
 #: lib/marshall_web/live/admin/jobs_live.ex:435
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:125
+#: lib/marshall_web/live/admin/audit_labels.ex:349
 #: lib/marshall_web/live/admin/jobs_live.ex:436
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr ""
@@ -7358,27 +7415,28 @@ msgstr ""
 msgid "Signing you in"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:734
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:724
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:731
+#: lib/marshall_web/live/admin/audit_labels.ex:309
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:771
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr ""
@@ -7398,7 +7456,7 @@ msgstr ""
 msgid "Temporarily unavailable"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr ""
@@ -7413,22 +7471,22 @@ msgstr ""
 msgid "We could not reach the newsletter service. Try again later."
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:765
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:767
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:768
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:770
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:753
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr ""
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:762
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:764
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr ""
@@ -7625,6 +7683,7 @@ msgstr ""
 msgid "Refreshing"
 msgstr ""
 
+#: lib/marshall_web/live/admin/audit_labels.ex:105
 #: lib/marshall_web/live/admin/git_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Registered"
@@ -7668,4 +7727,687 @@ msgstr ""
 #: lib/marshall_web/live/agent_threads_live.ex:119
 #, elixir-autogen, elixir-format
 msgid "Waiting for machine"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:101
+#, elixir-autogen, elixir-format
+msgid "ACME account"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:124
+#, elixir-autogen, elixir-format
+msgid "Activated"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:176
+#: lib/marshall_web/live/admin/audit_labels.ex:374
+#, elixir-autogen, elixir-format
+msgid "Activation failed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:197
+#, elixir-autogen, elixir-format
+msgid "Activation observed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:27
+#, elixir-autogen, elixir-format
+msgid "Administrator access granted"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:28
+#, elixir-autogen, elixir-format
+msgid "Administrator access revoked"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:25
+#, elixir-autogen, elixir-format
+msgid "Administrator bootstrapped"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:133
+#, elixir-autogen, elixir-format
+msgid "Advanced"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:134
+#, elixir-autogen, elixir-format
+msgid "Allocated"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:343
+#, elixir-autogen, elixir-format
+msgid "Applied"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:136
+#: lib/marshall_web/live/admin/audit_labels.ex:340
+#, elixir-autogen, elixir-format
+msgid "Approved"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:140
+#: lib/marshall_web/live/admin/audit_labels.ex:341
+#, elixir-autogen, elixir-format
+msgid "Blocked"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:184
+#, elixir-autogen, elixir-format
+msgid "Cancellation completed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:229
+#, elixir-autogen, elixir-format
+msgid "Cancellation restart recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:232
+#, elixir-autogen, elixir-format
+msgid "Cancellation stop recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:330
+#, elixir-autogen, elixir-format
+msgid "Capturing"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:102
+#, elixir-autogen, elixir-format
+msgid "Certificate"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:122
+#, elixir-autogen, elixir-format
+msgid "Certificate issued"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:110
+#, elixir-autogen, elixir-format
+msgid "Certificate order attempted"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:113
+#, elixir-autogen, elixir-format
+msgid "Certificate order bound"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:116
+#, elixir-autogen, elixir-format
+msgid "Certificate proof recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:119
+#, elixir-autogen, elixir-format
+msgid "Certificate proof refreshed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:368
+#, elixir-autogen, elixir-format
+msgid "Checking destination"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:359
+#, elixir-autogen, elixir-format
+msgid "Checking transfer"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:144
+#, elixir-autogen, elixir-format
+msgid "Checkpoint saved"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:333
+#, elixir-autogen, elixir-format
+msgid "Cleaning up"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:386
+#, elixir-autogen, elixir-format
+msgid "Cleaning up cancellation"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:380
+#, elixir-autogen, elixir-format
+msgid "Cleaning up source"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:148
+#, elixir-autogen, elixir-format
+msgid "Cleanup completed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:150
+#, elixir-autogen, elixir-format
+msgid "Confirmed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:166
+#, elixir-autogen, elixir-format
+msgid "Continued"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:155
+#, elixir-autogen, elixir-format
+msgid "Copy confirmed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:138
+#, elixir-autogen, elixir-format
+msgid "Copy started"
+msgstr ""
+
+#: lib/marshall_web/live/admin/operations_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "DNS"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:167
+#, elixir-autogen, elixir-format
+msgid "Deferred"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:389
+#, elixir-autogen, elixir-format
+msgid "Deleting copies"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:187
+#, elixir-autogen, elixir-format
+msgid "Deletion completed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:289
+#: lib/marshall_web/live/admin/audit_labels.ex:292
+#, elixir-autogen, elixir-format
+msgid "Deletion requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:202
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup offered"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:238
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:205
+#, elixir-autogen, elixir-format
+msgid "Destination revocation offered"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:242
+#, elixir-autogen, elixir-format
+msgid "Destination revocation recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:171
+#, elixir-autogen, elixir-format
+msgid "Destination work dispatched"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:168
+#, elixir-autogen, elixir-format
+msgid "Dispatched"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:98
+#, elixir-autogen, elixir-format
+msgid "Editor credential"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:100
+#, elixir-autogen, elixir-format
+msgid "Editor lease"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:95
+#, elixir-autogen, elixir-format
+msgid "Editor sign-in"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:49
+#, elixir-autogen, elixir-format
+msgid "Evacuation approved"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:46
+#, elixir-autogen, elixir-format
+msgid "Evacuation changed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:52
+#, elixir-autogen, elixir-format
+msgid "Evacuation replanned"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:43
+#, elixir-autogen, elixir-format
+msgid "Evacuation requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:181
+#, elixir-autogen, elixir-format
+msgid "Fenced"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:393
+#, elixir-autogen, elixir-format
+msgid "Fencing"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:58
+#, elixir-autogen, elixir-format
+msgid "Fleet certificate rotation requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_live.ex:261
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation} has an uncertain ACME order response. The generation can be failed after"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:55
+#, elixir-autogen, elixir-format
+msgid "Host configured"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:192
+#, elixir-autogen, elixir-format
+msgid "Idle policy updated"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:158
+#, elixir-autogen, elixir-format
+msgid "Import confirmed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:221
+#, elixir-autogen, elixir-format
+msgid "Import prepared"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:245
+#, elixir-autogen, elixir-format
+msgid "Import recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:139
+#, elixir-autogen, elixir-format
+msgid "Import started"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:103
+#, elixir-autogen, elixir-format
+msgid "Installation"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:104
+#, elixir-autogen, elixir-format
+msgid "Installed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:90
+#, elixir-autogen, elixir-format
+msgid "Integration attached"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:84
+#, elixir-autogen, elixir-format
+msgid "Integration configured"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:93
+#, elixir-autogen, elixir-format
+msgid "Integration detached"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:87
+#, elixir-autogen, elixir-format
+msgid "Integration removed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:173
+#, elixir-autogen, elixir-format
+msgid "Key dispatched"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:247
+#, elixir-autogen, elixir-format
+msgid "Key recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:312
+#, elixir-autogen, elixir-format
+msgid "Key retired"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:208
+#, elixir-autogen, elixir-format
+msgid "Key retirement offered"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:295
+#, elixir-autogen, elixir-format
+msgid "Key retirement requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:34
+#, elixir-autogen, elixir-format
+msgid "Machine access revoked"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:61
+#, elixir-autogen, elixir-format
+msgid "Machine lifecycle requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:64
+#, elixir-autogen, elixir-format
+msgid "Machine relocation requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:194
+#, elixir-autogen, elixir-format
+msgid "Machine state observed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:19
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication reset"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:16
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication verified"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:338
+#, elixir-autogen, elixir-format
+msgid "Offered"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:250
+#, elixir-autogen, elixir-format
+msgid "Operation recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:10
+#, elixir-autogen, elixir-format
+msgid "Passkey added"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:13
+#, elixir-autogen, elixir-format
+msgid "Passkey removed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:298
+#, elixir-autogen, elixir-format
+msgid "Pause requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:235
+#, elixir-autogen, elixir-format
+msgid "Placement switch recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:189
+#, elixir-autogen, elixir-format
+msgid "Placement switched"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:218
+#, elixir-autogen, elixir-format
+msgid "Preparation started"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:253
+#, elixir-autogen, elixir-format
+msgid "Progress recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:131
+#, elixir-autogen, elixir-format
+msgid "Progress updated"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:223
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:332
+#, elixir-autogen, elixir-format
+msgid "Publishing"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:161
+#: lib/marshall_web/live/admin/audit_labels.ex:164
+#, elixir-autogen, elixir-format
+msgid "Readiness confirmed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:179
+#: lib/marshall_web/live/admin/audit_labels.ex:371
+#, elixir-autogen, elixir-format
+msgid "Readiness failed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:225
+#, elixir-autogen, elixir-format
+msgid "Reconciled"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:226
+#, elixir-autogen, elixir-format
+msgid "Recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:277
+#, elixir-autogen, elixir-format
+msgid "Reflection metadata updated"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:279
+#, elixir-autogen, elixir-format
+msgid "Replanned"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:107
+#, elixir-autogen, elixir-format
+msgid "Request saved"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:280
+#, elixir-autogen, elixir-format
+msgid "Requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:135
+#, elixir-autogen, elixir-format
+msgid "Resize applied"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:304
+#, elixir-autogen, elixir-format
+msgid "Resize started"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:305
+#: lib/marshall_web/live/admin/audit_labels.ex:395
+#, elixir-autogen, elixir-format
+msgid "Resolved"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:306
+#, elixir-autogen, elixir-format
+msgid "Restart started"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:383
+#, elixir-autogen, elixir-format
+msgid "Restoring source"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:259
+#, elixir-autogen, elixir-format
+msgid "Result recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:313
+#, elixir-autogen, elixir-format
+msgid "Retry requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:377
+#, elixir-autogen, elixir-format
+msgid "Retrying destination"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:37
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:40
+#, elixir-autogen, elixir-format
+msgid "SSH session revoked"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:31
+#, elixir-autogen, elixir-format
+msgid "Sessions revoked"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:153
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture confirmed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:143
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture started"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:262
+#, elixir-autogen, elixir-format
+msgid "Source restoration recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:211
+#, elixir-autogen, elixir-format
+msgid "Source revocation offered"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:265
+#, elixir-autogen, elixir-format
+msgid "Source revocation recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:215
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup offered"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:269
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:318
+#, elixir-autogen, elixir-format
+msgid "Source stop started"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:301
+#, elixir-autogen, elixir-format
+msgid "Start requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:271
+#, elixir-autogen, elixir-format
+msgid "Stop recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:303
+#, elixir-autogen, elixir-format
+msgid "Stop requested"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:315
+#, elixir-autogen, elixir-format
+msgid "Stop started"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:362
+#, elixir-autogen, elixir-format
+msgid "Stopping source"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:320
+#: lib/marshall_web/live/admin/audit_labels.ex:344
+#, elixir-autogen, elixir-format
+msgid "Superseded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:66
+#, elixir-autogen, elixir-format
+msgid "Team created"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:69
+#, elixir-autogen, elixir-format
+msgid "Team membership changed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:75
+#, elixir-autogen, elixir-format
+msgid "Team ownership accepted"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:78
+#, elixir-autogen, elixir-format
+msgid "Team ownership declined"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:81
+#, elixir-autogen, elixir-format
+msgid "Team ownership offer cancelled"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:72
+#, elixir-autogen, elixir-format
+msgid "Team ownership offered"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:256
+#, elixir-autogen, elixir-format
+msgid "Transfer receipt recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:129
+#, elixir-autogen, elixir-format
+msgid "Uncertain certificate order failed"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:274
+#, elixir-autogen, elixir-format
+msgid "Unconfirmed outcome recorded"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:22
+#, elixir-autogen, elixir-format
+msgid "User deleted"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:21
+#, elixir-autogen, elixir-format
+msgid "User invited"
+msgstr ""
+
+#: lib/marshall_web/live/admin/audit_labels.ex:199
+#, elixir-autogen, elixir-format
+msgid "Work offered"
 msgstr ""

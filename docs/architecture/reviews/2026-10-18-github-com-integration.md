@@ -177,3 +177,39 @@ was not repeated after these focused corrections.
   qualify live OAuth App/organization consent and production rollout separately.
 - Review final source/contracts/HLDD; run component and protocol-consumer gates,
   ADR/reference checks and evaluated Nix `hldd`. Inception remains out of scope.
+
+## 2026-10-19 closure verification
+
+Controlled packaged edge check: **passed** at revision
+`97809b51f5187f38d46c0d261c923771a880cddc`, using
+`nix build .#checks.x86_64-linux.github-integration --no-link`. The run
+completed in 74 seconds (VM script 38.10 seconds); structured log
+`1792372715941-407085-0.jsonl`. It exercised two managed gh owners, Git clone
+and push, pagination and redirect refusal without mutation retry, Actions and
+release downloads, LFS upload/verify/second-owner download, generation and VM
+fences, anonymous fallback, lease withdrawal and credential redaction.
+
+This fixture substitutes Marshall/Lilly authority. It does not prove browser
+OAuth, scheduled Oban refresh, real fleet admission, retained-image acceptance
+or live GitHub consent. A single passing run also does not establish the cause
+of earlier intermittent transfer failures. ADR-0202 remains partial. The older
+Protocol results above are historical; current component and fleet gate results
+will be recorded independently.
+
+Current focused Marshall GitHub, admission and contract suite, including
+`--include distributed`, passed **36 tests**, seed **30**, in **29.8 seconds**
+using an isolated PostgreSQL instance (`/tmp/github-marshall-focused2.log`).
+This records bounded BEAM/database authority behavior, not native fleet or live
+provider acceptance.
+
+The closure adds real-fleet scenarios for Linux shared writers exercising the
+VM owner's GitHub identity and detached eligibility surviving authorized native
+stop/start with a changed systemd invocation. They remain present evidence until
+an executed fleet result is recorded. Relocation, reconnect persistence and
+Windows shared-writer acceptance remain distinct gaps.
+
+Harness prerequisite repairs copy the public CA into the browser-owned fixture
+directory and load the manifest validator's required GuestAgents module. These
+preserve certificate verification and image validation rather than bypassing
+those controls. Required empty Egyptian Arabic plural forms preserve catalog
+schema and existing translations; the forms remain untranslated fallback gaps.

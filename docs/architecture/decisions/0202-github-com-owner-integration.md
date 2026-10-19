@@ -243,6 +243,13 @@ executed results and remaining gaps are tracked in the
 [review](../reviews/2026-10-18-github-com-integration.md) and
 [service guide](../../services/github-com.md).
 
+The controlled packaged edge check passed on 2026-10-19 at revision
+`97809b51f5187f38d46c0d261c923771a880cddc`. Its managed-client and TLS transfer
+results use substituted Marshall/Lilly authority; they do not establish browser
+OAuth or fleet acceptance. The review records the exact execution scope, and the
+HLDD owner-integration scenario records the remaining security acceptance gaps.
+Implementation remains partial.
+
 ## Open questions
 
 No product-policy choice remains for this version. OAuth App provisioning, live

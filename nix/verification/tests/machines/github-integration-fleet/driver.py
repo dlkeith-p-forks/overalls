@@ -30,7 +30,11 @@ with subtest("real browser connects two owner identities and creates actual OSS 
         "install -d -m 700 -o tester -g users " + browser_root + " /home/tester/.pki/nssdb"
     )
     client.succeed("sudo -u tester certutil -N -d sql:/home/tester/.pki/nssdb --empty-password")
-    for name, certificate in (("marshall", root + "/ca.crt"), ("github", github_fixture_root)):
+    client.succeed(f"install -m 644 {root}/ca.crt {browser_root}/ca.crt")
+    for name, certificate in (
+        ("marshall", browser_root + "/ca.crt"),
+        ("github", github_fixture_root),
+    ):
         client.succeed(
             shlex.join(
                 [
@@ -133,9 +137,65 @@ with subtest("real guest managed Git clones and pushes a private repository with
         == "real fleet push"
     )
 
+if github_guest_os != "windows":
+    with subtest(
+        "shared member writer uses the VM owner's GitHub identity through browser terminal"
+    ):
+        shared_receipt = operator(
+            {
+                "action": "share",
+                "owner_id": users["owner_id"],
+                "vm_id": github_machines["owner"],
+                "email": users["member_email"],
+                "role": "operator",
+                "key": str(uuid.uuid4()),
+            }
+        )
+        assert shared_receipt.get("shared") is True
+        github_browser("shared-writer")
+        github_guest(github_machines["member"], "connected", "2")
+
 with subtest("browser detach persists anonymous forwarding and leaves the other owner connected"):
     github_browser("detach")
     github_guest(github_machines["owner"], "anonymous", "1")
+    github_guest(github_machines["member"], "connected", "2")
+
+with subtest("owner exclusion survives a real stopped guest and fresh native execution"):
+    # @cc [owner:ghuntley,label:verification;recovery] github-fleet-detach-restart
+    # A browser-created exclusion MUST still select anonymous forwarding after
+    # an authorized stop/start and a different native systemd invocation. The
+    # driver MUST observe real state and unit exit, never edit domain rows.
+    detached_vm = github_machines["owner"]
+    detached_host, detached_placement = current_placement(detached_vm)
+    detached_unit = "lilly-vm-" + detached_placement + ".service"
+    previous_invocation = detached_host.succeed(
+        "systemctl show --property=InvocationID --value " + detached_unit
+    ).strip()
+    assert len(previous_invocation) == 32
+    for lifecycle_kind in ("stop", "start"):
+        lifecycle_receipt = operator(
+            {
+                "action": "lifecycle",
+                "owner_id": users["owner_id"],
+                "vm_id": detached_vm,
+                "kind": lifecycle_kind,
+                "key": str(uuid.uuid4()),
+            }
+        )
+        assert lifecycle_receipt.get("requested") is True
+        if lifecycle_kind == "stop":
+            eventually(lambda: observed_state(detached_vm) == "stopped", timeout=600)
+            detached_host.fail("systemctl is-active --quiet " + detached_unit)
+        else:
+            running(detached_vm)
+    restarted_host, restarted_placement = current_placement(detached_vm)
+    current_invocation = restarted_host.succeed(
+        "systemctl show --property=InvocationID --value lilly-vm-"
+        + restarted_placement
+        + ".service"
+    ).strip()
+    assert len(current_invocation) == 32 and current_invocation != previous_invocation
+    github_guest(detached_vm, "anonymous", "1")
     github_guest(github_machines["member"], "connected", "2")
     github_browser("attach")
     github_guest(github_machines["owner"], "connected", "1")

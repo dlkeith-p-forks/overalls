@@ -55,9 +55,35 @@ class GitFixtureTest(unittest.TestCase):
             ("GET", fixture.PREFIX + "/info/refs?service=git-receive-pack", b""),
             ("POST", fixture.PREFIX + "/git-upload-pack", b"x" * 16_385),
             ("POST", fixture.PREFIX + "/git-upload-pack", b"not-a-git-packet"),
+            ("POST", fixture.PREFIX + "/git-upload-pack?service=git-upload-pack", b"0000"),
+            ("GET", fixture.PREFIX + "/info/refs?service=git-upload-pack&extra=1", b""),
+            (
+                "GET",
+                fixture.PREFIX + "/info/refs?service=git-upload-pack&service=git-upload-pack",
+                b"",
+            ),
         ):
             with self.subTest(path=path), self.assertRaises(ValueError):
                 self.repository.response(method, fixture.HOST, path, body)
+
+    def test_advertisements_match_service_query_separately_from_repository_path(self) -> None:
+        writable = fixture.Repository.create(self.root / "writable", self.git, allow_writes=True)
+        for host, prefix in (
+            (fixture.HOST + ":443", fixture.PREFIX),
+            ("com-github.integration.internal", "/git" + fixture.PREFIX),
+        ):
+            for service in ("git-upload-pack", "git-receive-pack"):
+                with self.subTest(host=host, service=service):
+                    result = writable.response(
+                        "GET", host, prefix + "/info/refs?service=" + service, b""
+                    )
+                    self.assertIsNotNone(result)
+                    assert result is not None
+                    self.assertEqual(
+                        result.content_type,
+                        ("application/x-" + service + "-advertisement").encode(),
+                    )
+                    self.assertIn(writable.commit.encode(), result.body)
 
     def test_real_shallow_git_clone_requires_fixture_ca_and_has_exact_tree(self) -> None:
         ca, ca_key = self.root / "ca.pem", self.root / "ca.key"

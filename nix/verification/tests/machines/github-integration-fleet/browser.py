@@ -157,10 +157,54 @@ def control(mode: str) -> None:
             browser.close()
 
 
+def shared_writer() -> None:
+    """@cc [owner:ghuntley,label:verification;security] github-fleet-shared-owner-identity
+    A separately authenticated member MUST execute managed gh in its own
+    writable browser terminal on the shared machine and observe the machine
+    owner's GitHub identity, despite its separate connected GitHub identity.
+    Success MUST require a guest-produced marker; raw terminal text stays private.
+    """
+    global stage
+    machines = fields(ROOT / "github-machines.json")
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(
+            executable_path="/run/current-system/sw/bin/chromium", headless=True
+        )
+        try:
+            context = browser.new_context(storage_state=str(ROOT / "member-github-session.json"))
+            page = context.new_page()
+            stage = "shared member owner terminal"
+            page.goto(ORIGIN + "/machines/" + machines["owner"] + "/terminals")
+            connected(page)
+            expect(page.locator("#terminal-status")).to_have_attribute(
+                "data-status", "live", timeout=90000
+            )
+            page.locator("#terminal-pane-holder > div:not(.hidden) .xterm-helper-textarea").focus()
+            # Split the marker so echoed input cannot satisfy the assertion.
+            suffix = uuid.uuid4().hex
+            marker = "GITHUB_SHARED_" + suffix
+            stage = "shared member managed owner identity"
+            page.keyboard.type(
+                'test "$(id -un)" != root && sudo -n true && '
+                'test "$(gh api user --jq .login)" = owner-1 && '
+                "printf '\\nGITHUB_SHARED_%s\\n' '" + suffix + "'",
+                delay=2,
+            )
+            page.keyboard.press("Enter")
+            expect(
+                page.locator("#terminal-pane-holder > div:not(.hidden) .xterm-accessibility-tree")
+            ).to_contain_text(marker, timeout=90000)
+            context.close()
+        finally:
+            browser.close()
+
+
 try:
     mode = sys.argv[1] if len(sys.argv) == 2 else "create"
     if mode in {"create", "connect"}:
         run(create=mode == "create")
+    elif mode == "shared-writer":
+        shared_writer()
     else:
         control(mode)
 except Exception as error:

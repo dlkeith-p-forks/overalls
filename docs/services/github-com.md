@@ -179,3 +179,10 @@ needs recorded execution. The review and authenticated HLDD ledger distinguish
 presence from results. Parsers, mocked token replies, installed CLIs and
 structural gates do not establish live GitHub, organization consent,
 seven-family runtime or production acceptance.
+
+The 2026-10-19 controlled packaged edge run passed managed gh, Git, LFS,
+binary downloads, lease withdrawal and credential-redaction scenarios. It uses
+substituted Marshall/Lilly authority. Consult the
+[execution review](../architecture/reviews/2026-10-18-github-com-integration.md)
+for the revision and bounded result; browser OAuth, scheduled refresh and retained
+native fleet acceptance need their own records.

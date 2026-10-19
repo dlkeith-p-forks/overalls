@@ -617,6 +617,12 @@ def git_ownership_refused(result: subprocess.CompletedProcess[bytes]) -> None:
         or result.stdout
         or b"detected dubious ownership in repository" not in result.stderr
     ):
+        print(
+            f"native ownership refusal mismatch: status={result.returncode} "
+            f"stdout_bytes={len(result.stdout)} stderr_bytes={len(result.stderr)} "
+            f"dubious_ownership={b'detected dubious ownership in repository' in result.stderr}",
+            flush=True,
+        )
         raise RuntimeError("native unrelated repository ownership was not refused")
 
 
@@ -629,18 +635,22 @@ def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
     Managed-user Git MUST succeed for that exact checkout and MUST reject an
     unrelated root-owned repository with Git's actual dubious-ownership refusal.
     """
+    print("native workspace phase=source-delivery", flush=True)
     services.workspace(context.uds, context.boot.binding, repository.source())
     probe = partial(ssh, context.fixture, context.work / "known_hosts", network=context.network)
     deadline = time.monotonic() + 90
+    print("native workspace phase=checkout-completion", flush=True)
     while True:
         alive(context.process)
         status = probe('test "$(cat /run/overalls-workspace/status)" = done')
         if status.returncode == 0 and not status.stdout:
             break
         if time.monotonic() >= deadline:
+            print("native workspace outcome=completion-deadline", flush=True)
             raise RuntimeError("native workspace checkout deadline exceeded")
         time.sleep(0.5)
     root = "/workspace/unpublished-fixture"
+    print("native workspace phase=commit-and-shallow-verification", flush=True)
     success(
         probe(
             f"set -eu; test -f {root}/.git/shallow; test -w {root}; "
@@ -652,10 +662,12 @@ def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
         # Names originate only from the closed local fixture, never a request.
         if name not in git_fixture.FILES:
             raise RuntimeError("invalid native checkout fixture manifest")
+        print("native workspace phase=manifest-verification", flush=True)
         result = probe(f"set -eu; test -w {root}/{name}; cat {root}/{name}")
         if result.returncode != 0 or hashlib.sha256(result.stdout).hexdigest() != expected:
             raise RuntimeError("native workspace checkout bytes differ from the fixture")
     unrelated = "/workspace/native-unrelated-root-repository"
+    print("native workspace phase=unrelated-repository-preparation", flush=True)
     prepare = (
         f"set -eu; test ! -e {unrelated}; umask 022; mkdir {unrelated}; "
         f"{context.platform.git} -C {unrelated} init --quiet; printf native-unrelated-repository"
@@ -665,6 +677,14 @@ def checkout(context: BootContext, repository: git_fixture.Repository) -> None:
         b"native-unrelated-repository",
     )
     try:
+        print("native workspace phase=unrelated-ownership-refusal", flush=True)
+        safe_directories = probe(f"{context.platform.git} config --get-all safe.directory")
+        print(
+            "native workspace ownership policy: "
+            f"all_repositories={b'*' in safe_directories.stdout.splitlines()} "
+            f"workspace_wildcard={b'/workspace/*' in safe_directories.stdout.splitlines()}",
+            flush=True,
+        )
         git_ownership_refused(probe(f"{context.platform.git} -C {unrelated} status --porcelain"))
     finally:
         cleanup = f"rm -rf {unrelated}"

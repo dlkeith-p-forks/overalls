@@ -3898,3 +3898,22 @@ Tested scope: Declared reflection protocol, dedicated Peach control role and pro
 **Gaps:** Fresh/stale execution, credential expiry and generated rotation/revocation histories, host loss and same-host native network isolation need recorded property and machine execution; credential unit tests passed in the focused 40-test Marshall run, and the Peach fixture validates the codec without invoking the HTTP Plug
 
 **Preferred test work:** Add generated current/stale execution and dedicated credential histories, then run a packaged NixOS guest allowed/refused projection journey with Peach enabled and retain exact outcomes
+
+## Connect a personal GitHub account and use managed gh, Git and LFS through the VM owner identity
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, storage, recovery.
+
+Boundary: Marshall owns encrypted OAuth credentials and scheduled rotation; Galileo admits owner-bound requests at com-github.integration.internal using current execution and generation leases. Shared VM writers exercise the owner identity.
+
+Required refusal: Foreign or stale execution and generation authority cannot redeem capabilities; detach and disconnect withdraw authenticated admission. Guests cannot select credential recipients. Fresh anonymous requests carry no OAuth bearer.
+
+Tested scope: ADR-0202 owner integration; controlled packaged edge execution is recorded separately from real fleet OAuth, retained images and live GitHub acceptance.
+
+- **machine, recorded**: [withdrawing a current lease closes the same real upstream without retry](repo:nix/verification/tests/machines/github-integration/driver.py) — Packaged Galileo and managed clients with controlled provider and substituted control authority; no fleet/browser OAuth claim.; [execution record](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md).
+- **property, present**: [connection histories cannot publish before refresh or resurrect after disconnect](repo:marshall/test/marshall/github/state_machine_test.exs) — Generated connection state histories in the BEAM; test presence does not establish current execution or native isolation..
+- **machine, present**: [current_invocation != previous_invocation](repo:nix/verification/tests/machines/github-integration-fleet/driver.py) — Real owner detach followed by authorized stop/start and changed native execution; test present, execution pending..
+- **machine, present**: [github-fleet-shared-owner-identity](repo:nix/verification/tests/machines/github-integration-fleet/browser.py) — Linux browser shared writer uses owner identity through managed gh in a live personal terminal; Windows terminal acceptance remains separate..
+
+**Gaps:** The controlled edge fixture substitutes Marshall and Lilly authority. Full browser OAuth, scheduled rotation, shared-writer delegation, detach persistence across relocation, seven-family retained updates and live provider consent require separately recorded acceptance. Unknown rotation results require reconnect.
+
+**Preferred test work:** Run the real github-integration-fleet journey and platform variants; record independent state-machine and distributed settlement results, then qualify live GitHub and restore behavior.

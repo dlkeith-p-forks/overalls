@@ -109,7 +109,9 @@ class Repository:
     def response(self, method: str, host: str, path: str, body: bytes) -> Response | None:
         """@cc [owner:ghuntley,label:verification;security] native-git-fixture-closed-origin
         Only the exact synthetic repository's smart-HTTP advertisement and
-        upload-pack routes MUST execute Git. Request bytes MUST NOT become
+        upload-pack routes, and enabled receive-pack routes, MUST execute Git.
+        Advertisements MUST select exactly one matching service query; mutation
+        routes MUST reject queries. Request bytes MUST NOT become
         command arguments, environment, repository paths or shell input. The
         generated object graph, request, response and execution time are bounded.
         """
@@ -119,7 +121,7 @@ class Repository:
         host = host.partition(":")[0].lower()
         parsed = urlsplit(path)
         query = parse_qs(parsed.query, keep_blank_values=True)
-        path = parsed.path + (("?" + parsed.query) if parsed.query else "")
+        path = parsed.path
         if host == "com-github.integration.internal" and path.startswith("/git/"):
             host, path = HOST, path.removeprefix("/git")
         if host != HOST:
@@ -138,7 +140,7 @@ class Repository:
                 b"001e# service=git-upload-pack\n0000"
                 + self.command(["upload-pack", "--stateless-rpc", "--advertise-refs", bare]),
             )
-        if method == "POST" and path == PREFIX + "/git-upload-pack" and body:
+        if method == "POST" and path == PREFIX + "/git-upload-pack" and not parsed.query and body:
             return Response(
                 b"application/x-git-upload-pack-result",
                 self.command(["upload-pack", "--stateless-rpc", bare], body),
@@ -146,7 +148,8 @@ class Repository:
         if (
             self.allow_writes
             and method == "GET"
-            and path == PREFIX + "/info/refs?service=git-receive-pack"
+            and path == PREFIX + "/info/refs"
+            and query == {"service": ["git-receive-pack"]}
             and not body
         ):
             return Response(
@@ -154,7 +157,13 @@ class Repository:
                 b"001f# service=git-receive-pack\n0000"
                 + self.command(["receive-pack", "--stateless-rpc", "--advertise-refs", bare]),
             )
-        if self.allow_writes and method == "POST" and path == PREFIX + "/git-receive-pack" and body:
+        if (
+            self.allow_writes
+            and method == "POST"
+            and path == PREFIX + "/git-receive-pack"
+            and not parsed.query
+            and body
+        ):
             return Response(
                 b"application/x-git-receive-pack-result",
                 self.command(["receive-pack", "--stateless-rpc", bare], body),

@@ -184,7 +184,7 @@ let
     nativeBuildInputs = [ packages.toolchain.elixir ];
   } ''
     export ERL_FLAGS="+S 2:2"
-    elixir -r ${../../../../../protocol/lib/overalls_protocol/editor_release.ex} -r ${../../../../../protocol/lib/overalls_protocol/image_manifest.ex} -e '
+    elixir -r ${../../../../../protocol/lib/overalls_protocol/editor_release.ex} -r ${../../../../../protocol/lib/overalls_protocol/guest_agents.ex} -r ${../../../../../protocol/lib/overalls_protocol/image_manifest.ex} -e '
       [source, output] = System.argv()
       {:ok, image} = source |> File.read!() |> JSON.decode!() |> OverallsProtocol.ImageManifest.validate()
       File.write!(output, image.id)
