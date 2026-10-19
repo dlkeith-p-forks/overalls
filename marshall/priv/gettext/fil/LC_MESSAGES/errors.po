@@ -113,3 +113,219 @@ msgstr "dapat mas mataas sa o katumbas ng %{number}"
 
 msgid "must be equal to %{number}"
 msgstr "dapat katumbas ng %{number}"
+
+#: lib/marshall_web/controllers/error_html.ex:52
+#, elixir-autogen, elixir-format
+msgid "Back to Overalls"
+msgstr "Bumalik sa Overall"
+
+#: lib/marshall_web/controllers/error_html.ex:45
+#, elixir-autogen, elixir-format
+msgid "Overalls is briefly unavailable. This page will retry automatically."
+msgstr "Saglit na hindi available ang mga overall. Awtomatikong susubukan muli ang pahinang ito."
+
+#: lib/marshall_web/controllers/error_html.ex:48
+#, elixir-autogen, elixir-format
+msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
+msgstr "Hindi namin mabuksan ang pahinang ito. Bumalik sa iyong lugar-paggawa, o subukang muli maya-maya."
+
+#: lib/marshall_web/controllers/error_html.ex:103
+#, elixir-autogen, elixir-format
+msgid "Bad Gateway"
+msgstr "Masamang Gateway"
+
+#: lib/marshall_web/controllers/error_html.ex:72
+#, elixir-autogen, elixir-format
+msgid "Bad Request"
+msgstr "Masamang Kahilingan"
+
+#: lib/marshall_web/controllers/error_html.ex:81
+#, elixir-autogen, elixir-format
+msgid "Conflict"
+msgstr "Salungatan"
+
+#: lib/marshall_web/controllers/error_html.ex:89
+#, elixir-autogen, elixir-format
+msgid "Expectation Failed"
+msgstr "Nabigo ang Pag-asa"
+
+#: lib/marshall_web/controllers/error_html.ex:94
+#, elixir-autogen, elixir-format
+msgid "Failed Dependency"
+msgstr "Nabigong Dependency"
+
+#: lib/marshall_web/controllers/error_html.ex:75
+#, elixir-autogen, elixir-format
+msgid "Forbidden"
+msgstr "Bawal"
+
+#: lib/marshall_web/controllers/error_html.ex:105
+#, elixir-autogen, elixir-format
+msgid "Gateway Timeout"
+msgstr "Nag-time out ang gateway"
+
+#: lib/marshall_web/controllers/error_html.ex:82
+#, elixir-autogen, elixir-format
+msgid "Gone"
+msgstr "wala na"
+
+#: lib/marshall_web/controllers/error_html.ex:106
+#, elixir-autogen, elixir-format
+msgid "HTTP Version Not Supported"
+msgstr "Hindi Sinusuportahan ang Bersyon ng HTTP"
+
+#: lib/marshall_web/controllers/error_html.ex:90
+#, elixir-autogen, elixir-format
+msgid "I'm a teapot"
+msgstr "Ako ay isang tsarera"
+
+#: lib/marshall_web/controllers/error_html.ex:108
+#, elixir-autogen, elixir-format
+msgid "Insufficient Storage"
+msgstr "Hindi Sapat na Imbakan"
+
+#: lib/marshall_web/controllers/error_html.ex:101
+#: lib/marshall_web/controllers/error_html.ex:112
+#, elixir-autogen, elixir-format
+msgid "Internal Server Error"
+msgstr "Error sa Panloob na Server"
+
+#: lib/marshall_web/controllers/error_html.ex:83
+#, elixir-autogen, elixir-format
+msgid "Length Required"
+msgstr "Kinakailangan ang Haba"
+
+#: lib/marshall_web/controllers/error_html.ex:93
+#, elixir-autogen, elixir-format
+msgid "Locked"
+msgstr "Naka-lock"
+
+#: lib/marshall_web/controllers/error_html.ex:109
+#, elixir-autogen, elixir-format
+msgid "Loop Detected"
+msgstr "Natukoy ang Loop"
+
+#: lib/marshall_web/controllers/error_html.ex:77
+#, elixir-autogen, elixir-format
+msgid "Method Not Allowed"
+msgstr "Hindi Pinahihintulutan ang Paraan"
+
+#: lib/marshall_web/controllers/error_html.ex:91
+#, elixir-autogen, elixir-format
+msgid "Misdirected Request"
+msgstr "Maling Paghiling"
+
+#: lib/marshall_web/controllers/error_html.ex:111
+#, elixir-autogen, elixir-format
+msgid "Network Authentication Required"
+msgstr "Kinakailangan ang Network Authentication"
+
+#: lib/marshall_web/controllers/error_html.ex:78
+#, elixir-autogen, elixir-format
+msgid "Not Acceptable"
+msgstr "Hindi Katanggap-tanggap"
+
+#: lib/marshall_web/controllers/error_html.ex:110
+#, elixir-autogen, elixir-format
+msgid "Not Extended"
+msgstr "Hindi Extended"
+
+#: lib/marshall_web/controllers/error_html.ex:76
+#, elixir-autogen, elixir-format
+msgid "Not Found"
+msgstr "Hindi Nahanap"
+
+#: lib/marshall_web/controllers/error_html.ex:102
+#, elixir-autogen, elixir-format
+msgid "Not Implemented"
+msgstr "Hindi Naipatupad"
+
+#: lib/marshall_web/controllers/error_html.ex:74
+#, elixir-autogen, elixir-format
+msgid "Payment Required"
+msgstr "Kinakailangan ang Pagbabayad"
+
+#: lib/marshall_web/controllers/error_html.ex:84
+#, elixir-autogen, elixir-format
+msgid "Precondition Failed"
+msgstr "Nabigo ang Precondition"
+
+#: lib/marshall_web/controllers/error_html.ex:97
+#, elixir-autogen, elixir-format
+msgid "Precondition Required"
+msgstr "Kinakailangan ang Precondition"
+
+#: lib/marshall_web/controllers/error_html.ex:79
+#, elixir-autogen, elixir-format
+msgid "Proxy Authentication Required"
+msgstr "Kinakailangan ang Proxy Authentication"
+
+#: lib/marshall_web/controllers/error_html.ex:85
+#, elixir-autogen, elixir-format
+msgid "Request Entity Too Large"
+msgstr "Humiling ng Entity Masyadong Malaki"
+
+#: lib/marshall_web/controllers/error_html.ex:99
+#, elixir-autogen, elixir-format
+msgid "Request Header Fields Too Large"
+msgstr "Humiling ng Mga Field ng Header na Masyadong Malaki"
+
+#: lib/marshall_web/controllers/error_html.ex:80
+#, elixir-autogen, elixir-format
+msgid "Request Timeout"
+msgstr "Humiling ng Timeout"
+
+#: lib/marshall_web/controllers/error_html.ex:86
+#, elixir-autogen, elixir-format
+msgid "Request-URI Too Long"
+msgstr "Masyadong Mahaba ang Request-URI"
+
+#: lib/marshall_web/controllers/error_html.ex:88
+#, elixir-autogen, elixir-format
+msgid "Requested Range Not Satisfiable"
+msgstr "Hindi Nasiyahan ang Hiniling na Saklaw"
+
+#: lib/marshall_web/controllers/error_html.ex:104
+#, elixir-autogen, elixir-format
+msgid "Service Unavailable"
+msgstr "Hindi Available ang Serbisyo"
+
+#: lib/marshall_web/controllers/error_html.ex:95
+#, elixir-autogen, elixir-format
+msgid "Too Early"
+msgstr "Masyadong Maaga"
+
+#: lib/marshall_web/controllers/error_html.ex:98
+#, elixir-autogen, elixir-format
+msgid "Too Many Requests"
+msgstr "Napakaraming Kahilingan"
+
+#: lib/marshall_web/controllers/error_html.ex:73
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "Hindi awtorisado"
+
+#: lib/marshall_web/controllers/error_html.ex:100
+#, elixir-autogen, elixir-format
+msgid "Unavailable For Legal Reasons"
+msgstr "Hindi Available Para sa Mga Legal na Dahilan"
+
+#: lib/marshall_web/controllers/error_html.ex:92
+#, elixir-autogen, elixir-format
+msgid "Unprocessable Content"
+msgstr "Hindi Maprosesong Nilalaman"
+
+#: lib/marshall_web/controllers/error_html.ex:87
+#, elixir-autogen, elixir-format
+msgid "Unsupported Media Type"
+msgstr "Hindi sinusuportahang Uri ng Media"
+
+#: lib/marshall_web/controllers/error_html.ex:96
+#, elixir-autogen, elixir-format
+msgid "Upgrade Required"
+msgstr "Kinakailangan ang Pag-upgrade"
+
+#: lib/marshall_web/controllers/error_html.ex:107
+#, elixir-autogen, elixir-format
+msgid "Variant Also Negotiates"
+msgstr "Nakikipagnegosasyon din ang Variant"

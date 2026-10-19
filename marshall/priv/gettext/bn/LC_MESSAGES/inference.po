@@ -1,0 +1,204 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: bn\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/inference_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "AI request"
+msgstr "AI অনুরোধ"
+
+#: lib/marshall_web/live/inference_live.ex:101
+#, elixir-autogen, elixir-format
+msgid "AI requests"
+msgstr "AI অনুরোধসমূহ"
+
+#: lib/marshall_web/live/inference_live.ex:106
+#, elixir-autogen, elixir-format
+msgid "AI requests · last 30 days"
+msgstr "AI অনুরোধ · গত ৩০ দিন"
+
+#: lib/marshall_web/live/inference_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+msgstr "প্রতিটি মেশিনের মালিকের নামে AI ব্যবহার গণনা হয়। অসম্পূর্ণ ব্যবহার অজানা থাকে।"
+
+#: lib/marshall_web/live/inference_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "AI usage is unavailable."
+msgstr "AI ব্যবহার উপলভ্য নয়।"
+
+#: lib/marshall_web/live/inference_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "AI usage report"
+msgstr "AI ব্যবহার প্রতিবেদন"
+
+#: lib/marshall_web/live/inference_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "All providers"
+msgstr "সব প্রদানকারী"
+
+#: lib/marshall_web/live/inference_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Anthropic"
+msgstr "Anthropic"
+
+#: lib/marshall_web/live/inference_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "প্রয়োগ করুন"
+
+#: lib/marshall_web/live/inference_live.ex:112
+#, elixir-autogen, elixir-format
+msgid "Daily AI request counts over the past 30 days"
+msgstr "গত ৩০ দিনের দৈনিক কৃত্রিম বুদ্ধিমত্তার অনুরোধের সংখ্যা"
+
+#: lib/marshall_web/live/inference_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "বিবরণ"
+
+#: lib/marshall_web/live/inference_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Exact model ID"
+msgstr "সঠিক মডেল আইডি"
+
+#: lib/marshall_web/live/inference_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Export AI usage"
+msgstr "কৃত্রিম বুদ্ধিমত্তার ব্যবহার রপ্তানি করুন"
+
+#: lib/marshall_web/live/inference_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Filter"
+msgstr "ছাঁকুন"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "মেশিনবহরের কৃত্রিম বুদ্ধিমত্তার ব্যবহার"
+
+#: lib/marshall_web/live/inference_live.ex:102
+#, elixir-autogen, elixir-format
+msgid "Incomplete AI reports"
+msgstr "অসম্পূর্ণ কৃত্রিম বুদ্ধিমত্তার প্রতিবেদন"
+
+#: lib/marshall_web/live/inference_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "ইনপুট টোকেন"
+
+#: lib/marshall_web/live/inference_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Inspect"
+msgstr "পরীক্ষা করুন"
+
+#: lib/marshall_web/live/inference_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "মেশিন"
+
+#: lib/marshall_web/live/inference_live.ex:136
+#: lib/marshall_web/live/inference_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Model"
+msgstr "মডেল"
+
+#: lib/marshall_web/live/inference_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "No AI requests match these filters."
+msgstr "এই ছাঁকনিতে কোনো কৃত্রিম বুদ্ধিমত্তার অনুরোধ মেলেনি।"
+
+#: lib/marshall_web/live/inference_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Older AI requests →"
+msgstr "পুরোনো কৃত্রিম বুদ্ধিমত্তার অনুরোধ →"
+
+#: lib/marshall_web/live/inference_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
+msgstr "প্রতিদিনের একটি কলাম, পুরোনোটি আগে; █-এর আট সারি সবচেয়ে ব্যস্ত দিনের অনুপাতে দেখানো। লেবেলে মাসের দিন লেখা।"
+
+#: lib/marshall_web/live/inference_live.ex:130
+#, elixir-autogen, elixir-format
+msgid "OpenAI"
+msgstr "OpenAI"
+
+#: lib/marshall_web/live/inference_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Outcome"
+msgstr "ফলাফল"
+
+#: lib/marshall_web/live/inference_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Output tokens"
+msgstr "আউটপুট টোকেন"
+
+#: lib/marshall_web/live/inference_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Placement / epoch"
+msgstr "অবস্থান / যুগ"
+
+#: lib/marshall_web/live/inference_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Pricing source / version"
+msgstr "মূল্যের উৎস / সংস্করণ"
+
+#: lib/marshall_web/live/inference_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Provider"
+msgstr "সেবাদাতা"
+
+#: lib/marshall_web/live/inference_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Reported input tokens"
+msgstr "প্রতিবেদিত ইনপুট টোকেন"
+
+#: lib/marshall_web/live/inference_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Reported output tokens"
+msgstr "প্রতিবেদিত আউটপুট টোকেন"
+
+#: lib/marshall_web/live/inference_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "সময়"
+
+#: lib/marshall_web/live/inference_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Token cost estimate · USD"
+msgstr "টোকেনের আনুমানিক খরচ · USD"
+
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "পাওয়া যাচ্ছে না"
+
+#: lib/marshall_web/live/inference_live.ex:60
+#: lib/marshall_web/live/inference_live.ex:178
+#: lib/marshall_web/live/inference_live.ex:185
+#: lib/marshall_web/live/inference_live.ex:188
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "অজানা"
+
+#: lib/marshall_web/live/inference_live.ex:168
+#, elixir-autogen, elixir-format
+msgid "Unreported"
+msgstr "প্রতিবেদিত নয়"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Your AI usage"
+msgstr "আপনার কৃত্রিম বুদ্ধিমত্তার ব্যবহার"

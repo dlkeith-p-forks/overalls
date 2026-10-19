@@ -13,7 +13,7 @@ defmodule Porsche.SSH.Output do
     rows =
       for %{"usage" => usage, "summary" => summary} <- commands,
           is_binary(usage) and is_binary(summary),
-          do: safe(usage) <> "\n  " <> safe(Gettext.gettext(Porsche.Gettext, summary))
+          do: safe(usage) <> "\n  " <> safe(Gettext.dgettext(Porsche.Gettext, "help", summary))
 
     if rows == [], do: human(response), else: Enum.join(rows, "\n") <> "\n"
   end
@@ -49,200 +49,249 @@ defmodule Porsche.SSH.Output do
   defp error_message(reason) do
     case reason do
       "unauthorized" ->
-        gettext("This connection is not authorized. Please sign in and try again.")
+        dgettext("management", "This connection is not authorized. Please sign in and try again.")
 
       "forbidden" ->
-        gettext("You do not have permission to perform this action.")
+        dgettext("management", "You do not have permission to perform this action.")
 
       "invalid_command" ->
-        gettext("Invalid command. Type help to see available commands.")
+        dgettext("management", "Invalid command. Type help to see available commands.")
 
       "temporarily_unavailable" ->
-        gettext("The service is temporarily unavailable. Please try again shortly.")
+        dgettext(
+          "management",
+          "The service is temporarily unavailable. Please try again shortly."
+        )
 
       "approval_required" ->
-        gettext("Approve this SSH key in your browser, then retry the command.")
+        dgettext("management", "Approve this SSH key in your browser, then retry the command.")
 
       "not_found" ->
-        gettext("The requested resource could not be found.")
+        dgettext("management", "The requested resource could not be found.")
 
       "unexpected_input" ->
-        gettext("Unexpected input. Please open a new SSH connection.")
+        dgettext("management", "Unexpected input. Please open a new SSH connection.")
 
       "machine_pinned" ->
-        gettext("The owner has this machine pinned; unpin it first: unpin MACHINE")
+        dgettext("management", "The owner has this machine pinned; unpin it first: unpin MACHINE")
 
       "machine_failed" ->
-        gettext("A failed machine cannot be pinned; an existing pin can still be removed.")
+        dgettext(
+          "management",
+          "A failed machine cannot be pinned; an existing pin can still be removed."
+        )
 
       "pin_limit" ->
-        gettext("You already hold the maximum number of pins; unpin one first.")
+        dgettext("management", "You already hold the maximum number of pins; unpin one first.")
 
       "insufficient_capacity" ->
-        gettext("There is not enough available capacity for this request.")
+        dgettext("management", "There is not enough available capacity for this request.")
 
       "host_unavailable" ->
-        gettext("The machine's host is unavailable. Please try again shortly.")
+        dgettext("management", "The machine's host is unavailable. Please try again shortly.")
 
       "clone_already_published" ->
-        gettext("This clone has already been published and cannot be retried or cancelled.")
+        dgettext(
+          "management",
+          "This clone has already been published and cannot be retried or cancelled."
+        )
 
       "clone_not_retryable" ->
-        gettext("This clone request cannot be retried in its current state.")
+        dgettext("management", "This clone request cannot be retried in its current state.")
 
       "clone_in_progress" ->
-        gettext("A clone request is already in progress for this machine.")
+        dgettext("management", "A clone request is already in progress for this machine.")
 
       "idempotency_conflict" ->
-        gettext(
+        dgettext(
+          "management",
           "This request ID was already used for a different command. Use the original command or a new request ID."
         )
 
       "workload_not_stable" ->
-        gettext(
+        dgettext(
+          "management",
           "The machine's workload is not stable enough for this operation. Check its state before retrying."
         )
 
       "source_unavailable" ->
-        gettext("The source machine is unavailable for this operation.")
+        dgettext("management", "The source machine is unavailable for this operation.")
 
       "transfer_busy" ->
-        gettext(
+        dgettext(
+          "management",
           "A transfer is already using this host's transfer slot. Please try again after it finishes."
         )
 
       "source_cleanup_pending" ->
-        gettext("Source cleanup is still pending. Wait for cleanup before retrying.")
+        dgettext(
+          "management",
+          "Source cleanup is still pending. Wait for cleanup before retrying."
+        )
 
       "resize_in_progress" ->
-        gettext("A resize request is already in progress for this machine.")
+        dgettext("management", "A resize request is already in progress for this machine.")
 
       "relocation_in_progress" ->
-        gettext("A relocation is already in progress for this machine.")
+        dgettext("management", "A relocation is already in progress for this machine.")
 
       "relocation_committed" ->
-        gettext("This relocation has committed its handoff and can no longer be cancelled.")
+        dgettext(
+          "management",
+          "This relocation has committed its handoff and can no longer be cancelled."
+        )
 
       "relocation_finished" ->
-        gettext("This relocation has already finished.")
+        dgettext("management", "This relocation has already finished.")
 
       "relocation_retry_unavailable" ->
-        gettext("This relocation cannot be retried in its current state.")
+        dgettext("management", "This relocation cannot be retried in its current state.")
 
       "placement_changed" ->
-        gettext("The machine's placement has changed. Inspect its current state before retrying.")
+        dgettext(
+          "management",
+          "The machine's placement has changed. Inspect its current state before retrying."
+        )
 
       "name_unavailable" ->
-        gettext("This machine name is unavailable. Choose another name.")
+        dgettext("management", "This machine name is unavailable. Choose another name.")
 
       "invalid_request" ->
-        gettext("The request is invalid. Check the command and its arguments.")
+        dgettext("management", "The request is invalid. Check the command and its arguments.")
 
       "conflict" ->
-        gettext(
+        dgettext(
+          "management",
           "The request conflicts with the current state. Inspect the machine or request before retrying."
         )
 
       "message_too_large" ->
-        gettext("The request or response exceeds the permitted size.")
+        dgettext("management", "The request or response exceeds the permitted size.")
 
       "rate_limited" ->
-        gettext(
+        dgettext(
+          "management",
           "Too many sessions or approval requests are active. Close an unused connection and try again."
         )
 
       "unsupported_version" ->
-        gettext(
+        dgettext(
+          "management",
           "The service does not support this protocol version. Ask your operator to update the compatible services."
         )
 
       "transport_error" ->
-        gettext(
+        dgettext(
+          "management",
           "The connection to the control service was interrupted. Check the request status before submitting it again."
         )
 
       "invalid_response" ->
-        gettext(
+        dgettext(
+          "management",
           "The control service returned an invalid response. Check the request status before submitting it again."
         )
 
       "http_error" ->
-        gettext(
+        dgettext(
+          "management",
           "The control service refused the request. Check the request status before submitting it again."
         )
 
       "invalid_configuration" ->
-        gettext("The service configuration is invalid. Contact your operator.")
+        dgettext("management", "The service configuration is invalid. Contact your operator.")
 
       "vm_deleted" ->
-        gettext("This machine has been deleted.")
+        dgettext("management", "This machine has been deleted.")
 
       "image_unavailable" ->
-        gettext("The requested machine image is unavailable.")
+        dgettext("management", "The requested machine image is unavailable.")
 
       "image_requirements_not_met" ->
-        gettext("The available host does not meet the machine image's requirements.")
+        dgettext(
+          "management",
+          "The available host does not meet the machine image's requirements."
+        )
 
       "invalid_vm_size" ->
-        gettext("The requested machine size is invalid. Check the CPU, memory and disk limits.")
+        dgettext(
+          "management",
+          "The requested machine size is invalid. Check the CPU, memory and disk limits."
+        )
 
       "disk_not_reserved" ->
-        gettext("The machine's disk is not reserved for this operation.")
+        dgettext("management", "The machine's disk is not reserved for this operation.")
 
       "generation_exhausted" ->
-        gettext("This machine has reached its execution generation limit. Contact your operator.")
+        dgettext(
+          "management",
+          "This machine has reached its execution generation limit. Contact your operator."
+        )
 
       "owner_protected" ->
-        gettext("This action cannot remove the owner's protected access.")
+        dgettext("management", "This action cannot remove the owner's protected access.")
 
       "recipient_not_registered" ->
-        gettext("The recipient does not have a registered account.")
+        dgettext("management", "The recipient does not have a registered account.")
 
       "workspace_source_not_allowed" ->
-        gettext("A repository source is not allowed for this machine profile.")
+        dgettext("management", "A repository source is not allowed for this machine profile.")
 
       "workspace_source_unavailable" ->
-        gettext("The repository source is unavailable.")
+        dgettext("management", "The repository source is unavailable.")
 
       "invalid_workspace_source" ->
-        gettext("The repository source is invalid. Use a supported public repository URL.")
+        dgettext(
+          "management",
+          "The repository source is invalid. Use a supported public repository URL."
+        )
 
       "resize_not_retryable" ->
-        gettext("This resize request cannot be retried in its current state.")
+        dgettext("management", "This resize request cannot be retried in its current state.")
 
       "resize_not_cancellable" ->
-        gettext("This resize request cannot be cancelled in its current state.")
+        dgettext("management", "This resize request cannot be cancelled in its current state.")
 
       "stop_unconfirmed" ->
-        gettext("The machine's stop has not been confirmed. Inspect its state before retrying.")
+        dgettext(
+          "management",
+          "The machine's stop has not been confirmed. Inspect its state before retrying."
+        )
 
       "stale_generation" ->
-        gettext(
+        dgettext(
+          "management",
           "The machine's execution generation has changed. Inspect its current state before retrying."
         )
 
       "request_not_found" ->
-        gettext("The requested command receipt could not be found.")
+        dgettext("management", "The requested command receipt could not be found.")
 
       "key_not_found" ->
-        gettext("The requested SSH key could not be found.")
+        dgettext("management", "The requested SSH key could not be found.")
 
       "https_required" ->
-        gettext("This connection requires verified HTTPS. Contact your operator.")
+        dgettext("management", "This connection requires verified HTTPS. Contact your operator.")
 
       "session_limit" ->
-        gettext("The session limit has been reached. Close an unused connection and try again.")
+        dgettext(
+          "management",
+          "The session limit has been reached. Close an unused connection and try again."
+        )
 
       "approval_limit" ->
-        gettext(
+        dgettext(
+          "management",
           "The approval request limit has been reached. Close an unused connection and try again."
         )
 
       "invalid_public_key" ->
-        gettext("The SSH public key is invalid. Check the key and try again.")
+        dgettext("management", "The SSH public key is invalid. Check the key and try again.")
 
       _ ->
-        gettext("The command could not be completed: %{reason}", reason: safe(reason))
+        dgettext("management", "The command could not be completed: %{reason}",
+          reason: safe(reason)
+        )
     end
   end
 
@@ -259,18 +308,18 @@ defmodule Porsche.SSH.Output do
   end
 
   @spec label(String.t()) :: String.t()
-  defp label("version"), do: gettext("Protocol version")
-  defp label("status"), do: gettext("Status")
-  defp label("request_id"), do: gettext("Request ID")
-  defp label("operation_id"), do: gettext("Operation ID")
-  defp label("result"), do: gettext("Result")
+  defp label("version"), do: dgettext("management", "Protocol version")
+  defp label("status"), do: dgettext("management", "Status")
+  defp label("request_id"), do: dgettext("management", "Request ID")
+  defp label("operation_id"), do: dgettext("management", "Operation ID")
+  defp label("result"), do: dgettext("management", "Result")
   defp label(key), do: safe(key)
 
   @spec field_value(String.t(), term()) :: String.t()
-  defp field_value("status", "accepted"), do: gettext("Accepted")
-  defp field_value("status", "succeeded"), do: gettext("Succeeded")
-  defp field_value("status", "failed"), do: gettext("Failed")
-  defp field_value("status", "superseded"), do: gettext("Superseded")
+  defp field_value("status", "accepted"), do: dgettext("management", "Accepted")
+  defp field_value("status", "succeeded"), do: dgettext("management", "Succeeded")
+  defp field_value("status", "failed"), do: dgettext("management", "Failed")
+  defp field_value("status", "superseded"), do: dgettext("management", "Superseded")
   defp field_value(_key, value), do: value(value)
 
   @spec value(term()) :: String.t()
@@ -294,8 +343,8 @@ defmodule Porsche.SSH.Output do
 
   @spec progress(map()) :: binary()
   def progress(%{event: :submitting, request_id: id}),
-    do: gettext("Request %{id}: submitting", id: safe(id)) <> "\n"
+    do: dgettext("management", "Request %{id}: submitting", id: safe(id)) <> "\n"
 
   def progress(%{event: :waiting, request_id: id}),
-    do: gettext("Request %{id}: waiting for completion", id: safe(id)) <> "\n"
+    do: dgettext("management", "Request %{id}: waiting for completion", id: safe(id)) <> "\n"
 end

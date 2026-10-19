@@ -1,0 +1,141 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: te\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/controllers/auth_controller.ex:89
+#, elixir-autogen, elixir-format
+msgid "An account with this email already exists. We've sent a link to that\naddress - confirm it to finish linking this provider to your account.\n"
+msgstr ""
+"ఈ ఇమెయిల్‌తో ఖాతా ఇప్పటికే ఉంది. ఆ\n"
+"చిరునామాకు లింక్ పంపాము; ఈ ప్రొవైడర్‌ను మీ ఖాతాతో అనుసంధానించడానికి దాన్ని నిర్ధారించండి.\n"
+
+#: lib/marshall_web/auth_overrides.ex:15
+#: lib/marshall_web/auth_text.ex:29
+#, elixir-autogen, elixir-format
+msgid "Check your email for a sign-in link. Your account will be created automatically when you sign in."
+msgstr ""
+"సైన్ ఇన్ లింక్ కోసం ఇమెయిల్ చూడండి. సైన్ ఇన్ చేసినప్పుడు ఖాతా స్వయంచాలకంగా "
+"సృష్టించబడుతుంది."
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "Continue to Overalls"
+msgstr "Overalls కు కొనసాగండి"
+
+#: lib/marshall_web/auth_text.ex:23
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "ఇమెయిల్"
+
+#: lib/marshall_web/auth_text.ex:14
+#, elixir-autogen, elixir-format
+msgid "Email me a sign-in link"
+msgstr "సైన్ ఇన్ లింక్‌ను ఇమెయిల్ చేయండి"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:153
+#, elixir-autogen, elixir-format
+msgid "If you did not request this, ignore this email."
+msgstr "మీరు అభ్యర్థించకపోతే ఈ ఇమెయిల్‌ను విస్మరించండి."
+
+#: lib/marshall_web/controllers/auth_controller.ex:95
+#, elixir-autogen, elixir-format
+msgid "Incorrect email or password"
+msgstr "ఇమెయిల్ లేదా పాస్‌వర్డ్ తప్పు"
+
+#: lib/marshall_web/auth_text.ex:26
+#, elixir-autogen, elixir-format
+msgid "Remember me"
+msgstr "నన్ను గుర్తుంచుకో"
+
+#: lib/marshall_web/auth_text.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sending link…"
+msgstr "లింక్ పంపుతోంది…"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:149
+#: lib/marshall_web/auth_text.ex:20
+#, elixir-autogen, elixir-format
+msgid "Sign in"
+msgstr "సైన్ ఇన్"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:146
+#, elixir-autogen, elixir-format
+msgid "Sign in to Overalls:"
+msgstr "Overallsలో సైన్ ఇన్ చేయండి:"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:138
+#, elixir-autogen, elixir-format
+msgid "Sign in to Overalls: %{link}\n\nIf you did not request this, ignore this email."
+msgstr ""
+"Overallsలో సైన్ ఇన్ చేయండి: %{link}\n"
+"\n"
+"మీరు అభ్యర్థించకపోతే ఈ ఇమెయిల్‌ను విస్మరించండి."
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Sign-in unavailable"
+msgstr "సైన్ ఇన్ అందుబాటులో లేదు"
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:27
+#, elixir-autogen, elixir-format
+msgid "Signing you in"
+msgstr "మిమ్మల్ని సైన్ ఇన్ చేస్తోంది"
+
+#: lib/marshall_web/controllers/audi_login_controller.ex:44
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "అందుబాటులో లేదు"
+
+#: lib/marshall_web/controllers/auth_controller.ex:38
+#, elixir-autogen, elixir-format
+msgid "You are now signed in"
+msgstr "ఇప్పుడు సైన్ ఇన్ అయ్యారు"
+
+#: lib/marshall_web/controllers/auth_controller.ex:152
+#, elixir-autogen, elixir-format
+msgid "You are now signed out"
+msgstr "ఇప్పుడు సైన్ అవుట్ అయ్యారు"
+
+#: lib/marshall_web/controllers/auth_controller.ex:80
+#, elixir-autogen, elixir-format
+msgid "You have already signed in another way, but have not confirmed your account.\nYou can confirm your account using the link we sent to you, or by resetting your password.\n"
+msgstr ""
+"మరో విధంగా సైన్ ఇన్ చేశారు, కానీ ఖాతా నిర్ధారించలేదు.\n"
+"పంపిన లింక్ ద్వారా లేదా పాస్‌వర్డ్ రీసెట్ చేసి నిర్ధారించవచ్చు.\n"
+
+#: lib/marshall/accounts/deliver_auth_email.ex:135
+#, elixir-autogen, elixir-format
+msgid "Your Overalls sign-in link"
+msgstr "మీ Overalls సైన్ ఇన్ లింక్"
+
+#: lib/marshall_web/controllers/auth_controller.ex:36
+#, elixir-autogen, elixir-format
+msgid "Your email address has now been confirmed"
+msgstr "ఇమెయిల్ చిరునామా నిర్ధారించబడింది"
+
+#: lib/marshall_web/automatic_magic_sign_in_live.ex:28
+#, elixir-autogen, elixir-format
+msgid "Your email link is being verified."
+msgstr "మీ ఇమెయిల్ లింక్ ధృవీకరించబడుతోంది."
+
+#: lib/marshall_web/controllers/auth_controller.ex:37
+#, elixir-autogen, elixir-format
+msgid "Your password has successfully been reset"
+msgstr "పాస్‌వర్డ్ విజయవంతంగా రీసెట్ అయింది"
+
+#: lib/marshall_web/controllers/auth_controller.ex:58
+#, elixir-autogen, elixir-format
+msgid "Your sign-in is no longer valid. Request a new sign-in link."
+msgstr "సైన్ ఇన్ ఇక చెల్లదు. కొత్త లింక్ అభ్యర్థించండి."

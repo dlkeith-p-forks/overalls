@@ -1,0 +1,267 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: pcm\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/teams_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "%{count} member"
+msgid_plural "%{count} members"
+msgstr[0] "%{count} team member"
+msgstr[1] "%{count} team member"
+
+#: lib/marshall_web/live/teams_live.ex:270
+#, elixir-autogen, elixir-format
+msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
+msgstr "Team get one owner. Ownership go change only when di person wey get di offer accept am; di former owner go become admin."
+
+#: lib/marshall_web/live/teams_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Accept ownership"
+msgstr "Accept to be owner"
+
+#: lib/marshall_web/live/teams_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Add, change or remove a member"
+msgstr "Put, change or remove team member"
+
+#: lib/marshall_web/live/teams_live.ex:257
+#, elixir-autogen, elixir-format
+msgid "Admin"
+msgstr "Di admin"
+
+#: lib/marshall_web/live/teams_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "Administrator"
+msgstr "Di administrator"
+
+#: lib/marshall_web/live/teams_live.ex:218
+#, elixir-autogen, elixir-format
+msgid "Can"
+msgstr "E fit"
+
+#: lib/marshall_web/live/teams_live.ex:347
+#, elixir-autogen, elixir-format
+msgid "Cancel offer"
+msgstr "Cancel di offer"
+
+#: lib/marshall_web/live/teams_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Could not create this team."
+msgstr "We no fit create this team."
+
+#: lib/marshall_web/live/teams_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Could not offer ownership."
+msgstr "We no fit offer ownership."
+
+#: lib/marshall_web/live/teams_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Could not update this membership."
+msgstr "We no fit update this membership."
+
+#: lib/marshall_web/live/teams_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Could not update this ownership offer."
+msgstr "We no fit update this ownership offer."
+
+#: lib/marshall_web/live/teams_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Create a team"
+msgstr "Make one team"
+
+#: lib/marshall_web/live/teams_live.ex:362
+#, elixir-autogen, elixir-format
+msgid "Create team"
+msgstr "Make team"
+
+#: lib/marshall_web/live/teams_live.ex:337
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "No accept am"
+
+#: lib/marshall_web/live/teams_live.ex:377
+#, elixir-autogen, elixir-format
+msgid "Everything, including appointing admins and offering ownership."
+msgstr "Everything, including to choose admins and offer ownership."
+
+#: lib/marshall_web/live/teams_live.ex:44
+#: lib/marshall_web/live/teams_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Di request no correct."
+
+#: lib/marshall_web/live/teams_live.ex:379
+#, elixir-autogen, elixir-format
+msgid "Manage members and team machines."
+msgstr "Manage members and machines for di team."
+
+#: lib/marshall_web/live/teams_live.ex:216
+#: lib/marshall_web/live/teams_live.ex:258
+#: lib/marshall_web/live/teams_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "Member"
+msgstr "Team member"
+
+#: lib/marshall_web/live/teams_live.ex:211
+#, elixir-autogen, elixir-format
+msgid "Members"
+msgstr "Di members"
+
+#: lib/marshall_web/live/teams_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Membership updated."
+msgstr "We don update membership."
+
+#: lib/marshall_web/live/teams_live.ex:352
+#, elixir-autogen, elixir-format
+msgid "No pending ownership offer."
+msgstr "No ownership offer dey wait."
+
+#: lib/marshall_web/live/teams_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Offer ownership"
+msgstr "Offer person ownership"
+
+#: lib/marshall_web/live/teams_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "Offer ownership to"
+msgstr "Offer ownership give"
+
+#: lib/marshall_web/live/teams_live.ex:290
+#, elixir-autogen, elixir-format
+msgid "Offered by"
+msgstr "Person wey offer am"
+
+#: lib/marshall_web/live/teams_live.ex:299
+#, elixir-autogen, elixir-format
+msgid "Offered to"
+msgstr "Person wey get di offer"
+
+#: lib/marshall_web/live/teams_live.ex:371
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "Di owner"
+
+#: lib/marshall_web/live/teams_live.ex:268
+#, elixir-autogen, elixir-format
+msgid "Ownership"
+msgstr "Who own am"
+
+#: lib/marshall_web/live/teams_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Ownership offer sent."
+msgstr "We don send ownership offer."
+
+#: lib/marshall_web/live/teams_live.ex:107
+#, elixir-autogen, elixir-format
+msgid "Ownership offer updated."
+msgstr "We don update ownership offer."
+
+#: lib/marshall_web/live/teams_live.ex:313
+#, elixir-autogen, elixir-format
+msgid "Ownership offered by %{value1} to %{value2}."
+msgstr "%{value1} don offer ownership to %{value2}."
+
+#: lib/marshall_web/live/teams_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Registered email"
+msgstr "Email wey register"
+
+#: lib/marshall_web/live/teams_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Remove am"
+
+#: lib/marshall_web/live/teams_live.ex:217
+#: lib/marshall_web/live/teams_live.ex:254
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Di role"
+
+#: lib/marshall_web/live/teams_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Save member"
+msgstr "Save di member"
+
+#: lib/marshall_web/live/teams_live.ex:180
+#, elixir-autogen, elixir-format
+msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
+msgstr "Share machines and integrations with people wey you dey work with. Owners dey choose admins, admins dey manage members."
+
+#: lib/marshall_web/live/teams_live.ex:308
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "How far e don go"
+
+#: lib/marshall_web/live/teams_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Team %{value1} created."
+msgstr "We don create team %{value1}."
+
+#: lib/marshall_web/live/teams_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "Team name"
+msgstr "Name for di team"
+
+#: lib/marshall_web/live/teams_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "Teams"
+msgstr "Di teams"
+
+#: lib/marshall_web/live/teams_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Teams are temporarily unavailable."
+msgstr "Teams no dey available now."
+
+#: lib/marshall_web/live/teams_live.ex:380
+#, elixir-autogen, elixir-format
+msgid "Use team machines and integrations."
+msgstr "Use machines and integrations for di team."
+
+#: lib/marshall_web/live/teams_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
+msgstr "You never join team. Create one below, or ask team admin to add you."
+
+#: lib/marshall_web/live/teams_live.ex:359
+#, elixir-autogen, elixir-format
+msgid "You become its owner and can add members straight away."
+msgstr "You go become di owner and you fit add members straight away."
+
+#: lib/marshall_web/live/teams_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Your role: %{role}"
+msgstr "Your role na: %{role}"
+
+#: lib/marshall_web/live/teams_live.ex:189
+#, elixir-autogen, elixir-format
+msgid "Your teams"
+msgstr "Your own teams"
+
+#: lib/marshall_web/live/teams_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "pending"
+msgstr "e dey wait"
+
+#: lib/marshall_web/live/teams_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "platform"
+msgstr "di platform"
+
+#: lib/marshall_web/live/teams_live.ex:250
+#: lib/marshall_web/live/teams_live.ex:284
+#, elixir-autogen, elixir-format
+msgid "teammate@example.test"
+msgstr "teammate@example.test"

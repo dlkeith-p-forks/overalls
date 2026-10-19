@@ -37,6 +37,15 @@ terminal bytes.
    compatibility after convergence under ADR-0159.
 5. Persist only the validated override. Authorization, session isolation,
    fallback behavior and translation completeness are tested as contracts.
+6. Organize native Gettext catalogs by locale and feature domain. Source strings,
+   contexts and plurals retain their identity within the owning feature; reusable
+   components own shared messages. Public `/docs/*` prose is localized. Handbook
+   chapter contents, titles and generated command references remain English,
+   independently of the reader controls' active language.
+7. Render supported scripts with the bundled font fallbacks in ADR-0207 while
+   retaining native shaping, validated HTML language and the existing presentation
+   constraints. Catalog coverage and font character coverage are separate from
+   observed browser legibility and layout.
 
 ## Consequences
 
@@ -62,10 +71,14 @@ The baseline human surfaces are [AccountLive](../../../marshall/lib/marshall_web
 
 ## Open questions
 
-Native linguistic review and packaged browser/Porsche execution remain unverified.
+Packaged browser/Porsche execution and complete translation coverage remain
+unverified. Native-speaker review is not a release requirement for this task.
 
 ## Related decisions
 
 - [ADR-0159](0159-remove-legacy-compatibility.md): converged compatibility lifetime.
 - [ADR-0196](0196-single-account-settings-page.md): account settings placement.
-- [ADR-0161](0161-monospace-web-presentation.md): presentation constraints.
+- [ADR-0161](0161-monospace-web-presentation.md): presentation constraints carried
+  forward by ADR-0207.
+- [ADR-0207](0207-bundled-multilingual-font-fallback.md): local script font coverage
+  and native shaping.

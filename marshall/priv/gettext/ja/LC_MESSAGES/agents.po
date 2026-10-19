@@ -1,0 +1,1555 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ja\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/threads_live.ex:1480
+#, elixir-autogen, elixir-format
+msgid "%{value1} Reasoning stays with this thread. Switch between Plan and Work as needed."
+msgstr "%{value1} 推論はこのスレッドに残ります。必要に応じて、「計画」と「作業」を切り替えます。"
+
+#: lib/marshall_web/live/threads_live.ex:2100
+#, elixir-autogen, elixir-format
+msgid "%{value1} reasoning"
+msgstr "%{value1} 推論"
+
+#: lib/marshall_web/live/threads_live.ex:2614
+#: lib/marshall_web/live/threads_live.ex:2616
+#, elixir-autogen, elixir-format
+msgid "A context source could not be fully loaded."
+msgstr "コンテキスト ソースを完全にロードできませんでした。"
+
+#: lib/marshall_web/live/threads_live.ex:1492
+#, elixir-autogen, elixir-format
+msgid "A machine of its own."
+msgstr "独自のマシン。"
+
+#: lib/marshall_web/live/threads_live.ex:1288
+#, elixir-autogen, elixir-format
+msgid "A selected skill is no longer available. Reload Skills and select its current source."
+msgstr "選択したスキルは使用できなくなりました。スキルをリロードし、現在のソースを選択します。"
+
+#: lib/marshall_web/live/threads_live.ex:1371
+#, elixir-autogen, elixir-format
+msgid "A space for your next idea"
+msgstr "次のアイデアのためのスペース"
+
+#: lib/marshall_web/live/threads_live.ex:1883
+#, elixir-autogen, elixir-format
+msgid "Access details are temporarily unavailable. Close sharing and try again shortly."
+msgstr "アクセスの詳細は一時的に利用できなくなります。共有を閉じて、すぐに再試行してください。"
+
+#: lib/marshall_web/live/threads_live.ex:1853
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "アクション"
+
+#: lib/marshall_web/live/threads_live.ex:1569
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "アクティブ"
+
+#: lib/marshall_web/live/threads_live.ex:1359
+#: lib/marshall_web/live/threads_live.ex:1633
+#, elixir-autogen, elixir-format
+msgid "Activity"
+msgstr "活動"
+
+#: lib/marshall_web/live/agent_threads_live.ex:111
+#: lib/marshall_web/live/threads_live.ex:2647
+#, elixir-autogen, elixir-format
+msgid "Agent"
+msgstr "エージェント"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Agent CLI approved for one hour. Return to your terminal."
+msgstr "エージェント CLI は 1 時間承認されました。端末に戻ります。"
+
+#: lib/marshall_web/live/agent_threads_live.ex:112
+#: lib/marshall_web/live/agent_threads_live.ex:136
+#: lib/marshall_web/live/threads_live.ex:2655
+#, elixir-autogen, elixir-format
+msgid "Agent started working"
+msgstr "エージェントが作業を開始しました"
+
+#: lib/marshall_web/live/agent_threads_live.ex:162
+#, elixir-autogen, elixir-format
+msgid "Agents"
+msgstr "エージェント"
+
+#: lib/marshall_web/live/threads_live.ex:1108
+#, elixir-autogen, elixir-format
+msgid "All teams"
+msgstr "全チーム"
+
+#: lib/marshall_web/live/threads_live.ex:1568
+#: lib/marshall_web/live/threads_live.ex:1660
+#, elixir-autogen, elixir-format
+msgid "All threads"
+msgstr "すべてのスレッド"
+
+#: lib/marshall_web/live/threads_live.ex:1689
+#, elixir-autogen, elixir-format
+msgid "All visible"
+msgstr "すべて表示されます"
+
+#: lib/marshall_web/live/threads_live.ex:2165
+#, elixir-autogen, elixir-format
+msgid "An operator can answer these questions."
+msgstr "オペレーターはこれらの質問に答えることができます。"
+
+#: lib/marshall_web/live/threads_live.ex:1263
+#, elixir-autogen, elixir-format
+msgid "Answer each question with a choice, your own answer, or both."
+msgstr "各質問に、選択肢、独自の答え、またはその両方で答えてください。"
+
+#: lib/marshall_web/live/threads_live.ex:2119
+#, elixir-autogen, elixir-format
+msgid "Answer these questions to continue the plan."
+msgstr "計画を続行するには、次の質問に答えてください。"
+
+#: lib/marshall_web/live/threads_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Answers submitted."
+msgstr "回答は提出されました。"
+
+#: lib/marshall_web/live/threads_live.ex:1676
+#, elixir-autogen, elixir-format
+msgid "Any time"
+msgstr "いつでも"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Approve CLI access"
+msgstr "CLI アクセスを承認する"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:64
+#, elixir-autogen, elixir-format
+msgid "Approve agent CLI"
+msgstr "エージェント CLI の承認"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr "承認中…"
+
+#: lib/marshall_web/live/threads_live.ex:1856
+#, elixir-autogen, elixir-format
+msgid "Archive"
+msgstr "アーカイブ"
+
+#: lib/marshall_web/live/threads_live.ex:1570
+#: lib/marshall_web/live/threads_live.ex:1666
+#: lib/marshall_web/live/threads_live.ex:2634
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "アーカイブ済み"
+
+#: lib/marshall_web/live/threads_live.ex:2209
+#, elixir-autogen, elixir-format
+msgid "Archived thread. The transcript is read-only. Reopen to continue on a new machine."
+msgstr "アーカイブされたスレッド。トランスクリプトは読み取り専用です。新しいマシンで続行するには、再度開いてください。"
+
+#: lib/marshall_web/live/threads_live.ex:2643
+#, elixir-autogen, elixir-format
+msgid "Archived · conversation retained"
+msgstr "アーカイブ済み · 会話は保持されます"
+
+#: lib/marshall_web/live/threads_live.ex:2633
+#, elixir-autogen, elixir-format
+msgid "Archiving"
+msgstr "アーカイブ"
+
+#: lib/marshall_web/live/threads_live.ex:2053
+#, elixir-autogen, elixir-format
+msgid "Archiving is in progress. Waiting for the machine to be deleted."
+msgstr "アーカイブが進行中です。マシンが削除されるのを待っています。"
+
+#: lib/marshall_web/live/threads_live.ex:394
+#, elixir-autogen, elixir-format
+msgid "Archiving requested. The machine will be deleted before archival completes."
+msgstr "アーカイブがリクエストされました。マシンはアーカイブが完了する前に削除されます。"
+
+#: lib/marshall_web/live/threads_live.ex:2642
+#, elixir-autogen, elixir-format
+msgid "Archiving · releasing the machine"
+msgstr "マシンのアーカイブ・リリース"
+
+#: lib/marshall_web/live/threads_live.ex:1763
+#: lib/marshall_web/live/threads_live.ex:1769
+#: lib/marshall_web/live/threads_live.ex:1775
+#, elixir-autogen, elixir-format
+msgid "Back to threads"
+msgstr "スレッドに戻る"
+
+#: lib/marshall_web/live/threads_live.ex:2456
+#: lib/marshall_web/live/threads_live.ex:2502
+#, elixir-autogen, elixir-format
+msgid "Branch, tag or commit"
+msgstr "ブランチ、タグ、またはコミット"
+
+#: lib/marshall_web/live/threads_live.ex:1392
+#, elixir-autogen, elixir-format
+msgid "Build something, fix a bug, explore an idea…"
+msgstr "何かを構築し、バグを修正し、アイデアを検討します…"
+
+#: lib/marshall_web/live/threads_live.ex:1460
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#: lib/marshall_web/live/threads_live.ex:1917
+#, elixir-autogen, elixir-format
+msgid "Change"
+msgstr "変化"
+
+#: lib/marshall_web/live/agent_threads_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Child thread"
+msgstr "子スレッド"
+
+#: lib/marshall_web/live/agent_threads_live.ex:116
+#: lib/marshall_web/live/agent_threads_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Child thread created"
+msgstr "子スレッドが作成されました"
+
+#: lib/marshall_web/live/threads_live.ex:1292
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image and machine size."
+msgstr "有効なイメージとマシン サイズを選択してください。"
+
+#: lib/marshall_web/live/threads_live.ex:2272
+#: lib/marshall_web/live/threads_live.ex:2316
+#, elixir-autogen, elixir-format
+msgid "Close"
+msgstr "近い"
+
+#: lib/marshall_web/live/threads_live.ex:2085
+#, elixir-autogen, elixir-format
+msgid "Collaboration mode"
+msgstr "コラボレーションモード"
+
+#: lib/marshall_web/live/threads_live.ex:639
+#, elixir-autogen, elixir-format
+msgid "Collaboration mode updated."
+msgstr "コラボレーションモードが更新されました。"
+
+#: lib/marshall_web/live/threads_live.ex:2533
+#, elixir-autogen, elixir-format
+msgid "Command suggestions"
+msgstr "コマンドの提案"
+
+#: lib/marshall_web/live/threads_live.ex:1424
+#: lib/marshall_web/live/threads_live.ex:1798
+#: lib/marshall_web/live/threads_live.ex:2101
+#: lib/marshall_web/live/threads_live.ex:2268
+#: lib/marshall_web/live/threads_live.ex:2289
+#, elixir-autogen, elixir-format
+msgid "Commands"
+msgstr "コマンド"
+
+#: lib/marshall_web/live/threads_live.ex:2442
+#, elixir-autogen, elixir-format
+msgid "Commit: %{value1}"
+msgstr "コミット: %{value1}"
+
+#: lib/marshall_web/live/threads_live.ex:2394
+#, elixir-autogen, elixir-format
+msgid "Compact context"
+msgstr "コンパクトなコンテキスト"
+
+#: lib/marshall_web/live/threads_live.ex:1278
+#, elixir-autogen, elixir-format
+msgid "Compaction could not reduce this context. Reduce required instructions or start a focused thread."
+msgstr "圧縮ではこのコンテキストを削減できませんでした。必要な命令を減らすか、集中したスレッドを開始します。"
+
+#: lib/marshall_web/live/threads_live.ex:2600
+#, elixir-autogen, elixir-format
+msgid "Composer help"
+msgstr "作曲家のヘルプ"
+
+#: lib/marshall_web/live/threads_live.ex:2360
+#, elixir-autogen, elixir-format
+msgid "Context bytes"
+msgstr "コンテキストバイト"
+
+#: lib/marshall_web/live/agent_threads_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Context captured"
+msgstr "コンテキストを保存しました"
+
+#: lib/marshall_web/live/agent_threads_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Context compacted"
+msgstr "コンテキストを圧縮しました"
+
+#: lib/marshall_web/live/threads_live.ex:649
+#, elixir-autogen, elixir-format
+msgid "Context compaction queued."
+msgstr "コンテキスト圧縮がキューに入れられました。"
+
+#: lib/marshall_web/live/threads_live.ex:2345
+#, elixir-autogen, elixir-format
+msgid "Context details are unavailable. The thread may still be preparing its workspace."
+msgstr "コンテキストの詳細は利用できません。スレッドはまだワークスペースを準備している可能性があります。"
+
+#: lib/marshall_web/live/threads_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "Context reload queued."
+msgstr "コンテキストのリロードがキューに入れられました。"
+
+#: lib/marshall_web/live/threads_live.ex:2071
+#, elixir-autogen, elixir-format
+msgid "Continue the work…"
+msgstr "作業を続けてください…"
+
+#: lib/marshall_web/live/agent_threads_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Could not create a child thread."
+msgstr "子スレッドを作成できませんでした。"
+
+#: lib/marshall_web/live/agent_threads_live.ex:197
+#, elixir-autogen, elixir-format
+msgid "Create child"
+msgstr "子の作成"
+
+#: lib/marshall_web/live/threads_live.ex:1433
+#, elixir-autogen, elixir-format
+msgid "Create thread"
+msgstr "スレッドを作成する"
+
+#: lib/marshall_web/live/threads_live.ex:2685
+#, elixir-autogen, elixir-format
+msgid "Delegated a task"
+msgstr "タスクを委任しました"
+
+#: lib/marshall_web/live/threads_live.ex:1859
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "消去"
+
+#: lib/marshall_web/live/threads_live.ex:1665
+#, elixir-autogen, elixir-format
+msgid "Deleting"
+msgstr "削除中"
+
+#: lib/marshall_web/live/threads_live.ex:1374
+#, elixir-autogen, elixir-format
+msgid "Describe a task. Your agent gets a machine and gets to work."
+msgstr "タスクについて説明します。エージェントはマシンを手に入れて仕事を始めます。"
+
+#: lib/marshall_web/live/threads_live.ex:2472
+#, elixir-autogen, elixir-format
+msgid "Disable"
+msgstr "無効にする"
+
+#: lib/marshall_web/live/threads_live.ex:2419
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "無効"
+
+#: lib/marshall_web/live/threads_live.ex:1470
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "ディスク (GiB)"
+
+#: lib/marshall_web/live/threads_live.ex:2473
+#, elixir-autogen, elixir-format
+msgid "Enable"
+msgstr "有効にする"
+
+#: lib/marshall_web/live/threads_live.ex:1664
+#: lib/marshall_web/live/threads_live.ex:2632
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "失敗した"
+
+#: lib/marshall_web/live/threads_live.ex:2279
+#, elixir-autogen, elixir-format
+msgid "Find a command"
+msgstr "コマンドを探す"
+
+#: lib/marshall_web/live/threads_live.ex:1557
+#: lib/marshall_web/live/threads_live.ex:1708
+#, elixir-autogen, elixir-format
+msgid "Find a task…"
+msgstr "タスクを見つけてください…"
+
+#: lib/marshall_web/live/threads_live.ex:1611
+#: lib/marshall_web/live/threads_live.ex:1929
+#, elixir-autogen, elixir-format
+msgid "First page"
+msgstr "最初のページ"
+
+#: lib/marshall_web/live/threads_live.ex:1170
+#, elixir-autogen, elixir-format
+msgid "Generation %{value1} (%{value2})"
+msgstr "世代 %{value1} (%{value2})"
+
+#: lib/marshall_web/live/threads_live.ex:1531
+#, elixir-autogen, elixir-format
+msgid "Give your agent a task. Follow the work here."
+msgstr "エージェントにタスクを与えます。ここの作業に従ってください。"
+
+#: lib/marshall_web/live/threads_live.ex:1530
+#, elixir-autogen, elixir-format
+msgid "Good work starts with a thread."
+msgstr "良い仕事は糸から始まります。"
+
+#: lib/marshall_web/live/threads_live.ex:1419
+#, elixir-autogen, elixir-format
+msgid "High"
+msgstr "高い"
+
+#: lib/marshall_web/live/threads_live.ex:2624
+#, elixir-autogen, elixir-format
+msgid "High gives difficult work more reasoning time."
+msgstr "値を高くすると、難しい作業に推論時間がかかります。"
+
+#: lib/marshall_web/live/threads_live.ex:1451
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "画像"
+
+#: lib/marshall_web/live/threads_live.ex:2192
+#, elixir-autogen, elixir-format
+msgid "Implement plan"
+msgstr "計画の実施"
+
+#: lib/marshall_web/live/threads_live.ex:1256
+#, elixir-autogen, elixir-format
+msgid "Implementation has already started for this plan."
+msgstr "この計画はすでに実施が始まっています。"
+
+#: lib/marshall_web/live/threads_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "Implementation queued."
+msgstr "実装がキューに入れられました。"
+
+#: lib/marshall_web/live/threads_live.ex:2178
+#, elixir-autogen, elixir-format
+msgid "Implementation started"
+msgstr "実装開始"
+
+#: lib/marshall_web/live/threads_live.ex:2355
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "入力トークン"
+
+#: lib/marshall_web/live/threads_live.ex:2489
+#, elixir-autogen, elixir-format
+msgid "Install a skill"
+msgstr "スキルをインストールする"
+
+#: lib/marshall_web/live/threads_live.ex:2513
+#, elixir-autogen, elixir-format
+msgid "Install skill"
+msgstr "スキルのインストール"
+
+#: lib/marshall_web/live/threads_live.ex:2512
+#, elixir-autogen, elixir-format
+msgid "Installing…"
+msgstr "インストール中…"
+
+#: lib/marshall_web/live/threads_live.ex:2365
+#, elixir-autogen, elixir-format
+msgid "Loaded sources"
+msgstr "ロードされたソース"
+
+#: lib/marshall_web/live/threads_live.ex:1417
+#, elixir-autogen, elixir-format
+msgid "Low"
+msgstr "低い"
+
+#: lib/marshall_web/live/threads_live.ex:2623
+#, elixir-autogen, elixir-format
+msgid "Low is for small, well-defined tasks."
+msgstr "「低」は、小規模で明確に定義されたタスクに適しています。"
+
+#: lib/marshall_web/live/threads_live.ex:1991
+#, elixir-autogen, elixir-format
+msgid "Machine generations"
+msgstr "マシンの世代"
+
+#: lib/marshall_web/live/agent_threads_live.ex:89
+#, elixir-autogen, elixir-format
+msgid "Machine or agent access is no longer available."
+msgstr "マシンまたはエージェントへのアクセスは利用できなくなりました。"
+
+#: lib/marshall_web/live/threads_live.ex:1445
+#, elixir-autogen, elixir-format
+msgid "Machine profile"
+msgstr "マシンプロファイル"
+
+#: lib/marshall_web/live/threads_live.ex:1438
+#, elixir-autogen, elixir-format
+msgid "Machine settings"
+msgstr "機械の設定"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Machine:"
+msgstr "機械："
+
+#: lib/marshall_web/live/agent_threads_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Maintenance finished"
+msgstr "メンテナンスが完了しました"
+
+#: lib/marshall_web/live/threads_live.ex:2434
+#, elixir-autogen, elixir-format
+msgid "Managed installations"
+msgstr "管理されたインストール"
+
+#: lib/marshall_web/live/threads_live.ex:2422
+#: lib/marshall_web/live/threads_live.ex:2569
+#, elixir-autogen, elixir-format
+msgid "Managed skill"
+msgstr "マネージドスキル"
+
+#: lib/marshall_web/live/threads_live.ex:369
+#, elixir-autogen, elixir-format
+msgid "Managed skill removed."
+msgstr "マネージドスキルが削除されました。"
+
+#: lib/marshall_web/live/threads_live.ex:1963
+#: lib/marshall_web/live/threads_live.ex:2702
+#, elixir-autogen, elixir-format
+msgid "Manager"
+msgstr "マネージャー"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "Match this request code with your terminal before approving:"
+msgstr "承認する前に、このリクエスト コードを端末と照合してください。"
+
+#: lib/marshall_web/live/threads_live.ex:1418
+#, elixir-autogen, elixir-format
+msgid "Medium"
+msgstr "中くらい"
+
+#: lib/marshall_web/live/threads_live.ex:2626
+#, elixir-autogen, elixir-format
+msgid "Medium is a good starting point for most work."
+msgstr "中は、ほとんどの作業の開始点として適しています。"
+
+#: lib/marshall_web/live/threads_live.ex:1464
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "メモリ (MiB)"
+
+#: lib/marshall_web/live/threads_live.ex:2070
+#, elixir-autogen, elixir-format
+msgid "Message"
+msgstr "メッセージ"
+
+#: lib/marshall_web/live/threads_live.ex:1690
+#, elixir-autogen, elixir-format
+msgid "Mine"
+msgstr "私の"
+
+#: lib/marshall_web/live/threads_live.ex:1407
+#, elixir-autogen, elixir-format
+msgid "Mode"
+msgstr "モード"
+
+#: lib/marshall_web/live/threads_live.ex:1286
+#, elixir-autogen, elixir-format
+msgid "More than one skill has this name. Select its exact source from Skills."
+msgstr "複数のスキルにこの名前が付いています。 「スキル」から正確なソースを選択してください。"
+
+#: lib/marshall_web/live/threads_live.ex:1363
+#: lib/marshall_web/live/threads_live.ex:1365
+#: lib/marshall_web/live/threads_live.ex:1532
+#, elixir-autogen, elixir-format
+msgid "New thread"
+msgstr "新しいスレッド"
+
+#: lib/marshall_web/live/threads_live.ex:1618
+#: lib/marshall_web/live/threads_live.ex:1935
+#, elixir-autogen, elixir-format
+msgid "Next page"
+msgstr "次のページ"
+
+#: lib/marshall_web/live/threads_live.ex:1727
+#, elixir-autogen, elixir-format
+msgid "No activity matches this filter."
+msgstr "このフィルターに一致するアクティビティはありません。"
+
+#: lib/marshall_web/live/threads_live.ex:1921
+#, elixir-autogen, elixir-format
+msgid "No individual thread grants yet."
+msgstr "個別のスレッドにはまだ付与されていません。"
+
+#: lib/marshall_web/live/threads_live.ex:2367
+#, elixir-autogen, elixir-format
+msgid "No instruction sources collected yet."
+msgstr "指示ソースはまだ収集されていません。"
+
+#: lib/marshall_web/live/threads_live.ex:2555
+#, elixir-autogen, elixir-format
+msgid "No matching skills. Use /skills to inspect the catalog."
+msgstr "一致するスキルはありません。 /skill を使用してカタログを検査します。"
+
+#: lib/marshall_web/live/threads_live.ex:1541
+#, elixir-autogen, elixir-format
+msgid "No older threads are available on this page."
+msgstr "このページには古いスレッドはありません。"
+
+#: lib/marshall_web/live/threads_live.ex:1582
+#, elixir-autogen, elixir-format
+msgid "No recent threads match your search."
+msgstr "検索に一致する最近のスレッドはありません。"
+
+#: lib/marshall_web/live/threads_live.ex:2407
+#, elixir-autogen, elixir-format
+msgid "No skills were discovered in this workspace."
+msgstr "このワークスペースではスキルが見つかりませんでした。"
+
+#: lib/marshall_web/live/threads_live.ex:2354
+#, elixir-autogen, elixir-format
+msgid "Not collected yet"
+msgstr "まだ収集されていません"
+
+#: lib/marshall_web/live/threads_live.ex:1388
+#: lib/marshall_web/live/threads_live.ex:2226
+#, elixir-autogen, elixir-format
+msgid "Objective"
+msgstr "客観的"
+
+#: lib/marshall_web/live/threads_live.ex:2691
+#, elixir-autogen, elixir-format
+msgid "Older context summarized"
+msgstr "古いコンテキストの要約"
+
+#: lib/marshall_web/live/threads_live.ex:1487
+#, elixir-autogen, elixir-format
+msgid "One task. One thread."
+msgstr "タスクが 1 つあります。スレッドは 1 つです。"
+
+#: lib/marshall_web/live/threads_live.ex:1844
+#, elixir-autogen, elixir-format
+msgid "Open VS Code"
+msgstr "VS コードを開く"
+
+#: lib/marshall_web/live/threads_live.ex:1446
+#, elixir-autogen, elixir-format
+msgid "Open source"
+msgstr "オープンソース"
+
+#: lib/marshall_web/live/threads_live.ex:1815
+#, elixir-autogen, elixir-format
+msgid "Open terminal"
+msgstr "ターミナルを開く"
+
+#: lib/marshall_web/live/threads_live.ex:1824
+#, elixir-autogen, elixir-format
+msgid "Open terminal here"
+msgstr "ここでターミナルを開きます"
+
+#: lib/marshall_web/live/threads_live.ex:1962
+#: lib/marshall_web/live/threads_live.ex:2701
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "オペレーター"
+
+#: lib/marshall_web/live/threads_live.ex:1895
+#, elixir-autogen, elixir-format
+msgid "Owner · cannot be changed"
+msgstr "所有者 · 変更できません"
+
+#: lib/marshall_web/live/threads_live.ex:1679
+#, elixir-autogen, elixir-format
+msgid "Past 30 days"
+msgstr "過去 30 日間"
+
+#: lib/marshall_web/live/threads_live.ex:1678
+#, elixir-autogen, elixir-format
+msgid "Past 7 days"
+msgstr "過去 7 日間"
+
+#: lib/marshall_web/live/threads_live.ex:1661
+#: lib/marshall_web/live/threads_live.ex:2629
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "保留中"
+
+#: lib/marshall_web/live/threads_live.ex:1518
+#, elixir-autogen, elixir-format
+msgid "Pick up where you left off."
+msgstr "中断したところから再開します。"
+
+#: lib/marshall_web/live/threads_live.ex:1408
+#: lib/marshall_web/live/threads_live.ex:2594
+#, elixir-autogen, elixir-format
+msgid "Plan"
+msgstr "プラン"
+
+#: lib/marshall_web/live/agent_threads_live.ex:123
+#, elixir-autogen, elixir-format
+msgid "Plan proposed"
+msgstr "プランを提案しました"
+
+#: lib/marshall_web/live/threads_live.ex:2639
+#, elixir-autogen, elixir-format
+msgid "Preparing a machine for this task"
+msgstr "このタスク用にマシンを準備する"
+
+#: lib/marshall_web/live/threads_live.ex:2029
+#, elixir-autogen, elixir-format
+msgid "Preparing your workspace"
+msgstr "ワークスペースの準備"
+
+#: lib/marshall_web/live/agent_threads_live.ex:110
+#: lib/marshall_web/live/agent_threads_live.ex:217
+#: lib/marshall_web/live/threads_live.ex:2646
+#, elixir-autogen, elixir-format
+msgid "Prompt"
+msgstr "プロンプト"
+
+#: lib/marshall_web/live/agent_threads_live.ex:49
+#: lib/marshall_web/live/threads_live.ex:614
+#, elixir-autogen, elixir-format
+msgid "Prompt queued."
+msgstr "プロンプトがキューに入れられました。"
+
+#: lib/marshall_web/live/agent_threads_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Prompts wake a stopped machine when you have write access."
+msgstr "書き込みアクセス権がある場合、停止したマシンを起動するように求めるプロンプトが表示されます。"
+
+#: lib/marshall_web/live/threads_live.ex:2175
+#, elixir-autogen, elixir-format
+msgid "Proposed plan"
+msgstr "提案された計画"
+
+#: lib/marshall_web/live/threads_live.ex:1662
+#: lib/marshall_web/live/threads_live.ex:2630
+#, elixir-autogen, elixir-format
+msgid "Provisioning"
+msgstr "プロビジョニング"
+
+#: lib/marshall_web/live/threads_live.ex:2038
+#, elixir-autogen, elixir-format
+msgid "Provisioning needs attention."
+msgstr "プロビジョニングには注意が必要です。"
+
+#: lib/marshall_web/live/threads_live.ex:378
+#, elixir-autogen, elixir-format
+msgid "Provisioning will retry."
+msgstr "プロビジョニングが再試行されます。"
+
+#: lib/marshall_web/live/agent_threads_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Questions answered"
+msgstr "質問に回答しました"
+
+#: lib/marshall_web/live/agent_threads_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Questions cancelled"
+msgstr "質問をキャンセルしました"
+
+#: lib/marshall_web/live/agent_threads_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Questions requested"
+msgstr "質問を依頼しました"
+
+#: lib/marshall_web/live/threads_live.ex:2667
+#, elixir-autogen, elixir-format
+msgid "Queued: %{tools}"
+msgstr "キューに登録されました: %{tools}"
+
+#: lib/marshall_web/live/threads_live.ex:1663
+#: lib/marshall_web/live/threads_live.ex:2631
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "準備ができて"
+
+#: lib/marshall_web/live/threads_live.ex:1415
+#, elixir-autogen, elixir-format
+msgid "Reasoning"
+msgstr "推論"
+
+#: lib/marshall_web/live/threads_live.ex:1516
+#, elixir-autogen, elixir-format
+msgid "Recent threads"
+msgstr "最近のスレッド"
+
+#: lib/marshall_web/live/threads_live.ex:1953
+#, elixir-autogen, elixir-format
+msgid "Registered email"
+msgstr "登録メールアドレス"
+
+#: lib/marshall_web/live/threads_live.ex:2388
+#, elixir-autogen, elixir-format
+msgid "Reload context"
+msgstr "コンテキストをリロードする"
+
+#: lib/marshall_web/live/threads_live.ex:2479
+#: lib/marshall_web/live/threads_live.ex:2584
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "取り除く"
+
+#: lib/marshall_web/live/threads_live.ex:2583
+#, elixir-autogen, elixir-format
+msgid "Remove %{skill}"
+msgstr "%{skill}を削除"
+
+#: lib/marshall_web/live/threads_live.ex:1866
+#, elixir-autogen, elixir-format
+msgid "Reopen"
+msgstr "再開"
+
+#: lib/marshall_web/live/threads_live.ex:1993
+#, elixir-autogen, elixir-format
+msgid "Reopened machines keep their earlier transcripts. Select one to read it."
+msgstr "再度開いたマシンには、以前のトランスクリプトが保持されます。どれかを選択して読んでください。"
+
+#: lib/marshall_web/live/threads_live.ex:2495
+#, elixir-autogen, elixir-format
+msgid "Repository URL"
+msgstr "リポジトリURL"
+
+#: lib/marshall_web/live/agent_threads_live.ex:113
+#: lib/marshall_web/live/threads_live.ex:2656
+#, elixir-autogen, elixir-format
+msgid "Response received"
+msgstr "応答を受信しました"
+
+#: lib/marshall_web/live/threads_live.ex:2044
+#, elixir-autogen, elixir-format
+msgid "Retry"
+msgstr "リトライ"
+
+#: lib/marshall_web/live/threads_live.ex:1487
+#, elixir-autogen, elixir-format
+msgid "Return to the conversation whenever you need."
+msgstr "必要に応じていつでも会話に戻ってください。"
+
+#: lib/marshall_web/live/threads_live.ex:2200
+#, elixir-autogen, elixir-format
+msgid "Revise"
+msgstr "改訂"
+
+#: lib/marshall_web/live/threads_live.ex:2501
+#, elixir-autogen, elixir-format
+msgid "Revision (optional)"
+msgstr "リビジョン（オプション）"
+
+#: lib/marshall_web/live/threads_live.ex:1964
+#, elixir-autogen, elixir-format
+msgid "Revoke thread grant"
+msgstr "スレッド許可を取り消す"
+
+#: lib/marshall_web/live/threads_live.ex:2703
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "取り消されました"
+
+#: lib/marshall_web/live/threads_live.ex:1959
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "役割"
+
+#: lib/marshall_web/live/threads_live.ex:1971
+#, elixir-autogen, elixir-format
+msgid "Save access"
+msgstr "保存アクセス"
+
+#: lib/marshall_web/live/threads_live.ex:1970
+#, elixir-autogen, elixir-format
+msgid "Saving…"
+msgstr "保存中…"
+
+#: lib/marshall_web/live/threads_live.ex:1687
+#, elixir-autogen, elixir-format
+msgid "Scope"
+msgstr "範囲"
+
+#: lib/marshall_web/live/threads_live.ex:1707
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "検索"
+
+#: lib/marshall_web/live/threads_live.ex:1555
+#, elixir-autogen, elixir-format
+msgid "Search recent threads"
+msgstr "最近のスレッドを検索"
+
+#: lib/marshall_web/live/threads_live.ex:1556
+#, elixir-autogen, elixir-format
+msgid "Searches this page of threads."
+msgstr "このページのスレッドを検索します。"
+
+#: lib/marshall_web/live/threads_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Select this skill from the workspace catalog when the machine starts."
+msgstr "マシンの起動時に、ワークスペース カタログからこのスキルを選択します。"
+
+#: lib/marshall_web/live/threads_live.ex:2109
+#, elixir-autogen, elixir-format
+msgid "Send"
+msgstr "送信"
+
+#: lib/marshall_web/live/agent_threads_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Send prompt"
+msgstr "プロンプトを送信"
+
+#: lib/marshall_web/live/agent_threads_live.ex:225
+#: lib/marshall_web/live/threads_live.ex:2107
+#, elixir-autogen, elixir-format
+msgid "Sending…"
+msgstr "送信中…"
+
+#: lib/marshall_web/live/threads_live.ex:1807
+#, elixir-autogen, elixir-format
+msgid "Share"
+msgstr "共有"
+
+#: lib/marshall_web/live/threads_live.ex:1876
+#, elixir-autogen, elixir-format
+msgid "Share this thread"
+msgstr "このスレッドを共有する"
+
+#: lib/marshall_web/live/threads_live.ex:1691
+#, elixir-autogen, elixir-format
+msgid "Shared with me"
+msgstr "私と共有しました"
+
+#: lib/marshall_web/live/threads_live.ex:1304
+#, elixir-autogen, elixir-format
+msgid "Sharing is not available for this thread's machine profile."
+msgstr "このスレッドのマシン プロファイルでは共有を利用できません。"
+
+#: lib/marshall_web/live/threads_live.ex:1566
+#, elixir-autogen, elixir-format
+msgid "Show"
+msgstr "見せる"
+
+#: lib/marshall_web/live/threads_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Skill availability updated."
+msgstr "スキルの利用可能性が更新されました。"
+
+#: lib/marshall_web/live/threads_live.ex:2506
+#, elixir-autogen, elixir-format
+msgid "Skill directory"
+msgstr "スキルディレクトリ"
+
+#: lib/marshall_web/live/threads_live.ex:323
+#, elixir-autogen, elixir-format
+msgid "Skill installation queued."
+msgstr "スキルのインストールが待機中です。"
+
+#: lib/marshall_web/live/threads_live.ex:2552
+#, elixir-autogen, elixir-format
+msgid "Skill suggestions"
+msgstr "スキルの提案"
+
+#: lib/marshall_web/live/threads_live.ex:334
+#: lib/marshall_web/live/threads_live.ex:346
+#, elixir-autogen, elixir-format
+msgid "Skill update queued."
+msgstr "スキル更新が待機中です。"
+
+#: lib/marshall_web/live/threads_live.ex:2599
+#, elixir-autogen, elixir-format
+msgid "Skills"
+msgstr "スキル"
+
+#: lib/marshall_web/live/threads_live.ex:2399
+#, elixir-autogen, elixir-format
+msgid "Skills add reusable instructions to a task. Choose the source you intend to use."
+msgstr "スキルは、再利用可能な指示をタスクに追加します。使用するソースを選択します。"
+
+#: lib/marshall_web/live/threads_live.ex:2404
+#, elixir-autogen, elixir-format
+msgid "Skills are unavailable until the workspace context has been collected."
+msgstr "ワークスペース コンテキストが収集されるまで、スキルは使用できません。"
+
+#: lib/marshall_web/live/threads_live.ex:1446
+#, elixir-autogen, elixir-format
+msgid "Standard"
+msgstr "標準"
+
+#: lib/marshall_web/live/threads_live.ex:2338
+#, elixir-autogen, elixir-format
+msgid "Start with a space to send slash-looking text literally. Type $ to choose a skill by its exact source."
+msgstr "スラッシュのようなテキストを文字通り送信するには、スペースから始めます。 $ と入力して、正確なソースによってスキルを選択します。"
+
+#: lib/marshall_web/live/threads_live.ex:1431
+#, elixir-autogen, elixir-format
+msgid "Starting…"
+msgstr "起動…"
+
+#: lib/marshall_web/live/threads_live.ex:1658
+#: lib/marshall_web/live/threads_live.ex:2351
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "状態"
+
+#: lib/marshall_web/live/threads_live.ex:2161
+#, elixir-autogen, elixir-format
+msgid "Submit answers"
+msgstr "回答を送信する"
+
+#: lib/marshall_web/live/threads_live.ex:2160
+#, elixir-autogen, elixir-format
+msgid "Submitting…"
+msgstr "送信中…"
+
+#: lib/marshall_web/live/threads_live.ex:1699
+#, elixir-autogen, elixir-format
+msgid "Team"
+msgstr "チーム"
+
+#: lib/marshall_web/live/threads_live.ex:1108
+#, elixir-autogen, elixir-format
+msgid "Team %{team}"
+msgstr "チーム%{team}"
+
+#: lib/marshall_web/live/threads_live.ex:1457
+#, elixir-autogen, elixir-format
+msgid "Team (optional)"
+msgstr "チーム (オプション)"
+
+#: lib/marshall_web/live/threads_live.ex:1458
+#, elixir-autogen, elixir-format
+msgid "Team ID"
+msgstr "チームID"
+
+#: lib/marshall_web/live/threads_live.ex:1298
+#, elixir-autogen, elixir-format
+msgid "That email does not belong to a registered account."
+msgstr "そのメールは登録されたアカウントのものではありません。"
+
+#: lib/marshall_web/live/agent_threads_live.ex:118
+#: lib/marshall_web/live/agent_threads_live.ex:138
+#: lib/marshall_web/live/threads_live.ex:2687
+#, elixir-autogen, elixir-format
+msgid "The agent encountered a problem"
+msgstr "エージェントで問題が発生しました"
+
+#: lib/marshall_web/live/threads_live.ex:1274
+#, elixir-autogen, elixir-format
+msgid "The current context exceeds the model allowance. Compact it or reduce the message."
+msgstr "現在のコンテキストはモデルの許容値を超えています。圧縮するかメッセージを減らしてください。"
+
+#: lib/marshall_web/live/threads_live.ex:1634
+#, elixir-autogen, elixir-format
+msgid "The latest state of your threads."
+msgstr "スレッドの最新の状態。"
+
+#: lib/marshall_web/live/agent_threads_live.ex:54
+#, elixir-autogen, elixir-format
+msgid "The machine or your access is no longer available."
+msgstr "マシンまたはアクセスは利用できなくなりました。"
+
+#: lib/marshall_web/live/threads_live.ex:1253
+#: lib/marshall_web/live/threads_live.ex:1255
+#, elixir-autogen, elixir-format
+msgid "The plan has changed. Review the latest proposal before continuing."
+msgstr "計画が変更されました。続行する前に、最新の提案を確認してください。"
+
+#: lib/marshall_web/live/threads_live.ex:1270
+#, elixir-autogen, elixir-format
+msgid "The required instructions and current message do not fit. Reduce them and try again."
+msgstr "必要な指示と現在のメッセージが一致しません。値を減らして再試行してください。"
+
+#: lib/marshall_web/live/threads_live.ex:1284
+#, elixir-autogen, elixir-format
+msgid "The skill operation failed. The previous installed revision remains available."
+msgstr "スキル操作に失敗しました。以前にインストールされたリビジョンは引き続き使用できます。"
+
+#: lib/marshall_web/live/threads_live.ex:1314
+#, elixir-autogen, elixir-format
+msgid "The thread operation could not be completed."
+msgstr "スレッド操作を完了できませんでした。"
+
+#: lib/marshall_web/live/threads_live.ex:1299
+#, elixir-autogen, elixir-format
+msgid "The thread owner's access cannot be changed."
+msgstr "スレッド所有者のアクセス権は変更できません。"
+
+#: lib/marshall_web/live/threads_live.ex:2219
+#, elixir-autogen, elixir-format
+msgid "The transcript is temporarily unavailable. Try again shortly."
+msgstr "トランスクリプトは一時的に利用できなくなります。しばらくしてからもう一度お試しください。"
+
+#: lib/marshall_web/live/threads_live.ex:1281
+#, elixir-autogen, elixir-format
+msgid "There is no older context to compact yet."
+msgstr "圧縮する古いコンテキストはまだありません。"
+
+#: lib/marshall_web/live/threads_live.ex:1293
+#, elixir-autogen, elixir-format
+msgid "There is not enough capacity for this machine right now."
+msgstr "現在、このマシンには十分な容量がありません。"
+
+#: lib/marshall_web/live/threads_live.ex:1261
+#, elixir-autogen, elixir-format
+msgid "These questions are no longer waiting for an answer."
+msgstr "これらの質問はもう答えを待つ必要はありません。"
+
+#: lib/marshall_web/live/threads_live.ex:1262
+#, elixir-autogen, elixir-format
+msgid "These questions have already been answered."
+msgstr "これらの質問はすでに答えられています。"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:49
+#, elixir-autogen, elixir-format
+msgid "This agent CLI approval is unavailable. Start again in your terminal."
+msgstr "このエージェント CLI 承認は利用できません。ターミナルで再度開始します。"
+
+#: lib/marshall_web/live/threads_live.ex:1246
+#, elixir-autogen, elixir-format
+msgid "This command does not accept a task. Your draft has been kept."
+msgstr "このコマンドはタスクを受け入れません。あなたのドラフトは保存されました。"
+
+#: lib/marshall_web/live/threads_live.ex:1252
+#, elixir-autogen, elixir-format
+msgid "This command needs a ready thread and current write access."
+msgstr "このコマンドには、準備完了のスレッドと現在の書き込みアクセスが必要です。"
+
+#: lib/marshall_web/live/threads_live.ex:1301
+#, elixir-autogen, elixir-format
+msgid "This request was already used for a different change. Reload this page and try again."
+msgstr "このリクエストはすでに別の変更に使用されています。このページをリロードして、もう一度お試しください。"
+
+#: lib/marshall_web/live/threads_live.ex:1295
+#, elixir-autogen, elixir-format
+msgid "This thread could not be found."
+msgstr "このスレッドは見つかりませんでした。"
+
+#: lib/marshall_web/live/threads_live.ex:1294
+#, elixir-autogen, elixir-format
+msgid "This thread is not archived."
+msgstr "このスレッドはアーカイブされていません。"
+
+#: lib/marshall_web/live/threads_live.ex:1291
+#, elixir-autogen, elixir-format
+msgid "This thread is still provisioning."
+msgstr "このスレッドはまだプロビジョニング中です。"
+
+#: lib/marshall_web/live/threads_live.ex:1296
+#, elixir-autogen, elixir-format
+msgid "This thread is temporarily unavailable. Try again shortly."
+msgstr "このスレッドは一時的に利用できなくなります。しばらくしてからもう一度お試しください。"
+
+#: lib/marshall_web/live/threads_live.ex:1768
+#, elixir-autogen, elixir-format
+msgid "This thread may have been deleted or the link is invalid."
+msgstr "このスレッドは削除されたか、リンクが無効である可能性があります。"
+
+#: lib/marshall_web/live/agent_threads_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "This tool is not available for the machine profile."
+msgstr "このツールはマシン プロファイルでは使用できません。"
+
+#: lib/marshall_web/live/threads_live.ex:1877
+#, elixir-autogen, elixir-format
+msgid "Thread access also applies to its machine. Separate machine grants and team access are managed independently."
+msgstr "スレッド アクセスはそのマシンにも適用されます。個別のマシン許可とチーム アクセスは独立して管理されます。"
+
+#: lib/marshall_web/live/threads_live.ex:502
+#, elixir-autogen, elixir-format
+msgid "Thread access updated."
+msgstr "スレッドアクセスが更新されました。"
+
+#: lib/marshall_web/live/threads_live.ex:1852
+#, elixir-autogen, elixir-format
+msgid "Thread actions"
+msgstr "スレッドアクション"
+
+#: lib/marshall_web/live/threads_live.ex:2598
+#, elixir-autogen, elixir-format
+msgid "Thread context"
+msgstr "スレッドコンテキスト"
+
+#: lib/marshall_web/live/threads_live.ex:410
+#, elixir-autogen, elixir-format
+msgid "Thread deletion requested."
+msgstr "スレッドの削除が要求されました。"
+
+#: lib/marshall_web/live/threads_live.ex:1767
+#, elixir-autogen, elixir-format
+msgid "Thread not found"
+msgstr "スレッドが見つかりません"
+
+#: lib/marshall_web/live/threads_live.ex:425
+#, elixir-autogen, elixir-format
+msgid "Thread reopened; provisioning a new machine."
+msgstr "スレッドが再開されました。新しいマシンをプロビジョニングします。"
+
+#: lib/marshall_web/live/threads_live.ex:1773
+#, elixir-autogen, elixir-format
+msgid "Thread temporarily unavailable"
+msgstr "スレッドが一時的に利用できなくなります"
+
+#: lib/marshall_web/live/threads_live.ex:1832
+#, elixir-autogen, elixir-format
+msgid "Thread terminal"
+msgstr "ねじ端子"
+
+#: lib/marshall_web/live/threads_live.ex:1761
+#, elixir-autogen, elixir-format
+msgid "Thread unavailable"
+msgstr "スレッドが利用できません"
+
+#: lib/marshall_web/live/agent_threads_live.ex:127
+#: lib/marshall_web/live/agent_threads_live.ex:141
+#: lib/marshall_web/live/threads_live.ex:2693
+#, elixir-autogen, elixir-format
+msgid "Thread updated"
+msgstr "スレッドが更新されました"
+
+#: lib/marshall_web/live/threads_live.ex:1354
+#, elixir-autogen, elixir-format
+msgid "Thread views"
+msgstr "スレッドビュー"
+
+#: lib/marshall_web/live/agent_threads_live.ex:170
+#: lib/marshall_web/live/agent_threads_live.ex:173
+#: lib/marshall_web/live/threads_live.ex:21
+#: lib/marshall_web/live/threads_live.ex:1356
+#: lib/marshall_web/live/threads_live.ex:1506
+#, elixir-autogen, elixir-format
+msgid "Threads"
+msgstr "スレッド"
+
+#: lib/marshall_web/live/threads_live.ex:1527
+#: lib/marshall_web/live/threads_live.ex:1720
+#, elixir-autogen, elixir-format
+msgid "Threads are temporarily unavailable. Try again shortly."
+msgstr "スレッドは一時的に利用できません。しばらくしてからもう一度お試しください。"
+
+#: lib/marshall_web/live/threads_live.ex:1677
+#, elixir-autogen, elixir-format
+msgid "Today"
+msgstr "今日"
+
+#: lib/marshall_web/live/threads_live.ex:2358
+#, elixir-autogen, elixir-format
+msgid "Token allowance"
+msgstr "トークン許容量"
+
+#: lib/marshall_web/live/threads_live.ex:2676
+#, elixir-autogen, elixir-format
+msgid "Tool cancelled"
+msgstr "ツールがキャンセルされました"
+
+#: lib/marshall_web/live/threads_live.ex:2679
+#, elixir-autogen, elixir-format
+msgid "Tool completed"
+msgstr "ツールが完成しました"
+
+#: lib/marshall_web/live/threads_live.ex:2673
+#, elixir-autogen, elixir-format
+msgid "Tool failed"
+msgstr "ツールが失敗しました"
+
+#: lib/marshall_web/live/threads_live.ex:2682
+#, elixir-autogen, elixir-format
+msgid "Tool outcome uncertain"
+msgstr "ツールの結果は不確実"
+
+#: lib/marshall_web/live/agent_threads_live.ex:115
+#: lib/marshall_web/live/agent_threads_live.ex:140
+#: lib/marshall_web/live/threads_live.ex:2684
+#, elixir-autogen, elixir-format
+msgid "Tool result received"
+msgstr "ツールの結果を受け取りました"
+
+#: lib/marshall_web/live/agent_threads_live.ex:114
+#: lib/marshall_web/live/agent_threads_live.ex:139
+#: lib/marshall_web/live/threads_live.ex:2666
+#: lib/marshall_web/live/threads_live.ex:2670
+#, elixir-autogen, elixir-format
+msgid "Tools queued"
+msgstr "キューにあるツール"
+
+#: lib/marshall_web/live/threads_live.ex:2010
+#, elixir-autogen, elixir-format
+msgid "Transcript"
+msgstr "成績証明書"
+
+#: lib/marshall_web/live/threads_live.ex:1774
+#, elixir-autogen, elixir-format
+msgid "Try again shortly."
+msgstr "しばらくしてからもう一度お試しください。"
+
+#: lib/marshall_web/live/agent_threads_live.ex:117
+#: lib/marshall_web/live/agent_threads_live.ex:137
+#: lib/marshall_web/live/threads_live.ex:2686
+#, elixir-autogen, elixir-format
+msgid "Turn complete"
+msgstr "ターン完了"
+
+#: lib/marshall_web/live/threads_live.ex:1420
+#, elixir-autogen, elixir-format
+msgid "Ultra"
+msgstr "ウルトラ"
+
+#: lib/marshall_web/live/threads_live.ex:2625
+#, elixir-autogen, elixir-format
+msgid "Ultra is for complex, open-ended work."
+msgstr "Ultra は、複雑で無制限の作業に適しています。"
+
+#: lib/marshall_web/live/threads_live.ex:2635
+#: lib/marshall_web/live/threads_live.ex:2704
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "未知"
+
+#: lib/marshall_web/live/threads_live.ex:1242
+#, elixir-autogen, elixir-format
+msgid "Unknown command. Open Commands to choose one, or start with a space to send literal text."
+msgstr "不明なコマンドです。コマンドを開いていずれかを選択するか、スペースで始めてリテラル テキストを送信します。"
+
+#: lib/marshall_web/live/threads_live.ex:1282
+#, elixir-autogen, elixir-format
+msgid "Unpin this thread's machine before deleting it."
+msgstr "削除する前に、このスレッドのマシンの固定を解除してください。"
+
+#: lib/marshall_web/live/threads_live.ex:1592
+#: lib/marshall_web/live/threads_live.ex:1745
+#: lib/marshall_web/live/threads_live.ex:1782
+#, elixir-autogen, elixir-format
+msgid "Untitled thread"
+msgstr "無題のスレッド"
+
+#: lib/marshall_web/live/threads_live.ex:2462
+#, elixir-autogen, elixir-format
+msgid "Update"
+msgstr "アップデート"
+
+#: lib/marshall_web/live/threads_live.ex:2455
+#, elixir-autogen, elixir-format
+msgid "Update revision (optional)"
+msgstr "リビジョンの更新 (オプション)"
+
+#: lib/marshall_web/live/threads_live.ex:1674
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "更新されました"
+
+#: lib/marshall_web/live/threads_live.ex:2461
+#, elixir-autogen, elixir-format
+msgid "Updating…"
+msgstr "更新中…"
+
+#: lib/marshall_web/live/threads_live.ex:2321
+#, elixir-autogen, elixir-format
+msgid "Use Commands or press Ctrl/Cmd+K while writing. Start a message with / to find a command; use Tab to complete it."
+msgstr ""
+"書き込み中にコマンドを使用するか、Ctrl/Cmd+K を押します。コマンドを見つけるには、メッセージを / で始めます。 Tab "
+"を使用して完了します。"
+
+#: lib/marshall_web/live/threads_live.ex:2490
+#, elixir-autogen, elixir-format
+msgid "Use a public GitHub, GitLab, Codeberg or Bitbucket repository."
+msgstr "パブリック GitHub、GitLab、Codeberg、または Bitbucket リポジトリを使用します。"
+
+#: lib/marshall_web/live/threads_live.ex:1945
+#, elixir-autogen, elixir-format
+msgid "Use an existing account's email to grant, change or revoke a thread role."
+msgstr "既存のアカウントの電子メールを使用して、スレッド ロールを付与、変更、または取り消します。"
+
+#: lib/marshall_web/live/threads_live.ex:2430
+#, elixir-autogen, elixir-format
+msgid "Use this skill"
+msgstr "このスキルを使用してください"
+
+#: lib/marshall_web/live/threads_live.ex:1625
+#, elixir-autogen, elixir-format
+msgid "View activity"
+msgstr "アクティビティの表示"
+
+#: lib/marshall_web/live/threads_live.ex:1961
+#: lib/marshall_web/live/threads_live.ex:2700
+#, elixir-autogen, elixir-format
+msgid "Viewer"
+msgstr "ビューア"
+
+#: lib/marshall_web/live/threads_live.ex:1974
+#, elixir-autogen, elixir-format
+msgid "Viewers read. Operators send prompts. Managers also share and manage the thread."
+msgstr "視聴者は読みます。オペレーターはプロンプトを送信します。マネージャーもスレッドを共有して管理します。"
+
+#: lib/marshall_web/live/threads_live.ex:1248
+#: lib/marshall_web/live/threads_live.ex:1258
+#, elixir-autogen, elixir-format
+msgid "Wait for the current work or pending questions to finish before changing this setting."
+msgstr "この設定を変更する前に、現在の作業または保留中の質問が完了するまで待ってください。"
+
+#: lib/marshall_web/live/threads_live.ex:2638
+#, elixir-autogen, elixir-format
+msgid "Waiting for a workspace"
+msgstr "ワークスペースを待っています"
+
+#: lib/marshall_web/live/agent_threads_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Waiting for machine"
+msgstr "マシンを待機中"
+
+#: lib/marshall_web/live/threads_live.ex:2233
+#, elixir-autogen, elixir-format
+msgid "Waiting for the agent's first update."
+msgstr "エージェントの最初の更新を待っています。"
+
+#: lib/marshall_web/live/threads_live.ex:2688
+#, elixir-autogen, elixir-format
+msgid "Waiting for the machine"
+msgstr "機械を待っています"
+
+#: lib/marshall_web/live/threads_live.ex:2689
+#, elixir-autogen, elixir-format
+msgid "Waiting for your answers"
+msgstr "あなたの答えを待っています"
+
+#: lib/marshall_web/live/threads_live.ex:2699
+#, elixir-autogen, elixir-format
+msgid "Web apps"
+msgstr "ウェブアプリ"
+
+#: lib/marshall_web/live/threads_live.ex:1372
+#, elixir-autogen, elixir-format
+msgid "What are we working on?"
+msgstr "私たちは何に取り組んでいますか?"
+
+#: lib/marshall_web/live/threads_live.ex:1408
+#: lib/marshall_web/live/threads_live.ex:2595
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "仕事"
+
+#: lib/marshall_web/live/threads_live.ex:2352
+#, elixir-autogen, elixir-format
+msgid "Working directory"
+msgstr "作業ディレクトリ"
+
+#: lib/marshall_web/live/threads_live.ex:1264
+#, elixir-autogen, elixir-format
+msgid "Workspace context is being collected. Try again shortly."
+msgstr "ワークスペースコンテキストを収集中です。しばらくしてからもう一度お試しください。"
+
+#: lib/marshall_web/live/threads_live.ex:1266
+#, elixir-autogen, elixir-format
+msgid "Workspace context is unavailable. Reload it when the machine is ready."
+msgstr "ワークスペースコンテキストが使用できません。マシンの準備ができたらリロードします。"
+
+#: lib/marshall_web/live/threads_live.ex:2692
+#, elixir-autogen, elixir-format
+msgid "Workspace context reloaded"
+msgstr "ワークスペースコンテキストがリロードされました"
+
+#: lib/marshall_web/live/threads_live.ex:1268
+#, elixir-autogen, elixir-format
+msgid "Workspace files changed during collection. Reload context and try again."
+msgstr "収集中にワークスペース ファイルが変更されました。コンテキストをリロードして再試行してください。"
+
+#: lib/marshall_web/live/threads_live.ex:2640
+#, elixir-autogen, elixir-format
+msgid "Workspace ready · open the conversation"
+msgstr "ワークスペースの準備ができました · 会話を開きます"
+
+#: lib/marshall_web/live/threads_live.ex:2641
+#, elixir-autogen, elixir-format
+msgid "Workspace setup needs attention"
+msgstr "ワークスペースの設定には注意が必要です"
+
+#: lib/marshall_web/live/threads_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "Workspace skill"
+msgstr "ワークスペーススキル"
+
+#: lib/marshall_web/live/threads_live.ex:2374
+#, elixir-autogen, elixir-format
+msgid "Workspace source"
+msgstr "ワークスペースソース"
+
+#: lib/marshall_web/live/agent_threads_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "You can read these threads. Ask for operator or manager access to send prompts."
+msgstr "これらのスレッドを読むことができます。プロンプトを送信するには、オペレーターまたはマネージャーのアクセス権を要求します。"
+
+#: lib/marshall_web/live/threads_live.ex:1297
+#: lib/marshall_web/live/threads_live.ex:1762
+#, elixir-autogen, elixir-format
+msgid "You do not have access to this thread."
+msgstr "このスレッドにアクセスする権限がありません。"
+
+#: lib/marshall_web/live/threads_live.ex:2021
+#, elixir-autogen, elixir-format
+msgid "You have read-only access to this thread."
+msgstr "このスレッドへの読み取り専用アクセス権があります。"
+
+#: lib/marshall_web/live/threads_live.ex:1492
+#, elixir-autogen, elixir-format
+msgid "Your agent's work runs in a dedicated environment."
+msgstr "エージェントの作業は専用の環境で実行されます。"
+
+#: lib/marshall_web/live/threads_live.ex:2153
+#, elixir-autogen, elixir-format
+msgid "Your answer or additional detail"
+msgstr "あなたの答えまたは追加の詳細"
+
+#: lib/marshall_web/live/threads_live.ex:2690
+#, elixir-autogen, elixir-format
+msgid "Your answers were received"
+msgstr "あなたの回答を受け取りました"
+
+#: lib/marshall_web/live/threads_live.ex:2118
+#, elixir-autogen, elixir-format
+msgid "Your input is needed"
+msgstr "あなたの意見が必要です"
+
+#: lib/marshall_web/live/threads_live.ex:2031
+#, elixir-autogen, elixir-format
+msgid "Your machine is starting. The agent will begin with your objective as soon as it is ready."
+msgstr "マシンが起動しています。エージェントは、準備が整い次第、あなたの目的に沿って作業を開始します。"
+
+#: lib/marshall_web/live/threads_live.ex:2041
+#, elixir-autogen, elixir-format
+msgid "Your objective is saved. Retry to prepare the workspace again."
+msgstr "あなたの目標は保存されました。ワークスペースを再度準備してみてください。"
+
+#: lib/marshall_web/live/threads_live.ex:1515
+#, elixir-autogen, elixir-format
+msgid "Your threads"
+msgstr "あなたのスレッド"
+
+#: lib/marshall_web/live/threads_live.ex:2332
+#, elixir-autogen, elixir-format
+msgid "and"
+msgstr "そして"
+
+#: lib/marshall_web/live/threads_live.ex:2333
+#, elixir-autogen, elixir-format
+msgid "choose a mode and submit the task together. Choosing a mode on a new thread does not create a machine."
+msgstr "モードを選択し、一緒にタスクを送信します。新しいスレッドでモードを選択しても、マシンは作成されません。"
+
+#: lib/marshall_web/live/threads_live.ex:1786
+#, elixir-autogen, elixir-format
+msgid "· %{value1} reasoning · %{value2}"
+msgstr "・%{value1}推論・%{value2}"
+
+#: lib/marshall_web/live/threads_live.ex:2301
+#, elixir-autogen, elixir-format
+msgid "↑ ↓ choose · Enter run · Escape close"
+msgstr "↑ ↓ 選択・実行する・エスケープ・閉じる"

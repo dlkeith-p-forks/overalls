@@ -1,0 +1,212 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: te\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/operations_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "%{count} · %{enabled} enabled"
+msgstr "%{count} · %{enabled} ప్రారంభించబడ్డాయి"
+
+#: lib/marshall_web/live/admin/operations_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Addresses"
+msgstr "చిరునామాలు"
+
+#: lib/marshall_web/live/admin/operations_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Architecture"
+msgstr "నిర్మాణం"
+
+#: lib/marshall_web/live/admin/operations_live.ex:68
+#: lib/marshall_web/live/admin/operations_live.ex:118
+#, elixir-autogen, elixir-format
+msgid "Audi services"
+msgstr "Audi సేవలు"
+
+#: lib/marshall_web/live/admin/operations_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Certificate expires"
+msgstr "సర్టిఫికెట్ గడువు"
+
+#: lib/marshall_web/live/admin/operations_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "DNS"
+msgstr "DNS"
+
+#: lib/marshall_web/live/admin/operations_live.ex:70
+#: lib/marshall_web/live/admin/operations_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "DNS publications"
+msgstr "DNS ప్రచురణలు"
+
+#: lib/marshall_web/live/admin/operations_live.ex:212
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "నిలిపివేయబడింది"
+
+#: lib/marshall_web/live/admin/operations_live.ex:212
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "ప్రారంభించబడింది"
+
+#: lib/marshall_web/live/admin/operations_live.ex:103
+#: lib/marshall_web/live/admin/operations_live.ex:237
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "గేట్‌వే"
+
+#: lib/marshall_web/live/admin/operations_live.ex:104
+#: lib/marshall_web/live/admin/operations_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Generation"
+msgstr "తరం"
+
+#: lib/marshall_web/live/admin/operations_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "ఇమేజ్"
+
+#: lib/marshall_web/live/admin/operations_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Image catalog"
+msgstr "ఇమేజ్ జాబితా"
+
+#: lib/marshall_web/live/admin/operations_live.ex:66
+#, elixir-autogen, elixir-format
+msgid "Images"
+msgstr "ఇమేజ్‌లు"
+
+#: lib/marshall_web/live/admin/operations_live.ex:69
+#: lib/marshall_web/live/admin/operations_live.ex:143
+#, elixir-autogen, elixir-format
+msgid "Ingress routes"
+msgstr "లోపలి మార్గాలు"
+
+#: lib/marshall_web/live/admin/operations_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "యంత్రం"
+
+#: lib/marshall_web/live/admin/operations_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Minimum RAM"
+msgstr "కనిష్ఠ RAM"
+
+#: lib/marshall_web/live/admin/operations_live.ex:81
+#, elixir-autogen, elixir-format
+msgid "Minimum disk"
+msgstr "కనిష్ఠ డిస్క్"
+
+#: lib/marshall_web/live/admin/operations_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "No Audi services enrolled."
+msgstr "నమోదైన Audi సేవలు లేవు."
+
+#: lib/marshall_web/live/admin/operations_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "No DNS publications are recorded."
+msgstr "DNS ప్రచురణలు నమోదుకాలేదు."
+
+#: lib/marshall_web/live/admin/operations_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "No gateways enrolled."
+msgstr "నమోదైన గేట్‌వేలు లేవు."
+
+#: lib/marshall_web/live/admin/operations_live.ex:73
+#, elixir-autogen, elixir-format
+msgid "No images in the catalog."
+msgstr "జాబితాలో ఇమేజ్‌లు లేవు."
+
+#: lib/marshall_web/live/admin/operations_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "No ingress routes are published."
+msgstr "లోపలి మార్గాలు ప్రచురించబడలేదు."
+
+#: lib/marshall_web/live/admin/operations_live.ex:25
+#, elixir-autogen, elixir-format
+msgid "Operational status is temporarily unavailable."
+msgstr "నిర్వహణ స్థితి తాత్కాలికంగా అందుబాటులో లేదు."
+
+#: lib/marshall_web/live/admin/operations_live.ex:52
+#, elixir-autogen, elixir-format
+msgid "Platform status"
+msgstr "వేదిక స్థితి"
+
+#: lib/marshall_web/live/admin/operations_live.ex:67
+#: lib/marshall_web/live/admin/operations_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Porsche gateways"
+msgstr "Porsche గేట్‌వేలు"
+
+#: lib/marshall_web/live/admin/operations_live.ex:54
+#, elixir-autogen, elixir-format
+msgid "Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
+msgstr ""
+"చదవడానికి మాత్రమే ఇమేజ్, Audi ప్రవేశం, Porsche గేట్‌వే స్థితి. రహస్యాలు, "
+"సర్టిఫికెట్ విషయాలు దాచబడతాయి."
+
+#: lib/marshall_web/live/admin/operations_live.ex:150
+#: lib/marshall_web/live/admin/operations_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Revision"
+msgstr "సంచిక"
+
+#: lib/marshall_web/live/admin/operations_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "పాత్ర"
+
+#: lib/marshall_web/live/admin/operations_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Route expires"
+msgstr "మార్గం గడువు"
+
+#: lib/marshall_web/live/admin/operations_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Service"
+msgstr "సేవ"
+
+#: lib/marshall_web/live/admin/operations_live.ex:82
+#: lib/marshall_web/live/admin/operations_live.ex:105
+#: lib/marshall_web/live/admin/operations_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "స్థితి"
+
+#: lib/marshall_web/live/admin/operations_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "తెలియదు"
+
+#: lib/marshall_web/live/admin/operations_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "నవీకరించబడింది"
+
+#: lib/marshall_web/live/admin/operations_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Zone"
+msgstr "మండలం"
+
+#: lib/marshall_web/live/admin/operations_live.ex:225
+#: lib/marshall_web/live/admin/operations_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "తెలియదు"
+
+#: lib/marshall_web/live/admin/operations_live.ex:62
+#, elixir-autogen, elixir-format
+msgid "· every 30 seconds"
+msgstr "· ప్రతి 30 సెకన్లకు"

@@ -1,0 +1,76 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: mr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "Approve SSH key"
+msgstr "SSH की मंजूर करा"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:94
+#, elixir-autogen, elixir-format
+msgid "Approve key"
+msgstr "की मंजूर करा"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
+msgstr ""
+"SSH जोडणी तुम्ही सुरू केली असेल आणि बोटठसा तुमच्या SSH क्लायंटशी जुळत असेल "
+"तरच ही की मंजूर करा."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr "मंजूर करत आहे…"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr "लेबल (ऐच्छिक)"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Manage your SSH keys"
+msgstr "तुमच्या SSH की व्यवस्थापित करा"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr "माझा लॅपटॉप"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:35
+#, elixir-autogen, elixir-format
+msgid "SSH key approved. You can return to your SSH client."
+msgstr "SSH की मंजूर झाली. SSH क्लायंटकडे परत जाऊ शकता."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#, elixir-autogen, elixir-format
+msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
+msgstr ""
+"ही SSH मंजुरी उपलब्ध नाही किंवा मुदत संपली. पुन्हा प्रयत्नासाठी नवीन SSH "
+"जोडणी सुरू करा."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
+msgstr ""
+"ही की %{value1} म्हणून साइन इन करेल. तुमच्या खात्याच्या अधिकारांनुसार मशीन "
+"व्यवस्थापित करू शकते."
+
+#: lib/marshall_web/ssh_approval_login.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "उपलब्ध नाही"

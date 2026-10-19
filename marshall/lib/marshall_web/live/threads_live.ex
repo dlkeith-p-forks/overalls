@@ -18,7 +18,7 @@ defmodule MarshallWeb.ThreadsLive do
     socket =
       socket
       |> assign(
-        page_title: gettext("Threads"),
+        page_title: dgettext("agents", "Threads"),
         threads_empty: true,
         threads_available: true,
         activity_empty: true,
@@ -199,7 +199,12 @@ defmodule MarshallWeb.ThreadsLive do
 
   def handle_event("reload_context", _params, socket) do
     {:noreply,
-     control_action(socket, &Threads.reload_context/2, %{}, gettext("Context reload queued."))}
+     control_action(
+       socket,
+       &Threads.reload_context/2,
+       %{},
+       dgettext("agents", "Context reload queued.")
+     )}
   end
 
   def handle_event("validate_questions", %{"answers" => answers}, socket) when is_map(answers),
@@ -218,7 +223,7 @@ defmodule MarshallWeb.ThreadsLive do
        socket,
        &Threads.answer_questions/2,
        %{question_id: question_id, answers: answers},
-       gettext("Answers submitted.")
+       dgettext("agents", "Answers submitted.")
      )}
   end
 
@@ -228,7 +233,7 @@ defmodule MarshallWeb.ThreadsLive do
        socket,
        &Threads.implement_plan/2,
        %{plan_id: plan_id},
-       gettext("Implementation queued.")
+       dgettext("agents", "Implementation queued.")
      )}
   end
 
@@ -261,8 +266,11 @@ defmodule MarshallWeb.ThreadsLive do
             id: query,
             name: query,
             description:
-              gettext("Select this skill from the workspace catalog when the machine starts."),
-            path: gettext("Workspace skill"),
+              dgettext(
+                "agents",
+                "Select this skill from the workspace catalog when the machine starts."
+              ),
+            path: dgettext("agents", "Workspace skill"),
             enabled: true
           }
         ]
@@ -320,7 +328,7 @@ defmodule MarshallWeb.ThreadsLive do
          revision: blank_to_nil(params["revision"]),
          subdirectory: params["subdirectory"]
        },
-       gettext("Skill installation queued."),
+       dgettext("agents", "Skill installation queued."),
        :idempotency_key
      )}
   end
@@ -331,7 +339,7 @@ defmodule MarshallWeb.ThreadsLive do
        socket,
        &Threads.update_skill/2,
        %{installation_id: id, revision: blank_to_nil(params["revision"])},
-       gettext("Skill update queued."),
+       dgettext("agents", "Skill update queued."),
        :idempotency_key
      )}
   end
@@ -343,7 +351,7 @@ defmodule MarshallWeb.ThreadsLive do
          socket,
          &Threads.update_skill/2,
          %{installation_id: id},
-         gettext("Skill update queued."),
+         dgettext("agents", "Skill update queued."),
          :idempotency_key
        )}
 
@@ -355,7 +363,7 @@ defmodule MarshallWeb.ThreadsLive do
            socket,
            &Threads.set_skill_enabled/2,
            %{installation_id: id, enabled: enabled == "true"},
-           gettext("Skill availability updated."),
+           dgettext("agents", "Skill availability updated."),
            :idempotency_key
          )}
 
@@ -366,7 +374,7 @@ defmodule MarshallWeb.ThreadsLive do
          socket,
          &Threads.remove_skill/2,
          %{installation_id: id},
-         gettext("Managed skill removed."),
+         dgettext("agents", "Managed skill removed."),
          :idempotency_key
        )}
 
@@ -375,7 +383,8 @@ defmodule MarshallWeb.ThreadsLive do
            actor: socket.assigns.current_user
          ) do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, gettext("Provisioning will retry.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:info, dgettext("agents", "Provisioning will retry.")) |> refresh()}
 
       {:error, reason} ->
         {:noreply, assign(socket, error: error_message(reason))}
@@ -391,7 +400,10 @@ defmodule MarshallWeb.ThreadsLive do
          socket
          |> put_flash(
            :info,
-           gettext("Archiving requested. The machine will be deleted before archival completes.")
+           dgettext(
+             "agents",
+             "Archiving requested. The machine will be deleted before archival completes."
+           )
          )
          |> push_navigate(to: ~p"/threads")}
 
@@ -407,7 +419,7 @@ defmodule MarshallWeb.ThreadsLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, gettext("Thread deletion requested."))
+         |> put_flash(:info, dgettext("agents", "Thread deletion requested."))
          |> push_navigate(to: ~p"/threads")}
 
       {:error, reason} ->
@@ -422,7 +434,7 @@ defmodule MarshallWeb.ThreadsLive do
       {:ok, thread} ->
         {:noreply,
          socket
-         |> put_flash(:info, gettext("Thread reopened; provisioning a new machine."))
+         |> put_flash(:info, dgettext("agents", "Thread reopened; provisioning a new machine."))
          |> push_navigate(to: ~p"/threads/#{thread.id}")}
 
       {:error, reason} ->
@@ -499,7 +511,7 @@ defmodule MarshallWeb.ThreadsLive do
            share_error: nil,
            grant_cursor: nil
          )
-         |> put_flash(:info, gettext("Thread access updated."))
+         |> put_flash(:info, dgettext("agents", "Thread access updated."))
          |> refresh()}
 
       {:error, reason} ->
@@ -611,7 +623,7 @@ defmodule MarshallWeb.ThreadsLive do
           selected_skills: []
         )
         |> push_event("thread-composer-clear", %{})
-        |> put_flash(:info, gettext("Prompt queued."))
+        |> put_flash(:info, dgettext("agents", "Prompt queued."))
         |> refresh()
 
       {:error, reason} ->
@@ -636,7 +648,7 @@ defmodule MarshallWeb.ThreadsLive do
         socket,
         &Threads.set_collaboration_mode/2,
         %{collaboration_mode: mode},
-        gettext("Collaboration mode updated."),
+        dgettext("agents", "Collaboration mode updated."),
         :none
       )
 
@@ -646,7 +658,7 @@ defmodule MarshallWeb.ThreadsLive do
         socket,
         &Threads.compact_context/2,
         %{},
-        gettext("Context compaction queued.")
+        dgettext("agents", "Context compaction queued.")
       )
 
   defp run_command(socket, :context),
@@ -1105,7 +1117,10 @@ defmodule MarshallWeb.ThreadsLive do
       |> Enum.uniq()
       |> Enum.sort()
 
-    [{gettext("All teams"), "all"} | Enum.map(teams, &{gettext("Team %{team}", team: &1), &1})]
+    [
+      {dgettext("agents", "All teams"), "all"}
+      | Enum.map(teams, &{dgettext("agents", "Team %{team}", team: &1), &1})
+    ]
   end
 
   @spec events_for(thread(), user(), Marshall.Threads.Generation.t() | nil) ::
@@ -1167,8 +1182,10 @@ defmodule MarshallWeb.ThreadsLive do
   defp generation_option(generation) do
     status = Atom.to_string(generation.status)
 
-    {gettext("Generation %{value1} (%{value2})", value1: generation.ordinal, value2: status),
-     generation.ordinal}
+    {dgettext("agents", "Generation %{value1} (%{value2})",
+       value1: generation.ordinal,
+       value2: status
+     ), generation.ordinal}
   end
 
   defp maybe_seed_image(socket, %{images: [image | _]}) do
@@ -1239,69 +1256,97 @@ defmodule MarshallWeb.ThreadsLive do
   defp error_messages do
     %{
       unknown_command:
-        gettext(
+        dgettext(
+          "agents",
           "Unknown command. Open Commands to choose one, or start with a space to send literal text."
         ),
       command_arguments:
-        gettext("This command does not accept a task. Your draft has been kept."),
+        dgettext("agents", "This command does not accept a task. Your draft has been kept."),
       busy:
-        gettext(
+        dgettext(
+          "agents",
           "Wait for the current work or pending questions to finish before changing this setting."
         ),
       operation_unavailable:
-        gettext("This command needs a ready thread and current write access."),
-      stale_plan: gettext("The plan has changed. Review the latest proposal before continuing."),
+        dgettext("agents", "This command needs a ready thread and current write access."),
+      stale_plan:
+        dgettext("agents", "The plan has changed. Review the latest proposal before continuing."),
       stale_proposal:
-        gettext("The plan has changed. Review the latest proposal before continuing."),
-      already_implemented: gettext("Implementation has already started for this plan."),
+        dgettext("agents", "The plan has changed. Review the latest proposal before continuing."),
+      already_implemented:
+        dgettext("agents", "Implementation has already started for this plan."),
       thread_busy:
-        gettext(
+        dgettext(
+          "agents",
           "Wait for the current work or pending questions to finish before changing this setting."
         ),
-      stale_question: gettext("These questions are no longer waiting for an answer."),
-      already_answered: gettext("These questions have already been answered."),
-      invalid_answers: gettext("Answer each question with a choice, your own answer, or both."),
-      context_pending: gettext("Workspace context is being collected. Try again shortly."),
+      stale_question: dgettext("agents", "These questions are no longer waiting for an answer."),
+      already_answered: dgettext("agents", "These questions have already been answered."),
+      invalid_answers:
+        dgettext("agents", "Answer each question with a choice, your own answer, or both."),
+      context_pending:
+        dgettext("agents", "Workspace context is being collected. Try again shortly."),
       context_unavailable:
-        gettext("Workspace context is unavailable. Reload it when the machine is ready."),
+        dgettext(
+          "agents",
+          "Workspace context is unavailable. Reload it when the machine is ready."
+        ),
       context_changed:
-        gettext("Workspace files changed during collection. Reload context and try again."),
+        dgettext(
+          "agents",
+          "Workspace files changed during collection. Reload context and try again."
+        ),
       context_too_large:
-        gettext(
+        dgettext(
+          "agents",
           "The required instructions and current message do not fit. Reduce them and try again."
         ),
       context_limit_exceeded:
-        gettext(
+        dgettext(
+          "agents",
           "The current context exceeds the model allowance. Compact it or reduce the message."
         ),
       compaction_no_progress:
-        gettext(
+        dgettext(
+          "agents",
           "Compaction could not reduce this context. Reduce required instructions or start a focused thread."
         ),
-      nothing_to_compact: gettext("There is no older context to compact yet."),
-      machine_pinned: gettext("Unpin this thread's machine before deleting it."),
+      nothing_to_compact: dgettext("agents", "There is no older context to compact yet."),
+      machine_pinned: dgettext("agents", "Unpin this thread's machine before deleting it."),
       skill_failed:
-        gettext("The skill operation failed. The previous installed revision remains available."),
+        dgettext(
+          "agents",
+          "The skill operation failed. The previous installed revision remains available."
+        ),
       skill_ambiguous:
-        gettext("More than one skill has this name. Select its exact source from Skills."),
+        dgettext(
+          "agents",
+          "More than one skill has this name. Select its exact source from Skills."
+        ),
       skill_unavailable:
-        gettext(
+        dgettext(
+          "agents",
           "A selected skill is no longer available. Reload Skills and select its current source."
         ),
-      thread_not_ready: gettext("This thread is still provisioning."),
-      invalid_machine_spec: gettext("Choose a valid image and machine size."),
-      insufficient_capacity: gettext("There is not enough capacity for this machine right now."),
-      reopen_unavailable: gettext("This thread is not archived."),
-      not_found: gettext("This thread could not be found."),
-      unavailable: gettext("This thread is temporarily unavailable. Try again shortly."),
-      forbidden: gettext("You do not have access to this thread."),
-      recipient_not_registered: gettext("That email does not belong to a registered account."),
-      owner_protected: gettext("The thread owner's access cannot be changed."),
+      thread_not_ready: dgettext("agents", "This thread is still provisioning."),
+      invalid_machine_spec: dgettext("agents", "Choose a valid image and machine size."),
+      insufficient_capacity:
+        dgettext("agents", "There is not enough capacity for this machine right now."),
+      reopen_unavailable: dgettext("agents", "This thread is not archived."),
+      not_found: dgettext("agents", "This thread could not be found."),
+      unavailable:
+        dgettext("agents", "This thread is temporarily unavailable. Try again shortly."),
+      forbidden: dgettext("agents", "You do not have access to this thread."),
+      recipient_not_registered:
+        dgettext("agents", "That email does not belong to a registered account."),
+      owner_protected: dgettext("agents", "The thread owner's access cannot be changed."),
       idempotency_conflict:
-        gettext(
+        dgettext(
+          "agents",
           "This request was already used for a different change. Reload this page and try again."
         ),
-      sharing_not_allowed: gettext("Sharing is not available for this thread's machine profile.")
+      sharing_not_allowed:
+        dgettext("agents", "Sharing is not available for this thread's machine profile.")
     }
   end
 
@@ -1311,7 +1356,7 @@ defmodule MarshallWeb.ThreadsLive do
       Map.get(
         error_messages(),
         Threads.error_reason(reason),
-        gettext("The thread operation could not be completed.")
+        dgettext("agents", "The thread operation could not be completed.")
       )
 
   # @cc [owner:ghuntley,label:product] thread-conversation-presentation
@@ -1351,27 +1396,27 @@ defmodule MarshallWeb.ThreadsLive do
         data-thread-editor={to_string(@editor_available)}
       >
         <header class="threads-toolbar">
-          <nav aria-label={gettext("Thread views")} class="threads-tabs">
+          <nav aria-label={dgettext("agents", "Thread views")} class="threads-tabs">
             <.link navigate={~p"/threads"} aria-current={@live_action == :index && "page"}>
-              {gettext("Threads")}
+              {dgettext("agents", "Threads")}
             </.link>
             <.link navigate={~p"/threads/activity"} aria-current={@live_action == :activity && "page"}>
-              {gettext("Activity")}
+              {dgettext("agents", "Activity")}
             </.link>
           </nav>
           <.link :if={@live_action != :new} navigate={~p"/threads/new"} class="console-button primary">
-            {gettext("New thread")} <.glyph name="plus" />
+            {dgettext("agents", "New thread")} <.glyph name="plus" />
           </.link>
-          <span :if={@live_action == :new} class="muted">{gettext("New thread")}</span>
+          <span :if={@live_action == :new} class="muted">{dgettext("agents", "New thread")}</span>
         </header>
 
         <%= if @live_action == :new do %>
           <div class="thread-start">
             <header class="thread-start-heading">
-              <p class="thread-eyebrow">{gettext("A space for your next idea")}</p>
-              <h1>{gettext("What are we working on?")}</h1>
+              <p class="thread-eyebrow">{dgettext("agents", "A space for your next idea")}</p>
+              <h1>{dgettext("agents", "What are we working on?")}</h1>
               <p class="muted">
-                {gettext("Describe a task. Your agent gets a machine and gets to work.")}
+                {dgettext("agents", "Describe a task. Your agent gets a machine and gets to work.")}
               </p>
             </header>
             <.form
@@ -1385,11 +1430,11 @@ defmodule MarshallWeb.ThreadsLive do
                 <.input
                   field={@form[:objective]}
                   type="textarea"
-                  label={gettext("Objective")}
+                  label={dgettext("agents", "Objective")}
                   data-thread-input="true"
                   aria-controls="thread-command-options"
                   aria-expanded="false"
-                  placeholder={gettext("Build something, fix a bug, explore an idea…")}
+                  placeholder={dgettext("agents", "Build something, fix a bug, explore an idea…")}
                   rows="6"
                   required
                 />
@@ -1404,70 +1449,83 @@ defmodule MarshallWeb.ThreadsLive do
                   <.input
                     field={@form[:collaboration_mode]}
                     type="select"
-                    label={gettext("Mode")}
-                    options={[{gettext("Work"), "work"}, {gettext("Plan"), "plan"}]}
+                    label={dgettext("agents", "Mode")}
+                    options={[
+                      {dgettext("agents", "Work"), "work"},
+                      {dgettext("agents", "Plan"), "plan"}
+                    ]}
                   />
                 </div>
                 <div class="thread-mode-control">
                   <.input
                     field={@form[:mode]}
                     type="select"
-                    label={gettext("Reasoning")}
+                    label={dgettext("agents", "Reasoning")}
                     options={[
-                      {gettext("Low"), "low"},
-                      {gettext("Medium"), "medium"},
-                      {gettext("High"), "high"},
-                      {gettext("Ultra"), "ultra"}
+                      {dgettext("agents", "Low"), "low"},
+                      {dgettext("agents", "Medium"), "medium"},
+                      {dgettext("agents", "High"), "high"},
+                      {dgettext("agents", "Ultra"), "ultra"}
                     ]}
                   />
                 </div>
-                <button type="button" data-thread-commands-open class="console-button ghost">{gettext(
+                <button type="button" data-thread-commands-open class="console-button ghost">{dgettext(
+                  "agents",
                   "Commands"
                 )}</button>
                 <button
                   id="create-thread"
                   class="console-button primary"
                   type="submit"
-                  phx-disable-with={gettext("Starting…")}
+                  phx-disable-with={dgettext("agents", "Starting…")}
                 >
-                  {gettext("Create thread")} <.glyph name="arrow_up" />
+                  {dgettext("agents", "Create thread")} <.glyph name="arrow_up" />
                 </button>
               </div>
               <details id="thread-machine-settings" class="thread-machine-settings">
                 <summary>
-                  {gettext("Machine settings")}
+                  {dgettext("agents", "Machine settings")}
                   <span class="muted">· {machine_summary(@form.params)}</span>
                 </summary>
                 <div class="thread-settings-fields">
                   <.input
                     field={@form[:profile]}
                     type="select"
-                    label={gettext("Machine profile")}
-                    options={[{gettext("Standard"), "standard"}, {gettext("Open source"), "oss"}]}
+                    label={dgettext("agents", "Machine profile")}
+                    options={[
+                      {dgettext("agents", "Standard"), "standard"},
+                      {dgettext("agents", "Open source"), "oss"}
+                    ]}
                   />
                   <.input
                     field={@form[:image_id]}
                     type="select"
-                    label={gettext("Image")}
+                    label={dgettext("agents", "Image")}
                     options={Enum.map(@catalog.images, &{&1.name || &1.id, &1.id})}
                     required
                   />
                   <.input
                     field={@form[:team_id]}
-                    label={gettext("Team (optional)")}
-                    placeholder={gettext("Team ID")}
+                    label={dgettext("agents", "Team (optional)")}
+                    placeholder={dgettext("agents", "Team ID")}
                   />
-                  <.input field={@form[:vcpu]} type="number" label={gettext("CPU")} min="1" max="32" />
+                  <.input
+                    field={@form[:vcpu]}
+                    type="number"
+                    label={dgettext("agents", "CPU")}
+                    min="1"
+                    max="32"
+                  />
                   <.input
                     field={@form[:memory_mib]}
                     type="number"
-                    label={gettext("Memory (MiB)")}
+                    label={dgettext("agents", "Memory (MiB)")}
                     min="512"
                   />
                   <.input
                     field={@form[:disk_gib]}
                     type="number"
-                    label={gettext("Disk (GiB)")}
+                    label={dgettext("agents", "Disk (GiB)")}
                     min="2"
                   />
                 </div>
@@ -1477,19 +1535,22 @@ defmodule MarshallWeb.ThreadsLive do
               </p>
             </.form>
             <p class="thread-mode-hint muted">
-              {gettext(
+              {dgettext(
+                "agents",
                 "%{value1} Reasoning stays with this thread. Switch between Plan and Work as needed.",
                 value1: mode_hint(@form.params["mode"])
               )}
             </p>
             <div class="thread-start-notes">
               <p>
-                <strong>{gettext("One task. One thread.")}</strong><br /><span class="muted">{gettext(
+                <strong>{dgettext("agents", "One task. One thread.")}</strong><br /><span class="muted">{dgettext(
+                  "agents",
                   "Return to the conversation whenever you need."
                 )}</span>
               </p>
               <p>
-                <strong>{gettext("A machine of its own.")}</strong><br /><span class="muted">{gettext(
+                <strong>{dgettext("agents", "A machine of its own.")}</strong><br /><span class="muted">{dgettext(
+                  "agents",
                   "Your agent's work runs in a dedicated environment."
                 )}</span>
               </p>
@@ -1503,7 +1564,7 @@ defmodule MarshallWeb.ThreadsLive do
           ]}>
             <nav
               id="thread-list"
-              aria-label={gettext("Threads")}
+              aria-label={dgettext("agents", "Threads")}
               class={[
                 "thread-list",
                 "threads-navigation",
@@ -1512,10 +1573,10 @@ defmodule MarshallWeb.ThreadsLive do
               ]}
             >
               <header class="thread-list-heading">
-                <h1 :if={@live_action == :index}>{gettext("Your threads")}</h1>
-                <h2 :if={@live_action != :index}>{gettext("Recent threads")}</h2>
+                <h1 :if={@live_action == :index}>{dgettext("agents", "Your threads")}</h1>
+                <h2 :if={@live_action != :index}>{dgettext("agents", "Recent threads")}</h2>
                 <p :if={@live_action == :index} class="muted">
-                  {gettext("Pick up where you left off.")}
+                  {dgettext("agents", "Pick up where you left off.")}
                 </p>
               </header>
               <p
@@ -1524,12 +1585,15 @@ defmodule MarshallWeb.ThreadsLive do
                 role="alert"
                 class="thread-notice"
               >
-                {gettext("Threads are temporarily unavailable. Try again shortly.")}
+                {dgettext("agents", "Threads are temporarily unavailable. Try again shortly.")}
               </p>
               <div :if={@threads_available and @threads_empty} class="thread-empty">
-                <h2>{gettext("Good work starts with a thread.")}</h2>
-                <p class="muted">{gettext("Give your agent a task. Follow the work here.")}</p>
-                <.link navigate={~p"/threads/new"} class="console-button primary">{gettext(
+                <h2>{dgettext("agents", "Good work starts with a thread.")}</h2>
+                <p class="muted">
+                  {dgettext("agents", "Give your agent a task. Follow the work here.")}
+                </p>
+                <.link navigate={~p"/threads/new"} class="console-button primary">{dgettext(
+                  "agents",
                   "New thread"
                 )}</.link>
               </div>
@@ -1538,7 +1602,7 @@ defmodule MarshallWeb.ThreadsLive do
                 id="thread-page-empty"
                 class="thread-empty muted"
               >
-                {gettext("No older threads are available on this page.")}
+                {dgettext("agents", "No older threads are available on this page.")}
               </p>
               <.form
                 :if={@live_action == :index and !@threads_empty}
@@ -1552,9 +1616,9 @@ defmodule MarshallWeb.ThreadsLive do
                   id="thread-search"
                   value={@thread_query}
                   type="search"
-                  label={gettext("Search recent threads")}
-                  hint={gettext("Searches this page of threads.")}
-                  placeholder={gettext("Find a task…")}
+                  label={dgettext("agents", "Search recent threads")}
+                  hint={dgettext("agents", "Searches this page of threads.")}
+                  placeholder={dgettext("agents", "Find a task…")}
                   phx-debounce="200"
                   maxlength="200"
                 />
@@ -1563,11 +1627,11 @@ defmodule MarshallWeb.ThreadsLive do
                   id="thread-status-filter"
                   value={@thread_filter}
                   type="select"
-                  label={gettext("Show")}
+                  label={dgettext("agents", "Show")}
                   options={[
-                    {gettext("All threads"), "all"},
-                    {gettext("Active"), "active"},
-                    {gettext("Archived"), "archived"}
+                    {dgettext("agents", "All threads"), "all"},
+                    {dgettext("agents", "Active"), "active"},
+                    {dgettext("agents", "Archived"), "archived"}
                   ]}
                 />
               </.form>
@@ -1579,7 +1643,7 @@ defmodule MarshallWeb.ThreadsLive do
                 id="thread-search-empty"
                 class="thread-empty muted"
               >
-                {gettext("No recent threads match your search.")}
+                {dgettext("agents", "No recent threads match your search.")}
               </p>
               <div id="thread-list-items" phx-update="stream">
                 <.link
@@ -1589,7 +1653,8 @@ defmodule MarshallWeb.ThreadsLive do
                   aria-current={if thread.id == (@selected && @selected.id), do: "page"}
                   class="thread-navigation-item"
                 >
-                  <span class="thread-navigation-title">{thread.title || gettext("Untitled thread")}</span>
+                  <span class="thread-navigation-title">{thread.title ||
+                    dgettext("agents", "Untitled thread")}</span>
                   <span class="thread-navigation-meta">
                     <span class="status-label" data-state={thread.status}>{status_label(thread.status)}</span>
                     <span class="thread-navigation-mode">{thread.mode}</span>
@@ -1608,21 +1673,21 @@ defmodule MarshallWeb.ThreadsLive do
                   type="button"
                   class="console-button compact ghost"
                   phx-click="threads_first"
-                >{gettext("First page")}</button>
+                >{dgettext("agents", "First page")}</button>
                 <button
                   :if={@thread_next}
                   id="thread-page-next"
                   type="button"
                   class="console-button compact ghost"
                   phx-click="threads_next"
-                >{gettext("Next page")}</button>
+                >{dgettext("agents", "Next page")}</button>
               </div>
               <.link
                 navigate={~p"/threads/activity"}
                 class="thread-navigation-activity-link"
                 aria-current={@live_action == :activity && "page"}
               >
-                {gettext("View activity")} <.glyph name="arrow_up_right" />
+                {dgettext("agents", "View activity")} <.glyph name="arrow_up_right" />
               </.link>
             </nav>
 
@@ -1630,8 +1695,8 @@ defmodule MarshallWeb.ThreadsLive do
               <div id="thread-activity" class="thread-activity">
                 <header class="thread-activity-heading">
                   <div>
-                    <h1>{gettext("Activity")}</h1><p class="muted">
-                      {gettext("The latest state of your threads.")}
+                    <h1>{dgettext("agents", "Activity")}</h1><p class="muted">
+                      {dgettext("agents", "The latest state of your threads.")}
                     </p>
                   </div>
                   <.form
@@ -1655,15 +1720,15 @@ defmodule MarshallWeb.ThreadsLive do
                       id="thread-activity-status-filter"
                       value={@activity_filter}
                       type="select"
-                      label={gettext("Status")}
+                      label={dgettext("agents", "Status")}
                       options={[
-                        {gettext("All threads"), "all"},
-                        {gettext("Pending"), "pending"},
-                        {gettext("Provisioning"), "provisioning"},
-                        {gettext("Ready"), "ready"},
-                        {gettext("Failed"), "failed"},
-                        {gettext("Deleting"), "deleting"},
-                        {gettext("Archived"), "archived"}
+                        {dgettext("agents", "All threads"), "all"},
+                        {dgettext("agents", "Pending"), "pending"},
+                        {dgettext("agents", "Provisioning"), "provisioning"},
+                        {dgettext("agents", "Ready"), "ready"},
+                        {dgettext("agents", "Failed"), "failed"},
+                        {dgettext("agents", "Deleting"), "deleting"},
+                        {dgettext("agents", "Archived"), "archived"}
                       ]}
                     />
                     <.input
@@ -1671,12 +1736,12 @@ defmodule MarshallWeb.ThreadsLive do
                       id="thread-activity-time-filter"
                       value={@activity_time_filter}
                       type="select"
-                      label={gettext("Updated")}
+                      label={dgettext("agents", "Updated")}
                       options={[
-                        {gettext("Any time"), "all"},
-                        {gettext("Today"), "today"},
-                        {gettext("Past 7 days"), "week"},
-                        {gettext("Past 30 days"), "month"}
+                        {dgettext("agents", "Any time"), "all"},
+                        {dgettext("agents", "Today"), "today"},
+                        {dgettext("agents", "Past 7 days"), "week"},
+                        {dgettext("agents", "Past 30 days"), "month"}
                       ]}
                     />
                     <.input
@@ -1684,11 +1749,11 @@ defmodule MarshallWeb.ThreadsLive do
                       id="thread-activity-owner-filter"
                       value={@activity_owner_filter}
                       type="select"
-                      label={gettext("Scope")}
+                      label={dgettext("agents", "Scope")}
                       options={[
-                        {gettext("All visible"), "all"},
-                        {gettext("Mine"), "mine"},
-                        {gettext("Shared with me"), "shared"}
+                        {dgettext("agents", "All visible"), "all"},
+                        {dgettext("agents", "Mine"), "mine"},
+                        {dgettext("agents", "Shared with me"), "shared"}
                       ]}
                     />
                     <.input
@@ -1696,7 +1761,7 @@ defmodule MarshallWeb.ThreadsLive do
                       id="thread-activity-team-filter"
                       value={@activity_team_filter}
                       type="select"
-                      label={gettext("Team")}
+                      label={dgettext("agents", "Team")}
                       options={@activity_team_options}
                     />
                     <.input
@@ -1704,8 +1769,8 @@ defmodule MarshallWeb.ThreadsLive do
                       id="thread-activity-query"
                       value={@activity_query}
                       type="search"
-                      label={gettext("Search")}
-                      placeholder={gettext("Find a task…")}
+                      label={dgettext("agents", "Search")}
+                      placeholder={dgettext("agents", "Find a task…")}
                       phx-debounce="200"
                       maxlength="200"
                     />
@@ -1717,14 +1782,14 @@ defmodule MarshallWeb.ThreadsLive do
                   class="thread-notice"
                   role="alert"
                 >
-                  {gettext("Threads are temporarily unavailable. Try again shortly.")}
+                  {dgettext("agents", "Threads are temporarily unavailable. Try again shortly.")}
                 </p>
                 <p
                   :if={@threads_available and @activity_empty}
                   id="thread-activity-empty"
                   class="thread-empty muted"
                 >
-                  {gettext("No activity matches this filter.")}
+                  {dgettext("agents", "No activity matches this filter.")}
                 </p>
                 <div id="thread-activity-items" phx-update="stream">
                   <.link
@@ -1742,7 +1807,7 @@ defmodule MarshallWeb.ThreadsLive do
                       <span>{TimeZones.format(thread.updated_at, @time_zone, :time)}</span>
                     </time>
                     <span class="thread-activity-description">
-                      <strong>{thread.title || gettext("Untitled thread")}</strong>
+                      <strong>{thread.title || dgettext("agents", "Untitled thread")}</strong>
                       <span class="muted">{status_description(thread.status)}</span>
                     </span>
                     <span class="status-label" data-state={thread.status}>{status_label(thread.status)}</span>
@@ -1758,32 +1823,35 @@ defmodule MarshallWeb.ThreadsLive do
                   <%= case @detail_error do %>
                     <% :forbidden -> %>
                       <div id="thread-forbidden" class="thread-empty" role="alert">
-                        <h2>{gettext("Thread unavailable")}</h2><p class="muted">
-                          {gettext("You do not have access to this thread.")}
-                        </p><.link navigate={~p"/threads"}>{gettext("Back to threads")}</.link>
+                        <h2>{dgettext("agents", "Thread unavailable")}</h2><p class="muted">
+                          {dgettext("agents", "You do not have access to this thread.")}
+                        </p><.link navigate={~p"/threads"}>{dgettext("agents", "Back to threads")}</.link>
                       </div>
                     <% :not_found -> %>
                       <div id="thread-not-found" class="thread-empty" role="alert">
-                        <h2>{gettext("Thread not found")}</h2><p class="muted">
-                          {gettext("This thread may have been deleted or the link is invalid.")}
-                        </p><.link navigate={~p"/threads"}>{gettext("Back to threads")}</.link>
+                        <h2>{dgettext("agents", "Thread not found")}</h2><p class="muted">
+                          {dgettext(
+                            "agents",
+                            "This thread may have been deleted or the link is invalid."
+                          )}
+                        </p><.link navigate={~p"/threads"}>{dgettext("agents", "Back to threads")}</.link>
                       </div>
                     <% _ -> %>
                       <div id="thread-unavailable" class="thread-empty" role="alert">
-                        <h2>{gettext("Thread temporarily unavailable")}</h2><p class="muted">
-                          {gettext("Try again shortly.")}
-                        </p><.link navigate={~p"/threads"}>{gettext("Back to threads")}</.link>
+                        <h2>{dgettext("agents", "Thread temporarily unavailable")}</h2><p class="muted">
+                          {dgettext("agents", "Try again shortly.")}
+                        </p><.link navigate={~p"/threads"}>{dgettext("agents", "Back to threads")}</.link>
                       </div>
                   <% end %>
                 <% else %>
                   <%= if @selected do %>
                     <header class="thread-detail-heading">
                       <div class="thread-detail-title">
-                        <h1>{@selected.title || gettext("Untitled thread")}</h1>
+                        <h1>{@selected.title || dgettext("agents", "Untitled thread")}</h1>
                         <p class="muted">
                           <span class="status-label" data-state={@selected.status}>{status_label(
                             @selected.status
-                          )}</span><span>{gettext("· %{value1} reasoning · %{value2}",
+                          )}</span><span>{dgettext("agents", "· %{value1} reasoning · %{value2}",
                             value1: @selected.mode,
                             value2: collaboration_label(@collaboration_mode)
                           )}</span>
@@ -1795,7 +1863,7 @@ defmodule MarshallWeb.ThreadsLive do
                           type="button"
                           data-thread-commands-open
                           class="console-button ghost"
-                        >{gettext("Commands")}</button>
+                        >{dgettext("agents", "Commands")}</button>
                         <button
                           :if={@can_manage}
                           id="thread-share-toggle"
@@ -1804,7 +1872,7 @@ defmodule MarshallWeb.ThreadsLive do
                           class="console-button ghost"
                           aria-expanded={to_string(@share_open)}
                           aria-controls="thread-sharing"
-                        >{gettext("Share")}</button>
+                        >{dgettext("agents", "Share")}</button>
                         <div
                           :if={@can_write and @selected.status == :ready and @selected.machine_id}
                           id="thread-terminal"
@@ -1812,7 +1880,7 @@ defmodule MarshallWeb.ThreadsLive do
                           <.link
                             navigate={~p"/machines/#{@selected.machine_id}/terminals"}
                             class="console-button ghost"
-                          >{gettext("Open terminal")} <.glyph name="arrow_up_right" /></.link>
+                          >{dgettext("agents", "Open terminal")} <.glyph name="arrow_up_right" /></.link>
                         </div>
                         <details
                           :if={@can_write and @selected.status == :ready and @selected.machine_id}
@@ -1821,7 +1889,7 @@ defmodule MarshallWeb.ThreadsLive do
                           data-thread-terminal
                         >
                           <summary class="console-button ghost">
-                            {gettext("Open terminal here")}
+                            {dgettext("agents", "Open terminal here")}
                           </summary>
                           <div class="thread-terminal-frame">
                             <iframe
@@ -1829,7 +1897,7 @@ defmodule MarshallWeb.ThreadsLive do
                               data-thread-terminal-src={
                                 ~p"/machines/#{@selected.machine_id}/terminals"
                               }
-                              title={gettext("Thread terminal")}
+                              title={dgettext("agents", "Thread terminal")}
                               loading="lazy"
                             ></iframe>
                           </div>
@@ -1841,7 +1909,7 @@ defmodule MarshallWeb.ThreadsLive do
                           target="_blank"
                           rel="noopener noreferrer"
                           class="console-button ghost"
-                        >{gettext("Open VS Code")} <.glyph name="arrow_up_right" /></.link>
+                        >{dgettext("agents", "Open VS Code")} <.glyph name="arrow_up_right" /></.link>
                         <details
                           :if={
                             @can_manage and
@@ -1849,21 +1917,25 @@ defmodule MarshallWeb.ThreadsLive do
                           }
                           class="thread-actions-menu"
                         >
-                          <summary aria-label={gettext("Thread actions")}>
-                            {gettext("Actions")}
+                          <summary aria-label={dgettext("agents", "Thread actions")}>
+                            {dgettext("agents", "Actions")}
                           </summary>
                           <div class="thread-actions-options">
-                            <button phx-click="archive" class="console-button ghost">{gettext(
+                            <button phx-click="archive" class="console-button ghost">{dgettext(
+                              "agents",
                               "Archive"
                             )}</button>
-                            <button phx-click="delete" class="console-button ghost">{gettext("Delete")}</button>
+                            <button phx-click="delete" class="console-button ghost">{dgettext(
+                              "agents",
+                              "Delete"
+                            )}</button>
                           </div>
                         </details>
                         <button
                           :if={@can_manage and @selected.status == :archived}
                           phx-click="reopen"
                           class="console-button primary"
-                        >{gettext("Reopen")}</button>
+                        >{dgettext("agents", "Reopen")}</button>
                       </div>
                     </header>
                     <section
@@ -1873,14 +1945,16 @@ defmodule MarshallWeb.ThreadsLive do
                       aria-labelledby="thread-sharing-heading"
                     >
                       <header>
-                        <h2 id="thread-sharing-heading">{gettext("Share this thread")}</h2><p class="muted">
-                          {gettext(
+                        <h2 id="thread-sharing-heading">{dgettext("agents", "Share this thread")}</h2><p class="muted">
+                          {dgettext(
+                            "agents",
                             "Thread access also applies to its machine. Separate machine grants and team access are managed independently."
                           )}
                         </p>
                       </header>
                       <p :if={!@grants_available} id="thread-grants-unavailable" role="alert">
-                        {gettext(
+                        {dgettext(
+                          "agents",
                           "Access details are temporarily unavailable. Close sharing and try again shortly."
                         )}
                       </p>
@@ -1892,7 +1966,7 @@ defmodule MarshallWeb.ThreadsLive do
                             time_zone={@grant_owner.time_zone}
                             viewer_zone={@time_zone}
                             now={@now}
-                          /><span class="muted">{gettext("Owner · cannot be changed")}</span>
+                          /><span class="muted">{dgettext("agents", "Owner · cannot be changed")}</span>
                         </div>
                         <div id="thread-grant-items" phx-update="stream">
                           <div
@@ -1914,11 +1988,11 @@ defmodule MarshallWeb.ThreadsLive do
                               phx-click="edit_access"
                               phx-value-email={grant.email}
                               phx-value-role={grant.role}
-                            >{gettext("Change")}</button>
+                            >{dgettext("agents", "Change")}</button>
                           </div>
                         </div>
                         <p :if={@grants_empty} class="muted">
-                          {gettext("No individual thread grants yet.")}
+                          {dgettext("agents", "No individual thread grants yet.")}
                         </p>
                         <div :if={@grant_cursor || @grant_next} class="row actions">
                           <button
@@ -1926,13 +2000,13 @@ defmodule MarshallWeb.ThreadsLive do
                             type="button"
                             class="console-button compact ghost"
                             phx-click="grants_first"
-                          >{gettext("First page")}</button>
+                          >{dgettext("agents", "First page")}</button>
                           <button
                             :if={@grant_next}
                             type="button"
                             class="console-button compact ghost"
                             phx-click="grants_next"
-                          >{gettext("Next page")}</button>
+                          >{dgettext("agents", "Next page")}</button>
                         </div>
                         <.form
                           for={@share_form}
@@ -1942,7 +2016,8 @@ defmodule MarshallWeb.ThreadsLive do
                           class="thread-access-form"
                         >
                           <p class="muted">
-                            {gettext(
+                            {dgettext(
+                              "agents",
                               "Use an existing account's email to grant, change or revoke a thread role."
                             )}
                           </p>
@@ -1950,28 +2025,29 @@ defmodule MarshallWeb.ThreadsLive do
                             <.input
                               field={@share_form[:email]}
                               type="email"
-                              label={gettext("Registered email")}
+                              label={dgettext("agents", "Registered email")}
                               required
                             />
                             <.input
                               field={@share_form[:role]}
                               type="select"
-                              label={gettext("Role")}
+                              label={dgettext("agents", "Role")}
                               options={[
-                                {gettext("Viewer"), "viewer"},
-                                {gettext("Operator"), "operator"},
-                                {gettext("Manager"), "manager"},
-                                {gettext("Revoke thread grant"), "revoked"}
+                                {dgettext("agents", "Viewer"), "viewer"},
+                                {dgettext("agents", "Operator"), "operator"},
+                                {dgettext("agents", "Manager"), "manager"},
+                                {dgettext("agents", "Revoke thread grant"), "revoked"}
                               ]}
                             />
                             <button
                               class="console-button primary"
                               type="submit"
-                              phx-disable-with={gettext("Saving…")}
-                            >{gettext("Save access")}</button>
+                              phx-disable-with={dgettext("agents", "Saving…")}
+                            >{dgettext("agents", "Save access")}</button>
                           </div>
                           <p class="muted thread-access-hint">
-                            {gettext(
+                            {dgettext(
+                              "agents",
                               "Viewers read. Operators send prompts. Managers also share and manage the thread."
                             )}
                           </p>
@@ -1988,9 +2064,12 @@ defmodule MarshallWeb.ThreadsLive do
                       aria-labelledby="thread-generations-heading"
                     >
                       <header>
-                        <h2 id="thread-generations-heading">{gettext("Machine generations")}</h2>
+                        <h2 id="thread-generations-heading">
+                          {dgettext("agents", "Machine generations")}
+                        </h2>
                         <p class="muted">
-                          {gettext(
+                          {dgettext(
+                            "agents",
                             "Reopened machines keep their earlier transcripts. Select one to read it."
                           )}
                         </p>
@@ -2007,7 +2086,7 @@ defmodule MarshallWeb.ThreadsLive do
                             ]
                           }
                           type="select"
-                          label={gettext("Transcript")}
+                          label={dgettext("agents", "Transcript")}
                           options={Enum.map(@generations, &generation_option/1)}
                         />
                       </.form>
@@ -2018,7 +2097,7 @@ defmodule MarshallWeb.ThreadsLive do
                         id="thread-read-only"
                         class="thread-notice muted"
                       >
-                        {gettext("You have read-only access to this thread.")}
+                        {dgettext("agents", "You have read-only access to this thread.")}
                       </p>
                       <div
                         :if={@selected.status in [:pending, :provisioning]}
@@ -2026,22 +2105,28 @@ defmodule MarshallWeb.ThreadsLive do
                         class="thread-notice"
                         role="status"
                       >
-                        <strong>{gettext("Preparing your workspace")}</strong>
+                        <strong>{dgettext("agents", "Preparing your workspace")}</strong>
                         <p class="muted">
-                          {gettext(
+                          {dgettext(
+                            "agents",
                             "Your machine is starting. The agent will begin with your objective as soon as it is ready."
                           )}
                         </p>
                       </div>
                       <div :if={@selected.status == :failed} class="thread-notice thread-recovery">
                         <div>
-                          <strong id="thread-provision-error">{gettext(
+                          <strong id="thread-provision-error">{dgettext(
+                            "agents",
                             "Provisioning needs attention."
                           )}</strong><p class="muted">
-                            {gettext("Your objective is saved. Retry to prepare the workspace again.")}
+                            {dgettext(
+                              "agents",
+                              "Your objective is saved. Retry to prepare the workspace again."
+                            )}
                           </p>
                         </div>
-                        <button :if={@can_manage} phx-click="retry" class="console-button primary">{gettext(
+                        <button :if={@can_manage} phx-click="retry" class="console-button primary">{dgettext(
+                          "agents",
                           "Retry"
                         )}</button>
                       </div>
@@ -2050,7 +2135,10 @@ defmodule MarshallWeb.ThreadsLive do
                         id="thread-deleting"
                         class="thread-notice muted"
                       >
-                        {gettext("Archiving is in progress. Waiting for the machine to be deleted.")}
+                        {dgettext(
+                          "agents",
+                          "Archiving is in progress. Waiting for the machine to be deleted."
+                        )}
                       </p>
                       <.form
                         :if={@can_write and @selected.status == :ready}
@@ -2067,8 +2155,8 @@ defmodule MarshallWeb.ThreadsLive do
                             aria-controls="thread-command-options"
                             aria-expanded="false"
                             type="textarea"
-                            aria-label={gettext("Message")}
-                            placeholder={gettext("Continue the work…")}
+                            aria-label={dgettext("agents", "Message")}
+                            placeholder={dgettext("agents", "Continue the work…")}
                             rows="2"
                             required
                           />
@@ -2082,7 +2170,7 @@ defmodule MarshallWeb.ThreadsLive do
                         <div class="thread-compose-controls">
                           <div
                             class="thread-collaboration-options"
-                            aria-label={gettext("Collaboration mode")}
+                            aria-label={dgettext("agents", "Collaboration mode")}
                           >
                             <button
                               :for={mode <- [:work, :plan]}
@@ -2097,16 +2185,19 @@ defmodule MarshallWeb.ThreadsLive do
                               disabled={@work_busy or !@controls_available}
                             >{collaboration_label(mode)}</button>
                           </div>
-                          <span class="muted">{gettext("%{value1} reasoning", value1: @selected.mode)}</span>
-                          <button type="button" data-thread-commands-open class="console-button ghost">{gettext(
+                          <span class="muted">{dgettext("agents", "%{value1} reasoning",
+                            value1: @selected.mode
+                          )}</span>
+                          <button type="button" data-thread-commands-open class="console-button ghost">{dgettext(
+                            "agents",
                             "Commands"
                           )}</button>
                           <button
                             class="console-button primary"
                             type="submit"
-                            phx-disable-with={gettext("Sending…")}
+                            phx-disable-with={dgettext("agents", "Sending…")}
                             disabled={not is_nil(@pending_question) or !@controls_available}
-                          >{gettext("Send")} <.glyph name="arrow_up" /></button>
+                          >{dgettext("agents", "Send")} <.glyph name="arrow_up" /></button>
                         </div>
                       </.form>
                       <section
@@ -2115,8 +2206,12 @@ defmodule MarshallWeb.ThreadsLive do
                         class="thread-question-card"
                         aria-labelledby="thread-questions-heading"
                       >
-                        <h2 id="thread-questions-heading">{gettext("Your input is needed")}</h2>
-                        <p class="muted">{gettext("Answer these questions to continue the plan.")}</p>
+                        <h2 id="thread-questions-heading">
+                          {dgettext("agents", "Your input is needed")}
+                        </h2>
+                        <p class="muted">
+                          {dgettext("agents", "Answer these questions to continue the plan.")}
+                        </p>
                         <.form
                           :if={@can_write}
                           for={@question_form}
@@ -2150,19 +2245,21 @@ defmodule MarshallWeb.ThreadsLive do
                               name={"answers[#{question["id"]}][text]"}
                               id={"thread-answer-#{question["id"]}-text"}
                               value={get_in(@question_answers, [question["id"], "text"]) || ""}
-                              label={gettext("Your answer or additional detail")}
+                              label={dgettext("agents", "Your answer or additional detail")}
                               rows="2"
                             />
                           </fieldset>
                           <button
                             type="submit"
                             class="console-button primary"
-                            phx-disable-with={gettext("Submitting…")}
-                          >{gettext("Submit answers")}</button>
+                            phx-disable-with={dgettext("agents", "Submitting…")}
+                          >{dgettext("agents", "Submit answers")}</button>
                         </.form>
                         <div :if={!@can_write} class="stack">
                           <p :for={question <- @pending_question.questions}>{question["question"]}</p>
-                          <p class="muted">{gettext("An operator can answer these questions.")}</p>
+                          <p class="muted">
+                            {dgettext("agents", "An operator can answer these questions.")}
+                          </p>
                         </div>
                       </section>
                       <section
@@ -2172,10 +2269,10 @@ defmodule MarshallWeb.ThreadsLive do
                         aria-labelledby="thread-plan-heading"
                       >
                         <header class="row actions">
-                          <h2 id="thread-plan-heading">{gettext("Proposed plan")}</h2><span
+                          <h2 id="thread-plan-heading">{dgettext("agents", "Proposed plan")}</h2><span
                             :if={@latest_plan.implementing_turn_id}
                             class="status-label"
-                          >{gettext("Implementation started")}</span>
+                          >{dgettext("agents", "Implementation started")}</span>
                         </header>
                         <pre>{@latest_plan.text}</pre>
                         <div
@@ -2189,7 +2286,7 @@ defmodule MarshallWeb.ThreadsLive do
                             phx-value-plan_id={@latest_plan.id}
                             class="console-button primary"
                             disabled={@work_busy or !@controls_available}
-                          >{gettext("Implement plan")}</button>
+                          >{dgettext("agents", "Implement plan")}</button>
                           <button
                             id="thread-revise-plan"
                             type="button"
@@ -2197,7 +2294,7 @@ defmodule MarshallWeb.ThreadsLive do
                             phx-value-plan_id={@latest_plan.id}
                             class="console-button ghost"
                             disabled={@work_busy or !@controls_available}
-                          >{gettext("Revise")}</button>
+                          >{dgettext("agents", "Revise")}</button>
                         </div>
                       </section>
                       <div id="thread-events" class="thread-events">
@@ -2206,7 +2303,8 @@ defmodule MarshallWeb.ThreadsLive do
                           id="thread-archived"
                           class="thread-notice muted"
                         >
-                          {gettext(
+                          {dgettext(
+                            "agents",
                             "Archived thread. The transcript is read-only. Reopen to continue on a new machine."
                           )}
                         </p>
@@ -2216,21 +2314,24 @@ defmodule MarshallWeb.ThreadsLive do
                           class="thread-notice"
                           role="alert"
                         >
-                          {gettext("The transcript is temporarily unavailable. Try again shortly.")}
+                          {dgettext(
+                            "agents",
+                            "The transcript is temporarily unavailable. Try again shortly."
+                          )}
                         </p>
                         <article
                           :if={@events_available and @events_empty}
                           class="thread-message"
                           data-kind="prompt"
                         >
-                          <p class="thread-message-role">{gettext("Objective")}</p>
+                          <p class="thread-message-role">{dgettext("agents", "Objective")}</p>
                           <pre>{@selected.objective}</pre>
                         </article>
                         <p
                           :if={@events_available and @events_empty and @selected.status == :ready}
                           class="muted"
                         >
-                          {gettext("Waiting for the agent's first update.")}
+                          {dgettext("agents", "Waiting for the agent's first update.")}
                         </p>
                         <div id="thread-transcript" phx-update="stream">
                           <article
@@ -2265,18 +2366,18 @@ defmodule MarshallWeb.ThreadsLive do
           phx-update="ignore"
         >
           <header class="thread-dialog-heading">
-            <h2 id="thread-command-heading">{gettext("Commands")}</h2><button
+            <h2 id="thread-command-heading">{dgettext("agents", "Commands")}</h2><button
               type="button"
               data-thread-commands-close
               class="console-button compact ghost"
-            >{gettext("Close")}</button>
+            >{dgettext("agents", "Close")}</button>
           </header>
           <.input
             id="thread-command-search"
             type="search"
             name="command_search"
             value=""
-            label={gettext("Find a command")}
+            label={dgettext("agents", "Find a command")}
             autocomplete="off"
             role="combobox"
             aria-autocomplete="list"
@@ -2286,7 +2387,7 @@ defmodule MarshallWeb.ThreadsLive do
           <div
             id="thread-command-options"
             role="listbox"
-            aria-label={gettext("Commands")}
+            aria-label={dgettext("agents", "Commands")}
             class="thread-command-list"
           >
             <button
@@ -2298,7 +2399,7 @@ defmodule MarshallWeb.ThreadsLive do
               aria-selected="false"
             ><span><strong>/{command}</strong> · {label}</span><span class="muted">{description}</span></button>
           </div>
-          <p class="muted">{gettext("↑ ↓ choose · Enter run · Escape close")}</p>
+          <p class="muted">{dgettext("agents", "↑ ↓ choose · Enter run · Escape close")}</p>
         </dialog>
         <dialog
           :if={@thread_dialog}
@@ -2313,12 +2414,13 @@ defmodule MarshallWeb.ThreadsLive do
               type="button"
               phx-click="close_thread_dialog"
               class="console-button compact ghost"
-            >{gettext("Close")}</button>
+            >{dgettext("agents", "Close")}</button>
           </header>
           <p :if={@error} role="alert">{@error}</p>
           <%= if @thread_dialog == :help do %>
             <p>
-              {gettext(
+              {dgettext(
+                "agents",
                 "Use Commands or press Ctrl/Cmd+K while writing. Start a message with / to find a command; use Tab to complete it."
               )}
             </p>
@@ -2329,49 +2431,58 @@ defmodule MarshallWeb.ThreadsLive do
             </dl>
             <p>
               <code>/plan task</code>
-              {gettext("and")} <code>/work task</code>
-              {gettext(
+              {dgettext("agents", "and")} <code>/work task</code>
+              {dgettext(
+                "agents",
                 "choose a mode and submit the task together. Choosing a mode on a new thread does not create a machine."
               )}
             </p>
             <p>
-              {gettext(
+              {dgettext(
+                "agents",
                 "Start with a space to send slash-looking text literally. Type $ to choose a skill by its exact source."
               )}
             </p>
           <% end %>
           <%= if @thread_dialog == :context do %>
             <p :if={!@context_available} role="status">
-              {gettext(
+              {dgettext(
+                "agents",
                 "Context details are unavailable. The thread may still be preparing its workspace."
               )}
             </p>
             <%= if @context_available do %>
               <dl class="kv">
-                <dt>{gettext("Status")}</dt><dd>{skill_value(@context_info, :status, "Ready")}</dd><dt>
-                  {gettext("Working directory")}
+                <dt>{dgettext("agents", "Status")}</dt><dd>
+                  {skill_value(@context_info, :status, "Ready")}
+                </dd><dt>
+                  {dgettext("agents", "Working directory")}
                 </dt><dd class="break">
-                  {skill_value(@context_info, :working_directory, gettext("Not collected yet"))}
-                </dd><dt>{gettext("Input tokens")}</dt><dd>
+                  {skill_value(
+                    @context_info,
+                    :working_directory,
+                    dgettext("agents", "Not collected yet")
+                  )}
+                </dd><dt>{dgettext("agents", "Input tokens")}</dt><dd>
                   {context_usage(@context_info, :input_tokens)}
                 </dd><dt>
-                  {gettext("Token allowance")}
+                  {dgettext("agents", "Token allowance")}
                 </dt><dd>{context_usage(@context_info, :token_limit)}</dd><dt>
-                  {gettext("Context bytes")}
+                  {dgettext("agents", "Context bytes")}
                 </dt><dd>
                   {context_usage(@context_info, :bytes)}
                 </dd>
               </dl>
-              <h3>{gettext("Loaded sources")}</h3>
+              <h3>{dgettext("agents", "Loaded sources")}</h3>
               <p :if={skill_value(@context_info, :sources, []) == []} class="muted">
-                {gettext("No instruction sources collected yet.")}
+                {dgettext("agents", "No instruction sources collected yet.")}
               </p>
               <ul class="thread-context-sources">
                 <li :for={source <- skill_value(@context_info, :sources, [])}>
                   <strong>{skill_value(source, :kind, "Instructions")}</strong><br /><span class="break">{skill_value(
                     source,
                     :path,
-                    gettext("Workspace source")
+                    dgettext("agents", "Workspace source")
                   )}</span>
                 </li>
               </ul>
@@ -2385,26 +2496,30 @@ defmodule MarshallWeb.ThreadsLive do
                 phx-click="reload_context"
                 class="console-button primary"
                 disabled={@work_busy}
-              >{gettext("Reload context")}</button><button
+              >{dgettext("agents", "Reload context")}</button><button
                 type="button"
                 phx-click="thread_command"
                 phx-value-command="compact"
                 class="console-button ghost"
                 disabled={@work_busy}
-              >{gettext("Compact context")}</button>
+              >{dgettext("agents", "Compact context")}</button>
             </div>
           <% end %>
           <%= if @thread_dialog == :skills do %>
             <p>
-              {gettext(
+              {dgettext(
+                "agents",
                 "Skills add reusable instructions to a task. Choose the source you intend to use."
               )}
             </p>
             <p :if={!@skills_available} role="status">
-              {gettext("Skills are unavailable until the workspace context has been collected.")}
+              {dgettext(
+                "agents",
+                "Skills are unavailable until the workspace context has been collected."
+              )}
             </p>
             <p :if={@skills_available and @skills == []} class="muted">
-              {gettext("No skills were discovered in this workspace.")}
+              {dgettext("agents", "No skills were discovered in this workspace.")}
             </p>
             <div id="thread-skill-catalog" class="stack">
               <article
@@ -2416,10 +2531,14 @@ defmodule MarshallWeb.ThreadsLive do
                   <strong>{skill_value(skill, :name, "Skill")}</strong><span
                     :if={!skill_value(skill, :enabled, true)}
                     class="status-label"
-                  >{gettext("Disabled")}</span>
+                  >{dgettext("agents", "Disabled")}</span>
                 </header>
                 <p>{skill_value(skill, :description, "")}</p><p class="muted break">
-                  {skill_value(skill, :path, skill_value(skill, :scope, gettext("Managed skill")))}
+                  {skill_value(
+                    skill,
+                    :path,
+                    skill_value(skill, :scope, dgettext("agents", "Managed skill"))
+                  )}
                 </p>
                 <button
                   :if={@can_write and skill_value(skill, :enabled, true)}
@@ -2427,11 +2546,11 @@ defmodule MarshallWeb.ThreadsLive do
                   phx-click="select_skill"
                   phx-value-id={skill_value(skill, :id)}
                   class="console-button compact ghost"
-                >{gettext("Use this skill")}</button>
+                >{dgettext("agents", "Use this skill")}</button>
               </article>
             </div>
             <section :if={@can_manage} class="thread-skill-management">
-              <h3>{gettext("Managed installations")}</h3>
+              <h3>{dgettext("agents", "Managed installations")}</h3>
               <article :for={skill <- @managed_skills} class="thread-skill-item">
                 <strong>{skill_value(skill, :name, "Skill")}</strong><span class="status-label">{skill_value(
                   skill,
@@ -2439,7 +2558,9 @@ defmodule MarshallWeb.ThreadsLive do
                   "pending"
                 )}</span>
                 <p class="muted break">{skill_value(skill, :source_url, "")}</p><p class="muted break">
-                  {gettext("Commit: %{value1}", value1: skill_value(skill, :commit, "Pending"))}
+                  {dgettext("agents", "Commit: %{value1}",
+                    value1: skill_value(skill, :commit, "Pending")
+                  )}
                 </p>
                 <.form
                   for={to_form(%{"revision" => ""}, as: :update)}
@@ -2452,14 +2573,14 @@ defmodule MarshallWeb.ThreadsLive do
                     name="update[revision]"
                     id={"thread-skill-revision-#{skill_value(skill, :id)}"}
                     value=""
-                    label={gettext("Update revision (optional)")}
-                    placeholder={gettext("Branch, tag or commit")}
+                    label={dgettext("agents", "Update revision (optional)")}
+                    placeholder={dgettext("agents", "Branch, tag or commit")}
                   />
                   <button
                     type="submit"
                     class="console-button ghost"
-                    phx-disable-with={gettext("Updating…")}
-                  >{gettext("Update")}</button>
+                    phx-disable-with={dgettext("agents", "Updating…")}
+                  >{dgettext("agents", "Update")}</button>
                 </.form>
                 <div class="row actions">
                   <button
@@ -2469,14 +2590,14 @@ defmodule MarshallWeb.ThreadsLive do
                     phx-value-id={skill_value(skill, :id)}
                     phx-value-enabled={to_string(!skill_value(skill, :enabled, true))}
                   >{if skill_value(skill, :enabled, true),
-                    do: gettext("Disable"),
-                    else: gettext("Enable")}</button>
+                    do: dgettext("agents", "Disable"),
+                    else: dgettext("agents", "Enable")}</button>
                   <button
                     type="button"
                     class="console-button compact ghost"
                     phx-click="remove_skill"
                     phx-value-id={skill_value(skill, :id)}
-                  >{gettext("Remove")}</button>
+                  >{dgettext("agents", "Remove")}</button>
                 </div>
               </article>
               <.form
@@ -2486,31 +2607,34 @@ defmodule MarshallWeb.ThreadsLive do
                 phx-submit="install_skill"
                 class="stack"
               >
-                <h3>{gettext("Install a skill")}</h3><p class="muted">
-                  {gettext("Use a public GitHub, GitLab, Codeberg or Bitbucket repository.")}
+                <h3>{dgettext("agents", "Install a skill")}</h3><p class="muted">
+                  {dgettext(
+                    "agents",
+                    "Use a public GitHub, GitLab, Codeberg or Bitbucket repository."
+                  )}
                 </p>
                 <.input
                   field={@skill_form[:url]}
                   type="url"
-                  label={gettext("Repository URL")}
+                  label={dgettext("agents", "Repository URL")}
                   placeholder="https://github.com/owner/repository"
                   required
                 />
                 <.input
                   field={@skill_form[:revision]}
-                  label={gettext("Revision (optional)")}
-                  placeholder={gettext("Branch, tag or commit")}
+                  label={dgettext("agents", "Revision (optional)")}
+                  placeholder={dgettext("agents", "Branch, tag or commit")}
                 />
                 <.input
                   field={@skill_form[:subdirectory]}
-                  label={gettext("Skill directory")}
+                  label={dgettext("agents", "Skill directory")}
                   required
                 />
                 <button
                   type="submit"
                   class="console-button primary"
-                  phx-disable-with={gettext("Installing…")}
-                >{gettext("Install skill")}</button>
+                  phx-disable-with={dgettext("agents", "Installing…")}
+                >{dgettext("agents", "Install skill")}</button>
               </.form>
             </section>
           <% end %>
@@ -2530,7 +2654,7 @@ defmodule MarshallWeb.ThreadsLive do
     <div
       id="thread-slash-options"
       role="listbox"
-      aria-label={gettext("Command suggestions")}
+      aria-label={dgettext("agents", "Command suggestions")}
       data-thread-completions
       hidden
       class="thread-command-list thread-command-completions"
@@ -2549,10 +2673,10 @@ defmodule MarshallWeb.ThreadsLive do
       id="thread-skill-suggestions"
       class="thread-command-list"
       role="listbox"
-      aria-label={gettext("Skill suggestions")}
+      aria-label={dgettext("agents", "Skill suggestions")}
     >
       <p :if={matching_skills(@skills, @query) == []} class="muted">
-        {gettext("No matching skills. Use /skills to inspect the catalog.")}
+        {dgettext("agents", "No matching skills. Use /skills to inspect the catalog.")}
       </p>
       <button
         :for={skill <- matching_skills(@skills, @query)}
@@ -2566,7 +2690,7 @@ defmodule MarshallWeb.ThreadsLive do
       ><strong>{skill_value(skill, :name)}</strong><span class="muted break">{skill_value(
         skill,
         :path,
-        skill_value(skill, :scope, gettext("Managed skill"))
+        skill_value(skill, :scope, dgettext("agents", "Managed skill"))
       )}</span></button>
     </div>
     <div
@@ -2580,8 +2704,8 @@ defmodule MarshallWeb.ThreadsLive do
         class="console-button compact ghost"
         phx-click="remove_selected_skill"
         phx-value-id={skill_value(skill, :id)}
-        aria-label={gettext("Remove %{skill}", skill: skill_value(skill, :name))}
-      >{gettext("Remove")}</button></span>
+        aria-label={dgettext("agents", "Remove %{skill}", skill: skill_value(skill, :name))}
+      >{dgettext("agents", "Remove")}</button></span>
     </div>
     """
   end
@@ -2591,13 +2715,13 @@ defmodule MarshallWeb.ThreadsLive do
   defp question_identity(question), do: question.id
 
   @spec collaboration_label(atom()) :: String.t()
-  defp collaboration_label(:plan), do: gettext("Plan")
-  defp collaboration_label(_), do: gettext("Work")
+  defp collaboration_label(:plan), do: dgettext("agents", "Plan")
+  defp collaboration_label(_), do: dgettext("agents", "Work")
 
   @spec dialog_title(atom()) :: String.t()
-  defp dialog_title(:context), do: gettext("Thread context")
-  defp dialog_title(:skills), do: gettext("Skills")
-  defp dialog_title(:help), do: gettext("Composer help")
+  defp dialog_title(:context), do: dgettext("agents", "Thread context")
+  defp dialog_title(:skills), do: dgettext("agents", "Skills")
+  defp dialog_title(:help), do: dgettext("agents", "Composer help")
 
   @spec context_usage(map(), atom()) :: String.t()
   defp context_usage(info, key) do
@@ -2611,40 +2735,50 @@ defmodule MarshallWeb.ThreadsLive do
   defp context_warning(value) when is_binary(value), do: value
 
   defp context_warning(%{} = value),
-    do: skill_value(value, :message, gettext("A context source could not be fully loaded."))
+    do:
+      skill_value(
+        value,
+        :message,
+        dgettext("agents", "A context source could not be fully loaded.")
+      )
 
-  defp context_warning(_), do: gettext("A context source could not be fully loaded.")
+  defp context_warning(_), do: dgettext("agents", "A context source could not be fully loaded.")
 
   @spec machine_summary(map()) :: String.t()
   defp machine_summary(params),
     do: "#{params["vcpu"]} CPU · #{params["memory_mib"]} MiB · #{params["disk_gib"]} GiB"
 
   @spec mode_hint(String.t()) :: String.t()
-  defp mode_hint("low"), do: gettext("Low is for small, well-defined tasks.")
-  defp mode_hint("high"), do: gettext("High gives difficult work more reasoning time.")
-  defp mode_hint("ultra"), do: gettext("Ultra is for complex, open-ended work.")
-  defp mode_hint(_mode), do: gettext("Medium is a good starting point for most work.")
+  defp mode_hint("low"), do: dgettext("agents", "Low is for small, well-defined tasks.")
+  defp mode_hint("high"), do: dgettext("agents", "High gives difficult work more reasoning time.")
+  defp mode_hint("ultra"), do: dgettext("agents", "Ultra is for complex, open-ended work.")
+  defp mode_hint(_mode), do: dgettext("agents", "Medium is a good starting point for most work.")
 
   @spec status_label(atom()) :: String.t()
-  defp status_label(:pending), do: gettext("Pending")
-  defp status_label(:provisioning), do: gettext("Provisioning")
-  defp status_label(:ready), do: gettext("Ready")
-  defp status_label(:failed), do: gettext("Failed")
-  defp status_label(:deleting), do: gettext("Archiving")
-  defp status_label(:archived), do: gettext("Archived")
-  defp status_label(_), do: gettext("Unknown")
+  defp status_label(:pending), do: dgettext("agents", "Pending")
+  defp status_label(:provisioning), do: dgettext("agents", "Provisioning")
+  defp status_label(:ready), do: dgettext("agents", "Ready")
+  defp status_label(:failed), do: dgettext("agents", "Failed")
+  defp status_label(:deleting), do: dgettext("agents", "Archiving")
+  defp status_label(:archived), do: dgettext("agents", "Archived")
+  defp status_label(_), do: dgettext("agents", "Unknown")
 
   @spec status_description(atom()) :: String.t()
-  defp status_description(:pending), do: gettext("Waiting for a workspace")
-  defp status_description(:provisioning), do: gettext("Preparing a machine for this task")
-  defp status_description(:ready), do: gettext("Workspace ready · open the conversation")
-  defp status_description(:failed), do: gettext("Workspace setup needs attention")
-  defp status_description(:deleting), do: gettext("Archiving · releasing the machine")
-  defp status_description(:archived), do: gettext("Archived · conversation retained")
+  defp status_description(:pending), do: dgettext("agents", "Waiting for a workspace")
+
+  defp status_description(:provisioning),
+    do: dgettext("agents", "Preparing a machine for this task")
+
+  defp status_description(:ready),
+    do: dgettext("agents", "Workspace ready · open the conversation")
+
+  defp status_description(:failed), do: dgettext("agents", "Workspace setup needs attention")
+  defp status_description(:deleting), do: dgettext("agents", "Archiving · releasing the machine")
+  defp status_description(:archived), do: dgettext("agents", "Archived · conversation retained")
 
   @spec event_role(atom()) :: String.t()
-  defp event_role(:prompt), do: gettext("Prompt")
-  defp event_role(:assistant), do: gettext("Agent")
+  defp event_role(:prompt), do: dgettext("agents", "Prompt")
+  defp event_role(:assistant), do: dgettext("agents", "Agent")
 
   @spec event_text(Marshall.Agents.Event.t()) :: String.t()
   defp event_text(%{kind: :prompt, body: body}), do: Map.get(body, "prompt", "")
@@ -2652,8 +2786,8 @@ defmodule MarshallWeb.ThreadsLive do
   defp event_text(%{kind: :assistant, body: body}),
     do: body |> Map.get("text", "") |> String.replace(["<proposed_plan>", "</proposed_plan>"], "")
 
-  defp event_text(%{kind: :turn_started}), do: gettext("Agent started working")
-  defp event_text(%{kind: :model_output}), do: gettext("Response received")
+  defp event_text(%{kind: :turn_started}), do: dgettext("agents", "Agent started working")
+  defp event_text(%{kind: :model_output}), do: dgettext("agents", "Response received")
 
   defp event_text(%{kind: :tool_queued, body: %{"calls" => calls}}) when is_list(calls) do
     names =
@@ -2663,43 +2797,49 @@ defmodule MarshallWeb.ThreadsLive do
       end)
 
     if names == [],
-      do: gettext("Tools queued"),
-      else: gettext("Queued: %{tools}", tools: Enum.join(names, ", "))
+      do: dgettext("agents", "Tools queued"),
+      else: dgettext("agents", "Queued: %{tools}", tools: Enum.join(names, ", "))
   end
 
-  defp event_text(%{kind: :tool_queued}), do: gettext("Tools queued")
+  defp event_text(%{kind: :tool_queued}), do: dgettext("agents", "Tools queued")
 
   defp event_text(%{kind: :tool_result, body: %{"result" => %{"status" => "failed"}}}),
-    do: gettext("Tool failed")
+    do: dgettext("agents", "Tool failed")
 
   defp event_text(%{kind: :tool_result, body: %{"result" => %{"status" => "cancelled"}}}),
-    do: gettext("Tool cancelled")
+    do: dgettext("agents", "Tool cancelled")
 
   defp event_text(%{kind: :tool_result, body: %{"result" => %{"status" => "completed"}}}),
-    do: gettext("Tool completed")
+    do: dgettext("agents", "Tool completed")
 
   defp event_text(%{kind: :tool_result, body: %{"result" => %{"status" => "uncertain"}}}),
-    do: gettext("Tool outcome uncertain")
+    do: dgettext("agents", "Tool outcome uncertain")
 
-  defp event_text(%{kind: :tool_result}), do: gettext("Tool result received")
-  defp event_text(%{kind: :child_spawned}), do: gettext("Delegated a task")
-  defp event_text(%{kind: :turn_finished}), do: gettext("Turn complete")
-  defp event_text(%{kind: :turn_failed}), do: gettext("The agent encountered a problem")
-  defp event_text(%{kind: :waiting_for_vm}), do: gettext("Waiting for the machine")
-  defp event_text(%{kind: :planning_question}), do: gettext("Waiting for your answers")
-  defp event_text(%{kind: :planning_answer}), do: gettext("Your answers were received")
-  defp event_text(%{kind: :context_compacted}), do: gettext("Older context summarized")
-  defp event_text(%{kind: :context_reloaded}), do: gettext("Workspace context reloaded")
-  defp event_text(_event), do: gettext("Thread updated")
+  defp event_text(%{kind: :tool_result}), do: dgettext("agents", "Tool result received")
+  defp event_text(%{kind: :child_spawned}), do: dgettext("agents", "Delegated a task")
+  defp event_text(%{kind: :turn_finished}), do: dgettext("agents", "Turn complete")
+
+  defp event_text(%{kind: :turn_failed}),
+    do: dgettext("agents", "The agent encountered a problem")
+
+  defp event_text(%{kind: :waiting_for_vm}), do: dgettext("agents", "Waiting for the machine")
+  defp event_text(%{kind: :planning_question}), do: dgettext("agents", "Waiting for your answers")
+  defp event_text(%{kind: :planning_answer}), do: dgettext("agents", "Your answers were received")
+  defp event_text(%{kind: :context_compacted}), do: dgettext("agents", "Older context summarized")
+
+  defp event_text(%{kind: :context_reloaded}),
+    do: dgettext("agents", "Workspace context reloaded")
+
+  defp event_text(_event), do: dgettext("agents", "Thread updated")
 
   # @cc [owner:ghuntley,label:product] localized-access-role-labels
   # Visible access roles MUST use translated labels while role attributes and
   # action values retain the authoritative domain atoms.
   @spec role_label(atom()) :: String.t()
-  defp role_label(:web), do: gettext("Web apps")
-  defp role_label(:viewer), do: gettext("Viewer")
-  defp role_label(:operator), do: gettext("Operator")
-  defp role_label(:manager), do: gettext("Manager")
-  defp role_label(:revoked), do: gettext("Revoked")
-  defp role_label(_), do: gettext("Unknown")
+  defp role_label(:web), do: dgettext("agents", "Web apps")
+  defp role_label(:viewer), do: dgettext("agents", "Viewer")
+  defp role_label(:operator), do: dgettext("agents", "Operator")
+  defp role_label(:manager), do: dgettext("agents", "Manager")
+  defp role_label(:revoked), do: dgettext("agents", "Revoked")
+  defp role_label(_), do: dgettext("agents", "Unknown")
 end

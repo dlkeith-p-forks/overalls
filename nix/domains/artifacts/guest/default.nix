@@ -2,6 +2,7 @@
   codingClis ? import ./coding-clis.nix { inherit pkgs; },
   extraModules ? [ ], imageName ? "lilly-nixos-x86_64",
   minimumMemoryBytes ? (if vscodeWeb == null then 536870912 else 2147483648),
+  minimumDiskBytes ? null,
   privateServiceRoots ? [ ] }:
 let
   guest = import (pkgs.path + "/nixos/lib/eval-config.nix") {
@@ -222,6 +223,9 @@ pkgs.runCommand imageName {
   initrd_sha256=$(sha256sum $out/initrd | cut -d' ' -f1)
   rootfs_sha256=$(sha256sum $out/rootfs.ext4 | cut -d' ' -f1)
   minimum_disk_bytes=$rootfs_bytes
+  ${pkgs.lib.optionalString (minimumDiskBytes != null) ''
+    minimum_disk_bytes=$(( minimum_disk_bytes > ${toString minimumDiskBytes} ? minimum_disk_bytes : ${toString minimumDiskBytes} ))
+  ''}
   ${pkgs.lib.optionalString (vscodeWeb != null) ''
     minimum_disk_bytes=$(( (rootfs_bytes + 2147483648 + 1073741823) / 1073741824 * 1073741824 ))
   ''}

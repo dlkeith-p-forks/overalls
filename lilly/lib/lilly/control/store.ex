@@ -84,11 +84,17 @@ defmodule Lilly.Control.Store do
 
   @spec mismatch_field(command(), command()) :: atom() | nil
   defp mismatch_field(existing, command) do
-    existing
-    |> immutable()
-    |> Map.keys()
-    |> Enum.sort()
-    |> Enum.find(fn key -> Map.get(existing, key) != Map.get(command, key) end)
+    cond do
+      existing.owner_id != command.owner_id ->
+        :owner_id
+
+      true ->
+        existing
+        |> immutable()
+        |> Map.keys()
+        |> Enum.sort()
+        |> Enum.find(fn key -> Map.get(existing, key) != Map.get(command, key) end)
+    end
   end
 
   @doc "Read the command for one physical placement, never by logical VM identity."

@@ -1,0 +1,1016 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ar\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5);\n"
+
+#: lib/marshall_web/live/admin/audit_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "; the next due check can then request a new generation."
+msgstr "؛ ويمكن للفحص المستحق التالي طلب جيل جديد."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:101
+#, elixir-autogen, elixir-format
+msgid "ACME account"
+msgstr "حساب اكمي"
+
+#: lib/marshall_web/live/admin/audit_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "ACME account: %{status}"
+msgstr "حساب ACME: %{status}"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:132
+#: lib/marshall_web/live/admin/audit_labels.ex:350
+#, elixir-autogen, elixir-format
+msgid "Acknowledged"
+msgstr "تم الإقرار"
+
+#: lib/marshall_web/live/admin/audit_live.ex:230
+#: lib/marshall_web/live/admin/audit_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "إجراء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:124
+#, elixir-autogen, elixir-format
+msgid "Activated"
+msgstr "تفعيلها"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:176
+#: lib/marshall_web/live/admin/audit_labels.ex:374
+#, elixir-autogen, elixir-format
+msgid "Activation failed"
+msgstr "فشل التنشيط"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:197
+#, elixir-autogen, elixir-format
+msgid "Activation observed"
+msgstr "تمت ملاحظة التنشيط"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:356
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "نشط"
+
+#: lib/marshall_web/live/admin/audit_live.ex:287
+#, elixir-autogen, elixir-format
+msgid "Actor"
+msgstr "الجهة المنفذة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:27
+#, elixir-autogen, elixir-format
+msgid "Administrator access granted"
+msgstr "تم منح وصول المسؤول"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:28
+#, elixir-autogen, elixir-format
+msgid "Administrator access revoked"
+msgstr "تم إبطال وصول المسؤول"
+
+#: lib/marshall_web/live/admin/audit_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Administrator actions"
+msgstr "إجراءات المسؤول"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:25
+#, elixir-autogen, elixir-format
+msgid "Administrator bootstrapped"
+msgstr "تمهيد المسؤول"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:133
+#, elixir-autogen, elixir-format
+msgid "Advanced"
+msgstr "متقدم"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:134
+#, elixir-autogen, elixir-format
+msgid "Allocated"
+msgstr "المخصصة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:343
+#, elixir-autogen, elixir-format
+msgid "Applied"
+msgstr "مطبق"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:136
+#: lib/marshall_web/live/admin/audit_labels.ex:340
+#, elixir-autogen, elixir-format
+msgid "Approved"
+msgstr "تمت الموافقة عليه"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:137
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "مؤرشف"
+
+#: lib/marshall_web/live/admin/audit_live.ex:179
+#, elixir-autogen, elixir-format
+msgid "Audit"
+msgstr "التدقيق"
+
+#: lib/marshall_web/live/admin/audit_live.ex:279
+#, elixir-autogen, elixir-format
+msgid "Audit history is unavailable."
+msgstr "سجل التدقيق غير متاح."
+
+#: lib/marshall_web/live/admin/audit_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Audit kinds"
+msgstr "أنواع التدقيق"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:140
+#: lib/marshall_web/live/admin/audit_labels.ex:341
+#, elixir-autogen, elixir-format
+msgid "Blocked"
+msgstr "محظور"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:184
+#, elixir-autogen, elixir-format
+msgid "Cancellation completed"
+msgstr "اكتمل الإلغاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:283
+#: lib/marshall_web/live/admin/audit_labels.ex:286
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "طُلب الإلغاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:229
+#, elixir-autogen, elixir-format
+msgid "Cancellation restart recorded"
+msgstr "تم تسجيل إعادة تشغيل الإلغاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:232
+#, elixir-autogen, elixir-format
+msgid "Cancellation stop recorded"
+msgstr "تم تسجيل توقف الإلغاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:141
+#: lib/marshall_web/live/admin/audit_labels.ex:142
+#: lib/marshall_web/live/admin/audit_labels.ex:336
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "ملغى"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:335
+#, elixir-autogen, elixir-format
+msgid "Cancelling"
+msgstr "يجري الإلغاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:330
+#, elixir-autogen, elixir-format
+msgid "Capturing"
+msgstr "التقاط"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:102
+#, elixir-autogen, elixir-format
+msgid "Certificate"
+msgstr "شهادة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:122
+#, elixir-autogen, elixir-format
+msgid "Certificate issued"
+msgstr "صدرت الشهادة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:110
+#, elixir-autogen, elixir-format
+msgid "Certificate order attempted"
+msgstr "تمت محاولة طلب الشهادة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:113
+#, elixir-autogen, elixir-format
+msgid "Certificate order bound"
+msgstr "أمر الشهادة ملزمة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:116
+#, elixir-autogen, elixir-format
+msgid "Certificate proof recorded"
+msgstr "تم تسجيل إثبات الشهادة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:119
+#, elixir-autogen, elixir-format
+msgid "Certificate proof refreshed"
+msgstr "تم تحديث إثبات الشهادة"
+
+#: lib/marshall_web/live/admin/audit_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Certificates"
+msgstr "الشهادات"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:368
+#, elixir-autogen, elixir-format
+msgid "Checking destination"
+msgstr "التحقق من الوجهة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:359
+#, elixir-autogen, elixir-format
+msgid "Checking transfer"
+msgstr "التحقق من النقل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:144
+#, elixir-autogen, elixir-format
+msgid "Checkpoint saved"
+msgstr "تم حفظ نقطة التفتيش"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:333
+#, elixir-autogen, elixir-format
+msgid "Cleaning up"
+msgstr "تنظيف"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:386
+#, elixir-autogen, elixir-format
+msgid "Cleaning up cancellation"
+msgstr "تنظيف الإلغاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:380
+#, elixir-autogen, elixir-format
+msgid "Cleaning up source"
+msgstr "تنظيف المصدر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:148
+#, elixir-autogen, elixir-format
+msgid "Cleanup completed"
+msgstr "اكتملت عملية التنظيف"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:145
+#: lib/marshall_web/live/admin/audit_labels.ex:334
+#: lib/marshall_web/live/admin/audit_labels.ex:339
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "مكتمل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:150
+#, elixir-autogen, elixir-format
+msgid "Confirmed"
+msgstr "تم التأكيد"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:166
+#, elixir-autogen, elixir-format
+msgid "Continued"
+msgstr "تابع"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:155
+#, elixir-autogen, elixir-format
+msgid "Copy confirmed"
+msgstr "تم تأكيد النسخ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:138
+#, elixir-autogen, elixir-format
+msgid "Copy started"
+msgstr "بدأ النسخ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:331
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "يجري النسخ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:325
+#, elixir-autogen, elixir-format
+msgid "Created"
+msgstr "تم الإنشاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:167
+#, elixir-autogen, elixir-format
+msgid "Deferred"
+msgstr "مؤجل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:354
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "محذوف"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:389
+#, elixir-autogen, elixir-format
+msgid "Deleting copies"
+msgstr "حذف النسخ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:187
+#, elixir-autogen, elixir-format
+msgid "Deletion completed"
+msgstr "اكتمل الحذف"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:289
+#: lib/marshall_web/live/admin/audit_labels.ex:292
+#, elixir-autogen, elixir-format
+msgid "Deletion requested"
+msgstr "تم طلب الحذف"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:202
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup offered"
+msgstr "عرضت تنظيف الوجهة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:238
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup recorded"
+msgstr "تم تسجيل تنظيف الوجهة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:205
+#, elixir-autogen, elixir-format
+msgid "Destination revocation offered"
+msgstr "عرض إلغاء الوجهة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:242
+#, elixir-autogen, elixir-format
+msgid "Destination revocation recorded"
+msgstr "تم تسجيل إلغاء الوجهة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:171
+#, elixir-autogen, elixir-format
+msgid "Destination work dispatched"
+msgstr "تم إرسال العمل الوجهة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:168
+#, elixir-autogen, elixir-format
+msgid "Dispatched"
+msgstr "أرسلت"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:347
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "تم الإفراغ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:346
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "جارٍ الإفراغ"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:98
+#, elixir-autogen, elixir-format
+msgid "Editor credential"
+msgstr "بيانات اعتماد المحرر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:100
+#, elixir-autogen, elixir-format
+msgid "Editor lease"
+msgstr "إيجار المحرر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:95
+#, elixir-autogen, elixir-format
+msgid "Editor sign-in"
+msgstr "تسجيل دخول المحرر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:394
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "جارٍ الإخلاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:49
+#, elixir-autogen, elixir-format
+msgid "Evacuation approved"
+msgstr "تمت الموافقة على الإخلاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:46
+#, elixir-autogen, elixir-format
+msgid "Evacuation changed"
+msgstr "تغير الإخلاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:52
+#, elixir-autogen, elixir-format
+msgid "Evacuation replanned"
+msgstr "تمت إعادة التخطيط للإخلاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:43
+#, elixir-autogen, elixir-format
+msgid "Evacuation requested"
+msgstr "طلب الإخلاء"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:126
+#: lib/marshall_web/live/admin/audit_labels.ex:337
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "فشل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:181
+#, elixir-autogen, elixir-format
+msgid "Fenced"
+msgstr "مسيجة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:393
+#, elixir-autogen, elixir-format
+msgid "Fencing"
+msgstr "المبارزة"
+
+#: lib/marshall_web/live/admin/audit_live.ex:207
+#: lib/marshall_web/live/admin/audit_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Filter lifecycle history"
+msgstr "تصفية سجل دورة الحياة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:58
+#, elixir-autogen, elixir-format
+msgid "Fleet certificate rotation requested"
+msgstr "تم طلب تدوير شهادة الأسطول"
+
+#: lib/marshall_web/live/admin/audit_live.ex:261
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation} has an uncertain ACME order response. The generation can be failed after"
+msgstr "يحتوي الجيل %{generation} على استجابة أمر ACME غير مؤكدة. يمكن أن يفشل الجيل بعد ذلك"
+
+#: lib/marshall_web/live/admin/audit_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation}: %{status}"
+msgstr "الجيل %{generation}: %{status}"
+
+#: lib/marshall_web/live/admin/audit_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "Host ID"
+msgstr "معرّف المضيف"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:55
+#, elixir-autogen, elixir-format
+msgid "Host configured"
+msgstr "تم تكوين المضيف"
+
+#: lib/marshall_web/live/admin/audit_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Human requests and system recovery transitions. History is retained for 90 days."
+msgstr ""
+"الطلبات البشرية وانتقالات استعادة النظام. يُحتفظ بالسجل لمدة 90 يومًا."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:192
+#, elixir-autogen, elixir-format
+msgid "Idle policy updated"
+msgstr "تم تحديث سياسة الخمول"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:158
+#, elixir-autogen, elixir-format
+msgid "Import confirmed"
+msgstr "تم تأكيد الاستيراد"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:221
+#, elixir-autogen, elixir-format
+msgid "Import prepared"
+msgstr "استيراد جاهز"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:245
+#, elixir-autogen, elixir-format
+msgid "Import recorded"
+msgstr "تم تسجيل الاستيراد"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:139
+#, elixir-autogen, elixir-format
+msgid "Import started"
+msgstr "بدأ الاستيراد"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:364
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "جارٍ الاستيراد"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:103
+#, elixir-autogen, elixir-format
+msgid "Installation"
+msgstr "التثبيت"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:104
+#, elixir-autogen, elixir-format
+msgid "Installed"
+msgstr "تم التثبيت"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:90
+#, elixir-autogen, elixir-format
+msgid "Integration attached"
+msgstr "التكامل مرفق"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:84
+#, elixir-autogen, elixir-format
+msgid "Integration configured"
+msgstr "تم تكوين التكامل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:93
+#, elixir-autogen, elixir-format
+msgid "Integration detached"
+msgstr "التكامل منفصل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:87
+#, elixir-autogen, elixir-format
+msgid "Integration removed"
+msgstr "تمت إزالة التكامل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:173
+#, elixir-autogen, elixir-format
+msgid "Key dispatched"
+msgstr "تم إرسال المفتاح"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:247
+#, elixir-autogen, elixir-format
+msgid "Key recorded"
+msgstr "تم تسجيل المفتاح"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:312
+#, elixir-autogen, elixir-format
+msgid "Key retired"
+msgstr "مفتاح متقاعد"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:208
+#, elixir-autogen, elixir-format
+msgid "Key retirement offered"
+msgstr "عرض التقاعد الرئيسي"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:295
+#, elixir-autogen, elixir-format
+msgid "Key retirement requested"
+msgstr "طلب التقاعد الرئيسي"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:34
+#, elixir-autogen, elixir-format
+msgid "Machine access revoked"
+msgstr "تم إبطال الوصول إلى الجهاز"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:61
+#, elixir-autogen, elixir-format
+msgid "Machine lifecycle requested"
+msgstr "دورة حياة الآلة المطلوبة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:64
+#, elixir-autogen, elixir-format
+msgid "Machine relocation requested"
+msgstr "طلب نقل الآلة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:194
+#, elixir-autogen, elixir-format
+msgid "Machine state observed"
+msgstr "تمت ملاحظة حالة الآلة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:19
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication reset"
+msgstr "إعادة تعيين المصادقة متعددة العوامل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:16
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication verified"
+msgstr "تم التحقق من المصادقة متعددة العوامل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:338
+#, elixir-autogen, elixir-format
+msgid "Offered"
+msgstr "عرضت"
+
+#: lib/marshall_web/live/admin/audit_live.ex:334
+#, elixir-autogen, elixir-format
+msgid "Older events →"
+msgstr "أحداث أقدم →"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:250
+#, elixir-autogen, elixir-format
+msgid "Operation recorded"
+msgstr "تم تسجيل العملية"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:10
+#, elixir-autogen, elixir-format
+msgid "Passkey added"
+msgstr "تمت إضافة مفتاح المرور"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:13
+#, elixir-autogen, elixir-format
+msgid "Passkey removed"
+msgstr "تمت إزالة مفتاح المرور"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:298
+#, elixir-autogen, elixir-format
+msgid "Pause requested"
+msgstr "طلب وقفة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:217
+#: lib/marshall_web/live/admin/audit_labels.ex:353
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "متوقف مؤقتًا"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:326
+#: lib/marshall_web/live/admin/audit_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "معلق"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:235
+#, elixir-autogen, elixir-format
+msgid "Placement switch recorded"
+msgstr "تم تسجيل تبديل الموضع"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:189
+#, elixir-autogen, elixir-format
+msgid "Placement switched"
+msgstr "تم تبديل الموضع"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:218
+#, elixir-autogen, elixir-format
+msgid "Preparation started"
+msgstr "بدأ التحضير"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:328
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "التحضير"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:253
+#, elixir-autogen, elixir-format
+msgid "Progress recorded"
+msgstr "التقدم المسجل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:131
+#, elixir-autogen, elixir-format
+msgid "Progress updated"
+msgstr "تم تحديث التقدم"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:223
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "تم النشر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:332
+#, elixir-autogen, elixir-format
+msgid "Publishing"
+msgstr "النشر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:106
+#: lib/marshall_web/live/admin/audit_labels.ex:327
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "في الطابور"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:161
+#: lib/marshall_web/live/admin/audit_labels.ex:164
+#, elixir-autogen, elixir-format
+msgid "Readiness confirmed"
+msgstr "تم تأكيد الجاهزية"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:179
+#: lib/marshall_web/live/admin/audit_labels.ex:371
+#, elixir-autogen, elixir-format
+msgid "Readiness failed"
+msgstr "الاستعداد فاشل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:224
+#: lib/marshall_web/live/admin/audit_labels.ex:345
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "جاهز"
+
+#: lib/marshall_web/live/admin/audit_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
+msgstr ""
+"أجيال الشهادات الشاملة الحديثة للأسطول وتثبيتات البوابات. تُستثنى المفاتيح "
+"الخاصة وإثباتات ACME."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:225
+#, elixir-autogen, elixir-format
+msgid "Reconciled"
+msgstr "التوفيق"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:226
+#, elixir-autogen, elixir-format
+msgid "Recorded"
+msgstr "مسجلة"
+
+#: lib/marshall_web/live/admin/audit_live.ex:181
+#, elixir-autogen, elixir-format
+msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
+msgstr ""
+"تغييرات الصلاحيات وطلبات دورة الحياة وأجيال الشهادات ووصول المحرر بعد "
+"تنقيحها. تُستثنى الحمولات وبيانات الاعتماد وبايتات الطرفية."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:277
+#, elixir-autogen, elixir-format
+msgid "Reflection metadata updated"
+msgstr "تم تحديث البيانات الوصفية للانعكاس"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:105
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "تم التسجيل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:279
+#, elixir-autogen, elixir-format
+msgid "Replanned"
+msgstr "إعادة التخطيط"
+
+#: lib/marshall_web/live/admin/audit_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "Request a new wildcard certificate for every Audi gateway?"
+msgstr "طلب شهادة شاملة جديدة لكل بوابة Audi؟"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:107
+#, elixir-autogen, elixir-format
+msgid "Request saved"
+msgstr "تم حفظ الطلب"
+
+#: lib/marshall_web/live/admin/audit_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Request wildcard rotation"
+msgstr "طلب تدوير الشهادة الشاملة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:280
+#, elixir-autogen, elixir-format
+msgid "Requested"
+msgstr "مطلوب"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:135
+#, elixir-autogen, elixir-format
+msgid "Resize applied"
+msgstr "تم تطبيق تغيير الحجم"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:304
+#, elixir-autogen, elixir-format
+msgid "Resize started"
+msgstr "بدأ تغيير الحجم"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:391
+#, elixir-autogen, elixir-format
+msgid "Resizing"
+msgstr "تغيير الحجم"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:305
+#: lib/marshall_web/live/admin/audit_labels.ex:395
+#, elixir-autogen, elixir-format
+msgid "Resolved"
+msgstr "تم الحل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:306
+#, elixir-autogen, elixir-format
+msgid "Restart started"
+msgstr "بدأت عملية إعادة التشغيل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:392
+#, elixir-autogen, elixir-format
+msgid "Restarting"
+msgstr "إعادة التشغيل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:383
+#, elixir-autogen, elixir-format
+msgid "Restoring source"
+msgstr "استعادة المصدر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:259
+#, elixir-autogen, elixir-format
+msgid "Result recorded"
+msgstr "تم تسجيل النتيجة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:311
+#: lib/marshall_web/live/admin/audit_labels.ex:348
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "تم الاستئناف"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:125
+#: lib/marshall_web/live/admin/audit_labels.ex:349
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "تم إخراجه من الخدمة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:313
+#, elixir-autogen, elixir-format
+msgid "Retry requested"
+msgstr "تم طلب إعادة المحاولة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:377
+#, elixir-autogen, elixir-format
+msgid "Retrying destination"
+msgstr "جارٍ إعادة محاولة الوجهة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:351
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "قيد التشغيل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:37
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked"
+msgstr "تم إبطال مفتاح SSH"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:40
+#, elixir-autogen, elixir-format
+msgid "SSH session revoked"
+msgstr "تم إبطال جلسة SSH"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:314
+#: lib/marshall_web/live/admin/audit_labels.ex:342
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "مجدول"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:31
+#, elixir-autogen, elixir-format
+msgid "Sessions revoked"
+msgstr "تم إلغاء الجلسات"
+
+#: lib/marshall_web/live/admin/audit_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "Since (ISO 8601)"
+msgstr "منذ (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:153
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture confirmed"
+msgstr "تم تأكيد التقاط اللقطة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:143
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture started"
+msgstr "بدأ التقاط اللقطة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:262
+#, elixir-autogen, elixir-format
+msgid "Source restoration recorded"
+msgstr "تم تسجيل استعادة المصدر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:309
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "تمت استعادة المصدر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:211
+#, elixir-autogen, elixir-format
+msgid "Source revocation offered"
+msgstr "عرضت إلغاء المصدر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:265
+#, elixir-autogen, elixir-format
+msgid "Source revocation recorded"
+msgstr "تم تسجيل إلغاء المصدر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:215
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup offered"
+msgstr "عرضت تنظيف لقطة المصدر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:269
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup recorded"
+msgstr "تم تسجيل عملية تنظيف لقطة المصدر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:318
+#, elixir-autogen, elixir-format
+msgid "Source stop started"
+msgstr "بدأ إيقاف المصدر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:301
+#, elixir-autogen, elixir-format
+msgid "Start requested"
+msgstr "البدء المطلوب"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:271
+#, elixir-autogen, elixir-format
+msgid "Stop recorded"
+msgstr "توقف عن التسجيل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:303
+#, elixir-autogen, elixir-format
+msgid "Stop requested"
+msgstr "طلب التوقف"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:315
+#, elixir-autogen, elixir-format
+msgid "Stop started"
+msgstr "بدأ التوقف"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:352
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "متوقف"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:329
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "الإيقاف"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:362
+#, elixir-autogen, elixir-format
+msgid "Stopping source"
+msgstr "توقف المصدر"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:320
+#: lib/marshall_web/live/admin/audit_labels.ex:344
+#, elixir-autogen, elixir-format
+msgid "Superseded"
+msgstr "تم استبداله"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:365
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "تبديل الموضع"
+
+#: lib/marshall_web/live/admin/audit_live.ex:288
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "الوجهة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:66
+#, elixir-autogen, elixir-format
+msgid "Team created"
+msgstr "تم إنشاء الفريق"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:69
+#, elixir-autogen, elixir-format
+msgid "Team membership changed"
+msgstr "تغيرت عضوية الفريق"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:75
+#, elixir-autogen, elixir-format
+msgid "Team ownership accepted"
+msgstr "تم قبول ملكية الفريق"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:78
+#, elixir-autogen, elixir-format
+msgid "Team ownership declined"
+msgstr "تم رفض ملكية الفريق"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:81
+#, elixir-autogen, elixir-format
+msgid "Team ownership offer cancelled"
+msgstr "تم إلغاء عرض ملكية الفريق"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:72
+#, elixir-autogen, elixir-format
+msgid "Team ownership offered"
+msgstr "عرضت ملكية الفريق"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:256
+#, elixir-autogen, elixir-format
+msgid "Transfer receipt recorded"
+msgstr "تم تسجيل إيصال التحويل"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:129
+#, elixir-autogen, elixir-format
+msgid "Uncertain certificate order failed"
+msgstr "فشل ترتيب الشهادة غير المؤكد"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:274
+#, elixir-autogen, elixir-format
+msgid "Unconfirmed outcome recorded"
+msgstr "تم تسجيل نتيجة غير مؤكدة"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:321
+#: lib/marshall_web/live/admin/audit_labels.ex:355
+#: lib/marshall_web/live/admin/audit_labels.ex:396
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "مجهول"
+
+#: lib/marshall_web/live/admin/audit_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Until (ISO 8601)"
+msgstr "حتى (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:22
+#, elixir-autogen, elixir-format
+msgid "User deleted"
+msgstr "تم حذف المستخدم"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:21
+#, elixir-autogen, elixir-format
+msgid "User invited"
+msgstr "تمت دعوة المستخدم"
+
+#: lib/marshall_web/live/admin/audit_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "VM ID"
+msgstr "معرّف الآلة الافتراضية"
+
+#: lib/marshall_web/live/admin/audit_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "VM lifecycle"
+msgstr "دورة حياة الآلة الافتراضية"
+
+#: lib/marshall_web/live/admin/audit_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "VS Code access"
+msgstr "الوصول إلى VS Code"
+
+#: lib/marshall_web/live/admin/audit_live.ex:285
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "متى"
+
+#: lib/marshall_web/live/admin/audit_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation could not be requested."
+msgstr "تعذر طلب تدوير الشهادة الشاملة."
+
+#: lib/marshall_web/live/admin/audit_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation requested for generation %{generation}."
+msgstr "طُلب تدوير الشهادة الشاملة للجيل %{generation}."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:199
+#, elixir-autogen, elixir-format
+msgid "Work offered"
+msgstr "العمل المقدم"
+
+#: lib/marshall_web/live/admin/audit_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "Workflow ID"
+msgstr "معرّف سير العمل"

@@ -15,7 +15,7 @@ defmodule Marshall.Android.DisplayHostBridge do
   @impl true
   def init({host_stream, relay, generation})
       when is_pid(host_stream) and is_integer(generation) and generation > 0,
-      do: {:ok, %{host_stream: host_stream, relay: relay, generation: generation}}
+      do: begin_bridge(host_stream, relay, generation)
 
   @impl true
   def handle_cast({:frame, generation, bytes}, %{generation: generation} = state)
@@ -28,9 +28,17 @@ defmodule Marshall.Android.DisplayHostBridge do
 
   def handle_cast({:input, viewer, bytes}, state)
       when is_pid(viewer) and is_binary(bytes) and byte_size(bytes) in 1..4096 do
-    send(state.host_stream, {:android_display_input, state.generation, viewer, bytes})
+    _ = Marshall.Android.DisplayRelay.input(state.relay, viewer, state.generation, bytes)
     {:noreply, state}
   end
 
   def handle_cast(_, state), do: {:noreply, state}
+
+  defp begin_bridge(host_stream, relay, generation) do
+    with :ok <- Marshall.Android.DisplayRelay.set_input_sink(relay, host_stream) do
+      {:ok, %{host_stream: host_stream, relay: relay, generation: generation}}
+    else
+      _ -> {:stop, :relay_unavailable}
+    end
+  end
 end

@@ -1,0 +1,267 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: fil\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n==1 || n==2 || n==3 || (n%10!=4 && n%10!=6 && n%10!=9) ? 0 : 1);\n"
+
+#: lib/marshall_web/live/teams_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "%{count} member"
+msgid_plural "%{count} members"
+msgstr[0] "%{count} miyembro"
+msgstr[1] "%{count} miyembro"
+
+#: lib/marshall_web/live/teams_live.ex:270
+#, elixir-autogen, elixir-format
+msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
+msgstr "Ang isang koponan ay may isang may-ari. Ang pagmamay-ari ay gumagalaw lamang kapag tinanggap ng taong inaalok ito; ang dating may-ari ay nagiging admin."
+
+#: lib/marshall_web/live/teams_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Accept ownership"
+msgstr "Tanggapin ang pagmamay-ari"
+
+#: lib/marshall_web/live/teams_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Add, change or remove a member"
+msgstr "Magdagdag, magpalit o mag-alis ng miyembro"
+
+#: lib/marshall_web/live/teams_live.ex:257
+#, elixir-autogen, elixir-format
+msgid "Admin"
+msgstr "Tagapangasiwa"
+
+#: lib/marshall_web/live/teams_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "Administrator"
+msgstr "Tagapangasiwa"
+
+#: lib/marshall_web/live/teams_live.ex:218
+#, elixir-autogen, elixir-format
+msgid "Can"
+msgstr "Pwede"
+
+#: lib/marshall_web/live/teams_live.ex:347
+#, elixir-autogen, elixir-format
+msgid "Cancel offer"
+msgstr "Kanselahin ang alok"
+
+#: lib/marshall_web/live/teams_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Could not create this team."
+msgstr "Hindi malikha ang pangkat na ito."
+
+#: lib/marshall_web/live/teams_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Could not offer ownership."
+msgstr "Hindi makapag-alok ng pagmamay-ari."
+
+#: lib/marshall_web/live/teams_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Could not update this membership."
+msgstr "Hindi ma-update ang membership na ito."
+
+#: lib/marshall_web/live/teams_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Could not update this ownership offer."
+msgstr "Hindi ma-update ang alok sa pagmamay-ari na ito."
+
+#: lib/marshall_web/live/teams_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Create a team"
+msgstr "Lumikha ng isang koponan"
+
+#: lib/marshall_web/live/teams_live.ex:362
+#, elixir-autogen, elixir-format
+msgid "Create team"
+msgstr "Lumikha ng koponan"
+
+#: lib/marshall_web/live/teams_live.ex:337
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "Tanggihan"
+
+#: lib/marshall_web/live/teams_live.ex:377
+#, elixir-autogen, elixir-format
+msgid "Everything, including appointing admins and offering ownership."
+msgstr "Lahat, kabilang ang paghirang ng mga admin at pag-aalok ng pagmamay-ari."
+
+#: lib/marshall_web/live/teams_live.ex:44
+#: lib/marshall_web/live/teams_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Di-wastong kahilingan."
+
+#: lib/marshall_web/live/teams_live.ex:379
+#, elixir-autogen, elixir-format
+msgid "Manage members and team machines."
+msgstr "Pamahalaan ang mga miyembro at makina ng koponan."
+
+#: lib/marshall_web/live/teams_live.ex:216
+#: lib/marshall_web/live/teams_live.ex:258
+#: lib/marshall_web/live/teams_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "Member"
+msgstr "Miyembro"
+
+#: lib/marshall_web/live/teams_live.ex:211
+#, elixir-autogen, elixir-format
+msgid "Members"
+msgstr "Mga miyembro"
+
+#: lib/marshall_web/live/teams_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Membership updated."
+msgstr "Na-update ang membership."
+
+#: lib/marshall_web/live/teams_live.ex:352
+#, elixir-autogen, elixir-format
+msgid "No pending ownership offer."
+msgstr "Walang nakabinbing alok ng pagmamay-ari."
+
+#: lib/marshall_web/live/teams_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Offer ownership"
+msgstr "Mag-alok ng pagmamay-ari"
+
+#: lib/marshall_web/live/teams_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "Offer ownership to"
+msgstr "Mag-alok ng pagmamay-ari sa"
+
+#: lib/marshall_web/live/teams_live.ex:290
+#, elixir-autogen, elixir-format
+msgid "Offered by"
+msgstr "Inaalok ng"
+
+#: lib/marshall_web/live/teams_live.ex:299
+#, elixir-autogen, elixir-format
+msgid "Offered to"
+msgstr "Inaalok sa"
+
+#: lib/marshall_web/live/teams_live.ex:371
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "May-ari"
+
+#: lib/marshall_web/live/teams_live.ex:268
+#, elixir-autogen, elixir-format
+msgid "Ownership"
+msgstr "Pagmamay-ari"
+
+#: lib/marshall_web/live/teams_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Ownership offer sent."
+msgstr "Ipinadala ang alok ng pagmamay-ari."
+
+#: lib/marshall_web/live/teams_live.ex:107
+#, elixir-autogen, elixir-format
+msgid "Ownership offer updated."
+msgstr "Na-update ang alok ng pagmamay-ari."
+
+#: lib/marshall_web/live/teams_live.ex:313
+#, elixir-autogen, elixir-format
+msgid "Ownership offered by %{value1} to %{value2}."
+msgstr "Inaalok ang pagmamay-ari ng %{value1} sa %{value2}."
+
+#: lib/marshall_web/live/teams_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Registered email"
+msgstr "Nakarehistrong email"
+
+#: lib/marshall_web/live/teams_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Alisin"
+
+#: lib/marshall_web/live/teams_live.ex:217
+#: lib/marshall_web/live/teams_live.ex:254
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Tungkulin"
+
+#: lib/marshall_web/live/teams_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Save member"
+msgstr "I-save ang miyembro"
+
+#: lib/marshall_web/live/teams_live.ex:180
+#, elixir-autogen, elixir-format
+msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
+msgstr "Magbahagi ng mga makina at pagsasama sa mga taong katrabaho mo. Ang mga may-ari ay humirang ng mga admin, ang mga admin ay namamahala sa mga miyembro."
+
+#: lib/marshall_web/live/teams_live.ex:308
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Katayuan"
+
+#: lib/marshall_web/live/teams_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Team %{value1} created."
+msgstr "Nalikha ang koponang %{value1}."
+
+#: lib/marshall_web/live/teams_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "Team name"
+msgstr "Pangalan ng koponan"
+
+#: lib/marshall_web/live/teams_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "Teams"
+msgstr "Mga koponan"
+
+#: lib/marshall_web/live/teams_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Teams are temporarily unavailable."
+msgstr "Pansamantalang hindi magagamit ang mga koponan."
+
+#: lib/marshall_web/live/teams_live.ex:380
+#, elixir-autogen, elixir-format
+msgid "Use team machines and integrations."
+msgstr "Gamitin ang mga makina at integrasyon ng koponan."
+
+#: lib/marshall_web/live/teams_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
+msgstr "Wala ka pa sa isang koponan. Lumikha sa ibaba, o hilingin sa tagapangasiwa ng koponan na idagdag ka."
+
+#: lib/marshall_web/live/teams_live.ex:359
+#, elixir-autogen, elixir-format
+msgid "You become its owner and can add members straight away."
+msgstr "Ikaw ang magiging may-ari nito at maaari kang magdagdag agad ng mga miyembro."
+
+#: lib/marshall_web/live/teams_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Your role: %{role}"
+msgstr "Iyong tungkulin: %{role}"
+
+#: lib/marshall_web/live/teams_live.ex:189
+#, elixir-autogen, elixir-format
+msgid "Your teams"
+msgstr "Iyong mga koponan"
+
+#: lib/marshall_web/live/teams_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "pending"
+msgstr "nakabinbin"
+
+#: lib/marshall_web/live/teams_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "platform"
+msgstr "plataporma"
+
+#: lib/marshall_web/live/teams_live.ex:250
+#: lib/marshall_web/live/teams_live.ex:284
+#, elixir-autogen, elixir-format
+msgid "teammate@example.test"
+msgstr "teammate@example.test"

@@ -16,7 +16,7 @@ defmodule MarshallWeb.GettextInterpolation do
       |> OverallsProtocol.SSHManagement.formatting_locale()
 
     bindings =
-      if map_size(bindings) > 0 and rtl?(locale) do
+      if map_size(bindings) > 0 and rtl?(Gettext.get_locale(MarshallWeb.Gettext)) do
         Map.new(bindings, fn {key, value} ->
           {key,
            Localize.Message.format!("{$value}", %{"value" => to_string(value)},
@@ -43,11 +43,5 @@ defmodule MarshallWeb.GettextInterpolation do
   def message_format, do: Gettext.Interpolation.Default.message_format()
 
   @spec rtl?(String.t()) :: boolean()
-  defp rtl?(locale) do
-    with {:ok, tag} <- Localize.LanguageTag.new(locale) do
-      Localize.Locale.get(tag, [:layout, :character_order]) == {:ok, :rtl}
-    else
-      _ -> false
-    end
-  end
+  defp rtl?(locale), do: Marshall.Localization.direction(locale) == :rtl
 end

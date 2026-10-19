@@ -1,0 +1,223 @@
+#
+msgid ""
+msgstr ""
+"Language: de\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/porsche/ssh/command_messages.ex:59
+#, elixir-autogen, elixir-format
+msgid "Accept a pending ownership offer."
+msgstr "Ein ausstehendes Eigentumsangebot annehmen."
+
+#: lib/porsche/ssh/command_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "Einen Administrator oder ein Mitglied hinzufügen oder ändern."
+
+#: lib/porsche/ssh/command_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr ""
+"Eine unveröffentlichte Klonanfrage oder eine noch nicht bestätigte "
+"Verlagerungsanfrage abbrechen."
+
+#: lib/porsche/ssh/command_messages.ex:61
+#, elixir-autogen, elixir-format
+msgid "Cancel your pending ownership offer."
+msgstr "Ihr ausstehendes Eigentumsangebot zurückziehen."
+
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Change a machine's CPU and memory; disk may only grow. A running machine "
+"stops and restarts."
+msgstr ""
+"CPU und Arbeitsspeicher einer Maschine ändern; die Festplatte kann nur "
+"vergrößert werden. Eine laufende Maschine wird angehalten und neu gestartet."
+
+#: lib/porsche/ssh/command_messages.ex:63
+#, elixir-autogen, elixir-format
+msgid "Close this interactive channel."
+msgstr "Diesen interaktiven Kanal schließen."
+
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
+"GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr ""
+"Eine Maschine erstellen. Maximale Festplatte: 500 GiB. --source klont ein "
+"öffentliches GitHub-, GitLab-, Codeberg- oder Bitbucket-Repository in den "
+"Gast."
+
+#: lib/porsche/ssh/command_messages.ex:53
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "Ein Team erstellen, dessen Eigentümer Sie sind."
+
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid ""
+"Create or replace a named integration at https://NAME.integration.internal."
+msgstr ""
+"Eine benannte Integration unter https://NAME.integration.internal erstellen "
+"oder ersetzen."
+
+#: lib/porsche/ssh/command_messages.ex:60
+#, elixir-autogen, elixir-format
+msgid "Decline a pending ownership offer."
+msgstr "Ein ausstehendes Eigentumsangebot ablehnen."
+
+#: lib/porsche/ssh/command_messages.ex:30
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr ""
+"Eine Maschine und ihre Festplatte löschen. Wird verweigert, solange der "
+"Eigentümer sie angeheftet hat."
+
+#: lib/porsche/ssh/command_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "Zugriff als viewer, operator oder manager gewähren."
+
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "Eine Maschine anhand ihres Namens oder ihrer UUID untersuchen."
+
+#: lib/porsche/ssh/command_messages.ex:62
+#, elixir-autogen, elixir-format
+msgid "Inspect a previously accepted request."
+msgstr "Eine zuvor angenommene Anfrage untersuchen."
+
+#: lib/porsche/ssh/command_messages.ex:50
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "Eine Integration ohne Geheimnisse untersuchen."
+
+#: lib/porsche/ssh/command_messages.ex:55
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "Die Mitglieder eines Teams auflisten."
+
+#: lib/porsche/ssh/command_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "Zugriffsberechtigungen auflisten."
+
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "Verfügbare Images auflisten."
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "Maschinen auflisten, auf die Sie zugreifen können."
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "Ihre SSH-Schlüssel auflisten."
+
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "Ihre Integrationen auflisten."
+
+#: lib/porsche/ssh/command_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "Ihre Teams und Rollen auflisten."
+
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "Eine Integration für eine Maschine verfügbar machen."
+
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "Eine Maschine auf einen automatisch gewählten Host verschieben."
+
+#: lib/porsche/ssh/command_messages.ex:58
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "Einem Administrator die Teameigentümerschaft anbieten."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:34
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Eine Maschine oben in Ihren Listen anheften. Das Anheften als Eigentümer weckt sie auf und verhindert automatisches Suspendieren und Löschen."
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr ""
+"Eine unabhängige vollständige Festplattenkopie einer Maschine einreihen."
+
+#: lib/porsche/ssh/command_messages.ex:52
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "Die explizite Verfügbarkeit einer Maschine entfernen."
+
+#: lib/porsche/ssh/command_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "Eine benannte Integration entfernen."
+
+#: lib/porsche/ssh/command_messages.ex:57
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "Die Mitgliedschaft eines Kontos entfernen."
+
+#: lib/porsche/ssh/command_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "Ihre Anheftung einer Maschine entfernen."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:69
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Eine suspendierte Maschine aus ihrem gespeicherten Arbeitsspeicher fortsetzen."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:65
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Aus dem gespeicherten Arbeitsspeicher fortsetzen und auf Kapazität oder Verlagerung warten."
+
+#: lib/porsche/ssh/command_messages.ex:20
+msgid "Retry a failed clone or relocation request."
+msgstr "Eine fehlgeschlagene Klon- oder Verlagerungsanfrage erneut versuchen."
+
+#: lib/porsche/ssh/command_messages.ex:41
+msgid "Revoke an account's shared access."
+msgstr "Den geteilten Zugriff eines Kontos widerrufen."
+
+#: lib/porsche/ssh/command_messages.ex:43
+msgid "Revoke one of your SSH keys."
+msgstr "Einen Ihrer SSH-Schlüssel widerrufen."
+
+#: lib/porsche/ssh/command_messages.ex:5
+#, elixir-autogen, elixir-format
+msgid "Show command help."
+msgstr "Befehlshilfe anzeigen."
+
+#: lib/porsche/ssh/command_messages.ex:6
+msgid "Show the authenticated account."
+msgstr "Das authentifizierte Konto anzeigen."
+
+#: lib/porsche/ssh/command_messages.ex:25
+msgid "Start a machine."
+msgstr "Eine Maschine starten."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:26
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Eine Maschine stoppen, ihre Festplatte behalten und den suspendierten Arbeitsspeicher verwerfen."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:64
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Eine Maschine suspendieren und ihren Arbeitsspeicher sowie ihre Festplatte behalten."

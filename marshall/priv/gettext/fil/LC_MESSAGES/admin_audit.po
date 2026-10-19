@@ -1,0 +1,1011 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: fil\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n==1 || n==2 || n==3 || (n%10!=4 && n%10!=6 && n%10!=9) ? 0 : 1);\n"
+
+#: lib/marshall_web/live/admin/audit_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "; the next due check can then request a new generation."
+msgstr "; ang susunod na takdang pagsusuri ay maaaring humiling ng bagong henerasyon."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:101
+#, elixir-autogen, elixir-format
+msgid "ACME account"
+msgstr "Account ng ACME"
+
+#: lib/marshall_web/live/admin/audit_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "ACME account: %{status}"
+msgstr "ACME na account: %{status}"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:132
+#: lib/marshall_web/live/admin/audit_labels.ex:350
+#, elixir-autogen, elixir-format
+msgid "Acknowledged"
+msgstr "Kinilala"
+
+#: lib/marshall_web/live/admin/audit_live.ex:230
+#: lib/marshall_web/live/admin/audit_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "Aksyon"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:124
+#, elixir-autogen, elixir-format
+msgid "Activated"
+msgstr "Na-activate"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:176
+#: lib/marshall_web/live/admin/audit_labels.ex:374
+#, elixir-autogen, elixir-format
+msgid "Activation failed"
+msgstr "Nabigo ang pag-activate"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:197
+#, elixir-autogen, elixir-format
+msgid "Activation observed"
+msgstr "Naobserbahan ang pag-activate"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:356
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "Aktibo"
+
+#: lib/marshall_web/live/admin/audit_live.ex:287
+#, elixir-autogen, elixir-format
+msgid "Actor"
+msgstr "artista"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:27
+#, elixir-autogen, elixir-format
+msgid "Administrator access granted"
+msgstr "Ibinigay ang access ng administrator"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:28
+#, elixir-autogen, elixir-format
+msgid "Administrator access revoked"
+msgstr "Binawi ang access ng administrator"
+
+#: lib/marshall_web/live/admin/audit_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Administrator actions"
+msgstr "Mga aksyon ng administrator"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:25
+#, elixir-autogen, elixir-format
+msgid "Administrator bootstrapped"
+msgstr "Na-bootstrap ang administrator"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:133
+#, elixir-autogen, elixir-format
+msgid "Advanced"
+msgstr "Mas mataas"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:134
+#, elixir-autogen, elixir-format
+msgid "Allocated"
+msgstr "Inilaan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:343
+#, elixir-autogen, elixir-format
+msgid "Applied"
+msgstr "Inilapat"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:136
+#: lib/marshall_web/live/admin/audit_labels.ex:340
+#, elixir-autogen, elixir-format
+msgid "Approved"
+msgstr "Naaprubahan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:137
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "Naka-archive"
+
+#: lib/marshall_web/live/admin/audit_live.ex:179
+#, elixir-autogen, elixir-format
+msgid "Audit"
+msgstr "Pag-audit"
+
+#: lib/marshall_web/live/admin/audit_live.ex:279
+#, elixir-autogen, elixir-format
+msgid "Audit history is unavailable."
+msgstr "Hindi available ang kasaysayan ng pag-audit."
+
+#: lib/marshall_web/live/admin/audit_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Audit kinds"
+msgstr "Mga uri ng pag-audit"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:140
+#: lib/marshall_web/live/admin/audit_labels.ex:341
+#, elixir-autogen, elixir-format
+msgid "Blocked"
+msgstr "Na-block"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:184
+#, elixir-autogen, elixir-format
+msgid "Cancellation completed"
+msgstr "Nakumpleto ang pagkansela"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:283
+#: lib/marshall_web/live/admin/audit_labels.ex:286
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "Hiniling ang pagkansela"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:229
+#, elixir-autogen, elixir-format
+msgid "Cancellation restart recorded"
+msgstr "Naitala ang pag-restart ng pagkansela"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:232
+#, elixir-autogen, elixir-format
+msgid "Cancellation stop recorded"
+msgstr "Naitala ang paghinto ng pagkansela"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:141
+#: lib/marshall_web/live/admin/audit_labels.ex:142
+#: lib/marshall_web/live/admin/audit_labels.ex:336
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "Kinansela"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:335
+#, elixir-autogen, elixir-format
+msgid "Cancelling"
+msgstr "Kinakansela"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:330
+#, elixir-autogen, elixir-format
+msgid "Capturing"
+msgstr "Pagkuha"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:102
+#, elixir-autogen, elixir-format
+msgid "Certificate"
+msgstr "Sertipiko"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:122
+#, elixir-autogen, elixir-format
+msgid "Certificate issued"
+msgstr "Inisyu ang sertipiko"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:110
+#, elixir-autogen, elixir-format
+msgid "Certificate order attempted"
+msgstr "Sinubukan ang order ng sertipiko"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:113
+#, elixir-autogen, elixir-format
+msgid "Certificate order bound"
+msgstr "Nakatali ang order ng sertipiko"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:116
+#, elixir-autogen, elixir-format
+msgid "Certificate proof recorded"
+msgstr "Naitala ang patunay ng sertipiko"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:119
+#, elixir-autogen, elixir-format
+msgid "Certificate proof refreshed"
+msgstr "Na-refresh ang patunay ng sertipiko"
+
+#: lib/marshall_web/live/admin/audit_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Certificates"
+msgstr "Mga sertipiko"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:368
+#, elixir-autogen, elixir-format
+msgid "Checking destination"
+msgstr "Sinusuri ang destinasyon"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:359
+#, elixir-autogen, elixir-format
+msgid "Checking transfer"
+msgstr "Sinusuri ang paglipat"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:144
+#, elixir-autogen, elixir-format
+msgid "Checkpoint saved"
+msgstr "Na-save ang checkpoint"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:333
+#, elixir-autogen, elixir-format
+msgid "Cleaning up"
+msgstr "Naglilinis"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:386
+#, elixir-autogen, elixir-format
+msgid "Cleaning up cancellation"
+msgstr "Nililinis ang pagkansela"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:380
+#, elixir-autogen, elixir-format
+msgid "Cleaning up source"
+msgstr "Paglilinis ng pinagmulan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:148
+#, elixir-autogen, elixir-format
+msgid "Cleanup completed"
+msgstr "Nakumpleto ang paglilinis"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:145
+#: lib/marshall_web/live/admin/audit_labels.ex:334
+#: lib/marshall_web/live/admin/audit_labels.ex:339
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "Kumpleto"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:150
+#, elixir-autogen, elixir-format
+msgid "Confirmed"
+msgstr "Nakumpirma"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:166
+#, elixir-autogen, elixir-format
+msgid "Continued"
+msgstr "Nagpatuloy"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:155
+#, elixir-autogen, elixir-format
+msgid "Copy confirmed"
+msgstr "Nakumpirma ang kopya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:138
+#, elixir-autogen, elixir-format
+msgid "Copy started"
+msgstr "Nagsimula ang pagkopya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:331
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "Nangongopya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:325
+#, elixir-autogen, elixir-format
+msgid "Created"
+msgstr "Nilikha"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:167
+#, elixir-autogen, elixir-format
+msgid "Deferred"
+msgstr "Ipinagpaliban"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:354
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "Tinanggal"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:389
+#, elixir-autogen, elixir-format
+msgid "Deleting copies"
+msgstr "Pagtanggal ng mga kopya"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:187
+#, elixir-autogen, elixir-format
+msgid "Deletion completed"
+msgstr "Nakumpleto ang pagtanggal"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:289
+#: lib/marshall_web/live/admin/audit_labels.ex:292
+#, elixir-autogen, elixir-format
+msgid "Deletion requested"
+msgstr "Hiniling ang pagtanggal"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:202
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup offered"
+msgstr "Inaalok ang paglilinis ng patutunguhan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:238
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup recorded"
+msgstr "Naitala ang paglilinis ng patutunguhan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:205
+#, elixir-autogen, elixir-format
+msgid "Destination revocation offered"
+msgstr "Inaalok ang pagbawi ng destinasyon"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:242
+#, elixir-autogen, elixir-format
+msgid "Destination revocation recorded"
+msgstr "Naitala ang pagbawi ng destinasyon"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:171
+#, elixir-autogen, elixir-format
+msgid "Destination work dispatched"
+msgstr "Ipinadala ang patutunguhan na gawain"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:168
+#, elixir-autogen, elixir-format
+msgid "Dispatched"
+msgstr "Ipinadala"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:347
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "Naubos na ang mga aktibong gawain"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:346
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "Inuubos ang mga aktibong gawain"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:98
+#, elixir-autogen, elixir-format
+msgid "Editor credential"
+msgstr "Kredensyal ng editor"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:100
+#, elixir-autogen, elixir-format
+msgid "Editor lease"
+msgstr "Pag-upa ng editor"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:95
+#, elixir-autogen, elixir-format
+msgid "Editor sign-in"
+msgstr "Pag-sign in sa editor"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:394
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "Inililikas"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:49
+#, elixir-autogen, elixir-format
+msgid "Evacuation approved"
+msgstr "Inaprubahan ang paglikas"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:46
+#, elixir-autogen, elixir-format
+msgid "Evacuation changed"
+msgstr "Nagbago ang paglikas"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:52
+#, elixir-autogen, elixir-format
+msgid "Evacuation replanned"
+msgstr "Muling pinaplano ang paglikas"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:43
+#, elixir-autogen, elixir-format
+msgid "Evacuation requested"
+msgstr "Hiniling ang paglikas"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:126
+#: lib/marshall_web/live/admin/audit_labels.ex:337
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Nabigo"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:181
+#, elixir-autogen, elixir-format
+msgid "Fenced"
+msgstr "Nabakuran"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:393
+#, elixir-autogen, elixir-format
+msgid "Fencing"
+msgstr "Pagbabakod"
+
+#: lib/marshall_web/live/admin/audit_live.ex:207
+#: lib/marshall_web/live/admin/audit_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Filter lifecycle history"
+msgstr "I-filter ang history ng lifecycle"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:58
+#, elixir-autogen, elixir-format
+msgid "Fleet certificate rotation requested"
+msgstr "Hiniling ang pag-ikot ng fleet certificate"
+
+#: lib/marshall_web/live/admin/audit_live.ex:261
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation} has an uncertain ACME order response. The generation can be failed after"
+msgstr "Ang henerasyon %{generation} ay may hindi tiyak na tugon sa order ng ACME. Maaaring mabigo ang henerasyon pagkatapos"
+
+#: lib/marshall_web/live/admin/audit_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation}: %{status}"
+msgstr "Henerasyon %{generation}: %{status}"
+
+#: lib/marshall_web/live/admin/audit_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "Host ID"
+msgstr "ID ng host"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:55
+#, elixir-autogen, elixir-format
+msgid "Host configured"
+msgstr "Na-configure ang host"
+
+#: lib/marshall_web/live/admin/audit_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Human requests and system recovery transitions. History is retained for 90 days."
+msgstr "Mga kahilingan ng tao at mga pagbabago sa pagbawi ng system. Ang kasaysayan ay pinananatili sa loob ng 90 araw."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:192
+#, elixir-autogen, elixir-format
+msgid "Idle policy updated"
+msgstr "Na-update ang patakaran sa idle"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:158
+#, elixir-autogen, elixir-format
+msgid "Import confirmed"
+msgstr "Nakumpirma ang pag-import"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:221
+#, elixir-autogen, elixir-format
+msgid "Import prepared"
+msgstr "Inihanda ang import"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:245
+#, elixir-autogen, elixir-format
+msgid "Import recorded"
+msgstr "Naitala ang pag-import"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:139
+#, elixir-autogen, elixir-format
+msgid "Import started"
+msgstr "Nagsimula ang pag-import"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:364
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "Ini-import"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:103
+#, elixir-autogen, elixir-format
+msgid "Installation"
+msgstr "Pag-install"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:104
+#, elixir-autogen, elixir-format
+msgid "Installed"
+msgstr "Naka-install"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:90
+#, elixir-autogen, elixir-format
+msgid "Integration attached"
+msgstr "Nakalakip na pagsasama"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:84
+#, elixir-autogen, elixir-format
+msgid "Integration configured"
+msgstr "Na-configure ang pagsasama"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:93
+#, elixir-autogen, elixir-format
+msgid "Integration detached"
+msgstr "Nahiwalay ang pagsasama"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:87
+#, elixir-autogen, elixir-format
+msgid "Integration removed"
+msgstr "Inalis ang pagsasama"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:173
+#, elixir-autogen, elixir-format
+msgid "Key dispatched"
+msgstr "Naipadala na ang susi"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:247
+#, elixir-autogen, elixir-format
+msgid "Key recorded"
+msgstr "Naitala ang susi"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:312
+#, elixir-autogen, elixir-format
+msgid "Key retired"
+msgstr "Nagretiro na ang susi"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:208
+#, elixir-autogen, elixir-format
+msgid "Key retirement offered"
+msgstr "Inaalok ang key retirement"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:295
+#, elixir-autogen, elixir-format
+msgid "Key retirement requested"
+msgstr "Hiniling ang susi sa pagreretiro"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:34
+#, elixir-autogen, elixir-format
+msgid "Machine access revoked"
+msgstr "Binawi ang access sa makina"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:61
+#, elixir-autogen, elixir-format
+msgid "Machine lifecycle requested"
+msgstr "Hiniling ang lifecycle ng makina"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:64
+#, elixir-autogen, elixir-format
+msgid "Machine relocation requested"
+msgstr "Hiniling ang paglipat ng makina"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:194
+#, elixir-autogen, elixir-format
+msgid "Machine state observed"
+msgstr "Naobserbahan ang estado ng makina"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:19
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication reset"
+msgstr "Pag-reset ng multi-factor na pagpapatotoo"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:16
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication verified"
+msgstr "Na-verify ang multi-factor na pagpapatotoo"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:338
+#, elixir-autogen, elixir-format
+msgid "Offered"
+msgstr "Inaalok"
+
+#: lib/marshall_web/live/admin/audit_live.ex:334
+#, elixir-autogen, elixir-format
+msgid "Older events →"
+msgstr "Mas lumang mga kaganapan →"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:250
+#, elixir-autogen, elixir-format
+msgid "Operation recorded"
+msgstr "Naitala ang operasyon"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:10
+#, elixir-autogen, elixir-format
+msgid "Passkey added"
+msgstr "Idinagdag ang passkey"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:13
+#, elixir-autogen, elixir-format
+msgid "Passkey removed"
+msgstr "Inalis ang passkey"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:298
+#, elixir-autogen, elixir-format
+msgid "Pause requested"
+msgstr "Humiling ng pause"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:217
+#: lib/marshall_web/live/admin/audit_labels.ex:353
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "Naka-pause"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:326
+#: lib/marshall_web/live/admin/audit_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Nakabinbin"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:235
+#, elixir-autogen, elixir-format
+msgid "Placement switch recorded"
+msgstr "Naitala ang paglipat ng placement"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:189
+#, elixir-autogen, elixir-format
+msgid "Placement switched"
+msgstr "Inilipat ang placement"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:218
+#, elixir-autogen, elixir-format
+msgid "Preparation started"
+msgstr "Nagsimula na ang paghahanda"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:328
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "Naghahanda"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:253
+#, elixir-autogen, elixir-format
+msgid "Progress recorded"
+msgstr "Naitala ang pag-unlad"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:131
+#, elixir-autogen, elixir-format
+msgid "Progress updated"
+msgstr "Na-update ang pag-unlad"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:223
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "Nai-publish"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:332
+#, elixir-autogen, elixir-format
+msgid "Publishing"
+msgstr "Paglalathala"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:106
+#: lib/marshall_web/live/admin/audit_labels.ex:327
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "Nakapila"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:161
+#: lib/marshall_web/live/admin/audit_labels.ex:164
+#, elixir-autogen, elixir-format
+msgid "Readiness confirmed"
+msgstr "Nakumpirma ang pagiging handa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:179
+#: lib/marshall_web/live/admin/audit_labels.ex:371
+#, elixir-autogen, elixir-format
+msgid "Readiness failed"
+msgstr "Nabigo ang pagiging handa"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:224
+#: lib/marshall_web/live/admin/audit_labels.ex:345
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "handa na"
+
+#: lib/marshall_web/live/admin/audit_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
+msgstr "Mga kamakailang henerasyon ng wildcard ng fleet at mga pag-install ng gateway. Ang mga pribadong key at ACME proof ay hindi kasama."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:225
+#, elixir-autogen, elixir-format
+msgid "Reconciled"
+msgstr "Nagkasundo"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:226
+#, elixir-autogen, elixir-format
+msgid "Recorded"
+msgstr "Naitala"
+
+#: lib/marshall_web/live/admin/audit_live.ex:181
+#, elixir-autogen, elixir-format
+msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
+msgstr "Na-redact na mga pagbabago sa awtoridad, mga kahilingan sa lifecycle, pagbuo ng certificate at access sa editor. Ang mga payload, kredensyal at terminal byte ay hindi kasama."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:277
+#, elixir-autogen, elixir-format
+msgid "Reflection metadata updated"
+msgstr "Na-update ang reflection metadata"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:105
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "Nakarehistro"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:279
+#, elixir-autogen, elixir-format
+msgid "Replanned"
+msgstr "Muling binalak"
+
+#: lib/marshall_web/live/admin/audit_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "Request a new wildcard certificate for every Audi gateway?"
+msgstr "Humiling ng bagong wildcard certificate para sa bawat gateway ng Audi?"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:107
+#, elixir-autogen, elixir-format
+msgid "Request saved"
+msgstr "Na-save ang kahilingan"
+
+#: lib/marshall_web/live/admin/audit_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Request wildcard rotation"
+msgstr "Humiling ng wildcard rotation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:280
+#, elixir-autogen, elixir-format
+msgid "Requested"
+msgstr "Hiniling"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:135
+#, elixir-autogen, elixir-format
+msgid "Resize applied"
+msgstr "Inilapat ang resize"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:304
+#, elixir-autogen, elixir-format
+msgid "Resize started"
+msgstr "Nagsimula ang pag-resize"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:391
+#, elixir-autogen, elixir-format
+msgid "Resizing"
+msgstr "Pagbabago ng laki"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:305
+#: lib/marshall_web/live/admin/audit_labels.ex:395
+#, elixir-autogen, elixir-format
+msgid "Resolved"
+msgstr "Nalutas"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:306
+#, elixir-autogen, elixir-format
+msgid "Restart started"
+msgstr "Nagsimula ang pag-restart"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:392
+#, elixir-autogen, elixir-format
+msgid "Restarting"
+msgstr "Nagsisimula muli"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:383
+#, elixir-autogen, elixir-format
+msgid "Restoring source"
+msgstr "Pagpapanumbalik ng pinagmulan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:259
+#, elixir-autogen, elixir-format
+msgid "Result recorded"
+msgstr "Naitala ang resulta"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:311
+#: lib/marshall_web/live/admin/audit_labels.ex:348
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "Ipinagpatuloy"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:125
+#: lib/marshall_web/live/admin/audit_labels.ex:349
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "Inalis sa serbisyo"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:313
+#, elixir-autogen, elixir-format
+msgid "Retry requested"
+msgstr "Hiniling na subukan muli"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:377
+#, elixir-autogen, elixir-format
+msgid "Retrying destination"
+msgstr "Sinusubukang muli ang patutunguhan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:351
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "Tumatakbo"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:37
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked"
+msgstr "Binawi ang SSH key"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:40
+#, elixir-autogen, elixir-format
+msgid "SSH session revoked"
+msgstr "Binawi ang session ng SSH"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:314
+#: lib/marshall_web/live/admin/audit_labels.ex:342
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "Naka-iskedyul"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:31
+#, elixir-autogen, elixir-format
+msgid "Sessions revoked"
+msgstr "Binawi ang mga session"
+
+#: lib/marshall_web/live/admin/audit_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "Since (ISO 8601)"
+msgstr "Mula noong (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:153
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture confirmed"
+msgstr "Nakumpirma ang pagkuha ng snapshot"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:143
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture started"
+msgstr "Nagsimula ang pagkuha ng snapshot"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:262
+#, elixir-autogen, elixir-format
+msgid "Source restoration recorded"
+msgstr "Naitala ang source restoration"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:309
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "Naibalik ang pinagmulan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:211
+#, elixir-autogen, elixir-format
+msgid "Source revocation offered"
+msgstr "Inaalok ang pagbawi ng pinagmulan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:265
+#, elixir-autogen, elixir-format
+msgid "Source revocation recorded"
+msgstr "Naitala ang pagbawi ng pinagmulan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:215
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup offered"
+msgstr "Inaalok ang source snapshot cleanup"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:269
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup recorded"
+msgstr "Naitala ang paglilinis ng snapshot ng pinagmulan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:318
+#, elixir-autogen, elixir-format
+msgid "Source stop started"
+msgstr "Nagsimula ang source stop"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:301
+#, elixir-autogen, elixir-format
+msgid "Start requested"
+msgstr "Simulan ang hiniling"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:271
+#, elixir-autogen, elixir-format
+msgid "Stop recorded"
+msgstr "Ihinto ang naitala"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:303
+#, elixir-autogen, elixir-format
+msgid "Stop requested"
+msgstr "Hiniling na huminto"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:315
+#, elixir-autogen, elixir-format
+msgid "Stop started"
+msgstr "Huminto nagsimula"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:352
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "Nakahinto"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:329
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "Inihihinto"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:362
+#, elixir-autogen, elixir-format
+msgid "Stopping source"
+msgstr "Pinipigilan ang pinagmulan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:320
+#: lib/marshall_web/live/admin/audit_labels.ex:344
+#, elixir-autogen, elixir-format
+msgid "Superseded"
+msgstr "Pinalitan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:365
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "Inililipat ang pagkakalagay"
+
+#: lib/marshall_web/live/admin/audit_live.ex:288
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "Patutunguhan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:66
+#, elixir-autogen, elixir-format
+msgid "Team created"
+msgstr "Nagawa ang koponan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:69
+#, elixir-autogen, elixir-format
+msgid "Team membership changed"
+msgstr "Nagbago ang membership ng team"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:75
+#, elixir-autogen, elixir-format
+msgid "Team ownership accepted"
+msgstr "Tinanggap ang pagmamay-ari ng koponan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:78
+#, elixir-autogen, elixir-format
+msgid "Team ownership declined"
+msgstr "Tinanggihan ang pagmamay-ari ng koponan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:81
+#, elixir-autogen, elixir-format
+msgid "Team ownership offer cancelled"
+msgstr "Kinansela ang alok ng pagmamay-ari ng koponan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:72
+#, elixir-autogen, elixir-format
+msgid "Team ownership offered"
+msgstr "Inaalok ang pagmamay-ari ng koponan"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:256
+#, elixir-autogen, elixir-format
+msgid "Transfer receipt recorded"
+msgstr "Naitala ang resibo sa paglilipat"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:129
+#, elixir-autogen, elixir-format
+msgid "Uncertain certificate order failed"
+msgstr "Nabigo ang hindi tiyak na order ng certificate"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:274
+#, elixir-autogen, elixir-format
+msgid "Unconfirmed outcome recorded"
+msgstr "Naitala ang hindi kumpirmadong resulta"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:321
+#: lib/marshall_web/live/admin/audit_labels.ex:355
+#: lib/marshall_web/live/admin/audit_labels.ex:396
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Hindi alam"
+
+#: lib/marshall_web/live/admin/audit_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Until (ISO 8601)"
+msgstr "Hanggang (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:22
+#, elixir-autogen, elixir-format
+msgid "User deleted"
+msgstr "Tinanggal ang user"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:21
+#, elixir-autogen, elixir-format
+msgid "User invited"
+msgstr "Inimbitahan ang user"
+
+#: lib/marshall_web/live/admin/audit_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "VM ID"
+msgstr "VM ID"
+
+#: lib/marshall_web/live/admin/audit_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "VM lifecycle"
+msgstr "Siklo ng buhay ng VM"
+
+#: lib/marshall_web/live/admin/audit_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "VS Code access"
+msgstr "Pag-access sa VS Code"
+
+#: lib/marshall_web/live/admin/audit_live.ex:285
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "Kailan"
+
+#: lib/marshall_web/live/admin/audit_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation could not be requested."
+msgstr "Hindi mahiling ang pagpapalit ng wildcard."
+
+#: lib/marshall_web/live/admin/audit_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation requested for generation %{generation}."
+msgstr "Hiniling ang pagpapalit ng wildcard para sa henerasyong %{generation}."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:199
+#, elixir-autogen, elixir-format
+msgid "Work offered"
+msgstr "Inaalok ang trabaho"
+
+#: lib/marshall_web/live/admin/audit_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "Workflow ID"
+msgstr "ID ng daloy ng trabaho"

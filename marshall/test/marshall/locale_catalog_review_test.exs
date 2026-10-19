@@ -32,6 +32,26 @@ defmodule Marshall.LocaleCatalogReviewTest do
     assert Review.unreviewed_forms(%{}, observations) == 1
   end
 
+  test "application scope retains its own exact reviews and rejects unknown names" do
+    reviews = Review.parse!([record(), %{record() | "app" => "porsche"}])
+    marshall = Review.for_app(reviews, "marshall")
+    porsche = Review.for_app(reviews, "porsche")
+    assert map_size(marshall) == 1
+    assert map_size(porsche) == 1
+    assert Map.merge(marshall, porsche) == reviews
+
+    [porsche_key] = Map.keys(porsche)
+    assert :ok = Review.validate!(porsche, %{porsche_key => status()})
+
+    assert_raise ArgumentError, ~r/Stale or ineligible/, fn ->
+      Review.validate!(porsche, %{})
+    end
+
+    assert_raise ArgumentError, ~r/Unknown.*application/, fn ->
+      Review.for_app(reviews, "porcshe")
+    end
+  end
+
   test "every identity dimension is exact and cannot widen an exception" do
     reviews = Review.parse!([record()])
     [key] = Map.keys(reviews)
@@ -126,6 +146,7 @@ defmodule Marshall.LocaleCatalogReviewTest do
           Map.delete(record(), "context"),
           %{record() | "reason" => "all_technical"},
           %{record() | "note" => " "},
+          %{record() | "app" => "porcshe"},
           %{record() | "form" => -1},
           %{record() | "context" => 42}
         ] do
@@ -135,29 +156,34 @@ defmodule Marshall.LocaleCatalogReviewTest do
     assert_raise ArgumentError, fn -> Review.parse!(%{}) end
   end
 
-  test "checked-in Finnish reviews identify exactly the 24 inspected invariant messages" do
-    path = Path.expand("../../priv/gettext/reviewed_source_equal.json", __DIR__)
-    reviews = Review.load!(path)
-    assert map_size(reviews) == 24
+  test "checked-in Marshall reviews identify exact present feature-catalog forms" do
+    root = Path.expand("../../priv/gettext", __DIR__)
 
-    catalog =
-      Expo.PO.parse_file!(Path.expand("../../priv/gettext/fi/LC_MESSAGES/default.po", __DIR__))
+    reviews =
+      root
+      |> Path.join("reviewed_source_equal.json")
+      |> Review.load!()
+      |> Review.for_app("marshall")
+
+    assert map_size(reviews) > 0
 
     observations =
-      Map.new(Enum.filter(catalog.messages, &match?(%Expo.Message.Singular{}, &1)), fn message ->
-        key = Review.identity("marshall", "fi", "default", message, 0)
-        equal = IO.iodata_to_binary(message.msgid) == IO.iodata_to_binary(message.msgstr)
+      root
+      |> Path.join("*/LC_MESSAGES/*.po")
+      |> Path.wildcard()
+      |> Enum.reduce(%{}, fn path, observations ->
+        locale = path |> Path.dirname() |> Path.dirname() |> Path.basename()
+        domain = Path.basename(path, ".po")
 
-        {key,
-         %{source_equal: equal, fuzzy: "fuzzy" in List.flatten(message.flags), invalid: false}}
+        Enum.reduce(Expo.PO.parse_file!(path).messages, observations, fn message, observations ->
+          Map.merge(observations, Review.observe("marshall", locale, domain, message, false))
+        end)
       end)
 
     assert :ok = Review.validate!(reviews, observations)
-    assert Review.unreviewed_forms(reviews, observations) == 0
 
-    assert Enum.all?(Map.keys(reviews), fn {app, locale, domain, context, _, plural, form} ->
-             {app, locale, domain, context, plural, form} ==
-               {"marshall", "fi", "default", nil, nil, 0}
+    assert Enum.all?(Map.keys(reviews), fn {app, _, domain, _, _, _, _} ->
+             app == "marshall" and domain != "default"
            end)
   end
 end

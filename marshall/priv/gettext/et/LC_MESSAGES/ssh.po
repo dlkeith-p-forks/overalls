@@ -1,0 +1,70 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: et\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "Approve SSH key"
+msgstr "Kinnita SSH-võti"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:94
+#, elixir-autogen, elixir-format
+msgid "Approve key"
+msgstr "Kinnita võti"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
+msgstr "Kinnita see võti ainult siis, kui alustasid SSH-ühendust ja selle sõrmejälg vastab sinu SSH-kliendi omale."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr "Kinnitamine…"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Label (optional)"
+msgstr "Silt (valikuline)"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Manage your SSH keys"
+msgstr "Halda oma SSH-võtmeid"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "My laptop"
+msgstr "Minu sülearvuti"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:35
+#, elixir-autogen, elixir-format
+msgid "SSH key approved. You can return to your SSH client."
+msgstr "SSH-võti kinnitatud. Võid naasta oma SSH-kliendi juurde."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#, elixir-autogen, elixir-format
+msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
+msgstr "See SSH-kinnitus pole saadaval või on aegunud. Uuesti proovimiseks alusta uut SSH-ühendust."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
+msgstr "See võti logib sisse kasutajana %{value1}. See saab masinaid hallata sinu konto õiguste järgi."
+
+#: lib/marshall_web/ssh_approval_login.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Pole saadaval"

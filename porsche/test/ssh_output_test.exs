@@ -55,9 +55,22 @@ defmodule Porsche.SSH.OutputTest do
       assert Output.render(response, true) == json
 
       for reason <- ["machine_pinned", "machine_failed", "pin_limit"] do
-        error = %{"version" => 1, "status" => "error", "error" => reason}
+        hint =
+          case reason do
+            "machine_pinned" ->
+              "The owner has this machine pinned; unpin it first: unpin MACHINE"
+
+            "machine_failed" ->
+              "A failed machine cannot be pinned; an existing pin can still be removed."
+
+            "pin_limit" ->
+              "You already hold the maximum number of pins; unpin one first."
+          end
+
+        error = %{"version" => 1, "status" => "error", "error" => reason, "hint" => hint}
         text = Output.render(error, false)
         assert text =~ pin_text
+        refute text =~ hint
         refute text =~ reason
         assert JSON.decode!(Output.render(error, true)) == error
       end

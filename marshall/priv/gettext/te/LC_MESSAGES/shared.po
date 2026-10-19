@@ -1,0 +1,449 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: te\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/components/time_components.ex:104
+#, elixir-autogen, elixir-format
+msgid "%{value1} local time · %{value2}"
+msgstr "%{value1} స్థానిక సమయం · %{value2}"
+
+#: lib/marshall_web/live/hldd_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "%{value1} · HLDD"
+msgstr "%{value1} · HLDD"
+
+#: lib/marshall_web/components/layouts/root.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "A little space for your next big idea."
+msgstr "మీ తదుపరి గొప్ప ఆలోచనకు చిన్న స్థలం."
+
+#: lib/marshall_web/live/hldd_live.ex:70
+#, elixir-autogen, elixir-format
+msgid "A reference for the system, its configuration, and its operation."
+msgstr "వ్యవస్థ, దాని అమరిక, నిర్వహణకు సూచిక."
+
+#: lib/marshall_web/components/layouts.ex:328
+#: lib/marshall_web/components/layouts.ex:428
+#, elixir-autogen, elixir-format
+msgid "AI usage"
+msgstr "AI వినియోగం"
+
+#: lib/marshall_web/components/layouts.ex:401
+#: lib/marshall_web/components/layouts.ex:446
+#, elixir-autogen, elixir-format
+msgid "Access authority"
+msgstr "ప్రాప్యత అధికారం"
+
+#: lib/marshall_web/components/layouts.ex:238
+#: lib/marshall_web/components/layouts.ex:320
+#: lib/marshall_web/components/layouts.ex:434
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "ఖాతా"
+
+#: lib/marshall_web/components/layouts.ex:390
+#, elixir-autogen, elixir-format
+msgid "Accounting"
+msgstr "లెక్కింపు"
+
+#: lib/marshall_web/components/core_components.ex:333
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "చర్యలు"
+
+#: lib/marshall_web/live/hldd_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Adjacent sections"
+msgstr "పక్క విభాగాలు"
+
+#: lib/marshall_web/components/layouts.ex:289
+#: lib/marshall_web/components/layouts.ex:398
+#, elixir-autogen, elixir-format
+msgid "Administration"
+msgstr "నిర్వహణ"
+
+#: lib/marshall_web/components/layouts.ex:242
+#: lib/marshall_web/components/layouts.ex:492
+#: lib/marshall_web/components/layouts.ex:493
+#: lib/marshall_web/controllers/docs_html/show.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Appearance"
+msgstr "రూపం"
+
+#: lib/marshall_web/components/layouts.ex:152
+#: lib/marshall_web/components/layouts.ex:166
+#, elixir-autogen, elixir-format
+msgid "Attempting to reconnect"
+msgstr "మళ్లీ కనెక్ట్ కావడానికి ప్రయత్నిస్తోంది"
+
+#: lib/marshall_web/components/layouts.ex:403
+#: lib/marshall_web/components/layouts.ex:447
+#, elixir-autogen, elixir-format
+msgid "Audit"
+msgstr "ఆడిట్"
+
+#: lib/marshall_web/components/layouts.ex:71
+#, elixir-autogen, elixir-format
+msgid "Breadcrumb"
+msgstr "నావిగేషన్ మార్గం"
+
+#: lib/marshall_web/components/layouts.ex:230
+#, elixir-autogen, elixir-format
+msgid "Browser"
+msgstr "బ్రౌజర్"
+
+#: lib/marshall_web/components/layouts.ex:233
+#: lib/marshall_web/components/layouts.ex:333
+#, elixir-autogen, elixir-format
+msgid "Browser extension"
+msgstr "బ్రౌజర్ పొడిగింపు"
+
+#: lib/marshall_web/components/layouts.ex:118
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "రద్దు చేయి"
+
+#: lib/marshall_web/components/layouts.ex:99
+#, elixir-autogen, elixir-format
+msgid "Cancel verification"
+msgstr "ధృవీకరణను రద్దు చేయి"
+
+#: lib/marshall_web/components/layouts.ex:261
+#: lib/marshall_web/components/layouts.ex:275
+#, elixir-autogen, elixir-format
+msgid "Close navigation"
+msgstr "నావిగేషన్‌ను మూసివేయి"
+
+#: lib/marshall_web/components/layouts.ex:95
+#, elixir-autogen, elixir-format
+msgid "Confirm administrative change"
+msgstr "నిర్వాహక మార్పును నిర్ధారించు"
+
+#: lib/marshall_web/live/hldd_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Contents"
+msgstr "విషయ సూచిక"
+
+#: lib/marshall_web/components/layouts.ex:283
+#, elixir-autogen, elixir-format
+msgid "Control room"
+msgstr "నియంత్రణ గది"
+
+#: lib/marshall_web/components/layouts.ex:426
+#, elixir-autogen, elixir-format
+msgid "Control room · %{section}"
+msgstr "నియంత్రణ గది · %{section}"
+
+#: lib/marshall_web/components/layouts.ex:423
+#, elixir-autogen, elixir-format
+msgid "Control room · AI usage"
+msgstr "నియంత్రణ గది · AI వినియోగం"
+
+#: lib/marshall_web/components/layouts.ex:496
+#, elixir-autogen, elixir-format
+msgid "Dark"
+msgstr "ముదురు"
+
+#: lib/marshall_web/components/layouts.ex:220
+#, elixir-autogen, elixir-format
+msgid "Docs"
+msgstr "పత్రాలు"
+
+#: lib/marshall_web/components/layouts.ex:347
+#, elixir-autogen, elixir-format
+msgid "Docs ↗"
+msgstr "పత్రాలు ↗"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Documentation"
+msgstr "డాక్యుమెంటేషన్"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "డాక్యుమెంటేషన్ కనుగొనబడలేదు"
+
+#: lib/marshall_web/components/layouts.ex:221
+#: lib/marshall_web/components/layouts.ex:346
+#: lib/marshall_web/controllers/docs_html/show.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Field notes"
+msgstr "పని గమనికలు"
+
+#: lib/marshall_web/components/layouts.ex:390
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "ఫ్లీట్ AI వినియోగం"
+
+#: lib/marshall_web/components/layouts.ex:402
+#, elixir-autogen, elixir-format
+msgid "Git mirrors"
+msgstr "Git మిర్రర్లు"
+
+#: lib/marshall_web/components/layouts.ex:416
+#: lib/marshall_web/components/layouts.ex:439
+#, elixir-autogen, elixir-format
+msgid "Git repositories"
+msgstr "Git రిపోజిటరీలు"
+
+#: lib/marshall_web/components/layouts.ex:360
+#, elixir-autogen, elixir-format
+msgid "GitHub ↗"
+msgstr "GitHub ↗"
+
+#: lib/marshall_web/components/layouts.ex:355
+#: lib/marshall_web/live/hldd_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "HLDD"
+msgstr "HLDD"
+
+#: lib/marshall_web/live/hldd_live.ex:68
+#, elixir-autogen, elixir-format
+msgid "HLDD · Design and operations"
+msgstr "HLDD · రూపకల్పన మరియు నిర్వహణ"
+
+#: lib/marshall_web/live/hldd_live.ex:72
+#: lib/marshall_web/live/hldd_live.ex:86
+#, elixir-autogen, elixir-format
+msgid "Handbook contents"
+msgstr "హ్యాండ్‌బుక్ విషయాలు"
+
+#: lib/marshall_web/components/layouts.ex:73
+#, elixir-autogen, elixir-format
+msgid "Home"
+msgstr "హోమ్"
+
+#: lib/marshall_web/components/layouts.ex:415
+#: lib/marshall_web/components/layouts.ex:438
+#, elixir-autogen, elixir-format
+msgid "Integrations"
+msgstr "అనుసంధానాలు"
+
+#: lib/marshall_web/components/layouts.ex:395
+#: lib/marshall_web/components/layouts.ex:443
+#, elixir-autogen, elixir-format
+msgid "Jobs"
+msgstr "జాబ్‌లు"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "LLM index"
+msgstr "LLM సూచిక"
+
+#: lib/marshall_web/components/layouts.ex:495
+#, elixir-autogen, elixir-format
+msgid "Light"
+msgstr "లేత"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Machine readable"
+msgstr "యంత్రం చదవగలిగేది"
+
+#: lib/marshall_web/components/layouts.ex:414
+#: lib/marshall_web/components/layouts.ex:437
+#, elixir-autogen, elixir-format
+msgid "Machines"
+msgstr "యంత్రాలు"
+
+#: lib/marshall_web/components/layouts.ex:278
+#, elixir-autogen, elixir-format
+msgid "Made to get dirty"
+msgstr "నిజమైన పని కోసం తయారు చేయబడింది"
+
+#: lib/marshall_web/components/layouts.ex:289
+#, elixir-autogen, elixir-format
+msgid "Main"
+msgstr "ప్రధాన"
+
+#: lib/marshall_web/components/layouts.ex:370
+#, elixir-autogen, elixir-format
+msgid "Make yourself comfy"
+msgstr "సౌకర్యంగా ఉండండి"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Markdown for this page"
+msgstr "ఈ పేజీ Markdown"
+
+#: lib/marshall_web/components/layouts.ex:256
+#, elixir-autogen, elixir-format
+msgid "Menu"
+msgstr "మెనూ"
+
+#: lib/marshall_web/components/layouts.ex:393
+#: lib/marshall_web/components/layouts.ex:441
+#, elixir-autogen, elixir-format
+msgid "Node maintenance"
+msgstr "నోడ్ నిర్వహణ"
+
+#: lib/marshall_web/controllers/page_html/home.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Open Overalls"
+msgstr "Overalls తెరువు"
+
+#: lib/marshall_web/components/layouts.ex:391
+#, elixir-autogen, elixir-format
+msgid "Operations"
+msgstr "చర్యలు"
+
+#: lib/marshall_web/controllers/docs_html/show.html.heex:32
+#: lib/marshall_web/live/hldd_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Overalls"
+msgstr "Overalls"
+
+#: lib/marshall_web/components/layouts.ex:412
+#: lib/marshall_web/components/layouts.ex:435
+#, elixir-autogen, elixir-format
+msgid "Overview"
+msgstr "అవలోకనం"
+
+#: lib/marshall_web/components/layouts.ex:396
+#: lib/marshall_web/components/layouts.ex:444
+#, elixir-autogen, elixir-format
+msgid "Platform status"
+msgstr "వేదిక స్థితి"
+
+#: lib/marshall_web/components/layouts.ex:343
+#: lib/marshall_web/components/layouts.ex:355
+#, elixir-autogen, elixir-format
+msgid "Reference"
+msgstr "సూచన గ్రంథం"
+
+#: lib/marshall_web/components/layouts.ex:240
+#: lib/marshall_web/controllers/docs_html/show.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Sign in"
+msgstr "సైన్ ఇన్"
+
+#: lib/marshall_web/components/layouts.ex:379
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "సైన్ అవుట్"
+
+#: lib/marshall_web/components/layouts.ex:213
+#: lib/marshall_web/components/layouts/root.html.heex:38
+#: lib/marshall_web/controllers/docs_html/show.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Skip to content"
+msgstr "కంటెంట్‌కు వెళ్లు"
+
+#: lib/marshall_web/components/layouts.ex:158
+#, elixir-autogen, elixir-format
+msgid "Something went wrong!"
+msgstr "ఏదో తప్పు జరిగింది!"
+
+#: lib/marshall_web/components/layouts.ex:224
+#, elixir-autogen, elixir-format
+msgid "Source"
+msgstr "మూలం"
+
+#: lib/marshall_web/components/layouts.ex:360
+#: lib/marshall_web/controllers/docs_html/show.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Source code"
+msgstr "మూల కోడ్"
+
+#: lib/marshall_web/components/layouts.ex:494
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "వ్యవస్థ"
+
+#: lib/marshall_web/components/layouts.ex:417
+#: lib/marshall_web/components/layouts.ex:440
+#, elixir-autogen, elixir-format
+msgid "Teams"
+msgstr "బృందాలు"
+
+#: lib/marshall_web/components/layouts.ex:104
+#, elixir-autogen, elixir-format
+msgid "This change needs a fresh passkey verification. Your verification lasts 15 minutes."
+msgstr "మార్పుకు కొత్త పాస్‌కీ ధృవీకరణ అవసరం. ధృవీకరణ 15 నిమిషాలు ఉంటుంది."
+
+#: lib/marshall_web/components/layouts.ex:413
+#: lib/marshall_web/components/layouts.ex:436
+#, elixir-autogen, elixir-format
+msgid "Threads"
+msgstr "సంభాషణలు"
+
+#: lib/marshall_web/components/layouts.ex:377
+#, elixir-autogen, elixir-format
+msgid "Time zone"
+msgstr "సమయ మండలం"
+
+#: lib/marshall_web/components/layouts.ex:400
+#: lib/marshall_web/components/layouts.ex:445
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr "వినియోగదారులు"
+
+#: lib/marshall_web/components/layouts.ex:111
+#, elixir-autogen, elixir-format
+msgid "Verify with passkey"
+msgstr "పాస్‌కీతో ధృవీకరించు"
+
+#: lib/marshall_web/components/layouts.ex:144
+#, elixir-autogen, elixir-format
+msgid "We can't find the internet"
+msgstr "ఇంటర్నెట్ కనుగొనలేకపోయాం"
+
+#: lib/marshall_web/components/layouts/root.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Welcome to Overalls. Make yourself at home."
+msgstr "Overallsకు స్వాగతం. ఇంటిలా భావించండి."
+
+#: lib/marshall_web/components/layouts.ex:394
+#: lib/marshall_web/components/layouts.ex:442
+#, elixir-autogen, elixir-format
+msgid "Workloads"
+msgstr "పనిభారాలు"
+
+#: lib/marshall_web/components/layouts.ex:280
+#: lib/marshall_web/components/layouts.ex:448
+#, elixir-autogen, elixir-format
+msgid "Workspace"
+msgstr "పని స్థలం"
+
+#: lib/marshall_web/components/layouts.ex:279
+#, elixir-autogen, elixir-format
+msgid "Workspace mode"
+msgstr "పని స్థల మోడ్"
+
+#: lib/marshall_web/components/layouts.ex:267
+#, elixir-autogen, elixir-format
+msgid "Workspace navigation"
+msgstr "పని స్థల నావిగేషన్"
+
+#: lib/marshall_web/components/layouts.ex:313
+#, elixir-autogen, elixir-format
+msgid "Your account"
+msgstr "మీ ఖాతా"
+
+#: lib/marshall_web/components/layouts.ex:410
+#, elixir-autogen, elixir-format
+msgid "Your workspace"
+msgstr "మీ పని స్థలం"
+
+#: lib/marshall_web/components/core_components.ex:107
+#, elixir-autogen, elixir-format
+msgid "close"
+msgstr "మూసివేయి"
+
+#: lib/marshall_web/live/hldd_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "← All sections"
+msgstr "← అన్ని విభాగాలు"

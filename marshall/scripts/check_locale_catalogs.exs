@@ -23,7 +23,28 @@ defmodule Marshall.LocaleCatalogCheck do
     locales = Marshall.Localization.supported_locales()
     domains = Path.wildcard(Path.join(root, "*.pot"))
 
-    reviews = Marshall.LocaleCatalogReview.load!(Path.join(root, "reviewed_source_equal.json"))
+    if domains == [] or Enum.any?(domains, &(Path.basename(&1) == "default.pot")),
+      do: raise("Expected feature-domain templates; default.pot is not permitted")
+
+    expected_domains = domains |> Enum.map(&Path.basename(&1, ".pot")) |> Enum.sort()
+
+    for locale <- locales do
+      actual_domains =
+        root
+        |> Path.join("#{locale}/LC_MESSAGES/*.po")
+        |> Path.wildcard()
+        |> Enum.map(&Path.basename(&1, ".po"))
+        |> Enum.sort()
+
+      unless actual_domains == expected_domains,
+        do: raise("Missing or unexpected feature-domain catalogs for #{locale}")
+    end
+
+    reviews =
+      root
+      |> Path.join("reviewed_source_equal.json")
+      |> Marshall.LocaleCatalogReview.load!()
+      |> Marshall.LocaleCatalogReview.for_app("marshall")
 
     results =
       for locale <- locales, template <- domains do

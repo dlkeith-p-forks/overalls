@@ -1,0 +1,261 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: mr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/admin/git_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "कृती"
+
+#: lib/marshall_web/live/admin/git_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "कृती"
+
+#: lib/marshall_web/live/admin/git_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Add a mirror"
+msgstr "मिरर जोडा"
+
+#: lib/marshall_web/live/admin/git_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Add mirror"
+msgstr "मिरर जोडा"
+
+#: lib/marshall_web/live/admin/git_live.ex:23
+#, elixir-autogen, elixir-format
+msgid "Could not register repository. Verify your passkey and labels."
+msgstr "रिपॉझिटरी नोंदवता आली नाही. पासकी आणि लेबले तपासा."
+
+#: lib/marshall_web/live/admin/git_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "अयशस्वी"
+
+#: lib/marshall_web/live/admin/git_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Git mirrors"
+msgstr "Git मिरर"
+
+#: lib/marshall_web/live/admin/git_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Git operation failed"
+msgstr "Git क्रिया अयशस्वी झाली"
+
+#: lib/marshall_web/live/admin/git_live.ex:81
+#, elixir-autogen, elixir-format
+msgid "GitHub organization"
+msgstr "GitHub संस्था"
+
+#: lib/marshall_web/live/admin/git_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Identifiers"
+msgstr "ओळखचिन्हे"
+
+#: lib/marshall_web/live/admin/git_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Mirrors"
+msgstr "मिरर"
+
+#: lib/marshall_web/live/admin/git_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "No mirror events recorded."
+msgstr "मिरर घटना नोंदलेल्या नाहीत."
+
+#: lib/marshall_web/live/admin/git_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "No repositories are mirrored yet."
+msgstr "अजून रिपॉझिटरी मिरर केलेल्या नाहीत."
+
+#: lib/marshall_web/live/admin/git_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "प्रलंबित"
+
+#: lib/marshall_web/live/admin/git_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Phase"
+msgstr "टप्पा"
+
+#: lib/marshall_web/live/admin/git_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Public GitHub repositories mirrored for machines. Mirrors refresh hourly; changes require recent passkey verification."
+msgstr ""
+"मशीनसाठी मिरर केलेल्या सार्वजनिक GitHub रिपॉझिटरी. मिरर दर तासाला अद्ययावत "
+"होतात; बदलांसाठी अलीकडील पासकी पडताळणी आवश्यक आहे."
+
+#: lib/marshall_web/live/admin/git_live.ex:173
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "तयार"
+
+#: lib/marshall_web/live/admin/git_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Reason"
+msgstr "कारण"
+
+#: lib/marshall_web/live/admin/git_live.ex:133
+#, elixir-autogen, elixir-format
+msgid "Recent mirror audit"
+msgstr "अलीकडील मिरर लेखापरीक्षण"
+
+#: lib/marshall_web/live/admin/git_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Refresh"
+msgstr "रीफ्रेश करा"
+
+#: lib/marshall_web/live/admin/git_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Refresh already in progress."
+msgstr "रीफ्रेश आधीच सुरू आहे."
+
+#: lib/marshall_web/live/admin/git_live.ex:37
+#, elixir-autogen, elixir-format
+msgid "Refresh could not be queued."
+msgstr "रीफ्रेश रांगेत टाकता आला नाही."
+
+#: lib/marshall_web/live/admin/git_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Refresh failed"
+msgstr "रीफ्रेश अयशस्वी झाले"
+
+#: lib/marshall_web/live/admin/git_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Refresh queued."
+msgstr "रीफ्रेश रांगेत टाकला."
+
+#: lib/marshall_web/live/admin/git_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Refresh requested"
+msgstr "रीफ्रेशची विनंती केली"
+
+#: lib/marshall_web/live/admin/git_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Refresh succeeded"
+msgstr "रीफ्रेश यशस्वी झाले"
+
+#: lib/marshall_web/live/admin/git_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Refreshing"
+msgstr "रीफ्रेश करत आहे"
+
+#: lib/marshall_web/live/admin/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "नोंदणीकृत"
+
+#: lib/marshall_web/live/admin/git_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "Removal queued."
+msgstr "काढणे रांगेत टाकले."
+
+#: lib/marshall_web/live/admin/git_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Removal requested"
+msgstr "काढण्याची विनंती केली"
+
+#: lib/marshall_web/live/admin/git_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "काढा"
+
+#: lib/marshall_web/live/admin/git_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Remove mirror?"
+msgstr "मिरर काढायचा?"
+
+#: lib/marshall_web/live/admin/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Removed"
+msgstr "काढले"
+
+#: lib/marshall_web/live/admin/git_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Removing"
+msgstr "काढत आहे"
+
+#: lib/marshall_web/live/admin/git_live.ex:87
+#: lib/marshall_web/live/admin/git_live.ex:102
+#, elixir-autogen, elixir-format
+msgid "Repository"
+msgstr "रिपॉझिटरी"
+
+#: lib/marshall_web/live/admin/git_live.ex:44
+#, elixir-autogen, elixir-format
+msgid "Repository could not be removed."
+msgstr "रिपॉझिटरी काढता आली नाही."
+
+#: lib/marshall_web/live/admin/git_live.ex:16
+#, elixir-autogen, elixir-format
+msgid "Repository registered."
+msgstr "रिपॉझिटरी नोंदवली."
+
+#: lib/marshall_web/live/admin/git_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Service unavailable"
+msgstr "सेवा उपलब्ध नाही"
+
+#: lib/marshall_web/live/admin/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "TLS verification failed"
+msgstr "TLS पडताळणी अयशस्वी झाली"
+
+#: lib/marshall_web/live/admin/git_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Timed out"
+msgstr "प्रतीक्षा वेळ संपली"
+
+#: lib/marshall_web/live/admin/git_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "अधिकृत नाही"
+
+#: lib/marshall_web/live/admin/git_live.ex:176
+#: lib/marshall_web/live/admin/git_live.ex:188
+#: lib/marshall_web/live/admin/git_live.ex:197
+#: lib/marshall_web/live/admin/git_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "अज्ञात"
+
+#: lib/marshall_web/live/admin/git_live.ex:139
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "केव्हा"
+
+#: lib/marshall_web/live/admin/git_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "actor"
+msgstr "कर्ता"
+
+#: lib/marshall_web/live/admin/git_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "attempt"
+msgstr "प्रयत्न"
+
+#: lib/marshall_web/live/admin/git_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "nixos"
+msgstr "nixos"
+
+#: lib/marshall_web/live/admin/git_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "nixpkgs"
+msgstr "nixpkgs"
+
+#: lib/marshall_web/live/admin/git_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "repository"
+msgstr "रिपॉझिटरी"

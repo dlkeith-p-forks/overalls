@@ -1,0 +1,655 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ta\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/terminal_live.ex:578
+#, elixir-autogen, elixir-format
+msgid "%{user} · %{count} viewing"
+msgid_plural "%{user} · %{count} viewing"
+msgstr[0] "%{user} · %{count} பேர் பார்க்கிறார்கள்"
+msgstr[1] "%{user} · %{count} பேர் பார்க்கிறார்கள்"
+
+#: lib/marshall_web/components/workspace_components.ex:251
+#, elixir-autogen, elixir-format
+msgid "%{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk · %{value4}"
+msgstr "%{value1} vCPU · %{value2} GiB நினைவகம் · %{value3} GiB வட்டு · %{value4}"
+
+#: lib/marshall_web/live/terminal_live.ex:544
+#, elixir-autogen, elixir-format
+msgid "+ New"
+msgstr "+ புதியது"
+
+#: lib/marshall_web/live/terminal_live.ex:674
+#, elixir-autogen, elixir-format
+msgid "A+"
+msgstr "A+"
+
+#: lib/marshall_web/components/workspace_components.ex:136
+#, elixir-autogen, elixir-format
+msgid "Access"
+msgstr "அணுகல்"
+
+#: lib/marshall_web/live/terminal_live.ex:738
+#, elixir-autogen, elixir-format
+msgid "Account email"
+msgstr "கணக்கு மின்னஞ்சல்"
+
+#: lib/marshall_web/live/terminal_live.ex:745
+#, elixir-autogen, elixir-format
+msgid "Allow viewing"
+msgstr "பார்க்க அனுமதி"
+
+#: lib/marshall_web/components/workspace_components.ex:403
+#, elixir-autogen, elixir-format
+msgid "Already installed"
+msgstr "ஏற்கனவே நிறுவப்பட்டது"
+
+#: lib/marshall_web/live/terminal_live.ex:629
+#, elixir-autogen, elixir-format
+msgid "Android display"
+msgstr "Android காட்சி"
+
+#: lib/marshall_web/live/terminal_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Android display canvas"
+msgstr "Android காட்சி வரைபரப்பு"
+
+#: lib/marshall_web/live/terminal_live.ex:85
+#: lib/marshall_web/live/terminal_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Android காட்சி கிடைக்கவில்லை."
+
+#: lib/marshall_web/live/terminal_live.ex:669
+#, elixir-autogen, elixir-format
+msgid "A−"
+msgstr "A−"
+
+#: lib/marshall_web/components/workspace_components.ex:425
+#: lib/marshall_web/live/terminal_live.ex:617
+#, elixir-autogen, elixir-format
+msgid "Boot log"
+msgstr "தொடக்கப் பதிவு"
+
+#: lib/marshall_web/live/terminal_live.ex:751
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "ரத்துசெய்"
+
+#: lib/marshall_web/live/terminal_live.ex:708
+#, elixir-autogen, elixir-format
+msgid "Close search"
+msgstr "தேடலை மூடு"
+
+#: lib/marshall_web/live/terminal_live.ex:599
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "அமர்வை மூடு"
+
+#: lib/marshall_web/live/terminal_live.ex:598
+#, elixir-autogen, elixir-format
+msgid "Close terminal %{value1}"
+msgstr "%{value1} முனையத்தை மூடு"
+
+#: lib/marshall_web/components/workspace_components.ex:372
+#, elixir-autogen, elixir-format
+msgid "Connect from your computer"
+msgstr "உங்கள் கணினியிலிருந்து இணையுங்கள்"
+
+#: lib/marshall_web/live/terminal_live.ex:649
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "இணைக்கப்படுகிறது…"
+
+#: lib/marshall_web/components/workspace_components.ex:267
+#: lib/marshall_web/components/workspace_components.ex:390
+#: lib/marshall_web/components/workspace_components.ex:400
+#: lib/marshall_web/components/workspace_components.ex:411
+#, elixir-autogen, elixir-format
+msgid "Copy"
+msgstr "நகலெடு"
+
+#: lib/marshall_web/components/workspace_components.ex:389
+#, elixir-autogen, elixir-format
+msgid "Copy Linux and macOS install command"
+msgstr "Linux மற்றும் macOS நிறுவல் கட்டளையை நகலெடு"
+
+#: lib/marshall_web/components/workspace_components.ex:410
+#, elixir-autogen, elixir-format
+msgid "Copy SSH command"
+msgstr "SSH கட்டளையை நகலெடு"
+
+#: lib/marshall_web/components/workspace_components.ex:399
+#, elixir-autogen, elixir-format
+msgid "Copy Windows PowerShell install command"
+msgstr "Windows PowerShell நிறுவல் கட்டளையை நகலெடு"
+
+#: lib/marshall_web/components/workspace_components.ex:266
+#, elixir-autogen, elixir-format
+msgid "Copy machine ID"
+msgstr "இயந்திர அடையாள எண்ணை நகலெடு"
+
+#: lib/marshall_web/components/workspace_components.ex:534
+#, elixir-autogen, elixir-format
+msgid "Customer"
+msgstr "வாடிக்கையாளர்"
+
+#: lib/marshall_web/live/terminal_live.ex:668
+#, elixir-autogen, elixir-format
+msgid "Decrease terminal font size"
+msgstr "முனைய எழுத்தளவைக் குறை"
+
+#: lib/marshall_web/components/workspace_components.ex:84
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "நீக்கப்பட்டது"
+
+#: lib/marshall_web/components/workspace_components.ex:66
+#, elixir-autogen, elixir-format
+msgid "Deleting"
+msgstr "நீக்கப்படுகிறது"
+
+#: lib/marshall_web/live/terminal_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "காட்சித் தொடர் இணைப்பு அனுமதிச்சீட்டு வழங்கப்பட்டது."
+
+#: lib/marshall_web/live/terminal_live.ex:679
+#: lib/marshall_web/live/terminal_live.ex:681
+#, elixir-autogen, elixir-format
+msgid "Enter full screen"
+msgstr "முழுத்திரைக்குச் செல்"
+
+#: lib/marshall_web/components/workspace_components.ex:83
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "தோல்வியடைந்தது"
+
+#: lib/marshall_web/live/terminal_live.ex:693
+#, elixir-autogen, elixir-format
+msgid "Find in scrollback"
+msgstr "முனைய வரலாற்றில் தேடு"
+
+#: lib/marshall_web/live/terminal_live.ex:715
+#, elixir-autogen, elixir-format
+msgid "Follow boot output"
+msgstr "தொடக்க வெளியீட்டைப் பின்தொடர்"
+
+#: lib/marshall_web/components/workspace_components.ex:259
+#, elixir-autogen, elixir-format
+msgid "ID"
+msgstr "அடையாளம்"
+
+#: lib/marshall_web/live/terminal_live.ex:673
+#, elixir-autogen, elixir-format
+msgid "Increase terminal font size"
+msgstr "முனைய எழுத்தளவை அதிகரி"
+
+#: lib/marshall_web/components/workspace_components.ex:380
+#, elixir-autogen, elixir-format
+msgid "Install and connect"
+msgstr "நிறுவி இணை"
+
+#: lib/marshall_web/components/workspace_components.ex:376
+#, elixir-autogen, elixir-format
+msgid "Installs Overalls, configures SSH, and connects to this machine. On Windows the installer also installs OpenSSH 9.6 or newer and, with administrator approval, makes it the default ssh."
+msgstr "Overalls-ஐ நிறுவி, SSH-ஐ அமைத்து இந்த இயந்திரத்துடன் இணைக்கும். Windows-இல் நிறுவி OpenSSH 9.6 அல்லது புதிய பதிப்பையும் நிறுவி, நிர்வாகி அங்கீகாரத்துடன் அதை இயல்புநிலை ssh-ஆக அமைக்கும்."
+
+#: lib/marshall_web/components/workspace_components.ex:382
+#, elixir-autogen, elixir-format
+msgid "Linux / macOS"
+msgstr "Linux / macOS"
+
+#: lib/marshall_web/components/workspace_components.ex:265
+#, elixir-autogen, elixir-format
+msgid "Machine ID"
+msgstr "இயந்திர அடையாளம்"
+
+#: lib/marshall_web/live/terminal_live.ex:338
+#, elixir-autogen, elixir-format
+msgid "Machine is paused. Resume it or reopen this terminal page."
+msgstr "கணினி இடைநிறுத்தப்பட்டுள்ளது. அதை மீண்டும் இயக்கவும் அல்லது இந்த முனையப் பக்கத்தை மீண்டும் திறக்கவும்."
+
+#: lib/marshall_web/live/terminal_live.ex:335
+#, elixir-autogen, elixir-format
+msgid "Machine is stopping or stopped. Choose Start to open a terminal."
+msgstr "இயந்திரம் நிறுத்தப்படுகிறது அல்லது நிறுத்தப்பட்டுள்ளது. முனையத்தைத் திறக்க தொடங்கு என்பதைத் தேர்ந்தெடுக்கவும்."
+
+#: lib/marshall_web/live/terminal_live.ex:55
+#, elixir-autogen, elixir-format
+msgid "Machine not found."
+msgstr "இயந்திரம் கிடைக்கவில்லை."
+
+#: lib/marshall_web/live/terminal_live.ex:332
+#, elixir-autogen, elixir-format
+msgid "Machine startup failed. Check the machine status and boot log."
+msgstr "இயந்திரத் தொடக்கம் தோல்வியடைந்தது. இயந்திர நிலையையும் தொடக்கப் பதிவையும் சரிபார்க்கவும்."
+
+#: lib/marshall_web/components/workspace_components.ex:126
+#, elixir-autogen, elixir-format
+msgid "Machine workspace"
+msgstr "இயந்திரப் பணியிடம்"
+
+#: lib/marshall_web/live/terminal_live.ex:703
+#, elixir-autogen, elixir-format
+msgid "Next match"
+msgstr "அடுத்த பொருத்தம்"
+
+#: lib/marshall_web/live/terminal_live.ex:609
+#, elixir-autogen, elixir-format
+msgid "No shared terminals are available to view."
+msgstr "பார்க்கக் கூடிய பகிரப்பட்ட முனையங்கள் இல்லை."
+
+#: lib/marshall_web/live/terminal_live.ex:613
+#, elixir-autogen, elixir-format
+msgid "No terminals are open. Choose New to open your personal shell."
+msgstr "முனையங்கள் திறக்கப்படவில்லை. உங்கள் தனிப்பட்ட கட்டளைச் சூழலைத் திறக்க புதியது என்பதைத் தேர்ந்தெடுக்கவும்."
+
+#: lib/marshall_web/components/workspace_components.ex:281
+#: lib/marshall_web/components/workspace_components.ex:291
+#: lib/marshall_web/components/workspace_components.ex:465
+#: lib/marshall_web/components/workspace_components.ex:473
+#, elixir-autogen, elixir-format
+msgid "Open VS Code"
+msgstr "VS Code-ஐத் திற"
+
+#: lib/marshall_web/components/workspace_components.ex:464
+#, elixir-autogen, elixir-format
+msgid "Open VS Code for %{value1}"
+msgstr "%{value1}-க்கு VS Code-ஐத் திற"
+
+#: lib/marshall_web/live/terminal_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "காட்சியைத் திறக்கவும்"
+
+#: lib/marshall_web/live/terminal_live.ex:117
+#, elixir-autogen, elixir-format
+msgid "Opening terminal; recovering the same request if the connection was interrupted."
+msgstr "முனையம் திறக்கப்படுகிறது; இணைப்பு தடைப்பட்டிருந்தால் அதே கோரிக்கை மீட்கப்படும்."
+
+#: lib/marshall_web/components/workspace_components.ex:328
+#, elixir-autogen, elixir-format
+msgid "Pause"
+msgstr "இடைநிறுத்தவும்"
+
+#: lib/marshall_web/components/workspace_components.ex:82
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "இடைநிறுத்தப்பட்டது"
+
+#: lib/marshall_web/components/workspace_components.ex:79
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "நிலுவையில்"
+
+#: lib/marshall_web/components/workspace_components.ex:205
+#, elixir-autogen, elixir-format
+msgid "Pinned"
+msgstr "பொருத்தப்பட்டது"
+
+#: lib/marshall_web/live/terminal_live.ex:452
+#, elixir-autogen, elixir-format
+msgid "Preparing your guest account…"
+msgstr "உங்கள் விருந்தினர் கணக்கு தயாராகிறது…"
+
+#: lib/marshall_web/live/terminal_live.ex:391
+#: lib/marshall_web/live/terminal_live.ex:429
+#: lib/marshall_web/live/terminal_live.ex:453
+#, elixir-autogen, elixir-format
+msgid "Preparing your terminal…"
+msgstr "உங்கள் முனையம் தயாராகிறது…"
+
+#: lib/marshall_web/live/terminal_live.ex:698
+#, elixir-autogen, elixir-format
+msgid "Previous match"
+msgstr "முந்தைய பொருத்தம்"
+
+#: lib/marshall_web/live/terminal_live.ex:722
+#, elixir-autogen, elixir-format
+msgid "Read-only boot console"
+msgstr "வாசிக்க மட்டுமே கூடிய தொடக்கக் கட்டுப்பாட்டகம்"
+
+#: lib/marshall_web/live/terminal_live.ex:607
+#, elixir-autogen, elixir-format
+msgid "Read-only host boot log. Guest terminal readiness is not required."
+msgstr "வாசிக்க மட்டுமே கூடிய புரவலன் தொடக்கப் பதிவு. விருந்தினர் முனையத் தயார்நிலை தேவையில்லை."
+
+#: lib/marshall_web/live/terminal_live.ex:392
+#, elixir-autogen, elixir-format
+msgid "Reconnecting to the terminal service…"
+msgstr "முனையச் சேவையுடன் மீண்டும் இணைக்கப்படுகிறது…"
+
+#: lib/marshall_web/live/terminal_live.ex:657
+#, elixir-autogen, elixir-format
+msgid "Rename in this browser"
+msgstr "இந்த உலாவியில் மறுபெயரிடு"
+
+#: lib/marshall_web/live/terminal_live.ex:656
+#, elixir-autogen, elixir-format
+msgid "Rename terminal"
+msgstr "முனையத்திற்கு மறுபெயரிடு"
+
+#: lib/marshall_web/live/terminal_live.ex:636
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "கட்டுப்பாட்டைக் கோரவும்"
+
+#: lib/marshall_web/components/workspace_components.ex:319
+#, elixir-autogen, elixir-format
+msgid "Resume machine"
+msgstr "கணினியை மீண்டும் இயக்கவும்"
+
+#: lib/marshall_web/components/workspace_components.ex:72
+#, elixir-autogen, elixir-format
+msgid "Resuming"
+msgstr "மீண்டும் இயங்குகிறது"
+
+#: lib/marshall_web/live/terminal_live.ex:140
+#: lib/marshall_web/live/terminal_live.ex:316
+#, elixir-autogen, elixir-format
+msgid "Resuming machine; waiting for capacity…"
+msgstr "கணினி மீண்டும் இயங்குகிறது; கொள்ளளவுக்காகக் காத்திருக்கிறது…"
+
+#: lib/marshall_web/live/terminal_live.ex:748
+#, elixir-autogen, elixir-format
+msgid "Revoke"
+msgstr "ரத்துசெய்"
+
+#: lib/marshall_web/components/workspace_components.ex:80
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "இயங்குகிறது"
+
+#: lib/marshall_web/components/workspace_components.ex:432
+#, elixir-autogen, elixir-format
+msgid "SSH connection details are temporarily unavailable."
+msgstr "SSH இணைப்பு விவரங்கள் தற்காலிகமாகக் கிடைக்கவில்லை."
+
+#: lib/marshall_web/components/workspace_components.ex:428
+#, elixir-autogen, elixir-format
+msgid "SSH connection requires write access to this machine."
+msgstr "SSH இணைப்பிற்கு இந்த இயந்திரத்தில் எழுதும் அணுகல் தேவை."
+
+#: lib/marshall_web/live/terminal_live.ex:663
+#, elixir-autogen, elixir-format
+msgid "Search (Ctrl+F)"
+msgstr "தேடு (Ctrl+F)"
+
+#: lib/marshall_web/live/terminal_live.ex:662
+#, elixir-autogen, elixir-format
+msgid "Search scrollback"
+msgstr "முனைய வரலாற்றில் தேடு"
+
+#: lib/marshall_web/live/terminal_live.ex:686
+#, elixir-autogen, elixir-format
+msgid "Search terminal scrollback"
+msgstr "முனைய உருட்டல் வரலாற்றில் தேடு"
+
+#: lib/marshall_web/components/workspace_components.ex:140
+#, elixir-autogen, elixir-format
+msgid "Settings"
+msgstr "அமைப்புகள்"
+
+#: lib/marshall_web/live/terminal_live.ex:590
+#, elixir-autogen, elixir-format
+msgid "Share terminal %{value1}"
+msgstr "%{value1} முனையத்தைப் பகிர்"
+
+#: lib/marshall_web/live/terminal_live.ex:730
+#, elixir-autogen, elixir-format
+msgid "Share this terminal"
+msgstr "இந்த முனையத்தைப் பகிர்"
+
+#: lib/marshall_web/live/terminal_live.ex:591
+#, elixir-autogen, elixir-format
+msgid "Share view"
+msgstr "காட்சியைப் பகிர்"
+
+#: lib/marshall_web/components/workspace_components.ex:535
+#, elixir-autogen, elixir-format
+msgid "Standard"
+msgstr "வழக்கமான"
+
+#: lib/marshall_web/components/workspace_components.ex:309
+#, elixir-autogen, elixir-format
+msgid "Start machine"
+msgstr "இயந்திரத்தைத் தொடங்கு"
+
+#: lib/marshall_web/components/workspace_components.ex:75
+#, elixir-autogen, elixir-format
+msgid "Starting"
+msgstr "தொடங்குகிறது"
+
+#: lib/marshall_web/components/workspace_components.ex:338
+#, elixir-autogen, elixir-format
+msgid "Stop"
+msgstr "நிறுத்து"
+
+#: lib/marshall_web/components/workspace_components.ex:81
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "நிறுத்தப்பட்டது"
+
+#: lib/marshall_web/components/workspace_components.ex:67
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "நிறுத்தப்படுகிறது"
+
+#: lib/marshall_web/components/workspace_components.ex:70
+#, elixir-autogen, elixir-format
+msgid "Suspending"
+msgstr "தற்காலிகமாக நிறுத்தப்படுகிறது"
+
+#: lib/marshall_web/components/workspace_components.ex:131
+#, elixir-autogen, elixir-format
+msgid "Terminal"
+msgstr "முனையம்"
+
+#: lib/marshall_web/live/terminal_live.ex:565
+#, elixir-autogen, elixir-format
+msgid "Terminal %{name}, %{count} viewer, created %{created}"
+msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
+msgstr[0] "முனையம் %{name}, %{count} பார்வையாளர், உருவாக்கப்பட்டது %{created}"
+msgstr[1] "முனையம் %{name}, %{count} பார்வையாளர்கள், உருவாக்கப்பட்டது %{created}"
+
+#: lib/marshall_web/live/terminal_live.ex:144
+#, elixir-autogen, elixir-format
+msgid "Terminal access ended."
+msgstr "முனைய அணுகல் முடிந்தது."
+
+#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:351
+#, elixir-autogen, elixir-format
+msgid "Terminal close requested; waiting for guest confirmation."
+msgstr "முனையத்தை மூடக் கோரப்பட்டது; விருந்தினர் உறுதிப்படுத்தலுக்காகக் காத்திருக்கிறது."
+
+#: lib/marshall_web/live/terminal_live.ex:468
+#, elixir-autogen, elixir-format
+msgid "Terminal limit reached for this machine."
+msgstr "இந்த இயந்திரத்தின் முனைய வரம்பு எட்டப்பட்டது."
+
+#: lib/marshall_web/live/terminal_live.ex:551
+#, elixir-autogen, elixir-format
+msgid "Terminal sessions"
+msgstr "முனைய அமர்வுகள்"
+
+#: lib/marshall_web/live/terminal_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Terminal viewing access updated."
+msgstr "முனையப் பார்வை அணுகல் புதுப்பிக்கப்பட்டது."
+
+#: lib/marshall_web/live/terminal_live.ex:473
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable while the host is offline."
+msgstr "புரவலன் இணைப்பில்லாதபோது முனையங்கள் கிடைக்காது."
+
+#: lib/marshall_web/live/terminal_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "The boot log is unavailable for the current machine execution."
+msgstr "தற்போதைய இயந்திர இயக்கத்திற்குத் தொடக்கப் பதிவு கிடைக்கவில்லை."
+
+#: lib/marshall_web/live/terminal_live.ex:487
+#, elixir-autogen, elixir-format
+msgid "The guest cannot host more terminal sessions."
+msgstr "விருந்தினரால் மேலும் முனைய அமர்வுகளை ஏற்க முடியாது."
+
+#: lib/marshall_web/live/terminal_live.ex:479
+#, elixir-autogen, elixir-format
+msgid "The previous opening has ended. Choose New to try again."
+msgstr "முந்தைய திறப்பு முடிந்துவிட்டது. மீண்டும் முயல புதியது என்பதைத் தேர்ந்தெடுக்கவும்."
+
+#: lib/marshall_web/live/terminal_live.ex:630
+#, elixir-autogen, elixir-format
+msgid "The software-rendered Android display uses the machine relay."
+msgstr "மென்பொருளால் வரையப்படும் Android காட்சி இயந்திரத்தின் தொடர் இணைப்பைப் பயன்படுத்துகிறது."
+
+#: lib/marshall_web/live/terminal_live.ex:489
+#, elixir-autogen, elixir-format
+msgid "The terminal could not be opened."
+msgstr "முனையத்தைத் திறக்க முடியவில்லை."
+
+#: lib/marshall_web/live/terminal_live.ex:514
+#, elixir-autogen, elixir-format
+msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
+msgstr "இந்த இயந்திரம் நிறுத்தப்பட்டுள்ளது. முனையத்தைத் திறக்க இதைத் தொடங்கவும். உங்கள் கோப்புகள் பாதுகாக்கப்பட்டுள்ளன."
+
+#: lib/marshall_web/components/workspace_components.ex:346
+#: lib/marshall_web/components/workspace_components.ex:515
+#, elixir-autogen, elixir-format
+msgid "This machine's image does not support the current browser editor."
+msgstr "இந்த இயந்திரத்தின் படிமம் தற்போதைய உலாவித் திருத்தியை ஆதரிக்காது."
+
+#: lib/marshall_web/components/workspace_components.ex:417
+#, elixir-autogen, elixir-format
+msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
+msgstr "இந்த இயந்திரத்தின் படிமத்தில் இன்னும் விருந்தினர் முகவர்கள் இல்லை: SSH, உலாவி முனையம் மற்றும் முகவர்கள் கிடைக்காது. பயன்படுத்தவும்:"
+
+#: lib/marshall_web/live/terminal_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
+msgstr "இந்த இயந்திரத்தின் படிமத்தில் முனைய முகவர் இல்லை; எனவே உலாவி முனையம் கிடைக்காது."
+
+#: lib/marshall_web/live/terminal_live.ex:652
+#, elixir-autogen, elixir-format
+msgid "Type to interact"
+msgstr "தொடர்புகொள்ள தட்டச்சு செய்யவும்"
+
+#: lib/marshall_web/live/terminal_live.ex:191
+#, elixir-autogen, elixir-format
+msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
+msgstr "முனையப் பகிர்வைப் புதுப்பிக்க முடியவில்லை. பகிர்வதற்கு முன் பெறுபவருக்கு இயந்திர அணுகல் இருக்க வேண்டும்."
+
+#: lib/marshall_web/components/workspace_components.ex:86
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "கிடைக்கவில்லை"
+
+#: lib/marshall_web/components/workspace_components.ex:85
+#: lib/marshall_web/components/workspace_components.ex:537
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "தெரியாதது"
+
+#: lib/marshall_web/components/workspace_components.ex:430
+#, elixir-autogen, elixir-format
+msgid "Use the browser terminal for this Inception environment."
+msgstr "இந்த Inception சூழலுக்கு உலாவி முனையத்தைப் பயன்படுத்தவும்."
+
+#: lib/marshall_web/components/workspace_components.ex:350
+#, elixir-autogen, elixir-format
+msgid "VS Code is temporarily unavailable for this machine."
+msgstr "இந்த இயந்திரத்திற்கு VS Code தற்காலிகமாகக் கிடைக்கவில்லை."
+
+#: lib/marshall_web/components/workspace_components.ex:518
+#, elixir-autogen, elixir-format
+msgid "VS Code is temporarily unavailable."
+msgstr "VS Code தற்காலிகமாகக் கிடைக்கவில்லை."
+
+#: lib/marshall_web/components/workspace_components.ex:519
+#, elixir-autogen, elixir-format
+msgid "VS Code is unavailable for this machine."
+msgstr "இந்த இயந்திரத்திற்கு VS Code கிடைக்காது."
+
+#: lib/marshall_web/components/workspace_components.ex:348
+#: lib/marshall_web/components/workspace_components.ex:517
+#, elixir-autogen, elixir-format
+msgid "VS Code requires a running machine."
+msgstr "VS Code-க்கு இயங்கும் இயந்திரம் தேவை."
+
+#: lib/marshall_web/live/terminal_live.ex:732
+#, elixir-autogen, elixir-format
+msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
+msgstr "இயந்திர இயக்குநர்களுக்கும் பார்வை மட்டுமே. பெறுபவருக்கு இந்த இயந்திரத்தில் ஏற்கெனவே அணுகல் இருக்க வேண்டும்."
+
+#: lib/marshall_web/live/terminal_live.ex:640
+#, elixir-autogen, elixir-format
+msgid "Waiting for display relay."
+msgstr "காட்சித் தொடர் இணைப்புக்காகக் காத்திருக்கிறது."
+
+#: lib/marshall_web/live/terminal_live.ex:340
+#, elixir-autogen, elixir-format
+msgid "Waiting for the machine to start…"
+msgstr "இயந்திரம் தொடங்கக் காத்திருக்கிறது…"
+
+#: lib/marshall_web/components/workspace_components.ex:392
+#, elixir-autogen, elixir-format
+msgid "Windows"
+msgstr "Windows"
+
+#: lib/marshall_web/live/terminal_live.ex:470
+#, elixir-autogen, elixir-format
+msgid "You do not have terminal access to this machine."
+msgstr "இந்த இயந்திரத்தில் உங்களுக்கு முனைய அணுகல் இல்லை."
+
+#: lib/marshall_web/live/terminal_live.ex:483
+#, elixir-autogen, elixir-format
+msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
+msgstr "உங்கள் விருந்தினர் கணக்கைத் தயாரிக்க முடியவில்லை. விருந்தினர் கணக்குச் சேவை கிடைப்பதைச் சரிபார்த்து மீண்டும் முயல புதியது என்பதைத் தேர்ந்தெடுக்கவும்."
+
+#: lib/marshall_web/live/terminal_live.ex:611
+#, elixir-autogen, elixir-format
+msgid "Your personal terminal opens when the machine is ready."
+msgstr "இயந்திரம் தயாரானதும் உங்கள் தனிப்பட்ட முனையம் திறக்கும்."
+
+#: lib/marshall_web/live/terminal_live.ex:476
+#, elixir-autogen, elixir-format
+msgid "Your previous shell has closed. Choose New to open another terminal."
+msgstr "உங்கள் முந்தைய கட்டளைச் சூழல் மூடப்பட்டது. மற்றொரு முனையத்தைத் திறக்க புதியது என்பதைத் தேர்ந்தெடுக்கவும்."
+
+#: lib/marshall_web/live/terminal_live.ex:518
+#, elixir-autogen, elixir-format
+msgid "Your terminal will open when the machine is running and ready."
+msgstr "இயந்திரம் இயங்கித் தயாரானதும் உங்கள் முனையம் திறக்கும்."
+
+#: lib/marshall_web/live/terminal_live.ex:664
+#, elixir-autogen, elixir-format
+msgid "find"
+msgstr "தேடு"
+
+#: lib/marshall_web/live/terminal_live.ex:682
+#, elixir-autogen, elixir-format
+msgid "full"
+msgstr "முழு"
+
+#: lib/marshall_web/live/terminal_live.ex:658
+#, elixir-autogen, elixir-format
+msgid "rename"
+msgstr "மறுபெயரிடு"
+
+#: lib/marshall_web/components/workspace_components.ex:426
+#, elixir-autogen, elixir-format
+msgid "to view the read-only host console."
+msgstr "வாசிக்க மட்டுமே கூடிய புரவலன் கட்டுப்பாட்டகத்தைப் பார்க்க."

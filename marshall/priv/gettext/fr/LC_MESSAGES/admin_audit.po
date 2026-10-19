@@ -1,0 +1,1012 @@
+#
+msgid ""
+msgstr ""
+"Language: fr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/admin/audit_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "; the next due check can then request a new generation."
+msgstr ""
+"; la prochaine vérification prévue pourra alors demander une nouvelle "
+"génération."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:101
+#, elixir-autogen, elixir-format
+msgid "ACME account"
+msgstr "Compte ACME"
+
+#: lib/marshall_web/live/admin/audit_live.ex:315
+#, elixir-autogen, elixir-format
+msgid "ACME account: %{status}"
+msgstr "Compte ACME : %{status}"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:132
+#: lib/marshall_web/live/admin/audit_labels.ex:350
+#, elixir-autogen, elixir-format
+msgid "Acknowledged"
+msgstr "Pris en compte"
+
+#: lib/marshall_web/live/admin/audit_live.ex:230
+#: lib/marshall_web/live/admin/audit_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "Action"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:124
+#, elixir-autogen, elixir-format
+msgid "Activated"
+msgstr "Activé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:176
+#: lib/marshall_web/live/admin/audit_labels.ex:374
+#, elixir-autogen, elixir-format
+msgid "Activation failed"
+msgstr "L'activation a échoué"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:197
+#, elixir-autogen, elixir-format
+msgid "Activation observed"
+msgstr "Activation observée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:356
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "Actif"
+
+#: lib/marshall_web/live/admin/audit_live.ex:287
+#, elixir-autogen, elixir-format
+msgid "Actor"
+msgstr "Acteur"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:27
+#, elixir-autogen, elixir-format
+msgid "Administrator access granted"
+msgstr "Accès administrateur accordé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:28
+#, elixir-autogen, elixir-format
+msgid "Administrator access revoked"
+msgstr "Accès administrateur révoqué"
+
+#: lib/marshall_web/live/admin/audit_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Administrator actions"
+msgstr "Actions administrateur"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:25
+#, elixir-autogen, elixir-format
+msgid "Administrator bootstrapped"
+msgstr "Administrateur amorcé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:133
+#, elixir-autogen, elixir-format
+msgid "Advanced"
+msgstr "Avancé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:134
+#, elixir-autogen, elixir-format
+msgid "Allocated"
+msgstr "Alloué"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:343
+#, elixir-autogen, elixir-format
+msgid "Applied"
+msgstr "Appliqué"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:136
+#: lib/marshall_web/live/admin/audit_labels.ex:340
+#, elixir-autogen, elixir-format
+msgid "Approved"
+msgstr "Approuvé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:137
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "Archivé"
+
+#: lib/marshall_web/live/admin/audit_live.ex:179
+#, elixir-autogen, elixir-format
+msgid "Audit"
+msgstr "Audit"
+
+#: lib/marshall_web/live/admin/audit_live.ex:279
+#, elixir-autogen, elixir-format
+msgid "Audit history is unavailable."
+msgstr "L’historique d’audit est indisponible."
+
+#: lib/marshall_web/live/admin/audit_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Audit kinds"
+msgstr "Types d’audit"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:140
+#: lib/marshall_web/live/admin/audit_labels.ex:341
+#, elixir-autogen, elixir-format
+msgid "Blocked"
+msgstr "Bloqué"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:184
+#, elixir-autogen, elixir-format
+msgid "Cancellation completed"
+msgstr "Annulation terminée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:283
+#: lib/marshall_web/live/admin/audit_labels.ex:286
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "Annulation demandée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:229
+#, elixir-autogen, elixir-format
+msgid "Cancellation restart recorded"
+msgstr "Reprise d'annulation enregistrée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:232
+#, elixir-autogen, elixir-format
+msgid "Cancellation stop recorded"
+msgstr "Arrêt d'annulation enregistré"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:141
+#: lib/marshall_web/live/admin/audit_labels.ex:142
+#: lib/marshall_web/live/admin/audit_labels.ex:336
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "Annulé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:335
+#, elixir-autogen, elixir-format
+msgid "Cancelling"
+msgstr "Annulation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:330
+#, elixir-autogen, elixir-format
+msgid "Capturing"
+msgstr "Capturer"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:102
+#, elixir-autogen, elixir-format
+msgid "Certificate"
+msgstr "Certificat"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:122
+#, elixir-autogen, elixir-format
+msgid "Certificate issued"
+msgstr "Certificat délivré"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:110
+#, elixir-autogen, elixir-format
+msgid "Certificate order attempted"
+msgstr "Tentative de commande de certificat"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:113
+#, elixir-autogen, elixir-format
+msgid "Certificate order bound"
+msgstr "Commande de certificat liée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:116
+#, elixir-autogen, elixir-format
+msgid "Certificate proof recorded"
+msgstr "Preuve de certificat enregistrée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:119
+#, elixir-autogen, elixir-format
+msgid "Certificate proof refreshed"
+msgstr "Preuve de certificat actualisée"
+
+#: lib/marshall_web/live/admin/audit_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Certificates"
+msgstr "Certificats"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:368
+#, elixir-autogen, elixir-format
+msgid "Checking destination"
+msgstr "Vérification de la destination"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:359
+#, elixir-autogen, elixir-format
+msgid "Checking transfer"
+msgstr "Vérification du transfert"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:144
+#, elixir-autogen, elixir-format
+msgid "Checkpoint saved"
+msgstr "Point de contrôle enregistré"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:333
+#, elixir-autogen, elixir-format
+msgid "Cleaning up"
+msgstr "Nettoyage"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:386
+#, elixir-autogen, elixir-format
+msgid "Cleaning up cancellation"
+msgstr "Nettoyage de l'annulation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:380
+#, elixir-autogen, elixir-format
+msgid "Cleaning up source"
+msgstr "Nettoyer la source"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:148
+#, elixir-autogen, elixir-format
+msgid "Cleanup completed"
+msgstr "Nettoyage terminé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:145
+#: lib/marshall_web/live/admin/audit_labels.ex:334
+#: lib/marshall_web/live/admin/audit_labels.ex:339
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "Terminé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:150
+#, elixir-autogen, elixir-format
+msgid "Confirmed"
+msgstr "Confirmé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:166
+#, elixir-autogen, elixir-format
+msgid "Continued"
+msgstr "Suite"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:155
+#, elixir-autogen, elixir-format
+msgid "Copy confirmed"
+msgstr "Copie confirmée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:138
+#, elixir-autogen, elixir-format
+msgid "Copy started"
+msgstr "Copie démarrée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:331
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "Copie"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:325
+#, elixir-autogen, elixir-format
+msgid "Created"
+msgstr "Créé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:167
+#, elixir-autogen, elixir-format
+msgid "Deferred"
+msgstr "Différé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:354
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "Supprimé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:389
+#, elixir-autogen, elixir-format
+msgid "Deleting copies"
+msgstr "Suppression de copies"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:187
+#, elixir-autogen, elixir-format
+msgid "Deletion completed"
+msgstr "Suppression terminée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:289
+#: lib/marshall_web/live/admin/audit_labels.ex:292
+#, elixir-autogen, elixir-format
+msgid "Deletion requested"
+msgstr "Suppression demandée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:202
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup offered"
+msgstr "Nettoyage de destination offert"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:238
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup recorded"
+msgstr "Nettoyage de destination enregistré"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:205
+#, elixir-autogen, elixir-format
+msgid "Destination revocation offered"
+msgstr "Révocation de destination offerte"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:242
+#, elixir-autogen, elixir-format
+msgid "Destination revocation recorded"
+msgstr "Révocation de destination enregistrée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:171
+#, elixir-autogen, elixir-format
+msgid "Destination work dispatched"
+msgstr "Travail à destination expédié"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:168
+#, elixir-autogen, elixir-format
+msgid "Dispatched"
+msgstr "Expédié"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:347
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "Vidée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:346
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "Vidage en cours"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:98
+#, elixir-autogen, elixir-format
+msgid "Editor credential"
+msgstr "Titre d'éditeur"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:100
+#, elixir-autogen, elixir-format
+msgid "Editor lease"
+msgstr "Bail d'éditeur"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:95
+#, elixir-autogen, elixir-format
+msgid "Editor sign-in"
+msgstr "Connexion de l'éditeur"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:394
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "Évacuation en cours"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:49
+#, elixir-autogen, elixir-format
+msgid "Evacuation approved"
+msgstr "Évacuation approuvée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:46
+#, elixir-autogen, elixir-format
+msgid "Evacuation changed"
+msgstr "L'évacuation a changé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:52
+#, elixir-autogen, elixir-format
+msgid "Evacuation replanned"
+msgstr "Évacuation replanifiée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:43
+#, elixir-autogen, elixir-format
+msgid "Evacuation requested"
+msgstr "Évacuation demandée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:126
+#: lib/marshall_web/live/admin/audit_labels.ex:337
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Échec"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:181
+#, elixir-autogen, elixir-format
+msgid "Fenced"
+msgstr "Clôturé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:393
+#, elixir-autogen, elixir-format
+msgid "Fencing"
+msgstr "Clôture"
+
+#: lib/marshall_web/live/admin/audit_live.ex:207
+#: lib/marshall_web/live/admin/audit_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Filter lifecycle history"
+msgstr "Filtrer l’historique du cycle de vie"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:58
+#, elixir-autogen, elixir-format
+msgid "Fleet certificate rotation requested"
+msgstr "Rotation de certificat de flotte demandée"
+
+#: lib/marshall_web/live/admin/audit_live.ex:261
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation} has an uncertain ACME order response. The generation can be failed after"
+msgstr "La génération %{generation} a une réponse de commande ACME incertaine. La génération peut échouer après"
+
+#: lib/marshall_web/live/admin/audit_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "Generation %{generation}: %{status}"
+msgstr "Génération %{generation} : %{status}"
+
+#: lib/marshall_web/live/admin/audit_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "Host ID"
+msgstr "Identifiant de l’hôte"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:55
+#, elixir-autogen, elixir-format
+msgid "Host configured"
+msgstr "Hôte configuré"
+
+#: lib/marshall_web/live/admin/audit_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Human requests and system recovery transitions. History is retained for 90 days."
+msgstr ""
+"Demandes humaines et transitions de reprise du système. L’historique est "
+"conservé pendant 90 jours."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:192
+#, elixir-autogen, elixir-format
+msgid "Idle policy updated"
+msgstr "Politique d'inactivité mise à jour"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:158
+#, elixir-autogen, elixir-format
+msgid "Import confirmed"
+msgstr "Importation confirmée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:221
+#, elixir-autogen, elixir-format
+msgid "Import prepared"
+msgstr "Importation préparée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:245
+#, elixir-autogen, elixir-format
+msgid "Import recorded"
+msgstr "Importation enregistrée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:139
+#, elixir-autogen, elixir-format
+msgid "Import started"
+msgstr "L'importation a commencé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:364
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "Importation en cours"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:103
+#, elixir-autogen, elixir-format
+msgid "Installation"
+msgstr "Mise en place"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:104
+#, elixir-autogen, elixir-format
+msgid "Installed"
+msgstr "Installé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:90
+#, elixir-autogen, elixir-format
+msgid "Integration attached"
+msgstr "Intégration ci-jointe"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:84
+#, elixir-autogen, elixir-format
+msgid "Integration configured"
+msgstr "Intégration configurée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:93
+#, elixir-autogen, elixir-format
+msgid "Integration detached"
+msgstr "Intégration détachée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:87
+#, elixir-autogen, elixir-format
+msgid "Integration removed"
+msgstr "Intégration supprimée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:173
+#, elixir-autogen, elixir-format
+msgid "Key dispatched"
+msgstr "Clé expédiée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:247
+#, elixir-autogen, elixir-format
+msgid "Key recorded"
+msgstr "Clé enregistrée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:312
+#, elixir-autogen, elixir-format
+msgid "Key retired"
+msgstr "Clé retirée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:208
+#, elixir-autogen, elixir-format
+msgid "Key retirement offered"
+msgstr "Clé retraite offerte"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:295
+#, elixir-autogen, elixir-format
+msgid "Key retirement requested"
+msgstr "Retrait de clé demandé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:34
+#, elixir-autogen, elixir-format
+msgid "Machine access revoked"
+msgstr "Accès à la machine révoqué"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:61
+#, elixir-autogen, elixir-format
+msgid "Machine lifecycle requested"
+msgstr "Cycle de vie de la machine demandé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:64
+#, elixir-autogen, elixir-format
+msgid "Machine relocation requested"
+msgstr "Déplacement de machine demandé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:194
+#, elixir-autogen, elixir-format
+msgid "Machine state observed"
+msgstr "État de la machine observé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:19
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication reset"
+msgstr "Réinitialisation de l'authentification multifacteur"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:16
+#, elixir-autogen, elixir-format
+msgid "Multi-factor authentication verified"
+msgstr "Authentification multifacteur vérifiée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:338
+#, elixir-autogen, elixir-format
+msgid "Offered"
+msgstr "Offert"
+
+#: lib/marshall_web/live/admin/audit_live.ex:334
+#, elixir-autogen, elixir-format
+msgid "Older events →"
+msgstr "Événements plus anciens →"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:250
+#, elixir-autogen, elixir-format
+msgid "Operation recorded"
+msgstr "Opération enregistrée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:10
+#, elixir-autogen, elixir-format
+msgid "Passkey added"
+msgstr "Clé d'accès ajoutée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:13
+#, elixir-autogen, elixir-format
+msgid "Passkey removed"
+msgstr "Clé d'accès supprimée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:298
+#, elixir-autogen, elixir-format
+msgid "Pause requested"
+msgstr "Pause demandée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:217
+#: lib/marshall_web/live/admin/audit_labels.ex:353
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "En pause"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:326
+#: lib/marshall_web/live/admin/audit_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "En attente"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:235
+#, elixir-autogen, elixir-format
+msgid "Placement switch recorded"
+msgstr "Changement de placement enregistré"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:189
+#, elixir-autogen, elixir-format
+msgid "Placement switched"
+msgstr "Emplacement changé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:218
+#, elixir-autogen, elixir-format
+msgid "Preparation started"
+msgstr "La préparation a commencé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:328
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "Préparation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:253
+#, elixir-autogen, elixir-format
+msgid "Progress recorded"
+msgstr "Des progrès enregistrés"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:131
+#, elixir-autogen, elixir-format
+msgid "Progress updated"
+msgstr "Progrès mis à jour"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:223
+#, elixir-autogen, elixir-format
+msgid "Published"
+msgstr "Publié"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:332
+#, elixir-autogen, elixir-format
+msgid "Publishing"
+msgstr "Publication"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:106
+#: lib/marshall_web/live/admin/audit_labels.ex:327
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "En file"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:161
+#: lib/marshall_web/live/admin/audit_labels.ex:164
+#, elixir-autogen, elixir-format
+msgid "Readiness confirmed"
+msgstr "Préparation confirmée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:179
+#: lib/marshall_web/live/admin/audit_labels.ex:371
+#, elixir-autogen, elixir-format
+msgid "Readiness failed"
+msgstr "Échec de la préparation"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:224
+#: lib/marshall_web/live/admin/audit_labels.ex:345
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "Prêt"
+
+#: lib/marshall_web/live/admin/audit_live.ex:251
+#, elixir-autogen, elixir-format
+msgid "Recent fleet wildcard generations and gateway installations. Private keys and ACME proofs are excluded."
+msgstr ""
+"Générations récentes de certificats génériques du parc et installations sur "
+"les passerelles. Les clés privées et preuves ACME sont exclues."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:225
+#, elixir-autogen, elixir-format
+msgid "Reconciled"
+msgstr "Réconcilié"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:226
+#, elixir-autogen, elixir-format
+msgid "Recorded"
+msgstr "Enregistré"
+
+#: lib/marshall_web/live/admin/audit_live.ex:181
+#, elixir-autogen, elixir-format
+msgid "Redacted authority changes, lifecycle requests, certificate generations and editor access. Payloads, credentials and terminal bytes are excluded."
+msgstr ""
+"Modifications d’autorité, demandes de cycle de vie, générations de "
+"certificats et accès éditeur expurgés. Les charges utiles, identifiants et "
+"octets de terminal sont exclus."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:277
+#, elixir-autogen, elixir-format
+msgid "Reflection metadata updated"
+msgstr "Métadonnées de réflexion mises à jour"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:105
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "Enregistré"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:279
+#, elixir-autogen, elixir-format
+msgid "Replanned"
+msgstr "Replanifié"
+
+#: lib/marshall_web/live/admin/audit_live.ex:274
+#, elixir-autogen, elixir-format
+msgid "Request a new wildcard certificate for every Audi gateway?"
+msgstr ""
+"Demander un nouveau certificat générique pour chaque passerelle Audi ?"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:107
+#, elixir-autogen, elixir-format
+msgid "Request saved"
+msgstr "Demande enregistrée"
+
+#: lib/marshall_web/live/admin/audit_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Request wildcard rotation"
+msgstr "Demander une rotation générique"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:280
+#, elixir-autogen, elixir-format
+msgid "Requested"
+msgstr "Demandé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:135
+#, elixir-autogen, elixir-format
+msgid "Resize applied"
+msgstr "Redimensionnement appliqué"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:304
+#, elixir-autogen, elixir-format
+msgid "Resize started"
+msgstr "Redimensionnement commencé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:391
+#, elixir-autogen, elixir-format
+msgid "Resizing"
+msgstr "Redimensionnement"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:305
+#: lib/marshall_web/live/admin/audit_labels.ex:395
+#, elixir-autogen, elixir-format
+msgid "Resolved"
+msgstr "Résolu"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:306
+#, elixir-autogen, elixir-format
+msgid "Restart started"
+msgstr "Redémarrage commencé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:392
+#, elixir-autogen, elixir-format
+msgid "Restarting"
+msgstr "Redémarrage"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:383
+#, elixir-autogen, elixir-format
+msgid "Restoring source"
+msgstr "Restauration des sources"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:259
+#, elixir-autogen, elixir-format
+msgid "Result recorded"
+msgstr "Résultat enregistré"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:311
+#: lib/marshall_web/live/admin/audit_labels.ex:348
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "Repris"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:125
+#: lib/marshall_web/live/admin/audit_labels.ex:349
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "Retiré du service"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:313
+#, elixir-autogen, elixir-format
+msgid "Retry requested"
+msgstr "Nouvelle tentative demandée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:377
+#, elixir-autogen, elixir-format
+msgid "Retrying destination"
+msgstr "Nouvelle tentative de destination"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:351
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "En cours d’exécution"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:37
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked"
+msgstr "Clé SSH révoquée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:40
+#, elixir-autogen, elixir-format
+msgid "SSH session revoked"
+msgstr "Session SSH révoquée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:314
+#: lib/marshall_web/live/admin/audit_labels.ex:342
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "Planifié"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:31
+#, elixir-autogen, elixir-format
+msgid "Sessions revoked"
+msgstr "Séances révoquées"
+
+#: lib/marshall_web/live/admin/audit_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "Since (ISO 8601)"
+msgstr "Depuis (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:153
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture confirmed"
+msgstr "Capture d'instantané confirmée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:143
+#, elixir-autogen, elixir-format
+msgid "Snapshot capture started"
+msgstr "La capture d'instantané a commencé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:262
+#, elixir-autogen, elixir-format
+msgid "Source restoration recorded"
+msgstr "Restauration de la source enregistrée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:309
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "Source restaurée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:211
+#, elixir-autogen, elixir-format
+msgid "Source revocation offered"
+msgstr "Révocation de source offerte"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:265
+#, elixir-autogen, elixir-format
+msgid "Source revocation recorded"
+msgstr "Révocation de la source enregistrée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:215
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup offered"
+msgstr "Nettoyage de l'instantané source offert"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:269
+#, elixir-autogen, elixir-format
+msgid "Source snapshot cleanup recorded"
+msgstr "Nettoyage de l'instantané source enregistré"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:318
+#, elixir-autogen, elixir-format
+msgid "Source stop started"
+msgstr "L'arrêt de la source a commencé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:301
+#, elixir-autogen, elixir-format
+msgid "Start requested"
+msgstr "Début demandé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:271
+#, elixir-autogen, elixir-format
+msgid "Stop recorded"
+msgstr "Arrêt enregistré"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:303
+#, elixir-autogen, elixir-format
+msgid "Stop requested"
+msgstr "Arrêt demandé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:315
+#, elixir-autogen, elixir-format
+msgid "Stop started"
+msgstr "Arrêt commencé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:352
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "Arrêté"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:329
+#, elixir-autogen, elixir-format
+msgid "Stopping"
+msgstr "Arrêt"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:362
+#, elixir-autogen, elixir-format
+msgid "Stopping source"
+msgstr "Arrêt de la source"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:320
+#: lib/marshall_web/live/admin/audit_labels.ex:344
+#, elixir-autogen, elixir-format
+msgid "Superseded"
+msgstr "Remplacé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:365
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "Changement de placement"
+
+#: lib/marshall_web/live/admin/audit_live.ex:288
+#, elixir-autogen, elixir-format
+msgid "Target"
+msgstr "Cible"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:66
+#, elixir-autogen, elixir-format
+msgid "Team created"
+msgstr "Équipe créée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:69
+#, elixir-autogen, elixir-format
+msgid "Team membership changed"
+msgstr "La composition de l'équipe a changé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:75
+#, elixir-autogen, elixir-format
+msgid "Team ownership accepted"
+msgstr "Propriété de l'équipe acceptée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:78
+#, elixir-autogen, elixir-format
+msgid "Team ownership declined"
+msgstr "La propriété de l'équipe a diminué"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:81
+#, elixir-autogen, elixir-format
+msgid "Team ownership offer cancelled"
+msgstr "Offre de propriété d'équipe annulée"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:72
+#, elixir-autogen, elixir-format
+msgid "Team ownership offered"
+msgstr "Propriété d'équipe offerte"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:256
+#, elixir-autogen, elixir-format
+msgid "Transfer receipt recorded"
+msgstr "Reçu de virement enregistré"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:129
+#, elixir-autogen, elixir-format
+msgid "Uncertain certificate order failed"
+msgstr "Échec de la commande de certificat incertaine"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:274
+#, elixir-autogen, elixir-format
+msgid "Unconfirmed outcome recorded"
+msgstr "Résultat non confirmé enregistré"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:321
+#: lib/marshall_web/live/admin/audit_labels.ex:355
+#: lib/marshall_web/live/admin/audit_labels.ex:396
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: lib/marshall_web/live/admin/audit_live.ex:232
+#, elixir-autogen, elixir-format
+msgid "Until (ISO 8601)"
+msgstr "Jusqu’à (ISO 8601)"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:22
+#, elixir-autogen, elixir-format
+msgid "User deleted"
+msgstr "Utilisateur supprimé"
+
+#: lib/marshall_web/live/admin/audit_labels.ex:21
+#, elixir-autogen, elixir-format
+msgid "User invited"
+msgstr "Utilisateur invité"
+
+#: lib/marshall_web/live/admin/audit_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "VM ID"
+msgstr "Identifiant VM"
+
+#: lib/marshall_web/live/admin/audit_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "VM lifecycle"
+msgstr "Cycle de vie VM"
+
+#: lib/marshall_web/live/admin/audit_live.ex:204
+#, elixir-autogen, elixir-format
+msgid "VS Code access"
+msgstr "Accès VS Code"
+
+#: lib/marshall_web/live/admin/audit_live.ex:285
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "Quand"
+
+#: lib/marshall_web/live/admin/audit_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation could not be requested."
+msgstr "La rotation générique n’a pas pu être demandée."
+
+#: lib/marshall_web/live/admin/audit_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Wildcard rotation requested for generation %{generation}."
+msgstr "Rotation générique demandée pour la génération %{generation}."
+
+#: lib/marshall_web/live/admin/audit_labels.ex:199
+#, elixir-autogen, elixir-format
+msgid "Work offered"
+msgstr "Travail offert"
+
+#: lib/marshall_web/live/admin/audit_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "Workflow ID"
+msgstr "Identifiant du workflow"

@@ -10,6 +10,7 @@ defmodule Marshall.LocaleCatalogReview do
 
   @fields ~w(app locale domain context msgid msgid_plural form reason note)
   @reasons ~w(brand unit cognate technical_literal)
+  @applications ~w(marshall porsche)
 
   @spec load!(String.t()) :: reviews()
   def load!(path), do: path |> File.read!() |> JSON.decode!() |> parse!()
@@ -29,7 +30,7 @@ defmodule Marshall.LocaleCatalogReview do
                Enum.all?(~w(context msgid_plural), fn field ->
                  is_nil(record[field]) or is_binary(record[field])
                end) and is_integer(record["form"]) and record["form"] >= 0 and
-               record["reason"] in @reasons,
+               record["reason"] in @reasons and record["app"] in @applications,
              do: raise(ArgumentError, "Invalid reviewed source-equality record values")
 
       key =
@@ -45,6 +46,17 @@ defmodule Marshall.LocaleCatalogReview do
 
   def parse!(_records),
     do: raise(ArgumentError, "Reviewed source-equality records must be a list")
+
+  # @cc [owner:ghuntley,label:verification] reviewed-source-application-scope
+  # Application selection MUST retain every review belonging to that application
+  # and MUST reject unknown applications, so misspelled names cannot hide reviews.
+  @spec for_app(reviews(), String.t()) :: reviews()
+  def for_app(reviews, app) when app in @applications do
+    Map.filter(reviews, fn {{entry_app, _, _, _, _, _, _}, _review} -> entry_app == app end)
+  end
+
+  def for_app(_reviews, app),
+    do: raise(ArgumentError, "Unknown reviewed source-equality application: #{inspect(app)}")
 
   @spec identity(String.t(), String.t(), String.t(), Expo.Message.t(), non_neg_integer()) ::
           identity()

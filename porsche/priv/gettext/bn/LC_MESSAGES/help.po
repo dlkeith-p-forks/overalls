@@ -1,0 +1,204 @@
+msgid ""
+msgstr ""
+"Language: bn\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/porsche/ssh/command_messages.ex:59
+#, elixir-autogen, elixir-format
+msgid "Accept a pending ownership offer."
+msgstr "অপেক্ষমাণ মালিকানার প্রস্তাব গ্রহণ করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "প্রশাসক বা সদস্য যোগ করুন বা পরিবর্তন করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "অপ্রকাশিত ক্লোন বা চূড়ান্ত না হওয়া স্থানান্তরের অনুরোধ বাতিল করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:61
+#, elixir-autogen, elixir-format
+msgid "Cancel your pending ownership offer."
+msgstr "আপনার অপেক্ষমাণ মালিকানার প্রস্তাব বাতিল করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "মেশিনের CPU ও মেমরি পরিবর্তন করুন; ডিস্ক কেবল বড় করা যায়। চলমান মেশিন থেমে আবার চালু হবে।"
+
+#: lib/porsche/ssh/command_messages.ex:63
+#, elixir-autogen, elixir-format
+msgid "Close this interactive channel."
+msgstr "এই ইন্টার‌্যাক্টিভ চ্যানেল বন্ধ করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "মেশিন তৈরি করুন। ডিস্কের সর্বোচ্চ সীমা: 500 GiB। --source গেস্টে একটি সর্বজনীন GitHub, GitLab, Codeberg বা Bitbucket রিপোজিটরি ক্লোন করে।"
+
+#: lib/porsche/ssh/command_messages.ex:53
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "আপনার মালিকানাধীন দল তৈরি করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "https://NAME.integration.internal-এ নামযুক্ত ইন্টিগ্রেশন তৈরি বা প্রতিস্থাপন করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:60
+#, elixir-autogen, elixir-format
+msgid "Decline a pending ownership offer."
+msgstr "অপেক্ষমাণ মালিকানার প্রস্তাব প্রত্যাখ্যান করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:30
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "মেশিন ও তার ডিস্ক মুছুন। মালিক পিন করে রাখলে মুছতে দেওয়া হবে না।"
+
+#: lib/porsche/ssh/command_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "দর্শক, অপারেটর বা ব্যবস্থাপকের প্রবেশাধিকার দিন।"
+
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "নাম বা UUID দিয়ে মেশিন পরীক্ষা করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:62
+#, elixir-autogen, elixir-format
+msgid "Inspect a previously accepted request."
+msgstr "আগে গৃহীত অনুরোধ পরীক্ষা করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:50
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "গোপন তথ্য ছাড়া ইন্টিগ্রেশন পরীক্ষা করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:55
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "দলের সদস্যদের তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "প্রবেশাধিকারের অনুমতিগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "উপলব্ধ ইমেজগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "আপনি প্রবেশ করতে পারেন এমন মেশিনগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "আপনার SSH কীগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "আপনার ইন্টিগ্রেশনগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "আপনার দল ও ভূমিকাগুলোর তালিকা দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "মেশিনের জন্য ইন্টিগ্রেশন উপলব্ধ করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "মেশিনকে স্বয়ংক্রিয়ভাবে নির্বাচিত হোস্টে সরান।"
+
+#: lib/porsche/ssh/command_messages.ex:58
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "প্রশাসককে দলের মালিকানা হস্তান্তরের প্রস্তাব দিন।"
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:34
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "আপনার তালিকার শীর্ষে একটি মেশিন পিন করুন। মালিক হিসেবে আপনি পিন করলে সেটি জেগে ওঠে এবং স্বয়ংক্রিয় স্থগিতকরণ ও মুছে ফেলা প্রতিরোধ হয়।"
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "মেশিনের সম্পূর্ণ ডিস্কের স্বতন্ত্র অনুলিপি সারিতে রাখুন।"
+
+#: lib/porsche/ssh/command_messages.ex:52
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "মেশিনের জন্য সরাসরি দেওয়া উপলব্ধতা সরান।"
+
+#: lib/porsche/ssh/command_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "নামযুক্ত ইন্টিগ্রেশন সরান।"
+
+#: lib/porsche/ssh/command_messages.ex:57
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "অ্যাকাউন্টের সদস্যপদ সরান।"
+
+#: lib/porsche/ssh/command_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "মেশিন থেকে আপনার পিন সরান।"
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:69
+msgid "Resume a suspended machine's preserved memory."
+msgstr "স্থগিত মেশিনের সংরক্ষিত মেমরি থেকে কাজ পুনরায় শুরু করুন।"
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:65
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "ধারণক্ষমতা বা স্থানান্তরের জন্য অপেক্ষা করে সংরক্ষিত মেমরি থেকে কাজ পুনরায় শুরু করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:20
+msgid "Retry a failed clone or relocation request."
+msgstr "ব্যর্থ ক্লোন বা স্থানান্তরের অনুরোধ আবার চেষ্টা করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:41
+msgid "Revoke an account's shared access."
+msgstr "অ্যাকাউন্টের শেয়ার করা প্রবেশাধিকার প্রত্যাহার করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:43
+msgid "Revoke one of your SSH keys."
+msgstr "আপনার একটি SSH কী প্রত্যাহার করুন।"
+
+#: lib/porsche/ssh/command_messages.ex:5
+msgid "Show command help."
+msgstr "কমান্ডের সাহায্য দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:6
+msgid "Show the authenticated account."
+msgstr "প্রমাণীকৃত অ্যাকাউন্ট দেখান।"
+
+#: lib/porsche/ssh/command_messages.ex:25
+msgid "Start a machine."
+msgstr "মেশিন চালু করুন।"
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:26
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "ডিস্ক রেখে এবং স্থগিত অবস্থার মেমরি বাদ দিয়ে মেশিন বন্ধ করুন।"
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:64
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "মেমরি ও ডিস্ক সংরক্ষণ করে মেশিন স্থগিত করুন।"

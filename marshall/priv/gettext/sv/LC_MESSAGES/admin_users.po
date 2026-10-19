@@ -1,0 +1,192 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: sv\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/users_live.ex:165
+#, elixir-autogen, elixir-format
+msgid "%{count} owned machine"
+msgid_plural "%{count} owned machines"
+msgstr[0] "%{count} ägd maskin"
+msgstr[1] "%{count} ägda maskiner"
+
+#: lib/marshall_web/live/admin/users_live.ex:256
+#, elixir-autogen, elixir-format
+msgid "Account pages"
+msgstr "Kontosidor"
+
+#: lib/marshall_web/live/admin/users_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Account request accepted."
+msgstr "Kontobegäran har godkänts."
+
+#: lib/marshall_web/live/admin/users_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Accounts are temporarily unavailable."
+msgstr "Kontona är tillfälligt otillgängliga."
+
+#: lib/marshall_web/live/admin/users_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "Administrator"
+msgstr "Administratör"
+
+#: lib/marshall_web/live/admin/users_live.ex:44
+#, elixir-autogen, elixir-format
+msgid "Administrator access updated."
+msgstr "Administratörsbehörigheten har uppdaterats."
+
+#: lib/marshall_web/live/admin/users_live.ex:63
+#, elixir-autogen, elixir-format
+msgid "Browser sessions revoked."
+msgstr "Webbläsarsessionerna har återkallats."
+
+#: lib/marshall_web/live/admin/users_live.ex:94
+#, elixir-autogen, elixir-format
+msgid "Could not accept this account change. Check confirmation and verify your passkey."
+msgstr "Kontoändringen kunde inte godkännas. Kontrollera bekräftelsen och verifiera din passnyckel."
+
+#: lib/marshall_web/live/admin/users_live.ex:47
+#, elixir-autogen, elixir-format
+msgid "Could not change administrator access."
+msgstr "Administratörsbehörigheten kunde inte ändras."
+
+#: lib/marshall_web/live/admin/users_live.ex:66
+#, elixir-autogen, elixir-format
+msgid "Could not revoke browser sessions."
+msgstr "Webbläsarsessionerna kunde inte återkallas."
+
+#: lib/marshall_web/live/admin/users_live.ex:247
+#, elixir-autogen, elixir-format
+msgid "Delete user and machines"
+msgstr "Radera användare och maskiner"
+
+#: lib/marshall_web/live/admin/users_live.ex:146
+#, elixir-autogen, elixir-format
+msgid "Email address"
+msgstr "E-postadress"
+
+#: lib/marshall_web/live/admin/users_live.ex:139
+#, elixir-autogen, elixir-format
+msgid "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
+msgstr "Alla konton i den här installationen. Inloggade användare kan läsa sidan; ändringar kräver en administratör med en nyligen verifierad passnyckel."
+
+#: lib/marshall_web/live/admin/users_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Grant this account access to administer the entire fleet and all machines?"
+msgstr "Ge kontot behörighet att administrera hela flottan och alla maskiner?"
+
+#: lib/marshall_web/live/admin/users_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Ogiltig begäran."
+
+#: lib/marshall_web/live/admin/users_live.ex:144
+#, elixir-autogen, elixir-format
+msgid "Invite a user"
+msgstr "Bjud in en användare"
+
+#: lib/marshall_web/live/admin/users_live.ex:166
+#, elixir-autogen, elixir-format
+msgid "MFA enabled"
+msgstr "Flerfaktorsautentisering aktiverad"
+
+#: lib/marshall_web/live/admin/users_live.ex:167
+#, elixir-autogen, elixir-format
+msgid "MFA not enrolled"
+msgstr "Flerfaktorsautentisering inte registrerad"
+
+#: lib/marshall_web/live/admin/users_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "Make administrator"
+msgstr "Gör till administratör"
+
+#: lib/marshall_web/live/admin/users_live.ex:262
+#, elixir-autogen, elixir-format
+msgid "Next page →"
+msgstr "Nästa sida →"
+
+#: lib/marshall_web/live/admin/users_live.ex:254
+#, elixir-autogen, elixir-format
+msgid "No accounts on this page."
+msgstr "Inga konton på den här sidan."
+
+#: lib/marshall_web/live/admin/users_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
+msgstr "Radera kontot och ALLA dess maskiner permanent, inklusive maskiner som delas med andra?"
+
+#: lib/marshall_web/live/admin/users_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "Remove administrator"
+msgstr "Ta bort administratör"
+
+#: lib/marshall_web/live/admin/users_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "Remove administrator access for this account?"
+msgstr "Ta bort kontots administratörsbehörighet?"
+
+#: lib/marshall_web/live/admin/users_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Reset MFA"
+msgstr "Återställ flerfaktorsautentisering"
+
+#: lib/marshall_web/live/admin/users_live.ex:216
+#, elixir-autogen, elixir-format
+msgid "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
+msgstr "Återställ användarens flerfaktorsautentisering och återkalla alla webbläsarsessioner? Användaren måste registrera en ny passnyckel."
+
+#: lib/marshall_web/live/admin/users_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "Send invitation"
+msgstr "Skicka inbjudan"
+
+#: lib/marshall_web/live/admin/users_live.ex:210
+#, elixir-autogen, elixir-format
+msgid "Sign out everywhere"
+msgstr "Logga ut överallt"
+
+#: lib/marshall_web/live/admin/users_live.ex:208
+#, elixir-autogen, elixir-format
+msgid "Sign this account out of every browser session?"
+msgstr "Logga ut kontot från alla webbläsarsessioner?"
+
+#: lib/marshall_web/live/admin/users_live.ex:234
+#, elixir-autogen, elixir-format
+msgid "Type the email to delete this account and its %{count} machines"
+msgstr "Skriv e-postadressen för att radera kontot och dess %{count} maskiner"
+
+#: lib/marshall_web/live/admin/users_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "User"
+msgstr "Användare"
+
+#: lib/marshall_web/live/admin/users_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr "Användare"
+
+#: lib/marshall_web/live/admin/users_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Verify with passkey · administrative access lasts 15 minutes →"
+msgstr "Verifiera med passnyckel · administrativ åtkomst gäller i 15 minuter →"
+
+#: lib/marshall_web/live/admin/users_live.ex:167
+#, elixir-autogen, elixir-format
+msgid "· Your account"
+msgstr "· Ditt konto"
+
+#: lib/marshall_web/live/admin/users_live.ex:257
+#, elixir-autogen, elixir-format
+msgid "← First page"
+msgstr "← Första sidan"

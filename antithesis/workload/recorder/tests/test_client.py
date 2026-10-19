@@ -178,7 +178,7 @@ class RecorderClientTest(unittest.TestCase):
                     row[0]
                     for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")
                 }
-            self.assertEqual(names, {"attempts", "archive_witness"})
+            self.assertEqual(names, {"attempts", "archive_witness", "sequence_blocks"})
 
 
 if __name__ == "__main__":

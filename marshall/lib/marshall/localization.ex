@@ -41,8 +41,30 @@ defmodule Marshall.Localization do
     locale |> normalize() |> OverallsProtocol.SSHManagement.formatting_locale()
   end
 
+  # @cc [owner:ghuntley,label:product;performance] bounded-cldr-direction-map
+  # Direction MUST come from bundled CLDR for the supported locale allowlist.
+  # The derived map MUST use one fixed cache key and contain only supported tags;
+  # unsupported input MUST select English and MUST NOT become a map key.
   @spec direction(term()) :: direction()
   def direction(locale) do
+    locale = normalize(locale) || default()
+
+    directions =
+      case :persistent_term.get({__MODULE__, :directions}, nil) do
+        nil ->
+          directions = Map.new(@locale_strings, &{&1, cldr_direction(&1)})
+          :persistent_term.put({__MODULE__, :directions}, directions)
+          directions
+
+        directions ->
+          directions
+      end
+
+    Map.fetch!(directions, locale)
+  end
+
+  @spec cldr_direction(locale()) :: direction()
+  defp cldr_direction(locale) do
     with {:ok, tag} <- Localize.LanguageTag.new(formatting_locale(locale)),
          {:ok, direction} when direction in [:rtl, :ltr] <-
            Localize.Locale.get(tag, [:layout, :character_order]) do

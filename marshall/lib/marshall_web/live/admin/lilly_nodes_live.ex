@@ -63,7 +63,11 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
 
       _ ->
         {:noreply,
-         put_flash(socket, :error, gettext("Capacity information is temporarily unavailable."))}
+         put_flash(
+           socket,
+           :error,
+           dgettext("admin_nodes", "Capacity information is temporarily unavailable.")
+         )}
     end
   end
 
@@ -82,14 +86,15 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
              actor: socket.assigns.current_user
            ) do
       {:noreply,
-       put_flash(socket, :info, gettext("Admission settings updated.")) |> refresh(false)}
+       put_flash(socket, :info, dgettext("admin_nodes", "Admission settings updated."))
+       |> refresh(false)}
     else
       _ ->
         {:noreply,
          put_flash(
            socket,
            :error,
-           gettext("Admission settings were invalid or the node is not ready.")
+           dgettext("admin_nodes", "Admission settings were invalid or the node is not ready.")
          )}
     end
   end
@@ -121,7 +126,7 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
         )
       )
     else
-      {:noreply, put_flash(socket, :error, gettext("No active campaign."))}
+      {:noreply, put_flash(socket, :error, dgettext("admin_nodes", "No active campaign."))}
     end
   end
 
@@ -137,18 +142,18 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
 
       respond(socket, result)
     else
-      {:noreply, put_flash(socket, :error, gettext("No active campaign."))}
+      {:noreply, put_flash(socket, :error, dgettext("admin_nodes", "No active campaign."))}
     end
   end
 
   def handle_event(_, _, socket),
-    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+    do: {:noreply, put_flash(socket, :error, dgettext("admin_nodes", "Invalid request."))}
 
   defp respond(socket, {:ok, _}) do
     {:noreply,
      socket
      |> assign(cursor: nil, request_id: Ash.UUID.generate())
-     |> put_flash(:info, gettext("Maintenance updated."))
+     |> put_flash(:info, dgettext("admin_nodes", "Maintenance updated."))
      |> refresh(false)}
   end
 
@@ -158,7 +163,10 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
        socket
        |> put_flash(
          :error,
-         gettext("Could not accept this change. Refresh and check the workload state.")
+         dgettext(
+           "admin_nodes",
+           "Could not accept this change. Refresh and check the workload state."
+         )
        )
        |> refresh(false)}
 
@@ -231,24 +239,25 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
       <section id="admin-lilly-nodes" class="stack">
         <UI.heading
           :if={is_nil(@host_id)}
-          title={gettext("Node maintenance")}
+          title={dgettext("admin_nodes", "Node maintenance")}
           subtitle={
-            gettext(
+            dgettext(
+              "admin_nodes",
               "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
             )
           }
         />
         <p :if={@unavailable?} role="alert" class="error">
-          {gettext("Node information is unavailable.")}
+          {dgettext("admin_nodes", "Node information is unavailable.")}
         </p>
         <div :if={is_nil(@host_id)} class="table-flow">
           <table>
             <thead>
               <tr>
-                <th class="width-auto">{gettext("Node")}</th>
-                <th class="width-min">{gettext("Maintenance")}</th>
-                <th class="width-min">{gettext("Admission")}</th>
-                <th class="width-min">{gettext("Report")}</th>
+                <th class="width-auto">{dgettext("admin_nodes", "Node")}</th>
+                <th class="width-min">{dgettext("admin_nodes", "Maintenance")}</th>
+                <th class="width-min">{dgettext("admin_nodes", "Admission")}</th>
+                <th class="width-min">{dgettext("admin_nodes", "Report")}</th>
               </tr>
             </thead>
             <tbody id="lilly-node-rows" phx-update="stream">
@@ -257,10 +266,16 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                   <.link navigate={~p"/admin/nodes/#{node.id}"}>{node.name}</.link>
                 </td>
                 <td><span class="status-label">{label(node.maintenance_mode)}</span></td>
-                <td>{if node.enabled, do: gettext("Enabled"), else: gettext("Excluded")}</td>
+                <td>
+                  {if node.enabled,
+                    do: dgettext("admin_nodes", "Enabled"),
+                    else: dgettext("admin_nodes", "Excluded")}
+                </td>
                 <td class="nowrap">
                   <span class="status-label" data-tone={if node.fresh, do: "success", else: "muted"}>
-                    {if node.fresh, do: gettext("Fresh"), else: gettext("Stale or unknown")}
+                    {if node.fresh,
+                      do: dgettext("admin_nodes", "Fresh"),
+                      else: dgettext("admin_nodes", "Stale or unknown")}
                   </span>
                 </td>
               </tr>
@@ -268,45 +283,55 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
           </table>
         </div>
         <div :if={@node && @host_id} class="stack">
-          <p><.link navigate={~p"/admin/nodes"}>{gettext("← Nodes")}</.link></p>
+          <p><.link navigate={~p"/admin/nodes"}>{dgettext("admin_nodes", "← Nodes")}</.link></p>
           <header class="page-heading ident">
             <div>
               <h1>{@node.name}</h1>
               <p>
-                {gettext("Lilly node · %{mode} maintenance", mode: label(@node.maintenance_mode))}
+                {dgettext("admin_nodes", "Lilly node · %{mode} maintenance",
+                  mode: label(@node.maintenance_mode)
+                )}
               </p>
             </div>
           </header>
-          <UI.panel id="node-summary" title={gettext("Node")}>
+          <UI.panel id="node-summary" title={dgettext("admin_nodes", "Node")}>
             <.kv>
-              <:item title={gettext("Maintenance")}>
+              <:item title={dgettext("admin_nodes", "Maintenance")}>
                 <span class="status-label">{label(@node.maintenance_mode)}</span>
               </:item>
-              <:item title={gettext("Admission")}>
-                {if @node.enabled, do: gettext("Enabled"), else: gettext("Excluded")}
+              <:item title={dgettext("admin_nodes", "Admission")}>
+                {if @node.enabled,
+                  do: dgettext("admin_nodes", "Enabled"),
+                  else: dgettext("admin_nodes", "Excluded")}
               </:item>
-              <:item title={gettext("Report")}>
-                {if @node.fresh, do: gettext("Fresh report"), else: gettext("Stale or unknown report")}
+              <:item title={dgettext("admin_nodes", "Report")}>
+                {if @node.fresh,
+                  do: dgettext("admin_nodes", "Fresh report"),
+                  else: dgettext("admin_nodes", "Stale or unknown report")}
               </:item>
             </.kv>
             <p id="terminal-stream-health" class="muted">
-              {gettext("Terminal protocol: %{protocol} · Local stream: %{state}",
-                protocol: Map.get(@node, :terminal_protocol, gettext("Unknown")),
+              {dgettext("admin_nodes", "Terminal protocol: %{protocol} · Local stream: %{state}",
+                protocol: Map.get(@node, :terminal_protocol, dgettext("admin_nodes", "Unknown")),
                 state:
-                  if(@node.terminal_stream_ready, do: gettext("ready"), else: gettext("unavailable"))
+                  if(@node.terminal_stream_ready,
+                    do: dgettext("admin_nodes", "ready"),
+                    else: dgettext("admin_nodes", "unavailable")
+                  )
               )}
             </p>
             <p class="muted">
-              {gettext(
+              {dgettext(
+                "admin_nodes",
                 "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
               )}
             </p>
             <div class="row actions">
               <button id="preview-evacuation" phx-click="preview" class="console-button">
-                {gettext("Preview evacuation")}
+                {dgettext("admin_nodes", "Preview evacuation")}
               </button>
               <button id="capacity-details" phx-click="capacity" class="console-button">
-                {gettext("Explain capacity")}
+                {dgettext("admin_nodes", "Explain capacity")}
               </button>
               <button
                 :if={
@@ -316,34 +341,41 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 id="start-evacuation"
                 phx-click="evacuate"
                 data-confirm={
-                  gettext(
+                  dgettext(
+                    "admin_nodes",
                     "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
                   )
                 }
                 class="console-button primary"
-              >{gettext("Start evacuation")}</button>
+              >{dgettext("admin_nodes", "Start evacuation")}</button>
             </div>
           </UI.panel>
           <UI.panel
             :if={@capacity}
             id="capacity-details-panel"
-            title={gettext("Capacity explanation")}
+            title={dgettext("admin_nodes", "Capacity explanation")}
           >
             <p class="muted">
-              {gettext(
+              {dgettext(
+                "admin_nodes",
                 "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
               )}
             </p>
             <.kv>
-              <:item title={gettext("Admission")}>
-                {if @capacity.admission_enabled, do: gettext("enabled"), else: gettext("excluded")}
+              <:item title={dgettext("admin_nodes", "Admission")}>
+                {if @capacity.admission_enabled,
+                  do: dgettext("admin_nodes", "enabled"),
+                  else: dgettext("admin_nodes", "excluded")}
               </:item>
-              <:item title={gettext("Execution ready")}>
-                {if @capacity.execution_ready, do: gettext("yes"), else: gettext("unknown")}
+              <:item title={dgettext("admin_nodes", "Execution ready")}>
+                {if @capacity.execution_ready,
+                  do: dgettext("admin_nodes", "yes"),
+                  else: dgettext("admin_nodes", "unknown")}
               </:item>
             </.kv>
             <p id="admission-overhead" class="muted">
-              {gettext(
+              {dgettext(
+                "admin_nodes",
                 "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled.",
                 cores: @capacity.host.overhead_cores,
                 memory: bytes(@capacity.host.overhead_memory_bytes)
@@ -358,14 +390,14 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
               <div class="grid">
                 <div class="field">
                   <label>
-                    <span class="field-label">{gettext("Admission")}</span>
+                    <span class="field-label">{dgettext("admin_nodes", "Admission")}</span>
                     <span class="select">
                       <select name="enabled">
                         <option value="true" selected={@capacity.admission_enabled}>
-                          {gettext("enabled")}
+                          {dgettext("admin_nodes", "enabled")}
                         </option>
                         <option value="false" selected={not @capacity.admission_enabled}>
-                          {gettext("excluded")}
+                          {dgettext("admin_nodes", "excluded")}
                         </option>
                       </select>
                     </span>
@@ -373,7 +405,7 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 </div>
                 <div class="field">
                   <label>
-                    <span class="field-label">{gettext("CPU overhead (cores)")}</span>
+                    <span class="field-label">{dgettext("admin_nodes", "CPU overhead (cores)")}</span>
                     <input
                       name="overhead_cores"
                       type="number"
@@ -384,7 +416,7 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 </div>
                 <div class="field">
                   <label>
-                    <span class="field-label">{gettext("RAM overhead (bytes)")}</span>
+                    <span class="field-label">{dgettext("admin_nodes", "RAM overhead (bytes)")}</span>
                     <input
                       name="overhead_memory_bytes"
                       type="number"
@@ -395,7 +427,8 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 </div>
               </div>
               <div class="row actions">
-                <button class="console-button primary" type="submit">{gettext(
+                <button class="console-button primary" type="submit">{dgettext(
+                  "admin_nodes",
                   "Apply admission settings"
                 )}</button>
               </div>
@@ -404,22 +437,24 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
               <table>
                 <thead>
                   <tr>
-                    <th class="width-auto">{gettext("Pool")}</th>
-                    <th class="width-min">{gettext("Report")}</th>
-                    <th class="width-min num">{gettext("CPU headroom")}</th>
-                    <th class="width-min num">{gettext("Memory headroom")}</th>
-                    <th class="width-min num">{gettext("CPU after holds")}</th>
-                    <th class="width-min num">{gettext("Memory after holds")}</th>
-                    <th class="width-min num">{gettext("Disk after holds")}</th>
-                    <th class="width-min num">{gettext("Startup holds")}</th>
-                    <th class="width-min num">{gettext("Copy/resize holds")}</th>
+                    <th class="width-auto">{dgettext("admin_nodes", "Pool")}</th>
+                    <th class="width-min">{dgettext("admin_nodes", "Report")}</th>
+                    <th class="width-min num">{dgettext("admin_nodes", "CPU headroom")}</th>
+                    <th class="width-min num">{dgettext("admin_nodes", "Memory headroom")}</th>
+                    <th class="width-min num">{dgettext("admin_nodes", "CPU after holds")}</th>
+                    <th class="width-min num">{dgettext("admin_nodes", "Memory after holds")}</th>
+                    <th class="width-min num">{dgettext("admin_nodes", "Disk after holds")}</th>
+                    <th class="width-min num">{dgettext("admin_nodes", "Startup holds")}</th>
+                    <th class="width-min num">{dgettext("admin_nodes", "Copy/resize holds")}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr :for={pool <- @capacity.pools}>
                     <td><code>{pool.name}</code></td>
                     <td class="muted">
-                      {if pool.fresh, do: gettext("Fresh"), else: gettext("Stale or unknown")}
+                      {if pool.fresh,
+                        do: dgettext("admin_nodes", "Fresh"),
+                        else: dgettext("admin_nodes", "Stale or unknown")}
                     </td>
                     <td class="num">
                       {quantity(pool.budget.measured_cpu_headroom_millicores, "mCPU")}
@@ -439,13 +474,20 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
               </table>
             </div>
           </UI.panel>
-          <UI.panel :if={@campaign} id="evacuation-campaign" title={gettext("Evacuation campaign")}>
+          <UI.panel
+            :if={@campaign}
+            id="evacuation-campaign"
+            title={dgettext("admin_nodes", "Evacuation campaign")}
+          >
             <:actions>
               <span class="status-label">{label(@campaign.status)}</span>
             </:actions>
-            <p class="break muted">{gettext("Campaign")} <code>{@campaign.id}</code></p>
+            <p class="break muted">
+              {dgettext("admin_nodes", "Campaign")} <code>{@campaign.id}</code>
+            </p>
             <p class="muted">
-              {gettext(
+              {dgettext(
+                "admin_nodes",
                 "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
               )}
             </p>
@@ -456,40 +498,44 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 phx-click="control"
                 phx-value-command="pause"
                 class="console-button"
-              >{gettext("Pause scheduling")}</button>
+              >{dgettext("admin_nodes", "Pause scheduling")}</button>
               <button
                 :if={@admin_authorized and @campaign.status == :paused}
                 id="continue-evacuation"
                 phx-click="control"
                 phx-value-command="continue"
                 class="console-button"
-              >{gettext("Continue scheduling")}</button>
+              >{dgettext("admin_nodes", "Continue scheduling")}</button>
               <button
                 :if={@admin_authorized and @campaign.status == :ready}
                 id="resume-node"
                 phx-click="control"
                 phx-value-command="resume"
                 class="console-button"
-              >{gettext("Restore admission")}</button>
+              >{dgettext("admin_nodes", "Restore admission")}</button>
               <button
                 :if={@admin_authorized and @campaign.status == :ready}
                 id="retire-node"
                 phx-click="control"
                 phx-value-command="retire"
                 data-confirm={
-                  gettext("Permanently retire this empty node and revoke its credentials?")
+                  dgettext(
+                    "admin_nodes",
+                    "Permanently retire this empty node and revoke its credentials?"
+                  )
                 }
                 class="console-button danger"
-              >{gettext("Retire node")}</button>
+              >{dgettext("admin_nodes", "Retire node")}</button>
             </div>
           </UI.panel>
           <UI.panel
             :if={@timeline != []}
             id="evacuation-timeline"
-            title={gettext("Evacuation timeline")}
+            title={dgettext("admin_nodes", "Evacuation timeline")}
           >
             <p class="muted">
-              {gettext(
+              {dgettext(
+                "admin_nodes",
                 "Campaign, workload and relocation milestones from durable control-plane records."
               )}
             </p>
@@ -497,9 +543,9 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
               <table>
                 <thead>
                   <tr>
-                    <th class="width-min">{gettext("Time")}</th>
-                    <th class="width-min">{gettext("Event")}</th>
-                    <th class="width-auto">{gettext("Details")}</th>
+                    <th class="width-min">{dgettext("admin_nodes", "Time")}</th>
+                    <th class="width-min">{dgettext("admin_nodes", "Event")}</th>
+                    <th class="width-auto">{dgettext("admin_nodes", "Details")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -507,14 +553,17 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                     <td><.timestamp at={event.at} zone={@time_zone} format={:datetime_seconds} /></td>
                     <td>{label(event.kind)}</td>
                     <td class="muted break">
-                      <span :if={event.vm_id}>{gettext("VM")} <code>{event.vm_id}</code></span>
-                      <span :if={event.relocation_id}>{gettext("move")}
+                      <span :if={event.vm_id}>{dgettext("admin_nodes", "VM")}
+                      <code>{event.vm_id}</code></span>
+                      <span :if={event.relocation_id}>{dgettext("admin_nodes", "move")}
                       <code>{event.relocation_id}</code></span>
-                      <span :if={event[:campaign_id]}>{gettext("campaign")}
+                      <span :if={event[:campaign_id]}>{dgettext("admin_nodes", "campaign")}
                       <code>{event[:campaign_id]}</code></span>
                       <span :if={event.kind == :job_state}>
-                        {gettext("job")} <code>{event.job_id}</code>
-                        · {job_state_label(event.state)} · {gettext("attempt %{attempt}",
+                        {dgettext("admin_nodes", "job")} <code>{event.job_id}</code>
+                        · {job_state_label(event.state)} · {dgettext(
+                          "admin_nodes",
+                          "attempt %{attempt}",
                           attempt: event.attempt
                         )}
                       </span>
@@ -527,16 +576,16 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
           <UI.panel
             :if={@campaign_history != []}
             id="evacuation-campaign-history"
-            title={gettext("Campaign history")}
+            title={dgettext("admin_nodes", "Campaign history")}
           >
             <div class="table-flow">
               <table>
                 <thead>
                   <tr>
-                    <th class="width-auto">{gettext("Campaign")}</th>
-                    <th class="width-min">{gettext("Status")}</th>
-                    <th class="width-min">{gettext("Opened")}</th>
-                    <th class="width-min">{gettext("Closed")}</th>
+                    <th class="width-auto">{dgettext("admin_nodes", "Campaign")}</th>
+                    <th class="width-min">{dgettext("admin_nodes", "Status")}</th>
+                    <th class="width-min">{dgettext("admin_nodes", "Opened")}</th>
+                    <th class="width-min">{dgettext("admin_nodes", "Closed")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -563,7 +612,8 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
             </div>
           </UI.panel>
           <p :if={@preview?} id="evacuation-preview-note" class="panel dashed">
-            {gettext(
+            {dgettext(
+              "admin_nodes",
               "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
             )}
           </p>
@@ -576,39 +626,42 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                 </span>
               </header>
               <p class="muted">
-                {gettext("Desired: %{desired} · Observed: %{observed}",
+                {dgettext("admin_nodes", "Desired: %{desired} · Observed: %{observed}",
                   desired: label(row.desired_state),
                   observed: label(row.observed_state)
                 )}
               </p>
               <p :if={row.item && row.item.blocker} class="error">
-                {gettext("Blocked: %{reason}", reason: label(row.item.blocker))}
+                {dgettext("admin_nodes", "Blocked: %{reason}", reason: label(row.item.blocker))}
               </p>
               <p :if={row.item && row.item.resolved_at}>
-                {gettext("Removed from this source; awaiting campaign cleanup verification.")}
+                {dgettext(
+                  "admin_nodes",
+                  "Removed from this source; awaiting campaign cleanup verification."
+                )}
               </p>
               <div :if={row.progress}>
-                <p>{gettext("Phase: %{phase}", phase: label(row.progress.phase))}</p>
+                <p>{dgettext("admin_nodes", "Phase: %{phase}", phase: label(row.progress.phase))}</p>
                 <p :if={row.progress.downtime}>
                   {if row.progress.downtime.ongoing,
                     do:
-                      gettext("Observed interruption: %{seconds}s (ongoing)",
+                      dgettext("admin_nodes", "Observed interruption: %{seconds}s (ongoing)",
                         seconds: row.progress.downtime.seconds
                       ),
                     else:
-                      gettext("Observed interruption: %{seconds}s",
+                      dgettext("admin_nodes", "Observed interruption: %{seconds}s",
                         seconds: row.progress.downtime.seconds
                       )}
                 </p>
               </div>
               <div :if={row.preview}>
                 <p :if={row.preview[:blocker]}>
-                  {gettext("Preview: %{blocker}", blocker: label(row.preview.blocker))}
+                  {dgettext("admin_nodes", "Preview: %{blocker}", blocker: label(row.preview.blocker))}
                 </p>
                 <p :if={row.preview[:destination_name]}>
-                  {gettext("Candidate: %{name}", name: row.preview.destination_name)}<span :if={
+                  {dgettext("admin_nodes", "Candidate: %{name}", name: row.preview.destination_name)}<span :if={
                     row.preview.downtime_approval_required
-                  }>{gettext("· Downtime approval required")}</span>
+                  }>{dgettext("admin_nodes", "· Downtime approval required")}</span>
                 </p>
               </div>
               <div :if={row.item && is_nil(row.item.resolved_at)} class="row actions">
@@ -623,13 +676,15 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                   phx-value-id={row.item.id}
                   phx-value-key={row.item.request_key}
                   data-confirm={
-                    gettext(
+                    dgettext(
+                      "admin_nodes",
                       "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
                     )
                   }
                   class="console-button"
-                >{gettext("Approve move downtime")}</button>
-                <span :if={row.item.approved_at} class="muted">{gettext(
+                >{dgettext("admin_nodes", "Approve move downtime")}</button>
+                <span :if={row.item.approved_at} class="muted">{dgettext(
+                  "admin_nodes",
                   "Downtime approved for this workload revision"
                 )}</span>
                 <button
@@ -639,19 +694,26 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
                   phx-value-id={row.item.id}
                   phx-value-key={row.item.request_key}
                   data-confirm={
-                    gettext(
+                    dgettext(
+                      "admin_nodes",
                       "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
                     )
                   }
                   class="console-button"
-                >{gettext("Re-plan workload")}</button>
+                >{dgettext("admin_nodes", "Re-plan workload")}</button>
               </div>
             </article>
           </div>
         </div>
-        <nav aria-label={gettext("Maintenance pages")} class="row">
-          <.link :if={@cursor} patch={page_path(@host_id, nil)}>{gettext("← First page")}</.link>
-          <.link :if={@next_cursor} patch={page_path(@host_id, @next_cursor)}>{gettext("Next page →")}</.link>
+        <nav aria-label={dgettext("admin_nodes", "Maintenance pages")} class="row">
+          <.link :if={@cursor} patch={page_path(@host_id, nil)}>{dgettext(
+            "admin_nodes",
+            "← First page"
+          )}</.link>
+          <.link :if={@next_cursor} patch={page_path(@host_id, @next_cursor)}>{dgettext(
+            "admin_nodes",
+            "Next page →"
+          )}</.link>
         </nav>
       </section>
     </Layouts.app>
@@ -663,136 +725,153 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
   defp page_path(host, nil), do: ~p"/admin/nodes/#{host}"
   defp page_path(host, cursor), do: ~p"/admin/nodes/#{host}?#{%{after: cursor}}"
   @spec label(term()) :: String.t()
-  defp label(value) when value in [:normal, "normal"], do: gettext("Normal")
-  defp label(value) when value in [:draining, "draining"], do: gettext("Draining")
-  defp label(value) when value in [:drained, "drained"], do: gettext("Drained")
-  defp label(value) when value in [:evacuating, "evacuating"], do: gettext("Evacuating")
-  defp label(value) when value in [:retired, "retired"], do: gettext("Retired")
-  defp label(value) when value in [:active, "active"], do: gettext("Active")
-  defp label(value) when value in [:paused, "paused"], do: gettext("Paused")
-  defp label(value) when value in [:ready, "ready"], do: gettext("Ready")
-  defp label(value) when value in [:resumed, "resumed"], do: gettext("Resumed")
-  defp label(value) when value in [:running, "running"], do: gettext("Running")
-  defp label(value) when value in [:stopped, "stopped"], do: gettext("Stopped")
-  defp label(value) when value in [:pending, "pending"], do: gettext("Pending")
-  defp label(value) when value in [:failed, "failed"], do: gettext("Failed")
-  defp label(value) when value in [:deleted, "deleted"], do: gettext("Deleted")
-  defp label(value) when value in [:unavailable, "unavailable"], do: gettext("Unavailable")
-  defp label(value) when value in [:unknown, "unknown"], do: gettext("Unknown")
-  defp label(value) when value in [:preparing, "preparing"], do: gettext("Preparing")
+  defp label(value) when value in [:normal, "normal"], do: dgettext("admin_nodes", "Normal")
+  defp label(value) when value in [:draining, "draining"], do: dgettext("admin_nodes", "Draining")
+  defp label(value) when value in [:drained, "drained"], do: dgettext("admin_nodes", "Drained")
+
+  defp label(value) when value in [:evacuating, "evacuating"],
+    do: dgettext("admin_nodes", "Evacuating")
+
+  defp label(value) when value in [:retired, "retired"], do: dgettext("admin_nodes", "Retired")
+  defp label(value) when value in [:active, "active"], do: dgettext("admin_nodes", "Active")
+  defp label(value) when value in [:paused, "paused"], do: dgettext("admin_nodes", "Paused")
+  defp label(value) when value in [:ready, "ready"], do: dgettext("admin_nodes", "Ready")
+  defp label(value) when value in [:resumed, "resumed"], do: dgettext("admin_nodes", "Resumed")
+  defp label(value) when value in [:running, "running"], do: dgettext("admin_nodes", "Running")
+  defp label(value) when value in [:stopped, "stopped"], do: dgettext("admin_nodes", "Stopped")
+  defp label(value) when value in [:pending, "pending"], do: dgettext("admin_nodes", "Pending")
+  defp label(value) when value in [:failed, "failed"], do: dgettext("admin_nodes", "Failed")
+  defp label(value) when value in [:deleted, "deleted"], do: dgettext("admin_nodes", "Deleted")
+
+  defp label(value) when value in [:unavailable, "unavailable"],
+    do: dgettext("admin_nodes", "Unavailable")
+
+  defp label(value) when value in [:unknown, "unknown"], do: dgettext("admin_nodes", "Unknown")
+
+  defp label(value) when value in [:preparing, "preparing"],
+    do: dgettext("admin_nodes", "Preparing")
 
   defp label(value) when value in [:checking_transfer, "checking_transfer"],
-    do: gettext("Checking transfer connectivity")
+    do: dgettext("admin_nodes", "Checking transfer connectivity")
 
   defp label(value) when value in [:stopping_source, "stopping_source"],
-    do: gettext("Stopping the source")
+    do: dgettext("admin_nodes", "Stopping the source")
 
-  defp label(value) when value in [:copying, "copying"], do: gettext("Copying")
-  defp label(value) when value in [:importing, "importing"], do: gettext("Importing")
-  defp label(value) when value in [:handoff, "handoff"], do: gettext("Switching placement")
+  defp label(value) when value in [:copying, "copying"], do: dgettext("admin_nodes", "Copying")
+
+  defp label(value) when value in [:importing, "importing"],
+    do: dgettext("admin_nodes", "Importing")
+
+  defp label(value) when value in [:handoff, "handoff"],
+    do: dgettext("admin_nodes", "Switching placement")
 
   defp label(value) when value in [:checking_destination, "checking_destination"],
-    do: gettext("Checking destination readiness")
+    do: dgettext("admin_nodes", "Checking destination readiness")
 
   defp label(value) when value in [:readiness_failed, "readiness_failed"],
-    do: gettext("Destination readiness failed; source copy retained")
+    do: dgettext("admin_nodes", "Destination readiness failed; source copy retained")
 
   defp label(value) when value in [:activation_failed, "activation_failed"],
-    do: gettext("Destination boot failed; source copy retained")
+    do: dgettext("admin_nodes", "Destination boot failed; source copy retained")
 
   defp label(value) when value in [:retrying_destination, "retrying_destination"],
-    do: gettext("Retrying destination boot")
+    do: dgettext("admin_nodes", "Retrying destination boot")
 
   defp label(value) when value in [:source_cleanup, "source_cleanup"],
-    do: gettext("Cleaning up the source")
+    do: dgettext("admin_nodes", "Cleaning up the source")
 
   defp label(value) when value in [:restoring_source, "restoring_source"],
-    do: gettext("Restoring the source")
+    do: dgettext("admin_nodes", "Restoring the source")
 
   defp label(value) when value in [:cancelled_cleanup, "cancelled_cleanup"],
-    do: gettext("Cleaning up after cancellation")
+    do: dgettext("admin_nodes", "Cleaning up after cancellation")
 
   defp label(value) when value in [:deleting_copies, "deleting_copies"],
-    do: gettext("Deleting retained copies")
+    do: dgettext("admin_nodes", "Deleting retained copies")
 
-  defp label(value) when value in [:complete, "complete"], do: gettext("Complete")
-  defp label(value) when value in [:cancelled, "cancelled"], do: gettext("Cancelled")
+  defp label(value) when value in [:complete, "complete"], do: dgettext("admin_nodes", "Complete")
+
+  defp label(value) when value in [:cancelled, "cancelled"],
+    do: dgettext("admin_nodes", "Cancelled")
 
   defp label(value) when value in [:campaign_requested, "campaign_requested"],
-    do: gettext("Campaign requested")
+    do: dgettext("admin_nodes", "Campaign requested")
 
-  defp label(value) when value in [:source_ready, "source_ready"], do: gettext("Source ready")
+  defp label(value) when value in [:source_ready, "source_ready"],
+    do: dgettext("admin_nodes", "Source ready")
 
   defp label(value) when value in [:campaign_closed, "campaign_closed"],
-    do: gettext("Campaign closed")
+    do: dgettext("admin_nodes", "Campaign closed")
 
   defp label(value) when value in [:relocation_committed, "relocation_committed"],
-    do: gettext("Relocation committed")
+    do: dgettext("admin_nodes", "Relocation committed")
 
   defp label(value) when value in [:source_restored, "source_restored"],
-    do: gettext("Source restored")
+    do: dgettext("admin_nodes", "Source restored")
 
   defp label(value) when value in [:source_cleanup_requested, "source_cleanup_requested"],
-    do: gettext("Source cleanup requested")
+    do: dgettext("admin_nodes", "Source cleanup requested")
 
   defp label(value) when value in [:source_cleanup_confirmed, "source_cleanup_confirmed"],
-    do: gettext("Source cleanup confirmed")
+    do: dgettext("admin_nodes", "Source cleanup confirmed")
 
   defp label(value)
        when value in [:destination_cleanup_requested, "destination_cleanup_requested"],
-       do: gettext("Destination cleanup requested")
+       do: dgettext("admin_nodes", "Destination cleanup requested")
 
   defp label(value)
        when value in [:destination_cleanup_confirmed, "destination_cleanup_confirmed"],
-       do: gettext("Destination cleanup confirmed")
+       do: dgettext("admin_nodes", "Destination cleanup confirmed")
 
   defp label(value) when value in [:cancellation_requested, "cancellation_requested"],
-    do: gettext("Cancellation requested")
+    do: dgettext("admin_nodes", "Cancellation requested")
 
-  defp label(value) when value in [:job_state, "job_state"], do: gettext("Job state")
+  defp label(value) when value in [:job_state, "job_state"],
+    do: dgettext("admin_nodes", "Job state")
 
   defp label(value) when value in [:workload_observed, "workload_observed"],
-    do: gettext("Workload observed")
+    do: dgettext("admin_nodes", "Workload observed")
 
   defp label(value) when value in [:downtime_approved, "downtime_approved"],
-    do: gettext("Downtime approved")
+    do: dgettext("admin_nodes", "Downtime approved")
 
   defp label(value) when value in [:relocation_started, "relocation_started"],
-    do: gettext("Relocation started")
+    do: dgettext("admin_nodes", "Relocation started")
 
   defp label(value) when value in [:workload_resolved, "workload_resolved"],
-    do: gettext("Workload resolved")
+    do: dgettext("admin_nodes", "Workload resolved")
 
   defp label(value) when value in [:workload_changed, "workload_changed"],
-    do: gettext("Workload changed")
+    do: dgettext("admin_nodes", "Workload changed")
 
   defp label(value) when value in [:workload_not_stable, "workload_not_stable"],
-    do: gettext("Workload is not stable")
+    do: dgettext("admin_nodes", "Workload is not stable")
 
   defp label(value) when value in [:source_unavailable, "source_unavailable"],
-    do: gettext("Source unavailable")
+    do: dgettext("admin_nodes", "Source unavailable")
 
-  defp label(value) when value in [:transfer_busy, "transfer_busy"], do: gettext("Transfer busy")
+  defp label(value) when value in [:transfer_busy, "transfer_busy"],
+    do: dgettext("admin_nodes", "Transfer busy")
 
   defp label(value) when value in [:insufficient_capacity, "insufficient_capacity"],
-    do: gettext("Insufficient capacity")
+    do: dgettext("admin_nodes", "Insufficient capacity")
 
   defp label(value) when value in [:downtime_approval_required, "downtime_approval_required"],
-    do: gettext("Downtime approval required")
+    do: dgettext("admin_nodes", "Downtime approval required")
 
   defp label(value) when value in [:resize_in_progress, "resize_in_progress"],
-    do: gettext("Resize in progress")
+    do: dgettext("admin_nodes", "Resize in progress")
 
   defp label(value) when value in [:relocation_in_progress, "relocation_in_progress"],
-    do: gettext("Relocation in progress")
+    do: dgettext("admin_nodes", "Relocation in progress")
 
   defp label(value) when value in [:clone_in_progress, "clone_in_progress"],
-    do: gettext("Clone in progress")
+    do: dgettext("admin_nodes", "Clone in progress")
 
-  defp label(_), do: gettext("Unknown")
-  defp quantity(nil, _), do: gettext("Unknown")
+  defp label(_), do: dgettext("admin_nodes", "Unknown")
+  defp quantity(nil, _), do: dgettext("admin_nodes", "Unknown")
   defp quantity(value, unit), do: "#{value} #{unit}"
-  defp bytes(nil), do: gettext("Unknown")
+  defp bytes(nil), do: dgettext("admin_nodes", "Unknown")
   defp bytes(value), do: "#{Float.round(value / 1_073_741_824, 1)} GiB"
 
   defp nonnegative(value) when is_binary(value) do
@@ -811,13 +890,29 @@ defmodule MarshallWeb.Admin.LillyNodesLive do
   # Timeline job state labels MUST match reviewed Oban display meanings without
   # changing the retained job state identifiers or terminal outcome semantics.
   @spec job_state_label(atom() | String.t()) :: String.t()
-  defp job_state_label(state) when state in [:available, "available"], do: gettext("Queued")
-  defp job_state_label(state) when state in [:suspended, "suspended"], do: gettext("Suspended")
-  defp job_state_label(state) when state in [:scheduled, "scheduled"], do: gettext("Scheduled")
-  defp job_state_label(state) when state in [:executing, "executing"], do: gettext("Running")
-  defp job_state_label(state) when state in [:retryable, "retryable"], do: gettext("Retrying")
-  defp job_state_label(state) when state in [:completed, "completed"], do: gettext("Succeeded")
-  defp job_state_label(state) when state in [:discarded, "discarded"], do: gettext("Failed")
-  defp job_state_label(state) when state in [:cancelled, "cancelled"], do: gettext("Cancelled")
-  defp job_state_label(_), do: gettext("Unknown")
+  defp job_state_label(state) when state in [:available, "available"],
+    do: dgettext("admin_nodes", "Queued")
+
+  defp job_state_label(state) when state in [:suspended, "suspended"],
+    do: dgettext("admin_nodes", "Suspended")
+
+  defp job_state_label(state) when state in [:scheduled, "scheduled"],
+    do: dgettext("admin_nodes", "Scheduled")
+
+  defp job_state_label(state) when state in [:executing, "executing"],
+    do: dgettext("admin_nodes", "Running")
+
+  defp job_state_label(state) when state in [:retryable, "retryable"],
+    do: dgettext("admin_nodes", "Retrying")
+
+  defp job_state_label(state) when state in [:completed, "completed"],
+    do: dgettext("admin_nodes", "Succeeded")
+
+  defp job_state_label(state) when state in [:discarded, "discarded"],
+    do: dgettext("admin_nodes", "Failed")
+
+  defp job_state_label(state) when state in [:cancelled, "cancelled"],
+    do: dgettext("admin_nodes", "Cancelled")
+
+  defp job_state_label(_), do: dgettext("admin_nodes", "Unknown")
 end

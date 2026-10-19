@@ -10,8 +10,10 @@
       data-idle-to={@idle_to}
       aria-live="polite"
     >
-      <h1 class="ident">{gettext("Preparing your repository…")}</h1>
-      <p class="muted">{gettext("Sign in if needed, then Overalls will create your machine.")}</p>
+      <h1 class="ident">{dgettext("machines", "Preparing your repository…")}</h1>
+      <p class="muted">
+        {dgettext("machines", "Sign in if needed, then Overalls will create your machine.")}
+      </p>
       <.form for={%{}} id="repository-launch-capture" action={~p"/launch/pending"} method="post">
         <input type="hidden" name="source" id="repository-launch-source" />
         <input type="hidden" name="visit" id="repository-launch-visit" />
@@ -22,7 +24,7 @@
 <noscript>
   <div class="public-page">
     <p>
-      {gettext("Enable JavaScript to open a repository link, or")} <a href={@idle_to}>{gettext("continue to Overalls")}</a>.
+      {dgettext("machines", "Enable JavaScript to open a repository link, or")} <a href={@idle_to}>{dgettext("machines", "continue to Overalls")}</a>.
     </p>
   </div>
 </noscript>

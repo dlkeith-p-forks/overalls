@@ -1,0 +1,344 @@
+#
+msgid ""
+msgstr ""
+"Language: es\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/access_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Access authority"
+msgstr "Autoridad de acceso"
+
+#: lib/marshall_web/live/admin/access_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Access inventory is temporarily unavailable."
+msgstr "El inventario de acceso no está disponible temporalmente."
+
+#: lib/marshall_web/live/admin/access_live.ex:106
+#: lib/marshall_web/live/admin/access_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "Cuenta"
+
+#: lib/marshall_web/live/admin/access_live.ex:110
+#: lib/marshall_web/live/admin/access_live.ex:156
+#: lib/marshall_web/live/admin/access_live.ex:205
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Acciones"
+
+#: lib/marshall_web/live/admin/access_live.ex:95
+#: lib/marshall_web/live/admin/access_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Active SSH sessions"
+msgstr "Sesiones SSH activas"
+
+#: lib/marshall_web/live/admin/access_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr "Añadido"
+
+#: lib/marshall_web/live_admin_auth.ex:142
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "Los cambios administrativos no están autorizados."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "Los cambios administrativos requieren un administrador."
+
+#: lib/marshall_web/live/admin/access_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "Cerrar sesión"
+
+#: lib/marshall_web/live/admin/access_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "Close this SSH session?"
+msgstr "¿Cerrar esta sesión SSH?"
+
+#: lib/marshall_web/live/admin/access_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Could not close that session."
+msgstr "No se pudo cerrar esa sesión."
+
+#: lib/marshall_web/live/admin/access_live.ex:46
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that VM access."
+msgstr "No se pudo revocar ese acceso a la VM."
+
+#: lib/marshall_web/live/admin/access_live.ex:26
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that key."
+msgstr "No se pudo revocar esa clave."
+
+#: lib/marshall_web/live/admin/access_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "Caduca"
+
+#: lib/marshall_web/live_admin_auth.ex:190
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "Primero finaliza o cancela la verificación actual."
+
+#: lib/marshall_web/live/admin/access_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "Puerta de enlace"
+
+#: lib/marshall_web/live/admin/access_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "Granted"
+msgstr "Concedido"
+
+#: lib/marshall_web/live_admin_auth.ex:205
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "Solicitud administrativa no válida."
+
+#: lib/marshall_web/live/admin/access_live.ex:51
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Solicitud no válida."
+
+#: lib/marshall_web/live/admin/access_live.ex:153
+#: lib/marshall_web/live/admin/access_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "Clave"
+
+#: lib/marshall_web/live/admin/access_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Máquina"
+
+#: lib/marshall_web/live/admin/access_live.ex:246
+#, elixir-autogen, elixir-format
+msgid "Manager"
+msgstr "Gestor"
+
+#: lib/marshall_web/live/admin/access_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "No active keys."
+msgstr "No hay claves activas."
+
+#: lib/marshall_web/live/admin/access_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "No active sessions."
+msgstr "No hay sesiones activas."
+
+#: lib/marshall_web/live/admin/access_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "No machine is shared with another account."
+msgstr "Ninguna máquina está compartida con otra cuenta."
+
+#: lib/marshall_web/live/admin/access_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "Operador"
+
+#: lib/marshall_web/live/admin/access_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "Aprobación de clave pendiente"
+
+#: lib/marshall_web/live/admin/access_live.ex:94
+#: lib/marshall_web/live/admin/access_live.ex:146
+#, elixir-autogen, elixir-format
+msgid "Registered SSH keys"
+msgstr "Claves SSH registradas"
+
+#: lib/marshall_web/live/admin/access_live.ex:138
+#, elixir-autogen, elixir-format
+msgid "Revoke access"
+msgstr "Revocar acceso"
+
+#: lib/marshall_web/live/admin/access_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Revoke key"
+msgstr "Revocar clave"
+
+#: lib/marshall_web/live/admin/access_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Revoke this SSH key and close sessions using it?"
+msgstr "¿Revocar esta clave SSH y cerrar las sesiones que la utilizan?"
+
+#: lib/marshall_web/live/admin/access_live.ex:136
+#, elixir-autogen, elixir-format
+msgid "Revoke this user's VM access?"
+msgstr "¿Revocar el acceso de este usuario a la máquina virtual?"
+
+#: lib/marshall_web/live/admin/access_live.ex:247
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "Revocado"
+
+#: lib/marshall_web/live/admin/access_live.ex:107
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Rol"
+
+#: lib/marshall_web/live/admin/access_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "SSH key"
+msgstr "Clave SSH"
+
+#: lib/marshall_web/live/admin/access_live.ex:25
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked."
+msgstr "Clave SSH revocada."
+
+#: lib/marshall_web/live/admin/access_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "SSH session closed."
+msgstr "Sesión SSH cerrada."
+
+#: lib/marshall_web/live/admin/access_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Shared machine access"
+msgstr "Acceso a máquinas compartidas"
+
+#: lib/marshall_web/live/admin/access_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Shared machine grants"
+msgstr "Permisos de máquinas compartidas"
+
+#: lib/marshall_web/live/admin/access_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: lib/marshall_web/live/admin/access_live.ex:90
+#, elixir-autogen, elixir-format
+msgid "Updated every 15 seconds"
+msgstr "Se actualiza cada 15 segundos"
+
+#: lib/marshall_web/live/admin/access_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "VM access revoked."
+msgstr "Acceso a la máquina virtual revocado."
+
+#: lib/marshall_web/live/admin/access_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Viewer"
+msgstr "Espectador"
+
+#: lib/marshall_web/live/admin/access_live.ex:243
+#, elixir-autogen, elixir-format
+msgid "Web apps"
+msgstr "Aplicaciones web"
+
+#: lib/marshall_web/live/admin/access_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
+msgstr ""
+"Quién puede acceder a cada máquina y mediante qué clave o sesión. Nunca se "
+"muestran claves privadas, tokens de sesión ni credenciales de pasarela."
+
+#: lib/marshall_web/admin_elevation.ex:41
+#, elixir-autogen, elixir-format
+msgid "add this Git mirror"
+msgstr "añadir este espejo de Git"
+
+#: lib/marshall_web/admin_elevation.ex:46
+#, elixir-autogen, elixir-format
+msgid "approve this workload downtime"
+msgstr "aprobar esta interrupción de la carga de trabajo"
+
+#: lib/marshall_web/admin_elevation.ex:33
+#, elixir-autogen, elixir-format
+msgid "change administrator access"
+msgstr "cambiar el acceso de administrador"
+
+#: lib/marshall_web/admin_elevation.ex:45
+#, elixir-autogen, elixir-format
+msgid "change this evacuation"
+msgstr "cambiar esta evacuación"
+
+#: lib/marshall_web/admin_elevation.ex:48
+#, elixir-autogen, elixir-format
+msgid "change this machine's state"
+msgstr "cambiar el estado de esta máquina"
+
+#: lib/marshall_web/admin_elevation.ex:52
+#, elixir-autogen, elixir-format
+msgid "change this node's admission settings"
+msgstr "cambiar la configuración de admisión de este nodo"
+
+#: lib/marshall_web/admin_elevation.ex:36
+#, elixir-autogen, elixir-format
+msgid "close this SSH session"
+msgstr "cerrar esta sesión SSH"
+
+#: lib/marshall_web/admin_elevation.ex:39
+#, elixir-autogen, elixir-format
+msgid "delete this user account"
+msgstr "eliminar esta cuenta de usuario"
+
+#: lib/marshall_web/admin_elevation.ex:49
+#, elixir-autogen, elixir-format
+msgid "move this machine"
+msgstr "trasladar esta máquina"
+
+#: lib/marshall_web/admin_elevation.ex:51
+#, elixir-autogen, elixir-format
+msgid "open this machine with administrator access"
+msgstr "abrir esta máquina con acceso de administrador"
+
+#: lib/marshall_web/admin_elevation.ex:42
+#, elixir-autogen, elixir-format
+msgid "refresh this Git mirror"
+msgstr "actualizar este espejo de Git"
+
+#: lib/marshall_web/admin_elevation.ex:43
+#, elixir-autogen, elixir-format
+msgid "remove this Git mirror"
+msgstr "eliminar este espejo de Git"
+
+#: lib/marshall_web/admin_elevation.ex:47
+#, elixir-autogen, elixir-format
+msgid "replan this workload move"
+msgstr "replanificar el traslado de esta carga de trabajo"
+
+#: lib/marshall_web/admin_elevation.ex:40
+#, elixir-autogen, elixir-format
+msgid "reset this account's passkeys"
+msgstr "restablecer las claves de acceso de esta cuenta"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "retry this background job"
+msgstr "reintentar esta tarea en segundo plano"
+
+#: lib/marshall_web/admin_elevation.ex:35
+#, elixir-autogen, elixir-format
+msgid "revoke this SSH key"
+msgstr "revocar esta clave SSH"
+
+#: lib/marshall_web/admin_elevation.ex:37
+#, elixir-autogen, elixir-format
+msgid "revoke this VM access"
+msgstr "revocar este acceso a la máquina virtual"
+
+#: lib/marshall_web/admin_elevation.ex:50
+#, elixir-autogen, elixir-format
+msgid "rotate the fleet certificate"
+msgstr "rotar el certificado de la flota"
+
+#: lib/marshall_web/admin_elevation.ex:38
+#, elixir-autogen, elixir-format
+msgid "send this invitation"
+msgstr "enviar esta invitación"
+
+#: lib/marshall_web/admin_elevation.ex:34
+#, elixir-autogen, elixir-format
+msgid "sign this account out everywhere"
+msgstr "cerrar todas las sesiones de esta cuenta"
+
+#: lib/marshall_web/admin_elevation.ex:44
+#, elixir-autogen, elixir-format
+msgid "start this node evacuation"
+msgstr "iniciar la evacuación de este nodo"

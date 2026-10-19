@@ -1,5 +1,7 @@
 # Architecture reviews
 
+- [Localization feature catalogs (2026-10-19)](2026-10-19-localization-feature-catalogs.md): native per-locale/per-feature catalogs and the source-English handbook boundary under ADR-0201; migration and verification evidence remain separately scoped.
+
 - [Overview newsletter (2026-10-18)](2026-10-18-overview-newsletter.md): ADR-0205's account-wide durable invitation, self-only dismissal and server-side Ghost subscription boundary; test presence is distinguished from external delivery and packaged browser acceptance.
 - [Guest reflection (2026-10-18)](2026-10-18-guest-reflection.md): ADR-0203's secret-free, execution-fenced Peach projection; protocol and credential tests are present while successful HTTP/native guest execution and fleet enablement remain open.
 - [GitHub.com owner integration (2026-10-18)](2026-10-18-github-com-integration.md): ADR-0202's owner-bound OAuth custody and managed guest route; source and focused tests are recorded while live provider and native rollout remain open.

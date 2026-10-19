@@ -1,0 +1,267 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ta\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/teams_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "%{count} member"
+msgid_plural "%{count} members"
+msgstr[0] "%{count} உறுப்பினர்"
+msgstr[1] "%{count} உறுப்பினர்கள்"
+
+#: lib/marshall_web/live/teams_live.ex:270
+#, elixir-autogen, elixir-format
+msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
+msgstr "ஒரு அணிக்கு ஒரு உரிமையாளர். வழங்கப்பட்டவர் ஏற்றுக்கொண்டாலே உரிமை மாறும்; முந்தைய உரிமையாளர் நிர்வாகியாகிறார்."
+
+#: lib/marshall_web/live/teams_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Accept ownership"
+msgstr "உரிமையை ஏற்கவும்"
+
+#: lib/marshall_web/live/teams_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Add, change or remove a member"
+msgstr "உறுப்பினரைச் சேர்க்கவும், மாற்றவும் அல்லது அகற்றவும்"
+
+#: lib/marshall_web/live/teams_live.ex:257
+#, elixir-autogen, elixir-format
+msgid "Admin"
+msgstr "நிர்வாகி"
+
+#: lib/marshall_web/live/teams_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "Administrator"
+msgstr "நிர்வாகி"
+
+#: lib/marshall_web/live/teams_live.ex:218
+#, elixir-autogen, elixir-format
+msgid "Can"
+msgstr "செய்ய முடியும்"
+
+#: lib/marshall_web/live/teams_live.ex:347
+#, elixir-autogen, elixir-format
+msgid "Cancel offer"
+msgstr "சலுகையை ரத்துசெய்"
+
+#: lib/marshall_web/live/teams_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Could not create this team."
+msgstr "இந்தக் குழுவை உருவாக்க முடியவில்லை."
+
+#: lib/marshall_web/live/teams_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Could not offer ownership."
+msgstr "உரிமையை வழங்க முன்வர முடியவில்லை."
+
+#: lib/marshall_web/live/teams_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Could not update this membership."
+msgstr "இந்த உறுப்பினர் நிலையைப் புதுப்பிக்க முடியவில்லை."
+
+#: lib/marshall_web/live/teams_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Could not update this ownership offer."
+msgstr "இந்த உரிமை வழங்கல் முன்மொழிவைப் புதுப்பிக்க முடியவில்லை."
+
+#: lib/marshall_web/live/teams_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Create a team"
+msgstr "ஒரு குழுவை உருவாக்கு"
+
+#: lib/marshall_web/live/teams_live.ex:362
+#, elixir-autogen, elixir-format
+msgid "Create team"
+msgstr "குழுவை உருவாக்கு"
+
+#: lib/marshall_web/live/teams_live.ex:337
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "மறு"
+
+#: lib/marshall_web/live/teams_live.ex:377
+#, elixir-autogen, elixir-format
+msgid "Everything, including appointing admins and offering ownership."
+msgstr "நிர்வாகிகளை நியமித்தல் மற்றும் உரிமையை வழங்க முன்வருதல் உட்பட அனைத்தும்."
+
+#: lib/marshall_web/live/teams_live.ex:44
+#: lib/marshall_web/live/teams_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "செல்லாத கோரிக்கை."
+
+#: lib/marshall_web/live/teams_live.ex:379
+#, elixir-autogen, elixir-format
+msgid "Manage members and team machines."
+msgstr "உறுப்பினர்களையும் குழு இயந்திரங்களையும் நிர்வகிக்கவும்."
+
+#: lib/marshall_web/live/teams_live.ex:216
+#: lib/marshall_web/live/teams_live.ex:258
+#: lib/marshall_web/live/teams_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "Member"
+msgstr "உறுப்பினர்"
+
+#: lib/marshall_web/live/teams_live.ex:211
+#, elixir-autogen, elixir-format
+msgid "Members"
+msgstr "உறுப்பினர்கள்"
+
+#: lib/marshall_web/live/teams_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Membership updated."
+msgstr "உறுப்பினர் நிலை புதுப்பிக்கப்பட்டது."
+
+#: lib/marshall_web/live/teams_live.ex:352
+#, elixir-autogen, elixir-format
+msgid "No pending ownership offer."
+msgstr "நிலுவையிலுள்ள உரிமை முன்மொழிவு இல்லை."
+
+#: lib/marshall_web/live/teams_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Offer ownership"
+msgstr "உரிமையை வழங்க முன்வா"
+
+#: lib/marshall_web/live/teams_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "Offer ownership to"
+msgstr "இவருக்கு உரிமையை வழங்க முன்வா"
+
+#: lib/marshall_web/live/teams_live.ex:290
+#, elixir-autogen, elixir-format
+msgid "Offered by"
+msgstr "முன்வந்தவர்"
+
+#: lib/marshall_web/live/teams_live.ex:299
+#, elixir-autogen, elixir-format
+msgid "Offered to"
+msgstr "பெறுபவர்"
+
+#: lib/marshall_web/live/teams_live.ex:371
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "உரிமையாளர்"
+
+#: lib/marshall_web/live/teams_live.ex:268
+#, elixir-autogen, elixir-format
+msgid "Ownership"
+msgstr "உரிமை"
+
+#: lib/marshall_web/live/teams_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Ownership offer sent."
+msgstr "உரிமை முன்மொழிவு அனுப்பப்பட்டது."
+
+#: lib/marshall_web/live/teams_live.ex:107
+#, elixir-autogen, elixir-format
+msgid "Ownership offer updated."
+msgstr "உரிமை முன்மொழிவு புதுப்பிக்கப்பட்டது."
+
+#: lib/marshall_web/live/teams_live.ex:313
+#, elixir-autogen, elixir-format
+msgid "Ownership offered by %{value1} to %{value2}."
+msgstr "%{value1}, %{value2}-க்கு உரிமையை வழங்க முன்வந்தார்."
+
+#: lib/marshall_web/live/teams_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Registered email"
+msgstr "பதிவுசெய்த மின்னஞ்சல்"
+
+#: lib/marshall_web/live/teams_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "நீக்கு"
+
+#: lib/marshall_web/live/teams_live.ex:217
+#: lib/marshall_web/live/teams_live.ex:254
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "பங்கு"
+
+#: lib/marshall_web/live/teams_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Save member"
+msgstr "உறுப்பினரைச் சேமி"
+
+#: lib/marshall_web/live/teams_live.ex:180
+#, elixir-autogen, elixir-format
+msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
+msgstr "உங்களுடன் பணியாற்றுபவர்களுடன் இயந்திரங்களையும் ஒருங்கிணைப்புகளையும் பகிரவும். உரிமையாளர்கள் நிர்வாகிகளை நியமிப்பார்கள்; நிர்வாகிகள் உறுப்பினர்களை நிர்வகிப்பார்கள்."
+
+#: lib/marshall_web/live/teams_live.ex:308
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "நிலைமை"
+
+#: lib/marshall_web/live/teams_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Team %{value1} created."
+msgstr "%{value1} குழு உருவாக்கப்பட்டது."
+
+#: lib/marshall_web/live/teams_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "Team name"
+msgstr "குழுப் பெயர்"
+
+#: lib/marshall_web/live/teams_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "Teams"
+msgstr "குழுக்கள்"
+
+#: lib/marshall_web/live/teams_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Teams are temporarily unavailable."
+msgstr "குழுக்கள் தற்காலிகமாகக் கிடைக்கவில்லை."
+
+#: lib/marshall_web/live/teams_live.ex:380
+#, elixir-autogen, elixir-format
+msgid "Use team machines and integrations."
+msgstr "குழு இயந்திரங்களையும் ஒருங்கிணைப்புகளையும் பயன்படுத்தவும்."
+
+#: lib/marshall_web/live/teams_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
+msgstr "நீங்கள் இன்னும் குழுவில் இல்லை. கீழே ஒன்றை உருவாக்கவும் அல்லது உங்களைச் சேர்க்கக் குழு நிர்வாகியிடம் கேட்கவும்."
+
+#: lib/marshall_web/live/teams_live.ex:359
+#, elixir-autogen, elixir-format
+msgid "You become its owner and can add members straight away."
+msgstr "நீங்கள் அதன் உரிமையாளராகி உடனே உறுப்பினர்களைச் சேர்க்கலாம்."
+
+#: lib/marshall_web/live/teams_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Your role: %{role}"
+msgstr "உங்கள் பங்கு: %{role}"
+
+#: lib/marshall_web/live/teams_live.ex:189
+#, elixir-autogen, elixir-format
+msgid "Your teams"
+msgstr "உங்கள் குழுக்கள்"
+
+#: lib/marshall_web/live/teams_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "pending"
+msgstr "நிலுவையில்"
+
+#: lib/marshall_web/live/teams_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "platform"
+msgstr "தளம்"
+
+#: lib/marshall_web/live/teams_live.ex:250
+#: lib/marshall_web/live/teams_live.ex:284
+#, elixir-autogen, elixir-format
+msgid "teammate@example.test"
+msgstr "teammate@example.test"

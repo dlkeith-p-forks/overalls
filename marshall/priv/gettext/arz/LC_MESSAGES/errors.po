@@ -23,137 +23,353 @@ msgstr ""
 ## effect: edit them in PO (`.po`) files instead.
 ## From Ecto.Changeset.cast/4
 msgid "can't be blank"
-msgstr ""
+msgstr "ما ينفعش تركه فارغًا"
 
 ## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr ""
+msgstr "مستخدم بالفعل"
 
 ## From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr ""
+msgstr "غير صالح"
 
 ## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
-msgstr ""
+msgstr "لازم يتقبل"
 
 ## From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr ""
+msgstr "تنسيقه غير صالح"
 
 ## From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr ""
+msgstr "يحتوي على إدخال غير صالح"
 
 ## From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr ""
+msgstr "محجوز"
 
 ## From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr ""
+msgstr "مش مطابق للتأكيد"
 
 ## From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "لسه مرتبط بالسجل ده"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "لسه مرتبطة بالسجل ده"
 
 ## From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لازم يحتوي على %{count} عنصر"
+msgstr[1] "لازم يحتوي على %{count} عنصر"
+msgstr[2] "لازم يحتوي على %{count} عنصر"
+msgstr[3] "لازم يحتوي على %{count} عناصر"
+msgstr[4] "لازم يحتوي على %{count} عنصر"
+msgstr[5] "لازم يحتوي على %{count} عنصر"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لازم يكون %{count} حرف"
+msgstr[1] "لازم يكون %{count} حرف"
+msgstr[2] "لازم يكون %{count} حرف"
+msgstr[3] "لازم يكون %{count} حروف"
+msgstr[4] "لازم يكون %{count} حرف"
+msgstr[5] "لازم يكون %{count} حرف"
 
 msgid "should be %{count} byte(s)"
 msgid_plural "should be %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لازم يكون حجمه %{count} بايت"
+msgstr[1] "لازم يكون حجمه %{count} بايت"
+msgstr[2] "لازم يكون حجمه %{count} بايت"
+msgstr[3] "لازم يكون حجمه %{count} بايت"
+msgstr[4] "لازم يكون حجمه %{count} بايت"
+msgstr[5] "لازم يكون حجمه %{count} بايت"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لازم يحتوي على %{count} عنصر على الأقل"
+msgstr[1] "لازم يحتوي على %{count} عنصر على الأقل"
+msgstr[2] "لازم يحتوي على %{count} عنصر على الأقل"
+msgstr[3] "لازم يحتوي على %{count} عناصر على الأقل"
+msgstr[4] "لازم يحتوي على %{count} عنصر على الأقل"
+msgstr[5] "لازم يحتوي على %{count} عنصر على الأقل"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لازم يكون %{count} حرف على الأقل"
+msgstr[1] "لازم يكون %{count} حرف على الأقل"
+msgstr[2] "لازم يكون %{count} حرف على الأقل"
+msgstr[3] "لازم يكون %{count} حروف على الأقل"
+msgstr[4] "لازم يكون %{count} حرف على الأقل"
+msgstr[5] "لازم يكون %{count} حرف على الأقل"
 
 msgid "should be at least %{count} byte(s)"
 msgid_plural "should be at least %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لازم يكون حجمه %{count} بايت على الأقل"
+msgstr[1] "لازم يكون حجمه %{count} بايت على الأقل"
+msgstr[2] "لازم يكون حجمه %{count} بايت على الأقل"
+msgstr[3] "لازم يكون حجمه %{count} بايت على الأقل"
+msgstr[4] "لازم يكون حجمه %{count} بايت على الأقل"
+msgstr[5] "لازم يكون حجمه %{count} بايت على الأقل"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لازم يحتوي على %{count} عنصر بالكتير"
+msgstr[1] "لازم يحتوي على %{count} عنصر بالكتير"
+msgstr[2] "لازم يحتوي على %{count} عنصر بالكتير"
+msgstr[3] "لازم يحتوي على %{count} عناصر بالكتير"
+msgstr[4] "لازم يحتوي على %{count} عنصر بالكتير"
+msgstr[5] "لازم يحتوي على %{count} عنصر بالكتير"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لازم يكون %{count} حرف بالكتير"
+msgstr[1] "لازم يكون %{count} حرف بالكتير"
+msgstr[2] "لازم يكون %{count} حرف بالكتير"
+msgstr[3] "لازم يكون %{count} حروف بالكتير"
+msgstr[4] "لازم يكون %{count} حرف بالكتير"
+msgstr[5] "لازم يكون %{count} حرف بالكتير"
 
 msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لازم يكون حجمه %{count} بايت بالكتير"
+msgstr[1] "لازم يكون حجمه %{count} بايت بالكتير"
+msgstr[2] "لازم يكون حجمه %{count} بايت بالكتير"
+msgstr[3] "لازم يكون حجمه %{count} بايت بالكتير"
+msgstr[4] "لازم يكون حجمه %{count} بايت بالكتير"
+msgstr[5] "لازم يكون حجمه %{count} بايت بالكتير"
 
 ## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "لازم يكون أقل من %{number}"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "لازم يكون أكبر من %{number}"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "لازم يكون أقل من أو يساوي %{number}"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "لازم يكون أكبر من أو يساوي %{number}"
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "لازم يساوي %{number}"
+
+#: lib/marshall_web/controllers/error_html.ex:52
+#, elixir-autogen, elixir-format
+msgid "Back to Overalls"
+msgstr "العودة إلى Overalls"
+
+#: lib/marshall_web/controllers/error_html.ex:45
+#, elixir-autogen, elixir-format
+msgid "Overalls is briefly unavailable. This page will retry automatically."
+msgstr "Overalls مش متاح لفترة قصيرة. الصفحة هتجرّب تاني تلقائيًا."
+
+#: lib/marshall_web/controllers/error_html.ex:48
+#, elixir-autogen, elixir-format
+msgid "We couldn’t open this page. Head back to your workspace, or try again in a moment."
+msgstr "ما قدرناش نفتح الصفحة. عد إلى مساحة عملك أو جرّب تاني بعد قليل."
+
+#: lib/marshall_web/controllers/error_html.ex:103
+#, elixir-autogen, elixir-format
+msgid "Bad Gateway"
+msgstr "خطأ في البوابة"
+
+#: lib/marshall_web/controllers/error_html.ex:72
+#, elixir-autogen, elixir-format
+msgid "Bad Request"
+msgstr "الطلب مش صالح"
+
+#: lib/marshall_web/controllers/error_html.ex:81
+#, elixir-autogen, elixir-format
+msgid "Conflict"
+msgstr "تعارض في الطلب"
+
+#: lib/marshall_web/controllers/error_html.ex:89
+#, elixir-autogen, elixir-format
+msgid "Expectation Failed"
+msgstr "توقّعات الطلب ما اتحققتش"
+
+#: lib/marshall_web/controllers/error_html.ex:94
+#, elixir-autogen, elixir-format
+msgid "Failed Dependency"
+msgstr "اعتماد مطلوب فشل"
+
+#: lib/marshall_web/controllers/error_html.ex:75
+#, elixir-autogen, elixir-format
+msgid "Forbidden"
+msgstr "الوصول ممنوع"
+
+#: lib/marshall_web/controllers/error_html.ex:105
+#, elixir-autogen, elixir-format
+msgid "Gateway Timeout"
+msgstr "مهلة البوابة انتهت"
+
+#: lib/marshall_web/controllers/error_html.ex:82
+#, elixir-autogen, elixir-format
+msgid "Gone"
+msgstr "المورد اتشال"
+
+#: lib/marshall_web/controllers/error_html.ex:106
+#, elixir-autogen, elixir-format
+msgid "HTTP Version Not Supported"
+msgstr "إصدار HTTP مش مدعوم"
+
+#: lib/marshall_web/controllers/error_html.ex:90
+#, elixir-autogen, elixir-format
+msgid "I'm a teapot"
+msgstr "أنا برّاد شاي"
+
+#: lib/marshall_web/controllers/error_html.ex:108
+#, elixir-autogen, elixir-format
+msgid "Insufficient Storage"
+msgstr "مساحة التخزين مش كفاية"
+
+#: lib/marshall_web/controllers/error_html.ex:101
+#: lib/marshall_web/controllers/error_html.ex:112
+#, elixir-autogen, elixir-format
+msgid "Internal Server Error"
+msgstr "خطأ داخلي في الخادم"
+
+#: lib/marshall_web/controllers/error_html.ex:83
+#, elixir-autogen, elixir-format
+msgid "Length Required"
+msgstr "طول المحتوى مطلوب"
+
+#: lib/marshall_web/controllers/error_html.ex:93
+#, elixir-autogen, elixir-format
+msgid "Locked"
+msgstr "المورد مقفول"
+
+#: lib/marshall_web/controllers/error_html.ex:109
+#, elixir-autogen, elixir-format
+msgid "Loop Detected"
+msgstr "اكتشفنا حلقة متكرّرة"
+
+#: lib/marshall_web/controllers/error_html.ex:77
+#, elixir-autogen, elixir-format
+msgid "Method Not Allowed"
+msgstr "طريقة الطلب مش مسموحة"
+
+#: lib/marshall_web/controllers/error_html.ex:91
+#, elixir-autogen, elixir-format
+msgid "Misdirected Request"
+msgstr "الطلب اتوجّه للمكان الغلط"
+
+#: lib/marshall_web/controllers/error_html.ex:111
+#, elixir-autogen, elixir-format
+msgid "Network Authentication Required"
+msgstr "تسجيل الدخول للشبكة مطلوب"
+
+#: lib/marshall_web/controllers/error_html.ex:78
+#, elixir-autogen, elixir-format
+msgid "Not Acceptable"
+msgstr "صيغة الرد مش مقبولة"
+
+#: lib/marshall_web/controllers/error_html.ex:110
+#, elixir-autogen, elixir-format
+msgid "Not Extended"
+msgstr "الامتداد المطلوب مش متاح"
+
+#: lib/marshall_web/controllers/error_html.ex:76
+#, elixir-autogen, elixir-format
+msgid "Not Found"
+msgstr "مش موجود"
+
+#: lib/marshall_web/controllers/error_html.ex:102
+#, elixir-autogen, elixir-format
+msgid "Not Implemented"
+msgstr "الوظيفة لسه مش متنفّذة"
+
+#: lib/marshall_web/controllers/error_html.ex:74
+#, elixir-autogen, elixir-format
+msgid "Payment Required"
+msgstr "الدفع مطلوب"
+
+#: lib/marshall_web/controllers/error_html.ex:84
+#, elixir-autogen, elixir-format
+msgid "Precondition Failed"
+msgstr "الشرط المسبق ما اتحققش"
+
+#: lib/marshall_web/controllers/error_html.ex:97
+#, elixir-autogen, elixir-format
+msgid "Precondition Required"
+msgstr "شرط مسبق مطلوب"
+
+#: lib/marshall_web/controllers/error_html.ex:79
+#, elixir-autogen, elixir-format
+msgid "Proxy Authentication Required"
+msgstr "تسجيل الدخول للوكيل مطلوب"
+
+#: lib/marshall_web/controllers/error_html.ex:85
+#, elixir-autogen, elixir-format
+msgid "Request Entity Too Large"
+msgstr "محتوى الطلب أكبر من المسموح"
+
+#: lib/marshall_web/controllers/error_html.ex:99
+#, elixir-autogen, elixir-format
+msgid "Request Header Fields Too Large"
+msgstr "حقول ترويسة الطلب أكبر من المسموح"
+
+#: lib/marshall_web/controllers/error_html.ex:80
+#, elixir-autogen, elixir-format
+msgid "Request Timeout"
+msgstr "مهلة الطلب انتهت"
+
+#: lib/marshall_web/controllers/error_html.ex:86
+#, elixir-autogen, elixir-format
+msgid "Request-URI Too Long"
+msgstr "عنوان الطلب أطول من المسموح"
+
+#: lib/marshall_web/controllers/error_html.ex:88
+#, elixir-autogen, elixir-format
+msgid "Requested Range Not Satisfiable"
+msgstr "نطاق البيانات المطلوب مش متاح"
+
+#: lib/marshall_web/controllers/error_html.ex:104
+#, elixir-autogen, elixir-format
+msgid "Service Unavailable"
+msgstr "الخدمة مش متاحة"
+
+#: lib/marshall_web/controllers/error_html.ex:95
+#, elixir-autogen, elixir-format
+msgid "Too Early"
+msgstr "الطلب اتبعت بدري"
+
+#: lib/marshall_web/controllers/error_html.ex:98
+#, elixir-autogen, elixir-format
+msgid "Too Many Requests"
+msgstr "طلبات أكتر من المسموح"
+
+#: lib/marshall_web/controllers/error_html.ex:73
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "تسجيل الدخول مطلوب"
+
+#: lib/marshall_web/controllers/error_html.ex:100
+#, elixir-autogen, elixir-format
+msgid "Unavailable For Legal Reasons"
+msgstr "مش متاح لأسباب قانونية"
+
+#: lib/marshall_web/controllers/error_html.ex:92
+#, elixir-autogen, elixir-format
+msgid "Unprocessable Content"
+msgstr "مش قادرين نعالج المحتوى"
+
+#: lib/marshall_web/controllers/error_html.ex:87
+#, elixir-autogen, elixir-format
+msgid "Unsupported Media Type"
+msgstr "نوع المحتوى مش مدعوم"
+
+#: lib/marshall_web/controllers/error_html.ex:96
+#, elixir-autogen, elixir-format
+msgid "Upgrade Required"
+msgstr "الترقية مطلوبة"
+
+#: lib/marshall_web/controllers/error_html.ex:107
+#, elixir-autogen, elixir-format
+msgid "Variant Also Negotiates"
+msgstr "تعارض في تفاوض بدائل المحتوى"
