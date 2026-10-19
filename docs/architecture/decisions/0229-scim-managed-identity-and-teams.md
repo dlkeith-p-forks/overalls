@@ -52,11 +52,12 @@ magic-link fencing, team retirement and localized rendering.
 
 ## Implementation evidence
 
-Initial resource, endpoint, digest-authentication, lifecycle fields, team
-retirement fence and control-room route are implemented in
+Resource, endpoint, digest-authentication, lifecycle fields, team retirement
+fence, OIDC browser flow, attached-resource cleanup, archive projections, and
+control-room route are implemented in
 [Marshall.Scim](../../../marshall/lib/marshall/scim.ex); durable
-resource cleanup, complete Group synchronization, OIDC registration and native
-NixOS execution remain partial.
+database-backed execution and native NixOS execution remain partial because
+those environments were unavailable during verification.
 
 ## Open questions
 
