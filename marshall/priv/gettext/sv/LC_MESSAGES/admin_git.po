@@ -1,0 +1,259 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: sv\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/git_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "Åtgärd"
+
+#: lib/marshall_web/live/admin/git_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Åtgärder"
+
+#: lib/marshall_web/live/admin/git_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Add a mirror"
+msgstr "Lägg till en spegel"
+
+#: lib/marshall_web/live/admin/git_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Add mirror"
+msgstr "Lägg till spegel"
+
+#: lib/marshall_web/live/admin/git_live.ex:23
+#, elixir-autogen, elixir-format
+msgid "Could not register repository. Verify your passkey and labels."
+msgstr "Arkivet kunde inte registreras. Verifiera din passnyckel och kontrollera etiketterna."
+
+#: lib/marshall_web/live/admin/git_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Misslyckad"
+
+#: lib/marshall_web/live/admin/git_live.ex:69
+#, elixir-autogen, elixir-format
+msgid "Git mirrors"
+msgstr "Git-speglar"
+
+#: lib/marshall_web/live/admin/git_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "Git operation failed"
+msgstr "Git-åtgärden misslyckades"
+
+#: lib/marshall_web/live/admin/git_live.ex:81
+#, elixir-autogen, elixir-format
+msgid "GitHub organization"
+msgstr "GitHub-organisation"
+
+#: lib/marshall_web/live/admin/git_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Identifiers"
+msgstr "Identifierare"
+
+#: lib/marshall_web/live/admin/git_live.ex:96
+#, elixir-autogen, elixir-format
+msgid "Mirrors"
+msgstr "Speglar"
+
+#: lib/marshall_web/live/admin/git_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "No mirror events recorded."
+msgstr "Inga spegelhändelser har registrerats."
+
+#: lib/marshall_web/live/admin/git_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "No repositories are mirrored yet."
+msgstr "Inga arkiv har speglats ännu."
+
+#: lib/marshall_web/live/admin/git_live.ex:171
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Väntar"
+
+#: lib/marshall_web/live/admin/git_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Phase"
+msgstr "Fas"
+
+#: lib/marshall_web/live/admin/git_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Public GitHub repositories mirrored for machines. Mirrors refresh hourly; changes require recent passkey verification."
+msgstr "Offentliga GitHub-arkiv som speglas för maskiner. Speglarna uppdateras varje timme; ändringar kräver en nyligen verifierad passnyckel."
+
+#: lib/marshall_web/live/admin/git_live.ex:173
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "Redo"
+
+#: lib/marshall_web/live/admin/git_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "Reason"
+msgstr "Orsak"
+
+#: lib/marshall_web/live/admin/git_live.ex:133
+#, elixir-autogen, elixir-format
+msgid "Recent mirror audit"
+msgstr "Senaste spegelgranskning"
+
+#: lib/marshall_web/live/admin/git_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Refresh"
+msgstr "Uppdatera"
+
+#: lib/marshall_web/live/admin/git_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Refresh already in progress."
+msgstr "Uppdatering pågår redan."
+
+#: lib/marshall_web/live/admin/git_live.ex:37
+#, elixir-autogen, elixir-format
+msgid "Refresh could not be queued."
+msgstr "Uppdateringen kunde inte köas."
+
+#: lib/marshall_web/live/admin/git_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Refresh failed"
+msgstr "Uppdateringen misslyckades"
+
+#: lib/marshall_web/live/admin/git_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Refresh queued."
+msgstr "Uppdateringen har köats."
+
+#: lib/marshall_web/live/admin/git_live.ex:183
+#, elixir-autogen, elixir-format
+msgid "Refresh requested"
+msgstr "Uppdatering begärd"
+
+#: lib/marshall_web/live/admin/git_live.ex:184
+#, elixir-autogen, elixir-format
+msgid "Refresh succeeded"
+msgstr "Uppdateringen lyckades"
+
+#: lib/marshall_web/live/admin/git_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Refreshing"
+msgstr "Uppdaterar"
+
+#: lib/marshall_web/live/admin/git_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "Registrerad"
+
+#: lib/marshall_web/live/admin/git_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "Removal queued."
+msgstr "Borttagningen har köats."
+
+#: lib/marshall_web/live/admin/git_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "Removal requested"
+msgstr "Borttagning begärd"
+
+#: lib/marshall_web/live/admin/git_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Ta bort"
+
+#: lib/marshall_web/live/admin/git_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Remove mirror?"
+msgstr "Ta bort spegeln?"
+
+#: lib/marshall_web/live/admin/git_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Removed"
+msgstr "Borttagen"
+
+#: lib/marshall_web/live/admin/git_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Removing"
+msgstr "Tar bort"
+
+#: lib/marshall_web/live/admin/git_live.ex:87
+#: lib/marshall_web/live/admin/git_live.ex:102
+#, elixir-autogen, elixir-format
+msgid "Repository"
+msgstr "Arkiv"
+
+#: lib/marshall_web/live/admin/git_live.ex:44
+#, elixir-autogen, elixir-format
+msgid "Repository could not be removed."
+msgstr "Arkivet kunde inte tas bort."
+
+#: lib/marshall_web/live/admin/git_live.ex:16
+#, elixir-autogen, elixir-format
+msgid "Repository registered."
+msgstr "Arkivet har registrerats."
+
+#: lib/marshall_web/live/admin/git_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Service unavailable"
+msgstr "Tjänsten är inte tillgänglig"
+
+#: lib/marshall_web/live/admin/git_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "TLS verification failed"
+msgstr "TLS-verifieringen misslyckades"
+
+#: lib/marshall_web/live/admin/git_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Timed out"
+msgstr "Tidsgränsen överskreds"
+
+#: lib/marshall_web/live/admin/git_live.ex:194
+#, elixir-autogen, elixir-format
+msgid "Unauthorized"
+msgstr "Inte behörig"
+
+#: lib/marshall_web/live/admin/git_live.ex:176
+#: lib/marshall_web/live/admin/git_live.ex:188
+#: lib/marshall_web/live/admin/git_live.ex:197
+#: lib/marshall_web/live/admin/git_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Okänd"
+
+#: lib/marshall_web/live/admin/git_live.ex:139
+#, elixir-autogen, elixir-format
+msgid "When"
+msgstr "När"
+
+#: lib/marshall_web/live/admin/git_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "actor"
+msgstr "aktör"
+
+#: lib/marshall_web/live/admin/git_live.ex:155
+#, elixir-autogen, elixir-format
+msgid "attempt"
+msgstr "försök"
+
+#: lib/marshall_web/live/admin/git_live.ex:82
+#, elixir-autogen, elixir-format
+msgid "nixos"
+msgstr "nixos"
+
+#: lib/marshall_web/live/admin/git_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "nixpkgs"
+msgstr "nixpkgs"
+
+#: lib/marshall_web/live/admin/git_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "repository"
+msgstr "arkiv"

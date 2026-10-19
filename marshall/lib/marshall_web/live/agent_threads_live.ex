@@ -46,12 +46,14 @@ defmodule MarshallWeb.AgentThreadsLive do
       {:ok, _turn} ->
         {:noreply,
          socket
-         |> assign(prompt_form: prompt_form(), notice: gettext("Prompt queued."))
+         |> assign(prompt_form: prompt_form(), notice: dgettext("agents", "Prompt queued."))
          |> refresh()}
 
       _ ->
         {:noreply,
-         assign(socket, notice: gettext("The machine or your access is no longer available."))}
+         assign(socket,
+           notice: dgettext("agents", "The machine or your access is no longer available.")
+         )}
     end
   end
 
@@ -62,7 +64,7 @@ defmodule MarshallWeb.AgentThreadsLive do
          push_navigate(socket, to: ~p"/machines/#{socket.assigns.vm_id}/threads/#{child.id}")}
 
       _ ->
-        {:noreply, assign(socket, notice: gettext("Could not create a child thread."))}
+        {:noreply, assign(socket, notice: dgettext("agents", "Could not create a child thread."))}
     end
   end
 
@@ -86,7 +88,10 @@ defmodule MarshallWeb.AgentThreadsLive do
     else
       _ ->
         socket
-        |> put_flash(:error, gettext("Machine or agent access is no longer available."))
+        |> put_flash(
+          :error,
+          dgettext("agents", "Machine or agent access is no longer available.")
+        )
         |> push_navigate(to: ~p"/machines")
     end
   end
@@ -103,19 +108,45 @@ defmodule MarshallWeb.AgentThreadsLive do
   defp prompt_form,
     do: to_form(%{"text" => "", "key" => Ash.UUID.generate()}, as: :prompt)
 
+  # @cc [owner:ghuntley,label:product] localized-agent-event-labels
+  # Event headings MUST translate reviewed event kinds and MUST NOT translate
+  # user prompts, assistant content or structured event payloads.
+  @spec event_label(atom()) :: String.t()
+  defp event_label(:prompt), do: dgettext("agents", "Prompt")
+  defp event_label(:assistant), do: dgettext("agents", "Agent")
+  defp event_label(:turn_started), do: dgettext("agents", "Agent started working")
+  defp event_label(:model_output), do: dgettext("agents", "Response received")
+  defp event_label(:tool_queued), do: dgettext("agents", "Tools queued")
+  defp event_label(:tool_result), do: dgettext("agents", "Tool result received")
+  defp event_label(:child_spawned), do: dgettext("agents", "Child thread created")
+  defp event_label(:turn_finished), do: dgettext("agents", "Turn complete")
+  defp event_label(:turn_failed), do: dgettext("agents", "The agent encountered a problem")
+  defp event_label(:waiting_for_vm), do: dgettext("agents", "Waiting for machine")
+  defp event_label(:questions_requested), do: dgettext("agents", "Questions requested")
+  defp event_label(:questions_answered), do: dgettext("agents", "Questions answered")
+  defp event_label(:questions_cancelled), do: dgettext("agents", "Questions cancelled")
+  defp event_label(:plan_proposed), do: dgettext("agents", "Plan proposed")
+  defp event_label(:context_captured), do: dgettext("agents", "Context captured")
+  defp event_label(:context_compacted), do: dgettext("agents", "Context compacted")
+  defp event_label(:maintenance_finished), do: dgettext("agents", "Maintenance finished")
+  defp event_label(_), do: dgettext("agents", "Thread updated")
+
   defp event_text(%{kind: :prompt, body: body}), do: Map.get(body, "prompt", "")
   defp event_text(%{kind: :assistant, body: body}), do: Map.get(body, "text", "")
-  defp event_text(%{kind: :child_spawned}), do: gettext("Child thread created")
+  defp event_text(%{kind: :child_spawned}), do: dgettext("agents", "Child thread created")
 
   defp event_text(%{kind: :turn_failed, body: %{"reason" => "capability_denied"}}),
-    do: gettext("This tool is not available for the machine profile.")
+    do: dgettext("agents", "This tool is not available for the machine profile.")
 
-  defp event_text(%{kind: :turn_started}), do: gettext("Agent started working")
-  defp event_text(%{kind: :turn_finished}), do: gettext("Turn complete")
-  defp event_text(%{kind: :turn_failed}), do: gettext("The agent encountered a problem")
-  defp event_text(%{kind: :tool_queued}), do: gettext("Tools queued")
-  defp event_text(%{kind: :tool_result}), do: gettext("Tool result received")
-  defp event_text(_), do: gettext("Thread updated")
+  defp event_text(%{kind: :turn_started}), do: dgettext("agents", "Agent started working")
+  defp event_text(%{kind: :turn_finished}), do: dgettext("agents", "Turn complete")
+
+  defp event_text(%{kind: :turn_failed}),
+    do: dgettext("agents", "The agent encountered a problem")
+
+  defp event_text(%{kind: :tool_queued}), do: dgettext("agents", "Tools queued")
+  defp event_text(%{kind: :tool_result}), do: dgettext("agents", "Tool result received")
+  defp event_text(_), do: dgettext("agents", "Thread updated")
 
   @impl true
   def render(assigns) do
@@ -136,18 +167,18 @@ defmodule MarshallWeb.AgentThreadsLive do
           active="agents"
         />
         <header>
-          <h2>{gettext("Agents")}</h2><p class="muted">
-            {gettext("Prompts wake a stopped machine when you have write access.")}
+          <h2>{dgettext("agents", "Agents")}</h2><p class="muted">
+            {dgettext("agents", "Prompts wake a stopped machine when you have write access.")}
           </p>
         </header>
         <p :if={@notice} role="status" id="agent-notice" class="panel dashed">
           {@notice}
         </p>
         <div class="agent-grid">
-          <nav aria-label={gettext("Threads")} class="panel thread-list">
+          <nav aria-label={dgettext("agents", "Threads")} class="panel thread-list">
             <ul class="tree">
               <li>
-                <strong>{gettext("Threads")}</strong>
+                <strong>{dgettext("agents", "Threads")}</strong>
                 <ul>
                   <li :for={thread <- @threads}>
                     <.link
@@ -167,17 +198,17 @@ defmodule MarshallWeb.AgentThreadsLive do
             >
               <.input
                 field={@child_form[:title]}
-                label={gettext("Child thread")}
+                label={dgettext("agents", "Child thread")}
                 maxlength="256"
                 required
               />
-              <button type="submit" class="console-button">{gettext("Create child")}</button>
+              <button type="submit" class="console-button">{dgettext("agents", "Create child")}</button>
             </.form>
           </nav>
           <div class="stack">
             <div id="agent-events" phx-update="stream" class="panel agent-events">
               <article :for={{id, event} <- @streams.events} id={id} class="agent-message">
-                <p class="muted"><strong>{event.kind}</strong></p>
+                <p class="muted"><strong>{event_label(event.kind)}</strong></p>
                 <pre>{event_text(event)}</pre>
               </article>
             </div>
@@ -191,7 +222,7 @@ defmodule MarshallWeb.AgentThreadsLive do
               <.input
                 field={@prompt_form[:text]}
                 type="textarea"
-                label={gettext("Prompt")}
+                label={dgettext("agents", "Prompt")}
                 maxlength="65536"
                 required
               />
@@ -199,11 +230,12 @@ defmodule MarshallWeb.AgentThreadsLive do
               <button
                 type="submit"
                 class="console-button primary"
-                phx-disable-with={gettext("Sending…")}
-              >{gettext("Send prompt")}</button>
+                phx-disable-with={dgettext("agents", "Sending…")}
+              >{dgettext("agents", "Send prompt")}</button>
             </.form>
             <p :if={@vm && !@vm.permissions.write} class="muted">
-              {gettext(
+              {dgettext(
+                "agents",
                 "You can read these threads. Ask for operator or manager access to send prompts."
               )}
             </p>

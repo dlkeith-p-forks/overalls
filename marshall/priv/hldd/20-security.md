@@ -1471,7 +1471,7 @@ Readiness, roster SSH, ConPTY, workspace and agent evidence therefore remains
 scoped to those capabilities. The staged editor runtime/source keeps
 `editor_capability = false`; the portable broker model and Win32 launcher add
 no authority by their presence.
-[ADR-0207](repo:docs/architecture/decisions/0207-windows-editor-job-custodian.md)
+[ADR-0208](repo:docs/architecture/decisions/0208-windows-editor-job-custodian.md)
 fully replaces ADR-0200's Windows candidate design while preserving its source,
 identity, immutable image and separate promotion requirements. Its separate
 `windows-editor-v1` manifest v7 requires an immutable editor descriptor; bundle v4

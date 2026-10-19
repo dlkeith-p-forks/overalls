@@ -1,0 +1,351 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: pcm\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/admin/access_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Access authority"
+msgstr "Who get power to give access"
+
+#: lib/marshall_web/live/admin/access_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Access inventory is temporarily unavailable."
+msgstr "Di list of who fit enter no dey available now."
+
+#: lib/marshall_web/live/admin/access_live.ex:106
+#: lib/marshall_web/live/admin/access_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "Your account"
+
+#: lib/marshall_web/live/admin/access_live.ex:110
+#: lib/marshall_web/live/admin/access_live.ex:156
+#: lib/marshall_web/live/admin/access_live.ex:205
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Things you fit do"
+
+#: lib/marshall_web/live/admin/access_live.ex:95
+#: lib/marshall_web/live/admin/access_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Active SSH sessions"
+msgstr "SSH sessions wey dey work"
+
+#: lib/marshall_web/live/admin/access_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr "We don put am"
+
+#: lib/marshall_web/live_admin_auth.ex:142
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "You no get authorization for administrative changes."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "Na administrator fit make administrative changes."
+
+#: lib/marshall_web/live/admin/access_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "Close di session"
+
+#: lib/marshall_web/live/admin/access_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "Close this SSH session?"
+msgstr "Make we close this SSH session?"
+
+#: lib/marshall_web/live/admin/access_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Could not close that session."
+msgstr "We no fit close that session."
+
+#: lib/marshall_web/live/admin/access_live.ex:46
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that VM access."
+msgstr "We no fit cancel that VM access."
+
+#: lib/marshall_web/live/admin/access_live.ex:26
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that key."
+msgstr "We no fit cancel that key."
+
+#: lib/marshall_web/live/admin/access_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "When e go expire"
+
+#: lib/marshall_web/live_admin_auth.ex:190
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "Finish or cancel di verification wey dey go on first."
+
+#: lib/marshall_web/live/admin/access_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "Di gateway"
+
+#: lib/marshall_web/live/admin/access_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "Granted"
+msgstr "We don give permission"
+
+#: lib/marshall_web/live_admin_auth.ex:205
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "Dis administrative request no valid."
+
+#: lib/marshall_web/live/admin/access_live.ex:51
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Di request no correct."
+
+#: lib/marshall_web/live/admin/access_live.ex:153
+#: lib/marshall_web/live/admin/access_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "Di key"
+
+#: lib/marshall_web/live/admin/access_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Di machine"
+
+#: lib/marshall_web/live/admin/access_live.ex:246
+#, elixir-autogen, elixir-format
+msgid "Manager"
+msgstr "Di manager"
+
+#: lib/marshall_web/live/admin/access_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "No active keys."
+msgstr "No key dey active."
+
+#: lib/marshall_web/live/admin/access_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "No active sessions."
+msgstr "No session dey active."
+
+#: lib/marshall_web/live/admin/access_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "No machine is shared with another account."
+msgstr "No machine wey share with another account."
+
+#: lib/marshall_web/live/admin/access_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "Di operator"
+
+#: lib/marshall_web/live/admin/access_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "Dey wait make dem approve key"
+
+#: lib/marshall_web/live/admin/access_live.ex:94
+#: lib/marshall_web/live/admin/access_live.ex:146
+#, elixir-autogen, elixir-format
+msgid "Registered SSH keys"
+msgstr "SSH keys wey register"
+
+#: lib/marshall_web/live/admin/access_live.ex:138
+#, elixir-autogen, elixir-format
+msgid "Revoke access"
+msgstr "Cancel di access"
+
+#: lib/marshall_web/live/admin/access_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Revoke key"
+msgstr "Cancel di key"
+
+#: lib/marshall_web/live/admin/access_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Revoke this SSH key and close sessions using it?"
+msgstr "Make we cancel this SSH key and close sessions wey dey use am?"
+
+#: lib/marshall_web/live/admin/access_live.ex:136
+#, elixir-autogen, elixir-format
+msgid "Revoke this user's VM access?"
+msgstr "Make we cancel this user VM access?"
+
+#: lib/marshall_web/live/admin/access_live.ex:247
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "We don cancel di permission"
+
+#: lib/marshall_web/live/admin/access_live.ex:107
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Di role"
+
+#: lib/marshall_web/live/admin/access_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "SSH key"
+msgstr "Di SSH key"
+
+#: lib/marshall_web/live/admin/access_live.ex:25
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked."
+msgstr "We don cancel SSH key."
+
+#: lib/marshall_web/live/admin/access_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "SSH session closed."
+msgstr "We don close SSH session."
+
+#: lib/marshall_web/live/admin/access_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Shared machine access"
+msgstr "Access to shared machines"
+
+#: lib/marshall_web/live/admin/access_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Shared machine grants"
+msgstr "Permissions for shared machines"
+
+#: lib/marshall_web/live/admin/access_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "We no know"
+
+#: lib/marshall_web/live/admin/access_live.ex:90
+#, elixir-autogen, elixir-format
+msgid "Updated every 15 seconds"
+msgstr "We dey update am every 15 sekọnd"
+
+#: lib/marshall_web/live/admin/access_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "VM access revoked."
+msgstr "We don cancel VM access."
+
+#: lib/marshall_web/live/admin/access_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Viewer"
+msgstr "Person wey dey watch"
+
+#: lib/marshall_web/live/admin/access_live.ex:243
+#, elixir-autogen, elixir-format
+msgid "Web apps"
+msgstr "Di web apps"
+
+#: lib/marshall_web/live/admin/access_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
+msgstr "Who fit reach which machine, and with which key or session. We no ever show private keys, session tokens and gateway credentials."
+
+#: lib/marshall_web/admin_elevation.ex:41
+#, elixir-autogen, elixir-format
+msgid "add this Git mirror"
+msgstr "put this Git mirror"
+
+#: lib/marshall_web/admin_elevation.ex:46
+#, elixir-autogen, elixir-format
+msgid "approve this workload downtime"
+msgstr "agree to downtime for this workload"
+
+#: lib/marshall_web/admin_elevation.ex:33
+#, elixir-autogen, elixir-format
+msgid "change administrator access"
+msgstr "change di admin access"
+
+#: lib/marshall_web/admin_elevation.ex:45
+#, elixir-autogen, elixir-format
+msgid "change this evacuation"
+msgstr "change how we move workloads out"
+
+#: lib/marshall_web/admin_elevation.ex:48
+#, elixir-autogen, elixir-format
+msgid "change this machine's state"
+msgstr "change how this machine dey"
+
+#: lib/marshall_web/admin_elevation.ex:52
+#, elixir-autogen, elixir-format
+msgid "change this node's admission settings"
+msgstr "change admission settings for this node"
+
+#: lib/marshall_web/admin_elevation.ex:36
+#, elixir-autogen, elixir-format
+msgid "close this SSH session"
+msgstr "close this your SSH session"
+
+#: lib/marshall_web/admin_elevation.ex:39
+#, elixir-autogen, elixir-format
+msgid "delete this user account"
+msgstr "delete this user own account"
+
+#: lib/marshall_web/admin_elevation.ex:49
+#, elixir-autogen, elixir-format
+msgid "move this machine"
+msgstr "move this your machine"
+
+#: lib/marshall_web/admin_elevation.ex:51
+#, elixir-autogen, elixir-format
+msgid "open this machine with administrator access"
+msgstr "open this machine with admin permission"
+
+#: lib/marshall_web/admin_elevation.ex:42
+#, elixir-autogen, elixir-format
+msgid "refresh this Git mirror"
+msgstr "refresh this your Git mirror"
+
+#: lib/marshall_web/admin_elevation.ex:43
+#, elixir-autogen, elixir-format
+msgid "remove this Git mirror"
+msgstr "remove this your Git mirror"
+
+#: lib/marshall_web/admin_elevation.ex:47
+#, elixir-autogen, elixir-format
+msgid "replan this workload move"
+msgstr "plan this workload move again"
+
+#: lib/marshall_web/admin_elevation.ex:40
+#, elixir-autogen, elixir-format
+msgid "reset this account's passkeys"
+msgstr "reset passkeys for this account"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "retry this background job"
+msgstr "try this background job again"
+
+#: lib/marshall_web/admin_elevation.ex:35
+#, elixir-autogen, elixir-format
+msgid "revoke this SSH key"
+msgstr "cancel this SSH key"
+
+#: lib/marshall_web/admin_elevation.ex:37
+#, elixir-autogen, elixir-format
+msgid "revoke this VM access"
+msgstr "cancel this VM access"
+
+#: lib/marshall_web/admin_elevation.ex:50
+#, elixir-autogen, elixir-format
+msgid "rotate the fleet certificate"
+msgstr "change di fleet certificate"
+
+#: lib/marshall_web/admin_elevation.ex:38
+#, elixir-autogen, elixir-format
+msgid "send this invitation"
+msgstr "send this your invitation"
+
+#: lib/marshall_web/admin_elevation.ex:34
+#, elixir-autogen, elixir-format
+msgid "sign this account out everywhere"
+msgstr "sign this account out from everywhere"
+
+#: lib/marshall_web/admin_elevation.ex:44
+#, elixir-autogen, elixir-format
+msgid "start this node evacuation"
+msgstr "start to move workloads from this node"

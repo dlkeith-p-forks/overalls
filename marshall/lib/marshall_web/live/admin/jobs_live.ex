@@ -7,14 +7,14 @@ defmodule MarshallWeb.Admin.JobsLive do
 
   defp states do
     [
-      {gettext("Queued"), :available},
-      {gettext("Suspended"), :suspended},
-      {gettext("Scheduled"), :scheduled},
-      {gettext("Running"), :executing},
-      {gettext("Retrying"), :retryable},
-      {gettext("Succeeded"), :completed},
-      {gettext("Failed"), :discarded},
-      {gettext("Cancelled"), :cancelled}
+      {dgettext("admin_jobs", "Queued"), :available},
+      {dgettext("admin_jobs", "Suspended"), :suspended},
+      {dgettext("admin_jobs", "Scheduled"), :scheduled},
+      {dgettext("admin_jobs", "Running"), :executing},
+      {dgettext("admin_jobs", "Retrying"), :retryable},
+      {dgettext("admin_jobs", "Succeeded"), :completed},
+      {dgettext("admin_jobs", "Failed"), :discarded},
+      {dgettext("admin_jobs", "Cancelled"), :cancelled}
     ]
   end
 
@@ -89,7 +89,10 @@ defmodule MarshallWeb.Admin.JobsLive do
          socket
          |> put_flash(
            :info,
-           gettext("Retry queued. The related operation will recheck its current state.")
+           dgettext(
+             "admin_jobs",
+             "Retry queued. The related operation will recheck its current state."
+           )
          )
          |> assign(:retry_request_id, Ash.UUID.generate())
          |> refresh()}
@@ -99,14 +102,17 @@ defmodule MarshallWeb.Admin.JobsLive do
          socket
          |> put_flash(
            :error,
-           gettext("This job could not be retried. Its state or your access may have changed.")
+           dgettext(
+             "admin_jobs",
+             "This job could not be retried. Its state or your access may have changed."
+           )
          )
          |> refresh()}
     end
   end
 
   def handle_event(_, _, socket),
-    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+    do: {:noreply, put_flash(socket, :error, dgettext("admin_jobs", "Invalid request."))}
 
   defp refresh(%{assigns: %{live_action: :index}} = socket) do
     filters = socket.assigns.filters
@@ -142,7 +148,10 @@ defmodule MarshallWeb.Admin.JobsLive do
         socket
         |> stream(:jobs, [], reset: true)
         |> assign(empty?: true, counts: %{}, next_cursor: nil)
-        |> put_flash(:error, gettext("Jobs are unavailable or the filters are invalid."))
+        |> put_flash(
+          :error,
+          dgettext("admin_jobs", "Jobs are unavailable or the filters are invalid.")
+        )
     end
   end
 
@@ -165,7 +174,10 @@ defmodule MarshallWeb.Admin.JobsLive do
         socket
         |> assign(job: nil, subject: nil, next_events_cursor: nil)
         |> stream(:events, [], reset: true)
-        |> put_flash(:error, gettext("This job is unavailable or its history has expired."))
+        |> put_flash(
+          :error,
+          dgettext("admin_jobs", "This job is unavailable or its history has expired.")
+        )
     end
   end
 
@@ -174,7 +186,7 @@ defmodule MarshallWeb.Admin.JobsLive do
 
   defp label(state),
     do:
-      Enum.find_value(states(), gettext("Unknown"), fn {label, value} ->
+      Enum.find_value(states(), dgettext("admin_jobs", "Unknown"), fn {label, value} ->
         if value == state, do: label
       end)
 
@@ -199,17 +211,22 @@ defmodule MarshallWeb.Admin.JobsLive do
     >
       <section id="admin-jobs" class="stack">
         <UI.heading
-          title={if @live_action == :index, do: gettext("Jobs"), else: gettext("Job details")}
+          title={
+            if @live_action == :index,
+              do: dgettext("admin_jobs", "Jobs"),
+              else: dgettext("admin_jobs", "Job details")
+          }
           subtitle={
-            gettext(
+            dgettext(
+              "admin_jobs",
               "Background work run by Oban. A successful job may have dispatched work whose physical outcome is still pending; follow the related operation for completion."
             )
           }
         >
           <:actions>
-            <span class="muted">{gettext("Updated")}
+            <span class="muted">{dgettext("admin_jobs", "Updated")}
             <.timestamp at={@refreshed_at} zone={@time_zone} format={:datetime_seconds} />
-            {gettext("· every 5 seconds")}</span>
+            {dgettext("admin_jobs", "· every 5 seconds")}</span>
           </:actions>
         </UI.heading>
         <%= if @live_action == :index do %>
@@ -232,58 +249,62 @@ defmodule MarshallWeb.Admin.JobsLive do
             </table>
           </div>
           <p class="muted">
-            {gettext(
+            {dgettext(
+              "admin_jobs",
               "Counts cover current and recently retained raw jobs. The list includes redacted history for up to 30 days; older history pruned before deployment is unavailable."
             )}
           </p>
           <.form for={@form} id="job-filters" phx-submit="filter" class="panel stack">
-            <h2>{gettext("Filter")}</h2>
+            <h2>{dgettext("admin_jobs", "Filter")}</h2>
             <div class="grid">
               <.input
                 field={@form[:state]}
                 type="select"
-                label={gettext("State")}
+                label={dgettext("admin_jobs", "State")}
                 options={@states}
-                prompt={gettext("All states")}
+                prompt={dgettext("admin_jobs", "All states")}
               />
               <.input
                 field={@form[:queue]}
-                label={gettext("Queue")}
-                placeholder={gettext("Any queue")}
+                label={dgettext("admin_jobs", "Queue")}
+                placeholder={dgettext("admin_jobs", "Any queue")}
                 maxlength="128"
               />
               <.input
                 field={@form[:worker]}
-                label={gettext("Worker")}
-                placeholder={gettext("Exact worker name")}
+                label={dgettext("admin_jobs", "Worker")}
+                placeholder={dgettext("admin_jobs", "Exact worker name")}
                 maxlength="256"
               />
               <.input
                 field={@form[:range]}
                 type="select"
-                label={gettext("Last updated")}
+                label={dgettext("admin_jobs", "Last updated")}
                 options={[
-                  {gettext("All retained"), "all"},
-                  {gettext("24 hours"), "day"},
-                  {gettext("7 days"), "week"},
-                  {gettext("30 days"), "month"}
+                  {dgettext("admin_jobs", "All retained"), "all"},
+                  {dgettext("admin_jobs", "24 hours"), "day"},
+                  {dgettext("admin_jobs", "7 days"), "week"},
+                  {dgettext("admin_jobs", "30 days"), "month"}
                 ]}
               />
             </div>
             <div class="row actions">
-              <button type="submit" class="console-button primary">{gettext("Filter jobs")}</button>
+              <button type="submit" class="console-button primary">{dgettext(
+                "admin_jobs",
+                "Filter jobs"
+              )}</button>
             </div>
           </.form>
           <div class="table-flow">
             <table>
               <thead>
                 <tr>
-                  <th class="width-min">{gettext("Job")}</th>
-                  <th class="width-min">{gettext("State")}</th>
-                  <th class="width-auto">{gettext("Queue / worker")}</th>
-                  <th class="width-min num">{gettext("Attempts")}</th>
-                  <th class="width-min num">{gettext("Waiting")}</th>
-                  <th class="width-min num">{gettext("Duration")}</th>
+                  <th class="width-min">{dgettext("admin_jobs", "Job")}</th>
+                  <th class="width-min">{dgettext("admin_jobs", "State")}</th>
+                  <th class="width-auto">{dgettext("admin_jobs", "Queue / worker")}</th>
+                  <th class="width-min num">{dgettext("admin_jobs", "Attempts")}</th>
+                  <th class="width-min num">{dgettext("admin_jobs", "Waiting")}</th>
+                  <th class="width-min num">{dgettext("admin_jobs", "Duration")}</th>
                 </tr>
               </thead>
               <tbody id="job-rows" phx-update="stream">
@@ -291,7 +312,7 @@ defmodule MarshallWeb.Admin.JobsLive do
                   <td><.link navigate={~p"/admin/jobs/#{job.id}"}>#{job.id}</.link></td>
                   <td class="nowrap">
                     <span class="status-label" data-tone={job_tone(job.state)}>{label(job.state)}</span>
-                    <span :if={!job.raw_present} class="muted">{gettext("Archived")}</span>
+                    <span :if={!job.raw_present} class="muted">{dgettext("admin_jobs", "Archived")}</span>
                   </td>
                   <td class="break">
                     {job.queue}<br /><span class="muted" title={job.worker}>{job.worker}</span>
@@ -304,22 +325,23 @@ defmodule MarshallWeb.Admin.JobsLive do
             </table>
           </div>
           <p :if={@empty?} id="jobs-empty" class="empty-state">
-            {gettext("No jobs match these filters.")}
+            {dgettext("admin_jobs", "No jobs match these filters.")}
           </p>
-          <nav aria-label={gettext("Job pages")} class="row">
-            <.link :if={@filters["before"]} patch={~p"/admin/jobs?#{Map.delete(@filters, "before")}"}>{gettext(
+          <nav aria-label={dgettext("admin_jobs", "Job pages")} class="row">
+            <.link :if={@filters["before"]} patch={~p"/admin/jobs?#{Map.delete(@filters, "before")}"}>{dgettext(
+              "admin_jobs",
               "← First page"
             )}</.link>
             <.link
               :if={@next_cursor}
               id="jobs-next"
               patch={~p"/admin/jobs?#{Map.put(@filters, "before", @next_cursor)}"}
-            >{gettext("Older jobs →")}</.link>
+            >{dgettext("admin_jobs", "Older jobs →")}</.link>
           </nav>
         <% else %>
-          <p><.link navigate={~p"/admin/jobs"}>{gettext("← Jobs")}</.link></p>
+          <p><.link navigate={~p"/admin/jobs"}>{dgettext("admin_jobs", "← Jobs")}</.link></p>
           <div :if={@job} id="job-detail" class="stack">
-            <UI.panel title={gettext("Job #%{id}", id: @job.id)}>
+            <UI.panel title={dgettext("admin_jobs", "Job #%{id}", id: @job.id)}>
               <:actions>
                 <span class="status-label" data-tone={job_tone(@job.state)}>{label(@job.state)}</span>
                 <button
@@ -327,58 +349,79 @@ defmodule MarshallWeb.Admin.JobsLive do
                   id="retry-job"
                   phx-click="retry"
                   data-confirm={
-                    gettext("Queue another attempt? The operation will recheck its current state.")
+                    dgettext(
+                      "admin_jobs",
+                      "Queue another attempt? The operation will recheck its current state."
+                    )
                   }
                   class="console-button primary"
-                >{gettext("Retry job")}</button>
-                <span :if={!@job.raw_present} class="muted">{gettext(
+                >{dgettext("admin_jobs", "Retry job")}</button>
+                <span :if={!@job.raw_present} class="muted">{dgettext(
+                  "admin_jobs",
                   "Archived history · retry unavailable"
                 )}</span>
               </:actions>
               <.kv>
-                <:item title={gettext("Queue")}>{@job.queue}</:item>
-                <:item title={gettext("Worker")}><span class="break">{@job.worker}</span></:item>
-                <:item title={gettext("Attempts")}>{@job.attempt} / {@job.max_attempts}</:item>
-                <:item title={gettext("Created")}>
+                <:item title={dgettext("admin_jobs", "Queue")}>{@job.queue}</:item>
+                <:item title={dgettext("admin_jobs", "Worker")}>
+                  <span class="break">{@job.worker}</span>
+                </:item>
+                <:item title={dgettext("admin_jobs", "Attempts")}>
+                  {@job.attempt} / {@job.max_attempts}
+                </:item>
+                <:item title={dgettext("admin_jobs", "Created")}>
                   <.timestamp at={@job.inserted_at} zone={@time_zone} format={:datetime_seconds} />
                 </:item>
-                <:item title={gettext("Scheduled / next retry")}>
+                <:item title={dgettext("admin_jobs", "Scheduled / next retry")}>
                   <.timestamp at={@job.scheduled_at} zone={@time_zone} format={:datetime_seconds} />
                 </:item>
-                <:item title={gettext("Last attempt started")}>
+                <:item title={dgettext("admin_jobs", "Last attempt started")}>
                   <.timestamp at={@job.attempted_at} zone={@time_zone} format={:datetime_seconds} />
                 </:item>
-                <:item title={gettext("Last execution duration")}>{duration(@job.duration_ms)}</:item>
-                <:item title={gettext("Recorded failures")}>{@job.error_count}</:item>
+                <:item title={dgettext("admin_jobs", "Last execution duration")}>
+                  {duration(@job.duration_ms)}
+                </:item>
+                <:item title={dgettext("admin_jobs", "Recorded failures")}>{@job.error_count}</:item>
               </.kv>
             </UI.panel>
             <p :if={@job.failure} id="job-failure" class="error">
               {@job.failure}
             </p>
-            <UI.panel :if={@subject} id="job-subject" title={gettext("Related record")}>
+            <UI.panel :if={@subject} id="job-subject" title={dgettext("admin_jobs", "Related record")}>
               <.kv>
                 <:item title={subject_kind(@subject.kind)}>
                   <code>{@subject.id}</code>
                 </:item>
-                <:item :if={Map.has_key?(@subject, :status)} title={gettext("Operation state")}>
+                <:item
+                  :if={Map.has_key?(@subject, :status)}
+                  title={dgettext("admin_jobs", "Operation state")}
+                >
                   {subject_status(@subject.status)}
                 </:item>
-                <:item :if={Map.has_key?(@subject, :finished)} title={gettext("Relocation complete")}>
-                  {if @subject.finished, do: gettext("Complete"), else: gettext("Pending")}
+                <:item
+                  :if={Map.has_key?(@subject, :finished)}
+                  title={dgettext("admin_jobs", "Relocation complete")}
+                >
+                  {if @subject.finished,
+                    do: dgettext("admin_jobs", "Complete"),
+                    else: dgettext("admin_jobs", "Pending")}
                 </:item>
               </.kv>
               <p :if={@subject[:vm_id]}>
-                <.link navigate={~p"/machines/#{@subject.vm_id}"}>{gettext("Open machine →")}</.link>
+                <.link navigate={~p"/machines/#{@subject.vm_id}"}>{dgettext(
+                  "admin_jobs",
+                  "Open machine →"
+                )}</.link>
               </p>
             </UI.panel>
-            <UI.panel id="job-history" title={gettext("Execution history")}>
+            <UI.panel id="job-history" title={dgettext("admin_jobs", "Execution history")}>
               <div class="table-flow">
                 <table>
                   <thead>
                     <tr>
-                      <th class="width-min">{gettext("Captured")}</th>
-                      <th class="width-min">{gettext("State")}</th>
-                      <th class="width-auto">{gettext("Attempt")}</th>
+                      <th class="width-min">{dgettext("admin_jobs", "Captured")}</th>
+                      <th class="width-min">{dgettext("admin_jobs", "State")}</th>
+                      <th class="width-auto">{dgettext("admin_jobs", "Attempt")}</th>
                     </tr>
                   </thead>
                   <tbody id="job-events" phx-update="stream">
@@ -396,7 +439,7 @@ defmodule MarshallWeb.Admin.JobsLive do
                         )}</span>
                       </td>
                       <td>
-                        {gettext("attempt %{attempt} · %{count} recorded failures",
+                        {dgettext("admin_jobs", "attempt %{attempt} · %{count} recorded failures",
                           attempt: event.attempt,
                           count: event.error_count
                         )}
@@ -409,7 +452,7 @@ defmodule MarshallWeb.Admin.JobsLive do
                 <.link
                   id="older-job-events"
                   patch={~p"/admin/jobs/#{@job.id}?#{%{events_before: @next_events_cursor}}"}
-                >{gettext("Older transitions →")}</.link>
+                >{dgettext("admin_jobs", "Older transitions →")}</.link>
               </p>
             </UI.panel>
           </div>
@@ -420,21 +463,21 @@ defmodule MarshallWeb.Admin.JobsLive do
   end
 
   @spec subject_kind(atom()) :: String.t()
-  defp subject_kind(:operation), do: gettext("Operation")
-  defp subject_kind(:relocation), do: gettext("Relocation")
-  defp subject_kind(:drain), do: gettext("Evacuation campaign")
-  defp subject_kind(_), do: gettext("Unknown")
+  defp subject_kind(:operation), do: dgettext("admin_jobs", "Operation")
+  defp subject_kind(:relocation), do: dgettext("admin_jobs", "Relocation")
+  defp subject_kind(:drain), do: dgettext("admin_jobs", "Evacuation campaign")
+  defp subject_kind(_), do: dgettext("admin_jobs", "Unknown")
 
   @spec subject_status(atom()) :: String.t()
-  defp subject_status(:pending), do: gettext("Pending")
-  defp subject_status(:acknowledged), do: gettext("Acknowledged")
-  defp subject_status(:completed), do: gettext("Complete")
-  defp subject_status(:cancelled), do: gettext("Cancelled")
-  defp subject_status(:draining), do: gettext("Draining")
-  defp subject_status(:drained), do: gettext("Drained")
-  defp subject_status(:resumed), do: gettext("Resumed")
-  defp subject_status(:retired), do: gettext("Retired")
-  defp subject_status(_), do: gettext("Unknown")
+  defp subject_status(:pending), do: dgettext("admin_jobs", "Pending")
+  defp subject_status(:acknowledged), do: dgettext("admin_jobs", "Acknowledged")
+  defp subject_status(:completed), do: dgettext("admin_jobs", "Complete")
+  defp subject_status(:cancelled), do: dgettext("admin_jobs", "Cancelled")
+  defp subject_status(:draining), do: dgettext("admin_jobs", "Draining")
+  defp subject_status(:drained), do: dgettext("admin_jobs", "Drained")
+  defp subject_status(:resumed), do: dgettext("admin_jobs", "Resumed")
+  defp subject_status(:retired), do: dgettext("admin_jobs", "Retired")
+  defp subject_status(_), do: dgettext("admin_jobs", "Unknown")
 
   @spec job_tone(atom()) :: String.t() | nil
   defp job_tone(:discarded), do: "danger"

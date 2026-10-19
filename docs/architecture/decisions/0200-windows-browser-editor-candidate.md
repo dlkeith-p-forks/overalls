@@ -6,7 +6,7 @@
 - Implementation: partial
 - Components: Marshall Editor, Audi, Lilly, shared protocol, Windows image, Code OSS package, Windows editor broker, Lyra account reconciler
 - Supersedes: none
-- Superseded by: ADR-0207
+- Superseded by: ADR-0208
 
 ## Context
 
@@ -225,7 +225,7 @@ None of these gaps authorizes changing the current false capability row.
 
 ## Related decisions
 
-[ADR-0207](0207-windows-editor-job-custodian.md) supersedes this decision in full,
+[ADR-0208](0208-windows-editor-job-custodian.md) supersedes this decision in full,
 carrying forward the candidate identity and promotion requirements while
 replacing broker-owned job lifetime with an independent SYSTEM custodian.
 

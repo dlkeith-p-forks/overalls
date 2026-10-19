@@ -1,0 +1,1555 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: ko\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/threads_live.ex:1480
+#, elixir-autogen, elixir-format
+msgid "%{value1} Reasoning stays with this thread. Switch between Plan and Work as needed."
+msgstr "%{value1} 추론은 이 스레드에 유지됩니다. 필요에 따라 계획과 작업 간을 전환합니다."
+
+#: lib/marshall_web/live/threads_live.ex:2100
+#, elixir-autogen, elixir-format
+msgid "%{value1} reasoning"
+msgstr "%{value1} 추론"
+
+#: lib/marshall_web/live/threads_live.ex:2614
+#: lib/marshall_web/live/threads_live.ex:2616
+#, elixir-autogen, elixir-format
+msgid "A context source could not be fully loaded."
+msgstr "컨텍스트 소스를 완전히 로드할 수 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1492
+#, elixir-autogen, elixir-format
+msgid "A machine of its own."
+msgstr "그 자체의 기계."
+
+#: lib/marshall_web/live/threads_live.ex:1288
+#, elixir-autogen, elixir-format
+msgid "A selected skill is no longer available. Reload Skills and select its current source."
+msgstr "선택한 기술을 더 이상 사용할 수 없습니다. 스킬을 다시 로드하고 현재 소스를 선택합니다."
+
+#: lib/marshall_web/live/threads_live.ex:1371
+#, elixir-autogen, elixir-format
+msgid "A space for your next idea"
+msgstr "다음 아이디어를 위한 공간"
+
+#: lib/marshall_web/live/threads_live.ex:1883
+#, elixir-autogen, elixir-format
+msgid "Access details are temporarily unavailable. Close sharing and try again shortly."
+msgstr "일시적으로 액세스 세부정보를 사용할 수 없습니다. 공유를 종료하고 잠시 후 다시 시도하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1853
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "행위"
+
+#: lib/marshall_web/live/threads_live.ex:1569
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "활동적인"
+
+#: lib/marshall_web/live/threads_live.ex:1359
+#: lib/marshall_web/live/threads_live.ex:1633
+#, elixir-autogen, elixir-format
+msgid "Activity"
+msgstr "활동"
+
+#: lib/marshall_web/live/agent_threads_live.ex:111
+#: lib/marshall_web/live/threads_live.ex:2647
+#, elixir-autogen, elixir-format
+msgid "Agent"
+msgstr "대리인"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Agent CLI approved for one hour. Return to your terminal."
+msgstr "에이전트 CLI가 1시간 동안 승인되었습니다. 터미널로 돌아갑니다."
+
+#: lib/marshall_web/live/agent_threads_live.ex:112
+#: lib/marshall_web/live/agent_threads_live.ex:136
+#: lib/marshall_web/live/threads_live.ex:2655
+#, elixir-autogen, elixir-format
+msgid "Agent started working"
+msgstr "에이전트가 작업을 시작했습니다."
+
+#: lib/marshall_web/live/agent_threads_live.ex:162
+#, elixir-autogen, elixir-format
+msgid "Agents"
+msgstr "자치령 대표"
+
+#: lib/marshall_web/live/threads_live.ex:1108
+#, elixir-autogen, elixir-format
+msgid "All teams"
+msgstr "모든 팀"
+
+#: lib/marshall_web/live/threads_live.ex:1568
+#: lib/marshall_web/live/threads_live.ex:1660
+#, elixir-autogen, elixir-format
+msgid "All threads"
+msgstr "모든 스레드"
+
+#: lib/marshall_web/live/threads_live.ex:1689
+#, elixir-autogen, elixir-format
+msgid "All visible"
+msgstr "모두 표시됨"
+
+#: lib/marshall_web/live/threads_live.ex:2165
+#, elixir-autogen, elixir-format
+msgid "An operator can answer these questions."
+msgstr "교환원은 이러한 질문에 답할 수 있습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1263
+#, elixir-autogen, elixir-format
+msgid "Answer each question with a choice, your own answer, or both."
+msgstr "각 질문에 선택 항목, 자신의 답변 또는 두 가지 모두를 사용하여 답변하세요."
+
+#: lib/marshall_web/live/threads_live.ex:2119
+#, elixir-autogen, elixir-format
+msgid "Answer these questions to continue the plan."
+msgstr "계획을 계속하려면 다음 질문에 답하세요."
+
+#: lib/marshall_web/live/threads_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Answers submitted."
+msgstr "답변이 제출되었습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1676
+#, elixir-autogen, elixir-format
+msgid "Any time"
+msgstr "언제든지"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Approve CLI access"
+msgstr "CLI 액세스 승인"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:64
+#, elixir-autogen, elixir-format
+msgid "Approve agent CLI"
+msgstr "에이전트 CLI 승인"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:74
+#, elixir-autogen, elixir-format
+msgid "Approving…"
+msgstr "승인 중…"
+
+#: lib/marshall_web/live/threads_live.ex:1856
+#, elixir-autogen, elixir-format
+msgid "Archive"
+msgstr "보관소"
+
+#: lib/marshall_web/live/threads_live.ex:1570
+#: lib/marshall_web/live/threads_live.ex:1666
+#: lib/marshall_web/live/threads_live.ex:2634
+#, elixir-autogen, elixir-format
+msgid "Archived"
+msgstr "보관됨"
+
+#: lib/marshall_web/live/threads_live.ex:2209
+#, elixir-autogen, elixir-format
+msgid "Archived thread. The transcript is read-only. Reopen to continue on a new machine."
+msgstr "보관된 스레드. 성적표는 읽기 전용입니다. 새 컴퓨터에서 계속하려면 다시 엽니다."
+
+#: lib/marshall_web/live/threads_live.ex:2643
+#, elixir-autogen, elixir-format
+msgid "Archived · conversation retained"
+msgstr "보관됨 · 대화가 보관됨"
+
+#: lib/marshall_web/live/threads_live.ex:2633
+#, elixir-autogen, elixir-format
+msgid "Archiving"
+msgstr "보관"
+
+#: lib/marshall_web/live/threads_live.ex:2053
+#, elixir-autogen, elixir-format
+msgid "Archiving is in progress. Waiting for the machine to be deleted."
+msgstr "보관이 진행 중입니다. 머신이 삭제되기를 기다리고 있습니다."
+
+#: lib/marshall_web/live/threads_live.ex:394
+#, elixir-autogen, elixir-format
+msgid "Archiving requested. The machine will be deleted before archival completes."
+msgstr "보관처리가 요청되었습니다. 보관이 완료되기 전에 머신이 삭제됩니다."
+
+#: lib/marshall_web/live/threads_live.ex:2642
+#, elixir-autogen, elixir-format
+msgid "Archiving · releasing the machine"
+msgstr "보관 및 머신 해제"
+
+#: lib/marshall_web/live/threads_live.ex:1763
+#: lib/marshall_web/live/threads_live.ex:1769
+#: lib/marshall_web/live/threads_live.ex:1775
+#, elixir-autogen, elixir-format
+msgid "Back to threads"
+msgstr "스레드로 돌아가기"
+
+#: lib/marshall_web/live/threads_live.ex:2456
+#: lib/marshall_web/live/threads_live.ex:2502
+#, elixir-autogen, elixir-format
+msgid "Branch, tag or commit"
+msgstr "분기, 태그 또는 커밋"
+
+#: lib/marshall_web/live/threads_live.ex:1392
+#, elixir-autogen, elixir-format
+msgid "Build something, fix a bug, explore an idea…"
+msgstr "무언가를 만들고, 버그를 수정하고, 아이디어를 탐색하세요…"
+
+#: lib/marshall_web/live/threads_live.ex:1460
+#, elixir-autogen, elixir-format
+msgid "CPU"
+msgstr "CPU"
+
+#: lib/marshall_web/live/threads_live.ex:1917
+#, elixir-autogen, elixir-format
+msgid "Change"
+msgstr "변화"
+
+#: lib/marshall_web/live/agent_threads_live.ex:193
+#, elixir-autogen, elixir-format
+msgid "Child thread"
+msgstr "하위 스레드"
+
+#: lib/marshall_web/live/agent_threads_live.ex:116
+#: lib/marshall_web/live/agent_threads_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Child thread created"
+msgstr "하위 스레드가 생성되었습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1292
+#, elixir-autogen, elixir-format
+msgid "Choose a valid image and machine size."
+msgstr "유효한 이미지와 머신 크기를 선택하세요."
+
+#: lib/marshall_web/live/threads_live.ex:2272
+#: lib/marshall_web/live/threads_live.ex:2316
+#, elixir-autogen, elixir-format
+msgid "Close"
+msgstr "닫다"
+
+#: lib/marshall_web/live/threads_live.ex:2085
+#, elixir-autogen, elixir-format
+msgid "Collaboration mode"
+msgstr "협업 모드"
+
+#: lib/marshall_web/live/threads_live.ex:639
+#, elixir-autogen, elixir-format
+msgid "Collaboration mode updated."
+msgstr "협업 모드가 업데이트되었습니다."
+
+#: lib/marshall_web/live/threads_live.ex:2533
+#, elixir-autogen, elixir-format
+msgid "Command suggestions"
+msgstr "명령 제안"
+
+#: lib/marshall_web/live/threads_live.ex:1424
+#: lib/marshall_web/live/threads_live.ex:1798
+#: lib/marshall_web/live/threads_live.ex:2101
+#: lib/marshall_web/live/threads_live.ex:2268
+#: lib/marshall_web/live/threads_live.ex:2289
+#, elixir-autogen, elixir-format
+msgid "Commands"
+msgstr "명령"
+
+#: lib/marshall_web/live/threads_live.ex:2442
+#, elixir-autogen, elixir-format
+msgid "Commit: %{value1}"
+msgstr "커밋: %{value1}"
+
+#: lib/marshall_web/live/threads_live.ex:2394
+#, elixir-autogen, elixir-format
+msgid "Compact context"
+msgstr "컴팩트한 컨텍스트"
+
+#: lib/marshall_web/live/threads_live.ex:1278
+#, elixir-autogen, elixir-format
+msgid "Compaction could not reduce this context. Reduce required instructions or start a focused thread."
+msgstr "압축은 이 컨텍스트를 줄일 수 없습니다. 필요한 지침을 줄이거나 집중적인 스레드를 시작하세요."
+
+#: lib/marshall_web/live/threads_live.ex:2600
+#, elixir-autogen, elixir-format
+msgid "Composer help"
+msgstr "작곡가 도움말"
+
+#: lib/marshall_web/live/threads_live.ex:2360
+#, elixir-autogen, elixir-format
+msgid "Context bytes"
+msgstr "컨텍스트 바이트"
+
+#: lib/marshall_web/live/agent_threads_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Context captured"
+msgstr "컨텍스트를 저장했습니다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Context compacted"
+msgstr "컨텍스트를 압축했습니다"
+
+#: lib/marshall_web/live/threads_live.ex:649
+#, elixir-autogen, elixir-format
+msgid "Context compaction queued."
+msgstr "컨텍스트 압축이 대기 중입니다."
+
+#: lib/marshall_web/live/threads_live.ex:2345
+#, elixir-autogen, elixir-format
+msgid "Context details are unavailable. The thread may still be preparing its workspace."
+msgstr "컨텍스트 세부정보를 사용할 수 없습니다. 스레드가 아직 작업 공간을 준비하는 중일 수 있습니다."
+
+#: lib/marshall_web/live/threads_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "Context reload queued."
+msgstr "컨텍스트 다시 로드가 대기 중입니다."
+
+#: lib/marshall_web/live/threads_live.ex:2071
+#, elixir-autogen, elixir-format
+msgid "Continue the work…"
+msgstr "작업을 계속하세요…"
+
+#: lib/marshall_web/live/agent_threads_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Could not create a child thread."
+msgstr "하위 스레드를 생성할 수 없습니다."
+
+#: lib/marshall_web/live/agent_threads_live.ex:197
+#, elixir-autogen, elixir-format
+msgid "Create child"
+msgstr "자식 만들기"
+
+#: lib/marshall_web/live/threads_live.ex:1433
+#, elixir-autogen, elixir-format
+msgid "Create thread"
+msgstr "스레드 생성"
+
+#: lib/marshall_web/live/threads_live.ex:2685
+#, elixir-autogen, elixir-format
+msgid "Delegated a task"
+msgstr "작업을 위임함"
+
+#: lib/marshall_web/live/threads_live.ex:1859
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "삭제"
+
+#: lib/marshall_web/live/threads_live.ex:1665
+#, elixir-autogen, elixir-format
+msgid "Deleting"
+msgstr "삭제 중"
+
+#: lib/marshall_web/live/threads_live.ex:1374
+#, elixir-autogen, elixir-format
+msgid "Describe a task. Your agent gets a machine and gets to work."
+msgstr "작업을 설명하세요. 에이전트가 기계를 가져와 작업을 시작합니다."
+
+#: lib/marshall_web/live/threads_live.ex:2472
+#, elixir-autogen, elixir-format
+msgid "Disable"
+msgstr "장애를 입히다"
+
+#: lib/marshall_web/live/threads_live.ex:2419
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "장애가 있는"
+
+#: lib/marshall_web/live/threads_live.ex:1470
+#, elixir-autogen, elixir-format
+msgid "Disk (GiB)"
+msgstr "디스크(GiB)"
+
+#: lib/marshall_web/live/threads_live.ex:2473
+#, elixir-autogen, elixir-format
+msgid "Enable"
+msgstr "할 수 있게 하다"
+
+#: lib/marshall_web/live/threads_live.ex:1664
+#: lib/marshall_web/live/threads_live.ex:2632
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "실패한"
+
+#: lib/marshall_web/live/threads_live.ex:2279
+#, elixir-autogen, elixir-format
+msgid "Find a command"
+msgstr "명령 찾기"
+
+#: lib/marshall_web/live/threads_live.ex:1557
+#: lib/marshall_web/live/threads_live.ex:1708
+#, elixir-autogen, elixir-format
+msgid "Find a task…"
+msgstr "작업 찾기…"
+
+#: lib/marshall_web/live/threads_live.ex:1611
+#: lib/marshall_web/live/threads_live.ex:1929
+#, elixir-autogen, elixir-format
+msgid "First page"
+msgstr "첫 페이지"
+
+#: lib/marshall_web/live/threads_live.ex:1170
+#, elixir-autogen, elixir-format
+msgid "Generation %{value1} (%{value2})"
+msgstr "세대 %{value1} (%{value2})"
+
+#: lib/marshall_web/live/threads_live.ex:1531
+#, elixir-autogen, elixir-format
+msgid "Give your agent a task. Follow the work here."
+msgstr "에이전트에게 작업을 부여하세요. 여기에서 작업을 따르십시오."
+
+#: lib/marshall_web/live/threads_live.ex:1530
+#, elixir-autogen, elixir-format
+msgid "Good work starts with a thread."
+msgstr "좋은 작업은 스레드에서 시작됩니다."
+
+#: lib/marshall_web/live/threads_live.ex:1419
+#, elixir-autogen, elixir-format
+msgid "High"
+msgstr "높은"
+
+#: lib/marshall_web/live/threads_live.ex:2624
+#, elixir-autogen, elixir-format
+msgid "High gives difficult work more reasoning time."
+msgstr "높으면 어려운 작업에 더 많은 추론 시간이 제공됩니다."
+
+#: lib/marshall_web/live/threads_live.ex:1451
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "영상"
+
+#: lib/marshall_web/live/threads_live.ex:2192
+#, elixir-autogen, elixir-format
+msgid "Implement plan"
+msgstr "계획 실행"
+
+#: lib/marshall_web/live/threads_live.ex:1256
+#, elixir-autogen, elixir-format
+msgid "Implementation has already started for this plan."
+msgstr "이 계획의 구현은 이미 시작되었습니다."
+
+#: lib/marshall_web/live/threads_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "Implementation queued."
+msgstr "구현이 대기 중입니다."
+
+#: lib/marshall_web/live/threads_live.ex:2178
+#, elixir-autogen, elixir-format
+msgid "Implementation started"
+msgstr "구현 시작"
+
+#: lib/marshall_web/live/threads_live.ex:2355
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "입력 토큰"
+
+#: lib/marshall_web/live/threads_live.ex:2489
+#, elixir-autogen, elixir-format
+msgid "Install a skill"
+msgstr "스킬을 설치하세요"
+
+#: lib/marshall_web/live/threads_live.ex:2513
+#, elixir-autogen, elixir-format
+msgid "Install skill"
+msgstr "스킬 설치"
+
+#: lib/marshall_web/live/threads_live.ex:2512
+#, elixir-autogen, elixir-format
+msgid "Installing…"
+msgstr "설치 중…"
+
+#: lib/marshall_web/live/threads_live.ex:2365
+#, elixir-autogen, elixir-format
+msgid "Loaded sources"
+msgstr "로드된 소스"
+
+#: lib/marshall_web/live/threads_live.ex:1417
+#, elixir-autogen, elixir-format
+msgid "Low"
+msgstr "낮은"
+
+#: lib/marshall_web/live/threads_live.ex:2623
+#, elixir-autogen, elixir-format
+msgid "Low is for small, well-defined tasks."
+msgstr "낮음은 작고 잘 정의된 작업에 적합합니다."
+
+#: lib/marshall_web/live/threads_live.ex:1991
+#, elixir-autogen, elixir-format
+msgid "Machine generations"
+msgstr "기계 세대"
+
+#: lib/marshall_web/live/agent_threads_live.ex:89
+#, elixir-autogen, elixir-format
+msgid "Machine or agent access is no longer available."
+msgstr "더 이상 머신이나 에이전트에 액세스할 수 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1445
+#, elixir-autogen, elixir-format
+msgid "Machine profile"
+msgstr "기계 프로필"
+
+#: lib/marshall_web/live/threads_live.ex:1438
+#, elixir-autogen, elixir-format
+msgid "Machine settings"
+msgstr "기계 설정"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Machine:"
+msgstr "기계:"
+
+#: lib/marshall_web/live/agent_threads_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Maintenance finished"
+msgstr "유지 관리가 완료되었습니다"
+
+#: lib/marshall_web/live/threads_live.ex:2434
+#, elixir-autogen, elixir-format
+msgid "Managed installations"
+msgstr "관리형 설치"
+
+#: lib/marshall_web/live/threads_live.ex:2422
+#: lib/marshall_web/live/threads_live.ex:2569
+#, elixir-autogen, elixir-format
+msgid "Managed skill"
+msgstr "관리되는 기술"
+
+#: lib/marshall_web/live/threads_live.ex:369
+#, elixir-autogen, elixir-format
+msgid "Managed skill removed."
+msgstr "관리 스킬이 삭제되었습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1963
+#: lib/marshall_web/live/threads_live.ex:2702
+#, elixir-autogen, elixir-format
+msgid "Manager"
+msgstr "관리자"
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:67
+#, elixir-autogen, elixir-format
+msgid "Match this request code with your terminal before approving:"
+msgstr "승인하기 전에 이 요청 코드를 단말기와 일치시키세요."
+
+#: lib/marshall_web/live/threads_live.ex:1418
+#, elixir-autogen, elixir-format
+msgid "Medium"
+msgstr "중간"
+
+#: lib/marshall_web/live/threads_live.ex:2626
+#, elixir-autogen, elixir-format
+msgid "Medium is a good starting point for most work."
+msgstr "매체는 대부분의 작업에 좋은 시작점입니다."
+
+#: lib/marshall_web/live/threads_live.ex:1464
+#, elixir-autogen, elixir-format
+msgid "Memory (MiB)"
+msgstr "메모리(MiB)"
+
+#: lib/marshall_web/live/threads_live.ex:2070
+#, elixir-autogen, elixir-format
+msgid "Message"
+msgstr "메시지"
+
+#: lib/marshall_web/live/threads_live.ex:1690
+#, elixir-autogen, elixir-format
+msgid "Mine"
+msgstr "내 거"
+
+#: lib/marshall_web/live/threads_live.ex:1407
+#, elixir-autogen, elixir-format
+msgid "Mode"
+msgstr "방법"
+
+#: lib/marshall_web/live/threads_live.ex:1286
+#, elixir-autogen, elixir-format
+msgid "More than one skill has this name. Select its exact source from Skills."
+msgstr "둘 이상의 스킬에 이 이름이 있습니다. 스킬에서 정확한 소스를 선택하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1363
+#: lib/marshall_web/live/threads_live.ex:1365
+#: lib/marshall_web/live/threads_live.ex:1532
+#, elixir-autogen, elixir-format
+msgid "New thread"
+msgstr "새 스레드"
+
+#: lib/marshall_web/live/threads_live.ex:1618
+#: lib/marshall_web/live/threads_live.ex:1935
+#, elixir-autogen, elixir-format
+msgid "Next page"
+msgstr "다음 페이지"
+
+#: lib/marshall_web/live/threads_live.ex:1727
+#, elixir-autogen, elixir-format
+msgid "No activity matches this filter."
+msgstr "이 필터와 일치하는 활동이 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1921
+#, elixir-autogen, elixir-format
+msgid "No individual thread grants yet."
+msgstr "아직 개별 스레드 부여가 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:2367
+#, elixir-autogen, elixir-format
+msgid "No instruction sources collected yet."
+msgstr "아직 수집된 지침 소스가 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:2555
+#, elixir-autogen, elixir-format
+msgid "No matching skills. Use /skills to inspect the catalog."
+msgstr "어울리는 스킬이 없습니다. /skills를 사용하여 카탈로그를 검사하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1541
+#, elixir-autogen, elixir-format
+msgid "No older threads are available on this page."
+msgstr "이 페이지에는 이전 스레드가 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1582
+#, elixir-autogen, elixir-format
+msgid "No recent threads match your search."
+msgstr "검색어와 일치하는 최근 스레드가 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:2407
+#, elixir-autogen, elixir-format
+msgid "No skills were discovered in this workspace."
+msgstr "이 작업공간에서는 기술이 발견되지 않았습니다."
+
+#: lib/marshall_web/live/threads_live.ex:2354
+#, elixir-autogen, elixir-format
+msgid "Not collected yet"
+msgstr "아직 수집되지 않음"
+
+#: lib/marshall_web/live/threads_live.ex:1388
+#: lib/marshall_web/live/threads_live.ex:2226
+#, elixir-autogen, elixir-format
+msgid "Objective"
+msgstr "목적"
+
+#: lib/marshall_web/live/threads_live.ex:2691
+#, elixir-autogen, elixir-format
+msgid "Older context summarized"
+msgstr "이전 컨텍스트 요약"
+
+#: lib/marshall_web/live/threads_live.ex:1487
+#, elixir-autogen, elixir-format
+msgid "One task. One thread."
+msgstr "하나의 작업. 하나의 스레드."
+
+#: lib/marshall_web/live/threads_live.ex:1844
+#, elixir-autogen, elixir-format
+msgid "Open VS Code"
+msgstr "VS 코드 열기"
+
+#: lib/marshall_web/live/threads_live.ex:1446
+#, elixir-autogen, elixir-format
+msgid "Open source"
+msgstr "오픈 소스"
+
+#: lib/marshall_web/live/threads_live.ex:1815
+#, elixir-autogen, elixir-format
+msgid "Open terminal"
+msgstr "터미널 열기"
+
+#: lib/marshall_web/live/threads_live.ex:1824
+#, elixir-autogen, elixir-format
+msgid "Open terminal here"
+msgstr "여기에서 터미널을 엽니다."
+
+#: lib/marshall_web/live/threads_live.ex:1962
+#: lib/marshall_web/live/threads_live.ex:2701
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "연산자"
+
+#: lib/marshall_web/live/threads_live.ex:1895
+#, elixir-autogen, elixir-format
+msgid "Owner · cannot be changed"
+msgstr "소유자 · 변경할 수 없음"
+
+#: lib/marshall_web/live/threads_live.ex:1679
+#, elixir-autogen, elixir-format
+msgid "Past 30 days"
+msgstr "지난 30일"
+
+#: lib/marshall_web/live/threads_live.ex:1678
+#, elixir-autogen, elixir-format
+msgid "Past 7 days"
+msgstr "지난 7일"
+
+#: lib/marshall_web/live/threads_live.ex:1661
+#: lib/marshall_web/live/threads_live.ex:2629
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "보류 중"
+
+#: lib/marshall_web/live/threads_live.ex:1518
+#, elixir-autogen, elixir-format
+msgid "Pick up where you left off."
+msgstr "중단한 부분부터 다시 시작하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1408
+#: lib/marshall_web/live/threads_live.ex:2594
+#, elixir-autogen, elixir-format
+msgid "Plan"
+msgstr "계획"
+
+#: lib/marshall_web/live/agent_threads_live.ex:123
+#, elixir-autogen, elixir-format
+msgid "Plan proposed"
+msgstr "계획을 제안했습니다"
+
+#: lib/marshall_web/live/threads_live.ex:2639
+#, elixir-autogen, elixir-format
+msgid "Preparing a machine for this task"
+msgstr "이 작업을 위한 기계 준비"
+
+#: lib/marshall_web/live/threads_live.ex:2029
+#, elixir-autogen, elixir-format
+msgid "Preparing your workspace"
+msgstr "작업 공간 준비"
+
+#: lib/marshall_web/live/agent_threads_live.ex:110
+#: lib/marshall_web/live/agent_threads_live.ex:217
+#: lib/marshall_web/live/threads_live.ex:2646
+#, elixir-autogen, elixir-format
+msgid "Prompt"
+msgstr "즉각적인"
+
+#: lib/marshall_web/live/agent_threads_live.ex:49
+#: lib/marshall_web/live/threads_live.ex:614
+#, elixir-autogen, elixir-format
+msgid "Prompt queued."
+msgstr "프롬프트가 대기 중입니다."
+
+#: lib/marshall_web/live/agent_threads_live.ex:163
+#, elixir-autogen, elixir-format
+msgid "Prompts wake a stopped machine when you have write access."
+msgstr "쓰기 액세스 권한이 있으면 중지된 시스템을 깨우라는 메시지가 표시됩니다."
+
+#: lib/marshall_web/live/threads_live.ex:2175
+#, elixir-autogen, elixir-format
+msgid "Proposed plan"
+msgstr "제안된 계획"
+
+#: lib/marshall_web/live/threads_live.ex:1662
+#: lib/marshall_web/live/threads_live.ex:2630
+#, elixir-autogen, elixir-format
+msgid "Provisioning"
+msgstr "프로비저닝"
+
+#: lib/marshall_web/live/threads_live.ex:2038
+#, elixir-autogen, elixir-format
+msgid "Provisioning needs attention."
+msgstr "프로비저닝에 주의가 필요합니다."
+
+#: lib/marshall_web/live/threads_live.ex:378
+#, elixir-autogen, elixir-format
+msgid "Provisioning will retry."
+msgstr "프로비저닝이 다시 시도됩니다."
+
+#: lib/marshall_web/live/agent_threads_live.ex:121
+#, elixir-autogen, elixir-format
+msgid "Questions answered"
+msgstr "질문에 답변했습니다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Questions cancelled"
+msgstr "질문을 취소했습니다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:120
+#, elixir-autogen, elixir-format
+msgid "Questions requested"
+msgstr "질문을 요청했습니다"
+
+#: lib/marshall_web/live/threads_live.ex:2667
+#, elixir-autogen, elixir-format
+msgid "Queued: %{tools}"
+msgstr "대기 중: %{tools}"
+
+#: lib/marshall_web/live/threads_live.ex:1663
+#: lib/marshall_web/live/threads_live.ex:2631
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "준비가 된"
+
+#: lib/marshall_web/live/threads_live.ex:1415
+#, elixir-autogen, elixir-format
+msgid "Reasoning"
+msgstr "추리"
+
+#: lib/marshall_web/live/threads_live.ex:1516
+#, elixir-autogen, elixir-format
+msgid "Recent threads"
+msgstr "최근 스레드"
+
+#: lib/marshall_web/live/threads_live.ex:1953
+#, elixir-autogen, elixir-format
+msgid "Registered email"
+msgstr "등록된 이메일"
+
+#: lib/marshall_web/live/threads_live.ex:2388
+#, elixir-autogen, elixir-format
+msgid "Reload context"
+msgstr "컨텍스트 다시 로드"
+
+#: lib/marshall_web/live/threads_live.ex:2479
+#: lib/marshall_web/live/threads_live.ex:2584
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "제거하다"
+
+#: lib/marshall_web/live/threads_live.ex:2583
+#, elixir-autogen, elixir-format
+msgid "Remove %{skill}"
+msgstr "%{skill} 제거"
+
+#: lib/marshall_web/live/threads_live.ex:1866
+#, elixir-autogen, elixir-format
+msgid "Reopen"
+msgstr "다시 열다"
+
+#: lib/marshall_web/live/threads_live.ex:1993
+#, elixir-autogen, elixir-format
+msgid "Reopened machines keep their earlier transcripts. Select one to read it."
+msgstr "다시 열린 머신은 이전 기록을 유지합니다. 읽으려면 하나를 선택하세요."
+
+#: lib/marshall_web/live/threads_live.ex:2495
+#, elixir-autogen, elixir-format
+msgid "Repository URL"
+msgstr "저장소 URL"
+
+#: lib/marshall_web/live/agent_threads_live.ex:113
+#: lib/marshall_web/live/threads_live.ex:2656
+#, elixir-autogen, elixir-format
+msgid "Response received"
+msgstr "응답을 받았습니다"
+
+#: lib/marshall_web/live/threads_live.ex:2044
+#, elixir-autogen, elixir-format
+msgid "Retry"
+msgstr "다시 해 보다"
+
+#: lib/marshall_web/live/threads_live.ex:1487
+#, elixir-autogen, elixir-format
+msgid "Return to the conversation whenever you need."
+msgstr "필요할 때마다 대화로 돌아가세요."
+
+#: lib/marshall_web/live/threads_live.ex:2200
+#, elixir-autogen, elixir-format
+msgid "Revise"
+msgstr "개정하다"
+
+#: lib/marshall_web/live/threads_live.ex:2501
+#, elixir-autogen, elixir-format
+msgid "Revision (optional)"
+msgstr "개정(선택사항)"
+
+#: lib/marshall_web/live/threads_live.ex:1964
+#, elixir-autogen, elixir-format
+msgid "Revoke thread grant"
+msgstr "스레드 부여 취소"
+
+#: lib/marshall_web/live/threads_live.ex:2703
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "취소됨"
+
+#: lib/marshall_web/live/threads_live.ex:1959
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "역할"
+
+#: lib/marshall_web/live/threads_live.ex:1971
+#, elixir-autogen, elixir-format
+msgid "Save access"
+msgstr "액세스 저장"
+
+#: lib/marshall_web/live/threads_live.ex:1970
+#, elixir-autogen, elixir-format
+msgid "Saving…"
+msgstr "절약…"
+
+#: lib/marshall_web/live/threads_live.ex:1687
+#, elixir-autogen, elixir-format
+msgid "Scope"
+msgstr "범위"
+
+#: lib/marshall_web/live/threads_live.ex:1707
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "찾다"
+
+#: lib/marshall_web/live/threads_live.ex:1555
+#, elixir-autogen, elixir-format
+msgid "Search recent threads"
+msgstr "최근 스레드 검색"
+
+#: lib/marshall_web/live/threads_live.ex:1556
+#, elixir-autogen, elixir-format
+msgid "Searches this page of threads."
+msgstr "이 스레드 페이지를 검색합니다."
+
+#: lib/marshall_web/live/threads_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Select this skill from the workspace catalog when the machine starts."
+msgstr "머신이 시작될 때 작업공간 카탈로그에서 이 스킬을 선택하십시오."
+
+#: lib/marshall_web/live/threads_live.ex:2109
+#, elixir-autogen, elixir-format
+msgid "Send"
+msgstr "보내다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Send prompt"
+msgstr "프롬프트 보내기"
+
+#: lib/marshall_web/live/agent_threads_live.ex:225
+#: lib/marshall_web/live/threads_live.ex:2107
+#, elixir-autogen, elixir-format
+msgid "Sending…"
+msgstr "배상…"
+
+#: lib/marshall_web/live/threads_live.ex:1807
+#, elixir-autogen, elixir-format
+msgid "Share"
+msgstr "공유하다"
+
+#: lib/marshall_web/live/threads_live.ex:1876
+#, elixir-autogen, elixir-format
+msgid "Share this thread"
+msgstr "이 스레드를 공유하세요"
+
+#: lib/marshall_web/live/threads_live.ex:1691
+#, elixir-autogen, elixir-format
+msgid "Shared with me"
+msgstr "나와 공유됨"
+
+#: lib/marshall_web/live/threads_live.ex:1304
+#, elixir-autogen, elixir-format
+msgid "Sharing is not available for this thread's machine profile."
+msgstr "이 스레드의 컴퓨터 프로필에는 공유할 수 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1566
+#, elixir-autogen, elixir-format
+msgid "Show"
+msgstr "보여주다"
+
+#: lib/marshall_web/live/threads_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Skill availability updated."
+msgstr "스킬 가용성이 업데이트되었습니다."
+
+#: lib/marshall_web/live/threads_live.ex:2506
+#, elixir-autogen, elixir-format
+msgid "Skill directory"
+msgstr "스킬 디렉토리"
+
+#: lib/marshall_web/live/threads_live.ex:323
+#, elixir-autogen, elixir-format
+msgid "Skill installation queued."
+msgstr "스킬 설치가 대기 중입니다."
+
+#: lib/marshall_web/live/threads_live.ex:2552
+#, elixir-autogen, elixir-format
+msgid "Skill suggestions"
+msgstr "기술 제안"
+
+#: lib/marshall_web/live/threads_live.ex:334
+#: lib/marshall_web/live/threads_live.ex:346
+#, elixir-autogen, elixir-format
+msgid "Skill update queued."
+msgstr "스킬 업데이트가 대기 중입니다."
+
+#: lib/marshall_web/live/threads_live.ex:2599
+#, elixir-autogen, elixir-format
+msgid "Skills"
+msgstr "기술"
+
+#: lib/marshall_web/live/threads_live.ex:2399
+#, elixir-autogen, elixir-format
+msgid "Skills add reusable instructions to a task. Choose the source you intend to use."
+msgstr "기술은 작업에 재사용 가능한 지침을 추가합니다. 사용하려는 소스를 선택하세요."
+
+#: lib/marshall_web/live/threads_live.ex:2404
+#, elixir-autogen, elixir-format
+msgid "Skills are unavailable until the workspace context has been collected."
+msgstr "작업공간 컨텍스트가 수집될 때까지 기술을 사용할 수 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1446
+#, elixir-autogen, elixir-format
+msgid "Standard"
+msgstr "기준"
+
+#: lib/marshall_web/live/threads_live.ex:2338
+#, elixir-autogen, elixir-format
+msgid "Start with a space to send slash-looking text literally. Type $ to choose a skill by its exact source."
+msgstr "슬래시 모양의 텍스트를 문자 그대로 보내려면 공백으로 시작하세요. 정확한 소스별로 기술을 선택하려면 $를 입력합니다."
+
+#: lib/marshall_web/live/threads_live.ex:1431
+#, elixir-autogen, elixir-format
+msgid "Starting…"
+msgstr "시작 중…"
+
+#: lib/marshall_web/live/threads_live.ex:1658
+#: lib/marshall_web/live/threads_live.ex:2351
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "상태"
+
+#: lib/marshall_web/live/threads_live.ex:2161
+#, elixir-autogen, elixir-format
+msgid "Submit answers"
+msgstr "답변 제출"
+
+#: lib/marshall_web/live/threads_live.ex:2160
+#, elixir-autogen, elixir-format
+msgid "Submitting…"
+msgstr "제출 중…"
+
+#: lib/marshall_web/live/threads_live.ex:1699
+#, elixir-autogen, elixir-format
+msgid "Team"
+msgstr "팀"
+
+#: lib/marshall_web/live/threads_live.ex:1108
+#, elixir-autogen, elixir-format
+msgid "Team %{team}"
+msgstr "팀 %{team}"
+
+#: lib/marshall_web/live/threads_live.ex:1457
+#, elixir-autogen, elixir-format
+msgid "Team (optional)"
+msgstr "팀(선택사항)"
+
+#: lib/marshall_web/live/threads_live.ex:1458
+#, elixir-autogen, elixir-format
+msgid "Team ID"
+msgstr "팀 ID"
+
+#: lib/marshall_web/live/threads_live.ex:1298
+#, elixir-autogen, elixir-format
+msgid "That email does not belong to a registered account."
+msgstr "해당 이메일은 등록된 계정에 속하지 않습니다."
+
+#: lib/marshall_web/live/agent_threads_live.ex:118
+#: lib/marshall_web/live/agent_threads_live.ex:138
+#: lib/marshall_web/live/threads_live.ex:2687
+#, elixir-autogen, elixir-format
+msgid "The agent encountered a problem"
+msgstr "상담원에게 문제가 발생했습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1274
+#, elixir-autogen, elixir-format
+msgid "The current context exceeds the model allowance. Compact it or reduce the message."
+msgstr "현재 컨텍스트가 모델 허용치를 초과합니다. 압축하거나 메시지를 줄이세요."
+
+#: lib/marshall_web/live/threads_live.ex:1634
+#, elixir-autogen, elixir-format
+msgid "The latest state of your threads."
+msgstr "스레드의 최신 상태입니다."
+
+#: lib/marshall_web/live/agent_threads_live.ex:54
+#, elixir-autogen, elixir-format
+msgid "The machine or your access is no longer available."
+msgstr "해당 기계 또는 귀하의 접근이 더 이상 불가능합니다."
+
+#: lib/marshall_web/live/threads_live.ex:1253
+#: lib/marshall_web/live/threads_live.ex:1255
+#, elixir-autogen, elixir-format
+msgid "The plan has changed. Review the latest proposal before continuing."
+msgstr "계획이 변경되었습니다. 계속하기 전에 최신 제안을 검토하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1270
+#, elixir-autogen, elixir-format
+msgid "The required instructions and current message do not fit. Reduce them and try again."
+msgstr "필수 지침과 현재 메시지가 맞지 않습니다. 이를 줄이고 다시 시도해 보세요."
+
+#: lib/marshall_web/live/threads_live.ex:1284
+#, elixir-autogen, elixir-format
+msgid "The skill operation failed. The previous installed revision remains available."
+msgstr "스킬작전이 실패했습니다. 이전에 설치된 개정판은 계속 사용할 수 있습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1314
+#, elixir-autogen, elixir-format
+msgid "The thread operation could not be completed."
+msgstr "스레드 작업을 완료할 수 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1299
+#, elixir-autogen, elixir-format
+msgid "The thread owner's access cannot be changed."
+msgstr "스레드 소유자의 액세스 권한은 변경할 수 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:2219
+#, elixir-autogen, elixir-format
+msgid "The transcript is temporarily unavailable. Try again shortly."
+msgstr "일시적으로 스크립트를 사용할 수 없습니다. 잠시 후 다시 시도하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1281
+#, elixir-autogen, elixir-format
+msgid "There is no older context to compact yet."
+msgstr "아직 압축할 이전 컨텍스트가 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1293
+#, elixir-autogen, elixir-format
+msgid "There is not enough capacity for this machine right now."
+msgstr "현재 이 컴퓨터의 용량이 충분하지 않습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1261
+#, elixir-autogen, elixir-format
+msgid "These questions are no longer waiting for an answer."
+msgstr "이러한 질문은 더 이상 답변을 기다리지 않습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1262
+#, elixir-autogen, elixir-format
+msgid "These questions have already been answered."
+msgstr "이러한 질문은 이미 답변되었습니다."
+
+#: lib/marshall_web/live/agent_cli_approval_live.ex:49
+#, elixir-autogen, elixir-format
+msgid "This agent CLI approval is unavailable. Start again in your terminal."
+msgstr "이 에이전트 CLI 승인을 사용할 수 없습니다. 터미널에서 다시 시작하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1246
+#, elixir-autogen, elixir-format
+msgid "This command does not accept a task. Your draft has been kept."
+msgstr "이 명령은 작업을 허용하지 않습니다. 초안이 보관되었습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1252
+#, elixir-autogen, elixir-format
+msgid "This command needs a ready thread and current write access."
+msgstr "이 명령에는 준비된 스레드와 현재 쓰기 액세스가 필요합니다."
+
+#: lib/marshall_web/live/threads_live.ex:1301
+#, elixir-autogen, elixir-format
+msgid "This request was already used for a different change. Reload this page and try again."
+msgstr "이 요청은 이미 다른 변경에 사용되었습니다. 이 페이지를 새로고침하고 다시 시도하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1295
+#, elixir-autogen, elixir-format
+msgid "This thread could not be found."
+msgstr "이 스레드를 찾을 수 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1294
+#, elixir-autogen, elixir-format
+msgid "This thread is not archived."
+msgstr "이 스레드는 보관되지 않습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1291
+#, elixir-autogen, elixir-format
+msgid "This thread is still provisioning."
+msgstr "이 스레드는 아직 프로비저닝 중입니다."
+
+#: lib/marshall_web/live/threads_live.ex:1296
+#, elixir-autogen, elixir-format
+msgid "This thread is temporarily unavailable. Try again shortly."
+msgstr "이 스레드를 일시적으로 사용할 수 없습니다. 잠시 후 다시 시도하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1768
+#, elixir-autogen, elixir-format
+msgid "This thread may have been deleted or the link is invalid."
+msgstr "이 스레드는 삭제되었거나 링크가 유효하지 않습니다."
+
+#: lib/marshall_web/live/agent_threads_live.ex:134
+#, elixir-autogen, elixir-format
+msgid "This tool is not available for the machine profile."
+msgstr "이 도구는 기계 프로필에는 사용할 수 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1877
+#, elixir-autogen, elixir-format
+msgid "Thread access also applies to its machine. Separate machine grants and team access are managed independently."
+msgstr "스레드 액세스는 해당 머신에도 적용됩니다. 별도의 머신 부여 및 팀 액세스는 독립적으로 관리됩니다."
+
+#: lib/marshall_web/live/threads_live.ex:502
+#, elixir-autogen, elixir-format
+msgid "Thread access updated."
+msgstr "스레드 액세스가 업데이트되었습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1852
+#, elixir-autogen, elixir-format
+msgid "Thread actions"
+msgstr "스레드 작업"
+
+#: lib/marshall_web/live/threads_live.ex:2598
+#, elixir-autogen, elixir-format
+msgid "Thread context"
+msgstr "스레드 컨텍스트"
+
+#: lib/marshall_web/live/threads_live.ex:410
+#, elixir-autogen, elixir-format
+msgid "Thread deletion requested."
+msgstr "스레드 삭제를 요청했습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1767
+#, elixir-autogen, elixir-format
+msgid "Thread not found"
+msgstr "스레드를 찾을 수 없습니다"
+
+#: lib/marshall_web/live/threads_live.ex:425
+#, elixir-autogen, elixir-format
+msgid "Thread reopened; provisioning a new machine."
+msgstr "스레드가 다시 열렸습니다. 새 머신을 프로비저닝합니다."
+
+#: lib/marshall_web/live/threads_live.ex:1773
+#, elixir-autogen, elixir-format
+msgid "Thread temporarily unavailable"
+msgstr "일시적으로 스레드를 사용할 수 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1832
+#, elixir-autogen, elixir-format
+msgid "Thread terminal"
+msgstr "스레드 터미널"
+
+#: lib/marshall_web/live/threads_live.ex:1761
+#, elixir-autogen, elixir-format
+msgid "Thread unavailable"
+msgstr "스레드를 사용할 수 없음"
+
+#: lib/marshall_web/live/agent_threads_live.ex:127
+#: lib/marshall_web/live/agent_threads_live.ex:141
+#: lib/marshall_web/live/threads_live.ex:2693
+#, elixir-autogen, elixir-format
+msgid "Thread updated"
+msgstr "스레드가 업데이트되었습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1354
+#, elixir-autogen, elixir-format
+msgid "Thread views"
+msgstr "스레드 보기"
+
+#: lib/marshall_web/live/agent_threads_live.ex:170
+#: lib/marshall_web/live/agent_threads_live.ex:173
+#: lib/marshall_web/live/threads_live.ex:21
+#: lib/marshall_web/live/threads_live.ex:1356
+#: lib/marshall_web/live/threads_live.ex:1506
+#, elixir-autogen, elixir-format
+msgid "Threads"
+msgstr "스레드"
+
+#: lib/marshall_web/live/threads_live.ex:1527
+#: lib/marshall_web/live/threads_live.ex:1720
+#, elixir-autogen, elixir-format
+msgid "Threads are temporarily unavailable. Try again shortly."
+msgstr "스레드를 일시적으로 사용할 수 없습니다. 잠시 후 다시 시도하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1677
+#, elixir-autogen, elixir-format
+msgid "Today"
+msgstr "오늘"
+
+#: lib/marshall_web/live/threads_live.ex:2358
+#, elixir-autogen, elixir-format
+msgid "Token allowance"
+msgstr "토큰 수당"
+
+#: lib/marshall_web/live/threads_live.ex:2676
+#, elixir-autogen, elixir-format
+msgid "Tool cancelled"
+msgstr "도구가 취소되었습니다."
+
+#: lib/marshall_web/live/threads_live.ex:2679
+#, elixir-autogen, elixir-format
+msgid "Tool completed"
+msgstr "도구 완료"
+
+#: lib/marshall_web/live/threads_live.ex:2673
+#, elixir-autogen, elixir-format
+msgid "Tool failed"
+msgstr "도구 실패"
+
+#: lib/marshall_web/live/threads_live.ex:2682
+#, elixir-autogen, elixir-format
+msgid "Tool outcome uncertain"
+msgstr "도구 결과가 불확실함"
+
+#: lib/marshall_web/live/agent_threads_live.ex:115
+#: lib/marshall_web/live/agent_threads_live.ex:140
+#: lib/marshall_web/live/threads_live.ex:2684
+#, elixir-autogen, elixir-format
+msgid "Tool result received"
+msgstr "도구 결과 수신됨"
+
+#: lib/marshall_web/live/agent_threads_live.ex:114
+#: lib/marshall_web/live/agent_threads_live.ex:139
+#: lib/marshall_web/live/threads_live.ex:2666
+#: lib/marshall_web/live/threads_live.ex:2670
+#, elixir-autogen, elixir-format
+msgid "Tools queued"
+msgstr "대기열에 있는 도구"
+
+#: lib/marshall_web/live/threads_live.ex:2010
+#, elixir-autogen, elixir-format
+msgid "Transcript"
+msgstr "성적 증명서"
+
+#: lib/marshall_web/live/threads_live.ex:1774
+#, elixir-autogen, elixir-format
+msgid "Try again shortly."
+msgstr "잠시 후 다시 시도하세요."
+
+#: lib/marshall_web/live/agent_threads_live.ex:117
+#: lib/marshall_web/live/agent_threads_live.ex:137
+#: lib/marshall_web/live/threads_live.ex:2686
+#, elixir-autogen, elixir-format
+msgid "Turn complete"
+msgstr "회전 완료"
+
+#: lib/marshall_web/live/threads_live.ex:1420
+#, elixir-autogen, elixir-format
+msgid "Ultra"
+msgstr "극단론자"
+
+#: lib/marshall_web/live/threads_live.ex:2625
+#, elixir-autogen, elixir-format
+msgid "Ultra is for complex, open-ended work."
+msgstr "Ultra는 복잡하고 개방적인 작업을 위한 것입니다."
+
+#: lib/marshall_web/live/threads_live.ex:2635
+#: lib/marshall_web/live/threads_live.ex:2704
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "알려지지 않은"
+
+#: lib/marshall_web/live/threads_live.ex:1242
+#, elixir-autogen, elixir-format
+msgid "Unknown command. Open Commands to choose one, or start with a space to send literal text."
+msgstr "알 수 없는 명령입니다. 명령을 열어 하나를 선택하거나 공백으로 시작하여 리터럴 텍스트를 보내세요."
+
+#: lib/marshall_web/live/threads_live.ex:1282
+#, elixir-autogen, elixir-format
+msgid "Unpin this thread's machine before deleting it."
+msgstr "이 스레드를 삭제하기 전에 해당 스레드의 컴퓨터를 고정 해제하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1592
+#: lib/marshall_web/live/threads_live.ex:1745
+#: lib/marshall_web/live/threads_live.ex:1782
+#, elixir-autogen, elixir-format
+msgid "Untitled thread"
+msgstr "제목 없는 스레드"
+
+#: lib/marshall_web/live/threads_live.ex:2462
+#, elixir-autogen, elixir-format
+msgid "Update"
+msgstr "업데이트"
+
+#: lib/marshall_web/live/threads_live.ex:2455
+#, elixir-autogen, elixir-format
+msgid "Update revision (optional)"
+msgstr "버전 업데이트(선택사항)"
+
+#: lib/marshall_web/live/threads_live.ex:1674
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "업데이트됨"
+
+#: lib/marshall_web/live/threads_live.ex:2461
+#, elixir-autogen, elixir-format
+msgid "Updating…"
+msgstr "업데이트 중…"
+
+#: lib/marshall_web/live/threads_live.ex:2321
+#, elixir-autogen, elixir-format
+msgid "Use Commands or press Ctrl/Cmd+K while writing. Start a message with / to find a command; use Tab to complete it."
+msgstr ""
+"명령을 사용하거나 작성하는 동안 Ctrl/Cmd+K를 누르세요. 명령을 찾으려면 /로 메시지를 시작하세요. 완료하려면 Tab을 "
+"사용하세요."
+
+#: lib/marshall_web/live/threads_live.ex:2490
+#, elixir-autogen, elixir-format
+msgid "Use a public GitHub, GitLab, Codeberg or Bitbucket repository."
+msgstr "공개 GitHub, GitLab, Codeberg 또는 Bitbucket 저장소를 사용하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1945
+#, elixir-autogen, elixir-format
+msgid "Use an existing account's email to grant, change or revoke a thread role."
+msgstr "스레드 역할을 부여, 변경 또는 취소하려면 기존 계정의 이메일을 사용하십시오."
+
+#: lib/marshall_web/live/threads_live.ex:2430
+#, elixir-autogen, elixir-format
+msgid "Use this skill"
+msgstr "이 스킬을 사용하세요"
+
+#: lib/marshall_web/live/threads_live.ex:1625
+#, elixir-autogen, elixir-format
+msgid "View activity"
+msgstr "활동 보기"
+
+#: lib/marshall_web/live/threads_live.ex:1961
+#: lib/marshall_web/live/threads_live.ex:2700
+#, elixir-autogen, elixir-format
+msgid "Viewer"
+msgstr "뷰어"
+
+#: lib/marshall_web/live/threads_live.ex:1974
+#, elixir-autogen, elixir-format
+msgid "Viewers read. Operators send prompts. Managers also share and manage the thread."
+msgstr "시청자가 읽습니다. 운영자가 프롬프트를 보냅니다. 관리자도 스레드를 공유하고 관리합니다."
+
+#: lib/marshall_web/live/threads_live.ex:1248
+#: lib/marshall_web/live/threads_live.ex:1258
+#, elixir-autogen, elixir-format
+msgid "Wait for the current work or pending questions to finish before changing this setting."
+msgstr "이 설정을 변경하기 전에 현재 작업이나 대기 중인 질문이 완료될 때까지 기다리세요."
+
+#: lib/marshall_web/live/threads_live.ex:2638
+#, elixir-autogen, elixir-format
+msgid "Waiting for a workspace"
+msgstr "작업 공간을 기다리고 있습니다"
+
+#: lib/marshall_web/live/agent_threads_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "Waiting for machine"
+msgstr "머신을 기다리는 중"
+
+#: lib/marshall_web/live/threads_live.ex:2233
+#, elixir-autogen, elixir-format
+msgid "Waiting for the agent's first update."
+msgstr "에이전트의 첫 번째 업데이트를 기다리고 있습니다."
+
+#: lib/marshall_web/live/threads_live.ex:2688
+#, elixir-autogen, elixir-format
+msgid "Waiting for the machine"
+msgstr "기계를 기다리는 중"
+
+#: lib/marshall_web/live/threads_live.ex:2689
+#, elixir-autogen, elixir-format
+msgid "Waiting for your answers"
+msgstr "귀하의 답변을 기다리고 있습니다"
+
+#: lib/marshall_web/live/threads_live.ex:2699
+#, elixir-autogen, elixir-format
+msgid "Web apps"
+msgstr "웹 앱"
+
+#: lib/marshall_web/live/threads_live.ex:1372
+#, elixir-autogen, elixir-format
+msgid "What are we working on?"
+msgstr "우리는 무엇을 하고 있나요?"
+
+#: lib/marshall_web/live/threads_live.ex:1408
+#: lib/marshall_web/live/threads_live.ex:2595
+#, elixir-autogen, elixir-format
+msgid "Work"
+msgstr "일하다"
+
+#: lib/marshall_web/live/threads_live.ex:2352
+#, elixir-autogen, elixir-format
+msgid "Working directory"
+msgstr "작업 디렉토리"
+
+#: lib/marshall_web/live/threads_live.ex:1264
+#, elixir-autogen, elixir-format
+msgid "Workspace context is being collected. Try again shortly."
+msgstr "작업공간 컨텍스트를 수집하는 중입니다. 잠시 후 다시 시도하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1266
+#, elixir-autogen, elixir-format
+msgid "Workspace context is unavailable. Reload it when the machine is ready."
+msgstr "작업공간 컨텍스트를 사용할 수 없습니다. 기기가 준비되면 다시 로드하세요."
+
+#: lib/marshall_web/live/threads_live.ex:2692
+#, elixir-autogen, elixir-format
+msgid "Workspace context reloaded"
+msgstr "작업공간 컨텍스트가 다시 로드됨"
+
+#: lib/marshall_web/live/threads_live.ex:1268
+#, elixir-autogen, elixir-format
+msgid "Workspace files changed during collection. Reload context and try again."
+msgstr "수집 중에 작업공간 파일이 변경되었습니다. 컨텍스트를 다시 로드하고 다시 시도하세요."
+
+#: lib/marshall_web/live/threads_live.ex:2640
+#, elixir-autogen, elixir-format
+msgid "Workspace ready · open the conversation"
+msgstr "작업공간 준비됨 · 대화 열기"
+
+#: lib/marshall_web/live/threads_live.ex:2641
+#, elixir-autogen, elixir-format
+msgid "Workspace setup needs attention"
+msgstr "작업공간 설정에 주의가 필요함"
+
+#: lib/marshall_web/live/threads_live.ex:265
+#, elixir-autogen, elixir-format
+msgid "Workspace skill"
+msgstr "작업 공간 기술"
+
+#: lib/marshall_web/live/threads_live.ex:2374
+#, elixir-autogen, elixir-format
+msgid "Workspace source"
+msgstr "작업공간 소스"
+
+#: lib/marshall_web/live/agent_threads_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "You can read these threads. Ask for operator or manager access to send prompts."
+msgstr "이 스레드를 읽을 수 있습니다. 메시지를 보내려면 교환원이나 관리자 액세스 권한을 요청하세요."
+
+#: lib/marshall_web/live/threads_live.ex:1297
+#: lib/marshall_web/live/threads_live.ex:1762
+#, elixir-autogen, elixir-format
+msgid "You do not have access to this thread."
+msgstr "이 스레드에 액세스할 수 없습니다."
+
+#: lib/marshall_web/live/threads_live.ex:2021
+#, elixir-autogen, elixir-format
+msgid "You have read-only access to this thread."
+msgstr "이 스레드에 대한 읽기 전용 액세스 권한이 있습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1492
+#, elixir-autogen, elixir-format
+msgid "Your agent's work runs in a dedicated environment."
+msgstr "에이전트의 작업은 전용 환경에서 실행됩니다."
+
+#: lib/marshall_web/live/threads_live.ex:2153
+#, elixir-autogen, elixir-format
+msgid "Your answer or additional detail"
+msgstr "귀하의 답변 또는 추가 세부정보"
+
+#: lib/marshall_web/live/threads_live.ex:2690
+#, elixir-autogen, elixir-format
+msgid "Your answers were received"
+msgstr "귀하의 답변이 접수되었습니다"
+
+#: lib/marshall_web/live/threads_live.ex:2118
+#, elixir-autogen, elixir-format
+msgid "Your input is needed"
+msgstr "귀하의 의견이 필요합니다"
+
+#: lib/marshall_web/live/threads_live.ex:2031
+#, elixir-autogen, elixir-format
+msgid "Your machine is starting. The agent will begin with your objective as soon as it is ready."
+msgstr "기계가 시작 중입니다. 에이전트는 목표가 준비되는 즉시 시작합니다."
+
+#: lib/marshall_web/live/threads_live.ex:2041
+#, elixir-autogen, elixir-format
+msgid "Your objective is saved. Retry to prepare the workspace again."
+msgstr "목표가 저장되었습니다. 작업공간을 다시 준비해 보세요."
+
+#: lib/marshall_web/live/threads_live.ex:1515
+#, elixir-autogen, elixir-format
+msgid "Your threads"
+msgstr "당신의 스레드"
+
+#: lib/marshall_web/live/threads_live.ex:2332
+#, elixir-autogen, elixir-format
+msgid "and"
+msgstr "그리고"
+
+#: lib/marshall_web/live/threads_live.ex:2333
+#, elixir-autogen, elixir-format
+msgid "choose a mode and submit the task together. Choosing a mode on a new thread does not create a machine."
+msgstr "모드를 선택하고 작업을 함께 제출하세요. 새 스레드에서 모드를 선택해도 머신이 생성되지 않습니다."
+
+#: lib/marshall_web/live/threads_live.ex:1786
+#, elixir-autogen, elixir-format
+msgid "· %{value1} reasoning · %{value2}"
+msgstr "· %{value1} 추론 · %{value2}"
+
+#: lib/marshall_web/live/threads_live.ex:2301
+#, elixir-autogen, elixir-format
+msgid "↑ ↓ choose · Enter run · Escape close"
+msgstr "↑ ↓ 선택 · 실행 입력 · 탈출 닫기"

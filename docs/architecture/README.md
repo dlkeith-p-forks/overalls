@@ -1,5 +1,10 @@
 # Architecture
 
+[ADR-0207](decisions/0207-bundled-multilingual-font-fallback.md) accepts bundled
+Noto script fallbacks while retaining JetBrains Mono as the primary grid font.
+It replaces only ADR-0161's exclusive-typeface clause; current packaged script
+rendering remains a separate acceptance obligation.
+
 [ADR-0205](decisions/0205-overview-newsletter.md) accepts a durable account-wide Overview newsletter invitation and fixed server-side Ghost subscription path; implementation remains partial.
 
 [ADR-0204](decisions/0204-git-attribution-and-guest-identity.md) preserves the reconciled duplicate Git attribution decision and its settings-page evidence; implementation remains partial.
@@ -8,9 +13,9 @@
 
 [ADR-0202](decisions/0202-github-com-owner-integration.md) accepts owner-bound GitHub OAuth custody and managed guest forwarding; implementation remains partial.
 
-[ADR-0201](decisions/0201-localized-human-surfaces.md) accepts Localize-backed human surfaces with validated language preferences and LTR/RTL presentation; translation and native browser acceptance remain partial.
+[ADR-0201](decisions/0201-localized-human-surfaces.md) accepts Localize-backed human surfaces with validated language preferences, LTR/RTL presentation and native Gettext catalogs partitioned by locale and feature. Public guides are localized; authenticated handbook chapters remain source English. Translation and native browser acceptance remain partial.
 
-[ADR-0207](decisions/0207-windows-editor-job-custodian.md) replaces
+[ADR-0208](decisions/0208-windows-editor-job-custodian.md) replaces
 [ADR-0200](decisions/0200-windows-browser-editor-candidate.md) with an independent
 SYSTEM job custodian behind the native Windows editor's SYSTEM gateway broker.
 The custodian owns atomic personal SAM/S4U worker launch, receipts and retained
@@ -583,7 +588,9 @@ visual system with The Monospace Web: a character grid, four colour tokens per
 theme, vendored JetBrains Mono, semantic HTML with text glyphs and no external
 resources, with Tailwind, daisyUI, heroicons, Cinder and the Mishka component
 set removed. Navigation, authorization, terminal transport and hook contracts
-are unchanged. The [presentation review](reviews/2026-10-13-monospace-web-presentation.md)
+are unchanged. [ADR-0207](decisions/0207-bundled-multilingual-font-fallback.md)
+adds bundled multilingual fallbacks while carrying forward these constraints.
+The [presentation review](reviews/2026-10-13-monospace-web-presentation.md)
 records the structural gate, the Playwright probe in both themes and the gaps.
 
 [ADR-0114](decisions/0114-overalls-workspace-design.md) added an authenticated

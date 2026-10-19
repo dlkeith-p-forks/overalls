@@ -1,0 +1,204 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: zh-Hans\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/inference_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "AI request"
+msgstr "AI 请求"
+
+#: lib/marshall_web/live/inference_live.ex:101
+#, elixir-autogen, elixir-format
+msgid "AI requests"
+msgstr "AI 请求"
+
+#: lib/marshall_web/live/inference_live.ex:106
+#, elixir-autogen, elixir-format
+msgid "AI requests · last 30 days"
+msgstr "AI 请求 · 最近 30 天"
+
+#: lib/marshall_web/live/inference_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+msgstr "AI 用量归属于各机器的所有者。未完整上报的用量仍为未知。"
+
+#: lib/marshall_web/live/inference_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "AI usage is unavailable."
+msgstr "AI 用量暂不可用。"
+
+#: lib/marshall_web/live/inference_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "AI usage report"
+msgstr "AI 用量报告"
+
+#: lib/marshall_web/live/inference_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "All providers"
+msgstr "所有提供方"
+
+#: lib/marshall_web/live/inference_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Anthropic"
+msgstr "Anthropic"
+
+#: lib/marshall_web/live/inference_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "应用"
+
+#: lib/marshall_web/live/inference_live.ex:112
+#, elixir-autogen, elixir-format
+msgid "Daily AI request counts over the past 30 days"
+msgstr "最近 30 天的每日 AI 请求数"
+
+#: lib/marshall_web/live/inference_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "详情"
+
+#: lib/marshall_web/live/inference_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Exact model ID"
+msgstr "精确模型 ID"
+
+#: lib/marshall_web/live/inference_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Export AI usage"
+msgstr "导出 AI 用量"
+
+#: lib/marshall_web/live/inference_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Filter"
+msgstr "筛选"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "集群 AI 用量"
+
+#: lib/marshall_web/live/inference_live.ex:102
+#, elixir-autogen, elixir-format
+msgid "Incomplete AI reports"
+msgstr "不完整的 AI 报告"
+
+#: lib/marshall_web/live/inference_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "输入令牌"
+
+#: lib/marshall_web/live/inference_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Inspect"
+msgstr "检查"
+
+#: lib/marshall_web/live/inference_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "机器"
+
+#: lib/marshall_web/live/inference_live.ex:136
+#: lib/marshall_web/live/inference_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Model"
+msgstr "模型"
+
+#: lib/marshall_web/live/inference_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "No AI requests match these filters."
+msgstr "没有符合筛选条件的 AI 请求。"
+
+#: lib/marshall_web/live/inference_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Older AI requests →"
+msgstr "更早的 AI 请求 →"
+
+#: lib/marshall_web/live/inference_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
+msgstr "每天一列，最早的在前；八行 █ 以最繁忙的一天为尺度。标签标示当月日期。"
+
+#: lib/marshall_web/live/inference_live.ex:130
+#, elixir-autogen, elixir-format
+msgid "OpenAI"
+msgstr "OpenAI"
+
+#: lib/marshall_web/live/inference_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Outcome"
+msgstr "结果"
+
+#: lib/marshall_web/live/inference_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Output tokens"
+msgstr "输出令牌"
+
+#: lib/marshall_web/live/inference_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Placement / epoch"
+msgstr "分配 / 纪元"
+
+#: lib/marshall_web/live/inference_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Pricing source / version"
+msgstr "价格来源 / 版本"
+
+#: lib/marshall_web/live/inference_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Provider"
+msgstr "提供方"
+
+#: lib/marshall_web/live/inference_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Reported input tokens"
+msgstr "已上报的输入令牌"
+
+#: lib/marshall_web/live/inference_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Reported output tokens"
+msgstr "已上报的输出令牌"
+
+#: lib/marshall_web/live/inference_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "时间"
+
+#: lib/marshall_web/live/inference_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Token cost estimate · USD"
+msgstr "令牌成本估计 · USD"
+
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "不可用"
+
+#: lib/marshall_web/live/inference_live.ex:60
+#: lib/marshall_web/live/inference_live.ex:178
+#: lib/marshall_web/live/inference_live.ex:185
+#: lib/marshall_web/live/inference_live.ex:188
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "未知"
+
+#: lib/marshall_web/live/inference_live.ex:168
+#, elixir-autogen, elixir-format
+msgid "Unreported"
+msgstr "未上报"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Your AI usage"
+msgstr "你的 AI 用量"

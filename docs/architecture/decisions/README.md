@@ -1,10 +1,9 @@
 # Architecture decision records
 
-[ADR-0207](0207-windows-editor-job-custodian.md) replaces ADR-0200 in full,
-preserving its personal-account and immutable candidate contracts while moving
-Windows worker/job custody into an independently supervised SYSTEM task and
-boot-bound local streaming proxy. Implementation and native recovery remain
-partial; production Windows editor selection is unchanged.
+[ADR-0207](0207-bundled-multilingual-font-fallback.md) accepts local Noto script
+fallbacks with native shaping and JetBrains Mono as the primary grid font. It
+supersedes only ADR-0161's exclusive-typeface clause and carries forward its other
+presentation constraints. Current browser rendering evidence remains partial.
 
 [ADR-0205](0205-overview-newsletter.md) accepts a durable account-wide Overview newsletter invitation and fixed server-side Ghost subscription path; implementation remains partial.
 
@@ -14,12 +13,18 @@ partial; production Windows editor selection is unchanged.
 
 [ADR-0202](0202-github-com-owner-integration.md) accepts owner-bound GitHub OAuth custody and managed guest forwarding; implementation remains partial.
 
-[ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, the central 25-locale policy, browser language negotiation and validated account overrides with LTR/RTL presentation; implementation remains partial.
+[ADR-0201](0201-localized-human-surfaces.md) accepts Localize-backed human surfaces, the central 28-locale policy, feature catalogs, browser language negotiation and validated account overrides with LTR/RTL presentation. Public guides are translated; HLDD contents remain English. Implementation remains partial.
 
-[ADR-0200](0200-windows-browser-editor-candidate.md) records the original
-source-built, account-bound Windows candidate and is superseded in full by
-ADR-0207. Its manifest-v7/bundle-v4 identity and promotion requirements continue
-in that replacement; the selected `windows-v1` editor capability stays false.
+[ADR-0200](0200-windows-browser-editor-candidate.md) accepts a source-built,
+account-bound Windows editor candidate with a separate `windows-editor-v1`
+manifest-v7/bundle-v4 contract. Native package, image and browser qualification
+remain separate; the selected `windows-v1` editor capability stays false.
+
+[ADR-0208](0208-windows-editor-job-custodian.md) replaces ADR-0200 in full,
+preserving the immutable Windows editor candidate contract while moving worker/job
+custody into an independently supervised SYSTEM task. Implementation remains
+partial pending native custodian failure/recovery and exact-image browser evidence.
+
 
 [ADR-0199](0199-memory-suspension-and-demand-wake.md) accepts full-memory
 suspension, paused relocation, durable demand wake and the four-hour tool-idle
@@ -289,6 +294,8 @@ removes Tailwind, daisyUI, heroicons, Cinder and the Mishka component set while
 keeping navigation, authorization, terminal and hook contracts. Structural and
 Playwright evidence are recorded in the
 [presentation review](../reviews/2026-10-13-monospace-web-presentation.md).
+[ADR-0207](0207-bundled-multilingual-font-fallback.md) replaces only its
+exclusive-typeface clause with local multilingual script fallbacks.
 
 [ADR-0160](0160-privileged-administrator-step-up.md) replaces ADR-0123's inherited
 administrator step-up with fixed fifteen-minute elevation, inline exact
@@ -463,10 +470,10 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0198](0198-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |
 | [ADR-0199](0199-memory-suspension-and-demand-wake.md) | accepted | partial | Memory-preserving suspension, relocation and demand wake |
 | [ADR-0200](0200-windows-browser-editor-candidate.md) | superseded | partial | Account-bound Windows browser editor candidate |
+| [ADR-0208](0208-windows-editor-job-custodian.md) | accepted | partial | Independent Windows editor job custodian |
 | [ADR-0202](0202-github-com-owner-integration.md) | accepted | partial | Owner-bound GitHub.com integration |
 | [ADR-0203](0203-guest-reflection.md) | accepted | partial | Guest reflection service |
 | [ADR-0206](0206-android-firecracker-guest.md) | accepted | partial | Software-rendered Android in the Firecracker guest |
-| [ADR-0207](0207-windows-editor-job-custodian.md) | accepted | partial | Independent Windows editor job custodian |
 | [ADR-0204](0204-git-attribution-and-guest-identity.md) | accepted | partial | Git attribution and guest identity |
 | [ADR-0205](0205-overview-newsletter.md) | accepted | partial | Overview newsletter signup |
 | [ADR-0189](0189-cachix-watch-store-publishing.md) | accepted | partial | Publish fleet store paths to Overalls Cachix |
@@ -490,7 +497,7 @@ native workflow completion and production activation retain separate scopes.
 | [ADR-0164](0164-arc-budget-and-safe-memory-decrease.md) | accepted | partial | ARC budget, dnode limit and safe guest memory decrease |
 | [ADR-0163](0163-bounded-standby-refill-and-capacity-damping.md) | accepted | partial | Bounded standby refill and capacity damping |
 | [ADR-0162](0162-clone-cleanup-liveness.md) | accepted | partial | Clone cleanup liveness and transfer slot release at quiescence |
-| [ADR-0161](0161-monospace-web-presentation.md) | accepted | partial | Monospace Web presentation for Marshall |
+| [ADR-0161](0161-monospace-web-presentation.md) | superseded | partial | Monospace Web presentation for Marshall |
 | [ADR-0160](0160-privileged-administrator-step-up.md) | accepted | partial | Privileged administrator step-up and pending-action continuation |
 | [ADR-0159](0159-remove-legacy-compatibility.md) | superseded | implemented | Remove legacy compatibility after convergence |
 | [ADR-0158](0158-durable-guest-identities.md) | superseded | partial | Durable guest identities independent of email |
@@ -924,3 +931,4 @@ and physical storage acceptance. See the
 ADR-0015/0037 retain their statuses and accepted rationale.
 
 | [ADR-0201](0201-localized-human-surfaces.md) | accepted | partial | Localized human-facing surfaces |
+| [ADR-0207](0207-bundled-multilingual-font-fallback.md) | accepted | partial | Bundled multilingual font fallback |

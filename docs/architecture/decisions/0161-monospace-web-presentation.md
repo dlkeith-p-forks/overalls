@@ -2,13 +2,18 @@
 
 - ID: ADR-0161
 - Date: 2026-10-13
-- Status: accepted
+- Status: superseded
 - Implementation: partial
 - Components: Marshall Web, browser assets
 - Supersedes: ADR-0114
-- Superseded by: none
+- Superseded by: ADR-0207
 
 ## Context
+
+[ADR-0207](0207-bundled-multilingual-font-fallback.md) replaces only this record's
+exclusive use of JetBrains Mono with bundled multilingual script fallbacks. It
+carries forward every other presentation, resource, theme, hook and terminal
+requirement. The decision and evidence below retain their historical scope.
 
 The user authorized, as this task, a redesign of the complete Marshall web
 application around [The Monospace Web](https://owickstrom.github.io/the-monospace-web/)
@@ -159,4 +164,5 @@ retention clause now void), [ADR-0084](0084-browser-terminal-workspace.md),
 [ADR-0117](0117-personal-terminal-machine-workspace.md),
 [ADR-0119](0119-authenticated-control-room-reads.md),
 [ADR-0122](0122-hldd-section-pages.md), [ADR-0158](0158-durable-guest-identities.md),
-[ADR-0160](0160-privileged-administrator-step-up.md).
+[ADR-0160](0160-privileged-administrator-step-up.md),
+[ADR-0207](0207-bundled-multilingual-font-fallback.md).

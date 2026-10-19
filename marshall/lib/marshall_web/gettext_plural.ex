@@ -11,6 +11,9 @@ defmodule MarshallWeb.GettextPlural do
   # Each plural selection reparses its header; no runtime cache is introduced.
   @impl true
   @spec init(context()) :: context()
+  def init(%{locale: "arz"} = context),
+    do: Map.put_new(context, :plural_forms_header, plural_forms_header("arz"))
+
   def init(context), do: context
 
   @impl true
@@ -27,5 +30,6 @@ defmodule MarshallWeb.GettextPlural do
 
   @impl true
   @spec plural_forms_header(String.t()) :: String.t() | nil
+  def plural_forms_header("arz"), do: Gettext.Plural.plural_forms_header("ar")
   def plural_forms_header(locale), do: Gettext.Plural.plural_forms_header(locale)
 end

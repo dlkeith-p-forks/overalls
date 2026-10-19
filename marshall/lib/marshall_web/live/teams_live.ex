@@ -28,12 +28,12 @@ defmodule MarshallWeb.TeamsLive do
       {:ok, team} ->
         {:noreply,
          socket
-         |> put_flash(:info, gettext("Team %{value1} created.", value1: team.name))
+         |> put_flash(:info, dgettext("teams", "Team %{value1} created.", value1: team.name))
          |> refresh()
          |> select(team.id)}
 
       {:error, _} ->
-        {:noreply, put_flash(socket, :error, gettext("Could not create this team."))}
+        {:noreply, put_flash(socket, :error, dgettext("teams", "Could not create this team."))}
     end
   end
 
@@ -41,7 +41,7 @@ defmodule MarshallWeb.TeamsLive do
     if Enum.any?(socket.assigns.teams, &(&1.id == id)) do
       {:noreply, select(socket, id)}
     else
-      {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+      {:noreply, put_flash(socket, :error, dgettext("teams", "Invalid request."))}
     end
   end
 
@@ -69,11 +69,11 @@ defmodule MarshallWeb.TeamsLive do
     case result do
       {:ok, _member} ->
         {:noreply,
-         socket |> put_flash(:info, gettext("Membership updated.")) |> refresh_members()}
+         socket |> put_flash(:info, dgettext("teams", "Membership updated.")) |> refresh_members()}
 
       {:error, _} ->
         {:noreply,
-         put_flash(socket, :error, gettext("Could not update this membership."))
+         put_flash(socket, :error, dgettext("teams", "Could not update this membership."))
          |> refresh_members()}
     end
   end
@@ -84,12 +84,13 @@ defmodule MarshallWeb.TeamsLive do
         {:noreply,
          socket
          |> assign(transfer_form: transfer_form())
-         |> put_flash(:info, gettext("Ownership offer sent."))
+         |> put_flash(:info, dgettext("teams", "Ownership offer sent."))
          |> refresh_members()}
 
       {:error, _} ->
         {:noreply,
-         put_flash(socket, :error, gettext("Could not offer ownership.")) |> refresh_members()}
+         put_flash(socket, :error, dgettext("teams", "Could not offer ownership."))
+         |> refresh_members()}
     end
   end
 
@@ -104,15 +105,17 @@ defmodule MarshallWeb.TeamsLive do
 
     case result do
       {:ok, _transfer} ->
-        {:noreply, socket |> put_flash(:info, gettext("Ownership offer updated.")) |> refresh()}
+        {:noreply,
+         socket |> put_flash(:info, dgettext("teams", "Ownership offer updated.")) |> refresh()}
 
       {:error, _} ->
-        {:noreply, put_flash(socket, :error, gettext("Could not update this ownership offer."))}
+        {:noreply,
+         put_flash(socket, :error, dgettext("teams", "Could not update this ownership offer."))}
     end
   end
 
   def handle_event(_, _, socket),
-    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+    do: {:noreply, put_flash(socket, :error, dgettext("teams", "Invalid request."))}
 
   defp refresh(socket) do
     case Teams.list_teams(%{}, actor: socket.assigns.current_user) do
@@ -123,7 +126,7 @@ defmodule MarshallWeb.TeamsLive do
       {:error, _} ->
         socket
         |> assign(teams: [], members: [], transfer: nil)
-        |> put_flash(:error, gettext("Teams are temporarily unavailable."))
+        |> put_flash(:error, dgettext("teams", "Teams are temporarily unavailable."))
     end
   end
 
@@ -175,18 +178,22 @@ defmodule MarshallWeb.TeamsLive do
     >
       <section id="teams-page" class="stack">
         <UI.heading
-          title={gettext("Teams")}
+          title={dgettext("teams", "Teams")}
           subtitle={
-            gettext(
+            dgettext(
+              "teams",
               "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
             )
           }
         />
         <p :if={@teams == []} class="empty-state">
-          {gettext("You are not in a team yet. Create one below, or ask a team admin to add you.")}
+          {dgettext(
+            "teams",
+            "You are not in a team yet. Create one below, or ask a team admin to add you."
+          )}
         </p>
         <div :if={@teams != []} id="teams" class="stack">
-          <nav class="machine-tabs" aria-label={gettext("Your teams")}>
+          <nav class="machine-tabs" aria-label={dgettext("teams", "Your teams")}>
             <button
               :for={team <- @teams}
               phx-click="select"
@@ -200,7 +207,10 @@ defmodule MarshallWeb.TeamsLive do
               <div>
                 <h1>{selected_team(assigns).name}</h1>
                 <p>
-                  {gettext("Your role: %{role}", role: role_label(selected_team(assigns).role))} · {ngettext(
+                  {dgettext("teams", "Your role: %{role}",
+                    role: role_label(selected_team(assigns).role)
+                  )} · {dngettext(
+                    "teams",
                     "%{count} member",
                     "%{count} members",
                     length(@members)
@@ -208,14 +218,14 @@ defmodule MarshallWeb.TeamsLive do
                 </p>
               </div>
             </header>
-            <UI.panel id="team-members" title={gettext("Members")}>
+            <UI.panel id="team-members" title={dgettext("teams", "Members")}>
               <div class="table-flow">
                 <table>
                   <thead>
                     <tr>
-                      <th class="width-min">{gettext("Member")}</th>
-                      <th class="width-min">{gettext("Role")}</th>
-                      <th class="width-auto">{gettext("Can")}</th>
+                      <th class="width-min">{dgettext("teams", "Member")}</th>
+                      <th class="width-min">{dgettext("teams", "Role")}</th>
+                      <th class="width-auto">{dgettext("teams", "Can")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -242,32 +252,36 @@ defmodule MarshallWeb.TeamsLive do
                 phx-submit="member"
                 class="stack"
               >
-                <h3>{gettext("Add, change or remove a member")}</h3>
+                <h3>{dgettext("teams", "Add, change or remove a member")}</h3>
                 <div class="grid">
                   <.input
                     field={@member_form[:email]}
-                    label={gettext("Registered email")}
-                    placeholder={gettext("teammate@example.test")}
+                    label={dgettext("teams", "Registered email")}
+                    placeholder={dgettext("teams", "teammate@example.test")}
                   />
                   <.input
                     field={@member_form[:role]}
-                    label={gettext("Role")}
+                    label={dgettext("teams", "Role")}
                     type="select"
                     options={[
-                      {gettext("Admin"), "admin"},
-                      {gettext("Member"), "member"},
-                      {gettext("Remove"), "removed"}
+                      {dgettext("teams", "Admin"), "admin"},
+                      {dgettext("teams", "Member"), "member"},
+                      {dgettext("teams", "Remove"), "removed"}
                     ]}
                   />
                 </div>
                 <div class="row actions">
-                  <button type="submit" class="console-button primary">{gettext("Save member")}</button>
+                  <button type="submit" class="console-button primary">{dgettext(
+                    "teams",
+                    "Save member"
+                  )}</button>
                 </div>
               </.form>
             </UI.panel>
-            <UI.panel id="team-ownership" title={gettext("Ownership")}>
+            <UI.panel id="team-ownership" title={dgettext("teams", "Ownership")}>
               <p class="muted">
-                {gettext(
+                {dgettext(
+                  "teams",
                   "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
                 )}
               </p>
@@ -280,14 +294,14 @@ defmodule MarshallWeb.TeamsLive do
               >
                 <.input
                   field={@transfer_form[:email]}
-                  label={gettext("Offer ownership to")}
-                  placeholder={gettext("teammate@example.test")}
+                  label={dgettext("teams", "Offer ownership to")}
+                  placeholder={dgettext("teams", "teammate@example.test")}
                 />
-                <button type="submit" class="console-button">{gettext("Offer ownership")}</button>
+                <button type="submit" class="console-button">{dgettext("teams", "Offer ownership")}</button>
               </.form>
               <div :if={@transfer} id="pending-transfer" class="stack">
                 <.kv>
-                  <:item title={gettext("Offered by")}>
+                  <:item title={dgettext("teams", "Offered by")}>
                     <.person
                       id="transfer-from"
                       email={@transfer.from_email}
@@ -296,7 +310,7 @@ defmodule MarshallWeb.TeamsLive do
                       now={@now}
                     />
                   </:item>
-                  <:item title={gettext("Offered to")}>
+                  <:item title={dgettext("teams", "Offered to")}>
                     <.person
                       id="transfer-to"
                       email={@transfer.to_email}
@@ -305,12 +319,12 @@ defmodule MarshallWeb.TeamsLive do
                       now={@now}
                     />
                   </:item>
-                  <:item title={gettext("Status")}>
-                    <span class="status-label">{gettext("pending")}</span>
+                  <:item title={dgettext("teams", "Status")}>
+                    <span class="status-label">{dgettext("teams", "pending")}</span>
                   </:item>
                 </.kv>
                 <p class="sr-only">
-                  {gettext("Ownership offered by %{value1} to %{value2}.",
+                  {dgettext("teams", "Ownership offered by %{value1} to %{value2}.",
                     value1: @transfer.from_email,
                     value2: @transfer.to_email
                   )}
@@ -324,7 +338,7 @@ defmodule MarshallWeb.TeamsLive do
                     phx-value-id={@transfer.id}
                     class="console-button primary"
                   >
-                    {gettext("Accept ownership")}
+                    {dgettext("teams", "Accept ownership")}
                   </button>
                   <button
                     :if={@transfer.to_user_id == @current_user.id}
@@ -334,7 +348,7 @@ defmodule MarshallWeb.TeamsLive do
                     phx-value-id={@transfer.id}
                     class="console-button"
                   >
-                    {gettext("Decline")}
+                    {dgettext("teams", "Decline")}
                   </button>
                   <button
                     :if={@transfer.from_user_id == @current_user.id}
@@ -344,22 +358,28 @@ defmodule MarshallWeb.TeamsLive do
                     phx-value-id={@transfer.id}
                     class="console-button"
                   >
-                    {gettext("Cancel offer")}
+                    {dgettext("teams", "Cancel offer")}
                   </button>
                 </div>
               </div>
               <p :if={!@transfer && selected_team(assigns).role != :owner} class="muted">
-                {gettext("No pending ownership offer.")}
+                {dgettext("teams", "No pending ownership offer.")}
               </p>
             </UI.panel>
           </div>
         </div>
         <.form for={@form} id="team-form" phx-submit="create" class="panel stack">
-          <h2>{gettext("Create a team")}</h2>
-          <p class="muted">{gettext("You become its owner and can add members straight away.")}</p>
-          <.input field={@form[:name]} label={gettext("Team name")} placeholder={gettext("platform")} />
+          <h2>{dgettext("teams", "Create a team")}</h2>
+          <p class="muted">
+            {dgettext("teams", "You become its owner and can add members straight away.")}
+          </p>
+          <.input
+            field={@form[:name]}
+            label={dgettext("teams", "Team name")}
+            placeholder={dgettext("teams", "platform")}
+          />
           <div class="row actions">
-            <button type="submit" class="console-button primary">{gettext("Create team")}</button>
+            <button type="submit" class="console-button primary">{dgettext("teams", "Create team")}</button>
           </div>
         </.form>
       </section>
@@ -368,15 +388,15 @@ defmodule MarshallWeb.TeamsLive do
   end
 
   @spec role_label(atom()) :: String.t()
-  defp role_label(:owner), do: gettext("Owner")
-  defp role_label(:admin), do: gettext("Administrator")
-  defp role_label(_), do: gettext("Member")
+  defp role_label(:owner), do: dgettext("teams", "Owner")
+  defp role_label(:admin), do: dgettext("teams", "Administrator")
+  defp role_label(_), do: dgettext("teams", "Member")
 
   @spec role_summary(atom()) :: String.t()
   defp role_summary(:owner),
-    do: gettext("Everything, including appointing admins and offering ownership.")
+    do: dgettext("teams", "Everything, including appointing admins and offering ownership.")
 
-  defp role_summary(:admin), do: gettext("Manage members and team machines.")
-  defp role_summary(:member), do: gettext("Use team machines and integrations.")
+  defp role_summary(:admin), do: dgettext("teams", "Manage members and team machines.")
+  defp role_summary(:member), do: dgettext("teams", "Use team machines and integrations.")
   defp role_summary(_), do: ""
 end

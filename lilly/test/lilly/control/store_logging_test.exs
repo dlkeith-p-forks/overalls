@@ -3,7 +3,7 @@ defmodule Lilly.Control.StoreLoggingTest do
   alias Lilly.Control.Store
   @id "11111111-1111-4111-8111-111111111111"
   @other "22222222-2222-4222-8222-222222222222"
-  @metadata [:event, :vm_id, :placement_id, :reason]
+  @metadata [:event, :vm_id, :placement_id, :reason, :field]
   @moduletag :tmp_dir
 
   setup %{tmp_dir: directory} do
@@ -35,7 +35,21 @@ defmodule Lilly.Control.StoreLoggingTest do
     assert log =~ "reason=generation_conflict"
     assert log =~ "reason=operation_conflict"
     assert log =~ "reason=vm_identity_conflict"
+    assert log =~ "field=slot"
     assert length(String.split(log, "lilly.intent_conflict")) - 1 == 3
+  end
+
+  test "owner identity conflicts identify the immutable owner field", %{store: store} do
+    assert {:ok, :stored} = Store.accept(store, command(1, @id))
+
+    log =
+      ExUnit.CaptureLog.capture_log([metadata: @metadata], fn ->
+        assert {:error, :vm_identity_conflict} =
+                 Store.accept(store, %{command(2, @other) | owner_id: @other})
+      end)
+
+    assert log =~ "reason=vm_identity_conflict"
+    assert log =~ "field=owner_id"
   end
 
   test "ordinary accepted intent stays silent", %{store: store} do

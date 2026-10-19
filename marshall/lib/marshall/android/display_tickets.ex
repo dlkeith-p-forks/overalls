@@ -22,7 +22,7 @@ defmodule Marshall.Android.DisplayTickets do
     with true <- android_display?(vm),
          true <- is_binary(vm_id(vm)),
          true <- is_binary(actor_id(actor)),
-         true <- Marshall.Access.Authorization.allowed?(vm, actor, "read"),
+         true <- Marshall.Access.Authorization.allowed?(vm, actor, authorization_action(mode)),
          generation when is_integer(generation) and generation > 0 <- generation(vm) do
       claim = %{
         machine_id: vm_id(vm),
@@ -60,11 +60,43 @@ defmodule Marshall.Android.DisplayTickets do
 
   def verify(_), do: {:error, :invalid_ticket}
 
+  @doc "Checks the immutable machine, generation and mode carried by a ticket."
+  @spec claim_matches?(claim(), String.t(), pos_integer(), mode()) :: boolean()
+  def claim_matches?(
+        %{machine_id: machine_id, generation: ticket_generation, mode: ticket_mode},
+        machine_id,
+        generation,
+        ticket_mode
+      )
+      when is_binary(machine_id) and is_integer(generation) and generation > 0,
+      do: ticket_generation == generation
+
+  def claim_matches?(_, _, _, _), do: false
+
+  @doc "Revalidates the ticket against the current machine generation and image."
+  @spec current?(claim(), Marshall.Accounts.User.t()) :: boolean()
+  def current?(%{machine_id: machine_id, generation: generation}, actor)
+      when is_binary(machine_id) and is_integer(generation) and generation > 0 do
+    with {:ok, vm} <- Marshall.Compute.get_vm(%{vm_id: machine_id}, actor: actor),
+         true <- android_display?(vm),
+         true <- generation(vm) == generation do
+      true
+    else
+      _ -> false
+    end
+  rescue
+    _ -> false
+  end
+
+  def current?(_, _), do: false
+
   defp android_display?(%{image_id: image_id}) when is_binary(image_id) do
     match?(%{android_display: true}, Marshall.Compute.Images.guest_capabilities(image_id))
   end
 
   defp android_display?(_), do: false
+  defp authorization_action(:viewer), do: "read"
+  defp authorization_action(:controller), do: "write"
   defp vm_id(%{id: id}), do: id
   defp vm_id(_), do: nil
   defp actor_id(%{id: id}), do: id

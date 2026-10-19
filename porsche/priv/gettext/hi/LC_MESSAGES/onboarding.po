@@ -1,0 +1,140 @@
+#
+msgid ""
+msgstr ""
+"Language: hi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/porsche/ssh/onboarding.ex:64
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"\n"
+"Keep this SSH connection open while approving the key.\n"
+msgstr ""
+"\n"
+"\n"
+"कुंजी को मंज़ूरी देते समय यह SSH कनेक्शन खुला रखें।\n"
+
+#: lib/porsche/ssh/onboarding.ex:81
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"Open an interactive Porsche connection without a remote command:"
+msgstr ""
+"\n"
+"दूरस्थ कमांड दिए बिना संवादात्मक Porsche कनेक्शन खोलें:"
+
+#: lib/porsche/ssh/onboarding.ex:59
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"Open this link, sign in, and approve the matching fingerprint:\n"
+"  "
+msgstr ""
+"\n"
+"यह लिंक खोलें, साइन इन करें और मेल खाते फ़िंगरप्रिंट को मंज़ूरी दें:\n"
+"  "
+
+#: lib/porsche/ssh/onboarding.ex:126
+#, elixir-autogen, elixir-format
+msgid ""
+"\n"
+"Or manage your keys at:\n"
+"  "
+msgstr ""
+"\n"
+"या अपनी कुंजियाँ यहाँ प्रबंधित करें:\n"
+"  "
+
+#: lib/porsche/ssh/onboarding.ex:70
+#, elixir-autogen, elixir-format
+msgid "After approval, retry your command here.\n"
+msgstr "मंज़ूरी के बाद यहाँ अपना कमांड फिर आज़माएँ।\n"
+
+#: lib/porsche/ssh/onboarding.ex:65
+#, elixir-autogen, elixir-format
+msgid ""
+"Approval links expire after %{minutes} minutes or when this connection "
+"closes.\n"
+msgstr ""
+"मंज़ूरी के लिंक %{minutes} मिनट बाद या यह कनेक्शन बंद होने पर समाप्त हो जाते"
+" हैं।\n"
+
+#: lib/porsche/ssh/onboarding.ex:138
+#, elixir-autogen, elixir-format
+msgid "Follow the browser approval instructions, then run the setup command\n"
+msgstr "ब्राउज़र में मंज़ूरी के निर्देशों का पालन करें, फिर सेटअप कमांड चलाएँ\n"
+
+#: lib/porsche/ssh/onboarding.ex:83
+#, elixir-autogen, elixir-format
+msgid "Keep that connection open while approving your key in the browser,\n"
+msgstr "ब्राउज़र में कुंजी को मंज़ूरी देते समय वह कनेक्शन खुला रखें,\n"
+
+#: lib/porsche/ssh/onboarding.ex:129
+#, elixir-autogen, elixir-format
+msgid ""
+"Register or check your SSH key in Overalls Account settings > SSH keys.\n"
+"\n"
+msgstr ""
+"Overalls खाता सेटिंग > SSH कुंजियाँ में अपनी कुंजी दर्ज करें या जाँचें।\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:124
+#, elixir-autogen, elixir-format
+msgid ""
+"Register or check your key by connecting to:\n"
+"  ssh "
+msgstr ""
+"यहाँ कनेक्ट करके अपनी कुंजी दर्ज करें या जाँचें:\n"
+"  ssh "
+
+#: lib/porsche/ssh/onboarding.ex:113
+#, elixir-autogen, elixir-format
+msgid ""
+"This SSH connection could not be authorized. Check your machine access and try again.\n"
+"\n"
+msgstr ""
+"यह SSH कनेक्शन अधिकृत नहीं हो सका। अपनी मशीन का एक्सेस जाँचें और पुनः प्रयास करें।\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:107
+#, elixir-autogen, elixir-format
+msgid ""
+"We couldn't verify this SSH key right now. Please try again shortly.\n"
+"\n"
+msgstr ""
+"हम अभी इस SSH कुंजी को सत्यापित नहीं कर सके। कृपया थोड़ी देर बाद पुनः प्रयास करें।\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:54
+#, elixir-autogen, elixir-format
+msgid ""
+"We don't recognize this SSH key:\n"
+"  "
+msgstr ""
+"हम इस SSH कुंजी को नहीं पहचानते:\n"
+"  "
+
+#: lib/porsche/ssh/onboarding.ex:95
+#, elixir-autogen, elixir-format
+msgid ""
+"Welcome to Overalls.\n"
+"\n"
+"This connection needs the Overalls SSH configuration.\n"
+"\n"
+msgstr ""
+"Overalls में आपका स्वागत है।\n"
+"\n"
+"इस कनेक्शन के लिए Overalls SSH कॉन्फ़िगरेशन आवश्यक है।\n"
+"\n"
+
+#: lib/porsche/ssh/onboarding.ex:142
+#, elixir-autogen, elixir-format
+msgid "from your machine's page and reconnect without root@.\n"
+msgstr "अपनी मशीन के पृष्ठ से और root@ के बिना पुनः कनेक्ट करें।\n"
+
+#: lib/porsche/ssh/onboarding.ex:87
+#, elixir-autogen, elixir-format
+msgid "then retry your original command.\n"
+msgstr "फिर अपनी मूल कमांड पुनः आज़माएँ।\n"

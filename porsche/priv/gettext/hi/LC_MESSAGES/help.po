@@ -1,0 +1,216 @@
+#
+msgid ""
+msgstr ""
+"Language: hi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/porsche/ssh/command_messages.ex:59
+#, elixir-autogen, elixir-format
+msgid "Accept a pending ownership offer."
+msgstr "लंबित स्वामित्व प्रस्ताव स्वीकार करें।"
+
+#: lib/porsche/ssh/command_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "व्यवस्थापक या सदस्य जोड़ें या बदलें।"
+
+#: lib/porsche/ssh/command_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "अप्रकाशित क्लोन या अपुष्ट स्थानांतरण अनुरोध रद्द करें।"
+
+#: lib/porsche/ssh/command_messages.ex:61
+#, elixir-autogen, elixir-format
+msgid "Cancel your pending ownership offer."
+msgstr "अपना लंबित स्वामित्व प्रस्ताव रद्द करें।"
+
+#: lib/porsche/ssh/command_messages.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Change a machine's CPU and memory; disk may only grow. A running machine "
+"stops and restarts."
+msgstr ""
+"मशीन का CPU और मेमोरी बदलें; डिस्क केवल बढ़ाई जा सकती है। चलती मशीन बंद होकर"
+" दोबारा शुरू होगी।"
+
+#: lib/porsche/ssh/command_messages.ex:63
+#, elixir-autogen, elixir-format
+msgid "Close this interactive channel."
+msgstr "यह संवादात्मक चैनल बंद करें।"
+
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
+"GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr ""
+"मशीन बनाएँ। डिस्क की अधिकतम सीमा: 500 GiB। --source अतिथि में सार्वजनिक "
+"GitHub, GitLab, Codeberg या Bitbucket रिपॉज़िटरी की प्रतिलिपि बनाता है।"
+
+#: lib/porsche/ssh/command_messages.ex:53
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "अपने स्वामित्व वाली टीम बनाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid ""
+"Create or replace a named integration at https://NAME.integration.internal."
+msgstr "https://NAME.integration.internal पर नामित एकीकरण बनाएँ या बदलें।"
+
+#: lib/porsche/ssh/command_messages.ex:60
+#, elixir-autogen, elixir-format
+msgid "Decline a pending ownership offer."
+msgstr "लंबित स्वामित्व प्रस्ताव अस्वीकार करें।"
+
+#: lib/porsche/ssh/command_messages.ex:30
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr ""
+"मशीन और उसकी डिस्क मिटाएँ। मालिक द्वारा पिन किए होने पर यह अस्वीकार होगा।"
+
+#: lib/porsche/ssh/command_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "दर्शक, संचालक या प्रबंधक की पहुँच दें।"
+
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "नाम या UUID से मशीन की जाँच करें।"
+
+#: lib/porsche/ssh/command_messages.ex:62
+#, elixir-autogen, elixir-format
+msgid "Inspect a previously accepted request."
+msgstr "पहले स्वीकार किए गए अनुरोध की जाँच करें।"
+
+#: lib/porsche/ssh/command_messages.ex:50
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "गोपनीय जानकारी के बिना एकीकरण जाँचें।"
+
+#: lib/porsche/ssh/command_messages.ex:55
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "टीम के सदस्यों की सूची दिखाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "दिए गए पहुँच अधिकारों की सूची दिखाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "उपलब्ध इमेज की सूची दिखाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "जिन मशीनों तक आपकी पहुँच है उनकी सूची दिखाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "अपनी SSH कुंजियों की सूची दिखाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "अपने एकीकरणों की सूची दिखाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "अपनी टीमों और भूमिकाओं की सूची दिखाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "मशीन के लिए एकीकरण उपलब्ध करें।"
+
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "मशीन को अपने आप चुने गए होस्ट पर ले जाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:58
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "व्यवस्थापक को टीम का स्वामित्व देने का प्रस्ताव भेजें।"
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:34
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "मशीन को अपनी सूचियों में सबसे ऊपर पिन करें। मालिक के रूप में आपके पिन करने से मशीन चालू होती है और उसका स्वचालित निलंबन व मिटाया जाना रुकता है।"
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "मशीन की पूरी डिस्क की स्वतंत्र प्रतिलिपि कतार में जोड़ें।"
+
+#: lib/porsche/ssh/command_messages.ex:52
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "मशीन की स्पष्ट रूप से दी गई उपलब्धता हटाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "नामित एकीकरण हटाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:57
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "खाते की सदस्यता हटाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "मशीन से अपना पिन हटाएँ।"
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:69
+msgid "Resume a suspended machine's preserved memory."
+msgstr "निलंबित मशीन की सुरक्षित मेमोरी से उसे फिर चालू करें।"
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:65
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "क्षमता या स्थानांतरण की प्रतीक्षा करते हुए सुरक्षित मेमोरी से फिर शुरू करें।"
+
+#: lib/porsche/ssh/command_messages.ex:20
+msgid "Retry a failed clone or relocation request."
+msgstr "विफल क्लोन या स्थानांतरण अनुरोध फिर आज़माएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:41
+msgid "Revoke an account's shared access."
+msgstr "खाते की साझा पहुँच वापस लें।"
+
+#: lib/porsche/ssh/command_messages.ex:43
+msgid "Revoke one of your SSH keys."
+msgstr "अपनी एक SSH कुंजी रद्द करें।"
+
+#: lib/porsche/ssh/command_messages.ex:5
+#, elixir-autogen, elixir-format
+msgid "Show command help."
+msgstr "कमांड की सहायता दिखाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:6
+msgid "Show the authenticated account."
+msgstr "प्रमाणित खाता दिखाएँ।"
+
+#: lib/porsche/ssh/command_messages.ex:25
+msgid "Start a machine."
+msgstr "मशीन शुरू करें।"
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:26
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "मशीन रोकें, उसकी डिस्क रखें और निलंबित अवस्था की मेमोरी हटा दें।"
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:64
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "मशीन की मेमोरी और डिस्क सुरक्षित रखते हुए उसे निलंबित करें।"

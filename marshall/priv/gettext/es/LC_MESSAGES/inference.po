@@ -1,0 +1,199 @@
+#
+msgid ""
+msgstr ""
+"Language: es\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/inference_live.ex:192
+#, elixir-autogen, elixir-format
+msgid "AI request"
+msgstr "Solicitud de IA"
+
+#: lib/marshall_web/live/inference_live.ex:101
+#, elixir-autogen, elixir-format
+msgid "AI requests"
+msgstr "Solicitudes de IA"
+
+#: lib/marshall_web/live/inference_live.ex:106
+#, elixir-autogen, elixir-format
+msgid "AI requests · last 30 days"
+msgstr "Solicitudes de IA · últimos 30 días"
+
+#: lib/marshall_web/live/inference_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "AI usage is attributed to each machine’s owner. Incomplete AI usage remains unknown."
+msgstr ""
+"El uso de IA se atribuye al propietario de cada máquina. El uso incompleto "
+"de IA permanece desconocido."
+
+#: lib/marshall_web/live/inference_live.ex:39
+#, elixir-autogen, elixir-format
+msgid "AI usage is unavailable."
+msgstr "El uso de IA no está disponible."
+
+#: lib/marshall_web/live/inference_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "AI usage report"
+msgstr "Informe de uso de IA"
+
+#: lib/marshall_web/live/inference_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "All providers"
+msgstr "Todos los proveedores"
+
+#: lib/marshall_web/live/inference_live.ex:131
+#, elixir-autogen, elixir-format
+msgid "Anthropic"
+msgstr "Anthropic"
+
+#: lib/marshall_web/live/inference_live.ex:142
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "Aplicar"
+
+#: lib/marshall_web/live/inference_live.ex:112
+#, elixir-autogen, elixir-format
+msgid "Daily AI request counts over the past 30 days"
+msgstr "Recuento diario de solicitudes de IA de los últimos 30 días"
+
+#: lib/marshall_web/live/inference_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Detalles"
+
+#: lib/marshall_web/live/inference_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Exact model ID"
+msgstr "ID exacto del modelo"
+
+#: lib/marshall_web/live/inference_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Export AI usage"
+msgstr "Exportar uso de IA"
+
+#: lib/marshall_web/live/inference_live.ex:122
+#, elixir-autogen, elixir-format
+msgid "Filter"
+msgstr "Filtrar"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Fleet AI usage"
+msgstr "Uso de IA de la flota"
+
+#: lib/marshall_web/live/inference_live.ex:102
+#, elixir-autogen, elixir-format
+msgid "Incomplete AI reports"
+msgstr "Informes de IA incompletos"
+
+#: lib/marshall_web/live/inference_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Input tokens"
+msgstr "Tokens de entrada"
+
+#: lib/marshall_web/live/inference_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "Inspect"
+msgstr "Inspeccionar"
+
+#: lib/marshall_web/live/inference_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Máquina"
+
+#: lib/marshall_web/live/inference_live.ex:136
+#: lib/marshall_web/live/inference_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Model"
+msgstr "Modelo"
+
+#: lib/marshall_web/live/inference_live.ex:215
+#, elixir-autogen, elixir-format
+msgid "No AI requests match these filters."
+msgstr "Ninguna solicitud de IA coincide con estos filtros."
+
+#: lib/marshall_web/live/inference_live.ex:221
+#, elixir-autogen, elixir-format
+msgid "Older AI requests →"
+msgstr "Solicitudes de IA anteriores →"
+
+#: lib/marshall_web/live/inference_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "One column per day, oldest first; eight rows of █ scale to the busiest day. Labels mark the day of the month."
+msgstr ""
+"Una columna por día, del más antiguo al más reciente; ocho filas de █ se "
+"ajustan al día de mayor actividad. Las etiquetas indican el día del mes."
+
+#: lib/marshall_web/live/inference_live.ex:130
+#, elixir-autogen, elixir-format
+msgid "OpenAI"
+msgstr "OpenAI"
+
+#: lib/marshall_web/live/inference_live.ex:153
+#, elixir-autogen, elixir-format
+msgid "Outcome"
+msgstr "Resultado"
+
+#: lib/marshall_web/live/inference_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Output tokens"
+msgstr "Tokens de salida"
+
+#: lib/marshall_web/live/inference_live.ex:198
+#, elixir-autogen, elixir-format
+msgid "Placement / epoch"
+msgstr "Asignación / época"
+
+#: lib/marshall_web/live/inference_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Pricing source / version"
+msgstr "Fuente de precios / versión"
+
+#: lib/marshall_web/live/inference_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Provider"
+msgstr "Proveedor"
+
+#: lib/marshall_web/live/inference_live.ex:103
+#, elixir-autogen, elixir-format
+msgid "Reported input tokens"
+msgstr "Tokens de entrada declarados"
+
+#: lib/marshall_web/live/inference_live.ex:104
+#, elixir-autogen, elixir-format
+msgid "Reported output tokens"
+msgstr "Tokens de salida declarados"
+
+#: lib/marshall_web/live/inference_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "Hora"
+
+#: lib/marshall_web/live/inference_live.ex:175
+#, elixir-autogen, elixir-format
+msgid "Token cost estimate · USD"
+msgstr "Estimación del coste de tokens · USD"
+
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "No disponible"
+
+#: lib/marshall_web/live/inference_live.ex:60
+#: lib/marshall_web/live/inference_live.ex:178
+#: lib/marshall_web/live/inference_live.ex:185
+#: lib/marshall_web/live/inference_live.ex:188
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: lib/marshall_web/live/inference_live.ex:168
+#, elixir-autogen, elixir-format
+msgid "Unreported"
+msgstr "Sin informar"
+
+#: lib/marshall_web/live/inference_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Your AI usage"
+msgstr "Tu uso de IA"

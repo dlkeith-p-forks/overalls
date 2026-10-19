@@ -20,7 +20,7 @@ msgstr "%{count}д назад"
 #: lib/marshall_web/browser_messages.ex:18
 #, elixir-autogen, elixir-format
 msgid "%{count}h ago"
-msgstr "%{count}h ago"
+msgstr "%{count} ч. назад"
 
 #: lib/marshall_web/browser_messages.ex:19
 #, elixir-autogen, elixir-format
@@ -103,17 +103,17 @@ msgstr "Выйти из полноэкранного режима"
 msgid "Input buffer full — that input was not sent"
 msgstr "Входной буфер заполнен — ввод не был отправлен."
 
-#: lib/marshall_web/browser_messages.ex:36
+#: lib/marshall_web/browser_messages.ex:42
 #, elixir-autogen, elixir-format
 msgid "Match found"
 msgstr "Матч найден"
 
-#: lib/marshall_web/browser_messages.ex:37
+#: lib/marshall_web/browser_messages.ex:43
 #, elixir-autogen, elixir-format
 msgid "No matches"
 msgstr "Нет совпадений"
 
-#: lib/marshall_web/browser_messages.ex:39
+#: lib/marshall_web/browser_messages.ex:45
 #, elixir-autogen, elixir-format
 msgid "Open this link?\n\n%{url}"
 msgstr ""
@@ -121,111 +121,131 @@ msgstr ""
 "\n"
 "%{url}"
 
-#: lib/marshall_web/browser_messages.ex:40
+#: lib/marshall_web/browser_messages.ex:46
 #, elixir-autogen, elixir-format
 msgid "Opening…"
 msgstr "Открытие…"
 
-#: lib/marshall_web/browser_messages.ex:42
+#: lib/marshall_web/browser_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "Passkey request cancelled. You can try again."
 msgstr "Запрос пароля отменен. Вы можете попробовать еще раз."
 
-#: lib/marshall_web/browser_messages.ex:44
+#: lib/marshall_web/browser_messages.ex:50
 #, elixir-autogen, elixir-format
 msgid "Passkey verification failed or unavailable. Try again."
 msgstr "Проверка пароля не удалась или недоступна. Попробуйте еще раз."
 
-#: lib/marshall_web/browser_messages.ex:46
+#: lib/marshall_web/browser_messages.ex:52
 #, elixir-autogen, elixir-format
 msgid "Terminal name (this browser only; empty restores the generated name)"
 msgstr ""
 "Имя терминала (только для этого браузера; пустое значение восстанавливает "
 "сгенерированное имя)"
 
-#: lib/marshall_web/browser_messages.ex:51
+#: lib/marshall_web/browser_messages.ex:57
 #, elixir-autogen, elixir-format
 msgid "The result could not be confirmed. Reload the page and check the result before retrying."
 msgstr ""
 "Результат не удалось подтвердить. Перезагрузите страницу и проверьте "
 "результат, прежде чем повторить попытку."
 
-#: lib/marshall_web/browser_messages.ex:56
+#: lib/marshall_web/browser_messages.ex:62
 #, elixir-autogen, elixir-format
 msgid "This machine asks to write %{bytes} bytes to your clipboard. Type once, session, or mute."
 msgstr ""
 "Эта машина запрашивает запись %{bytes} байт в буфер обмена. Введите once, "
 "session или mute."
 
-#: lib/marshall_web/browser_messages.ex:62
+#: lib/marshall_web/browser_messages.ex:68
 #, elixir-autogen, elixir-format
 msgid "This repository link could not be launched. Open the link again."
 msgstr ""
 "Эту ссылку на репозиторий не удалось запустить. Откройте ссылку еще раз."
 
-#: lib/marshall_web/browser_messages.ex:63
+#: lib/marshall_web/browser_messages.ex:69
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "Введите текст для взаимодействия"
 
-#: lib/marshall_web/browser_messages.ex:64
+#: lib/marshall_web/browser_messages.ex:70
 #, elixir-autogen, elixir-format
 msgid "Updating viewing access…"
 msgstr "Обновление доступа к просмотру…"
 
-#: lib/marshall_web/browser_messages.ex:66
+#: lib/marshall_web/browser_messages.ex:72
 #, elixir-autogen, elixir-format
 msgid "Verification could not be completed. Try again."
 msgstr "Не удалось завершить проверку. Попробуйте еще раз."
 
-#: lib/marshall_web/browser_messages.ex:68
+#: lib/marshall_web/browser_messages.ex:74
 #, elixir-autogen, elixir-format
 msgid "Verify with your passkey to %{action}. This runs once after verification."
 msgstr ""
 "Подтвердите свой ключ доступа к %{action}. Это запускается один раз после "
 "проверки."
 
-#: lib/marshall_web/browser_messages.ex:73
+#: lib/marshall_web/browser_messages.ex:79
 #, elixir-autogen, elixir-format
 msgid "View only"
 msgstr "Только просмотр"
 
-#: lib/marshall_web/browser_messages.ex:74
+#: lib/marshall_web/browser_messages.ex:80
 #, elixir-autogen, elixir-format
 msgid "Viewing access updated."
 msgstr "Доступ к просмотру обновлен."
 
-#: lib/marshall_web/browser_messages.ex:75
+#: lib/marshall_web/browser_messages.ex:81
 #, elixir-autogen, elixir-format
 msgid "Waiting for your passkey…"
 msgstr "Ожидание пароля…"
 
-#: lib/marshall_web/browser_messages.ex:77
+#: lib/marshall_web/browser_messages.ex:83
 #, elixir-autogen, elixir-format
 msgid "complete this administrative change"
 msgstr "завершить это административное изменение"
 
-#: lib/marshall_web/browser_messages.ex:78
+#: lib/marshall_web/browser_messages.ex:84
 #, elixir-autogen, elixir-format
 msgid "just now"
 msgstr "прямо сейчас"
 
-#: lib/marshall_web/browser_messages.ex:79
+#: lib/marshall_web/browser_messages.ex:85
 #, elixir-autogen, elixir-format
 msgid "● live"
 msgstr "● в реальном времени"
 
-#: lib/marshall_web/browser_messages.ex:80
+#: lib/marshall_web/browser_messages.ex:86
 #, elixir-autogen, elixir-format
 msgid "● read-only"
 msgstr "● только для чтения"
 
-#: lib/marshall_web/browser_messages.ex:81
+#: lib/marshall_web/browser_messages.ex:87
 #, elixir-autogen, elixir-format
 msgid "⟳ reconnecting…"
 msgstr "⟳ повторное подключение…"
 
-#: lib/marshall_web/browser_messages.ex:82
+#: lib/marshall_web/browser_messages.ex:88
 #, elixir-autogen, elixir-format
 msgid "⟳ restoring scrollback…"
 msgstr "⟳ восстановление обратной прокрутки…"
+
+#: lib/marshall_web/browser_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "Connecting…"
+msgstr "Подключение…"
+
+#: lib/marshall_web/browser_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Diagram unavailable. Source:\n%{source}"
+msgstr "Диаграмма недоступна. Исходный код:\n%{source}"
+
+#: lib/marshall_web/browser_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "No terminals"
+msgstr "Нет терминалов"
+
+#: lib/marshall_web/browser_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "— output before this view is not in the scrollback window —"
+msgstr "— вывод до этого представления отсутствует в истории прокрутки —"

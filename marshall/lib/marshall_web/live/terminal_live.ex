@@ -8,8 +8,8 @@ defmodule MarshallWeb.TerminalLive do
   alias MarshallWeb.{MachineWorkspace, TerminalOpening}
   import MarshallWeb.TerminalOpening, only: [is_retryable: 1]
 
-  on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
-  on_mount MarshallWeb.MachineWorkspace
+  on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
+  on_mount(MarshallWeb.MachineWorkspace)
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
@@ -52,7 +52,7 @@ defmodule MarshallWeb.TerminalLive do
 
         {:ok,
          socket
-         |> put_flash(:error, gettext("Machine not found."))
+         |> put_flash(:error, dgettext("terminal", "Machine not found."))
          |> push_navigate(to: ~p"/machines")}
     end
   end
@@ -77,19 +77,28 @@ defmodule MarshallWeb.TerminalLive do
       {:ok, ticket} ->
         {:noreply,
          socket
-         |> assign(android_display_notice: gettext("Display relay ticket issued."))
-         |> push_event("android_display_ticket", %{ticket: ticket, mode: mode})}
+         |> assign(android_display_notice: dgettext("terminal", "Display relay ticket issued."))
+         |> push_event("android_display_ticket", %{
+           ticket: ticket,
+           mode: mode,
+           machine_id: socket.assigns.vm.id,
+           generation: socket.assigns.vm.generation
+         })}
 
       {:error, :forbidden} ->
         {:noreply,
-         assign(socket, android_display_notice: gettext("Android display is unavailable."))}
+         assign(socket,
+           android_display_notice: dgettext("terminal", "Android display is unavailable.")
+         )}
     end
   end
 
   def handle_event("android_display_ticket", _params, socket),
     do:
       {:noreply,
-       assign(socket, android_display_notice: gettext("Android display is unavailable."))}
+       assign(socket,
+         android_display_notice: dgettext("terminal", "Android display is unavailable.")
+       )}
 
   def handle_event("terminal_new", %{"request_id" => request_id}, socket)
       when is_binary(request_id) do
@@ -114,7 +123,8 @@ defmodule MarshallWeb.TerminalLive do
          assign(socket,
            opening_notice: nil,
            notice:
-             gettext(
+             dgettext(
+               "terminal",
                "Opening terminal; recovering the same request if the connection was interrupted."
              )
          )}
@@ -137,11 +147,12 @@ defmodule MarshallWeb.TerminalLive do
       {:noreply, push_event(socket, "terminal_ticket", %{session_id: session_id, ticket: ticket})}
     else
       {:error, :terminal_open_pending} ->
-        {:noreply, assign(socket, notice: gettext("Resuming machine; waiting for capacity…"))}
+        {:noreply,
+         assign(socket, notice: dgettext("terminal", "Resuming machine; waiting for capacity…"))}
 
       refusal ->
         Marshall.Events.emit("terminal.ticket_refused", reason: ticket_refusal(refusal))
-        {:noreply, assign(socket, notice: gettext("Terminal access ended."))}
+        {:noreply, assign(socket, notice: dgettext("terminal", "Terminal access ended."))}
     end
   end
 
@@ -158,7 +169,8 @@ defmodule MarshallWeb.TerminalLive do
       {:error, :terminal_close_pending} ->
         {:noreply,
          assign(socket,
-           notice: gettext("Terminal close requested; waiting for guest confirmation.")
+           notice:
+             dgettext("terminal", "Terminal close requested; waiting for guest confirmation.")
          )}
 
       _ ->
@@ -182,13 +194,15 @@ defmodule MarshallWeb.TerminalLive do
              email,
              if(action == "share", do: :shared, else: :revoked)
            ) do
-      {:reply, %{ok: true}, assign(socket, notice: gettext("Terminal viewing access updated."))}
+      {:reply, %{ok: true},
+       assign(socket, notice: dgettext("terminal", "Terminal viewing access updated."))}
     else
       _ ->
         {:reply, %{ok: false},
          assign(socket,
            notice:
-             gettext(
+             dgettext(
+               "terminal",
                "Unable to update terminal sharing. The recipient must have machine access before sharing."
              )
          )}
@@ -218,7 +232,11 @@ defmodule MarshallWeb.TerminalLive do
       {:error, _reason} ->
         {:reply, %{ok: false},
          assign(socket,
-           notice: gettext("The boot log is unavailable for the current machine execution.")
+           notice:
+             dgettext(
+               "terminal",
+               "The boot log is unavailable for the current machine execution."
+             )
          )}
     end
   end
@@ -313,8 +331,11 @@ defmodule MarshallWeb.TerminalLive do
                "read",
                if(wake_on_mount?, do: :connect, else: :observe)
              ) do
-          {:error, :terminal_open_pending} -> gettext("Resuming machine; waiting for capacity…")
-          _ -> socket.assigns.opening_notice || machine_waiting_notice(vm)
+          {:error, :terminal_open_pending} ->
+            dgettext("terminal", "Resuming machine; waiting for capacity…")
+
+          _ ->
+            socket.assigns.opening_notice || machine_waiting_notice(vm)
         end
 
       assign(socket, notice: notice)
@@ -324,20 +345,21 @@ defmodule MarshallWeb.TerminalLive do
   @spec machine_waiting_notice(map()) :: String.t()
   defp machine_waiting_notice(%{guest_capabilities: %{available: true, terminal: false}}),
     do:
-      gettext(
+      dgettext(
+        "terminal",
         "This machine's image has no terminal agent, so the browser terminal is unavailable."
       )
 
   defp machine_waiting_notice(%{observed_state: :failed}),
-    do: gettext("Machine startup failed. Check the machine status and boot log.")
+    do: dgettext("terminal", "Machine startup failed. Check the machine status and boot log.")
 
   defp machine_waiting_notice(%{desired_state: :stopped}),
-    do: gettext("Machine is stopping or stopped. Choose Start to open a terminal.")
+    do: dgettext("terminal", "Machine is stopping or stopped. Choose Start to open a terminal.")
 
   defp machine_waiting_notice(%{desired_state: :paused}),
-    do: gettext("Machine is paused. Resume it or reopen this terminal page.")
+    do: dgettext("terminal", "Machine is paused. Resume it or reopen this terminal page.")
 
-  defp machine_waiting_notice(_vm), do: gettext("Waiting for the machine to start…")
+  defp machine_waiting_notice(_vm), do: dgettext("terminal", "Waiting for the machine to start…")
 
   defp list_current_sessions(socket) do
     case Marshall.Terminal.Authority.list_sessions(
@@ -348,7 +370,7 @@ defmodule MarshallWeb.TerminalLive do
       {:ok, sessions} ->
         notice =
           if Enum.any?(sessions, &(&1.kill_status == :pending)),
-            do: gettext("Terminal close requested; waiting for guest confirmation."),
+            do: dgettext("terminal", "Terminal close requested; waiting for guest confirmation."),
             else:
               socket.assigns.opening_notice ||
                 if(socket.assigns.opening.phase == :failed, do: socket.assigns.notice)
@@ -388,8 +410,8 @@ defmodule MarshallWeb.TerminalLive do
       {:error, reason} when is_retryable(reason) ->
         pending =
           if socket.assigns.opening.phase in [:waiting, :opening],
-            do: gettext("Preparing your terminal…"),
-            else: gettext("Reconnecting to the terminal service…")
+            do: dgettext("terminal", "Preparing your terminal…"),
+            else: dgettext("terminal", "Reconnecting to the terminal service…")
 
         assign(socket, notice: socket.assigns.opening_notice || pending)
 
@@ -426,7 +448,7 @@ defmodule MarshallWeb.TerminalLive do
 
       assign(socket,
         opening_task: task.ref,
-        notice: socket.assigns.opening_notice || gettext("Preparing your terminal…")
+        notice: socket.assigns.opening_notice || dgettext("terminal", "Preparing your terminal…")
       )
     else
       socket
@@ -449,8 +471,8 @@ defmodule MarshallWeb.TerminalLive do
       notice:
         cond do
           not pending? -> notice(reason)
-          reason == :rejected -> gettext("Preparing your guest account…")
-          true -> gettext("Preparing your terminal…")
+          reason == :rejected -> dgettext("terminal", "Preparing your guest account…")
+          true -> dgettext("terminal", "Preparing your terminal…")
         end
     )
   end
@@ -465,28 +487,31 @@ defmodule MarshallWeb.TerminalLive do
   defp parse_cursor(_, fallback), do: fallback
 
   defp notice(:too_many_terminal_sessions),
-    do: gettext("Terminal limit reached for this machine.")
+    do: dgettext("terminal", "Terminal limit reached for this machine.")
 
-  defp notice(:forbidden), do: gettext("You do not have terminal access to this machine.")
+  defp notice(:forbidden),
+    do: dgettext("terminal", "You do not have terminal access to this machine.")
 
   defp notice(:terminal_unavailable),
-    do: gettext("Terminals are unavailable while the host is offline.")
+    do: dgettext("terminal", "Terminals are unavailable while the host is offline.")
 
   defp notice(:unknown_session),
-    do: gettext("Your previous shell has closed. Choose New to open another terminal.")
+    do:
+      dgettext("terminal", "Your previous shell has closed. Choose New to open another terminal.")
 
   defp notice(:opening_expired),
-    do: gettext("The previous opening has ended. Choose New to try again.")
+    do: dgettext("terminal", "The previous opening has ended. Choose New to try again.")
 
   defp notice(:rejected),
     do:
-      gettext(
+      dgettext(
+        "terminal",
         "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
       )
 
-  defp notice(:limit), do: gettext("The guest cannot host more terminal sessions.")
+  defp notice(:limit), do: dgettext("terminal", "The guest cannot host more terminal sessions.")
 
-  defp notice(_), do: gettext("The terminal could not be opened.")
+  defp notice(_), do: dgettext("terminal", "The terminal could not be opened.")
 
   @impl true
   def render(assigns) do
@@ -511,11 +536,12 @@ defmodule MarshallWeb.TerminalLive do
           role="status"
         >
           <%= if @vm.desired_state == :stopped do %>
-            {gettext(
+            {dgettext(
+              "terminal",
               "This machine is stopped. Start it to open your terminal. Your files are retained."
             )}
           <% else %>
-            {gettext("Your terminal will open when the machine is running and ready.")}
+            {dgettext("terminal", "Your terminal will open when the machine is running and ready.")}
           <% end %>
         </div>
         <p :if={@notice} id="terminal-notice" role="status">
@@ -541,14 +567,14 @@ defmodule MarshallWeb.TerminalLive do
                 type="button"
                 class="console-button primary"
               >
-                {gettext("+ New")}
+                {dgettext("terminal", "+ New")}
               </button>
             </div>
             <div
               id="terminal-sidebar-list"
               phx-update="stream"
               role="listbox"
-              aria-label={gettext("Terminal sessions")}
+              aria-label={dgettext("terminal", "Terminal sessions")}
             >
               <div
                 :for={{dom_id, session} <- @streams.terminal_sessions}
@@ -562,7 +588,8 @@ defmodule MarshallWeb.TerminalLive do
                   role="option"
                   aria-selected="false"
                   aria-label={
-                    ngettext(
+                    dngettext(
+                      "terminal",
                       "Terminal %{name}, %{count} viewer, created %{created}",
                       "Terminal %{name}, %{count} viewers, created %{created}",
                       session.viewers,
@@ -575,7 +602,8 @@ defmodule MarshallWeb.TerminalLive do
                   <span aria-hidden="true"><span class="terminal-unread-dot"></span></span>
                   <span>
                     <span class="terminal-label">{session.display_name}</span>
-                    <span class="terminal-meta">{ngettext(
+                    <span class="terminal-meta">{dngettext(
+                      "terminal",
                       "%{user} · %{count} viewing",
                       "%{user} · %{count} viewing",
                       session.viewers,
@@ -587,16 +615,20 @@ defmodule MarshallWeb.TerminalLive do
                   :if={session.can_kill}
                   type="button"
                   data-terminal-share={session.id}
-                  aria-label={gettext("Share terminal %{value1}", value1: session.display_name)}
-                  title={gettext("Share view")}
+                  aria-label={
+                    dgettext("terminal", "Share terminal %{value1}", value1: session.display_name)
+                  }
+                  title={dgettext("terminal", "Share view")}
                   class="console-button ghost"
                 >+</button>
                 <button
                   :if={session.can_kill}
                   type="button"
                   data-terminal-kill={session.id}
-                  aria-label={gettext("Close terminal %{value1}", value1: session.display_name)}
-                  title={gettext("Close session")}
+                  aria-label={
+                    dgettext("terminal", "Close terminal %{value1}", value1: session.display_name)
+                  }
+                  title={dgettext("terminal", "Close session")}
                   class="console-button ghost"
                 >×</button>
               </div>
@@ -604,17 +636,23 @@ defmodule MarshallWeb.TerminalLive do
             <div id="terminal-empty" class={[!@sessions_empty? && "hidden"]}>
               <%= cond do %>
                 <% @boot_log? -> %>
-                  {gettext("Read-only host boot log. Guest terminal readiness is not required.")}
+                  {dgettext(
+                    "terminal",
+                    "Read-only host boot log. Guest terminal readiness is not required."
+                  )}
                 <% !@vm.permissions.write -> %>
-                  {gettext("No shared terminals are available to view.")}
+                  {dgettext("terminal", "No shared terminals are available to view.")}
                 <% @opening.phase in [:waiting, :opening] -> %>
-                  {gettext("Your personal terminal opens when the machine is ready.")}
+                  {dgettext("terminal", "Your personal terminal opens when the machine is ready.")}
                 <% true -> %>
-                  {gettext("No terminals are open. Choose New to open your personal shell.")}
+                  {dgettext(
+                    "terminal",
+                    "No terminals are open. Choose New to open your personal shell."
+                  )}
               <% end %>
             </div>
             <div id="terminal-sidebar-tools" phx-update="ignore">
-              <button id="terminal-boot-log" type="button">{gettext("Boot log")}</button>
+              <button id="terminal-boot-log" type="button">{dgettext("terminal", "Boot log")}</button>
             </div>
           </aside>
 
@@ -625,101 +663,113 @@ defmodule MarshallWeb.TerminalLive do
             aria-labelledby="android-display-heading"
             phx-hook="AndroidDisplay"
             data-display-websocket-url="/android-display"
+            data-machine-id={@vm.id}
           >
-            <h2 id="android-display-heading">{gettext("Android display")}</h2>
-            <p>{gettext("The software-rendered Android display uses the machine relay.")}</p>
+            <h2 id="android-display-heading">{dgettext("terminal", "Android display")}</h2>
+            <p>
+              {dgettext("terminal", "The software-rendered Android display uses the machine relay.")}
+            </p>
             <div class="row">
               <button type="button" phx-click="android_display_ticket" phx-value-mode="viewer">
-                {gettext("Open display")}
+                {dgettext("terminal", "Open display")}
               </button>
               <button type="button" phx-click="android_display_ticket" phx-value-mode="controller">
-                {gettext("Request control")}
+                {dgettext("terminal", "Request control")}
               </button>
             </div>
             <p data-display-status data-status="idle" role="status">
-              {@android_display_notice || gettext("Waiting for display relay.")}
+              {@android_display_notice || dgettext("terminal", "Waiting for display relay.")}
             </p>
-            <canvas width="1080" height="1920" aria-label={gettext("Android display canvas")}></canvas>
+            <canvas
+              width="1080"
+              height="1920"
+              aria-label={dgettext("terminal", "Android display canvas")}
+            ></canvas>
           </section>
 
           <div id="terminal-display" class="machine-terminal-display">
             <div id="terminal-display-ui" phx-update="ignore">
               <div class="terminal-toolbar">
                 <p id="terminal-status" phx-update="ignore" role="status" data-status="connecting">
-                  {gettext("Connecting…")}
+                  {dgettext("terminal", "Connecting…")}
                 </p>
                 <div class="terminal-tools">
-                  <span id="terminal-input-hint" phx-update="ignore">{gettext("Type to interact")}</span>
+                  <span id="terminal-input-hint" phx-update="ignore">{dgettext(
+                    "terminal",
+                    "Type to interact"
+                  )}</span>
                   <button
                     type="button"
                     data-terminal-tool="rename"
-                    aria-label={gettext("Rename terminal")}
-                    title={gettext("Rename in this browser")}
-                  >{gettext("rename")}</button>
+                    aria-label={dgettext("terminal", "Rename terminal")}
+                    title={dgettext("terminal", "Rename in this browser")}
+                  >{dgettext("terminal", "rename")}</button>
                   <button
                     type="button"
                     data-terminal-tool="search"
-                    aria-label={gettext("Search scrollback")}
-                    title={gettext("Search (Ctrl+F)")}
-                  >{gettext("find")}</button>
+                    aria-label={dgettext("terminal", "Search scrollback")}
+                    title={dgettext("terminal", "Search (Ctrl+F)")}
+                  >{dgettext("terminal", "find")}</button>
                   <button
                     type="button"
                     data-terminal-tool="zoom-out"
-                    aria-label={gettext("Decrease terminal font size")}
-                  >{gettext("A−")}</button>
+                    aria-label={dgettext("terminal", "Decrease terminal font size")}
+                  >{dgettext("terminal", "A−")}</button>
                   <button
                     type="button"
                     data-terminal-tool="zoom-in"
-                    aria-label={gettext("Increase terminal font size")}
-                  >{gettext("A+")}</button>
+                    aria-label={dgettext("terminal", "Increase terminal font size")}
+                  >{dgettext("terminal", "A+")}</button>
                   <button
                     id="terminal-fullscreen"
                     type="button"
                     data-terminal-tool="fullscreen"
-                    aria-label={gettext("Enter full screen")}
+                    aria-label={dgettext("terminal", "Enter full screen")}
                     aria-pressed="false"
-                    title={gettext("Enter full screen")}
-                  >{gettext("full")}</button>
+                    title={dgettext("terminal", "Enter full screen")}
+                  >{dgettext("terminal", "full")}</button>
                 </div>
               </div>
               <div id="terminal-search-bar" role="search" class="hidden">
-                <label class="sr-only" for="terminal-search-query">{gettext(
+                <label class="sr-only" for="terminal-search-query">{dgettext(
+                  "terminal",
                   "Search terminal scrollback"
                 )}</label>
                 <input
                   id="terminal-search-query"
                   type="search"
                   maxlength="256"
-                  placeholder={gettext("Find in scrollback")}
+                  placeholder={dgettext("terminal", "Find in scrollback")}
                 />
                 <button
                   type="button"
                   data-terminal-tool="search-previous"
-                  aria-label={gettext("Previous match")}
+                  aria-label={dgettext("terminal", "Previous match")}
                 >↑</button>
                 <button
                   type="button"
                   data-terminal-tool="search-next"
-                  aria-label={gettext("Next match")}
+                  aria-label={dgettext("terminal", "Next match")}
                 >↓</button>
                 <button
                   type="button"
                   data-terminal-tool="search-close"
-                  aria-label={gettext("Close search")}
+                  aria-label={dgettext("terminal", "Close search")}
                 >×</button>
                 <span id="terminal-search-result" role="status"></span>
               </div>
               <div id="terminal-pane-holder"></div>
               <div id="terminal-boot-view" class="hidden">
                 <label>
-                  <input id="terminal-boot-autoscroll" type="checkbox" checked /> {gettext(
+                  <input id="terminal-boot-autoscroll" type="checkbox" checked /> {dgettext(
+                    "terminal",
                     "Follow boot output"
                   )}
                 </label>
                 <div
                   id="terminal-boot-xterm"
                   role="region"
-                  aria-label={gettext("Read-only boot console")}
+                  aria-label={dgettext("terminal", "Read-only boot console")}
                 >
                 </div>
               </div>
@@ -727,28 +777,29 @@ defmodule MarshallWeb.TerminalLive do
           </div>
           <div id="terminal-share-dialog-region" phx-update="ignore">
             <dialog id="terminal-share-dialog" aria-labelledby="terminal-share-heading">
-              <h2 id="terminal-share-heading">{gettext("Share this terminal")}</h2>
+              <h2 id="terminal-share-heading">{dgettext("terminal", "Share this terminal")}</h2>
               <p>
-                {gettext(
+                {dgettext(
+                  "terminal",
                   "Viewing only, even for machine operators. The recipient must already have access to this machine."
                 )}
               </p>
               <div class="field">
                 <label for="terminal-share-email">
-                  <span class="field-label">{gettext("Account email")}</span>
+                  <span class="field-label">{dgettext("terminal", "Account email")}</span>
                   <input id="terminal-share-email" type="email" maxlength="320" />
                 </label>
               </div>
               <p id="terminal-share-result" role="status"></p>
               <div class="dialog-actions">
                 <button type="button" data-terminal-tool="share-submit" class="console-button primary">
-                  {gettext("Allow viewing")}
+                  {dgettext("terminal", "Allow viewing")}
                 </button>
                 <button type="button" data-terminal-tool="share-revoke" class="console-button">
-                  {gettext("Revoke")}
+                  {dgettext("terminal", "Revoke")}
                 </button>
                 <button type="button" data-terminal-tool="share-close" class="console-button">
-                  {gettext("Cancel")}
+                  {dgettext("terminal", "Cancel")}
                 </button>
               </div>
             </dialog>

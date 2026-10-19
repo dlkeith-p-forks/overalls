@@ -1,0 +1,272 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: mr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/marshall_web/live/teams_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "%{count} member"
+msgid_plural "%{count} members"
+msgstr[0] "%{count} सदस्य"
+msgstr[1] "%{count} सदस्य"
+
+#: lib/marshall_web/live/teams_live.ex:270
+#, elixir-autogen, elixir-format
+msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
+msgstr ""
+"संघाचा एकच मालक असतो. प्रस्ताव स्वीकारल्यानंतरच मालकी हस्तांतरित होते; आधीचा"
+" मालक प्रशासक होतो."
+
+#: lib/marshall_web/live/teams_live.ex:327
+#, elixir-autogen, elixir-format
+msgid "Accept ownership"
+msgstr "मालकी स्वीकारा"
+
+#: lib/marshall_web/live/teams_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Add, change or remove a member"
+msgstr "सदस्य जोडा, बदला किंवा काढा"
+
+#: lib/marshall_web/live/teams_live.ex:257
+#, elixir-autogen, elixir-format
+msgid "Admin"
+msgstr "प्रशासक"
+
+#: lib/marshall_web/live/teams_live.ex:372
+#, elixir-autogen, elixir-format
+msgid "Administrator"
+msgstr "प्रशासक"
+
+#: lib/marshall_web/live/teams_live.ex:218
+#, elixir-autogen, elixir-format
+msgid "Can"
+msgstr "करू शकतो"
+
+#: lib/marshall_web/live/teams_live.ex:347
+#, elixir-autogen, elixir-format
+msgid "Cancel offer"
+msgstr "प्रस्ताव रद्द करा"
+
+#: lib/marshall_web/live/teams_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Could not create this team."
+msgstr "हा संघ तयार करता आला नाही."
+
+#: lib/marshall_web/live/teams_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Could not offer ownership."
+msgstr "मालकीचा प्रस्ताव देता आला नाही."
+
+#: lib/marshall_web/live/teams_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Could not update this membership."
+msgstr "ही सदस्यता अद्ययावत करता आली नाही."
+
+#: lib/marshall_web/live/teams_live.ex:110
+#, elixir-autogen, elixir-format
+msgid "Could not update this ownership offer."
+msgstr "हा मालकी प्रस्ताव अद्ययावत करता आला नाही."
+
+#: lib/marshall_web/live/teams_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Create a team"
+msgstr "संघ तयार करा"
+
+#: lib/marshall_web/live/teams_live.ex:362
+#, elixir-autogen, elixir-format
+msgid "Create team"
+msgstr "संघ तयार करा"
+
+#: lib/marshall_web/live/teams_live.ex:337
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "नकार द्या"
+
+#: lib/marshall_web/live/teams_live.ex:377
+#, elixir-autogen, elixir-format
+msgid "Everything, including appointing admins and offering ownership."
+msgstr "प्रशासक नेमणे आणि मालकी देणे यांसह सर्व काही."
+
+#: lib/marshall_web/live/teams_live.ex:44
+#: lib/marshall_web/live/teams_live.ex:115
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "अवैध विनंती."
+
+#: lib/marshall_web/live/teams_live.ex:379
+#, elixir-autogen, elixir-format
+msgid "Manage members and team machines."
+msgstr "सदस्य आणि संघाची मशीन व्यवस्थापित करा."
+
+#: lib/marshall_web/live/teams_live.ex:216
+#: lib/marshall_web/live/teams_live.ex:258
+#: lib/marshall_web/live/teams_live.ex:373
+#, elixir-autogen, elixir-format
+msgid "Member"
+msgstr "सदस्य"
+
+#: lib/marshall_web/live/teams_live.ex:211
+#, elixir-autogen, elixir-format
+msgid "Members"
+msgstr "सदस्य"
+
+#: lib/marshall_web/live/teams_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Membership updated."
+msgstr "सदस्यता अद्ययावत केली."
+
+#: lib/marshall_web/live/teams_live.ex:352
+#, elixir-autogen, elixir-format
+msgid "No pending ownership offer."
+msgstr "प्रलंबित मालकी प्रस्ताव नाही."
+
+#: lib/marshall_web/live/teams_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Offer ownership"
+msgstr "मालकीचा प्रस्ताव द्या"
+
+#: lib/marshall_web/live/teams_live.ex:283
+#, elixir-autogen, elixir-format
+msgid "Offer ownership to"
+msgstr "यांना मालकी द्या"
+
+#: lib/marshall_web/live/teams_live.ex:290
+#, elixir-autogen, elixir-format
+msgid "Offered by"
+msgstr "प्रस्ताव देणारे"
+
+#: lib/marshall_web/live/teams_live.ex:299
+#, elixir-autogen, elixir-format
+msgid "Offered to"
+msgstr "प्रस्ताव स्वीकारणारे"
+
+#: lib/marshall_web/live/teams_live.ex:371
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "मालक"
+
+#: lib/marshall_web/live/teams_live.ex:268
+#, elixir-autogen, elixir-format
+msgid "Ownership"
+msgstr "मालकी"
+
+#: lib/marshall_web/live/teams_live.ex:87
+#, elixir-autogen, elixir-format
+msgid "Ownership offer sent."
+msgstr "मालकी प्रस्ताव पाठवला."
+
+#: lib/marshall_web/live/teams_live.ex:107
+#, elixir-autogen, elixir-format
+msgid "Ownership offer updated."
+msgstr "मालकी प्रस्ताव अद्ययावत केला."
+
+#: lib/marshall_web/live/teams_live.ex:313
+#, elixir-autogen, elixir-format
+msgid "Ownership offered by %{value1} to %{value2}."
+msgstr "%{value1} यांनी %{value2} यांना मालकी दिली आहे."
+
+#: lib/marshall_web/live/teams_live.ex:249
+#, elixir-autogen, elixir-format
+msgid "Registered email"
+msgstr "नोंदणीकृत ईमेल"
+
+#: lib/marshall_web/live/teams_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "काढा"
+
+#: lib/marshall_web/live/teams_live.ex:217
+#: lib/marshall_web/live/teams_live.ex:254
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "भूमिका"
+
+#: lib/marshall_web/live/teams_live.ex:264
+#, elixir-autogen, elixir-format
+msgid "Save member"
+msgstr "सदस्य जतन करा"
+
+#: lib/marshall_web/live/teams_live.ex:180
+#, elixir-autogen, elixir-format
+msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
+msgstr ""
+"सहकाऱ्यांसोबत मशीन आणि एकत्रीकरणे सामायिक करा. मालक प्रशासक नेमतात, प्रशासक "
+"सदस्य व्यवस्थापित करतात."
+
+#: lib/marshall_web/live/teams_live.ex:308
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "स्थिती"
+
+#: lib/marshall_web/live/teams_live.ex:31
+#, elixir-autogen, elixir-format
+msgid "Team %{value1} created."
+msgstr "संघ %{value1} तयार झाला."
+
+#: lib/marshall_web/live/teams_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "Team name"
+msgstr "संघाचे नाव"
+
+#: lib/marshall_web/live/teams_live.ex:178
+#, elixir-autogen, elixir-format
+msgid "Teams"
+msgstr "संघ"
+
+#: lib/marshall_web/live/teams_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Teams are temporarily unavailable."
+msgstr "संघ तात्पुरते उपलब्ध नाहीत."
+
+#: lib/marshall_web/live/teams_live.ex:380
+#, elixir-autogen, elixir-format
+msgid "Use team machines and integrations."
+msgstr "संघाची मशीन आणि एकत्रीकरणे वापरा."
+
+#: lib/marshall_web/live/teams_live.ex:186
+#, elixir-autogen, elixir-format
+msgid "You are not in a team yet. Create one below, or ask a team admin to add you."
+msgstr ""
+"तुम्ही अजून संघात नाही. खाली एक तयार करा किंवा संघ प्रशासकाला जोडायला सांगा."
+
+#: lib/marshall_web/live/teams_live.ex:359
+#, elixir-autogen, elixir-format
+msgid "You become its owner and can add members straight away."
+msgstr "तुम्ही मालक होता आणि लगेच सदस्य जोडू शकता."
+
+#: lib/marshall_web/live/teams_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Your role: %{role}"
+msgstr "तुमची भूमिका: %{role}"
+
+#: lib/marshall_web/live/teams_live.ex:189
+#, elixir-autogen, elixir-format
+msgid "Your teams"
+msgstr "तुमचे संघ"
+
+#: lib/marshall_web/live/teams_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "pending"
+msgstr "प्रलंबित"
+
+#: lib/marshall_web/live/teams_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "platform"
+msgstr "प्लॅटफॉर्म"
+
+#: lib/marshall_web/live/teams_live.ex:250
+#: lib/marshall_web/live/teams_live.ex:284
+#, elixir-autogen, elixir-format
+msgid "teammate@example.test"
+msgstr "teammate@example.test"

@@ -63,6 +63,28 @@ defmodule MarshallWeb.HLDDLiveTest do
              live(signed_in(conn, user()), "/hldd/not-a-chapter")
   end
 
+  test "English handbook content keeps its language and direction inside localized chrome",
+       %{conn: conn} do
+    conn = signed_in(conn, user())
+
+    for {locale, direction} <- [{"ar", "rtl"}, {"ja", "ltr"}] do
+      localized_conn = put_req_header(conn, "accept-language", locale)
+      {:ok, index, html} = live(localized_conn, "/hldd")
+      document = LazyHTML.from_document(html)
+
+      assert Enum.count(LazyHTML.query(document, "html[lang='#{locale}'][dir='#{direction}']")) ==
+               1
+
+      assert has_element?(index, "#hldd-index a[lang=en][dir=ltr]", "System overview")
+
+      {:ok, section, _html} = live(localized_conn, "/hldd/system")
+      assert has_element?(section, "article[data-hldd-section=system][lang=en][dir=ltr]")
+      assert has_element?(section, "#system h1", "System overview")
+      assert has_element?(section, ".hldd-contents a[lang=en][dir=ltr]", "System overview")
+      assert has_element?(section, ".hldd-pagination span[lang=en][dir=ltr]")
+    end
+  end
+
   test "query parameters cannot load a chapter into the contents page", %{conn: conn} do
     {:ok, view, _} = live(signed_in(conn, user()), "/hldd?section=options")
     assert has_element?(view, "#hldd-index")

@@ -21,7 +21,7 @@ defmodule MarshallWeb.GitRawController do
       |> put_resp_header("content-disposition", "attachment; filename=\"#{filename}\"")
       |> send_resp(200, bytes)
     else
-      _ -> send_resp(conn, 404, gettext("Unavailable"))
+      _ -> send_resp(conn, 404, dgettext("git", "Unavailable"))
     end
   end
 end

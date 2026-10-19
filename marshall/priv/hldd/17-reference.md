@@ -316,6 +316,12 @@ checks also compared an acknowledged batch with the bridge's archive copy,
 which republishes about every 0.2 s; they now wait up to 5 s for that copy, and
 a lost-reply batch no longer re-synchronizes the next check. No product
 behavior changed.
+Run `f12e00a27739e7abddf565ca2975e449-65-0` confirmed the VM stayed alive but
+still failed the one-new-batch checks: each traces command derived producer
+sequences from its attempt count plus fixed offsets up to 340, so successive
+commands reused sequences, and the spool correctly stored an identical body
+once. Each command now reserves a disjoint 400-sequence block from the
+workload ledger.
 The optional `admission-stub` profile runs the atomic-allocation and key-replay
 admission commands on a harness **stub** storage substrate, which is not ZFS.
 Only in that profile does the controlled Lilly release report configured stub
@@ -1269,7 +1275,7 @@ earlier mixed-source asset
 build does not verify this forward patch or complete browser behavior. The
 [matrix review](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)
 records the source scope and remaining native, controller-lease, isolation and
-recovery gaps; ADR-0206 remains partial. ADR-0207 now fully supersedes ADR-0200's
+recovery gaps; ADR-0206 remains partial. ADR-0208 now fully supersedes ADR-0200's
 Windows candidate decision, with its identity and promotion requirements retained.
 
 The next test-fixture repair gives each generated retention, Enrico HTTPS, SMTP,

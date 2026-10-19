@@ -1,0 +1,788 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: sv\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "Aktiv"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#, elixir-autogen, elixir-format
+msgid "Admission"
+msgstr "Tilldelningsprövning"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Admission settings updated."
+msgstr "Inställningarna för tilldelningsprövning har uppdaterats."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Admission settings were invalid or the node is not ready."
+msgstr "Inställningarna för tilldelningsprövning var ogiltiga eller noden är inte redo."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:566
+#, elixir-autogen, elixir-format
+msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
+msgstr "Vägledande förhandsvisning för den här sidan. Varje arbetsbelastning bedöms separat; mål och tillgänglig kapacitet kan ändras. Tilldelningsprövningen kontrollerar och reserverar resurser på nytt när varje flytt börjar."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
+#, elixir-autogen, elixir-format
+msgid "Apply admission settings"
+msgstr "Verkställ inställningar för tilldelningsprövning"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:631
+#, elixir-autogen, elixir-format
+msgid "Approve move downtime"
+msgstr "Godkänn driftstopp för flytten"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#, elixir-autogen, elixir-format
+msgid "Blocked: %{reason}"
+msgstr "Blockerad: %{reason}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#, elixir-autogen, elixir-format
+msgid "CPU after holds"
+msgstr "Processor efter reservationer"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#, elixir-autogen, elixir-format
+msgid "CPU headroom"
+msgstr "Ledig processorkapacitet"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
+#, elixir-autogen, elixir-format
+msgid "CPU overhead (cores)"
+msgstr "Processorreserv (kärnor)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
+#, elixir-autogen, elixir-format
+msgid "Campaign"
+msgstr "Kampanj"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:727
+#, elixir-autogen, elixir-format
+msgid "Campaign closed"
+msgstr "Kampanjen avslutad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#, elixir-autogen, elixir-format
+msgid "Campaign history"
+msgstr "Kampanjhistorik"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
+#, elixir-autogen, elixir-format
+msgid "Campaign requested"
+msgstr "Kampanj begärd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
+#, elixir-autogen, elixir-format
+msgid "Campaign, workload and relocation milestones from durable control-plane records."
+msgstr "Milstolpar för kampanjer, arbetsbelastningar och flyttar från beständiga poster i kontrollplanet."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
+#, elixir-autogen, elixir-format
+msgid "Cancellation requested"
+msgstr "Avbrytning begärd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:719
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:821
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "Avbruten"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
+#, elixir-autogen, elixir-format
+msgid "Candidate: %{name}"
+msgstr "Kandidat: %{name}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:330
+#, elixir-autogen, elixir-format
+msgid "Capacity explanation"
+msgstr "Kapacitetsförklaring"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:66
+#, elixir-autogen, elixir-format
+msgid "Capacity information is temporarily unavailable."
+msgstr "Kapacitetsinformationen är tillfälligt otillgänglig."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#, elixir-autogen, elixir-format
+msgid "Checking destination readiness"
+msgstr "Kontrollerar att målet är redo"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#, elixir-autogen, elixir-format
+msgid "Checking transfer connectivity"
+msgstr "Kontrollerar överföringsanslutningen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:713
+#, elixir-autogen, elixir-format
+msgid "Cleaning up after cancellation"
+msgstr "Rensar efter avbrytning"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
+#, elixir-autogen, elixir-format
+msgid "Cleaning up the source"
+msgstr "Rensar källan"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#, elixir-autogen, elixir-format
+msgid "Clone in progress"
+msgstr "Kloning pågår"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:539
+#, elixir-autogen, elixir-format
+msgid "Closed"
+msgstr "Stängd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:718
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "Klar"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:346
+#, elixir-autogen, elixir-format
+msgid "Configured host overhead: %{cores} cores · %{memory} memory. These margins are included in admission arithmetic and remain deployment-controlled."
+msgstr "Konfigurerad värdoverhead: %{cores} kärnor · %{memory} minne. Dessa marginaler ingår i beräkningen för antagning och styrs fortfarande av driftskonfigurationen."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
+#, elixir-autogen, elixir-format
+msgid "Continue scheduling"
+msgstr "Fortsätt schemaläggning"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
+#, elixir-autogen, elixir-format
+msgid "Copy/resize holds"
+msgstr "Reservationer för kopiering/storleksändring"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#, elixir-autogen, elixir-format
+msgid "Copying"
+msgstr "Kopierar"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Could not accept this change. Refresh and check the workload state."
+msgstr "Ändringen kunde inte godkännas. Uppdatera och kontrollera arbetsbelastningens tillstånd."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#, elixir-autogen, elixir-format
+msgid "Deleted"
+msgstr "Raderad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
+#, elixir-autogen, elixir-format
+msgid "Deleting retained copies"
+msgstr "Raderar bevarade kopior"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#, elixir-autogen, elixir-format
+msgid "Desired: %{desired} · Observed: %{observed}"
+msgstr "Önskat: %{desired} · Observerat: %{observed}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#, elixir-autogen, elixir-format
+msgid "Destination boot failed; source copy retained"
+msgstr "Målets start misslyckades; källkopian bevaras"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:747
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup confirmed"
+msgstr "Rensning av målet bekräftad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:743
+#, elixir-autogen, elixir-format
+msgid "Destination cleanup requested"
+msgstr "Rensning av målet begärd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#, elixir-autogen, elixir-format
+msgid "Destination readiness failed; source copy retained"
+msgstr "Målets beredskapskontroll misslyckades; källkopian bevaras"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Detaljer"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
+#, elixir-autogen, elixir-format
+msgid "Disk after holds"
+msgstr "Disk efter reservationer"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:781
+#, elixir-autogen, elixir-format
+msgid "Downtime approval required"
+msgstr "Godkännande av driftstopp krävs"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:758
+#, elixir-autogen, elixir-format
+msgid "Downtime approved"
+msgstr "Driftstopp godkänt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#, elixir-autogen, elixir-format
+msgid "Downtime approved for this workload revision"
+msgstr "Driftstopp godkänt för den här arbetsbelastningsversionen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#, elixir-autogen, elixir-format
+msgid "Drained"
+msgstr "Tömd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#, elixir-autogen, elixir-format
+msgid "Draining"
+msgstr "Tömmer"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "Aktiverad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:319
+#, elixir-autogen, elixir-format
+msgid "Evacuate all workloads on this node? Running guests will be interrupted during their moves. Full stopped copies require separate per-workload approval."
+msgstr "Evakuera alla arbetsbelastningar på noden? Gäster som körs avbryts under flytten. Fullständiga stoppade kopior kräver separat godkännande för varje arbetsbelastning."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#, elixir-autogen, elixir-format
+msgid "Evacuating"
+msgstr "Evakuerar"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:300
+#, elixir-autogen, elixir-format
+msgid "Evacuation blocks new placements while existing guests remain served. Moving a running guest briefly interrupts it. A full stopped copy can take substantially longer and needs approval for each workload."
+msgstr "Evakuering blockerar nya placeringar medan befintliga gäster fortsätter betjänas. Flytt av en körande gäst avbryter den kort. En fullständig stoppad kopia kan ta betydligt längre tid och kräver godkännande för varje arbetsbelastning."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
+#, elixir-autogen, elixir-format
+msgid "Evacuation campaign"
+msgstr "Evakueringskampanj"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
+#, elixir-autogen, elixir-format
+msgid "Evacuation timeline"
+msgstr "Tidslinje för evakuering"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
+#, elixir-autogen, elixir-format
+msgid "Event"
+msgstr "Händelse"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:260
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:286
+#, elixir-autogen, elixir-format
+msgid "Excluded"
+msgstr "Undantagen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:341
+#, elixir-autogen, elixir-format
+msgid "Execution ready"
+msgstr "Körningen är redo"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "Explain capacity"
+msgstr "Förklara kapaciteten"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:820
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Misslyckad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#, elixir-autogen, elixir-format
+msgid "Fresh"
+msgstr "Aktuell"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#, elixir-autogen, elixir-format
+msgid "Fresh report"
+msgstr "Aktuell rapport"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#, elixir-autogen, elixir-format
+msgid "Importing"
+msgstr "Importerar"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:778
+#, elixir-autogen, elixir-format
+msgid "Insufficient capacity"
+msgstr "Otillräcklig kapacitet"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:145
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Ogiltig begäran."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:752
+#, elixir-autogen, elixir-format
+msgid "Job state"
+msgstr "Jobbstatus"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:276
+#, elixir-autogen, elixir-format
+msgid "Lilly node · %{mode} maintenance"
+msgstr "Lilly-nod · underhåll %{mode}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "Lilly nodes and their admission state. Move a node's workloads before taking its machine out of service."
+msgstr "Lilly-noder och deras tilldelningstillstånd. Flytta nodens arbetsbelastningar innan maskinen tas ur drift."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:249
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:282
+#, elixir-autogen, elixir-format
+msgid "Maintenance"
+msgstr "Underhåll"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#, elixir-autogen, elixir-format
+msgid "Maintenance pages"
+msgstr "Underhållssidor"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Maintenance updated."
+msgstr "Underhållet har uppdaterats."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
+#, elixir-autogen, elixir-format
+msgid "Memory after holds"
+msgstr "Minne efter reservationer"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#, elixir-autogen, elixir-format
+msgid "Memory headroom"
+msgstr "Ledig minneskapacitet"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#, elixir-autogen, elixir-format
+msgid "Next page →"
+msgstr "Nästa sida →"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:124
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "No active campaign."
+msgstr "Ingen aktiv kampanj."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:248
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:280
+#, elixir-autogen, elixir-format
+msgid "Node"
+msgstr "Nod"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Node information is unavailable."
+msgstr "Nodinformationen är inte tillgänglig."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:234
+#, elixir-autogen, elixir-format
+msgid "Node maintenance"
+msgstr "Nodunderhåll"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
+#, elixir-autogen, elixir-format
+msgid "Normal"
+msgstr "Normal"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:599
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s"
+msgstr "Observerat avbrott: %{seconds}s"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:595
+#, elixir-autogen, elixir-format
+msgid "Observed interruption: %{seconds}s (ongoing)"
+msgstr "Observerat avbrott: %{seconds}s (pågående)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:538
+#, elixir-autogen, elixir-format
+msgid "Opened"
+msgstr "Öppnad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
+#, elixir-autogen, elixir-format
+msgid "Pause scheduling"
+msgstr "Pausa schemaläggning"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
+#, elixir-autogen, elixir-format
+msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
+msgstr "Paus hindrar att nya flyttar schemaläggs. Godkända flyttar fortsätter. Underhållsberedskap kräver bekräftad rensning av källan; slutförda jobb räcker inte ensamma."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#, elixir-autogen, elixir-format
+msgid "Paused"
+msgstr "Pausad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "Väntar"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
+#, elixir-autogen, elixir-format
+msgid "Permanently retire this empty node and revoke its credentials?"
+msgstr "Ta den tomma noden ur bruk permanent och återkalla dess autentiseringsuppgifter?"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#, elixir-autogen, elixir-format
+msgid "Phase: %{phase}"
+msgstr "Fas: %{phase}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#, elixir-autogen, elixir-format
+msgid "Pool"
+msgstr "Resurspool"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#, elixir-autogen, elixir-format
+msgid "Preparing"
+msgstr "Förbereder"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:306
+#, elixir-autogen, elixir-format
+msgid "Preview evacuation"
+msgstr "Förhandsvisa evakuering"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:606
+#, elixir-autogen, elixir-format
+msgid "Preview: %{blocker}"
+msgstr "Förhandsvisning: %{blocker}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:814
+#, elixir-autogen, elixir-format
+msgid "Queued"
+msgstr "Köad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
+#, elixir-autogen, elixir-format
+msgid "RAM overhead (bytes)"
+msgstr "RAM-reserv (byte)"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:642
+#, elixir-autogen, elixir-format
+msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
+msgstr "Planera om arbetsbelastningen med nuvarande placering och önskat tillstånd? Tidigare godkännande av driftstopp tas bort."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:647
+#, elixir-autogen, elixir-format
+msgid "Re-plan workload"
+msgstr "Planera om arbetsbelastning"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:333
+#, elixir-autogen, elixir-format
+msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
+msgstr "Skrivskyddad tilldelningsberäkning. Den reserverar inte kapacitet; okända mätvärden hindrar tilldelning."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "Redo"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:730
+#, elixir-autogen, elixir-format
+msgid "Relocation committed"
+msgstr "Flytten bekräftad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:787
+#, elixir-autogen, elixir-format
+msgid "Relocation in progress"
+msgstr "Flytt pågår"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:761
+#, elixir-autogen, elixir-format
+msgid "Relocation started"
+msgstr "Flytt startad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:588
+#, elixir-autogen, elixir-format
+msgid "Removed from this source; awaiting campaign cleanup verification."
+msgstr "Borttagen från källan; väntar på verifiering av kampanjrensningen."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#, elixir-autogen, elixir-format
+msgid "Report"
+msgstr "Rapport"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:784
+#, elixir-autogen, elixir-format
+msgid "Resize in progress"
+msgstr "Storleksändring pågår"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
+#, elixir-autogen, elixir-format
+msgid "Restore admission"
+msgstr "Återställ tilldelningsprövning"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#, elixir-autogen, elixir-format
+msgid "Restoring the source"
+msgstr "Återställer källan"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#, elixir-autogen, elixir-format
+msgid "Resumed"
+msgstr "Återupptagen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
+#, elixir-autogen, elixir-format
+msgid "Retire node"
+msgstr "Ta nod ur bruk"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#, elixir-autogen, elixir-format
+msgid "Retired"
+msgstr "Tagen ur bruk"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:818
+#, elixir-autogen, elixir-format
+msgid "Retrying"
+msgstr "Försöker igen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#, elixir-autogen, elixir-format
+msgid "Retrying destination boot"
+msgstr "Försöker starta målet igen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:817
+#, elixir-autogen, elixir-format
+msgid "Running"
+msgstr "Körs"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:816
+#, elixir-autogen, elixir-format
+msgid "Scheduled"
+msgstr "Schemalagd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:739
+#, elixir-autogen, elixir-format
+msgid "Source cleanup confirmed"
+msgstr "Rensning av källan bekräftad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:736
+#, elixir-autogen, elixir-format
+msgid "Source cleanup requested"
+msgstr "Rensning av källan begärd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:724
+#, elixir-autogen, elixir-format
+msgid "Source ready"
+msgstr "Källan redo"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:733
+#, elixir-autogen, elixir-format
+msgid "Source restored"
+msgstr "Källan återställd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
+#, elixir-autogen, elixir-format
+msgid "Source unavailable"
+msgstr "Källan otillgänglig"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown"
+msgstr "Inaktuell eller okänd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:289
+#, elixir-autogen, elixir-format
+msgid "Stale or unknown report"
+msgstr "Inaktuell eller okänd rapport"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:324
+#, elixir-autogen, elixir-format
+msgid "Start evacuation"
+msgstr "Starta evakuering"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
+#, elixir-autogen, elixir-format
+msgid "Startup holds"
+msgstr "Startreservationer"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Status"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:626
+#, elixir-autogen, elixir-format
+msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
+msgstr "Stoppa den körande arbetsbelastningen under hela flytten? Kopiering av diskar och omstart på målet kan orsaka ett långvarigt driftstopp."
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#, elixir-autogen, elixir-format
+msgid "Stopped"
+msgstr "Stoppad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#, elixir-autogen, elixir-format
+msgid "Stopping the source"
+msgstr "Stoppar källan"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:819
+#, elixir-autogen, elixir-format
+msgid "Succeeded"
+msgstr "Lyckad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:815
+#, elixir-autogen, elixir-format
+msgid "Suspended"
+msgstr "Vilande"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#, elixir-autogen, elixir-format
+msgid "Switching placement"
+msgstr "Byter placering"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:293
+#, elixir-autogen, elixir-format
+msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
+msgstr "Terminalprotokoll: %{protocol} · Lokal ström: %{state}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "Tid"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:775
+#, elixir-autogen, elixir-format
+msgid "Transfer busy"
+msgstr "Överföring upptagen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#, elixir-autogen, elixir-format
+msgid "Unavailable"
+msgstr "Inte tillgänglig"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:792
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:795
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:822
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Okänd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
+#, elixir-autogen, elixir-format
+msgid "VM"
+msgstr "VM"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:767
+#, elixir-autogen, elixir-format
+msgid "Workload changed"
+msgstr "Arbetsbelastningen ändrades"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:770
+#, elixir-autogen, elixir-format
+msgid "Workload is not stable"
+msgstr "Arbetsbelastningen är inte stabil"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:755
+#, elixir-autogen, elixir-format
+msgid "Workload observed"
+msgstr "Arbetsbelastningen observerad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:764
+#, elixir-autogen, elixir-format
+msgid "Workload resolved"
+msgstr "Arbetsbelastningen fastställd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
+#, elixir-autogen, elixir-format
+msgid "attempt %{attempt}"
+msgstr "försök %{attempt}"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#, elixir-autogen, elixir-format
+msgid "campaign"
+msgstr "kampanj"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
+#, elixir-autogen, elixir-format
+msgid "enabled"
+msgstr "aktiverad"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
+#, elixir-autogen, elixir-format
+msgid "excluded"
+msgstr "undantagen"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
+#, elixir-autogen, elixir-format
+msgid "job"
+msgstr "jobb"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
+#, elixir-autogen, elixir-format
+msgid "move"
+msgstr "flytt"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#, elixir-autogen, elixir-format
+msgid "ready"
+msgstr "redo"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:296
+#, elixir-autogen, elixir-format
+msgid "unavailable"
+msgstr "inte tillgänglig"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "okänd"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:342
+#, elixir-autogen, elixir-format
+msgid "yes"
+msgstr "ja"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#, elixir-autogen, elixir-format
+msgid "· Downtime approval required"
+msgstr "· Godkännande av driftstopp krävs"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#, elixir-autogen, elixir-format
+msgid "← First page"
+msgstr "← Första sidan"
+
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:271
+#, elixir-autogen, elixir-format
+msgid "← Nodes"
+msgstr "← Noder"

@@ -104,7 +104,7 @@ defmodule MarshallWeb.CoreComponents do
           </p>
           <p>{msg}</p>
         </div>
-        <button type="button" aria-label={gettext("close")}>×</button>
+        <button type="button" aria-label={dgettext("shared", "close")}>×</button>
       </div>
     </div>
     """
@@ -330,7 +330,7 @@ defmodule MarshallWeb.CoreComponents do
               {col[:label]}
             </th>
             <th :if={@action != []} class="width-min">
-              <span class="sr-only">{gettext("Actions")}</span>
+              <span class="sr-only">{dgettext("shared", "Actions")}</span>
             </th>
           </tr>
         </thead>

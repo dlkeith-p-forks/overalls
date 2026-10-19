@@ -1,6 +1,6 @@
 defmodule Marshall.LocalizedMarkdownTest do
   use ExUnit.Case, async: true
-  alias Marshall.{Documentation, Handbook, LocalizedMarkdown}
+  alias Marshall.{Documentation, DocumentationMessages, LocalizedMarkdown}
 
   test "prose extraction preserves fenced command and diagram bytes" do
     source =
@@ -21,19 +21,36 @@ defmodule Marshall.LocalizedMarkdownTest do
     assert [%{source: ^prose, translatable?: true}] = LocalizedMarkdown.units(prose)
   end
 
-  test "locale selection is closed and chapter identifiers remain stable" do
-    ids = Enum.map(Handbook.contents("en"), & &1.id)
-
+  test "public documentation locale selection and page selectors are closed" do
     for locale <- LocalizedMarkdown.locales() do
-      assert Enum.map(Handbook.contents(locale), & &1.id) == ids
-      assert Enum.all?(Handbook.contents(locale), &(Enum.sort(Map.keys(&1)) == [:id, :title]))
-      assert Handbook.fetch_chapter("../system", locale) == :error
       assert {:ok, %{slug: "index"}} = Documentation.page("index", locale)
       assert Documentation.page("../secrets", locale) == :error
     end
 
     assert Documentation.page("index", "../../secret") == Documentation.page("index", "en")
-    assert Handbook.contents("unsupported") == Handbook.contents("en")
+  end
+
+  # @cc [owner:ghuntley,label:verification] documentation-public-prose-only
+  # Generated documentation identities MUST contain only public page prose,
+  # public page titles and command help; HLDD-only prose MUST NOT enter catalogs.
+  test "generated documentation inventory excludes handbook-only prose" do
+    public_prose =
+      :marshall
+      |> Application.app_dir("priv/docs/*.md")
+      |> Path.wildcard()
+      |> Enum.flat_map(fn path ->
+        path
+        |> File.read!()
+        |> LocalizedMarkdown.units()
+        |> Enum.filter(& &1.translatable?)
+        |> Enum.map(& &1.source)
+      end)
+
+    titles = Enum.map(Documentation.pages("en"), & &1.title)
+    help = Enum.map(OverallsProtocol.SSHCommand.catalog(), & &1.summary)
+    expected = MapSet.new(public_prose ++ titles ++ help ++ ["Options:"])
+
+    assert MapSet.new(DocumentationMessages.messages()) == expected
   end
 
   test "localized command references preserve every command and option token" do
@@ -106,5 +123,34 @@ defmodule Marshall.LocalizedMarkdownTest do
            )
 
     refute LocalizedMarkdown.valid_translation?("# Commands", "Commands")
+  end
+
+  test "translated prose retains parsed emphasis and list structure" do
+    source = "- Disk limit: **500 GiB**.\n- Choose *Developer mode*."
+
+    assert LocalizedMarkdown.valid_translation?(
+             source,
+             "- Choisissez *Mode développeur*.\n- Limite du disque : **500 GiB**."
+           )
+
+    refute LocalizedMarkdown.valid_translation?(
+             source,
+             "- Limite : **500 GiB **.\n- Choisissez *Mode développeur*."
+           )
+
+    refute LocalizedMarkdown.valid_translation?(
+             source,
+             "- Limite : **500 GiB**.\n— Choisissez *Mode développeur*."
+           )
+
+    refute LocalizedMarkdown.valid_translation?(
+             "1. Configure the server.\n2. Connect.",
+             "- Configurez le serveur.\n- Connectez-vous."
+           )
+  end
+
+  test "structure validation bounds prose parsing" do
+    oversized = String.duplicate("x", 65_537)
+    refute LocalizedMarkdown.valid_translation?(oversized, oversized)
   end
 end

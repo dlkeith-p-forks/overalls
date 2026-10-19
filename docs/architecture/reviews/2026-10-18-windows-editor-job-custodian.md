@@ -7,7 +7,7 @@ source integration and acceptance results must name their later checkpoints.
 
 ## Decision and impact
 
-[ADR-0207](../decisions/0207-windows-editor-job-custodian.md) replaces
+[ADR-0208](../decisions/0208-windows-editor-job-custodian.md) replaces
 [ADR-0200](../decisions/0200-windows-browser-editor-candidate.md) in full. It
 preserves the official Code OSS source/import boundary, SAM/S4U identity,
 bounded cancellation, exact v7/v4 candidate and target-registry contracts, and
@@ -90,7 +90,7 @@ old receipt using only root-process exit; that did not prove descendant
 quiescence. The source now refuses **every** existing same-boot receipt when it
 has no retained worker/job handle. It neither adopts nor deletes that receipt,
 even when the root is gone. A new physical boot uses a new namespace. This is
-a conservative safety fix, not completion of ADR-0207 clause 11: same-boot
+a conservative safety fix, not completion of ADR-0208 clause 11: same-boot
 custodian crash recovery to a new worker remains unimplemented until stronger
 quiescence proof and native tests exist.
 

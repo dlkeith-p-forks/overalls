@@ -101,7 +101,7 @@ defmodule MarshallWeb.TimeComponents do
 
     ~H"""
     <span id={@id} class={["local-time muted", @class]} data-zone={@zone}>
-      {gettext("%{value1} local time · %{value2}",
+      {dgettext("shared", "%{value1} local time · %{value2}",
         value1: TimeZones.format(@now, @zone, :clock),
         value2: @difference.text
       )}

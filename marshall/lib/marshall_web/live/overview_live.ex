@@ -20,7 +20,11 @@ defmodule MarshallWeb.OverviewLive do
 
     {:ok,
      socket
-     |> assign(page_title: gettext("Overview"), visible: true, newsletter_status: nil)
+     |> assign(
+       page_title: dgettext("machines", "Overview"),
+       visible: true,
+       newsletter_status: nil
+     )
      |> assign(newsletter_form: to_form(%{"email" => ""}, as: :newsletter))
      |> refresh()}
   end
@@ -149,30 +153,34 @@ defmodule MarshallWeb.OverviewLive do
     >
       <section id="overview" phx-hook="DashboardVisibility">
         <UI.heading
-          title={gettext("A good day to make something.")}
-          subtitle={gettext("Your workspace, with a little room to breathe.")}
+          title={dgettext("machines", "A good day to make something.")}
+          subtitle={dgettext("machines", "Your workspace, with a little room to breathe.")}
         >
           <:actions>
             <.link id="overview-create" navigate={~p"/machines/new"} class="console-button primary">
-              {gettext("+ Create machine")}
+              {dgettext("machines", "+ Create machine")}
             </.link>
           </:actions>
         </UI.heading>
         <div class="overview-grid">
-          <UI.panel id="overview-machines" title={gettext("Your machines")}>
-            <:actions><.link navigate={~p"/machines"}>{gettext("View all →")}</.link></:actions>
+          <UI.panel id="overview-machines" title={dgettext("machines", "Your machines")}>
+            <:actions>
+              <.link navigate={~p"/machines"}>{dgettext("machines", "View all →")}</.link>
+            </:actions>
             <%= case @machines do %>
               <% {:ok, page} -> %>
                 <UI.empty
                   :if={page.items == []}
                   id="overview-machines-empty"
-                  title={gettext("Room for your next idea")}
+                  title={dgettext("machines", "Room for your next idea")}
                 >
-                  {gettext(
+                  {dgettext(
+                    "machines",
                     "No machines in this preview yet. Create one or ask an owner to share access."
                   )}
                   <:action>
-                    <.link navigate={~p"/machines/new"} class="console-button ghost">{gettext(
+                    <.link navigate={~p"/machines/new"} class="console-button ghost">{dgettext(
+                      "machines",
                       "Create your first machine"
                     )}</.link>
                   </:action>
@@ -187,8 +195,8 @@ defmodule MarshallWeb.OverviewLive do
                     <div>
                       <.link navigate={~p"/machines/#{vm.id}"} class="machine-name">{vm.name}</.link><p>
                         {vm.vcpu} vCPU · {gib(vm.memory_bytes)} GiB memory · {gib(vm.disk_bytes)} GiB disk · {if vm.owner,
-                          do: gettext("Personal"),
-                          else: gettext("Shared")}
+                          do: dgettext("machines", "Personal"),
+                          else: dgettext("machines", "Shared")}
                       </p>
                     </div>
                     <div class="preview-labels">
@@ -205,20 +213,20 @@ defmodule MarshallWeb.OverviewLive do
                         :if={vm.desired_state == :running && vm.observed_state == :running}
                         navigate={~p"/machines/#{vm.id}/terminals"}
                         id={"overview-terminal-#{vm.id}"}
-                      >{gettext("Open terminal ↗")}</.link>
+                      >{dgettext("machines", "Open terminal ↗")}</.link>
                       <UI.machine_editor_action vm={vm} id_prefix="overview-machine" variant={:link} />
                       <UI.pin_toggle vm={vm} id={"pin-#{vm.id}"} />
                     </div>
                   </article>
                 </div>
                 <p :if={page.more} class="muted">
-                  {gettext("A small preview. All your accessible machines are in")} <.link navigate={
+                  {dgettext("machines", "A small preview. All your accessible machines are in")} <.link navigate={
                     ~p"/machines"
-                  }>{gettext("Machines")}</.link>.
+                  }>{dgettext("machines", "Machines")}</.link>.
                 </p>
               <% :unavailable -> %>
                 <p id="overview-machines-unavailable" role="status">
-                  {gettext("Machines couldn’t be loaded. Refresh to try again.")}
+                  {dgettext("machines", "Machines couldn’t be loaded. Refresh to try again.")}
                 </p>
             <% end %>
           </UI.panel>
@@ -226,7 +234,7 @@ defmodule MarshallWeb.OverviewLive do
             <UI.panel
               :if={!@newsletter_dismissed}
               id="overview-newsletter"
-              title={gettext("Stay in the loop")}
+              title={dgettext("machines", "Stay in the loop")}
             >
               <:actions>
                 <button
@@ -234,10 +242,10 @@ defmodule MarshallWeb.OverviewLive do
                   type="button"
                   class="console-button ghost"
                   phx-click="dismiss_newsletter"
-                >{gettext("Dismiss")}</button>
+                >{dgettext("machines", "Dismiss")}</button>
               </:actions>
               <p class="muted">
-                {gettext("Get tips, tricks and updates about Overalls and AI by email.")}
+                {dgettext("machines", "Get tips, tricks and updates about Overalls and AI by email.")}
               </p>
               <.form
                 for={@newsletter_form}
@@ -252,32 +260,40 @@ defmodule MarshallWeb.OverviewLive do
                   autocomplete="email"
                   placeholder="you@example.com"
                   required
-                  label={gettext("Email address")}
+                  label={dgettext("machines", "Email address")}
                 />
-                <button id="overview-newsletter-submit" type="submit" class="console-button primary">{gettext(
+                <button id="overview-newsletter-submit" type="submit" class="console-button primary">{dgettext(
+                  "machines",
                   "Subscribe"
                 )}</button>
               </.form>
               <p id="overview-newsletter-status" class="muted" role="status" aria-live="polite">
                 <%= case @newsletter_status do %>
                   <% :ok -> %>
-                    {gettext("Check your inbox and click the link to confirm your subscription.")}
+                    {dgettext(
+                      "machines",
+                      "Check your inbox and click the link to confirm your subscription."
+                    )}
                   <% {:error, :invalid_email} -> %>
-                    {gettext("Enter a valid email address.")}
+                    {dgettext("machines", "Enter a valid email address.")}
                   <% {:error, :unavailable} -> %>
-                    {gettext("We could not reach the newsletter service. Try again later.")}
+                    {dgettext(
+                      "machines",
+                      "We could not reach the newsletter service. Try again later."
+                    )}
                   <% _ -> %>
-                    {gettext("Unsubscribe any time.")}
+                    {dgettext("machines", "Unsubscribe any time.")}
                 <% end %>
               </p>
             </UI.panel>
             <UI.panel
               id="overview-marvin-extension"
-              title={gettext("Open repositories from your browser")}
+              title={dgettext("machines", "Open repositories from your browser")}
               data-overalls-extension-setup="true"
             >
               <p class="muted">
-                {gettext(
+                {dgettext(
+                  "machines",
                   "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
                 )}
               </p>
@@ -285,43 +301,56 @@ defmodule MarshallWeb.OverviewLive do
                 id="overview-marvin-extension-link"
                 href={~p"/docs/browser-extension"}
                 class="console-button ghost"
-              >{gettext("Set up the browser extension ↗")}</.link>
+              >{dgettext("machines", "Set up the browser extension ↗")}</.link>
             </UI.panel>
-            <UI.panel id="overview-capacity" title={gettext("Room to grow")}>
-              <p class="muted">{gettext("Current provisioning headroom")}</p>
+            <UI.panel id="overview-capacity" title={dgettext("machines", "Room to grow")}>
+              <p class="muted">{dgettext("machines", "Current provisioning headroom")}</p>
               <%= case @catalog do %>
                 <% {:ok, %{capacity_known: true} = catalog} -> %>
                   <.kv>
-                    <:item title={gettext("CPU")}>
-                      {gettext("%{value1} vCPU", value1: catalog.available.vcpu)}
+                    <:item title={dgettext("machines", "CPU")}>
+                      {dgettext("machines", "%{value1} vCPU", value1: catalog.available.vcpu)}
                     </:item>
-                    <:item title={gettext("Memory")}>
-                      {gettext("%{value1} GiB", value1: gib(catalog.available.memory_bytes))}
+                    <:item title={dgettext("machines", "Memory")}>
+                      {dgettext("machines", "%{value1} GiB",
+                        value1: gib(catalog.available.memory_bytes)
+                      )}
                     </:item>
-                    <:item title={gettext("Disk")}>
-                      {gettext("%{value1} GiB", value1: gib(catalog.available.disk_bytes))}
+                    <:item title={dgettext("machines", "Disk")}>
+                      {dgettext("machines", "%{value1} GiB",
+                        value1: gib(catalog.available.disk_bytes)
+                      )}
                     </:item>
                   </.kv>
                   <p class="muted">
-                    {gettext("Capacity is checked again when you create a machine.")}
+                    {dgettext("machines", "Capacity is checked again when you create a machine.")}
                   </p>
                 <% _ -> %>
                   <p id="overview-capacity-unavailable" class="muted">
-                    {gettext("Headroom is temporarily unavailable.")}
+                    {dgettext("machines", "Headroom is temporarily unavailable.")}
                   </p>
               <% end %>
             </UI.panel>
-            <UI.panel title={gettext("Make yourself at home")}>
+            <UI.panel title={dgettext("machines", "Make yourself at home")}>
               <ul class="tree note-list">
                 <li>
-                  <strong>{gettext("Next steps")}</strong>
+                  <strong>{dgettext("machines", "Next steps")}</strong>
                   <ul>
                     <li>
-                      <.link navigate={~p"/integrations"}>{gettext("Connect an integration ↗")}</.link>
+                      <.link navigate={~p"/integrations"}>{dgettext(
+                        "machines",
+                        "Connect an integration ↗"
+                      )}</.link>
                     </li>
-                    <li><.link navigate={~p"/teams"}>{gettext("Find your people ↗")}</.link></li>
-                    <li><.link navigate={~p"/usage"}>{gettext("Explore your usage ↗")}</.link></li>
-                    <li><.link href={~p"/docs"}>{gettext("Read the field notes ↗")}</.link></li>
+                    <li>
+                      <.link navigate={~p"/teams"}>{dgettext("machines", "Find your people ↗")}</.link>
+                    </li>
+                    <li>
+                      <.link navigate={~p"/usage"}>{dgettext("machines", "Explore your usage ↗")}</.link>
+                    </li>
+                    <li>
+                      <.link href={~p"/docs"}>{dgettext("machines", "Read the field notes ↗")}</.link>
+                    </li>
                   </ul>
                 </li>
               </ul>
@@ -329,13 +358,14 @@ defmodule MarshallWeb.OverviewLive do
           </div>
         </div>
         <div class="overview-refresh">
-          <span>{gettext("Updated")} <.timestamp at={@updated_at} zone={@time_zone} format={:time} /></span><Layouts.action
+          <span>{dgettext("machines", "Updated")}
+          <.timestamp at={@updated_at} zone={@time_zone} format={:time} /></span><Layouts.action
             id="overview-refresh"
             tone="ghost"
             phx-click="refresh"
-            phx-disable-with={gettext("Refreshing…")}
+            phx-disable-with={dgettext("machines", "Refreshing…")}
           >
-            <.glyph name="refresh" /> {gettext("Refresh")}
+            <.glyph name="refresh" /> {dgettext("machines", "Refresh")}
           </Layouts.action>
         </div>
       </section>

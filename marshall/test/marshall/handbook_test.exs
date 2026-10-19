@@ -14,6 +14,37 @@ defmodule Marshall.HandbookTest do
     end
   end
 
+  test "source titles and command help remain English in every reader locale" do
+    contents = Handbook.contents()
+    chapters = Map.new(contents, &{&1.id, Handbook.fetch_chapter(&1.id)})
+
+    for locale <- Marshall.Localization.supported_locales() do
+      Gettext.with_locale(MarshallWeb.Gettext, locale, fn ->
+        assert Handbook.contents() == contents
+
+        for {id, chapter} <- chapters do
+          assert Handbook.fetch_chapter(id) == chapter
+        end
+      end)
+    end
+
+    for path <- Path.wildcard(Application.app_dir(:marshall, "priv/hldd/[0-9]*.md")) do
+      [_, id] = Regex.run(~r/^[0-9]+-(.+)\.md$/, Path.basename(path))
+      [_, title] = Regex.run(~r/^# (.+)$/m, File.read!(path))
+      assert {:ok, %{title: ^title}} = Handbook.fetch_chapter(id)
+    end
+
+    {:ok, reference} = Handbook.fetch_chapter("reference")
+    text = reference.html |> LazyHTML.from_document() |> LazyHTML.text()
+
+    for command <- OverallsProtocol.SSHCommand.catalog() do
+      assert text =~ command.summary
+    end
+
+    assert text =~ "Options:"
+    refute reference.html =~ "{{COMMAND_REFERENCE}}"
+  end
+
   @tag :hegel
   test "unknown identifiers cannot select files or unlisted chapters" do
     ids = MapSet.new(Handbook.contents(), & &1.id)

@@ -2,6 +2,34 @@
 let
   sdk = packages.androidSdk;
   sdkRoot = "${sdk}/libexec/android-sdk";
+  fixtureApk = pkgs.runCommand "overalls-android-fixture-apk" {
+    nativeBuildInputs = [ pkgs.jdk pkgs.unzip pkgs.zip ];
+  } ''
+    set -euo pipefail
+    buildTools=$(find ${sdkRoot}/build-tools -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)
+    platform=${sdkRoot}/platforms/android-36
+    test -x "$buildTools/aapt2" -a -x "$buildTools/d8" -a -x "$buildTools/apksigner"
+    test -f "$platform/android.jar"
+    mkdir -p src/classes dex linked apk "$HOME/.android"
+    keytool -genkeypair -keystore "$HOME/.android/debug.keystore" -storepass android \
+      -alias androiddebugkey -keypass android -dname "CN=Android Debug,O=Android,C=US" \
+      -keyalg RSA -validity 10_000 >/dev/null 2>&1
+    cp ${./app/AndroidManifest.xml} src/AndroidManifest.xml
+    cp ${./app/MainActivity.java} src/MainActivity.java
+    javac --release 8 -classpath "$platform/android.jar" -d src/classes src/MainActivity.java
+    "$buildTools/d8" --lib "$platform/android.jar" --output dex src/classes
+    "$buildTools/aapt2" link -I "$platform/android.jar" \
+      --manifest src/AndroidManifest.xml -o linked/unsigned.apk
+    cd apk
+    ${pkgs.unzip}/bin/unzip -q ../linked/unsigned.apk
+    cp ../dex/classes.dex .
+    ${pkgs.zip}/bin/zip -q -r ../unsigned.apk .
+    cd ..
+    "$buildTools/zipalign" -p -f 4 unsigned.apk aligned.apk
+    "$buildTools/apksigner" sign --ks "$HOME/.android/debug.keystore" \
+      --ks-pass pass:android --ks-key-alias androiddebugkey --key-pass pass:android \
+      --out "$out" aligned.apk
+  '';
   emulatorScript = pkgs.writeShellScript "android-emulator-software" ''
     set -euo pipefail
     export ANDROID_HOME=${sdkRoot}
@@ -28,7 +56,7 @@ hw.lcd.density = 160
 CONFIG
     fi
     exec ${sdkRoot}/emulator/emulator -avd overalls-test \
-      -no-accel -gpu swiftshader_indirect -no-window -noaudio \
+      -no-accel -gpu swiftshader_indirect -noaudio \
       -no-boot-anim -no-snapshot -skip-adb-auth \
       -ports 5554,5555
   '';
@@ -92,11 +120,28 @@ pkgs.testers.runNixOSTest {
     android.succeed("export HOME=/var/lib/android-test; adb kill-server; adb start-server")
     android.succeed("HOME=/var/lib/android-test adb connect 127.0.0.1:5555")
     android.wait_until_succeeds("HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 wait-for-device", timeout=600)
-    android.wait_until_succeeds("test \"$(HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop sys.boot_completed | tr -d '\\r')\" = 1", timeout=1200)
+    try:
+      android.wait_until_succeeds('test "$(HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop sys.boot_completed | tr -d \'\\r\')" = 1', timeout=1200)
+    except Exception:
+      print(android.succeed("HOME=/var/lib/android-test adb devices -l || true"))
+      print(android.succeed("systemctl status android-test-emulator.service --no-pager || true"))
+      print(android.succeed("HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop || true"))
+      raise
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell getprop ro.kernel.qemu | grep -Fx 1")
+    android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 install -r ${fixtureApk} | grep -F Success")
+    android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell am start -n com.overalls.androidfixture/.MainActivity | grep -F cmp=com.overalls.androidfixture/.MainActivity")
+    android.wait_until_succeeds("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell run-as com.overalls.androidfixture cat files/marker | grep -Fx overalls-android-fixture-v1", timeout=60)
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell settings get global animator_duration_scale")
     android.succeed("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 exec-out screencap -p > /tmp/android-screencap.png")
     android.succeed("test $(stat -c %s /tmp/android-screencap.png) -gt 100")
     android.succeed("head -c 8 /tmp/android-screencap.png | od -An -t x1 | grep -F '89 50 4e 47 0d 0a 1a 0a'")
+    android.succeed("systemctl stop android-test-emulator.service")
+    android.wait_until_succeeds('test "$(systemctl show -p ActiveState --value android-test-emulator.service)" = inactive', timeout=60)
+    android.succeed("systemctl start android-test-emulator.service")
+    android.wait_for_open_port(5555)
+    android.wait_until_succeeds("HOME=/var/lib/android-test adb connect 127.0.0.1:5555 | grep -E 'connected|already connected'", timeout=60)
+    android.wait_until_succeeds("HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 wait-for-device", timeout=600)
+    android.wait_until_succeeds('test "$(HOME=/var/lib/android-test timeout 15 adb -s 127.0.0.1:5555 shell getprop sys.boot_completed | tr -d \"\\r\")" = 1', timeout=1200)
+    android.wait_until_succeeds("HOME=/var/lib/android-test adb -s 127.0.0.1:5555 shell run-as com.overalls.androidfixture cat files/marker | grep -Fx overalls-android-fixture-v1", timeout=120)
   '';
 }

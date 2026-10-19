@@ -36,7 +36,10 @@ config :localize,
     :fil,
     :et,
     :fi,
-    :sv
+    :sv,
+    :"ar-EG",
+    :sw,
+    :ha
   ]
 
 config :overalls_diagnostics, events_catalog: Marshall.Events
@@ -228,7 +231,7 @@ config :esbuild,
   version: "0.25.4",
   marshall: [
     args:
-      ~w(js/app.js css/app.css --bundle --target=es2022 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --alias:@=.),
+      ~w(js/app.js css/app.css --bundle --format=esm --target=es2022 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --alias:@=.),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
   ]

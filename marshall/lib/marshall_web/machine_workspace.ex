@@ -87,7 +87,8 @@ defmodule MarshallWeb.MachineWorkspace do
       |> assign(machine_connection: nil)
       |> put_flash(
         :error,
-        gettext(
+        dgettext(
+          "machines",
           "Administrative verification expired. Choose the machine in Fleet workloads and verify your passkey to reopen it."
         )
       )
@@ -95,7 +96,10 @@ defmodule MarshallWeb.MachineWorkspace do
     else
       socket
       |> assign(machine_connection: nil)
-      |> put_flash(:error, gettext("This machine is unavailable or your access has ended."))
+      |> put_flash(
+        :error,
+        dgettext("machines", "This machine is unavailable or your access has ended.")
+      )
       |> push_navigate(to: "/machines")
     end
   end
@@ -165,18 +169,20 @@ defmodule MarshallWeb.MachineWorkspace do
 
     cond do
       String.contains?(text, "pin_limit") ->
-        gettext("You can pin up to %{value1} machines. Unpin one before pinning another.",
+        dgettext(
+          "machines",
+          "You can pin up to %{value1} machines. Unpin one before pinning another.",
           value1: Access.Pins.limit()
         )
 
       String.contains?(text, "vm_deleted") ->
-        gettext("This machine is being deleted and cannot be pinned.")
+        dgettext("machines", "This machine is being deleted and cannot be pinned.")
 
       String.contains?(text, "machine_failed") ->
         "A failed machine cannot be pinned."
 
       true ->
-        gettext("The pin could not be changed. Refresh and try again.")
+        dgettext("machines", "The pin could not be changed. Refresh and try again.")
     end
   end
 
@@ -221,7 +227,7 @@ defmodule MarshallWeb.MachineWorkspace do
            |> assign(machine_connection: nil)
            |> put_flash(
              :error,
-             gettext("The machine could not be updated. Refresh and try again.")
+             dgettext("machines", "The machine could not be updated. Refresh and try again.")
            )}
         end
     end

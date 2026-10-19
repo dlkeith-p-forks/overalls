@@ -2,7 +2,10 @@ defmodule Marshall.LocalizedMarkdown do
   @moduledoc "Compiled documentation localization units, preserving fenced examples and diagrams."
 
   @type unit :: %{source: String.t(), translatable?: boolean()}
-  @locales ~w(en zh-Hans hi es ar fr bn pt-BR pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv)
+  @type structure :: %{String.t() => pos_integer()}
+  @structural_tags ~w(code em h1 h2 h3 h4 h5 h6 li ol strong ul)
+  @max_prose_bytes 65_536
+  @locales ~w(en zh-Hans hi es ar fr bn pt-BR pt-PT ru ur id de ja pcm mr te tr ta vi ko fil et fi sv arz sw ha)
 
   @spec locales() :: [String.t()]
   def locales, do: @locales
@@ -77,11 +80,93 @@ defmodule Marshall.LocalizedMarkdown do
   # @cc [owner:ghuntley,label:security] localized-markdown-protected-tokens
   # Translated prose MUST preserve the exact multiset of inline code spans,
   # including spans crossing line breaks, and link destinations from its source.
+  # Parsed emphasis, list types/items, headings and code spans MUST also remain
+  # present; prose order and paragraph wrapping MAY change with the language.
   @spec valid_translation?(String.t(), String.t()) :: boolean()
   def valid_translation?(source, translated) do
     protected(source) == protected(translated) and
-      heading_prefix(source) == heading_prefix(translated)
+      heading_prefix(source) == heading_prefix(translated) and
+      same_structure?(source, translated)
   end
+
+  @spec same_structure?(String.t(), String.t()) :: boolean()
+  defp same_structure?(source, translated) do
+    with {:ok, expected} <- structure(source),
+         {:ok, actual} <- structure(translated) do
+      expected == actual
+    else
+      :error -> false
+    end
+  end
+
+  @spec structure(String.t()) :: {:ok, structure()} | :error
+  defp structure(value) when byte_size(value) <= @max_prose_bytes do
+    value
+    |> Earmark.as_ast!()
+    |> structure_nodes(%{})
+  rescue
+    Earmark.Error -> :error
+  end
+
+  defp structure(_value), do: :error
+
+  @spec structure_nodes(term(), structure()) :: {:ok, structure()} | :error
+  defp structure_nodes([], counts), do: {:ok, counts}
+
+  defp structure_nodes([node | remaining], counts) do
+    with {:ok, next} <- structure_node(node, counts) do
+      structure_nodes(remaining, next)
+    end
+  end
+
+  defp structure_nodes(_nodes, _counts), do: :error
+
+  @spec structure_node(term(), structure()) :: {:ok, structure()} | :error
+  defp structure_node(text, counts) when is_binary(text), do: {:ok, counts}
+
+  defp structure_node({tag, attributes, children, metadata}, counts)
+       when is_binary(tag) and is_list(attributes) and is_map(metadata) do
+    counts =
+      if tag in @structural_tags,
+        do: Map.update(counts, tag, 1, &(&1 + 1)),
+        else: counts
+
+    with {:ok, next} <- structure_nodes(children, counts),
+         true <- emphasis_edges?(tag, children) do
+      {:ok, next}
+    else
+      _ -> :error
+    end
+  end
+
+  defp structure_node(_node, _counts), do: :error
+
+  @spec emphasis_edges?(String.t(), term()) :: boolean()
+  defp emphasis_edges?(tag, children) when tag in ["strong", "em"] do
+    case visible_text(children) do
+      {:ok, text} -> text != "" and String.trim(text) == text
+      :error -> false
+    end
+  end
+
+  defp emphasis_edges?(_tag, _children), do: true
+
+  @spec visible_text(term()) :: {:ok, String.t()} | :error
+  defp visible_text([]), do: {:ok, ""}
+  defp visible_text(text) when is_binary(text), do: {:ok, text}
+
+  defp visible_text({tag, attributes, children, metadata})
+       when is_binary(tag) and is_list(attributes) and is_map(metadata),
+       do: visible_text(children)
+
+  defp visible_text([node | remaining]) do
+    with {:ok, first} <- visible_text(node),
+         {:ok, rest} <- visible_text(remaining) do
+      {:ok, first <> rest}
+    end
+  end
+
+  defp visible_text(_nodes), do: :error
 
   @spec protected(String.t()) :: [String.t()]
   defp protected(value) do

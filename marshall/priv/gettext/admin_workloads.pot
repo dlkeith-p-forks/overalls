@@ -1,0 +1,137 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:239
+#, elixir-autogen, elixir-format
+msgid "Archive this VM?"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:241
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:174
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:116
+#, elixir-autogen, elixir-format
+msgid "Every machine in the fleet, with the same lifecycle, resize and relocation safety checks as the owner's console. No terminal data or credentials are included."
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Fleet workloads"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:136
+#, elixir-autogen, elixir-format
+msgid "Host"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Lifecycle request queued."
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Lifecycle request was rejected."
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:231
+#, elixir-autogen, elixir-format
+msgid "Move"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:129
+#, elixir-autogen, elixir-format
+msgid "No active workloads."
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:51
+#, elixir-autogen, elixir-format
+msgid "Relocation request queued."
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:59
+#, elixir-autogen, elixir-format
+msgid "Relocation request was rejected."
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:190
+#, elixir-autogen, elixir-format
+msgid "Resize"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:137
+#, elixir-autogen, elixir-format
+msgid "Shape"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:219
+#, elixir-autogen, elixir-format
+msgid "Start"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:138
+#, elixir-autogen, elixir-format
+msgid "State"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:228
+#, elixir-autogen, elixir-format
+msgid "Stop"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:182
+#, elixir-autogen, elixir-format
+msgid "Terminal"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "The owner has pinned this machine; it cannot be deleted until they unpin it."
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:123
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:135
+#, elixir-autogen, elixir-format
+msgid "Workload"
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:95
+#, elixir-autogen, elixir-format
+msgid "Workload inventory is temporarily unavailable."
+msgstr ""
+
+#: lib/marshall_web/live/admin/workloads_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "· every 15 seconds"
+msgstr ""

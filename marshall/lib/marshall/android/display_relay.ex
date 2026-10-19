@@ -7,11 +7,20 @@ defmodule Marshall.Android.DisplayRelay do
           generation: pos_integer(),
           viewers: %{pid() => reference()},
           controller: pid() | nil,
-          sequence: non_neg_integer()
+          sequence: non_neg_integer(),
+          input_sink: pid() | nil
         }
 
   @spec start_link(pos_integer()) :: GenServer.on_start()
-  def start_link(generation), do: GenServer.start_link(__MODULE__, generation)
+  def start_link(generation), do: GenServer.start_link(__MODULE__, {generation, nil})
+
+  @spec start_link(pos_integer(), pid()) :: GenServer.on_start()
+  def start_link(generation, input_sink) when is_pid(input_sink),
+    do: GenServer.start_link(__MODULE__, {generation, input_sink})
+
+  @spec set_input_sink(GenServer.server(), pid()) :: :ok
+  def set_input_sink(relay, input_sink),
+    do: GenServer.call(relay, {:set_input_sink, input_sink})
 
   @spec attach(GenServer.server(), pid(), mode()) :: :ok | {:error, atom()}
   def attach(relay, pid, mode), do: GenServer.call(relay, {:attach, pid, mode})
@@ -27,8 +36,20 @@ defmodule Marshall.Android.DisplayRelay do
     do: GenServer.call(relay, {:input, pid, generation, bytes})
 
   @impl true
-  def init(generation) when is_integer(generation) and generation > 0,
-    do: {:ok, %{generation: generation, viewers: %{}, controller: nil, sequence: 0}}
+  def init({generation, input_sink}) when is_integer(generation) and generation > 0,
+    do:
+      {:ok,
+       %{
+         generation: generation,
+         viewers: %{},
+         controller: nil,
+         sequence: 0,
+         input_sink: input_sink
+       }}
+
+  @impl true
+  def handle_call({:set_input_sink, input_sink}, _from, state) when is_pid(input_sink),
+    do: {:reply, :ok, %{state | input_sink: input_sink}}
 
   @impl true
   def handle_call({:attach, pid, :viewer}, _from, state),
@@ -66,6 +87,9 @@ defmodule Marshall.Android.DisplayRelay do
         %{controller: pid, generation: generation} = state
       )
       when is_binary(bytes) and byte_size(bytes) in 1..4096 do
+    if is_pid(state.input_sink),
+      do: send(state.input_sink, {:android_display_input, generation, pid, bytes})
+
     send(pid, {:android_display_input_accepted, generation, bytes})
     {:reply, :ok, state}
   end

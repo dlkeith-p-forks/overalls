@@ -29,7 +29,7 @@ for this requested guest model. Public ADB/RFB listeners were rejected for secur
 ## Consequences
 
 The profile has higher boot and frame latency and needs persistent writable AVD
-storage. Existing Linux image identities remain unchanged. Initial sizing is four
+storage. Existing Linux image identities remain unchanged. Initial sizing is eight
 vCPUs, 8 GiB RAM and 32 GiB disk with a 600-second readiness budget.
 
 ## Invariants and verification
@@ -37,8 +37,8 @@ vCPUs, 8 GiB RAM and 32 GiB disk with a 600-second readiness budget.
 The emulator must not require `/dev/kvm`; stale generations cannot retain display
 or input authority; AVD state survives restart; and viewers cannot send input.
 Protocol tests, Hegel properties and the Android NixOS machine fixture cover the
-current partial implementation. Authenticated vsock display and browser rendering
-remain unverified.
+current partial implementation. The guest now provides a typed host-CID-validated
+display relay; native transport and browser rendering remain unverified.
 
 ## Implementation evidence
 
@@ -46,8 +46,8 @@ remain unverified.
 
 ## Open questions
 
-The authenticated vsock display relay, controller lease integration and `/machines/:id`
-viewer still need implementation and native acceptance.
+Native Firecracker transport, controller lease integration, browser rendering and
+the `/machines/:id` viewer still need end-to-end acceptance.
 
 ## Related decisions
 

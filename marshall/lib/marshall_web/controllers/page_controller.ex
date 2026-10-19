@@ -22,6 +22,6 @@ defmodule MarshallWeb.PageController do
     conn
     |> put_resp_header("cache-control", "no-store")
     |> put_resp_header("referrer-policy", "no-referrer")
-    |> render(:launch, page_title: gettext("Launch"), idle_to: idle_to)
+    |> render(:launch, page_title: dgettext("machines", "Launch"), idle_to: idle_to)
   end
 end

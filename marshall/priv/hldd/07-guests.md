@@ -1658,7 +1658,7 @@ use OpenSSL, because rustls rejects the deployed private leaf.
 
 ### Windows editor payload staging (not admitted)
 
-[ADR-0207](repo:docs/architecture/decisions/0207-windows-editor-job-custodian.md)
+[ADR-0208](repo:docs/architecture/decisions/0208-windows-editor-job-custodian.md)
 accepts the account-bound native Windows candidate: a source-built Code OSS
 bundle, SYSTEM gateway broker, independent SYSTEM job custodian and verified local
 SAM/S4U workers. Two fixed private tasks supervise the roles independently.
@@ -1844,6 +1844,9 @@ process and bounds each ADB wait attempt to fifteen seconds within its existing
 600-second readiness window. These startup/verification repairs do not record a
 new native emulator pass.
 The image's current RFB bridge is loopback-bound for diagnostics only; it is not
-an authenticated display authority. An authenticated vsock relay with one input
-controller and read-only viewers remains pending, as does native Firecracker
-acceptance.
+an authenticated display authority. The guest now validates Lilly's bounded
+display preface in a typed fixed-port relay before forwarding to loopback RFB;
+Lilly's namespace ingress remains the network authority. The profile reserves
+8 GiB memory and 32 GiB writable disk. Signed ticket verification, browser
+controller/viewer leases and native Firecracker acceptance remain outside this
+guest-only evidence.

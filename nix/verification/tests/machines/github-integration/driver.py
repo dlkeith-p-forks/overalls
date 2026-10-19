@@ -202,7 +202,7 @@ with subtest(
 
 with subtest("withdrawing a current lease closes the same real upstream without retry"):
     client.succeed(
-        "systemd-run --quiet --unit=github-held --property=Type=oneshot --property=StandardOutput=null --property=StandardError=null gh api fixture/hold"
+        "systemd-run --quiet --no-block --unit=github-held --property=Type=oneshot --property=StandardOutput=null --property=StandardError=null gh api fixture/hold"
     )
     proxy.wait_until_succeeds("grep -q 'hold_opened' /run/galileo-fixture/observed.jsonl")
     authority_state(1, "anonymous", 2)

@@ -233,6 +233,15 @@ def await_running(vm: str) -> None:
         ):
             dumped = True
             dump_guest_diagnostics(provisioners)
+            for machine in provisioners:
+                print(
+                    machine.succeed(
+                        "for cg in /sys/fs/cgroup/lilly.slice/lilly-vm-*.service; do "
+                        '[ -d "$cg" ] || continue; echo ===="$cg"; '
+                        'cat "$cg/cgroup.procs" 2>/dev/null || true; '
+                        "done"
+                    )
+                )
         if state == "failed":
             print(
                 sql_json(
@@ -246,10 +255,12 @@ def await_running(vm: str) -> None:
             )
             if placement and placement != "":
                 for machine in provisioners:
-                    machine.execute(
-                        "for pid in $(find /sys/fs/cgroup/lilly.slice -path '*lilly-vm-*' -name cgroup.procs -exec cat {} + 2>/dev/null); "
-                        "do printf '%s ' \"$pid\"; cat /proc/$pid/comm 2>/dev/null || true; "
-                        "readlink /proc/$pid/exe 2>/dev/null || true; done"
+                    print(
+                        machine.succeed(
+                            "for pid in $(find /sys/fs/cgroup/lilly.slice -path '*lilly-vm-*' -name cgroup.procs -exec cat {} + 2>/dev/null); "
+                            "do printf '%s ' \"$pid\"; cat /proc/$pid/comm 2>/dev/null || true; "
+                            "readlink /proc/$pid/exe 2>/dev/null || true; done"
+                        )
                     )
         assert state != "failed", "Real guest launch failed"
         return state == "running"

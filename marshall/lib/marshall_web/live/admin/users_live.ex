@@ -41,10 +41,17 @@ defmodule MarshallWeb.Admin.UsersLive do
     case result do
       {:ok, _} ->
         {:noreply,
-         socket |> put_flash(:info, gettext("Administrator access updated.")) |> refresh()}
+         socket
+         |> put_flash(:info, dgettext("admin_users", "Administrator access updated."))
+         |> refresh()}
 
       {:error, _} ->
-        {:noreply, put_flash(socket, :error, gettext("Could not change administrator access."))}
+        {:noreply,
+         put_flash(
+           socket,
+           :error,
+           dgettext("admin_users", "Could not change administrator access.")
+         )}
     end
   end
 
@@ -60,10 +67,14 @@ defmodule MarshallWeb.Admin.UsersLive do
 
     case result do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, gettext("Browser sessions revoked.")) |> refresh()}
+        {:noreply,
+         socket
+         |> put_flash(:info, dgettext("admin_users", "Browser sessions revoked."))
+         |> refresh()}
 
       {:error, _} ->
-        {:noreply, put_flash(socket, :error, gettext("Could not revoke browser sessions."))}
+        {:noreply,
+         put_flash(socket, :error, dgettext("admin_users", "Could not revoke browser sessions."))}
     end
   end
 
@@ -77,21 +88,25 @@ defmodule MarshallWeb.Admin.UsersLive do
     do: change_account(socket, :reset_mfa, %{user_id: id})
 
   def handle_event(_, _, socket),
-    do: {:noreply, put_flash(socket, :error, gettext("Invalid request."))}
+    do: {:noreply, put_flash(socket, :error, dgettext("admin_users", "Invalid request."))}
 
   defp change_account(socket, action, params) do
     case User
          |> Ash.ActionInput.for_action(action, params, actor: socket.assigns.current_user)
          |> Ash.run_action() do
       {:ok, _} ->
-        {:noreply, socket |> put_flash(:info, gettext("Account request accepted.")) |> refresh()}
+        {:noreply,
+         socket
+         |> put_flash(:info, dgettext("admin_users", "Account request accepted."))
+         |> refresh()}
 
       _ ->
         {:noreply,
          put_flash(
            socket,
            :error,
-           gettext(
+           dgettext(
+             "admin_users",
              "Could not accept this account change. Check confirmation and verify your passkey."
            )
          )}
@@ -116,7 +131,7 @@ defmodule MarshallWeb.Admin.UsersLive do
         socket
         |> stream(:users, [], reset: true)
         |> assign(empty?: true, next_cursor: nil)
-        |> put_flash(:error, gettext("Accounts are temporarily unavailable."))
+        |> put_flash(:error, dgettext("admin_users", "Accounts are temporarily unavailable."))
     end
   end
 
@@ -134,21 +149,35 @@ defmodule MarshallWeb.Admin.UsersLive do
     >
       <section id="admin-users" class="stack">
         <UI.heading
-          title={gettext("Users")}
+          title={dgettext("admin_users", "Users")}
           subtitle={
-            gettext(
+            dgettext(
+              "admin_users",
               "Every account on this deployment. Signed-in users can read this page; changes need an administrator with a recent passkey verification."
             )
           }
         />
-        <UI.panel :if={@admin_authorized} id="invite-panel" title={gettext("Invite a user")}>
+        <UI.panel
+          :if={@admin_authorized}
+          id="invite-panel"
+          title={dgettext("admin_users", "Invite a user")}
+        >
           <.form for={to_form(%{})} id="invite-user" phx-submit="invite" class="field-row">
-            <.input name="email" value="" type="email" label={gettext("Email address")} required />
-            <button class="console-button primary">{gettext("Send invitation")}</button>
+            <.input
+              name="email"
+              value=""
+              type="email"
+              label={dgettext("admin_users", "Email address")}
+              required
+            />
+            <button class="console-button primary">{dgettext("admin_users", "Send invitation")}</button>
           </.form>
           <p class="muted">
             <.link href={~p"/settings?#{%{return_to: "/admin/users"}}" <> "#security"}>
-              {gettext("Verify with passkey · administrative access lasts 15 minutes →")}
+              {dgettext(
+                "admin_users",
+                "Verify with passkey · administrative access lasts 15 minutes →"
+              )}
             </.link>
           </p>
         </UI.panel>
@@ -157,14 +186,24 @@ defmodule MarshallWeb.Admin.UsersLive do
             <header>
               <h2 class="ident break">{user.email}</h2>
               <span class="status-label" data-tone={if user.administrator, do: "success", else: nil}>
-                {if user.administrator, do: gettext("Administrator"), else: gettext("User")}
+                {if user.administrator,
+                  do: dgettext("admin_users", "Administrator"),
+                  else: dgettext("admin_users", "User")}
               </span>
             </header>
             <div class="panel-body">
               <p class="muted">
-                {ngettext("%{count} owned machine", "%{count} owned machines", user.owned_count)} · {if user.mfa_enabled,
-                  do: gettext("MFA enabled"),
-                  else: gettext("MFA not enrolled")}<span :if={user.id == @current_user.id}>{gettext(
+                {dngettext(
+                  "admin_users",
+                  "%{count} owned machine",
+                  "%{count} owned machines",
+                  user.owned_count
+                )} · {if user.mfa_enabled,
+                  do: dgettext("admin_users", "MFA enabled"),
+                  else: dgettext("admin_users", "MFA not enrolled")}<span :if={
+                  user.id == @current_user.id
+                }>{dgettext(
+                  "admin_users",
                   "· Your account"
                 )}</span>
               </p>
@@ -189,36 +228,40 @@ defmodule MarshallWeb.Admin.UsersLive do
                     phx-value-enabled={to_string(not user.administrator)}
                     data-confirm={
                       if user.administrator,
-                        do: gettext("Remove administrator access for this account?"),
+                        do: dgettext("admin_users", "Remove administrator access for this account?"),
                         else:
-                          gettext(
+                          dgettext(
+                            "admin_users",
                             "Grant this account access to administer the entire fleet and all machines?"
                           )
                     }
                     class="console-button"
                   >
                     {if user.administrator,
-                      do: gettext("Remove administrator"),
-                      else: gettext("Make administrator")}
+                      do: dgettext("admin_users", "Remove administrator"),
+                      else: dgettext("admin_users", "Make administrator")}
                   </button>
                   <button
                     id={"sessions-#{user.id}"}
                     phx-click="revoke-sessions"
                     phx-value-id={user.id}
-                    data-confirm={gettext("Sign this account out of every browser session?")}
+                    data-confirm={
+                      dgettext("admin_users", "Sign this account out of every browser session?")
+                    }
                     class="console-button"
-                  >{gettext("Sign out everywhere")}</button>
+                  >{dgettext("admin_users", "Sign out everywhere")}</button>
                   <button
                     id={"reset-mfa-#{user.id}"}
                     phx-click="reset-mfa"
                     phx-value-id={user.id}
                     data-confirm={
-                      gettext(
+                      dgettext(
+                        "admin_users",
                         "Reset this user's MFA and revoke all browser sessions? They must enroll a replacement passkey."
                       )
                     }
                     class="console-button"
-                  >{gettext("Reset MFA")}</button>
+                  >{dgettext("admin_users", "Reset MFA")}</button>
                 </div>
                 <.form
                   for={to_form(%{})}
@@ -231,7 +274,9 @@ defmodule MarshallWeb.Admin.UsersLive do
                     name="confirmation"
                     value=""
                     label={
-                      gettext("Type the email to delete this account and its %{count} machines",
+                      dgettext(
+                        "admin_users",
+                        "Type the email to delete this account and its %{count} machines",
                         count: user.owned_count
                       )
                     }
@@ -239,27 +284,28 @@ defmodule MarshallWeb.Admin.UsersLive do
                   />
                   <button
                     data-confirm={
-                      gettext(
+                      dgettext(
+                        "admin_users",
                         "Permanently delete this account and ALL machines they own, including machines shared with others?"
                       )
                     }
                     class="console-button danger"
-                  >{gettext("Delete user and machines")}</button>
+                  >{dgettext("admin_users", "Delete user and machines")}</button>
                 </.form>
               </div>
             </div>
           </article>
         </div>
         <p :if={@empty?} id="admin-users-empty" class="empty-state">
-          {gettext("No accounts on this page.")}
+          {dgettext("admin_users", "No accounts on this page.")}
         </p>
-        <nav class="row" aria-label={gettext("Account pages")}>
-          <.link :if={@cursor} patch={~p"/admin/users"}>{gettext("← First page")}</.link>
+        <nav class="row" aria-label={dgettext("admin_users", "Account pages")}>
+          <.link :if={@cursor} patch={~p"/admin/users"}>{dgettext("admin_users", "← First page")}</.link>
           <.link
             :if={@next_cursor}
             id="admin-users-next"
             patch={~p"/admin/users?#{%{after: @next_cursor}}"}
-          >{gettext("Next page →")}</.link>
+          >{dgettext("admin_users", "Next page →")}</.link>
         </nav>
       </section>
     </Layouts.app>

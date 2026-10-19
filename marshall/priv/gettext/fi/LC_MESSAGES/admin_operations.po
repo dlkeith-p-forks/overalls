@@ -1,0 +1,210 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: fi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/marshall_web/live/admin/operations_live.ex:222
+#, elixir-autogen, elixir-format
+msgid "%{count} · %{enabled} enabled"
+msgstr "%{count} · %{enabled} käytössä"
+
+#: lib/marshall_web/live/admin/operations_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "Addresses"
+msgstr "Osoitteet"
+
+#: lib/marshall_web/live/admin/operations_live.ex:79
+#, elixir-autogen, elixir-format
+msgid "Architecture"
+msgstr "Arkkitehtuuri"
+
+#: lib/marshall_web/live/admin/operations_live.ex:68
+#: lib/marshall_web/live/admin/operations_live.ex:118
+#, elixir-autogen, elixir-format
+msgid "Audi services"
+msgstr "Audi-palvelut"
+
+#: lib/marshall_web/live/admin/operations_live.ex:151
+#, elixir-autogen, elixir-format
+msgid "Certificate expires"
+msgstr "Varmenne vanhenee"
+
+#: lib/marshall_web/live/admin/operations_live.ex:236
+#, elixir-autogen, elixir-format
+msgid "DNS"
+msgstr "DNS"
+
+#: lib/marshall_web/live/admin/operations_live.ex:70
+#: lib/marshall_web/live/admin/operations_live.ex:156
+#, elixir-autogen, elixir-format
+msgid "DNS publications"
+msgstr "DNS-julkaisut"
+
+#: lib/marshall_web/live/admin/operations_live.ex:212
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "Ei käytössä"
+
+#: lib/marshall_web/live/admin/operations_live.ex:212
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "Käytössä"
+
+#: lib/marshall_web/live/admin/operations_live.ex:103
+#: lib/marshall_web/live/admin/operations_live.ex:237
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "Yhdyskäytävä"
+
+#: lib/marshall_web/live/admin/operations_live.ex:104
+#: lib/marshall_web/live/admin/operations_live.ex:126
+#, elixir-autogen, elixir-format
+msgid "Generation"
+msgstr "Sukupolvi"
+
+#: lib/marshall_web/live/admin/operations_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Image"
+msgstr "Levykuva"
+
+#: lib/marshall_web/live/admin/operations_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Image catalog"
+msgstr "Levykuvaluettelo"
+
+#: lib/marshall_web/live/admin/operations_live.ex:66
+#, elixir-autogen, elixir-format
+msgid "Images"
+msgstr "Levykuvat"
+
+#: lib/marshall_web/live/admin/operations_live.ex:69
+#: lib/marshall_web/live/admin/operations_live.ex:143
+#, elixir-autogen, elixir-format
+msgid "Ingress routes"
+msgstr "Saapuvan liikenteen reitit"
+
+#: lib/marshall_web/live/admin/operations_live.ex:149
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Kone"
+
+#: lib/marshall_web/live/admin/operations_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Minimum RAM"
+msgstr "Vähimmäismuisti"
+
+#: lib/marshall_web/live/admin/operations_live.ex:81
+#, elixir-autogen, elixir-format
+msgid "Minimum disk"
+msgstr "Levyn vähimmäiskoko"
+
+#: lib/marshall_web/live/admin/operations_live.ex:119
+#, elixir-autogen, elixir-format
+msgid "No Audi services enrolled."
+msgstr "Audi-palveluja ei ole rekisteröity."
+
+#: lib/marshall_web/live/admin/operations_live.ex:160
+#, elixir-autogen, elixir-format
+msgid "No DNS publications are recorded."
+msgstr "DNS-julkaisuja ei ole tallennettu."
+
+#: lib/marshall_web/live/admin/operations_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "No gateways enrolled."
+msgstr "Yhdyskäytäviä ei ole rekisteröity."
+
+#: lib/marshall_web/live/admin/operations_live.ex:73
+#, elixir-autogen, elixir-format
+msgid "No images in the catalog."
+msgstr "Luettelossa ei ole levykuvia."
+
+#: lib/marshall_web/live/admin/operations_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "No ingress routes are published."
+msgstr "Saapuvan liikenteen reittejä ei ole julkaistu."
+
+#: lib/marshall_web/live/admin/operations_live.ex:25
+#, elixir-autogen, elixir-format
+msgid "Operational status is temporarily unavailable."
+msgstr "Toimintatila ei ole tilapäisesti saatavilla."
+
+#: lib/marshall_web/live/admin/operations_live.ex:52
+#, elixir-autogen, elixir-format
+msgid "Platform status"
+msgstr "Alustan tila"
+
+#: lib/marshall_web/live/admin/operations_live.ex:67
+#: lib/marshall_web/live/admin/operations_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Porsche gateways"
+msgstr "Porsche-yhdyskäytävät"
+
+#: lib/marshall_web/live/admin/operations_live.ex:54
+#, elixir-autogen, elixir-format
+msgid "Read-only image, Audi ingress and Porsche gateway status. Secrets and certificate material are withheld."
+msgstr "Vain luettavat levykuvien, Audin saapuvan liikenteen ja Porsche-yhdyskäytävien tilat. Salaisuuksia ja varmenneaineistoa ei näytetä."
+
+#: lib/marshall_web/live/admin/operations_live.ex:150
+#: lib/marshall_web/live/admin/operations_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Revision"
+msgstr "Versio"
+
+#: lib/marshall_web/live/admin/operations_live.ex:125
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Rooli"
+
+#: lib/marshall_web/live/admin/operations_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Route expires"
+msgstr "Reitti vanhenee"
+
+#: lib/marshall_web/live/admin/operations_live.ex:124
+#, elixir-autogen, elixir-format
+msgid "Service"
+msgstr "Palvelu"
+
+#: lib/marshall_web/live/admin/operations_live.ex:82
+#: lib/marshall_web/live/admin/operations_live.ex:105
+#: lib/marshall_web/live/admin/operations_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "Tila"
+
+#: lib/marshall_web/live/admin/operations_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: lib/marshall_web/live/admin/operations_live.ex:60
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr "Päivitetty"
+
+#: lib/marshall_web/live/admin/operations_live.ex:161
+#, elixir-autogen, elixir-format
+msgid "Zone"
+msgstr "Aikavyöhyke"
+
+#: lib/marshall_web/live/admin/operations_live.ex:225
+#: lib/marshall_web/live/admin/operations_live.ex:229
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "tuntematon"
+
+#: lib/marshall_web/live/admin/operations_live.ex:62
+#, elixir-autogen, elixir-format
+msgid "· every 30 seconds"
+msgstr "· 30 sekunnin välein"

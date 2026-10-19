@@ -18,9 +18,34 @@ transport reset does not preserve established sockets.
 
 ## Language and text direction
 
-[ADR-0201](repo:docs/architecture/decisions/0201-localized-human-surfaces.md) accepts a saved account language override with session/browser negotiation and English fallback. The supported catalog list includes Japanese, Hindi, Filipino, Estonian, Finnish, Swedish and Brazilian/European Portuguese. Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Implementation and recorded browser/native evidence remain partial.
+[ADR-0201](repo:docs/architecture/decisions/0201-localized-human-surfaces.md) accepts a saved account language override with session/browser negotiation and English fallback. The 28 supported locales include Japanese, Hindi, Filipino, Estonian, Finnish, Swedish, Brazilian/European Portuguese, Egyptian Arabic, Swahili and Hausa. Arabic, Egyptian Arabic and Urdu use right-to-left document direction; other supported locales are left-to-right. Human browser, email, public documentation and interactive Porsche prose are localization targets. Machine JSON, protocol identifiers, diagnostic events and terminal bytes remain unchanged. Recorded browser/native acceptance remains separately scoped.
 
 SSH key rename descriptions, confirmation and refusal flashes, and administrative verification/refusal messages use the active locale catalog. Translation does not change ownership checks, recent-passkey requirements or accepted mutation outcomes. English date-only month/day output follows bundled CLDR ordering (`Oct 18`); the UTC provenance remains unchanged.
+
+Catalogs are maintained per language and feature using native Gettext domains.
+The public `/docs/*` guides are translated. This handbook's chapter titles,
+contents and command reference remain English in every language, with an
+explicit English left-to-right content boundary; reader controls follow the
+selected language. Documentation extraction excludes `priv/hldd`, so handbook
+edits cannot create translation work or change catalog coverage.
+
+Public guide translations preserve literal code, command and link tokens and
+parsed heading, emphasis and list structure. Each prose unit is bounded to
+64 KiB during structural validation. Invalid translated structure falls back
+to source English. Input examples must satisfy their actual field grammar;
+machine identifiers and valid technical examples may remain unchanged only
+with exact catalog reviews. Repeated direction lookup uses a bounded table
+derived from bundled CLDR for validated supported locales.
+
+JetBrains Mono remains the primary Latin and layout-grid font. Locally bundled
+Noto faces cover CJK, Arabic/Urdu, Devanagari, Bengali, Telugu, Tamil, Hausa's
+extended Latin characters and interface symbols, preserving native shaping and
+language-specific glyph selection. CSS selects
+script faces from this origin; no font service is contacted. Pinned sources,
+licences and asset hashes are maintained with the fonts. Catalog and glyph
+coverage checks do not establish browser legibility, joining, clipping or
+overflow; current packaged rendering evidence remains separately scoped under
+[ADR-0207](repo:docs/architecture/decisions/0207-bundled-multilingual-font-fallback.md).
 
 ## Inline privileged browser actions
 
@@ -93,7 +118,7 @@ image and source scope.
 
 Windows has a reviewed native Code OSS bundle and a separately unselected
 candidate image; `windows-v1` retains `editor: false`.
-[ADR-0207](repo:docs/architecture/decisions/0207-windows-editor-job-custodian.md)
+[ADR-0208](repo:docs/architecture/decisions/0208-windows-editor-job-custodian.md)
 separates the gateway-only SYSTEM broker from an independent SYSTEM custodian.
 The custodian owns personal SAM/S4U worker launch, complete SID-bound receipts,
 exact worker pipes and retained kill-on-close jobs. Both roles independently

@@ -207,7 +207,7 @@ replacement remains incomplete. A new physical boot gets a new namespace.
 Independent-task peer/capacity/failure execution and a complete newly bound image's
 browser journey remain gaps. The old candidate and its failed broker recovery
 cannot qualify this replacement. See
-[ADR-0207](repo:docs/architecture/decisions/0207-windows-editor-job-custodian.md)
+[ADR-0208](repo:docs/architecture/decisions/0208-windows-editor-job-custodian.md)
 and its [review](repo:docs/architecture/reviews/2026-10-18-windows-editor-job-custodian.md).
 
 Declared module/image composition does not claim production activation or a

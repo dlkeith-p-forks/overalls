@@ -9,10 +9,10 @@ defmodule MarshallWeb.Gettext do
       use Gettext, backend: MarshallWeb.Gettext
 
       # Simple translation
-      gettext("Here is the string to translate")
+      dgettext("shared", "Here is the string to translate")
 
       # Plural translation
-      ngettext("Here is the string to translate",
+      dngettext("shared", "Here is the string to translate",
                "Here are the strings to translate",
                3)
 

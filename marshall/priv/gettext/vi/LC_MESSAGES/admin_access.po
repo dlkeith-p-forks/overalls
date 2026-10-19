@@ -1,0 +1,351 @@
+#  This file is a PO Template file.
+#
+#  "msgid"s here are often extracted from source code.
+#  Add new messages manually only if they're dynamic
+#  messages that can't be statically extracted.
+#
+#  Run "mix gettext.extract" to bring this file up to
+#  date. Leave "msgstr"s empty as changing them here has no
+#  effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+"Language: vi\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/marshall_web/live/admin/access_live.ex:83
+#, elixir-autogen, elixir-format
+msgid "Access authority"
+msgstr "Thẩm quyền truy cập"
+
+#: lib/marshall_web/live/admin/access_live.ex:65
+#, elixir-autogen, elixir-format
+msgid "Access inventory is temporarily unavailable."
+msgstr "Danh sách truy cập tạm thời không khả dụng."
+
+#: lib/marshall_web/live/admin/access_live.ex:106
+#: lib/marshall_web/live/admin/access_live.ex:152
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "Tài khoản"
+
+#: lib/marshall_web/live/admin/access_live.ex:110
+#: lib/marshall_web/live/admin/access_live.ex:156
+#: lib/marshall_web/live/admin/access_live.ex:205
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Thao tác"
+
+#: lib/marshall_web/live/admin/access_live.ex:95
+#: lib/marshall_web/live/admin/access_live.ex:195
+#, elixir-autogen, elixir-format
+msgid "Active SSH sessions"
+msgstr "Phiên SSH đang hoạt động"
+
+#: lib/marshall_web/live/admin/access_live.ex:154
+#, elixir-autogen, elixir-format
+msgid "Added"
+msgstr "Đã thêm"
+
+#: lib/marshall_web/live_admin_auth.ex:142
+#, elixir-autogen, elixir-format
+msgid "Administrative changes are not authorized."
+msgstr "Các thay đổi quản trị không được cấp quyền."
+
+#: lib/marshall_web/live_admin_auth.ex:124
+#, elixir-autogen, elixir-format
+msgid "Administrative changes require an administrator."
+msgstr "Các thay đổi quản trị yêu cầu quyền quản trị viên."
+
+#: lib/marshall_web/live/admin/access_live.ex:226
+#, elixir-autogen, elixir-format
+msgid "Close session"
+msgstr "Đóng phiên"
+
+#: lib/marshall_web/live/admin/access_live.ex:224
+#, elixir-autogen, elixir-format
+msgid "Close this SSH session?"
+msgstr "Đóng phiên SSH này?"
+
+#: lib/marshall_web/live/admin/access_live.ex:36
+#, elixir-autogen, elixir-format
+msgid "Could not close that session."
+msgstr "Không thể đóng phiên đó."
+
+#: lib/marshall_web/live/admin/access_live.ex:46
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that VM access."
+msgstr "Không thể thu hồi quyền truy cập máy ảo đó."
+
+#: lib/marshall_web/live/admin/access_live.ex:26
+#, elixir-autogen, elixir-format
+msgid "Could not revoke that key."
+msgstr "Không thể thu hồi khóa đó."
+
+#: lib/marshall_web/live/admin/access_live.ex:203
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "Hết hạn"
+
+#: lib/marshall_web/live_admin_auth.ex:190
+#, elixir-autogen, elixir-format
+msgid "Finish or cancel the current verification first."
+msgstr "Hãy hoàn tất hoặc hủy quá trình xác minh hiện tại trước."
+
+#: lib/marshall_web/live/admin/access_live.ex:201
+#, elixir-autogen, elixir-format
+msgid "Gateway"
+msgstr "Cổng kết nối"
+
+#: lib/marshall_web/live/admin/access_live.ex:108
+#, elixir-autogen, elixir-format
+msgid "Granted"
+msgstr "Đã cấp"
+
+#: lib/marshall_web/live_admin_auth.ex:205
+#, elixir-autogen, elixir-format
+msgid "Invalid administrative request."
+msgstr "Yêu cầu quản trị không hợp lệ."
+
+#: lib/marshall_web/live/admin/access_live.ex:51
+#, elixir-autogen, elixir-format
+msgid "Invalid request."
+msgstr "Yêu cầu không hợp lệ."
+
+#: lib/marshall_web/live/admin/access_live.ex:153
+#: lib/marshall_web/live/admin/access_live.ex:202
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "Khóa"
+
+#: lib/marshall_web/live/admin/access_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Machine"
+msgstr "Máy"
+
+#: lib/marshall_web/live/admin/access_live.ex:246
+#, elixir-autogen, elixir-format
+msgid "Manager"
+msgstr "Người quản lý"
+
+#: lib/marshall_web/live/admin/access_live.ex:147
+#, elixir-autogen, elixir-format
+msgid "No active keys."
+msgstr "Không có khóa đang hoạt động."
+
+#: lib/marshall_web/live/admin/access_live.ex:196
+#, elixir-autogen, elixir-format
+msgid "No active sessions."
+msgstr "Không có phiên đang hoạt động."
+
+#: lib/marshall_web/live/admin/access_live.ex:99
+#, elixir-autogen, elixir-format
+msgid "No machine is shared with another account."
+msgstr "Không có máy được chia sẻ với tài khoản khác."
+
+#: lib/marshall_web/live/admin/access_live.ex:245
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "Người vận hành"
+
+#: lib/marshall_web/live/admin/access_live.ex:213
+#, elixir-autogen, elixir-format
+msgid "Pending key approval"
+msgstr "Đang chờ duyệt khóa"
+
+#: lib/marshall_web/live/admin/access_live.ex:94
+#: lib/marshall_web/live/admin/access_live.ex:146
+#, elixir-autogen, elixir-format
+msgid "Registered SSH keys"
+msgstr "Các khóa SSH đã đăng ký"
+
+#: lib/marshall_web/live/admin/access_live.ex:138
+#, elixir-autogen, elixir-format
+msgid "Revoke access"
+msgstr "Thu hồi quyền truy cập"
+
+#: lib/marshall_web/live/admin/access_live.ex:187
+#, elixir-autogen, elixir-format
+msgid "Revoke key"
+msgstr "Thu hồi khóa"
+
+#: lib/marshall_web/live/admin/access_live.ex:185
+#, elixir-autogen, elixir-format
+msgid "Revoke this SSH key and close sessions using it?"
+msgstr "Thu hồi khóa SSH này và đóng các phiên đang sử dụng khóa?"
+
+#: lib/marshall_web/live/admin/access_live.ex:136
+#, elixir-autogen, elixir-format
+msgid "Revoke this user's VM access?"
+msgstr "Thu hồi quyền truy cập máy ảo của người dùng này?"
+
+#: lib/marshall_web/live/admin/access_live.ex:247
+#, elixir-autogen, elixir-format
+msgid "Revoked"
+msgstr "Đã thu hồi"
+
+#: lib/marshall_web/live/admin/access_live.ex:107
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Vai trò"
+
+#: lib/marshall_web/live/admin/access_live.ex:172
+#, elixir-autogen, elixir-format
+msgid "SSH key"
+msgstr "Khóa SSH"
+
+#: lib/marshall_web/live/admin/access_live.ex:25
+#, elixir-autogen, elixir-format
+msgid "SSH key revoked."
+msgstr "Đã thu hồi khóa SSH."
+
+#: lib/marshall_web/live/admin/access_live.ex:33
+#, elixir-autogen, elixir-format
+msgid "SSH session closed."
+msgstr "Đã đóng phiên SSH."
+
+#: lib/marshall_web/live/admin/access_live.ex:97
+#, elixir-autogen, elixir-format
+msgid "Shared machine access"
+msgstr "Quyền truy cập máy được chia sẻ"
+
+#: lib/marshall_web/live/admin/access_live.ex:93
+#, elixir-autogen, elixir-format
+msgid "Shared machine grants"
+msgstr "Quyền được cấp đối với máy được chia sẻ"
+
+#: lib/marshall_web/live/admin/access_live.ex:248
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Không xác định"
+
+#: lib/marshall_web/live/admin/access_live.ex:90
+#, elixir-autogen, elixir-format
+msgid "Updated every 15 seconds"
+msgstr "Cập nhật mỗi 15 giây"
+
+#: lib/marshall_web/live/admin/access_live.ex:43
+#, elixir-autogen, elixir-format
+msgid "VM access revoked."
+msgstr "Đã thu hồi quyền truy cập máy ảo."
+
+#: lib/marshall_web/live/admin/access_live.ex:244
+#, elixir-autogen, elixir-format
+msgid "Viewer"
+msgstr "Người xem"
+
+#: lib/marshall_web/live/admin/access_live.ex:243
+#, elixir-autogen, elixir-format
+msgid "Web apps"
+msgstr "Ứng dụng web"
+
+#: lib/marshall_web/live/admin/access_live.ex:85
+#, elixir-autogen, elixir-format
+msgid "Who can reach which machine, and by which key or session. Private keys, session tokens and gateway credentials are never shown."
+msgstr "Ai có thể truy cập máy nào bằng khóa hoặc phiên nào. Khóa riêng, token phiên và thông tin xác thực cổng không bao giờ được hiển thị."
+
+#: lib/marshall_web/admin_elevation.ex:41
+#, elixir-autogen, elixir-format
+msgid "add this Git mirror"
+msgstr "thêm bản sao Git này"
+
+#: lib/marshall_web/admin_elevation.ex:46
+#, elixir-autogen, elixir-format
+msgid "approve this workload downtime"
+msgstr "phê duyệt gián đoạn khối lượng công việc này"
+
+#: lib/marshall_web/admin_elevation.ex:33
+#, elixir-autogen, elixir-format
+msgid "change administrator access"
+msgstr "thay đổi quyền quản trị viên"
+
+#: lib/marshall_web/admin_elevation.ex:45
+#, elixir-autogen, elixir-format
+msgid "change this evacuation"
+msgstr "thay đổi cuộc sơ tán này"
+
+#: lib/marshall_web/admin_elevation.ex:48
+#, elixir-autogen, elixir-format
+msgid "change this machine's state"
+msgstr "thay đổi trạng thái máy này"
+
+#: lib/marshall_web/admin_elevation.ex:52
+#, elixir-autogen, elixir-format
+msgid "change this node's admission settings"
+msgstr "thay đổi cài đặt tiếp nhận của nút này"
+
+#: lib/marshall_web/admin_elevation.ex:36
+#, elixir-autogen, elixir-format
+msgid "close this SSH session"
+msgstr "đóng phiên SSH này"
+
+#: lib/marshall_web/admin_elevation.ex:39
+#, elixir-autogen, elixir-format
+msgid "delete this user account"
+msgstr "xóa tài khoản người dùng này"
+
+#: lib/marshall_web/admin_elevation.ex:49
+#, elixir-autogen, elixir-format
+msgid "move this machine"
+msgstr "di chuyển máy này"
+
+#: lib/marshall_web/admin_elevation.ex:51
+#, elixir-autogen, elixir-format
+msgid "open this machine with administrator access"
+msgstr "mở máy này với quyền quản trị viên"
+
+#: lib/marshall_web/admin_elevation.ex:42
+#, elixir-autogen, elixir-format
+msgid "refresh this Git mirror"
+msgstr "làm mới bản sao Git này"
+
+#: lib/marshall_web/admin_elevation.ex:43
+#, elixir-autogen, elixir-format
+msgid "remove this Git mirror"
+msgstr "xóa bản sao Git này"
+
+#: lib/marshall_web/admin_elevation.ex:47
+#, elixir-autogen, elixir-format
+msgid "replan this workload move"
+msgstr "lập lại kế hoạch di chuyển khối lượng công việc này"
+
+#: lib/marshall_web/admin_elevation.ex:40
+#, elixir-autogen, elixir-format
+msgid "reset this account's passkeys"
+msgstr "đặt lại khóa truy cập của tài khoản này"
+
+#: lib/marshall_web/admin_elevation.ex:53
+#, elixir-autogen, elixir-format
+msgid "retry this background job"
+msgstr "thử lại tác vụ nền này"
+
+#: lib/marshall_web/admin_elevation.ex:35
+#, elixir-autogen, elixir-format
+msgid "revoke this SSH key"
+msgstr "thu hồi khóa SSH này"
+
+#: lib/marshall_web/admin_elevation.ex:37
+#, elixir-autogen, elixir-format
+msgid "revoke this VM access"
+msgstr "thu hồi quyền truy cập máy ảo này"
+
+#: lib/marshall_web/admin_elevation.ex:50
+#, elixir-autogen, elixir-format
+msgid "rotate the fleet certificate"
+msgstr "thay chứng chỉ đội máy"
+
+#: lib/marshall_web/admin_elevation.ex:38
+#, elixir-autogen, elixir-format
+msgid "send this invitation"
+msgstr "gửi lời mời này"
+
+#: lib/marshall_web/admin_elevation.ex:34
+#, elixir-autogen, elixir-format
+msgid "sign this account out everywhere"
+msgstr "đăng xuất tài khoản này ở mọi nơi"
+
+#: lib/marshall_web/admin_elevation.ex:44
+#, elixir-autogen, elixir-format
+msgid "start this node evacuation"
+msgstr "bắt đầu sơ tán nút này"

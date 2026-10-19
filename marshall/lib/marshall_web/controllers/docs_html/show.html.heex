@@ -23,23 +23,26 @@
   </head>
   <body>
     <div class="public-page">
-      <a href="#main-content" class="skip-link">{gettext("Skip to content")}</a>
+      <a href="#main-content" class="skip-link">{dgettext("shared", "Skip to content")}</a>
       <div class="docs-shell">
         <aside class="docs-nav">
-          <nav aria-label={gettext("Documentation")}>
+          <nav aria-label={dgettext("shared", "Documentation")}>
             <ul class="tree">
               <li>
-                <strong><a href={~p"/"}>{gettext("Overalls")}</a></strong>
+                <strong><a href={~p"/"}>{dgettext("shared", "Overalls")}</a></strong>
                 <ul>
-                  <li><a href={~p"/sign-in"}>{gettext("Sign in")}</a></li>
+                  <li><a href={~p"/sign-in"}>{dgettext("shared", "Sign in")}</a></li>
                   <li>
-                    <a href="https://github.com/ghuntley/overalls">{gettext("Source code")}
+                    <a href="https://github.com/ghuntley/overalls">{dgettext(
+                      "shared",
+                      "Source code"
+                    )}
                     <span aria-hidden="true">↗</span></a>
                   </li>
                 </ul>
               </li>
               <li>
-                <strong>{gettext("Field notes")}</strong>
+                <strong>{dgettext("shared", "Field notes")}</strong>
                 <ul>
                   <li :for={page <- @pages}>
                     <a
@@ -50,14 +53,14 @@
                 </ul>
               </li>
               <li>
-                <strong>{gettext("Machine readable")}</strong>
+                <strong>{dgettext("shared", "Machine readable")}</strong>
                 <ul>
-                  <li><a href={~p"/llms.txt"}>{gettext("LLM index")}</a></li>
+                  <li><a href={~p"/llms.txt"}>{dgettext("shared", "LLM index")}</a></li>
                   <li>
                     <a href={
                       if @page.slug == "index", do: "/docs.md", else: "/docs/#{@page.slug}.md"
                     }>
-                      {gettext("Markdown for this page")}
+                      {dgettext("shared", "Markdown for this page")}
                     </a>
                   </li>
                 </ul>
@@ -65,7 +68,7 @@
             </ul>
           </nav>
           <div class="docs-appearance">
-            <span>{gettext("Appearance")}</span><Layouts.theme_toggle />
+            <span>{dgettext("shared", "Appearance")}</span><Layouts.theme_toggle />
           </div>
         </aside>
         <main id="main-content" data-public-documentation class="docs-content prose">
