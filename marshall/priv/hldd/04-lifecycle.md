@@ -529,6 +529,10 @@ Recorded native execution passed: the submission history took337.69seconds
 within a1036.30-second machine script, with composed driver static checks passed.
 A timeout or disconnection alone is insufficient evidence of the
 intended daemon loss; the scenario observes actual process retirement.
+
+The maintenance worker also submits idempotent pause intents for every running
+machine owned by an inactive SCIM user before the grace deadline. Compute's
+existing lifecycle coordinator remains the authority for the pause operation.
 Initial provisioning, guest data continuity, power loss and hosted
 faults remain separate gaps.
 
