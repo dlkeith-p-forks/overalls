@@ -158,6 +158,8 @@ defmodule MarshallWeb.Router do
     post("/launch/pending", RepositoryLaunchController, :stage)
     post("/launch/pending/clear", RepositoryLaunchController, :clear)
     auth_routes(AuthController, Marshall.Accounts.User, path: "/auth")
+    get "/auth/oidc/start", ScimOidcController, :start
+    get "/auth/oidc/callback", ScimOidcController, :callback
 
     sign_out_route(AuthController, "/sign-out",
       on_mount_prepend: [MarshallWeb.AuthenticationPrivacy],
