@@ -127,6 +127,8 @@ defmodule Galileo.GitHub.HTTP do
 
     with true <- System.monotonic_time(:millisecond) < config.github_lease_expires_at,
          {:ok, authorization, route} <- destination(authorization, route, context) do
+      context = %{context | route: route}
+
       Process.put(@state_key, %{
         conn: conn,
         status: nil,
