@@ -14411,7 +14411,7 @@
       "denial": "Another host cannot decrypt the bundle; a missing secret keeps the previous bundle and fences startup; unsafe credential files and invalid keyrings refuse startup; UPDATE/DELETE/TRUNCATE on audit rows fail.",
       "scope": "susan-secrets and susan-service machine tests; susan-image for the container form.",
       "status": "partial",
-      "gaps": "secrets/overalls-susan.enc.json does not exist yet; no production host recipient.",
+      "gaps": "secrets/overalls-susan.enc.json holds placeholder values only (recovery-only); no production host recipient or real APNs/FCM credentials.",
       "preferred_gap": "Create the document for the chosen host and repeat susan-secrets against it.",
       "evidence": [
         {

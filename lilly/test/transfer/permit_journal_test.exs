@@ -224,6 +224,28 @@ defmodule Lilly.Transfer.PermitJournalTest do
              Journal.lookup_probe(c.root, c.host, c.relocation, c.public, uuid(90), 1000)
   end
 
+  test "a running-source probe advances to its memory export but no other intent", c do
+    checkpoint = %{
+      "id" => uuid(20),
+      "memory_bytes" => 536_870_912,
+      "state_bytes" => 4096,
+      "compatibility" => "sha256:" <> String.duplicate("a", 64),
+      "memory_sha256" => "sha256:" <> String.duplicate("b", 64),
+      "state_sha256" => "sha256:" <> String.duplicate("c", 64),
+      "manifest_sha256" => "sha256:" <> String.duplicate("d", 64),
+      "dataset_guid" => "300",
+      "snapshot_guid" => "400"
+    }
+
+    assert :ok = probe(c)
+    with_ram = %{c | wire: Map.put(c.wire, "checkpoint", checkpoint)}
+    moved = Map.put(with_ram.wire, "vm_id", uuid(99))
+    assert {:error, _} = grant(%{with_ram | wire: moved})
+    assert {:error, _} = grant(%{with_ram | public: key(2)})
+    assert :ok = grant(with_ram)
+    assert {:ok, %{descriptor: %{checkpoint: %{snapshot_guid: "400"}}}} = lookup(c)
+  end
+
   test "preparation creates no grant and cannot repair or revive retained state", c do
     assert :ok = Journal.prepare(c.root, c.host, c.relocation)
     assert :ok = Journal.prepare(c.root, c.host, c.relocation)

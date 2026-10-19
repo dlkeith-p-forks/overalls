@@ -111,10 +111,19 @@ Implemented in this change, with these refinements of the decision text:
   machine tests [`susan-service`](../../../nix/verification/tests/machines/susan-service/driver.py),
   [`susan-secrets`](../../../nix/verification/tests/machines/susan-secrets/driver.py)
   and [`susan-image`](../../../nix/verification/tests/machines/susan-image/driver.py).
+- Secrets: [`secrets/overalls-susan.enc.json`](../../../secrets/overalls-susan.enc.json)
+  exists with all six keys holding **placeholder** values (throwaway keys of
+  the right shape, a `placeholder` service account and the local socket
+  database URL), registered recovery-only in
+  [`secret-documents.nix`](../../../nix/policy/secrets/secret-documents.nix)
+  and passing `nix run .#secrets -- check`. No host enables Susan, so no
+  `services.susan.secretsFile` points at it yet; see
+  [secret custody](../../../secrets/README.md#susan-push-relay).
 
-Remaining for `implemented`: real APNs/FCM acceptance (the machine tests use
-local fake origins behind a private CA), the encrypted
-`secrets/overalls-susan.enc.json`, and hosting and TLS placement. Marshall's
+Remaining for `implemented`: real APNs/FCM credentials and acceptance (the
+machine tests use local fake origins behind a private CA, and the committed
+document holds placeholders only), a host recipient for that document, and
+hosting and TLS placement. Marshall's
 [poke client](../../../marshall/lib/marshall/notifications/susan.ex) is now
 present under ADR-0225; historical fake-relay execution does not establish
 real provider acceptance or the latest integrated relay verifier.

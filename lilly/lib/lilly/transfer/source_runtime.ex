@@ -10,6 +10,9 @@ defmodule Lilly.Transfer.SourceRuntime do
     :source_authority_unconfirmed,
     :source_lease_expired,
     :source_lineage_unconfirmed,
+    :source_command_unconfirmed,
+    :source_claim_unconfirmed,
+    :checkpoint_unconfirmed,
     :source_stream_busy,
     :source_snapshot_unconfirmed,
     :export_permit_unconfirmed

@@ -38,8 +38,10 @@ defmodule Lilly.Transfer.CheckpointTransfer do
   # Partial native state MUST NOT trigger ordinary replay or cold boot.
   @spec pull(Path.t(), Pool.t(), map(), map(), pos_integer(), pos_integer(), pid() | nil) ::
           :ok | failure()
+  # Clone and disk-only descriptors carry no checkpoint, so they pull no RAM;
+  # DiskTransfer is the decoder Receiver.pull/7 already applied to this wire.
   def pull(root, pool, wire, endpoint, timeout, rate, progress) do
-    with {:ok, transfer} <- OverallsProtocol.Relocation.descriptor(wire) do
+    with {:ok, transfer} <- OverallsProtocol.DiskTransfer.descriptor(wire) do
       if Map.has_key?(transfer, :checkpoint),
         do: pull_memory(root, pool, transfer, endpoint, timeout, rate, progress),
         else: :ok
@@ -87,7 +89,7 @@ defmodule Lilly.Transfer.CheckpointTransfer do
 
               with {:ok, {:ssh, producer}} <- SSH.command(endpoint, request, files),
                    :ok <-
-                     Stream.run(
+                     stream(
                        files.stream_dir,
                        {:ssh, %{producer | verb: :checkpoint}},
                        consumer,
@@ -352,6 +354,67 @@ defmodule Lilly.Transfer.CheckpointTransfer do
     case Lilly.Host.MountTable.at(path) do
       {:ok, %{"source" => ^dataset, "target" => ^path, "fstype" => "zfs"}} -> :ok
       _ -> with {:ok, _} <- Command.run(:zfs_mount, [dataset]), do: :ok
+    end
+  end
+
+  # @cc [owner:ghuntley,label:recovery;concurrency] checkpoint-stream-runs-lock-free
+  # Stream.run/6 refuses a caller holding any lease, so the RAM stream MUST run
+  # in a linked child that inherits none of this process's activity lock, as
+  # the disk receive does. The parent keeps activity exclusion, forwards only
+  # monotonic progress counters and kills the child once the attempt ends.
+  @spec stream(
+          Path.t(),
+          Lilly.Host.Hostd.stream_producer(),
+          Lilly.Host.Hostd.stream_consumer(),
+          pos_integer(),
+          pos_integer(),
+          pid() | nil
+        ) :: :ok | Stream.failure() | failure()
+  defp stream(directory, producer, consumer, timeout, rate, progress) do
+    receiver = self()
+
+    task =
+      Task.async(fn ->
+        Process.flag(:sensitive, true)
+
+        Stream.run(
+          directory,
+          producer,
+          consumer,
+          timeout,
+          rate,
+          if(is_pid(progress), do: receiver, else: nil)
+        )
+      end)
+
+    try do
+      await_stream(task, System.monotonic_time(:millisecond) + timeout + 10_000, progress)
+    catch
+      :exit, _ -> failure()
+    after
+      Task.shutdown(task, :brutal_kill)
+    end
+  end
+
+  @spec await_stream(Task.t(), integer(), pid() | nil) :: :ok | Stream.failure() | failure()
+  defp await_stream(%Task{pid: pid, ref: ref} = task, deadline, progress) do
+    if System.monotonic_time(:millisecond) >= deadline do
+      failure()
+    else
+      receive do
+        {:lilly_transfer_progress, ^pid, count}
+        when is_pid(progress) and is_integer(count) and count in 0..9_223_372_036_854_775_807 ->
+          send(progress, {:lilly_transfer_progress, self(), count})
+          await_stream(task, deadline, progress)
+
+        {^ref, result} ->
+          result
+
+        {:DOWN, ^ref, :process, ^pid, _} ->
+          failure()
+      after
+        max(0, deadline - System.monotonic_time(:millisecond)) -> failure()
+      end
     end
   end
 

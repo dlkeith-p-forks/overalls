@@ -565,3 +565,17 @@ refuses pause and resume while preserving ordinary boot admission. Authenticated
 host reports carry bounded qualification IDs, and Marshall checks the VM's exact
 image before pause, restored capacity admission, memory relocation and final
 handoff.
+
+A memory relocation probes its destination while the source still runs, so the
+probe grant records the intent without a checkpoint. The later export grant may
+add only that checkpoint; any other intent or key change is refused
+([permit journal](repo:lilly/lib/lilly/transfer/permit_journal.ex),
+[test](repo:lilly/test/transfer/permit_journal_test.exs)). The destination pulls
+the RAM stream in a child process that holds no lease, as the disk receive does,
+while the parent keeps receive-activity exclusion
+([checkpoint transfer](repo:lilly/lib/lilly/transfer/checkpoint_transfer.ex)).
+Cross-host clone copies carry no checkpoint and pull no RAM
+([test](repo:lilly/test/transfer/checkpoint_transfer_test.exs)). A failed source
+prepare step reports its own closed reason instead of one generic refusal.
+These are BEAM unit results; the composed `porsche-fleet` relocate and clone
+journey is the native evidence.

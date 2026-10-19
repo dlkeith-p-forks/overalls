@@ -4182,7 +4182,7 @@ Tested scope: susan-secrets and susan-service machine tests; susan-image for the
 - **machine, recorded**: [keyring rotation is audited and older push keys still open](repo:nix/verification/tests/machines/susan-secrets/driver.py) — Single host plus a wrong-host node.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 - **machine, recorded**: [no secret bytes in image layers or the container filesystem](repo:nix/verification/tests/machines/susan-image/driver.py) — Rootful podman.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 
-**Gaps:** secrets/overalls-susan.enc.json does not exist yet; no production host recipient.
+**Gaps:** secrets/overalls-susan.enc.json holds placeholder values only (recovery-only); no production host recipient or real APNs/FCM credentials.
 
 **Preferred test work:** Create the document for the chosen host and repeat susan-secrets against it.
 
