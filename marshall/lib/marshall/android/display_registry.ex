@@ -48,6 +48,8 @@ defmodule Marshall.Android.DisplayRegistry do
     end
   end
 
+  def handle_call(_, _from, state), do: {:reply, {:error, :invalid_key}, state}
+
   defp start_bridge(key, generation, host_stream, open_message, state) do
     with {:ok, relay, state} <- relay_for_state(key, generation, state),
          {:ok, bridge} <-
@@ -62,8 +64,6 @@ defmodule Marshall.Android.DisplayRegistry do
       error -> {:reply, error, state}
     end
   end
-
-  def handle_call(_, _from, state), do: {:reply, {:error, :invalid_key}, state}
 
   defp start_relay(key, generation, state) do
     case Marshall.Android.DisplayRelay.start_link(generation) do

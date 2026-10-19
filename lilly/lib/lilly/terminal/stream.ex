@@ -762,7 +762,7 @@ defmodule Lilly.Terminal.Stream do
         state
 
       {%{pid: pid}, channels} ->
-        _ = Lilly.Terminal.AndroidDisplay.terminate(pid)
+        _ = Lilly.Terminal.AndroidDisplay.stop(pid)
         %{state | android_channels: channels}
     end
   end
