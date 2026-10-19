@@ -306,7 +306,9 @@ defmodule MarshallWeb.IntegrationsLive do
             <header>
               <h2 class="ident break"><code>{integration.name}.integration.internal</code></h2>
               <div class="row">
-                <span class="status-label">{if integration.team_id, do: "team", else: "personal"}</span>
+                <span class="status-label">{if integration.team_id,
+                  do: dgettext("integrations", "Team-owned integration"),
+                  else: dgettext("integrations", "Personal integration")}</span>
                 <button
                   id={"remove-integration-#{integration.id}"}
                   phx-click="remove"
