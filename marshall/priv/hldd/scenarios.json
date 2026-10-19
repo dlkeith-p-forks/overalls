@@ -14022,7 +14022,9 @@
           "path": "nix/verification/tests/machines/susan-service/driver.py",
           "assertion": "APNs poke is content-free and over HTTP/2 with verified TLS",
           "scope": "Fake provider origins behind a private CA.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`susan-service` passed"
         },
         {
           "kind": "property",
@@ -14052,7 +14054,9 @@
           "path": "nix/verification/tests/machines/susan-service/driver.py",
           "assertion": "provider 503 retries once in-request, then a later retry succeeds once",
           "scope": "Single node.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`susan-service` passed"
         },
         {
           "kind": "property",
@@ -14083,14 +14087,18 @@
           "path": "nix/verification/tests/machines/susan-secrets/driver.py",
           "assertion": "keyring rotation is audited and older push keys still open",
           "scope": "Single host plus a wrong-host node.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`susan-secrets` passed"
         },
         {
           "kind": "machine",
           "path": "nix/verification/tests/machines/susan-image/driver.py",
           "assertion": "no secret bytes in image layers or the container filesystem",
           "scope": "Rootful podman.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`susan-image` passed"
         }
       ]
     },
@@ -14145,7 +14153,9 @@
           "path": "nix/verification/tests/machines/push-notifications/driver.py",
           "assertion": "Susan 503, 503, then 200 yields exactly one provider send",
           "scope": "Release against fake Susan at the compiled origin with OS-trusted TLS.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`push-notifications` passed"
         }
       ]
     },
@@ -14203,21 +14213,27 @@
           "path": "nix/verification/tests/machines/push-relay/driver.py",
           "assertion": "provider 503 twice, then 200: Susan accepts Marshall's signature and sends once",
           "scope": "Packaged Marshall and Susan releases with a fake provider.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`push-relay` passed"
         },
         {
           "kind": "machine",
           "path": "nix/verification/tests/machines/push-relay/driver.py",
           "assertion": "only the device can open what the provider received",
           "scope": "Device and stranger keys opening the provider-received ciphertext.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`push-relay` passed"
         },
         {
           "kind": "machine",
           "path": "nix/verification/tests/machines/push-relay/driver.py",
           "assertion": "provider 410 invalidates the device and later pokes are never sent",
           "scope": "Provider unregistration propagated through Susan to Marshall.",
-          "execution": "present"
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-19-mila-m6.md",
+          "record_assertion": "`push-relay` passed"
         },
         {
           "kind": "unit",

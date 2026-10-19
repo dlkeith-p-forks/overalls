@@ -4081,7 +4081,7 @@ Required refusal: Forged signatures, unknown/denied keys and malformed bodies an
 
 Tested scope: Packaged release, real SOPS bundle, local PostgreSQL and verify_peer TLS to local fake APNs/OAuth/FCM origins.
 
-- **machine, present**: [APNs poke is content-free and over HTTP/2 with verified TLS](repo:nix/verification/tests/machines/susan-service/driver.py) — Fake provider origins behind a private CA..
+- **machine, recorded**: [APNs poke is content-free and over HTTP/2 with verified TLS](repo:nix/verification/tests/machines/susan-service/driver.py) — Fake provider origins behind a private CA.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 - **property, present**: [arbitrary event sequences never send before every check and always answer once](repo:susan/test/susan/machine_property_test.exs) — Pure FSM..
 
 **Gaps:** No real Apple or Google acceptance; hosting and TLS placement open.
@@ -4098,7 +4098,7 @@ Required refusal: Replays answer 400; the eleventh burst poke answers 429 with R
 
 Tested scope: susan-service machine test and Hegel token-bucket/replay properties.
 
-- **machine, present**: [provider 503 retries once in-request, then a later retry succeeds once](repo:nix/verification/tests/machines/susan-service/driver.py) — Single node..
+- **machine, recorded**: [provider 503 retries once in-request, then a later retry succeeds once](repo:nix/verification/tests/machines/susan-service/driver.py) — Single node.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 - **property, present**: [admissions never exceed burst plus refill and refusals name a sufficient wait](repo:susan/test/susan/token_bucket_property_test.exs) — Pure arithmetic..
 
 **Gaps:** Buckets are per node; multi-instance limits are untested.
@@ -4115,8 +4115,8 @@ Required refusal: Another host cannot decrypt the bundle; a missing secret keeps
 
 Tested scope: susan-secrets and susan-service machine tests; susan-image for the container form.
 
-- **machine, present**: [keyring rotation is audited and older push keys still open](repo:nix/verification/tests/machines/susan-secrets/driver.py) — Single host plus a wrong-host node..
-- **machine, present**: [no secret bytes in image layers or the container filesystem](repo:nix/verification/tests/machines/susan-image/driver.py) — Rootful podman..
+- **machine, recorded**: [keyring rotation is audited and older push keys still open](repo:nix/verification/tests/machines/susan-secrets/driver.py) — Single host plus a wrong-host node.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+- **machine, recorded**: [no secret bytes in image layers or the container filesystem](repo:nix/verification/tests/machines/susan-image/driver.py) — Rootful podman.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 
 **Gaps:** secrets/overalls-susan.enc.json does not exist yet; no production host recipient.
 
@@ -4136,7 +4136,7 @@ Tested scope: BEAM unit, Hegel and Covenant tests against PostgreSQL with a Req.
 - **unit, present**: [503, 503, 200 sends once successfully; 410 invalidates the device](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I3 with an in-process Susan stub..
 - **property, present**: [the retry mapping matches the ADR-0225 table](repo:marshall/test/marshall/notifications/delivery_worker_test.exs) — Hegel over status, Retry-After and final attempt..
 - **property, present**: [flipping any bit of a sealed poke is refused](repo:protocol/test/push_poke_test.exs) — PushPoke round-trip and tamper refusal over generated inputs..
-- **machine, present**: [Susan 503, 503, then 200 yields exactly one provider send](repo:nix/verification/tests/machines/push-notifications/driver.py) — Release against fake Susan at the compiled origin with OS-trusted TLS..
+- **machine, recorded**: [Susan 503, 503, then 200 yields exactly one provider send](repo:nix/verification/tests/machines/push-notifications/driver.py) — Release against fake Susan at the compiled origin with OS-trusted TLS.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 
 **Gaps:** Real Susan, APNs/FCM delivery and Mila decryption on a device are not exercised.
 
@@ -4169,9 +4169,9 @@ Required refusal: A stranger X25519 key cannot open the forwarded ciphertext; a 
 
 Tested scope: NixOS machine test with a Marshall role node and a Susan relay node behind TLS for notifications.overalls.dev; local fake APNs/OAuth/FCM origins stand in for Apple and Google.
 
-- **machine, present**: [provider 503 twice, then 200: Susan accepts Marshall's signature and sends once](repo:nix/verification/tests/machines/push-relay/driver.py) — Packaged Marshall and Susan releases with a fake provider..
-- **machine, present**: [only the device can open what the provider received](repo:nix/verification/tests/machines/push-relay/driver.py) — Device and stranger keys opening the provider-received ciphertext..
-- **machine, present**: [provider 410 invalidates the device and later pokes are never sent](repo:nix/verification/tests/machines/push-relay/driver.py) — Provider unregistration propagated through Susan to Marshall..
+- **machine, recorded**: [provider 503 twice, then 200: Susan accepts Marshall's signature and sends once](repo:nix/verification/tests/machines/push-relay/driver.py) — Packaged Marshall and Susan releases with a fake provider.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+- **machine, recorded**: [only the device can open what the provider received](repo:nix/verification/tests/machines/push-relay/driver.py) — Device and stranger keys opening the provider-received ciphertext.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
+- **machine, recorded**: [provider 410 invalidates the device and later pokes are never sent](repo:nix/verification/tests/machines/push-relay/driver.py) — Provider unregistration propagated through Susan to Marshall.; [execution record](repo:docs/architecture/reviews/2026-10-19-mila-m6.md).
 - **unit, present**: [non-canonical bodies and signatures over the bare body are refused](repo:susan/test/susan/request_test.exs) — Susan verifier against the shared SusanPoke fixture..
 
 **Gaps:** Real APNs/FCM acceptance and decryption in the iOS/Android notification extensions are not exercised.
