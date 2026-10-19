@@ -60,6 +60,7 @@ defmodule OverallsProtocol.CheckpointTest do
         "execution_ready" => false,
         "terminal_protocol" => 0,
         "inception_image_id" => nil,
+        "checkpoint_image_ids" => [@hash],
         "checkpoint_compatibility" => @hash
       },
       pools: [pool]
@@ -67,6 +68,26 @@ defmodule OverallsProtocol.CheckpointTest do
 
     wire = OverallsProtocol.encode_report(report)
     assert {:ok, ^report} = OverallsProtocol.report(wire)
+
+    for invalid <- [
+          nil,
+          [@hash, @hash],
+          ["linux"],
+          Enum.map(1..257, fn n ->
+            "sha256:" <> String.pad_leading(Integer.to_string(n, 16), 64, "0")
+          end)
+        ] do
+      assert {:error, :invalid_message} =
+               OverallsProtocol.report(
+                 put_in(wire, ["inventory", "checkpoint_image_ids"], invalid)
+               )
+    end
+
+    assert {:error, :invalid_message} =
+             OverallsProtocol.report(
+               update_in(wire, ["inventory"], &Map.delete(&1, "checkpoint_image_ids"))
+             )
+
     [encoded] = wire["pools"]
     excessive = put_in(encoded, ["checkpoint_allocations", @id], ram + 1)
     assert {:error, :invalid_message} = OverallsProtocol.report(%{wire | "pools" => [excessive]})

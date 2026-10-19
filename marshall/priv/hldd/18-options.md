@@ -2422,6 +2422,19 @@ Type: `string matching the pattern /[a-zA-Z0-9_./:+-]+`.
 Default: Required when its service or enclosing record is selected.
 
 
+## `services.lilly.checkpointImageIds`
+
+Exact immutable image IDs with separately reviewed native memory-continuation qualification. Empty refuses pause/resume while retaining ordinary boot admission.
+
+Type: `list of string matching the pattern sha256:[0-9a-f]{64}`.
+
+Default:
+
+```nix
+[ ]
+```
+
+
 ## `services.lilly.controlPlane`
 
 Verified HTTPS control-plane origin; no embedded credentials.

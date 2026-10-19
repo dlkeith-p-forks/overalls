@@ -82,6 +82,7 @@ with subtest("disabled host fixtures become usable only after real authenticated
             "execution_ready",
             "terminal_protocol",
             "inception_image_id",
+            "checkpoint_image_ids",
             "checkpoint_compatibility",
         }
         assert inventory["execution_ready"] is True

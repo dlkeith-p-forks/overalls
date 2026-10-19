@@ -23,7 +23,9 @@ defmodule Marshall.Compute.RelocationCompetingHistoryTest do
     WorkloadPlacement
   }
 
-  @moduletag timeout: 180_000
+  # Two measured runs completed nine real database histories in 31–33 seconds.
+  # Keep all 100 histories and bound their aggregate runtime with headroom.
+  @moduletag timeout: 600_000
 
   # @cc [owner:ghuntley,label:verification;capacity;recovery] competing-relocation-receipt-history
   # An independent stable workload MUST remain allocation-free on repeated real
@@ -34,6 +36,7 @@ defmodule Marshall.Compute.RelocationCompetingHistoryTest do
   # the competitor's complete allocation records. This is database authority
   # with synthetic outcomes, not evidence that native streams have ceased.
   property "competing relocation admission follows both endpoint stream receipts",
+    profile: :ci,
     test_cases: 100 do
     source_first? = draw("source_first?", boolean())
     wrong_epoch? = draw("wrong_epoch?", boolean())

@@ -356,8 +356,12 @@ defmodule Marshall.Compute.Lifecycle do
   defp reserve_pause!(host, vm, reservation) do
     unless vm.observed_state in [:running, :paused], do: Ledger.rollback(:workload_not_stable)
 
-    unless OverallsProtocol.ImageManifest.id?(host.inventory["checkpoint_compatibility"]),
-      do: Ledger.rollback(:checkpoint_unavailable)
+    unless OverallsProtocol.ImageManifest.id?(host.inventory["checkpoint_compatibility"]) and
+             OverallsProtocol.NativeAdmission.checkpoint_qualified?(
+               vm.image_id,
+               host.inventory["checkpoint_image_ids"]
+             ),
+           do: Ledger.rollback(:checkpoint_unavailable)
 
     [pool] = Ledger.read!(Marshall.Compute.StoragePool, id: vm.pool_id)
     needed = 2 * OverallsProtocol.VMShape.checkpoint_bytes(vm.memory_bytes)

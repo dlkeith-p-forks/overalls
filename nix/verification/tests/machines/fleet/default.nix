@@ -184,7 +184,7 @@ let
     nativeBuildInputs = [ packages.toolchain.elixir ];
   } ''
     export ERL_FLAGS="+S 2:2"
-    elixir -r ${../../../../../protocol/lib/overalls_protocol/editor_release.ex} -r ${../../../../../protocol/lib/overalls_protocol/image_manifest.ex} -e '
+    elixir -r ${../../../../../protocol/lib/overalls_protocol/editor_release.ex} -r ${../../../../../protocol/lib/overalls_protocol/guest_agents.ex} -r ${../../../../../protocol/lib/overalls_protocol/image_manifest.ex} -e '
       [source, output] = System.argv()
       {:ok, image} = source |> File.read!() |> JSON.decode!() |> OverallsProtocol.ImageManifest.validate()
       File.write!(output, image.id)
@@ -1148,6 +1148,9 @@ let
       protectedCidrs = [ "11.0.0.2/32" "${hosts.${if name == "l1" then "l2" else "l1"}.ip}/32" ];
       guestCpuCores = 6;
       guestMemoryMiB = fixtureGuestMemoryMiB;
+      # Candidate admission is confined to these disposable memory-continuation,
+      # relocation and evacuation tests; it never promotes a production image.
+      checkpointImageIds = lib.optionals (suspension || relocation || maintenanceEvacuation) [ guestImageId ];
       images = [ { path = "${guest}"; } ]
         ++ lib.optionals ubuntu [ { path = "${nixosGuest}"; } ];
       pools = [{

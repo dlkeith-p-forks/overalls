@@ -478,7 +478,11 @@ defmodule Lilly.VM.Driver do
     locked_value(config, spec, fn ->
       with :ok <- existing_claim(config, pool, spec),
            {:ok, bundle} <- guest_bundle(pool, spec),
-           true <- OverallsProtocol.NativeAdmission.checkpoint_admitted?(bundle),
+           true <-
+             OverallsProtocol.NativeAdmission.checkpoint_admitted?(
+               bundle,
+               config.checkpoint_image_ids
+             ),
            {:ok, compatibility} <- Checkpoint.compatibility(config.firecracker),
            {:ok, intent} <-
              Intent.set(directory(config, spec), spec.id, revision(options), :paused) do
@@ -564,7 +568,11 @@ defmodule Lilly.VM.Driver do
     locked(config, spec, fn ->
       with :ok <- existing_claim(config, pool, spec),
            {:ok, bundle} <- guest_bundle(pool, spec),
-           true <- OverallsProtocol.NativeAdmission.checkpoint_admitted?(bundle),
+           true <-
+             OverallsProtocol.NativeAdmission.checkpoint_admitted?(
+               bundle,
+               config.checkpoint_image_ids
+             ),
            {:ok, compatibility} <- Checkpoint.compatibility(config.firecracker),
            {:ok, intent} <-
              Intent.set(directory(config, spec), spec.id, revision(options), :running) do
@@ -678,7 +686,12 @@ defmodule Lilly.VM.Driver do
   end
 
   defp wait_api(config, pool, spec, state, deadline) do
-    case Observation.check_state(config, pool, spec, [state]) do
+    observation =
+      if state == :unconfigured,
+        do: Observation.preboot(config, pool, spec),
+        else: Observation.check_state(config, pool, spec, [state])
+
+    case observation do
       {:ok, _} ->
         :ok
 

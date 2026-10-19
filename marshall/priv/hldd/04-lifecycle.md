@@ -19,6 +19,19 @@ Prompts and authorized network access wake sleeping machines; requests to an
 already running machine do not continually reset the tool clock. Only the owner's
 pin prevents automatic suspension, and pinning a suspended machine requests wake.
 
+Lilly's trusted `services.lilly.checkpointImageIds` configuration admits exact
+content-addressed Linux kernel image IDs for memory operations. Its empty default
+refuses pause and resume while preserving ordinary boot admission. Add production
+IDs only after separately recorded native continuation qualification for those
+artifacts. The suspension machine fixture opts in only its derived test image;
+that candidate admission does not qualify production images or other Linux families.
+Authenticated host reports carry the required bounded `checkpoint_image_ids`
+inventory. Marshall requires the VM's exact image before pause, restored capacity
+admission and memory relocation, and rechecks the destination before handoff.
+Qualification lists may differ between hosts; an unrelated additional qualified
+image does not make their physical checkpoint compatibility differ. Removing an
+ID blocks its subsequent memory operations, including resume of retained RAM.
+
 ```mermaid
 stateDiagram-v2
   running --> paused: capture and compute-empty proof
@@ -533,3 +546,10 @@ waiter property and exec-marker control passed in a fresh127-second native packa
 with three library properties and six integration checks, rustfmt and Clippy.
 This verifies local lock/intent ordering, not journal/systemd/Firecracker recovery.
 See the [waiting-intent review](repo:docs/architecture/reviews/2026-10-05-launch-guard-waiting-intent.md).
+
+Restore first proves the confined VMM is still unconfigured. Firecracker installs
+its main-thread seccomp filter during snapshot load, so this preboot proof
+requires its expected unfiltered state and grants no guest execution. After
+load, Lilly proves the paused VMM has its seccomp filter before resuming;
+running observations require the same filter. Namespace, jail identity,
+privileges and resource limits remain checked in both phases.

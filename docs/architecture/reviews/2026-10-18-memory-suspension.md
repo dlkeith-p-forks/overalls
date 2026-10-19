@@ -259,8 +259,49 @@ history remains disk-only. Pause admission requires a fresh checkpoint capabilit
 from Lilly, so an old host report cannot receive an unsupported memory command.
 Consumer deployment and private relay enrollment must precede producer enablement;
 see the operations handbook. Git integration does not perform live deployment.
+The converged host inventory additionally requires `checkpoint_image_ids`;
+old producers lacking it are refused rather than assigned default qualification.
+Coordinate reporter and consumer rollout before enabling memory operations.
+The qualification set is independent of physical checkpoint compatibility, so
+hosts with different qualified-image supersets can still exchange compatible RAM.
 
 ## Remaining verification
+
+The 2026-10-19 admission review found that the Linux/kernel predicate admitted
+unqualified images without requiring an immutable identity. The corrected
+predicate requires an exact content-addressed image ID from trusted Lilly
+configuration on both pause and resume. `services.lilly.checkpointImageIds`
+defaults empty; ordinary starts remain available. The disposable suspension
+fixture supplies only its own derived candidate image ID. No production image
+is promoted by that configuration. This repairs an ADR-0199 implementation
+violation without changing the accepted decision or guest wire format.
+
+Qualification is also required in authenticated host inventory. Marshall checks
+the exact VM image before pause, restored capacity and memory relocation
+selection, revalidates both endpoints before source pause, and revalidates the
+destination before handoff. This closes the late-driver-refusal gap: a destination
+with matching physical compatibility but no image qualification must not acquire
+authoritative memory custody. Source review separately confirmed that cold-start
+and stopped disk-only relocation remain independent of checkpoint qualification.
+New tests cover qualification withdrawal before pause/handoff, durable wake waiting
+and qualified supersets; application execution remains separately required.
+
+Focused verification: Marshall lifecycle/wake suites **18 passed** (ExUnit seed
+344801), including generated actual Ash WakeRequest transition histories.
+Protocol admission **12 passed**, including the default 100-case Hegel property
+checking validated image/bundle identity and changed artifact refusal. Lilly
+configuration/checkpoint/sealing **16 passed**. These are BEAM-level admission
+and state-machine checks; they do not qualify any native artifact. Current full
+consumer gates and the changed-fixture native run remain required.
+
+Before the additional inventory propagation change, the full protocol gate
+passed **419 tests** in 916.5 seconds and Dialyzer reported **0 errors**.
+The final strict-inventory focused protocol run passed **29 tests**. Its final
+full `mix precommit` passed **420 tests** in 903.6 seconds, with **0 Dialyzer
+errors**, no skips and passing runtime/ADR/contracts gates. High-concurrency Marshall and Lilly runs were stopped
+after recorded database/timing/property-health failures; isolated lower-scheduler
+runs preserve the full generated case counts. None of those interrupted runs is
+recorded as a passing full gate. The known Inception failure remains out of scope.
 
 The 2026-10-19 native rerun exposed missing suspension-fixture prerequisites:
 the fixture excluded the Galileo/Audi private issuer and skipped its runtime
@@ -272,6 +313,14 @@ completed private-service enrollment but exited with status 137 while waiting
 for the fleet wildcard certificate, before guest launch. This is not passing
 pause/resume or relocation evidence. Concurrent native builds were present;
 the exit status alone does not establish why the process was killed.
+
+A subsequent execution of
+`0jx1wjrk12g9j78bjgh0kk729hzbv27f-vm-test-run-overalls-memory-suspension-fleet.drv`
+activated the wildcard certificate and reached native guest provisioning readiness.
+It failed before suspension in the SSH journey because the client CA file was
+installed only by an excluded browser subtest. The SSH journey now installs its
+own pinned fixture CA independently, preserving HTTPS certificate verification.
+That failed execution establishes neither RAM continuation nor relocation.
 
 The accepted decision is unchanged by the merge reconciliation and bounded
 repairs. Source review and focused contention/reopen execution resolve the
@@ -285,3 +334,43 @@ and full NixOS fleet execution remain in progress. Fault-injected block-barrier
 failure and complete retained-image qualification remain distinct gaps.
 No production rollout or physical-host acceptance is
 claimed. Known Inception failures remain out of scope.
+
+The final strict-inventory Marshall focused run passed **98 tests** in 72.3
+seconds (seed 794721), including actual Ash wake histories, suspension admission,
+restored-capacity waiting, stopped relocation independence and qualification
+withdrawal before handoff. The final Nix HLDD gate also passed. These checks do
+not establish native memory continuation.
+
+The diagnostic native run `frx45xy50jay1a400nz4jzpx4g26gr69-vm-test-run-overalls-memory-suspension-fleet.drv`
+captured a checkpoint and reached restoring without the earlier intent conflict,
+but reported `vmm_process_ambiguous` before snapshot load. Source inspection of
+the pinned Firecracker builder confirmed its main-thread seccomp filter is
+installed at the end of snapshot restoration. Lilly had required that filter
+before submitting the snapshot-load request. A dedicated preboot observation
+now requires exact unconfigured API state and the expected unfiltered main
+thread, retaining jail, namespace, UID/GID, empty capabilities, no-new-privileges,
+resource limits and stable unit checks. Post-load paused and running observations
+still require the configured seccomp filter before execution can resume. The
+new generated process-evidence property checks phase separation and malformed
+confinement refusal. The final-source focused Lilly observer/configuration run
+passed **6 tests** (seed 200378), including that 100-case property; changed-source
+native verification remains pending. This is a bounded restore-order correction, not native qualification.
+
+The preceding Lilly full gate completed naturally: **652 tests passed** in
+1400.0 seconds, Covenant **15/15** and Dialyzer **0 errors/skips**. That launch
+snapshot preceded strict-inventory propagation and the preboot correction; a
+fresh final-source gate is running. Quiet fresh-boot properties were preserved
+at their complete generated counts.
+
+Read-only triage of the interrupted broad Marshall run identified five
+independent initial failures: retention coverage omits
+`notification_devices_versions`; reviewed FreeBSD cold admission conflicts
+with the inherited `GitIdentity.require_image!` capability requirement; the
+bootstrap duplicate-claim model expects a stable attempt while implementation
+rotates it; and two remote TLS properties failed health/restart timing. The
+admission and bootstrap mismatches are inherited from trunk commits 0230a8131
+and 8d1fcf41e respectively, outside checkpoint admission; they are not labelled
+environmental failures. Subsequent application shutdown caused 623 missing-Repo
+and one missing-endpoint-ETS failures. All recorded suspension and relocation
+capacity failures in that run were missing-Repo cascades; final focused checks
+passed, but this does not turn the interrupted broad gate into passing evidence.

@@ -21,6 +21,50 @@ defmodule Marshall.Events do
   # commits.
   use Overalls.Diagnostics.Events.Catalog, service: :marshall
 
+  defevent("operations.migration_failed",
+    level: :error,
+    message: "Release database migration failed",
+    metadata: [
+      exception_class:
+        {:enum,
+         [
+           :postgrex,
+           :connection,
+           :migration,
+           :match,
+           :argument,
+           :runtime,
+           :unknown,
+           :exit,
+           :unexpected_result
+         ]},
+      postgres_code:
+        {:enum,
+         [
+           :unknown,
+           :duplicate_table,
+           :duplicate_column,
+           :undefined_table,
+           :undefined_column,
+           :invalid_schema_name,
+           :invalid_catalog_name,
+           :invalid_password,
+           :invalid_authorization_specification,
+           :insufficient_privilege,
+           :too_many_connections,
+           :cannot_connect_now,
+           :connection_failure,
+           :query_canceled,
+           :lock_not_available,
+           :deadlock_detected,
+           :serialization_failure,
+           :disk_full,
+           :out_of_memory,
+           :admin_shutdown
+         ]}
+    ]
+  )
+
   defevent("telemetry.service_levels_unavailable",
     level: :warning,
     message: "Durable service level publication unavailable",
