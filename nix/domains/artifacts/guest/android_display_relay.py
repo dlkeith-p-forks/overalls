@@ -25,6 +25,7 @@ class RelayConfig:
     port: int = 5900
     rfb_port: int = 5901
     maximum_preface_bytes: int = 4096
+    host_cid: int = 2
 
 
 CONFIG: Final = RelayConfig()
@@ -121,18 +122,36 @@ def _serve(client: socket.socket) -> None:
 
 
 def main() -> None:
-    """Serve Lilly's marked TAP ingress until systemd stops the unit."""
+    """Serve Lilly's TAP and Firecracker host-vsock ingress."""
 
-    # Lilly's reviewed namespace connector reaches the guest's fixed display
-    # port through the placement TAP. The host nft mark is the network boundary;
-    # this process adds the closed preface check before exposing loopback RFB.
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as listener:
-        listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        listener.bind(("0.0.0.0", CONFIG.port))
-        listener.listen(8)
+    listeners: list[socket.socket] = []
+    tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tcp.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    tcp.bind(("0.0.0.0", CONFIG.port))
+    tcp.listen(8)
+    listeners.append(tcp)
+    if hasattr(socket, "AF_VSOCK"):
+        vsock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
+        vsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        vsock.bind((socket.VMADDR_CID_ANY, CONFIG.port))
+        vsock.listen(8)
+        listeners.append(vsock)
+    selector = selectors.DefaultSelector()
+    try:
+        for listener in listeners:
+            selector.register(listener, selectors.EVENT_READ)
         while True:
-            client, _address = listener.accept()
-            threading.Thread(target=_serve_client, args=(client,), daemon=True).start()
+            for key, _ in selector.select(timeout=30):
+                listener = cast(socket.socket, key.fileobj)
+                client, address = listener.accept()
+                if listener.family == socket.AF_VSOCK and address[0] != CONFIG.host_cid:
+                    client.close()
+                    continue
+                threading.Thread(target=_serve_client, args=(client,), daemon=True).start()
+    finally:
+        selector.close()
+        for listener in listeners:
+            listener.close()
 
 
 def _serve_client(client: socket.socket) -> None:

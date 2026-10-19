@@ -112,9 +112,9 @@ CONFIG
     };
   };
 
-  # The typed relay terminates Lilly's fixed TAP ingress and forwards only to
-  # loopback RFB. Lilly authenticates the signed ticket and the relay validates
-  # its closed shape before forwarding bytes; no public RFB listener is used.
+  # The typed relay terminates Lilly's fixed TAP ingress (and host-vsock
+  # connections from CID 2) and forwards only to loopback RFB. Lilly
+  # authenticates the signed ticket and the relay validates its closed shape.
   systemd.services.overalls-android-display-vsock = {
     description = "Android display vsock relay";
     wantedBy = [ "multi-user.target" ];
@@ -130,7 +130,7 @@ CONFIG
       PrivateTmp = true;
       ProtectSystem = "strict";
       ProtectHome = true;
-      RestrictAddressFamilies = [ "AF_INET" "AF_INET6" ];
+      RestrictAddressFamilies = [ "AF_VSOCK" "AF_INET" "AF_INET6" ];
       CapabilityBoundingSet = "";
       MemoryMax = "128M";
       TasksMax = 32;
