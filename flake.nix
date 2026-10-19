@@ -8,7 +8,7 @@
   # pinned only by flake.lock; the package-input-lock check MUST fail when
   # flake.lock and devenv.lock lock different revisions.
   inputs = {
-    nix-compact.url = "github:ghuntley/nix-compact/7b4205856cd01b2c356197689daabcca19baa7af";
+    nix-compact.url = "github:ghuntley/nix-compact/9e43798f4ebf1b969432b6e1eb9f8a0bdf69fede";
     buildNixpkgs.url = "github:cachix/devenv-nixpkgs/rolling";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixos-images = {
