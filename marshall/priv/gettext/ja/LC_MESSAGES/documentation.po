@@ -961,3 +961,8 @@ msgstr "デプロイメントは配信記録を 7 日間保持し、監査履歴
 #, elixir-autogen, elixir-format
 msgid "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
 msgstr "`device prefs` は 1 台のデバイスの通知を一時停止または再開します。`device rm` はデバイスを完全に取り消します。次に通知を許可すると、Mila は再び登録します。アカウントを削除または廃止すると、そのすべてのデバイスが取り消されます。"
+
+#: lib/marshall_web/controllers/docs_controller.ex:35
+#, elixir-autogen, elixir-format
+msgid "Documentation not found"
+msgstr "ドキュメントが見つかりません"

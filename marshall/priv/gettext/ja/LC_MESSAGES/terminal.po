@@ -653,3 +653,23 @@ msgstr "名前を変更する"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "読み取り専用のホスト コンソールを表示します。"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "ピン留め"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "%{name} をピン留め"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "ピン留めを解除"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "%{name} のピン留めを解除"

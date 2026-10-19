@@ -48,7 +48,10 @@ The Enrico container supervisor MUST accept only a private restart_enrico
 request for its one immutable release child. It MUST confirm that child's
 termination and new private health before issuing a result with distinct PIDs
 and a higher durable launch generation. An interrupted or unconfirmed restart
-MUST remain uncertain and MUST NOT be replayed automatically.
+MUST remain uncertain and MUST NOT be replayed automatically. Like the production
+unit (Restart=on-failure, RestartSec=5, default 90 s stop timeout), a release
+that exits or fails to start MUST be started again after 5 s and a stop that
+outlives 90 s MUST be killed; neither may yield a restarted result.
 
 @cc [owner:ghuntley,label:verification;security] enrico-passive-inode-observer
 The Enrico observer MUST publish only the eight fixed native Git slot lock

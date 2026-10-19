@@ -171,11 +171,6 @@ msgstr "নথিপত্র ↗"
 msgid "Documentation"
 msgstr "নথিপত্র"
 
-#: lib/marshall_web/controllers/docs_controller.ex:35
-#, elixir-autogen, elixir-format
-msgid "Documentation not found"
-msgstr "নথি পাওয়া যায়নি"
-
 #: lib/marshall_web/components/layouts.ex:223
 #: lib/marshall_web/components/layouts.ex:355
 #: lib/marshall_web/controllers/docs_html/show.html.heex:45

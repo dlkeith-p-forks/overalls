@@ -1,9 +1,9 @@
 defmodule MarshallWeb.Admin.UsersLive do
   use MarshallWeb, :live_view
   alias Marshall.Accounts.User
-  on_mount {MarshallWeb.AuthenticationPrivacy, :default}
-  on_mount {MarshallWeb.LiveUserAuth, :live_user_required}
-  on_mount {MarshallWeb.LiveAdminAuth, :required}
+  on_mount({MarshallWeb.AuthenticationPrivacy, :default})
+  on_mount({MarshallWeb.LiveUserAuth, :live_user_required})
+  on_mount({MarshallWeb.LiveAdminAuth, :required})
 
   @impl true
   def mount(_, _, socket) do
@@ -207,7 +207,9 @@ defmodule MarshallWeb.Admin.UsersLive do
                   "· Your account"
                 )}</span>
               </p>
-              <p :if={user.deletion_status} class="muted">{user.deletion_status}</p>
+              <p :if={user.deletion_status} class="muted">
+                {deletion_status_label(user.deletion_status)}
+              </p>
               <p :if={user.time_zone}>
                 <.local_time
                   id={"admin-user-local-time-#{user.id}"}
@@ -311,4 +313,19 @@ defmodule MarshallWeb.Admin.UsersLive do
     </Layouts.app>
     """
   end
+
+  # @cc [owner:ghuntley,label:product] account-deletion-status-presentation
+  # Account-deletion progress MUST translate the finite reviewed projection
+  # statuses in the admin_users domain. Unrecognized projection values MUST NOT
+  # appear as prose or be used as unchecked translation identifiers.
+  @spec deletion_status_label(term()) :: String.t()
+  defp deletion_status_label("Deleted"), do: dgettext("admin_users", "Deleted")
+
+  defp deletion_status_label("Retrying machine cleanup"),
+    do: dgettext("admin_users", "Retrying machine cleanup")
+
+  defp deletion_status_label("Deleting machines"),
+    do: dgettext("admin_users", "Deleting machines")
+
+  defp deletion_status_label(_), do: dgettext("admin_users", "Unavailable")
 end

@@ -383,3 +383,9 @@ msgstr "← 第一页"
 #, elixir-autogen, elixir-format
 msgid "← Jobs"
 msgstr "← 任务"
+
+#: lib/marshall_web/live/admin/jobs_live.ex:389
+#: lib/marshall_web/live/admin/jobs_live.ex:397
+#, elixir-autogen, elixir-format
+msgid "An execution attempt failed. Raw exception details are excluded from administrative history."
+msgstr "一次执行尝试失败。管理历史不包含原始异常详情。"

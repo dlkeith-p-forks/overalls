@@ -1954,3 +1954,82 @@ msgstr "← मशीन"
 #, elixir-autogen, elixir-format
 msgid "← Settings"
 msgstr "← सेटिंग्ज"
+
+#: lib/marshall_web/components/clone_components.ex:400
+#: lib/marshall_web/live/resize_live.ex:256
+#, elixir-autogen, elixir-format
+msgid "Current"
+msgstr "सध्याचा टप्पा"
+
+#: lib/marshall_web/components/clone_components.ex:399
+#: lib/marshall_web/live/resize_live.ex:255
+#, elixir-autogen, elixir-format
+msgid "Done"
+msgstr "पूर्ण"
+
+#: lib/marshall_web/components/clone_components.ex:417
+#, elixir-autogen, elixir-format
+msgid "a snapshot mount could not be released yet."
+msgstr "स्नॅपशॉट माउंट अद्याप मुक्त करता आला नाही."
+
+#: lib/marshall_web/components/clone_components.ex:433
+#, elixir-autogen, elixir-format
+msgid "cleanup on the host did not finish yet."
+msgstr "होस्टवरील स्वच्छतेचे काम अद्याप पूर्ण झाले नाही."
+
+#: lib/marshall_web/components/clone_components.ex:436
+#, elixir-autogen, elixir-format
+msgid "the copied disk could not be prepared yet."
+msgstr "कॉपी केलेली डिस्क अद्याप तयार करता आली नाही."
+
+#: lib/marshall_web/components/clone_components.ex:420
+#, elixir-autogen, elixir-format
+msgid "the disk copy did not finish; it resumes automatically."
+msgstr "डिस्कची प्रत तयार झाली नाही; प्रक्रिया आपोआप पुन्हा सुरू होईल."
+
+#: lib/marshall_web/components/clone_components.ex:439
+#, elixir-autogen, elixir-format
+msgid "the host could not confirm the step yet."
+msgstr "होस्टला अद्याप या टप्प्याची पुष्टी करता आली नाही."
+
+#: lib/marshall_web/components/clone_components.ex:429
+#, elixir-autogen, elixir-format
+msgid "the hosts could not connect; the host retries automatically."
+msgstr "होस्ट एकमेकांशी जोडले जाऊ शकले नाहीत; होस्ट आपोआप पुन्हा प्रयत्न करतो."
+
+#: lib/marshall_web/components/clone_components.ex:408
+#, elixir-autogen, elixir-format
+msgid "the machine is mid-operation; the host retries automatically."
+msgstr "मशीनवर दुसरी प्रक्रिया सुरू आहे; होस्ट आपोआप पुन्हा प्रयत्न करतो."
+
+#: lib/marshall_web/components/clone_components.ex:411
+#, elixir-autogen, elixir-format
+msgid "the source changed state; it continues once the source settles."
+msgstr "स्रोताची स्थिती बदलली आहे; स्रोत स्थिर झाल्यावर प्रक्रिया पुढे जाईल."
+
+#: lib/marshall_web/components/clone_components.ex:414
+#, elixir-autogen, elixir-format
+msgid "the source snapshot could not be prepared or released yet."
+msgstr "स्रोताचा स्नॅपशॉट अद्याप तयार किंवा मुक्त करता आला नाही."
+
+#: lib/marshall_web/components/clone_components.ex:405
+#, elixir-autogen, elixir-format
+msgid "the storage pool is busy; the host retries automatically."
+msgstr "स्टोरेज पूल व्यस्त आहे; होस्ट आपोआप पुन्हा प्रयत्न करतो."
+
+#: lib/marshall_web/components/clone_components.ex:426
+#, elixir-autogen, elixir-format
+msgid "the transfer permit lapsed; it is renewed automatically."
+msgstr "हस्तांतरण परवान्याची मुदत संपली; त्याचे आपोआप नूतनीकरण होते."
+
+#: lib/marshall_web/components/clone_components.ex:423
+#, elixir-autogen, elixir-format
+msgid "the transfer stream was interrupted; it resumes automatically."
+msgstr "हस्तांतरणाचा प्रवाह खंडित झाला; प्रक्रिया आपोआप पुन्हा सुरू होईल."
+
+#: lib/marshall_web/live/resize_live.ex:625
+#: lib/marshall_web/live/resize_live.ex:644
+#: lib/marshall_web/live/resize_live.ex:651
+#, elixir-autogen, elixir-format
+msgid "Confirm"
+msgstr "पुष्टी करा"

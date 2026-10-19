@@ -61,10 +61,28 @@ defmodule MarshallWeb.InferenceLive do
 
   defp tokens(completion, field) do
     case completion["tokens"][field] do
-      nil -> "Unknown"
+      nil -> dgettext("inference", "Unknown")
       value -> to_string(value)
     end
   end
+
+  # @cc [owner:ghuntley,label:product] inference-human-status-boundary
+  # Known completion states MUST render localized labels; unknown or missing
+  # values MUST render localized Unknown without echoing arbitrary stored text.
+  # Stored completion fields and machine-readable exports MUST remain unchanged.
+  @spec outcome_label(term()) :: String.t()
+  defp outcome_label("completed"), do: dgettext("inference", "Completed")
+  defp outcome_label("upstream_error"), do: dgettext("inference", "Upstream error")
+  defp outcome_label("cancelled"), do: dgettext("inference", "Cancelled")
+  defp outcome_label("revoked"), do: dgettext("inference", "Revoked")
+  defp outcome_label("transport_error"), do: dgettext("inference", "Transport error")
+  defp outcome_label("interrupted"), do: dgettext("inference", "Interrupted")
+  defp outcome_label(_), do: dgettext("inference", "Unknown")
+
+  @spec completeness_label(term()) :: String.t()
+  defp completeness_label("complete"), do: dgettext("inference", "Complete")
+  defp completeness_label("partial"), do: dgettext("inference", "Partial")
+  defp completeness_label(_), do: dgettext("inference", "Unknown")
 
   @impl true
   def render(assigns) do
@@ -176,7 +194,7 @@ defmodule MarshallWeb.InferenceLive do
                 <td class="num">{tokens(row.completion, "output_tokens")}</td>
                 <td>
                   {if row.completion,
-                    do: row.completion["outcome"],
+                    do: outcome_label(row.completion["outcome"]),
                     else: dgettext("inference", "Unreported")}
                 </td>
                 <td>
@@ -213,7 +231,7 @@ defmodule MarshallWeb.InferenceLive do
                       <div>
                         <dt>{dgettext("inference", "AI usage report")}</dt>
                         <dd>
-                          {if row.completion, do: row.completion["completeness"], else: "unknown"}
+                          {completeness_label((row.completion || %{})["completeness"])}
                         </dd>
                       </div>
                     </dl>

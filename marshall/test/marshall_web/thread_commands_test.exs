@@ -3,6 +3,23 @@ defmodule MarshallWeb.ThreadCommandsTest do
 
   alias MarshallWeb.ThreadCommands
 
+  test "Japanese and Arabic command labels localize without changing slash tokens" do
+    english = Gettext.with_locale(MarshallWeb.Gettext, "en", &ThreadCommands.all/0)
+
+    for locale <- ["ja", "ar"] do
+      Gettext.with_locale(MarshallWeb.Gettext, locale, fn ->
+        assert Enum.map(ThreadCommands.all(), &elem(&1, 0)) == Enum.map(english, &elem(&1, 0))
+
+        for {{command, label, description}, {command, source_label, source_description}} <-
+              Enum.zip(ThreadCommands.all(), english) do
+          refute label == source_label
+          refute description == source_description
+          assert ThreadCommands.parse("/#{command}") == {:command, command, ""}
+        end
+      end)
+    end
+  end
+
   # @cc [owner:ghuntley,label:verification;product] composer-literal-prefix-evidence
   # Slash-looking text with leading whitespace MUST retain its exact content;
   # recognizing commands MUST NOT trim literal prompts into operations.

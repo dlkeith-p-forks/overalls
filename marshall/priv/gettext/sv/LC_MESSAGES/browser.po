@@ -250,3 +250,13 @@ msgstr "Inga terminaler"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— utdata före den här vyn finns inte i rullningshistoriken —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "Terminalinmatning"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "För mycket utdata för att läsa upp; navigera manuellt mellan raderna för att läsa"

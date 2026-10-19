@@ -137,3 +137,14 @@ msgstr "귀하의 비밀번호가 성공적으로 재설정되었습니다"
 #, elixir-autogen, elixir-format
 msgid "Your sign-in is no longer valid. Request a new sign-in link."
 msgstr "귀하의 로그인은 더 이상 유효하지 않습니다. 새 로그인 링크를 요청하세요."
+
+#: lib/marshall_web/sign_out_overrides.ex:16
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to sign out?"
+msgstr "로그아웃하시겠습니까?"
+
+#: lib/marshall_web/sign_out_overrides.ex:15
+#: lib/marshall_web/sign_out_overrides.ex:17
+#, elixir-autogen, elixir-format
+msgid "Sign out"
+msgstr "로그아웃"

@@ -171,11 +171,6 @@ msgstr "문서 ↗"
 msgid "Documentation"
 msgstr "선적 서류 비치"
 
-#: lib/marshall_web/controllers/docs_controller.ex:35
-#, elixir-autogen, elixir-format
-msgid "Documentation not found"
-msgstr "문서를 찾을 수 없습니다"
-
 #: lib/marshall_web/components/layouts.ex:223
 #: lib/marshall_web/components/layouts.ex:355
 #: lib/marshall_web/controllers/docs_html/show.html.heex:45

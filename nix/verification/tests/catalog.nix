@@ -75,6 +75,7 @@ buildPkgs.lib.genAttrs [ "marshall-release" "lilly-release" "audi-release" "pors
   teams-browser = import ./machines/teams service;
   installer-trust = import ./machines/installer-trust service;
   admin-account-browser = import ./machines/admin-account service;
+  localization-account-porsche = import ./machines/localization service;
   control-room-browser = import ./machines/control-room service;
   credential-self-service-browser = import ./machines/credential-self-service service;
   job-history-browser = import ./machines/job-history service;

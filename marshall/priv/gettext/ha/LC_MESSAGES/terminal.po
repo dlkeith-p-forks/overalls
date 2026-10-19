@@ -653,3 +653,23 @@ msgstr "sake suna"
 #, elixir-autogen, elixir-format
 msgid "to view the read-only host console."
 msgstr "don duba na'urar sarrafa runduna ta karatu kaɗai."
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Pin"
+msgstr "Maƙala"
+
+#: lib/marshall_web/components/workspace_components.ex:198
+#, elixir-autogen, elixir-format
+msgid "Pin %{name}"
+msgstr "Maƙala %{name}"
+
+#: lib/marshall_web/components/workspace_components.ex:200
+#, elixir-autogen, elixir-format
+msgid "Unpin"
+msgstr "Cire maƙali"
+
+#: lib/marshall_web/components/workspace_components.ex:197
+#, elixir-autogen, elixir-format
+msgid "Unpin %{name}"
+msgstr "Cire maƙalin %{name}"

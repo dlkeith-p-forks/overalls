@@ -257,3 +257,13 @@ msgstr "Keine Terminals"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— die Ausgabe vor dieser Ansicht ist nicht im Rückscrollpuffer enthalten —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "Terminaleingabe"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "Zu viel Ausgabe zum Vorlesen; navigieren Sie zum Lesen manuell durch die Zeilen"

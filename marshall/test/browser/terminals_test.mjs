@@ -1,7 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { Terminal } from "../../assets/vendor/xterm/xterm.mjs";
 import { deliverTicket } from "../../assets/js/terminals/tickets.js";
 import {
+  localizeTerminalAccessibility,
   clipboardConsent,
   confirmedHttpUrl,
   decodeBase64Bytes,
@@ -615,4 +617,32 @@ test("relative activity uses the server formatting locale while the document kee
     assert.equal(relativeActivity(0, now), new Intl.RelativeTimeFormat("ar-EG", {numeric: "auto"}).format(-3, "minute"));
     assert.equal(globalThis.document.documentElement.lang, "arz");
   } finally { globalThis.document = previous; }
+});
+
+
+test("xterm public accessibility labels follow the current generated catalog before creation", () => {
+  const previousDocument = globalThis.document;
+  const previousPrompt = Terminal.strings.promptLabel;
+  const previousOverflow = Terminal.strings.tooMuchOutput;
+  const prompt = "Terminal input";
+  const overflow = "Too much output to announce, navigate to rows manually to read";
+  try {
+    for (const labels of [
+      {[prompt]: "端末への入力", [overflow]: "出力が多すぎるため、行を移動して読んでください"},
+      {[prompt]: "إدخال الطرفية", [overflow]: "المخرجات كثيرة؛ انتقل إلى الصفوف لقراءتها"},
+      {},
+    ]) {
+      globalThis.document = {querySelector: () => ({getAttribute: () => JSON.stringify(labels)})};
+      localizeTerminalAccessibility();
+      const terminal = new Terminal({screenReaderMode: true});
+      assert.equal(Terminal.strings.promptLabel, labels[prompt] || prompt);
+      assert.equal(Terminal.strings.tooMuchOutput, labels[overflow] || overflow);
+      assert.equal(terminal.options.screenReaderMode, true);
+      terminal.dispose();
+    }
+  } finally {
+    globalThis.document = previousDocument;
+    Terminal.strings.promptLabel = previousPrompt;
+    Terminal.strings.tooMuchOutput = previousOverflow;
+  }
 });

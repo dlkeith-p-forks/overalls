@@ -66,8 +66,36 @@
       "scope": "ADR-0201 presentation boundaries with historical bounded BEAM/LiveView execution, latest strict 28-locale catalog/data/document checks and a recorded Bombadil settings journey across all 28 locales and 112 theme/viewport combinations. Locale persistence after reload, browser-language reset and repeated saves from a fragment passed on the immutable compiled runtime identified by the browser receipt. Latest Porsche notification-guidance assertions preserve command tokens and decoded JSON; they do not extend native SSH or browser acceptance. All-route browser, native Porsche and independent linguistic acceptance remain partial.",
       "status": "partial",
       "gaps": "Independent native-speaker review remains incomplete despite strict catalog coverage and structural Markdown checks. The recorded synthetic browser fixture establishes only its settings journey and observed layout; packaged NixOS account-language/Porsche journeys, all-route and cross-browser bidi/shaping behavior and native Porsche protocol journeys remain unestablished.",
-      "preferred_gap": "Add generated negotiation and isolation properties and packaged NixOS account-language/Porsche journeys; broaden browser routes and engines and obtain independent native-speaker review. Preserve the separate native and linguistic evidence boundaries.",
+      "preferred_gap": "Execute the new generated negotiation/isolation properties and packaged NixOS account-language/Porsche journey; broaden browser engines and record representative script rendering. Independent native-speaker review remains optional for release and separate from structural coverage.",
       "evidence": [
+        {
+          "kind": "property",
+          "path": "marshall/test/marshall_web/locale_property_test.exs",
+          "assertion": "interleaved request histories isolate both locale backends and reset stale state",
+          "scope": "Generated supported locale pairs and bounded interleaved request histories check quality negotiation, explicit override, fallback, formatter state and direction. Present but not yet executed at the requested commit-before-tests publication boundary; no account authorization or native browser claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall/locale_catalog_check_test.exs",
+          "assertion": "empty, whitespace, copied and fuzzy translations fail by default",
+          "scope": "Actual checker subprocess fixtures distinguish enforcing and report-only execution, partial plurals, fuzzy forms, English fallback and exact invariant reviews. New current-source execution remains pending; no linguistic-quality claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "unit",
+          "path": "marshall/test/marshall_web/localization_remaining_ui_test.exs",
+          "assertion": "Japanese and Arabic pin labels preserve state, payload and untrusted names",
+          "scope": "Product-authored pin names, twelve clone failure explanations and accessible stage labels use native catalogs while mixed-script bindings remain escaped and machine state stays literal. Present with execution pending; no real-browser shaping or native guest claim.",
+          "execution": "present"
+        },
+        {
+          "kind": "machine",
+          "path": "nix/verification/tests/machines/localization/default.nix",
+          "assertion": "Porsche derives human language from durable account authority and preserves JSON",
+          "scope": "Packaged Marshall settings and public-guide/English-handbook browser routes plus trusted real Porsche SSH human help and JSON for all 28 locales. Ordinary owned control-plane machine fixtures establish no guest execution or isolation. Check is present; native execution remains pending at publication.",
+          "execution": "present"
+        },
         {
           "kind": "manual",
           "path": "docs/architecture/reviews/2026-10-19-localization-browser-evidence.json",

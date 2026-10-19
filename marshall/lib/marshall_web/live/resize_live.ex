@@ -251,6 +251,11 @@ defmodule MarshallWeb.ResizeLive do
 
   defp disk_bytes(_), do: :error
 
+  @spec step_state_label(:done | :current | :pending) :: String.t()
+  defp step_state_label(:done), do: dgettext("machines", "Done")
+  defp step_state_label(:current), do: dgettext("machines", "Current")
+  defp step_state_label(:pending), do: dgettext("machines", "Pending")
+
   @impl true
   def render(assigns) do
     ~H"""
@@ -347,7 +352,7 @@ defmodule MarshallWeb.ResizeLive do
                   aria-current={state == :current && "step"}
                 >
                   <span class="step-marker" aria-hidden="true"></span>
-                  <span>{label}<span class="sr-only"> — {state}</span></span>
+                  <span>{label}<span class="sr-only"> — {step_state_label(state)}</span></span>
                 </li>
               </ol>
               <.kv id="pending-resources">
@@ -613,7 +618,12 @@ defmodule MarshallWeb.ResizeLive do
         do: dgettext("machines", "Restart"),
         else: dgettext("machines", "Leave stopped")
 
-    ["Stop", "Resize", restart, "Confirm"]
+    [
+      dgettext("machines", "Stop"),
+      dgettext("machines", "Resize"),
+      restart,
+      dgettext("machines", "Confirm")
+    ]
     |> Enum.with_index()
     |> Enum.map(fn {label, index} ->
       {label,
@@ -631,13 +641,13 @@ defmodule MarshallWeb.ResizeLive do
       dgettext("machines", "Stop the machine"),
       dgettext("machines", "Apply the new sizes"),
       dgettext("machines", "Restart with the new resources"),
-      "Confirm"
+      dgettext("machines", "Confirm")
     ]
 
   defp planned_steps(_),
     do: [
       dgettext("machines", "Apply the new sizes while stopped"),
       dgettext("machines", "Grow the filesystem on next boot"),
-      "Confirm"
+      dgettext("machines", "Confirm")
     ]
 end

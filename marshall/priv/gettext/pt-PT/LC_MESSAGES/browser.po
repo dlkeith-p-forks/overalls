@@ -253,3 +253,13 @@ msgstr "Nenhum terminal"
 #, elixir-autogen, elixir-format
 msgid "— output before this view is not in the scrollback window —"
 msgstr "— a saída anterior a esta vista não está no histórico de deslocamento —"
+
+#: lib/marshall_web/browser_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Terminal input"
+msgstr "Entrada do terminal"
+
+#: lib/marshall_web/browser_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Too much output to announce, navigate to rows manually to read"
+msgstr "Há demasiada saída para anunciar; percorra manualmente as linhas para a ler"

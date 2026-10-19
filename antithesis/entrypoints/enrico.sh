@@ -100,6 +100,31 @@ launch() {
   persist_generation "$((generation + 1))"
 }
 
+# Production runs Enrico with systemd Restart=on-failure and RestartSec=5, so a
+# release that exits before or after readiness (for example while Postgres is
+# partitioned at boot) is started again rather than ending the host. A child
+# still alive but not yet ready keeps its start, as systemd would.
+launch_until_ready() {
+  while true; do
+    if ((child == 0)) || ! kill -0 "$child" 2>/dev/null; then
+      launch && return 0
+    fi
+    if kill -0 "$child" 2>/dev/null; then
+      until healthy; do
+        kill -0 "$child" 2>/dev/null || break
+        sleep 0.25
+      done
+      if kill -0 "$child" 2>/dev/null; then
+        persist_generation "$((generation + 1))"
+        return 0
+      fi
+    fi
+    wait "$child" 2>/dev/null || true
+    echo 'Enrico release exited before readiness; restarting' >&2
+    sleep 5
+  done
+}
+
 publish() {
   local request_id=$1 status=$2 reason=$3 before_pid=$4 after_pid=$5 before_generation=$6
   local result="$channel/results/$request_id.json" temporary
@@ -116,16 +141,20 @@ publish() {
   mv -T "$temporary" "$result"
 }
 
+# Mirrors systemd's default 90 s TimeoutStopSec (the Enrico unit sets none):
+# a child that outlives it is killed and the stop is reported unconfirmed.
 stop_child() {
   local attempt
   kill -TERM "$child" 2>/dev/null || return 1
-  for ((attempt=0; attempt<60; attempt++)); do
+  for ((attempt=0; attempt<360; attempt++)); do
     if ! kill -0 "$child" 2>/dev/null || [[ "$(ps -o stat= -p "$child" 2>/dev/null)" == Z* ]]; then
       wait "$child" || true
       return 0
     fi
     sleep 0.25
   done
+  kill -KILL "$child" 2>/dev/null || true
+  wait "$child" || true
   return 1
 }
 
@@ -136,7 +165,7 @@ terminate() {
 }
 trap terminate TERM INT
 
-launch || { echo 'Enrico release readiness unavailable' >&2; exit 1; }
+launch_until_ready
 if [[ -s "$state/restart-inflight" ]]; then
   interrupted=$(<"$state/restart-inflight")
   if [[ "$interrupted" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]]; then
@@ -148,7 +177,12 @@ if [[ -s "$state/restart-inflight" ]]; then
 fi
 
 while true; do
-  kill -0 "$child" 2>/dev/null || { echo 'Enrico release exited' >&2; exit 1; }
+  if ! kill -0 "$child" 2>/dev/null; then
+    wait "$child" 2>/dev/null || true
+    echo 'Enrico release exited; restarting' >&2
+    sleep 5
+    launch_until_ready
+  fi
   /opt/overalls/entrypoints/observe-enrico.sh || true
   for request in "$channel"/requests/*.json; do
     [[ -e "$request" || -L "$request" ]] || continue
@@ -172,12 +206,14 @@ while true; do
     if ! stop_child; then
       publish "$request_id" uncertain stop_unconfirmed 0 0 0
       rm -f "$request" "$state/restart-inflight"
-      exit 1
+      launch_until_ready
+      continue
     fi
     if ! launch; then
       publish "$request_id" uncertain start_unconfirmed 0 0 0
       rm -f "$request" "$state/restart-inflight"
-      exit 1
+      launch_until_ready
+      continue
     fi
     if ((child == before_pid)); then
       publish "$request_id" uncertain pid_reused 0 0 0
