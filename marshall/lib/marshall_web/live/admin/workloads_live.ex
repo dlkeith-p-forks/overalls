@@ -156,7 +156,13 @@ defmodule MarshallWeb.Admin.WorkloadsLive do
                   <code class="muted">{vm.id}</code>
                 </td>
                 <td><code title={vm.host_id}>{short(vm.host_id)}</code></td>
-                <td class="nowrap">{dgettext("machines", "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk", value1: vm.vcpu, value2: gib(vm.memory_bytes), value3: "—")}</td>
+                <td class="nowrap">
+                  {dgettext("machines", "%{value1} vCPU · %{value2} GiB RAM · %{value3} GiB disk",
+                    value1: vm.vcpu,
+                    value2: gib(vm.memory_bytes),
+                    value3: "—"
+                  )}
+                </td>
                 <td class="nowrap">
                   <span class="status-label" data-state={vm.observed_state}>
                     {state_label(vm.observed_state)}

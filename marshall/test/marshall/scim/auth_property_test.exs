@@ -4,16 +4,14 @@ defmodule Marshall.Scim.AuthPropertyTest do
   import Hegel.Gen
 
   property "digesting a token is stable and rotation changes the digest", test_cases: 100 do
-    check all(
-            token <- string(:alphanumeric, min_length: 1, max_length: 128),
-            replacement <- string(:alphanumeric, min_length: 1, max_length: 128),
-            token != replacement
-          ) do
-      digest = Marshall.Scim.Auth.digest(token)
-      assert digest == Marshall.Scim.Auth.digest(token)
-      refute digest == Marshall.Scim.Auth.digest(replacement)
-      refute digest == token
-    end
+    token = draw(string(:alphanumeric, min_length: 1, max_length: 128))
+    replacement = draw(string(:alphanumeric, min_length: 1, max_length: 128))
+    assume(token != replacement)
+
+    digest = Marshall.Scim.Auth.digest(token)
+    assert digest == Marshall.Scim.Auth.digest(token)
+    refute digest == Marshall.Scim.Auth.digest(replacement)
+    refute digest == token
   end
 
   property "digest output is fixed width and never reveals bearer material", test_cases: 100 do
