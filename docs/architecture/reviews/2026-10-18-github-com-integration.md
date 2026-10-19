@@ -407,7 +407,7 @@ unchanged. The evaluated `native-os-guest-unit` check passed in2s
 unknown version, floating-point and string versions. This is construction-policy
 evidence, not native runtime qualification. The attribution harness checks
 effective personal-user configuration and actual commit authorship on every
-boot; candidate execution remains pending.
+boot; complete candidate qualification remains pending.
 
 Fleet acceptance now includes real detached relocation (completed destination,
 host change, advanced execution epoch and inactive source unit), browser
@@ -440,4 +440,46 @@ format checks passed (`/tmp/github-native-renewal-stage-contracts.log`). The
 invalid-request regression checks unchanged refusal and closed numeric mapping.
 These results do not establish a native TLS failure cause, OmniOS artifact
 delivery, candidate attribution qualification or promoted-image acceptance;
-the separate native diagnostic and candidate runs remain pending.
+the separate native transfer diagnostic and complete candidate qualification
+remain pending.
+
+### Partial native candidate execution and fixture diagnostics
+
+**Both native boot attribution checkpoints passed.** The fresh FreeBSD crash
+candidate verified current MMDS Git configuration and actual commit attribution.
+The five-target graph captured at
+`1ab4f04e` terminated at its crash-recovery variant after 712 seconds. Structured
+log `1792384835389-3296256-0.jsonl` records
+`native current-boot Git attribution verified boot=0` and `boot=1` at events
+5978 and 6003. Both boots also completed ordinary execution, live-group
+observation, withdrawn-group death and fresh-fence completion, followed by
+`native service fenced execution verified` at events 5985 and 6010. These are
+scoped native observations from isolated synthetic authority, not a Marshall
+admission or live GitHub result.
+
+Event 6011 then reports `external-machine-oracle` failure. No complete crash
+receipt or five-variant qualification passed. Nix stopped the graph on this
+first failure; the four other in-progress variants have interrupted, unrecorded
+outcomes, not four additional native failures. The candidate remains unpromoted
+and the exact admitted image pins remain unchanged. The subsequent independent
+five-target graph uses keep-going; its outcomes remain pending.
+
+The crash fixture now emits fixed phase names and a bounded decimal UFS fsck
+status from 0 through 255. It preserves the same `fsck_ufs -B -f` command and
+zero-only success requirement; raw stdout/stderr remain discarded. The original
+command wrapper already enforced nonzero failure through `set -eu`. This change
+identifies a failed phase without relaxing recovery evidence or diagnosing the
+earlier native cause. **8 host crash-boundary tests passed**, with pinned Ruff
+format/check and ty (`/tmp/github-native-crash-closed-stage-check.log`). The new
+native diagnostic execution remains pending.
+
+Shared default-OSS setup now explicitly starts Audi private services after
+observing Ziggy and Galileo ready. This retries a dependency-failed setup start
+that a later dependency restart does not recreate. The explicit start has a
+900-second bound; the existing Audi readiness wait and production service
+dependencies/certificate deadline are unchanged. Pinned Ruff format/check,
+contract format and the actual composed driver's ty check passed; the latter
+uses Python 3.13.15 and ty 0.0.73 with typed framework-injected globals
+(`/tmp/github-composed-driver-ty.log`). Corrected fixture runtime remains pending.
+These diagnostic and fixture changes preserve the accepted authority and native
+qualification boundaries; they introduce no architectural decision.

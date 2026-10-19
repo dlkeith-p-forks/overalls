@@ -1851,6 +1851,10 @@ requirement.
 Fresh FreeBSD candidates now opt into an explicit version1 attribution manifest
 field, requiring source-v2 and a native payload. Default constructors omit the
 field. Candidate admission flags remain false and promoted disks retain their
-exact old identities. Native qualification checks epoch-specific personal-user
-Git configuration and actual commit attribution on each boot; presence of that
-oracle is not a recorded successful execution.
+exact old identities. A fresh FreeBSD crash candidate recorded epoch-specific
+personal-user Git configuration and actual commit attribution on both boots,
+plus complete executor withdrawal and fresh-fence completion. Its enclosing
+crash oracle then failed; the other four qualification variants were interrupted
+without completed outcomes. No complete qualification or promotion passed.
+The [GitHub review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)
+retains the exact source/log scope and unchanged native admission gap.

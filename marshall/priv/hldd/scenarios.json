@@ -4587,7 +4587,7 @@
       "denial": "Reject unauthorized admission and Customer sharing, egress and agent execution even when a user selects Customer explicitly.",
       "scope": "Generated browser draft/default/reload histories and SSH semantic-input retry histories; native ordinary-user creation and profile enforcement journey. Campaign 015 separately checks the packaged standalone browser helper with pinned ty; recorded native execution retains its original source and scope.",
       "status": "partial",
-      "gaps": "The recorded journey uses ordinary users, NixOS guests and local DNS/HTTP. Unauthorized admission, broader peer/spoofing/IPv6, Brady, owner guest SSH and hostile tool execution retain separate acceptance. Campaign 011 separately verified repaired shared NixOS/Ubuntu trust prerequisites; the seven legacy feature matrices were not rerun.",
+      "gaps": "The recorded journey uses ordinary users, NixOS guests and local DNS/HTTP. Unauthorized admission, broader peer/spoofing/IPv6, Brady, owner guest SSH and hostile tool execution retain separate acceptance. Campaign 011 separately verified repaired shared NixOS/Ubuntu trust prerequisites; the seven legacy feature matrices were not rerun. Current explicit Audi startup after Ziggy/Galileo readiness passed static and actual composed-driver typing checks; corrected fixture runtime remains pending.",
       "preferred_gap": "Add native unauthorized creation and owner guest-SSH cases; retain separate packet/tool and complete legacy feature-matrix acceptance after campaign 011's shared trust fixture repair.",
       "evidence": [
         {
@@ -12894,7 +12894,7 @@
       "denial": "Refuse old flush, workspace and terminal authority after restart. Refuse incomplete filesystem checks, corrupt or missing retained bytes, an unobserved SIGKILL, reused boot identity or unclean final exit; incomplete histories cannot publish a receipt.",
       "scope": "Seven host boundary checks and the composed NixOS driver passed. An initial FreeBSD crash run exposed scheduled-only libc sync and lost acknowledged home/marker bytes. The corrected native UFS suspension/resume flush passed the final reviewed image 5022d714 crash variant in 224 seconds: observed SIGKILL, same-disk/new-MMDS/new-boot restart, exact retained bytes, stale-authority refusal, native UFS snapshot background fsck, all eight crash checks, both complete service oracles and final clean exit. The source-qualified OmniOS image then passed the crash variant with image SHA-256 d47a84fd726276865bea26812c2a3624b88144eda87926e2dd6dbd5dccb98bc8, kernel c56dc5c19523ef29511e2bfe4b98a6544b786a089b55b654c30ea32e821bdd21, firmware 261c6d43a4d74e6e7f4ea98390b35b6e0d90c511cf961e4b7abb60410b1c24a2 and VMM ba91e85a7af3f96d02f845df543daec07353ed6bff4aaee0abf524c751476b68. Its immutable crash receipt records SIGKILL, fresh MMDS/boot identity, stale-authority refusal, exact retained bytes, completed zero-error ZFS scrub and clean shutdown; both image families retain native_admission=false. Final unchanged OmniOS 45983 disk separately passed the same-disk process-SIGKILL runner with endings sigkill,clean, fresh authority/boot identity, exact retained bytes and native ZFS integrity checks.",
       "status": "partial",
-      "gaps": "Interrupted writes, interrupted expansion, physical stable-media/host power loss, direct isolation, relocation and fleet recovery remain unproven; both native crash receipts retain admission false, while exact sealed FreeBSD activation is recorded separately.",
+      "gaps": "Interrupted writes, interrupted expansion, physical stable-media/host power loss, direct isolation, relocation and fleet recovery remain unproven; both native crash receipts retain admission false, while exact sealed FreeBSD activation is recorded separately. A later Git-identity-capable FreeBSD candidate failed the enclosing external-machine-oracle after two attribution and executor checkpoints; no complete candidate crash receipt or promotion passed. New fixed-phase and bounded-fsck diagnostics remain runtime-pending.",
       "preferred_gap": "Test interrupted writes and expansion, physical stable-media and host recovery, direct isolation and fleet recovery separately against exact image/kernel/VMM provenance.",
       "evidence": [
         {
@@ -12914,6 +12914,15 @@
           "scope": "Seven host checks validate retained data, filesystem-result and source/mode boundaries without crashing or recovering a native guest.",
           "record": "docs/architecture/reviews/2026-10-17-native-kernel-attestation.md",
           "record_assertion": "Seven host boundary checks passed."
+        },
+        {
+          "kind": "unit",
+          "execution": "recorded",
+          "path": "nix/verification/tests/support/native_crash_recovery_test.py",
+          "assertion": "test_fsck_exit_status_is_closed_and_bounded",
+          "scope": "Eight current Linux-host boundary tests passed, including exact decimal fsck status parsing and malformed/oversized refusal, with pinned Ruff and ty. No native filesystem or corrected crash-journey pass.",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "**8 host crash-boundary tests passed**"
         },
         {
           "kind": "manual",
@@ -13210,9 +13219,9 @@
         "storage",
         "recovery"
       ],
-      "scope": "Account preference, codec and immutable snapshot property coverage; guest acceptance remains separately recorded.",
+      "scope": "Account preference, codec and immutable snapshot property coverage; a fresh FreeBSD crash candidate separately recorded two current-MMDS native Git configuration/commit checkpoints and executor withdrawal/fresh-fence completion before its enclosing crash failure.",
       "status": "partial",
-      "gaps": "Production rollout and complete cross-OS native Git commit acceptance remain unrecorded.",
+      "gaps": "Production rollout, complete cross-OS native Git commit acceptance and five-variant candidate qualification remain unrecorded. The FreeBSD crash candidate failed after its two attribution checkpoints; the other four in-progress variants were interrupted without completed outcomes. No image promotion or new Marshall admission passed.",
       "preferred_gap": "Run real guest commits under managed login accounts after setting custom identity and after reboot; retain native and property scopes separately.",
       "evidence": [
         {
@@ -13254,8 +13263,17 @@
           "kind": "machine",
           "path": "nix/verification/tests/machines/native-services/driver.py",
           "assertion": "all-boots-current-mmds-git-config-and-commit-attribution",
-          "scope": "Fresh capable native candidates must retain all original service checks plus actual personal-user Git configuration and commit attribution for each epoch-distinct boot, with previous boot source authority refused. Candidate runtime execution and promotion remain unrecorded.",
+          "scope": "Fresh capable native candidates must retain all original service checks plus actual personal-user Git configuration and commit attribution for each epoch-distinct boot, with previous boot source authority refused. Complete receipt execution and promotion remain unrecorded; separate partial native checkpoint observations do not establish this enclosing oracle.",
           "execution": "present"
+        },
+        {
+          "kind": "manual",
+          "path": "nix/verification/tests/support/native_service_runner.py",
+          "assertion": "native current-boot Git attribution verified boot=",
+          "scope": "Inspected the 1ab4f04e FreeBSD crash-variant log: both current-MMDS personal Git configuration and actual commit attribution checkpoints passed, followed by complete executor withdrawal/fresh-fence completion on each boot. The enclosing crash oracle failed; no complete qualification, promotion, Marshall admission or live GitHub result.",
+          "execution": "recorded",
+          "record": "docs/architecture/reviews/2026-10-18-github-com-integration.md",
+          "record_assertion": "**Both native boot attribution checkpoints passed.**"
         },
         {
           "kind": "unit",

@@ -199,18 +199,29 @@ def scrub_status(body: bytes) -> Scrub:
     raise services.ProtocolError("invalid native crash scrub status")
 
 
+def ufs_integrity_status(body: bytes) -> int:
+    """Parse only the bounded decimal fsck exit status, never arbitrary output."""
+    if re.fullmatch(rb"0|[1-9][0-9]{0,2}", body) is None or int(body) > 255:
+        raise services.ProtocolError("invalid native crash UFS exit status")
+    return int(body)
+
+
 def integrity(context: runner.BootContext) -> Integrity:
+    print("native crash phase=integrity-root-mount", flush=True)
     check_root(context)
     if context.platform.name == "freebsd":
         # Pinned fsck_ufs -B creates a snapshot for a supported active-filesystem
         # check; -f prevents the clean-superblock shortcut. Never run live -n.
+        print("native crash phase=ufs-integrity-command", flush=True)
         body = command(
             context,
-            "/sbin/fsck_ufs -B -f /dev/gpt/rootfs >/dev/null 2>&1; "
-            "printf native-ufs-integrity-checked",
+            "if /sbin/fsck_ufs -B -f /dev/gpt/rootfs >/dev/null 2>&1; "
+            'then printf 0; else status=$?; printf "%s" "$status"; fi',
             root=True,
         )
-        if body != b"native-ufs-integrity-checked":
+        status = ufs_integrity_status(body)
+        print(f"native crash ufs-fsck-exit={status}", flush=True)
+        if status != 0:
             raise services.ProtocolError("native crash UFS integrity check failed")
         return "ufs-snapshot-background-fsck"
     if (
@@ -377,14 +388,20 @@ class Oracle:
                 raise services.ProtocolError("native crash dirty writes failed")
             self.before = observation
             return
+        print("native crash phase=observed-sigkill", flush=True)
         observed_crash(self.before.process)
         if observation.os_name != self.before.os_name:
             raise services.ProtocolError("native crash restart changed platform")
+        print("native crash phase=new-boot-authority", flush=True)
         new_authority(self.before.boot, context.boot)
+        print("native crash phase=filesystem-integrity", flush=True)
         checked = integrity(context)
+        print("native crash phase=retained-home-bytes", flush=True)
         if command(context, f"test -f {MARKER}; test ! -L {MARKER}; /bin/cat {MARKER}") != RETAINED:
             raise services.ProtocolError("native crash lost retained home bytes")
+        print("native crash phase=stale-authority-refusal", flush=True)
         stale_refusals(context, self.before.boot)
+        print("native crash phase=restored-flush-readiness", flush=True)
         services.flush(context.uds, context.boot)
         if services.readiness(context.uds, context.boot.binding) != context.boot:
             raise services.ProtocolError("native crash restored services changed authority")
