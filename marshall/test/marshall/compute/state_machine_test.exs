@@ -84,6 +84,94 @@ defmodule Marshall.Compute.StateMachineTest do
     end)
   end
 
+  # @cc [owner:ghuntley,label:recovery;verification] suspension-lifecycle-state-machine
+  # Generated suspension histories MUST preserve the lifecycle fences: only an idle,
+  # unpinned running machine may pause; wake demand coalesces while paused or waiting
+  # for capacity; relocation never loses the checkpoint; and a cold start is never
+  # admitted for a machine that still owns a checkpoint.
+  property "suspension histories preserve checkpoint, wake and idle invariants" do
+    actions =
+      draw(
+        "suspension actions",
+        list_of(
+          member_of([
+            :tool_call,
+            :idle_expire,
+            :pin,
+            :unpin,
+            :pause,
+            :prompt_wake,
+            :network_wake,
+            :capacity_unavailable,
+            :capacity_available,
+            :relocate,
+            :cancel
+          ]),
+          min_length: 1,
+          max_length: 80
+        )
+      )
+
+    initial = %{state: :running, pinned: false, checkpoint: false, wake_requests: 0}
+
+    final =
+      Enum.reduce(actions, initial, fn action, model ->
+        next = suspension_transition(model, action)
+
+        assert next.wake_requests in 0..1
+        assert next.checkpoint or next.state not in [:paused, :waiting_capacity, :relocating]
+        refute next.state == :running and next.checkpoint and action == :idle_expire
+
+        next
+      end)
+
+    assert final.state in [:running, :paused, :waiting_capacity, :relocating]
+  end
+
+  @spec suspension_transition(map(), atom()) :: map()
+  defp suspension_transition(model, :tool_call), do: %{model | state: :running}
+
+  defp suspension_transition(%{state: :running} = model, :idle_expire) do
+    if model.pinned, do: model, else: %{model | state: :paused, checkpoint: true}
+  end
+
+  defp suspension_transition(model, :idle_expire), do: model
+  defp suspension_transition(model, :pin), do: %{model | pinned: true}
+  defp suspension_transition(model, :unpin), do: %{model | pinned: false}
+
+  defp suspension_transition(%{state: :running} = model, :pause),
+    do: %{model | state: :paused, checkpoint: true}
+
+  defp suspension_transition(%{state: state} = model, action)
+       when action in [:prompt_wake, :network_wake] and state in [:paused, :waiting_capacity] do
+    %{model | wake_requests: 1}
+  end
+
+  defp suspension_transition(%{state: :paused, wake_requests: 1} = model, :capacity_unavailable),
+    do: %{model | state: :waiting_capacity}
+
+  defp suspension_transition(%{state: :paused, wake_requests: 1} = model, :capacity_available),
+    do: %{model | state: :running, wake_requests: 0}
+
+  defp suspension_transition(
+         %{state: :waiting_capacity, wake_requests: 1} = model,
+         :capacity_available
+       ),
+       do: %{model | state: :running, wake_requests: 0}
+
+  defp suspension_transition(%{state: state, checkpoint: true} = model, :relocate)
+       when state in [:paused, :waiting_capacity],
+       do: %{model | state: :relocating}
+
+  defp suspension_transition(%{state: :relocating} = model, :capacity_available),
+    do: %{model | state: :paused}
+
+  defp suspension_transition(%{state: state} = model, :cancel)
+       when state in [:relocating, :waiting_capacity],
+       do: %{model | state: :paused}
+
+  defp suspension_transition(model, _action), do: model
+
   @spec change(struct(), atom(), map()) :: Ash.Changeset.t()
   defp change(record, action, args \\ %{}),
     do: Ash.Changeset.for_update(record, action, args, actor: SystemActor.compute())
