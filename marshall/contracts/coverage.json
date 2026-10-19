@@ -1,9 +1,9 @@
 {
   "apps": {
     "marshall": {
-      "active": 36,
-      "coverage": 0.9167,
-      "covered": 33
+      "active": 42,
+      "coverage": 1.0,
+      "covered": 42
     },
     "system": {
       "active": 0,
@@ -64,14 +64,14 @@
     "marshall.github": {
       "active": 3,
       "app": "marshall",
-      "coverage": 0.0,
-      "covered": 0,
+      "coverage": 1.0,
+      "covered": 3,
       "form": "light",
       "obligations": {
         "marshall.github.I1": {
-          "failing": 1,
+          "failing": 0,
           "kind": "security",
-          "passing": 0,
+          "passing": 1,
           "status": "active",
           "testable": true,
           "tests": [
@@ -79,9 +79,9 @@
           ]
         },
         "marshall.github.I2": {
-          "failing": 1,
+          "failing": 0,
           "kind": "security",
-          "passing": 0,
+          "passing": 1,
           "status": "active",
           "testable": true,
           "tests": [
@@ -89,9 +89,9 @@
           ]
         },
         "marshall.github.I3": {
-          "failing": 1,
+          "failing": 0,
           "kind": "security",
-          "passing": 0,
+          "passing": 1,
           "status": "active",
           "testable": true,
           "tests": [
@@ -214,6 +214,75 @@
           "testable": true,
           "tests": [
             "test registered Git sources accept safe names and reject traversal or URL suffixes"
+          ]
+        }
+      }
+    },
+    "marshall.notifications": {
+      "active": 6,
+      "app": "marshall",
+      "coverage": 1.0,
+      "covered": 6,
+      "form": "light",
+      "obligations": {
+        "marshall.notifications.I1": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the Susan origin is compiled and only the test branch reads configuration"
+          ]
+        },
+        "marshall.notifications.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test Susan receives only signed ciphertext that the device alone can open"
+          ]
+        },
+        "marshall.notifications.I3": {
+          "failing": 0,
+          "kind": "functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test 503, 503, 200 sends once successfully; 410 invalidates the device"
+          ]
+        },
+        "marshall.notifications.I4": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test the operator switch refuses registration and silences the producer"
+          ]
+        },
+        "marshall.notifications.I5": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test SSH key removal and account retirement revoke bound devices"
+          ]
+        },
+        "marshall.notifications.I6": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test device versions and registration receipts keep only the push-key digest"
           ]
         }
       }
@@ -446,8 +515,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 36,
-    "coverage": 0.9167,
-    "covered": 33
+    "active": 42,
+    "coverage": 1.0,
+    "covered": 42
   }
 }

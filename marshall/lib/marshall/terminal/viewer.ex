@@ -21,6 +21,16 @@ defmodule Marshall.Terminal.Viewer do
           | :output_ack
           | :slow_viewer
 
+  # Gateway and attach refusals that close before an attachment exists; each
+  # is reported as `terminal.viewer_refused` so operators can see why.
+  @type attach_refusal ::
+          :gateway_session
+          | :gateway_unavailable
+          | :gateway_ticket
+          | :stream_unavailable
+          | :attach_timeout
+          | :attach_refused
+
   # @cc [owner:ghuntley,label:security] viewer-ticket-and-cedar-authority
   # init/1 MUST consume a single-use ticket, load its registry session, and
   # recheck Cedar read (ro) or write (rw) permission on the VM before any
@@ -64,14 +74,14 @@ defmodule Marshall.Terminal.Viewer do
             ssh_session_id: ssh_session_id
           })
         else
-          {:error, _reason} -> stop_ssh(:refused)
+          {:error, _reason} -> gateway_refused(:gateway_ticket, :refused)
         end
 
       {:error, :authority_credential} ->
-        stop_ssh(:authority)
+        gateway_refused(:gateway_session, :authority)
 
       {:error, :unavailable} ->
-        stop_ssh(:transport)
+        gateway_refused(:gateway_unavailable, :transport)
     end
   end
 
@@ -151,16 +161,32 @@ defmodule Marshall.Terminal.Viewer do
 
         {:relay_reply, _ref, {:error, reason}} ->
           _ = Marshall.Terminal.Authority.record_viewer_event(session, actor, :denied)
+          attach_refused(:attach_refused)
           stop(reason, :refused, state)
       after
         5000 ->
           _ = Marshall.Terminal.Authority.record_viewer_event(session, actor, :denied)
+          attach_refused(:attach_timeout)
           stop(:attach_timeout, :transport, state)
       end
     else
       {:error, _reason} ->
+        attach_refused(:stream_unavailable)
         if origin.origin == :ssh, do: stop_ssh(:refused), else: {:stop, :unauthorized, %{}}
     end
+  end
+
+  @spec attach_refused(attach_refusal()) :: :ok
+  defp attach_refused(reason) do
+    Marshall.Events.emit("terminal.viewer_refused", reason: reason)
+    :ok
+  end
+
+  @spec gateway_refused(attach_refusal(), OverallsProtocol.TerminalAttach.outcome()) ::
+          WebSock.handle_result()
+  defp gateway_refused(reason, outcome) do
+    attach_refused(reason)
+    stop_ssh(outcome)
   end
 
   # Browser viewers keep their historical close behaviour; a gateway stream
