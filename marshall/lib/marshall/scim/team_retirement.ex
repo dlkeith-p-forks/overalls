@@ -11,8 +11,17 @@ defmodule Marshall.Scim.TeamRetirement do
     |> Ash.Query.filter(is_nil(archived_at) and management_mode == :native)
     |> Ash.read!(actor: Marshall.Authorization.SystemActor.compute())
     |> Enum.each(fn team ->
-      Ledger.update!(team, :mark_retiring, %{management_mode: :retiring})
-      Ledger.archive!(team, :archive)
+      deadline = DateTime.add(DateTime.utc_now(), 7 * 24 * 60 * 60, :second)
+
+      Ledger.update!(team, :mark_retiring, %{
+        management_mode: :retiring,
+        scim_retirement_deadline: deadline
+      })
+
+      Marshall.Scim.TeamRetirementWorker.new(%{"team_id" => team.id},
+        schedule_in: 7 * 24 * 60 * 60
+      )
+      |> Oban.insert!()
 
       Ledger.after_commit(fn ->
         Marshall.Events.emit("scim.team_retirement_started", team_id: team.id)

@@ -1,5 +1,11 @@
 # Machine lifecycle
 
+SCIM-managed team retirement is coordinated by `Marshall.Scim.TeamRetirementWorker`.
+Enabling SCIM marks native teams retiring, records a seven-day deadline, and
+enqueues durable deletion intents for each attached virtual machine. The worker
+is idempotent and retries through Oban; physical reclamation remains owned by
+`Marshall.Compute.Lifecycle`.
+
 ## Memory-preserving suspension
 
 [ADR-0199](repo:docs/architecture/decisions/0199-memory-suspension-and-demand-wake.md)
