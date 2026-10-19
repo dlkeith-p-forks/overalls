@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/machines_live.ex:1166
+#: lib/marshall_web/live/machines_live.ex:1184
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr " ఇంకా పెరుగుతోంది"
@@ -45,12 +45,12 @@ msgstr[1] "నమోదైన కీలు %{count}"
 msgid "%{count} · %{enabled} enabled"
 msgstr "%{count} · %{enabled} ప్రారంభించబడ్డాయి"
 
-#: lib/marshall_web/live/machines_live.ex:1163
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} సెకన్లు%{suffix}"
 
-#: lib/marshall_web/live/terminal_live.ex:548
+#: lib/marshall_web/live/terminal_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
@@ -64,8 +64,8 @@ msgstr "%{value1} CPU"
 
 #: lib/marshall_web/live/machines_live.ex:968
 #: lib/marshall_web/live/machines_live.ex:971
-#: lib/marshall_web/live/overview_live.ex:258
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:299
+#: lib/marshall_web/live/overview_live.ex:302
 #: lib/marshall_web/live/resize_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -94,7 +94,7 @@ msgid "%{value1} reasoning"
 msgstr "%{value1} తర్కం"
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
@@ -149,12 +149,12 @@ msgstr "**** (రాయడానికి మాత్రమే)"
 msgid "+ Create machine"
 msgstr "+ యంత్రాన్ని సృష్టించు"
 
-#: lib/marshall_web/live/terminal_live.ex:514
+#: lib/marshall_web/live/terminal_live.ex:544
 #, elixir-autogen, elixir-format
 msgid "+ New"
 msgstr "+ కొత్తది"
 
-#: lib/marshall_web/live/machines_live.ex:1228
+#: lib/marshall_web/live/machines_live.ex:1246
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ క్లోన్‌ను క్యూలో చేర్చు"
@@ -240,7 +240,7 @@ msgstr ""
 "ఎంచుకున్న నైపుణ్యం ఇప్పుడు అందుబాటులో లేదు. నైపుణ్యాలను మళ్లీ లోడ్ చేసి "
 "ప్రస్తుత మూలాన్ని ఎంచుకోండి."
 
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "చిన్న ముందుచూపు. మీకు అందుబాటులో ఉన్న అన్ని యంత్రాలు ఇక్కడ ఉన్నాయి"
@@ -257,7 +257,7 @@ msgstr ""
 "బృందానికి ఒక యజమాని ఉంటారు. స్వీకర్త అంగీకరించినప్పుడే యాజమాన్యం మారుతుంది; "
 "పాత యజమాని నిర్వాహకులవుతారు."
 
-#: lib/marshall_web/live/terminal_live.ex:620
+#: lib/marshall_web/live/terminal_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "A+"
 msgstr "A+"
@@ -356,7 +356,7 @@ msgstr "ప్రాప్యత నవీకరించబడింది."
 msgid "Account"
 msgstr "ఖాతా"
 
-#: lib/marshall_web/live/terminal_live.ex:684
+#: lib/marshall_web/live/terminal_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Account email"
 msgstr "ఖాతా ఇమెయిల్"
@@ -400,7 +400,7 @@ msgstr "చర్య"
 msgid "Actions"
 msgstr "చర్యలు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:656
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
 #: lib/marshall_web/live/threads_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Active"
@@ -524,7 +524,7 @@ msgstr "నిర్వాహక చర్యలు"
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:357
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "అనుమతి పరిశీలన"
@@ -539,7 +539,7 @@ msgstr "అనుమతి సెట్టింగ్‌లు నవీకర�
 msgid "Admission settings were invalid or the node is not ready."
 msgstr "అనుమతి సెట్టింగ్‌లు చెల్లవు లేదా నోడ్ సిద్ధంగా లేదు."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr ""
@@ -604,7 +604,7 @@ msgstr "అన్ని సంభాషణలు"
 msgid "All visible"
 msgstr "కనిపించేవన్నీ"
 
-#: lib/marshall_web/live/terminal_live.ex:691
+#: lib/marshall_web/live/terminal_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Allow viewing"
 msgstr "చూడటానికి అనుమతించు"
@@ -683,7 +683,7 @@ msgstr "రూపం"
 msgid "Apply"
 msgstr "వర్తింపజేయి"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:394
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "అనుమతి సెట్టింగ్‌లను వర్తింపజేయి"
@@ -708,7 +708,7 @@ msgstr "హోస్ట్‌పై కొత్త CPU, మెమరీ, డి
 msgid "Approve CLI access"
 msgstr "CLI ప్రాప్యతకు ఆమోదం ఇవ్వు"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:68
+#: lib/marshall_web/live/ssh_approval_live.ex:82
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr "SSH కీకి ఆమోదం ఇవ్వు"
@@ -718,17 +718,17 @@ msgstr "SSH కీకి ఆమోదం ఇవ్వు"
 msgid "Approve agent CLI"
 msgstr "ఏజెంట్ CLIకి ఆమోదం ఇవ్వు"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:94
+#: lib/marshall_web/live/ssh_approval_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr "కీకి ఆమోదం ఇవ్వు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:616
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "తరలింపు అంతరాయానికి ఆమోదం ఇవ్వు"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:71
+#: lib/marshall_web/live/ssh_approval_live.ex:85
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr ""
@@ -736,7 +736,7 @@ msgstr ""
 " ఈ కీని ఆమోదించండి."
 
 #: lib/marshall_web/live/agent_cli_approval_live.ex:74
-#: lib/marshall_web/live/ssh_approval_live.ex:92
+#: lib/marshall_web/live/ssh_approval_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "ఆమోదిస్తోంది…"
@@ -853,7 +853,7 @@ msgstr "ఆడిట్ చరిత్ర అందుబాటులో లే
 msgid "Audit kinds"
 msgstr "ఆడిట్ రకాలు"
 
-#: lib/marshall_web/live/terminal_live.ex:615
+#: lib/marshall_web/live/terminal_live.ex:669
 #, elixir-autogen, elixir-format
 msgid "A−"
 msgstr "A−"
@@ -898,7 +898,7 @@ msgid "Binary content"
 msgstr "బైనరీ కంటెంట్"
 
 #: lib/marshall_web/components/workspace_components.ex:425
-#: lib/marshall_web/live/terminal_live.ex:587
+#: lib/marshall_web/live/terminal_live.ex:617
 #, elixir-autogen, elixir-format
 msgid "Boot log"
 msgstr "బూట్ లాగ్"
@@ -919,7 +919,7 @@ msgstr "నావిగేషన్ మార్గం"
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "డిస్క్‌ను సురక్షితంగా సంగ్రహించడానికి మూలాన్ని కొద్దిసేపు ఆపుతోంది."
 
-#: lib/marshall_web/live/overview_live.ex:244
+#: lib/marshall_web/live/overview_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr ""
@@ -948,7 +948,7 @@ msgid "Build something, fix a bug, explore an idea…"
 msgstr "ఏదైనా నిర్మించండి, లోపాన్ని సరిచేయండి, ఆలోచనను అన్వేషించండి…"
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:295
 #: lib/marshall_web/live/resize_live.ex:288
 #: lib/marshall_web/live/resize_live.ex:328
 #: lib/marshall_web/live/resize_live.ex:413
@@ -963,7 +963,7 @@ msgstr "CPU"
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "రిజర్వేషన్ల తర్వాత CPU"
@@ -974,28 +974,28 @@ msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr ""
 "CPU, మెమరీని పెంచవచ్చు లేదా తగ్గించవచ్చు. డిస్క్ పరిమాణాన్ని పెంచడమే సాధ్యం."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:405
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "CPU మిగులు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "CPU అదనపు వ్యయం (కోర్లు)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "ప్రచారం"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:524
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "ప్రచార చరిత్ర"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:488
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr "నియంత్రణ స్థాయి శాశ్వత రికార్డుల్లోని ప్రచారం, పనిభారం, తరలింపు దశలు."
@@ -1008,7 +1008,7 @@ msgstr "చేయగలరు"
 #: lib/marshall_web/components/clone_components.ex:110
 #: lib/marshall_web/components/layouts.ex:118
 #: lib/marshall_web/live/machines_live.ex:939
-#: lib/marshall_web/live/terminal_live.ex:697
+#: lib/marshall_web/live/terminal_live.ex:751
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "రద్దు చేయి"
@@ -1020,7 +1020,7 @@ msgstr ""
 "రద్దును అంగీకరించలేకపోయాం. పరిమాణాలు ఇప్పటికే వర్తిస్తున్నాయి లేదా యంత్ర "
 "స్థితి నిర్ధారించబడలేదు."
 
-#: lib/marshall_web/live/machines_live.ex:1178
+#: lib/marshall_web/live/machines_live.ex:1196
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "తరలింపును రద్దు చేయి"
@@ -1047,7 +1047,7 @@ msgstr "రద్దు అభ్యర్థించబడింది. పు
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
 #: lib/marshall_web/live/admin/jobs_live.ex:432
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:717
 #: lib/marshall_web/live/resize_live.ex:503
 #: lib/marshall_web/live/resize_live.ex:540
 #: lib/marshall_web/live/resize_live.ex:548
@@ -1087,7 +1087,7 @@ msgstr ""
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "రద్దు చేస్తోంది: ఆపివేత నిర్ధారణకు వేచి ఉంది; పరిమాణాలు మారవు."
 
-#: lib/marshall_web/live/machines_live.ex:1176
+#: lib/marshall_web/live/machines_live.ex:1194
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "రద్దు చేస్తోంది…"
@@ -1102,7 +1102,7 @@ msgstr "సామర్థ్య వివరణ"
 msgid "Capacity information is temporarily unavailable."
 msgstr "సామర్థ్య సమాచారం తాత్కాలికంగా అందుబాటులో లేదు."
 
-#: lib/marshall_web/live/overview_live.ex:261
+#: lib/marshall_web/live/overview_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "యంత్రం సృష్టించేటప్పుడు సామర్థ్యం మళ్లీ తనిఖీ చేయబడుతుంది."
@@ -1142,13 +1142,13 @@ msgstr ""
 "సైన్ ఇన్ లింక్ కోసం ఇమెయిల్ చూడండి. సైన్ ఇన్ చేసినప్పుడు ఖాతా స్వయంచాలకంగా "
 "సృష్టించబడుతుంది."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
 #: lib/marshall_web/live/machines_live.ex:655
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "గమ్యం సిద్ధతను తనిఖీ చేస్తోంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
 #: lib/marshall_web/live/machines_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
@@ -1209,7 +1209,7 @@ msgstr "క్లోన్ రద్దయింది"
 msgid "Clone complete"
 msgstr "క్లోన్ పూర్తయింది"
 
-#: lib/marshall_web/live/machines_live.ex:1198
+#: lib/marshall_web/live/machines_live.ex:1216
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "యంత్రాన్ని క్లోన్ చేయి"
@@ -1224,12 +1224,12 @@ msgstr "క్లోన్‌కు శ్రద్ధ అవసరం"
 msgid "Clone queued. You can queue another copy."
 msgstr "క్లోన్ క్యూలో ఉంది. మరో కాపీని క్యూలో చేర్చవచ్చు."
 
-#: lib/marshall_web/live/machines_live.ex:1243
+#: lib/marshall_web/live/machines_live.ex:1261
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "క్లోన్ అభ్యర్థనలు"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1269
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr ""
@@ -1253,18 +1253,18 @@ msgstr "మూసివేయి"
 msgid "Close navigation"
 msgstr "నావిగేషన్‌ను మూసివేయి"
 
-#: lib/marshall_web/live/terminal_live.ex:654
+#: lib/marshall_web/live/terminal_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Close search"
 msgstr "శోధనను మూసివేయి"
 
 #: lib/marshall_web/live/admin/access_live.ex:224
-#: lib/marshall_web/live/terminal_live.ex:569
+#: lib/marshall_web/live/terminal_live.ex:599
 #, elixir-autogen, elixir-format
 msgid "Close session"
 msgstr "సెషన్‌ను మూసివేయి"
 
-#: lib/marshall_web/live/terminal_live.ex:568
+#: lib/marshall_web/live/terminal_live.ex:598
 #, elixir-autogen, elixir-format
 msgid "Close terminal %{value1}"
 msgstr "టెర్మినల్ %{value1}ను మూసివేయి"
@@ -1274,7 +1274,7 @@ msgstr "టెర్మినల్ %{value1}ను మూసివేయి"
 msgid "Close this SSH session?"
 msgstr "ఈ SSH సెషన్‌ను మూసివేయాలా?"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:533
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "మూసివేయబడింది"
@@ -1333,7 +1333,7 @@ msgstr ""
 
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:431
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
 #: lib/marshall_web/live/resize_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Complete"
@@ -1360,7 +1360,7 @@ msgstr "నిర్ధారిత వనరులు"
 msgid "Connect"
 msgstr "కనెక్ట్ చేయి"
 
-#: lib/marshall_web/live/overview_live.ex:273
+#: lib/marshall_web/live/overview_live.ex:320
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "అనుసంధానాన్ని కనెక్ట్ చేయి ↗"
@@ -1370,7 +1370,7 @@ msgstr "అనుసంధానాన్ని కనెక్ట్ చేయ�
 msgid "Connect from your computer"
 msgstr "మీ కంప్యూటర్ నుంచి కనెక్ట్ అవ్వండి"
 
-#: lib/marshall_web/live/terminal_live.ex:595
+#: lib/marshall_web/live/terminal_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "Connecting…"
 msgstr "కనెక్ట్ అవుతోంది…"
@@ -1407,7 +1407,7 @@ msgstr ""
 msgid "Context reload queued."
 msgstr "సందర్భ రీలోడ్ క్యూలో చేర్చబడింది."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:462
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "షెడ్యూలింగ్ కొనసాగించు"
@@ -1460,13 +1460,13 @@ msgstr "Windows PowerShell ఇన్‌స్టాల్ కమాండ్‌�
 msgid "Copy machine ID"
 msgstr "యంత్ర IDని కాపీ చేయి"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "కాపీ/పరిమాణ మార్పు రిజర్వేషన్లు"
 
 #: lib/marshall_web/components/clone_components.ex:254
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "కాపీ చేస్తోంది"
@@ -1601,7 +1601,7 @@ msgstr ""
 msgid "Create a machine"
 msgstr "యంత్రాన్ని సృష్టించు"
 
-#: lib/marshall_web/live/machines_live.ex:1203
+#: lib/marshall_web/live/machines_live.ex:1221
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr ""
@@ -1637,7 +1637,7 @@ msgstr "బృందాన్ని సృష్టించు"
 msgid "Create thread"
 msgstr "సంభాషణను సృష్టించు"
 
-#: lib/marshall_web/live/overview_live.ex:173
+#: lib/marshall_web/live/overview_live.ex:175
 #, elixir-autogen, elixir-format
 msgid "Create your first machine"
 msgstr "మీ మొదటి యంత్రాన్ని సృష్టించండి"
@@ -1688,7 +1688,7 @@ msgid "Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB
 msgstr ""
 "ప్రస్తుత మిగులు: %{value1} vCPU · %{value2} GiB మెమరీ · %{value3} GiB డిస్క్"
 
-#: lib/marshall_web/live/overview_live.ex:253
+#: lib/marshall_web/live/overview_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "ప్రస్తుత సమకూర్పు మిగులు"
@@ -1728,7 +1728,7 @@ msgstr "ముదురు"
 msgid "Decline"
 msgstr "నిరాకరించు"
 
-#: lib/marshall_web/live/terminal_live.ex:614
+#: lib/marshall_web/live/terminal_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Decrease terminal font size"
 msgstr "టెర్మినల్ ఫాంట్‌ను తగ్గించు"
@@ -1739,18 +1739,18 @@ msgid "Delegated a task"
 msgstr "పని అప్పగించబడింది"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:217
-#: lib/marshall_web/live/machines_live.ex:1290
+#: lib/marshall_web/live/machines_live.ex:1308
 #: lib/marshall_web/live/threads_live.ex:1859
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "తొలగించు"
 
-#: lib/marshall_web/live/machines_live.ex:1275
+#: lib/marshall_web/live/machines_live.ex:1293
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "యంత్రాన్ని తొలగించు"
 
-#: lib/marshall_web/live/machines_live.ex:1288
+#: lib/marshall_web/live/machines_live.ex:1306
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr "ఈ యంత్రాన్ని, దాని డిస్క్‌ను తొలగించాలా? దీన్ని వెనక్కి తీసుకోలేరు."
@@ -1761,7 +1761,7 @@ msgid "Delete user and machines"
 msgstr "వినియోగదారుని, యంత్రాలను తొలగించు"
 
 #: lib/marshall_web/components/workspace_components.ex:84
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "తొలగించబడింది"
@@ -1773,7 +1773,7 @@ msgstr "తొలగించబడింది"
 msgid "Deleting"
 msgstr "తొలగిస్తోంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:714
 #: lib/marshall_web/live/machines_live.ex:661
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
@@ -1784,13 +1784,13 @@ msgstr "ఉంచిన కాపీలను తొలగిస్తోంద�
 msgid "Describe a task. Your agent gets a machine and gets to work."
 msgstr "పనిని వివరించండి. మీ ఏజెంట్ యంత్రాన్ని పొంది పని ప్రారంభిస్తుంది."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
 #: lib/marshall_web/live/machines_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "గమ్యం బూట్ విఫలమైంది; మూల కాపీ ఉంచబడింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
 #: lib/marshall_web/live/machines_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
@@ -1814,7 +1814,7 @@ msgstr ""
 msgid "Detach"
 msgstr "విడదీయి"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:498
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
 #: lib/marshall_web/live/admin/workloads_live.ex:150
 #: lib/marshall_web/live/inference_live.ex:154
 #, elixir-autogen, elixir-format
@@ -1845,7 +1845,7 @@ msgid "Disabled"
 msgstr "నిలిపివేయబడింది"
 
 #: lib/marshall_web/live/machines_live.ex:970
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:301
 #: lib/marshall_web/live/resize_live.ex:292
 #: lib/marshall_web/live/resize_live.ex:344
 #: lib/marshall_web/live/resize_live.ex:447
@@ -1864,7 +1864,7 @@ msgstr "డిస్క్ (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "డిస్క్ (GiB) — గరిష్ఠం 500 GiB"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "రిజర్వేషన్ల తర్వాత డిస్క్"
@@ -1889,7 +1889,7 @@ msgstr "డాక్యుమెంటేషన్"
 msgid "Download raw file ↗"
 msgstr "మూల ఫైల్‌ను డౌన్‌లోడ్ చేయి ↗"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:617
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "ఈ పనిభారం సంచికకు అంతరాయం ఆమోదించబడింది"
@@ -1906,7 +1906,7 @@ msgid "Email"
 msgstr "ఇమెయిల్"
 
 #: lib/marshall_web/live/admin/users_live.ex:146
-#: lib/marshall_web/live/overview_live.ex:226
+#: lib/marshall_web/live/overview_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "ఇమెయిల్ చిరునామా"
@@ -1943,8 +1943,8 @@ msgstr "పదిహేను నిమిషాలు ముగియకము�
 msgid "Ends that person's access to this machine."
 msgstr "ఆ వ్యక్తి ఈ యంత్ర ప్రాప్యతను ముగిస్తుంది."
 
-#: lib/marshall_web/live/terminal_live.ex:625
-#: lib/marshall_web/live/terminal_live.ex:627
+#: lib/marshall_web/live/terminal_live.ex:679
+#: lib/marshall_web/live/terminal_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "పూర్తి తెరలోకి వెళ్లు"
@@ -1971,17 +1971,17 @@ msgstr ""
 "చేయడానికి చాలా ఎక్కువ సమయం, ప్రతి పనిభారానికి ఆమోదం అవసరం."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:425
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:438
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "ఖాళీ చేసే ప్రచారం"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:485
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "ఖాళీ చేసే కాలక్రమం"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:497
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "ఈవెంట్"
@@ -2046,7 +2046,7 @@ msgstr "గడువు ముగుస్తుంది"
 msgid "Explain capacity"
 msgstr "సామర్థ్యాన్ని వివరించు"
 
-#: lib/marshall_web/live/overview_live.ex:275
+#: lib/marshall_web/live/overview_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "వినియోగాన్ని చూడండి ↗"
@@ -2058,7 +2058,7 @@ msgstr "AI వినియోగాన్ని ఎగుమతి చేయి"
 
 #: lib/marshall_web/components/workspace_components.ex:83
 #: lib/marshall_web/live/admin/jobs_live.ex:16
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:663
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
 #: lib/marshall_web/live/threads_live.ex:1664
 #: lib/marshall_web/live/threads_live.ex:2632
 #, elixir-autogen, elixir-format
@@ -2072,12 +2072,12 @@ msgstr "విఫలమైంది"
 msgid "Field notes"
 msgstr "పని గమనికలు"
 
-#: lib/marshall_web/live/machines_live.ex:1199
+#: lib/marshall_web/live/machines_live.ex:1217
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "ఫైళ్లు, నిల్వ చేసిన ఆధారాలు కాపీలో ఉంటాయి"
 
-#: lib/marshall_web/live/machines_live.ex:1233
+#: lib/marshall_web/live/machines_live.ex:1251
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "ఫైళ్లు, నిల్వ చేసిన ఆధారాలు కాపీలో ఉంటాయి."
@@ -2110,12 +2110,12 @@ msgstr "కమాండ్‌ను కనుగొను"
 msgid "Find a task…"
 msgstr "పనిని కనుగొను…"
 
-#: lib/marshall_web/live/terminal_live.ex:639
+#: lib/marshall_web/live/terminal_live.ex:693
 #, elixir-autogen, elixir-format
 msgid "Find in scrollback"
 msgstr "టెర్మినల్ చరిత్రలో కనుగొను"
 
-#: lib/marshall_web/live/overview_live.ex:274
+#: lib/marshall_web/live/overview_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "మీ బృందాన్ని కనుగొనండి ↗"
@@ -2152,13 +2152,13 @@ msgstr "ఫ్లీట్ AI వినియోగం"
 msgid "Fleet workloads"
 msgstr "ఫ్లీట్ పనిభారాలు"
 
-#: lib/marshall_web/live/terminal_live.ex:661
+#: lib/marshall_web/live/terminal_live.ex:715
 #, elixir-autogen, elixir-format
 msgid "Follow boot output"
 msgstr "బూట్ అవుట్‌పుట్‌ను అనుసరించు"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "తాజా"
@@ -2270,7 +2270,7 @@ msgstr "HTTPS గమ్యం"
 msgid "Handbook contents"
 msgstr "హ్యాండ్‌బుక్ విషయాలు"
 
-#: lib/marshall_web/live/overview_live.ex:264
+#: lib/marshall_web/live/overview_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "మిగులు తాత్కాలికంగా అందుబాటులో లేదు."
@@ -2383,7 +2383,7 @@ msgstr "అసంపూర్ణ AI నివేదికలు"
 msgid "Incorrect email or password"
 msgstr "ఇమెయిల్ లేదా పాస్‌వర్డ్ తప్పు"
 
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:673
 #, elixir-autogen, elixir-format
 msgid "Increase terminal font size"
 msgstr "టెర్మినల్ ఫాంట్‌ను పెంచు"
@@ -2542,7 +2542,7 @@ msgid "LLM index"
 msgstr "LLM సూచిక"
 
 #: lib/marshall_web/live/account_live.ex:722
-#: lib/marshall_web/live/ssh_approval_live.ex:84
+#: lib/marshall_web/live/ssh_approval_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "లేబుల్ (ఐచ్ఛికం)"
@@ -2594,12 +2594,12 @@ msgstr "ప్రారంభిస్తోంది"
 msgid "Launching repository"
 msgstr "రిపోజిటరీని ప్రారంభిస్తోంది"
 
-#: lib/marshall_web/live/machines_live.ex:1218
+#: lib/marshall_web/live/machines_live.ex:1236
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "పేరు రూపొందించడానికి ఖాళీగా వదలండి"
 
-#: lib/marshall_web/live/machines_live.ex:1231
+#: lib/marshall_web/live/machines_live.ex:1249
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "పేరు రూపొందించడానికి ఖాళీగా వదలండి."
@@ -2713,13 +2713,13 @@ msgstr "యంత్రం విడదీయబడింది."
 msgid "Machine generations"
 msgstr "యంత్ర తరాలు"
 
-#: lib/marshall_web/live/terminal_live.ex:305
+#: lib/marshall_web/live/terminal_live.ex:335
 #, elixir-autogen, elixir-format
 msgid "Machine is stopping or stopped. Choose Start to open a terminal."
 msgstr ""
 "యంత్రం ఆగుతోంది లేదా ఆగింది. టెర్మినల్ తెరవడానికి ప్రారంభించు ఎంచుకోండి."
 
-#: lib/marshall_web/live/terminal_live.ex:47
+#: lib/marshall_web/live/terminal_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "Machine not found."
 msgstr "యంత్రం కనుగొనబడలేదు."
@@ -2754,7 +2754,7 @@ msgstr "యంత్రం అభ్యర్థించబడింది."
 msgid "Machine settings"
 msgstr "యంత్ర సెట్టింగ్‌లు"
 
-#: lib/marshall_web/live/terminal_live.ex:302
+#: lib/marshall_web/live/terminal_live.ex:332
 #, elixir-autogen, elixir-format
 msgid "Machine startup failed. Check the machine status and boot log."
 msgstr "యంత్ర ప్రారంభం విఫలమైంది. స్థితి, బూట్ లాగ్ చూడండి."
@@ -2778,7 +2778,7 @@ msgstr "యంత్రం:"
 #: lib/marshall_web/components/layouts.ex:437
 #: lib/marshall_web/live/machines_live.ex:105
 #: lib/marshall_web/live/machines_live.ex:685
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "యంత్రాలు"
@@ -2788,7 +2788,7 @@ msgstr "యంత్రాలు"
 msgid "Machines are temporarily unavailable."
 msgstr "యంత్రాలు తాత్కాలికంగా అందుబాటులో లేవు."
 
-#: lib/marshall_web/live/overview_live.ex:215
+#: lib/marshall_web/live/overview_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "యంత్రాలను లోడ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించడానికి రిఫ్రెష్ చేయండి."
@@ -2814,7 +2814,7 @@ msgstr "ప్రధాన"
 msgid "Maintenance"
 msgstr "నిర్వహణ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:637
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "నిర్వహణ పేజీలు"
@@ -2834,7 +2834,7 @@ msgstr "నిర్వాహకునిగా చేయి"
 msgid "Make it yours"
 msgstr "మీదిగా చేసుకోండి"
 
-#: lib/marshall_web/live/overview_live.ex:268
+#: lib/marshall_web/live/overview_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "ఇంటిలా భావించండి"
@@ -2849,7 +2849,7 @@ msgstr "సౌకర్యంగా ఉండండి"
 msgid "Manage members and team machines."
 msgstr "సభ్యులు, బృంద యంత్రాలను నిర్వహించండి."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:97
+#: lib/marshall_web/live/ssh_approval_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr "SSH కీలను నిర్వహించండి"
@@ -2893,7 +2893,7 @@ msgstr "ఈ పేజీ Markdown"
 msgid "Match this request code with your terminal before approving:"
 msgstr "ఆమోదానికి ముందు ఈ అభ్యర్థన కోడ్‌ను టెర్మినల్‌తో సరిపోల్చండి:"
 
-#: lib/marshall_web/live/machines_live.ex:1158
+#: lib/marshall_web/live/machines_live.ex:1176
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr ""
@@ -2928,7 +2928,7 @@ msgid "Membership updated."
 msgstr "సభ్యత్వం నవీకరించబడింది."
 
 #: lib/marshall_web/live/machines_live.ex:967
-#: lib/marshall_web/live/overview_live.ex:258
+#: lib/marshall_web/live/overview_live.ex:298
 #: lib/marshall_web/live/resize_live.ex:289
 #: lib/marshall_web/live/resize_live.ex:334
 #: lib/marshall_web/live/resize_live.ex:441
@@ -2943,12 +2943,12 @@ msgstr "మెమరీ"
 msgid "Memory (MiB)"
 msgstr "మెమరీ (MiB)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "రిజర్వేషన్ల తర్వాత మెమరీ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:406
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "మెమరీ మిగులు"
@@ -2988,7 +2988,7 @@ msgstr "మిర్రర్ కంటెంట్ అందుబాటుల�
 msgid "Mirrors"
 msgstr "మిర్రర్లు"
 
-#: lib/marshall_web/live/machines_live.ex:1149
+#: lib/marshall_web/live/machines_live.ex:1167
 #: lib/marshall_web/live/threads_live.ex:1407
 #, elixir-autogen, elixir-format
 msgid "Mode"
@@ -3022,20 +3022,20 @@ msgstr "తరలింపు రద్దయింది; శుభ్రపర
 msgid "Move complete"
 msgstr "తరలింపు పూర్తయింది"
 
-#: lib/marshall_web/live/machines_live.ex:1131
+#: lib/marshall_web/live/machines_live.ex:1149
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr ""
 "యంత్రాన్ని స్వయంచాలకంగా ఎంచుకున్న హోస్ట్‌కు తరలించాలా? యంత్రం కొద్దిసేపు "
 "అందుబాటులో ఉండకపోవచ్చు."
 
-#: lib/marshall_web/live/machines_live.ex:1136
+#: lib/marshall_web/live/machines_live.ex:1154
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "మరో హోస్ట్‌కు తరలించు"
 
 #: lib/marshall_web/live/account_live.ex:724
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "నా ల్యాప్‌టాప్"
@@ -3066,7 +3066,7 @@ msgstr ""
 msgid "Needs attention"
 msgstr "శ్రద్ధ అవసరం"
 
-#: lib/marshall_web/live/machines_live.ex:1217
+#: lib/marshall_web/live/machines_live.ex:1235
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "కొత్త యంత్ర పేరు (ఐచ్ఛికం)"
@@ -3083,7 +3083,7 @@ msgstr "కొత్త పరిమాణాలు"
 msgid "New thread"
 msgstr "కొత్త సంభాషణ"
 
-#: lib/marshall_web/live/terminal_live.ex:649
+#: lib/marshall_web/live/terminal_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Next match"
 msgstr "తదుపరి సరిపోలిక"
@@ -3094,7 +3094,7 @@ msgstr "తదుపరి సరిపోలిక"
 msgid "Next page"
 msgstr "తదుపరి పేజీ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:639
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #: lib/marshall_web/live/admin/users_live.ex:262
 #: lib/marshall_web/live/machines_live.ex:795
 #: lib/marshall_web/live/machines_live.ex:1063
@@ -3102,7 +3102,7 @@ msgstr "తదుపరి పేజీ"
 msgid "Next page →"
 msgstr "తదుపరి పేజీ →"
 
-#: lib/marshall_web/live/overview_live.ex:271
+#: lib/marshall_web/live/overview_live.ex:317
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "తదుపరి దశలు"
@@ -3158,7 +3158,7 @@ msgstr "సక్రియ పనిభారాలు లేవు."
 msgid "No activity matches this filter."
 msgstr "వడపోతకు సరిపడే కార్యాచరణ లేదు."
 
-#: lib/marshall_web/live/machines_live.ex:1248
+#: lib/marshall_web/live/machines_live.ex:1266
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr ""
@@ -3292,7 +3292,7 @@ msgstr "తరలింపు అందుబాటులో లేదు."
 msgid "No repositories are mirrored yet."
 msgstr "రిపోజిటరీలు ఇంకా మిర్రర్ చేయబడలేదు."
 
-#: lib/marshall_web/live/terminal_live.ex:579
+#: lib/marshall_web/live/terminal_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "No shared terminals are available to view."
 msgstr "చూడటానికి పంచుకున్న టెర్మినళ్లు లేవు."
@@ -3302,7 +3302,7 @@ msgstr "చూడటానికి పంచుకున్న టెర్మ�
 msgid "No skills were discovered in this workspace."
 msgstr "ఈ పని స్థలంలో నైపుణ్యాలు కనుగొనబడలేదు."
 
-#: lib/marshall_web/live/terminal_live.ex:583
+#: lib/marshall_web/live/terminal_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "No terminals are open. Choose New to open your personal shell."
 msgstr "టెర్మినళ్లు తెరిచి లేవు. వ్యక్తిగత షెల్ కోసం కొత్తది ఎంచుకోండి."
@@ -3342,7 +3342,7 @@ msgstr "ఇంకా సేకరించలేదు"
 msgid "Objective"
 msgstr "లక్ష్యం"
 
-#: lib/marshall_web/live/machines_live.ex:1154
+#: lib/marshall_web/live/machines_live.ex:1172
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "గమనించిన అంతరాయం"
@@ -3445,7 +3445,7 @@ msgstr "క్లోన్ తెరువు"
 msgid "Open machine →"
 msgstr "యంత్రాన్ని తెరువు →"
 
-#: lib/marshall_web/live/overview_live.ex:240
+#: lib/marshall_web/live/overview_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "బ్రౌజర్ నుంచి రిపోజిటరీలు తెరవండి"
@@ -3471,7 +3471,7 @@ msgstr "%{value1} కోసం టెర్మినల్ తెరువు"
 msgid "Open terminal here"
 msgstr "ఇక్కడ టెర్మినల్ తెరువు"
 
-#: lib/marshall_web/live/overview_live.ex:204
+#: lib/marshall_web/live/overview_live.ex:208
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "టెర్మినల్ తెరువు ↗"
@@ -3486,12 +3486,12 @@ msgstr "ఈ యంత్ర వెబ్ యాప్‌లు తెరువ�
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:532
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "తెరవబడింది"
 
-#: lib/marshall_web/live/terminal_live.ex:87
+#: lib/marshall_web/live/terminal_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Opening terminal; recovering the same request if the connection was interrupted."
 msgstr ""
@@ -3647,12 +3647,12 @@ msgstr ""
 msgid "Paths"
 msgstr "మార్గాలు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:455
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "షెడ్యూలింగ్‌ను పాజ్ చేయి"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr ""
@@ -3678,7 +3678,7 @@ msgstr "పీర్ యంత్ర ID"
 #: lib/marshall_web/components/workspace_components.ex:79
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:429
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
 #: lib/marshall_web/live/resize_live.ex:504
 #: lib/marshall_web/live/threads_live.ex:1661
 #: lib/marshall_web/live/threads_live.ex:2629
@@ -3693,12 +3693,12 @@ msgstr ""
 "ఈ ఖాతాను, ఇతరులతో పంచుకున్నవాటితో సహా దాని అన్ని యంత్రాలను శాశ్వతంగా "
 "తొలగించాలా?"
 
-#: lib/marshall_web/live/machines_live.ex:1297
+#: lib/marshall_web/live/machines_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "యంత్రాన్ని, డిస్క్‌ను శాశ్వతంగా తొలగించు. వెనక్కి తీసుకోలేరు."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:476
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr "ఈ ఖాళీ నోడ్‌ను శాశ్వతంగా విరమింపజేసి ఆధారాలను రద్దు చేయాలా?"
@@ -3709,7 +3709,7 @@ msgid "Permission to clone this machine is no longer available."
 msgstr "యంత్రాన్ని క్లోన్ చేసే అనుమతి ఇక లేదు."
 
 #: lib/marshall_web/live/machines_live.ex:879
-#: lib/marshall_web/live/overview_live.ex:186
+#: lib/marshall_web/live/overview_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "వ్యక్తిగత"
@@ -3720,12 +3720,12 @@ msgid "Personal integration"
 msgstr "వ్యక్తిగత అనుసంధానం"
 
 #: lib/marshall_web/live/admin/git_live.ex:103
-#: lib/marshall_web/live/machines_live.ex:1146
+#: lib/marshall_web/live/machines_live.ex:1164
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "దశ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:582
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:589
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "దశ: %{phase}"
@@ -3758,7 +3758,7 @@ msgstr "ప్రణాళిక"
 msgid "Platform status"
 msgstr "వేదిక స్థితి"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:403
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "పూల్"
@@ -3780,7 +3780,7 @@ msgid "Power afterwards"
 msgstr "తర్వాత విద్యుత్ స్థితి"
 
 #: lib/marshall_web/components/clone_components.ex:252
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "సిద్ధం చేస్తోంది"
@@ -3805,7 +3805,7 @@ msgstr "స్నాప్‌షాట్‌కు ముందు స్థల�
 msgid "Preparing transfer"
 msgstr "బదిలీ సిద్ధం చేస్తోంది"
 
-#: lib/marshall_web/live/terminal_live.ex:422
+#: lib/marshall_web/live/terminal_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Preparing your guest account…"
 msgstr "మీ గెస్ట్ ఖాతాను సిద్ధం చేస్తోంది…"
@@ -3820,9 +3820,9 @@ msgstr "యంత్రాన్ని సిద్ధం చేస్తోం�
 msgid "Preparing your repository…"
 msgstr "రిపోజిటరీని సిద్ధం చేస్తోంది…"
 
-#: lib/marshall_web/live/terminal_live.ex:361
-#: lib/marshall_web/live/terminal_live.ex:399
-#: lib/marshall_web/live/terminal_live.ex:423
+#: lib/marshall_web/live/terminal_live.ex:391
+#: lib/marshall_web/live/terminal_live.ex:429
+#: lib/marshall_web/live/terminal_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "Preparing your terminal…"
 msgstr "టెర్మినల్‌ను సిద్ధం చేస్తోంది…"
@@ -3837,12 +3837,12 @@ msgstr "పని స్థలాన్ని సిద్ధం చేస్త
 msgid "Preview evacuation"
 msgstr "ఖాళీ చేయడాన్ని ముందుగా చూడు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:604
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "ముందుచూపు: %{blocker}"
 
-#: lib/marshall_web/live/terminal_live.ex:644
+#: lib/marshall_web/live/terminal_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "Previous match"
 msgstr "మునుపటి సరిపోలిక"
@@ -3965,24 +3965,24 @@ msgstr "క్యూలో ఉంది"
 msgid "Queued: %{tools}"
 msgstr "క్యూలో: %{tools}"
 
-#: lib/marshall_web/live/machines_live.ex:1226
+#: lib/marshall_web/live/machines_live.ex:1244
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "క్యూలో పెడుతోంది…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:383
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "RAM అదనపు వ్యయం (బైట్లు)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:627
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:640
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr ""
 "ప్రస్తుత కేటాయింపు, కావలసిన స్థితితో పనిభారాన్ని మళ్లీ ప్రణాళిక చేయాలా? పాత "
 "అంతరాయ ఆమోదం తొలగించబడుతుంది."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:645
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "పనిభారాన్ని మళ్లీ ప్రణాళిక చేయి"
@@ -3992,7 +3992,7 @@ msgstr "పనిభారాన్ని మళ్లీ ప్రణాళి�
 msgid "Read and write in the terminal."
 msgstr "టెర్మినల్‌లో చదవండి, రాయండి."
 
-#: lib/marshall_web/live/overview_live.ex:276
+#: lib/marshall_web/live/overview_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "పని గమనికలు చదవండి ↗"
@@ -4009,12 +4009,12 @@ msgstr ""
 "చదవడానికి మాత్రమే అనుమతి లెక్కింపు. సామర్థ్యం రిజర్వ్ చేయదు; తెలియని కొలతలు "
 "అనుమతి నిలిపివేస్తాయి."
 
-#: lib/marshall_web/live/terminal_live.ex:668
+#: lib/marshall_web/live/terminal_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Read-only boot console"
 msgstr "చదవడానికి మాత్రమే బూట్ కన్సోల్"
 
-#: lib/marshall_web/live/terminal_live.ex:577
+#: lib/marshall_web/live/terminal_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Read-only host boot log. Guest terminal readiness is not required."
 msgstr ""
@@ -4032,7 +4032,7 @@ msgstr ""
 msgid "Read-only mirrors of public GitHub repositories."
 msgstr "పబ్లిక్ GitHub రిపోజిటరీల చదవడానికి మాత్రమే మిర్రర్లు."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:658
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #: lib/marshall_web/live/threads_live.ex:1663
 #: lib/marshall_web/live/threads_live.ex:2631
 #, elixir-autogen, elixir-format
@@ -4071,7 +4071,7 @@ msgstr "ఇటీవలి మిర్రర్ ఆడిట్"
 msgid "Recent threads"
 msgstr "ఇటీవలి సంభాషణలు"
 
-#: lib/marshall_web/live/terminal_live.ex:362
+#: lib/marshall_web/live/terminal_live.ex:392
 #, elixir-autogen, elixir-format
 msgid "Reconnecting to the terminal service…"
 msgstr "టెర్మినల్ సేవకు మళ్లీ కనెక్ట్ అవుతోంది…"
@@ -4101,7 +4101,7 @@ msgid "Reference"
 msgstr "సూచన గ్రంథం"
 
 #: lib/marshall_web/live/admin/git_live.ex:119
-#: lib/marshall_web/live/overview_live.ex:290
+#: lib/marshall_web/live/overview_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "రిఫ్రెష్ చేయి"
@@ -4121,7 +4121,7 @@ msgstr "రిఫ్రెష్‌ను క్యూలో పెట్టల�
 msgid "Refresh queued."
 msgstr "రిఫ్రెష్ క్యూలో ఉంది."
 
-#: lib/marshall_web/live/overview_live.ex:288
+#: lib/marshall_web/live/overview_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "రిఫ్రెష్ చేస్తోంది…"
@@ -4154,7 +4154,7 @@ msgstr "సంబంధిత రికార్డు"
 msgid "Reload context"
 msgstr "సందర్భాన్ని మళ్లీ లోడ్ చేయి"
 
-#: lib/marshall_web/live/machines_live.ex:1120
+#: lib/marshall_web/live/machines_live.ex:1138
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "యంత్రాన్ని తరలించు"
@@ -4250,7 +4250,7 @@ msgstr ""
 "ఈ పాస్‌కీని తొలగించాలా? చివరి పాస్‌కీ తొలగిస్తే అన్ని చోట్ల సైన్ అవుట్ "
 "అవుతారు."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "ఈ మూలం నుంచి తొలగించబడింది; ప్రచార శుభ్రపరచడం ధృవీకరణకు వేచి ఉంది."
@@ -4261,12 +4261,12 @@ msgstr "ఈ మూలం నుంచి తొలగించబడింది
 msgid "Rename"
 msgstr "పేరు మార్చు"
 
-#: lib/marshall_web/live/terminal_live.ex:603
+#: lib/marshall_web/live/terminal_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Rename in this browser"
 msgstr "ఈ బ్రౌజర్‌లో పేరు మార్చు"
 
-#: lib/marshall_web/live/terminal_live.ex:602
+#: lib/marshall_web/live/terminal_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Rename terminal"
 msgstr "టెర్మినల్ పేరు మార్చు"
@@ -4284,7 +4284,7 @@ msgstr ""
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:404
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "నివేదిక"
@@ -4360,7 +4360,7 @@ msgstr "రద్దు అభ్యర్థిస్తోంది…"
 msgid "Requesting resize…"
 msgstr "పరిమాణ మార్పు అభ్యర్థిస్తోంది…"
 
-#: lib/marshall_web/live/machines_live.ex:1184
+#: lib/marshall_web/live/machines_live.ex:1202
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "పునఃప్రారంభం అభ్యర్థిస్తోంది…"
@@ -4370,7 +4370,7 @@ msgstr "పునఃప్రారంభం అభ్యర్థిస్త�
 msgid "Requesting retry…"
 msgstr "మళ్లీ ప్రయత్నం అభ్యర్థిస్తోంది…"
 
-#: lib/marshall_web/live/machines_live.ex:1129
+#: lib/marshall_web/live/machines_live.ex:1147
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "అభ్యర్థిస్తోంది…"
@@ -4415,7 +4415,7 @@ msgstr ""
 "పరిమాణ మార్పును అంగీకరించలేకపోయాం. పరిమాణాలు, ప్రస్తుత యంత్ర స్థితి తనిఖీ "
 "చేయండి."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:782
 #: lib/marshall_web/live/resize_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
@@ -4489,12 +4489,12 @@ msgstr "పునఃప్రారంభమైంది"
 msgid "Restarting"
 msgstr "పునఃప్రారంభిస్తోంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:469
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "అనుమతిని పునరుద్ధరించు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:479
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "నోడ్‌ను విరమింపజేయి"
@@ -4512,7 +4512,7 @@ msgstr ""
 "మళ్లీ ప్రయత్నాన్ని అంగీకరించలేకపోయాం. సామర్థ్యం లేదా యంత్ర స్థితి "
 "మారివుండవచ్చు."
 
-#: lib/marshall_web/live/machines_live.ex:1186
+#: lib/marshall_web/live/machines_live.ex:1204
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "గమ్యం బూట్‌ను మళ్లీ ప్రయత్నించు"
@@ -4572,7 +4572,7 @@ msgstr "సంచిక"
 msgid "Revision (optional)"
 msgstr "సంచిక (ఐచ్ఛికం)"
 
-#: lib/marshall_web/live/terminal_live.ex:694
+#: lib/marshall_web/live/terminal_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "రద్దు చేయి"
@@ -4625,7 +4625,7 @@ msgstr "పాత్ర"
 msgid "Room for your next idea"
 msgstr "తదుపరి ఆలోచనకు స్థలం"
 
-#: lib/marshall_web/live/overview_live.ex:252
+#: lib/marshall_web/live/overview_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "పెరగడానికి స్థలం"
@@ -4647,7 +4647,7 @@ msgstr "రూటింగ్, బృంద యాజమాన్యం, పీ�
 
 #: lib/marshall_web/components/workspace_components.ex:80
 #: lib/marshall_web/live/admin/jobs_live.ex:13
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:660
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Running"
@@ -4674,7 +4674,8 @@ msgstr "SSH కీ"
 msgid "SSH key added."
 msgstr "SSH కీ చేర్చబడింది."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:35
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:112
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "SSH కీ ఆమోదించబడింది. SSH క్లయింట్‌కు తిరిగి వెళ్లవచ్చు."
@@ -4764,7 +4765,7 @@ msgstr "పరిధి"
 msgid "Search"
 msgstr "శోధన"
 
-#: lib/marshall_web/live/terminal_live.ex:609
+#: lib/marshall_web/live/terminal_live.ex:663
 #, elixir-autogen, elixir-format
 msgid "Search (Ctrl+F)"
 msgstr "శోధన (Ctrl+F)"
@@ -4780,12 +4781,12 @@ msgstr "కంటెంట్ శోధించు"
 msgid "Search recent threads"
 msgstr "ఇటీవలి సంభాషణలు శోధించు"
 
-#: lib/marshall_web/live/terminal_live.ex:608
+#: lib/marshall_web/live/terminal_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Search scrollback"
 msgstr "టెర్మినల్ చరిత్ర శోధించు"
 
-#: lib/marshall_web/live/terminal_live.ex:632
+#: lib/marshall_web/live/terminal_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Search terminal scrollback"
 msgstr "టెర్మినల్ చరిత్ర శోధించు"
@@ -4836,7 +4837,7 @@ msgstr "పంపుతోంది…"
 msgid "Service"
 msgstr "సేవ"
 
-#: lib/marshall_web/live/overview_live.ex:250
+#: lib/marshall_web/live/overview_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "బ్రౌజర్ పొడిగింపును అమర్చండి ↗"
@@ -4863,12 +4864,12 @@ msgstr ""
 "సహచరులతో యంత్రాలు, అనుసంధానాలు పంచుకోండి. యజమానులు నిర్వాహకులను నియమిస్తారు,"
 " నిర్వాహకులు సభ్యులను నిర్వహిస్తారు."
 
-#: lib/marshall_web/live/terminal_live.ex:560
+#: lib/marshall_web/live/terminal_live.ex:590
 #, elixir-autogen, elixir-format
 msgid "Share terminal %{value1}"
 msgstr "టెర్మినల్ %{value1}ను పంచుకో"
 
-#: lib/marshall_web/live/terminal_live.ex:676
+#: lib/marshall_web/live/terminal_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Share this terminal"
 msgstr "ఈ టెర్మినల్‌ను పంచుకో"
@@ -4878,12 +4879,12 @@ msgstr "ఈ టెర్మినల్‌ను పంచుకో"
 msgid "Share this thread"
 msgstr "ఈ సంభాషణను పంచుకో"
 
-#: lib/marshall_web/live/terminal_live.ex:561
+#: lib/marshall_web/live/terminal_live.ex:591
 #, elixir-autogen, elixir-format
 msgid "Share view"
 msgstr "వీక్షణను పంచుకో"
 
-#: lib/marshall_web/live/overview_live.ex:187
+#: lib/marshall_web/live/overview_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "పంచుకోబడింది"
@@ -5091,7 +5092,7 @@ msgid "Source was stopped when this request began."
 msgstr "అభ్యర్థన ప్రారంభమైనప్పుడు మూలం ఆపివుంది."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "పాతది లేదా తెలియదు"
@@ -5147,7 +5148,7 @@ msgstr "కొత్త వనరులతో యంత్రాన్ని ప
 msgid "Starting…"
 msgstr "ప్రారంభిస్తోంది…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "ప్రారంభ రిజర్వేషన్లు"
@@ -5170,7 +5171,7 @@ msgstr "స్థిర హెడర్ పేరు"
 msgid "Static header value"
 msgstr "స్థిర హెడర్ విలువ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:531
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:535
 #: lib/marshall_web/live/admin/operations_live.ex:82
 #: lib/marshall_web/live/admin/operations_live.ex:105
 #: lib/marshall_web/live/admin/operations_live.ex:128
@@ -5201,7 +5202,7 @@ msgstr "ఆపు"
 msgid "Stop the machine"
 msgstr "యంత్రాన్ని ఆపు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:624
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr ""
@@ -5209,7 +5210,7 @@ msgstr ""
 " పునఃప్రారంభించడం దీర్ఘ అంతరాయం కలిగించవచ్చు."
 
 #: lib/marshall_web/components/workspace_components.ex:81
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:661
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Stopped"
@@ -5239,7 +5240,7 @@ msgstr ""
 msgid "Stopping the machine so its resources can change safely."
 msgstr "వనరులు సురక్షితంగా మార్చడానికి యంత్రాన్ని ఆపుతోంది."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #: lib/marshall_web/live/machines_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
@@ -5280,7 +5281,7 @@ msgstr "విజయవంతం"
 msgid "Suspended"
 msgstr "సస్పెండ్ అయింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
 #: lib/marshall_web/live/machines_live.ex:654
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
@@ -5362,25 +5363,25 @@ msgstr "బృందాలు తాత్కాలికంగా అందు�
 msgid "Terminal"
 msgstr "టెర్మినల్"
 
-#: lib/marshall_web/live/terminal_live.ex:535
+#: lib/marshall_web/live/terminal_live.ex:565
 #, elixir-autogen, elixir-format
 msgid "Terminal %{name}, %{count} viewer, created %{created}"
 msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
 msgstr[0] "టెర్మినల్ %{name}, %{count} వీక్షకుడు, సృష్టి %{created}"
 msgstr[1] "టెర్మినల్ %{name}, %{count} వీక్షకులు, సృష్టి %{created}"
 
-#: lib/marshall_web/live/terminal_live.ex:114
+#: lib/marshall_web/live/terminal_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Terminal access ended."
 msgstr "టెర్మినల్ ప్రాప్యత ముగిసింది."
 
-#: lib/marshall_web/live/terminal_live.ex:131
-#: lib/marshall_web/live/terminal_live.ex:321
+#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "Terminal close requested; waiting for guest confirmation."
 msgstr "టెర్మినల్ మూసివేత అభ్యర్థించబడింది; గెస్ట్ నిర్ధారణకు వేచి ఉంది."
 
-#: lib/marshall_web/live/terminal_live.ex:438
+#: lib/marshall_web/live/terminal_live.ex:468
 #, elixir-autogen, elixir-format
 msgid "Terminal limit reached for this machine."
 msgstr "ఈ యంత్ర టెర్మినల్ పరిమితి చేరింది."
@@ -5390,7 +5391,7 @@ msgstr "ఈ యంత్ర టెర్మినల్ పరిమితి �
 msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
 msgstr "టెర్మినల్ ప్రోటోకాల్: %{protocol} · స్థానిక స్ట్రీమ్: %{state}"
 
-#: lib/marshall_web/live/terminal_live.ex:521
+#: lib/marshall_web/live/terminal_live.ex:551
 #, elixir-autogen, elixir-format
 msgid "Terminal sessions"
 msgstr "టెర్మినల్ సెషన్లు"
@@ -5400,7 +5401,7 @@ msgstr "టెర్మినల్ సెషన్లు"
 msgid "Terminal unavailable"
 msgstr "టెర్మినల్ అందుబాటులో లేదు"
 
-#: lib/marshall_web/live/terminal_live.ex:155
+#: lib/marshall_web/live/terminal_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Terminal viewing access updated."
 msgstr "టెర్మినల్ వీక్షణ ప్రాప్యత నవీకరించబడింది."
@@ -5410,7 +5411,7 @@ msgstr "టెర్మినల్ వీక్షణ ప్రాప్యత 
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "టెర్మినల్, జీవితచక్రం, పరిమాణ మార్పు, క్లోన్, పంచుకోవడం."
 
-#: lib/marshall_web/live/terminal_live.ex:443
+#: lib/marshall_web/live/terminal_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Terminals are unavailable while the host is offline."
 msgstr "హోస్ట్ ఆఫ్‌లైన్‌లో ఉన్నప్పుడు టెర్మినళ్లు అందుబాటులో ఉండవు."
@@ -5454,7 +5455,7 @@ msgstr ""
 msgid "The agent encountered a problem"
 msgstr "ఏజెంట్‌కు సమస్య ఎదురైంది"
 
-#: lib/marshall_web/live/terminal_live.ex:191
+#: lib/marshall_web/live/terminal_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "The boot log is unavailable for the current machine execution."
 msgstr "ప్రస్తుత యంత్ర అమలుకు బూట్ లాగ్ అందుబాటులో లేదు."
@@ -5491,7 +5492,7 @@ msgstr ""
 msgid "The default machine image is not available right now."
 msgstr "డిఫాల్ట్ యంత్ర ఇమేజ్ ప్రస్తుతం అందుబాటులో లేదు."
 
-#: lib/marshall_web/live/terminal_live.ex:457
+#: lib/marshall_web/live/terminal_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "The guest cannot host more terminal sessions."
 msgstr "గెస్ట్ మరిన్ని టెర్మినల్ సెషన్లు ఉంచలేదు."
@@ -5525,7 +5526,7 @@ msgid "The machine has changed since this draft was created. Review the confirme
 msgstr ""
 "ముసాయిదా సృష్టించిన తర్వాత యంత్రం మారింది. పైన నిర్ధారిత వనరులు చూడండి."
 
-#: lib/marshall_web/live/machines_live.ex:1140
+#: lib/marshall_web/live/machines_live.ex:1158
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr ""
@@ -5534,7 +5535,7 @@ msgstr ""
 "అందువల్ల తరలింపు కొంత ఎక్కువ పట్టవచ్చు; ఉత్పత్తిలో AWSపై Overalls "
 "నడిచినప్పుడు చాలా వేగంగా ఉండాలని ఆశిస్తున్నాం."
 
-#: lib/marshall_web/live/machines_live.ex:1151
+#: lib/marshall_web/live/machines_live.ex:1169
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "యంత్రం ఆపబడి, ఒకసారి కాపీ చేయబడి, గమ్యంలో ప్రారంభమవుతుంది."
@@ -5572,7 +5573,7 @@ msgstr ""
 "యంత్రం మునుపటి కాపీ స్నాప్‌షాట్‌ను ఇంకా విడుదల చేస్తోంది. త్వరలో మళ్లీ "
 "ప్రయత్నించండి."
 
-#: lib/marshall_web/live/terminal_live.ex:449
+#: lib/marshall_web/live/terminal_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "The previous opening has ended. Choose New to try again."
 msgstr "మునుపటి తెరవడం ముగిసింది. మళ్లీ ప్రయత్నానికి కొత్తది ఎంచుకోండి."
@@ -5637,7 +5638,7 @@ msgid "The source was busy or changed before cloning began. Retry when it is rea
 msgstr ""
 "క్లోన్‌కు ముందు మూలం బిజీగా ఉంది లేదా మారింది. సిద్ధమైనప్పుడు ప్రయత్నించండి."
 
-#: lib/marshall_web/live/terminal_live.ex:459
+#: lib/marshall_web/live/terminal_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "The terminal could not be opened."
 msgstr "టెర్మినల్ తెరవలేకపోయాం."
@@ -5692,7 +5693,7 @@ msgstr "ఈ ప్రశ్నలు ఇప్పుడు జవాబు క�
 msgid "These questions have already been answered."
 msgstr "ఈ ప్రశ్నలకు ఇప్పటికే జవాబిచ్చారు."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr ""
@@ -5734,7 +5735,7 @@ msgstr "ఈ జాబ్ మళ్లీ ప్రయత్నించలేక
 msgid "This job is unavailable or its history has expired."
 msgstr "ఈ జాబ్ అందుబాటులో లేదు లేదా చరిత్ర గడువు ముగిసింది."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:77
+#: lib/marshall_web/live/ssh_approval_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr ""
@@ -5761,7 +5762,7 @@ msgstr "యంత్రం తొలగించబడుతోంది, పి
 msgid "This machine is being deleted."
 msgstr "యంత్రం తొలగించబడుతోంది."
 
-#: lib/marshall_web/live/terminal_live.ex:484
+#: lib/marshall_web/live/terminal_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
 msgstr "యంత్రం ఆపివుంది. టెర్మినల్ కోసం ప్రారంభించండి. ఫైళ్లు నిలుస్తాయి."
@@ -5794,7 +5795,7 @@ msgstr ""
 "యంత్ర ఇమేజ్‌లో గెస్ట్ ఏజెంట్లు ఇంకా లేవు: SSH, బ్రౌజర్ టెర్మినల్, ఏజెంట్లు "
 "అందుబాటులో లేవు. వాడండి"
 
-#: lib/marshall_web/live/terminal_live.ex:297
+#: lib/marshall_web/live/terminal_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
 msgstr ""
@@ -5932,7 +5933,7 @@ msgstr "సంభాషణలు"
 msgid "Threads are temporarily unavailable. Try again shortly."
 msgstr "సంభాషణలు తాత్కాలికంగా అందుబాటులో లేవు. త్వరలో ప్రయత్నించండి."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:496
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
 #: lib/marshall_web/live/inference_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Time"
@@ -6028,7 +6029,7 @@ msgstr "రకం"
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "ఈ ఖాతాను, దాని %{count} యంత్రాలను తొలగించడానికి ఇమెయిల్ టైప్ చేయండి"
 
-#: lib/marshall_web/live/terminal_live.ex:598
+#: lib/marshall_web/live/terminal_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "సంప్రదించడానికి టైప్ చేయండి"
@@ -6043,7 +6044,7 @@ msgstr "అల్ట్రా"
 msgid "Ultra is for complex, open-ended work."
 msgstr "అల్ట్రా క్లిష్టమైన, విస్తృత పనులకు."
 
-#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
 msgstr ""
@@ -6051,10 +6052,22 @@ msgstr ""
 "ఉండాలి."
 
 #: lib/marshall_web/components/workspace_components.ex:86
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
+#: lib/marshall_web/controllers/audi_login_controller.ex:44
+#: lib/marshall_web/controllers/editor_controller.ex:26
+#: lib/marshall_web/controllers/editor_controller.ex:61
+#: lib/marshall_web/controllers/git_raw_controller.ex:24
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#: lib/marshall_web/controllers/marvin_download_controller.ex:118
+#: lib/marshall_web/controllers/overalls_controller.ex:21
+#: lib/marshall_web/controllers/overalls_controller.ex:25
+#: lib/marshall_web/controllers/overalls_controller.ex:37
+#: lib/marshall_web/controllers/overalls_controller.ex:50
+#: lib/marshall_web/controllers/overalls_controller.ex:54
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
 #: lib/marshall_web/live/machines_live.ex:750
 #: lib/marshall_web/live/machines_live.ex:964
 #: lib/marshall_web/live/machines_live.ex:974
+#: lib/marshall_web/ssh_approval_login.ex:29
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "అందుబాటులో లేదు"
@@ -6065,10 +6078,10 @@ msgstr "అందుబాటులో లేదు"
 #: lib/marshall_web/live/admin/jobs_live.ex:426
 #: lib/marshall_web/live/admin/jobs_live.ex:437
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:791
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
 #: lib/marshall_web/live/inference_live.ex:60
 #: lib/marshall_web/live/inference_live.ex:178
 #: lib/marshall_web/live/inference_live.ex:185
@@ -6096,7 +6109,7 @@ msgstr "తొలగించే ముందు యంత్రం పిన్
 msgid "Unpin this thread's machine before deleting it."
 msgstr "తొలగించే ముందు సంభాషణ యంత్రం పిన్ తీసివేయండి."
 
-#: lib/marshall_web/live/machines_live.ex:1294
+#: lib/marshall_web/live/machines_live.ex:1312
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr ""
@@ -6133,7 +6146,7 @@ msgstr "నవీకరణ సంచిక (ఐచ్ఛికం)"
 #: lib/marshall_web/live/admin/jobs_live.ex:210
 #: lib/marshall_web/live/admin/operations_live.ex:60
 #: lib/marshall_web/live/admin/workloads_live.ex:103
-#: lib/marshall_web/live/overview_live.ex:284
+#: lib/marshall_web/live/overview_live.ex:332
 #: lib/marshall_web/live/threads_live.ex:1674
 #, elixir-autogen, elixir-format
 msgid "Updated"
@@ -6144,7 +6157,7 @@ msgstr "నవీకరించబడింది"
 msgid "Updated every 15 seconds"
 msgstr "ప్రతి 15 సెకన్లకు నవీకరణ"
 
-#: lib/marshall_web/live/machines_live.ex:1244
+#: lib/marshall_web/live/machines_live.ex:1262
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "స్వయంచాలకంగా నవీకరిస్తుంది"
@@ -6209,7 +6222,7 @@ msgstr "వినియోగదారు"
 msgid "Users"
 msgstr "వినియోగదారులు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:506
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "VM"
@@ -6245,6 +6258,7 @@ msgid "VS Code is temporarily unavailable."
 msgstr "VS Code తాత్కాలికంగా అందుబాటులో లేదు."
 
 #: lib/marshall_web/components/workspace_components.ex:519
+#: lib/marshall_web/controllers/editor_controller.ex:17
 #, elixir-autogen, elixir-format
 msgid "VS Code is unavailable for this machine."
 msgstr "ఈ యంత్రానికి VS Code అందుబాటులో లేదు."
@@ -6313,7 +6327,7 @@ msgstr ""
 "వీక్షకులు చదువుతారు. ఆపరేటర్లు సూచనలు పంపుతారు. మేనేజర్లు సంభాషణ పంచుకుని "
 "నిర్వహిస్తారు."
 
-#: lib/marshall_web/live/terminal_live.ex:678
+#: lib/marshall_web/live/terminal_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
 msgstr ""
@@ -6364,7 +6378,7 @@ msgstr "హోస్ట్ బదిలీ స్థానం కోసం వ�
 msgid "Waiting for the machine"
 msgstr "యంత్రం కోసం వేచి ఉంది"
 
-#: lib/marshall_web/live/terminal_live.ex:310
+#: lib/marshall_web/live/terminal_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Waiting for the machine to start…"
 msgstr "యంత్రం ప్రారంభానికి వేచి ఉంది…"
@@ -6597,7 +6611,7 @@ msgstr "ఈ సంభాషణలు చదవవచ్చు. సూచనల�
 msgid "You do not have access to this thread."
 msgstr "ఈ సంభాషణకు ప్రాప్యత లేదు."
 
-#: lib/marshall_web/live/terminal_live.ex:440
+#: lib/marshall_web/live/terminal_live.ex:470
 #, elixir-autogen, elixir-format
 msgid "You do not have terminal access to this machine."
 msgstr "యంత్ర టెర్మినల్ ప్రాప్యత లేదు."
@@ -6690,7 +6704,7 @@ msgstr ""
 "కనిపిస్తాయి; మండలం సేవ్ చేసిన తర్వాత మీతో బృందం, యంత్రం, సంభాషణ "
 "పంచుకునేవారు, నిర్వాహకులు ఇమెయిల్ పక్కన స్థానిక సమయం చూస్తారు."
 
-#: lib/marshall_web/live/terminal_live.ex:453
+#: lib/marshall_web/live/terminal_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
 msgstr ""
@@ -6750,12 +6764,12 @@ msgstr ""
 msgid "Your password has successfully been reset"
 msgstr "పాస్‌వర్డ్ విజయవంతంగా రీసెట్ అయింది"
 
-#: lib/marshall_web/live/terminal_live.ex:581
+#: lib/marshall_web/live/terminal_live.ex:611
 #, elixir-autogen, elixir-format
 msgid "Your personal terminal opens when the machine is ready."
 msgstr "యంత్రం సిద్ధమైనప్పుడు వ్యక్తిగత టెర్మినల్ తెరుచుకుంటుంది."
 
-#: lib/marshall_web/live/terminal_live.ex:446
+#: lib/marshall_web/live/terminal_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Your previous shell has closed. Choose New to open another terminal."
 msgstr "మునుపటి షెల్ మూసివేయబడింది. మరో టెర్మినల్ కోసం కొత్తది ఎంచుకోండి."
@@ -6792,7 +6806,7 @@ msgstr "సైన్ ఇన్ ఇక చెల్లదు. కొత్త ల
 msgid "Your teams"
 msgstr "మీ బృందాలు"
 
-#: lib/marshall_web/live/terminal_live.ex:488
+#: lib/marshall_web/live/terminal_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "Your terminal will open when the machine is running and ready."
 msgstr "యంత్రం నడిచి సిద్ధమైనప్పుడు టెర్మినల్ తెరుచుకుంటుంది."
@@ -6852,7 +6866,7 @@ msgstr "ఈ పనిభార అంతరాయానికి ఆమోది
 msgid "attempt"
 msgstr "ప్రయత్నం"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "ప్రయత్నం %{attempt}"
@@ -6862,7 +6876,7 @@ msgstr "ప్రయత్నం %{attempt}"
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "ప్రయత్నం %{attempt} · నమోదైన వైఫల్యాలు %{count}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:509
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "ప్రచారం"
@@ -6920,7 +6934,7 @@ msgid "email, time zone and your local clock"
 msgstr "ఇమెయిల్, సమయ మండలం, స్థానిక గడియారం"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "ప్రారంభించబడింది"
@@ -6931,7 +6945,7 @@ msgid "example-integration"
 msgstr "ఉదాహరణ-అనుసంధానం"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:364
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "మినహాయించబడింది"
@@ -6941,22 +6955,22 @@ msgstr "మినహాయించబడింది"
 msgid "file"
 msgstr "ఫైల్"
 
-#: lib/marshall_web/live/terminal_live.ex:610
+#: lib/marshall_web/live/terminal_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "find"
 msgstr "కనుగొను"
 
-#: lib/marshall_web/live/terminal_live.ex:628
+#: lib/marshall_web/live/terminal_live.ex:682
 #, elixir-autogen, elixir-format
 msgid "full"
 msgstr "పూర్తి"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:512
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "జాబ్"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:507
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "తరలించు"
@@ -7006,7 +7020,7 @@ msgstr "ఈ Git మిర్రర్ రిఫ్రెష్ చేయి"
 msgid "remove this Git mirror"
 msgstr "ఈ Git మిర్రర్ తొలగించు"
 
-#: lib/marshall_web/live/terminal_live.ex:604
+#: lib/marshall_web/live/terminal_live.ex:658
 #, elixir-autogen, elixir-format
 msgid "rename"
 msgstr "పేరు మార్చు"
@@ -7104,7 +7118,7 @@ msgstr "అవును"
 msgid "· %{value1} reasoning · %{value2}"
 msgstr "· %{value1} తర్కం · %{value2}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:596
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· అంతరాయ ఆమోదం అవసరం"
@@ -7135,7 +7149,7 @@ msgid "← All sections"
 msgstr "← అన్ని విభాగాలు"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:310
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
 #: lib/marshall_web/live/admin/users_live.ex:257
 #: lib/marshall_web/live/machines_live.ex:794
 #: lib/marshall_web/live/machines_live.ex:1060
@@ -7213,7 +7227,7 @@ msgstr "Git సెట్టింగ్‌లు సేవ్ అయ్యాయ
 msgid "Git username"
 msgstr "Git వినియోగదారు పేరు"
 
-#: lib/marshall_web/live/terminal_live.ex:308
+#: lib/marshall_web/live/terminal_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
 msgstr "మెషీన్ విరామంలో ఉంది. దానిని తిరిగి ప్రారంభించండి లేదా ఈ టెర్మినల్ పేజీని మళ్లీ తెరవండి."
@@ -7224,7 +7238,7 @@ msgid "Pause"
 msgstr "విరామం ఇవ్వండి"
 
 #: lib/marshall_web/components/workspace_components.ex:82
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:657
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "విరామంలో ఉంది"
@@ -7239,8 +7253,8 @@ msgstr "మెషీన్‌ను తిరిగి ప్రారంభి�
 msgid "Resuming"
 msgstr "తిరిగి ప్రారంభమవుతోంది"
 
-#: lib/marshall_web/live/terminal_live.ex:110
-#: lib/marshall_web/live/terminal_live.ex:286
+#: lib/marshall_web/live/terminal_live.ex:140
+#: lib/marshall_web/live/terminal_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
 msgstr "మెషీన్ తిరిగి ప్రారంభమవుతోంది; సామర్థ్యం కోసం వేచి ఉంది…"
@@ -7285,54 +7299,54 @@ msgstr "స్వీకరణ ధృవీకరించబడింది"
 msgid "Awaiting GitHub authorization"
 msgstr "GitHub అనుమతి కోసం వేచి ఉంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:576
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr "నిరోధించబడింది: %{reason}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr "క్యాంపెయిన్ ముగిసింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr "క్యాంపెయిన్ అభ్యర్థించబడింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "రద్దు అభ్యర్థించబడింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:594
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr "అభ్యర్థి: %{name}"
 
-#: lib/marshall_web/live/overview_live.ex:231
+#: lib/marshall_web/live/overview_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "మీ ఇన్‌బాక్స్‌ని చూసి, చందాను నిర్ధారించడానికి లింక్‌ను క్లిక్ చేయండి."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:711
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr "రద్దు తర్వాత శుభ్రపరుస్తోంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr "మూలాన్ని శుభ్రపరుస్తోంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:706
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr "క్లోన్ జరుగుతోంది"
 
 #: lib/marshall_web/live/integrations_live.ex:312
 #: lib/marshall_web/live/integrations_live.ex:400
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1129
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "వ్యాఖ్య"
@@ -7368,17 +7382,17 @@ msgstr "%{login} గా కనెక్ట్ అయింది"
 msgid "Continue to Overalls"
 msgstr "Overalls కు కొనసాగండి"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:573
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:577
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr "కావలసినది: %{desired} · గమనించినది: %{observed}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr "గమ్యస్థాన శుభ్రపరిచే పని నిర్ధారించబడింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr "గమ్యస్థాన శుభ్రపరిచే పని అభ్యర్థించబడింది"
@@ -7403,39 +7417,39 @@ msgstr "కనెక్షన్ తొలగించబడింది"
 msgid "Disconnecting GitHub"
 msgstr "GitHub కనెక్షన్ తొలగిస్తోంది"
 
-#: lib/marshall_web/live/overview_live.ex:222
+#: lib/marshall_web/live/overview_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "మూసివేయండి"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:779
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr "సేవ నిలిచిపోయే సమయానికి ఆమోదం అవసరం"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:756
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr "సేవ నిలిచిపోయే సమయం ఆమోదించబడింది"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:434
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "పనిభారం ఖాళీ చేయబడింది"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:433
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "పనిభారం ఖాళీ చేస్తోంది"
 
-#: lib/marshall_web/live/overview_live.ex:232
+#: lib/marshall_web/live/overview_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "చెల్లుబాటు అయ్యే ఇమెయిల్ చిరునామా నమోదు చేయండి."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "పనిభారాన్ని తరలిస్తోంది"
@@ -7445,7 +7459,7 @@ msgstr "పనిభారాన్ని తరలిస్తోంది"
 msgid "Finishing active GitHub requests"
 msgstr "సక్రియ GitHub అభ్యర్థనలను పూర్తి చేస్తోంది"
 
-#: lib/marshall_web/live/overview_live.ex:224
+#: lib/marshall_web/live/overview_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "Overalls మరియు AI గురించి చిట్కాలు, మెళకువలు, తాజా సమాచారం ఇమెయిల్ ద్వారా పొందండి."
@@ -7460,22 +7474,22 @@ msgstr "GitHub కనెక్ట్ అయింది."
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "GitHub కనెక్ట్ చేయలేకపోయింది. Integrations నుండి మళ్లీ ప్రయత్నించండి."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "దిగుమతి చేస్తోంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:776
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr "తగినంత సామర్థ్యం లేదు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr "జాబ్ స్థితి"
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1123
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "లేబుల్‌లు"
@@ -7490,17 +7504,17 @@ msgstr "మెషీన్ మెటాడేటా సేవ్ అయింద
 msgid "Machines excluded from your GitHub identity"
 msgstr "మీ GitHub గుర్తింపు నుండి మినహాయించిన మెషీన్‌లు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr "సాధారణం"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:597
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr "గమనించిన అంతరాయం: %{seconds}s"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:593
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr "గమనించిన అంతరాయం: %{seconds}s (కొనసాగుతోంది)"
@@ -7515,7 +7529,7 @@ msgstr "చర్య"
 msgid "Reconnect required"
 msgstr "మళ్లీ కనెక్ట్ చేయాలి"
 
-#: lib/marshall_web/live/machines_live.ex:1115
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "ప్రతిబింబ మెటాడేటా"
@@ -7530,49 +7544,49 @@ msgstr "GitHub కనెక్షన్‌ను నవీకరిస్తో�
 msgid "Relocation"
 msgstr "స్థలాంతరణ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr "స్థలాంతరణ ఖరారైంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr "స్థలాంతరణ జరుగుతోంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:759
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr "స్థలాంతరణ ప్రారంభమైంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr "మూలాన్ని పునరుద్ధరిస్తోంది"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:435
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "తిరిగి ప్రారంభమైంది"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:436
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:655
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "విరమించబడింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr "గమ్యస్థాన బూట్‌ను మళ్లీ ప్రయత్నిస్తోంది"
 
-#: lib/marshall_web/live/machines_live.ex:1118
+#: lib/marshall_web/live/machines_live.ex:1135
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "మెటాడేటా సేవ్ చేయండి"
 
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1132
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "ఏజెంట్‌ల కోసం సంక్షిప్త వివరణ"
@@ -7587,37 +7601,37 @@ msgstr "గెస్ట్ ప్రతిబింబం కోసం సంక
 msgid "Signing you in"
 msgstr "మిమ్మల్ని సైన్ ఇన్ చేస్తోంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr "మూలాన్ని శుభ్రపరిచే పని నిర్ధారించబడింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:734
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr "మూలాన్ని శుభ్రపరిచే పని అభ్యర్థించబడింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:684
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr "మూలం సిద్ధంగా ఉంది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:687
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "మూలం పునరుద్ధరించబడింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:700
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:771
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr "మూలం అందుబాటులో లేదు"
 
-#: lib/marshall_web/live/overview_live.ex:220
+#: lib/marshall_web/live/overview_live.ex:229
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "తాజా విశేషాలు తెలుసుకోండి"
 
-#: lib/marshall_web/live/overview_live.ex:227
+#: lib/marshall_web/live/overview_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "చందా పొందండి"
@@ -7627,37 +7641,37 @@ msgstr "చందా పొందండి"
 msgid "Temporarily unavailable"
 msgstr "తాత్కాలికంగా అందుబాటులో లేదు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr "బదిలీ బిజీగా ఉంది"
 
-#: lib/marshall_web/live/overview_live.ex:234
+#: lib/marshall_web/live/overview_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "ఎప్పుడైనా చందాను రద్దు చేసుకోవచ్చు."
 
-#: lib/marshall_web/live/overview_live.ex:233
+#: lib/marshall_web/live/overview_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "వార్తాలేఖ సేవను చేరుకోలేకపోయాము. తర్వాత మళ్లీ ప్రయత్నించండి."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr "పనిభారం మారింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:768
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr "పనిభారం స్థిరంగా లేదు"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:694
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr "పనిభారం గమనించబడింది"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:762
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr "పనిభారం పరిష్కరించబడింది"
@@ -7672,7 +7686,7 @@ msgstr "మీ ఇమెయిల్ లింక్ ధృవీకరించ
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "మీ మెషీన్‌లు కనెక్ట్ చేసిన GitHub గుర్తింపును స్వయంచాలకంగా ఉపయోగిస్తాయి. భాగస్వామ్య మెషీన్ వాడే సహకారులు దాని యజమాని GitHub అనుమతులను ఉపయోగించవచ్చు. వేరుచేసిన మెషీన్‌లకు అనామక పబ్లిక్ GitHub యాక్సెస్ కొనసాగుతుంది."
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1125
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "ప్రొడక్షన్, ప్రాజెక్ట్-పేరు"
@@ -7702,78 +7716,77 @@ msgstr "ఈ కీ పేరు మార్చలేకపోయాము. గ�
 msgid "Administrative changes require an administrator."
 msgstr "నిర్వాహక మార్పులకు నిర్వాహకుడై ఉండాలి."
 
-#: lib/marshall_web/live_admin_auth.ex:139
+#: lib/marshall_web/live_admin_auth.ex:142
 #, elixir-autogen, elixir-format
 msgid "Administrative changes are not authorized."
 msgstr "నిర్వాహక మార్పులకు అధికారం లేదు."
 
-#: lib/marshall_web/live_admin_auth.ex:186
+#: lib/marshall_web/live_admin_auth.ex:190
 #, elixir-autogen, elixir-format
 msgid "Finish or cancel the current verification first."
 msgstr "ముందుగా ప్రస్తుత ధృవీకరణను పూర్తి చేయండి లేదా రద్దు చేయండి."
 
-#: lib/marshall_web/live_admin_auth.ex:199
+#: lib/marshall_web/live_admin_auth.ex:205
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "చెల్లని నిర్వాహక అభ్యర్థన."
 
-#: lib/marshall_web/controllers/audi_login_controller.ex:34
-#: lib/marshall_web/controllers/editor_controller.ex:52
+#: lib/marshall_web/live/terminal_live.ex:629
 #, elixir-autogen, elixir-format
-msgid "Sign-in unavailable"
-msgstr "సైన్ ఇన్ అందుబాటులో లేదు"
+msgid "Android display"
+msgstr "Android డిస్‌ప్లే"
+
+#: lib/marshall_web/live/terminal_live.ex:85
+#: lib/marshall_web/live/terminal_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Android డిస్‌ప్లే అందుబాటులో లేదు."
+
+#: lib/marshall_web/live/terminal_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "డిస్‌ప్లే రిలే టికెట్ జారీ చేయబడింది."
 
 #: lib/marshall_web/controllers/overalls_controller.ex:76
 #, elixir-autogen, elixir-format
 msgid "Installer trust unavailable"
 msgstr "ఇన్‌స్టాలర్ విశ్వసనీయత తనిఖీ అందుబాటులో లేదు"
 
+#: lib/marshall_web/live/terminal_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "డిస్‌ప్లే తెరవండి"
+
+#: lib/marshall_web/live/terminal_live.ex:636
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "నియంత్రణను అభ్యర్థించండి"
+
 #: lib/marshall_web/controllers/overalls_controller.ex:89
 #, elixir-autogen, elixir-format
 msgid "SSH trust unavailable"
 msgstr "SSH విశ్వసనీయత తనిఖీ అందుబాటులో లేదు"
 
-#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#: lib/marshall_web/controllers/audi_login_controller.ex:35
+#: lib/marshall_web/controllers/editor_controller.ex:52
 #, elixir-autogen, elixir-format
-msgid "This repository link could not be launched. Open the link again."
-msgstr "ఈ రిపోజిటరీ లింక్ నుంచి ప్రారంభించలేకపోయాము. లింక్‌ను మళ్లీ తెరవండి."
+msgid "Sign-in unavailable"
+msgstr "సైన్ ఇన్ అందుబాటులో లేదు"
 
-
-#: lib/marshall_web/controllers/repository_launch_controller.ex:51
-#, elixir-autogen, elixir-format
-msgid "This launch could not be completed. Sign in and open the link again."
-msgstr "ఈ ప్రారంభాన్ని పూర్తి చేయలేకపోయాము. సైన్ ఇన్ చేసి లింక్‌ను మళ్లీ తెరవండి."
-
-#: lib/marshall_web/live/terminal_live.ex:79
-#, elixir-autogen, elixir-format
-msgid "Display relay ticket issued."
-msgstr "డిస్‌ప్లే రిలే టికెట్ జారీ చేయబడింది."
-
-#: lib/marshall_web/live/terminal_live.ex:83
-#: lib/marshall_web/live/terminal_live.ex:88
-#, elixir-autogen, elixir-format
-msgid "Android display is unavailable."
-msgstr "Android డిస్‌ప్లే అందుబాటులో లేదు."
-
-#: lib/marshall_web/live/terminal_live.ex:618
-#, elixir-autogen, elixir-format
-msgid "Android display"
-msgstr "Android డిస్‌ప్లే"
-
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "The software-rendered Android display uses the machine relay."
 msgstr "సాఫ్ట్‌వేర్‌తో రెండర్ చేసిన Android డిస్‌ప్లే మెషీన్ రిలేను ఉపయోగిస్తుంది."
 
-#: lib/marshall_web/live/terminal_live.ex:622
+#: lib/marshall_web/controllers/repository_launch_controller.ex:55
 #, elixir-autogen, elixir-format
-msgid "Open display"
-msgstr "డిస్‌ప్లే తెరవండి"
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "ఈ ప్రారంభాన్ని పూర్తి చేయలేకపోయాము. సైన్ ఇన్ చేసి లింక్‌ను మళ్లీ తెరవండి."
 
-#: lib/marshall_web/live/terminal_live.ex:625
+#: lib/marshall_web/controllers/repository_launch_controller.ex:23
 #, elixir-autogen, elixir-format
-msgid "Request control"
-msgstr "నియంత్రణను అభ్యర్థించండి"
+msgid "This repository link could not be launched. Open the link again."
+msgstr "ఈ రిపోజిటరీ లింక్ నుంచి ప్రారంభించలేకపోయాము. లింక్‌ను మళ్లీ తెరవండి."
 
 #: lib/marshall_web/controllers/docs_controller.ex:35
 #, elixir-autogen, elixir-format
@@ -7789,3 +7802,8 @@ msgstr "Android డిస్‌ప్లే కాన్వాస్"
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
 msgstr "డిస్‌ప్లే రిలే కోసం వేచి ఉంది."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr "Mila‌ను తెరవండి"

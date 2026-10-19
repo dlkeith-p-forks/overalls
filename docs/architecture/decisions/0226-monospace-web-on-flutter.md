@@ -54,8 +54,17 @@ inaccurate for `↻` and `⎘`; browsers fall back to another font for them.
 
 `mila/app/lib/ui/{tokens,theme,widgets}.dart`;
 [`mila/app/test/design_system_test.dart`](../../../mila/app/test/design_system_test.dart) and `test/golden_test.dart` with
-`test/goldens/`; run by the `mila-test` Nix check. Remaining: tables, tabs,
-segmented controls and the terminal view for later milestones.
+`test/goldens/`; run by the `mila-test` Nix check.
+
+The M2–M4 screens add `Segmented` and `TopTabs` to
+[`widgets.dart`](../../../mila/app/lib/ui/widgets.dart) and a terminal theme,
+`monoTerminalTheme`, to [`tokens.dart`](../../../mila/app/lib/ui/tokens.dart).
+The theme takes its foreground, background, cursor and selection colours from
+the tokens and the ANSI palette from xterm's defaults, as the web terminal
+does. The terminal view stays left to right under right-to-left locales.
+The new `terminal_ar.png` and `thread_ar.png` goldens and the regenerated
+machine goldens (the machine list gained a threads button) are **not yet
+generated or run**. Remaining: tables.
 
 ## Open questions
 

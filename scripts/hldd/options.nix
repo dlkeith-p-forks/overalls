@@ -10,7 +10,7 @@ let
   safely = value: let result = builtins.tryEval (builtins.deepSeq value value);
     in if result.success then result.value else { _type = "literalExpression"; text = "<derived from required configuration>"; };
   owned = o: lib.hasPrefix "overalls." o.name ||
-    builtins.match "services\\.(overalls[^.]*|marshall[^.]*|lilly[^.]*|audi[^.]*|brady|porsche|ziggy|galileo|enrico|peach|underclass)\\..*" o.name != null;
+    builtins.match "services\\.(overalls[^.]*|marshall[^.]*|lilly[^.]*|audi[^.]*|brady|porsche|ziggy|galileo|enrico|peach|susan|underclass)\\..*" o.name != null;
 in map (o: {
   inherit (o) name type;
   description = if (o.description or null) == null then "No additional description is declared by the module." else o.description;

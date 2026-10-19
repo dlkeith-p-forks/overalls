@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/marshall_web/live/machines_live.ex:1166
+#: lib/marshall_web/live/machines_live.ex:1184
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr " und es werden mehr"
@@ -45,12 +45,12 @@ msgstr[1] "%{count} registrierte Schlüssel"
 msgid "%{count} · %{enabled} enabled"
 msgstr "%{count} · %{enabled} aktiviert"
 
-#: lib/marshall_web/live/machines_live.ex:1163
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} Sekunden%{suffix}"
 
-#: lib/marshall_web/live/terminal_live.ex:548
+#: lib/marshall_web/live/terminal_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
@@ -64,8 +64,8 @@ msgstr "%{value1} CPU"
 
 #: lib/marshall_web/live/machines_live.ex:968
 #: lib/marshall_web/live/machines_live.ex:971
-#: lib/marshall_web/live/overview_live.ex:258
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:299
+#: lib/marshall_web/live/overview_live.ex:302
 #: lib/marshall_web/live/resize_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -94,7 +94,7 @@ msgid "%{value1} reasoning"
 msgstr "Denktiefe %{value1}"
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
@@ -151,12 +151,12 @@ msgstr "**** (nur schreibbar)"
 msgid "+ Create machine"
 msgstr "+ Maschine erstellen"
 
-#: lib/marshall_web/live/terminal_live.ex:514
+#: lib/marshall_web/live/terminal_live.ex:544
 #, elixir-autogen, elixir-format
 msgid "+ New"
 msgstr "+ Neu"
 
-#: lib/marshall_web/live/machines_live.ex:1228
+#: lib/marshall_web/live/machines_live.ex:1246
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ Klon einreihen"
@@ -243,7 +243,7 @@ msgstr ""
 "Eine ausgewählte Fertigkeit ist nicht mehr verfügbar. Laden Sie Fertigkeiten"
 " neu und wählen Sie deren aktuelle Quelle."
 
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "Eine kleine Vorschau. Alle zugänglichen Maschinen finden Sie unter"
@@ -260,7 +260,7 @@ msgstr ""
 "Ein Team hat einen Eigentümer. Das Eigentum geht erst über, wenn die "
 "eingeladene Person annimmt; der bisherige Eigentümer wird Administrator."
 
-#: lib/marshall_web/live/terminal_live.ex:620
+#: lib/marshall_web/live/terminal_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "A+"
 msgstr "A+"
@@ -359,7 +359,7 @@ msgstr "Zugriff aktualisiert."
 msgid "Account"
 msgstr "Konto"
 
-#: lib/marshall_web/live/terminal_live.ex:684
+#: lib/marshall_web/live/terminal_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Account email"
 msgstr "Konto-E-Mail"
@@ -403,7 +403,7 @@ msgstr "Aktion"
 msgid "Actions"
 msgstr "Aktionen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:656
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
 #: lib/marshall_web/live/threads_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Active"
@@ -528,7 +528,7 @@ msgstr "Administratoraktionen"
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:357
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "Zulassung"
@@ -544,7 +544,7 @@ msgid "Admission settings were invalid or the node is not ready."
 msgstr ""
 "Die Zulassungseinstellungen waren ungültig oder der Knoten ist nicht bereit."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr ""
@@ -610,7 +610,7 @@ msgstr "Alle Threads"
 msgid "All visible"
 msgstr "Alle sichtbaren"
 
-#: lib/marshall_web/live/terminal_live.ex:691
+#: lib/marshall_web/live/terminal_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Allow viewing"
 msgstr "Ansehen erlauben"
@@ -691,7 +691,7 @@ msgstr "Darstellung"
 msgid "Apply"
 msgstr "Anwenden"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:394
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "Zulassungseinstellungen anwenden"
@@ -718,7 +718,7 @@ msgstr ""
 msgid "Approve CLI access"
 msgstr "CLI-Zugriff genehmigen"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:68
+#: lib/marshall_web/live/ssh_approval_live.ex:82
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr "SSH-Schlüssel genehmigen"
@@ -728,17 +728,17 @@ msgstr "SSH-Schlüssel genehmigen"
 msgid "Approve agent CLI"
 msgstr "Agenten-CLI genehmigen"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:94
+#: lib/marshall_web/live/ssh_approval_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr "Schlüssel genehmigen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:616
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "Ausfallzeit der Verlagerung genehmigen"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:71
+#: lib/marshall_web/live/ssh_approval_live.ex:85
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr ""
@@ -746,7 +746,7 @@ msgstr ""
 "haben und der Fingerabdruck mit Ihrem SSH-Client übereinstimmt."
 
 #: lib/marshall_web/live/agent_cli_approval_live.ex:74
-#: lib/marshall_web/live/ssh_approval_live.ex:92
+#: lib/marshall_web/live/ssh_approval_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "Wird genehmigt…"
@@ -864,7 +864,7 @@ msgstr "Der Auditverlauf ist nicht verfügbar."
 msgid "Audit kinds"
 msgstr "Auditarten"
 
-#: lib/marshall_web/live/terminal_live.ex:615
+#: lib/marshall_web/live/terminal_live.ex:669
 #, elixir-autogen, elixir-format
 msgid "A−"
 msgstr "A−"
@@ -910,7 +910,7 @@ msgid "Binary content"
 msgstr "Binärer Inhalt"
 
 #: lib/marshall_web/components/workspace_components.ex:425
-#: lib/marshall_web/live/terminal_live.ex:587
+#: lib/marshall_web/live/terminal_live.ex:617
 #, elixir-autogen, elixir-format
 msgid "Boot log"
 msgstr "Startprotokoll"
@@ -933,7 +933,7 @@ msgstr ""
 "Quelle wird kurz angehalten, damit ihre Festplatte sicher erfasst werden "
 "kann."
 
-#: lib/marshall_web/live/overview_live.ex:244
+#: lib/marshall_web/live/overview_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr ""
@@ -963,7 +963,7 @@ msgstr ""
 "Entwickeln Sie etwas, beheben Sie einen Fehler, erkunden Sie eine Idee…"
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:295
 #: lib/marshall_web/live/resize_live.ex:288
 #: lib/marshall_web/live/resize_live.ex:328
 #: lib/marshall_web/live/resize_live.ex:413
@@ -978,7 +978,7 @@ msgstr "CPU"
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "CPU nach Reservierungen"
@@ -990,28 +990,28 @@ msgstr ""
 "CPU und Arbeitsspeicher können erhöht oder verringert werden. Die Festplatte"
 " kann nur vergrößert werden."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:405
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "CPU-Spielraum"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "CPU-Zusatzbedarf (Kerne)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "Kampagne"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:524
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "Kampagnenverlauf"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:488
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr ""
@@ -1026,7 +1026,7 @@ msgstr "Darf"
 #: lib/marshall_web/components/clone_components.ex:110
 #: lib/marshall_web/components/layouts.ex:118
 #: lib/marshall_web/live/machines_live.ex:939
-#: lib/marshall_web/live/terminal_live.ex:697
+#: lib/marshall_web/live/terminal_live.ex:751
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -1038,7 +1038,7 @@ msgstr ""
 "Abbruch konnte nicht angenommen werden. Die Größen werden bereits angewendet"
 " oder der Maschinenzustand ist unbestätigt."
 
-#: lib/marshall_web/live/machines_live.ex:1178
+#: lib/marshall_web/live/machines_live.ex:1196
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "Verlagerung abbrechen"
@@ -1067,7 +1067,7 @@ msgstr ""
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
 #: lib/marshall_web/live/admin/jobs_live.ex:432
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:717
 #: lib/marshall_web/live/resize_live.ex:503
 #: lib/marshall_web/live/resize_live.ex:540
 #: lib/marshall_web/live/resize_live.ex:548
@@ -1108,7 +1108,7 @@ msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr ""
 "Abbruch: Stoppbestätigung wird abgewartet; die Größen bleiben unverändert."
 
-#: lib/marshall_web/live/machines_live.ex:1176
+#: lib/marshall_web/live/machines_live.ex:1194
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "Wird abgebrochen…"
@@ -1123,7 +1123,7 @@ msgstr "Kapazitätserklärung"
 msgid "Capacity information is temporarily unavailable."
 msgstr "Kapazitätsinformationen sind vorübergehend nicht verfügbar."
 
-#: lib/marshall_web/live/overview_live.ex:261
+#: lib/marshall_web/live/overview_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "Beim Erstellen einer Maschine wird die Kapazität erneut geprüft."
@@ -1163,13 +1163,13 @@ msgstr ""
 "Prüfen Sie Ihre E-Mails auf einen Anmeldelink. Ihr Konto wird bei der "
 "Anmeldung automatisch erstellt."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
 #: lib/marshall_web/live/machines_live.ex:655
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "Zielbereitschaft wird geprüft"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
 #: lib/marshall_web/live/machines_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
@@ -1230,7 +1230,7 @@ msgstr "Klonen abgebrochen"
 msgid "Clone complete"
 msgstr "Klonen abgeschlossen"
 
-#: lib/marshall_web/live/machines_live.ex:1198
+#: lib/marshall_web/live/machines_live.ex:1216
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "Maschine klonen"
@@ -1245,12 +1245,12 @@ msgstr "Klonen erfordert Aufmerksamkeit"
 msgid "Clone queued. You can queue another copy."
 msgstr "Klon eingereiht. Sie können eine weitere Kopie einreihen."
 
-#: lib/marshall_web/live/machines_live.ex:1243
+#: lib/marshall_web/live/machines_live.ex:1261
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "Klonanfragen"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1269
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr ""
@@ -1274,18 +1274,18 @@ msgstr "Schließen"
 msgid "Close navigation"
 msgstr "Navigation schließen"
 
-#: lib/marshall_web/live/terminal_live.ex:654
+#: lib/marshall_web/live/terminal_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Close search"
 msgstr "Suche schließen"
 
 #: lib/marshall_web/live/admin/access_live.ex:224
-#: lib/marshall_web/live/terminal_live.ex:569
+#: lib/marshall_web/live/terminal_live.ex:599
 #, elixir-autogen, elixir-format
 msgid "Close session"
 msgstr "Sitzung schließen"
 
-#: lib/marshall_web/live/terminal_live.ex:568
+#: lib/marshall_web/live/terminal_live.ex:598
 #, elixir-autogen, elixir-format
 msgid "Close terminal %{value1}"
 msgstr "Terminal %{value1} schließen"
@@ -1295,7 +1295,7 @@ msgstr "Terminal %{value1} schließen"
 msgid "Close this SSH session?"
 msgstr "Diese SSH-Sitzung schließen?"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:533
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "Geschlossen"
@@ -1354,7 +1354,7 @@ msgstr ""
 
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:431
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
 #: lib/marshall_web/live/resize_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Complete"
@@ -1381,7 +1381,7 @@ msgstr "Bestätigte Ressourcen"
 msgid "Connect"
 msgstr "Verbinden"
 
-#: lib/marshall_web/live/overview_live.ex:273
+#: lib/marshall_web/live/overview_live.ex:320
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "Integration verbinden ↗"
@@ -1391,7 +1391,7 @@ msgstr "Integration verbinden ↗"
 msgid "Connect from your computer"
 msgstr "Von Ihrem Computer verbinden"
 
-#: lib/marshall_web/live/terminal_live.ex:595
+#: lib/marshall_web/live/terminal_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "Connecting…"
 msgstr "Verbindung wird hergestellt…"
@@ -1428,7 +1428,7 @@ msgstr ""
 msgid "Context reload queued."
 msgstr "Kontextneuladen eingereiht."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:462
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "Planung fortsetzen"
@@ -1481,13 +1481,13 @@ msgstr "Installationsbefehl für Windows PowerShell kopieren"
 msgid "Copy machine ID"
 msgstr "Maschinen-ID kopieren"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "Reservierungen für Kopieren/Größenänderung"
 
 #: lib/marshall_web/components/clone_components.ex:254
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "Wird kopiert"
@@ -1626,7 +1626,7 @@ msgstr ""
 msgid "Create a machine"
 msgstr "Maschine erstellen"
 
-#: lib/marshall_web/live/machines_live.ex:1203
+#: lib/marshall_web/live/machines_live.ex:1221
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr ""
@@ -1662,7 +1662,7 @@ msgstr "Team erstellen"
 msgid "Create thread"
 msgstr "Thread erstellen"
 
-#: lib/marshall_web/live/overview_live.ex:173
+#: lib/marshall_web/live/overview_live.ex:175
 #, elixir-autogen, elixir-format
 msgid "Create your first machine"
 msgstr "Erste Maschine erstellen"
@@ -1715,7 +1715,7 @@ msgstr ""
 "Aktueller Spielraum: %{value1} vCPU · %{value2} GiB Arbeitsspeicher · "
 "%{value3} GiB Festplatte"
 
-#: lib/marshall_web/live/overview_live.ex:253
+#: lib/marshall_web/live/overview_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "Aktueller Bereitstellungsspielraum"
@@ -1756,7 +1756,7 @@ msgstr "Dunkel"
 msgid "Decline"
 msgstr "Ablehnen"
 
-#: lib/marshall_web/live/terminal_live.ex:614
+#: lib/marshall_web/live/terminal_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Decrease terminal font size"
 msgstr "Terminalschrift verkleinern"
@@ -1767,18 +1767,18 @@ msgid "Delegated a task"
 msgstr "Aufgabe delegiert"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:217
-#: lib/marshall_web/live/machines_live.ex:1290
+#: lib/marshall_web/live/machines_live.ex:1308
 #: lib/marshall_web/live/threads_live.ex:1859
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Löschen"
 
-#: lib/marshall_web/live/machines_live.ex:1275
+#: lib/marshall_web/live/machines_live.ex:1293
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "Maschine löschen"
 
-#: lib/marshall_web/live/machines_live.ex:1288
+#: lib/marshall_web/live/machines_live.ex:1306
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr ""
@@ -1791,7 +1791,7 @@ msgid "Delete user and machines"
 msgstr "Benutzer und Maschinen löschen"
 
 #: lib/marshall_web/components/workspace_components.ex:84
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "Gelöscht"
@@ -1803,7 +1803,7 @@ msgstr "Gelöscht"
 msgid "Deleting"
 msgstr "Wird gelöscht"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:714
 #: lib/marshall_web/live/machines_live.ex:661
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
@@ -1816,13 +1816,13 @@ msgstr ""
 "Beschreiben Sie eine Aufgabe. Ihr Agent erhält eine Maschine und beginnt die"
 " Arbeit."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
 #: lib/marshall_web/live/machines_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "Zielstart fehlgeschlagen; Quellkopie aufbewahrt"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
 #: lib/marshall_web/live/machines_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
@@ -1846,7 +1846,7 @@ msgstr ""
 msgid "Detach"
 msgstr "Trennen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:498
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
 #: lib/marshall_web/live/admin/workloads_live.ex:150
 #: lib/marshall_web/live/inference_live.ex:154
 #, elixir-autogen, elixir-format
@@ -1877,7 +1877,7 @@ msgid "Disabled"
 msgstr "Deaktiviert"
 
 #: lib/marshall_web/live/machines_live.ex:970
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:301
 #: lib/marshall_web/live/resize_live.ex:292
 #: lib/marshall_web/live/resize_live.ex:344
 #: lib/marshall_web/live/resize_live.ex:447
@@ -1896,7 +1896,7 @@ msgstr "Festplatte (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "Festplatte (GiB) — Höchstens 500 GiB"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "Festplatte nach Reservierungen"
@@ -1921,7 +1921,7 @@ msgstr "Dokumentation"
 msgid "Download raw file ↗"
 msgstr "Rohdatei herunterladen ↗"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:617
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "Ausfallzeit für diese Workload-Revision genehmigt"
@@ -1938,7 +1938,7 @@ msgid "Email"
 msgstr "E-Mail"
 
 #: lib/marshall_web/live/admin/users_live.ex:146
-#: lib/marshall_web/live/overview_live.ex:226
+#: lib/marshall_web/live/overview_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "E-Mail-Adresse"
@@ -1975,8 +1975,8 @@ msgstr "Beenden Sie diese Verifizierung vor Ablauf der fünfzehn Minuten."
 msgid "Ends that person's access to this machine."
 msgstr "Beendet den Zugriff dieser Person auf diese Maschine."
 
-#: lib/marshall_web/live/terminal_live.ex:625
-#: lib/marshall_web/live/terminal_live.ex:627
+#: lib/marshall_web/live/terminal_live.ex:679
+#: lib/marshall_web/live/terminal_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "Vollbild öffnen"
@@ -2005,17 +2005,17 @@ msgstr ""
 " erfordert eine Genehmigung für jeden Workload."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:425
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:438
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "Evakuierungskampagne"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:485
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "Evakuierungsverlauf"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:497
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "Ereignis"
@@ -2082,7 +2082,7 @@ msgstr "Läuft ab"
 msgid "Explain capacity"
 msgstr "Kapazität erklären"
 
-#: lib/marshall_web/live/overview_live.ex:275
+#: lib/marshall_web/live/overview_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "Nutzung erkunden ↗"
@@ -2094,7 +2094,7 @@ msgstr "KI-Nutzung exportieren"
 
 #: lib/marshall_web/components/workspace_components.ex:83
 #: lib/marshall_web/live/admin/jobs_live.ex:16
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:663
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
 #: lib/marshall_web/live/threads_live.ex:1664
 #: lib/marshall_web/live/threads_live.ex:2632
 #, elixir-autogen, elixir-format
@@ -2108,12 +2108,12 @@ msgstr "Fehlgeschlagen"
 msgid "Field notes"
 msgstr "Feldnotizen"
 
-#: lib/marshall_web/live/machines_live.ex:1199
+#: lib/marshall_web/live/machines_live.ex:1217
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "Dateien und gespeicherte Anmeldedaten sind in der Kopie enthalten"
 
-#: lib/marshall_web/live/machines_live.ex:1233
+#: lib/marshall_web/live/machines_live.ex:1251
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "Dateien und gespeicherte Anmeldedaten sind in der Kopie enthalten."
@@ -2146,12 +2146,12 @@ msgstr "Befehl suchen"
 msgid "Find a task…"
 msgstr "Aufgabe suchen…"
 
-#: lib/marshall_web/live/terminal_live.ex:639
+#: lib/marshall_web/live/terminal_live.ex:693
 #, elixir-autogen, elixir-format
 msgid "Find in scrollback"
 msgstr "Im Terminalverlauf suchen"
 
-#: lib/marshall_web/live/overview_live.ex:274
+#: lib/marshall_web/live/overview_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "Finden Sie Ihr Team ↗"
@@ -2188,13 +2188,13 @@ msgstr "KI-Nutzung der Flotte"
 msgid "Fleet workloads"
 msgstr "Flotten-Workloads"
 
-#: lib/marshall_web/live/terminal_live.ex:661
+#: lib/marshall_web/live/terminal_live.ex:715
 #, elixir-autogen, elixir-format
 msgid "Follow boot output"
 msgstr "Startausgabe verfolgen"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "Aktuell"
@@ -2308,7 +2308,7 @@ msgstr "HTTPS-Ziel"
 msgid "Handbook contents"
 msgstr "Handbuchinhalt"
 
-#: lib/marshall_web/live/overview_live.ex:264
+#: lib/marshall_web/live/overview_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "Der Spielraum ist vorübergehend nicht verfügbar."
@@ -2423,7 +2423,7 @@ msgstr "Unvollständige KI-Berichte"
 msgid "Incorrect email or password"
 msgstr "E-Mail oder Passwort falsch"
 
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:673
 #, elixir-autogen, elixir-format
 msgid "Increase terminal font size"
 msgstr "Terminalschrift vergrößern"
@@ -2584,7 +2584,7 @@ msgid "LLM index"
 msgstr "LLM-Index"
 
 #: lib/marshall_web/live/account_live.ex:722
-#: lib/marshall_web/live/ssh_approval_live.ex:84
+#: lib/marshall_web/live/ssh_approval_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "Bezeichnung (optional)"
@@ -2636,12 +2636,12 @@ msgstr "Wird gestartet"
 msgid "Launching repository"
 msgstr "Repository wird gestartet"
 
-#: lib/marshall_web/live/machines_live.ex:1218
+#: lib/marshall_web/live/machines_live.ex:1236
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "Leer lassen, um einen Namen zu erzeugen"
 
-#: lib/marshall_web/live/machines_live.ex:1231
+#: lib/marshall_web/live/machines_live.ex:1249
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "Leer lassen, um einen Namen zu erzeugen."
@@ -2755,14 +2755,14 @@ msgstr "Maschine getrennt."
 msgid "Machine generations"
 msgstr "Maschinengenerationen"
 
-#: lib/marshall_web/live/terminal_live.ex:305
+#: lib/marshall_web/live/terminal_live.ex:335
 #, elixir-autogen, elixir-format
 msgid "Machine is stopping or stopped. Choose Start to open a terminal."
 msgstr ""
 "Die Maschine wird angehalten oder ist angehalten. Wählen Sie Starten, um ein"
 " Terminal zu öffnen."
 
-#: lib/marshall_web/live/terminal_live.ex:47
+#: lib/marshall_web/live/terminal_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "Machine not found."
 msgstr "Maschine nicht gefunden."
@@ -2797,7 +2797,7 @@ msgstr "Maschine angefordert."
 msgid "Machine settings"
 msgstr "Maschineneinstellungen"
 
-#: lib/marshall_web/live/terminal_live.ex:302
+#: lib/marshall_web/live/terminal_live.ex:332
 #, elixir-autogen, elixir-format
 msgid "Machine startup failed. Check the machine status and boot log."
 msgstr ""
@@ -2823,7 +2823,7 @@ msgstr "Maschine:"
 #: lib/marshall_web/components/layouts.ex:437
 #: lib/marshall_web/live/machines_live.ex:105
 #: lib/marshall_web/live/machines_live.ex:685
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "Maschinen"
@@ -2833,7 +2833,7 @@ msgstr "Maschinen"
 msgid "Machines are temporarily unavailable."
 msgstr "Maschinen sind vorübergehend nicht verfügbar."
 
-#: lib/marshall_web/live/overview_live.ex:215
+#: lib/marshall_web/live/overview_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr ""
@@ -2861,7 +2861,7 @@ msgstr "Hauptbereich"
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:637
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "Wartungsseiten"
@@ -2881,7 +2881,7 @@ msgstr "Zum Administrator machen"
 msgid "Make it yours"
 msgstr "Machen Sie es zu Ihrem"
 
-#: lib/marshall_web/live/overview_live.ex:268
+#: lib/marshall_web/live/overview_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "Fühlen Sie sich wie zu Hause"
@@ -2896,7 +2896,7 @@ msgstr "Machen Sie es sich bequem"
 msgid "Manage members and team machines."
 msgstr "Mitglieder und Teammaschinen verwalten."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:97
+#: lib/marshall_web/live/ssh_approval_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr "SSH-Schlüssel verwalten"
@@ -2942,7 +2942,7 @@ msgid "Match this request code with your terminal before approving:"
 msgstr ""
 "Vergleichen Sie diesen Anfragecode vor der Genehmigung mit Ihrem Terminal:"
 
-#: lib/marshall_web/live/machines_live.ex:1158
+#: lib/marshall_web/live/machines_live.ex:1176
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr ""
@@ -2977,7 +2977,7 @@ msgid "Membership updated."
 msgstr "Mitgliedschaft aktualisiert."
 
 #: lib/marshall_web/live/machines_live.ex:967
-#: lib/marshall_web/live/overview_live.ex:258
+#: lib/marshall_web/live/overview_live.ex:298
 #: lib/marshall_web/live/resize_live.ex:289
 #: lib/marshall_web/live/resize_live.ex:334
 #: lib/marshall_web/live/resize_live.ex:441
@@ -2992,12 +2992,12 @@ msgstr "Arbeitsspeicher"
 msgid "Memory (MiB)"
 msgstr "Arbeitsspeicher (MiB)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "Arbeitsspeicher nach Reservierungen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:406
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "Arbeitsspeicherspielraum"
@@ -3037,7 +3037,7 @@ msgstr "Spiegelinhalt ist nicht verfügbar."
 msgid "Mirrors"
 msgstr "Spiegel"
 
-#: lib/marshall_web/live/machines_live.ex:1149
+#: lib/marshall_web/live/machines_live.ex:1167
 #: lib/marshall_web/live/threads_live.ex:1407
 #, elixir-autogen, elixir-format
 msgid "Mode"
@@ -3071,20 +3071,20 @@ msgstr "Verlagerung abgebrochen; Bereinigung abgeschlossen"
 msgid "Move complete"
 msgstr "Verlagerung abgeschlossen"
 
-#: lib/marshall_web/live/machines_live.ex:1131
+#: lib/marshall_web/live/machines_live.ex:1149
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr ""
 "Diese Maschine auf einen automatisch ausgewählten Host verlagern? Sie kann "
 "kurzzeitig nicht verfügbar sein."
 
-#: lib/marshall_web/live/machines_live.ex:1136
+#: lib/marshall_web/live/machines_live.ex:1154
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "Auf anderen Host verlagern"
 
 #: lib/marshall_web/live/account_live.ex:724
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "Mein Laptop"
@@ -3117,7 +3117,7 @@ msgstr ""
 msgid "Needs attention"
 msgstr "Erfordert Aufmerksamkeit"
 
-#: lib/marshall_web/live/machines_live.ex:1217
+#: lib/marshall_web/live/machines_live.ex:1235
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "Neuer Maschinenname (optional)"
@@ -3134,7 +3134,7 @@ msgstr "Neue Größen"
 msgid "New thread"
 msgstr "Neuer Thread"
 
-#: lib/marshall_web/live/terminal_live.ex:649
+#: lib/marshall_web/live/terminal_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Next match"
 msgstr "Nächster Treffer"
@@ -3145,7 +3145,7 @@ msgstr "Nächster Treffer"
 msgid "Next page"
 msgstr "Nächste Seite"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:639
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #: lib/marshall_web/live/admin/users_live.ex:262
 #: lib/marshall_web/live/machines_live.ex:795
 #: lib/marshall_web/live/machines_live.ex:1063
@@ -3153,7 +3153,7 @@ msgstr "Nächste Seite"
 msgid "Next page →"
 msgstr "Nächste Seite →"
 
-#: lib/marshall_web/live/overview_live.ex:271
+#: lib/marshall_web/live/overview_live.ex:317
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "Nächste Schritte"
@@ -3211,7 +3211,7 @@ msgstr "Keine aktiven Workloads."
 msgid "No activity matches this filter."
 msgstr "Keine Aktivität entspricht diesem Filter."
 
-#: lib/marshall_web/live/machines_live.ex:1248
+#: lib/marshall_web/live/machines_live.ex:1266
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr ""
@@ -3352,7 +3352,7 @@ msgstr "Keine Verlagerung verfügbar."
 msgid "No repositories are mirrored yet."
 msgstr "Noch keine Repositories gespiegelt."
 
-#: lib/marshall_web/live/terminal_live.ex:579
+#: lib/marshall_web/live/terminal_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "No shared terminals are available to view."
 msgstr "Keine freigegebenen Terminals zum Ansehen verfügbar."
@@ -3362,7 +3362,7 @@ msgstr "Keine freigegebenen Terminals zum Ansehen verfügbar."
 msgid "No skills were discovered in this workspace."
 msgstr "Keine Fertigkeiten in diesem Arbeitsbereich gefunden."
 
-#: lib/marshall_web/live/terminal_live.ex:583
+#: lib/marshall_web/live/terminal_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "No terminals are open. Choose New to open your personal shell."
 msgstr ""
@@ -3405,7 +3405,7 @@ msgstr "Noch nicht gesammelt"
 msgid "Objective"
 msgstr "Ziel"
 
-#: lib/marshall_web/live/machines_live.ex:1154
+#: lib/marshall_web/live/machines_live.ex:1172
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "Beobachtete Ausfallzeit"
@@ -3508,7 +3508,7 @@ msgstr "Klon öffnen"
 msgid "Open machine →"
 msgstr "Maschine öffnen →"
 
-#: lib/marshall_web/live/overview_live.ex:240
+#: lib/marshall_web/live/overview_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "Repositories aus Ihrem Browser öffnen"
@@ -3534,7 +3534,7 @@ msgstr "Terminal für %{value1} öffnen"
 msgid "Open terminal here"
 msgstr "Terminal hier öffnen"
 
-#: lib/marshall_web/live/overview_live.ex:204
+#: lib/marshall_web/live/overview_live.ex:208
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "Terminal öffnen ↗"
@@ -3549,12 +3549,12 @@ msgstr "Web-Apps dieser Maschine öffnen. Kein Terminal."
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:532
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "Geöffnet"
 
-#: lib/marshall_web/live/terminal_live.ex:87
+#: lib/marshall_web/live/terminal_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Opening terminal; recovering the same request if the connection was interrupted."
 msgstr ""
@@ -3713,12 +3713,12 @@ msgstr ""
 msgid "Paths"
 msgstr "Pfade"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:455
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "Planung pausieren"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr ""
@@ -3744,7 +3744,7 @@ msgstr "Peer-Maschinen-ID"
 #: lib/marshall_web/components/workspace_components.ex:79
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:429
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
 #: lib/marshall_web/live/resize_live.ex:504
 #: lib/marshall_web/live/threads_live.ex:1661
 #: lib/marshall_web/live/threads_live.ex:2629
@@ -3759,14 +3759,14 @@ msgstr ""
 "Dieses Konto und ALLE eigenen Maschinen dauerhaft löschen, einschließlich "
 "mit anderen geteilter Maschinen?"
 
-#: lib/marshall_web/live/machines_live.ex:1297
+#: lib/marshall_web/live/machines_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr ""
 "Diese Maschine und ihre Festplatte dauerhaft entfernen. Dies kann nicht "
 "rückgängig gemacht werden."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:476
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr ""
@@ -3778,7 +3778,7 @@ msgid "Permission to clone this machine is no longer available."
 msgstr "Die Berechtigung zum Klonen dieser Maschine ist nicht mehr verfügbar."
 
 #: lib/marshall_web/live/machines_live.ex:879
-#: lib/marshall_web/live/overview_live.ex:186
+#: lib/marshall_web/live/overview_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "Persönlich"
@@ -3789,12 +3789,12 @@ msgid "Personal integration"
 msgstr "Persönliche Integration"
 
 #: lib/marshall_web/live/admin/git_live.ex:103
-#: lib/marshall_web/live/machines_live.ex:1146
+#: lib/marshall_web/live/machines_live.ex:1164
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "Phase"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:582
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:589
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "Phase: %{phase}"
@@ -3827,7 +3827,7 @@ msgstr "Planen"
 msgid "Platform status"
 msgstr "Plattformzustand"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:403
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "Pool"
@@ -3849,7 +3849,7 @@ msgid "Power afterwards"
 msgstr "Anschließender Energiezustand"
 
 #: lib/marshall_web/components/clone_components.ex:252
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "Wird vorbereitet"
@@ -3875,7 +3875,7 @@ msgstr ""
 msgid "Preparing transfer"
 msgstr "Übertragung wird vorbereitet"
 
-#: lib/marshall_web/live/terminal_live.ex:422
+#: lib/marshall_web/live/terminal_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Preparing your guest account…"
 msgstr "Ihr Gastkonto wird vorbereitet…"
@@ -3890,9 +3890,9 @@ msgstr "Ihre Maschine wird vorbereitet…"
 msgid "Preparing your repository…"
 msgstr "Ihr Repository wird vorbereitet…"
 
-#: lib/marshall_web/live/terminal_live.ex:361
-#: lib/marshall_web/live/terminal_live.ex:399
-#: lib/marshall_web/live/terminal_live.ex:423
+#: lib/marshall_web/live/terminal_live.ex:391
+#: lib/marshall_web/live/terminal_live.ex:429
+#: lib/marshall_web/live/terminal_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "Preparing your terminal…"
 msgstr "Ihr Terminal wird vorbereitet…"
@@ -3907,12 +3907,12 @@ msgstr "Ihr Arbeitsbereich wird vorbereitet"
 msgid "Preview evacuation"
 msgstr "Evakuierungsvorschau"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:604
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "Vorschau: %{blocker}"
 
-#: lib/marshall_web/live/terminal_live.ex:644
+#: lib/marshall_web/live/terminal_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "Previous match"
 msgstr "Vorheriger Treffer"
@@ -4037,24 +4037,24 @@ msgstr "Eingereiht"
 msgid "Queued: %{tools}"
 msgstr "Eingereiht: %{tools}"
 
-#: lib/marshall_web/live/machines_live.ex:1226
+#: lib/marshall_web/live/machines_live.ex:1244
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "Wird eingereiht…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:383
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "RAM-Zusatzbedarf (Bytes)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:627
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:640
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr ""
 "Diesen Workload mit aktueller Platzierung und gewünschtem Zustand neu "
 "planen? Eine frühere Ausfallzeitgenehmigung wird gelöscht."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:645
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "Workload neu planen"
@@ -4064,7 +4064,7 @@ msgstr "Workload neu planen"
 msgid "Read and write in the terminal."
 msgstr "Im Terminal lesen und schreiben."
 
-#: lib/marshall_web/live/overview_live.ex:276
+#: lib/marshall_web/live/overview_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "Feldnotizen lesen ↗"
@@ -4081,12 +4081,12 @@ msgstr ""
 "Schreibgeschützte Zulassungsberechnung. Sie reserviert keine Kapazität; "
 "unbekannte Messungen verhindern die Zulassung."
 
-#: lib/marshall_web/live/terminal_live.ex:668
+#: lib/marshall_web/live/terminal_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Read-only boot console"
 msgstr "Schreibgeschützte Startkonsole"
 
-#: lib/marshall_web/live/terminal_live.ex:577
+#: lib/marshall_web/live/terminal_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Read-only host boot log. Guest terminal readiness is not required."
 msgstr ""
@@ -4105,7 +4105,7 @@ msgstr ""
 msgid "Read-only mirrors of public GitHub repositories."
 msgstr "Schreibgeschützte Spiegel öffentlicher GitHub-Repositories."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:658
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #: lib/marshall_web/live/threads_live.ex:1663
 #: lib/marshall_web/live/threads_live.ex:2631
 #, elixir-autogen, elixir-format
@@ -4144,7 +4144,7 @@ msgstr "Aktueller Spiegelaudit"
 msgid "Recent threads"
 msgstr "Aktuelle Threads"
 
-#: lib/marshall_web/live/terminal_live.ex:362
+#: lib/marshall_web/live/terminal_live.ex:392
 #, elixir-autogen, elixir-format
 msgid "Reconnecting to the terminal service…"
 msgstr "Verbindung zum Terminaldienst wird erneut hergestellt…"
@@ -4174,7 +4174,7 @@ msgid "Reference"
 msgstr "Referenz"
 
 #: lib/marshall_web/live/admin/git_live.ex:119
-#: lib/marshall_web/live/overview_live.ex:290
+#: lib/marshall_web/live/overview_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "Aktualisieren"
@@ -4194,7 +4194,7 @@ msgstr "Aktualisierung konnte nicht eingereiht werden."
 msgid "Refresh queued."
 msgstr "Aktualisierung eingereiht."
 
-#: lib/marshall_web/live/overview_live.ex:288
+#: lib/marshall_web/live/overview_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "Wird aktualisiert…"
@@ -4227,7 +4227,7 @@ msgstr "Zugehöriger Datensatz"
 msgid "Reload context"
 msgstr "Kontext neu laden"
 
-#: lib/marshall_web/live/machines_live.ex:1120
+#: lib/marshall_web/live/machines_live.ex:1138
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "Maschine verlagern"
@@ -4323,7 +4323,7 @@ msgstr ""
 "Diesen Passkey entfernen? Das Entfernen Ihres letzten Passkeys meldet Sie "
 "überall ab."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr ""
@@ -4335,12 +4335,12 @@ msgstr ""
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: lib/marshall_web/live/terminal_live.ex:603
+#: lib/marshall_web/live/terminal_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Rename in this browser"
 msgstr "In diesem Browser umbenennen"
 
-#: lib/marshall_web/live/terminal_live.ex:602
+#: lib/marshall_web/live/terminal_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Rename terminal"
 msgstr "Terminal umbenennen"
@@ -4359,7 +4359,7 @@ msgstr ""
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:404
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "Bericht"
@@ -4435,7 +4435,7 @@ msgstr "Abbruch wird angefordert…"
 msgid "Requesting resize…"
 msgstr "Größenänderung wird angefordert…"
 
-#: lib/marshall_web/live/machines_live.ex:1184
+#: lib/marshall_web/live/machines_live.ex:1202
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "Neustart wird angefordert…"
@@ -4445,7 +4445,7 @@ msgstr "Neustart wird angefordert…"
 msgid "Requesting retry…"
 msgstr "Wiederholung wird angefordert…"
 
-#: lib/marshall_web/live/machines_live.ex:1129
+#: lib/marshall_web/live/machines_live.ex:1147
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "Wird angefordert…"
@@ -4490,7 +4490,7 @@ msgstr ""
 "Größenänderung konnte nicht angenommen werden. Prüfen Sie die Größen und den"
 " aktuellen Maschinenzustand."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:782
 #: lib/marshall_web/live/resize_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
@@ -4564,12 +4564,12 @@ msgstr "Neu gestartet"
 msgid "Restarting"
 msgstr "Wird neu gestartet"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:469
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "Zulassung wiederherstellen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:479
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "Knoten stilllegen"
@@ -4587,7 +4587,7 @@ msgstr ""
 "Wiederholung konnte nicht angenommen werden. Kapazität oder Maschinenzustand"
 " können sich geändert haben."
 
-#: lib/marshall_web/live/machines_live.ex:1186
+#: lib/marshall_web/live/machines_live.ex:1204
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "Zielstart erneut versuchen"
@@ -4648,7 +4648,7 @@ msgstr "Revision"
 msgid "Revision (optional)"
 msgstr "Revision (optional)"
 
-#: lib/marshall_web/live/terminal_live.ex:694
+#: lib/marshall_web/live/terminal_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "Widerrufen"
@@ -4701,7 +4701,7 @@ msgstr "Rolle"
 msgid "Room for your next idea"
 msgstr "Raum für Ihre nächste Idee"
 
-#: lib/marshall_web/live/overview_live.ex:252
+#: lib/marshall_web/live/overview_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "Raum zum Wachsen"
@@ -4723,7 +4723,7 @@ msgstr "Routing, Teameigentum und Peer-Verbindungen"
 
 #: lib/marshall_web/components/workspace_components.ex:80
 #: lib/marshall_web/live/admin/jobs_live.ex:13
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:660
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Running"
@@ -4750,7 +4750,8 @@ msgstr "SSH-Schlüssel"
 msgid "SSH key added."
 msgstr "SSH-Schlüssel hinzugefügt."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:35
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:112
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "SSH-Schlüssel genehmigt. Sie können zu Ihrem SSH-Client zurückkehren."
@@ -4840,7 +4841,7 @@ msgstr "Geltungsbereich"
 msgid "Search"
 msgstr "Suchen"
 
-#: lib/marshall_web/live/terminal_live.ex:609
+#: lib/marshall_web/live/terminal_live.ex:663
 #, elixir-autogen, elixir-format
 msgid "Search (Ctrl+F)"
 msgstr "Suchen (Ctrl+F)"
@@ -4856,12 +4857,12 @@ msgstr "Inhalt durchsuchen"
 msgid "Search recent threads"
 msgstr "Aktuelle Threads durchsuchen"
 
-#: lib/marshall_web/live/terminal_live.ex:608
+#: lib/marshall_web/live/terminal_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Search scrollback"
 msgstr "Terminalverlauf durchsuchen"
 
-#: lib/marshall_web/live/terminal_live.ex:632
+#: lib/marshall_web/live/terminal_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Search terminal scrollback"
 msgstr "Terminalverlauf durchsuchen"
@@ -4914,7 +4915,7 @@ msgstr "Wird gesendet…"
 msgid "Service"
 msgstr "Dienst"
 
-#: lib/marshall_web/live/overview_live.ex:250
+#: lib/marshall_web/live/overview_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "Browsererweiterung einrichten ↗"
@@ -4941,12 +4942,12 @@ msgstr ""
 "Teilen Sie Maschinen und Integrationen mit Ihren Mitarbeitern. Eigentümer "
 "ernennen Administratoren, Administratoren verwalten Mitglieder."
 
-#: lib/marshall_web/live/terminal_live.ex:560
+#: lib/marshall_web/live/terminal_live.ex:590
 #, elixir-autogen, elixir-format
 msgid "Share terminal %{value1}"
 msgstr "Terminal %{value1} teilen"
 
-#: lib/marshall_web/live/terminal_live.ex:676
+#: lib/marshall_web/live/terminal_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Share this terminal"
 msgstr "Dieses Terminal teilen"
@@ -4956,12 +4957,12 @@ msgstr "Dieses Terminal teilen"
 msgid "Share this thread"
 msgstr "Diesen Thread teilen"
 
-#: lib/marshall_web/live/terminal_live.ex:561
+#: lib/marshall_web/live/terminal_live.ex:591
 #, elixir-autogen, elixir-format
 msgid "Share view"
 msgstr "Ansicht teilen"
 
-#: lib/marshall_web/live/overview_live.ex:187
+#: lib/marshall_web/live/overview_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "Geteilt"
@@ -5173,7 +5174,7 @@ msgid "Source was stopped when this request began."
 msgstr "Quelle war zu Beginn dieser Anfrage angehalten."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "Veraltet oder unbekannt"
@@ -5230,7 +5231,7 @@ msgstr "Maschine wird mit ihren neuen Ressourcen gestartet."
 msgid "Starting…"
 msgstr "Wird gestartet…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "Startreservierungen"
@@ -5253,7 +5254,7 @@ msgstr "Statischer Headername"
 msgid "Static header value"
 msgstr "Statischer Headerwert"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:531
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:535
 #: lib/marshall_web/live/admin/operations_live.ex:82
 #: lib/marshall_web/live/admin/operations_live.ex:105
 #: lib/marshall_web/live/admin/operations_live.ex:128
@@ -5284,7 +5285,7 @@ msgstr "Anhalten"
 msgid "Stop the machine"
 msgstr "Maschine anhalten"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:624
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr ""
@@ -5293,7 +5294,7 @@ msgstr ""
 "Ausfallzeiten verursachen."
 
 #: lib/marshall_web/components/workspace_components.ex:81
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:661
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Stopped"
@@ -5323,7 +5324,7 @@ msgstr ""
 msgid "Stopping the machine so its resources can change safely."
 msgstr "Maschine wird angehalten, um ihre Ressourcen sicher zu ändern."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #: lib/marshall_web/live/machines_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
@@ -5364,7 +5365,7 @@ msgstr "Erfolgreich"
 msgid "Suspended"
 msgstr "Ausgesetzt"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
 #: lib/marshall_web/live/machines_live.ex:654
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
@@ -5448,25 +5449,25 @@ msgstr "Teams sind vorübergehend nicht verfügbar."
 msgid "Terminal"
 msgstr "Terminal"
 
-#: lib/marshall_web/live/terminal_live.ex:535
+#: lib/marshall_web/live/terminal_live.ex:565
 #, elixir-autogen, elixir-format
 msgid "Terminal %{name}, %{count} viewer, created %{created}"
 msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
 msgstr[0] "Terminal %{name}, %{count} Zuschauer, erstellt %{created}"
 msgstr[1] "Terminal %{name}, %{count} Zuschauer, erstellt %{created}"
 
-#: lib/marshall_web/live/terminal_live.ex:114
+#: lib/marshall_web/live/terminal_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Terminal access ended."
 msgstr "Terminalzugriff beendet."
 
-#: lib/marshall_web/live/terminal_live.ex:131
-#: lib/marshall_web/live/terminal_live.ex:321
+#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "Terminal close requested; waiting for guest confirmation."
 msgstr "Terminalschließung angefordert; Bestätigung des Gasts steht aus."
 
-#: lib/marshall_web/live/terminal_live.ex:438
+#: lib/marshall_web/live/terminal_live.ex:468
 #, elixir-autogen, elixir-format
 msgid "Terminal limit reached for this machine."
 msgstr "Terminallimit für diese Maschine erreicht."
@@ -5476,7 +5477,7 @@ msgstr "Terminallimit für diese Maschine erreicht."
 msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
 msgstr "Terminalprotokoll: %{protocol} · Lokaler Datenstrom: %{state}"
 
-#: lib/marshall_web/live/terminal_live.ex:521
+#: lib/marshall_web/live/terminal_live.ex:551
 #, elixir-autogen, elixir-format
 msgid "Terminal sessions"
 msgstr "Terminalsitzungen"
@@ -5486,7 +5487,7 @@ msgstr "Terminalsitzungen"
 msgid "Terminal unavailable"
 msgstr "Terminal nicht verfügbar"
 
-#: lib/marshall_web/live/terminal_live.ex:155
+#: lib/marshall_web/live/terminal_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Terminal viewing access updated."
 msgstr "Terminalansichtsberechtigung aktualisiert."
@@ -5496,7 +5497,7 @@ msgstr "Terminalansichtsberechtigung aktualisiert."
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "Terminal, Lebenszyklus, Größenänderung, Klonen und Freigabe."
 
-#: lib/marshall_web/live/terminal_live.ex:443
+#: lib/marshall_web/live/terminal_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Terminals are unavailable while the host is offline."
 msgstr "Terminals sind nicht verfügbar, solange der Host offline ist."
@@ -5540,7 +5541,7 @@ msgstr ""
 msgid "The agent encountered a problem"
 msgstr "Der Agent hat ein Problem festgestellt"
 
-#: lib/marshall_web/live/terminal_live.ex:191
+#: lib/marshall_web/live/terminal_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "The boot log is unavailable for the current machine execution."
 msgstr ""
@@ -5579,7 +5580,7 @@ msgstr ""
 msgid "The default machine image is not available right now."
 msgstr "Das Standardmaschinenimage ist derzeit nicht verfügbar."
 
-#: lib/marshall_web/live/terminal_live.ex:457
+#: lib/marshall_web/live/terminal_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "The guest cannot host more terminal sessions."
 msgstr "Der Gast kann keine weiteren Terminalsitzungen aufnehmen."
@@ -5617,7 +5618,7 @@ msgstr ""
 "Die Maschine hat sich seit Erstellung dieses Entwurfs geändert. Prüfen Sie "
 "oben die bestätigten Ressourcen."
 
-#: lib/marshall_web/live/machines_live.ex:1140
+#: lib/marshall_web/live/machines_live.ex:1158
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr ""
@@ -5627,7 +5628,7 @@ msgstr ""
 " dauern; beim Overalls-Produktionsbetrieb auf AWS werden deutlich schnellere"
 " Verlagerungen erwartet."
 
-#: lib/marshall_web/live/machines_live.ex:1151
+#: lib/marshall_web/live/machines_live.ex:1169
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "Die Maschine wird angehalten, einmal kopiert und am Ziel gestartet."
@@ -5671,7 +5672,7 @@ msgstr ""
 "Die vorherige Kopie dieser Maschine gibt ihren Snapshot noch frei. Versuchen"
 " Sie es in Kürze erneut."
 
-#: lib/marshall_web/live/terminal_live.ex:449
+#: lib/marshall_web/live/terminal_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "The previous opening has ended. Choose New to try again."
 msgstr ""
@@ -5751,7 +5752,7 @@ msgstr ""
 "Die Quelle war vor Beginn des Klonens beschäftigt oder hat sich geändert. "
 "Versuchen Sie es erneut, wenn sie bereit ist."
 
-#: lib/marshall_web/live/terminal_live.ex:459
+#: lib/marshall_web/live/terminal_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "The terminal could not be opened."
 msgstr "Terminal konnte nicht geöffnet werden."
@@ -5811,7 +5812,7 @@ msgstr "Diese Fragen warten nicht mehr auf eine Antwort."
 msgid "These questions have already been answered."
 msgstr "Diese Fragen wurden bereits beantwortet."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr ""
@@ -5862,7 +5863,7 @@ msgstr ""
 msgid "This job is unavailable or its history has expired."
 msgstr "Dieser Auftrag ist nicht verfügbar oder sein Verlauf ist abgelaufen."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:77
+#: lib/marshall_web/live/ssh_approval_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr ""
@@ -5889,7 +5890,7 @@ msgstr "Diese Maschine wird gelöscht und kann nicht angeheftet werden."
 msgid "This machine is being deleted."
 msgstr "Diese Maschine wird gelöscht."
 
-#: lib/marshall_web/live/terminal_live.ex:484
+#: lib/marshall_web/live/terminal_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
 msgstr ""
@@ -5927,7 +5928,7 @@ msgstr ""
 "Das Image dieser Maschine hat noch keine Gastagenten: SSH, Browserterminal "
 "und Agenten sind nicht verfügbar. Verwenden Sie"
 
-#: lib/marshall_web/live/terminal_live.ex:297
+#: lib/marshall_web/live/terminal_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
 msgstr ""
@@ -6075,7 +6076,7 @@ msgstr ""
 "Threads sind vorübergehend nicht verfügbar. Versuchen Sie es in Kürze "
 "erneut."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:496
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
 #: lib/marshall_web/live/inference_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Time"
@@ -6173,7 +6174,7 @@ msgstr ""
 "Geben Sie die E-Mail ein, um dieses Konto und seine %{count} Maschinen zu "
 "löschen"
 
-#: lib/marshall_web/live/terminal_live.ex:598
+#: lib/marshall_web/live/terminal_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "Zur Interaktion tippen"
@@ -6188,7 +6189,7 @@ msgstr "Ultra"
 msgid "Ultra is for complex, open-ended work."
 msgstr "Ultra ist für komplexe, offene Aufgaben gedacht."
 
-#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
 msgstr ""
@@ -6196,10 +6197,22 @@ msgstr ""
 "der Freigabe Maschinenzugriff haben."
 
 #: lib/marshall_web/components/workspace_components.ex:86
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
+#: lib/marshall_web/controllers/audi_login_controller.ex:44
+#: lib/marshall_web/controllers/editor_controller.ex:26
+#: lib/marshall_web/controllers/editor_controller.ex:61
+#: lib/marshall_web/controllers/git_raw_controller.ex:24
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#: lib/marshall_web/controllers/marvin_download_controller.ex:118
+#: lib/marshall_web/controllers/overalls_controller.ex:21
+#: lib/marshall_web/controllers/overalls_controller.ex:25
+#: lib/marshall_web/controllers/overalls_controller.ex:37
+#: lib/marshall_web/controllers/overalls_controller.ex:50
+#: lib/marshall_web/controllers/overalls_controller.ex:54
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
 #: lib/marshall_web/live/machines_live.ex:750
 #: lib/marshall_web/live/machines_live.ex:964
 #: lib/marshall_web/live/machines_live.ex:974
+#: lib/marshall_web/ssh_approval_login.ex:29
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Nicht verfügbar"
@@ -6210,10 +6223,10 @@ msgstr "Nicht verfügbar"
 #: lib/marshall_web/live/admin/jobs_live.ex:426
 #: lib/marshall_web/live/admin/jobs_live.ex:437
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:791
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
 #: lib/marshall_web/live/inference_live.ex:60
 #: lib/marshall_web/live/inference_live.ex:178
 #: lib/marshall_web/live/inference_live.ex:185
@@ -6241,7 +6254,7 @@ msgstr "Lösen Sie die Anheftung dieser Maschine vor dem Löschen."
 msgid "Unpin this thread's machine before deleting it."
 msgstr "Lösen Sie die Anheftung der Maschine dieses Threads vor dem Löschen."
 
-#: lib/marshall_web/live/machines_live.ex:1294
+#: lib/marshall_web/live/machines_live.ex:1312
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr ""
@@ -6278,7 +6291,7 @@ msgstr "Aktualisierungsrevision (optional)"
 #: lib/marshall_web/live/admin/jobs_live.ex:210
 #: lib/marshall_web/live/admin/operations_live.ex:60
 #: lib/marshall_web/live/admin/workloads_live.ex:103
-#: lib/marshall_web/live/overview_live.ex:284
+#: lib/marshall_web/live/overview_live.ex:332
 #: lib/marshall_web/live/threads_live.ex:1674
 #, elixir-autogen, elixir-format
 msgid "Updated"
@@ -6289,7 +6302,7 @@ msgstr "Aktualisiert"
 msgid "Updated every 15 seconds"
 msgstr "Alle 15 Sekunden aktualisiert"
 
-#: lib/marshall_web/live/machines_live.ex:1244
+#: lib/marshall_web/live/machines_live.ex:1262
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "Aktualisiert sich automatisch"
@@ -6358,7 +6371,7 @@ msgstr "Benutzer"
 msgid "Users"
 msgstr "Benutzer"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:506
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "VM"
@@ -6394,6 +6407,7 @@ msgid "VS Code is temporarily unavailable."
 msgstr "VS Code ist vorübergehend nicht verfügbar."
 
 #: lib/marshall_web/components/workspace_components.ex:519
+#: lib/marshall_web/controllers/editor_controller.ex:17
 #, elixir-autogen, elixir-format
 msgid "VS Code is unavailable for this machine."
 msgstr "VS Code ist für diese Maschine nicht verfügbar."
@@ -6466,7 +6480,7 @@ msgstr ""
 "Zuschauer lesen. Operatoren senden Anweisungen. Verwalter teilen und "
 "verwalten zusätzlich den Thread."
 
-#: lib/marshall_web/live/terminal_live.ex:678
+#: lib/marshall_web/live/terminal_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
 msgstr ""
@@ -6520,7 +6534,7 @@ msgstr ""
 msgid "Waiting for the machine"
 msgstr "Wartet auf die Maschine"
 
-#: lib/marshall_web/live/terminal_live.ex:310
+#: lib/marshall_web/live/terminal_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Waiting for the machine to start…"
 msgstr "Wartet auf den Maschinenstart…"
@@ -6767,7 +6781,7 @@ msgstr ""
 msgid "You do not have access to this thread."
 msgstr "Sie haben keinen Zugriff auf diesen Thread."
 
-#: lib/marshall_web/live/terminal_live.ex:440
+#: lib/marshall_web/live/terminal_live.ex:470
 #, elixir-autogen, elixir-format
 msgid "You do not have terminal access to this machine."
 msgstr "Sie haben keinen Terminalzugriff auf diese Maschine."
@@ -6861,7 +6875,7 @@ msgstr ""
 "gemeinsamem Team, Maschine oder Thread sowie Administratoren sehen Ihre "
 "aktuelle Ortszeit neben Ihrer E-Mail, sobald eine Zeitzone gespeichert ist."
 
-#: lib/marshall_web/live/terminal_live.ex:453
+#: lib/marshall_web/live/terminal_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
 msgstr ""
@@ -6923,12 +6937,12 @@ msgstr ""
 msgid "Your password has successfully been reset"
 msgstr "Ihr Passwort wurde erfolgreich zurückgesetzt"
 
-#: lib/marshall_web/live/terminal_live.ex:581
+#: lib/marshall_web/live/terminal_live.ex:611
 #, elixir-autogen, elixir-format
 msgid "Your personal terminal opens when the machine is ready."
 msgstr "Ihr persönliches Terminal öffnet sich, wenn die Maschine bereit ist."
 
-#: lib/marshall_web/live/terminal_live.ex:446
+#: lib/marshall_web/live/terminal_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Your previous shell has closed. Choose New to open another terminal."
 msgstr ""
@@ -6970,7 +6984,7 @@ msgstr ""
 msgid "Your teams"
 msgstr "Ihre Teams"
 
-#: lib/marshall_web/live/terminal_live.ex:488
+#: lib/marshall_web/live/terminal_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "Your terminal will open when the machine is running and ready."
 msgstr "Ihr Terminal öffnet sich, wenn die Maschine läuft und bereit ist."
@@ -7030,7 +7044,7 @@ msgstr "diese Workload-Ausfallzeit genehmigen"
 msgid "attempt"
 msgstr "Versuch"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "Versuch %{attempt}"
@@ -7040,7 +7054,7 @@ msgstr "Versuch %{attempt}"
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "Versuch %{attempt} · %{count} erfasste Fehler"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:509
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "Kampagne"
@@ -7098,7 +7112,7 @@ msgid "email, time zone and your local clock"
 msgstr "E-Mail, Zeitzone und Ihre Ortszeit"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "aktiviert"
@@ -7109,7 +7123,7 @@ msgid "example-integration"
 msgstr "beispiel-integration"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:364
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "ausgeschlossen"
@@ -7119,22 +7133,22 @@ msgstr "ausgeschlossen"
 msgid "file"
 msgstr "Datei"
 
-#: lib/marshall_web/live/terminal_live.ex:610
+#: lib/marshall_web/live/terminal_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "find"
 msgstr "finden"
 
-#: lib/marshall_web/live/terminal_live.ex:628
+#: lib/marshall_web/live/terminal_live.ex:682
 #, elixir-autogen, elixir-format
 msgid "full"
 msgstr "vollständig"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:512
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "Auftrag"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:507
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "verlagern"
@@ -7184,7 +7198,7 @@ msgstr "diesen Git-Spiegel aktualisieren"
 msgid "remove this Git mirror"
 msgstr "diesen Git-Spiegel entfernen"
 
-#: lib/marshall_web/live/terminal_live.ex:604
+#: lib/marshall_web/live/terminal_live.ex:658
 #, elixir-autogen, elixir-format
 msgid "rename"
 msgstr "umbenennen"
@@ -7282,7 +7296,7 @@ msgstr "ja"
 msgid "· %{value1} reasoning · %{value2}"
 msgstr "· Denktiefe %{value1} · %{value2}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:596
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· Ausfallzeitgenehmigung erforderlich"
@@ -7313,7 +7327,7 @@ msgid "← All sections"
 msgstr "← Alle Abschnitte"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:310
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
 #: lib/marshall_web/live/admin/users_live.ex:257
 #: lib/marshall_web/live/machines_live.ex:794
 #: lib/marshall_web/live/machines_live.ex:1060
@@ -7391,7 +7405,7 @@ msgstr "Git-Einstellungen gespeichert."
 msgid "Git username"
 msgstr "Git-Benutzername"
 
-#: lib/marshall_web/live/terminal_live.ex:308
+#: lib/marshall_web/live/terminal_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
 msgstr "Die Maschine ist pausiert. Setzen Sie sie fort oder öffnen Sie diese Terminalseite erneut."
@@ -7402,7 +7416,7 @@ msgid "Pause"
 msgstr "Pausieren"
 
 #: lib/marshall_web/components/workspace_components.ex:82
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:657
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "Pausiert"
@@ -7417,8 +7431,8 @@ msgstr "Maschine fortsetzen"
 msgid "Resuming"
 msgstr "Wird fortgesetzt"
 
-#: lib/marshall_web/live/terminal_live.ex:110
-#: lib/marshall_web/live/terminal_live.ex:286
+#: lib/marshall_web/live/terminal_live.ex:140
+#: lib/marshall_web/live/terminal_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
 msgstr "Maschine wird fortgesetzt; Kapazität wird abgewartet…"
@@ -7463,54 +7477,54 @@ msgstr "Bestätigt"
 msgid "Awaiting GitHub authorization"
 msgstr "GitHub-Autorisierung wird abgewartet"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:576
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr "Blockiert: %{reason}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr "Kampagne abgeschlossen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr "Kampagne angefordert"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "Abbruch angefordert"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:594
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr "Kandidat: %{name}"
 
-#: lib/marshall_web/live/overview_live.ex:231
+#: lib/marshall_web/live/overview_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "Prüfen Sie Ihren Posteingang und klicken Sie auf den Link, um Ihr Abonnement zu bestätigen."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:711
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr "Bereinigung nach dem Abbruch läuft"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr "Quelle wird bereinigt"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:706
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr "Klonvorgang läuft"
 
 #: lib/marshall_web/live/integrations_live.ex:312
 #: lib/marshall_web/live/integrations_live.ex:400
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1129
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "Kommentar"
@@ -7546,17 +7560,17 @@ msgstr "Verbunden als %{login}"
 msgid "Continue to Overalls"
 msgstr "Weiter zu Overalls"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:573
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:577
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr "Soll: %{desired} · Beobachtet: %{observed}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr "Bereinigung des Ziels bestätigt"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr "Bereinigung des Ziels angefordert"
@@ -7581,39 +7595,39 @@ msgstr "Getrennt"
 msgid "Disconnecting GitHub"
 msgstr "GitHub-Verbindung wird getrennt"
 
-#: lib/marshall_web/live/overview_live.ex:222
+#: lib/marshall_web/live/overview_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "Schließen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:779
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr "Genehmigung der Ausfallzeit erforderlich"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:756
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr "Ausfallzeit genehmigt"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:434
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "Leergeräumt"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:433
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "Wird leergeräumt"
 
-#: lib/marshall_web/live/overview_live.ex:232
+#: lib/marshall_web/live/overview_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "Geben Sie eine gültige E-Mail-Adresse ein."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "Wird evakuiert"
@@ -7623,7 +7637,7 @@ msgstr "Wird evakuiert"
 msgid "Finishing active GitHub requests"
 msgstr "Aktive GitHub-Anfragen werden abgeschlossen"
 
-#: lib/marshall_web/live/overview_live.ex:224
+#: lib/marshall_web/live/overview_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "Erhalten Sie Tipps, Tricks und Neuigkeiten zu Overalls und KI per E-Mail."
@@ -7638,22 +7652,22 @@ msgstr "GitHub verbunden."
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "GitHub konnte nicht verbunden werden. Versuchen Sie es unter Integrationen erneut."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "Wird importiert"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:776
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr "Unzureichende Kapazität"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr "Auftragsstatus"
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1123
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "Bezeichnungen"
@@ -7668,17 +7682,17 @@ msgstr "Maschinenmetadaten gespeichert."
 msgid "Machines excluded from your GitHub identity"
 msgstr "Von Ihrer GitHub-Identität ausgeschlossene Maschinen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr "Normal"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:597
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr "Beobachtete Unterbrechung: %{seconds}s"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:593
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr "Beobachtete Unterbrechung: %{seconds}s (andauernd)"
@@ -7693,7 +7707,7 @@ msgstr "Vorgang"
 msgid "Reconnect required"
 msgstr "Erneute Verbindung erforderlich"
 
-#: lib/marshall_web/live/machines_live.ex:1115
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "Reflexionsmetadaten"
@@ -7708,49 +7722,49 @@ msgstr "GitHub-Verbindung wird aktualisiert"
 msgid "Relocation"
 msgstr "Verlagerung"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr "Verlagerung verbindlich übernommen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr "Verlagerung läuft"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:759
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr "Verlagerung gestartet"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr "Quelle wird wiederhergestellt"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:435
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "Fortgesetzt"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:436
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:655
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "Außer Betrieb genommen"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr "Start des Ziels wird erneut versucht"
 
-#: lib/marshall_web/live/machines_live.ex:1118
+#: lib/marshall_web/live/machines_live.ex:1135
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "Metadaten speichern"
 
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1132
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "Kurzbeschreibung für Agenten"
@@ -7765,37 +7779,37 @@ msgstr "Kurzbeschreibung für die Gastreflexion"
 msgid "Signing you in"
 msgstr "Sie werden angemeldet"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr "Bereinigung der Quelle bestätigt"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:734
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr "Bereinigung der Quelle angefordert"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:684
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr "Quelle bereit"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:687
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "Quelle wiederhergestellt"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:700
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:771
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr "Quelle nicht verfügbar"
 
-#: lib/marshall_web/live/overview_live.ex:220
+#: lib/marshall_web/live/overview_live.ex:229
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "Bleiben Sie auf dem Laufenden"
 
-#: lib/marshall_web/live/overview_live.ex:227
+#: lib/marshall_web/live/overview_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "Abonnieren"
@@ -7805,37 +7819,37 @@ msgstr "Abonnieren"
 msgid "Temporarily unavailable"
 msgstr "Vorübergehend nicht verfügbar"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr "Übertragung belegt"
 
-#: lib/marshall_web/live/overview_live.ex:234
+#: lib/marshall_web/live/overview_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "Sie können sich jederzeit abmelden."
 
-#: lib/marshall_web/live/overview_live.ex:233
+#: lib/marshall_web/live/overview_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "Der Newsletter-Dienst ist nicht erreichbar. Versuchen Sie es später erneut."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr "Arbeitslast geändert"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:768
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr "Arbeitslast ist nicht stabil"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:694
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr "Arbeitslast beobachtet"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:762
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr "Arbeitslast ermittelt"
@@ -7850,7 +7864,7 @@ msgstr "Ihr E-Mail-Link wird überprüft."
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "Ihre Maschinen verwenden automatisch Ihre verbundene GitHub-Identität. Mitarbeitende, die eine gemeinsam genutzte Maschine verwenden, können die GitHub-Berechtigungen ihres Eigentümers nutzen. Getrennte Maschinen behalten anonymen Zugriff auf öffentliche GitHub-Inhalte."
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1125
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "produktion, projektname"
@@ -7880,78 +7894,77 @@ msgstr "Dieser Schlüssel konnte nicht umbenannt werden. Verwende höchstens 128
 msgid "Administrative changes require an administrator."
 msgstr "Administrative Änderungen erfordern einen Administrator."
 
-#: lib/marshall_web/live_admin_auth.ex:139
+#: lib/marshall_web/live_admin_auth.ex:142
 #, elixir-autogen, elixir-format
 msgid "Administrative changes are not authorized."
 msgstr "Administrative Änderungen sind nicht autorisiert."
 
-#: lib/marshall_web/live_admin_auth.ex:186
+#: lib/marshall_web/live_admin_auth.ex:190
 #, elixir-autogen, elixir-format
 msgid "Finish or cancel the current verification first."
 msgstr "Schließe zuerst die aktuelle Überprüfung ab oder brich sie ab."
 
-#: lib/marshall_web/live_admin_auth.ex:199
+#: lib/marshall_web/live_admin_auth.ex:205
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "Ungültige administrative Anfrage."
 
-#: lib/marshall_web/controllers/audi_login_controller.ex:34
-#: lib/marshall_web/controllers/editor_controller.ex:52
+#: lib/marshall_web/live/terminal_live.ex:629
 #, elixir-autogen, elixir-format
-msgid "Sign-in unavailable"
-msgstr "Anmeldung nicht verfügbar"
+msgid "Android display"
+msgstr "Android-Anzeige"
+
+#: lib/marshall_web/live/terminal_live.ex:85
+#: lib/marshall_web/live/terminal_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Die Android-Anzeige ist nicht verfügbar."
+
+#: lib/marshall_web/live/terminal_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "Ticket für das Anzeige-Relay ausgestellt."
 
 #: lib/marshall_web/controllers/overalls_controller.ex:76
 #, elixir-autogen, elixir-format
 msgid "Installer trust unavailable"
 msgstr "Vertrauensprüfung des Installationsprogramms nicht verfügbar"
 
+#: lib/marshall_web/live/terminal_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "Anzeige öffnen"
+
+#: lib/marshall_web/live/terminal_live.ex:636
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "Steuerung anfordern"
+
 #: lib/marshall_web/controllers/overalls_controller.ex:89
 #, elixir-autogen, elixir-format
 msgid "SSH trust unavailable"
 msgstr "SSH-Vertrauensprüfung nicht verfügbar"
 
-#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#: lib/marshall_web/controllers/audi_login_controller.ex:35
+#: lib/marshall_web/controllers/editor_controller.ex:52
 #, elixir-autogen, elixir-format
-msgid "This repository link could not be launched. Open the link again."
-msgstr "Dieser Repository-Link konnte nicht gestartet werden. Öffnen Sie den Link erneut."
+msgid "Sign-in unavailable"
+msgstr "Anmeldung nicht verfügbar"
 
-
-#: lib/marshall_web/controllers/repository_launch_controller.ex:51
-#, elixir-autogen, elixir-format
-msgid "This launch could not be completed. Sign in and open the link again."
-msgstr "Dieser Start konnte nicht abgeschlossen werden. Melden Sie sich an und öffnen Sie den Link erneut."
-
-#: lib/marshall_web/live/terminal_live.ex:79
-#, elixir-autogen, elixir-format
-msgid "Display relay ticket issued."
-msgstr "Ticket für das Anzeige-Relay ausgestellt."
-
-#: lib/marshall_web/live/terminal_live.ex:83
-#: lib/marshall_web/live/terminal_live.ex:88
-#, elixir-autogen, elixir-format
-msgid "Android display is unavailable."
-msgstr "Die Android-Anzeige ist nicht verfügbar."
-
-#: lib/marshall_web/live/terminal_live.ex:618
-#, elixir-autogen, elixir-format
-msgid "Android display"
-msgstr "Android-Anzeige"
-
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "The software-rendered Android display uses the machine relay."
 msgstr "Die per Software gerenderte Android-Anzeige verwendet das Relay der Maschine."
 
-#: lib/marshall_web/live/terminal_live.ex:622
+#: lib/marshall_web/controllers/repository_launch_controller.ex:55
 #, elixir-autogen, elixir-format
-msgid "Open display"
-msgstr "Anzeige öffnen"
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "Dieser Start konnte nicht abgeschlossen werden. Melden Sie sich an und öffnen Sie den Link erneut."
 
-#: lib/marshall_web/live/terminal_live.ex:625
+#: lib/marshall_web/controllers/repository_launch_controller.ex:23
 #, elixir-autogen, elixir-format
-msgid "Request control"
-msgstr "Steuerung anfordern"
+msgid "This repository link could not be launched. Open the link again."
+msgstr "Dieser Repository-Link konnte nicht gestartet werden. Öffnen Sie den Link erneut."
 
 #: lib/marshall_web/controllers/docs_controller.ex:35
 #, elixir-autogen, elixir-format
@@ -7967,3 +7980,8 @@ msgstr "Android-Anzeigefläche"
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
 msgstr "Warten auf die Bildschirmweiterleitung."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr "Mila öffnen"

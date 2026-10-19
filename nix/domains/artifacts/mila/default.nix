@@ -96,7 +96,7 @@ let
     preBuild = ''
       mkdir -p ../../../lyra/tests/fixtures ../../../protocol/test/fixtures
       cp ${../../../../lyra/tests/fixtures/workspace_sources.json} ../../../lyra/tests/fixtures/workspace_sources.json
-      for f in app_routes machine_states push_pokes ssh_command_lines ssh_host_certificates; do
+      for f in app_routes machine_states porsche_client_results push_pokes ssh_command_lines ssh_host_certificates terminal_attach; do
         cp ${../../../../protocol/test/fixtures}/$f.json ../../../protocol/test/fixtures/$f.json
       done
     '';

@@ -101,7 +101,7 @@ msgstr ""
 msgid "Delete a machine and its disk. Refused while its owner has it pinned."
 msgstr ""
 
-#: lib/porsche/ssh/channel.ex:115
+#: lib/porsche/ssh/channel.ex:154
 #, elixir-autogen, elixir-format
 msgid "Docs:"
 msgstr ""
@@ -191,7 +191,7 @@ msgstr ""
 msgid "Offer team ownership to an admin."
 msgstr ""
 
-#: lib/porsche/ssh/channel.ex:113
+#: lib/porsche/ssh/channel.ex:152
 #, elixir-autogen, elixir-format
 msgid "Porsche machine management. Type help."
 msgstr ""
@@ -231,12 +231,12 @@ msgstr ""
 msgid "Remove your pin from a machine."
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:297
+#: lib/porsche/ssh/output.ex:349
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:300
+#: lib/porsche/ssh/output.ex:352
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr ""
@@ -271,7 +271,7 @@ msgstr ""
 msgid "Start a machine."
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:245
+#: lib/porsche/ssh/output.ex:297
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr ""
@@ -386,32 +386,32 @@ msgstr ""
 msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:270
+#: lib/porsche/ssh/output.ex:322
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:272
+#: lib/porsche/ssh/output.ex:324
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:265
+#: lib/porsche/ssh/output.ex:317
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:262
+#: lib/porsche/ssh/output.ex:314
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:264
+#: lib/porsche/ssh/output.ex:316
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:266
+#: lib/porsche/ssh/output.ex:318
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr ""
@@ -421,17 +421,17 @@ msgstr ""
 msgid "Source cleanup is still pending. Wait for cleanup before retrying."
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:263
+#: lib/porsche/ssh/output.ex:315
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:271
+#: lib/porsche/ssh/output.ex:323
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr ""
 
-#: lib/porsche/ssh/output.ex:273
+#: lib/porsche/ssh/output.ex:325
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr ""
@@ -649,4 +649,184 @@ msgstr ""
 #: lib/porsche/ssh/output.ex:79
 #, elixir-autogen, elixir-format
 msgid "You already hold the maximum number of pins; unpin one first."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:75
+#, elixir-autogen, elixir-format
+msgid "Register this device for push notifications. The push key is read from stdin."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:78
+#, elixir-autogen, elixir-format
+msgid "List your push notification devices."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:79
+#, elixir-autogen, elixir-format
+msgid "Revoke a push notification device."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:80
+#, elixir-autogen, elixir-format
+msgid "Turn push notifications on or off for one device."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:81
+#, elixir-autogen, elixir-format
+msgid "Attach this SSH terminal to a shared terminal session; needs ssh -t."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:245
+#, elixir-autogen, elixir-format
+msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "List agent threads you can read, with unread counts."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:57
+#, elixir-autogen, elixir-format
+msgid "Inspect a thread, its pending question and latest plan."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:58
+#, elixir-autogen, elixir-format
+msgid "List a thread's transcript events after a sequence number."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:59
+#, elixir-autogen, elixir-format
+msgid "Send a prompt read from standard input to a thread."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:60
+#, elixir-autogen, elixir-format
+msgid "Answer a thread's pending question with JSON read from standard input."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:63
+#, elixir-autogen, elixir-format
+msgid "Approve a thread's latest plan and start implementing it."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:64
+#, elixir-autogen, elixir-format
+msgid "Ask for a revised plan, reading the feedback from standard input."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:65
+#, elixir-autogen, elixir-format
+msgid "Switch a thread between plan and work collaboration."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:66
+#, elixir-autogen, elixir-format
+msgid "Mark a thread read up to a transcript sequence number."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:67
+#, elixir-autogen, elixir-format
+msgid "List a machine's terminal sessions you can open."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:68
+#, elixir-autogen, elixir-format
+msgid "Open your personal terminal session on a machine."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Close one of your terminal sessions on a machine."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:70
+#, elixir-autogen, elixir-format
+msgid "Show a machine's web endpoint, port and visibility."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Change a machine's web port or visibility, optionally at an expected revision."
+msgstr ""
+
+#: lib/porsche/ssh/command_messages.ex:74
+#, elixir-autogen, elixir-format
+msgid "Stream JSON change notices for machines, threads and this session."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:250
+#, elixir-autogen, elixir-format
+msgid "This thread is not ready for prompts yet."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:253
+#, elixir-autogen, elixir-format
+msgid "This thread is busy with a turn. Try again when it finishes."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:256
+#, elixir-autogen, elixir-format
+msgid "That plan is no longer the latest proposal. Show the thread again."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:259
+#, elixir-autogen, elixir-format
+msgid "That question is no longer pending."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:262
+#, elixir-autogen, elixir-format
+msgid "That question has already been answered."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:265
+#, elixir-autogen, elixir-format
+msgid "The answers do not match the pending question."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:268
+#, elixir-autogen, elixir-format
+msgid "Answer the pending question before sending another prompt."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:271
+#, elixir-autogen, elixir-format
+msgid "The web settings changed since you read them. Show them again and retry."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:274
+#, elixir-autogen, elixir-format
+msgid "Port 4444 is reserved for the editor."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:277
+#, elixir-autogen, elixir-format
+msgid "This machine's profile does not allow web publishing."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:280
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable on this machine right now."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:283
+#, elixir-autogen, elixir-format
+msgid "The machine is waking. Retry the terminal shortly."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:286
+#, elixir-autogen, elixir-format
+msgid "That terminal session no longer exists."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:289
+#, elixir-autogen, elixir-format
+msgid "This command reads its input from standard input. Pipe it in and end the command with -."
+msgstr ""
+
+#: lib/porsche/ssh/output.ex:294
+#, elixir-autogen, elixir-format
+msgid "The standard input is empty or exceeds this command's size limit."
 msgstr ""

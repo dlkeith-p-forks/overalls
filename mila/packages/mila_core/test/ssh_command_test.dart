@@ -12,7 +12,9 @@ final File _vectors = File('../../../protocol/test/fixtures/ssh_command_lines.js
 PorscheCommand _fromJson(Map<String, Object?> value) => PorscheCommand(
   value['command']! as String,
   arguments: (value['arguments']! as List<Object?>).cast<String>(),
-  options: (value['options']! as Map<String, Object?>).map((key, value) => MapEntry(key, value!)),
+  options: (value['options']! as Map<String, Object?>).map(
+    (key, value) => MapEntry(key, value is List<Object?> ? value.cast<String>().toList() : value!),
+  ),
 );
 
 final Generator<String> _uuid =
@@ -85,6 +87,41 @@ final Generator<PorscheCommand> _command = oneOf<PorscheCommand>([
     booleans(),
   ).map((v) => PorscheCommand('device prefs', arguments: [v.$1], options: {'enabled': '${v.$2}'})),
 ]);
+
+/// The thread, terminal, web and watch commands (ADR-0222).
+final Generator<PorscheCommand> _clientCommand =
+    tuple2(tuple2(_uuid, _uuid), tuple2(_machine, integers(min: 0, max: 2147483647))).flatMap((v) {
+      final ((thread, other), (machine, sequence)) = v;
+      return sampledFrom([
+        PorscheCommand('thread ls', options: {'machine': machine, 'after': thread, 'json': true}),
+        PorscheCommand('thread show', arguments: [thread]),
+        PorscheCommand('thread turns', arguments: [thread], options: {'after': '$sequence'}),
+        PorscheCommand('thread prompt', arguments: [thread, '-'], options: {'json': true}),
+        PorscheCommand('thread answer', arguments: [thread, other, '-']),
+        PorscheCommand('thread plan approve', arguments: [thread, other]),
+        PorscheCommand('thread plan revise', arguments: [thread, other, '-']),
+        PorscheCommand('thread mode', arguments: [thread, 'plan']),
+        PorscheCommand('thread read', arguments: [thread, '$sequence']),
+        PorscheCommand('terminal ls', arguments: [machine]),
+        PorscheCommand('terminal new', arguments: [machine], options: {'request-id': 'porsche-1'}),
+        PorscheCommand('terminal kill', arguments: [machine, other]),
+        PorscheCommand('web show', arguments: [machine]),
+        PorscheCommand('web set', arguments: [machine], options: {'port': '8080', 'public': true}),
+        PorscheCommand(
+          'web set',
+          arguments: [machine],
+          options: {'private': true, 'revision': '2'},
+        ),
+        PorscheCommand(
+          'watch',
+          options: {
+            'machine': [machine, other],
+            'thread': thread,
+            'session': true,
+          },
+        ),
+      ]);
+    });
 
 void main() {
   final document = jsonDecode(_vectors.readAsStringSync()) as Map<String, Object?>;
@@ -180,6 +217,77 @@ void main() {
     expect(parseCommandLine(line), command);
   });
 
+  property('client commands encode to lines the server grammar reads back', (tc) {
+    final command = tc.draw(_clientCommand, name: 'command');
+    expect(validateCommand(command), isNull);
+    final line = encodeCommand(command);
+    expect(parseCommandLine(line), command);
+    expect(line.contains('\n') || line.contains('\r'), isFalse);
+  });
+
+  property('a corrupted thread identifier is refused before any line exists', (tc) {
+    final command = tc.draw(_clientCommand, name: 'command');
+    final garbage = tc.draw(sampledFrom(const ['', 'x', 'NOT-A-UUID', '-1']), name: 'garbage');
+    if (command.name.startsWith('thread ') && command.arguments.isNotEmpty) {
+      final corrupted = PorscheCommand(
+        command.name,
+        arguments: [garbage, ...command.arguments.skip(1)],
+        options: command.options,
+      );
+      expect(validateCommand(corrupted), isNotNull);
+    }
+  });
+
+  test('stdin payload commands name their kind and limit', () {
+    const thread = '0d9cc041-9db2-4e4c-b28b-1e41d7f472c1';
+    expect(stdinPayload(PorscheCommand('thread prompt', arguments: [thread, '-'])), (
+      PayloadKind.prompt,
+      65536,
+    ));
+    expect(
+      stdinPayload(PorscheCommand('thread answer', arguments: [thread, thread, '-']))?.$1,
+      PayloadKind.answers,
+    );
+    expect(stdinPayload(PorscheCommand('thread show', arguments: [thread])), isNull);
+    // The payload never travels on the command line.
+    expect(
+      validateCommand(
+        PorscheCommand('thread prompt', arguments: [thread, '-'], options: {'stdin': 'hi'}),
+      ),
+      CommandRefusal.unknownOption,
+    );
+  });
+
+  test('watch filters are bounded and web set names a setting', () {
+    final many = [for (var i = 0; i < 17; i++) 'box-$i'];
+    expect(
+      validateCommand(PorscheCommand('watch', options: {'machine': many})),
+      CommandRefusal.invalidOption,
+    );
+    expect(validateCommand(PorscheCommand('watch')), CommandRefusal.invalidOption);
+    expect(
+      validateCommand(PorscheCommand('web set', arguments: ['box'], options: {'json': true})),
+      CommandRefusal.invalidOption,
+    );
+    expect(
+      validateCommand(
+        PorscheCommand('web set', arguments: ['box'], options: {'public': true, 'private': true}),
+      ),
+      CommandRefusal.invalidOption,
+    );
+    expect(
+      validateCommand(
+        PorscheCommand(
+          'thread ls',
+          options: {
+            'machine': ['a', 'b'],
+          },
+        ),
+      ),
+      CommandRefusal.invalidOption,
+    );
+  });
+
   property('lexing arbitrary text never throws', (tc) {
     final line = tc.draw(text(maxLength: 80), name: 'line');
     final tokens = lexCommandLine(line);
@@ -192,8 +300,8 @@ void main() {
     final line = encodeCommand(PorscheCommand('share remove', arguments: ['box', value]));
     final tokens = lexCommandLine(line)!;
     expect(tokens.last, value);
-    // `share remove box VALUE`, plus the `--` separator before a leading dash.
-    expect(tokens.length, value.startsWith('-') ? 5 : 4);
+    // `share remove box VALUE`, plus the `--` separator before a leading `--`.
+    expect(tokens.length, value.startsWith('--') ? 5 : 4);
     expect(parseCommandLine(line)!.arguments, ['box', value]);
   });
 }

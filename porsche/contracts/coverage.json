@@ -1,9 +1,9 @@
 {
   "apps": {
     "porsche": {
-      "active": 4,
+      "active": 7,
       "coverage": 1.0,
-      "covered": 4
+      "covered": 7
     },
     "system": {
       "active": 0,
@@ -70,6 +70,45 @@
         }
       }
     },
+    "porsche.terminal": {
+      "active": 3,
+      "app": "porsche",
+      "coverage": 1.0,
+      "covered": 3,
+      "form": "light",
+      "obligations": {
+        "porsche.terminal.I1": {
+          "failing": 0,
+          "kind": "non_functional",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test declared modules compile and remain loadable"
+          ]
+        },
+        "porsche.terminal.I2": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test read-only attachments discard input and writable grants release it in order"
+          ]
+        },
+        "porsche.terminal.I3": {
+          "failing": 0,
+          "kind": "security",
+          "passing": 1,
+          "status": "active",
+          "testable": true,
+          "tests": [
+            "test output receipts advance per delivered frame"
+          ]
+        }
+      }
+    },
     "system": {
       "active": 0,
       "app": "system",
@@ -81,8 +120,8 @@
   },
   "covenant": "0.2.0",
   "totals": {
-    "active": 4,
+    "active": 7,
     "coverage": 1.0,
-    "covered": 4
+    "covered": 7
   }
 }

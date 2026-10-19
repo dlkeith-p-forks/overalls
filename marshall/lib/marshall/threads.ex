@@ -42,6 +42,10 @@ defmodule Marshall.Threads do
     resource Marshall.Threads.AccessChange
 
     resource Marshall.Threads.Generation
+
+    resource Marshall.Threads.ReadMarker do
+      define :mark_read, action: :mark_read
+    end
   end
 
   @type user :: Marshall.Accounts.User.t()
@@ -114,6 +118,43 @@ defmodule Marshall.Threads do
       _ -> {:error, :machine_unavailable}
     end
   end
+
+  @doc "Reads retained transcript events after a sequence, oldest first."
+  # @cc [owner:ghuntley,label:security;durability] retained-transcript-after
+  # Incremental transcript reads MUST apply the same current read authority and
+  # paired agent binding as `events/4`, return events strictly after the given
+  # sequence in ascending order, and exclude streamed model output.
+  @spec events_after(String.t(), user(), pos_integer() | nil, non_neg_integer(), pos_integer()) ::
+          {:ok, [Marshall.Agents.Event.t()]} | {:error, term()}
+  def events_after(
+        thread_id,
+        %Marshall.Accounts.User{} = actor,
+        generation,
+        after_sequence,
+        limit
+      )
+      when is_binary(thread_id) and
+             (is_nil(generation) or (is_integer(generation) and generation >= 1)) and
+             is_integer(after_sequence) and after_sequence >= 0 and is_integer(limit) and
+             limit in 1..200 do
+    with {:ok, thread} <- get_thread(%{thread_id: thread_id}, actor: actor),
+         {:ok, generation} <- generation_for(thread, generation),
+         {:ok, agent_thread_id} <- valid_binding(thread, generation) do
+      {:ok,
+       Marshall.Agents.Event
+       |> Ash.Query.filter(
+         thread_id == ^agent_thread_id and kind != :model_output and sequence > ^after_sequence
+       )
+       |> Ash.Query.sort(sequence: :asc)
+       |> Ash.Query.limit(limit)
+       |> Ash.read!(actor: Marshall.Authorization.SystemActor.compute())}
+    else
+      {:error, reason} -> {:error, error_reason(reason)}
+      _ -> {:error, :machine_unavailable}
+    end
+  end
+
+  def events_after(_, _, _, _, _), do: {:error, :forbidden}
 
   @spec generation_for(Thread.t(), pos_integer() | nil) ::
           {:ok, Marshall.Threads.Generation.t()} | {:error, atom()}

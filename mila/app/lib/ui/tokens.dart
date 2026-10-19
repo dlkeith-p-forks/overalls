@@ -2,6 +2,7 @@
 // derives from these four tokens per theme; no other file may declare one.
 // Values mirror marshall/assets/css/tokens.css.
 import 'package:flutter/widgets.dart';
+import 'package:xterm/xterm.dart' show TerminalTheme, TerminalThemes;
 
 /// One theme's four colour tokens.
 @immutable
@@ -48,4 +49,36 @@ abstract final class MonoScale {
   static const FontWeight normal = FontWeight.w500;
   static const FontWeight medium = FontWeight.w600;
   static const FontWeight bold = FontWeight.w800;
+}
+
+/// The terminal's theme: foreground, background, cursor and selection from
+/// the four tokens, as the web terminal does; the sixteen ANSI colours stay
+/// the emulator's defaults, because they are program output, not chrome.
+TerminalTheme monoTerminalTheme(MonoTokens tokens) {
+  const ansi = TerminalThemes.defaultTheme;
+  return TerminalTheme(
+    cursor: tokens.text,
+    selection: tokens.textAlt,
+    foreground: tokens.text,
+    background: tokens.background,
+    black: ansi.black,
+    red: ansi.red,
+    green: ansi.green,
+    yellow: ansi.yellow,
+    blue: ansi.blue,
+    magenta: ansi.magenta,
+    cyan: ansi.cyan,
+    white: ansi.white,
+    brightBlack: ansi.brightBlack,
+    brightRed: ansi.brightRed,
+    brightGreen: ansi.brightGreen,
+    brightYellow: ansi.brightYellow,
+    brightBlue: ansi.brightBlue,
+    brightMagenta: ansi.brightMagenta,
+    brightCyan: ansi.brightCyan,
+    brightWhite: ansi.brightWhite,
+    searchHitBackground: tokens.textAlt,
+    searchHitBackgroundCurrent: tokens.text,
+    searchHitForeground: tokens.background,
+  );
 }

@@ -94,6 +94,14 @@ for {name, key, default} <- [
   end
 end
 
+# services.marshall.notifications.enable (ADR-0225). Unset means enabled; any
+# value other than "true" or "false" refuses startup.
+case System.get_env("MARSHALL_NOTIFICATIONS_ENABLED", "true") do
+  "true" -> config :marshall, notifications_enabled: true
+  "false" -> config :marshall, notifications_enabled: false
+  _ -> raise "Invalid MARSHALL_NOTIFICATIONS_ENABLED (expected true or false)"
+end
+
 case Marshall.Operations.RuntimeConfig.inception_public(System.get_env()) do
   {:ok, settings} -> config :marshall, inception_public: settings
   {:error, _} -> raise "Invalid Inception public settings"
@@ -133,7 +141,15 @@ case Marshall.Ingress.FleetACMEConfig.from_env(System.get_env()) do
     config :marshall, fleet_acme: settings
 
     config :marshall, Oban,
-      queues: [default: 10, provisioning: 10, mail: 2, maintenance: 2, github: 2, certificates: 1]
+      queues: [
+        default: 10,
+        provisioning: 10,
+        mail: 2,
+        maintenance: 2,
+        github: 2,
+        notifications: 5,
+        certificates: 1
+      ]
 
   {:error, _} ->
     raise "Invalid fleet ACME issuer configuration"

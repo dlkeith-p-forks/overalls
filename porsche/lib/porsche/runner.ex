@@ -49,10 +49,33 @@ defmodule Porsche.Runner do
     end)
   end
 
+  # @cc [owner:ghuntley,label:security] porsche-attach-never-runs-as-command
+  # `terminal attach` returns a single-use ticket, so the command runner MUST
+  # refuse it (interactive lines and structured dispatch alike) without
+  # contacting Marshall; only a PTY attach channel may request its ticket.
+  # @cc [owner:ghuntley,label:security] porsche-stdin-payload-required
+  # A command that reads a secret or a text payload from stdin MUST NOT be
+  # dispatched until the channel has supplied it as a validated structure.
+  # `watch` streams only over an exec channel and is never a single request.
   defp run_validated(client, session, command, options) do
-    if SSHCommand.stdin_secret?(command),
-      do: failure(:stdin_secret_required, nil, 2),
-      else: execute(client, session, command, options)
+    if SSHCommand.attach?(command),
+      do: failure(:attach_requires_pty, nil, 2),
+      else: run_payload_checked(client, session, command, options)
+  end
+
+  defp run_payload_checked(client, session, command, options) do
+    case SSHCommand.stdin_payload?(command) do
+      {:secret, _} ->
+        failure(:stdin_secret_required, nil, 2)
+
+      {_kind, _limit} ->
+        failure(:stdin_payload_required, nil, 2)
+
+      false ->
+        if command.command == "watch",
+          do: failure(:invalid_command, nil, 2),
+          else: execute(client, session, command, options)
+    end
   end
 
   defp execute(client, session, command, options) do
@@ -240,5 +263,21 @@ defmodule Porsche.Runner do
     do: "A failed machine cannot be pinned; an existing pin can still be removed."
 
   defp hint(:pin_limit), do: "You already hold the maximum number of pins; unpin one first."
+
+  defp hint(:push_disabled),
+    do: "This deployment has push notifications turned off; ask its operator."
+
+  defp hint(:device_limit),
+    do: "You already have the maximum number of devices; remove one first: device rm DEVICE_ID"
+
+  defp hint(:revision_conflict),
+    do: "Read the current settings with web show MACHINE, then retry with --revision."
+
+  defp hint(:stale_proposal),
+    do: "Read the latest plan with thread show THREAD, then approve or revise that plan."
+
+  defp hint(:stdin_payload_required),
+    do: "Pipe the text on standard input and end the command with -."
+
   defp hint(_), do: nil
 end

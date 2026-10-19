@@ -935,7 +935,7 @@ histories pass 171 refusals across 57 cases, including control/public origin,
 listener bounds, paths, config/credential/key custody and CA defects. Refusals
 preserve recursive fixture bytes, types, permissions, ownership and link counts,
 and diagnostics exclude original/mutated credentials, host-key/CA bytes and
-fixture paths. The unset control starts exactly five live named base children
+fixture paths. The unset control starts exactly seven live named base children
 without listener or status startup. These are test-build checks. Baseline
 synthetic host-key bytes establish loader custody acceptance only; configured
 SSH/host-certificate startup, packaged refusal, file-replacement races, native
@@ -963,6 +963,71 @@ Evidence: [personal workspace](repo:docs/architecture/decisions/0117-personal-te
 [SSH guidance](repo:docs/architecture/decisions/0120-ssh-onboarding-guidance.md),
 [Porsche operations](repo:docs/operations/porsche-operations.md).
 
+### Mila client commands
+
+Mila (ADR-0220) drives Marshall only through Porsche's command catalog
+(ADR-0222). Thread commands (`thread ls|show|turns|prompt|answer|plan
+approve|plan revise|mode|read`), terminal commands (`terminal ls|new|kill`),
+web commands (`web show|set`) and the streaming `watch` share the existing
+shared parser, Marshall session authority and pinned `ssh_requests` receipts.
+Marshall answers identifiers, states, unread counts and canonical
+`overalls://` routes; thread objectives, machine specifications and skill
+selections never reach the wire.
+
+Prompt, answer and plan-revision text arrives only on standard input after a
+final `-`, bounded per command at 64 KiB; the integration secret keeps its own
+4098-byte kind. Porsche buffers to that bound, validates through
+`SSHCommand.put_stdin_payload/2` and logs only a closed
+`porsche.stdin_payload_rejected` reason. Marshall stores receipts with the
+payload replaced by a SHA-256 digest and with the caller's SSH key id, so a
+Porsche-originated prompt, answer, plan approval or web change is attributable
+without retaining its text. Read markers are per reader and agent transcript
+and never move backwards; `thread ls` derives unread counts from them.
+
+`web set` passes the caller's expected `policy_revision` (or the one it just
+read) to Ingress, which rechecks manage authority under the VM lock and
+refuses `revision_conflict`. Terminal commands run outside the receipt
+transaction because the terminal domain commits its opening intent before
+guest dispatch; `terminal new` derives its opening identity from the account
+and request id, so a retry rejoins the same shell.
+
+```mermaid
+sequenceDiagram
+  participant Mila
+  participant Porsche
+  participant Marshall
+  Mila->>Porsche: exec "watch --thread T --session"
+  Porsche->>Marshall: porsche.watch_subscribe(session, machines, threads)
+  Marshall-->>Porsche: canonical ids readable now (or refusal)
+  Porsche-->>Mila: {"event":"watching",...}
+  Marshall--)Porsche: hint thread T (after commit)
+  Porsche-->>Mila: {"event":"thread","id":T} (debounced)
+  Mila->>Porsche: exec "thread show T --json"
+  loop every 15 s
+    Porsche->>Marshall: watch_subscribe again
+    Porsche-->>Mila: {"event":"heartbeat"} or close with exit 3
+  end
+```
+
+A hint is never authority: Porsche routes `{kind, id}` hints only to channels
+registered for identifiers Marshall authorized, and the client re-reads
+through ordinary commands. Porsche's gateway binding subscribes to every
+thread and terminal-session hint, so the trusted gateway learns change
+identifiers across accounts but never their content. Revocation ends a watch
+within one heartbeat.
+
+Evidence: [command grammar](repo:protocol/lib/overalls_protocol/ssh_command.ex),
+[protocol properties](repo:protocol/test/ssh_client_commands_test.exs),
+[dispatch](repo:marshall/lib/marshall/ssh/commands.ex),
+[watch authority](repo:marshall/lib/marshall/ssh/watch.ex),
+[read markers](repo:marshall/lib/marshall/threads/read_markers.ex),
+[Marshall command tests](repo:marshall/test/marshall/ssh/client_commands_test.exs),
+[Porsche watch routing](repo:porsche/lib/porsche/watchers.ex),
+[Porsche tests](repo:porsche/test/client_commands_test.exs),
+[real SSH transport test](repo:marshall/test/marshall_web/ssh_transport_test.exs).
+Committed-hint delivery, live terminal openings and a NixOS machine journey
+remain unexercised.
+
 ### Local host-certificate startup evidence
 
 Native guest SSH refusal checks distinguish recognized users denied by VM or
@@ -981,7 +1046,7 @@ custody and material/path-safe output. Signed invalid type/options/principal
 cases retain valid cryptographic signatures.
 
 A separate configured control starts the real default-callback loopback daemon,
-checks seven direct children, readiness, private status socket and an actual SSH
+checks nine direct children, readiness, private status socket and an actual SSH
 banner, then stops the application and removes its owned socket. This establishes
 local startup only. Certificate negotiation/client CA trust, account proof and
 authorized Marshall management, production release/systemd startup, native
@@ -1144,6 +1209,104 @@ Evidence:
   and [Android service](repo:mila/app/android/app/src/main/kotlin/dev/overalls/mila/MilaMessagingService.kt);
 - the [desktop machine test](repo:nix/verification/tests/machines/mila-desktop/default.nix)
   and the [M5 device review](repo:docs/architecture/reviews/2026-10-18-mila-device.md).
+
+### Mila terminals, threads and web
+
+Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid
+lists threads across machines. Every action is an ordinary Porsche command
+(ADR-0222). Each mutation carries a request id and is submitted once, then
+polled through `request show`. Prompts, answers and plan revisions are sent on
+the exec channel's stdin, never on the command line, and are limited to 64 KiB.
+Links to these pages only navigate.
+
+| Concern | Behaviour |
+| --- | --- |
+| Terminal attach | `terminal attach M S [--cursor N] [--read-only]` on a PTY sized to the view, with window-change on resize. One JSON header line on stderr (at most 512 bytes) states `from`, `replay_bytes` and `mode`. Output before it is dropped. |
+| Cursor resume | A dropped channel reattaches from the bytes already shown. When the header's `from` differs from the cursor, Mila resets the screen and counts a documented jump; otherwise the cursor only moves forward. |
+| Read-only | Chosen or granted, read-only never sends keys, pastes or resizes. Choosing control again reattaches writable. |
+| Retry | Exit 5 (transport) retries with backoff, at most 8 attempts. Exits 1 (refused), 2 (invalid) and 3 (authority) end the view with a localized reason. |
+| Threads | Lists, transcript pages (`thread turns --after`), questions, plan approve and revise, plan or work mode. The read marker only moves forward (`thread read`). |
+| Watch | `watch` JSON lines trigger re-reads; Mila never takes state from them. More than 40 s of silence reopens the stream. Transport loss reconnects after 1 to 60 s; authority loss stops it. |
+| Web | `web show`, and `web set` at the shown `policy_revision`, so a concurrent change is a conflict. Only HTTPS URLs on DNS hosts are opened. Public endpoints open in a webview on iOS and Android; private endpoints always open in the system browser. |
+
+```mermaid
+sequenceDiagram
+    participant M as Mila
+    participant P as Porsche
+    participant G as Guest PTY
+    M->>P: terminal attach M S --cursor N (pty)
+    P-->>M: stderr {attached:true, from, replay_bytes, mode}
+    P-->>M: replayed bytes, then live output
+    M->>P: keys (rw only), window-change
+    P-->>M: exit 5 (transport)
+    M->>P: terminal attach M S --cursor N' (after backoff)
+```
+
+Failure behaviour: terminal bytes exist only in the in-memory emulator. They
+are never written to disk, the offline cache, preferences or logs. A paste is
+bracketed and cannot carry control sequences.
+
+Evidence:
+- [command catalogue](repo:mila/packages/mila_core/lib/src/ssh_command.dart);
+- [attach state machine](repo:mila/packages/mila_core/lib/src/terminal_attach.dart);
+- [watch supervisor](repo:mila/packages/mila_core/lib/src/watch.dart);
+- [channels](repo:mila/packages/mila_transport/lib/src/channels.dart) and the
+  [OpenSSH journeys](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart);
+- [app flows](repo:mila/app/test/client_flow_test.dart);
+- the [UI review](repo:docs/architecture/reviews/2026-10-18-mila-ui.md).
+
+All of these tests are present; none has a recorded passing run yet.
+
+## Terminal attach over SSH
+
+`ssh -t control.example.test terminal attach MACHINE SESSION [--cursor N] [--read-only]`
+joins a registry terminal session (the same session the browser shows) from
+any SSH client. It needs a pty and is never an ordinary command; without
+`-t` it exits 2 with `attach_requires_pty`. Porsche writes one JSON header
+line on stderr (`{"attached":true,"mode":"rw|ro","from":N,...}` or
+`{"attached":false,"error":...}`) and then relays raw terminal bytes.
+
+| Exit | Meaning |
+| --- | --- |
+| 0 | The session closed or the client detached (end of input). |
+| 1 | Refused: unknown session, another machine's session, forbidden, conflict. |
+| 2 | Invalid: bad arguments or no pty. |
+| 3 | Authority: the SSH key, approval, session or gateway credential was revoked. |
+| 5 | Transport: Marshall unreachable, inconclusive authority, silence over 15 s. |
+
+```mermaid
+sequenceDiagram
+    participant C as SSH client
+    participant P as Porsche
+    participant M as Marshall
+    participant V as Terminal viewer
+    C->>P: pty-req, exec "terminal attach M S"
+    P->>M: commands "terminal attach" (control link)
+    M-->>P: single-use ticket bound to this SSH session
+    P->>M: GET /api/terminal-gateway/v1/stream (gateway bearer, SSH session, ticket)
+    M->>M: session_live? before upgrade
+    M->>V: upgrade with {:ssh, gateway, session} authority
+    V-->>P: attached, mode, replay from cursor
+    P-->>C: stderr header, then output (ack after local send)
+    C->>P: input (only when rw, within 16 frames / 256 KiB credit)
+    V->>M: recheck every 5 s and on ssh_session/user hints
+    V-->>P: close 4001 on revocation
+    P-->>C: exit 3
+```
+
+Evidence: [command grammar](repo:protocol/lib/overalls_protocol/ssh_command.ex),
+[closed tables](repo:protocol/lib/overalls_protocol/terminal_attach.ex) and
+[fixture](repo:protocol/test/fixtures/terminal_attach.json);
+[gateway stream](repo:marshall/lib/marshall_web/terminal_gateway_api.ex),
+[viewer](repo:marshall/lib/marshall/terminal/viewer.ex),
+[Porsche attachment](repo:porsche/lib/porsche/terminal/attachment.ex) and
+[credit](repo:porsche/lib/porsche/terminal/credit.ex);
+[end-to-end test](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs),
+[Porsche relay tests](repo:porsche/test/terminal_attachment_test.exs),
+[credit model property](repo:porsche/test/terminal_credit_property_test.exs) and the
+[fleet journey](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py)
+(not yet recorded passing). See [ADR-0223](repo:docs/architecture/decisions/0223-porsche-terminal-attach.md)
+and the [S2 review](repo:docs/architecture/reviews/2026-10-19-mila-terminal-attach.md).
 
 ## Explicit terminal kill under withheld credit
 

@@ -4005,3 +4005,325 @@ Tested scope: NixOS machine test with real X input, packaged Marshall, haproxy a
 **Gaps:** No machine is provisioned, so the list content and machine-page links are exercised only on an empty list and an unknown id.
 
 **Preferred test work:** Run the same journey in a fleet fixture with a provisioned machine.
+
+## Deliver a Mila notification through Susan without revealing content
+
+Coverage: **partial**. Layers: identity, authorization, transport, storage.
+
+Boundary: Only a push key Susan can open plus a valid install signature admits a poke; providers receive only ciphertext, collapse id and fixed loc-keys.
+
+Required refusal: Forged signatures, unknown/denied keys and malformed bodies answer the same 404/400 body and write nothing.
+
+Tested scope: Packaged release, real SOPS bundle, local PostgreSQL and verify_peer TLS to local fake APNs/OAuth/FCM origins.
+
+- **machine, present**: [APNs poke is content-free and over HTTP/2 with verified TLS](repo:nix/verification/tests/machines/susan-service/driver.py) — Fake provider origins behind a private CA..
+- **property, present**: [arbitrary event sequences never send before every check and always answer once](repo:susan/test/susan/machine_property_test.exs) — Pure FSM..
+
+**Gaps:** No real Apple or Google acceptance; hosting and TLS placement open.
+
+**Preferred test work:** Exercise sandbox APNs and FCM with publisher credentials once hosting is chosen.
+
+## Retry a poke without double notification and bound abuse
+
+Coverage: **partial**. Layers: execution, recovery.
+
+Boundary: A sent delivery id is answered 204 without a second send; per-key, install, source and global token buckets bound throughput.
+
+Required refusal: Replays answer 400; the eleventh burst poke answers 429 with Retry-After; deny-listed keys answer 404; unregistered tokens answer 410 and stay cached.
+
+Tested scope: susan-service machine test and Hegel token-bucket/replay properties.
+
+- **machine, present**: [provider 503 retries once in-request, then a later retry succeeds once](repo:nix/verification/tests/machines/susan-service/driver.py) — Single node..
+- **property, present**: [admissions never exceed burst plus refill and refusals name a sufficient wait](repo:susan/test/susan/token_bucket_property_test.exs) — Pure arithmetic..
+
+**Gaps:** Buckets are per node; multi-instance limits are untested.
+
+**Preferred test work:** Machine test with two Susan nodes behind one proxy.
+
+## Operate Susan's secrets and audit trail
+
+Coverage: **partial**. Layers: storage, recovery, identity.
+
+Boundary: Secrets arrive only through the host-bound SOPS bundle and systemd credentials; the audit trail is append-only and hash chained.
+
+Required refusal: Another host cannot decrypt the bundle; a missing secret keeps the previous bundle and fences startup; unsafe credential files and invalid keyrings refuse startup; UPDATE/DELETE/TRUNCATE on audit rows fail.
+
+Tested scope: susan-secrets and susan-service machine tests; susan-image for the container form.
+
+- **machine, present**: [keyring rotation is audited and older push keys still open](repo:nix/verification/tests/machines/susan-secrets/driver.py) — Single host plus a wrong-host node..
+- **machine, present**: [no secret bytes in image layers or the container filesystem](repo:nix/verification/tests/machines/susan-image/driver.py) — Rootful podman..
+
+**Gaps:** secrets/overalls-susan.enc.json does not exist yet; no production host recipient.
+
+**Preferred test work:** Create the document for the chosen host and repeat susan-secrets against it.
+
+## An agent asks a planning question and the thread's writers get a Mila notification that opens the thread, without Susan learning what it is about
+
+Coverage: **partial**. Layers: identity, authorization, transport, isolation, storage, recovery.
+
+Boundary: After the planning transaction commits, Marshall queues one delivery per active, enabled device of current thread writers other than the actor, seals the route to the device X25519 key and sends Susan only a signed ciphertext body; 503s retry under the same delivery id and 410 invalidates the device.
+
+Required refusal: Viewers, the actor, paused, revoked and invalidated devices receive nothing; a rolled-back question produces nothing; a stranger key cannot open the poke; the operator switch refuses registration with push_disabled.
+
+Tested scope: BEAM unit, Hegel and Covenant tests against PostgreSQL with a Req.Test Susan stub, plus a NixOS machine test of the release against a fake Susan at the compiled origin over OS-trusted TLS.
+
+- **unit, present**: [an agent question notifies current writers' devices after commit, not viewers](repo:marshall/test/marshall/notifications/producer_test.exs) — Producer recipients, coalescing and after-commit timing in the BEAM..
+- **unit, present**: [503, 503, 200 sends once successfully; 410 invalidates the device](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I3 with an in-process Susan stub..
+- **property, present**: [the retry mapping matches the ADR-0225 table](repo:marshall/test/marshall/notifications/delivery_worker_test.exs) — Hegel over status, Retry-After and final attempt..
+- **property, present**: [flipping any bit of a sealed poke is refused](repo:protocol/test/push_poke_test.exs) — PushPoke round-trip and tamper refusal over generated inputs..
+- **machine, present**: [Susan 503, 503, then 200 yields exactly one provider send](repo:nix/verification/tests/machines/push-notifications/driver.py) — Release against fake Susan at the compiled origin with OS-trusted TLS..
+
+**Gaps:** Real Susan, APNs/FCM delivery and Mila decryption on a device are not exercised.
+
+**Preferred test work:** A fleet journey with the Susan service, a fake provider and the Mila client decrypting the poke.
+
+## A Mila user registers, pauses and removes a push device over Porsche, and removing the SSH key or retiring the account revokes it
+
+Coverage: **partial**. Layers: identity, authorization, storage, recovery.
+
+Boundary: device register binds the device to the session SSH key, reads the push key only from stdin and retains only its digest in receipts and versions; at most ten live devices per user.
+
+Required refusal: Another user's device id refuses device_not_found; an eleventh device refuses device_limit; a key not owned by the actor refuses; a revoked device is never poked.
+
+Tested scope: BEAM Covenant and unit tests through SSH.execute and the domain API; Porsche runner and channel tests for stdin and refusal hints.
+
+- **unit, present**: [SSH key removal and account retirement revoke bound devices](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I5..
+- **unit, present**: [device versions and registration receipts keep only the push-key digest](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I6 through SSH.execute..
+
+**Gaps:** No machine test drives device commands through a real Porsche SSH session.
+
+**Preferred test work:** Extend mila-porsche to register, list and remove a device through Porsche to Marshall.
+
+## A needs-input poke travels from the packaged Marshall release through the packaged Susan release to a provider, and only the registered device can open it
+
+Coverage: **partial**. Layers: identity, transport, isolation, storage, recovery.
+
+Boundary: Marshall signs the canonical SusanPoke body with its install identity and sends it over verified TLS to the compiled Susan origin; Susan verifies the domain-separated signature, opens the push key it issued and forwards only ciphertext, retrying provider 503s without a second send under the same delivery id.
+
+Required refusal: A stranger X25519 key cannot open the forwarded ciphertext; a provider 410 invalidates the device and later pokes drop as device_inactive; neither journal holds the push key, the device key, the route or a poke ciphertext.
+
+Tested scope: NixOS machine test with a Marshall role node and a Susan relay node behind TLS for notifications.overalls.dev; local fake APNs/OAuth/FCM origins stand in for Apple and Google.
+
+- **machine, present**: [provider 503 twice, then 200: Susan accepts Marshall's signature and sends once](repo:nix/verification/tests/machines/push-relay/driver.py) — Packaged Marshall and Susan releases with a fake provider..
+- **machine, present**: [only the device can open what the provider received](repo:nix/verification/tests/machines/push-relay/driver.py) — Device and stranger keys opening the provider-received ciphertext..
+- **machine, present**: [provider 410 invalidates the device and later pokes are never sent](repo:nix/verification/tests/machines/push-relay/driver.py) — Provider unregistration propagated through Susan to Marshall..
+- **unit, present**: [non-canonical bodies and signatures over the bare body are refused](repo:susan/test/susan/request_test.exs) — Susan verifier against the shared SusanPoke fixture..
+
+**Gaps:** Real APNs/FCM acceptance and decryption in the iOS/Android notification extensions are not exercised.
+
+**Preferred test work:** A device-farm journey with store-signed builds against provider sandboxes.
+
+## A user attaches an SSH terminal to the same persistent terminal session the browser shows, with replay, and detaches
+
+Coverage: **partial**. Layers: identity, authorization, transport, execution, storage.
+
+Boundary: Porsche obtains a single-use ticket bound to the SSH session through the control link, then opens Marshall's gateway stream with the gateway bearer and SSH session; the stream upgrades into the production terminal viewer.
+
+Required refusal: An unknown or another machine's session exits 1 (not_found); attach without a pty exits 2 before any ticket is requested; a browser ticket on the gateway route, or an SSH ticket on the browser route, closes 4003.
+
+Tested scope: BEAM end-to-end through a real Porsche listener, control link and TLS FleetEndpoint against a fake host stream; Porsche relay against a fake gateway; the native fleet journey on a real guest is implemented but not yet recorded passing.
+
+- **unit, present**: [an SSH attach relays the shared session through the production viewer](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs) — Real Porsche listener and control link, TLS FleetEndpoint, production viewer, fake host stream in the BEAM test VM..
+- **property, present**: [every close code, status and refusal maps into the closed exit table](repo:protocol/test/terminal_attach_test.exs) — Hegel property over the shared closed tables and header codec..
+- **machine, present**: [Porsche SSH attach shares the browser terminal session](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — Real OpenSSH client through Porsche into the personal session opened by TerminalLive's production call on a real guest..
+
+**Gaps:** No recorded native run of the porsche-terminal-fleet journey; Mila does not yet drive attach.
+
+**Preferred test work:** Record a passing porsche-terminal-fleet run.
+
+## A user attaches read-only and watches a shared session without being able to type into it
+
+Coverage: **partial**. Layers: authorization, isolation.
+
+Boundary: The ticket mode never escalates (rw only for the owner with write access and without --read-only); Porsche's credit discards read-only input before the websocket and never sends resize.
+
+Required refusal: Typed input on a read-only attach never reaches the session, even if Marshall granted rw.
+
+Tested scope: BEAM end-to-end and Porsche relay tests plus a Hegel credit model; native guest effect not yet recorded.
+
+- **property, present**: [input release respects the window, ordering and read-only refusal](repo:porsche/test/terminal_credit_property_test.exs) — Hegel reference model of Porsche input credit..
+- **unit, present**: [a read-only SSH attach never reaches the session with input](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs) — Real Porsche listener against the production viewer in the BEAM test VM..
+- **machine, present**: [read-only SSH attach input never reaches the guest](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — Guest shell output proves read-only input was never evaluated..
+
+**Gaps:** No recorded native run.
+
+**Preferred test work:** Record a passing porsche-terminal-fleet run.
+
+## Removing a user's SSH key or closing their SSH session ends a live terminal attach
+
+Coverage: **partial**. Layers: identity, execution, recovery.
+
+Boundary: The viewer rechecks SSH.Authority.session_live?/2 every 5 seconds and on ssh_session/user hints; a refused credential closes 4001 and Porsche exits 3; an inconclusive check closes 1011 (exit 5).
+
+Required refusal: A revoked key or closed SSH session cannot keep reading or writing the terminal beyond the 5-second recheck.
+
+Tested scope: BEAM end-to-end bound under 6.5 s including teardown; the native 5-second bound from commit is implemented in the fleet journey but not yet recorded.
+
+- **unit, present**: [key revocation closes a live attachment with exit 3 within five seconds](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs) — Real Porsche listener, production SSH key removal and viewer recheck in the BEAM test VM..
+- **machine, present**: [SSH key revocation closes a live attach within five seconds](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — Production key removal through the fixture operator; exit time compared with the post-commit wall clock..
+
+**Gaps:** No recorded native run; latency while an SSH client stalls output is unmeasured.
+
+**Preferred test work:** Record a passing porsche-terminal-fleet run.
+
+## Terminal bytes, tickets and tokens used by an SSH attach never reach logs
+
+Coverage: **partial**. Layers: storage, transport.
+
+Boundary: Porsche attachments are porsche_private processes with redacted status; only catalogued enum-metadata events are emitted; Marshall's terminal log filter keeps only allowed reason atoms.
+
+Required refusal: No journal on any fleet machine contains typed or echoed attach bytes.
+
+Tested scope: Captured-log assertions in the Porsche relay test; native journal scan implemented but not yet recorded.
+
+- **unit, present**: [a writable attach relays output after delivery, input within credit and resizes](repo:porsche/test/terminal_attachment_test.exs) — Fake gateway; asserts captured logs contain no bytes, ticket or token..
+- **machine, present**: [no SSH attach terminal bytes reach any journal](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — journalctl scan of every Marshall, provisioner and client machine for a random marker..
+
+**Gaps:** No recorded native run.
+
+**Preferred test work:** Record a passing porsche-terminal-fleet run.
+
+## Mila lists, reads, prompts, answers and approves plans in agent threads through Porsche SSH
+
+Coverage: **partial**. Layers: identity, authorization, transport, storage.
+
+Boundary: Porsche dispatches the shared-parser command under Marshall session authority; the Threads domain checks thread read/write with the SSH actor; prompt, answer and revision text arrives only as a bounded stdin payload and receipts keep only its digest and the SSH key id.
+
+Required refusal: A payload command without stdin, an oversized or empty payload, a busy thread, a stale proposal or question, invalid answers and a stranger's thread refuse with closed reasons before any turn is admitted; a reused request id with different text is idempotency_conflict.
+
+Tested scope: BEAM tests of protocol grammar (Hegel), Marshall dispatch against the real Threads, Agents and Planning domains, Porsche channel/runner custody, and one real SSH + Porsche + HTTPS control journey.
+
+- **property, present**: [client commands format to canonical lines that parse back unchanged](repo:protocol/test/ssh_client_commands_test.exs) — Canonical line form round-trips and mutation classification for all 15 commands..
+- **property, present**: [stdin payloads are bounded valid text and never accepted on the command line](repo:protocol/test/ssh_client_commands_test.exs) — Stdin payload kinds, limits and command-line refusal..
+- **unit, present**: [thread commands list, show, prompt and mark read through the domain](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Dispatch, unread counts, digest-only receipts with SSH key id, replay and conflict..
+- **unit, present**: [thread answer and plan commands keep the domain's question and proposal fences](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Planning question answer, stale proposal refusal and plan approval into a Work turn..
+- **unit, present**: [exec reads prompt payloads from stdin within their bound](repo:porsche/test/ssh_channel_test.exs) — OTP SSH exec channel buffers, bounds and validates the prompt payload..
+- **unit, present**: [porsche-threads: stdin prompts, thread reads and a revocable watch](repo:marshall/test/marshall_web/ssh_transport_test.exs) — Real OpenSSH-protocol client, Porsche listener and Marshall control over verified TLS in one BEAM..
+- **machine, present**: [Porsche thread, web and watch commands drive Marshall domains](repo:nix/verification/tests/machines/fleet/scenarios/porsche-threads.py) — Native OpenSSH, packaged Porsche and Marshall on the fleet fixture..
+
+**Gaps:** Committed-hint delivery and a NixOS fleet journey have not run; turn execution by a model is outside these tests.
+
+**Preferred test work:** Run the porsche-threads fleet machine test.
+
+## A reader's unread count in a thread only falls as they read and restarts for a reopened transcript
+
+Coverage: **partial**. Layers: storage, authorization.
+
+Boundary: Marshall.Threads.ReadMarker is keyed per user and agent transcript, written only under an advisory transaction lock after current thread read authority; positions clamp to the last durable event.
+
+Required refusal: A smaller position leaves the stored marker unchanged; a thread without a bound transcript refuses thread_not_ready; a reader without thread read is forbidden.
+
+Tested scope: Hegel property over arbitrary mark-read sequences against PostgreSQL in the BEAM sandbox.
+
+- **property, present**: [read marker positions never decrease](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Running-maximum invariant and unread counts..
+
+**Gaps:** Concurrent writers across nodes are serialized by the lock but not exercised by a distributed test.
+
+**Preferred test work:** Add a distributed property with concurrent mark-read writers.
+
+## Mila changes a machine's web port or visibility only against the revision it read
+
+Coverage: **partial**. Layers: authorization, storage.
+
+Boundary: web set keeps unnamed settings, passes the caller's or freshly read policy_revision to Ingress.configure_endpoint, which rechecks manage authority under the VM lock.
+
+Required refusal: A stale revision refuses revision_conflict, port 4444 reserved_editor_port and a profile without web web_not_allowed; the endpoint stays unchanged.
+
+Tested scope: BEAM test against the real Ingress domain.
+
+- **unit, present**: [web show and web set use the endpoint's optimistic policy revision](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Revision fence, reserved port and receipt provenance..
+- **machine, present**: [revision_conflict](repo:nix/verification/tests/machines/fleet/scenarios/porsche-threads.py) — Native fleet revision refusal..
+
+**Gaps:** No native ingress reachability check follows the change in these tests.
+
+**Preferred test work:** Run the porsche-threads fleet machine test.
+
+## Mila keeps one SSH exec open to learn which machines, threads and its own session changed
+
+Coverage: **partial**. Layers: authorization, transport, recovery.
+
+Boundary: porsche.watch_subscribe authorizes every named machine and thread for the session; Porsche registers only the returned identifiers, coalesces hints and repeats the subscription each heartbeat; notices carry identifiers only.
+
+Required refusal: A stranger's thread refuses the whole subscription (403); a pending key without --session gets approval instructions; a revoked key ends the stream with exit 3 at the next heartbeat.
+
+Tested scope: Marshall subscription authority, Porsche routing (Hegel coalescing property), OTP channel stream and a real SSH transport journey.
+
+- **unit, present**: [watch subscriptions authorize every named machine and thread](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Subscription authority and control route classification..
+- **property, present**: [queued hints drain to one identifier notice per distinct hint](repo:porsche/test/client_commands_test.exs) — Debounce coalescing and identifier-only notices..
+- **unit, present**: [watch streams identifier notices, renews on heartbeat and ends on revocation](repo:porsche/test/ssh_channel_test.exs) — OTP SSH exec watch stream..
+- **unit, present**: [porsche-threads: stdin prompts, thread reads and a revocable watch](repo:marshall/test/marshall_web/ssh_transport_test.exs) — Real SSH, Porsche and HTTPS control..
+
+**Gaps:** Delivery of a hint from a committed domain change is not exercised (sandboxed tests never commit pg_notify).
+
+**Preferred test work:** Run the porsche-threads fleet machine test with a committed thread change.
+
+## A user opens a shared terminal session from Mila, types, survives a dropped connection and can watch read-only
+
+Coverage: **partial**. Layers: transport, execution, isolation.
+
+Boundary: Mila attaches with terminal attach on a PTY through Porsche, resumes from its byte cursor, and fences input locally when read-only; Marshall and Porsche authorize the attach.
+
+Required refusal: Output before the header is dropped; a read-only attachment sends no keys, paste or resize; refused, invalid and authority exits end the view; transport retries stop after 8 attempts.
+
+Tested scope: Hegel stateful attach machine, in-memory channel header tests, a stock OpenSSH PTY journey and widget flows against the fake Porsche. No native PTY or real Porsche attach.
+
+- **property, present**: [terminal attach matches its model](repo:mila/packages/mila_core/test/terminal_attach_test.dart) — Hegel StateMachine over attach, header, output, end, reset and read-only events..
+- **unit, present**: [the stderr header, output and exit become signals in order](repo:mila/packages/mila_transport/test/channels_test.dart) — In-memory stderr/stdout/exit streams..
+- **unit, present**: [terminal attach runs on a pty sized to the view, with resize and exit mapping](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Stock OpenSSH ForceCommand emulating attach..
+- **unit, present**: [view-only mode never sends keys or pastes](repo:mila/app/test/client_flow_test.dart) — Widget flow against the fake Porsche..
+
+**Gaps:** The stderr header path cannot be shown through stock OpenSSH; no machine test drives the terminal screen.
+
+**Preferred test work:** Extend mila-desktop with a provisioned guest and attach through the real Porsche release.
+
+## A user reads an agent thread in Mila, sends a prompt, answers a question and approves a plan
+
+Coverage: **partial**. Layers: authorization, transport, storage.
+
+Boundary: Every thread action is a Porsche thread command with a request id; text travels on stdin; Marshall's thread domain authorizes and records it.
+
+Required refusal: Text over 64 KiB or invalid UTF-8 is refused before sending; a busy thread or stale plan is refused by the server and shown; the read marker never moves back.
+
+Tested scope: Hegel properties for read markers, search and payload bounds; fixture decoding; widget flows against the fake Porsche.
+
+- **property, present**: [read markers only move forward](repo:mila/packages/mila_core/test/thread_test.dart) — UnreadState and readMarkerToSend..
+- **property, present**: [payloads up to the limit are accepted and never enter the line](repo:mila/packages/mila_core/test/thread_test.dart) — payloadCommand over generated text..
+- **unit, present**: [a prompt travels on stdin, never on the command line](repo:mila/app/test/client_flow_test.dart) — Widget flow against the fake Porsche..
+
+**Gaps:** No run against Marshall's thread domain through Porsche.
+
+**Preferred test work:** A NixOS machine test sending a prompt from the Linux bundle through Porsche to Marshall.
+
+## A user opens, copies, shares or changes the visibility of a machine's web address from Mila
+
+Coverage: **partial**. Layers: authorization, transport, identity.
+
+Boundary: web show and web set through Porsche at the shown policy revision; private endpoints open in the system browser where Marshall's browser session authorizes them.
+
+Required refusal: A non-HTTPS or credentialed URL is not opened; a concurrent change is reported as a conflict; an out-of-range port is refused before sending; the webview refuses non-HTTPS navigation.
+
+Tested scope: Fixture decoding and widget flows against the fake Porsche; no device webview.
+
+- **unit, present**: [terminal and web results decode](repo:mila/packages/mila_core/test/client_results_test.dart) — Shared result fixture..
+- **unit, present**: [a concurrent change is reported, not overwritten](repo:mila/app/test/client_flow_test.dart) — Widget flow against the fake Porsche..
+
+**Gaps:** iOS and Android webview and share sheet are not built or run.
+
+**Preferred test work:** Record device builds; drive the web tab in mila-desktop.
+
+## Mila refreshes machines, terminals and threads when Porsche's watch stream reports a change
+
+Coverage: **partial**. Layers: transport, recovery, authorization.
+
+Boundary: Mila runs watch with at most 16 filters and re-reads through ordinary commands; it takes no state from watch lines.
+
+Required refusal: Overlong or malformed lines are refused; silence beyond 40 s reopens; authority loss stops the watch.
+
+Tested scope: Hegel stateful supervisor, framing property and OpenSSH reconnect journey.
+
+- **property, present**: [the watch supervisor matches its model](repo:mila/packages/mila_core/test/watch_test.dart) — Hegel StateMachine over open, receive, end and close..
+- **unit, present**: [a watch feed reads JSON lines, reconnects after exit 5 and stops on exit 3](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Stock OpenSSH ForceCommand emulating watch..
+
+**Gaps:** No run against Porsche's real watch.
+
+**Preferred test work:** A NixOS machine test observing a thread change through watch.

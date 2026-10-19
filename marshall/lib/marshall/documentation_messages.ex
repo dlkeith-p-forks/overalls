@@ -63,6 +63,7 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "# NixOS machine configuration"),
     dgettext_noop("documentation", "# NixOS option reference"),
     dgettext_noop("documentation", "# Overalls documentation"),
+    dgettext_noop("documentation", "# Push notifications"),
     dgettext_noop("documentation", "# Reflection integration"),
     dgettext_noop("documentation", "# Resize, clone, and relocation"),
     dgettext_noop("documentation", "# Routine operations"),
@@ -74,7 +75,23 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "# Verification and reference"),
     dgettext_noop(
       "documentation",
+      "## A Linux user adds a deployment, approves Mila in the browser, sees their machines and follows overalls:// links, and still sees the saved list after a restart"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## A Mila user registers, pauses and removes a push device over Porsche, and removing the SSH key or retiring the account revokes it"
+    ),
+    dgettext_noop(
+      "documentation",
       "## A gateway creates and reads an authenticated SSH session through either control adapter"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## A needs-input poke travels from the packaged Marshall release through the packaged Susan release to a provider, and only the registered device can open it"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## A reader's unread count in a thread only falls as they read and restarts for a reopened transcript"
     ),
     dgettext_noop(
       "documentation",
@@ -88,6 +105,38 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "## A thread machine suspends after four tool-idle hours and resumes its memory on a prompt or authorized SSH, web or editor connection, relocating automatically when its host is full"
     ),
+    dgettext_noop(
+      "documentation",
+      "## A user attaches an SSH terminal to the same persistent terminal session the browser shows, with replay, and detaches"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## A user attaches read-only and watches a shared session without being able to type into it"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## A user opens a shared terminal session from Mila, types, survives a dropped connection and can watch read-only"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## A user opens, copies, shares or changes the visibility of a machine's web address from Mila"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## A user reads an agent thread in Mila, sends a prompt, answers a question and approves a plan"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## A user signs Mila in to a deployment by approving its per-deployment device key in the browser"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## A user turns on notifications for one deployment on their phone and later turns them off"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## A user turns on the app lock and Mila asks for biometrics after time in the background"
+    ),
     dgettext_noop("documentation", "## Account Git preferences"),
     dgettext_noop("documentation", "## Actual scrollback growth"),
     dgettext_noop("documentation", "## Administrator action continuation"),
@@ -97,6 +146,14 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "## Agent context remains within existing services"),
     dgettext_noop("documentation", "## Agent loss and retry authority"),
     dgettext_noop("documentation", "## Agent project context"),
+    dgettext_noop(
+      "documentation",
+      "## An agent asks a planning question and the thread's writers get a Mila notification that opens the thread, without Susan learning what it is about"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## An agent needs input and the user's phone shows a notification that opens the right machine"
+    ),
     dgettext_noop(
       "documentation",
       "## An operator starts Brady with closed egress policy, private runtime signer and disposable cache settings"
@@ -253,10 +310,15 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "## Credential and key rotation"),
     dgettext_noop("documentation", "## Customer private-service boundaries"),
     dgettext_noop("documentation", "## Dedicated editor path"),
+    dgettext_noop(
+      "documentation",
+      "## Deliver a Mila notification through Susan without revealing content"
+    ),
     dgettext_noop("documentation", "## Demand wake and relocation relay"),
     dgettext_noop("documentation", "## Deploy a candidate while preserving guests and authority"),
     dgettext_noop("documentation", "## Developer SSH"),
     dgettext_noop("documentation", "## Developer verification"),
+    dgettext_noop("documentation", "## Devices"),
     dgettext_noop("documentation", "## Diagnostic outages and queue recovery"),
     dgettext_noop("documentation", "## Diagnostic paths and custody"),
     dgettext_noop("documentation", "## Disable, drain, resume, retire"),
@@ -475,6 +537,28 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "## Memory suspension and wake authority"),
     dgettext_noop("documentation", "## Memory-preserving suspension"),
     dgettext_noop("documentation", "## Metadata controls"),
+    dgettext_noop("documentation", "## Mila"),
+    dgettext_noop(
+      "documentation",
+      "## Mila changes a machine's web port or visibility only against the revision it read"
+    ),
+    dgettext_noop("documentation", "## Mila client boundaries"),
+    dgettext_noop(
+      "documentation",
+      "## Mila connects to a deployment only after verifying its Porsche host certificate against the pinned trust document"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## Mila keeps one SSH exec open to learn which machines, threads and its own session changed"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## Mila lists, reads, prompts, answers and approves plans in agent threads through Porsche SSH"
+    ),
+    dgettext_noop(
+      "documentation",
+      "## Mila refreshes machines, terminals and threads when Porsche's watch stream reports a change"
+    ),
     dgettext_noop("documentation", "## Mixed growth and admission under viewer pressure"),
     dgettext_noop(
       "documentation",
@@ -490,6 +574,7 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "## Native guest protocol reference"),
     dgettext_noop("documentation", "## Native submission and daemon-loss verification"),
     dgettext_noop("documentation", "## Native utility descendant custody"),
+    dgettext_noop("documentation", "## Needs-input push notifications"),
     dgettext_noop("documentation", "## Neighboring terminal under viewer pressure"),
     dgettext_noop(
       "documentation",
@@ -576,6 +661,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "## Open the single account page, move between its profile, sign-in, SSH key and Git sections, and reach it from the sidebar, the step-up redirect, the SSH approval page and the CLI hint"
     ),
+    dgettext_noop("documentation", "## Operate Susan's secrets and audit trail"),
     dgettext_noop(
       "documentation",
       "## Operate control and accounting without Marshall diagnostic ingestion"
@@ -599,11 +685,13 @@ defmodule Marshall.DocumentationMessages do
       "## Plan work, answer durable questions and implement the exact completed proposal"
     ),
     dgettext_noop("documentation", "## Porsche"),
+    dgettext_noop("documentation", "## Porsche client command payloads and hints"),
     dgettext_noop("documentation", "## Prepare a host"),
     dgettext_noop(
       "documentation",
       "## Preview, request, pause and resume a host evacuation with current administrator authority"
     ),
+    dgettext_noop("documentation", "## Privacy"),
     dgettext_noop("documentation", "## Privacy and availability"),
     dgettext_noop("documentation", "## Privileged administrator continuation layers"),
     dgettext_noop("documentation", "## Privileged administrator step-up"),
@@ -617,6 +705,8 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "## Purpose-authenticated fleet services submit unsupported or malformed control envelopes during deployment skew"
     ),
+    dgettext_noop("documentation", "## Push notification custody and refusal"),
+    dgettext_noop("documentation", "## Push notification switch"),
     dgettext_noop(
       "documentation",
       "## Qualify exact reviewed FreeBSD and OmniOS images while refusing altered or unapproved native identities"
@@ -734,6 +824,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "## Relocation"),
     dgettext_noop(
       "documentation",
+      "## Removing a user's SSH key or closing their SSH session ends a live terminal attach"
+    ),
+    dgettext_noop(
+      "documentation",
       "## Rename and remove own passkeys and manage SSH keys from the account page"
     ),
     dgettext_noop("documentation", "## Replace a Lilly host"),
@@ -809,6 +903,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "## Retry a mirror refresh after repository removal and attempt reuse while completed receipts reach their retention cap"
     ),
+    dgettext_noop("documentation", "## Retry a poke without double notification and bound abuse"),
     dgettext_noop(
       "documentation",
       "## Retry a refused mirror refresh after an active worker completes or dies"
@@ -826,6 +921,7 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "## SSH host CA configuration"),
     dgettext_noop("documentation", "## SSH host authority recovery"),
     dgettext_noop("documentation", "## SSH host certificate authority"),
+    dgettext_noop("documentation", "## SSH terminal attach gateway stream"),
     dgettext_noop(
       "documentation",
       "## Save account Git defaults, create a machine and use optional agent attribution"
@@ -893,9 +989,17 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "## Subscribe to the newsletter or permanently dismiss the Overview invitation"
     ),
+    dgettext_noop("documentation", "## Susan placement and fixed egress"),
+    dgettext_noop("documentation", "## Susan push relay"),
+    dgettext_noop("documentation", "## Susan push relay layers"),
     dgettext_noop("documentation", "## Suspended workloads and gateway relay"),
     dgettext_noop("documentation", "## Suspension checkpoint custody"),
     dgettext_noop("documentation", "## Telemetry retention and capacity"),
+    dgettext_noop("documentation", "## Terminal attach over SSH"),
+    dgettext_noop(
+      "documentation",
+      "## Terminal bytes, tickets and tokens used by an SSH attach never reach logs"
+    ),
     dgettext_noop("documentation", "## Thread authorization boundary"),
     dgettext_noop("documentation", "## Thread commands and planning controls"),
     dgettext_noop("documentation", "## Thread machine suspension"),
@@ -906,6 +1010,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "## Transfer team ownership without losing its authority invariant"
     ),
+    dgettext_noop("documentation", "## Turning notifications off"),
     dgettext_noop("documentation", "## Underclass"),
     dgettext_noop("documentation", "## Underclass provider egress layers"),
     dgettext_noop(
@@ -1297,6 +1402,7 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "## `services.marshall.instances`"),
     dgettext_noop("documentation", "## `services.marshall.marvinPackage`"),
     dgettext_noop("documentation", "## `services.marshall.memoryMiB`"),
+    dgettext_noop("documentation", "## `services.marshall.notifications.enable`"),
     dgettext_noop("documentation", "## `services.marshall.openFirewall`"),
     dgettext_noop("documentation", "## `services.marshall.package`"),
     dgettext_noop("documentation", "## `services.marshall.poolSize`"),
@@ -1706,6 +1812,25 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "## `services.porsche.port`"),
     dgettext_noop("documentation", "## `services.porsche.publicOrigin`"),
     dgettext_noop("documentation", "## `services.porsche.secretUnits`"),
+    dgettext_noop("documentation", "## `services.susan.apnsTopics`"),
+    dgettext_noop("documentation", "## `services.susan.bind`"),
+    dgettext_noop("documentation", "## `services.susan.cpuCores`"),
+    dgettext_noop("documentation", "## `services.susan.database.createLocally`"),
+    dgettext_noop("documentation", "## `services.susan.enable`"),
+    dgettext_noop("documentation", "## `services.susan.fcmAppIds`"),
+    dgettext_noop("documentation", "## `services.susan.limits.<name>._module.args`"),
+    dgettext_noop("documentation", "## `services.susan.limits.<name>._module.check`"),
+    dgettext_noop("documentation", "## `services.susan.limits.<name>._module.freeformType`"),
+    dgettext_noop("documentation", "## `services.susan.limits.<name>._module.specialArgs`"),
+    dgettext_noop("documentation", "## `services.susan.limits.<name>.burst`"),
+    dgettext_noop("documentation", "## `services.susan.limits.<name>.per_hour`"),
+    dgettext_noop("documentation", "## `services.susan.limits`"),
+    dgettext_noop("documentation", "## `services.susan.memoryMiB`"),
+    dgettext_noop("documentation", "## `services.susan.package`"),
+    dgettext_noop("documentation", "## `services.susan.port`"),
+    dgettext_noop("documentation", "## `services.susan.secretUnits`"),
+    dgettext_noop("documentation", "## `services.susan.secretsFile`"),
+    dgettext_noop("documentation", "## `services.susan.trustedProxies`"),
     dgettext_noop("documentation", "## `services.underclass.egress.enable`"),
     dgettext_noop("documentation", "## `services.underclass.egress.exitNode`"),
     dgettext_noop("documentation", "## `services.underclass.egress.proxyPort`"),
@@ -1757,8 +1882,12 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "### Local host-session takeover histories"),
     dgettext_noop("documentation", "### Local strict certificate negotiation"),
     dgettext_noop("documentation", "### Measured boot reductions"),
+    dgettext_noop("documentation", "### Mila client commands"),
+    dgettext_noop("documentation", "### Mila notifications, app lock and offline list"),
+    dgettext_noop("documentation", "### Mila terminals, threads and web"),
     dgettext_noop("documentation", "### Native kernel candidates and socket ABI"),
     dgettext_noop("documentation", "### Native submission mutation sensitivity"),
+    dgettext_noop("documentation", "### Notifications ownership"),
     dgettext_noop("documentation", "### Open a repository from the terminal"),
     dgettext_noop("documentation", "### Peach reflection authority"),
     dgettext_noop("documentation", "### Reconcile encrypted-document recipients"),
@@ -1848,6 +1977,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Gaps:** Buckets are per node; multi-instance limits are untested."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Gaps:** Capture overhead, database throughput, independent physical hosts, hardware authenticators, SMTP inbox delivery and production rollout remain outside finite functional evidence. Historical passes retain their captured revisions."
     ),
     dgettext_noop(
@@ -1856,11 +1989,19 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Gaps:** Committed-hint delivery and a NixOS fleet journey have not run; turn execution by a model is outside these tests."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Gaps:** Complete per-source native fault coverage and seven-day history remain pending. Earlier Audi and combined remaining-source failures are retained separately; serial Audi SSH, focused native Porsche and serial Brady durable-source/collector acceptance passed. Expanded Enrico recorder/producer SIGKILL, clean restart, outage and recovery passed. DNS recorder loss and clean/unclean idle producer restart preserve history with the expected coverage transitions; Admitted DNS producer loss now has recorded pre-deadline failure and recovery evidence; overload/storage faults remain separate. Porsche service scripts retain narrower scopes. Hardware power loss and per-application host restart remain unverified; measurement horizons are provisional. External notification delivery needs a configured destination. Porsche recorder loss with a surviving producer, clean restart and unclean idle producer restart now have recorded native continuity evidence; in-flight producer loss remains separate. Brady recorder loss and clean/unclean idle producer restarts now have recorded accounting/coverage continuity and unchanged guest process evidence; in-flight loss remains separate."
     ),
     dgettext_noop(
       "documentation",
       "**Gaps:** Concurrent native browser/SSH registration-versus-retirement delivery and independent physical control-plane hosts remain unverified. Existing native journeys retain their separate nonconcurrent scope."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Gaps:** Concurrent writers across nodes are serialized by the lock but not exercised by a distributed test."
     ),
     dgettext_noop(
       "documentation",
@@ -1897,6 +2038,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "**Gaps:** Default hosted Lilly still refuses guest effects, while the optional integrated GuestExecutor has no composed journey. A separate inner-host TCG boot measured ZFS/cgroups but did not connect Control or admit a guest. No workspace delivery, Firecracker/KVM, physical isolation or hosted baseline is established by this guest boot. The router has a separate local TCG result. This manual check lacks preferred NixOS machine/property evidence for the integrated guest bridge."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Gaps:** Delivery of a hint from a committed domain change is not exercised (sandboxed tests never commit pg_notify)."
     ),
     dgettext_noop(
       "documentation",
@@ -2168,6 +2313,11 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Gaps:** No device build; Susan and the Marshall/Porsche device commands are other workstreams and are not run against Mila."
+    ),
+    dgettext_noop("documentation", "**Gaps:** No device run of local_auth on iOS or Android."),
+    dgettext_noop(
+      "documentation",
       "**Gaps:** No execution on a real Windows workstation yet: unattended winget OpenSSH installation, the elevated machine PATH reordering and its declined-elevation fallback, config-ssh against Porsche, overalls ssh into Linux and Windows guests, overalls open and an update activation by rename-aside are unexercised; the planned proof uses a Windows Server 2025 fleet VM as the workstation."
     ),
     dgettext_noop(
@@ -2188,6 +2338,14 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Gaps:** No machine is provisioned, so the list content and machine-page links are exercised only on an empty list and an unknown id."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Gaps:** No machine test drives device commands through a real Porsche SSH session."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Gaps:** No native NixOS create/prompt/archive/reopen journey, generated worker-loss/idempotency history, multi-node recovery or broader production provider acceptance is recorded. The one deployed retry and its continuity through contraction do not prove native teardown, isolation or fault recovery. Previous-generation transcript selection and read-only retrieval are implemented and covered by focused tests, but native archive/reopen continuity remains unverified. The terminal link and lazy embedded disclosure are implemented; a persistent global thread rail, project filtering and activity ordering beyond the current authorized page remain separate work. Index search covers only the current authorized keyset page of at most 50 threads; First page and Next page controls walk older authorized pages. Synthetic browser observations do not establish cross-device runtime acceptance."
     ),
     dgettext_noop(
@@ -2197,6 +2355,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "**Gaps:** No native guest survival, physical channel custody, independent-node partition or hosted acceptance. Wrong-budget-PID mutant was caught at old owner retirement and restored four-check execution passed; full Marshall gate/typing remain pending."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Gaps:** No native ingress reachability check follows the change in these tests."
     ),
     dgettext_noop(
       "documentation",
@@ -2228,7 +2390,20 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Gaps:** No real Apple or Google acceptance; hosting and TLS placement open."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Gaps:** No recorded hosted peer execution, independent Marshall/Lilly integration, fault campaign or native guest proof. Preferred property and machine tests for the real service graph remain separate."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Gaps:** No recorded native run of the porsche-terminal-fleet journey; Mila does not yet drive attach."
+    ),
+    dgettext_noop("documentation", "**Gaps:** No recorded native run."),
+    dgettext_noop(
+      "documentation",
+      "**Gaps:** No recorded native run; latency while an SSH client stalls output is unmeasured."
     ),
     dgettext_noop(
       "documentation",
@@ -2242,6 +2417,11 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "**Gaps:** No repeated/racing reset stress, malformed DMA, DMA reclamation or physical/multi-host safety. The single OmniOS event establishes socket fencing, separately from service restoration and exact-image promotion."
     ),
+    dgettext_noop(
+      "documentation",
+      "**Gaps:** No run against Marshall's thread domain through Porsche."
+    ),
+    dgettext_noop("documentation", "**Gaps:** No run against Porsche's real watch."),
     dgettext_noop(
       "documentation",
       "**Gaps:** Ordering mutation and final gates pending. Actual journal submission, systemd/cgroup placement, jailer FD retirement, real Firecracker and packaged recovery remain unverified by this property. Historical native evidence retained by byte-identical source/test integration; fresh main29ad6228 combined packages/consumer gates remain pending."
@@ -2328,6 +2508,14 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Gaps:** Real APNs/FCM acceptance and decryption in the iOS/Android notification extensions are not exercised."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Gaps:** Real Susan, APNs/FCM delivery and Mila decryption on a device are not exercised."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Gaps:** Real external operator login, certificate rotation, production activation and effective retention require deployment acceptance. No notification delivery is implied."
     ),
     dgettext_noop(
@@ -2408,6 +2596,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Gaps:** The iOS extension and Android messaging service have not been built or run on a device; Marshall's poke producer is another workstream."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Gaps:** The lock-wait race has no regression test because the reset check interval is not injectable; no NixOS test drives saturation and no live provider throttling observation covers this revision."
     ),
     dgettext_noop(
@@ -2436,6 +2628,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Gaps:** The real-Porsche fixture has no Marshall, so a full signed-in command journey through Porsche to Marshall is not yet exercised from Mila."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Gaps:** The recorded journey uses ordinary users, NixOS guests and local DNS/HTTP. Unauthorized admission, broader peer/spoofing/IPv6, Brady, owner guest SSH and hostile tool execution retain separate acceptance. Campaign 011 separately verified repaired shared NixOS/Ubuntu trust prerequisites; the seven legacy feature matrices were not rerun."
     ),
     dgettext_noop(
@@ -2445,6 +2641,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "**Gaps:** The sibling is a Linux TCP sink behind the test peer uplink. Direct native VM/TAP peer, jail, physical-host and multi-host isolation/recovery remain unproven. Exact OmniOS direct host-KVM policy receipts are separate from formal nested-NixOS gates and immutable qualification."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Gaps:** The stderr header path cannot be shown through stock OpenSSH; no machine test drives the terminal screen."
     ),
     dgettext_noop(
       "documentation",
@@ -2484,6 +2684,18 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Gaps:** iOS and Android key custody and link delivery have no device build."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Gaps:** iOS and Android webview and share sheet are not built or run."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Gaps:** secrets/overalls-susan.enc.json does not exist yet; no production host recipient."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Lean pool-locked preparation (ADR-0152):**\n- **One logical snapshot:** each preparation retains two consecutive native tree\n  reads and identity checks under the pool lock. The `PoolSnapshot` holds their\n  validated observation, one owner listing and one mount table.\n- **Derived checks:** the absence proof, allocation audit and template audit all\n  derive from that snapshot. The template audit\n  joins observed mountpoint, seal and GUID rows. Template sealing and reader\n  validation keep the exec, setuid and devices check.\n- **After a mutation:** after its own create, `zfs set` or rename, a preparation\n  re-reads only the affected child. It then re-verifies the whole pool exactly\n  once.\n- **Fencing:** a snapshot whose lock was released is refused.\n- **Refusals:** all existing refusals are kept.\n- **Measured effect:** the native trace halved the whole-pool listings for a\n  claim, from 12 to 6. The production concurrency campaign is\n  outstanding."
     ),
     dgettext_noop(
@@ -2496,7 +2708,23 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Preferred test work:** A NixOS machine test observing a thread change through watch.\n"
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** A NixOS machine test sending a prompt from the Linux bundle through Porsche to Marshall."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Preferred test work:** A dedicated host-effects-custody machine test for wrong-peer refusal, BEAM SIGKILL mid-command and escaped descendants under cgroup custody."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** A device-farm journey with store-signed builds against provider sandboxes."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** A fleet journey with the Susan service, a fake provider and the Mila client decrypting the poke."
     ),
     dgettext_noop(
       "documentation",
@@ -2513,6 +2741,14 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "**Preferred test work:** Add a direct second native VM/TAP, jail and physical-host boundaries without transferring the Linux-sink policy result to those scopes."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** Add a distributed property with concurrent mark-read writers."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** Add a fleet scenario with a fake relay and the real Porsche device commands driving mila-probe through register, prefs and rm."
     ),
     dgettext_noop(
       "documentation",
@@ -2568,7 +2804,7 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
-      "**Preferred test work:** Add generated current/stale execution and dedicated credential histories, then run a packaged NixOS guest allowed/refused projection journey with Peach enabled and retain exact outcomes\n"
+      "**Preferred test work:** Add generated current/stale execution and dedicated credential histories, then run a packaged NixOS guest allowed/refused projection journey with Peach enabled and retain exact outcomes"
     ),
     dgettext_noop(
       "documentation",
@@ -2704,6 +2940,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Preferred test work:** Create the document for the chosen host and repeat susan-secrets against it."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Preferred test work:** Diagnose the refused admission reports at their actual guard, then run the bounded capture/cancellation journey and unchanged automatic clone control; extend native profile/interruption coverage independently. Synthetic receipts establish only coordinator behavior. Execute the replacement independent-observability native and property scenarios; historical receipts cannot establish this cutover."
     ),
     dgettext_noop(
@@ -2752,6 +2992,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Preferred test work:** Exercise sandbox APNs and FCM with publisher credentials once hosting is chosen."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Preferred test work:** Exercise shell-supervisor death with surviving children, then physical host failure and fleet recovery separately."
     ),
     dgettext_noop(
@@ -2761,6 +3005,14 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "**Preferred test work:** Extend live delivered-report boundary and independently faulted readiness gates, preserving separate updater, physical and hosted acceptance."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** Extend mila-desktop with a provisioned guest and attach through the real Porsche release."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** Extend mila-porsche to register, list and remove a device through Porsche to Marshall."
     ),
     dgettext_noop(
       "documentation",
@@ -2785,6 +3037,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "**Preferred test work:** Extend the Underclass NixOS service test with controlled streams and an event importer; verify authorization, sanitized persistence, retention, rollups, bounded windows and restart recovery."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** Extend the mila-desktop NixOS machine test to a signed-in journey through Porsche and Marshall."
     ),
     dgettext_noop(
       "documentation",
@@ -2860,6 +3116,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Preferred test work:** Machine test with two Susan nodes behind one proxy."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Preferred test work:** Make the reset check interval injectable and add an end-to-end test where a cooldown expires while a request waits on the reset lock; extend the Underclass NixOS service test with a throttling upstream fixture."
     ),
     dgettext_noop(
@@ -2920,11 +3180,27 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Preferred test work:** Record a passing porsche-terminal-fleet run."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Preferred test work:** Record a passing user-ssh-journey-fleet run on the detached bridge path."
     ),
     dgettext_noop(
       "documentation",
       "**Preferred test work:** Record a passing vscode-web-nixos-fleet run of the editor restart subtest; nested HTTPS waits on a working Inception fleet."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** Record an iOS simulator and Android emulator run that delivers a fixture poke to the extension and service."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** Record device builds; drive the web tab in mila-desktop."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** Record device or emulator runs with enrolled biometrics."
     ),
     dgettext_noop(
       "documentation",
@@ -3144,7 +3420,23 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "**Preferred test work:** Run the porsche-threads fleet machine test with a committed thread change."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** Run the porsche-threads fleet machine test."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** Run the same journey in a fleet fixture with a provisioned machine."
+    ),
+    dgettext_noop(
+      "documentation",
       "**Preferred test work:** Run the selected private Docker topology at the built image identity, then record reviewed enrollment, current authenticated Control/report, a real nested guest and crash recovery; retain separate native NixOS machine and generated property evidence."
+    ),
+    dgettext_noop(
+      "documentation",
+      "**Preferred test work:** Run the signed-in journey in a fleet fixture with a provisioned machine, and record iOS and Android device builds."
     ),
     dgettext_noop(
       "documentation",
@@ -3216,6 +3508,14 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- **Host identity.** Mila accepts only an Ed25519 host certificate from the\n  pinned deployment CA that names the management host and is inside its\n  validity window. The check runs in key exchange, so an untrusted host never\n  receives a device-key signature. No trust-on-first-use, no unsigned\n  fallback; a changed CA, host or zone is refused (ADR-0228).\n- **Device keys.** One P-256 key per deployment, in the Secure Enclave or\n  Android Keystore; the Linux test key is an owner-only `0600` file and a\n  readable key file is refused. Keys, signatures and tokens are never logged.\n- **Links.** `overalls://` links only navigate; they never send a command,\n  add a deployment or approve anything (ADR-0221).\n- **Mila push privacy.** Pokes are end-to-end encrypted to a per-deployment\n  device X25519 key, so the relay learns only that a deployment poked a\n  device. Notification text is fixed, and the route is a validated tap link.\n  The push key reaches Porsche only on stdin. The platform token is sent only\n  to the fixed relay origin and is never stored.\n- **Local data.** Snapshots, settings and keys on Linux are owner-only files;\n  the offline snapshot holds machine rows only, never approval links, tokens\n  or terminal bytes. The optional app lock hides content from rendering and\n  the accessibility tree.\n- **Untested:** native iOS and Android builds on devices (Secure Enclave,\n  Keystore, notification extension and messaging service, `local_auth`).\n- **Mila terminal fencing.** Read-only attachments never send input or\n  resizes. The attach header is closed and bounded, and output before it is\n  dropped. Terminal bytes never leave memory.\n- **Mila payloads.** Prompt, answer and plan-revision text goes only on stdin\n  (at most 64 KiB) and never on a command line, in a log or in the cache.\n- **Mila web.** Only HTTPS URLs on DNS hosts, without user info or fragment, are\n  opened. Private endpoints go to the system browser, so Marshall browser\n  credentials never enter a webview. The webview allows only HTTPS navigation.\n- **Untested:** the stderr attach header through real OpenSSH (it is merged into\n  the PTY there), device builds of the share sheet and webview, and these\n  screens in the `mila-desktop` machine test."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **Identity.** A poke is authenticated twice. Only Susan can open the push key\n  (AEAD under a keyring that never leaves Susan), and the request is signed with\n  the Marshall's Ed25519 install key. Both checks always run.\n  - Failure answers 404 with the same body as malformed input, and it writes\n    nothing.\n  - The install fingerprint (SHA-256 of the public key) drives the\n    `InstallIdentity` state machine, `unknown → trusted → rate_limited → blocked`.\n- **Authorization.**\n  - The key's deployment binding must match the poke.\n  - The key id must not be on the deny-list.\n  - The install must not be blocked.\n  - The token must not be in the negative cache of unregistered tokens.\n- **Transport.** TLS terminates at the fronting proxy. `X-Forwarded-For` is\n  believed only from configured proxies. Egress goes only to the four compiled\n  provider origins, with system trust and peer verification\n  ([`Susan.Provider.Finch`](repo:susan/lib/susan/provider/finch.ex)).\n  A service account naming another token endpoint is refused at startup.\n- **Execution fencing.** A `DeliveryReceipt` is unique per install and delivery\n  id. Reclaiming a failed or stale `sending` receipt is an atomic conditional\n  update, so concurrent retries cannot double-send.\n- **Privacy and storage.**\n  - Susan has no plaintext content.\n  - Source addresses are reduced to an HMAC under a daily random salt held in\n    memory.\n  - Tokens, envelopes, ciphertext and install keys are never stored or logged.\n    `Susan.Events` carries enum and integer metadata only.\n  - The audit trail stores closed action and reason enums, the fingerprint, key\n    id, provider and delivery id.\n  - The audit trail is append-only through a PostgreSQL trigger and REVOKE. It is\n    hash chained, and an audited Oban prune removes entries after 90 days.\n- **Secrets.** All six secrets arrive as systemd credentials from the host-bound\n  `overallsSecrets` bundle, or as a container secrets mount. Each file passes the\n  canonical-path, ancestor, single-link, owner and mode checks\n  ([`Susan.Credentials`](repo:susan/lib/susan/credentials.ex)). Any failure is\n  one fixed startup error.\n- **Expected refusals:**\n  - 400 malformed, replayed or stale;\n  - 404 unknown, expired, deny-listed, mismatched, badly signed or blocked;\n  - 410 unregistered;\n  - 429 limited or in-flight;\n  - the database refuses UPDATE, DELETE and TRUNCATE on audit rows;\n  - another host cannot decrypt the bundle.\n- **Untested gaps.**\n  - Real APNs/FCM acceptance: the machine tests use local fake origins behind a\n    private CA.\n  - Production hosting and TLS.\n  - Multi-instance rate limiting: the buckets are per node and in memory.\n  - Keyring rotation resets the negative cache, because the digest key derives\n    from the active keyring key.\n"
+    ),
+    dgettext_noop(
+      "documentation",
       "- **Lilly stops or crashes.** The session closes. hostd stops every queued wait,\n  kills and reaps every command of that session through `cgroup.kill`, and only then\n  releases its leases. This is the same fencing the per-lock helpers gave on caller\n  death.\n- **One Lilly process dies.** For example, a VM actor task killed by preemption.\n  Lilly's session process releases that holder's leases, and hostd kills their\n  commands before the release completes.\n- **hostd stops or crashes.** Lilly is bound to it and stops too. systemd kills\n  hostd's whole cgroup, including in-flight utilities, and a utility that outlives a\n  crashed hostd still holds its inherited lock descriptor, so no successor is granted\n  while it runs. On restart hostd kills any command cgroups left by its predecessor.\n  VMMs are transient units outside hostd's cgroup and keep running.\n- **A guest SSH, editor or nested HTTPS session is live during a hostd or\n  Lilly restart.** Its detached\n  ingress bridge runs in its own `lilly-ingress-<key>.scope` in\n  `lilly_ingress.slice`, outside both units, so the session continues\n  ([ADR-0187](repo:docs/architecture/decisions/0187-detached-ingress-bridges.md)).\n  The restarted Lilly lists live bridges through hostd. It gives each one with a\n  readable record a keeper, which has 30 seconds to see its execution current\n  again. It ends a bridge with no record at once, and one whose execution is not\n  current in time. Editor and nested HTTPS connections take the same path\n  ([ADR-0192](repo:docs/architecture/decisions/0192-staged-detached-ingress.md)):\n  hostd writes their Lilly-derived preface and checks the editor's exact\n  ready frame before the bridge starts, so a live browser editor WebSocket\n  continues too. A connection still being set up when hostd restarts fails,\n  and its client retries. Marshall's lease renewal for SSH, editor and web\n  streams answers `unavailable` while Lilly reconnects, after every\n  conclusive check, and Audi retries inside the unchanged lease, so a\n  renewal falling in the restart window does not cut the session. Nested\n  streams keep their publication-bound five-second leases and do not ride\n  out a Lilly restart."
     ),
     dgettext_noop(
@@ -3232,7 +3532,15 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- **machine, present**: [APNs poke is content-free and over HTTP/2 with verified TLS](repo:nix/verification/tests/machines/susan-service/driver.py) — Fake provider origins behind a private CA..\n- **property, present**: [arbitrary event sequences never send before every check and always answer once](repo:susan/test/susan/machine_property_test.exs) — Pure FSM.."
+    ),
+    dgettext_noop(
+      "documentation",
       "- **machine, present**: [address reuse cannot attribute an old kernel flow to the new owner](repo:nix/verification/tests/machines/fleet/scenarios/brady.py) — Native stale flow attribution refusal..\n- **manual, recorded**: [verified-https-redirect-clone-repeat-protected](repo:scripts/egress_acceptance.py) — Overalls 5f5225f3 before/after guest stop/start and ca739afa after healthy activation: actual NixOS and Ubuntu system trust, signer chain, independent digest, shallow clone, redirects, current resolved owner/VM/generation HTTPS cache hits, protected destinations and independently reachable pinned-IP Customer connection refusal. Later complete stages passed; earlier SSH closures and a failed long-session diagnosis remain unresolved transport gaps. Shared-service faults remain isolated.; [execution record](repo:docs/architecture/reviews/2026-10-02-https-egress-production.md)."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **machine, present**: [keyring rotation is audited and older push keys still open](repo:nix/verification/tests/machines/susan-secrets/driver.py) — Single host plus a wrong-host node..\n- **machine, present**: [no secret bytes in image layers or the container filesystem](repo:nix/verification/tests/machines/susan-image/driver.py) — Rootful podman.."
     ),
     dgettext_noop(
       "documentation",
@@ -3248,6 +3556,14 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- **machine, present**: [provider 503 retries once in-request, then a later retry succeeds once](repo:nix/verification/tests/machines/susan-service/driver.py) — Single node..\n- **property, present**: [admissions never exceed burst plus refill and refusals name a sufficient wait](repo:susan/test/susan/token_bucket_property_test.exs) — Pure arithmetic.."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **machine, present**: [provider 503 twice, then 200: Susan accepts Marshall's signature and sends once](repo:nix/verification/tests/machines/push-relay/driver.py) — Packaged Marshall and Susan releases with a fake provider..\n- **machine, present**: [only the device can open what the provider received](repo:nix/verification/tests/machines/push-relay/driver.py) — Device and stranger keys opening the provider-received ciphertext..\n- **machine, present**: [provider 410 invalidates the device and later pokes are never sent](repo:nix/verification/tests/machines/push-relay/driver.py) — Provider unregistration propagated through Susan to Marshall..\n- **unit, present**: [non-canonical bodies and signatures over the bare body are refused](repo:susan/test/susan/request_test.exs) — Susan verifier against the shared SusanPoke fixture.."
+    ),
+    dgettext_noop(
+      "documentation",
       "- **machine, recorded**: [A different SSH host identity cannot decrypt this bundle](repo:nix/verification/tests/machines/secret-custody/driver.py) — Historical qznzhiy5msbanzza00ci46mpr54gc6rd native secret delivery, identity, host recipient rotation and replacement recovery. No new native run in032.; [execution record](repo:docs/architecture/reviews/2026-09-16-secret-host-rotation.md).\n- **machine, recorded**: [retiring a still-needed encryption key is rejected without exposing old data](repo:nix/verification/tests/machines/credential-rotation/driver.py) — Historical three-Marshall staged encryption/signing/cookie/database credential rotation through actual encrypted bundles. No new native run in032.; [execution record](repo:docs/architecture/reviews/2026-09-16-fleet-credential-rotation.md).\n- **property, recorded**: [actual decryptor differs from operation oracle](repo:nix/verification/tests/evaluation/secret_recipient_histories.py) — Generated recovery membership/key overlap, selected host overlap/retirement, JSON/YAML/YML recovery-only custody, actual decryptor/data-key oracle and exact refusal/replay inventories through public CLI. Exact exported derivation k55qp2q5dq1qn0a6da4cl9qj8alzxn7i; executable inputs 6c741a5e on fff6587e.; [execution record](repo:docs/architecture/reviews/2026-09-26-secret-recipient-histories.md).\n- **property, recorded**: [partial publication scope was misreported](repo:nix/verification/tests/evaluation/secret_recipient_histories.py) — Generated later-candidate refusal and interruption immediately before/after real publish; exact partial scope and explicit unmodified CLI retry. No power-loss or multi-document-atomicity claim. Exact exported derivation k55qp2q5dq1qn0a6da4cl9qj8alzxn7i; executable inputs 6c741a5e on fff6587e.; [execution record](repo:docs/architecture/reviews/2026-09-26-secret-recipient-histories.md).\n- **property, recorded**: [def environment_file_roundtrip](repo:nix/verification/tests/machines/secret-custody/driver.py) — Drawn secret values roundtrip through actual systemd EnvironmentFile delivery as a driver-side Hegel property with redacted draws and guest render/verify in fixture.py; executed in vm-test-run-overalls-secret-custody on the Hegel branch.; [execution record](repo:docs/architecture/reviews/2026-09-16-nixos-releases-and-roles.md).\n- **property, recorded**: [successor opened a sealed historical generation](repo:nix/verification/tests/evaluation/secret_recipient_histories.py) — Recipient generator without the former operator pin: 12 anchored recipient histories, 6 generated examples and 3 explicit pairs of the documented two-generation turnover ceremony with per-step drift, data-key rotation and decryptor equality plus post-turnover historical-envelope refusal, and 4 generated examples and 1 explicit pair of direct full-turnover refusals (retention label for the removed identity, decrypt label for the new identity, unchanged inventories, immediate reconvergence after restoring the source policy). Exact exported derivation l2vs2rmr4kzkaynggc8jf028l6l6x0h9.; [execution record](repo:docs/architecture/reviews/2026-09-26-custody-backup-key.md).\n- **property, recorded**: [def test_cli_refuses_hostless_document_without_recovery_only(](repo:nix/verification/tests/machines/auto-update/custody_histories.py) — Real overalls-secrets CLI refuses a hostless non-recovery document and a hosted recovery-only document with the exact inventory error, and accepts recovery-only plus hosted custody on export.; [execution record](repo:docs/architecture/reviews/2026-09-26-custody-updater.md)."
     ),
     dgettext_noop(
@@ -3257,6 +3573,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "- **machine, recorded**: [The recovery variant MUST kill an actual native daemon, keep readiness](repo:nix/verification/tests/machines/native-services/default.nix) — Four host snapshot-parser and failure-cleanup tests passed with Ruff/ty. The vendor-base and final reviewed FreeBSD image 5022d714 both passed two clean boots with actual flush-daemon kill/reap, three live-channel readiness refusals, exact mode/bytes restoration, a new supervised PID and same-boot flush/refusals restored. Final per-boot recovery and service receipts bind exact image/kernel/firmware/VMM inputs.; [execution record](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).\n- **unit, recorded**: [snapshot](repo:nix/verification/tests/support/native_recovery_test.py) — Four host checks exercise canonical snapshot parsing, malformed input refusals and finally restoration without receipt on failure. They do not kill a native daemon.; [execution record](repo:docs/architecture/reviews/2026-10-17-native-kernel-attestation.md).\n- **manual, recorded**: [Recovery observed real daemon death](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md) — Exact OmniOS 45983 direct host-KVM individual-daemon kill/reap history passed with three withheld-readiness probes and current-boot restoration. No shell-supervisor/physical-host guarantee.; [execution record](repo:docs/architecture/reviews/2026-10-18-guest-os-matrix.md)."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **machine, recorded**: [approval in the browser leads to the machine list](repo:nix/verification/tests/machines/mila-desktop/driver.py) — Linux bundle under X11 against packaged Marshall and Porsche.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md)."
     ),
     dgettext_noop(
       "documentation",
@@ -3424,6 +3744,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- **property, present**: [client commands format to canonical lines that parse back unchanged](repo:protocol/test/ssh_client_commands_test.exs) — Canonical line form round-trips and mutation classification for all 15 commands..\n- **property, present**: [stdin payloads are bounded valid text and never accepted on the command line](repo:protocol/test/ssh_client_commands_test.exs) — Stdin payload kinds, limits and command-line refusal..\n- **unit, present**: [thread commands list, show, prompt and mark read through the domain](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Dispatch, unread counts, digest-only receipts with SSH key id, replay and conflict..\n- **unit, present**: [thread answer and plan commands keep the domain's question and proposal fences](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Planning question answer, stale proposal refusal and plan approval into a Work turn..\n- **unit, present**: [exec reads prompt payloads from stdin within their bound](repo:porsche/test/ssh_channel_test.exs) — OTP SSH exec channel buffers, bounds and validates the prompt payload..\n- **unit, present**: [porsche-threads: stdin prompts, thread reads and a revocable watch](repo:marshall/test/marshall_web/ssh_transport_test.exs) — Real OpenSSH-protocol client, Porsche listener and Marshall control over verified TLS in one BEAM..\n- **machine, present**: [Porsche thread, web and watch commands drive Marshall domains](repo:nix/verification/tests/machines/fleet/scenarios/porsche-threads.py) — Native OpenSSH, packaged Porsche and Marshall on the fleet fixture.."
+    ),
+    dgettext_noop(
+      "documentation",
       "- **property, present**: [completed tool groups are either entirely summarized or entirely retained](repo:marshall/test/marshall/agents/compaction_test.exs) — Generated pure request groups assert that compaction does not split a completed function call from its result; no database or provider execution is included..\n- **unit, present**: [only bounded completed purpose-specific output can become a checkpoint](repo:marshall/test/marshall/agents/compaction_test.exs) — Pure completion validation rejects malformed or incomplete summary/native output before checkpoint publication..\n- **unit, present**: [unknown native support uses tool-free summaries and keeps instructions outside generated state](repo:marshall/test/marshall/agents/compaction_test.exs) — Pure request construction selects the summary fallback without verified native support and preserves separate trusted instructions..\n- **unit, recorded**: [a compaction plan can be reconstructed by another process after worker loss](repo:marshall/test/marshall/agents/agent_context_recovery_distributed_test.exs) — The distributed fixture stops the compaction worker and reconstructs the checkpoint and plan through a replacement peer using committed PostgreSQL state; no guest or provider is involved.; [execution record](repo:docs/architecture/reviews/2026-10-16-agent-context-and-planning.md)."
     ),
     dgettext_noop(
@@ -3452,6 +3776,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- **property, present**: [input release respects the window, ordering and read-only refusal](repo:porsche/test/terminal_credit_property_test.exs) — Hegel reference model of Porsche input credit..\n- **unit, present**: [a read-only SSH attach never reaches the session with input](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs) — Real Porsche listener against the production viewer in the BEAM test VM..\n- **machine, present**: [read-only SSH attach input never reaches the guest](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — Guest shell output proves read-only input was never evaluated.."
+    ),
+    dgettext_noop(
+      "documentation",
       "- **property, present**: [invalid common Marshall runtime settings refuse before application startup](repo:marshall/test/marshall/operations/invalid_runtime_boot_property_test.exs) — Specific fixed-error family, calibrated tracing, no reviewed startup or surviving Marshall state and private image marker/path-safe output..\n- **unit, present**: [valid common Marshall runtime settings load without starting the application](repo:marshall/test/marshall/operations/invalid_runtime_boot_property_test.exs) — Real app.config default and boundary acceptance, with calibrated tracing and no application or serving state.."
     ),
     dgettext_noop(
@@ -3464,6 +3792,14 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- **property, present**: [read marker positions never decrease](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Running-maximum invariant and unread counts.."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **property, present**: [read markers only move forward](repo:mila/packages/mila_core/test/thread_test.dart) — UnreadState and readMarkerToSend..\n- **property, present**: [payloads up to the limit are accepted and never enter the line](repo:mila/packages/mila_core/test/thread_test.dart) — payloadCommand over generated text..\n- **unit, present**: [a prompt travels on stdin, never on the command line](repo:mila/app/test/client_flow_test.dart) — Widget flow against the fake Porsche.."
+    ),
+    dgettext_noop(
+      "documentation",
       "- **property, present**: [removing the owning entity attribute never preserves Cedar authority](repo:marshall/test/marshall/authorization/cedar_test.exs) — Generated VM, team and integration owner actions against the real Cedar evaluator; valid controls allow and resources missing their owner attribute refuse. This does not inject a database fault or prove an Ash authorizer caller boundary.\n- **unit, recorded**: [recently elevated ordinary users may read projections](repo:marshall/test/marshall/accounts/control_room_authority_test.exs) — Ordinary users cannot mutate through domain actions.; [execution record](repo:docs/architecture/reviews/2026-09-25-control-room-read-access.md).\n- **property, recorded**: [current role and login histories govern Control room reads and audited writes](repo:marshall/test/marshall_web/control_room_history_test.exs) — Generated persisted role and session transitions; real browser/domain guards; target and audit invariants.; [execution record](repo:docs/architecture/reviews/2026-09-25-control-room-verification.md).\n- **machine, recorded**: [native-control-room-authority](repo:nix/verification/tests/machines/control-room/browser.py) — One packaged serving replica, verified TLS, ordinary browsing, virtual WebAuthn and current stored authority.; [execution record](repo:docs/architecture/reviews/2026-09-25-control-room-verification.md).\n- **machine, recorded**: [native-control-room-authority](repo:nix/verification/tests/machines/control-room/browser.py) — Current native nine-page admin inventory, ordinary reader access, virtual WebAuthn elevation, forged role-write refusal and unchanged audit/role state, revocation, demotion, mounted login expiry and export404. Real sign-out removes remembered custody before fresh-request refusal; one serving replica.; [execution record](repo:docs/architecture/reviews/2026-10-09-observability-decoupling.md).\n- **machine, recorded**: [native-subsequent-mfa-login](repo:nix/verification/tests/machines/mfa-login/browser.py) — Three colocated serving replicas, virtual WebAuthn, subsequent magic-link and remembered login, actual backend and WebSocket observations, admin-UI mounted/copied-cookie revocation including a no-MFA account.; [execution record](repo:docs/architecture/reviews/2026-09-25-mfa-login-verification.md).\n- **unit, recorded**: [administrative revocation on one replica refuses every protected read on the others](repo:marshall/test/marshall_web/cross_replica_revocation_test.exs) — Three independent BEAM instances sharing committed PostgreSQL; mounted Control room, handbook and machine read checks, the mounted usage export and the account projection read action all refuse after revocation committed on another replica; commit-boundary race and partition fail-closed with rejoin enforcement. No independent-host claim.; [execution record](repo:docs/architecture/reviews/2026-09-26-cross-replica-revocation.md)."
     ),
     dgettext_noop(
@@ -3472,7 +3808,15 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- **property, present**: [terminal attach matches its model](repo:mila/packages/mila_core/test/terminal_attach_test.dart) — Hegel StateMachine over attach, header, output, end, reset and read-only events..\n- **unit, present**: [the stderr header, output and exit become signals in order](repo:mila/packages/mila_transport/test/channels_test.dart) — In-memory stderr/stdout/exit streams..\n- **unit, present**: [terminal attach runs on a pty sized to the view, with resize and exit mapping](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Stock OpenSSH ForceCommand emulating attach..\n- **unit, present**: [view-only mode never sends keys or pastes](repo:mila/app/test/client_flow_test.dart) — Widget flow against the fake Porsche.."
+    ),
+    dgettext_noop(
+      "documentation",
       "- **property, present**: [terminal exchange fences stop generated actor rosters without losing intent](repo:lilly/test/lilly/control/historical_fence_test.exs) — One to four real actors across six terminal exchange classes; all actor processes stop, every durable Store command remains, status stays unavailable and ticks cannot self-recover. No native VMM, Marshall allocation or external restart claim.\n- **machine, recorded**: [restore recovers deleted host bytes and a usable isolated database](repo:nix/verification/tests/machines/backups/driver.py) — Recorded native restore drill: the operator-mode boot against the isolated restored database starts exactly the persistence, encryption and authorization children with no Endpoint process, and Oban normalizes to no queues, plugins, stager or peer leadership, so no AshOban trigger or queue consumer runs. Decryption succeeds only with the restored keyring.; [execution record](repo:docs/architecture/reviews/2026-09-26-historical-authority-characterization.md).\n- **unit, recorded**: [regressed command replay is acknowledged without rolling back durable intent](repo:lilly/test/lilly/control/historical_fence_test.exs) — Historical fixed fence characterization: regressed and duplicate command replay acknowledge after rereading matching-or-newer durable intent without rollback; unknown-pool and corrupt-store receipts fence :command_store_failed without acknowledging; :unauthorized/stale-session results stop actors, terminal and clone/transfer workers, preserve durable intent and never reopen by themselves. The original capture also included an ambient-host inventory assertion removed in the current merge; it establishes no controlled native inventory or Runtime-init fence composition.; [execution record](repo:docs/architecture/reviews/2026-09-26-historical-authority-characterization.md).\n- **machine, recorded**: [large tracked unit inventory omits descriptions and still rejects unknown resources](repo:nix/verification/tests/machines/native-zfs/driver.py) — Incoming d4499c4c merged native subtest passed8.22seconds:56 real sleeping tracked systemd units/cgroups exceed the verbose64KiB inventory frame; compact ID-only inventory accepts, omitted live placement and unknown child cgroup refuse. Ownership.verify_units with actual systemd/cgroups only, without Firecracker or Runtime initialization composition. Complete native-zfs later failed unrelated auto-update enrollment receipt validation, so no complete suite pass.; [execution record](repo:docs/architecture/reviews/2026-09-26-historical-authority-characterization.md).\n- **unit, recorded**: [physical units unknown to the durable command set fence execution readiness](repo:lilly/test/lilly/control/historical_fence_test.exs) — Incoming bee03919 captured separate-BEAM fake systemctl unknown-unit and failed-scan refusal with exact ID-only arguments; avoids assumptions about the developer host and changes no shared PATH. Latest combined execution remains separate, without native cgroup ownership or historical fleet reactivation claim.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [a restored journal cannot resolve egress before a fresh running observation](repo:lilly/test/vm/actor_test.exs) — Guest-facing restored-authority refusal: after an actor restart the recovered journal authorizes neither ingress nor egress before the new incarnation records a fresh physical running observation; missing owner metadata and durably superseded intent stay unresolved.; [execution record](repo:docs/architecture/reviews/2026-09-26-historical-authority-characterization.md)."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **property, present**: [the watch supervisor matches its model](repo:mila/packages/mila_core/test/watch_test.dart) — Hegel StateMachine over open, receive, end and close..\n- **unit, present**: [a watch feed reads JSON lines, reconnects after exit 5 and stops on exit 3](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Stock OpenSSH ForceCommand emulating watch.."
     ),
     dgettext_noop(
       "documentation",
@@ -3533,6 +3877,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "- **property, recorded**: [canonical URLs and wire encodings round-trip](repo:protocol/test/workspace_source_test.exs) — Current four-provider source2 URL/wire round trips, hostile route refusal and execution command admission by kind/profile; pure codec scope.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **property, recorded**: [source capability is explicit, survives encoding and changes immutable identity](repo:protocol/test/image_manifest_test.exs) — Strict manifest4 capability, exact fields, content identity and obsolete-manifest refusal; no real image boot.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **property, recorded**: [arbitrary staged values never bypass the exact validated shape](repo:marshall/test/marshall_web/pending_launch_test.exs) — Malformed signed-session input cannot become a canonical source/visit/expiry; no browser transport.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [anonymous staging canonicalizes public input and creates no machine](repo:marshall/test/marshall_web/controllers/repository_launch_controller_test.exs) — CSRF HTTP capture writes only bounded signed-session input and no compute rows; fake Phoenix connection, no browser.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [largest accepted source plus full stored login fits the browser cookie budget](repo:marshall/test/marshall_web/controllers/repository_launch_controller_test.exs) — Maximum accepted input and complete stored login fit the signed-cookie budget; no vendor/browser cookie behavior.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, present**: [passkey verification offers the staged launch without automatic navigation](repo:marshall/test/marshall_web/account_live_test.exs) — Optional Security verification exposes an allowlisted staged-launch return link without automatic navigation or allocation. The October 10 recorded result tested the superseded mandatory login-MFA continuation..\n- **property, recorded**: [repository launch visits dedupe per visit across generated histories](repo:marshall/test/marshall_web/repository_launch_history_test.exs) — SQL-backed current source2 capture/LaunchLive/receipt histories audit VM, reservation, operation and pinned snapshot counts across visits, invalid input and refusal; no native guest/browser.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [revocation after admission refuses completion without clearing pending input](repo:marshall/test/marshall_web/repository_launch_history_test.exs) — Postcommit completion rechecks current login authority and preserves pending input after revocation; no native browser race.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **property, recorded**: [the workspace source joins idempotent admission identity](repo:marshall/test/marshall/compute/workspace_source_admission_test.exs) — Current source2 same-key replay and conflict with changed/absent source over real admission transactions.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **property, recorded**: [every provider requires an explicit source-capable image before allocation](repo:marshall/test/marshall/compute/workspace_source_admission_test.exs) — All four providers refuse absent/obsolete capability before allocation or host selection; synthetic image manifests, no guest boot.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [obsolete sourced starts refuse without changing retained state or snapshots](repo:marshall/test/marshall/compute/workspace_source_admission_test.exs) — Actual lifecycle rollback preserves all VM/reservation/operation rows for obsolete sourced starts; unsourced obsolete images and disabled current capable images still start. Durable catalog only; no native bundle or staged image lookup.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **property, recorded**: [source images refuse before creating launch state](repo:lilly/test/vm/image_source_capability_test.exs) — Production initial-start driver refuses missing/current-schema mismatch capability before filesystem/native effects; no Firecracker or retained adoption claim.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **property, recorded**: [delivery command sequences keep boot binding, conflict and readiness invariants](repo:lilly/test/vm/workspace_source_test.exs) — Source2 all-provider delivery to a fake vsock guest over a real Unix socket: stale epochs, lost acknowledgements, refusals, conflicts and non-blocking start.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **property, recorded**: [journal transitions match the delivery edge table](repo:lilly/test/lifecycle/workspace_source_test.exs) — Generated journal state sequences and closed audit events.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **property, recorded**: [fn receiver_state_machine](repo:lyra/tests/workspace_receiver.rs) — Current source2 Hegel state machine over deliveries, conflicts, replays, restarts and clone outcomes with git argv invariants; fake git/local filesystem only.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [fn obsolete_persisted_source_is_refused_even_after_done](repo:lyra/src/workspace_receiver.rs) — An old persisted source refuses before a done marker can bypass validation, without overwriting historical source bytes; local filesystem only.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [fn deadline_kills_descendant_holding_stdout_after_parent_exits](repo:lyra/tests/workspace_git_output.rs) — Actual Linux subprocess deadline kills a descendant retaining stdout after its git parent exits and returns before ordinary child exit; no provider TLS or guest isolation.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [fn hexadecimal_named_links_fail_closed_on_invalid_advertised_output](repo:lyra/tests/workspace_git_output.rs) — Malformed/oversized advertised listing refuses hexadecimal fallback; valid empty listing permits commit fallback and an advertised hexadecimal branch wins a tag tie. Synthetic ref data only.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [fn real_git_checks_out_both_object_formats](repo:lyra/tests/workspace_object_format.rs) — Pinned real-local-Git SHA1/SHA256 repositories use production resolver/plan for exact HEAD on full commits, named branches,40digit SHA256 abbreviations and dedicated GitHub/GitLab change refs. Synthetic advertisements replace provider I/O; checkout URL becomes local before git. No provider TLS, browser or native guest claim.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **property, recorded**: [fn open_stage_machine](repo:lyra/tests/open_cli.rs) — Hegel state machine over overalls open stages with a recording fake ssh.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **machine, present**: [subsequent enrolled login resumes launch without elevation](repo:nix/verification/tests/machines/repository-launch/browser.py) — Updated native helper enrolls a virtual passkey, signs out and requires ordinary subsequent magic-link login to admit its staged branch without elevation. No current execution is recorded. The October 10 earlier Ubuntu run passed the superseded mandatory-MFA stage and four deduplicated launches in24.51s; later historical frozen NixOS results remain separately scoped..\n- **machine, recorded**: [all four providers clone every supported revision in a real guest](repo:nix/verification/tests/machines/repository-launch/driver.py) — Incoming frozen browser-feature NixOS all twenty provider/revision combinations, including fixed installed-CA Codeberg/Bitbucket API/fork probes and actual guest-owned done/exact HEAD/shallow markers, passed; additional sixteen-case subtest took576.29s. This predates ADR0158 integration; local provider DNS/TLS/Git/API, no live network, complete Ubuntu or latest combined claim.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **machine, recorded**: [each guest clones its own requested ref with plain git](repo:nix/verification/tests/machines/repository-launch/driver.py) — Historical e2384877 source1 NixOS fleet, packaged browser and CLI, Firecracker guests and local fake github.com; not current source2/MFA/provider acceptance.; [execution record](repo:docs/architecture/reviews/2026-09-28-repository-launch.md).\n- **machine, recorded**: [overalls open creates a sourced machine, waits for the guest clone and runs in it](repo:nix/verification/tests/machines/repository-launch/driver.py) — Historical e2384877 source1 Ubuntu image variant of the GitHub fleet journey; not current source2/MFA/provider acceptance.; [execution record](repo:docs/architecture/reviews/2026-09-28-repository-launch.md).\n- **unit, recorded**: [a sourced crash on an obsolete image commits proof and releases compute](repo:marshall/test/marshall/compute/lifecycle_test.exs) — Real SQL/Ash crash outcome commit/replay, immutable initial operation completion and retained disk/address with unavailable source capability; no restart dispatch or native guest effects.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [fresh telemetry commits after a pending sourced recovery loses its image](repo:marshall/test/marshall/compute/lifecycle_test.exs) — Real stale-crash to fresh HostReports transaction, exact capability identity refusal, committed report/crash proof and released confirmed compute; no native telemetry/kernel acceptance.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [resize restart pins the recorded source on a disabled capable image](repo:marshall/test/marshall/compute/resize_test.exs) — Actual Resize stop/resize/restart transaction and supplied snapshot preserve stored source, target sizes, resize identity and immutable prior snapshots; disabled current image allowed independently of staging.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [obsolete source images refuse only resize restart and retain physical proof](repo:marshall/test/marshall/compute/resize_test.exs) — Actual confirmed resize commits proof/target sizes, terminal finite failure and compute release while exact disk/address and snapshots remain retained; normal deletion remains possible. SQL-backed synthetic physical evidence, no native guest acceptance.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [a supplied source cannot turn an unsourced machine into a sourced start](repo:marshall/test/marshall/compute/resize_test.exs) — Real operation enqueue strips supplied source absent durable VM source while preserving owner/placement/generation and immutable earlier operation; no native execution claim.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [a supplied sourced start cannot replace the retained image](repo:marshall/test/marshall/compute/resize_test.exs) — Valid decoded source-bearing start with current but source-incapable alternate image refuses before durable VM/operation mutation; SQL authority scope, no native execution.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **machine, recorded**: [each guest clones its own requested ref with plain git](repo:nix/verification/tests/machines/repository-launch/driver.py) — Incoming earlier corrected source2 Ubuntu runtime: four initial GitHub fixtures reach exact requested HEAD and shallow checkout in20.93s; full revision/provider matrix and NixOS family were pending at that capture. Later incoming frozen NixOS family passed separately; local TLS fixtures, no public provider network or latest combined acceptance.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **machine, recorded**: [guest restart keeps the checkout and never re-clones](repo:nix/verification/tests/machines/repository-launch/driver.py) — Corrected source2 Ubuntu runtime stop/start retains checkout, done marker and local probe without re-clone in47.26s. Existing portable boot custody, no arbitrary interruption or NixOS-family claim.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [capture omits query and fragment secrets while preserving provider revisions](repo:marshall/test/browser/repository_launch_test.mjs) — Pure four-provider minimizer sentinel regression strips query/hash before the value may become a nonce key or POST source; no DOM/browser/history/form execution.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [capture refuses user information without constructing a submitted source](repo:marshall/test/browser/repository_launch_test.mjs) — Pure helper rejects nonempty and empty userinfo before source creation; no DOM or direct HTTP-client refusal claim.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **unit, recorded**: [privacy minimization preserves raw authority and path for server refusal](repo:marshall/test/browser/repository_launch_test.mjs) — Pure helper retains explicit443/literal../encoded%2e%2e after query/hash removal so established backend grammar still sees hostile raw input; no server action or DOM execution.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **machine, recorded**: [guest_checkout(vm_id, \"clone\", matrix_heads[kind], api_provider)](repo:nix/verification/tests/machines/repository-launch/driver.py) — Corrected Ubuntu failed enclosing matrix: ten additional guest exact-head/shallow assertions completed for GitHubtag; GitLabdefault/ref/tag/commit/change; Codebergdefault/ref/tag/commit, before Codebergchange remainedcloning. No Bitbucket/CLI/public-download/full-family claim; frontend captured before final minimization.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **machine, recorded**: [api_commands(api_provider, sha)](repo:nix/verification/tests/machines/repository-launch/guest.exs) — Final NixOS Codeberg/Bitbucket change cases passed actual guest installed-CA TLS, exact API schema/head and fork Git preflights with private terminal/response bytes; fixed stage/index/exit/status diagnostics supplement authoritative guest clone assertions. Local fixtures, no live provider or complete Ubuntu claim.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **machine, recorded**: [new tab owner login resumes pending launch](repo:nix/verification/tests/machines/repository-launch/browser.py) — Final privacy-fixed native Chromium ordinary fragment capture reaches clean sign-in, then same-context second-tab magic link resumes source-owned creation. Subsequent real virtual-WebAuthn MFA precedes branch admission; reload/back/revisit remain deduplicated. Passed NixOS 22.00s and latest Ubuntu 23.04s before its guest-startup failure; local colocated fleet, no real inbox/hardware authenticator or query/hash storage/POST sentinel assertions.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **machine, recorded**: [guest restart keeps the checkout and never re-clones](repo:nix/verification/tests/machines/repository-launch/driver.py) — Final NixOS retained stop/start passed in 16.47s with exact existing checkout HEAD, done marker, local probe and absent partial directory. Current portable boot/source2 custody on real ZFS/Firecracker, no arbitrary power-loss or foreign/corrupt retained-bundle claim.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md).\n- **machine, recorded**: [overalls open creates a sourced machine, waits for the guest clone and runs in it](repo:nix/verification/tests/machines/repository-launch/driver.py) — Final NixOS actual packaged overalls CLI authenticates with registered key through Porsche/Audi, creates source2 VM, waits for guest checkout, runs the fixed command in expected working directory and refuses an invalid source without creation; subtest 32.75s. Local provider/fleet, no live provider or production activation.; [execution record](repo:docs/architecture/reviews/2026-10-10-browser-launcher.md)."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **property, recorded**: [changing any byte of a sealed poke is never accepted](repo:mila/packages/mila_core/test/push_poke_test.dart) — Pure Dart X25519, HKDF-SHA256 and ChaCha20-Poly1305 over protocol/test/fixtures/push_pokes.json.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).\n- **unit, recorded**: [invalidVectorsAreRefused](repo:mila/app/android/app/src/test/kotlin/dev/overalls/mila/PokeOpenerTest.kt) — Kotlin PokeOpener compiled with kotlinc 2.3.21 and run under JUnit off-device.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md)."
     ),
     dgettext_noop(
       "documentation",
@@ -3740,6 +4088,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- **property, recorded**: [push registration matches its model](repo:mila/packages/mila_core/test/push_registration_test.dart) — Hegel StateMachine, 1500 cases of 80 steps, with delayed, reordered and stale fake-server replies.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).\n- **unit, recorded**: [registration sends the push key on stdin and the poke public key in the line](repo:mila/packages/mila_transport/test/push_test.dart) — SusanClient over a fake transport and PushRegistrar over a fake Porsche session.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).\n- **unit, recorded**: [turning notifications on registers once; the key stays off the line](repo:mila/app/test/device_features_test.dart) — Flutter widget tests over the fake Porsche, fake relay transport and fake push platform.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md)."
+    ),
+    dgettext_noop(
+      "documentation",
       "- **property, recorded**: [real refresh workers preserve reuse against retired generation messages](repo:enrico/test/manager_history_property_test.exs) — Controlled executable at the Git argument-vector boundary; actual task completion/death across receipt cap boundaries, exact replay and outcome conservation.; [execution record](repo:docs/architecture/reviews/2026-10-03-enrico-attempt-generation-histories.md).\n- **property, recorded**: [unknown or missing completion generations cannot manufacture an outcome](repo:enrico/test/manager_history_property_test.exs) — Fixed nil attempt/generation witness and generated missing, malformed and unknown generations preserve exact empty Manager state and emit zero outcomes.; [execution record](repo:docs/architecture/reviews/2026-10-03-enrico-attempt-generation-histories.md)."
     ),
     dgettext_noop(
@@ -3784,7 +4136,15 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- **property, recorded**: [sign-in never shows a stale or expired link](repo:mila/packages/mila_core/test/domain_test.dart) — Hegel stateful sign-in machine over a fake clock and Porsche replies.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).\n- **unit, recorded**: [a key file other users can read is refused, not used](repo:mila/packages/mila_transport/test/device_key_test.dart) — Linux file custody: 0600 key, 0700 directory, readable and malformed files refused.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).\n- **unit, recorded**: [a signed P-256 device key proves possession like any other client key](repo:porsche/test/ssh_proof_test.exs) — Porsche SSH proof of possession for an ecdsa-sha2-nistp256 client key in the BEAM test VM.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).\n- **machine, recorded**: [the pinned CA's certificate and the device key reach Porsche](repo:nix/verification/tests/machines/mila-porsche/default.nix) — Real Porsche release with the device key from mila-probe; Marshall is absent, so commands end in an authority envelope.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).\n- **machine, recorded**: [approval in the browser leads to the machine list](repo:nix/verification/tests/machines/mila-desktop/driver.py) — Linux bundle under X11 against packaged Marshall and Porsche.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md)."
+    ),
+    dgettext_noop(
+      "documentation",
       "- **property, recorded**: [stamping_is_chunking_independent](repo:lilly/native/boot-log/src/tests.rs) — Generated console bytes and chunkings stamp identically to the whole buffer and to an independent line oracle; prefix stripping recovers the input. Pure writer logic; no VMM or guest.; [execution record](repo:docs/architecture/reviews/2026-10-10-guest-boot-profile.md).\n- **unit, recorded**: [ubuntu_rotation_and_every_drift_take_the_full_path](repo:lyra/src/bin/overalls-trustd.rs) — Temporary-store receiver cases with an update-ca-certificates emulator: identical delivery is a no-op, rotation and five drift kinds rebuild, a failed rebuild withdraws the marker. Does not run the real Ubuntu tool.; [execution record](repo:docs/architecture/reviews/2026-10-10-guest-boot-profile.md).\n- **machine, recorded**: [a restart retiring that root removes it from the guest trust store](repo:nix/verification/tests/machines/zfs-guest/boot-profile.py) — Real Firecracker NixOS and Ubuntu guests booted three times through Lilly trust delivery; boot report printed each boot; bundle membership after each delivery and Ubuntu CApath accept/refuse for present/retired roots. Nested KVM, isolated from Audi.; [execution record](repo:docs/architecture/reviews/2026-10-10-guest-boot-profile.md)."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **property, recorded**: [the lock never shows content early (enabled at start)](repo:mila/packages/mila_core/test/app_lock_test.dart) — Hegel StateMachine over lifecycle, delay and unlock events.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md).\n- **machine, recorded**: [after a restart the deployment, lock setting and offline list remain](repo:nix/verification/tests/machines/mila-desktop/driver.py) — Linux bundle under X11 against packaged Marshall and Porsche.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-device.md)."
     ),
     dgettext_noop(
       "documentation",
@@ -3801,6 +4161,22 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "- **unit, present**: [Firecracker v1.16.1](repo:nix/verification/tests/evaluation/firecracker-vmm.nix) — The patched VMM reports the upstream version, lists --enable-pci and remains a static x86-64 firecracker/jailer pair; it does not boot a guest..\n- **unit, present**: [disable-legacy=on](repo:nix/verification/tests/evaluation/windows-guest.nix) — Builder rules: KVM sandbox, restricted networking, modern-only virtio-pci, pinned ISO and drivers, EMS enabled, no autologon, version-5 manifest shape, launcher flags. No installation or boot..\n- **machine, recorded**: [SAC>](repo:nix/verification/tests/machines/windows-guest/driver.py) — Installs the evaluation image and boots it under the patched Firecracker on nested KVM until the Windows SAC prompt appears on the serial log. Firmware entry, ACPI, PM timer, virtio-blk-pci and EMS only; no networking or agents. Passed on 2026-10-14 (273.9 s script time).; [execution record](repo:docs/architecture/reviews/2026-10-14-windows-lilly-launch.md)."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **unit, present**: [SSH key removal and account retirement revoke bound devices](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I5..\n- **unit, present**: [device versions and registration receipts keep only the push-key digest](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I6 through SSH.execute.."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **unit, present**: [a writable attach relays output after delivery, input within credit and resizes](repo:porsche/test/terminal_attachment_test.exs) — Fake gateway; asserts captured logs contain no bytes, ticket or token..\n- **machine, present**: [no SSH attach terminal bytes reach any journal](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — journalctl scan of every Marshall, provisioner and client machine for a random marker.."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **unit, present**: [an SSH attach relays the shared session through the production viewer](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs) — Real Porsche listener and control link, TLS FleetEndpoint, production viewer, fake host stream in the BEAM test VM..\n- **property, present**: [every close code, status and refusal maps into the closed exit table](repo:protocol/test/terminal_attach_test.exs) — Hegel property over the shared closed tables and header codec..\n- **machine, present**: [Porsche SSH attach shares the browser terminal session](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — Real OpenSSH client through Porsche into the personal session opened by TerminalLive's production call on a real guest.."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **unit, present**: [an agent question notifies current writers' devices after commit, not viewers](repo:marshall/test/marshall/notifications/producer_test.exs) — Producer recipients, coalescing and after-commit timing in the BEAM..\n- **unit, present**: [503, 503, 200 sends once successfully; 410 invalidates the device](repo:marshall/test/contract/marshall/notifications_contract_test.exs) — Covenant marshall.notifications.I3 with an in-process Susan stub..\n- **property, present**: [the retry mapping matches the ADR-0225 table](repo:marshall/test/marshall/notifications/delivery_worker_test.exs) — Hegel over status, Retry-After and final attempt..\n- **property, present**: [flipping any bit of a sealed poke is refused](repo:protocol/test/push_poke_test.exs) — PushPoke round-trip and tamper refusal over generated inputs..\n- **machine, present**: [Susan 503, 503, then 200 yields exactly one provider send](repo:nix/verification/tests/machines/push-notifications/driver.py) — Release against fake Susan at the compiled origin with OS-trusted TLS.."
     ),
     dgettext_noop(
       "documentation",
@@ -3824,6 +4200,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- **unit, present**: [key revocation closes a live attachment with exit 3 within five seconds](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs) — Real Porsche listener, production SSH key removal and viewer recheck in the BEAM test VM..\n- **machine, present**: [SSH key revocation closes a live attach within five seconds](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py) — Production key removal through the fixture operator; exit time compared with the post-commit wall clock.."
+    ),
+    dgettext_noop(
+      "documentation",
       "- **unit, present**: [manager revocation before publication refuses a successful guest result](repo:marshall/test/marshall/agents/skills_test.exs) — SQL fixture publication rechecks management authority before accepting a synthetic successful guest descriptor..\n- **unit, present**: [ambiguous results reconcile from status without repeating installation](repo:marshall/test/marshall/agents/skills_test.exs) — SQL operation state resolves a synthetic status response without invoking a second install dispatch..\n- **unit, present**: [replacement machine restoration pins the prior commit and digest](repo:marshall/test/marshall/agents/skills_test.exs) — A synthetic changed machine generation restores recorded revision identity rather than following a branch..\n- **unit, present**: [extracts_real_blobs_without_running_attributes_filters_or_hooks](repo:lyra/src/agent/managed_skills.rs) — Local real-Git fixtures exercise ordinary blob extraction without checkout hooks or configured filters; no guest transport is involved..\n- **unit, present**: [status_reports_missing_and_preserves_edited_revisions](repo:lyra/src/agent/managed_skills.rs) — Local receipt/status inspection distinguishes missing operation state from installed content changed after publication..\n- **unit, recorded**: [queued managed skill installation is dispatched and completed by another process](repo:marshall/test/marshall/agents/agent_context_recovery_distributed_test.exs) — The distributed fixture stops writer and dispatcher peers, then completes the queued operation through a replacement peer using committed PostgreSQL state; no guest installation is involved.; [execution record](repo:docs/architecture/reviews/2026-10-16-agent-context-and-planning.md)."
     ),
     dgettext_noop(
@@ -3840,7 +4220,19 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- **unit, present**: [terminal and web results decode](repo:mila/packages/mila_core/test/client_results_test.dart) — Shared result fixture..\n- **unit, present**: [a concurrent change is reported, not overwritten](repo:mila/app/test/client_flow_test.dart) — Widget flow against the fake Porsche.."
+    ),
+    dgettext_noop(
+      "documentation",
       "- **unit, present**: [the merged page keeps the strict security mount of the former Security page](repo:marshall/test/marshall_web/account_live_test.exs) — Exact lifecycle mount ids [{AuthenticationPrivacy, :default}, {LiveUserAuth, :security}] and the /settings route to AccountLive.\n- **unit, present**: [the page renders every section behind one Account navigation entry](repo:marshall/test/marshall_web/account_live_test.exs) — All four section ids and index anchors, #nav-account current, #nav-usage, no /settings/* sidebar links, the account-menu clock link to /settings#profile.\n- **unit, present**: [anonymous visitors must sign in and the old settings pages are gone](repo:marshall/test/marshall_web/account_live_test.exs) — Sign-in redirect on /settings and 404 on the three removed paths.\n- **unit, present**: [admin reads remain available but a mutation prompts step-up](repo:marshall/test/marshall_web/account_live_test.exs) — The no-key administrator redirect and the Users page link target /settings?return_to=%2Fadmin%2Fusers#security.\n- **unit, present**: [revoked browser login cannot change keys through an existing LiveView](repo:marshall/test/marshall_web/account_live_test.exs) — A revoked persisted token halts the SSH key event on the merged page with a sign-in redirect and no key is stored.\n- **manual, present**: [check_account](repo:marshall/scripts/monospace_browser_probe.py) — Current synthetic browser fixture targets the Account route and all four sections, retains Git preference and zone round trips, anchor positioning, grid alignment and light/dark/mobile screenshots. Source and static checks do not record browser execution of this repaired probe.."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **unit, present**: [watch subscriptions authorize every named machine and thread](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Subscription authority and control route classification..\n- **property, present**: [queued hints drain to one identifier notice per distinct hint](repo:porsche/test/client_commands_test.exs) — Debounce coalescing and identifier-only notices..\n- **unit, present**: [watch streams identifier notices, renews on heartbeat and ends on revocation](repo:porsche/test/ssh_channel_test.exs) — OTP SSH exec watch stream..\n- **unit, present**: [porsche-threads: stdin prompts, thread reads and a revocable watch](repo:marshall/test/marshall_web/ssh_transport_test.exs) — Real SSH, Porsche and HTTPS control.."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **unit, present**: [web show and web set use the endpoint's optimistic policy revision](repo:marshall/test/marshall/ssh/client_commands_test.exs) — Revision fence, reserved port and receipt provenance..\n- **machine, present**: [revision_conflict](repo:nix/verification/tests/machines/fleet/scenarios/porsche-threads.py) — Native fleet revision refusal.."
     ),
     dgettext_noop(
       "documentation",
@@ -3857,6 +4249,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "- **unit, recorded**: [Monospace presentation check passed](repo:marshall/scripts/check_monospace.exs) — Rejects utility classes, colour literals, external references and JavaScript utility toggles across templates, stylesheets and presentation JavaScript.; [execution record](repo:docs/architecture/reviews/2026-10-13-monospace-web-presentation.md).\n- **manual, recorded**: [External resources were requested](repo:marshall/scripts/monospace_browser_probe.py) — Both themes on every route, phone widths, contrast, font availability, grid alignment, drawer focus, draft identity, reduced motion, administration navigation, session-free docs and origin-only requests against the disposable fixture; 70 screenshots captured.; [execution record](repo:docs/architecture/reviews/2026-10-13-monospace-web-presentation.md).\n- **manual, recorded**: [External resources were requested](repo:marshall/scripts/monospace_browser_probe.py) — Final diagramCSS separate synthetic fixture probe passed39.014s: both themes,390px phone layouts,grid/font/contrast,navigation/drafts/publicdocs and no external requests. Accounts/machines are synthetic; neither nativeguest nor provider/deployment scope.; [execution record](repo:docs/architecture/reviews/2026-10-13-native-guest-coding-clis.md).\n- **unit, present**: [machine connection keeps installer and SSH commands without a profile download](repo:marshall/test/marshall_web/machines_live_test.exs) — Mounted machine page renders the header name, state, operating-system label, inline machine ID with its Copy control and the retained installer/SSH commands; the Ubuntu admission test pins the image display name on the detail, Settings, Machines and Overview pages. Synthetic images; no guest execution..\n- **manual, present**: [check_machine_header](repo:marshall/scripts/monospace_browser_probe.py) — Heading-box containment of name, state, operating system, machine ID and power actions in both themes and at 390px; machine-ID copy reports \"Machine ID copied.\" and the clipboard holds only the displayed ID before the installer copy check. Synthetic fixture machines only..\n- **unit, present**: [status labels name the state in text and carry its severity tone](repo:marshall/test/marshall_web/machines_live_test.exs) — Machines list and machine header labels render Failed/danger, Running/success, Starting and Stopping/pending and Stopped without a tone, with the observed data-state and the [OS] [State] order; the Overview test covers the same Failed and Running labels in the preview label row. Seeded observations, not provisioner outcomes..\n- **manual, present**: [check_status_labels](repo:marshall/scripts/monospace_browser_probe.py) — Overview and Machines in both themes at desktop and 390px: the seeded Failed label is bold inverse video exactly one grid row tall, Running is bold and Stopped plain on the page colours, and the Failed and Stopped labels never share a colour. Synthetic fixture machines; no guest execution.."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- **unit, recorded**: [a certificate from another CA is refused before authentication](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Stock OpenSSH server presenting host certificates in the mila-transport Nix check.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).\n- **unit, recorded**: [a different CA is refused and the pin is kept](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart) — Trust document pinning and reconciliation.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).\n- **unit, recorded**: [server-issued certificates verify in Mila](repo:mila/packages/mila_core/test/host_trust_test.dart) — Elixir-issued certificate fixtures get the same verdict in Dart.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md).\n- **machine, recorded**: [a certificate from another CA is refused before authentication](repo:nix/verification/tests/machines/mila-porsche/default.nix) — Real Porsche release refusing a rogue CA without an authentication record; Marshall is absent, so commands end in an authority envelope.; [execution record](repo:docs/architecture/reviews/2026-10-18-mila-m1.md)."
     ),
     dgettext_noop(
       "documentation",
@@ -3936,6 +4332,14 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "- A relay refusal or a `push_disabled` deployment leaves notifications off\n  and says why. A blocked system permission is reported without contacting\n  anyone.\n- A tampered, truncated, wrong-host or wrong-schema poke is refused before\n  anything from it is shown.\n- A snapshot file other users can read is deleted rather than read.\n- Mila logs no tokens, push keys, poke bytes or routes."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- An operator can disable notifications for the whole deployment with\n  `services.marshall.notifications.enable = false`. Registration is then\n  refused and nothing is sent to Susan.\n- You can pause a single device with `device prefs DEVICE_ID --enabled false`.\n- You can revoke a device with `device rm DEVICE_ID`."
+    ),
+    dgettext_noop(
+      "documentation",
       "- Linux and macOS: the `curl … /bin/install.sh | bash` command.\n- Windows: run the Windows `powershell …` command under \"Install and connect\"\n  in PowerShell. Windows needs OpenSSH 9.6 or newer: the installer installs it\n  with winget when the built-in client is older and, after you approve the\n  administrator prompt, makes it the default `ssh` for new terminals."
     ),
     dgettext_noop(
@@ -3944,11 +4348,19 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
-      "- [Browser extension](/docs/browser-extension.md): open supported repositories in Overalls.\n- [Getting started](/docs/quickstart.md): register a key and connect.\n- [Command reference](/docs/commands.md): syntax and available options.\n- [Automation](/docs/automation.md): JSON, retries and completion.\n- [Reflection integration](/docs/reflection.md): discover guest metadata and available private integrations."
+      "- When Susan is down, notifications are delayed. Marshall's watch stream still\n  works.\n- When PostgreSQL is down, `/healthz` answers 503 and pokes answer 503.\n- When a provider has an outage, pokes answer 503 with that provider's\n  Retry-After."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- [Browser extension](/docs/browser-extension.md): open supported repositories in Overalls.\n- [Getting started](/docs/quickstart.md): register a key and connect.\n- [Command reference](/docs/commands.md): syntax and available options.\n- [Automation](/docs/automation.md): JSON, retries and completion.\n- [Reflection integration](/docs/reflection.md): discover guest metadata and available private integrations.\n- [Push notifications](/docs/notifications.md): Mila notifications, devices and privacy."
     ),
     dgettext_noop(
       "documentation",
       "- [Download for Chrome or Chromium](/bin/chrome.zip): extract the ZIP, open\n  `chrome://extensions`, enable **Developer mode**, and choose **Load unpacked**.\n- [Download for Firefox](/bin/firefox.xpi): open `about:debugging`, choose\n  **This Firefox**, then **Load Temporary Add-on** and select the downloaded XPI."
+    ),
+    dgettext_noop(
+      "documentation",
+      "- [registration machine](repo:mila/packages/mila_core/lib/src/push_registration.dart)\n  and its [stateful property](repo:mila/packages/mila_core/test/push_registration_test.dart);\n- [poke opening](repo:mila/packages/mila_core/lib/src/push_poke.dart) against\n  the [shared vectors](repo:protocol/test/fixtures/push_pokes.json) in\n  [its tests](repo:mila/packages/mila_core/test/push_poke_test.dart);\n- [relay client](repo:mila/packages/mila_transport/lib/src/susan.dart) and\n  [registrar](repo:mila/packages/mila_transport/lib/src/push_registrar.dart)\n  with [their tests](repo:mila/packages/mila_transport/test/push_test.dart);\n- [lock policy](repo:mila/packages/mila_core/lib/src/app_lock.dart),\n  [snapshot cache](repo:mila/packages/mila_core/lib/src/snapshot_cache.dart)\n  and the [app journeys](repo:mila/app/test/device_features_test.dart);\n- native [iOS extension](repo:mila/app/ios/NotificationService/NotificationService.swift)\n  and [Android service](repo:mila/app/android/app/src/main/kotlin/dev/overalls/mila/MilaMessagingService.kt);\n- the [desktop machine test](repo:nix/verification/tests/machines/mila-desktop/default.nix)\n  and the [M5 device review](repo:docs/architecture/reviews/2026-10-18-mila-device.md)."
     ),
     dgettext_noop(
       "documentation",
@@ -4046,6 +4458,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "A hint is never authority: Porsche routes `{kind, id}` hints only to channels\nregistered for identifiers Marshall authorized, and the client re-reads\nthrough ordinary commands. Porsche's gateway binding subscribes to every\nthread and terminal-session hint, so the trusted gateway learns change\nidentifiers across accounts but never their content. Revocation ends a watch\nwithin one heartbeat."
+    ),
+    dgettext_noop(
+      "documentation",
       "A launch runs as six steps: begin (claim and running intent), disk, boot\nrecords, jail, logging and network, and commit\n([ADR-0176](repo:docs/architecture/decisions/0176-host-concurrency-single-writers-and-effects.md)\ndecision 2). Each step holds the placement lease only for its own duration and\nwaits for it in lilly-hostd's queue for at most two seconds, so a boot probe or\nobservation between steps no longer waits behind a whole create. Before acting,\nevery step after begin re-reads its fence: the exact intent begin set, no\ndeletion tombstone, a stopped unit and no launch attempt at or beyond that\nrevision. A changed fence stops the launch as preempted before that step's\neffects. Commit checks the actor's commit grant, persists `launch-attempt.bin`\nand starts the unit in one section, so a launch is attempted at most once per\nrevision. A launch that stops between steps starts again from begin; each step\nis idempotent (an existing correctly bound disk is reused)."
     ),
     dgettext_noop(
@@ -4118,7 +4534,7 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
-      "A separate configured control starts the real default-callback loopback daemon,\nchecks seven direct children, readiness, private status socket and an actual SSH\nbanner, then stops the application and removes its owned socket. This establishes\nlocal startup only. Certificate negotiation/client CA trust, account proof and\nauthorized Marshall management, production release/systemd startup, native\nisolation, concurrent file replacement and hosted faults remain separate.\nThe server's embedded-CA signature check does not choose which CA a client may\ntrust. Evidence: [boot properties](repo:porsche/test/host_certificate_boot_property_test.exs)\nand [execution review](repo:docs/architecture/reviews/2026-09-29-antithesis-property-audit.md)."
+      "A separate configured control starts the real default-callback loopback daemon,\nchecks nine direct children, readiness, private status socket and an actual SSH\nbanner, then stops the application and removes its owned socket. This establishes\nlocal startup only. Certificate negotiation/client CA trust, account proof and\nauthorized Marshall management, production release/systemd startup, native\nisolation, concurrent file replacement and hosted faults remain separate.\nThe server's embedded-CA signature check does not choose which CA a client may\ntrust. Evidence: [boot properties](repo:porsche/test/host_certificate_boot_property_test.exs)\nand [execution review](repo:docs/architecture/reviews/2026-09-29-antithesis-property-audit.md)."
     ),
     dgettext_noop(
       "documentation",
@@ -4191,9 +4607,11 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Acceptance requires the deployed revision, healthy required services, current host\nreports, an authorized guest lifecycle, terminal/SSH access, and working configured\nmail/provider paths. A build or push alone proves none of these runtime outcomes."
     ),
+    dgettext_noop("documentation", "Accepted APNs topics (Mila bundle identifiers)."),
+    dgettext_noop("documentation", "Accepted FCM application identifiers."),
     dgettext_noop(
       "documentation",
-      "Account authorization controls preference updates. Validated identity is inert execution metadata bound to the machine’s admitted snapshot and current boot. Guest services atomically publish protected Git configuration; malformed metadata refuses. Identity values must not enter diagnostics. Guest sudo and Git local configuration retain their existing authority. Native cross-OS and production rollout acceptance remain separate from BEAM property evidence.\n"
+      "Account authorization controls preference updates. Validated identity is inert execution metadata bound to the machine’s admitted snapshot and current boot. Guest services atomically publish protected Git configuration; malformed metadata refuses. Identity values must not enter diagnostics. Guest sudo and Git local configuration retain their existing authority. Native cross-OS and production rollout acceptance remain separate from BEAM property evidence."
     ),
     dgettext_noop(
       "documentation",
@@ -4339,6 +4757,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "All of these tests are present; none has a recorded passing run yet."
+    ),
+    dgettext_noop(
+      "documentation",
       "All seven selected exact immutable images now have separate recorded successful\ncreate/readiness, strict personal-account CLI SSH, stop with an independent\ncurrent-owner stopped checkpoint, same-VM restart, repeated strict SSH and\ncompleted deletion. The matrix review's typed aggregate binds all 49 stage\nreceipts and four additional Arch/Alma read-only sudo/helper checks at distinct\ntimes and recorded revision contexts. Fresh OmniOS `122228` supplies the owner\ncheckpoint missing from its earlier `091638` journey. This scoped milestone\ndoes not establish a simultaneous same-revision run, broader enabled-capability\nacceptance, revocation, native isolation, interrupted growth or physical recovery."
     ),
     dgettext_noop(
@@ -4443,11 +4865,19 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Answer a thread's pending question with JSON read from standard input."
+    ),
+    dgettext_noop(
+      "documentation",
       "Any other delivery withdraws the marker, replaces the roots and runs\n`update-ca-certificates --fresh`, which rebuilds the bundle, the hash links and\nthe hooks. The marker is written only after that rebuild verifies. Trust still\ncompletes before guest networking, DNS, roster sync and sshd on every boot\n(ADR-0113)."
     ),
     dgettext_noop(
       "documentation",
       "Append-refusal diagnostics now use the reviewed `brady.cache_write_refused`\ncatalog event: a finite cause and bounded freshness durations, with no paths,\npayloads or raw errors. This adds diagnosis without changing capacity or privacy\nauthority. Acceptance GETs retry transient failures at most three times; TLS\ncertificate refusal remains immediate, all attempts are retained and trust\nvalidation is unchanged. These retries do not establish backend availability."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Apple and Google deliver notifications only to apps signed by the app's\npublisher, so every Overalls deployment sends notifications through one shared\nrelay, Susan, at `https://notifications.overalls.dev`. Your deployment cannot\nbe configured to use another relay."
     ),
     dgettext_noop(
       "documentation",
@@ -4473,6 +4903,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Approve a new key through Porsche's interactive browser flow while keeping that\nSSH connection open. Closing it invalidates the approval link. A one-shot command\nmust be retried interactively; browser identity alone does not prove key custody.\nApproval and manual key addition hold current account admission through the outer\ncommit. If account retirement wins, the registration is refused without consuming\napproval or adding a key. A fresh identity explicitly registers a released key\nafter old-account cleanup; old sessions retain their original registration ID."
     ),
+    dgettext_noop("documentation", "Approve a thread's latest plan and start implementing it."),
     dgettext_noop(
       "documentation",
       "Arch Linux and AlmaLinux remain Linux guests for authorization and isolation:\ntheir catalog marker changes image identity, not the kernel guest agent, trust,\nnetwork guard, storage ownership or recovery boundary. The builder evaluation\ndoes not establish runtime isolation or distribution-native security behavior."
@@ -4513,11 +4944,19 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Arrows mean configured service placement. Configuration: `overalls`. Marshall instances: `overalls`. Fleet address: `10.90.0.1`. Fleet peers: `dungarees`. Administrative SSH ports: 2222.\n<!-- hldd:view:end -->"
     ),
+    dgettext_noop(
+      "documentation",
+      "Ask for a revised plan, reading the feedback from standard input."
+    ),
     dgettext_noop("documentation", "At least two independent authoritative nameservers."),
     dgettext_noop("documentation", "At the Porsche prompt, enter:"),
     dgettext_noop(
       "documentation",
       "Atomically published PEM key and full certificate chain, readable by the haproxy group."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Attach this SSH terminal to a shared terminal session; needs ssh -t."
     ),
     dgettext_noop(
       "documentation",
@@ -4708,6 +5147,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Boundary: A sent delivery id is answered 204 without a second send; per-key, install, source and global token buckets bound throughput."
+    ),
+    dgettext_noop(
+      "documentation",
       "Boundary: A transport refusal does not prove a domain effect completed or authorize lifecycle cleanup; Lilly must preserve the permanent class used by Runtime fencing."
     ),
     dgettext_noop(
@@ -4729,6 +5172,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Boundary: Actual managed SSH observes the root-owned flush marker, executable mode/hash and live PID. Within one boot the oracle kills/reaps that process while executable permission prevents restart, then restores exact mode and requires a different supervised PID with the same bytes and boot identity."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: After the planning transaction commits, Marshall queues one delivery per active, enabled device of current thread writers other than the actor, seals the route to the device X25519 key and sends Susan only a signed ciphertext body; 503s retry under the same delivery id and 410 invalidates the device."
     ),
     dgettext_noop(
       "documentation",
@@ -4904,6 +5351,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Boundary: Every thread action is a Porsche thread command with a request id; text travels on stdin; Marshall's thread domain authorizes and records it."
+    ),
+    dgettext_noop(
+      "documentation",
       "Boundary: Exact Git revision, staged secrets, serialized migration, compatible storage identity and readiness."
     ),
     dgettext_noop(
@@ -5004,6 +5455,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Boundary: Locked content is offstage and excluded from semantics; the lock fails closed when its setting is saved, and an unlock result from an older attempt is ignored."
+    ),
+    dgettext_noop(
+      "documentation",
       "Boundary: Loopback Grafana authenticates the operator and reads only the nine Nix-provisioned candidate duration recordings; source-owned histograms enter the collector under assigned application provenance."
     ),
     dgettext_noop(
@@ -5040,11 +5495,39 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Boundary: Marshall signs the canonical SusanPoke body with its install identity and sends it over verified TLS to the compiled Susan origin; Susan verifies the domain-separated signature, opens the push key it issued and forwards only ciphertext, retrying provider 503s without a second send under the same delivery id."
+    ),
+    dgettext_noop(
+      "documentation",
       "Boundary: Marshall.Threads owns the durable objective, mode, team visibility and thread-to-machine binding. Compute owns VM admission/lifecycle and Agents owns turns, model calls and tools. PostgreSQL transactions, row locks, generation keys and Oban jobs coordinate durable thread changes. The authenticated LiveView is a client of these domains."
     ),
     dgettext_noop(
       "documentation",
+      "Boundary: Marshall.Threads.ReadMarker is keyed per user and agent transcript, written only under an advisory transaction lock after current thread read authority; positions clamp to the last durable event."
+    ),
+    dgettext_noop(
+      "documentation",
       "Boundary: MarshallWeb.SecurityHeaders sets one Content-Security-Policy (script-src 'self' alone; style-src keeps 'unsafe-inline' for the vendored xterm.js and Mermaid renderers), Permissions-Policy, same-origin opener and resource policies, nosniff, SAMEORIGIN framing and no cross-domain policies before health, static files, the early /api refusals and the router. MarshallWeb.NoIndex adds X-Robots-Tag on the same surfaces and the root layout repeats it as a robots meta tag beside the disallow-all robots.txt. Production sends HSTS max-age=63072000 with includeSubDomains and no preload. The production session cookie is __Host-marshall (Secure, HttpOnly, Path=/, no Domain, SameSite=Lax, signed and encrypted) and the remembered credential is __Host-remember_me; MarshallWeb.BrowserSession owns the options for Plug.Session, the LiveView socket and every forged-session test or release probe, and expires legacy cookie names carried by a request. Headers and cookies grant nothing: stored-login checks, Cedar and CSRF tokens decide access, and user applications on *.apps.ghuntley.dev remain same-site with Marshall."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: Mila attaches with terminal attach on a PTY through Porsche, resumes from its byte cursor, and fences input locally when read-only; Marshall and Porsche authorize the attach."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: Mila exchanges the platform token for a relay push key at the fixed relay origin and registers through Porsche with the push key on stdin; the deployment binds the device to the registering SSH key. Mila persists only a token digest, device id, key id and expiry."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: Mila fetches https://HOST/bin/ssh-trust.json without redirects, pins it, and in key exchange accepts only an Ed25519 host certificate from the pinned CA naming the management host inside its validity window, before user authentication."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: Mila holds one P-256 device key per deployment in platform custody (owner-only file on Linux) and authenticates to Porsche with it; Marshall's existing browser key approval grants the account, and Mila only re-checks whoami."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: Mila runs watch with at most 16 filters and re-reads through ordinary commands; it takes no state from watch lines."
     ),
     dgettext_noop(
       "documentation",
@@ -5085,6 +5568,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Boundary: One LiveView at /settings mounts through the AuthenticationPrivacy tag and LiveUserAuth's :security mode, so the profile, passkey, SSH key and Git sections all recheck the persisted login on mount, every event, every message and every parameter change; mutations use the socket actor through User.security, Marshall.SSH, User.set_time_zone and User.git_settings; fragments (#profile, #security, #ssh-keys, #git-settings) carry no authority and return_to keeps its allowlist."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: Only a push key Susan can open plus a valid install signature admits a poke; providers receive only ciphertext, collapse id and fixed loc-keys."
     ),
     dgettext_noop(
       "documentation",
@@ -5132,7 +5619,23 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Boundary: Pokes are encrypted to a per-deployment device X25519 key with the host in the AAD; only the device opens them, and the notification shows fixed localized text with the validated route as its tap link."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: Porsche attachments are porsche_private processes with redacted status; only catalogued enum-metadata events are emitted; Marshall's terminal log filter keeps only allowed reason atoms."
+    ),
+    dgettext_noop(
+      "documentation",
       "Boundary: Porsche counts terminal SSH command dispatch results in fixed cumulative outcomes and duration; a private numeric file feeds a Rust exporter through a Porsche-only collector intake with Nix-owned service identity."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: Porsche dispatches the shared-parser command under Marshall session authority; the Threads domain checks thread read/write with the SSH actor; prompt, answer and revision text arrives only as a bounded stdin payload and receipts keep only its digest and the SSH key id."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: Porsche obtains a single-use ticket bound to the SSH session through the control link, then opens Marshall's gateway stream with the gateway bearer and SSH session; the stream upgrades into the production terminal viewer."
     ),
     dgettext_noop(
       "documentation",
@@ -5196,6 +5699,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Boundary: Secrets arrive only through the host-bound SOPS bundle and systemd credentials; the audit trail is append-only and hash chained."
+    ),
+    dgettext_noop(
+      "documentation",
       "Boundary: Shared account admission through the outer manual/approval transaction, exclusive retirement and completed old-UUID credential cleanup."
     ),
     dgettext_noop(
@@ -5229,6 +5736,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Boundary: The BEAM holds only sockets it created (ADR-0184). lilly-hostd connects Lilly's own socket to api.sock or v.sock beneath pool roots, or, as a fallback only, bridges it to a namespace connection through lilly-ingress-bridge running as lilly (op 13); every ingress service instead sends Audi's accepted connection to a detached bridge (ADR-0187, ADR-0192). hostd sends no descriptor and Lilly closes each socket after its gen_tcp port is down."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: The Linux bundle reaches the deployment only through the pinned trust document and Porsche SSH; approval happens in the authenticated production web page after fingerprint comparison; links only navigate; settings, device keys and snapshots are owner-only."
     ),
     dgettext_noop(
       "documentation",
@@ -5308,7 +5819,15 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Boundary: The ticket mode never escalates (rw only for the owner with write access and without --read-only); Porsche's credit discards read-only input before the websocket and never sends resize."
+    ),
+    dgettext_noop(
+      "documentation",
       "Boundary: The v6 image and v3 workload bundle carry immutable kernel provenance. Lilly uses the caller-owned jail-local /v.sock and a fixed probe port to compare the native OS, placement, execution epoch, boot challenge and kernel digest, requiring a canonical boot ID before credentials or readiness. Readiness must return the same boot ID. Native source receipts and placeholder kernels remain outside fleet admission; unqualified native capabilities remain false. Separate complete exact-image qualification enables only the reviewed sealed FreeBSD and exact OmniOS native subsets; changed or unreviewed candidates remain closed."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: The viewer rechecks SSH.Authority.session_live?/2 every 5 seconds and on ssh_session/user hints; a refused credential closes 4001 and Porsche exits 3; an inconclusive check closes 1011 (exit 5)."
     ),
     dgettext_noop(
       "documentation",
@@ -5368,7 +5887,23 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Boundary: device register binds the device to the session SSH key, reads the push key only from stdin and retains only its digest in receipts and versions; at most ten live devices per user."
+    ),
+    dgettext_noop(
+      "documentation",
       "Boundary: lilly-hostd holds each lease's flock on the existing lock inode, grants waiters in arrival order and runs leased utilities from a closed table with the lease descriptor inherited, each in its own command cgroup in production."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: porsche.watch_subscribe authorizes every named machine and thread for the session; Porsche registers only the returned identifiers, coalesces hints and repeats the subscription each heartbeat; notices carry identifiers only."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: web set keeps unnamed settings, passes the caller's or freshly read policy_revision to Ingress.configure_endpoint, which rechecks manage authority under the VM lock."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Boundary: web show and web set through Porsche at the shown policy revision; private endpoints open in the system browser where Marshall's browser session authorizes them."
     ),
     dgettext_noop(
       "documentation",
@@ -5477,6 +6012,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Change a machine's web port or visibility, optionally at an expected revision."
+    ),
+    dgettext_noop(
+      "documentation",
       "Changes to implementation, configuration, protocols, architecture, operations or\nverification must use the repository's `hldd-maintenance` skill. Update affected\nchapters and diagrams in the same change. When no reader-visible fact changes,\nrecord the specific reason. Never mark a review complete by refreshing hashes\nwithout inspecting the source change."
     ),
     dgettext_noop(
@@ -5507,6 +6046,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Cloning is currently unavailable for the Inception multi-disk profile."
     ),
+    dgettext_noop("documentation", "Close one of your terminal sessions on a machine."),
     dgettext_noop("documentation", "Close this interactive channel."),
     dgettext_noop(
       "documentation",
@@ -5605,6 +6145,7 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop("documentation", "Coverage: **partial**. Layers: authorization, execution."),
     dgettext_noop("documentation", "Coverage: **partial**. Layers: authorization, isolation."),
+    dgettext_noop("documentation", "Coverage: **partial**. Layers: authorization, storage."),
     dgettext_noop(
       "documentation",
       "Coverage: **partial**. Layers: authorization, transport, execution, isolation, recovery."
@@ -5627,6 +6168,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Coverage: **partial**. Layers: authorization, transport, identity."
+    ),
+    dgettext_noop(
+      "documentation",
       "Coverage: **partial**. Layers: authorization, transport, isolation, recovery."
     ),
     dgettext_noop(
@@ -5636,6 +6181,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Coverage: **partial**. Layers: authorization, transport, recovery."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Coverage: **partial**. Layers: authorization, transport, storage."
     ),
     dgettext_noop(
       "documentation",
@@ -5705,6 +6254,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Coverage: **partial**. Layers: identity, authorization, transport, execution, storage."
+    ),
+    dgettext_noop(
+      "documentation",
       "Coverage: **partial**. Layers: identity, authorization, transport, execution."
     ),
     dgettext_noop(
@@ -5741,6 +6294,7 @@ defmodule Marshall.DocumentationMessages do
       "Coverage: **partial**. Layers: identity, execution, recovery."
     ),
     dgettext_noop("documentation", "Coverage: **partial**. Layers: identity, execution."),
+    dgettext_noop("documentation", "Coverage: **partial**. Layers: identity, isolation."),
     dgettext_noop(
       "documentation",
       "Coverage: **partial**. Layers: identity, transport, execution, isolation, recovery."
@@ -5763,6 +6317,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Coverage: **partial**. Layers: identity, transport, isolation, storage, recovery."
+    ),
+    dgettext_noop(
+      "documentation",
       "Coverage: **partial**. Layers: identity, transport, recovery."
     ),
     dgettext_noop(
@@ -5774,7 +6332,10 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Coverage: **partial**. Layers: isolation, transport, execution."
     ),
+    dgettext_noop("documentation", "Coverage: **partial**. Layers: storage, authorization."),
+    dgettext_noop("documentation", "Coverage: **partial**. Layers: storage, recovery, identity."),
     dgettext_noop("documentation", "Coverage: **partial**. Layers: storage, recovery."),
+    dgettext_noop("documentation", "Coverage: **partial**. Layers: storage, transport."),
     dgettext_noop(
       "documentation",
       "Coverage: **partial**. Layers: transport, execution, isolation, recovery."
@@ -5785,11 +6346,20 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Coverage: **partial**. Layers: transport, execution, isolation."
+    ),
+    dgettext_noop(
+      "documentation",
       "Coverage: **partial**. Layers: transport, execution, recovery."
     ),
     dgettext_noop(
       "documentation",
       "Coverage: **partial**. Layers: transport, execution, storage."
+    ),
+    dgettext_noop("documentation", "Coverage: **partial**. Layers: transport, isolation."),
+    dgettext_noop(
+      "documentation",
+      "Coverage: **partial**. Layers: transport, recovery, authorization."
     ),
     dgettext_noop("documentation", "Coverage: **partial**. Layers: transport, recovery."),
     dgettext_noop(
@@ -5799,6 +6369,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Coverage: **partial**. Layers: transport, storage, recovery."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Create a local PostgreSQL database and peer-authenticated role named susan."
     ),
     dgettext_noop(
       "documentation",
@@ -5972,6 +6546,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Each device has at most one open delivery per collapse key; a newer fact while\none is open is recorded as `dropped/coalesced`. Deliveries expire after one\nhour and terminal rows and their versions are pruned after seven days."
+    ),
+    dgettext_noop(
+      "documentation",
       "Each enabled Elixir producer has a separate `overalls-trace-INSTANCE` Rust service.\nThe shared Events catalog and official OpenTelemetry SDK emit bounded reviewed\nspans to that producer's Unix socket. The receiver authenticates the peer UID and\nexact systemd cgroup, validates the generated schema, and replaces host/service\nprovenance from Nix configuration. A same-UID process in another unit cannot\nborrow the producer identity. The receiver has no application or database\ncredentials and cannot mutate guests, accounting or control state."
     ),
     dgettext_noop(
@@ -5989,6 +6567,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Each host collects its own logs and sends directly to selected destinations. The\ncentral Overalls role stores metrics, traces and fleet logs; the Dungarees worker\nexports over authenticated fleet WireGuard. Grafana, Prometheus and Tempo HTTP\nreaders bind loopback. Optional public Grafana uses a separate authenticated HTTPS\nfrontend and account; Marshall sign-in does not confer Grafana access."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Each machine in Mila has Info, Terminals, Threads and Web tabs. A Recent grid\nlists threads across machines. Every action is an ordinary Porsche command\n(ADR-0222). Each mutation carries a request id and is submitted once, then\npolled through `request show`. Prompts, answers and plan revisions are sent on\nthe exec channel's stdin, never on the command line, and are limited to 64 KiB.\nLinks to these pages only navigate."
     ),
     dgettext_noop(
       "documentation",
@@ -6017,6 +6599,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Edit `fleet/hosts/NAME/host.json` for reviewed identity and budgets, the host's\n`configuration.nix` and imports for service placement, and shared modules for role\nbehavior. Keep credentials in the encrypted/runtime custody flow. Do not put\nprivate environment values into this projection. Follow [configuration](#configuration)\nand [deployment](#deployment) for installation, enrollment, builds and activation."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Egress is fixed in code, not configuration. The container uses a\nloopback-only, epmd-less distribution ([`Susan.Epmd`](repo:susan/lib/susan/epmd.ex))\nbecause it has no shell from which to start epmd.\n"
     ),
     dgettext_noop(
       "documentation",
@@ -6114,6 +6700,11 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Every running guest can query `https://reflection.internal` for a bounded,\nsecret-free description of itself and the private services currently available\nto its execution."
     ),
+    dgettext_noop("documentation", "Evidence:"),
+    dgettext_noop(
+      "documentation",
+      "Evidence:\n- [command catalogue](repo:mila/packages/mila_core/lib/src/ssh_command.dart);\n- [attach state machine](repo:mila/packages/mila_core/lib/src/terminal_attach.dart);\n- [watch supervisor](repo:mila/packages/mila_core/lib/src/watch.dart);\n- [channels](repo:mila/packages/mila_transport/lib/src/channels.dart) and the\n  [OpenSSH journeys](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart);\n- [app flows](repo:mila/app/test/client_flow_test.dart);\n- the [UI review](repo:docs/architecture/reviews/2026-10-18-mila-ui.md)."
+    ),
     dgettext_noop(
       "documentation",
       "Evidence: [Lilly policy](repo:lilly/lib/lilly/network/policy.ex),\n[fleet network](repo:docs/operations/fleet-network.md), [Audi operations](repo:docs/services/audi.md),\n[private names](repo:docs/architecture/decisions/0111-private-service-tls-names.md),\n[ACME module](repo:nix/domains/system/acme/default.nix)."
@@ -6137,6 +6728,14 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Evidence: [command catalog](repo:protocol/lib/overalls_protocol/ssh_command.ex),\n[test catalog](repo:nix/verification/tests/README.md),\n[architecture index](repo:docs/architecture/decisions/README.md),\n[maintenance skill](repo:.agents/skills/hldd-maintenance/SKILL.md)."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Evidence: [command grammar](repo:protocol/lib/overalls_protocol/ssh_command.ex),\n[closed tables](repo:protocol/lib/overalls_protocol/terminal_attach.ex) and\n[fixture](repo:protocol/test/fixtures/terminal_attach.json);\n[gateway stream](repo:marshall/lib/marshall_web/terminal_gateway_api.ex),\n[viewer](repo:marshall/lib/marshall/terminal/viewer.ex),\n[Porsche attachment](repo:porsche/lib/porsche/terminal/attachment.ex) and\n[credit](repo:porsche/lib/porsche/terminal/credit.ex);\n[end-to-end test](repo:marshall/test/marshall_web/ssh_terminal_attach_test.exs),\n[Porsche relay tests](repo:porsche/test/terminal_attachment_test.exs),\n[credit model property](repo:porsche/test/terminal_credit_property_test.exs) and the\n[fleet journey](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py)\n(not yet recorded passing). See [ADR-0223](repo:docs/architecture/decisions/0223-porsche-terminal-attach.md)\nand the [S2 review](repo:docs/architecture/reviews/2026-10-19-mila-terminal-attach.md)."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Evidence: [command grammar](repo:protocol/lib/overalls_protocol/ssh_command.ex),\n[protocol properties](repo:protocol/test/ssh_client_commands_test.exs),\n[dispatch](repo:marshall/lib/marshall/ssh/commands.ex),\n[watch authority](repo:marshall/lib/marshall/ssh/watch.ex),\n[read markers](repo:marshall/lib/marshall/threads/read_markers.ex),\n[Marshall command tests](repo:marshall/test/marshall/ssh/client_commands_test.exs),\n[Porsche watch routing](repo:porsche/lib/porsche/watchers.ex),\n[Porsche tests](repo:porsche/test/client_commands_test.exs),\n[real SSH transport test](repo:marshall/test/marshall_web/ssh_transport_test.exs).\nCommitted-hint delivery, live terminal openings and a NixOS machine journey\nremain unexercised."
     ),
     dgettext_noop(
       "documentation",
@@ -6181,6 +6780,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Evidence: [resize](repo:marshall/lib/marshall/compute/resize_request.ex),\n[clone](repo:marshall/lib/marshall/compute/clone_request.ex),\n[relocation](repo:marshall/lib/marshall/compute/relocation.ex),\n[evacuation](repo:marshall/lib/marshall/compute/evacuation.ex)."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Evidence: [transport](repo:mila/packages/mila_transport/lib/src/ssh_porsche.dart)\nand its [OpenSSH journeys](repo:mila/packages/mila_transport/test/ssh_porsche_test.dart),\n[host certificates](repo:mila/packages/mila_core/lib/src/host_trust.dart),\n[sign-in machine](repo:mila/packages/mila_core/lib/src/sign_in.dart),\n[device keys](repo:mila/packages/mila_transport/lib/src/device_key.dart),\n[dartssh2 patch](repo:nix/platform/patches/dartssh2-host-certificates.patch),\n[real-Porsche machine test](repo:nix/verification/tests/machines/mila-porsche/default.nix)\n(passed against the real Porsche release), the [desktop journey](repo:nix/verification/tests/machines/mila-desktop/default.nix)\n(browser approval, machine list and forwarded links through the Linux bundle) and the [M1 review](repo:docs/architecture/reviews/2026-10-18-mila-m1.md)."
     ),
     dgettext_noop(
       "documentation",
@@ -6264,6 +6867,15 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Failure and supersession can also terminate earlier phases. The execution and\ndataset journals retain launch and cleanup authority. The deadline starts at\nlaunch, allowing materialization its separate utility bounds. The original deadline\nsurvives retries; a cached receipt is reusable only for the same execution and\nboot challenge after physical confinement is rechecked. State and revision\npublish atomically in lifecycle envelope version 2; duplicate polling changes\nneither. After fsync, at most 128 reviewed UUID/state/time diagnostics per caller defer\nuntil the exact native writer releases. Confirmed release admits them to the\nbounded SDK queue and structured logs; spool handoff runs independently. Queue\nrefusal or uncertain lock release may drop diagnostics without undoing state.\nTemplate diagnostics retain closed host/pool identity; these\nobservations never authorize a copy, physical seal or execution."
+    ),
+    dgettext_noop("documentation", "Failure behaviour:"),
+    dgettext_noop(
+      "documentation",
+      "Failure behaviour: an untrusted host ends the connection before any command and\nbefore the device key signs anything; an unreachable origin with no pin is\nreported as unreachable rather than untrusted. Mila stores no terminal bytes,\ntokens or reply bodies; it logs nothing about keys or commands."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Failure behaviour: terminal bytes exist only in the in-memory emulator. They\nare never written to disk, the offline cache, preferences or logs. A paste is\nbracketed and cannot carry control sequences."
     ),
     dgettext_noop(
       "documentation",
@@ -6740,6 +7352,7 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop("documentation", "Inspect a machine by name or UUID."),
     dgettext_noop("documentation", "Inspect a previously accepted request."),
+    dgettext_noop("documentation", "Inspect a thread, its pending question and latest plan."),
     dgettext_noop("documentation", "Inspect an integration without secrets."),
     dgettext_noop(
       "documentation",
@@ -6905,8 +7518,11 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Lilly's private readiness socket requires a newly delivered authenticated report\nand completed observations of the current durable placement authorities. Restored\njournals and a running systemd main process cannot establish deployment readiness.\nThe `lilly-runtime-readiness` check places six native guests on two provisioners,\nstops fixture PostgreSQL and restarts each daemon main process one or two times.\nEach incarnation must produce a complete negative socket reply before a bounded\nnegative watch. After database restoration, the test requires newer authenticated\nhost epochs, fresh reports, affirmative readiness and unchanged guest process\nidentities. The native check passed its 897.72-second machine script, including\n248.40 seconds for readiness histories; execution scope is recorded in the\n[readiness review](repo:docs/architecture/reviews/2026-10-03-lilly-runtime-readiness.md).\nExact report-age\nboundaries retain separate direct Runtime property coverage. Physical rollout,\nupdater promotion and hosted fault exploration remain separate acceptance."
     ),
+    dgettext_noop("documentation", "List a machine's terminal sessions you can open."),
     dgettext_noop("documentation", "List a team's members."),
+    dgettext_noop("documentation", "List a thread's transcript events after a sequence number."),
     dgettext_noop("documentation", "List access grants."),
+    dgettext_noop("documentation", "List agent threads you can read, with unread counts."),
     dgettext_noop("documentation", "List available images."),
     dgettext_noop("documentation", "List machines you can access."),
     dgettext_noop(
@@ -6915,7 +7531,9 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop("documentation", "List your SSH keys."),
     dgettext_noop("documentation", "List your integrations."),
+    dgettext_noop("documentation", "List your push notification devices."),
     dgettext_noop("documentation", "List your teams and roles."),
+    dgettext_noop("documentation", "Listener address behind the TLS-terminating proxy."),
     dgettext_noop("documentation", "Literal IPv4 backend bind address."),
     dgettext_noop("documentation", "Literal public listener address."),
     dgettext_noop(
@@ -7028,6 +7646,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Manual SSH key registration and browser key approval serialize with retirement\nthrough the account admission fence. A registration committed first is included\nin old-UUID cleanup. If retirement wins, registration is refused without adding\nkey or approval records. Completed cleanup leaves no active key for that retired\nUUID. A fresh identity must explicitly register the released fingerprint and gets\na new registration ID; existing sessions stay bound to the old ID.\nGenerated same-email histories and three independent Marshall processes verify\nboth registration orders and exact committed inventories. This is database\nworkflow evidence; native concurrent browser/SSH delivery remains separate.\nSee the [credential review](repo:docs/architecture/reviews/2026-09-25-credential-lifecycle-verification.md)."
     ),
+    dgettext_noop("documentation", "Mark a thread read up to a transcript sequence number."),
     dgettext_noop("documentation", "Marshall TLS endpoints, keyed by backend identity."),
     dgettext_noop(
       "documentation",
@@ -7129,6 +7748,26 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Merging Lilly's pending and delivering trust journal writes (about 6 ms each)\nwas not worth the change."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Mila (ADR-0220) drives Marshall only through Porsche's command catalog\n(ADR-0222). Thread commands (`thread ls|show|turns|prompt|answer|plan\napprove|plan revise|mode|read`), terminal commands (`terminal ls|new|kill`),\nweb commands (`web show|set`) and the streaming `watch` share the existing\nshared parser, Marshall session authority and pinned `ssh_requests` receipts.\nMarshall answers identifiers, states, unread counts and canonical\n`overalls://` routes; thread objectives, machine specifications and skill\nselections never reach the wire."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Mila holds no account authority; every action is a Porsche command that\nMarshall authorizes like any other SSH caller (ADR-0220)."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Mila is the Overalls client for iOS and Android; its Linux build exists for\ntesting. It manages machines through one SSH connection to the deployment's\nPorsche gateway and adds no Marshall API: every command is an ordinary Porsche\n`--json` command, authorized by Marshall's domains like any other SSH caller."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Mila registers your phone when you allow notifications. The registration is\nbound to the SSH key Mila uses, so removing that key from your account also\nrevokes the device. Each account can have up to ten active devices."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Mila, the Overalls mobile app, can tell you when an agent needs your input:\nwhen a planning turn asks you a question or proposes a plan. A notification\nonly says that something needs attention; opening it takes you to the thread\nin Mila, which then fetches the details over your own SSH connection."
     ),
     dgettext_noop(
       "documentation",
@@ -7301,6 +7940,18 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Nonempty set of providers enabled for discovery and inference; readiness requires all selected catalogs."
     ),
+    dgettext_noop(
+      "documentation",
+      "Notifications are a convenience. While Mila is open, it follows your threads\nthrough its own live watch stream, which works even when notifications are\ndisabled or Susan is unavailable.\n"
+    ),
+    dgettext_noop(
+      "documentation",
+      "Notifications are opt-in per device and per deployment. Mila asks the\nplatform for an APNs or FCM token. It exchanges the token for a push key at\nthe fixed relay origin `https://notifications.overalls.dev`, then registers\nthe device through Porsche with\n`device register --platform P --push-key - --enc-pubkey K`. The push key\ntravels only on the command's stdin. The token goes only to the relay. Mila\nstores neither: its saved record holds a token digest, the device id, the key\nid and the key expiry."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Notifications go to the devices of every person who can currently act on the\nthread, except the person whose action caused it. People with view-only\naccess are not notified."
+    ),
     dgettext_noop("documentation", "OTLP hostname, without scheme, path or credentials."),
     dgettext_noop(
       "documentation",
@@ -7405,6 +8056,7 @@ defmodule Marshall.DocumentationMessages do
       "Open ports in the firewall for the Audiobookshelf web interface."
     ),
     dgettext_noop("documentation", "Open the public HTTPS port."),
+    dgettext_noop("documentation", "Open your personal terminal session on a machine."),
     dgettext_noop(
       "documentation",
       "Opening a magic link in a JavaScript-enabled browser submits the token through\nthe CSRF-protected sign-in POST without another click and remembers the browser.\nThe initial GET does not consume the link. A browser without JavaScript can use\nthe fallback button. A successful sign-in returns to the requested destination\nor Overview. Pending first-key setup does not block ordinary reads; the account\npage's sign-in section is opened by an explicit credential action or by the\nprivileged step-up setup flow.\nInvalid, expired and replayed links leave no login or remembered credential.\nJavaScript-capable automated link visitors may consume a valid single-use link;\nGET-only scanners cannot. The updated three-replica native MFA browser journey\npassed automatic navigation and remembered-cookie checks in one NixOS VM; see\nthe [automatic sign-in review](repo:docs/architecture/reviews/2026-10-02-automatic-magic-link.md)."
@@ -7473,6 +8125,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Optional private runtime bearer credential for the approved webhook."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Optional token-bucket overrides keyed by key, install, source, global or issue."
     ),
     dgettext_noop(
       "documentation",
@@ -7552,6 +8208,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "Peer's Lego responder port."),
     dgettext_noop(
       "documentation",
+      "Peers whose last X-Forwarded-For hop is believed for per-source rate limits."
+    ),
+    dgettext_noop(
+      "documentation",
       "Pending export admission budget per producer, within retained archive budget."
     ),
     dgettext_noop(
@@ -7599,6 +8259,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Plain HTTP listener port; TLS terminates at the fronting proxy."
+    ),
+    dgettext_noop(
+      "documentation",
       "Plain-text HTTP refusal messages use the negotiated locale for repository launch,\ninstaller/download and trust failures, editor/sign-in failures, inference/raw Git\naccess and missing documentation. Status codes, final newlines and generic\nredaction remain unchanged. Successful installer scripts, archives, manifests,\nchecksums, trust JSON, CSV fields and raw Git bytes retain their machine format.\nPublic documentation and download routes negotiate without creating sessions.\nPlain-text responses carry no HTML direction attribute; HTML RTL and native\nbrowser acceptance remain separate verification boundaries."
     ),
     dgettext_noop(
@@ -7633,6 +8297,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Porsche status polls (`request show`, listings) are read-only. They validate the\nsession, key and user but do not queue on the account's command lock, so polling\nnever waits behind that account's in-flight mutations (ADR-0140). A transport\nerror, 503, 429 or other non-2xx poll keeps waiting until the deadline. Only a\ndenial, an invalid receipt or the deadline ends a wait."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Porsche stdin payloads (prompt, answers, plan revision) are bounded per\ncommand, validated before dispatch and stored only as digests in\n`ssh_requests`, with the submitting SSH key id. The Porsche gateway binding\nreceives all thread, terminal-session and SSH-session hint identifiers; they\ncarry no content and grant nothing; watch subscriptions are re-authorized\nevery heartbeat. Expected refusals: `stdin_payload_invalid`,\n`stdin_payload_required`, `revision_conflict`, `stale_proposal`,\n`thread_busy`, `forbidden` for a stranger's watch."
     ),
     dgettext_noop(
       "documentation",
@@ -7726,6 +8394,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Prometheus time retention in days; distinct from the seven-day SLO window."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Prompt, answer and plan-revision text arrives only on standard input after a\nfinal `-`, bounded per command at 64 KiB; the integration secret keeps its own\n4098-byte kind. Porsche buffers to that bound, validates through\n`SSHCommand.put_stdin_payload/2` and logs only a closed\n`porsche.stdin_payload_rejected` reason. Marshall stores receipts with the\npayload replaced by a SHA-256 digest and with the caller's SSH key id, so a\nPorsche-originated prompt, answer, plan approval or web change is attributable\nwithout retaining its text. Read markers are per reader and agent transcript\nand never move backwards; `thread ls` derives unread counts from them."
     ),
     dgettext_noop(
       "documentation",
@@ -7828,6 +8500,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Pure namespace planner properties now require every distinct exact target once\nand refuse distinct-target and total-observation overflow. Generated inputs and\nfixed 511/512/513 and 32,767/32,768/32,769 witnesses passed in the eight-check\nCargo capture; isolated omitted-target and early-cap mutants were detected.\nThese properties verify planner inputs, not native proc/descriptor scans or\nunmount authority. See the [planner review](repo:docs/architecture/reviews/2026-10-02-namespace-plan-properties.md)."
     ),
+    dgettext_noop("documentation", "Push notifications"),
     dgettext_noop("documentation", "Queue an independent full-disk copy of a machine."),
     dgettext_noop(
       "documentation",
@@ -7894,6 +8567,10 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Refresh starts ten minutes before access expiry. Stop new old-generation\nadmissions, drain existing requests for at most five minutes, then withdraw\nremaining leases before exchange. Current-attempt settlement atomically publishes\nthe replacement pair. Provider waits stay outside database transactions. An\nuncertain rotating exchange requires reconnect; duplicate workers, old replies\nand revoked callbacks cannot restore a generation."
     ),
+    dgettext_noop(
+      "documentation",
+      "Register this device for push notifications. The push key is read from stdin."
+    ),
     dgettext_noop("documentation", "Registered HTTPS GitHub OAuth callback URL."),
     dgettext_noop(
       "documentation",
@@ -7952,7 +8629,7 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "Required native ZFS pool and dataset identity."),
     dgettext_noop(
       "documentation",
-      "Required operator settings and private credential/host-key custody are validated\nbefore Porsche starts its supervisor or serving children. Generated local OTP\nhistories pass 171 refusals across 57 cases, including control/public origin,\nlistener bounds, paths, config/credential/key custody and CA defects. Refusals\npreserve recursive fixture bytes, types, permissions, ownership and link counts,\nand diagnostics exclude original/mutated credentials, host-key/CA bytes and\nfixture paths. The unset control starts exactly five live named base children\nwithout listener or status startup. These are test-build checks. Baseline\nsynthetic host-key bytes establish loader custody acceptance only; configured\nSSH/host-certificate startup, packaged refusal, file-replacement races, native\nisolation and hosted config faults remain open for this property."
+      "Required operator settings and private credential/host-key custody are validated\nbefore Porsche starts its supervisor or serving children. Generated local OTP\nhistories pass 171 refusals across 57 cases, including control/public origin,\nlistener bounds, paths, config/credential/key custody and CA defects. Refusals\npreserve recursive fixture bytes, types, permissions, ownership and link counts,\nand diagnostics exclude original/mutated credentials, host-key/CA bytes and\nfixture paths. The unset control starts exactly seven live named base children\nwithout listener or status startup. These are test-build checks. Baseline\nsynthetic host-key bytes establish loader custody acceptance only; configured\nSSH/host-certificate startup, packaged refusal, file-replacement races, native\nisolation and hosted config faults remain open for this property."
     ),
     dgettext_noop(
       "documentation",
@@ -7964,7 +8641,15 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Required refusal: A Linux key file readable by group or other users, or malformed, is refused rather than used; a stale or expired approval link is never shown; an unapproved key reaches only approval_required."
+    ),
+    dgettext_noop(
+      "documentation",
       "Required refusal: A bundle with guest_agents none never reports guest_ready: trust is recorded as skipped for the exact boot, provisioning ends in the terminal unattested phase (no boot UUID, no path to ready), and readiness, terminal options, workspace sources and the Inception profile are refused before any host effect. Marshall refuses terminal sessions, agent turns, the agent executor binding, web search and Inception admission for such an image, hides the corresponding controls, and admits only the physical service level. An older Lilly fails closed on a firmware bundle, which is why the converged push precedes any placement. Lilly's host policy drops every unmarked packet between the host and a Customer guest, so nothing on the host reaches the Windows guest except the SSH and editor ingress paths it does not yet have. The guest bootstrap refuses an MMDS document whose fields fail validation or whose MAC is not the adapter's and never logs the token or boot challenge."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: A failed or stale authentication leaves Mila locked; a platform without biometrics reports the lock unavailable instead of pretending to lock."
     ),
     dgettext_noop(
       "documentation",
@@ -7980,7 +8665,15 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Required refusal: A non-HTTPS or credentialed URL is not opened; a concurrent change is reported as a conflict; an out-of-range port is refused before sending; the webview refuses non-HTTPS navigation."
+    ),
+    dgettext_noop(
+      "documentation",
       "Required refusal: A non-https origin, a foreign management host or zone, or a host outside the zone is refused before any download; a digest mismatch or failed SSH configuration leaves the installed binary and SSH profile unchanged; a client without hostname protection stops setup; an executable path containing a double quote is refused for ProxyCommand."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: A payload command without stdin, an oversized or empty payload, a busy thread, a stale proposal or question, invalid answers and a stranger's thread refuse with closed reasons before any turn is admitted; a reused request id with different text is idempotency_conflict."
     ),
     dgettext_noop(
       "documentation",
@@ -7992,11 +8685,35 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Required refusal: A relay refusal, a push_disabled deployment or a denied system permission leaves notifications off with a reason; a stale or reordered reply never changes state; turning notifications off during an in-flight registration removes the device once it lands."
+    ),
+    dgettext_noop(
+      "documentation",
       "Required refusal: A retired session cannot retain its backing scrollback after returning quota; natural EOF preserves every independently queued output byte."
     ),
     dgettext_noop(
       "documentation",
+      "Required refusal: A revoked key or closed SSH session cannot keep reading or writing the terminal beyond the 5-second recheck."
+    ),
+    dgettext_noop(
+      "documentation",
       "Required refusal: A silent outgoing hop must retire and notify its viewer; the incoming application must release its budget slot after resumption."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: A smaller position leaves the stored marker unchanged; a thread without a bound transcript refuses thread_not_ready; a reader without thread read is forbidden."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: A stale revision refuses revision_conflict, port 4444 reserved_editor_port and a profile without web web_not_allowed; the endpoint stays unchanged."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: A stranger X25519 key cannot open the forwarded ciphertext; a provider 410 invalidates the device and later pokes drop as device_inactive; neither journal holds the push key, the device key, the route or a poke ciphertext."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: A stranger's thread refuses the whole subscription (403); a pending key without --session gets approval instructions; a revoked key ends the stream with exit 3 at the next heartbeat."
     ),
     dgettext_noop(
       "documentation",
@@ -8024,6 +8741,14 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Required refusal: An unknown deployment's link lands on the deployment list, a second invocation never opens a second window, snapshots hold no approval links or tokens, and a saved list's actions are disabled."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: An unknown or another machine's session exits 1 (not_found); attach without a pty exits 2 before any ticket is requested; a browser ticket on the gateway route, or an SSH ticket on the browser route, closes 4003."
+    ),
+    dgettext_noop(
+      "documentation",
       "Required refusal: Anonymous Grafana queries, reader credentials on insert paths and unprivileged credential reads refuse. Marshall has no diagnostic reader credential or query path."
     ),
     dgettext_noop(
@@ -8033,6 +8758,22 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Required refusal: Anonymous or revoked readers cannot retain the page. Missing seven-day history, sparse traffic, changed source lifetime, missing host coverage, malformed or duplicate recordings and foreign labels remain Unknown. Missing, duplicate, stale, failed or foreign burn rules cannot display an inactive warning."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: Another CA, another principal, an expired certificate or a plain host key ends the connection before the device key signs; a conflicting later trust document is refused and the pin kept; an unreachable origin uses only an unretired pin."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: Another host cannot decrypt the bundle; a missing secret keeps the previous bundle and fences startup; unsafe credential files and invalid keyrings refuse startup; UPDATE/DELETE/TRUNCATE on audit rows fail."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: Another user's device id refuses device_not_found; an eleventh device refuses device_limit; a key not owned by the actor refuses; a revoked device is never poked."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: Any flipped byte, truncation, extension, wrong host, unknown version or plaintext outside {v:1, kind:needs_input, route} is refused before anything is shown."
     ),
     dgettext_noop(
       "documentation",
@@ -8125,6 +8866,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Required refusal: Foreign, late and duplicate completions cannot settle admissions. Corrupt/missing initialized state, symlinks, concurrent writers and failed durability cannot reset history or publish fresh healthy evidence."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: Forged signatures, unknown/denied keys and malformed bodies answer the same 404/400 body and write nothing."
     ),
     dgettext_noop(
       "documentation",
@@ -8252,6 +8997,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Required refusal: No journal on any fleet machine contains typed or echoed attach bytes."
+    ),
+    dgettext_noop(
+      "documentation",
       "Required refusal: No successor lease while a utility of the previous holder may run; no mutating utility without a lease; no second command on a busy lease; no session for a wrong uid, cgroup or protocol version."
     ),
     dgettext_noop(
@@ -8273,6 +9022,14 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Required refusal: Ordinary users cannot mutate, demoted actors cannot admit late writes, removed/stale repository handles cannot read, and superseded or duplicate attempts cannot publish outcomes."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: Output before the header is dropped; a read-only attachment sends no keys, paste or resize; refused, invalid and authority exits end the view; transport retries stop after 8 attempts."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: Overlong or malformed lines are refused; silence beyond 40 s reopens; authority loss stops the watch."
     ),
     dgettext_noop(
       "documentation",
@@ -8544,6 +9301,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Required refusal: Replays answer 400; the eleventh burst poke answers 429 with Retry-After; deny-listed keys answer 404; unregistered tokens answer 410 and stay cached."
+    ),
+    dgettext_noop(
+      "documentation",
       "Required refusal: Require three refusals over the still-live readiness channel while the flush daemon cannot restart. Refuse malformed snapshot/mode/PID/hash framing and incomplete restoration; only the full sequence may publish a receipt."
     ),
     dgettext_noop(
@@ -8576,6 +9337,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Required refusal: Text over 64 KiB or invalid UTF-8 is refused before sending; a busy thread or stale plan is refused by the server and shown; the read marker never moves back."
+    ),
+    dgettext_noop(
+      "documentation",
       "Required refusal: The accepted windows-v1 editor capability remains false. Missing or mismatched image descriptors, foreign gateway or execution, stale roster account, ambiguous package/PATH custody, wrong SID/process/job/pipe and exhausted pending-I/O capacity must refuse. A foreign process cannot be terminated or adopted without exact custody; a portable test or cross-link cannot qualify native Windows browser admission."
     ),
     dgettext_noop(
@@ -8585,6 +9350,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Required refusal: The initial q35 image reached multi-user and answered port 1026 flush but did not report readiness when its NIC appeared as enp0s3; the net.ifnames=0 repair allowed the exact readiness check. A flush reply alone cannot authorize readiness, and an emulator boot cannot authorize hosted Lilly placement or native physical effects."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: Typed input on a read-only attach never reaches the session, even if Marshall granted rw."
     ),
     dgettext_noop(
       "documentation",
@@ -8633,6 +9402,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Required refusal: Viewers and revoked actors cannot answer or implement. Child agents cannot ask human questions. Stale, cancelled, archived or nonactive requests refuse. Competing answers cannot overwrite a winner, changed replay inputs conflict and partial proposal output cannot be implemented. Mode changes while work runs or awaits answers refuse."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Required refusal: Viewers, the actor, paused, revoked and invalidated devices receive nothing; a rolled-back question produces nothing; a stranger key cannot open the poke; the operator switch refuses registration with push_disabled."
     ),
     dgettext_noop(
       "documentation",
@@ -8759,6 +9532,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Revocation hints prompt renewal; a thirty-second lease bounds communication if a\nhint is lost. A closed relay cannot revive on later grant restoration. Guest\nprocesses follow native worker lifetime, not the browser lease. Broker restart\npreserves systemd-owned workers and sockets; upstream extension-host activity,\nits five-minute idle timer and 1500-second reconnection grace govern shutdown.\nPersonal homes prevent automatic inheritance while existing sudo writers still\nhold root capability. See [recovery](#recovery) and [security boundaries](#security)."
     ),
+    dgettext_noop("documentation", "Revoke a push notification device."),
     dgettext_noop("documentation", "Revoke an account's shared access."),
     dgettext_noop("documentation", "Revoke one of your SSH keys."),
     dgettext_noop(
@@ -8844,7 +9618,7 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
-      "Runtime secrets stay in private fixture volumes; only the operator enrolls\nLilly through Marshall's reviewed CLI. Bootstrap checks both TLS endpoints,\nmigration and a fresh authenticated host report before one setup signal.\nThe SQL witness requires a positive report sequence, a report timestamp within\n60 seconds and a durable session matching the host's current session ID, host\nID and epoch. It does not read the retired host `protocol_version` column or\ninfer a wire version from SQL. Production Execution and the real Control\nprobes enforce wire v4 separately. Historical local boot captures predate this\ncurrent-schema witness; local readiness alone does not establish hosted SDK\ningestion or native effects.\nThe optional `repository-origin` profile adds a second gate before the same\nsingle setup signal: the operator-issued repository manifest must match the\nindependent fixture ID, the origin fixture must answer an authenticated state\nread, the SELECT-only oracle must find the registration row and a\n`pending`/`refreshing`/`ready` phase, and Enrico must answer an authenticated\nstatus read for a never-issued attempt. Marshall commits GitHub sources in\ncanonical lowercase, so the operator publishes `github/fixture/demo` exactly as\nregistered and the origin fixture serves that path; an earlier mixed-case\nmanifest and served path never matched the committed row, and Marshall's own\nrefresh failed against the origin, so setup stayed incomplete. The probe now\nreports each distinct unmet prerequisite once per process by condition token,\nobservation state, HTTP status or phase, never by credential or payload.\nThe failed-refresh published-head case was never exercised in hosted runs:\nthe workload image linked Git into its closure but not onto a fixed path, so\nthe native blob oracle could not run Git and every attempt stopped before the\nforce push (run `30a420d501d5d6d22527e679a7f00005-65-0`). The image now links\n`/opt/overalls/git`, the oracle calls it explicitly, and each early stop logs a\nfixed `Enrico published-head case unexercised` reason.\nThe 1,025-attempt receipt-cap campaign ran but stopped silently in hosted run\n`56a1285564c94413812835f74246cf04-65-0`: it abandoned the campaign on the first\nfailed fetch, although Enrico retains failed and succeeded receipts alike under\nthe same cap. It now counts any settled attempt and logs a fixed\n`Enrico receipt-cap campaign unexercised` reason at every early stop. Run\n`3f76c3f47ad4062ba0d1c37896e5f3e9-65-0` measured about 5.7 s per attempt on its\ncleanest timeline, which suggested the campaign could not finish, yet the next\nrun (`ddd07ab2f16fe84d9cf3020e10a648ce-65-0`) completed it once and hit every\ncap assertion (oldest receipt evicted, newest replayable, no second fetch);\nEnrico's unit and property tests remain the primary cap evidence. The 3f76c3f4 run produced one\ncounterexample to the ninth-refresh refusal: a held fetch hit Enrico's 10 s\nread timeout under a slowed network, freeing a slot that the ninth refresh then\nlegitimately took, while a holder snapshot scanned before that change still\nmatched. The ninth verdict now requires a snapshot whose scan started after the\nninth submission, and the observer stamps each snapshot before it scans.\nThe optional `recorder-host` profile selects the TCG NixOS recorder VM and the\nthree recorder commands. The workload waits for the VM health check, then its\nown read-only probe requires a fresh all-active unit sample, producer and spool\nidentities in their reviewed cgroups, a distinct 32–64 MiB archive device, a\ncheckpoint whose pending admissions name only the current producer PID and\nstart ticks, a readable SQLite archive and writable request and ledger volumes.\nMissing or stale evidence leaves setup incomplete. Its first hosted validation\nstopped in initrd emergency mode: the runner's `root=` argument duplicated the\nimage's own root fstab entry and, without `rw`, left the real root read-only,\nso the `/run` bind into it failed. The runner now relies on the image fstab\nalone; a direct local QEMU TCG boot of the rebuilt context, outside any\ncontainer, reached the runner's health check in 66–96 s. Its first hosted run\n(`bbb308949ab76c0f1ce04fd209f1f091-65-0`) failed container setup because the\nAntithesis container filesystem refuses O_DIRECT, which QEMU `cache=none`\nneeds to open the qcow2 backing image. The recorder, host and storage VMM\nrunners now probe O_DIRECT on every disk and its backing image and fall back to\nflush-respecting `cache=writeback` (never `cache=unsafe`), printing the\neffective mode. Hosted run `109aecb1aca881ff09e15403e72802cb-65-0` completed\nsetup but reached no trace spool custody: the guest fixture paths were\ncontext-free strings, so the trace fixtures were absent and the BEAM producer\ncrashed on every trace request; back-to-back recovery restarts also tripped\nsystemd's default start limit, and the pressure loop outran the command window.\nThe fixture paths now carry store context, the producer refuses a failed\nrequest instead of exiting, the two restarted units have no start limit in this\nfixture only, and the pressure loop has a 20 s budget. The next run\n(`acfe129cf2288d30a7972edcbf9b92cf-65-0`) reached spool custody, recovery and\nreal ENOSPC on the dedicated archive, but the one write attempted under ENOSPC\ncommitted into already allocated SQLite pages, so no refusal followed; the\ncommand now keeps writing, up to 32 batches, until the exhausted backing\nrefuses. Archive quota refusal stays out of reach inside the 20 s loop. Run\n`10d727fc7a050a9695a0b16e87a47db9-65-0` reached that refusal and the reopen path\nand reported two oracle races, not recorder defects: the fresh batch after a\nspool restart was sent before the reopened spool had bound ingest (systemd\nreports the restart at exec), and the request SDK heartbeat had already\nrecovered its fsynced `v1:gap` marker to `v1:running` when the saturation\ncheck read it. The reopen check now retries a transport-unavailable reply,\nand the saturation check accepts `v1:running` only with the checkpoint's\nadvanced coverage start as the durable gap. Both acknowledged-custody\nchecks held throughout. Run `d03118781050d16ad698713ce9fb4d61-65-0` reached\nreal ENOSPC 25 times and its refusal 18 times without a counterexample, but the\n20 s organic loop never filled the 57 MB archive, so its exhausted-backing,\nstorage-refusal and saturation checks were never evaluated. The ENOSPC path now\nevaluates those same checks against its confirmed zero-free backing and\nrefused write. Run `eb926cce7fee3dfcad1d6d8172b28d29-65-0` then passed 65 of\n67 properties; only quota refusal and the hint-loss anchor stayed unreached.\nThe 60 MiB archive quota exceeds the 57 MB archive device, so ENOSPC always\ncomes first, and pending custody never drains in this fixture, so the 32 MiB\npending quota needs far more intake than a timeline sends. Each traces command\nnow ends with a bounded window in which the bridge restarts the real spool on a\nfixed configuration whose only change is the minimum pending quota (one body\nlimit), sends large batches until the production admission check refuses with\n`429`, checks that the refusal kept accepted bytes, and restores the default\nquota before returning. It proves the pending-quota refusal path, not the\nproduction quota values or the archive-quota branch. The hint-loss anchor\ncannot fire under hosted faults: Oban reports `:isolated` only after 120 s with\nno notifier ping, beyond any recorded timeline. Its evidence is emulated, not\nnative.\nThe optional `admission-stub` profile runs the atomic-allocation and key-replay\nadmission commands on a harness **stub** storage substrate, which is not ZFS.\nOnly in that profile does the controlled Lilly release report configured stub\npool totals for its enrolled pool identity, measured cgroup memory headroom, a\nlabelled STUB CPU budget of one core capped by the measured cgroup cores, and a tiny non-bootable image it digest-verifies before advertising;\nthe enrollment operator registers that image through Marshall's catalog action\nand then enables lilly-a through the reviewed CLI `enable` action, which\nrefuses until Lilly's stub report is fresh and execution-ready. A fully stub-backed report advertises placement readiness, so Marshall's real\nadmission transaction commits VM, placement, reservation and dispatch rows,\nbut the controlled executor never launches a guest. A delete settles only\nthrough a labelled **STUB** enabled by this profile's explicit opt-in: the\ncontrolled executor reports the deleted facts for a placement only after\nobserving a controlled pool, a journal that never recorded it running, only\npublication records for it and no native execution state, and writes an\nabsence attestation; Marshall's real outcome, release and archive path then\nruns. Run `a8c0a8e424bc48eb017aa2322795fc68-65-0` left archived-key replay\nunreached and later admissions short of vCPU because no delete settled. This\nis never cleanup or physical-absence evidence for anything that existed. Setup requires the enabled normal-mode host and those committed report, pool\nand image rows in SQL; hosted runs before this check never enabled the host,\nso every admission probe stopped at unknown capacity\n(`dd4f5f9cd52da22427ae2e5b79c095bf-65-0`). With the host enabled, the next run\nstill submitted nothing: the pre-submission SQL witness read host and pool from\nthe VM row, which the placement migration had moved to\n`compute_workload_placements`, so every query failed and was reported as\nunavailable (`379970e17a2d5312bff3e5c5e2c17369-65-0`). The witness now joins the\ncurrent placement, and oracle queries log each failing SQLSTATE class once.\nThe following run (`642e01a83533ba33f07ba9e3eb4b17fd-65-0`) settled hundreds of\ndecisions, all refusals, so the acceptance-path assertions held only vacuously;\nthe refusal reason was invisible because the operator discards evaluation\noutput. The workload now logs Marshall's closed refusal token once per process,\nand the operator names the operation whose result became uncertain. CPU and\nmemory headroom here are measured over the whole Antithesis VM, so a refusal\nfor capacity is Marshall's correct decision on a busy host, not a defect.\nCatalog headroom below the request shape no longer withholds a request: a\ndefinite `insufficient_capacity` refusal is Marshall's real decision, checked\nfor absent rows and a bounded one-VM replay. Every stop before a settled\ndecision logs a fixed `Compute admission unexercised` reason; the first hosted\nrun reached no admission assertion because those lines were never emitted.\nRun `6890e1608b75e9b82fe11382bb4aeefc-65-0` still refused every request for\nvCPU: the hosted VM has one logical CPU, so the measured headroom never frees a\nwhole core, hence the stub CPU budget above. The next run\n(`74188918d21886495a53d124a725c7e5-65-0`) admitted requests and failed the\njoined-allocation check once in 267 examples: a partition held a provision\noperation pending across a minute tick, and AshOban's dispatch scheduler\ncorrectly enqueued a repeat hint, so the oracle counted two dispatch jobs. The\noracle now requires at least one dispatch job; placement, reservation, address\nand provision-operation counts remain exact.\nThe results are admission-logic evidence only, never ZFS, physical-capacity,\nKVM or isolation evidence; the measured-capacity command stays in a separate,\nunselected template for the measured host graph.\nThe optional `guest-lifecycle` profile selects the guest lifecycle command with\nthe guest VMM overlay. Its container Lilly is a separate STUB-storage release:\nit reports a fixed synthetic pool with no ZFS and compute headroom for one free\nguest-vmm slot, capped by measured cgroup limits, and sets execution readiness\nonly after a guest-vmm health check and a verified advertised image. The\nenrollment operator registers that image manifest through the catalog action\nand enables lilly-a through the reviewed CLI `enable` action once its report is\nfresh and execution-ready; Marshall's catalog counts no capacity from a disabled\nhost. Bootstrap adds a third gate: the guest-vmm image identity, read through the\nread-only witness bridge, and a Marshall catalog offering that image with known\ncapacity for its shape. The stub admits one emulated QEMU TCG guest only; it is\nnot native ZFS, KVM, Firecracker, isolation or capacity evidence. Its first\nhosted run (`a2edc265384761d6607df51eac50b29d-65-0`) timed out at\n`capacity_unknown` because the host was never enabled; the earlier local pass\nhad inherited an enabled host from a retained PostgreSQL volume, so local\nvalidations now start from empty volumes. With the host enabled, run\n`91c9dfa850d2435808323d8910182d7a-65-0` still admitted no guest: the stub slot\nreported exactly the 2 GiB guest memory, while admission reserves guest memory\nplus the fixed 64 MiB VMM overhead, so Marshall correctly refused every\nprovision for insufficient capacity. The slot now reports guest memory plus\nthat overhead, and the workload capacity gate requires the same sum. Run\n`655477db4745f0857c2c0ffcd8571d7a-65-0` then booted real QEMU guests to port 1024\nreadiness, but no stop ever completed: the guest VMM inventory dropped the\nexecution epoch and generation once a placement stopped, while the fixture\nexecutor binds a stop to that exact boot, so every stop was deferred until the\ndriver gave up and later cycles found the slot held. The inventory now reports\nthe stopped boot tuple from its stop record, and the driver submits a final\nstop on every exit after admission. Run `23988c965cff394cc43e5a8553dc12b0-65-0`\nlogged per-dimension gap reasons: most cycles stopped at\n`compute_catalog_unavailable` because each operator request boots a fresh\nMarshall BEAM whose cold TLS pool missed the production 3 s handshake under\ninjected latency, so the evaluation crashed before reaching Compute; a lost\nfinal stop then left the single slot occupied (`capacity_insufficient_vcpu`).\nOperator request evaluations now use a harness-only small pool with longer\nconnect, handshake and queue budgets, reads and `request_key`-idempotent\nprovision and lifecycle evaluations retry a crashed attempt, the final stop is\nresubmitted with one request key, and the driver waits up to 120 s for a reply.\nProduction Repo settings and the long-lived Marshall nodes are unchanged.\nRun `a574538c77694308d6133a2f478b71d2-65-0` then completed 54 verified boots\nand about 69 product stops, yet observed no stop: the stopped guest record keeps\nthe retained boot's generation while the stop operation carries Marshall's\nbumped generation, and the driver asked the exactly fenced witness for the\nlatter. Most other cycles read the catalog once while the last accepted Lilly\nreport was older than Marshall's 5 s capacity freshness window under injected\nControl faults (`capacity_unknown`). The driver now requests the stopped witness\nwith the provision's tuple, polls the catalog for up to 90 s before\nprovisioning, and retries an `insufficient_capacity` refusal once after a fresh\nwait, logging only the closed refusal token. Marshall's freshness decision is\nunchanged.\nRun `c011420b1c74f586054654f8d1023683-65-0` showed the operator's witness\nfence still required the stop's bumped generation while the guest server keeps\nthe retained boot's: a `guest.witness` read of a VM desired and observed\nstopped now accepts the newest completed provision/start tuple on its\nplacement. Operator `image_unavailable` refusals (a stale host image report\nbetween catalog and provision) are retried like `insufficient_capacity`, each\ncatalog read is bounded to 30 s within a 180 s window, and an expired sample\nlogs its last unmet step.\nRun `766b5d3778010731ec34ab191bf48f7c-65-0` reached consistent completed\nprovisions, yet reported the outcome/VM consistency property as never hit: the\ndriver evaluated it only when a contradiction occurred. It now evaluates that\nassertion for every completed outcome it samples, and resubmits a stop or start\nwhose reply was lost with the same deduplicated request key up to three times\ninstead of abandoning the cycle after one lost reply.\nIn every other profile the host report has unavailable pool capacity and false\nexecution readiness, so a successful Control connection cannot authorize a\nguest placement. The\ncontrolled executor records requests without claiming physical effects; its\ndefault guest callbacks remain unavailable. An optional integrated TCG adapter\nis authored with a measured inner ZFS host and emulated guest observation, but\nhas no recorded composed journey. Its recovery inventory permits only the\nfixed `lilly.service` and `lilly-guest-emulator.service` cgroups plus exact\ntracked VM units when systemd creates them; unknown or malformed native\ninventory fences recovery, while the emulator inventory independently checks\ntracked placements. The optional TCG guest context\nhas a [recorded local boot](repo:antithesis/verification/guest-boot.md): exact\nport 1024 readiness on three q35-adapted NixOS guest boots, with one restart\non a retained qcow2 overlay and matching offline machine-id bytes. The\nstorage-router VM separately passed a\n[local direct-run smoke](repo:antithesis/verification/storage-boot.md) with\nreal ZFS/Brady, origin-off cache replay and retained marker/quota across QMP\nreset. The four selected control-context exports\npassed at their captured derivations. A later local base Compose project also\nemitted setup and passed six serial Control commands; the selected manifest\nhas four stale runtime-dependency hashes, so no frozen hosted baseline follows."
+      "Runtime secrets stay in private fixture volumes; only the operator enrolls\nLilly through Marshall's reviewed CLI. Bootstrap checks both TLS endpoints,\nmigration and a fresh authenticated host report before one setup signal.\nThe SQL witness requires a positive report sequence, a report timestamp within\n60 seconds and a durable session matching the host's current session ID, host\nID and epoch. It does not read the retired host `protocol_version` column or\ninfer a wire version from SQL. Production Execution and the real Control\nprobes enforce wire v4 separately. Historical local boot captures predate this\ncurrent-schema witness; local readiness alone does not establish hosted SDK\ningestion or native effects.\nThe optional `repository-origin` profile adds a second gate before the same\nsingle setup signal: the operator-issued repository manifest must match the\nindependent fixture ID, the origin fixture must answer an authenticated state\nread, the SELECT-only oracle must find the registration row and a\n`pending`/`refreshing`/`ready` phase, and Enrico must answer an authenticated\nstatus read for a never-issued attempt. Marshall commits GitHub sources in\ncanonical lowercase, so the operator publishes `github/fixture/demo` exactly as\nregistered and the origin fixture serves that path; an earlier mixed-case\nmanifest and served path never matched the committed row, and Marshall's own\nrefresh failed against the origin, so setup stayed incomplete. The probe now\nreports each distinct unmet prerequisite once per process by condition token,\nobservation state, HTTP status or phase, never by credential or payload.\nThe failed-refresh published-head case was never exercised in hosted runs:\nthe workload image linked Git into its closure but not onto a fixed path, so\nthe native blob oracle could not run Git and every attempt stopped before the\nforce push (run `30a420d501d5d6d22527e679a7f00005-65-0`). The image now links\n`/opt/overalls/git`, the oracle calls it explicitly, and each early stop logs a\nfixed `Enrico published-head case unexercised` reason.\nThe 1,025-attempt receipt-cap campaign ran but stopped silently in hosted run\n`56a1285564c94413812835f74246cf04-65-0`: it abandoned the campaign on the first\nfailed fetch, although Enrico retains failed and succeeded receipts alike under\nthe same cap. It now counts any settled attempt and logs a fixed\n`Enrico receipt-cap campaign unexercised` reason at every early stop. Run\n`3f76c3f47ad4062ba0d1c37896e5f3e9-65-0` measured about 5.7 s per attempt on its\ncleanest timeline, which suggested the campaign could not finish, yet the next\nrun (`ddd07ab2f16fe84d9cf3020e10a648ce-65-0`) completed it once and hit every\ncap assertion (oldest receipt evicted, newest replayable, no second fetch);\nEnrico's unit and property tests remain the primary cap evidence. The 3f76c3f4 run produced one\ncounterexample to the ninth-refresh refusal: a held fetch hit Enrico's 10 s\nread timeout under a slowed network, freeing a slot that the ninth refresh then\nlegitimately took, while a holder snapshot scanned before that change still\nmatched. The ninth verdict now requires a snapshot whose scan started after the\nninth submission, and the observer stamps each snapshot before it scans.\nThe optional `recorder-host` profile selects the TCG NixOS recorder VM and the\nthree recorder commands. The workload waits for the VM health check, then its\nown read-only probe requires a fresh all-active unit sample, producer and spool\nidentities in their reviewed cgroups, a distinct 32–64 MiB archive device, a\ncheckpoint whose pending admissions name only the current producer PID and\nstart ticks, a readable SQLite archive and writable request and ledger volumes.\nMissing or stale evidence leaves setup incomplete. Its first hosted validation\nstopped in initrd emergency mode: the runner's `root=` argument duplicated the\nimage's own root fstab entry and, without `rw`, left the real root read-only,\nso the `/run` bind into it failed. The runner now relies on the image fstab\nalone; a direct local QEMU TCG boot of the rebuilt context, outside any\ncontainer, reached the runner's health check in 66–96 s. Its first hosted run\n(`bbb308949ab76c0f1ce04fd209f1f091-65-0`) failed container setup because the\nAntithesis container filesystem refuses O_DIRECT, which QEMU `cache=none`\nneeds to open the qcow2 backing image. The recorder, host and storage VMM\nrunners now probe O_DIRECT on every disk and its backing image and fall back to\nflush-respecting `cache=writeback` (never `cache=unsafe`), printing the\neffective mode. Hosted run `109aecb1aca881ff09e15403e72802cb-65-0` completed\nsetup but reached no trace spool custody: the guest fixture paths were\ncontext-free strings, so the trace fixtures were absent and the BEAM producer\ncrashed on every trace request; back-to-back recovery restarts also tripped\nsystemd's default start limit, and the pressure loop outran the command window.\nThe fixture paths now carry store context, the producer refuses a failed\nrequest instead of exiting, the two restarted units have no start limit in this\nfixture only, and the pressure loop has a 20 s budget. The next run\n(`acfe129cf2288d30a7972edcbf9b92cf-65-0`) reached spool custody, recovery and\nreal ENOSPC on the dedicated archive, but the one write attempted under ENOSPC\ncommitted into already allocated SQLite pages, so no refusal followed; the\ncommand now keeps writing, up to 32 batches, until the exhausted backing\nrefuses. Archive quota refusal stays out of reach inside the 20 s loop. Run\n`10d727fc7a050a9695a0b16e87a47db9-65-0` reached that refusal and the reopen path\nand reported two oracle races, not recorder defects: the fresh batch after a\nspool restart was sent before the reopened spool had bound ingest (systemd\nreports the restart at exec), and the request SDK heartbeat had already\nrecovered its fsynced `v1:gap` marker to `v1:running` when the saturation\ncheck read it. The reopen check now retries a transport-unavailable reply,\nand the saturation check accepts `v1:running` only with the checkpoint's\nadvanced coverage start as the durable gap. Both acknowledged-custody\nchecks held throughout. Run `d03118781050d16ad698713ce9fb4d61-65-0` reached\nreal ENOSPC 25 times and its refusal 18 times without a counterexample, but the\n20 s organic loop never filled the 57 MB archive, so its exhausted-backing,\nstorage-refusal and saturation checks were never evaluated. The ENOSPC path now\nevaluates those same checks against its confirmed zero-free backing and\nrefused write. Run `eb926cce7fee3dfcad1d6d8172b28d29-65-0` then passed 65 of\n67 properties; only quota refusal and the hint-loss anchor stayed unreached.\nThe 60 MiB archive quota exceeds the 57 MB archive device, so ENOSPC always\ncomes first, and pending custody never drains in this fixture, so the 32 MiB\npending quota needs far more intake than a timeline sends. Each traces command\nnow ends with a bounded window in which the bridge restarts the real spool on a\nfixed configuration whose only change is the minimum pending quota (one body\nlimit), sends large batches until the production admission check refuses with\n`429`, checks that the refusal kept accepted bytes, and restores the default\nquota before returning. It proves the pending-quota refusal path, not the\nproduction quota values or the archive-quota branch. The hint-loss anchor\ncannot fire under hosted faults: Oban reports `:isolated` only after 120 s with\nno notifier ping, beyond any recorded timeline. Its evidence is emulated, not\nnative.\nThe 60-minute run `c5b8084588217cfe23b52086caf9e624-65-0` exposed two harness\ndefects. QEMU's default 1 GiB TCG translation cache plus the 1536 MiB guest\nexceeded the VM container's 3 GiB limit under archive pressure; the cgroup\nkilled QEMU (exit 137), and later traces commands failed their readiness\nprerequisite. The recorder VM now caps the cache at 256 MiB. The one-new-batch\nchecks also compared an acknowledged batch with the bridge's archive copy,\nwhich republishes about every 0.2 s; they now wait up to 5 s for that copy, and\na lost-reply batch no longer re-synchronizes the next check. No product\nbehavior changed.\nThe optional `admission-stub` profile runs the atomic-allocation and key-replay\nadmission commands on a harness **stub** storage substrate, which is not ZFS.\nOnly in that profile does the controlled Lilly release report configured stub\npool totals for its enrolled pool identity, measured cgroup memory headroom, a\nlabelled STUB CPU budget of one core capped by the measured cgroup cores, and a tiny non-bootable image it digest-verifies before advertising;\nthe enrollment operator registers that image through Marshall's catalog action\nand then enables lilly-a through the reviewed CLI `enable` action, which\nrefuses until Lilly's stub report is fresh and execution-ready. A fully stub-backed report advertises placement readiness, so Marshall's real\nadmission transaction commits VM, placement, reservation and dispatch rows,\nbut the controlled executor never launches a guest. A delete settles only\nthrough a labelled **STUB** enabled by this profile's explicit opt-in: the\ncontrolled executor reports the deleted facts for a placement only after\nobserving a controlled pool, a journal that never recorded it running, only\npublication records for it and no native execution state, and writes an\nabsence attestation; Marshall's real outcome, release and archive path then\nruns. Run `a8c0a8e424bc48eb017aa2322795fc68-65-0` left archived-key replay\nunreached and later admissions short of vCPU because no delete settled. This\nis never cleanup or physical-absence evidence for anything that existed. Setup requires the enabled normal-mode host and those committed report, pool\nand image rows in SQL; hosted runs before this check never enabled the host,\nso every admission probe stopped at unknown capacity\n(`dd4f5f9cd52da22427ae2e5b79c095bf-65-0`). With the host enabled, the next run\nstill submitted nothing: the pre-submission SQL witness read host and pool from\nthe VM row, which the placement migration had moved to\n`compute_workload_placements`, so every query failed and was reported as\nunavailable (`379970e17a2d5312bff3e5c5e2c17369-65-0`). The witness now joins the\ncurrent placement, and oracle queries log each failing SQLSTATE class once.\nThe following run (`642e01a83533ba33f07ba9e3eb4b17fd-65-0`) settled hundreds of\ndecisions, all refusals, so the acceptance-path assertions held only vacuously;\nthe refusal reason was invisible because the operator discards evaluation\noutput. The workload now logs Marshall's closed refusal token once per process,\nand the operator names the operation whose result became uncertain. CPU and\nmemory headroom here are measured over the whole Antithesis VM, so a refusal\nfor capacity is Marshall's correct decision on a busy host, not a defect.\nCatalog headroom below the request shape no longer withholds a request: a\ndefinite `insufficient_capacity` refusal is Marshall's real decision, checked\nfor absent rows and a bounded one-VM replay. Every stop before a settled\ndecision logs a fixed `Compute admission unexercised` reason; the first hosted\nrun reached no admission assertion because those lines were never emitted.\nRun `6890e1608b75e9b82fe11382bb4aeefc-65-0` still refused every request for\nvCPU: the hosted VM has one logical CPU, so the measured headroom never frees a\nwhole core, hence the stub CPU budget above. The next run\n(`74188918d21886495a53d124a725c7e5-65-0`) admitted requests and failed the\njoined-allocation check once in 267 examples: a partition held a provision\noperation pending across a minute tick, and AshOban's dispatch scheduler\ncorrectly enqueued a repeat hint, so the oracle counted two dispatch jobs. The\noracle now requires at least one dispatch job; placement, reservation, address\nand provision-operation counts remain exact.\nThe results are admission-logic evidence only, never ZFS, physical-capacity,\nKVM or isolation evidence; the measured-capacity command stays in a separate,\nunselected template for the measured host graph.\nThe optional `guest-lifecycle` profile selects the guest lifecycle command with\nthe guest VMM overlay. Its container Lilly is a separate STUB-storage release:\nit reports a fixed synthetic pool with no ZFS and compute headroom for one free\nguest-vmm slot, capped by measured cgroup limits, and sets execution readiness\nonly after a guest-vmm health check and a verified advertised image. The\nenrollment operator registers that image manifest through the catalog action\nand enables lilly-a through the reviewed CLI `enable` action once its report is\nfresh and execution-ready; Marshall's catalog counts no capacity from a disabled\nhost. Bootstrap adds a third gate: the guest-vmm image identity, read through the\nread-only witness bridge, and a Marshall catalog offering that image with known\ncapacity for its shape. The stub admits one emulated QEMU TCG guest only; it is\nnot native ZFS, KVM, Firecracker, isolation or capacity evidence. Its first\nhosted run (`a2edc265384761d6607df51eac50b29d-65-0`) timed out at\n`capacity_unknown` because the host was never enabled; the earlier local pass\nhad inherited an enabled host from a retained PostgreSQL volume, so local\nvalidations now start from empty volumes. With the host enabled, run\n`91c9dfa850d2435808323d8910182d7a-65-0` still admitted no guest: the stub slot\nreported exactly the 2 GiB guest memory, while admission reserves guest memory\nplus the fixed 64 MiB VMM overhead, so Marshall correctly refused every\nprovision for insufficient capacity. The slot now reports guest memory plus\nthat overhead, and the workload capacity gate requires the same sum. Run\n`655477db4745f0857c2c0ffcd8571d7a-65-0` then booted real QEMU guests to port 1024\nreadiness, but no stop ever completed: the guest VMM inventory dropped the\nexecution epoch and generation once a placement stopped, while the fixture\nexecutor binds a stop to that exact boot, so every stop was deferred until the\ndriver gave up and later cycles found the slot held. The inventory now reports\nthe stopped boot tuple from its stop record, and the driver submits a final\nstop on every exit after admission. Run `23988c965cff394cc43e5a8553dc12b0-65-0`\nlogged per-dimension gap reasons: most cycles stopped at\n`compute_catalog_unavailable` because each operator request boots a fresh\nMarshall BEAM whose cold TLS pool missed the production 3 s handshake under\ninjected latency, so the evaluation crashed before reaching Compute; a lost\nfinal stop then left the single slot occupied (`capacity_insufficient_vcpu`).\nOperator request evaluations now use a harness-only small pool with longer\nconnect, handshake and queue budgets, reads and `request_key`-idempotent\nprovision and lifecycle evaluations retry a crashed attempt, the final stop is\nresubmitted with one request key, and the driver waits up to 120 s for a reply.\nProduction Repo settings and the long-lived Marshall nodes are unchanged.\nRun `a574538c77694308d6133a2f478b71d2-65-0` then completed 54 verified boots\nand about 69 product stops, yet observed no stop: the stopped guest record keeps\nthe retained boot's generation while the stop operation carries Marshall's\nbumped generation, and the driver asked the exactly fenced witness for the\nlatter. Most other cycles read the catalog once while the last accepted Lilly\nreport was older than Marshall's 5 s capacity freshness window under injected\nControl faults (`capacity_unknown`). The driver now requests the stopped witness\nwith the provision's tuple, polls the catalog for up to 90 s before\nprovisioning, and retries an `insufficient_capacity` refusal once after a fresh\nwait, logging only the closed refusal token. Marshall's freshness decision is\nunchanged.\nRun `c011420b1c74f586054654f8d1023683-65-0` showed the operator's witness\nfence still required the stop's bumped generation while the guest server keeps\nthe retained boot's: a `guest.witness` read of a VM desired and observed\nstopped now accepts the newest completed provision/start tuple on its\nplacement. Operator `image_unavailable` refusals (a stale host image report\nbetween catalog and provision) are retried like `insufficient_capacity`, each\ncatalog read is bounded to 30 s within a 180 s window, and an expired sample\nlogs its last unmet step.\nRun `766b5d3778010731ec34ab191bf48f7c-65-0` reached consistent completed\nprovisions, yet reported the outcome/VM consistency property as never hit: the\ndriver evaluated it only when a contradiction occurred. It now evaluates that\nassertion for every completed outcome it samples, and resubmits a stop or start\nwhose reply was lost with the same deduplicated request key up to three times\ninstead of abandoning the cycle after one lost reply.\nIn every other profile the host report has unavailable pool capacity and false\nexecution readiness, so a successful Control connection cannot authorize a\nguest placement. The\ncontrolled executor records requests without claiming physical effects; its\ndefault guest callbacks remain unavailable. An optional integrated TCG adapter\nis authored with a measured inner ZFS host and emulated guest observation, but\nhas no recorded composed journey. Its recovery inventory permits only the\nfixed `lilly.service` and `lilly-guest-emulator.service` cgroups plus exact\ntracked VM units when systemd creates them; unknown or malformed native\ninventory fences recovery, while the emulator inventory independently checks\ntracked placements. The optional TCG guest context\nhas a [recorded local boot](repo:antithesis/verification/guest-boot.md): exact\nport 1024 readiness on three q35-adapted NixOS guest boots, with one restart\non a retained qcow2 overlay and matching offline machine-id bytes. The\nstorage-router VM separately passed a\n[local direct-run smoke](repo:antithesis/verification/storage-boot.md) with\nreal ZFS/Brady, origin-off cache replay and retained marker/quota across QMP\nreset. The four selected control-context exports\npassed at their captured derivations. A later local base Compose project also\nemitted setup and passed six serial Control commands; the selected manifest\nhas four stale runtime-dependency hashes, so no frozen hosted baseline follows."
     ),
     dgettext_noop(
       "documentation",
@@ -8861,6 +9635,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "SOPS document containing ZIGGY_CREDENTIAL, OPENAI_API_KEY and ANTHROPIC_API_KEY."
+    ),
+    dgettext_noop(
+      "documentation",
+      "SOPS document secrets/overalls-susan.enc.json with the six Susan secrets."
     ),
     dgettext_noop(
       "documentation",
@@ -8920,9 +9698,18 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Selected daily repository/workflow/project/package scopes include `read:org`,\nwithout organization administration or repository deletion. Provider consent,\nrepository grants, organization approval and SAML SSO remain independent\nrefusals. Actual source/results and remaining gaps are recorded in the\n[review](repo:docs/architecture/reviews/2026-10-18-github-com-integration.md)\nand [scenario coverage](#coverage)."
     ),
+    dgettext_noop("documentation", "Send a prompt read from standard input to a thread."),
+    dgettext_noop(
+      "documentation",
+      "Send content-free, end-to-end encrypted Mila push pokes through the Susan relay at https://notifications.overalls.dev. When false, device registration is refused with push_disabled and no deliveries are produced."
+    ),
     dgettext_noop(
       "documentation",
       "Sensitive operations and expected refusals: the Special Administration Console\non COM1 accepts an interactive login, unlike the Linux `no-serial-login-shell`\ncontract. For the agentless image this remains a recorded gap; the `windows-v1`\nroster agent rotates the bootstrap Administrator to a random unrecorded password\nand disables it after the first activated roster account (ADR-0171 gate 3).\nThe guest bootstrap runs as SYSTEM, reads\nonly MMDS, validates every field (including the adapter MAC) and never logs the\nsession token or boot challenge. The evaluation-ISO build must never be pointed\nat production media without the licence review in `iso.json`."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Sensitive operations: `device register` (stdin push key), `device rm`,\n`device prefs`, operator disable. Expected refusals: `push_disabled`,\n`device_limit`, `device_not_found`, `unauthorized`, `invalid_request`.\nUntested: real Susan/APNs/FCM delivery, Mila-side decryption on hardware."
     ),
     dgettext_noop(
       "documentation",
@@ -8973,6 +9760,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Shared public user registry; permissions are explicit and fleet-wide."
     ),
+    dgettext_noop("documentation", "Show a machine's web endpoint, port and visibility."),
     dgettext_noop("documentation", "Show command help."),
     dgettext_noop("documentation", "Show the authenticated account."),
     dgettext_noop(
@@ -9052,6 +9840,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Stream JSON change notices for machines, threads and this session."
+    ),
+    dgettext_noop(
+      "documentation",
       "Structured planning questions remain visible after reconnect. Current writers\ncan answer the active request; viewers cannot. A completed plan is rendered as\na sanitized card with Implement plan and Revise, while partial output cannot\nbe implemented. The server rechecks authority and the exact proposal identity\nbefore admitting a Work turn on the same machine. The composer stays above the\nnewest-first transcript throughout these interactions."
     ),
     dgettext_noop(
@@ -9063,6 +9855,31 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Supply `hostId`, `controlPlane`, `credentialFile`, `egressInterface`, enrolled\n`pools`, and installed image manifests. `hostId` and pool GUIDs come from enrollment;\nthey are not generated during service activation. Configure guest CPU/RAM budgets,\nhost overheads, protected networks, ingress, private services, and public trust\nroots. Keep the transfer listener separate from administrative SSH."
     ),
+    dgettext_noop("documentation", "Susan OTP release."),
+    dgettext_noop(
+      "documentation",
+      "Susan is a separate deployment, not a role on fleet hosts. It is either the\nNixOS service [`services.susan`](repo:nix/domains/system/susan.nix) with a local\nPostgreSQL or the OCI image\n[`image-susan`](repo:nix/domains/artifacts/susan-image.nix). The image is\nstreamLayeredImage with uid 65532, no shell, a read-only root, tmpfs `/tmp` and\na fixed creation time. Migrations run as a separate release command. Hosting,\nregistry and TLS placement are open (ADR-0224), so no inventory host enables it\nyet and the generated topology has no Susan node."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Susan keeps an append-only audit log of key issues, accepted and refused\nnotifications, rate limits and delivery outcomes. Each entry records only the\naction, reason, a fingerprint of the sending deployment, the push key ID, the\nprovider (Apple or Google), the outcome and a delivery ID. It does not record IP\naddresses, push tokens, keys or encrypted messages. Audit entries are deleted\nafter 90 days."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Susan learns that a deployment notified some device, never what about\n([ADR-0224](repo:docs/architecture/decisions/0224-susan-push-relay.md),\n[ADR-0225](repo:docs/architecture/decisions/0225-marshall-notifications-domain.md))."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Susan never sees your prompts, agent output, thread or machine names, email\naddress, SSH keys or any other account data."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Susan sees the IP address of your deployment and when each notification is\nsent, an opaque push key issued to your device, an encrypted message and the\nnotification kind. The message is encrypted on your deployment to a key that\nonly your device holds, so Susan cannot read where the notification leads."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Susan sits outside every Marshall's trust boundary and is designed so that a\ncompromise of it reveals neither notification content nor routes."
+    ),
     dgettext_noop("documentation", "Suspend a machine, preserving its memory and disk."),
     dgettext_noop(
       "documentation",
@@ -9072,6 +9889,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Suspension adds sensitive RAM storage and continuation authority. Checkpoint\nmemory, manifests and hashes never enter ordinary diagnostics, backup/clone\nstreams or public capabilities. Exact image/VMM/device and CPU/KVM compatibility\nmust be proven before loading; guest continuation uses the captured boot tuple\ninside a separately fenced current placement/epoch. A durable consumed marker\nprecedes possible execution, and ambiguous execution forbids replay."
     ),
+    dgettext_noop("documentation", "Switch a thread between plan and work collaboration."),
     dgettext_noop(
       "documentation",
       "Systemd owns personal workers and mode-0600 sockets independently of the root\nbroker. Broker restart preserves them and saved personal data only when the\nroot-owned launch digest still matches UID/name/protocol/commit/release/origin.\nChanged legitimate identity requires successful stop before replacement;\nunanswered metadata and foreign socket custody refuse without stopping it.\nIf the worker exits,\nthe next freshly authorized broker use starts a new personal process without\ndeleting home or extension data. Upstream extension-host activity, its five-minute\nidle timer and 1500-second reconnection grace govern automatic shutdown, rather\nthan an exact timestamp of the last raw relay close."
@@ -9228,7 +10046,36 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Tested scope: BEAM Covenant and unit tests through SSH.execute and the domain API; Porsche runner and channel tests for stdin and refusal hints."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: BEAM end-to-end and Porsche relay tests plus a Hegel credit model; native guest effect not yet recorded."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: BEAM end-to-end bound under 6.5 s including teardown; the native 5-second bound from commit is implemented in the fleet journey but not yet recorded."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: BEAM end-to-end through a real Porsche listener, control link and TLS FleetEndpoint against a fake host stream; Porsche relay against a fake gateway; the native fleet journey on a real guest is implemented but not yet recorded passing."
+    ),
+    dgettext_noop("documentation", "Tested scope: BEAM test against the real Ingress domain."),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: BEAM tests of protocol grammar (Hegel), Marshall dispatch against the real Threads, Agents and Planning domains, Porsche channel/runner custody, and one real SSH + Porsche + HTTPS control journey."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: BEAM unit, Hegel and Covenant tests against PostgreSQL with a Req.Test Susan stub, plus a NixOS machine test of the release against a fake Susan at the compiled origin over OS-trusted TLS."
+    ),
+    dgettext_noop(
+      "documentation",
       "Tested scope: Both serial managed SSH/browser journeys passed after integrating feature 63214e60 with independent-observability revision a2d9e6e: actual certified SSH and personal HTTPS Bash/Starship hooks, nested login/non-login startup, exact noninteractive identity/home stdout, two successful bounded real roster-service refreshes, relocation and reboot. Native driver times were NixOS 890.30 seconds and Ubuntu 909.18 seconds. Integrated full Lyra/Clippy, image evaluations and all-files static hooks passed separately. Both complete root/manual-user suites retain historical feature 63214e60/base 1cd8be40 evidence with checked account/home cleanup; guest image/account-helper source is unchanged across integration. Earlier managed, Marshall precommit and evaluated Nix handbook results retain their historical scopes."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: Captured-log assertions in the Porsche relay test; native journal scan implemented but not yet recorded."
     ),
     dgettext_noop(
       "documentation",
@@ -9249,6 +10096,18 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Tested scope: Customer authorization properties, generated lifecycle/receipt histories across entry actors, generated local guest network identity tuples and real Firecracker guest network/ingress plus owner CLI lifecycle cases."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: Dart certificate verification against Elixir-issued fixtures, trust resolution, and five journeys against a stock OpenSSH server in the Nix sandbox; mutation-checked by disabling the host check."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: Dart device-key encoding, signature and file-custody tests, the Hegel stateful sign-in machine, and an Elixir proof that Porsche accepts a signed P-256 client key. Native Secure Enclave and Android Keystore custody are not compiled or run."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: Dart openPoke against every shared vector plus Hegel tamper properties; Kotlin PokeOpener against the same vectors under JUnit. Swift CryptoKit opening and the notification extension are not built or run."
     ),
     dgettext_noop(
       "documentation",
@@ -9285,6 +10144,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Tested scope: Fixed/generated property is present with exact guard PID/inode blocked-FLOCK witness, post-lock changes and unchanged-current exec control; native package99seconds passed."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: Fixture decoding and widget flows against the fake Porsche; no device webview."
     ),
     dgettext_noop(
       "documentation",
@@ -9472,11 +10335,27 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Tested scope: Hegel properties for read markers, search and payload bounds; fixture decoding; widget flows against the fake Porsche."
+    ),
+    dgettext_noop(
+      "documentation",
       "Tested scope: Hegel properties over every curated zone and random instants including DST edges for label offsets, ordering, uniqueness, antisymmetric differences and validation; database round trips of the action; LiveView tests of the profile page, resolution order, dead render, UTC-provenance timestamps and people on team, machine, thread and Control room pages; Covenant obligations; synthetic browser probe of the profile page and an Adelaide timestamp. During integration through 9e7f6bd3, 49 focused tests passed, including actual persisted-token revocation refused on the next clock tick after correcting hook order. No native journey."
     ),
     dgettext_noop(
       "documentation",
       "Tested scope: Hegel properties prove chunking-independent stamping and exact bounded retention. Rust unit cases cover the receiver's no-op, rotation, drift and failed-rebuild paths. Native boot-profile journeys on NixOS and Ubuntu boot through Lilly's real trust delivery with identical, added and retired root sets, verifying the guest bundle (and Ubuntu CApath links) after each boot."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: Hegel property over arbitrary mark-read sequences against PostgreSQL in the BEAM sandbox."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: Hegel stateful attach machine, in-memory channel header tests, a stock OpenSSH PTY journey and widget flows against the fake Porsche. No native PTY or real Porsche attach."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: Hegel stateful supervisor, framing property and OpenSSH reconnect journey."
     ),
     dgettext_noop(
       "documentation",
@@ -9524,6 +10403,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Tested scope: Marshall subscription authority, Porsche routing (Hegel coalescing property), OTP channel stream and a real SSH transport journey."
+    ),
+    dgettext_noop(
+      "documentation",
       "Tested scope: Metadata-only contents, one chapter per URL, direct and history navigation, ordinary persisted reader role, and revoked mounted and fresh-request refusal in real-release NixOS rendering. Generated chapter histories cover token revocation, expiry and deletion. Mandatory Ash ownership and evaluated deployment views include source-backed explanations and declared-versus-live boundaries. The merged post-0fcab4f6 renderer passed all current sections/domain/topology views in 339 seconds, VM script 68.02 seconds, before the later editor eligibility control. Workspace and Control room retain the exact Source code link immediately below HLDD; fixture sign-in failures retain fixed diagnostics. Campaign 015 separately checks the packaged standalone browser helper with pinned ty; recorded native execution retains its original source and scope. The source2-era renderer additionally passed all 22 sections/domain/topology views, navigation/hook removal, history/themes and revoked-reader refusal in 388 seconds before final documentation and editor SQL corrections; unchanged presentation assertions retain that captured-source scope. The coding-client feature snapshot additionally passed unchanged packaged rendering/navigation/theme/mobile/print/revocation assertions in58.71s after containing diagram scrolling and preserving576px minimumSVG width. The corrected/refrozen packaged source separately passed in 47.18 seconds, VM script 47.14 seconds and reader subtest 22.15 seconds: every current section/reference graph, actual SVG/domain/topology views, hook cleanup, desktop/dark/mobile/print, unknown/public routes, retained ordinary role and mounted/stale-cookie revocation. Its frozen source precedes the outcome-evidence prose recording that result."
     ),
     dgettext_noop(
@@ -9564,6 +10447,14 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Tested scope: NixOS machine test with a Marshall role node and a Susan relay node behind TLS for notifications.overalls.dev; local fake APNs/OAuth/FCM origins stand in for Apple and Google."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: NixOS machine test with real X input, packaged Marshall, haproxy and Porsche, and Playwright Chromium for the approval. Machines are not provisioned (no Lilly), so the live list is empty."
+    ),
+    dgettext_noop(
+      "documentation",
       "Tested scope: NixOS machine test: real journald event delivered through collector, verified-TLS authenticated entry, right/wrong-credential refusals, two-source filtering and queued backfill after an entry outage, plus descriptor credential hygiene. Property tests pin LogsQL escaping and fail-closed filters; application tests pin page rendering, redaction narrative, tail and halted events."
     ),
     dgettext_noop(
@@ -9573,6 +10464,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Tested scope: Original feature Marshall1421-check gate and forced Dialyzer, populated migration/schema/contracts, complete serial NixOS SSH, Ubuntu email-continuity subtest and both native lifecycles retain base63a1443c plus featuref1bd0e05 scope. Separate incoming d4499c4c merged Protocol259/Lilly555/Marshall1429 gates with zero-error forced Dialyzer and both eight-subtest lifecycles passed (NixOS438.33seconds, Ubuntu574.18seconds). Canonical identity/retirement, fresh same-email/no inheritance, physical cleanup/shared retention, old-home reservation, explicit sharing and packaged Lyra SSH passed; not later incoming source."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: Packaged release, real SOPS bundle, local PostgreSQL and verify_peer TLS to local fake APNs/OAuth/FCM origins."
     ),
     dgettext_noop(
       "documentation",
@@ -9613,6 +10508,14 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Tested scope: Protocol/Lilly units cover closed schemas and stale framing through local sockets. Original candidate receipts retain false admission; the separate exact-image-qualified-admission scenario records activation of only the sealed reviewed FreeBSD image. Lyra compares a read-only executing transport token with a bounded root-owned expected file and separately hashes the kernel file. FreeBSD two-boot candidate assembly checks actual installed bytes/Git/trust and executing sysctl identity. A scoped 139-second nested-KVM run checked the actual FreeBSD socket token/CID2/3, native ABI refusals, oversized/disconnected refusal/recovery and nine exact echo sizes through 1 MiB. Corrected illumos objects passed native nine-module link/install, QEMU file/runtime checks and seven native helper safety tests. The seed-fixed clean-export OmniOS candidate then passed the complete executing-AF40 verifier and native Rust token/CID2/3/refusal/nine-size transport checks under Firecracker with a debugger-only stock pseudo_isa override. The assembler now binds persistent pseudo ISA and serial configuration; exact final-image replay remains required. The final reviewed FreeBSD image 5022d714 passed all five native variants with actual current-boot kernel responses, complete per-boot service oracles and exact image/kernel/firmware/VMM receipts. Linux shared-core properties and extracted listener harnesses retain model scope. A separate exact test-only FreeBSD probe passed one actual pause/full-snapshot/resume transport event, fencing idle identity and pending socket calls; its formal repeatable nested-KVM gate passed in 232 seconds with exact immutable receipts. The earlier 9853 illumos static-lifetime/direct-budget build passed all 26 objects and three host-test gates, then native nine-module linkage and 764-entry clean-export assembly with three native SMF validations and four exact stock-network removals. The sealed disk 24318238 first service/ordinary/reset attempts failed in early boot with blank serial and Firecracker Shutdown(GenericError), before fixtures, native probes or reset API calls; no cause or runtime success is established. The current source-qualified OmniOS test image subsequently passed two complete native service boots with current-boot identity, trust, flush, workspace, terminal, SSH and executor-fencing checks; its patched VMM requires status zero and the bounded syncing file systems... done marker for clean shutdown. Its separate crash receipt records observed SIGKILL, fresh MMDS/boot identity, stale-authority refusal, exact retained bytes, completed zero-error ZFS scrub and clean shutdown. The final ordinary FreeBSD catalog transport gate separately passed in 246 seconds on exact image 19658a4a, preserving the ordinary/reset/service image distinctions. The completion-corrected 76b8c1ad build passed all 26 objects and four host gates, including 161 five-function completion histories and four rejected actual-source mutants. Separate pristine native assembly passed nine-module/764-entry/schema/network checks, read-only receipt extraction and clean shutdown, sealing disk a49255bd. A paired direct-only QEMU diagnostic reaches console login on 76b8 under identical no-vsock settings where 9853 panics mounting root; growth enters maintenance, so corrected Firecracker services/transport/reset and original ZFS EIO causality remain separate. The first corrected-image Firecracker service run stays alive and reaches console login with growth in maintenance, withholding bootstrap network/identity and missing its 240-second fixture deadline. Retained nested serial corrects the earlier wrapper-rendered blank-output impression. A separate host-direct diagnostic isolates sliced expansion refusal, and the corrected typed operand kit passed a fresh pristine assembly sealing bea32fe6; exact-image growth, policy, supervised daemon-recovery, transport/reset, isolation and admission replay remains open; the current service and crash receipts retain native_admission=false."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: Pure Dart AppLock under a Hegel StateMachine and Flutter widget tests with a fake authenticator; the Linux machine test checks the unavailable setting. local_auth on devices is not run."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: Pure Dart registration machine under a Hegel StateMachine with a fake server, relay client and registrar unit tests over fake transports, and Flutter widget journeys over the fake Porsche. Native APNs/FCM token delivery, the real relay and the Marshall device commands are not exercised."
     ),
     dgettext_noop(
       "documentation",
@@ -9833,6 +10736,14 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Tested scope: hostd library tests (decoder and lease-order Hegel properties, real-utility session custody) and Lilly lock tests against the real daemon. Unit tests use process-group custody; cgroup custody is exercised only by module-based NixOS machine tests."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: susan-secrets and susan-service machine tests; susan-image for the container form."
+    ),
+    dgettext_noop(
+      "documentation",
+      "Tested scope: susan-service machine test and Hegel token-bucket/replay properties."
     ),
     dgettext_noop(
       "documentation",
@@ -10663,6 +11574,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "The pipeline is the pure state machine\n[`Susan.Poke.Machine`](repo:susan/lib/susan/poke/machine.ex), interpreted by\n[`Susan.Poke`](repo:susan/lib/susan/poke.ex). Token buckets are per key (burst 10,\n60/h), install, source digest and global\n([`Susan.RateLimiter`](repo:susan/lib/susan/rate_limiter.ex)). Replay uses a\n±5-minute nonce window plus a per-install `delivery_id` receipt, so a retried\npoke never notifies twice. A provider 429/5xx is retried once in the request,\nthen answers 503 with the provider's `Retry-After`. Operators use only\n`susan-operator` (`bin/susan rpc` on loopback distribution) through\n[`Susan.Operator`](repo:susan/lib/susan/operator.ex): audit tail, export and\nverify, key deny-list, install block and unblock. Hosting and TLS placement\nremain open; the service listens on plain HTTP behind a TLS-terminating proxy.\n"
+    ),
+    dgettext_noop(
+      "documentation",
       "The previously sealed `wz4r` disk was assembled from a stale cached kit: its\nreceipt still carries the old `/workspace/*` Git ownership configuration and\npre-fencing workspace receiver. The current source-derived kit is\n`/nix/store/w5mg2jw3c2sispdkfg1r9ys5vxm41a97-overalls-omnios-native-image-candidate-kit`\nand has not yet been assembled into a replacement disk. Consequently the\nhistorical `wz4r` hashes below do not qualify current workspace, lease, service,\ngrowth or recovery behavior; OmniOS admission remains disabled."
     ),
     dgettext_noop(
@@ -10929,6 +11844,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "These are legal connection phases, not proof of successful provider effects.\nAuthorization and refresh attempts retain their own one-use/submission phases;\nqueued delivery, request expiry and provider response are not connection state."
     ),
+    dgettext_noop("documentation", "These are the failure boundaries:"),
     dgettext_noop(
       "documentation",
       "These are user-run processes with guest-local state, separate from\n[Marshall-owned agents](#agents). Customer still refuses private inference.\nProduction Ziggy enables only OpenAI; Claude is configured and its beta URL is\nsupported, but returns `provider_unavailable` until Anthropic is separately\nenabled with Ziggy-owned credentials. New image identities affect future\nprovisioning and do not migrate retained writable disks. Actual client execution,\nTLS/provider routing and GC retention remain scoped evidence in\n[coverage](#coverage) and the\n[review](repo:docs/architecture/reviews/2026-10-13-native-guest-coding-clis.md).\nBoth native image probes executed client version/help, configuration and root/plain\nuser trust before and after GC. Both complete integrated coding-client fleets\npassed: native personal-account terminal inference, separate curl beta counting,\nlimited trust refusal, root GC, registered verified SSH inference from both\nclients after GC, and Customer no-effects refusal. These fleets use editor-free\nfixture images with the shared client packages/settings and isolated verified-TLS\nproviders; their identities differ from the production artifacts above. The\ncurrent plugin-update assertion passed in both native client/GC probes. The\ncomplete packaged NixOS lifecycle and current Marshall/static/Nix handbook gates\npassed at the reviewed `c5747868` checkpoint. Ubuntu's broad lifecycle failed on\na quarantined template when starting a fresh neighbour after its client, source,\ninitial confinement and host-loss checks passed; an unchanged full rerun failed\nthere again. Two diagnostic slices did not reproduce the failure. Separate\nretained-state inspection after another import demonstrated strict device-identity\nrefusal without proving the historical cause. A limited test-only post-import\ncache action now covers exact reuse or device-only refusal, fenced deletion and a\nfully verified distinct incarnation. It changes no production guard or launch\nauthority. The complete corrected Ubuntu suite passed in 2,203.23 seconds of\ndriver execution, including exact reuse in the new action and final clone/receive\ncleanup. Device-only replacement remains unexecuted, and the original failure\ncause remains unknown. Focused current NixOS exact reuse and original neighbour\ncleanup passed in the current packaged prefix; later omitted cases retain only\nthe earlier complete NixOS scope. The corrected/refrozen packaged handbook browser\ncheck passed at its captured source. Both hosts activated published `8930a70f`,\nbut the first production NixOS Codex canary timed out before any inference\nadmission; guest deletion, reservation release and dataset absence were confirmed,\nand Ubuntu creation was not issued. Separate pinned public-chain validation\nrejects the legacy leaf. Same-root preparation and both independent encrypted\nhost replacements passed; commit/push, live replacement and a successful\nproduction client journey remain separate. The GC helper\nruns as root; the subsequent SSH journey separately establishes personal-account\ninference after GC."
@@ -11058,6 +11974,7 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Trusted local Overalls CLI artifacts for private guest updates."
     ),
+    dgettext_noop("documentation", "Turn push notifications on or off for one device."),
     dgettext_noop(
       "documentation",
       "Two custody refusals persist there with deterministic backoff — delays of 30\nseconds doubling to a fifteen-minute cap while the failure count caps at sixteen\n— and neither expires on its own. A candidate whose environment changes the\nserving Marshall database URL, token signing secret, cookie or Cloak custody is\nrefused at preflight as `coordinated_secret_change`; staging resolves privately\nbut is never published, consumers never stop and no migration runs. Recovery is\nthe documented manual cutover from the\n[NixOS operations runbook](repo:docs/operations/nixos.md): once the operator has switched\nthe host to the exact refused closure and re-prepared its bundles, the first\ntimer run after the persisted retry time finds the active candidate and only\nre-verifies live health. It does not re-stage, re-resolve, rerun migrations or\nswitch again; the verify-only path then records the candidate healthy and clears\nthe backoff. A bundle whose document no longer names the host recipient while\nconfiguration still selects it instead wedges at staging with failure\n`operation_failed` in phase `stage`, retaining the previously published bundle\nuntouched; restore the document's recipient or remove the bundle selection and\nthe corrected revision converges without further action. Because the retry time\npersists, allow up to one backoff interval after the manual cutover before the\nconverged status appears."
@@ -11091,6 +12008,7 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop("documentation", "Type: `integer between 1 and 100 (both inclusive)`."),
     dgettext_noop("documentation", "Type: `integer between 1 and 1000 (both inclusive)`."),
     dgettext_noop("documentation", "Type: `integer between 1 and 100000 (both inclusive)`."),
+    dgettext_noop("documentation", "Type: `integer between 1 and 10000000 (both inclusive)`."),
     dgettext_noop("documentation", "Type: `integer between 1 and 1073741824 (both inclusive)`."),
     dgettext_noop(
       "documentation",
@@ -11377,6 +12295,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "Untested boundaries: the native fleet journey\n([scenario](repo:nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py))\nhas not yet recorded a passing run. Revocation latency while an SSH client\nstalls output (a blocked 30-second local send) is not measured."
+    ),
+    dgettext_noop(
+      "documentation",
       "Untested boundaries: the packaged browser sending the connect param, and a\nsaved zone whose rules change between tz releases. Expected refusals:\n`invalid_time_zone` for unknown identifiers, `Forbidden` for non-user actors,\n`unauthorized` for retired accounts."
     ),
     dgettext_noop(
@@ -11496,6 +12418,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "When Fluent Bit stops, `overalls-logging-health.service` continues serving filesystem\nqueue observations on port 9467. Delivery counters become invalid rather than zero.\nInspect source cursors, destination drops, backlog age and disk headroom before\nrestarting it. Keep shard databases and queued chunks. The startup preflight only\nreads shard cursors and never rewrites them. Unsafe or corrupt cursor custody\nrefuses startup and requires reviewed repair, not generic deletion of the logging\nstate directory."
+    ),
+    dgettext_noop(
+      "documentation",
+      "When a planning turn records a new question or plan proposal, Marshall tells\nthe people who can act on the thread through Mila, even with the app closed\n([ADR-0225](repo:docs/architecture/decisions/0225-marshall-notifications-domain.md)).\nThe [producer](repo:marshall/lib/marshall/notifications/producer.ex) runs only\nafter the outer [planning](repo:marshall/lib/marshall/agents/planning.ex)\ntransaction commits; a rolled-back question produces nothing and a replayed\ncall creates no second delivery. Recipients are the current thread writers\n(owner, creator, operator/manager grants, thread grants and team members) minus\nthe actor; viewers are never notified."
     ),
     dgettext_noop(
       "documentation",
@@ -11624,6 +12550,10 @@ defmodule Marshall.DocumentationMessages do
       "documentation",
       "Whether to enable single-hop authorized ingress over the host fleet WireGuard network."
     ),
+    dgettext_noop(
+      "documentation",
+      "Whether to enable the Susan push relay for content-free Mila notifications (ADR-0224)."
+    ),
     dgettext_noop("documentation", "Whether to enable this browser editor probe."),
     dgettext_noop("documentation", "Whether to enable this source recorder."),
     dgettext_noop(
@@ -11657,6 +12587,11 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "Write admission/publication diagnostics use the reviewed Brady Events catalog.\nCompleted request events distinguish published, abandoned and unattempted writes,\nwith existing authoritative owner/VM/generation bindings. No per-chunk logging or\nURLs, headers, payloads or credentials are added. Deployments and VM lifecycle\nmutations retain their existing management audit path. Native/property execution\nand live isolated-store nixpkgs acceptance are recorded separately in the\n[large-cache review](repo:docs/architecture/reviews/2026-10-02-large-egress-cache.md).\nIts live phases passed real independent-store pinned nixpkgs fetches and exact\n318,532,502-byte LLVM reuse across NixOS and Ubuntu. Nix uses `/tar.gz/`, while\nthe legacy curl archive uses `/legacy.tar.gz/`; their references remain separate.\nBounded private guest jobs retain completion receipts across interrupted test\ntransports. Earlier SSH and unresolved-attribution failures remain documented\navailability gaps; they are not presumed fixed by cache or runner changes."
+    ),
+    dgettext_noop("documentation", "You can review and manage devices with Porsche:"),
+    dgettext_noop(
+      "documentation",
+      "Your deployment keeps delivery records for seven days and stores only a digest\nof each push key in its audit history."
     ),
     dgettext_noop(
       "documentation",
@@ -11760,7 +12695,15 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
-      "[Fleet-network tests](repo:nix/verification/tests/machines/fleet-network/default.nix) exercise\ntunnel reachability and forbidden paths in NixOS machines. The\n[host replacement](repo:nix/verification/tests/machines/fleet/scenarios/host-replacement.py)\njourney retires one test provisioner and enrolls its replacement (fresh machine\nidentity, name and storage GUIDs) through the protected SOPS/SSH path on the same\nfixture topology. The\n[fleet scenarios](repo:nix/verification/tests/machines/fleet/default.nix) use a separate test\ntopology, including three Marshall instances; that fixture is not this fleet's\nreplica count. Prefer native NixOS allowed/refused traffic tests and generated\nauthority histories for changes to these boundaries. Production failure-domain,\npublic DNS/gateway failover and host-loss acceptance require separately recorded\nevidence. See [scenario coverage](#coverage) and [recovery](#recovery) for the\nremaining security and recovery gaps.\n"
+      "[ADR-0223](repo:docs/architecture/decisions/0223-porsche-terminal-attach.md)\nadds `GET /api/terminal-gateway/v1/stream` on the private fleet listener. It\nupgrades into the existing terminal viewer, so every browser terminal\nboundary still applies; the rows below are what attach adds."
+    ),
+    dgettext_noop(
+      "documentation",
+      "[ADR-0224](repo:docs/architecture/decisions/0224-susan-push-relay.md) adds Susan,\nan independently deployed Elixir service with its own PostgreSQL database that\nrelays content-free notifications for the store-distributed Mila app. Mila asks\nSusan for a push key ([`Susan.Keys`](repo:susan/lib/susan/keys.ex)): an\nAES-256-GCM envelope sealing the provider token, application, environment and\nthe deployment host, under a keyring id with a 90-day expiry\n([`Susan.PushKey`](repo:susan/lib/susan/push_key.ex)). Mila hands the opaque key\nto its Marshall. Marshall later pokes Susan with the key, an end-to-end\nciphertext, the closed kind `needs_input`, a collapse id, a delivery id, a nonce\nand the issue time, signed with its Ed25519 install identity over the domain label\n`overalls-susan-poke-v1`, a zero byte and the exact body bytes ([`OverallsProtocol.SusanPoke`](repo:protocol/lib/overalls_protocol/susan_poke.ex)). Susan opens the key, forwards only the ciphertext, collapse id and fixed\nlocalization keys to APNs (HTTP/2, `.p8` JWT) or FCM v1 (service-account OAuth),\nand answers with a bounded status."
+    ),
+    dgettext_noop(
+      "documentation",
+      "[Fleet-network tests](repo:nix/verification/tests/machines/fleet-network/default.nix) exercise\ntunnel reachability and forbidden paths in NixOS machines. The\n[host replacement](repo:nix/verification/tests/machines/fleet/scenarios/host-replacement.py)\njourney retires one test provisioner and enrolls its replacement (fresh machine\nidentity, name and storage GUIDs) through the protected SOPS/SSH path on the same\nfixture topology. The\n[fleet scenarios](repo:nix/verification/tests/machines/fleet/default.nix) use a separate test\ntopology, including three Marshall instances; that fixture is not this fleet's\nreplica count. Prefer native NixOS allowed/refused traffic tests and generated\nauthority histories for changes to these boundaries. Production failure-domain,\npublic DNS/gateway failover and host-loss acceptance require separately recorded\nevidence. See [scenario coverage](#coverage) and [recovery](#recovery) for the\nremaining security and recovery gaps."
     ),
     dgettext_noop(
       "documentation",
@@ -11808,6 +12751,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "[`Marshall.Notifications`](repo:marshall/lib/marshall/notifications.ex) owns\ndevices, deliveries and the install identity. It reads SSH keys, accounts and\nagent threads but never writes them; SSH and Accounts call its revocation\nfunctions inside their own transactions. Susan is an external service at\n`notifications.overalls.dev`, outside every Overalls host; its outage only\ndelays notifications and Mila's watch stream still works while open."
+    ),
+    dgettext_noop(
+      "documentation",
       "`/hldd` lists sections. Each `/hldd/SECTION` page loads one chapter; previous and\nnext links follow handbook order. The contents page sends no chapter bodies, and\nsection changes remove previous diagrams. Direct section links require the same\ncurrent login as the contents page."
     ),
     dgettext_noop(
@@ -11837,6 +12784,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "`Marshall.Threads` records a pending thread, its typed machine specification and\nthe Oban provisioning job in one transaction. After commit, the worker calls\nCompute admission with a durable machine key and records the admitted VM\nidentity before waiting for an observed running state. It binds the registered\nagent root/thread, applies the selected mode and submits the initial objective\nwith a stable request key before reporting ready. Duplicate jobs reuse the same\nadmission and initial turn; every worker write checks the current machine key\nso a retired attempt cannot overwrite a reopened thread."
+    ),
+    dgettext_noop(
+      "documentation",
+      "`device prefs` pauses or resumes notifications for one device. `device rm`\nrevokes it permanently; Mila registers again the next time you allow\nnotifications. Deleting or retiring your account revokes all its devices."
     ),
     dgettext_noop(
       "documentation",
@@ -11916,6 +12867,10 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "`services.marshall.notifications.enable` (default `true`) reaches Marshall as\n`MARSHALL_NOTIFICATIONS_ENABLED` in both the\n[pre-start and serving wrappers](repo:nix/domains/system/marshall.nix), after\nany `EnvironmentFile`, and [runtime configuration](repo:marshall/config/runtime.exs)\nrefuses any other value than `true` or `false`. When false, `device register`\nrefuses with `push_disabled` (HTTP 409) and the producer is a no-op; queued\ndeliveries drop as `preference_off`. The Susan origin\n`https://notifications.overalls.dev` is a\n[compiled constant](repo:marshall/lib/marshall/notifications/susan.ex) verified\nagainst the operating-system trust store; only a `MIX_ENV=test` build reads an\noverride, so no deployment setting can redirect pokes."
+    ),
+    dgettext_noop(
+      "documentation",
       "`services.overallsBrowserProbes.instances.nixos` and `.ubuntu` declare separate\nfive-minute browser journeys. Each requires private absolute runtime `fixtureFile`\nand `storageStateFile` paths and fleet OpenTelemetry. Overalls declares both;\ncredentials are separately provisioned from an actual completed operator browser\nsign-in. They are never Nix values or automatic authentication bypasses. The\nclosed fixture pins the machine, expected personal origin, guest OS, username/UID\nand pre-existing Markdown probe file. Missing credentials leave the source without\nusable coverage. Do not infer health from an enabled unit; see [monitoring](#monitoring)."
     ),
     dgettext_noop(
@@ -11932,6 +12887,14 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "`ssh -t control.example.test terminal attach MACHINE SESSION [--cursor N] [--read-only]`\njoins a registry terminal session (the same session the browser shows) from\nany SSH client. It needs a pty and is never an ordinary command; without\n`-t` it exits 2 with `attach_requires_pty`. Porsche writes one JSON header\nline on stderr (`{\"attached\":true,\"mode\":\"rw|ro\",\"from\":N,...}` or\n`{\"attached\":false,\"error\":...}`) and then relays raw terminal bytes."
+    ),
+    dgettext_noop(
+      "documentation",
+      "`web set` passes the caller's expected `policy_revision` (or the one it just\nread) to Ingress, which rechecks manage authority under the VM lock and\nrefuses `revision_conflict`. Terminal commands run outside the receipt\ntransaction because the terminal domain commits its opening intent before\nguest dispatch; `terminal new` derives its opening identity from the account\nand request id, so a retry rejoins the same shell."
+    ),
+    dgettext_noop(
+      "documentation",
       "cgroup v2 paths whose root processes may open a lilly-hostd session.\nLilly's own unit by default; an empty list admits any root peer\n(machine tests whose probe BEAMs run outside lilly.service)."
     ),
     dgettext_noop(
@@ -11940,7 +12903,7 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
-      "| Ash domain | Declared resources |\n| --- | --- |\n| [`Lilly.Lifecycle`](repo:lilly/lib/lilly/lifecycle.ex) | `Lilly.Lifecycle.BackupSnapshot`, `Lilly.Lifecycle.Checkpoint`, `Lilly.Lifecycle.CloneCopy`, `Lilly.Lifecycle.Dataset`, `Lilly.Lifecycle.Execution`, `Lilly.Lifecycle.GuestTrust`, `Lilly.Lifecycle.ImageTemplate`, `Lilly.Lifecycle.Import`, `Lilly.Lifecycle.Permit`, `Lilly.Lifecycle.Provisioning`, `Lilly.Lifecycle.Resize`, `Lilly.Lifecycle.SnapshotPointer`, `Lilly.Lifecycle.SnapshotSet`, `Lilly.Lifecycle.WorkspaceSource` |\n| [`Marshall.Access`](repo:marshall/lib/marshall/access.ex) | `Marshall.Access.Change`, `Marshall.Access.Grant`, `Marshall.Access.Pin` |\n| [`Marshall.Accounts`](repo:marshall/lib/marshall/accounts.ex) | `Marshall.Accounts.AdminBootstrap`, `Marshall.Accounts.AdminEvent`, `Marshall.Accounts.AuthEmail`, `Marshall.Accounts.GuestAccount`, `Marshall.Accounts.GuestAccount.Version`, `Marshall.Accounts.Passkey`, `Marshall.Accounts.PasskeyChallenge`, `Marshall.Accounts.Token`, `Marshall.Accounts.User`, `Marshall.Accounts.UserDeletion`, `Marshall.Accounts.Verification` |\n| [`Marshall.Administration`](repo:marshall/lib/marshall/administration.ex) | `Marshall.Administration.AuditEvent`, `Marshall.Administration.JobEvent`, `Marshall.Administration.JobSnapshot` |\n| [`Marshall.Agents`](repo:marshall/lib/marshall/agents.ex) | `Marshall.Agents.AuditEvent`, `Marshall.Agents.CLISession`, `Marshall.Agents.Command`, `Marshall.Agents.ContextCheckpoint`, `Marshall.Agents.ContextSnapshot`, `Marshall.Agents.Event`, `Marshall.Agents.Executor`, `Marshall.Agents.ModelCall`, `Marshall.Agents.PlanProposal`, `Marshall.Agents.PlanningQuestion`, `Marshall.Agents.Root`, `Marshall.Agents.SearchCache`, `Marshall.Agents.SearchUsage`, `Marshall.Agents.SkillInstallation`, `Marshall.Agents.SkillOperation`, `Marshall.Agents.SkillRevision`, `Marshall.Agents.Thread`, `Marshall.Agents.ToolBootstrap`, `Marshall.Agents.ToolMaintenance`, `Marshall.Agents.Turn` |\n| [`Marshall.Compute`](repo:marshall/lib/marshall/compute.ex) | `Marshall.Compute.CleanupRequest`, `Marshall.Compute.CloneEffect`, `Marshall.Compute.CloneRequest`, `Marshall.Compute.EnrollmentOperation`, `Marshall.Compute.Evacuation`, `Marshall.Compute.EvacuationItem`, `Marshall.Compute.Host`, `Marshall.Compute.HostCredential`, `Marshall.Compute.HostDrain`, `Marshall.Compute.HostSession`, `Marshall.Compute.Image`, `Marshall.Compute.LifecycleEvent`, `Marshall.Compute.NetworkAddress`, `Marshall.Compute.Operation`, `Marshall.Compute.PhysicalOutcome`, `Marshall.Compute.ProbeRequest`, `Marshall.Compute.ReadinessRequest`, `Marshall.Compute.Relocation`, `Marshall.Compute.RelocationRetry`, `Marshall.Compute.Reservation`, `Marshall.Compute.ResizeRequest`, `Marshall.Compute.ServiceLevelAttempt`, `Marshall.Compute.ServiceLevelTotal`, `Marshall.Compute.SourcePermitRequest`, `Marshall.Compute.StoragePool`, `Marshall.Compute.TransferSlot`, `Marshall.Compute.VirtualMachine`, `Marshall.Compute.WakeRequest`, `Marshall.Compute.WakeRequestKey`, `Marshall.Compute.WorkflowServiceLevelAttempt`, `Marshall.Compute.WorkloadPlacement`, `Marshall.Compute.WorkspaceSource` |\n| [`Marshall.Editor`](repo:marshall/lib/marshall/editor.ex) | `Marshall.Editor.Credential`, `Marshall.Editor.Lease`, `Marshall.Editor.Login` |\n| [`Marshall.Enrico`](repo:marshall/lib/marshall/enrico.ex) | `Marshall.Enrico.AuditEvent`, `Marshall.Enrico.Repository` |\n| [`Marshall.Galileo`](repo:marshall/lib/marshall/galileo.ex) | `Marshall.Galileo.Attachment`, `Marshall.Galileo.Credential`, `Marshall.Galileo.Integration`, `Marshall.Galileo.IntegrationHeader`, `Marshall.Galileo.PeerToken` |\n| [`Marshall.GitHub`](repo:marshall/lib/marshall/github.ex) | `Marshall.GitHub.AuditEvent`, `Marshall.GitHub.AuthorizationAttempt`, `Marshall.GitHub.Connection`, `Marshall.GitHub.Exclusion`, `Marshall.GitHub.RefreshAttempt`, `Marshall.GitHub.RequestLease`, `Marshall.GitHub.RestoreEpoch` |\n| [`Marshall.Inference`](repo:marshall/lib/marshall/inference.ex) | `Marshall.Inference.Credential`, `Marshall.Inference.Daily`, `Marshall.Inference.Request` |\n| [`Marshall.Ingress`](repo:marshall/lib/marshall/ingress.ex) | `Marshall.Ingress.EditorAssetsReceipt`, `Marshall.Ingress.Endpoint`, `Marshall.Ingress.Environment`, `Marshall.Ingress.EnvironmentPublication`, `Marshall.Ingress.EnvironmentStream`, `Marshall.Ingress.FleetCertificate`, `Marshall.Ingress.FleetCertificateAccount`, `Marshall.Ingress.FleetCertificateInstallation`, `Marshall.Ingress.Publication`, `Marshall.Ingress.Relay`, `Marshall.Ingress.Route`, `Marshall.Ingress.Service`, `Marshall.Ingress.Session`, `Marshall.Ingress.WebCredential`, `Marshall.Ingress.WebLogin`, `Marshall.Ingress.WebStream` |\n| [`Marshall.Peach`](repo:marshall/lib/marshall/peach.ex) | `Marshall.Peach.Credential`, `Marshall.Peach.Credential.Version` |\n| [`Marshall.SSH`](repo:marshall/lib/marshall/ssh.ex) | `Marshall.SSH.Approval`, `Marshall.SSH.Gateway`, `Marshall.SSH.GuestLogin`, `Marshall.SSH.HostCertificate`, `Marshall.SSH.Key`, `Marshall.SSH.Request`, `Marshall.SSH.Session` |\n| [`Marshall.Teams`](repo:marshall/lib/marshall/teams.ex) | `Marshall.Teams.Team`, `Marshall.Teams.TeamMember`, `Marshall.Teams.Transfer` |\n| [`Marshall.Terminal`](repo:marshall/lib/marshall/terminal.ex) | `Marshall.Terminal.Event`, `Marshall.Terminal.Grant`, `Marshall.Terminal.Location`, `Marshall.Terminal.Opening`, `Marshall.Terminal.Session`, `Marshall.Terminal.Ticket` |\n| [`Marshall.Threads`](repo:marshall/lib/marshall/threads.ex) | `Marshall.Threads.AccessChange`, `Marshall.Threads.Generation`, `Marshall.Threads.Grant`, `Marshall.Threads.Thread` |\n<!-- hldd:view:end -->"
+      "| Ash domain | Declared resources |\n| --- | --- |\n| [`Lilly.Lifecycle`](repo:lilly/lib/lilly/lifecycle.ex) | `Lilly.Lifecycle.BackupSnapshot`, `Lilly.Lifecycle.Checkpoint`, `Lilly.Lifecycle.CloneCopy`, `Lilly.Lifecycle.Dataset`, `Lilly.Lifecycle.Execution`, `Lilly.Lifecycle.GuestTrust`, `Lilly.Lifecycle.ImageTemplate`, `Lilly.Lifecycle.Import`, `Lilly.Lifecycle.Permit`, `Lilly.Lifecycle.Provisioning`, `Lilly.Lifecycle.Resize`, `Lilly.Lifecycle.SnapshotPointer`, `Lilly.Lifecycle.SnapshotSet`, `Lilly.Lifecycle.WorkspaceSource` |\n| [`Marshall.Access`](repo:marshall/lib/marshall/access.ex) | `Marshall.Access.Change`, `Marshall.Access.Grant`, `Marshall.Access.Pin` |\n| [`Marshall.Accounts`](repo:marshall/lib/marshall/accounts.ex) | `Marshall.Accounts.AdminBootstrap`, `Marshall.Accounts.AdminEvent`, `Marshall.Accounts.AuthEmail`, `Marshall.Accounts.GuestAccount`, `Marshall.Accounts.GuestAccount.Version`, `Marshall.Accounts.Passkey`, `Marshall.Accounts.PasskeyChallenge`, `Marshall.Accounts.Token`, `Marshall.Accounts.User`, `Marshall.Accounts.UserDeletion`, `Marshall.Accounts.Verification` |\n| [`Marshall.Administration`](repo:marshall/lib/marshall/administration.ex) | `Marshall.Administration.AuditEvent`, `Marshall.Administration.JobEvent`, `Marshall.Administration.JobSnapshot` |\n| [`Marshall.Agents`](repo:marshall/lib/marshall/agents.ex) | `Marshall.Agents.AuditEvent`, `Marshall.Agents.CLISession`, `Marshall.Agents.Command`, `Marshall.Agents.ContextCheckpoint`, `Marshall.Agents.ContextSnapshot`, `Marshall.Agents.Event`, `Marshall.Agents.Executor`, `Marshall.Agents.ModelCall`, `Marshall.Agents.PlanProposal`, `Marshall.Agents.PlanningQuestion`, `Marshall.Agents.Root`, `Marshall.Agents.SearchCache`, `Marshall.Agents.SearchUsage`, `Marshall.Agents.SkillInstallation`, `Marshall.Agents.SkillOperation`, `Marshall.Agents.SkillRevision`, `Marshall.Agents.Thread`, `Marshall.Agents.ToolBootstrap`, `Marshall.Agents.ToolMaintenance`, `Marshall.Agents.Turn` |\n| [`Marshall.Compute`](repo:marshall/lib/marshall/compute.ex) | `Marshall.Compute.CleanupRequest`, `Marshall.Compute.CloneEffect`, `Marshall.Compute.CloneRequest`, `Marshall.Compute.EnrollmentOperation`, `Marshall.Compute.Evacuation`, `Marshall.Compute.EvacuationItem`, `Marshall.Compute.Host`, `Marshall.Compute.HostCredential`, `Marshall.Compute.HostDrain`, `Marshall.Compute.HostSession`, `Marshall.Compute.Image`, `Marshall.Compute.LifecycleEvent`, `Marshall.Compute.NetworkAddress`, `Marshall.Compute.Operation`, `Marshall.Compute.PhysicalOutcome`, `Marshall.Compute.ProbeRequest`, `Marshall.Compute.ReadinessRequest`, `Marshall.Compute.Relocation`, `Marshall.Compute.RelocationRetry`, `Marshall.Compute.Reservation`, `Marshall.Compute.ResizeRequest`, `Marshall.Compute.ServiceLevelAttempt`, `Marshall.Compute.ServiceLevelTotal`, `Marshall.Compute.SourcePermitRequest`, `Marshall.Compute.StoragePool`, `Marshall.Compute.TransferSlot`, `Marshall.Compute.VirtualMachine`, `Marshall.Compute.WakeRequest`, `Marshall.Compute.WakeRequestKey`, `Marshall.Compute.WorkflowServiceLevelAttempt`, `Marshall.Compute.WorkloadPlacement`, `Marshall.Compute.WorkspaceSource` |\n| [`Marshall.Editor`](repo:marshall/lib/marshall/editor.ex) | `Marshall.Editor.Credential`, `Marshall.Editor.Lease`, `Marshall.Editor.Login` |\n| [`Marshall.Enrico`](repo:marshall/lib/marshall/enrico.ex) | `Marshall.Enrico.AuditEvent`, `Marshall.Enrico.Repository` |\n| [`Marshall.Galileo`](repo:marshall/lib/marshall/galileo.ex) | `Marshall.Galileo.Attachment`, `Marshall.Galileo.Credential`, `Marshall.Galileo.Integration`, `Marshall.Galileo.IntegrationHeader`, `Marshall.Galileo.PeerToken` |\n| [`Marshall.GitHub`](repo:marshall/lib/marshall/github.ex) | `Marshall.GitHub.AuditEvent`, `Marshall.GitHub.AuthorizationAttempt`, `Marshall.GitHub.Connection`, `Marshall.GitHub.Exclusion`, `Marshall.GitHub.RefreshAttempt`, `Marshall.GitHub.RequestLease`, `Marshall.GitHub.RestoreEpoch` |\n| [`Marshall.Inference`](repo:marshall/lib/marshall/inference.ex) | `Marshall.Inference.Credential`, `Marshall.Inference.Daily`, `Marshall.Inference.Request` |\n| [`Marshall.Ingress`](repo:marshall/lib/marshall/ingress.ex) | `Marshall.Ingress.EditorAssetsReceipt`, `Marshall.Ingress.Endpoint`, `Marshall.Ingress.Environment`, `Marshall.Ingress.EnvironmentPublication`, `Marshall.Ingress.EnvironmentStream`, `Marshall.Ingress.FleetCertificate`, `Marshall.Ingress.FleetCertificateAccount`, `Marshall.Ingress.FleetCertificateInstallation`, `Marshall.Ingress.Publication`, `Marshall.Ingress.Relay`, `Marshall.Ingress.Route`, `Marshall.Ingress.Service`, `Marshall.Ingress.Session`, `Marshall.Ingress.WebCredential`, `Marshall.Ingress.WebLogin`, `Marshall.Ingress.WebStream` |\n| [`Marshall.Notifications`](repo:marshall/lib/marshall/notifications.ex) | `Delivery`, `Device`, `Marshall.Notifications.InstallIdentity` |\n| [`Marshall.Peach`](repo:marshall/lib/marshall/peach.ex) | `Marshall.Peach.Credential`, `Marshall.Peach.Credential.Version` |\n| [`Marshall.SSH`](repo:marshall/lib/marshall/ssh.ex) | `Marshall.SSH.Approval`, `Marshall.SSH.Gateway`, `Marshall.SSH.GuestLogin`, `Marshall.SSH.HostCertificate`, `Marshall.SSH.Key`, `Marshall.SSH.Request`, `Marshall.SSH.Session` |\n| [`Marshall.Teams`](repo:marshall/lib/marshall/teams.ex) | `Marshall.Teams.Team`, `Marshall.Teams.TeamMember`, `Marshall.Teams.Transfer` |\n| [`Marshall.Terminal`](repo:marshall/lib/marshall/terminal.ex) | `Marshall.Terminal.Event`, `Marshall.Terminal.Grant`, `Marshall.Terminal.Location`, `Marshall.Terminal.Opening`, `Marshall.Terminal.Session`, `Marshall.Terminal.Ticket` |\n| [`Marshall.Threads`](repo:marshall/lib/marshall/threads.ex) | `Marshall.Threads.AccessChange`, `Marshall.Threads.Generation`, `Marshall.Threads.Grant`, `Marshall.Threads.ReadMarker`, `Marshall.Threads.Thread` |\n| [`Susan.Audit`](repo:susan/lib/susan/audit.ex) | `Susan.Audit.AuditEntry` |\n| [`Susan.Relay`](repo:susan/lib/susan/relay.ex) | `Susan.Relay.DeliveryReceipt`, `Susan.Relay.InstallIdentity`, `Susan.Relay.KeyDenial`, `Susan.Relay.UnregisteredToken` |\n<!-- hldd:view:end -->"
     ),
     dgettext_noop(
       "documentation",
@@ -11964,11 +12927,23 @@ defmodule Marshall.DocumentationMessages do
     ),
     dgettext_noop(
       "documentation",
+      "| Concern | Behaviour |\n| --- | --- |\n| Device identity | One P-256 key per deployment: Secure Enclave (iOS), Android Keystore with StrongBox where present, an owner-only `0600` file on Linux. A readable Linux key file is refused. |\n| Host trust | `https://HOST/bin/ssh-trust.json` is fetched over HTTPS without redirects and pinned. A later document with another CA, host or zone is refused; a failed fetch uses only an unretired pin. |\n| Host acceptance | Only `ssh-ed25519-cert-v01@openssh.com`. The certificate must come from the pinned CA, name the management host and be inside its validity window. The check runs in key exchange, before user authentication. |\n| Sign-in | Porsche's browser key approval. Mila opens `approval_url` in the system browser and keeps the connection, re-checking `whoami` every 2 seconds. A link expires after 600 seconds and is never replaced while shown. |\n| Mutations | Submitted once with a client `porsche-<32 hex>` request id and `--no-wait`, then polled with `request show`; never resubmitted. |\n| Links | `overalls://HOST/PATH` only navigates. Unknown deployments land on the deployment list; signed-out deployments reach only their sign-in screen. |"
+    ),
+    dgettext_noop(
+      "documentation",
+      "| Concern | Behaviour |\n| --- | --- |\n| Registration | A pure state machine. Each step has an operation number, and a reply to an older step is ignored. Turning notifications off while a registration is in flight removes the device once it lands. A new platform token re-registers. The key is rotated within 14 days of expiry. `push_disabled` stops retries. Transient failures back off from 5 s to 30 min. |\n| Poke contents | Pokes are end-to-end encrypted to a per-deployment X25519 key: `0x01 ‖ ephemeral key ‖ nonce ‖ ChaCha20-Poly1305 ciphertext`, with the key derived by HKDF-SHA256 and the deployment host bound in the AAD. The relay sees only ciphertext. The plaintext is exactly `{v, kind: \"needs_input\", route}`, and the route must be a canonical app route on that host. |\n| Notification text | Fixed and localized (\"An agent needs your input\"). The decrypted route is used only as the tap link. A poke that fails to open shows the fixed text with no link on iOS (an APNs alert cannot be suppressed); Android shows nothing. |\n| Poke keys | iOS Keychain group shared with the notification extension, readable after first unlock on this device only. On Android, wrapped by a Keystore AES key. Only the public key leaves native code. Removing the device deletes the key. |\n| Device list | Each device can be turned on or off, or removed (`device prefs`, `device rm`). A device missing from `device ls` shows as revoked. |\n| App lock | Optional, with biometrics or the device passcode (`local_auth`). It locks immediately or after 1 or 5 minutes in the background. A saved lock covers Mila from the first frame. Locked content is not painted and not in the accessibility tree. Linux has no lock, and the setting says so. |\n| Offline list | The last complete machine listing per deployment is saved as an owner-only `0600` file holding machine rows only, at most 500. While offline, the saved list is shown with its save time and its actions are disabled. |\n| Linux desktop | One window. A second `mila overalls://…` hands its link to the running window, which only navigates. |"
+    ),
+    dgettext_noop(
+      "documentation",
+      "| Concern | Behaviour |\n| --- | --- |\n| Terminal attach | `terminal attach M S [--cursor N] [--read-only]` on a PTY sized to the view, with window-change on resize. One JSON header line on stderr (at most 512 bytes) states `from`, `replay_bytes` and `mode`. Output before it is dropped. |\n| Cursor resume | A dropped channel reattaches from the bytes already shown. When the header's `from` differs from the cursor, Mila resets the screen and counts a documented jump; otherwise the cursor only moves forward. |\n| Read-only | Chosen or granted, read-only never sends keys, pastes or resizes. Choosing control again reattaches writable. |\n| Retry | Exit 5 (transport) retries with backoff, at most 8 attempts. Exits 1 (refused), 2 (invalid) and 3 (authority) end the view with a localized reason. |\n| Threads | Lists, transcript pages (`thread turns --after`), questions, plan approve and revise, plan or work mode. The read marker only moves forward (`thread read`). |\n| Watch | `watch` JSON lines trigger re-reads; Mila never takes state from them. More than 40 s of silence reopens the stream. Transport loss reconnects after 1 to 60 s; authority loss stops it. |\n| Web | `web show`, and `web set` at the shown `policy_revision`, so a concurrent change is a conflict. Only HTTPS URLs on DNS hosts are opened. Public endpoints open in a webview on iOS and Android; private endpoints always open in the system browser. |"
+    ),
+    dgettext_noop(
+      "documentation",
       "| Declaration | Purpose |\n| --- | --- |\n| `flake.nix` | Packages, modules, machine configurations, checks |\n| `fleet/hosts/NAME/host.json` | Reviewed hardware, network, storage, identity, budgets (`arcMaxMiB` 24576, `guestMemoryMiB` 95232 and `guestCpuCores` 32 on both fleet hosts, ADR-0164; a ceiling decrease ships in its own push after the updater that permits it, because the compatibility predicate runs in the live updater) and encrypted document inventory |\n| `fleet/hosts/NAME/configuration.nix` | Enrolled host roles and service composition |\n| `nix/policy/identity/users.nix` | Named fleet users, administrative and recovery membership |\n| `nix/policy/network/allowed-hosts.nix` | Reviewed perimeter source grants |\n| `nix/policy/secrets/secret-documents.nix` | Public secret-document and recipient inventory |\n| `fleet/guest-images.nix` | Guest artifacts selected for the fleet |"
     ),
     dgettext_noop(
       "documentation",
-      "| Domain | Responsibility and authority |\n| --- | --- |\n| `Marshall.Accounts` | User identity, login tokens, email verification, passkeys, account deletion and permanent GuestAccount UUID/UID reservations. Immutable `u<uid>` guest identity belongs to the User UUID independently of its email. Authentication identifies a caller; resource policy still decides access. |\n| `Marshall.Access` | Persisted machine grants, grant changes and per-user machine pins. Cedar evaluates current ownership, direct VM sharing, team membership and canonical current-thread grants; a cached permission cannot authorize a later mutation. A pin confers no authority; the owner's pin is read by the lifecycle coordinator as a deletion fence (ADR-0193). |\n| `Marshall.Administration` | Administrative job snapshots, retries and audit projections. Read access and elevated administrative mutations have separate checks. |\n| `Marshall.Agents` | Agent roots, threads, turns, events, commands, model calls and executor leases. Active context snapshots/checkpoints, planning questions/proposals and managed skill configuration extend this same authority under ADR-0178/0179. ToolMaintenance owns desired public tool generations and executor-fenced installation receipts independently of conversations. Persisted leases and current authority fence execution. |\n| `Marshall.Threads` | User-level objectives, titles, modes, durable provisioning, canonical sharing grants and immutable sharing results. The current thread-to-VM binding contributes grants to machine authority; the coordinator delegates admission, execution and teardown to the existing domains. |\n| `Marshall.Compute` | Host enrollment, pools, reservations, VM intent, placements, operation receipts and lifecycle workflows. The ledger owns admission and durable execution authority, including immutable source2 provider/namespace/revision `WorkspaceSource` references pinned in provision/start commands. Current manifest4 image identity/capability gates source admission and new source-bearing command snapshots, including retained starts; the signed pending browser cookie owns no domain authority. |\n| `Marshall.Editor` | Personal browser Login, Credential and Lease authority. Current stored login/write, permanent account and exact execution/release locks hold through the outer ledger commit; generic web/DNS visibility cannot authorize the editor. |\n| `Marshall.Enrico` | Repository registration, refresh state and audit. The Enrico service holds the quota-bound mirror cache; the domain holds control-plane intent. |\n| `Marshall.Galileo` | Integration definitions, encrypted header custody, attachments and peer tokens. Current attachment policy governs each authorized service interaction. |\n| `Marshall.GitHub` | Personal OAuth connections, authorization/refresh attempts, persistent machine exclusions, generation-bound request leases and payload-free audit. The current VM owner selects the grant; guest claims, queued work and cached projections confer no authority. |\n| `Marshall.Inference` | Provider credentials, request admission and daily usage. Request authority and accounting remain distinct from provider-side execution. |\n| `Marshall.Ingress` | Public services, publications, DNS, TLS custody, readiness and ingress sessions, including short-lived immutable EditorAssetsReceipt. Discovery binds current placement/assets but does not grant Editor authority. |\n| `Marshall.Peach` | Dedicated private-reflection host credentials. Rotation serializes on the Compute host, retains only a secret digest, revokes prior Peach credentials and never changes compute credentials, sessions, reports or reservations. Current host state, expiry and revocation fence each projection request. |\n| `Marshall.SSH` | Account keys, browser approvals, gateway sessions, management requests, guest login and public host-certificate generations. Signing locks current service or boot authority through publication; the private CA remains outside PostgreSQL. Management authority does not grant host administrative SSH. |\n| `Marshall.Teams` | Teams, membership and resource transfers. Mutations enter Compute's ledger commit scope so authority changes share its transaction boundary. |\n| `Marshall.Terminal` | Grants, locations, openings, sessions, events and tickets. Exclusive writer leases and current execution fences govern terminal access. |\n| `Lilly.Lifecycle` | OS-locked execution, dataset, snapshot, import, same-pool clone-copy, resize, trust, workspace-source delivery, provisioning, template and permit journals. Provisioning progress records readiness without granting launch or cleanup authority. A clone-copy journal (ADR-0145) binds a same-pool clone destination to its verified source snapshot and its own ordinary claim; it grants neither execution authority nor capacity credit. Host-local physical ownership does not depend on PostgreSQL availability. |"
+      "| Domain | Responsibility and authority |\n| --- | --- |\n| `Marshall.Accounts` | User identity, login tokens, email verification, passkeys, account deletion and permanent GuestAccount UUID/UID reservations. Immutable `u<uid>` guest identity belongs to the User UUID independently of its email. Authentication identifies a caller; resource policy still decides access. |\n| `Marshall.Access` | Persisted machine grants, grant changes and per-user machine pins. Cedar evaluates current ownership, direct VM sharing, team membership and canonical current-thread grants; a cached permission cannot authorize a later mutation. A pin confers no authority; the owner's pin is read by the lifecycle coordinator as a deletion fence (ADR-0193). |\n| `Marshall.Administration` | Administrative job snapshots, retries and audit projections. Read access and elevated administrative mutations have separate checks. |\n| `Marshall.Agents` | Agent roots, threads, turns, events, commands, model calls and executor leases. Active context snapshots/checkpoints, planning questions/proposals and managed skill configuration extend this same authority under ADR-0178/0179. ToolMaintenance owns desired public tool generations and executor-fenced installation receipts independently of conversations. Persisted leases and current authority fence execution. |\n| `Marshall.Threads` | User-level objectives, titles, modes, durable provisioning, canonical sharing grants, immutable sharing results and per-reader monotonic transcript read markers. The current thread-to-VM binding contributes grants to machine authority; the coordinator delegates admission, execution and teardown to the existing domains. |\n| `Marshall.Notifications` | Mila push devices bound to the registering SSH key, needs-input deliveries and the per-install Ed25519 identity. It reads SSH keys, accounts and agent threads but never writes them; SSH key archive and account retirement call its revocation functions inside their own transactions. Susan is an external relay it reaches only at the compiled origin. |\n| `Marshall.Compute` | Host enrollment, pools, reservations, VM intent, placements, operation receipts and lifecycle workflows. The ledger owns admission and durable execution authority, including immutable source2 provider/namespace/revision `WorkspaceSource` references pinned in provision/start commands. Current manifest4 image identity/capability gates source admission and new source-bearing command snapshots, including retained starts; the signed pending browser cookie owns no domain authority. |\n| `Marshall.Editor` | Personal browser Login, Credential and Lease authority. Current stored login/write, permanent account and exact execution/release locks hold through the outer ledger commit; generic web/DNS visibility cannot authorize the editor. |\n| `Marshall.Enrico` | Repository registration, refresh state and audit. The Enrico service holds the quota-bound mirror cache; the domain holds control-plane intent. |\n| `Marshall.Galileo` | Integration definitions, encrypted header custody, attachments and peer tokens. Current attachment policy governs each authorized service interaction. |\n| `Marshall.GitHub` | Personal OAuth connections, authorization/refresh attempts, persistent machine exclusions, generation-bound request leases and payload-free audit. The current VM owner selects the grant; guest claims, queued work and cached projections confer no authority. |\n| `Marshall.Inference` | Provider credentials, request admission and daily usage. Request authority and accounting remain distinct from provider-side execution. |\n| `Marshall.Ingress` | Public services, publications, DNS, TLS custody, readiness and ingress sessions, including short-lived immutable EditorAssetsReceipt. Discovery binds current placement/assets but does not grant Editor authority. |\n| `Marshall.Peach` | Dedicated private-reflection host credentials. Rotation serializes on the Compute host, retains only a secret digest, revokes prior Peach credentials and never changes compute credentials, sessions, reports or reservations. Current host state, expiry and revocation fence each projection request. |\n| `Marshall.SSH` | Account keys, browser approvals, gateway sessions, management requests, guest login and public host-certificate generations. Signing locks current service or boot authority through publication; the private CA remains outside PostgreSQL. Management authority does not grant host administrative SSH. |\n| `Marshall.Teams` | Teams, membership and resource transfers. Mutations enter Compute's ledger commit scope so authority changes share its transaction boundary. |\n| `Marshall.Terminal` | Grants, locations, openings, sessions, events and tickets. Exclusive writer leases and current execution fences govern terminal access. |\n| `Lilly.Lifecycle` | OS-locked execution, dataset, snapshot, import, same-pool clone-copy, resize, trust, workspace-source delivery, provisioning, template and permit journals. Provisioning progress records readiness without granting launch or cleanup authority. A clone-copy journal (ADR-0145) binds a same-pool clone destination to its verified source snapshot and its own ordinary claim; it grants neither execution authority nor capacity credit. Host-local physical ownership does not depend on PostgreSQL availability. |\n| `Susan.Relay` | Susan's install identities (`unknown → trusted → rate_limited → blocked`), key-id deny-list, keyed-digest negative cache for unregistered provider tokens and per-install delivery receipts. Authority comes only from a push key Susan can open plus a valid install signature; no Marshall or Mila account exists here. |\n| `Susan.Audit` | Append-only, hash-chained audit entries with closed action and reason enums. The database refuses UPDATE/TRUNCATE and permits DELETE only to the audited 90-day prune; operators read and export through `bin/susan rpc`. |"
     ),
     dgettext_noop(
       "documentation",
@@ -11977,6 +12952,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "| Evidence | Scope and remaining limit |\n| --- | --- |\n| [Logging machine](repo:nix/verification/tests/machines/logging/driver.py) | Native journal, outage/restart and unread reboot recovery; isolated provider credentials, no live AWS account |\n| [Log-store machine](repo:nix/verification/tests/machines/log-store/driver.py) | Native TLS insert/read separation, Grafana proxy and credential custody, routing/backfill; production activation remains separate |\n| [Routing/health checks](repo:nix/verification/tests/evaluation/logging.nix) | Pinned Fluent Bit configuration, source/cursor isolation, independent numeric health and checkpoint migration |\n| [Grafana fleet machine](repo:nix/verification/tests/machines/otel-fleet/default.nix) | Collector/store provisioning and authenticated dashboards; seven-day production compliance remains separate |\n| [Marshall telemetry machine](repo:nix/verification/tests/machines/otel-marshall/default.nix) | Business application plus durable recorder and removed diagnostic routes; actual source-specific workflows remain separate |\n| [SLO rule checks](repo:nix/verification/tests/evaluation/otel-slo-rules.nix) | Eligibility, rosters, gaps, burns and production cadence using synthetic time series |\n| [Recorder machine](repo:nix/verification/tests/machines/otel-request-recorder/default.nix) | Kernel producer custody, process/host loss and checkpoint behavior in a disposable VM |"
+    ),
+    dgettext_noop(
+      "documentation",
+      "| Exit | Meaning |\n| --- | --- |\n| 0 | The session closed or the client detached (end of input). |\n| 1 | Refused: unknown session, another machine's session, forbidden, conflict. |\n| 2 | Invalid: bad arguments or no pty. |\n| 3 | Authority: the SSH key, approval, session or gateway credential was revoked. |\n| 5 | Transport: Marshall unreachable, inconclusive authority, silence over 15 s. |"
     ),
     dgettext_noop(
       "documentation",
@@ -11993,6 +12972,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "| Layer | Allowed operation and expected refusal |\n| --- | --- |\n| Identity | Current login and account identify the actor; the immutable creator guest identity selects personal configuration. A collaborator cannot switch the thread's configuration owner. |\n| Authorization | Current write authority gates mode changes, compaction, question answers and exact proposal implementation. Current management authority gates managed skill configuration. Viewers, stale pages and revoked actors cannot mutate these resources. |\n| Transport | Existing authenticated Ziggy and executor paths carry bounded typed operations. Files on the Marshall host and guest-supplied identity claims are not context authority. |\n| Execution | Current placement, epoch, lease and executor fence bind guest reads and installations. Generation/frontier comparison rejects stale checkpoint results. Claimed ambiguous provider work is not replayed automatically. |\n| Isolation | Plan is an instructional workflow, not a read-only sandbox. Project text, skills and summaries cannot grant tools or bypass VM/profile restrictions. Public fetching has no credentials, hooks, filters, submodules or install scripts. |\n| Storage | Agents retains immutable snapshots/checkpoints separately from transcript events. Applied file content, prompts, summaries and skill bodies stay out of diagnostics and accounting. Revisions referenced by admitted work remain retained. |\n| Recovery | Restart preserves pending questions and accepted answers. One current answer wins; cancelled, archived or authority-invalid requests refuse. Failed compaction/update preserves the prior checkpoint/revision; pinned restoration and status reconciliation avoid branch drift and blind installation replay. |"
+    ),
+    dgettext_noop(
+      "documentation",
+      "| Layer | Authority and expected refusal |\n| --- | --- |\n| Identity | A device is bound to the SSH key of the Porsche session that registered it; a key not owned by the actor refuses `unauthorized`. Each install signs pokes with an Ed25519 identity whose seed is AshCloak-encrypted. |\n| Authorization | Only the device owner lists, pauses or removes it; others receive `device_not_found`. Recipients are re-derived from current write authority at production time; viewers and the actor are excluded. More than ten live devices refuse `device_limit`. |\n| Transport | Pokes go only to the compiled origin over verified TLS with the system trust store, `retry: false`, no redirects; the canonical signed body is ≤1 KiB. |\n| Execution | Delivery attempts are fenced by the `attempts` counter, so a stale job cannot overwrite a newer outcome; expired, revoked, invalidated or preference-off deliveries drop before sending. |\n| Isolation | The route is sealed to the device's X25519 key with deployment-bound HKDF; the body carries only ciphertext, an opaque per-install collapse id, the delivery id, deployment host, kind, nonce, issue time and Susan's push key. |\n| Storage | The push key is AshCloak-encrypted; versions, receipts and events retain only a 16-hex digest. Events carry enum/int metadata only. |\n| Recovery | 429/5xx/transport retry with jittered backoff honouring `Retry-After` (8 attempts); 404/410 invalidates the device; SSH key archive and account retirement revoke devices in the same transaction; a reconciler re-enqueues stuck rows. |"
     ),
     dgettext_noop(
       "documentation",
@@ -12029,6 +13012,10 @@ defmodule Marshall.DocumentationMessages do
     dgettext_noop(
       "documentation",
       "| Layer | Authority and required refusal |\n| --- | --- |\n| Identity | Pins belong to the current stored login's user. A compute system actor, a nil actor or any non-user term projects an empty pinned set and a false flag; no path lets one user read or change another user's pins. |\n| Authorization | Pinning rechecks current Cedar read access under the VM row lock and refuses deleted intent. Deletion through every path (browser, Fleet workloads, SSH/Porsche `rm`, thread teardown) is refused with `machine_pinned` while the owner holds a live pinned row; shared users' pins never fence, and start/stop are never fenced. |\n| Transport | Browser toggles and Porsche `pin`/`unpin` carry only the machine reference and displayed state; the coordinator's idempotent result absorbs a stale state. Refusals cross the SSH control API as closed 409 reasons (`machine_pinned`, `pin_limit`) and Porsche prints fixed hints with no remote text. |\n| Execution | Pin, unpin and delete serialize on the VM row lock; a per-user advisory lock serializes one user's pins so the twenty-pin cap holds under concurrency. The guard runs after existing clone/resize/relocation/deleted-intent checks and a refusal rolls the whole request back. |\n| Isolation | A pin changes no guest, host or network state. Relocation source cleanup reclaims a copy and is not fenced. |\n| Storage | One live row per user/machine (`current_pin` identity, partial index for the guard), PaperTrail versions with actor kind/id and no sensitive attributes. Removal is an archive; both VM archive sites archive every remaining pin in the archive transaction. |\n| Recovery | The owner's account deletion archives the owner's own pins in the delete transaction, so a retired account cannot leave an undeletable machine; account cleanup also archives the user's pins elsewhere. A user whose access ended can still unpin. |"
+    ),
+    dgettext_noop(
+      "documentation",
+      "| Layer | Authority and required refusal |\n| --- | --- |\n| Identity | Porsche gateway bearer plus the attaching connection's live SSH session token plus a single-use terminal ticket. Missing, malformed or oversized credentials refuse with 401/400 before a socket exists; browser cookies and login tokens grant nothing here. |\n| Authorization | The ticket is issued by `terminal attach` only after current registry and Cedar checks for that machine and session (`unknown_session` → 404, `forbidden` → 403). Mode never escalates: rw only for the owner with current write access and without `--read-only`. |\n| Transport | TLS on the fleet listener. Tickets are bound to their origin: an SSH-bound ticket refuses on the browser route and a browser ticket refuses here (close 4003). Tickets and tokens are never printed, logged or pinned in receipts. |\n| Execution | The viewer rechecks `SSH.Authority.session_live?/2` every 5 seconds and on `:ssh_session`/user control hints; key, approval or session revocation closes 4001 and Porsche exits 3. An unanswered check closes 1011 (exit 5), never continuing on stale authority. |\n| Isolation | Read-only attaches never send input or resize; Porsche discards their input before the websocket. Attach joins only registry sessions on the named machine; the guest identity is the session owner's personal account. |\n| Storage | Only the ticket row (with `ssh_session_id`) is persisted and it is consumed on upgrade. Terminal bytes, tickets and tokens never reach journals: Porsche attachments are `porsche_private` with redacted status, and events carry enum metadata only. |\n| Recovery | A lost control link, gateway stream or 15 seconds of silence ends the attach with exit 5; the guest session survives and can be reattached from a cursor. Output is acknowledged only after local SSH delivery, so replay is never skipped. |"
     ),
     dgettext_noop(
       "documentation",

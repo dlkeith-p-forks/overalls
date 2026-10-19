@@ -6,6 +6,8 @@ defmodule Porsche.InvalidBootProbe do
     Porsche.SSH.Sessions,
     Porsche.SSH.Connections,
     Porsche.SSH.Commands,
+    Porsche.Watchers,
+    Porsche.Terminal.Attachments,
     Porsche.Observability
   ]
   @type flags :: %{
@@ -93,7 +95,7 @@ defmodule Porsche.InvalidBootProbe do
     children = Supervisor.which_children(supervisor)
     pids = Enum.map(children, fn {_id, pid, _type, _modules} -> pid end)
 
-    length(pids) == 5 and
+    length(pids) == 6 and
       Enum.all?(@base_names, fn name ->
         pid = Process.whereis(name)
         is_pid(pid) and pid in pids

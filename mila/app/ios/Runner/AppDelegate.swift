@@ -205,6 +205,18 @@ final class MilaPlatform: NSObject, FlutterSceneLifeCycleDelegate, UNUserNotific
       }
       UIApplication.shared.open(url)
       result(nil)
+    case "share":
+      // A web endpoint link to the system share sheet; HTTPS only.
+      guard let text = arguments["url"] as? String, let url = URL(string: text), url.scheme == "https" else {
+        return result(Self.invalid("url"))
+      }
+      let sheet = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+      let root = UIApplication.shared.connectedScenes
+        .compactMap { ($0 as? UIWindowScene)?.keyWindow?.rootViewController }
+        .first
+      sheet.popoverPresentationController?.sourceView = root?.view
+      root?.present(sheet, animated: true)
+      result(nil)
     default:
       result(FlutterMethodNotImplemented)
     }

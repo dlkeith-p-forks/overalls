@@ -680,7 +680,7 @@ msgstr ""
 msgid "Approve CLI access"
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:68
+#: lib/marshall_web/live/ssh_approval_live.ex:82
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr ""
@@ -690,7 +690,7 @@ msgstr ""
 msgid "Approve agent CLI"
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:94
+#: lib/marshall_web/live/ssh_approval_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr ""
@@ -700,13 +700,13 @@ msgstr ""
 msgid "Approve move downtime"
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:71
+#: lib/marshall_web/live/ssh_approval_live.ex:85
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr ""
 
 #: lib/marshall_web/live/agent_cli_approval_live.ex:74
-#: lib/marshall_web/live/ssh_approval_live.ex:92
+#: lib/marshall_web/live/ssh_approval_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr ""
@@ -2446,7 +2446,7 @@ msgid "LLM index"
 msgstr ""
 
 #: lib/marshall_web/live/account_live.ex:722
-#: lib/marshall_web/live/ssh_approval_live.ex:84
+#: lib/marshall_web/live/ssh_approval_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr ""
@@ -2750,7 +2750,7 @@ msgstr ""
 msgid "Manage members and team machines."
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:97
+#: lib/marshall_web/live/ssh_approval_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr ""
@@ -2930,7 +2930,7 @@ msgid "Move to another host"
 msgstr ""
 
 #: lib/marshall_web/live/account_live.ex:724
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr ""
@@ -4500,7 +4500,8 @@ msgstr ""
 msgid "SSH key added."
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:35
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:112
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr ""
@@ -5478,7 +5479,7 @@ msgstr ""
 msgid "These questions have already been answered."
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr ""
@@ -5518,7 +5519,7 @@ msgstr ""
 msgid "This job is unavailable or its history has expired."
 msgstr ""
 
-#: lib/marshall_web/live/ssh_approval_live.ex:77
+#: lib/marshall_web/live/ssh_approval_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr ""
@@ -7529,4 +7530,9 @@ msgstr ""
 #: lib/marshall_web/live/terminal_live.ex:640
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
+msgstr ""
+
+#: lib/marshall_web/live/ssh_approval_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
 msgstr ""

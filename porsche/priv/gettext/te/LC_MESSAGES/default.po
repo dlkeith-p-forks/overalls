@@ -7,10 +7,7 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:60
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"\n"
-"Keep this SSH connection open while approving the key.\n"
+msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr ""
 "\n"
 "\n"
@@ -18,190 +15,36 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:75
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open an interactive Porsche connection without a remote command:"
+msgid "\nOpen an interactive Porsche connection without a remote command:"
 msgstr ""
 "\n"
 "రిమోట్ ఆదేశం లేకుండా పరస్పర Porsche కనెక్షన్‌ను తెరవండి:"
 
 #: lib/porsche/ssh/onboarding.ex:58
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Open this link, sign in, and approve the matching fingerprint:\n"
-"  "
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
 msgstr ""
 "\n"
 "ఈ లింక్ తెరిచి, సైన్ ఇన్ చేసి, సరిపోలే వేలిముద్రను ఆమోదించండి:\n"
 "  "
 
-msgid "Show the authenticated account."
-msgstr "ధృవీకరించబడిన ఖాతాను చూపించండి."
-
-#: lib/porsche/ssh/command_messages.ex:9
+#: lib/porsche/ssh/onboarding.ex:112
 #, elixir-autogen, elixir-format
-msgid "List available images."
-msgstr "అందుబాటులో ఉన్న ఇమేజ్‌లను జాబితా చేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:16
-#, elixir-autogen, elixir-format
-msgid "List machines you can access."
-msgstr "మీరు యాక్సెస్ చేయగల యంత్రాలను జాబితా చేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:36
-#, elixir-autogen, elixir-format
-msgid "Inspect a machine by name or UUID."
-msgstr "పేరు లేదా UUID ద్వారా యంత్రాన్ని పరిశీలించండి."
-
-#: lib/porsche/ssh/command_messages.ex:17
-#, elixir-autogen, elixir-format
-msgid ""
-"Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, "
-"GitLab, Codeberg or Bitbucket repository in the guest."
+msgid "\nOr manage your keys at:\n  "
 msgstr ""
-"యంత్రాన్ని సృష్టించండి. డిస్క్ గరిష్ఠ పరిమాణం: 500 GiB. --source గెస్ట్‌లో "
-"పబ్లిక్ GitHub, GitLab, Codeberg లేదా Bitbucket రిపోజిటరీని క్లోన్ "
-"చేస్తుంది."
+"\n"
+"లేదా మీ కీలను ఇక్కడ నిర్వహించండి:\n"
+"  "
 
-#: lib/porsche/ssh/command_messages.ex:6
-#, elixir-autogen, elixir-format
-msgid "Queue an independent full-disk copy of a machine."
-msgstr "యంత్రం మొత్తం డిస్క్ యొక్క స్వతంత్ర కాపీని వరుసలో ఉంచండి."
-
-#: lib/porsche/ssh/command_messages.ex:24
-#, elixir-autogen, elixir-format
-msgid "Move a machine to an automatically selected host."
-msgstr "యంత్రాన్ని స్వయంచాలకంగా ఎంచుకున్న హోస్ట్‌కు తరలించండి."
-
-#: lib/porsche/ssh/command_messages.ex:28
-#, elixir-autogen, elixir-format
-msgid ""
-"Change a machine's CPU and memory; disk may only grow. A running machine "
-"stops and restarts."
-msgstr ""
-"యంత్రం CPU మరియు మెమరీని మార్చండి; డిస్క్‌ను పెంచడం మాత్రమే సాధ్యం. "
-"నడుస్తున్న యంత్రం ఆగి తిరిగి ప్రారంభమవుతుంది."
-
-msgid "Retry a failed clone or relocation request."
-msgstr "విఫలమైన క్లోన్ లేదా తరలింపు అభ్యర్థనను మళ్లీ ప్రయత్నించండి."
-
-#: lib/porsche/ssh/command_messages.ex:25
-#, elixir-autogen, elixir-format
-msgid "Cancel an unpublished clone or uncommitted relocation request."
-msgstr "ప్రచురించని క్లోన్ లేదా ఖరారు కాని తరలింపు అభ్యర్థనను రద్దు చేయండి."
-
-msgid "Start a machine."
-msgstr "యంత్రాన్ని ప్రారంభించండి."
-
-# Reviewed English fallback pending translation of suspension behavior.
-msgid "Stop a machine, retaining its disk and discarding suspended memory."
-msgstr "Stop a machine, retaining its disk and discarding suspended memory."
-
-#: lib/porsche/ssh/command_messages.ex:32
-#, elixir-autogen, elixir-format
-msgid "Delete a machine and its disk. Refused while its owner has it pinned."
-msgstr ""
-"యంత్రాన్ని, దాని డిస్క్‌ను తొలగించండి. యజమాని పిన్ చేసి ఉంచితే "
-"నిరాకరించబడుతుంది."
-
-# Reviewed English fallback pending translation of suspension behavior.
-msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
-msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
-
-#: lib/porsche/ssh/command_messages.ex:51
-#, elixir-autogen, elixir-format
-msgid "Remove your pin from a machine."
-msgstr "యంత్రంపై మీ పిన్‌ను తీసివేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:35
-#, elixir-autogen, elixir-format
-msgid "List access grants."
-msgstr "యాక్సెస్ అనుమతులను జాబితా చేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:33
-#, elixir-autogen, elixir-format
-msgid "Grant viewer, operator or manager access."
-msgstr "వీక్షకుడు, ఆపరేటర్ లేదా నిర్వాహకుడి యాక్సెస్ ఇవ్వండి."
-
-msgid "Revoke an account's shared access."
-msgstr "ఖాతా భాగస్వామ్య యాక్సెస్‌ను ఉపసంహరించండి."
-
-#: lib/porsche/ssh/command_messages.ex:37
-#, elixir-autogen, elixir-format
-msgid "List your SSH keys."
-msgstr "మీ SSH కీలను జాబితా చేయండి."
-
-msgid "Revoke one of your SSH keys."
-msgstr "మీ SSH కీలలో ఒకదాన్ని ఉపసంహరించండి."
-
-#: lib/porsche/ssh/command_messages.ex:10
-#, elixir-autogen, elixir-format
-msgid ""
-"Create or replace a named integration at https://NAME.integration.internal."
-msgstr ""
-"https://NAME.integration.internal వద్ద పేరుతో అనుసంధానాన్ని సృష్టించండి లేదా"
-" భర్తీ చేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:14
-#, elixir-autogen, elixir-format
-msgid "Remove a named integration."
-msgstr "పేరుతో ఉన్న అనుసంధానాన్ని తీసివేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:13
-#, elixir-autogen, elixir-format
-msgid "List your integrations."
-msgstr "మీ అనుసంధానాలను జాబితా చేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:15
-#, elixir-autogen, elixir-format
-msgid "Inspect an integration without secrets."
-msgstr "రహస్యాలు చూపకుండా అనుసంధానాన్ని పరిశీలించండి."
-
-#: lib/porsche/ssh/command_messages.ex:11
-#, elixir-autogen, elixir-format
-msgid "Make an integration available to a machine."
-msgstr "యంత్రానికి అనుసంధానాన్ని అందుబాటులో ఉంచండి."
-
-#: lib/porsche/ssh/command_messages.ex:12
-#, elixir-autogen, elixir-format
-msgid "Remove a machine's explicit availability."
-msgstr "యంత్రానికి ప్రత్యేకంగా ఇచ్చిన అందుబాటును తీసివేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:41
-#, elixir-autogen, elixir-format
-msgid "Create a team you own."
-msgstr "మీ యాజమాన్యంలో బృందాన్ని సృష్టించండి."
-
-#: lib/porsche/ssh/command_messages.ex:42
-#, elixir-autogen, elixir-format
-msgid "List your teams and roles."
-msgstr "మీ బృందాలు, పాత్రలను జాబితా చేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:45
-#, elixir-autogen, elixir-format
-msgid "List a team's members."
-msgstr "బృంద సభ్యులను జాబితా చేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:43
-#, elixir-autogen, elixir-format
-msgid "Add or change an admin or member."
-msgstr "నిర్వాహకుడిని లేదా సభ్యుడిని జోడించండి లేదా మార్చండి."
-
-#: lib/porsche/ssh/command_messages.ex:44
-#, elixir-autogen, elixir-format
-msgid "Remove an account's membership."
-msgstr "ఖాతా సభ్యత్వాన్ని తీసివేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:49
-#, elixir-autogen, elixir-format
-msgid "Offer team ownership to an admin."
-msgstr "నిర్వాహకుడికి బృంద యాజమాన్యాన్ని అందించే ప్రతిపాదన చేయండి."
-
-#: lib/porsche/ssh/command_messages.ex:46
+#: lib/porsche/ssh/command_messages.ex:48
 #, elixir-autogen, elixir-format
 msgid "Accept a pending ownership offer."
 msgstr "పెండింగ్‌లో ఉన్న యాజమాన్య ప్రతిపాదనను అంగీకరించండి."
+
+#: lib/porsche/ssh/command_messages.ex:45
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "నిర్వాహకుడిని లేదా సభ్యుడిని జోడించండి లేదా మార్చండి."
 
 #: lib/porsche/ssh/onboarding.ex:64
 #, elixir-autogen, elixir-format
@@ -210,9 +53,7 @@ msgstr "ఆమోదం తర్వాత మీ ఆదేశాన్ని �
 
 #: lib/porsche/ssh/onboarding.ex:61
 #, elixir-autogen, elixir-format
-msgid ""
-"Approval links expire after %{minutes} minutes or when this connection "
-"closes.\n"
+msgid "Approval links expire after %{minutes} minutes or when this connection closes.\n"
 msgstr ""
 "ఆమోద లింక్‌లు %{minutes} నిమిషాల తర్వాత లేదా ఈ కనెక్షన్ మూసినప్పుడు గడువు "
 "ముగుస్తాయి.\n"
@@ -222,22 +63,61 @@ msgstr ""
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "బ్రౌజర్‌లో ఈ SSH కీని ఆమోదించి, తర్వాత ఆదేశాన్ని మళ్లీ ప్రయత్నించండి."
 
-#: lib/porsche/ssh/command_messages.ex:47
+#: lib/porsche/ssh/command_messages.ex:19
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "ప్రచురించని క్లోన్ లేదా ఖరారు కాని తరలింపు అభ్యర్థనను రద్దు చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:50
 #, elixir-autogen, elixir-format
 msgid "Cancel your pending ownership offer."
 msgstr "మీ పెండింగ్ యాజమాన్య ప్రతిపాదనను రద్దు చేయండి."
 
-#: lib/porsche/ssh/command_messages.ex:7
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr ""
+"యంత్రం CPU మరియు మెమరీని మార్చండి; డిస్క్‌ను పెంచడం మాత్రమే సాధ్యం. "
+"నడుస్తున్న యంత్రం ఆగి తిరిగి ప్రారంభమవుతుంది."
+
+#: lib/porsche/ssh/command_messages.ex:52
 #, elixir-autogen, elixir-format
 msgid "Close this interactive channel."
 msgstr "ఈ పరస్పర సంభాషణ ఛానెల్‌ను మూసివేయండి."
 
-#: lib/porsche/ssh/command_messages.ex:48
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr ""
+"యంత్రాన్ని సృష్టించండి. డిస్క్ గరిష్ఠ పరిమాణం: 500 GiB. --source గెస్ట్‌లో "
+"పబ్లిక్ GitHub, GitLab, Codeberg లేదా Bitbucket రిపోజిటరీని క్లోన్ "
+"చేస్తుంది."
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "మీ యాజమాన్యంలో బృందాన్ని సృష్టించండి."
+
+#: lib/porsche/ssh/command_messages.ex:34
+#, elixir-autogen, elixir-format
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr ""
+"https://NAME.integration.internal వద్ద పేరుతో అనుసంధానాన్ని సృష్టించండి లేదా"
+" భర్తీ చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:49
 #, elixir-autogen, elixir-format
 msgid "Decline a pending ownership offer."
 msgstr "పెండింగ్‌లో ఉన్న యాజమాన్య ప్రతిపాదనను తిరస్కరించండి."
 
-#: lib/porsche/ssh/channel.ex:115
+#: lib/porsche/ssh/command_messages.ex:22
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr ""
+"యంత్రాన్ని, దాని డిస్క్‌ను తొలగించండి. యజమాని పిన్ చేసి ఉంచితే "
+"నిరాకరించబడుతుంది."
+
+#: lib/porsche/ssh/channel.ex:154
 #, elixir-autogen, elixir-format
 msgid "Docs:"
 msgstr "పత్రాలు:"
@@ -247,10 +127,25 @@ msgstr "పత్రాలు:"
 msgid "Follow the browser approval instructions, then run the setup command\n"
 msgstr "బ్రౌజర్ ఆమోద సూచనలను అనుసరించి, ఆపై సెటప్ ఆదేశాన్ని అమలు చేయండి\n"
 
-#: lib/porsche/ssh/command_messages.ex:27
+#: lib/porsche/ssh/command_messages.ex:30
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "వీక్షకుడు, ఆపరేటర్ లేదా నిర్వాహకుడి యాక్సెస్ ఇవ్వండి."
+
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "పేరు లేదా UUID ద్వారా యంత్రాన్ని పరిశీలించండి."
+
+#: lib/porsche/ssh/command_messages.ex:51
 #, elixir-autogen, elixir-format
 msgid "Inspect a previously accepted request."
 msgstr "గతంలో అంగీకరించిన అభ్యర్థనను పరిశీలించండి."
+
+#: lib/porsche/ssh/command_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "రహస్యాలు చూపకుండా అనుసంధానాన్ని పరిశీలించండి."
 
 #: lib/porsche/ssh/output.ex:58
 #, elixir-autogen, elixir-format
@@ -262,68 +157,141 @@ msgstr "చెల్లని ఆదేశం. అందుబాటులో �
 msgid "Keep that connection open while approving your key in the browser,\n"
 msgstr "బ్రౌజర్‌లో మీ కీని ఆమోదిస్తున్నప్పుడు ఆ కనెక్షన్‌ను తెరిచి ఉంచండి,\n"
 
-#: lib/porsche/ssh/channel.ex:113
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "బృంద సభ్యులను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:29
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "యాక్సెస్ అనుమతులను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "అందుబాటులో ఉన్న ఇమేజ్‌లను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "మీరు యాక్సెస్ చేయగల యంత్రాలను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:32
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "మీ SSH కీలను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "మీ అనుసంధానాలను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "మీ బృందాలు, పాత్రలను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "యంత్రానికి అనుసంధానాన్ని అందుబాటులో ఉంచండి."
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "యంత్రాన్ని స్వయంచాలకంగా ఎంచుకున్న హోస్ట్‌కు తరలించండి."
+
+#: lib/porsche/ssh/command_messages.ex:47
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "నిర్వాహకుడికి బృంద యాజమాన్యాన్ని అందించే ప్రతిపాదన చేయండి."
+
+#: lib/porsche/ssh/channel.ex:152
 #, elixir-autogen, elixir-format
 msgid "Porsche machine management. Type help."
 msgstr "Porsche యంత్ర నిర్వహణ. help టైప్ చేయండి."
 
+#: lib/porsche/ssh/command_messages.ex:13
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "యంత్రం మొత్తం డిస్క్ యొక్క స్వతంత్ర కాపీని వరుసలో ఉంచండి."
+
 #: lib/porsche/ssh/onboarding.ex:114
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your SSH key in Overalls Account settings > SSH keys.\n"
-"\n"
+msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
 msgstr ""
 "Overalls ఖాతా సెట్టింగ్‌లు > SSH కీలలో మీ SSH కీని నమోదు చేయండి లేదా తనిఖీ చేయండి.\n"
 "\n"
 
 #: lib/porsche/ssh/onboarding.ex:110
 #, elixir-autogen, elixir-format
-msgid ""
-"Register or check your key by connecting to:\n"
-"  ssh "
+msgid "Register or check your key by connecting to:\n  ssh "
 msgstr ""
 "ఇక్కడ కనెక్ట్ చేసి మీ కీని నమోదు చేయండి లేదా తనిఖీ చేయండి:\n"
 "  ssh "
 
-#: lib/porsche/ssh/output.ex:104
+#: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "యంత్రానికి ప్రత్యేకంగా ఇచ్చిన అందుబాటును తీసివేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "పేరుతో ఉన్న అనుసంధానాన్ని తీసివేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:46
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "ఖాతా సభ్యత్వాన్ని తీసివేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:28
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "యంత్రంపై మీ పిన్‌ను తీసివేయండి."
+
+#: lib/porsche/ssh/output.ex:349
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "అభ్యర్థన %{id}: సమర్పిస్తోంది"
 
-#: lib/porsche/ssh/output.ex:107
+#: lib/porsche/ssh/output.ex:352
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "అభ్యర్థన %{id}: పూర్తయ్యే వరకు వేచి ఉంది"
 
-# Reviewed English fallback pending translation of suspension behavior.
-msgid "Suspend a machine, preserving its memory and disk."
-msgstr "Suspend a machine, preserving its memory and disk."
-
-# Reviewed English fallback pending translation of suspension behavior.
-msgid "Resume preserved memory, waiting for capacity or relocation."
-msgstr "Resume preserved memory, waiting for capacity or relocation."
-
-# Reviewed English fallback pending translation of suspension behavior.
-msgid "Resume a suspended machine's preserved memory."
-msgstr "Resume a suspended machine's preserved memory."
-
-#: lib/porsche/ssh/onboarding.ex:112
+#: lib/porsche/ssh/command_messages.ex:18
 #, elixir-autogen, elixir-format
-msgid ""
-"\n"
-"Or manage your keys at:\n"
-"  "
-msgstr ""
-"\n"
-"లేదా మీ కీలను ఇక్కడ నిర్వహించండి:\n"
-"  "
+msgid "Retry a failed clone or relocation request."
+msgstr "విఫలమైన క్లోన్ లేదా తరలింపు అభ్యర్థనను మళ్లీ ప్రయత్నించండి."
 
-#: lib/porsche/ssh/command_messages.ex:8
+#: lib/porsche/ssh/command_messages.ex:31
+#, elixir-autogen, elixir-format
+msgid "Revoke an account's shared access."
+msgstr "ఖాతా భాగస్వామ్య యాక్సెస్‌ను ఉపసంహరించండి."
+
+#: lib/porsche/ssh/command_messages.ex:33
+#, elixir-autogen, elixir-format
+msgid "Revoke one of your SSH keys."
+msgstr "మీ SSH కీలలో ఒకదాన్ని ఉపసంహరించండి."
+
+#: lib/porsche/ssh/command_messages.ex:5
 #, elixir-autogen, elixir-format
 msgid "Show command help."
 msgstr "కమాండ్ సహాయాన్ని చూపించు."
 
-#: lib/porsche/ssh/output.ex:73
+#: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
+msgid "Show the authenticated account."
+msgstr "ధృవీకరించబడిన ఖాతాను చూపించండి."
+
+#: lib/porsche/ssh/command_messages.ex:20
+#, elixir-autogen, elixir-format
+msgid "Start a machine."
+msgstr "యంత్రాన్ని ప్రారంభించండి."
+
+#: lib/porsche/ssh/output.ex:297
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr "కమాండ్‌ను పూర్తి చేయలేకపోయాము: %{reason}"
@@ -342,9 +310,7 @@ msgstr ""
 
 #: lib/porsche/ssh/onboarding.ex:100
 #, elixir-autogen, elixir-format
-msgid ""
-"This SSH connection could not be authorized. Check your machine access and try again.\n"
-"\n"
+msgid "This SSH connection could not be authorized. Check your machine access and try again.\n\n"
 msgstr ""
 "ఈ SSH కనెక్షన్‌కు అధికారం ఇవ్వలేకపోయాము. మీ మెషీన్ యాక్సెస్‌ను తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.\n"
 "\n"
@@ -361,29 +327,21 @@ msgstr "ఊహించని ఇన్‌పుట్. దయచేసి క�
 
 #: lib/porsche/ssh/onboarding.ex:97
 #, elixir-autogen, elixir-format
-msgid ""
-"We couldn't verify this SSH key right now. Please try again shortly.\n"
-"\n"
+msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
 msgstr ""
 "ప్రస్తుతం ఈ SSH కీని ధృవీకరించలేకపోయాము. దయచేసి కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.\n"
 "\n"
 
 #: lib/porsche/ssh/onboarding.ex:53
 #, elixir-autogen, elixir-format
-msgid ""
-"We don't recognize this SSH key:\n"
-"  "
+msgid "We don't recognize this SSH key:\n  "
 msgstr ""
 "ఈ SSH కీ మాకు తెలియదు:\n"
 "  "
 
 #: lib/porsche/ssh/onboarding.ex:86
 #, elixir-autogen, elixir-format
-msgid ""
-"Welcome to Overalls.\n"
-"\n"
-"This connection needs the Overalls SSH configuration.\n"
-"\n"
+msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
 msgstr ""
 "Overallsకు స్వాగతం.\n"
 "\n"
@@ -405,6 +363,36 @@ msgstr "మీ మెషీన్ పేజీ నుండి మరియు r
 msgid "then retry your original command.\n"
 msgstr "ఆపై మీ అసలు కమాండ్‌ను మళ్లీ ప్రయత్నించండి.\n"
 
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:55
+#, elixir-autogen, elixir-format
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:53
+#, elixir-autogen, elixir-format
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspend a machine, preserving its memory and disk."
+
 #: lib/porsche/ssh/output.ex:94
 #, elixir-autogen, elixir-format
 msgid "A clone request is already in progress for this machine."
@@ -412,8 +400,7 @@ msgstr "ఈ మెషీన్‌కు క్లోన్ అభ్యర్థ
 
 #: lib/porsche/ssh/output.ex:76
 #, elixir-autogen, elixir-format
-msgid ""
-"A failed machine cannot be pinned; an existing pin can still be removed."
+msgid "A failed machine cannot be pinned; an existing pin can still be removed."
 msgstr "విఫలమైన మెషీన్‌ను పిన్ చేయలేరు; ఇప్పటికే ఉన్న పిన్‌ను తీసివేయవచ్చు."
 
 #: lib/porsche/ssh/output.ex:121
@@ -433,39 +420,37 @@ msgstr "ఈ మెషీన్ పరిమాణ మార్పు అభ్�
 
 #: lib/porsche/ssh/output.ex:110
 #, elixir-autogen, elixir-format
-msgid ""
-"A transfer is already using this host's transfer slot. Please try again "
-"after it finishes."
+msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr ""
 "ఈ హోస్ట్ బదిలీ స్లాట్‌ను మరో బదిలీ ఉపయోగిస్తోంది. అది పూర్తయిన తర్వాత మళ్లీ "
 "ప్రయత్నించండి."
 
-#: lib/porsche/ssh/output.ex:270
+#: lib/porsche/ssh/output.ex:322
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr "ఆమోదించబడింది"
 
-#: lib/porsche/ssh/output.ex:272
+#: lib/porsche/ssh/output.ex:324
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "విఫలమైంది"
 
-#: lib/porsche/ssh/output.ex:265
+#: lib/porsche/ssh/output.ex:317
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr "చర్య ID"
 
-#: lib/porsche/ssh/output.ex:262
+#: lib/porsche/ssh/output.ex:314
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr "ప్రోటోకాల్ సంస్కరణ"
 
-#: lib/porsche/ssh/output.ex:264
+#: lib/porsche/ssh/output.ex:316
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr "అభ్యర్థన ID"
 
-#: lib/porsche/ssh/output.ex:266
+#: lib/porsche/ssh/output.ex:318
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr "ఫలితం"
@@ -477,17 +462,17 @@ msgstr ""
 "మూలాన్ని శుభ్రపరచడం ఇంకా పెండింగ్‌లో ఉంది. మళ్లీ ప్రయత్నించే ముందు అది "
 "పూర్తయ్యే వరకు వేచి ఉండండి."
 
-#: lib/porsche/ssh/output.ex:263
+#: lib/porsche/ssh/output.ex:315
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "స్థితి"
 
-#: lib/porsche/ssh/output.ex:271
+#: lib/porsche/ssh/output.ex:323
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "విజయవంతమైంది"
 
-#: lib/porsche/ssh/output.ex:273
+#: lib/porsche/ssh/output.ex:325
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "భర్తీ చేయబడింది"
@@ -499,9 +484,7 @@ msgstr "SSH పబ్లిక్ కీ చెల్లదు. కీని త
 
 #: lib/porsche/ssh/output.ex:237
 #, elixir-autogen, elixir-format
-msgid ""
-"The approval request limit has been reached. Close an unused connection and "
-"try again."
+msgid "The approval request limit has been reached. Close an unused connection and try again."
 msgstr ""
 "ఆమోద అభ్యర్థనల పరిమితి చేరుకుంది. ఉపయోగించని కనెక్షన్‌ను మూసి మళ్లీ "
 "ప్రయత్నించండి."
@@ -513,27 +496,21 @@ msgstr "అందుబాటులో ఉన్న హోస్ట్ మెష
 
 #: lib/porsche/ssh/output.ex:160
 #, elixir-autogen, elixir-format
-msgid ""
-"The connection to the control service was interrupted. Check the request "
-"status before submitting it again."
+msgid "The connection to the control service was interrupted. Check the request status before submitting it again."
 msgstr ""
 "నియంత్రణ సేవతో కనెక్షన్‌కు అంతరాయం కలిగింది. మళ్లీ పంపే ముందు అభ్యర్థన "
 "స్థితిని తనిఖీ చేయండి."
 
 #: lib/porsche/ssh/output.ex:170
 #, elixir-autogen, elixir-format
-msgid ""
-"The control service refused the request. Check the request status before "
-"submitting it again."
+msgid "The control service refused the request. Check the request status before submitting it again."
 msgstr ""
 "నియంత్రణ సేవ అభ్యర్థనను తిరస్కరించింది. మళ్లీ పంపే ముందు అభ్యర్థన స్థితిని "
 "తనిఖీ చేయండి."
 
 #: lib/porsche/ssh/output.ex:165
 #, elixir-autogen, elixir-format
-msgid ""
-"The control service returned an invalid response. Check the request status "
-"before submitting it again."
+msgid "The control service returned an invalid response. Check the request status before submitting it again."
 msgstr ""
 "నియంత్రణ సేవ చెల్లని ప్రతిస్పందన ఇచ్చింది. మళ్లీ పంపే ముందు అభ్యర్థన "
 "స్థితిని తనిఖీ చేయండి."
@@ -545,9 +522,7 @@ msgstr "ఈ చర్య కోసం మెషీన్ డిస్క్ ర�
 
 #: lib/porsche/ssh/output.ex:220
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's execution generation has changed. Inspect its current state "
-"before retrying."
+msgid "The machine's execution generation has changed. Inspect its current state before retrying."
 msgstr ""
 "మెషీన్ అమలు జనరేషన్ మారింది. మళ్లీ ప్రయత్నించే ముందు ప్రస్తుత స్థితిని తనిఖీ"
 " చేయండి."
@@ -559,27 +534,21 @@ msgstr "మెషీన్ హోస్ట్ అందుబాటులో ల
 
 #: lib/porsche/ssh/output.ex:133
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's placement has changed. Inspect its current state before "
-"retrying."
+msgid "The machine's placement has changed. Inspect its current state before retrying."
 msgstr ""
 "మెషీన్ అమరిక స్థానం మారింది. మళ్లీ ప్రయత్నించే ముందు ప్రస్తుత స్థితిని తనిఖీ"
 " చేయండి."
 
 #: lib/porsche/ssh/output.ex:217
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's stop has not been confirmed. Inspect its state before "
-"retrying."
+msgid "The machine's stop has not been confirmed. Inspect its state before retrying."
 msgstr ""
 "మెషీన్ ఆగినట్లు నిర్ధారణ కాలేదు. మళ్లీ ప్రయత్నించే ముందు స్థితిని తనిఖీ "
 "చేయండి."
 
 #: lib/porsche/ssh/output.ex:102
 #, elixir-autogen, elixir-format
-msgid ""
-"The machine's workload is not stable enough for this operation. Check its "
-"state before retrying."
+msgid "The machine's workload is not stable enough for this operation. Check its state before retrying."
 msgstr ""
 "ఈ చర్యకు మెషీన్ వర్క్‌లోడ్ తగినంత స్థిరంగా లేదు. మళ్లీ ప్రయత్నించే ముందు "
 "స్థితిని తనిఖీ చేయండి."
@@ -597,8 +566,7 @@ msgstr "గ్రహీతకు నమోదైన ఖాతా లేదు."
 
 #: lib/porsche/ssh/output.ex:208
 #, elixir-autogen, elixir-format
-msgid ""
-"The repository source is invalid. Use a supported public repository URL."
+msgid "The repository source is invalid. Use a supported public repository URL."
 msgstr ""
 "రిపాజిటరీ మూలం చెల్లదు. మద్దతు ఉన్న పబ్లిక్ రిపాజిటరీ URL ఉపయోగించండి."
 
@@ -609,9 +577,7 @@ msgstr "రిపాజిటరీ మూలం అందుబాటులో 
 
 #: lib/porsche/ssh/output.ex:142
 #, elixir-autogen, elixir-format
-msgid ""
-"The request conflicts with the current state. Inspect the machine or request"
-" before retrying."
+msgid "The request conflicts with the current state. Inspect the machine or request before retrying."
 msgstr ""
 "అభ్యర్థన ప్రస్తుత స్థితితో విరుద్ధంగా ఉంది. మళ్లీ ప్రయత్నించే ముందు మెషీన్ "
 "లేదా అభ్యర్థనను తనిఖీ చేయండి."
@@ -643,9 +609,7 @@ msgstr "అభ్యర్థించిన మెషీన్ ఇమేజ్ 
 
 #: lib/porsche/ssh/output.ex:187
 #, elixir-autogen, elixir-format
-msgid ""
-"The requested machine size is invalid. Check the CPU, memory and disk "
-"limits."
+msgid "The requested machine size is invalid. Check the CPU, memory and disk limits."
 msgstr ""
 "అభ్యర్థించిన మెషీన్ పరిమాణం చెల్లదు. CPU, మెమరీ మరియు డిస్క్ పరిమితులను "
 "తనిఖీ చేయండి."
@@ -657,18 +621,14 @@ msgstr "సేవ కాన్ఫిగరేషన్ చెల్లదు. �
 
 #: lib/porsche/ssh/output.ex:155
 #, elixir-autogen, elixir-format
-msgid ""
-"The service does not support this protocol version. Ask your operator to "
-"update the compatible services."
+msgid "The service does not support this protocol version. Ask your operator to update the compatible services."
 msgstr ""
 "సేవ ఈ ప్రోటోకాల్ సంస్కరణకు మద్దతు ఇవ్వదు. అనుకూల సేవలను నవీకరించమని మీ "
 "ఆపరేటర్‌ను అడగండి."
 
 #: lib/porsche/ssh/output.ex:234
 #, elixir-autogen, elixir-format
-msgid ""
-"The session limit has been reached. Close an unused connection and try "
-"again."
+msgid "The session limit has been reached. Close an unused connection and try again."
 msgstr ""
 "సెషన్ పరిమితి చేరుకుంది. ఉపయోగించని కనెక్షన్‌ను మూసి మళ్లీ ప్రయత్నించండి."
 
@@ -689,8 +649,7 @@ msgstr "ఈ చర్య యజమాని రక్షిత ప్రవే�
 
 #: lib/porsche/ssh/output.ex:88
 #, elixir-autogen, elixir-format
-msgid ""
-"This clone has already been published and cannot be retried or cancelled."
+msgid "This clone has already been published and cannot be retried or cancelled."
 msgstr ""
 "ఈ క్లోన్ ఇప్పటికే ప్రచురించబడింది; మళ్లీ ప్రయత్నించడం లేదా రద్దు చేయడం "
 "సాధ్యం కాదు."
@@ -712,9 +671,7 @@ msgstr "ఈ మెషీన్ తొలగించబడింది."
 
 #: lib/porsche/ssh/output.ex:193
 #, elixir-autogen, elixir-format
-msgid ""
-"This machine has reached its execution generation limit. Contact your "
-"operator."
+msgid "This machine has reached its execution generation limit. Contact your operator."
 msgstr ""
 "ఈ మెషీన్ అమలు జనరేషన్ పరిమితిని చేరుకుంది. మీ ఆపరేటర్‌ను సంప్రదించండి."
 
@@ -735,15 +692,12 @@ msgstr "ఈ స్థాన మార్పు ఇప్పటికే పూ�
 
 #: lib/porsche/ssh/output.ex:124
 #, elixir-autogen, elixir-format
-msgid ""
-"This relocation has committed its handoff and can no longer be cancelled."
+msgid "This relocation has committed its handoff and can no longer be cancelled."
 msgstr "ఈ స్థాన మార్పు అప్పగింత ఖరారైంది; ఇక రద్దు చేయలేరు."
 
 #: lib/porsche/ssh/output.ex:97
 #, elixir-autogen, elixir-format
-msgid ""
-"This request ID was already used for a different command. Use the original "
-"command or a new request ID."
+msgid "This request ID was already used for a different command. Use the original command or a new request ID."
 msgstr ""
 "ఈ అభ్యర్థన ID వేరే కమాండ్‌కు ఉపయోగించబడింది. అసలు కమాండ్ లేదా కొత్త అభ్యర్థన"
 " ID ఉపయోగించండి."
@@ -760,9 +714,7 @@ msgstr "ప్రస్తుత స్థితిలో ఈ పరిమాణ
 
 #: lib/porsche/ssh/output.ex:150
 #, elixir-autogen, elixir-format
-msgid ""
-"Too many sessions or approval requests are active. Close an unused "
-"connection and try again."
+msgid "Too many sessions or approval requests are active. Close an unused connection and try again."
 msgstr ""
 "చాలా సెషన్‌లు లేదా ఆమోద అభ్యర్థనలు సక్రియంగా ఉన్నాయి. ఉపయోగించని కనెక్షన్‌ను"
 " మూసి మళ్లీ ప్రయత్నించండి."
@@ -771,3 +723,183 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "You already hold the maximum number of pins; unpin one first."
 msgstr "మీ పిన్‌ల గరిష్ఠ పరిమితి చేరుకుంది; ముందుగా ఒక పిన్ తీసివేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:75
+#, elixir-autogen, elixir-format
+msgid "Register this device for push notifications. The push key is read from stdin."
+msgstr "పుష్ నోటిఫికేషన్ల కోసం ఈ పరికరాన్ని నమోదు చేయండి. పుష్ కీ stdin నుండి చదవబడుతుంది."
+
+#: lib/porsche/ssh/command_messages.ex:78
+#, elixir-autogen, elixir-format
+msgid "List your push notification devices."
+msgstr "మీ పుష్ నోటిఫికేషన్ పరికరాలను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:79
+#, elixir-autogen, elixir-format
+msgid "Revoke a push notification device."
+msgstr "ఒక పుష్ నోటిఫికేషన్ పరికరాన్ని రద్దు చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:80
+#, elixir-autogen, elixir-format
+msgid "Turn push notifications on or off for one device."
+msgstr "ఒక పరికరం కోసం పుష్ నోటిఫికేషన్లను ఆన్ లేదా ఆఫ్ చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:81
+#, elixir-autogen, elixir-format
+msgid "Attach this SSH terminal to a shared terminal session; needs ssh -t."
+msgstr "ఈ SSH టెర్మినల్‌ను భాగస్వామ్య టెర్మినల్ సెషన్‌కు జోడిస్తుంది; ssh -t అవసరం."
+
+#: lib/porsche/ssh/output.ex:245
+#, elixir-autogen, elixir-format
+msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr "terminal attach కు టెర్మినల్ అవసరం. ssh -t తో కనెక్ట్ అయి దాన్ని కమాండ్‌గా అమలు చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "List agent threads you can read, with unread counts."
+msgstr "మీరు చదవగల ఏజెంట్ థ్రెడ్‌లను చదవని సంఖ్యలతో జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:57
+#, elixir-autogen, elixir-format
+msgid "Inspect a thread, its pending question and latest plan."
+msgstr "థ్రెడ్‌ను, దాని పెండింగ్ ప్రశ్నను మరియు తాజా ప్రణాళికను పరిశీలించండి."
+
+#: lib/porsche/ssh/command_messages.ex:58
+#, elixir-autogen, elixir-format
+msgid "List a thread's transcript events after a sequence number."
+msgstr "ఒక క్రమ సంఖ్య తర్వాత థ్రెడ్ ట్రాన్స్‌క్రిప్ట్ ఈవెంట్‌లను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:59
+#, elixir-autogen, elixir-format
+msgid "Send a prompt read from standard input to a thread."
+msgstr "ప్రామాణిక ఇన్‌పుట్ నుండి చదివిన ప్రాంప్ట్‌ను థ్రెడ్‌కు పంపండి."
+
+#: lib/porsche/ssh/command_messages.ex:60
+#, elixir-autogen, elixir-format
+msgid "Answer a thread's pending question with JSON read from standard input."
+msgstr "ప్రామాణిక ఇన్‌పుట్ నుండి చదివిన JSON తో థ్రెడ్ పెండింగ్ ప్రశ్నకు సమాధానం ఇవ్వండి."
+
+#: lib/porsche/ssh/command_messages.ex:63
+#, elixir-autogen, elixir-format
+msgid "Approve a thread's latest plan and start implementing it."
+msgstr "థ్రెడ్ తాజా ప్రణాళికను ఆమోదించి దాని అమలును ప్రారంభించండి."
+
+#: lib/porsche/ssh/command_messages.ex:64
+#, elixir-autogen, elixir-format
+msgid "Ask for a revised plan, reading the feedback from standard input."
+msgstr "సవరించిన ప్రణాళికను అడగండి, అభిప్రాయాన్ని ప్రామాణిక ఇన్‌పుట్ నుండి చదువుతూ."
+
+#: lib/porsche/ssh/command_messages.ex:65
+#, elixir-autogen, elixir-format
+msgid "Switch a thread between plan and work collaboration."
+msgstr "థ్రెడ్‌ను plan మరియు work సహకారం మధ్య మార్చండి."
+
+#: lib/porsche/ssh/command_messages.ex:66
+#, elixir-autogen, elixir-format
+msgid "Mark a thread read up to a transcript sequence number."
+msgstr "ట్రాన్స్‌క్రిప్ట్ క్రమ సంఖ్య వరకు థ్రెడ్‌ను చదివినట్లు గుర్తించండి."
+
+#: lib/porsche/ssh/command_messages.ex:67
+#, elixir-autogen, elixir-format
+msgid "List a machine's terminal sessions you can open."
+msgstr "మీరు తెరవగల యంత్రం టెర్మినల్ సెషన్‌లను జాబితా చేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:68
+#, elixir-autogen, elixir-format
+msgid "Open your personal terminal session on a machine."
+msgstr "యంత్రంపై మీ వ్యక్తిగత టెర్మినల్ సెషన్‌ను తెరవండి."
+
+#: lib/porsche/ssh/command_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Close one of your terminal sessions on a machine."
+msgstr "యంత్రంపై మీ టెర్మినల్ సెషన్‌లలో ఒకదాన్ని మూసివేయండి."
+
+#: lib/porsche/ssh/command_messages.ex:70
+#, elixir-autogen, elixir-format
+msgid "Show a machine's web endpoint, port and visibility."
+msgstr "యంత్రం వెబ్ ఎండ్‌పాయింట్, పోర్ట్ మరియు దృశ్యమానతను చూపండి."
+
+#: lib/porsche/ssh/command_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Change a machine's web port or visibility, optionally at an expected revision."
+msgstr "యంత్రం వెబ్ పోర్ట్ లేదా దృశ్యమానతను మార్చండి, ఐచ్ఛికంగా ఆశించిన సవరణ వద్ద."
+
+#: lib/porsche/ssh/command_messages.ex:74
+#, elixir-autogen, elixir-format
+msgid "Stream JSON change notices for machines, threads and this session."
+msgstr "యంత్రాలు, థ్రెడ్‌లు మరియు ఈ సెషన్ కోసం JSON మార్పు నోటీసులను స్ట్రీమ్ చేయండి."
+
+#: lib/porsche/ssh/output.ex:250
+#, elixir-autogen, elixir-format
+msgid "This thread is not ready for prompts yet."
+msgstr "ఈ థ్రెడ్ ఇంకా ప్రాంప్ట్‌లకు సిద్ధంగా లేదు."
+
+#: lib/porsche/ssh/output.ex:253
+#, elixir-autogen, elixir-format
+msgid "This thread is busy with a turn. Try again when it finishes."
+msgstr "ఈ థ్రెడ్ ఒక టర్న్‌తో బిజీగా ఉంది. అది పూర్తయిన తర్వాత మళ్లీ ప్రయత్నించండి."
+
+#: lib/porsche/ssh/output.ex:256
+#, elixir-autogen, elixir-format
+msgid "That plan is no longer the latest proposal. Show the thread again."
+msgstr "ఆ ప్రణాళిక ఇకపై తాజా ప్రతిపాదన కాదు. థ్రెడ్‌ను మళ్లీ చూపండి."
+
+#: lib/porsche/ssh/output.ex:259
+#, elixir-autogen, elixir-format
+msgid "That question is no longer pending."
+msgstr "ఆ ప్రశ్న ఇకపై పెండింగ్‌లో లేదు."
+
+#: lib/porsche/ssh/output.ex:262
+#, elixir-autogen, elixir-format
+msgid "That question has already been answered."
+msgstr "ఆ ప్రశ్నకు ఇప్పటికే సమాధానం ఇవ్వబడింది."
+
+#: lib/porsche/ssh/output.ex:265
+#, elixir-autogen, elixir-format
+msgid "The answers do not match the pending question."
+msgstr "సమాధానాలు పెండింగ్ ప్రశ్నతో సరిపోలడం లేదు."
+
+#: lib/porsche/ssh/output.ex:268
+#, elixir-autogen, elixir-format
+msgid "Answer the pending question before sending another prompt."
+msgstr "మరో ప్రాంప్ట్ పంపే ముందు పెండింగ్ ప్రశ్నకు సమాధానం ఇవ్వండి."
+
+#: lib/porsche/ssh/output.ex:271
+#, elixir-autogen, elixir-format
+msgid "The web settings changed since you read them. Show them again and retry."
+msgstr "మీరు చదివిన తర్వాత వెబ్ సెట్టింగ్‌లు మారాయి. వాటిని మళ్లీ చూపించి మళ్లీ ప్రయత్నించండి."
+
+#: lib/porsche/ssh/output.ex:274
+#, elixir-autogen, elixir-format
+msgid "Port 4444 is reserved for the editor."
+msgstr "పోర్ట్ 4444 ఎడిటర్ కోసం రిజర్వ్ చేయబడింది."
+
+#: lib/porsche/ssh/output.ex:277
+#, elixir-autogen, elixir-format
+msgid "This machine's profile does not allow web publishing."
+msgstr "ఈ యంత్రం ప్రొఫైల్ వెబ్ ప్రచురణను అనుమతించదు."
+
+#: lib/porsche/ssh/output.ex:280
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable on this machine right now."
+msgstr "ఈ యంత్రంలో ప్రస్తుతం టెర్మినల్‌లు అందుబాటులో లేవు."
+
+#: lib/porsche/ssh/output.ex:283
+#, elixir-autogen, elixir-format
+msgid "The machine is waking. Retry the terminal shortly."
+msgstr "యంత్రం మేల్కొంటోంది. కొద్దిసేపట్లో టెర్మినల్‌ను మళ్లీ ప్రయత్నించండి."
+
+#: lib/porsche/ssh/output.ex:286
+#, elixir-autogen, elixir-format
+msgid "That terminal session no longer exists."
+msgstr "ఆ టెర్మినల్ సెషన్ ఇకపై ఉనికిలో లేదు."
+
+#: lib/porsche/ssh/output.ex:289
+#, elixir-autogen, elixir-format
+msgid "This command reads its input from standard input. Pipe it in and end the command with -."
+msgstr "ఈ ఆదేశం తన ఇన్‌పుట్‌ను ప్రామాణిక ఇన్‌పుట్ నుండి చదువుతుంది. దాన్ని పైప్ చేసి ఆదేశాన్ని - తో ముగించండి."
+
+#: lib/porsche/ssh/output.ex:294
+#, elixir-autogen, elixir-format
+msgid "The standard input is empty or exceeds this command's size limit."
+msgstr "ప్రామాణిక ఇన్‌పుట్ ఖాళీగా ఉంది లేదా ఈ ఆదేశం పరిమాణ పరిమితిని మించింది."

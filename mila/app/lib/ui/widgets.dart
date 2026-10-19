@@ -181,3 +181,89 @@ class ConsoleButton extends StatelessWidget {
     ),
   );
 }
+
+/// One choice among a few, as the web's segmented control: every option is
+/// a bordered button and the selected one is drawn in inverse video, so the
+/// selection never depends on colour alone.
+class Segmented<T> extends StatelessWidget {
+  const Segmented({
+    super.key,
+    required this.options,
+    required this.selected,
+    required this.label,
+    this.onSelected,
+    this.keyPrefix = 'segment',
+  });
+
+  final List<T> options;
+  final T? selected;
+  final String Function(T option) label;
+  final ValueChanged<T>? onSelected;
+  final String keyPrefix;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = MonoTheme.of(context);
+    return Wrap(
+      children: [
+        for (final (index, option) in options.indexed)
+          Semantics(
+            selected: option == selected,
+            button: true,
+            child: OutlinedButton(
+              key: Key('$keyPrefix-$index'),
+              style: option == selected
+                  ? OutlinedButton.styleFrom(
+                      backgroundColor: tokens.text,
+                      foregroundColor: tokens.background,
+                    )
+                  : null,
+              onPressed: onSelected == null ? null : () => onSelected!(option),
+              child: Text(label(option).toUpperCase(), softWrap: false),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// A row of page tabs under the app bar, as the web's top tabs.
+class TopTabs extends StatelessWidget {
+  const TopTabs({
+    super.key,
+    required this.labels,
+    required this.selected,
+    required this.onSelected,
+  });
+
+  final List<String> labels;
+  final int selected;
+  final ValueChanged<int> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = MonoTheme.of(context);
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          for (final (index, label) in labels.indexed)
+            Semantics(
+              selected: index == selected,
+              child: TextButton(
+                key: Key('tab-$index'),
+                style: index == selected
+                    ? TextButton.styleFrom(
+                        backgroundColor: tokens.text,
+                        foregroundColor: tokens.background,
+                      )
+                    : null,
+                onPressed: () => onSelected(index),
+                child: Text(label.toUpperCase(), softWrap: false),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}

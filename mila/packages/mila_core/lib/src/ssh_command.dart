@@ -20,7 +20,29 @@ const int maximumTokens = 32;
 /// Porsche refuses more options than this on one command.
 const int maximumOptions = 12;
 
-const Set<String> _booleans = {'json', 'no-wait', 'peer'};
+const Set<String> _booleans = {
+  'json',
+  'no-wait',
+  'peer',
+  'public',
+  'private',
+  'session',
+  'read-only',
+};
+
+/// Options that may repeat; repeated values collect into a list. Only
+/// `watch` accepts a list (ADR-0222).
+const Set<String> _repeatable = {'machine', 'thread'};
+
+/// The most identifiers one `watch` filter may name.
+const int maximumWatchFilters = 16;
+
+/// Stdin payload kinds and byte limits, as `SSHCommand.stdin_payload?/1`.
+const Map<String, (PayloadKind, int)> stdinPayloads = {
+  'thread prompt': (PayloadKind.prompt, 65536),
+  'thread answer': (PayloadKind.answers, 65536),
+  'thread plan revise': (PayloadKind.revision, 65536),
+};
 
 /// One catalog row: positional bounds, extra options and request kind.
 final class CommandSpec {
@@ -120,6 +142,37 @@ const Map<String, CommandSpec> catalog = {
     physical: true,
   ),
   'team list': CommandSpec('team list', options: ['after']),
+  'thread ls': CommandSpec('thread ls', options: ['machine', 'after']),
+  'thread show': CommandSpec('thread show', minArguments: 1, maxArguments: 1),
+  'thread turns': CommandSpec('thread turns', minArguments: 1, maxArguments: 1, options: ['after']),
+  'thread prompt': CommandSpec('thread prompt', minArguments: 2, maxArguments: 2, mutation: true),
+  'thread answer': CommandSpec('thread answer', minArguments: 3, maxArguments: 3, mutation: true),
+  'thread plan approve': CommandSpec(
+    'thread plan approve',
+    minArguments: 2,
+    maxArguments: 2,
+    mutation: true,
+  ),
+  'thread plan revise': CommandSpec(
+    'thread plan revise',
+    minArguments: 3,
+    maxArguments: 3,
+    mutation: true,
+  ),
+  'thread mode': CommandSpec('thread mode', minArguments: 2, maxArguments: 2, mutation: true),
+  'thread read': CommandSpec('thread read', minArguments: 2, maxArguments: 2, mutation: true),
+  'terminal ls': CommandSpec('terminal ls', minArguments: 1, maxArguments: 1),
+  'terminal new': CommandSpec('terminal new', minArguments: 1, maxArguments: 1, mutation: true),
+  'terminal kill': CommandSpec('terminal kill', minArguments: 2, maxArguments: 2, mutation: true),
+  'web show': CommandSpec('web show', minArguments: 1, maxArguments: 1),
+  'web set': CommandSpec(
+    'web set',
+    minArguments: 1,
+    maxArguments: 1,
+    options: ['port', 'public', 'private', 'revision'],
+    mutation: true,
+  ),
+  'watch': CommandSpec('watch', options: ['machine', 'thread', 'session']),
   // Push devices (ADR-0225). The push key travels on stdin, never in the line.
   'device register': CommandSpec(
     'device register',
@@ -137,12 +190,71 @@ const Map<String, CommandSpec> catalog = {
     mutation: true,
     required: ['enabled'],
   ),
+  // Agent threads (ADR-0222). Prompt, answer and revision text travel on
+  // stdin after a final `-` argument, never in the line.
+  'thread ls': CommandSpec('thread ls', options: ['machine', 'after']),
+  'thread show': CommandSpec('thread show', minArguments: 1, maxArguments: 1),
+  'thread turns': CommandSpec('thread turns', minArguments: 1, maxArguments: 1, options: ['after']),
+  'thread prompt': CommandSpec('thread prompt', minArguments: 2, maxArguments: 2, mutation: true),
+  'thread answer': CommandSpec('thread answer', minArguments: 3, maxArguments: 3, mutation: true),
+  'thread plan approve': CommandSpec(
+    'thread plan approve',
+    minArguments: 2,
+    maxArguments: 2,
+    mutation: true,
+  ),
+  'thread plan revise': CommandSpec(
+    'thread plan revise',
+    minArguments: 3,
+    maxArguments: 3,
+    mutation: true,
+  ),
+  'thread mode': CommandSpec('thread mode', minArguments: 2, maxArguments: 2, mutation: true),
+  'thread read': CommandSpec('thread read', minArguments: 2, maxArguments: 2, mutation: true),
+  // Terminals (ADR-0223). `terminal attach` is a read: its ticket is never
+  // pinned in a receipt, so it carries no request id.
+  'terminal ls': CommandSpec('terminal ls', minArguments: 1, maxArguments: 1),
+  'terminal new': CommandSpec('terminal new', minArguments: 1, maxArguments: 1, mutation: true),
+  'terminal kill': CommandSpec('terminal kill', minArguments: 2, maxArguments: 2, mutation: true),
+  'terminal attach': CommandSpec(
+    'terminal attach',
+    minArguments: 2,
+    maxArguments: 2,
+    options: ['cursor', 'read-only'],
+  ),
+  // Web endpoints (ADR-0222).
+  'web show': CommandSpec('web show', minArguments: 1, maxArguments: 1),
+  'web set': CommandSpec(
+    'web set',
+    minArguments: 1,
+    maxArguments: 1,
+    options: ['port', 'public', 'private', 'revision'],
+    mutation: true,
+  ),
+  // Live change notices on a long-lived exec channel (ADR-0222).
+  'watch': CommandSpec('watch', options: ['machine', 'thread', 'session']),
+};
+
+/// The stdin payload a command reads after its final `-` argument.
+enum PayloadKind { prompt, answers, revision }
+
+/// Porsche accepts at most this many stdin bytes for a text payload.
+const int maximumPayloadBytes = 65536;
+
+/// Commands whose final `-` argument names a stdin text payload.
+const Map<String, PayloadKind> payloadCommands = {
+  'thread prompt': PayloadKind.prompt,
+  'thread answer': PayloadKind.answers,
+  'thread plan revise': PayloadKind.revision,
 };
 
 /// Platforms `device register` accepts.
 const Set<String> pushPlatforms = {'ios', 'android'};
 
 final RegExp _encPublicKey = RegExp(r'^[A-Za-z0-9_-]{43}$');
+
+/// The stdin payload [command] reads, or null when it reads none.
+(PayloadKind, int)? stdinPayload(PorscheCommand command) => stdinPayloads[command.name];
 
 /// A structured Porsche command before encoding.
 final class PorscheCommand {
@@ -156,7 +268,8 @@ final class PorscheCommand {
   final String name;
   final List<String> arguments;
 
-  /// Values are `String`, or `true` for boolean flags.
+  /// Values are `String`, `true` for boolean flags, or `List<String>` for a
+  /// repeated `watch` filter.
   final Map<String, Object> options;
 
   @override
@@ -165,13 +278,13 @@ final class PorscheCommand {
       other.name == name &&
       _listEquals(other.arguments, arguments) &&
       other.options.length == options.length &&
-      options.entries.every((entry) => other.options[entry.key] == entry.value);
+      options.entries.every((entry) => _valueEquals(other.options[entry.key], entry.value));
 
   @override
   int get hashCode => Object.hash(
     name,
     Object.hashAll(arguments),
-    Object.hashAllUnordered(options.entries.map((e) => Object.hash(e.key, e.value))),
+    Object.hashAllUnordered(options.entries.map((e) => Object.hash(e.key, _valueHash(e.value)))),
   );
 
   @override
@@ -180,6 +293,13 @@ final class PorscheCommand {
 
 bool _listEquals(List<String> a, List<String> b) =>
     a.length == b.length && Iterable<int>.generate(a.length).every((i) => a[i] == b[i]);
+
+bool _valueEquals(Object? a, Object b) => switch ((a, b)) {
+  (final List<String> x, final List<String> y) => _listEquals(x, y),
+  _ => a == b,
+};
+
+int _valueHash(Object value) => value is List<String> ? Object.hashAll(value) : value.hashCode;
 
 /// Why Mila refused to build a command line.
 enum CommandRefusal {
@@ -235,6 +355,48 @@ bool _text(String value) {
 /// Disk maximum shared with `OverallsProtocol.VMShape`.
 const int maximumDiskGib = 500;
 
+/// A transcript sequence: canonical, 0 to 2^31-1 (0 is before the first).
+bool isSequence(String value) {
+  if (value.isEmpty || value.length > 10) return false;
+  final n = int.tryParse(value);
+  return n != null && n >= 0 && n <= 2147483647 && n.toString() == value;
+}
+
+/// A terminal replay cursor: a canonical non-negative signed 64-bit offset.
+bool isCursor(String value) {
+  if (value.isEmpty || value.length > 19) return false;
+  final n = int.tryParse(value);
+  return n != null && n >= 0 && n.toString() == value;
+}
+
+bool _commandOptionValid(String command, String key, Object value) {
+  if (value is List<String>) {
+    return command == 'watch' &&
+        _repeatable.contains(key) &&
+        value.length <= maximumWatchFilters &&
+        value.every((item) => _commandOptionValid(command, key, item));
+  }
+  return switch ((command, key)) {
+    ('thread turns', 'after') => value is String && isSequence(value),
+    ('thread ls' || 'watch', 'machine') => value is String && isMachineReference(value),
+    ('watch', 'thread') => value is String && isCanonicalUuid(value),
+    ('web set', 'port') => value is String && _positive(value, 65535),
+    ('web set', 'revision') => value is String && _positive(value, 2147483647),
+    ('terminal attach', 'cursor') => value is String && isCursor(value),
+    _ => _optionValid(key, value),
+  };
+}
+
+/// Cross-option rules: a web change names a setting and never both
+/// visibilities; a watch names at least one subscription.
+bool _commandOptionsValid(String command, Map<String, Object> options) => switch (command) {
+  'web set' =>
+    !(options.containsKey('public') && options.containsKey('private')) &&
+        const ['port', 'public', 'private'].any(options.containsKey),
+  'watch' => const ['machine', 'thread', 'session'].any(options.containsKey),
+  _ => true,
+};
+
 bool _optionValid(String key, Object value) {
   if (_booleans.contains(key)) return value == true;
   if (value is! String) return false;
@@ -283,6 +445,22 @@ bool _argumentsValid(String name, List<String> args) => switch ((name, args)) {
     isMachineReference(machine) && utf8.encode(email).length <= 320,
   ('ssh-key remove' || 'device rm' || 'device prefs', [final id]) => isCanonicalUuid(id),
   ('request show' || 'request retry' || 'request cancel', [final id]) => isRequestId(id),
+  ('thread show' || 'thread turns', [final thread]) => isCanonicalUuid(thread),
+  ('thread prompt', [final thread, '-']) => isCanonicalUuid(thread),
+  ('thread answer', [final thread, final question, '-']) =>
+    isCanonicalUuid(thread) && isCanonicalUuid(question),
+  ('thread plan approve', [final thread, final plan]) =>
+    isCanonicalUuid(thread) && isCanonicalUuid(plan),
+  ('thread plan revise', [final thread, final plan, '-']) =>
+    isCanonicalUuid(thread) && isCanonicalUuid(plan),
+  ('thread mode', [final thread, final mode]) =>
+    isCanonicalUuid(thread) && (mode == 'plan' || mode == 'work'),
+  ('thread read', [final thread, final sequence]) =>
+    isCanonicalUuid(thread) && isSequence(sequence),
+  ('terminal ls' || 'terminal new' || 'web show' || 'web set', [final machine]) =>
+    isMachineReference(machine),
+  ('terminal kill' || 'terminal attach', [final machine, final session]) =>
+    isMachineReference(machine) && isCanonicalUuid(session),
   (_, []) => true,
   _ => false,
 };
@@ -298,9 +476,10 @@ CommandRefusal? validateCommand(PorscheCommand command) {
   final allowed = spec.allowedOptions;
   for (final MapEntry(:key, :value) in command.options.entries) {
     if (!allowed.contains(key)) return CommandRefusal.unknownOption;
-    if (!_optionValid(key, value)) return CommandRefusal.invalidOption;
+    if (!_commandOptionValid(command.name, key, value)) return CommandRefusal.invalidOption;
   }
   if (!spec.required.every(command.options.containsKey)) return CommandRefusal.invalidOption;
+  if (!_commandOptionsValid(command.name, command.options)) return CommandRefusal.invalidOption;
   if (!_argumentsValid(command.name, command.arguments)) return CommandRefusal.invalidArgument;
   return null;
 }
@@ -323,8 +502,10 @@ String _quote(String token) {
   return "'${token.replaceAll("'", r"'\''")}'";
 }
 
-/// Encodes a validated command as one Porsche line. Options come first so a
-/// positional argument beginning with `--` follows the `--` separator.
+/// Encodes a validated command as one Porsche line, as
+/// `OverallsProtocol.SSHCommand.format/1`. Options come first so a positional
+/// argument beginning with `--` follows the `--` separator; a lone `-` (the
+/// stdin marker) needs none.
 String encodeCommand(PorscheCommand command) {
   final refusal = validateCommand(command);
   if (refusal != null) throw CommandRefused(refusal);
@@ -332,11 +513,13 @@ String encodeCommand(PorscheCommand command) {
   final tokens = <String>[
     ...command.name.split(' '),
     for (final key in keys)
-      if (command.options[key] == true)
-        '--$key'
-      else
-        '--$key=${_quote(command.options[key]! as String)}',
-    if (command.arguments.any((arg) => arg.startsWith('-'))) '--',
+      ...switch (command.options[key]!) {
+        true => ['--$key'],
+        final List<String> values => [for (final value in values) '--$key=${_quote(value)}'],
+        final String value => ['--$key=${_quote(value)}'],
+        _ => throw const CommandRefused(CommandRefusal.invalidOption),
+      },
+    if (command.arguments.any((arg) => arg.startsWith('--'))) '--',
     ...command.arguments.map(_quote),
   ];
   final line = tokens.join(' ');
@@ -405,6 +588,7 @@ PorscheCommand? parseCommandLine(String line) {
       'team $sub $sub2',
       rest,
     ),
+    ['thread', 'plan', final sub, ...final rest] => ('thread plan $sub', rest),
     [final group, final sub, ...final rest]
         when const [
           'share',
@@ -413,6 +597,9 @@ PorscheCommand? parseCommandLine(String line) {
           'integration',
           'team',
           'device',
+          'thread',
+          'terminal',
+          'web',
         ].contains(group) =>
       ('$group $sub', rest),
     [final name, ...final rest] => (name, rest),
@@ -442,13 +629,88 @@ PorscheCommand? parseCommandLine(String line) {
       } else {
         return null;
       }
-      // Mila never sends repeatable integration headers.
-      if (options.containsKey(key)) return null;
-      options[key] = value;
+      // Mila never sends repeatable integration headers; watch filters repeat.
+      final previous = options[key];
+      if (previous == null) {
+        options[key] = value;
+      } else if (_repeatable.contains(key) && value is String && previous is List<String>) {
+        options[key] = [...previous, value];
+      } else if (_repeatable.contains(key) && value is String && previous is String) {
+        options[key] = [previous, value];
+      } else {
+        return null;
+      }
       positional = false;
     } else {
       arguments.add(token);
     }
   }
   return PorscheCommand(name, arguments: arguments, options: options);
+}
+
+/// Why Mila refused a stdin payload before sending anything.
+enum PayloadRefusal { blank, tooLarge, invalidText, notAnObject }
+
+/// Thrown when a payload would be refused by Porsche; nothing was sent.
+final class PayloadRefused implements Exception {
+  const PayloadRefused(this.reason);
+  final PayloadRefusal reason;
+  @override
+  String toString() => 'PayloadRefused(${reason.name})';
+}
+
+bool _validUtf16(String value) {
+  for (var i = 0; i < value.length; i++) {
+    final unit = value.codeUnitAt(i);
+    if (unit >= 0xD800 && unit <= 0xDBFF) {
+      if (i + 1 >= value.length) return false;
+      final next = value.codeUnitAt(i + 1);
+      if (next < 0xDC00 || next > 0xDFFF) return false;
+      i++;
+    } else if (unit >= 0xDC00 && unit <= 0xDFFF) {
+      return false;
+    }
+  }
+  return true;
+}
+
+// @cc [owner:ghuntley,label:security;capacity] mila-stdin-payload-bounded
+// Prompt, answer and revision text MUST travel only on stdin after a final
+// `-` argument, as at most 64 KiB of valid UTF-8 without NUL; a refused
+// payload MUST NOT open a channel. It is never part of a command line.
+/// Validates [text] as Porsche's `stdin_text?/2` does for [kind].
+PayloadRefusal? validatePayload(PayloadKind kind, String text) {
+  if (!_validUtf16(text) || text.contains('\u0000')) return PayloadRefusal.invalidText;
+  final bytes = utf8.encode(text).length;
+  if (bytes > maximumPayloadBytes) return PayloadRefusal.tooLarge;
+  if (text.trim().isEmpty) return PayloadRefusal.blank;
+  if (kind == PayloadKind.answers) {
+    try {
+      if (jsonDecode(text) is! Map<String, Object?>) return PayloadRefusal.notAnObject;
+    } on FormatException {
+      return PayloadRefusal.notAnObject;
+    }
+  }
+  return null;
+}
+
+/// A payload command ready to send: its line-safe command and stdin bytes.
+final class PayloadCommand {
+  const PayloadCommand._(this.command, this.stdin);
+  final PorscheCommand command;
+  final List<int> stdin;
+}
+
+/// Builds a payload [command] whose final argument is `-` with [text] as its
+/// stdin. Throws [CommandRefused] or [PayloadRefused] before any I/O.
+PayloadCommand payloadCommand(PorscheCommand command, String text) {
+  final kind = payloadCommands[command.name];
+  if (kind == null || command.arguments.isEmpty || command.arguments.last != '-') {
+    throw const CommandRefused(CommandRefusal.invalidArgument);
+  }
+  final refusal = validateCommand(command);
+  if (refusal != null) throw CommandRefused(refusal);
+  final payload = validatePayload(kind, text);
+  if (payload != null) throw PayloadRefused(payload);
+  return PayloadCommand._(command, List<int>.unmodifiable(utf8.encode(text)));
 }

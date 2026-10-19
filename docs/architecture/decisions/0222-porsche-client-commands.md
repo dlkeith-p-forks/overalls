@@ -58,12 +58,54 @@ the 25-locale catalogs.
 ## Implementation evidence
 
 - `pinned` and `route`: [`marshall/lib/marshall/ssh/commands.ex`](../../../marshall/lib/marshall/ssh/commands.ex) with
-  [`marshall/test/marshall/ssh/commands_test.exs`](../../../marshall/test/marshall/ssh/commands_test.exs). **Gap:** not run; Marshall
-  does not compile on this branch's base for a pre-existing reason.
+  [`marshall/test/marshall/ssh/commands_test.exs`](../../../marshall/test/marshall/ssh/commands_test.exs).
 - Mila consumes `pinned` (pinned-first ordering in
   [`mila/packages/mila_core/lib/src/machine.dart`](../../../mila/packages/mila_core/lib/src/machine.dart), tested in `test/machine_test.dart`).
-- Thread, web, device and watch commands, ReadMarker and stdin payloads are
-  planned (M3–M5).
+- Command catalog, argument grammar and `stdin_payload?/1` (prompt, answers and
+  revision at 64 KiB; the integration secret keeps its own kind):
+  [`protocol/lib/overalls_protocol/ssh_command.ex`](../../../protocol/lib/overalls_protocol/ssh_command.ex),
+  shared line fixtures in [`protocol/test/fixtures/ssh_command_lines.json`](../../../protocol/test/fixtures/ssh_command_lines.json),
+  Hegel round-trip and refusal properties in
+  [`protocol/test/ssh_client_commands_test.exs`](../../../protocol/test/ssh_client_commands_test.exs), and the matching Dart
+  encoder in [`mila/packages/mila_core/lib/src/ssh_command.dart`](../../../mila/packages/mila_core/lib/src/ssh_command.dart).
+- Thread, terminal and web dispatch over Threads, `Terminal.Authority` and
+  Ingress (optimistic `policy_revision`), with pinned receipts that keep only
+  payload digests and the SSH key id:
+  [`marshall/lib/marshall/ssh/commands.ex`](../../../marshall/lib/marshall/ssh/commands.ex),
+  [`marshall/test/marshall/ssh/client_commands_test.exs`](../../../marshall/test/marshall/ssh/client_commands_test.exs) and the published result shapes in
+  [`protocol/test/fixtures/porsche_client_results.json`](../../../protocol/test/fixtures/porsche_client_results.json).
+- `Marshall.Threads.ReadMarker`, keyed per reader and agent transcript, with
+  the never-decreasing Hegel property in the client command test:
+  [`marshall/lib/marshall/threads/read_markers.ex`](../../../marshall/lib/marshall/threads/read_markers.ex).
+- `watch`: Marshall's `watch_subscribe` authority
+  ([`marshall/lib/marshall/ssh/watch.ex`](../../../marshall/lib/marshall/ssh/watch.ex)), `:thread` and
+  `:terminal_session` hints, and Porsche's hint routing
+  ([`porsche/lib/porsche/watchers.ex`](../../../porsche/lib/porsche/watchers.ex),
+  [`porsche/lib/porsche/ssh/watch.ex`](../../../porsche/lib/porsche/ssh/watch.ex)), tested in
+  [`porsche/test/client_commands_test.exs`](../../../porsche/test/client_commands_test.exs),
+  [`porsche/test/ssh_channel_test.exs`](../../../porsche/test/ssh_channel_test.exs) and over real SSH, Porsche and
+  HTTPS control in [`marshall/test/marshall_web/ssh_transport_test.exs`](../../../marshall/test/marshall_web/ssh_transport_test.exs).
+- Terminal commands (`terminal ls|new|kill`) are implemented on the same
+  receipt model, outside the receipt transaction because the terminal domain
+  commits its opening intent before guest dispatch.
+- **Gaps:** `device register|ls|rm|prefs` belong to the Notifications work
+  (ADR-0225) and are not here. Committed-hint delivery to a watch is not
+  exercised end to end, because sandboxed tests never commit `pg_notify`;
+  Porsche routing is tested with direct hints. Terminal commands are tested
+  only for refusals without a live guest stream. The `porsche-threads` fleet
+  machine test ([`scenarios/porsche-threads.py`](../../../nix/verification/tests/machines/fleet/scenarios/porsche-threads.py))
+  is written but has not run. Run records are in the
+  [Mila client commands review](../reviews/2026-10-18-mila-commands.md).
+
+- **Mila client:** [`ssh_command.dart`](../../../mila/packages/mila_core/lib/src/ssh_command.dart)
+  encodes every client command against the shared `ssh_command_lines.json`;
+  [`thread.dart`](../../../mila/packages/mila_core/lib/src/thread.dart),
+  [`web.dart`](../../../mila/packages/mila_core/lib/src/web.dart) and
+  [`watch.dart`](../../../mila/packages/mila_core/lib/src/watch.dart) decode
+  `porsche_client_results.json`. Payloads go only on stdin and `web set` sends
+  `--revision`. These client tests have not yet run on the integrated tree.
+  Terminal `ls|new|kill` are decided in ADR-0223 and implemented with these
+  commands.
 
 ## Open questions
 

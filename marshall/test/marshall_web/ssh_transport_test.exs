@@ -124,6 +124,7 @@ defmodule MarshallWeb.SSHTransportTest do
     start_supervised!({Registry, keys: :unique, name: Porsche.SSH.Sessions})
     start_supervised!({DynamicSupervisor, strategy: :one_for_one, name: Porsche.SSH.Connections})
     start_supervised!({Task.Supervisor, name: Porsche.SSH.Commands})
+    start_supervised!(Porsche.Watchers)
     on_exit(fn -> :logger.remove_primary_filter(:porsche_privacy) end)
 
     plug =
@@ -405,6 +406,131 @@ defmodule MarshallWeb.SSHTransportTest do
     connection = connect(c)
     assert exec(connection, "whoami --json").status == 3
     assert Ledger.read!(SSH.Session) == []
+  end
+
+  # @cc [owner:ghuntley,label:verification;security] porsche-threads-transport
+  # Over real SSH, Porsche and verified HTTPS control, a prompt MUST travel only
+  # as a stdin payload into the Threads domain, thread reads MUST reflect it,
+  # and a watch MUST open through Marshall's subscription authority, renew on
+  # heartbeat and end with exit 3 once the key is revoked. Committed-hint
+  # delivery is outside this sandboxed test (pg_notify needs a commit).
+  test "porsche-threads: stdin prompts, thread reads and a revocable watch", c do
+    previous = Application.get_env(:porsche, :watch_heartbeat_ms)
+    Application.put_env(:porsche, :watch_heartbeat_ms, 300)
+
+    on_exit(fn ->
+      if previous,
+        do: Application.put_env(:porsche, :watch_heartbeat_ms, previous),
+        else: Application.delete_env(:porsche, :watch_heartbeat_ms)
+    end)
+
+    thread = ready_thread(c.owner)
+    connection = connect(c)
+    prompt = "Run the test suite and summarise failures.\n"
+
+    prompted =
+      exec_with_stdin(
+        connection,
+        "thread prompt #{thread.id} - --request-id transport-prompt --json",
+        prompt
+      )
+
+    assert prompted.status == 0
+    assert prompted.response["status"] == "succeeded"
+    refute prompted.out =~ "summarise failures"
+    [turn] = Ledger.read!(Marshall.Agents.Turn, id: prompted.response["result"]["turn_id"])
+    assert turn.prompt == String.trim(prompt)
+    [request] = Ledger.read!(SSH.Request, request_id: "transport-prompt")
+    assert request.ssh_key_id == c.key.id
+    refute JSON.encode!(request.command) =~ "summarise failures"
+
+    listed = exec(connection, "thread ls --json").response["result"]["items"]
+    assert Enum.map(listed, & &1["id"]) == [thread.id]
+    assert exec(connection, "thread show #{thread.id} --json").response["result"]["busy"]
+
+    assert exec(connection, "thread read #{thread.id} 1 --request-id transport-read --json").status ==
+             0
+
+    {:ok, channel} = :ssh_connection.session_channel(connection, 5000)
+    :success = :ssh_connection.exec(connection, channel, "watch --thread #{thread.id}", 5000)
+    opened = until_text(connection, channel, "\"heartbeat\"", "")
+    [watching | _] = opened |> String.split("\n", trim: true) |> Enum.map(&JSON.decode!/1)
+    assert watching["event"] == "watching"
+    assert watching["threads"] == [thread.id]
+
+    assert {:ok, _} = SSH.remove_key(%{id: c.key.id}, actor: c.owner)
+    closed = collect_raw(connection, channel, %{out: "", err: "", status: nil})
+    assert closed.status == 3
+  end
+
+  defp ready_thread(owner) do
+    request = request()
+
+    {:ok, thread} =
+      Marshall.Threads.create_thread(
+        %{
+          objective: "Improve the workspace",
+          mode: :medium,
+          machine_spec: request,
+          idempotency_key: request.idempotency_key
+        },
+        actor: owner
+      )
+
+    args = %{"thread_id" => thread.id, "machine_key" => thread.machine_key}
+    {:snooze, _} = Marshall.Threads.ProvisionWorker.perform(%Oban.Job{args: args})
+    [vm] = Ledger.read!(VirtualMachine, idempotency_key: thread.machine_key)
+    Ledger.update!(vm, :observe, %{observed_state: :running})
+    :ok = Marshall.Threads.ProvisionWorker.perform(%Oban.Job{args: args})
+    [ready] = Ledger.read!(Marshall.Threads.Thread, id: thread.id)
+
+    for turn <- Ledger.read!(Marshall.Agents.Turn, thread_id: ready.agent_thread_id),
+        turn.status in [:queued, :running],
+        do: Ledger.update!(turn, :transition, %{status: :completed, finished_at: Ledger.now()})
+
+    ready
+  end
+
+  defp exec_with_stdin(connection, command, stdin) do
+    {:ok, channel} = :ssh_connection.session_channel(connection, 5000)
+    :success = :ssh_connection.exec(connection, channel, command, 5000)
+    :ok = :ssh_connection.send(connection, channel, stdin)
+    :ok = :ssh_connection.send_eof(connection, channel)
+    collect(connection, channel, %{out: "", err: "", status: nil})
+  end
+
+  defp until_text(connection, channel, text, output) do
+    if String.contains?(output, text) do
+      output
+    else
+      receive do
+        {:ssh_cm, ^connection, {:data, ^channel, 0, bytes}} ->
+          :ssh_connection.adjust_window(connection, channel, byte_size(bytes))
+          until_text(connection, channel, text, output <> bytes)
+      after
+        8000 -> flunk("expected SSH output did not arrive: #{inspect(text)}")
+      end
+    end
+  end
+
+  defp collect_raw(connection, channel, result) do
+    receive do
+      {:ssh_cm, ^connection, {:data, ^channel, stream, bytes}} ->
+        :ssh_connection.adjust_window(connection, channel, byte_size(bytes))
+        key = if stream == 0, do: :out, else: :err
+        collect_raw(connection, channel, Map.update!(result, key, &(&1 <> bytes)))
+
+      {:ssh_cm, ^connection, {:exit_status, ^channel, status}} ->
+        collect_raw(connection, channel, %{result | status: status})
+
+      {:ssh_cm, ^connection, {:eof, ^channel}} ->
+        collect_raw(connection, channel, result)
+
+      {:ssh_cm, ^connection, {:closed, ^channel}} ->
+        result
+    after
+      12_000 -> flunk("SSH channel did not close")
+    end
   end
 
   defp free_port do

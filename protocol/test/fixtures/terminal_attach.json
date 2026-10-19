@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "description": "Porsche `terminal attach M S [--cursor N] [--read-only]` over an SSH exec channel with a prior pty request (ADR-0223). Stdout carries terminal bytes only. Stderr carries exactly one newline-terminated JSON header line. The exit status is the closed table below.",
+  "invocation": {
+    "requires_pty": true,
+    "command": "terminal attach MACHINE SESSION [--cursor N] [--read-only]",
+    "stdout": "terminal output bytes only, replayed from the cursor",
+    "stdin": "terminal input bytes; dropped unread when the attachment is read-only",
+    "window_change": "becomes a resize of the shared session for writable attachments"
+  },
+  "gateway_stream": {
+    "path": "/api/terminal-gateway/v1/stream",
+    "query": ["cursor", "cols", "rows"],
+    "headers": ["authorization", "overalls-ssh-session", "overalls-terminal-ticket"]
+  },
+  "headers": [
+    {
+      "line": "{\"attached\":true,\"from\":0,\"mode\":\"rw\",\"replay_bytes\":2048,\"version\":1}\n",
+      "header": {"kind": "attached", "from": 0, "replay_bytes": 2048, "mode": "rw"}
+    },
+    {
+      "line": "{\"attached\":true,\"from\":4096,\"mode\":\"ro\",\"replay_bytes\":0,\"version\":1}\n",
+      "header": {"kind": "attached", "from": 4096, "replay_bytes": 0, "mode": "ro"}
+    },
+    {
+      "line": "{\"attached\":false,\"error\":\"forbidden\",\"version\":1}\n",
+      "header": {"kind": "refused", "error": "forbidden"}
+    },
+    {
+      "line": "{\"attached\":false,\"error\":\"attach_requires_pty\",\"version\":1}\n",
+      "header": {"kind": "refused", "error": "attach_requires_pty"}
+    }
+  ],
+  "invalid_headers": [
+    "{\"attached\":true,\"from\":-1,\"mode\":\"rw\",\"replay_bytes\":0,\"version\":1}",
+    "{\"attached\":true,\"from\":0,\"mode\":\"admin\",\"replay_bytes\":0,\"version\":1}",
+    "{\"attached\":false,\"error\":\"ticket=abc\",\"version\":1}",
+    "{\"attached\":false,\"error\":\"forbidden\",\"version\":2}",
+    "{\"attached\":true,\"from\":0,\"mode\":\"rw\",\"replay_bytes\":0,\"version\":1,\"ticket\":\"x\"}",
+    "not json"
+  ],
+  "exit_codes": [
+    {"status": 0, "outcome": "closed", "meaning": "the terminal session ended or the client detached"},
+    {"status": 1, "outcome": "refused", "meaning": "Marshall refused the attachment (no access, unknown session, terminal unavailable)"},
+    {"status": 2, "outcome": "invalid", "meaning": "invalid invocation, including a missing pty request"},
+    {"status": 3, "outcome": "authority", "meaning": "account, key or SSH session authority failed or was revoked"},
+    {"status": 5, "outcome": "transport", "meaning": "transport or service failure; retrying may succeed"}
+  ],
+  "close_codes": [
+    {"code": 1000, "outcome": "closed"},
+    {"code": 4001, "outcome": "authority"},
+    {"code": 4003, "outcome": "refused"},
+    {"code": 1008, "outcome": "transport"},
+    {"code": 1011, "outcome": "transport"}
+  ],
+  "errors": [
+    {"error": "invalid_command", "outcome": "invalid"},
+    {"error": "attach_requires_pty", "outcome": "invalid"},
+    {"error": "approval_required", "outcome": "authority"},
+    {"error": "unauthorized", "outcome": "authority"},
+    {"error": "authority_credential", "outcome": "authority"},
+    {"error": "forbidden", "outcome": "refused"},
+    {"error": "not_found", "outcome": "refused"},
+    {"error": "terminal_unavailable", "outcome": "refused"},
+    {"error": "conflict", "outcome": "refused"},
+    {"error": "temporarily_unavailable", "outcome": "transport"},
+    {"error": "transport_error", "outcome": "transport"}
+  ]
+}

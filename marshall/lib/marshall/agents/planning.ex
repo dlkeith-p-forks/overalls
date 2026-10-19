@@ -180,6 +180,8 @@ defmodule Marshall.Agents.Planning do
         })
 
         audit!(thread, turn.id, :questions_requested, request.id, nil, :accepted)
+        # Push the writers' devices only after the outer commit (ADR-0225).
+        Marshall.Notifications.Producer.needs_input!(thread)
         request
     end
   end
@@ -420,6 +422,7 @@ defmodule Marshall.Agents.Planning do
         })
 
         audit!(thread, turn.id, :plan_proposed, proposal.id, nil, :completed)
+        Marshall.Notifications.Producer.needs_input!(thread)
         proposal
     end
   end

@@ -71,6 +71,11 @@ final class _Sshd {
   /// The `ssh-ed25519 …` line of the CA that signed the host certificate.
   final String ca;
 
+  /// What the attach stand-in observed about its pty.
+  List<String> get attach => File('${dir.path}/attach').existsSync()
+      ? File('${dir.path}/attach').readAsLinesSync()
+      : const [];
+
   List<String> get received => File('${dir.path}/received').existsSync()
       ? File('${dir.path}/received').readAsLinesSync()
       : const [];
@@ -101,6 +106,25 @@ printf '%s\\n' "\$SSH_ORIGINAL_COMMAND" >> $path/received
 echo "progress for people" >&2
 case "\$SSH_ORIGINAL_COMMAND" in
   "whoami --json") printf '%s\\n' '{"version":1,"status":"succeeded","result":{"state":"approved"}}'; exit 0 ;;
+  "terminal attach "*)
+    # Stands in for a Porsche attach: stock OpenSSH merges stderr into the
+    # pty, so only the pty, window change, input relay and exit status are
+    # observable here; the header path is tested in channels_test.dart.
+    if [ -t 0 ]; then echo "tty=yes" >> $path/attach; else echo "tty=no" >> $path/attach; fi
+    echo "size=\$(stty size)" >> $path/attach
+    echo "term=\$TERM" >> $path/attach
+    printf 'ready\\n'
+    read -r line
+    echo "size=\$(stty size)" >> $path/attach
+    printf 'got:%s\\n' "\$line"
+    case "\$line" in revoke) exit 3 ;; *) exit 0 ;; esac ;;
+  "watch "*)
+    n=\$(cat $path/watches 2>/dev/null || echo 0); n=\$((n + 1)); echo \$n > $path/watches
+    printf '%s\\n' '{"version":1,"event":"watching","session_id":"019a0f74-4e5f-7a6b-8c7d-8e9f0a1b2c3d","machines":[],"threads":["0d9cc041-9db2-4e4c-b28b-1e41d7f472c1"]}'
+    printf '%s\\n' '{"version":1,"event":"thread","id":"0d9cc041-9db2-4e4c-b28b-1e41d7f472c1"}'
+    printf '%s\\n' '{"version":1,"event":"heartbeat"}'
+    if [ "\$n" -ge 2 ]; then printf '%s\\n' '{"version":1,"status":"error","error":"unauthorized"}'; exit 3; fi
+    exit 5 ;;
   *) printf '%s\\n' '{"version":1,"status":"error","error":"invalid_command"}'; exit 2 ;;
 esac
 ''');
@@ -329,6 +353,81 @@ void main() {
         await session.close();
         // Lines arrive exactly as encodeCommand wrote them.
         expect(server.received, [encodeCommand(whoami), encodeCommand(show)]);
+      },
+      skip: skip,
+      timeout: const Timeout(Duration(seconds: 60)),
+    );
+
+    test(
+      'terminal attach runs on a pty sized to the view, with resize and exit mapping',
+      () async {
+        final server = await _Sshd.start(sshd!, device);
+        addTearDown(server.stop);
+        final session = await connector(server).connect(const Deployment(_host), generation: 1);
+        addTearDown(session.close);
+        final command = const TerminalAttach.initial(
+          readOnly: false,
+        ).command('dev-box', '019a0f73-3d4e-7f5a-8b6c-7d8e9f0a1b2c');
+        Future<(String, AttachOutcome)> run(String line) async {
+          final channel = await session.attach(command, size: const TerminalSize(100, 30));
+          final out = StringBuffer();
+          final ready = Completer<void>();
+          AttachOutcome? outcome;
+          final done = channel.signals.forEach((signal) {
+            switch (signal) {
+              case AttachOutputSignal(:final bytes):
+                out.write(utf8.decode(bytes, allowMalformed: true));
+                if (out.toString().contains('ready') && !ready.isCompleted) ready.complete();
+              case AttachEndSignal(outcome: final o):
+                outcome = o;
+              case AttachHeaderSignal():
+                fail('stock OpenSSH sends no stderr header on a pty');
+            }
+          });
+          await ready.future.timeout(const Duration(seconds: 10));
+          channel.resize(const TerminalSize(132, 43));
+          await Future<void>.delayed(const Duration(milliseconds: 300));
+          channel.send(utf8.encode('$line\r'));
+          await done.timeout(const Duration(seconds: 10));
+          return (out.toString(), outcome!);
+        }
+
+        final (output, closed) = await run('hello');
+        expect(output, contains('got:hello'));
+        expect(closed, AttachOutcome.closed);
+        expect(server.attach, containsAllInOrder(['tty=yes', 'size=30 100', 'size=43 132']));
+        expect(server.attach, contains('term=xterm-256color'));
+        final (_, revoked) = await run('revoke');
+        expect(revoked, AttachOutcome.authority);
+        expect(server.received.first, encodeCommand(command));
+      },
+      skip: skip,
+      timeout: const Timeout(Duration(seconds: 60)),
+    );
+
+    test(
+      'a watch feed reads JSON lines, reconnects after exit 5 and stops on exit 3',
+      () async {
+        final server = await _Sshd.start(sshd!, device);
+        addTearDown(server.stop);
+        final session = await connector(server).connect(const Deployment(_host), generation: 1);
+        addTearDown(session.close);
+        final feed = WatchFeed(
+          open: session.watch,
+          filter: WatchFilter(threads: ['0d9cc041-9db2-4e4c-b28b-1e41d7f472c1']),
+        );
+        final events = <WatchEvent>[];
+        feed.events.listen(events.add);
+        final stopped = feed.status.firstWhere((s) => s == FeedStatus.stopped);
+        feed.start();
+        await stopped.timeout(const Duration(seconds: 30));
+        expect(events.whereType<ThreadChanged>(), hasLength(2));
+        expect(events.whereType<Watching>(), hasLength(2));
+        expect(feed.state.stop, WatchStop.authority);
+        expect(server.received.where((l) => l.startsWith('watch ')).toSet(), {
+          'watch --json --thread=0d9cc041-9db2-4e4c-b28b-1e41d7f472c1',
+        });
+        await feed.close();
       },
       skip: skip,
       timeout: const Timeout(Duration(seconds: 60)),

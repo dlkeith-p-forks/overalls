@@ -10,6 +10,7 @@ import 'dart:typed_data';
 import 'package:dartssh2/dartssh2.dart';
 import 'package:mila_core/mila_core.dart';
 
+import 'channels.dart';
 import 'device_key.dart';
 import 'porsche.dart';
 
@@ -191,6 +192,42 @@ final class _SshPorscheSession implements PorscheSession {
     } on FormatException {
       return const ChannelOutcome(PorscheExit.failed, null);
     }
+  }
+
+  // @cc [owner:ghuntley,label:protocol;security] mila-attach-pty-channel
+  // `terminal attach` MUST run on its own exec channel after a pty request
+  // sized to the view; window changes are sent only through resize, and the
+  // channel's bytes are relayed, never stored or logged.
+  @override
+  Future<TerminalChannel> attach(PorscheCommand command, {required TerminalSize size}) async {
+    if (command.name != 'terminal attach') {
+      throw ArgumentError.value(command.name, 'command', 'not terminal attach');
+    }
+    final clamped = size.clamped;
+    final session = await _client.execute(
+      encodeCommand(command),
+      pty: SSHPtyConfig(width: clamped.columns, height: clamped.rows),
+    );
+    return StreamTerminalChannel(
+      stdout: session.stdout,
+      stderr: session.stderr,
+      exitStatus: session.done.then((_) => session.exitCode),
+      write: session.write,
+      resize: (size) => session.resizeTerminal(size.columns, size.rows),
+      close: () async => session.close(),
+    );
+  }
+
+  @override
+  Future<WatchChannel> watch(PorscheCommand command) async {
+    if (command.name != 'watch') throw ArgumentError.value(command.name, 'command', 'not watch');
+    final session = await _client.execute(encodeCommand(command));
+    unawaited(session.stderr.drain<void>().catchError((Object _) {}));
+    return StreamWatchChannel(
+      stdout: session.stdout,
+      exitStatus: session.done.then((_) => session.exitCode),
+      close: () async => session.close(),
+    );
   }
 
   @override

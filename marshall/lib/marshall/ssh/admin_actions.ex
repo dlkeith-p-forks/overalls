@@ -81,6 +81,7 @@ defmodule Marshall.SSH.AdminActions do
       key ->
         Marshall.Accounts.Security.require_admin!(actor)
         :ok = Ledger.archive!(key, :revoke)
+        _ = Marshall.Notifications.revoke_for_key!(key.id, :key_revoked)
 
         Ledger.create!(AdminEvent, :record, %{
           actor_id: actor.id,

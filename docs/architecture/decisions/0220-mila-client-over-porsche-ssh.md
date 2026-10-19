@@ -116,7 +116,40 @@ custody needs native code on each platform, which Nix cannot build for iOS.
   **Gap:** the iOS notification extension, the Android messaging service and
   `local_auth` have not been built or run on a device.
 
-Remaining: threads, terminal and web (M2–M4).
+- M2–M4 client code for terminals, threads and web
+  ([UI review](../reviews/2026-10-18-mila-ui.md)). **Not yet executed:** the
+  code and tests below are written but have not been run, analysed or built
+  by Nix in this change, so they are evidence of intent only.
+  - command encoding for the `thread`, `terminal`, `web` and `watch`
+    commands, with stdin payloads of at most 64 KiB
+    ([`ssh_command.dart`](../../../mila/packages/mila_core/lib/src/ssh_command.dart)),
+    plus result decoders checked against the shared
+    `protocol/test/fixtures/porsche_client_results.json` and
+    `terminal_attach.json` vectors
+    ([`client_results_test.dart`](../../../mila/packages/mila_core/test/client_results_test.dart));
+  - the terminal attach state machine with a monotone cursor and
+    read-only fencing
+    ([`terminal_attach.dart`](../../../mila/packages/mila_core/lib/src/terminal_attach.dart),
+    a Hegel `StateMachine` in `test/terminal_attach_test.dart`), the extra
+    keys and bracketed-paste encoding
+    ([`extra_keys.dart`](../../../mila/packages/mila_core/lib/src/extra_keys.dart)),
+    the thread unread and search helpers
+    ([`thread.dart`](../../../mila/packages/mila_core/lib/src/thread.dart)) and the
+    watch line decoder and reconnect supervisor
+    ([`watch.dart`](../../../mila/packages/mila_core/lib/src/watch.dart));
+  - PTY attach and watch channels
+    ([`channels.dart`](../../../mila/packages/mila_transport/lib/src/channels.dart),
+    [`ssh_porsche.dart`](../../../mila/packages/mila_transport/lib/src/ssh_porsche.dart)),
+    with in-memory header tests and stock OpenSSH tests for the PTY size,
+    window change, input and exit mapping;
+  - the terminal, thread and web screens under
+    [`mila/app/lib/features/`](../../../mila/app/lib/features) with
+    `test/client_flow_test.dart` against the fake Porsche.
+
+  **Gap:** stock OpenSSH merges stderr into the PTY, so the attach header is
+  proven only by the in-memory channel tests; the `mila-desktop` machine
+  test does not yet cover these screens, and the iOS and Android share and
+  webview paths have not been built.
 
 ## Open questions
 

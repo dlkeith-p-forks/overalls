@@ -11,6 +11,7 @@ import 'features/notifications/push_controller.dart';
 import 'features/preferences.dart';
 import 'features/session.dart';
 import 'features/sign_in_screen.dart';
+import 'features/web/web_controller.dart';
 import 'integration_probe.dart';
 import 'transport/fake_porsche.dart';
 import 'transport/platform.dart';
@@ -42,6 +43,8 @@ Future<void> main(List<String> arguments) async {
           pokeKeyStoreProvider.overrideWithValue(const HardwarePokeKeyStore()),
         ],
         openExternalProvider.overrideWithValue(openApprovalLink),
+        inAppWebViewProvider.overrideWithValue(platformHasWebView),
+        if (platformHasWebView) shareLinkProvider.overrideWithValue(shareLink),
         incomingLinksProvider.overrideWithValue(platformLinks(arguments)),
       ],
     );

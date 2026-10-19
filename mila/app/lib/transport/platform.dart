@@ -110,6 +110,18 @@ Future<void> openApprovalLink(Uri uri) async {
   await milaPlatformChannel.invokeMethod<void>('openUrl', {'url': uri.toString()});
 }
 
+/// Shares a web endpoint link through the iOS or Android share sheet. Only
+/// HTTPS links are shared.
+Future<void> shareLink(Uri uri) async {
+  if (uri.scheme != 'https' || !isHostname(uri.host)) {
+    throw ArgumentError.value(uri.scheme, 'uri', 'shared links are HTTPS');
+  }
+  await milaPlatformChannel.invokeMethod<void>('share', {'url': uri.toString()});
+}
+
+/// Whether public web endpoints open in an in-app webview here.
+bool get platformHasWebView => Platform.isIOS || Platform.isAndroid;
+
 /// Calls the platform makes into Dart, fanned out by method name.
 final StreamController<MethodCall> _platformCalls = StreamController<MethodCall>.broadcast();
 bool _listening = false;

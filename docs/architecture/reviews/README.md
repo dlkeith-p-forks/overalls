@@ -1,5 +1,25 @@
 # Architecture reviews
 
+- [Mila M6: integrated client, relay and verification (2026-10-19)](2026-10-19-mila-m6.md):
+  ADR-0220–0228 across the integrated Mila, Porsche, Marshall and Susan
+  changes; records which machine and unit runs passed on the integrated tree.
+- [Susan push relay (2026-10-19)](2026-10-19-susan-push-relay.md): ADR-0224's
+  account-free relay, canonical domain-separated poke signature shared with
+  Marshall, append-only audit and per-node limits; real APNs/FCM and hosting open.
+- [Mila terminal attach (2026-10-19)](2026-10-19-mila-terminal-attach.md):
+  ADR-0223's Porsche attach through the Marshall terminal-gateway stream with an
+  unpinned ticket and credit after local send.
+- [Mila M2–M4 screens (2026-10-18)](2026-10-18-mila-ui.md): terminal, thread
+  and web screens over the client commands and attach channel; payloads only on
+  stdin and private endpoints only in the system browser.
+- [Mila client commands (2026-10-18)](2026-10-18-mila-commands.md): ADR-0222's
+  thread, terminal, web and watch commands, monotonic read markers and
+  digest-only stdin payload receipts.
+- [Mila notifications (2026-10-18)](2026-10-18-mila-notifications.md): ADR-0225's
+  Notifications domain, after-commit producer, fenced delivery worker and
+  content-free E2E pokes to the compiled Susan origin.
+- [Mila device features (2026-10-18)](2026-10-18-mila-device.md): push
+  registration, v1 poke opening, app lock and the offline snapshot cache.
 - [Mila M1: client, transport and host trust (2026-10-18)](2026-10-18-mila-m1.md):
   ADR-0220–0228; per-deployment P-256 keys, strict host certificates checked in
   key exchange, the patched dartssh2 overlay and link navigation; native custody

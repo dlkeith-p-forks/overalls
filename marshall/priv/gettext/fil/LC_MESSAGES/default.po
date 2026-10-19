@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n==1 || n==2 || n==3 || (n%10!=4 && n%10!=6 && n%10!=9) ? 0 : 1);\n"
 
-#: lib/marshall_web/live/machines_live.ex:1166
+#: lib/marshall_web/live/machines_live.ex:1184
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr " at nagbibilang"
@@ -45,12 +45,12 @@ msgstr[1] "%{count} nakarehistrong susi"
 msgid "%{count} · %{enabled} enabled"
 msgstr "%{count} · %{enabled} pinagana"
 
-#: lib/marshall_web/live/machines_live.ex:1163
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} segundo%{suffix}"
 
-#: lib/marshall_web/live/terminal_live.ex:548
+#: lib/marshall_web/live/terminal_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
@@ -64,8 +64,8 @@ msgstr "%{value1} CPU"
 
 #: lib/marshall_web/live/machines_live.ex:968
 #: lib/marshall_web/live/machines_live.ex:971
-#: lib/marshall_web/live/overview_live.ex:258
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:299
+#: lib/marshall_web/live/overview_live.ex:302
 #: lib/marshall_web/live/resize_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -92,7 +92,7 @@ msgid "%{value1} reasoning"
 msgstr "%{value1} pangangatwiran"
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
@@ -146,12 +146,12 @@ msgstr "**** (maaari lamang sulatan)"
 msgid "+ Create machine"
 msgstr "+ Lumikha ng makina"
 
-#: lib/marshall_web/live/terminal_live.ex:514
+#: lib/marshall_web/live/terminal_live.ex:544
 #, elixir-autogen, elixir-format
 msgid "+ New"
 msgstr "+ Bago"
 
-#: lib/marshall_web/live/machines_live.ex:1228
+#: lib/marshall_web/live/machines_live.ex:1246
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ Queue ng clone"
@@ -232,7 +232,7 @@ msgstr "Isang sanggunian para sa system, pagsasaayos nito, at pagpapatakbo nito.
 msgid "A selected skill is no longer available. Reload Skills and select its current source."
 msgstr "Hindi na available ang isang napiling kasanayan. I-reload ang Mga Kasanayan at piliin ang kasalukuyang pinagmulan nito."
 
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "Isang maliit na preview. Nasa loob ang lahat ng iyong naa-access na makina"
@@ -247,7 +247,7 @@ msgstr "Isang puwang para sa iyong susunod na ideya"
 msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
 msgstr "Ang isang koponan ay may isang may-ari. Ang pagmamay-ari ay gumagalaw lamang kapag tinanggap ng taong inaalok ito; ang dating may-ari ay nagiging admin."
 
-#: lib/marshall_web/live/terminal_live.ex:620
+#: lib/marshall_web/live/terminal_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "A+"
 msgstr "A+"
@@ -342,7 +342,7 @@ msgstr "Na-update ang access."
 msgid "Account"
 msgstr "Account ng gumagamit"
 
-#: lib/marshall_web/live/terminal_live.ex:684
+#: lib/marshall_web/live/terminal_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Account email"
 msgstr "Email ng account"
@@ -386,7 +386,7 @@ msgstr "Aksyon"
 msgid "Actions"
 msgstr "Mga aksyon"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:656
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
 #: lib/marshall_web/live/threads_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Active"
@@ -506,7 +506,7 @@ msgstr "Mga aksyon ng administrator"
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:357
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "Pagpasok"
@@ -521,7 +521,7 @@ msgstr "Na-update ang mga setting ng pagpasok."
 msgid "Admission settings were invalid or the node is not ready."
 msgstr "Di-wasto ang mga setting ng admission o hindi pa handa ang node."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr "Advisory preview para sa page na ito. Ang bawat workload ay independiyenteng sinusuri; maaaring magbago ang mga destinasyon at available na kapasidad. Muling sinusuri at inilalaan ang mga mapagkukunan kapag nagsimula ang bawat paglipat."
@@ -583,7 +583,7 @@ msgstr "Lahat ng mga thread"
 msgid "All visible"
 msgstr "Lahat nakikita"
 
-#: lib/marshall_web/live/terminal_live.ex:691
+#: lib/marshall_web/live/terminal_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Allow viewing"
 msgstr "Payagan ang pagtingin"
@@ -658,7 +658,7 @@ msgstr "Hitsura"
 msgid "Apply"
 msgstr "Mag-apply"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:394
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "Ilapat ang mga setting ng pagpasok"
@@ -683,7 +683,7 @@ msgstr "Paglalapat ng bagong CPU, memory at mga laki ng disk sa host."
 msgid "Approve CLI access"
 msgstr "Aprubahan ang CLI access"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:68
+#: lib/marshall_web/live/ssh_approval_live.ex:82
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr "Aprubahan ang SSH key"
@@ -693,23 +693,23 @@ msgstr "Aprubahan ang SSH key"
 msgid "Approve agent CLI"
 msgstr "Aprubahan ang ahente CLI"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:94
+#: lib/marshall_web/live/ssh_approval_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr "Aprubahan ang susi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:616
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "Aprubahan ang downtime ng paglipat"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:71
+#: lib/marshall_web/live/ssh_approval_live.ex:85
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr "Aprubahan lang ang key na ito kung sinimulan mo ang koneksyon sa SSH at tumutugma ang fingerprint nito sa iyong SSH client."
 
 #: lib/marshall_web/live/agent_cli_approval_live.ex:74
-#: lib/marshall_web/live/ssh_approval_live.ex:92
+#: lib/marshall_web/live/ssh_approval_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "Inaprubahan…"
@@ -823,7 +823,7 @@ msgstr "Hindi available ang kasaysayan ng pag-audit."
 msgid "Audit kinds"
 msgstr "Mga uri ng pag-audit"
 
-#: lib/marshall_web/live/terminal_live.ex:615
+#: lib/marshall_web/live/terminal_live.ex:669
 #, elixir-autogen, elixir-format
 msgid "A−"
 msgstr "A−"
@@ -866,7 +866,7 @@ msgid "Binary content"
 msgstr "Binary na nilalaman"
 
 #: lib/marshall_web/components/workspace_components.ex:425
-#: lib/marshall_web/live/terminal_live.ex:587
+#: lib/marshall_web/live/terminal_live.ex:617
 #, elixir-autogen, elixir-format
 msgid "Boot log"
 msgstr "Talaan ng pagsisimula"
@@ -887,7 +887,7 @@ msgstr "Landas ng nabigasyon"
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "Saglit na ihinto ang pinagmulan upang ligtas na makuha ang disk nito."
 
-#: lib/marshall_web/live/overview_live.ex:244
+#: lib/marshall_web/live/overview_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr "Magdala ng GitHub, GitLab, Codeberg o Bitbucket repository sa Overalls gamit ang extension ng Chrome o Firefox."
@@ -914,7 +914,7 @@ msgid "Build something, fix a bug, explore an idea…"
 msgstr "Bumuo ng isang bagay, ayusin ang isang bug, galugarin ang isang ideya..."
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:295
 #: lib/marshall_web/live/resize_live.ex:288
 #: lib/marshall_web/live/resize_live.ex:328
 #: lib/marshall_web/live/resize_live.ex:413
@@ -929,7 +929,7 @@ msgstr "CPU"
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "CPU pagkatapos ng pag-hold"
@@ -939,28 +939,28 @@ msgstr "CPU pagkatapos ng pag-hold"
 msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "Maaaring tumaas o bumaba ang CPU at memorya. Ang laki ng disk ay maaari lamang lumaki."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:405
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "Headroom ng CPU"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "Overhead ng CPU (mga core)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "Kampanya"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:524
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "Kasaysayan ng kampanya"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:488
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr "Mga milestone ng campaign, workload at relocation mula sa matibay na mga record ng control-plane."
@@ -973,7 +973,7 @@ msgstr "Pwede"
 #: lib/marshall_web/components/clone_components.ex:110
 #: lib/marshall_web/components/layouts.ex:118
 #: lib/marshall_web/live/machines_live.ex:939
-#: lib/marshall_web/live/terminal_live.ex:697
+#: lib/marshall_web/live/terminal_live.ex:751
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Kanselahin"
@@ -983,7 +983,7 @@ msgstr "Kanselahin"
 msgid "Cancel could not be accepted. Sizes are already being applied or the machine state is unconfirmed."
 msgstr "Hindi matanggap ang pagkansela. Inilapat na ang mga sukat o hindi nakumpirma ang estado ng makina."
 
-#: lib/marshall_web/live/machines_live.ex:1178
+#: lib/marshall_web/live/machines_live.ex:1196
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "Kanselahin ang paglipat"
@@ -1010,7 +1010,7 @@ msgstr "Hiniling ang pagkansela. Maaaring magpatuloy ang paglilinis pagkatapos m
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
 #: lib/marshall_web/live/admin/jobs_live.ex:432
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:717
 #: lib/marshall_web/live/resize_live.ex:503
 #: lib/marshall_web/live/resize_live.ex:540
 #: lib/marshall_web/live/resize_live.ex:548
@@ -1048,7 +1048,7 @@ msgstr "Pagkansela: naghihintay na makumpirma ang paghinto, pagkatapos ay mag-re
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "Pagkansela: naghihintay para sa paghinto upang makumpirma; ang mga sukat ay nananatiling hindi nagbabago."
 
-#: lib/marshall_web/live/machines_live.ex:1176
+#: lib/marshall_web/live/machines_live.ex:1194
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "Kinakansela…"
@@ -1063,7 +1063,7 @@ msgstr "Pagpapaliwanag ng kapasidad"
 msgid "Capacity information is temporarily unavailable."
 msgstr "Pansamantalang hindi available ang impormasyon ng kapasidad."
 
-#: lib/marshall_web/live/overview_live.ex:261
+#: lib/marshall_web/live/overview_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "Sinusuri muli ang kapasidad kapag gumawa ka ng makina."
@@ -1099,13 +1099,13 @@ msgstr "Baguhin"
 msgid "Check your email for a sign-in link. Your account will be created automatically when you sign in."
 msgstr "Tingnan ang iyong email para sa isang link sa pag-sign in. Awtomatikong malilikha ang iyong account kapag nag-sign in ka."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
 #: lib/marshall_web/live/machines_live.ex:655
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "Sinusuri ang kahandaan sa patutunguhan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
 #: lib/marshall_web/live/machines_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
@@ -1166,7 +1166,7 @@ msgstr "Kinansela ang clone"
 msgid "Clone complete"
 msgstr "Kumpleto ang clone"
 
-#: lib/marshall_web/live/machines_live.ex:1198
+#: lib/marshall_web/live/machines_live.ex:1216
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "I-clone ang makina"
@@ -1181,12 +1181,12 @@ msgstr "Kailangan ng clone ng atensyon"
 msgid "Clone queued. You can queue another copy."
 msgstr "Nakapila si Clone. Maaari kang pumila ng isa pang kopya."
 
-#: lib/marshall_web/live/machines_live.ex:1243
+#: lib/marshall_web/live/machines_live.ex:1261
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "I-clone ang mga kahilingan"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1269
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr "Pansamantalang hindi available ang mga kahilingan sa pag-clone. Awtomatikong sinusubukang muli."
@@ -1208,18 +1208,18 @@ msgstr "Isara"
 msgid "Close navigation"
 msgstr "Isara ang nabigasyon"
 
-#: lib/marshall_web/live/terminal_live.ex:654
+#: lib/marshall_web/live/terminal_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Close search"
 msgstr "Isara ang paghahanap"
 
 #: lib/marshall_web/live/admin/access_live.ex:224
-#: lib/marshall_web/live/terminal_live.ex:569
+#: lib/marshall_web/live/terminal_live.ex:599
 #, elixir-autogen, elixir-format
 msgid "Close session"
 msgstr "Isara ang session"
 
-#: lib/marshall_web/live/terminal_live.ex:568
+#: lib/marshall_web/live/terminal_live.ex:598
 #, elixir-autogen, elixir-format
 msgid "Close terminal %{value1}"
 msgstr "Isara ang terminal %{value1}"
@@ -1229,7 +1229,7 @@ msgstr "Isara ang terminal %{value1}"
 msgid "Close this SSH session?"
 msgstr "Isara ang SSH session na ito?"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:533
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "sarado"
@@ -1286,7 +1286,7 @@ msgstr "Hindi mababawasan ng compaction ang kontekstong ito. Bawasan ang mga kin
 
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:431
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
 #: lib/marshall_web/live/resize_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Complete"
@@ -1313,7 +1313,7 @@ msgstr "Mga nakumpirma na mapagkukunan"
 msgid "Connect"
 msgstr "Kumonekta"
 
-#: lib/marshall_web/live/overview_live.ex:273
+#: lib/marshall_web/live/overview_live.ex:320
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "Ikonekta ang isang pagsasama ↗"
@@ -1323,7 +1323,7 @@ msgstr "Ikonekta ang isang pagsasama ↗"
 msgid "Connect from your computer"
 msgstr "Kumonekta mula sa iyong computer"
 
-#: lib/marshall_web/live/terminal_live.ex:595
+#: lib/marshall_web/live/terminal_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "Connecting…"
 msgstr "Kumokonekta…"
@@ -1358,7 +1358,7 @@ msgstr "Hindi available ang mga detalye ng konteksto. Maaaring inihahanda pa rin
 msgid "Context reload queued."
 msgstr "Nakapila ang pag-reload ng konteksto."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:462
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "Ipagpatuloy ang pag-iskedyul"
@@ -1411,13 +1411,13 @@ msgstr "Kopyahin ang Windows PowerShell install command"
 msgid "Copy machine ID"
 msgstr "Kopyahin ang machine ID"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "Kopyahin/baguhin ang laki ng mga hold"
 
 #: lib/marshall_web/components/clone_components.ex:254
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "Nangongopya"
@@ -1542,7 +1542,7 @@ msgstr "Ang mga bilang ay sumasaklaw sa kasalukuyan at kamakailang pinanatili ng
 msgid "Create a machine"
 msgstr "Lumikha ng isang makina"
 
-#: lib/marshall_web/live/machines_live.ex:1203
+#: lib/marshall_web/live/machines_live.ex:1221
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr "Gumawa ng pribado, independiyenteng kopya ng makinang ito. Saglit na huminto ang mga tumatakbong machine para sa bawat snapshot, pagkatapos ay i-restart habang nagpapatuloy ang pagkopya. Pinoproseso ang mga kopya sa pagkakasunud-sunod at tumutugma sa estado ng kapangyarihan ng pinagmulan kapag nagsimula ang kanilang turn."
@@ -1574,7 +1574,7 @@ msgstr "Lumikha ng koponan"
 msgid "Create thread"
 msgstr "Gumawa ng thread"
 
-#: lib/marshall_web/live/overview_live.ex:173
+#: lib/marshall_web/live/overview_live.ex:175
 #, elixir-autogen, elixir-format
 msgid "Create your first machine"
 msgstr "Lumikha ng iyong unang makina"
@@ -1620,7 +1620,7 @@ msgstr "Pansamantalang hindi available ang kasalukuyang headroom."
 msgid "Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk"
 msgstr "Kasalukuyang headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk"
 
-#: lib/marshall_web/live/overview_live.ex:253
+#: lib/marshall_web/live/overview_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "Kasalukuyang provisioning headroom"
@@ -1658,7 +1658,7 @@ msgstr "Madilim"
 msgid "Decline"
 msgstr "Tanggihan"
 
-#: lib/marshall_web/live/terminal_live.ex:614
+#: lib/marshall_web/live/terminal_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Decrease terminal font size"
 msgstr "Bawasan ang laki ng font ng terminal"
@@ -1669,18 +1669,18 @@ msgid "Delegated a task"
 msgstr "Nagtalaga ng gawain"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:217
-#: lib/marshall_web/live/machines_live.ex:1290
+#: lib/marshall_web/live/machines_live.ex:1308
 #: lib/marshall_web/live/threads_live.ex:1859
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Tanggalin"
 
-#: lib/marshall_web/live/machines_live.ex:1275
+#: lib/marshall_web/live/machines_live.ex:1293
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "Tanggalin ang makina"
 
-#: lib/marshall_web/live/machines_live.ex:1288
+#: lib/marshall_web/live/machines_live.ex:1306
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr "Tanggalin ang makinang ito at ang disk nito? Hindi na ito maaaring bawiin."
@@ -1691,7 +1691,7 @@ msgid "Delete user and machines"
 msgstr "Tanggalin ang user at mga makina"
 
 #: lib/marshall_web/components/workspace_components.ex:84
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "Tinanggal"
@@ -1703,7 +1703,7 @@ msgstr "Tinanggal"
 msgid "Deleting"
 msgstr "Tinatanggal"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:714
 #: lib/marshall_web/live/machines_live.ex:661
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
@@ -1714,13 +1714,13 @@ msgstr "Pagtanggal ng mga nananatiling kopya"
 msgid "Describe a task. Your agent gets a machine and gets to work."
 msgstr "Ilarawan ang isang gawain. Kumuha ng makina ang iyong ahente at nagsimulang magtrabaho."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
 #: lib/marshall_web/live/machines_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "Nabigo ang destination boot; pinanatili ang pinagmulang kopya"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
 #: lib/marshall_web/live/machines_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
@@ -1742,7 +1742,7 @@ msgstr "Hiniling ang pag-restart ng destinasyon. Ang pinagmulang kopya ay nanana
 msgid "Detach"
 msgstr "Maghiwalay"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:498
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
 #: lib/marshall_web/live/admin/workloads_live.ex:150
 #: lib/marshall_web/live/inference_live.ex:154
 #, elixir-autogen, elixir-format
@@ -1771,7 +1771,7 @@ msgid "Disabled"
 msgstr "Hindi pinagana"
 
 #: lib/marshall_web/live/machines_live.ex:970
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:301
 #: lib/marshall_web/live/resize_live.ex:292
 #: lib/marshall_web/live/resize_live.ex:344
 #: lib/marshall_web/live/resize_live.ex:447
@@ -1790,7 +1790,7 @@ msgstr "Disk (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "Disk (GiB) — Pinakamataas na 500 GiB"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "Disk pagkatapos hold"
@@ -1815,7 +1815,7 @@ msgstr "Dokumentasyon"
 msgid "Download raw file ↗"
 msgstr "I-download ang raw file ↗"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:617
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "Inaprubahan ang downtime para sa rebisyon sa workload na ito"
@@ -1832,7 +1832,7 @@ msgid "Email"
 msgstr "Email"
 
 #: lib/marshall_web/live/admin/users_live.ex:146
-#: lib/marshall_web/live/overview_live.ex:226
+#: lib/marshall_web/live/overview_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "Adres ng email"
@@ -1869,8 +1869,8 @@ msgstr "Tapusin ang pag-verify na ito bago matapos ang labinlimang minuto."
 msgid "Ends that person's access to this machine."
 msgstr "Tinatapos ang pag-access ng taong iyon sa makinang ito."
 
-#: lib/marshall_web/live/terminal_live.ex:625
-#: lib/marshall_web/live/terminal_live.ex:627
+#: lib/marshall_web/live/terminal_live.ex:679
+#: lib/marshall_web/live/terminal_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "Ipasok ang buong screen"
@@ -1891,17 +1891,17 @@ msgid "Evacuation blocks new placements while existing guests remain served. Mov
 msgstr "Hinaharangan ng evacuation ang mga bagong placement habang nananatiling nagsisilbi ang mga kasalukuyang bisita. Ang paglipat ng tumatakbong panauhin ay panandaliang nakakagambala dito. Ang isang ganap na nakahintong kopya ay maaaring tumagal nang malaki at nangangailangan ng pag-apruba para sa bawat workload."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:425
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:438
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "Kampanya sa paglikas"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:485
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "Timeline ng paglikas"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:497
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "Kaganapan"
@@ -1962,7 +1962,7 @@ msgstr "Mag-e-expire"
 msgid "Explain capacity"
 msgstr "Ipaliwanag ang kapasidad"
 
-#: lib/marshall_web/live/overview_live.ex:275
+#: lib/marshall_web/live/overview_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "Galugarin ang iyong paggamit ↗"
@@ -1974,7 +1974,7 @@ msgstr "I-export ang paggamit ng AI"
 
 #: lib/marshall_web/components/workspace_components.ex:83
 #: lib/marshall_web/live/admin/jobs_live.ex:16
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:663
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
 #: lib/marshall_web/live/threads_live.ex:1664
 #: lib/marshall_web/live/threads_live.ex:2632
 #, elixir-autogen, elixir-format
@@ -1988,12 +1988,12 @@ msgstr "Nabigo"
 msgid "Field notes"
 msgstr "Mga tala sa field"
 
-#: lib/marshall_web/live/machines_live.ex:1199
+#: lib/marshall_web/live/machines_live.ex:1217
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "Ang mga file at nakaimbak na kredensyal ay kasama sa kopya"
 
-#: lib/marshall_web/live/machines_live.ex:1233
+#: lib/marshall_web/live/machines_live.ex:1251
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "Ang mga file at nakaimbak na kredensyal ay kasama sa kopya."
@@ -2026,12 +2026,12 @@ msgstr "Maghanap ng utos"
 msgid "Find a task…"
 msgstr "Maghanap ng gawain..."
 
-#: lib/marshall_web/live/terminal_live.ex:639
+#: lib/marshall_web/live/terminal_live.ex:693
 #, elixir-autogen, elixir-format
 msgid "Find in scrollback"
 msgstr "Hanapin sa scrollback"
 
-#: lib/marshall_web/live/overview_live.ex:274
+#: lib/marshall_web/live/overview_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "Hanapin ang iyong mga tao ↗"
@@ -2068,13 +2068,13 @@ msgstr "Paggamit ng Fleet AI"
 msgid "Fleet workloads"
 msgstr "Mga workload ng fleet"
 
-#: lib/marshall_web/live/terminal_live.ex:661
+#: lib/marshall_web/live/terminal_live.ex:715
 #, elixir-autogen, elixir-format
 msgid "Follow boot output"
 msgstr "Sundin ang boot output"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "Sariwa"
@@ -2186,7 +2186,7 @@ msgstr "Target ng HTTPS"
 msgid "Handbook contents"
 msgstr "Mga nilalaman ng handbook"
 
-#: lib/marshall_web/live/overview_live.ex:264
+#: lib/marshall_web/live/overview_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "Pansamantalang hindi available ang headroom."
@@ -2297,7 +2297,7 @@ msgstr "Mga hindi kumpletong ulat ng AI"
 msgid "Incorrect email or password"
 msgstr "Maling email o password"
 
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:673
 #, elixir-autogen, elixir-format
 msgid "Increase terminal font size"
 msgstr "Dagdagan ang laki ng font ng terminal"
@@ -2449,7 +2449,7 @@ msgid "LLM index"
 msgstr "Indeks ng LLM"
 
 #: lib/marshall_web/live/account_live.ex:722
-#: lib/marshall_web/live/ssh_approval_live.ex:84
+#: lib/marshall_web/live/ssh_approval_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "Label (opsyonal)"
@@ -2501,12 +2501,12 @@ msgstr "Paglulunsad"
 msgid "Launching repository"
 msgstr "Paglulunsad ng repositoryo"
 
-#: lib/marshall_web/live/machines_live.ex:1218
+#: lib/marshall_web/live/machines_live.ex:1236
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "Iwanang blangko upang makabuo ng pangalan"
 
-#: lib/marshall_web/live/machines_live.ex:1231
+#: lib/marshall_web/live/machines_live.ex:1249
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "Iwanang blangko upang makabuo ng pangalan."
@@ -2618,12 +2618,12 @@ msgstr "Nakahiwalay ang makina."
 msgid "Machine generations"
 msgstr "Mga henerasyon ng makina"
 
-#: lib/marshall_web/live/terminal_live.ex:305
+#: lib/marshall_web/live/terminal_live.ex:335
 #, elixir-autogen, elixir-format
 msgid "Machine is stopping or stopped. Choose Start to open a terminal."
 msgstr "Ang makina ay humihinto o huminto. Piliin ang Start para magbukas ng terminal."
 
-#: lib/marshall_web/live/terminal_live.ex:47
+#: lib/marshall_web/live/terminal_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "Machine not found."
 msgstr "Hindi nahanap ang makina."
@@ -2658,7 +2658,7 @@ msgstr "Hiniling ang makina."
 msgid "Machine settings"
 msgstr "Mga setting ng makina"
 
-#: lib/marshall_web/live/terminal_live.ex:302
+#: lib/marshall_web/live/terminal_live.ex:332
 #, elixir-autogen, elixir-format
 msgid "Machine startup failed. Check the machine status and boot log."
 msgstr "Nabigo ang pagsisimula ng makina. Suriin ang katayuan ng makina at boot log."
@@ -2682,7 +2682,7 @@ msgstr "makina:"
 #: lib/marshall_web/components/layouts.ex:437
 #: lib/marshall_web/live/machines_live.ex:105
 #: lib/marshall_web/live/machines_live.ex:685
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "Mga makina"
@@ -2692,7 +2692,7 @@ msgstr "Mga makina"
 msgid "Machines are temporarily unavailable."
 msgstr "Pansamantalang hindi magagamit ang mga makina."
 
-#: lib/marshall_web/live/overview_live.ex:215
+#: lib/marshall_web/live/overview_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "Hindi ma-load ang mga makina. I-refresh para subukang muli."
@@ -2718,7 +2718,7 @@ msgstr "Pangunahing"
 msgid "Maintenance"
 msgstr "Pagpapanatili"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:637
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "Mga pahina ng pagpapanatili"
@@ -2738,7 +2738,7 @@ msgstr "Gumawa ng administrator"
 msgid "Make it yours"
 msgstr "Gawin itong sa iyo"
 
-#: lib/marshall_web/live/overview_live.ex:268
+#: lib/marshall_web/live/overview_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "Gawin ang iyong sarili sa bahay"
@@ -2753,7 +2753,7 @@ msgstr "Gawin ang iyong sarili kumportable"
 msgid "Manage members and team machines."
 msgstr "Pamahalaan ang mga miyembro at makina ng koponan."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:97
+#: lib/marshall_web/live/ssh_approval_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr "Pamahalaan ang iyong mga SSH key"
@@ -2797,7 +2797,7 @@ msgstr "Markdown para sa page na ito"
 msgid "Match this request code with your terminal before approving:"
 msgstr "Itugma ang request code na ito sa iyong terminal bago aprubahan:"
 
-#: lib/marshall_web/live/machines_live.ex:1158
+#: lib/marshall_web/live/machines_live.ex:1176
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr "Sinusukat sa pagitan ng control-plane stop at mga obserbasyon sa pagiging handa; maaaring mag-iba ang availability ng bisita."
@@ -2830,7 +2830,7 @@ msgid "Membership updated."
 msgstr "Na-update ang membership."
 
 #: lib/marshall_web/live/machines_live.ex:967
-#: lib/marshall_web/live/overview_live.ex:258
+#: lib/marshall_web/live/overview_live.ex:298
 #: lib/marshall_web/live/resize_live.ex:289
 #: lib/marshall_web/live/resize_live.ex:334
 #: lib/marshall_web/live/resize_live.ex:441
@@ -2845,12 +2845,12 @@ msgstr "Alaala"
 msgid "Memory (MiB)"
 msgstr "Memorya (MiB)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "Memorya pagkatapos ng paghawak"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:406
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "Headroom ng memorya"
@@ -2890,7 +2890,7 @@ msgstr "Hindi available ang mga nilalaman ng salamin."
 msgid "Mirrors"
 msgstr "Mga salamin"
 
-#: lib/marshall_web/live/machines_live.ex:1149
+#: lib/marshall_web/live/machines_live.ex:1167
 #: lib/marshall_web/live/threads_live.ex:1407
 #, elixir-autogen, elixir-format
 msgid "Mode"
@@ -2922,18 +2922,18 @@ msgstr "Kinansela ang paglipat; kumpleto ang paglilinis"
 msgid "Move complete"
 msgstr "Kumpleto ang paglipat"
 
-#: lib/marshall_web/live/machines_live.ex:1131
+#: lib/marshall_web/live/machines_live.ex:1149
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr "Ilipat ang machine na ito sa isang awtomatikong napiling host? Maaaring pansamantalang hindi magagamit ang makina."
 
-#: lib/marshall_web/live/machines_live.ex:1136
+#: lib/marshall_web/live/machines_live.ex:1154
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "Lumipat sa ibang host"
 
 #: lib/marshall_web/live/account_live.ex:724
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "Yung laptop ko"
@@ -2959,7 +2959,7 @@ msgstr "Mga pinangalanang endpoint na naaabot ng iyong mga machine sa https://NA
 msgid "Needs attention"
 msgstr "Kailangan ng atensyon"
 
-#: lib/marshall_web/live/machines_live.ex:1217
+#: lib/marshall_web/live/machines_live.ex:1235
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "Bagong pangalan ng makina (opsyonal)"
@@ -2976,7 +2976,7 @@ msgstr "Mga bagong sukat"
 msgid "New thread"
 msgstr "Bagong thread"
 
-#: lib/marshall_web/live/terminal_live.ex:649
+#: lib/marshall_web/live/terminal_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Next match"
 msgstr "Susunod na laban"
@@ -2987,7 +2987,7 @@ msgstr "Susunod na laban"
 msgid "Next page"
 msgstr "Susunod na pahina"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:639
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #: lib/marshall_web/live/admin/users_live.ex:262
 #: lib/marshall_web/live/machines_live.ex:795
 #: lib/marshall_web/live/machines_live.ex:1063
@@ -2995,7 +2995,7 @@ msgstr "Susunod na pahina"
 msgid "Next page →"
 msgstr "Susunod na pahina →"
 
-#: lib/marshall_web/live/overview_live.ex:271
+#: lib/marshall_web/live/overview_live.ex:317
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "Mga susunod na hakbang"
@@ -3051,7 +3051,7 @@ msgstr "Walang aktibong workload."
 msgid "No activity matches this filter."
 msgstr "Walang aktibidad na tumutugma sa filter na ito."
 
-#: lib/marshall_web/live/machines_live.ex:1248
+#: lib/marshall_web/live/machines_live.ex:1266
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr "Wala pang mga kahilingan sa clone. Ipila ang isang kopya at sundan ang pag-usad nito dito."
@@ -3177,7 +3177,7 @@ msgstr "Walang magagamit na relokasyon."
 msgid "No repositories are mirrored yet."
 msgstr "Wala pang na-mirror na mga repositoryo."
 
-#: lib/marshall_web/live/terminal_live.ex:579
+#: lib/marshall_web/live/terminal_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "No shared terminals are available to view."
 msgstr "Walang mga nakabahaging terminal na magagamit upang tingnan."
@@ -3187,7 +3187,7 @@ msgstr "Walang mga nakabahaging terminal na magagamit upang tingnan."
 msgid "No skills were discovered in this workspace."
 msgstr "Walang mga kasanayan ang natuklasan sa workspace na ito."
 
-#: lib/marshall_web/live/terminal_live.ex:583
+#: lib/marshall_web/live/terminal_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "No terminals are open. Choose New to open your personal shell."
 msgstr "Walang bukas na terminal. Piliin ang Bago upang buksan ang iyong personal na shell."
@@ -3226,7 +3226,7 @@ msgstr "Hindi pa nakolekta"
 msgid "Objective"
 msgstr "Layunin"
 
-#: lib/marshall_web/live/machines_live.ex:1154
+#: lib/marshall_web/live/machines_live.ex:1172
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "Naobserbahan ang downtime"
@@ -3325,7 +3325,7 @@ msgstr "Buksan ang clone"
 msgid "Open machine →"
 msgstr "Buksan ang makina →"
 
-#: lib/marshall_web/live/overview_live.ex:240
+#: lib/marshall_web/live/overview_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "Buksan ang mga repository mula sa iyong browser"
@@ -3351,7 +3351,7 @@ msgstr "Buksan ang terminal para sa %{value1}"
 msgid "Open terminal here"
 msgstr "Buksan ang terminal dito"
 
-#: lib/marshall_web/live/overview_live.ex:204
+#: lib/marshall_web/live/overview_live.ex:208
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "Buksan ang terminal ↗"
@@ -3366,12 +3366,12 @@ msgstr "Buksan ang web app ng machine na ito. Walang terminal."
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:532
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "Binuksan"
 
-#: lib/marshall_web/live/terminal_live.ex:87
+#: lib/marshall_web/live/terminal_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Opening terminal; recovering the same request if the connection was interrupted."
 msgstr "Pagbubukas ng terminal; pagbawi ng parehong kahilingan kung ang koneksyon ay naputol."
@@ -3518,12 +3518,12 @@ msgstr "Mag-paste ng pampublikong key mula sa iyong .pub file. Huwag kailanman m
 msgid "Paths"
 msgstr "Mga landas"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:455
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "I-pause ang pag-iiskedyul"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr "Pinipigilan ng pause ang mga bagong galaw sa pag-iskedyul. Patuloy ang mga tinanggap na galaw. Ang handa sa pagpapanatili ay nangangailangan ng nakumpirma na paglilinis ng pinagmulan; hindi sapat ang mga natapos na trabaho lamang."
@@ -3546,7 +3546,7 @@ msgstr "ID ng peer machine"
 #: lib/marshall_web/components/workspace_components.ex:79
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:429
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
 #: lib/marshall_web/live/resize_live.ex:504
 #: lib/marshall_web/live/threads_live.ex:1661
 #: lib/marshall_web/live/threads_live.ex:2629
@@ -3559,12 +3559,12 @@ msgstr "Nakabinbin"
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Permanenteng tanggalin ang account na ito at LAHAT ng machine na pagmamay-ari nila, kasama ang mga machine na ibinahagi sa iba?"
 
-#: lib/marshall_web/live/machines_live.ex:1297
+#: lib/marshall_web/live/machines_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "Permanenteng alisin ang makinang ito at ang disk nito. Hindi na ito maaaring bawiin."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:476
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr "Permanenteng ihinto ang walang laman na node na ito at bawiin ang mga kredensyal nito?"
@@ -3575,7 +3575,7 @@ msgid "Permission to clone this machine is no longer available."
 msgstr "Hindi na available ang pahintulot na i-clone ang makinang ito."
 
 #: lib/marshall_web/live/machines_live.ex:879
-#: lib/marshall_web/live/overview_live.ex:186
+#: lib/marshall_web/live/overview_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "Pansarili"
@@ -3586,12 +3586,12 @@ msgid "Personal integration"
 msgstr "Personal na pagsasama"
 
 #: lib/marshall_web/live/admin/git_live.ex:103
-#: lib/marshall_web/live/machines_live.ex:1146
+#: lib/marshall_web/live/machines_live.ex:1164
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "Yugto"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:582
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:589
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "Yugto: %{phase}"
@@ -3624,7 +3624,7 @@ msgstr "Plano"
 msgid "Platform status"
 msgstr "Katayuan ng platform"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:403
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "Pangkat ng mapagkukunan"
@@ -3646,7 +3646,7 @@ msgid "Power afterwards"
 msgstr "Power pagkatapos"
 
 #: lib/marshall_web/components/clone_components.ex:252
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "Naghahanda"
@@ -3671,7 +3671,7 @@ msgstr "Paghahanda ng espasyo at pagsuri sa pinagmulan bago kumuha ng snapshot."
 msgid "Preparing transfer"
 msgstr "Paghahanda ng paglipat"
 
-#: lib/marshall_web/live/terminal_live.ex:422
+#: lib/marshall_web/live/terminal_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Preparing your guest account…"
 msgstr "Inihahanda ang iyong guest account…"
@@ -3686,9 +3686,9 @@ msgstr "Inihahanda ang iyong makina…"
 msgid "Preparing your repository…"
 msgstr "Inihahanda ang iyong repository…"
 
-#: lib/marshall_web/live/terminal_live.ex:361
-#: lib/marshall_web/live/terminal_live.ex:399
-#: lib/marshall_web/live/terminal_live.ex:423
+#: lib/marshall_web/live/terminal_live.ex:391
+#: lib/marshall_web/live/terminal_live.ex:429
+#: lib/marshall_web/live/terminal_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "Preparing your terminal…"
 msgstr "Inihahanda ang iyong terminal…"
@@ -3703,12 +3703,12 @@ msgstr "Inihahanda ang iyong workspace"
 msgid "Preview evacuation"
 msgstr "Silipin ang paglikas"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:604
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "Paunang tingin: %{blocker}"
 
-#: lib/marshall_web/live/terminal_live.ex:644
+#: lib/marshall_web/live/terminal_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "Previous match"
 msgstr "Nakaraang laban"
@@ -3823,22 +3823,22 @@ msgstr "Nakapila"
 msgid "Queued: %{tools}"
 msgstr "Nakapila: %{tools}"
 
-#: lib/marshall_web/live/machines_live.ex:1226
+#: lib/marshall_web/live/machines_live.ex:1244
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "Nakapila…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:383
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "Karagdagang gamit ng RAM (byte)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:627
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:640
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr "Muling planuhin ang workload na ito gamit ang kasalukuyang pagkakalagay at gustong estado nito? Ang anumang nakaraang pag-apruba ng downtime ay iki-clear."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:645
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "Muling magplano ng workload"
@@ -3848,7 +3848,7 @@ msgstr "Muling magplano ng workload"
 msgid "Read and write in the terminal."
 msgstr "Magbasa at magsulat sa terminal."
 
-#: lib/marshall_web/live/overview_live.ex:276
+#: lib/marshall_web/live/overview_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "Basahin ang mga tala sa field ↗"
@@ -3863,12 +3863,12 @@ msgstr "Basahin ang terminal."
 msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
 msgstr "Read-only admission arithmetic. Hindi ito nagrereserba ng kapasidad; hindi kilalang mga sukat na pinipigilan ang pagpasok."
 
-#: lib/marshall_web/live/terminal_live.ex:668
+#: lib/marshall_web/live/terminal_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Read-only boot console"
 msgstr "Read-only na boot console"
 
-#: lib/marshall_web/live/terminal_live.ex:577
+#: lib/marshall_web/live/terminal_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Read-only host boot log. Guest terminal readiness is not required."
 msgstr "Read-only host boot log. Hindi kailangan ang kahandaan sa terminal ng bisita."
@@ -3883,7 +3883,7 @@ msgstr "Read-only na imahe, Audi ingress at Porsche gateway status. Ang mga lihi
 msgid "Read-only mirrors of public GitHub repositories."
 msgstr "Read-only na mga salamin ng mga pampublikong GitHub repository."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:658
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #: lib/marshall_web/live/threads_live.ex:1663
 #: lib/marshall_web/live/threads_live.ex:2631
 #, elixir-autogen, elixir-format
@@ -3920,7 +3920,7 @@ msgstr "Kamakailang mirror audit"
 msgid "Recent threads"
 msgstr "Mga kamakailang thread"
 
-#: lib/marshall_web/live/terminal_live.ex:362
+#: lib/marshall_web/live/terminal_live.ex:392
 #, elixir-autogen, elixir-format
 msgid "Reconnecting to the terminal service…"
 msgstr "Kumokonekta muli sa serbisyo ng terminal…"
@@ -3947,7 +3947,7 @@ msgid "Reference"
 msgstr "Sanggunian"
 
 #: lib/marshall_web/live/admin/git_live.ex:119
-#: lib/marshall_web/live/overview_live.ex:290
+#: lib/marshall_web/live/overview_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "I-refresh"
@@ -3967,7 +3967,7 @@ msgstr "Hindi ma-queue ang pag-refresh."
 msgid "Refresh queued."
 msgstr "Nakapila ang refresh."
 
-#: lib/marshall_web/live/overview_live.ex:288
+#: lib/marshall_web/live/overview_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "Nire-refresh…"
@@ -4000,7 +4000,7 @@ msgstr "Kaugnay na talaan"
 msgid "Reload context"
 msgstr "I-reload ang konteksto"
 
-#: lib/marshall_web/live/machines_live.ex:1120
+#: lib/marshall_web/live/machines_live.ex:1138
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "Ilipat ang makina"
@@ -4092,7 +4092,7 @@ msgstr "Alisin ang SSH access ng key na ito? Magpapatuloy ang tinatanggap na mga
 msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
 msgstr "Alisin ang passkey na ito? Kapag inalis ang iyong huling passkey, masa-sign out ka sa lahat ng dako."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "Inalis mula sa pinagmulang ito; naghihintay ng pag-verify sa paglilinis ng kampanya."
@@ -4103,12 +4103,12 @@ msgstr "Inalis mula sa pinagmulang ito; naghihintay ng pag-verify sa paglilinis 
 msgid "Rename"
 msgstr "Palitan ang pangalan"
 
-#: lib/marshall_web/live/terminal_live.ex:603
+#: lib/marshall_web/live/terminal_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Rename in this browser"
 msgstr "Palitan ang pangalan sa browser na ito"
 
-#: lib/marshall_web/live/terminal_live.ex:602
+#: lib/marshall_web/live/terminal_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Rename terminal"
 msgstr "Palitan ang pangalan ng terminal"
@@ -4125,7 +4125,7 @@ msgstr "Ang mga muling binuksan na makina ay nagpapanatili ng kanilang mga nauna
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:404
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "Ulat"
@@ -4201,7 +4201,7 @@ msgstr "Humihiling ng pagkansela..."
 msgid "Requesting resize…"
 msgstr "Humihiling ng resize..."
 
-#: lib/marshall_web/live/machines_live.ex:1184
+#: lib/marshall_web/live/machines_live.ex:1202
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "Hinihiling na i-restart..."
@@ -4211,7 +4211,7 @@ msgstr "Hinihiling na i-restart..."
 msgid "Requesting retry…"
 msgstr "Humihiling na muling subukan..."
 
-#: lib/marshall_web/live/machines_live.ex:1129
+#: lib/marshall_web/live/machines_live.ex:1147
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "Humihiling…"
@@ -4252,7 +4252,7 @@ msgstr "Kinansela ang pag-resize."
 msgid "Resize could not be accepted. Check the sizes and current machine state."
 msgstr "Hindi matanggap ang pag-resize. Suriin ang mga laki at kasalukuyang estado ng makina."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:782
 #: lib/marshall_web/live/resize_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
@@ -4324,12 +4324,12 @@ msgstr "Na-restart"
 msgid "Restarting"
 msgstr "Nagsisimula muli"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:469
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "Ibalik ang pagpasok"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:479
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "Iretiro ang node"
@@ -4345,7 +4345,7 @@ msgstr "Subukan muli"
 msgid "Retry could not be accepted. Capacity or machine state may have changed."
 msgstr "Hindi matanggap ang muling subukan. Maaaring nagbago ang kapasidad o estado ng makina."
 
-#: lib/marshall_web/live/machines_live.ex:1186
+#: lib/marshall_web/live/machines_live.ex:1204
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "Subukan muli ang patutunguhang boot"
@@ -4401,7 +4401,7 @@ msgstr "Rebisyon"
 msgid "Revision (optional)"
 msgstr "Rebisyon (opsyonal)"
 
-#: lib/marshall_web/live/terminal_live.ex:694
+#: lib/marshall_web/live/terminal_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "Bawiin"
@@ -4454,7 +4454,7 @@ msgstr "Tungkulin"
 msgid "Room for your next idea"
 msgstr "Silid para sa iyong susunod na ideya"
 
-#: lib/marshall_web/live/overview_live.ex:252
+#: lib/marshall_web/live/overview_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "Kwarto para lumaki"
@@ -4476,7 +4476,7 @@ msgstr "Pagruruta, pagmamay-ari ng koponan at mga koneksiyon sa kapwa makina"
 
 #: lib/marshall_web/components/workspace_components.ex:80
 #: lib/marshall_web/live/admin/jobs_live.ex:13
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:660
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Running"
@@ -4503,7 +4503,8 @@ msgstr "SSH na susi"
 msgid "SSH key added."
 msgstr "Idinagdag ang SSH key."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:35
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:112
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "Naaprubahan ang SSH key. Maaari kang bumalik sa iyong SSH client."
@@ -4591,7 +4592,7 @@ msgstr "Saklaw"
 msgid "Search"
 msgstr "Maghanap"
 
-#: lib/marshall_web/live/terminal_live.ex:609
+#: lib/marshall_web/live/terminal_live.ex:663
 #, elixir-autogen, elixir-format
 msgid "Search (Ctrl+F)"
 msgstr "Maghanap (Ctrl+F)"
@@ -4607,12 +4608,12 @@ msgstr "Maghanap sa nilalaman"
 msgid "Search recent threads"
 msgstr "Maghanap ng mga kamakailang thread"
 
-#: lib/marshall_web/live/terminal_live.ex:608
+#: lib/marshall_web/live/terminal_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Search scrollback"
 msgstr "Maghanap ng scrollback"
 
-#: lib/marshall_web/live/terminal_live.ex:632
+#: lib/marshall_web/live/terminal_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Search terminal scrollback"
 msgstr "Maghanap sa kasaysayan ng terminal"
@@ -4663,7 +4664,7 @@ msgstr "Ipinapadala…"
 msgid "Service"
 msgstr "Serbisyo"
 
-#: lib/marshall_web/live/overview_live.ex:250
+#: lib/marshall_web/live/overview_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "I-set up ang extension ng browser ↗"
@@ -4688,12 +4689,12 @@ msgstr "Ibahagi"
 msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
 msgstr "Magbahagi ng mga makina at pagsasama sa mga taong katrabaho mo. Ang mga may-ari ay humirang ng mga admin, ang mga admin ay namamahala sa mga miyembro."
 
-#: lib/marshall_web/live/terminal_live.ex:560
+#: lib/marshall_web/live/terminal_live.ex:590
 #, elixir-autogen, elixir-format
 msgid "Share terminal %{value1}"
 msgstr "Ibahagi ang terminal %{value1}"
 
-#: lib/marshall_web/live/terminal_live.ex:676
+#: lib/marshall_web/live/terminal_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Share this terminal"
 msgstr "Ibahagi ang terminal na ito"
@@ -4703,12 +4704,12 @@ msgstr "Ibahagi ang terminal na ito"
 msgid "Share this thread"
 msgstr "Ibahagi ang thread na ito"
 
-#: lib/marshall_web/live/terminal_live.ex:561
+#: lib/marshall_web/live/terminal_live.ex:591
 #, elixir-autogen, elixir-format
 msgid "Share view"
 msgstr "Ibahagi ang view"
 
-#: lib/marshall_web/live/overview_live.ex:187
+#: lib/marshall_web/live/overview_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "Ibinahagi"
@@ -4911,7 +4912,7 @@ msgid "Source was stopped when this request began."
 msgstr "Nakahinto ang pinagmulan nang simulan ang kahilingang ito."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "Luma o hindi alam"
@@ -4965,7 +4966,7 @@ msgstr "Pinapagana ang makina gamit ang mga bagong mapagkukunan nito."
 msgid "Starting…"
 msgstr "Sinisimulan…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "Mga pumipigil sa pagsisimula"
@@ -4988,7 +4989,7 @@ msgstr "Pangalan ng nakapirming header"
 msgid "Static header value"
 msgstr "Halaga ng nakapirming header"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:531
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:535
 #: lib/marshall_web/live/admin/operations_live.ex:82
 #: lib/marshall_web/live/admin/operations_live.ex:105
 #: lib/marshall_web/live/admin/operations_live.ex:128
@@ -5019,13 +5020,13 @@ msgstr "Ihinto"
 msgid "Stop the machine"
 msgstr "Ihinto ang makina"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:624
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr "Ihinto ang tumatakbong gawain sa buong paglilipat? Maaaring magdulot ng mahabang pagkaantala ang pagkopya ng mga disk nito at muling pagpapatakbo sa patutunguhan."
 
 #: lib/marshall_web/components/workspace_components.ex:81
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:661
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Stopped"
@@ -5053,7 +5054,7 @@ msgstr "Inihihinto ang pagkopya at inaalis ang mga pansamantalang mapagkukunan. 
 msgid "Stopping the machine so its resources can change safely."
 msgstr "Inihihinto ang makina upang ligtas na mabago ang mga mapagkukunan nito."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #: lib/marshall_web/live/machines_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
@@ -5094,7 +5095,7 @@ msgstr "Nagtagumpay"
 msgid "Suspended"
 msgstr "Nasuspinde"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
 #: lib/marshall_web/live/machines_live.ex:654
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
@@ -5176,25 +5177,25 @@ msgstr "Pansamantalang hindi magagamit ang mga koponan."
 msgid "Terminal"
 msgstr "Terminal"
 
-#: lib/marshall_web/live/terminal_live.ex:535
+#: lib/marshall_web/live/terminal_live.ex:565
 #, elixir-autogen, elixir-format
 msgid "Terminal %{name}, %{count} viewer, created %{created}"
 msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
 msgstr[0] "Terminal %{name}, %{count} tagatingin, nilikha %{created}"
 msgstr[1] "Terminal %{name}, %{count} tagatingin, nilikha %{created}"
 
-#: lib/marshall_web/live/terminal_live.ex:114
+#: lib/marshall_web/live/terminal_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Terminal access ended."
 msgstr "Natapos ang pag-access sa terminal."
 
-#: lib/marshall_web/live/terminal_live.ex:131
-#: lib/marshall_web/live/terminal_live.ex:321
+#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "Terminal close requested; waiting for guest confirmation."
 msgstr "Hiniling ang pagsasara ng terminal; naghihintay ng kumpirmasyon ng panauhin."
 
-#: lib/marshall_web/live/terminal_live.ex:438
+#: lib/marshall_web/live/terminal_live.ex:468
 #, elixir-autogen, elixir-format
 msgid "Terminal limit reached for this machine."
 msgstr "Naabot na ang limitasyon ng mga terminal para sa makinang ito."
@@ -5204,7 +5205,7 @@ msgstr "Naabot na ang limitasyon ng mga terminal para sa makinang ito."
 msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
 msgstr "Protokol ng terminal: %{protocol} · Lokal na daloy: %{state}"
 
-#: lib/marshall_web/live/terminal_live.ex:521
+#: lib/marshall_web/live/terminal_live.ex:551
 #, elixir-autogen, elixir-format
 msgid "Terminal sessions"
 msgstr "Mga sesyon ng terminal"
@@ -5214,7 +5215,7 @@ msgstr "Mga sesyon ng terminal"
 msgid "Terminal unavailable"
 msgstr "Hindi magagamit ang terminal"
 
-#: lib/marshall_web/live/terminal_live.ex:155
+#: lib/marshall_web/live/terminal_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Terminal viewing access updated."
 msgstr "Na-update ang pahintulot sa pagtingin sa terminal."
@@ -5224,7 +5225,7 @@ msgstr "Na-update ang pahintulot sa pagtingin sa terminal."
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "Terminal, siklo ng buhay, pagbabago ng laki, pagkopya at pagbabahagi."
 
-#: lib/marshall_web/live/terminal_live.ex:443
+#: lib/marshall_web/live/terminal_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Terminals are unavailable while the host is offline."
 msgstr "Hindi magagamit ang mga terminal habang hindi nakakonekta ang host."
@@ -5265,7 +5266,7 @@ msgstr "Dapat nakarehistro na ang account. Pinapalitan ng pag-save ng tungkulin 
 msgid "The agent encountered a problem"
 msgstr "Nagkaroon ng problema ang ahente"
 
-#: lib/marshall_web/live/terminal_live.ex:191
+#: lib/marshall_web/live/terminal_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "The boot log is unavailable for the current machine execution."
 msgstr "Hindi magagamit ang talaan ng pagsisimula para sa kasalukuyang pagtakbo ng makina."
@@ -5295,7 +5296,7 @@ msgstr "Hindi makapagbukas ng mga repositoryo ang paunang imahe. Pumili ng imahe
 msgid "The default machine image is not available right now."
 msgstr "Hindi magagamit ngayon ang paunang imahe ng makina."
 
-#: lib/marshall_web/live/terminal_live.ex:457
+#: lib/marshall_web/live/terminal_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "The guest cannot host more terminal sessions."
 msgstr "Hindi na kayang tumanggap ng panauhin ng higit pang sesyon ng terminal."
@@ -5325,12 +5326,12 @@ msgstr "Hindi ma-update ang makina. I-refresh at subukang muli."
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "Nagbago ang makina mula nang likhain ang burador na ito. Suriin ang nakumpirmang mapagkukunan sa itaas."
 
-#: lib/marshall_web/live/machines_live.ex:1140
+#: lib/marshall_web/live/machines_live.ex:1158
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr "Ihihinto ang makina, kokopyahin nang isang beses at paandarin sa awtomatikong napiling host. Gumagamit ang aming pangkat para sa pagbuo ng koneksiyong 1 Gbit/s sa pagitan ng mga host, kaya maaaring mas matagal nang kaunti ang paglilipat; inaasahang mas mabilis ito kapag tumatakbo na ang Overalls sa AWS sa produksiyon."
 
-#: lib/marshall_web/live/machines_live.ex:1151
+#: lib/marshall_web/live/machines_live.ex:1169
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "Ihihinto ang makina, kokopyahin nang isang beses at paandarin sa patutunguhan."
@@ -5366,7 +5367,7 @@ msgstr "Nagbago ang plano. Suriin ang pinakabagong mungkahi bago magpatuloy."
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "Inilalabas pa ng naunang kopya ng makinang ito ang kopya ng estado nito. Subukang muli maya-maya."
 
-#: lib/marshall_web/live/terminal_live.ex:449
+#: lib/marshall_web/live/terminal_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "The previous opening has ended. Choose New to try again."
 msgstr "Natapos na ang naunang pagbubukas. Piliin ang Bago upang subukang muli."
@@ -5426,7 +5427,7 @@ msgstr "Nabura ang pinagmulang makina bago nagsimula ang kahilingang ito."
 msgid "The source was busy or changed before cloning began. Retry when it is ready."
 msgstr "Abala o nagbago ang pinagmulan bago nagsimula ang pagkopya. Subukang muli kapag handa na ito."
 
-#: lib/marshall_web/live/terminal_live.ex:459
+#: lib/marshall_web/live/terminal_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "The terminal could not be opened."
 msgstr "Hindi mabuksan ang terminal."
@@ -5481,7 +5482,7 @@ msgstr "Hindi na naghihintay ng sagot ang mga tanong na ito."
 msgid "These questions have already been answered."
 msgstr "Nasagot na ang mga tanong na ito."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr "Hindi magagamit o nag-expire na ang pag-apruba sa SSH na ito. Magsimula ng bagong koneksiyong SSH upang subukang muli."
@@ -5521,7 +5522,7 @@ msgstr "Hindi maulit ang gawaing ito. Maaaring nagbago ang kalagayan nito o ang 
 msgid "This job is unavailable or its history has expired."
 msgstr "Hindi magagamit ang gawaing ito o nag-expire na ang kasaysayan nito."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:77
+#: lib/marshall_web/live/ssh_approval_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr "Magsa-sign in ang susing ito bilang %{value1}. Maaari itong mamahala ng mga makina ayon sa mga pahintulot ng iyong account."
@@ -5546,7 +5547,7 @@ msgstr "Binubura ang makinang ito at hindi ito maaaring i-pin."
 msgid "This machine is being deleted."
 msgstr "Binubura ang makinang ito."
 
-#: lib/marshall_web/live/terminal_live.ex:484
+#: lib/marshall_web/live/terminal_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
 msgstr "Nakahinto ang makinang ito. Paandarin ito upang buksan ang iyong terminal. Nananatili ang iyong mga file."
@@ -5577,7 +5578,7 @@ msgstr "Hindi sinusuportahan ng imahe ng makinang ito ang kasalukuyang editor sa
 msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
 msgstr "Wala pang mga ahente ng panauhin ang imahe ng makinang ito: hindi magagamit ang SSH, terminal sa browser at mga ahente. Gamitin ang"
 
-#: lib/marshall_web/live/terminal_live.ex:297
+#: lib/marshall_web/live/terminal_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
 msgstr "Walang ahente ng terminal ang imahe ng makinang ito, kaya hindi magagamit ang terminal sa browser."
@@ -5710,7 +5711,7 @@ msgstr "Mga usapan"
 msgid "Threads are temporarily unavailable. Try again shortly."
 msgstr "Pansamantalang hindi magagamit ang mga usapan. Subukang muli maya-maya."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:496
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
 #: lib/marshall_web/live/inference_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Time"
@@ -5806,7 +5807,7 @@ msgstr "Uri"
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "I-type ang email upang burahin ang account na ito at ang %{count} makina nito"
 
-#: lib/marshall_web/live/terminal_live.ex:598
+#: lib/marshall_web/live/terminal_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "Mag-type upang makipag-ugnayan"
@@ -5821,16 +5822,28 @@ msgstr "Napakataas"
 msgid "Ultra is for complex, open-ended work."
 msgstr "Ang Napakataas ay para sa masalimuot na gawaing walang tiyak na hangganan."
 
-#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
 msgstr "Hindi ma-update ang pagbabahagi ng terminal. Dapat may pag-access sa makina ang tatanggap bago magbahagi."
 
 #: lib/marshall_web/components/workspace_components.ex:86
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
+#: lib/marshall_web/controllers/audi_login_controller.ex:44
+#: lib/marshall_web/controllers/editor_controller.ex:26
+#: lib/marshall_web/controllers/editor_controller.ex:61
+#: lib/marshall_web/controllers/git_raw_controller.ex:24
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#: lib/marshall_web/controllers/marvin_download_controller.ex:118
+#: lib/marshall_web/controllers/overalls_controller.ex:21
+#: lib/marshall_web/controllers/overalls_controller.ex:25
+#: lib/marshall_web/controllers/overalls_controller.ex:37
+#: lib/marshall_web/controllers/overalls_controller.ex:50
+#: lib/marshall_web/controllers/overalls_controller.ex:54
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
 #: lib/marshall_web/live/machines_live.ex:750
 #: lib/marshall_web/live/machines_live.ex:964
 #: lib/marshall_web/live/machines_live.ex:974
+#: lib/marshall_web/ssh_approval_login.ex:29
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Hindi magagamit"
@@ -5841,10 +5854,10 @@ msgstr "Hindi magagamit"
 #: lib/marshall_web/live/admin/jobs_live.ex:426
 #: lib/marshall_web/live/admin/jobs_live.ex:437
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:791
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
 #: lib/marshall_web/live/inference_live.ex:60
 #: lib/marshall_web/live/inference_live.ex:178
 #: lib/marshall_web/live/inference_live.ex:185
@@ -5870,7 +5883,7 @@ msgstr "Alisin ang pag-pin sa makinang ito bago ito burahin."
 msgid "Unpin this thread's machine before deleting it."
 msgstr "Alisin ang pag-pin sa makina ng usapang ito bago ito burahin."
 
-#: lib/marshall_web/live/machines_live.ex:1294
+#: lib/marshall_web/live/machines_live.ex:1312
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr "Alisin ang pag-pin upang burahin. Habang naka-pin sa iyo ang makinang ito, walang makabubura rito."
@@ -5905,7 +5918,7 @@ msgstr "I-update ang rebisyon (opsiyonal)"
 #: lib/marshall_web/live/admin/jobs_live.ex:210
 #: lib/marshall_web/live/admin/operations_live.ex:60
 #: lib/marshall_web/live/admin/workloads_live.ex:103
-#: lib/marshall_web/live/overview_live.ex:284
+#: lib/marshall_web/live/overview_live.ex:332
 #: lib/marshall_web/live/threads_live.ex:1674
 #, elixir-autogen, elixir-format
 msgid "Updated"
@@ -5916,7 +5929,7 @@ msgstr "Na-update"
 msgid "Updated every 15 seconds"
 msgstr "Ina-update tuwing 15 segundo"
 
-#: lib/marshall_web/live/machines_live.ex:1244
+#: lib/marshall_web/live/machines_live.ex:1262
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "Awtomatikong nag-a-update"
@@ -5978,7 +5991,7 @@ msgstr "Gumagamit"
 msgid "Users"
 msgstr "Mga gumagamit"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:506
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "VM"
@@ -6014,6 +6027,7 @@ msgid "VS Code is temporarily unavailable."
 msgstr "Pansamantalang hindi magagamit ang VS Code."
 
 #: lib/marshall_web/components/workspace_components.ex:519
+#: lib/marshall_web/controllers/editor_controller.ex:17
 #, elixir-autogen, elixir-format
 msgid "VS Code is unavailable for this machine."
 msgstr "Hindi magagamit ang VS Code para sa makinang ito."
@@ -6078,7 +6092,7 @@ msgstr "Tagatingin"
 msgid "Viewers read. Operators send prompts. Managers also share and manage the thread."
 msgstr "Nagbabasa ang mga tagatingin. Nagpapadala ng tagubilin ang mga tagapagpatakbo. Nagbabahagi at namamahala rin ng usapan ang mga tagapamahala."
 
-#: lib/marshall_web/live/terminal_live.ex:678
+#: lib/marshall_web/live/terminal_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
 msgstr "Para lamang sa pagtingin, kahit para sa mga tagapagpatakbo ng makina. Dapat mayroon nang pag-access sa makinang ito ang tatanggap."
@@ -6124,7 +6138,7 @@ msgstr "Naghihintay ng puwang para sa paglilipat sa host; ginagamit ito ng ibang
 msgid "Waiting for the machine"
 msgstr "Naghihintay sa makina"
 
-#: lib/marshall_web/live/terminal_live.ex:310
+#: lib/marshall_web/live/terminal_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Waiting for the machine to start…"
 msgstr "Hinihintay na umandar ang makina…"
@@ -6351,7 +6365,7 @@ msgstr "Maaari mong basahin ang mga usapang ito. Humiling ng pag-access bilang t
 msgid "You do not have access to this thread."
 msgstr "Wala kang pag-access sa usapang ito."
 
-#: lib/marshall_web/live/terminal_live.ex:440
+#: lib/marshall_web/live/terminal_live.ex:470
 #, elixir-autogen, elixir-format
 msgid "You do not have terminal access to this machine."
 msgstr "Wala kang pag-access sa terminal ng makinang ito."
@@ -6436,7 +6450,7 @@ msgstr "Nakumpirma na ang iyong adres ng email"
 msgid "Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved."
 msgstr "Ang iyong email ang pagkakakilanlan mo sa pag-sign in at hindi ito mababago rito. Ipinapakita ang lahat ng oras sa Overalls ayon sa iyong sona; makikita ng mga taong kasama mo sa koponan, makina o usapan, at ng mga tagapangasiwa, ang iyong kasalukuyang lokal na oras sa tabi ng iyong email kapag na-save na ang sona."
 
-#: lib/marshall_web/live/terminal_live.ex:453
+#: lib/marshall_web/live/terminal_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
 msgstr "Hindi maihanda ang iyong account sa panauhin. Tiyaking magagamit ang serbisyo para sa account ng panauhin, pagkatapos piliin ang Bago upang subukang muli."
@@ -6486,12 +6500,12 @@ msgstr "Na-reset ang iyong mga passkey. Magrehistro ng kapalit bago mag-apruba n
 msgid "Your password has successfully been reset"
 msgstr "Matagumpay na na-reset ang iyong password"
 
-#: lib/marshall_web/live/terminal_live.ex:581
+#: lib/marshall_web/live/terminal_live.ex:611
 #, elixir-autogen, elixir-format
 msgid "Your personal terminal opens when the machine is ready."
 msgstr "Magbubukas ang iyong pansariling terminal kapag handa na ang makina."
 
-#: lib/marshall_web/live/terminal_live.ex:446
+#: lib/marshall_web/live/terminal_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Your previous shell has closed. Choose New to open another terminal."
 msgstr "Nagsara ang iyong naunang shell. Piliin ang Bago upang magbukas ng ibang terminal."
@@ -6526,7 +6540,7 @@ msgstr "Hindi na wasto ang iyong pag-sign in. Humiling ng bagong link para mag-s
 msgid "Your teams"
 msgstr "Iyong mga koponan"
 
-#: lib/marshall_web/live/terminal_live.ex:488
+#: lib/marshall_web/live/terminal_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "Your terminal will open when the machine is running and ready."
 msgstr "Magbubukas ang iyong terminal kapag tumatakbo at handa na ang makina."
@@ -6586,7 +6600,7 @@ msgstr "aprubahan ang pagkaantalang ito ng gawain"
 msgid "attempt"
 msgstr "pagsubok"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "pagsubok %{attempt}"
@@ -6596,7 +6610,7 @@ msgstr "pagsubok %{attempt}"
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "pagsubok %{attempt} · %{count} naitalang kabiguan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:509
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "kampanya"
@@ -6652,7 +6666,7 @@ msgid "email, time zone and your local clock"
 msgstr "email, sona ng oras at iyong lokal na orasan"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "pinagana"
@@ -6663,7 +6677,7 @@ msgid "example-integration"
 msgstr "example-integration"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:364
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "hindi kasama"
@@ -6673,22 +6687,22 @@ msgstr "hindi kasama"
 msgid "file"
 msgstr "file ng datos"
 
-#: lib/marshall_web/live/terminal_live.ex:610
+#: lib/marshall_web/live/terminal_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "find"
 msgstr "hanapin"
 
-#: lib/marshall_web/live/terminal_live.ex:628
+#: lib/marshall_web/live/terminal_live.ex:682
 #, elixir-autogen, elixir-format
 msgid "full"
 msgstr "puno"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:512
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "gawain"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:507
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "ilipat"
@@ -6738,7 +6752,7 @@ msgstr "i-refresh ang salaming repositoryo ng Git na ito"
 msgid "remove this Git mirror"
 msgstr "alisin ang salaming repositoryo ng Git na ito"
 
-#: lib/marshall_web/live/terminal_live.ex:604
+#: lib/marshall_web/live/terminal_live.ex:658
 #, elixir-autogen, elixir-format
 msgid "rename"
 msgstr "palitan ang pangalan"
@@ -6836,7 +6850,7 @@ msgstr "oo"
 msgid "· %{value1} reasoning · %{value2}"
 msgstr "· %{value1} na pangangatwiran · %{value2}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:596
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· Kailangan ng pag-apruba sa pagkaantala"
@@ -6867,7 +6881,7 @@ msgid "← All sections"
 msgstr "← Lahat ng seksiyon"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:310
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
 #: lib/marshall_web/live/admin/users_live.ex:257
 #: lib/marshall_web/live/machines_live.ex:794
 #: lib/marshall_web/live/machines_live.ex:1060
@@ -6945,7 +6959,7 @@ msgstr "Na-save ang mga setting ng Git."
 msgid "Git username"
 msgstr "Username sa Git"
 
-#: lib/marshall_web/live/terminal_live.ex:308
+#: lib/marshall_web/live/terminal_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
 msgstr "Naka-pause ang makina. Ipagpatuloy ito o buksang muli ang pahinang ito ng terminal."
@@ -6956,7 +6970,7 @@ msgid "Pause"
 msgstr "I-pause"
 
 #: lib/marshall_web/components/workspace_components.ex:82
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:657
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "Naka-pause"
@@ -6971,8 +6985,8 @@ msgstr "Ipagpatuloy ang makina"
 msgid "Resuming"
 msgstr "Ipinagpapatuloy"
 
-#: lib/marshall_web/live/terminal_live.ex:110
-#: lib/marshall_web/live/terminal_live.ex:286
+#: lib/marshall_web/live/terminal_live.ex:140
+#: lib/marshall_web/live/terminal_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
 msgstr "Ipinagpapatuloy ang makina; naghihintay ng kapasidad…"
@@ -7017,54 +7031,54 @@ msgstr "Kinilala"
 msgid "Awaiting GitHub authorization"
 msgstr "Naghihintay ng pahintulot mula sa GitHub"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:576
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr "Nakaharang: %{reason}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr "Isinara ang kampanya"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr "Hiniling ang kampanya"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "Hiniling ang pagkansela"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:594
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr "Kandidato: %{name}"
 
-#: lib/marshall_web/live/overview_live.ex:231
+#: lib/marshall_web/live/overview_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "Tingnan ang iyong inbox at i-click ang link upang kumpirmahin ang iyong subscription."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:711
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr "Nililinis pagkatapos ng pagkansela"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr "Nililinis ang pinagmulan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:706
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr "Isinasagawa ang pag-clone"
 
 #: lib/marshall_web/live/integrations_live.ex:312
 #: lib/marshall_web/live/integrations_live.ex:400
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1129
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "Komento"
@@ -7100,17 +7114,17 @@ msgstr "Nakakonekta bilang %{login}"
 msgid "Continue to Overalls"
 msgstr "Magpatuloy sa Overalls"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:573
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:577
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr "Ninanais: %{desired} · Naobserbahan: %{observed}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr "Nakumpirma ang paglilinis ng destinasyon"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr "Hiniling ang paglilinis ng destinasyon"
@@ -7135,39 +7149,39 @@ msgstr "Nadiskonekta"
 msgid "Disconnecting GitHub"
 msgstr "Idinidiskonekta ang GitHub"
 
-#: lib/marshall_web/live/overview_live.ex:222
+#: lib/marshall_web/live/overview_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "Isara"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:779
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr "Kailangan ng pag-apruba para sa downtime"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:756
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr "Naaprubahan ang downtime"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:434
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "Naubos na ang mga aktibong gawain"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:433
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "Inuubos ang mga aktibong gawain"
 
-#: lib/marshall_web/live/overview_live.ex:232
+#: lib/marshall_web/live/overview_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "Maglagay ng wastong email address."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "Inililikas"
@@ -7177,7 +7191,7 @@ msgstr "Inililikas"
 msgid "Finishing active GitHub requests"
 msgstr "Tinatapos ang mga aktibong kahilingan sa GitHub"
 
-#: lib/marshall_web/live/overview_live.ex:224
+#: lib/marshall_web/live/overview_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "Makatanggap sa email ng mga tip, paraan at balita tungkol sa Overalls at AI."
@@ -7192,22 +7206,22 @@ msgstr "Nakakonekta ang GitHub."
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "Hindi maikonekta ang GitHub. Subukang muli mula sa Mga Integrasyon."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "Ini-import"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:776
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr "Hindi sapat ang kapasidad"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr "Kalagayan ng gawain"
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1123
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "Mga label"
@@ -7222,17 +7236,17 @@ msgstr "Nai-save ang metadata ng makina."
 msgid "Machines excluded from your GitHub identity"
 msgstr "Mga makinang hindi gumagamit ng iyong pagkakakilanlan sa GitHub"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr "Normal"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:597
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr "Naobserbahang pagkaantala: %{seconds}s"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:593
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr "Naobserbahang pagkaantala: %{seconds}s (nagpapatuloy)"
@@ -7247,7 +7261,7 @@ msgstr "Operasyon"
 msgid "Reconnect required"
 msgstr "Kailangang kumonekta muli"
 
-#: lib/marshall_web/live/machines_live.ex:1115
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "Metadata ng reflection"
@@ -7262,49 +7276,49 @@ msgstr "Nire-refresh ang koneksyon sa GitHub"
 msgid "Relocation"
 msgstr "Paglilipat ng lokasyon"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr "Pinagtibay ang paglilipat ng lokasyon"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr "Isinasagawa ang paglilipat ng lokasyon"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:759
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr "Nagsimula ang paglilipat ng lokasyon"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr "Ibinabalik ang pinagmulan"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:435
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "Ipinagpatuloy"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:436
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:655
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "Inalis sa serbisyo"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr "Muling sinusubukan ang pag-boot ng destinasyon"
 
-#: lib/marshall_web/live/machines_live.ex:1118
+#: lib/marshall_web/live/machines_live.ex:1135
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "I-save ang metadata"
 
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1132
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "Maikling paglalarawan para sa mga agent"
@@ -7319,37 +7333,37 @@ msgstr "Maikling paglalarawan para sa guest reflection"
 msgid "Signing you in"
 msgstr "Isinasagawa ang iyong pag-sign in"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr "Nakumpirma ang paglilinis ng pinagmulan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:734
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr "Hiniling ang paglilinis ng pinagmulan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:684
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr "Handa na ang pinagmulan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:687
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "Naibalik ang pinagmulan"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:700
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:771
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr "Hindi available ang pinagmulan"
 
-#: lib/marshall_web/live/overview_live.ex:220
+#: lib/marshall_web/live/overview_live.ex:229
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "Manatiling may alam sa mga balita"
 
-#: lib/marshall_web/live/overview_live.ex:227
+#: lib/marshall_web/live/overview_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "Mag-subscribe"
@@ -7359,37 +7373,37 @@ msgstr "Mag-subscribe"
 msgid "Temporarily unavailable"
 msgstr "Pansamantalang hindi available"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr "Abala ang paglilipat"
 
-#: lib/marshall_web/live/overview_live.ex:234
+#: lib/marshall_web/live/overview_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "Mag-unsubscribe anumang oras."
 
-#: lib/marshall_web/live/overview_live.ex:233
+#: lib/marshall_web/live/overview_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "Hindi namin makontak ang serbisyo ng newsletter. Subukang muli mamaya."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr "Nagbago ang workload"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:768
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr "Hindi matatag ang workload"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:694
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr "Naobserbahan ang workload"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:762
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr "Natukoy ang workload"
@@ -7404,7 +7418,7 @@ msgstr "Bineberipika ang link sa iyong email."
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "Awtomatikong ginagamit ng iyong mga makina ang nakakonektang pagkakakilanlan mo sa GitHub. Magagamit ng mga kasamahang gumagamit ng nakabahaging makina ang mga pahintulot sa GitHub ng may-ari nito. Nananatili ang hindi nagpapakilalang access sa mga pampublikong repositoryo sa GitHub para sa mga makinang nakahiwalay."
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1125
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "produksiyon, pangalan-ng-proyekto"
@@ -7434,78 +7448,77 @@ msgstr "Hindi mapalitan ang pangalan ng key na ito. Gumamit ng hanggang 128 char
 msgid "Administrative changes require an administrator."
 msgstr "Nangangailangan ng administrator ang mga administratibong pagbabago."
 
-#: lib/marshall_web/live_admin_auth.ex:139
+#: lib/marshall_web/live_admin_auth.ex:142
 #, elixir-autogen, elixir-format
 msgid "Administrative changes are not authorized."
 msgstr "Hindi awtorisado ang mga administratibong pagbabago."
 
-#: lib/marshall_web/live_admin_auth.ex:186
+#: lib/marshall_web/live_admin_auth.ex:190
 #, elixir-autogen, elixir-format
 msgid "Finish or cancel the current verification first."
 msgstr "Tapusin o kanselahin muna ang kasalukuyang pagpapatunay."
 
-#: lib/marshall_web/live_admin_auth.ex:199
+#: lib/marshall_web/live_admin_auth.ex:205
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "Hindi wastong administratibong request."
 
-#: lib/marshall_web/controllers/audi_login_controller.ex:34
-#: lib/marshall_web/controllers/editor_controller.ex:52
+#: lib/marshall_web/live/terminal_live.ex:629
 #, elixir-autogen, elixir-format
-msgid "Sign-in unavailable"
-msgstr "Hindi magagamit ang pag-sign in"
+msgid "Android display"
+msgstr "Display ng Android"
+
+#: lib/marshall_web/live/terminal_live.ex:85
+#: lib/marshall_web/live/terminal_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Hindi magagamit ang display ng Android."
+
+#: lib/marshall_web/live/terminal_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "Naibigay na ang tiket ng relay ng display."
 
 #: lib/marshall_web/controllers/overalls_controller.ex:76
 #, elixir-autogen, elixir-format
 msgid "Installer trust unavailable"
 msgstr "Hindi magagamit ang pagtiyak sa pagiging mapagkakatiwalaan ng installer"
 
+#: lib/marshall_web/live/terminal_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "Buksan ang display"
+
+#: lib/marshall_web/live/terminal_live.ex:636
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "Humiling ng kontrol"
+
 #: lib/marshall_web/controllers/overalls_controller.ex:89
 #, elixir-autogen, elixir-format
 msgid "SSH trust unavailable"
 msgstr "Hindi magagamit ang pagtiyak sa pagiging mapagkakatiwalaan ng SSH"
 
-#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#: lib/marshall_web/controllers/audi_login_controller.ex:35
+#: lib/marshall_web/controllers/editor_controller.ex:52
 #, elixir-autogen, elixir-format
-msgid "This repository link could not be launched. Open the link again."
-msgstr "Hindi mailunsad ang link ng repositoryong ito. Buksan muli ang link."
+msgid "Sign-in unavailable"
+msgstr "Hindi magagamit ang pag-sign in"
 
-
-#: lib/marshall_web/controllers/repository_launch_controller.ex:51
-#, elixir-autogen, elixir-format
-msgid "This launch could not be completed. Sign in and open the link again."
-msgstr "Hindi makumpleto ang paglulunsad na ito. Mag-sign in at buksan muli ang link."
-
-#: lib/marshall_web/live/terminal_live.ex:79
-#, elixir-autogen, elixir-format
-msgid "Display relay ticket issued."
-msgstr "Naibigay na ang tiket ng relay ng display."
-
-#: lib/marshall_web/live/terminal_live.ex:83
-#: lib/marshall_web/live/terminal_live.ex:88
-#, elixir-autogen, elixir-format
-msgid "Android display is unavailable."
-msgstr "Hindi magagamit ang display ng Android."
-
-#: lib/marshall_web/live/terminal_live.ex:618
-#, elixir-autogen, elixir-format
-msgid "Android display"
-msgstr "Display ng Android"
-
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "The software-rendered Android display uses the machine relay."
 msgstr "Ginagamit ng display ng Android na ni-render sa software ang relay ng makina."
 
-#: lib/marshall_web/live/terminal_live.ex:622
+#: lib/marshall_web/controllers/repository_launch_controller.ex:55
 #, elixir-autogen, elixir-format
-msgid "Open display"
-msgstr "Buksan ang display"
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "Hindi makumpleto ang paglulunsad na ito. Mag-sign in at buksan muli ang link."
 
-#: lib/marshall_web/live/terminal_live.ex:625
+#: lib/marshall_web/controllers/repository_launch_controller.ex:23
 #, elixir-autogen, elixir-format
-msgid "Request control"
-msgstr "Humiling ng kontrol"
+msgid "This repository link could not be launched. Open the link again."
+msgstr "Hindi mailunsad ang link ng repositoryong ito. Buksan muli ang link."
 
 #: lib/marshall_web/controllers/docs_controller.ex:35
 #, elixir-autogen, elixir-format
@@ -7521,3 +7534,8 @@ msgstr "Canvas ng display ng Android"
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
 msgstr "Naghihintay sa relay ng display."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr "Buksan ang Mila"

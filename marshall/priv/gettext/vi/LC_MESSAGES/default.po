@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/machines_live.ex:1166
+#: lib/marshall_web/live/machines_live.ex:1184
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr " và vẫn đang tăng"
@@ -42,12 +42,12 @@ msgstr[0] "%{count} khóa đã đăng ký"
 msgid "%{count} · %{enabled} enabled"
 msgstr "%{count} · %{enabled} đã bật"
 
-#: lib/marshall_web/live/machines_live.ex:1163
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} giây%{suffix}"
 
-#: lib/marshall_web/live/terminal_live.ex:548
+#: lib/marshall_web/live/terminal_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
@@ -60,8 +60,8 @@ msgstr "%{value1} CPU"
 
 #: lib/marshall_web/live/machines_live.ex:968
 #: lib/marshall_web/live/machines_live.ex:971
-#: lib/marshall_web/live/overview_live.ex:258
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:299
+#: lib/marshall_web/live/overview_live.ex:302
 #: lib/marshall_web/live/resize_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -90,7 +90,7 @@ msgid "%{value1} reasoning"
 msgstr "Suy luận %{value1}"
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
@@ -144,12 +144,12 @@ msgstr "**** (chỉ ghi)"
 msgid "+ Create machine"
 msgstr "+ Tạo máy"
 
-#: lib/marshall_web/live/terminal_live.ex:514
+#: lib/marshall_web/live/terminal_live.ex:544
 #, elixir-autogen, elixir-format
 msgid "+ New"
 msgstr "+ Mới"
 
-#: lib/marshall_web/live/machines_live.ex:1228
+#: lib/marshall_web/live/machines_live.ex:1246
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ Xếp bản sao vào hàng đợi"
@@ -234,7 +234,7 @@ msgid "A selected skill is no longer available. Reload Skills and select its cur
 msgstr ""
 "Kỹ năng đã chọn không còn khả dụng. Tải lại Kỹ năng và chọn nguồn hiện tại."
 
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "Bản xem trước nhỏ. Tất cả máy bạn truy cập được nằm trong"
@@ -251,7 +251,7 @@ msgstr ""
 "Nhóm có một chủ sở hữu. Quyền sở hữu chỉ chuyển khi người nhận chấp nhận; "
 "chủ cũ trở thành quản trị viên."
 
-#: lib/marshall_web/live/terminal_live.ex:620
+#: lib/marshall_web/live/terminal_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "A+"
 msgstr "A+"
@@ -349,7 +349,7 @@ msgstr "Đã cập nhật quyền truy cập."
 msgid "Account"
 msgstr "Tài khoản"
 
-#: lib/marshall_web/live/terminal_live.ex:684
+#: lib/marshall_web/live/terminal_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Account email"
 msgstr "Email tài khoản"
@@ -393,7 +393,7 @@ msgstr "Thao tác"
 msgid "Actions"
 msgstr "Thao tác"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:656
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
 #: lib/marshall_web/live/threads_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Active"
@@ -517,7 +517,7 @@ msgstr "Thao tác quản trị"
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:357
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "Tiếp nhận"
@@ -532,7 +532,7 @@ msgstr "Đã cập nhật cài đặt tiếp nhận."
 msgid "Admission settings were invalid or the node is not ready."
 msgstr "Cài đặt tiếp nhận không hợp lệ hoặc nút chưa sẵn sàng."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr ""
@@ -597,7 +597,7 @@ msgstr "Mọi cuộc hội thoại"
 msgid "All visible"
 msgstr "Tất cả hiển thị"
 
-#: lib/marshall_web/live/terminal_live.ex:691
+#: lib/marshall_web/live/terminal_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Allow viewing"
 msgstr "Cho phép xem"
@@ -676,7 +676,7 @@ msgstr "Giao diện"
 msgid "Apply"
 msgstr "Áp dụng"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:394
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "Áp dụng thiết lập tiếp nhận"
@@ -701,7 +701,7 @@ msgstr "Đang áp dụng kích thước CPU, bộ nhớ và đĩa mới trên m�
 msgid "Approve CLI access"
 msgstr "Chấp thuận quyền truy cập CLI"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:68
+#: lib/marshall_web/live/ssh_approval_live.ex:82
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr "Chấp thuận khóa SSH"
@@ -711,23 +711,23 @@ msgstr "Chấp thuận khóa SSH"
 msgid "Approve agent CLI"
 msgstr "Chấp thuận CLI của tác tử"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:94
+#: lib/marshall_web/live/ssh_approval_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr "Chấp thuận khóa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:616
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "Chấp thuận thời gian ngừng khi di chuyển"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:71
+#: lib/marshall_web/live/ssh_approval_live.ex:85
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr "Chỉ chấp thuận khóa này nếu bạn đã khởi tạo kết nối SSH và dấu vân tay khớp với máy khách SSH của bạn."
 
 #: lib/marshall_web/live/agent_cli_approval_live.ex:74
-#: lib/marshall_web/live/ssh_approval_live.ex:92
+#: lib/marshall_web/live/ssh_approval_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "Đang chấp thuận…"
@@ -841,7 +841,7 @@ msgstr "Không có lịch sử kiểm toán."
 msgid "Audit kinds"
 msgstr "Loại kiểm toán"
 
-#: lib/marshall_web/live/terminal_live.ex:615
+#: lib/marshall_web/live/terminal_live.ex:669
 #, elixir-autogen, elixir-format
 msgid "A−"
 msgstr "A−"
@@ -884,7 +884,7 @@ msgid "Binary content"
 msgstr "Nội dung nhị phân"
 
 #: lib/marshall_web/components/workspace_components.ex:425
-#: lib/marshall_web/live/terminal_live.ex:587
+#: lib/marshall_web/live/terminal_live.ex:617
 #, elixir-autogen, elixir-format
 msgid "Boot log"
 msgstr "Nhật ký khởi động"
@@ -905,7 +905,7 @@ msgstr "Đường dẫn điều hướng"
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "Tạm dừng nguồn trong chốc lát để chụp đĩa an toàn."
 
-#: lib/marshall_web/live/overview_live.ex:244
+#: lib/marshall_web/live/overview_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr "Đưa kho GitHub, GitLab, Codeberg hoặc Bitbucket vào Overalls bằng tiện ích Chrome hoặc Firefox."
@@ -932,7 +932,7 @@ msgid "Build something, fix a bug, explore an idea…"
 msgstr "Xây dựng, sửa lỗi, khám phá ý tưởng…"
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:295
 #: lib/marshall_web/live/resize_live.ex:288
 #: lib/marshall_web/live/resize_live.ex:328
 #: lib/marshall_web/live/resize_live.ex:413
@@ -947,7 +947,7 @@ msgstr "CPU"
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "CPU sau khi giữ chỗ"
@@ -957,28 +957,28 @@ msgstr "CPU sau khi giữ chỗ"
 msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "CPU và bộ nhớ có thể tăng hoặc giảm. Kích thước đĩa chỉ có thể tăng."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:405
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "Dung lượng CPU còn trống"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "Chi phí CPU phụ trội (lõi)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "Chiến dịch"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:524
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "Lịch sử chiến dịch"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:488
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr "Các mốc chiến dịch, khối lượng công việc và di chuyển từ bản ghi bền vững của mặt phẳng điều khiển."
@@ -991,7 +991,7 @@ msgstr "Có thể"
 #: lib/marshall_web/components/clone_components.ex:110
 #: lib/marshall_web/components/layouts.ex:118
 #: lib/marshall_web/live/machines_live.ex:939
-#: lib/marshall_web/live/terminal_live.ex:697
+#: lib/marshall_web/live/terminal_live.ex:751
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Hủy"
@@ -1001,7 +1001,7 @@ msgstr "Hủy"
 msgid "Cancel could not be accepted. Sizes are already being applied or the machine state is unconfirmed."
 msgstr "Không thể chấp nhận hủy. Kích thước đang được áp dụng hoặc trạng thái máy chưa được xác nhận."
 
-#: lib/marshall_web/live/machines_live.ex:1178
+#: lib/marshall_web/live/machines_live.ex:1196
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "Hủy di chuyển"
@@ -1028,7 +1028,7 @@ msgstr "Đã yêu cầu hủy. Việc dọn dẹp có thể tiếp tục sau khi
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
 #: lib/marshall_web/live/admin/jobs_live.ex:432
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:717
 #: lib/marshall_web/live/resize_live.ex:503
 #: lib/marshall_web/live/resize_live.ex:540
 #: lib/marshall_web/live/resize_live.ex:548
@@ -1066,7 +1066,7 @@ msgstr "Đang hủy: chờ xác nhận dừng rồi khởi động lại với k
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "Đang hủy: chờ xác nhận dừng; kích thước không đổi."
 
-#: lib/marshall_web/live/machines_live.ex:1176
+#: lib/marshall_web/live/machines_live.ex:1194
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "Đang hủy…"
@@ -1081,7 +1081,7 @@ msgstr "Giải thích dung lượng"
 msgid "Capacity information is temporarily unavailable."
 msgstr "Thông tin dung lượng tạm thời không khả dụng."
 
-#: lib/marshall_web/live/overview_live.ex:261
+#: lib/marshall_web/live/overview_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "Dung lượng được kiểm tra lại khi bạn tạo máy."
@@ -1117,13 +1117,13 @@ msgstr "Thay đổi"
 msgid "Check your email for a sign-in link. Your account will be created automatically when you sign in."
 msgstr "Kiểm tra email để lấy liên kết đăng nhập. Tài khoản sẽ tự động được tạo khi bạn đăng nhập."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
 #: lib/marshall_web/live/machines_live.ex:655
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "Đang kiểm tra đích sẵn sàng"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
 #: lib/marshall_web/live/machines_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
@@ -1184,7 +1184,7 @@ msgstr "Đã hủy nhân bản"
 msgid "Clone complete"
 msgstr "Đã hoàn tất nhân bản"
 
-#: lib/marshall_web/live/machines_live.ex:1198
+#: lib/marshall_web/live/machines_live.ex:1216
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "Nhân bản máy"
@@ -1199,12 +1199,12 @@ msgstr "Nhân bản cần được xử lý"
 msgid "Clone queued. You can queue another copy."
 msgstr "Đã xếp hàng nhân bản. Bạn có thể xếp thêm bản sao."
 
-#: lib/marshall_web/live/machines_live.ex:1243
+#: lib/marshall_web/live/machines_live.ex:1261
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "Yêu cầu nhân bản"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1269
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr "Yêu cầu nhân bản tạm thời không khả dụng. Đang tự động thử lại."
@@ -1226,18 +1226,18 @@ msgstr "Đóng"
 msgid "Close navigation"
 msgstr "Đóng điều hướng"
 
-#: lib/marshall_web/live/terminal_live.ex:654
+#: lib/marshall_web/live/terminal_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Close search"
 msgstr "Đóng tìm kiếm"
 
 #: lib/marshall_web/live/admin/access_live.ex:224
-#: lib/marshall_web/live/terminal_live.ex:569
+#: lib/marshall_web/live/terminal_live.ex:599
 #, elixir-autogen, elixir-format
 msgid "Close session"
 msgstr "Đóng phiên"
 
-#: lib/marshall_web/live/terminal_live.ex:568
+#: lib/marshall_web/live/terminal_live.ex:598
 #, elixir-autogen, elixir-format
 msgid "Close terminal %{value1}"
 msgstr "Đóng thiết bị đầu cuối %{value1}"
@@ -1247,7 +1247,7 @@ msgstr "Đóng thiết bị đầu cuối %{value1}"
 msgid "Close this SSH session?"
 msgstr "Đóng phiên SSH này?"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:533
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "Đã đóng"
@@ -1304,7 +1304,7 @@ msgstr "Không thể thu gọn thêm ngữ cảnh này. Giảm chỉ dẫn bắt
 
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:431
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
 #: lib/marshall_web/live/resize_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Complete"
@@ -1331,7 +1331,7 @@ msgstr "Tài nguyên đã xác nhận"
 msgid "Connect"
 msgstr "Kết nối"
 
-#: lib/marshall_web/live/overview_live.ex:273
+#: lib/marshall_web/live/overview_live.ex:320
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "Kết nối tích hợp ↗"
@@ -1341,7 +1341,7 @@ msgstr "Kết nối tích hợp ↗"
 msgid "Connect from your computer"
 msgstr "Kết nối từ máy tính của bạn"
 
-#: lib/marshall_web/live/terminal_live.ex:595
+#: lib/marshall_web/live/terminal_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "Connecting…"
 msgstr "Đang kết nối…"
@@ -1376,7 +1376,7 @@ msgstr "Chi tiết ngữ cảnh không khả dụng. Luồng có thể vẫn đa
 msgid "Context reload queued."
 msgstr "Đã xếp hàng tải lại ngữ cảnh."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:462
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "Tiếp tục lập lịch"
@@ -1429,13 +1429,13 @@ msgstr "Sao chép lệnh cài đặt Windows PowerShell"
 msgid "Copy machine ID"
 msgstr "Sao chép ID máy"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "Giữ chỗ sao chép/đổi kích thước"
 
 #: lib/marshall_web/components/clone_components.ex:254
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "Đang sao chép"
@@ -1560,7 +1560,7 @@ msgstr "Số liệu gồm tác vụ thô hiện tại và được giữ lại g
 msgid "Create a machine"
 msgstr "Tạo một máy"
 
-#: lib/marshall_web/live/machines_live.ex:1203
+#: lib/marshall_web/live/machines_live.ex:1221
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr "Tạo bản sao riêng, độc lập của máy này. Máy đang chạy tạm dừng cho mỗi bản chụp nhanh rồi khởi động lại trong khi sao chép tiếp tục. Các bản sao được xử lý theo thứ tự và khớp với trạng thái nguồn lúc đến lượt."
@@ -1592,7 +1592,7 @@ msgstr "Tạo nhóm"
 msgid "Create thread"
 msgstr "Tạo luồng"
 
-#: lib/marshall_web/live/overview_live.ex:173
+#: lib/marshall_web/live/overview_live.ex:175
 #, elixir-autogen, elixir-format
 msgid "Create your first machine"
 msgstr "Tạo máy đầu tiên của bạn"
@@ -1638,7 +1638,7 @@ msgstr "Dung lượng còn trống hiện tại tạm thời không khả dụng
 msgid "Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk"
 msgstr "Dung lượng còn trống: %{value1} vCPU · %{value2} GiB bộ nhớ · %{value3} GiB đĩa"
 
-#: lib/marshall_web/live/overview_live.ex:253
+#: lib/marshall_web/live/overview_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "Dung lượng cấp phát còn trống hiện tại"
@@ -1676,7 +1676,7 @@ msgstr "Tối"
 msgid "Decline"
 msgstr "Từ chối"
 
-#: lib/marshall_web/live/terminal_live.ex:614
+#: lib/marshall_web/live/terminal_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Decrease terminal font size"
 msgstr "Giảm cỡ chữ thiết bị đầu cuối"
@@ -1687,18 +1687,18 @@ msgid "Delegated a task"
 msgstr "Đã ủy thác nhiệm vụ"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:217
-#: lib/marshall_web/live/machines_live.ex:1290
+#: lib/marshall_web/live/machines_live.ex:1308
 #: lib/marshall_web/live/threads_live.ex:1859
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "Xóa"
 
-#: lib/marshall_web/live/machines_live.ex:1275
+#: lib/marshall_web/live/machines_live.ex:1293
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "Xóa máy"
 
-#: lib/marshall_web/live/machines_live.ex:1288
+#: lib/marshall_web/live/machines_live.ex:1306
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr "Xóa máy này và đĩa của nó? Không thể hoàn tác."
@@ -1709,7 +1709,7 @@ msgid "Delete user and machines"
 msgstr "Xóa người dùng và máy"
 
 #: lib/marshall_web/components/workspace_components.ex:84
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "Đã xóa"
@@ -1721,7 +1721,7 @@ msgstr "Đã xóa"
 msgid "Deleting"
 msgstr "Đang xóa"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:714
 #: lib/marshall_web/live/machines_live.ex:661
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
@@ -1732,13 +1732,13 @@ msgstr "Đang xóa các bản sao giữ lại"
 msgid "Describe a task. Your agent gets a machine and gets to work."
 msgstr "Mô tả nhiệm vụ. Tác tử của bạn nhận máy và bắt đầu làm việc."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
 #: lib/marshall_web/live/machines_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "Đích khởi động thất bại; giữ lại bản sao nguồn"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
 #: lib/marshall_web/live/machines_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
@@ -1760,7 +1760,7 @@ msgstr "Đã yêu cầu khởi động lại đích. Bản sao nguồn được 
 msgid "Detach"
 msgstr "Tách"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:498
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
 #: lib/marshall_web/live/admin/workloads_live.ex:150
 #: lib/marshall_web/live/inference_live.ex:154
 #, elixir-autogen, elixir-format
@@ -1789,7 +1789,7 @@ msgid "Disabled"
 msgstr "Đã vô hiệu hóa"
 
 #: lib/marshall_web/live/machines_live.ex:970
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:301
 #: lib/marshall_web/live/resize_live.ex:292
 #: lib/marshall_web/live/resize_live.ex:344
 #: lib/marshall_web/live/resize_live.ex:447
@@ -1808,7 +1808,7 @@ msgstr "Đĩa (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "Đĩa (GiB) — Tối đa 500 GiB"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "Đĩa sau khi giữ chỗ"
@@ -1833,7 +1833,7 @@ msgstr "Hệ thống tài liệu"
 msgid "Download raw file ↗"
 msgstr "Tải tệp thô ↗"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:617
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "Đã chấp thuận thời gian ngừng cho bản sửa đổi khối lượng công việc này"
@@ -1850,7 +1850,7 @@ msgid "Email"
 msgstr "Thư điện tử"
 
 #: lib/marshall_web/live/admin/users_live.ex:146
-#: lib/marshall_web/live/overview_live.ex:226
+#: lib/marshall_web/live/overview_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "Địa chỉ email"
@@ -1887,8 +1887,8 @@ msgstr "Kết thúc xác minh trước khi hết mười lăm phút."
 msgid "Ends that person's access to this machine."
 msgstr "Chấm dứt quyền truy cập máy này của người đó."
 
-#: lib/marshall_web/live/terminal_live.ex:625
-#: lib/marshall_web/live/terminal_live.ex:627
+#: lib/marshall_web/live/terminal_live.ex:679
+#: lib/marshall_web/live/terminal_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "Vào toàn màn hình"
@@ -1909,17 +1909,17 @@ msgid "Evacuation blocks new placements while existing guests remain served. Mov
 msgstr "Di tản chặn bố trí mới trong khi vẫn phục vụ máy khách hiện có. Di chuyển máy khách đang chạy gây gián đoạn ngắn. Sao chép đầy đủ khi dừng có thể lâu hơn đáng kể và cần chấp thuận cho từng khối lượng công việc."
 
 #: lib/marshall_web/live/admin/jobs_live.ex:425
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:438
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "Chiến dịch di tản"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:485
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "Dòng thời gian di tản"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:497
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "Sự kiện"
@@ -1980,7 +1980,7 @@ msgstr "Hết hạn"
 msgid "Explain capacity"
 msgstr "Giải thích dung lượng"
 
-#: lib/marshall_web/live/overview_live.ex:275
+#: lib/marshall_web/live/overview_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "Khám phá mức sử dụng ↗"
@@ -1992,7 +1992,7 @@ msgstr "Xuất mức sử dụng AI"
 
 #: lib/marshall_web/components/workspace_components.ex:83
 #: lib/marshall_web/live/admin/jobs_live.ex:16
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:663
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
 #: lib/marshall_web/live/threads_live.ex:1664
 #: lib/marshall_web/live/threads_live.ex:2632
 #, elixir-autogen, elixir-format
@@ -2006,12 +2006,12 @@ msgstr "Thất bại"
 msgid "Field notes"
 msgstr "Ghi chú thực địa"
 
-#: lib/marshall_web/live/machines_live.ex:1199
+#: lib/marshall_web/live/machines_live.ex:1217
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "Bản sao gồm tệp và thông tin xác thực đã lưu"
 
-#: lib/marshall_web/live/machines_live.ex:1233
+#: lib/marshall_web/live/machines_live.ex:1251
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "Bản sao gồm tệp và thông tin xác thực đã lưu."
@@ -2044,12 +2044,12 @@ msgstr "Tìm lệnh"
 msgid "Find a task…"
 msgstr "Tìm nhiệm vụ…"
 
-#: lib/marshall_web/live/terminal_live.ex:639
+#: lib/marshall_web/live/terminal_live.ex:693
 #, elixir-autogen, elixir-format
 msgid "Find in scrollback"
 msgstr "Tìm trong lịch sử cuộn"
 
-#: lib/marshall_web/live/overview_live.ex:274
+#: lib/marshall_web/live/overview_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "Tìm đồng đội ↗"
@@ -2086,13 +2086,13 @@ msgstr "Mức sử dụng AI của đội máy"
 msgid "Fleet workloads"
 msgstr "Khối lượng công việc của đội máy"
 
-#: lib/marshall_web/live/terminal_live.ex:661
+#: lib/marshall_web/live/terminal_live.ex:715
 #, elixir-autogen, elixir-format
 msgid "Follow boot output"
 msgstr "Theo dõi đầu ra khởi động"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "Mới"
@@ -2204,7 +2204,7 @@ msgstr "Đích HTTPS"
 msgid "Handbook contents"
 msgstr "Mục lục sổ tay"
 
-#: lib/marshall_web/live/overview_live.ex:264
+#: lib/marshall_web/live/overview_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "Dung lượng còn trống tạm thời không khả dụng."
@@ -2315,7 +2315,7 @@ msgstr "Báo cáo AI chưa đầy đủ"
 msgid "Incorrect email or password"
 msgstr "Email hoặc mật khẩu không đúng"
 
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:673
 #, elixir-autogen, elixir-format
 msgid "Increase terminal font size"
 msgstr "Tăng cỡ chữ thiết bị đầu cuối"
@@ -2467,7 +2467,7 @@ msgid "LLM index"
 msgstr "Chỉ mục LLM"
 
 #: lib/marshall_web/live/account_live.ex:722
-#: lib/marshall_web/live/ssh_approval_live.ex:84
+#: lib/marshall_web/live/ssh_approval_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "Nhãn (tùy chọn)"
@@ -2519,12 +2519,12 @@ msgstr "Đang khởi chạy"
 msgid "Launching repository"
 msgstr "Đang khởi chạy kho"
 
-#: lib/marshall_web/live/machines_live.ex:1218
+#: lib/marshall_web/live/machines_live.ex:1236
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "Để trống để tạo tên tự động"
 
-#: lib/marshall_web/live/machines_live.ex:1231
+#: lib/marshall_web/live/machines_live.ex:1249
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "Để trống để tạo tên tự động."
@@ -2636,12 +2636,12 @@ msgstr "Đã tách máy."
 msgid "Machine generations"
 msgstr "Thế hệ máy"
 
-#: lib/marshall_web/live/terminal_live.ex:305
+#: lib/marshall_web/live/terminal_live.ex:335
 #, elixir-autogen, elixir-format
 msgid "Machine is stopping or stopped. Choose Start to open a terminal."
 msgstr "Máy đang dừng hoặc đã dừng. Chọn Bắt đầu để mở thiết bị đầu cuối."
 
-#: lib/marshall_web/live/terminal_live.ex:47
+#: lib/marshall_web/live/terminal_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "Machine not found."
 msgstr "Không tìm thấy máy."
@@ -2676,7 +2676,7 @@ msgstr "Đã yêu cầu máy."
 msgid "Machine settings"
 msgstr "Thiết lập máy"
 
-#: lib/marshall_web/live/terminal_live.ex:302
+#: lib/marshall_web/live/terminal_live.ex:332
 #, elixir-autogen, elixir-format
 msgid "Machine startup failed. Check the machine status and boot log."
 msgstr "Máy khởi động thất bại. Kiểm tra trạng thái máy và nhật ký khởi động."
@@ -2700,7 +2700,7 @@ msgstr "Máy:"
 #: lib/marshall_web/components/layouts.ex:437
 #: lib/marshall_web/live/machines_live.ex:105
 #: lib/marshall_web/live/machines_live.ex:685
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "Máy"
@@ -2710,7 +2710,7 @@ msgstr "Máy"
 msgid "Machines are temporarily unavailable."
 msgstr "Máy tạm thời không khả dụng."
 
-#: lib/marshall_web/live/overview_live.ex:215
+#: lib/marshall_web/live/overview_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "Không thể tải máy. Làm mới để thử lại."
@@ -2736,7 +2736,7 @@ msgstr "Chính"
 msgid "Maintenance"
 msgstr "Bảo trì"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:637
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "Trang bảo trì"
@@ -2756,7 +2756,7 @@ msgstr "Đặt làm quản trị viên"
 msgid "Make it yours"
 msgstr "Tùy chỉnh theo ý bạn"
 
-#: lib/marshall_web/live/overview_live.ex:268
+#: lib/marshall_web/live/overview_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "Hãy tự nhiên như ở nhà"
@@ -2771,7 +2771,7 @@ msgstr "Hãy thoải mái"
 msgid "Manage members and team machines."
 msgstr "Quản lý thành viên và máy của nhóm."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:97
+#: lib/marshall_web/live/ssh_approval_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr "Quản lý khóa SSH"
@@ -2815,7 +2815,7 @@ msgstr "Markdown của trang này"
 msgid "Match this request code with your terminal before approving:"
 msgstr "Đối chiếu mã yêu cầu với thiết bị đầu cuối trước khi chấp thuận:"
 
-#: lib/marshall_web/live/machines_live.ex:1158
+#: lib/marshall_web/live/machines_live.ex:1176
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr "Đo giữa các quan sát dừng và sẵn sàng của mặt phẳng điều khiển; mức khả dụng của máy khách có thể khác."
@@ -2848,7 +2848,7 @@ msgid "Membership updated."
 msgstr "Đã cập nhật tư cách thành viên."
 
 #: lib/marshall_web/live/machines_live.ex:967
-#: lib/marshall_web/live/overview_live.ex:258
+#: lib/marshall_web/live/overview_live.ex:298
 #: lib/marshall_web/live/resize_live.ex:289
 #: lib/marshall_web/live/resize_live.ex:334
 #: lib/marshall_web/live/resize_live.ex:441
@@ -2863,12 +2863,12 @@ msgstr "Bộ nhớ"
 msgid "Memory (MiB)"
 msgstr "Bộ nhớ (MiB)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "Bộ nhớ sau khi giữ chỗ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:406
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "Bộ nhớ còn trống"
@@ -2908,7 +2908,7 @@ msgstr "Nội dung bản sao gương không khả dụng."
 msgid "Mirrors"
 msgstr "Bản sao gương"
 
-#: lib/marshall_web/live/machines_live.ex:1149
+#: lib/marshall_web/live/machines_live.ex:1167
 #: lib/marshall_web/live/threads_live.ex:1407
 #, elixir-autogen, elixir-format
 msgid "Mode"
@@ -2940,18 +2940,18 @@ msgstr "Đã hủy di chuyển; dọn dẹp hoàn tất"
 msgid "Move complete"
 msgstr "Di chuyển hoàn tất"
 
-#: lib/marshall_web/live/machines_live.ex:1131
+#: lib/marshall_web/live/machines_live.ex:1149
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr "Di chuyển máy này đến máy chủ được chọn tự động? Máy có thể tạm thời không khả dụng."
 
-#: lib/marshall_web/live/machines_live.ex:1136
+#: lib/marshall_web/live/machines_live.ex:1154
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "Di chuyển sang máy chủ khác"
 
 #: lib/marshall_web/live/account_live.ex:724
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "Máy tính xách tay của tôi"
@@ -2977,7 +2977,7 @@ msgstr "Điểm cuối có tên mà máy truy cập tại https://NAME.integrati
 msgid "Needs attention"
 msgstr "Cần xử lý"
 
-#: lib/marshall_web/live/machines_live.ex:1217
+#: lib/marshall_web/live/machines_live.ex:1235
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "Tên máy mới (tùy chọn)"
@@ -2994,7 +2994,7 @@ msgstr "Kích thước mới"
 msgid "New thread"
 msgstr "Luồng mới"
 
-#: lib/marshall_web/live/terminal_live.ex:649
+#: lib/marshall_web/live/terminal_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Next match"
 msgstr "Kết quả tiếp theo"
@@ -3005,7 +3005,7 @@ msgstr "Kết quả tiếp theo"
 msgid "Next page"
 msgstr "Trang tiếp"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:639
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #: lib/marshall_web/live/admin/users_live.ex:262
 #: lib/marshall_web/live/machines_live.ex:795
 #: lib/marshall_web/live/machines_live.ex:1063
@@ -3013,7 +3013,7 @@ msgstr "Trang tiếp"
 msgid "Next page →"
 msgstr "Trang tiếp →"
 
-#: lib/marshall_web/live/overview_live.ex:271
+#: lib/marshall_web/live/overview_live.ex:317
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "Bước tiếp theo"
@@ -3069,7 +3069,7 @@ msgstr "Không có khối lượng công việc đang hoạt động."
 msgid "No activity matches this filter."
 msgstr "Không có hoạt động khớp bộ lọc."
 
-#: lib/marshall_web/live/machines_live.ex:1248
+#: lib/marshall_web/live/machines_live.ex:1266
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr "Chưa có yêu cầu nhân bản. Xếp hàng bản sao và theo dõi tiến độ tại đây."
@@ -3195,7 +3195,7 @@ msgstr "Không có lượt di chuyển khả dụng."
 msgid "No repositories are mirrored yet."
 msgstr "Chưa tạo bản sao gương kho nào."
 
-#: lib/marshall_web/live/terminal_live.ex:579
+#: lib/marshall_web/live/terminal_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "No shared terminals are available to view."
 msgstr "Không có thiết bị đầu cuối chia sẻ để xem."
@@ -3205,7 +3205,7 @@ msgstr "Không có thiết bị đầu cuối chia sẻ để xem."
 msgid "No skills were discovered in this workspace."
 msgstr "Không tìm thấy kỹ năng trong không gian làm việc này."
 
-#: lib/marshall_web/live/terminal_live.ex:583
+#: lib/marshall_web/live/terminal_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "No terminals are open. Choose New to open your personal shell."
 msgstr "Không có thiết bị đầu cuối đang mở. Chọn Mới để mở shell cá nhân."
@@ -3244,7 +3244,7 @@ msgstr "Chưa thu thập"
 msgid "Objective"
 msgstr "Mục tiêu"
 
-#: lib/marshall_web/live/machines_live.ex:1154
+#: lib/marshall_web/live/machines_live.ex:1172
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "Thời gian ngừng quan sát được"
@@ -3343,7 +3343,7 @@ msgstr "Mở bản nhân bản"
 msgid "Open machine →"
 msgstr "Mở máy →"
 
-#: lib/marshall_web/live/overview_live.ex:240
+#: lib/marshall_web/live/overview_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "Mở kho từ trình duyệt"
@@ -3369,7 +3369,7 @@ msgstr "Mở thiết bị đầu cuối cho %{value1}"
 msgid "Open terminal here"
 msgstr "Mở thiết bị đầu cuối tại đây"
 
-#: lib/marshall_web/live/overview_live.ex:204
+#: lib/marshall_web/live/overview_live.ex:208
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "Mở thiết bị đầu cuối ↗"
@@ -3384,12 +3384,12 @@ msgstr "Mở ứng dụng web của máy này. Không có thiết bị đầu cu
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:532
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "Đã mở"
 
-#: lib/marshall_web/live/terminal_live.ex:87
+#: lib/marshall_web/live/terminal_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Opening terminal; recovering the same request if the connection was interrupted."
 msgstr "Đang mở thiết bị đầu cuối; khôi phục cùng yêu cầu nếu kết nối bị gián đoạn."
@@ -3535,12 +3535,12 @@ msgstr "Dán khóa công khai từ tệp .pub. Không bao giờ dán khóa riên
 msgid "Paths"
 msgstr "Đường dẫn"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:455
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "Tạm dừng lập lịch"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr "Tạm dừng ngăn lập lịch lượt di chuyển mới. Lượt đã chấp nhận vẫn tiếp tục. Sẵn sàng bảo trì cần xác nhận dọn nguồn; chỉ có tác vụ hoàn tất là chưa đủ."
@@ -3563,7 +3563,7 @@ msgstr "ID máy ngang hàng"
 #: lib/marshall_web/components/workspace_components.ex:79
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:429
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
 #: lib/marshall_web/live/resize_live.ex:504
 #: lib/marshall_web/live/threads_live.ex:1661
 #: lib/marshall_web/live/threads_live.ex:2629
@@ -3576,12 +3576,12 @@ msgstr "Đang chờ"
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "Xóa vĩnh viễn tài khoản này và TẤT CẢ máy họ sở hữu, kể cả máy chia sẻ với người khác?"
 
-#: lib/marshall_web/live/machines_live.ex:1297
+#: lib/marshall_web/live/machines_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "Xóa vĩnh viễn máy này và đĩa của nó. Không thể hoàn tác."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:476
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr "Ngừng vĩnh viễn nút trống này và thu hồi thông tin xác thực?"
@@ -3592,7 +3592,7 @@ msgid "Permission to clone this machine is no longer available."
 msgstr "Quyền nhân bản máy này không còn khả dụng."
 
 #: lib/marshall_web/live/machines_live.ex:879
-#: lib/marshall_web/live/overview_live.ex:186
+#: lib/marshall_web/live/overview_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "Cá nhân"
@@ -3603,12 +3603,12 @@ msgid "Personal integration"
 msgstr "Tích hợp cá nhân"
 
 #: lib/marshall_web/live/admin/git_live.ex:103
-#: lib/marshall_web/live/machines_live.ex:1146
+#: lib/marshall_web/live/machines_live.ex:1164
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "Giai đoạn"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:582
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:589
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "Giai đoạn: %{phase}"
@@ -3641,7 +3641,7 @@ msgstr "Kế hoạch"
 msgid "Platform status"
 msgstr "Trạng thái nền tảng"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:403
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "Nhóm tài nguyên"
@@ -3663,7 +3663,7 @@ msgid "Power afterwards"
 msgstr "Trạng thái nguồn sau đó"
 
 #: lib/marshall_web/components/clone_components.ex:252
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "Đang chuẩn bị"
@@ -3688,7 +3688,7 @@ msgstr "Đang chuẩn bị không gian và kiểm tra nguồn trước khi chụ
 msgid "Preparing transfer"
 msgstr "Đang chuẩn bị truyền"
 
-#: lib/marshall_web/live/terminal_live.ex:422
+#: lib/marshall_web/live/terminal_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Preparing your guest account…"
 msgstr "Đang chuẩn bị tài khoản máy khách…"
@@ -3703,9 +3703,9 @@ msgstr "Đang chuẩn bị máy của bạn…"
 msgid "Preparing your repository…"
 msgstr "Đang chuẩn bị kho của bạn…"
 
-#: lib/marshall_web/live/terminal_live.ex:361
-#: lib/marshall_web/live/terminal_live.ex:399
-#: lib/marshall_web/live/terminal_live.ex:423
+#: lib/marshall_web/live/terminal_live.ex:391
+#: lib/marshall_web/live/terminal_live.ex:429
+#: lib/marshall_web/live/terminal_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "Preparing your terminal…"
 msgstr "Đang chuẩn bị thiết bị đầu cuối…"
@@ -3720,12 +3720,12 @@ msgstr "Đang chuẩn bị không gian làm việc"
 msgid "Preview evacuation"
 msgstr "Xem trước di tản"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:604
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "Xem trước: %{blocker}"
 
-#: lib/marshall_web/live/terminal_live.ex:644
+#: lib/marshall_web/live/terminal_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "Previous match"
 msgstr "Kết quả trước"
@@ -3840,22 +3840,22 @@ msgstr "Đã xếp hàng"
 msgid "Queued: %{tools}"
 msgstr "Đã xếp hàng: %{tools}"
 
-#: lib/marshall_web/live/machines_live.ex:1226
+#: lib/marshall_web/live/machines_live.ex:1244
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "Đang xếp hàng…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:383
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "RAM phụ trội (byte)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:627
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:640
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr "Lập lại kế hoạch khối lượng công việc này bằng vị trí và trạng thái mong muốn hiện tại? Mọi chấp thuận thời gian ngừng trước đó sẽ bị xóa."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:645
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "Lập lại kế hoạch khối lượng công việc"
@@ -3865,7 +3865,7 @@ msgstr "Lập lại kế hoạch khối lượng công việc"
 msgid "Read and write in the terminal."
 msgstr "Đọc và ghi trong thiết bị đầu cuối."
 
-#: lib/marshall_web/live/overview_live.ex:276
+#: lib/marshall_web/live/overview_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "Đọc ghi chú thực địa ↗"
@@ -3880,12 +3880,12 @@ msgstr "Đọc thiết bị đầu cuối."
 msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
 msgstr "Tính toán tiếp nhận chỉ đọc. Không giữ chỗ dung lượng; số đo chưa biết sẽ ngăn tiếp nhận."
 
-#: lib/marshall_web/live/terminal_live.ex:668
+#: lib/marshall_web/live/terminal_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Read-only boot console"
 msgstr "Bảng điều khiển khởi động chỉ đọc"
 
-#: lib/marshall_web/live/terminal_live.ex:577
+#: lib/marshall_web/live/terminal_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Read-only host boot log. Guest terminal readiness is not required."
 msgstr "Nhật ký khởi động máy chủ chỉ đọc. Không cần thiết bị đầu cuối máy khách sẵn sàng."
@@ -3900,7 +3900,7 @@ msgstr "Trạng thái ảnh, lối vào Audi và cổng Porsche chỉ đọc. B�
 msgid "Read-only mirrors of public GitHub repositories."
 msgstr "Bản sao gương chỉ đọc của kho GitHub công khai."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:658
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #: lib/marshall_web/live/threads_live.ex:1663
 #: lib/marshall_web/live/threads_live.ex:2631
 #, elixir-autogen, elixir-format
@@ -3937,7 +3937,7 @@ msgstr "Kiểm toán bản sao gương gần đây"
 msgid "Recent threads"
 msgstr "Luồng gần đây"
 
-#: lib/marshall_web/live/terminal_live.ex:362
+#: lib/marshall_web/live/terminal_live.ex:392
 #, elixir-autogen, elixir-format
 msgid "Reconnecting to the terminal service…"
 msgstr "Đang kết nối lại dịch vụ thiết bị đầu cuối…"
@@ -3964,7 +3964,7 @@ msgid "Reference"
 msgstr "Tham chiếu"
 
 #: lib/marshall_web/live/admin/git_live.ex:119
-#: lib/marshall_web/live/overview_live.ex:290
+#: lib/marshall_web/live/overview_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "Làm mới"
@@ -3984,7 +3984,7 @@ msgstr "Không thể đưa yêu cầu làm mới vào hàng đợi."
 msgid "Refresh queued."
 msgstr "Đã đưa yêu cầu làm mới vào hàng đợi."
 
-#: lib/marshall_web/live/overview_live.ex:288
+#: lib/marshall_web/live/overview_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "Đang làm mới…"
@@ -4017,7 +4017,7 @@ msgstr "Bản ghi liên quan"
 msgid "Reload context"
 msgstr "Tải lại ngữ cảnh"
 
-#: lib/marshall_web/live/machines_live.ex:1120
+#: lib/marshall_web/live/machines_live.ex:1138
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "Di chuyển máy"
@@ -4109,7 +4109,7 @@ msgstr "Xóa quyền truy cập SSH của khóa này? Các thao tác máy đã �
 msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
 msgstr "Xóa khóa truy cập này? Xóa khóa truy cập cuối cùng sẽ đăng xuất bạn ở mọi nơi."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "Đã xóa khỏi nguồn này; đang chờ xác minh việc dọn dẹp chiến dịch."
@@ -4120,12 +4120,12 @@ msgstr "Đã xóa khỏi nguồn này; đang chờ xác minh việc dọn dẹp 
 msgid "Rename"
 msgstr "Đổi tên"
 
-#: lib/marshall_web/live/terminal_live.ex:603
+#: lib/marshall_web/live/terminal_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Rename in this browser"
 msgstr "Đổi tên trong trình duyệt này"
 
-#: lib/marshall_web/live/terminal_live.ex:602
+#: lib/marshall_web/live/terminal_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Rename terminal"
 msgstr "Đổi tên thiết bị đầu cuối"
@@ -4142,7 +4142,7 @@ msgstr "Máy được mở lại giữ các bản ghi trước đó. Chọn mộ
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:404
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "Báo cáo"
@@ -4218,7 +4218,7 @@ msgstr "Đang yêu cầu hủy…"
 msgid "Requesting resize…"
 msgstr "Đang yêu cầu đổi kích thước…"
 
-#: lib/marshall_web/live/machines_live.ex:1184
+#: lib/marshall_web/live/machines_live.ex:1202
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "Đang yêu cầu khởi động lại…"
@@ -4228,7 +4228,7 @@ msgstr "Đang yêu cầu khởi động lại…"
 msgid "Requesting retry…"
 msgstr "Đang yêu cầu thử lại…"
 
-#: lib/marshall_web/live/machines_live.ex:1129
+#: lib/marshall_web/live/machines_live.ex:1147
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "Đang yêu cầu…"
@@ -4269,7 +4269,7 @@ msgstr "Đã hủy đổi kích thước."
 msgid "Resize could not be accepted. Check the sizes and current machine state."
 msgstr "Không thể chấp nhận đổi kích thước. Hãy kiểm tra kích thước và trạng thái máy hiện tại."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:782
 #: lib/marshall_web/live/resize_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
@@ -4341,12 +4341,12 @@ msgstr "Đã khởi động lại"
 msgid "Restarting"
 msgstr "Đang khởi động lại"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:469
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "Khôi phục khả năng tiếp nhận"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:479
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "Ngừng sử dụng nút"
@@ -4362,7 +4362,7 @@ msgstr "Thử lại"
 msgid "Retry could not be accepted. Capacity or machine state may have changed."
 msgstr "Không thể chấp nhận yêu cầu thử lại. Dung lượng hoặc trạng thái máy có thể đã thay đổi."
 
-#: lib/marshall_web/live/machines_live.ex:1186
+#: lib/marshall_web/live/machines_live.ex:1204
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "Thử khởi động đích lại"
@@ -4418,7 +4418,7 @@ msgstr "Bản sửa đổi"
 msgid "Revision (optional)"
 msgstr "Bản sửa đổi (tùy chọn)"
 
-#: lib/marshall_web/live/terminal_live.ex:694
+#: lib/marshall_web/live/terminal_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "Thu hồi"
@@ -4471,7 +4471,7 @@ msgstr "Vai trò"
 msgid "Room for your next idea"
 msgstr "Không gian cho ý tưởng tiếp theo"
 
-#: lib/marshall_web/live/overview_live.ex:252
+#: lib/marshall_web/live/overview_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "Không gian để phát triển"
@@ -4493,7 +4493,7 @@ msgstr "Định tuyến, quyền sở hữu của nhóm và kết nối ngang h�
 
 #: lib/marshall_web/components/workspace_components.ex:80
 #: lib/marshall_web/live/admin/jobs_live.ex:13
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:660
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Running"
@@ -4520,7 +4520,8 @@ msgstr "Khóa SSH"
 msgid "SSH key added."
 msgstr "Đã thêm khóa SSH."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:35
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:112
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "Đã phê duyệt khóa SSH. Bạn có thể quay lại ứng dụng SSH."
@@ -4608,7 +4609,7 @@ msgstr "Phạm vi"
 msgid "Search"
 msgstr "Tìm kiếm"
 
-#: lib/marshall_web/live/terminal_live.ex:609
+#: lib/marshall_web/live/terminal_live.ex:663
 #, elixir-autogen, elixir-format
 msgid "Search (Ctrl+F)"
 msgstr "Tìm kiếm (Ctrl+F)"
@@ -4624,12 +4625,12 @@ msgstr "Tìm nội dung"
 msgid "Search recent threads"
 msgstr "Tìm luồng gần đây"
 
-#: lib/marshall_web/live/terminal_live.ex:608
+#: lib/marshall_web/live/terminal_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Search scrollback"
 msgstr "Tìm trong lịch sử cuộn"
 
-#: lib/marshall_web/live/terminal_live.ex:632
+#: lib/marshall_web/live/terminal_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Search terminal scrollback"
 msgstr "Tìm trong lịch sử thiết bị đầu cuối"
@@ -4680,7 +4681,7 @@ msgstr "Đang gửi…"
 msgid "Service"
 msgstr "Dịch vụ"
 
-#: lib/marshall_web/live/overview_live.ex:250
+#: lib/marshall_web/live/overview_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "Thiết lập tiện ích trình duyệt ↗"
@@ -4705,12 +4706,12 @@ msgstr "Chia sẻ"
 msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
 msgstr "Chia sẻ máy và tích hợp với đồng nghiệp. Chủ sở hữu chỉ định quản trị viên; quản trị viên quản lý thành viên."
 
-#: lib/marshall_web/live/terminal_live.ex:560
+#: lib/marshall_web/live/terminal_live.ex:590
 #, elixir-autogen, elixir-format
 msgid "Share terminal %{value1}"
 msgstr "Chia sẻ thiết bị đầu cuối %{value1}"
 
-#: lib/marshall_web/live/terminal_live.ex:676
+#: lib/marshall_web/live/terminal_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Share this terminal"
 msgstr "Chia sẻ thiết bị đầu cuối này"
@@ -4720,12 +4721,12 @@ msgstr "Chia sẻ thiết bị đầu cuối này"
 msgid "Share this thread"
 msgstr "Chia sẻ luồng này"
 
-#: lib/marshall_web/live/terminal_live.ex:561
+#: lib/marshall_web/live/terminal_live.ex:591
 #, elixir-autogen, elixir-format
 msgid "Share view"
 msgstr "Chia sẻ chế độ xem"
 
-#: lib/marshall_web/live/overview_live.ex:187
+#: lib/marshall_web/live/overview_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "Đã chia sẻ"
@@ -4928,7 +4929,7 @@ msgid "Source was stopped when this request began."
 msgstr "Nguồn đang dừng khi yêu cầu này bắt đầu."
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "Cũ hoặc không xác định"
@@ -4982,7 +4983,7 @@ msgstr "Đang khởi động máy với tài nguyên mới."
 msgid "Starting…"
 msgstr "Đang khởi động…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "Điều kiện chặn khởi động"
@@ -5005,7 +5006,7 @@ msgstr "Tên tiêu đề cố định"
 msgid "Static header value"
 msgstr "Giá trị tiêu đề cố định"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:531
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:535
 #: lib/marshall_web/live/admin/operations_live.ex:82
 #: lib/marshall_web/live/admin/operations_live.ex:105
 #: lib/marshall_web/live/admin/operations_live.ex:128
@@ -5036,13 +5037,13 @@ msgstr "Dừng"
 msgid "Stop the machine"
 msgstr "Dừng máy"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:624
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr "Dừng khối lượng công việc đang chạy trong suốt quá trình di chuyển? Sao chép đĩa và khởi động lại ở đích có thể gây gián đoạn kéo dài."
 
 #: lib/marshall_web/components/workspace_components.ex:81
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:661
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Stopped"
@@ -5070,7 +5071,7 @@ msgstr "Đang dừng sao chép và xóa tài nguyên tạm. Việc khôi phục 
 msgid "Stopping the machine so its resources can change safely."
 msgstr "Đang dừng máy để thay đổi tài nguyên an toàn."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #: lib/marshall_web/live/machines_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
@@ -5111,7 +5112,7 @@ msgstr "Thành công"
 msgid "Suspended"
 msgstr "Đã tạm ngưng"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
 #: lib/marshall_web/live/machines_live.ex:654
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
@@ -5193,24 +5194,24 @@ msgstr "Các nhóm tạm thời không khả dụng."
 msgid "Terminal"
 msgstr "Thiết bị đầu cuối"
 
-#: lib/marshall_web/live/terminal_live.ex:535
+#: lib/marshall_web/live/terminal_live.ex:565
 #, elixir-autogen, elixir-format
 msgid "Terminal %{name}, %{count} viewer, created %{created}"
 msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
 msgstr[0] "Thiết bị đầu cuối %{name}, %{count} người xem, tạo lúc %{created}"
 
-#: lib/marshall_web/live/terminal_live.ex:114
+#: lib/marshall_web/live/terminal_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Terminal access ended."
 msgstr "Quyền truy cập thiết bị đầu cuối đã kết thúc."
 
-#: lib/marshall_web/live/terminal_live.ex:131
-#: lib/marshall_web/live/terminal_live.ex:321
+#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "Terminal close requested; waiting for guest confirmation."
 msgstr "Đã yêu cầu đóng thiết bị đầu cuối; đang chờ xác nhận từ máy khách."
 
-#: lib/marshall_web/live/terminal_live.ex:438
+#: lib/marshall_web/live/terminal_live.ex:468
 #, elixir-autogen, elixir-format
 msgid "Terminal limit reached for this machine."
 msgstr "Đã đạt giới hạn thiết bị đầu cuối của máy này."
@@ -5220,7 +5221,7 @@ msgstr "Đã đạt giới hạn thiết bị đầu cuối của máy này."
 msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
 msgstr "Giao thức thiết bị đầu cuối: %{protocol} · Luồng cục bộ: %{state}"
 
-#: lib/marshall_web/live/terminal_live.ex:521
+#: lib/marshall_web/live/terminal_live.ex:551
 #, elixir-autogen, elixir-format
 msgid "Terminal sessions"
 msgstr "Các phiên thiết bị đầu cuối"
@@ -5230,7 +5231,7 @@ msgstr "Các phiên thiết bị đầu cuối"
 msgid "Terminal unavailable"
 msgstr "Thiết bị đầu cuối không khả dụng"
 
-#: lib/marshall_web/live/terminal_live.ex:155
+#: lib/marshall_web/live/terminal_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Terminal viewing access updated."
 msgstr "Đã cập nhật quyền xem thiết bị đầu cuối."
@@ -5240,7 +5241,7 @@ msgstr "Đã cập nhật quyền xem thiết bị đầu cuối."
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "Thiết bị đầu cuối, vòng đời, đổi kích thước, nhân bản và chia sẻ."
 
-#: lib/marshall_web/live/terminal_live.ex:443
+#: lib/marshall_web/live/terminal_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Terminals are unavailable while the host is offline."
 msgstr "Thiết bị đầu cuối không khả dụng khi máy chủ ngoại tuyến."
@@ -5281,7 +5282,7 @@ msgstr "Tài khoản phải được đăng ký trước. Lưu vai trò sẽ tha
 msgid "The agent encountered a problem"
 msgstr "Tác nhân gặp sự cố"
 
-#: lib/marshall_web/live/terminal_live.ex:191
+#: lib/marshall_web/live/terminal_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "The boot log is unavailable for the current machine execution."
 msgstr "Nhật ký khởi động không khả dụng cho lần chạy máy hiện tại."
@@ -5311,7 +5312,7 @@ msgstr "Ảnh hệ thống mặc định không thể mở kho mã. Chọn ảnh
 msgid "The default machine image is not available right now."
 msgstr "Ảnh hệ thống mặc định hiện không khả dụng."
 
-#: lib/marshall_web/live/terminal_live.ex:457
+#: lib/marshall_web/live/terminal_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "The guest cannot host more terminal sessions."
 msgstr "Máy khách không thể mở thêm phiên thiết bị đầu cuối."
@@ -5341,12 +5342,12 @@ msgstr "Không thể cập nhật máy. Hãy làm mới và thử lại."
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "Máy đã thay đổi kể từ khi tạo bản nháp này. Hãy xem lại tài nguyên đã xác nhận ở trên."
 
-#: lib/marshall_web/live/machines_live.ex:1140
+#: lib/marshall_web/live/machines_live.ex:1158
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr "Máy được dừng, sao chép một lần và khởi động trên máy chủ được chọn tự động. Đội máy phát triển dùng kết nối 1 Gbit/s giữa các máy chủ nên việc di chuyển có thể lâu hơn một chút; dự kiến sẽ nhanh hơn nhiều khi Overalls chạy chính thức trên AWS."
 
-#: lib/marshall_web/live/machines_live.ex:1151
+#: lib/marshall_web/live/machines_live.ex:1169
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "Máy được dừng, sao chép một lần và khởi động ở đích."
@@ -5382,7 +5383,7 @@ msgstr "Kế hoạch đã thay đổi. Hãy xem đề xuất mới nhất trư�
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "Bản sao trước của máy vẫn đang giải phóng ảnh chụp nhanh. Hãy thử lại sau giây lát."
 
-#: lib/marshall_web/live/terminal_live.ex:449
+#: lib/marshall_web/live/terminal_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "The previous opening has ended. Choose New to try again."
 msgstr "Lần mở trước đã kết thúc. Chọn Mới để thử lại."
@@ -5442,7 +5443,7 @@ msgstr "Máy nguồn đã bị xóa trước khi yêu cầu này bắt đầu."
 msgid "The source was busy or changed before cloning began. Retry when it is ready."
 msgstr "Nguồn đang bận hoặc đã thay đổi trước khi bắt đầu nhân bản. Thử lại khi nguồn sẵn sàng."
 
-#: lib/marshall_web/live/terminal_live.ex:459
+#: lib/marshall_web/live/terminal_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "The terminal could not be opened."
 msgstr "Không thể mở thiết bị đầu cuối."
@@ -5497,7 +5498,7 @@ msgstr "Các câu hỏi này không còn chờ trả lời."
 msgid "These questions have already been answered."
 msgstr "Các câu hỏi này đã được trả lời."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr "Phê duyệt SSH này không khả dụng hoặc đã hết hạn. Hãy tạo kết nối SSH mới để thử lại."
@@ -5537,7 +5538,7 @@ msgstr "Không thể thử lại tác vụ này. Trạng thái hoặc quyền tr
 msgid "This job is unavailable or its history has expired."
 msgstr "Tác vụ này không khả dụng hoặc lịch sử đã hết hạn."
 
-#: lib/marshall_web/live/ssh_approval_live.ex:77
+#: lib/marshall_web/live/ssh_approval_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr "Khóa này sẽ đăng nhập với danh tính %{value1}. Khóa có thể quản lý máy theo quyền của tài khoản bạn."
@@ -5562,7 +5563,7 @@ msgstr "Máy này đang bị xóa và không thể ghim."
 msgid "This machine is being deleted."
 msgstr "Máy này đang bị xóa."
 
-#: lib/marshall_web/live/terminal_live.ex:484
+#: lib/marshall_web/live/terminal_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
 msgstr "Máy này đã dừng. Khởi động để mở thiết bị đầu cuối. Các tệp của bạn được giữ lại."
@@ -5593,7 +5594,7 @@ msgstr "Ảnh hệ thống của máy này không hỗ trợ trình chỉnh sử
 msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
 msgstr "Ảnh hệ thống của máy này chưa có tác nhân máy khách: SSH, thiết bị đầu cuối trình duyệt và tác nhân không khả dụng. Dùng"
 
-#: lib/marshall_web/live/terminal_live.ex:297
+#: lib/marshall_web/live/terminal_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
 msgstr "Ảnh hệ thống của máy này không có tác nhân thiết bị đầu cuối nên thiết bị đầu cuối trình duyệt không khả dụng."
@@ -5726,7 +5727,7 @@ msgstr "Các luồng"
 msgid "Threads are temporarily unavailable. Try again shortly."
 msgstr "Các luồng tạm thời không khả dụng. Hãy thử lại sau giây lát."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:496
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
 #: lib/marshall_web/live/inference_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Time"
@@ -5822,7 +5823,7 @@ msgstr "Loại"
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "Nhập email để xóa tài khoản này và %{count} máy của tài khoản"
 
-#: lib/marshall_web/live/terminal_live.ex:598
+#: lib/marshall_web/live/terminal_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "Nhập để tương tác"
@@ -5837,16 +5838,28 @@ msgstr "Siêu cấp"
 msgid "Ultra is for complex, open-ended work."
 msgstr "Siêu cấp dành cho công việc phức tạp, không giới hạn trước."
 
-#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
 msgstr "Không thể cập nhật chia sẻ thiết bị đầu cuối. Người nhận phải có quyền truy cập máy trước khi chia sẻ."
 
 #: lib/marshall_web/components/workspace_components.ex:86
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
+#: lib/marshall_web/controllers/audi_login_controller.ex:44
+#: lib/marshall_web/controllers/editor_controller.ex:26
+#: lib/marshall_web/controllers/editor_controller.ex:61
+#: lib/marshall_web/controllers/git_raw_controller.ex:24
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#: lib/marshall_web/controllers/marvin_download_controller.ex:118
+#: lib/marshall_web/controllers/overalls_controller.ex:21
+#: lib/marshall_web/controllers/overalls_controller.ex:25
+#: lib/marshall_web/controllers/overalls_controller.ex:37
+#: lib/marshall_web/controllers/overalls_controller.ex:50
+#: lib/marshall_web/controllers/overalls_controller.ex:54
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
 #: lib/marshall_web/live/machines_live.ex:750
 #: lib/marshall_web/live/machines_live.ex:964
 #: lib/marshall_web/live/machines_live.ex:974
+#: lib/marshall_web/ssh_approval_login.ex:29
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "Không khả dụng"
@@ -5857,10 +5870,10 @@ msgstr "Không khả dụng"
 #: lib/marshall_web/live/admin/jobs_live.ex:426
 #: lib/marshall_web/live/admin/jobs_live.ex:437
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:791
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
 #: lib/marshall_web/live/inference_live.ex:60
 #: lib/marshall_web/live/inference_live.ex:178
 #: lib/marshall_web/live/inference_live.ex:185
@@ -5886,7 +5899,7 @@ msgstr "Bỏ ghim máy này trước khi xóa."
 msgid "Unpin this thread's machine before deleting it."
 msgstr "Bỏ ghim máy của luồng này trước khi xóa."
 
-#: lib/marshall_web/live/machines_live.ex:1294
+#: lib/marshall_web/live/machines_live.ex:1312
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr "Bỏ ghim để xóa. Khi bạn ghim máy này, không gì có thể xóa máy."
@@ -5921,7 +5934,7 @@ msgstr "Cập nhật bản sửa đổi (tùy chọn)"
 #: lib/marshall_web/live/admin/jobs_live.ex:210
 #: lib/marshall_web/live/admin/operations_live.ex:60
 #: lib/marshall_web/live/admin/workloads_live.ex:103
-#: lib/marshall_web/live/overview_live.ex:284
+#: lib/marshall_web/live/overview_live.ex:332
 #: lib/marshall_web/live/threads_live.ex:1674
 #, elixir-autogen, elixir-format
 msgid "Updated"
@@ -5932,7 +5945,7 @@ msgstr "Đã cập nhật"
 msgid "Updated every 15 seconds"
 msgstr "Cập nhật mỗi 15 giây"
 
-#: lib/marshall_web/live/machines_live.ex:1244
+#: lib/marshall_web/live/machines_live.ex:1262
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "Tự động cập nhật"
@@ -5994,7 +6007,7 @@ msgstr "Người dùng"
 msgid "Users"
 msgstr "Người dùng"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:506
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "Máy ảo"
@@ -6030,6 +6043,7 @@ msgid "VS Code is temporarily unavailable."
 msgstr "VS Code tạm thời không khả dụng."
 
 #: lib/marshall_web/components/workspace_components.ex:519
+#: lib/marshall_web/controllers/editor_controller.ex:17
 #, elixir-autogen, elixir-format
 msgid "VS Code is unavailable for this machine."
 msgstr "VS Code không khả dụng cho máy này."
@@ -6094,7 +6108,7 @@ msgstr "Người xem"
 msgid "Viewers read. Operators send prompts. Managers also share and manage the thread."
 msgstr "Người xem đọc nội dung. Người vận hành gửi lời nhắc. Người quản lý còn chia sẻ và quản lý luồng."
 
-#: lib/marshall_web/live/terminal_live.ex:678
+#: lib/marshall_web/live/terminal_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
 msgstr "Chỉ được xem, kể cả người vận hành máy. Người nhận phải có sẵn quyền truy cập máy này."
@@ -6140,7 +6154,7 @@ msgstr "Đang chờ lượt truyền của máy chủ; một lần sao chép ho�
 msgid "Waiting for the machine"
 msgstr "Đang chờ máy"
 
-#: lib/marshall_web/live/terminal_live.ex:310
+#: lib/marshall_web/live/terminal_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Waiting for the machine to start…"
 msgstr "Đang chờ máy khởi động…"
@@ -6367,7 +6381,7 @@ msgstr "Bạn có thể đọc các luồng này. Yêu cầu quyền vận hành
 msgid "You do not have access to this thread."
 msgstr "Bạn không có quyền truy cập luồng này."
 
-#: lib/marshall_web/live/terminal_live.ex:440
+#: lib/marshall_web/live/terminal_live.ex:470
 #, elixir-autogen, elixir-format
 msgid "You do not have terminal access to this machine."
 msgstr "Bạn không có quyền truy cập thiết bị đầu cuối của máy này."
@@ -6452,7 +6466,7 @@ msgstr "Địa chỉ email của bạn đã được xác nhận"
 msgid "Your email is your sign-in identity and cannot be edited here. Every time on Overalls is shown in your zone; people who share a team, machine or thread with you, and administrators, see your current local time next to your email once a zone is saved."
 msgstr "Email là danh tính đăng nhập và không thể sửa ở đây. Mọi thời gian trên Overalls hiển thị theo múi giờ của bạn; sau khi lưu múi giờ, người cùng nhóm, máy hoặc luồng và quản trị viên sẽ thấy giờ địa phương hiện tại cạnh email của bạn."
 
-#: lib/marshall_web/live/terminal_live.ex:453
+#: lib/marshall_web/live/terminal_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
 msgstr "Không thể chuẩn bị tài khoản máy khách. Kiểm tra dịch vụ tài khoản máy khách có sẵn, rồi chọn Mới để thử lại."
@@ -6502,12 +6516,12 @@ msgstr "Khóa truy cập đã được đặt lại. Đăng ký khóa thay thế
 msgid "Your password has successfully been reset"
 msgstr "Mật khẩu của bạn đã được đặt lại thành công"
 
-#: lib/marshall_web/live/terminal_live.ex:581
+#: lib/marshall_web/live/terminal_live.ex:611
 #, elixir-autogen, elixir-format
 msgid "Your personal terminal opens when the machine is ready."
 msgstr "Thiết bị đầu cuối cá nhân sẽ mở khi máy sẵn sàng."
 
-#: lib/marshall_web/live/terminal_live.ex:446
+#: lib/marshall_web/live/terminal_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Your previous shell has closed. Choose New to open another terminal."
 msgstr "Shell trước đã đóng. Chọn Mới để mở thiết bị đầu cuối khác."
@@ -6542,7 +6556,7 @@ msgstr "Phiên đăng nhập không còn hợp lệ. Hãy yêu cầu liên kết
 msgid "Your teams"
 msgstr "Nhóm của bạn"
 
-#: lib/marshall_web/live/terminal_live.ex:488
+#: lib/marshall_web/live/terminal_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "Your terminal will open when the machine is running and ready."
 msgstr "Thiết bị đầu cuối sẽ mở khi máy đang chạy và sẵn sàng."
@@ -6602,7 +6616,7 @@ msgstr "phê duyệt gián đoạn khối lượng công việc này"
 msgid "attempt"
 msgstr "lần thử"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "lần thử %{attempt}"
@@ -6612,7 +6626,7 @@ msgstr "lần thử %{attempt}"
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "lần thử %{attempt} · %{count} lỗi được ghi nhận"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:509
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "chiến dịch"
@@ -6668,7 +6682,7 @@ msgid "email, time zone and your local clock"
 msgstr "email, múi giờ và đồng hồ địa phương của bạn"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "đã bật"
@@ -6679,7 +6693,7 @@ msgid "example-integration"
 msgstr "example-integration"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:364
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "đã loại trừ"
@@ -6689,22 +6703,22 @@ msgstr "đã loại trừ"
 msgid "file"
 msgstr "tệp"
 
-#: lib/marshall_web/live/terminal_live.ex:610
+#: lib/marshall_web/live/terminal_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "find"
 msgstr "tìm"
 
-#: lib/marshall_web/live/terminal_live.ex:628
+#: lib/marshall_web/live/terminal_live.ex:682
 #, elixir-autogen, elixir-format
 msgid "full"
 msgstr "đầy"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:512
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "tác vụ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:507
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "di chuyển"
@@ -6754,7 +6768,7 @@ msgstr "làm mới bản sao Git này"
 msgid "remove this Git mirror"
 msgstr "xóa bản sao Git này"
 
-#: lib/marshall_web/live/terminal_live.ex:604
+#: lib/marshall_web/live/terminal_live.ex:658
 #, elixir-autogen, elixir-format
 msgid "rename"
 msgstr "đổi tên"
@@ -6852,7 +6866,7 @@ msgstr "có"
 msgid "· %{value1} reasoning · %{value2}"
 msgstr "· suy luận %{value1} · %{value2}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:596
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· Cần phê duyệt thời gian gián đoạn"
@@ -6883,7 +6897,7 @@ msgid "← All sections"
 msgstr "← Tất cả các phần"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:310
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
 #: lib/marshall_web/live/admin/users_live.ex:257
 #: lib/marshall_web/live/machines_live.ex:794
 #: lib/marshall_web/live/machines_live.ex:1060
@@ -6961,7 +6975,7 @@ msgstr "Đã lưu cài đặt Git."
 msgid "Git username"
 msgstr "Tên người dùng Git"
 
-#: lib/marshall_web/live/terminal_live.ex:308
+#: lib/marshall_web/live/terminal_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
 msgstr "Máy đã tạm dừng. Tiếp tục máy hoặc mở lại trang terminal này."
@@ -6972,7 +6986,7 @@ msgid "Pause"
 msgstr "Tạm dừng"
 
 #: lib/marshall_web/components/workspace_components.ex:82
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:657
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "Đã tạm dừng"
@@ -6987,8 +7001,8 @@ msgstr "Tiếp tục máy"
 msgid "Resuming"
 msgstr "Đang tiếp tục"
 
-#: lib/marshall_web/live/terminal_live.ex:110
-#: lib/marshall_web/live/terminal_live.ex:286
+#: lib/marshall_web/live/terminal_live.ex:140
+#: lib/marshall_web/live/terminal_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
 msgstr "Đang tiếp tục máy; chờ tài nguyên khả dụng…"
@@ -7033,54 +7047,54 @@ msgstr "Đã xác nhận"
 msgid "Awaiting GitHub authorization"
 msgstr "Đang chờ GitHub cấp quyền"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:576
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr "Bị chặn: %{reason}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr "Chiến dịch đã đóng"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr "Đã yêu cầu chiến dịch"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "Đã yêu cầu hủy"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:594
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr "Ứng viên: %{name}"
 
-#: lib/marshall_web/live/overview_live.ex:231
+#: lib/marshall_web/live/overview_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "Kiểm tra hộp thư đến và nhấp vào liên kết để xác nhận đăng ký."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:711
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr "Đang dọn dẹp sau khi hủy"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr "Đang dọn dẹp nguồn"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:706
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr "Đang nhân bản"
 
 #: lib/marshall_web/live/integrations_live.ex:312
 #: lib/marshall_web/live/integrations_live.ex:400
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1129
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "Bình luận"
@@ -7116,17 +7130,17 @@ msgstr "Đã kết nối với tài khoản %{login}"
 msgid "Continue to Overalls"
 msgstr "Tiếp tục đến Overalls"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:573
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:577
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr "Mong muốn: %{desired} · Quan sát: %{observed}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr "Đã xác nhận dọn dẹp đích"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr "Đã yêu cầu dọn dẹp đích"
@@ -7151,39 +7165,39 @@ msgstr "Đã ngắt kết nối"
 msgid "Disconnecting GitHub"
 msgstr "Đang ngắt kết nối GitHub"
 
-#: lib/marshall_web/live/overview_live.ex:222
+#: lib/marshall_web/live/overview_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "Đóng"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:779
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr "Cần phê duyệt gián đoạn"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:756
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr "Đã phê duyệt gián đoạn"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:434
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "Đã rút hết tải"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:433
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "Đang rút tải"
 
-#: lib/marshall_web/live/overview_live.ex:232
+#: lib/marshall_web/live/overview_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "Nhập địa chỉ email hợp lệ."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "Đang sơ tán"
@@ -7193,7 +7207,7 @@ msgstr "Đang sơ tán"
 msgid "Finishing active GitHub requests"
 msgstr "Đang hoàn tất các yêu cầu GitHub đang hoạt động"
 
-#: lib/marshall_web/live/overview_live.ex:224
+#: lib/marshall_web/live/overview_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "Nhận mẹo, thủ thuật và tin cập nhật về Overalls và AI qua email."
@@ -7208,22 +7222,22 @@ msgstr "Đã kết nối GitHub."
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "Không thể kết nối GitHub. Hãy thử lại trong mục Tích hợp."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "Đang nhập"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:776
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr "Không đủ năng lực"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr "Trạng thái tác vụ"
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1123
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "Nhãn"
@@ -7238,17 +7252,17 @@ msgstr "Đã lưu siêu dữ liệu máy."
 msgid "Machines excluded from your GitHub identity"
 msgstr "Các máy không sử dụng danh tính GitHub của bạn"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr "Bình thường"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:597
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr "Gián đoạn quan sát được: %{seconds} giây"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:593
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr "Gián đoạn quan sát được: %{seconds} giây (đang tiếp diễn)"
@@ -7263,7 +7277,7 @@ msgstr "Thao tác"
 msgid "Reconnect required"
 msgstr "Cần kết nối lại"
 
-#: lib/marshall_web/live/machines_live.ex:1115
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "Siêu dữ liệu phản ánh"
@@ -7278,49 +7292,49 @@ msgstr "Đang làm mới kết nối GitHub"
 msgid "Relocation"
 msgstr "Di chuyển"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr "Đã cam kết di chuyển"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr "Đang di chuyển"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:759
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr "Đã bắt đầu di chuyển"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr "Đang khôi phục nguồn"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:435
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "Đã tiếp tục"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:436
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:655
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "Đã ngừng sử dụng"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr "Đang thử khởi động đích lại"
 
-#: lib/marshall_web/live/machines_live.ex:1118
+#: lib/marshall_web/live/machines_live.ex:1135
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "Lưu siêu dữ liệu"
 
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1132
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "Mô tả ngắn cho tác nhân"
@@ -7335,37 +7349,37 @@ msgstr "Mô tả ngắn cho phần phản ánh của máy khách"
 msgid "Signing you in"
 msgstr "Đang đăng nhập cho bạn"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr "Đã xác nhận dọn dẹp nguồn"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:734
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr "Đã yêu cầu dọn dẹp nguồn"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:684
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr "Nguồn sẵn sàng"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:687
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "Đã khôi phục nguồn"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:700
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:771
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr "Nguồn không khả dụng"
 
-#: lib/marshall_web/live/overview_live.ex:220
+#: lib/marshall_web/live/overview_live.ex:229
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "Theo dõi tin tức mới nhất"
 
-#: lib/marshall_web/live/overview_live.ex:227
+#: lib/marshall_web/live/overview_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "Đăng ký"
@@ -7375,37 +7389,37 @@ msgstr "Đăng ký"
 msgid "Temporarily unavailable"
 msgstr "Tạm thời không khả dụng"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr "Truyền tải đang bận"
 
-#: lib/marshall_web/live/overview_live.ex:234
+#: lib/marshall_web/live/overview_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "Hủy đăng ký bất cứ lúc nào."
 
-#: lib/marshall_web/live/overview_live.ex:233
+#: lib/marshall_web/live/overview_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "Không thể liên hệ với dịch vụ bản tin. Hãy thử lại sau."
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr "Khối lượng công việc đã thay đổi"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:768
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr "Khối lượng công việc chưa ổn định"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:694
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr "Đã quan sát khối lượng công việc"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:762
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr "Đã giải quyết khối lượng công việc"
@@ -7420,7 +7434,7 @@ msgstr "Đang xác minh liên kết email của bạn."
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "Các máy của bạn tự động sử dụng danh tính GitHub đã kết nối. Cộng tác viên sử dụng máy dùng chung có thể sử dụng quyền GitHub của chủ sở hữu máy. Các máy đã tách vẫn có quyền truy cập ẩn danh vào tài nguyên công khai trên GitHub."
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1125
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "sản-xuất, tên-dự-án"
@@ -7450,78 +7464,77 @@ msgstr "Không thể đổi tên khóa này. Hãy dùng tối đa 128 ký tự."
 msgid "Administrative changes require an administrator."
 msgstr "Các thay đổi quản trị yêu cầu quyền quản trị viên."
 
-#: lib/marshall_web/live_admin_auth.ex:139
+#: lib/marshall_web/live_admin_auth.ex:142
 #, elixir-autogen, elixir-format
 msgid "Administrative changes are not authorized."
 msgstr "Các thay đổi quản trị không được cấp quyền."
 
-#: lib/marshall_web/live_admin_auth.ex:186
+#: lib/marshall_web/live_admin_auth.ex:190
 #, elixir-autogen, elixir-format
 msgid "Finish or cancel the current verification first."
 msgstr "Hãy hoàn tất hoặc hủy quá trình xác minh hiện tại trước."
 
-#: lib/marshall_web/live_admin_auth.ex:199
+#: lib/marshall_web/live_admin_auth.ex:205
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "Yêu cầu quản trị không hợp lệ."
 
-#: lib/marshall_web/controllers/audi_login_controller.ex:34
-#: lib/marshall_web/controllers/editor_controller.ex:52
+#: lib/marshall_web/live/terminal_live.ex:629
 #, elixir-autogen, elixir-format
-msgid "Sign-in unavailable"
-msgstr "Không thể đăng nhập"
+msgid "Android display"
+msgstr "Màn hình Android"
+
+#: lib/marshall_web/live/terminal_live.ex:85
+#: lib/marshall_web/live/terminal_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Màn hình Android không khả dụng."
+
+#: lib/marshall_web/live/terminal_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "Đã cấp vé chuyển tiếp màn hình."
 
 #: lib/marshall_web/controllers/overalls_controller.ex:76
 #, elixir-autogen, elixir-format
 msgid "Installer trust unavailable"
 msgstr "Không thể xác minh độ tin cậy của trình cài đặt"
 
+#: lib/marshall_web/live/terminal_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "Mở màn hình"
+
+#: lib/marshall_web/live/terminal_live.ex:636
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "Yêu cầu điều khiển"
+
 #: lib/marshall_web/controllers/overalls_controller.ex:89
 #, elixir-autogen, elixir-format
 msgid "SSH trust unavailable"
 msgstr "Không thể xác minh độ tin cậy SSH"
 
-#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#: lib/marshall_web/controllers/audi_login_controller.ex:35
+#: lib/marshall_web/controllers/editor_controller.ex:52
 #, elixir-autogen, elixir-format
-msgid "This repository link could not be launched. Open the link again."
-msgstr "Không thể khởi chạy từ liên kết kho mã này. Hãy mở lại liên kết."
+msgid "Sign-in unavailable"
+msgstr "Không thể đăng nhập"
 
-
-#: lib/marshall_web/controllers/repository_launch_controller.ex:51
-#, elixir-autogen, elixir-format
-msgid "This launch could not be completed. Sign in and open the link again."
-msgstr "Không thể hoàn tất lần khởi chạy này. Hãy đăng nhập và mở lại liên kết."
-
-#: lib/marshall_web/live/terminal_live.ex:79
-#, elixir-autogen, elixir-format
-msgid "Display relay ticket issued."
-msgstr "Đã cấp vé chuyển tiếp màn hình."
-
-#: lib/marshall_web/live/terminal_live.ex:83
-#: lib/marshall_web/live/terminal_live.ex:88
-#, elixir-autogen, elixir-format
-msgid "Android display is unavailable."
-msgstr "Màn hình Android không khả dụng."
-
-#: lib/marshall_web/live/terminal_live.ex:618
-#, elixir-autogen, elixir-format
-msgid "Android display"
-msgstr "Màn hình Android"
-
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "The software-rendered Android display uses the machine relay."
 msgstr "Màn hình Android kết xuất bằng phần mềm sử dụng bộ chuyển tiếp của máy."
 
-#: lib/marshall_web/live/terminal_live.ex:622
+#: lib/marshall_web/controllers/repository_launch_controller.ex:55
 #, elixir-autogen, elixir-format
-msgid "Open display"
-msgstr "Mở màn hình"
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "Không thể hoàn tất lần khởi chạy này. Hãy đăng nhập và mở lại liên kết."
 
-#: lib/marshall_web/live/terminal_live.ex:625
+#: lib/marshall_web/controllers/repository_launch_controller.ex:23
 #, elixir-autogen, elixir-format
-msgid "Request control"
-msgstr "Yêu cầu điều khiển"
+msgid "This repository link could not be launched. Open the link again."
+msgstr "Không thể khởi chạy từ liên kết kho mã này. Hãy mở lại liên kết."
 
 #: lib/marshall_web/controllers/docs_controller.ex:35
 #, elixir-autogen, elixir-format
@@ -7537,3 +7550,8 @@ msgstr "Vùng hiển thị Android"
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
 msgstr "Đang chờ chuyển tiếp màn hình."
+
+#: lib/marshall_web/live/ssh_approval_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr "Mở Mila"

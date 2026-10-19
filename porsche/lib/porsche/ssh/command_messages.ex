@@ -53,6 +53,34 @@ defmodule Porsche.SSH.CommandMessages do
   @message_38 gettext_noop("Suspend a machine, preserving its memory and disk.")
   @message_39 gettext_noop("Resume preserved memory, waiting for capacity or relocation.")
   @message_40 gettext_noop("Resume a suspended machine's preserved memory.")
+  @message_41 gettext_noop("List agent threads you can read, with unread counts.")
+  @message_42 gettext_noop("Inspect a thread, its pending question and latest plan.")
+  @message_43 gettext_noop("List a thread's transcript events after a sequence number.")
+  @message_44 gettext_noop("Send a prompt read from standard input to a thread.")
+  @message_45 gettext_noop(
+                "Answer a thread's pending question with JSON read from standard input."
+              )
+  @message_46 gettext_noop("Approve a thread's latest plan and start implementing it.")
+  @message_47 gettext_noop("Ask for a revised plan, reading the feedback from standard input.")
+  @message_48 gettext_noop("Switch a thread between plan and work collaboration.")
+  @message_49 gettext_noop("Mark a thread read up to a transcript sequence number.")
+  @message_50 gettext_noop("List a machine's terminal sessions you can open.")
+  @message_51 gettext_noop("Open your personal terminal session on a machine.")
+  @message_52 gettext_noop("Close one of your terminal sessions on a machine.")
+  @message_53 gettext_noop("Show a machine's web endpoint, port and visibility.")
+  @message_54 gettext_noop(
+                "Change a machine's web port or visibility, optionally at an expected revision."
+              )
+  @message_55 gettext_noop("Stream JSON change notices for machines, threads and this session.")
+  @message_56 gettext_noop(
+                "Register this device for push notifications. The push key is read from stdin."
+              )
+  @message_57 gettext_noop("List your push notification devices.")
+  @message_58 gettext_noop("Revoke a push notification device.")
+  @message_59 gettext_noop("Turn push notifications on or off for one device.")
+  @message_terminal_attach gettext_noop(
+                             "Attach this SSH terminal to a shared terminal session; needs ssh -t."
+                           )
 
   @spec sources() :: [String.t()]
   def sources,
@@ -97,6 +125,26 @@ defmodule Porsche.SSH.CommandMessages do
       @message_37,
       @message_38,
       @message_39,
-      @message_40
+      @message_40,
+      @message_41,
+      @message_42,
+      @message_43,
+      @message_44,
+      @message_45,
+      @message_46,
+      @message_47,
+      @message_48,
+      @message_49,
+      @message_50,
+      @message_51,
+      @message_52,
+      @message_53,
+      @message_54,
+      @message_55,
+      @message_56,
+      @message_57,
+      @message_58,
+      @message_59,
+      @message_terminal_attach
     ]
 end

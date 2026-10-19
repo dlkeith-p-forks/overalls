@@ -19,6 +19,8 @@ dependencies:
     path: ../packages/mila_core
   mila_transport:
     path: ../packages/mila_transport
+  webview_flutter: ^4.14.1
+  xterm: ^4.0.0
 
 dev_dependencies:
   flutter_test:

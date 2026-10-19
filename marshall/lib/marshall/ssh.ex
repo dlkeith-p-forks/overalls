@@ -28,6 +28,7 @@ defmodule Marshall.SSH do
       define :open_session, action: :open_session
       define :session_status, action: :session_status
       define :close_session, action: :close_session
+      define :watch_subscribe, action: :watch_subscribe
       define :list_sessions_for_admin, action: :list_for_admin
       define :revoke_session_for_admin, action: :revoke_for_admin
     end

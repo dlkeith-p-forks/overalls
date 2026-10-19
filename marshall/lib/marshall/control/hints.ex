@@ -30,7 +30,9 @@ defmodule Marshall.Control.Hints do
     :ssh_session,
     :ssh_approval,
     :endpoint_policy,
-    :environment_publication
+    :environment_publication,
+    :thread,
+    :terminal_session
   ]
   @kind_names Map.new(@kinds, &{Atom.to_string(&1), &1})
 
@@ -48,6 +50,8 @@ defmodule Marshall.Control.Hints do
           | :ssh_approval
           | :endpoint_policy
           | :environment_publication
+          | :thread
+          | :terminal_session
 
   @doc "The closed set of hint kinds."
   @spec kinds() :: [kind()]

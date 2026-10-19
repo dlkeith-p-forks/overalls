@@ -42,6 +42,30 @@ defmodule OverallsProtocol.SSHManagement do
     end
   end
 
+  # @cc [owner:ghuntley,label:protocol;security] ssh-management-watch-subscribe
+  # A watch subscription names at most 16 machine references and 16 thread
+  # UUIDs for one session token. It asks Marshall to authorize reads only; the
+  # hints it enables are never authority and carry no domain content.
+  def request(
+        "watch_subscribe",
+        %{
+          "version" => 1,
+          "session_token" => token,
+          "machines" => machines,
+          "threads" => threads
+        } = value
+      )
+      when map_size(value) == 4 and is_binary(token) and byte_size(token) in 1..80 and
+             is_list(machines) and is_list(threads) and length(machines) <= 16 and
+             length(threads) <= 16 do
+    if Enum.all?(machines, &machine?/1) and Enum.all?(threads, &OverallsProtocol.uuid?/1),
+      do: {:ok, %{session_token: token, machines: machines, threads: threads}},
+      else: {:error, :invalid_request}
+  end
+
   def request(_, %{"version" => version}) when version != 1, do: {:error, :unsupported_version}
   def request(_, _), do: {:error, :invalid_request}
+
+  defp machine?(value),
+    do: OverallsProtocol.MachineName.valid?(value) or OverallsProtocol.uuid?(value)
 end

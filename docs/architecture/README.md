@@ -7,9 +7,14 @@ one Porsche SSH connection with per-deployment P-256 device keys and strict host
 certificates. They also add canonical `overalls://` routes, the Porsche client
 commands, terminal attach over a Marshall gateway stream, the Susan push relay at
 `https://notifications.overalls.dev` and Marshall's Notifications domain with
-end-to-end encrypted pokes. Status per milestone is in the
-[M1](reviews/2026-10-18-mila-m1.md) and [device](reviews/2026-10-18-mila-device.md)
-reviews.
+end-to-end encrypted pokes. Susan runs on no fleet host. Marshall reaches it
+only at the compiled origin, sending a canonical poke body that its install
+identity signs. Status is in the
+[M1](reviews/2026-10-18-mila-m1.md), [device](reviews/2026-10-18-mila-device.md),
+[notifications](reviews/2026-10-18-mila-notifications.md),
+[terminal attach](reviews/2026-10-19-mila-terminal-attach.md),
+[Susan](reviews/2026-10-19-susan-push-relay.md) and
+[M6](reviews/2026-10-19-mila-m6.md) reviews; all nine decisions are partial.
 
 [ADR-0205](decisions/0205-overview-newsletter.md) accepts a durable account-wide Overview newsletter invitation and fixed server-side Ghost subscription path; implementation remains partial.
 

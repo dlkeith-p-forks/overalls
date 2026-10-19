@@ -22,6 +22,10 @@ final Generator<String> _path = oneOf([
   _uuid.map((id) => '/machines/$id'),
   _uuid.map((id) => '/machines/$id/info'),
   tuple2(_uuid, _uuid).map((v) => '/machines/${v.$1}/terminals/${v.$2}'),
+  tuple2(_uuid, _uuid).map((v) => '/machines/${v.$1}/threads/${v.$2}'),
+  _uuid.map((id) => '/machines/$id/web'),
+  _uuid.map((id) => '/machines/$id/terminals'),
+  _uuid.map((id) => '/machines/$id/threads'),
   _uuid.map((id) => '/threads/$id'),
   _uuid.map((id) => '/ssh/approved?session=$id'),
   just('/launch?source=https%3A%2F%2Fgithub.com%2Fghuntley%2Foveralls'),
@@ -37,7 +41,7 @@ void main() {
     expect(target, isA<OpenPath>());
     final opened = (target as OpenPath).path;
     expect(
-      opened == settingsPath || opened.startsWith(machinesPath(deployment)),
+      opened == settingsPath || opened.startsWith(deploymentRoot(deployment)),
       isTrue,
       reason: opened,
     );
@@ -62,6 +66,20 @@ void main() {
     final input = tc.draw(text(maxLength: 80), name: 'input');
     final target = linkTarget(input, const [_added], signedIn: (_) => true);
     expect(target, isA<LinkTarget>());
+  });
+
+  test('each new page link opens its own screen', () {
+    const m = '0d9cc041-9db2-4e4c-b28b-1e41d7f472c1';
+    const t = '6f1e2d3c-4b5a-4987-8a6b-5c4d3e2f1a0b';
+    String open(String path) => (linkTarget('overalls://overalls.example$path', const [
+      _added,
+    ], signedIn: (_) => true) as OpenPath).path;
+    expect(open('/machines/$m/threads/$t'), machineThreadPath(_added, m, t));
+    expect(open('/machines/$m/terminals/$t'), machineTerminalPath(_added, m, t));
+    expect(open('/threads/$t'), threadPath(_added, t));
+    expect(open('/threads'), threadsPath(_added));
+    expect(open('/machines/$m/web'), machineWebPath(_added, m));
+    expect(open('/machines/$m/info'), machinePath(_added, m));
   });
 
   test('deployment entry accepts only a lowercase host and optional port', () {

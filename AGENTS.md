@@ -63,7 +63,7 @@ or [Mila guidance](mila/AGENTS.md) for the component being changed.
   failures.
 - Elixir diagnostic events MUST go through each application's reviewed Events
   catalog (`Marshall.Events`, `Lilly.Events`, `Audi.Events`, `Brady.Events`,
-  `Ziggy.Events`, `Porsche.Events`): add a `defevent` entry first, then emit
+  `Ziggy.Events`, `Porsche.Events`, `Susan.Events`): add a `defevent` entry first, then emit
   with catalogued metadata keys only. Never log credentials, authentication
   tokens, terminal bytes, command arguments or payloads; the catalogs have no
   string metadata type on purpose. Outcome events follow the outer transaction

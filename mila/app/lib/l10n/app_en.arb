@@ -453,5 +453,371 @@
         "example": "2026-10-18 14:05 UTC"
       }
     }
+  },
+  "tabInfo": "Info",
+  "@tabInfo": {
+    "description": "Machine tab: the machine's state and size."
+  },
+  "tabTerminals": "Terminals",
+  "@tabTerminals": {
+    "description": "Machine tab: the machine's shared terminal sessions."
+  },
+  "tabThreads": "Threads",
+  "@tabThreads": {
+    "description": "Machine tab and app bar button: agent threads (conversations with a coding agent)."
+  },
+  "tabWeb": "Web",
+  "@tabWeb": {
+    "description": "Machine tab: the machine's published web address."
+  },
+  "terminalNew": "New terminal",
+  "@terminalNew": {
+    "description": "Button that opens a new shared terminal session on the machine."
+  },
+  "terminalsFailed": "Terminal sessions could not be loaded.",
+  "@terminalsFailed": {
+    "description": "Shown when the terminal session list failed to load."
+  },
+  "terminalsEmpty": "No terminal sessions yet.",
+  "@terminalsEmpty": {
+    "description": "Shown when the machine has no terminal sessions."
+  },
+  "terminalMine": "mine",
+  "@terminalMine": {
+    "description": "Short label on a terminal session this account opened."
+  },
+  "terminalClosing": "closing",
+  "@terminalClosing": {
+    "description": "Short status label on a terminal session that is being closed."
+  },
+  "terminalViewers": "{count, plural, =0{no viewers} =1{1 viewer} other{{count} viewers}}",
+  "@terminalViewers": {
+    "description": "How many people are attached to a terminal session.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "terminalAttach": "Attach",
+  "@terminalAttach": {
+    "description": "Button that opens a terminal session's screen."
+  },
+  "terminalClose": "Close",
+  "@terminalClose": {
+    "description": "Button that closes a terminal session for everyone attached to it."
+  },
+  "terminalCloseConfirm": "Close this terminal session for everyone attached to it? Programs running in it stop.",
+  "@terminalCloseConfirm": {
+    "description": "Confirmation before closing a terminal session."
+  },
+  "terminalAttaching": "attaching",
+  "@terminalAttaching": {
+    "description": "Short status label while Mila connects to a terminal session."
+  },
+  "terminalReadOnly": "view only",
+  "@terminalReadOnly": {
+    "description": "Short status label: this attachment shows the terminal but never sends keys."
+  },
+  "terminalLive": "live",
+  "@terminalLive": {
+    "description": "Short status label: this attachment is connected and can type."
+  },
+  "terminalReconnecting": "reconnecting",
+  "@terminalReconnecting": {
+    "description": "Short status label: the terminal connection dropped and Mila is reconnecting."
+  },
+  "terminalEnded": "The terminal session ended.",
+  "@terminalEnded": {
+    "description": "Shown when the terminal session was closed."
+  },
+  "terminalRefused": "The deployment refused to attach to this terminal session.",
+  "@terminalRefused": {
+    "description": "Shown when attaching was refused, for example because the session no longer exists."
+  },
+  "terminalSignedOut": "This device is no longer authorized. Sign in again to attach.",
+  "@terminalSignedOut": {
+    "description": "Shown when the deployment no longer accepts this device's key."
+  },
+  "terminalInvalid": "Mila could not attach to this terminal session.",
+  "@terminalInvalid": {
+    "description": "Shown when the attach request or its reply was invalid."
+  },
+  "terminalUnreachable": "The deployment cannot be reached.",
+  "@terminalUnreachable": {
+    "description": "Shown when Mila gave up reconnecting to a terminal session."
+  },
+  "terminalModeView": "View",
+  "@terminalModeView": {
+    "description": "Choice: watch the terminal without typing."
+  },
+  "terminalModeControl": "Control",
+  "@terminalModeControl": {
+    "description": "Choice: type into the terminal."
+  },
+  "terminalPaste": "Paste",
+  "@terminalPaste": {
+    "description": "Extra key that pastes the clipboard into the terminal."
+  },
+  "threadsSearch": "Search threads",
+  "@threadsSearch": {
+    "description": "Hint in the thread search field."
+  },
+  "threadsFailed": "Threads could not be loaded.",
+  "@threadsFailed": {
+    "description": "Shown when the thread list failed to load."
+  },
+  "threadsEmpty": "No threads yet.",
+  "@threadsEmpty": {
+    "description": "Shown when there are no agent threads."
+  },
+  "threadsNoMatch": "No threads match.",
+  "@threadsNoMatch": {
+    "description": "Shown when no thread matches the search."
+  },
+  "threadsRecentTitle": "Recent threads",
+  "@threadsRecentTitle": {
+    "description": "Title of the grid of recently active agent threads across all machines."
+  },
+  "threadsUnreadTotal": "{count, plural, =0{Nothing unread} =1{1 unread update} other{{count} unread updates}}",
+  "@threadsUnreadTotal": {
+    "description": "Total unread updates across the shown threads.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "threadUntitled": "Untitled thread",
+  "@threadUntitled": {
+    "description": "Shown for a thread that has no title."
+  },
+  "threadUnread": "{count, plural, =1{1 new} other{{count} new}}",
+  "@threadUnread": {
+    "description": "Unread updates on one thread.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "threadStatusProvisioning": "provisioning",
+  "@threadStatusProvisioning": {
+    "description": "Short thread status: its machine is being prepared."
+  },
+  "threadStatusReady": "ready",
+  "@threadStatusReady": {
+    "description": "Short thread status: the thread can take prompts."
+  },
+  "threadStatusArchived": "archived",
+  "@threadStatusArchived": {
+    "description": "Short thread status: the thread is archived."
+  },
+  "threadModePlan": "Plan",
+  "@threadModePlan": {
+    "description": "Collaboration mode: the agent proposes a plan before changing anything."
+  },
+  "threadModeWork": "Work",
+  "@threadModeWork": {
+    "description": "Collaboration mode: the agent makes changes directly."
+  },
+  "threadEventPrompt": "Prompt sent",
+  "@threadEventPrompt": {
+    "description": "Transcript line for a prompt with no text."
+  },
+  "threadEventAssistant": "Agent replied",
+  "@threadEventAssistant": {
+    "description": "Transcript line for an agent reply with no text."
+  },
+  "threadEventTurnStarted": "Turn started",
+  "@threadEventTurnStarted": {
+    "description": "Transcript line: the agent started working on a prompt."
+  },
+  "threadEventTurnFinished": "Turn finished",
+  "@threadEventTurnFinished": {
+    "description": "Transcript line: the agent finished working on a prompt."
+  },
+  "threadEventTurnFailed": "Turn failed",
+  "@threadEventTurnFailed": {
+    "description": "Transcript line: the agent's work on a prompt failed."
+  },
+  "threadEventTool": "Tool used",
+  "@threadEventTool": {
+    "description": "Transcript line: the agent ran a tool."
+  },
+  "threadEventChild": "Helper started",
+  "@threadEventChild": {
+    "description": "Transcript line: the agent started a helper agent."
+  },
+  "threadEventWaitingForMachine": "Waiting for the machine",
+  "@threadEventWaitingForMachine": {
+    "description": "Transcript line: the agent is waiting for its machine to start."
+  },
+  "threadEventQuestions": "Agent asked a question",
+  "@threadEventQuestions": {
+    "description": "Transcript line: the agent asked the user a question."
+  },
+  "threadEventAnswered": "Question answered",
+  "@threadEventAnswered": {
+    "description": "Transcript line: the user answered the agent's question."
+  },
+  "threadEventQuestionsCancelled": "Question withdrawn",
+  "@threadEventQuestionsCancelled": {
+    "description": "Transcript line: the agent's question was withdrawn."
+  },
+  "threadEventPlan": "Plan proposed",
+  "@threadEventPlan": {
+    "description": "Transcript line: the agent proposed a plan."
+  },
+  "threadEventMaintenance": "Context updated",
+  "@threadEventMaintenance": {
+    "description": "Transcript line: the agent saved or compacted its working context."
+  },
+  "threadEventOther": "Update",
+  "@threadEventOther": {
+    "description": "Transcript line for an event this version of Mila does not know."
+  },
+  "threadFailed": "This thread could not be loaded.",
+  "@threadFailed": {
+    "description": "Shown when the thread failed to load."
+  },
+  "threadWorking": "working",
+  "@threadWorking": {
+    "description": "Short status label: the agent is working on a prompt."
+  },
+  "threadNoTurns": "Nothing here yet. Send a prompt to start.",
+  "@threadNoTurns": {
+    "description": "Shown in an empty thread."
+  },
+  "threadPlanTitle": "Proposed plan",
+  "@threadPlanTitle": {
+    "description": "Title of the panel showing the agent's proposed plan."
+  },
+  "threadPlanRevisionHint": "What should change?",
+  "@threadPlanRevisionHint": {
+    "description": "Hint in the field for asking the agent to revise its plan."
+  },
+  "threadPlanApprove": "Approve",
+  "@threadPlanApprove": {
+    "description": "Button that approves the agent's plan so it starts work."
+  },
+  "threadPlanRevise": "Ask for changes",
+  "@threadPlanRevise": {
+    "description": "Button that sends the revision request to the agent."
+  },
+  "threadQuestionTitle": "The agent asks",
+  "@threadQuestionTitle": {
+    "description": "Title of the panel with the agent's questions."
+  },
+  "threadAnswerHint": "Your answer",
+  "@threadAnswerHint": {
+    "description": "Hint in the free-text answer field."
+  },
+  "threadAnswerSend": "Send answer",
+  "@threadAnswerSend": {
+    "description": "Button that sends the answers to the agent."
+  },
+  "threadComposerBusy": "The agent is working…",
+  "@threadComposerBusy": {
+    "description": "Composer hint while the agent is busy."
+  },
+  "threadComposerHint": "Message the agent",
+  "@threadComposerHint": {
+    "description": "Composer hint."
+  },
+  "threadSend": "Send",
+  "@threadSend": {
+    "description": "Button that sends the prompt."
+  },
+  "threadTextInvalid": "This text cannot be sent.",
+  "@threadTextInvalid": {
+    "description": "Shown when the prompt contains characters that cannot be sent."
+  },
+  "threadTextTooLarge": "This text is too long to send.",
+  "@threadTextTooLarge": {
+    "description": "Shown when the prompt is larger than 64 KiB."
+  },
+  "threadBusy": "The agent is still working. Try again when it finishes.",
+  "@threadBusy": {
+    "description": "Shown when the thread refused a prompt because it is busy."
+  },
+  "threadYou": "You",
+  "@threadYou": {
+    "description": "Label above the user's prompts in the transcript."
+  },
+  "threadAgent": "Agent",
+  "@threadAgent": {
+    "description": "Label above the agent's replies in the transcript."
+  },
+  "webCopied": "Address copied.",
+  "@webCopied": {
+    "description": "Shown after the web address was copied."
+  },
+  "webFailed": "The web address could not be loaded.",
+  "@webFailed": {
+    "description": "Shown when the machine's web endpoint failed to load."
+  },
+  "webVisibility": "Visibility",
+  "@webVisibility": {
+    "description": "Label: who can open the machine's web address."
+  },
+  "webPublic": "Public",
+  "@webPublic": {
+    "description": "Visibility: anyone with the address can open it."
+  },
+  "webPrivate": "Private",
+  "@webPrivate": {
+    "description": "Visibility: only signed-in users with access can open it."
+  },
+  "webPort": "Port",
+  "@webPort": {
+    "description": "Label: the machine port the web address serves."
+  },
+  "webAddress": "Address",
+  "@webAddress": {
+    "description": "Label: the machine's web address."
+  },
+  "webPublicExplain": "Anyone with this address can open it.",
+  "@webPublicExplain": {
+    "description": "Explains public visibility."
+  },
+  "webPrivateExplain": "Only people who can use this machine can open it, after signing in in their browser.",
+  "@webPrivateExplain": {
+    "description": "Explains private visibility; private addresses open in the browser."
+  },
+  "webNoAddress": "This deployment does not publish web addresses.",
+  "@webNoAddress": {
+    "description": "Shown when the deployment has no web ingress."
+  },
+  "webOpen": "Open",
+  "@webOpen": {
+    "description": "Button that opens the web address."
+  },
+  "webCopy": "Copy",
+  "@webCopy": {
+    "description": "Button that copies the web address."
+  },
+  "webShare": "Share",
+  "@webShare": {
+    "description": "Button that shares the web address."
+  },
+  "webSettings": "Settings",
+  "@webSettings": {
+    "description": "Title of the panel for changing port and visibility."
+  },
+  "webPortInvalid": "Enter a port from 1 to 65535.",
+  "@webPortInvalid": {
+    "description": "Shown when the port is not a number from 1 to 65535."
+  },
+  "webSave": "Save",
+  "@webSave": {
+    "description": "Button that saves the port."
+  },
+  "webConflict": "Someone else changed this setting. The current value is shown; try again.",
+  "@webConflict": {
+    "description": "Shown when another change was saved first."
   }
 }

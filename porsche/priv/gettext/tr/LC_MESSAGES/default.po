@@ -4,200 +4,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/porsche/ssh/channel.ex:113
+#: lib/porsche/ssh/onboarding.ex:60
 #, elixir-autogen, elixir-format
-msgid "Porsche machine management. Type help."
-msgstr "Porsche makine yönetimi. help yazın."
-
-#: lib/porsche/ssh/channel.ex:115
-#, elixir-autogen, elixir-format
-msgid "Docs:"
-msgstr "Belgeler:"
-
-msgid "Show command help."
-msgstr "Komut yardımını göster."
-
-msgid "Show the authenticated account."
-msgstr "Kimliği doğrulanmış hesabı göster."
-
-#: lib/porsche/ssh/command_messages.ex:9
-#, elixir-autogen, elixir-format
-msgid "List available images."
-msgstr "Kullanılabilir imajları listele."
-
-#: lib/porsche/ssh/command_messages.ex:16
-#, elixir-autogen, elixir-format
-msgid "List machines you can access."
-msgstr "Erişebildiğiniz makineleri listele."
-
-#: lib/porsche/ssh/command_messages.ex:36
-#, elixir-autogen, elixir-format
-msgid "Inspect a machine by name or UUID."
-msgstr "Bir makineyi adına veya UUID değerine göre incele."
-
-#: lib/porsche/ssh/command_messages.ex:17
-#, elixir-autogen, elixir-format
-msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
-msgstr "Makine oluştur. En yüksek disk kapasitesi: 500 GiB. --source, konuk içinde herkese açık bir GitHub, GitLab, Codeberg veya Bitbucket deposunu klonlar."
-
-#: lib/porsche/ssh/command_messages.ex:6
-#, elixir-autogen, elixir-format
-msgid "Queue an independent full-disk copy of a machine."
-msgstr "Makinenin bağımsız tam disk kopyasını kuyruğa al."
-
-#: lib/porsche/ssh/command_messages.ex:24
-#, elixir-autogen, elixir-format
-msgid "Move a machine to an automatically selected host."
-msgstr "Makineyi otomatik seçilen bir ana makineye taşı."
-
-#: lib/porsche/ssh/command_messages.ex:28
-#, elixir-autogen, elixir-format
-msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
-msgstr "Makinenin CPU ve belleğini değiştir; disk yalnızca büyütülebilir. Çalışan makine durdurulur ve yeniden başlatılır."
-
-msgid "Retry a failed clone or relocation request."
-msgstr "Başarısız klonlama veya taşıma isteğini yeniden dene."
-
-#: lib/porsche/ssh/command_messages.ex:25
-#, elixir-autogen, elixir-format
-msgid "Cancel an unpublished clone or uncommitted relocation request."
-msgstr "Yayımlanmamış klonu veya kesinleştirilmemiş taşıma isteğini iptal et."
-
-msgid "Start a machine."
-msgstr "Makineyi başlat."
-
-# Reviewed English fallback pending translation of suspension behavior.
-msgid "Stop a machine, retaining its disk and discarding suspended memory."
-msgstr "Stop a machine, retaining its disk and discarding suspended memory."
-
-#: lib/porsche/ssh/command_messages.ex:32
-#, elixir-autogen, elixir-format
-msgid "Delete a machine and its disk. Refused while its owner has it pinned."
-msgstr "Makineyi ve diskini sil. Sahibi sabitlemişse reddedilir."
-
-# Reviewed English fallback pending translation of suspension behavior.
-msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
-msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
-
-#: lib/porsche/ssh/command_messages.ex:51
-#, elixir-autogen, elixir-format
-msgid "Remove your pin from a machine."
-msgstr "Makinedeki sabitlemenizi kaldır."
-
-#: lib/porsche/ssh/command_messages.ex:35
-#, elixir-autogen, elixir-format
-msgid "List access grants."
-msgstr "Erişim izinlerini listele."
-
-#: lib/porsche/ssh/command_messages.ex:33
-#, elixir-autogen, elixir-format
-msgid "Grant viewer, operator or manager access."
-msgstr "Görüntüleyici, operatör veya yönetici erişimi ver."
-
-msgid "Revoke an account's shared access."
-msgstr "Bir hesabın paylaşılan erişimini iptal et."
-
-#: lib/porsche/ssh/command_messages.ex:37
-#, elixir-autogen, elixir-format
-msgid "List your SSH keys."
-msgstr "SSH anahtarlarınızı listele."
-
-msgid "Revoke one of your SSH keys."
-msgstr "SSH anahtarlarınızdan birini iptal et."
-
-#: lib/porsche/ssh/command_messages.ex:10
-#, elixir-autogen, elixir-format
-msgid "Create or replace a named integration at https://NAME.integration.internal."
-msgstr "https://NAME.integration.internal adresinde adlandırılmış bir entegrasyon oluştur veya değiştir."
-
-#: lib/porsche/ssh/command_messages.ex:14
-#, elixir-autogen, elixir-format
-msgid "Remove a named integration."
-msgstr "Adlandırılmış bir entegrasyonu kaldır."
-
-#: lib/porsche/ssh/command_messages.ex:13
-#, elixir-autogen, elixir-format
-msgid "List your integrations."
-msgstr "Entegrasyonlarınızı listele."
-
-#: lib/porsche/ssh/command_messages.ex:15
-#, elixir-autogen, elixir-format
-msgid "Inspect an integration without secrets."
-msgstr "Bir entegrasyonu gizli bilgiler olmadan incele."
-
-#: lib/porsche/ssh/command_messages.ex:11
-#, elixir-autogen, elixir-format
-msgid "Make an integration available to a machine."
-msgstr "Bir entegrasyonu makinenin kullanımına aç."
-
-#: lib/porsche/ssh/command_messages.ex:12
-#, elixir-autogen, elixir-format
-msgid "Remove a machine's explicit availability."
-msgstr "Bir makineye açıkça verilmiş kullanılabilirliği kaldır."
-
-#: lib/porsche/ssh/command_messages.ex:41
-#, elixir-autogen, elixir-format
-msgid "Create a team you own."
-msgstr "Sahibi olduğunuz bir ekip oluştur."
-
-#: lib/porsche/ssh/command_messages.ex:42
-#, elixir-autogen, elixir-format
-msgid "List your teams and roles."
-msgstr "Ekiplerinizi ve rollerinizi listele."
-
-#: lib/porsche/ssh/command_messages.ex:45
-#, elixir-autogen, elixir-format
-msgid "List a team's members."
-msgstr "Bir ekibin üyelerini listele."
-
-#: lib/porsche/ssh/command_messages.ex:43
-#, elixir-autogen, elixir-format
-msgid "Add or change an admin or member."
-msgstr "Yönetici veya üye ekle ya da değiştir."
-
-#: lib/porsche/ssh/command_messages.ex:44
-#, elixir-autogen, elixir-format
-msgid "Remove an account's membership."
-msgstr "Bir hesabın üyeliğini kaldır."
-
-#: lib/porsche/ssh/command_messages.ex:49
-#, elixir-autogen, elixir-format
-msgid "Offer team ownership to an admin."
-msgstr "Ekip sahipliğini bir yöneticiye teklif et."
-
-#: lib/porsche/ssh/command_messages.ex:46
-#, elixir-autogen, elixir-format
-msgid "Accept a pending ownership offer."
-msgstr "Bekleyen sahiplik teklifini kabul et."
-
-#: lib/porsche/ssh/command_messages.ex:48
-#, elixir-autogen, elixir-format
-msgid "Decline a pending ownership offer."
-msgstr "Bekleyen sahiplik teklifini reddet."
-
-#: lib/porsche/ssh/command_messages.ex:47
-#, elixir-autogen, elixir-format
-msgid "Cancel your pending ownership offer."
-msgstr "Bekleyen sahiplik teklifinizi iptal et."
-
-#: lib/porsche/ssh/command_messages.ex:27
-#, elixir-autogen, elixir-format
-msgid "Inspect a previously accepted request."
-msgstr "Daha önce kabul edilmiş bir isteği incele."
-
-#: lib/porsche/ssh/command_messages.ex:7
-#, elixir-autogen, elixir-format
-msgid "Close this interactive channel."
-msgstr "Bu etkileşimli kanalı kapat."
-
-msgid "We don't recognize this SSH key:\n  "
-msgstr "Bu SSH anahtarını tanımıyoruz:\n  "
-
-#: lib/porsche/ssh/onboarding.ex:58
-#, elixir-autogen, elixir-format
-msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
-msgstr "\nBu bağlantıyı açın, giriş yapın ve eşleşen parmak izini onaylayın:\n  "
-
 msgid "\n\nKeep this SSH connection open while approving the key.\n"
 msgstr "\n\nAnahtarı onaylarken bu SSH bağlantısını açık tutun.\n"
 
@@ -206,10 +14,25 @@ msgstr "\n\nAnahtarı onaylarken bu SSH bağlantısını açık tutun.\n"
 msgid "\nOpen an interactive Porsche connection without a remote command:"
 msgstr "\nUzak komut olmadan etkileşimli bir Porsche bağlantısı açın:"
 
+#: lib/porsche/ssh/onboarding.ex:58
+#, elixir-autogen, elixir-format
+msgid "\nOpen this link, sign in, and approve the matching fingerprint:\n  "
+msgstr "\nBu bağlantıyı açın, giriş yapın ve eşleşen parmak izini onaylayın:\n  "
+
 #: lib/porsche/ssh/onboarding.ex:112
 #, elixir-autogen, elixir-format
 msgid "\nOr manage your keys at:\n  "
 msgstr "\nVeya anahtarlarınızı şuradan yönetin:\n  "
+
+#: lib/porsche/ssh/command_messages.ex:48
+#, elixir-autogen, elixir-format
+msgid "Accept a pending ownership offer."
+msgstr "Bekleyen sahiplik teklifini kabul et."
+
+#: lib/porsche/ssh/command_messages.ex:45
+#, elixir-autogen, elixir-format
+msgid "Add or change an admin or member."
+msgstr "Yönetici veya üye ekle ya da değiştir."
 
 #: lib/porsche/ssh/onboarding.ex:64
 #, elixir-autogen, elixir-format
@@ -226,10 +49,80 @@ msgstr "Onay bağlantıları %{minutes} dakika sonra veya bu bağlantı kapandı
 msgid "Approve this SSH key in your browser, then retry the command."
 msgstr "Bu SSH anahtarını tarayıcınızda onaylayın, ardından komutu yeniden deneyin."
 
+#: lib/porsche/ssh/command_messages.ex:19
+#, elixir-autogen, elixir-format
+msgid "Cancel an unpublished clone or uncommitted relocation request."
+msgstr "Yayımlanmamış klonu veya kesinleştirilmemiş taşıma isteğini iptal et."
+
+#: lib/porsche/ssh/command_messages.ex:50
+#, elixir-autogen, elixir-format
+msgid "Cancel your pending ownership offer."
+msgstr "Bekleyen sahiplik teklifinizi iptal et."
+
+#: lib/porsche/ssh/command_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "Change a machine's CPU and memory; disk may only grow. A running machine stops and restarts."
+msgstr "Makinenin CPU ve belleğini değiştir; disk yalnızca büyütülebilir. Çalışan makine durdurulur ve yeniden başlatılır."
+
+#: lib/porsche/ssh/command_messages.ex:52
+#, elixir-autogen, elixir-format
+msgid "Close this interactive channel."
+msgstr "Bu etkileşimli kanalı kapat."
+
+#: lib/porsche/ssh/command_messages.ex:10
+#, elixir-autogen, elixir-format
+msgid "Create a machine. Disk maximum: 500 GiB. --source clones a public GitHub, GitLab, Codeberg or Bitbucket repository in the guest."
+msgstr "Makine oluştur. En yüksek disk kapasitesi: 500 GiB. --source, konuk içinde herkese açık bir GitHub, GitLab, Codeberg veya Bitbucket deposunu klonlar."
+
+#: lib/porsche/ssh/command_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "Create a team you own."
+msgstr "Sahibi olduğunuz bir ekip oluştur."
+
+#: lib/porsche/ssh/command_messages.ex:34
+#, elixir-autogen, elixir-format
+msgid "Create or replace a named integration at https://NAME.integration.internal."
+msgstr "https://NAME.integration.internal adresinde adlandırılmış bir entegrasyon oluştur veya değiştir."
+
+#: lib/porsche/ssh/command_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "Decline a pending ownership offer."
+msgstr "Bekleyen sahiplik teklifini reddet."
+
+#: lib/porsche/ssh/command_messages.ex:22
+#, elixir-autogen, elixir-format
+msgid "Delete a machine and its disk. Refused while its owner has it pinned."
+msgstr "Makineyi ve diskini sil. Sahibi sabitlemişse reddedilir."
+
+#: lib/porsche/ssh/channel.ex:154
+#, elixir-autogen, elixir-format
+msgid "Docs:"
+msgstr "Belgeler:"
+
 #: lib/porsche/ssh/onboarding.ex:120
 #, elixir-autogen, elixir-format
 msgid "Follow the browser approval instructions, then run the setup command\n"
 msgstr "Tarayıcıdaki onay talimatlarını izleyin, ardından kurulum komutunu çalıştırın\n"
+
+#: lib/porsche/ssh/command_messages.ex:30
+#, elixir-autogen, elixir-format
+msgid "Grant viewer, operator or manager access."
+msgstr "Görüntüleyici, operatör veya yönetici erişimi ver."
+
+#: lib/porsche/ssh/command_messages.ex:9
+#, elixir-autogen, elixir-format
+msgid "Inspect a machine by name or UUID."
+msgstr "Bir makineyi adına veya UUID değerine göre incele."
+
+#: lib/porsche/ssh/command_messages.ex:51
+#, elixir-autogen, elixir-format
+msgid "Inspect a previously accepted request."
+msgstr "Daha önce kabul edilmiş bir isteği incele."
+
+#: lib/porsche/ssh/command_messages.ex:39
+#, elixir-autogen, elixir-format
+msgid "Inspect an integration without secrets."
+msgstr "Bir entegrasyonu gizli bilgiler olmadan incele."
 
 #: lib/porsche/ssh/output.ex:58
 #, elixir-autogen, elixir-format
@@ -241,6 +134,66 @@ msgstr "Geçersiz komut. Kullanılabilir komutları görmek için help yazın."
 msgid "Keep that connection open while approving your key in the browser,\n"
 msgstr "Anahtarınızı tarayıcıda onaylarken bu bağlantıyı açık tutun,\n"
 
+#: lib/porsche/ssh/command_messages.ex:44
+#, elixir-autogen, elixir-format
+msgid "List a team's members."
+msgstr "Bir ekibin üyelerini listele."
+
+#: lib/porsche/ssh/command_messages.ex:29
+#, elixir-autogen, elixir-format
+msgid "List access grants."
+msgstr "Erişim izinlerini listele."
+
+#: lib/porsche/ssh/command_messages.ex:7
+#, elixir-autogen, elixir-format
+msgid "List available images."
+msgstr "Kullanılabilir imajları listele."
+
+#: lib/porsche/ssh/command_messages.ex:8
+#, elixir-autogen, elixir-format
+msgid "List machines you can access."
+msgstr "Erişebildiğiniz makineleri listele."
+
+#: lib/porsche/ssh/command_messages.ex:32
+#, elixir-autogen, elixir-format
+msgid "List your SSH keys."
+msgstr "SSH anahtarlarınızı listele."
+
+#: lib/porsche/ssh/command_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "List your integrations."
+msgstr "Entegrasyonlarınızı listele."
+
+#: lib/porsche/ssh/command_messages.ex:43
+#, elixir-autogen, elixir-format
+msgid "List your teams and roles."
+msgstr "Ekiplerinizi ve rollerinizi listele."
+
+#: lib/porsche/ssh/command_messages.ex:40
+#, elixir-autogen, elixir-format
+msgid "Make an integration available to a machine."
+msgstr "Bir entegrasyonu makinenin kullanımına aç."
+
+#: lib/porsche/ssh/command_messages.ex:14
+#, elixir-autogen, elixir-format
+msgid "Move a machine to an automatically selected host."
+msgstr "Makineyi otomatik seçilen bir ana makineye taşı."
+
+#: lib/porsche/ssh/command_messages.ex:47
+#, elixir-autogen, elixir-format
+msgid "Offer team ownership to an admin."
+msgstr "Ekip sahipliğini bir yöneticiye teklif et."
+
+#: lib/porsche/ssh/channel.ex:152
+#, elixir-autogen, elixir-format
+msgid "Porsche machine management. Type help."
+msgstr "Porsche makine yönetimi. help yazın."
+
+#: lib/porsche/ssh/command_messages.ex:13
+#, elixir-autogen, elixir-format
+msgid "Queue an independent full-disk copy of a machine."
+msgstr "Makinenin bağımsız tam disk kopyasını kuyruğa al."
+
 #: lib/porsche/ssh/onboarding.ex:114
 #, elixir-autogen, elixir-format
 msgid "Register or check your SSH key in Overalls Account settings > SSH keys.\n\n"
@@ -251,29 +204,67 @@ msgstr "SSH anahtarınızı Overalls Hesap ayarları > SSH anahtarları bölüm�
 msgid "Register or check your key by connecting to:\n  ssh "
 msgstr "Şuraya bağlanarak anahtarınızı kaydedin veya kontrol edin:\n  ssh "
 
-#: lib/porsche/ssh/output.ex:104
+#: lib/porsche/ssh/command_messages.ex:41
+#, elixir-autogen, elixir-format
+msgid "Remove a machine's explicit availability."
+msgstr "Bir makineye açıkça verilmiş kullanılabilirliği kaldır."
+
+#: lib/porsche/ssh/command_messages.ex:37
+#, elixir-autogen, elixir-format
+msgid "Remove a named integration."
+msgstr "Adlandırılmış bir entegrasyonu kaldır."
+
+#: lib/porsche/ssh/command_messages.ex:46
+#, elixir-autogen, elixir-format
+msgid "Remove an account's membership."
+msgstr "Bir hesabın üyeliğini kaldır."
+
+#: lib/porsche/ssh/command_messages.ex:28
+#, elixir-autogen, elixir-format
+msgid "Remove your pin from a machine."
+msgstr "Makinedeki sabitlemenizi kaldır."
+
+#: lib/porsche/ssh/output.ex:349
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: submitting"
 msgstr "İstek %{id}: gönderiliyor"
 
-#: lib/porsche/ssh/output.ex:107
+#: lib/porsche/ssh/output.ex:352
 #, elixir-autogen, elixir-format
 msgid "Request %{id}: waiting for completion"
 msgstr "İstek %{id}: tamamlanması bekleniyor"
 
-# Reviewed English fallback pending translation of suspension behavior.
-msgid "Suspend a machine, preserving its memory and disk."
-msgstr "Suspend a machine, preserving its memory and disk."
+#: lib/porsche/ssh/command_messages.ex:18
+#, elixir-autogen, elixir-format
+msgid "Retry a failed clone or relocation request."
+msgstr "Başarısız klonlama veya taşıma isteğini yeniden dene."
 
-# Reviewed English fallback pending translation of suspension behavior.
-msgid "Resume preserved memory, waiting for capacity or relocation."
-msgstr "Resume preserved memory, waiting for capacity or relocation."
+#: lib/porsche/ssh/command_messages.ex:31
+#, elixir-autogen, elixir-format
+msgid "Revoke an account's shared access."
+msgstr "Bir hesabın paylaşılan erişimini iptal et."
 
-# Reviewed English fallback pending translation of suspension behavior.
-msgid "Resume a suspended machine's preserved memory."
-msgstr "Resume a suspended machine's preserved memory."
+#: lib/porsche/ssh/command_messages.ex:33
+#, elixir-autogen, elixir-format
+msgid "Revoke one of your SSH keys."
+msgstr "SSH anahtarlarınızdan birini iptal et."
 
-#: lib/porsche/ssh/output.ex:73
+#: lib/porsche/ssh/command_messages.ex:5
+#, elixir-autogen, elixir-format
+msgid "Show command help."
+msgstr "Komut yardımını göster."
+
+#: lib/porsche/ssh/command_messages.ex:6
+#, elixir-autogen, elixir-format
+msgid "Show the authenticated account."
+msgstr "Kimliği doğrulanmış hesabı göster."
+
+#: lib/porsche/ssh/command_messages.ex:20
+#, elixir-autogen, elixir-format
+msgid "Start a machine."
+msgstr "Makineyi başlat."
+
+#: lib/porsche/ssh/output.ex:297
 #, elixir-autogen, elixir-format
 msgid "The command could not be completed: %{reason}"
 msgstr "Komut tamamlanamadı: %{reason}"
@@ -308,6 +299,11 @@ msgstr "Beklenmeyen girdi. Lütfen yeni bir SSH bağlantısı açın."
 msgid "We couldn't verify this SSH key right now. Please try again shortly.\n\n"
 msgstr "Bu SSH anahtarını şu anda doğrulayamadık. Lütfen kısa bir süre sonra yeniden deneyin.\n\n"
 
+#: lib/porsche/ssh/onboarding.ex:53
+#, elixir-autogen, elixir-format
+msgid "We don't recognize this SSH key:\n  "
+msgstr "Bu SSH anahtarını tanımıyoruz:\n  "
+
 #: lib/porsche/ssh/onboarding.ex:86
 #, elixir-autogen, elixir-format
 msgid "Welcome to Overalls.\n\nThis connection needs the Overalls SSH configuration.\n\n"
@@ -327,6 +323,36 @@ msgstr "makinenizin sayfasından alın ve root@ olmadan yeniden bağlanın.\n"
 #, elixir-autogen, elixir-format
 msgid "then retry your original command.\n"
 msgstr "ardından ilk komutunuzu yeniden deneyin.\n"
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:25
+#, elixir-autogen, elixir-format
+msgid "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+msgstr "Pin a machine to the top of your lists. Your owner pin wakes it, prevents automatic suspension, and prevents deletion."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:55
+#, elixir-autogen, elixir-format
+msgid "Resume a suspended machine's preserved memory."
+msgstr "Resume a suspended machine's preserved memory."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "Resume preserved memory, waiting for capacity or relocation."
+msgstr "Resume preserved memory, waiting for capacity or relocation."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "Stop a machine, retaining its disk and discarding suspended memory."
+msgstr "Stop a machine, retaining its disk and discarding suspended memory."
+
+# Reviewed English fallback pending translation of suspension behavior.
+#: lib/porsche/ssh/command_messages.ex:53
+#, elixir-autogen, elixir-format
+msgid "Suspend a machine, preserving its memory and disk."
+msgstr "Suspend a machine, preserving its memory and disk."
 
 #: lib/porsche/ssh/output.ex:94
 #, elixir-autogen, elixir-format
@@ -358,32 +384,32 @@ msgstr "Bu makine için bir yeniden boyutlandırma isteği zaten sürüyor."
 msgid "A transfer is already using this host's transfer slot. Please try again after it finishes."
 msgstr "Bir aktarım bu ana makinenin aktarım yuvasını zaten kullanıyor. Bittikten sonra yeniden deneyin."
 
-#: lib/porsche/ssh/output.ex:270
+#: lib/porsche/ssh/output.ex:322
 #, elixir-autogen, elixir-format
 msgid "Accepted"
 msgstr "Kabul edildi"
 
-#: lib/porsche/ssh/output.ex:272
+#: lib/porsche/ssh/output.ex:324
 #, elixir-autogen, elixir-format
 msgid "Failed"
 msgstr "Başarısız"
 
-#: lib/porsche/ssh/output.ex:265
+#: lib/porsche/ssh/output.ex:317
 #, elixir-autogen, elixir-format
 msgid "Operation ID"
 msgstr "İşlem kimliği"
 
-#: lib/porsche/ssh/output.ex:262
+#: lib/porsche/ssh/output.ex:314
 #, elixir-autogen, elixir-format
 msgid "Protocol version"
 msgstr "Protokol sürümü"
 
-#: lib/porsche/ssh/output.ex:264
+#: lib/porsche/ssh/output.ex:316
 #, elixir-autogen, elixir-format
 msgid "Request ID"
 msgstr "İstek kimliği"
 
-#: lib/porsche/ssh/output.ex:266
+#: lib/porsche/ssh/output.ex:318
 #, elixir-autogen, elixir-format
 msgid "Result"
 msgstr "Sonuç"
@@ -393,17 +419,17 @@ msgstr "Sonuç"
 msgid "Source cleanup is still pending. Wait for cleanup before retrying."
 msgstr "Kaynak temizliği hâlâ bekliyor. Yeniden denemeden önce temizliğin bitmesini bekleyin."
 
-#: lib/porsche/ssh/output.ex:263
+#: lib/porsche/ssh/output.ex:315
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Durum"
 
-#: lib/porsche/ssh/output.ex:271
+#: lib/porsche/ssh/output.ex:323
 #, elixir-autogen, elixir-format
 msgid "Succeeded"
 msgstr "Başarılı"
 
-#: lib/porsche/ssh/output.ex:273
+#: lib/porsche/ssh/output.ex:325
 #, elixir-autogen, elixir-format
 msgid "Superseded"
 msgstr "Yerine yenisi geçti"
@@ -622,3 +648,183 @@ msgstr "Çok fazla etkin oturum veya onay isteği var. Kullanılmayan bir bağla
 #, elixir-autogen, elixir-format
 msgid "You already hold the maximum number of pins; unpin one first."
 msgstr "Zaten en fazla sayıda sabitlemeye sahipsiniz; önce birini kaldırın."
+
+#: lib/porsche/ssh/command_messages.ex:75
+#, elixir-autogen, elixir-format
+msgid "Register this device for push notifications. The push key is read from stdin."
+msgstr "Bu cihazı anlık bildirimler için kaydedin. Anlık bildirim anahtarı stdin'den okunur."
+
+#: lib/porsche/ssh/command_messages.ex:78
+#, elixir-autogen, elixir-format
+msgid "List your push notification devices."
+msgstr "Anlık bildirim cihazlarınızı listeleyin."
+
+#: lib/porsche/ssh/command_messages.ex:79
+#, elixir-autogen, elixir-format
+msgid "Revoke a push notification device."
+msgstr "Bir anlık bildirim cihazını iptal edin."
+
+#: lib/porsche/ssh/command_messages.ex:80
+#, elixir-autogen, elixir-format
+msgid "Turn push notifications on or off for one device."
+msgstr "Tek bir cihaz için anlık bildirimleri açın veya kapatın."
+
+#: lib/porsche/ssh/command_messages.ex:81
+#, elixir-autogen, elixir-format
+msgid "Attach this SSH terminal to a shared terminal session; needs ssh -t."
+msgstr "Bu SSH terminalini paylaşılan bir terminal oturumuna bağlar; ssh -t gerektirir."
+
+#: lib/porsche/ssh/output.ex:245
+#, elixir-autogen, elixir-format
+msgid "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+msgstr "terminal attach bir terminal gerektirir. ssh -t ile bağlanın ve komut olarak çalıştırın."
+
+#: lib/porsche/ssh/command_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "List agent threads you can read, with unread counts."
+msgstr "Okuyabildiğiniz ajan iş parçacıklarını okunmamış sayılarıyla listele."
+
+#: lib/porsche/ssh/command_messages.ex:57
+#, elixir-autogen, elixir-format
+msgid "Inspect a thread, its pending question and latest plan."
+msgstr "Bir iş parçacığını, bekleyen sorusunu ve en son planını incele."
+
+#: lib/porsche/ssh/command_messages.ex:58
+#, elixir-autogen, elixir-format
+msgid "List a thread's transcript events after a sequence number."
+msgstr "Bir iş parçacığının bir sıra numarasından sonraki döküm olaylarını listele."
+
+#: lib/porsche/ssh/command_messages.ex:59
+#, elixir-autogen, elixir-format
+msgid "Send a prompt read from standard input to a thread."
+msgstr "Standart girdiden okunan bir istemi iş parçacığına gönder."
+
+#: lib/porsche/ssh/command_messages.ex:60
+#, elixir-autogen, elixir-format
+msgid "Answer a thread's pending question with JSON read from standard input."
+msgstr "Bir iş parçacığının bekleyen sorusunu standart girdiden okunan JSON ile yanıtla."
+
+#: lib/porsche/ssh/command_messages.ex:63
+#, elixir-autogen, elixir-format
+msgid "Approve a thread's latest plan and start implementing it."
+msgstr "Bir iş parçacığının en son planını onayla ve uygulamaya başla."
+
+#: lib/porsche/ssh/command_messages.ex:64
+#, elixir-autogen, elixir-format
+msgid "Ask for a revised plan, reading the feedback from standard input."
+msgstr "Geri bildirimi standart girdiden okuyarak gözden geçirilmiş bir plan iste."
+
+#: lib/porsche/ssh/command_messages.ex:65
+#, elixir-autogen, elixir-format
+msgid "Switch a thread between plan and work collaboration."
+msgstr "Bir iş parçacığını plan ve work iş birliği arasında değiştir."
+
+#: lib/porsche/ssh/command_messages.ex:66
+#, elixir-autogen, elixir-format
+msgid "Mark a thread read up to a transcript sequence number."
+msgstr "Bir iş parçacığını bir döküm sıra numarasına kadar okundu olarak işaretle."
+
+#: lib/porsche/ssh/command_messages.ex:67
+#, elixir-autogen, elixir-format
+msgid "List a machine's terminal sessions you can open."
+msgstr "Bir makinenin açabileceğiniz terminal oturumlarını listele."
+
+#: lib/porsche/ssh/command_messages.ex:68
+#, elixir-autogen, elixir-format
+msgid "Open your personal terminal session on a machine."
+msgstr "Bir makinede kişisel terminal oturumunuzu aç."
+
+#: lib/porsche/ssh/command_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Close one of your terminal sessions on a machine."
+msgstr "Bir makinedeki terminal oturumlarınızdan birini kapat."
+
+#: lib/porsche/ssh/command_messages.ex:70
+#, elixir-autogen, elixir-format
+msgid "Show a machine's web endpoint, port and visibility."
+msgstr "Bir makinenin web uç noktasını, bağlantı noktasını ve görünürlüğünü göster."
+
+#: lib/porsche/ssh/command_messages.ex:71
+#, elixir-autogen, elixir-format
+msgid "Change a machine's web port or visibility, optionally at an expected revision."
+msgstr "Bir makinenin web bağlantı noktasını veya görünürlüğünü, isteğe bağlı olarak beklenen bir revizyonda değiştir."
+
+#: lib/porsche/ssh/command_messages.ex:74
+#, elixir-autogen, elixir-format
+msgid "Stream JSON change notices for machines, threads and this session."
+msgstr "Makineler, iş parçacıkları ve bu oturum için JSON değişiklik bildirimlerini akış olarak ilet."
+
+#: lib/porsche/ssh/output.ex:250
+#, elixir-autogen, elixir-format
+msgid "This thread is not ready for prompts yet."
+msgstr "Bu iş parçacığı henüz istemlere hazır değil."
+
+#: lib/porsche/ssh/output.ex:253
+#, elixir-autogen, elixir-format
+msgid "This thread is busy with a turn. Try again when it finishes."
+msgstr "Bu iş parçacığı bir turla meşgul. Tamamlandığında yeniden deneyin."
+
+#: lib/porsche/ssh/output.ex:256
+#, elixir-autogen, elixir-format
+msgid "That plan is no longer the latest proposal. Show the thread again."
+msgstr "Bu plan artık en son öneri değil. İş parçacığını yeniden gösterin."
+
+#: lib/porsche/ssh/output.ex:259
+#, elixir-autogen, elixir-format
+msgid "That question is no longer pending."
+msgstr "Bu soru artık beklemede değil."
+
+#: lib/porsche/ssh/output.ex:262
+#, elixir-autogen, elixir-format
+msgid "That question has already been answered."
+msgstr "Bu soru zaten yanıtlandı."
+
+#: lib/porsche/ssh/output.ex:265
+#, elixir-autogen, elixir-format
+msgid "The answers do not match the pending question."
+msgstr "Yanıtlar bekleyen soruyla eşleşmiyor."
+
+#: lib/porsche/ssh/output.ex:268
+#, elixir-autogen, elixir-format
+msgid "Answer the pending question before sending another prompt."
+msgstr "Başka bir istem göndermeden önce bekleyen soruyu yanıtlayın."
+
+#: lib/porsche/ssh/output.ex:271
+#, elixir-autogen, elixir-format
+msgid "The web settings changed since you read them. Show them again and retry."
+msgstr "Web ayarları siz okuduktan sonra değişti. Yeniden gösterip tekrar deneyin."
+
+#: lib/porsche/ssh/output.ex:274
+#, elixir-autogen, elixir-format
+msgid "Port 4444 is reserved for the editor."
+msgstr "4444 numaralı bağlantı noktası düzenleyici için ayrılmıştır."
+
+#: lib/porsche/ssh/output.ex:277
+#, elixir-autogen, elixir-format
+msgid "This machine's profile does not allow web publishing."
+msgstr "Bu makinenin profili web yayınına izin vermiyor."
+
+#: lib/porsche/ssh/output.ex:280
+#, elixir-autogen, elixir-format
+msgid "Terminals are unavailable on this machine right now."
+msgstr "Bu makinede terminaller şu anda kullanılamıyor."
+
+#: lib/porsche/ssh/output.ex:283
+#, elixir-autogen, elixir-format
+msgid "The machine is waking. Retry the terminal shortly."
+msgstr "Makine uyanıyor. Terminali kısa süre sonra yeniden deneyin."
+
+#: lib/porsche/ssh/output.ex:286
+#, elixir-autogen, elixir-format
+msgid "That terminal session no longer exists."
+msgstr "Bu terminal oturumu artık mevcut değil."
+
+#: lib/porsche/ssh/output.ex:289
+#, elixir-autogen, elixir-format
+msgid "This command reads its input from standard input. Pipe it in and end the command with -."
+msgstr "Bu komut girdisini standart girdiden okur. Girdiyi pipe ile aktarın ve komutu - ile bitirin."
+
+#: lib/porsche/ssh/output.ex:294
+#, elixir-autogen, elixir-format
+msgid "The standard input is empty or exceeds this command's size limit."
+msgstr "Standart girdi boş veya bu komutun boyut sınırını aşıyor."

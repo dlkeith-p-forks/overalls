@@ -3,7 +3,7 @@
 - ID: ADR-0224
 - Date: 2026-10-18
 - Status: accepted
-- Implementation: planned
+- Implementation: partial
 - Components: Susan, Marshall, Mila
 - Supersedes: none
 - Superseded by: none
@@ -55,13 +55,67 @@ Mila's `watch` stream still works while the app is open.
 
 ## Invariants and verification
 
-Planned: `susan-service`, `susan-secrets` and `susan-image` machine tests;
-retries never double-notify; no IP or token bytes in the database dump or
-journal.
+- Pokes are content-free: provider payloads carry only the ciphertext, the
+  collapse id and fixed localization keys (`susan-content-free-relay`).
+- Retries never double-notify: a sent delivery id answers 204 without a
+  second provider send; a failed one may be retried once it is reclaimed.
+- 400 and 404 share one body; unauthenticated pokes write nothing.
+- No source addresses, provider tokens, push keys or ciphertext in the
+  database dump, the journal or audit exports.
+- The audit trail is append-only in PostgreSQL and hash chained.
+
+Machine tests `susan-service`, `susan-secrets` and `susan-image` exercise these
+against the packaged release; unit, Hegel property and Covenant tests cover the
+BEAM-observable pipeline.
 
 ## Implementation evidence
 
-No implementation yet.
+Implemented in this change, with these refinements of the decision text:
+
+- Service: [`susan/`](../../../susan/README.md) with Ash domains
+  [`Susan.Relay`](../../../susan/lib/susan/relay.ex) and
+  [`Susan.Audit`](../../../susan/lib/susan/audit.ex); the pure poke FSM
+  [`Susan.Poke.Machine`](../../../susan/lib/susan/poke/machine.ex), the HTTP
+  surface [`Susan.HTTP`](../../../susan/lib/susan/http.ex), push-key envelopes
+  [`Susan.PushKey`](../../../susan/lib/susan/push_key.ex) (AES-256-GCM, keyring
+  ids, 90-day expiry) and providers under
+  [`susan/lib/susan/provider/`](../../../susan/lib/susan/provider.ex).
+- The body and signature follow the shared
+  [`OverallsProtocol.SusanPoke`](../../../protocol/lib/overalls_protocol/susan_poke.ex):
+  a canonical eight-member JSON body, and an Ed25519 install signature over
+  `"overalls-susan-poke-v1" || 0x00 || body` verified on the received bytes,
+  carried in the
+  `overalls-install-key` and `overalls-install-signature` headers (base64url,
+  no padding); the wire example is
+  [`protocol/test/fixtures/susan_poke_request.json`](../../../protocol/test/fixtures/susan_poke_request.json).
+- Key issuance accepts `environment` `production` or `development` (the APNs
+  sandbox gateway); FCM accepts only `production`. `expires_at` is ISO-8601 UTC
+  ending in `Z`.
+- Response codes: 204 delivered or duplicate; 400 malformed, replayed, stale or
+  provider-rejected; 404 unknown/expired/denied/mismatched key, bad signature
+  or blocked install (same body as 400); 410 unregistered token; 429 with
+  `Retry-After` for rate limits and in-flight duplicates; 503 with
+  `Retry-After` when the provider is unavailable after one in-request retry.
+- Audit: append-only trigger and REVOKE in
+  [`priv/repo/migrations`](../../../susan/priv/repo/migrations/20261018231800_audit_append_only.exs),
+  operator access in [`Susan.Operator`](../../../susan/lib/susan/operator.ex)
+  through `bin/susan rpc` only, audited 90-day prune in
+  [`Susan.Maintenance.Prune`](../../../susan/lib/susan/maintenance/prune.ex).
+- Deployment: NixOS module
+  [`nix/domains/system/susan.nix`](../../../nix/domains/system/susan.nix) with
+  the `overallsSecrets` bundle `susan`, and the OCI image
+  [`nix/domains/artifacts/susan-image.nix`](../../../nix/domains/artifacts/susan-image.nix)
+  (`packages.x86_64-linux.image-susan`).
+- Tests: [`susan/test/`](../../../susan/test/test_helper.exs), Covenant
+  obligations under [`susan/contracts/`](../../../susan/contracts/README.md), and
+  machine tests [`susan-service`](../../../nix/verification/tests/machines/susan-service/driver.py),
+  [`susan-secrets`](../../../nix/verification/tests/machines/susan-secrets/driver.py)
+  and [`susan-image`](../../../nix/verification/tests/machines/susan-image/driver.py).
+
+Remaining for `implemented`: real APNs/FCM acceptance (the machine tests use
+local fake origins behind a private CA), the encrypted
+`secrets/overalls-susan.enc.json`, hosting and TLS placement, and Marshall's
+poke client (ADR-0225).
 
 ## Open questions
 

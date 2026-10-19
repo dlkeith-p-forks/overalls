@@ -30,11 +30,22 @@ defmodule Marshall.Control.Services.Porsche do
 
   # @cc [owner:ghuntley,label:security] control-porsche-bind
   # A Porsche hello MUST carry an empty bind; the identity is the gateway its
-  # credential names. The socket subscribes only to that gateway's session
-  # and approval hints.
+  # credential names. The socket subscribes to that gateway's service hints and,
+  # for `watch` streams (ADR-0222), to every machine, thread, terminal-session
+  # and SSH-session hint. Hints carry only a closed kind and a UUID and are never
+  # authority: Porsche routes them only to watchers whose subscription Marshall
+  # authorized, and every watcher re-reads through authorized commands.
   @impl true
   def bind(principal, bind) when map_size(bind) == 0,
-    do: {:ok, principal, [{:service, principal.gateway_id}]}
+    do:
+      {:ok, principal,
+       [
+         {:service, principal.gateway_id},
+         {:vm, :all},
+         {:thread, :all},
+         {:terminal_session, :all},
+         {:ssh_session, :all}
+       ]}
 
   def bind(_principal, _bind), do: {:close, :refused}
 

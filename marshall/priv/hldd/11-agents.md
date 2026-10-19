@@ -301,6 +301,39 @@ queues each model call. PostgreSQL agent turns, model calls and execution
 fences remain authoritative, so a LiveView process or thread URL cannot bypass
 the machine's current authority.
 
+## Needs-input push notifications
+
+When a planning turn records a new question or plan proposal, Marshall tells
+the people who can act on the thread through Mila, even with the app closed
+([ADR-0225](repo:docs/architecture/decisions/0225-marshall-notifications-domain.md)).
+The [producer](repo:marshall/lib/marshall/notifications/producer.ex) runs only
+after the outer [planning](repo:marshall/lib/marshall/agents/planning.ex)
+transaction commits; a rolled-back question produces nothing and a replayed
+call creates no second delivery. Recipients are the current thread writers
+(owner, creator, operator/manager grants, thread grants and team members) minus
+the actor; viewers are never notified.
+
+```mermaid
+sequenceDiagram
+  participant P as Planning transaction
+  participant N as Notifications.Producer
+  participant W as DeliveryWorker (Oban :notifications)
+  participant S as Susan (notifications.overalls.dev)
+  participant M as Mila device
+  P->>N: after_commit(thread)
+  N->>N: Delivery queued per active, enabled device (collapse per thread)
+  N->>W: job(delivery_id)
+  W->>W: seal PushPoke v1 to device X25519 key; sign with install Ed25519
+  W->>S: POST /api/push/v1/poke (ciphertext only)
+  S-->>W: 2xx delivered · 404/410 invalidate · 429/5xx retry · other 4xx permanent
+  S->>M: APNs/FCM poke
+  M->>M: decrypt route; fetch details over Porsche SSH
+```
+
+Each device has at most one open delivery per collapse key; a newer fact while
+one is open is recorded as `dropped/coalesced`. Deliveries expire after one
+hour and terminal rows and their versions are pruned after seven days.
+
 ## Context, compaction and collaboration
 
 [ADR-0178](repo:docs/architecture/decisions/0178-durable-agent-context-and-planning.md)

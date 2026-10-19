@@ -241,6 +241,58 @@ defmodule Porsche.SSH.Output do
       "invalid_public_key" ->
         gettext("The SSH public key is invalid. Check the key and try again.")
 
+      "attach_requires_pty" ->
+        gettext(
+          "terminal attach needs a terminal. Connect with ssh -t and run it as the command."
+        )
+
+      "thread_not_ready" ->
+        gettext("This thread is not ready for prompts yet.")
+
+      "thread_busy" ->
+        gettext("This thread is busy with a turn. Try again when it finishes.")
+
+      "stale_proposal" ->
+        gettext("That plan is no longer the latest proposal. Show the thread again.")
+
+      "stale_question" ->
+        gettext("That question is no longer pending.")
+
+      "already_answered" ->
+        gettext("That question has already been answered.")
+
+      "invalid_answers" ->
+        gettext("The answers do not match the pending question.")
+
+      "awaiting_answers" ->
+        gettext("Answer the pending question before sending another prompt.")
+
+      "revision_conflict" ->
+        gettext("The web settings changed since you read them. Show them again and retry.")
+
+      "reserved_editor_port" ->
+        gettext("Port 4444 is reserved for the editor.")
+
+      "web_not_allowed" ->
+        gettext("This machine's profile does not allow web publishing.")
+
+      "terminal_unavailable" ->
+        gettext("Terminals are unavailable on this machine right now.")
+
+      "terminal_open_pending" ->
+        gettext("The machine is waking. Retry the terminal shortly.")
+
+      "unknown_session" ->
+        gettext("That terminal session no longer exists.")
+
+      "stdin_payload_required" ->
+        gettext(
+          "This command reads its input from standard input. Pipe it in and end the command with -."
+        )
+
+      "stdin_payload_invalid" ->
+        gettext("The standard input is empty or exceeds this command's size limit.")
+
       _ ->
         gettext("The command could not be completed: %{reason}", reason: safe(reason))
     end

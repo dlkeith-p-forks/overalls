@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/marshall_web/live/machines_live.ex:1166
+#: lib/marshall_web/live/machines_live.ex:1184
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr " और बढ़ता जा रहा है"
@@ -45,12 +45,12 @@ msgstr[1] "%{count} पंजीकृत कुंजी"
 msgid "%{count} · %{enabled} enabled"
 msgstr "%{count} · %{enabled} सक्षम"
 
-#: lib/marshall_web/live/machines_live.ex:1163
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} सेकंड%{suffix}"
 
-#: lib/marshall_web/live/terminal_live.ex:548
+#: lib/marshall_web/live/terminal_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
@@ -64,8 +64,8 @@ msgstr "%{value1} CPU"
 
 #: lib/marshall_web/live/machines_live.ex:968
 #: lib/marshall_web/live/machines_live.ex:971
-#: lib/marshall_web/live/overview_live.ex:258
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:299
+#: lib/marshall_web/live/overview_live.ex:302
 #: lib/marshall_web/live/resize_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -94,7 +94,7 @@ msgid "%{value1} reasoning"
 msgstr "%{value1} रीजनिंग"
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
@@ -149,12 +149,12 @@ msgstr "**** (केवल लिखने योग्य)"
 msgid "+ Create machine"
 msgstr "+ मशीन बनाएँ"
 
-#: lib/marshall_web/live/terminal_live.ex:514
+#: lib/marshall_web/live/terminal_live.ex:544
 #, elixir-autogen, elixir-format
 msgid "+ New"
 msgstr "+ नया"
 
-#: lib/marshall_web/live/machines_live.ex:1228
+#: lib/marshall_web/live/machines_live.ex:1246
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ क्लोन कतार में डालें"
@@ -239,7 +239,7 @@ msgid "A selected skill is no longer available. Reload Skills and select its cur
 msgstr ""
 "चयनित स्किल अब उपलब्ध नहीं है। Skills रीलोड करें और वर्तमान स्रोत चुनें।"
 
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "छोटा प्रीव्यू। आपकी पहुँच वाली सभी मशीनें यहाँ हैं "
@@ -256,7 +256,7 @@ msgstr ""
 "टीम का एक मालिक होता है। प्रस्तावित व्यक्ति के स्वीकार करने पर ही स्वामित्व "
 "बदलता है; पिछला मालिक एडमिन बन जाता है।"
 
-#: lib/marshall_web/live/terminal_live.ex:620
+#: lib/marshall_web/live/terminal_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "A+"
 msgstr "A+"
@@ -354,7 +354,7 @@ msgstr "पहुँच अपडेट की गई।"
 msgid "Account"
 msgstr "खाता"
 
-#: lib/marshall_web/live/terminal_live.ex:684
+#: lib/marshall_web/live/terminal_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Account email"
 msgstr "खाता ईमेल"
@@ -398,7 +398,7 @@ msgstr "कार्रवाई"
 msgid "Actions"
 msgstr "कार्रवाइयाँ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:656
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
 #: lib/marshall_web/live/threads_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Active"
@@ -522,7 +522,7 @@ msgstr "व्यवस्थापक की कार्रवाइयाँ"
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:357
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "प्रवेश"
@@ -537,7 +537,7 @@ msgstr "प्रवेश सेटिंग अपडेट की गईं�
 msgid "Admission settings were invalid or the node is not ready."
 msgstr "प्रवेश सेटिंग अमान्य थीं या नोड तैयार नहीं है।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr ""
@@ -602,7 +602,7 @@ msgstr "सभी थ्रेड"
 msgid "All visible"
 msgstr "सभी दृश्यमान"
 
-#: lib/marshall_web/live/terminal_live.ex:691
+#: lib/marshall_web/live/terminal_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Allow viewing"
 msgstr "देखने की अनुमति दें"
@@ -681,7 +681,7 @@ msgstr "दिखावट"
 msgid "Apply"
 msgstr "लागू करें"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:394
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "प्रवेश सेटिंग लागू करें"
@@ -706,7 +706,7 @@ msgstr "होस्ट पर CPU, मेमोरी और डिस्क �
 msgid "Approve CLI access"
 msgstr "CLI पहुँच की मंज़ूरी दें"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:68
+#: lib/marshall_web/live/ssh_approval_live.ex:82
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr "SSH कुंजी को मंज़ूरी दें"
@@ -716,17 +716,17 @@ msgstr "SSH कुंजी को मंज़ूरी दें"
 msgid "Approve agent CLI"
 msgstr "एजेंट CLI को मंज़ूरी दें"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:94
+#: lib/marshall_web/live/ssh_approval_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr "कुंजी को मंज़ूरी दें"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:616
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "स्थानांतरण के लिए बंद रहने की अवधि को मंज़ूरी दें"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:71
+#: lib/marshall_web/live/ssh_approval_live.ex:85
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr ""
@@ -734,7 +734,7 @@ msgstr ""
 "फ़िंगरप्रिंट आपके SSH क्लाइंट से मेल खाता हो।"
 
 #: lib/marshall_web/live/agent_cli_approval_live.ex:74
-#: lib/marshall_web/live/ssh_approval_live.ex:92
+#: lib/marshall_web/live/ssh_approval_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "मंज़ूरी दी जा रही है…"
@@ -851,7 +851,7 @@ msgstr "ऑडिट इतिहास उपलब्ध नहीं है�
 msgid "Audit kinds"
 msgstr "ऑडिट के प्रकार"
 
-#: lib/marshall_web/live/terminal_live.ex:615
+#: lib/marshall_web/live/terminal_live.ex:669
 #, elixir-autogen, elixir-format
 msgid "A−"
 msgstr "A−"
@@ -897,7 +897,7 @@ msgid "Binary content"
 msgstr "बाइनरी सामग्री"
 
 #: lib/marshall_web/components/workspace_components.ex:425
-#: lib/marshall_web/live/terminal_live.ex:587
+#: lib/marshall_web/live/terminal_live.ex:617
 #, elixir-autogen, elixir-format
 msgid "Boot log"
 msgstr "बूट लॉग"
@@ -920,7 +920,7 @@ msgstr ""
 "डिस्क की सुरक्षित प्रतिलिपि लेने के लिए स्रोत को थोड़ी देर बंद किया जा रहा "
 "है।"
 
-#: lib/marshall_web/live/overview_live.ex:244
+#: lib/marshall_web/live/overview_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr ""
@@ -949,7 +949,7 @@ msgid "Build something, fix a bug, explore an idea…"
 msgstr "कुछ बनाएँ, बग ठीक करें, किसी विचार पर काम करें…"
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:295
 #: lib/marshall_web/live/resize_live.ex:288
 #: lib/marshall_web/live/resize_live.ex:328
 #: lib/marshall_web/live/resize_live.ex:413
@@ -964,7 +964,7 @@ msgstr "CPU"
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "आरक्षण के बाद CPU"
@@ -976,28 +976,28 @@ msgstr ""
 "CPU और मेमोरी बढ़ाई या घटाई जा सकती हैं। डिस्क का आकार केवल बढ़ाया जा सकता "
 "है।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:405
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "उपलब्ध अतिरिक्त CPU क्षमता"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "CPU ओवरहेड (कोर)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "अभियान"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:524
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "अभियान का इतिहास"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:488
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr ""
@@ -1011,7 +1011,7 @@ msgstr "अनुमति"
 #: lib/marshall_web/components/clone_components.ex:110
 #: lib/marshall_web/components/layouts.ex:118
 #: lib/marshall_web/live/machines_live.ex:939
-#: lib/marshall_web/live/terminal_live.ex:697
+#: lib/marshall_web/live/terminal_live.ex:751
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "रद्द करें"
@@ -1023,7 +1023,7 @@ msgstr ""
 "रद्द करने का अनुरोध स्वीकार नहीं हुआ। आकार पहले से लागू हो रहे हैं या मशीन "
 "की स्थिति की पुष्टि नहीं हुई है।"
 
-#: lib/marshall_web/live/machines_live.ex:1178
+#: lib/marshall_web/live/machines_live.ex:1196
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "स्थानांतरण रद्द करें"
@@ -1050,7 +1050,7 @@ msgstr "रद्द करने का अनुरोध किया गय�
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
 #: lib/marshall_web/live/admin/jobs_live.ex:432
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:717
 #: lib/marshall_web/live/resize_live.ex:503
 #: lib/marshall_web/live/resize_live.ex:540
 #: lib/marshall_web/live/resize_live.ex:548
@@ -1091,7 +1091,7 @@ msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr ""
 "रद्द किया जा रहा है: बंद होने की पुष्टि का इंतज़ार है; आकार नहीं बदलेंगे।"
 
-#: lib/marshall_web/live/machines_live.ex:1176
+#: lib/marshall_web/live/machines_live.ex:1194
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "रद्द किया जा रहा है…"
@@ -1106,7 +1106,7 @@ msgstr "क्षमता का विवरण"
 msgid "Capacity information is temporarily unavailable."
 msgstr "क्षमता की जानकारी फ़िलहाल उपलब्ध नहीं है।"
 
-#: lib/marshall_web/live/overview_live.ex:261
+#: lib/marshall_web/live/overview_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "मशीन बनाते समय क्षमता फिर जाँची जाती है।"
@@ -1146,13 +1146,13 @@ msgstr ""
 "साइन इन लिंक के लिए अपना ईमेल देखें। साइन इन करने पर आपका खाता अपने आप बन "
 "जाएगा।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
 #: lib/marshall_web/live/machines_live.ex:655
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "गंतव्य की तैयारी जाँची जा रही है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
 #: lib/marshall_web/live/machines_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
@@ -1213,7 +1213,7 @@ msgstr "क्लोन रद्द किया गया"
 msgid "Clone complete"
 msgstr "क्लोन पूरा हुआ"
 
-#: lib/marshall_web/live/machines_live.ex:1198
+#: lib/marshall_web/live/machines_live.ex:1216
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "मशीन का क्लोन बनाएँ"
@@ -1228,12 +1228,12 @@ msgstr "क्लोन पर ध्यान देना ज़रूरी �
 msgid "Clone queued. You can queue another copy."
 msgstr "क्लोन कतार में है। आप एक और कॉपी कतार में जोड़ सकते हैं।"
 
-#: lib/marshall_web/live/machines_live.ex:1243
+#: lib/marshall_web/live/machines_live.ex:1261
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "क्लोन के अनुरोध"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1269
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr "क्लोन अनुरोध फ़िलहाल उपलब्ध नहीं हैं। अपने आप दोबारा कोशिश हो रही है।"
@@ -1255,18 +1255,18 @@ msgstr "बंद करें"
 msgid "Close navigation"
 msgstr "नेविगेशन बंद करें"
 
-#: lib/marshall_web/live/terminal_live.ex:654
+#: lib/marshall_web/live/terminal_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Close search"
 msgstr "खोज बंद करें"
 
 #: lib/marshall_web/live/admin/access_live.ex:224
-#: lib/marshall_web/live/terminal_live.ex:569
+#: lib/marshall_web/live/terminal_live.ex:599
 #, elixir-autogen, elixir-format
 msgid "Close session"
 msgstr "सत्र बंद करें"
 
-#: lib/marshall_web/live/terminal_live.ex:568
+#: lib/marshall_web/live/terminal_live.ex:598
 #, elixir-autogen, elixir-format
 msgid "Close terminal %{value1}"
 msgstr "टर्मिनल %{value1} बंद करें"
@@ -1276,7 +1276,7 @@ msgstr "टर्मिनल %{value1} बंद करें"
 msgid "Close this SSH session?"
 msgstr "यह SSH सत्र बंद करें?"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:533
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "बंद"
@@ -1335,7 +1335,7 @@ msgstr ""
 
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:431
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
 #: lib/marshall_web/live/resize_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Complete"
@@ -1362,7 +1362,7 @@ msgstr "पुष्टि किए गए संसाधन"
 msgid "Connect"
 msgstr "कनेक्ट करें"
 
-#: lib/marshall_web/live/overview_live.ex:273
+#: lib/marshall_web/live/overview_live.ex:320
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "इंटीग्रेशन कनेक्ट करें ↗"
@@ -1372,7 +1372,7 @@ msgstr "इंटीग्रेशन कनेक्ट करें ↗"
 msgid "Connect from your computer"
 msgstr "अपने कंप्यूटर से कनेक्ट करें"
 
-#: lib/marshall_web/live/terminal_live.ex:595
+#: lib/marshall_web/live/terminal_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "Connecting…"
 msgstr "कनेक्ट किया जा रहा है…"
@@ -1409,7 +1409,7 @@ msgstr ""
 msgid "Context reload queued."
 msgstr "संदर्भ फिर लोड करना कतार में जोड़ा गया।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:462
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "शेड्यूलिंग जारी रखें"
@@ -1462,13 +1462,13 @@ msgstr "Windows PowerShell इंस्टॉल कमांड कॉपी �
 msgid "Copy machine ID"
 msgstr "मशीन ID कॉपी करें"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "कॉपी/आकार बदलने के आरक्षण"
 
 #: lib/marshall_web/components/clone_components.ex:254
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "कॉपी किया जा रहा है"
@@ -1602,7 +1602,7 @@ msgstr ""
 msgid "Create a machine"
 msgstr "मशीन बनाएँ"
 
-#: lib/marshall_web/live/machines_live.ex:1203
+#: lib/marshall_web/live/machines_live.ex:1221
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr ""
@@ -1637,7 +1637,7 @@ msgstr "टीम बनाएँ"
 msgid "Create thread"
 msgstr "थ्रेड बनाएँ"
 
-#: lib/marshall_web/live/overview_live.ex:173
+#: lib/marshall_web/live/overview_live.ex:175
 #, elixir-autogen, elixir-format
 msgid "Create your first machine"
 msgstr "अपनी पहली मशीन बनाएँ"
@@ -1689,7 +1689,7 @@ msgstr ""
 "वर्तमान अतिरिक्त क्षमता: %{value1} vCPU · %{value2} GiB मेमोरी · %{value3} "
 "GiB डिस्क"
 
-#: lib/marshall_web/live/overview_live.ex:253
+#: lib/marshall_web/live/overview_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "प्रोविज़निंग के लिए वर्तमान अतिरिक्त क्षमता"
@@ -1729,7 +1729,7 @@ msgstr "गहरा"
 msgid "Decline"
 msgstr "अस्वीकार करें"
 
-#: lib/marshall_web/live/terminal_live.ex:614
+#: lib/marshall_web/live/terminal_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Decrease terminal font size"
 msgstr "टर्मिनल फ़ॉन्ट छोटा करें"
@@ -1740,18 +1740,18 @@ msgid "Delegated a task"
 msgstr "एक काम सौंपा"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:217
-#: lib/marshall_web/live/machines_live.ex:1290
+#: lib/marshall_web/live/machines_live.ex:1308
 #: lib/marshall_web/live/threads_live.ex:1859
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "हटाएँ"
 
-#: lib/marshall_web/live/machines_live.ex:1275
+#: lib/marshall_web/live/machines_live.ex:1293
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "मशीन हटाएँ"
 
-#: lib/marshall_web/live/machines_live.ex:1288
+#: lib/marshall_web/live/machines_live.ex:1306
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr "यह मशीन और इसकी डिस्क हटाएँ? यह कार्रवाई वापस नहीं ली जा सकती।"
@@ -1762,7 +1762,7 @@ msgid "Delete user and machines"
 msgstr "उपयोगकर्ता और मशीनें हटाएँ"
 
 #: lib/marshall_web/components/workspace_components.ex:84
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "हटाया गया"
@@ -1774,7 +1774,7 @@ msgstr "हटाया गया"
 msgid "Deleting"
 msgstr "हटाया जा रहा है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:714
 #: lib/marshall_web/live/machines_live.ex:661
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
@@ -1785,13 +1785,13 @@ msgstr "सुरक्षित रखी कॉपी हटाई जा र�
 msgid "Describe a task. Your agent gets a machine and gets to work."
 msgstr "काम का विवरण दें। आपका एजेंट मशीन लेकर काम शुरू करेगा।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
 #: lib/marshall_web/live/machines_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "गंतव्य बूट नहीं हुआ; स्रोत की कॉपी सुरक्षित है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
 #: lib/marshall_web/live/machines_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
@@ -1815,7 +1815,7 @@ msgstr ""
 msgid "Detach"
 msgstr "अलग करें"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:498
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
 #: lib/marshall_web/live/admin/workloads_live.ex:150
 #: lib/marshall_web/live/inference_live.ex:154
 #, elixir-autogen, elixir-format
@@ -1846,7 +1846,7 @@ msgid "Disabled"
 msgstr "बंद"
 
 #: lib/marshall_web/live/machines_live.ex:970
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:301
 #: lib/marshall_web/live/resize_live.ex:292
 #: lib/marshall_web/live/resize_live.ex:344
 #: lib/marshall_web/live/resize_live.ex:447
@@ -1865,7 +1865,7 @@ msgstr "डिस्क (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "डिस्क (GiB) — अधिकतम 500 GiB"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "आरक्षण के बाद डिस्क"
@@ -1890,7 +1890,7 @@ msgstr "दस्तावेज़"
 msgid "Download raw file ↗"
 msgstr "मूल फ़ाइल डाउनलोड करें ↗"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:617
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "इस वर्कलोड संशोधन के लिए बंद रहने की अवधि मंज़ूर है"
@@ -1907,7 +1907,7 @@ msgid "Email"
 msgstr "ईमेल"
 
 #: lib/marshall_web/live/admin/users_live.ex:146
-#: lib/marshall_web/live/overview_live.ex:226
+#: lib/marshall_web/live/overview_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "ईमेल पता"
@@ -1944,8 +1944,8 @@ msgstr "पंद्रह मिनट पूरे होने से पह�
 msgid "Ends that person's access to this machine."
 msgstr "इस मशीन तक उस व्यक्ति की पहुँच समाप्त करता है।"
 
-#: lib/marshall_web/live/terminal_live.ex:625
-#: lib/marshall_web/live/terminal_live.ex:627
+#: lib/marshall_web/live/terminal_live.ex:679
+#: lib/marshall_web/live/terminal_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "पूरी स्क्रीन खोलें"
@@ -1972,17 +1972,17 @@ msgstr ""
 "काफ़ी अधिक समय लग सकता है और हर वर्कलोड की मंज़ूरी चाहिए।"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:425
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:438
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "निकासी अभियान"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:485
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "निकासी की समयरेखा"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:497
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "घटना"
@@ -2049,7 +2049,7 @@ msgstr "समाप्ति"
 msgid "Explain capacity"
 msgstr "क्षमता समझाएँ"
 
-#: lib/marshall_web/live/overview_live.ex:275
+#: lib/marshall_web/live/overview_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "अपना उपयोग देखें ↗"
@@ -2061,7 +2061,7 @@ msgstr "AI उपयोग निर्यात करें"
 
 #: lib/marshall_web/components/workspace_components.ex:83
 #: lib/marshall_web/live/admin/jobs_live.ex:16
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:663
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
 #: lib/marshall_web/live/threads_live.ex:1664
 #: lib/marshall_web/live/threads_live.ex:2632
 #, elixir-autogen, elixir-format
@@ -2075,12 +2075,12 @@ msgstr "विफल"
 msgid "Field notes"
 msgstr "फ़ील्ड नोट्स"
 
-#: lib/marshall_web/live/machines_live.ex:1199
+#: lib/marshall_web/live/machines_live.ex:1217
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "फ़ाइलें और सहेजे गए क्रेडेंशियल कॉपी में शामिल हैं"
 
-#: lib/marshall_web/live/machines_live.ex:1233
+#: lib/marshall_web/live/machines_live.ex:1251
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "फ़ाइलें और सहेजे गए क्रेडेंशियल कॉपी में शामिल हैं।"
@@ -2113,12 +2113,12 @@ msgstr "कमांड खोजें"
 msgid "Find a task…"
 msgstr "काम खोजें…"
 
-#: lib/marshall_web/live/terminal_live.ex:639
+#: lib/marshall_web/live/terminal_live.ex:693
 #, elixir-autogen, elixir-format
 msgid "Find in scrollback"
 msgstr "पिछले टर्मिनल आउटपुट में खोजें"
 
-#: lib/marshall_web/live/overview_live.ex:274
+#: lib/marshall_web/live/overview_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "अपने साथियों को खोजें ↗"
@@ -2155,13 +2155,13 @@ msgstr "फ़्लीट का AI उपयोग"
 msgid "Fleet workloads"
 msgstr "फ़्लीट के वर्कलोड"
 
-#: lib/marshall_web/live/terminal_live.ex:661
+#: lib/marshall_web/live/terminal_live.ex:715
 #, elixir-autogen, elixir-format
 msgid "Follow boot output"
 msgstr "बूट आउटपुट के साथ स्क्रॉल करें"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "ताज़ा"
@@ -2273,7 +2273,7 @@ msgstr "HTTPS गंतव्य"
 msgid "Handbook contents"
 msgstr "हैंडबुक की विषय-सूची"
 
-#: lib/marshall_web/live/overview_live.ex:264
+#: lib/marshall_web/live/overview_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "अतिरिक्त क्षमता फ़िलहाल उपलब्ध नहीं है।"
@@ -2386,7 +2386,7 @@ msgstr "अधूरी AI रिपोर्ट"
 msgid "Incorrect email or password"
 msgstr "ईमेल या पासवर्ड गलत है"
 
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:673
 #, elixir-autogen, elixir-format
 msgid "Increase terminal font size"
 msgstr "टर्मिनल फ़ॉन्ट बड़ा करें"
@@ -2546,7 +2546,7 @@ msgid "LLM index"
 msgstr "LLM अनुक्रमणिका"
 
 #: lib/marshall_web/live/account_live.ex:722
-#: lib/marshall_web/live/ssh_approval_live.ex:84
+#: lib/marshall_web/live/ssh_approval_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "लेबल (वैकल्पिक)"
@@ -2598,12 +2598,12 @@ msgstr "शुरू किया जा रहा है"
 msgid "Launching repository"
 msgstr "रिपॉज़िटरी शुरू की जा रही है"
 
-#: lib/marshall_web/live/machines_live.ex:1218
+#: lib/marshall_web/live/machines_live.ex:1236
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "नाम अपने आप बनाने के लिए खाली छोड़ें"
 
-#: lib/marshall_web/live/machines_live.ex:1231
+#: lib/marshall_web/live/machines_live.ex:1249
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "नाम अपने आप बनाने के लिए खाली छोड़ें।"
@@ -2717,12 +2717,12 @@ msgstr "मशीन अलग की गई।"
 msgid "Machine generations"
 msgstr "मशीन की पीढ़ियाँ"
 
-#: lib/marshall_web/live/terminal_live.ex:305
+#: lib/marshall_web/live/terminal_live.ex:335
 #, elixir-autogen, elixir-format
 msgid "Machine is stopping or stopped. Choose Start to open a terminal."
 msgstr "मशीन बंद हो रही है या बंद है। टर्मिनल खोलने के लिए शुरू करें चुनें।"
 
-#: lib/marshall_web/live/terminal_live.ex:47
+#: lib/marshall_web/live/terminal_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "Machine not found."
 msgstr "मशीन नहीं मिली।"
@@ -2757,7 +2757,7 @@ msgstr "मशीन का अनुरोध किया गया।"
 msgid "Machine settings"
 msgstr "मशीन सेटिंग"
 
-#: lib/marshall_web/live/terminal_live.ex:302
+#: lib/marshall_web/live/terminal_live.ex:332
 #, elixir-autogen, elixir-format
 msgid "Machine startup failed. Check the machine status and boot log."
 msgstr "मशीन शुरू नहीं हुई। मशीन की स्थिति और बूट लॉग जाँचें।"
@@ -2781,7 +2781,7 @@ msgstr "मशीन:"
 #: lib/marshall_web/components/layouts.ex:437
 #: lib/marshall_web/live/machines_live.ex:105
 #: lib/marshall_web/live/machines_live.ex:685
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "मशीनें"
@@ -2791,7 +2791,7 @@ msgstr "मशीनें"
 msgid "Machines are temporarily unavailable."
 msgstr "मशीनें फ़िलहाल उपलब्ध नहीं हैं।"
 
-#: lib/marshall_web/live/overview_live.ex:215
+#: lib/marshall_web/live/overview_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "मशीनें लोड नहीं हुईं। दोबारा कोशिश के लिए रीफ़्रेश करें।"
@@ -2817,7 +2817,7 @@ msgstr "मुख्य"
 msgid "Maintenance"
 msgstr "रखरखाव"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:637
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "रखरखाव के पेज"
@@ -2837,7 +2837,7 @@ msgstr "प्रशासक बनाएँ"
 msgid "Make it yours"
 msgstr "इसे अपना बनाएँ"
 
-#: lib/marshall_web/live/overview_live.ex:268
+#: lib/marshall_web/live/overview_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "इसे अपना घर समझें"
@@ -2852,7 +2852,7 @@ msgstr "आराम से काम करें"
 msgid "Manage members and team machines."
 msgstr "सदस्यों और टीम की मशीनों का प्रबंधन करें।"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:97
+#: lib/marshall_web/live/ssh_approval_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr "अपनी SSH कुंजियाँ प्रबंधित करें"
@@ -2896,7 +2896,7 @@ msgstr "इस पेज का Markdown"
 msgid "Match this request code with your terminal before approving:"
 msgstr "मंज़ूरी देने से पहले इस अनुरोध कोड को अपने टर्मिनल से मिलाएँ:"
 
-#: lib/marshall_web/live/machines_live.ex:1158
+#: lib/marshall_web/live/machines_live.ex:1176
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr ""
@@ -2931,7 +2931,7 @@ msgid "Membership updated."
 msgstr "सदस्यता अपडेट की गई।"
 
 #: lib/marshall_web/live/machines_live.ex:967
-#: lib/marshall_web/live/overview_live.ex:258
+#: lib/marshall_web/live/overview_live.ex:298
 #: lib/marshall_web/live/resize_live.ex:289
 #: lib/marshall_web/live/resize_live.ex:334
 #: lib/marshall_web/live/resize_live.ex:441
@@ -2946,12 +2946,12 @@ msgstr "मेमोरी"
 msgid "Memory (MiB)"
 msgstr "मेमोरी (MiB)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "आरक्षण के बाद मेमोरी"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:406
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "उपलब्ध अतिरिक्त मेमोरी"
@@ -2991,7 +2991,7 @@ msgstr "मिरर की सामग्री उपलब्ध नही�
 msgid "Mirrors"
 msgstr "मिरर"
 
-#: lib/marshall_web/live/machines_live.ex:1149
+#: lib/marshall_web/live/machines_live.ex:1167
 #: lib/marshall_web/live/threads_live.ex:1407
 #, elixir-autogen, elixir-format
 msgid "Mode"
@@ -3023,20 +3023,20 @@ msgstr "स्थानांतरण रद्द हुआ; सफ़ाई �
 msgid "Move complete"
 msgstr "स्थानांतरण पूरा"
 
-#: lib/marshall_web/live/machines_live.ex:1131
+#: lib/marshall_web/live/machines_live.ex:1149
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr ""
 "इस मशीन को अपने आप चुने गए होस्ट पर भेजें? मशीन थोड़ी देर अनुपलब्ध हो सकती "
 "है।"
 
-#: lib/marshall_web/live/machines_live.ex:1136
+#: lib/marshall_web/live/machines_live.ex:1154
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "दूसरे होस्ट पर भेजें"
 
 #: lib/marshall_web/live/account_live.ex:724
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "मेरा लैपटॉप"
@@ -3068,7 +3068,7 @@ msgstr ""
 msgid "Needs attention"
 msgstr "ध्यान देना ज़रूरी है"
 
-#: lib/marshall_web/live/machines_live.ex:1217
+#: lib/marshall_web/live/machines_live.ex:1235
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "नई मशीन का नाम (वैकल्पिक)"
@@ -3085,7 +3085,7 @@ msgstr "नए आकार"
 msgid "New thread"
 msgstr "नया थ्रेड"
 
-#: lib/marshall_web/live/terminal_live.ex:649
+#: lib/marshall_web/live/terminal_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Next match"
 msgstr "अगला मिलान"
@@ -3096,7 +3096,7 @@ msgstr "अगला मिलान"
 msgid "Next page"
 msgstr "अगला पेज"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:639
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #: lib/marshall_web/live/admin/users_live.ex:262
 #: lib/marshall_web/live/machines_live.ex:795
 #: lib/marshall_web/live/machines_live.ex:1063
@@ -3104,7 +3104,7 @@ msgstr "अगला पेज"
 msgid "Next page →"
 msgstr "अगला पेज →"
 
-#: lib/marshall_web/live/overview_live.ex:271
+#: lib/marshall_web/live/overview_live.ex:317
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "अगले चरण"
@@ -3161,7 +3161,7 @@ msgstr "कोई सक्रिय वर्कलोड नहीं है�
 msgid "No activity matches this filter."
 msgstr "इस फ़िल्टर से कोई गतिविधि मेल नहीं खाती।"
 
-#: lib/marshall_web/live/machines_live.ex:1248
+#: lib/marshall_web/live/machines_live.ex:1266
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr ""
@@ -3299,7 +3299,7 @@ msgstr "कोई स्थानांतरण उपलब्ध नहीं
 msgid "No repositories are mirrored yet."
 msgstr "अभी किसी रिपॉज़िटरी का मिरर नहीं बना है।"
 
-#: lib/marshall_web/live/terminal_live.ex:579
+#: lib/marshall_web/live/terminal_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "No shared terminals are available to view."
 msgstr "देखने के लिए कोई साझा टर्मिनल उपलब्ध नहीं है।"
@@ -3309,7 +3309,7 @@ msgstr "देखने के लिए कोई साझा टर्मि�
 msgid "No skills were discovered in this workspace."
 msgstr "इस कार्यक्षेत्र में कोई स्किल नहीं मिली।"
 
-#: lib/marshall_web/live/terminal_live.ex:583
+#: lib/marshall_web/live/terminal_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "No terminals are open. Choose New to open your personal shell."
 msgstr "कोई टर्मिनल खुला नहीं है। अपना निजी शेल खोलने के लिए नया चुनें।"
@@ -3349,7 +3349,7 @@ msgstr "अभी इकट्ठा नहीं हुआ"
 msgid "Objective"
 msgstr "उद्देश्य"
 
-#: lib/marshall_web/live/machines_live.ex:1154
+#: lib/marshall_web/live/machines_live.ex:1172
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "दर्ज अनुपलब्ध अवधि"
@@ -3452,7 +3452,7 @@ msgstr "क्लोन खोलें"
 msgid "Open machine →"
 msgstr "मशीन खोलें →"
 
-#: lib/marshall_web/live/overview_live.ex:240
+#: lib/marshall_web/live/overview_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "अपने ब्राउज़र से रिपॉज़िटरी खोलें"
@@ -3478,7 +3478,7 @@ msgstr "%{value1} के लिए टर्मिनल खोलें"
 msgid "Open terminal here"
 msgstr "यहाँ टर्मिनल खोलें"
 
-#: lib/marshall_web/live/overview_live.ex:204
+#: lib/marshall_web/live/overview_live.ex:208
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "टर्मिनल खोलें ↗"
@@ -3493,12 +3493,12 @@ msgstr "इस मशीन के वेब ऐप खोलें। टर्
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:532
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "खोला गया"
 
-#: lib/marshall_web/live/terminal_live.ex:87
+#: lib/marshall_web/live/terminal_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Opening terminal; recovering the same request if the connection was interrupted."
 msgstr ""
@@ -3652,12 +3652,12 @@ msgstr ""
 msgid "Paths"
 msgstr "पथ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:455
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "शेड्यूलिंग रोकें"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr ""
@@ -3683,7 +3683,7 @@ msgstr "पीयर मशीन ID"
 #: lib/marshall_web/components/workspace_components.ex:79
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:429
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
 #: lib/marshall_web/live/resize_live.ex:504
 #: lib/marshall_web/live/threads_live.ex:1661
 #: lib/marshall_web/live/threads_live.ex:2629
@@ -3698,14 +3698,14 @@ msgstr ""
 "यह खाता और इसके स्वामित्व की सभी मशीनें स्थायी रूप से हटाएँ, जिसमें दूसरों "
 "के साथ साझा मशीनें भी शामिल हैं?"
 
-#: lib/marshall_web/live/machines_live.ex:1297
+#: lib/marshall_web/live/machines_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr ""
 "इस मशीन और इसकी डिस्क को स्थायी रूप से हटाएँ। यह कार्रवाई वापस नहीं ली जा "
 "सकती।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:476
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr "इस खाली नोड को स्थायी रूप से हटाकर इसके क्रेडेंशियल रद्द करें?"
@@ -3716,7 +3716,7 @@ msgid "Permission to clone this machine is no longer available."
 msgstr "इस मशीन का क्लोन बनाने की अनुमति अब उपलब्ध नहीं है।"
 
 #: lib/marshall_web/live/machines_live.ex:879
-#: lib/marshall_web/live/overview_live.ex:186
+#: lib/marshall_web/live/overview_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "व्यक्तिगत"
@@ -3727,12 +3727,12 @@ msgid "Personal integration"
 msgstr "व्यक्तिगत इंटीग्रेशन"
 
 #: lib/marshall_web/live/admin/git_live.ex:103
-#: lib/marshall_web/live/machines_live.ex:1146
+#: lib/marshall_web/live/machines_live.ex:1164
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "चरण"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:582
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:589
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "चरण: %{phase}"
@@ -3765,7 +3765,7 @@ msgstr "योजना"
 msgid "Platform status"
 msgstr "प्लैटफ़ॉर्म की स्थिति"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:403
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "पूल"
@@ -3787,7 +3787,7 @@ msgid "Power afterwards"
 msgstr "बाद की पावर स्थिति"
 
 #: lib/marshall_web/components/clone_components.ex:252
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "तैयार किया जा रहा है"
@@ -3812,7 +3812,7 @@ msgstr "स्नैपशॉट लेने से पहले जगह त�
 msgid "Preparing transfer"
 msgstr "स्थानांतरण तैयार किया जा रहा है"
 
-#: lib/marshall_web/live/terminal_live.ex:422
+#: lib/marshall_web/live/terminal_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Preparing your guest account…"
 msgstr "आपका गेस्ट खाता तैयार किया जा रहा है…"
@@ -3827,9 +3827,9 @@ msgstr "आपकी मशीन तैयार की जा रही है
 msgid "Preparing your repository…"
 msgstr "आपकी रिपॉज़िटरी तैयार की जा रही है…"
 
-#: lib/marshall_web/live/terminal_live.ex:361
-#: lib/marshall_web/live/terminal_live.ex:399
-#: lib/marshall_web/live/terminal_live.ex:423
+#: lib/marshall_web/live/terminal_live.ex:391
+#: lib/marshall_web/live/terminal_live.ex:429
+#: lib/marshall_web/live/terminal_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "Preparing your terminal…"
 msgstr "आपका टर्मिनल तैयार किया जा रहा है…"
@@ -3844,12 +3844,12 @@ msgstr "आपका कार्यक्षेत्र तैयार कि
 msgid "Preview evacuation"
 msgstr "निकासी का प्रीव्यू देखें"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:604
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "प्रीव्यू: %{blocker}"
 
-#: lib/marshall_web/live/terminal_live.ex:644
+#: lib/marshall_web/live/terminal_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "Previous match"
 msgstr "पिछला मिलान"
@@ -3970,24 +3970,24 @@ msgstr "कतार में"
 msgid "Queued: %{tools}"
 msgstr "कतार में: %{tools}"
 
-#: lib/marshall_web/live/machines_live.ex:1226
+#: lib/marshall_web/live/machines_live.ex:1244
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "कतार में जोड़ा जा रहा है…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:383
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "RAM ओवरहेड (बाइट)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:627
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:640
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr ""
 "वर्तमान तैनाती और वांछित स्थिति से इस वर्कलोड की योजना फिर बनाएँ? बंद रहने "
 "की अवधि की पिछली मंज़ूरी हट जाएगी।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:645
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "वर्कलोड की योजना फिर बनाएँ"
@@ -3997,7 +3997,7 @@ msgstr "वर्कलोड की योजना फिर बनाएँ"
 msgid "Read and write in the terminal."
 msgstr "टर्मिनल में पढ़ें और लिखें।"
 
-#: lib/marshall_web/live/overview_live.ex:276
+#: lib/marshall_web/live/overview_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "फ़ील्ड नोट्स पढ़ें ↗"
@@ -4014,12 +4014,12 @@ msgstr ""
 "प्रवेश की केवल पढ़ने योग्य गणना। यह क्षमता आरक्षित नहीं करती; अज्ञात माप "
 "होने पर प्रवेश रोका जाता है।"
 
-#: lib/marshall_web/live/terminal_live.ex:668
+#: lib/marshall_web/live/terminal_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Read-only boot console"
 msgstr "केवल पढ़ने योग्य बूट कंसोल"
 
-#: lib/marshall_web/live/terminal_live.ex:577
+#: lib/marshall_web/live/terminal_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Read-only host boot log. Guest terminal readiness is not required."
 msgstr ""
@@ -4037,7 +4037,7 @@ msgstr ""
 msgid "Read-only mirrors of public GitHub repositories."
 msgstr "सार्वजनिक GitHub रिपॉज़िटरी के केवल पढ़ने योग्य मिरर।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:658
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #: lib/marshall_web/live/threads_live.ex:1663
 #: lib/marshall_web/live/threads_live.ex:2631
 #, elixir-autogen, elixir-format
@@ -4076,7 +4076,7 @@ msgstr "मिरर का हाल का ऑडिट"
 msgid "Recent threads"
 msgstr "हाल के थ्रेड"
 
-#: lib/marshall_web/live/terminal_live.ex:362
+#: lib/marshall_web/live/terminal_live.ex:392
 #, elixir-autogen, elixir-format
 msgid "Reconnecting to the terminal service…"
 msgstr "टर्मिनल सेवा से दोबारा कनेक्ट किया जा रहा है…"
@@ -4105,7 +4105,7 @@ msgid "Reference"
 msgstr "संदर्भ"
 
 #: lib/marshall_web/live/admin/git_live.ex:119
-#: lib/marshall_web/live/overview_live.ex:290
+#: lib/marshall_web/live/overview_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "रीफ़्रेश करें"
@@ -4125,7 +4125,7 @@ msgstr "रीफ़्रेश कतार में नहीं जोड�
 msgid "Refresh queued."
 msgstr "रीफ़्रेश कतार में जोड़ा गया।"
 
-#: lib/marshall_web/live/overview_live.ex:288
+#: lib/marshall_web/live/overview_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "रीफ़्रेश हो रहा है…"
@@ -4158,7 +4158,7 @@ msgstr "संबंधित रिकॉर्ड"
 msgid "Reload context"
 msgstr "संदर्भ फिर लोड करें"
 
-#: lib/marshall_web/live/machines_live.ex:1120
+#: lib/marshall_web/live/machines_live.ex:1138
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "मशीन स्थानांतरित करें"
@@ -4251,7 +4251,7 @@ msgstr ""
 msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
 msgstr "यह पासकी हटाएँ? आखिरी पासकी हटाने पर आप हर जगह से साइन आउट हो जाएँगे।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "इस स्रोत से हटाया गया; अभियान की सफ़ाई के सत्यापन का इंतज़ार है।"
@@ -4262,12 +4262,12 @@ msgstr "इस स्रोत से हटाया गया; अभिया
 msgid "Rename"
 msgstr "नाम बदलें"
 
-#: lib/marshall_web/live/terminal_live.ex:603
+#: lib/marshall_web/live/terminal_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Rename in this browser"
 msgstr "इस ब्राउज़र में नाम बदलें"
 
-#: lib/marshall_web/live/terminal_live.ex:602
+#: lib/marshall_web/live/terminal_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Rename terminal"
 msgstr "टर्मिनल का नाम बदलें"
@@ -4286,7 +4286,7 @@ msgstr ""
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:404
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "रिपोर्ट"
@@ -4362,7 +4362,7 @@ msgstr "रद्द करने का अनुरोध हो रहा ह
 msgid "Requesting resize…"
 msgstr "आकार बदलने का अनुरोध हो रहा है…"
 
-#: lib/marshall_web/live/machines_live.ex:1184
+#: lib/marshall_web/live/machines_live.ex:1202
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "दोबारा शुरू करने का अनुरोध हो रहा है…"
@@ -4372,7 +4372,7 @@ msgstr "दोबारा शुरू करने का अनुरोध �
 msgid "Requesting retry…"
 msgstr "दोबारा कोशिश का अनुरोध हो रहा है…"
 
-#: lib/marshall_web/live/machines_live.ex:1129
+#: lib/marshall_web/live/machines_live.ex:1147
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "अनुरोध किया जा रहा है…"
@@ -4415,7 +4415,7 @@ msgstr "आकार बदलना रद्द हुआ।"
 msgid "Resize could not be accepted. Check the sizes and current machine state."
 msgstr "आकार बदलना स्वीकार नहीं हुआ। आकार और मशीन की वर्तमान स्थिति जाँचें।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:782
 #: lib/marshall_web/live/resize_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
@@ -4489,12 +4489,12 @@ msgstr "दोबारा शुरू हुआ"
 msgid "Restarting"
 msgstr "दोबारा शुरू हो रहा है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:469
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "प्रवेश बहाल करें"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:479
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "नोड हटाएँ"
@@ -4511,7 +4511,7 @@ msgid "Retry could not be accepted. Capacity or machine state may have changed."
 msgstr ""
 "दोबारा कोशिश स्वीकार नहीं हुई। क्षमता या मशीन की स्थिति बदल गई हो सकती है।"
 
-#: lib/marshall_web/live/machines_live.ex:1186
+#: lib/marshall_web/live/machines_live.ex:1204
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "गंतव्य बूट की फिर कोशिश करें"
@@ -4569,7 +4569,7 @@ msgstr "संशोधन"
 msgid "Revision (optional)"
 msgstr "संशोधन (वैकल्पिक)"
 
-#: lib/marshall_web/live/terminal_live.ex:694
+#: lib/marshall_web/live/terminal_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "रद्द करें"
@@ -4622,7 +4622,7 @@ msgstr "भूमिका"
 msgid "Room for your next idea"
 msgstr "आपके अगले विचार के लिए जगह"
 
-#: lib/marshall_web/live/overview_live.ex:252
+#: lib/marshall_web/live/overview_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "आगे बढ़ने की जगह"
@@ -4644,7 +4644,7 @@ msgstr "रूटिंग, टीम का स्वामित्व और 
 
 #: lib/marshall_web/components/workspace_components.ex:80
 #: lib/marshall_web/live/admin/jobs_live.ex:13
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:660
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Running"
@@ -4671,7 +4671,8 @@ msgstr "SSH कुंजी"
 msgid "SSH key added."
 msgstr "SSH कुंजी जोड़ी गई।"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:35
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:112
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "SSH कुंजी मंज़ूर हुई। आप अपने SSH क्लाइंट पर लौट सकते हैं।"
@@ -4761,7 +4762,7 @@ msgstr "दायरा"
 msgid "Search"
 msgstr "खोजें"
 
-#: lib/marshall_web/live/terminal_live.ex:609
+#: lib/marshall_web/live/terminal_live.ex:663
 #, elixir-autogen, elixir-format
 msgid "Search (Ctrl+F)"
 msgstr "खोजें (Ctrl+F)"
@@ -4777,12 +4778,12 @@ msgstr "सामग्री खोजें"
 msgid "Search recent threads"
 msgstr "हाल के थ्रेड खोजें"
 
-#: lib/marshall_web/live/terminal_live.ex:608
+#: lib/marshall_web/live/terminal_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Search scrollback"
 msgstr "पिछला आउटपुट खोजें"
 
-#: lib/marshall_web/live/terminal_live.ex:632
+#: lib/marshall_web/live/terminal_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Search terminal scrollback"
 msgstr "पिछले टर्मिनल आउटपुट में खोजें"
@@ -4833,7 +4834,7 @@ msgstr "भेजा जा रहा है…"
 msgid "Service"
 msgstr "सेवा"
 
-#: lib/marshall_web/live/overview_live.ex:250
+#: lib/marshall_web/live/overview_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "ब्राउज़र एक्सटेंशन सेट करें ↗"
@@ -4860,12 +4861,12 @@ msgstr ""
 "साथ काम करने वालों के साथ मशीनें और इंटीग्रेशन साझा करें। मालिक प्रशासक "
 "नियुक्त करते हैं, प्रशासक सदस्यों का प्रबंधन करते हैं।"
 
-#: lib/marshall_web/live/terminal_live.ex:560
+#: lib/marshall_web/live/terminal_live.ex:590
 #, elixir-autogen, elixir-format
 msgid "Share terminal %{value1}"
 msgstr "टर्मिनल %{value1} साझा करें"
 
-#: lib/marshall_web/live/terminal_live.ex:676
+#: lib/marshall_web/live/terminal_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Share this terminal"
 msgstr "यह टर्मिनल साझा करें"
@@ -4875,12 +4876,12 @@ msgstr "यह टर्मिनल साझा करें"
 msgid "Share this thread"
 msgstr "यह थ्रेड साझा करें"
 
-#: lib/marshall_web/live/terminal_live.ex:561
+#: lib/marshall_web/live/terminal_live.ex:591
 #, elixir-autogen, elixir-format
 msgid "Share view"
 msgstr "दृश्य साझा करें"
 
-#: lib/marshall_web/live/overview_live.ex:187
+#: lib/marshall_web/live/overview_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "साझा"
@@ -5088,7 +5089,7 @@ msgid "Source was stopped when this request began."
 msgstr "अनुरोध शुरू होने पर स्रोत बंद था।"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "पुराना या अज्ञात"
@@ -5144,7 +5145,7 @@ msgstr "नए संसाधनों के साथ मशीन शुर�
 msgid "Starting…"
 msgstr "शुरू हो रहा है…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "शुरुआत के आरक्षण"
@@ -5167,7 +5168,7 @@ msgstr "स्थिर हेडर का नाम"
 msgid "Static header value"
 msgstr "स्थिर हेडर का मान"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:531
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:535
 #: lib/marshall_web/live/admin/operations_live.ex:82
 #: lib/marshall_web/live/admin/operations_live.ex:105
 #: lib/marshall_web/live/admin/operations_live.ex:128
@@ -5198,7 +5199,7 @@ msgstr "बंद करें"
 msgid "Stop the machine"
 msgstr "मशीन बंद करें"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:624
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr ""
@@ -5206,7 +5207,7 @@ msgstr ""
 "गंतव्य पर फिर शुरू करने से लंबे समय तक सेवा बंद रह सकती है।"
 
 #: lib/marshall_web/components/workspace_components.ex:81
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:661
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Stopped"
@@ -5236,7 +5237,7 @@ msgstr ""
 msgid "Stopping the machine so its resources can change safely."
 msgstr "संसाधन सुरक्षित रूप से बदलने के लिए मशीन बंद की जा रही है।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #: lib/marshall_web/live/machines_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
@@ -5277,7 +5278,7 @@ msgstr "सफल"
 msgid "Suspended"
 msgstr "निलंबित"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
 #: lib/marshall_web/live/machines_live.ex:654
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
@@ -5359,25 +5360,25 @@ msgstr "टीमें फ़िलहाल उपलब्ध नहीं �
 msgid "Terminal"
 msgstr "टर्मिनल"
 
-#: lib/marshall_web/live/terminal_live.ex:535
+#: lib/marshall_web/live/terminal_live.ex:565
 #, elixir-autogen, elixir-format
 msgid "Terminal %{name}, %{count} viewer, created %{created}"
 msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
 msgstr[0] "टर्मिनल %{name}, %{count} दर्शक, बनाया गया %{created}"
 msgstr[1] "टर्मिनल %{name}, %{count} दर्शक, बनाया गया %{created}"
 
-#: lib/marshall_web/live/terminal_live.ex:114
+#: lib/marshall_web/live/terminal_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Terminal access ended."
 msgstr "टर्मिनल की पहुँच समाप्त हुई।"
 
-#: lib/marshall_web/live/terminal_live.ex:131
-#: lib/marshall_web/live/terminal_live.ex:321
+#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "Terminal close requested; waiting for guest confirmation."
 msgstr "टर्मिनल बंद करने का अनुरोध हुआ; गेस्ट की पुष्टि का इंतज़ार है।"
 
-#: lib/marshall_web/live/terminal_live.ex:438
+#: lib/marshall_web/live/terminal_live.ex:468
 #, elixir-autogen, elixir-format
 msgid "Terminal limit reached for this machine."
 msgstr "इस मशीन के टर्मिनल की सीमा पूरी हो गई।"
@@ -5387,7 +5388,7 @@ msgstr "इस मशीन के टर्मिनल की सीमा प
 msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
 msgstr "टर्मिनल प्रोटोकॉल: %{protocol} · स्थानीय स्ट्रीम: %{state}"
 
-#: lib/marshall_web/live/terminal_live.ex:521
+#: lib/marshall_web/live/terminal_live.ex:551
 #, elixir-autogen, elixir-format
 msgid "Terminal sessions"
 msgstr "टर्मिनल सत्र"
@@ -5397,7 +5398,7 @@ msgstr "टर्मिनल सत्र"
 msgid "Terminal unavailable"
 msgstr "टर्मिनल उपलब्ध नहीं है"
 
-#: lib/marshall_web/live/terminal_live.ex:155
+#: lib/marshall_web/live/terminal_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Terminal viewing access updated."
 msgstr "टर्मिनल देखने की पहुँच अपडेट हुई।"
@@ -5407,7 +5408,7 @@ msgstr "टर्मिनल देखने की पहुँच अपड�
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "टर्मिनल, जीवनचक्र, आकार बदलना, क्लोन और साझा करना।"
 
-#: lib/marshall_web/live/terminal_live.ex:443
+#: lib/marshall_web/live/terminal_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Terminals are unavailable while the host is offline."
 msgstr "होस्ट ऑफ़लाइन होने पर टर्मिनल उपलब्ध नहीं हैं।"
@@ -5450,7 +5451,7 @@ msgstr ""
 msgid "The agent encountered a problem"
 msgstr "एजेंट को समस्या हुई"
 
-#: lib/marshall_web/live/terminal_live.ex:191
+#: lib/marshall_web/live/terminal_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "The boot log is unavailable for the current machine execution."
 msgstr "वर्तमान मशीन निष्पादन का बूट लॉग उपलब्ध नहीं है।"
@@ -5486,7 +5487,7 @@ msgstr ""
 msgid "The default machine image is not available right now."
 msgstr "डिफ़ॉल्ट मशीन इमेज अभी उपलब्ध नहीं है।"
 
-#: lib/marshall_web/live/terminal_live.ex:457
+#: lib/marshall_web/live/terminal_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "The guest cannot host more terminal sessions."
 msgstr "गेस्ट और टर्मिनल सत्र नहीं चला सकता।"
@@ -5519,7 +5520,7 @@ msgid "The machine has changed since this draft was created. Review the confirme
 msgstr ""
 "यह ड्राफ़्ट बनने के बाद मशीन बदल गई है। ऊपर पुष्टि किए गए संसाधन देखें।"
 
-#: lib/marshall_web/live/machines_live.ex:1140
+#: lib/marshall_web/live/machines_live.ex:1158
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr ""
@@ -5528,7 +5529,7 @@ msgstr ""
 "इसलिए स्थानांतरण में थोड़ा अधिक समय लग सकता है; प्रोडक्शन में AWS पर "
 "Overalls चलने पर स्थानांतरण बहुत तेज़ होने की उम्मीद है।"
 
-#: lib/marshall_web/live/machines_live.ex:1151
+#: lib/marshall_web/live/machines_live.ex:1169
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "मशीन बंद करके एक बार कॉपी की जाती है और गंतव्य पर शुरू होती है।"
@@ -5566,7 +5567,7 @@ msgstr ""
 "इस मशीन की पिछली कॉपी अभी अपना स्नैपशॉट छोड़ रही है। थोड़ी देर में फिर कोशिश"
 " करें।"
 
-#: lib/marshall_web/live/terminal_live.ex:449
+#: lib/marshall_web/live/terminal_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "The previous opening has ended. Choose New to try again."
 msgstr "खोलने का पिछला प्रयास समाप्त हुआ। दोबारा कोशिश के लिए नया चुनें।"
@@ -5636,7 +5637,7 @@ msgstr ""
 "क्लोन शुरू होने से पहले स्रोत व्यस्त था या बदल गया। तैयार होने पर फिर कोशिश "
 "करें।"
 
-#: lib/marshall_web/live/terminal_live.ex:459
+#: lib/marshall_web/live/terminal_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "The terminal could not be opened."
 msgstr "टर्मिनल नहीं खोला जा सका।"
@@ -5693,7 +5694,7 @@ msgstr "ये सवाल अब जवाब के इंतज़ार म
 msgid "These questions have already been answered."
 msgstr "इन सवालों के जवाब पहले ही दिए जा चुके हैं।"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr ""
@@ -5738,7 +5739,7 @@ msgstr ""
 msgid "This job is unavailable or its history has expired."
 msgstr "यह जॉब उपलब्ध नहीं है या इसका इतिहास समाप्त हो गया है।"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:77
+#: lib/marshall_web/live/ssh_approval_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr ""
@@ -5765,7 +5766,7 @@ msgstr "यह मशीन हटाई जा रही है और पि�
 msgid "This machine is being deleted."
 msgstr "यह मशीन हटाई जा रही है।"
 
-#: lib/marshall_web/live/terminal_live.ex:484
+#: lib/marshall_web/live/terminal_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
 msgstr ""
@@ -5800,7 +5801,7 @@ msgstr ""
 "इस मशीन की इमेज में अभी गेस्ट एजेंट नहीं हैं: SSH, ब्राउज़र टर्मिनल और एजेंट"
 " उपलब्ध नहीं हैं। उपयोग करें"
 
-#: lib/marshall_web/live/terminal_live.ex:297
+#: lib/marshall_web/live/terminal_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
 msgstr ""
@@ -5940,7 +5941,7 @@ msgstr "थ्रेड"
 msgid "Threads are temporarily unavailable. Try again shortly."
 msgstr "थ्रेड फ़िलहाल उपलब्ध नहीं हैं। थोड़ी देर में फिर कोशिश करें।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:496
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
 #: lib/marshall_web/live/inference_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Time"
@@ -6036,7 +6037,7 @@ msgstr "प्रकार"
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "यह खाता और इसकी %{count} मशीनें हटाने के लिए ईमेल टाइप करें"
 
-#: lib/marshall_web/live/terminal_live.ex:598
+#: lib/marshall_web/live/terminal_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "बातचीत के लिए टाइप करें"
@@ -6051,7 +6052,7 @@ msgstr "अत्यधिक"
 msgid "Ultra is for complex, open-ended work."
 msgstr "अत्यधिक विकल्प जटिल और खुली दिशा वाले काम के लिए है।"
 
-#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
 msgstr ""
@@ -6059,10 +6060,22 @@ msgstr ""
 "पहुँच होनी चाहिए।"
 
 #: lib/marshall_web/components/workspace_components.ex:86
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
+#: lib/marshall_web/controllers/audi_login_controller.ex:44
+#: lib/marshall_web/controllers/editor_controller.ex:26
+#: lib/marshall_web/controllers/editor_controller.ex:61
+#: lib/marshall_web/controllers/git_raw_controller.ex:24
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#: lib/marshall_web/controllers/marvin_download_controller.ex:118
+#: lib/marshall_web/controllers/overalls_controller.ex:21
+#: lib/marshall_web/controllers/overalls_controller.ex:25
+#: lib/marshall_web/controllers/overalls_controller.ex:37
+#: lib/marshall_web/controllers/overalls_controller.ex:50
+#: lib/marshall_web/controllers/overalls_controller.ex:54
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
 #: lib/marshall_web/live/machines_live.ex:750
 #: lib/marshall_web/live/machines_live.ex:964
 #: lib/marshall_web/live/machines_live.ex:974
+#: lib/marshall_web/ssh_approval_login.ex:29
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "अनुपलब्ध"
@@ -6073,10 +6086,10 @@ msgstr "अनुपलब्ध"
 #: lib/marshall_web/live/admin/jobs_live.ex:426
 #: lib/marshall_web/live/admin/jobs_live.ex:437
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:791
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
 #: lib/marshall_web/live/inference_live.ex:60
 #: lib/marshall_web/live/inference_live.ex:178
 #: lib/marshall_web/live/inference_live.ex:185
@@ -6104,7 +6117,7 @@ msgstr "मशीन हटाने से पहले इसका पिन 
 msgid "Unpin this thread's machine before deleting it."
 msgstr "इस थ्रेड को हटाने से पहले उसकी मशीन का पिन हटाएँ।"
 
-#: lib/marshall_web/live/machines_live.ex:1294
+#: lib/marshall_web/live/machines_live.ex:1312
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr ""
@@ -6140,7 +6153,7 @@ msgstr "संशोधन अपडेट करें (वैकल्पि�
 #: lib/marshall_web/live/admin/jobs_live.ex:210
 #: lib/marshall_web/live/admin/operations_live.ex:60
 #: lib/marshall_web/live/admin/workloads_live.ex:103
-#: lib/marshall_web/live/overview_live.ex:284
+#: lib/marshall_web/live/overview_live.ex:332
 #: lib/marshall_web/live/threads_live.ex:1674
 #, elixir-autogen, elixir-format
 msgid "Updated"
@@ -6151,7 +6164,7 @@ msgstr "अपडेट किया गया"
 msgid "Updated every 15 seconds"
 msgstr "हर 15 सेकंड में अपडेट होता है"
 
-#: lib/marshall_web/live/machines_live.ex:1244
+#: lib/marshall_web/live/machines_live.ex:1262
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "अपने आप अपडेट होता है"
@@ -6218,7 +6231,7 @@ msgstr "उपयोगकर्ता"
 msgid "Users"
 msgstr "उपयोगकर्ता"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:506
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "VM"
@@ -6254,6 +6267,7 @@ msgid "VS Code is temporarily unavailable."
 msgstr "VS Code फ़िलहाल उपलब्ध नहीं है।"
 
 #: lib/marshall_web/components/workspace_components.ex:519
+#: lib/marshall_web/controllers/editor_controller.ex:17
 #, elixir-autogen, elixir-format
 msgid "VS Code is unavailable for this machine."
 msgstr "इस मशीन के लिए VS Code उपलब्ध नहीं है।"
@@ -6322,7 +6336,7 @@ msgstr ""
 "दर्शक पढ़ते हैं। ऑपरेटर प्रॉम्प्ट भेजते हैं। प्रबंधक थ्रेड साझा और प्रबंधित "
 "भी करते हैं।"
 
-#: lib/marshall_web/live/terminal_live.ex:678
+#: lib/marshall_web/live/terminal_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
 msgstr ""
@@ -6376,7 +6390,7 @@ msgstr ""
 msgid "Waiting for the machine"
 msgstr "मशीन का इंतज़ार है"
 
-#: lib/marshall_web/live/terminal_live.ex:310
+#: lib/marshall_web/live/terminal_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Waiting for the machine to start…"
 msgstr "मशीन शुरू होने का इंतज़ार है…"
@@ -6617,7 +6631,7 @@ msgstr ""
 msgid "You do not have access to this thread."
 msgstr "आपको इस थ्रेड की पहुँच नहीं है।"
 
-#: lib/marshall_web/live/terminal_live.ex:440
+#: lib/marshall_web/live/terminal_live.ex:470
 #, elixir-autogen, elixir-format
 msgid "You do not have terminal access to this machine."
 msgstr "आपको इस मशीन के टर्मिनल की पहुँच नहीं है।"
@@ -6711,7 +6725,7 @@ msgstr ""
 "थ्रेड साझा करने वाले लोग और प्रशासक ईमेल के पास आपका वर्तमान स्थानीय समय "
 "देखते हैं।"
 
-#: lib/marshall_web/live/terminal_live.ex:453
+#: lib/marshall_web/live/terminal_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
 msgstr ""
@@ -6771,12 +6785,12 @@ msgstr ""
 msgid "Your password has successfully been reset"
 msgstr "आपका पासवर्ड सफलतापूर्वक रीसेट हुआ"
 
-#: lib/marshall_web/live/terminal_live.ex:581
+#: lib/marshall_web/live/terminal_live.ex:611
 #, elixir-autogen, elixir-format
 msgid "Your personal terminal opens when the machine is ready."
 msgstr "मशीन तैयार होने पर आपका निजी टर्मिनल खुलता है।"
 
-#: lib/marshall_web/live/terminal_live.ex:446
+#: lib/marshall_web/live/terminal_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Your previous shell has closed. Choose New to open another terminal."
 msgstr "आपका पिछला शेल बंद हो गया। दूसरा टर्मिनल खोलने के लिए नया चुनें।"
@@ -6813,7 +6827,7 @@ msgstr "आपका साइन इन अब मान्य नहीं ह
 msgid "Your teams"
 msgstr "आपकी टीमें"
 
-#: lib/marshall_web/live/terminal_live.ex:488
+#: lib/marshall_web/live/terminal_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "Your terminal will open when the machine is running and ready."
 msgstr "मशीन चालू और तैयार होने पर आपका टर्मिनल खुलेगा।"
@@ -6873,7 +6887,7 @@ msgstr "इस वर्कलोड के बंद रहने की अव
 msgid "attempt"
 msgstr "प्रयास"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "प्रयास %{attempt}"
@@ -6883,7 +6897,7 @@ msgstr "प्रयास %{attempt}"
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "प्रयास %{attempt} · %{count} दर्ज विफलताएँ"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:509
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "अभियान"
@@ -6939,7 +6953,7 @@ msgid "email, time zone and your local clock"
 msgstr "ईमेल, समय क्षेत्र और आपकी स्थानीय घड़ी"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "चालू"
@@ -6950,7 +6964,7 @@ msgid "example-integration"
 msgstr "example-integration"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:364
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "बाहर रखा गया"
@@ -6960,22 +6974,22 @@ msgstr "बाहर रखा गया"
 msgid "file"
 msgstr "फ़ाइल"
 
-#: lib/marshall_web/live/terminal_live.ex:610
+#: lib/marshall_web/live/terminal_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "find"
 msgstr "खोजें"
 
-#: lib/marshall_web/live/terminal_live.ex:628
+#: lib/marshall_web/live/terminal_live.ex:682
 #, elixir-autogen, elixir-format
 msgid "full"
 msgstr "पूरा"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:512
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "जॉब"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:507
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "स्थानांतरित करें"
@@ -7025,7 +7039,7 @@ msgstr "यह Git मिरर रीफ़्रेश करें"
 msgid "remove this Git mirror"
 msgstr "यह Git मिरर हटाएँ"
 
-#: lib/marshall_web/live/terminal_live.ex:604
+#: lib/marshall_web/live/terminal_live.ex:658
 #, elixir-autogen, elixir-format
 msgid "rename"
 msgstr "नाम बदलें"
@@ -7123,7 +7137,7 @@ msgstr "हाँ"
 msgid "· %{value1} reasoning · %{value2}"
 msgstr "· %{value1} तर्क-विचार · %{value2}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:596
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· बंद रहने की अवधि की मंज़ूरी चाहिए"
@@ -7154,7 +7168,7 @@ msgid "← All sections"
 msgstr "← सभी अनुभाग"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:310
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
 #: lib/marshall_web/live/admin/users_live.ex:257
 #: lib/marshall_web/live/machines_live.ex:794
 #: lib/marshall_web/live/machines_live.ex:1060
@@ -7232,7 +7246,7 @@ msgstr "Git सेटिंग सहेज ली गईं।"
 msgid "Git username"
 msgstr "Git उपयोगकर्ता नाम"
 
-#: lib/marshall_web/live/terminal_live.ex:308
+#: lib/marshall_web/live/terminal_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
 msgstr "मशीन रुकी हुई है। उसे फिर से चालू करें या इस टर्मिनल पृष्ठ को दोबारा खोलें।"
@@ -7243,7 +7257,7 @@ msgid "Pause"
 msgstr "रोकें"
 
 #: lib/marshall_web/components/workspace_components.ex:82
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:657
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "रुकी हुई"
@@ -7258,8 +7272,8 @@ msgstr "मशीन फिर से चालू करें"
 msgid "Resuming"
 msgstr "फिर से चालू हो रही है"
 
-#: lib/marshall_web/live/terminal_live.ex:110
-#: lib/marshall_web/live/terminal_live.ex:286
+#: lib/marshall_web/live/terminal_live.ex:140
+#: lib/marshall_web/live/terminal_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
 msgstr "मशीन फिर से चालू हो रही है; क्षमता उपलब्ध होने की प्रतीक्षा है…"
@@ -7304,54 +7318,54 @@ msgstr "प्राप्ति स्वीकार की गई"
 msgid "Awaiting GitHub authorization"
 msgstr "GitHub प्राधिकरण की प्रतीक्षा में"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:576
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr "अवरुद्ध: %{reason}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr "अभियान बंद हो गया"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr "अभियान का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "रद्द करने का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:594
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr "उम्मीदवार: %{name}"
 
-#: lib/marshall_web/live/overview_live.ex:231
+#: lib/marshall_web/live/overview_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "अपना इनबॉक्स देखें और सदस्यता की पुष्टि करने के लिए लिंक पर क्लिक करें।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:711
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr "रद्द करने के बाद सफ़ाई की जा रही है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr "स्रोत की सफ़ाई की जा रही है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:706
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr "क्लोन बनाया जा रहा है"
 
 #: lib/marshall_web/live/integrations_live.ex:312
 #: lib/marshall_web/live/integrations_live.ex:400
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1129
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "टिप्पणी"
@@ -7387,17 +7401,17 @@ msgstr "%{login} के रूप में कनेक्ट है"
 msgid "Continue to Overalls"
 msgstr "Overalls पर आगे बढ़ें"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:573
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:577
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr "वांछित: %{desired} · अवलोकित: %{observed}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr "गंतव्य की सफ़ाई की पुष्टि हो गई"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr "गंतव्य की सफ़ाई का अनुरोध किया गया"
@@ -7422,39 +7436,39 @@ msgstr "डिस्कनेक्ट है"
 msgid "Disconnecting GitHub"
 msgstr "GitHub डिस्कनेक्ट किया जा रहा है"
 
-#: lib/marshall_web/live/overview_live.ex:222
+#: lib/marshall_web/live/overview_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "खारिज करें"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:779
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr "डाउनटाइम की स्वीकृति आवश्यक है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:756
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr "डाउनटाइम स्वीकृत है"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:434
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "खाली कर दिया गया"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:433
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "खाली किया जा रहा है"
 
-#: lib/marshall_web/live/overview_live.ex:232
+#: lib/marshall_web/live/overview_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "मान्य ईमेल पता दर्ज करें।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "कार्यभार हटाया जा रहा है"
@@ -7464,7 +7478,7 @@ msgstr "कार्यभार हटाया जा रहा है"
 msgid "Finishing active GitHub requests"
 msgstr "सक्रिय GitHub अनुरोध पूरे किए जा रहे हैं"
 
-#: lib/marshall_web/live/overview_live.ex:224
+#: lib/marshall_web/live/overview_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "ईमेल से Overalls और AI के बारे में सुझाव, तरकीबें और अपडेट पाएँ।"
@@ -7479,22 +7493,22 @@ msgstr "GitHub कनेक्ट हो गया।"
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "GitHub कनेक्ट नहीं हो सका। एकीकरण से फिर प्रयास करें।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "आयात किया जा रहा है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:776
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr "अपर्याप्त क्षमता"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr "जॉब की स्थिति"
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1123
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "लेबल"
@@ -7509,17 +7523,17 @@ msgstr "मशीन का मेटाडेटा सहेजा गया�
 msgid "Machines excluded from your GitHub identity"
 msgstr "आपकी GitHub पहचान से बाहर रखी गई मशीनें"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr "सामान्य"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:597
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr "अवलोकित व्यवधान: %{seconds}s"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:593
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr "अवलोकित व्यवधान: %{seconds}s (जारी)"
@@ -7534,7 +7548,7 @@ msgstr "संचालन"
 msgid "Reconnect required"
 msgstr "फिर से कनेक्ट करना आवश्यक है"
 
-#: lib/marshall_web/live/machines_live.ex:1115
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "रिफ़्लेक्शन मेटाडेटा"
@@ -7549,49 +7563,49 @@ msgstr "GitHub कनेक्शन रीफ़्रेश किया ज�
 msgid "Relocation"
 msgstr "स्थानांतरण"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr "स्थानांतरण की पुष्टि हो गई"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr "स्थानांतरण जारी है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:759
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr "स्थानांतरण शुरू हो गया"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr "स्रोत बहाल किया जा रहा है"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:435
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "फिर से शुरू हो गया"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:436
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:655
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "सेवा से हटा दिया गया"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr "गंतव्य को बूट करने का फिर से प्रयास किया जा रहा है"
 
-#: lib/marshall_web/live/machines_live.ex:1118
+#: lib/marshall_web/live/machines_live.ex:1135
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "मेटाडेटा सहेजें"
 
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1132
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "एजेंटों के लिए संक्षिप्त विवरण"
@@ -7606,37 +7620,37 @@ msgstr "गेस्ट रिफ़्लेक्शन के लिए स�
 msgid "Signing you in"
 msgstr "आपको साइन इन किया जा रहा है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr "स्रोत की सफ़ाई की पुष्टि हो गई"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:734
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr "स्रोत की सफ़ाई का अनुरोध किया गया"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:684
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr "स्रोत तैयार है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:687
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "स्रोत बहाल हो गया"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:700
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:771
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr "स्रोत अनुपलब्ध है"
 
-#: lib/marshall_web/live/overview_live.ex:220
+#: lib/marshall_web/live/overview_live.ex:229
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "अपडेट पाते रहें"
 
-#: lib/marshall_web/live/overview_live.ex:227
+#: lib/marshall_web/live/overview_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "सदस्यता लें"
@@ -7646,37 +7660,37 @@ msgstr "सदस्यता लें"
 msgid "Temporarily unavailable"
 msgstr "अस्थायी रूप से अनुपलब्ध"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr "स्थानांतरण व्यस्त है"
 
-#: lib/marshall_web/live/overview_live.ex:234
+#: lib/marshall_web/live/overview_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "किसी भी समय सदस्यता छोड़ें।"
 
-#: lib/marshall_web/live/overview_live.ex:233
+#: lib/marshall_web/live/overview_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "हम न्यूज़लेटर सेवा तक नहीं पहुँच सके। बाद में फिर प्रयास करें।"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr "कार्यभार बदल गया"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:768
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr "कार्यभार स्थिर नहीं है"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:694
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr "कार्यभार का अवलोकन किया गया"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:762
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr "कार्यभार का समाधान हो गया"
@@ -7691,7 +7705,7 @@ msgstr "आपके ईमेल लिंक का सत्यापन क�
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "आपकी मशीनें अपने आप आपकी कनेक्ट की गई GitHub पहचान का उपयोग करती हैं। साझा मशीन का उपयोग करने वाले सहयोगी उसके मालिक की GitHub अनुमतियों का उपयोग कर सकते हैं। अलग की गई मशीनों में सार्वजनिक GitHub की अनाम पहुँच बनी रहती है।"
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1125
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "उत्पादन, परियोजना-नाम"
@@ -7721,78 +7735,77 @@ msgstr "इस कुंजी का नाम नहीं बदल सके
 msgid "Administrative changes require an administrator."
 msgstr "प्रशासनिक बदलावों के लिए प्रशासक होना आवश्यक है।"
 
-#: lib/marshall_web/live_admin_auth.ex:139
+#: lib/marshall_web/live_admin_auth.ex:142
 #, elixir-autogen, elixir-format
 msgid "Administrative changes are not authorized."
 msgstr "प्रशासनिक बदलाव अधिकृत नहीं हैं।"
 
-#: lib/marshall_web/live_admin_auth.ex:186
+#: lib/marshall_web/live_admin_auth.ex:190
 #, elixir-autogen, elixir-format
 msgid "Finish or cancel the current verification first."
 msgstr "पहले वर्तमान सत्यापन पूरा करें या रद्द करें।"
 
-#: lib/marshall_web/live_admin_auth.ex:199
+#: lib/marshall_web/live_admin_auth.ex:205
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "अमान्य प्रशासनिक अनुरोध।"
 
-#: lib/marshall_web/controllers/audi_login_controller.ex:34
-#: lib/marshall_web/controllers/editor_controller.ex:52
+#: lib/marshall_web/live/terminal_live.ex:629
 #, elixir-autogen, elixir-format
-msgid "Sign-in unavailable"
-msgstr "साइन इन उपलब्ध नहीं है"
+msgid "Android display"
+msgstr "Android डिस्प्ले"
+
+#: lib/marshall_web/live/terminal_live.ex:85
+#: lib/marshall_web/live/terminal_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Android डिस्प्ले उपलब्ध नहीं है।"
+
+#: lib/marshall_web/live/terminal_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "डिस्प्ले रिले टिकट जारी किया गया।"
 
 #: lib/marshall_web/controllers/overalls_controller.ex:76
 #, elixir-autogen, elixir-format
 msgid "Installer trust unavailable"
 msgstr "इंस्टॉलर की विश्वसनीयता जाँच उपलब्ध नहीं है"
 
+#: lib/marshall_web/live/terminal_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "डिस्प्ले खोलें"
+
+#: lib/marshall_web/live/terminal_live.ex:636
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "नियंत्रण का अनुरोध करें"
+
 #: lib/marshall_web/controllers/overalls_controller.ex:89
 #, elixir-autogen, elixir-format
 msgid "SSH trust unavailable"
 msgstr "SSH की विश्वसनीयता जाँच उपलब्ध नहीं है"
 
-#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#: lib/marshall_web/controllers/audi_login_controller.ex:35
+#: lib/marshall_web/controllers/editor_controller.ex:52
 #, elixir-autogen, elixir-format
-msgid "This repository link could not be launched. Open the link again."
-msgstr "इस रिपॉज़िटरी लिंक से लॉन्च नहीं किया जा सका। लिंक फिर से खोलें।"
+msgid "Sign-in unavailable"
+msgstr "साइन इन उपलब्ध नहीं है"
 
-
-#: lib/marshall_web/controllers/repository_launch_controller.ex:51
-#, elixir-autogen, elixir-format
-msgid "This launch could not be completed. Sign in and open the link again."
-msgstr "यह लॉन्च पूरा नहीं किया जा सका। साइन इन करें और लिंक फिर से खोलें।"
-
-#: lib/marshall_web/live/terminal_live.ex:79
-#, elixir-autogen, elixir-format
-msgid "Display relay ticket issued."
-msgstr "डिस्प्ले रिले टिकट जारी किया गया।"
-
-#: lib/marshall_web/live/terminal_live.ex:83
-#: lib/marshall_web/live/terminal_live.ex:88
-#, elixir-autogen, elixir-format
-msgid "Android display is unavailable."
-msgstr "Android डिस्प्ले उपलब्ध नहीं है।"
-
-#: lib/marshall_web/live/terminal_live.ex:618
-#, elixir-autogen, elixir-format
-msgid "Android display"
-msgstr "Android डिस्प्ले"
-
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "The software-rendered Android display uses the machine relay."
 msgstr "सॉफ़्टवेयर से रेंडर किया गया Android डिस्प्ले मशीन के रिले का उपयोग करता है।"
 
-#: lib/marshall_web/live/terminal_live.ex:622
+#: lib/marshall_web/controllers/repository_launch_controller.ex:55
 #, elixir-autogen, elixir-format
-msgid "Open display"
-msgstr "डिस्प्ले खोलें"
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "यह लॉन्च पूरा नहीं किया जा सका। साइन इन करें और लिंक फिर से खोलें।"
 
-#: lib/marshall_web/live/terminal_live.ex:625
+#: lib/marshall_web/controllers/repository_launch_controller.ex:23
 #, elixir-autogen, elixir-format
-msgid "Request control"
-msgstr "नियंत्रण का अनुरोध करें"
+msgid "This repository link could not be launched. Open the link again."
+msgstr "इस रिपॉज़िटरी लिंक से लॉन्च नहीं किया जा सका। लिंक फिर से खोलें।"
 
 #: lib/marshall_web/controllers/docs_controller.ex:35
 #, elixir-autogen, elixir-format
@@ -7808,3 +7821,8 @@ msgstr "Android डिस्प्ले कैनवस"
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
 msgstr "डिस्प्ले रिले की प्रतीक्षा की जा रही है।"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr "Mila खोलें"

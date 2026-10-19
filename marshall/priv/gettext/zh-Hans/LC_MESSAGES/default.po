@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/marshall_web/live/machines_live.ex:1166
+#: lib/marshall_web/live/machines_live.ex:1184
 #, elixir-autogen, elixir-format
 msgid " and counting"
 msgstr "，且仍在增加"
@@ -42,12 +42,12 @@ msgstr[0] "已登记 %{count} 个密钥"
 msgid "%{count} · %{enabled} enabled"
 msgstr "%{count} · 已启用 %{enabled}"
 
-#: lib/marshall_web/live/machines_live.ex:1163
+#: lib/marshall_web/live/machines_live.ex:1181
 #, elixir-autogen, elixir-format
 msgid "%{seconds} seconds%{suffix}"
 msgstr "%{seconds} 秒%{suffix}"
 
-#: lib/marshall_web/live/terminal_live.ex:548
+#: lib/marshall_web/live/terminal_live.ex:578
 #, elixir-autogen, elixir-format
 msgid "%{user} · %{count} viewing"
 msgid_plural "%{user} · %{count} viewing"
@@ -60,8 +60,8 @@ msgstr "%{value1} CPU"
 
 #: lib/marshall_web/live/machines_live.ex:968
 #: lib/marshall_web/live/machines_live.ex:971
-#: lib/marshall_web/live/overview_live.ex:258
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:299
+#: lib/marshall_web/live/overview_live.ex:302
 #: lib/marshall_web/live/resize_live.ex:293
 #, elixir-autogen, elixir-format
 msgid "%{value1} GiB"
@@ -88,7 +88,7 @@ msgid "%{value1} reasoning"
 msgstr "推理深度：%{value1}"
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "%{value1} vCPU"
 msgstr "%{value1} vCPU"
@@ -142,12 +142,12 @@ msgstr "****（仅可写入）"
 msgid "+ Create machine"
 msgstr "+ 创建机器"
 
-#: lib/marshall_web/live/terminal_live.ex:514
+#: lib/marshall_web/live/terminal_live.ex:544
 #, elixir-autogen, elixir-format
 msgid "+ New"
 msgstr "+ 新建"
 
-#: lib/marshall_web/live/machines_live.ex:1228
+#: lib/marshall_web/live/machines_live.ex:1246
 #, elixir-autogen, elixir-format
 msgid "+ Queue clone"
 msgstr "+ 将克隆加入队列"
@@ -229,7 +229,7 @@ msgstr "有关系统、配置与运维的参考资料。"
 msgid "A selected skill is no longer available. Reload Skills and select its current source."
 msgstr "所选技能已不可用。请重新加载技能并选择其当前来源。"
 
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:215
 #, elixir-autogen, elixir-format
 msgid "A small preview. All your accessible machines are in"
 msgstr "简要预览。你可以访问的所有机器都在"
@@ -244,7 +244,7 @@ msgstr "为你的下一个创意留出空间"
 msgid "A team has one owner. Ownership moves only when the person it is offered to accepts; the previous owner becomes an admin."
 msgstr "每个团队只有一位所有者。只有接收方接受后才会转移所有权；原所有者将成为管理员。"
 
-#: lib/marshall_web/live/terminal_live.ex:620
+#: lib/marshall_web/live/terminal_live.ex:674
 #, elixir-autogen, elixir-format
 msgid "A+"
 msgstr "A+"
@@ -339,7 +339,7 @@ msgstr "访问权限已更新。"
 msgid "Account"
 msgstr "账户"
 
-#: lib/marshall_web/live/terminal_live.ex:684
+#: lib/marshall_web/live/terminal_live.ex:738
 #, elixir-autogen, elixir-format
 msgid "Account email"
 msgstr "账户邮箱"
@@ -383,7 +383,7 @@ msgstr "操作"
 msgid "Actions"
 msgstr "操作"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:656
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
 #: lib/marshall_web/live/threads_live.ex:1569
 #, elixir-autogen, elixir-format
 msgid "Active"
@@ -503,7 +503,7 @@ msgstr "管理员操作"
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:250
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:285
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:338
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:357
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
 #, elixir-autogen, elixir-format
 msgid "Admission"
 msgstr "准入"
@@ -518,7 +518,7 @@ msgstr "准入设置已更新。"
 msgid "Admission settings were invalid or the node is not ready."
 msgstr "准入设置无效，或节点尚未就绪。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:560
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:564
 #, elixir-autogen, elixir-format
 msgid "Advisory preview for this page. Each workload is evaluated independently; destinations and available capacity can change. Admission rechecks and reserves resources when each move begins."
 msgstr "本页仅供预览。每个工作负载均独立评估；目标与可用容量可能变化。每次迁移开始时，准入流程都会重新检查并预留资源。"
@@ -580,7 +580,7 @@ msgstr "所有会话"
 msgid "All visible"
 msgstr "所有可见项"
 
-#: lib/marshall_web/live/terminal_live.ex:691
+#: lib/marshall_web/live/terminal_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Allow viewing"
 msgstr "允许查看"
@@ -657,7 +657,7 @@ msgstr "外观"
 msgid "Apply"
 msgstr "应用"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:394
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:398
 #, elixir-autogen, elixir-format
 msgid "Apply admission settings"
 msgstr "应用准入设置"
@@ -682,7 +682,7 @@ msgstr "正在主机上应用新的 CPU、内存和磁盘大小。"
 msgid "Approve CLI access"
 msgstr "批准 CLI 访问"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:68
+#: lib/marshall_web/live/ssh_approval_live.ex:82
 #, elixir-autogen, elixir-format
 msgid "Approve SSH key"
 msgstr "批准 SSH 密钥"
@@ -692,23 +692,23 @@ msgstr "批准 SSH 密钥"
 msgid "Approve agent CLI"
 msgstr "批准智能体 CLI"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:94
+#: lib/marshall_web/live/ssh_approval_live.ex:108
 #, elixir-autogen, elixir-format
 msgid "Approve key"
 msgstr "批准密钥"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:616
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:629
 #, elixir-autogen, elixir-format
 msgid "Approve move downtime"
 msgstr "批准迁移停机"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:71
+#: lib/marshall_web/live/ssh_approval_live.ex:85
 #, elixir-autogen, elixir-format
 msgid "Approve this key only if you started the SSH connection and its fingerprint matches your SSH client."
 msgstr "仅当你发起了 SSH 连接且指纹与你的 SSH 客户端一致时，才批准此密钥。"
 
 #: lib/marshall_web/live/agent_cli_approval_live.ex:74
-#: lib/marshall_web/live/ssh_approval_live.ex:92
+#: lib/marshall_web/live/ssh_approval_live.ex:106
 #, elixir-autogen, elixir-format
 msgid "Approving…"
 msgstr "正在批准…"
@@ -822,7 +822,7 @@ msgstr "审计历史不可用。"
 msgid "Audit kinds"
 msgstr "审计类型"
 
-#: lib/marshall_web/live/terminal_live.ex:615
+#: lib/marshall_web/live/terminal_live.ex:669
 #, elixir-autogen, elixir-format
 msgid "A−"
 msgstr "A−"
@@ -865,7 +865,7 @@ msgid "Binary content"
 msgstr "二进制内容"
 
 #: lib/marshall_web/components/workspace_components.ex:425
-#: lib/marshall_web/live/terminal_live.ex:587
+#: lib/marshall_web/live/terminal_live.ex:617
 #, elixir-autogen, elixir-format
 msgid "Boot log"
 msgstr "启动日志"
@@ -886,7 +886,7 @@ msgstr "导航路径"
 msgid "Briefly stopping the source so its disk can be captured safely."
 msgstr "短暂停止源机器，以安全捕获其磁盘。"
 
-#: lib/marshall_web/live/overview_live.ex:244
+#: lib/marshall_web/live/overview_live.ex:280
 #, elixir-autogen, elixir-format
 msgid "Bring a GitHub, GitLab, Codeberg or Bitbucket repository into Overalls with the Chrome or Firefox extension."
 msgstr ""
@@ -914,7 +914,7 @@ msgid "Build something, fix a bug, explore an idea…"
 msgstr "构建一些东西、修复一个错误、探索一个创意…"
 
 #: lib/marshall_web/live/machines_live.ex:966
-#: lib/marshall_web/live/overview_live.ex:257
+#: lib/marshall_web/live/overview_live.ex:295
 #: lib/marshall_web/live/resize_live.ex:288
 #: lib/marshall_web/live/resize_live.ex:328
 #: lib/marshall_web/live/resize_live.ex:413
@@ -929,7 +929,7 @@ msgstr "CPU"
 msgid "CPU (vCPU)"
 msgstr "CPU (vCPU)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
 #, elixir-autogen, elixir-format
 msgid "CPU after holds"
 msgstr "预留后的 CPU"
@@ -939,28 +939,28 @@ msgstr "预留后的 CPU"
 msgid "CPU and memory can increase or decrease. Disk size can only grow."
 msgstr "CPU 和内存可增加或减少。磁盘只能扩容。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:405
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
 #, elixir-autogen, elixir-format
 msgid "CPU headroom"
 msgstr "CPU 余量"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:372
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:376
 #, elixir-autogen, elixir-format
 msgid "CPU overhead (cores)"
 msgstr "CPU 开销（核心数）"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:530
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:446
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:534
 #, elixir-autogen, elixir-format
 msgid "Campaign"
 msgstr "迁移批次"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:524
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:528
 #, elixir-autogen, elixir-format
 msgid "Campaign history"
 msgstr "批次历史"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:488
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:492
 #, elixir-autogen, elixir-format
 msgid "Campaign, workload and relocation milestones from durable control-plane records."
 msgstr "来自控制平面持久记录的批次、工作负载与迁移里程碑。"
@@ -973,7 +973,7 @@ msgstr "可以"
 #: lib/marshall_web/components/clone_components.ex:110
 #: lib/marshall_web/components/layouts.ex:118
 #: lib/marshall_web/live/machines_live.ex:939
-#: lib/marshall_web/live/terminal_live.ex:697
+#: lib/marshall_web/live/terminal_live.ex:751
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "取消"
@@ -983,7 +983,7 @@ msgstr "取消"
 msgid "Cancel could not be accepted. Sizes are already being applied or the machine state is unconfirmed."
 msgstr "无法接受取消请求。正在应用大小，或机器状态尚未确认。"
 
-#: lib/marshall_web/live/machines_live.ex:1178
+#: lib/marshall_web/live/machines_live.ex:1196
 #, elixir-autogen, elixir-format
 msgid "Cancel move"
 msgstr "取消迁移"
@@ -1010,7 +1010,7 @@ msgstr "已请求取消。恢复后可能继续清理。"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:17
 #: lib/marshall_web/live/admin/jobs_live.ex:432
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:682
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:717
 #: lib/marshall_web/live/resize_live.ex:503
 #: lib/marshall_web/live/resize_live.ex:540
 #: lib/marshall_web/live/resize_live.ex:548
@@ -1048,7 +1048,7 @@ msgstr "正在取消：等待确认停止后，以当前大小重新启动。"
 msgid "Cancelling: waiting for the stop to confirm; the sizes stay unchanged."
 msgstr "正在取消：等待确认停止；大小保持不变。"
 
-#: lib/marshall_web/live/machines_live.ex:1176
+#: lib/marshall_web/live/machines_live.ex:1194
 #, elixir-autogen, elixir-format
 msgid "Cancelling…"
 msgstr "正在取消…"
@@ -1063,7 +1063,7 @@ msgstr "容量说明"
 msgid "Capacity information is temporarily unavailable."
 msgstr "容量信息暂不可用。"
 
-#: lib/marshall_web/live/overview_live.ex:261
+#: lib/marshall_web/live/overview_live.ex:306
 #, elixir-autogen, elixir-format
 msgid "Capacity is checked again when you create a machine."
 msgstr "创建机器时会再次检查容量。"
@@ -1099,13 +1099,13 @@ msgstr "修改"
 msgid "Check your email for a sign-in link. Your account will be created automatically when you sign in."
 msgstr "请查收登录链接。登录时会自动创建账户。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
 #: lib/marshall_web/live/machines_live.ex:655
 #, elixir-autogen, elixir-format
 msgid "Checking destination readiness"
 msgstr "正在检查目标就绪状态"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
 #: lib/marshall_web/live/machines_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Checking transfer connectivity"
@@ -1166,7 +1166,7 @@ msgstr "克隆已取消"
 msgid "Clone complete"
 msgstr "克隆已完成"
 
-#: lib/marshall_web/live/machines_live.ex:1198
+#: lib/marshall_web/live/machines_live.ex:1216
 #, elixir-autogen, elixir-format
 msgid "Clone machine"
 msgstr "克隆机器"
@@ -1181,12 +1181,12 @@ msgstr "克隆需要处理"
 msgid "Clone queued. You can queue another copy."
 msgstr "克隆已加入队列。你可以再添加一个副本。"
 
-#: lib/marshall_web/live/machines_live.ex:1243
+#: lib/marshall_web/live/machines_live.ex:1261
 #, elixir-autogen, elixir-format
 msgid "Clone requests"
 msgstr "克隆请求"
 
-#: lib/marshall_web/live/machines_live.ex:1251
+#: lib/marshall_web/live/machines_live.ex:1269
 #, elixir-autogen, elixir-format
 msgid "Clone requests are temporarily unavailable. Retrying automatically."
 msgstr "克隆请求暂不可用。正在自动重试。"
@@ -1208,18 +1208,18 @@ msgstr "关闭"
 msgid "Close navigation"
 msgstr "关闭导航"
 
-#: lib/marshall_web/live/terminal_live.ex:654
+#: lib/marshall_web/live/terminal_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Close search"
 msgstr "关闭搜索"
 
 #: lib/marshall_web/live/admin/access_live.ex:224
-#: lib/marshall_web/live/terminal_live.ex:569
+#: lib/marshall_web/live/terminal_live.ex:599
 #, elixir-autogen, elixir-format
 msgid "Close session"
 msgstr "关闭会话"
 
-#: lib/marshall_web/live/terminal_live.ex:568
+#: lib/marshall_web/live/terminal_live.ex:598
 #, elixir-autogen, elixir-format
 msgid "Close terminal %{value1}"
 msgstr "关闭终端 %{value1}"
@@ -1229,7 +1229,7 @@ msgstr "关闭终端 %{value1}"
 msgid "Close this SSH session?"
 msgstr "关闭此 SSH 会话？"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:533
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:537
 #, elixir-autogen, elixir-format
 msgid "Closed"
 msgstr "已关闭"
@@ -1286,7 +1286,7 @@ msgstr "压缩无法减少此上下文。请减少必要指令，或新建专注
 
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:431
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:681
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:716
 #: lib/marshall_web/live/resize_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Complete"
@@ -1313,7 +1313,7 @@ msgstr "已确认的资源"
 msgid "Connect"
 msgstr "连接"
 
-#: lib/marshall_web/live/overview_live.ex:273
+#: lib/marshall_web/live/overview_live.ex:320
 #, elixir-autogen, elixir-format
 msgid "Connect an integration ↗"
 msgstr "连接集成 ↗"
@@ -1323,7 +1323,7 @@ msgstr "连接集成 ↗"
 msgid "Connect from your computer"
 msgstr "从你的电脑连接"
 
-#: lib/marshall_web/live/terminal_live.ex:595
+#: lib/marshall_web/live/terminal_live.ex:649
 #, elixir-autogen, elixir-format
 msgid "Connecting…"
 msgstr "正在连接…"
@@ -1358,7 +1358,7 @@ msgstr "上下文详情不可用。会话可能仍在准备工作区。"
 msgid "Context reload queued."
 msgstr "上下文重载已加入队列。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:462
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:466
 #, elixir-autogen, elixir-format
 msgid "Continue scheduling"
 msgstr "继续调度"
@@ -1411,13 +1411,13 @@ msgstr "复制 Windows PowerShell 安装命令"
 msgid "Copy machine ID"
 msgstr "复制机器 ID"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:411
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:415
 #, elixir-autogen, elixir-format
 msgid "Copy/resize holds"
 msgstr "复制/调整大小预留"
 
 #: lib/marshall_web/components/clone_components.ex:254
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
 #, elixir-autogen, elixir-format
 msgid "Copying"
 msgstr "正在复制"
@@ -1542,7 +1542,7 @@ msgstr "统计包括当前和最近保留的原始任务。列表包含最多 30
 msgid "Create a machine"
 msgstr "创建机器"
 
-#: lib/marshall_web/live/machines_live.ex:1203
+#: lib/marshall_web/live/machines_live.ex:1221
 #, elixir-autogen, elixir-format
 msgid "Create a private, independent copy of this machine. Running machines stop briefly for each snapshot, then restart while copying continues. Copies are processed in order and match the source's power state when their turn begins."
 msgstr "创建此机器的独立私有副本。运行中的机器会短暂停止以生成快照，然后重新启动，复制则继续进行。副本按顺序处理，电源状态与轮到它时的源机器一致。"
@@ -1574,7 +1574,7 @@ msgstr "创建团队"
 msgid "Create thread"
 msgstr "创建会话"
 
-#: lib/marshall_web/live/overview_live.ex:173
+#: lib/marshall_web/live/overview_live.ex:175
 #, elixir-autogen, elixir-format
 msgid "Create your first machine"
 msgstr "创建第一台机器"
@@ -1620,7 +1620,7 @@ msgstr "当前余量暂不可用。"
 msgid "Current headroom: %{value1} vCPU · %{value2} GiB memory · %{value3} GiB disk"
 msgstr "当前余量：%{value1} vCPU · %{value2} GiB 内存 · %{value3} GiB 磁盘"
 
-#: lib/marshall_web/live/overview_live.ex:253
+#: lib/marshall_web/live/overview_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Current provisioning headroom"
 msgstr "当前可配置余量"
@@ -1658,7 +1658,7 @@ msgstr "深色"
 msgid "Decline"
 msgstr "拒绝"
 
-#: lib/marshall_web/live/terminal_live.ex:614
+#: lib/marshall_web/live/terminal_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Decrease terminal font size"
 msgstr "缩小终端字号"
@@ -1669,18 +1669,18 @@ msgid "Delegated a task"
 msgstr "已委派任务"
 
 #: lib/marshall_web/live/admin/workloads_live.ex:217
-#: lib/marshall_web/live/machines_live.ex:1290
+#: lib/marshall_web/live/machines_live.ex:1308
 #: lib/marshall_web/live/threads_live.ex:1859
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr "删除"
 
-#: lib/marshall_web/live/machines_live.ex:1275
+#: lib/marshall_web/live/machines_live.ex:1293
 #, elixir-autogen, elixir-format
 msgid "Delete machine"
 msgstr "删除机器"
 
-#: lib/marshall_web/live/machines_live.ex:1288
+#: lib/marshall_web/live/machines_live.ex:1306
 #, elixir-autogen, elixir-format
 msgid "Delete this machine and its disk? This cannot be undone."
 msgstr "删除此机器及其磁盘？此操作无法撤销。"
@@ -1691,7 +1691,7 @@ msgid "Delete user and machines"
 msgstr "删除用户及其机器"
 
 #: lib/marshall_web/components/workspace_components.ex:84
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
 #, elixir-autogen, elixir-format
 msgid "Deleted"
 msgstr "已删除"
@@ -1703,7 +1703,7 @@ msgstr "已删除"
 msgid "Deleting"
 msgstr "正在删除"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:714
 #: lib/marshall_web/live/machines_live.ex:661
 #, elixir-autogen, elixir-format
 msgid "Deleting retained copies"
@@ -1714,13 +1714,13 @@ msgstr "正在删除保留副本"
 msgid "Describe a task. Your agent gets a machine and gets to work."
 msgstr "描述任务。智能体会获得一台机器并开始工作。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
 #: lib/marshall_web/live/machines_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Destination boot failed; source copy retained"
 msgstr "目标启动失败；源副本已保留"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
 #: lib/marshall_web/live/machines_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Destination readiness failed; source copy retained"
@@ -1742,7 +1742,7 @@ msgstr "已请求目标重新启动。确认就绪前会保留源副本。"
 msgid "Detach"
 msgstr "解除关联"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:498
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:502
 #: lib/marshall_web/live/admin/workloads_live.ex:150
 #: lib/marshall_web/live/inference_live.ex:154
 #, elixir-autogen, elixir-format
@@ -1771,7 +1771,7 @@ msgid "Disabled"
 msgstr "已禁用"
 
 #: lib/marshall_web/live/machines_live.ex:970
-#: lib/marshall_web/live/overview_live.ex:259
+#: lib/marshall_web/live/overview_live.ex:301
 #: lib/marshall_web/live/resize_live.ex:292
 #: lib/marshall_web/live/resize_live.ex:344
 #: lib/marshall_web/live/resize_live.ex:447
@@ -1790,7 +1790,7 @@ msgstr "磁盘 (GiB)"
 msgid "Disk (GiB) — Maximum 500 GiB"
 msgstr "磁盘 (GiB) — 最大 500 GiB"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:409
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:413
 #, elixir-autogen, elixir-format
 msgid "Disk after holds"
 msgstr "预留后的磁盘"
@@ -1815,7 +1815,7 @@ msgstr "文档"
 msgid "Download raw file ↗"
 msgstr "下载原始文件 ↗"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:617
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "Downtime approved for this workload revision"
 msgstr "已批准此工作负载修订版的停机"
@@ -1832,7 +1832,7 @@ msgid "Email"
 msgstr "电子邮箱"
 
 #: lib/marshall_web/live/admin/users_live.ex:146
-#: lib/marshall_web/live/overview_live.ex:226
+#: lib/marshall_web/live/overview_live.ex:255
 #, elixir-autogen, elixir-format
 msgid "Email address"
 msgstr "邮箱地址"
@@ -1869,8 +1869,8 @@ msgstr "在十五分钟结束前终止此验证。"
 msgid "Ends that person's access to this machine."
 msgstr "终止此人对此机器的访问。"
 
-#: lib/marshall_web/live/terminal_live.ex:625
-#: lib/marshall_web/live/terminal_live.ex:627
+#: lib/marshall_web/live/terminal_live.ex:679
+#: lib/marshall_web/live/terminal_live.ex:681
 #, elixir-autogen, elixir-format
 msgid "Enter full screen"
 msgstr "进入全屏"
@@ -1891,17 +1891,17 @@ msgid "Evacuation blocks new placements while existing guests remain served. Mov
 msgstr "疏散会阻止新的分配，而现有客户机继续服务。迁移运行中的客户机会短暂中断。全量停机复制可能耗时更长，并需要逐个工作负载批准。"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:425
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:438
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:442
 #, elixir-autogen, elixir-format
 msgid "Evacuation campaign"
 msgstr "疏散批次"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:485
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "Evacuation timeline"
 msgstr "疏散时间线"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:497
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:501
 #, elixir-autogen, elixir-format
 msgid "Event"
 msgstr "事件"
@@ -1962,7 +1962,7 @@ msgstr "到期"
 msgid "Explain capacity"
 msgstr "解释容量"
 
-#: lib/marshall_web/live/overview_live.ex:275
+#: lib/marshall_web/live/overview_live.ex:323
 #, elixir-autogen, elixir-format
 msgid "Explore your usage ↗"
 msgstr "查看用量 ↗"
@@ -1974,7 +1974,7 @@ msgstr "导出 AI 用量"
 
 #: lib/marshall_web/components/workspace_components.ex:83
 #: lib/marshall_web/live/admin/jobs_live.ex:16
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:663
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
 #: lib/marshall_web/live/threads_live.ex:1664
 #: lib/marshall_web/live/threads_live.ex:2632
 #, elixir-autogen, elixir-format
@@ -1988,12 +1988,12 @@ msgstr "失败"
 msgid "Field notes"
 msgstr "工作笔记"
 
-#: lib/marshall_web/live/machines_live.ex:1199
+#: lib/marshall_web/live/machines_live.ex:1217
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy"
 msgstr "文件和已存储凭据均包含在副本中"
 
-#: lib/marshall_web/live/machines_live.ex:1233
+#: lib/marshall_web/live/machines_live.ex:1251
 #, elixir-autogen, elixir-format
 msgid "Files and stored credentials are included in the copy."
 msgstr "文件和已存储凭据均包含在副本中。"
@@ -2026,12 +2026,12 @@ msgstr "查找命令"
 msgid "Find a task…"
 msgstr "查找任务…"
 
-#: lib/marshall_web/live/terminal_live.ex:639
+#: lib/marshall_web/live/terminal_live.ex:693
 #, elixir-autogen, elixir-format
 msgid "Find in scrollback"
 msgstr "在终端历史中查找"
 
-#: lib/marshall_web/live/overview_live.ex:274
+#: lib/marshall_web/live/overview_live.ex:322
 #, elixir-autogen, elixir-format
 msgid "Find your people ↗"
 msgstr "寻找你的伙伴 ↗"
@@ -2068,13 +2068,13 @@ msgstr "集群 AI 用量"
 msgid "Fleet workloads"
 msgstr "集群工作负载"
 
-#: lib/marshall_web/live/terminal_live.ex:661
+#: lib/marshall_web/live/terminal_live.ex:715
 #, elixir-autogen, elixir-format
 msgid "Follow boot output"
 msgstr "跟随启动输出"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Fresh"
 msgstr "最新"
@@ -2186,7 +2186,7 @@ msgstr "HTTPS 目标"
 msgid "Handbook contents"
 msgstr "手册目录"
 
-#: lib/marshall_web/live/overview_live.ex:264
+#: lib/marshall_web/live/overview_live.ex:310
 #, elixir-autogen, elixir-format
 msgid "Headroom is temporarily unavailable."
 msgstr "余量暂不可用。"
@@ -2297,7 +2297,7 @@ msgstr "不完整的 AI 报告"
 msgid "Incorrect email or password"
 msgstr "邮箱或密码错误"
 
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:673
 #, elixir-autogen, elixir-format
 msgid "Increase terminal font size"
 msgstr "增大终端字号"
@@ -2451,7 +2451,7 @@ msgid "LLM index"
 msgstr "LLM 索引"
 
 #: lib/marshall_web/live/account_live.ex:722
-#: lib/marshall_web/live/ssh_approval_live.ex:84
+#: lib/marshall_web/live/ssh_approval_live.ex:98
 #, elixir-autogen, elixir-format
 msgid "Label (optional)"
 msgstr "标签（可选）"
@@ -2503,12 +2503,12 @@ msgstr "正在启动"
 msgid "Launching repository"
 msgstr "正在启动仓库"
 
-#: lib/marshall_web/live/machines_live.ex:1218
+#: lib/marshall_web/live/machines_live.ex:1236
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name"
 msgstr "留空以自动生成名称"
 
-#: lib/marshall_web/live/machines_live.ex:1231
+#: lib/marshall_web/live/machines_live.ex:1249
 #, elixir-autogen, elixir-format
 msgid "Leave blank to generate a name."
 msgstr "留空以自动生成名称。"
@@ -2620,12 +2620,12 @@ msgstr "机器已解除关联。"
 msgid "Machine generations"
 msgstr "机器代次"
 
-#: lib/marshall_web/live/terminal_live.ex:305
+#: lib/marshall_web/live/terminal_live.ex:335
 #, elixir-autogen, elixir-format
 msgid "Machine is stopping or stopped. Choose Start to open a terminal."
 msgstr "机器正在停止或已停止。选择“启动”以打开终端。"
 
-#: lib/marshall_web/live/terminal_live.ex:47
+#: lib/marshall_web/live/terminal_live.ex:55
 #, elixir-autogen, elixir-format
 msgid "Machine not found."
 msgstr "未找到机器。"
@@ -2660,7 +2660,7 @@ msgstr "已请求机器。"
 msgid "Machine settings"
 msgstr "机器设置"
 
-#: lib/marshall_web/live/terminal_live.ex:302
+#: lib/marshall_web/live/terminal_live.ex:332
 #, elixir-autogen, elixir-format
 msgid "Machine startup failed. Check the machine status and boot log."
 msgstr "机器启动失败。请检查机器状态和启动日志。"
@@ -2684,7 +2684,7 @@ msgstr "机器："
 #: lib/marshall_web/components/layouts.ex:437
 #: lib/marshall_web/live/machines_live.ex:105
 #: lib/marshall_web/live/machines_live.ex:685
-#: lib/marshall_web/live/overview_live.ex:211
+#: lib/marshall_web/live/overview_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Machines"
 msgstr "机器"
@@ -2694,7 +2694,7 @@ msgstr "机器"
 msgid "Machines are temporarily unavailable."
 msgstr "机器暂不可用。"
 
-#: lib/marshall_web/live/overview_live.ex:215
+#: lib/marshall_web/live/overview_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Machines couldn’t be loaded. Refresh to try again."
 msgstr "无法加载机器。请刷新以重试。"
@@ -2720,7 +2720,7 @@ msgstr "主区域"
 msgid "Maintenance"
 msgstr "维护"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:637
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:650
 #, elixir-autogen, elixir-format
 msgid "Maintenance pages"
 msgstr "维护页面"
@@ -2740,7 +2740,7 @@ msgstr "设为管理员"
 msgid "Make it yours"
 msgstr "按你的方式打造"
 
-#: lib/marshall_web/live/overview_live.ex:268
+#: lib/marshall_web/live/overview_live.ex:314
 #, elixir-autogen, elixir-format
 msgid "Make yourself at home"
 msgstr "就像在家一样"
@@ -2755,7 +2755,7 @@ msgstr "放松自在"
 msgid "Manage members and team machines."
 msgstr "管理成员和团队机器。"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:97
+#: lib/marshall_web/live/ssh_approval_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Manage your SSH keys"
 msgstr "管理 SSH 密钥"
@@ -2799,7 +2799,7 @@ msgstr "此页的 Markdown"
 msgid "Match this request code with your terminal before approving:"
 msgstr "批准前，请将此请求代码与终端中的代码对照："
 
-#: lib/marshall_web/live/machines_live.ex:1158
+#: lib/marshall_web/live/machines_live.ex:1176
 #, elixir-autogen, elixir-format
 msgid "Measured between control-plane stop and readiness observations; guest availability may differ."
 msgstr "以控制平面观测到的停止和就绪时间为准；客户机实际可用时间可能不同。"
@@ -2832,7 +2832,7 @@ msgid "Membership updated."
 msgstr "成员关系已更新。"
 
 #: lib/marshall_web/live/machines_live.ex:967
-#: lib/marshall_web/live/overview_live.ex:258
+#: lib/marshall_web/live/overview_live.ex:298
 #: lib/marshall_web/live/resize_live.ex:289
 #: lib/marshall_web/live/resize_live.ex:334
 #: lib/marshall_web/live/resize_live.ex:441
@@ -2847,12 +2847,12 @@ msgstr "内存"
 msgid "Memory (MiB)"
 msgstr "内存 (MiB)"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:412
 #, elixir-autogen, elixir-format
 msgid "Memory after holds"
 msgstr "预留后的内存"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:406
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
 #, elixir-autogen, elixir-format
 msgid "Memory headroom"
 msgstr "内存余量"
@@ -2892,7 +2892,7 @@ msgstr "镜像仓库内容不可用。"
 msgid "Mirrors"
 msgstr "镜像仓库"
 
-#: lib/marshall_web/live/machines_live.ex:1149
+#: lib/marshall_web/live/machines_live.ex:1167
 #: lib/marshall_web/live/threads_live.ex:1407
 #, elixir-autogen, elixir-format
 msgid "Mode"
@@ -2924,18 +2924,18 @@ msgstr "迁移已取消；清理已完成"
 msgid "Move complete"
 msgstr "迁移已完成"
 
-#: lib/marshall_web/live/machines_live.ex:1131
+#: lib/marshall_web/live/machines_live.ex:1149
 #, elixir-autogen, elixir-format
 msgid "Move this machine to an automatically selected host? The machine may be briefly unavailable."
 msgstr "将此机器迁移到自动选择的主机？机器可能会短暂不可用。"
 
-#: lib/marshall_web/live/machines_live.ex:1136
+#: lib/marshall_web/live/machines_live.ex:1154
 #, elixir-autogen, elixir-format
 msgid "Move to another host"
 msgstr "迁移到其他主机"
 
 #: lib/marshall_web/live/account_live.ex:724
-#: lib/marshall_web/live/ssh_approval_live.ex:86
+#: lib/marshall_web/live/ssh_approval_live.ex:100
 #, elixir-autogen, elixir-format
 msgid "My laptop"
 msgstr "我的笔记本电脑"
@@ -2961,7 +2961,7 @@ msgstr "机器可通过 https://NAME.integration.internal 访问的命名端点�
 msgid "Needs attention"
 msgstr "需要处理"
 
-#: lib/marshall_web/live/machines_live.ex:1217
+#: lib/marshall_web/live/machines_live.ex:1235
 #, elixir-autogen, elixir-format
 msgid "New machine name (optional)"
 msgstr "新机器名称（可选）"
@@ -2978,7 +2978,7 @@ msgstr "新大小"
 msgid "New thread"
 msgstr "新会话"
 
-#: lib/marshall_web/live/terminal_live.ex:649
+#: lib/marshall_web/live/terminal_live.ex:703
 #, elixir-autogen, elixir-format
 msgid "Next match"
 msgstr "下一个匹配项"
@@ -2989,7 +2989,7 @@ msgstr "下一个匹配项"
 msgid "Next page"
 msgstr "下一页"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:639
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
 #: lib/marshall_web/live/admin/users_live.ex:262
 #: lib/marshall_web/live/machines_live.ex:795
 #: lib/marshall_web/live/machines_live.ex:1063
@@ -2997,7 +2997,7 @@ msgstr "下一页"
 msgid "Next page →"
 msgstr "下一页 →"
 
-#: lib/marshall_web/live/overview_live.ex:271
+#: lib/marshall_web/live/overview_live.ex:317
 #, elixir-autogen, elixir-format
 msgid "Next steps"
 msgstr "后续步骤"
@@ -3053,7 +3053,7 @@ msgstr "没有运行中的工作负载。"
 msgid "No activity matches this filter."
 msgstr "没有符合筛选条件的活动。"
 
-#: lib/marshall_web/live/machines_live.ex:1248
+#: lib/marshall_web/live/machines_live.ex:1266
 #, elixir-autogen, elixir-format
 msgid "No clone requests yet. Queue a copy and follow its progress here."
 msgstr "还没有克隆请求。将副本加入队列并在此跟踪进度。"
@@ -3179,7 +3179,7 @@ msgstr "没有可用的迁移。"
 msgid "No repositories are mirrored yet."
 msgstr "还没有镜像仓库。"
 
-#: lib/marshall_web/live/terminal_live.ex:579
+#: lib/marshall_web/live/terminal_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "No shared terminals are available to view."
 msgstr "没有可供查看的共享终端。"
@@ -3189,7 +3189,7 @@ msgstr "没有可供查看的共享终端。"
 msgid "No skills were discovered in this workspace."
 msgstr "此工作区中未发现技能。"
 
-#: lib/marshall_web/live/terminal_live.ex:583
+#: lib/marshall_web/live/terminal_live.ex:613
 #, elixir-autogen, elixir-format
 msgid "No terminals are open. Choose New to open your personal shell."
 msgstr "没有打开的终端。选择“新建”以打开个人 shell。"
@@ -3228,7 +3228,7 @@ msgstr "尚未收集"
 msgid "Objective"
 msgstr "目标"
 
-#: lib/marshall_web/live/machines_live.ex:1154
+#: lib/marshall_web/live/machines_live.ex:1172
 #, elixir-autogen, elixir-format
 msgid "Observed downtime"
 msgstr "观测到的停机时间"
@@ -3327,7 +3327,7 @@ msgstr "打开克隆"
 msgid "Open machine →"
 msgstr "打开机器 →"
 
-#: lib/marshall_web/live/overview_live.ex:240
+#: lib/marshall_web/live/overview_live.ex:276
 #, elixir-autogen, elixir-format
 msgid "Open repositories from your browser"
 msgstr "从浏览器打开仓库"
@@ -3353,7 +3353,7 @@ msgstr "为 %{value1} 打开终端"
 msgid "Open terminal here"
 msgstr "在此打开终端"
 
-#: lib/marshall_web/live/overview_live.ex:204
+#: lib/marshall_web/live/overview_live.ex:208
 #, elixir-autogen, elixir-format
 msgid "Open terminal ↗"
 msgstr "打开终端 ↗"
@@ -3368,12 +3368,12 @@ msgstr "打开此机器的 Web 应用。不包含终端。"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:532
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:536
 #, elixir-autogen, elixir-format
 msgid "Opened"
 msgstr "已打开"
 
-#: lib/marshall_web/live/terminal_live.ex:87
+#: lib/marshall_web/live/terminal_live.ex:117
 #, elixir-autogen, elixir-format
 msgid "Opening terminal; recovering the same request if the connection was interrupted."
 msgstr "正在打开终端；如果连接中断，会恢复同一请求。"
@@ -3519,12 +3519,12 @@ msgstr "请粘贴 .pub 文件中的公钥。切勿粘贴私钥。"
 msgid "Paths"
 msgstr "路径"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:455
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:459
 #, elixir-autogen, elixir-format
 msgid "Pause scheduling"
 msgstr "暂停调度"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:444
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:448
 #, elixir-autogen, elixir-format
 msgid "Pause stops new moves from being scheduled. Accepted moves continue. Maintenance-ready requires confirmed source cleanup; completed jobs alone are insufficient."
 msgstr "暂停会阻止调度新的迁移。已接受的迁移将继续。维护就绪需要确认源机器清理完成；仅任务完成并不足够。"
@@ -3547,7 +3547,7 @@ msgstr "对等机器 ID"
 #: lib/marshall_web/components/workspace_components.ex:79
 #: lib/marshall_web/live/admin/jobs_live.ex:367
 #: lib/marshall_web/live/admin/jobs_live.ex:429
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:662
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:675
 #: lib/marshall_web/live/resize_live.ex:504
 #: lib/marshall_web/live/threads_live.ex:1661
 #: lib/marshall_web/live/threads_live.ex:2629
@@ -3560,12 +3560,12 @@ msgstr "待处理"
 msgid "Permanently delete this account and ALL machines they own, including machines shared with others?"
 msgstr "永久删除此账户及其拥有的全部机器，包括与他人共享的机器？"
 
-#: lib/marshall_web/live/machines_live.ex:1297
+#: lib/marshall_web/live/machines_live.ex:1315
 #, elixir-autogen, elixir-format
 msgid "Permanently remove this machine and its disk. This cannot be undone."
 msgstr "永久移除此机器及其磁盘。此操作无法撤销。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:476
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:480
 #, elixir-autogen, elixir-format
 msgid "Permanently retire this empty node and revoke its credentials?"
 msgstr "永久停用此空节点并撤销其凭据？"
@@ -3576,7 +3576,7 @@ msgid "Permission to clone this machine is no longer available."
 msgstr "克隆此机器的权限已不可用。"
 
 #: lib/marshall_web/live/machines_live.ex:879
-#: lib/marshall_web/live/overview_live.ex:186
+#: lib/marshall_web/live/overview_live.ex:190
 #, elixir-autogen, elixir-format
 msgid "Personal"
 msgstr "个人"
@@ -3587,12 +3587,12 @@ msgid "Personal integration"
 msgstr "个人集成"
 
 #: lib/marshall_web/live/admin/git_live.ex:103
-#: lib/marshall_web/live/machines_live.ex:1146
+#: lib/marshall_web/live/machines_live.ex:1164
 #, elixir-autogen, elixir-format
 msgid "Phase"
 msgstr "阶段"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:582
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:589
 #, elixir-autogen, elixir-format
 msgid "Phase: %{phase}"
 msgstr "阶段：%{phase}"
@@ -3625,7 +3625,7 @@ msgstr "规划"
 msgid "Platform status"
 msgstr "平台状态"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:403
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:407
 #, elixir-autogen, elixir-format
 msgid "Pool"
 msgstr "资源池"
@@ -3647,7 +3647,7 @@ msgid "Power afterwards"
 msgstr "完成后的电源状态"
 
 #: lib/marshall_web/components/clone_components.ex:252
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:680
 #, elixir-autogen, elixir-format
 msgid "Preparing"
 msgstr "正在准备"
@@ -3672,7 +3672,7 @@ msgstr "正在准备空间并在快照前检查源机器。"
 msgid "Preparing transfer"
 msgstr "正在准备传输"
 
-#: lib/marshall_web/live/terminal_live.ex:422
+#: lib/marshall_web/live/terminal_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Preparing your guest account…"
 msgstr "正在准备客户机账户…"
@@ -3687,9 +3687,9 @@ msgstr "正在准备你的机器…"
 msgid "Preparing your repository…"
 msgstr "正在准备你的仓库…"
 
-#: lib/marshall_web/live/terminal_live.ex:361
-#: lib/marshall_web/live/terminal_live.ex:399
-#: lib/marshall_web/live/terminal_live.ex:423
+#: lib/marshall_web/live/terminal_live.ex:391
+#: lib/marshall_web/live/terminal_live.ex:429
+#: lib/marshall_web/live/terminal_live.ex:453
 #, elixir-autogen, elixir-format
 msgid "Preparing your terminal…"
 msgstr "正在准备你的终端…"
@@ -3704,12 +3704,12 @@ msgstr "正在准备工作区"
 msgid "Preview evacuation"
 msgstr "预览疏散"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:591
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:604
 #, elixir-autogen, elixir-format
 msgid "Preview: %{blocker}"
 msgstr "预览：%{blocker}"
 
-#: lib/marshall_web/live/terminal_live.ex:644
+#: lib/marshall_web/live/terminal_live.ex:698
 #, elixir-autogen, elixir-format
 msgid "Previous match"
 msgstr "上一个匹配项"
@@ -3824,22 +3824,22 @@ msgstr "已排队"
 msgid "Queued: %{tools}"
 msgstr "已排队：%{tools}"
 
-#: lib/marshall_web/live/machines_live.ex:1226
+#: lib/marshall_web/live/machines_live.ex:1244
 #, elixir-autogen, elixir-format
 msgid "Queuing…"
 msgstr "正在排队…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:383
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:387
 #, elixir-autogen, elixir-format
 msgid "RAM overhead (bytes)"
 msgstr "内存开销（字节）"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:627
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:640
 #, elixir-autogen, elixir-format
 msgid "Re-plan this workload using its current placement and desired state? Any previous downtime approval will be cleared."
 msgstr "根据当前分配和期望状态重新规划此工作负载？之前的停机批准将被清除。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:632
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:645
 #, elixir-autogen, elixir-format
 msgid "Re-plan workload"
 msgstr "重新规划工作负载"
@@ -3849,7 +3849,7 @@ msgstr "重新规划工作负载"
 msgid "Read and write in the terminal."
 msgstr "读取和写入终端。"
 
-#: lib/marshall_web/live/overview_live.ex:276
+#: lib/marshall_web/live/overview_live.ex:324
 #, elixir-autogen, elixir-format
 msgid "Read the field notes ↗"
 msgstr "阅读工作笔记 ↗"
@@ -3864,12 +3864,12 @@ msgstr "读取终端。"
 msgid "Read-only admission arithmetic. It does not reserve capacity; unknown measurements withhold admission."
 msgstr "只读准入计算。不预留容量；未知测量值会阻止准入。"
 
-#: lib/marshall_web/live/terminal_live.ex:668
+#: lib/marshall_web/live/terminal_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Read-only boot console"
 msgstr "只读启动控制台"
 
-#: lib/marshall_web/live/terminal_live.ex:577
+#: lib/marshall_web/live/terminal_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Read-only host boot log. Guest terminal readiness is not required."
 msgstr "只读主机启动日志。不要求客户机终端就绪。"
@@ -3884,7 +3884,7 @@ msgstr "只读镜像、Audi 入站及 Porsche 网关状态。机密和证书材�
 msgid "Read-only mirrors of public GitHub repositories."
 msgstr "GitHub 公开仓库的只读镜像。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:658
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
 #: lib/marshall_web/live/threads_live.ex:1663
 #: lib/marshall_web/live/threads_live.ex:2631
 #, elixir-autogen, elixir-format
@@ -3921,7 +3921,7 @@ msgstr "近期镜像仓库审计"
 msgid "Recent threads"
 msgstr "近期会话"
 
-#: lib/marshall_web/live/terminal_live.ex:362
+#: lib/marshall_web/live/terminal_live.ex:392
 #, elixir-autogen, elixir-format
 msgid "Reconnecting to the terminal service…"
 msgstr "正在重新连接终端服务…"
@@ -3948,7 +3948,7 @@ msgid "Reference"
 msgstr "参考"
 
 #: lib/marshall_web/live/admin/git_live.ex:119
-#: lib/marshall_web/live/overview_live.ex:290
+#: lib/marshall_web/live/overview_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Refresh"
 msgstr "刷新"
@@ -3968,7 +3968,7 @@ msgstr "无法将刷新加入队列。"
 msgid "Refresh queued."
 msgstr "刷新已加入队列。"
 
-#: lib/marshall_web/live/overview_live.ex:288
+#: lib/marshall_web/live/overview_live.ex:336
 #, elixir-autogen, elixir-format
 msgid "Refreshing…"
 msgstr "正在刷新…"
@@ -4001,7 +4001,7 @@ msgstr "相关记录"
 msgid "Reload context"
 msgstr "重新加载上下文"
 
-#: lib/marshall_web/live/machines_live.ex:1120
+#: lib/marshall_web/live/machines_live.ex:1138
 #, elixir-autogen, elixir-format
 msgid "Relocate machine"
 msgstr "迁移机器"
@@ -4093,7 +4093,7 @@ msgstr "移除此密钥的 SSH 访问权限？已接受的机器操作将继续�
 msgid "Remove this passkey? Removing your last passkey signs you out everywhere."
 msgstr "移除此通行密钥？移除最后一个通行密钥会退出所有设备。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:579
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
 #, elixir-autogen, elixir-format
 msgid "Removed from this source; awaiting campaign cleanup verification."
 msgstr "已从此源移除；等待批次清理验证。"
@@ -4104,12 +4104,12 @@ msgstr "已从此源移除；等待批次清理验证。"
 msgid "Rename"
 msgstr "重命名"
 
-#: lib/marshall_web/live/terminal_live.ex:603
+#: lib/marshall_web/live/terminal_live.ex:657
 #, elixir-autogen, elixir-format
 msgid "Rename in this browser"
 msgstr "在此浏览器中重命名"
 
-#: lib/marshall_web/live/terminal_live.ex:602
+#: lib/marshall_web/live/terminal_live.ex:656
 #, elixir-autogen, elixir-format
 msgid "Rename terminal"
 msgstr "重命名终端"
@@ -4126,7 +4126,7 @@ msgstr "重新打开的机器会保留以前的记录。请选择一份阅读。
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:251
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:288
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:404
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:408
 #, elixir-autogen, elixir-format
 msgid "Report"
 msgstr "报告"
@@ -4202,7 +4202,7 @@ msgstr "正在请求取消…"
 msgid "Requesting resize…"
 msgstr "正在请求调整大小…"
 
-#: lib/marshall_web/live/machines_live.ex:1184
+#: lib/marshall_web/live/machines_live.ex:1202
 #, elixir-autogen, elixir-format
 msgid "Requesting restart…"
 msgstr "正在请求重新启动…"
@@ -4212,7 +4212,7 @@ msgstr "正在请求重新启动…"
 msgid "Requesting retry…"
 msgstr "正在请求重试…"
 
-#: lib/marshall_web/live/machines_live.ex:1129
+#: lib/marshall_web/live/machines_live.ex:1147
 #, elixir-autogen, elixir-format
 msgid "Requesting…"
 msgstr "正在请求…"
@@ -4253,7 +4253,7 @@ msgstr "调整大小已取消。"
 msgid "Resize could not be accepted. Check the sizes and current machine state."
 msgstr "无法接受调整大小请求。请检查大小和当前机器状态。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:704
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:782
 #: lib/marshall_web/live/resize_live.ex:308
 #, elixir-autogen, elixir-format
 msgid "Resize in progress"
@@ -4325,12 +4325,12 @@ msgstr "已重启"
 msgid "Restarting"
 msgstr "正在重启"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:469
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Restore admission"
 msgstr "恢复准入"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:479
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Retire node"
 msgstr "停用节点"
@@ -4346,7 +4346,7 @@ msgstr "重试"
 msgid "Retry could not be accepted. Capacity or machine state may have changed."
 msgstr "无法接受重试请求。容量或机器状态可能已改变。"
 
-#: lib/marshall_web/live/machines_live.ex:1186
+#: lib/marshall_web/live/machines_live.ex:1204
 #, elixir-autogen, elixir-format
 msgid "Retry destination boot"
 msgstr "重试目标启动"
@@ -4402,7 +4402,7 @@ msgstr "修订版"
 msgid "Revision (optional)"
 msgstr "修订版（可选）"
 
-#: lib/marshall_web/live/terminal_live.ex:694
+#: lib/marshall_web/live/terminal_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Revoke"
 msgstr "撤销"
@@ -4455,7 +4455,7 @@ msgstr "角色"
 msgid "Room for your next idea"
 msgstr "为下一个创意留出空间"
 
-#: lib/marshall_web/live/overview_live.ex:252
+#: lib/marshall_web/live/overview_live.ex:290
 #, elixir-autogen, elixir-format
 msgid "Room to grow"
 msgstr "成长空间"
@@ -4477,7 +4477,7 @@ msgstr "路由、团队所有权与对等连接"
 
 #: lib/marshall_web/components/workspace_components.ex:80
 #: lib/marshall_web/live/admin/jobs_live.ex:13
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:660
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:673
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Running"
@@ -4504,7 +4504,8 @@ msgstr "SSH 密钥"
 msgid "SSH key added."
 msgstr "SSH 密钥已添加。"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:35
+#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:112
 #, elixir-autogen, elixir-format
 msgid "SSH key approved. You can return to your SSH client."
 msgstr "SSH 密钥已批准。可以返回 SSH 客户端。"
@@ -4592,7 +4593,7 @@ msgstr "范围"
 msgid "Search"
 msgstr "搜索"
 
-#: lib/marshall_web/live/terminal_live.ex:609
+#: lib/marshall_web/live/terminal_live.ex:663
 #, elixir-autogen, elixir-format
 msgid "Search (Ctrl+F)"
 msgstr "搜索 (Ctrl+F)"
@@ -4608,12 +4609,12 @@ msgstr "搜索内容"
 msgid "Search recent threads"
 msgstr "搜索近期会话"
 
-#: lib/marshall_web/live/terminal_live.ex:608
+#: lib/marshall_web/live/terminal_live.ex:662
 #, elixir-autogen, elixir-format
 msgid "Search scrollback"
 msgstr "搜索终端历史"
 
-#: lib/marshall_web/live/terminal_live.ex:632
+#: lib/marshall_web/live/terminal_live.ex:686
 #, elixir-autogen, elixir-format
 msgid "Search terminal scrollback"
 msgstr "搜索终端历史"
@@ -4664,7 +4665,7 @@ msgstr "正在发送…"
 msgid "Service"
 msgstr "服务"
 
-#: lib/marshall_web/live/overview_live.ex:250
+#: lib/marshall_web/live/overview_live.ex:288
 #, elixir-autogen, elixir-format
 msgid "Set up the browser extension ↗"
 msgstr "设置浏览器扩展 ↗"
@@ -4689,12 +4690,12 @@ msgstr "共享"
 msgid "Share machines and integrations with the people you work with. Owners appoint admins, admins manage members."
 msgstr "与同事共享机器和集成。所有者任命管理员，管理员管理成员。"
 
-#: lib/marshall_web/live/terminal_live.ex:560
+#: lib/marshall_web/live/terminal_live.ex:590
 #, elixir-autogen, elixir-format
 msgid "Share terminal %{value1}"
 msgstr "共享终端 %{value1}"
 
-#: lib/marshall_web/live/terminal_live.ex:676
+#: lib/marshall_web/live/terminal_live.ex:730
 #, elixir-autogen, elixir-format
 msgid "Share this terminal"
 msgstr "共享此终端"
@@ -4704,12 +4705,12 @@ msgstr "共享此终端"
 msgid "Share this thread"
 msgstr "共享此会话"
 
-#: lib/marshall_web/live/terminal_live.ex:561
+#: lib/marshall_web/live/terminal_live.ex:591
 #, elixir-autogen, elixir-format
 msgid "Share view"
 msgstr "共享视图"
 
-#: lib/marshall_web/live/overview_live.ex:187
+#: lib/marshall_web/live/overview_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Shared"
 msgstr "已共享"
@@ -4915,7 +4916,7 @@ msgid "Source was stopped when this request began."
 msgstr "此请求开始时，源机器已停止。"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:263
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:418
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:422
 #, elixir-autogen, elixir-format
 msgid "Stale or unknown"
 msgstr "过期或未知"
@@ -4969,7 +4970,7 @@ msgstr "正在使用新资源启动机器。"
 msgid "Starting…"
 msgstr "正在启动…"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:410
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:414
 #, elixir-autogen, elixir-format
 msgid "Startup holds"
 msgstr "启动预留"
@@ -4992,7 +4993,7 @@ msgstr "静态请求头名称"
 msgid "Static header value"
 msgstr "静态请求头值"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:531
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:535
 #: lib/marshall_web/live/admin/operations_live.ex:82
 #: lib/marshall_web/live/admin/operations_live.ex:105
 #: lib/marshall_web/live/admin/operations_live.ex:128
@@ -5023,13 +5024,13 @@ msgstr "停止"
 msgid "Stop the machine"
 msgstr "停止机器"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:611
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:624
 #, elixir-autogen, elixir-format
 msgid "Stop this running workload for the entire move? Copying its disks and restarting it on the destination can cause prolonged downtime."
 msgstr "在整个迁移期间停止此运行中的工作负载？复制磁盘并在目标重启可能造成长时间停机。"
 
 #: lib/marshall_web/components/workspace_components.ex:81
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:661
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:674
 #: lib/marshall_web/live/resize_live.ex:296
 #, elixir-autogen, elixir-format
 msgid "Stopped"
@@ -5057,7 +5058,7 @@ msgstr "正在停止复制并移除临时资源。源机器恢复单独跟踪。
 msgid "Stopping the machine so its resources can change safely."
 msgstr "正在停止机器，以安全更改资源。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:669
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
 #: lib/marshall_web/live/machines_live.ex:651
 #, elixir-autogen, elixir-format
 msgid "Stopping the source"
@@ -5098,7 +5099,7 @@ msgstr "成功"
 msgid "Suspended"
 msgstr "已挂起"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
 #: lib/marshall_web/live/machines_live.ex:654
 #, elixir-autogen, elixir-format
 msgid "Switching placement"
@@ -5180,24 +5181,24 @@ msgstr "团队暂不可用。"
 msgid "Terminal"
 msgstr "终端"
 
-#: lib/marshall_web/live/terminal_live.ex:535
+#: lib/marshall_web/live/terminal_live.ex:565
 #, elixir-autogen, elixir-format
 msgid "Terminal %{name}, %{count} viewer, created %{created}"
 msgid_plural "Terminal %{name}, %{count} viewers, created %{created}"
 msgstr[0] "终端 %{name}，%{count} 位查看者，创建于 %{created}"
 
-#: lib/marshall_web/live/terminal_live.ex:114
+#: lib/marshall_web/live/terminal_live.ex:144
 #, elixir-autogen, elixir-format
 msgid "Terminal access ended."
 msgstr "终端访问已结束。"
 
-#: lib/marshall_web/live/terminal_live.ex:131
-#: lib/marshall_web/live/terminal_live.ex:321
+#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:351
 #, elixir-autogen, elixir-format
 msgid "Terminal close requested; waiting for guest confirmation."
 msgstr "已请求关闭终端；等待客户机确认。"
 
-#: lib/marshall_web/live/terminal_live.ex:438
+#: lib/marshall_web/live/terminal_live.ex:468
 #, elixir-autogen, elixir-format
 msgid "Terminal limit reached for this machine."
 msgstr "已达到此机器的终端数量上限。"
@@ -5207,7 +5208,7 @@ msgstr "已达到此机器的终端数量上限。"
 msgid "Terminal protocol: %{protocol} · Local stream: %{state}"
 msgstr "终端协议：%{protocol} · 本地流：%{state}"
 
-#: lib/marshall_web/live/terminal_live.ex:521
+#: lib/marshall_web/live/terminal_live.ex:551
 #, elixir-autogen, elixir-format
 msgid "Terminal sessions"
 msgstr "终端会话"
@@ -5217,7 +5218,7 @@ msgstr "终端会话"
 msgid "Terminal unavailable"
 msgstr "终端不可用"
 
-#: lib/marshall_web/live/terminal_live.ex:155
+#: lib/marshall_web/live/terminal_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Terminal viewing access updated."
 msgstr "终端查看权限已更新。"
@@ -5227,7 +5228,7 @@ msgstr "终端查看权限已更新。"
 msgid "Terminal, lifecycle, resize, clone and sharing."
 msgstr "终端、生命周期、调整大小、克隆和共享。"
 
-#: lib/marshall_web/live/terminal_live.ex:443
+#: lib/marshall_web/live/terminal_live.ex:473
 #, elixir-autogen, elixir-format
 msgid "Terminals are unavailable while the host is offline."
 msgstr "主机离线时，终端不可用。"
@@ -5268,7 +5269,7 @@ msgstr "账户必须已登记。保存角色会替换此人对机器的直接角
 msgid "The agent encountered a problem"
 msgstr "智能体遇到了问题"
 
-#: lib/marshall_web/live/terminal_live.ex:191
+#: lib/marshall_web/live/terminal_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "The boot log is unavailable for the current machine execution."
 msgstr "当前机器执行的启动日志不可用。"
@@ -5298,7 +5299,7 @@ msgstr "默认镜像无法打开仓库。请选择带有当前工作区服务的
 msgid "The default machine image is not available right now."
 msgstr "默认机器镜像暂不可用。"
 
-#: lib/marshall_web/live/terminal_live.ex:457
+#: lib/marshall_web/live/terminal_live.ex:487
 #, elixir-autogen, elixir-format
 msgid "The guest cannot host more terminal sessions."
 msgstr "客户机无法容纳更多终端会话。"
@@ -5328,14 +5329,14 @@ msgstr "无法更新机器。请刷新后重试。"
 msgid "The machine has changed since this draft was created. Review the confirmed resources above."
 msgstr "创建此草稿后，机器已发生变化。请查看上方已确认的资源。"
 
-#: lib/marshall_web/live/machines_live.ex:1140
+#: lib/marshall_web/live/machines_live.ex:1158
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on an automatically selected host. Our development fleet uses a 1 Gbit/s connection between hosts, so a move can take a little longer; moves are expected to be much faster when Overalls runs on AWS in production."
 msgstr ""
 "机器将停止、复制一次，并在自动选择的主机上启动。我们的开发集群主机间连接为 1 Gbit/s，因此迁移可能稍久；Overalls 在 AWS "
 "生产环境运行时，预计迁移会快得多。"
 
-#: lib/marshall_web/live/machines_live.ex:1151
+#: lib/marshall_web/live/machines_live.ex:1169
 #, elixir-autogen, elixir-format
 msgid "The machine is stopped, copied once and started on the destination."
 msgstr "机器将停止、复制一次，并在目标上启动。"
@@ -5371,7 +5372,7 @@ msgstr "计划已更改。继续前请查看最新方案。"
 msgid "The previous copy of this machine is still releasing its snapshot. Retry shortly."
 msgstr "此机器的上一个副本仍在释放快照。请稍后重试。"
 
-#: lib/marshall_web/live/terminal_live.ex:449
+#: lib/marshall_web/live/terminal_live.ex:479
 #, elixir-autogen, elixir-format
 msgid "The previous opening has ended. Choose New to try again."
 msgstr "上一次打开已结束。请选择“新建”以重试。"
@@ -5431,7 +5432,7 @@ msgstr "此请求开始前，源机器已删除。"
 msgid "The source was busy or changed before cloning began. Retry when it is ready."
 msgstr "克隆开始前，源机器繁忙或已更改。请在就绪后重试。"
 
-#: lib/marshall_web/live/terminal_live.ex:459
+#: lib/marshall_web/live/terminal_live.ex:489
 #, elixir-autogen, elixir-format
 msgid "The terminal could not be opened."
 msgstr "无法打开终端。"
@@ -5486,7 +5487,7 @@ msgstr "这些问题已不再等待回答。"
 msgid "These questions have already been answered."
 msgstr "这些问题已得到回答。"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:50
+#: lib/marshall_web/live/ssh_approval_live.ex:64
 #, elixir-autogen, elixir-format
 msgid "This SSH approval is unavailable or has expired. Start a new SSH connection to try again."
 msgstr "此 SSH 批准请求不可用或已过期。请发起新的 SSH 连接以重试。"
@@ -5526,7 +5527,7 @@ msgstr "无法重试此任务。任务状态或你的权限可能已改变。"
 msgid "This job is unavailable or its history has expired."
 msgstr "此任务不可用，或其历史已过期。"
 
-#: lib/marshall_web/live/ssh_approval_live.ex:77
+#: lib/marshall_web/live/ssh_approval_live.ex:91
 #, elixir-autogen, elixir-format
 msgid "This key will sign in as %{value1}. It can manage machines according to your account's permissions."
 msgstr "此密钥将以 %{value1} 身份登录。它可根据你的账户权限管理机器。"
@@ -5551,7 +5552,7 @@ msgstr "此机器正在删除，无法固定。"
 msgid "This machine is being deleted."
 msgstr "此机器正在删除。"
 
-#: lib/marshall_web/live/terminal_live.ex:484
+#: lib/marshall_web/live/terminal_live.ex:514
 #, elixir-autogen, elixir-format
 msgid "This machine is stopped. Start it to open your terminal. Your files are retained."
 msgstr "此机器已停止。启动后即可打开终端。文件会保留。"
@@ -5582,7 +5583,7 @@ msgstr "此机器镜像不支持当前浏览器编辑器。"
 msgid "This machine's image has no guest agents yet: SSH, the browser terminal and agents are unavailable. Use"
 msgstr "此机器镜像尚无客户机智能体：SSH、浏览器终端和智能体不可用。请使用"
 
-#: lib/marshall_web/live/terminal_live.ex:297
+#: lib/marshall_web/live/terminal_live.ex:327
 #, elixir-autogen, elixir-format
 msgid "This machine's image has no terminal agent, so the browser terminal is unavailable."
 msgstr "此机器镜像没有终端智能体，因此浏览器终端不可用。"
@@ -5715,7 +5716,7 @@ msgstr "会话"
 msgid "Threads are temporarily unavailable. Try again shortly."
 msgstr "会话暂不可用。请稍后重试。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:496
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:500
 #: lib/marshall_web/live/inference_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Time"
@@ -5811,7 +5812,7 @@ msgstr "类型"
 msgid "Type the email to delete this account and its %{count} machines"
 msgstr "输入邮箱以删除此账户及其 %{count} 台机器"
 
-#: lib/marshall_web/live/terminal_live.ex:598
+#: lib/marshall_web/live/terminal_live.ex:652
 #, elixir-autogen, elixir-format
 msgid "Type to interact"
 msgstr "输入以交互"
@@ -5826,16 +5827,28 @@ msgstr "超高"
 msgid "Ultra is for complex, open-ended work."
 msgstr "超高推理深度适用于复杂、开放式工作。"
 
-#: lib/marshall_web/live/terminal_live.ex:161
+#: lib/marshall_web/live/terminal_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Unable to update terminal sharing. The recipient must have machine access before sharing."
 msgstr "无法更新终端共享。共享前，接收者必须拥有机器访问权限。"
 
 #: lib/marshall_web/components/workspace_components.ex:86
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
+#: lib/marshall_web/controllers/audi_login_controller.ex:44
+#: lib/marshall_web/controllers/editor_controller.ex:26
+#: lib/marshall_web/controllers/editor_controller.ex:61
+#: lib/marshall_web/controllers/git_raw_controller.ex:24
+#: lib/marshall_web/controllers/inference_export_controller.ex:53
+#: lib/marshall_web/controllers/marvin_download_controller.ex:118
+#: lib/marshall_web/controllers/overalls_controller.ex:21
+#: lib/marshall_web/controllers/overalls_controller.ex:25
+#: lib/marshall_web/controllers/overalls_controller.ex:37
+#: lib/marshall_web/controllers/overalls_controller.ex:50
+#: lib/marshall_web/controllers/overalls_controller.ex:54
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
 #: lib/marshall_web/live/machines_live.ex:750
 #: lib/marshall_web/live/machines_live.ex:964
 #: lib/marshall_web/live/machines_live.ex:974
+#: lib/marshall_web/ssh_approval_login.ex:29
 #, elixir-autogen, elixir-format
 msgid "Unavailable"
 msgstr "不可用"
@@ -5846,10 +5859,10 @@ msgstr "不可用"
 #: lib/marshall_web/live/admin/jobs_live.ex:426
 #: lib/marshall_web/live/admin/jobs_live.ex:437
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:294
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:707
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:710
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:790
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:791
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:793
 #: lib/marshall_web/live/inference_live.ex:60
 #: lib/marshall_web/live/inference_live.ex:178
 #: lib/marshall_web/live/inference_live.ex:185
@@ -5875,7 +5888,7 @@ msgstr "删除前请取消固定此机器。"
 msgid "Unpin this thread's machine before deleting it."
 msgstr "删除前请取消固定此会话的机器。"
 
-#: lib/marshall_web/live/machines_live.ex:1294
+#: lib/marshall_web/live/machines_live.ex:1312
 #, elixir-autogen, elixir-format
 msgid "Unpin to delete. While you have this machine pinned, nothing can delete it."
 msgstr "取消固定后才能删除。只要你固定此机器，就无法删除它。"
@@ -5910,7 +5923,7 @@ msgstr "更新修订版（可选）"
 #: lib/marshall_web/live/admin/jobs_live.ex:210
 #: lib/marshall_web/live/admin/operations_live.ex:60
 #: lib/marshall_web/live/admin/workloads_live.ex:103
-#: lib/marshall_web/live/overview_live.ex:284
+#: lib/marshall_web/live/overview_live.ex:332
 #: lib/marshall_web/live/threads_live.ex:1674
 #, elixir-autogen, elixir-format
 msgid "Updated"
@@ -5921,7 +5934,7 @@ msgstr "已更新"
 msgid "Updated every 15 seconds"
 msgstr "每 15 秒更新"
 
-#: lib/marshall_web/live/machines_live.ex:1244
+#: lib/marshall_web/live/machines_live.ex:1262
 #, elixir-autogen, elixir-format
 msgid "Updates automatically"
 msgstr "自动更新"
@@ -5983,7 +5996,7 @@ msgstr "用户"
 msgid "Users"
 msgstr "用户"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:506
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:510
 #, elixir-autogen, elixir-format
 msgid "VM"
 msgstr "虚拟机"
@@ -6019,6 +6032,7 @@ msgid "VS Code is temporarily unavailable."
 msgstr "VS Code 暂不可用。"
 
 #: lib/marshall_web/components/workspace_components.ex:519
+#: lib/marshall_web/controllers/editor_controller.ex:17
 #, elixir-autogen, elixir-format
 msgid "VS Code is unavailable for this machine."
 msgstr "此机器的 VS Code 不可用。"
@@ -6083,7 +6097,7 @@ msgstr "查看者"
 msgid "Viewers read. Operators send prompts. Managers also share and manage the thread."
 msgstr "查看者可阅读。操作员可发送提示词。管理者还可共享和管理会话。"
 
-#: lib/marshall_web/live/terminal_live.ex:678
+#: lib/marshall_web/live/terminal_live.ex:732
 #, elixir-autogen, elixir-format
 msgid "Viewing only, even for machine operators. The recipient must already have access to this machine."
 msgstr "仅供查看，即使是机器操作员也一样。接收者必须已拥有此机器的访问权限。"
@@ -6129,7 +6143,7 @@ msgstr "正在等待主机传输名额；另一个复制或迁移任务正在使
 msgid "Waiting for the machine"
 msgstr "正在等待机器"
 
-#: lib/marshall_web/live/terminal_live.ex:310
+#: lib/marshall_web/live/terminal_live.ex:340
 #, elixir-autogen, elixir-format
 msgid "Waiting for the machine to start…"
 msgstr "正在等待机器启动…"
@@ -6356,7 +6370,7 @@ msgstr "你可以阅读这些会话。请申请操作员或管理者权限以发
 msgid "You do not have access to this thread."
 msgstr "你没有此会话的访问权限。"
 
-#: lib/marshall_web/live/terminal_live.ex:440
+#: lib/marshall_web/live/terminal_live.ex:470
 #, elixir-autogen, elixir-format
 msgid "You do not have terminal access to this machine."
 msgstr "你没有此机器的终端访问权限。"
@@ -6445,7 +6459,7 @@ msgstr ""
 "邮箱是你的登录身份，无法在此编辑。Overalls "
 "中的所有时间均按你的时区显示；保存时区后，与你共享团队、机器或会话的人及管理员会在邮箱旁看到你的当前当地时间。"
 
-#: lib/marshall_web/live/terminal_live.ex:453
+#: lib/marshall_web/live/terminal_live.ex:483
 #, elixir-autogen, elixir-format
 msgid "Your guest account could not be prepared. Check that the guest account service is available, then choose New to retry."
 msgstr "无法准备客户机账户。请检查客户机账户服务是否可用，然后选择“新建”重试。"
@@ -6495,12 +6509,12 @@ msgstr "通行密钥已重置。批准管理员更改前，请登记替代密钥
 msgid "Your password has successfully been reset"
 msgstr "密码已成功重置"
 
-#: lib/marshall_web/live/terminal_live.ex:581
+#: lib/marshall_web/live/terminal_live.ex:611
 #, elixir-autogen, elixir-format
 msgid "Your personal terminal opens when the machine is ready."
 msgstr "机器就绪后，个人终端会打开。"
 
-#: lib/marshall_web/live/terminal_live.ex:446
+#: lib/marshall_web/live/terminal_live.ex:476
 #, elixir-autogen, elixir-format
 msgid "Your previous shell has closed. Choose New to open another terminal."
 msgstr "先前的 shell 已关闭。选择“新建”以打开另一个终端。"
@@ -6535,7 +6549,7 @@ msgstr "登录已失效。请请求新的登录链接。"
 msgid "Your teams"
 msgstr "你的团队"
 
-#: lib/marshall_web/live/terminal_live.ex:488
+#: lib/marshall_web/live/terminal_live.ex:518
 #, elixir-autogen, elixir-format
 msgid "Your terminal will open when the machine is running and ready."
 msgstr "机器运行并就绪后，终端会打开。"
@@ -6595,7 +6609,7 @@ msgstr "批准此工作负载停机"
 msgid "attempt"
 msgstr "尝试"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:517
 #, elixir-autogen, elixir-format
 msgid "attempt %{attempt}"
 msgstr "尝试 %{attempt}"
@@ -6605,7 +6619,7 @@ msgstr "尝试 %{attempt}"
 msgid "attempt %{attempt} · %{count} recorded failures"
 msgstr "尝试 %{attempt} · 已记录 %{count} 次失败"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:509
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:513
 #, elixir-autogen, elixir-format
 msgid "campaign"
 msgstr "批次"
@@ -6661,7 +6675,7 @@ msgid "email, time zone and your local clock"
 msgstr "邮箱、时区和当地时钟"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:361
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:365
 #, elixir-autogen, elixir-format
 msgid "enabled"
 msgstr "已启用"
@@ -6672,7 +6686,7 @@ msgid "example-integration"
 msgstr "示例集成"
 
 #: lib/marshall_web/live/admin/lilly_nodes_live.ex:339
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:364
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "excluded"
 msgstr "已排除"
@@ -6682,22 +6696,22 @@ msgstr "已排除"
 msgid "file"
 msgstr "文件"
 
-#: lib/marshall_web/live/terminal_live.ex:610
+#: lib/marshall_web/live/terminal_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "find"
 msgstr "查找"
 
-#: lib/marshall_web/live/terminal_live.ex:628
+#: lib/marshall_web/live/terminal_live.ex:682
 #, elixir-autogen, elixir-format
 msgid "full"
 msgstr "完整"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:512
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:516
 #, elixir-autogen, elixir-format
 msgid "job"
 msgstr "任务"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:507
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:511
 #, elixir-autogen, elixir-format
 msgid "move"
 msgstr "迁移"
@@ -6747,7 +6761,7 @@ msgstr "刷新此 Git 镜像仓库"
 msgid "remove this Git mirror"
 msgstr "移除此 Git 镜像仓库"
 
-#: lib/marshall_web/live/terminal_live.ex:604
+#: lib/marshall_web/live/terminal_live.ex:658
 #, elixir-autogen, elixir-format
 msgid "rename"
 msgstr "重命名"
@@ -6845,7 +6859,7 @@ msgstr "是"
 msgid "· %{value1} reasoning · %{value2}"
 msgstr "· 推理深度 %{value1} · %{value2}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:596
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:609
 #, elixir-autogen, elixir-format
 msgid "· Downtime approval required"
 msgstr "· 需要批准停机"
@@ -6876,7 +6890,7 @@ msgid "← All sections"
 msgstr "← 所有章节"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:310
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:638
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
 #: lib/marshall_web/live/admin/users_live.ex:257
 #: lib/marshall_web/live/machines_live.ex:794
 #: lib/marshall_web/live/machines_live.ex:1060
@@ -6954,7 +6968,7 @@ msgstr "Git 设置已保存。"
 msgid "Git username"
 msgstr "Git 用户名"
 
-#: lib/marshall_web/live/terminal_live.ex:308
+#: lib/marshall_web/live/terminal_live.ex:338
 #, elixir-autogen, elixir-format
 msgid "Machine is paused. Resume it or reopen this terminal page."
 msgstr "机器已暂停。请恢复机器或重新打开此终端页面。"
@@ -6965,7 +6979,7 @@ msgid "Pause"
 msgstr "暂停"
 
 #: lib/marshall_web/components/workspace_components.ex:82
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:657
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:670
 #, elixir-autogen, elixir-format
 msgid "Paused"
 msgstr "已暂停"
@@ -6980,8 +6994,8 @@ msgstr "恢复机器"
 msgid "Resuming"
 msgstr "正在恢复"
 
-#: lib/marshall_web/live/terminal_live.ex:110
-#: lib/marshall_web/live/terminal_live.ex:286
+#: lib/marshall_web/live/terminal_live.ex:140
+#: lib/marshall_web/live/terminal_live.ex:316
 #, elixir-autogen, elixir-format
 msgid "Resuming machine; waiting for capacity…"
 msgstr "正在恢复机器；等待可用容量…"
@@ -7026,54 +7040,54 @@ msgstr "已确认"
 msgid "Awaiting GitHub authorization"
 msgstr "等待 GitHub 授权"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:576
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:583
 #, elixir-autogen, elixir-format
 msgid "Blocked: %{reason}"
 msgstr "已阻止：%{reason}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:685
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:725
 #, elixir-autogen, elixir-format
 msgid "Campaign closed"
 msgstr "迁移计划已关闭"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:683
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:720
 #, elixir-autogen, elixir-format
 msgid "Campaign requested"
 msgstr "已请求迁移计划"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:692
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:748
 #, elixir-autogen, elixir-format
 msgid "Cancellation requested"
 msgstr "已请求取消"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:594
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:607
 #, elixir-autogen, elixir-format
 msgid "Candidate: %{name}"
 msgstr "候选项：%{name}"
 
-#: lib/marshall_web/live/overview_live.ex:231
+#: lib/marshall_web/live/overview_live.ex:264
 #, elixir-autogen, elixir-format
 msgid "Check your inbox and click the link to confirm your subscription."
 msgstr "请查看收件箱并点击链接以确认订阅。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:679
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:711
 #, elixir-autogen, elixir-format
 msgid "Cleaning up after cancellation"
 msgstr "正在执行取消后的清理"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:677
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
 #, elixir-autogen, elixir-format
 msgid "Cleaning up the source"
 msgstr "正在清理源端"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:706
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:788
 #, elixir-autogen, elixir-format
 msgid "Clone in progress"
 msgstr "正在克隆"
 
 #: lib/marshall_web/live/integrations_live.ex:312
 #: lib/marshall_web/live/integrations_live.ex:400
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1129
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr "备注"
@@ -7109,17 +7123,17 @@ msgstr "已以 %{login} 的身份连接"
 msgid "Continue to Overalls"
 msgstr "继续前往 Overalls"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:573
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:577
 #, elixir-autogen, elixir-format
 msgid "Desired: %{desired} · Observed: %{observed}"
 msgstr "期望状态：%{desired} · 观测状态：%{observed}"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:691
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:745
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup confirmed"
 msgstr "已确认目标端清理完成"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:690
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:741
 #, elixir-autogen, elixir-format
 msgid "Destination cleanup requested"
 msgstr "已请求清理目标端"
@@ -7144,39 +7158,39 @@ msgstr "已断开连接"
 msgid "Disconnecting GitHub"
 msgstr "正在断开 GitHub 连接"
 
-#: lib/marshall_web/live/overview_live.ex:222
+#: lib/marshall_web/live/overview_live.ex:237
 #, elixir-autogen, elixir-format
 msgid "Dismiss"
 msgstr "关闭"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:703
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:779
 #, elixir-autogen, elixir-format
 msgid "Downtime approval required"
 msgstr "需要批准停机"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:695
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:756
 #, elixir-autogen, elixir-format
 msgid "Downtime approved"
 msgstr "已批准停机"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:434
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:653
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:666
 #, elixir-autogen, elixir-format
 msgid "Drained"
 msgstr "已完成排空"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:433
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:652
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:665
 #, elixir-autogen, elixir-format
 msgid "Draining"
 msgstr "正在排空"
 
-#: lib/marshall_web/live/overview_live.ex:232
+#: lib/marshall_web/live/overview_live.ex:266
 #, elixir-autogen, elixir-format
 msgid "Enter a valid email address."
 msgstr "请输入有效的电子邮件地址。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:654
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:667
 #, elixir-autogen, elixir-format
 msgid "Evacuating"
 msgstr "正在疏散"
@@ -7186,7 +7200,7 @@ msgstr "正在疏散"
 msgid "Finishing active GitHub requests"
 msgstr "正在完成进行中的 GitHub 请求"
 
-#: lib/marshall_web/live/overview_live.ex:224
+#: lib/marshall_web/live/overview_live.ex:240
 #, elixir-autogen, elixir-format
 msgid "Get tips, tricks and updates about Overalls and AI by email."
 msgstr "通过电子邮件获取有关 Overalls 和 AI 的实用技巧及最新动态。"
@@ -7201,22 +7215,22 @@ msgstr "已连接 GitHub。"
 msgid "GitHub could not be connected. Try again from Integrations."
 msgstr "无法连接 GitHub。请在“集成”页面重试。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:671
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
 #, elixir-autogen, elixir-format
 msgid "Importing"
 msgstr "正在导入"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:776
 #, elixir-autogen, elixir-format
 msgid "Insufficient capacity"
 msgstr "容量不足"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:693
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:750
 #, elixir-autogen, elixir-format
 msgid "Job state"
 msgstr "作业状态"
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1123
 #, elixir-autogen, elixir-format
 msgid "Labels"
 msgstr "标签"
@@ -7231,17 +7245,17 @@ msgstr "已保存机器元数据。"
 msgid "Machines excluded from your GitHub identity"
 msgstr "不使用您的 GitHub 身份的机器"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:651
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:664
 #, elixir-autogen, elixir-format
 msgid "Normal"
 msgstr "正常"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:586
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:597
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s"
 msgstr "观测到的中断：%{seconds} 秒"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:585
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:593
 #, elixir-autogen, elixir-format
 msgid "Observed interruption: %{seconds}s (ongoing)"
 msgstr "观测到的中断：%{seconds} 秒（仍在继续）"
@@ -7256,7 +7270,7 @@ msgstr "操作"
 msgid "Reconnect required"
 msgstr "需要重新连接"
 
-#: lib/marshall_web/live/machines_live.ex:1115
+#: lib/marshall_web/live/machines_live.ex:1120
 #, elixir-autogen, elixir-format
 msgid "Reflection metadata"
 msgstr "自省元数据"
@@ -7271,49 +7285,49 @@ msgstr "正在刷新 GitHub 连接"
 msgid "Relocation"
 msgstr "迁移"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:686
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:728
 #, elixir-autogen, elixir-format
 msgid "Relocation committed"
 msgstr "已提交迁移"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:705
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:785
 #, elixir-autogen, elixir-format
 msgid "Relocation in progress"
 msgstr "正在迁移"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:696
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:759
 #, elixir-autogen, elixir-format
 msgid "Relocation started"
 msgstr "迁移已开始"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:678
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:708
 #, elixir-autogen, elixir-format
 msgid "Restoring the source"
 msgstr "正在恢复源端"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:435
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:659
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:672
 #, elixir-autogen, elixir-format
 msgid "Resumed"
 msgstr "已恢复"
 
 #: lib/marshall_web/live/admin/jobs_live.ex:436
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:655
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:668
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr "已退役"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:676
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:702
 #, elixir-autogen, elixir-format
 msgid "Retrying destination boot"
 msgstr "正在重试启动目标端"
 
-#: lib/marshall_web/live/machines_live.ex:1118
+#: lib/marshall_web/live/machines_live.ex:1135
 #, elixir-autogen, elixir-format
 msgid "Save metadata"
 msgstr "保存元数据"
 
-#: lib/marshall_web/live/machines_live.ex:1117
+#: lib/marshall_web/live/machines_live.ex:1132
 #, elixir-autogen, elixir-format
 msgid "Short description for agents"
 msgstr "供智能体使用的简短描述"
@@ -7328,37 +7342,37 @@ msgstr "供客户机自省使用的简短描述"
 msgid "Signing you in"
 msgstr "正在登录"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:689
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:737
 #, elixir-autogen, elixir-format
 msgid "Source cleanup confirmed"
 msgstr "已确认源端清理完成"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:688
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:734
 #, elixir-autogen, elixir-format
 msgid "Source cleanup requested"
 msgstr "已请求清理源端"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:684
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:722
 #, elixir-autogen, elixir-format
 msgid "Source ready"
 msgstr "源端已就绪"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:687
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:731
 #, elixir-autogen, elixir-format
 msgid "Source restored"
 msgstr "源端已恢复"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:700
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:771
 #, elixir-autogen, elixir-format
 msgid "Source unavailable"
 msgstr "源端不可用"
 
-#: lib/marshall_web/live/overview_live.ex:220
+#: lib/marshall_web/live/overview_live.ex:229
 #, elixir-autogen, elixir-format
 msgid "Stay in the loop"
 msgstr "随时掌握最新动态"
 
-#: lib/marshall_web/live/overview_live.ex:227
+#: lib/marshall_web/live/overview_live.ex:257
 #, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr "订阅"
@@ -7368,37 +7382,37 @@ msgstr "订阅"
 msgid "Temporarily unavailable"
 msgstr "暂时不可用"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:701
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:773
 #, elixir-autogen, elixir-format
 msgid "Transfer busy"
 msgstr "传输繁忙"
 
-#: lib/marshall_web/live/overview_live.ex:234
+#: lib/marshall_web/live/overview_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "Unsubscribe any time."
 msgstr "可随时取消订阅。"
 
-#: lib/marshall_web/live/overview_live.ex:233
+#: lib/marshall_web/live/overview_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "We could not reach the newsletter service. Try again later."
 msgstr "无法连接电子通讯服务。请稍后重试。"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:698
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:765
 #, elixir-autogen, elixir-format
 msgid "Workload changed"
 msgstr "工作负载已更改"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:699
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:768
 #, elixir-autogen, elixir-format
 msgid "Workload is not stable"
 msgstr "工作负载不稳定"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:694
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:753
 #, elixir-autogen, elixir-format
 msgid "Workload observed"
 msgstr "已观测到工作负载"
 
-#: lib/marshall_web/live/admin/lilly_nodes_live.ex:697
+#: lib/marshall_web/live/admin/lilly_nodes_live.ex:762
 #, elixir-autogen, elixir-format
 msgid "Workload resolved"
 msgstr "已确定工作负载"
@@ -7413,7 +7427,7 @@ msgstr "正在验证您的电子邮件链接。"
 msgid "Your machines automatically use your connected GitHub identity. Collaborators using a shared machine can use its owner's GitHub permissions. Detached machines retain anonymous public GitHub access."
 msgstr "您的机器会自动使用您已连接的 GitHub 身份。使用共享机器的协作者可以使用机器所有者的 GitHub 权限。已断开关联的机器仍可匿名访问 GitHub 上的公开资源。"
 
-#: lib/marshall_web/live/machines_live.ex:1116
+#: lib/marshall_web/live/machines_live.ex:1125
 #, elixir-autogen, elixir-format
 msgid "production, project-name"
 msgstr "生产环境, 项目名称"
@@ -7443,78 +7457,77 @@ msgstr "无法重命名此密钥。请使用不超过 128 个字符的名称。"
 msgid "Administrative changes require an administrator."
 msgstr "管理更改需要管理员权限。"
 
-#: lib/marshall_web/live_admin_auth.ex:139
+#: lib/marshall_web/live_admin_auth.ex:142
 #, elixir-autogen, elixir-format
 msgid "Administrative changes are not authorized."
 msgstr "管理更改未经授权。"
 
-#: lib/marshall_web/live_admin_auth.ex:186
+#: lib/marshall_web/live_admin_auth.ex:190
 #, elixir-autogen, elixir-format
 msgid "Finish or cancel the current verification first."
 msgstr "请先完成或取消当前验证。"
 
-#: lib/marshall_web/live_admin_auth.ex:199
+#: lib/marshall_web/live_admin_auth.ex:205
 #, elixir-autogen, elixir-format
 msgid "Invalid administrative request."
 msgstr "无效的管理请求。"
 
-#: lib/marshall_web/controllers/audi_login_controller.ex:34
-#: lib/marshall_web/controllers/editor_controller.ex:52
+#: lib/marshall_web/live/terminal_live.ex:629
 #, elixir-autogen, elixir-format
-msgid "Sign-in unavailable"
-msgstr "无法登录"
+msgid "Android display"
+msgstr "Android显示"
+
+#: lib/marshall_web/live/terminal_live.ex:85
+#: lib/marshall_web/live/terminal_live.ex:92
+#, elixir-autogen, elixir-format
+msgid "Android display is unavailable."
+msgstr "Android显示不可用。"
+
+#: lib/marshall_web/live/terminal_live.ex:80
+#, elixir-autogen, elixir-format
+msgid "Display relay ticket issued."
+msgstr "已签发显示中继票据。"
 
 #: lib/marshall_web/controllers/overalls_controller.ex:76
 #, elixir-autogen, elixir-format
 msgid "Installer trust unavailable"
 msgstr "无法验证安装程序的可信性"
 
+#: lib/marshall_web/live/terminal_live.ex:633
+#, elixir-autogen, elixir-format
+msgid "Open display"
+msgstr "打开显示"
+
+#: lib/marshall_web/live/terminal_live.ex:636
+#, elixir-autogen, elixir-format
+msgid "Request control"
+msgstr "请求控制"
+
 #: lib/marshall_web/controllers/overalls_controller.ex:89
 #, elixir-autogen, elixir-format
 msgid "SSH trust unavailable"
 msgstr "无法验证SSH的可信性"
 
-#: lib/marshall_web/controllers/repository_launch_controller.ex:20
+#: lib/marshall_web/controllers/audi_login_controller.ex:35
+#: lib/marshall_web/controllers/editor_controller.ex:52
 #, elixir-autogen, elixir-format
-msgid "This repository link could not be launched. Open the link again."
-msgstr "无法通过此仓库链接启动。请重新打开链接。"
+msgid "Sign-in unavailable"
+msgstr "无法登录"
 
-
-#: lib/marshall_web/controllers/repository_launch_controller.ex:51
-#, elixir-autogen, elixir-format
-msgid "This launch could not be completed. Sign in and open the link again."
-msgstr "无法完成此次启动。请登录后重新打开链接。"
-
-#: lib/marshall_web/live/terminal_live.ex:79
-#, elixir-autogen, elixir-format
-msgid "Display relay ticket issued."
-msgstr "已签发显示中继票据。"
-
-#: lib/marshall_web/live/terminal_live.ex:83
-#: lib/marshall_web/live/terminal_live.ex:88
-#, elixir-autogen, elixir-format
-msgid "Android display is unavailable."
-msgstr "Android显示不可用。"
-
-#: lib/marshall_web/live/terminal_live.ex:618
-#, elixir-autogen, elixir-format
-msgid "Android display"
-msgstr "Android显示"
-
-#: lib/marshall_web/live/terminal_live.ex:619
+#: lib/marshall_web/live/terminal_live.ex:630
 #, elixir-autogen, elixir-format
 msgid "The software-rendered Android display uses the machine relay."
 msgstr "由软件渲染的Android显示使用机器中继。"
 
-#: lib/marshall_web/live/terminal_live.ex:622
+#: lib/marshall_web/controllers/repository_launch_controller.ex:55
 #, elixir-autogen, elixir-format
-msgid "Open display"
-msgstr "打开显示"
+msgid "This launch could not be completed. Sign in and open the link again."
+msgstr "无法完成此次启动。请登录后重新打开链接。"
 
-#: lib/marshall_web/live/terminal_live.ex:625
+#: lib/marshall_web/controllers/repository_launch_controller.ex:23
 #, elixir-autogen, elixir-format
-msgid "Request control"
-msgstr "请求控制"
+msgid "This repository link could not be launched. Open the link again."
+msgstr "无法通过此仓库链接启动。请重新打开链接。"
 
 #: lib/marshall_web/controllers/docs_controller.ex:35
 #, elixir-autogen, elixir-format
@@ -7530,3 +7543,8 @@ msgstr "Android 显示画布"
 #, elixir-autogen, elixir-format
 msgid "Waiting for display relay."
 msgstr "正在等待显示中继。"
+
+#: lib/marshall_web/live/ssh_approval_live.ex:114
+#, elixir-autogen, elixir-format
+msgid "Open Mila"
+msgstr "打开 Mila"

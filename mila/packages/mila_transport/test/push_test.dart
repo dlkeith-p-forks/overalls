@@ -65,6 +65,13 @@ final class _FakeSession implements PorscheSession {
   int get generation => 1;
 
   @override
+  Future<TerminalChannel> attach(PorscheCommand command, {required TerminalSize size}) =>
+      throw UnsupportedError('attach');
+
+  @override
+  Future<WatchChannel> watch(PorscheCommand command) => throw UnsupportedError('watch');
+
+  @override
   Future<ChannelOutcome> exec(PorscheCommand command, {List<int>? stdin}) async {
     lines.add(encodeCommand(command));
     stdins.add(stdin);

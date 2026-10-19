@@ -13,6 +13,20 @@ String machinesPath(Deployment deployment) => '${_d(deployment)}/machines';
 String machinePath(Deployment deployment, String id) => '${_d(deployment)}/machines/$id';
 String notificationsPath(Deployment deployment) => '${_d(deployment)}/notifications';
 
+/// Every in-app page of [deployment] starts with this prefix.
+String deploymentRoot(Deployment deployment) => '${_d(deployment)}/';
+String machineTerminalsPath(Deployment deployment, String id) =>
+    '${machinePath(deployment, id)}/terminals';
+String machineTerminalPath(Deployment deployment, String id, String session) =>
+    '${machineTerminalsPath(deployment, id)}/$session';
+String machineThreadsPath(Deployment deployment, String id) =>
+    '${machinePath(deployment, id)}/threads';
+String machineThreadPath(Deployment deployment, String id, String thread) =>
+    '${machineThreadsPath(deployment, id)}/$thread';
+String machineWebPath(Deployment deployment, String id) => '${machinePath(deployment, id)}/web';
+String threadsPath(Deployment deployment) => '${_d(deployment)}/threads';
+String threadPath(Deployment deployment, String thread) => '${threadsPath(deployment)}/$thread';
+
 /// Decodes the deployment segment of an in-app path.
 Deployment? deploymentFromSegment(String? segment) =>
     segment == null ? null : parseDeployment(Uri.decodeComponent(segment));
@@ -55,16 +69,24 @@ LinkTarget linkTarget(
   if (deployment == null) return UnknownDeployment(route.host);
   if (!signedIn(deployment)) return OpenPath(signInPath(deployment));
   return switch (route.page) {
-    MachinePage(:final machineId) ||
-    MachineTerminalPage(:final machineId) ||
-    MachineThreadPage(:final machineId) => OpenPath(machinePath(deployment, machineId)),
+    MachinePage(:final machineId, :final tab) => OpenPath(switch (tab) {
+      MachineTab.overview || MachineTab.info => machinePath(deployment, machineId),
+      MachineTab.web => machineWebPath(deployment, machineId),
+      MachineTab.terminals => machineTerminalsPath(deployment, machineId),
+      MachineTab.threads => machineThreadsPath(deployment, machineId),
+    }),
+    MachineTerminalPage(:final machineId, :final sessionId) => OpenPath(
+      machineTerminalPath(deployment, machineId, sessionId),
+    ),
+    MachineThreadPage(:final machineId, :final threadId) => OpenPath(
+      machineThreadPath(deployment, machineId, threadId),
+    ),
+    ThreadsPage() => OpenPath(threadsPath(deployment)),
+    ThreadPage(:final threadId) => OpenPath(threadPath(deployment, threadId)),
     SettingsPage() => const OpenPath(settingsPath),
-    // Pages later milestones add land on the machine list for now; a launch
-    // link never creates a machine without the user confirming it.
-    MachinesPage() ||
-    ThreadsPage() ||
-    ThreadPage() ||
-    LaunchPage() ||
-    SshApprovedPage() => OpenPath(machinesPath(deployment)),
+    // Opening a terminal or thread only navigates: attaching and reading
+    // happen on the page, never as a side effect of the link. A launch link
+    // never creates a machine without the user confirming it.
+    MachinesPage() || LaunchPage() || SshApprovedPage() => OpenPath(machinesPath(deployment)),
   };
 }

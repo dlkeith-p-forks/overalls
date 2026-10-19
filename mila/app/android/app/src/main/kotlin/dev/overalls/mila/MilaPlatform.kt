@@ -91,6 +91,18 @@ class MilaPlatform(
                     context.startActivity(Intent(Intent.ACTION_VIEW, uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                     result.success(null)
                 }
+                // A web endpoint link to the system share sheet; HTTPS only.
+                "share" -> {
+                    val uri = Uri.parse(call.argument<String>("url") ?: "")
+                    if (uri.scheme != "https") return result.error("invalid_argument", "url", null)
+                    val send = Intent(Intent.ACTION_SEND)
+                        .setType("text/plain")
+                        .putExtra(Intent.EXTRA_TEXT, uri.toString())
+                    context.startActivity(
+                        Intent.createChooser(send, null).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    )
+                    result.success(null)
+                }
                 else -> result.notImplemented()
             }
         } catch (e: IllegalArgumentException) {

@@ -6,7 +6,8 @@ defmodule Overalls.Diagnostics do
   and metadata remain owned by each application's `Events` catalog.
   """
 
-  @type service :: :marshall | :lilly | :audi | :porsche | :brady | :ziggy | :enrico | :galileo
+  @type service ::
+          :marshall | :lilly | :audi | :porsche | :brady | :ziggy | :enrico | :galileo | :susan
   @type metadata :: %{optional(atom()) => atom() | binary() | integer() | nil} | keyword()
   @type custody :: :ok | {:error, :invalid | :unavailable | :refused}
 end

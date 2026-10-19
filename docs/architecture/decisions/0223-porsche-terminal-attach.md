@@ -3,7 +3,7 @@
 - ID: ADR-0223
 - Date: 2026-10-18
 - Status: accepted
-- Implementation: planned
+- Implementation: partial
 - Components: Porsche, Marshall, protocol, Mila
 - Supersedes: none
 - Superseded by: none
@@ -54,7 +54,51 @@ threat model (HLDD chapter 20).
 
 ## Implementation evidence
 
-No implementation yet.
+Partial (S2, 2026-10-19): `terminal attach`, the gateway stream, the SSH
+viewer authority and Porsche's attach mode are implemented; `terminal
+ls|new|kill` belong to the separate client-commands workstream, and Mila does
+not yet drive attach.
+
+- Command grammar and closed exit, close-code and header tables:
+  [ssh_command.ex](../../../protocol/lib/overalls_protocol/ssh_command.ex),
+  [terminal_attach.ex](../../../protocol/lib/overalls_protocol/terminal_attach.ex)
+  and the shared [fixture](../../../protocol/test/fixtures/terminal_attach.json),
+  conformance-tested with Hegel properties in
+  [terminal_attach_test.exs](../../../protocol/test/terminal_attach_test.exs).
+- Gateway stream:
+  [TerminalGatewayAPI](../../../marshall/lib/marshall_web/terminal_gateway_api.ex)
+  on the [fleet endpoint](../../../marshall/lib/marshall_web/fleet_endpoint.ex);
+  `{:ssh, gateway, session}` authority, SSH-session-bound tickets and the
+  5-second recheck in [Viewer](../../../marshall/lib/marshall/terminal/viewer.ex),
+  [SSH.Authority](../../../marshall/lib/marshall/ssh/authority.ex) and
+  [Tickets](../../../marshall/lib/marshall/terminal/tickets.ex); the ticket is
+  issued by [SSH.Commands](../../../marshall/lib/marshall/ssh/commands.ex).
+  End-to-end with the real Porsche listener:
+  [ssh_terminal_attach_test.exs](../../../marshall/test/marshall_web/ssh_terminal_attach_test.exs).
+- Porsche attach mode: [Channel](../../../porsche/lib/porsche/ssh/channel.ex),
+  [Attachment](../../../porsche/lib/porsche/terminal/attachment.ex) and
+  [Credit](../../../porsche/lib/porsche/terminal/credit.ex), tested in
+  [terminal_attachment_test.exs](../../../porsche/test/terminal_attachment_test.exs)
+  and the Hegel model in
+  [terminal_credit_property_test.exs](../../../porsche/test/terminal_credit_property_test.exs).
+  Output credit after a successful local send is Covenant obligation
+  `porsche.terminal.I3` in
+  [terminal.obligations.md](../../../porsche/contracts/porsche/terminal.obligations.md).
+- Native journey: the `porsche-terminal-fleet` machine test
+  ([scenario](../../../nix/verification/tests/machines/fleet/scenarios/porsche-terminal.py),
+  registered in [catalog.nix](../../../nix/verification/tests/catalog.nix))
+  evaluates but has not yet recorded a passing run. Shared-session,
+  read-only, revocation-within-5-seconds and journal-privacy claims are
+  established natively only once it passes.
+
+Run counts and gaps: [S2 review](../reviews/2026-10-19-mila-terminal-attach.md).
+
+- **Mila client:** [`terminal_attach.dart`](../../../mila/packages/mila_core/lib/src/terminal_attach.dart)
+  decodes the bounded stderr header and maps exit statuses as in
+  `terminal_attach.json`; the PTY channel is in
+  [`channels.dart`](../../../mila/packages/mila_transport/lib/src/channels.dart).
+  Stock OpenSSH merges stderr into the PTY, so the header path is proven only
+  in memory. These client tests have not yet run on the integrated tree.
 
 ## Open questions
 

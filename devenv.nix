@@ -295,6 +295,15 @@ in
         files = "^(galileo/(lib|config)/.*\\.exs?$|galileo/mix\\.exs$|scripts/check_logging\\.exs$)";
         pass_filenames = false;
       };
+      elixir-logging-susan = {
+        enable = true;
+        name = "logging-check-susan";
+        description = "Enforce the Susan structured-event catalog";
+        entry = "${toolchain.elixir}/bin/elixir scripts/check_logging.exs susan";
+        language = "system";
+        files = "^(susan/(lib|config)/.*\\.exs?$|susan/mix\\.exs$|scripts/check_logging\\.exs$)";
+        pass_filenames = false;
+      };
       elixir-logging-enrico = {
         enable = true;
         name = "logging-check-enrico";

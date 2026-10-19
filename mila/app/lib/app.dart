@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mila_core/mila_core.dart' show isCanonicalUuid;
 import 'package:mila_transport/mila_transport.dart';
 
 import 'features/deployments_screen.dart';
@@ -16,6 +17,11 @@ import 'features/routes.dart';
 import 'features/session.dart';
 import 'features/settings_screen.dart';
 import 'features/sign_in_screen.dart';
+import 'features/terminal/terminal_screen.dart';
+import 'features/terminal/terminals_screen.dart';
+import 'features/threads/thread_screen.dart';
+import 'features/threads/threads_screen.dart';
+import 'features/web/web_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'ui/theme.dart';
 import 'ui/tokens.dart';
@@ -25,6 +31,19 @@ GoRouter buildRouter() {
     final d = deploymentFromSegment(state.pathParameters['deployment']);
     return d == null ? const DeploymentsScreen() : build(d);
   }
+
+  // Machine pages take canonical ids only; anything else lands on the
+  // machine list rather than a page for an identifier that cannot exist.
+  Widget machine(
+    GoRouterState state,
+    Widget Function(Deployment, String, Map<String, String>) build, {
+    List<String> ids = const [],
+  }) => deployment(state, (d) {
+    final id = state.pathParameters['id'];
+    final values = {for (final name in ids) name: state.pathParameters[name] ?? ''};
+    final valid = (id == null || isCanonicalUuid(id)) && values.values.every(isCanonicalUuid);
+    return valid ? build(d, id ?? '', values) : MachinesScreen(deployment: d);
+  });
 
   return GoRouter(
     routes: [
@@ -43,11 +62,57 @@ GoRouter buildRouter() {
         builder: (context, state) => deployment(state, (d) => NotificationsScreen(deployment: d)),
       ),
       GoRoute(
-        path: '/d/:deployment/machines/:id',
-        builder: (context, state) => deployment(
+        path: '/d/:deployment/threads',
+        builder: (context, state) => deployment(state, (d) => RecentThreadsScreen(deployment: d)),
+      ),
+      GoRoute(
+        path: '/d/:deployment/threads/:thread',
+        builder: (context, state) => machine(
           state,
-          (d) => MachineScreen(deployment: d, machineId: state.pathParameters['id']!),
+          (d, _, ids) => ThreadScreen(deployment: d, threadId: ids['thread']!),
+          ids: const ['thread'],
         ),
+      ),
+      GoRoute(
+        path: '/d/:deployment/machines/:id',
+        builder: (context, state) =>
+            machine(state, (d, id, _) => MachineScreen(deployment: d, machineId: id)),
+      ),
+      GoRoute(
+        path: '/d/:deployment/machines/:id/info',
+        builder: (context, state) =>
+            machine(state, (d, id, _) => MachineScreen(deployment: d, machineId: id)),
+      ),
+      GoRoute(
+        path: '/d/:deployment/machines/:id/terminals',
+        builder: (context, state) =>
+            machine(state, (d, id, _) => TerminalsScreen(deployment: d, machineId: id)),
+      ),
+      GoRoute(
+        path: '/d/:deployment/machines/:id/terminals/:session',
+        builder: (context, state) => machine(
+          state,
+          (d, id, ids) => TerminalScreen(deployment: d, machineId: id, sessionId: ids['session']!),
+          ids: const ['session'],
+        ),
+      ),
+      GoRoute(
+        path: '/d/:deployment/machines/:id/threads',
+        builder: (context, state) =>
+            machine(state, (d, id, _) => MachineThreadsScreen(deployment: d, machineId: id)),
+      ),
+      GoRoute(
+        path: '/d/:deployment/machines/:id/threads/:thread',
+        builder: (context, state) => machine(
+          state,
+          (d, id, ids) => ThreadScreen(deployment: d, machineId: id, threadId: ids['thread']!),
+          ids: const ['thread'],
+        ),
+      ),
+      GoRoute(
+        path: '/d/:deployment/machines/:id/web',
+        builder: (context, state) =>
+            machine(state, (d, id, _) => WebScreen(deployment: d, machineId: id)),
       ),
     ],
   );

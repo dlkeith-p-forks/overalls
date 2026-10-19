@@ -46,6 +46,11 @@ class _MachinesScreenState extends ConsumerState<MachinesScreen> {
         title: Text(l.machinesTitle),
         actions: [
           TextButton(
+            key: const Key('open-threads'),
+            onPressed: () => context.go(threadsPath(widget.deployment)),
+            child: Text(l.tabThreads.toUpperCase()),
+          ),
+          TextButton(
             key: const Key('open-notifications'),
             onPressed: () => context.go(notificationsPath(widget.deployment)),
             child: Text(l.notificationsTitle.toUpperCase()),
