@@ -680,11 +680,11 @@ defmodule MarshallWeb.TerminalLive do
             <p data-display-status data-status="idle" role="status">
               {@android_display_notice || dgettext("terminal", "Waiting for display relay.")}
             </p>
-            <canvas
-              width="1080"
-              height="1920"
+            <div
+              data-display-target
+              role="img"
               aria-label={dgettext("terminal", "Android display canvas")}
-            ></canvas>
+            ></div>
           </section>
 
           <div id="terminal-display" class="machine-terminal-display">
