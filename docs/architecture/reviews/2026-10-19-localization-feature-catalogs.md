@@ -346,3 +346,25 @@ does not establish full Node compilation, editor construction, runtime execution
 or browser acceptance. The repair restores the existing package-input contract
 without adding a package source or changing editor authority; documented editor
 defaults remain the same package rather than an evaluation-error sentinel.
+
+The later `41106c6b3` through `3cfcae787` integration adds Android host-stream
+sequence-gap closure, updates the guest journald option to the current spelling
+while retaining volatile storage, and pins the existing guest coding-CLI package
+source by archive hash independently from the host package refresh. Codex remains
+0.149.0 and Claude Code 2.1.238; their native settings and update controls are
+unchanged. Claude's narrowly permitted import retains the supplied overlays;
+the separate Codex import uses the archive's package set without inheriting
+overlays. No native guest CLI execution or new package-source build acceptance
+is inferred from this configuration review.
+
+The Android change introduces no human-facing string or locale identity. Its
+new BEAM regression initially decoded a WebSock iodata reply as binary; the
+fixture now uses `IO.iodata_to_binary/1`. The focused
+`host_stream_android_test.exs` and `host_stream_test.exs` run passed all 11 tests
+in 61.6 seconds with seed `452775`, eight maximum cases and unchanged 100-case
+property budgets. The production host-stream and corrected regression source
+match the validated isolated snapshot. This bounds the new sequence-gap behavior
+and does not extend earlier full-suite, type, native host or browser evidence.
+The Android review and handbook retain the unverified composed Firecracker
+journey. These changes preserve the accepted runtime, transport authority and
+volatile-log decisions; no ADR implementation status is promoted.
